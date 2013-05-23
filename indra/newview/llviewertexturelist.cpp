@@ -1293,7 +1293,8 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32 mem)
 {
 	// Initialize the image pipeline VRAM settings
 	S32 cur_mem = gSavedSettings.getS32("TextureMemory");
-	F32 mem_multiplier = gSavedSettings.getF32("RenderTextureMemoryMultiple");
+//	//BD - Allowing higher video card memory usage
+	//F32 mem_multiplier = gSavedSettings.getF32("RenderTextureMemoryMultiple");
 	S32 default_mem = getMaxVideoRamSetting(true); // recommended default
 	if (mem == 0)
 	{
@@ -1305,14 +1306,15 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32 mem)
 	}
 
 	// limit the texture memory to a multiple of the default if we've found some cards to behave poorly otherwise
-	mem = llmin(mem, (S32) (mem_multiplier * (F32) default_mem));
+	/*mem = llmin(mem, (S32) (mem_multiplier * (F32) default_mem));
 
 	mem = llclamp(mem, getMinVideoRamSetting(), getMaxVideoRamSetting());
 	if (mem != cur_mem)
 	{
 		gSavedSettings.setS32("TextureMemory", mem);
 		return; //listener will re-enter this function
-	}
+	}*/
+//	//BD - Allowing higher video card memory usage
 
 	// TODO: set available resident texture mem based on use by other subsystems
 	// currently max(12MB, VRAM/4) assumed...
