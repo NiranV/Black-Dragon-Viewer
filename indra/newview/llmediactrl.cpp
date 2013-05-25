@@ -667,7 +667,8 @@ bool LLMediaCtrl::ensureMediaSourceExists()
 			mMediaSource->addObserver( this );
 			mMediaSource->setBackgroundColor( getBackgroundColor() );
 			mMediaSource->setTrustedBrowser(mTrusted);
-			mMediaSource->setPageZoomFactor( LLUI::getScaleFactor().mV[ VX ] );
+//			//BD - Webmedia UI Scaling fix, dont scale websites according to our UI size.
+			mMediaSource->setPageZoomFactor( 1.0f );
 
 			if(mClearCache)
 			{
