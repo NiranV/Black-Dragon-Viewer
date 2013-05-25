@@ -14593,5 +14593,16 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
+  <key>MovementRotationSpeed</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls rotation speed of your Avatar , smaller values result in eventually breaking turn animations in AO's and a more direct control feeling</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.20</real>
+  </map>
 </map>
 </llsd>
