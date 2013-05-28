@@ -5260,7 +5260,7 @@ void LLObjectBridge::openItem()
 {
 	// object double-click action is to wear/unwear object
 	performAction(getInventoryModel(),
-		      get_is_item_worn(mUUID) ? "detach" : "attach");
+		      get_is_item_worn(mUUID) ? "detach" : "wear_add");
 }
 
 std::string LLObjectBridge::getLabelSuffix() const
