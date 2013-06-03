@@ -98,6 +98,8 @@ private:
 
 private:
 	LLTextBox	*mTextTime;
+//	//BD
+	LLTextBox	*mFPSText;
 
 	LLStatGraph *mSGBandwidth;
 	LLStatGraph *mSGPacketLoss;

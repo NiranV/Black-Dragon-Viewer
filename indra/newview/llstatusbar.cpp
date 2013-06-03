@@ -166,6 +166,8 @@ BOOL LLStatusBar::postBuild()
 	gMenuBarView->setRightMouseDownCallback(boost::bind(&show_navbar_context_menu, _1, _2, _3));
 
 	mTextTime = getChild<LLTextBox>("TimeText" );
+//	//BD
+	mFPSText = getChild<LLTextBox>("FPSText");
 	
 	getChild<LLUICtrl>("buyL")->setCommitCallback(
 		boost::bind(&LLStatusBar::onClickBuyCurrency, this));
@@ -257,6 +259,10 @@ void LLStatusBar::refresh()
 		mSGBandwidth->setThreshold(1, bwtotal);
 		mSGBandwidth->setThreshold(2, bwtotal);
 	}
+
+//	//BD - Framerate counter in statusbar
+	F32 fps_value = LLViewerStats::getInstance()->mFPSStat.getMeanPerSec();
+	mFPSText->setValue(fps_value);
 	
 	// update clock every 10 seconds
 	if(mClockUpdateTimer.getElapsedTimeF32() > 10.f)
