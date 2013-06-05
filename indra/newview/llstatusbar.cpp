@@ -332,13 +332,11 @@ void LLStatusBar::refresh()
 void LLStatusBar::setVisibleForMouselook(bool visible)
 {
 	mTextTime->setVisible(visible);
-	getChild<LLUICtrl>("balance_bg")->setVisible(visible);
 	mBoxBalance->setVisible(visible);
 	mBtnVolume->setVisible(visible);
 	mMediaToggle->setVisible(visible);
 	mSGBandwidth->setVisible(visible);
 	mSGPacketLoss->setVisible(visible);
-	setBackgroundVisible(visible);
 }
 
 void LLStatusBar::debitBalance(S32 debit)
