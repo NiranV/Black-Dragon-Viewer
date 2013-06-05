@@ -1362,9 +1362,9 @@
       <string>Vector3</string>
       <key>Value</key>
       <array>
-        <real>-3.0</real>
+        <real>-2.5</real>
         <real>0.0</real>
-        <real>0.75</real>
+        <real>0.1</real>
       </array>
     </map>
     <key>CameraOffsetFrontView</key>
@@ -1377,24 +1377,54 @@
       <string>Vector3</string>
       <key>Value</key>
       <array>
-        <real>2.2</real>
+        <real>-6.0</real>
         <real>0.0</real>
-        <real>0.0</real>
+        <real>8.0</real>
       </array>
     </map>
     <key>CameraOffsetGroupView</key>
     <map>
       <key>Comment</key>
-      <string>Initial camera offset from avatar in Group View</string>
+      <string>Initial camera offset from avatar in Shoulder View</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
       <string>Vector3</string>
       <key>Value</key>
       <array>
-        <real>-1.0</real>
+        <real>-2.0</real>
+        <real>-0.8</real>
+        <real>0.0</real>
+      </array>
+    </map>
+    <key>CameraOffsetLeftShoulderView</key>
+    <map>
+      <key>Comment</key>
+      <string>Initial camera offset from avatar in Left Shoulder View</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+        <real>-1.5</real>
         <real>0.7</real>
-        <real>0.5</real>
+        <real>-0.35</real>
+      </array>
+    </map>
+    <key>CameraOffsetRightShoulderView</key>
+    <map>
+      <key>Comment</key>
+      <string>Initial camera offset from avatar in Right Shoulder View</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+        <real>-1.5</real>
+        <real>-0.7</real>
+        <real>-0.35</real>
       </array>
     </map>
     <key>CameraOffsetScale</key>
@@ -3978,9 +4008,9 @@
       <string>Vector3D</string>
       <key>Value</key>
       <array>
-        <real>1.0</real>
+        <real>0.125</real>
         <real>0.0</real>
-        <real>1.0</real>
+        <real>0.775</real>
       </array>
     </map>
     <key>FocusOffsetFrontView</key>
@@ -3995,22 +4025,52 @@
       <array>
         <real>0.0</real>
         <real>0.0</real>
-        <real>0.0</real>
+        <real>0.3</real>
       </array>
     </map>
     <key>FocusOffsetGroupView</key>
     <map>
       <key>Comment</key>
-      <string>Initial focus point offset relative to avatar for the camera preset Group View</string>
+      <string>Initial focus point offset relative to avatar for the camera preset Shoulder View</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
       <string>Vector3D</string>
       <key>Value</key>
       <array>
-        <real>1.5</real>
-        <real>0.7</real>
         <real>1.0</real>
+        <real>-1.0</real>
+        <real>0.4</real>
+      </array>
+    </map>
+    <key>FocusOffsetLeftShoulderView</key>
+    <map>
+      <key>Comment</key>
+      <string>Initial focus point offset relative to avatar for the camera preset Left Shoulder View</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3D</string>
+      <key>Value</key>
+      <array>
+        <real>0.0</real>
+        <real>0.8</real>
+        <real>0.8</real>
+      </array>
+    </map>
+    <key>FocusOffsetRightShoulderView</key>
+    <map>
+      <key>Comment</key>
+      <string>Initial focus point offset relative to avatar for the camera preset Right Shoulder View</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3D</string>
+      <key>Value</key>
+      <array>
+        <real>0.0</real>
+        <real>-0.8</real>
+        <real>0.8</real>
       </array>
     </map>
     <key>FocusPosOnLogout</key>
