@@ -694,16 +694,16 @@ with the same filename but different name
   
   <!-- Back Dragon textures-->
   
-  <!--<texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
-    
-  <texture name="lock2" file_name="lock.png" preload="true" />
-  <texture name="transparentj2c" file_name="transparent.j2c" preload="true" />
-  <texture name="menubg" file_name="menubg.jpg" preload="true" />
-  <texture name="airicon" file_name="airicon.png" preload="true" />
   <texture name="user-entry" file_name="user-entry.png" preload="true" />
   <texture name="pw-entry" file_name="pw-entry.png" preload="true" />
   <texture name="place-entry" file_name="place-entry.png" preload="true" />
   <texture name="grid-entry" file_name="grid-entry.png" preload="true" />
+  
+  <!--<texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
+    
+  <texture name="lock2" file_name="lock.png" preload="true" />
+  <texture name="menubg" file_name="menubg.jpg" preload="true" />
+  <texture name="airicon" file_name="airicon.png" preload="true" />
   
   <texture name="NavBar_BG_middle" file_name="navbar/NavBar_BG_middle.png" preload="true" />
 
@@ -715,10 +715,7 @@ with the same filename but different name
   <texture name="TextField_Active3" file_name="widgets/TextField_Active3.png" preload="true" scale.left="12" scale.top="12" scale.right="238" scale.bottom="12" />
   <texture name="TextField_Off4" file_name="widgets/TextField_Off4.png" preload="true" scale.left="12" scale.top="12" scale.right="248" scale.bottom="12" />
   <texture name="TextField_Disabled4" file_name="widgets/TextField_Disabled4.png" preload="true" scale.left="12" scale.top="12" scale.right="238" scale.bottom="12" />
-  <texture name="TextField_Active4" file_name="widgets/TextField_Active4.png" preload="true" scale.left="12" scale.top="12" scale.right="248" scale.bottom="12" />
-  
-  <texture name="SLScene" file_name="SLScene.jpg" preload="true"/>
-  <texture name="ShooterScene" file_name="ShooterScene.jpg" preload="true"/>-->
+  <texture name="TextField_Active4" file_name="widgets/TextField_Active4.png" preload="true" scale.left="12" scale.top="12" scale.right="248" scale.bottom="12" />-->
   
   <texture name="Balance" file_name="icons/Balance.png" preload="true"/>
   
@@ -729,6 +726,8 @@ with the same filename but different name
   
   <texture name="Toast_Background_Round" file_name="windows/Toast_Background_Round.png" preload="true" scale.left="6" scale.top="26" scale.right="58" scale.bottom="6" />
   <texture name="Toast_Over_Round" file_name="windows/Toast_Over_Round.png" preload="true" scale.left="6" scale.top="80" scale.right="191" scale.bottom="6" />
+  
+  <texture name="transparentj2c" file_name="transparent.j2c" preload="true" />
   
   <texture name="Inv_TexturesClosed" file_name="icons/Inv_TexturesClosed.png" preload="false" />
   <texture name="Inv_SoundsClosed" file_name="icons/Inv_SoundsClosed.png" preload="false" />

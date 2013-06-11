@@ -43,7 +43,6 @@
 #include "llcombobox.h"
 #include "llcurl.h"
 #include "llviewercontrol.h"
-#include "llfloaterpreference.h"
 #include "llfocusmgr.h"
 #include "lllineeditor.h"
 #include "llnotificationsutil.h"
@@ -69,6 +68,8 @@
 #include "lltrans.h"
 #include "llglheaders.h"
 #include "llpanelloginlistener.h"
+
+//#include "nvprefspanel.h"
 
 #if LL_WINDOWS
 #pragma warning(disable: 4355)      // 'this' used in initializer list
@@ -108,7 +109,6 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 						 void (*callback)(S32 option, void* user_data),
 						 void *cb_data)
 :	LLPanel(),
-	mLogoImage(),
 	mCallback(callback),
 	mCallbackData(cb_data),
 	mListener(new LLPanelLoginListener(this))
@@ -135,11 +135,8 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 		login_holder->addChild(this);
 	}
 
-	// Logo
-	mLogoImage = LLUI::getUIImage("startup_logo");
-
 	buildFromFile( "panel_login.xml");
-
+	
 	reshape(rect.getWidth(), rect.getHeight());
 
 	LLLineEditor* password_edit(getChild<LLLineEditor>("password_edit"));
@@ -147,12 +144,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	// STEAM-14: When user presses Enter with this field in focus, initiate login
 	password_edit->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 
-	// change z sort of clickable text to be behind buttons
-	sendChildToBack(getChildView("forgot_password_text"));
-
-	LLComboBox* location_combo = getChild<LLComboBox>("start_location_combo");
-	updateLocationSelectorsVisibility(); // separate so that it can be called from preferences
-	location_combo->setFocusLostCallback(boost::bind(&LLPanelLogin::onLocationSLURL, this));
+	getChild<LLComboBox>("start_location_combo")->setFocusLostCallback(boost::bind(&LLPanelLogin::onLocationSLURL, this));
 	
 	LLComboBox* server_choice_combo = getChild<LLComboBox>("server_combo");
 	server_choice_combo->setCommitCallback(boost::bind(&LLPanelLogin::onSelectServer, this));
@@ -204,53 +196,27 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	}
 	
 	childSetAction("connect_btn", onClickConnect, this);
-
-	getChild<LLPanel>("links_login_panel")->setDefaultBtn("connect_btn");
+	childSetAction("quit_btn", onClickQuit, this);
+	childSetAction("forgot_password_text", onClickForgotPassword, this);
+	childSetAction("create_new_account_text", onClickNewAccount, this);
 
 	std::string channel = LLVersionInfo::getChannel();
 	std::string version = llformat("%s (%d)",
 								   LLVersionInfo::getShortVersion().c_str(),
 								   LLVersionInfo::getBuild());
-	
-	LLTextBox* forgot_password_text = getChild<LLTextBox>("forgot_password_text");
-	forgot_password_text->setClickedCallback(onClickForgotPassword, NULL);
-
-	childSetAction("create_new_account_btn", onClickNewAccount, NULL);
-
-	LLTextBox* need_help_text = getChild<LLTextBox>("login_help");
-	need_help_text->setClickedCallback(onClickHelp, NULL);
-	
-	// get the web browser control
-	LLMediaCtrl* web_browser = getChild<LLMediaCtrl>("login_html");
-	web_browser->addObserver(this);
-
-	reshapeBrowser();
+	LLButton* channel_text = getChild<LLButton>("channel_text");
+	channel_text->setLabelArg("[CHANNEL]", channel);
+	channel_text->setLabelArg("[VERSION]", version);
 
 	loadLoginPage();
-
+			
 	// Show last logged in user favorites in "Start at" combo.
-	addUsersWithFavoritesToUsername();
-	LLComboBox* username_combo(getChild<LLComboBox>("username_combo"));
-	username_combo->setTextChangedCallback(boost::bind(&LLPanelLogin::addFavoritesToStartLocation, this));
+	LLLineEditor* username_combo(getChild<LLLineEditor>("username_combo"));
+	addFavoritesToStartLocation();
 	// STEAM-14: When user presses Enter with this field in focus, initiate login
 	username_combo->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
-}
 
-void LLPanelLogin::addUsersWithFavoritesToUsername()
-{
-	LLComboBox* combo = getChild<LLComboBox>("username_combo");
-	if (!combo) return;
-	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "stored_favorites.xml");
-	LLSD fav_llsd;
-	llifstream file;
-	file.open(filename);
-	if (!file.is_open()) return;
-	LLSDSerialize::fromXML(fav_llsd, file);
-	for (LLSD::map_const_iterator iter = fav_llsd.beginMap();
-		iter != fav_llsd.endMap(); ++iter)
-	{
-		combo->add(iter->first);
-	}
+	getChild<LLButton>("connect_btn")->setFocus(true);
 }
 
 void LLPanelLogin::addFavoritesToStartLocation()
@@ -265,7 +231,7 @@ void LLPanelLogin::addFavoritesToStartLocation()
 	}
 
 	// Load favorites into the combo.
-	std::string user_defined_name = getChild<LLComboBox>("username_combo")->getSimple();
+	std::string user_defined_name = getChild<LLLineEditor>("username_combo")->getValue();
 	std::string canonical_user_name = canonicalize_username(user_defined_name);
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "stored_favorites.xml");
 	LLSD fav_llsd;
@@ -303,21 +269,6 @@ void LLPanelLogin::addFavoritesToStartLocation()
 	}
 }
 
-// force the size to be correct (XML doesn't seem to be sufficient to do this)
-// (with some padding so the other login screen doesn't show through)
-void LLPanelLogin::reshapeBrowser()
-{
-	LLMediaCtrl* web_browser = getChild<LLMediaCtrl>("login_html");
-	LLRect rect = gViewerWindow->getWindowRectScaled();
-	LLRect html_rect;
-	html_rect.setCenterAndSize(
-		rect.getCenterX() - 2, rect.getCenterY() + 40,
-		rect.getWidth() + 6, rect.getHeight() - 78 );
-	web_browser->setRect( html_rect );
-	web_browser->reshape( html_rect.getWidth(), html_rect.getHeight(), TRUE );
-	reshape( rect.getWidth(), rect.getHeight(), 1 );
-}
-
 LLPanelLogin::~LLPanelLogin()
 {
 	LLPanelLogin::sInstance = NULL;
@@ -330,44 +281,12 @@ LLPanelLogin::~LLPanelLogin()
 // virtual
 void LLPanelLogin::draw()
 {
-	gGL.pushMatrix();
-	{
-		F32 image_aspect = 1.333333f;
-		F32 view_aspect = (F32)getRect().getWidth() / (F32)getRect().getHeight();
-		// stretch image to maintain aspect ratio
-		if (image_aspect > view_aspect)
-		{
-			gGL.translatef(-0.5f * (image_aspect / view_aspect - 1.f) * getRect().getWidth(), 0.f, 0.f);
-			gGL.scalef(image_aspect / view_aspect, 1.f, 1.f);
-		}
-
-		S32 width = getRect().getWidth();
-		S32 height = getRect().getHeight();
-
-		if (getChild<LLView>("login_widgets")->getVisible())
-		{
-			// draw a background box in black
-			gl_rect_2d( 0, height - 264, width, 264, LLColor4::black );
-			// draw the bottom part of the background image
-			// just the blue background to the native client UI
-			mLogoImage->draw(0, -264, width + 8, mLogoImage->getHeight());
-		};
-	}
-	gGL.popMatrix();
-
 	LLPanel::draw();
 }
 
 // virtual
 BOOL LLPanelLogin::handleKeyHere(KEY key, MASK mask)
 {
-	if ( KEY_F1 == key )
-	{
-		LLViewerHelp* vhelp = LLViewerHelp::getInstance();
-		vhelp->showTopic(vhelp->f1HelpTopic());
-		return TRUE;
-	}
-
 	return LLPanel::handleKeyHere(key, mask);
 }
 
@@ -400,7 +319,7 @@ void LLPanelLogin::giveFocus()
 		BOOL have_pass = !pass.empty();
 
 		LLLineEditor* edit = NULL;
-		LLComboBox* combo = NULL;
+		LLLineEditor* combo = NULL;
 		if (have_username && !have_pass)
 		{
 			// User saved his name but not his password.  Move
@@ -410,7 +329,7 @@ void LLPanelLogin::giveFocus()
 		else
 		{
 			// User doesn't have a name, so start there.
-			combo = sInstance->getChild<LLComboBox>("username_combo");
+			combo = sInstance->getChild<LLLineEditor>("username_combo");
 		}
 
 		if (edit)
@@ -433,11 +352,8 @@ void LLPanelLogin::showLoginWidgets()
 		// *NOTE: Mani - This may or may not be obselete code.
 		// It seems to be part of the defunct? reg-in-client project.
 		sInstance->getChildView("login_widgets")->setVisible( true);
-		LLMediaCtrl* web_browser = sInstance->getChild<LLMediaCtrl>("login_html");
-		sInstance->reshapeBrowser();
 		// *TODO: Append all the usual login parameters, like first_login=Y etc.
 		std::string splash_screen_url = LLGridManager::getInstance()->getLoginPage();
-		web_browser->navigateTo( splash_screen_url, "text/html" );
 		LLUICtrl* username_combo = sInstance->getChild<LLUICtrl>("username_combo");
 		username_combo->setFocus(TRUE);
 	}
@@ -483,15 +399,15 @@ void LLPanelLogin::setFields(LLPointer<LLCredential> credential,
 		    login_id += " ";
 		    login_id += lastname;
 	    }
-		sInstance->getChild<LLComboBox>("username_combo")->setLabel(login_id);	
+		sInstance->getChild<LLLineEditor>("username_combo")->setValue(login_id);	
 	}
 	else if((std::string)identifier["type"] == "account")
 	{
-		sInstance->getChild<LLComboBox>("username_combo")->setLabel((std::string)identifier["account_name"]);		
+		sInstance->getChild<LLLineEditor>("username_combo")->setValue((std::string)identifier["account_name"]);		
 	}
 	else
 	{
-	  sInstance->getChild<LLComboBox>("username_combo")->setLabel(std::string());	
+	  sInstance->getChild<LLLineEditor>("username_combo")->setValue(std::string());	
 	}
 	sInstance->addFavoritesToStartLocation();
 	// if the password exists in the credential, set the password field with
@@ -621,7 +537,7 @@ BOOL LLPanelLogin::areCredentialFieldsDirty()
 		std::string username = sInstance->getChild<LLUICtrl>("username_combo")->getValue().asString();
 		LLStringUtil::trim(username);
 		std::string password = sInstance->getChild<LLUICtrl>("password_edit")->getValue().asString();
-		LLComboBox* combo = sInstance->getChild<LLComboBox>("username_combo");
+		LLLineEditor* combo = sInstance->getChild<LLLineEditor>("username_combo");
 		if(combo && combo->isDirty())
 		{
 			return true;
@@ -633,20 +549,6 @@ BOOL LLPanelLogin::areCredentialFieldsDirty()
 		}
 	}
 	return false;	
-}
-
-
-// static
-void LLPanelLogin::updateLocationSelectorsVisibility()
-{
-	if (sInstance) 
-	{
-		BOOL show_start = gSavedSettings.getBOOL("ShowStartLocation");
-		sInstance->getChild<LLLayoutPanel>("start_location_panel")->setVisible(show_start);
-
-		BOOL show_server = gSavedSettings.getBOOL("ForceShowGrid");
-		sInstance->getChild<LLLayoutPanel>("grid_panel")->setVisible(show_server);
-	}	
 }
 
 // static - called from LLStartUp::setStartSLURL
@@ -731,26 +633,10 @@ void LLPanelLogin::closePanel()
 	}
 }
 
-// static
-void LLPanelLogin::setAlwaysRefresh(bool refresh)
-{
-	if (sInstance && LLStartUp::getStartupState() < STATE_LOGIN_CLEANUP)
-	{
-		LLMediaCtrl* web_browser = sInstance->getChild<LLMediaCtrl>("login_html");
-
-		if (web_browser)
-		{
-			web_browser->setAlwaysRefresh(refresh);
-		}
-	}
-}
-
-
-
 void LLPanelLogin::loadLoginPage()
 {
 	if (!sInstance) return;
-
+	
 	LLURI login_page = LLURI(LLGridManager::getInstance()->getLoginPage());
 	LLSD params(login_page.queryMap());
 
@@ -784,24 +670,18 @@ void LLPanelLogin::loadLoginPage()
 	LLURI login_uri(LLURI::buildHTTP(login_page.authority(),
 									 login_page.path(),
 									 params));
-
-	gViewerWindow->setMenuBackgroundColor(false, !LLGridManager::getInstance()->isInProductionGrid());
-
-	LLMediaCtrl* web_browser = sInstance->getChild<LLMediaCtrl>("login_html");
-	if (web_browser->getCurrentNavUrl() != login_uri.asString())
-	{
-		LL_DEBUGS("AppInit") << "loading:    " << login_uri << LL_ENDL;
-		web_browser->navigateTo( login_uri.asString(), "text/html" );
-	}
-}
-
-void LLPanelLogin::handleMediaEvent(LLPluginClassMedia* /*self*/, EMediaEvent event)
-{
 }
 
 //---------------------------------------------------------------------------
 // Protected methods
 //---------------------------------------------------------------------------
+
+//static
+void LLPanelLogin::onClickQuit(void *)
+{
+	LLAppViewer::instance()->userQuit();
+	return;
+}
 
 // static
 void LLPanelLogin::onClickConnect(void *)
@@ -810,6 +690,12 @@ void LLPanelLogin::onClickConnect(void *)
 	{
 		// JC - Make sure the fields all get committed.
 		sInstance->setFocus(FALSE);
+
+		//NV - Set final login location where we will start now here when pressing connect,
+		//we dont need to set it every time we change it. It gets saved into a debug and
+		//read and set when we press connect, so it will always save and work as intended.
+		LLSLURL slurl(gSavedSettings.getString("LoginLocation"));
+		LLStartUp::setStartSLURL(slurl);
 
 		LLComboBox* combo = sInstance->getChild<LLComboBox>("server_combo");
 		LLSD combo_val = combo->getSelectedValue();
@@ -895,16 +781,6 @@ void LLPanelLogin::onClickForgotPassword(void*)
 	}
 }
 
-//static
-void LLPanelLogin::onClickHelp(void*)
-{
-	if (sInstance)
-	{
-		LLViewerHelp* vhelp = LLViewerHelp::getInstance();
-		vhelp->showTopic(vhelp->preLoginTopic());
-	}
-}
-
 // static
 void LLPanelLogin::onPassKey(LLLineEditor* caller, void* user_data)
 {
@@ -936,9 +812,7 @@ void LLPanelLogin::updateServer()
 			// update the login panel links 
 			bool system_grid = LLGridManager::getInstance()->isSystemGrid();
 
-			// Want to vanish not only create_new_account_btn, but also the
-			// title text over it, so turn on/off the whole layout_panel element.
-			sInstance->getChild<LLLayoutPanel>("links")->setVisible(system_grid);
+			sInstance->getChildView("create_new_account_text")->setVisible( system_grid);
 			sInstance->getChildView("forgot_password_text")->setVisible(system_grid);
 
 			// grid changed so show new splash screen (possibly)
@@ -1012,7 +886,6 @@ void LLPanelLogin::onLocationSLURL()
 
 	LLStartUp::setStartSLURL(location); // calls onUpdateStartSLURL, above 
 }
-
 
 std::string canonicalize_username(const std::string& name)
 {

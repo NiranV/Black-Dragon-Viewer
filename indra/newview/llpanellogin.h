@@ -1,4 +1,4 @@
-/** 
+/**
  * @file llpanellogin.h
  * @brief Login username entry fields.
  *
@@ -67,20 +67,13 @@ public:
 
 	static BOOL areCredentialFieldsDirty();
 	static void setLocation(const LLSLURL& slurl);
-	
-	/// Call when preferences that control visibility may have changed
-	static void updateLocationSelectorsVisibility();
 
 	static void closePanel();
 
-	void setSiteIsAlive( bool alive );
-
 	static void loadLoginPage();	
 	static void giveFocus();
-	static void setAlwaysRefresh(bool refresh); 
 	
 	// inherited from LLViewerMediaObserver
-	/*virtual*/ void handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
 	static void updateServer();  // update the combo box, change the login page to the new server, clear the combo
 
 	/// to be called from LLStartUp::setStartSLURL
@@ -88,9 +81,7 @@ public:
 
 private:
 	friend class LLPanelLoginListener;
-	void reshapeBrowser();
 	void addFavoritesToStartLocation();
-	void addUsersWithFavoritesToUsername();
 	void onSelectServer();
 	void onLocationSLURL();
 
@@ -98,9 +89,13 @@ private:
 	static void onClickNewAccount(void*);
 	static void onClickVersion(void*);
 	static void onClickForgotPassword(void*);
-	static void onClickHelp(void*);
 	static void onPassKey(LLLineEditor* caller, void* user_data);
 	static void updateServerCombo();
+
+	//NV - Convert them to non-static?
+	static void onClickQuit(void*);
+	static void onClickShooter(void*);
+	static void onClickClassic(void*);
 
 private:
 	LLPointer<LLUIImage> mLogoImage;
