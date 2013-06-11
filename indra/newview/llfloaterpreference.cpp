@@ -722,7 +722,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	onNotificationsChange("GroupChatOptions");
 	onNotificationsChange("NearbyChatOptions");
 
-	LLPanelLogin::setAlwaysRefresh(true);
+	//LLPanelLogin::setAlwaysRefresh(true);
 	refresh();
 	
 	// Make sure the current state of prefs are saved away when
@@ -766,7 +766,7 @@ void LLFloaterPreference::setHardwareDefaults()
 void LLFloaterPreference::onClose(bool app_quitting)
 {
 	gSavedSettings.setS32("LastPrefTab", getChild<LLTabContainer>("pref core")->getCurrentPanelIndex());
-	LLPanelLogin::setAlwaysRefresh(false);
+	//LLPanelLogin::setAlwaysRefresh(false);
 	if (!app_quitting)
 	{
 		cancel();
@@ -829,7 +829,7 @@ void LLFloaterPreference::onBtnOK()
 		llinfos << "Can't close preferences!" << llendl;
 	}
 
-	LLPanelLogin::updateLocationSelectorsVisibility();	
+	//LLPanelLogin::updateLocationSelectorsVisibility();	
 	//Need to reload the navmesh if the pathing console is up
 	LLHandle<LLFloaterPathfindingConsole> pathfindingConsoleHandle = LLFloaterPathfindingConsole::getInstanceHandle();
 	if ( !pathfindingConsoleHandle.isDead() )
@@ -854,7 +854,7 @@ void LLFloaterPreference::onBtnApply( )
 	apply();
 	saveSettings();
 
-	LLPanelLogin::updateLocationSelectorsVisibility();
+	//LLPanelLogin::updateLocationSelectorsVisibility();
 }
 
 // static 
