@@ -4656,7 +4656,7 @@ void LLViewerWindow::revealIntroPanel()
 {
 	if (mProgressView)
 	{
-		mProgressView->revealIntroPanel();
+		//mProgressView->revealIntroPanel();
 	}
 }
 
@@ -4664,7 +4664,7 @@ void LLViewerWindow::setShowProgress(const BOOL show)
 {
 	if (mProgressView)
 	{
-		mProgressView->setVisible(show);
+		mProgressView->fade(show);
 	}
 }
 
@@ -4685,7 +4685,7 @@ void LLViewerWindow::setProgressString(const std::string& string)
 {
 	if (mProgressView)
 	{
-		mProgressView->setText(string);
+		//mProgressView->setText(string);
 	}
 }
 
@@ -4693,7 +4693,7 @@ void LLViewerWindow::setProgressMessage(const std::string& msg)
 {
 	if(mProgressView)
 	{
-		mProgressView->setMessage(msg);
+		//mProgressView->setMessage(msg);
 	}
 }
 

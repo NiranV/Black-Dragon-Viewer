@@ -271,8 +271,8 @@ void MandatoryUpdateMachine::CheckingForUpdate::enter(void)
 	llinfos << "entering checking for update" << llendl;
 	
 	mProgressView = gViewerWindow->getProgressView();
-	mProgressView->setMessage("Looking for update...");
-	mProgressView->setText("There is a required update for your Black Dragon installation.");
+	//mProgressView->setMessage("Looking for update...");
+	//mProgressView->setText("There is a required update for your Black Dragon installation.");
 	mProgressView->setPercent(0);
 	mProgressView->setVisible(true);
 	mConnection = LLEventPumps::instance().obtain(LLUpdaterService::pumpName()).
@@ -422,11 +422,11 @@ void MandatoryUpdateMachine::WaitingForDownload::enter(void)
 {
 	llinfos << "entering waiting for download" << llendl;
 	mProgressView = gViewerWindow->getProgressView();
-	mProgressView->setMessage("Downloading update...");
+	//mProgressView->setMessage("Downloading update...");
 	std::ostringstream stream;
 	stream << "There is a required update for your Black Dragon installation." << std::endl <<
 		"Version " << mMachine.mUpdaterService.updatedVersion();
-	mProgressView->setText(stream.str());
+	//mProgressView->setText(stream.str());
 	mProgressView->setPercent(0);
 	mProgressView->setVisible(true);
 	mConnection = LLEventPumps::instance().obtain(LLUpdaterService::pumpName()).
