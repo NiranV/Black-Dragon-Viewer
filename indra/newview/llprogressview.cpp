@@ -282,17 +282,6 @@ void LLProgressView::draw()
 		return;
 	}
 
-	if(mStartupComplete)
-	{
-		//Earn Faster than Lightning if we start teleporting and if we don't have it yet
-		//but only if its really a TP , not login/out
-		static LLCachedControl<bool> lightning(gSavedPerAccountSettings, "AchievementLightning");
-		if(!lightning)
-		{
-			gSavedPerAccountSettings.setBOOL("AchievementLightning", true);
-		}
-	}
-
 	setTip();
 	drawStartTexture(1.0f);
 	// draw children
