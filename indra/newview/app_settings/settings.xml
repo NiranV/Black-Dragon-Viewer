@@ -14664,5 +14664,222 @@
     <key>Value</key>
     <real>0.20</real>
   </map>
+  
+  <!-- Tonemapping -->
+  <key>ExodusRenderAutoExposeStep</key>
+  <map>
+      <key>Comment</key>
+      <string>Amount to "correct" exposure by every frame until we've reached the target exposure in ExodusRenderExposureTarget.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>0.125</real>
+  </map>
+  <key>ExodusRenderExposureTarget</key>
+  <map>
+      <key>Comment</key>
+      <string>Target exposure level for auto exposure. Only applied when ExodusRenderAutoExposure is set to TRUE.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>1.0</real>
+  </map>
+  <key>ExodusRenderAutoExposure</key>
+  <map>
+      <key>Comment</key>
+      <string>Whether or not to enable auto exposure. Note: autoexposure is slightly more expensive, and may not work on all GPUs and drivers.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+  </map>
+  <key>ExodusRenderToneAdvOptA</key>
+  <map>
+      <key>Comment</key>
+      <string>Advanced tone mapping options. X = Shoulder strength, Y = Linear strength, Z = Linear angle.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+          <real>0.22</real>
+          <real>0.30</real>
+          <real>0.10</real>
+      </array>
+  </map>
+  <key>ExodusRenderToneAdvOptB</key>
+  <map>
+      <key>Comment</key>
+      <string>Advanced tone mapping options (cont'd). X = Toe strength, Y = Toe numerator, Z = Toe denominator.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+          <real>0.20</real>
+          <real>0.01</real>
+          <real>0.30</real>
+      </array>
+  </map>
+  <key>ExodusRenderToneAdvOptC</key>
+  <map>
+      <key>Comment</key>
+      <string>Advanced tone mapping options (cont'd). X = Linear white point, Y = Exposure bias.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+          <real>11.2</real>
+          <real>2.0</real>
+          <real>0</real>
+      </array>
+  </map>
+  <key>ExodusRenderHighPrecision</key>
+  <map>
+    <key>Comment</key>
+    <string>Do we want floating point 64-bit frame buffers?</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ExodusRenderGammaCorrect</key>
+  <map>
+    <key>Comment</key>
+    <string>Do we want gamma correct rendering?</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ExodusRenderToneExposure</key>
+  <map>
+    <key>Comment</key>
+    <string>Exposure for tone mapping.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>2.1</real>
+  </map>
+  <key>ExodusRenderToneMapping</key>
+  <map>
+    <key>Comment</key>
+    <string>This enables and disables Tone Mapping.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ExodusRenderToneMappingTech</key>
+  <map>
+    <key>Comment</key>
+    <string>Tone mapping technique to use. 0 applies Filmic, 1 applies Linear, and 2 applies Reinhard.  Defaults to Reinhard.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>S32</string>
+    <key>Value</key>
+    <integer>2</integer>
+  </map>
+  <key>ExodusRenderColorGradeTech</key>
+  <map>
+    <key>Comment</key>
+    <string>Color grading technique to use. 0 applies linear color correction, 1 applies a 1D color gammut LUT, 2 does nothing (yet), -1 disables color grading altogether.  Defaults to linear.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>S32</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ExodusRenderColorGradeTexture</key>
+  <map>
+    <key>Comment</key>
+    <string>Image to use for color grading post process.  Note: this should always be a gradient with alpha. (UUID texture reference)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>String</string>
+    <key>Value</key>
+    <string>38c32253-287c-e607-c3d7-a702b4c21363</string>
+  </map>
+  <key>ExodusRenderVignette</key>
+  <map>
+    <key>Comment</key>
+    <string>Amount of vignette to apply (X), power of vignette shading (Y), and multiplier for vignette shading (Z).</string>
+    <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+          <real>0.0</real>
+          <real>1.0</real>
+          <real>3.0</real>
+      </array>
+  </map>
+  <key>ExodusRenderExposure</key>
+  <map>
+    <key>Comment</key>
+    <string>High Dynamic Range Exposure.  Each value represents a different color channel.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>0.35</real>
+      <real>0.35</real>
+      <real>0.35</real>
+    </array>
+  </map>
+  <key>ExodusRenderGamma</key>
+  <map>
+    <key>Comment</key>
+    <string>High Dynamic Range Gamma Correction.  Each value represents a different color channel.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>1.00</real>
+      <real>1.00</real>
+      <real>1.00</real>
+    </array>
+  </map>
+  <key>ExodusRenderOffset</key>
+  <map>
+    <key>Comment</key>
+    <string>High Dynamic Range Brightness Offset.  Each value represents a different color channel.  Higher values brighten the scene, lower values darken.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>-0.119</real>
+      <real>-0.125</real>
+      <real>-0.125</real>
+    </array>
+  </map>
 </map>
 </llsd>
