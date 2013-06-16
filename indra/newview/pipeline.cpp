@@ -27,6 +27,7 @@
 #include "llviewerprecompiledheaders.h"
 
 #include "pipeline.h"
+#include "exopostprocess.h"
 
 // library includes
 #include "llaudioengine.h" // For debugging.
@@ -656,6 +657,21 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("CameraDoFResScale");
 	connectRefreshCachedSettingsSafe("RenderAutoHideSurfaceAreaLimit");
 	gSavedSettings.getControl("RenderAutoHideSurfaceAreaLimit")->getCommitSignal()->connect(boost::bind(&LLPipeline::refreshCachedSettings));
+	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
+	connectRefreshCachedSettingsSafe("ExodusRenderOffset");
+	connectRefreshCachedSettingsSafe("ExodusRenderExposure");
+	connectRefreshCachedSettingsSafe("ExodusRenderGammaCorrect");
+	connectRefreshCachedSettingsSafe("ExodusRenderHighPrecision");
+	connectRefreshCachedSettingsSafe("ExodusRenderToneExposure");
+	connectRefreshCachedSettingsSafe("ExodusRenderToneMapping");
+	connectRefreshCachedSettingsSafe("ExodusRenderVignette");
+	connectRefreshCachedSettingsSafe("ExodusRenderToneMappingTech");
+	connectRefreshCachedSettingsSafe("ExodusRenderColorGradeTexture");
+	connectRefreshCachedSettingsSafe("ExodusRenderColorGradeTech");
+	connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptA");
+    connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptB");
+    connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptC");
+
 }
 
 LLPipeline::~LLPipeline()
@@ -938,7 +954,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		const U32 occlusion_divisor = 3;
 
 		//allocate deferred rendering color buffers
-		if (!mDeferredScreen.allocate(resX, resY, GL_SRGB8_ALPHA8, TRUE, TRUE, LLTexUnit::TT_RECT_TEXTURE, FALSE, samples)) return false;
+		if (!mDeferredScreen.allocate(resX, resY, GL_RGBA16F_ARB, TRUE, TRUE, LLTexUnit::TT_RECT_TEXTURE, FALSE, samples)) return false;
 		if (!mDeferredDepth.allocate(resX, resY, 0, TRUE, FALSE, LLTexUnit::TT_RECT_TEXTURE, FALSE, samples)) return false;
 		if (!mOcclusionDepth.allocate(resX/occlusion_divisor, resY/occlusion_divisor, 0, TRUE, FALSE, LLTexUnit::TT_RECT_TEXTURE, FALSE, samples)) return false;
 		if (!addDeferredAttachments(mDeferredScreen)) return false;
@@ -1035,7 +1051,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		mDeferredDepth.release();
 		mOcclusionDepth.release();
 						
-		if (!mScreen.allocate(resX, resY, GL_RGBA, TRUE, TRUE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;		
+		if (!mScreen.allocate(resX, resY, GL_RGBA, TRUE, TRUE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
 	}
 	
 	if (LLPipeline::sRenderDeferred)
@@ -1068,7 +1084,8 @@ void LLPipeline::updateRenderDeferred()
 					 WindLightUseAtmosShaders) ? TRUE : FALSE) &&
 					!gUseWireframe;
 
-	sRenderDeferred = deferred;	
+	sRenderDeferred = deferred;
+	exoPostProcess::instance().ExodusRenderPostUpdate();
 	if (deferred)
 	{ //must render glow when rendering deferred since post effect pass is needed to present any lighting at all
 		sRenderGlow = TRUE;
@@ -1165,6 +1182,10 @@ void LLPipeline::refreshCachedSettings()
 	CameraMaxCoF = gSavedSettings.getF32("CameraMaxCoF");
 	CameraDoFResScale = gSavedSettings.getF32("CameraDoFResScale");
 	RenderAutoHideSurfaceAreaLimit = gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit");
+
+	// <exodus>
+	exoPostProcess::instance().ExodusRenderPostSettingsUpdate();
+	// </exodus>
 	
 	updateRenderDeferred();
 }
@@ -1323,6 +1344,7 @@ void LLPipeline::createGLBuffers()
 
 		createLUTBuffers();
 	}
+	exoPostProcess::instance().ExodusGenerateLUT();
 
 	gBumpImageList.restoreGL();
 }
@@ -7457,7 +7479,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 	
 	gGL.setColorMask(true, true);
 	glClearColor(0,0,0,0);
-	
+	exoPostProcess::instance().ExodusRenderPostStack(&mScreen, &mScreen);
 	{
 		{
 			LLFastTimer ftm(FTM_RENDER_BLOOM_FBO);
@@ -7596,6 +7618,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 
 
 		bool multisample = RenderFSAASamples > 1 && mFXAABuffer.isComplete();
+		exoPostProcess::instance().multisample = multisample;
 
 		gViewerWindow->setup3DViewport();
 				
@@ -7975,6 +7998,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 		if (LLGLSLShader::sNoFixedFunction)
 		{
 			gGlowCombineProgram.bind();
+			gGlowCombineProgram.uniform3fv(LLShaderMgr::EXO_RENDER_VIGNETTE, 1, exoPostProcess::sExodusRenderVignette.mV); // Work around for ExodusRenderVignette in non-deferred.
 		}
 		else
 		{

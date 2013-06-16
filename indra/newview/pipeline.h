@@ -40,6 +40,7 @@
 #include "llgl.h"
 #include "lldrawable.h"
 #include "llrendertarget.h"
+#include "exopostprocess.h"
 
 #include <stack>
 
@@ -117,6 +118,7 @@ public:
 	void doResetVertexBuffers();
 	void resizeScreenTexture();
 	void releaseGLBuffers();
+	void createGLBuffers(U32 width, U32 height);
 	void releaseLUTBuffers();
 	void releaseScreenBuffers();
 	void createGLBuffers();
@@ -599,6 +601,10 @@ public:
 	static S32				sVisibleLightCount;
 	static F32				sMinRenderSize;
 	static BOOL				sRenderingHUDs;
+	static BOOL             sExodusRenderHighPrecision;
+	static BOOL             sExodusRenderGammaCorrect;
+	static BOOL             sExodusRenderShaderGamma;
+	static BOOL             sExodusRenderToneMapping;
 
 	//screen texture
 	U32 					mScreenWidth;

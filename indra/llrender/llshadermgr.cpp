@@ -1135,6 +1135,18 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("lightMap");
 	mReservedUniforms.push_back("bloomMap");
 	mReservedUniforms.push_back("projectionMap");
+
+	// <exodus>
+	mReservedUniforms.push_back("exo_gamma");
+	mReservedUniforms.push_back("exo_exposure");
+	mReservedUniforms.push_back("exo_offset");
+	mReservedUniforms.push_back("exo_vignette");
+	mReservedUniforms.push_back("textureLUT");
+	mReservedUniforms.push_back("exo_screen");
+	mReservedUniforms.push_back("invGammaFunc");
+
+	//llassert(mReservedUniforms.size() == LLShaderMgr::EXO_RENDER_SCREEN+1);
+	// </exodus>
 	
 	mReservedUniforms.push_back("global_gamma");
 	mReservedUniforms.push_back("texture_gamma");
