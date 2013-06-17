@@ -2,84 +2,125 @@
 <floater
   can_minimize="false" 
   can_resize="false"
-  height="105"
+  height="115"
   layout="topleft"
   name="window_size"
+  background_color="FloaterDefaultBackgroundColor"
   title="WINDOW SIZE"
-  width="205">
-  <string name="resolution_format">[RES_X] x [RES_Y]</string>
+  width="330">
     <text
      follows="top|left"
      font="SansSerif"
      height="16"
-     left="15"
-     top="10" 
+     left="10"
+     top="0" 
      name="windowsize_text"
-     width="280">
-     Set window size:
+     width="330">
+     Click a template on the right or
+set a custom resolution:
     </text>
-    <combo_box
-     allow_text_entry="true"
-     height="23"
+    <spinner
+     decimal_digits="0"
      follows="left|top"
-     left_delta="0"
-     max_chars="20"
-     name="window_size_combo"
-     tool_tip="width x height"
-     top_pad="5"
-     width="179">
-      <combo_box.item
-       label="1000 x 700 (default)"
-       name="item1"
-       value="1000 x 700" />
-      <combo_box.item
-       label="1024 x 768 (4:3 XGA)"
-       name="item2"
-       value="1024 x 768" />
-      <combo_box.item
-       label="1280 x 720 (16:9 HDTV)"
-       name="item3"
-       value="1280 x 720" />
-      <combo_box.item
-       label="1280 x 800 (5:8 WXGA)"
-       name="item4"
-       value="1280 x 800" />
-      <combo_box.item
-       label="1280 x 1024 (5:4 SXGA)"
-       name="item5"
-       value="1280 x 1024" />
-      <combo_box.item
-       label="1440 x 900 (8:5 WSXGA)"
-       name="item7"
-       value="1440 x 900" />
-      <combo_box.item
-       label="1600 x 900 (16:9 HD+)"
-       name="item8"
-       value="1600 x 900" />
-      <combo_box.item
-       label="1600 x 1200 (4:3 UXGA)"
-       name="item9"
-       value="1600 x 1200" />
-      <combo_box.item
-       label="1680 x 1050 (8:5 WSXGA+)"
-       name="item10"
-       value="1680 x 1050" />
-      <combo_box.item
-       label="1920 x 1080 (16:9 HDTV)"
-       name="item11"
-       value="1920 x 1080" />
-      <combo_box.item
-       label="1920 x 1200 (8:5 WUXGA)"
-       name="item12"
-       value="1920 x 1200" />
-    </combo_box>
+     height="23"
+     increment="1"
+     initial_value="1280"
+     label="Width (X):"
+     label_width="115"
+     layout="topleft"
+     left="10"
+     max_val="6000"
+     min_val="480"
+     name="window_x"
+     top_pad="20"
+     width="170" />
+    <spinner
+     decimal_digits="0"
+     follows="left|top"
+     height="23"
+     increment="1"
+     initial_value="720"
+     label="Height (Y):"
+     label_width="115"
+     layout="topleft"
+     left="10"
+     max_val="2560"
+     min_val="320"
+     name="window_y"
+     top_pad="0"
+     width="170" />
+    <button
+     follows="right|bottom"
+     height="16"
+     label="800 x 600"
+     left="190"
+     label_color="EmphasisColor"
+     font.style="UNDERLINE"
+     image_unselected="Transparent.j2c"
+     image_selected="Transparent.j2c"
+     name="800 x 600"
+     top="20"
+     halign="left"
+     width="80" />
+    <button
+     follows="right|bottom"
+     height="16"
+     label="1024 x 768"
+     left="190"
+     label_color="EmphasisColor"
+     font.style="UNDERLINE"
+     image_unselected="Transparent.j2c"
+     image_selected="Transparent.j2c"
+     name="1024 x 768"
+     halign="left"
+     top_pad="2"
+     width="80" />
+    <button
+     follows="right|bottom"
+     height="16"
+     label="1280 x 720 HD"
+     left="190"
+     label_color="EmphasisColor"
+     font.style="UNDERLINE"
+     image_unselected="Transparent.j2c"
+     image_selected="Transparent.j2c"
+     halign="left"
+     name="1280 x 720"
+     top_pad="2"
+     width="100" />
+    <button
+     follows="right|bottom"
+     height="16"
+     label="1440 x 900"
+     left="190"
+     label_color="EmphasisColor"
+     font.style="UNDERLINE"
+     image_unselected="Transparent.j2c"
+     image_selected="Transparent.j2c"
+     halign="left"
+     name="1440 x 900"
+     top_pad="2"
+     width="80" />
+    <button
+     follows="right|bottom"
+     height="16"
+     label="1540 x 960 (480p x2)"
+     label_color="EmphasisColor"
+     font.style="UNDERLINE"
+     image_unselected="Transparent.j2c"
+     image_selected="Transparent.j2c"
+     left="190"
+     halign="left"
+     name="1540 x 960"
+     top_pad="2"
+     width="130" />
     <button
      follows="right|bottom"
      height="23"
      label="Set"
-     left_delta="0"
+     left="6"
      name="set_btn"
-     top_pad="10"
+     top="85"
      width="85" />
     <button
      follows="right|bottom"
