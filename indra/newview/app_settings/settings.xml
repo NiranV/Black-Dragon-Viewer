@@ -14664,6 +14664,28 @@
     <key>Value</key>
     <real>0.20</real>
   </map>
+  <key>RenderInterpolateWindlight</key>
+  <map>
+    <key>Comment</key>
+    <string>Smoothly animate Windlight Preset changes</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>RenderWindlightInterpolateTime</key>
+  <map>
+    <key>Comment</key>
+    <string>Timespan for interpolating between Windlight settings</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>5.0</real>
+  </map>
   
   <!-- Tonemapping -->
   <key>ExodusRenderAutoExposeStep</key>
