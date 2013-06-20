@@ -1718,6 +1718,15 @@
                 <menu_item_check.on_click
                  function="View.ShowHUDAttachments" />
             </menu_item_check>
+												<menu_item_check
+             label="Show HUD Attachments"
+             name="Show HUD Attachments"
+             shortcut="alt|shift|H">
+                <menu_item_check.on_check
+                 function="View.CheckHUDAttachments" />
+                <menu_item_check.on_click
+                 function="View.ShowHUDAttachments" />
+            </menu_item_check>
             <menu_item_check
              label="Highlight Transparent"
              name="Highlight Transparent"
