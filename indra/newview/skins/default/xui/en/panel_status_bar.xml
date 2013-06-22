@@ -52,14 +52,14 @@
      image_hover_unselected="Balance"
      image_unselected="Balance"
      image_pressed="Balance"
-     height="18"
+     height="16"
      label=""
      label_color="White"
-     left_pad="2"
+     left_pad="3"
      label_shadow="true"
      name="buyL"
      tool_tip="Click to buy more L$"
-     top="0"
+     top="2"
      width="16" />
     <text
      type="string"
