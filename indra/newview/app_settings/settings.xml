@@ -8830,7 +8830,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>1.4</real>
+    <real>3.0</real>
   </map>
   <key>RenderShadowBlurSamples</key>
   <map>
@@ -8852,7 +8852,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0</real>
+    <real>0.08</real>
   </map>
 
   <key>RenderDynamicLOD</key>
