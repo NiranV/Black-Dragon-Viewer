@@ -79,6 +79,18 @@ void LLFloaterEditWater::onOpen(const LLSD& key)
 	std::string param = key.asString();
 	std::string floater_title = getString(std::string("title_") + param);
 
+	if(!param.empty())
+	{
+		//NV - Guard against a rare crash that might happen for some people
+		floater_title = getString(std::string("title_") + param);
+	}
+	else
+	{
+		//NV - We are most likely beeing send here via button so lets pick a
+		//	   neutral title for both editing/creating a new one.
+		floater_title = getString(std::string("title_neutral"));
+	}
+
 	// Update floater title.
 	setTitle(floater_title);
 
