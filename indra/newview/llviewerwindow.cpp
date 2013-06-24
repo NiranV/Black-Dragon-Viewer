@@ -2187,18 +2187,14 @@ void LLViewerWindow::reshape(S32 width, S32 height)
 
 		if (!maximized)
 		{
-			U32 min_window_width=gSavedSettings.getU32("MinWindowWidth");
-			U32 min_window_height=gSavedSettings.getU32("MinWindowHeight");
-			// tell the OS specific window code about min window size
-			mWindow->setMinSize(min_window_width, min_window_height);
+			// U32 min_window_width=gSavedSettings.getU32("MinWindowWidth");
+			// U32 min_window_height=gSavedSettings.getU32("MinWindowHeight");
 
-			LLCoordScreen window_rect;
-			if (mWindow->getSize(&window_rect))
-			{
-			// Only save size if not maximized
-				gSavedSettings.setU32("WindowWidth", window_rect.mX);
-				gSavedSettings.setU32("WindowHeight", window_rect.mY);
-			}
+			//NV - Aww this is a horrible hack
+			width = width + 16;
+			height = height + 38;
+			gSavedSettings.setS32("WindowWidth", width);
+			gSavedSettings.setS32("WindowHeight", height);
 		}
 
 		LLViewerStats::getInstance()->setStat(LLViewerStats::ST_WINDOW_WIDTH, (F64)width);
