@@ -5,10 +5,10 @@
  height="418"
  label="Graphics"
  layout="topleft"
- left="102"
+ left="0"
  name="Display panel"
  top="1"
- width="517">
+ width="417">
     <text
      type="string"
      length="1"
@@ -28,7 +28,7 @@
      halign="right"
      height="12"
      layout="topleft"
-     left="55"
+     left="97"
      name="FasterText"
      top="10"
      width="80">
@@ -43,24 +43,15 @@
      left_delta="370"
      name="BetterText"
      top_delta="0"
-     width="100">
+     width="50">
         Ultra
     </text>
-    <icon
-     color="0.12 0.12 0.12 1"
-     height="14"
-     image_name="Rounded_Square"
-     layout="topleft"
-     left="148"
-     name="LowGraphicsDivet"
-     top_delta="0"
-     width="2" />
   <icon
      color="0.12 0.12 0.12 1"
      height="14"
      image_name="Rounded_Square"
      layout="topleft"
-     left_pad="41"
+     left="233"
      name="LowMidraphicsDivet"
      top_delta="0"
      width="2" />
@@ -117,7 +108,7 @@
      increment="1"
      initial_value="0"
      layout="topleft"
-     left="140"
+     left="182"
      max_val="6"
      name="QualityPerformanceSelection"
      show_text="false"
@@ -126,25 +117,15 @@
 	 <slider.commit_callback
 			function="Pref.QualityPerformance"/>
 	</slider>		
-    <panel
-     border="false"
-	 follows="top|left"
-     height="300"
-     label="CustomGraphics"
-     layout="topleft"
-     left="5"
-     name="CustomGraphics Panel"
-     top="30"
-     width="485">
 		<text
 		 type="string"
 		 length="1"
 		 follows="left|top"
 		 height="12"
 		 layout="topleft"
-		 left_delta="5"
+		 left="10"
 		 name="ShadersText"
-		 top="3"
+		 top="35"
 		 width="128">
 			Shaders:
 		</text>
@@ -297,6 +278,7 @@
          control_name="RenderShadowDetail"
          height="23"
          layout="topleft"
+         follows="top|left"
          left="15"
          top_pad="0" 
          name="ShadowDetail"
@@ -332,6 +314,7 @@
          control_name="RenderReflectionDetail"
          height="23"
          layout="topleft"
+         follows="top|left"
          left="15"
          top_pad="0"
          name="Reflections"
@@ -375,6 +358,7 @@
          control_name="ExodusRenderColorGradeTech"
          height="23"
          layout="topleft"
+         follows="top|left"
          left="15"
          top_pad="0"
          name="Reflections"
@@ -403,7 +387,7 @@
 		 max_val="512"
 		 min_val="64"
 		 name="DrawDistance"
-		 top="3"
+		 top="35"
 		 width="296" />
 		<text
 		 type="string"
@@ -414,7 +398,7 @@
 		 left_delta="291"
 		 name="DrawDistanceMeterText2"
 		 top_delta="0"
-		 width="128">
+		 width="16">
 			m
 		</text>    
 		<slider
@@ -615,18 +599,6 @@
             parameter="AvatarPhysicsDetailText" />
         </slider>
         <text
-        type="string"
-        length="1"
-        follows="left|top"
-        height="12"
-        layout="topleft"
-        left="469"
-        name="AvatarPhysicsDetailText"
-        top_pad="-16"
-        width="128">
-           Low
-        </text>
-        <text
          type="string"
          length="1"
          follows="left|top"
@@ -634,8 +606,8 @@
          layout="topleft"
          left="469"
          name="PostProcessText"
-         top="60"
-         width="128">
+         top="95"
+         width="36">
             Low
         </text>
         <text
@@ -647,7 +619,7 @@
          left_delta="0"
          name="ObjectMeshDetailText"
          top_pad="26"
-         width="128">
+         width="36">
             Low
         </text>
         <text
@@ -659,7 +631,7 @@
          left_delta="0"
          name="FlexibleMeshDetailText"
          top_pad="8"
-         width="128">
+         width="36">
             Low
         </text>
         <text
@@ -671,7 +643,7 @@
          left_delta="0"
          name="TreeMeshDetailText"
          top_pad="8"
-         width="128">
+         width="36">
             Low
         </text>
         <text
@@ -683,7 +655,7 @@
          left_delta="0"
          name="AvatarMeshDetailText"
          top_pad="8"
-         width="128">
+         width="36">
             Low
         </text>
         <text
@@ -695,7 +667,7 @@
          left_delta="0"
          name="TerrainMeshDetailText"
          top_pad="8"
-         width="128">
+         width="36">
             Low
         </text>
         <text
@@ -708,8 +680,20 @@
          left_delta="0"
          name="SkyMeshDetailText"
          top_pad="8"
-         width="128">
+         width="36">
             Low
+        </text>
+        <text
+        type="string"
+        length="1"
+        follows="left|top"
+        height="12"
+        layout="topleft"
+        left="469"
+        name="AvatarPhysicsDetailText"
+        top_pad="8"
+        width="36">
+           Low
         </text>
 
         <text
@@ -720,7 +704,7 @@
          layout="topleft"
          left_delta="-260"
          name="AvatarRenderingText"
-         top="250"
+         top="285"
          width="128">
         Avatar Rendering:
       </text>
@@ -766,8 +750,8 @@
        left="407"
        left_pad="-30"
        name="TerrainDetailText"
-        top="250"
-       width="155">
+        top="285"
+       width="100">
           Terrain detail:
       </text>
       <radio_group
@@ -794,8 +778,6 @@
            top_delta="16"
            width="50" />
       </radio_group>
-	</panel>
-	
     <button
      follows="left|bottom"
      height="23"
