@@ -86,9 +86,7 @@ BOOL LLFloaterWindowSize::postBuild()
 }
 
 void LLFloaterWindowSize::initWindowSizeControls()
-{
-    LLComboBox* ctrl_window_size = getChild<LLComboBox>("window_size_combo");
-        
+{  
     // Look to see if current window size matches existing window sizes, if so then
     // just set the selection value...
     U32 height = gViewerWindow->getWindowHeightRaw();
@@ -96,26 +94,6 @@ void LLFloaterWindowSize::initWindowSizeControls()
 	// ugh... make the spinners show the correct value on first creation
 	height = height - 38;
 	width = width - 16;
-    for (S32 i=0; i < ctrl_window_size->getItemCount(); i++)
-    {
-        U32 height_test = 0;
-        U32 width_test = 0;
-        ctrl_window_size->setCurrentByIndex(i);
-        std::string resolution = ctrl_window_size->getValue().asString();
-        if (extractWindowSizeFromString(resolution, &width_test, &height_test))
-        {
-            if ((height_test == height) && (width_test == width))
-            {
-				return;
-            }
-        }
-    }
-    // ...otherwise, add a new entry with the current window height/width.
-    LLUIString resolution_label = getString("resolution_format");
-    resolution_label.setArg("[RES_X]", llformat("%d", width));
-    resolution_label.setArg("[RES_Y]", llformat("%d", height));
-    ctrl_window_size->add(resolution_label, ADD_TOP);
-    ctrl_window_size->setCurrentByIndex(0);
 }
 
 void LLFloaterWindowSize::onClickSet()
