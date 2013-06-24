@@ -699,11 +699,15 @@ with the same filename but different name
   <texture name="place-entry" file_name="place-entry.png" preload="true" />
   <texture name="grid-entry" file_name="grid-entry.png" preload="true" />
   
+  <texture name="airicon" file_name="airicon.png" preload="true" />
+  <texture name="watericon" file_name="watericon.png" preload="true" />
+  <texture name="sunicon" file_name="sunicon.png" preload="true" />
+  <texture name="lighticon" file_name="lighticon.png" preload="true" />
+  
   <!--<texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
     
   <texture name="lock2" file_name="lock.png" preload="true" />
   <texture name="menubg" file_name="menubg.jpg" preload="true" />
-  <texture name="airicon" file_name="airicon.png" preload="true" />
   
   <texture name="NavBar_BG_middle" file_name="navbar/NavBar_BG_middle.png" preload="true" />
 

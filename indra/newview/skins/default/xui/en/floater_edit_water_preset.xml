@@ -8,12 +8,18 @@
  save_rect="true"
  title="Edit Water Preset"
  width="700">
-  <string name="title_new">Create a New Water Preset</string>
-  <string name="title_edit">Edit a Water Preset</string>
-  <string name="hint_new">Name your preset, adjust the controls to create it, and click "Save".</string>
-  <string name="hint_edit">To edit your water preset, adjust the controls and click "Save".</string>
-  <string name="combo_label">-Select a preset-</string>
-
+<string name="title_new">
+			Create a new Water Preset
+</string>
+<string name="title_edit">
+			Edit Water Preset
+</string>
+<string name="title_neutral">
+			Edit a Water Preset or create a new one.
+</string>
+<string name="combo_label">
+			-Select a preset-
+</string>
    <text
    follows="top|left|right"
    font="SansSerif"
@@ -78,7 +84,7 @@
    
    <icon
    height="150"
-   image_name="watericon.png"
+   image_name="watericon"
    layout="topleft"
    color="1 1 1 0.3"
    left="535"

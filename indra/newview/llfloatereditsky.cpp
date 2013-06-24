@@ -94,14 +94,15 @@ void LLFloaterEditSky::onOpen(const LLSD& key)
 	bool new_preset = isNewPreset();
 	std::string param = key.asString();
 	std::string floater_title;
+
 	if(!param.empty())
 	{
-		//NV - Guard against a rare crash that might happen for some people
+//		//BD - Guard against a rare crash that might happen for some people
 		floater_title = getString(std::string("title_") + param);
 	}
 	else
 	{
-		//NV - We are most likely beeing send here via button so lets pick a
+//		//BD - We are most likely beeing send here via button so lets pick a
 		//	   neutral title for both editing/creating a new one.
 		floater_title = getString(std::string("title_neutral"));
 	}

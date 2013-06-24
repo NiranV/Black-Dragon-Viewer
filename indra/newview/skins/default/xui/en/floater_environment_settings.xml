@@ -19,7 +19,7 @@
  <!-- Sky/Day Cycle Settings -->
              <icon
              height="20"
-             image_name="sunicon.png"
+             image_name="sunicon"
              layout="topleft"
              color="1 1 1 0.8"
              left="0"
@@ -28,7 +28,7 @@
              width="20" />
 	     <icon
              height="20"
-             image_name="watericon.png"
+             image_name="watericon"
              layout="topleft"
              color="1 1 1 0.8"
              left="280"

@@ -9,7 +9,7 @@ save_rect="true"
 title="Edit Sky Preset"
 width="700">
 <string name="title_new">
-			Create a New Sky Preset
+			Create a new Sky Preset
 </string>
 <string name="title_edit">
 			Edit Sky Preset
@@ -109,7 +109,7 @@ width="700">
      width="698">
         <icon
 	 height="180"
-	 image_name="lighticon.png"
+	 image_name="lighticon"
 	 layout="topleft"
 	 color="1 1 1 0.3"
 	 left="10"
