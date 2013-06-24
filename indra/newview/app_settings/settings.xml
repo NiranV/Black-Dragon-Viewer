@@ -14686,6 +14686,105 @@
     <key>Value</key>
     <real>5.0</real>
   </map>
+  <key>MiniMapChatRing</key>
+  <map>
+    <key>Comment</key>
+    <string>Display range ring on mini map</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowSidebarMinimap</key>
+  <map>
+    <key>Comment</key>
+    <string>Shows Mini Map in Sidebar</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowTopSearchBar</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Search field in Top bar</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowBigWorldMap</key>
+  <map>
+    <key>Comment</key>
+    <string>Show World Map legend and controls</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ShowQuickWindlightButton</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Windlight Button in Top bar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowQuickSkyButton</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Sky Button in Top bar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowQuickWaterButton</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Water Button in Top bar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowQuickBrowserButton</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Browser Button in Top bar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ShowQuickHomeButton</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Home Button in Top bar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   
   <!-- Tonemapping -->
   <key>ExodusRenderAutoExposeStep</key>
