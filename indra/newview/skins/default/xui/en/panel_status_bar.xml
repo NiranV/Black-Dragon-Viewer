@@ -36,7 +36,7 @@
     <text
      halign="right"
      font="SansSerifSmall"
-     follows="all"
+     follows="right|top"
      height="16"
      left="-320" 
      name="balance"
