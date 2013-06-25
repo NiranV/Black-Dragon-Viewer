@@ -93,9 +93,9 @@
       <panel name="toolbar_view_holder"
              follows="all"
              layout="topleft"
-             height="450"
+             height="455"
              width="1024"
-             top="50"
+             top="45"
              left="0"
              mouse_opaque="false"
              tab_stop="false"/>
