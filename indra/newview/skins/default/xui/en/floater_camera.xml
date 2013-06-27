@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
- legacy_header_height="18"
  can_minimize="true"
  can_close="true"
- height="110"
+ height="95"
  layout="topleft"
  background_color="FloaterColorView"
  name="camera_floater"
@@ -44,7 +43,7 @@
      height="100"
      layout="topleft"
      left="2"
-     top="10"
+     top="0"
      mouse_opaque="false"
      name="controls"
      width="206">
@@ -53,9 +52,9 @@
          height="102"
          layout="topleft"
          left="8"
-	 clip="true"
+									clip="true"
          name="preset_views_list"
-         top="4"
+         top="0"
          width="162"
          visible="true">
         <panel_camera_item
@@ -140,7 +139,7 @@
           layout="topleft"
           left="8"
           name="camera_modes_list"
-          top="24"
+          top="0"
           width="162"
           visible="false">
         <panel_camera_item
@@ -180,10 +179,10 @@
             height="97"
             layout="topleft"
             left="0"
-	    visible="false"
+												visible="false"
             mouse_opaque="false"
             name="zoom"
-            top="4"
+            top="0"
             width="206">
            <joystick_rotate
               follows="top|left"
@@ -266,7 +265,7 @@
      left_pad="-27"
      height="80"
      width="25"
-     top_pad="-85"
+     top_pad="-92"
      name="buttons">
         <button
          height="23"
