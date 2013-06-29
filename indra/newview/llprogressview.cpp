@@ -334,7 +334,7 @@ void LLProgressView::onCancelButtonClicked(void*)
 		}
 		else
 		{
-			gSavedSettings.setF32("RenderGlowStrength" , 0.2f);
+			gSavedSettings.setF32("RenderGlowStrength" , 0.21f);
 		}
 		if(gSavedPerAccountSettings.controlExists("PrevFoV"))
 		{
