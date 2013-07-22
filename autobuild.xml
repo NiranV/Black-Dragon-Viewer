@@ -522,9 +522,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-	      <string>91752db72202807cffb33c1ec3fd90fc</string>
+	      <string>f564a7d936a35492be490b850b284702</string>
               <key>url</key>
-	      <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/3p-fmodex-private/rev/276321/arch/CYGWIN/installer/fmodex-4.44-windows-20130521.tar.bz2</string>
+	      <string>https://bitbucket.org/NiranV/black-dragon/downloads/fmodex-4.44.12-windows-20130611.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -2741,6 +2741,7 @@
                   <string>-DUNATTENDED:BOOL=ON</string>
                   <string>-DINSTALL_PROPRIETARY=FALSE</string>
                   <string>-DUSE_KDU=FALSE</string>
+                  <string>-DFMODEX=TRUE</string>
                   </array>
               </map>
               <key>name</key>
