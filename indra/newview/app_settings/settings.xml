@@ -14577,5 +14577,21 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+		
+		
+		<!-- Black Dragon Debugs -->
+		
+		
+		<key>AllowWalkingBackwards</key>
+  <map>
+    <key>Comment</key>
+    <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
 </map>
 </llsd>
