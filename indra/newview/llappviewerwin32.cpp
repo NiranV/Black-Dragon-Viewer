@@ -79,7 +79,7 @@ extern "C" {
 #endif
 #endif
 
-const std::string LLAppViewerWin32::sWindowClass = "Second Life";
+const std::string LLAppViewerWin32::sWindowClass = "Black Dragon";
 
 /*
     This function is used to print to the command line a text message 
