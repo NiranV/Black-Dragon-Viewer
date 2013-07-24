@@ -97,14 +97,11 @@ public:
 	void setHighlight(const std::string& highlight);
 	void setState(EItemState item_style);
 	void setAvatarId(const LLUUID& id, const LLUUID& session_id, bool ignore_status_changes = false, bool is_resident = true);
-	void setLastInteractionTime(U32 secs_since);
-	//Show/hide profile/info btn, translating speaker indicator and avatar name coordinates accordingly
-	void setShowProfileBtn(bool show);
-	void setShowInfoBtn(bool show);
+	void setExtraInformation(const std::string& information);
 	void showSpeakingIndicator(bool show);
 	void setShowPermissions(bool show) { mShowPermissions = show; };
-	void showLastInteractionTime(bool show);
-	void setAvatarIconVisible(bool visible);
+	void setLastInteractionTime(U32 secs_since);
+	void showExtraInformation(bool show);
 	
 	const LLUUID& getAvatarId() const;
 	std::string getAvatarName() const;
@@ -146,39 +143,16 @@ private:
 	typedef std::map<EItemState, LLColor4> icon_color_map_t;
 	static icon_color_map_t& getItemIconColorMap();
 
-	/**
-	 * Initializes widths of all children to use them while changing visibility of any of them.
-	 *
-	 * @see updateChildren()
-	 */
-	static void initChildrenWidths(LLAvatarListItem* self);
-
-	/**
-	 * Updates position and rectangle of visible children to fit all available item's width.
-	 */
-	void updateChildren();
-
-	/**
-	 * Update visibility of active permissions icons.
-	 *
-	 * Need to call updateChildren() afterwards to sort out their layout.
-	 */
+	//Update visibility of active permissions icons.
 	bool showPermissions(bool visible);
 
-	/**
-	 * Gets child view specified by index.
-	 *
-	 * This method implemented via switch by all EAvatarListItemChildIndex values.
-	 * It is used to not store children in array or vector to avoid of increasing memory usage.
-	 */
 	LLView* getItemChildView(EAvatarListItemChildIndex child_index);
 
 	LLTextBox* mAvatarName;
-	LLTextBox* mLastInteractionTime;
+	LLTextBox* mExtraInformation;
 	LLStyle::Params mAvatarNameStyle;
 	
 	LLButton* mInfoBtn;
-	LLButton* mProfileBtn;
 
 	LLUUID mAvatarId;
 	std::string mHighlihtSubstring; // substring to highlight
@@ -186,7 +160,6 @@ private:
 	//Flag indicating that info/profile button shouldn't be shown at all.
 	//Speaker indicator and avatar name coords are translated accordingly
 	bool mShowInfoBtn;
-	bool mShowProfileBtn;
 
 	/// indicates whether to show icons representing permissions granted
 	bool mShowPermissions;
