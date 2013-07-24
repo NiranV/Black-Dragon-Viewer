@@ -2742,6 +2742,8 @@
                   <string>-DINSTALL_PROPRIETARY=FALSE</string>
                   <string>-DUSE_KDU=FALSE</string>
                   <string>-DFMODEX=TRUE</string>
+                  <string>-DLL_TESTS:BOOL=FALSE</string>
+                  <string>-DPACKAGE:BOOL=FALSE</string>
                   </array>
               </map>
               <key>name</key>
