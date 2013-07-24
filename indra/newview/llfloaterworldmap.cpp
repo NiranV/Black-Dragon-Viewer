@@ -517,7 +517,6 @@ void LLFloaterWorldMap::draw()
 	bool enable = LLWorldMapView::showRegionInfo();
 	getChildView("people_chk")->setEnabled(enable);
 	getChildView("infohub_chk")->setEnabled(enable);
-	getChildView("telehub_chk")->setEnabled(enable);
 	getChildView("land_for_sale_chk")->setEnabled(enable);
 	getChildView("event_chk")->setEnabled(enable);
 	getChildView("events_mature_chk")->setEnabled(enable);
