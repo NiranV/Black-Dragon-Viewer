@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<panel
+background_opaque="true"
+background_visible="true"
+bg_opaque_image="Volume_Background" 
+bg_alpha_image="Volume_Background" 
+border_visible="false"
+border="false"
+chrome="true"
+right="-5"
+follows="bottom|right"
+height="150"
+layout="topleft"
+name="drawdistance_floater"
+width="32">
+ <slider
+ control_name="RenderFarClip"
+ follows="left|top"
+ left="0"
+ top="10"
+ orientation="vertical"
+ height="120"
+ increment="8"
+ max_val="768"
+ min_val="8"
+ layout="topleft"
+ name="drawdistance"
+ show_text="false"/>
+ <text
+ type="string"
+ font="SansSerifSmall"
+ control_name="RenderFarClip"
+ follows="right|top"
+ halign="center"
+ height="16"
+ top_pad="2"
+ layout="topleft"
+ left="2"
+ name="CurFarClip"
+ width="30"/>
+</panel>

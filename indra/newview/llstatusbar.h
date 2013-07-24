@@ -33,6 +33,7 @@
 extern S32 STATUS_BAR_HEIGHT;
 
 class LLButton;
+class LLIconCtrl;
 class LLLineEditor;
 class LLMessageSystem;
 class LLTextBox;
@@ -43,6 +44,8 @@ class LLFrameTimer;
 class LLStatGraph;
 class LLPanelVolumePulldown;
 class LLPanelNearByMedia;
+//BD - Draw Distance mouse-over slider
+class BDPanelDrawDistance;
 
 class LLStatusBar
 :	public LLPanel
@@ -92,13 +95,15 @@ private:
 	void onMouseEnterVolume();
 	void onMouseEnterNearbyMedia();
 	void onClickScreen(S32 x, S32 y);
+//	//BD - Draw Distance mouse-over slider
+	void onMouseEnterDrawDistance();
 
 	static void onClickMediaToggle(void* data);
 	static void onClickBalance(void* data);
 
 private:
 	LLTextBox	*mTextTime;
-//	//BD
+//	//BD - Framerate counter in statusbar
 	LLTextBox	*mFPSText;
 
 	LLStatGraph *mSGBandwidth;
@@ -110,6 +115,8 @@ private:
 	LLButton	*mMediaToggle;
 	LLView		*mScriptOut;
 	LLFrameTimer	mClockUpdateTimer;
+//	//BD - Draw Distance mouse-over slider
+	LLIconCtrl	*mDrawDistance;
 
 	S32				mBalance;
 	S32				mHealth;
@@ -119,6 +126,8 @@ private:
 	LLFrameTimer*	mHealthTimer;
 	LLPanelVolumePulldown* mPanelVolumePulldown;
 	LLPanelNearByMedia*	mPanelNearByMedia;
+//	//BD - Draw Distance mouse-over slider
+	BDPanelDrawDistance* mPanelDrawDistance;
 };
 
 // *HACK: Status bar owns your cached money balance. JC

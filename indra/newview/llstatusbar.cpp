@@ -44,6 +44,7 @@
 #include "llfloaterscriptdebug.h"
 #include "llhints.h"
 #include "llhudicon.h"
+#include "lliconctrl.h"
 #include "llnavigationbar.h"
 #include "llkeyboard.h"
 #include "lllineeditor.h"
@@ -86,6 +87,9 @@
 // system includes
 #include <iomanip>
 
+
+// Black Dragon
+#include "bdpaneldrawdistance.h"
 
 //
 // Globals
@@ -166,7 +170,7 @@ BOOL LLStatusBar::postBuild()
 	gMenuBarView->setRightMouseDownCallback(boost::bind(&show_navbar_context_menu, _1, _2, _3));
 
 	mTextTime = getChild<LLTextBox>("TimeText" );
-//	//BD
+//	//BD - Framerate counter in statusbar
 	mFPSText = getChild<LLTextBox>("FPSText");
 	
 	getChild<LLUICtrl>("buyL")->setCommitCallback(
@@ -186,6 +190,10 @@ BOOL LLStatusBar::postBuild()
 	mMediaToggle = getChild<LLButton>("media_toggle_btn");
 	mMediaToggle->setClickedCallback( &LLStatusBar::onClickMediaToggle, this );
 	mMediaToggle->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterNearbyMedia, this));
+
+//	//BD - Draw Distance mouse-over slider
+	mDrawDistance = getChild<LLIconCtrl>("draw_distance_icon");
+	mDrawDistance->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterDrawDistance, this));
 
 	LLHints::registerHintTarget("linden_balance", getChild<LLView>("balance_bg")->getHandle());
 
@@ -237,6 +245,12 @@ BOOL LLStatusBar::postBuild()
 	addChild(mPanelNearByMedia);
 	mPanelNearByMedia->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
 	mPanelNearByMedia->setVisible(FALSE);
+
+//	//BD - Draw Distance mouse-over slider
+	mPanelDrawDistance = new BDPanelDrawDistance();
+	addChild(mPanelDrawDistance);
+	mPanelDrawDistance->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
+	mPanelDrawDistance->setVisible(FALSE);
 
 	mScriptOut = getChildView("scriptout");
 
@@ -488,6 +502,8 @@ void LLStatusBar::onMouseEnterVolume()
 	LLUI::addPopup(mPanelVolumePulldown);
 	mPanelNearByMedia->setVisible(FALSE);
 	mPanelVolumePulldown->setVisible(TRUE);
+//	//BD - Draw Distance mouse-over slider
+	mPanelDrawDistance->setVisible(FALSE);
 }
 
 void LLStatusBar::onMouseEnterNearbyMedia()
@@ -511,8 +527,35 @@ void LLStatusBar::onMouseEnterNearbyMedia()
 
 	mPanelVolumePulldown->setVisible(FALSE);
 	mPanelNearByMedia->setVisible(TRUE);
+//	//BD - Draw Distance mouse-over slider
+	mPanelDrawDistance->setVisible(FALSE);
 }
 
+//BD - Draw Distance mouse-over slider
+void LLStatusBar::onMouseEnterDrawDistance()
+{
+	LLView* popup_holder = gViewerWindow->getRootView()->getChildView("popup_holder");
+	LLRect draw_distance_rect = mPanelDrawDistance->getRect();
+	LLIconCtrl* draw_distance_icon =  getChild<LLIconCtrl>( "draw_distance_icon" );
+	LLRect draw_distance_icon_rect = draw_distance_icon->getRect();
+	draw_distance_rect.setLeftTopAndSize(draw_distance_icon_rect.mLeft -
+										(draw_distance_rect.getWidth() - draw_distance_icon_rect.getWidth()),
+										draw_distance_icon_rect.mBottom,
+										draw_distance_rect.getWidth(),
+										draw_distance_rect.getHeight());
+	// force onscreen
+	draw_distance_rect.translate(popup_holder->getRect().getWidth() - draw_distance_rect.mRight - 57, 0);
+	
+	// show the draw distance pull-down
+	mPanelDrawDistance->setShape(draw_distance_rect);
+	LLUI::clearPopups();
+	LLUI::addPopup(mPanelDrawDistance);
+
+	mPanelNearByMedia->setVisible(FALSE);
+	mPanelVolumePulldown->setVisible(FALSE);
+	mPanelDrawDistance->setVisible(TRUE);
+}
+//BD
 
 static void onClickVolume(void* data)
 {

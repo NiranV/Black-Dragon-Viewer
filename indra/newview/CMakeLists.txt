@@ -669,6 +669,7 @@ set(viewer_SOURCE_FILES
     llworldmapview.cpp
     llxmlrpclistener.cpp
     llxmlrpctransaction.cpp
+    bdpaneldrawdistance.cpp
     noise.cpp
     pipeline.cpp
     )
@@ -1243,6 +1244,7 @@ set(viewer_HEADER_FILES
     llworldmapview.h
     llxmlrpclistener.h
     llxmlrpctransaction.h
+    bdpaneldrawdistance.h
     macmain.h
     noise.h
     pipeline.h
