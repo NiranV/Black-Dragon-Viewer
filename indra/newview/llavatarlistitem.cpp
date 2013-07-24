@@ -66,7 +66,6 @@ LLAvatarListItem::LLAvatarListItem(bool not_from_ui_factory/* = true*/)
 	mSpeakingIndicator(NULL),
 	mInfoBtn(NULL),
 	mOnlineStatus(E_UNKNOWN),
-	mShowProfileBtn(true),
 	mShowPermissions(false),
 	mHovered(false),
 	mAvatarNameCacheConnection()
@@ -142,8 +141,6 @@ S32 LLAvatarListItem::notifyParent(const LLSD& info)
 void LLAvatarListItem::onMouseEnter(S32 x, S32 y, MASK mask)
 {
 	getChildView("hovered_icon")->setVisible( true);
-	mInfoBtn->setVisible(mShowInfoBtn);
-	mProfileBtn->setVisible(mShowProfileBtn);
 
 	mHovered = true;
 	LLPanel::onMouseEnter(x, y, mask);
@@ -288,11 +285,6 @@ BOOL LLAvatarListItem::handleDoubleClick(S32 x, S32 y, MASK mask)
 	if(mInfoBtn->getRect().pointInRect(x, y))
 	{
 		onInfoBtnClick();
-		return TRUE;
-	}
-	if(mProfileBtn->getRect().pointInRect(x, y))
-	{
-		onProfileBtnClick();
 		return TRUE;
 	}
 	return LLPanel::handleDoubleClick(x, y, mask);

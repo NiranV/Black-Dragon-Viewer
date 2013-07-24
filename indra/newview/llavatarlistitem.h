@@ -146,8 +146,6 @@ private:
 	//Update visibility of active permissions icons.
 	bool showPermissions(bool visible);
 
-	LLView* getItemChildView(EAvatarListItemChildIndex child_index);
-
 	LLTextBox* mAvatarName;
 	LLTextBox* mExtraInformation;
 	LLStyle::Params mAvatarNameStyle;
