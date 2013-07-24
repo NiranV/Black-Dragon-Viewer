@@ -113,6 +113,7 @@ namespace LLToolBarEnums
 	{
 		BTNTYPE_ICONS_WITH_TEXT = 0,
 		BTNTYPE_ICONS_ONLY,
+		BTNTYPE_ICONS_SMALL,
 
 		BTNTYPE_COUNT
 	};
@@ -156,7 +157,8 @@ public:
 		Mandatory<LLToolBarEnums::SideType>		side;
 
 		Optional<LLToolBarButton::Params>		button_icon,
-												button_icon_and_text;
+												button_icon_and_text,
+												button_icon_small;
 
 		Optional<bool>							read_only,
 												wrap;

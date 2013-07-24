@@ -32,4 +32,12 @@
     <on_check function="Toolbars.CheckSetting"
               parameter="icons_only" />
   </menu_item_check>
+  <menu_item_check label="Small Icons"
+                   layout="topleft"
+                   name="icons_small">
+    <on_click function="Toolbars.EnableSetting"
+              parameter="icons_small" />
+    <on_check function="Toolbars.CheckSetting"
+              parameter="icons_small" />
+  </menu_item_check>
 </context_menu>
