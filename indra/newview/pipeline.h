@@ -112,6 +112,9 @@ public:
 	LLPipeline();
 	~LLPipeline();
 
+	//BD - Change water reflection resolution on the way
+	void handleReflectionChanges();
+
 	void destroyGL();
 	void restoreGL();
 	void resetVertexBuffers();

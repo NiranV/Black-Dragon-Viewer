@@ -1190,6 +1190,20 @@ void LLPipeline::refreshCachedSettings()
 	updateRenderDeferred();
 }
 
+//BD - Refresh reflections on the fly
+void LLPipeline::handleReflectionChanges()
+{
+	mWaterRef.release();
+	mWaterDis.release();
+
+	if (LLPipeline::sWaterReflections)
+	{
+		U32 res = (U32) llmax(gSavedSettings.getS32("RenderWaterRefResolution"), 512);
+		mWaterRef.allocate(res,res,GL_RGBA,TRUE,FALSE);
+		mWaterDis.allocate(res,res,GL_RGBA,TRUE,FALSE,LLTexUnit::TT_TEXTURE, true);
+	}
+}
+
 void LLPipeline::releaseGLBuffers()
 {
 	assertInitialized();
