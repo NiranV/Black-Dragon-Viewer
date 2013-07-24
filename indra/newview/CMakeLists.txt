@@ -670,6 +670,7 @@ set(viewer_SOURCE_FILES
     llxmlrpclistener.cpp
     llxmlrpctransaction.cpp
     bdpaneldrawdistance.cpp
+    exopostprocess.cpp
     noise.cpp
     pipeline.cpp
     )
@@ -1245,6 +1246,7 @@ set(viewer_HEADER_FILES
     llxmlrpclistener.h
     llxmlrpctransaction.h
     bdpaneldrawdistance.h
+    exopostprocess.h
     macmain.h
     noise.h
     pipeline.h
