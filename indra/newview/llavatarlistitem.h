@@ -81,10 +81,9 @@ public:
 
 	virtual BOOL postBuild();
 
-	/**
-	 * Processes notification from speaker indicator to update children when indicator's visibility is changed.
-	 */
-    virtual void handleVisibilityChange ( BOOL new_visibility );
+	/*virtual*/ void draw();
+	
+	//Processes notification from speaker indicator to update children when indicator's visibility is changed.
 	virtual S32	notifyParent(const LLSD& info);
 	virtual void onMouseLeave(S32 x, S32 y, MASK mask);
 	virtual void onMouseEnter(S32 x, S32 y, MASK mask);
@@ -112,25 +111,23 @@ public:
 	std::string getAvatarToolTip() const;
 
 	void onInfoBtnClick();
-	void onProfileBtnClick();
 
 	/*virtual*/ BOOL handleDoubleClick(S32 x, S32 y, MASK mask);
 
 protected:
-	/**
-	 * Contains indicator to show voice activity. 
-	 */
+	
+	//Contains indicator to show voice activity.  
 	LLOutputMonitorCtrl* mSpeakingIndicator;
 
 	LLAvatarIconCtrl* mAvatarIcon;
 
-	/// Indicator for permission to see me online.
+	/// Panel of the Indicator for permission to see me online.
 	LLIconCtrl* mIconPermissionOnline;
-	/// Indicator for permission to see my position on the map.
+	/// Panel of the Indicator for permission to see my position on the map.
 	LLIconCtrl* mIconPermissionMap;
-	/// Indicator for permission to edit my objects.
+	/// Panel of the Indicator for permission to edit my objects.
 	LLIconCtrl* mIconPermissionEditMine;
-	/// Indicator for permission to edit their objects.
+	/// Panel of the Indicator for permission to edit their objects.
 	LLIconCtrl* mIconPermissionEditTheirs;
 
 private:
@@ -140,27 +137,6 @@ private:
 		E_ONLINE,
 		E_UNKNOWN,
 	} EOnlineStatus;
-
-	/**
-	 * Enumeration of item elements in order from right to left.
-	 * 
-	 * updateChildren() assumes that indexes are in the such order to process avatar icon easier.
-	 *
-	 * @see updateChildren()
-	 */
-	typedef enum e_avatar_item_child {
-		ALIC_SPEAKER_INDICATOR,
-		ALIC_PROFILE_BUTTON,
-		ALIC_INFO_BUTTON,
-		ALIC_PERMISSION_ONLINE,
-		ALIC_PERMISSION_MAP,
-		ALIC_PERMISSION_EDIT_MINE,
-		ALIC_PERMISSION_EDIT_THEIRS,
-		ALIC_INTERACTION_TIME,
-		ALIC_NAME,
-		ALIC_ICON,
-		ALIC_COUNT,
-	} EAvatarListItemChildIndex;
 
 	void setNameInternal(const std::string& name, const std::string& highlight);
 	void onAvatarNameCache(const LLAvatarName& av_name);
@@ -217,22 +193,9 @@ private:
 
 	/// true when the mouse pointer is hovering over this item
 	bool mHovered;
-	
+
 	void fetchAvatarName();
 	boost::signals2::connection mAvatarNameCacheConnection;
-
-	static bool	sStaticInitialized; // this variable is introduced to improve code readability
-	static S32  sLeftPadding; // padding to first left visible child (icon or name)
-	static S32  sNameRightPadding; // right padding from name to next visible child
-
-	/**
-	 * Contains widths of each child specified by EAvatarListItemChildIndex
-	 * including padding to the next right one.
-	 *
-	 * @see initChildrenWidths()
-	 */
-	static S32 sChildrenWidths[ALIC_COUNT];
-
 };
 
 #endif //LL_LLAVATARLISTITEM_H
