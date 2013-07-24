@@ -79,7 +79,7 @@ uniform vec2 screen_res;
 vec3 calcDirectionalLight(vec3 n, vec3 l)
 {
 	float a = max(dot(n,l),0.0);
-	a = pow(a, 1.0/1.3);
+	//a = pow(a, 1.0/1.3);
 	return vec3(a,a,a);
 }
 
@@ -189,6 +189,11 @@ vec3 srgb_to_linear(vec3 cs)
     cl = {
         {  ((cs + 0.055)/1.055)^2.4,   cs >  0.04045*/
 
+	vec3 low_range = cs / vec3(12.92);
+
+	if (((cs.r + cs.g + cs.b) / 3) <= 0.04045)
+		return low_range;
+
 	return pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
 }
 
@@ -288,8 +293,7 @@ void main()
 	diff.rgb = srgb_to_linear(diff.rgb);
 	
 #ifdef USE_VERTEX_COLOR
-	diff.rgb *= vertex_color.rgb;
-	float vertex_color_alpha = vertex_color.a;	
+	float vertex_color_alpha = diff.a * vertex_color.a;	
 #else
 	float vertex_color_alpha = 1.0;
 #endif
@@ -306,8 +310,9 @@ void main()
 	vec4 col = vec4(vary_ambient + dlight, vertex_color_alpha);
 #endif
 
-	vec4 color = gamma_diff * col;
-	
+	vec4 color = col;
+	color.rgb *= gamma_diff.rgb;
+
 	color.rgb = atmosLighting(color.rgb);
 
 	color.rgb = scaleSoftClip(color.rgb);

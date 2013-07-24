@@ -86,6 +86,11 @@ vec3 srgb_to_linear(vec3 cs)
     cl = {
         {  ((cs + 0.055)/1.055)^2.4,   cs >  0.04045*/
 
+	vec3 low_range = cs / vec3(12.92);
+
+	if (((cs.r + cs.g + cs.b) / 3) <= 0.04045)
+		return low_range;
+
 	return pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
 }
 
@@ -378,7 +383,7 @@ void main()
 	norm.xyz = decode_normal(norm.xy); // unpack norm
 		
 	float da = max(dot(norm.xyz, sun_dir.xyz), 0.0);
-	da = pow(da, 1.0/1.3);
+	//da = pow(da, 1.0/1.3);
 
 	vec4 diffuse = texture2DRect(diffuseRect, tc);
 

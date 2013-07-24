@@ -38,6 +38,11 @@ vec3 srgb_to_linear(vec3 cs)
     cl = {
         {  ((cs + 0.055)/1.055)^2.4,   cs >  0.04045*/
 
+	vec3 low_range = cs / vec3(12.92);
+
+	if (((cs.r + cs.g + cs.b) / 3) <= 0.04045)
+		return low_range;
+
 	return pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
 }
 
@@ -672,7 +677,7 @@ void main()
 
 	col.rgb *= ambient;
 
-	col.rgb = col.rgb + atmosAffectDirectionalLight(pow(final_da, 1.0/1.3));
+	col.rgb = col.rgb + atmosAffectDirectionalLight(final_da); //pow(final_da, 1.0/1.3));
 	col.rgb *= old_diffcol.rgb;
 	
 

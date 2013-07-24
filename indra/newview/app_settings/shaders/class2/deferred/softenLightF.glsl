@@ -85,6 +85,11 @@ vec3 srgb_to_linear(vec3 cs)
     cl = {
         {  ((cs + 0.055)/1.055)^2.4,   cs >  0.04045*/
 
+	vec3 low_range = cs / vec3(12.92);
+
+	if (((cs.r + cs.g + cs.b) / 3) <= 0.04045)
+		return low_range;
+
 	return pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
 }
 
@@ -385,8 +390,8 @@ void main()
 		
 	float da = max(dot(norm.xyz, sun_dir.xyz), 0.0);
 
-	float light_gamma = 1.0/1.3;
-	da = pow(da, light_gamma);
+	//float light_gamma = 1.0/1.3;
+	//da = pow(da, light_gamma);
 
 
 	vec4 diffuse = texture2DRect(diffuseRect, tc);
@@ -400,11 +405,9 @@ void main()
 		vec4 spec = texture2DRect(specularRect, vary_fragcoord.xy);
 		
 		vec2 scol_ambocc = texture2DRect(lightMap, vary_fragcoord.xy).rg;
-		scol_ambocc = pow(scol_ambocc, vec2(light_gamma));
+		//scol_ambocc = pow(scol_ambocc, vec2(light_gamma));
 
 		float scol = max(scol_ambocc.r, diffuse.a); 
-
-		
 
 		float ambocc = scol_ambocc.g;
 	
@@ -422,6 +425,7 @@ void main()
 	
 		col *= diffuse.rgb;
 	
+
 		vec3 refnormpersp = normalize(reflect(pos.xyz, norm.xyz));
 
 		if (spec.a > 0.0) // specular reflection
@@ -447,11 +451,10 @@ void main()
 			
 			vec3 refcol = textureCube(environmentMap, env_vec).rgb;
 
-			col = mix(col.rgb, refcol, 
-				envIntensity);  
+			col = mix(col.rgb, refcol, envIntensity);  
 
 		}
-						
+	
 		if (norm.w < 0.5)
 		{
 			col = mix(atmosLighting(col), fullbrightAtmosTransport(col), diffuse.a);
@@ -463,6 +466,8 @@ void main()
 			col = fogged.rgb;
 			bloom = fogged.a;
 		#endif
+
+
 
 		col = srgb_to_linear(col);
 

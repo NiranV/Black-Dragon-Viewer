@@ -39,8 +39,16 @@ VARYING vec3 vary_position;
 VARYING vec4 vertex_color;
 VARYING vec2 vary_texcoord0;
 
-vec3 fullbrightAtmosTransport(vec3 light);
-vec3 fullbrightScaleSoftClip(vec3 light);
+vec3 fullbrightAtmosTransportDeferred(vec3 light)
+{
+	return light;
+}
+
+vec3 fullbrightScaleSoftClipDeferred(vec3 light)
+{
+	//soft clip effect:
+	return light;
+}
 
 #ifdef HAS_ALPHA_MASK
 uniform float minimum_alpha;
@@ -131,10 +139,8 @@ void main()
 
 	color.rgb *= vertex_color.rgb;
 	color.rgb = srgb_to_linear(color.rgb);
-	
-
-	color.rgb = fullbrightAtmosTransport(color.rgb);
-	color.rgb = fullbrightScaleSoftClip(color.rgb);
+	color.rgb = fullbrightAtmosTransportDeferred(color.rgb);
+	color.rgb = fullbrightScaleSoftClipDeferred(color.rgb);
 	
 	color.rgb = linear_to_srgb(color.rgb);
 
@@ -143,6 +149,8 @@ void main()
 	vec4 fogged = applyWaterFogDeferred(pos, vec4(color.rgb, final_alpha));
 	color.rgb = fogged.rgb;
 	color.a   = fogged.a;
+#else
+	color.a   = final_alpha;
 #endif
 
 	frag_color.rgb = color.rgb;
