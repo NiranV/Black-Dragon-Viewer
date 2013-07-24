@@ -4,13 +4,13 @@
 	<!-- Named Colors -->
 	<color
 	 name="EmphasisColor"
-	 value="0.38 0.694 0.573 1" />
+	 value="0.38 0.694 0.473 1" />
 	<color
 	 name="EmphasisColor_13"
-	 value="0.38 0.694 0.573 0.13" />
+	 value="0.38 0.694 0.473 0.13" />
 	<color
 	 name="EmphasisColor_35"
-	 value="0.38 0.694 0.573 0.35" />
+	 value="0.38 0.694 0.473 0.35" />
 	<color
 	 name="BeaconColor"
     value="0.749 0.298 0 1" />	 
@@ -521,13 +521,13 @@
      reference="FrogGreen" />
     <color
      name="MenuDefaultBgColor"
-     reference="DkGray2" />
+     value="0.07 0.17 0.1 0.9" />
     <color
      name="MenuItemDisabledColor"
-	 reference="LtGray_50" />
+     value="0.5 0.5 0.5 0.5" />
     <color
      name="MenuItemEnabledColor"
-     reference="LtGray" />
+     value="1 1 1 0.85" />
     <color
      name="MenuItemHighlightBgColor"
      reference="EmphasisColor_35" />
@@ -867,6 +867,23 @@
     <color
       name="ToolbarDropZoneColor"
       value=".48 .69 1 .5" />
+    
+    <!-- Black Dragon Colors -->
+    <color
+    name="Friend"
+    value="0.447 0.884 0.544 1" />
+    <color
+    name="Black_60"
+    value="0 0 0 0.6" />
+    <color
+    name="Black_75"
+    value="0 0 0 0.75" />
+    <color
+    name="Black_78"
+    value="0 0 0 0.78" />
+    <color
+    name="Black_95"
+    value="0 0 0 0.95" />
   
     <!-- Generic color names (legacy) -->
   <color
