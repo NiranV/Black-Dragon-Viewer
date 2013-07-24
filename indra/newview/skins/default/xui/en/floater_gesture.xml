@@ -4,9 +4,8 @@
  save_rect="true"
  legacy_header_height="18"
  can_resize="true"
- height="465"
+ height="450"
  name="gestures"
- help_topic="gestures"
  title="GESTURES"
  background_visible="true"
  label="Places"
@@ -30,14 +29,15 @@
      draw_heading="true"
      follows="all"
      layout="topleft"
-     left="0"
+     left="3"
+     right="-3"
      multi_select="true"
-     top="20"
+     top="15"
      name="gesture_list">
         <scroll_list.columns
          label="Name"
          name="name"
-         width="153" />
+         width="150" />
         <scroll_list.columns
          label="Chat"
          name="trigger"
@@ -51,70 +51,70 @@
          name="shortcut"
          width="80" />
     </scroll_list>
-              <panel
-             background_visible="true"
-             bevel_style="none"
-             top_pad="0"
-             follows="left|right|bottom"
-             height="30"
-             label="bottom_panel"
-             layout="topleft"
-             left="0"
-             name="bottom_panel"
-             width="313">
-              <menu_button
-               follows="bottom|left"
-               height="18"
-               image_disabled="OptionsMenu_Disabled"
-               image_selected="OptionsMenu_Press"
-               image_unselected="OptionsMenu_Off"
-               layout="topleft"
-               left="10"
-               menu_filename="menu_gesture_gear.xml"
-               name="gear_btn"
-               top="5"
-               tool_tip="More options"
-               width="18" />
-              <button
-                 follows="bottom|left"
-                 font="SansSerifBigBold"
-                 height="18"
-                 image_selected="AddItem_Press"
-                 image_unselected="AddItem_Off"
-                 image_disabled="AddItem_Disabled"
-                 layout="topleft"
-                 left_pad="5"
-                 name="new_gesture_btn"
-                 tool_tip="Make new gesture"
-                 top_delta="0"
-                 width="18" />
-              <button
-                 follows="bottom|left"
-                 font="SansSerifBigBold"
-                 height="10"
-                 image_hover_selected="Activate_Checkmark"
-                 image_selected="Activate_Checkmark"
-                 image_unselected="Activate_Checkmark"
-                 layout="topleft"
-                 left_pad="5"
-                 name="activate_btn"
-                 tool_tip="Activate/Deactivate selected gesture"
-                 top="10"
-                 width="10" />
-              <button
-                 follows="bottom|right"
-                 font="SansSerifBigBold"
-                 height="18"
-                 image_selected="TrashItem_Press"
-                 image_unselected="TrashItem_Off"
-                 image_disabled="TrashItem_Disabled"
-                 layout="topleft"
-                 name="del_btn"
-                 right="-5"
-                 tool_tip="Delete this gesture"
-                 top_delta="0"
-                 width="18" />
-            </panel>
+ <panel
+  background_visible="false"
+  bevel_style="none"
+  top_pad="0"
+  follows="left|right|bottom"
+  height="22"
+  label="bottom_panel"
+  layout="topleft"
+  left="0"
+  name="bottom_panel"
+  width="313">
+   <menu_button
+    follows="bottom|left"
+    height="18"
+    image_disabled="OptionsMenu_Disabled"
+    image_selected="OptionsMenu_Press"
+    image_unselected="OptionsMenu_Off"
+    layout="topleft"
+    left="10"
+    menu_filename="menu_gesture_gear.xml"
+    name="gear_btn"
+    top="0"
+    tool_tip="More options"
+    width="18" />
+   <button
+      follows="bottom|left"
+      font="SansSerifBigBold"
+      height="18"
+      image_selected="AddItem_Press"
+      image_unselected="AddItem_Off"
+      image_disabled="AddItem_Disabled"
+      layout="topleft"
+      left_pad="5"
+      name="new_gesture_btn"
+      tool_tip="Make new gesture"
+      top_delta="0"
+      width="18" />
+   <button
+      follows="bottom|left"
+      font="SansSerifBigBold"
+      height="10"
+      image_hover_selected="Activate_Checkmark"
+      image_selected="Activate_Checkmark"
+      image_unselected="Activate_Checkmark"
+      layout="topleft"
+      left_pad="5"
+      name="activate_btn"
+      tool_tip="Activate/Deactivate selected gesture"
+      top="4"
+      width="10" />
+   <button
+      follows="bottom|right"
+      font="SansSerifBigBold"
+      height="18"
+      image_selected="TrashItem_Press"
+      image_unselected="TrashItem_Off"
+      image_disabled="TrashItem_Disabled"
+      layout="topleft"
+      name="del_btn"
+      right="-5"
+      tool_tip="Delete this gesture"
+      top_delta="-2"
+      width="18" />
+ </panel>
     <button
      follows="left|bottom"
      height="23"
@@ -122,7 +122,7 @@
      layout="topleft"
      left="6"
      name="edit_btn"
-     top_pad="5"
+     top_pad="0"
      width="83" />
     <button
      follows="left|bottom"

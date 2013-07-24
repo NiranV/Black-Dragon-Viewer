@@ -5,10 +5,10 @@
  height="500"
  layout="topleft"
  min_height="50"
+ background_color="FloaterDefaultBackgroundColor"
  name="notifications_console"
- help_topic="notifications_console"
  single_instance="true"
- title="NOTIFICATIONS CONSOLE"
+ title="Notification Console"
  width="500">
     <combo_box
      follows="left|right|top"

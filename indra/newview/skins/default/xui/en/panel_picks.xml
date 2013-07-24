@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
-bg_opaque_color="DkGray2"
-       background_visible="true"
-       background_opaque="true"
+ bg_opaque_color="DkGray2"
+ background_visible="false"
+ background_opaque="true"
  follows="all"
  height="571"
  label="Picks"
@@ -17,141 +17,165 @@ bg_opaque_color="DkGray2"
  <string
   name="no_classifieds"
   value="No Classifieds" />
- <text
+  <tab_container
+  follows="all"
+  halign="center"
+  height="513"
+  layout="topleft"
+  left="0"
+  name="Picks Tabs"
+  tab_min_width="150"
+  tab_max_width="157"
+  tab_height="20"
+  tab_group="1"
+  tab_position="top"
+  top="0"
+  width="315">
+    <panel
+    follows="all"
+    height="513"
+    layout="topleft"
+    left="0"
+    title="Picks"
+    name="tab_picks"
+    top="0"
+    width="315">
+      <flat_list_view
+      color="Black_50"
+      follows="all"
+      layout="topleft"
+      left="0"
+      name="picks_list"
+      visible="true"
+      top="0"
+      height="513"
+      width="313" />
+    </panel>
+    <panel
+    follows="all"
+    height="513"
+    layout="topleft"
+    left="0"
+    title="Classifieds"
+    name="tab_classifieds"
+    top="0"
+    width="315">
+      <flat_list_view
+      color="Black_50"
+      follows="all"
+      layout="topleft"
+      left="0"
+      name="classifieds_list"
+      visible="true"
+      top="0"
+      height="513"
+      width="313" />
+    </panel>
+    </tab_container>
+  <!--<text
   type="string"
   follows="all"
-  height="535"
+  height="490"
   layout="topleft"
   left="6"
   name="picks_panel_text"
   wrap="true"
-  top="10"
-  width="313"/>
- <accordion
-  fit_parent="true" 
-  follows="all"
-  height="514"
-  layout="topleft"
-  left="0"
-  name="accordion"
-  top="0"
-  single_expansion="true"
-  width="313">
-    <accordion_tab
-     layout="topleft"
-     height="235"
-     min_height="150"
-     name="tab_picks"
-     title="Picks"
-     visible="false">
- <flat_list_view
-         color="DkGray2"
-         follows="all"
-         layout="topleft"
-         left="0"
-         name="picks_list"
-         opaque="true"
-         top="0"
-         width="313" />
-    </accordion_tab>
-    <accordion_tab
-     layout="topleft"
-     height="235"
-     name="tab_classifieds"
-     title="Classifieds"
-     visible="false">
-            <flat_list_view
-             color="DkGray2"
-             follows="all"
-             layout="topleft"
-             left="0"
-             name="classifieds_list"
-             opaque="true"
-             top="0"
-             width="313" />
-    </accordion_tab>
- </accordion>
-   <panel
-       bg_opaque_color="DkGray2"
-       background_visible="true"
-       background_opaque="true"
-       bevel_style="none"
-       enabled="false"
-       follows="bottom|left|right"
-       left="1"
-       height="27"
-       label="bottom_panel"
-       layout="topleft"
-       name="edit_panel"
-       top_pad="0"
-       width="312">
-         
-         <layout_stack
-		  follows="bottom|left|right"
-		  height="23"
-		  layout="bottomleft"
-		  name="edit_panel_ls"
-		  left="10"
-		  orientation="horizontal"
-		  top_pad="0"
-		  width="293">
-		  
-		  <layout_panel
-			  follows="bottom|left"
-			  height="18"
-			  layout="bottomleft"
-			  left="0"
-			  name="gear_menu_btn"
-		      auto_resize="true"
-			  width="51">
-				<button
-	             follows="bottom|left"
-	             height="18"
-	             image_disabled="AddItem_Disabled"
-	             image_selected="AddItem_Press"
-	             image_unselected="AddItem_Off"
-	             layout="topleft"
-	             left="0"
-	             name="new_btn"
-	             tool_tip="Create a new pick or classified at the current location"
-	             top="0"
-	             width="18" />
-		  </layout_panel>
-		  
-		  <layout_panel
-			  follows="bottom|right"
-			  height="18"
-			  layout="bottomleft"
-			  name="trash_btn_lp"
-		      auto_resize="true"
-			  width="18">
-				<button
-	             follows="bottom|right"
-	             height="18"
-	             image_disabled="TrashItem_Disabled"
-	             image_selected="TrashItem_Press"
-	             image_unselected="TrashItem_Off"
-	             layout="topleft"
-	             name="trash_btn"
-	             top="0"
-	             width="18" />
-		  </layout_panel>
-		  
-	  </layout_stack>
-	  </panel>
-	  
-	  <panel
- bg_opaque_color="DkGray"
-       background_visible="true"
-       background_opaque="true"
-         follows="bottom|left|right"
-         layout="topleft"
-         left="0"
-         height="30"
-         name="buttons_cucks"
-         top_pad="0"
-         width="313">
-      
+  top="20"
+  width="313"/> -->
+    <panel
+    bg_opaque_color="Black_75"
+    background_visible="true"
+    background_opaque="true"
+    bevel_style="none"
+    enabled="false"
+    follows="bottom|left|right"
+    left="1"
+    height="27"
+    label="bottom_panel"
+    layout="topleft"
+    name="edit_panel"
+    top_pad="0"
+    width="312">
+      <layout_stack
+      animate="false"
+      border_size="0"
+      follows="left|right|bottom"
+      height="25"
+      layout="topleft"
+      orientation="horizontal"
+      top_pad="1"
+      left="0"
+      name="bottom_panel"
+      width="312">
+	<layout_panel
+	follows="bottom|left"
+	height="25"
+	auto_resize="false"
+	layout="topleft"
+	name="gear_menu_btn"
+	width="33">
+	 <button
+	 follows="bottom|left"
+	 height="25"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+	 image_overlay="AddItem_Off"
+	 layout="topleft"
+	 left="1"
+	 name="new_btn"
+	 tool_tip="Create a new pick or classified at the current location"
+	 top="0"
+	 width="31" />
+      </layout_panel>
+      <layout_panel
+      follows="left|bottom|right"
+      height="25"
+      layout="topleft"
+      name="trash_btn_lp"
+      auto_resize="true"
+      width="248">
+	<icon
+	follows="bottom|left|right"
+	height="25"
+	image_name="Toolbar_Middle_Off"
+	layout="topleft"
+	left="0"
+	top="0"
+	name="dummy_icon"
+	width="247" />
+      </layout_panel>
+      <layout_panel
+      follows="bottom|left"
+      height="25"
+      layout="topleft"
+      auto_resize="false"
+      name="trash_btn_lp"
+      width="32">
+	<button
+	follows="bottom|left"
+	height="25"
+	image_overlay="TrashItem_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	name="trash_btn"
+	top="0"
+	left="0"
+	width="31" />
+      </layout_panel>
+      </layout_stack>
+      </panel>
+      <panel
+      bg_opaque_color="DkGray"
+      background_visible="false"
+      background_opaque="true"
+      follows="bottom|left|right"
+      layout="topleft"
+      left="0"
+      height="30"
+      name="buttons_cucks"
+      top_pad="0"
+      width="313">
       <layout_stack
 		  follows="bottom|left|right"
 		  height="28"

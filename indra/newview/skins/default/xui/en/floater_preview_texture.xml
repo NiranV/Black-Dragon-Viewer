@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
  legacy_header_height="18"
+ auto_tile="true"
  can_resize="true"
- height="350"
+ follows="left|top"
+ height="600"
  layout="topleft"
  min_height="200"
- min_width="370"
+ min_width="360"
+ background_color="FloaterDefaultBackgroundColor"
  name="preview_texture"
- help_topic="preview_texture"
- width="370">
+ width="800">
    <floater.string
      name="Title">
         Texture: [NAME]
@@ -40,7 +42,7 @@
      left_pad="0"
      max_length_bytes="127"
      name="desc"
-     width="190" />
+     width="690" />
     <text
      type="string"
      halign="right"
@@ -48,9 +50,9 @@
      follows="right|bottom"
      height="16"
      layout="topleft"
-     left="110"
+     left="580"
      name="dimensions"
-     top="255"
+     top="545"
      width="200">
         [WIDTH]px x [HEIGHT]px
     </text>
@@ -61,9 +63,9 @@
      follows="right|bottom"
      height="16"
      layout="topleft"
-     left_delta="-110"
+     left="360"
      name="aspect_ratio"
-     top_pad="5"
+     top_delta="0"
      width="200">
         Preview aspect ratio
     </text>
@@ -76,11 +78,11 @@
      max_chars="20"
      mouse_opaque="true"
      enabled="true"
-     width="108"
+     width="75"
      name="combo_aspect_ratio"
      tool_tip="Preview at a fixed aspect ratio">
     	<combo_item name="Unconstrained" value="Unconstrained">
-    		Unconstrained
+    		None
     	</combo_item>
    	<combo_item name="1:1" value="1:1" tool_tip="Group insignia or Real World profile">
 		1:1
@@ -109,9 +111,9 @@
      height="22"
      label="OK"
      layout="topleft"
-     left="6"
+     left="450"
      name="Keep"
-     top_pad="5"
+     top="570"
      width="110" />
     <button
      follows="right|bottom"

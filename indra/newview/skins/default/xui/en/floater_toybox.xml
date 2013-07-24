@@ -5,28 +5,28 @@
   can_minimize="false"
   can_resize="false"
   default_tab_group="1"
-  height="375"
-  help_topic="toybox"
+  height="216"
   layout="topleft"
   legacy_header_height="18"
+  background_color="FloaterDefaultBackgroundColor"
   name="Toybox"
   positioning="centered"
   save_rect="true"
   single_instance="true"
-  title="TOOLBAR BUTTONS"
-  width="650">
+  title="Toolbar Buttons"
+  width="675">
   <text
     follows="left|top"
     font="SansSerifMedium"
     valign="top"
     halign="left"
-    height="20"
+    height="15"
     layout="topleft"
-    left="20"
+    left="15"
     length="1"
     name="toybox label 1"
-    right="-20"
-    top="35"
+    right="-15"
+    top="20"
     type="string">
       Add or remove buttons by dragging them to or from the toolbars.
   </text>
@@ -35,69 +35,83 @@
     font="SansSerifMedium"
     valign="top"
     halign="left"
-    height="20"
+    height="15"
     layout="topleft"
-    left="20"
+    left="15"
     length="1"
     name="toybox label 2"
-    right="-20"
-    top="55"
+    right="-15"
+    top_pad="0"
     type="string">
       Buttons will appear as shown or as icon-only depending on each toolbar's settings.
   </text>
   <toolbar
-    bottom="310"
+    bottom="250"
     button_display_mode="icons_with_text"
     follows="all"
-    left="20"
-    button_icon_and_text.button_width.max="140"
+    left="15"
+    button_icon_and_text.button_width.max="190"
     button_icon_and_text.button_width.min="70"
     name="toybox_toolbar"
-    pad_left="5"
-    pad_right="5"
-    pad_top="5"
+    pad_left="0"
+    pad_right="0"
+    pad_top="1"
     pad_bottom="5"
-    pad_between="15"
+    pad_between="3"
     read_only="true"
-    right="-20"
+    right="-15"
     side="top"
-    top="85">
-    <button_panel background_visible="false" />
-    <button_icon_and_text image_unselected="PushButton_Off"
-                          image_selected="PushButton_Off"
-                          image_disabled_selected="PushButton_Disabled"
-                          image_disabled="PushButton_Disabled"
-                          label_color="ButtonLabelColor"
-                          label_color_selected="ButtonLabelColor"
-                          label_color_disabled="ButtonLabelDisabledColor"
-                          label_color_disabled_selected="ButtonLabelDisabledColor"
-                          image_color="ButtonImageColor"
-                          image_color_disabled="ButtonImageColor"
-                          flash_color="ButtonUnselectedFgColor"
-                          halign="left"
-                          hover_glow_amount="0.15"
-                          sound_flags="0"
-                          display_pressed_state="false" />
-  </toolbar>
+    top_pad="0">
+      <button_panel
+      background_visible="false" />
+      <button_icon_and_text
+      image_unselected="PushButton_Off"
+      image_selected="PushButton_Off"
+      image_disabled_selected="PushButton_Disabled"
+      image_disabled="PushButton_Disabled"
+      label_color="ButtonLabelColor"
+      label_color_selected="ButtonLabelColor"
+      label_color_disabled="ButtonLabelDisabledColor"
+      label_color_disabled_selected="ButtonLabelDisabledColor"
+      image_color="ButtonImageColor"
+      image_color_disabled="ButtonImageColor"
+      flash_color="ButtonUnselectedFgColor"
+      halign="center"
+      hover_glow_amount="0.15"
+      sound_flags="0"
+      display_pressed_state="false" />
+      <icon
+      layout="topleft"
+      height="28"
+      width="15"
+      follows="left|top"
+      top="20"
+      left="10"
+      tab_stop="false" 
+      visible="false"
+      use_draw_context_alpha="false"
+      image_name="Caret_Top_Icon"
+      name="caret" />
+    </toolbar>
   <panel
     bevel_style="none"
     border="true"
-    bottom="311"
+    bottom="186"
     follows="left|bottom|right"
     left="20"
     right="-20"
-    top="311" />
+    top="186" />
   <button
     follows="left|bottom|right"
     height="23"
     label="Clear all toolbars"
     label_selected="Clear all toolbars"
     layout="topleft"
-    left="185"
+    left="145"
     name="btn_clear_all"
-    top="330"
-    width="130">
-    <button.commit_callback function="Toybox.ClearAll" />
+    top="188"
+    width="180">
+   <button.commit_callback function="Toybox.ClearAll" />
   </button>
   <button
     follows="left|bottom|right"
@@ -107,8 +121,8 @@
     layout="topleft"
     left="335"
     name="btn_restore_defaults"
-    top="330"
-    width="130">
+    top="188"
+    width="180">
     <button.commit_callback function="Toybox.RestoreDefaults" />
   </button>
 </floater>

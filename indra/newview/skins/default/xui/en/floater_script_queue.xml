@@ -5,8 +5,8 @@
  height="400"
  layout="topleft"
  name="queue"
- help_topic="queue"
  save_rect="true"
+ background_color="FloaterDefaultBackgroundColor"
  title="RESET PROGRESS"
  width="300">
     <floater.string

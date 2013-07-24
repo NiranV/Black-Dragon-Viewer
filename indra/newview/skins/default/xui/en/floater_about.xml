@@ -1,49 +1,46 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
- positioning="centered"
- legacy_header_height="18"
- height="440"
- layout="topleft"
- name="floater_about"
- help_topic="floater_about"
- save_rect="true"
- title="ABOUT [CAPITALIZED_APP_NAME]"
- width="470">
-  <floater.string
-     name="AboutHeader">
+positioning="centered"
+legacy_header_height="18"
+height="440"
+layout="topleft"
+name="floater_about"
+background_color="FloaterDefaultBackgroundColor"
+save_rect="true"
+title="About [APP_NAME]"
+width="470">
+ <floater.string
+ name="AboutHeader">
 [APP_NAME] [VIEWER_VERSION_0].[VIEWER_VERSION_1].[VIEWER_VERSION_2] ([VIEWER_VERSION_3]) [BUILD_DATE] [BUILD_TIME] ([CHANNEL])
 [[VIEWER_RELEASE_NOTES_URL] [ReleaseNotes]]
 
-</floater.string>
-  <floater.string
-     name="AboutCompiler">
+ </floater.string>
+ <floater.string
+ name="AboutCompiler">
 Built with [COMPILER] version [COMPILER_VERSION]
 
-</floater.string>
-  <floater.string
-     name="AboutPosition">
+ </floater.string>
+ <floater.string
+ name="AboutPosition">
 You are at [POSITION_0,number,1], [POSITION_1,number,1], [POSITION_2,number,1] in [REGION] located at &lt;nolink&gt;[HOSTNAME]&lt;/nolink&gt; ([HOSTIP])
 [SERVER_VERSION]
 [SERVER_RELEASE_NOTES_URL]
 
-</floater.string>
-  <!-- *NOTE: Do not translate text like GPU, Graphics Card, etc -
-       Most PC users who know what these mean will be used to the English versions,
-       and this info sometimes gets sent to support. -->
-  <floater.string
-     name="AboutSystem">
+ </floater.string>
+ <floater.string
+ name="AboutSystem">
 CPU: [CPU]
 Memory: [MEMORY_MB] MB
 OS Version: [OS_VERSION]
 Graphics Card Vendor: [GRAPHICS_CARD_VENDOR]
 Graphics Card: [GRAPHICS_CARD]
-</floater.string>
-  <floater.string
-     name="AboutDriver">
+ </floater.string>
+ <floater.string
+ name="AboutDriver">
 Windows Graphics Driver Version: [GRAPHICS_DRIVER_VERSION]
-</floater.string>
-  <floater.string
-     name="AboutLibs">
+ </floater.string>
+ <floater.string
+ name="AboutLibs">
 OpenGL Version: [OPENGL_VERSION]
 
 libcurl Version: [LIBCURL_VERSION]
@@ -51,180 +48,358 @@ J2C Decoder Version: [J2C_VERSION]
 Audio Driver Version: [AUDIO_DRIVER_VERSION]
 Qt Webkit Version: [QT_WEBKIT_VERSION]
 Voice Server Version: [VOICE_VERSION]
-</floater.string>
-  <floater.string
-     name="none">
-      (none)
-  </floater.string>
-  <floater.string
-     name="AboutTraffic">
+ </floater.string>
+ <floater.string
+ name="none">
+(none)
+ </floater.string>
+ <floater.string
+ name="AboutTraffic">
 Packets Lost: [PACKETS_LOST,number,0]/[PACKETS_IN,number,0] ([PACKETS_PCT,number,1]%)
-</floater.string>
-<floater.string
-     name="ErrorFetchingServerReleaseNotesURL">
+ </floater.string>
+ <floater.string
+ name="ErrorFetchingServerReleaseNotesURL">
 Error fetching server release notes URL.
-</floater.string>
-  <tab_container
-    follows="all" 
-    top="25"
-    left="10"
-    height="405" 
-    width="450" 
-    name="about_tab"
-    tab_position="top">
-    <panel
-      border="true" 
-      label="Info"
-      help_topic="about_support_tab"
-      name="support_panel">
-      <text_editor
-        parse_urls="true" 
-       follows="top|left"
-       font="SansSerif"
-       height="343"
-       bg_readonly_color="Transparent"
-       left="5"
-       max_length="65536"
-       name="support_editor"
-       top="5"
-       width="435"
-       word_wrap="true" />
-      <button
-        follows="left|top" 
-        label="Copy to Clipboard"
-        name="copy_btn"
-        left="10"
-        top_pad="5"
-        height="25"
-        width="180" />
-    </panel>
-    <panel
-      border="true" 
-      label="Credits" 
-      help_topic="about_credits_tab"
-      name="credits_panel">
-      <text
-          follows="top|left|right"
-          height="10"
-          layout="topleft"
-          left="5"
-          name="linden_intro"
-          top="10"
-          width="435"
-          wrap="true">
+ </floater.string>
+ <tab_container
+ follows="all" 
+ top="25"
+ left="10"
+ height="405" 
+ width="450" 
+ name="about_tab"
+ tab_position="top">
+  <panel
+  border="false" 
+  label="Info"
+  name="support_panel">
+   <text_editor
+   parse_urls="true" 
+   follows="top|left"
+   font="SansSerif"
+   height="343"
+   bg_readonly_color="Transparent"
+   left="5"
+   max_length="65536"
+   name="support_editor"
+   top="5"
+   width="435"
+   word_wrap="true" />
+   <button
+   follows="left|top" 
+   label="Copy to Clipboard"
+   name="copy_btn"
+   left="10"
+   top_pad="5"
+   height="25"
+   width="180" />
+  </panel>
+  <panel
+  border="false" 
+  label="Credits"
+  name="credits_panel">
+   <text
+   follows="top|left|right"
+   height="10"
+   layout="topleft"
+   left="5"
+   name="linden_intro"
+   top="10"
+   width="435"
+   wrap="true">
 Second Life is brought to you by the Lindens:
-      </text>
-      <text_editor
-       enabled="false" 
-       follows="top|left"
-       height="98"
-       bg_readonly_color="Transparent"
-       left="5"
-       text_color="LtGray"
-       max_length="65536"
-       name="linden_names"
-       top_pad="10"
-       width="435"
-       word_wrap="true">
+   </text>
+   <text_editor
+   enabled="false" 
+   follows="top|left"
+   height="98"
+   bg_readonly_color="Transparent"
+   left="5"
+   text_color="LtGray"
+   max_length="65536"
+   name="linden_names"
+   top_pad="10"
+   width="435"
+   word_wrap="true">
 Philip, Andrew, Doug, Richard, Phoenix, Ian, Mark, Robin, Dan, Char, Ryan, Eric, Jim, Lee, Jeff, Michael, Kelly, Steve, Catherine, Bub, Ramzi, Jill, Jeska, Don, Kona, Callum, Charity, Jack, Shawn, babbage, James, Lauren, Blue, Brent, Reuben, Pathfinder, Jesse, Patsy, Torley, Bo, Cyn, Jonathan, Gia, Annette, Ginsu, Harry, Lex, Runitai, Guy, Cornelius, Beth, Swiss, Thumper, Wendy, Teeple, Seth, Dee, Mia, Sally, Liana, Aura, Beez, Milo, Red, Gulliver, Marius, Joe, Jose, Dore, Justin, Nora, Morpheus, Lexie, Amber, Chris, Xan, Leyla, Walker, Sabin, Joshua, Hiromi, Tofu, Fritz, June, Jean, Ivy, Dez, Ken, Betsy, Which, Spike, Rob, Zee, Dustin, George, Claudia, del, Matthew, jane, jay, Adrian, Yool, Rika, Yoz, siobhan, Qarl, Benjamin, Beast, Everett, madhavi, Christopher, Izzy, stephany, Jeremy, sean, adreanne, Pramod, Tobin, sejong, Iridium, maurice, kj, Meta, kari, JP, bert, kyle, Jon, Socrates, Bridie, Ivan, maria, Aric, Coco, Periapse, sandy, Storrs, Lotte, Colossus, Brad, Pastrami, Zen, BigPapi, Banzai, Sardonyx, Mani, Garry, Jaime, Neuro, Samuel, Niko, CeeLo, Austin, Soft, Poppy, emma, tessa, angelo, kurz, alexa, Sue, CG, Blake, Erica, Brett, Bevis, kristen, Q, simon, Enus, MJ, laurap, Kip, Scouse, Ron, Ram, kend, Marty, Prospero, melissa, kraft, Nat, Seraph, Hamilton, Lordan, Green, miz, Ashlei, Trinity, Ekim, Echo, Charlie, Rowan, Rome, Jt, Doris, benoc, Christy, Bao, Kate, Tj, Patch, Cheah, Johan, Brandy, Angela, Oreh, Cogsworth, Lan, Mitchell, Space, Bambers, Einstein, Bender, Malbers, Matias, Maggie, Rothman, Milton, Niall, Marin, Allison, Mango, Andrea, Katt, Yi, Ambroff, Rico, Raymond, Gail, Christa, William, Dawn, Usi, Dynamike, M, Corr, Dante, Molly, kaylee, Danica, Kelv, Lil, jacob, Nya, Rodney, elsie, Blondin, Grant, Nyx, Devin, Monty, Minerva, Keira, Katie, Jenn, Makai, Clare, Joy, Cody, Gayathri, FJ, spider, Oskar, Landon, Jarv, Noelle, Al, Doc, Gray, Vir, t, Maestro, Simone, Shannon, yang, Courtney, Scott, charlene, Quixote, Susan, Zed, Amanda, Katelin, Esbee, JoRoan, Enkidu, roxie, Scarlet, Merov, Kevin, Judy, Rand, Newell, Les, Dessie, Galen, Michon, Geo, Siz, Calyle, Pete, Praveen, Callen, Sheldon, Pink, Nelson, jenelle, Terrence, Nathan, Juan, Sascha, Huseby, Karina, Kaye, Kotler, Lis, Darv, Charrell, Dakota, Kimmora, Theeba, Taka, Mae, Perry, Ducot, dana, Esther, Dough, gisele, Doten, Viale, Fisher, jessieann, ashley, Torres, delby, rountree, kurt, Slaton, Madison, Rue, Gino, Wen, Casssandra, Brodesky, Squid, Gez, Rakesh, Gecko, Ladan, Tony, Tatem, Squire, Falcon, BK, Crimp, Tiggs, Bacon, Coyot, Carmilla, Webb, Sea, Arch, Jillian, Jason, Bernard, Vogt, Peggy, dragon, Pup, xandix, Wallace, Bewest, Inoshiro, Rhett, AG, Aimee, Ghengis, Itiaes, Eli, Steffan, Epic, Grapes, Stone, Prep, Scobu, Robert, Alain, Carla, Vicky, Tia, Alec, Taras, Lisa, Oz, Ariane, Log, House, Kazu, Kim, Drofnas, Tyler, Campbell, Michele, Madeline, Nelly, Baron, Thor, Lori, Hele, Fredrik, Teddy, Pixie, Berry, Gabrielle, Alfonso, Brooke, Wolf, Ringo, Cru, Charlar, Rodvik, Gibson, Elise, Bagman, Greger, Leonidas, Jerm, Leslie, CB, Brenda, Durian, Carlo, mm, Zeeshan, Caleb, Max, Elikak, Mercille, Steph, Chase
-      </text_editor>
-      <text
-          follows="top|left"
-          height="10"
-          layout="topleft"
-          left="5"
-          name="contrib_intro"
-          top_pad="10"
-          width="435"
-          wrap="true">
+   </text_editor>
+   <text
+   follows="top|left"
+   height="10"
+   layout="topleft"
+   left="5"
+   name="contrib_intro"
+   top_pad="10"
+   width="435"
+   wrap="true">
 with open source contributions from:
-      </text>
-      <text_editor
-       enabled="false" 
-       follows="top|left"
-       height="98"
-       bg_readonly_color="Transparent"
-       left="5"
-       text_color="LtGray"
-       max_length="65536"
-       name="contrib_names"
-       top_pad="10"
-       width="435"
-       word_wrap="true">
+   </text>
+   <text_editor
+   enabled="false" 
+   follows="top|left"
+   height="98"
+   bg_readonly_color="Transparent"
+   left="5"
+   text_color="LtGray"
+   max_length="65536"
+   name="contrib_names"
+   top_pad="10"
+   width="435"
+   word_wrap="true">
 Dummy Name replaced at run time
-      </text_editor>
-      <text
-          follows="top|left"
-          height="10"
-          layout="topleft"
-          left="5"
-          name="trans_intro"
-          top_pad="10"
-          width="435"
-          wrap="true">
+   </text_editor>
+   <text
+   follows="top|left"
+   height="10"
+   layout="topleft"
+   left="5"
+   name="trans_intro"
+   top_pad="10"
+   width="435"
+   wrap="true">
 and translations from:
-      </text>
-      <text_editor
-       enabled="false" 
-       follows="top|left"
-       height="98"
-       bg_readonly_color="Transparent"
-       left="5"
-       text_color="LtGray"
-       max_length="65536"
-       name="trans_names"
-       top_pad="10"
-       width="435"
-       word_wrap="true">
+   </text>
+   <text_editor
+   enabled="false" 
+   follows="top|left"
+   height="98"
+   bg_readonly_color="Transparent"
+   left="5"
+   text_color="LtGray"
+   max_length="65536"
+   name="trans_names"
+   top_pad="10"
+   width="435"
+   word_wrap="true">
 Dummy Name replaced at run time
-      </text_editor>
-    </panel>
-    <panel
-      border="true"
-      label="Licenses"
-      help_topic="about_licenses_tab"
-      name="licenses_panel">
-      <text_editor
-       enabled="false"
-       follows="left|top"
-       height="375"
-       bg_readonly_color="Transparent"
-       left="5"
-       text_color="LtGray"
-       max_length="65536"
-       name="credits_editor"
-       top="5"
-       width="435"
-       word_wrap="true">
-        3Dconnexion SDK Copyright (C) 1992-2009 3Dconnexion
-        APR Copyright (C) 2011 The Apache Software Foundation
-        Collada DOM Copyright 2006 Sony Computer Entertainment Inc.
-        cURL Copyright (C) 1996-2010, Daniel Stenberg, (daniel@haxx.se)
-        DBus/dbus-glib Copyright (C) 2002, 2003  CodeFactory AB / Copyright (C) 2003, 2004 Red Hat, Inc.
-        expat Copyright (C) 1998, 1999, 2000 Thai Open Source Software Center Ltd.
-        FreeType Copyright (C) 1996-2002, 2006 David Turner, Robert Wilhelm, and Werner Lemberg.
-        GL Copyright (C) 1999-2004 Brian Paul.
-        GLOD Copyright (C) 2003-04 Jonathan Cohen, Nat Duca, Chris Niski, Johns Hopkins University and David Luebke, Brenden Schubert, University of Virginia.
-        google-perftools Copyright (c) 2005, Google Inc.
-        Havok.com(TM) Copyright (C) 1999-2001, Telekinesys Research Limited.
-        jpeg2000 Copyright (C) 2001, David Taubman, The University of New South Wales (UNSW)
-        jpeglib Copyright (C) 1991-1998, Thomas G. Lane.
-        ogg/vorbis Copyright (C) 2002, Xiphophorus
-        OpenSSL Copyright (C) 1998-2008 The OpenSSL Project.
-        PCRE Copyright (c) 1997-2012 University of Cambridge
-        SDL Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002 Sam Lantinga
-        SSLeay Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
-        xmlrpc-epi Copyright (C) 2000 Epinions, Inc.
-        zlib Copyright (C) 1995-2012 Jean-loup Gailly and Mark Adler.
+   </text_editor>
+  </panel>
+  <panel
+  border="false"
+  label="Licenses"
+  name="licenses_panel">
+   <text_editor
+   enabled="false"
+   follows="left|top"
+   height="375"
+   bg_readonly_color="Transparent"
+   left="5"
+   text_color="LtGray"
+   max_length="65536"
+   name="credits_editor"
+   top="5"
+   width="435"
+   word_wrap="true">
+3Dconnexion SDK Copyright (C) 1992-2007 3Dconnexion
+APR Copyright (C) 2000-2004 The Apache Software Foundation
+Collada DOM Copyright 2005 Sony Computer Entertainment Inc.
+cURL Copyright (C) 1996-2002, Daniel Stenberg, (daniel@haxx.se)
+DBus/dbus-glib Copyright (C) 2002, 2003  CodeFactory AB / Copyright (C) 2003, 2004 Red Hat, Inc.
+expat Copyright (C) 1998, 1999, 2000 Thai Open Source Software Center Ltd.
+FMOD Sound System, copyright © Firelight Technologies Pty, Ltd., 1994-2012
+FreeType Copyright (C) 1996-2002, The FreeType Project (www.freetype.org).
+GL Copyright (C) 1999-2004 Brian Paul.
+GLOD Copyright (C) 2003-04 Jonathan Cohen, Nat Duca, Chris Niski, Johns Hopkins University and David Luebke, Brenden Schubert, University of Virginia.
+google-perftools Copyright (c) 2005, Google Inc.
+Havok.com(TM) Copyright (C) 1999-2001, Telekinesys Research Limited.
+jpeg2000 Copyright (C) 2001, David Taubman, The University of New South Wales (UNSW)
+jpeglib Copyright (C) 1991-1998, Thomas G. Lane.
+ogg/vorbis Copyright (C) 2001, Xiphophorus
+OpenSSL Copyright (C) 1998-2002 The OpenSSL Project.
+PCRE Copyright (c) 1997-2008 University of Cambridge
+SDL Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002 Sam Lantinga
+SSLeay Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
+xmlrpc-epi Copyright (C) 2000 Epinions, Inc.
+zlib Copyright (C) 1995-2002 Jean-loup Gailly and Mark Adler.
+google-perftools Copyright (c) 2005, Google Inc.
 
-        Second Life Viewer uses Havok (TM) Physics. (c)Copyright 1999-2010 Havok.com Inc. (and its Licensors). All Rights Reserved. See www.havok.com for details.
+Second Life uses Havok (TM) Physics. (c)Copyright 1999-2010 Havok.com Inc. (and its Licensors). All Rights Reserved. See www.havok.com for details.
 
-        This software contains source code provided by NVIDIA Corporation.
+This software contains source code provided by NVIDIA Corporation.
 
-        All rights reserved.  See licenses.txt for details.
+All rights reserved.  See licenses.txt for details.
 
-        Voice chat Audio coding: Polycom(R) Siren14(TM) (ITU-T Rec. G.722.1 Annex C)
-      </text_editor>
-      </panel>
-    </tab_container>
+Voice chat Audio coding: Polycom(R) Siren14(TM) (ITU-T Rec. G.722.1 Annex C)
+   </text_editor>
+  </panel>
+  <panel
+  border="true"
+  label="Special Thanks"
+  name="licenses_panel">
+   <text_editor
+   enabled="false"
+   follows="left|top"
+   parse_urls="true"
+   height="375"
+   bg_readonly_color="Transparent"
+   left="5"
+   text_color="LtGray"
+   max_length="65536"
+   name="credits_editor"
+   top="5"
+   width="435"
+   word_wrap="true">
+Heres a List of Special Thanks to all people that helped my Viewer , implemented a Feature or something for the UI
+
+Runatai Linden:
+Vir Linden:
+Leslie Linden:
+Tofu Linden:
+Bao Linden:
+ Shining Fixes
+ 
+Altair Memo:
+ OpenMP initial work
+ 
+Andromeda Rage:
+ Derender
+ 
+Ansariel Hiller
+ Most highlighted Script commands hovertips
+ Unknown distance in Minimap
+ 
+Armin Weatherwax
+ Misc. Fixes
+ 
+Arrehn Oberlander:
+ Qarls Aligning Tool Tweaks &amp; Fixes
+ 
+Chalice Yao:
+ Touch &amp; Sit protection
+ 
+Dannyy Collazo:
+ Script toolbar button icon
+ 
+Geenz Spad:
+ Blinn Phong Speculars
+ High Precision Floating Point Frame Buffers
+ Gamma Correction
+ Color Correction
+ Color Grading
+ Tone Mapping
+ Vignette Effect
+ 
+Kadah Coba
+ Additional Parcel Code cleanup
+ Hide Lookat
+ 
+Katharine Berry:
+ Streaming Media Info
+ 
+Kirstenlee Cinquetti:
+ Radar Distance Text
+ 
+Kitty Barnett:
+ RLVa Support &amp; Updates
+ Spellchecker
+ 
+L4n4:
+ Donations
+ 
+Liny Odell:
+ Scrollable Fast Timers Window
+ 
+Luna Jubilee:
+ Windlight Presets (from her blog)
+ 
+Marine Kelley:
+ Mouselook grabbing
+ Non-hiding UI in Mouselook
+ Right-click in Mouselook
+ 
+MartinRJ Fayray:
+ STORM-1890 Fix
+ VWR-29094 Fix
+ Script Editor Goto-line function
+ 
+Mechatoy Mekanic:
+ Sponsoring
+ www.mechtoys.com
+ http://maps.secondlife.com/secondlife/Axell/185/128/21
+ 
+Miguael Liamano:
+ Additional Windlight Presets
+ Ashen Blood Skin
+ French Translation
+ Linux Releases
+ OpenMP Work
+ 
+Nicky Perian:
+ Edit Objects Crash Fix
+ SSL Fix
+ Misc Crash Fixes
+ 
+NiranV Dean:
+ Achievements
+ Additional highlighted Script commands
+ Additional Left/Right Shoulder Cam
+ Animation Time Factor Feature
+ Autohiding Topbar
+ Azure Skin
+ Copy Group and Avatar SLURL in Nearby/Group
+ Darkness Skin
+ Fading Teleport Screen Tweaks
+ Fix Buttons
+ FPS Counter
+ German Translation
+ Login Machinima Videos
+ Machinima Sidebar
+ Major UI designing and texturing
+ Mouselook grabbing Switch
+ Non-hiding UI in Mouselook Switch
+ Preferences Reorganisation
+ Qarls Mesh Deformer Switch
+ Rotation Degree Customization
+ Super Smooth Flexible User Interface
+ Switchable Keyboard Layouts
+ Top Toolbar
+ Teleport Warp Effects
+ Viewer 1 Style Volume Controls
+ Windows Releases
+ Whisper Range Ring in Minimap
+ Script Editor Goto-line function revised
+ 
+Oz Linden:
+ Initial Parcel Code cleanup
+ TPV Check &amp; Pass
+ 
+Qarl Fizz:
+ Qarls Aligning Tool
+ Qarls Mesh Deformer
+ 
+Sovereign Engineer:
+ Linux Fixes
+ FModEX Support
+ Logspam Fixes
+ DejaVu Font Updates
+ 
+TankMaster Finesmith:
+ Optional Chat Range Rings
+ Qarls Aligning Tool Tweaks &amp; Fixes
+ 
+Tofu Buzzard
+ Atmospheric Haze Fix
+ Better SSAO
+ Faster DoF
+ Screen Space Reflections
+ 
+Vaalith Jinn:
+ Local Bitmaps
+ 
+Vincent Nacon
+ Natural Cloud Noise Images
+ 
+Yonathan Yap:
+ Raw Anim Support
+ 
+Zi Ree:
+ Fading Teleport Screen
+ Keep Camera position on self click
+ Pie Menus
+ Texture Refresh
+
+feel free to IM me if you can tell me missing names and/or find more stuff others did!
+   </text_editor>
+  </panel>
+ </tab_container>
 </floater>

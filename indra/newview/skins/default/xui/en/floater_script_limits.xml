@@ -3,9 +3,9 @@
  legacy_header_height="18"
  can_resize="true"
  height="570"
- help_topic="scriptlimits"
  layout="topleft"
  name="scriptlimits"
+ background_color="FloaterDefaultBackgroundColor"
  save_rect="true"
  title="SCRIPT INFORMATION"
  width="480">

@@ -7,10 +7,10 @@
  layout="topleft"
  min_height="160"
  min_width="270"
+ background_color="FloaterDefaultBackgroundColor"
  name="objectcontents"
- help_topic="objectcontents"
  save_rect="true"
- title="OBJECT CONTENTS"
+ title="Object Contents"
  width="300">
    <text
      type="string"

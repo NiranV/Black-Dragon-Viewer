@@ -5,7 +5,7 @@
  height="200"
  layout="topleft"
  name="script"
- help_topic="script"
+ background_color="FloaterDefaultBackgroundColor"
  short_title="[ALL SCRIPTS]"
  title="[ALL SCRIPTS]"
  width="440">

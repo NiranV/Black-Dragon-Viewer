@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
+ bg_opaque_image="Window_NoTitle_Foreground"
+ bg_alpha_image="Window_NoTitle_Background"
  positioning="cascading"
- can_minimize="true" 
+ can_minimize="false" 
  can_resize="true"
+ bg_visible="true"
  chrome="true"
- height="200"
+ height="220"
  layout="topleft"
  min_height="128"
  min_width="128"
- name="Map"
- title="MINI-MAP"
- help_topic="map"
+ legacy_header_height="25"
+ name=""
+ background_color="Transparent"
+ title=""
  save_rect="true"
  save_visibility="true"
- width="200">
+ width="220">
     <floater.string
      name="ToolTipMsg">
-        [REGION](Double-click to open Map, shift-drag to pan)
+      [REGION](Double-click to open Map, shift-drag to pan)
     </floater.string>
-	<floater.string
+    <floater.string
      name="AltToolTipMsg">
-		[REGION](Double-click to teleport, shift-drag to pan)
-	</floater.string>
-	<floater.string name="mini_map_caption">
+      [REGION](Double-click to teleport, shift-drag to pan)
+    </floater.string>
+    <floater.string name="mini_map_caption">
 	Mini-map
     </floater.string>
     <net_map
      follows="top|left|bottom|right"
      layout="topleft"
-     left="0"
+     left="4"
      mouse_opaque="false"
      name="Net Map"
-     width="200"
-     height="200"
-     top="0"/>
+     width="212"
+     height="214"
+     bg_color="Transparent"
+     top="3"/>
     <text
      type="string"
      length="1"
@@ -43,7 +48,7 @@
      left="0"
      name="floater_map_north"
      right="10"
-     text_color="1 1 1 0.7"
+     text_color="1 0.3 0 1"
      top="189">
         N
     </text>
@@ -56,7 +61,7 @@
      left="0"
      name="floater_map_east"
      right="10"
-     text_color="1 1 1 0.7"
+     text_color="1 1 0 1"
      top="189">
         E
     </text>
@@ -69,7 +74,7 @@
      left="0"
      name="floater_map_west"
      right="11"
-     text_color="1 1 1 0.7"
+     text_color="0 1 0 1"
      top="175">
         W
     </text>
@@ -82,60 +87,10 @@
      left="0"
      name="floater_map_south"
      right="10"
-     text_color="1 1 1 0.7"
+     text_color="0 0.75 0.9 1"
      top="189">
         S
     </text>
-    <text
-     type="string"
-     length="1"
-     bottom="218"
-     label="SE"
-     layout="topleft"
-     left="0"
-     name="floater_map_southeast"
-     right="20"
-     text_color="1 1 1 0.7"
-     top="189">
-        SE
-    </text>
-    <text
-     type="string"
-     length="1"
-     bottom="218"
-     label="NE"
-     layout="topleft"
-     left="0"
-     name="floater_map_northeast"
-     right="20"
-     text_color="1 1 1 0.7"
-     top="189">
-        NE
-    </text>
-    <text
-     type="string"
-     length="1"
-     bottom="218"
-     label="SW"
-     layout="topleft"
-     left="0"
-     name="floater_map_southwest"
-     right="20"
-     text_color="1 1 1 0.7"
-     top="189">
-        SW
-    </text>
-    <text
-     type="string"
-     length="1"
-     bottom="218"
-     label="NW"
-     layout="topleft"
-     left="0"
-     name="floater_map_northwest"
-     right="20"
-     text_color="1 1 1 0.7"
-     top="189">
-        NW
-    </text>
+
+
 </floater>

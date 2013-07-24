@@ -12,12 +12,12 @@
      left="12"
      mouse_opaque="true"
      name="title_icon"
-     top="5"
+     top="6"
      width="18" />
     <text
      follows="top|left|right"
      font="SansSerifBold"
-     height="20"
+     height="14"
      layout="topleft"
      left_pad="12"
      length="1"
@@ -25,7 +25,7 @@
      right="-10"
      text_color="white"
      type="string"
-     top_delta="5">
+     top_delta="3">
         Save to My Inventory
     </text>
     <view_border 
@@ -47,7 +47,7 @@
      left="12"
      length="1"
      name="hint_lbl"
-     top_pad="10"
+     top_pad="3"
      type="string"
      word_wrap="true">
         Saving an image to your inventory costs L$[UPLOAD_COST]. To save your image as a texture select one of the square formats.
@@ -114,7 +114,6 @@
      width="95" />
     <check_box
      bottom_delta="20"
-     height="10"
      follows="left|top"
      label="Constrain proportions"
      layout="topleft"
@@ -128,7 +127,7 @@
      layout="topleft"
      name="cancel_btn"
      right="-32"
-     top="350"
+     top="337"
      width="100">
       <button.commit_callback
        function="Inventory.Cancel" />

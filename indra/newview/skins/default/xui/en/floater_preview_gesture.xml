@@ -4,7 +4,7 @@
  height="460"
  layout="topleft"
  name="gesture_preview"
- help_topic="gesture_preview"
+ background_color="FloaterDefaultBackgroundColor"
  width="280">
     <floater.string
      name="step_anim">
@@ -129,7 +129,7 @@
      left_delta="135"
      name="modifier_combo"
      top_delta="-4"
-     width="55" />
+     width="55"/>
     <combo_box
      height="20"
      label="None"
@@ -137,7 +137,140 @@
      left_pad="4"
      name="key_combo"
      top_delta="0"
-     width="50" />
+     width="50" >
+        <combo_box.item
+        label="B"
+        name="B"
+        value="B"/>
+        <combo_box.item
+        label="C"
+        name="C"
+        value="C"/>
+        <combo_box.item
+        label="E"
+        name="E"
+        value="E"/>
+        <combo_box.item
+        label="F"
+        name="F"
+        value="F"/>
+        <combo_box.item
+        label="G"
+        name="G"
+        value="G"/>
+        <combo_box.item
+        label="H"
+        name="H"
+        value="H"/>
+        <combo_box.item
+        label="I"
+        name="I"
+        value="I"/>
+        <combo_box.item
+        label="J"
+        name="J"
+        value="J"/>
+        <combo_box.item
+        label="K"
+        name="K"
+        value="K"/>
+        <combo_box.item
+        label="L"
+        name="L"
+        value="L"/>
+        <combo_box.item
+        label="M"
+        name="M"
+        value="M"/>
+        <combo_box.item
+        label="N"
+        name="N"
+        value="N"/>
+        <combo_box.item
+        label="O"
+        name="O"
+        value="O"/>
+        <combo_box.item
+        label="P"
+        name="P"
+        value="P"/>
+        <combo_box.item
+        label="Q"
+        name="Q"
+        value="Q"/>
+        <combo_box.item
+        label="R"
+        name="R"
+        value="R"/>
+        <combo_box.item
+        label="T"
+        name="T"
+        value="T"/>
+        <combo_box.item
+        label="U"
+        name="U"
+        value="U"/>
+        <combo_box.item
+        label="V"
+        name="V"
+        value="V"/>
+        <combo_box.item
+        label="X"
+        name="X"
+        value="X"/>
+        <combo_box.item
+        label="Y"
+        name="Y"
+        value="Y"/>
+        <combo_box.item
+        label="Z"
+        name="Z"
+        value="Z"/>
+        <combo_box.item
+        label="1"
+        name="1"
+        value="1"/>
+        <combo_box.item
+        label="2"
+        name="2"
+        value="2"/>
+        <combo_box.item
+        label="3"
+        name="3"
+        value="3"/>
+        <combo_box.item
+        label="4"
+        name="4"
+        value="4"/>
+        <combo_box.item
+        label="5"
+        name="5"
+        value="5"/>
+        <combo_box.item
+        label="6"
+        name="6"
+        value="6"/>
+        <combo_box.item
+        label="7"
+        name="7"
+        value="7"/>
+        <combo_box.item
+        label="8"
+        name="8"
+        value="8"/>
+        <combo_box.item
+        label="9"
+        name="9"
+        value="9"/>
+        <combo_box.item
+        label="0"
+        name="0"
+        value="0"/>
+        <combo_box.item
+        label="Space"
+        name="Space"
+        value="Space"/>
+        </combo_box>
     <text
      type="string"
      length="1"

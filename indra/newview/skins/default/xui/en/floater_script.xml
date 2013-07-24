@@ -5,6 +5,7 @@
  height="250"
  layout="topleft"
  name="script_floater"
+ background_color="FloaterDefaultBackgroundColor"
  can_dock="true"
  can_minimize="true"
  visible="false" 
