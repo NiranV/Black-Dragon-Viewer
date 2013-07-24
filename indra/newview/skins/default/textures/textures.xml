@@ -656,12 +656,20 @@ with the same filename but different name
   <texture name="jump_right_out.tga" file_name="widgets/jump_right_out.png" />
   <texture name="jump_right_in.tga" file_name="widgets/jump_right_in.png" />
 
+  <texture name="scrollbutton_left_out_blue.tga" file_name="widgets/ScrollArrow_Left_Opaque.png" />
+  <texture name="scrollbutton_left_in_blue.tga" file_name="widgets/ScrollArrow_Left_Over_Opaque.png" />
+  <texture name="scrollbutton_right_out_blue.tga" file_name="widgets/ScrollArrow_Right_Opaque.png" />
+  <texture name="scrollbutton_right_in_blue.tga" file_name="widgets/ScrollArrow_Right_Over_Opaque.png" />
+  <texture name="scrollbutton_up_out_blue.tga" file_name="widgets/ScrollArrow_Up_Opaque.png" />
+  <texture name="scrollbutton_up_in_blue.tga" file_name="widgets/ScrollArrow_Up_Over_Opaque.png" />
+  <texture name="scrollbutton_down_out_blue.tga" file_name="widgets/ScrollArrow_Down_Opaque.png" />
+  <texture name="scrollbutton_down_in_blue.tga" file_name="widgets/ScrollArrow_Down_Over_Opaque.png" />
+
   <texture name="up_arrow.tga" file_name="up_arrow.png" />
   <texture name="down_arrow.tga" file_name="down_arrow.png" />
   <texture name="arrow_down.tga" />
 
   <texture name="materials_ui_x_24.png" />
-
   <texture name="Progress_1" file_name="icons/Progress_1.png" preload="true" />
   <texture name="Progress_2" file_name="icons/Progress_2.png" preload="true" />
   <texture name="Progress_3" file_name="icons/Progress_3.png" preload="true" />
@@ -691,6 +699,9 @@ with the same filename but different name
   <texture name="Popup_Caution" file_name="icons/pop_up_caution.png"/>
   <texture name="Camera_Drag_Dot" file_name="world/CameraDragDot.png"/>
   <texture name="NavBar Separator" file_name="navbar/separator.png"/>
+
+  <texture name="Horizontal Drag Handle" file_name="widgets/horizontal_drag_handle.png"/>
+  <texture name="Vertical Drag Handle" file_name="widgets/vertical_drag_handle.png"/>
   
   <!-- Back Dragon textures-->
   
