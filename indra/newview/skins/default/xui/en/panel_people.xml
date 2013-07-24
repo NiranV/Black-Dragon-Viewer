@@ -61,8 +61,8 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
      left="3"
      name="tabs"
      tab_group="1"
-     tab_min_width="70"
-     tab_height="30"
+     tab_min_width="62"
+     tab_height="20"
      tab_position="top"
      top="0"
      halign="center"
@@ -71,40 +71,101 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 <!-- ================================= NEARBY tab =========================== -->
 
         <panel
-         background_opaque="true"
-         background_visible="true"
-         bg_alpha_color="DkGray"
-         bg_opaque_color="DkGray"
+         background_visible="false"
          bottom="-1"
          follows="all"
-         label="NEARBY"
+         label="Nearby"
          layout="topleft"
          left="0"
          help_topic="people_nearby_tab"
          name="nearby_panel"
          right="-1"
          top="0">
-            <panel
-             follows="left|top|right"
-             height="27"
+         <layout_stack
+           clip="false"
+           follows="all"
+           height="412"
+           layout="topleft"
+           left="0"
+           mouse_opaque="false"
+           orientation="vertical"
+           right="-1"
+           top="0">
+           <layout_panel
+             height="145"
+             layout="topleft"
+             min_dim="100"
+             mouse_opaque="false"
+             name="Net Map Panel"
+             user_resize="true"
+             visibility_control="NearbyListShowMap"
+             width="313">
+             <net_map
+               bg_color="Transparent"
+               follows="all"
+               height="140"
+               layout="topleft"
+               left="2"
+               mouse_opaque="false"
+               name="Net Map"
+               right="-1"
+               top="2" />
+           </layout_panel>
+           <layout_panel
+             height="213"
+             layout="topleft"
+             min_dim="100"
+             mouse_opaque="false"
+             right="-1"
+             user_resize="true">
+             <avatar_list
+               allow_select="true"
+               follows="all"
+               height="211"
+               ignore_online_status="true"
+               layout="topleft"
+               left="2"
+               keep_one_selected="false"
+               multi_select="true"
+               name="avatar_list"
+               right="-1"
+               top="0" />
+           </layout_panel>
+         </layout_stack>
+									<panel
+             follows="left|bottom|right"
+												 background_visible="true"
+												 bg_alpha_color="Black_25"
+             height="25"
              label="bottom_panel"
              layout="topleft"
              left="0"
              name="nearby_buttons_panel"
              right="-1"
-             top="0">
+             top="-27">
+												<icon
+															follows="left|top|right"
+															image_name="Toolbar_Middle_Off"
+															height="25"
+															width="192"
+															layout="topleft"
+															left="2"
+															top="0"/>
                 <filter_editor
                  follows="left|top|right"
+																	background_image="TextField_Off"
+															  background_image_disabled="TextField_Disabled"
+																	background_image_focused="TextField_Active"
                  height="23"
                  layout="topleft"
-                 left="6"
+                 left="4"
                  label="Filter People"
                  max_length_chars="300"
                  name="nearby_filter_input"
                  text_color="Black"
                  text_pad_left="10"
-                 top="4"
-                 width="178" />
+                 top="1"
+                 width="188" />
                 <button
                  commit_callback.function="People.Gear"
                  follows="right"
@@ -114,10 +175,10 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left_pad="7"
+                 left_pad="3"
                  name="gear_btn"
                  tool_tip="Actions on selected person"
-                 top="3"
+                 top="0"
                  width="31" />
                 <menu_button
                  follows="right"
@@ -127,7 +188,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left_pad="2"
+                 left_pad="1"
                  menu_filename="menu_people_nearby_view.xml"
                  menu_position="bottomleft"
                  name="nearby_view_btn"
@@ -142,7 +203,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left_pad="2"
+                 left_pad="1"
                  name="add_friend_btn"
                  tool_tip="Offer friendship to a resident"
                  top_delta="0"
@@ -158,7 +219,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_overlay="TrashItem_Off"
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
-                 left_pad="2"
+                 left_pad="1"
                  layout="topleft"
                  name="nearby_del_btn"
                  tool_tip="Remove selected person as a friend"
@@ -168,165 +229,27 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                      function="People.DelFriend" />
                  </dnd_button>
             </panel>
-         <layout_stack
-           clip="false"
-           follows="all"
-           height="410"
-           layout="topleft"
-           left="0"
-           mouse_opaque="false"
-           orientation="vertical"
-           right="-1"
-           top_pad="0">
-           <layout_panel
-             height="142"
-             layout="topleft"
-             min_dim="100"
-             mouse_opaque="false"
-             user_resize="true"
-             visibility_control="NearbyListShowMap"
-             width="313">
-             <net_map
-               bg_color="NetMapBackgroundColor"
-               follows="all"
-               height="140"
-               layout="topleft"
-               left="3"
-               mouse_opaque="false"
-               name="Net Map"
-               right="-1"
-               top="4" />
-           </layout_panel>
-           <layout_panel
-             height="213"
-             layout="topleft"
-             min_dim="100"
-             mouse_opaque="false"
-             right="-1"
-             user_resize="true">
-             <avatar_list
-               allow_select="true"
-               follows="all"
-               height="211"
-               ignore_online_status="true"
-               layout="topleft"
-               left="3"
-               keep_one_selected="false"
-               multi_select="true"
-               name="avatar_list"
-               right="-1"
-               top="2" />
-           </layout_panel>
-         </layout_stack>
         </panel>
 
 <!-- ================================= FRIENDS tab ========================== -->
 
         <panel
-         background_opaque="true"
-       background_visible="true"
-         bg_alpha_color="DkGray"
-         bg_opaque_color="DkGray"
+         background_visible="false"
          bottom="-1"
          follows="all"
-         label="FRIENDS"
+         label="Friends"
          layout="topleft"
          left="0"
          help_topic="people_friends_tab"
          name="friends_panel"
          right="-1"
          top="0">
-            <panel
-             follows="left|top|right"
-             height="27"
-             label="bottom_panel"
-             layout="topleft"
-             left="0"
-             name="friends_buttons_panel"
-             right="-1"
-             top="0">
-                <filter_editor
-                 follows="left|top|right"
-                 height="23"
-                 layout="topleft"
-                 left="6"
-                 label="Filter People"
-                 max_length_chars="300"
-                 name="friends_filter_input"
-                 text_color="Black"
-                 text_pad_left="10"
-                 top="4"
-                 width="177" />
-                <button
-                 commit_callback.function="People.Gear"
-                 follows="right"
-                 height="25"
-                 image_hover_unselected="Toolbar_Middle_Over"
-                 image_overlay="OptionsMenu_Off"
-                 image_selected="Toolbar_Middle_Selected"
-                 image_unselected="Toolbar_Middle_Off"
-                 layout="topleft"
-                 left_pad="8"
-                 name="gear_btn"
-                 tool_tip="Actions on selected person"
-                 top="3"
-                 width="31" />
-                <menu_button
-                 follows="right"
-                 height="25"
-                 image_hover_unselected="Toolbar_Middle_Over"
-                 image_overlay="Conv_toolbar_sort"
-                 image_selected="Toolbar_Middle_Selected"
-                 image_unselected="Toolbar_Middle_Off"
-                 layout="topleft"
-                 left_pad="2"
-                 menu_filename="menu_people_friends_view.xml"
-                 menu_position="bottomleft"
-                 name="friends_view_btn"
-                 tool_tip="View/sort options"
-                 top_delta="0"
-                 width="31" />
-                <button
-                 follows="right"
-                 height="25"
-                 image_hover_unselected="Toolbar_Middle_Over"
-                 image_overlay="AddItem_Off"
-                 image_selected="Toolbar_Middle_Selected"
-                 image_unselected="Toolbar_Middle_Off"
-                 layout="topleft"
-                 left_pad="2"
-                 name="friends_add_btn"
-                 tool_tip="Offer friendship to a resident"
-                 top_delta="0"
-                 width="31">
-                    <commit_callback
-                     function="People.AddFriendWizard" />
-                </button>
-                <dnd_button
-                 follows="right"
-                 height="25"
-                 image_hover_unselected="Toolbar_Middle_Over"
-                 image_overlay="TrashItem_Off"
-                 image_selected="Toolbar_Middle_Selected"
-                 image_unselected="Toolbar_Middle_Off"
-                 left_pad="2"
-                 layout="topleft"
-                 name="friends_del_btn"
-                 tool_tip="Remove selected person as a friend"
-                 top_delta="0"
-                 width="31">
-                    <commit_callback
-                     function="People.DelFriend" />
-                </dnd_button>
-            </panel>
             <accordion
-       		 background_visible="true"
-       		 bg_alpha_color="DkGray2"
-       		 bg_opaque_color="DkGray2"
+       		 background_visible="false"
              follows="all"
              height="408"
              layout="topleft"
-             left="3"
+             left="2"
              name="friends_accordion"
              right="-2"
              top_pad="2">
@@ -366,6 +289,102 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                          width="307" />
                 </accordion_tab>
             </accordion>
+												<panel
+             follows="left|bottom|right"
+             background_visible="true"
+												 bg_alpha_color="Black_25"
+             height="25"
+             label="bottom_panel"
+             layout="topleft"
+             left="0"
+             name="friends_buttons_panel"
+             right="-1"
+             top="-27">
+															<icon
+															follows="left|top|right"
+															image_name="Toolbar_Middle_Off"
+															height="25"
+															width="192"
+															layout="topleft"
+															left="2"
+															top="0"/>
+                <filter_editor
+                 follows="left|top|right"
+																	background_image="TextField_Off"
+															  background_image_disabled="TextField_Disabled"
+																	background_image_focused="TextField_Active"
+                 height="23"
+                 layout="topleft"
+                 left="4"
+                 label="Filter People"
+                 max_length_chars="300"
+                 name="friends_filter_input"
+                 text_color="Black"
+                 text_pad_left="10"
+                 top="1"
+                 width="188" />
+                <button
+                 commit_callback.function="People.Gear"
+                 follows="right"
+                 height="25"
+                 image_hover_unselected="Toolbar_Middle_Over"
+                 image_overlay="OptionsMenu_Off"
+                 image_selected="Toolbar_Middle_Selected"
+                 image_unselected="Toolbar_Middle_Off"
+                 layout="topleft"
+                 left_pad="3"
+                 name="gear_btn"
+                 tool_tip="Actions on selected person"
+                 top="0"
+                 width="31" />
+                <menu_button
+                 follows="right"
+                 height="25"
+                 image_hover_unselected="Toolbar_Middle_Over"
+                 image_overlay="Conv_toolbar_sort"
+                 image_selected="Toolbar_Middle_Selected"
+                 image_unselected="Toolbar_Middle_Off"
+                 layout="topleft"
+                 left_pad="1"
+                 menu_filename="menu_people_friends_view.xml"
+                 menu_position="bottomleft"
+                 name="friends_view_btn"
+                 tool_tip="View/sort options"
+                 top_delta="0"
+                 width="31" />
+                <button
+                 follows="right"
+                 height="25"
+                 image_hover_unselected="Toolbar_Middle_Over"
+                 image_overlay="AddItem_Off"
+                 image_selected="Toolbar_Middle_Selected"
+                 image_unselected="Toolbar_Middle_Off"
+                 layout="topleft"
+                 left_pad="1"
+                 name="friends_add_btn"
+                 tool_tip="Offer friendship to a resident"
+                 top_delta="0"
+                 width="31">
+                    <commit_callback
+                     function="People.AddFriendWizard" />
+                </button>
+                <dnd_button
+                 follows="right"
+                 height="25"
+                 image_hover_unselected="Toolbar_Middle_Over"
+                 image_overlay="TrashItem_Off"
+                 image_selected="Toolbar_Middle_Selected"
+                 image_unselected="Toolbar_Middle_Off"
+                 left_pad="1"
+                 layout="topleft"
+                 name="friends_del_btn"
+                 tool_tip="Remove selected person as a friend"
+                 top_delta="0"
+                 width="31">
+                    <commit_callback
+                     function="People.DelFriend" />
+                </dnd_button>
+            </panel>
             <text
              follows="all"
              height="450"
@@ -379,13 +398,10 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 <!-- ================================= GROUPS tab =========================== -->
 
         <panel
-         background_opaque="true"
-       background_visible="true"
-         bg_alpha_color="DkGray"
-         bg_opaque_color="DkGray"
+         background_visible="false"
          bottom="-1"
          follows="all"
-         label="GROUPS"
+         label="Groups"
          layout="topleft"
          left="0"
          help_topic="people_groups_tab"
@@ -396,27 +412,49 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
      *NOTE: no_groups_msg & group_list attributes are not defined as translatable in VLT. See EXT-5931
      Values are set from appropriate strings at the top of file via LLPeoplePanel::postBuild()
     -->
-            <panel
-             follows="left|top|right"
-             height="27"
+            <group_list
+             allow_select="true" 
+             follows="all"
+             height="406"
+             layout="topleft"
+             left="2"
+             name="group_list"
+             right="-2"
+             top_pad="4" />
+												<panel
+             follows="left|bottom|right"
+             background_visible="true"
+												 bg_alpha_color="Black_25"
+             height="25"
              label="bottom_panel"
              layout="topleft"
              left="0"
              name="groups_buttons_panel"
              right="-1"
-             top="0">
+             top="-27">
+															<icon
+															follows="left|top|right"
+															image_name="Toolbar_Middle_Off"
+															height="25"
+															width="192"
+															layout="topleft"
+															left="2"
+															top="0"/>
                 <filter_editor
                  follows="left|top|right"
+																	background_image="TextField_Off"
+															  background_image_disabled="TextField_Disabled"
+																	background_image_focused="TextField_Active"
                  height="23"
                  layout="topleft"
-                 left="6"
+                 left="4"
                  label="Filter Groups"
                  max_length_chars="300"
                  name="groups_filter_input"
                  text_color="Black"
                  text_pad_left="10"
-                 top="4"
-                 width="177" />
+                 top="1"
+                 width="188" />
                 <menu_button
                  follows="right"
                  height="25"
@@ -425,10 +463,10 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left_pad="8"
+                 left_pad="3"
                  name="groups_gear_btn"
                  tool_tip="Actions on selected group"
-                 top="3"
+                 top="0"
                  width="31" />
                 <menu_button
                  follows="right"
@@ -438,7 +476,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left_pad="2"
+                 left_pad="1"
                  menu_filename="menu_people_groups_view.xml"
                  menu_position="bottomleft"
                  name="groups_view_btn"
@@ -453,7 +491,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left_pad="2"
+                 left_pad="1"
                  menu_filename="menu_group_plus.xml"
                  menu_position="bottomleft"
                  name="plus_btn"
@@ -470,7 +508,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_overlay="TrashItem_Off"
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
-                 left_pad="2"
+                 left_pad="1"
                  layout="topleft"
                  name="minus_btn"
                  tool_tip="Leave selected group"
@@ -480,54 +518,66 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                      function="People.Group.Minus" />
                 </dnd_button>
             </panel>
-            <group_list
-             allow_select="true" 
-             follows="all"
-             height="406"
-             layout="topleft"
-             left="3"
-             name="group_list"
-             right="-2"
-             top_pad="4" />
         </panel>
 
 <!-- ================================= RECENT tab =========================== -->
 
         <panel
-         background_opaque="true"
-       background_visible="true"
-         bg_alpha_color="DkGray"
-         bg_opaque_color="DkGray"
+         background_visible="false"
          follows="all"
          height="383"
-         label="RECENT"
+         label="Recent"
          layout="topleft"
          left="0"
          help_topic="people_recent_tab"
          name="recent_panel"
          right="-1"
          top="0">
-            <panel
-             follows="left|top|right"
-             height="27"
+            <avatar_list
+             allow_select="true"
+             follows="all"
+             height="351"
+             layout="topleft"
+             left="3"
+             multi_select="true"
+             name="avatar_list"
+             show_last_interaction_time="true"
+             right="-2"
+             top_pad="4" />
+												<panel
+             follows="left|bottom|right"
+             background_visible="true"
+												 bg_alpha_color="Black_25"
+             height="25"
              label="bottom_panel"
              layout="topleft"
              left="0"
              name="recent_buttons_panel"
              right="-1"
-             top="0">
+             top="-27">
+															<icon
+															follows="left|top|right"
+															image_name="Toolbar_Middle_Off"
+															height="25"
+															width="192"
+															layout="topleft"
+															left="2"
+															top="0"/>
                 <filter_editor
                  follows="left|top|right"
+																	background_image="TextField_Off"
+															  background_image_disabled="TextField_Disabled"
+																	background_image_focused="TextField_Active"
                  height="23"
                  layout="topleft"
-                 left="6"
+                 left="4"
                  label="Filter People"
                  max_length_chars="300"
                  name="recent_filter_input"
                  text_color="Black"
                  text_pad_left="10"
-                 top="4"
-                 width="177" />
+                 top="1"
+                 width="188" />
                 <button
                  commit_callback.function="People.Gear"
                  follows="right"
@@ -537,10 +587,10 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left_pad="8"
+                 left_pad="3"
                  name="gear_btn"
                  tool_tip="Actions on selected person"
-                 top="3"
+                 top="0"
                  width="31" />
                 <menu_button
                  follows="right"
@@ -550,7 +600,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left_pad="2"
+                 left_pad="1"
                  menu_filename="menu_people_recent_view.xml"
                  menu_position="bottomleft"
                  name="recent_view_btn"
@@ -565,7 +615,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left_pad="2"
+                 left_pad="1"
                  name="add_friend_btn"
                  tool_tip="Offer friendship to a resident"
                  top_delta="0"
@@ -581,7 +631,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_overlay="TrashItem_Off"
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
-                 left_pad="2"
+                 left_pad="1"
                  layout="topleft"
                  name="recent_del_btn"
                  tool_tip="Remove selected person as a friend"
@@ -591,29 +641,15 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                      function="People.DelFriend" />
                  </dnd_button>
             </panel>
-            <avatar_list
-             allow_select="true"
-             follows="all"
-             height="351"
-             layout="topleft"
-             left="3"
-             multi_select="true"
-             name="avatar_list"
-             show_last_interaction_time="true"
-             right="-2"
-             top_pad="4" />
         </panel>
 
 <!-- ================================= BLOCKED tab ========================== -->
 
         <panel
-         background_opaque="true"
-         background_visible="true"
-         bg_alpha_color="DkGray"
-         bg_opaque_color="DkGray"
+         background_visible="false"
          follows="all"
          height="383"
-         label="BLOCKED"
+         label="Blocked"
          layout="topleft"
          left="0"
          help_topic="people_blocked_tab"
@@ -629,9 +665,9 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
            label="Blocked Residents &amp; Objects"
            layout="topleft"
            left="0"
+											width="323"
            font="SansSerifBold"
-           top="0"
-           right="-1" />
+           top="0" />
         </panel>
     </tab_container>
 </panel>
