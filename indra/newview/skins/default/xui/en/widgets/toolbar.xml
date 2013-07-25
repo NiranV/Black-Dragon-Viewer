@@ -81,4 +81,24 @@ read_only="false">
  button_flash_count="99999"
  button_flash_rate="1.0"
  flash_color="EmphasisColor"/>
+ <button_text
+ pad_left="10"
+ pad_right="10"
+ image_pressed="PushButton_Press"
+ image_pressed_selected="PushButton_Selected_Press"
+ image_selected="PushButton_Selected_Press"
+ image_disabled_selected="PushButton_Selected_Disabled"
+ image_disabled="PushButton_Disabled"
+ desired_height="24"
+ button_width.min="30"
+ button_width.max="170"               
+ follows="left|top"
+ label_color_selected="White"
+ halign="center"
+ chrome="true"
+ use_ellipses="true"
+ auto_resize="true"
+ button_flash_count="99999"
+ button_flash_rate="1.0"
+ flash_color="EmphasisColor"/>
 </toolbar>
