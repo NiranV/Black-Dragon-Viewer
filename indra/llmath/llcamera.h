@@ -33,7 +33,7 @@
 #include "llplane.h"
 #include "llvector4a.h"
 
-const F32 DEFAULT_FIELD_OF_VIEW 	= 60.f * DEG_TO_RAD;
+const F32 DEFAULT_FIELD_OF_VIEW 	= 63.33f * DEG_TO_RAD;
 const F32 DEFAULT_ASPECT_RATIO 		= 640.f / 480.f;
 const F32 DEFAULT_NEAR_PLANE 		= 0.25f;
 const F32 DEFAULT_FAR_PLANE 		= 64.f;	// far reaches across two horizontal, not diagonal, regions
