@@ -119,7 +119,7 @@ LLAgentCamera::LLAgentCamera() :
 	mCameraMode( CAMERA_MODE_THIRD_PERSON ),
 	mLastCameraMode( CAMERA_MODE_THIRD_PERSON ),
 
-	mCameraPreset(CAMERA_PRESET_REAR_VIEW),
+	mCameraPreset(CAMERA_PRESET_GROUP_VIEW),
 
 	mCameraAnimating( FALSE ),
 	mAnimationCameraStartGlobal(),
