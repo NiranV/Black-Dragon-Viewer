@@ -11,7 +11,7 @@
  save_visibility="true"
  single_instance="true"
  reuse_instance="true"
- title="CONVERSATIONS"
+ title="Conversations"
  bottom="-50"
  right="-5"
  width="450"
@@ -26,6 +26,7 @@
      animate="true" 
      bottom="-1"
      follows="all"
+     border_size="0"
      layout="topleft"
      left="0"
      name="conversations_stack"
@@ -36,21 +37,22 @@
          auto_resize="false"
          user_resize="true"        
          name="conversations_layout_panel"
-         min_dim="38"
+         min_dim="31"
          expanded_min_dim="156">
             <layout_stack
              animate="false" 
              follows="left|top|right"
-             height="35"
+             height="30"
              layout="topleft"
              left="0"
+             border_size="0"
              name="conversations_pane_buttons_stack"
              orientation="horizontal"
              right="-1"
              top="0">
                 <layout_panel
                  auto_resize="true"
-                 height="35"
+                 height="27"
                  name="conversations_pane_buttons_expanded">
                     <menu_button
                      follows="top|left"
@@ -64,7 +66,7 @@
                      left="5"
                      name="sort_btn"
                      tool_tip="View/sort options"
-                     top="5"
+                     top="2"
                      width="31" />
                     <button
                      follows="top|left"
@@ -74,8 +76,8 @@
                      image_selected="Toolbar_Middle_Selected"
                      image_unselected="Toolbar_Middle_Off"
                      layout="topleft"
-                     top="5"
-                     left_pad="2"
+                     top="2"
+                     left_pad="1"
                      name="add_btn"
                      tool_tip="Start a new conversation"
                      width="31"/>
@@ -87,17 +89,17 @@
                      image_selected="Toolbar_Middle_Selected"
                      image_unselected="Toolbar_Middle_Off"
                      layout="topleft"
-                     top="5"
-                     left_pad="2"
+                     top="2"
+                     left_pad="1"
                      name="speak_btn"
                      tool_tip="Speak with people using your microphone"
                      width="31"/>	
                 </layout_panel>
                 <layout_panel
                  auto_resize="false"
-                 height="35"
+                 height="30"
                  name="conversations_pane_buttons_collapsed"
-                 width="41">
+                 width="31">
                     <button
                      follows="right|top"
                      height="25"
@@ -106,7 +108,7 @@
                      image_selected="Toolbar_Middle_Selected"
                      image_unselected="Toolbar_Middle_Off"
                      layout="topleft"
-                     top="5"
+                     top="2"
                      left="1"
                      name="expand_collapse_btn"
                      tool_tip="Collapse/Expand this list"
@@ -119,8 +121,8 @@
              layout="topleft"
              name="conversations_list_panel"
              opaque="true"
-             top="35"
-             left="5"
+             top="30"
+             left="1"
              right="-1"/>
         </layout_panel>
         <layout_panel
@@ -153,8 +155,8 @@
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 top="5"
-                 right="-10"
+                 top="2"
+                 right="1"
                  name="stub_collapse_btn"
                  tool_tip="Collapse this pane"
                  width="31" />

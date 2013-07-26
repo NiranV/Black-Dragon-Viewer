@@ -77,9 +77,9 @@
          follows="all"
          right="-5"
          bottom="-1"
+         border_size="0"
          top="0"
          left="5"
-         border_size="0"
          layout="topleft"
          orientation="vertical"
          name="main_stack"
@@ -87,7 +87,7 @@
             <layout_panel
              auto_resize="false"
              name="toolbar_panel"
-             height="35"
+             height="28"
              right="-1"
              left="1">
                 <menu_button
@@ -99,10 +99,10 @@
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left="5"
+                 left="2"
                  name="view_options_btn"
                  tool_tip="View/sort options"
-                 top="5"
+                 top="2"
                  width="31" />
                 <menu_button
                  menu_filename="menu_im_conversation.xml"
@@ -113,8 +113,8 @@
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 top="5"
-                 left_pad="2"
+                 top="2"
+                 left_pad="1"
                  name="gear_btn"
                  visible="false"
                  tool_tip="Actions on selected person"
@@ -128,8 +128,8 @@
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 top="5"
-                 left_pad="2"
+                 top="2"
+                 left_pad="1"
                  name="add_btn"
                  tool_tip="Add someone to this conversation"
                  width="31"/>
@@ -141,8 +141,8 @@
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 top="5"
-                 left_pad="2"
+                 top="2"
+                 left_pad="1"
                  name="voice_call_btn"
                  tool_tip="Open voice connection"
                  width="31"/>
@@ -152,7 +152,7 @@
                  draw_border="false"
                  height="16"
                  layout="topleft"
-                 top="10"
+                 top="7"
                  left_pad="10"
                  mouse_opaque="true"
                  name="speaking_indicator"
@@ -166,8 +166,8 @@
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 top="5"
-                 right="-67"
+                 top="2"
+                 right="-65"
                  name="close_btn"
                  tool_tip="End this conversation"
                  width="31" />
@@ -179,8 +179,8 @@
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 top="5"
-                 left_pad="2"
+                 top="2"
+                 left_pad="1"
                  name="expand_collapse_btn"
                  tool_tip="Collapse/Expand this pane"
                  width="31" />
@@ -192,9 +192,9 @@
                  image_selected="Toolbar_Middle_Selected"
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
-                 left_pad="2"
+                 left_pad="1"
                  name="tear_off_btn"
-                 top="5"
+                 top="2"
                  width="31" />
             </layout_panel>
             <layout_panel
@@ -207,6 +207,7 @@
                  orientation="horizontal"
                  name="im_panels"
                  tab_group="1"
+                 border_size="0"
                  top="0"
                  right="-1"
                  bottom="-1"
@@ -229,6 +230,7 @@
                          animate="true" 
                          default_tab_group="2"
                          follows="all"
+                         border_size="0"
                          orientation="vertical"
                          name="translate_and_chat_stack"
                          tab_group="1"
@@ -238,15 +240,15 @@
                          bottom="-1">
                             <layout_panel
                              auto_resize="false"
-                             height="26"
+                             height="20"
                              name="translate_chat_checkbox_lp">
                                 <check_box
-                                 top="10"
+                                 top="3"
                                  control_name="TranslateChat"
                                  enabled="true"
                                  height="16"
                                  label="Translate chat"
-                                 left="5"
+                                 left="1"
                                  name="translate_chat_checkbox"
                                  width="230" />
                             </layout_panel>
@@ -258,8 +260,7 @@
                                  name="chat_history"
                                  parse_highlights="true"
                                  parse_urls="true"
-                                 right="-1"
-                                 left="5"
+                                 left="1"
                                  top="0"
                                  bottom="-1" />
                             </layout_panel>
@@ -270,18 +271,18 @@
             <layout_panel
              top_delta="0"
              top="0"
-             height="26"
-             bottom="-1"
+             height="24"
              auto_resize="false"
              name="chat_layout_panel">
                 <layout_stack
                  animate="false"
                  default_tab_group="2"
                  follows="all"
+                 border_size="0"
                  orientation="horizontal"
                  name="input_panels"
                  top="0"
-                 bottom="-2"
+                 bottom="-1"
                  left="0"
                  right="-1">
                     <layout_panel
@@ -292,36 +293,36 @@
                      bottom="-1">
                         <chat_editor
                          layout="topleft"
-                         expand_lines_count="5"
                          follows="left|right|bottom"
-                         font="SansSerifSmall"
-                         height="20"    
-                         is_expandable="true"
+                         font="SansSerifBig"
+                         height="21"
+                         is_expandable="false"
                          text_tentative_color="TextFgTentativeColor"
                          name="chat_editor"
                          max_length="1023"
                          spellcheck="true"
                          tab_group="3"
-                         top="1"
-                         bottom="-2"
-                         left="4"
-                         right="-4"
+                         v_pad="2"
+                         line_spacing.pixels="-1" 
+                         top="0"
+                         left="1"
+                         right="-1"
                          wrap="true" />
                     </layout_panel>
                     <layout_panel
                      auto_resize="false"
                      user_resize="false"
                      name="input_button_layout_panel"
-                     width="30"
+                     width="28"
                      top="0"
                      bottom="-1">
                         <button
                          layout="topleft"
-                         left="1"
+                         left="0"
                          right="-1"
-                         top="1"
-                         height="22"
-                         follows="left|right|top"
+                         top="0"
+                         height="21"
+                         follows="left|right|bottom"
                          image_hover_unselected="Toolbar_Middle_Over"
                          image_overlay="Conv_expand_one_line"
                          image_selected="Toolbar_Middle_Selected"
