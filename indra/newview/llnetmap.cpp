@@ -344,6 +344,9 @@ void LLNetMap::draw()
 
 		LLWorld::getInstance()->getAvatars(&avatar_ids, &positions, gAgentCamera.getCameraPositionGlobal());
 
+//		//BD - Draw chat range ring(s)
+		static LLUICachedControl<bool> chat_ring("MiniMapChatRing", true);
+
 		// Draw avatars
 		for (U32 i = 0; i < avatar_ids.size(); i++)
 		{
@@ -400,15 +403,12 @@ void LLNetMap::draw()
 				mClosestAgentToCursor = uuid;
 			}
 
-			// Draw chat range ring(s)
-				static LLUICachedControl<bool> chat_ring("MiniMapChatRing", true);
-				if(chat_ring)
-				{
-//					//BD - Whisper Range ring
-					drawRing(5.0, pos_map, map_chat_ring_color);
-					drawRing(CHAT_NORMAL_RADIUS, pos_map, map_chat_ring_color);
-					drawRing(100.0, pos_map, map_chat_ring_color);
-				}
+//			//BD - Draw chat range ring(s)
+			static LLUICachedControl<bool> chat_ring("MiniMapChatRing", true);
+			if(chat_ring)
+			{
+				drawRing(CHAT_NORMAL_RADIUS, pos_map, map_chat_ring_color);
+			}
 		}
 
 		// Draw dot for autopilot target
@@ -448,6 +448,10 @@ void LLNetMap::draw()
 			{
 				mClosestAgentToCursor = gAgent.getID();
 			}
+
+//			//BD - Draw chat range ring(s)
+			drawRing(5.0, pos_map, map_chat_ring_color);
+			drawRing(100.0, pos_map, map_chat_ring_color);
 		}
 
 		// Draw frustum
