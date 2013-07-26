@@ -251,10 +251,12 @@ void LLFloaterIMNearbyChat::setVisible(BOOL visible)
 {
 	LLFloaterIMSessionTab::setVisible(visible);
 
+	/* BD - Nope.
 	if(visible)
 	{
 		removeScreenChat();
 	}
+	*/
 }
 
 
@@ -302,6 +304,7 @@ void LLFloaterIMNearbyChat::onClose(bool app_quitting)
 // virtual
 void LLFloaterIMNearbyChat::onClickCloseBtn()
 {
+	/* BD - Nope.
 	if (!isTornOff())
 	{
 		return;
@@ -313,15 +316,19 @@ void LLFloaterIMNearbyChat::onClickCloseBtn()
 	{
 		im_box->onNearbyChatClosed();
 	}
+	*/
+	setVisible(false);
 }
 
 void LLFloaterIMNearbyChat::onChatFontChange(LLFontGL* fontp)
 {
 	// Update things with the new font whohoo
+	/*
 	if (mInputEditor)
 	{
 		mInputEditor->setFont(fontp);
 	}
+	*/
 }
 
 
@@ -642,6 +649,10 @@ void LLFloaterIMNearbyChat::onChatBoxCommit()
 	}
 
 	gAgent.stopTyping();
+	if(!isMessagePaneExpanded() && gSavedSettings.getBOOL("AutohideChatOnReturn"))
+	{
+		setVisible(false);
+	}
 }
 
 void LLFloaterIMNearbyChat::displaySpeakingIndicator()

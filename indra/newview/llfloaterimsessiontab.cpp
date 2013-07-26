@@ -272,7 +272,6 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	mInputEditor->setTextExpandedCallback(boost::bind(&LLFloaterIMSessionTab::reshapeChatLayoutPanel, this));
 	mInputEditor->setCommitOnFocusLost( FALSE );
 	mInputEditor->setPassDelete(TRUE);
-	mInputEditor->setFont(LLViewerChat::getChatFont());
 
 	mChatLayoutPanelHeight = mChatLayoutPanel->getRect().getHeight();
 	mInputEditorPad = mChatLayoutPanelHeight - mInputEditor->getRect().getHeight();
@@ -396,6 +395,13 @@ void LLFloaterIMSessionTab::onFocusReceived()
 void LLFloaterIMSessionTab::onFocusLost()
 {
 	setBackgroundOpaque(false);
+	//	//BD - Autoclose Chat
+	if(gSavedSettings.getBOOL("EnableAutohidingChat") 
+		&& mIsNearbyChat
+		&& !isMessagePaneExpanded())
+    {
+		setVisible(false);
+    }
 	LLTransientDockableFloater::onFocusLost();
 }
 
@@ -753,7 +759,7 @@ void LLFloaterIMSessionTab::forceReshape()
 
 void LLFloaterIMSessionTab::reshapeChatLayoutPanel()
 {
-	mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + mInputEditorPad, FALSE);
+	mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + 4.f, FALSE);
 }
 
 void LLFloaterIMSessionTab::showTranslationCheckbox(BOOL show)
