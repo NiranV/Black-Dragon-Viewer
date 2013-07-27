@@ -272,6 +272,7 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	mInputEditor->setTextExpandedCallback(boost::bind(&LLFloaterIMSessionTab::reshapeChatLayoutPanel, this));
 	mInputEditor->setCommitOnFocusLost( FALSE );
 	mInputEditor->setPassDelete(TRUE);
+	mInputEditor->enableSingleLineMode(TRUE);
 
 	mChatLayoutPanelHeight = mChatLayoutPanel->getRect().getHeight();
 	mInputEditorPad = mChatLayoutPanelHeight - mInputEditor->getRect().getHeight();
@@ -759,7 +760,7 @@ void LLFloaterIMSessionTab::forceReshape()
 
 void LLFloaterIMSessionTab::reshapeChatLayoutPanel()
 {
-	mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + 4.f, FALSE);
+	mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + 6.f, FALSE);
 }
 
 void LLFloaterIMSessionTab::showTranslationCheckbox(BOOL show)
@@ -858,7 +859,6 @@ void LLFloaterIMSessionTab::onCollapseToLine(LLFloaterIMSessionTab* self)
 		self->mExpandCollapseLineBtn->setImageOverlay(self->getString(expand ? "collapseline_icon" : "expandline_icon"));
 		self->mContentPanel->setVisible(!expand);
 		self->mToolbarPanel->setVisible(!expand);
-		self->mInputEditor->enableSingleLineMode(expand);
 		self->reshapeFloater(expand);
 		self->setMessagePaneExpanded(!expand);
 	}
@@ -872,7 +872,7 @@ void LLFloaterIMSessionTab::reshapeFloater(bool collapse)
 	{
 		mFloaterHeight = floater_rect.getHeight();
 		S32 height = mContentPanel->getRect().getHeight() + mToolbarPanel->getRect().getHeight()
-			+ mChatLayoutPanel->getRect().getHeight() - mChatLayoutPanelHeight + 2;
+			+ mChatLayoutPanel->getRect().getHeight() - mChatLayoutPanelHeight;
 		floater_rect.mTop -= height;
 	}
 	else
