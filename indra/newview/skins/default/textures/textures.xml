@@ -715,12 +715,12 @@ with the same filename but different name
   <texture name="sunicon" file_name="sunicon.png" preload="true" />
   <texture name="lighticon" file_name="lighticon.png" preload="true" />
   
+  <texture name="NavBar_BG_middle" file_name="navbar/NavBar_BG_middle.png" preload="true" />
+  
   <!--<texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
     
   <texture name="lock2" file_name="lock.png" preload="true" />
   <texture name="menubg" file_name="menubg.jpg" preload="true" />
-  
-  <texture name="NavBar_BG_middle" file_name="navbar/NavBar_BG_middle.png" preload="true" />
 
   <texture name="TextField_Off2" file_name="widgets/TextField_Off2.png" preload="true" scale.left="9" scale.top="1" scale.right="238" scale.bottom="12" />
   <texture name="TextField_Disabled2" file_name="widgets/TextField_Disabled2.png" preload="true" scale.left="9" scale.top="12" scale.right="238" scale.bottom="12" />
