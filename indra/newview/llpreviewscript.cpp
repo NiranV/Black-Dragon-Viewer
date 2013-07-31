@@ -424,7 +424,7 @@ BOOL LLScriptEdCore::postBuild()
 		}
 	}
 	
-	LLColor3 color(0.5f, 0.0f, 0.15f);
+	LLColor3 color(1.0f, 0.4f, 0.15f);
 	mEditor->loadKeywords(gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS,"keywords.ini"), funcs, tooltips, color);
 
 	std::vector<std::string> primary_keywords;
