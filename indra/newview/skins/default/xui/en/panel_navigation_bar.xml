@@ -2,7 +2,6 @@
 <panel
  background_opaque="false"
  background_visible="false"
- bg_opaque_color="MouseGray"
  follows="left|top|right"
  focus_root="true" 
  height="45"
@@ -12,15 +11,15 @@
  width="800">
 	<icon
 	 follows="top|left"
-	 image_name="navbar/NavBar_BG.png"
+	 image_name="navbar/NavBar_BG_l1.png"
 	 mouse_opaque="false"
-	 name="bg_icon"
-	 scale_image="true"
+	 name="bg_icon_l1"
+	 scale_image="false"
 	 visible="true"
 	 left="0"
 	 top="0"
 	 height="50"
-	 width="1600"/>
+	 width="1920"/>
 	 <layout_stack
        follows="top|left|right"
        height="50"

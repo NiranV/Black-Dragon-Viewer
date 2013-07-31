@@ -40,6 +40,17 @@
                   top="0"
                   right="-200"
                   visible="false"/>
+     <icon
+       follows="top|left|right"
+       image_name="navbar/NavBar_BG_l2.png"
+       mouse_opaque="false"
+       name="bg_icon_l2"
+       scale_image="true"
+       visible="true"
+       left="0"
+       top="0"
+       height="50"
+       width="1024"/>
      <panel follows="left|top|right"
              height="19"
              left="0"
