@@ -30,32 +30,6 @@
 
 uniform float emissive_brightness;
 
-
-vec3 srgb_to_linear(vec3 cs)
-{
-	
-/*        {  cs / 12.92,                 cs <= 0.04045
-    cl = {
-        {  ((cs + 0.055)/1.055)^2.4,   cs >  0.04045*/
-
-	vec3 low_range = cs / vec3(12.92);
-
-	if (((cs.r + cs.g + cs.b) / 3) <= 0.04045)
-		return low_range;
-
-	return pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
-}
-
-vec3 linear_to_srgb(vec3 cl)
-{
-	    /*{  0.0,                          0         <= cl
-            {  12.92 * c,                    0         <  cl < 0.0031308
-    cs = {  1.055 * cl^0.41666 - 0.055,   0.0031308 <= cl < 1
-            {  1.0,                                       cl >= 1*/
-
-	return 1.055 * pow(cl, vec3(0.41666)) - 0.055;
-}
-
 #if (DIFFUSE_ALPHA_MODE == DIFFUSE_ALPHA_MODE_BLEND)
 
 #ifdef DEFINE_GL_FRAGCOLOR
@@ -139,6 +113,43 @@ uniform vec4 light_position[8];
 uniform vec3 light_direction[8];
 uniform vec3 light_attenuation[8]; 
 uniform vec3 light_diffuse[8];
+
+vec3 srgb_to_linear(vec3 cs)
+{
+	vec3 low_range = cs / vec3(12.92);
+	vec3 high_range = pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
+	bvec3 lte = lessThanEqual(cs,vec3(0.04045));
+
+#ifdef OLD_SELECT
+	vec3 result;
+	result.r = lte.r ? low_range.r : high_range.r;
+	result.g = lte.g ? low_range.g : high_range.g;
+	result.b = lte.b ? low_range.b : high_range.b;
+    return result;
+#else
+	return mix(high_range, low_range, lte);
+#endif
+
+}
+
+vec3 linear_to_srgb(vec3 cl)
+{
+	cl = clamp(cl, vec3(0), vec3(1));
+	vec3 low_range  = cl * 12.92;
+	vec3 high_range = 1.055 * pow(cl, vec3(0.41666)) - 0.055;
+	bvec3 lt = lessThan(cl,vec3(0.0031308));
+
+#ifdef OLD_SELECT
+	vec3 result;
+	result.r = lt.r ? low_range.r : high_range.r;
+	result.g = lt.g ? low_range.g : high_range.g;
+	result.b = lt.b ? low_range.b : high_range.b;
+    return result;
+#else
+	return mix(high_range, low_range, lt);
+#endif
+
+}
 
 #ifdef WATER_FOG
 uniform vec4 waterPlane;
@@ -533,7 +544,7 @@ void main()
 #endif
 
 #if (DIFFUSE_ALPHA_MODE == DIFFUSE_ALPHA_MODE_BLEND)
-	vec3 old_diffcol = diffcol.rgb;
+	vec3 gamma_diff = diffcol.rgb;
 	diffcol.rgb = srgb_to_linear(diffcol.rgb);
 #endif
 
@@ -677,9 +688,8 @@ void main()
 
 	col.rgb *= ambient;
 
-	col.rgb = col.rgb + atmosAffectDirectionalLight(final_da); //pow(final_da, 1.0/1.3));
-	col.rgb *= old_diffcol.rgb;
-	
+	col.rgb = col.rgb + atmosAffectDirectionalLight(pow(final_da, 1.0/1.3));
+	col.rgb *= gamma_diff.rgb;
 
 	float glare = 0.0;
 
@@ -701,7 +711,7 @@ void main()
 		col += spec_contrib;
 	}
 
-	col = mix(col.rgb, old_diffcol.rgb, diffuse.a);
+	col = mix(col.rgb, gamma_diff.rgb, diffuse.a);
 
 	if (envIntensity > 0.0)
 	{
@@ -720,11 +730,11 @@ void main()
 	}
 
 	col = mix(atmosLighting(col), fullbrightAtmosTransport(col), diffuse.a);
-	col = mix(scaleSoftClip(col), fullbrightScaleSoftClip(col), diffuse.a);
+	col = mix(scaleSoftClip(col), fullbrightScaleSoftClip(col),  diffuse.a);
 
 	//convert to linear space before adding local lights
 	col = srgb_to_linear(col);
-
+			
 	vec3 npos = normalize(-pos.xyz);
 
  #define LIGHT_LOOP(i) col.rgb = col.rgb + calcPointLightOrSpotLight(light_diffuse[i].rgb, npos, diffuse.rgb, final_specular, pos.xyz, norm.xyz, light_position[i], light_direction[i].xyz, light_attenuation[i].x, light_attenuation[i].y, light_attenuation[i].z, glare);
@@ -740,9 +750,9 @@ void main()
 	glare = min(glare, 1.0);
 	float al = max(diffcol.a,glare)*vertex_color.a;
 
-
 	//convert to gamma space for display on screen
 	col.rgb = linear_to_srgb(col.rgb);
+
 
 #ifdef WATER_FOG
 	vec4 temp = applyWaterFogDeferred(pos, vec4(col.rgb, al));
@@ -754,7 +764,6 @@ void main()
 	frag_color.a   = al;
 
 #else
-	//final_color.rgb = vec3(1,0,1);
 	frag_data[0] = final_color;
 	frag_data[1] = final_specular; // XYZ = Specular color. W = Specular exponent.
 	frag_data[2] = final_normal; // XY = Normal.  Z = Env. intensity.

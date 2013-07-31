@@ -78,30 +78,41 @@ vec3 vary_AtmosAttenuation;
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
 
-
 vec3 srgb_to_linear(vec3 cs)
 {
-	
-/*        {  cs / 12.92,                 cs <= 0.04045
-    cl = {
-        {  ((cs + 0.055)/1.055)^2.4,   cs >  0.04045*/
-
 	vec3 low_range = cs / vec3(12.92);
+	vec3 high_range = pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
+	bvec3 lte = lessThanEqual(cs,vec3(0.04045));
 
-	if (((cs.r + cs.g + cs.b) / 3) <= 0.04045)
-		return low_range;
+#ifdef OLD_SELECT
+	vec3 result;
+	result.r = lte.r ? low_range.r : high_range.r;
+	result.g = lte.g ? low_range.g : high_range.g;
+	result.b = lte.b ? low_range.b : high_range.b;
+    return result;
+#else
+	return mix(high_range, low_range, lte);
+#endif
 
-	return pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
 }
 
 vec3 linear_to_srgb(vec3 cl)
 {
-	    /*{  0.0,                          0         <= cl
-            {  12.92 * c,                    0         <  cl < 0.0031308
-    cs = {  1.055 * cl^0.41666 - 0.055,   0.0031308 <= cl < 1
-            {  1.0,                                       cl >= 1*/
+	cl = clamp(cl, vec3(0), vec3(1));
+	vec3 low_range  = cl * 12.92;
+	vec3 high_range = 1.055 * pow(cl, vec3(0.41666)) - 0.055;
+	bvec3 lt = lessThan(cl,vec3(0.0031308));
 
-	return 1.055 * pow(cl, vec3(0.41666)) - 0.055;
+#ifdef OLD_SELECT
+	vec3 result;
+	result.r = lt.r ? low_range.r : high_range.r;
+	result.g = lt.g ? low_range.g : high_range.g;
+	result.b = lt.b ? low_range.b : high_range.b;
+    return result;
+#else
+	return mix(high_range, low_range, lt);
+#endif
+
 }
 
 
@@ -138,7 +149,6 @@ vec3 getPositionEye()
 {
 	return vary_PositionEye;
 }
-
 vec3 getSunlitColor()
 {
 	return vary_SunlitColor;
@@ -383,7 +393,7 @@ void main()
 	norm.xyz = decode_normal(norm.xy); // unpack norm
 		
 	float da = max(dot(norm.xyz, sun_dir.xyz), 0.0);
-	//da = pow(da, 1.0/1.3);
+	da = pow(da, 1.0/1.3);
 
 	vec4 diffuse = texture2DRect(diffuseRect, tc);
 
@@ -404,7 +414,7 @@ void main()
 
 		col.rgb *= ambient;
 
-		col += atmosAffectDirectionalLight(max(min(da, 1.0), 0.0));
+		col += atmosAffectDirectionalLight(max(min(da, 1.0), 0.0));	
 	
 		col *= diffuse.rgb;
 	

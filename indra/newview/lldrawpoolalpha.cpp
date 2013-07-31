@@ -103,13 +103,18 @@ void LLDrawPoolAlpha::beginPostDeferredPass(S32 pass)
 			simple_shader = &gDeferredAlphaProgram;
 			fullbright_shader = &gDeferredFullbrightProgram;
 		}
+		
+		F32 gamma = gSavedSettings.getF32("RenderDeferredDisplayGamma");
 
 		fullbright_shader->bind();
 		fullbright_shader->uniform1f(LLShaderMgr::TEXTURE_GAMMA, 2.2f); 
+		fullbright_shader->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
 		fullbright_shader->unbind();
 
 		//prime simple shader (loads shadow relevant uniforms)
 		gPipeline.bindDeferredShader(*simple_shader);
+
+		simple_shader->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
 	}
 	else
 	{
@@ -524,7 +529,8 @@ void LLDrawPoolAlpha::renderAlpha(U32 mask)
 					}
 				}
 
-				params.mVertexBuffer->setBuffer(mask);
+				params.mVertexBuffer->setBuffer(mask & ~(params.mFullbright ? (LLVertexBuffer::MAP_TEXTURE_INDEX | LLVertexBuffer::MAP_TANGENT | LLVertexBuffer::MAP_TEXCOORD1 | LLVertexBuffer::MAP_TEXCOORD2) : 0));
+                
 				params.mVertexBuffer->drawRange(params.mDrawMode, params.mStart, params.mEnd, params.mCount, params.mOffset);
 				gPipeline.addTrianglesDrawn(params.mCount, params.mDrawMode);
 				

@@ -177,11 +177,13 @@ public:
 		// </exodus>
 		
 		GLOBAL_GAMMA,
-		TEXTURE_GAMMA,
-		
+		TEXTURE_GAMMA,		
+
 		SPECULAR_COLOR,
 		ENVIRONMENT_INTENSITY,
 		
+		DISPLAY_GAMMA,
+
 		END_RESERVED_UNIFORMS
 	} eGLSLReservedUniforms;
 

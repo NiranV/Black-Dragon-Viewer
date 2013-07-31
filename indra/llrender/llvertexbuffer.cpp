@@ -753,10 +753,10 @@ void LLVertexBuffer::drawRange(U32 mode, U32 start, U32 end, U32 count, U32 indi
 	U16* idx = ((U16*) getIndicesPointer())+indices_offset;
 
 	stop_glerror();
-	LLGLSLShader::startProfile();
-	glDrawRangeElements(sGLMode[mode], start, end, count, GL_UNSIGNED_SHORT, 
+		LLGLSLShader::startProfile();
+		glDrawRangeElements(sGLMode[mode], start, end, count, GL_UNSIGNED_SHORT, 
 		idx);
-	LLGLSLShader::stopProfile(count, mode);
+		LLGLSLShader::stopProfile(count, mode);
 	stop_glerror();
 
 	
@@ -2209,11 +2209,39 @@ void LLVertexBuffer::bindForFeedback(U32 channel, U32 type, U32 index, U32 count
 #endif
 }
 
+void DumpComponents(U32 mask)
+{
+	llinfos <<
+	((mask & LLVertexBuffer::MAP_VERTEX)		? "vertex:"		: " ") <<
+	((mask & LLVertexBuffer::MAP_NORMAL)		? "norms:"		: " ") <<
+	((mask & LLVertexBuffer::MAP_TEXCOORD0)	? "TC0:"		: " ") <<
+	((mask & LLVertexBuffer::MAP_TEXCOORD1)	? "TC1:"		: " ") <<
+	((mask & LLVertexBuffer::MAP_TEXCOORD2)	? "TC2:"		: " ") <<
+	((mask & LLVertexBuffer::MAP_TEXCOORD3)	? "TC3:"		: " ") <<
+	((mask & LLVertexBuffer::MAP_COLOR)		? "color:"		: " ") <<
+	((mask & LLVertexBuffer::MAP_EMISSIVE)	? "emissive:"	: " ") <<
+	((mask & LLVertexBuffer::MAP_TANGENT)	? "tangents"	: " ") << llendl;
+}
+
 // Set for rendering
 void LLVertexBuffer::setBuffer(U32 data_mask)
 {
 	flush();
 
+	if((getTypeMask() & data_mask) != data_mask)
+	{
+		if (gDebugGL)
+		{			
+			// Dump info about what was missing
+			//
+			DumpComponents(data_mask & ~getTypeMask());
+			llwarns << "Missing VB stream components. ^^" << llendl;
+		}
+		// Make sure we don't write checks we can't cash below...
+		//
+		data_mask = (data_mask & getTypeMask());
+	}
+	
 	//set up pointers if the data mask is different ...
 	bool setup = (sLastMask != data_mask);
 
@@ -2236,16 +2264,17 @@ void LLVertexBuffer::setBuffer(U32 data_mask)
 					required_mask |= required;
 				}
 			}
-
+        
 			if ((data_mask & required_mask) != required_mask)
 			{
 				
 				U32 unsatisfied_mask = (required_mask & ~data_mask);
 				U32 i = 0;
 
-				while (i < 15)
+				while (i < TYPE_MAX)
 				{
-					switch ((unsatisfied_mask & (1 << i)))
+                    U32 unsatisfied_flag = unsatisfied_mask & (1 << i);
+					switch (unsatisfied_flag)
 					{
 						case MAP_VERTEX: llinfos << "Missing vert pos" << llendl; break;
 						case MAP_NORMAL: llinfos << "Missing normals" << llendl; break;
@@ -2260,9 +2289,14 @@ void LLVertexBuffer::setBuffer(U32 data_mask)
 						case MAP_WEIGHT4: llinfos << "Missing weightx4" << llendl; break;
 						case MAP_CLOTHWEIGHT: llinfos << "Missing clothweight" << llendl; break;
 						case MAP_TEXTURE_INDEX: llinfos << "Missing tex index" << llendl; break;
-						default: llinfos << "Missing who effin knows" << llendl;
+						default: llinfos << "Missing who effin knows: " << unsatisfied_flag << llendl;
 					}					
 				}
+
+            if (unsatisfied_mask & (1 << TYPE_INDEX))
+            {
+               llinfos << "Missing indices" << llendl;
+            }
 
 				llerrs << "Shader consumption mismatches data provision." << llendl;
 			}

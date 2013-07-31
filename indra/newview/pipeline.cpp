@@ -8781,14 +8781,13 @@ void LLPipeline::renderDeferredLighting()
 						gDeferredMultiLightProgram[idx].uniform4fv(LLShaderMgr::MULTI_LIGHT_COL, count, (GLfloat*) col);
 						gDeferredMultiLightProgram[idx].uniform1f(LLShaderMgr::MULTI_LIGHT_FAR_Z, far_z);
 						far_z = 0.f;
-						count = 0; 
-						mDeferredVB->setBuffer(LLVertexBuffer::MAP_VERTEX);
+						count = 0;
+      mDeferredVB->setBuffer(LLVertexBuffer::MAP_VERTEX);
 						mDeferredVB->drawArrays(LLRender::TRIANGLES, 0, 3);
+						unbindDeferredShader(gDeferredMultiLightProgram[idx]);
 					}
 				}
 				
-				unbindDeferredShader(gDeferredMultiLightProgram[0]);
-
 				bindDeferredShader(gDeferredMultiSpotLightProgram);
 
 				gDeferredMultiSpotLightProgram.enableTexture(LLShaderMgr::DEFERRED_PROJECTION);
@@ -8871,7 +8870,7 @@ void LLPipeline::renderDeferredLighting()
 		
 		F32 gamma = gSavedSettings.getF32("RenderDeferredDisplayGamma");
 
-		gDeferredPostGammaCorrectProgram.uniform1f(LLShaderMgr::TEXTURE_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
+		gDeferredPostGammaCorrectProgram.uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
 		
 		gGL.begin(LLRender::TRIANGLE_STRIP);
 		gGL.texCoord2f(tc1.mV[0], tc1.mV[1]);
@@ -9420,7 +9419,7 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 		
 		F32 gamma = gSavedSettings.getF32("RenderDeferredDisplayGamma");
 
-		gDeferredPostGammaCorrectProgram.uniform1f(LLShaderMgr::TEXTURE_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
+		gDeferredPostGammaCorrectProgram.uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
 		
 		gGL.begin(LLRender::TRIANGLE_STRIP);
 		gGL.texCoord2f(tc1.mV[0], tc1.mV[1]);

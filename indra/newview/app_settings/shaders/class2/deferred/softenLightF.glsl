@@ -80,27 +80,39 @@ uniform vec2 screen_res;
 
 vec3 srgb_to_linear(vec3 cs)
 {
-	
-/*        {  cs / 12.92,                 cs <= 0.04045
-    cl = {
-        {  ((cs + 0.055)/1.055)^2.4,   cs >  0.04045*/
-
 	vec3 low_range = cs / vec3(12.92);
+	vec3 high_range = pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
+	bvec3 lte = lessThanEqual(cs,vec3(0.04045));
 
-	if (((cs.r + cs.g + cs.b) / 3) <= 0.04045)
-		return low_range;
+#ifdef OLD_SELECT
+	vec3 result;
+	result.r = lte.r ? low_range.r : high_range.r;
+	result.g = lte.g ? low_range.g : high_range.g;
+	result.b = lte.b ? low_range.b : high_range.b;
+    return result;
+#else
+	return mix(high_range, low_range, lte);
+#endif
 
-	return pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
 }
 
 vec3 linear_to_srgb(vec3 cl)
 {
-	    /*{  0.0,                          0         <= cl
-            {  12.92 * c,                    0         <  cl < 0.0031308
-    cs = {  1.055 * cl^0.41666 - 0.055,   0.0031308 <= cl < 1
-            {  1.0,                                       cl >= 1*/
+	cl = clamp(cl, vec3(0), vec3(1));
+	vec3 low_range  = cl * 12.92;
+	vec3 high_range = 1.055 * pow(cl, vec3(0.41666)) - 0.055;
+	bvec3 lt = lessThan(cl,vec3(0.0031308));
 
-	return 1.055 * pow(cl, vec3(0.41666)) - 0.055;
+#ifdef OLD_SELECT
+	vec3 result;
+	result.r = lt.r ? low_range.r : high_range.r;
+	result.g = lt.g ? low_range.g : high_range.g;
+	result.b = lt.b ? low_range.b : high_range.b;
+    return result;
+#else
+	return mix(high_range, low_range, lt);
+#endif
+
 }
 
 vec2 encode_normal(vec3 n)
@@ -390,8 +402,8 @@ void main()
 		
 	float da = max(dot(norm.xyz, sun_dir.xyz), 0.0);
 
-	//float light_gamma = 1.0/1.3;
-	//da = pow(da, light_gamma);
+	float light_gamma = 1.0/1.3;
+	da = pow(da, light_gamma);
 
 
 	vec4 diffuse = texture2DRect(diffuseRect, tc);
@@ -405,9 +417,11 @@ void main()
 		vec4 spec = texture2DRect(specularRect, vary_fragcoord.xy);
 		
 		vec2 scol_ambocc = texture2DRect(lightMap, vary_fragcoord.xy).rg;
-		//scol_ambocc = pow(scol_ambocc, vec2(light_gamma));
+		scol_ambocc = pow(scol_ambocc, vec2(light_gamma));
 
 		float scol = max(scol_ambocc.r, diffuse.a); 
+
+		
 
 		float ambocc = scol_ambocc.g;
 	
@@ -425,7 +439,6 @@ void main()
 	
 		col *= diffuse.rgb;
 	
-
 		vec3 refnormpersp = normalize(reflect(pos.xyz, norm.xyz));
 
 		if (spec.a > 0.0) // specular reflection
@@ -451,7 +464,8 @@ void main()
 			
 			vec3 refcol = textureCube(environmentMap, env_vec).rgb;
 
-			col = mix(col.rgb, refcol, envIntensity);  
+			col = mix(col.rgb, refcol, 
+				envIntensity);  
 
 		}
 	
@@ -466,8 +480,6 @@ void main()
 			col = fogged.rgb;
 			bloom = fogged.a;
 		#endif
-
-
 
 		col = srgb_to_linear(col);
 
