@@ -8198,17 +8198,13 @@
   <key>RenderSSAOEffect</key>
   <map>
     <key>Comment</key>
-    <string>Multiplier for (1) value and (2) saturation (HSV definition), for areas which are totally occluded.  Blends with original color for partly-occluded areas.  (Third component is unused.)</string>
+    <string>Multiplier for value for areas which are totally occluded.  Blends with original color for partly-occluded areas.  (Third component is unused.)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Vector3</string>
+    <string>F32</string>
     <key>Value</key>
-    <array>
-      <real>0.80</real>
-      <real>1.00</real>
-      <real>0.00</real>
-    </array>
+    <real>0.8</real>
   </map>
   <key>RenderBumpmapMinDistanceSquared</key>
     <map>
@@ -14639,10 +14635,9 @@
   </map>
 		
 		
-		<!-- Black Dragon Debugs -->
+  <!-- Black Dragon Debugs -->
 		
-		
-		<key>EnableAutohidingChat</key>
+  <key>EnableAutohidingChat</key>
   <map>
     <key>Comment</key>
     <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
@@ -14653,7 +14648,7 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
-		<key>AutohideChatOnReturn</key>
+  <key>AutohideChatOnReturn</key>
   <map>
     <key>Comment</key>
     <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
@@ -14664,7 +14659,7 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
-		<key>AllowWalkingBackwards</key>
+  <key>AllowWalkingBackwards</key>
   <map>
     <key>Comment</key>
     <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
