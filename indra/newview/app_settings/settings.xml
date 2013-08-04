@@ -14637,6 +14637,19 @@
 		
   <!-- Black Dragon Debugs -->
 		
+		
+  <key>SlowMotionTimeFactor</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls time factor for Slow Motion animations</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.2</real>
+  </map>
+		
   <key>EnableAutohidingChat</key>
   <map>
     <key>Comment</key>
