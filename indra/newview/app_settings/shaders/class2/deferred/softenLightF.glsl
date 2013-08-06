@@ -438,7 +438,7 @@ void main()
 		
 		col = mix(col, diffuse.rgb, diffuse.a);
 
-		if (envIntensity > 0.0)
+		/*if (envIntensity > 0.0)
 		{ //add environmentmap
 			vec3 env_vec = env_mat * refnormpersp;
 			
@@ -446,7 +446,7 @@ void main()
 
 			col = mix(col.rgb, refcol, envIntensity);  
 
-		}
+		}*/
 	
 		if (norm.w < 0.5)
 		{
