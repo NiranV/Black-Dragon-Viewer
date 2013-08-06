@@ -128,14 +128,22 @@ void LLDrawPoolAlpha::beginPostDeferredPass(S32 pass)
 		gObjectFullbrightAlphaMaskProgram.setMinimumAlpha(0.33f);
 	}
 
-	if (LLPipeline::sUnderWaterRender)
-	{
-		emissive_shader = &gObjectEmissiveWaterProgram;
-	}
-	else
-	{
-		emissive_shader = &gObjectEmissiveProgram;
-	}
+
+    if (LLPipeline::sRenderDeferred)
+    {
+		emissive_shader = &gDeferredEmissiveProgram;
+    }
+    else
+    {
+		if (LLPipeline::sUnderWaterRender)
+		{
+			emissive_shader = &gObjectEmissiveWaterProgram;
+		}
+		else
+		{
+			emissive_shader = &gObjectEmissiveProgram;
+		}
+    }
 
 	deferred_render = TRUE;
 	if (mVertexShaderLevel > 0)
@@ -529,7 +537,7 @@ void LLDrawPoolAlpha::renderAlpha(U32 mask)
 					}
 				}
 
-				params.mVertexBuffer->setBuffer(mask & ~(params.mFullbright ? (LLVertexBuffer::MAP_TEXTURE_INDEX | LLVertexBuffer::MAP_TANGENT | LLVertexBuffer::MAP_TEXCOORD1 | LLVertexBuffer::MAP_TEXCOORD2) : 0));
+				params.mVertexBuffer->setBuffer(mask & ~(params.mFullbright ? (LLVertexBuffer::MAP_TANGENT | LLVertexBuffer::MAP_TEXCOORD1 | LLVertexBuffer::MAP_TEXCOORD2) : 0));
                 
 				params.mVertexBuffer->drawRange(params.mDrawMode, params.mStart, params.mEnd, params.mCount, params.mOffset);
 				gPipeline.addTrianglesDrawn(params.mCount, params.mDrawMode);
@@ -545,7 +553,6 @@ void LLDrawPoolAlpha::renderAlpha(U32 mask)
 
 					emissive_shader->bind();
 					
-					// glow doesn't use vertex colors from the mesh data
 					params.mVertexBuffer->setBuffer((mask & ~LLVertexBuffer::MAP_COLOR) | LLVertexBuffer::MAP_EMISSIVE);
 					
 					// do the actual drawing, again
