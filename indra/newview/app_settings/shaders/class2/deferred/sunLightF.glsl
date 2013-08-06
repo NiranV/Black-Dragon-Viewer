@@ -105,11 +105,10 @@ float pcfShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_screen)
 
 	float shadow = cs;
 
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(2.0/shadow_res.x, 1.5/shadow_res.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(1.0/shadow_res.x, -1.5/shadow_res.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-2.0/shadow_res.x, 1.5/shadow_res.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-1.0/shadow_res.x, -1.5/shadow_res.y, 0.0)).x;
-
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.25/shadow_res.x, 0.25/shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.35/shadow_res.x, -0.35/shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.25/shadow_res.x, 0.25/shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.35/shadow_res.x, -0.35/shadow_res.y, 0.0)).x;
 			
     return shadow*0.2;
 }
@@ -123,13 +122,10 @@ float pcfSpotShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_scr
 	float cs = shadow2D(shadowMap, stc.xyz).x;
 	float shadow = cs;
 
-	vec2 off = 1.0/proj_shadow_res;
-	off.y *= 1.5;
-	
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(off.x*2.0, off.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(off.x, -off.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-off.x, off.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-off.x*2.0, -off.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.45/proj_shadow_res.x, 0.45/shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.65/proj_shadow_res.x, -0.65/shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.45/proj_shadow_res.x, 0.45/shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.65/proj_shadow_res.x, -0.65/shadow_res.y, 0.0)).x;
 
         return shadow*0.2;
 }

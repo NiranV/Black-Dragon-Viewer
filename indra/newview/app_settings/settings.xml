@@ -8171,7 +8171,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>500.0</real>
+    <real>400.0</real>
   </map>
   <key>RenderSSAOMaxScale</key>
   <map>
@@ -8182,7 +8182,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>200</integer>
+    <integer>500</integer>
   </map>
   <key>RenderSSAOFactor</key>
   <map>
@@ -8193,22 +8193,18 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.30</real>
+    <real>5.0</real>
   </map>
   <key>RenderSSAOEffect</key>
   <map>
     <key>Comment</key>
-    <string>Multiplier for (1) value and (2) saturation (HSV definition), for areas which are totally occluded.  Blends with original color for partly-occluded areas.  (Third component is unused.)</string>
+    <string>Multiplier for value for areas which are totally occluded.  Blends with original color for partly-occluded areas.  (Third component is unused.)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Vector3</string>
+    <string>F32</string>
     <key>Value</key>
-    <array>
-      <real>0.80</real>
-      <real>1.00</real>
-      <real>0.00</real>
-    </array>
+    <real>0.65</real>
   </map>
   <key>RenderBumpmapMinDistanceSquared</key>
     <map>
@@ -8446,7 +8442,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>-0.008</real>
+    <real>-0.003</real>
   </map>
   <key>RenderShadowOffset</key>
   <map>
@@ -8815,8 +8811,8 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
+      <real>1.1</real>
       <real>3.0</real>
-      <real>2.0</real>
       <real>0.0</real>
     </array>
   </map>
@@ -14639,10 +14635,35 @@
   </map>
 		
 		
-		<!-- Black Dragon Debugs -->
+  <!-- Black Dragon Debugs -->
 		
 		
-		<key>EnableAutohidingChat</key>
+  <key>SlowMotionTimeFactor</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls time factor for Slow Motion animations</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.2</real>
+  </map>
+		
+  <!-- Machinima Sidebar Debugs-->
+  <key>MachinimaSidebarPush</key>
+  <map>
+    <key>Comment</key>
+    <string>Open the pushing version of the Sidebar</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+		
+  <key>EnableAutohidingChat</key>
   <map>
     <key>Comment</key>
     <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
@@ -14653,7 +14674,7 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
-		<key>AutohideChatOnReturn</key>
+  <key>AutohideChatOnReturn</key>
   <map>
     <key>Comment</key>
     <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
@@ -14664,7 +14685,7 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
-		<key>AllowWalkingBackwards</key>
+  <key>AllowWalkingBackwards</key>
   <map>
     <key>Comment</key>
     <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>

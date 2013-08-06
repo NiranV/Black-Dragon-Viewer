@@ -247,7 +247,7 @@ bool handleSlowMotionAnimation(const LLSD& newvalue)
 {
 	if (newvalue.asBoolean())
 	{
-		gAgentAvatarp->setAnimTimeFactor(0.2f);
+		gAgentAvatarp->setAnimTimeFactor(gSavedSettings.getF32("SlowMotionTimeFactor"));
 	}
 	else
 	{
