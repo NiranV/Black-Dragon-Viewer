@@ -8109,9 +8109,9 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
+      <real>3.34</real>
       <real>3.0</real>
-      <real>3.0</real>
-      <real>2.0</real>
+      <real>10.0</real>
     </array>
   </map>
   <key>RenderShadowOrthoClipPlanes</key>
@@ -8464,7 +8464,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>-0.007</real>
+    <real>-0.001</real>
   </map>
   <key>RenderShadowOffsetError</key>
   <map>
@@ -8787,7 +8787,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>5.0</real>
+    <real>0.0</real>
   </map>
   <key>RenderShadowFOVCutoff</key>
   <map>
@@ -8798,7 +8798,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.8</real>
+    <real>0.0</real>
   </map>
 
   <key>RenderShadowGaussian</key>
@@ -8848,7 +8848,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.08</real>
+    <real>0.008</real>
   </map>
 
   <key>RenderDynamicLOD</key>
