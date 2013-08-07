@@ -115,20 +115,21 @@ vec4 getPosition(vec2 pos_screen)
 
 float pcfShadow(sampler2DShadow shadowMap, vec4 stc)
 {
+	vec2 recip_shadow_res = 1.0 / shadow_res.xy;
 	stc.xyz /= stc.w;
 	stc.z += shadow_bias;
-
-	stc.x = floor(stc.x*shadow_res.x + fract(stc.y*12345))/shadow_res.x; // add some chaotic jitter to X sample pos according to Y to disguise the snapping going on here
 	
+	stc.x = floor(stc.x*shadow_res.x + fract(pos_screen.y*0.5)) * recip_shadow_res.x;
 	float cs = shadow2D(shadowMap, stc.xyz).x;
+	
 	float shadow = cs;
 	
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(2.0/shadow_res.x, 1.5/shadow_res.y, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(1.0/shadow_res.x, -1.5/shadow_res.y, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(-1.0/shadow_res.x, 1.5/shadow_res.y, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(-2.0/shadow_res.x, -1.5/shadow_res.y, 0.0)).x;
-                        
-    return shadow*0.2;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.60*recip_shadow_res.x, 0.55*recip_shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.72*recip_shadow_res.x, -0.65*recip_shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.60*recip_shadow_res.x, 0.55*recip_shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.72*recip_shadow_res.x, -0.65*recip_shadow_res.y, 0.0)).x;
+	         
+        return shadow*0.2;
 }
 
 

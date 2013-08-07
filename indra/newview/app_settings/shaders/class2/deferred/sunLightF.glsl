@@ -100,15 +100,15 @@ float pcfShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_screen)
 	stc.xyz /= stc.w;
 	stc.z += shadow_bias;
 
-	stc.x = floor(stc.x*shadow_res.x + fract(pos_screen.y*0.666666666))/shadow_res.x; // add some jitter to X sample pos according to Y to disguise the snapping going on here
+	stc.x = floor(stc.x*shadow_res.x + fract(pos_screen.y*0))/shadow_res.x; // add some jitter to X sample pos according to Y to disguise the snapping going on here
 	float cs = shadow2D(shadowMap, stc.xyz).x;
 
 	float shadow = cs;
 
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.25/shadow_res.x, 0.25/shadow_res.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.35/shadow_res.x, -0.35/shadow_res.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.25/shadow_res.x, 0.25/shadow_res.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.35/shadow_res.x, -0.35/shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.45/shadow_res.x, 0.35/shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.65/shadow_res.x, -0.55/shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.45/shadow_res.x, 0.35/shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.65/shadow_res.x, -0.55/shadow_res.y, 0.0)).x;
 			
     return shadow*0.2;
 }
@@ -117,7 +117,7 @@ float pcfSpotShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_scr
 {
 	stc.xyz /= stc.w;
 	stc.z += spot_shadow_bias*scl;
-	stc.x = floor(proj_shadow_res.x * stc.x + fract(pos_screen.y*0.666666666)) / proj_shadow_res.x; // snap
+	stc.x = floor(proj_shadow_res.x * stc.x + fract(pos_screen.y*0.0)) / proj_shadow_res.x; // snap
 
 	float cs = shadow2D(shadowMap, stc.xyz).x;
 	float shadow = cs;
