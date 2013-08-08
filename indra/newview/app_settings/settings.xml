@@ -14637,19 +14637,6 @@
 		
   <!-- Black Dragon Debugs -->
 		
-		
-  <key>SlowMotionTimeFactor</key>
-  <map>
-    <key>Comment</key>
-    <string>Controls time factor for Slow Motion animations</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.2</real>
-  </map>
-		
   <!-- Machinima Sidebar Debugs-->
   <key>MachinimaSidebarPush</key>
   <map>
@@ -14662,7 +14649,29 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-		
+  
+  <key>SlowMotionTimeFactor</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls time factor for Slow Motion animations</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.2</real>
+  </map>
+  <key>HideTopbar</key>
+  <map>
+    <key>Comment</key>
+    <string>Hides the whole topbar</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>EnableAutohidingChat</key>
   <map>
     <key>Comment</key>

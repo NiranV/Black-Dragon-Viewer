@@ -331,12 +331,7 @@ void LLStatusBar::refresh()
 
 void LLStatusBar::setVisibleForMouselook(bool visible)
 {
-	mTextTime->setVisible(visible);
-	mBoxBalance->setVisible(visible);
-	mBtnVolume->setVisible(visible);
-	mMediaToggle->setVisible(visible);
-	mSGBandwidth->setVisible(visible);
-	mSGPacketLoss->setVisible(visible);
+	gSavedSettings.setBOOL("HideTopbar", !visible);
 }
 
 void LLStatusBar::debitBalance(S32 debit)
