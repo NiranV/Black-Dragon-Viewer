@@ -454,17 +454,25 @@ void LLWorldMapView::draw()
 			std::string mesg;
 			if (info->isDown())
 			{
-				mesg = llformat( "%s (%s)", info->getName().c_str(), sStringsMap["offline"].c_str());
+				mesg = llformat( "%s (%s) ", info->getName().c_str(), sStringsMap["offline"].c_str());
 			}
 			else
 			{
-				mesg = info->getName();
+//				//BD - Take ourself into account for our agent counter
+				S32 agent_count = info->getAgentCount();
+				if (info->getName() == gAgent.getRegion()->getName())
+				{
+					++agent_count;
+				}
+
+//				//BD - Show an avatar count behind the SIM name
+				mesg = llformat( "%s (%d *) ", info->getName().c_str(), agent_count);
 			}
 			if (!mesg.empty())
 			{
 				font->renderUTF8(
 					mesg, 0,
-					llfloor(left + 3), llfloor(bottom + 2),
+					llfloor(left + 3), llfloor(bottom + 5),
 					LLColor4::white,
 					LLFontGL::LEFT, LLFontGL::BASELINE, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW);
 			}
