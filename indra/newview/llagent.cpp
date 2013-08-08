@@ -3942,6 +3942,16 @@ void LLAgent::teleportRequest(
 // Landmark ID = LLUUID::null means teleport home
 void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 {
+//	//BD - Check if our TP is a Home TP
+	if(landmark_asset_id == LLUUID::null)
+	{
+		mIsHomeTP = true;
+	}
+	else
+	{
+		mIsHomeTP = false;
+	}
+
 	mTeleportRequest = LLTeleportRequestPtr(new LLTeleportRequestViaLandmark(landmark_asset_id));
 	startTeleportRequest();
 }
@@ -3949,7 +3959,8 @@ void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 void LLAgent::doTeleportViaLandmark(const LLUUID& landmark_asset_id)
 {
 	LLViewerRegion *regionp = getRegion();
-	if(regionp && teleportCore())
+//	//BD - Don't show TP screen if its a Home TP to the same SIM we are on.
+	if(regionp && teleportCore((regionp->getHandle() == mHomeRegionHandle) && mIsHomeTP))
 	{
 		LLMessageSystem* msg = gMessageSystem;
 		msg->newMessageFast(_PREHASH_TeleportLandmarkRequest);
