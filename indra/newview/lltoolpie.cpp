@@ -1596,6 +1596,12 @@ BOOL LLToolPie::handleRightClickPick()
 	// Spawn pie menu
 	if (mPick.mPickType == LLPickInfo::PICK_LAND)
 	{
+//		//BD - Make sure our selection is empty before we try to select a new one
+		//	   otherwise we will end up not updating our selection correctly
+		if(!LLViewerParcelMgr::getInstance()->selectionEmpty())
+		{
+			LLViewerParcelMgr::getInstance()->deselectLand();
+		}
 		LLParcelSelectionHandle selection = LLViewerParcelMgr::getInstance()->selectParcelAt( mPick.mPosGlobal );
 		gMenuHolder->setParcelSelection(selection);
 		gMenuLand->show(x, y);
