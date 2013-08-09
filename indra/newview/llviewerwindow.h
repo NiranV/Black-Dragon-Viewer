@@ -405,7 +405,6 @@ private:
 
 	void			switchToolByMask(MASK mask);
 	void			destroyWindow();
-	void			drawMouselookInstructions();
 	void			stopGL(BOOL save_state = TRUE);
 	void			restoreGL(const std::string& progress_message = LLStringUtil::null);
 	void			initFonts(F32 zoom_factor = 1.f);

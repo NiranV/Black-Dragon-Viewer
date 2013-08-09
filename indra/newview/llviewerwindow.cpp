@@ -2395,7 +2395,6 @@ void LLViewerWindow::draw()
 
 		if( gAgentCamera.cameraMouselook() || LLFloaterCamera::inFreeCameraMode() )
 		{
-			drawMouselookInstructions();
 			stop_glerror();
 		}
 
@@ -4532,25 +4531,6 @@ void LLViewerWindow::destroyWindow()
 		LLWindowManager::destroyWindow(mWindow);
 	}
 	mWindow = NULL;
-}
-
-
-void LLViewerWindow::drawMouselookInstructions()
-{
-	// Draw instructions for mouselook ("Press ESC to return to World View" partially transparent at the bottom of the screen.)
-	const std::string instructions = LLTrans::getString("LeaveMouselook");
-	const LLFontGL* font = LLFontGL::getFont(LLFontDescriptor("SansSerif", "Large", LLFontGL::BOLD));
-	
-	//to be on top of Bottom bar when it is opened
-	const S32 INSTRUCTIONS_PAD = 50;
-
-	font->renderUTF8( 
-		instructions, 0,
-		getWorldViewRectScaled().getCenterX(),
-		getWorldViewRectScaled().mBottom + INSTRUCTIONS_PAD,
-		LLColor4( 1.0f, 1.0f, 1.0f, 0.5f ),
-		LLFontGL::HCENTER, LLFontGL::TOP,
-		LLFontGL::NORMAL,LLFontGL::DROP_SHADOW);
 }
 
 void* LLViewerWindow::getPlatformWindow() const

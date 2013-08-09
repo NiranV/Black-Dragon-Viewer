@@ -1228,9 +1228,6 @@ Warten Sie kurz und versuchen Sie dann noch einmal, sich anzumelden.
 	<string name="GraphicsQualityHigh">
 		Hoch
 	</string>
-	<string name="LeaveMouselook">
-		ESC drücken, um zur Normalansicht zurückzukehren
-	</string>
 	<string name="InventoryNoMatchingItems">
 		Sie haben nicht das Richtige gefunden? Versuchen Sie es mit der [secondlife:///app/search/all/[SEARCH_TERM] Suche].
 	</string>

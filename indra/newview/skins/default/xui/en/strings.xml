@@ -2171,9 +2171,6 @@ For AI Character: Get the closest navigable point to the point provided.
 	<string name="GraphicsQualityMid">Mid</string>
 	<string name="GraphicsQualityHigh">High</string>
 
-	<!-- mouselook -->
-	<string name="LeaveMouselook">Press ESC to return to World View</string>
-
 	<!-- inventory -->
 	<string name="InventoryNoMatchingItems">Didn't find what you're looking for? Try [secondlife:///app/search/all/[SEARCH_TERM] Search].</string>
 	<string name="PlacesNoMatchingItems">Didn't find what you're looking for? Try [secondlife:///app/search/places/[SEARCH_TERM] Search].</string>
