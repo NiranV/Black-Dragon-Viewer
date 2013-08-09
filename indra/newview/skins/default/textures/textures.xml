@@ -705,6 +705,9 @@ with the same filename but different name
   
   <!-- Back Dragon textures-->
   
+  <texture name="TabIcon_Close_Off" file_name="taskpanel/TabIcon_Close_Off.png" preload="false" />
+  <texture name="TabIcon_Open_Off" file_name="taskpanel/TabIcon_Open_Off.png" preload="false" />
+  
   <texture name="user-entry" file_name="user-entry.png" preload="true" />
   <texture name="pw-entry" file_name="pw-entry.png" preload="true" />
   <texture name="place-entry" file_name="place-entry.png" preload="true" />
