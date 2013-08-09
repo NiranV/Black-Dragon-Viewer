@@ -380,6 +380,7 @@ BOOL	LLPipeline::sWaterReflections = FALSE;
 BOOL	LLPipeline::sRenderGlow = FALSE;
 BOOL	LLPipeline::sReflectionRender = FALSE;
 BOOL	LLPipeline::sImpostorRender = FALSE;
+BOOL	LLPipeline::sImpostorRenderAlphaDepthPass = FALSE;
 BOOL	LLPipeline::sUnderWaterRender = FALSE;
 BOOL	LLPipeline::sTextureBindTest = FALSE;
 BOOL	LLPipeline::sRenderFrameTest = FALSE;
@@ -11390,15 +11391,18 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		if (!avatar->mImpostor.isComplete())
 		{
 			LLFastTimer t(FTM_IMPOSTOR_ALLOCATE);
-			avatar->mImpostor.allocate(resX,resY,GL_RGBA,TRUE,FALSE);
+			
 
-#if DEFERRED_IMPOSTORS
 			if (LLPipeline::sRenderDeferred)
 			{
+				avatar->mImpostor.allocate(resX,resY,GL_SRGB8_ALPHA8,TRUE,FALSE);
 				addDeferredAttachments(avatar->mImpostor);
 			}
-#endif
-			
+			else
+			{
+				avatar->mImpostor.allocate(resX,resY,GL_RGBA,TRUE,FALSE);
+			}
+
 			gGL.getTexUnit(0)->bind(&avatar->mImpostor);
 			gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_POINT);
 			gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
@@ -11406,38 +11410,60 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		else if(resX != avatar->mImpostor.getWidth() || resY != avatar->mImpostor.getHeight())
 		{
 			LLFastTimer t(FTM_IMPOSTOR_RESIZE);
-			avatar->mImpostor.resize(resX,resY,GL_RGBA);
+			avatar->mImpostor.resize(resX,resY,LLPipeline::sRenderDeferred ? GL_SRGB8_ALPHA8 : GL_RGBA);
 		}
 
 		avatar->mImpostor.bindTarget();		
 	}
 
-#if DEFERRED_IMPOSTORS
 	if (LLPipeline::sRenderDeferred)
 	{
-		avatar->mImpostor.clear();
+		avatar->mImpostor.clear();		
 		renderGeomDeferred(camera);
+
+		renderGeomPostDeferred(camera);		
+
+		// Shameless hack time: render it all again,
+		// this time writing the depth
+		// values we need to generate the alpha mask below
+		// while preserving the alpha-sorted color rendering
+		// from the previous pass
+		//
+		sImpostorRenderAlphaDepthPass = true;
+		// depth-only here...
+		//
+		gGL.setColorMask(false,false);
 		renderGeomPostDeferred(camera);
+		sImpostorRenderAlphaDepthPass = false;
 	}
 	else
-#endif
-	{		
+	{
 		LLGLEnable scissor(GL_SCISSOR_TEST);
 		glScissor(0, 0, resX, resY);	
 		avatar->mImpostor.clear();
 		renderGeom(camera);
+
+		// Shameless hack time: render it all again,
+		// this time writing the depth
+		// values we need to generate the alpha mask below
+		// while preserving the alpha-sorted color rendering
+		// from the previous pass
+		//
+		sImpostorRenderAlphaDepthPass = true;
+		// depth-only here...
+		//
+		gGL.setColorMask(false,false);
+		renderGeom(camera);
 	}
-	
+
 	{ //create alpha mask based on depth buffer (grey out if muted)
 		LLFastTimer t(FTM_IMPOSTOR_BACKGROUND);
 
-#if DEFERRED_IMPOSTORS
 		if (LLPipeline::sRenderDeferred)
 		{
 			GLuint buff = GL_COLOR_ATTACHMENT0;
 			glDrawBuffersARB(1, &buff);
 		}
-#endif
 
 		LLGLDisable blend(GL_BLEND);
 
