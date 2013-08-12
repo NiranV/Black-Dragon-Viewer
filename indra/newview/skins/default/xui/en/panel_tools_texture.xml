@@ -67,17 +67,6 @@
              name="glow"
              top_pad="2"
              width="50" />
-            <color_swatch
-             can_apply_immediately="true"
-             follows="left|top"
-             height="36"
-             label=""
-             layout="topleft"
-             left="10"
-             name="colorswatch"
-             tool_tip="Click to open color picker"
-             top="56"
-             width="64" />
             <texture_picker
              can_apply_immediately="true"
              default_image_name="Default"
@@ -90,13 +79,24 @@
              tool_tip="Click to choose a picture"
              top="0"
              width="64" />
+            <color_swatch
+             can_apply_immediately="true"
+             follows="left|top"
+             height="36"
+             label=""
+             layout="topleft"
+             left="10"
+             name="colorswatch"
+             tool_tip="Click to open color picker"
+             top="56"
+             width="64" />
             <check_box
              height="19"
              label="Full Bright"
              layout="topleft"
              left_pad="7"
              name="checkbox fullbright"
-             top_delta="0"
+             top="0"
              width="81" />
             <combo_box
              height="23"
