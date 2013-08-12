@@ -226,6 +226,19 @@ private:
 	LLVector3		mFocusObjectOffset;
 	F32				mFocusDotRadius; 				// Meters
 	BOOL			mTrackFocusObject;
+
+	//--------------------------------------------------------------------
+	// Camera backup
+	//--------------------------------------------------------------------
+public:
+	void			saveCamera();
+	void			loadSavedCamera();
+
+private:
+	LLVector3d					mSavedCameraPos;
+	LLVector3d					mSavedCameraFocus;
+	LLPointer<LLViewerObject>	mSavedCameraFocusObject;
+	bool						mSavedCamera;
 	
 	//--------------------------------------------------------------------
 	// Lookat / Pointat
@@ -238,7 +251,7 @@ public:
 	void 			slamLookAt(const LLVector3 &look_at); // Set the physics data
 	BOOL			setPointAt(EPointAtType target_type, LLViewerObject *object = NULL, LLVector3 position = LLVector3::zero);
 	EPointAtType	getPointAtType();
-public:
+
 	LLPointer<LLHUDEffectLookAt> mLookAt;
 	LLPointer<LLHUDEffectPointAt> mPointAt;
 

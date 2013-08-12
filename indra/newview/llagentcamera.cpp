@@ -173,7 +173,13 @@ LLAgentCamera::LLAgentCamera() :
 	mPanLeftKey(0.f),
 	mPanRightKey(0.f),
 	mPanInKey(0.f),
-	mPanOutKey(0.f)
+	mPanOutKey(0.f),
+
+	mSavedCameraPos(),
+	mSavedCameraFocus(),
+	mSavedCameraFocusObject(NULL),
+	mSavedCamera(false)
+
 {
 	mFollowCam.setMaxCameraDistantFromSubject( MAX_CAMERA_DISTANCE_FROM_AGENT );
 
@@ -2793,6 +2799,32 @@ S32 LLAgentCamera::directionToKey(S32 direction)
 	if (direction > 0) return 1;
 	if (direction < 0) return -1;
 	return 0;
+}
+
+//BD - Load/save camera position.
+void LLAgentCamera::saveCamera()
+{
+	mSavedCameraPos = getCameraPositionGlobal();
+	mSavedCameraFocus = getFocusTargetGlobal();
+	mSavedCameraFocusObject = getFocusObject();
+
+	mSavedCamera = true;
+}
+
+void LLAgentCamera::loadSavedCamera()
+{
+	if (mSavedCamera)
+	{
+		LLUUID focus_id;
+
+		unlockView();
+		if (mSavedCameraFocusObject)
+		{
+			focus_id = mSavedCameraFocusObject->getID();
+		}
+
+		setCameraPosAndFocusGlobal(mSavedCameraPos, mSavedCameraFocus, focus_id);
+	}
 }
 
 
