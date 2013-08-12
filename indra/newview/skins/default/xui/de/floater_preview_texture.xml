@@ -10,7 +10,7 @@
 		Beschreibung:
 	</text>
 	<text name="dimensions">
-		[WIDTH]px x [HEIGHT]px
+		[WIDTH] x [HEIGHT]
 	</text>
 	<text name="aspect_ratio">
 		Seitenverhältnis anzeigen
