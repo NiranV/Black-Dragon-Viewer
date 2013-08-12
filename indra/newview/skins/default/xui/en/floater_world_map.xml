@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
- legacy_header_height="18"
+ legacy_header_height="8"
  can_resize="true"
  height="500"
  layout="topleft"
@@ -93,7 +93,7 @@
    height="16"
    layout="topleft"
    left="100"
-   name="people_chek"
+   name="people_chk"
    top="15"
    width="22" />
    <icon
@@ -164,7 +164,7 @@
    <icon
    follows="top|left"
    height="15"
-   image_name="icon_for_sale.tga"
+   image_name="Icon_For_Sale"
    layout="topleft"
    mouse_opaque="true"
    name="landforsale"
