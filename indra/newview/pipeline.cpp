@@ -11434,7 +11434,9 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		//
 		gGL.setColorMask(false,false);
 		renderGeomPostDeferred(camera);
+
 		sImpostorRenderAlphaDepthPass = false;
+
 	}
 	else
 	{
@@ -11450,10 +11452,13 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		// from the previous pass
 		//
 		sImpostorRenderAlphaDepthPass = true;
+
 		// depth-only here...
 		//
 		gGL.setColorMask(false,false);
 		renderGeom(camera);
+
+		sImpostorRenderAlphaDepthPass = false;
 	}
 
 	{ //create alpha mask based on depth buffer (grey out if muted)

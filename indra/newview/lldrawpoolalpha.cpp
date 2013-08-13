@@ -93,7 +93,12 @@ void LLDrawPoolAlpha::beginPostDeferredPass(S32 pass)
 
 	if (pass == 0)
 	{
-		if (LLPipeline::sUnderWaterRender)
+		if (LLPipeline::sImpostorRender)
+		{
+			simple_shader = &gDeferredAlphaImpostorProgram;
+			fullbright_shader = &gDeferredFullbrightProgram;
+		}
+		else if (LLPipeline::sUnderWaterRender)
 		{
 			simple_shader = &gDeferredAlphaWaterProgram;
 			fullbright_shader = &gDeferredFullbrightWaterProgram;
@@ -116,7 +121,7 @@ void LLDrawPoolAlpha::beginPostDeferredPass(S32 pass)
 
 		simple_shader->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
 	}
-	else
+	else if (!LLPipeline::sImpostorRender)
 	{
 		//update depth buffer sampler
 		gPipeline.mScreen.flush();
@@ -156,7 +161,7 @@ void LLDrawPoolAlpha::beginPostDeferredPass(S32 pass)
 
 void LLDrawPoolAlpha::endPostDeferredPass(S32 pass) 
 { 
-	if (pass == 1)
+	if (pass == 1 && !LLPipeline::sImpostorRender)
 	{
 		gPipeline.mDeferredDepth.flush();
 		gPipeline.mScreen.bindTarget();
@@ -176,7 +181,13 @@ void LLDrawPoolAlpha::beginRenderPass(S32 pass)
 {
 	LLFastTimer t(FTM_RENDER_ALPHA);
 	
-	if (LLPipeline::sUnderWaterRender)
+	if (LLPipeline::sImpostorRender)
+	{
+		simple_shader = &gObjectSimpleImpostorProgram;
+		fullbright_shader = &gObjectFullbrightProgram;
+		emissive_shader = &gObjectEmissiveProgram;
+	}
+	else if (LLPipeline::sUnderWaterRender)
 	{
 		simple_shader = &gObjectSimpleWaterProgram;
 		fullbright_shader = &gObjectFullbrightWaterProgram;
@@ -548,7 +559,8 @@ void LLDrawPoolAlpha::renderAlpha(U32 mask)
 				gPipeline.addTrianglesDrawn(params.mCount, params.mDrawMode);
 				
 				// If this alpha mesh has glow, then draw it a second time to add the destination-alpha (=glow).  Interleaving these state-changing calls could be expensive, but glow must be drawn Z-sorted with alpha.
-				if (current_shader && 
+				if (current_shader &&
+                    !LLPipeline::sImpostorRender &&
 					draw_glow_for_this_partition &&
 					params.mVertexBuffer->hasDataType(LLVertexBuffer::TYPE_EMISSIVE))
 				{

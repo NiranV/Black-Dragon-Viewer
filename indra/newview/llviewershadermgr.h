@@ -244,6 +244,7 @@ extern LLGLSLShader			gOneTextureNoColorProgram;
 
 //object shaders
 extern LLGLSLShader			gObjectSimpleProgram;
+extern LLGLSLShader			gObjectSimpleImpostorProgram;
 extern LLGLSLShader			gObjectPreviewProgram;
 extern LLGLSLShader			gObjectSimpleAlphaMaskProgram;
 extern LLGLSLShader			gObjectSimpleWaterProgram;
@@ -376,6 +377,7 @@ extern LLGLSLShader			gDeferredPostGammaCorrectProgram;
 extern LLGLSLShader			gDeferredAvatarShadowProgram;
 extern LLGLSLShader			gDeferredAttachmentShadowProgram;
 extern LLGLSLShader			gDeferredAlphaProgram;
+extern LLGLSLShader			gDeferredAlphaImpostorProgram;
 extern LLGLSLShader			gDeferredFullbrightProgram;
 extern LLGLSLShader			gDeferredFullbrightAlphaMaskProgram;
 extern LLGLSLShader			gDeferredAlphaWaterProgram;
