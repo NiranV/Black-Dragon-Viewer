@@ -50,6 +50,9 @@
 #include "llwindow.h"
 #include "llworld.h"
 
+//BD - Always-on Mouse-steering
+#include "lltoolfocus.h"
+
 using namespace LLAvatarAppearanceDefines;
 
 extern LLMenuBarGL* gMenuBarView;
@@ -1171,6 +1174,28 @@ void LLAgentCamera::updateCamera()
 	if ( camera_mode == CAMERA_MODE_FOLLOW && mFocusOnAvatar )
 	{
 		mCameraUpVector = mFollowCam.getUpVector();
+	}
+
+	if(gSavedSettings.getBOOL("EnableThirdPersonSteering"))
+	{
+		if(gViewerWindow->getRightMouseDown())
+		{
+			LLToolCamera::getInstance()->setMouseCapture(FALSE);
+			gViewerWindow->showCursor();
+		}
+		else if(gViewerWindow->getLeftMouseDown())
+		{
+			LLToolCamera::getInstance()->handleMouseDown(gViewerWindow->getCurrentMouseX(), gViewerWindow->getCurrentMouseY() , 0x0000);
+		}
+		else
+		{
+			if(!LLToolCamera::getInstance()->hasMouseCapture())
+			{
+				LLToolCamera::getInstance()->setMouseCapture(TRUE);
+				gViewerWindow->hideCursor();
+			}
+			gViewerWindow->moveCursorToCenter();
+		}
 	}
 
 	if (mSitCameraEnabled)

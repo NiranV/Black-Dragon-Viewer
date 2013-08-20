@@ -78,6 +78,7 @@
 
 //BD - Includes we need for special features
 #include "llenvmanager.h"
+#include "lltoolfocus.h"
 
 // Third party library includes
 #include <boost/algorithm/string.hpp>
@@ -633,10 +634,10 @@ static bool handleGlowChanged(const LLSD&)
 	return true;
 }
 
-//BD - Mouse-Steering Mode
-/*static bool handleMouseSteeringChanged(const LLSD&)
+//BD - Always-on Mouse-steering
+static bool handleMouseSteeringChanged(const LLSD&)
 {
-	//BD - Whenever Mouse-Steering is off and we trigger this we will
+	//BD - Whenever steering is off and we trigger this we will
 	//     show the cursor here because it would be too hacky in camera
 	//     cpp itself
 	if(!gSavedSettings.getBOOL("EnableThirdPersonSteering"))
@@ -648,6 +649,7 @@ static bool handleGlowChanged(const LLSD&)
 	return true;
 }
 
+/*
 //BD - Machinima Sidebar
 static bool handleSidebarAsOverlayChanged(const LLSD&)
 {
@@ -891,7 +893,7 @@ void settings_setup_listeners()
 	//gSavedSettings.getControl("UseMachinimaSidebarAsOverlay")->getSignal()->connect(boost::bind(&handleSidebarAsOverlayChanged, _2));
 	//gSavedSettings.getControl("PreferencesPanelOpen")->getSignal()->connect(boost::bind(&handlePreferencesPanelChanged, _2));
 	//gSavedSettings.getControl("ShooterKeyLayout")->getSignal()->connect(boost::bind(&handleKeyboardLayoutChanged, _2));
-	//gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
+	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
 	gSavedSettings.getControl("RenderTerrainScale")->getSignal()->connect(boost::bind(&handleTerrainScaleChanged, _2));
 	gSavedSettings.getControl("RenderWaterRefResolution")->getSignal()->connect(boost::bind(&handleWaterResolutionChanged, _2));
 	gSavedSettings.getControl("RenderAttachedLights")->getSignal()->connect(boost::bind(&handleRenderAttachedLightsChanged, _2));

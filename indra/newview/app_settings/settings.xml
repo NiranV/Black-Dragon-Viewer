@@ -14650,6 +14650,17 @@
     <integer>0</integer>
   </map>
   
+  <key>EnableThirdPersonSteering</key>
+  <map>
+    <key>Comment</key>
+    <string>Toggles Mouse-steering mode to always on as if you click and hold down your Mouse on your Avatar while moving the Mouse</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>RenderUnderWaterDistortion</key>
   <map>
     <key>Comment</key>
