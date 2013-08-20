@@ -170,6 +170,7 @@ S32 LLPipeline::RenderGlowIterations;
 F32 LLPipeline::RenderGlowWidth;
 F32 LLPipeline::RenderGlowStrength;
 BOOL LLPipeline::RenderDepthOfField;
+BOOL LLPipeline::RenderDepthOfFieldInEditMode;
 BOOL LLPipeline::RenderUnderWaterDistortion;
 F32 LLPipeline::CameraFocusTransitionTime;
 F32 LLPipeline::CameraFNumber;
@@ -625,6 +626,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderGlowWidth");
 	connectRefreshCachedSettingsSafe("RenderGlowStrength");
 	connectRefreshCachedSettingsSafe("RenderDepthOfField");
+	connectRefreshCachedSettingsSafe("RenderDepthOfFieldInEditMode");
 	connectRefreshCachedSettingsSafe("CameraFocusTransitionTime");
 	connectRefreshCachedSettingsSafe("CameraFNumber");
 	connectRefreshCachedSettingsSafe("CameraFocalLength");
@@ -1151,6 +1153,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderGlowWidth = gSavedSettings.getF32("RenderGlowWidth");
 	RenderGlowStrength = gSavedSettings.getF32("RenderGlowStrength");
 	RenderDepthOfField = gSavedSettings.getBOOL("RenderDepthOfField");
+	RenderDepthOfFieldInEditMode = gSavedSettings.getBOOL("RenderDepthOfFieldInEditMode");
 	RenderUnderWaterDistortion = gSavedSettings.getBOOL("RenderUnderWaterDistortion");
 	CameraFocusTransitionTime = gSavedSettings.getF32("CameraFocusTransitionTime");
 	CameraFNumber = gSavedSettings.getF32("CameraFNumber");
@@ -1285,7 +1288,7 @@ void LLPipeline::createGLBuffers()
 	if (LLPipeline::sWaterReflections)
 	{ //water reflection texture
 		U32 res = (U32) llmax(gSavedSettings.getS32("RenderWaterRefResolution"), 512);
-		
+			
 		// Set up SRGB targets if we're doing deferred-path reflection rendering
 		//
 		if (LLPipeline::sRenderDeferred && materials_in_water)
@@ -1296,10 +1299,10 @@ void LLPipeline::createGLBuffers()
 		}
 		else
 		{
-			mWaterRef.allocate(res,res,GL_RGBA,TRUE,FALSE);
-			//always use FBO for mWaterDis so it can be used for avatar texture bakes
-			mWaterDis.allocate(res,res,GL_RGBA,TRUE,FALSE,LLTexUnit::TT_TEXTURE, true);
-		}
+		mWaterRef.allocate(res,res,GL_RGBA,TRUE,FALSE);
+		//always use FBO for mWaterDis so it can be used for avatar texture bakes
+		mWaterDis.allocate(res,res,GL_RGBA,TRUE,FALSE,LLTexUnit::TT_TEXTURE, true);
+	}
 	}
 
 	mHighlight.allocate(256,256,GL_RGBA, FALSE, FALSE);
@@ -4934,18 +4937,6 @@ void LLPipeline::renderPhysicsDisplay()
 		}
 	}
 
-	for (LLCullResult::bridge_iterator i = sCull->beginVisibleBridge(); i != sCull->endVisibleBridge(); ++i)
-	{
-		LLSpatialBridge* bridge = *i;
-		if (!bridge->isDead() && hasRenderType(bridge->mDrawableType))
-		{
-			gGL.pushMatrix();
-			gGL.multMatrix((F32*)bridge->mDrawable->getRenderMatrix().mMatrix);
-			bridge->renderPhysicsShapes();
-			gGL.popMatrix();
-		}
-	}
-
 	gGL.flush();
 
 	if (LLGLSLShader::sNoFixedFunction)
@@ -5391,6 +5382,42 @@ void LLPipeline::renderDebug()
 	if (LLGLSLShader::sNoFixedFunction)
 	{
 		gUIProgram.bind();
+	}
+
+	if (hasRenderDebugMask(LLPipeline::RENDER_DEBUG_RAYCAST) && !hud_only)
+	{ //draw crosshairs on particle intersection
+		if (gDebugRaycastParticle)
+		{
+			if (LLGLSLShader::sNoFixedFunction)
+			{ //this debug display requires shaders
+				gDebugProgram.bind();
+
+				gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
+
+				LLVector3 center(gDebugRaycastParticleIntersection.getF32ptr());
+				LLVector3 size(0.1f, 0.1f, 0.1f);
+
+				LLVector3 p[6];
+
+				p[0] = center + size.scaledVec(LLVector3(1,0,0));
+				p[1] = center + size.scaledVec(LLVector3(-1,0,0));
+				p[2] = center + size.scaledVec(LLVector3(0,1,0));
+				p[3] = center + size.scaledVec(LLVector3(0,-1,0));
+				p[4] = center + size.scaledVec(LLVector3(0,0,1));
+				p[5] = center + size.scaledVec(LLVector3(0,0,-1));
+				
+				gGL.begin(LLRender::LINES);
+				gGL.diffuseColor3f(1.f, 1.f, 0.f);
+				for (U32 i = 0; i < 6; i++)
+				{
+					gGL.vertex3fv(p[i].mV);
+				}
+				gGL.end();
+				gGL.flush();
+
+				gDebugProgram.unbind();
+			}
+		}
 	}
 
 	if (hasRenderDebugMask(LLPipeline::RENDER_DEBUG_SHADOW_FRUSTA))
@@ -7073,6 +7100,48 @@ void LLPipeline::setRenderHighlightTextureChannel(LLRender::eTexIndex channel)
 	sRenderHighlightTextureChannel = channel;
 }
 
+LLVOPartGroup* LLPipeline::lineSegmentIntersectParticle(const LLVector4a& start, const LLVector4a& end, LLVector4a* intersection,
+														S32* face_hit)
+{
+	LLVector4a local_end = end;
+
+	LLVector4a position;
+
+	LLDrawable* drawable = NULL;
+
+	for (LLWorld::region_list_t::const_iterator iter = LLWorld::getInstance()->getRegionList().begin(); 
+			iter != LLWorld::getInstance()->getRegionList().end(); ++iter)
+	{
+		LLViewerRegion* region = *iter;
+
+		LLSpatialPartition* part = region->getSpatialPartition(LLViewerRegion::PARTITION_PARTICLE);
+		if (part && hasRenderType(part->mDrawableType))
+		{
+			LLDrawable* hit = part->lineSegmentIntersect(start, local_end, TRUE, face_hit, &position, NULL, NULL, NULL);
+			if (hit)
+			{
+				drawable = hit;
+				local_end = position;						
+			}
+		}
+	}
+
+	LLVOPartGroup* ret = NULL;
+	if (drawable)
+	{
+		//make sure we're returning an LLVOPartGroup
+		llassert(drawable->getVObj()->getPCode() == LLViewerObject::LL_VO_PART_GROUP);
+		ret = (LLVOPartGroup*) drawable->getVObj().get();
+	}
+		
+	if (intersection)
+	{
+		*intersection = position;
+	}
+
+	return ret;
+}
+
 LLViewerObject* LLPipeline::lineSegmentIntersectInWorld(const LLVector4a& start, const LLVector4a& end,
 														BOOL pick_transparent,												
 														S32* face_hit,
@@ -7633,7 +7702,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 
 		bool dof_enabled = (LLViewerCamera::getInstance()->cameraUnderWater() && 
 							RenderUnderWaterDistortion) &&
-							!LLToolMgr::getInstance()->inBuildMode() &&
+			(RenderDepthOfFieldInEditMode || !LLToolMgr::getInstance()->inBuildMode()) &&
 							RenderDepthOfField;
 
 
@@ -8790,7 +8859,7 @@ void LLPipeline::renderDeferredLighting()
 						gDeferredMultiLightProgram[idx].uniform4fv(LLShaderMgr::MULTI_LIGHT_COL, count, (GLfloat*) col);
 						gDeferredMultiLightProgram[idx].uniform1f(LLShaderMgr::MULTI_LIGHT_FAR_Z, far_z);
 						far_z = 0.f;
-						count = 0;
+						count = 0; 
       mDeferredVB->setBuffer(LLVertexBuffer::MAP_VERTEX);
 						mDeferredVB->drawArrays(LLRender::TRIANGLES, 0, 3);
 						unbindDeferredShader(gDeferredMultiLightProgram[idx]);
@@ -9814,11 +9883,11 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 					}
 					else
 					{
-						renderGeom(camera, TRUE);
+					renderGeom(camera, TRUE);
 					}					
-						
+
 					gPipeline.popRenderTypeMask();
-				}					
+				}
 
 				gGL.setColorMask(true, false);
 				gPipeline.pushRenderTypeMask();
@@ -9865,9 +9934,9 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 						}
 						else
 						{
-							renderGeom(camera);
-						}
+						renderGeom(camera);
 					}
+				}	
 				}	
 
 				if (LLPipeline::sRenderDeferred && materials_in_water)
@@ -9917,7 +9986,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 			LLViewerCamera::sCurCameraID = LLViewerCamera::CAMERA_WATER1;
 			
 			mWaterDis.getViewport(gGLViewport);
-
+			
 			if (!LLPipeline::sUnderWaterRender || LLDrawPoolWater::sNeedsReflectionUpdate)
 			{
 				//clip out geometry on the same side of water as the camera
@@ -9928,7 +9997,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 				static LLCullResult result;
 				updateCull(camera, result, water_clip, &plane);
 				stateSort(camera, result);
-			
+
 				gGL.setColorMask(true, true);
 				mWaterDis.clear();
 				
@@ -9948,9 +10017,9 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 				}
 				else
 				{
-					renderGeom(camera);					
+				renderGeom(camera);
 				}
-				
+
 				if (LLPipeline::sRenderDeferred && materials_in_water)
 				{
 					gPipeline.mDeferredScreen.flush();
@@ -10249,7 +10318,7 @@ BOOL LLPipeline::getVisiblePointCloud(LLCamera& camera, LLVector3& min, LLVector
 	pp.push_back(LLVector3(max.mV[0], max.mV[1], max.mV[2]));
 
 	//add corners of camera frustum
-	for (U32 i = 0; i < 8; i++)
+	for (U32 i = 0; i < LLCamera::AGENT_FRUSTRUM_NUM; i++)
 	{
 		pp.push_back(camera.mAgentFrustum[i]);
 	}
@@ -10276,7 +10345,7 @@ BOOL LLPipeline::getVisiblePointCloud(LLCamera& camera, LLVector3& min, LLVector
 
 	for (U32 i = 0; i < 12; i++)
 	{ //for each line segment in bounding box
-		for (U32 j = 0; j < 6; j++) 
+		for (U32 j = 0; j < LLCamera::AGENT_PLANE_NO_USER_CLIP_NUM; j++) 
 		{ //for each plane in camera frustum
 			const LLPlane& cp = camera.getAgentPlane(j);
 			const LLVector3& v1 = pp[bs[i*2+0]];
@@ -10362,7 +10431,7 @@ BOOL LLPipeline::getVisiblePointCloud(LLCamera& camera, LLVector3& min, LLVector
 			}
 		}
 				
-		for (U32 j = 0; j < 6; ++j)
+		for (U32 j = 0; j < LLCamera::AGENT_PLANE_NO_USER_CLIP_NUM; ++j)
 		{
 			const LLPlane& cp = camera.getAgentPlane(j);
 			F32 dist = cp.dist(pp[i]);
@@ -11286,23 +11355,29 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 	}
 	else
 	{
-		andRenderTypeMask(LLPipeline::RENDER_TYPE_VOLUME,
-						LLPipeline::RENDER_TYPE_AVATAR,
+		andRenderTypeMask(LLPipeline::RENDER_TYPE_ALPHA,
+			LLPipeline::RENDER_TYPE_FULLBRIGHT,
+			LLPipeline::RENDER_TYPE_VOLUME,
+			LLPipeline::RENDER_TYPE_GLOW,
 						LLPipeline::RENDER_TYPE_BUMP,
-						LLPipeline::RENDER_TYPE_GRASS,
-						LLPipeline::RENDER_TYPE_SIMPLE,
-						LLPipeline::RENDER_TYPE_FULLBRIGHT,
-						LLPipeline::RENDER_TYPE_ALPHA, 
-						LLPipeline::RENDER_TYPE_INVISIBLE,
 						LLPipeline::RENDER_TYPE_PASS_SIMPLE,
 						LLPipeline::RENDER_TYPE_PASS_ALPHA,
 						LLPipeline::RENDER_TYPE_PASS_ALPHA_MASK,
+			LLPipeline::RENDER_TYPE_PASS_BUMP,
+			LLPipeline::RENDER_TYPE_PASS_POST_BUMP,
 						LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT,
 						LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT_ALPHA_MASK,
 						LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT_SHINY,
+			LLPipeline::RENDER_TYPE_PASS_GLOW,
+			LLPipeline::RENDER_TYPE_PASS_GRASS,
 						LLPipeline::RENDER_TYPE_PASS_SHINY,
 						LLPipeline::RENDER_TYPE_PASS_INVISIBLE,
 						LLPipeline::RENDER_TYPE_PASS_INVISI_SHINY,
+			LLPipeline::RENDER_TYPE_AVATAR,
+			LLPipeline::RENDER_TYPE_ALPHA_MASK,
+			LLPipeline::RENDER_TYPE_FULLBRIGHT_ALPHA_MASK,
+			LLPipeline::RENDER_TYPE_INVISIBLE,
+			LLPipeline::RENDER_TYPE_SIMPLE,
 						END_RENDER_TYPES);
 	}
 	
@@ -11416,7 +11491,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 			{
 				avatar->mImpostor.allocate(resX,resY,GL_RGBA,TRUE,FALSE);
 			}
-
+		
 			gGL.getTexUnit(0)->bind(&avatar->mImpostor);
 			gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_POINT);
 			gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
@@ -11424,15 +11499,15 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		else if(resX != avatar->mImpostor.getWidth() || resY != avatar->mImpostor.getHeight())
 		{
 			LLFastTimer t(FTM_IMPOSTOR_RESIZE);
-			avatar->mImpostor.resize(resX,resY,LLPipeline::sRenderDeferred ? GL_SRGB8_ALPHA8 : GL_RGBA);
+			avatar->mImpostor.resize(resX,resY);
 		}
 
-		avatar->mImpostor.bindTarget();		
+		avatar->mImpostor.bindTarget();
 	}
 
 	if (LLPipeline::sRenderDeferred)
 	{
-		avatar->mImpostor.clear();		
+		avatar->mImpostor.clear();
 		renderGeomDeferred(camera);
 
 		renderGeomPostDeferred(camera);		
@@ -11455,7 +11530,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 	else
 	{
 		LLGLEnable scissor(GL_SCISSOR_TEST);
-		glScissor(0, 0, resX, resY);	
+		glScissor(0, 0, resX, resY);
 		avatar->mImpostor.clear();
 		renderGeom(camera);
 
@@ -11474,7 +11549,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 
 		sImpostorRenderAlphaDepthPass = false;
 	}
-
+	
 	{ //create alpha mask based on depth buffer (grey out if muted)
 		LLFastTimer t(FTM_IMPOSTOR_BACKGROUND);
 
