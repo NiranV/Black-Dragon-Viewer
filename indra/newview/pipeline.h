@@ -921,10 +921,12 @@ public:
 	static F32 RenderGlowWidth;
 	static F32 RenderGlowStrength;
 	static BOOL RenderDepthOfField;
+	static BOOL RenderUnderWaterDistortion;
 	static F32 CameraFocusTransitionTime;
 	static F32 CameraFNumber;
 	static F32 CameraFocalLength;
 	static F32 CameraFieldOfView;
+	static F32 CameraUnderWaterDistortion;
 	static F32 RenderShadowNoise;
 	static F32 RenderShadowBlurSize;
 	static F32 RenderSSAOScale;
