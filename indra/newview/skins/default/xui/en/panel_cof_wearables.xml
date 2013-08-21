@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- background_visible="true"
+ background_visible="false"
  bg_alpha_color="DkGray"
  border="false"
  follows="all"
@@ -17,8 +17,8 @@
      single_expansion="true"
      top="0"
      name="cof_wearables_accordion"
-     background_visible="true"
-     bg_alpha_color="DkGray2"
+     background_visible="false"
+     bg_alpha_color="Black_50"
      width="311">
         <accordion_tab
          layout="topleft"
@@ -29,6 +29,7 @@
              follows="all"
              height="10"
              item_pad="3"
+			 background_visible="false"
              keep_selection_visible_on_reshape="true"
              layout="topleft"
              left="0"
