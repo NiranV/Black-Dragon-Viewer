@@ -15,8 +15,6 @@
 	<!--Default for now-->
 	<RenderFlexTimeFactor value="0.5"/>
 	<!--256... but they do not use this-->
-	<RenderGlowResolutionPow value="8"/>
-	<!--Low number-->
 	<RenderMaxPartCount value="1024"/>
 	<!--bump okay-->
 	<RenderObjectBump value="FALSE"/>
