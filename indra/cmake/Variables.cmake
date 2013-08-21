@@ -170,7 +170,7 @@ endif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # Default deploy grid
 set(GRID agni CACHE STRING "Target Grid")
 
-set(VIEWER_CHANNEL "Second Life Test" CACHE STRING "Viewer Channel Name")
+set(VIEWER_CHANNEL "Black Dragon" CACHE STRING "Viewer Channel Name")
 
 if (XCODE_VERSION GREATER 4.2)
   set(ENABLE_SIGNING OFF CACHE BOOL "Enable signing the viewer")
