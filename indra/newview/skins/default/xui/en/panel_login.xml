@@ -17,19 +17,7 @@ top="600"
 <panel.string name="forgot_password_url">
        http://secondlife.com/account/request.php
 </panel.string>
-  <!--<icon
-  follows="all"
-  height="600"
-  image_name="menubg"
-  layout="topleft"
-  name="background"
-  mouse_opaque="false"
-  visible="true"
-  width="996"
-  left="0"
-  top="0"/>-->
   <web_browser
-  visibility_control="ExperimentalLogin"
   tab_stop="false" 
   trusted_content="true" 
   bg_opaque_color="Black"
@@ -168,18 +156,18 @@ top="600"
       mouse_opaque="false"
       name="root_panel"
       top_pad="0"
-      width="200">
+      width="220">
         <icon
         follows="left|top"
         height="34"
         image_name="user-entry"
         layout="topleft"
-        name="login_panel"
+        name="user_icon"
         mouse_opaque="false"
         visible="true"
         width="200"
         left="0"
-        top="10"/>
+        top="5"/>
         <line_editor
         allow_text_entry="true"
         commit_on_focus_lost="false"
@@ -197,12 +185,12 @@ top="600"
         height="34"
         image_name="pw-entry"
         layout="topleft"
-        name="login_panel"
+        name="pass_icon"
         mouse_opaque="false"
         visible="true"
         width="200"
         left="0"
-        top="45"/>
+        top="35"/>
         <line_editor
         follows="left|bottom"
         commit_on_focus_lost="false"
@@ -220,11 +208,99 @@ top="600"
         follows="left|bottom"
         font="SansSerifSmall"
         height="18"
-        left="35"
-        label="Remember password"
-        top_pad="5"
+        left_pad="0"
+        label=""
+        top_delta="2"
         name="remember_check"
         width="20"/>
+        <icon
+        follows="top|left"
+        height="34"
+        image_name="place-entry"
+        layout="topleft"
+        name="place-entry"
+        mouse_opaque="false"
+        width="200"
+        left="0"
+        top="65"/>
+        <combo_box
+        allow_text_entry="true"
+        control_name="LoginLocation"
+        follows="left|top"
+        height="23"
+        max_chars="128"
+        top_delta="6"
+        left_delta="35"
+        name="start_location_combo"
+        width="164">
+          <combo_box.combo_editor
+          background_image="TextField_Off"
+          background_image_disabled="TextField_Disabled"
+          background_image_focused="TextField_Active"/>
+          <combo_box.item
+          label="My last location"
+          name="MyLastLocation"
+          value="last" />
+          <combo_box.item
+          label="My home"
+          name="MyHome"
+          value="home" />
+          <combo_box.item
+          label="&lt;Type region name&gt;"
+          name="Typeregionname"
+          value="" />
+          <combo_box.combo_button
+          scale_image="false"
+          image_unselected="DownArrow_Off"
+          image_selected="transparentj2c"
+          image_disabled="transparentj2c" />
+          <combo_box.drop_down_button
+          scale_image="false"
+          image_unselected="transparentj2c"
+          image_selected="transparentj2c"
+          image_pressed="transparentj2c" 
+          image_pressed_selected="transparentj2c"
+          image_disabled="transparentj2c"/>
+        </combo_box>
+        <!--<icon
+        follows="left|top"
+        height="34"
+        image_name="grid-entry"
+        layout="topleft"
+        name="grid-entry"
+        mouse_opaque="false"
+        width="200"
+        left="0"
+        top_pad="6"/>
+        <combo_box
+        allow_text_entry="true"
+        font="SansSerifSmall"
+        follows="left|top"
+        height="23"
+        max_chars="256"
+        layout="topleft"
+        top_delta="5"
+        left="34"
+        name="server_combo"
+        width="164"
+        visible="true">
+          <combo_box.combo_editor
+          background_image="TextField_Off"
+          background_image_disabled="TextField_Disabled"
+          background_image_focused="TextField_Active"/>
+          <combo_box.combo_button
+          scale_image="false"
+          image_unselected="DownArrow_Off"
+          image_selected="transparentj2c"
+          image_disabled="transparentj2c" />
+          <combo_box.drop_down_button
+          scale_image="false"
+          image_unselected="transparentj2c"
+          image_selected="transparentj2c"
+          image_pressed="transparentj2c" 
+          image_pressed_selected="transparentj2c"
+          image_disabled="transparentj2c" />
+        </combo_box>-->
       </layout_panel>
       <layout_panel
       auto_resize="true"
