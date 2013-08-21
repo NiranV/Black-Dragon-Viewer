@@ -200,19 +200,17 @@ void LLProgressView::draw()
 
 	if (mFadeFromLoginTimer.getStarted())
 	{
-		//NV - What if the debug is not yet written/saved? it will just take 0.0 then , lets
-		//     just take the default if the debug doesnt yet exist
-		if(gSavedPerAccountSettings.controlExists("PrevGlow"))
+		if(gSavedSettings.controlExists("PrevGlow"))
 		{
-			glow = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, gSavedPerAccountSettings.getF32("PrevGlow"), 1.f);
+			glow = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, gSavedSettings.getF32("PrevGlow"), 1.f);
 		}
 		else
 		{
 			glow = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.21f, 1.f);
 		}
-		if(gSavedPerAccountSettings.controlExists("PrevFoV"))
+		if(gSavedSettings.controlExists("PrevFoV"))
 		{
-			fov = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, gSavedPerAccountSettings.getF32("PrevFoV"), 1.7f);
+			fov = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, gSavedSettings.getF32("PrevFoV"), 1.7f);
 		}
 		else
 		{
@@ -240,20 +238,18 @@ void LLProgressView::draw()
 	if (mFadeToWorldTimer.getStarted())
 	{
 		// draw fading panel
-		//NV - What if the debug is not yet written/saved? it will just take 0.0 then , lets
-		//     just take the default if the debug doesnt yet exist
 		alpha = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
-		if(gSavedPerAccountSettings.controlExists("PrevGlow"))
+		if(gSavedSettings.controlExists("PrevGlow"))
 		{
-			glow = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, gSavedPerAccountSettings.getF32("PrevGlow"));
+			glow = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, gSavedSettings.getF32("PrevGlow"));
 		}
 		else
 		{
 			glow = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.21f);
 		}
-		if(gSavedPerAccountSettings.controlExists("PrevFoV"))
+		if(gSavedSettings.controlExists("PrevFoV"))
 		{
-			fov = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.7f, gSavedPerAccountSettings.getF32("PrevFoV"));
+			fov = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.7f, gSavedSettings.getF32("PrevFoV"));
 		}
 		else
 		{
@@ -315,9 +311,7 @@ void LLProgressView::onCancelButtonClicked(void*)
 	}
 	else
 	{
-		//NV - What if the debug is not yet written/saved? it will just take 0.0 then , lets
-		//     just take the default if the debug doesnt yet exist
-		if(gSavedPerAccountSettings.controlExists("PrevGlow"))
+		if(gSavedSettings.controlExists("PrevGlow"))
 		{
 			gSavedSettings.setF32("RenderGlowStrength" , gSavedPerAccountSettings.getF32("PrevGlow"));
 		}
@@ -325,7 +319,7 @@ void LLProgressView::onCancelButtonClicked(void*)
 		{
 			gSavedSettings.setF32("RenderGlowStrength" , 0.21f);
 		}
-		if(gSavedPerAccountSettings.controlExists("PrevFoV"))
+		if(gSavedSettings.controlExists("PrevFoV"))
 		{
 			gSavedSettings.setF32("CameraAngle" , gSavedPerAccountSettings.getF32("PrevFoV"));
 		}

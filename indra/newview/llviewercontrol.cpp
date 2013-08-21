@@ -624,13 +624,13 @@ static bool handleRenderAttachedParticlesChanged(const LLSD& newvalue)
 //BD - Glow and Field of View changes
 static bool handleCameraAngleChanged(const LLSD&)
 {
-	gSavedSettings.setF32("CameraAngle" , gSavedPerAccountSettings.getF32("PrevFoV"));
+	gSavedSettings.setF32("CameraAngle" , gSavedSettings.getF32("PrevFoV"));
 	return true;
 }
 
 static bool handleGlowChanged(const LLSD&)
 {
-	gSavedSettings.setF32("RenderGlowStrength" , gSavedPerAccountSettings.getF32("PrevGlow"));
+	gSavedSettings.setF32("RenderGlowStrength" , gSavedSettings.getF32("PrevGlow"));
 	return true;
 }
 
@@ -886,8 +886,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("LoginLocation")->getSignal()->connect(boost::bind(&handleLoginLocationChanged));
 
 //	//BD - Special Debugs and handles
-	gSavedPerAccountSettings.getControl("PrevGlow")->getSignal()->connect(boost::bind(&handleGlowChanged, _2));
-	gSavedPerAccountSettings.getControl("PrevFoV")->getSignal()->connect(boost::bind(&handleCameraAngleChanged, _2));
+	gSavedSettings.getControl("PrevGlow")->getSignal()->connect(boost::bind(&handleGlowChanged, _2));
+	gSavedSettings.getControl("PrevFoV")->getSignal()->connect(boost::bind(&handleCameraAngleChanged, _2));
 	//gSavedSettings.getControl("AutohideTopbar")->getSignal()->connect(boost::bind(&handleAutohideTopbar, _2));
 	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
 	//gSavedSettings.getControl("UseMachinimaSidebarAsOverlay")->getSignal()->connect(boost::bind(&handleSidebarAsOverlayChanged, _2));

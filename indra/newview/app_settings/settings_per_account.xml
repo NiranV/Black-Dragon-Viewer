@@ -220,30 +220,6 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      
-      
-        <key>PrevGlow</key>
-        <map>
-            <key>Comment</key>
-            <string>test</string>
-            <key>Persist</key>
-            <integer>1</integer>
-            <key>Type</key>
-            <string>F32</string>
-            <key>Value</key>
-            <integer>0.210</integer>
-        </map>
-        <key>PrevFoV</key>
-        <map>
-            <key>Comment</key>
-            <string>test</string>
-            <key>Persist</key>
-            <integer>1</integer>
-            <key>Type</key>
-            <string>F32</string>
-            <key>Value</key>
-            <integer>1.10</integer>
-        </map>
         
         
     <!-- Settings below are for back compatibility only.
