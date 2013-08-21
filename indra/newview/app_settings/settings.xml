@@ -14673,7 +14673,7 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-  <key>RenderUnderWaterDistortion</key>
+  <key>RenderDepthOfFieldUnderwater</key>
   <map>
     <key>Comment</key>
     <string>Render Depth of Field underwater simulating a underwater blur effect</string>
@@ -14683,6 +14683,17 @@
     <string>Boolean</string>
     <key>Value</key>
     <real>1</real>
+  </map>
+  <key>CameraOverWaterDistortion</key>
+  <map>
+    <key>Comment</key>
+    <string>Underwater distortion strength</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>67.0</real>
   </map>
   <key>CameraUnderWaterDistortion</key>
   <map>

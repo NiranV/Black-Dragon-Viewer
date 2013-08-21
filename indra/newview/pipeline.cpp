@@ -171,12 +171,13 @@ F32 LLPipeline::RenderGlowWidth;
 F32 LLPipeline::RenderGlowStrength;
 BOOL LLPipeline::RenderDepthOfField;
 BOOL LLPipeline::RenderDepthOfFieldInEditMode;
-BOOL LLPipeline::RenderUnderWaterDistortion;
+BOOL LLPipeline::RenderDepthOfFieldUnderwater;
 F32 LLPipeline::CameraFocusTransitionTime;
 F32 LLPipeline::CameraFNumber;
 F32 LLPipeline::CameraFocalLength;
 F32 LLPipeline::CameraFieldOfView;
 F32 LLPipeline::CameraUnderWaterDistortion;
+F32 LLPipeline::CameraOverWaterDistortion;
 F32 LLPipeline::RenderShadowNoise;
 F32 LLPipeline::RenderShadowBlurSize;
 F32 LLPipeline::RenderSSAOScale;
@@ -627,10 +628,13 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderGlowStrength");
 	connectRefreshCachedSettingsSafe("RenderDepthOfField");
 	connectRefreshCachedSettingsSafe("RenderDepthOfFieldInEditMode");
+	connectRefreshCachedSettingsSafe("RenderDepthOfFieldUnderWater");
 	connectRefreshCachedSettingsSafe("CameraFocusTransitionTime");
 	connectRefreshCachedSettingsSafe("CameraFNumber");
 	connectRefreshCachedSettingsSafe("CameraFocalLength");
 	connectRefreshCachedSettingsSafe("CameraFieldOfView");
+	connectRefreshCachedSettingsSafe("CameraOverWaterDistortion");
+	connectRefreshCachedSettingsSafe("CameraUnderWaterDistortion");
 	connectRefreshCachedSettingsSafe("RenderShadowNoise");
 	connectRefreshCachedSettingsSafe("RenderShadowBlurSize");
 	connectRefreshCachedSettingsSafe("RenderSSAOScale");
@@ -1154,11 +1158,12 @@ void LLPipeline::refreshCachedSettings()
 	RenderGlowStrength = gSavedSettings.getF32("RenderGlowStrength");
 	RenderDepthOfField = gSavedSettings.getBOOL("RenderDepthOfField");
 	RenderDepthOfFieldInEditMode = gSavedSettings.getBOOL("RenderDepthOfFieldInEditMode");
-	RenderUnderWaterDistortion = gSavedSettings.getBOOL("RenderUnderWaterDistortion");
+	RenderDepthOfFieldUnderwater = gSavedSettings.getBOOL("RenderDepthOfFieldUnderwater");
 	CameraFocusTransitionTime = gSavedSettings.getF32("CameraFocusTransitionTime");
 	CameraFNumber = gSavedSettings.getF32("CameraFNumber");
 	CameraFocalLength = gSavedSettings.getF32("CameraFocalLength");
 	CameraFieldOfView = gSavedSettings.getF32("CameraFieldOfView");
+	CameraOverWaterDistortion = gSavedSettings.getF32("CameraOverWaterDistortion");
 	CameraUnderWaterDistortion = gSavedSettings.getF32("CameraUnderWaterDistortion");
 	RenderShadowNoise = gSavedSettings.getF32("RenderShadowNoise");
 	RenderShadowBlurSize = gSavedSettings.getF32("RenderShadowBlurSize");
@@ -7700,9 +7705,10 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 	if (LLPipeline::sRenderDeferred)
 	{
 
-		bool dof_enabled = (LLViewerCamera::getInstance()->cameraUnderWater() && 
-							RenderUnderWaterDistortion) &&
-			(RenderDepthOfFieldInEditMode || !LLToolMgr::getInstance()->inBuildMode()) &&
+		bool dof_enabled = (RenderDepthOfFieldUnderwater ||
+							!LLViewerCamera::getInstance()->cameraUnderWater()) &&
+							(RenderDepthOfFieldInEditMode || 
+							!LLToolMgr::getInstance()->inBuildMode()) &&
 							RenderDepthOfField;
 
 
@@ -7737,13 +7743,13 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 				}
 			}
 
-			if(LLViewerCamera::getInstance()->cameraUnderWater() && dof_enabled)
+			if(LLViewerCamera::getInstance()->cameraUnderWater())
 			{
 				gSavedSettings.setF32("CameraFieldOfView", CameraUnderWaterDistortion);
 			}
 			else
 			{
-				gSavedSettings.setF32("CameraFieldOfView", CameraFieldOfView);
+				gSavedSettings.setF32("CameraFieldOfView", CameraOverWaterDistortion);
 			}
 		
 			if (focus_point.isExactlyZero())
