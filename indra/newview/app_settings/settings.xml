@@ -14742,7 +14742,7 @@
   <key>EnableAutohidingChat</key>
   <map>
     <key>Comment</key>
-    <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
+    <string>Hide the Local Chat floater automatically whenever it loses focus</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -14753,7 +14753,7 @@
   <key>AutohideChatOnReturn</key>
   <map>
     <key>Comment</key>
-    <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
+    <string>Hide the Local Chat floater whenever you press the return key, no matter if the Chat is empty or not</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
