@@ -823,7 +823,7 @@
  reference="LtGray" />
  <color
  name="UserChatColor"
- reference="Yellow" />
+ reference="White" />
  <color
  name="llOwnerSayChatColor"
  reference="LtYellow" />
