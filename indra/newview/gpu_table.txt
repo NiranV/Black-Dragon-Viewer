@@ -348,6 +348,9 @@ NVIDIA GTX 660M							.*NVIDIA .*GTX 66[0-9]M.*							5	1	0	4.3
 NVIDIA GTX 670M							.*NVIDIA .*GTX 67[0-9]M.*							5	1	1	4.2
 NVIDIA GTX 680M							.*NVIDIA .*GTX 68[0-9]M.*							5	1	0	4.2
 NVIDIA GTX 690M							.*NVIDIA .*GTX 69[0-9]M.*							5	1	0	0
+NVIDIA GTX 760M							.*NVIDIA .*GTX 76[0-9]M.*							5	1	1	4.3
+NVIDIA GTX 770M							.*NVIDIA .*GTX 77[0-9]M.*							5	1	1	4.3
+NVIDIA GTX 780M							.*NVIDIA .*GTX 78[0-9]M.*							5	1	1	4.3
 NVIDIA G100								.*NVIDIA .*G10.*									3	1	1	4.2
 NVIDIA GT 120							.*NVIDIA .*GT 12.*									2	1	0	3.3
 NVIDIA GT 130							.*NVIDIA .*GT 13.*									2	1	0	3.3
@@ -399,6 +402,9 @@ NVIDIA GTX 660							.*NVIDIA .*GTX 66.*									5	1	0	4.3
 NVIDIA GTX 670							.*NVIDIA .*GTX 67.*									5	1	1	4.2
 NVIDIA GTX 680							.*NVIDIA .*GTX 68.*									5	1	1	4.2
 NVIDIA GTX 690							.*NVIDIA .*GTX 69.*									5	1	1	4.2
+NVIDIA GTX 760							.*NVIDIA .*GTX 76.*									5	1	1	4.3
+NVIDIA GTX 770							.*NVIDIA .*GTX 77.*									5	1	1	4.3
+NVIDIA GTX 780							.*NVIDIA .*GTX 78.*									5	1	1	4.3
 NVIDIA C51								.*NVIDIA .*C51.*									0	1	1	2
 NVIDIA G72								.*NVIDIA .*G72.*									1	1	0	0
 NVIDIA G73								.*NVIDIA .*G73.*									1	1	0	0
