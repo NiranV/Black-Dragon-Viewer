@@ -8395,8 +8395,8 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLViewHighlightTransparent(), "View.HighlightTransparent");
 	view_listener_t::addMenu(new LLViewToggleRenderType(), "View.ToggleRenderType");
 	view_listener_t::addMenu(new LLViewShowHUDAttachments(), "View.ShowHUDAttachments");
-	view_listener_t::addMenu(new LLZoomer(1.2f), "View.ZoomOut");
-	view_listener_t::addMenu(new LLZoomer(1/1.2f), "View.ZoomIn");
+	view_listener_t::addMenu(new LLZoomer(1.1f), "View.ZoomOut");
+	view_listener_t::addMenu(new LLZoomer(1/1.1f), "View.ZoomIn");
 	view_listener_t::addMenu(new LLZoomer(DEFAULT_FIELD_OF_VIEW, false), "View.ZoomDefault");
 	view_listener_t::addMenu(new LLViewDefaultUISize(), "View.DefaultUISize");
 	view_listener_t::addMenu(new LLViewToggleUI(), "View.ToggleUI");
