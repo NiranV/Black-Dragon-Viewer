@@ -1378,8 +1378,8 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshot* floater)
 		}
 		else
 		{
-			width_ctrl->setMaxValue(6016);
-			height_ctrl->setMaxValue(6016);
+			width_ctrl->setMaxValue(16384);
+			height_ctrl->setMaxValue(16384);
 		}
     }
         
