@@ -721,11 +721,13 @@ with the same filename but different name
   
   <texture name="NavBar_BG_middle" file_name="navbar/NavBar_BG_middle.png" preload="true" />
   
+  <texture name="Menu_Bar" file_name="menu_bar.tga" scale.left="1" scale.top="40" scale.right="1025" scale.bottom="0" />
+  
   <!--<texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
     
   <texture name="lock2" file_name="lock.png" preload="true" />
   <texture name="menubg" file_name="menubg.jpg" preload="true" />
-
+  
   <texture name="TextField_Off2" file_name="widgets/TextField_Off2.png" preload="true" scale.left="9" scale.top="1" scale.right="238" scale.bottom="12" />
   <texture name="TextField_Disabled2" file_name="widgets/TextField_Disabled2.png" preload="true" scale.left="9" scale.top="12" scale.right="238" scale.bottom="12" />
   <texture name="TextField_Active2" file_name="widgets/TextField_Active2.png" preload="true" scale.left="9" scale.top="12" scale.right="238" scale.bottom="12" />

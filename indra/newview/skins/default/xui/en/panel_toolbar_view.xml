@@ -36,6 +36,19 @@ visible="true">
 			follows="all"
 			mouse_opaque="false">
 				<layout_panel
+				name="top_mini_location_space_panel"
+				auto_resize="false"
+				height="24"
+				width="1024"
+				mouse_opaque="false"/>
+				<layout_panel
+				name="top_navbar_space_panel"
+				visibility_control="ShowNavbarNavigationPanel"
+				auto_resize="false"
+				height="15"
+				width="1024"
+				mouse_opaque="false"/>
+				<layout_panel
 				name="top_toolbar_panel"
 				auto_resize="false"
 				height="30"
