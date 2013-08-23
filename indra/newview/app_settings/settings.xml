@@ -14662,6 +14662,52 @@
     <integer>0</integer>
   </map>
   
+  <!-- Inventory Filters -->
+  <key>InventorySortObjectsByName</key>
+  <map>
+    <key>Comment</key>
+    <string>Weither we should sort the Inventory by Name or not.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>InventorySortObjectsByDate</key>
+  <map>
+    <key>Comment</key>
+    <string>Weither we should sort the Inventory objects by date or not.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>InventorySortFoldersByName</key>
+  <map>
+    <key>Comment</key>
+    <string>Weither we should sort the Inventory folders by Name or not.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>InventorySystemFoldersToTop</key>
+  <map>
+    <key>Comment</key>
+    <string>Move System folders always to the top.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  
   <key>PrevGlow</key>
   <map>
 	<key>Comment</key>
