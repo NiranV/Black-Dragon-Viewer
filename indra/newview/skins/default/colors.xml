@@ -913,9 +913,23 @@
  value="0.35 1 0.4 1"/>
  <color
  name="Blue_Chat"
- value="0.35 0.6 1 1"/>
- 
+ value="0.35 0.6 1 1"/> 
+
+ <!--Resize bar colors -->
+
  <color
+ name="ResizebarBorderLight"
+ value="0.231 0.231 0.231 1"/>
+
+ <color
+ name="ResizebarBorderDark"
+ value="0.133 0.133 0.133 1"/>
+
+ <color
+ name="ResizebarBody"
+ value="0.208 0.208 0.208 1"/>
+    
+ <color  
  name="MapChatRingColor"
  value="1 0.867188 0 0.1" />
 </colors>
