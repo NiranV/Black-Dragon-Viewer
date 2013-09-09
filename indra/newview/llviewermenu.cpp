@@ -3890,7 +3890,8 @@ void handle_reset_view()
 		LLFloaterSidePanelContainer::showPanel("appearance", LLSD().with("type", "my_outfits"));
 	}
 
-	gAgentCamera.switchCameraPreset(CAMERA_PRESET_REAR_VIEW);
+//	//BD - Do not change our camera preset on reset view.
+	//gAgentCamera.switchCameraPreset(CAMERA_PRESET_REAR_VIEW);
 	reset_view_final( TRUE );
 	LLFloaterCamera::resetCameraMode();
 }
