@@ -9050,8 +9050,8 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
-      <real>1.1</real>
-      <real>3.0</real>
+      <real>2.0</real>
+      <real>4.0</real>
       <real>0.0</real>
     </array>
   </map>
@@ -9065,7 +9065,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>3.0</real>
+    <real>2.4</real>
   </map>
   <key>RenderShadowBlurSamples</key>
   <map>
