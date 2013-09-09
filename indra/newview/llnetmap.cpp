@@ -75,7 +75,7 @@ const F32 MIN_PICK_SCALE = 2.f;
 const S32 MOUSE_DRAG_SLOP = 2;		// How far the mouse needs to move before we think it's a drag
 
 const F32 WIDTH_PIXELS = 2.f;
-const S32 CIRCLE_STEPS = 100;
+const S32 CIRCLE_STEPS = 64;
 
 const F64 COARSEUPDATE_MAX_Z = 1020.0f;
 
@@ -404,7 +404,6 @@ void LLNetMap::draw()
 			}
 
 //			//BD - Draw chat range ring(s)
-			static LLUICachedControl<bool> chat_ring("MiniMapChatRing", true);
 			if(chat_ring)
 			{
 				drawRing(CHAT_NORMAL_RADIUS, pos_map, map_chat_ring_color);
@@ -450,8 +449,11 @@ void LLNetMap::draw()
 			}
 
 //			//BD - Draw chat range ring(s)
-			drawRing(5.0, pos_map, map_chat_ring_color);
-			drawRing(100.0, pos_map, map_chat_ring_color);
+			if(chat_ring)
+			{
+				drawRing(5.0, pos_map, map_chat_ring_color);
+				drawRing(100.0, pos_map, map_chat_ring_color);
+			}
 		}
 
 		// Draw frustum
