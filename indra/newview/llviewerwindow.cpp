@@ -2394,10 +2394,7 @@ void LLViewerWindow::draw()
 		// Draw tool specific overlay on world
 		LLToolMgr::getInstance()->getCurrentTool()->draw();
 
-		if( gAgentCamera.cameraMouselook() || LLFloaterCamera::inFreeCameraMode() )
-		{
-			stop_glerror();
-		}
+		gViewerWindow->getRootView()->getChild<LLIconCtrl>("bg_icon_l2")->setVisible(!gAgentCamera.cameraMouselook());
 
 		// Draw all nested UI views.
 		// No translation needed, this view is glued to 0,0
