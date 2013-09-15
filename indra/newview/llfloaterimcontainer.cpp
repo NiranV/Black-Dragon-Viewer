@@ -211,7 +211,7 @@ BOOL LLFloaterIMContainer::postBuild()
 	// a scroller for folder view
 	LLRect scroller_view_rect = mConversationsListPanel->getRect();
 	scroller_view_rect.translate(-scroller_view_rect.mLeft, -scroller_view_rect.mBottom);
-	scroller_view_rect.mBottom += getChild<LLLayoutStack>("conversations_pane_buttons_stack")->getRect().getHeight();
+	//scroller_view_rect.mBottom += getChild<LLLayoutStack>("conversations_pane_buttons_stack")->getRect().getHeight();
 	LLScrollContainer::Params scroller_params(LLUICtrlFactory::getDefaultParams<LLFolderViewScrollContainer>());
 	scroller_params.rect(scroller_view_rect);
 
@@ -674,13 +674,18 @@ void LLFloaterIMContainer::setVisible(BOOL visible)
 void LLFloaterIMContainer::getDetachedConversationFloaters(floater_list_t& floaters)
 {
 	typedef conversations_widgets_map::value_type conv_pair;
+	LLFloaterIMNearbyChat *nearby_chat = LLFloaterReg::findTypedInstance<LLFloaterIMNearbyChat>("nearby_chat");
+
 	BOOST_FOREACH(conv_pair item, mConversationsWidgets)
 	{
 		LLConversationViewSession* widget = dynamic_cast<LLConversationViewSession*>(item.second);
 		if (widget)
 		{
 			LLFloater* session_floater = widget->getSessionFloater();
-			if (session_floater && session_floater->isDetachedAndNotMinimized())
+
+			// Exclude nearby chat from output, as it should be handled separately 
+			if (session_floater && session_floater->isDetachedAndNotMinimized() 
+				&& session_floater != nearby_chat)
 			{
 				floaters.push_back(session_floater);
 			}

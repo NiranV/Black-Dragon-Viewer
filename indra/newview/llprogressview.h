@@ -1,4 +1,4 @@
-/** 
+/**
  * @file llprogressview.h
  * @brief LLProgressView class definition
  *
@@ -28,21 +28,19 @@
 #define LL_LLPROGRESSVIEW_H
 
 #include "llpanel.h"
-#include "llmediactrl.h"
 #include "llframetimer.h"
+#include "lltextbox.h"
 #include "llevents.h"
+#include <boost/concept_check.hpp>
 
 class LLImageRaw;
 class LLButton;
 class LLProgressBar;
 
 class LLProgressView : 
-	public LLPanel,
-	public LLViewerMediaObserver
+	public LLPanel
 
 {
-	LOG_CLASS(LLProgressView);
-
 public:
 	LLProgressView();
 	virtual ~LLProgressView();
@@ -56,33 +54,37 @@ public:
 	/*virtual*/ BOOL handleKeyHere(KEY key, MASK mask);
 	/*virtual*/ void setVisible(BOOL visible);
 
-	// inherited from LLViewerMediaObserver
-	/*virtual*/ void handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
-
-	void setText(const std::string& text);
 	void setPercent(const F32 percent);
 
-	// Set it to NULL when you want to eliminate the message.
-	void setMessage(const std::string& msg);
+	// Set a random Tip every X seconds
+	void setTip();
 	
 	// turns on (under certain circumstances) the into video after login
 	void revealIntroPanel();
+
+	void fade(BOOL in);		// ## Zi: Fade teleport screens
 
 	void setStartupComplete();
 
 	void setCancelButtonVisible(BOOL b, const std::string& label);
 
 	static void onCancelButtonClicked( void* );
-	static void onClickMessage(void*);
 	bool onAlertModal(const LLSD& sd);
+
+	LLUICtrl* mMessageText;
+	LLTextBox* mPercentText;
+
+	// note - this is not just hiding the intro panel - it also hides the parent panel
+	// and is used when the intro is finished and we want to show the world
+	void removeIntroPanel();
 
 protected:
 	LLProgressBar* mProgressBar;
-	LLMediaCtrl* mMediaCtrl;
 	F32 mPercentDone;
 	std::string mMessage;
 	LLButton*	mCancelBtn;
 	LLFrameTimer mFadeToWorldTimer;
+	LLFrameTimer mTipCycleTimer;
 	LLFrameTimer mFadeFromLoginTimer;
 	LLRect mOutlineRect;
 	bool mMouseDownInActiveArea;
@@ -94,7 +96,6 @@ protected:
 	LLEventStream mUpdateEvents; 
 
 	bool handleUpdate(const LLSD& event_data);
-	static void onIdle(void* user_data);
 };
 
 #endif // LL_LLPROGRESSVIEW_H

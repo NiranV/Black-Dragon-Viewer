@@ -132,7 +132,7 @@ private:
 
 };
 
-static const U32 MAX_SNAPSHOT_IMAGE_SIZE = 6 * 1024; // max snapshot image size 6144 * 6144
+static const U32 MAX_SNAPSHOT_IMAGE_SIZE = 16 * 1024; // max snapshot image size 6144 * 6144
 
 class LLViewerWindow : public LLWindowCallbacks
 {
@@ -410,7 +410,6 @@ private:
 
 	void			switchToolByMask(MASK mask);
 	void			destroyWindow();
-	void			drawMouselookInstructions();
 	void			stopGL(BOOL save_state = TRUE);
 	void			restoreGL(const std::string& progress_message = LLStringUtil::null);
 	void			initFonts(F32 zoom_factor = 1.f);

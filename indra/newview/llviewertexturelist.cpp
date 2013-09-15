@@ -1308,11 +1308,12 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32 mem)
 	}
 
 	mem = llclamp(mem, getMinVideoRamSetting(), getMaxVideoRamSetting(false, mem_multiplier));
-	if (mem != cur_mem)
+	/*if (mem != cur_mem)
 	{
 		gSavedSettings.setS32("TextureMemory", mem);
 		return; //listener will re-enter this function
-	}
+	}*/
+//	//BD - Allowing higher video card memory usage
 
 	// TODO: set available resident texture mem based on use by other subsystems
 	// currently max(12MB, VRAM/4) assumed...
@@ -1779,6 +1780,28 @@ bool LLUIImageList::initFromFile()
 		PASS_DECODE_LATER,
 		NUM_PASSES
 	};
+
+	{
+//		//BD - Select 3 random numbers for random loadingscreen preloading.
+		srand( (unsigned)time( NULL ) );
+		int random_number1 = rand()%12;
+		int random_number2 = rand()%12;
+		int random_number3 = rand()%12;
+		std::string filename1 = llformat("loadingscreens/loading%i.jpg" , random_number1);
+		std::string filename2 = llformat("loadingscreens/loading%i.jpg" , random_number2);
+		std::string filename3 = llformat("loadingscreens/loading%i.jpg" , random_number3);
+
+//		//BD - Set their rectangle.
+		LLRect rect;
+		rect.mTop = 1058;
+		rect.mRight = 1920;
+		LLRect clip;
+
+//		//BD - Preload our randomly selected images.
+		preloadUIImage("loading1", filename1, false, rect, clip);
+		preloadUIImage("loading2", filename2, false, rect, clip);
+		preloadUIImage("loading3", filename3, false, rect, clip);
+	}
 
 	for (S32 cur_pass = PASS_DECODE_NOW; cur_pass < NUM_PASSES; cur_pass++)
 	{

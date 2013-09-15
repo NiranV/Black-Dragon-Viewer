@@ -3890,7 +3890,8 @@ void handle_reset_view()
 		LLFloaterSidePanelContainer::showPanel("appearance", LLSD().with("type", "my_outfits"));
 	}
 
-	gAgentCamera.switchCameraPreset(CAMERA_PRESET_REAR_VIEW);
+//	//BD - Do not change our camera preset on reset view.
+	//gAgentCamera.switchCameraPreset(CAMERA_PRESET_REAR_VIEW);
 	reset_view_final( TRUE );
 	LLFloaterCamera::resetCameraMode();
 }
@@ -8395,8 +8396,8 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLViewHighlightTransparent(), "View.HighlightTransparent");
 	view_listener_t::addMenu(new LLViewToggleRenderType(), "View.ToggleRenderType");
 	view_listener_t::addMenu(new LLViewShowHUDAttachments(), "View.ShowHUDAttachments");
-	view_listener_t::addMenu(new LLZoomer(1.2f), "View.ZoomOut");
-	view_listener_t::addMenu(new LLZoomer(1/1.2f), "View.ZoomIn");
+	view_listener_t::addMenu(new LLZoomer(1.1f), "View.ZoomOut");
+	view_listener_t::addMenu(new LLZoomer(1/1.1f), "View.ZoomIn");
 	view_listener_t::addMenu(new LLZoomer(DEFAULT_FIELD_OF_VIEW, false), "View.ZoomDefault");
 	view_listener_t::addMenu(new LLViewDefaultUISize(), "View.DefaultUISize");
 	view_listener_t::addMenu(new LLViewToggleUI(), "View.ToggleUI");
@@ -8794,4 +8795,7 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelected(), "EditableSelected");
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
+
+	commit.add("World.SaveCamera", boost::bind(&LLAgentCamera::saveCamera, &gAgentCamera));
+	commit.add("World.LoadCamera", boost::bind(&LLAgentCamera::loadSavedCamera, &gAgentCamera));
 }

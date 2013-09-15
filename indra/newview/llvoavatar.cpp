@@ -3256,7 +3256,8 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 			}
 			LLVector3 velDir = getVelocity();
 			velDir.normalize();
-			if ( mSignaledAnimations.find(ANIM_AGENT_WALK) != mSignaledAnimations.end())
+//			//BD - Backwards walking feature
+			if (!gSavedSettings.getBOOL("AllowWalkingBackwards") && (mSignaledAnimations.find(ANIM_AGENT_WALK) != mSignaledAnimations.end()))
 			{
 				F32 vpD = velDir * primDir;
 				if (vpD < -0.5f)
@@ -3379,7 +3380,8 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 			}
 			else
 			{
-				pelvis_lag_time = PELVIS_LAG_WALKING;
+//				//BD - Custom turnaround speed.
+				pelvis_lag_time = gSavedSettings.getF32("MovementRotationSpeed");
 			}
 
 			F32 u = llclamp((deltaTime / pelvis_lag_time), 0.0f, 1.0f);	

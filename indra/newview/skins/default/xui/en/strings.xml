@@ -7,8 +7,8 @@
 
 	<!-- Default Args - these arguments will be replaced in all strings -->
 	<string name="SECOND_LIFE">Second Life</string>
-	<string name="APP_NAME">Second Life</string>
-	<string name="CAPITALIZED_APP_NAME">SECOND LIFE</string>
+	<string name="APP_NAME">Black Dragon</string>
+	<string name="CAPITALIZED_APP_NAME">BLACK DRAGON</string>
 	<string name="SECOND_LIFE_GRID">Second Life Grid</string>
 	<string name="SUPPORT_SITE">Second Life Support Portal</string>
 
@@ -2171,9 +2171,6 @@ For AI Character: Get the closest navigable point to the point provided.
 	<string name="GraphicsQualityLow">Low</string>
 	<string name="GraphicsQualityMid">Mid</string>
 	<string name="GraphicsQualityHigh">High</string>
-
-	<!-- mouselook -->
-	<string name="LeaveMouselook">Press ESC to return to World View</string>
 
 	<!-- inventory -->
 	<string name="InventoryNoMatchingItems">Didn't find what you're looking for? Try [secondlife:///app/search/all/[SEARCH_TERM] Search].</string>

@@ -63,6 +63,9 @@
 #include "llfavoritesbar.h"
 #include "llagentui.h"
 
+// Black Dragon includes
+#include "llsearchcombobox.h"
+
 #include <boost/regex.hpp>
 
 //-- LLTeleportHistoryMenuItem -----------------------------------------------
@@ -266,6 +269,8 @@ LLNavigationBar::LLNavigationBar()
 	mBtnBack(NULL),
 	mBtnForward(NULL),
 	mBtnHome(NULL),
+//	//BD - Search Combo Box
+	mSearchComboBox(NULL),
 	mCmbLocation(NULL),
 	mSaveToLocationHistory(false)
 {
@@ -300,6 +305,11 @@ BOOL LLNavigationBar::postBuild()
 	mBtnForward->setClickDraggingCallback(boost::bind(&LLNavigationBar::showTeleportHistoryMenu, this,_1));
 
 	mBtnHome->setClickedCallback(boost::bind(&LLNavigationBar::onHomeButtonClicked, this));
+
+//	//BD - Search Combo Box
+	mSearchComboBox	= getChild<LLSearchComboBox>("search_combo_box");
+	mSearchComboBox->setCommitCallback(boost::bind(&LLNavigationBar::onSearchCommit, this));
+	fillSearchComboBox();
 
 	mCmbLocation->setCommitCallback(boost::bind(&LLNavigationBar::onLocationSelection, this));
 
@@ -380,6 +390,42 @@ void LLNavigationBar::onHomeButtonClicked()
 {
 	gAgent.teleportHome();
 }
+
+//BD - Search Combo Box
+void LLNavigationBar::onSearchCommit()
+{
+	std::string search_query = mSearchComboBox->getSimple();
+	if(!search_query.empty())
+	{
+		LLSearchHistory::getInstance()->addEntry(search_query);
+	}
+	invokeSearch(search_query);	
+}
+
+void LLNavigationBar::fillSearchComboBox()
+{
+	if(!mSearchComboBox)
+	{
+		return;
+	}
+
+	LLSearchHistory::getInstance()->load();
+
+	LLSearchHistory::search_history_list_t search_list = 
+		LLSearchHistory::getInstance()->getSearchHistoryList();
+	LLSearchHistory::search_history_list_t::const_iterator it = search_list.begin();
+	for( ; search_list.end() != it; ++it)
+	{
+		LLSearchHistory::LLSearchHistoryItem item = *it;
+		mSearchComboBox->add(item.search_query);
+	}
+}
+
+void LLNavigationBar::invokeSearch(std::string search_text)
+{
+	LLFloaterReg::showInstance("search", LLSD().with("category", "all").with("query", LLSD(search_text)));
+}
+//BD
 
 void LLNavigationBar::onTeleportHistoryMenuItemClicked(const LLSD& userdata)
 {
@@ -667,11 +713,6 @@ void LLNavigationBar::handleLoginComplete()
 	LLTeleportHistory::getInstance()->handleLoginComplete();
 	LLPanelTopInfoBar::instance().handleLoginComplete();
 	mCmbLocation->handleLoginComplete();
-}
-
-void LLNavigationBar::invokeSearch(std::string search_text)
-{
-	LLFloaterReg::showInstance("search", LLSD().with("category", "all").with("query", LLSD(search_text)));
 }
 
 void LLNavigationBar::clearHistoryCache()

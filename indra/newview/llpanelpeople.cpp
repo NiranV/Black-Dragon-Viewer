@@ -586,10 +586,8 @@ BOOL LLPanelPeople::postBuild()
 	mOnlineFriendList = friends_tab->getChild<LLAvatarList>("avatars_online");
 	mAllFriendList = friends_tab->getChild<LLAvatarList>("avatars_all");
 	mOnlineFriendList->setNoItemsCommentText(getString("no_friends_online"));
-	mOnlineFriendList->setShowIcons("FriendsListShowIcons");
 	mOnlineFriendList->showPermissions("FriendsListShowPermissions");
 	mAllFriendList->setNoItemsCommentText(getString("no_friends"));
-	mAllFriendList->setShowIcons("FriendsListShowIcons");
 	mAllFriendList->showPermissions("FriendsListShowPermissions");
 
 	LLPanel* nearby_tab = getChild<LLPanel>(NEARBY_TAB_NAME);
@@ -598,7 +596,6 @@ BOOL LLPanelPeople::postBuild()
 	mNearbyList->setNoItemsCommentText(getString("no_one_near"));
 	mNearbyList->setNoItemsMsg(getString("no_one_near"));
 	mNearbyList->setNoFilteredItemsMsg(getString("no_one_filtered_near"));
-	mNearbyList->setShowIcons("NearbyListShowIcons");
 	mMiniMap = (LLNetMap*)getChildView("Net Map",true);
 	mMiniMap->setToolTipMsg(gSavedSettings.getBOOL("DoubleClickTeleport") ? 
 		getString("AltMiniMapToolTipMsg") :	getString("MiniMapToolTipMsg"));
@@ -607,7 +604,6 @@ BOOL LLPanelPeople::postBuild()
 	mRecentList->setNoItemsCommentText(getString("no_recent_people"));
 	mRecentList->setNoItemsMsg(getString("no_recent_people"));
 	mRecentList->setNoFilteredItemsMsg(getString("no_filtered_recent_people"));
-	mRecentList->setShowIcons("RecentListShowIcons");
 
 	mGroupList = getChild<LLGroupList>("group_list");
 	mGroupList->setNoItemsMsg(getString("no_groups_msg"));
@@ -1216,11 +1212,6 @@ void LLPanelPeople::onFriendsViewSortMenuItemClicked(const LLSD& userdata)
 	{
 		setSortOrder(mAllFriendList, E_SORT_BY_STATUS);
 	}
-	else if (chosen_item == "view_icons")
-	{
-		mAllFriendList->toggleIcons();
-		mOnlineFriendList->toggleIcons();
-	}
 	else if (chosen_item == "view_permissions")
 	{
 		bool show_permissions = !gSavedSettings.getBOOL("FriendsListShowPermissions");
@@ -1252,10 +1243,6 @@ void LLPanelPeople::onNearbyViewSortMenuItemClicked(const LLSD& userdata)
 	else if (chosen_item == "sort_name")
 	{
 		setSortOrder(mNearbyList, E_SORT_BY_NAME);
-	}
-	else if (chosen_item == "view_icons")
-	{
-		mNearbyList->toggleIcons();
 	}
 	else if (chosen_item == "sort_distance")
 	{
@@ -1289,10 +1276,6 @@ void LLPanelPeople::onRecentViewSortMenuItemClicked(const LLSD& userdata)
 	else if (chosen_item == "sort_name")
 	{
 		setSortOrder(mRecentList, E_SORT_BY_NAME);
-	}
-	else if (chosen_item == "view_icons")
-	{
-		mRecentList->toggleIcons();
 	}
 }
 

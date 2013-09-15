@@ -209,6 +209,8 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
+        
+        
     <!-- Settings below are for back compatibility only.
     They are not used in current viewer anymore. But they can't be removed to avoid
     influence on previous versions of the viewer in case of settings are not used or default value

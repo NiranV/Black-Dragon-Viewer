@@ -1200,3 +1200,169 @@ std::string LLUrlEntryIcon::getIcon(const std::string &url)
 	LLStringUtil::trim(mIcon);
 	return mIcon;
 }
+
+// BD
+// LLUrlEntryRed lets us turn text to red with <red>...</red> tags
+//
+LLUrlEntryRed::LLUrlEntryRed()
+{
+	mPattern = boost::regex("<red>.*?</red>",
+							boost::regex::perl|boost::regex::icase);
+}
+
+std::string LLUrlEntryRed::getUrl(const std::string &url) const
+{
+	// return the text between the <red> and </red> tags
+	return url.substr(5, url.size()-5-6);
+}
+
+std::string LLUrlEntryRed::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
+{
+	getStyle();
+	return getUrl(url);
+}
+
+LLStyle::Params LLUrlEntryRed::getStyle() const 
+{
+	LLStyle::Params style_params;
+	style_params.color = LLUIColorTable::instance().getColor("Red_Chat");
+	style_params.readonly_color = LLUIColorTable::instance().getColor("Red_Chat");
+	return style_params;
+}
+
+// LLUrlEntryGreen lets us turn text to green with <green>...</green> tags
+//
+LLUrlEntryGreen::LLUrlEntryGreen()
+{
+	mPattern = boost::regex("<green>.*?</green>",
+							boost::regex::perl|boost::regex::icase);
+}
+
+std::string LLUrlEntryGreen::getUrl(const std::string &url) const
+{
+	// return the text between the <green> and </green> tags
+	return url.substr(7, url.size()-7-8);
+}
+
+std::string LLUrlEntryGreen::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
+{
+	getStyle();
+	return getUrl(url);
+}
+
+LLStyle::Params LLUrlEntryGreen::getStyle() const 
+{
+	LLStyle::Params style_params;
+	style_params.color = LLUIColorTable::instance().getColor("Green_Chat");
+	style_params.readonly_color = LLUIColorTable::instance().getColor("Green_Chat");
+	return style_params;
+}
+
+// LLUrlEntryBlue lets us turn text to blue with <blue>...</blue> tags
+//
+LLUrlEntryBlue::LLUrlEntryBlue()
+{
+	mPattern = boost::regex("<blue>.*?</blue>",
+							boost::regex::perl|boost::regex::icase);
+}
+
+std::string LLUrlEntryBlue::getUrl(const std::string &url) const
+{
+	// return the text between the <blue> and </blue> tags
+	return url.substr(6, url.size()-6-7);
+}
+
+std::string LLUrlEntryBlue::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
+{
+	getStyle();
+	return getUrl(url);
+}
+
+LLStyle::Params LLUrlEntryBlue::getStyle() const 
+{
+	LLStyle::Params style_params;
+	style_params.color = LLUIColorTable::instance().getColor("Blue_Chat");
+	style_params.readonly_color = LLUIColorTable::instance().getColor("Blue_Chat");
+	return style_params;
+}
+
+// LLUrlEntryUnderline lets us underline text with <u>...</u> tags
+//
+LLUrlEntryUnderline::LLUrlEntryUnderline()
+{
+	mPattern = boost::regex("<u>.*?</u>",
+							boost::regex::perl|boost::regex::icase);
+}
+
+std::string LLUrlEntryUnderline::getUrl(const std::string &url) const
+{
+	// return the text between the <u> and </u> tags
+	return url.substr(3, url.size()-3-4);
+}
+
+std::string LLUrlEntryUnderline::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
+{
+	getStyle();
+	return getUrl(url);
+}
+
+LLStyle::Params LLUrlEntryUnderline::getStyle() const 
+{
+	LLStyle::Params style_params;
+	style_params.font.style = "UNDERLINE";
+	return style_params;
+}
+
+// LLUrlEntryBold lets us write fat letters with <b>...</b> tags
+//
+LLUrlEntryBold::LLUrlEntryBold()
+{
+	mPattern = boost::regex("<b>.*?</b>",
+							boost::regex::perl|boost::regex::icase);
+}
+
+std::string LLUrlEntryBold::getUrl(const std::string &url) const
+{
+	// return the text between the <b> and </b> tags
+	return url.substr(3, url.size()-3-4);
+}
+
+std::string LLUrlEntryBold::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
+{
+	getStyle();
+	return getUrl(url);
+}
+
+LLStyle::Params LLUrlEntryBold::getStyle() const 
+{
+	LLStyle::Params style_params;
+	style_params.font.style = "BOLD";
+	return style_params;
+}
+
+// LLUrlEntryItalic lets us write in italic style with <i>...</i> tags
+//
+LLUrlEntryItalic::LLUrlEntryItalic()
+{
+	mPattern = boost::regex("<i>.*?</i>",
+							boost::regex::perl|boost::regex::icase);
+}
+
+std::string LLUrlEntryItalic::getUrl(const std::string &url) const
+{
+	// return the text between the <i> and </i> tags
+	return url.substr(3, url.size()-3-4);
+}
+
+std::string LLUrlEntryItalic::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
+{
+	getStyle();
+	return getUrl(url);
+}
+
+LLStyle::Params LLUrlEntryItalic::getStyle() const 
+{
+	LLStyle::Params style_params;
+	style_params.font.style = "ITALIC";
+	return style_params;
+}

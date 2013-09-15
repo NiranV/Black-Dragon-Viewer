@@ -302,6 +302,9 @@ public:
 
 	void addToCreateTexture();
 
+	void addExplicitFormat(LLGLuint format);
+	void removeExplicitFormat();
+
 	 // ONLY call from LLViewerTextureList
 	BOOL createTexture(S32 usename = 0);
 	void destroyTexture() ;	
@@ -412,6 +415,9 @@ private:
 	BOOL  mFullyLoaded;
 	BOOL  mInDebug;
 	BOOL  mInFastCacheList;
+	BOOL  mHasExplicitFormat;
+	LLGLuint mInternalFormat;
+	LLGLuint mPrimaryFormat;
 
 protected:		
 	std::string mLocalFileName;
@@ -494,6 +500,7 @@ public:
 	static LLPointer<LLViewerFetchedTexture> sDefaultImagep; // "Default" texture for error cases, the only case of fetched texture which is generated in local.
 	static LLPointer<LLViewerFetchedTexture> sSmokeImagep; // Old "Default" translucent texture
 	static LLPointer<LLViewerFetchedTexture> sFlatNormalImagep; // Flat normal map denoting no bumpiness on a surface
+	static LLPointer<LLViewerFetchedTexture> sExodusColorGradeTexp;
 };
 
 //

@@ -66,18 +66,16 @@
 	<radio_group name="edit_radio_group">
 		<radio_item label="Bewegen" name="radio position"/>
 		<radio_item label="Drehen (Strg)" name="radio rotate"/>
-		<radio_item label="Dehnen (Strg+Umschalt)" name="radio stretch"/>
+		<radio_item label="Dehnen (Strg+Shift)" name="radio stretch"/>
 		<radio_item label="Fläche auswählen" name="radio select face"/>
+		<radio_item label="Ausrichten" name="radio align"/>
 	</radio_group>
-	<check_box label="Verknüpfte Teile bearbeiten" name="checkbox edit linked parts"/>
-	<button label="Link" name="link_btn" width="30"/>
-	<button label="Verknüpfung auflösen" name="unlink_btn" width="126"/>
-	<check_box label="" name="checkbox uniform"/>
-	<text label="Beide Seiten dehnen" name="checkbox uniform label">
-		Beide Seiten dehnen
-	</text>
-	<check_box initial_value="true" label="Texturen dehnen" name="checkbox stretch textures" top_pad="-5"/>
-	<check_box initial_value="true" label="Einrasten" name="checkbox snap to grid" top_pad="15"/>
+	<check_box label="Verlinktes bearbeiten" name="checkbox edit linked parts"/>
+	<button label="Ver-" name="link_btn"/>
+	<button label="Ent-linken" name="unlink_btn"/>
+	<check_box label="Beide Seiten dehnen" name="checkbox uniform"/>
+	<check_box initial_value="true" label="Texturen dehnen" name="checkbox stretch textures"/>
+	<check_box initial_value="true" label="Einrasten" name="checkbox snap to grid"/>
 	<combo_box name="combobox grid mode" tool_tip="Wählen Sie das gewünschte Rasterlineal zum Positionieren des Objekts aus.">
 		<combo_box.item label="Welt" name="World"/>
 		<combo_box.item label="Lokal" name="Local"/>
@@ -99,7 +97,7 @@
 	<button label="" label_selected="" name="ToolRing" tool_tip="Ring"/>
 	<button label="" label_selected="" name="ToolTree" tool_tip="Baum"/>
 	<button label="" label_selected="" name="ToolGrass" tool_tip="Gras"/>
-	<check_box label="Ausgewähltes Werkzeug beibehalten" name="checkbox sticky"/>
+	<check_box label="Werkzeug beibehalten" name="checkbox sticky"/>
 	<check_box label="Auswahl kopieren" name="checkbox copy selection"/>
 	<check_box initial_value="true" label="Kopie zentrieren" name="checkbox copy centers"/>
 	<check_box label="Kopie drehen" name="checkbox copy rotates"/>

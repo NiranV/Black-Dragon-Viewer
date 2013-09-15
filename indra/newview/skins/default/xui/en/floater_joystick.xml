@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
  legacy_header_height="18"
- height="500"
+ height="460"
  layout="topleft"
  name="Joystick"
- help_topic="joystick"
+ background_color="FloaterDefaultBackgroundColor"
  title="JOYSTICK CONFIGURATION"
  width="569">
     <floater.string
@@ -13,7 +13,6 @@
     </floater.string>
     <check_box
      bottom="38"
-     height="10"
      control_name="JoystickEnabled"
      halign="left"
      label="Enable Joystick:"
@@ -29,7 +28,6 @@
      width="380" />
     <spinner
      bottom="48"
-     height="10"
      control_name="JoystickAxis1"
      decimal_digits="0"
      increment="1"
@@ -43,7 +41,6 @@
      width="140" />
     <spinner
      bottom="48"
-     height="10"     
      control_name="JoystickAxis2"
      decimal_digits="0"
      increment="1"
@@ -57,7 +54,6 @@
      width="140" />
     <spinner
      bottom="48"
-     height="10"     
      control_name="JoystickAxis0"
      decimal_digits="0"
      increment="1"
@@ -71,7 +67,6 @@
      width="140" />
     <spinner
      bottom="68"
-     height="10"     
      control_name="JoystickAxis4"
      decimal_digits="0"
      increment="1"
@@ -85,7 +80,6 @@
      width="140" />
     <spinner
      bottom="68"
-     height="10"     
      control_name="JoystickAxis5"
      decimal_digits="0"
      increment="1"
@@ -99,7 +93,6 @@
      width="140" />
     <spinner
      bottom="68"
-     height="10"     
      control_name="JoystickAxis3"
      decimal_digits="0"
      increment="1"
@@ -113,7 +106,6 @@
      width="140" />
     <spinner
      bottom="88"
-     height="10"     
      control_name="JoystickAxis6"
      decimal_digits="0"
      increment="1"
@@ -126,8 +118,7 @@
      name="JoystickAxis6"
      width="140" />
     <check_box
-     bottom_delta="18"
-     height="10"
+     bottom_delta="10"
      control_name="ZoomDirect"
      label="Direct Zoom"
      layout="topleft"
@@ -136,7 +127,6 @@
      width="60" />
     <check_box
      bottom_delta="0"
-     height="10"     
      control_name="Cursor3D"
      label="3D Cursor"
      layout="topleft"
@@ -145,7 +135,6 @@
      width="60" />
     <check_box
      bottom_delta="0"
-     height="10"     
      control_name="AutoLeveling"
      label="Auto Level"
      layout="topleft"
@@ -162,13 +151,12 @@
      left="37"
      mouse_opaque="false"
      name="Control Modes:"
-     top="110"
+     top="105"
      width="102">
         Control Modes:
     </text>
     <check_box
-     bottom="127"
-     height="10"     
+     bottom="122"
      control_name="JoystickAvatarEnabled"
      halign="center"
      label="Avatar"
@@ -177,8 +165,7 @@
      name="JoystickAvatarEnabled"
      width="60" />
     <check_box
-     bottom="127"
-     height="10"     
+     bottom="122"
      control_name="JoystickBuildEnabled"
      halign="center"
      label="Build"
@@ -187,8 +174,7 @@
      name="JoystickBuildEnabled"
      width="60" />
     <check_box
-     bottom="127"
-     height="10"     
+     bottom="122"
      control_name="JoystickFlycamEnabled"
      halign="center"
      label="Flycam"
@@ -203,7 +189,7 @@
      left="359"
      name="axis_view"
      show_label="true"
-     top="142"
+     top="127"
      width="200">
         <stat_bar
          bar_max="2"
@@ -261,7 +247,7 @@
     <text
      type="string"
      length="1"
-     bottom="144"
+     bottom="135"
      halign="right"
      layout="topleft"
      left="3"
@@ -270,8 +256,7 @@
         X Scale
     </text>
     <spinner
-     bottom="144"
-     height="10"     
+     bottom="135"
      control_name="AvatarAxisScale1"
      decimal_digits="2"
      label_width="0"
@@ -282,8 +267,7 @@
      name="AvatarAxisScale1"
      width="56" />
     <spinner
-     bottom="144"
-     height="10"     
+     bottom="135"
      control_name="BuildAxisScale1"
      decimal_digits="2"
      label_width="0"
@@ -294,8 +278,7 @@
      name="BuildAxisScale1"
      width="56" />
     <spinner
-     bottom="144"
-     height="10"     
+     bottom="135"
      control_name="FlycamAxisScale1"
      decimal_digits="2"
      label_width="0"
@@ -308,7 +291,7 @@
     <text
      type="string"
      length="1"
-     bottom="164"
+     bottom="155"
      halign="right"
      layout="topleft"
      left="3"
@@ -317,8 +300,7 @@
         Y Scale
     </text>
     <spinner
-     bottom="164"
-     height="10"     
+     bottom="155"
      control_name="AvatarAxisScale2"
      decimal_digits="2"
      label_width="0"
@@ -329,8 +311,7 @@
      name="AvatarAxisScale2"
      width="56" />
     <spinner
-     bottom="164"
-     height="10"     
+     bottom="155"
      control_name="BuildAxisScale2"
      decimal_digits="2"
      label_width="0"
@@ -341,8 +322,7 @@
      name="BuildAxisScale2"
      width="56" />
     <spinner
-     bottom="164"
-     height="10"     
+     bottom="155"
      control_name="FlycamAxisScale2"
      decimal_digits="2"
      label_width="0"
@@ -355,7 +335,7 @@
     <text
      type="string"
      length="1"
-     bottom="184"
+     bottom="175"
      halign="right"
      layout="topleft"
      left="3"
@@ -364,8 +344,7 @@
         Z Scale
     </text>
     <spinner
-     bottom="184"
-     height="10"     
+     bottom="175"
      control_name="AvatarAxisScale0"
      decimal_digits="2"
      label_width="0"
@@ -376,8 +355,7 @@
      name="AvatarAxisScale0"
      width="56" />
     <spinner
-     bottom="184"
-     height="10"     
+     bottom="175"
      control_name="BuildAxisScale0"
      decimal_digits="2"
      label_width="0"
@@ -388,8 +366,7 @@
      name="BuildAxisScale0"
      width="56" />
     <spinner
-     bottom="184"
-     height="10"     
+     bottom="175"
      control_name="FlycamAxisScale0"
      decimal_digits="2"
      label_width="0"
@@ -402,7 +379,7 @@
     <text
      type="string"
      length="1"
-     bottom="204"
+     bottom="195"
      halign="right"
      layout="topleft"
      left="3"
@@ -411,8 +388,7 @@
         Pitch Scale
     </text>
     <spinner
-     bottom="204"
-     height="10"     
+     bottom="195"
      control_name="AvatarAxisScale4"
      decimal_digits="2"
      label_width="0"
@@ -423,8 +399,7 @@
      name="AvatarAxisScale4"
      width="56" />
     <spinner
-     bottom="204"
-     height="10"     
+     bottom="195"
      control_name="BuildAxisScale4"
      decimal_digits="2"
      label_width="0"
@@ -435,8 +410,7 @@
      name="BuildAxisScale4"
      width="56" />
     <spinner
-     bottom="204"
-     height="10"     
+     bottom="195"
      control_name="FlycamAxisScale4"
      decimal_digits="2"
      label_width="0"
@@ -449,7 +423,7 @@
     <text
      type="string"
      length="1"
-     bottom="224"
+     bottom="215"
      halign="right"
      layout="topleft"
      left="3"
@@ -458,8 +432,7 @@
         Yaw Scale
     </text>
     <spinner
-     bottom="224"
-     height="10"
+     bottom="215"
      control_name="AvatarAxisScale5"
      decimal_digits="2"
      label_width="0"
@@ -470,8 +443,7 @@
      name="AvatarAxisScale5"
      width="56" />
     <spinner
-     bottom="224"
-     height="10"
+     bottom="215"
      control_name="BuildAxisScale5"
      decimal_digits="2"
      label_width="0"
@@ -482,8 +454,7 @@
      name="BuildAxisScale5"
      width="56" />
     <spinner
-     bottom="224"
-     height="10"
+     bottom="215"
      control_name="FlycamAxisScale5"
      decimal_digits="2"
      label_width="0"
@@ -496,7 +467,7 @@
     <text
      type="string"
      length="1"
-     bottom="244"
+     bottom="235"
      halign="right"
      layout="topleft"
      left="3"
@@ -505,8 +476,7 @@
         Roll Scale
     </text>
     <spinner
-     bottom="244"
-     height="10"
+     bottom="235"
      control_name="BuildAxisScale3"
      decimal_digits="2"
      label_width="0"
@@ -517,8 +487,7 @@
      name="BuildAxisScale3"
      width="56" />
     <spinner
-     bottom="244"
-     height="10"
+     bottom="235"
      control_name="FlycamAxisScale3"
      decimal_digits="2"
      label_width="0"
@@ -531,7 +500,7 @@
     <text
      type="string"
      length="1"
-     bottom="274"
+     bottom="265"
      halign="right"
      layout="topleft"
      left="3"
@@ -540,8 +509,7 @@
         X Dead Zone
     </text>
     <spinner
-     bottom="274"
-     height="10"
+     bottom="265"
      control_name="AvatarAxisDeadZone1"
      decimal_digits="2"
      increment="0.01"
@@ -551,8 +519,7 @@
      name="AvatarAxisDeadZone1"
      width="56" />
     <spinner
-     bottom="274"
-     height="10"
+     bottom="265"
      control_name="BuildAxisDeadZone1"
      decimal_digits="2"
      increment="0.01"
@@ -562,8 +529,7 @@
      name="BuildAxisDeadZone1"
      width="56" />
     <spinner
-     bottom="274"
-     height="10"
+     bottom="265"
      control_name="FlycamAxisDeadZone1"
      decimal_digits="2"
      increment="0.01"
@@ -575,7 +541,7 @@
     <text
      type="string"
      length="1"
-     bottom="294"
+     bottom="285"
      halign="right"
      layout="topleft"
      left="3"
@@ -584,8 +550,7 @@
         Y Dead Zone
     </text>
     <spinner
-     bottom="294"
-     height="10"     
+     bottom="285"
      control_name="AvatarAxisDeadZone2"
      decimal_digits="2"
      increment="0.01"
@@ -595,8 +560,7 @@
      name="AvatarAxisDeadZone2"
      width="56" />
     <spinner
-     bottom="294"
-     height="10"
+     bottom="285"
      control_name="BuildAxisDeadZone2"
      decimal_digits="2"
      increment="0.01"
@@ -606,8 +570,7 @@
      name="BuildAxisDeadZone2"
      width="56" />
     <spinner
-     bottom="294"
-     height="10"
+     bottom="285"
      control_name="FlycamAxisDeadZone2"
      decimal_digits="2"
      increment="0.01"
@@ -619,7 +582,7 @@
     <text
      type="string"
      length="1"
-     bottom="314"
+     bottom="305"
      halign="right"
      layout="topleft"
      left="3"
@@ -628,8 +591,7 @@
         Z Dead Zone
     </text>
     <spinner
-     bottom="314"
-     height="10"
+     bottom="305"
      control_name="AvatarAxisDeadZone0"
      decimal_digits="2"
      increment="0.01"
@@ -639,8 +601,7 @@
      name="AvatarAxisDeadZone0"
      width="56" />
     <spinner
-     bottom="314"
-     height="10"
+     bottom="305"
      control_name="BuildAxisDeadZone0"
      decimal_digits="2"
      increment="0.01"
@@ -650,8 +611,7 @@
      name="BuildAxisDeadZone0"
      width="56" />
     <spinner
-     bottom="314"
-     height="10"
+     bottom="305"
      control_name="FlycamAxisDeadZone0"
      decimal_digits="2"
      increment="0.01"
@@ -663,7 +623,7 @@
     <text
      type="string"
      length="1"
-     bottom="334"
+     bottom="325"
      halign="right"
      layout="topleft"
      left="2"
@@ -672,8 +632,7 @@
         Pitch Dead Zone
     </text>
     <spinner
-     bottom="334"
-     height="10"
+     bottom="325"
      control_name="AvatarAxisDeadZone4"
      decimal_digits="2"
      increment="0.01"
@@ -683,8 +642,7 @@
      name="AvatarAxisDeadZone4"
      width="56" />
     <spinner
-     bottom="334"
-     height="10"
+     bottom="325"
      control_name="BuildAxisDeadZone4"
      decimal_digits="2"
      increment="0.01"
@@ -694,8 +652,7 @@
      name="BuildAxisDeadZone4"
      width="56" />
     <spinner
-     bottom="334"
-     height="10"
+     bottom="325"
      control_name="FlycamAxisDeadZone4"
      decimal_digits="2"
      increment="0.01"
@@ -707,7 +664,7 @@
     <text
      type="string"
      length="1"
-     bottom="354"
+     bottom="345"
      halign="right"
      layout="topleft"
      left="3"
@@ -716,8 +673,7 @@
         Yaw Dead Zone
     </text>
     <spinner
-     bottom="354"
-     height="10"
+     bottom="345"
      control_name="AvatarAxisDeadZone5"
      decimal_digits="2"
      increment="0.01"
@@ -727,8 +683,7 @@
      name="AvatarAxisDeadZone5"
      width="56" />
     <spinner
-     bottom="354"
-     height="10"
+     bottom="345"
      control_name="BuildAxisDeadZone5"
      decimal_digits="2"
      increment="0.01"
@@ -738,8 +693,7 @@
      name="BuildAxisDeadZone5"
      width="56" />
     <spinner
-     bottom="354"
-     height="10"
+     bottom="345"
      control_name="FlycamAxisDeadZone5"
      decimal_digits="2"
      increment="0.01"
@@ -751,7 +705,7 @@
     <text
      type="string"
      length="1"
-     bottom="374"
+     bottom="365"
      halign="right"
      layout="topleft"
      left="3"
@@ -760,8 +714,7 @@
         Roll Dead Zone
     </text>
     <spinner
-     bottom="374"
-     height="10"
+     bottom="365"
      control_name="BuildAxisDeadZone3"
      decimal_digits="2"
      increment="0.01"
@@ -771,8 +724,7 @@
      name="BuildAxisDeadZone3"
      width="56" />
     <spinner
-     bottom="374"
-     height="10"
+     bottom="365"
      control_name="FlycamAxisDeadZone3"
      decimal_digits="2"
      increment="0.01"
@@ -781,10 +733,25 @@
      left="290"
      name="FlycamAxisDeadZone3"
      width="56" />
+    <slider
+     control_name="FlycamFeathering"
+     decimal_digits="0"
+     follows="left|top"
+     height="16"
+     increment="0.05"
+     initial_value="1"
+     layout="topleft"
+     left="281"
+     max_val="1"
+     min_val="0.1"
+     name="FlycamFeathering2"
+     show_text="false"
+     top="395"
+     width="73" />
     <text
      type="string"
      length="1"
-     bottom="402"
+     bottom="397"
      halign="right"
      layout="topleft"
      left="3"
@@ -805,7 +772,7 @@
      min_val="1"
      name="AvatarFeathering"
      show_text="false"
-     top="402"
+     top="381"
      width="73" />
     <slider
      control_name="BuildFeathering"
@@ -828,7 +795,7 @@
      follows="left|top"
      height="16"
      increment="1"
-     initial_value="0.7"
+     initial_value="1"
      layout="topleft"
      left_delta="70"
      max_val="32"
@@ -840,7 +807,7 @@
     <text
      type="string"
      length="1"
-     bottom="430"
+     bottom="421"
      halign="right"
      layout="topleft"
      left="3"
@@ -849,8 +816,7 @@
         Zoom Scale
     </text>
     <spinner
-     bottom="430"
-     height="10"
+     bottom="421"
      control_name="FlycamAxisScale6"
      decimal_digits="2"
      label_width="0"
@@ -863,7 +829,7 @@
     <text
      type="string"
      length="1"
-     bottom="450"
+     bottom="441"
      halign="right"
      layout="topleft"
      left="3"
@@ -872,8 +838,7 @@
         Zoom Dead Zone
     </text>
     <spinner
-     bottom="450"
-     height="10"
+     bottom="441"
      control_name="FlycamAxisDeadZone6"
      decimal_digits="2"
      increment="0.01"
@@ -889,7 +854,7 @@
      layout="topleft"
      left="359"
      name="SpaceNavigatorDefaults"
-     top="429"
+     top="400"
      width="200" />
     <button
      follows="right|bottom"

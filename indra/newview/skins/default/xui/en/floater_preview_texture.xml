@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
  legacy_header_height="18"
+ auto_tile="true"
  can_resize="true"
- height="350"
+ follows="left|top"
+ height="500"
  layout="topleft"
- min_height="200"
- min_width="370"
+ min_height="280"
+ min_width="375"
+ background_color="FloaterDefaultBackgroundColor"
  name="preview_texture"
- help_topic="preview_texture"
- width="370">
+ width="500">
    <floater.string
      name="Title">
         Texture: [NAME]
@@ -26,7 +28,7 @@
      layout="topleft"
      left="10"
      name="desc txt"
-     top="21"
+     top="22"
      width="90">
         Description:
     </text>
@@ -36,51 +38,53 @@
      follows="left|top|right"
      font="SansSerif"
      height="19"
+	 text_pad_right="100"
      layout="topleft"
      left_pad="0"
+	 top_delta="-2"
      max_length_bytes="127"
      name="desc"
-     width="190" />
-    <text
+     width="390" />
+	<icon
+       follows="top|right"
+       image_name="white.tga"
+	   color="0 0 0 0.8"
+       mouse_opaque="false"
+       name="bg"
+       scale_image="true"
+       visible="true"
+       left="400"
+       top_delta="0"
+       height="18"
+       width="90"/>
+	<text
      type="string"
-     halign="right"
+     halign="center"
      length="1"
-     follows="right|bottom"
-     height="16"
+     follows="left|top"
+	 text_color="1 1 1 0.75"
+     height="18"
      layout="topleft"
-     left="110"
+     left_delta="0"
      name="dimensions"
-     top="255"
-     width="200">
-        [WIDTH]px x [HEIGHT]px
-    </text>
-    <text
-     type="string"
-     halign="right"
-     length="1"
-     follows="right|bottom"
-     height="16"
-     layout="topleft"
-     left_delta="-110"
-     name="aspect_ratio"
-     top_pad="5"
-     width="200">
-        Preview aspect ratio
+     top_delta="3"
+     width="90">
+        [WIDTH] x [HEIGHT]
     </text>
     <combo_box
      allow_text_entry="true" 
-     top_delta="-3" 
+     top="470" 
      follows="right|bottom" 
      height="23"
-     left_pad="10"
+     left="134"
      max_chars="20"
      mouse_opaque="true"
      enabled="true"
-     width="108"
+     width="75"
      name="combo_aspect_ratio"
      tool_tip="Preview at a fixed aspect ratio">
     	<combo_item name="Unconstrained" value="Unconstrained">
-    		Unconstrained
+    		None
     	</combo_item>
    	<combo_item name="1:1" value="1:1" tool_tip="Group insignia or Real World profile">
 		1:1
@@ -109,10 +113,10 @@
      height="22"
      label="OK"
      layout="topleft"
-     left="6"
+     left="210"
      name="Keep"
-     top_pad="5"
-     width="110" />
+     top="470"
+     width="50" />
     <button
      follows="right|bottom"
      height="22"

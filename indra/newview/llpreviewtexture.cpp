@@ -281,16 +281,11 @@ void LLPreviewTexture::reshape(S32 width, S32 height, BOOL called_from_parent)
 {
 	LLPreview::reshape(width, height, called_from_parent);
 
-	LLRect dim_rect(getChildView("dimensions")->getRect());
-
-	S32 horiz_pad = 2 * (LLPANEL_BORDER_WIDTH + PREVIEW_PAD) + PREVIEW_RESIZE_HANDLE_SIZE;
-
-	// add space for dimensions and aspect ratio
-	S32 info_height = dim_rect.mTop + CLIENT_RECT_VPAD;
+	S32 horiz_pad = 10;
 
 	LLRect client_rect(horiz_pad, getRect().getHeight(), getRect().getWidth() - horiz_pad, 0);
-	client_rect.mTop -= (PREVIEW_HEADER_SIZE + CLIENT_RECT_VPAD);
-	client_rect.mBottom += PREVIEW_BORDER + CLIENT_RECT_VPAD + info_height ;
+	client_rect.mTop -= 50;
+	client_rect.mBottom += 35;
 
 	S32 client_width = client_rect.getWidth();
 	S32 client_height = client_rect.getHeight();

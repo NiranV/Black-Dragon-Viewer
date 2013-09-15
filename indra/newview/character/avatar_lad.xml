@@ -211,7 +211,7 @@
      pie_slice="5"
      name="L Forearm"
      joint="mElbowLeft"
-     position="0 0.113 0"
+     position="0 0.12 0"
      rotation="0 0 0"
    visible_in_first_person="true" />
 
@@ -261,7 +261,7 @@
      pie_slice="4"
      name="L Upper Leg"
      joint="mHipLeft"
-     position="-0.019 -0.034 -0.310"
+     position="-0.017 -0.041 -0.310"
      rotation="0 0 0"
    visible_in_first_person="true"/>
 
@@ -271,7 +271,7 @@
      pie_slice="5"
      name="L Lower Leg"
      joint="mKneeLeft"
-     position="-0.044 -0.007 -0.261"
+     position="-0.044 -0.007 -0.262"
      rotation="0 0 0"
    visible_in_first_person="true" />
 
@@ -396,7 +396,7 @@
     <attachment_point
        id="39"
        group="6"
-       pie_slice="1"
+       pie_slice="4"
        name="Neck"
        joint="mNeck"
        position="0 0 0"
@@ -1084,7 +1084,8 @@
          scale="0 0 .5" />
       </param_skeleton>
     </param>
-                          <param
+
+    <param
      id="11001"
      group="0"
      name="Hover"
@@ -12307,7 +12308,7 @@ render_pass="bump">
 	 <param_driver />
     </param>
 
-  <param
+    <param
      id="11000"
      group="0"
      name="AppearanceMessage_Version"

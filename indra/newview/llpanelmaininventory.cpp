@@ -116,7 +116,6 @@ LLPanelMainInventory::LLPanelMainInventory(const LLPanel::Params& p)
  	//mCommitCallbackRegistrar.add("Inventory.NewWindow", boost::bind(&LLPanelMainInventory::newWindow, this));
 	mCommitCallbackRegistrar.add("Inventory.ShowFilters", boost::bind(&LLPanelMainInventory::toggleFindOptions, this));
 	mCommitCallbackRegistrar.add("Inventory.ResetFilters", boost::bind(&LLPanelMainInventory::resetFilters, this));
-	mCommitCallbackRegistrar.add("Inventory.SetSortBy", boost::bind(&LLPanelMainInventory::setSortBy, this, _2));
 	mCommitCallbackRegistrar.add("Inventory.Share",  boost::bind(&LLAvatarActions::shareWithAvatars, this));
 
 	mSavedFolderState = new LLSaveFolderState();
@@ -182,6 +181,10 @@ BOOL LLPanelMainInventory::postBuild()
 		}
 
 	}
+
+	getChild<LLButton>("sort_by_date")->setCommitCallback(boost::bind(&LLPanelMainInventory::setSortObjects, this));
+	getChild<LLButton>("sort_folders_by_name")->setCommitCallback(boost::bind(&LLPanelMainInventory::setSortFoldersByName, this));
+	getChild<LLButton>("sys_folders_on_top")->setCommitCallback(boost::bind(&LLPanelMainInventory::setSortSystemOnTop, this));
 
 	mFilterEditor = getChild<LLFilterEditor>("inventory search editor");
 	if (mFilterEditor)
@@ -332,41 +335,47 @@ void LLPanelMainInventory::resetFilters()
 	setFilterTextFromFilter();
 }
 
-void LLPanelMainInventory::setSortBy(const LLSD& userdata)
+void LLPanelMainInventory::setSortSystemOnTop()
 {
 	U32 sort_order_mask = getActivePanel()->getSortOrder();
-	std::string sort_type = userdata.asString();
-	if (sort_type == "name")
+	if ( sort_order_mask & LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP )
+	{
+		sort_order_mask &= ~LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP;
+	}
+	else
+	{
+		sort_order_mask |= LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP;
+	}
+	getActivePanel()->setSortOrder(sort_order_mask);
+	gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
+}
+
+void LLPanelMainInventory::setSortFoldersByName()
+{
+	U32 sort_order_mask = getActivePanel()->getSortOrder();
+	if ( sort_order_mask & LLInventoryFilter::SO_FOLDERS_BY_NAME )
+	{
+		sort_order_mask &= ~LLInventoryFilter::SO_FOLDERS_BY_NAME;
+	}
+	else
+	{
+		sort_order_mask |= LLInventoryFilter::SO_FOLDERS_BY_NAME;
+	}
+	getActivePanel()->setSortOrder(sort_order_mask);
+	gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
+}
+
+void LLPanelMainInventory::setSortObjects()
+{
+	U32 sort_order_mask = getActivePanel()->getSortOrder();
+	if (sort_order_mask & gSavedSettings.getBOOL("InventorySortObjectsByDate"))
 	{
 		sort_order_mask &= ~LLInventoryFilter::SO_DATE;
 	}
-	else if (sort_type == "date")
+	else
 	{
 		sort_order_mask |= LLInventoryFilter::SO_DATE;
 	}
-	else if (sort_type == "foldersalwaysbyname")
-	{
-		if ( sort_order_mask & LLInventoryFilter::SO_FOLDERS_BY_NAME )
-		{
-			sort_order_mask &= ~LLInventoryFilter::SO_FOLDERS_BY_NAME;
-		}
-		else
-		{
-			sort_order_mask |= LLInventoryFilter::SO_FOLDERS_BY_NAME;
-		}
-	}
-	else if (sort_type == "systemfolderstotop")
-	{
-		if ( sort_order_mask & LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP )
-		{
-			sort_order_mask &= ~LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP;
-		}
-		else
-		{
-			sort_order_mask |= LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP;
-		}
-	}
-
 	getActivePanel()->setSortOrder(sort_order_mask);
 	gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
 }
@@ -574,7 +583,6 @@ void LLPanelMainInventory::updateItemcountText()
 
 	LLStringUtil::format_map_t string_args;
 	string_args["[ITEM_COUNT]"] = item_count_string;
-	string_args["[FILTER]"] = getFilterText();
 
 	std::string text = "";
 
@@ -997,26 +1005,6 @@ void LLPanelMainInventory::onCustomAction(const LLSD& userdata)
 	if (command_name == "new_window")
 	{
 		newWindow();
-	}
-	if (command_name == "sort_by_name")
-	{
-		const LLSD arg = "name";
-		setSortBy(arg);
-	}
-	if (command_name == "sort_by_recent")
-	{
-		const LLSD arg = "date";
-		setSortBy(arg);
-	}
-	if (command_name == "sort_folders_by_name")
-	{
-		const LLSD arg = "foldersalwaysbyname";
-		setSortBy(arg);
-	}
-	if (command_name == "sort_system_folders_to_top")
-	{
-		const LLSD arg = "systemfolderstotop";
-		setSortBy(arg);
 	}
 	if (command_name == "show_filters")
 	{

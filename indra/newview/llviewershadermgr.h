@@ -58,6 +58,8 @@ public:
 	BOOL loadShadersInterface();
 	BOOL loadShadersWindLight();
 	BOOL loadTransformShaders();
+	void unloadExodusPostShaders();
+    BOOL loadExodusPostShaders();
 
 	std::vector<S32> mVertexShaderLevel;
 	S32	mMaxAvatarShaderLevel;
@@ -327,6 +329,16 @@ extern LLGLSLShader			gWLCloudProgram;
 extern LLGLSLShader			gPostColorFilterProgram;
 extern LLGLSLShader			gPostNightVisionProgram;
 
+//Exodus post processing shaders
+extern LLGLSLShader         gGammaCorrectionPost;
+extern LLGLSLShader         gColorGradePost;
+extern LLGLSLShader         gLinearToneMapping;
+extern LLGLSLShader         gReinhardToneMapping;
+extern LLGLSLShader         gFilmicToneMapping;
+extern LLGLSLShader         gGammaConvertPrepass;
+extern LLGLSLShader         gVignettePost;
+extern LLGLSLShader         gColorGradePostLegacy;
+extern LLGLSLShader         gFilmicToneMappingAdv;
 
 // Deferred rendering shaders
 extern LLGLSLShader			gDeferredImpostorProgram;

@@ -487,10 +487,28 @@ bool LLWLParamManager::applyDayCycleParams(const LLSD& params, LLEnvKey::EScope 
 	return true;
 }
 
-bool LLWLParamManager::applySkyParams(const LLSD& params)
+bool LLWLParamManager::applySkyParams(const LLSD& params, bool interpolate /*= false*/)
 {
-	mAnimator.deactivate();
-	mCurParams.setAll(params);
+	if (params.size() == 0)
+	{
+		llwarns << "Undefined sky params" << llendl;
+		return false;
+	}
+
+	if (interpolate)
+	{
+		if (!mAnimator.getIsRunning())
+			resetAnimator(0.f, true); 
+		
+		if (!params.has("mName") || mCurParams.mName != params["mName"])
+			LLWLParamManager::getInstance()->mAnimator.startInterpolationSky(params);
+	}
+	else
+	{
+		mAnimator.deactivate();
+		mCurParams.setAll(params);
+	}
+
 	return true;
 }
 

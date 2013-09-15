@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-
 <floater
   positioning="cascading"
   legacy_header_height="18"
   can_resize="true"
   height="588"
+  background_color="FloaterColorPlaces"
   layout="topleft"
   name="floater_places"
-  help_topic="floater_places"
   save_rect="true"
   reuse_instance="true"
-  title="PLACES"
-  min_height="440"
+  title="Places"
+  min_height="230"
   min_width="333"
   width="333">
     <panel

@@ -2,8 +2,8 @@
  <panel name="Outfits"
  bg_alpha_color="DkGray"
  bg_opaque_color="DkGray"
- background_opaque="true"
- background_visible="true"
+ background_opaque="false"
+ background_visible="false"
   follows="all"
  height="575"
  label="Things"
@@ -27,59 +27,57 @@
      left="5"
      name="appearance_tabs"
      tab_min_width="150"
-     tab_height="30"
+     tab_height="20"
      tab_position="top"
      halign="center"
      top="8"
-     width="315">
+     width="310">
          <panel
            class="outfits_list"
            filename="panel_outfits_list.xml"
            height="520"
            name="outfitslist_tab"
-           background_visible="true"
-           help_topic="my_outfits_tab"
+           background_visible="false"
            follows="all"
-           label="MY OUTFITS"
+           label="My Outfits"
            layout="topleft"
            width="315" />
          <panel
-           background_visible="true"
+           background_visible="false"
            bg_alpha_color="DkGray"
            class="panel_wearing"
            filename="panel_outfits_wearing.xml"
            follows="all"
            height="520"
-           help_topic="now_wearing_tab"
-           label="WEARING"
+           label="Worn Outfit"
            layout="topleft"
            name="cof_tab"
            width="315" />
    </tab_container>
 
    <panel
-       background_visible="true"
+       background_visible="false"
        follows="bottom|left|right"
        height="27"
        layout="topleft"
-       left="9"
+       left="8"
        top_pad="1"
        visible="true"
        name="bottom_panel"
        width="310">
-			<layout_stack
-     	         follows="bottom|left|right"
-		         height="23"
-		         layout="topleft"
-		         mouse_opaque="false"
-		         name="bottom_panel_ls"
-		         left="0"
-		         orientation="horizontal"
-		         top="0"
-		         width="308">	
-			    <layout_panel
-			         follows="bottom|left|right"
-			         height="23"
+	    <layout_stack
+	     follows="bottom|left|right"
+	     height="23"
+	     layout="topleft"
+	     mouse_opaque="false"
+	     name="bottom_panel_ls"
+	     left="0"
+	     orientation="horizontal"
+	     top="0"
+	     width="308">	
+		<layout_panel
+		     follows="bottom|left|right"
+		     height="23"
                      layout="bottomleft"
                      left="0"			
                      mouse_opaque="false"
@@ -94,14 +92,18 @@
                          layout="topleft"
                          name="save_btn"
                          top="0"
-                         width="155" />
+																									image_selected="SegmentedBtn_Left_Selected_Press"
+                         image_unselected="SegmentedBtn_Left_Off"
+                         image_pressed="SegmentedBtn_Left_Press"
+                         image_pressed_selected="SegmentedBtn_Left_Selected_Press"
+                         width="132" />
                     <button
                          follows="bottom|right"
                          height="23"
                          name="save_flyout_btn"
                          label=""
                          layout="topleft"
-                         left_pad="-20"
+                         left_pad="-1"
                          tab_stop="false"
                          image_selected="SegmentedBtn_Right_Selected_Press"
                          image_unselected="SegmentedBtn_Right_Off"

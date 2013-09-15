@@ -50,6 +50,9 @@
 #include "llwindow.h"
 #include "llworld.h"
 
+//BD - Always-on Mouse-steering
+#include "lltoolfocus.h"
+
 using namespace LLAvatarAppearanceDefines;
 
 extern LLMenuBarGL* gMenuBarView;
@@ -119,7 +122,7 @@ LLAgentCamera::LLAgentCamera() :
 	mCameraMode( CAMERA_MODE_THIRD_PERSON ),
 	mLastCameraMode( CAMERA_MODE_THIRD_PERSON ),
 
-	mCameraPreset(CAMERA_PRESET_REAR_VIEW),
+	mCameraPreset(CAMERA_PRESET_GROUP_VIEW),
 
 	mCameraAnimating( FALSE ),
 	mAnimationCameraStartGlobal(),
@@ -173,7 +176,13 @@ LLAgentCamera::LLAgentCamera() :
 	mPanLeftKey(0.f),
 	mPanRightKey(0.f),
 	mPanInKey(0.f),
-	mPanOutKey(0.f)
+	mPanOutKey(0.f),
+
+	mSavedCameraPos(),
+	mSavedCameraFocus(),
+	mSavedCameraFocusObject(NULL),
+	mSavedCamera(false)
+
 {
 	mFollowCam.setMaxCameraDistantFromSubject( MAX_CAMERA_DISTANCE_FROM_AGENT );
 
@@ -206,10 +215,16 @@ void LLAgentCamera::init()
 	mCameraOffsetInitial[CAMERA_PRESET_REAR_VIEW] = gSavedSettings.getControl("CameraOffsetRearView");
 	mCameraOffsetInitial[CAMERA_PRESET_FRONT_VIEW] = gSavedSettings.getControl("CameraOffsetFrontView");
 	mCameraOffsetInitial[CAMERA_PRESET_GROUP_VIEW] = gSavedSettings.getControl("CameraOffsetGroupView");
+//	//BD - Left/Right shoulder camera preset
+	mCameraOffsetInitial[CAMERA_PRESET_LEFT_VIEW] = gSavedSettings.getControl("CameraOffsetLeftShoulderView");
+	mCameraOffsetInitial[CAMERA_PRESET_RIGHT_VIEW] = gSavedSettings.getControl("CameraOffsetRightShoulderView");
 
 	mFocusOffsetInitial[CAMERA_PRESET_REAR_VIEW] = gSavedSettings.getControl("FocusOffsetRearView");
 	mFocusOffsetInitial[CAMERA_PRESET_FRONT_VIEW] = gSavedSettings.getControl("FocusOffsetFrontView");
 	mFocusOffsetInitial[CAMERA_PRESET_GROUP_VIEW] = gSavedSettings.getControl("FocusOffsetGroupView");
+//	//BD - Left/Right shoulder camera preset
+	mFocusOffsetInitial[CAMERA_PRESET_LEFT_VIEW] = gSavedSettings.getControl("FocusOffsetLeftShoulderView");
+	mFocusOffsetInitial[CAMERA_PRESET_RIGHT_VIEW] = gSavedSettings.getControl("FocusOffsetRightShoulderView");
 
 	mCameraCollidePlane.clearVec();
 	mCurrentCameraDistance = getCameraOffsetInitial().magVec() * gSavedSettings.getF32("CameraOffsetScale");
@@ -1159,6 +1174,28 @@ void LLAgentCamera::updateCamera()
 	if ( camera_mode == CAMERA_MODE_FOLLOW && mFocusOnAvatar )
 	{
 		mCameraUpVector = mFollowCam.getUpVector();
+	}
+
+	if(gSavedSettings.getBOOL("EnableThirdPersonSteering"))
+	{
+		if(gViewerWindow->getRightMouseDown())
+		{
+			LLToolCamera::getInstance()->setMouseCapture(FALSE);
+			gViewerWindow->showCursor();
+		}
+		else if(gViewerWindow->getLeftMouseDown())
+		{
+			LLToolCamera::getInstance()->handleMouseDown(gViewerWindow->getCurrentMouseX(), gViewerWindow->getCurrentMouseY() , 0x0000);
+		}
+		else
+		{
+			if(!LLToolCamera::getInstance()->hasMouseCapture())
+			{
+				LLToolCamera::getInstance()->setMouseCapture(TRUE);
+				gViewerWindow->hideCursor();
+			}
+			gViewerWindow->moveCursorToCenter();
+		}
 	}
 
 	if (mSitCameraEnabled)
@@ -2787,6 +2824,32 @@ S32 LLAgentCamera::directionToKey(S32 direction)
 	if (direction > 0) return 1;
 	if (direction < 0) return -1;
 	return 0;
+}
+
+//BD - Load/save camera position.
+void LLAgentCamera::saveCamera()
+{
+	mSavedCameraPos = getCameraPositionGlobal();
+	mSavedCameraFocus = getFocusTargetGlobal();
+	mSavedCameraFocusObject = getFocusObject();
+
+	mSavedCamera = true;
+}
+
+void LLAgentCamera::loadSavedCamera()
+{
+	if (mSavedCamera)
+	{
+		LLUUID focus_id;
+
+		unlockView();
+		if (mSavedCameraFocusObject)
+		{
+			focus_id = mSavedCameraFocusObject->getID();
+		}
+
+		setCameraPosAndFocusGlobal(mSavedCameraPos, mSavedCameraFocus, focus_id);
+	}
 }
 
 

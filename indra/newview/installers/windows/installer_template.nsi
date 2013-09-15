@@ -76,8 +76,8 @@ LangString LanguageCode ${LANG_TRADCHINESE}  "zh"
 ;; Tweak for different servers/builds (this placeholder is replaced by viewer_manifest.py)
 ;; For example:
 ;; !define INSTFLAGS "%(flags)s"
-;; !define INSTNAME   "SecondLife%(grid_caps)s"
-;; !define SHORTCUT   "Second Life (%(grid_caps)s)"
+;; !define INSTNAME   "BlackDragon%(grid_caps)s"
+;; !define SHORTCUT   "Black Dragon (%(grid_caps)s)"
 ;; !define URLNAME   "secondlife%(grid)s"
 ;; !define UNINSTALL_SETTINGS 1
 
@@ -252,7 +252,7 @@ FunctionEnd
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Function CloseSecondLife
   Push $0
-  FindWindow $0 "Second Life" ""
+  FindWindow $0 "Black Dragon" ""
   IntCmp $0 0 DONE
   
   StrCmp $SKIP_DIALOGS "true" CLOSE
@@ -266,7 +266,7 @@ Function CloseSecondLife
     SendMessage $0 16 0 0
 
   LOOP:
-	  FindWindow $0 "Second Life" ""
+	  FindWindow $0 "Black Dragon" ""
 	  IntCmp $0 0 DONE
 	  Sleep 500
 	  Goto LOOP
@@ -615,7 +615,7 @@ FunctionEnd
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Function un.CloseSecondLife
   Push $0
-  FindWindow $0 "Second Life" ""
+  FindWindow $0 "Black Dragon" ""
   IntCmp $0 0 DONE
   MessageBox MB_OKCANCEL $(CloseSecondLifeUnInstMB) IDOK CLOSE IDCANCEL CANCEL_UNINSTALL
 
@@ -627,7 +627,7 @@ Function un.CloseSecondLife
     SendMessage $0 16 0 0
 
   LOOP:
-	  FindWindow $0 "Second Life" ""
+	  FindWindow $0 "Black Dragon" ""
 	  IntCmp $0 0 DONE
 	  Sleep 500
 	  Goto LOOP
@@ -1020,11 +1020,11 @@ WriteRegExpandStr HKEY_CLASSES_ROOT "x-grid-location-info\shell\open\command" ""
 ; write out uninstaller
 WriteUninstaller "$INSTDIR\uninst.exe"
 
-; Uninstall existing "Second Life Viewer 2" install if needed.
+; Uninstall existing "Black Dragon" install if needed.
 StrCmp $DO_UNINSTALL_V2 "" REMOVE_SLV2_DONE
-  ExecWait '"$PROGRAMFILES\SecondLifeViewer2\uninst.exe" /S _?=$PROGRAMFILES\SecondLifeViewer2'
-  Delete "$PROGRAMFILES\SecondLifeViewer2\uninst.exe" ; with _? option above, uninst.exe will be left behind.
-  RMDir "$PROGRAMFILES\SecondLifeViewer2" ; will remove only if empty.
+  ExecWait '"$PROGRAMFILES\Black Dragon\uninst.exe" /S _?=$PROGRAMFILES\Black Dragpn'
+  Delete "$PROGRAMFILES\Black Dragon\uninst.exe" ; with _? option above, uninst.exe will be left behind.
+  RMDir "$PROGRAMFILES\Black Dragon" ; will remove only if empty.
 
   Call RestoreUserFiles
   Call RemoveTempUserFiles

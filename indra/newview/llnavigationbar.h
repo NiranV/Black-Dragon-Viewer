@@ -33,6 +33,7 @@
 class LLLocationInputCtrl;
 class LLMenuGL;
 class LLSearchEditor;
+//BD - Search Combo Box
 class LLSearchComboBox;
 
 /**
@@ -107,6 +108,9 @@ private:
 
 	void rebuildTeleportHistoryMenu();
 	void showTeleportHistoryMenu(LLUICtrl* btn_ctrl);
+//	//BD - Search Combo Box
+	void onSearchCommit();
+	void fillSearchComboBox();
 	void invokeSearch(std::string search_text);
 	// callbacks
 	void onTeleportHistoryMenuItemClicked(const LLSD& userdata);
@@ -139,6 +143,8 @@ private:
 	LLPullButton*				mBtnBack;
 	LLPullButton*				mBtnForward;
 	LLButton*					mBtnHome;
+	//	//BD - Search Combo Box
+	LLSearchComboBox			*mSearchComboBox;
 	LLLocationInputCtrl*		mCmbLocation;
 	LLRect						mDefaultNbRect;
 	LLRect						mDefaultFpRect;

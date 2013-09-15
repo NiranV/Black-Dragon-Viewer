@@ -178,6 +178,7 @@ void LLFloaterToybox::onToolBarButtonEnter(LLView* button)
 		case LLToolBarView::TOOLBAR_BOTTOM:	suffix = LLTrans::getString("Toolbar_Bottom_Tooltip");	break;
 		case LLToolBarView::TOOLBAR_LEFT:	suffix = LLTrans::getString("Toolbar_Left_Tooltip");	break;
 		case LLToolBarView::TOOLBAR_RIGHT:	suffix = LLTrans::getString("Toolbar_Right_Tooltip");	break;
+		case LLToolBarView::TOOLBAR_TOP:	suffix = LLTrans::getString("Toolbar_Top_Tooltip");		break;
 
 		default:
 			break;

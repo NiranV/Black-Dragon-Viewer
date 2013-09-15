@@ -220,6 +220,16 @@ LLGLSLShader			gDeferredSkinnedFullbrightShinyProgram;
 LLGLSLShader			gDeferredSkinnedFullbrightProgram;
 LLGLSLShader			gNormalMapGenProgram;
 
+LLGLSLShader            gGammaCorrectionPost;
+LLGLSLShader            gColorGradePost;
+LLGLSLShader            gLinearToneMapping;
+LLGLSLShader            gReinhardToneMapping;
+LLGLSLShader            gFilmicToneMapping;
+LLGLSLShader            gGammaConvertPrepass;
+LLGLSLShader            gVignettePost;
+LLGLSLShader            gColorGradePostLegacy;
+LLGLSLShader            gFilmicToneMappingAdv;
+
 // Deferred materials shaders
 LLGLSLShader			gDeferredMaterialProgram[LLMaterial::SHADER_COUNT*2];
 LLGLSLShader			gDeferredMaterialWaterProgram[LLMaterial::SHADER_COUNT*2];
@@ -356,6 +366,7 @@ void LLViewerShaderMgr::initAttribsAndUniforms(void)
 		mAvatarUniforms.push_back("gGravity");
 
 		mWLUniforms.push_back("camPosLocal");
+		mWLUniforms.push_back("gamcorr");
 
 		mTerrainUniforms.reserve(5);
 		mTerrainUniforms.push_back("detail_0");
@@ -811,6 +822,7 @@ void LLViewerShaderMgr::unloadShaders()
 	gDeferredSkinnedDiffuseProgram.unload();
 	gDeferredSkinnedBumpProgram.unload();
 	gDeferredSkinnedAlphaProgram.unload();
+	unloadExodusPostShaders();
 
 	gTransformPositionProgram.unload();
 	gTransformTexCoordProgram.unload();
@@ -1117,6 +1129,8 @@ BOOL LLViewerShaderMgr::loadShadersEffects()
 		}
 	}
 	
+	success = loadExodusPostShaders();
+
 	return success;
 
 }
@@ -1184,6 +1198,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 			gDeferredMaterialProgram[i].unload();
 			gDeferredMaterialWaterProgram[i].unload();
 		}
+		unloadExodusPostShaders();
 		return TRUE;
 	}
 
@@ -2008,6 +2023,118 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 	}
 
 	return success;
+}
+
+void LLViewerShaderMgr::unloadExodusPostShaders()
+{
+    gGammaCorrectionPost.unload();
+    gColorGradePost.unload();
+    gLinearToneMapping.unload();
+    gReinhardToneMapping.unload();
+    gFilmicToneMapping.unload();
+    gGammaConvertPrepass.unload();
+    gVignettePost.unload();
+    gFilmicToneMappingAdv.unload();
+}
+
+BOOL LLViewerShaderMgr::loadExodusPostShaders()
+{
+    BOOL success = TRUE;
+    //We only ever want to load these in deferred (as we'll probably never use floating point buffers in classic rendering)
+    if (LLPipeline::sRenderDeferred)
+    {
+        if (success)
+        {
+            gGammaConvertPrepass.mName = "Exodus Gamma Correction Pre-pass";
+            gGammaConvertPrepass.mShaderFiles.clear();
+            gGammaConvertPrepass.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+            gGammaConvertPrepass.mShaderFiles.push_back(make_pair("exoshade/post/exoGammaConvertF.glsl", GL_FRAGMENT_SHADER_ARB));
+            gGammaConvertPrepass.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+            success = gGammaConvertPrepass.createShader(NULL, NULL);
+        }
+        
+        if (success)
+        {
+            gGammaCorrectionPost.mName = "Exodus Gamma Correction Post";
+            gGammaCorrectionPost.mShaderFiles.clear();
+            gGammaCorrectionPost.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+            gGammaCorrectionPost.mShaderFiles.push_back(make_pair("exoshade/post/exoGammaCorrectF.glsl", GL_FRAGMENT_SHADER_ARB));
+            gGammaCorrectionPost.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+            success = gGammaCorrectionPost.createShader(NULL, NULL);
+        }
+        
+        if (success)
+        {
+            gFilmicToneMapping.mName = "Exodus Filmic Tonemapping Post";
+            gFilmicToneMapping.mShaderFiles.clear();
+            gFilmicToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+            gFilmicToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoFilmicToneF.glsl", GL_FRAGMENT_SHADER_ARB));
+            gFilmicToneMapping.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+            success = gFilmicToneMapping.createShader(NULL, NULL);
+        }
+        
+        if (success)
+        {
+            gFilmicToneMappingAdv.mName = "Exodus Advanced Filmic Tonemapping";
+            gFilmicToneMappingAdv.mShaderFiles.clear();
+            gFilmicToneMappingAdv.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+            gFilmicToneMappingAdv.mShaderFiles.push_back(make_pair("exoshade/post/exoFilmicToneAdvancedF.glsl", GL_FRAGMENT_SHADER_ARB));
+            gFilmicToneMappingAdv.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+            success = gFilmicToneMappingAdv.createShader(NULL, NULL);
+        }
+    }
+    
+    if (success)
+    {
+        gVignettePost.mName = "Exodus Vignette Post";
+        gVignettePost.mShaderFiles.clear();
+        gVignettePost.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gVignettePost.mShaderFiles.push_back(make_pair("exoshade/post/exoVignetteF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gVignettePost.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gVignettePost.createShader(NULL, NULL);
+    }
+    
+    if (success)
+    {
+        gColorGradePost.mName = "Exodus Color Grading Post";
+        gColorGradePost.mShaderFiles.clear();
+        gColorGradePost.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gColorGradePost.mShaderFiles.push_back(make_pair("exoshade/post/exoColorGradeF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gColorGradePost.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gColorGradePost.createShader(NULL, NULL);
+    }
+    
+    if (success)
+    {
+        gLinearToneMapping.mName = "Exodus Linear Tonemapping Post";
+        gLinearToneMapping.mShaderFiles.clear();
+        gLinearToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gLinearToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoLinearToneF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gLinearToneMapping.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gLinearToneMapping.createShader(NULL, NULL);
+    }
+    
+    if (success)
+    {
+        gReinhardToneMapping.mName = "Exodus Reinhard Tonemapping Post";
+        gReinhardToneMapping.mShaderFiles.clear();
+        gReinhardToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gReinhardToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoReinhardToneF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gReinhardToneMapping.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gReinhardToneMapping.createShader(NULL, NULL);
+    }
+    
+    if (success)
+    {
+        gColorGradePostLegacy.mName = "Exodus Legacy Color Grading Post";
+        gColorGradePostLegacy.mShaderFiles.clear();
+        gColorGradePostLegacy.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gColorGradePostLegacy.mShaderFiles.push_back(make_pair("exoshade/post/exoColorGradeLegacyF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gColorGradePostLegacy.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gColorGradePostLegacy.createShader(NULL, NULL);
+    }
+    
+    return success;
 }
 
 BOOL LLViewerShaderMgr::loadShadersObject()

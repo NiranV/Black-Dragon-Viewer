@@ -3,8 +3,8 @@
  legacy_header_height="18"
  height="85"
  layout="topleft"
+ background_color="FloaterDefaultBackgroundColor"
  name="preview_anim"
- help_topic="preview_anim"
  width="280">
     <floater.string
      name="Title">
@@ -19,7 +19,7 @@
      layout="topleft"
      left="10"
      name="desc txt"
-     top="25"
+     top="21"
      width="80">
         Description:
     </text>
@@ -35,6 +35,33 @@
      name="desc"
      top="19"
      width="170" />
+    <check_box
+     control_name="SlowMotionAnimation"
+     height="16"
+     initial_value="false"
+     label="play with custom speed"
+     layout="topleft"
+     left="8"
+     name="timefactor"
+     top_pad="4"
+     tool_tip="Play animations with a custom set speed factor"
+     width="315" />
+    <spinner
+      control_name="SlowMotionTimeFactor"
+      decimal_digits="3"
+      follows="left|top"
+      height="20"
+      increment="0.1"
+      initial_value="1"
+      label=""
+      label_width="0"
+      layout="topleft"
+      left="195"
+      max_val="15"
+      min_val="-15"
+      name="Factor"
+      top_delta="-4"
+      width="70" />
     <button
      height="20"
      label="Play Inworld"
@@ -43,7 +70,7 @@
      left="10"
      name="Inworld"
      tool_tip="Play this animation so that others can see it"
-     top="47"
+     top_pad="1"
      width="125">
        <button.commit_callback
         function="PreviewAnim.Play"

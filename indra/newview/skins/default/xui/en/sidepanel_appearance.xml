@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
-background_visible="true"
+background_visible="false"
 default_tab_group="1"
 follows="all"
 height="570"
@@ -27,26 +27,25 @@ width="333">
    <panel
    background_opaque="true"
    background_visible="true"
-   bg_opaque_color="DkGray2"
+   bg_opaque_color="Black_25"
    left="10"
    top="5"
    follows="left|top|right"
    layout="topleft"
    width="303"
    height="33"
-   name="panel_currentlook"
-   >
+   name="panel_currentlook">
       <button
       follows="left|top"
       left="205" top="7" width="20" height="20"
-      label="E"
+      label=""
       layout="topleft"
       name="editappearance_btn"
       visible="false" />
       <button
       follows="left|top"
       left="235" top="7" width="20" height="20"
-      label="O"
+      label=""
       layout="topleft"
       name="openoutfit_btn"
       visible="false" />
@@ -60,6 +59,17 @@ width="333">
       left="1"
       top="0"
       width="31" />
+      <button
+      follows="bottom|left"
+      height="23"
+      tool_tip="Create a new outfit"
+      image_unselected="AddItem_Off"
+      image_selected="AddItem_Off"
+      layout="topleft"
+      left="14"
+      top="11"
+      name="newlook_btn"
+      width="23" />
       <text
       font="SansSerifSmall"
       text_color="EmphasisColor"
@@ -77,7 +87,6 @@ width="333">
       font="SansSerifLargeBold"
       height="20"
       left="35"
-      parse_urls="false"
       text_color="White"
       top="15"
       use_ellipses="true"
@@ -114,10 +123,9 @@ width="333">
    layout="topleft"
    left="10"
    label="Filter Outfits"
-   max_length_chars="300"
    name="Filter"
    search_button_visible="true"
-   top_pad="10"
+   top_pad="3"
    width="303" />
    <panel
    class="panel_outfits_inventory"
@@ -129,17 +137,8 @@ width="333">
    visible="false"
    left="0"
    tab_group="1"
-   top_pad="6"
+   top_pad="2"
    follows="all" />
-  <!--   <button
-	  follows="bottom|left"
-		height="23"
-		label="New outfit"
-		layout="topleft"
-		left_pad="5"
-		right="-10"
-		name="newlook_btn"
-		 width="100" />-->
    <panel
    class="panel_outfit_edit"
    filename="panel_outfit_edit.xml"

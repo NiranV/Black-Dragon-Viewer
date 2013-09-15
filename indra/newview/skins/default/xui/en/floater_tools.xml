@@ -7,9 +7,8 @@
  bg_opaque_image="Window_NoTitle_Foreground"
  bg_alpha_image="Window_NoTitle_Background"
  name="toolbox floater"
- help_topic="toolbox_floater"
  save_rect="true"
- short_title="BUILD TOOLS"
+ short_title="Build Tools"
  single_instance="true"
  save_visibility="true"
  sound_flags="0"
@@ -76,75 +75,76 @@
     </floater.string>
     <button
      follows="left|top"
-     height="25"
+     height="16"
      image_bottom_pad="1"
      image_overlay="Tool_Zoom"
      image_selected="PushButton_Selected_Press"
      layout="topleft"
-     left="10"
+     left="8"
+					top="0"
      name="button focus"
      tool_tip="Focus"
-     width="35">
+     width="16">
 	  <button.commit_callback
 	     function="BuildTool.setTool"
 	     parameter="Focus" />
 	</button>
     <button
      follows="left|top"
-      height="25"
+      height="16"
      image_bottom_pad="1"
      image_overlay="Tool_Grab"
      image_selected="PushButton_Selected_Press"
      layout="topleft"
-     left_pad="10"
+     left_pad="5"
      name="button move"
      tool_tip="Move"
-     width="35">
+     width="16">
 	  <button.commit_callback
 	     function="BuildTool.setTool"
 	     parameter="Move" />
 	</button>
     <button
      follows="left|top"
-     height="25"
+     height="16"
      image_bottom_pad="1"
      image_overlay="Tool_Face"
      image_selected="PushButton_Selected_Press"
      layout="topleft"
-     left_pad="10"
+     left_pad="5"
      name="button edit"
      tool_tip="Edit"
-     width="35">
+     width="16">
 	  <button.commit_callback
 	     function="BuildTool.setTool"
 	     parameter="Edit" />
 	</button>
     <button
      follows="left|top"
-      height="25"
+      height="16"
      image_bottom_pad="1"
      image_overlay="Tool_Create"
      image_selected="PushButton_Selected_Press"
      layout="topleft"
-     left_pad="10"
+     left_pad="5"
      name="button create"
      tool_tip="Create"
-     width="35">
+     width="16">
 	  <button.commit_callback
 	     function="BuildTool.setTool"
 	     parameter="Create" />
 	</button>
     <button
      follows="left|top"
-      height="25"
+      height="16"
      image_bottom_pad="1"
      image_overlay="Tool_Dozer"
      image_selected="PushButton_Selected_Press"
      layout="topleft"
-     left_pad="10"
+     left_pad="5"
      name="button land"
      tool_tip="Land"
-     width="35">
+     width="16">
 	  <button.commit_callback
 	     function="BuildTool.setTool"
 	     parameter="Land" />
@@ -166,9 +166,9 @@
     </text>
    <radio_group
      layout="topleft"
-     left="10"
+     left="5"
       height="70"
-      top="59"
+      top_pad="3"
      name="focus_radio_group">
         <radio_item
          top_pad="6"
@@ -201,11 +201,11 @@
      width="134">
 	 <slider_bar.commit_callback
 	     function="BuildTool.commitZoom"/>
-	</slider_bar>
+			</slider_bar>
    <radio_group
-      left="10"
+      left="5"
       height="70"
-      top="59"
+      top="52"
      layout="topleft"
      name="move_radio_group">
         <radio_item
@@ -229,7 +229,7 @@
 	<radio_group
      follows="left|top"
 	 left="5"
-	 top="55"
+	 top="52"
 	 height="70"
      layout="topleft"
 	 name="edit_radio_group">
@@ -252,80 +252,38 @@
          label="Select Face"
          layout="topleft"
          name="radio select face" />
+								<radio_item
+		 top_pad="6"
+         label="Align"
+         layout="topleft"
+         name="radio align" />
 			<radio_group.commit_callback
 			function="BuildTool.commitRadioEdit"/>
     </radio_group>
-    <check_box
-     left="5"
-     follows="left|top"
-     height="28"
-	 control_name="EditLinkedParts"
-     label="Edit linked"
-     layout="topleft"
-     name="checkbox edit linked parts"
-     top_pad="-18">
-		  <check_box.commit_callback
-			function="BuildTool.selectComponent"/>
-	</check_box>
 
-   <button
-     follows="left|top"
-     height="20"
-     label="Link"
-     top="108"
-     layout="topleft"
-     left="143"
-     name="link_btn"
-     width="50">
-	  <button.commit_callback
-	     function="BuildTool.LinkObjects"/>
-    </button>
-    <button
-     follows="left|top"
-     height="20"
-     label="Unlink"
-     layout="topleft"
-     left_pad="2"
-     name="unlink_btn"
-     width="90">
-	  <button.commit_callback
-	     function="BuildTool.UnlinkObjects"/>
-    </button>
     <check_box
      control_name="ScaleUniform"
-     height="19"
-     label=""
+     height="16"
+     label="Stretch Both Sides"
      layout="topleft"
      left="143"
      name="checkbox uniform"
-     top="48"
+     top="50"
      width="20" />
-    <text
-     height="19"
-     label="Stretch Both Sides"
-     left_delta="20"
-     name="checkbox uniform label"
-     top_delta="2"
-     width="120"
-     layout="topleft"
-     follows="top|left"
-     wrap="true">
-     	Stretch Both Sides
-    </text>
     <check_box
      control_name="ScaleStretchTextures"
-     height="19"
+     height="16"
      initial_value="true"
      label="Stretch Textures"
      layout="topleft"
      left="143"
      name="checkbox stretch textures"
-     top_pad="-4"
+     top_pad="0"
      follows="left|top"
      width="134" />
    <check_box
      control_name="SnapEnabled"
-     height="18"
+     height="16"
      initial_value="true"
      label="Snap"
      layout="topleft"
@@ -338,8 +296,8 @@
       follows="left|top"
       name="combobox grid mode"
       tool_tip="Choose the type of grid ruler for positioning the object"
-      top="83"
-      left="195"
+      top="78"
+      left="215"
       top_pad="0"
       width="60">
       <combo_box.item
@@ -356,10 +314,45 @@
       value="Reference" />
       <combo_box.commit_callback
       function="BuildTool.gridMode"/>
-    </combo_box>  
+    </combo_box>
+				<check_box
+     left="143"
+     follows="left|top"
+     height="16"
+	 control_name="EditLinkedParts"
+     label="Edit linked"
+     layout="topleft"
+     name="checkbox edit linked parts"
+     top_pad="0">
+		  <check_box.commit_callback
+			function="BuildTool.selectComponent"/>
+	</check_box>
+				<button
+     follows="left|top"
+     height="20"
+     label="Link"
+     top="114"
+     layout="topleft"
+     left="143"
+     name="link_btn"
+     width="50">
+	  <button.commit_callback
+	     function="BuildTool.LinkObjects"/>
+    </button>
+    <button
+     follows="left|top"
+     height="20"
+     label="Unlink"
+     layout="topleft"
+     left_pad="2"
+     name="unlink_btn"
+     width="80">
+	  <button.commit_callback
+	     function="BuildTool.UnlinkObjects"/>
+    </button>
   
   <button
-     left="259"
+     left="275"
      label=""
      image_selected="ForwardArrow_Press"
      image_unselected="ForwardArrow_Off"
@@ -367,8 +360,8 @@
      follows="top|left"
      name="Options..."
      tool_tip="See more grid options"
-     top="83"
-     width="25"
+     top="78"
+     width="20"
      height="20" >
 	 <button.commit_callback
 	     function="BuildTool.gridOptions"/>
@@ -387,46 +380,20 @@
      tool_tip="Cube"
      top="58"
      width="20" />
-    <button
+				<button
      follows="left|top"
      height="20"
-     image_disabled="Object_Prism"
-     image_disabled_selected="Object_Prism"
-     image_selected="Object_Prism_Selected"
-     image_unselected="Object_Prism"
+     image_disabled="Object_Sphere"
+     image_disabled_selected="Object_Sphere"
+     image_selected="Object_Sphere_Selected"
+     image_unselected="Object_Sphere"
      layout="topleft"
      left_delta="29"
-     name="ToolPrism"
-     tool_tip="Prism"
+     name="ToolSphere"
+     tool_tip="Sphere"
      top_delta="0"
      width="20" />
-    <button
-     follows="left|top"
-     height="20"
-     image_disabled="Object_Pyramid"
-     image_disabled_selected="Object_Pyramid"
-     image_selected="Object_Pyramid_Selected"
-     image_unselected="Object_Pyramid"
-     layout="topleft"
-     left_delta="29"
-     name="ToolPyramid"
-     tool_tip="Pyramid"
-     top_delta="0"
-     width="20" />
-    <button
-     follows="left|top"
-     height="20"
-     image_disabled="Object_Tetrahedron"
-     image_disabled_selected="Object_Tetrahedron"
-     image_selected="Object_Tetrahedron_Selected"
-     image_unselected="Object_Tetrahedron"
-     layout="topleft"
-     left_delta="29"
-     name="ToolTetrahedron"
-     tool_tip="Tetrahedron"
-     top_delta="0"
-     width="20" />
-    <button
+				<button
      follows="left|top"
      height="20"
      image_disabled="Object_Cylinder"
@@ -442,17 +409,17 @@
     <button
      follows="left|top"
      height="20"
-     image_disabled="Object_Hemi_Cylinder"
-     image_disabled_selected="Object_Hemi_Cylinder"
-     image_selected="Object_Hemi_Cylinder_Selected"
-     image_unselected="Object_Hemi_Cylinder"
+     image_disabled="Object_Pyramid"
+     image_disabled_selected="Object_Pyramid"
+     image_selected="Object_Pyramid_Selected"
+     image_unselected="Object_Pyramid"
      layout="topleft"
-     left="10"
-     name="ToolHemiCylinder"
-     tool_tip="Hemicylinder"
-     top="84"
+     left_delta="29"
+     name="ToolPyramid"
+     tool_tip="Pyramid"
+     top_delta="0"
      width="20" />
-    <button
+				<button
      follows="left|top"
      height="20"
      image_disabled="Object_Cone"
@@ -463,6 +430,58 @@
      left_delta="29"
      name="ToolCone"
      tool_tip="Cone"
+     top_delta="0"
+     width="20" />
+				<button
+     follows="left|top"
+     height="20"
+     image_disabled="Object_Prism"
+     image_disabled_selected="Object_Prism"
+     image_selected="Object_Prism_Selected"
+     image_unselected="Object_Prism"
+     layout="topleft"
+     left="10"
+     name="ToolPrism"
+     tool_tip="Prism"
+     top="84"
+     width="20" />
+				<button
+     follows="left|top"
+     height="20"
+     image_disabled="Object_Hemi_Sphere"
+     image_disabled_selected="Object_Hemi_Sphere"
+     image_selected="Object_Hemi_Sphere_Selected"
+     image_unselected="Object_Hemi_Sphere"
+     layout="topleft"
+     left_delta="29"
+     name="ToolHemiSphere"
+     tool_tip="Hemisphere"
+     top_delta="0"
+     width="20" />
+				<button
+     follows="left|top"
+     height="20"
+     image_disabled="Object_Hemi_Cylinder"
+     image_disabled_selected="Object_Hemi_Cylinder"
+     image_selected="Object_Hemi_Cylinder_Selected"
+     image_unselected="Object_Hemi_Cylinder"
+     layout="topleft"
+     left_delta="29"
+     name="ToolHemiCylinder"
+     tool_tip="Hemicylinder"
+     top_delta="0"
+     width="20" />
+				<button
+     follows="left|top"
+     height="20"
+     image_disabled="Object_Tetrahedron"
+     image_disabled_selected="Object_Tetrahedron"
+     image_selected="Object_Tetrahedron_Selected"
+     image_unselected="Object_Tetrahedron"
+     layout="topleft"
+     left_delta="29"
+     name="ToolTetrahedron"
+     tool_tip="Tetrahedron"
      top_delta="0"
      width="20" />
     <button
@@ -481,32 +500,6 @@
     <button
      follows="left|top"
      height="20"
-     image_disabled="Object_Sphere"
-     image_disabled_selected="Object_Sphere"
-     image_selected="Object_Sphere_Selected"
-     image_unselected="Object_Sphere"
-     layout="topleft"
-     left_delta="29"
-     name="ToolSphere"
-     tool_tip="Sphere"
-     top_delta="0"
-     width="20" />
-    <button
-     follows="left|top"
-     height="20"
-     image_disabled="Object_Hemi_Sphere"
-     image_disabled_selected="Object_Hemi_Sphere"
-     image_selected="Object_Hemi_Sphere_Selected"
-     image_unselected="Object_Hemi_Sphere"
-     layout="topleft"
-     left_delta="29"
-     name="ToolHemiSphere"
-     tool_tip="Hemisphere"
-     top_delta="0"
-     width="20" />
-    <button
-     follows="left|top"
-     height="20"
      image_disabled="Object_Torus"
      image_disabled_selected="Object_Torus"
      image_selected="Object_Torus_Selected"
@@ -520,19 +513,6 @@
     <button
      follows="left|top"
      height="20"
-     image_disabled="Object_Tube"
-     image_disabled_selected="Object_Tube"
-     image_selected="Object_Tube_Selected"
-     image_unselected="Object_Tube"
-     layout="topleft"
-     left_delta="29"
-     name="ToolTube"
-     tool_tip="Tube"
-     top_delta="0"
-     width="20" />
-    <button
-     follows="left|top"
-     height="20"
      image_disabled="Object_Ring"
      image_disabled_selected="Object_Ring"
      image_selected="Object_Ring_Selected"
@@ -541,6 +521,19 @@
      left_delta="29"
      name="ToolRing"
      tool_tip="Ring"
+     top_delta="0"
+     width="20" />
+				<button
+     follows="left|top"
+     height="20"
+     image_disabled="Object_Tube"
+     image_disabled_selected="Object_Tube"
+     image_selected="Object_Tube_Selected"
+     image_unselected="Object_Tube"
+     layout="topleft"
+     left_delta="29"
+     name="ToolTube"
+     tool_tip="Tube"
      top_delta="0"
      width="20" />
     <button
@@ -576,7 +569,7 @@
      height="19"
      label="Keep Tool selected"
      layout="topleft"
-     left="155"
+     left="150"
      name="checkbox sticky"
      top="55"
      width="128" />
@@ -595,7 +588,7 @@
      initial_value="true"
      label="Center Copy"
      layout="topleft"
-     left_delta="18"
+     left_delta="10"
      name="checkbox copy centers"
      top="85"
      width="134" />
@@ -611,9 +604,9 @@
     <radio_group
      height="105"
      layout="topleft"
-     left="4"
+     left="5"
      name="land_radio_group"
-     top="54"
+     top="48"
      width="114">
         <radio_item
          height="19"
@@ -749,8 +742,17 @@
      width="82">
 	  <button.commit_callback
 	     function="BuildTool.applyToSelection"/>
-    </button>
-    <text
+				</button>
+    <view_border
+    bevel_style="none"
+    follows="top|left"
+    height="0"
+    layout="topleft"
+    left="6"
+    name="cost_text_border"
+    top="138"
+    width="284"/>
+				<text
 	 text_color="LtGray_50"
 	  type="string"
 	  length="1"
@@ -760,7 +762,7 @@
 	  layout="topleft"
 	  left="10"
 	  name="selection_empty"
-	  top_pad="0"
+	  top_pad="2"
 	  width="100">
 		Nothing selected.
 	</text>
@@ -793,41 +795,6 @@
 	  width="280">
 	  [CAPACITY_STRING] [secondlife:///app/openfloater/object_weights More info]
 	</text>
-    <!-- <text -->
-    <!-- text_color="LtGray_50" -->
-    <!--  type="string" -->
-    <!--  length="1" -->
-    <!--  height="10" -->
-    <!--  follows="left|top" -->
-    <!--  halign="right" -->
-    <!--  layout="topleft" -->
-    <!--  right="-10" -->
-    <!--  name="obj_count" -->
-    <!--  top_pad="5" -->
-    <!--  width="143"> -->
-    <!--     Objects: [COUNT] -->
-    <!-- </text> -->
-    <!-- <text -->
-    <!-- text_color="LtGray_50" -->
-    <!--  type="string" -->
-    <!--  length="1" -->
-    <!--  follows="left|top" -->
-    <!--  halign="right" -->
-    <!--  layout="topleft" -->
-    <!--  right="-10" -->
-    <!--  name="prim_count" -->
-    <!--  width="143"> -->
-    <!--     Prims: [COUNT] -->
-    <!-- </text> -->
-    <view_border
-    bevel_style="none"
-    follows="top|left"
-    height="0"
-    layout="topleft"
-    left="6"
-    name="cost_text_border"
-    top="135"
-    width="282"/>
     <tab_container
      follows="left|top"
      height="410"
@@ -1160,7 +1127,7 @@ even though the user gets a free copy.
          follows="left|top"
          layout="topleft"
          mouse_opaque="false"
-         background_visible="true"
+         background_visible="false"
          bg_alpha_color="DkGray"
          name="perms_build"
          left="0"

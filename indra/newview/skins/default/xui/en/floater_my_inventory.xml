@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <floater
- positioning="cascading"
+ positioning="specified"
+ left="-1"
+ bottom="-500"
  can_close="true"
  can_resize="true"
  height="570"
- help_topic="sidebar_inventory"
- min_width="333"
- min_height="570"
+ background_color="FloaterColorInventory"
+ min_width="300"
+ min_height="150"
  name="floater_my_inventory"
  save_rect="true"
  save_visibility="true"
  reuse_instance="true"
- title="INVENTORY"
+ title="Inventory"
  width="333" >
    <panel
     class="sidepanel_inventory"

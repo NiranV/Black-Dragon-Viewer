@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <floater
-    positioning="cascading"
-    can_close="true"
-    can_resize="true"
-    height="440"
-    help_topic="floater_merchant_outbox"
-    min_width="300"
-    min_height="200"
-    name="floater_merchant_outbox"
-    save_rect="true"
-    save_visibility="false"
-    reuse_instance="true"
-    title="MERCHANT OUTBOX"
-    width="333">
+positioning="cascading"
+can_close="true"
+can_resize="true"
+height="440"
+min_width="300"
+min_height="200"
+background_color="FloaterDefaultBackgroundColor"
+name="floater_merchant_outbox"
+save_rect="true"
+save_visibility="false"
+reuse_instance="true"
+title="Merchant Outbox"
+width="333">
   <string name="OutboxFolderCount0"></string>
   <string name="OutboxFolderCount1">1 folder</string>
   <string name="OutboxFolderCountN">[NUM] folders</string>
@@ -24,6 +24,7 @@
       left="0"
       top="0"
       label=""
+      name="panel1"
       height="440"
       width="333">
     <panel
@@ -31,8 +32,8 @@
         left="10"
         bottom="370"
         width="313"
-        top="0"
-        bg_opaque_color="InventoryBackgroundColor">
+        name="panel2"
+        top="0">
       <panel
           name="outbox_inventory_placeholder_panel"
           follows="all"
@@ -40,8 +41,7 @@
           top="0"
           left="0"
           width="308"
-          height="370"
-          bg_opaque_color="InventoryBackgroundColor">
+          height="370">
         <text
             name="outbox_inventory_placeholder_title"
             type="string"
@@ -72,6 +72,7 @@
     <panel
         follows="bottom|left|right"
         left="10"
+        name="panel3"
         bottom="435"
         width="313"
         top="370">
@@ -83,8 +84,8 @@
           left="5"
           width="303"
           height="25"
-          background_visible="false"
-          bg_alpha_color="EmphasisColor_35"
+          background_visible="true"
+          bg_alpha_color="EmphasisColor_13"
           border="true"
           bevel_style="in"
           visible="true">
@@ -98,6 +99,7 @@
             width="293"
             halign="center"
             font="SansSerifMedium"
+            name="outbox_generic_drag_text"
             font_shadow="hard"
             valign="top">
           Drag items here to create folders
@@ -130,12 +132,31 @@
           width="150"
           enabled="false" />
     </panel>
-    <layout_stack name="import_progress_indicator" orientation="vertical" left="0" height="440" top="0" width="333" follows="all" visible="false">
+    <layout_stack
+    name="import_progress_indicator"
+    orientation="vertical"
+    left="0"
+    height="440"
+    top="0"
+    width="333"
+    follows="all"
+    visible="false">
       <layout_panel />
-      <layout_panel height="24" auto_resize="false">
-        <layout_stack orientation="horizontal" left="0" height="24" top="0" width="333" follows="all">
-          <layout_panel width="0" />
-          <layout_panel width="24" auto_resize="false">
+      <layout_panel
+        height="24"
+        auto_resize="false">
+        <layout_stack
+            orientation="horizontal"
+            left="0"
+            height="24"
+            top="0"
+            width="333"
+            follows="all">
+          <layout_panel
+            width="0" />
+          <layout_panel
+            width="24"
+            auto_resize="false">
             <loading_indicator
                 height="24"
                 layout="topleft"

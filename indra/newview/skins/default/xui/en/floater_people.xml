@@ -14,13 +14,13 @@
   single_instance="true"
   reuse_instance="true"
   title="PEOPLE"
-  width="370">
+  width="345">
     <panel_container
       default_panel_name="panel_people"
       follows="all"
       height="570"
       name="main_panel"
-      width="370">
+      width="345">
       <panel
         class="panel_people"
         name="panel_people"

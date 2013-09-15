@@ -47,7 +47,7 @@
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <real>300</real>
+      <real>0</real>
     </map>
     <key>AdminMenu</key>
     <map>
@@ -1335,7 +1335,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>1.047197551</real>
+      <real>1.10</real>
     </map>
     <key>CameraOffset</key>
     <map>
@@ -1373,9 +1373,9 @@
       <string>Vector3</string>
       <key>Value</key>
       <array>
-        <real>-3.0</real>
+        <real>-2.5</real>
         <real>0.0</real>
-        <real>0.75</real>
+        <real>0.1</real>
       </array>
     </map>
     <key>CameraOffsetFrontView</key>
@@ -1388,24 +1388,54 @@
       <string>Vector3</string>
       <key>Value</key>
       <array>
-        <real>2.2</real>
+        <real>-6.0</real>
         <real>0.0</real>
-        <real>0.0</real>
+        <real>8.0</real>
       </array>
     </map>
     <key>CameraOffsetGroupView</key>
     <map>
       <key>Comment</key>
-      <string>Initial camera offset from avatar in Group View</string>
+      <string>Initial camera offset from avatar in Shoulder View</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
       <string>Vector3</string>
       <key>Value</key>
       <array>
-        <real>-1.0</real>
+        <real>-2.0</real>
+        <real>-0.8</real>
+        <real>0.0</real>
+      </array>
+    </map>
+    <key>CameraOffsetLeftShoulderView</key>
+    <map>
+      <key>Comment</key>
+      <string>Initial camera offset from avatar in Left Shoulder View</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+        <real>-1.5</real>
         <real>0.7</real>
-        <real>0.5</real>
+        <real>-0.35</real>
+      </array>
+    </map>
+    <key>CameraOffsetRightShoulderView</key>
+    <map>
+      <key>Comment</key>
+      <string>Initial camera offset from avatar in Right Shoulder View</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+        <real>-1.5</real>
+        <real>-0.7</real>
+        <real>-0.35</real>
       </array>
     </map>
     <key>CameraOffsetScale</key>
@@ -1478,7 +1508,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>10.0</real>
+    <real>80.6</real>
   </map>
 
   <key>CameraFNumber</key>
@@ -1490,7 +1520,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>9.0</real>
+    <real>21.2</real>
   </map>
 
   <key>CameraFocalLength</key>
@@ -1502,7 +1532,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>50</real>
+    <real>22</real>
   </map>
 
   <key>CameraFieldOfView</key>
@@ -1514,7 +1544,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>60.0</real>
+    <real>67.0</real>
   </map>
 
   <key>CameraAspectRatio</key>
@@ -4066,9 +4096,9 @@
       <string>Vector3D</string>
       <key>Value</key>
       <array>
-        <real>1.0</real>
+        <real>0.125</real>
         <real>0.0</real>
-        <real>1.0</real>
+        <real>0.775</real>
       </array>
     </map>
     <key>FocusOffsetFrontView</key>
@@ -4083,22 +4113,52 @@
       <array>
         <real>0.0</real>
         <real>0.0</real>
-        <real>0.0</real>
+        <real>0.3</real>
       </array>
     </map>
     <key>FocusOffsetGroupView</key>
     <map>
       <key>Comment</key>
-      <string>Initial focus point offset relative to avatar for the camera preset Group View</string>
+      <string>Initial focus point offset relative to avatar for the camera preset Shoulder View</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
       <string>Vector3D</string>
       <key>Value</key>
       <array>
-        <real>1.5</real>
-        <real>0.7</real>
         <real>1.0</real>
+        <real>-1.0</real>
+        <real>0.4</real>
+      </array>
+    </map>
+    <key>FocusOffsetLeftShoulderView</key>
+    <map>
+      <key>Comment</key>
+      <string>Initial focus point offset relative to avatar for the camera preset Left Shoulder View</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3D</string>
+      <key>Value</key>
+      <array>
+        <real>0.0</real>
+        <real>0.8</real>
+        <real>0.8</real>
+      </array>
+    </map>
+    <key>FocusOffsetRightShoulderView</key>
+    <map>
+      <key>Comment</key>
+      <string>Initial focus point offset relative to avatar for the camera preset Right Shoulder View</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3D</string>
+      <key>Value</key>
+      <array>
+        <real>0.0</real>
+        <real>-0.8</real>
+        <real>0.8</real>
       </array>
     </map>
     <key>FocusPosOnLogout</key>
@@ -6051,7 +6111,7 @@
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
-    <integer>1</integer>
+    <integer>0</integer>
   </map>
   <key>MemoryFailurePreventionEnabled</key>
   <map>
@@ -7025,7 +7085,7 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
-      <integer>1</integer>
+      <integer>0</integer>
     </map>
     <key>ParticipantListShowIcons</key>
     <map>
@@ -8276,9 +8336,9 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
+      <real>3.34</real>
       <real>3.0</real>
-      <real>3.0</real>
-      <real>2.0</real>
+      <real>10.0</real>
     </array>
   </map>
   <key>RenderShadowOrthoClipPlanes</key>
@@ -8338,7 +8398,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>500.0</real>
+    <real>400.0</real>
   </map>
   <key>RenderSSAOMaxScale</key>
   <map>
@@ -8349,7 +8409,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>200</integer>
+    <integer>500</integer>
   </map>
   <key>RenderSSAOFactor</key>
   <map>
@@ -8360,22 +8420,18 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.30</real>
+    <real>5.0</real>
   </map>
   <key>RenderSSAOEffect</key>
   <map>
     <key>Comment</key>
-    <string>Multiplier for (1) value and (2) saturation (HSV definition), for areas which are totally occluded.  Blends with original color for partly-occluded areas.  (Third component is unused.)</string>
+    <string>Multiplier for value for areas which are totally occluded.  Blends with original color for partly-occluded areas.  (Third component is unused.)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Vector3</string>
+    <string>F32</string>
     <key>Value</key>
-    <array>
-      <real>0.80</real>
-      <real>1.00</real>
-      <real>0.00</real>
-    </array>
+    <real>0.65</real>
   </map>
   <key>RenderBumpmapMinDistanceSquared</key>
     <map>
@@ -8613,7 +8669,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>-0.008</real>
+    <real>-0.003</real>
   </map>
   <key>RenderShadowOffset</key>
   <map>
@@ -8635,7 +8691,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>-0.007</real>
+    <real>-0.001</real>
   </map>
   <key>RenderShadowOffsetError</key>
   <map>
@@ -8970,7 +9026,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>5.0</real>
+    <real>0.0</real>
   </map>
   <key>RenderShadowFOVCutoff</key>
   <map>
@@ -8981,7 +9037,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.8</real>
+    <real>0.0</real>
   </map>
 
   <key>RenderShadowGaussian</key>
@@ -8994,8 +9050,8 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
-      <real>3.0</real>
       <real>2.0</real>
+      <real>4.0</real>
       <real>0.0</real>
     </array>
   </map>
@@ -9009,7 +9065,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>1.4</real>
+    <real>2.4</real>
   </map>
   <key>RenderShadowBlurSamples</key>
   <map>
@@ -9031,7 +9087,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0</real>
+    <real>0.008</real>
   </map>
 
   <key>RenderDynamicLOD</key>
@@ -9187,9 +9243,9 @@
       <string>Vector3</string>
       <key>Value</key>
       <array>
-        <real>1</real>
-        <real>0</real>
-        <real>0</real>
+        <real>0.6</real>
+        <real>0.2</real>
+        <real>0.2</real>
       </array>
     </map>
     <key>RenderGlowMaxExtractAlpha</key>
@@ -9201,7 +9257,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.25</real>
+      <real>0.018</real>
     </map>
     <key>RenderGlowMinLuminance</key>
     <map>
@@ -9212,7 +9268,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>9999</real>
+      <real>0</real>
     </map>
     <key>RenderGlowResolutionPow</key>
     <map>
@@ -9223,7 +9279,7 @@
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>9</integer>
+      <integer>10</integer>
     </map>
     <key>RenderGlowStrength</key>
     <map>
@@ -9234,7 +9290,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.35</real>
+      <real>0.21</real>
     </map>
     <key>RenderGlowWarmthAmount</key>
     <map>
@@ -9245,7 +9301,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.0</real>
+      <real>3.8</real>
     </map>
     <key>RenderGlowWarmthWeights</key>
     <map>
@@ -9258,8 +9314,8 @@
       <key>Value</key>
       <array>
         <real>1.0</real>
-        <real>0.5</real>
-        <real>0.7</real>
+        <real>0.6</real>
+        <real>0.75</real>
       </array>
     </map>
     <key>RenderGlowWidth</key>
@@ -9271,7 +9327,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>1.3</real>
+      <real>2.1</real>
     </map>
     <key>RenderGround</key>
     <map>
@@ -9635,7 +9691,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>12.0</real>
+      <real>6.0</real>
     </map>
     <key>RenderTextureMemoryMultiple</key>
     <map>
@@ -9767,7 +9823,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <integer>0</integer>
+    <integer>200</integer>
   </map>
     
   <key>RenderAutoHideSurfaceAreaLimit</key>
@@ -11608,7 +11664,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>500.0</real>
+      <real>10000.0</real>
     </map>
     <key>UpdaterMaximumBandwidth</key>
     <map>
@@ -14358,7 +14414,7 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
-      <integer>1</integer>
+      <integer>0</integer>
     </map>
     <key>ShowOfferedInventory</key>
     <map>
@@ -14827,6 +14883,551 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
+  </map>
+		
+		
+  <!-- Black Dragon Debugs -->
+		
+  <!-- Machinima Sidebar Debugs-->
+  <key>MachinimaSidebarPush</key>
+  <map>
+    <key>Comment</key>
+    <string>Open the pushing version of the Sidebar</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  
+  <!-- Inventory Filters -->
+  <key>InventorySortObjectsByName</key>
+  <map>
+    <key>Comment</key>
+    <string>Weither we should sort the Inventory by Name or not.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>InventorySortObjectsByDate</key>
+  <map>
+    <key>Comment</key>
+    <string>Weither we should sort the Inventory objects by date or not.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>InventorySortFoldersByName</key>
+  <map>
+    <key>Comment</key>
+    <string>Weither we should sort the Inventory folders by Name or not.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>InventorySystemFoldersToTop</key>
+  <map>
+    <key>Comment</key>
+    <string>Move System folders always to the top.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  
+  <key>PrevGlow</key>
+  <map>
+	<key>Comment</key>
+	<string>test</string>
+	<key>Persist</key>
+	<integer>1</integer>
+	<key>Type</key>
+	<string>F32</string>
+	<key>Value</key>
+	<real>0.210</real>
+  </map>
+  <key>PrevFoV</key>
+  <map>
+	<key>Comment</key>
+	<string>test</string>
+	<key>Persist</key>
+	<integer>1</integer>
+	<key>Type</key>
+	<string>F32</string>
+	<key>Value</key>
+	<real>1.10</real>
+  </map>
+  
+  <key>EnableThirdPersonSteering</key>
+  <map>
+    <key>Comment</key>
+    <string>Toggles Mouse-steering mode to always on as if you click and hold down your Mouse on your Avatar while moving the Mouse</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>RenderDepthOfFieldUnderwater</key>
+  <map>
+    <key>Comment</key>
+    <string>Render Depth of Field underwater simulating a underwater blur effect</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <real>1</real>
+  </map>
+  <key>CameraOverWaterDistortion</key>
+  <map>
+    <key>Comment</key>
+    <string>Underwater distortion strength</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>67.0</real>
+  </map>
+  <key>CameraUnderWaterDistortion</key>
+  <map>
+    <key>Comment</key>
+    <string>Underwater distortion strength</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>120.0</real>
+  </map>
+  <key>RenderEnableFullbright</key>
+  <map>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <real>1</real>
+  </map>
+  <key>SlowMotionTimeFactor</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls time factor for Slow Motion animations</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.2</real>
+  </map>
+  <key>HideTopbar</key>
+  <map>
+    <key>Comment</key>
+    <string>Hides the whole topbar</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>EnableAutohidingChat</key>
+  <map>
+    <key>Comment</key>
+    <string>Hide the Local Chat floater automatically whenever it loses focus</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>AutohideChatOnReturn</key>
+  <map>
+    <key>Comment</key>
+    <string>Hide the Local Chat floater whenever you press the return key, no matter if the Chat is empty or not</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>AllowWalkingBackwards</key>
+  <map>
+    <key>Comment</key>
+    <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>MovementRotationSpeed</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls rotation speed of your Avatar , smaller values result in eventually breaking turn animations in AO's and a more direct control feeling</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.20</real>
+  </map>
+  <key>RenderInterpolateWindlight</key>
+  <map>
+    <key>Comment</key>
+    <string>Smoothly animate Windlight Preset changes</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>RenderWindlightInterpolateTime</key>
+  <map>
+    <key>Comment</key>
+    <string>Timespan for interpolating between Windlight settings</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>5.0</real>
+  </map>
+  <key>MiniMapChatRing</key>
+  <map>
+    <key>Comment</key>
+    <string>Display range ring on mini map</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowSidebarMinimap</key>
+  <map>
+    <key>Comment</key>
+    <string>Shows Mini Map in Sidebar</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowTopSearchBar</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Search field in Top bar</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowBigWorldMap</key>
+  <map>
+    <key>Comment</key>
+    <string>Show World Map legend and controls</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ShowQuickWindlightButton</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Windlight Button in Top bar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowQuickSkyButton</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Sky Button in Top bar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowQuickWaterButton</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Water Button in Top bar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowQuickBrowserButton</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Browser Button in Top bar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ShowQuickHomeButton</key>
+  <map>
+    <key>Comment</key>
+    <string>Show Home Button in Top bar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  
+  <!-- Tonemapping -->
+  <key>ExodusRenderAutoExposeStep</key>
+  <map>
+      <key>Comment</key>
+      <string>Amount to "correct" exposure by every frame until we've reached the target exposure in ExodusRenderExposureTarget.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>0.125</real>
+  </map>
+  <key>ExodusRenderExposureTarget</key>
+  <map>
+      <key>Comment</key>
+      <string>Target exposure level for auto exposure. Only applied when ExodusRenderAutoExposure is set to TRUE.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>1.0</real>
+  </map>
+  <key>ExodusRenderAutoExposure</key>
+  <map>
+      <key>Comment</key>
+      <string>Whether or not to enable auto exposure. Note: autoexposure is slightly more expensive, and may not work on all GPUs and drivers.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+  </map>
+  <key>ExodusRenderToneAdvOptA</key>
+  <map>
+      <key>Comment</key>
+      <string>Advanced tone mapping options. X = Shoulder strength, Y = Linear strength, Z = Linear angle.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+          <real>0.22</real>
+          <real>0.30</real>
+          <real>0.10</real>
+      </array>
+  </map>
+  <key>ExodusRenderToneAdvOptB</key>
+  <map>
+      <key>Comment</key>
+      <string>Advanced tone mapping options (cont'd). X = Toe strength, Y = Toe numerator, Z = Toe denominator.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+          <real>0.20</real>
+          <real>0.01</real>
+          <real>0.30</real>
+      </array>
+  </map>
+  <key>ExodusRenderToneAdvOptC</key>
+  <map>
+      <key>Comment</key>
+      <string>Advanced tone mapping options (cont'd). X = Linear white point, Y = Exposure bias.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+          <real>11.2</real>
+          <real>2.0</real>
+          <real>0</real>
+      </array>
+  </map>
+  <key>ExodusRenderHighPrecision</key>
+  <map>
+    <key>Comment</key>
+    <string>Do we want floating point 64-bit frame buffers?</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ExodusRenderGammaCorrect</key>
+  <map>
+    <key>Comment</key>
+    <string>Do we want gamma correct rendering?</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ExodusRenderToneExposure</key>
+  <map>
+    <key>Comment</key>
+    <string>Exposure for tone mapping.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>2.1</real>
+  </map>
+  <key>ExodusRenderToneMapping</key>
+  <map>
+    <key>Comment</key>
+    <string>This enables and disables Tone Mapping.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ExodusRenderToneMappingTech</key>
+  <map>
+    <key>Comment</key>
+    <string>Tone mapping technique to use. 0 applies Filmic, 1 applies Linear, and 2 applies Reinhard.  Defaults to Reinhard.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>S32</string>
+    <key>Value</key>
+    <integer>2</integer>
+  </map>
+  <key>ExodusRenderColorGradeTech</key>
+  <map>
+    <key>Comment</key>
+    <string>Color grading technique to use. 0 applies linear color correction, 1 applies a 1D color gammut LUT, 2 does nothing (yet), -1 disables color grading altogether.  Defaults to linear.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>S32</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ExodusRenderColorGradeTexture</key>
+  <map>
+    <key>Comment</key>
+    <string>Image to use for color grading post process.  Note: this should always be a gradient with alpha. (UUID texture reference)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>String</string>
+    <key>Value</key>
+    <string>38c32253-287c-e607-c3d7-a702b4c21363</string>
+  </map>
+  <key>ExodusRenderVignette</key>
+  <map>
+    <key>Comment</key>
+    <string>Amount of vignette to apply (X), power of vignette shading (Y), and multiplier for vignette shading (Z).</string>
+    <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Vector3</string>
+      <key>Value</key>
+      <array>
+          <real>0.0</real>
+          <real>1.0</real>
+          <real>3.0</real>
+      </array>
+  </map>
+  <key>ExodusRenderExposure</key>
+  <map>
+    <key>Comment</key>
+    <string>High Dynamic Range Exposure.  Each value represents a different color channel.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>0.35</real>
+      <real>0.35</real>
+      <real>0.35</real>
+    </array>
+  </map>
+  <key>ExodusRenderGamma</key>
+  <map>
+    <key>Comment</key>
+    <string>High Dynamic Range Gamma Correction.  Each value represents a different color channel.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>1.00</real>
+      <real>1.00</real>
+      <real>1.00</real>
+    </array>
+  </map>
+  <key>ExodusRenderOffset</key>
+  <map>
+    <key>Comment</key>
+    <string>High Dynamic Range Brightness Offset.  Each value represents a different color channel.  Higher values brighten the scene, lower values darken.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>-0.08</real>
+      <real>-0.08</real>
+      <real>-0.08</real>
+    </array>
   </map>
 </map>
 </llsd>

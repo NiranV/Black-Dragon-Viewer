@@ -7,118 +7,126 @@
  name="login_progress_panel"
  top="768"
  width="1024">
+  <string name="LoadingTip 0">[#21] Random and usefull tips will be displayed here over time</string>
+  <string name="LoadingTip 1">[#1] You can reorder/realign all your onscreen buttons like your Inventory to each of the four toolbars , top , left , right , bottom. You can also add additional buttons or delete buttons if you wish , just right click on an active button and click 'Select Buttons' , this will open a Window in which you can drag and drop all buttons where you want them!</string>
+  <string name="LoadingTip 2">[#2] Lighting and Shadows is also known as Deferred. Deferred Rendering is an advanced graphic rendering used in a lot of games today as example Crysis 2 , StarCraft 2 and Grand Theft Auto 4</string>
+  <string name="LoadingTip 3">[#3] Chat can be started by pressing Enter at any Time while not having any other window focused , you can also SHOUT by holding 'Ctrl' and WHISPER by holding 'Shift' while sending a Chat message!</string>
+  <string name="LoadingTip 4">[#4] Draw Distance can be a Performance-killer , set it wisely and dont unnecessarily push it over 128m , your PC will thank you!</string>
+  <string name="LoadingTip 5">[#5] Chuck Norris finished Second Life 3 times already!</string>
+  <string name="LoadingTip 6">[#6] You can re-read all Tips in Dragon Main Menu -> Useful features -> Loadingscreen tips.</string>
+  <string name="LoadingTip 7">[#7] This Viewer is based on Linden Lab's 3.6 codebase. It includes Server Side Baking/Appearance and the Materials Project.</string>
+  <string name="LoadingTip 8">[#8] You can open a second Inventory window by clicking at 'File' at the top of the Inventory window and then selecting 'New Inventory Window'.</string>
+  <string name="LoadingTip 9">[#9] This Viewer supports RLVa, its a good way to live out your 'controlling' side , its often used for BDSM , locks , collars and other restraining actions , the reason why it was called Restrained Life but just because its mainly used for BDSM its not bad its API can also be used to create powerfull and really cool Roleplay games or HUD's , it can even be used to create automatic outfit wear and unwear scripts! so dont hesitiate to try it out! if you dont like it you can always disable it in Preferences -> Viewer -> RLVa , but you will need a relog.</string>
+  <string name="LoadingTip 10">[#10] Your 'People' window acts as recent chatter list , radar , friend and group list. You can start an IM Session by double clicking your friend or someone in the radar, on group it will open and start a group chat conversation.</string>
+  <string name="LoadingTip 11">[#11] This Viewer supported by Mech Toys a Shop in Second Life that sells dollie and windup oriented RLV toys. You might want to pay a visit there http://maps.secondlife.com/secondlife/Axell/185/128/21</string>
+  <string name="LoadingTip 12">[#12] Its loading and preparing the lag right now...</string>
+  <string name="LoadingTip 13">[#13] This Viewer is aimed at high graphic defaults , delivering you a fairly good graphic preset for every graphic level right from stock!</string>
+  <string name="LoadingTip 14">[#14] Black Dragon supports Color Grading , Tone Mapping and Vignette known from Exodus Viewer and has Gamma Correction by default now due to the Materials Project. You should really try those out if you have a good Computer that is able to handle Deferred aswell. You can find those Options in Preferences -> Display -> General , and their finetuning options in Display -> High Precision.</string>
+  <string name="LoadingTip 15">[#15] Keep in mind that alot of problems can often be solved by the simpliest things , like cleaning your cache. Sometimes you sadly need bigger calibers ... you will have to delete your settings then , you should always keep a backup of them however.</string>
+  <string name="LoadingTip 16">[#16] Mesh is a cool new , faster and higher detailed way to customize your Avatar. Be sure to check them out on the Marketplace! Dragon -> Marketplace. Be warned , not everything shiny is valueable , try Demo's before you buy the full item.</string>
+  <string name="LoadingTip 17">[#17] This Viewer offers alot Options to customize your Viewer appearance , you can find alot of them regarding the main interface in Preferences -> Interface -> Customisation.</string>
+  <string name="LoadingTip 18">[#18] Take your time while exploring the Viewer , look into all corners , slowly work from panel to panel , you will find a lot of Options to customise a lot of different aspects.</string>
+  <string name="LoadingTip 19">[#19] Do you think Groupchat popups are annoying and fill your screen? Disable them! Preferences -> Chat -> IM / Group IM -> Enable Group Chat Pop-ups.</string>
+  <string name="LoadingTip 20">[#20] Another great way to get support/help is to join my official group secondlife:///app/group/d2ba3314-b9f7-ded7-40ad-b0c276acd1bd/about , i will try helping whenever im online.</string>
+   <loading_indicator
+   follows="left|right|bottom|top"
+   mouse_opaque="false"
+   name="loading_indicator"
+   images_per_sec="0.01"
+   height="768"
+   width="1024"
+   top_pad="0"
+   left="0"
+   tab_stop="false">
+   <images>
+   <image name="loading1"/>
+   <image name="loading2"/>
+   <image name="loading3"/>
+   </images>
+   </loading_indicator>
     <layout_stack
      follows="left|right|top|bottom"
      height="768"
      layout="topleft"
      left="0"
-     name="horizontal_centering"
+     name="stack1"
      orientation="horizontal"
      top="0"
      width="1024">
         <layout_panel
          layout="topleft"
          min_width="10"
-         name="left"
+         name="panel1"
+         user_resize="false"
          width="150" />
         <layout_panel
          height="768"
          layout="topleft"
-         min_width="670"
-         name="center"
-         width="670">
+         min_width="640"
+         name="panel2"
+         user_resize="false"
+         width="640">
             <layout_stack
              follows="left|right|top|bottom"
              height="768"
              layout="topleft"
              left="0"
              orientation="vertical" 
-             name="vertical_centering"
+             name="stack2"
              top="0"
-             width="670">
+             width="640">
                 <layout_panel
                  height="200"
                  layout="topleft"
                  min_height="10"
                  name="panel3"
-                 width="670" />
+                 width="640" />
                 <layout_panel
                  auto_resize="false"
                  height="250"
                  layout="topleft"
                  min_height="250"
                  name="panel4"
-                 width="670">
-                    <icon
-                     color="LoginProgressBoxCenterColor"
-                     follows="left|right|bottom|top"
-                     height="250"
-                     image_name="Rounded_Square"
-                     layout="topleft"
-                     left="0"
-                     top="0"
-                     width="670" />
-                    <text
-                     follows="left|right|top"
-                     font="SansSerifHuge"
-                     font_shadow="none"
-                     halign="left"
-                     height="20"
-                     layout="topleft"
-                     left_delta="47"
-                     name="title_text"
-                     text_color="LoginProgressBoxTextColor"
-                     top_delta="50"
-                     right="-47"/>
+                 width="640">
                     <text
                      follows="left|right|top"
                      font="SansSerif"
                      font_shadow="none"
+                     font.style="BOLD"
                      halign="left"
-                     height="20"
+                     height="15"
                      layout="topleft"
-                     left_delta="0"
-                     name="progress_text"
-                     text_color="LoginProgressBoxTextColor"
-                     top_pad="5"
-                     right="-47"
-                     word_wrap="true"/>
-                    <progress_bar
-                     bottom="115"
-                     color_bar="1 1 1 0.96"
-                     follows="left|right|top"
-                     height="16"
-                     layout="topleft"
-                     left="45"
-                     name="login_progress_bar"
-                     right="-45" />
+                     left_delta="33"
+                     name="title_text2"
+                     text_color="EmphasisColor"
+                     top="95"
+                     width="593" >
+                     Did you know?
+                     </text>
                     <text
                      follows="left|right|top|bottom"
-                     font="SansSerifLarge"
-                     font_shadow="none"
+                     font="SansSerif"
                      halign="left"
+                     parse_urls="true"
                      height="100"
                      layout="topleft"
-                     left="45"
+                     left="35"
                      line_spacing.pixels="2"
                      name="message_text"
-                     text_color="LoginProgressBoxTextColor"
-                     top="145"
-                     right="-90"
-                     word_wrap="true"/>
+                     text_color="EmphasisColor"
+                     top="112"
+                     width="570"
+                     word_wrap="true">
+                     Tips will be randomly displayed here!
+                    </text>
                 </layout_panel>
-                <layout_panel
-                 height="200"
-                 layout="topleft"
-                 min_width="10"
-                 name="panel5"
-                 width="670" />
             </layout_stack>
         </layout_panel>
         <layout_panel
          layout="topleft"
          min_width="10"
-         name="right"
+         name="panel7"
+         user_resize="false"
          width="150" />
     </layout_stack>
     <button
@@ -127,14 +135,51 @@
      layout="topleft"
      left="-106"
      name="cancel_btn"
-     top="700"
+     top="720"
      width="90" />
-  <web_browser
-   follows="all"
-   layout="topleft"
-   left="0"
-   name="login_media_panel"
-   width="1024"
-   height="768"
-   top="0"/>
+    <progress_bar
+     bottom="-1"
+     color_bar="0.2 0.75 0.45 1"
+     follows="left|bottom|right"
+     height="20"
+     width="1024"
+     layout="topleft"
+     left="0"
+     name="login_progress_bar" />
+    <!--<icon
+     bottom="-1"
+     follows="left|bottom|right"
+     height="20"
+     image_name="ProgressTrack"
+     color="0.5 1 0.5 1"
+     left="0"
+     width="1024" />-->
+    <text
+     follows="left|right|bottom"
+     font="SansSerif"
+     halign="center"
+     height="15"
+     layout="topleft"
+     left="0"
+     line_spacing.pixels="2"
+     name="percent_text"
+     text_color="EmphasisColor"
+     bottom="-3"
+     word_wrap="false">
+      0
+    </text>
+    <text
+     follows="left|right|bottom"
+     font="SansSerif"
+     halign="center"
+     height="15"
+     layout="topleft"
+     left="35"
+     line_spacing.pixels="2"
+     name="percent_symbol_text"
+     text_color="EmphasisColor"
+     bottom="-3"
+     word_wrap="true">
+      %
+    </text>
 </panel>

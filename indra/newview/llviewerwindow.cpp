@@ -2188,18 +2188,14 @@ void LLViewerWindow::reshape(S32 width, S32 height)
 
 		if (!maximized)
 		{
-			U32 min_window_width=gSavedSettings.getU32("MinWindowWidth");
-			U32 min_window_height=gSavedSettings.getU32("MinWindowHeight");
-			// tell the OS specific window code about min window size
-			mWindow->setMinSize(min_window_width, min_window_height);
+			// U32 min_window_width=gSavedSettings.getU32("MinWindowWidth");
+			// U32 min_window_height=gSavedSettings.getU32("MinWindowHeight");
 
-			LLCoordScreen window_rect;
-			if (mWindow->getSize(&window_rect))
-			{
-			// Only save size if not maximized
-				gSavedSettings.setU32("WindowWidth", window_rect.mX);
-				gSavedSettings.setU32("WindowHeight", window_rect.mY);
-			}
+			//NV - Aww this is a horrible hack
+			width = width + 16;
+			height = height + 38;
+			gSavedSettings.setS32("WindowWidth", width);
+			gSavedSettings.setS32("WindowHeight", height);
 		}
 
 		LLViewerStats::getInstance()->setStat(LLViewerStats::ST_WINDOW_WIDTH, (F64)width);
@@ -2398,11 +2394,7 @@ void LLViewerWindow::draw()
 		// Draw tool specific overlay on world
 		LLToolMgr::getInstance()->getCurrentTool()->draw();
 
-		if( gAgentCamera.cameraMouselook() || LLFloaterCamera::inFreeCameraMode() )
-		{
-			drawMouselookInstructions();
-			stop_glerror();
-		}
+		gViewerWindow->getRootView()->getChild<LLIconCtrl>("bg_icon_l2")->setVisible(!gAgentCamera.cameraMouselook());
 
 		// Draw all nested UI views.
 		// No translation needed, this view is glued to 0,0
@@ -4546,25 +4538,6 @@ void LLViewerWindow::destroyWindow()
 	mWindow = NULL;
 }
 
-
-void LLViewerWindow::drawMouselookInstructions()
-{
-	// Draw instructions for mouselook ("Press ESC to return to World View" partially transparent at the bottom of the screen.)
-	const std::string instructions = LLTrans::getString("LeaveMouselook");
-	const LLFontGL* font = LLFontGL::getFont(LLFontDescriptor("SansSerif", "Large", LLFontGL::BOLD));
-	
-	//to be on top of Bottom bar when it is opened
-	const S32 INSTRUCTIONS_PAD = 50;
-
-	font->renderUTF8( 
-		instructions, 0,
-		getWorldViewRectScaled().getCenterX(),
-		getWorldViewRectScaled().mBottom + INSTRUCTIONS_PAD,
-		LLColor4( 1.0f, 1.0f, 1.0f, 0.5f ),
-		LLFontGL::HCENTER, LLFontGL::TOP,
-		LLFontGL::NORMAL,LLFontGL::DROP_SHADOW);
-}
-
 void* LLViewerWindow::getPlatformWindow() const
 {
 	return mWindow->getPlatformWindow();
@@ -4668,7 +4641,7 @@ void LLViewerWindow::revealIntroPanel()
 {
 	if (mProgressView)
 	{
-		mProgressView->revealIntroPanel();
+		//mProgressView->revealIntroPanel();
 	}
 }
 
@@ -4676,7 +4649,7 @@ void LLViewerWindow::setShowProgress(const BOOL show)
 {
 	if (mProgressView)
 	{
-		mProgressView->setVisible(show);
+		mProgressView->fade(show);
 	}
 }
 
@@ -4697,7 +4670,7 @@ void LLViewerWindow::setProgressString(const std::string& string)
 {
 	if (mProgressView)
 	{
-		mProgressView->setText(string);
+		//mProgressView->setText(string);
 	}
 }
 
@@ -4705,7 +4678,7 @@ void LLViewerWindow::setProgressMessage(const std::string& msg)
 {
 	if(mProgressView)
 	{
-		mProgressView->setMessage(msg);
+		//mProgressView->setMessage(msg);
 	}
 }
 

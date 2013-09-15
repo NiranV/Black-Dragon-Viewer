@@ -4,12 +4,12 @@
  bevel_style="none"
  border_style="line"
  can_resize="true"
- height="580"
+ height="575"
  layout="topleft"
  min_height="271"
- min_width="290"
+ min_width="400"
  name="script ed float"
- help_topic="script_ed_float"
+ background_color="FloaterDefaultBackgroundColor"
  save_rect="true"
  title="SCRIPT: NEW SCRIPT"
  width="508">
@@ -27,27 +27,17 @@
     </floater.string>
     <panel
      bevel_style="none"
-     
      border_style="line"
      follows="left|top|right|bottom"
      height="522"
      layout="topleft"
      left="10"
      name="script ed panel"
-     top="20"
+     top="15"
      width="497" />
-    <button
-     follows="left|bottom"
-     height="23"
-     label="Reset"
-     label_selected="Reset"
-     layout="topleft"
-     name="Reset"
-     left="10"
-     width="85" />
     <check_box
-    left_delta="90"
-    top_delta="3"
+     left="10"
+     top_pad="0"
      enabled="false"
      follows="left|bottom"
      font="SansSerif"
@@ -58,7 +48,8 @@
      name="running"
      width="205" />
     <check_box
-    left_delta="140"
+     left_delta="0"
+     top_pad="-2"
      enabled="true"
      follows="left|bottom"
      font="SansSerif"
@@ -68,4 +59,14 @@
      layout="topleft"
      name="mono"
      width="100" />
+    <button
+     follows="right|bottom"
+     height="23"
+     label="Reset"
+     top_delta="-13"
+     label_selected="Reset"
+     layout="topleft"
+     name="Reset"
+     right="-11"
+     width="85" />
 </floater>

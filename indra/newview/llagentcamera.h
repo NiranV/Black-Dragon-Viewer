@@ -52,11 +52,18 @@ enum ECameraPreset
 	/** Default preset, what the Third Person Mode actually was */
 	CAMERA_PRESET_REAR_VIEW,
 	
-	/** "Looking at the Avatar from the front" */
+	/** "Looking at the Avatar from a top-down view" */
 	CAMERA_PRESET_FRONT_VIEW, 
 
-	/** "Above and to the left, over the shoulder, pulled back a little on the zoom" */
-	CAMERA_PRESET_GROUP_VIEW
+	/** "Above and to the right, over the shoulder, pulled back a little on the zoom" */
+	CAMERA_PRESET_GROUP_VIEW,
+
+//	//BD - Left/Right shoulder camera preset
+	/** "Shooter like , close up over the left-shoulder cam" */
+	CAMERA_PRESET_LEFT_VIEW,
+
+	/** "Shooter like , close up over the right-shoulder cam" */
+	CAMERA_PRESET_RIGHT_VIEW
 };
 
 //------------------------------------------------------------------------
@@ -219,6 +226,19 @@ private:
 	LLVector3		mFocusObjectOffset;
 	F32				mFocusDotRadius; 				// Meters
 	BOOL			mTrackFocusObject;
+
+	//--------------------------------------------------------------------
+	// Camera backup
+	//--------------------------------------------------------------------
+public:
+	void			saveCamera();
+	void			loadSavedCamera();
+
+private:
+	LLVector3d					mSavedCameraPos;
+	LLVector3d					mSavedCameraFocus;
+	LLPointer<LLViewerObject>	mSavedCameraFocusObject;
+	bool						mSavedCamera;
 	
 	//--------------------------------------------------------------------
 	// Lookat / Pointat
@@ -231,7 +251,7 @@ public:
 	void 			slamLookAt(const LLVector3 &look_at); // Set the physics data
 	BOOL			setPointAt(EPointAtType target_type, LLViewerObject *object = NULL, LLVector3 position = LLVector3::zero);
 	EPointAtType	getPointAtType();
-public:
+
 	LLPointer<LLHUDEffectLookAt> mLookAt;
 	LLPointer<LLHUDEffectPointAt> mPointAt;
 

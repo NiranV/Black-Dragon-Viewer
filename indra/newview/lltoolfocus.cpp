@@ -314,7 +314,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 	S32 dx = gViewerWindow->getCurrentMouseDX();
 	S32 dy = gViewerWindow->getCurrentMouseDY();
 	
-	if (hasMouseCapture() && mValidClickPoint)
+	if (hasMouseCapture() && mValidClickPoint || gSavedSettings.getBOOL("EnableThirdPersonSteering"))
 	{
 		mAccumX += llabs(dx);
 		mAccumY += llabs(dy);
@@ -330,9 +330,9 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		}
 	}
 
-	if (mOutsideSlopX || mOutsideSlopY)
+	if (mOutsideSlopX || mOutsideSlopY )
 	{
-		if (!mValidClickPoint)
+		if (!mValidClickPoint && !gSavedSettings.getBOOL("EnableThirdPersonSteering"))
 		{
 			lldebugst(LLERR_USER_INPUT) << "hover handled by LLToolFocus [invalid point]" << llendl;
 			gViewerWindow->setCursor(UI_CURSOR_NO);
@@ -342,7 +342,8 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 
 		if (gCameraBtnOrbit ||
 			mask == MASK_ORBIT || 
-			mask == (MASK_ALT | MASK_ORBIT))
+			mask == (MASK_ALT | MASK_ORBIT) ||
+			gSavedSettings.getBOOL("EnableThirdPersonSteering"))
 		{
 			// Orbit tool
 			if (hasMouseCapture())
@@ -425,21 +426,24 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		}
 	}
 
-	if (gCameraBtnOrbit ||
-		mask == MASK_ORBIT || 
-		mask == (MASK_ALT | MASK_ORBIT))
+	if(!gSavedSettings.getBOOL("EnableThirdPersonSteering"))
 	{
-		gViewerWindow->setCursor(UI_CURSOR_TOOLCAMERA);
-	}
-	else if (	gCameraBtnPan ||
-				mask == MASK_PAN ||
-				mask == (MASK_PAN | MASK_ALT) )
-	{
-		gViewerWindow->setCursor(UI_CURSOR_TOOLPAN);
-	}
-	else
-	{
-		gViewerWindow->setCursor(UI_CURSOR_TOOLZOOMIN);
+		if (gCameraBtnOrbit ||
+			mask == MASK_ORBIT || 
+			mask == (MASK_ALT | MASK_ORBIT))
+		{
+			gViewerWindow->setCursor(UI_CURSOR_TOOLCAMERA);
+		}
+		else if (	gCameraBtnPan ||
+					mask == MASK_PAN ||
+					mask == (MASK_PAN | MASK_ALT) )
+		{
+			gViewerWindow->setCursor(UI_CURSOR_TOOLPAN);
+		}
+		else
+		{
+			gViewerWindow->setCursor(UI_CURSOR_TOOLZOOMIN);
+		}
 	}
 	
 	return TRUE;

@@ -1,265 +1,403 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
+follows="all"
+height="600"
+layout="topleft"
+left="0"
+name="panel_login"
+focus_root="false" 
+top="600"
+ width="996">
+<panel.string name="create_account_url">
+       http://join.secondlife.com/
+</panel.string>
+<string name="reg_in_client_url" translate="false">
+     http://secondlife.eniac15.lindenlab.com/reg-in-client/
+</string>
+<panel.string name="forgot_password_url">
+       http://secondlife.com/account/request.php
+</panel.string>
+  <web_browser
+  tab_stop="false" 
+  trusted_content="true" 
+  bg_opaque_color="Black"
+  border_visible="false"
+  top="-600"
+  follows="all"
+  start_url="http://www.youtube.com/watch_popup?v=lUCdjpphUtw&amp;vq=hd1080"
+  left="0"
+  name="html"
+  height="640"
+  width="996" />
+  
+  <icon
+  follows="bottom|left|right"
+  height="165"
+  image_name="NavBar_BG_middle"
+  color="0 0 0 0.8"
+  layout="topleft"
+  name="login_bg"
+  mouse_opaque="false"
+  visible="true"
+  width="996"
+  left="0"
+  top="-155"/>
+  <button
+  follows="left|bottom|right"
+  height="35"
+  image_unselected="transparentj2c"
+  image_selected="transparentj2c"
+  label="Login to Secondlife™"
+  font="SansSerifHuge"
+  font.style="BOLD"
+  label_color="1 1 1 0.8"
+  layout="topleft"
+  left="275"
+  right="-275"
+  name="connect_btn"
+  top="-153"
+  width="996"/>
+  <panel
+  follows="right|left|bottom"
+  height="100"
+  layout="topleft"
+  left="0"
+  name="panel_login2"
+  focus_root="true" 
+  top="-121"
+  width="996">
+    <layout_stack
+    border_size="0"
     follows="all"
-    height="600"
+    height="100"
     layout="topleft"
     left="0"
-    name="panel_login"
-    focus_root="true" 
-    top="600"
-    width="1130">
-  <string name="reg_in_client_url" translate="false">
-    http://secondlife.eniac15.lindenlab.com/reg-in-client/
-  </string>
-  <panel.string
-      name="forgot_password_url">
-    http://secondlife.com/account/request.php
-  </panel.string>
-  <!-- *NOTE: Custom resize logic for login_html in llpanellogin.cpp -->
-  <web_browser
-      tab_stop="false" 
-      trusted_content="true" 
-      bg_opaque_color="Black"
-      border_visible="false"
-      bottom="600"
+    mouse_opaque="false"
+    name="root_stack"
+    orientation="horizontal"
+    top="0"
+    width="996">
+      <layout_panel
+      auto_resize="true"
       follows="all"
-      left="0"
-      name="login_html"
-      start_url=""
-      top="0"
-      height="600"
-      width="996"/>
-  <layout_stack
-      animate="false"
-      clip="false"
-      follows="left|bottom|right"
-      name="login_widgets"
+      height="100"
       layout="topleft"
-      orientation="horizontal"
-      top="519"
-      width="1130"
-      height="80">
-    <layout_panel
-        auto_resize="false"
-        follows="left|bottom"
-        name="login"
+      mouse_opaque="false"
+      name="info_panel"
+      top_pad="0"
+      width="200">
+        <icon
+        follows="bottom|left"
+        height="35"
+        color="1 1 1 0.75"
+        image_name="SL_Logo"
         layout="topleft"
-        width="310"
-        min_width="310"
-        height="80">
-      <text
-          follows="left|bottom"
-          font="SansSerif"
-          font.style="BOLD"
-          font.size="Large"
-          height="16"
-          name="log_in_text"
-          top="8"
-          left="15"
-          width="150">
-        LOG IN
-      </text>
-      <text
-          follows="left|bottom"
-          font="SansSerifSmall"
-          height="16"
-          name="username_text"
-          top="35"
-          left="15"
-          width="150">
-        Username:
-      </text>
-      <!-- STEAM-14: Turn off commit_on_focus_lost so if user presses Enter
-           with focus in this combo_box, we can use commit action to initiate
-           login -->
-      <combo_box
-          allow_text_entry="true"
-          follows="left|bottom"
-          height="22"
-          left_delta="0"
-          max_chars="128"
-          commit_on_focus_lost="false"
-          combo_editor.prevalidate_callback="ascii"
-          tool_tip="The username you chose when you registered, like bobsmith12 or Steller Sunshine"
-          top_pad="0"
-          name="username_combo"
-          width="178">
-<!-- empirically, displayed width is 150 anyway?!? -->
-        <combo_box.combo_button
-            visible ="false"/>
-        <combo_box.drop_down_button
-            visible ="false"/>
-      </combo_box>
-<!-- left="175" based on actual "username_combo" width of 150 vs. 178 -->
-      <text
-          follows="left|bottom"
-          font="SansSerifSmall"
-          height="16"
-          name="password_text"
-          top="35"
-          left="175"
-          width="150">
-        Password:
-      </text>
-      <!-- STEAM-14: Turn off commit_on_focus_lost so if user presses Enter
-           with focus in this line_editor, we can use commit action to
-           initiate login -->
-      <line_editor
-          follows="left|bottom"
-          height="22"
-          max_length_bytes="16"
-          name="password_edit"
-          is_password="true" 
-          select_on_focus="true"
-          commit_on_focus_lost="false"
-          top_pad="0"
-          width="135" />
-    </layout_panel>
-    <layout_panel
-        auto_resize="false"
+        name="vicon"
+        mouse_opaque="false"
+        visible="true"
+        width="35"
+        left="2"
+        top="1"/>
+        <text
         follows="left|bottom"
-        name="start_location_panel"
-        layout="topleft"
-        width="175"
-        min_width="175"
-        height="80">
-      <text
-          follows="left|bottom"
-          font="SansSerifSmall"
-          height="16"
-          left="10"
-          name="start_location_text"
-          top="35"
-          width="130">
-        Start at:
-      </text>
-      <combo_box
-          allow_text_entry="true"
-          control_name="NextLoginLocation"
-          follows="left|bottom"
-          height="22"
-          max_chars="128"
-          top_pad="0"
-          name="start_location_combo"
-          width="165">
-        <combo_box.item
-            label="My last location"
-            name="MyLastLocation"
-            value="last" />
-        <combo_box.item
-            label="My home"
-            name="MyHome"
-            value="home" />
-        <combo_box.item
-            label="&lt;Type region name&gt;"
-            name="Typeregionname"   value="" />
-      </combo_box>
-    </layout_panel>
-    <layout_panel
-        auto_resize="false"
+        font="SansSerifBig"
+        font_shadow="soft"
+        font.style="BOLD"
+        text_color="EmphasisColor"
+        halign="left"
+        height="17"
+        top="4"
+        left_pad="-2"
+        name="app_name_text"
+        width="180"
+        word_wrap="true">
+           [APP_NAME]
+        </text>
+        <text
         follows="left|bottom"
-        name="grid_panel"
+        font="SansSerif"
+        font.style="BOLDITALIC"
+        font_shadow="soft"
+        text_color="EmphasisColor"
+        halign="left"
+        height="28"
+        top_pad="0"
+        left="35"
+        name="different_text"
+        width="180"
+        word_wrap="true">
+           Rawr!
+        </text>
+        <button
+        follows="left|bottom|right"
+        height="20"
+        image_unselected="transparentj2c"
+        image_selected="transparentj2c"
+        label="[CHANNEL] [VERSION]"
+        font="SansSerif"
+        font.style="BOLD"
+        label_color="EmphasisColor"
         layout="topleft"
-        width="145"
-        height="80"
-        visible="false">
-      <combo_box
-          allow_text_entry="false"
-          font="SansSerifSmall"
-          follows="left|right|bottom"
-          height="23"
-          max_chars="256"
-          left="10"
-          top="51"
-          layout="topleft"
-          top_pad="2"
-          name="server_combo"
-          width="135" />
-    </layout_panel>
-    <layout_panel
-        auto_resize="false"
+        left="5"
+        halign="left"
+        name="channel_text"
+        top="83"
+        width="200">
+        <button.commit_callback
+          function="Floater.Show"
+          parameter="sl_about"/>
+        </button>
+      </layout_panel>
+      <layout_panel
+      auto_resize="false"
+      follows="all"
+      height="100"
+      layout="topleft"
+      mouse_opaque="false"
+      name="root_panel"
+      top_pad="0"
+      width="220">
+        <icon
+        follows="left|top"
+        height="34"
+        image_name="user-entry"
+        layout="topleft"
+        name="user_icon"
+        mouse_opaque="false"
+        visible="true"
+        width="200"
+        left="0"
+        top="5"/>
+        <line_editor
+        allow_text_entry="true"
+        commit_on_focus_lost="false"
         follows="left|bottom"
-        name="links_login_panel"
+        height="22"
+        label="Username"
+        left_delta="35"
+        max_chars="128"
+        tool_tip="The username you chose when you registered, like bobsmith12 or Steller Sunshine"
+        top_delta="6"
+        name="username_combo"
+        width="152"/>
+        <icon
+        follows="left|top"
+        height="34"
+        image_name="pw-entry"
         layout="topleft"
-        width="290"
-        height="80">
-      <text
-          follows="left|bottom"
-          font="SansSerifSmall"
-          text_color="EmphasisColor"
-          left="10"
-          height="16"
-          name="login_help"
-          top="19"
-          width="280">
-        Need help logging in?
-      </text>
-      <text
-          follows="left|bottom"
-          font="SansSerifSmall"
-          text_color="EmphasisColor"
-          height="16"
-          name="forgot_password_text"
-          top="35"
-          width="280">
-        Forgot your username or password?
-      </text>
-      <button
-          follows="left|bottom"
-          top_pad="0"
-          height="23"
-          image_unselected="PushButton_On"
-          image_selected="PushButton_On_Selected"
-          label="Log In"
-          label_color="White"
-          layout="topleft"
-          name="connect_btn"
-          width="90" />
-      <check_box
-          control_name="RememberPassword"
-          follows="left|bottom"
-          font="SansSerifSmall"
-          left="110"
-          top="56"
-          height="16"
-          label="Remember password"
-          top_pad="3"
-          name="remember_check"
-          width="145" />
-    </layout_panel>
-    <layout_panel
-        tab_stop="false"
-        follows="right|bottom"
-        name="links" 
-        width="210"
-        min_width="100"
-        height="80">
-      <text
-          follows="right|bottom"
-          font="SansSerif"
-          font.style="BOLD"
-          font.size="Large"
-          halign="right"
-          height="16"
-          name="create_account_text"
-          top="8"
-          right="-15"
-          width="200">
-        CREATE YOUR ACCOUNT
-      </text>
-      <button
-          follows="right|bottom"
-          top="35"
-          right="-15"
-          height="23"
-          image_unselected="PushButton_On"
-          image_selected="PushButton_On_Selected"
-          label="Start now"
-          label_color="White"
-          layout="topleft"
-          left_pad="10"
-          name="create_new_account_btn"
-          width="90" />
-    </layout_panel>
-  </layout_stack>
+        name="pass_icon"
+        mouse_opaque="false"
+        visible="true"
+        width="200"
+        left="0"
+        top="35"/>
+        <line_editor
+        follows="left|bottom"
+        commit_on_focus_lost="false"
+        height="22"
+        max_length_bytes="16"
+        name="password_edit"
+        label="Password"
+        is_password="true" 
+        select_on_focus="true"
+        left_delta="35"
+        top_delta="6"
+        width="152" />
+        <check_box
+        control_name="RememberPassword"
+        follows="left|bottom"
+        font="SansSerifSmall"
+        height="18"
+        left_pad="0"
+        label=""
+        top_delta="2"
+        name="remember_check"
+        width="20"/>
+        <icon
+        follows="top|left"
+        height="34"
+        image_name="place-entry"
+        layout="topleft"
+        name="place-entry"
+        mouse_opaque="false"
+        width="200"
+        left="0"
+        top="65"/>
+        <combo_box
+        allow_text_entry="true"
+        control_name="LoginLocation"
+        follows="left|top"
+        height="23"
+        max_chars="128"
+        top_delta="6"
+        left_delta="35"
+        name="start_location_combo"
+        width="164">
+          <combo_box.combo_editor
+          background_image="TextField_Off"
+          background_image_disabled="TextField_Disabled"
+          background_image_focused="TextField_Active"/>
+          <combo_box.item
+          label="My last location"
+          name="MyLastLocation"
+          value="last" />
+          <combo_box.item
+          label="My home"
+          name="MyHome"
+          value="home" />
+          <combo_box.item
+          label="&lt;Type region name&gt;"
+          name="Typeregionname"
+          value="" />
+          <combo_box.combo_button
+          scale_image="false"
+          image_unselected="DownArrow_Off"
+          image_selected="transparentj2c"
+          image_disabled="transparentj2c" />
+          <combo_box.drop_down_button
+          scale_image="false"
+          image_unselected="transparentj2c"
+          image_selected="transparentj2c"
+          image_pressed="transparentj2c" 
+          image_pressed_selected="transparentj2c"
+          image_disabled="transparentj2c"/>
+        </combo_box>
+        <!--<icon
+        follows="left|top"
+        height="34"
+        image_name="grid-entry"
+        layout="topleft"
+        name="grid-entry"
+        mouse_opaque="false"
+        width="200"
+        left="0"
+        top_pad="6"/>
+        <combo_box
+        allow_text_entry="true"
+        font="SansSerifSmall"
+        follows="left|top"
+        height="23"
+        max_chars="256"
+        layout="topleft"
+        top_delta="5"
+        left="34"
+        name="server_combo"
+        width="164"
+        visible="true">
+          <combo_box.combo_editor
+          background_image="TextField_Off"
+          background_image_disabled="TextField_Disabled"
+          background_image_focused="TextField_Active"/>
+          <combo_box.combo_button
+          scale_image="false"
+          image_unselected="DownArrow_Off"
+          image_selected="transparentj2c"
+          image_disabled="transparentj2c" />
+          <combo_box.drop_down_button
+          scale_image="false"
+          image_unselected="transparentj2c"
+          image_selected="transparentj2c"
+          image_pressed="transparentj2c" 
+          image_pressed_selected="transparentj2c"
+          image_disabled="transparentj2c" />
+        </combo_box>-->
+      </layout_panel>
+      <layout_panel
+      auto_resize="true"
+      follows="all"
+      height="100"
+      layout="topleft"
+      mouse_opaque="false"
+      name="help_panel"
+      top_pad="0"
+      width="200">
+        <button
+        follows="right|top"
+        height="18"
+        control_name="PreferencesLogin"
+        image_unselected="transparentj2c"
+        image_selected="transparentj2c"
+        label="Settings"
+        is_toggle="false"
+        font="SansSerifBig"
+        font.style="BOLD"
+        label_color="1 1 1 0.7"
+        layout="topleft"
+        left="0"
+        halign="right"
+        name="pref_btn"
+        top="10"
+        width="200">
+              <button.commit_callback
+              function="Floater.Toggle"
+              parameter="preferences"/>
+        </button>
+        <button
+        follows="right|top"
+        height="18"
+        image_unselected="transparentj2c"
+        image_selected="transparentj2c"
+        label="Sign Up"
+        font="SansSerifBig"
+        font.style="BOLD"
+        label_color="1 1 1 0.7"
+        layout="topleft"
+        left="0"
+        halign="right"
+        name="create_new_account_text"
+        top_pad="0"
+        width="200"/>
+        <button
+        follows="right|top"
+        height="18"
+        image_unselected="transparentj2c"
+        image_selected="transparentj2c"
+        label="Forgot Login details?"
+        font="SansSerifBig"
+        font.style="BOLD"
+        label_color="1 1 1 0.7"
+        layout="topleft"
+        left="0"
+        halign="right"
+        name="forgot_password_text"
+        top_pad="0"
+        width="200"/>
+        <button
+        follows="right|top"
+        height="18"
+        image_unselected="transparentj2c"
+        image_selected="transparentj2c"
+        label="Grid Status"
+        font="SansSerifBig"
+        font.style="BOLD"
+        label_color="1 1 1 0.7"
+        layout="topleft"
+        left="0"
+        halign="right"
+        name="grid_btn"
+        top_pad="0"
+        width="200">
+        <button.commit_callback
+          function="PromptShowURL"
+          parameter="WebLaunchExternalTarget,http://status.secondlifegrid.net/"/>
+        </button>
+        <button
+        follows="right|top"
+        height="18"
+        control_name="FirstStart"
+        image_unselected="transparentj2c"
+        image_selected="transparentj2c"
+        label="Quit [APP_NAME]"
+        font="SansSerifBig"
+        font.style="BOLD"
+        label_color="1 1 1 0.7"
+        layout="topleft"
+        left="0"
+        halign="right"
+        name="quit_btn"
+        top_pad="0"
+        width="200"/>
+      </layout_panel>
+    </layout_stack>
+  </panel>
 </panel>
