@@ -1396,19 +1396,6 @@ BOOL LLViewerFetchedTexture::createTexture(S32 usename/*= 0*/)
 	return res;
 }
 
-//<exodus>
-void LLViewerFetchedTexture::addExplicitFormat(LLGLuint intrenal_format)
-{
-    mHasExplicitFormat = true;
-    mInternalFormat = intrenal_format;
-}
-
-void LLViewerFetchedTexture::removeExplicitFormat()
-{
-    mHasExplicitFormat = false;
-}
-//</exodus>
-
 // Call with 0,0 to turn this feature off.
 //virtual
 void LLViewerFetchedTexture::setKnownDrawSize(S32 width, S32 height)

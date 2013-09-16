@@ -613,7 +613,6 @@ public:
 	static F32				sMinRenderSize;
 	static BOOL				sRenderingHUDs;
 	static BOOL             sExodusRenderHighPrecision;
-	static BOOL             sExodusRenderGammaCorrect;
 	static BOOL             sExodusRenderShaderGamma;
 	static BOOL             sExodusRenderToneMapping;
 
