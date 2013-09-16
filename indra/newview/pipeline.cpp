@@ -654,6 +654,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderDeferredAtmospheric");
 	connectRefreshCachedSettingsSafe("RenderReflectionDetail");
 	connectRefreshCachedSettingsSafe("RenderHighlightFadeTime");
+	connectRefreshCachedSettingsSafe("RenderScreenSpaceReflections");
 	connectRefreshCachedSettingsSafe("RenderShadowClipPlanes");
 	connectRefreshCachedSettingsSafe("RenderShadowOrthoClipPlanes");
 	connectRefreshCachedSettingsSafe("RenderShadowNearDist");

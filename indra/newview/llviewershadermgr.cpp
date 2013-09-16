@@ -1784,6 +1784,12 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
 
+//		//BD - Toggle Tofu's Screen Space Reflections
+		if(gSavedSettings.getBOOL("RenderScreenSpaceReflections"))
+		{
+			gDeferredSoftenProgram.addPermutation("USE_SSR", "1");
+		}
+
 		gDeferredSoftenProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		if (gSavedSettings.getBOOL("RenderDeferredSSAO"))
