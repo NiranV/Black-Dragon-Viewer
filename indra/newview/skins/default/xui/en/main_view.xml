@@ -42,12 +42,11 @@
                   visible="false"/>
      <icon
        follows="top|left|right"
-       visibility_control="ShowNavbarNavigationPanel"
        image_name="navbar/NavBar_BG_l2.png"
        mouse_opaque="false"
        name="bg_icon_l2"
        scale_image="true"
-       visible="true"
+       visible="false"
        left="0"
        top="0"
        height="50"

@@ -2394,7 +2394,9 @@ void LLViewerWindow::draw()
 		// Draw tool specific overlay on world
 		LLToolMgr::getInstance()->getCurrentTool()->draw();
 
-		gViewerWindow->getRootView()->getChild<LLIconCtrl>("bg_icon_l2")->setVisible(!gAgentCamera.cameraMouselook());
+		gViewerWindow->getRootView()->getChild<LLIconCtrl>("bg_icon_l2")->setVisible
+									(!gAgentCamera.cameraMouselook() && 
+									gSavedSettings.getBOOL("ShowNavbarNavigationPanel"));
 
 		// Draw all nested UI views.
 		// No translation needed, this view is glued to 0,0
