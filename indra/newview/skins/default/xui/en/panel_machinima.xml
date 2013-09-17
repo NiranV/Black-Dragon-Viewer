@@ -167,7 +167,7 @@ width="345">
                   layout="topleft"
                   left="10"
                   name="misc"
-                  top_pad="21"
+                  top_pad="5"
                   width="280">
                   Misc:
                   </text>
@@ -269,18 +269,6 @@ width="345">
                   name="RenderUWDistortion"
                   top_pad="0"
                   width="115"/>
-                  <check_box
-                  control_name="ExodusRenderHighPrecision"
-                  enabled_control="RenderDeferred"
-                  height="16"
-                  initial_value="true"
-                  label="High Precision Rendering"
-                  tool_tip="Toggles if the Viewer should use High Precision Rendering making which will make the Viewer use more available colors causing smoother color transitions, can often be observed bright black textures"
-                  layout="topleft"
-                  left_delta="0"
-                  name="HighPrecision"
-                  top_pad="0"
-                  width="115" />
                   <check_box
                   control_name="ExodusRenderToneMapping"
                   enabled_control="RenderDeferred"
