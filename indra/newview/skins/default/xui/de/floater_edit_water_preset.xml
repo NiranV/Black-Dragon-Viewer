@@ -19,12 +19,13 @@
 		Um Ihre Voreinstellung zu bearbeiten, passen Sie die Steuerungen an und klicken Sie auf „Speichern“.
 	</text>
 	<text name="label">
-		Name der Voreinstellung:
+		Einstellungsname:
 	</text>
 	<text name="note">
 		Hinweis: Wenn Sie den Namen Ihrer Voreinstellung ändern, entsteht eine neue Voreinstellung; die vorhandene Voreinstellung wird nicht geändert.
 	</text>
-	<panel name="panel_water_preset">
+	<tab_container name="Object Info Tabs">
+	<panel name="Settings" label="Einstellungen">
 		<text name="water_color_label">
 			Trübungsfarbe
 		</text>
@@ -33,9 +34,6 @@
 		</text>
 		<text name="underwater_fog_modifier_label">
 			Modifikator für Wassertrübung
-		</text>
-		<text name="BHText">
-			Richtung für große Wellen
 		</text>
 		<slider label="X" name="WaterWave1DirX"/>
 		<slider label="Y" name="WaterWave1DirY"/>
@@ -48,9 +46,6 @@
 		<text name="FresnelOffsetText">
 			Fresnel-Versatz
 		</text>
-		<text name="BHText2">
-			Richtung für kleine Wellen
-		</text>
 		<slider label="X" name="WaterWave2DirX"/>
 		<slider label="Y" name="WaterWave2DirY"/>
 		<text name="DensMultText">
@@ -62,11 +57,21 @@
 		<text name="MaxAltText">
 			Mischungsmultiplikator
 		</text>
+	</panel>
+	<panel name="Image" label="Textur">
+		<text name="BHText">
+			Richtung für große Wellen
+		</text>
+		<text name="BHText2">
+			Richtung für kleine Wellen
+		</text>
 		<text name="BHText3">
 			Normal-Map
 		</text>
 	</panel>
-	<check_box label="Diese Voreinstellung zu meiner neuen Wassereinstellung machen" name="make_default_cb"/>
+	</tab_container>
+	<check_box label="Als mein neues Wasser setzen" name="make_default_cb"/>
 	<button label="Speichern" name="save"/>
+	<button label="Löschen" name="delete"/>
 	<button label="Abbrechen" name="cancel"/>
 </floater>
