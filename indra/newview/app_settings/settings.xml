@@ -15323,7 +15323,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>2.1</real>
+    <real>2.25</real>
   </map>
   <key>ExodusRenderToneMapping</key>
   <map>
@@ -15394,9 +15394,9 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
-      <real>0.35</real>
-      <real>0.35</real>
-      <real>0.35</real>
+      <real>0.275</real>
+      <real>0.275</real>
+      <real>0.275</real>
     </array>
   </map>
   <key>ExodusRenderGamma</key>
@@ -15424,9 +15424,9 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
-      <real>-0.08</real>
-      <real>-0.08</real>
-      <real>-0.08</real>
+      <real>-0.09</real>
+      <real>-0.09</real>
+      <real>-0.09</real>
     </array>
   </map>
 </map>
