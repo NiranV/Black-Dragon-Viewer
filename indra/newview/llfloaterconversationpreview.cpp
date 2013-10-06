@@ -127,7 +127,10 @@ void LLFloaterConversationPreview::draw()
 
 void LLFloaterConversationPreview::onOpen(const LLSD& key)
 {
-	showHistory();
+	if(mChatHistoryLoaded)
+	{
+		showHistory();
+	}
 }
 
 void LLFloaterConversationPreview::showHistory()

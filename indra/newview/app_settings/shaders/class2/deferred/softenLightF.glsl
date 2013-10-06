@@ -603,7 +603,7 @@ void main()
 			col = mix(col.rgb, refcol, 
 				envIntensity);  
 		}
-	
+						
 		if (norm.w < 0.5)
 		{
 			col = mix(atmosLighting(col), fullbrightAtmosTransport(col), diffuse.a);
