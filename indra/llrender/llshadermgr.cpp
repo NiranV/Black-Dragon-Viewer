@@ -1156,6 +1156,8 @@ void LLShaderMgr::initAttribsAndUniforms()
 
 	mReservedUniforms.push_back("display_gamma");
 
+	mReservedUniforms.push_back("num_colors");
+
 	llassert(mReservedUniforms.size() == END_RESERVED_UNIFORMS);
 
 	std::set<std::string> dupe_check;

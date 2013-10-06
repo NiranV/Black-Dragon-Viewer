@@ -66,7 +66,11 @@ void main()
 	color.a = 1.0;
 
 	color.rgb = pow(color.rgb, vec3(1.0/2.2));
-
+	
+	#ifdef GREY_SCALE
+		color.rgb = vec3((0.299 * color.r) + (0.587 * color.g) + (0.114 * color.b));
+	#endif
+	
 	frag_color = color;
 }
 

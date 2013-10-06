@@ -356,6 +356,10 @@ void main()
 
 	//not sure why, but this line prevents MATBUG-194
 	col = max(col, vec3(0.0));
+	
+	#ifdef GREY_SCALE
+		col = vec3((0.299 * col.r) + (0.587 * col.g) + (0.114 * col.b));
+	#endif
 
 	frag_color.rgb = col;	
 	frag_color.a = 0.0;

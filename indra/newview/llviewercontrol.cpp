@@ -614,6 +614,8 @@ void toggle_updater_service_active(const LLSD& new_value)
 static bool handleRenderPermutationChanged(const LLSD& newval)
 {
 	gDeferredSoftenProgram.unload();
+	gDeferredAlphaProgram.unload();
+	gDeferredFullbrightProgram.unload();
 	LLViewerShaderMgr::instance()->loadShadersDeferred();
 	return true;
 }
@@ -909,6 +911,9 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderAttachedLights")->getSignal()->connect(boost::bind(&handleRenderAttachedLightsChanged, _2));
 	gSavedSettings.getControl("RenderAttachedParticles")->getSignal()->connect(boost::bind(&handleRenderAttachedParticlesChanged, _2));
 	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleRenderPermutationChanged, _2));
+	gSavedSettings.getControl("RenderPostPosterizationSamples")->getSignal()->connect(boost::bind(&handleRenderPermutationChanged, _2));
+	gSavedSettings.getControl("RenderPostPosterization")->getSignal()->connect(boost::bind(&handleRenderPermutationChanged, _2));
+	gSavedSettings.getControl("RenderPostGreyscale")->getSignal()->connect(boost::bind(&handleRenderPermutationChanged, _2));
 	gSavedSettings.getControl("RenderNormalMapScale")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
 //	//BD
 }

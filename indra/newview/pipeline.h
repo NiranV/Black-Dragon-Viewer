@@ -935,6 +935,9 @@ public:
 	static F32 CameraFieldOfView;
 	static F32 CameraOverWaterDistortion;
 	static F32 CameraUnderWaterDistortion;
+	static BOOL RenderPostPosterization;
+	static U32 RenderPostPosterizationSamples;
+	static BOOL RenderPostGreyscale;
 	static F32 RenderShadowNoise;
 	static F32 RenderShadowBlurSize;
 	static F32 RenderSSAOScale;

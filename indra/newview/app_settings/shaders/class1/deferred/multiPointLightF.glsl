@@ -158,6 +158,9 @@ void main()
 		}
 	}
 	
+	#ifdef GREY_SCALE
+		out_col = vec3((0.299 * out_col.r) + (0.587 * out_col.g) + (0.114 * out_col.b));
+	#endif
 
 	frag_color.rgb = out_col;
 	frag_color.a = 0.0;

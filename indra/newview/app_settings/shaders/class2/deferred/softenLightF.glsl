@@ -65,6 +65,8 @@ uniform mat3 env_mat;
 uniform vec4 shadow_clip;
 uniform float ssao_effect;
 
+uniform float num_colors;
+
 uniform vec3 sun_dir;
 VARYING vec2 vary_fragcoord;
 
@@ -569,7 +571,7 @@ void main()
 	
 				// Add the two types of shiny together
 				vec3 spec_contrib = (ssshiny * (1.0 - fullbrightification) * 0.5 + dumbshiny);
-				bloom = spec.a * dot(spec_contrib, spec_contrib) * 0.25 * (1.0 - bloomdamp);
+				//bloom = dot(spec_contrib, spec_contrib) / 6;
 	
 				col.rgb = mix(col.rgb + ssshiny, diffuse.rgb, fullbrightification) + dumbshiny;
 			}
@@ -616,7 +618,19 @@ void main()
 
 		col = srgb_to_linear(col);
 	}
-
+	
+	#ifdef POSTERIZATION
+		col = pow(col, vec3(0.6));
+		col = col * num_colors;
+		col = floor(col);
+		col = col / num_colors;
+		col = pow(col, vec3(1.0/0.6));
+	#endif
+	
+	#ifdef GREY_SCALE
+		col = vec3((0.299 * col.r) + (0.587 * col.g) + (0.114 * col.b));
+	#endif
+	
 	frag_color.rgb = col;
 	frag_color.a = bloom;
 }

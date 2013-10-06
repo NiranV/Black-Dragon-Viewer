@@ -1540,6 +1540,17 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredAlphaProgram.addPermutation("USE_INDEXED_TEX", "1");
 		gDeferredAlphaProgram.addPermutation("HAS_SHADOW", mVertexShaderLevel[SHADER_DEFERRED] > 1 ? "1" : "0");
 		gDeferredAlphaProgram.addPermutation("USE_VERTEX_COLOR", "1");
+//		//BD - Toggle Greyscale
+		if(gSavedSettings.getBOOL("RenderPostGreyscale"))
+		{
+			gDeferredAlphaProgram.addPermutation("GREY_SCALE", "1");
+		}
+
+//		//BD - Toggle Posterization
+		if(gSavedSettings.getBOOL("RenderPostPosterization"))
+		{
+			gDeferredAlphaProgram.addPermutation("POSTERIZATION", "1");
+		}
 		gDeferredAlphaProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		success = gDeferredAlphaProgram.createShader(NULL, NULL);
@@ -1640,6 +1651,17 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredFullbrightProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredFullbrightProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightF.glsl", GL_FRAGMENT_SHADER_ARB));
 		gDeferredFullbrightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+//		//BD - Toggle Greyscale
+		if(gSavedSettings.getBOOL("RenderPostGreyscale"))
+		{
+			gDeferredFullbrightProgram.addPermutation("GREY_SCALE", "1");
+		}
+
+//		//BD - Toggle Posterization
+		if(gSavedSettings.getBOOL("RenderPostPosterization"))
+		{
+			gDeferredFullbrightProgram.addPermutation("POSTERIZATION", "1");
+		}
 		success = gDeferredFullbrightProgram.createShader(NULL, NULL);
 	}
 
@@ -1788,6 +1810,18 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		if(gSavedSettings.getBOOL("RenderScreenSpaceReflections"))
 		{
 			gDeferredSoftenProgram.addPermutation("USE_SSR", "1");
+		}
+
+//		//BD - Toggle Greyscale
+		if(gSavedSettings.getBOOL("RenderPostGreyscale"))
+		{
+			gDeferredSoftenProgram.addPermutation("GREY_SCALE", "1");
+		}
+
+//		//BD - Toggle Posterization
+		if(gSavedSettings.getBOOL("RenderPostPosterization"))
+		{
+			gDeferredSoftenProgram.addPermutation("POSTERIZATION", "1");
 		}
 
 		gDeferredSoftenProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];

@@ -184,6 +184,9 @@ public:
 		
 		DISPLAY_GAMMA,
 
+//		//BD - Post Effects
+		DEFERRED_NUM_COLORS,
+
 		END_RESERVED_UNIFORMS
 	} eGLSLReservedUniforms;
 
