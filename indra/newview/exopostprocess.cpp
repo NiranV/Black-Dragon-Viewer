@@ -28,7 +28,6 @@
 LLVector3	exoPostProcess::sExodusRenderGamma;
 LLVector3	exoPostProcess::sExodusRenderExposure;
 LLVector3	exoPostProcess::sExodusRenderOffset;
-BOOL		exoPostProcess::sExodusRenderGammaCorrect;
 BOOL		exoPostProcess::sExodusRenderHighPrecision;
 GLuint		exoPostProcess::sExodusRenderColorFormat;
 F32			exoPostProcess::sExodusRenderToneExposure;
@@ -61,7 +60,6 @@ exoPostProcess::exoPostProcess()
 	sExodusRenderGamma = LLVector3(1.f, 1.f, 1.f);
 	sExodusRenderExposure = LLVector3(1.f, 1.f, 1.f);
 	sExodusRenderOffset = LLVector3(1.f, 1.f, 1.f);
-	sExodusRenderGammaCorrect = FALSE;
 	sExodusRenderHighPrecision = FALSE;
 	sExodusRenderColorFormat = GL_RGBA8;
 	sExodusRenderToneExposure = 1.f;
@@ -90,15 +88,10 @@ void exoPostProcess::ExodusRenderPostStack(LLRenderTarget *src, LLRenderTarget *
 				ExodusRenderToneMapping(src, dst, exoPostProcess::EXODUS_RENDER_TONE_LINEAR);
 			else if (sExodusRenderToneMappingTech == 2)
 				ExodusRenderToneMapping(src, dst, exoPostProcess::EXODUS_RENDER_TONE_REINHARD);
-			else if (sExodusRenderToneMappingTech == 0 && sExodusRenderGammaCorrect && LLPipeline::sRenderDeferred)
+			else if (sExodusRenderToneMappingTech == 0 && LLPipeline::sRenderDeferred)
 				ExodusRenderToneMapping(src, dst, exoPostProcess::EXODUS_RENDER_TONE_FILMIC);
 			else if (sExodusRenderToneMappingTech == 3 && LLPipeline::sRenderDeferred)
 				ExodusRenderToneMapping(src, dst, exoPostProcess::EXODUS_RENDER_TONE_FILMIC_ADV);
-		}
-		
-		if (sExodusRenderGammaCorrect && LLPipeline::sRenderDeferred && !(sExodusRenderToneMappingTech == 0 && sExodusRenderToneMapping))
-		{
-			ExodusRenderGammaCorrection(src, exoPostProcess::EXODUS_RENDER_GAMMA_POST);
 		}
 		
 		if (sExodusRenderColorGradeTech > -1 && LLPipeline::sRenderDeferred)
@@ -122,9 +115,8 @@ void exoPostProcess::ExodusRenderPostSettingsUpdate()
 	sExodusRenderGamma = gSavedSettings.getVector3("ExodusRenderGamma");
 	sExodusRenderExposure = gSavedSettings.getVector3("ExodusRenderExposure");
 	sExodusRenderOffset = gSavedSettings.getVector3("ExodusRenderOffset");
-	sExodusRenderGammaCorrect = gSavedSettings.getBOOL("ExodusRenderGammaCorrect");
 	sExodusRenderHighPrecision = gSavedSettings.getBOOL("ExodusRenderHighPrecision");
-	sExodusRenderColorFormat = GL_RGBA8;
+	sExodusRenderColorFormat = GL_RGBA16F_ARB;
 	sExodusRenderToneExposure = gSavedSettings.getF32("ExodusRenderToneExposure");
 	sExodusRenderToneMapping = gSavedSettings.getBOOL("ExodusRenderToneMapping");
 	sExodusRenderVignette = gSavedSettings.getVector3("ExodusRenderVignette");
@@ -147,36 +139,12 @@ void exoPostProcess::ExodusRenderPostSettingsUpdate()
 		}
 	}
 	
-	if (sExodusRenderGammaCorrect)
-	{
-		if (!gPipeline.RenderDeferred)
-		{
-			sExodusRenderGammaCorrect = FALSE;
-			sExodusRenderGammaCurve = 1.0f;
-		} else {
-			sExodusRenderGammaCurve = 2.2f;
-		}
-	}
-	
 	if (sExodusRenderToneMapping)
 	{
 		if (!gPipeline.RenderDeferred)
 		{
 			sExodusRenderToneMapping = FALSE;
 		}
-	}
-	
-	if (sExodusRenderHighPrecision)
-	{
-		sExodusRenderColorFormat = GL_RGBA16F_ARB;
-	}
-	else if(sExodusRenderGammaCorrect && !sExodusRenderHighPrecision)
-	{
-		sExodusRenderColorFormat = GL_RGBA12;
-	}
-	else
-	{
-		sExodusRenderColorFormat = GL_RGBA;
 	}
 }
 void exoPostProcess::ExodusRenderPostUpdate()
@@ -234,8 +202,6 @@ void exoPostProcess::ExodusRenderPost(LLRenderTarget* src, LLRenderTarget* dst, 
 {
     if (type == EXODUS_RENDER_TONE_LINEAR || type == EXODUS_RENDER_TONE_REINHARD || type == EXODUS_RENDER_TONE_FILMIC || type == EXODUS_RENDER_TONE_FILMIC_ADV)
         ExodusRenderToneMapping(src, dst, type);
-    else if (type == EXODUS_RENDER_GAMMA_POST || type == EXODUS_RENDER_GAMMA_PRE)
-        ExodusRenderGammaCorrection(src, type);
     else if (type == EXODUS_RENDER_COLOR_GRADE || type == EXODUS_RENDER_COLOR_GRADE_LEGACY)
         ExodusRenderColorGrade(src, dst, type);
     else if (type == EXODUS_RENDER_VIGNETTE_POST)
@@ -244,87 +210,6 @@ void exoPostProcess::ExodusRenderPost(LLRenderTarget* src, LLRenderTarget* dst, 
 
 void exoPostProcess::ExodusGenerateLUT()
 {
-	if (!mGammaFunc)
-	{
-		U32 gammaFuncResX = 256;
-		U32 gammaFuncResY = 2;
-		U8* ls = new U8[gammaFuncResX*gammaFuncResY];
-		//F32 gammaExp = sExodusRenderGammaCorrect ? 2.2 : 1.0;
-		for (U32 y = 0; y < gammaFuncResY; ++y)
-		{
-			for (U32 x = 0; x < gammaFuncResX; ++x)
-			{
-				if (y == 0)
-				{
-					ls[y*gammaFuncResX+x] = 0;
-					F32 sa = (F32) 1.f / 256.f * x;
-					F32 spec = powf(sa, 2.2f);
-					ls[y*gammaFuncResX+x] = (U8)(llclamp(spec, 0.f, 1.f) * 256);
-				} else if (y == 1)
-				{
-					ls[y*gammaFuncResX+x] = 0;
-					F32 sa = (F32) 1.f / 256.f * x;
-					ls[y*gammaFuncResX+x] = (U8)(llclamp(sa, 0.f, 1.f) * 256);
-				}
-			}
-		}
-		
-		LLImageGL::generateTextures(LLTexUnit::TT_TEXTURE, GL_R8, 1, &mGammaFunc);
-		gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_TEXTURE, mGammaFunc);
-		LLImageGL::setManualImage(LLTexUnit::getInternalType(LLTexUnit::TT_TEXTURE), 0, GL_R8, gammaFuncResX, gammaFuncResY, GL_RED, GL_UNSIGNED_BYTE, ls, false);
-		gGL.getTexUnit(0)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
-		gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_TRILINEAR);
-		
-		delete [] ls;
-	}
-	
-	if (!mInvGammaFunc)
-	{
-		U32 gammaFuncResX = 256;
-		U32 gammaFuncResY = 2;
-		U8* ls = new U8[gammaFuncResX*gammaFuncResY];
-		F32 gammaExp = 1.f / sExodusRenderGammaCurve;
-		for (U32 y = 0; y < gammaFuncResY; ++y)
-		{
-			for (U32 x = 0; x < gammaFuncResX; ++x)
-			{
-				ls[y*gammaFuncResX+x] = 0;
-				F32 sa = (F32) 1.f / 256.f * x;
-				F32 spec = powf(sa, gammaExp);
-				ls[y*gammaFuncResX+x] = (U8)(llclamp(spec, 0.f, 1.f) * 255);
-			}
-		}
-		
-		LLImageGL::generateTextures(LLTexUnit::TT_TEXTURE, GL_R8, 1, &mInvGammaFunc);
-		gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_TEXTURE, mInvGammaFunc);
-		LLImageGL::setManualImage(LLTexUnit::getInternalType(LLTexUnit::TT_TEXTURE), 0, GL_R8, gammaFuncResX, gammaFuncResY, GL_RED, GL_UNSIGNED_BYTE, ls, false);
-		gGL.getTexUnit(0)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
-		gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_TRILINEAR);
-		
-		delete [] ls;
-	}
-}
-
-void exoPostProcess::ExodusRenderGammaCorrection(LLRenderTarget* dst, S32 type)
-{
-    dst->bindTarget();
-	if (type == exoPostProcess::EXODUS_RENDER_GAMMA_POST)
-	{
-		gGammaCorrectionPost.bind();
-		mExoPostBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
-		exoShader::BindRenderTarget(dst, &gGammaCorrectionPost, LLShaderMgr::EXO_RENDER_SCREEN, 0);
-		mExoPostBuffer->drawArrays(LLRender::TRIANGLES, 0, 3);
-		stop_glerror();
-		gGammaCorrectionPost.unbind();
-	} else if (type == exoPostProcess::EXODUS_RENDER_GAMMA_PRE) {
-		gGammaConvertPrepass.bind();
-		mExoPostBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
-		exoShader::BindRenderTarget(dst, &gGammaConvertPrepass, LLShaderMgr::EXO_RENDER_SCREEN, 0);
-		mExoPostBuffer->drawArrays(LLRender::TRIANGLES, 0, 3);
-		stop_glerror();
-		gGammaConvertPrepass.unbind();
-	}
-    dst->flush();
 }
 
 void exoPostProcess::ExodusRenderToneMapping(LLRenderTarget *src, LLRenderTarget *dst, S32 type)

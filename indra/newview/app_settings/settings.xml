@@ -14970,6 +14970,39 @@
 	<real>1.10</real>
   </map>
   
+  <key>RenderPostPosterizationSamples</key>
+  <map>
+    <key>Comment</key>
+    <string>Set the number of color shades used for rendering the scene.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>16</integer>
+  </map>
+  <key>RenderPostPosterization</key>
+  <map>
+    <key>Comment</key>
+    <string>Render the screen with a given number of color-shades only to posterize the final image.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>RenderPostGreyscale</key>
+  <map>
+    <key>Comment</key>
+    <string>Render the world in greyscale</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>EnableThirdPersonSteering</key>
   <map>
     <key>Comment</key>
@@ -15024,6 +15057,17 @@
     <string>Boolean</string>
     <key>Value</key>
     <real>1</real>
+  </map>
+  <key>RenderScreenSpaceReflections</key>
+  <map>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <real>0</real>
   </map>
   <key>SlowMotionTimeFactor</key>
   <map>
@@ -15303,17 +15347,6 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-  <key>ExodusRenderGammaCorrect</key>
-  <map>
-    <key>Comment</key>
-    <string>Do we want gamma correct rendering?</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
   <key>ExodusRenderToneExposure</key>
   <map>
     <key>Comment</key>
@@ -15323,7 +15356,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>2.1</real>
+    <real>2.25</real>
   </map>
   <key>ExodusRenderToneMapping</key>
   <map>
@@ -15394,9 +15427,9 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
-      <real>0.35</real>
-      <real>0.35</real>
-      <real>0.35</real>
+      <real>0.275</real>
+      <real>0.275</real>
+      <real>0.275</real>
     </array>
   </map>
   <key>ExodusRenderGamma</key>
@@ -15424,9 +15457,9 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
-      <real>-0.08</real>
-      <real>-0.08</real>
-      <real>-0.08</real>
+      <real>-0.09</real>
+      <real>-0.09</real>
+      <real>-0.09</real>
     </array>
   </map>
 </map>

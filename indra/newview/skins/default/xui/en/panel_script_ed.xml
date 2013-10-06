@@ -6,6 +6,7 @@
  height="496"
  layout="topleft"
  left="0"
+ top="5"
  name="script panel"
  width="497">
     <panel.string
@@ -38,7 +39,7 @@
      height="18"
      layout="topleft"
      left="0"
-     top="5"
+     top="10"
      mouse_opaque="false"
      name="script_menu"
      width="476">
@@ -241,7 +242,7 @@
         Loading...
     </text_editor>
     <scroll_list
-     top_pad="10"
+     top_pad="5"
      left="0"
      follows="left|right|bottom"
      height="60"

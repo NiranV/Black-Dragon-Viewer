@@ -302,9 +302,6 @@ public:
 
 	void addToCreateTexture();
 
-	void addExplicitFormat(LLGLuint format);
-	void removeExplicitFormat();
-
 	 // ONLY call from LLViewerTextureList
 	BOOL createTexture(S32 usename = 0);
 	void destroyTexture() ;	
@@ -415,9 +412,6 @@ private:
 	BOOL  mFullyLoaded;
 	BOOL  mInDebug;
 	BOOL  mInFastCacheList;
-	BOOL  mHasExplicitFormat;
-	LLGLuint mInternalFormat;
-	LLGLuint mPrimaryFormat;
 
 protected:		
 	std::string mLocalFileName;

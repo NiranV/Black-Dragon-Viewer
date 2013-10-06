@@ -243,9 +243,9 @@ visible="true">
 		width="345"
 		visibility_control="MachinimaSidebarPush">
 			<panel
-			top="0"
+			top="45"
 			follows="top|right|bottom"
-			height="500"
+			height="455"
 			left="-345"
 			mouse_opaque="false"
 			name="machinima"

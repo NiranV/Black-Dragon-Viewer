@@ -178,6 +178,9 @@ F32 LLPipeline::CameraFocalLength;
 F32 LLPipeline::CameraFieldOfView;
 F32 LLPipeline::CameraUnderWaterDistortion;
 F32 LLPipeline::CameraOverWaterDistortion;
+BOOL LLPipeline::RenderPostPosterization;
+U32 LLPipeline::RenderPostPosterizationSamples;
+BOOL LLPipeline::RenderPostGreyscale;
 F32 LLPipeline::RenderShadowNoise;
 F32 LLPipeline::RenderShadowBlurSize;
 F32 LLPipeline::RenderSSAOScale;
@@ -635,6 +638,9 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("CameraFieldOfView");
 	connectRefreshCachedSettingsSafe("CameraOverWaterDistortion");
 	connectRefreshCachedSettingsSafe("CameraUnderWaterDistortion");
+	connectRefreshCachedSettingsSafe("RenderPostGreyscale");
+	connectRefreshCachedSettingsSafe("RenderPostPosterization");
+	connectRefreshCachedSettingsSafe("RenderPostPosterizationSamples");
 	connectRefreshCachedSettingsSafe("RenderShadowNoise");
 	connectRefreshCachedSettingsSafe("RenderShadowBlurSize");
 	connectRefreshCachedSettingsSafe("RenderSSAOScale");
@@ -654,6 +660,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderDeferredAtmospheric");
 	connectRefreshCachedSettingsSafe("RenderReflectionDetail");
 	connectRefreshCachedSettingsSafe("RenderHighlightFadeTime");
+	connectRefreshCachedSettingsSafe("RenderScreenSpaceReflections");
 	connectRefreshCachedSettingsSafe("RenderShadowClipPlanes");
 	connectRefreshCachedSettingsSafe("RenderShadowOrthoClipPlanes");
 	connectRefreshCachedSettingsSafe("RenderShadowNearDist");
@@ -669,7 +676,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
 	connectRefreshCachedSettingsSafe("ExodusRenderOffset");
 	connectRefreshCachedSettingsSafe("ExodusRenderExposure");
-	connectRefreshCachedSettingsSafe("ExodusRenderGammaCorrect");
 	connectRefreshCachedSettingsSafe("ExodusRenderHighPrecision");
 	connectRefreshCachedSettingsSafe("ExodusRenderToneExposure");
 	connectRefreshCachedSettingsSafe("ExodusRenderToneMapping");
@@ -1173,6 +1179,9 @@ void LLPipeline::refreshCachedSettings()
 	CameraFieldOfView = gSavedSettings.getF32("CameraFieldOfView");
 	CameraOverWaterDistortion = gSavedSettings.getF32("CameraOverWaterDistortion");
 	CameraUnderWaterDistortion = gSavedSettings.getF32("CameraUnderWaterDistortion");
+	RenderPostPosterization = gSavedSettings.getBOOL("RenderPostPosterization");
+	RenderPostPosterizationSamples = gSavedSettings.getU32("RenderPostPosterizationSamples");
+	RenderPostGreyscale = gSavedSettings.getBOOL("RenderPostGreyscale");
 	RenderShadowNoise = gSavedSettings.getF32("RenderShadowNoise");
 	RenderShadowBlurSize = gSavedSettings.getF32("RenderShadowBlurSize");
 	RenderSSAOScale = gSavedSettings.getF32("RenderSSAOScale");
@@ -8397,7 +8406,9 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform2f(LLShaderMgr::DEFERRED_PROJ_SHADOW_RES, mShadow[4].getWidth(), mShadow[4].getHeight());
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);
-	
+
+//	//BD - Post Effects
+	shader.uniform1f(LLShaderMgr::DEFERRED_NUM_COLORS, RenderPostPosterizationSamples);
 
 	if (shader.getUniformLocation("norm_mat") >= 0)
 	{

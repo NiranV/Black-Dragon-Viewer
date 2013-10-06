@@ -249,28 +249,31 @@ Leslie Linden:
 Tofu Linden:
 Bao Linden:
  Shining Fixes
+
+Aimee Arcana:
+ Additional Water Normalmaps
  
 Altair Memo:
- OpenMP initial work
+ *OpenMP initial work
  
 Andromeda Rage:
- Derender
+ *Derender
  
 Ansariel Hiller
- Most highlighted Script commands hovertips
- Unknown distance in Minimap
+ *Most highlighted Script commands hovertips
+ *Unknown distance in Minimap
  
 Armin Weatherwax
  Misc. Fixes
  
 Arrehn Oberlander:
- Qarls Aligning Tool Tweaks &amp; Fixes
+ *Qarls Aligning Tool Tweaks &amp; Fixes
  
 Chalice Yao:
- Touch &amp; Sit protection
+ *Touch &amp; Sit protection
  
 Dannyy Collazo:
- Script toolbar button icon
+ *Script toolbar button icon
  
 Geenz Spad:
  Blinn Phong Speculars
@@ -282,37 +285,34 @@ Geenz Spad:
  Vignette Effect
  
 Kadah Coba
- Additional Parcel Code cleanup
- Hide Lookat
+ *Hide Lookat
  
 Katharine Berry:
- Streaming Media Info
+ *Streaming Media Info
  
 Kirstenlee Cinquetti:
- Radar Distance Text
+ *Radar Distance Text
  
 Kitty Barnett:
- RLVa Support &amp; Updates
- Spellchecker
+ *RLVa Support &amp; Updates
  
 L4n4:
  Donations
  
 Liny Odell:
- Scrollable Fast Timers Window
+ *Scrollable Fast Timers Window
  
 Luna Jubilee:
- Windlight Presets (from her blog)
+ *Windlight Presets (from her blog)
  
 Marine Kelley:
- Mouselook grabbing
- Non-hiding UI in Mouselook
- Right-click in Mouselook
+ *Mouselook grabbing
+ *Non-hiding UI in Mouselook
+ *Right-click in Mouselook
  
 MartinRJ Fayray:
- STORM-1890 Fix
- VWR-29094 Fix
- Script Editor Goto-line function
+ *STORM-1890 Fix
+ *VWR-29094 Fix
  
 Mechatoy Mekanic:
  Sponsoring
@@ -320,85 +320,80 @@ Mechatoy Mekanic:
  http://maps.secondlife.com/secondlife/Axell/185/128/21
  
 Miguael Liamano:
- Additional Windlight Presets
- Ashen Blood Skin
- French Translation
- Linux Releases
- OpenMP Work
+ *Additional Windlight Presets
+ *Ashen Blood Skin
+ *French Translation
+ *Linux Releases
+ *OpenMP Work
  
 Nicky Perian:
- Edit Objects Crash Fix
- SSL Fix
- Misc Crash Fixes
+ *Edit Objects Crash Fix
+ *SSL Fix
+ *Misc Crash Fixes
  
 NiranV Dean:
- Achievements
+ *Achievements
  Additional highlighted Script commands
  Additional Left/Right Shoulder Cam
  Animation Time Factor Feature
- Autohiding Topbar
- Azure Skin
- Copy Group and Avatar SLURL in Nearby/Group
- Darkness Skin
+ *Autohiding Topbar
+ *Azure Skin
+ *Copy Group and Avatar SLURL in Nearby/Group
+ *Darkness Skin
  Fading Teleport Screen Tweaks
- Fix Buttons
+ *Fix Buttons
  FPS Counter
  German Translation
  Login Machinima Videos
  Machinima Sidebar
  Major UI designing and texturing
- Mouselook grabbing Switch
- Non-hiding UI in Mouselook Switch
- Preferences Reorganisation
- Qarls Mesh Deformer Switch
- Rotation Degree Customization
- Super Smooth Flexible User Interface
- Switchable Keyboard Layouts
+ *Mouselook grabbing Switch
+ *Non-hiding UI in Mouselook Switch
+ *Preferences Reorganisation
+ *Qarls Mesh Deformer Switch
+ *Rotation Degree Customization
+ *Super Smooth Flexible User Interface
+ *Switchable Keyboard Layouts
  Top Toolbar
  Teleport Warp Effects
- Viewer 1 Style Volume Controls
+ *Viewer 1 Style Volume Controls
  Windows Releases
  Whisper Range Ring in Minimap
  Script Editor Goto-line function revised
  
 Oz Linden:
- Initial Parcel Code cleanup
- TPV Check &amp; Pass
+ *TPV Check &amp; Pass
  
 Qarl Fizz:
- Qarls Aligning Tool
- Qarls Mesh Deformer
+ *Qarls Aligning Tool
+ *Qarls Mesh Deformer
  
 Sovereign Engineer:
- Linux Fixes
- FModEX Support
- Logspam Fixes
- DejaVu Font Updates
+ *Linux Fixes
+ *Logspam Fixes
+ *DejaVu Font Updates
  
 TankMaster Finesmith:
- Optional Chat Range Rings
- Qarls Aligning Tool Tweaks &amp; Fixes
+ *Optional Chat Range Rings
+ *Qarls Aligning Tool Tweaks &amp; Fixes
  
 Tofu Buzzard
- Atmospheric Haze Fix
+ *Atmospheric Haze Fix
  Better SSAO
  Faster DoF
  Screen Space Reflections
  
-Vaalith Jinn:
- Local Bitmaps
- 
 Vincent Nacon
- Natural Cloud Noise Images
+ *Natural Cloud Noise Images
  
 Yonathan Yap:
- Raw Anim Support
+ *Raw Anim Support
  
 Zi Ree:
  Fading Teleport Screen
- Keep Camera position on self click
- Pie Menus
- Texture Refresh
+ *Keep Camera position on self click
+ *Pie Menus
+ *Texture Refresh
 
 feel free to IM me if you can tell me missing names and/or find more stuff others did!
    </text_editor>

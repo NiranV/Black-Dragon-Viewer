@@ -250,12 +250,14 @@
                 <menu_item_call.on_click
                  function="World.SetAway" />
             </menu_item_call>
-            <menu_item_call
-             label="Busy"
-             name="Set Busy">
-                <menu_item_call.on_click
-                 function="World.SetBusy"/>
-            </menu_item_call>
+            <menu_item_check
+			name="Do Not Disturb"
+			label="Do Not Disturb">
+			 <menu_item_check.on_check
+			  function="View.Status.CheckDoNotDisturb" />
+			 <menu_item_check.on_click
+			  function="World.SetDoNotDisturb"/>
+		   </menu_item_check>
         </menu>
 
         <menu_item_separator/>

@@ -171,6 +171,18 @@ void main()
 	color.a   = final_alpha;
 #endif
 
+#ifdef GREY_SCALE
+	color.rgb = vec3((0.299 * color.r) + (0.587 * color.g) + (0.114 * color.b));
+#endif
+
+#ifdef POSTERIZATION
+	color.rgb = pow(color.rgb, vec3(0.6));
+	color.rgb = color.rgb * 16.0;
+	color.rgb = floor(color.rgb);
+	color.rgb = color.rgb / 16.0;
+	color.rgb = pow(color.rgb, vec3(1.0/0.6));
+#endif
+
 	frag_color.rgb = color.rgb;
 	frag_color.a   = color.a;
 }

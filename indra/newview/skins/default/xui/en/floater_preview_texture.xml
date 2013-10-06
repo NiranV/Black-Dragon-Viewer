@@ -61,7 +61,7 @@
      type="string"
      halign="center"
      length="1"
-     follows="left|top"
+     follows="right|top"
 	 text_color="1 1 1 0.75"
      height="18"
      layout="topleft"

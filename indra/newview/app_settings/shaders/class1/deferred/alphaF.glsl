@@ -623,6 +623,23 @@ void main()
 
 #endif
 
+	#ifdef GREY_SCALE
+		color.rgb = vec3((0.299 * color.r) + (0.587 * color.g) + (0.114 * color.b));
+	#endif
+	
+	#ifdef POSTERIZATION
+		color.rgb = pow(color.rgb, vec3(0.6));
+		color.rgb = color.rgb * 4.0;
+		color.rgb = floor(color.rgb);
+		color.rgb = color.rgb / 4.0;
+		color.rgb = pow(color.rgb, vec3(1.0/0.6));
+		color.a = pow(color.a, 0.6);
+		color.a = color.a * 6.0;
+		color.a = floor(color.a);
+		color.a = color.a / 6.0;
+		color.a = pow(color.a, 1.0/0.6);
+	#endif
+
 	frag_color = color;
 }
 

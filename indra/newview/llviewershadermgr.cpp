@@ -220,12 +220,10 @@ LLGLSLShader			gDeferredSkinnedFullbrightShinyProgram;
 LLGLSLShader			gDeferredSkinnedFullbrightProgram;
 LLGLSLShader			gNormalMapGenProgram;
 
-LLGLSLShader            gGammaCorrectionPost;
 LLGLSLShader            gColorGradePost;
 LLGLSLShader            gLinearToneMapping;
 LLGLSLShader            gReinhardToneMapping;
 LLGLSLShader            gFilmicToneMapping;
-LLGLSLShader            gGammaConvertPrepass;
 LLGLSLShader            gVignettePost;
 LLGLSLShader            gColorGradePostLegacy;
 LLGLSLShader            gFilmicToneMappingAdv;
@@ -366,7 +364,6 @@ void LLViewerShaderMgr::initAttribsAndUniforms(void)
 		mAvatarUniforms.push_back("gGravity");
 
 		mWLUniforms.push_back("camPosLocal");
-		mWLUniforms.push_back("gamcorr");
 
 		mTerrainUniforms.reserve(5);
 		mTerrainUniforms.push_back("detail_0");
@@ -1543,6 +1540,17 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredAlphaProgram.addPermutation("USE_INDEXED_TEX", "1");
 		gDeferredAlphaProgram.addPermutation("HAS_SHADOW", mVertexShaderLevel[SHADER_DEFERRED] > 1 ? "1" : "0");
 		gDeferredAlphaProgram.addPermutation("USE_VERTEX_COLOR", "1");
+//		//BD - Toggle Greyscale
+		if(gSavedSettings.getBOOL("RenderPostGreyscale"))
+		{
+			gDeferredAlphaProgram.addPermutation("GREY_SCALE", "1");
+		}
+
+//		//BD - Toggle Posterization
+		if(gSavedSettings.getBOOL("RenderPostPosterization"))
+		{
+			gDeferredAlphaProgram.addPermutation("POSTERIZATION", "1");
+		}
 		gDeferredAlphaProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		success = gDeferredAlphaProgram.createShader(NULL, NULL);
@@ -1643,6 +1651,17 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredFullbrightProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredFullbrightProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightF.glsl", GL_FRAGMENT_SHADER_ARB));
 		gDeferredFullbrightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+//		//BD - Toggle Greyscale
+		if(gSavedSettings.getBOOL("RenderPostGreyscale"))
+		{
+			gDeferredFullbrightProgram.addPermutation("GREY_SCALE", "1");
+		}
+
+//		//BD - Toggle Posterization
+		if(gSavedSettings.getBOOL("RenderPostPosterization"))
+		{
+			gDeferredFullbrightProgram.addPermutation("POSTERIZATION", "1");
+		}
 		success = gDeferredFullbrightProgram.createShader(NULL, NULL);
 	}
 
@@ -1786,6 +1805,24 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSoftenProgram.mShaderFiles.clear();
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+
+//		//BD - Toggle Tofu's Screen Space Reflections
+		if(gSavedSettings.getBOOL("RenderScreenSpaceReflections"))
+		{
+			gDeferredSoftenProgram.addPermutation("USE_SSR", "1");
+		}
+
+//		//BD - Toggle Greyscale
+		if(gSavedSettings.getBOOL("RenderPostGreyscale"))
+		{
+			gDeferredSoftenProgram.addPermutation("GREY_SCALE", "1");
+		}
+
+//		//BD - Toggle Posterization
+		if(gSavedSettings.getBOOL("RenderPostPosterization"))
+		{
+			gDeferredSoftenProgram.addPermutation("POSTERIZATION", "1");
+		}
 
 		gDeferredSoftenProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
@@ -2027,12 +2064,10 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 
 void LLViewerShaderMgr::unloadExodusPostShaders()
 {
-    gGammaCorrectionPost.unload();
     gColorGradePost.unload();
     gLinearToneMapping.unload();
     gReinhardToneMapping.unload();
     gFilmicToneMapping.unload();
-    gGammaConvertPrepass.unload();
     gVignettePost.unload();
     gFilmicToneMappingAdv.unload();
 }
@@ -2042,27 +2077,7 @@ BOOL LLViewerShaderMgr::loadExodusPostShaders()
     BOOL success = TRUE;
     //We only ever want to load these in deferred (as we'll probably never use floating point buffers in classic rendering)
     if (LLPipeline::sRenderDeferred)
-    {
-        if (success)
-        {
-            gGammaConvertPrepass.mName = "Exodus Gamma Correction Pre-pass";
-            gGammaConvertPrepass.mShaderFiles.clear();
-            gGammaConvertPrepass.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
-            gGammaConvertPrepass.mShaderFiles.push_back(make_pair("exoshade/post/exoGammaConvertF.glsl", GL_FRAGMENT_SHADER_ARB));
-            gGammaConvertPrepass.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
-            success = gGammaConvertPrepass.createShader(NULL, NULL);
-        }
-        
-        if (success)
-        {
-            gGammaCorrectionPost.mName = "Exodus Gamma Correction Post";
-            gGammaCorrectionPost.mShaderFiles.clear();
-            gGammaCorrectionPost.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
-            gGammaCorrectionPost.mShaderFiles.push_back(make_pair("exoshade/post/exoGammaCorrectF.glsl", GL_FRAGMENT_SHADER_ARB));
-            gGammaCorrectionPost.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
-            success = gGammaCorrectionPost.createShader(NULL, NULL);
-        }
-        
+    {      
         if (success)
         {
             gFilmicToneMapping.mName = "Exodus Filmic Tonemapping Post";
