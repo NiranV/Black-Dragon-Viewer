@@ -13,47 +13,71 @@ width="345">
       <icon
       top="0" 
       scale_image="true"
-      follows="all"
+      follows="top|left"
       layout="topleft"
-      height="768"
+      height="42"
       color="0 0 0 0.75"
       image_name="Rounded_Rect"
       left="0"
-      width="345" />
-      <scroll_container
-      color="Transparent"
+      width="344" />
+      <text
+      font="SansSerifHuge"
+      font.style="BOLD"
+      font_shadow="soft"
+      text_color="EmphasisColor"
+      follows="left|top"
+      height="20"
+      layout="topleft"
+      left="10"
+      name="machinima"
+      top="9"
+      width="320">
+      Machinima Sidebar
+      </text>
+      <icon
+      top_pad="15" 
+      scale_image="true"
       follows="all"
       layout="topleft"
-      left="0"
-      name="machinima_scroll"
-      opaque="true"
-      height="762"
-      width="345"
-      top="3">
+      height="722"
+      color="0 0 0 0.75"
+      image_name="white.tga"
+      left="2"
+      width="341" />
+      <!--<view_border
+      bevel_style="out"
+      follows="top|left"
+      height="722"
+      layout="topleft"
+      left="2"
+      name="cost_text_border"
+      top_delta="0"
+      width="341"/>-->
+      <accordion
+      layout="topleft"
+      follows="all"
+      height="718"
+      left="3"
+      name="accordion"
+      top_delta="2"
+      single_expansion="false"
+      width="340">
+            <accordion_tab
+            layout="topleft"
+            name="main_options"
+            fit_panel="true"
+            height="380"
+            title="General">
             <panel
             border="false"
             background_visible="false"
-            follows="top|left"
-            height="1005"
+            follows="all"
+            height="380"
             layout="topleft"
             left="0"
             name="scroll_panel"
             top="0"
             width="330">
-                  <text
-                  font="SansSerifHuge"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  text_color="EmphasisColor"
-                  follows="left|top"
-                  height="20"
-                  layout="topleft"
-                  left="10"
-                  name="machinima"
-                  top="7"
-                  width="320">
-                  Machinima Options:
-                  </text>
                   <text
                   font="SansSerif"
                   font.style="BOLD"
@@ -64,7 +88,7 @@ width="345">
                   layout="topleft"
                   left="10"
                   name="shaders"
-                  top_pad="10"
+                  top_pad="0"
                   width="280">
                   Shader Toggles:
                   </text>
@@ -86,9 +110,23 @@ width="345">
                   tool_tip="Toggles the Vertex Shader allowing ripple water, reflections on water and a much more realistic sky with clouds aswell as Post Process Glow. Known as 'Windlight'"
                   layout="topleft"
                   left="20"
-                  name="BasicShaders"
+                  name="BasicShadersᒪ"
                   top_pad="0"
                   width="115"/>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="7"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┗
+                  </text>
                   <check_box
                   control_name="WindLightUseAtmosShaders"
                   enabled_control="VertexShaderEnable"
@@ -97,10 +135,48 @@ width="345">
                   label="Atmospheric Shader"
                   tool_tip="Toggles the Atmospheric Shader rendering the scene more realistic by adding additional light calculations. Needs Vertex Shader!"
                   layout="topleft"
-                  left_delta="0"
+                  left_pad="0"
                   name="WindLightUseAtmosShaders"
-                  top_pad="0"
+                  top_delta="0"
                   width="115"/>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="7"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┣
+                  </text>
+                  <check_box
+                  control_name="RenderObjectBump"
+                  height="16"
+                  label="Bumpmapping"
+                  tool_tip="Toggles Bumpmapping and shiny surfaces which reflect lights of the environment"
+                  layout="topleft"
+                  left_pad="0"
+                  name="BumpShiny"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-10"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┣
+                  </text>
                   <check_box
                   control_name="RenderAvatarVP"
                   disabled_control="RenderGlow"
@@ -109,10 +185,24 @@ width="345">
                   label="Hardware Skinning"
                   tool_tip="Enabling Hardware Skinning opens up the basic rendering needed for high end shaders like Deferred Rendering"
                   layout="topleft"
-                  left_delta="0"
+                  left_pad="0"
                   name="AvatarVertexProgram"
-                  top_pad="0"
+                  top_delta="0"
                   width="115"/>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-10"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┗
+                  </text>
                   <check_box
                   control_name="RenderGlow"
                   disabled_control="RenderDeferred"
@@ -120,10 +210,24 @@ width="345">
                   label="Post Process Glow"
                   tool_tip="Toggles the glowing of Prims and environment in some circumstances. Glow appearance and strength can be manipulated in the 'Lighting Tab' - needs Vertex Shader to run and is needed for Deferred Rendering"
                   layout="topleft"
-                  left="20"
+                  left_pad="0"
                   name="Glow"
-                  top_pad="0"
+                  top_delta="0"
                   width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="7"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┗
+                  </text>
                   <check_box
                   control_name="RenderDeferred"
                   enabled_control="RenderGlow"
@@ -131,10 +235,24 @@ width="345">
                   label="Deferred Rendering"
                   tool_tip="Toggles Deferred Rendering adding shadows cast by and on Prims, Avatars and the World aswell as uses a new lighting which allows Projected Lights/Textures which can also drop shadows. Vertex Shader, Atmospheric Shader, Post Process Glow and Hardware Skinning are needed to use this!"
                   layout="topleft"
-                  left="20"
+                  left_pad="0"
                   name="Deferred"
-                  top_pad="0"
+                  top_delta="0"
                   width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="7"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┣
+                  </text>
                   <check_box
                   control_name="RenderDeferredSSAO"
                   enabled_control="RenderDeferred"
@@ -142,10 +260,63 @@ width="345">
                   label="Ambient Occlusion"
                   tool_tip="Toggles Ambient Occlusion, blurs Shadows (Shadow Softening) and renders SSAO which adds small dark edges and transitions. Deferred Rendering is needed in order to use this!"
                   layout="topleft"
-                  left_delta="0"
+                  left_pad="0"
                   name="UseSSAO"
-                  top_pad="0"
+                  top_delta="0"
                   width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-10"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┃
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_pad="7"
+                  name="shaders"
+                  top_delta="0"
+                  width="10">
+                  ┗
+                  </text>
+                  <check_box
+                  control_name="RenderScreenSpaceReflections"
+                  height="16"
+                  initial_value="true"
+                  label="Screen Space Reflections"
+                  tool_tip="Toggles Screen Space Reflections on shiny surfaces creating very realistic reflective surfaces but will need a monstrous PC"
+                  layout="topleft"
+                  left_pad="0"
+                  name="RenderScreenSpaceReflections"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-27"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┣
+                  </text>
                   <check_box
                   control_name="RenderDepthOfField"
                   enabled_control="RenderDeferred"
@@ -153,9 +324,126 @@ width="345">
                   label="Depth of Field"
                   tool_tip="Toggles a camera like Depth of Field effect on or off, often used to blur out distance or things that shouldnt be in focus"
                   layout="topleft"
-                  left_delta="0"
+                  left_pad="0"
                   name="UseDoF"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-10"
+                  name="shaders"
                   top_pad="0"
+                  width="10">
+                  ┃
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_pad="7"
+                  name="shaders"
+                  top_delta="0"
+                  width="10">
+                  ┗
+                  </text>
+                  <check_box
+                  control_name="RenderUnderWaterDistortion"
+                  enabled_control="RenderDepthOfField"
+                  height="16"
+                  label="Underwater Distortion"
+                  tool_tip="Controls weither this Viewer should render a faked underwater distortion effect done with Depth of Field or not"
+                  layout="topleft"
+                  left_pad="0"
+                  name="RenderUWDistortion"
+                  top_delta="0"
+                  width="115"/>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-27"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┣
+                  </text>
+                  <check_box
+                  control_name="ExodusRenderToneMapping"
+                  enabled_control="RenderDeferred"
+                  height="16"
+                  initial_value="false"
+                  label="Tone Mapping"
+                  tool_tip="Toggles if Tone Mapping should be used while Deferred Rendering is active, it might cause the whole scene to look more/less colorfull and increase/decrease the overall scene brightness difference making the scene look dull"
+                  layout="topleft"
+                  left_pad="0"
+                  name="ToneMapping"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-10"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┣
+                  </text>
+                  <check_box
+                  control_name="RenderPostGreyscale"
+                  enabled_control="RenderDeferred"
+                  height="16"
+                  initial_value="false"
+                  label="Greyscale"
+                  tool_tip="Toggles if we should render everything in greyscale"
+                  layout="topleft"
+                  left_pad="0"
+                  name="PostGreyscale"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-10"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┗
+                  </text>
+                  <check_box
+                  control_name="RenderPostPosterization"
+                  enabled_control="RenderDeferred"
+                  height="16"
+                  initial_value="false"
+                  label="Posterization"
+                  tool_tip="Toggles if we should render everything in greyscale"
+                  layout="topleft"
+                  left_pad="0"
+                  name="PostPosterization"
+                  top_delta="0"
                   width="115" />
                   <text
                   font="SansSerif"
@@ -172,59 +460,14 @@ width="345">
                   Misc:
                   </text>
                   <check_box
-                  top_pad="0"
-                  height="16"
-                  control_name="JoystickEnabled"
-                  halign="left"
-                  label="Enable Flycam"
-                  layout="topleft"
-                  left="20"
-                  name="enable_joystick"
-                  width="60" />
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="EmphasisColor"
-                  layout="topleft"
-                  left="170"
-                  name="effects"
-                  top="37"
-                  width="150">
-                  Effect Toggles:
-                  </text>
-                  <check_box
-                  control_name="RenderObjectBump"
-                  height="16"
-                  label="Bumpmapping"
-                  tool_tip="Toggles Bumpmapping and shiny surfaces which reflect lights of the environment"
-                  layout="topleft"
-                  left_delta="10"
-                  name="BumpShiny"
-                  top_pad="0"
-                  width="115" />
-                  <check_box
                   control_name="RenderEnableFullbright"
                   height="16"
                   initial_value="true"
                   label="Enable Fullbright"
                   tool_tip="Tell the Viewer to ignore the Fullbright flags on Object creation resulting in no Fullbrights until restart/revisit - WARNING! , does not work with Objects that use an old set prim attribute LIGHT script command!"
                   layout="topleft"
-                  left_delta="0"
+                  left="20"
                   name="EnableFullbright"
-                  top_pad="0"
-                  width="115" />
-                  <check_box
-                  control_name="RenderScreenSpaceReflections"
-                  height="16"
-                  initial_value="true"
-                  label="Screen Space Reflections"
-                  tool_tip="Toggles Screen Space Reflections on shiny surfaces creating very realistic reflective surfaces but will need a monstrous PC"
-                  layout="topleft"
-                  left_delta="0"
-                  name="RenderScreenSpaceReflections"
                   top_pad="0"
                   width="115" />
                   <check_box
@@ -259,28 +502,15 @@ width="345">
                   top_pad="0"
                   width="115" />
                   <check_box
-                  control_name="RenderUnderWaterDistortion"
-                  enabled_control="RenderDepthOfField"
+                  top_pad="0"
                   height="16"
-                  label="Underwater Distortion"
-                  tool_tip="Controls weither this Viewer should render a faked underwater distortion effect done with Depth of Field or not"
+                  control_name="JoystickEnabled"
+                  halign="left"
+                  label="Enable Flycam"
                   layout="topleft"
                   left_delta="0"
-                  name="RenderUWDistortion"
-                  top_pad="0"
-                  width="115"/>
-                  <check_box
-                  control_name="ExodusRenderToneMapping"
-                  enabled_control="RenderDeferred"
-                  height="16"
-                  initial_value="false"
-                  label="Tone Mapping"
-                  tool_tip="Toggles if Tone Mapping should be used while Deferred Rendering is active, it might cause the whole scene to look more/less colorfull and increase/decrease the overall scene brightness difference making the scene look dull"
-                  layout="topleft"
-                  left_delta="0"
-                  name="ToneMapping"
-                  top_pad="0"
-                  width="115" />
+                  name="enable_joystick"
+                  width="60" />
                   <text
                   font="SansSerif"
                   font.style="BOLD"
@@ -291,7 +521,7 @@ width="345">
                   layout="topleft"
                   left="170"
                   name="windlight"
-                  top_pad="5"
+                  top="249"
                   width="280">
                   Windlight:
                   </text>
@@ -305,6 +535,34 @@ width="345">
                   left="180"
                   name="UseRegioLight"
                   width="75" />
+                  <check_box
+                  top_pad="0"
+                  height="16"
+                  control_name="RenderInterpolateWindlight"
+                  halign="center"
+                  label="Windlight Transitions"
+                  layout="topleft"
+                  left="180"
+                  name="WindlightInterpolation"
+                  width="75" />
+                  </panel>
+            </accordion_tab>
+            <accordion_tab
+            layout="topleft"
+            height="760"
+            name="advanced_options"
+            fit_panel="true"
+            title="Finetuning">
+                  <panel
+                  border="false"
+                  background_visible="false"
+                  follows="top|left"
+                  height="1005"
+                  layout="topleft"
+                  left="0"
+                  name="scroll_panel"
+                  top="0"
+                  width="330">      
                   <text
                   font="SansSerif"
                   font.style="BOLD"
@@ -753,7 +1011,7 @@ width="345">
                   <slider
                   can_edit_text="true"
                   control_name="PrevFoV"
-                  decimal_digits="4"
+                  decimal_digits="3"
                   follows="left|top"
                   height="16"
                   increment="0.01"
@@ -767,7 +1025,7 @@ width="345">
                   top_pad="3"
                   name="camera_fov"
                   show_text="true"
-                  width="304" />
+                  width="297" />
                   <slider
                   can_edit_text="true"
                   control_name="DynamicCameraStrength"
@@ -927,6 +1185,8 @@ width="345">
                   top_pad="3"
                   width="288" />
             </panel>
-      </scroll_container>
+            </accordion_tab>
+      </accordion>
+      <!--</scroll_container>-->
 </panel>
 
