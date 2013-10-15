@@ -236,9 +236,9 @@ void exoPostProcess::ExodusRenderToneMapping(LLRenderTarget *src, LLRenderTarget
     shader->uniform1f(LLShaderMgr::EXO_RENDER_EXPOSURE, sExodusRenderToneExposure);
     if (type == EXODUS_RENDER_TONE_FILMIC_ADV)
     {
-        shader->uniform3fv("exo_advToneUA", 1, sExodusRenderToneAdvOptA.mV);
-        shader->uniform3fv("exo_advToneUB", 1, sExodusRenderToneAdvOptB.mV);
-        shader->uniform3fv("exo_advToneUC", 1, sExodusRenderToneAdvOptC.mV);
+        shader->uniform3fv(LLShaderMgr::EXO_RENDER_ADV_TONE_UA, 1, sExodusRenderToneAdvOptA.mV);
+        shader->uniform3fv(LLShaderMgr::EXO_RENDER_ADV_TONE_UB, 1, sExodusRenderToneAdvOptB.mV);
+        shader->uniform3fv(LLShaderMgr::EXO_RENDER_ADV_TONE_UC, 1, sExodusRenderToneAdvOptC.mV);
     }
     mExoPostBuffer->drawArrays(LLRender::TRIANGLES, 0, 3);
     stop_glerror();
@@ -338,5 +338,5 @@ void exoShader::BindRenderTarget(LLRenderTarget* tgt, LLGLSLShader* shader, S32 
             gGL.getTexUnit(0)->activate();
         }
     }
-    shader->uniform2f("screen_res", tgt->getWidth(), tgt->getHeight());
+    shader->uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, tgt->getWidth(), tgt->getHeight());
 }

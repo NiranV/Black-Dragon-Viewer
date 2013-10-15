@@ -1148,6 +1148,10 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("exo_screen");
 	mReservedUniforms.push_back("invGammaFunc");
 
+	mReservedUniforms.push_back("exo_advToneUA");
+	mReservedUniforms.push_back("exo_advToneUB");
+	mReservedUniforms.push_back("exo_advToneUC");
+
 	//llassert(mReservedUniforms.size() == LLShaderMgr::EXO_RENDER_SCREEN+1);
 	// </exodus>
 	
