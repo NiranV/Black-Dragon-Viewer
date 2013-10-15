@@ -551,6 +551,13 @@ void LLPanelMainInventory::changed(U32)
 	updateItemcountText();
 }
 
+void LLPanelMainInventory::setFocusFilterEditor()
+{
+	if(mFilterEditor)
+	{
+		mFilterEditor->setFocus(true);
+	}
+}
 
 // virtual
 void LLPanelMainInventory::draw()
