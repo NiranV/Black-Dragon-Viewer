@@ -132,7 +132,7 @@ void LLWLAnimator::update(LLWLParamSet& curParams)
 		}
 
 		// <FS:Ansariel> Custom Windlight interpolate time
-     	static LLCachedControl<F32> interpolate_time(gSavedSettings, "RenderWindlightInterpolateTime");
+     	static LLCachedControl<F32> interpolate_time(gSavedSettings, "RenderWindlightInterpolateTime", 10.0);
 		
 		if (mIsInterpolatingSky)
 		{
