@@ -61,18 +61,18 @@ width="345">
       name="accordion"
       top_delta="2"
       single_expansion="false"
-      width="340">
+      width="338">
             <accordion_tab
             layout="topleft"
             name="main_options"
             fit_panel="true"
-            height="380"
+            height="473"
             title="General">
             <panel
             border="false"
             background_visible="false"
             follows="all"
-            height="380"
+            height="473"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -201,6 +201,184 @@ width="345">
                   name="shaders"
                   top_pad="0"
                   width="10">
+                  ┣
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta=""
+                  name="shaders"
+                  top_pad="-4"
+                  width="10">
+                  ┣
+                  </text>
+                  <radio_group
+                  control_name="RenderReflectionDetail"
+                  draw_border="false"
+                  height="38"
+                  layout="topleft"
+                  left_pad="0"
+                  name="TerrainDetailRadio"
+                  top_delta="-16"
+                  width="240">
+                        <radio_item
+                        height="16"
+                        label="No Water Reflections"
+                        value="0"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="100">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Terrain"
+                        value="1"
+                        layout="topleft"
+                        left_delta="17"
+                        name="0"
+                        top_pad="0"
+                        width="57">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Objects"
+                        value="2"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="62">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="AVs"
+                        value="3"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="40">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="All"
+                        value="4"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="50">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="7"
+                  name="shaders"
+                  top_delta="16"
+                  width="10">
+                  ┗
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="16"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_pad="60"
+                  name="shaders"
+                  top_delta="0"
+                  width="10">
+                  ╸
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="16"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_pad="63"
+                  name="shaders"
+                  top_delta="0"
+                  width="10">
+                  ╸
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="16"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_pad="40"
+                  name="shaders"
+                  top_delta="0"
+                  width="10">
+                  ╸
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-210"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
                   ┗
                   </text>
                   <check_box
@@ -248,6 +426,122 @@ width="345">
                   text_color="EmphasisColor"
                   layout="topleft"
                   left_delta="7"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┣
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="0"
+                  name="shaders"
+                  top_delta="16"
+                  width="10">
+                  ┣
+                  </text>
+                  <radio_group
+                  control_name="RenderShadowDetail"
+                  draw_border="false"
+                  height="38"
+                  layout="topleft"
+                  left_pad="0"
+                  name="TerrainDetailRadio"
+                  top_delta="-17"
+                  width="200">
+                        <radio_item
+                        height="16"
+                        label="No Shadows"
+                        value="0"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="20">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Sun &amp; Moon"
+                        value="1"
+                        layout="topleft"
+                        left_delta="17"
+                        name="0"
+                        top_pad="0"
+                        width="84">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Projectors"
+                        value="2"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="50">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="7"
+                  name="shaders"
+                  top_delta="16"
+                  width="10">
+                  ┗
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="16"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left="193"
+                  name="shaders"
+                  top_delta="0"
+                  width="10">
+                  ╸
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-115"
                   name="shaders"
                   top_pad="0"
                   width="10">
@@ -455,21 +749,10 @@ width="345">
                   layout="topleft"
                   left="10"
                   name="misc"
-                  top_pad="5"
+                  top_pad="9"
                   width="280">
                   Misc:
                   </text>
-                  <check_box
-                  control_name="RenderEnableFullbright"
-                  height="16"
-                  initial_value="true"
-                  label="Enable Fullbright"
-                  tool_tip="Tell the Viewer to ignore the Fullbright flags on Object creation resulting in no Fullbrights until restart/revisit - WARNING! , does not work with Objects that use an old set prim attribute LIGHT script command!"
-                  layout="topleft"
-                  left="20"
-                  name="EnableFullbright"
-                  top_pad="0"
-                  width="115" />
                   <check_box
                   control_name="RenderLocalLights"
                   enabled_control="RenderDeferred"
@@ -482,35 +765,46 @@ width="345">
                   top_pad="0"
                   width="115" />
                   <check_box
+                  control_name="RenderEnableFullbright"
+                  height="16"
+                  initial_value="true"
+                  label="Enable Fullbright"
+                  tool_tip="Tell the Viewer to ignore the Fullbright flags on Object creation resulting in no Fullbrights until restart/revisit - WARNING! , does not work with Objects that use an old set prim attribute LIGHT script command!"
+                  layout="topleft"
+                  left="180"
+                  name="EnableFullbright"
+                  top_delta="0"
+                  width="115" />
+                  <check_box
                   control_name="RenderAttachedLights"
                   height="16"
                   label="Attached Lights"
                   tool_tip="Toggles rendering of lights which are attached to your or other Avatars on or off. Usefull for annoying facelights"
                   layout="topleft"
-                  left_delta="0"
+                  left="10"
                   name="attached_lights"
                   top_pad="0"
                   width="115" />
+                  <check_box
+                  top_delta="0"
+                  height="16"
+                  control_name="JoystickEnabled"
+                  halign="left"
+                  label="Enable Flycam"
+                  layout="topleft"
+                  left="180"
+                  name="enable_joystick"
+                  width="60" />
                   <check_box
                   control_name="RenderAttachedParticles"
                   height="16"
                   label="Attached Particles"
                   tool_tip="Toggles rendering of particles which are attached to your or other Avatars on or off. Usefull for particle spammers"
                   layout="topleft"
-                  left_delta="0"
+                  left="10"
                   name="attached_particles"
                   top_pad="0"
                   width="115" />
-                  <check_box
-                  top_pad="0"
-                  height="16"
-                  control_name="JoystickEnabled"
-                  halign="left"
-                  label="Enable Flycam"
-                  layout="topleft"
-                  left_delta="0"
-                  name="enable_joystick"
-                  width="60" />
                   <text
                   font="SansSerif"
                   font.style="BOLD"
@@ -519,9 +813,9 @@ width="345">
                   height="20"
                   text_color="EmphasisColor"
                   layout="topleft"
-                  left="170"
+                  left="10"
                   name="windlight"
-                  top="249"
+                  top_pad="10"
                   width="280">
                   Windlight:
                   </text>
@@ -532,7 +826,7 @@ width="345">
                   halign="center"
                   label="Regio-light"
                   layout="topleft"
-                  left="180"
+                  left="10"
                   name="UseRegioLight"
                   width="75" />
                   <check_box
@@ -540,11 +834,30 @@ width="345">
                   height="16"
                   control_name="RenderInterpolateWindlight"
                   halign="center"
-                  label="Windlight Transitions"
+                  label="Windlight Transition:"
                   layout="topleft"
-                  left="180"
+                  left_delta="0"
                   name="WindlightInterpolation"
                   width="75" />
+                  <slider
+                  control_name="RenderWindlightInterpolateTime"
+                  enabled_control="VertexShaderEnable"
+                  decimal_digits="1"
+                  follows="left|top"
+                  can_edit_text="true"
+                  height="16"
+                  increment="0.1"
+                  initial_value="5"
+                  label=""
+                  tool_tip="Set how much seconds Windlight transitions between preset selections should take"
+                  label_width="110"
+                  layout="topleft"
+                  left="20"
+                  max_val="20"
+                  min_val="0"
+                  name="BlurDistance"
+                  top_delta="-1"
+                  width="290" />
                   </panel>
             </accordion_tab>
             <accordion_tab
