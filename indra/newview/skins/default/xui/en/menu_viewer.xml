@@ -1930,6 +1930,39 @@
                  function="Advanced.ToggleRenderType"
                  parameter="bump" />
             </menu_item_check>
+			<menu_item_check
+             label="Fullbright"
+             name="Rendering Type Bump"
+             shortcut="control|alt|shift|\">
+                <menu_item_check.on_check
+                 function="Advanced.CheckRenderType"
+                 parameter="fullbright" />
+                <menu_item_check.on_click
+                 function="Advanced.ToggleRenderType"
+                 parameter="fullbright" />
+            </menu_item_check>
+			<menu_item_check
+             label="Fullbright Alpha"
+             name="Rendering Type Bump"
+             shortcut="control|alt|shift|\">
+                <menu_item_check.on_check
+                 function="Advanced.CheckRenderType"
+                 parameter="fullbright_alpha" />
+                <menu_item_check.on_click
+                 function="Advanced.ToggleRenderType"
+                 parameter="fullbright_alpha" />
+            </menu_item_check>
+			<menu_item_check
+             label="Fullbright Shiny"
+             name="Rendering Type Bump"
+             shortcut="control|alt|shift|\">
+                <menu_item_check.on_check
+                 function="Advanced.CheckRenderType"
+                 parameter="fullbright_shiny" />
+                <menu_item_check.on_click
+                 function="Advanced.ToggleRenderType"
+                 parameter="fullbright_shiny" />
+            </menu_item_check>
         </menu>
         <menu
          create_jump_keys="true"

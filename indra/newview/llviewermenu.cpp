@@ -746,6 +746,18 @@ U32 render_type_from_string(std::string render_type)
 	{
 		return LLPipeline::RENDER_TYPE_BUMP;
 	}
+	else if ("fullbright" == render_type)
+	{
+		return LLPipeline::RENDER_TYPE_FULLBRIGHT;
+	}
+	else if ("fullbright_alpha" == render_type)
+	{
+		return LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT_ALPHA_MASK;
+	}
+	else if ("fullbright_shiny" == render_type)
+	{
+		return LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT_SHINY;
+	}
 	else
 	{
 		return 0;
