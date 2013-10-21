@@ -25,6 +25,8 @@
      animate="true" 
      bottom="-1"
      follows="all"
+     open_time_constant="0.0"
+     close_time_constant="0.0"
      border_size="0"
      layout="topleft"
      left="0"

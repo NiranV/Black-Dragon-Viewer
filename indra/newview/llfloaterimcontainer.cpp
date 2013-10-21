@@ -749,6 +749,14 @@ void LLFloaterIMContainer::collapseMessagesPane(bool collapse)
 
 		// Save the order in which the panels are closed to reverse user's last action.
 		gSavedPerAccountSettings.setBOOL("ConversationsExpandMessagePaneFirst", mConversationsPane->isCollapsed());
+		
+		// Make sure our floater moves to the right instead of left since we put the list there.
+		translate(msg_pane_width,0);
+	}
+	else
+	{
+		// Revert what we did when we collapsed the floater.
+		translate(-gSavedPerAccountSettings.getS32("ConversationsMessagePaneWidth"),0);
 	}
 
 	mConversationsPane->setIgnoreReshape(collapse);
