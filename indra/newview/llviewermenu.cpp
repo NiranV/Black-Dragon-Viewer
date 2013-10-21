@@ -125,6 +125,8 @@
 #include "llpathfindingmanager.h"
 #include "boost/unordered_map.hpp"
 
+#include "piemenu.h"	// pie Menu
+
 using namespace LLAvatarAppearanceDefines;
 
 typedef LLPointer<LLViewerObject> LLViewerObjectPtr;
@@ -162,7 +164,7 @@ LLMenuGL		*gPopupMenuView = NULL;
 LLMenuGL		*gEditMenu = NULL;
 LLMenuBarGL		*gLoginMenuBarView = NULL;
 
-// Pie menus
+// Context menus
 LLContextMenu	*gMenuAvatarSelf	= NULL;
 LLContextMenu	*gMenuAvatarOther = NULL;
 LLContextMenu	*gMenuObject = NULL;
@@ -170,6 +172,14 @@ LLContextMenu	*gMenuAttachmentSelf = NULL;
 LLContextMenu	*gMenuAttachmentOther = NULL;
 LLContextMenu	*gMenuLand	= NULL;
 LLContextMenu	*gMenuMuteParticle = NULL;
+
+// Pie menus
+PieMenu		*gPieMenuAvatarSelf	= NULL;
+PieMenu		*gPieMenuAvatarOther = NULL;
+PieMenu		*gPieMenuObject = NULL;
+PieMenu		*gPieMenuAttachmentSelf = NULL;
+PieMenu		*gPieMenuAttachmentOther = NULL;
+PieMenu		*gPieMenuLand	= NULL;
 
 const std::string SAVE_INTO_TASK_INVENTORY("Save Object Back to Object Contents");
 
@@ -182,6 +192,13 @@ LLContextMenu* gAttachBodyPartPieMenus[8];
 LLContextMenu* gDetachPieMenu = NULL;
 LLContextMenu* gDetachScreenPieMenu = NULL;
 LLContextMenu* gDetachBodyPartPieMenus[8];
+
+PieMenu* gPieAttachScreenMenu = NULL;
+PieMenu* gPieAttachMenu = NULL;
+PieMenu* gPieAttachBodyPartMenus[8];
+PieMenu* gPieDetachMenu = NULL;
+PieMenu* gPieDetachScreenMenu = NULL;
+PieMenu* gPieDetachBodyPartMenus[8];
 
 //
 // Local prototypes
@@ -428,6 +445,34 @@ void init_menus()
 
 	gMenuMuteParticle = LLUICtrlFactory::createFromFile<LLContextMenu>(
 		"menu_mute_particle.xml", gMenuHolder, registry);
+
+	///
+	/// Pie menus
+	///
+
+	gPieMenuAvatarSelf = LLUICtrlFactory::createFromFile<PieMenu>(
+		"menu_pie_avatar_self.xml", gMenuHolder, registry);
+	gPieMenuAvatarOther = LLUICtrlFactory::createFromFile<PieMenu>(
+		"menu_pie_avatar_other.xml", gMenuHolder, registry);
+
+	// added "Pie" to the control names to keep them unique
+	gPieDetachScreenMenu = gMenuHolder->getChild<PieMenu>("Pie Object Detach HUD", true);
+	gPieDetachMenu = gMenuHolder->getChild<PieMenu>("Pie Object Detach", true);
+
+	gPieMenuObject = LLUICtrlFactory::createFromFile<PieMenu>(
+		"menu_pie_object.xml", gMenuHolder, registry);
+
+	// added "Pie" to the control names to keep them unique
+	gPieAttachScreenMenu = gMenuHolder->getChild<PieMenu>("Pie Object Attach HUD");
+	gPieAttachMenu = gMenuHolder->getChild<PieMenu>("Pie Object Attach");
+
+	gPieMenuAttachmentSelf = LLUICtrlFactory::createFromFile<PieMenu>(
+		"menu_pie_attachment_self.xml", gMenuHolder, registry);
+	gPieMenuAttachmentOther = LLUICtrlFactory::createFromFile<PieMenu>(
+		"menu_pie_attachment_other.xml", gMenuHolder, registry);
+
+	gPieMenuLand = LLUICtrlFactory::createFromFile<PieMenu>(
+		"menu_pie_land.xml", gMenuHolder, registry);
 
 	///
 	/// set up the colors

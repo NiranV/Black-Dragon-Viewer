@@ -675,6 +675,9 @@ set(viewer_SOURCE_FILES
     exopostprocess.cpp
     noise.cpp
     pipeline.cpp
+	piemenu.cpp
+    pieseparator.cpp
+    pieslice.cpp
     )
 
 set(VIEWER_BINARY_NAME "blackdragon-bin" CACHE STRING
@@ -1254,6 +1257,9 @@ set(viewer_HEADER_FILES
     macmain.h
     noise.h
     pipeline.h
+	piemenu.h
+    pieseparator.h
+    pieslice.h
     VertexCache.h
     VorbisFramework.h
     )

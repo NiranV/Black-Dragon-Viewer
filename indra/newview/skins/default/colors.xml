@@ -679,13 +679,16 @@
  reference="Red_80" />
  <color
  name="PieMenuBgColor"
- value="0.24 0.24 0.24 0.59" />
+ value="0.0 0.1742666 0.1479834 0.8" />
  <color
  name="PieMenuLineColor"
- value="0 0 0 0.5" />
+ value="0.0 0.0 0.0 0.9" />
  <color
  name="PieMenuSelectedColor"
- value="0.72 0.72 0.74 0.3" />
+ value="0.0 0.742666 0.679834 0.3" />
+ <color
+ name="PieMenuTextColor"
+ value="0.90387 0.886446 0.744568 1" />
  <color
  name="PropertyColorAuction"
  value="0.5 0 1 0.4" />
