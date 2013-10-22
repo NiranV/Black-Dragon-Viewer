@@ -651,6 +651,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 						tool == LLToolCompScale::getInstance() ||
 						tool == LLToolFace::getInstance() ||
 						tool == LLToolIndividual::getInstance() ||
+						tool == QToolAlign::getInstance() ||
 						tool == LLToolPipette::getInstance();
 
 	mBtnEdit	->setToggleState( edit_visible );
@@ -685,6 +686,10 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	else if ( tool == LLToolFace::getInstance() )
 	{
 		mRadioGroupEdit->setValue("radio select face");
+	}
+	else if ( tool == QToolAlign::getInstance() )
+	{
+		mRadioGroupEdit->setValue("radio align");
 	}
 
 	if (mComboGridMode) 
@@ -981,6 +986,10 @@ void commit_radio_group_edit(LLUICtrl *ctrl)
 	else if (selected == "radio select face")
 	{
 		LLFloaterTools::setEditTool( LLToolFace::getInstance() );
+	}
+	else if (selected == "radio align")
+	{
+		LLFloaterTools::setEditTool( QToolAlign::getInstance() );
 	}
 	gSavedSettings.setBOOL("ShowParcelOwners", show_owners);
 }
