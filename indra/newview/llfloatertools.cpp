@@ -89,6 +89,8 @@
 #include "lluictrlfactory.h"
 #include "llmeshrepository.h"
 
+#include "qtoolalign.h"
+
 // Globals
 LLFloaterTools *gFloaterTools = NULL;
 bool LLFloaterTools::sShowObjectCost = true;

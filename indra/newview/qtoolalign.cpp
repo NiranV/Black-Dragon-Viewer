@@ -39,7 +39,7 @@ void cmdline_printchat(std::string message)
     chat.mText = message;
 	chat.mSourceType = CHAT_SOURCE_SYSTEM;
 	LLSD args;
-	args["type"] = LLNotificationsUI::NT_NEARBYCHAT;
+	args["type"] = LLNotificationsUI::NA_BOTTOM;
 	LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
 }
 
