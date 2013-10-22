@@ -53,6 +53,10 @@ uniform float scene_light_strength;
 uniform mat3 env_mat;
 uniform mat3 ssao_effect_mat;
 
+uniform float num_colors;
+uniform float greyscale_str;
+uniform float sepia_str;
+
 uniform vec3 sun_dir;
 
 #if HAS_SHADOW
@@ -612,6 +616,26 @@ void main()
 	// keep it linear
 	//
 	color.rgb += light.rgb;
+	
+	#if POSTERIZATION
+		color.rgb = pow(color.rgb, vec3(0.6));
+		color.rgb = color.rgb * num_colors;
+		color.rgb = floor(color.rgb);
+		color.rgb = color.rgb / num_colors;
+		color.rgb = pow(color.rgb, vec3(1.0/0.6));
+	#endif
+	
+	#if GREY_SCALE
+		vec3 color_gr = vec3((0.299 * color.r) + (0.587 * color.g) + (0.114 * color.b));
+		color.rgb = mix(color.rgb, color_gr, greyscale_str);
+	#endif
+	
+	#if SEPIA
+		float sepia_mix = dot(vec3(0.299, 0.587, 0.114), vec3(color.rgb));
+		vec3 color_sep = mix(vec3(0.14, 0.03, 0.0), vec3(0.72, 0.63, 0.25), sepia_mix);
+		color_sep = mix(color_sep, vec3(sepia_mix), 0.0);
+		color.rgb = mix(color.rgb, color_sep, sepia_str);
+	#endif
 
 	// straight to display gamma, we're post-deferred
 	//
@@ -622,23 +646,6 @@ void main()
 #endif
 
 #endif
-
-	#ifdef GREY_SCALE
-		color.rgb = vec3((0.299 * color.r) + (0.587 * color.g) + (0.114 * color.b));
-	#endif
-	
-	#ifdef POSTERIZATION
-		color.rgb = pow(color.rgb, vec3(0.6));
-		color.rgb = color.rgb * 4.0;
-		color.rgb = floor(color.rgb);
-		color.rgb = color.rgb / 4.0;
-		color.rgb = pow(color.rgb, vec3(1.0/0.6));
-		color.a = pow(color.a, 0.6);
-		color.a = color.a * 6.0;
-		color.a = floor(color.a);
-		color.a = color.a / 6.0;
-		color.a = pow(color.a, 1.0/0.6);
-	#endif
 
 	frag_color = color;
 }

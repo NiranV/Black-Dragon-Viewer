@@ -1393,6 +1393,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredImpostorProgram.mShaderFiles.clear();
 		gDeferredImpostorProgram.mShaderFiles.push_back(make_pair("deferred/impostorV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredImpostorProgram.mShaderFiles.push_back(make_pair("deferred/impostorF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredImpostorProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredImpostorProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredImpostorProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 		gDeferredImpostorProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 		success = gDeferredImpostorProgram.createShader(NULL, NULL);
 	}
@@ -1403,6 +1406,8 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredLightProgram.mShaderFiles.clear();
 		gDeferredLightProgram.mShaderFiles.push_back(make_pair("deferred/pointLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredLightProgram.mShaderFiles.push_back(make_pair("deferred/pointLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredLightProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredLightProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
 		gDeferredLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		success = gDeferredLightProgram.createShader(NULL, NULL);
@@ -1418,6 +1423,8 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 			gDeferredMultiLightProgram[i].mShaderFiles.push_back(make_pair("deferred/multiPointLightF.glsl", GL_FRAGMENT_SHADER_ARB));
 			gDeferredMultiLightProgram[i].mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 			gDeferredMultiLightProgram[i].addPermutation("LIGHT_COUNT", llformat("%d", i+1));
+			gDeferredMultiLightProgram[i].addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+			gDeferredMultiLightProgram[i].addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
 			success = gDeferredMultiLightProgram[i].createShader(NULL, NULL);
 		}
 	}
@@ -1428,6 +1435,8 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSpotLightProgram.mShaderFiles.clear();
 		gDeferredSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/pointLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/spotLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredSpotLightProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredSpotLightProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
 		gDeferredSpotLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		success = gDeferredSpotLightProgram.createShader(NULL, NULL);
@@ -1439,6 +1448,8 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredMultiSpotLightProgram.mShaderFiles.clear();
 		gDeferredMultiSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/multiPointLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredMultiSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/multiSpotLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredMultiSpotLightProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredMultiSpotLightProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
 		gDeferredMultiSpotLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		success = gDeferredMultiSpotLightProgram.createShader(NULL, NULL);
@@ -1505,17 +1516,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredAlphaProgram.addPermutation("USE_INDEXED_TEX", "1");
 		gDeferredAlphaProgram.addPermutation("HAS_SHADOW", mVertexShaderLevel[SHADER_DEFERRED] > 1 ? "1" : "0");
 		gDeferredAlphaProgram.addPermutation("USE_VERTEX_COLOR", "1");
-//		//BD - Toggle Greyscale
-		if(gSavedSettings.getBOOL("RenderPostGreyscale"))
-		{
-			gDeferredAlphaProgram.addPermutation("GREY_SCALE", "1");
-		}
-
-//		//BD - Toggle Posterization
-		if(gSavedSettings.getBOOL("RenderPostPosterization"))
-		{
-			gDeferredAlphaProgram.addPermutation("POSTERIZATION", "1");
-		}
+		gDeferredAlphaProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredAlphaProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredAlphaProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 		gDeferredAlphaProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		success = gDeferredAlphaProgram.createShader(NULL, NULL);
@@ -1549,6 +1552,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredAlphaImpostorProgram.addPermutation("HAS_SHADOW", mVertexShaderLevel[SHADER_DEFERRED] > 1 ? "1" : "0");
 		gDeferredAlphaImpostorProgram.addPermutation("USE_VERTEX_COLOR", "1");
 		gDeferredAlphaImpostorProgram.addPermutation("FOR_IMPOSTOR", "1");
+		gDeferredAlphaImpostorProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredAlphaImpostorProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredAlphaImpostorProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 
 		gDeferredAlphaImpostorProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
@@ -1582,6 +1588,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredAlphaWaterProgram.addPermutation("WATER_FOG", "1");
 		gDeferredAlphaWaterProgram.addPermutation("USE_VERTEX_COLOR", "1");
 		gDeferredAlphaWaterProgram.addPermutation("HAS_SHADOW", mVertexShaderLevel[SHADER_DEFERRED] > 1 ? "1" : "0");
+		gDeferredAlphaWaterProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredAlphaWaterProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredAlphaWaterProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 		gDeferredAlphaWaterProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		success = gDeferredAlphaWaterProgram.createShader(NULL, NULL);
@@ -1615,18 +1624,10 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredFullbrightProgram.mShaderFiles.clear();
 		gDeferredFullbrightProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredFullbrightProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredFullbrightProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredFullbrightProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredFullbrightProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 		gDeferredFullbrightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
-//		//BD - Toggle Greyscale
-		if(gSavedSettings.getBOOL("RenderPostGreyscale"))
-		{
-			gDeferredFullbrightProgram.addPermutation("GREY_SCALE", "1");
-		}
-
-//		//BD - Toggle Posterization
-		if(gSavedSettings.getBOOL("RenderPostPosterization"))
-		{
-			gDeferredFullbrightProgram.addPermutation("POSTERIZATION", "1");
-		}
 		success = gDeferredFullbrightProgram.createShader(NULL, NULL);
 	}
 
@@ -1641,6 +1642,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredFullbrightAlphaMaskProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredFullbrightAlphaMaskProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightF.glsl", GL_FRAGMENT_SHADER_ARB));
 		gDeferredFullbrightAlphaMaskProgram.addPermutation("HAS_ALPHA_MASK","1");
+		gDeferredFullbrightAlphaMaskProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredFullbrightAlphaMaskProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredFullbrightAlphaMaskProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 		gDeferredFullbrightAlphaMaskProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 		success = gDeferredFullbrightAlphaMaskProgram.createShader(NULL, NULL);
 	}
@@ -1658,6 +1662,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredFullbrightWaterProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 		gDeferredFullbrightWaterProgram.mShaderGroup = LLGLSLShader::SG_WATER;
 		gDeferredFullbrightWaterProgram.addPermutation("WATER_FOG","1");
+		gDeferredFullbrightWaterProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredFullbrightWaterProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredFullbrightWaterProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 		success = gDeferredFullbrightWaterProgram.createShader(NULL, NULL);
 	}
 
@@ -1675,6 +1682,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredFullbrightAlphaMaskWaterProgram.mShaderGroup = LLGLSLShader::SG_WATER;
 		gDeferredFullbrightAlphaMaskWaterProgram.addPermutation("HAS_ALPHA_MASK","1");
 		gDeferredFullbrightAlphaMaskWaterProgram.addPermutation("WATER_FOG","1");
+		gDeferredFullbrightAlphaMaskWaterProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredFullbrightAlphaMaskWaterProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredFullbrightAlphaMaskWaterProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 		success = gDeferredFullbrightAlphaMaskWaterProgram.createShader(NULL, NULL);
 	}
 
@@ -1688,6 +1698,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredFullbrightShinyProgram.mShaderFiles.clear();
 		gDeferredFullbrightShinyProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightShinyV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredFullbrightShinyProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightShinyF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredFullbrightShinyProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredFullbrightShinyProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredFullbrightShinyProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 		gDeferredFullbrightShinyProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 		success = gDeferredFullbrightShinyProgram.createShader(NULL, NULL);
 	}
@@ -1703,6 +1716,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSkinnedFullbrightProgram.mShaderFiles.clear();
 		gDeferredSkinnedFullbrightProgram.mShaderFiles.push_back(make_pair("objects/fullbrightSkinnedV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredSkinnedFullbrightProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredSkinnedFullbrightProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredSkinnedFullbrightProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredSkinnedFullbrightProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 		gDeferredSkinnedFullbrightProgram.mShaderLevel = mVertexShaderLevel[SHADER_OBJECT];
 		success = gDeferredSkinnedFullbrightProgram.createShader(NULL, NULL);
 	}
@@ -1718,6 +1734,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSkinnedFullbrightShinyProgram.mShaderFiles.clear();
 		gDeferredSkinnedFullbrightShinyProgram.mShaderFiles.push_back(make_pair("objects/fullbrightShinySkinnedV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredSkinnedFullbrightShinyProgram.mShaderFiles.push_back(make_pair("deferred/fullbrightShinyF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredSkinnedFullbrightShinyProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredSkinnedFullbrightShinyProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredSkinnedFullbrightShinyProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 		gDeferredSkinnedFullbrightShinyProgram.mShaderLevel = mVertexShaderLevel[SHADER_OBJECT];
 		success = gDeferredSkinnedFullbrightShinyProgram.createShader(NULL, NULL);
 	}
@@ -1770,24 +1789,10 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSoftenProgram.mShaderFiles.clear();
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
-
-//		//BD - Toggle Tofu's Screen Space Reflections
-		if(gSavedSettings.getBOOL("RenderScreenSpaceReflections"))
-		{
-			gDeferredSoftenProgram.addPermutation("USE_SSR", "1");
-		}
-
-//		//BD - Toggle Greyscale
-		if(gSavedSettings.getBOOL("RenderPostGreyscale"))
-		{
-			gDeferredSoftenProgram.addPermutation("GREY_SCALE", "1");
-		}
-
-//		//BD - Toggle Posterization
-		if(gSavedSettings.getBOOL("RenderPostPosterization"))
-		{
-			gDeferredSoftenProgram.addPermutation("POSTERIZATION", "1");
-		}
+		gDeferredSoftenProgram.addPermutation("USE_SSR", (bool)gSavedSettings.getBOOL("RenderScreenSpaceReflections") ? "1" : "0");
+		gDeferredSoftenProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredSoftenProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredSoftenProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 
 		gDeferredSoftenProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
@@ -1805,6 +1810,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSoftenWaterProgram.mShaderFiles.clear();
 		gDeferredSoftenWaterProgram.mShaderFiles.push_back(make_pair("deferred/softenLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredSoftenWaterProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredSoftenWaterProgram.addPermutation("GREY_SCALE", (bool)gSavedSettings.getBOOL("RenderPostGreyscale") ? "1" : "0");
+		gDeferredSoftenWaterProgram.addPermutation("POSTERIZATION", (bool)gSavedSettings.getBOOL("RenderPostPosterization") ? "1" : "0");
+		gDeferredSoftenWaterProgram.addPermutation("SEPIA", (bool)gSavedSettings.getBOOL("RenderPostSepia") ? "1" : "0");
 
 		gDeferredSoftenWaterProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 		gDeferredSoftenWaterProgram.addPermutation("WATER_FOG", "1");

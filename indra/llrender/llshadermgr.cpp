@@ -1163,7 +1163,10 @@ void LLShaderMgr::initAttribsAndUniforms()
 
 	mReservedUniforms.push_back("matrixPalette");
 
+//	//BD - Post Effects
 	mReservedUniforms.push_back("num_colors");
+	mReservedUniforms.push_back("greyscale_str");
+	mReservedUniforms.push_back("sepia_str");
 	
 	mReservedUniforms.push_back("screenTex");
 	mReservedUniforms.push_back("screenDepth");

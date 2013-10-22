@@ -15192,10 +15192,43 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <key>RenderPostGreyscaleStrength</key>
+  <map>
+    <key>Comment</key>
+    <string>Set the percentual amount of greyscale's strength, 1.0 means fully greyscale , 0.0 means fully colored</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <integer>1.0</integer>
+  </map>
   <key>RenderPostGreyscale</key>
   <map>
     <key>Comment</key>
-    <string>Render the world in greyscale</string>
+    <string>Render the scene in greyscale</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>RenderPostSepiaStrength</key>
+  <map>
+    <key>Comment</key>
+    <string>Set the percentual amount of sepia's strength, 1.0 means a full sepia tone, 0.0 means no sepia tone at all.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <integer>0.1</integer>
+  </map>
+  <key>RenderPostSepia</key>
+  <map>
+    <key>Comment</key>
+    <string>Render the scene in sepia</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>

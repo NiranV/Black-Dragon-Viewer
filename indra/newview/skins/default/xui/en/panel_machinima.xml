@@ -66,7 +66,7 @@ width="345">
             layout="topleft"
             name="main_options"
             fit_panel="true"
-            height="473"
+            height="491"
             title="General">
             <panel
             border="false"
@@ -725,6 +725,32 @@ width="345">
                   name="shaders"
                   top_pad="0"
                   width="10">
+                  ┣
+                  </text>
+                  <check_box
+                  control_name="RenderPostSepia"
+                  enabled_control="RenderDeferred"
+                  height="16"
+                  initial_value="false"
+                  label="Sepia"
+                  tool_tip="Toggles if we should render everything in sepia, needs greyscale in order to look like real sepia"
+                  layout="topleft"
+                  left_pad="0"
+                  name="PostSepia"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="EmphasisColor"
+                  layout="topleft"
+                  left_delta="-10"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
                   ┗
                   </text>
                   <check_box
@@ -733,7 +759,7 @@ width="345">
                   height="16"
                   initial_value="false"
                   label="Posterization"
-                  tool_tip="Toggles if we should render everything in greyscale"
+                  tool_tip="Toggles if we should render everything with a set amount of color shades"
                   layout="topleft"
                   left_pad="0"
                   name="PostPosterization"
@@ -862,7 +888,7 @@ width="345">
             </accordion_tab>
             <accordion_tab
             layout="topleft"
-            height="760"
+            height="840"
             name="advanced_options"
             fit_panel="true"
             title="Finetuning">
@@ -1032,7 +1058,7 @@ width="345">
                   min_val="0"
                   name="SSAOFactor"
                   top_pad="3"
-                  width="290" />
+                  width="289" />
                   <text
                   font="SansSerif"
                   font.style="BOLD"
@@ -1180,6 +1206,77 @@ width="345">
                   tool_tip="Second Field of View Option to set strength (FoV) of underwater distortion , 0 means extreme , everywhere and is default"
                   top_pad="3"
                   width="298" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  layout="topleft"
+                  left="10"
+                  text_color="EmphasisColor"
+                  name="shadows"
+                  top_pad="6"
+                  width="280">
+                  Post Processing:
+                  </text>
+                  <slider
+                  control_name="RenderPostGreyscaleStrength"
+                  enabled_control="RenderDeferred"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="16"
+                  increment="0.01"
+                  initial_value="1"
+                  can_edit_text="true"
+                  label="Greyscale Strength:"
+                  label_width="110"
+                  tool_tip="Set the percentual amount of greyscale's strength"
+                  layout="topleft"
+                  left="20"
+                  max_val="1"
+                  min_val="0"
+                  name="GreyscaleStrength"
+                  top_pad="2"
+                  width="290" />
+                  <slider
+                  control_name="RenderPostSepiaStrength"
+                  enabled_control="RenderDeferred"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="16"
+                  increment="0.01"
+                  initial_value="1"
+                  can_edit_text="true"
+                  label="Sepia Strength:"
+                  label_width="110"
+                  tool_tip="Set the percentual amount of sepia's strength"
+                  layout="topleft"
+                  left="20"
+                  max_val="1"
+                  min_val="0"
+                  name="SepiaStrength"
+                  top_pad="2"
+                  width="290" />
+                  <slider
+                  control_name="RenderPostPosterizationSamples"
+                  enabled_control="RenderDeferred"
+                  decimal_digits="1"
+                  follows="left|top"
+                  height="16"
+                  increment="1"
+                  initial_value="1"
+                  can_edit_text="true"
+                  label="Posterize Samples:"
+                  label_width="110"
+                  tool_tip="Set the number of color shades we render the scene with in Posterization."
+                  layout="topleft"
+                  left="20"
+                  max_val="64"
+                  min_val="1"
+                  name="PosterizationSamples"
+                  top_pad="2"
+                  width="287" />
                   <text
                   font="SansSerif"
                   font.style="BOLD"

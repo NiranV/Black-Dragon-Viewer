@@ -63,6 +63,10 @@ uniform vec3 color;
 uniform float falloff;
 uniform float size;
 
+uniform float num_colors;
+uniform float greyscale_str;
+uniform float sepia_str;
+
 VARYING vec4 vary_fragcoord;
 uniform vec2 screen_res;
 
@@ -329,8 +333,17 @@ void main()
 		}
 	}
 	
-	#ifdef GREY_SCALE
-		color.rgb = vec3((0.299 * color.r) + (0.587 * color.g) + (0.114 * color.b));
+	#if POSTERIZATION
+		col = pow(col, vec3(0.6));
+		col = col * num_colors;
+		col = floor(col);
+		col = col / num_colors;
+		col = pow(col, vec3(1.0/0.6));
+	#endif
+	
+	#if GREY_SCALE
+		vec3 col_gr = vec3((0.299 * col.r) + (0.587 * col.g) + (0.114 * col.b));
+		col = mix(col, col_gr, 0.0);
 	#endif
 	
 	frag_color.rgb = col;	

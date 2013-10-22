@@ -39,6 +39,9 @@ VARYING vec3 vary_position;
 VARYING vec4 vertex_color;
 VARYING vec2 vary_texcoord0;
 
+uniform float num_colors;
+uniform float greyscale_str;
+uniform float sepia_str;
 
 vec3 srgb_to_linear(vec3 cs)
 {
@@ -171,17 +174,25 @@ void main()
 	color.a   = final_alpha;
 #endif
 
-#ifdef GREY_SCALE
-	color.rgb = vec3((0.299 * color.r) + (0.587 * color.g) + (0.114 * color.b));
-#endif
-
-#ifdef POSTERIZATION
-	color.rgb = pow(color.rgb, vec3(0.6));
-	color.rgb = color.rgb * 16.0;
-	color.rgb = floor(color.rgb);
-	color.rgb = color.rgb / 16.0;
-	color.rgb = pow(color.rgb, vec3(1.0/0.6));
-#endif
+	#if POSTERIZATION
+		color.rgb = pow(color.rgb, vec3(0.6));
+		color.rgb = color.rgb * num_colors;
+		color.rgb = floor(color.rgb);
+		color.rgb = color.rgb / num_colors;
+		color.rgb = pow(color.rgb, vec3(1.0/0.6));
+	#endif
+	
+	#if GREY_SCALE
+		vec3 color_gr = vec3((0.299 * color.r) + (0.587 * color.g) + (0.114 * color.b));
+		color.rgb = mix(color.rgb, color_gr, 1.0);
+	#endif
+	
+	#if SEPIA
+		float sepia_mix = dot(vec3(0.299, 0.587, 0.114), vec3(color.rgb));
+		vec3 color_sep = mix(vec3(0.14, 0.03, 0.0), vec3(0.72, 0.63, 0.25), sepia_mix);
+		color_sep = mix(color_sep, vec3(sepia_mix), 0.0);
+		color.rgb = mix(color.rgb, color_sep, 1.0);
+	#endif
 
 	frag_color.rgb = color.rgb;
 	frag_color.a   = color.a;
