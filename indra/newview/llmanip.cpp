@@ -55,7 +55,7 @@
 #include "llglheaders.h"
 #include "lluiimage.h"
 // Local constants...
-const S32 VERTICAL_OFFSET = 50;
+const S32 VERTICAL_OFFSET = 105;
 
 F32		LLManip::sHelpTextVisibleTime = 2.f;
 F32		LLManip::sHelpTextFadeTime = 2.f;
