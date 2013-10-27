@@ -419,12 +419,21 @@ LLAvatarListItem::icon_color_map_t& LLAvatarListItem::getItemIconColorMap()
 bool LLAvatarListItem::showPermissions(bool visible)
 {
 	const LLRelationship* relation = LLAvatarTracker::instance().getBuddyInfo(getAvatarId());
+	LLColor4 permission = LLUIColorTable::instance().getColor("White");
 	if(relation && visible)
 	{
-		mIconPermissionOnline->setVisible(relation->isRightGrantedTo(LLRelationship::GRANT_ONLINE_STATUS));
-		mIconPermissionMap->setVisible(relation->isRightGrantedTo(LLRelationship::GRANT_MAP_LOCATION));
-		mIconPermissionEditMine->setVisible(relation->isRightGrantedTo(LLRelationship::GRANT_MODIFY_OBJECTS));
-		mIconPermissionEditTheirs->setVisible(relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS));
+		mIconPermissionOnline->setColor(LLUIColorTable::instance().getColor
+			(relation->isRightGrantedTo(LLRelationship::GRANT_ONLINE_STATUS) ? "White" : "White_25"));
+		mIconPermissionMap->setColor(LLUIColorTable::instance().getColor
+			(relation->isRightGrantedTo(LLRelationship::GRANT_MAP_LOCATION) ? "White" : "White_25"));
+		mIconPermissionEditMine->setColor(LLUIColorTable::instance().getColor
+			(relation->isRightGrantedTo(LLRelationship::GRANT_MODIFY_OBJECTS) ? "White" : "White_25"));
+		mIconPermissionEditTheirs->setColor(LLUIColorTable::instance().getColor
+			(relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "White" : "White_25"));
+		mIconPermissionOnline->setVisible(true);
+		mIconPermissionMap->setVisible(true);
+		mIconPermissionEditMine->setVisible(true);
+		mIconPermissionEditTheirs->setVisible(true);
 	}
 
 	return NULL != relation;
