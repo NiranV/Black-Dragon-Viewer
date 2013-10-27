@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<panel
+border="false"
+follows="all"
+height="408"
+label="Viewer"
+mouse_opaque="false"
+layout="topleft"
+left="102"
+name="viewer_panel"
+top="45"
+width="510">
+       <scroll_container
+       color="Transparent"
+       follows="all"
+       layout="topleft"
+       left="0"
+       name="viewer_scroll"
+       opaque="true"
+       height="407"
+       width="510"
+       top="0">
+	      <panel
+	      layout="topleft"
+	      follows="left|top|right"
+	      height="695"
+	      name="viewer_scroll_panel"
+	      top="0"
+	      left="0"
+	      width="495">
+		     
+			 <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top="0"
+ width="515"/>
+		     <text
+		     type="string"
+		     length="1"
+		     follows="left|top"
+		     height="12"
+		     layout="topleft"
+		     left="10"
+		     name="viewer_label"
+		     top_delta="4"
+		     width="120">Viewer Options:</text>
+		     
+		     <check_box
+		     control_name="AllowMultipleViewers"
+		     height="16"
+		     initial_value="true"
+		     label="Allow Multiple Viewers"
+		     layout="topleft"
+		     left="10"
+		     name="MultiViewers"
+		     top_pad="15"
+		     width="256" />
+		     <check_box
+		     control_name="SafeMode"
+		     height="16"
+		     initial_value="true"
+		     label="Run in Safe Mode"
+		     layout="topleft"
+		     left="10"
+		     name="SafeMode"
+		     top_pad="0"
+		     width="256" />
+		     <check_box
+		     control_name="DisableMouseWarp"
+		     height="16"
+		     initial_value="false"
+		     label="Disable Mouse Warp"
+		     layout="topleft"
+		     tool_tip="Disables Mouse Warp to the Center of the Screen when zooming on something"
+		     left="10"
+		     name="DisableMouseWarp"
+		     top_pad="0"
+		     width="256" />
+		     <check_box
+		     control_name="TabToTextFieldsOnly"
+		     height="16"
+		     initial_value="true"
+		     label="Tab to Text Fields only"
+		     layout="topleft"
+		     left="10"
+		     name="TabToTextFieldsOnly"
+		     top_pad="0"
+		     width="256" />
+		     <check_box
+		     control_name="AutoAcceptNewInventory"
+		     height="16"
+		     initial_value="true"
+		     label="Auto accept Inventory offers"
+		     layout="topleft"
+		     left="10"
+		     name="AutoAcceptNewInventory"
+		     top_pad="0"
+		     width="256" />
+			 <text
+		     name="head_label2"
+		     follows="left|top"
+		     layout="topleft"
+		     top="31" 
+		     left="225" 
+		     height="20"
+		     width="300"
+		     text_color="EmphasisColor">
+		     Set external Script Editor here:
+		     </text>
+		     <line_editor
+		     control_name="ExternalEditor"
+		     follows="left|top"
+		     font="SansSerif"
+		     height="23"
+		     layout="topleft"
+		     left="225"
+		     name="ExternalEditor"
+		     tool_tip="Set an external Script Editor Program to use for LSL Scripts"
+		     top_pad="-3"
+		     width="262" />
+		     <text
+		     name="help_label"
+		     follows="left|top"
+		     layout="topleft"
+		     top_delta="26" 
+		     left_delta="0" 
+		     height="20"
+		     width="300"
+		     text_color="EmphasisColor">
+		     (e.g.: /usr/bin/gedit -_new_window "%s")
+		     </text>
+		     
+			 <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="33"
+ width="515"/>
+		     <text
+		     type="string"
+		     length="1"
+		     follows="left|top"
+		     height="12"
+		     layout="topleft"
+		     left="10"
+		     name="build_label"
+		     top_delta="4"
+		     width="120">Build Options:</text>
+		     
+		     <check_box
+		     control_name="RectangleSelectInclusive"
+		     height="16"
+		     initial_value="false"
+		     label="Select entire Prim when one Rectangle in Selection"
+		     layout="topleft"
+		     left="10"
+		     tool_tip="Selects the entire Prim/Object even when only one Rectangle comes into your Selection-Box"
+		     name="RectangleSelectInclusive"
+		     top_pad="15"
+		     width="256" />
+		     <check_box
+		     control_name="HideSelectedObjects"
+		     height="16"
+		     initial_value="false"
+		     label="Hide Objects selected in Build Mode"
+		     layout="topleft"
+		     left="10"
+		     name="HideSelectedObjects"
+		     top_pad="0"
+		     width="256" />
+		     <check_box
+		     control_name="AvatarRightHander"
+		     height="16"
+		     initial_value="false"
+		     label="Use right arm editing motion instead of left (for right handed)"
+		     layout="topleft"
+		     left="10"
+		     name="AvatarRightHander"
+		     top_pad="0"
+		     width="256" />
+		     <check_box
+		     control_name="ShowSelectionBeam"
+		     height="16"
+		     initial_value="true"
+		     label="Show Selection Beam"
+		     layout="topleft"
+		     left="10"
+		     name="ShowBeam"
+		     top_pad="0"
+		     width="256" />
+		     
+			 <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="10"
+ width="515"/>
+		     <text
+		     type="string"
+		     length="1"
+		     follows="left|top"
+		     height="12"
+		     layout="topleft"
+		     left="10"
+		     name="sec_label"
+		     top_delta="4"
+		     width="120">Security Options:</text>
+		     
+		     <check_box
+		     control_name="_NACL_DisableClickSit"
+		     height="16"
+		     initial_value="false"
+		     label="Disable left-click sit"
+		     layout="topleft"
+		     left="10"
+		     name="LeftClickSit"
+		     top_pad="15"
+		     width="256" />
+		     <check_box
+		     control_name="_NACL_DisableClickTouch"
+		     height="16"
+		     initial_value="false"
+		     label="Disable left-click touch"
+		     layout="topleft"
+		     left="10"
+		     name="LeftClickTouch"
+		     top_pad="0"
+		     width="256" />
+		     
+			 <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="10"
+ width="515"/>
+		     <text
+		     type="string"
+		     length="1"
+		     follows="left|top"
+		     height="12"
+		     layout="topleft"
+		     left="10"
+		     name="debug_label"
+		     top_delta="4"
+		     width="120">Debug Options:</text>
+		     
+		     <check_box
+		     control_name="AdminMenu"
+		     height="16"
+		     initial_value="true"
+		     label="Enable Admin Options"
+		     tool_tip="Enables the Admin Menu Option to be activated (LL Viewer workaround), shows additional Options like Texture Picker , Debug Information in IM , enabled God Options (only when God) and allows Fly everywhere (also in no fy zones)"
+		     layout="topleft"
+		     left="10"
+		     name="ShowAdmin"
+		     top_pad="15"
+		     width="256" />
+		     <check_box
+		     control_name="EnableAltZoom"
+		     height="16"
+		     initial_value="true"
+		     label="Enable Alt + Mouse zooming"
+		     layout="topleft"
+		     left="10"
+		     name="EnableAltZoom"
+		     top_pad="0"
+		     width="256" />
+		     <check_box
+		     control_name="EnableGrab"
+		     height="16"
+		     initial_value="true"
+		     label="Enable Ctrl + Mouse object grabbing"
+		     layout="topleft"
+		     left="10"
+		     name="EnableGrab"
+		     top_pad="0"
+		     width="256" />
+		     
+			 <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="10"
+ width="515"/>
+		     <text
+		     type="string"
+		     length="1"
+		     follows="left|top"
+		     height="12"
+		     layout="topleft"
+		     left="10"
+		     name="network_label"
+		     mouse_opaque="false"
+		     top_delta="4"
+		     width="300">
+		     Network Settings:
+		     </text>
+		     
+		     <slider
+		     can_edit_text="true"
+		     control_name="ThrottleBandwidthKBPS"
+		     decimal_digits="0"
+		     follows="left|top"
+		     height="16"
+		     increment="100"
+		     initial_value="500"
+		     label="Maximum Bandwidth"
+		     layout="topleft"
+		     left="10"
+		     max_val="10000"
+		     min_val="100"
+		     name="max_bandwidth"
+		     top_pad="15"
+			 label_width="150"
+		     width="325" />
+		     <text
+		     type="string"
+		     length="1"
+		     follows="left|top"
+		     height="10"
+		     layout="topleft"
+		     left_pad="6"
+		     mouse_opaque="false"
+		     name="text_box2"
+		     top_delta="1"
+		     width="200">
+		     kbps
+		     </text>
+		     <check_box
+		     control_name="ConnectionPortEnabled"
+		     height="16"
+		     label="Custom Port:"
+		     layout="topleft"
+		     left="10"
+		     name="connection_port_enabled"
+		     top_pad="10"
+		     width="256">
+		     <check_box.commit_callback
+		     function="Notification.Show"
+		     parameter="ChangeConnectionPort" />
+		     </check_box>
+		     <spinner
+		     control_name="ConnectionPort"
+		     enabled_control="ConnectionPortEnabled"
+		     decimal_digits="0"
+		     follows="left|top"
+		     height="23"
+		     increment="1"
+		     initial_value="13000"
+		     layout="topleft"
+		     left="170"
+		     max_val="13050"
+		     min_val="13000"
+		     name="connection_port"
+		     top_delta="0"
+		     width="63" />
+
+		     
+		     <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="10"
+ width="515"/>
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="Cache:"
+   top_delta="4"
+   width="100">
+    Cache Options:
+  </text>
+  <slider
+   control_name="CacheSize"
+   can_edit_text="true"
+   decimal_digits="0"
+   follows="left|top"
+   height="16"
+   increment="64"
+   initial_value="1024"
+   label="Size:"
+   label_width="150"
+   layout="topleft"
+   left="10"
+   max_val="9984"
+   min_val="64"
+   top_pad="17"
+   name="cachesizespinner"
+   width="319" />
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="23"
+   layout="topleft"
+   left_pad="5"
+   top_delta="0"
+   mouse_opaque="false"
+   name="text_box5"
+   width="20">
+    MB
+  </text>
+  <button
+   follows="left|top"
+   height="23"
+   label="Clear Cache"
+   label_selected="Clear Cache"
+   layout="topleft"
+   left_pad="10"
+   name="clear_cache"
+   top_delta="-3"
+   width="108">
+  <button.commit_callback
+   function="Pref.ClearCache" />
+  </button>
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="10"
+   layout="topleft"
+   left="10"
+   name="Cache location"
+   top_pad="5"
+   width="160">
+    Cache location:
+  </text>
+  <line_editor
+   control_name="CacheLocationTopFolder"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="23"
+   layout="topleft"
+   left_pad="0"
+   max_length="4096"
+   name="cache_location"
+   top_delta="-2"
+   width="189" />
+  <button
+   follows="left|top"
+   height="23"
+   label="..."
+   label_selected="Browse"
+   layout="topleft"
+   left_pad="5"
+   name="set_cache"
+   top_delta="0"
+   width="25">
+  <button.commit_callback
+   function="Pref.SetCache" />
+  </button>
+  <button
+    follows="left|top"
+    height="23"
+    label="Reset"
+    label_selected="Default Location"
+    layout="topleft"
+    left_pad="3"
+    name="default_cache_location"
+    top_delta="0"
+    width="80">
+    <button.commit_callback
+     function="Pref.ResetCache" />
+  </button>
+  <check_box
+		     top_delta="4"
+		     follows="left|top"
+		     height="16"
+		     initial_value="true"
+		     control_name="ObjectCacheEnabled"
+		     label="Enable Object Cache"
+		     left="10"
+		     mouse_opaque="true"
+		     name="ObjectCacheEnabled"
+		     radio_style="false"
+		     width="400"
+		     top_pad="9"/>
+  <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="10"
+ width="515"/>
+		     <text
+		     type="string"
+		     length="1"
+		     follows="left|top"
+		     height="10"
+		     layout="topleft"
+		     left="10"
+		     name="Other:"
+		     mouse_opaque="false"
+		     top_delta="4"
+		     width="300">
+		     Other Options:
+		     </text>
+		     <check_box
+		     top_delta="4"
+		     enabled="true"
+		     follows="left|top"
+		     height="16"
+		     initial_value="true"
+		     control_name="NoInventoryLibrary"
+		     label="Disable Library in Inventory"
+		     left="10"
+		     mouse_opaque="true"
+		     name="no_library"
+		     radio_style="false"
+		     width="400"
+		     top_pad="15"/>
+		     <check_box
+		     control_name="UseHTTPInventory"
+		     height="16"
+		     initial_value="false"
+		     label="Use HTTP Inventory"
+		     layout="topleft"
+		     left="10"
+		     tool_tip="Allow use of http inventory transfers instead of UDP"
+		     name="UseHTTPInventory"
+		     top_pad="0"
+		     width="256" />
+			 <slider
+		     control_name="PrecachingDelay"
+		     decimal_digits="0"
+		     follows="left|top"
+		     height="16"
+		     increment="1"
+		     initial_value="6"
+		     label="Precaching Delay"
+		     label_width="150"
+		     layout="topleft"
+		     left="10"
+		     tool_tip="Controls how long Nirans should precache the World before showing it"
+		     max_val="10"
+		     min_val="1"
+		     name="PrecachingDelay"
+		     top_pad="5"
+		     width="319" />
+			 
+			 <!--<text
+		     name="head_label1"
+		     follows="left|top"
+		     layout="topleft"
+		     top_delta="-17" 
+		     left="225" 
+		     height="20"
+		     width="300"
+		     text_color="EmphasisColor">
+		     Set default Object Texture here:
+		     </text>
+		     <line_editor
+		     control_name="DefaultObjectTexture"
+		     follows="left|top"
+		     font="SansSerif"
+		     height="23"
+		     layout="topleft"
+		     left="225"
+		     name="DefaultObjectTexture"
+		     tool_tip="Sets the Default Object Texture - Needs Restart of Nirans Viewer!"
+		     top_pad="-3"
+		     width="270" />
+		     <text
+		     name="default_label"
+		     follows="left|top"
+		     layout="topleft"
+		     top_delta="26" 
+		     left_delta="0" 
+		     height="20"
+		     width="300"
+		     text_color="EmphasisColor">
+		     (89556747-24cb-43ed-920b-47caed15465f - Default)
+			 </text>-->
+	      </panel>
+       </scroll_container>
+</panel>

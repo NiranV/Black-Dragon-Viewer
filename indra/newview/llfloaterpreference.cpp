@@ -694,11 +694,9 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 			}
 		}
 		getChildView("maturity_desired_combobox")->setVisible( true);
-		getChildView("maturity_desired_textbox")->setVisible( false);
 	}
 	else
 	{
-		getChild<LLUICtrl>("maturity_desired_textbox")->setValue(maturity_combo->getSelectedItemLabel());
 		getChildView("maturity_desired_combobox")->setVisible( false);
 	}
 

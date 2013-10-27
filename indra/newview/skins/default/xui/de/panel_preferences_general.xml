@@ -21,10 +21,9 @@
 	<text name="language_textbox2">
 		(Erfordert Neustart)
 	</text>
-	<text name="maturity_desired_prompt" width="350">
-		Ich möchte auf Inhalt mit folgender Einstufung zugreifen:
+	<text name="maturity_desired_prompt">
+		Ich möchte folgende Inhalte sehen:
 	</text>
-	<text name="maturity_desired_textbox"/>
 	<combo_box name="maturity_desired_combobox">
 		<combo_box.item label="Generell, Moderat, Adult" name="Desired_Adult"/>
 		<combo_box.item label="Generell und Moderat" name="Desired_Mature"/>
@@ -66,7 +65,7 @@
 		<combo_box.item label="5 Minuten" name="item1"/>
 		<combo_box.item label="10 Minuten" name="item2"/>
 		<combo_box.item label="30 Minuten" name="item3"/>
-		<combo_box.item label="nie" name="item4"/>
+		<combo_box.item label="Nie" name="item4"/>
 	</combo_box>
 	<text name="text_box3">
 		Nicht-stören-Antwort:

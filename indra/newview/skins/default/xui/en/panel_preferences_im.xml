@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<panel
+follows="left|top|right|bottom"
+height="408"
+label="IM Chat"
+layout="topleft"
+left="102"
+name="instant"
+top="45"
+width="510">
+ 
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top="0"
+ width="515"/>
+ <text
+ name="show_ims_in_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Instant Message and Group Message Options:
+ </text>
+ <check_box
+ control_name="EnableGroupChatPopups"
+ name="EnableGroupChatPopups"
+ label="Enable Group Chat Pop-ups" 
+ layout="topleft"
+ top_pad="15" 
+ left="10" 
+ height="16"
+ tool_tip="Check to see popups when a Group Chat message arrives"
+ width="400" />
+ <check_box
+ control_name="EnableIMChatPopups"
+ name="EnableIMChatPopups"
+ label="Enable IM Chat Pop-ups" 
+ layout="topleft"
+ top_pad="0"
+ height="16"
+ tool_tip="Check to see popups when an instant message arrives"
+ width="400" />
+ <check_box
+ height="16"
+ label="Email me IMs when I'm offline"
+ layout="topleft"
+ left_delta="0"
+ name="send_im_to_email"
+ top_pad="0"
+ width="400" />
+ <text
+ name="email_address"
+ follows="left|top"
+ layout="topleft"
+ left="29"
+ font.style="ITALICUNDERLINE"
+ text_color="EmphasisColor"
+ height="16"
+ value="SecondlifeUser@Provider.xxx"
+ width="300"
+ top_pad="0"/>
+ 
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="10"
+ width="515"/>
+ <text
+ name="misc_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Appearance Options:
+ </text>
+ <spinner
+ control_name="ToastFadingTime"
+ decimal_digits="0"
+ follows="left|top"
+ height="16"
+ increment="1"
+ initial_value="1"
+ label="Toast Fade Time:"
+ label_width="120"
+ layout="topleft"
+ left="10"
+ tool_tip="Sets the seconds Toasts (small Messages in the right bottom corner) need to fade out after they got transparent (started to fade)"
+ max_val="10"
+ min_val="0"
+ name="ToastFadingTime"
+ top_pad="15"
+ width="175" />
+ <spinner
+ control_name="ToastGap"
+ decimal_digits="0"
+ follows="left|top"
+ height="16"
+ increment="1"
+ initial_value="1"
+ label="Toast Gap:"
+ label_width="120"
+ layout="topleft"
+ left="10"
+ tool_tip="Sets the Space between Toasts in pixels"
+ max_val="25"
+ min_val="0"
+ name="ToastGap"
+ top_pad="6"
+ width="175" />
+ <spinner
+ control_name="ChannelBottomPanelMargin"
+ decimal_digits="0"
+ follows="left|top"
+ height="16"
+ increment="1"
+ initial_value="35"
+ label="Toast Margin:"
+ label_width="120"
+ layout="topleft"
+ left="10"
+ tool_tip="Sets the Space in pixels between System Messages/IM Message Floaters and Bottom Bar"
+ max_val="100"
+ min_val="0"
+ name="ChannelBottomPanelMargin"
+ top_pad="6"
+ width="175" />
+ <spinner
+ control_name="WellIconFlashCount"
+ decimal_digits="0"
+ follows="left|top"
+ height="16"
+ increment="1"
+ initial_value="4"
+ label="IM Flash Count:"
+ label_width="120"
+ layout="topleft"
+ left="270"
+ max_val="100"
+ min_val="1"
+ name="WellIconFlashCount"
+ top_delta="-44"
+ width="175" />
+ <!--<text
+ name="requires_restart_label1"
+ follows="left|top"
+ layout="topleft"
+ top_delta="0" 
+ left_delta="180" 
+ height="20"
+ width="130"
+ text_color="EmphasisColor">
+ (requires restart)
+ </text>-->
+ <spinner
+ control_name="WellIconFlashPeriod"
+ decimal_digits="1"
+ follows="left|top"
+ height="16"
+ increment="0.1"
+ initial_value="0.2"
+ label="IM Flash Period:"
+ label_width="120"
+ layout="topleft"
+ left="270"
+ max_val="5"
+ min_val="0.1"
+ name="WellIconFlashPeriod"
+ top_pad="6"
+ width="175" />
+ <!--<text
+ name="requires_restart_label2"
+ follows="left|top"
+ layout="topleft"
+ top_delta="0" 
+ left_delta="180" 
+ height="20"
+ width="130"
+ text_color="EmphasisColor">
+ (requires restart)
+ </text>-->
+</panel>
