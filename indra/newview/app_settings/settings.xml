@@ -674,7 +674,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <integer>60</integer>
+      <integer>2</integer>
     </map>  
     <key>AvatarRotateThresholdFast</key>
     <map>
