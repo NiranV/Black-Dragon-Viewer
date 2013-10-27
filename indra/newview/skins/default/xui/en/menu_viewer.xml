@@ -1619,16 +1619,6 @@
         <menu_item_separator/>
 
         <menu_item_check
-         label="High-res Snapshot"
-         name="HighResSnapshot">
-            <menu_item_check.on_check
-             function="CheckControl"
-             parameter="HighResSnapshot" />
-            <menu_item_check.on_click
-             function="ToggleControl"
-             parameter="HighResSnapshot" />
-        </menu_item_check>
-        <menu_item_check
          label="Quiet Snapshots to Disk"
          name="QuietSnapshotsToDisk">
             <menu_item_check.on_check
@@ -2057,177 +2047,10 @@
                  function="Advanced.ToggleFeature"
                  parameter="flexible" />
             </menu_item_check>
-        </menu>        
-        <menu
-         label="RLVa"
-         name="RLVa Embedded"
-         tear_off="true"
-         visible="true" />
-        <menu_item_check
-         label="Use Plugin Read Thread"
-         name="Use Plugin Read Thread">
-            <menu_item_check.on_check
-             function="CheckControl"
-             parameter="PluginUseReadThread" />
-            <menu_item_check.on_click
-             function="ToggleControl"
-             parameter="PluginUseReadThread" />
-        </menu_item_check>
-        <menu_item_call
-         label="Clear Group Cache"
-         name="ClearGroupCache">
-            <menu_item_call.on_click
-             function="Advanced.ClearGroupCache"
-             parameter="ClearGroupCache" />
-        </menu_item_call>
-        <menu_item_check
-         label="Mouse Smoothing"
-         name="Mouse Smoothing">
-            <menu_item_check.on_check
-             function="CheckControl"
-             parameter="MouseSmooth" />
-            <menu_item_check.on_click
-             function="ToggleControl"
-             parameter="MouseSmooth" />
-        </menu_item_check>
-            <menu_item_call
-             enabled="false"
-             label="Release Keys"
-             name="Release Keys">
-                <menu_item_call.on_click
-                 function="Tools.ReleaseKeys"
-                 parameter="" />
-                <menu_item_call.on_enable
-                 function="Tools.EnableReleaseKeys"
-                 parameter="" />
-            </menu_item_call>
-        <menu_item_separator/>
+        </menu>
+		
+		<menu_item_separator/>
 
-        <menu
-         create_jump_keys="true"
-         label="Shortcuts"
-         name="Shortcuts"
-         tear_off="true"
-         visible="false">
-            <!-- This second, alternative shortcut for Show Advanced Menu is for backward compatibility.  The main shortcut has been changed so it's Linux-friendly, where the old shortcut is typically eaten by the window manager. -->
-            <menu_item_check
-               label="Show Advanced Menu - legacy shortcut"
-               name="Show Advanced Menu - legacy shortcut"
-               shortcut="control|alt|D">
-              <on_check
-                 function="CheckControl"
-                 parameter="UseDebugMenus" />
-              <on_click
-                 function="ToggleControl"
-                 parameter="UseDebugMenus" />
-            </menu_item_check>
-
-            <menu_item_separator/>
-
-            <menu_item_call
-             label="Close Window"
-             name="Close Window"
-             shortcut="control|W">
-                <menu_item_call.on_click
-                 function="File.CloseWindow" />
-                <menu_item_call.on_enable
-                 function="File.EnableCloseWindow" />
-            </menu_item_call>
-            <menu_item_call
-             label="Close All Windows"
-             name="Close All Windows"
-             shortcut="control|shift|W">
-                <menu_item_call.on_click
-                 function="File.CloseAllWindows" />
-                <menu_item_call.on_enable
-                 function="File.EnableCloseAllWindows" />
-            </menu_item_call>
-
-            <menu_item_separator/>
-
-            <menu_item_call
-             label="Snapshot to Disk"
-             name="Snapshot to Disk"
-             shortcut="control|`"
-             use_mac_ctrl="true">
-                <menu_item_call.on_click
-                 function="File.TakeSnapshotToDisk" />
-            </menu_item_call>
-
-            <menu_item_separator/>
-
-            <menu_item_call
-             label="Mouselook"
-             name="Mouselook"
-             shortcut="M">
-                <menu_item_call.on_click
-                 function="View.Mouselook" />
-                <menu_item_call.on_enable
-                 function="View.EnableMouselook" />
-            </menu_item_call>
-            <menu_item_check
-             label="Joystick Flycam"
-             name="Joystick Flycam"
-             shortcut="alt|shift|F">
-                <menu_item_check.on_check
-                 function="View.CheckJoystickFlycam" />
-                <menu_item_check.on_click
-                 function="View.JoystickFlycam" />
-                <menu_item_check.on_enable
-                 function="View.EnableJoystickFlycam" />
-            </menu_item_check>
-            <menu_item_call
-             label="Reset View"
-             name="Reset View"
-             shortcut="Esc">
-                <menu_item_call.on_click
-                 function="View.ResetView" />
-            </menu_item_call>
-            <menu_item_call
-             label="Look at Last Chatter"
-             name="Look at Last Chatter"
-             shortcut="control|\">
-                <menu_item_call.on_click
-                 function="View.LookAtLastChatter" />
-                <menu_item_call.on_enable
-                 function="View.EnableLastChatter" />
-            </menu_item_call>
-
-            <menu_item_separator/>
-
-            <menu_item_call
-             label="Zoom In"
-             name="Zoom In"
-             shortcut="control|0">
-                <menu_item_call.on_click
-                 function="View.ZoomIn" />
-            </menu_item_call>
-            <menu_item_call
-             label="Zoom Default"
-             name="Zoom Default"
-             shortcut="control|9">
-                <menu_item_call.on_click
-                 function="View.ZoomDefault" />
-            </menu_item_call>
-            <menu_item_call
-             label="Zoom Out"
-             name="Zoom Out"
-             shortcut="control|8">
-                <menu_item_call.on_click
-                 function="View.ZoomOut" />
-            </menu_item_call>
-        </menu> <!--Shortcuts-->
-
-        <menu_item_separator/>
-        <menu_item_check
-           label="RestrainedLove API"
-           name="RLV API">
-              <menu_item_check.on_check
-               function="RLV.CheckEnabled" />
-              <menu_item_check.on_click
-               function="RLV.ToggleEnabled" />
-        </menu_item_check>
-								<menu_item_separator/>
         <menu_item_call
          label="Show Debug Settings"
          name="Debug Settings">
@@ -2235,17 +2058,6 @@
              function="Advanced.ShowDebugSettings"
              parameter="all" />
         </menu_item_call>
-     <menu_item_check
-         label="Show Develop Menu"
-         name="Debug Mode"
-         shortcut="control|alt|Q">
-            <menu_item_check.on_check
-             function="CheckControl"
-             parameter="QAMode" />
-            <menu_item_check.on_click
-             function="ToggleControl"
-             parameter="QAMode" />
-        </menu_item_check>
     </menu>
     <menu
      create_jump_keys="true"
