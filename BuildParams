@@ -47,6 +47,18 @@ Linux.cxx_version = /usr/bin/g++-4.6
 ################################################################
 viewer_channel = "Black Dragon"
 
+# Setup default packaging parameters.
+sourceid = ""
+additional_packages = "Amazon Desura B C"
+Amazon_sourceid = "1207v_Amazon"
+Amazon_viewer_channel_suffix = " Amazon"
+Desura_sourceid = "1208_desura"
+Desura_viewer_channel_suffix = " Desura"
+B_sourceid = "1301_B"
+B_viewer_channel_suffix = " B"
+C_sourceid = "1302_C"
+C_viewer_channel_suffix = " C"
+
 # Report changes since...
 viewer-development.show_changes_since = last_sprint
 

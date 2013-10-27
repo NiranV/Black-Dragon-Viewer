@@ -5,6 +5,7 @@
     <command name="speak"/>
     <command name="chat"/>
     <command name="people"/>
+    <command name="social"/>
     <command name="places"/>
     <command name="picks"/>
     <command name="inventory"/>
