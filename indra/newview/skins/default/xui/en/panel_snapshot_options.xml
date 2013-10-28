@@ -16,7 +16,7 @@
    imgoverlay_label_space="10"
    label="Post to My Profile Feed"
    layout="topleft"
-   left_delta="0"
+   left="10"
    name="save_to_profile_btn"
    pad_left="10"
    right="-10"
