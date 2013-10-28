@@ -106,6 +106,13 @@
              function="Floater.Show"
              parameter="snapshot" />
         </menu_item_call>
+		<menu_item_call
+        label="Post to Facebook..."
+        name="PostToFacebook">
+        <menu_item_call.on_click
+          function="Floater.Toggle"
+          parameter="social"/>
+      </menu_item_call>
 	</menu>
 	<menu
      	label="Edit"
@@ -2969,52 +2976,8 @@
                 <menu_item_call.on_click
                  function="Floater.Show"
                  parameter="bumps" />
-            </menu_item_call>
-
-        <menu
-         create_jump_keys="true"
-         label="Recorder"
-         name="Recorder"
-         tear_off="true">
-            <menu_item_call
-             label="Start Playback"
-             name="Start Playback">
-                <menu_item_call.on_click
-                 function="Advanced.AgentPilot"
-                 parameter="start playback" />
-            </menu_item_call>
-            <menu_item_call
-             label="Stop Playback"
-             name="Stop Playback">
-                <menu_item_call.on_click
-                 function="Advanced.AgentPilot"
-                 parameter="stop playback" />
-            </menu_item_call>
-            <menu_item_check
-             label="Loop Playback"
-             name="Loop Playback">
-                <menu_item_check.on_check
-                 function="Advanced.CheckAgentPilotLoop"
-                 parameter="loopPlayback" />
-                <menu_item_check.on_click
-                 function="Advanced.ToggleAgentPilotLoop" />
-            </menu_item_check>
-            <menu_item_call
-             label="Start Record"
-             name="Start Record">
-                <menu_item_call.on_click
-                 function="Advanced.AgentPilot"
-                 parameter="start record" />
-            </menu_item_call>
-            <menu_item_call
-             label="Stop Record"
-             name="Stop Record">
-                <menu_item_call.on_click
-                 function="Advanced.AgentPilot"
-                 parameter="stop record" />
-            </menu_item_call>
-        </menu>
-
+		</menu_item_call>
+		
         <menu
          create_jump_keys="true"
          label="World"
@@ -4103,9 +4066,40 @@
       <menu_item_separator/>
       	<menu
          create_jump_keys="true"
-         label="Agent Recorder"
+         label="Recorder"
          name="Recorder"
          tear_off="true">
+		 
+		 <menu_item_call visible="true"
+             label="Start event recording"
+             name="Start event recording">
+	      <menu_item_call.on_visible
+		 function="displayViewerEventRecorderMenuItems" />
+                <menu_item_call.on_click
+                 function="Advanced.EventRecorder"
+                 parameter="start recording" />
+            </menu_item_call>
+            <menu_item_call visible="true"
+             label="Stop event recording"
+             name="Stop event recording">
+	      <menu_item_call.on_visible
+		 function="displayViewerEventRecorderMenuItems" />
+                <menu_item_call.on_click
+                 function="Advanced.EventRecorder"
+                 parameter="stop recording" />
+            </menu_item_call>
+            <menu_item_call visible="true"
+             label="Playback event recording"
+             name="Playback event recording">
+	      <menu_item_call.on_visible
+		 function="displayViewerEventRecorderMenuItems" />
+                <menu_item_call.on_click
+                 function="Advanced.EventRecorder"
+                 parameter="start playback" />
+            </menu_item_call>
+		 
+		 <menu_item_separator/>
+		 
             <menu_item_call
              label="Start Playback"
              name="Start Playback">
