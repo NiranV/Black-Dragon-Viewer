@@ -2,7 +2,7 @@
 <floater
   legacy_header_height="18"
   can_resize="true"
-  height="560"
+  height="400"
   layout="topleft"
   follows="all"
   min_height="400"
@@ -11,9 +11,9 @@
   background_color="FloaterDefaultBackgroundColor"
   save_rect="true"
   title=""
-  width="400">
+  width="560">
   <layout_stack
-    bottom="560"
+    bottom="400"
     follows="left|right|top|bottom"
     layout="topleft"
     left="5"
@@ -115,26 +115,26 @@
         <combo_box.commit_callback
           function="WebContent.EnterAddress" />
       </combo_box>
+      <icon
+        name="media_secure_lock_flag"
+        height="16"
+        follows="top|left"
+        image_name="Lock2"
+        layout="topleft"
+        left_delta="2"
+        top_delta="3"
+        visible="true" 
+        tool_tip="Secured Browsing"
+        width="16" />
       <progress_bar
         color_bar="1 1 1 1"
         follows="left|top|right"
         height="9"
-        top_delta="21"
+        top_delta="18"
         left="0"
         right="-5"
         layout="topleft"
         name="statusbarprogress"/>
-      <icon
-        name="media_secure_lock_flag"
-        height="16"
-        follows="top|right"
-        image_name="Lock2"
-        layout="topleft"
-        left_delta="245"
-        top_delta="2"
-        visible="false" 
-        tool_tip="Secured Browsing"
-        width="16" />
       <button
         image_overlay="ExternalBrowser_Off"
         image_disabled="PushButton_Disabled"
