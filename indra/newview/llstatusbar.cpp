@@ -87,7 +87,6 @@
 // system includes
 #include <iomanip>
 
-
 // Black Dragon
 #include "bdpaneldrawdistance.h"
 

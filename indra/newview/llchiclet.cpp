@@ -35,6 +35,9 @@
 #include "llscriptfloater.h"
 #include "llsingleton.h"
 #include "llsyswellwindow.h"
+// [SL:KB] - Patch: UI-Notifications | Checked: 2013-05-09 (Catznip-3.5)
+#include "llchannelmanager.h"
+// [/SL:KB]
 
 static LLDefaultChildRegistry::Register<LLChicletPanel> t1("chiclet_panel");
 static LLDefaultChildRegistry::Register<LLNotificationChiclet> t2("chiclet_notification");

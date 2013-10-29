@@ -682,6 +682,15 @@ set(viewer_SOURCE_FILES
 	piemenu.cpp
     pieseparator.cpp
     pieslice.cpp
+    rlvactions.cpp
+    rlvhandler.cpp
+    rlvhelper.cpp
+    rlvcommon.cpp
+    rlvlocks.cpp
+    rlvinventory.cpp
+    rlvextensions.cpp
+    rlvfloaters.cpp
+    rlvui.cpp
     )
 
 set(VIEWER_BINARY_NAME "blackdragon-bin" CACHE STRING
@@ -1268,6 +1277,16 @@ set(viewer_HEADER_FILES
 	piemenu.h
     pieseparator.h
     pieslice.h
+    rlvactions.h
+    rlvdefines.h
+    rlvhandler.h
+    rlvhelper.h
+    rlvcommon.h
+    rlvlocks.h
+    rlvinventory.h
+    rlvextensions.h
+    rlvfloaters.h
+    rlvui.h
     VertexCache.h
     VorbisFramework.h
     )
