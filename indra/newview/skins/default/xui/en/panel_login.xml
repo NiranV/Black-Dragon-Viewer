@@ -18,6 +18,7 @@ top="600"
        http://secondlife.com/account/request.php
 </panel.string>
   <web_browser
+  visibility_control="ExperimentalLogin"
   tab_stop="false" 
   trusted_content="true" 
   bg_opaque_color="Black"
