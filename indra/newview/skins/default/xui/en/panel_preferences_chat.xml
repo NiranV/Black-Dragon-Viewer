@@ -9,6 +9,26 @@ left="102"
 name="chat"
 top="45"
 width="510">
+ <scroll_container
+ color="Transparent"
+ follows="all"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="chat_scroll"
+ opaque="true"
+ height="407"
+ width="510"
+ top="0">
+  <panel
+  layout="topleft"
+  follows="left|top|right"
+  height="645"
+  name="camera_scroll_panel"
+  top="0"
+  mouse_opaque="false"
+  left="0"
+  width="495">
  <panel
  follows="left|top|right"
  height="20"
@@ -31,12 +51,12 @@ width="510">
  Font Size:
  </text>
  <radio_group
- height="65"
+ height="16"
  layout="topleft"
  left="10"
  control_name="ChatFontSize"
  name="chat_font_size"
- top_pad="3"
+ top_pad="15"
  width="440">
  <radio_item
  height="16"
@@ -45,26 +65,37 @@ width="510">
  left="0"
  name="radio"
  value="0"
- top="10"
- width="125" />
+ top="0"
+ width="100" >
+  <radio_item.label_text
+  v_pad="-1"/>
+ </radio_item>
  <radio_item
  height="16"
  label="Medium"
+ font="SanfSerifMedium"
  layout="topleft"
- left_delta="0"
+ left_pad="10"
  name="radio2"
  value="1"
- top_pad="2"
- width="125" />
+ top_delta="0"
+ width="100" >
+  <radio_item.label_text
+  v_pad="-1"/>
+ </radio_item>
  <radio_item
  height="16"
  label="Large"
+ font="SansSerifLarge"
  layout="topleft"
- left_delta="0"
+ left_pad="10"
  name="radio3"
  value="2"
- top_pad="2"
- width="125" />
+ top_delta="0"
+ width="100">
+  <radio_item.label_text
+  v_pad="-2"/>
+ </radio_item>
  </radio_group>
  <panel
  follows="left|top|right"
@@ -75,7 +106,7 @@ width="510">
  mouse_opaque="false"
  left="0"
  name="title"
- top_pad="5"
+ top_pad="10"
  width="515"/>
  <text
  layout="topleft"
@@ -172,6 +203,49 @@ width="510">
  name="play_typing_animation"
  top_pad="0"
  width="400" />
+ <check_box
+ control_name="PlayChattingAnim"
+ height="16"
+ initial_value="true"
+ label="Play chatting animation when sending chat"
+ layout="topleft"
+ left="10"
+ name="play_chat_animation"
+ top_pad="0"
+ width="400" />
+     <check_box
+        control_name="PlaySoundNewConversation"
+        height="16"
+        label="Play 'New Conversation' Sound"
+        layout="topleft"
+        left="270"
+        top_delta="-64"
+        name="new_conversation"
+        width="150" />
+    <check_box
+        control_name="PlaySoundIncomingVoiceCall"
+        height="16"
+        label="Play 'Incoming Voice Call' Sound"
+        layout="topleft"
+        top_pad="0"
+        name="incoming_voice_call"
+        width="150" />
+    <check_box
+        control_name="PlaySoundTeleportOffer"
+        height="16"
+        label="Play 'Teleport Offer' Sound"
+        layout="topleft"
+        top_pad="0"
+        name="teleport_offer"
+        width="150" />
+    <check_box
+        control_name="PlaySoundInventoryOffer"
+        height="16"
+        label="Play 'Inventory Offer' Sound"
+        layout="topleft"
+        top_pad="0"
+        name="inventory_offer"
+        width="150" />
  <panel
  follows="left|top|right"
  height="20"
@@ -181,7 +255,7 @@ width="510">
  mouse_opaque="false"
  left="0"
  name="title"
- top_pad="10"
+ top_pad="25"
  width="515"/>
  <text
  type="string"
@@ -203,7 +277,44 @@ width="510">
  left_delta="0"
  name="plain_text_chat_history"
  top_pad="15"
- width="400" />
+ width="250" />
+ <check_box
+ control_name="ShowScriptErrors" 
+ follows="left|top"
+ height="16"
+ label="Show script errors in:" 
+ layout="topleft" 
+ left="10"
+ top_pad="2"
+ name="show_script_errors" 
+ width="250" />
+ <radio_group 
+ control_name="ShowScriptErrorsLocation"
+ enabled_control="ShowScriptErrors" 
+ follows="top|left"
+ height="36" 
+ layout="topleft" 
+ left_delta="10"
+ name="show_location" 
+ top_pad="2"
+ width="200">
+ <radio_item
+ height="16" 
+ label="Nearby Chat"
+ layout="topleft" 
+ left="3"
+ name="0" 
+ top="0" 
+ width="315" />
+ <radio_item 
+ height="16" 
+ label="Script Error Window" 
+ layout="topleft"
+ left_delta="0"
+ name="1" 
+ top_pad="0" 
+ width="315" />
+ </radio_group>
  <check_box
  control_name="UseChatBubbles"
  follows="left|top"
@@ -220,51 +331,14 @@ width="510">
  height="16"
  increment="0.05"
  initial_value="1"
- label="Opacity"
+ label="Bubble Chat Opacity:"
  layout="topleft"
- left_delta="20"
- top_pad="2"
- decimal_digits="2"
- label_width="58"
- name="bubble_chat_opacity"
- width="210"/>
- <check_box
- control_name="ShowScriptErrors" 
- follows="left|top"
- height="16"
- label="Show script errors in:" 
- layout="topleft" 
  left="10"
  top_pad="2"
- name="show_script_errors" 
- width="256" />
- <radio_group 
- control_name="ShowScriptErrorsLocation"
- enabled_control="ShowScriptErrors" 
- follows="top|left"
- height="40" 
- layout="topleft" 
- left_delta="10"
- name="show_location" 
- top_pad="4"
- width="364">
- <radio_item
- height="16" 
- label="Nearby chat"
- layout="topleft" 
- left="3"
- name="0" 
- top="0" 
- width="315" />
- <radio_item 
- height="16" 
- label="Separate window" 
- layout="topleft"
- left_delta="0"
- name="1" 
- top_pad="0" 
- width="315" />
- </radio_group>
+ decimal_digits="2"
+ label_width="150"
+ name="bubble_chat_opacity"
+ width="319"/>
  <spinner
  control_name="ChatStartFromBottomPixels"
  decimal_digits="0"
@@ -275,11 +349,11 @@ width="510">
  label="Space from bottom to chat:"
  label_width="145"
  layout="topleft"
- left="300"
+ left="270"
  max_val="120"
  min_val="0"
  name="ChatStartFromBottomPixels"
- top="298"
+ top="282"
  width="200" />
  <spinner
  control_name="NearbyToastLifeTime"
@@ -291,7 +365,7 @@ width="510">
  label="Chattext Life Time:"
  label_width="145"
  layout="topleft"
- left="300"
+ left="270"
  max_val="40"
  min_val="2"
  name="NearbyToastLifeTime"
@@ -307,10 +381,375 @@ width="510">
  label="Chattext Fade Time:"
  label_width="145"
  layout="topleft"
- left="300"
+ left="270"
  max_val="39"
  min_val="1"
  name="NearbyToastFadingTime"
  top_pad="2"
  width="200" />
+
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="53"
+ width="515"/>
+ <text
+ type="string"
+ layout="topleft"
+ follows="top|left"
+ length="1"
+ height="12"
+ left="10"
+ top_delta="4"
+ name="chat_options_label"
+ width="200">
+ Chat Behavior Options:
+ </text>
+    <text
+          follows="top|left"
+        layout="topleft"
+        height="15"
+        name="friend_ims"
+        width="200"
+        left="10"
+        top_pad="15">
+      Friend IMs:
+    </text>
+    <combo_box
+               follows="top|left"
+        control_name="NotificationFriendIMOptions"
+        height="23"
+        layout="topleft"
+        left_pad="0"
+        top_delta="-3"
+        name="FriendIMOptions"
+        width="170">
+      <item
+          label="Open Conversations window"
+          name="OpenConversationsWindow"
+          value="openconversations"/>      
+      <item
+          label="Pop up the message"
+          name="PopUpMessage"
+          value="toast"/>
+      <item
+          label="Flash toolbar button"
+          name="FlashToolbarButton"
+          value="flash"/>
+      <item
+          label="No action"
+          name="NoAction"
+          value="noaction"/>
+    </combo_box>
+    <check_box
+               follows="top|left"
+        control_name="PlaySoundFriendIM"
+        height="16"
+        label="Play sound"
+        layout="topleft"
+        name="play_sound_friend_im"
+        left_pad="7"
+        top_delta="4"
+        width="28">
+    </check_box>
+    <text
+          follows="top|left"
+        layout="topleft"
+        height="15"
+        name="non_friend_ims"
+        width="200"
+        left="10"
+        top_pad="8">
+      Non-friend IMs:
+    </text>
+    <combo_box
+               follows="top|left"
+        control_name="NotificationNonFriendIMOptions"
+        height="23"
+        layout="topleft"
+        left_pad="0"
+        top_delta="-3"
+        name="NonFriendIMOptions"
+        width="170">
+      <item
+          label="Open Conversations window"
+          name="OpenConversationsWindow"
+          value="openconversations"/>
+      <item
+          label="Pop up the message"
+          name="PopUpMessage"
+          value="toast"/>
+      <item
+          label="Flash toolbar button"
+          name="FlashToolbarButton"
+          value="flash"/>
+      <item
+          label="No action"
+          name="NoAction"
+          value="noaction"/>
+    </combo_box>
+    <check_box
+               follows="top|left"
+        control_name="PlaySoundNonFriendIM"
+        height="16"
+        label="Play sound"
+        layout="topleft"
+        name="play_sound_non_friend_im"
+        left_pad="7"
+        top_delta="4"
+        width="28">
+    </check_box>
+    <text
+          follows="top|left"
+        layout="topleft"
+        left="10"
+        height="15"
+        name="conference_ims"
+        width="200"
+        top_pad="8">
+      Conference IMs:
+    </text>
+    <combo_box
+               follows="top|left"
+        control_name="NotificationConferenceIMOptions"
+        height="23"
+        layout="topleft"
+        left_pad="0"
+        top_delta="-3"
+        name="ConferenceIMOptions"
+        width="170">
+      <item
+          label="Open Conversations window"
+          name="OpenConversationsWindow"
+          value="openconversations"/>
+      <item
+          label="Pop up the message"
+          name="PopUpMessage"
+          value="toast"/>
+      <item
+          label="Flash toolbar button"
+          name="FlashToolbarButton"
+          value="flash"/>
+      <item
+          label="No action"
+          name="NoAction"
+          value="noaction"/>
+    </combo_box>
+    <check_box
+               follows="top|left"
+        control_name="PlaySoundConferenceIM"
+        height="16"
+        label="Play sound"
+        layout="topleft"
+        name="play_sound_conference_im"
+        left_pad="7"
+        top_delta="4"
+        width="28">
+    </check_box>
+    <text
+          follows="top|left"
+        layout="topleft"
+        left="10"
+        height="15"
+        name="group_chat"
+        width="200"
+        top_pad="8">
+      Group chat:
+    </text>
+    <combo_box
+               follows="top|left"
+        control_name="NotificationGroupChatOptions"
+        height="23"
+        layout="topleft"
+        left_pad="0"
+        top_delta="-3"
+        name="GroupChatOptions"
+        width="170">
+      <item
+          label="Open Conversations window"
+          name="OpenConversationsWindow"
+          value="openconversations"/>
+      <item
+          label="Pop up the message"
+          name="PopUpMessage"
+          value="toast"/>
+      <item
+          label="Flash toolbar button"
+          name="FlashToolbarButton"
+          value="flash"/>
+      <item
+          label="No action"
+          name="NoAction"
+          value="noaction"/>
+    </combo_box>
+    <check_box
+               follows="top|left"
+        control_name="PlaySoundGroupChatIM"
+        height="16"
+        label="Play sound"
+        layout="topleft"
+        name="play_sound_group_chat_im"
+        left_pad="7"
+        top_delta="4"
+        width="28">
+    </check_box>
+    <text
+          follows="top|left"
+        layout="topleft"
+        left="10"
+        height="15"
+        name="nearby_chat"
+        width="200"
+        top_pad="8">
+      Nearby chat:
+    </text>
+    <combo_box
+               follows="top|left"
+        control_name="NotificationNearbyChatOptions"
+        height="23"
+        layout="topleft"
+        left_pad="0"
+        top_delta="-3"
+        name="NearbyChatOptions"
+        width="170">
+      <item
+          label="Open Conversations window"
+          name="OpenConversationsWindow"
+          value="openconversations"/>
+      <item
+          label="Pop up the message"
+          name="PopUpMessage"
+          value="toast"/>
+      <item
+          label="Flash toolbar button"
+          name="FlashToolBarButton"
+          value="flash"/>
+      <item
+          label="No action"
+          name="NoAction"
+          value="noaction"/>
+    </combo_box>
+    <check_box
+               follows="top|left"
+        control_name="PlaySoundNearbyChatIM"
+        height="16"
+        label="Play sound"
+        layout="topleft"
+        name="play_sound_nearby_chat_im"
+        left_pad="7"
+        top_delta="4"
+        width="28">
+    </check_box>
+    <text
+          follows="top|left"
+        layout="topleft"
+        left="10"
+        height="15"
+        name="object_ims"
+        width="200"
+        top_pad="8">
+      Object IMs:
+    </text>
+    <combo_box
+               follows="top|left"
+        control_name="NotificationObjectIMOptions"
+        height="23"
+        layout="topleft"
+        left_pad="0"
+        top_delta="-3"
+        name="ObjectIMOptions"
+        width="170">
+      <item
+          label="Open Conversations window"
+          name="OpenConversationsWindow"
+          value="openconversations"/>
+      <item
+          label="Pop up the message"
+          name="PopUpMessage"
+          value="toast"/>
+      <item
+          label="Flash toolbar button"
+          name="FlashToolBarButton"
+          value="flash"/>
+      <item
+          label="No action"
+          name="NoAction"
+          value="noaction"/>
+    </combo_box>
+    <check_box
+               follows="top|left"
+        control_name="PlaySoundObjectIM"
+        height="16"
+        label="Play sound"
+        layout="topleft"
+        name="play_sound_object_im"
+        left_pad="7"
+        top_delta="4"
+        width="28">
+    </check_box>
+
+        <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="10"
+ width="515"/>
+ <text
+ type="string"
+ layout="topleft"
+ follows="top|left"
+ length="1"
+ height="12"
+ left="10"
+ top_delta="4"
+ name="chat_options_label"
+ width="200">
+ Misc Chat Options:
+ </text>
+  
+  <button
+      height="23"
+      label="Translator Options"
+      layout="topleft"
+      left="9"
+      name="ok_btn"
+      top_pad="15"
+      width="150">
+    <commit_callback
+        function="Pref.TranslationSettings" />
+  </button>
+  <button
+      height="23"
+      layout="topleft"
+      top_pad="-23"
+      left_pad="5"
+      name="autoreplace_showgui"
+      commit_callback.function="Pref.AutoReplace"
+      label="Auto-Replacer Options"
+      width="150">
+  </button>
+  <button
+      height="23"
+      layout="topleft"
+      top_pad="-23"
+      left_pad="5"
+      name="spellcheck_showgui"
+      commit_callback.function="Pref.SpellChecker"
+      label="Spell Checker Options"
+      width="150">
+  </button>
+  </panel>
+ </scroll_container>
+
 </panel>

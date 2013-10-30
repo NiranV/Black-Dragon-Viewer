@@ -290,9 +290,10 @@ width="510">
    top_pad="0"
    width="115" />
    <check_box
+              enabled="false"
    control_name="RenderUseImpostors"
    height="16"
-   initial_value="true"
+   initial_value="false"
    label="Use Simple Avatar Impostors"
    tool_tip="Toggles Avatar Impostors on or off which replace all Avatars exceeding your set amount with 2D sprites which can boost your performance significantly. Depends on your Max Avatar Visible and Avatar Quality settings"
    layout="topleft"

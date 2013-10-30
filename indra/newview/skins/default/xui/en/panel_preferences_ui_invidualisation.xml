@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="675"
+     height="640"
      name="ui_panel"
      top="0"
      left="0"
@@ -447,14 +447,14 @@ width="510">
 	    control_name="ExperimentalLogin"
 	    height="16"
 	    initial_value="true"
-	    label="Use experimental Login Page"
+	    label="Enable animated Login background"
 	    layout="topleft"
 	    left="10"
-	    tool_tip="Activates the Experimental animated Background in Login page"
+	    tool_tip="Enables the Experimental animated background in Login page"
 	    name="ExperimentalLogin"
 	    top_pad="15"
 	    width="256" />
-	    <check_box
+	    <!--<check_box
 				   enabled="false"
 	    control_name="UseMachinimaSidebarAsOverlay"
 	    height="16"
@@ -465,7 +465,7 @@ width="510">
 	    tool_tip="Change between a pushing Machinima Sidebar and one that just slides over the UI"
 	    name="UseMachinimaSidebarAsOverlay"
 	    top_pad="0"
-	    width="256" />
+	    width="256" />-->
 	    
 		<panel
  follows="left|top|right"
@@ -500,7 +500,6 @@ width="510">
 	    top_pad="15"
 	    width="125" />
 	    <check_box
-				   enabled="false"
 	    control_name="DoubleClickShowWorldMap"
 	    height="16"
 	    initial_value="false"
@@ -511,8 +510,7 @@ width="510">
 	    top_pad="0"
 	    width="125" />
 	   <check_box
-				  enabled="false"
-	    control_name="ShowSidebarMinimap"
+	    control_name="NearbyListShowMap"
 	    height="16"
 	    initial_value="false"
 	    label="Show Minimap in People floater"

@@ -23,7 +23,7 @@ width="510">
 	      <panel
 	      layout="topleft"
 	      follows="left|top|right"
-	      height="695"
+	      height="710"
 	      name="viewer_scroll_panel"
 	      top="0"
 	      left="0"
@@ -162,7 +162,7 @@ width="510">
 		     control_name="RectangleSelectInclusive"
 		     height="16"
 		     initial_value="false"
-		     label="Select entire Prim when one Rectangle in Selection"
+		     label="Select entire Prim when one rectangle in Selection"
 		     layout="topleft"
 		     left="10"
 		     tool_tip="Selects the entire Prim/Object even when only one Rectangle comes into your Selection-Box"
@@ -180,6 +180,7 @@ width="510">
 		     top_pad="0"
 		     width="256" />
 		     <check_box
+						enabled="false"
 		     control_name="AvatarRightHander"
 		     height="16"
 		     initial_value="false"
@@ -223,6 +224,7 @@ width="510">
 		     width="120">Security Options:</text>
 		     
 		     <check_box
+						enabled="false"
 		     control_name="_NACL_DisableClickSit"
 		     height="16"
 		     initial_value="false"
@@ -233,6 +235,7 @@ width="510">
 		     top_pad="15"
 		     width="256" />
 		     <check_box
+						enabled="false"
 		     control_name="_NACL_DisableClickTouch"
 		     height="16"
 		     initial_value="false"
@@ -327,7 +330,7 @@ width="510">
 		     control_name="ThrottleBandwidthKBPS"
 		     decimal_digits="0"
 		     follows="left|top"
-		     height="16"
+		     height="15"
 		     increment="100"
 		     initial_value="500"
 		     label="Maximum Bandwidth"
@@ -343,12 +346,12 @@ width="510">
 		     type="string"
 		     length="1"
 		     follows="left|top"
-		     height="10"
+		     height="15"
 		     layout="topleft"
 		     left_pad="6"
 		     mouse_opaque="false"
 		     name="text_box2"
-		     top_delta="1"
+		     top_delta="2"
 		     width="200">
 		     kbps
 		     </text>
@@ -359,7 +362,7 @@ width="510">
 		     layout="topleft"
 		     left="10"
 		     name="connection_port_enabled"
-		     top_pad="10"
+		     top_pad="5"
 		     width="256">
 		     <check_box.commit_callback
 		     function="Notification.Show"
@@ -378,7 +381,7 @@ width="510">
 		     max_val="13050"
 		     min_val="13000"
 		     name="connection_port"
-		     top_delta="0"
+		     top_delta="-2"
 		     width="63" />
 
 		     
@@ -410,7 +413,7 @@ width="510">
    can_edit_text="true"
    decimal_digits="0"
    follows="left|top"
-   height="16"
+   height="15"
    increment="64"
    initial_value="1024"
    label="Size:"
@@ -419,46 +422,57 @@ width="510">
    left="10"
    max_val="9984"
    min_val="64"
-   top_pad="17"
+   top_pad="15"
    name="cachesizespinner"
    width="319" />
   <text
    type="string"
    length="1"
    follows="left|top"
-   height="23"
+   height="15"
    layout="topleft"
    left_pad="5"
-   top_delta="0"
+   top_delta="2"
    mouse_opaque="false"
    name="text_box5"
    width="20">
     MB
   </text>
-  <button
-   follows="left|top"
-   height="23"
-   label="Clear Cache"
-   label_selected="Clear Cache"
-   layout="topleft"
-   left_pad="10"
-   name="clear_cache"
-   top_delta="-3"
-   width="108">
-  <button.commit_callback
-   function="Pref.ClearCache" />
-  </button>
+  <check_box
+		     top_delta="4"
+		     follows="left|top"
+		     height="16"
+		     initial_value="true"
+		     control_name="ObjectCacheEnabled"
+		     label="Enable Object Cache"
+		     left="10"
+		     mouse_opaque="true"
+		     name="ObjectCacheEnabled"
+		     radio_style="false"
+		     width="400"
+		     top_pad="3"/>
+  <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="10"
+ width="515"/>
   <text
    type="string"
    length="1"
    follows="left|top"
-   height="10"
+   height="12"
    layout="topleft"
    left="10"
-   name="Cache location"
-   top_pad="5"
-   width="160">
-    Cache location:
+   name="Cache:"
+   top_delta="4"
+   width="100">
+    Cache Location:
   </text>
   <line_editor
    control_name="CacheLocationTopFolder"
@@ -468,11 +482,11 @@ width="510">
    font="SansSerif"
    height="23"
    layout="topleft"
-   left_pad="0"
+   left="10"
    max_length="4096"
    name="cache_location"
-   top_delta="-2"
-   width="189" />
+   top_pad="15"
+   width="300" />
   <button
    follows="left|top"
    height="23"
@@ -499,19 +513,19 @@ width="510">
     <button.commit_callback
      function="Pref.ResetCache" />
   </button>
-  <check_box
-		     top_delta="4"
-		     follows="left|top"
-		     height="16"
-		     initial_value="true"
-		     control_name="ObjectCacheEnabled"
-		     label="Enable Object Cache"
-		     left="10"
-		     mouse_opaque="true"
-		     name="ObjectCacheEnabled"
-		     radio_style="false"
-		     width="400"
-		     top_pad="9"/>
+  <button
+   follows="left|top"
+   height="23"
+   label="Clear"
+   label_selected="Clear Cache"
+   layout="topleft"
+   left_pad="3"
+   name="clear_cache"
+   top_delta="0"
+   width="60">
+  <button.commit_callback
+   function="Pref.ClearCache" />
+  </button>
   <panel
  follows="left|top|right"
  height="20"
@@ -534,7 +548,7 @@ width="510">
 		     mouse_opaque="false"
 		     top_delta="4"
 		     width="300">
-		     Other Options:
+		     Misc Options:
 		     </text>
 		     <check_box
 		     top_delta="4"

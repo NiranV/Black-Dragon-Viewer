@@ -49,7 +49,7 @@
  height="12"
  width="350"
  top_delta="4">
- Camera Behavior Options:
+ Camera Options:
  </text>
    <slider
    can_edit_text="true"
@@ -154,11 +154,12 @@
    width="250"
    top_pad="4"/>
    <check_box
+              enabled="false"
    control_name="ClickOnAvatarKeepsCamera"
    follows="left|top"
    height="16"
    initial_value="false"
-   label="Disable Mouse-steering when clicking on your Avatar"
+   label="Disable Mouse-Steering"
    layout="topleft"
    left="10"
    name="ClickOnAvatarKeepsCamera"
@@ -169,23 +170,36 @@
    control_name="EditCameraMovement"
    height="16"
    follows="left|top"
-   label="Automatic Camera Movement for Build/Edit"
+   label="Turn Camera for Build/Edit Mode"
    layout="topleft"
-   left_delta="0"
+   left="270"
    name="edit_camera_movement"
    tool_tip="Use automatic camera positioning when entering and exiting edit mode"
    width="300"
-   top_pad="0" />
+   top_delta="-16" />
    <check_box
    control_name="AppearanceCameraMovement"
    follows="left|top"
    height="16"
-   label="Automatic Camera Movement for Appearance"
+   label="Turn Camera for Appearance Mode"
    layout="topleft"
    top_pad="0"
    name="appearance_camera_movement"
    tool_tip="Use automatic camera positioning while in edit mode. Also disables Appearance Mode alltogether"
    width="300" />
+   <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Flycam Setup"
+ name="joystick_setup_button"
+ width="130"
+ top_pad="3"
+ left="10">
+   <button.commit_callback
+   function="Floater.Show"
+   parameter="pref_joystick" />
+ </button>
 <panel
  follows="left|top|right"
  height="20"

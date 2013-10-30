@@ -268,8 +268,6 @@ width="510">
  height="14"
  halign="left"
  layout="topleft"
- font.style="BOLD"
- text_color="EmphasisColor"
  left="10"
  name="Walkleftright"
  top_delta="0"
@@ -310,8 +308,6 @@ width="510">
  follows="left|top"
  height="14"
  halign="left"
- font.style="BOLD"
- text_color="EmphasisColor"
  layout="topleft"
  left="10"
  name="Rotateleftright"
@@ -353,8 +349,6 @@ width="510">
  follows="left|top"
  height="14"
  halign="left"
- font.style="BOLD"
- text_color="EmphasisColor"
  layout="topleft"
  left="10"
  name="Jump"
@@ -382,8 +376,6 @@ width="510">
  follows="left|top"
  height="14"
  halign="left"
- font.style="BOLD"
- text_color="EmphasisColor"
  layout="topleft"
  left="10"
  name="StartChat"
@@ -425,8 +417,6 @@ width="510">
  follows="left|top"
  height="14"
  halign="left"
- font.style="BOLD"
- text_color="EmphasisColor"
  layout="topleft"
  left="10"
  name="StopMotion"
@@ -483,7 +473,7 @@ width="510">
  top_delta="4">
  Misc Options:
  </text>
- <!--<check_box
+ <check_box
  control_name="UseNewWalkRun"
  height="16"
  initial_value="true"
@@ -493,7 +483,7 @@ width="510">
  tool_tip="Use new Walk/Run/Crouch animations of Viewer 2"
  name="NewWalkRun"
  top_pad="15"
- width="256" />-->
+ width="256" />
  <check_box
  control_name="AllowWalkingBackwards"
  follows="left|top"
@@ -505,7 +495,7 @@ width="510">
  name="AllowWalkingBackwards"
  tool_tip="Make the Avatar turn around when pressing back instead of the Avatar walking backwards"
  width="200"
- top_pad="15"/>
+ top_pad="0"/>
  <spinner
  decimal_digits="2"
  follows="left|top"
@@ -520,19 +510,6 @@ width="510">
  initial_value="0.15"
  min_val="0"
  name="RotationSpeed"
- top_delta="0"
+ top_delta="-16"
  width="200" />
- <!--<button
- height="22"
- follows="top|left"
- layout="topleft"
- label="Flycam Setup"
- name="joystick_setup_button"
- width="130"
- top_delta="0"
- left="270">
-   <button.commit_callback
-   function="Floater.Show"
-   parameter="pref_joystick" />
- </button>-->
 </panel>

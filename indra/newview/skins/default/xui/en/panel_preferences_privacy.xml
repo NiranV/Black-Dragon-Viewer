@@ -114,54 +114,37 @@
      top_pad="15"
      width="350">
     </check_box>
-    <check_box
-     control_name="LogNearbyChat"
-     height="16"
-     label="Save nearby chat logs on my computer"
-     layout="topleft"
-     left_delta="0"
-     name="log_nearby_chat"
-     top_pad="0"
-     width="350">
-    </check_box>
-    <check_box
-     control_name="LogInstantMessages"
-     height="16"
-     label="Save IM logs on my computer"
-     layout="topleft"
-     left_delta="0"
-     name="log_instant_messages"
-     top_pad="0"
-     width="350">
-    </check_box>
-    <check_box
-     control_name="LogShowHistory"
-     height="16"
-     label="Show History of last Conversations in IM/Groups"
-     layout="topleft"
-     left_delta="0"
-     name="log_history"
-     top_pad="0"
-     width="350">
-    </check_box>
-    <check_box
-     control_name="LogTimestamp"
-     height="16"
-     label="Add timestamp to each line in logs"
-     layout="topleft"
-     left_delta="0"
-     name="show_timestamps_check_im"
-     top_pad="0"
-     width="237" />
-    <check_box
-     control_name="LogFileNamewithDate"
-     height="16"
-     label="Add datestamp to log file name."
-     layout="topleft"
-     left_delta="0"
-     name="logfile_name_datestamp"
-     top_pad="0"
-     width="350"/>
+    <text
+        layout="topleft"
+        follows="top|left"
+        left="10"
+        text_color="White"
+        height="15"
+        top_pad="5"
+        width="200">
+        Save on Computer:
+    </text>
+
+    <combo_box
+        enabled="false"
+        control_name="KeepConversationLogTranscripts"
+        height="23"
+        layout="topleft"
+        follows="top|left"
+        left_pad="0"
+        name="chat_font_size"
+        top_delta="-3"
+        width="170">
+        <item
+            label="Log and transcripts"
+            value="2"/>
+        <item
+            label="Log only"
+            value="1"/>
+        <item
+            label="No log or transcripts"
+            value="0"/>
+    </combo_box>
     <panel
  follows="left|top|right"
  height="20"
@@ -177,7 +160,7 @@
      type="string"
      length="1"
      follows="left|top"
-     height="10"
+     height="12"
      layout="topleft"
      left="10"
      mouse_opaque="false"
@@ -197,7 +180,7 @@
      mouse_opaque="false"
      name="log_path_string"
      top_pad="15"
-     width="470"/>
+     width="285"/>
     <button
      follows="left|top"
      height="23"
@@ -208,6 +191,36 @@
      name="log_path_button"
      top_delta="0"
      width="25"/>
+    
+
+    <button
+        enabled="false"
+        follows="top|left"
+        height="23"
+        label="Clear"
+        layout="topleft"
+        left_pad="5"
+        top_delta="0"
+        name="clear_log"
+        width="60">
+        <commit_callback
+            function="Pref.ClearLog" />
+    </button>
+  
+    <button
+        enabled="false"
+        follows="top|left"
+        height="23"
+        label="Delete transcripts"
+        layout="topleft"
+        left_pad="5"
+        top_delta="0"
+        name="delete_transcripts"
+        width="115">
+        <button.commit_callback
+            function="Pref.DeleteTranscripts" />
+    </button>
+
     
     <panel
  follows="left|top|right"
@@ -224,7 +237,7 @@
      type="string"
      length="1"
      follows="left|top"
-     height="10"
+     height="12"
      layout="topleft"
      left="10"
      mouse_opaque="false"

@@ -89,7 +89,7 @@
      height="15"
      layout="topleft"
      left="10"
-     top_pad="7"
+     top_pad="5"
      name="maturity_desired_prompt"
      width="200">
         I want to access content rated:
@@ -141,16 +141,6 @@
      left_pad="2"
      name="rating_icon_adult"
      width="18"/>
-    <!--<text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="15"
-     layout="topleft"
-     left="10"
-     top_pad="8"
-     name="maturity_desired_textbox"
-     width="300"/>-->
     <text
      type="string"
      length="1"
@@ -159,7 +149,7 @@
      layout="topleft"
      left="10"
      name="start_location_textbox"
-     top_pad="11"
+     top_pad="9"
      width="200">
         Start location:
     </text>
@@ -190,7 +180,7 @@
       left="10"
       name="title_afk_text"
       width="200"
-      top_pad="7">
+      top_pad="5">
     Automatically go AFK after:
     </text>
   <combo_box
@@ -203,27 +193,27 @@
     name="afk"
     width="170">
     <combo_box.item
-     label="2 minutes"
+     label="2 Minutes"
      name="item0"
      value="120" />
     <combo_box.item
-     label="5 minutes"
+     label="5 Minutes"
      name="item1"
      value="300" />
     <combo_box.item
-     label="10 minutes"
+     label="10 Minutes"
      name="item2"
      value="600" />
     <combo_box.item
-     label="15 minutes"
+     label="15 Minutes"
      name="item2"
      value="900" />
     <combo_box.item
-     label="30 minutes"
+     label="30 Minutes"
      name="item3"
      value="1800" />
     <combo_box.item
-     label="never"
+     label="Never"
      name="item4"
      value="0" />
   </combo_box>
@@ -252,60 +242,63 @@
    </text>
    <radio_group
      control_name="AvatarNameTagMode"
-     height="65"
-     width="100"
+     height="16"
+     width="300"
      layout="topleft"
      left="10"
-     top_pad="3"
+     top_pad="15"
      name="Name_Tag_Preference">
-        <radio_item
-         label="Off"
-         layout="topleft"
-         name="radio"
-         top_pad="10"
-         value="0"
-         height="16"
-         width="75" />
-        <radio_item
+    <radio_item
          label="On"
          layout="topleft"
-         top_pad="2"
+         left="0"
+         top="0"
          name="radio2"
          value="1"
          height="16"
-         width="75" />
+         width="100" />
+        <radio_item
+         label="Off"
+         layout="topleft"
+         left_pad="0"
+         name="radio"
+         top_delta="0"
+         value="0"
+         height="16"
+         width="100" />
         <radio_item
          label="Show briefly"
          layout="topleft"
-         top_pad="2"
+         left_pad="0"
+         top_delta="0"
          name="radio3"
          value="2"
          height="16"
-         width="160" />
+         width="100" />
     </radio_group>
    <slider
       can_edit_text="true"
       control_name="RenderNameFadeDuration"
       decimal_digits="1"
       follows="left|top"
-      height="16"
+      height="15"
       increment="0.1"
       label="Name fade duration (s):"
       initial_value="10"
       layout="topleft"
-      left_pad="10"
+      left="10"
       max_val="30"
       min_val="0.1"
       label_width="150"
       name="name_fade_slider"
-      top_delta="10"
+      top_pad="3"
       width="319" />
    <slider
       can_edit_text="true"
       control_name="RenderNameShowTime"
       decimal_digits="1"
       follows="left|top"
-      height="16"
+      height="15"
       increment="1"
       label="Start fading after (s):"
       initial_value="10"
@@ -315,7 +308,7 @@
       min_val="1"
       label_width="150"
       name="name_start_fade_slider"
-      top_pad="3"
+      top_pad="2"
       width="316" />
     <check_box
      follows="left|top"
@@ -327,7 +320,7 @@
      tool_tip="Allow display names in chat, IM, Name tags, etc."
      name="display_names_check"
      width="300"
-     top_pad="22"/>
+     top_pad="4"/>
    <check_box
      enabled_control="UseDisplayNames"
      control_name="NameTagShowDisplayNames"
@@ -355,7 +348,7 @@
      control_name="NameTagShowGroupTitles"
      follows="left|top"
      height="16"
-     label="Show group titles"
+     label="Show Group Titles"
      layout="topleft"
      left_delta="200"
      top_delta="-33"
@@ -366,7 +359,7 @@
      control_name="NameTagShowFriends"
      follows="left|top"
      height="16"
-     label="Highlight friend Names"
+     label="Highlight Friend Names"
      layout="topleft"
      left_delta="0"
      top_pad="0"
@@ -377,7 +370,7 @@
      control_name="RenderNameShowSelf"
      height="16"
      top_pad="0"
-     label="Show my Name"
+     label="Show my own Name"
      layout="topleft"
      left_delta="0"
      name="show_my_name_checkbox1"
@@ -418,7 +411,7 @@
    <check_box
      control_name="FlyingAtExit"
      height="16"
-     label="Flying at Exit"
+     label="Remember flying state at Logout"
      layout="topleft"
      left_pad="0"
      top_delta="0"
