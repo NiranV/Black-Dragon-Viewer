@@ -1761,25 +1761,26 @@ BOOL LLToolPie::handleRightClickPick()
 				if (is_other_attachment)
 				{
 					gMenuAttachmentOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
-				if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
-				{
-					gPieMenuAttachmentOther->show(x, y);
+					if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
+					{
+						gPieMenuAttachmentOther->show(x, y);
+					}
+					else
+					{
+						gMenuAttachmentOther->show(x, y);
+					}
 				}
-				else
-				{
-					gMenuAttachmentOther->show(x, y);
-				}
-			}
 				else
 				{
 					gMenuAvatarOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
-				if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
-				{
-					gPieMenuAvatarOther->show(x, y);
-				}
-				else
-				{
-					gMenuAvatarOther->show(x, y);
+					if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
+					{
+						gPieMenuAvatarOther->show(x, y);
+					}
+					else
+					{
+						gMenuAvatarOther->show(x, y);
+					}
 				}
 // [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
 			}
@@ -1788,7 +1789,6 @@ BOOL LLToolPie::handleRightClickPick()
 				make_ui_sound("UISndInvalidOp");
 			}
 // [/RLVa:KB]
-			}
 		}
 		else if (object->isAttachment())
 		{
@@ -1828,14 +1828,14 @@ BOOL LLToolPie::handleRightClickPick()
 			{
 // [/RLVa:KB]
 				gMenuHolder->getChild<LLUICtrl>("Object Mute")->setValue(mute_msg);
-			if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
-			{
-				gPieMenuObject->show(x, y);
-			}
-			else
-			{
-				gMenuObject->show(x, y);
-			}
+				if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
+				{
+					gPieMenuObject->show(x, y);
+				}
+				else
+				{
+					gMenuObject->show(x, y);
+				}
 
 				showVisualContextMenuEffect();
 // [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.el) | Modified: RLVa-1.1.0l
