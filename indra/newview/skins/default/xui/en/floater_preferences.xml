@@ -104,12 +104,6 @@
          label="Privacy"
          layout="topleft"
          name="privacy" />
-		<!--<panel
-         class="panel_preference_misc"
-         filename="panel_preferences_misc.xml"
-         label="Misc"
-         layout="topleft"
-         name="misc" />-->
 		<panel
 		 class="panel_preference"
          filename="panel_preferences_ui_colors.xml"
@@ -128,6 +122,12 @@
          label="Viewer"
          layout="topleft"
          name="viewer" />
+		<panel
+         class="panel_preference_rlva"
+         filename="panel_preferences_rlva.xml"
+         label="Restrained Love"
+         layout="topleft"
+         name="rlva" />
     </tab_container>
 
 </floater>
