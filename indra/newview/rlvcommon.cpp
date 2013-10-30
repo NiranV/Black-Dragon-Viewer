@@ -551,7 +551,7 @@ bool rlvMenuToggleEnabled()
 // Checked: 2011-08-16 (RLVa-1.4.0b) | Added: RLVa-1.4.0b
 void rlvMenuToggleVisible()
 {
-	bool fTopLevel = rlvGetSetting(RLV_SETTING_TOPLEVELMENU, true);
+	/*bool fTopLevel = rlvGetSetting(RLV_SETTING_TOPLEVELMENU, true);
 	bool fRlvEnabled = rlv_handler_t::isEnabled();
 
 	LLMenuGL* pRLVaMenuMain = gMenuBarView->findChildMenuByName("RLVa Main", FALSE);
@@ -572,7 +572,7 @@ void rlvMenuToggleVisible()
 			pMenuTo->addChild(pItem);
 			pItem->updateBranchParent(pMenuTo);
 		}
-	}
+	}*/
 }
 
 // Checked: 2010-04-23 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g
