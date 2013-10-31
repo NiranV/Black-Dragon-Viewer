@@ -204,6 +204,7 @@ background_visible="false"
 	      <menu_button
 	       follows="bottom|right"
 	       height="23"
+		   label="▼"
 	       layout="topleft"
 	       mouse_opaque="false"
 	       name="overflow_btn"
