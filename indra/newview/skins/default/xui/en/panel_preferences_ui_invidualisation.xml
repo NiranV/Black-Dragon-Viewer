@@ -75,23 +75,13 @@ width="510">
 	control_name="SearchFromAddressBar"
 	height="16"
 	initial_value="true"
-	label="Allow searching via Navbar"
+	label="Allow searching via Adressbar"
 	layout="topleft"
 	left="10"
 	name="SearchFromAddressBar"
 	top_pad="0"
 	width="256" />
-	<check_box
-			   enabled="false"
-	    control_name="ShowTopSearchBar"
-	    height="16"
-	    initial_value="true"
-	    label="Show Search field in Topbar"
-	    layout="topleft"
-	    left="10"
-	    name="ShowTopSearchBar"
-	    top_pad="0"
-	    width="256" />
+	
 	    <check_box
 	    control_name="ShowNetStats"
 	    height="16"
@@ -145,29 +135,16 @@ width="510">
 	    width="210" />
 		
 		<check_box
-				   enabled="false"
-	control_name="ShowNavbarFavoritesPanel"
-	height="16"
-	initial_value="true"
-	label="Show Favoritebar"
-	layout="topleft"
-	left="270"
-	name="ShowFavbar"
-	top="31"
-	width="256" />
-		<check_box
-				   enabled="false"
 	control_name="ShowQuickWindlightButton"
 	height="16"
 	initial_value="true"
 	label="Show Quick Windlight Button"
 	layout="topleft"
-	left_delta="0"
+	left="270"
 	name="ShowQuickWindlight"
-	top_pad="0"
+	top="31"
 	width="256" />
 	<check_box
-			   enabled="false"
 	control_name="ShowQuickSkyButton"
 	height="16"
 	initial_value="true"
@@ -178,7 +155,6 @@ width="510">
 	top_pad="0"
 	width="256" />
 	<check_box
-			   enabled="false"
 	control_name="ShowQuickWaterButton"
 	height="16"
 	initial_value="true"
@@ -189,7 +165,6 @@ width="510">
 	top_pad="0"
 	width="256" />
 	<check_box
-			   enabled="false"
 	control_name="ShowQuickBrowserButton"
 	height="16"
 	initial_value="false"
@@ -200,7 +175,6 @@ width="510">
 	top_pad="0"
 	width="256" />
 	<check_box
-			   enabled="false"
 	control_name="ShowQuickHomeButton"
 	height="16"
 	initial_value="true"
@@ -222,17 +196,15 @@ width="510">
 	top_pad="0"
 	width="256" />
 	<check_box
-			   enabled="false"
-	    control_name="NavbarLayer1"
+	    control_name="ShowTopSearchBar"
 	    height="16"
 	    initial_value="true"
-	    label="Show Navbar Background Layer"
+	    label="Show Quick Search Field"
 	    layout="topleft"
 	    left_delta="0"
-	    tool_tip="This option will either hide the first of four layers in Azure or the overall background in Darkness"
-	    name="NavLayer1"
+	    name="ShowTopSearchBar"
 	    top_pad="0"
-	    width="90" />
+	    width="256" />
     
 	<panel
  follows="left|top|right"

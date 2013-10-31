@@ -32,11 +32,11 @@
        top="0"
        width="800">
          <layout_panel
-           follows="top|left|right"
-											auto_resize="false"
-           layout="topleft"
-											height="32"
-											min_height="32"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="32"
+			min_height="32"
            name="navigation_layout_panel"
            width="800">
 	        <panel
@@ -56,6 +56,25 @@
 						name="border1"
 						top="4"
 						width="1"/>
+			<layout_stack
+       follows="top|left|right"
+       height="30"
+       layout="topleft"
+       border_size="-5"
+       left="60"
+       mouse_opaque="false"
+       name="nvp_stack"
+       orientation="horizontal"
+       top="3"
+	   right="-100"
+       width="800">
+         <layout_panel
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="42">
 	         <pull_button
 	         follows="left|top"
 	         direction="down"
@@ -65,10 +84,10 @@
 										image_unselected="transparent.j2c"
 	         image_bottom_pad="1"
 	         layout="topleft"
-	         left_pad="4"
+	         left="0"
 	         name="back_btn"
 	         tool_tip="Go back to previous location"
-	         top="2"
+	         top="0"
 	         width="20" />
 	        <pull_button
 	         follows="left|top"
@@ -82,17 +101,26 @@
 	         left_pad="-3"
 	         name="forward_btn"
 	         tool_tip="Go forward one location"
-	         top_delta="0"
+	         top="0"
 	         width="20" />
+		 </layout_panel>
+		 <layout_panel
+			visibility_control="ShowQuickHomeButton"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="40">
 									
 									<view_border
 						bevel_style="in"
 						follows="top|left"
 						height="20"
 						layout="topleft"
-						left_pad="4"
+						left="1"
 						name="border1"
-						top="4"
+						top="1"
 						width="1"/>
 	        <button
 	         follows="left|top"
@@ -107,50 +135,86 @@
 	         tool_tip="Teleport to my home location"
 	         top_delta="-1"
 	         width="28" />
+		 </layout_panel>
+		 <layout_panel
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="10">
 									
 		 <view_border
 						bevel_style="in"
 						follows="top|left"
 						height="20"
 						layout="topleft"
-						left_pad="3"
+						left="1"
 						name="border1"
-						top="4"
+						top="1"
 						width="1"/>
+		 </layout_panel>
+		 <layout_panel
+					   visibility_control="ShowQuickWindlightButton"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="31">
 			<button
 			image_overlay="Windlightbutton.tga"
 			image_selected="Transparent.j2c"
 			image_unselected="Transparent.j2c"
 			follows="left|top"
-			height=""
+			height="23"
 			layout="topleft"
-			left_pad="3"
+			left="0"
 			name="Windlight"
 			label=""
 			tool_tip="Opens Windlight Floater"
-			top_delta="-2"
+			top_pad="-1"
 			width="24">
 			<button.init_callback
 			      function="Button.SetFloaterToggle"
 			      parameter="env_settings" />
 			</button>
+		 </layout_panel>
+		 <layout_panel
+					   visibility_control="ShowQuickSkyButton"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="30">
 			<button
 			image_overlay="Skybutton.tga"
 			image_selected="Transparent.j2c"
 			image_unselected="Transparent.j2c"
+			halign="center"
 			follows="left|top"
 			height="23"
 			layout="topleft"
-			left_pad="1"
+			left="0"
 			name="Sky"
 			label=""
 			tool_tip="Opens Sky Settings Floater"
-			top_delta="0"
+			top_pad="-1"
 			width="24">
 			<button.init_callback
 			      function="Button.SetFloaterToggle"
 			      parameter="env_edit_sky" />
 			</button>
+		 </layout_panel>
+		 <layout_panel
+					   visibility_control="ShowQuickWaterButton"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="25">
 			<button
 			image_overlay="Waterbutton.tga"
 			image_selected="Transparent.j2c"
@@ -158,16 +222,25 @@
 			follows="left|top"
 			height="23"
 			layout="topleft"
-			left_pad="-1"
+			left="0"
 			name="Water"
 			label=""
 			tool_tip="Opens Water Settings Floater"
-			top_delta="0"
+			top_pad="-1"
 			width="24">
 			<button.init_callback
 			      function="Button.SetFloaterToggle"
 			      parameter="env_edit_water" />
 			</button>
+		 </layout_panel>
+		 <layout_panel
+					   visibility_control="ShowQuickBrowserButton"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="44">
 			<button
 			image_overlay="icons\ExternalBrowser_Off.png"
 			image_selected="Transparent.j2c"
@@ -175,43 +248,59 @@
 			follows="left|top"
 			height="23"
 			layout="topleft"
-			left_pad="7"
+			left="14"
 			name="Browser"
 			label=""
 			tool_tip="Opens a new Browser Window"
-			top_delta="0"
+			top_pad="-1"
 			width="24">
 			<button.commit_callback
 			      function="Advanced.WebContentTest"
 			      parameter="www.google.com" />
 			</button>
+		 </layout_panel>
+		 <layout_panel
+			follows="top|left|right"
+			auto_resize="true"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="312">
 	        <location_input
-                       follows="all"
+                       follows="top|left|right"
 	         halign="right"
 	         height="23"
 	         label="Location"
 	         layout="topleft"
-	         left_pad="7"
+	         left="7"
 	         max_chars="254"
 	         mouse_opaque="false"
 	         name="location_combo"
-	         top_delta="0"
+	         top="0"
                 width="300">
              <combo_list
              mouse_wheel_opaque="true"/>
 	        </location_input>
+		 </layout_panel>
+		 <layout_panel
+					   visibility_control="ShowTopSearchBar"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="120">
 									
 									<search_combo_box
-			follows="right|top"
-			halign="right"
+			follows="left|top"
 			height="23"
 			label="Search"
 			layout="topleft"
-			left_pad="3"
+			left="3"
 			mouse_opaque="false"
 			name="search_combo_box"
 			tool_tip="Search for something in Second Life"
-			top="2"
+			top="0"
 			width="114" >
 			<combo_editor
 			label="Search"
@@ -225,6 +314,8 @@
 			border.shadow_dark_color="FocusColor"
 			mouse_wheel_opaque="true" />
 			</search_combo_box>
+		 </layout_panel>
+			</layout_stack>
          </panel>
         </layout_panel>
          <layout_panel
