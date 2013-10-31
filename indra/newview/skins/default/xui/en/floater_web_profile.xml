@@ -3,5 +3,5 @@
 name="floater_web_profile"
 width="400"
 background_color="FloaterDefaultBackgroundColor"
-height="562"
+height="400"
 filename="floater_web_content.xml"/>
