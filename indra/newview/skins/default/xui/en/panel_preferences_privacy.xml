@@ -126,7 +126,7 @@
     </text>
 
     <combo_box
-        enabled="false"
+        enabled="true"
         control_name="KeepConversationLogTranscripts"
         height="23"
         layout="topleft"
