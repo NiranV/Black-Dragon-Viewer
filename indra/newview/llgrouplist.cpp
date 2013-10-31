@@ -225,8 +225,10 @@ void LLGroupList::addNewItem(const LLUUID& id, const std::string& name, const LL
 	item->setName(name, mNameFilter);
 	item->setGroupIconID(icon_id);
 
-	item->getChildView("info_btn")->setVisible( false);
-	item->getChildView("profile_btn")->setVisible( false);
+	if (id.notNull()) // don't show the info button for the "none" group
+	{
+		getChildView("profile_btn")->setVisible(true);
+	}
 	item->setGroupIconVisible(mShowIcons);
 
 	addItem(item, id, pos);
@@ -348,10 +350,11 @@ void LLGroupListItem::setValue( const LLSD& value )
 void LLGroupListItem::onMouseEnter(S32 x, S32 y, MASK mask)
 {
 	getChildView("hovered_icon")->setVisible( true);
+
+//	//BD - Make sure we show it in case something went wrong and its still not visible
 	if (mGroupID.notNull()) // don't show the info button for the "none" group
 	{
-		mInfoBtn->setVisible(true);
-		getChildView("profile_btn")->setVisible( true);
+		getChildView("profile_btn")->setVisible(true);
 	}
 
 	LLPanel::onMouseEnter(x, y, mask);
@@ -360,8 +363,6 @@ void LLGroupListItem::onMouseEnter(S32 x, S32 y, MASK mask)
 void LLGroupListItem::onMouseLeave(S32 x, S32 y, MASK mask)
 {
 	getChildView("hovered_icon")->setVisible( false);
-	mInfoBtn->setVisible(false);
-	getChildView("profile_btn")->setVisible( false);
 
 	LLPanel::onMouseLeave(x, y, mask);
 }
