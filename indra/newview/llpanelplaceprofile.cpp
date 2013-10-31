@@ -49,6 +49,7 @@
 #include "llbuycurrencyhtml.h"
 #include "llslurl.h"
 #include "llstatusbar.h"
+#include "lltabcontainer.h"
 #include "llviewercontrol.h"
 #include "llviewerparcelmgr.h"
 #include "llviewerregion.h"
@@ -229,7 +230,7 @@ void LLPanelPlaceProfile::setInfoType(EInfoType type)
 	getChild<LLTextBox>("owner_label")->setVisible(is_info_type_agent);
 	mParcelOwner->setVisible(is_info_type_agent);
 
-	getChild<LLAccordionCtrl>("advanced_info_accordion")->setVisible(is_info_type_agent);
+	getChild<LLTabContainer>("advanced_info_tab")->setVisible(is_info_type_agent);
 
 	// If we came from search we want larger description area, approx. 10 lines (see STORM-1311).
 	// Don't use the maximum available space because that leads to nasty artifacts
