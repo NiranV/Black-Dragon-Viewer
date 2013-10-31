@@ -17,6 +17,22 @@
          function="Url.SendIM" />        
     </menu_item_call>
     <menu_item_call
+     label="Offer Teleport"
+     layout="topleft"
+     name="offer_teleport">
+        <menu_item_call.on_click
+         function="Url.SendTeleport" />        
+    </menu_item_call>
+    <menu_item_call
+     label="Voice Call"
+     layout="topleft"
+     name="call">
+        <menu_item_call.on_click
+         function="Url.VoiceCall" />        
+    </menu_item_call>
+    <menu_item_separator
+     layout="topleft" />
+    <menu_item_call
      label="Add Friend..."
      layout="topleft"
      name="add_friend">
@@ -30,6 +46,36 @@
         <menu_item_call.on_click
          function="Url.RemoveFriend" />
         </menu_item_call>
+    <menu_item_separator
+     layout="topleft" />
+    <menu_item_call
+     label="Map"
+     layout="topleft"
+     name="map">
+        <menu_item_call.on_click
+         function="Url.Map" />        
+    </menu_item_call>
+    <menu_item_call
+     label="Share..."
+     layout="topleft"
+     name="share">
+        <menu_item_call.on_click
+         function="Url.Share" />        
+    </menu_item_call>
+    <menu_item_call
+     label="Pay"
+     layout="topleft"
+     name="pay">
+        <menu_item_call.on_click
+         function="Url.Pay" />        
+    </menu_item_call>
+    <menu_item_call
+     label="Ignore"
+     layout="topleft"
+     name="ignore">
+        <menu_item_call.on_click
+         function="Url.Mute" />        
+    </menu_item_call>
     <menu_item_separator
      layout="topleft" />
     <menu_item_call

@@ -203,6 +203,47 @@ void LLUrlAction::sendIM(std::string url)
 	}
 }
 
+void LLUrlAction::sendTeleport(std::string url)
+{
+	std::string id_str = getUserID(url);
+	if (LLUUID::validate(id_str))
+	{
+		executeSLURL("secondlife:///app/agent/" + id_str + "/offerteleport");
+	}
+}
+
+void LLUrlAction::share(std::string url)
+{
+	executeSLURL("secondlife:///app/inventory/show");
+}
+
+void LLUrlAction::pay(std::string url)
+{
+	std::string id_str = getUserID(url);
+	if (LLUUID::validate(id_str))
+	{
+		executeSLURL("secondlife:///app/agent/" + id_str + "/pay");
+	}
+}
+
+void LLUrlAction::showOnMap(std::string url)
+{
+	std::string id_str = getUserID(url);
+	if (LLUUID::validate(id_str))
+	{
+		executeSLURL("secondlife:///app/maptrackavatar/" + id_str);
+	}
+}
+
+void LLUrlAction::callVoice(std::string url)
+{
+	std::string id_str = getUserID(url);
+	if (LLUUID::validate(id_str))
+	{
+		executeSLURL("secondlife:///app/voicecallavatar/" + id_str);
+	}
+}
+
 void LLUrlAction::addFriend(std::string url)
 {
 	std::string id_str = getUserID(url);
@@ -228,5 +269,14 @@ void LLUrlAction::blockObject(std::string url)
 	if (LLUUID::validate(object_id))
 	{
 		executeSLURL("secondlife:///app/agent/" + object_id + "/block/" + object_name);
+	}
+}
+
+void LLUrlAction::blockAvatar(std::string url)
+{
+	std::string id_str = getUserID(url);
+	if (LLUUID::validate(id_str))
+	{
+		executeSLURL("secondlife:///app/agent/" + id_str + "/mute");
 	}
 }
