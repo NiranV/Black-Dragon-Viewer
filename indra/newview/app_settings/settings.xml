@@ -15796,6 +15796,28 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
+  <key>AllowMUpose</key>
+  <map>
+	<key>Comment</key>
+	<string>Allow MU* pose style in chat and IM</string>
+	<key>Persist</key>
+	<integer>1</integer>
+	<key>Type</key>
+	<string>Boolean</string>
+	<key>Value</key>
+	<integer>1</integer>
+  </map>
+  <key>AutoCloseOOC</key>
+  <map>
+	<key>Comment</key>
+	<string>Auto-close OOC chat with '))'</string>
+	<key>Persist</key>
+	<integer>1</integer>
+	<key>Type</key>
+	<string>Boolean</string>
+	<key>Value</key>
+	<integer>1</integer>
+  </map>
   
   <!-- Tonemapping -->
   <key>ExodusRenderAutoExposeStep</key>
