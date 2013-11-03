@@ -352,6 +352,14 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.AutoReplace",            boost::bind(&LLFloaterPreference::onClickAutoReplace, this));
 	mCommitCallbackRegistrar.add("Pref.SpellChecker",           boost::bind(&LLFloaterPreference::onClickSpellChecker, this));
 
+//	//BD - Array Debugs
+	mCommitCallbackRegistrar.add("Pref.ArrayX",           boost::bind(&LLFloaterPreference::onCommitX, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayY",           boost::bind(&LLFloaterPreference::onCommitY, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayZ",           boost::bind(&LLFloaterPreference::onCommitZ, this,_1, _2));
+
+//	//BD - Revert to Default
+	mCommitCallbackRegistrar.add("Pref.Default",           boost::bind(&LLFloaterPreference::resetToDefault, this,_1));
+
 	sSkin = gSavedSettings.getString("SkinCurrent");
 
 	mCommitCallbackRegistrar.add("Pref.ClickActionChange",		boost::bind(&LLFloaterPreference::onClickActionChange, this));
@@ -499,6 +507,34 @@ LLFloaterPreference::~LLFloaterPreference()
 	}
 
 	LLConversationLog::instance().removeObserver(this);
+}
+
+//BD - Array Debugs
+void LLFloaterPreference::onCommitX(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLVector3 value = gSavedSettings.getVector3(param.asString());
+	value.mV[VX] = ctrl->getValue().asReal();
+	gSavedSettings.setVector3( param.asString() , value);
+}
+
+void LLFloaterPreference::onCommitY(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLVector3 value = gSavedSettings.getVector3(param.asString());
+	value.mV[VY] = ctrl->getValue().asReal();
+	gSavedSettings.setVector3( param.asString() , value);
+}
+
+void LLFloaterPreference::onCommitZ(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLVector3 value = gSavedSettings.getVector3(param.asString());
+	value.mV[VZ] = ctrl->getValue().asReal();
+	gSavedSettings.setVector3( param.asString() , value);
+}
+
+//BD - Revert to Default
+void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
+{
+	ctrl->getControlVariable()->resetToDefault();
 }
 
 void LLFloaterPreference::draw()

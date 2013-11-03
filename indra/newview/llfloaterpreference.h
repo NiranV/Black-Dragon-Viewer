@@ -156,6 +156,14 @@ public:
 	void updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box);
 	void refreshUI();
 
+//	//BD - Debug Arrays
+	void onCommitX(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitY(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitZ(LLUICtrl* ctrl, const LLSD& param);
+
+//	//BD - Revert to Default
+	void resetToDefault(LLUICtrl* ctrl);
+
 	void onCommitParcelMediaAutoPlayEnable();
 	void onCommitMediaEnabled();
 	void onCommitMusicEnabled();
