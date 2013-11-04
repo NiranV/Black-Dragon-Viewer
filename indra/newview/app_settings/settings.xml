@@ -15557,7 +15557,7 @@
   <key>CameraOverWaterDistortion</key>
   <map>
     <key>Comment</key>
-    <string>Underwater distortion strength</string>
+    <string>Depth of Field strength over water</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
