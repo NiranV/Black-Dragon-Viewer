@@ -356,6 +356,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ArrayX",           boost::bind(&LLFloaterPreference::onCommitX, this,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayY",           boost::bind(&LLFloaterPreference::onCommitY, this,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayZ",           boost::bind(&LLFloaterPreference::onCommitZ, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayXD",           boost::bind(&LLFloaterPreference::onCommitXd, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayYD",           boost::bind(&LLFloaterPreference::onCommitYd, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayZD",           boost::bind(&LLFloaterPreference::onCommitZd, this,_1, _2));
 
 //	//BD - Revert to Default
 	mCommitCallbackRegistrar.add("Pref.Default",           boost::bind(&LLFloaterPreference::resetToDefault, this,_1));
@@ -477,6 +480,10 @@ BOOL LLFloaterPreference::postBuild()
 
 	LLLogChat::setSaveHistorySignal(boost::bind(&LLFloaterPreference::onLogChatHistorySaved, this));
 
+//	//BD - Refresh our controls at the start
+	refreshGraphicControls();
+	refreshCameraControls();
+
 	return TRUE;
 }
 
@@ -531,10 +538,91 @@ void LLFloaterPreference::onCommitZ(LLUICtrl* ctrl, const LLSD& param)
 	gSavedSettings.setVector3( param.asString() , value);
 }
 
+void LLFloaterPreference::onCommitXd(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLVector3d value = gSavedSettings.getVector3d(param.asString());
+	value.mdV[VX] = ctrl->getValue().asReal();
+	gSavedSettings.setVector3d( param.asString() , value);
+}
+
+void LLFloaterPreference::onCommitYd(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLVector3d value = gSavedSettings.getVector3d(param.asString());
+	value.mdV[VY] = ctrl->getValue().asReal();
+	gSavedSettings.setVector3d( param.asString() , value);
+}
+
+void LLFloaterPreference::onCommitZd(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLVector3d value = gSavedSettings.getVector3d(param.asString());
+	value.mdV[VZ] = ctrl->getValue().asReal();
+	gSavedSettings.setVector3d( param.asString() , value);
+}
+
 //BD - Revert to Default
 void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
 {
-	ctrl->getControlVariable()->resetToDefault();
+	ctrl->getControlVariable()->resetToDefault(true);
+	refreshGraphicControls();
+}
+
+//BD - Refresh all controls
+void LLFloaterPreference::refreshGraphicControls()
+{
+	getChild<LLUICtrl>("RenderGlowLumWeights_X")->setValue(gSavedSettings.getVector3("RenderGlowLumWeights").mV[VX]);
+	getChild<LLUICtrl>("RenderGlowLumWeights_Y")->setValue(gSavedSettings.getVector3("RenderGlowLumWeights").mV[VY]);
+	getChild<LLUICtrl>("RenderGlowLumWeights_Z")->setValue(gSavedSettings.getVector3("RenderGlowLumWeights").mV[VZ]);
+	getChild<LLUICtrl>("RenderGlowWarmthWeights_X")->setValue(gSavedSettings.getVector3("RenderGlowWarmthWeights").mV[VX]);
+	getChild<LLUICtrl>("RenderGlowWarmthWeights_Y")->setValue(gSavedSettings.getVector3("RenderGlowWarmthWeights").mV[VY]);
+	getChild<LLUICtrl>("RenderGlowWarmthWeights_Z")->setValue(gSavedSettings.getVector3("RenderGlowWarmthWeights").mV[VZ]);
+
+	getChild<LLUICtrl>("ExodusRenderGamma_X")->setValue(gSavedSettings.getVector3("ExodusRenderGamma").mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderGamma_Y")->setValue(gSavedSettings.getVector3("ExodusRenderGamma").mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderGamma_Z")->setValue(gSavedSettings.getVector3("ExodusRenderGamma").mV[VZ]);
+	getChild<LLUICtrl>("ExodusRenderExposure_X")->setValue(gSavedSettings.getVector3("ExodusRenderExposure").mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderExposure_Y")->setValue(gSavedSettings.getVector3("ExodusRenderExposure").mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderExposure_Z")->setValue(gSavedSettings.getVector3("ExodusRenderExposure").mV[VZ]);
+	getChild<LLUICtrl>("ExodusRenderOffset_X")->setValue(gSavedSettings.getVector3("ExodusRenderOffset").mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderOffset_Y")->setValue(gSavedSettings.getVector3("ExodusRenderOffset").mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderOffset_Z")->setValue(gSavedSettings.getVector3("ExodusRenderOffset").mV[VZ]);
+	getChild<LLUICtrl>("ExodusRenderVignette_X")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderVignette_Y")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderVignette_Z")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VZ]);
+}
+
+void LLFloaterPreference::refreshCameraControls()
+{
+	getChild<LLUICtrl>("FocusOffsetFrontView_X")->setValue(gSavedSettings.getVector3d("FocusOffsetFrontView").mdV[VX]);
+	getChild<LLUICtrl>("FocusOffsetFrontView_Y")->setValue(gSavedSettings.getVector3d("FocusOffsetFrontView").mdV[VY]);
+	getChild<LLUICtrl>("FocusOffsetFrontView_Z")->setValue(gSavedSettings.getVector3d("FocusOffsetFrontView").mdV[VZ]);
+	getChild<LLUICtrl>("FocusOffsetGroupView_X")->setValue(gSavedSettings.getVector3d("FocusOffsetGroupView").mdV[VX]);
+	getChild<LLUICtrl>("FocusOffsetGroupView_Y")->setValue(gSavedSettings.getVector3d("FocusOffsetGroupView").mdV[VY]);
+	getChild<LLUICtrl>("FocusOffsetGroupView_Z")->setValue(gSavedSettings.getVector3d("FocusOffsetGroupView").mdV[VZ]);
+	getChild<LLUICtrl>("FocusOffsetRearView_X")->setValue(gSavedSettings.getVector3d("FocusOffsetRearView").mdV[VX]);
+	getChild<LLUICtrl>("FocusOffsetRearView_Y")->setValue(gSavedSettings.getVector3d("FocusOffsetRearView").mdV[VY]);
+	getChild<LLUICtrl>("FocusOffsetRearView_Z")->setValue(gSavedSettings.getVector3d("FocusOffsetRearView").mdV[VZ]);
+	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_X")->setValue(gSavedSettings.getVector3d("FocusOffsetLeftShoulderView").mdV[VX]);
+	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_Y")->setValue(gSavedSettings.getVector3d("FocusOffsetLeftShoulderView").mdV[VY]);
+	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_Z")->setValue(gSavedSettings.getVector3d("FocusOffsetLeftShoulderView").mdV[VZ]);
+	getChild<LLUICtrl>("FocusOffsetRightShoulderView_X")->setValue(gSavedSettings.getVector3d("FocusOffsetRightShoulderView").mdV[VX]);
+	getChild<LLUICtrl>("FocusOffsetRightShoulderView_Y")->setValue(gSavedSettings.getVector3d("FocusOffsetRightShoulderView").mdV[VY]);
+	getChild<LLUICtrl>("FocusOffsetRightShoulderView_Z")->setValue(gSavedSettings.getVector3d("FocusOffsetRightShoulderView").mdV[VZ]);
+
+	getChild<LLUICtrl>("CameraOffsetFrontView_X")->setValue(gSavedSettings.getVector3("CameraOffsetFrontView").mV[VX]);
+	getChild<LLUICtrl>("CameraOffsetFrontView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetFrontView").mV[VY]);
+	getChild<LLUICtrl>("CameraOffsetFrontView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetFrontView").mV[VZ]);
+	getChild<LLUICtrl>("CameraOffsetGroupView_X")->setValue(gSavedSettings.getVector3("CameraOffsetGroupView").mV[VX]);
+	getChild<LLUICtrl>("CameraOffsetGroupView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetGroupView").mV[VY]);
+	getChild<LLUICtrl>("CameraOffsetGroupView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetGroupView").mV[VZ]);
+	getChild<LLUICtrl>("CameraOffsetRearView_X")->setValue(gSavedSettings.getVector3("CameraOffsetRearView").mV[VX]);
+	getChild<LLUICtrl>("CameraOffsetRearView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetRearView").mV[VY]);
+	getChild<LLUICtrl>("CameraOffsetRearView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetRearView").mV[VZ]);
+	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_X")->setValue(gSavedSettings.getVector3("CameraOffsetLeftShoulderView").mV[VX]);
+	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetLeftShoulderView").mV[VY]);
+	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetLeftShoulderView").mV[VZ]);
+	getChild<LLUICtrl>("CameraOffsetRightShoulderView_X")->setValue(gSavedSettings.getVector3("CameraOffsetRightShoulderView").mV[VX]);
+	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetRightShoulderView").mV[VY]);
+	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetRightShoulderView").mV[VZ]);
 }
 
 void LLFloaterPreference::draw()
@@ -767,7 +855,10 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 
 	//LLPanelLogin::setAlwaysRefresh(true);
 	refresh();
-	
+
+	refreshGraphicControls();
+	refreshCameraControls();
+
 	// Make sure the current state of prefs are saved away when
 	// when the floater is opened.  That will make cancel do its
 	// job

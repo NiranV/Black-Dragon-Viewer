@@ -14,7 +14,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top="0"
  width="515"/>
@@ -66,7 +66,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -141,7 +141,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="15"
  width="515"/>
@@ -179,7 +179,10 @@
        left_pad="2"
        name="disable_this_popup"
        top_delta="0"
-       width="25"/>
+       width="25">
+		  <button.commit_callback
+                                 function="Pref.ClickDisablePopup"/>
+      </button>
 	  <panel
  follows="left|top|right"
  height="20"
@@ -187,7 +190,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="11"
  width="515"/>
@@ -225,5 +228,8 @@
        left_pad="2"
        name="enable_this_popup"
        top_delta="0"
-       width="25"/>
+       width="25">
+		  <button.commit_callback
+                                 function="Pref.ClickEnablePopup"/>
+      </button>
 </panel>

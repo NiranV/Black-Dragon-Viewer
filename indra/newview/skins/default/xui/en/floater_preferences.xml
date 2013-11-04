@@ -49,7 +49,7 @@
      tab_width="140"
      tab_padding_right="0"
      top="21"
-     width="658">
+     width="656">
         <panel
 	     class="panel_preference"
          filename="panel_preferences_general.xml"

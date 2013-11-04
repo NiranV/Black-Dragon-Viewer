@@ -49,7 +49,7 @@ width="510">
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top="0"
  width="515"/>
@@ -200,7 +200,7 @@ Usernames
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="13"
  width="515"/>
@@ -282,7 +282,7 @@ highlights
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="13"
  width="515"/>
@@ -577,7 +577,7 @@ highlights
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="22"
  width="515"/>
@@ -1586,7 +1586,7 @@ NOTE: Most of them wont need a restart.
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="23"
  width="515"/>

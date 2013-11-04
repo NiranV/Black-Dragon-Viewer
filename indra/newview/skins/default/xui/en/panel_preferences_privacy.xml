@@ -20,7 +20,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top="0"
  width="515"/>
@@ -87,7 +87,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -152,7 +152,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -229,7 +229,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -254,7 +254,10 @@
      left="10"
      name="block_list"
      top_pad="15"
-     width="145"/>
+     width="145">
+      <button.commit_callback
+            function="Pref.BlockList" />
+    </button>
     <text
      type="string"
      length="1"
@@ -278,7 +281,10 @@
      left="10"
      name="clear_web_cache"
      top_pad="12"
-     width="145"/>
+     width="145">
+      <button.commit_callback
+            function="Pref.WebClearCache" />
+    </button>
     <text
      type="string"
      length="1"

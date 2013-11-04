@@ -160,9 +160,16 @@ public:
 	void onCommitX(LLUICtrl* ctrl, const LLSD& param);
 	void onCommitY(LLUICtrl* ctrl, const LLSD& param);
 	void onCommitZ(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitXd(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitYd(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitZd(LLUICtrl* ctrl, const LLSD& param);
 
 //	//BD - Revert to Default
 	void resetToDefault(LLUICtrl* ctrl);
+
+//	//BD - Refresh all controls
+	void refreshGraphicControls();
+	void refreshCameraControls();
 
 	void onCommitParcelMediaAutoPlayEnable();
 	void onCommitMediaEnabled();

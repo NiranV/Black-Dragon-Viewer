@@ -37,7 +37,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top="0"
  width="515"/>
@@ -207,7 +207,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -303,7 +303,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -363,6 +363,7 @@
    name="MouseSmooth"
    width="256" />
    <check_box
+              enabled="false"
    control_name="AllowUIHidingInML"
    follows="left|top"
    enabled_control="EnableMouselook"
@@ -374,6 +375,7 @@
    name="MLInterfaceHide"
    width="256" />
    <check_box
+              enabled="false"
    control_name="AllowMouselookGrab"
    follows="left|top"
    enabled_control="EnableMouselook"
@@ -418,7 +420,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -447,7 +449,11 @@
    min_val="-4"
    name="CameraOffsetFrontView_X"
    top_pad="15"
-   width="242"/>
+   width="242">
+    <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="CameraOffsetFrontView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -462,7 +468,11 @@
    min_val="-4"
    name="CameraOffsetFrontView_Y"
    top_pad="2"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="CameraOffsetFrontView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -477,7 +487,11 @@
    min_val="-4"
    name="CameraOffsetFrontView_Z"
    top_pad="2"
-   width="242"/>
+   width="242">
+    <slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="CameraOffsetFrontView"/>
+      </slider>
    
    <slider
    decimal_digits="3"
@@ -493,7 +507,11 @@
    min_val="-4"
    name="FocusOffsetFrontView_X"
    top_delta="-34"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayXD"
+      parameter="FocusOffsetFrontView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -508,7 +526,11 @@
    min_val="-4"
    name="FocusOffsetFrontView_Y"
    top_pad="2"
-   width="235"/>
+   width="235">
+   <slider.commit_callback
+      function="Pref.ArrayYD"
+      parameter="FocusOffsetFrontView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -523,7 +545,11 @@
    min_val="-4"
    name="FocusOffsetFrontView_Z"
    top_pad="2"
-   width="235"/>
+   width="235">
+   <slider.commit_callback
+      function="Pref.ArrayZD"
+      parameter="FocusOffsetFrontView"/>
+      </slider>
    
    <panel
  follows="left|top|right"
@@ -532,7 +558,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -560,7 +586,11 @@
    min_val="-4"
    name="CameraOffsetGroupView_X"
    top_pad="15"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="CameraOffsetGroupView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -575,7 +605,11 @@
    min_val="-4"
    name="CameraOffsetGroupView_Y"
    top_pad="2"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="CameraOffsetGroupView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -590,7 +624,11 @@
    min_val="-4"
    name="CameraOffsetGroupView_Z"
    top_pad="2"
-   width="242"/>
+   width="242">
+   <slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="CameraOffsetGroupView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -605,7 +643,11 @@
    min_val="-4"
    name="FocusOffsetGroupView_X"
    top_delta="-34"
-   width="235"/>
+   width="235">
+   <slider.commit_callback
+      function="Pref.ArrayXD"
+      parameter="FocusOffsetGroupView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -620,7 +662,11 @@
    min_val="-4"
    name="FocusOffsetGroupView_Y"
    top_pad="2"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayYD"
+      parameter="FocusOffsetGroupView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -635,7 +681,11 @@
    min_val="-4"
    name="FocusOffsetGroupView_Z"
    top_pad="2"
-   width="235"/>
+   width="235">
+   <slider.commit_callback
+      function="Pref.ArrayZD"
+      parameter="FocusOffsetGroupView"/>
+      </slider>
    
    
    <panel
@@ -645,7 +695,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -673,7 +723,11 @@
    min_val="-4"
    name="CameraOffsetRearView_X"
    top_pad="15"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="CameraOffsetRearView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -688,7 +742,11 @@
    min_val="-4"
    name="CameraOffsetRearView_Y"
    top_pad="2"
-   width="235"/>
+   width="235">
+   <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="CameraOffsetRearView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -703,7 +761,11 @@
    min_val="-4"
    name="CameraOffsetRearView_Z"
    top_pad="2"
-   width="242"/>
+   width="242">
+   <slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="CameraOffsetRearView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -718,7 +780,11 @@
    min_val="-4"
    name="FocusOffsetRearView_X"
    top_delta="-34"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayXD"
+      parameter="FocusOffsetRearView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -733,7 +799,11 @@
    min_val="-4"
    name="FocusOffsetRearView_Y"
    top_pad="2"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayYD"
+      parameter="FocusOffsetRearView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -748,7 +818,11 @@
    min_val="-4"
    name="FocusOffsetRearView_Z"
    top_pad="2"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayZD"
+      parameter="FocusOffsetRearView"/>
+      </slider>
    
    <panel
  follows="left|top|right"
@@ -757,7 +831,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -785,7 +859,11 @@
    min_val="-4"
    name="CameraOffsetRightShoulderView_X"
    top_pad="15"
-   width="235"/>
+   width="235">
+   <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="CameraOffsetRigthShoulderView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -800,7 +878,11 @@
    min_val="-4"
    name="CameraOffsetRightShoulderView_Y"
    top_pad="2"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="CameraOffsetRigthShoulderView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -815,7 +897,11 @@
    min_val="-4"
    name="CameraOffsetRightShoulderView_Z"
    top_pad="2"
-   width="242"/>
+   width="242">
+   <slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="CameraOffsetRigthShoulderView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -830,7 +916,11 @@
    min_val="-4"
    name="FocusOffsetRightShoulderView_X"
    top_delta="-34"
-   width="235"/>
+   width="235">
+   <slider.commit_callback
+      function="Pref.ArrayXD"
+      parameter="FocusOffsetRigthShoulderView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -845,7 +935,11 @@
    min_val="-4"
    name="FocusOffsetRightShoulderView_Y"
    top_pad="2"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayXD"
+      parameter="FocusOffsetRigthShoulderView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -860,7 +954,11 @@
    min_val="-4"
    name="FocusOffsetRightShoulderView_Z"
    top_pad="2"
-   width="235"/>
+   width="235">
+   <slider.commit_callback
+      function="Pref.ArrayXD"
+      parameter="FocusOffsetRigthShoulderView"/>
+      </slider>
    
    <panel
  follows="left|top|right"
@@ -869,7 +967,7 @@
  bg_alpha_color="Black_50"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="1"
  name="title"
  top_pad="10"
  width="515"/>
@@ -897,7 +995,11 @@
    min_val="-4"
    name="CameraOffsetLeftShoulderView_X"
    top_pad="15"
-   width="235"/>
+   width="235">
+   <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="CameraOffsetLeftShoulderView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -912,7 +1014,11 @@
    min_val="-4"
    name="CameraOffsetLeftShoulderView_Y"
    top_pad="5"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="CameraOffsetLeftShoulderView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -927,7 +1033,11 @@
    min_val="-4"
    name="CameraOffsetLeftShoulderView_Z"
    top_pad="2"
-   width="242"/>
+   width="242">
+    <slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="CameraOffsetLeftShoulderView"/>
+      </slider>
    
    <slider
    decimal_digits="3"
@@ -943,7 +1053,11 @@
    min_val="-4"
    name="FocusOffsetLeftShoulderView_X"
    top_delta="-34"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayXD"
+      parameter="FocusOffsetLeftShoulderView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -958,7 +1072,11 @@
    min_val="-4"
    name="FocusOffsetLeftShoulderView_Y"
    top_pad="2"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayYD"
+      parameter="FocusOffsetLeftShoulderView"/>
+      </slider>
    <slider
    decimal_digits="3"
    follows="left|top"
@@ -973,7 +1091,11 @@
    min_val="-4"
    name="FocusOffsetLeftShoulderView_Z"
    top_pad="2"
-   width="235"/>
+   width="235">
+    <slider.commit_callback
+      function="Pref.ArrayZD"
+      parameter="FocusOffsetLeftShoulderView"/>
+      </slider>
   </panel>
  </scroll_container>
 </panel>
