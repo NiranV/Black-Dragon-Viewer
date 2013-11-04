@@ -1011,22 +1011,7 @@ bool LLAppViewer::init()
 	gGLManager.getGLInfo(gDebugInfo);
 	gGLManager.printGLInfoString();
 
-	// Load Default bindings
-	std::string key_bindings_file = gDirUtilp->findFile("keys.xml",
-														gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, ""),
-														gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
-
-
-	if (!gViewerKeyboard.loadBindingsXML(key_bindings_file))
-	{
-		std::string key_bindings_file = gDirUtilp->findFile("keys.ini",
-															gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, ""),
-															gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
-		if (!gViewerKeyboard.loadBindings(key_bindings_file))
-		{
-			LL_ERRS("InitInfo") << "Unable to open keys.ini" << LL_ENDL;
-		}
-	}
+	loadKeyboardlayout();
 
 	// If we don't have the right GL requirements, exit.
 	if (!gGLManager.mHasRequirements)
@@ -1204,6 +1189,24 @@ bool LLAppViewer::init()
 	LLAgentLanguage::init();
 
 	return true;
+}
+
+void LLAppViewer::loadKeyboardlayout()
+{
+	std::string key_bindings_file;
+	if (gSavedSettings.getBOOL("ShooterKeyLayout"))
+	{
+		key_bindings_file = gDirUtilp->findFile("keys_shooter.xml",	gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
+	}
+	else
+	{
+		key_bindings_file = gDirUtilp->findFile("keys.xml",	gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
+	}
+
+	if (!gViewerKeyboard.loadBindingsXML(key_bindings_file))
+	{
+		LL_ERRS("InitInfo") << "Unable to open keys.ini" << LL_ENDL;
+	}
 }
 
 void LLAppViewer::initMaxHeapSize()

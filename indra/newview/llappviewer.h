@@ -182,6 +182,8 @@ public:
 
 	// llcorehttp init/shutdown/config information.
 	LLAppCoreHttp & getAppCoreHttp()			{ return mAppCoreHttp; }
+
+	void loadKeyboardlayout();
 	
 protected:
 	virtual bool initWindow(); // Initialize the viewer's window.
