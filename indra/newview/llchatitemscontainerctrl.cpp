@@ -113,7 +113,7 @@ void	LLFloaterIMNearbyChatToastPanel::reshape		(S32 width, S32 height, BOOL call
 	LLRect msg_text_rect = msg_text->getRect();
 	LLRect avatar_rect = icon->getRect();
 	
-	avatar_rect.setLeftTopAndSize(2,height-2,avatar_rect.getWidth(),avatar_rect.getHeight());
+	avatar_rect.setLeftTopAndSize(3,height-3,avatar_rect.getWidth(),avatar_rect.getHeight());
 	icon->setRect(avatar_rect);
 
 
