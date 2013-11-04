@@ -328,11 +328,12 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 	}
 
     // 3. Flash FUI button
-    if (("toast" == user_preferences || "flash" == user_preferences) &&
-    		(CLOSED == conversations_floater_status
+    if (("toast" == user_preferences || "flash" == user_preferences)
+    	&& (CLOSED == conversations_floater_status
 		|| NOT_ON_TOP == conversations_floater_status)
 		&& !is_session_focused
-		&& !is_dnd_msg) //prevent flashing FUI button because the conversation floater will have already opened
+		&& !is_dnd_msg //prevent flashing FUI button because the conversation floater will have already opened
+		&& session_id.notNull()) //prevent local chat from making the chat button flash
 	{
 		if(!LLMuteList::getInstance()->isMuted(participant_id))
     {
