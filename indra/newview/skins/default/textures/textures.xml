@@ -247,9 +247,9 @@ with the same filename but different name
   <texture name="Info_Press" file_name="navbar/Info_Press.png" preload="false" />
 
   <texture name="Inspector_Background" file_name="windows/Inspector_Background.png" preload="false"
-           scale.left="4" scale.top="28" scale.right="60" scale.bottom="4" />
-  <texture name="Inspector_Hover" file_name="windows/Inspector_Hover.png" preload="false" />
-  <texture name="Inspector_I" file_name="windows/Inspector_I.png" preload="false" />
+           scale.left="4" scale.top="56" scale.right="26" scale.bottom="4" />
+  <texture name="Inspector_Hover" file_name="windows/Inspector_Hover.png" preload="false" scale.left="4" scale.top="56" scale.right="26" scale.bottom="4"/>
+  <texture name="Inspector_I" file_name="windows/Inspector_I.png" preload="false"/>
 
   <texture name="Inv_Alpha" file_name="icons/Inv_Alpha.png" preload="false" />
   <texture name="Inv_Animation" file_name="icons/Inv_Animation.png" preload="false" />
@@ -589,9 +589,9 @@ with the same filename but different name
 
   <texture name="Toast_CloseBtn" file_name="windows/Toast_CloseBtn.png" preload="true" />
   <texture name="Toast_Background" file_name="windows/Toast_Background.png" preload="true"
-           scale.left="4" scale.top="28" scale.right="60" scale.bottom="4" />
+           scale.left="4" scale.top="56" scale.right="26" scale.bottom="4" />
   <texture name="Toast_Over" file_name="windows/Toast_Over.png" preload="true"
-           scale.left="4" scale.top="28" scale.right="60" scale.bottom="4" />
+           scale.left="4" scale.top="56" scale.right="26" scale.bottom="4" />
 
   <texture name="Tool_Create" file_name="build/Tool_Create.png" preload="false" />
   <texture name="Tool_Dozer" file_name="build/Tool_Dozer.png" preload="false" />
@@ -624,7 +624,7 @@ with the same filename but different name
   <texture name="DownArrow_Off" file_name="icons/DownArrow_Off.png" preload="false" />
 
     <texture name="Volume_Background" file_name="windows/Volume_Background.png" preload="false"
-           scale.left="6" scale.top="33" scale.right="63" scale.bottom="10" />
+           scale.left="4" scale.top="56" scale.right="26" scale.bottom="4" />
 
   <texture name="VoicePTT_Lvl1" file_name="bottomtray/VoicePTT_Lvl1.png" preload="false" />
   <texture name="VoicePTT_Lvl2" file_name="bottomtray/VoicePTT_Lvl2.png" preload="false" />
@@ -756,8 +756,8 @@ with the same filename but different name
   <texture name="Audio_Off_Old" file_name="icons/Audio_Off_Old.png" preload="true" />-->
   <texture name="Draw_Distance" file_name="icons/Draw_Distance.png" preload="true" />
   
-  <texture name="Toast_Background_Round" file_name="windows/Toast_Background_Round.png" preload="true" scale.left="6" scale.top="26" scale.right="58" scale.bottom="6" />
-  <texture name="Toast_Over_Round" file_name="windows/Toast_Over_Round.png" preload="true" scale.left="6" scale.top="80" scale.right="191" scale.bottom="6" />
+  <texture name="Toast_Background_Round" file_name="windows/Toast_Background_Round.png" preload="true" scale.left="4" scale.top="24" scale.right="26" scale.bottom="4" />
+  <texture name="Toast_Over_Round" file_name="windows/Toast_Over_Round.png" preload="true" scale.left="4" scale.top="24" scale.right="26" scale.bottom="4" />
   
   <texture name="transparentj2c" file_name="transparent.j2c" preload="true" />
   
