@@ -536,7 +536,7 @@ void LLStatusBar::onMouseEnterDrawDistance()
 										draw_distance_rect.getWidth(),
 										draw_distance_rect.getHeight());
 	// force onscreen
-	draw_distance_rect.translate(popup_holder->getRect().getWidth() - draw_distance_rect.mRight - 57, 0);
+	draw_distance_rect.translate(popup_holder->getRect().getWidth() - draw_distance_rect.mRight - 67, 0);
 	
 	// show the draw distance pull-down
 	mPanelDrawDistance->setShape(draw_distance_rect);
