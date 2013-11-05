@@ -13,13 +13,14 @@
   title=""
   width="560">
   <layout_stack
-    bottom="400"
+    top="20"
     follows="left|right|top|bottom"
     layout="topleft"
     left="5"
+    width="555"
+    height="382"
     name="stack1"
-    orientation="vertical"
-    top="18">
+    orientation="vertical">
     <layout_panel
       auto_resize="false"
       height="28"
@@ -27,7 +28,6 @@
       left="0"
       min_height="28"
       name="nav_controls"
-      top="400"
       width="395">
       <button
         image_overlay="Arrow_Left_Off"

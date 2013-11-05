@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
 name="floater_web_profile"
-width="400"
+width="560"
 background_color="FloaterDefaultBackgroundColor"
 height="400"
 filename="floater_web_content.xml"/>
