@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
  background_visible="false"
- height="25"
+ height="27"
  label="friend_online_status"
  layout="topleft"
  left="0"
@@ -13,10 +13,10 @@
 	 height="19"
 	 image_name="Generic_Person"
 	 layout="topleft"
-	 left="3"
+	 left="4"
 	 mouse_opaque="false"
 	 name="avatar_icon"
-	 top="3"
+	 top="4"
 	 width="19" />
     <text
      font="SansSerifSmall"
@@ -26,7 +26,7 @@
      left_pad="5"
      name="message"
      text_color="White"
-     top="6"
+     top="7"
      use_ellipses="true"
      value=""
      width="189"
