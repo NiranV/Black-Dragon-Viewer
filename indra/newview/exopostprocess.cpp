@@ -28,7 +28,6 @@
 LLVector3	exoPostProcess::sExodusRenderGamma;
 LLVector3	exoPostProcess::sExodusRenderExposure;
 LLVector3	exoPostProcess::sExodusRenderOffset;
-BOOL		exoPostProcess::sExodusRenderHighPrecision;
 GLuint		exoPostProcess::sExodusRenderColorFormat;
 F32			exoPostProcess::sExodusRenderToneExposure;
 BOOL		exoPostProcess::sExodusRenderToneMapping;
@@ -60,7 +59,6 @@ exoPostProcess::exoPostProcess()
 	sExodusRenderGamma = LLVector3(1.f, 1.f, 1.f);
 	sExodusRenderExposure = LLVector3(1.f, 1.f, 1.f);
 	sExodusRenderOffset = LLVector3(1.f, 1.f, 1.f);
-	sExodusRenderHighPrecision = FALSE;
 	sExodusRenderColorFormat = GL_RGBA8;
 	sExodusRenderToneExposure = 1.f;
 	sExodusRenderToneMapping = FALSE;
@@ -115,7 +113,6 @@ void exoPostProcess::ExodusRenderPostSettingsUpdate()
 	sExodusRenderGamma = gSavedSettings.getVector3("ExodusRenderGamma");
 	sExodusRenderExposure = gSavedSettings.getVector3("ExodusRenderExposure");
 	sExodusRenderOffset = gSavedSettings.getVector3("ExodusRenderOffset");
-	sExodusRenderHighPrecision = gSavedSettings.getBOOL("ExodusRenderHighPrecision");
 	sExodusRenderColorFormat = GL_RGBA16F_ARB;
 	sExodusRenderToneExposure = gSavedSettings.getF32("ExodusRenderToneExposure");
 	sExodusRenderToneMapping = gSavedSettings.getBOOL("ExodusRenderToneMapping");
@@ -130,14 +127,6 @@ void exoPostProcess::ExodusRenderPostSettingsUpdate()
 	sExodusRenderToneAdvOptA = gSavedSettings.getVector3("ExodusRenderToneAdvOptA");
 	sExodusRenderToneAdvOptB = gSavedSettings.getVector3("ExodusRenderToneAdvOptB");
 	sExodusRenderToneAdvOptC = gSavedSettings.getVector3("ExodusRenderToneAdvOptC");
-	
-	if (sExodusRenderHighPrecision)
-	{
-		if (!gPipeline.RenderDeferred)
-		{
-			sExodusRenderHighPrecision = FALSE;
-		}
-	}
 	
 	if (sExodusRenderToneMapping)
 	{

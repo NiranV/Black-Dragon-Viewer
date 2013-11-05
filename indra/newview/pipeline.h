@@ -612,7 +612,6 @@ public:
 	static S32				sVisibleLightCount;
 	static F32				sMinRenderSize;
 	static BOOL				sRenderingHUDs;
-	static BOOL             sExodusRenderHighPrecision;
 	static BOOL             sExodusRenderShaderGamma;
 	static BOOL             sExodusRenderToneMapping;
 

@@ -15909,17 +15909,6 @@
           <real>0</real>
       </array>
   </map>
-  <key>ExodusRenderHighPrecision</key>
-  <map>
-    <key>Comment</key>
-    <string>Do we want floating point 64-bit frame buffers?</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
   <key>ExodusRenderToneExposure</key>
   <map>
     <key>Comment</key>

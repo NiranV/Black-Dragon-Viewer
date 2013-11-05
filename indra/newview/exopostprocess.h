@@ -76,7 +76,6 @@ public:
 	static LLVector3	sExodusRenderGamma;
 	static LLVector3	sExodusRenderExposure;
 	static LLVector3	sExodusRenderOffset;
-	static BOOL			sExodusRenderHighPrecision;
 	static GLuint		sExodusRenderColorFormat;
 	static F32			sExodusRenderToneExposure;
 	static BOOL			sExodusRenderToneMapping;

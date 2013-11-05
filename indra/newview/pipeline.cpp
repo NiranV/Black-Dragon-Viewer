@@ -697,7 +697,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
 	connectRefreshCachedSettingsSafe("ExodusRenderOffset");
 	connectRefreshCachedSettingsSafe("ExodusRenderExposure");
-	connectRefreshCachedSettingsSafe("ExodusRenderHighPrecision");
 	connectRefreshCachedSettingsSafe("ExodusRenderToneExposure");
 	connectRefreshCachedSettingsSafe("ExodusRenderToneMapping");
 	connectRefreshCachedSettingsSafe("ExodusRenderVignette");
