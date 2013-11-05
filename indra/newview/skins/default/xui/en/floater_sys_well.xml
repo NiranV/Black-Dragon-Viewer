@@ -29,8 +29,8 @@
     </string>
 
     <flat_list_view
-	    color="FloaterDefaultBackgroundColor"
 	    follows="all"
+		color="Transparent"
 	    layout="topleft"
 	    name="notification_list"
 	    left="1"
