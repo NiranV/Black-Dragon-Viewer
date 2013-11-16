@@ -173,15 +173,15 @@ BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 	{
 		llinfos << "(same object re-attached)" << llendl;
 		removeObject(object);
+		llinfos << "removed double object" << llendl;
 		// Pass through anyway to let setupDrawable()
 		// re-connect object to the joint correctly
 	}
-
+	llinfos << "getting attachment ID" << llendl;
 // [SL:KB] - Patch: Appearance-Misc | Checked: 2011-01-13 (Catznip-2.4)
 	// LLViewerJointAttachment::removeObject() sets the object's item to the NULL UUID so we need to extract it *after* the block above
 	object->extractAttachmentItemID();
 // [/SL:KB]
-
 	// Two instances of the same inventory item attached --
 	// Request detach, and kill the object in the meantime.
 	if (getAttachedObject(object->getAttachmentItemID()))
@@ -193,8 +193,9 @@ BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 		LLVOAvatarSelf::detachAttachmentIntoInventory(object->getAttachmentItemID());
 		return FALSE;
 	}
-
+	llinfos << "pushing back attached objects" << llendl;
 	mAttachedObjects.push_back(object);
+	llinfos << "setting up drawable" << llendl;
 	setupDrawable(object);
 	
 	if (mIsHUDAttachment)
@@ -214,7 +215,9 @@ BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 			}
 		}
 	}
+	llinfos << "calculating LoD" << llendl;
 	calcLOD();
+	llinfos << "updating Xform" << llendl;
 	mUpdateXform = TRUE;
 	
 	return TRUE;
