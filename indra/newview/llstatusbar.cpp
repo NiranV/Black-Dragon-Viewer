@@ -89,7 +89,6 @@
 
 // Black Dragon
 #include "bdpaneldrawdistance.h"
-
 //
 // Globals
 //

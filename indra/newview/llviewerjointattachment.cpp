@@ -182,6 +182,7 @@ BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 	// LLViewerJointAttachment::removeObject() sets the object's item to the NULL UUID so we need to extract it *after* the block above
 	object->extractAttachmentItemID();
 // [/SL:KB]
+
 	// Two instances of the same inventory item attached --
 	// Request detach, and kill the object in the meantime.
 	if (getAttachedObject(object->getAttachmentItemID()))

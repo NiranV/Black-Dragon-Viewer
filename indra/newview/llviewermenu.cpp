@@ -128,10 +128,10 @@
 #include "llpathfindingmanager.h"
 #include "boost/unordered_map.hpp"
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
+#include "rlvactions.h"
 #include "rlvhandler.h"
 #include "rlvlocks.h"
 // [/RLVa:KB]
-
 #include "piemenu.h"	// pie Menu
 
 using namespace LLAvatarAppearanceDefines;
@@ -4024,7 +4024,7 @@ class LLEditEnableCustomizeAvatar : public view_listener_t
 	{
 //		bool new_value = gAgentWearables.areWearablesLoaded();
 // [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.2.0c) | Modified: RLVa-1.0.0g
-		bool new_value = gAgentWearables.areWearablesLoaded() && ((!rlv_handler_t::isEnabled()) || (gRlvHandler.canStand()));
+		bool new_value = gAgentWearables.areWearablesLoaded() && ((!rlv_handler_t::isEnabled()) || (RlvActions::canStand()));
 // [/RLVa:KB]
 		return new_value;
 	}
@@ -4137,7 +4137,7 @@ class LLLandSit : public view_listener_t
 	bool handleEvent(const LLSD& userdata)
 	{
 // [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Modified: RLVa-1.2.1f
-		if ( (rlv_handler_t::isEnabled()) && ((!gRlvHandler.canStand()) || (gRlvHandler.hasBehaviour(RLV_BHVR_SIT))) )
+		if ( (rlv_handler_t::isEnabled()) && ((!RlvActions::canStand()) || (gRlvHandler.hasBehaviour(RLV_BHVR_SIT))) )
 			return true;
 // [/RLVa:KB]
 
@@ -4681,7 +4681,7 @@ void handle_take_copy()
 	if (LLSelectMgr::getInstance()->getSelection()->isEmpty()) return;
 
 // [RLVa:KB] - Checked: 2010-03-07 (RLVa-1.2.0c) | Modified: RLVa-1.2.0a
-	if ( (rlv_handler_t::isEnabled()) && (!gRlvHandler.canStand()) )
+	if ( (rlv_handler_t::isEnabled()) && (!RlvActions::canStand()) )
 	{
 		// Allow only if the avie isn't sitting on any of the selected objects
 		LLObjectSelectionHandle hSel = LLSelectMgr::getInstance()->getSelection();
@@ -6242,7 +6242,7 @@ bool enable_object_stand_up()
 	// 'Object Stand Up' menu item is enabled when agent is sitting on selection
 //	return sitting_on_selection();
 // [RLVa:KB] - Checked: 2010-07-24 (RLVa-1.2.0g) | Added: RLVa-1.2.0g
-	return sitting_on_selection() && ( (!rlv_handler_t::isEnabled()) || (gRlvHandler.canStand()) );
+	return sitting_on_selection() && ( (!rlv_handler_t::isEnabled()) || (RlvActions::canStand()) );
 // [/RLVa:KB]
 }
 
@@ -9410,14 +9410,14 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
 
-	commit.add("World.SaveCamera", boost::bind(&LLAgentCamera::saveCamera, &gAgentCamera));
-	commit.add("World.LoadCamera", boost::bind(&LLAgentCamera::loadSavedCamera, &gAgentCamera));
-	
 // [RLVa:KB] - Checked: 2010-04-23 (RLVa-1.2.0g) | Added: RLVa-1.2.0
 	commit.add("RLV.ToggleEnabled", boost::bind(&rlvMenuToggleEnabled));
 	enable.add("RLV.CheckEnabled", boost::bind(&rlvMenuCheckEnabled));
 	if (rlv_handler_t::isEnabled())
 	{
+		enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
+	}
+// [/RLVa:KB]
 		enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
 	}
 // [/RLVa:KB]

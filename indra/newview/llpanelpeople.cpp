@@ -78,6 +78,7 @@
 #include "rlvhandler.h"
 // [/RLVa:KB]
 
+
 #define FRIEND_LIST_UPDATE_TIMEOUT	0.5
 #define NEARBY_LIST_UPDATE_INTERVAL 1
 
