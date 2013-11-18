@@ -2474,8 +2474,6 @@ void LLAgent::onAnimStop(const LLUUID& id)
 			clearAFK();
 #else
 			clearAFK();
-#else
-		clearAFK();
 #endif // RLV_EXTENSION_CMD_ALLOWIDLE
 // [/RLVa:KB]
 	}

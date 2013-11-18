@@ -1767,8 +1767,8 @@ BOOL LLToolPie::handleRightClickPick()
 					}
 					else
 					{
-					gMenuAttachmentOther->show(x, y);
-				}
+						gMenuAttachmentOther->show(x, y);
+					}
 				}
 				else
 				{
@@ -1779,15 +1779,8 @@ BOOL LLToolPie::handleRightClickPick()
 					}
 					else
 					{
-					gMenuAvatarOther->show(x, y);
-				}
-// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
-			}
-			else
-			{
-				make_ui_sound("UISndInvalidOp");
-			}
-// [/RLVa:KB]
+						gMenuAvatarOther->show(x, y);
+					}
 				}
 // [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
 			}
@@ -1841,7 +1834,7 @@ BOOL LLToolPie::handleRightClickPick()
 				}
 				else
 				{
-				gMenuObject->show(x, y);
+					gMenuObject->show(x, y);
 				}
 
 				showVisualContextMenuEffect();

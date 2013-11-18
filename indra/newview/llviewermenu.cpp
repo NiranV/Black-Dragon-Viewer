@@ -9418,7 +9418,4 @@ void initialize_menus()
 		enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
 	}
 // [/RLVa:KB]
-		enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
-	}
-// [/RLVa:KB]
 }

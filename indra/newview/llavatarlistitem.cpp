@@ -301,9 +301,6 @@ BOOL LLAvatarListItem::handleDoubleClick(S32 x, S32 y, MASK mask)
 		onInfoBtnClick();
 		return TRUE;
 	}
-// [SL:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
-	if ( (mProfileBtn->getVisible()) && (mProfileBtn->getEnabled()) && (mProfileBtn->getRect().pointInRect(x, y)) )
-// [/SL:KB]
 	return LLPanel::handleDoubleClick(x, y, mask);
 }
 
