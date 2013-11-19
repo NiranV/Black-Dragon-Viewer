@@ -596,15 +596,17 @@ void main()
 		col = mix(col, diffuse.rgb, diffuse.a);
 		
 		// Add environmentmap
-		if(false)if (envIntensity > 0.0)
-		{
-			vec3 env_vec = env_mat * refnormpersp;
-			
-			vec3 refcol = textureCube(environmentMap, env_vec).rgb;
-
-			col = mix(col.rgb, refcol, 
-				envIntensity);  
-		}
+		#ifdef ENV_SHINY_ALLOWED
+			if (envIntensity > 0.0)
+			{
+				vec3 env_vec = env_mat * refnormpersp;
+				
+				vec3 refcol = textureCube(environmentMap, env_vec).rgb;
+	
+				col = mix(col.rgb, refcol, 
+					envIntensity);  
+			}
+		#endif
 						
 		if (norm.w < 0.5)
 		{
