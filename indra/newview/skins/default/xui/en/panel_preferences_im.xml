@@ -28,34 +28,15 @@ width="510">
  height="12"
  width="350"
  top_delta="4">
- Instant Message and Group Message Options:
+ Instant Message Options:
  </text>
- <check_box
- control_name="EnableGroupChatPopups"
- name="EnableGroupChatPopups"
- label="Enable Group Chat Pop-ups" 
- layout="topleft"
- top_pad="15" 
- left="10" 
- height="16"
- tool_tip="Check to see popups when a Group Chat message arrives"
- width="400" />
- <check_box
- control_name="EnableIMChatPopups"
- name="EnableIMChatPopups"
- label="Enable IM Chat Pop-ups" 
- layout="topleft"
- top_pad="0"
- height="16"
- tool_tip="Check to see popups when an instant message arrives"
- width="400" />
  <check_box
  height="16"
  label="Email me IMs when I'm offline"
  layout="topleft"
  left_delta="0"
  name="send_im_to_email"
- top_pad="0"
+ top_pad="15"
  width="400" />
  <!--<text
  name="email_address"
