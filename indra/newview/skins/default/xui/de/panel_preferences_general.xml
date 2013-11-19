@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Allgemein" name="general_panel">
 	<text name="language_textbox">
 		Sprache:
@@ -7,23 +7,22 @@
 		<combo_box.item label="Systemvorgabe" name="System Default Language"/>
 		<combo_box.item label="English (Englisch)" name="English"/>
 		<combo_box.item label="Danks (Dänisch) - Beta" name="Danish"/>
-		<combo_box.item label="Deutsch - Beta" name="Deutsch(German)"/>
+		<combo_box.item label="Deutsch - wird gewartet von Niran" name="Deutsch(German)"/>
 		<combo_box.item label="Español (Spanisch) - Beta" name="Spanish"/>
 		<combo_box.item label="Français (Französisch) - Beta" name="French"/>
 		<combo_box.item label="Italiano (Italienisch) - Beta" name="Italian"/>
+		<combo_box.item label="Nederlands (Niederländisch) - Beta" name="Dutch"/>
 		<combo_box.item label="Polski (Polnisch) - Beta" name="Polish"/>
 		<combo_box.item label="Português (Portugiesisch) - Beta" name="Portugese"/>
-		<combo_box.item label="Русский (Russisch) – Beta" name="Russian"/>
-		<combo_box.item label="Türkçe (Türkisch) – Beta" name="Turkish"/>
 		<combo_box.item label="日本語 (Japanisch) - Beta" name="(Japanese)"/>
-		<combo_box.item label="正體中文 (Traditionelles Chinesisch) – Beta" name="Traditional Chinese"/>
 	</combo_box>
 	<text name="language_textbox2">
 		(Erfordert Neustart)
 	</text>
 	<text name="maturity_desired_prompt">
-		Ich möchte folgende Inhalte sehen:
+		Zeige inhalte für:
 	</text>
+	<text name="maturity_desired_textbox"/>
 	<combo_box name="maturity_desired_combobox">
 		<combo_box.item label="Generell, Moderat, Adult" name="Desired_Adult"/>
 		<combo_box.item label="Generell und Moderat" name="Desired_Mature"/>
@@ -37,6 +36,7 @@
 		<combo_box.item label="Mein Zuhause" name="MyHome" tool_tip="Als Standardeinstellung in Zuhauseposition anmelden."/>
 	</combo_box>
 	<check_box initial_value="true" label="Beim Anmelden anzeigen" name="show_location_checkbox"/>
+	<check_box label="Grid Auswahl beim Login anzeigen" name="show_grid_selection_check"/>
 	<text name="name_tags_textbox">
 		Avatarnamen:
 	</text>
@@ -45,21 +45,33 @@
 		<radio_item label="An" name="radio2" value="1"/>
 		<radio_item label="Kurz anzeigen" name="radio3" value="2"/>
 	</radio_group>
-	<check_box label="Mein Name" name="show_my_name_checkbox1"/>
-	<check_box label="Benutzernamen" name="show_slids" tool_tip="Benutzernamen wie berndschmidt123 anzeigen"/>
-	<check_box label="Gruppentitel" name="show_all_title_checkbox1" tool_tip="Gruppentitel wie „Vorstand“ oder „Mitglied“"/>
-	<check_box label="Freunde hervorheben" name="show_friends" tool_tip="Avatarnamen Ihrer Freunde hervorheben"/>
-	<check_box label="Anzeigenamen anzeigen" name="display_names_check" tool_tip="Aktivieren Sie diese Option, um Anzeigenamen in Chat, IM, Avatarnamen usw. zu verwenden."/>
-	<text name="inworld_typing_rg_label">
-		Drücken von Buchstabentasten:
+	<slider label="Ausblendzeit (s):" name="name_fade_slider"/>
+	<slider label="Ausblenden nach (s):" name="name_start_fade_slider"/>
+	<check_box label="Meinen Namen anzeigen" name="show_my_name_checkbox1"/>
+	<check_box initial_value="true" label="Kleine Avatarnamen" name="small_avatar_names_checkbox"/>
+	<check_box label="Gruppentitel anzeigen" name="show_all_title_checkbox1"/>
+	<check_box label="Anzeigenamen anzeigen" name="show_display_names_checkbox1"/>
+	<check_box label="Freundnamen vorheben" name="show_friends_checkbox1"/>
+	<check_box label="Accountnamen anzeigen" name="show_usernames_checkbox1"/>
+	<check_box label="Anzeigenamen erlauben" name="display_names_check"/>
+	<text name="login_options">
+		Login Optionen:
 	</text>
-	<radio_group name="inworld_typing_preference">
-		<radio_item label="Startet lokalen Chat" name="radio_start_chat" value="1"/>
-		<radio_item label="Beeinflusst Bewegung (z. B. WASD)" name="radio_move" value="0"/>
-	</radio_group>
+	<check_box label="Automatisch anmelden" name="Auto_login"/>
+	<check_box label="Fliegen beim Login" name="Flying_At_Exit" tool_tip="Automatisch Flug Modus einschalten wenn du dich fliegend abgemeldet hast"/>
+	<text name="effects_color_textbox">
+		Meine Effekte:
+	</text>
 	<text name="title_afk_text">
 		Zeit bis zur Abwesenheit:
 	</text>
+	<text name="fade_duration_textbox">
+		Ausblendlänge:
+	</text>
+	<text name="start_fading_textbox">
+		Ausblenden nach (sek):
+	</text>
+	<color_swatch label="" name="effect_color_swatch" tool_tip="Klicken Sie hier, um die Farbauswahl zu öffnen"/>
 	<combo_box label="Timeout für Abwesenheit:" name="afk">
 		<combo_box.item label="2 Minuten" name="item0"/>
 		<combo_box.item label="5 Minuten" name="item1"/>
@@ -68,9 +80,28 @@
 		<combo_box.item label="Nie" name="item4"/>
 	</combo_box>
 	<text name="text_box3">
-		Nicht-stören-Antwort:
+		Antwort, wenn im „Beschäftigt“-Modus:
 	</text>
-	<text_editor name="do_not_disturb_response">
+	<text name="name_colors">
+		Avatarnamen Farben:
+	</text>
+	<text name="same">
+		gleiche
+Anzeige &amp; Accountnamen
+	</text>
+	<text name="diffs">
+		verschiedene
+Anzeige &amp; Accountname
+	</text>
+	<text name="highlighted">
+		hervorgehobene
+Freundesnamen
+	</text>
+	<text name="legacy">
+		alte Standart
+Accountnamen
+	</text>
+	<text_editor name="busy_response">
 		log_in_to_change
 	</text_editor>
 </panel>

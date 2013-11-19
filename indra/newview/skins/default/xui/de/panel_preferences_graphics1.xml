@@ -1,114 +1,261 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Grafik" name="Display panel">
+	<text name="gfx_preset_label">
+		Grafik Voreinstellung:
+	</text>
+	<button label="Speichern" name="preset_save"/>
+	<button label="Laden" name="preset_load"/>
+	<text name="Font DPI:">
+		Schriftgröße:
+	</text>
+	<text name="Fullscreen Ratio:">
+		Bildverhältnis:
+	</text>
+	<text name="ultrasettings_label">
+		* = SL Ultra Einstellung
+	</text>
+	<layout_stack name="general_stack">
+	<layout_panel name="general_panel">
+	<text name="general_label">
+		Allgemeine Einstellungen:
+	</text>
+		<checkbox label="Vollbildmodus" tool_tip="Startet den Viewer beim nächsten mal im Vollbildmodus" name="Fullscreen"/>
+	</layout_panel>
+	<layout_panel name="fullscreen_panel">
+		<checkbox label="Automatisches Bildformat" tool_tip="Wählt das passenste Bildformat automatisch aus" name="FullAspect"/>
+	</layout_panel>
+	<layout_panel name="options_panel">
+		<text name="shader_label">
+			Shader Einstellungen:
+		</text>
+		<checkbox label="Reliefzuordnung" tool_tip="Erlaubt Bumpmapping (Reliefzuordnung) und Glanzeffekte die das Licht in der Umgebung reflektieren" name="BumpShiny"/>
+		<checkbox label="Vertex Shader" tool_tip="Erlaubt erweiterte Himmel/Wasser und Leuchteffekte auch bekannt als Windlight" name="VertexShader"/>
+		<checkbox label="Atmosphären Shader" tool_tip="Fügt dem Vertex Shader noch mehr Realismus hinzu in dem Textur Wolken eingesetzt werden und die Beleuchtung etwas realistischer berechnet wird" name="WindLightUseAtmosShaders"/>
+		<checkbox label="Animierte Bäume" tool_tip="Animierte Bäume bewegt Bäume im Wind um ihnen Leben einzuhauchen , aber Achtung diese Option lässt selbst den härtesten High End PC brechen wie ein Zahnstocher" name="AnimateTrees"/>
+		<checkbox label="Dynamisches Level-Of-Detail" tool_tip="Dynamisches LOD (Level of Detail/ Detailstufen) sorgt dafür das auf Distanz Objekte nahezu unbemerkt mit weniger Details dargestellt werden , das kann ein wenig Geschwindigkeit geben" name="DynamicLOD"/>
+		<checkbox label="Objekt-Objekt Verdeckung" tool_tip="Verdeckung sorgt dafür das Objekte hinter Objekten versteckt werden (nicht gerendert) um so Performance zu sparen , sollte bei aktiven Deferred Renderer ausgeschaltet werden!" name="UseOcclusion"/>
+		<checkbox label="Transparentwasser" tool_tip="Stellt Wasser wahlweise Transparent dar, oder wenn deaktiviert , mit einer einfachen nicht transparenten Textur" name="RenderTransparentWater"/>
+		<checkbox label="Einfache Avatare" tool_tip="Ersetzt zuviele Avatare durch 2D Sprites (Texturen) um an Geschwindigkeit zu gewinnen" name="AvatarImpostors"/>
+		<checkbox label="Hautberechnung" tool_tip="Hardware Hautberechnung sorgt für alle Vorbereitungen um Avatar Kleidung zu Simulieren (Kleidersimulation) und kann zudem auf manchen Systemen zu Geschwindigkeitszuwachs führen" name="AvatarVertexProgram"/>
+		<checkbox label="Kleidersimulation" tool_tip="Simuliert Kleiderbewegungen im Wind und durch Bewegungen , funktioniert mit aktiven Deferred Renderer nicht mehr" name="AvatarCloth"/>
+		<checkbox label="Avatar Physik" tool_tip="Simuliert die natürlichen Physikalischen bewegungen des Körpers" name="AvatarPhysics"/>
+		<checkbox label="Angehängte Lichter" tool_tip="Schaltet angehängte Lichtquellen aus , z.B Facelights" name="attached_lights"/>
+		<checkbox label="Angehängte Partikel" tool_tip="Schaltet angehängte Partikel von Objekten aus" name="attached_particles"/>
+	</layout_panel>
+	<layout_panel name="windlight_panel">
+		<checkbox label="Leuchteffekte" tool_tip="Schaltet Leuchteffekte (Glow) ein oder aus" name="Glow"/>
+	</layout_panel>
+	<layout_panel name="deferred_panel">
+		<checkbox label="Deferred Renderer" tool_tip="Der Deferred Renderer sorgt für noch realistischere Umgebungsbeläuchtung , zudem können Schatten angezeigt werden und Projektionslichter werden möglich" name="Deferred"/>
+	</layout_panel>
+	<layout_panel name="deferred_panel2">
+		<checkbox label="Deferred Lichter" tool_tip="Schaltet die Lichter im Deferred Renderer ein oder aus" name="UseLightShaders"/>
+		<checkbox label="High Precision Renderer" tool_tip="Schaltet den Deferred Renderer auf Hochprezisions Floating Pointers um um so ein sauberes , stufenloseres Bild zu erzeugen" name="HighPrecision"/>
+		<checkbox label="Tone Mapping" tool_tip="Schaltet Tone Mapping (Dynamikkompression) zusätzlich zur Gamma Korrektur hinzu , benötigt wird Gamma Korrektur" name="ToneMapping"/>
+		<checkbox label="Umgebungsverdeckung" tool_tip="Umgebungsverdeckung oder auch SSAO genannt sorgt für mehr Realität indem Schatten weichgezeichnet werden und eine Subtile Beleuchtung entstehen kann (dunkle Rillen)" name="UseSSAO"/>
+		<checkbox label="Tiefenunschärfe" tool_tip="Simuliert Tiefenschärfe Effekte wie bei einer Kamera" name="UseDoF"/>
+	</layout_panel>
+	<layout_panel name="dof_panel">
+		<checkbox label="Unterwassertrübung" tool_tip="Simuliert mithilfe von Tiefenschärfe einen Unterwasser Sicht-Verschlechterungs Effekt" name="RenderUWDistortion"/>
+	</layout_panel>
+	</layout_stack>
+	<combo_box name="DDistance" tooltip="Kontrolliert die Sichtweite in Meter"/>
+	<text name="InterfaceSize">
+		Oberflächengröße:
+	</text>
 	<text name="QualitySpeed">
-		Qualität und Geschwindigkeit:
+		Gesamtqualität (!):
 	</text>
-	<text name="FasterText">
-		Schneller
+	<text name="RenderFarClip">
+		Sichtweite:
 	</text>
-	<text name="BetterText">
-		Besser
+	<text name="MaxParticles">
+		Max. Partikelanzahl:
 	</text>
-	<text name="ShadersPrefText">
-		Niedrig
+	<text name="MaxAvatars">
+		Max. Avataranzahl:
 	</text>
-	<text name="ShadersPrefText2">
-		Mittel
+	<text name="LightAmount">
+		Lichter Anzahl:
 	</text>
-	<text name="ShadersPrefText3">
-		Hoch
+	<text name="GlowResolution">
+		Nachbearbeitung:
 	</text>
-	<text name="ShadersPrefText4">
-		Ultra
+	<text name="TerrainTexQuality">
+		Bodentextur Qualität:
 	</text>
-	<panel label="CustomGraphics" name="CustomGraphics Panel">
-		<text name="ShadersText">
-			Shader:
-		</text>
-		<check_box initial_value="true" label="Transparentes Wasser" name="TransparentWater"/>
-		<check_box initial_value="true" label="Bumpmapping und Glanz" name="BumpShiny"/>
-		<check_box initial_value="true" label="Lokale Lichtquellen" name="LocalLights"/>
-		<check_box initial_value="true" label="Einfache Shader" name="BasicShaders" tool_tip="Deaktivieren Sie diese Option, wenn der Grafikkartentreiber Abstürze verursacht"/>
-		<check_box initial_value="true" label="Atmosphären-Shader" name="WindLightUseAtmosShaders"/>
-		<check_box initial_value="true" label="Erweitertes Beleuchtungsmodell" name="UseLightShaders"/>
-		<check_box initial_value="true" label="Ambient Occlusion" name="UseSSAO"/>
-		<check_box initial_value="true" label="Schärfentiefe" name="UseDoF"/>
-		<text name="shadows_label">
-			Schatten:
-		</text>
-		<combo_box name="ShadowDetail">
-			<combo_box.item label="Keine" name="0"/>
-			<combo_box.item label="Sonne/Mond" name="1"/>
-			<combo_box.item label="Sonne/Mond + Projektoren" name="2"/>
-		</combo_box>
-		<text name="reflection_label">
-			Wasserreflexionen:
-		</text>
-		<combo_box initial_value="true" label="Wasserreflexionen" name="Reflections">
-			<combo_box.item label="Minimal" name="0"/>
-			<combo_box.item label="Terrain und Bäume" name="1"/>
-			<combo_box.item label="Alle statischen Objekte" name="2"/>
-			<combo_box.item label="Alle Avatare und Objekte" name="3"/>
-			<combo_box.item label="Alles" name="4"/>
-		</combo_box>
-		<slider label="Avatar-Physik:" name="AvatarPhysicsDetail"/>
-		<text name="AvatarPhysicsDetailText">
-			Niedrig
-		</text>
-		<slider label="Sichtweite:" name="DrawDistance"/>
-		<text name="DrawDistanceMeterText2">
-			m
-		</text>
-		<slider label="Max. Partikelzahl:" name="MaxParticleCount"/>
-		<slider label="Max. Anzahl an voll dargestellten Avataren:" label_width="230" name="MaxNumberAvatarDrawn" width="315"/>
-		<slider label="Post-Processing-Qualität:" name="RenderPostProcess"/>
-		<text name="MeshDetailText">
-			Darstellungsgrad:
-		</text>
-		<slider label="   Objekte:" name="ObjectMeshDetail"/>
-		<slider label="   Flexiprimitiva:" name="FlexibleMeshDetail"/>
-		<slider label="   Bäume:" name="TreeMeshDetail"/>
-		<slider label="   Avatare:" name="AvatarMeshDetail"/>
-		<slider label="   Terrain:" name="TerrainMeshDetail"/>
-		<slider label="   Himmel:" name="SkyMeshDetail"/>
-		<text name="PostProcessText">
-			Niedrig
-		</text>
-		<text name="ObjectMeshDetailText">
-			Niedrig
-		</text>
-		<text name="FlexibleMeshDetailText">
-			Niedrig
-		</text>
-		<text name="TreeMeshDetailText">
-			Niedrig
-		</text>
-		<text name="AvatarMeshDetailText">
-			Niedrig
-		</text>
-		<text name="TerrainMeshDetailText">
-			Niedrig
-		</text>
-		<text name="SkyMeshDetailText">
-			Niedrig
-		</text>
-		<text name="AvatarRenderingText">
-			Avatar-Darstellung:
-		</text>
-		<check_box initial_value="true" label="Vereinfachte Avatardarstellung" name="AvatarImpostors"/>
-		<check_box initial_value="true" label="Hardware-Hautberechnung" name="AvatarVertexProgram"/>
-		<check_box initial_value="true" label="Avatar-Kleidung" name="AvatarCloth"/>
-		<text name="TerrainDetailText">
-			Terraindetails:
-		</text>
-		<radio_group name="TerrainDetailRadio">
-			<radio_item label="Niedrig" name="0"/>
-			<radio_item label="Hoch" name="2"/>
-		</radio_group>
-		--&gt;
-	</panel>
-	<button label="Übernehmen" label_selected="Übernehmen" name="Apply"/>
+	<text name="ShadowQuality">
+		Schatten Qualität:
+	</text>
+	<text name="ShadowAmount">
+		Schatten:
+	</text>
+	<text name="ObjectLOD">
+		Objekt Qualität:
+	</text>
+	<text name="FlexiLOD">
+		Flexi Qualität:
+	</text>
+	<text name="TreeLOD">
+		Vollbaum Reichweite:
+	</text>
+	<text name="AvatarLOD">
+		Avatar Qualität:
+	</text>
+	<text name="TerrainLOD">
+		Boden Qualität:
+	</text>
+	<text name="SkyLOD">
+		Himmel Qualität:
+	</text>
+	<text name="Reflectiontext">
+		Reflektions Qualität:
+	</text>
+	<text name="ReflectionAmount">
+		Reflektionsanzahl:
+	</text>
+	<text name="AVPhys">
+		Avatar Physik:
+	</text>
+	<text name="SSAOStyleText">
+		SSAO Typ:
+	</text>
+	<text name="Antialiasing:">
+		Kantenglättung:
+	</text>
+	<combo_box name="UIScaleFactor">
+	<combo_box.item label="Klein" name="0"/>
+	<combo_box.item label="Mittel" name="1"/>
+	<combo_box.item label="Groß" name="2"/>
+	</combo_box>
+	<combo_box name="QualityPerformanceSelection">
+	<combo_box.item label="Niedrig" name="0"/>
+	<combo_box.item label="Mittel" name="1"/>
+	<combo_box.item label="Hoch" name="2"/>
+	<combo_box.item label="Ultra" name="3"/>
+	</combo_box>
+	<combo_box name="MaxPartCountDrop">
+	<combo_box.item label="Keine" name="0"/>
+	<combo_box.item label="Wenige" name="1"/>
+	<combo_box.item label="Normal viele" name="2"/>
+	<combo_box.item label="Mehr" name="3"/>
+	<combo_box.item label="Noch Mehr" name="4"/>
+	<combo_box.item label="Dutzende*" name="5"/>
+	</combo_box>
+	<combo_box name="AvatarCountDrop">
+	<combo_box.item label="Wenig" name="0"/>
+	<combo_box.item label="Ein paar" name="1"/>
+	<combo_box.item label="Normal viele*" name="2"/>
+	<combo_box.item label="Mehr" name="3"/>
+	<combo_box.item label="Viele" name="4"/>
+	<combo_box.item label="Haufenweise" name="5"/>
+	</combo_box>
+	<combo_box name="PostProcessDrop">
+	<combo_box.item label="Sehr Schlecht" name="0"/>
+	<combo_box.item label="Schlecht" name="1"/>
+	<combo_box.item label="Normal*" name="2"/>
+	<combo_box.item label="Gut" name="3"/>
+	<combo_box.item label="Sehr Gut" name="4"/>
+	</combo_box>
+	<combo_box name="TerrainTexDrop">
+	<combo_box.item label="Sehr Schlecht" name="0"/>
+	<combo_box.item label="Schlecht" name="1"/>
+	<combo_box.item label="Normal*" name="2"/>
+	<combo_box.item label="Gut" name="3"/>
+	<combo_box.item label="Sehr Gut" name="4"/>
+	<combo_box.item label="Super Gut" name="5"/>
+	</combo_box>
+	<combo_box name="ShadowResDrop">
+	<combo_box.item label="Sehr Schlecht" name="0"/>
+	<combo_box.item label="Unscharf" name="1"/>
+	<combo_box.item label="Normal" name="2"/>
+	<combo_box.item label="Scharf*" name="3"/>
+	<combo_box.item label="Sehr Scharf" name="4"/>
+	<combo_box.item label="Super Scharf" name="5"/>
+	<combo_box.item label="Extrem Scharf" name="6"/>
+	</combo_box>
+	<combo_box name="ObjectLODDrop">
+	<combo_box.item label="Sehr Niedrig" name="0"/>
+	<combo_box.item label="Niedrig" name="1"/>
+	<combo_box.item label="Normal*" name="2"/>
+	<combo_box.item label="Hoch" name="3"/>
+	<combo_box.item label="Sehr Hoch" name="4"/>
+	<combo_box.item label="Super Hoch" name="5"/>
+	</combo_box>
+	<combo_box name="FlexiLODDrop">
+	<combo_box.item label="Sehr Niedrig" name="0"/>
+	<combo_box.item label="Niedrig" name="1"/>
+	<combo_box.item label="Normal" name="2"/>
+	<combo_box.item label="Hoch" name="3"/>
+	<combo_box.item label="Sehr Hoch*" name="4"/>
+	</combo_box>
+	<combo_box name="TreeVolumeDrop">
+	<combo_box.item label="Sehr Nah" name="0"/>
+	<combo_box.item label="Nah" name="1"/>
+	<combo_box.item label="Mittelweit*" name="2"/>
+	<combo_box.item label="Weit" name="3"/>
+	<combo_box.item label="Sehr Weit" name="4"/>
+	<combo_box.item label="Galxien entfernt" name="5"/>
+	</combo_box>
+	<combo_box name="AvatarLODDrop">
+	<combo_box.item label="Sehr Niedrig" name="0"/>
+	<combo_box.item label="Niedrig" name="1"/>
+	<combo_box.item label="Normal*" name="2"/>
+	<combo_box.item label="Hoch" name="3"/>
+	<combo_box.item label="Sehr Hoch" name="4"/>
+	</combo_box>
+	<combo_box name="TerrainLODDrop">
+	<combo_box.item label="Sehr Niedrig" name="0"/>
+	<combo_box.item label="Niedrig" name="1"/>
+	<combo_box.item label="Normal*" name="2"/>
+	<combo_box.item label="Hoch" name="3"/>
+	<combo_box.item label="Sehr Hoch" name="4"/>
+	<combo_box.item label="Super Hoch" name="5"/>
+	</combo_box>
+	<combo_box name="SkyLODDrop">
+	<combo_box.item label="Sehr Niedrig" name="0"/>
+	<combo_box.item label="Niedrig" name="1"/>
+	<combo_box.item label="Normal" name="2"/>
+	<combo_box.item label="Hoch*" name="3"/>
+	<combo_box.item label="Sehr Hoch" name="4"/>
+	<combo_box.item label="Super Hoch" name="5"/>
+	</combo_box>
+	<combo_box name="ReflectionRes">
+	<combo_box.item label="Niedrig" name="0"/>
+	<combo_box.item label="Normal" name="1"/>
+	<combo_box.item label="Hoch*" name="2"/>
+	<combo_box.item label="Sehr Hoch" name="3"/>
+	<combo_box.item label="Ultra Hoch" name="4"/>
+	<combo_box.item label="Höchste" name="5"/>
+	</combo_box>
+	<combo_box name="AVPhysics">
+	<combo_box.item label="Sehr Niedrig" name="0"/>
+	<combo_box.item label="Niedrig" name="1"/>
+	<combo_box.item label="Normal" name="2"/>
+	<combo_box.item label="Hoch" name="3"/>
+	<combo_box.item label="Sehr Hoch" name="4"/>
+	<combo_box.item label="Ultra Hoch" name="5"/>
+	</combo_box>
+	<combo_box name="fsaa">
+	<combo_box.item label="Deaktiviert" name="FSAADisabled"/>
+	<combo_box.item label="Aktiviert" name="2x"/>
+	</combo_box>
+	<combo_box name="ShadowDetail">
+	<combo_box.item label="Keine Schatten" name="0"/>
+	<combo_box.item label="Einige Schatten" name="1"/>
+	<combo_box.item label="Alle Schatten" name="2"/>
+	</combo_box>
+	<combo_box name="Lightcount">
+	<combo_box.item label="Nur Sonne/Mond" name="0"/>
+	<combo_box.item label="Viele Lichter" name="1"/>
+	<combo_box.item label="Alle Lichter" name="2"/>
+	</combo_box>
+	<combo_box name="Reflections">
+	<combo_box.item label="Minimale Reflektionen" name="0"/>
+	<combo_box.item label="Wenige Reflektionen" name="1"/>
+	<combo_box.item label="Einige Reflektionen" name="2"/>
+	<combo_box.item label="Viele Reflektionen" name="3"/>
+	<combo_box.item label="Alle Reflektionen" name="4"/>
+	</combo_box>
 	<button label="Zurücksetzen" name="Defaults"/>
-	<button label="Erweitert" name="Advanced"/>
-	<button label="Hardware" label_selected="Hardware" name="GraphicsHardwareButton"/>
 </panel>
