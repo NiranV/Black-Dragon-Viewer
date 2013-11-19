@@ -47,28 +47,6 @@
    <image name="loading3"/>
    </images>
    </loading_indicator>
-    <layout_stack
-     follows="left|right|top|bottom"
-     height="768"
-     layout="topleft"
-     left="0"
-     name="stack1"
-     orientation="horizontal"
-     top="0"
-     width="1024">
-        <layout_panel
-         layout="topleft"
-         min_width="10"
-         name="panel1"
-         user_resize="false"
-         width="150" />
-        <layout_panel
-         height="768"
-         layout="topleft"
-         min_width="640"
-         name="panel2"
-         user_resize="false"
-         width="640">
             <layout_stack
              follows="left|right|top|bottom"
              height="768"
@@ -77,39 +55,40 @@
              orientation="vertical" 
              name="stack2"
              top="0"
-             width="640">
+             width="1024">
                 <layout_panel
-                 height="200"
+                 height="10"
+                 auto_resize="false"
                  layout="topleft"
                  min_height="10"
                  name="panel3"
-                 width="640" />
+                 width="1024" />
                 <layout_panel
                  auto_resize="false"
                  height="250"
                  layout="topleft"
                  min_height="250"
                  name="panel4"
-                 width="640">
+                 width="1024">
                     <text
                      follows="left|right|top"
                      font="SansSerif"
                      font_shadow="none"
                      font.style="BOLD"
-                     halign="left"
+                     halign="center"
                      height="15"
                      layout="topleft"
                      left_delta="33"
                      name="title_text2"
                      text_color="EmphasisColor"
-                     top="95"
-                     width="593" >
+                     top="0"
+                     width="953" >
                      Did you know?
                      </text>
                     <text
                      follows="left|right|top|bottom"
                      font="SansSerif"
-                     halign="left"
+                     halign="center"
                      parse_urls="true"
                      height="100"
                      layout="topleft"
@@ -117,26 +96,21 @@
                      line_spacing.pixels="2"
                      name="message_text"
                      text_color="EmphasisColor"
-                     top="112"
-                     width="570"
+                     top="20"
+                     width="945"
                      word_wrap="true">
                      Tips will be randomly displayed here!
                     </text>
                 </layout_panel>
             </layout_stack>
-        </layout_panel>
-        <layout_panel
-         layout="topleft"
-         min_width="10"
-         name="panel7"
-         user_resize="false"
-         width="150" />
-    </layout_stack>
     <button
-     follows="right|bottom"
+     follows="left|bottom|right"
      height="22"
      layout="topleft"
-     left="-106"
+     image_pressed="transparent.j2c"
+     image_unselected="transparent.j2c"
+     left="400"
+     right="-400"
      name="cancel_btn"
      top="720"
      width="90" />
