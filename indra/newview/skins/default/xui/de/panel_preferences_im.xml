@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<panel label="IM Chat" name="instant">
+	<check_box label="IM Popups anzeigen" name="EnableIMChatPopups" tool_tip="Einschalten um IM Nachrichten am unteren Bildschirmrand in einem kleinen Popup anzuzeigen"/>
+	<check_box label="Gruppen-Chat Popups anzeigen" name="EnableGroupChatPopups" tool_tip="Einschalten um Gruppen Nachrichten am unteren Bildschirmrand in einem kleinen Popup anzuzeigen"/>
+	<check_box label="IMs per Email zuschicken, wenn ich offline bin" name="send_im_to_email"/>
+	<check_box label="IM/Meldungen nicht verschieben wenn die Seitenleiste aktiv ist" name="SidebarCameraMovement"/>
+	<text name="show_ims_in_label">
+		IMs anzeigen in:
+	</text>
+	<text name="tab_direction_label">
+		Tab Ausrichtung:
+	</text>
+	<text name="requires_restart_label">
+		(Neustart erforderlich)
+	</text>
+	<text name="requires_restart_label1">
+		(Neustart erforderlich)
+	</text>
+	<text name="requires_restart_label2">
+		(Neustart erforderlich)
+	</text>
+	<text name="requires_restart_label3">
+		(Neustart erforderlich)
+	</text>
+	<radio_group name="im_tab_alignment" tool_tip="Bestimmt ob Sofortnachrichten (Instant Messages) Vertikal oder Horizontal getabbt werden sollen wenn die Registrierkarten Ansicht aktiv ist">
+		<radio_item label="Horizontal" name="radio_horizontal"/>
+		<radio_item label="Vertikal" name="radio_vertical"/>
+	</radio_group>
+	<radio_group name="chat_window" tool_tip="Zeigen Sie Ihre Sofortnachrichten (Instant Messages) in einem anderen Fenster oder in einem einzigen Fenster mit vielen Registerkarten an (Neustart erforderlich).">
+		<radio_item label="Getrennte Fenster" name="radio"/>
+		<radio_item label="Registerkarten" name="radio2"/>
+	</radio_group>
+	<spinner label="IM Blinkanzahl:" name="WellIconFlashCount"/>
+	<spinner label="IM Blinkzeit:" name="WellIconFlashPeriod"/>
+	<spinner name="ToastFadingTime" label="Toast Blendzeit:"/>
+	<spinner name="ToastGap" label="Toast Lückengröße:"/>
+	<spinner name="ChannelBottomPanelMargin" label="Toast Bodenabsatz:"/>
+</panel>

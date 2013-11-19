@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<panel label="RLVa" name="RLVa panel">
+	<text name="header1">
+		RLVa Generell:
+	</text>
+	<text name="header2">
+		RLVa Erweitert:
+	</text>
+	<text name="head_label1">
+		Objekte immer ersetzen in Ordnern die anfangen mit:
+	</text>
+	<text name="head_label2">
+		Objekte immer hinzufügen in Ordnern die anfangen mit:
+	</text>
+	<text name="head_label3">
+		Nachrichten in IM einbringen:
+	</text>
+	<text name="head_label4">
+		Avatar höhen versatz:
+	</text>
+	<check_box label="Restrained Love (A)" name="RLVa"/>
+	<check_box label="OOC mit verbotenem Chat erlauben" name="RLVaOOC"/>
+	<check_box label="RLVa darf Windlight nicht beeinflussen" name="RLVaNSE"/>
+	<check_box label="RLVa Auslassungspunkte" name="RLVaEllipsis"/>
+	<check_box label="Keine unterordner an #RLV vergeben" name="RLVaFGT"/>
+	<check_box label="'unset' oder 'duplicate' Commandos verstecken" name="RLVaHUD"/>
+	<check_box label="Komposit RLVa Ordner erlauben" name="RLVaCompo"/>
+	<check_box label="Alte Ordner benennung erlauben" name="RLVaLNaming"/>
+	<check_box label="'Shared Wear' erlauben" name="RLVaSharedWear"/>
+	<check_box label="Geblockte Kleidung verstecken" name="RLVaHidelocked"/>
+	<check_box label="Geblockte Anhänge verstecken" name="RLVaHideattachs"/>
+	<check_box label="Auto. umbenennen von 'shared' Objekten" name="RLVaARename"/>
+	<check_box label="RLVa Namensschilder anzeigen" name="RLVaNames"/>
+	<check_box label="Blockieren von Anhängen ersetzen verbieten" name="RLVaReplaceWearables"/>
+	<check_box label="Restrained Debug Nachrichten anzeigen" name="RLVaDebug"/>
+	<check_box label="Assertion fehlschläge anzeigen" name="RLVaAssertion"/>
+	<check_box label="'FirstRLVGiveToRLV' Warnung erlauben" name="RLVaGiveRLV"/>
+	<radio_group name="not_embed_in_IM">
+		<radio_item label="Standart" name="radio_default"/>
+		<radio_item label="Fokussiert" name="radio_focused"/>
+		<radio_item label="Nie" name="radio_never"/>
+	</radio_group>
+</panel>
