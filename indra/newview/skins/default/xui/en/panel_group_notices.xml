@@ -17,6 +17,27 @@ You can turn off Notices on the General tab.
      name="no_notices_text">
         There are no past notices
     </panel.string>
+    <scroll_container
+         color="Transparent"
+         follows="all"
+         layout="topleft"
+         mouse_opaque="false"
+         left="0"
+         name="roles_scroll"
+         opaque="true"
+         height="529"
+         width="302"
+         top="0">
+      <panel
+         bevel_style="none"
+         border="false"
+         follows="top|left"
+         height="495"
+         width="289"
+         layout="topleft"
+         left="0"
+         name="preferences_container"
+         top="0">
     <text
       follows="left|top"
      type="string"
@@ -39,11 +60,11 @@ Maximum 200 per group daily
      draw_heading="true"
      height="175"
      layout="topleft"
-     left="0"
+     left="5"
      right="-1"
      name="notice_list"
      top_pad="0"
-     width="304">
+     width="300">
         <scroll_list.columns
          label=""
          name="icon"
@@ -261,11 +282,10 @@ Maximum 200 per group daily
      label="View Past Notice"
      layout="topleft"
      left="0"
-     right="-1"
      visible="false"
      name="panel_view_past_notice"
      top="230"
-    width="313">
+    width="289">
         <text
          type="string"
          font="SansSerifMedium"
@@ -332,7 +352,7 @@ Maximum 200 per group daily
          enabled="false"
          height="160"
          layout="topleft"
-         left="0"
+         left="5"
          right="-1"
          max_length="511"
          name="view_message"
@@ -360,4 +380,6 @@ Maximum 200 per group daily
          top_pad="5"
          width="180" />
         </panel>
+      </panel>
+    </scroll_container>
 </panel>

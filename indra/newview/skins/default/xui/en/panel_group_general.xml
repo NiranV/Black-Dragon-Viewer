@@ -3,6 +3,8 @@
  label="General"
  height="604"
  width="304"
+ follows="left|top"
+ layout="topleft"
  class="panel_group_general"
  name="general_tab">
     <panel.string
@@ -19,14 +21,27 @@ Hover your mouse over the options for more help.
      name="incomplete_member_data_str">
         Retrieving member data
     </panel.string>
-   <panel
-      name="group_info_top"
-      follows="top|left|right"
-      top="0"
-      left="0"
-      height="129"
-      width="304"
-      layout="topleft">
+    <scroll_container
+         color="Transparent"
+         follows="all"
+         layout="topleft"
+         mouse_opaque="false"
+         left="0"
+         name="roles_scroll"
+         opaque="true"
+         height="603"
+         width="302"
+         top="0">
+      <panel
+         bevel_style="none"
+         border="false"
+         follows="top|left"
+         height="580"
+         width="292"
+         layout="topleft"
+         left="0"
+         name="preferences_container"
+         top="0">
     <texture_picker
      default_image_name="Generic_Group_Large"
      follows="left|top"
@@ -86,11 +101,10 @@ Hover your mouse over the options for more help.
      name="btn_join"
      visible="true"
      width="120" />
-    </panel>
     <text_editor
      type="string"
      follows="left|top|right"
-     left="3"
+     left="5"
      height="80"
      layout="topleft"
      max_length="511"
@@ -109,7 +123,7 @@ Hover your mouse over the options for more help.
      heading_height="23"
      height="160"
      layout="topleft"
-     left="0"
+     left="5"
      name="visible_members"
      short_names="false" 
      top_pad="2">
@@ -159,6 +173,7 @@ Hover your mouse over the options for more help.
          tool_tip="Sets the title that appears in your avatar&apos;s name tag when this group is active."
          top_pad="2" />
         <check_box
+         follows="left|top"
          height="16"
          font="SansSerifSmall"
          label="Receive group notices"
@@ -169,6 +184,7 @@ Hover your mouse over the options for more help.
          top_pad="5"
          width="300" />
         <check_box
+         follows="left|top"
          height="16"
          label="Show in my profile"
          layout="topleft"
@@ -177,23 +193,11 @@ Hover your mouse over the options for more help.
          tool_tip="Sets whether you want to show this group in your profile"
          top_pad="5"
          width="295" />
-   <panel
-         background_visible="false"
-         bevel_style="none"
-         border="false"
-         bg_alpha_color="FloaterUnfocusBorderColor"
-         follows="left|top|right"
-         height="140"
-         width="313"
-         layout="topleft"
-         left="0"
-         name="preferences_container"
-         top_pad="5">
         <text
          follows="left|top|right"
          type="string"
          height="12"
-         layout="left|top|right"
+         layout="topleft"
          left="5"
          text_color="EmphasisColor"
          name="group_settngs_label"
@@ -210,6 +214,7 @@ Hover your mouse over the options for more help.
          tool_tip="Sets whether this group allows new members to join without being invited."
          width="90" />
         <check_box
+         follows="left|top"
          height="16"
          label="Cost to join"
          layout="topleft"
@@ -266,4 +271,5 @@ Hover your mouse over the options for more help.
          width="300" />
 
     </panel>
+    </scroll_container>
 </panel>
