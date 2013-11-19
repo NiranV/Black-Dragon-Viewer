@@ -1808,9 +1808,9 @@ bool LLUIImageList::initFromFile()
 	{
 //		//BD - Select 3 random numbers for random loadingscreen preloading.
 		srand( (unsigned)time( NULL ) );
-		int random_number1 = rand()%12;
-		int random_number2 = rand()%12;
-		int random_number3 = rand()%12;
+		int random_number1 = rand()%7;
+		int random_number2 = rand()%7;
+		int random_number3 = rand()%7;
 		std::string filename1 = llformat("loadingscreens/loading%i.jpg" , random_number1);
 		std::string filename2 = llformat("loadingscreens/loading%i.jpg" , random_number2);
 		std::string filename3 = llformat("loadingscreens/loading%i.jpg" , random_number3);
