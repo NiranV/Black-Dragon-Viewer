@@ -713,7 +713,7 @@ width="510">
     layout="topleft"
     left_delta="0"
     name="bar0"
-    top_delta="2"
+    top_delta="4"
     width="8" />
     <locate
     height="10"
@@ -774,7 +774,7 @@ width="510">
     left_pad="3"
     top_delta="0"
     name="set_voice_hotkey_button"
-    width="80"/>
+    width="100"/>
     <button
     enabled_control="EnableVoiceChat"
     follows="top|left"
