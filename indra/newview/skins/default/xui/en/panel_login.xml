@@ -17,7 +17,7 @@ top="600"
 <panel.string name="forgot_password_url">
        http://secondlife.com/account/request.php
 </panel.string>
-  <!--<web_browser
+  <web_browser
   visibility_control="ExperimentalLogin"
   tab_stop="false" 
   trusted_content="true" 
@@ -29,7 +29,7 @@ top="600"
   left="0"
   name="html"
   height="640"
-  width="996" />-->
+  width="996" />
   
   <icon
   follows="bottom|left|right"
