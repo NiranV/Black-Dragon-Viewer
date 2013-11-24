@@ -17,7 +17,7 @@ top="600"
 <panel.string name="forgot_password_url">
        http://secondlife.com/account/request.php
 </panel.string>
-  <web_browser
+  <!--<web_browser
   visibility_control="ExperimentalLogin"
   tab_stop="false" 
   trusted_content="true" 
@@ -29,7 +29,7 @@ top="600"
   left="0"
   name="html"
   height="640"
-  width="996" />
+  width="996" />-->
   
   <icon
   follows="bottom|left|right"
@@ -43,6 +43,26 @@ top="600"
   width="996"
   left="0"
   top="-155"/>
+  
+  <button
+        follows="left|bottom|right"
+        height="20"
+        image_unselected="transparentj2c"
+        image_selected="transparentj2c"
+        label="Show Release Notes"
+        font="SansSerif"
+        font.style="BOLD"
+        label_color="EmphasisColor"
+        layout="topleft"
+        left="5"
+        halign="left"
+        name="channel_text"
+        top="-150"
+        width="200">
+        <button.commit_callback
+          function="Advanced.WebContentTest"
+          parameter="http://niranv-sl.blogspot.de/"/>
+        </button>
   <button
   follows="left|bottom|right"
   height="35"
