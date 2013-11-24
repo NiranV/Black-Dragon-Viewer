@@ -1,0 +1,20 @@
+<llsd>
+    <array>
+        <array>
+            <real>0.24652767181396484</real>
+            <string>[Tarnix] Ultrabright Night</string>
+        </array>
+        <array>
+            <real>0.24999989569187164</real>
+            <string>[Tarnix] Ultrabright Morning</string>
+        </array>
+        <array>
+            <real>0.49652755260467529</real>
+            <string>[Tarnix] Ultrabright Day</string>
+        </array>
+        <array>
+            <real>0.90277743339538574</real>
+            <string>[Tarnix] Ultrabright Night</string>
+        </array>
+    </array>
+</llsd>
