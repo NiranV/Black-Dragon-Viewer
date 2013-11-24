@@ -190,7 +190,10 @@
      left_pad="5"
      name="log_path_button"
      top_delta="0"
-     width="25"/>
+     width="25">
+      <commit_callback
+            function="Pref.LogPath" />
+    </button>
     
 
     <button
