@@ -1429,7 +1429,6 @@ void LLAgentCamera::updateCamera()
 	LLVector3 focus_agent = gAgent.getPosAgentFromGlobal(mFocusGlobal);
 	
 	mCameraPositionAgent = gAgent.getPosAgentFromGlobal(camera_pos_global);
-
 	// Move the camera
 
 	LLViewerCamera::getInstance()->updateCameraLocation(mCameraPositionAgent, mCameraUpVector, focus_agent);
@@ -1460,15 +1459,34 @@ void LLAgentCamera::updateCamera()
 		LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() + 
 			LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() + 
 			LLVector3(0.1f, 0.f, 0.f) * gAgentAvatarp->mPelvisp->getWorldRotation();
-		LLVector3 diff = mCameraPositionAgent - head_pos;
-		diff = diff * ~gAgentAvatarp->mRoot->getWorldRotation();
-
+		
 		LLJoint* torso_joint = gAgentAvatarp->mTorsop;
 		LLJoint* chest_joint = gAgentAvatarp->mChestp;
 		LLVector3 torso_scale = torso_joint->getScale();
 		LLVector3 chest_scale = chest_joint->getScale();
 
-		gAgentAvatarp->mPelvisp->setPosition(gAgentAvatarp->mPelvisp->getPosition() + diff);
+		if(gSavedSettings.getBOOL("UseRealisticMouselook"))
+		{
+			LLVector3 at_axis(1.0, 0.0, 0.0);
+			LLQuaternion agent_rot = gAgent.getFrameAgent().getQuaternion();
+			if (isAgentAvatarValid() && gAgentAvatarp->getParent())
+			{
+				LLViewerObject* root_object = (LLViewerObject*)gAgentAvatarp->getRoot();
+				if (!root_object->flagCameraDecoupled())
+				{
+					agent_rot *= ((LLViewerObject*)(gAgentAvatarp->getParent()))->getRenderRotation();
+				}
+			}
+			at_axis = at_axis * agent_rot;
+			LLVector3 poi = gAgentAvatarp->mHeadp->getWorldPosition() + at_axis;
+			LLViewerCamera::getInstance()->updateCameraLocation(head_pos, mCameraUpVector, poi);
+		}
+		else
+		{
+			LLVector3 diff = mCameraPositionAgent - head_pos;
+			diff = diff * ~gAgentAvatarp->mRoot->getWorldRotation();
+			gAgentAvatarp->mPelvisp->setPosition(gAgentAvatarp->mPelvisp->getPosition() + diff);
+		}
 
 		gAgentAvatarp->mRoot->updateWorldMatrixChildren();
 
