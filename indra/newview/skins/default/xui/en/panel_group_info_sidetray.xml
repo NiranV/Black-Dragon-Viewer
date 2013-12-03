@@ -8,7 +8,7 @@
  left="0"
  top="20"
  name="GroupInfo"
- width="313">
+ width="333">
     <panel.string
      name="default_needs_apply_text">
         There are unsaved changes
@@ -31,7 +31,7 @@
       top="0"
       left="0"
       height="29"
-      width="313"
+      width="333"
       layout="topleft">
     <button
      follows="top|right"
@@ -61,7 +61,7 @@
      text_color="LtGray"
       top="1"
      use_ellipses="true"
-      width="275"
+      width="295"
       follows="top|left|right"
       word_wrap="false"
       mouse_opaque="false"/>
@@ -84,14 +84,14 @@
      height="508"
      halign="center"
      layout="topleft"
-     left="0"
+     left="3"
      right="-1"
      name="roles_tab_container"
      tab_position="top"
      tab_height="22"
      tab_min_width="75"
      top_pad="0"
-     width="310">
+     width="330">
                    <panel
                       border="false"
                       class="panel_group_general"
