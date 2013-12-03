@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Sonstiges" name="main inventory panel">
 	<panel.string name="ItemcountFetching">
-	x ([ITEM_COUNT])...
+	([ITEM_COUNT])...
 	</panel.string>
 	<panel.string name="ItemcountCompleted">
-	x [ITEM_COUNT]
+	[ITEM_COUNT]
 	</panel.string>
 	<text name="ItemcountText">
 		---
