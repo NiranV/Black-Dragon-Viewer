@@ -1220,7 +1220,7 @@ Warten Sie kurz und versuchen Sie dann noch einmal, sich anzumelden.
 		Teleport-Angebot
 	</string>
 	<string name="StartUpNotifications">
-		Sie haben neue Benachrichtigungen erhalten, während Sie abwesend waren.
+		Sie haben neue Benachrichtigungen erhalten.
 	</string>
 	<string name="OverflowInfoChannelString">
 		Sie haben noch %d weitere Benachrichtigungen
