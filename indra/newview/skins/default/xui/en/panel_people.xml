@@ -61,7 +61,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
      left="3"
      name="tabs"
      tab_group="1"
-     tab_min_width="62"
+     tab_min_width="59"
      tab_height="20"
      tab_position="top"
      top="0"
@@ -74,7 +74,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          background_visible="false"
          bottom="-1"
          follows="all"
-         label="Nearby"
+         label="Radar"
          layout="topleft"
          left="0"
          help_topic="people_nearby_tab"
@@ -103,13 +103,13 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
              <net_map
                bg_color="Transparent"
                follows="all"
-               height="140"
+               height="143"
                layout="topleft"
-               left="2"
+               left="3"
                mouse_opaque="false"
                name="Net Map"
-               right="-1"
-               top="2" />
+               right="-3"
+               top="4" />
            </layout_panel>
            <layout_panel
              height="213"
