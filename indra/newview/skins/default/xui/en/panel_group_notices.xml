@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- height="530"
+ height="500"
  label="Notices"
  layout="topleft"
  left="0"
  name="notices_tab"
+ follows="all"
  top="0"
- width="304">
+ width="324">
     <panel.string
      name="help_text">
         Notices let you send a message and an optionally attached item.
@@ -25,15 +26,15 @@ You can turn off Notices on the General tab.
          left="0"
          name="roles_scroll"
          opaque="true"
-         height="529"
-         width="302"
+         height="499"
+         width="322"
          top="0">
       <panel
          bevel_style="none"
          border="false"
-         follows="top|left"
+         follows="top|left|right"
          height="495"
-         width="289"
+         width="306"
          layout="topleft"
          left="0"
          name="preferences_container"
@@ -49,7 +50,7 @@ You can turn off Notices on the General tab.
      left="5"
      name="lbl2"
      right="-1"
-     top="5"
+     top="2"
      width="300">
      Notices are kept for 14 days.
 Maximum 200 per group daily
@@ -61,10 +62,10 @@ Maximum 200 per group daily
      height="175"
      layout="topleft"
      left="5"
-     right="-1"
+     right="-6"
      name="notice_list"
-     top_pad="0"
-     width="300">
+     top_pad="3"
+     width="290">
         <scroll_list.columns
          label=""
          name="icon"
@@ -107,22 +108,22 @@ Maximum 200 per group daily
        top_delta="0"
        width="127" />
      <button
-     follows="top|left"
+     follows="top|right"
      height="23"
      image_overlay="Refresh_Off"
      layout="topleft"
      name="refresh_notices"
-     left="260"
+     right="-5"
      tool_tip="Refresh list of notices"
      top_delta="0"
      width="23" />
     <panel
      follows="left|top|right"
-     height="280"
+     height="235"
      label="Create New Notice"
      layout="topleft"
      left="0"
-     right="-1"
+     right="-5"
      top_pad="0"
      visible="true"
      name="panel_create_new_notice"
@@ -138,7 +139,7 @@ Maximum 200 per group daily
          name="lbl"
          text_color="EmphasisColor"
          top="5"
-         width="200">
+         width="220">
             Create a Notice
         </text>
         <text
@@ -159,11 +160,12 @@ Maximum 200 per group daily
          height="16"
          layout="topleft"
          left_pad="3"
+         right="-1"
          max_length_bytes="63"
          name="create_subject"
          prevalidate_callback="ascii"
          spellcheck="true"
-         width="218" />
+         width="232" />
         <text
          follows="left|top"
          type="string"
@@ -180,22 +182,24 @@ Maximum 200 per group daily
          follows="left|top|right"
          height="90"
          layout="topleft"
-         left_pad="3"
+         left_pad="4"
          max_length="511"
          name="create_message"
          spellcheck="true"
          top_delta="0"
-         width="218"
+         right="-2"
+         width="230"
          word_wrap="true" />
         <text
          follows="left|top"
          type="string"
          halign="left"
-         height="14"
+         height="16"
          layout="topleft"
          left="10"
+         top_pad="5"
          name="lbl5"
-         width="200">
+         width="62">
             Attach:
         </text>
         <line_editor
@@ -203,54 +207,67 @@ Maximum 200 per group daily
          enabled="false"
          height="19"
          layout="topleft"
+         left_pad="3"
+         right="-1"
          max_length_bytes="90"
          mouse_opaque="false"
          name="create_inventory_name"
-         top_pad="2"
-         width="285" />
+         top_delta="0"
+         width="232" />
         <text
         text_color="EmphasisColor"
-         follows="left|top"
+         follows="left|top|right"
          type="string"
-         halign="right"
+         halign="left"
          height="34"
          layout="topleft"
          left="10"
+         right="-90"
          name="string"
-         top_pad="15"
+         top_pad="5"
          word_wrap="true"
-         width="150">
+         width="195">
             Drag and drop item here to attach it:
         </text>
         <icon
-         height="48"
+         height="29"
+         follows="top|right"
          image_name="DropTarget"
          layout="topleft"
          left_pad="10"
          mouse_opaque="true"
          name="drop_icon"
-         top_delta="-10"
-         width="110" />
-        <button
-         follows="left|top"
+         top_delta="-0"
+         width="30" />
+        <group_drop_target
+         height="30"
+         follows="top|right"
+         top_delta="0"
+         left_delta="0"
          layout="topleft"
-         left="20"
-         top_delta="50"
-         height="23"
-         width="100"
+         name="drop_target"
+         tool_tip="Drag an inventory item onto this target box to send it with this notice. You must have permission to copy and transfer the item in order to attach it."
+         width="30" />
+        <button
+         follows="right|top"
+         layout="topleft"
+         left_pad="5"
+         top_delta="4"
+         height="21"
+         width="22"
          name="open_inventory"
-         label="Inventory"
+         label="..."
          tool_tip="Open Inventory">
 			<button.init_callback
 				 function="Button.SetFloaterToggle"
 				 parameter="inventory"/>
 		</button>
         <button
-         follows="left|top"
          layout="topleft"
-         left="140"
+         follows="top|right"
+         left_pad="3"
          name="remove_attachment"
-         top_delta="0"
+         top_delta="2"
                  height="18"
                  image_selected="TrashItem_Press"
                  image_unselected="TrashItem_Off"
@@ -258,23 +275,15 @@ Maximum 200 per group daily
                  tool_tip="Remove attachment from your notification"
                  width="18" />
         <button
-         follows="left|top"
+         follows="top|right"
          height="23"
          label="Send"
          label_selected="Send"
          layout="topleft"
-         right="-25"
-         top_pad="10"
+         right="-1"
+         bottom="-1"
          name="send_notice"
          width="100" />
-      <group_drop_target
-         height="75"
-         top="160"
-         left="10"
-         layout="topleft"
-         name="drop_target"
-         tool_tip="Drag an inventory item onto this target box to send it with this notice. You must have permission to copy and transfer the item in order to attach it."
-         width="280" />
    </panel>
     <panel
      follows="left|top|right"
@@ -282,10 +291,11 @@ Maximum 200 per group daily
      label="View Past Notice"
      layout="topleft"
      left="0"
+     right="-5"
      visible="false"
      name="panel_view_past_notice"
      top="230"
-    width="289">
+    width="308">
         <text
          type="string"
          font="SansSerifMedium"
@@ -362,14 +372,16 @@ Maximum 200 per group daily
          word_wrap="true" />
         <line_editor
          enabled="false"
+         follows="top|left|right"
          height="20"
          layout="topleft"
          left="5"
+         right="-1"
          max_length_bytes="63"
          mouse_opaque="false"
          name="view_inventory_name"
-         top_pad="8"
-         width="250"/>
+         top_pad="7"
+         width="303"/>
         <button
          follows="left|top"
          height="23"
