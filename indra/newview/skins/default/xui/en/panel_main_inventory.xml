@@ -15,16 +15,64 @@
   </panel.string>
   <panel.string
    name="ItemcountFetching">
-   x [ITEM_COUNT]
+   ([ITEM_COUNT])...
   </panel.string>
   <panel.string
    name="ItemcountCompleted">
-   x [ITEM_COUNT]
+   [ITEM_COUNT]
   </panel.string>
   <panel.string
    name="ItemcountUnknown">
 			---
   </panel.string>
+  <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="4"
+ name="title"
+ top="0"
+ width="292"/>
+  <text
+	    type="string"
+	    length="1"
+	    follows="left|top"
+	    height="25"
+	    layout="topleft"
+		halign="right"
+	    left="195"
+	    word_wrap="false"
+	    font.style="ITALIC"
+	    name="ItemcountText"
+	    font="SansSerifSmall"
+	    text_color="Friend"
+	    top_delta="4"
+	    width="100">
+					---
+				</text>
+				<icon 
+   scale_image="true"
+   follows="left|top"
+   layout="topleft"
+   color="1 1 1 1"
+   height="16"
+   image_name="Inv_Object"
+   left="300"
+   top_delta="-1"
+   width="16" />
+     <!--<view_border
+	 bevel_style="in"
+	 follows="top|left|right"
+	 height="1"
+	 layout="topleft"
+	 left="10"
+	 name="border1"
+	 top="19"
+	 right="-10"
+	 width="250"/>-->
     <menu_bar
    height="18"
    layout="topleft"
@@ -34,7 +82,7 @@
    tool_tip="General Operations"
    left="10"
    name="menu_gear_default"
-   top="0">
+   top="1">
     <menu
      label="File"
      layout="topleft"
@@ -397,43 +445,7 @@
     </menu_item_call> -->
     </menu>
     </menu_bar>
-				<view_border
-						bevel_style="in"
-						follows="top|left|right"
-						height="1"
-						layout="topleft"
-						left="10"
-						name="border1"
-						top="18"
-						right="-10"
-						width="250"/>
-				<icon 
-   scale_image="true"
-   follows="left|top"
-   layout="topleft"
-   color="1 1 1 1"
-   height="16"
-   image_name="Inv_Object"
-   left="10"
-   top_pad="4"
-   width="16" />
-				<text
-	    type="string"
-	    length="1"
-	    follows="left|top"
-	    height="25"
-	    layout="topleft"
-	    left_pad="2"
-	    word_wrap="true"
-	    font.style="ITALIC"
-	    name="ItemcountText"
-	    font="SansSerifSmall"
-	    text_color="Friend"
-	    top_delta="1"
-	    width="100">
-					---
-				</text>
-  <text
+	<text
    type="string"
    length="1"
    follows="left|top"
@@ -445,7 +457,7 @@
    mouse_opaque="true"
    name="sort_options"
    width="128"
-   top_delta="-1">
+   top_pad="3">
    Sorting:
    </text>
   <icon 
@@ -534,7 +546,7 @@
      tab_height="20"
      tab_group="1"
      tab_position="top"
-     tab_min_width="100"
+     tab_min_width="146"
      top_pad="1"
      width="282">
     <inventory_panel
