@@ -44,25 +44,25 @@ top="600"
   left="0"
   top="-155"/>
   
-  <button
-        follows="left|bottom|right"
-        height="20"
-        image_unselected="transparentj2c"
-        image_selected="transparentj2c"
-        label="Show Release Notes"
-        font="SansSerif"
-        font.style="BOLD"
-        label_color="EmphasisColor"
-        layout="topleft"
-        left="5"
-        halign="left"
-        name="channel_text"
-        top="-150"
-        width="200">
-        <button.commit_callback
-          function="Advanced.WebContentTest"
-          parameter="http://niranv-sl.blogspot.de/"/>
-        </button>
+       <button
+       follows="left|bottom|right"
+       height="20"
+       image_unselected="transparentj2c"
+       image_selected="transparentj2c"
+       label="Show Release Notes"
+       font="SansSerif"
+       font.style="BOLD"
+       label_color="EmphasisColor"
+       layout="topleft"
+       left="5"
+       halign="left"
+       name="version_info_link"
+       top="-150"
+       width="200">
+       <button.commit_callback
+         function="Advanced.WebContentTest"
+         parameter="http://niranv-sl.blogspot.de/"/>
+       </button>
   <button
   follows="left|bottom|right"
   height="35"
