@@ -15249,7 +15249,19 @@
 		
 		
   <!-- Black Dragon Debugs -->
-		
+  
+  <key>UseRealisticMouselook</key>
+  <map>
+    <key>Comment</key>
+    <string>Use a realistic first person view, this prevents your camera from beeing the center of everything and your avatar always beeing locked below you, it allows your Avatar to move around freely in mouselook while your camera will follow it around. Prepare your seatbelts for an awesome shaky View! May break with certain super unrealistic animations.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  
   <!-- Machinima Sidebar Debugs-->
   <key>MachinimaSidebarPush</key>
   <map>
