@@ -2166,48 +2166,51 @@ void LLAgent::endAnimationUpdateUI()
 	//---------------------------------------------------------------------
 	if (gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK)
 	{
-		// clean up UI
-		// first show anything hidden by UI toggle
-		gViewerWindow->setUIVisibility(TRUE);
-
-		// then hide stuff we want hidden for mouselook 
-		gToolBarView->setToolBarsVisible(false);
-		gMenuBarView->setVisible(FALSE);
-		LLNavigationBar::getInstance()->setVisible(FALSE);
-		gStatusBar->setVisibleForMouselook(false);
-
-		LLPanelTopInfoBar::getInstance()->setVisible(FALSE);
-
-		LLChicletBar::getInstance()->setVisible(FALSE);
-
-		LLPanelStandStopFlying::getInstance()->setVisible(FALSE);
-
-		// clear out camera lag effect
-		gAgentCamera.clearCameraLag();
-
-		// JC - Added for always chat in third person option
-		gFocusMgr.setKeyboardFocus(NULL);
-
-		LLToolMgr::getInstance()->setCurrentToolset(gMouselookToolset);
-
-		mViewsPushed = TRUE;
-
-		if (mMouselookModeInSignal)
+		if (gSavedSettings.getBOOL("AllowUIHidingInML"))
 		{
-			(*mMouselookModeInSignal)();
-		}
+			// clean up UI
+			// first show anything hidden by UI toggle
+			gViewerWindow->setUIVisibility(TRUE);
 
-		// hide all floaters except the mini map
+			// then hide stuff we want hidden for mouselook 
+			gToolBarView->setToolBarsVisible(false);
+			gMenuBarView->setVisible(FALSE);
+			LLNavigationBar::getInstance()->setVisible(FALSE);
+			gStatusBar->setVisibleForMouselook(false);
+
+			LLPanelTopInfoBar::getInstance()->setVisible(FALSE);
+
+			LLChicletBar::getInstance()->setVisible(FALSE);
+
+			LLPanelStandStopFlying::getInstance()->setVisible(FALSE);
+
+			// clear out camera lag effect
+			gAgentCamera.clearCameraLag();
+
+			// JC - Added for always chat in third person option
+			gFocusMgr.setKeyboardFocus(NULL);
+
+			LLToolMgr::getInstance()->setCurrentToolset(gMouselookToolset);
+
+			mViewsPushed = TRUE;
+
+			if (mMouselookModeInSignal)
+			{
+				(*mMouselookModeInSignal)();
+			}
+
+			// hide all floaters except the mini map
 
 #if 0 // Use this once all floaters are registered
-		std::set<std::string> exceptions;
-		exceptions.insert("mini_map");
-		LLFloaterReg::hideVisibleInstances(exceptions);
+			std::set<std::string> exceptions;
+			exceptions.insert("mini_map");
+			LLFloaterReg::hideVisibleInstances(exceptions);
 #else // Use this for now
-		LLFloaterView::skip_list_t skip_list;
-		skip_list.insert(LLFloaterReg::findInstance("mini_map"));
-		gFloaterView->pushVisibleAll(FALSE, skip_list);
+			LLFloaterView::skip_list_t skip_list;
+			skip_list.insert(LLFloaterReg::findInstance("mini_map"));
+			gFloaterView->pushVisibleAll(FALSE, skip_list);
 #endif
+		}
 
 		if( gMorphView )
 		{

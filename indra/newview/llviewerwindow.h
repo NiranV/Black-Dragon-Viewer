@@ -272,7 +272,6 @@ public:
 	LLVector3		mouseDirectionGlobal(const S32 x, const S32 y) const;
 	LLVector3		mouseDirectionCamera(const S32 x, const S32 y) const;
 	LLVector3       mousePointHUD(const S32 x, const S32 y) const;
-		
 
 	// Is window of our application frontmost?
 	BOOL			getActive() const			{ return mActive; }

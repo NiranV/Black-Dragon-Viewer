@@ -15250,6 +15250,17 @@
 		
   <!-- Black Dragon Debugs -->
   
+  <key>AllowUIHidingInML</key>
+  <map>
+    <key>Comment</key>
+    <string>Allow the UI to hide when going into Mouselook mode</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>UseRealisticMouselook</key>
   <map>
     <key>Comment</key>
