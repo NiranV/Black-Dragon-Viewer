@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="863"
+  height="879"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -374,7 +374,6 @@
    name="MouseSmooth"
    width="256" />
    <check_box
-              enabled="false"
    control_name="AllowUIHidingInML"
    follows="left|top"
    enabled_control="EnableMouselook"
@@ -423,6 +422,24 @@
    name="invert_mouse"
    top_delta="0"
    width="128" />
+   <slider
+   can_edit_text="true"
+   control_name="AvatarRotateThresholdMouselook"
+   decimal_digits="0"
+   follows="left|top"
+   height="15"
+   increment="1"
+   initial_value="120"
+   layout="topleft"
+   label="Rotationstep ° [mouselook]"
+   left="10"
+   label_width="150"
+   max_val="240"
+   min_val="2"
+   name="camrotateml"
+   show_text="true"
+   width="319"
+   top_pad="2"/>
    
    <panel
  follows="left|top|right"
