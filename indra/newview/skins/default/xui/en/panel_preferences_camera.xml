@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="855"
+  height="863"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -352,6 +352,17 @@
    name="ShowCrosshairs"
    width="256" />
    <check_box
+   control_name="UseRealisticMouselook"
+   follows="left|top"
+   height="16"
+   enabled_control="EnableMouselook"
+   label="Enable 'realistic' Camera behavior in Mouselook"
+   layout="topleft"
+   left="10"
+   top_pad="0"
+   name="UseRealisticMouselook"
+   width="256" />
+   <check_box
    control_name="MouseSmooth"
    follows="left|top"
    enabled_control="EnableMouselook"
@@ -359,7 +370,7 @@
    label="Smooth Mouselook"
    layout="topleft"
    left="270"
-   top_delta="-32"
+   top_delta="-48"
    name="MouseSmooth"
    width="256" />
    <check_box
@@ -400,7 +411,7 @@
    left="10"
    max_val="15"
    name="mouse_sensitivity"
-   top_pad="3"
+   top_pad="19"
    width="336" />
    <check_box
    enabled_control="EnableMouselook"
