@@ -498,7 +498,7 @@ width="510">
    top_delta="0"
    width="25">
   <button.commit_callback
-   function="Pref.LogPath" />
+   function="Pref.SetCache" />
   </button>
   <button
     follows="left|top"
