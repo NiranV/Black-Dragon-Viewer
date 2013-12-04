@@ -3439,12 +3439,13 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 
 			static LLCachedControl<F32> s_pelvis_rot_threshold_slow(gSavedSettings, "AvatarRotateThresholdSlow", 60.0);
 			static LLCachedControl<F32> s_pelvis_rot_threshold_fast(gSavedSettings, "AvatarRotateThresholdFast", 2.0);
+			static LLCachedControl<F32> s_pelvis_rot_threshold_ml(gSavedSettings, "AvatarRotateThresholdMouselook", 120.0);
 
 			F32 pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, s_pelvis_rot_threshold_slow, s_pelvis_rot_threshold_fast);
 						
 			if (self_in_mouselook)
 			{
-				pelvis_rot_threshold *= MOUSELOOK_PELVIS_FOLLOW_FACTOR;
+				pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, s_pelvis_rot_threshold_ml, s_pelvis_rot_threshold_fast);
 			}
 			pelvis_rot_threshold *= DEG_TO_RAD;
 
