@@ -1160,14 +1160,6 @@ void LLAgentCamera::updateCamera()
 
 	validateFocusObject();
 
-	if (isAgentAvatarValid() && 
-		gAgentAvatarp->isSitting() &&
-		camera_mode == CAMERA_MODE_MOUSELOOK)
-	{
-		//changed camera_skyward to the new global "mCameraUpVector"
-		mCameraUpVector = mCameraUpVector * gAgentAvatarp->getRenderRotation();
-	}
-
 	if (cameraThirdPerson() && mFocusOnAvatar && LLFollowCamMgr::getActiveFollowCamParams())
 	{
 		changeCameraToFollow();
@@ -1454,7 +1446,7 @@ void LLAgentCamera::updateCamera()
 	}
 	gAgent.setLastPositionGlobal(global_pos);
 	
-	if (LLVOAvatar::sVisibleInFirstPerson && isAgentAvatarValid() && !gAgentAvatarp->isSitting() && cameraMouselook())
+	if (LLVOAvatar::sVisibleInFirstPerson && isAgentAvatarValid() && cameraMouselook())
 	{
 		LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() + 
  			LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() + 
@@ -1467,6 +1459,8 @@ void LLAgentCamera::updateCamera()
 
 		if(gSavedSettings.getBOOL("UseRealisticMouselook"))
 		{
+			//BD - Use a realistic camera movement in Mouselook, this will make the camera bob on movement
+			//	   and allow the body to freely move around instead of beeing locked into place below you.
 			LLVector3 at_axis(1.0, 0.0, 0.0);
 			LLQuaternion agent_rot = gAgent.getFrameAgent().getQuaternion();
 			if (isAgentAvatarValid() && gAgentAvatarp->getParent())
@@ -1483,6 +1477,9 @@ void LLAgentCamera::updateCamera()
 		}
 		else
 		{
+			//BD - Use the old known Mouselook camera movement style where your body is locked in
+			//     position below you and is not allowed to freely move around, this also eliminates
+			//     all bobbing and additional camera shake effects caused by animations.
 			LLVector3 diff = mCameraPositionAgent - head_pos;
 			diff = diff * ~gAgentAvatarp->mRoot->getWorldRotation();
 			gAgentAvatarp->mPelvisp->setPosition(gAgentAvatarp->mPelvisp->getPosition() + diff);
