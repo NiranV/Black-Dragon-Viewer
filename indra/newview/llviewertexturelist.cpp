@@ -1805,26 +1805,21 @@ bool LLUIImageList::initFromFile()
 		NUM_PASSES
 	};
 
+//	//BD - Select 3 random numbers for random loadingscreen preloading.
+	CurCount = 0;
+	for (; CurCount < 3; CurCount++)
 	{
-//		//BD - Select 3 random numbers for random loadingscreen preloading.
 		srand( (unsigned)time( NULL ) );
-		int random_number1 = rand()%7;
-		int random_number2 = rand()%7;
-		int random_number3 = rand()%7;
-		std::string filename1 = llformat("loadingscreens/loading%i.jpg" , random_number1);
-		std::string filename2 = llformat("loadingscreens/loading%i.jpg" , random_number2);
-		std::string filename3 = llformat("loadingscreens/loading%i.jpg" , random_number3);
+		int random_number = rand()%7;
+		std::string filename = llformat("loadingscreens/loading%i.jpg" , random_number);
 
 //		//BD - Set their rectangle.
-		LLRect rect;
-		rect.mTop = 1058;
-		rect.mRight = 1920;
+		LLRect rect(0, 1058, 1920, 0);
 		LLRect clip;
 
 //		//BD - Preload our randomly selected images.
-		preloadUIImage("loading1", filename1, false, rect, clip);
-		preloadUIImage("loading2", filename2, false, rect, clip);
-		preloadUIImage("loading3", filename3, false, rect, clip);
+		std::string imagename = llformat("loading%i" , CurCount);
+		preloadUIImage(imagename, filename, false, rect, clip);
 	}
 
 	for (S32 cur_pass = PASS_DECODE_NOW; cur_pass < NUM_PASSES; cur_pass++)

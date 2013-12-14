@@ -42,9 +42,9 @@
    left="0"
    tab_stop="false">
    <images>
+   <image name="loading0"/>
    <image name="loading1"/>
    <image name="loading2"/>
-   <image name="loading3"/>
    </images>
    </loading_indicator>
             <layout_stack

@@ -253,6 +253,8 @@ private:
 		LLRect mImageClipRegion;
 	};
 
+	S32 CurCount;
+
 	typedef std::map< std::string, LLPointer<LLUIImage> > uuid_ui_image_map_t;
 	uuid_ui_image_map_t mUIImages;
 
