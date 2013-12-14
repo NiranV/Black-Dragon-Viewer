@@ -192,6 +192,7 @@ width="510">
  height="20"
  follows="left|top"
  layout="topleft"
+ initial_value="1"
  left="140"
  tool_tip="Control the overall size of the User Interface (Small = 0.8 , Normal = 1.0 , Big 1.2)"
  top_pad="-15"
@@ -204,7 +205,7 @@ width="510">
  <combo_box.item
  label="Normal"
  name="1"
- value="1.0"/>
+ value="1"/>
  <combo_box.item
  label="Big"
  name="2"
