@@ -522,9 +522,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-	      <string>f564a7d936a35492be490b850b284702</string>
+              <string>155a18d9675efd334e4dbc4fd1664bdf</string>
               <key>url</key>
-	      <string>https://bitbucket.org/NiranV/black-dragon/downloads/fmodex-4.44.12-windows-20130611.tar.bz2</string>
+              <string>http://viewer.catznip.com/downloads/packages/fmodex-4.44.12-windows-20130713.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>

@@ -905,7 +905,7 @@ void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channe
 			// Redirect chat if needed
 			if ( ( (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT) || (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE)) ) && 
 				 (gRlvHandler.redirectChatOrEmote(utf8_out_text)) ) )
-			{
+		{
 				return;
 			}
 

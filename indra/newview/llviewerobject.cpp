@@ -5926,6 +5926,13 @@ void LLViewerObject::resetChildrenPosition(const LLVector3& offset, BOOL simplif
 	return ;
 }
 
+// virtual 
+BOOL	LLViewerObject::isTempAttachment() const
+{
+	return (mID.notNull() && (mID == mAttachmentItemID));
+}
+
+
 const LLUUID &LLViewerObject::getAttachmentItemID() const
 {
 	return mAttachmentItemID;
