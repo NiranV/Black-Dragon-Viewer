@@ -1466,10 +1466,10 @@ void LLAgentCamera::updateCamera()
 			if (isAgentAvatarValid() && gAgentAvatarp->getParent())
 			{
 				LLViewerObject* root_object = (LLViewerObject*)gAgentAvatarp->getRoot();
-				if (!root_object->flagCameraDecoupled())
-				{
-					agent_rot *= ((LLViewerObject*)(gAgentAvatarp->getParent()))->getRenderRotation();
-				}
+ 				if (!root_object->flagCameraDecoupled())
+ 				{
+ 					agent_rot *= ((LLViewerObject*)(gAgentAvatarp->getParent()))->getRenderRotation();
+ 				}
 			}
 			at_axis = at_axis * agent_rot;
 			LLVector3 poi = gAgentAvatarp->mHeadp->getWorldPosition() + at_axis;
