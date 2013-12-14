@@ -504,7 +504,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                 top_delta="6"
 				width="63"
                 name="groupcount">
-              [COUNT] / [REMAINING]
+              [COUNT] + [REMAINING] / 42
             </text>
                 <menu_button
                  follows="right"
