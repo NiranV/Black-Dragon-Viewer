@@ -349,10 +349,6 @@ with the same filename but different name
   <texture name="Movement_Up_Off" file_name="bottomtray/Movement_Up_Off.png" preload="false" />
   <texture name="Movement_Up_On" file_name="bottomtray/Movement_Up_On.png" preload="false" />
 
-  <texture name="NavBar_BG" file_name="navbar/NavBar_BG.png" preload="true" scale.left="1" scale.top="1" scale.right="0" scale.bottom="0" />
-  <texture name="NavBar_BG_NoFav_Bevel" file_name="navbar/NavBar_BG_NoFav_Bevel.png" preload="true" scale.left="1" scale.top="1" scale.right="0" scale.bottom="0" />
-  <texture name="NavBar_BG_NoNav_Bevel" file_name="navbar/NavBar_BG_NoNav_Bevel.png" preload="true" scale.left="1" scale.top="1" scale.right="0" scale.bottom="0" />
-
   <texture name="Nearby_chat_icon" file_name="icons/nearby_chat_icon.png" preload="false" />
 
   <texture name="Notices_Unread" file_name="bottomtray/Notices_Unread.png" preload="true" />
@@ -755,10 +751,7 @@ with the same filename but different name
   
   <texture name="Audio_Off_Old" file_name="icons/Audio_Off_Old.png" preload="true" />-->
   <texture name="Draw_Distance" file_name="icons/Draw_Distance.png" preload="true" />
-  
-  <texture name="Toast_Background_Round" file_name="windows/Toast_Background_Round.png" preload="true" scale.left="4" scale.top="24" scale.right="26" scale.bottom="4" />
-  <texture name="Toast_Over_Round" file_name="windows/Toast_Over_Round.png" preload="true" scale.left="4" scale.top="24" scale.right="26" scale.bottom="4" />
-  
+
   <texture name="transparentj2c" file_name="transparent.j2c" preload="true" />
   
   <texture name="Inv_TexturesClosed" file_name="icons/Inv_TexturesClosed.png" preload="false" />
