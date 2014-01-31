@@ -815,36 +815,6 @@ bool LLPanelPeople::updateSuggestedFriendList()
 	return false;
 }
 
-bool LLPanelPeople::updateSuggestedFriendList()
-{
-	const LLAvatarTracker& av_tracker = LLAvatarTracker::instance();
-	uuid_vec_t& suggested_friends = mSuggestedFriends->getIDs();
-	suggested_friends.clear();
-
-	//Add suggested friends
-	LLSD friends = LLFacebookConnect::instance().getContent();
-	for (LLSD::array_const_iterator i = friends.beginArray(); i != friends.endArray(); ++i)
-	{
-		LLUUID agent_id = (*i).asUUID();
-		bool second_life_buddy = agent_id.notNull() ? av_tracker.isBuddy(agent_id) : false;
-
-		if(!second_life_buddy)
-		{
-			//FB+SL but not SL friend
-			if (agent_id.notNull())
-			{
-				suggested_friends.push_back(agent_id);
-			}
-		}
-	}
-
-	//Force a refresh when there aren't any filter matches (prevent displaying content that shouldn't display)
-	mSuggestedFriends->setDirty(true, !mSuggestedFriends->filterHasMatches());
-	showFriendsAccordionsIfNeeded();
-
-	return false;
-}
-
 void LLPanelPeople::updateNearbyList()
 {
 	if (!mNearbyList)
