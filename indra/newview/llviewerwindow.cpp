@@ -1056,29 +1056,21 @@ BOOL LLViewerWindow::handleRightMouseDown(LLWindow *window,  LLCoordGL pos, MASK
 	x = llround((F32)x / mDisplayScale.mV[VX]);
 	y = llround((F32)y / mDisplayScale.mV[VY]);
 
-	BOOL down = TRUE;
-	BOOL handle = handleAnyMouseClick(window,pos,mask,LLMouseHandler::CLICK_RIGHT,down);
-	if (handle)
-		return handle;
-
-	// *HACK: this should be rolled into the composite tool logic, not
-	// hardcoded at the top level.
-	if (CAMERA_MODE_CUSTOMIZE_AVATAR != gAgentCamera.getCameraMode() && LLToolMgr::getInstance()->getCurrentTool() != LLToolPie::getInstance())
-	{
-		// If the current tool didn't process the click, we should show
-		// the pie menu.  This can be done by passing the event to the pie
-		// menu tool.
-		LLToolPie::getInstance()->handleRightMouseDown(x, y, mask);
-		// show_context_menu( x, y, mask );
-	}
-
-	return TRUE;
+//	//BD - Redirect right clicks to LLToolCamera and check if it wants to
+	//	   handle the right click before the actual main Window does.
+	return LLToolCamera::getInstance()->handleRightMouseDown(x, y, mask);
 }
 
 BOOL LLViewerWindow::handleRightMouseUp(LLWindow *window,  LLCoordGL pos, MASK mask)
 {
-	BOOL down = FALSE;
- 	return handleAnyMouseClick(window,pos,mask,LLMouseHandler::CLICK_RIGHT,down);
+	S32 x = pos.mX;
+	S32 y = pos.mY;
+	x = llround((F32)x / mDisplayScale.mV[VX]);
+	y = llround((F32)y / mDisplayScale.mV[VY]);
+
+//	//BD - Redirect right clicks to LLToolCamera and check if it wants to
+	//	   handle the right click before the actual main Window does.
+	return LLToolCamera::getInstance()->handleRightMouseUp(x, y, mask);
 }
 
 BOOL LLViewerWindow::handleMiddleMouseDown(LLWindow *window,  LLCoordGL pos, MASK mask)
@@ -2619,7 +2611,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 						break;
 					}
 				}
-		}
+			}
 		}
 
 		if (keyboard_focus->handleKey(key, mask, FALSE))

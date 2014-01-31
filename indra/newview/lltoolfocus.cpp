@@ -60,6 +60,7 @@ BOOL gCameraBtnOrbit = FALSE;
 BOOL gCameraBtnPan = FALSE;
 
 const S32 SLOP_RANGE = 4;
+const S32 SLOP_RANGE_RIGHT = 24;
 const F32 FOCUS_OFFSET_FACTOR = 1.f;
 
 //
@@ -74,10 +75,15 @@ LLToolCamera::LLToolCamera()
 	mMouseDownY(0),
 	mOutsideSlopX(FALSE),
 	mOutsideSlopY(FALSE),
+	mOutsideSlopRightX(FALSE),
+	mOutsideSlopRightY(FALSE),
 	mValidClickPoint(FALSE),
 	mMouseSteering(FALSE),
+	mRightMouse(FALSE),
 	mMouseUpX(0),
 	mMouseUpY(0),
+	mMouseRightUpX(0),
+	mMouseRightUpY(0),
 	mMouseUpMask(MASK_NONE)
 { }
 
@@ -125,6 +131,29 @@ BOOL LLToolCamera::handleMouseDown(S32 x, S32 y, MASK mask)
 	gViewerWindow->hideCursor();
 
 	gViewerWindow->pickAsync(x, y, mask, pickCallback);
+
+	return TRUE;
+}
+
+//BD - Hold Right-Mouse-Button to turn
+BOOL LLToolCamera::handleRightMouseDown(S32 x, S32 y, MASK mask)
+{
+	// Ensure a mouseup
+	setMouseCapture(TRUE);
+
+	mAccumX = 0;
+	mAccumY = 0;
+
+	// If mouse capture gets ripped away, claim we moused up
+	// at the point we moused down. JC
+	mMouseRightUpX = x;
+	mMouseRightUpY = y;
+	mMouseUpMask = mask;
+
+	mOutsideSlopRightX = FALSE;
+	mOutsideSlopRightY = FALSE;
+
+	mRightMouse = TRUE;
 
 	return TRUE;
 }
@@ -308,29 +337,78 @@ BOOL LLToolCamera::handleMouseUp(S32 x, S32 y, MASK mask)
 	return TRUE;
 }
 
+//BD - Hold Right-Mouse-Button to turn
+BOOL LLToolCamera::handleRightMouseUp(S32 x, S32 y, MASK mask)
+{
+	gViewerWindow->showCursor();
+	mRightMouse = FALSE;
+
+	if (hasMouseCapture())
+	{
+		// calls releaseMouse() internally
+		setMouseCapture(FALSE);
+	}
+	else
+	{
+		releaseMouse();
+	}
+
+//	//BD - Intercept here if we reached the threshold
+	if (mOutsideSlopRightX || mOutsideSlopRightY)
+	{
+		return TRUE;
+	}
+
+//	//BD - Calculate the correct onscreen position and throw both
+	//	   RightMouseDown and RightMouseUp to prevent pie menus from
+	//	   staying in their initial state until clicking somewhere
+	LLCoordGL pos;
+	pos.mX = x * gViewerWindow->getDisplayScale().mV[VX];
+	pos.mY = y * gViewerWindow->getDisplayScale().mV[VY];
+	gViewerWindow->handleAnyMouseClick(gViewerWindow->getWindow(), pos, mask, LLMouseHandler::CLICK_RIGHT, TRUE);
+	return gViewerWindow->handleAnyMouseClick(gViewerWindow->getWindow(), pos, mask, LLMouseHandler::CLICK_RIGHT, FALSE);
+}
+
 
 BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 {
 	S32 dx = gViewerWindow->getCurrentMouseDX();
 	S32 dy = gViewerWindow->getCurrentMouseDY();
 	
-	if (hasMouseCapture() && mValidClickPoint || gSavedSettings.getBOOL("EnableThirdPersonSteering"))
+	if (hasMouseCapture() && mValidClickPoint || 
+		gSavedSettings.getBOOL("EnableThirdPersonSteering") ||
+		mRightMouse)
 	{
 		mAccumX += llabs(dx);
 		mAccumY += llabs(dy);
 
-		if (mAccumX >= SLOP_RANGE)
+		if (!mRightMouse)
 		{
-			mOutsideSlopX = TRUE;
-		}
+			if (mAccumX >= SLOP_RANGE)
+			{
+				mOutsideSlopX = TRUE;
+			}
 
-		if (mAccumY >= SLOP_RANGE)
+			if (mAccumY >= SLOP_RANGE)
+			{
+				mOutsideSlopY = TRUE;
+			}
+		}
+		else
 		{
-			mOutsideSlopY = TRUE;
+			if (mAccumX >= SLOP_RANGE_RIGHT)
+			{
+				mOutsideSlopRightX = TRUE;
+			}
+
+			if (mAccumY >= SLOP_RANGE_RIGHT)
+			{
+				mOutsideSlopRightY = TRUE;
+			}
 		}
 	}
 
-	if (mOutsideSlopX || mOutsideSlopY )
+	if (mOutsideSlopX || mOutsideSlopY)
 	{
 		if (!mValidClickPoint && !gSavedSettings.getBOOL("EnableThirdPersonSteering"))
 		{
@@ -425,8 +503,30 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 			lldebugst(LLERR_USER_INPUT) << "hover handled by LLToolZoom" << llendl;		
 		}
 	}
+	else if (mRightMouse && mOutsideSlopRightX || mRightMouse && mOutsideSlopRightY)
+	{
+//		//BD - Handle right click threshold breaks as a seperate camera tool to
+		//	   prevent any unintentional left-click blocking or interceptions
+		if (hasMouseCapture())
+		{
+			const F32 RADIANS_PER_PIXEL = 360.f * DEG_TO_RAD / gViewerWindow->getWorldViewWidthScaled();
 
-	if(!gSavedSettings.getBOOL("EnableThirdPersonSteering"))
+			if (dx != 0)
+			{
+				gAgentCamera.cameraOrbitAround( -dx * RADIANS_PER_PIXEL );
+			}
+
+			if (dy != 0)
+			{
+				gAgentCamera.cameraOrbitOver( -dy * RADIANS_PER_PIXEL );
+			}
+			gViewerWindow->hideCursor();
+			LLUI::setMousePositionScreen(mMouseRightUpX, mMouseRightUpY);
+		}
+	}
+
+	if(!gSavedSettings.getBOOL("EnableThirdPersonSteering") ||
+		!mRightMouse)
 	{
 		if (gCameraBtnOrbit ||
 			mask == MASK_ORBIT || 
@@ -436,7 +536,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		}
 		else if (	gCameraBtnPan ||
 					mask == MASK_PAN ||
-					mask == (MASK_PAN | MASK_ALT) )
+					mask == (MASK_PAN | MASK_ALT))
 		{
 			gViewerWindow->setCursor(UI_CURSOR_TOOLPAN);
 		}
