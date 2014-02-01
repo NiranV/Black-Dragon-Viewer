@@ -71,6 +71,7 @@
 #include "llstatusbar.h"
 #include "llteleportflags.h"
 #include "lltool.h"
+#include "lltoolfocus.h"
 #include "lltoolbarview.h"
 #include "lltoolpie.h"
 #include "lltoolmgr.h"
@@ -558,7 +559,7 @@ void LLAgent::moveAt(S32 direction, bool reset)
 		setControlFlags(AGENT_CONTROL_AT_NEG | AGENT_CONTROL_FAST_AT);
 	}
 
-	if (reset)
+	if (reset && !LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		gAgentCamera.resetView();
 	}
@@ -586,7 +587,10 @@ void LLAgent::moveAtNudge(S32 direction)
 		setControlFlags(AGENT_CONTROL_NUDGE_AT_NEG);
 	}
 
-	gAgentCamera.resetView();
+	if(!LLToolCamera::getInstance()->hasMouseCapture())
+	{
+		gAgentCamera.resetView();
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -611,7 +615,10 @@ void LLAgent::moveLeft(S32 direction)
 		setControlFlags(AGENT_CONTROL_LEFT_NEG | AGENT_CONTROL_FAST_LEFT);
 	}
 
-	gAgentCamera.resetView();
+	if(!LLToolCamera::getInstance()->hasMouseCapture())
+	{
+		gAgentCamera.resetView();
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -636,7 +643,10 @@ void LLAgent::moveLeftNudge(S32 direction)
 		setControlFlags(AGENT_CONTROL_NUDGE_LEFT_NEG);
 	}
 
-	gAgentCamera.resetView();
+	if(!LLToolCamera::getInstance()->hasMouseCapture())
+	{
+		gAgentCamera.resetView();
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -661,7 +671,10 @@ void LLAgent::moveUp(S32 direction)
 		setControlFlags(AGENT_CONTROL_UP_NEG | AGENT_CONTROL_FAST_UP);
 	}
 
-	gAgentCamera.resetView();
+	if(!LLToolCamera::getInstance()->hasMouseCapture())
+	{
+		gAgentCamera.resetView();
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -680,9 +693,9 @@ void LLAgent::moveYaw(F32 mag, bool reset_view)
 		setControlFlags(AGENT_CONTROL_YAW_NEG);
 	}
 
-    if (reset_view)
+    if (reset_view && !LLToolCamera::getInstance()->hasMouseCapture())
 	{
-        gAgentCamera.resetView();
+		gAgentCamera.resetView();
 	}
 }
 
