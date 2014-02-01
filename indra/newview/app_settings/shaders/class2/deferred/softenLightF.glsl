@@ -42,6 +42,28 @@ uniform sampler2D	  lightFunc;
 uniform float blur_size;
 uniform float blur_fidelity;
 
+vec3 best_refn;
+float best_refshad;
+float best_refapprop;
+vec3 best_refcol;
+float total_refapprop;
+float rnd;
+vec3 reflight;
+float bloomdamp;
+
+float rnd2;
+float guessnumfp;
+float gnfrac;
+float rd;
+float rdpow2;
+float refdist;
+vec2 ref2d;
+float refdepth;
+vec3 refcol;
+
+const int its = 26;
+const float itsf = 26.0;
+
 // Inputs
 uniform vec4 morphFactor;
 uniform vec3 camPosLocal;
@@ -463,27 +485,25 @@ void main()
 				
 				float checkerboard = floor(mod(tc.x+tc.y, 2.0));
 	
-				vec3 best_refn = vec3(0);
-				float best_refshad = 0;
-				float best_refapprop = -1.0;
-				vec3 best_refcol = vec3(0);
-				float total_refapprop = 0;
-				float rnd = rand(tc.xy);
-				vec3 reflight = sun_dir.xyz;
-				float bloomdamp = 0.0;
-				const int its = 26;
-				const float itsf = 26.0;
+				best_refn = vec3(0);
+				best_refshad = 0;
+				best_refapprop = -1.0;
+				best_refcol = vec3(0);
+				total_refapprop = 0;
+				rnd = rand(tc.xy);
+				reflight = sun_dir.xyz;
+				bloomdamp = 0.0;
 				
 				for (int guessnum = 1; guessnum <= its; ++guessnum)
 				{
-					float rnd2 = rand(vec2(guessnum+rnd, tc.x));
-					float guessnumfp = float(guessnum);
-					float gnfrac = guessnumfp / itsf;
+					rnd2 = rand(vec2(guessnum+rnd, tc.x));
+					guessnumfp = float(guessnum);
+					gnfrac = guessnumfp / itsf;
 					guessnumfp -= (checkerboard*0.5 + rnd);
-					float rd = guessnumfp / itsf;
-					float rdpow2 = rd * rd;
-					float refdist = (-2.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * (rdpow2));// / (-depth) ;
-					vec2 ref2d = (orig_ref2d + (1.0 - spec.a)*0.25*vec2(rnd2*2.0-1.0)) * refdist;
+					rd = guessnumfp / itsf;
+					rdpow2 = rd * rd;
+					refdist = (-2.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * (rdpow2));// / (-depth) ;
+					ref2d = (orig_ref2d + (1.0 - spec.a)*0.25*vec2(rnd2*2.0-1.0)) * refdist;
 					
 					ref2d += tc.xy; // use as offset from destination
 					
@@ -491,8 +511,8 @@ void main()
 					ref2d.x < 0.0 || ref2d.x > screen_res.x) continue;
 					
 					// Get attributes from the 2D guess point.
-					float refdepth = texture2DRect(depthMap, ref2d).r;
-					vec3 refcol = texture2DRect(diffuseRect, ref2d).rgb;
+					refdepth = texture2DRect(depthMap, ref2d).r;
+					refcol = texture2DRect(diffuseRect, ref2d).rgb;
 					
 					//convert to gamma space
 					refcol.rgb = linear_to_srgb(refcol.rgb);
@@ -512,11 +532,6 @@ void main()
 						refshad = pow(refshad, light_gamma);
 						vec3 refn = /*normalize*/(decode_normal(texture2DRect(normalMap, ref2d).xy));
 						
-						// Darken reflections from points which face away from the reflected ray - our guess was a back-face
-						refapprop = min(refapprop, step(dot(refnorm, refn), 0.001));
-						float ppdist = dot(norm.xyz, refpos.xyz - pos.xyz);
-	
-						refapprop = min(refapprop, step(0.01, ppdist));
 	
 						total_refapprop += refapprop;
 						best_refn += refn.xyz * refapprop;
