@@ -353,8 +353,10 @@ BOOL LLToolCamera::handleRightMouseUp(S32 x, S32 y, MASK mask)
 		releaseMouse();
 	}
 
-//	//BD - Intercept here if we reached the threshold
-	if (mOutsideSlopRightX || mOutsideSlopRightY)
+//	//BD - Intercept here if we reached the threshold or if we are in
+	//     Appearance Mode, this prevents a nasty crash bug.
+	if (mOutsideSlopRightX || mOutsideSlopRightY ||
+		CAMERA_MODE_CUSTOMIZE_AVATAR == gAgentCamera.getCameraMode())
 	{
 		return TRUE;
 	}
