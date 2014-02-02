@@ -143,7 +143,7 @@ BOOL LLFloaterMove::postBuild()
 
 	initMovementMode();
 
-	gAgent.addParcelChangedCallback(LLFloaterMove::sUpdateFlyingStatus);
+	gAgent.addParcelChangedCallback(LLFloaterMove::sUpdateMovementStatus);
 
 	return TRUE;
 }
