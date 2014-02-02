@@ -525,6 +525,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                      function="People.Group.Plus.Validate" />
                 </menu_button>
             </panel>
+                use_ellipses="true"
         </panel>
 
 <!-- ================================= RECENT tab =========================== -->
