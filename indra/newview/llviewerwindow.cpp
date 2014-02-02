@@ -1003,10 +1003,18 @@ BOOL LLViewerWindow::handleAnyMouseClick(LLWindow *window,  LLCoordGL pos, MASK 
 				llinfos << buttonname << " Mouse " << buttonstatestr << " " << LLViewerEventRecorder::instance().get_xui()	<< llendl;
 			} 
 			return TRUE;
-		} else if (LLView::sDebugMouseHandling)
-			{
-				llinfos << buttonname << " Mouse " << buttonstatestr << " not handled by view" << llendl;
-			}
+		} 
+		else if (LLView::sDebugMouseHandling)
+		{
+			llinfos << buttonname << " Mouse " << buttonstatestr << " not handled by view" << llendl;
+		}
+
+//		//BD - If we have the tools floater open and are right clicking pass this event to 
+		//     the pie menu tool otherwise it will be eaten.
+		if (clicktype == LLMouseHandler::CLICK_RIGHT && LLToolMgr::getInstance()->inBuildMode())
+		{
+			LLToolPie::getInstance()->handleRightMouseDown(x, y, mask);
+		}
 	}
 
 	// Do not allow tool manager to handle mouseclicks if we have disconnected	
