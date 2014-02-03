@@ -527,26 +527,28 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		}
 	}
 
-	if(!gSavedSettings.getBOOL("EnableThirdPersonSteering") ||
-		!mRightMouse)
+	if(gSavedSettings.getBOOL("EnableThirdPersonSteering") ||
+	mRightMouse)
 	{
-		if (gCameraBtnOrbit ||
-			mask == MASK_ORBIT || 
-			mask == (MASK_ALT | MASK_ORBIT))
-		{
-			gViewerWindow->setCursor(UI_CURSOR_TOOLCAMERA);
-		}
-		else if (	gCameraBtnPan ||
-					mask == MASK_PAN ||
-					mask == (MASK_PAN | MASK_ALT))
-		{
-			gViewerWindow->setCursor(UI_CURSOR_TOOLPAN);
-		}
-		else
-		{
-			gViewerWindow->setCursor(UI_CURSOR_TOOLZOOMIN);
-		}
+		gViewerWindow->setCursor(UI_CURSOR_ARROW);
 	}
+	else if (gCameraBtnOrbit ||
+		mask == MASK_ORBIT || 
+		mask == (MASK_ALT | MASK_ORBIT))
+	{
+		gViewerWindow->setCursor(UI_CURSOR_TOOLCAMERA);
+	}
+	else if (	gCameraBtnPan ||
+				mask == MASK_PAN ||
+				mask == (MASK_PAN | MASK_ALT))
+	{
+		gViewerWindow->setCursor(UI_CURSOR_TOOLPAN);
+	}
+	else
+	{
+		gViewerWindow->setCursor(UI_CURSOR_TOOLZOOMIN);
+	}
+	
 	
 	return TRUE;
 }
