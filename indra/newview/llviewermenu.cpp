@@ -486,7 +486,7 @@ void init_menus()
 	///
 	LLColor4 color;
 
-	LLColor4 context_menu_color = LLUIColorTable::instance().getColor("MenuPopupBgColor");
+	LLColor4 context_menu_color = LLUIColorTable::instance().getColor("MenuDefaultBgColor");
 	
 	gMenuAvatarSelf->setBackgroundColor( context_menu_color );
 	gMenuAvatarOther->setBackgroundColor( context_menu_color );
@@ -496,7 +496,7 @@ void init_menus()
 
 	gMenuLand->setBackgroundColor( context_menu_color );
 
-	color = LLUIColorTable::instance().getColor( "MenuPopupBgColor" );
+	color = LLUIColorTable::instance().getColor( "MenuDefaultBgColor" );
 	gPopupMenuView->setBackgroundColor( color );
 
 	// If we are not in production, use a different color to make it apparent.

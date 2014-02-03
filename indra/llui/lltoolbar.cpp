@@ -157,7 +157,6 @@ void LLToolBar::createContextMenu()
 
 		if (menu)
 		{
-			menu->setBackgroundColor(LLUIColorTable::instance().getColor("MenuPopupBgColor"));
 			mPopupMenuHandle = menu->getHandle();
 			mRemoveButtonHandle = menu->getChild<LLView>("Remove button")->getHandle();
 		}
