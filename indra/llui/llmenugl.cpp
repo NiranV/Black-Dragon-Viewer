@@ -3053,6 +3053,13 @@ void LLMenuGL::draw( void )
 			color_drop_shadow, drop_shadow_floater );
 	}
 
+//	//BD - If torn off do not show the background because we got a nice background
+	//     color already.
+	if( mTornOff )
+	{
+		setBackgroundVisible(false);
+	}
+
 	if( mBgVisible )
 	{
 		gl_rect_2d( 0, getRect().getHeight(), getRect().getWidth(), 0, mBackgroundColor.get() );
