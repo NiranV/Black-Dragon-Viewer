@@ -205,8 +205,8 @@ void LLAgentCamera::init()
 	mDrawDistance = gSavedSettings.getF32("RenderFarClip");
 
 	LLViewerCamera::getInstance()->setView(DEFAULT_FIELD_OF_VIEW);
-	// Leave at 0.1 meters until we have real near clip management
-	LLViewerCamera::getInstance()->setNear(0.1f);
+	// Leave at 0.01 meters until we have real near clip management
+	LLViewerCamera::getInstance()->setNear(0.01f);
 	LLViewerCamera::getInstance()->setFar(mDrawDistance);			// if you want to change camera settings, do so in camera.h
 	LLViewerCamera::getInstance()->setAspect( gViewerWindow->getWorldViewAspectRatio() );		// default, overridden in LLViewerWindow::reshape
 	LLViewerCamera::getInstance()->setViewHeightInPixels(768);			// default, overridden in LLViewerWindow::reshape
