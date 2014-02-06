@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
 border="false"
 follows="left|top|right|bottom"
@@ -2358,6 +2358,10 @@ width="510">
       label="Reinhard"
       name="Reinhard"
       value="2" />
+      <combo_box.item
+      label="Custom"
+      name="Custom"
+      value="3" />
       </combo_box>
       <slider
       can_edit_text="true"
