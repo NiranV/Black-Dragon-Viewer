@@ -2087,6 +2087,7 @@ width="510">
      height="16"
      follows="top|left"
      initial_value="true"
+     enabled="false"
      label="Render Underwater Distortion"
      tool_tip="Controls weither this Viewer should render a faked underwater distortion effect done with Depth of Field or not"
      layout="topleft"
