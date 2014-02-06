@@ -13,7 +13,7 @@
  value="0.38 0.694 0.473 0.35" />
  <color
  name="BeaconColor"
- value="0.749 0.298 0 1" />	 
+ value="0.749 0.298 0 0.5" />	 
  <color
  name="White"
  value="1 1 1 1" />
@@ -56,7 +56,7 @@
  <color
  name="Black"
  value="0 0 0 1" />
- <colork
+ <color
  name="Black_10"
  value="0 0 0 0.1" />
  <color
@@ -67,7 +67,7 @@
  value="0 0 0 0.5" />
  <color
  name="FrogGreen"
- value="0.26 0.345 0.263 1" />
+ value="0.26 0.345 0.263 0.5" />
  <color
  name="Red"
  value="1 0 0 1" />
@@ -188,7 +188,7 @@
  reference="Unused?" />
  <color
  name="ButtonFlashBgColor"
- reference="Unused?" />
+ reference="BeaconColor" />
  <color
  name="ButtonImageColor"
  reference="White" />
