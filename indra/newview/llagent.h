@@ -522,7 +522,7 @@ private:
 public:
 	void			moveAt(S32 direction, bool reset_view = true);
 	void			moveAtNudge(S32 direction);
-	void			moveLeft(S32 direction);
+	void			moveLeft(S32 direction, bool reset_view = true);
 	void			moveLeftNudge(S32 direction);
 	void			moveUp(S32 direction);
 	void			moveYaw(F32 mag, bool reset_view = true);

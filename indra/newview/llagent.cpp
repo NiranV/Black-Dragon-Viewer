@@ -594,7 +594,7 @@ void LLAgent::moveAtNudge(S32 direction)
 //-----------------------------------------------------------------------------
 // moveLeft()
 //-----------------------------------------------------------------------------
-void LLAgent::moveLeft(S32 direction)
+void LLAgent::moveLeft(S32 direction, bool reset)
 {
 	mMoveTimer.reset();
 	LLFirstUse::notMoving(false);
@@ -613,7 +613,7 @@ void LLAgent::moveLeft(S32 direction)
 		setControlFlags(AGENT_CONTROL_LEFT_NEG | AGENT_CONTROL_FAST_LEFT);
 	}
 
-	if(!LLToolCamera::getInstance()->hasMouseCapture())
+	if(reset && !LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		gAgentCamera.resetView();
 	}

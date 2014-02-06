@@ -366,11 +366,11 @@ void LLViewerJoystick::agentSlide(F32 inc)
 {
 	if (inc < 0.f)
 	{
-		gAgent.moveLeft(1);
+		gAgent.moveLeft(1, false);
 	}
 	else if (inc > 0.f)
 	{
-		gAgent.moveLeft(-1);
+		gAgent.moveLeft(-1, false);
 	}
 }
 
@@ -763,67 +763,15 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	
 	handleRun((F32) sqrt(sDelta[Z_I]*sDelta[Z_I] + sDelta[X_I]*sDelta[X_I]));
 	
-	// Allow forward/backward movement some priority
-	if (dom_axis == Z_I)
-	{
-		agentPush(sDelta[Z_I]);			// forward/back
-		
-		if (fabs(sDelta[X_I])  > .1f)
-		{
-			agentSlide(sDelta[X_I]);	// move sideways
-		}
-		
-		if (fabs(sDelta[Y_I])  > .1f)
-		{
-			agentFly(sDelta[Y_I]);		// up/down & crouch
-		}
-	
-		// too many rotations during walking can be confusing, so apply
-		// the deadzones one more time (quick & dirty), at 50%|30% power
-		F32 eff_rx = .3f * dead_zone[RX_I];
-		F32 eff_ry = .3f * dead_zone[RY_I];
-	
-		if (sDelta[RX_I] > 0)
-		{
-			eff_rx = llmax(sDelta[RX_I] - eff_rx, 0.f);
-		}
-		else
-		{
-			eff_rx = llmin(sDelta[RX_I] + eff_rx, 0.f);
-		}
-
-		if (sDelta[RY_I] > 0)
-		{
-			eff_ry = llmax(sDelta[RY_I] - eff_ry, 0.f);
-		}
-		else
-		{
-			eff_ry = llmin(sDelta[RY_I] + eff_ry, 0.f);
-		}
-		
-		
-		if (fabs(eff_rx) > 0.f || fabs(eff_ry) > 0.f)
-		{
-			if (gAgent.getFlying())
-			{
-				agentPitch(eff_rx);
-				agentYaw(eff_ry);
-			}
-			else
-			{
-				agentPitch(eff_rx);
-				agentYaw(2.f * eff_ry);
-			}
-		}
-	}
-	else
-	{
-		agentSlide(sDelta[X_I]);		// move sideways
-		agentFly(sDelta[Y_I]);			// up/down & crouch
-		agentPush(sDelta[Z_I]);			// forward/back
-		agentPitch(sDelta[RX_I]);		// pitch
-		agentYaw(sDelta[RY_I]);			// turn
-	}
+//	//BD - Use raw deltas, do not add any stupid limitations or extra dead zones
+	//	   otherwise alot controllers will cry and camera movement will bug out
+	//     or be completely ignored on some controllers. Especially fixes Xbox 360
+	//     controller avatar movement.
+	agentSlide(sDelta[X_I]);		// move sideways
+	agentFly(sDelta[Y_I]);			// up/down & crouch
+	agentPush(sDelta[Z_I]);			// forward/back
+	agentPitch(sDelta[RX_I]);		// pitch
+	agentYaw(sDelta[RY_I]);			// turn
 }
 
 // -----------------------------------------------------------------------------
