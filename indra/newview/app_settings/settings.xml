@@ -9553,7 +9553,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.018</real>
+      <real>0.040</real>
     </map>
     <key>RenderGlowMinLuminance</key>
     <map>
@@ -9586,7 +9586,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.21</real>
+      <real>0.2</real>
     </map>
     <key>RenderGlowWarmthAmount</key>
     <map>
@@ -9597,7 +9597,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>3.8</real>
+      <real>20.0</real>
     </map>
     <key>RenderGlowWarmthWeights</key>
     <map>
@@ -9623,7 +9623,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>2.1</real>
+      <real>1.8</real>
     </map>
     <key>RenderGround</key>
     <map>
