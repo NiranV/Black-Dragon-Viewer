@@ -1346,19 +1346,39 @@ F32 LLAgent::clampPitchToLimits(F32 angle)
 
 	LLVector3 skyward = getReferenceUpVector();
 
-	const F32 look_down_limit = 179.f * DEG_TO_RAD;
-	const F32 look_up_limit   =   1.f * DEG_TO_RAD;
+//	//BD - Mouselook pitch limitations to prevent camera bugging.
+	const F32 LOOK_DOWN_LIMIT_ML = 160.f * DEG_TO_RAD;
+	const F32 LOOK_UP_LIMIT_ML   =  20.f * DEG_TO_RAD;
+
+	const F32 LOOK_DOWN_LIMIT = 179.f * DEG_TO_RAD;
+	const F32 LOOK_UP_LIMIT   =   1.f * DEG_TO_RAD;
 
 	F32 angle_from_skyward = acos( mFrameAgent.getAtAxis() * skyward );
 
-	// clamp pitch to limits
-	if ((angle >= 0.f) && (angle_from_skyward + angle > look_down_limit))
+	const bool realistic_ml = gSavedSettings.getBOOL("UseRealisticMouselook");
+//	//BD - clamp pitch in realistic mouselook more than usual.
+	if(realistic_ml && gAgentCamera.cameraMouselook())
 	{
-		angle = look_down_limit - angle_from_skyward;
+		if ((angle >= 0.f) && (angle_from_skyward + angle > LOOK_DOWN_LIMIT_ML))
+		{
+			angle = LOOK_DOWN_LIMIT_ML - angle_from_skyward;
+		}
+		else if ((angle < 0.f) && (angle_from_skyward + angle < LOOK_UP_LIMIT_ML))
+		{
+			angle = LOOK_UP_LIMIT_ML - angle_from_skyward;
+		}
 	}
-	else if ((angle < 0.f) && (angle_from_skyward + angle < look_up_limit))
+	else
 	{
-		angle = look_up_limit - angle_from_skyward;
+		// clamp pitch to limits
+		if ((angle >= 0.f) && (angle_from_skyward + angle > LOOK_DOWN_LIMIT))
+		{
+			angle = LOOK_DOWN_LIMIT - angle_from_skyward;
+		}
+		else if ((angle < 0.f) && (angle_from_skyward + angle < LOOK_UP_LIMIT))
+		{
+			angle = LOOK_UP_LIMIT - angle_from_skyward;
+		}
 	}
    
     return angle;
