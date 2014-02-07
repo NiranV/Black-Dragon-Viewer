@@ -1739,7 +1739,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>80.6</real>
+    <real>20.2</real>
   </map>
 
   <key>CameraFNumber</key>
@@ -1751,7 +1751,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>21.2</real>
+    <real>22.1</real>
   </map>
 
   <key>CameraFocalLength</key>
