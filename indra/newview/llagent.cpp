@@ -650,7 +650,7 @@ void LLAgent::moveLeftNudge(S32 direction)
 //-----------------------------------------------------------------------------
 // moveUp()
 //-----------------------------------------------------------------------------
-void LLAgent::moveUp(S32 direction)
+void LLAgent::moveUp(S32 direction, bool reset)
 {
 	mMoveTimer.reset();
 	LLFirstUse::notMoving(false);
@@ -669,7 +669,7 @@ void LLAgent::moveUp(S32 direction)
 		setControlFlags(AGENT_CONTROL_UP_NEG | AGENT_CONTROL_FAST_UP);
 	}
 
-	if(!LLToolCamera::getInstance()->hasMouseCapture())
+	if(reset && !LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		gAgentCamera.resetView();
 	}
@@ -1346,7 +1346,7 @@ F32 LLAgent::clampPitchToLimits(F32 angle)
 
 	LLVector3 skyward = getReferenceUpVector();
 
-	const F32 look_down_limit = 179.f * DEG_TO_RAD;;
+	const F32 look_down_limit = 179.f * DEG_TO_RAD;
 	const F32 look_up_limit   =   1.f * DEG_TO_RAD;
 
 	F32 angle_from_skyward = acos( mFrameAgent.getAtAxis() * skyward );

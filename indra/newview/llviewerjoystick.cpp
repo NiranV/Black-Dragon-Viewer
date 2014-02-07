@@ -358,7 +358,7 @@ void LLViewerJoystick::handleRun(F32 inc)
 // -----------------------------------------------------------------------------
 void LLViewerJoystick::agentJump()
 {
-    gAgent.moveUp(1);
+    gAgent.moveUp(1, false);
 }
 
 // -----------------------------------------------------------------------------
@@ -399,12 +399,12 @@ void LLViewerJoystick::agentFly(F32 inc)
 		{
 			gAgent.setFlying(true);
 		}
-		gAgent.moveUp(1);
+		gAgent.moveUp(1, false);
 	}
 	else if (inc > 0.f)
 	{
 		// crouch
-		gAgent.moveUp(-1);
+		gAgent.moveUp(-1, false);
 	}
 }
 
@@ -629,7 +629,7 @@ void LLViewerJoystick::moveAvatar(bool reset)
 		{
 			if (!gAgent.getFlying())
 			{
-				gAgent.moveUp(1);
+				gAgent.moveUp(1, false);
 			}
 			else if (!button_held)
 			{
@@ -764,7 +764,7 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	handleRun((F32) sqrt(sDelta[Z_I]*sDelta[Z_I] + sDelta[X_I]*sDelta[X_I]));
 	
 //	//BD - Use raw deltas, do not add any stupid limitations or extra dead zones
-	//	   otherwise alot controllers will cry and camera movement will bug out
+	//     otherwise alot controllers will cry and camera movement will bug out
 	//     or be completely ignored on some controllers. Especially fixes Xbox 360
 	//     controller avatar movement.
 	agentSlide(sDelta[X_I]);		// move sideways

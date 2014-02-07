@@ -524,7 +524,7 @@ public:
 	void			moveAtNudge(S32 direction);
 	void			moveLeft(S32 direction, bool reset_view = true);
 	void			moveLeftNudge(S32 direction);
-	void			moveUp(S32 direction);
+	void			moveUp(S32 direction, bool reset_view = true);
 	void			moveYaw(F32 mag, bool reset_view = true);
 	void			movePitch(F32 mag);
 
