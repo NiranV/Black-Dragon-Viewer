@@ -59,7 +59,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="all"
-            height="1305"
+            height="1285"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -639,8 +639,8 @@ width="345">
                   </text>
                   <check_box
                   control_name="RenderUnderWaterDistortion"
-                  enabled_control="RenderDepthOfField"
                   height="16"
+                  enabled="false"
                   label="Underwater Distortion"
                   tool_tip="Controls weither this Viewer should render a faked underwater distortion effect done with Depth of Field or not"
                   layout="topleft"
@@ -1006,25 +1006,6 @@ width="345">
                   max_val="1"
                   min_val="0"
                   name="BlurDistance"
-                  top_pad="3"
-                  width="290" />
-                  <slider
-                  control_name="RenderShadowResolutionScale"
-                  enabled_control="RenderDeferred"
-                  decimal_digits="2"
-                  follows="left|top"
-                  can_edit_text="true"
-                  height="16"
-                  increment="0.05"
-                  initial_value="1"
-                  label="Resolution:"
-                  tool_tip="Sets the Resolution of Shadows against your Screen resolution"
-                  label_width="110"
-                  layout="topleft"
-                  left="20"
-                  max_val="4"
-                  min_val="0"
-                  name="RenderShadowResolutionScale"
                   top_pad="3"
                   width="290" />
                   <text
