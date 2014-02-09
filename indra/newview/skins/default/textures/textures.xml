@@ -727,9 +727,12 @@ with the same filename but different name
   
   <texture name="Menu_Bar" file_name="menu_bar.tga" scale.left="1" scale.top="40" scale.right="1025" scale.bottom="0" />
   
-  <!--<texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
-    
-  <texture name="lock2" file_name="lock.png" preload="true" />
+  <texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
+  <texture name="Command_Script_Limits_Icon" file_name="toolbar_icons/script.png"      preload="true" />
+  <texture name="Command_PF_Linksets_Icon"  file_name="toolbar_icons/linksets.png"     preload="true" />
+  <texture name="Command_PF_Characters_Icon" file_name="toolbar_icons/characters.png"  preload="true" />
+  
+  <!--<texture name="lock2" file_name="lock.png" preload="true" />
   <texture name="menubg" file_name="menubg.jpg" preload="true" />
   
   <texture name="TextField_Off2" file_name="widgets/TextField_Off2.png" preload="true" scale.left="9" scale.top="1" scale.right="238" scale.bottom="12" />
