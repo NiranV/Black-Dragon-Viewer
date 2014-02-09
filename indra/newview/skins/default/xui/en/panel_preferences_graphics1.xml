@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1655"
+  height="1700"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -819,6 +819,7 @@ width="510">
  control_name="BackgroundYieldTime"
  height="15"
  is_toggle="false"
+ label_color="White"
  label="⌊default⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
@@ -1278,6 +1279,7 @@ width="510">
  control_name="RenderGlowMinLuminance"
  height="15"
  is_toggle="false"
+ label_color="White"
  label="⌊default⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
@@ -1619,64 +1621,6 @@ width="510">
  name="2x"
  value="2" />
  </combo_box>
-   <check_box
-   control_name="RenderObjectBump"
-   height="16"
-   initial_value="true"
-   label="Render Advanced Materials"
-   tool_tip="Toggles Bumpmapping and shiny surfaces which reflect lights of the environment"
-   layout="topleft"
-   left="10"
-   name="BumpShiny"
-   top_pad="5"
-   width="115" />
-   <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="10"
- name="BumpStrength"
- top_pad="4"
- width="120">
- Normalmap Strength:
- </text>
- <combo_box
- control_name="RenderNormalMapScale"
- height="20"
- follows="left|top"
- layout="topleft"
- left="140"
- tool_tip="Controls the strength and resolution ration when generating Normal Maps on Bumpmaps (needs turning on/off any higher graphic relevant option)"
- top_delta="-2"
- name="BumpStrengthSelection"
- width="100">
- <combo_box.item
- label="Very Fine"
- name="0"
- value="512"/>
- <combo_box.item
- label="Finer"
- name="1"
- value="256"/>
- <combo_box.item
- label="Fine"
- name="2"
- value="128"/>
- <combo_box.item
- label="Normal*"
- name="3"
- value="64"/>
- <combo_box.item
- label="Rough"
- name="4"
- value="32"/>
- <combo_box.item
- label="Rougher"
- name="5"
- value="16"/>
- </combo_box>
  <check_box
    control_name="RenderLocalLights"
    height="16"
@@ -1724,59 +1668,146 @@ width="510">
  name="2"
  value="2"/>
  </combo_box>
- <text
+ <check_box
+   control_name="RenderObjectBump"
+   height="16"
+   initial_value="true"
+   label="Render Advanced Materials"
+   tool_tip="Toggles Bumpmapping and shiny surfaces which reflect lights of the environment"
+   layout="topleft"
+   left="270"
+   name="BumpShiny"
+   top_delta="-17"
+   width="115" />
+   <text
  type="string"
  length="1"
- enabled_control="RenderDeferred"
  follows="left|top"
  height="12"
  layout="topleft"
  left="270"
- name="ShadowQuality"
- top_delta="3"
+ name="BumpStrength"
+ top_pad="4"
  width="120">
- Shadow Quality:
+ Normalmap Strength:
  </text>
  <combo_box
- control_name="RenderShadowResolutionScale"
- enabled_control="RenderDeferred"
+ control_name="RenderNormalMapScale"
  height="20"
- layout="topleft"
  follows="left|top"
+ layout="topleft"
  left="390"
- tool_tip="Controls the resolution of shadows against your window or fullscreen resolution"
- top_pad="-15"
- name="ShadowResDrop"
+ tool_tip="Controls the strength and resolution ration when generating Normal Maps on Bumpmaps (needs turning on/off any higher graphic relevant option)"
+ top_delta="-2"
+ name="BumpStrengthSelection"
  width="100">
  <combo_box.item
- label="Very Low"
+ label="Very Fine"
  name="0"
- value="0.2"/>
+ value="512"/>
  <combo_box.item
- label="Low"
+ label="Finer"
  name="1"
- value="0.5"/>
+ value="256"/>
  <combo_box.item
- label="Medium"
+ label="Fine"
  name="2"
- value="0.75"/>
+ value="128"/>
  <combo_box.item
- label="High*"
+ label="Normal*"
  name="3"
- value="1"/>
+ value="64"/>
  <combo_box.item
- label="Very High"
+ label="Rough"
  name="4"
- value="1.5"/>
+ value="32"/>
  <combo_box.item
- label="Ultra"
+ label="Rougher"
  name="5"
- value="2"/>
- <combo_box.item
- label="Extreme"
- name="6"
- value="2.5"/>
+ value="16"/>
  </combo_box>
+ <slider
+      enabled_control="RenderDeferredSSAO"
+      decimal_digits="0"
+      follows="left|top"
+      height="15"
+      increment="256"
+      initial_value="1024"
+      can_edit_text="true"
+      label="Shadowmap Width:"
+      label_width="150"
+      tool_tip="Set the width of the shadowmap"
+      layout="topleft"
+      left="10"
+      max_val="4096"
+      min_val="256"
+      name="RenderShadowResolution"
+      top_pad="5"
+      width="326">
+   <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="RenderShadowResolution"/>
+      </slider>
+ <slider
+      enabled_control="RenderDeferredSSAO"
+      decimal_digits="0"
+      follows="left|top"
+      height="15"
+      increment="256"
+      initial_value="1024"
+      can_edit_text="true"
+      label="Shadowmap Height:"
+      label_width="150"
+      tool_tip="Set the height of the shadowmap"
+      layout="topleft"
+      left="10"
+      max_val="4096"
+      min_val="256"
+      name="RenderShadowResolution"
+      top_pad="1"
+      width="326">
+   <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="RenderShadowResolution"/>
+      </slider>
+ <slider
+      enabled_control="RenderDeferredSSAO"
+      decimal_digits="1"
+      follows="left|top"
+      height="15"
+      increment="0.1"
+      initial_value="1"
+      can_edit_text="true"
+      label="Shadowmap Multiplicator:"
+      label_width="150"
+      tool_tip="Set the the multiplicator value for width and height of the shadowmap"
+      layout="topleft"
+      left="10"
+      max_val="4"
+      min_val="0"
+      name="RenderShadowResolution"
+      top_pad="1"
+      width="315" >
+   <slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="RenderShadowResolution"/>
+      </slider>
+ <button
+ follows="left|top"
+ control_name="RenderShadowResolution"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
  <slider
       control_name="RenderShadowBlurSize"
       enabled_control="RenderDeferredSSAO"
@@ -1794,7 +1825,7 @@ width="510">
       max_val="6"
       min_val="0"
       name="BlurSize"
-      top_pad="5"
+      top_pad="1"
       width="315" />
  <button
  follows="left|top"
