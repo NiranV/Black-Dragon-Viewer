@@ -58,7 +58,7 @@ LLSpinCtrl::Params::Params()
 	text_disabled_color("text_disabled_color"),
 	up_button("up_button"),
 	down_button("down_button"),
-	allow_scrolling("allow_scrolling", false)
+	allow_scrolling("allow_scrolling", true)
 {}
 
 LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
@@ -426,23 +426,24 @@ void LLSpinCtrl::reportInvalidData()
 
 BOOL LLSpinCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks)
 {
-	if( mAllowScrolling )
+	if( mAllowScrolling && mEditor->hasFocus())
 	{
 		if( clicks > 0 )
 		{
 			while( clicks-- )
 			{
 				onDownBtn(getValue());
+				return TRUE;
 			}
 		}
 		else
 		while( clicks++ )
 		{
 			onUpBtn(getValue());
+			return TRUE;
 		}
 	}
-
-	return TRUE;
+	return FALSE;
 }
 
 BOOL LLSpinCtrl::handleKeyHere(KEY key, MASK mask)
