@@ -897,7 +897,7 @@ public:
 	static BOOL RenderUIBuffer;
 	static S32 RenderShadowDetail;
 	static BOOL RenderDeferredSSAO;
-	static F32 RenderShadowResolutionScale;
+	static LLVector3 RenderShadowResolution;
 	static BOOL RenderLocalLights;
 	static BOOL RenderDelayCreation;
 	static BOOL RenderAnimateRes;

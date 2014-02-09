@@ -9084,16 +9084,20 @@
     <real>0.04</real>
   </map>
 
-  <key>RenderShadowResolutionScale</key>
+  <key>RenderShadowResolution</key>
   <map>
     <key>Comment</key>
-    <string>Scale of shadow map resolution vs. screen resolution</string>
+    <string>Raw shadow width (X) and height (Y) by multiplicator (Z)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>F32</string>
+    <string>Vector3</string>
     <key>Value</key>
-    <real>1.0</real>
+    <array>
+      <real>1024</real>
+      <real>1024</real>
+      <real>1.0</real>
+    </array>
   </map>
   <key>RenderDeferredTreeShadowBias</key>
   <map>
