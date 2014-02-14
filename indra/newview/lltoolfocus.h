@@ -54,6 +54,8 @@ public:
 	static void pickCallback(const LLPickInfo& pick_info);
 	BOOL mouseSteerMode() { return mMouseSteering; }
 
+	BOOL	mRightMouse;
+
 protected:
 	// called from handleMouseUp and onMouseCaptureLost to "let go"
 	// of the mouse and make it visible JC
@@ -75,7 +77,6 @@ protected:
 	MASK	mMouseUpMask;
 	S32		mMouseRightUpX;
 	S32		mMouseRightUpY;
-	BOOL	mRightMouse;
 };
 
 

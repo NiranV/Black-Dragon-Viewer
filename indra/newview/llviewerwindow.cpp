@@ -3288,7 +3288,7 @@ void LLViewerWindow::updateLayout()
 			MASK	mask = gKeyboard->currentMask(TRUE);
 			gFloaterTools->updatePopup( select_center_screen, mask );
 		}
-		else
+		else if(!LLToolCamera::getInstance()->mRightMouse)
 		{
 			gFloaterTools->setVisible(FALSE);
 		}
