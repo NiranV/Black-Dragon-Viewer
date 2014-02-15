@@ -217,6 +217,7 @@ F32 LLPipeline::RenderShadowFOVCutoff;
 BOOL LLPipeline::CameraOffset;
 F32 LLPipeline::CameraMaxCoF;
 F32 LLPipeline::CameraDoFResScale;
+BOOL LLPipeline::CameraFreeDoFFocus;
 F32 LLPipeline::RenderAutoHideSurfaceAreaLimit;
 
 const F32 BACKLIGHT_DAY_MAGNITUDE_AVATAR = 0.2f;
@@ -692,6 +693,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("CameraOffset");
 	connectRefreshCachedSettingsSafe("CameraMaxCoF");
 	connectRefreshCachedSettingsSafe("CameraDoFResScale");
+	connectRefreshCachedSettingsSafe("CameraFreeDoFFocus");
 	connectRefreshCachedSettingsSafe("RenderAutoHideSurfaceAreaLimit");
 	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
 	connectRefreshCachedSettingsSafe("ExodusRenderOffset");
@@ -1229,6 +1231,7 @@ void LLPipeline::refreshCachedSettings()
 	CameraOffset = gSavedSettings.getBOOL("CameraOffset");
 	CameraMaxCoF = gSavedSettings.getF32("CameraMaxCoF");
 	CameraDoFResScale = gSavedSettings.getF32("CameraDoFResScale");
+	CameraFreeDoFFocus = gSavedSettings.getBOOL("CameraFreeDoFFocus");
 	RenderAutoHideSurfaceAreaLimit = gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit");
 
 	// <exodus>
@@ -7764,6 +7767,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 			static F32 transition_time = 1.f;
 
 			LLVector3 focus_point;
+			LLVector3 prev_focus_point;
 
 			LLViewerObject* obj = LLViewerMediaFocus::getInstance()->getFocusedObject();
 			if (obj && obj->mDrawable && obj->isSelected())
@@ -7787,14 +7791,20 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 			{
 				gSavedSettings.setF32("CameraFieldOfView", CameraOverWaterDistortion);
 			}
-		
-			if (focus_point.isExactlyZero())
+
+			if(gSavedSettings.getBOOL("CameraDoFLocked"))
+			{
+				focus_point = PrevDoFFocusPoint;
+			}
+			else if (focus_point.isExactlyZero())
 			{
 				if (LLViewerJoystick::getInstance()->getOverrideCamera())
 				{ //focus on point under cursor
 					focus_point.set(gDebugRaycastIntersection.getF32ptr());
 				}
-				else if (gAgentCamera.cameraMouselook())
+				else if (gAgentCamera.cameraMouselook() ||
+					!LLViewerJoystick::getInstance()->getOverrideCamera() && 
+					CameraFreeDoFFocus)
 				{ //focus on point under mouselook crosshairs
 					LLVector4a result;
 					result.clear();
@@ -7804,6 +7814,11 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 													&result);
 
 					focus_point.set(result.getF32ptr());
+					gSavedSettings.setVector3("XYZ1", focus_point);
+//					//BD - Safeguard against sudden all-blurry-screen in rare
+					//     inconsistent situations caused by unknown reasons.
+					focus_point.clamp(LLVector3(0,0,0),focus_point);
+
 				}
 				else
 				{
@@ -7813,6 +7828,12 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 					{
 						focus_point = LLVector3(gAgentCamera.getFocusGlobal()-region->getOriginGlobal());
 					}
+
+				}
+
+				if(!focus_point.isExactlyZero())
+				{
+					PrevDoFFocusPoint = focus_point;
 				}
 			}
 

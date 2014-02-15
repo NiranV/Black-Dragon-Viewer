@@ -886,6 +886,8 @@ public:
 	//debug use
 	static U32              sCurRenderPoolType ;
 
+	LLVector3 PrevDoFFocusPoint;
+
 	//cached settings
 	static BOOL WindLightUseAtmosShaders;
 	static BOOL VertexShaderEnable;
@@ -970,6 +972,7 @@ public:
 	static BOOL CameraOffset;
 	static F32 CameraMaxCoF;
 	static F32 CameraDoFResScale;
+	static BOOL CameraFreeDoFFocus;
 	static F32 RenderAutoHideSurfaceAreaLimit;
 };
 

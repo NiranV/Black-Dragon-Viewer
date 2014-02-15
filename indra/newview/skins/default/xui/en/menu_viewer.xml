@@ -4048,6 +4048,33 @@
             <menu_item_call.on_click
                function="World.LoadCamera"/>
             </menu_item_call>
+			<menu_item_check
+             label="Enable DoF Focus via Mouse"
+             layout="topleft"
+	     shortcut="control|X"
+             name="CameraFreeDoFFocus">
+        	<menu_item_check.on_check
+                 function="CheckControl"
+                 parameter="CameraFreeDoFFocus" />
+                <menu_item_check.on_click
+                 function="ToggleControl"
+                 parameter="CameraFreeDoFFocus" />
+            </menu_item_check>
+			<menu_item_check
+             label="Lock Depth of Field Focus"
+             layout="topleft"
+	     shortcut="shift|X"
+             name="CameraDoFLocked">
+        	<menu_item_check.on_check
+                 function="CheckControl"
+                 parameter="CameraDoFLocked" />
+                <menu_item_check.on_click
+                 function="ToggleControl"
+                 parameter="CameraDoFLocked" />
+            </menu_item_check>
+			
+			<menu_item_separator/>
+			
             <menu_item_call
              label="Mouselook"
              name="Mouselook"
