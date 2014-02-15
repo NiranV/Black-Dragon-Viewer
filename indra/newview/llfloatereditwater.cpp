@@ -52,6 +52,7 @@ LLFloaterEditWater::LLFloaterEditWater(const LLSD &key)
 ,	mWaterPresetCombo(NULL)
 ,	mMakeDefaultCheckBox(NULL)
 ,	mSaveButton(NULL)
+,	mDeleteButton(NULL)
 {
 }
 
@@ -60,8 +61,9 @@ BOOL LLFloaterEditWater::postBuild()
 {
 	mWaterPresetNameEditor = getChild<LLLineEditor>("water_preset_name");
 	mWaterPresetCombo = getChild<LLComboBox>("water_preset_combo");
-	mMakeDefaultCheckBox = getChild<LLCheckBoxCtrl>("make_default_cb");
+	mMakeDefaultCheckBox = getChild<LLButton>("make_default_cb");
 	mSaveButton = getChild<LLButton>("save");
+	mDeleteButton = getChild<LLButton>("delete");
 
 	initCallbacks();
 	refreshWaterPresetsList();
@@ -75,32 +77,28 @@ void LLFloaterEditWater::onOpen(const LLSD& key)
 {
 	bool new_preset = isNewPreset();
 	std::string param = key.asString();
-	std::string floater_title = getString(std::string("title_") + param);
-	std::string hint = getString(std::string("hint_" + param));
+	std::string floater_title;
+
+	if(!param.empty())
+	{
+//		//BD - Guard against a rare crash that might happen for some people
+		floater_title = getString(std::string("title_") + param);
+	}
+	else
+	{
+//		//BD - We are most likely beeing send here via button so lets pick a
+		//	   neutral title for both editing/creating a new one.
+		floater_title = getString(std::string("title_neutral"));
+	}
 
 	// Update floater title.
 	setTitle(floater_title);
-
-	// Update the hint at the top.
-	getChild<LLUICtrl>("hint")->setValue(hint);
-
-	// Hide the hint to the right of the combo if we're invoked to create a new preset.
-	getChildView("note")->setVisible(!new_preset);
 
 	// Switch between the water presets combobox and preset name input field.
 	mWaterPresetCombo->setVisible(!new_preset);
 	mWaterPresetNameEditor->setVisible(new_preset);
 
 	reset();
-}
-
-// virtual
-void LLFloaterEditWater::onClose(bool app_quitting)
-{
-	if (!app_quitting) // there's no point to change environment if we're quitting
-	{
-		LLEnvManagerNew::instance().usePrefs(); // revert changes made to current environment
-	}
 }
 
 // virtual
@@ -118,6 +116,7 @@ void LLFloaterEditWater::initCallbacks(void)
 
 	mSaveButton->setCommitCallback(boost::bind(&LLFloaterEditWater::onBtnSave, this));
 	getChild<LLButton>("cancel")->setCommitCallback(boost::bind(&LLFloaterEditWater::onBtnCancel, this));
+	mDeleteButton->setCommitCallback(boost::bind(&LLFloaterEditWater::onDeletePreset, this));
 
 	LLEnvManagerNew::instance().setRegionSettingsChangeCallback(boost::bind(&LLFloaterEditWater::onRegionSettingsChange, this));
 	LLWaterParamManager::instance().setPresetListChangeCallback(boost::bind(&LLFloaterEditWater::onWaterPresetListChange, this));
@@ -668,8 +667,6 @@ void LLFloaterEditWater::onSaveConfirmed()
 		LL_DEBUGS("Windlight") << name << " is now the new preferred water preset" << llendl;
 		LLEnvManagerNew::instance().setUseWaterPreset(name);
 	}
-
-	closeFloater();
 }
 
 void LLFloaterEditWater::onBtnSave()
@@ -714,26 +711,15 @@ void LLFloaterEditWater::onBtnSave()
 
 void LLFloaterEditWater::onBtnCancel()
 {
+	LLEnvManagerNew::instance().usePrefs(); // revert changes made to current environment
 	closeFloater();
 }
 
 void LLFloaterEditWater::onWaterPresetListChange()
 {
-	std::string name;
-	LLEnvKey::EScope scope;
-	getSelectedPreset(name, scope); // preset being edited
-
-	if (scope == LLEnvKey::SCOPE_LOCAL && !LLWaterParamManager::instance().hasParamSet(name))
-	{
-		// Preset we've been editing doesn't exist anymore. Close the floater.
-		closeFloater(false);
-	}
-	else
-	{
-		// A new preset has been added.
-		// Refresh the presets list, though it may not make sense as the floater is about to be closed.
-		refreshWaterPresetsList();
-	}
+	// A new preset has been added.
+	// Refresh the presets list, though it may not make sense as the floater is about to be closed.
+	refreshWaterPresetsList();
 }
 
 void LLFloaterEditWater::onRegionSettingsChange()
@@ -769,4 +755,22 @@ void LLFloaterEditWater::onRegionInfoUpdate()
 	}
 
 	enableEditing(can_edit);
+}
+
+void LLFloaterEditWater::onDeletePreset()
+{
+	LLEnvKey::EScope scope;
+	std::string name;
+	getSelectedPreset(name, scope);
+
+	// Don't allow deleting system presets.
+	if (LLWaterParamManager::instance().isSystemPreset(name))
+	{
+		LLNotificationsUtil::add("WLNoEditDefault");
+		return;
+	}
+	else
+	{
+		LLWaterParamManager::instance().removeParamSet(name, true);
+	}
 }

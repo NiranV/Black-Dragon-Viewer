@@ -5,7 +5,7 @@
  height="120"
  layout="topleft"
  name="script search"
- help_topic="script_search"
+ background_color="FloaterDefaultBackgroundColor"
  title="SCRIPT SEARCH"
  width="300">
     <check_box

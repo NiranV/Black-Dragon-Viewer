@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
-background_visible="true"
  follows="all"
  height="570"
  label="Group Profile"
@@ -9,7 +8,7 @@ background_visible="true"
  left="0"
  top="20"
  name="GroupInfo"
- width="313">
+ width="333">
     <panel.string
      name="default_needs_apply_text">
         There are unsaved changes
@@ -32,7 +31,7 @@ background_visible="true"
       top="0"
       left="0"
       height="29"
-      width="313"
+      width="333"
       layout="topleft">
     <button
      follows="top|right"
@@ -62,7 +61,7 @@ background_visible="true"
      text_color="LtGray"
       top="1"
      use_ellipses="true"
-      width="275"
+      width="295"
       follows="top|left|right"
       word_wrap="false"
       mouse_opaque="false"/>
@@ -79,106 +78,71 @@ background_visible="true"
      height="20"
      visible="false" />
     </panel>
-   <layout_stack
-     name="layout"
-     orientation="vertical"
-      follows="all"
-     left="8"
-     top_pad="0"
-     height="506"
-     width="292"
-     border_size="0">
-   <layout_panel
-       bg_alpha_color="DkGray2"
-       bg_opaque_color="DkGray2"
-       background_visible="true"
-       background_opaque="true"
-       name="group_accordions"
-       follows="all"
-       layout="topleft"
-       auto_resize="true"
-       user_resize="true"
-       height="513"
-       width="313">
-   <accordion
-     left="0"
-     top="0"
-     single_expansion="true"
-     fit_parent="true"
+      <tab_container
+    border="false"
      follows="all"
+     height="508"
+     halign="center"
      layout="topleft"
-     name="groups_accordion"
-     height="513"
-     width="313">
-         <accordion_tab
-            expanded="true"
-            layout="topleft"
-            name="group_general_tab"
-            title="General"
-            fit_panel="false">
+     left="3"
+     right="-1"
+     name="roles_tab_container"
+     tab_position="top"
+     tab_height="22"
+     tab_min_width="75"
+     top_pad="0"
+     width="330">
                    <panel
                       border="false"
                       class="panel_group_general"
+                      background_visible="true"
+     bg_alpha_color="0 0 0 0.40"
                       filename="panel_group_general.xml"
                       layout="topleft"
                       left="0"
+                      label="General"
                       follows="left|top|right"
                       help_topic="group_general_tab"
                       name="group_general_tab_panel"
                       top="0" />
-         </accordion_tab>
-         <accordion_tab
-            expanded="false"
-            layout="topleft"
-            name="group_roles_tab"
-            title="Roles"
-            fit_panel="false">
                 <panel
                    border="false"
                    class="panel_group_roles"
+                   background_visible="true"
+     bg_alpha_color="0 0 0 0.40"
                    filename="panel_group_roles.xml"
                    follows="left|top|right"
                    layout="topleft"
                    left="0"
+                   label="Roles"
                    name="group_roles_tab_panel"
                    top="0" />
-         </accordion_tab>
-         <accordion_tab
-            expanded="false"
-            layout="topleft"
-            name="group_notices_tab"
-            title="Notices"
-            fit_panel="false">
                 <panel
                     border="false"
                     class="panel_group_notices"
+                    background_visible="true"
+     bg_alpha_color="0 0 0 0.40"
                     filename="panel_group_notices.xml"
                     follows="left|top|right"
                     layout="topleft"
                     left="0"
+                    label="Notices"
                     help_topic="group_notices_tab"
                     name="group_notices_tab_panel"
                     top="0" />
-         </accordion_tab>
-         <accordion_tab
-             expanded="false"
-             layout="topleft"
-             name="group_land_tab"
-             title="Land/Assets"
-             fit_panel="false">
                  <panel
 					 border="false"
                      class="panel_group_land_money"
+                     background_visible="true"
+     bg_alpha_color="0 0 0 0.40"
                      filename="panel_group_land_money.xml"
                      follows="left|top|right"
                      layout="topleft"
                      left="0"
+                     label="Land"
                      name="group_land_tab_panel"
                      top="0" />
-         </accordion_tab>
-         </accordion>
-   </layout_panel>
-  </layout_stack>
+      </tab_container>
    
    		   <layout_stack
 	     	follows="bottom|left|right"

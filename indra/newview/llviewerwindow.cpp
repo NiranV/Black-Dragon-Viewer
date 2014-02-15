@@ -210,6 +210,10 @@
 #include "llviewerwindowlistener.h"
 #include "llpaneltopinfobar.h"
 
+// [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c)
+#include "rlvhandler.h"
+// [/RLVa:KB]
+
 #if LL_WINDOWS
 #include <tchar.h> // For Unicode conversion methods
 #endif
@@ -999,10 +1003,18 @@ BOOL LLViewerWindow::handleAnyMouseClick(LLWindow *window,  LLCoordGL pos, MASK 
 				llinfos << buttonname << " Mouse " << buttonstatestr << " " << LLViewerEventRecorder::instance().get_xui()	<< llendl;
 			} 
 			return TRUE;
-		} else if (LLView::sDebugMouseHandling)
-			{
-				llinfos << buttonname << " Mouse " << buttonstatestr << " not handled by view" << llendl;
-			}
+		} 
+		else if (LLView::sDebugMouseHandling)
+		{
+			llinfos << buttonname << " Mouse " << buttonstatestr << " not handled by view" << llendl;
+		}
+
+//		//BD - If we have the tools floater open and are right clicking pass this event to 
+		//     the pie menu tool otherwise it will be eaten.
+		if (clicktype == LLMouseHandler::CLICK_RIGHT && LLToolMgr::getInstance()->inBuildMode())
+		{
+			LLToolPie::getInstance()->handleRightMouseDown(x, y, mask);
+		}
 	}
 
 	// Do not allow tool manager to handle mouseclicks if we have disconnected	
@@ -1052,29 +1064,21 @@ BOOL LLViewerWindow::handleRightMouseDown(LLWindow *window,  LLCoordGL pos, MASK
 	x = llround((F32)x / mDisplayScale.mV[VX]);
 	y = llround((F32)y / mDisplayScale.mV[VY]);
 
-	BOOL down = TRUE;
-	BOOL handle = handleAnyMouseClick(window,pos,mask,LLMouseHandler::CLICK_RIGHT,down);
-	if (handle)
-		return handle;
-
-	// *HACK: this should be rolled into the composite tool logic, not
-	// hardcoded at the top level.
-	if (CAMERA_MODE_CUSTOMIZE_AVATAR != gAgentCamera.getCameraMode() && LLToolMgr::getInstance()->getCurrentTool() != LLToolPie::getInstance())
-	{
-		// If the current tool didn't process the click, we should show
-		// the pie menu.  This can be done by passing the event to the pie
-		// menu tool.
-		LLToolPie::getInstance()->handleRightMouseDown(x, y, mask);
-		// show_context_menu( x, y, mask );
-	}
-
-	return TRUE;
+//	//BD - Redirect right clicks to LLToolCamera and check if it wants to
+	//	   handle the right click before the actual main Window does.
+	return LLToolCamera::getInstance()->handleRightMouseDown(x, y, mask);
 }
 
 BOOL LLViewerWindow::handleRightMouseUp(LLWindow *window,  LLCoordGL pos, MASK mask)
 {
-	BOOL down = FALSE;
- 	return handleAnyMouseClick(window,pos,mask,LLMouseHandler::CLICK_RIGHT,down);
+	S32 x = pos.mX;
+	S32 y = pos.mY;
+	x = llround((F32)x / mDisplayScale.mV[VX]);
+	y = llround((F32)y / mDisplayScale.mV[VY]);
+
+//	//BD - Redirect right clicks to LLToolCamera and check if it wants to
+	//	   handle the right click before the actual main Window does.
+	return LLToolCamera::getInstance()->handleRightMouseUp(x, y, mask);
 }
 
 BOOL LLViewerWindow::handleMiddleMouseDown(LLWindow *window,  LLCoordGL pos, MASK mask)
@@ -2240,18 +2244,14 @@ void LLViewerWindow::reshape(S32 width, S32 height)
 
 		if (!maximized)
 		{
-			U32 min_window_width=gSavedSettings.getU32("MinWindowWidth");
-			U32 min_window_height=gSavedSettings.getU32("MinWindowHeight");
-			// tell the OS specific window code about min window size
-			mWindow->setMinSize(min_window_width, min_window_height);
+			// U32 min_window_width=gSavedSettings.getU32("MinWindowWidth");
+			// U32 min_window_height=gSavedSettings.getU32("MinWindowHeight");
 
-			LLCoordScreen window_rect;
-			if (mWindow->getSize(&window_rect))
-			{
-			// Only save size if not maximized
-				gSavedSettings.setU32("WindowWidth", window_rect.mX);
-				gSavedSettings.setU32("WindowHeight", window_rect.mY);
-			}
+			//NV - Aww this is a horrible hack
+			width = width + 16;
+			height = height + 38;
+			gSavedSettings.setS32("WindowWidth", width);
+			gSavedSettings.setS32("WindowHeight", height);
 		}
 
 		LLViewerStats::getInstance()->setStat(LLViewerStats::ST_WINDOW_WIDTH, (F64)width);
@@ -2450,11 +2450,11 @@ void LLViewerWindow::draw()
 		// Draw tool specific overlay on world
 		LLToolMgr::getInstance()->getCurrentTool()->draw();
 
-		if( gAgentCamera.cameraMouselook() || LLFloaterCamera::inFreeCameraMode() )
-		{
-			drawMouselookInstructions();
-			stop_glerror();
-		}
+		gViewerWindow->getRootView()->getChild<LLIconCtrl>("bg_icon_l2")->setVisible
+									(!gAgentCamera.cameraMouselook()
+									&&	gSavedSettings.getBOOL("ShowNavbarNavigationPanel")
+									||	gAgentCamera.cameraMouselook()	
+									&&	!gSavedSettings.getBOOL("AllowUIHidingInML"));
 
 		// Draw all nested UI views.
 		// No translation needed, this view is glued to 0,0
@@ -2619,7 +2619,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 						break;
 					}
 				}
-		}
+			}
 		}
 
 		if (keyboard_focus->handleKey(key, mask, FALSE))
@@ -3288,7 +3288,7 @@ void LLViewerWindow::updateLayout()
 			MASK	mask = gKeyboard->currentMask(TRUE);
 			gFloaterTools->updatePopup( select_center_screen, mask );
 		}
-		else
+		else if(!LLToolCamera::getInstance()->mRightMouse)
 		{
 			gFloaterTools->setVisible(FALSE);
 		}
@@ -3637,6 +3637,15 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 						{
 							moveable_object_selected = TRUE;
 							this_object_movable = TRUE;
+
+// [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c) | Modified: RLVa-0.2.0g
+							if ( (rlv_handler_t::isEnabled()) && 
+								 ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP))) )
+							{
+								if ((isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (gAgentAvatarp->getRoot() == object->getRootEdit()))
+									moveable_object_selected = this_object_movable = FALSE;
+							}
+// [/RLVa:KB]
 						}
 						all_selected_objects_move = all_selected_objects_move && this_object_movable;
 						all_selected_objects_modify = all_selected_objects_modify && object->permModify();
@@ -3922,6 +3931,13 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 		found = gPipeline.lineSegmentIntersectInHUD(mh_start, mh_end, pick_transparent,
 													face_hit, intersection, uv, normal, tangent);
 
+// [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c) | Modified: RLVa-1.2.0c
+		if ( (rlv_handler_t::isEnabled()) && (found) &&
+			 (LLToolCamera::getInstance()->hasMouseCapture()) && (gKeyboard->currentMask(TRUE) & MASK_ALT) )
+		{
+			found = NULL;
+		}
+// [/RLVa:KB]
 		if (!found) // if not found in HUD, look in world:
 		{
 			found = gPipeline.lineSegmentIntersectInWorld(mw_start, mw_end, pick_transparent,
@@ -3930,6 +3946,44 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 			{
 				gDebugRaycastIntersection = *intersection;
 			}
+		}
+
+// [RLVa:KB] - Checked: 2010-01-02 (RLVa-1.1.0l) | Added: RLVa-1.1.0l
+#ifdef RLV_EXTENSION_CMD_INTERACT
+		if ( (rlv_handler_t::isEnabled()) && (found) && (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT)) )
+		{
+			// Allow picking if:
+			//   - the drag-and-drop tool is active (allows inventory offers)
+			//   - the camera tool is active
+			//   - the pie tool is active *and* we picked our own avie (allows "mouse steering" and the self pie menu)
+			LLTool* pCurTool = LLToolMgr::getInstance()->getCurrentTool();
+			if ( (LLToolDragAndDrop::getInstance() != pCurTool) && 
+					(!LLToolCamera::getInstance()->hasMouseCapture()) &&
+					((LLToolPie::getInstance() != pCurTool) || (gAgent.getID() != found->getID())) )
+			{
+				found = NULL;
+			}
+#endif // RLV_EXTENSION_CMD_INTERACT
+// [/RLVa:KB]
+		}
+
+// [RLVa:KB] - Checked: 2010-01-02 (RLVa-1.1.0l) | Added: RLVa-1.1.0l
+#ifdef RLV_EXTENSION_CMD_INTERACT
+		if ( (rlv_handler_t::isEnabled()) && (found) && (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT)) )
+		{
+			// Allow picking if:
+			//   - the drag-and-drop tool is active (allows inventory offers)
+			//   - the camera tool is active
+			//   - the pie tool is active *and* we picked our own avie (allows "mouse steering" and the self pie menu)
+			LLTool* pCurTool = LLToolMgr::getInstance()->getCurrentTool();
+			if ( (LLToolDragAndDrop::getInstance() != pCurTool) && 
+					(!LLToolCamera::getInstance()->hasMouseCapture()) &&
+					((LLToolPie::getInstance() != pCurTool) || (gAgent.getID() != found->getID())) )
+			{
+				found = NULL;
+			}
+#endif // RLV_EXTENSION_CMD_INTERACT
+// [/RLVa:KB]
 		}
 	}
 		
@@ -4607,25 +4661,6 @@ void LLViewerWindow::destroyWindow()
 	mWindow = NULL;
 }
 
-
-void LLViewerWindow::drawMouselookInstructions()
-{
-	// Draw instructions for mouselook ("Press ESC to return to World View" partially transparent at the bottom of the screen.)
-	const std::string instructions = LLTrans::getString("LeaveMouselook");
-	const LLFontGL* font = LLFontGL::getFont(LLFontDescriptor("SansSerif", "Large", LLFontGL::BOLD));
-	
-	//to be on top of Bottom bar when it is opened
-	const S32 INSTRUCTIONS_PAD = 50;
-
-	font->renderUTF8( 
-		instructions, 0,
-		getWorldViewRectScaled().getCenterX(),
-		getWorldViewRectScaled().mBottom + INSTRUCTIONS_PAD,
-		LLColor4( 1.0f, 1.0f, 1.0f, 0.5f ),
-		LLFontGL::HCENTER, LLFontGL::TOP,
-		LLFontGL::NORMAL,LLFontGL::DROP_SHADOW);
-}
-
 void* LLViewerWindow::getPlatformWindow() const
 {
 	return mWindow->getPlatformWindow();
@@ -4729,7 +4764,7 @@ void LLViewerWindow::revealIntroPanel()
 {
 	if (mProgressView)
 	{
-		mProgressView->revealIntroPanel();
+		//mProgressView->revealIntroPanel();
 	}
 }
 
@@ -4737,7 +4772,7 @@ void LLViewerWindow::setShowProgress(const BOOL show)
 {
 	if (mProgressView)
 	{
-		mProgressView->setVisible(show);
+		mProgressView->fade(show);
 	}
 }
 
@@ -4758,7 +4793,7 @@ void LLViewerWindow::setProgressString(const std::string& string)
 {
 	if (mProgressView)
 	{
-		mProgressView->setText(string);
+		//mProgressView->setText(string);
 	}
 }
 
@@ -4766,7 +4801,7 @@ void LLViewerWindow::setProgressMessage(const std::string& msg)
 {
 	if(mProgressView)
 	{
-		mProgressView->setMessage(msg);
+		//mProgressView->setMessage(msg);
 	}
 }
 

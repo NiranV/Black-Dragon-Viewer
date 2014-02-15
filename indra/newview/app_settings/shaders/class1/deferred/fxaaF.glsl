@@ -2108,9 +2108,9 @@ void main()
 										vec4(0,0,0,0),				//fxaaConsoleRcpFrameOpt
 										rcp_frame_opt,				//fxaaConsoleRcpFrameOpt2
 										rcp_frame_opt2,				//fxaaConsole360RcpFrameOpt2
-										0.75,						//fxaaQualitySubpix
-										0.07,						//fxaaQualityEdgeThreshold
-										0.03,						//fxaaQualityEdgeThresholdMin
+										1.0,						//fxaaQualitySubpix
+										0.01,						//fxaaQualityEdgeThreshold
+										0.00,						//fxaaQualityEdgeThresholdMin
 										8.0,						//fxaaConsoleEdgeSharpness
 										0.125,						//fxaaConsoleEdgeThreshold
 										0.05,						//fxaaConsoleEdgeThresholdMin

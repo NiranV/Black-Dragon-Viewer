@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<panel
+follows="all"
+height="408"
+label="RLVa"
+layout="topleft"
+left="0"
+name="RLVa panel"
+top="45"
+width="510">
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="515"/>
+	<check_box
+	control_name="RestrainedLove"
+	height="16"
+	initial_value="true"
+	label="Enable Restrained Love (A)"
+	layout="topleft"
+	follows="left|top"
+	left="5"
+	name="RLVa"
+	top_delta="4"
+	width="256" />
+	<check_box
+	control_name="RestrainedLoveCanOOC"
+	height="16"
+	initial_value="true"
+	label="Enable OOC with restricted Chat"
+	layout="topleft"
+	left_delta="5"
+	follows="left|top"
+	name="RLVaOOC"
+	top_pad="11"
+	width="256" />
+	<check_box
+	control_name="RestrainedLoveNoSetEnv"
+	height="16"
+	initial_value="true"
+	label="Forbid changing Windlight settings via RLV"
+	layout="topleft"
+	left_delta="0"
+	tool_tip="When TRUE, forbids to set the environment (time of day and Windlight settings) via RestrainedLove. Needs a restart of the viewer."
+	follows="left|top"
+	name="RLVaNSE"
+	top_pad="0"
+	width="256" />
+	<check_box
+	control_name="RestrainedLoveShowEllipsis"
+	height="16"
+	initial_value="true"
+	label="Use RLV Ellipsis"
+	layout="topleft"
+	left_delta="0"
+	tool_tip="When TRUE, show '...' when someone speaks, while the avatar is prevented from hearing. When FALSE, don't show anything."
+	follows="left|top"
+	name="RLVaEllipsis"
+	top_pad="0"
+	width="256" />
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="515"/>
+	<text
+	name="header2"
+	follows="left|top"
+	layout="topleft"
+	top_delta="4" 
+	left="10" 
+	height="12"
+	width="300">
+	 Advanced Restrained Love (A) Options:
+	</text>
+	<check_box
+	control_name="RLVaEnableCompositeFolders"
+	height="16"
+	initial_value="true"
+	label="Enable Composite Folders"
+	layout="topleft"
+	left_delta="0"
+	tool_tip="Enables composite folders for shared inventory"
+	follows="left|top"
+	name="RLVaCompo"
+	top_pad="15"
+	width="256" />
+	<check_box
+	control_name="RLVaEnableLegacyNaming"
+	height="16"
+	initial_value="true"
+	label="Enable Legacy folder naming"
+	layout="topleft"
+	left_delta="0"
+	tool_tip="Enables legacy naming convention for folders"
+	follows="left|top"
+	name="RLVaLNaming"
+	top_pad="0"
+	width="256" />
+	<check_box
+	control_name="RLVaEnableSharedWear"
+	height="16"
+	initial_value="true"
+	label="Enable shared Wear"
+	layout="topleft"
+	left_delta="0"
+	tool_tip="Attachments in the shared #RLV folder can be force-attached without needing to specify an attachment point"
+	follows="left|top"
+	name="RLVaSharedWear"
+	top_pad="0"
+	width="256" />
+	<check_box
+	control_name="RLVaWearReplaceUnlocked"
+	height="16"
+	initial_value="true"
+	label="Disable blocking of replace wearables"
+	layout="topleft"
+	left_delta="0"
+	tool_tip="Don't block wear replace when at least one attachment on the target attachment point is non-detachable"
+	follows="left|top"
+	name="RLVaReplaceWearables"
+	top_pad="0"
+	width="256" />
+	<check_box
+	control_name="RestrainedLoveForbidGiveToRLV"
+	height="16"
+	initial_value="true"
+	label="Disable giving sub-folders to the RLV folder"
+	layout="topleft"
+	left="10"
+	tool_tip="When TRUE, forbids to give sub-folders to the #RLV RestrainedLove folder."
+	follows="left|top"
+	name="RLVaFGT"
+	top_pad="0"
+	width="256" />
+	<check_box
+	control_name="RLVaHideLockedLayers"
+	height="16"
+	initial_value="true"
+	label="Hide locked wearable layers"
+	layout="topleft"
+	left="270"
+	tool_tip="Hides 'remove outfit' restricted worn clothing layers from @getoufit"
+	follows="left|top"
+	name="RLVaHidelocked"
+	top_delta="-64"
+	width="256" />
+	<check_box
+	control_name="RLVaHideLockedAttachments"
+	height="16"
+	initial_value="true"
+	label="Hide locked attachments"
+	layout="topleft"
+	left_delta="0"
+	tool_tip="Hides non-detachable worn attachments from @getattach"
+	follows="left|top"
+	name="RLVaHideattachs"
+	top_pad="0"
+	width="256" />
+	<check_box
+	control_name="RLVaDebugHideUnsetDuplicate"
+	height="16"
+	initial_value="true"
+	label="Hide 'unset' or 'duplicate' commands"
+	layout="topleft"
+	left_delta="0"
+	tool_tip="Suppresses reporting 'unset' or 'duplicate' command restrictions when RestrainedLoveDebug is TRUE"
+	follows="left|top"
+	name="RLVaHUD"
+	top_pad="0"
+	width="256" />
+	<check_box
+	control_name="RLVaShowNameTags"
+	height="16"
+	initial_value="true"
+	label="Show RLVa Name tags"
+	layout="topleft"
+	left_delta="0"
+	tool_tip="Display of names above avatars is subject to the general 'Show Names' setting when @shownames=n restricted"
+	follows="left|top"
+	name="RLVaNames"
+	top_pad="0"
+	width="256" />
+	<check_box
+	control_name="RLVaSharedInvAutoRename"
+	height="16"
+	initial_value="true"
+	label="Auto. rename shared inventory items"
+	layout="topleft"
+	left_delta="0"
+	tool_tip="Automatically renames shared inventory items when worn"
+	follows="left|top"
+	name="RLVaARename"
+	top_pad="0"
+	width="256" />
+	
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="515"/>
+	<check_box
+	control_name="RestrainedLoveDebug"
+	height="16"
+	initial_value="true"
+	label="Restrained Love (A) Debug messages:"
+	layout="topleft"
+	left="5"
+	tool_tip="TRUE shows all RLV commands which would be normally hidden (to prevent chat spam) , good for debugging"
+	name="RLVaDebug"
+	top_delta="4"
+	width="256" />
+	<check_box
+	control_name="RLVaShowAssertionFailures"
+	height="16"
+	initial_value="true"
+	label="Show Assertion failures"
+	tool_tip="Notify the user when an assertion fails"
+	layout="topleft"
+	left_delta="5"
+	name="RLVaAssertion"
+	top_pad="11"
+	width="256" />
+	<check_box
+	control_name="WarnFirstRLVGiveToRLV"
+	height="16"
+	initial_value="true"
+	label="Enable 'FirstRLVGiveToRLV' Warning"
+	tool_tip="Enables FirstRLVGiveToRLV warning dialog"
+	layout="topleft"
+	left_delta="0"
+	name="RLVaGiveRLV"
+	top_pad="0"
+	width="256" />
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="515"/>
+	<text
+	name="head_label1"
+	follows="left|top"
+	layout="topleft"
+	word_wrap="true"
+	top_delta="4" 
+	left="10" 
+	height="12"
+	width="315">
+	 'Add' or 'Replace' wearables in a folder beginning with:
+	</text>
+	<text
+	name="head_label2"
+	follows="left|top"
+	layout="topleft"
+	word_wrap="true"
+	top_pad="17"
+	left="10" 
+	height="12"
+	width="50">
+	 Add:
+	</text>
+	<line_editor
+	control_name="RestrainedLoveReplaceWhenFolderBeginsWith"
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="10"
+	name="RLVaReplacebegins"
+	tool_tip="If a folder name begins with this string, its attach behavior will always be 'replace', never 'stack'. Default is blank (disabled)."
+	top_delta="-3"
+	width="150" />
+	<text
+	name="head_label2"
+	follows="left|top"
+	layout="topleft"
+	word_wrap="true"
+	top_delta="3"
+	left="270" 
+	height="12"
+	width="50">
+	 Replace:
+	</text>
+	<line_editor
+	control_name="RestrainedLoveStackWhenFolderBeginsWith"
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="10"
+	name="RLVaReplacebegins"
+	tool_tip="If a folder name begins with this string, its attach behavior will always be 'stack', never 'replace'. Default is '+'."
+	top_delta="-3"
+	width="150" />
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="515"/>
+ <text
+	name="head_label3"
+	follows="left|top"
+	layout="topleft"
+	top_delta="4" 
+	left="10" 
+	height="20"
+	width="200">
+	 Notification Embedding Behavior:
+	</text>
+ <radio_group
+	height="48"
+	layout="topleft"
+	left_delta="0"
+	control_name="NotificationCanEmbedInIM"
+	name="not_embed_in_IM"
+	top_pad="7"
+	tool_tip="Controls notification panel embedding in IMs (0 = default, 1 = focused, 2 = never)"
+	width="150">
+	<radio_item
+	height="16"
+	label="default"
+	layout="topleft"
+	left="0"
+	name="radio_default"
+	value="0"
+	top="0"
+	width="100" />
+	<radio_item
+	height="16"
+	label="focused"
+	layout="topleft"
+	top_delta="0"
+	left_pad="0"
+	name="radio_focused"
+	value="1"
+	width="100" />
+	<radio_item
+	height="16"
+	label="never"
+	layout="topleft"
+	top_delta="0"
+	left_pad="0"
+	name="radio_never"
+	value="2"
+	width="100" />
+	</radio_group>
+</panel>

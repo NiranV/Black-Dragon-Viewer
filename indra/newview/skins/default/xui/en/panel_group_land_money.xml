@@ -32,6 +32,27 @@
      name="land_contrib_error">
         Unable to set your land contribution
     </panel.string>
+    <scroll_container
+         color="Transparent"
+         follows="all"
+         layout="topleft"
+         mouse_opaque="false"
+         left="0"
+         name="roles_scroll"
+         opaque="true"
+         height="499"
+         width="302"
+         top="0">
+      <panel
+         bevel_style="none"
+         border="false"
+         follows="top|left"
+         height="493"
+         width="290"
+         layout="topleft"
+         left="0"
+         name="preferences_container"
+         top="0">
    <!-- <text
      type="string"
      follows="left|top"
@@ -50,14 +71,14 @@
           left="0"
           right="-1"
           height="250"
-          width="313"
+          width="290"
           >
     <scroll_list
      draw_heading="true"
      follows="top|left|right"
      height="130"
      layout="topleft"
-     left="0"
+     left="5"
      right="-1"
      top="0"
      sort_column="0"
@@ -127,7 +148,7 @@
      layout="topleft"
      left="0"
      name="total_land_in_use_label"
-     top_pad="0"
+     top_pad="-3"
      width="130">
         Total land in use:
     </text>
@@ -241,7 +262,7 @@
      font="SansSerifBig"
      height="16"
      layout="topleft"
-     left="0"
+     left="5"
      name="group_money_heading"
      text_color="EmphasisColor"
      top_pad="-15"
@@ -250,21 +271,20 @@
     </text>
     </panel>
     <tab_container
-     follows="all"
+     follows="top|left"
      height="230"
      halign="center"
      layout="topleft"
      left="0"
-     right="-1"
      name="group_money_tab_container"
      tab_position="top"
      top_pad="2"
-     tab_min_width="90"
-     width="313">
+     tab_min_width="93"
+     width="291">
         <panel
          border="false"
          follows="all"
-         label="PLANNING"
+         label="Planning"
          layout="topleft"
          left="0"
          help_topic="group_money_planning_tab"
@@ -278,7 +298,7 @@
              follows="all"
              height="200"
              layout="topleft"
-             left="0"
+             left="4"
              max_length="4096"
              name="group_money_planning_text"
              top="2"
@@ -290,7 +310,7 @@
       <panel
          border="false"
          follows="all"
-         label="DETAILS"
+         label="Details"
          layout="topleft"
          left="0"
          help_topic="group_money_details_tab"
@@ -303,7 +323,7 @@
              follows="all"
              height="185"
              layout="topleft"
-             left="0"
+             left="4"
              max_length="4096"
              name="group_money_details_text"
              top="2"
@@ -334,7 +354,7 @@
       <panel
          border="false"
          follows="all"
-         label="SALES"
+         label="Sales"
          layout="topleft"
          left="0"
          help_topic="group_money_sales_tab"
@@ -347,7 +367,7 @@
              follows="all"
              height="185"
              layout="topleft"
-             left="0"
+             left="4"
              max_length="4096"
              name="group_money_sales_text"
              top="2"
@@ -376,4 +396,6 @@
 	     width="25" />
         </panel>
     </tab_container>
+      </panel>
+    </scroll_container>
 </panel>

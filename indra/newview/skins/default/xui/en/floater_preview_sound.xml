@@ -4,7 +4,7 @@
  height="85"
  layout="topleft"
  name="preview_sound"
- help_topic="preview_sound"
+ background_color="FloaterDefaultBackgroundColor"
  width="280">
     <floater.string
      name="Title">
@@ -57,5 +57,4 @@
      tool_tip="Play this sound so that only you can hear it"
      left_pad="10"
      width="125" />
-
 </floater>

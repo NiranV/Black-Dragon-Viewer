@@ -31,6 +31,7 @@
 
 class LLComboBox;
 class LLRadioGroup;
+class LLCheckBoxCtrl;
 
 class LLFloaterEnvironmentSettings : public LLFloater
 {
@@ -43,25 +44,22 @@ public:
 
 private:
 	void onSwitchRegionSettings();
-	void onSwitchDayCycle();
 
 	void onSelectWaterPreset();
 	void onSelectSkyPreset();
 	void onSelectDayCyclePreset();
 
-	void onBtnOK();
 	void onBtnCancel();
 
 	void refresh(); /// update controls with user prefs
 	void apply();
-	void cancel();
 
 	void populateWaterPresetsList();
 	void populateSkyPresetsList();
 	void populateDayCyclePresetsList();
 
-	LLRadioGroup*	mRegionSettingsRadioGroup;
-	LLRadioGroup*	mDayCycleSettingsRadioGroup;
+	LLButton*		mRegionSettingsButton;
+	LLCheckBoxCtrl*		mDayCycleSettingsCheck;
 
 	LLComboBox*		mWaterPresetCombo;
 	LLComboBox*		mSkyPresetCombo;

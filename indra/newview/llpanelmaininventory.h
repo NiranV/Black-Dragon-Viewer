@@ -112,7 +112,9 @@ protected:
 	void newWindow();
 	void doCreate(const LLSD& userdata);
 	void resetFilters();
-	void setSortBy(const LLSD& userdata);
+	void setSortObjects();
+	void setSortSystemOnTop();
+	void setSortFoldersByName();
 	void saveTexture(const LLSD& userdata);
 	bool isSaveTextureEnabled(const LLSD& userdata);
 	void updateItemcountText();

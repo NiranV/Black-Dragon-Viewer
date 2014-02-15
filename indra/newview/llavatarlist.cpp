@@ -47,11 +47,11 @@
 #include "llvoiceclient.h"
 #include "llviewercontrol.h"	// for gSavedSettings
 #include "lltooldraganddrop.h"
+// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.2a)
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 static LLDefaultChildRegistry::Register<LLAvatarList> r("avatar_list");
-
-// Last interaction time update period.
-static const F32 LIT_UPDATE_PERIOD = 5;
 
 // Maximum number of avatars that can be added to a list in one pass.
 // Used to limit time spent for avatar list update per frame.
@@ -61,21 +61,6 @@ bool LLAvatarList::contains(const LLUUID& id)
 {
 	const uuid_vec_t& ids = getIDs();
 	return std::find(ids.begin(), ids.end(), id) != ids.end();
-}
-
-void LLAvatarList::toggleIcons()
-{
-	// Save the new value for new items to use.
-	mShowIcons = !mShowIcons;
-	gSavedSettings.setBOOL(mIconParamName, mShowIcons);
-	
-	// Show/hide icons for all existing items.
-	std::vector<LLPanel*> items;
-	getItems(items);
-	for( std::vector<LLPanel*>::const_iterator it = items.begin(); it != items.end(); it++)
-	{
-		static_cast<LLAvatarListItem*>(*it)->setAvatarIconVisible(mShowIcons);
-	}
 }
 
 void LLAvatarList::setSpeakingIndicatorsVisible(bool visible)
@@ -120,8 +105,6 @@ static const LLFlatListView::ItemReverseComparator REVERSE_NAME_COMPARATOR(NAME_
 LLAvatarList::Params::Params()
 : ignore_online_status("ignore_online_status", false)
 , show_last_interaction_time("show_last_interaction_time", false)
-, show_info_btn("show_info_btn", true)
-, show_profile_btn("show_profile_btn", true)
 , show_speaking_indicator("show_speaking_indicator", true)
 , show_permissions_granted("show_permissions_granted", false)
 {
@@ -134,12 +117,13 @@ LLAvatarList::LLAvatarList(const Params& p)
 , mContextMenu(NULL)
 , mDirty(true) // to force initial update
 , mNeedUpdateNames(false)
-, mLITUpdateTimer(NULL)
-, mShowIcons(true)
-, mShowInfoBtn(p.show_info_btn)
-, mShowProfileBtn(p.show_profile_btn)
+, mExtraDataUpdateTimer(new LLTimer())
 , mShowSpeakingIndicator(p.show_speaking_indicator)
 , mShowPermissions(p.show_permissions_granted)
+, mShowExtraInformation(p.show_speaking_indicator) // May be overridden later.
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+, mRlvCheckShowNames(false)
+// [/RLVa:KB]
 {
 	setCommitOnSelectionChange(true);
 
@@ -148,9 +132,9 @@ LLAvatarList::LLAvatarList(const Params& p)
 
 	if (mShowLastInteractionTime)
 	{
-		mLITUpdateTimer = new LLTimer();
-		mLITUpdateTimer->setTimerExpirySec(0); // zero to force initial update
-		mLITUpdateTimer->start();
+		mExtraDataUpdatePeriod = 5;
+		mExtraDataUpdateTimer->setTimerExpirySec(0); // zero to force initial update
+		mExtraDataUpdateTimer->start();
 	}
 	
 	LLAvatarNameCache::addUseDisplayNamesCallback(boost::bind(&LLAvatarList::handleDisplayNamesOptionChanged, this));
@@ -165,13 +149,12 @@ void LLAvatarList::handleDisplayNamesOptionChanged()
 
 LLAvatarList::~LLAvatarList()
 {
-	delete mLITUpdateTimer;
+	delete mExtraDataUpdateTimer;
 }
 
-void LLAvatarList::setShowIcons(std::string param_name)
+void LLAvatarList::setShowExtraInformation(bool show)
 {
-	mIconParamName= param_name;
-	mShowIcons = gSavedSettings.getBOOL(mIconParamName);
+	 	mShowExtraInformation = show;
 }
 
 // virtual
@@ -190,10 +173,10 @@ void LLAvatarList::draw()
 	if (mDirty)
 		refresh();
 
-	if (mShowLastInteractionTime && mLITUpdateTimer->hasExpired())
+	if (mExtraDataUpdatePeriod && mExtraDataUpdateTimer->hasExpired())
 	{
-		updateLastInteractionTimes();
-		mLITUpdateTimer->setTimerExpirySec(LIT_UPDATE_PERIOD); // restart the timer
+		updateExtraData();
+		mExtraDataUpdateTimer->setTimerExpirySec(mExtraDataUpdatePeriod); // restart the timer
 	}
 }
 
@@ -241,7 +224,7 @@ void LLAvatarList::addAvalineItem(const LLUUID& item_id, const LLUUID& session_i
 	LLAvalineListItem* item = new LLAvalineListItem(/*hide_number=*/false);
 	item->setAvatarId(item_id, session_id, true, false);
 	item->setName(item_name);
-	item->showLastInteractionTime(mShowLastInteractionTime);
+	item->showExtraInformation(mShowExtraInformation);
 	item->showSpeakingIndicator(mShowSpeakingIndicator);
 	item->setOnline(false);
 
@@ -420,6 +403,25 @@ boost::signals2::connection LLAvatarList::setItemDoubleClickCallback(const mouse
 	return mItemDoubleClickSignal.connect(cb);
 }
 
+boost::signals2::connection LLAvatarList::setExtraDataCallback(const extra_data_signal_t::slot_type& cb)
+{
+	 	return mExtraDataSignal.connect(cb);
+}
+	 	 
+void LLAvatarList::setExtraDataUpdatePeriod(F32 period)
+{
+	mExtraDataUpdatePeriod = period;
+	if(period > 0)
+	{
+	 	    mExtraDataUpdateTimer->setTimerExpirySec(period);
+	 	    mExtraDataUpdateTimer->start();
+	}
+	else
+	{
+	 	    mExtraDataUpdateTimer->stop();
+	}
+}
+
 //virtual
 S32 LLAvatarList::notifyParent(const LLSD& info)
 {
@@ -434,14 +436,14 @@ S32 LLAvatarList::notifyParent(const LLSD& info)
 void LLAvatarList::addNewItem(const LLUUID& id, const std::string& name, BOOL is_online, EAddPosition pos)
 {
 	LLAvatarListItem* item = new LLAvatarListItem();
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+	item->setRlvCheckShowNames(mRlvCheckShowNames);
+// [/RLVa:KB]
 	// This sets the name as a side effect
 	item->setAvatarId(id, mSessionID, mIgnoreOnlineStatus);
 	item->setOnline(mIgnoreOnlineStatus ? true : is_online);
-	item->showLastInteractionTime(mShowLastInteractionTime);
+	item->showExtraInformation(mShowExtraInformation);
 
-	item->setAvatarIconVisible(mShowIcons);
-	item->setShowInfoBtn(mShowInfoBtn);
-	item->setShowProfileBtn(mShowProfileBtn);
 	item->showSpeakingIndicator(mShowSpeakingIndicator);
 	item->setShowPermissions(mShowPermissions);
 
@@ -454,7 +456,10 @@ void LLAvatarList::addNewItem(const LLUUID& id, const std::string& name, BOOL is
 BOOL LLAvatarList::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
 	BOOL handled = LLUICtrl::handleRightMouseDown(x, y, mask);
-	if ( mContextMenu && !isAvalineItemSelected())
+//	if ( mContextMenu && !isAvalineItemSelected())
+// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.2a) | Modified: RLVa-1.2.0d
+	if ( (mContextMenu && !isAvalineItemSelected()) && ((!mRlvCheckShowNames) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))) )
+// [/RLVa:KB]
 	{
 		uuid_vec_t selected_uuids;
 		getSelectedUUIDs(selected_uuids);
@@ -574,9 +579,32 @@ void LLAvatarList::updateLastInteractionTimes()
 	}
 }
 
+void LLAvatarList::updateExtraData()
+{
+	if(mShowLastInteractionTime)
+	{
+	 	updateLastInteractionTimes();
+	}
+	else if(!mExtraDataSignal.empty())
+	{
+	 	std::vector<LLPanel*> items;
+	 	getItems(items);
+	 	 
+	 	for( std::vector<LLPanel*>::const_iterator it = items.begin(); it != items.end(); it++)
+	 	{
+	 	    LLAvatarListItem* item = static_cast<LLAvatarListItem*>(*it);
+	 	    item->setExtraInformation(*mExtraDataSignal(item->getAvatarId()));
+	 	}
+	}
+}
+
 void LLAvatarList::onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask)
 {
-	mItemDoubleClickSignal(ctrl, x, y, mask);
+//	mItemDoubleClickSignal(ctrl, x, y, mask);
+// [RLVa:KB] - Checked: 2010-06-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+	if ( (!mRlvCheckShowNames) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) )
+		mItemDoubleClickSignal(ctrl, x, y, mask);
+// [/RLVa:KB]
 }
 
 bool LLAvatarItemComparator::compare(const LLPanel* item1, const LLPanel* item2) const
@@ -635,9 +663,7 @@ BOOL LLAvalineListItem::postBuild()
 	if (rv)
 	{
 		setOnline(true);
-		showLastInteractionTime(false);
-		setShowProfileBtn(false);
-		setShowInfoBtn(false);
+		showExtraInformation(false);
 		mAvatarIcon->setValue("Avaline_Icon");
 		mAvatarIcon->setToolTip(std::string(""));
 	}

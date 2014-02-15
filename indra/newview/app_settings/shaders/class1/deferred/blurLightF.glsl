@@ -114,20 +114,6 @@ void main()
 		}
 	}
 
-	for (int i = 1; i < 4; i++)
-	{
-		vec2 samptc = tc - kern[i].z*dlt;
-	    vec3 samppos = getPosition(samptc).xyz; 
-
-		float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
-		
-		if (d*d <= pointplanedist_tolerance_pow2)
-		{
-			col += texture2DRect(lightMap, samptc)*kern[i].xyxx;
-			defined_weight += kern[i].xy;
-		}
-	}
-
 	col /= defined_weight.xyxx;
 	col.y *= col.y;
 	

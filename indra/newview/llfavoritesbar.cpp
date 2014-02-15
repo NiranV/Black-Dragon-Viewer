@@ -904,7 +904,6 @@ BOOL LLFavoritesBarCtrl::postBuild()
 	{
 		menu = LLUICtrlFactory::getDefaultWidget<LLMenuGL>("inventory_menu");
 	}
-	menu->setBackgroundColor(LLUIColorTable::instance().getColor("MenuPopupBgColor"));
 	mContextMenuHandle = menu->getHandle();
 
 	return TRUE;

@@ -8,7 +8,7 @@
  border="false"
  chrome="true"
  follows="bottom"
- height="155"
+ height="125"
  layout="topleft"
  name="volumepulldown_floater"
  width="225">
@@ -26,7 +26,7 @@
      layout="topleft"
      name="System Volume"
      show_text="false"
-     top="10"
+     top="8"
      volume="true">
         <slider.commit_callback
          function="Pref.setControlFalse"
@@ -35,12 +35,13 @@
     <button
      control_name="MuteAudio"
      follows="top|left"
-     height="16"
+     height="15"
      image_selected="AudioMute_Off"
      image_unselected="Audio_Off"
      is_toggle="true"
      layout="topleft"
      left_pad="5"
+     top_delta="0"
      name="mute_audio"
      tab_stop="false"
      width="16" />
@@ -58,7 +59,7 @@
         layout="topleft"
         name="UI Volume"
         show_text="false"
-        top_pad="4"
+        top_pad="1"
         volume="true">
     <slider.commit_callback
         function="Pref.setControlFalse"
@@ -68,12 +69,13 @@
         control_name="MuteUI"
         disabled_control="MuteAudio"
         follows="top|left"
-        height="16"
+        height="15"
         image_selected="AudioMute_Off"
         image_unselected="Audio_Off"
         is_toggle="true"
         layout="topleft"
         left_pad="5"
+        top_delta="0"
         name="mute_audio"
         tab_stop="false"
         width="16" />
@@ -91,7 +93,7 @@
      layout="topleft"
      name="Wind Volume"
      show_text="false"
-     top_pad="4"
+     top_pad="1"
      volume="true">
         <slider.commit_callback
          function="Pref.setControlFalse"
@@ -101,12 +103,13 @@
      control_name="MuteAmbient"
      disabled_control="MuteAudio"
      follows="top|left"
-     height="16"
+     height="15"
      image_selected="AudioMute_Off"
      image_unselected="Audio_Off"
      is_toggle="true"
      layout="topleft"
      left_pad="5"
+     top_delta="0"
      name="mute_audio"
      tab_stop="false"
      width="16" />
@@ -124,7 +127,7 @@
      layout="topleft"
      name="SFX Volume"
      show_text="false"
-     top_pad="4"
+     top_pad="1"
      volume="true">
         <slider.commit_callback
          function="Pref.setControlFalse"
@@ -134,28 +137,19 @@
      control_name="MuteSounds"
      disabled_control="MuteAudio"
      follows="top|left"
-     height="16"
+     height="15"
      image_selected="AudioMute_Off"
      image_unselected="Audio_Off"
      is_toggle="true"
      layout="topleft"
      left_pad="5"
+     top_delta="0"
      name="mute_audio"
      tab_stop="false"
      width="16">
       <button.commit_callback
       function="Pref.SetSounds"/>
     </button>
-  <check_box
-    name="gesture_audio_play_btn"
-		control_name="EnableGestureSounds"
-    disabled_control="MuteAudio"
-    height="16"
-    layout="topleft"
-    left_pad="5"
-    tool_tip="Enable sounds from gestures"
-    top_delta="2"
-    width="350"/>
     <slider
      control_name="AudioLevelMusic"
      disabled_control="MuteAudio"
@@ -170,7 +164,7 @@
      layout="topleft"
      name="Music Volume"
      show_text="false"
-     top_pad="4"
+     top_pad="1"
      volume="true">
         <slider.commit_callback
          function="Pref.setControlFalse"
@@ -180,27 +174,16 @@
      control_name="MuteMusic"
      disabled_control="MuteAudio"
      follows="top|left"
-     height="16"
+     height="15"
      image_selected="AudioMute_Off"
      image_unselected="Audio_Off"
      is_toggle="true"
      layout="topleft"
      left_pad="5"
+     top_delta="0"
      name="mute_audio"
      tab_stop="false"
      width="16" />
-    <check_box
-        control_name="AudioStreamingMusic"
-        height="16"
-        tool_tip="Enable Streaming Music"
-        layout="topleft"
-        left_pad="5"
-        name="enable_music"
-        top_delta="2"
-        width="350">
-        <check_box.commit_callback
-            function="Pref.updateMediaAutoPlayCheckbox"/>
-    </check_box>
     <slider
         control_name="AudioLevelMedia"
         disabled_control="MuteAudio"
@@ -215,7 +198,7 @@
         layout="topleft"
         name="Media Volume"
         show_text="false"
-        top_pad="4"
+        top_pad="1"
         volume="true">
       <slider.commit_callback
         function="Pref.setControlFalse"
@@ -225,29 +208,16 @@
         control_name="MuteMedia"
         disabled_control="MuteAudio"
         follows="top|left"
-        height="16"
+        height="15"
         image_selected="AudioMute_Off"
         image_unselected="Audio_Off"
         is_toggle="true"
         layout="topleft"
         left_pad="5"
+        top_delta="0"
         name="mute_audio"
         tab_stop="false"
         width="16" />
-    <check_box
-        label_text.halign="left"
-        follows="left|top"
-        height="16"
-        control_name ="AudioStreamingMedia"
-        tool_tip="Enable Streaming Media"
-        layout="topleft"
-        top_delta="2"
-        left_pad="5"
-        name="enable_media"
-        width="110">
-        <check_box.commit_callback
-            function="Pref.updateMediaAutoPlayCheckbox"/>
-    </check_box>
     <slider
         control_name="AudioLevelVoice"
         disabled_control="MuteAudio"
@@ -260,7 +230,7 @@
         left="10"
         width="160"
         layout="topleft"
-        top_pad="4"
+        top_pad="1"
         name="Voice Volume"
         show_text="false"
         volume="true">
@@ -272,15 +242,52 @@
         control_name="MuteVoice"
         disabled_control="MuteAudio"
         follows="top|left"
-        height="16"
+        height="15"
         image_selected="AudioMute_Off"
         image_unselected="Audio_Off"
         is_toggle="true"
         layout="topleft"
         left_pad="5"
+        top_delta="0"
         name="mute_audio"
         tab_stop="false"
         width="16" />
+    <check_box
+    name="gesture_audio_play_btn"
+		control_name="EnableGestureSounds"
+    disabled_control="MuteAudio"
+    height="16"
+    layout="topleft"
+    left_pad="5"
+    tool_tip="Enable sounds from gestures"
+    top="56"
+    width="350"/>
+    <check_box
+        control_name="AudioStreamingMusic"
+        height="16"
+        tool_tip="Enable Streaming Music"
+        layout="topleft"
+        left_delta="0"
+        name="enable_music"
+        top_pad="0"
+        width="350">
+        <check_box.commit_callback
+            function="Pref.updateMediaAutoPlayCheckbox"/>
+    </check_box>
+    <check_box
+        label_text.halign="left"
+        follows="left|top"
+        height="16"
+        control_name ="AudioStreamingMedia"
+        tool_tip="Enable Streaming Media"
+        layout="topleft"
+        top_pad="0"
+        left_delta="0"
+        name="enable_media"
+        width="110">
+        <check_box.commit_callback
+            function="Pref.updateMediaAutoPlayCheckbox"/>
+    </check_box>
     <check_box
         label_text.halign="left"
         follows="left|top"
@@ -289,8 +296,8 @@
         disabled_control="CmdLineDisableVoice"
         tool_tip="Enable Voice Chat"
         layout="topleft"
-        top_delta="2"
-        left_pad="5"
+        top_pad="0"
+        left_delta="0"
         name="enable_voice_check"
         width="110"/>
 </panel>

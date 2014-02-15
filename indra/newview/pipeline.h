@@ -40,6 +40,7 @@
 #include "llgl.h"
 #include "lldrawable.h"
 #include "llrendertarget.h"
+#include "exopostprocess.h"
 
 #include <stack>
 
@@ -112,12 +113,16 @@ public:
 	LLPipeline();
 	~LLPipeline();
 
+	//BD - Change water reflection resolution on the way
+	void handleReflectionChanges();
+
 	void destroyGL();
 	void restoreGL();
 	void resetVertexBuffers();
 	void doResetVertexBuffers();
 	void resizeScreenTexture();
 	void releaseGLBuffers();
+	void createGLBuffers(U32 width, U32 height);
 	void releaseLUTBuffers();
 	void releaseScreenBuffers();
 	void createGLBuffers();
@@ -608,6 +613,8 @@ public:
 	static S32				sVisibleLightCount;
 	static F32				sMinRenderSize;
 	static BOOL				sRenderingHUDs;
+	static BOOL             sExodusRenderShaderGamma;
+	static BOOL             sExodusRenderToneMapping;
 
 	//screen texture
 	U32 					mScreenWidth;
@@ -879,6 +886,8 @@ public:
 	//debug use
 	static U32              sCurRenderPoolType ;
 
+	LLVector3 PrevDoFFocusPoint;
+
 	//cached settings
 	static BOOL WindLightUseAtmosShaders;
 	static BOOL VertexShaderEnable;
@@ -890,7 +899,7 @@ public:
 	static BOOL RenderUIBuffer;
 	static S32 RenderShadowDetail;
 	static BOOL RenderDeferredSSAO;
-	static F32 RenderShadowResolutionScale;
+	static LLVector3 RenderShadowResolution;
 	static BOOL RenderLocalLights;
 	static BOOL RenderDelayCreation;
 	static BOOL RenderAnimateRes;
@@ -921,16 +930,25 @@ public:
 	static F32 RenderGlowStrength;
 	static BOOL RenderDepthOfField;
 	static BOOL RenderDepthOfFieldInEditMode;
+	static BOOL RenderDepthOfFieldUnderwater;
 	static F32 CameraFocusTransitionTime;
 	static F32 CameraFNumber;
 	static F32 CameraFocalLength;
 	static F32 CameraFieldOfView;
+	static F32 CameraOverWaterDistortion;
+	static F32 CameraUnderWaterDistortion;
+	static BOOL RenderPostPosterization;
+	static U32 RenderPostPosterizationSamples;
+	static BOOL RenderPostGreyscale;
+	static F32 RenderPostGreyscaleStrength;
+	static BOOL RenderPostSepia;
+	static F32 RenderPostSepiaStrength;
 	static F32 RenderShadowNoise;
 	static F32 RenderShadowBlurSize;
 	static F32 RenderSSAOScale;
 	static U32 RenderSSAOMaxScale;
 	static F32 RenderSSAOFactor;
-	static LLVector3 RenderSSAOEffect;
+	static F32 RenderSSAOEffect;
 	static F32 RenderShadowOffsetError;
 	static F32 RenderShadowBiasError;
 	static F32 RenderShadowOffset;
@@ -954,6 +972,7 @@ public:
 	static BOOL CameraOffset;
 	static F32 CameraMaxCoF;
 	static F32 CameraDoFResScale;
+	static BOOL CameraFreeDoFFocus;
 	static F32 RenderAutoHideSurfaceAreaLimit;
 };
 

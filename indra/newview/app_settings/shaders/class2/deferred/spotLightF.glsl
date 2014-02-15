@@ -54,6 +54,10 @@ uniform float proj_ambiance;
 uniform float near_clip;
 uniform float far_clip;
 
+uniform float num_colors;
+uniform float greyscale_str;
+uniform float sepia_str;
+
 uniform vec3 proj_origin; //origin of projection to be used for angular attenuation
 uniform float sun_wash;
 uniform int proj_shadow_idx;
@@ -353,6 +357,19 @@ void main()
 			}
 		}
 	}
+	
+	#if POSTERIZATION
+		col = pow(col, vec3(0.6));
+		col = col * num_colors;
+		col = floor(col);
+		col = col / num_colors;
+		col = pow(col, vec3(1.0/0.6));
+	#endif
+	
+	#if GREY_SCALE
+		vec3 col_gr = vec3((0.299 * col.r) + (0.587 * col.g) + (0.114 * col.b));
+		col = mix(col, col_gr, 0.0);
+	#endif
 	
 	//not sure why, but this line prevents MATBUG-194
 	col = max(col, vec3(0.0));

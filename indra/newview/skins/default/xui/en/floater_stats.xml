@@ -5,20 +5,20 @@
  height="400"
  layout="topleft"
  name="Statistics"
- help_topic="statistics"
  save_rect="true"
  save_visibility="true"
- title="STATISTICS"
+ background_color="FloaterColorStats"
+ title="Statistics"
  width="260">
     <scroll_container
      follows="top|left|bottom|right"
-     height="380"
+     height="370"
      layout="topleft"
-     left="0"
+     left="5"
      name="statistics_scroll"
      reserve_scroll_corner="true"
      top="20"
-     width="260">
+     width="250">
       <container_view
        follows="top|left|bottom|right"
        height="378"
@@ -26,7 +26,7 @@
        left="2"
        name="statistics_view"
        top="20"
-       width="245" >
+       width="235" >
         <!--Basic Section-->
 		  <stat_view
 			 name="basic"
@@ -40,8 +40,8 @@
 			   stat="fpsstat"
 			   bar_min="0"
 			   bar_max="60"
-			   tick_spacing="6"
-			   label_spacing="12"
+			   tick_spacing="5"
+			   label_spacing="10"
 			   precision="1"
 			   show_bar="true"
 			   show_history="true">
@@ -55,7 +55,7 @@
 			   bar_max="5000"
 			   tick_spacing="500"
 			   label_spacing="1000"
-				 precision="0"
+			   precision="0"
 			   show_bar="true"
 			   show_history="false">
 			</stat_bar>
@@ -149,19 +149,19 @@
 				 show_per_sec="true"
 				 show_bar="false">
 			  </stat_bar>
-       <stat_bar
+			  <stat_bar
 				 name="object_cache_hits"
 				 label="Object Cache Hit Rate"
 				 stat="object_cache_hits"
 				 bar_min="0"
 				 bar_max="100"
-         unit_label="%"
+				 unit_label="%"
 				 tick_spacing="20"
 				 label_spacing="20"
 				 show_history="true"
-         show_per_sec="false"
+				 show_per_sec="false"
 				 show_bar="false">
-        </stat_bar>
+			  </stat_bar>
 			</stat_view>
         <!--Texture Stats-->
 			<stat_view
@@ -174,27 +174,27 @@
 				 stat="texture_cache_hits"
 				 bar_min="0.f"
 				 bar_max="100.f"
-         unit_label="%"
+				 unit_label="%"
 				 tick_spacing="20"
 				 label_spacing="20"
 				 show_history="true"
-         show_per_sec="false"
+				 show_per_sec="false"
 				 show_bar="false">
-        </stat_bar>
-        <stat_bar
+			  </stat_bar>
+			  <stat_bar
 				 name="texture_cache_read_latency"
 				 label="Cache Read Latency"
-         unit_label="msec"
+				 unit_label="msec"
 				 stat="texture_cache_read_latency"
 				 bar_min="0.f"
 				 bar_max="1000.f"
 				 tick_spacing="100"
 				 label_spacing="200"
 				 show_history="true"
-         show_per_sec="false"
+				 show_per_sec="false"
 				 show_bar="false">
-        </stat_bar>
-        <stat_bar
+			  </stat_bar>
+			  <stat_bar
 				 name="numimagesstat"
 				 label="Count"
 				 stat="numimagesstat" 

@@ -1,176 +1,339 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- background_opaque="true"
- background_visible="true"
- bg_opaque_color="MouseGray"
+ background_opaque="false"
+ background_visible="false"
  follows="left|top|right"
  focus_root="true" 
- height="34"
+ height="45"
  layout="topleft"
  name="navigation_bar"
  chrome="true"
  width="800">
 	<icon
-	 follows="all"
-	 image_name="NavBar_BG"
+	 follows="top|left"
+	 image_name="navbar/NavBar_BG_l1.png"
 	 mouse_opaque="false"
-	 name="bg_icon"
-	 scale_image="true"
-	 visible="false"
+	 name="bg_icon_l1"
+	 scale_image="false"
+	 visible="true"
 	 left="0"
 	 top="0"
-	 height="34"
-	 width="600"/>
-	<icon
-	 follows="all"
-	 image_name="NavBar_BG_NoFav_Bevel"
-	 mouse_opaque="false"
-	 name="bg_icon_no_fav_bevel"
-	 scale_image="true"
-	 visible="false"
-	 left="0"
-	 top="0"
-	 height="34"
-	 width="600"/>
-	<icon
-	 follows="all"
-	 image_name="NavBar_BG_NoNav_Bevel"
-	 mouse_opaque="false"
-	 name="bg_icon_no_nav_bevel"
-	 scale_image="true"
-	 visible="false"
-	 left="0"
-	 top="0"
-	 height="34"
-	 width="600"/>
-  <icon
-    follows="all"
-    image_name="NavBar Separator"
-    mouse_opaque="false"
-    name="separator_image"
-    scale_image="true"
-    left="0"
-    top="0"
-    width="800"
-    height="2"/>
+	 height="50"
+	 width="1920"/>
 	 <layout_stack
-       follows="all"
-       height="34"
+       follows="top|left|right"
+       height="50"
        layout="topleft"
-       border_size="0"
-       resize_bar_overlap="3"
+       border_size="-5"
        left="0"
        mouse_opaque="false"
        name="nvp_stack"
-       orientation="horizontal"
+       orientation="vertical"
        top="0"
        width="800">
          <layout_panel
-           follows="top|left"
-           layout="topleft"
-           auto_resize="true"
-           user_resize="true"
-           min_width="410"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="32"
+			min_height="32"
            name="navigation_layout_panel"
-           width="480">
+           width="800">
 	        <panel
-	         background_visible="false"
 	         follows="left|top|right"
-	         top="3"
-	         height="23"
+	         top="0"
+	         height="27"
 	         layout="topleft"
-                       left="0"
+          left="0"
 	         name="navigation_panel"
-             width="480">
+          width="800">
+										<view_border
+						bevel_style="in"
+						follows="top|left"
+						height="20"
+						layout="topleft"
+						left="57"
+						name="border1"
+						top="4"
+						width="1"/>
+			<layout_stack
+       follows="top|left|right"
+       height="30"
+       layout="topleft"
+       border_size="-5"
+       left="60"
+       mouse_opaque="false"
+       name="nvp_stack"
+       orientation="horizontal"
+       top="3"
+	   right="-100"
+       width="800">
+         <layout_panel
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="42">
 	         <pull_button
 	         follows="left|top"
 	         direction="down"
 	         height="23"
 	         image_overlay="Arrow_Left_Off"
-	         image_hover_unselected="PushButton_Over"
+										image_selected="transparent.j2c"
+										image_unselected="transparent.j2c"
 	         image_bottom_pad="1"
 	         layout="topleft"
-	         left="10"
+	         left="0"
 	         name="back_btn"
 	         tool_tip="Go back to previous location"
-	         top="2"
-	         width="31" />
+	         top="0"
+	         width="20" />
 	        <pull_button
 	         follows="left|top"
 	         direction="down"
 	         height="23"
 	         image_overlay="Arrow_Right_Off"
-	         image_hover_unselected="PushButton_Over"
+										image_selected="transparent.j2c"
+										image_unselected="transparent.j2c"
 	         image_bottom_pad="1"
 	         layout="topleft"
-	         left_pad="0"
+	         left_pad="-3"
 	         name="forward_btn"
 	         tool_tip="Go forward one location"
-	         top_delta="0"
-	         width="31" />
+	         top="0"
+	         width="20" />
+		 </layout_panel>
+		 <layout_panel
+			visibility_control="ShowQuickHomeButton"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="40">
+									
+									<view_border
+						bevel_style="in"
+						follows="top|left"
+						height="20"
+						layout="topleft"
+						left="1"
+						name="border1"
+						top="1"
+						width="1"/>
 	        <button
 	         follows="left|top"
 	         height="23"
 	         image_bottom_pad="1"
 	         image_overlay="Home_Off"
-	         image_hover_unselected="PushButton_Over"
+										image_selected="transparent.j2c"
+										image_unselected="transparent.j2c"
 	         layout="topleft"
-	         left_pad="7"
+	         left_pad="3"
 	         name="home_btn"
 	         tool_tip="Teleport to my home location"
-	         top_delta="0"
-	         width="32" />
+	         top_delta="-1"
+	         width="28" />
+		 </layout_panel>
+		 <layout_panel
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="10">
+									
+		 <view_border
+						bevel_style="in"
+						follows="top|left"
+						height="20"
+						layout="topleft"
+						left="1"
+						name="border1"
+						top="1"
+						width="1"/>
+		 </layout_panel>
+		 <layout_panel
+					   visibility_control="ShowQuickWindlightButton"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="31">
+			<button
+			image_overlay="Windlightbutton.tga"
+			image_selected="Transparent.j2c"
+			image_unselected="Transparent.j2c"
+			follows="left|top"
+			height="23"
+			layout="topleft"
+			left="0"
+			name="Windlight"
+			label=""
+			tool_tip="Opens Windlight Floater"
+			top_pad="-1"
+			width="24">
+			<button.init_callback
+			      function="Button.SetFloaterToggle"
+			      parameter="env_settings" />
+			</button>
+		 </layout_panel>
+		 <layout_panel
+					   visibility_control="ShowQuickSkyButton"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="30">
+			<button
+			image_overlay="Skybutton.tga"
+			image_selected="Transparent.j2c"
+			image_unselected="Transparent.j2c"
+			halign="center"
+			follows="left|top"
+			height="23"
+			layout="topleft"
+			left="0"
+			name="Sky"
+			label=""
+			tool_tip="Opens Sky Settings Floater"
+			top_pad="-1"
+			width="24">
+			<button.init_callback
+			      function="Button.SetFloaterToggle"
+			      parameter="env_edit_sky" />
+			</button>
+		 </layout_panel>
+		 <layout_panel
+					   visibility_control="ShowQuickWaterButton"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="25">
+			<button
+			image_overlay="Waterbutton.tga"
+			image_selected="Transparent.j2c"
+			image_unselected="Transparent.j2c"
+			follows="left|top"
+			height="23"
+			layout="topleft"
+			left="0"
+			name="Water"
+			label=""
+			tool_tip="Opens Water Settings Floater"
+			top_pad="-1"
+			width="24">
+			<button.init_callback
+			      function="Button.SetFloaterToggle"
+			      parameter="env_edit_water" />
+			</button>
+		 </layout_panel>
+		 <layout_panel
+					   visibility_control="ShowQuickBrowserButton"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="44">
+			<button
+			image_overlay="icons\ExternalBrowser_Off.png"
+			image_selected="Transparent.j2c"
+			image_unselected="Transparent.j2c"
+			follows="left|top"
+			height="23"
+			layout="topleft"
+			left="14"
+			name="Browser"
+			label=""
+			tool_tip="Opens a new Browser Window"
+			top_pad="-1"
+			width="24">
+			<button.commit_callback
+			      function="Advanced.WebContentTest"
+			      parameter="www.google.com" />
+			</button>
+		 </layout_panel>
+		 <layout_panel
+			follows="top|left|right"
+			auto_resize="true"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="312">
 	        <location_input
-                       follows="all"
+                       follows="top|left|right"
 	         halign="right"
 	         height="23"
 	         label="Location"
 	         layout="topleft"
-	         left_pad="7"
+	         left="7"
 	         max_chars="254"
 	         mouse_opaque="false"
 	         name="location_combo"
-	         top_delta="0"
-                width="355">
+	         top="0"
+                width="300">
              <combo_list
              mouse_wheel_opaque="true"/>
 	        </location_input>
+		 </layout_panel>
+		 <layout_panel
+					   visibility_control="ShowTopSearchBar"
+			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="120">
+									
+									<search_combo_box
+			follows="left|top"
+			height="23"
+			label="Search"
+			layout="topleft"
+			left="3"
+			mouse_opaque="false"
+			name="search_combo_box"
+			tool_tip="Search for something in Second Life"
+			top="0"
+			width="114" >
+			<combo_editor
+			label="Search"
+			text_pad_right="8" 
+			name="search_combo_editor"/>
+			<combo_list
+			draw_border="true"
+			border.highlight_light_color="FocusColor"
+			border.highlight_dark_color="FocusColor"
+			border.shadow_light_color="FocusColor"
+			border.shadow_dark_color="FocusColor"
+			mouse_wheel_opaque="true" />
+			</search_combo_box>
+		 </layout_panel>
+			</layout_stack>
          </panel>
-          <icon
-             follows="top|right"
-             height="25"
-             image_name="ChatBarHandle"
-             layout="topleft"
-             left="-3"
-             name="resize_handle"
-             top="4"
-             width="5" />
         </layout_panel>
          <layout_panel
-           follows="top|left"
+           follows="top|left|right"
 	         layout="topleft"
-           auto_resize="true"
-           user_resize="true"
-           min_width="185"
+										height="18"
+										min_width="18"
+										auto_resize="false"
            name="favorites_layout_panel"
            width="320">
-           <icon
-             follows="top|left"
-             height="25"
-             image_name="ChatBarHandle"
-             layout="topleft"
-             left="-323"
-             name="resize_handle"
-             top="4"
-             width="5" />
 
            <favorites_bar
              follows="left|right|top"
              font="SansSerifSmall"
-             height="20"
+             height="15"
              layout="topleft"
              left="0"
-             top="4"
+             top="0"
              name="favorite"
              image_drag_indication="Accordion_ArrowOpened_Off"
              tool_tip="Drag Landmarks here for quick access to your favorite places in Second Life!"

@@ -7,8 +7,8 @@
  layout="topleft"
  min_height="243"
  min_width="234"
+ background_color="FloaterDefaultBackgroundColor"
  name="preview notecard"
- help_topic="preview_notecard"
  title="NOTECARD:"
  width="400">
     <floater.string
@@ -62,7 +62,7 @@
      length="1"
      embedded_items="true"
      follows="left|top|right|bottom"
-     font="SansSerif"
+     font="DejaVuSans2.ttf"
      height="281"
      ignore_tab="false"
      layout="topleft"
@@ -75,7 +75,6 @@
      top="46"
      width="392"
      word_wrap="true">
-        Loading...
     </text_editor>
     <button
      follows="right|bottom"

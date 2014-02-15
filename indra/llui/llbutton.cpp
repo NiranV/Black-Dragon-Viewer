@@ -640,9 +640,9 @@ void LLButton::draw()
 	bool selected = getToggleState();
 	
 	bool use_glow_effect = FALSE;
-	LLColor4 highlighting_color = LLColor4::white;
+	LLColor4 highlighting_color = LLUIColorTable::instance().getColor("BeaconColor");
 	LLColor4 glow_color = LLColor4::white;
-	LLRender::eBlendType glow_type = LLRender::BT_ADD_WITH_ALPHA;
+	LLRender::eBlendType glow_type = LLRender::BT_ALPHA;
 	LLUIImage* imagep = NULL;
 
     //  Cancel sticking of color, if the button is pressed,

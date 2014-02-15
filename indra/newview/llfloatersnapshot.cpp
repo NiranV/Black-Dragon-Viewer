@@ -1,4 +1,4 @@
-/** 
+﻿/** 
  * @file llfloatersnapshot.cpp
  * @brief Snapshot preview window, allowing saving, e-mailing, etc.
  *
@@ -58,7 +58,6 @@ const S32 MAX_POSTCARD_DATASIZE = 1024 * 1024; // one megabyte
 const S32 MAX_TEXTURE_SIZE = 512 ; //max upload texture size 512 * 512
 
 static LLDefaultChildRegistry::Register<LLSnapshotFloaterView> r("snapshot_floater_view");
-
 
 
 ///----------------------------------------------------------------------------
@@ -389,7 +388,7 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshot* floater)
 			height_ctrl->setValue(h);
 		}
 
-		// Сlamp snapshot resolution to window size when showing UI or HUD in snapshot.
+		// Ð¡lamp snapshot resolution to window size when showing UI or HUD in snapshot.
 		if (gSavedSettings.getBOOL("RenderUIInSnapshot") || gSavedSettings.getBOOL("RenderHUDInSnapshot"))
 		{
 			S32 width = gViewerWindow->getWindowWidthRaw();
@@ -1142,8 +1141,8 @@ void LLFloaterSnapshot::draw()
 			previewp->drawPreviewRect(offset_x, offset_y) ;
 
 			// Draw some controls on top of the preview thumbnail.
-			static const S32 PADDING = 5;
-			static const S32 REFRESH_LBL_BG_HEIGHT = 32;
+			static const S32 PADDING = 2;
+			static const S32 REFRESH_LBL_BG_HEIGHT = 22;
 
 			// Reshape and position the posting result message panels at the top of the thumbnail.
 			// Do this regardless of current posting status (finished or not) to avoid flicker
@@ -1159,9 +1158,6 @@ void LLFloaterSnapshot::draw()
 				mFailureLblPanel->setRect(result_lbl_rect);
 			}
 
-			// Position the refresh button in the bottom left corner of the thumbnail.
-			mRefreshBtn->setOrigin(local_offset_x + PADDING, local_offset_y + PADDING);
-
 			if (impl.mNeedRefresh)
 			{
 				// Place the refresh hint text to the right of the refresh button.
@@ -1170,7 +1166,7 @@ void LLFloaterSnapshot::draw()
 
 				// Draw the refresh hint background.
 				LLRect refresh_label_bg_rect(offset_x, offset_y + REFRESH_LBL_BG_HEIGHT, offset_x + thumbnail_w - 1, offset_y);
-				gl_rect_2d(refresh_label_bg_rect, LLColor4::white % 0.9f, TRUE);
+				gl_rect_2d(refresh_label_bg_rect, LLColor4::black % 0.65f, TRUE);
 			}
 
 			gGL.pushUIMatrix();

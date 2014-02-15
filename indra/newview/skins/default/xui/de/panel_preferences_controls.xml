@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<panel label="Steuerung" name="Controls panel">
+		<text name="inworld_typing_rg_label">
+		Buchstaben drücken:
+	</text>
+   	<radio_group name="inworld_typing_preference">
+        <radio_item label="Startet den Lokalen Chat" name="radio_start_chat"/>
+        <radio_item label="Dient der Bewegung (z.B W,A,S,D)" name="radio_move"/>
+	</radio_group>
+	<check_box label="Mit Pfeiltasten bewegen" name="arrow_keys_move_avatar_check"/>
+	<check_box label="1-mal-klicken-bewegen (MMORPG Stil)" name="ClickToWalk"/>
+	<check_box label="2-mal-drücken-halten, um zu rennen" name="tap_tap_hold_to_run"/>
+	<check_box label="Avatarlippen beim Sprechen bewegen" name="enable_lip_sync"/>
+	<check_box label="Doppelklick Teleport" name="DoubleclickTP" tool_tip="Klicke irgentwo in die Landschaft doppelt um dich sofort dorthin zu teleportieren"/>
+	<check_box label="Doppelklick Autopilot" name="DoubleClickAutopilot"/>
+	<check_box label="Doppelklick Autopilot sperrt Kamera" name="AutoPilotLocksCamera" tool_tip="Sperrt Kamerabewegungen während dem Autopilot Modus"/>
+	<check_box label="Springen taste festhalten um automatisch in den Flugmodus zu wechseln" name="AutomaticFly"/>
+	<check_box label="Neue Bewegungs Animationen nutzen" name="NewWalkRun" tool_tip="Neue Viewer 2 Lauf/Geh/Kriech Animationen benutzen"/>
+	<check_box label="Den Avatar beim rückwärtslaufen nach hinten drehen" name="AllowWalkingBackwards" tool_tip="Erlaubt es den Avatar weiter als nur bis zur Seite zu drehen und verhindert so das beim rückwärtslaufen der Avatar nicht nach hinten gedreht wird (Moonwalk effekt)"/>
+	<spinner label="Avatar Rotationsgeschwindigkeit:" name="RotationSpeed"/>
+	<text name="Keyboardlayout">
+		Welches Tastaturlayout willst du benutzen?
+	</text>
+	<text name="restart_label">
+		(Erfordert Neustart)
+	</text>
+	<text name="Classic">
+		Klassisches SL
+	</text>
+	<text name="Actions">
+		Aktionen
+	</text>
+	<text name="Shooter">
+		Shooter/Rollenspiel
+	</text>
+	<text name="ClassicWalk">
+		Umschalt + A &amp; D
+	</text>
+	<text name="Walkleftright">
+		:Links/Rechts gehen:
+	</text>
+	<text name="ShooterWalk">
+		A &amp; D
+	</text>
+	<text name="ClassicRotate">
+		A &amp; D
+	</text>
+	<text name="Rotateleftright">
+		:Links/Rechts drehen:
+	</text>
+	<text name="ShooterRotate">
+		Q &amp; E
+	</text>
+	<text name="ClassicJump">
+		E
+	</text>
+	<text name="Jump">
+		:Springen:
+	</text>
+	<text name="ShooterJump">
+		Leertaste
+	</text>
+	<text name="StartChat">
+		:Chat starten:
+	</text>
+	<text name="ShooterChat">
+		Eingabe
+	</text>
+	<text name="ClassicChat">
+		Eingabe
+	</text>
+	<text name="StopMotion">
+		:Bewegung stoppen:
+	</text>
+	<text name="ClassicStop">
+		Leertaste
+	</text>
+	<button label="Andere Geräte" name="joystick_setup_button"/>
+</panel>

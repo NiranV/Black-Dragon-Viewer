@@ -225,6 +225,9 @@ public:
 	void			setStartPosition(U32 location_id); // Marks current location as start, sends information to servers
 	void			setHomePosRegion(const U64& region_handle, const LLVector3& pos_region);
 	BOOL			getHomePosGlobal(LLVector3d* pos_global);
+
+//	//BD - Home TP check
+	BOOL			mIsHomeTP;
 private:
 	BOOL 			mHaveHomePosition;
 	U64				mHomeRegionHandle;
@@ -394,19 +397,31 @@ public:
 		DOUBLETAP_SLIDERIGHT
 	};
 
-	void			setAlwaysRun() 			{ mbAlwaysRun = true; }
-	void			clearAlwaysRun() 		{ mbAlwaysRun = false; }
-	void			setRunning() 			{ mbRunning = true; }
-	void			clearRunning() 			{ mbRunning = false; }
-	void 			sendWalkRun(bool running);
+// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
+	void			setAlwaysRun();
+	void			setTempRun();
+	void			clearAlwaysRun();
+	void			clearTempRun();
+	void 			sendWalkRun();
+	bool			getTempRun()			{ return mbTempRun; }
+	bool			getRunning() const 		{ return (mbAlwaysRun) || (mbTempRun); }
+// [/RLVa:KB]
+//	void			setAlwaysRun() 			{ mbAlwaysRun = true; }
+//	void			clearAlwaysRun() 		{ mbAlwaysRun = false; }
+//	void			setRunning() 			{ mbRunning = true; }
+//	void			clearRunning() 			{ mbRunning = false; }
+//	void 			sendWalkRun(bool running);
 	bool			getAlwaysRun() const 	{ return mbAlwaysRun; }
-	bool			getRunning() const 		{ return mbRunning; }
+//	bool			getRunning() const 		{ return mbRunning; }
 public:
 	LLFrameTimer 	mDoubleTapRunTimer;
 	EDoubleTapRunMode mDoubleTapRunMode;
 private:
 	bool 			mbAlwaysRun; 			// Should the avatar run by default rather than walk?
-	bool 			mbRunning;				// Is the avatar trying to run right now?
+// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
+	bool 			mbTempRun;
+// [/RLVa:KB]
+//	bool 			mbRunning;				// Is the avatar trying to run right now?
 	bool			mbTeleportKeepsLookAt;	// Try to keep look-at after teleport is complete
 
 	//--------------------------------------------------------------------
@@ -507,9 +522,9 @@ private:
 public:
 	void			moveAt(S32 direction, bool reset_view = true);
 	void			moveAtNudge(S32 direction);
-	void			moveLeft(S32 direction);
+	void			moveLeft(S32 direction, bool reset_view = true);
 	void			moveLeftNudge(S32 direction);
-	void			moveUp(S32 direction);
+	void			moveUp(S32 direction, bool reset_view = true);
 	void			moveYaw(F32 mag, bool reset_view = true);
 	void			movePitch(F32 mag);
 

@@ -46,6 +46,7 @@ public:
 		Optional<bool> allow_text_entry;
 		Optional<bool> allow_digits_only;
 		Optional<bool> label_wrap;
+		Optional<bool> allow_scrolling;
 
 		Optional<LLUIColor> text_enabled_color;
 		Optional<LLUIColor> text_disabled_color;
@@ -118,6 +119,8 @@ private:
 
 	BOOL			mbHasBeenSet;
 	BOOL			mAllowEdit;
+
+	BOOL			mAllowScrolling;
 };
 
 #endif  // LL_LLSPINCTRL_H

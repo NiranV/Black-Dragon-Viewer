@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel
+border="false"
+follows="all"
+height="408"
+label="Controls"
+mouse_opaque="false"
+layout="topleft"
+left="0"
+name="Controls panel"
+top="45"
+width="510">
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="515"/>
+ <text
+ name="show_ims_in_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Keyboard Options:
+ </text>
+ <check_box
+ control_name="ArrowKeysAlwaysMove"
+ follows="left|top"
+ height="16"
+ label="Arrow keys always move me"
+ layout="topleft"
+ left="10"
+ name="arrow_keys_move_avatar_check"
+ width="237"
+ top_pad="15"/>
+ <check_box
+ control_name="AllowTapTapHoldRun"
+ follows="left|top"
+ height="16"
+ label="Tap-tap-hold to run"
+ layout="topleft"
+ left="10"
+ name="tap_tap_hold_to_run"
+ width="237"
+ top_pad="0"/>
+ <check_box
+ control_name="AutomaticFly"
+ height="16"
+ initial_value="true"
+ label="Hold jump key to automatically start flying"
+ layout="topleft"
+ left_delta="0"
+ name="AutomaticFly"
+ top_pad="0"
+ width="256" />
+ <radio_group
+ control_name="LetterKeysFocusChatBar" 
+ height="27"
+ layout="topleft"
+ left="270"
+ top="32"
+ width="200"
+ name="inworld_typing_preference">
+  <radio_item
+  label="Letter keys start Chat"
+  name="radio_start_chat"
+  top_delta="25" 
+  layout="topleft"
+  height="16" 
+  left="0" 
+  value="1"
+  width="150" />
+  <radio_item
+  label="Letter keys move (i.e. W A S D)"
+  left="0"
+  layout="topleft"
+  top_pad="1" 
+  height="16" 
+  name="radio_move"
+  value="0"
+  width="75" />
+ </radio_group>
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="31"
+ width="515"/>
+ <text
+ name="show_ims_in_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Mouse Options:
+ </text>
+ <check_box
+ control_name="ClickToWalk"
+ follows="left|top"
+ height="16"
+ label="Enable Left-click to Walk (MMORPG Style)"
+ layout="topleft"
+ left_delta="0"
+ name="ClickToWalk"
+ width="237"
+ top_pad="15"/>
+ <check_box
+ control_name="DoubleClickTeleport"
+ follows="left|top"
+ height="16" 
+ initial_value="false"
+ label="Enable Double-click Teleport"
+ layout="topleft"
+ left_delta="0"
+ name="DoubleclickTP"
+ tool_tip="Double Click anywhere to TP there instantly"
+ width="150"
+ top_pad="0"/>
+ <check_box
+ control_name="DoubleClickAutoPilot"
+ disabled_control="DoubleClickTeleport"
+ follows="left|top"
+ height="16" 
+ initial_value="false"
+ label="Enable Double-click Autopilot"
+ layout="topleft"
+ left_delta="0"
+ name="DoubleclickPilot"
+ tool_tip="Double Click anywhere to walk to this Position"
+ width="150"
+ top_pad="0"/>
+ <check_box
+ control_name="AutoPilotLocksCamera"
+ disabled_control="DoubleClickTeleport"
+ follows="left|top"
+ height="16" 
+ initial_value="false"
+ label="Disable locking the Camera in Double-click Autopilot"
+ layout="topleft"
+ left_delta="0"
+ name="AutoPilotLocksCamera"
+ tool_tip="Locks the Camera Pan/Rotation during Auto Pilot"
+ width="200"
+ top_pad="0"/>
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="515"/>
+ <text
+ name="show_ims_in_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Keyboard Layout Options:
+ </text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ font.style="BOLDITALIC"
+ left="175"
+ name="Classic"
+ top_pad="15"
+ width="125">
+    Classic SL
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ font.style="BOLD"
+ left="10"
+ name="Actions"
+ top_delta="0"
+ width="100">
+    Actions
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ font.style="BOLDITALIC"
+ left="333"
+ name="Shooter"
+ top_delta="0"
+ width="125">
+    Shooter/RPG
+</text>
+ <radio_group
+ control_name="ShooterKeyLayout"
+ height="18"
+ layout="topleft"
+ left="10"
+ name="ShooterKeyLayout"
+ top_delta="-3"
+ width="321">
+ <radio_item
+ height="18"
+ label=""
+ layout="topleft"
+ left="142"
+ name="Classic"
+ value=""
+ top="0"
+ width="16" />
+ <radio_item
+ height="18"
+ label=""
+ layout="topleft"
+ left_pad="142"
+ name="Shooter"
+ value="true"
+ top_delta="0"
+ width="16" />
+ </radio_group>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ font.style="ITALIC"
+ left="175"
+ name="ClassicWalk"
+ top_pad="3"
+ width="125">
+    Shift + A / D
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ left="10"
+ name="Walkleftright"
+ top_delta="0"
+ width="400">
+    Walk Left / Right:
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ font.style="ITALIC"
+ layout="topleft"
+ left="333"
+ name="ShooterWalk"
+ top_delta="0"
+ width="125">
+    A / D
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ font.style="ITALIC"
+ left="175"
+ name="ClassicRotate"
+ top_pad="2"
+ width="125">
+    A / D
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ left="10"
+ name="Rotateleftright"
+ top_delta="0"
+ width="400">
+    Rotate Left / Right:
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ font.style="ITALIC"
+ layout="topleft"
+ left="333"
+ name="ShooterRotate"
+ top_delta="0"
+ width="125">
+    Q / E
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ font.style="ITALIC"
+ left="175"
+ name="ClassicJump"
+ top_pad="2"
+ width="125">
+    E
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ left="10"
+ name="Jump"
+ top_delta="0"
+ width="400">
+    Jump:
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ font.style="ITALIC"
+ layout="topleft"
+ left="333"
+ name="ShooterJump"
+ top_delta="0"
+ width="125">
+    Spacebar
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ left="10"
+ name="StartChat"
+ top_pad="2"
+ width="400">
+    Start Chat:
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ font.style="ITALIC"
+ layout="topleft"
+ left="333"
+ name="ShooterChat"
+ top_delta="0"
+ width="125">
+    Enter
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ font.style="ITALIC"
+ left="175"
+ name="ClassicChat"
+ top_delta="0"
+ width="125">
+    Enter
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ left="10"
+ name="StopMotion"
+ top_pad="2"
+ width="400">
+    Stop Motion:
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ font.style="ITALIC"
+ layout="topleft"
+ left="333"
+ name="ShooterStop"
+ top_delta="0"
+ width="125">
+    X
+</text>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="14"
+ halign="left"
+ layout="topleft"
+ font.style="ITALIC"
+ left="175"
+ name="ClassicStop"
+ top_delta="0"
+ width="125">
+    Spacebar
+</text>
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="515"/>
+ <text
+ name="show_ims_in_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Misc Options:
+ </text>
+ <check_box
+ control_name="UseNewWalkRun"
+ height="16"
+ initial_value="true"
+ label="Use new Movement Animations"
+ layout="topleft"
+ left_delta="0"
+ tool_tip="Use new Walk/Run/Crouch animations of Viewer 2"
+ name="NewWalkRun"
+ top_pad="15"
+ width="256" />
+ <check_box
+ control_name="AllowWalkingBackwards"
+ follows="left|top"
+ height="16" 
+ initial_value="true"
+ label="Always make Avatar face walking direction"
+ layout="topleft"
+ left_delta="0"
+ name="AllowWalkingBackwards"
+ tool_tip="Make the Avatar turn around when pressing back instead of the Avatar walking backwards"
+ width="200"
+ top_pad="0"/>
+ <spinner
+ decimal_digits="2"
+ follows="left|top"
+ height="16"
+ control_name="MovementRotationSpeed"
+ increment="0.01"
+ label="Rotation Speed:"
+ label_width="150"
+ layout="topleft"
+ left="270"
+ max_val="1"
+ initial_value="0.15"
+ min_val="0"
+ name="RotationSpeed"
+ top_delta="-16"
+ width="200" />
+</panel>

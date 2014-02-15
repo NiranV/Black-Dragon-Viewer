@@ -45,7 +45,7 @@ Linux.cxx_version = /usr/bin/g++-4.6
 # All Linden Lab builds (and only Linden Lab builds)
 # should use a viewer_channel that begins with "Second Life"
 ################################################################
-viewer_channel = "Second Life Test"
+viewer_channel = "Black Dragon"
 
 # Setup default packaging parameters.
 sourceid = ""
@@ -145,6 +145,17 @@ viewer-materials.viewer_channel = "Second Life Beta Materials"
 viewer-materials.build_debug_release_separately = true
 viewer-materials.build_CYGWIN_Debug = false
 viewer-materials.build_viewer_update_version_manager = false
+
+# viewer-chui
+#
+# ========================================
+
+viewer-chui.viewer_channel = "Project Viewer - CHUI"
+viewer-chui.login_channel = "Project Viewer - CHUI"
+viewer-chui.viewer_grid = agni
+viewer-chui.build_debug_release_separately = true
+viewer-chui.build_CYGWIN_Debug = false
+viewer-chui.build_viewer_update_version_manager = false
 
 # =================================================================
 # asset delivery 2010 projects

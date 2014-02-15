@@ -40,7 +40,6 @@
 
 #include "llagent.h"
 #include "llbutton.h"
-#include "llcallbacklist.h"
 #include "llfocusmgr.h"
 #include "llnotifications.h"
 #include "llprogressbar.h"
@@ -53,11 +52,15 @@
 #include "lluictrlfactory.h"
 #include "llpanellogin.h"
 
+#include <time.h>
+
 LLProgressView* LLProgressView::sInstance = NULL;
 
 S32 gStartImageWidth = 1;
 S32 gStartImageHeight = 1;
-const F32 FADE_TO_WORLD_TIME = 1.0f;
+const F32 FADE_TO_WORLD_TIME = 2.5f;
+const F32 FADE_FROM_LOGIN_TIME = 1.5f;
+const F32 CYCLE_TIMER = 7.0f;
 
 static LLRegisterPanelClassWrapper<LLProgressView> r("progress_view");
 
@@ -65,38 +68,31 @@ static LLRegisterPanelClassWrapper<LLProgressView> r("progress_view");
 LLProgressView::LLProgressView() 
 :	LLPanel(),
 	mPercentDone( 0.f ),
-	mMediaCtrl( NULL ),
 	mMouseDownInActiveArea( false ),
 	mUpdateEvents("LLProgressView"),
 	mFadeToWorldTimer(),
+	mTipCycleTimer(),
 	mFadeFromLoginTimer(),
 	mStartupComplete(false)
 {
 	mUpdateEvents.listen("self", boost::bind(&LLProgressView::handleUpdate, this, _1));
-	mFadeToWorldTimer.stop();
-	mFadeFromLoginTimer.stop();
 }
 
 BOOL LLProgressView::postBuild()
 {
 	mProgressBar = getChild<LLProgressBar>("login_progress_bar");
 
-	// media control that is used to play intro video
-	mMediaCtrl = getChild<LLMediaCtrl>("login_media_panel");
-	mMediaCtrl->setVisible( false );		// hidden initially
-	mMediaCtrl->addObserver( this );		// watch events
-	
-	LLViewerMedia::setOnlyAudibleMediaTextureID(mMediaCtrl->getTextureID());
-
 	mCancelBtn = getChild<LLButton>("cancel_btn");
 	mCancelBtn->setClickedCallback(  LLProgressView::onCancelButtonClicked, NULL );
+	mFadeToWorldTimer.stop();
+	mTipCycleTimer.getStarted();
+	mFadeFromLoginTimer.stop();
 
-	getChild<LLTextBox>("title_text")->setText(LLStringExplicit(LLAppViewer::instance()->getSecondLifeTitle()));
-
-	getChild<LLTextBox>("message_text")->setClickedCallback(onClickMessage, this);
+	mMessageText = getChild<LLUICtrl>("message_text");
+	mPercentText = getChild<LLTextBox>("percent_text");
 
 	// hidden initially, until we need it
-	setVisible(FALSE);
+	LLPanel::setVisible(FALSE);
 
 	LLNotifications::instance().getChannel("AlertModal")->connectChanged(boost::bind(&LLProgressView::onAlertModal, this, _1));
 
@@ -107,9 +103,6 @@ BOOL LLProgressView::postBuild()
 
 LLProgressView::~LLProgressView()
 {
-	// Just in case something went wrong, make sure we deregister our idle callback.
-	gIdleCallbacks.deleteFunction(onIdle, this);
-
 	gFocusMgr.releaseFocusIfNeeded( this );
 
 	sInstance = NULL;
@@ -135,42 +128,12 @@ BOOL LLProgressView::handleKeyHere(KEY key, MASK mask)
 	return TRUE;
 }
 
-void LLProgressView::revealIntroPanel()
-{
-	// if user hasn't yet seen intro video
-	std::string intro_url = gSavedSettings.getString("PostFirstLoginIntroURL");
-	if ( intro_url.length() > 0 && 
-			gSavedSettings.getBOOL("BrowserJavascriptEnabled") &&
-			gSavedSettings.getBOOL("PostFirstLoginIntroViewed" ) == FALSE )
-	{
-		// hide the progress bar
-		getChild<LLView>("stack1")->setVisible(false);
-		
-		// navigate to intro URL and reveal widget 
-		mMediaCtrl->navigateTo( intro_url );	
-		mMediaCtrl->setVisible( TRUE );
-
-
-		// flag as having seen the new user post login intro
-		gSavedSettings.setBOOL("PostFirstLoginIntroViewed", TRUE );
-
-		mMediaCtrl->setFocus(TRUE);
-	}
-
-	mFadeFromLoginTimer.start();
-	gIdleCallbacks.addFunction(onIdle, this);
-}
-
 void LLProgressView::setStartupComplete()
 {
 	mStartupComplete = true;
 
-	// if we are not showing a video, fade into world
-	if (!mMediaCtrl->getVisible())
-	{
-		mFadeFromLoginTimer.stop();
-		mFadeToWorldTimer.start();
-	}
+	mFadeFromLoginTimer.stop();
+	mFadeToWorldTimer.start();
 }
 
 void LLProgressView::setVisible(BOOL visible)
@@ -189,39 +152,41 @@ void LLProgressView::setVisible(BOOL visible)
 	} 
 }
 
+// ## Zi: Fade teleport screens
+void LLProgressView::fade(BOOL in)
+{
+	if(in)
+	{
+		mFadeFromLoginTimer.start();
+		mFadeToWorldTimer.stop();
+		setVisible(TRUE);
+	}
+	else
+	{
+		mFadeFromLoginTimer.stop();
+		mFadeToWorldTimer.start();
+		// set visibility will be done in the draw() method after fade
+	}
+}
+// ## Zi: Fade teleport screens
+
+void LLProgressView::setTip()
+{
+	if(mTipCycleTimer.getElapsedTimeAndResetF32() > CYCLE_TIMER)
+	{
+		srand( (unsigned)time( NULL ) );
+		int mRandom = rand()%21;
+		std::string output = llformat("LoadingTip %i" , mRandom);
+		mMessageText->setValue(getString(output));
+	}
+}
 
 void LLProgressView::drawStartTexture(F32 alpha)
 {
 	gGL.pushMatrix();	
-	if (gStartTexture)
-	{
-		LLGLSUIDefault gls_ui;
-		gGL.getTexUnit(0)->bind(gStartTexture.get());
-		gGL.color4f(1.f, 1.f, 1.f, alpha);
-		F32 image_aspect = (F32)gStartImageWidth / (F32)gStartImageHeight;
-		S32 width = getRect().getWidth();
-		S32 height = getRect().getHeight();
-		F32 view_aspect = (F32)width / (F32)height;
-		// stretch image to maintain aspect ratio
-		if (image_aspect > view_aspect)
-		{
-			gGL.translatef(-0.5f * (image_aspect / view_aspect - 1.f) * width, 0.f, 0.f);
-			gGL.scalef(image_aspect / view_aspect, 1.f, 1.f);
-		}
-		else
-		{
-			gGL.translatef(0.f, -0.5f * (view_aspect / image_aspect - 1.f) * height, 0.f);
-			gGL.scalef(1.f, view_aspect / image_aspect, 1.f);
-		}
-		gl_rect_2d_simple_tex( getRect().getWidth(), getRect().getHeight() );
-		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-	}
-	else
-	{
-		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-		gGL.color4f(0.f, 0.f, 0.f, 1.f);
-		gl_rect_2d(getRect());
-	}
+	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
+	gGL.color4f(0.f, 0.f, 0.f, alpha);		// ## Zi: Fade teleport screens
+	gl_rect_2d(getRect());
 	gGL.popMatrix();
 }
 
@@ -229,18 +194,43 @@ void LLProgressView::drawStartTexture(F32 alpha)
 void LLProgressView::draw()
 {
 	static LLTimer timer;
+	F32 glow;
+	F32 fov;
+	F32 alpha;
 
 	if (mFadeFromLoginTimer.getStarted())
 	{
-		F32 alpha = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 0.f, 1.f);
-		LLViewDrawContext context(alpha);
-
-		if (!mMediaCtrl->getVisible())
+		if(gSavedSettings.controlExists("PrevGlow"))
 		{
-			drawStartTexture(alpha);
+			glow = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, gSavedSettings.getF32("PrevGlow"), 1.f);
 		}
-		
+		else
+		{
+			glow = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.21f, 1.f);
+		}
+		if(gSavedSettings.controlExists("PrevFoV"))
+		{
+			fov = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, gSavedSettings.getF32("PrevFoV"), 1.7f);
+		}
+		else
+		{
+			fov = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 1.1f, 1.7f);
+		}
+		alpha = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.f, 1.f);
+		LLViewDrawContext context(alpha);
+		gSavedSettings.setF32("RenderGlowStrength" , glow);
+		gSavedSettings.setF32("CameraAngle" , fov);
+
+		drawStartTexture(alpha);
+
 		LLPanel::draw();
+
+		if (mFadeFromLoginTimer.getElapsedTimeF32() > FADE_FROM_LOGIN_TIME )
+		{
+			mFadeFromLoginTimer.stop();
+			LLPanelLogin::closePanel();
+		}
+
 		return;
 	}
 
@@ -248,9 +238,27 @@ void LLProgressView::draw()
 	if (mFadeToWorldTimer.getStarted())
 	{
 		// draw fading panel
-		F32 alpha = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
+		alpha = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
+		if(gSavedSettings.controlExists("PrevGlow"))
+		{
+			glow = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, gSavedSettings.getF32("PrevGlow"));
+		}
+		else
+		{
+			glow = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.21f);
+		}
+		if(gSavedSettings.controlExists("PrevFoV"))
+		{
+			fov = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.7f, gSavedSettings.getF32("PrevFoV"));
+		}
+		else
+		{
+			fov = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.7f, 1.1f);
+		}
 		LLViewDrawContext context(alpha);
-				
+		
+		gSavedSettings.setF32("RenderGlowStrength" , glow);
+		gSavedSettings.setF32("CameraAngle" , fov);
 		drawStartTexture(alpha);
 		LLPanel::draw();
 
@@ -259,55 +267,33 @@ void LLProgressView::draw()
 		{
 			mFadeToWorldTimer.stop();
 
-			LLViewerMedia::setOnlyAudibleMediaTextureID(LLUUID::null);
-
 			// Fade is complete, release focus
 			gFocusMgr.releaseFocusIfNeeded( this );
 
 			// turn off panel that hosts intro so we see the world
-			setVisible(FALSE);
-
-			// stop observing events since we no longer care
-			mMediaCtrl->remObserver( this );
-
-			// hide the intro
-			mMediaCtrl->setVisible( false );
-
-			// navigate away from intro page to something innocuous since 'unload' is broken right now
-			//mMediaCtrl->navigateTo( "about:blank" );
-
-			// FIXME: this causes a crash that i haven't been able to fix
-			mMediaCtrl->unloadMediaSource();	
+			LLPanel::setVisible(FALSE);
 
 			gStartTexture = NULL;
 		}
 		return;
 	}
 
+	setTip();
 	drawStartTexture(1.0f);
 	// draw children
 	LLPanel::draw();
 }
 
-void LLProgressView::setText(const std::string& text)
-{
-	getChild<LLUICtrl>("progress_text")->setValue(text);
-}
-
 void LLProgressView::setPercent(const F32 percent)
 {
+	S32 percent_label = percent;
 	mProgressBar->setValue(percent);
-}
-
-void LLProgressView::setMessage(const std::string& msg)
-{
-	mMessage = msg;
-	getChild<LLUICtrl>("message_text")->setValue(mMessage);
+	mPercentText->setValue(percent_label);
 }
 
 void LLProgressView::setCancelButtonVisible(BOOL b, const std::string& label)
 {
-	mCancelBtn->setVisible( b );
+	getChildView("cancel_panel")->setVisible( b );
 	mCancelBtn->setEnabled( b );
 	mCancelBtn->setLabelSelected(label);
 	mCancelBtn->setLabelUnselected(label);
@@ -325,55 +311,31 @@ void LLProgressView::onCancelButtonClicked(void*)
 	}
 	else
 	{
+		if(gSavedSettings.controlExists("PrevGlow"))
+		{
+			gSavedSettings.setF32("RenderGlowStrength" , gSavedPerAccountSettings.getF32("PrevGlow"));
+		}
+		else
+		{
+			gSavedSettings.setF32("RenderGlowStrength" , 0.21f);
+		}
+		if(gSavedSettings.controlExists("PrevFoV"))
+		{
+			gSavedSettings.setF32("CameraAngle" , gSavedPerAccountSettings.getF32("PrevFoV"));
+		}
+		else
+		{
+			gSavedSettings.setF32("CameraAngle" , 1.1f);
+		}
 		gAgent.teleportCancel();
 		sInstance->mCancelBtn->setEnabled(FALSE);
 		sInstance->setVisible(FALSE);
 	}
 }
 
-// static
-void LLProgressView::onClickMessage(void* data)
-{
-	LLProgressView* viewp = (LLProgressView*)data;
-	if ( viewp != NULL && ! viewp->mMessage.empty() )
-	{
-		std::string url_to_open( "" );
-
-		size_t start_pos;
-		start_pos = viewp->mMessage.find( "https://" );
-		if (start_pos == std::string::npos)
-			start_pos = viewp->mMessage.find( "http://" );
-		if (start_pos == std::string::npos)
-			start_pos = viewp->mMessage.find( "ftp://" );
-			
-		if ( start_pos != std::string::npos )
-		{
-			size_t end_pos = viewp->mMessage.find_first_of( " \n\r\t", start_pos );
-			if ( end_pos != std::string::npos )
-				url_to_open = viewp->mMessage.substr( start_pos, end_pos - start_pos );
-			else
-				url_to_open = viewp->mMessage.substr( start_pos );
-
-			LLWeb::loadURLExternal( url_to_open );
-		}
-	}
-}
-
 bool LLProgressView::handleUpdate(const LLSD& event_data)
 {
-	LLSD message = event_data.get("message");
-	LLSD desc = event_data.get("desc");
 	LLSD percent = event_data.get("percent");
-
-	if(message.isDefined())
-	{
-		setMessage(message.asString());
-	}
-
-	if(desc.isDefined())
-	{
-		setText(desc.asString());
-	}
 	
 	if(percent.isDefined())
 	{
@@ -395,48 +357,4 @@ bool LLProgressView::onAlertModal(const LLSD& notify)
 		}
 	}
 	return false;
-}
-
-void LLProgressView::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event)
-{
-	// the intro web content calls javascript::window.close() when it's done
-	if( event == MEDIA_EVENT_CLOSE_REQUEST )
-	{
-		if (mStartupComplete)
-		{
-			//make sure other timer has stopped
-			mFadeFromLoginTimer.stop();
-			mFadeToWorldTimer.start();
-		}
-		else
-		{
-			// hide the media ctrl and wait for startup to be completed before fading to world
-			mMediaCtrl->setVisible(false);
-			if (mMediaCtrl->getMediaPlugin())
-			{
-				mMediaCtrl->getMediaPlugin()->stop();
-			}
-
-			// show the progress bar
-			getChild<LLView>("stack1")->setVisible(true);
-		}
-	}
-}
-
-
-// static
-void LLProgressView::onIdle(void* user_data)
-{
-	LLProgressView* self = (LLProgressView*) user_data;
-
-	// Close login panel on mFadeToWorldTimer expiration.
-	if (self->mFadeFromLoginTimer.getStarted() &&
-		self->mFadeFromLoginTimer.getElapsedTimeF32() > FADE_TO_WORLD_TIME)
-	{
-		self->mFadeFromLoginTimer.stop();
-		LLPanelLogin::closePanel();
-
-		// Nothing to do anymore.
-		gIdleCallbacks.deleteFunction(onIdle, user_data);
-	}
 }

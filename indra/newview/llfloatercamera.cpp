@@ -528,6 +528,12 @@ void LLFloaterCamera::updateItemsSelection()
 	getChild<LLPanelCameraItem>("group_view")->setValue(argument);
 	argument["selected"] = preset == CAMERA_PRESET_FRONT_VIEW;
 	getChild<LLPanelCameraItem>("front_view")->setValue(argument);
+//	//BD - Left/Right shoulder camera preset
+	argument["selected"] = preset == CAMERA_PRESET_LEFT_VIEW;
+	getChild<LLPanelCameraItem>("left_shoulder_view")->setValue(argument);
+	argument["selected"] = preset == CAMERA_PRESET_RIGHT_VIEW;
+	getChild<LLPanelCameraItem>("right_shoulder_view")->setValue(argument);
+
 	argument["selected"] = gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK;
 	getChild<LLPanelCameraItem>("mouselook_view")->setValue(argument);
 	argument["selected"] = mCurrMode == CAMERA_CTRL_MODE_FREE_CAMERA;
@@ -577,6 +583,15 @@ void LLFloaterCamera::switchToPreset(const std::string& name)
 	else if ("front_view" == name)
 	{
 		gAgentCamera.switchCameraPreset(CAMERA_PRESET_FRONT_VIEW);
+	}
+//	//BD - Left/Right shoulder camera preset
+	else if ("left_shoulder_view" == name)
+	{
+		gAgentCamera.switchCameraPreset(CAMERA_PRESET_LEFT_VIEW);
+	}
+	else if ("right_shoulder_view" == name)
+	{
+		gAgentCamera.switchCameraPreset(CAMERA_PRESET_RIGHT_VIEW);
 	}
 }
 

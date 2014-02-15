@@ -5,13 +5,13 @@
  height="640"
  layout="topleft"
  min_height="230"
- min_width="750"
+ min_width="560"
  name="gui_preview_tool"
- help_topic="gui_preview_tool"
+ background_color="FloaterDefaultBackgroundColor"
  single_instance="true"
  title="XUI PREVIEW TOOL"
  translate="false"
- width="750">
+ width="560">
     <string name="ExternalEditorNotSet">
 Select an editor by setting the environment variable LL_XUI_EDITOR
 or the ExternalEditor setting
@@ -24,8 +24,20 @@ or specifying its path in the "Editor Path" field.</string>
      mouse_opaque="false"
      default_tab_group="1"
      name="main_panel"
-     right="750"
+     right="560"
      top="0">
+      <panel
+         bevel_style="in"
+         bg_alpha_color="0 0 0 0"
+         bg_opaque_color="0 0 0 0.3"
+         border="true"
+         follows="left|right|top"
+         height="90"
+         layout="topleft"
+         left="10"
+         top="20"
+         name="vlt_panel"
+         right="-10">
         <text
          type="string"
          length="1"
@@ -33,10 +45,10 @@ or specifying its path in the "Editor Path" field.</string>
          font="SansSerif"
          height="30"
          layout="topleft"
-         left="10"
+         left="5"
          name="select_language_label"
-         top="25"
-         width="130">
+         top="7"
+         width="150">
             Primary Language:
         </text>
         <combo_box
@@ -58,11 +70,11 @@ or specifying its path in the "Editor Path" field.</string>
          label="Show"
          label_selected="Show"
          layout="topleft"
-         left_pad="10"
+         left_pad="5"
          name="display_floater"
          tool_tip="Display the XUI floater defined by the selected XML file"
          top_delta="-2"
-         width="95" />
+         width="90" />
         <button
          enabled="false"
          follows="left|top"
@@ -70,44 +82,22 @@ or specifying its path in the "Editor Path" field.</string>
          label="Hide"
          label_selected="Hide"
          layout="topleft"
-         left_pad="10"
+         left_pad="5"
          name="close_displayed_floater"
          tool_tip="Closes the currently-displayed floater, if one exists"
          top_delta="0"
-         width="85" />
+         width="80" />
         <button
          follows="left|top"
          height="25"
          label="Edit..."
          label_selected="Edit..."
          layout="topleft"
-         left_pad="10"
+         left_pad="5"
          name="edit_floater"
          tool_tip="Edit the XUI floater defined by the selected XML file (opens external editor).  Opens en version if no localized version exists."
          top_delta="0"
          width="95" />
-        <button
-         follows="left|top"
-         height="25"
-         label="Save"
-         label_selected="Save"
-         layout="topleft"
-         left_pad="5"
-         name="save_floater"
-         tool_tip="Save the XUI floater defined by the selected XML file"
-         top_delta="0"
-         width="85" />
-        <button
-         follows="left|top"
-         height="25"
-         label="Save All"
-         label_selected="Save All"
-         layout="topleft"
-         left_pad="10"
-         name="save_all_floaters"
-         tool_tip="Save all XUI floaters defined by the selected language"
-         top_delta="0"
-         width="85" />
         <button
          follows="right|top"
          height="25"
@@ -115,11 +105,11 @@ or specifying its path in the "Editor Path" field.</string>
          label="&gt; &gt;"
          label_selected="&lt; &lt;"
          layout="topleft"
-         left_pad="15"
+         left_pad="5"
          name="toggle_overlap_panel"
          tool_tip="Toggle highlighting and display panel for overlapping elements; right-click an element to select it for this feature.  The selected element is marked by a red rectangle."
          top_delta="0"
-         width="30" />
+         width="35" />
         <text
          type="string"
          length="1"
@@ -127,18 +117,17 @@ or specifying its path in the "Editor Path" field.</string>
          font="SansSerif"
          height="30"
          layout="topleft"
-         left="10"
+         left="5"
          name="select_language_label_2"
-         right="-50"
-         top="53"
-         width="105">
+         top="35"
+         width="140">
             Secondary Language:
         </text>
         <combo_box
          follows="top|left"
          height="20"
          layout="topleft"
-         left_delta="135"
+         left_pad="15"
          name="language_select_combo_2"
          top_delta="0"
          width="55">
@@ -152,20 +141,51 @@ or specifying its path in the "Editor Path" field.</string>
          height="25"
          label="Show"
          layout="topleft"
-         left_pad="10"
+         left_pad="5"
          name="display_floater_2"
          tool_tip="Display the XUI floater defined by the selected XML file"
          top_delta="-2"
-         width="95" />
+         width="90" />
         <button
          enabled="false"
          follows="left|top"
          height="25"
          label="Hide"
          layout="topleft"
-         left_pad="10"
+         left_pad="5"
          name="close_displayed_floater_2"
          tool_tip="Closes the currently-displayed floater, if one exists"
+         top_delta="0"
+         width="80" />
+        <check_box
+          follows="left|top"
+          label="Show Rectangles"
+          name="show_rectangles"
+          left_pad="5"
+          top_delta="-3"
+          height="25"
+          width="120" />
+        
+        <button
+         follows="left|top"
+         height="25"
+         label="Save"
+         label_selected="Save"
+         layout="topleft"
+         left="5"
+         name="save_floater"
+         tool_tip="Save the XUI floater defined by the selected XML file"
+         top_pad="6"
+         width="85" />
+        <button
+         follows="left|top"
+         height="25"
+         label="Save All"
+         label_selected="Save All"
+         layout="topleft"
+         left_pad="5"
+         name="save_all_floaters"
+         tool_tip="Save all XUI floaters defined by the selected language"
          top_delta="0"
          width="85" />
         <button
@@ -173,18 +193,20 @@ or specifying its path in the "Editor Path" field.</string>
          height="25"
          label="Export Schema"
          layout="topleft"
-         left_pad="10"
+         left_pad="5"
          name="export_schema"
          top_delta="0"
          width="120" />
-        <check_box
-          follows="left|top"
-          label="Show Rectangles"
-          name="show_rectangles"
-          left_pad="10"
-          top_delta="0"
-          height="25"
-          width="120" />
+        <button
+         follows="left|top"
+         height="25"
+         label="Refresh List"
+         layout="topleft"
+         left_pad="5"
+         name="Refresh_btn"
+         top_delta="0"
+         width="100" />
+      </panel>
       
         <scroll_list
          bottom="525"
@@ -194,20 +216,20 @@ or specifying its path in the "Editor Path" field.</string>
          follows="left|top|bottom|right"
          label="Name"
          layout="topleft"
-         left="10"
+         left="7"
          name="name_list"
-         right="-10"
+         right="-7"
          tab_group="1"
          search_column="1"
-         top="80">
+         top="110">
             <scroll_list.columns
              label="Title"
              name="title_column"
-             width="150" />
+             width="160" />
             <scroll_list.columns
              label="File"
              name="file_column"
-             width="150" />
+             width="180" />
             <scroll_list.columns
              dynamic_width="true"
              label="Top-Level Node"
@@ -232,11 +254,10 @@ or specifying its path in the "Editor Path" field.</string>
              font="SansSerif"
              height="30"
              layout="topleft"
-             left="10"
-             left_delta="10"
+             left="5"
              name="editor_path_label"
              top="10"
-             width="100">
+             width="120">
                 Editor Path:
             </text>
             <line_editor
@@ -246,13 +267,13 @@ or specifying its path in the "Editor Path" field.</string>
              font="SansSerif"
              height="20"
              layout="topleft"
-             left_delta="100"
+             left_pad="0"
              max_length_bytes="300"
              name="executable_path_field"
              select_on_focus="true"
              tool_tip="The full path to an editor (executable) to edit floater XML files (quotes not necessary)"
              top_delta="-2"
-             width="315" />
+             width="330" />
             <button
              follows="left|bottom"
              height="25"
@@ -271,11 +292,10 @@ or specifying its path in the "Editor Path" field.</string>
              font="SansSerif"
              height="30"
              layout="topleft"
-             left="10"
-             left_delta="-420"
+             left="5"
              name="executable_args_label"
              top="36"
-             width="100">
+             width="120">
                 Editor Arguments:
             </text>
             <line_editor
@@ -285,13 +305,13 @@ or specifying its path in the "Editor Path" field.</string>
              font="SansSerif"
              height="20"
              layout="topleft"
-             left_delta="100"
+             left_pad="0"
              max_length_bytes="300"
              name="executable_args_field"
              select_on_focus="true"
              tool_tip="Command-line arguments to the editor; use &apos;%FILE%&apos; to refer to the target file; &apos;YourProgram.exe FileName.xml&apos; will be run if this field is empty"
              top_delta="-2"
-             width="315" />
+             width="410" />
         </panel>
         <panel
          bevel_style="in"
@@ -312,11 +332,10 @@ or specifying its path in the "Editor Path" field.</string>
              font="SansSerif"
              height="30"
              layout="topleft"
-             left="10"
-             left_delta="10"
+             left="5"
              name="diff_file_label"
              top="10"
-             width="200">
+             width="120">
                 Delta File:
             </text>
             <line_editor
@@ -326,24 +345,24 @@ or specifying its path in the "Editor Path" field.</string>
              font="SansSerif"
              height="20"
              layout="topleft"
-             left_delta="65"
+             left_pad="0"
              max_length_bytes="300"
              name="vlt_diff_path_field"
              select_on_focus="true"
              tool_tip="The full path to an XML D0 or D1 localization difference file generated by the Viewer Localization Toolkit"
              top_delta="-2"
-             width="235" />
+             width="265" />
             <button
              follows="left|bottom"
              height="25"
-             label="Browse..."
+             label="..."
              label_selected="Browse..."
              layout="topleft"
              left_pad="5"
              name="browse_for_vlt_diffs"
              tool_tip="Browse for a VLT-generated D0 or D1 difference file to highlight changed files and elements"
              top_delta="-2"
-             width="75" />
+             width="25" />
             <button
              follows="left|bottom"
              height="25"
@@ -360,9 +379,9 @@ or specifying its path in the "Editor Path" field.</string>
     </panel>
     <scroll_container
      follows="top|right|bottom"
-     height="600"
+     height="610"
      layout="topleft"
-     left="750"
+     left="560"
      name="overlap_scroll"
      reserve_scroll_corner="true"
      top="20"
@@ -373,8 +392,7 @@ or specifying its path in the "Editor Path" field.</string>
         top="0"
         left="0"
         width="300"
-        height="600"
-        >
+        height="610">
         <overlap_panel
          background_opaque="true"
          background_visible="true"
@@ -383,7 +401,7 @@ or specifying its path in the "Editor Path" field.</string>
          bg_opaque_color="1 1 1 1"
          border="true"
          follows="top|right|bottom"
-         height="600"
+         height="610"
          label="Overlap Panel"
          layout="topleft"
          left="0"

@@ -60,6 +60,9 @@
 #include "llviewerwindow.h"
 #include "llworld.h"
 #include "llworldmapview.h"		// shared draw code
+// [RLVa:KB] - Checked: 2010-04-19 (RLVa-1.2.0f)
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 static LLDefaultChildRegistry::Register<LLNetMap> r1("net_map");
 
@@ -73,6 +76,9 @@ const F32 MIN_DOT_RADIUS = 3.5f;
 const F32 DOT_SCALE = 0.75f;
 const F32 MIN_PICK_SCALE = 2.f;
 const S32 MOUSE_DRAG_SLOP = 2;		// How far the mouse needs to move before we think it's a drag
+
+const F32 WIDTH_PIXELS = 2.f;
+const S32 CIRCLE_STEPS = 64;
 
 const F64 COARSEUPDATE_MAX_Z = 1020.0f;
 
@@ -153,7 +159,8 @@ void LLNetMap::draw()
 	//static LLUIColor map_track_disabled_color = LLUIColorTable::instance().getColor("MapTrackDisabledColor", LLColor4::white);
 	static LLUIColor map_frustum_color = LLUIColorTable::instance().getColor("MapFrustumColor", LLColor4::white);
 	static LLUIColor map_frustum_rotating_color = LLUIColorTable::instance().getColor("MapFrustumRotatingColor", LLColor4::white);
-	
+	static LLUIColor map_chat_ring_color = LLUIColorTable::instance().getColor("MapChatRingColor", LLColor4::white);
+
 	if (mObjectImagep.isNull())
 	{
 		createObjectImage();
@@ -340,6 +347,9 @@ void LLNetMap::draw()
 
 		LLWorld::getInstance()->getAvatars(&avatar_ids, &positions, gAgentCamera.getCameraPositionGlobal());
 
+//		//BD - Draw chat range ring(s)
+		static LLUICachedControl<bool> chat_ring("MiniMapChatRing", true);
+
 		// Draw avatars
 		for (U32 i = 0; i < avatar_ids.size(); i++)
 		{
@@ -349,7 +359,11 @@ void LLNetMap::draw()
 
 			pos_map = globalPosToView(positions[i]);
 
-			bool show_as_friend = (LLAvatarTracker::instance().getBuddyInfo(uuid) != NULL);
+// [RLVa:KB] - Checked: 2010-04-19 (RLVa-1.2.0f) | Modified: RLVa-1.2.0f
+			bool show_as_friend = (LLAvatarTracker::instance().getBuddyInfo(uuid) != NULL) &&
+				(!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES));
+// [/RLVa:KB]
+//			bool show_as_friend = (LLAvatarTracker::instance().getBuddyInfo(uuid) != NULL);
 
 			LLColor4 color = show_as_friend ? map_avatar_friend_color : map_avatar_color;
 
@@ -398,6 +412,12 @@ void LLNetMap::draw()
 				closest_dist_squared = dist_to_cursor_squared;
 				mClosestAgentToCursor = uuid;
 			}
+
+//			//BD - Draw chat range ring(s)
+			if(chat_ring)
+			{
+				drawRing(CHAT_NORMAL_RADIUS, pos_map, map_chat_ring_color);
+			}
 		}
 
 		// Draw dot for autopilot target
@@ -436,6 +456,13 @@ void LLNetMap::draw()
 			if(dist_to_cursor_squared < min_pick_dist_squared && dist_to_cursor_squared < closest_dist_squared)
 			{
 				mClosestAgentToCursor = gAgent.getID();
+			}
+
+//			//BD - Draw chat range ring(s)
+			if(chat_ring)
+			{
+				drawRing(5.0, pos_map, map_chat_ring_color);
+				drawRing(100.0, pos_map, map_chat_ring_color);
 			}
 		}
 
@@ -494,10 +521,9 @@ void LLNetMap::reshape(S32 width, S32 height, BOOL called_from_parent)
 	createObjectImage();
 }
 
-LLVector3 LLNetMap::globalPosToView(const LLVector3d& global_pos)
+LLVector3 LLNetMap::globalPosToView( const LLVector3d& global_pos )
 {
 	LLVector3d camera_position = gAgentCamera.getCameraPositionGlobal();
-
 	LLVector3d relative_pos_global = global_pos - camera_position;
 	LLVector3 pos_local;
 	pos_local.setVec(relative_pos_global);  // convert to floats from doubles
@@ -520,10 +546,23 @@ LLVector3 LLNetMap::globalPosToView(const LLVector3d& global_pos)
 	return pos_local;
 }
 
+void LLNetMap::drawRing(const F32 radius, const LLVector3 pos_map, const LLUIColor& color)
+
+{
+	F32 meters_to_pixels = mScale / LLWorld::getInstance()->getRegionWidthInMeters();
+	F32 radius_pixels = radius * meters_to_pixels;
+
+	glMatrixMode(GL_MODELVIEW);
+	gGL.pushMatrix();
+	gGL.translatef((F32)pos_map.mV[VX], (F32)pos_map.mV[VY], 0.f);
+	gl_ring(radius_pixels, WIDTH_PIXELS, color, color, CIRCLE_STEPS, FALSE);
+	gGL.popMatrix();
+}
+
 void LLNetMap::drawTracking(const LLVector3d& pos_global, const LLColor4& color, 
 							BOOL draw_arrow )
 {
-	LLVector3 pos_local = globalPosToView(pos_global);
+	LLVector3 pos_local = globalPosToView( pos_global );
 	if( (pos_local.mV[VX] < 0) ||
 		(pos_local.mV[VY] < 0) ||
 		(pos_local.mV[VX] >= getRect().getWidth()) ||
@@ -601,10 +640,28 @@ BOOL LLNetMap::handleToolTip( S32 x, S32 y, MASK mask )
 
 	// If the cursor is near an avatar on the minimap, a mini-inspector will be
 	// shown for the avatar, instead of the normal map tooltip.
-	if (handleToolTipAgent(mClosestAgentToCursor))
+//	if (handleToolTipAgent(mClosestAgentToCursor))
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
+	if ( (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && (handleToolTipAgent(mClosestAgentToCursor)) )
+// [/RLVa:KB]
 	{
 		return TRUE;
 	}
+
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
+	LLStringUtil::format_map_t args;
+
+	LLAvatarName avName;
+	if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && 
+		 (mClosestAgentToCursor.notNull()) && (LLAvatarNameCache::get(mClosestAgentToCursor, &avName)) )
+	{
+		args["[AGENT]"] = RlvStrings::getAnonym(avName) + "\n";
+	}
+	else
+	{
+		args["[AGENT]"] = "";
+	}
+// [/RLVa:KB]
 
 	LLRect sticky_rect;
 	std::string region_name;
@@ -617,14 +674,17 @@ BOOL LLNetMap::handleToolTip( S32 x, S32 y, MASK mask )
 		sticky_rect.mRight = sticky_rect.mLeft + 2 * SLOP;
 		sticky_rect.mTop = sticky_rect.mBottom + 2 * SLOP;
 
-		region_name = region->getName();
+//		region_name = region->getName();
+// [RLVa:KB] - Checked: 2010-10-19 (RLVa-1.2.2b) | Modified: RLVa-1.2.2b
+		region_name = ((!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)) ? region->getName() : RlvStrings::getString(RLV_STRING_HIDDEN_REGION));
+// [/RLVa:KB]
 		if (!region_name.empty())
 		{
 			region_name += "\n";
 		}
 	}
 
-	LLStringUtil::format_map_t args;
+//	LLStringUtil::format_map_t args;
 	args["[REGION]"] = region_name;
 	std::string msg = mToolTipMsg;
 	LLStringUtil::format(msg, args);

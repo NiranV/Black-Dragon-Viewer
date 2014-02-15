@@ -57,7 +57,8 @@ LLSpinCtrl::Params::Params()
 	text_enabled_color("text_enabled_color"),
 	text_disabled_color("text_disabled_color"),
 	up_button("up_button"),
-	down_button("down_button")
+	down_button("down_button"),
+	allow_scrolling("allow_scrolling", true)
 {}
 
 LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
@@ -66,7 +67,8 @@ LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
 	mbHasBeenSet( FALSE ),
 	mPrecision(p.decimal_digits),
 	mTextEnabledColor(p.text_enabled_color()),
-	mTextDisabledColor(p.text_disabled_color())
+	mTextDisabledColor(p.text_disabled_color()),
+	mAllowScrolling(p.allow_scrolling)
 {
 	static LLUICachedControl<S32> spinctrl_spacing ("UISpinctrlSpacing", 0);
 	static LLUICachedControl<S32> spinctrl_btn_width ("UISpinctrlBtnWidth", 0);
@@ -424,20 +426,24 @@ void LLSpinCtrl::reportInvalidData()
 
 BOOL LLSpinCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks)
 {
-	if( clicks > 0 )
+	if( mAllowScrolling && mEditor->hasFocus())
 	{
-		while( clicks-- )
+		if( clicks > 0 )
 		{
-			onDownBtn(getValue());
+			while( clicks-- )
+			{
+				onDownBtn(getValue());
+				return TRUE;
+			}
+		}
+		else
+		while( clicks++ )
+		{
+			onUpBtn(getValue());
+			return TRUE;
 		}
 	}
-	else
-	while( clicks++ )
-	{
-		onUpBtn(getValue());
-	}
-
-	return TRUE;
+	return FALSE;
 }
 
 BOOL LLSpinCtrl::handleKeyHere(KEY key, MASK mask)

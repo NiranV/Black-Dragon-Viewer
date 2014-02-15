@@ -32,6 +32,7 @@
 class LLAccordionCtrl;
 class LLIconCtrl;
 class LLTextEditor;
+class LLTabContainer;
 
 class LLPanelPlaceProfile : public LLPanelPlaceInfo
 {

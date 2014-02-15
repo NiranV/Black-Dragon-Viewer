@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
     positioning="cascading"
+    background_color="FloaterDefaultBackgroundColor"
     can_resize="true"
     can_tear_off="false"
-    height="273"
-    width="635"
+    height="227"
+    width="600"
     min_height="273"
-    min_width="635"
+    min_width="600"
     layout="topleft"
     name="floater_pathfinding_characters"
-    help_topic="floater_pathfinding_characters"
     reuse_instance="true"
     save_rect="false"
     single_instance="true"
@@ -31,20 +31,20 @@
       bevel_style="none"
       follows="left|top|right|bottom"
       layout="topleft"
-      height="191"
-      width="635">
+      height="170"
+      width="600">
     <scroll_list
         column_padding="0"
         draw_heading="true"
         follows="all"
         height="135"
         layout="topleft"
-        left="18"
-        top_pad="10"
+        left="5"
+        top_pad="0"
         tab_stop="false"
         multi_select="true"
         name="objects_scroll_list"
-        width="600">
+        width="590">
       <scroll_list.columns
           label="Name"
           name="name"
@@ -60,7 +60,7 @@
       <scroll_list.columns
           label="CPU"
           name="cpu_time"
-          width="60" />
+          width="50" />
       <scroll_list.columns
           label="Altitude"
           name="altitude"
@@ -73,58 +73,59 @@
         type="string"
         text_color="LabelTextColor"
         length="1"
+        left="5"
         follows="left|bottom|right"
         layout="topleft"
         name="messaging_status"
-        top_pad="17"
-        width="238">
+        top_pad="7"
+        width="251">
       Characters:
     </text>
     <button
         follows="right|bottom"
         height="21"
-        label="Refresh list"
+        label="Liste aktualisieren"
         layout="topleft"
         name="refresh_objects_list"
         top_pad="-29"
         left_pad="0"
-        width="115"/>
+        width="110"/>
     <button
-        follows="right|bottom"
+        follows="left|bottom"
         height="21"
         label="Select all"
         layout="topleft"
         name="select_all_objects"
         top_pad="-21"
-        left_pad="8"
-        width="115"/>
+        left_pad="3"
+        width="110"/>
     <button
-        follows="right|bottom"
+        follows="left|bottom"
         height="21"
         label="Select none"
         layout="topleft"
         name="select_none_objects"
         top_pad="-21"
-        left_pad="8"
-        width="115"/>
+        left_pad="3"
+        width="110"/>
   </panel>
   <view_border
       bevel_style="none"
-      follows="left|right|bottom"
+      follows="left|right|top"
       height="0"
       layout="topleft"
       name="horiz_separator"
       top_pad="0"
-      left="18"
-      width="600"/>
+      left="5"
+      width="590"/>
   <panel
       border="false"
       bevel_style="none"
       follows="left|right|bottom"
       layout="topleft"
       left="0"
-      height="67"
-      width="635">
+      height="47"
+      width="600">
     <text
         height="13"
         word_wrap="false"
@@ -136,9 +137,9 @@
         follows="left|bottom|right"
         layout="topleft"
         name="actions_label"
-        left="18"
-        top_pad="8"
-        width="242">
+        left="7"
+        top_pad="3"
+        width="240">
       Actions on selected characters:
     </text>
     <check_box
@@ -165,8 +166,8 @@
         label="Take"
         layout="topleft"
         name="take_objects"
-        top_pad="9"
-        left="18"
+        top_pad="3"
+        left="5"
         width="94"/>
     <button
         follows="left|bottom"
@@ -175,7 +176,7 @@
         layout="topleft"
         name="take_copy_objects"
         top_pad="-22"
-        left_pad="6"
+        left_pad="3"
         width="94"/>
     <button
         follows="left|bottom"
@@ -185,7 +186,7 @@
         name="teleport_me_to_object"
         tool_tip="Enabled only when one character is selected."
         top_pad="-22"
-        left_pad="26"
+        left_pad="24"
         width="159"/>
     <button
         follows="right|bottom"
@@ -194,7 +195,7 @@
         layout="topleft"
         name="return_objects"
         top_pad="-22"
-        left_pad="26"
+        left_pad="24"
         width="94"/>
     <button
         follows="right|bottom"
@@ -203,7 +204,7 @@
         layout="topleft"
         name="delete_objects"
         top_pad="-22"
-        left_pad="6"
+        left_pad="3"
         width="94"/>
   </panel>
 </floater>

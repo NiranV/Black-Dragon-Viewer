@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
  follows="top|right|left"
- height="24"
+ height="21"
  layout="topleft"
  left="0"
  name="avatar_list_item"
@@ -18,143 +18,133 @@
     <string name="FormatWeeks">[COUNT]w</string>
     <string name="FormatMonths">[COUNT]mon</string>
     <string name="FormatYears">[COUNT]y</string>
- 
-    <!--
-    *NOTE: llavatarlistitem.cpp lays these controls out depending on which
-           ones are visible. Trying to change their order here will break it
-           ... which kinda sucks.
-    -->
     <icon
-     follows="top|right|left"
-     height="24"
-     image_name="ListItem_Over"
-     layout="topleft"
-     left="0"
-     name="hovered_icon"
-     top="0"
-     visible="false"
-     width="320" />
+    follows="top|right|left"
+    height="21"
+    image_name="ListItem_Over"
+    layout="topleft"
+    left="0"
+    name="hovered_icon"
+    top="0"
+    visible="false"
+    width="320" />
     <icon
-     height="24"
-     follows="top|right|left"
-     image_name="ListItem_Select"
-     layout="topleft"
-     left="0"
-     name="selected_icon"
-     top="0"
-     visible="false"
-     width="320" />
+    height="21"
+    follows="top|right|left"
+    image_name="ListItem_Select"
+    layout="topleft"
+    left="0"
+    name="selected_icon"
+    top="0"
+    visible="false"
+    width="320" />
     <avatar_icon
-     follows="top|left"
-     height="20"
-     default_icon_name="Generic_Person"
-     layout="topleft"
-     left="5"
-     mouse_opaque="true"
-     top="2"
-     width="20" />
-    <text
-     follows="left|right"
-     font="SansSerifSmall"
-     height="15"
-     layout="topleft"
-     left_pad="5"
-     name="avatar_name"
-     parse_urls="false"
-     top="6"
-     use_ellipses="true"
-     value="(loading)"
-     width="180" />
-    <text
-     follows="right"
-     font="SansSerifSmall"
-     height="15"
-     layout="topleft"
-     left_pad="5"
-     right="-164"
-     name="last_interaction"
-     text_color="LtGray_50"
-     value="0s"
-     width="35" />
-    <icon
-     height="16"
-     follows="right"
-     image_name="Permission_Edit_Objects_Theirs"
-     layout="topleft"
-     left_pad="3"
-     right="-129"
-     name="permission_edit_theirs_icon"
-     tool_tip="You can edit this friend&apos;s objects"
-     top="4"
-     width="16" />
-    <icon
-     height="16"
-     follows="right"
-     image_name="Permission_Edit_Objects_Mine"
-     layout="topleft"
-     left_pad="3"
-     right="-110"
-     name="permission_edit_mine_icon"
-     tool_tip="This friend can edit, delete or take your objects"
-     top_delta="0"
-     width="16" />
-    <icon
-     height="16"
-     follows="right"
-     image_name="Permission_Visible_Map"
-     layout="topleft"
-     left_pad="3"
-     tool_tip="This friend can locate you on the map"
-     right="-91"
-     name="permission_map_icon"
-     top_delta="0"
-     width="16" />
-    <icon
-     height="16"
-     follows="right"
-     image_name="Permission_Visible_Online"
-     layout="topleft"
-     left_pad="3"
-     right="-72"
-     name="permission_online_icon"
-     tool_tip="This friend can see when you&apos;re online"
-     top_delta="0"
-     width="16" />
-    <button
-     follows="right"
-     height="16"
-     image_pressed="Info_Press"
-     image_unselected="Info_Over"
-     layout="topleft"
-     left_pad="3"
-     right="-53"
-     name="info_btn"
-     tool_tip="More info"
-     tab_stop="false"
-     top_delta="0"
-     width="16" />
-    <button
-     follows="right"
-     height="20"
-     image_overlay="Web_Profile_Off"
-     layout="topleft"
-     left_pad="5"
-     right="-28"
-     name="profile_btn"
-     tab_stop="false"
-     tool_tip="View profile"
-     top_delta="-2"
-     width="20" />
+    follows="top|left"
+    height="18"
+    default_icon_name="Generic_Person"
+    layout="topleft"
+    left="1"
+    mouse_opaque="true"
+    top="2"
+    width="18" />
     <output_monitor
-     auto_update="true"
-     follows="right"
-     draw_border="false"
-     height="16"
-     layout="topleft"
-     left_pad="5"
-     right="-3"
-     mouse_opaque="true"
-     name="speaking_indicator"
-     visible="true"
-     width="20" />
+    auto_update="true"
+    follows="top|left"
+    draw_border="false"
+    height="20"
+    layout="topleft"
+    left="1"
+    top="0"
+    visible="true"
+    mouse_opaque="true"
+    name="speaking_indicator"
+    width="320" />
+    <button
+    follows="top|left"
+    height="18"
+    image_pressed="transparent.j2c"
+    image_unselected="transparent.j2c"
+    layout="topleft"
+    left="1"
+    name="info_btn"
+    tab_stop="false"
+    top="1"
+    visible="true"
+    width="18" />
+    <text
+    follows="top|left|right"
+    font="SansSerifSmall"
+    font_shadow="soft"
+    height="13"
+    layout="topleft"
+    font.style="BOLD"
+    left="25"
+    word_wrap="false"
+    name="avatar_name"
+    parse_urls="false"
+    top="4"
+    use_ellipses="true"
+    value="(loading)"
+    width="292"/>
+    <!--<text
+    follows="top|left|right"
+    font="SansSerifSmall"
+    font_shadow="soft"
+    height="11"
+    layout="topleft"
+    halign="left"
+    left="60"
+    top="11"
+    name="extra_information"
+    text_color="1 1 1 0.7"
+    value=""
+    width="100" />-->
+    <icon
+    height="16"
+    follows="right|top"
+    image_name="Permission_Edit_Objects_Theirs"
+    layout="topleft"
+    right="-47"
+    visible="false"
+    color="1 1 1 0.5"
+    name="permission_edit_theirs_icon"
+    tool_tip="You can edit this friend&apos;s objects"
+    top="3"
+    width="16" />
+    <icon
+    height="16"
+    follows="right|top"
+    image_name="Permission_Edit_Objects_Mine"
+    layout="topleft"
+    right="-32"
+    visible="false"
+    color="1 1 1 0.5"
+    name="permission_edit_mine_icon"
+    tool_tip="This friend can edit, delete or take your objects"
+    top="3"
+    width="16" />
+    <icon
+    height="16"
+    follows="right|top"
+    image_name="Permission_Visible_Map"
+    layout="topleft"
+    tool_tip="This friend can locate you on the map"
+    right="-17"
+    visible="false"
+    color="1 1 1 0.5"
+    name="permission_map_icon"
+    top="3"
+    width="16" />
+    <icon
+    height="16"
+    follows="right|top"
+    image_name="Permission_Visible_Online"
+    layout="topleft"
+    right="-2"
+    visible="false"
+    color="1 1 1 0.5"
+    name="permission_online_icon"
+    tool_tip="This friend can see when you&apos;re online"
+    top="3"
+    width="16" />
 </panel>

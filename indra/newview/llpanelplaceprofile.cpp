@@ -49,9 +49,13 @@
 #include "llbuycurrencyhtml.h"
 #include "llslurl.h"
 #include "llstatusbar.h"
+#include "lltabcontainer.h"
 #include "llviewercontrol.h"
 #include "llviewerparcelmgr.h"
 #include "llviewerregion.h"
+// [RLVa:KB] - Checked: 2010-09-02 (RLVa-1.2.1b)
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 static LLRegisterPanelClassWrapper<LLPanelPlaceProfile> t_place_profile("panel_place_profile");
 
@@ -226,7 +230,7 @@ void LLPanelPlaceProfile::setInfoType(EInfoType type)
 	getChild<LLTextBox>("owner_label")->setVisible(is_info_type_agent);
 	mParcelOwner->setVisible(is_info_type_agent);
 
-	getChild<LLAccordionCtrl>("advanced_info_accordion")->setVisible(is_info_type_agent);
+	getChild<LLTabContainer>("advanced_info_tab")->setVisible(is_info_type_agent);
 
 	// If we came from search we want larger description area, approx. 10 lines (see STORM-1311).
 	// Don't use the maximum available space because that leads to nasty artifacts
@@ -590,7 +594,10 @@ void LLPanelPlaceProfile::displaySelectedParcelInfo(LLParcel* parcel,
 	mLastSelectedRegionID = region->getRegionID();
 	LLPanelPlaceInfo::processParcelInfo(parcel_data);
 
-	mYouAreHerePanel->setVisible(is_current_parcel);
+//	mYouAreHerePanel->setVisible(is_current_parcel);
+// [RLVa:KB] - Checked: 2010-09-02 (RLVa-1.4.5) | Added: RLVa-1.2.1
+	mYouAreHerePanel->setVisible(is_current_parcel && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)));
+// [/RLVa:KB]
 	getChild<LLAccordionCtrlTab>("sales_tab")->setVisible(for_sale);
 }
 
@@ -657,6 +664,9 @@ void LLPanelPlaceProfile::updateYouAreHereBanner(void* userdata)
 		BOOL display_banner = gAgent.getRegion()->getRegionID() == self->mLastSelectedRegionID &&
 										LLAgentUI::checkAgentDistance(self->mPosRegion, radius);
 
-		self->mYouAreHerePanel->setVisible(display_banner);
+//		self->mYouAreHerePanel->setVisible(display_banner);
+// [RLVa:KB] - Checked: 2010-09-02 (RLVa-1.4.5) | Added: RLVa-1.2.1
+		self->mYouAreHerePanel->setVisible(display_banner && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)));
+// [/RLVa:KB]
 	}
 }

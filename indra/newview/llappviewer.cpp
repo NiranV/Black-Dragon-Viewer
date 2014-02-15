@@ -91,6 +91,13 @@
 #include "llprogressview.h"
 #include "llvocache.h"
 #include "llvopartgroup.h"
+// [SL:KB] - Patch: Appearance-Misc | Checked: 2013-02-12 (Catznip-3.4)
+#include "llappearancemgr.h"
+// [/SL:KB]
+// [RLVa:KB] - Checked: 2010-05-03 (RLVa-1.2.0g)
+#include "rlvhandler.h"
+// [/RLVa:KB]
+
 #include "llweb.h"
 #include "llsecondlifeurls.h"
 #include "llupdaterservice.h"
@@ -350,16 +357,16 @@ BOOL gLogoutInProgress = FALSE;
 // Internal globals... that should be removed.
 static std::string gArgs;
 const int MAX_MARKER_LENGTH = 1024;
-const std::string MARKER_FILE_NAME("SecondLife.exec_marker");
-const std::string START_MARKER_FILE_NAME("SecondLife.start_marker");
-const std::string ERROR_MARKER_FILE_NAME("SecondLife.error_marker");
-const std::string LLERROR_MARKER_FILE_NAME("SecondLife.llerror_marker");
-const std::string LOGOUT_MARKER_FILE_NAME("SecondLife.logout_marker");
+const std::string MARKER_FILE_NAME("BlackDragon.exec_marker");
+const std::string START_MARKER_FILE_NAME("BlackDragon.start_marker");
+const std::string ERROR_MARKER_FILE_NAME("BlackDragon.error_marker");
+const std::string LLERROR_MARKER_FILE_NAME("BlackDragon.llerror_marker");
+const std::string LOGOUT_MARKER_FILE_NAME("BlackDragon.logout_marker");
 static BOOL gDoDisconnect = FALSE;
 static std::string gLaunchFileOnQuit;
 
 // Used on Win32 for other apps to identify our window (eg, win_setup)
-const char* const VIEWER_WINDOW_CLASSNAME = "Second Life";
+const char* const VIEWER_WINDOW_CLASSNAME = "Black Dragon";
 
 //-- LLDeferredTaskList ------------------------------------------------------
 
@@ -473,7 +480,15 @@ void idle_afk_check()
 {
 	// check idle timers
 	F32 current_idle = gAwayTriggerTimer.getElapsedTimeF32();
-	F32 afk_timeout  = gSavedSettings.getS32("AFKTimeout");
+//	F32 afk_timeout  = gSavedSettings.getS32("AFKTimeout");
+// [RLVa:KB] - Checked: 2010-05-03 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g
+#ifdef RLV_EXTENSION_CMD_ALLOWIDLE
+	// Enforce an idle time of 30 minutes if @allowidle=n restricted
+	F32 afk_timeout = (!gRlvHandler.hasBehaviour(RLV_BHVR_ALLOWIDLE)) ? gSavedSettings.getS32("AFKTimeout") : 60 * 30;
+#else
+	F32 afk_timeout = gSavedSettings.getS32("AFKTimeout");
+#endif // RLV_EXTENSION_CMD_ALLOWIDLE
+// [/RLVa:KB]
 	if (afk_timeout && (current_idle > afk_timeout) && ! gAgent.getAFK())
 	{
 		LL_INFOS("IdleAway") << "Idle more than " << afk_timeout << " seconds: automatically changing to Away status" << LL_ENDL;
@@ -747,7 +762,7 @@ bool LLAppViewer::init()
 
 	// Need to do this initialization before we do anything else, since anything
 	// that touches files should really go through the lldir API
-	gDirUtilp->initAppDirs("SecondLife");
+	gDirUtilp->initAppDirs("BlackDragon");
 	// set skin search path to default, will be overridden later
 	// this allows simple skinned file lookups to work
 	gDirUtilp->setSkinFolder("default", "en");
@@ -996,22 +1011,7 @@ bool LLAppViewer::init()
 	gGLManager.getGLInfo(gDebugInfo);
 	gGLManager.printGLInfoString();
 
-	// Load Default bindings
-	std::string key_bindings_file = gDirUtilp->findFile("keys.xml",
-														gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, ""),
-														gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
-
-
-	if (!gViewerKeyboard.loadBindingsXML(key_bindings_file))
-	{
-		std::string key_bindings_file = gDirUtilp->findFile("keys.ini",
-															gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, ""),
-															gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
-		if (!gViewerKeyboard.loadBindings(key_bindings_file))
-		{
-			LL_ERRS("InitInfo") << "Unable to open keys.ini" << LL_ENDL;
-		}
-	}
+	loadKeyboardlayout();
 
 	// If we don't have the right GL requirements, exit.
 	if (!gGLManager.mHasRequirements)
@@ -1189,6 +1189,24 @@ bool LLAppViewer::init()
 	LLAgentLanguage::init();
 
 	return true;
+}
+
+void LLAppViewer::loadKeyboardlayout()
+{
+	std::string key_bindings_file;
+	if (gSavedSettings.getBOOL("ShooterKeyLayout"))
+	{
+		key_bindings_file = gDirUtilp->findFile("keys_shooter.xml",	gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
+	}
+	else
+	{
+		key_bindings_file = gDirUtilp->findFile("keys.xml",	gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
+	}
+
+	if (!gViewerKeyboard.loadBindingsXML(key_bindings_file))
+	{
+		LL_ERRS("InitInfo") << "Unable to open keys.ini" << LL_ENDL;
+	}
 }
 
 void LLAppViewer::initMaxHeapSize()
@@ -2159,7 +2177,14 @@ void errorCallback(const std::string &error_string)
 	//Set the ErrorActivated global so we know to create a marker file
 	gLLErrorActivated = true;
 	
+//	LLError::crashAndLoop(error_string);
+// [SL:KB] - Patch: Viewer-Build | Checked: 2010-12-04 (Catznip-2.4)
+#if !LL_RELEASE_FOR_DOWNLOAD && LL_WINDOWS
+	DebugBreak();
+#else
 	LLError::crashAndLoop(error_string);
+#endif // LL_RELEASE_WITH_DEBUG_INFO && LL_WINDOWS
+// [/SL:KB]
 }
 
 void LLAppViewer::initLoggingAndGetLastDuration()
@@ -2173,12 +2198,12 @@ void LLAppViewer::initLoggingAndGetLastDuration()
 
 	// Remove the last ".old" log file.
 	std::string old_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-							     "SecondLife.old");
+							     "BlackDragon.old");
 	LLFile::remove(old_log_file);
 
 	// Get name of the log file
 	std::string log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-							     "SecondLife.log");
+							     "BlackDragon.log");
 	/*
 	 * Before touching any log files, compute the duration of the last run
 	 * by comparing the ctime of the previous start marker file with the ctime
@@ -5224,6 +5249,11 @@ void LLAppViewer::disconnectViewer()
 
 	// close inventory interface, close all windows
 	LLFloaterInventory::cleanup();
+
+// [SL:KB] - Patch: Appearance-Misc | Checked: 2013-02-12 (Catznip-3.4)
+	// Destroying all objects below will trigger attachment detaching code and attempt to remove the COF links for them
+	LLAppearanceMgr::instance().setAttachmentInvLinkEnable(false);
+// [/SL:KB]
 
 	gAgentWearables.cleanup();
 	gAgentCamera.cleanup();

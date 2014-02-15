@@ -1,39 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- border="true"
  follows="left|top|right|bottom"
  height="408"
  label="Setup"
  layout="topleft"
- left="102"
+ left="0"
  name="Input panel"
- top="1"
+ top="45"
  width="517">
+  <panel
+  layout="topleft"
+  follows="left|top"
+  height="400"
+  visible="true"
+  name="network_panel"
+  top="0"
+  left="0"
+  width="517">
   <text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="10"
-     layout="topleft"
-     left="30"
-     name="Network:"
-     mouse_opaque="false"
-     top="10"
-     width="300">
+  type="string"
+  length="1"
+  follows="left|top"
+  height="10"
+  layout="topleft"
+  left="10"
+  name="Network:"
+  mouse_opaque="false"
+  top_pad="10"
+  width="300">
     Network:
-  </text>
-  <text
-   type="string"
-   length="1"
-   follows="left|top"
-   height="10"
-   layout="topleft"
-   left_delta="50"
-   name="Maximum bandwidth"
-   mouse_opaque="false"
-   top_pad="10"
-   width="200">
-    Maximum bandwidth
   </text>
   <slider
    can_edit_text="true"
@@ -43,13 +38,14 @@
    height="15"
    increment="100"
    initial_value="500"
+   label="Maximum Bandwidth"
    layout="topleft"
-   left_delta="150"
+   left="20"
    max_val="10000"
    min_val="100"
    name="max_bandwidth"
-   top_delta="0"
-   width="180" />
+   top_pad="10"
+   width="280" />
   <text
    type="string"
    length="1"
@@ -61,20 +57,20 @@
    name="text_box2"
    top_delta="1"
    width="200">
-    kbps
+    kbit/s
   </text>
   <check_box
    control_name="ConnectionPortEnabled"
- height="16"
+   height="16"
    label="Custom port"
    layout="topleft"
-   left="77"
+   left="20"
    name="connection_port_enabled"
    top_pad="10"
    width="256">
     <check_box.commit_callback
-     function="Notification.Show"
- parameter="ChangeConnectionPort" />
+      function="Notification.Show"
+      parameter="ChangeConnectionPort" />
   </check_box>
   <spinner
    control_name="ConnectionPort"
@@ -85,190 +81,531 @@
    increment="1"
    initial_value="13000"
    label="Port number:"
-   label_width="105"
+   label_width="75"
    layout="topleft"
-   left_delta="160"
+   left="152"
    max_val="13050"
    min_val="13000"
    name="connection_port"
-   top_delta="3"
-   width="170" />
-
+   top_delta="0"
+   width="140" />
   <text
-         type="string"
-         length="1"
-         follows="left|top"
-         height="10"
-         layout="topleft"
-         left="30"
-         name="Web:"
-         top_pad="5"
-         width="300">
-    Web:
+     type="string"
+     length="1"
+     follows="left|top"
+     height="10"
+     layout="topleft"
+     left="10"
+     name="Cache:"
+     mouse_opaque="false"
+     top_pad="5"
+     width="300">
+    Cache:
   </text>
-  <radio_group
-   control_name="UseExternalBrowser"
-   draw_border="false"
-   follows="top|left"
-   height="40"
-   layout="topleft"
-   left_delta="50"
-   name="use_external_browser"
-   top_pad="-2"
-   width="480">
-    <radio_item
-      height="20"
-      label="Use my browser (IE, Firefox, Safari)"
-      layout="topleft"
-      left_delta="0"
-      name="external"
-      value="true"
-      top="0"
-      tool_tip="Use the default system web browser for help, web links, etc. Not recommended if running full screen."
-      width="480" />
-    <radio_item
-      height="20"
-      label="Use built-in browser"
-      layout="topleft"
-      left="0"
-      name="internal"
-      value=""
-      tool_tip="Use the built-in web browser for help, web links, etc. This browser opens as a new window inside [APP_NAME]."
-      top_delta="20"
-      width="480" />
-  </radio_group>
-
   <check_box
-    top_delta="2"
-    enabled="true"
+    top_delta="4"
     follows="left|top"
-    height="18"
+    height="14"
     initial_value="true"
-    control_name="BrowserPluginsEnabled"
-    label="Enable plugins"
-    left_delta="20"
+    control_name="ObjectCacheEnabled"
+    label="Enable Object Cache"
+    left="20"
     mouse_opaque="true"
-    name="browser_plugins_enabled"
+    name="ObjectCacheEnabled"
     radio_style="false"
     width="400"
-    top_pad="5"/>
-
-  <check_box
-   top_delta="4"
+    top_pad="10"/>
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="10"
+   layout="topleft"
+   left="20"
+   mouse_opaque="false"
+   name="cache_size_label_l"
+   top_pad="10"
+   width="200">
+    Cache size
+  </text>
+  <spinner
+   can_edit_text="true"
+   control_name="CacheSize"
+   decimal_digits="0"
+   follows="left|top"
+   height="15"
+   increment="16"
+   initial_value="1024"
+   layout="topleft"
+   left_delta="150"
+   max_val="9986"
+   min_val="64"
+   name="cache_size"
+   top_delta="-2"
+   width="70" />
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="10"
+   layout="topleft"
+   left_pad="6"
+   mouse_opaque="false"
+   name="text_box5"
+   top_delta="1"
+   width="60">
+    Mega Bytes
+  </text>
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="10"
+   layout="topleft"
+   left="20"
+   name="Cache location"
+   top_delta="20"
+   width="300">
+    Cache location:
+  </text>
+  <line_editor
+   control_name="CacheLocationTopFolder"
+   border_style="line"
+   border_thickness="1"
    enabled="true"
    follows="left|top"
-   height="14"
-   initial_value="true"
-   control_name="CookiesEnabled"
-   label="Accept cookies"
+   font="SansSerif"
+   height="23"
+   layout="topleft"
+   left="20"
+   max_length="4096"
+   name="cache_location"
+   top_pad="5"
+   width="205" />
+  <button
+   follows="left|top"
+   height="23"
+   label="Browse"
+   label_selected="Browse"
+   layout="topleft"
+   left_pad="5"
+   name="set_cache"
+   top_delta="-1"
+   width="100"/>
+  <button
+    follows="left|top"
+    height="23"
+    label="Default Location"
+    label_selected="Default Location"
+    layout="topleft"
+    left_pad="3"
+    name="reset_cache"
+    top_delta="0"
+    width="100"/>
+  <button
+   follows="left|top"
+   height="23"
+   label="Clear Cache"
+   label_selected="Clear Cache"
+   layout="topleft"
    left_delta="0"
-   mouse_opaque="true" 
-   name="cookies_enabled"
-   radio_style="false"
-   width="400"
-   top_pad="5"/>
-  
+   name="clear_cache"
+   top_delta="-35"
+   width="100"/>
+   <text
+     type="string"
+     length="1"
+     follows="left|top"
+     height="10"
+     layout="topleft"
+     left="10"
+     name="Other:"
+     mouse_opaque="false"
+     top="185"
+     width="300">
+    Other:
+  </text>
   <check_box
     top_delta="4"
     enabled="true"
     follows="left|top"
     height="14"
     initial_value="true"
-    control_name="BrowserJavascriptEnabled"
-    label="Enable Javascript"
-    left_delta="0"
+    control_name="NoInventoryLibrary"
+    label="Disable Library in Inventory"
+    left="20"
     mouse_opaque="true"
-    name="browser_javascript_enabled"
+    name="no_library"
     radio_style="false"
     width="400"
-    top_pad="5"/>
-  <check_box
-    top_delta="4"
-    enabled="true"
-    follows="left|top"
-    height="14"
+    top_pad="10"/>
+    <check_box
+    control_name="UseHTTPInventory"
+    height="16"
     initial_value="false"
-    control_name="MediaEnablePopups"
-    label="Enable media browser pop-ups"
-    left_delta="0"
-    mouse_opaque="true"
-    name="media_popup_enabled"
-    width="400"           
-    top_pad="5"/>
+    label="Use HTTP Inventory"
+    layout="topleft"
+    left="20"
+    tool_tip="Allow use of http inventory transfers instead of UDP"
+    name="UseHTTPInventory"
+    top_pad="2"
+    width="256" />
   <text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="10"
-     layout="topleft"
-     left="30"
-     name="Software updates:"
-     mouse_opaque="false"
-     top_pad="5"
-     width="300">
-    Software updates:
-  </text>
-  <combo_box
-     control_name="UpdaterServiceSetting"
-     follows="left|top"
-     height="23"
-     layout="topleft"
-     left_delta="50"
-     top_pad="5"
-     name="updater_service_combobox"
-     width="300">
-        <combo_box.item
-         label="Install automatically"
-         name="Install_automatically"
-         value="3" />
-      <!--
-        <combo_box.item
-         label="Ask before installing"
-         name="Install_ask"
-         value="1" />
-      -->
-        <combo_box.item
-         label="Download and install updates manually"
-         name="Install_manual"
-         value="0" />
-  </combo_box>
-  <check_box
-    top_delta="4"
-    enabled="true"
-    follows="left|top"
-    height="14"
-    control_name="UpdaterWillingToTest"
-    label="Willing to update to release candidates"
-    left_delta="0"
-    mouse_opaque="true"
-    name="update_willing_to_test"
-    width="400"           
-    top_pad="5"/>
-  <text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="10"
-     layout="topleft"
-     left="30"
-     name="Proxy Settings:"
-     mouse_opaque="false"
-     top_pad="5"
-     width="300">
-		Proxy Settings:
+   type="string"
+   length="1"
+   follows="left|top"
+   height="10"
+   layout="topleft"
+   left="10"
+   name="Proxy Settings:"
+   mouse_opaque="false"
+   top_pad="5"
+   width="300">
+      Proxy Settings:
   </text>
   <button
-	label="Adjust proxy settings"
+    label="Adjust proxy settings"
     follows="left|top"
     height="23"
-	width="140" 
+    width="140" 
     label_selected="Browse"
     layout="topleft"
-    left_delta="50"
+    left="20"
     name="set_proxy"
-    top_pad="5"
-    >
-		<button.commit_callback
-		  function="Pref.Proxy" />
-  </button>
+    top_pad="10"/>
+    </panel>
+  <panel
+  layout="topleft"
+  follows="left|top"
+  height="400"
+  visible="false"
+  name="browser_panel"
+  top="0"
+  left="0"
+  width="517">
+     <text
+     type="string"
+     length="1"
+     follows="left|top"
+     height="10"
+     layout="topleft"
+     left="10"
+     name="Web:"
+     top="10"
+     width="300">
+     Web:
+     </text>
+     <check_box
+     top_delta="2"
+     enabled="true"
+     follows="left|top"
+     height="18"
+     initial_value="false"
+     control_name="DisableExternalBrowser"
+     label="disallow"
+     left="260"
+     mouse_opaque="true"
+     name="external_enabled"
+     radio_style="false"
+     width="400"
+     top="28"/>
+     <radio_group
+     control_name="UseExternalBrowser"
+     draw_border="false"
+     follows="top|left"
+     height="40"
+     layout="topleft"
+     left="20"
+     name="use_external_browser"
+     top="25"
+     width="480">
+     <radio_item
+     height="20"
+     label="Use my browser (IE, Firefox, Safari)"
+     layout="topleft"
+     left_delta="0"
+     name="external"
+     value="true"
+     top="0"
+     tool_tip="Use the default system web browser for help, web links, etc. Not recommended if running full screen."
+     width="480" />
+     <radio_item
+     height="20"
+     label="Use built-in browser"
+     layout="topleft"
+     left="0"
+     name="internal"
+     value=""
+     tool_tip="Use the built-in web browser for help, web links, etc. This browser opens as a new window inside [APP_NAME]."
+     top_delta="18"
+     width="480" />
+     </radio_group>
+     <check_box
+     top_delta="2"
+     enabled="true"
+     follows="left|top"
+     height="16"
+     initial_value="true"
+     control_name="BrowserPluginsEnabled"
+     label="Enable plugins"
+     left="20"
+     mouse_opaque="true"
+     name="browser_plugins_enabled"
+     radio_style="false"
+     width="400"
+     top_pad="2"/>
+     <check_box
+     top_delta="4"
+     enabled="true"
+     follows="left|top"
+     height="16"
+     initial_value="true"
+     control_name="CookiesEnabled"
+     label="Accept cookies"
+     left_delta="0"
+     mouse_opaque="true" 
+     name="cookies_enabled"
+     radio_style="false"
+     width="400"
+     top_pad="2"/>
+     <check_box
+     top_delta="4"
+     enabled="true"
+     follows="left|top"
+     height="16"
+     initial_value="true"
+     control_name="BrowserJavascriptEnabled"
+     label="Enable Javascript"
+     left_delta="0"
+     mouse_opaque="true"
+     name="browser_javascript_enabled"
+     radio_style="false"
+     width="400"
+     top_pad="2"/>
+     <check_box
+     top_delta="4"
+     enabled="true"
+     follows="left|top"
+     height="16"
+     initial_value="true"
+     enabled_control="BrowserJavascriptEnabled"
+     control_name="BrowserEnableJSObject"
+     label="Enable Javascript Bridge"
+     left_delta="0"
+     mouse_opaque="true"
+     name="browser_javascript_object_enabled"
+     radio_style="false"
+     width="400"
+     top_pad="2"/>
+     <check_box
+     top_delta="4"
+     enabled="true"
+     follows="left|top"
+     height="16"
+     initial_value="false"
+     control_name="MediaEnablePopups"
+     label="Enable Media Browser Pop-ups"
+     left_delta="0"
+     mouse_opaque="true"
+     name="media_popup_enabled"
+     width="400"           
+     top_pad="2"/>
+     <check_box
+     enabled="true"
+     follows="left|top"
+     height="16"
+     initial_value="false"
+     control_name="AutoLoadWebProfiles"
+     label="Auto load all Webprofiles without asking"
+     left_delta="0"
+     mouse_opaque="true"
+     name="AutoLoadWebProfiles"
+     width="400"
+     top_pad="2"/>
+     <check_box
+     enabled="true"
+     follows="left|top"
+     height="16"
+     initial_value="false"
+     control_name="BrowserProxyEnabled"
+     label="Enable Web Proxy"
+     left_delta="0"
+     mouse_opaque="true"
+     name="web_proxy_enabled"
+     radio_style="false"
+     width="400"
+     top_pad="2"/>
+     <text
+     type="string"
+     length="1"
+     follows="left|top"
+     height="10"
+     layout="topleft"
+     left="10"
+     name="Proxy location"
+     top_pad="5"
+     width="300">
+       Proxy location:
+     </text>
+     <line_editor
+     control_name="BrowserProxyAddress"
+     enabled_control="BrowserProxyEnabled"
+     follows="left|top"
+     font="SansSerif"
+     height="23"
+     layout="topleft"
+     left="20"
+     name="web_proxy_editor"
+     tool_tip="The name or IP address of the proxy you would like to use"
+     top_pad="8"
+     width="200" />
+     <spinner
+     control_name="BrowserProxyPort"
+     enabled_control="BrowserProxyEnabled"
+     decimal_digits="0"
+     follows="left|top"
+     height="23"
+     increment="1"
+     initial_value="80"
+     label="Port number:"
+     label_width="95"
+     layout="topleft"
+     left_delta="210"
+     max_val="12000"
+     min_val="10"
+     name="web_proxy_port"
+     top_delta="0"
+     width="145" />
+     <check_box
+     top_delta="7"
+     follows="left|top"
+     height="16"
+     initial_value="false"
+     control_name="MediaShowOutsideParcel"
+     label="Show Media outsite your current Parcel"
+     left="20"
+     mouse_opaque="true"
+     name="MediaShowOutsideParcel"
+     radio_style="false"
+     width="400"
+     top_pad="5"/>
+     <check_box
+     top_delta="7"
+     follows="left|top"
+     height="16"
+     initial_value="true"
+     control_name="MediaShowWithinParcel"
+     label="Show Media within your current Parcel"
+     left="20"
+     mouse_opaque="true"
+     name="MediaShowWithinParcel"
+     radio_style="false"
+     width="400"
+     top_pad="2"/>
+     <spinner
+     control_name="MediaControlTimeout"
+     decimal_digits="0"
+     follows="left|top"
+     height="23"
+     increment="0.5"
+     initial_value="8"
+     label="Media UI Timeout:"
+     label_width="200"
+     tool_tip="Sets seconds after which Media UI starts to fade out"
+     layout="topleft"
+     left="20"
+     max_val="100"
+     min_val="0"
+     name="MediaControlTimeout"
+     top_pad="4"
+     width="250" />
+     <spinner
+     control_name="MediaBrowserWindowLimit"
+     decimal_digits="0"
+     follows="left|top"
+     height="23"
+     increment="1"
+     initial_value="8"
+     label="Max Browser Limit:"
+     label_width="200"
+     tool_tip="Sets maximum opened Browsers , 0 = unlimited"
+     layout="topleft"
+     left="20"
+     max_val="100"
+     min_val="0"
+     name="MediaBrowserWindowLimit"
+     top_pad="2"
+     width="250" />
+     <text
+     type="string"
+     length="1"
+     follows="left|top"
+     height="10"
+     layout="topleft"
+     left="10"
+     name="Prim:"
+     mouse_opaque="false"
+     top_pad="10"
+     width="300">
+       Webmedia Prims:
+     </text>
+     <check_box
+     top_delta="7"
+     follows="left|top"
+     height="18"
+     control_name="PrimMediaDragNDrop"
+     label="Allow Drag n Drop of URLs onto Media Prims"
+     left="20"
+     mouse_opaque="true"
+     name="PrimMediaDragNDrop"
+     width="400"
+     top_pad="7"/>
+     <spinner
+     control_name="PluginInstancesTotal"
+     decimal_digits="0"
+     follows="left|top"
+     height="23"
+     increment="1"
+     initial_value="8"
+     label="Max Plugin Limit:"
+     label_width="200"
+     tool_tip="Sets maximum running Prim Media plugins at the same time"
+     layout="topleft"
+     left="20"
+     max_val="100"
+     min_val="1"
+     name="PluginInstancesTotal"
+     top_pad="2"
+     width="250" />
+  </panel>
+  <button
+  follows="left|top"
+  height="22"
+  image_overlay="Command_Network_Icon"
+  layout="topleft"
+  name="network_panel_btn"
+  mouse_opaque="false"
+  imgoverlay_label_space="5"
+  halign="left"
+  is_toggle="true"
+  label="Network"
+  image_overlay_alignment="left"
+  width="112"
+  left="520"
+  top="5"/>
+  <button
+  follows="left|top"
+  height="22"
+  image_overlay="Command_Browser_Icon"
+  layout="topleft"
+  name="browser_panel_btn"
+  label="Browser"
+  is_toggle="true"
+  mouse_opaque="false"
+  imgoverlay_label_space="5"
+  halign="left"
+  image_overlay_alignment="left"
+  width="112"
+  top_pad="3"
+  left_delta="0"/>
 </panel>

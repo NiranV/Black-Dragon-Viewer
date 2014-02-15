@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<pie_menu
+    name="Attachment Pie">
+
+    <pie_slice
+        label="Profile"
+        name="Profile">
+        <pie_slice.on_click
+            function="ShowAgentProfile"
+            parameter="agent" />
+    </pie_slice>
+    <pie_slice
+        enabled="false"
+        label="Drop"
+        name="Drop">
+        <pie_slice.on_click
+            function="Attachment.Drop" />
+        <pie_slice.on_enable
+            function="Attachment.EnableDrop" />
+    </pie_slice>
+    <pie_menu
+        name="Attachment Pie More"
+        label="More &gt;">
+
+        <pie_slice
+            enabled="true"
+            label="Tex Refresh"
+            name="Texture Refresh">
+            <pie_slice.on_click
+                function="Object.TexRefresh" />
+        </pie_slice>
+        <pie_slice
+            label="Copy UUID"
+            enabled="true"
+            name="Copy Avatar UUID">
+            <pie_slice.on_click
+                 function="Avatar.GetUUID" />
+            </pie_slice>
+        <pie_slice
+            enabled="false"
+            label="Touch"
+            name="Attachment Object Touch">
+            <pie_slice.on_click
+                function="Object.Touch" />
+            <pie_slice.on_enable
+                function="Object.EnableTouch"
+                name="EnableTouch"/>
+        </pie_slice>
+        <pie_slice
+            enabled="true"
+            label="Derender"
+            name="Derender">
+            <pie_slice.on_click
+                function="Object.Derender" />
+        </pie_slice>
+        <pie_slice
+            label="Inspect"
+            name="Object Inspect">
+            <pie_slice.on_click
+                function="Floater.Show"
+                parameter="inspect" />
+        </pie_slice>
+        <pie_slice
+        label="Debug Textures"
+        enabled="true"
+        name="Debug...">
+        <pie_slice.on_click
+            function="Avatar.Debug" />
+    </pie_slice>
+        <pie_slice
+            enabled="false"
+            label="Object Profile"
+            name="Object Profile">
+            <pie_slice.on_click
+                function="Object.Inspect" />
+            <pie_slice.on_enable
+                function="Object.EnableInspect" />
+        </pie_slice>
+
+    </pie_menu>
+    <pie_slice
+        label="Sit Here"
+        autohide="true"
+        name="Sit Down Here">
+        <pie_slice.on_click
+            function="Self.SitDown"
+            parameter="" />
+        <pie_slice.on_enable
+            function="Self.EnableSitDown" />
+    </pie_slice>
+    <pie_slice
+        label="Stand Up"
+        autohide="true"
+        name="Stand Up">
+        <pie_slice.on_click
+            function="Self.StandUp" />
+        <pie_slice.on_enable
+            function="Self.EnableStandUp" />
+    </pie_slice>
+    <pie_slice
+        enabled="true"
+        label="Detach"
+        name="Detach">
+        <pie_slice.on_click
+            function="Attachment.Detach" />
+        <pie_slice.on_enable
+            function="Attachment.EnableDetach" />
+    </pie_slice>
+          <pie_slice
+             label="Reset Scripts"
+             name="Reset Scripts">
+            <pie_slice.on_click
+               function="Tools.SelectedScriptAction"
+               parameter="reset" />
+            <pie_slice.on_enable
+               function="EditableSelected" />
+          </pie_slice>
+    <pie_slice label="Edit Shape"
+        layout="topleft"
+        name="Edit My Shape">
+        <pie_slice.on_click
+            function="EditShape" />
+        <pie_slice.on_enable
+            function="Edit.EnableEditShape" />
+    </pie_slice>
+    <pie_slice
+        enabled="true"
+        label="Edit"
+        name="Edit">
+        <pie_slice.on_click
+            function="Object.Edit" />
+        <pie_slice.on_enable
+            function="EnableEdit" />
+    </pie_slice>
+
+</pie_menu>

@@ -66,6 +66,10 @@ uniform float scene_light_strength;
 uniform mat3 env_mat;
 uniform mat3 ssao_effect_mat;
 
+uniform float num_colors;
+uniform float greyscale_str;
+uniform float sepia_str;
+
 uniform vec3 sun_dir;
 VARYING vec2 vary_fragcoord;
 
@@ -440,16 +444,18 @@ void main()
 		
 		col = mix(col.rgb, diffuse.rgb, diffuse.a);
 				
-		if (envIntensity > 0.0)
-		{ //add environmentmap
-			vec3 env_vec = env_mat * refnormpersp;
-			
-			
-			vec3 refcol = textureCube(environmentMap, env_vec).rgb;
-
-			col = mix(col.rgb, refcol, 
-				envIntensity);  
-		}
+		#ifdef ENV_SHINY_ALLOWED
+		 if (envIntensity > 0.0)
+		 { //add environmentmap
+			 vec3 env_vec = env_mat * refnormpersp;
+			 
+			 
+			 vec3 refcol = textureCube(environmentMap, env_vec).rgb;
+ 
+			 col = mix(col.rgb, refcol, 
+				 envIntensity);  
+		 }
+		#endif
 				
 		if (norm.w < 0.5)
 		{
@@ -468,6 +474,26 @@ void main()
 		//col = vec3(1,0,1);
 		//col.g = envIntensity;
 	}
+	
+	#if POSTERIZATION
+		col = pow(col, vec3(0.6));
+		col = col * num_colors;
+		col = floor(col);
+		col = col / num_colors;
+		col = pow(col, vec3(1.0/0.6));
+	#endif
+	
+	#if GREY_SCALE
+		vec3 col_gr = vec3((0.299 * col.r) + (0.587 * col.g) + (0.114 * col.b));
+		col = mix(col, col_gr, greyscale_str);
+	#endif
+	
+	#if SEPIA
+		float sepia_mix = dot(vec3(0.299, 0.587, 0.114), vec3(col));
+		vec3 col_sep = mix(vec3(0.14, 0.03, 0.0), vec3(0.72, 0.63, 0.25), sepia_mix);
+		col_sep = mix(col_sep, vec3(sepia_mix), 0.0);
+		col = mix(col, col_sep, sepia_str);
+	#endif
 
 	frag_color.rgb = col.rgb;
 	frag_color.a = bloom;

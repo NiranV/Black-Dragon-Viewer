@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Popups" name="popups" title="Popups">
 	<text name="tell_me_label">
-		Anzeigen:
+		Zeige mir:
 	</text>
 	<check_box label="Wenn ich L$ ausgebe oder erhalte" name="notify_money_change_checkbox"/>
 	<check_box label="Wenn meine Freunde sich an- oder abmelden" name="friends_online_notify_checkbox"/>
+	<check_box label="Wie lange Avatare zum rezzen brauchen" name="DebugAvatarRezTime"/>
 	<text name="show_label">
 		Immer anzeigen:
 	</text>
 	<text name="dont_show_label">
 		Niemals anzeigen:
 	</text>
+	<text name="nots_label">
+		Meldungseinstellungen:
+	</text>
+	<spinner label="Nachrichten-Tipp Lebenszeit:" name="NotificationTipToastLifeTime"/>
+	<spinner label="Nachrichten Lebenszeit:" name="NotificationToastLifeTime"/>
+	<spinner label="Bodenfreiraum in pixel:" name="ChannelBottomPanelMargin"/>
 </panel>

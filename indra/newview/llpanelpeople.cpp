@@ -74,6 +74,10 @@
 
 #include "llagentui.h"
 #include "llslurl.h"
+// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.2a)
+#include "rlvhandler.h"
+// [/RLVa:KB]
+
 
 #define FRIEND_LIST_UPDATE_TIMEOUT	0.5
 #define NEARBY_LIST_UPDATE_INTERVAL 1
@@ -601,10 +605,8 @@ BOOL LLPanelPeople::postBuild()
 	mAllFriendList = friends_tab->getChild<LLAvatarList>("avatars_all");
 	mSuggestedFriends = friends_tab->getChild<LLAvatarList>("suggested_friends");
 	mOnlineFriendList->setNoItemsCommentText(getString("no_friends_online"));
-	mOnlineFriendList->setShowIcons("FriendsListShowIcons");
 	mOnlineFriendList->showPermissions("FriendsListShowPermissions");
 	mAllFriendList->setNoItemsCommentText(getString("no_friends"));
-	mAllFriendList->setShowIcons("FriendsListShowIcons");
 	mAllFriendList->showPermissions("FriendsListShowPermissions");
 
 	LLPanel* nearby_tab = getChild<LLPanel>(NEARBY_TAB_NAME);
@@ -613,7 +615,9 @@ BOOL LLPanelPeople::postBuild()
 	mNearbyList->setNoItemsCommentText(getString("no_one_near"));
 	mNearbyList->setNoItemsMsg(getString("no_one_near"));
 	mNearbyList->setNoFilteredItemsMsg(getString("no_one_filtered_near"));
-	mNearbyList->setShowIcons("NearbyListShowIcons");
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+	mNearbyList->setRlvCheckShowNames(true);
+// [/RLVa:KB]
 	mMiniMap = (LLNetMap*)getChildView("Net Map",true);
 	mMiniMap->setToolTipMsg(gSavedSettings.getBOOL("DoubleClickTeleport") ? 
 		getString("AltMiniMapToolTipMsg") :	getString("MiniMapToolTipMsg"));
@@ -622,7 +626,6 @@ BOOL LLPanelPeople::postBuild()
 	mRecentList->setNoItemsCommentText(getString("no_recent_people"));
 	mRecentList->setNoItemsMsg(getString("no_recent_people"));
 	mRecentList->setNoFilteredItemsMsg(getString("no_filtered_recent_people"));
-	mRecentList->setShowIcons("RecentListShowIcons");
 
 	mGroupList = getChild<LLGroupList>("group_list");
 	mGroupList->setNoItemsMsg(getString("no_groups_msg"));
@@ -883,6 +886,9 @@ void LLPanelPeople::updateFacebookList(bool visible)
 void LLPanelPeople::updateButtons()
 {
 	std::string cur_tab		= getActiveTabName();
+// [RLVa:KB] - Checked: 2013-05-06 (RLVa-1.4.9)
+	bool nearby_tab_active = (cur_tab == NEARBY_TAB_NAME);
+// [/RLVa:KB]
 	bool friends_tab_active = (cur_tab == FRIENDS_TAB_NAME);
 	bool group_tab_active	= (cur_tab == GROUP_TAB_NAME);
 	//bool recent_tab_active	= (cur_tab == RECENT_TAB_NAME);
@@ -923,6 +929,11 @@ void LLPanelPeople::updateButtons()
 			if (cur_panel->hasChild("add_friend_btn", TRUE))
 				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self);
 
+//			cur_panel->getChildView("add_friend_btn")->setEnabled(!is_friend);
+// [RLVa:KB] - Checked: 2010-07-20 (RLVa-1.2.2a) | Added: RLVa-1.2.0h
+//			cur_panel->getChildView("add_friend_btn")->setEnabled(
+//				!is_friend && ((!nearby_tab_active) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))));
+// [/RLBa:KB]
 			if (friends_tab_active)
 			{
 				cur_panel->getChildView("friends_del_btn")->setEnabled(multiple_selected);
@@ -934,6 +945,13 @@ void LLPanelPeople::updateButtons()
 			}
 		}
 	}
+
+// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.2a) | Modified: RLVa-1.2.0d
+	if ( (nearby_tab_active) && (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) )
+	{
+		item_selected = multiple_selected = false;
+	}
+// [/RLBa:KB]
 }
 
 std::string LLPanelPeople::getActiveTabName() const
@@ -1310,11 +1328,6 @@ void LLPanelPeople::onFriendsViewSortMenuItemClicked(const LLSD& userdata)
 	{
 		setSortOrder(mAllFriendList, E_SORT_BY_STATUS);
 	}
-	else if (chosen_item == "view_icons")
-	{
-		mAllFriendList->toggleIcons();
-		mOnlineFriendList->toggleIcons();
-	}
 	else if (chosen_item == "view_permissions")
 	{
 		bool show_permissions = !gSavedSettings.getBOOL("FriendsListShowPermissions");
@@ -1346,10 +1359,6 @@ void LLPanelPeople::onNearbyViewSortMenuItemClicked(const LLSD& userdata)
 	else if (chosen_item == "sort_name")
 	{
 		setSortOrder(mNearbyList, E_SORT_BY_NAME);
-	}
-	else if (chosen_item == "view_icons")
-	{
-		mNearbyList->toggleIcons();
 	}
 	else if (chosen_item == "sort_distance")
 	{
@@ -1383,10 +1392,6 @@ void LLPanelPeople::onRecentViewSortMenuItemClicked(const LLSD& userdata)
 	else if (chosen_item == "sort_name")
 	{
 		setSortOrder(mRecentList, E_SORT_BY_NAME);
-	}
-	else if (chosen_item == "view_icons")
-	{
-		mRecentList->toggleIcons();
 	}
 }
 

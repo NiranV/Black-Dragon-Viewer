@@ -44,6 +44,7 @@
 #include "llfloaterscriptdebug.h"
 #include "llhints.h"
 #include "llhudicon.h"
+#include "lliconctrl.h"
 #include "llnavigationbar.h"
 #include "llkeyboard.h"
 #include "lllineeditor.h"
@@ -86,7 +87,8 @@
 // system includes
 #include <iomanip>
 
-
+// Black Dragon
+#include "bdpaneldrawdistance.h"
 //
 // Globals
 //
@@ -166,6 +168,8 @@ BOOL LLStatusBar::postBuild()
 	gMenuBarView->setRightMouseDownCallback(boost::bind(&show_navbar_context_menu, _1, _2, _3));
 
 	mTextTime = getChild<LLTextBox>("TimeText" );
+//	//BD - Framerate counter in statusbar
+	mFPSText = getChild<LLTextBox>("FPSText");
 	
 	getChild<LLUICtrl>("buyL")->setCommitCallback(
 		boost::bind(&LLStatusBar::onClickBuyCurrency, this));
@@ -185,6 +189,10 @@ BOOL LLStatusBar::postBuild()
 	mMediaToggle->setClickedCallback( &LLStatusBar::onClickMediaToggle, this );
 	mMediaToggle->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterNearbyMedia, this));
 
+//	//BD - Draw Distance mouse-over slider
+	mDrawDistance = getChild<LLIconCtrl>("draw_distance_icon");
+	mDrawDistance->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterDrawDistance, this));
+
 	LLHints::registerHintTarget("linden_balance", getChild<LLView>("balance_bg")->getHandle());
 
 	gSavedSettings.getControl("MuteAudio")->getSignal()->connect(boost::bind(&LLStatusBar::onVolumeChanged, this, _2));
@@ -193,7 +201,7 @@ BOOL LLStatusBar::postBuild()
 	S32 x = getRect().getWidth() - 2;
 	S32 y = 0;
 	LLRect r;
-	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT-1, x, y+1);
+	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+1, x, y+1);
 	LLStatGraph::Params sgp;
 	sgp.name("BandwidthGraph");
 	sgp.rect(r);
@@ -206,7 +214,7 @@ BOOL LLStatusBar::postBuild()
 	addChild(mSGBandwidth);
 	x -= SIM_STAT_WIDTH + 2;
 
-	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT-1, x, y+1);
+	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+1, x, y+1);
 	//these don't seem to like being reused
 	LLStatGraph::Params pgp;
 	pgp.name("PacketLossPercent");
@@ -236,6 +244,12 @@ BOOL LLStatusBar::postBuild()
 	mPanelNearByMedia->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
 	mPanelNearByMedia->setVisible(FALSE);
 
+//	//BD - Draw Distance mouse-over slider
+	mPanelDrawDistance = new BDPanelDrawDistance();
+	addChild(mPanelDrawDistance);
+	mPanelDrawDistance->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
+	mPanelDrawDistance->setVisible(FALSE);
+
 	mScriptOut = getChildView("scriptout");
 
 	return TRUE;
@@ -257,6 +271,10 @@ void LLStatusBar::refresh()
 		mSGBandwidth->setThreshold(1, bwtotal);
 		mSGBandwidth->setThreshold(2, bwtotal);
 	}
+
+//	//BD - Framerate counter in statusbar
+	F32 fps_value = LLViewerStats::getInstance()->mFPSStat.getMeanPerSec();
+	mFPSText->setValue(fps_value);
 	
 	// update clock every 10 seconds
 	if(mClockUpdateTimer.getElapsedTimeF32() > 10.f)
@@ -311,14 +329,7 @@ void LLStatusBar::refresh()
 
 void LLStatusBar::setVisibleForMouselook(bool visible)
 {
-	mTextTime->setVisible(visible);
-	getChild<LLUICtrl>("balance_bg")->setVisible(visible);
-	mBoxBalance->setVisible(visible);
-	mBtnVolume->setVisible(visible);
-	mMediaToggle->setVisible(visible);
-	mSGBandwidth->setVisible(visible);
-	mSGPacketLoss->setVisible(visible);
-	setBackgroundVisible(visible);
+	gSavedSettings.setBOOL("HideTopbar", !visible);
 }
 
 void LLStatusBar::debitBalance(S32 debit)
@@ -482,6 +493,8 @@ void LLStatusBar::onMouseEnterVolume()
 	LLUI::addPopup(mPanelVolumePulldown);
 	mPanelNearByMedia->setVisible(FALSE);
 	mPanelVolumePulldown->setVisible(TRUE);
+//	//BD - Draw Distance mouse-over slider
+	mPanelDrawDistance->setVisible(FALSE);
 }
 
 void LLStatusBar::onMouseEnterNearbyMedia()
@@ -505,8 +518,35 @@ void LLStatusBar::onMouseEnterNearbyMedia()
 
 	mPanelVolumePulldown->setVisible(FALSE);
 	mPanelNearByMedia->setVisible(TRUE);
+//	//BD - Draw Distance mouse-over slider
+	mPanelDrawDistance->setVisible(FALSE);
 }
 
+//BD - Draw Distance mouse-over slider
+void LLStatusBar::onMouseEnterDrawDistance()
+{
+	LLView* popup_holder = gViewerWindow->getRootView()->getChildView("popup_holder");
+	LLRect draw_distance_rect = mPanelDrawDistance->getRect();
+	LLIconCtrl* draw_distance_icon =  getChild<LLIconCtrl>( "draw_distance_icon" );
+	LLRect draw_distance_icon_rect = draw_distance_icon->getRect();
+	draw_distance_rect.setLeftTopAndSize(draw_distance_icon_rect.mLeft -
+										(draw_distance_rect.getWidth() - draw_distance_icon_rect.getWidth()),
+										draw_distance_icon_rect.mBottom,
+										draw_distance_rect.getWidth(),
+										draw_distance_rect.getHeight());
+	// force onscreen
+	draw_distance_rect.translate(popup_holder->getRect().getWidth() - draw_distance_rect.mRight - 67, 0);
+	
+	// show the draw distance pull-down
+	mPanelDrawDistance->setShape(draw_distance_rect);
+	LLUI::clearPopups();
+	LLUI::addPopup(mPanelDrawDistance);
+
+	mPanelNearByMedia->setVisible(FALSE);
+	mPanelVolumePulldown->setVisible(FALSE);
+	mPanelDrawDistance->setVisible(TRUE);
+}
+//BD
 
 static void onClickVolume(void* data)
 {

@@ -80,9 +80,15 @@ public:
 	static std::string getObjectName(std::string url);
 	static std::string getObjectId(std::string url);
 	static void sendIM(std::string url);
+	static void sendTeleport(std::string url);
+	static void pay(std::string url);
+	static void share(std::string url);
+	static void showOnMap(std::string url);
+	static void callVoice(std::string url);
 	static void addFriend(std::string url);
 	static void removeFriend(std::string url);
 	static void blockObject(std::string url);
+	static void blockAvatar(std::string url);
 
 	/// specify the callbacks to enable this class's functionality
 	typedef boost::function<void (const std::string&)> url_callback_t;

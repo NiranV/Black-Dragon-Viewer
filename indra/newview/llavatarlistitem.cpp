@@ -27,8 +27,6 @@
 
 #include "llviewerprecompiledheaders.h"
 
-#include <boost/signals2.hpp>
-
 #include "llavataractions.h"
 #include "llavatarlistitem.h"
 
@@ -41,11 +39,9 @@
 #include "llavatariconctrl.h"
 #include "lloutputmonitorctrl.h"
 #include "lltooldraganddrop.h"
-
-bool LLAvatarListItem::sStaticInitialized = false;
-S32 LLAvatarListItem::sLeftPadding = 0;
-S32 LLAvatarListItem::sNameRightPadding = 0;
-S32 LLAvatarListItem::sChildrenWidths[LLAvatarListItem::ALIC_COUNT];
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a)
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 static LLWidgetNameRegistry::StaticRegistrar sRegisterAvatarListItemParams(&typeid(LLAvatarListItem::Params), "avatar_list_item");
 
@@ -65,17 +61,17 @@ LLAvatarListItem::LLAvatarListItem(bool not_from_ui_factory/* = true*/)
 	LLFriendObserver(),
 	mAvatarIcon(NULL),
 	mAvatarName(NULL),
-	mLastInteractionTime(NULL),
+	mExtraInformation(NULL),
 	mIconPermissionOnline(NULL),
 	mIconPermissionMap(NULL),
 	mIconPermissionEditMine(NULL),
 	mIconPermissionEditTheirs(NULL),
 	mSpeakingIndicator(NULL),
 	mInfoBtn(NULL),
-	mProfileBtn(NULL),
 	mOnlineStatus(E_UNKNOWN),
-	mShowInfoBtn(true),
-	mShowProfileBtn(true),
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+	mRlvCheckShowNames(false),
+// [/RLVa:KB]
 	mShowPermissions(false),
 	mHovered(false),
 	mAvatarNameCacheConnection()
@@ -105,51 +101,19 @@ BOOL  LLAvatarListItem::postBuild()
 {
 	mAvatarIcon = getChild<LLAvatarIconCtrl>("avatar_icon");
 	mAvatarName = getChild<LLTextBox>("avatar_name");
-	mLastInteractionTime = getChild<LLTextBox>("last_interaction");
+	mExtraInformation = getChild<LLTextBox>("extra_information");
 
 	mIconPermissionOnline = getChild<LLIconCtrl>("permission_online_icon");
 	mIconPermissionMap = getChild<LLIconCtrl>("permission_map_icon");
 	mIconPermissionEditMine = getChild<LLIconCtrl>("permission_edit_mine_icon");
 	mIconPermissionEditTheirs = getChild<LLIconCtrl>("permission_edit_theirs_icon");
-	mIconPermissionOnline->setVisible(false);
-	mIconPermissionMap->setVisible(false);
-	mIconPermissionEditMine->setVisible(false);
-	mIconPermissionEditTheirs->setVisible(false);
 
 	mSpeakingIndicator = getChild<LLOutputMonitorCtrl>("speaking_indicator");
-	mInfoBtn = getChild<LLButton>("info_btn");
-	mProfileBtn = getChild<LLButton>("profile_btn");
 
-	mInfoBtn->setVisible(false);
+	mInfoBtn = getChild<LLButton>("info_btn");
 	mInfoBtn->setClickedCallback(boost::bind(&LLAvatarListItem::onInfoBtnClick, this));
 
-	mProfileBtn->setVisible(false);
-	mProfileBtn->setClickedCallback(boost::bind(&LLAvatarListItem::onProfileBtnClick, this));
-
-	if (!sStaticInitialized)
-	{
-		// Remember children widths including their padding from the next sibling,
-		// so that we can hide and show them again later.
-		initChildrenWidths(this);
-
-		// Right padding between avatar name text box and nearest visible child.
-		sNameRightPadding = LLUICtrlFactory::getDefaultParams<LLAvatarListItem>().name_right_pad;
-
-		sStaticInitialized = true;
-	}
-
 	return TRUE;
-}
-
-void LLAvatarListItem::handleVisibilityChange ( BOOL new_visibility )
-{
-    //Adjust positions of icons (info button etc) when 
-    //speaking indicator visibility was changed/toggled while panel was closed (not visible)
-    if(new_visibility && mSpeakingIndicator->getIndicatorToggled())
-    {
-        updateChildren();
-        mSpeakingIndicator->setIndicatorToggled(false);
-    }
 }
 
 void LLAvatarListItem::fetchAvatarName()
@@ -164,11 +128,17 @@ void LLAvatarListItem::fetchAvatarName()
 	}
 }
 
+
+void LLAvatarListItem::draw()
+{
+	showPermissions(mShowPermissions);
+	LLPanel::draw();
+}
+
 S32 LLAvatarListItem::notifyParent(const LLSD& info)
 {
 	if (info.has("visibility_changed"))
 	{
-		updateChildren();
 		return 1;
 	}
 	return LLPanel::notifyParent(info);
@@ -177,27 +147,22 @@ S32 LLAvatarListItem::notifyParent(const LLSD& info)
 void LLAvatarListItem::onMouseEnter(S32 x, S32 y, MASK mask)
 {
 	getChildView("hovered_icon")->setVisible( true);
-	mInfoBtn->setVisible(mShowInfoBtn);
-	mProfileBtn->setVisible(mShowProfileBtn);
+//	mInfoBtn->setVisible(mShowInfoBtn);
+//	mProfileBtn->setVisible(mShowProfileBtn);
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+	mInfoBtn->setVisible( (mShowInfoBtn) && ((!mRlvCheckShowNames) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))) );
+// [/RLVa:KB]
 
 	mHovered = true;
 	LLPanel::onMouseEnter(x, y, mask);
-
-	showPermissions(mShowPermissions);
-	updateChildren();
 }
 
 void LLAvatarListItem::onMouseLeave(S32 x, S32 y, MASK mask)
 {
 	getChildView("hovered_icon")->setVisible( false);
-	mInfoBtn->setVisible(false);
-	mProfileBtn->setVisible(false);
 
 	mHovered = false;
 	LLPanel::onMouseLeave(x, y, mask);
-
-	showPermissions(false);
-	updateChildren();
 }
 
 // virtual, called by LLAvatarTracker
@@ -209,14 +174,11 @@ void LLAvatarListItem::changed(U32 mask)
 	if (mask & LLFriendObserver::POWERS)
 	{
 		showPermissions(mShowPermissions && mHovered);
-		updateChildren();
 	}
 }
 
 void LLAvatarListItem::setOnline(bool online)
 {
-	// *FIX: setName() overrides font style set by setOnline(). Not an issue ATM.
-
 	if (mOnlineStatus != E_UNKNOWN && (bool) mOnlineStatus == online)
 		return;
 
@@ -298,25 +260,23 @@ void LLAvatarListItem::setAvatarId(const LLUUID& id, const LLUUID& session_id, b
 	}
 }
 
-void LLAvatarListItem::showLastInteractionTime(bool show)
+void LLAvatarListItem::showExtraInformation(bool show)
 {
-	mLastInteractionTime->setVisible(show);
-	updateChildren();
+	if (show)
+		return;
+
+	mExtraInformation->setVisible(false);
 }
 
+void LLAvatarListItem::setExtraInformation(const std::string& information)
+{
+	mExtraInformation->setValue(information);
+}
+	 	 
+// This will overwrite any extra information otherwise being displayed
 void LLAvatarListItem::setLastInteractionTime(U32 secs_since)
 {
-	mLastInteractionTime->setValue(formatSeconds(secs_since));
-}
-
-void LLAvatarListItem::setShowInfoBtn(bool show)
-{
-	mShowInfoBtn = show;
-}
-
-void LLAvatarListItem::setShowProfileBtn(bool show)
-{
-	mShowProfileBtn = show;
+	setExtraInformation(formatSeconds(secs_since));
 }
 
 void LLAvatarListItem::showSpeakingIndicator(bool visible)
@@ -324,23 +284,6 @@ void LLAvatarListItem::showSpeakingIndicator(bool visible)
 	// Already done? Then do nothing.
 	if (mSpeakingIndicator->getVisible() == (BOOL)visible)
 		return;
-// Disabled to not contradict with SpeakingIndicatorManager functionality. EXT-3976
-// probably this method should be totally removed.
-//	mSpeakingIndicator->setVisible(visible);
-//	updateChildren();
-}
-
-void LLAvatarListItem::setAvatarIconVisible(bool visible)
-{
-	// Already done? Then do nothing.
-	if (mAvatarIcon->getVisible() == (BOOL)visible)
-	{
-		return;
-	}
-
-	// Show/hide avatar icon.
-	mAvatarIcon->setVisible(visible);
-	updateChildren();
 }
 
 void LLAvatarListItem::onInfoBtnClick()
@@ -348,21 +291,14 @@ void LLAvatarListItem::onInfoBtnClick()
 	LLFloaterReg::showInstance("inspect_avatar", LLSD().with("avatar_id", mAvatarId));
 }
 
-void LLAvatarListItem::onProfileBtnClick()
-{
-	LLAvatarActions::showProfile(mAvatarId);
-}
-
 BOOL LLAvatarListItem::handleDoubleClick(S32 x, S32 y, MASK mask)
 {
-	if(mInfoBtn->getRect().pointInRect(x, y))
+//	if(mInfoBtn->getRect().pointInRect(x, y))
+// [SL:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
+	if ( (mInfoBtn->getVisible()) && (mInfoBtn->getEnabled()) && (mInfoBtn->getRect().pointInRect(x, y)) )
+// [/SL:KB]
 	{
 		onInfoBtnClick();
-		return TRUE;
-	}
-	if(mProfileBtn->getRect().pointInRect(x, y))
-	{
-		onProfileBtnClick();
 		return TRUE;
 	}
 	return LLPanel::handleDoubleClick(x, y, mask);
@@ -406,8 +342,15 @@ void LLAvatarListItem::onAvatarNameCache(const LLAvatarName& av_name)
 {
 	mAvatarNameCacheConnection.disconnect();
 
-	setAvatarName(av_name.getDisplayName());
-	setAvatarToolTip(av_name.getUserName());
+//	setAvatarName(av_name.getDisplayName());
+//	setAvatarToolTip(av_name.getUserName());
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
+	bool fRlvFilter = (mRlvCheckShowNames) && (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES));
+	setAvatarName( (!fRlvFilter) ? av_name.getDisplayName() : RlvStrings::getAnonym(av_name) );
+	setAvatarToolTip( (!fRlvFilter) ? av_name.getUserName() : RlvStrings::getAnonym(av_name) );
+	// TODO-RLVa: bit of a hack putting this here. Maybe find a better way?
+	mAvatarIcon->setDrawTooltip(!fRlvFilter);
+// [/RLVa:KB]
 
 	//requesting the list to resort
 	notifyParent(LLSD().with("sort", LLSD()));
@@ -494,191 +437,26 @@ LLAvatarListItem::icon_color_map_t& LLAvatarListItem::getItemIconColorMap()
 	return item_icon_color_map;
 }
 
-// static
-void LLAvatarListItem::initChildrenWidths(LLAvatarListItem* avatar_item)
-{
-	//speaking indicator width + padding
-	S32 speaking_indicator_width = avatar_item->getRect().getWidth() - avatar_item->mSpeakingIndicator->getRect().mLeft;
-
-	//profile btn width + padding
-	S32 profile_btn_width = avatar_item->mSpeakingIndicator->getRect().mLeft - avatar_item->mProfileBtn->getRect().mLeft;
-
-	//info btn width + padding
-	S32 info_btn_width = avatar_item->mProfileBtn->getRect().mLeft - avatar_item->mInfoBtn->getRect().mLeft;
-
-	// online permission icon width + padding
-	S32 permission_online_width = avatar_item->mInfoBtn->getRect().mLeft - avatar_item->mIconPermissionOnline->getRect().mLeft;
-
-	// map permission icon width + padding
-	S32 permission_map_width = avatar_item->mIconPermissionOnline->getRect().mLeft - avatar_item->mIconPermissionMap->getRect().mLeft;
-
-	// edit my objects permission icon width + padding
-	S32 permission_edit_mine_width = avatar_item->mIconPermissionMap->getRect().mLeft - avatar_item->mIconPermissionEditMine->getRect().mLeft;
-
-	// edit their objects permission icon width + padding
-	S32 permission_edit_theirs_width = avatar_item->mIconPermissionEditMine->getRect().mLeft - avatar_item->mIconPermissionEditTheirs->getRect().mLeft;
-
-	// last interaction time textbox width + padding
-	S32 last_interaction_time_width = avatar_item->mIconPermissionEditTheirs->getRect().mLeft - avatar_item->mLastInteractionTime->getRect().mLeft;
-
-	// avatar icon width + padding
-	S32 icon_width = avatar_item->mAvatarName->getRect().mLeft - avatar_item->mAvatarIcon->getRect().mLeft;
-
-	sLeftPadding = avatar_item->mAvatarIcon->getRect().mLeft;
-
-	S32 index = ALIC_COUNT;
-	sChildrenWidths[--index] = icon_width;
-	sChildrenWidths[--index] = 0; // for avatar name we don't need its width, it will be calculated as "left available space"
-	sChildrenWidths[--index] = last_interaction_time_width;
-	sChildrenWidths[--index] = permission_edit_theirs_width;
-	sChildrenWidths[--index] = permission_edit_mine_width;
-	sChildrenWidths[--index] = permission_map_width;
-	sChildrenWidths[--index] = permission_online_width;
-	sChildrenWidths[--index] = info_btn_width;
-	sChildrenWidths[--index] = profile_btn_width;
-	sChildrenWidths[--index] = speaking_indicator_width;
-	llassert(index == 0);
-}
-
-void LLAvatarListItem::updateChildren()
-{
-	LL_DEBUGS("AvatarItemReshape") << LL_ENDL;
-	LL_DEBUGS("AvatarItemReshape") << "Updating for: " << getAvatarName() << LL_ENDL;
-
-	S32 name_new_width = getRect().getWidth();
-	S32 ctrl_new_left = name_new_width;
-	S32 name_new_left = sLeftPadding;
-
-	// iterate through all children and set them into correct position depend on each child visibility
-	// assume that child indexes are in back order: the first in Enum is the last (right) in the item
-	// iterate & set child views starting from right to left
-	for (S32 i = 0; i < ALIC_COUNT; ++i)
-	{
-		// skip "name" textbox, it will be processed out of loop later
-		if (ALIC_NAME == i) continue;
-
-		LLView* control = getItemChildView((EAvatarListItemChildIndex)i);
-
-		LL_DEBUGS("AvatarItemReshape") << "Processing control: " << control->getName() << LL_ENDL;
-		// skip invisible views
-		if (!control->getVisible()) continue;
-
-		S32 ctrl_width = sChildrenWidths[i]; // including space between current & left controls
-
-		// decrease available for 
-		name_new_width -= ctrl_width;
-		LL_DEBUGS("AvatarItemReshape") << "width: " << ctrl_width << ", name_new_width: " << name_new_width << LL_ENDL;
-
-		LLRect control_rect = control->getRect();
-		LL_DEBUGS("AvatarItemReshape") << "rect before: " << control_rect << LL_ENDL;
-
-		if (ALIC_ICON == i)
-		{
-			// assume that this is the last iteration,
-			// so it is not necessary to save "ctrl_new_left" value calculated on previous iterations
-			ctrl_new_left = sLeftPadding;
-			name_new_left = ctrl_new_left + ctrl_width;
-		}
-		else
-		{
-			ctrl_new_left -= ctrl_width;
-		}
-
-		LL_DEBUGS("AvatarItemReshape") << "ctrl_new_left: " << ctrl_new_left << LL_ENDL;
-
-		control_rect.setLeftTopAndSize(
-			ctrl_new_left,
-			control_rect.mTop,
-			control_rect.getWidth(),
-			control_rect.getHeight());
-
-		LL_DEBUGS("AvatarItemReshape") << "rect after: " << control_rect << LL_ENDL;
-		control->setShape(control_rect);
-	}
-
-	// set size and position of the "name" child
-	LLView* name_view = getItemChildView(ALIC_NAME);
-	LLRect name_view_rect = name_view->getRect();
-	LL_DEBUGS("AvatarItemReshape") << "name rect before: " << name_view_rect << LL_ENDL;
-
-	// apply paddings
-	name_new_width -= sLeftPadding;
-	name_new_width -= sNameRightPadding;
-
-	name_view_rect.setLeftTopAndSize(
-		name_new_left,
-		name_view_rect.mTop,
-		name_new_width,
-		name_view_rect.getHeight());
-
-	name_view->setShape(name_view_rect);
-
-	LL_DEBUGS("AvatarItemReshape") << "name rect after: " << name_view_rect << LL_ENDL;
-}
-
 bool LLAvatarListItem::showPermissions(bool visible)
 {
 	const LLRelationship* relation = LLAvatarTracker::instance().getBuddyInfo(getAvatarId());
+	LLColor4 permission = LLUIColorTable::instance().getColor("White");
 	if(relation && visible)
 	{
-		mIconPermissionOnline->setVisible(relation->isRightGrantedTo(LLRelationship::GRANT_ONLINE_STATUS));
-		mIconPermissionMap->setVisible(relation->isRightGrantedTo(LLRelationship::GRANT_MAP_LOCATION));
-		mIconPermissionEditMine->setVisible(relation->isRightGrantedTo(LLRelationship::GRANT_MODIFY_OBJECTS));
-		mIconPermissionEditTheirs->setVisible(relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS));
-	}
-	else
-	{
-		mIconPermissionOnline->setVisible(false);
-		mIconPermissionMap->setVisible(false);
-		mIconPermissionEditMine->setVisible(false);
-		mIconPermissionEditTheirs->setVisible(false);
+		mIconPermissionOnline->setColor(LLUIColorTable::instance().getColor
+			(relation->isRightGrantedTo(LLRelationship::GRANT_ONLINE_STATUS) ? "White" : "White_25"));
+		mIconPermissionMap->setColor(LLUIColorTable::instance().getColor
+			(relation->isRightGrantedTo(LLRelationship::GRANT_MAP_LOCATION) ? "White" : "White_25"));
+		mIconPermissionEditMine->setColor(LLUIColorTable::instance().getColor
+			(relation->isRightGrantedTo(LLRelationship::GRANT_MODIFY_OBJECTS) ? "White" : "White_25"));
+		mIconPermissionEditTheirs->setColor(LLUIColorTable::instance().getColor
+			(relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "White" : "White_25"));
+		mIconPermissionOnline->setVisible(true);
+		mIconPermissionMap->setVisible(true);
+		mIconPermissionEditMine->setVisible(true);
+		mIconPermissionEditTheirs->setVisible(true);
 	}
 
 	return NULL != relation;
 }
-
-LLView* LLAvatarListItem::getItemChildView(EAvatarListItemChildIndex child_view_index)
-{
-	LLView* child_view = mAvatarName;
-
-	switch (child_view_index)
-	{
-	case ALIC_ICON:
-		child_view = mAvatarIcon;
-		break;
-	case ALIC_NAME:
-		child_view = mAvatarName;
-		break;
-	case ALIC_INTERACTION_TIME:
-		child_view = mLastInteractionTime;
-		break;
-	case ALIC_SPEAKER_INDICATOR:
-		child_view = mSpeakingIndicator;
-		break;
-	case ALIC_PERMISSION_ONLINE:
-		child_view = mIconPermissionOnline;
-		break;
-	case ALIC_PERMISSION_MAP:
-		child_view = mIconPermissionMap;
-		break;
-	case ALIC_PERMISSION_EDIT_MINE:
-		child_view = mIconPermissionEditMine;
-		break;
-	case ALIC_PERMISSION_EDIT_THEIRS:
-		child_view = mIconPermissionEditTheirs;
-		break;
-	case ALIC_INFO_BUTTON:
-		child_view = mInfoBtn;
-		break;
-	case ALIC_PROFILE_BUTTON:
-		child_view = mProfileBtn;
-		break;
-	default:
-		LL_WARNS("AvatarItemReshape") << "Unexpected child view index is passed: " << child_view_index << LL_ENDL;
-		// leave child_view untouched
-	}
-	
-	return child_view;
-}
-
 // EOF

@@ -49,6 +49,12 @@
 #include "llvoavatarself.h"
 #include "llwindow.h"
 #include "llworld.h"
+// [RLVa:KB] - Checked: 2010-05-10 (RLVa-1.2.0g)
+#include "rlvactions.h"
+#include "rlvhandler.h"
+// [/RLVa:KB]
+//BD - Always-on Mouse-steering
+#include "lltoolfocus.h"
 
 using namespace LLAvatarAppearanceDefines;
 
@@ -119,7 +125,7 @@ LLAgentCamera::LLAgentCamera() :
 	mCameraMode( CAMERA_MODE_THIRD_PERSON ),
 	mLastCameraMode( CAMERA_MODE_THIRD_PERSON ),
 
-	mCameraPreset(CAMERA_PRESET_REAR_VIEW),
+	mCameraPreset(CAMERA_PRESET_GROUP_VIEW),
 
 	mCameraAnimating( FALSE ),
 	mAnimationCameraStartGlobal(),
@@ -173,7 +179,13 @@ LLAgentCamera::LLAgentCamera() :
 	mPanLeftKey(0.f),
 	mPanRightKey(0.f),
 	mPanInKey(0.f),
-	mPanOutKey(0.f)
+	mPanOutKey(0.f),
+
+	mSavedCameraPos(),
+	mSavedCameraFocus(),
+	mSavedCameraFocusObject(NULL),
+	mSavedCamera(false)
+
 {
 	mFollowCam.setMaxCameraDistantFromSubject( MAX_CAMERA_DISTANCE_FROM_AGENT );
 
@@ -193,8 +205,8 @@ void LLAgentCamera::init()
 	mDrawDistance = gSavedSettings.getF32("RenderFarClip");
 
 	LLViewerCamera::getInstance()->setView(DEFAULT_FIELD_OF_VIEW);
-	// Leave at 0.1 meters until we have real near clip management
-	LLViewerCamera::getInstance()->setNear(0.1f);
+	// Leave at 0.01 meters until we have real near clip management
+	LLViewerCamera::getInstance()->setNear(0.01f);
 	LLViewerCamera::getInstance()->setFar(mDrawDistance);			// if you want to change camera settings, do so in camera.h
 	LLViewerCamera::getInstance()->setAspect( gViewerWindow->getWorldViewAspectRatio() );		// default, overridden in LLViewerWindow::reshape
 	LLViewerCamera::getInstance()->setViewHeightInPixels(768);			// default, overridden in LLViewerWindow::reshape
@@ -206,10 +218,16 @@ void LLAgentCamera::init()
 	mCameraOffsetInitial[CAMERA_PRESET_REAR_VIEW] = gSavedSettings.getControl("CameraOffsetRearView");
 	mCameraOffsetInitial[CAMERA_PRESET_FRONT_VIEW] = gSavedSettings.getControl("CameraOffsetFrontView");
 	mCameraOffsetInitial[CAMERA_PRESET_GROUP_VIEW] = gSavedSettings.getControl("CameraOffsetGroupView");
+//	//BD - Left/Right shoulder camera preset
+	mCameraOffsetInitial[CAMERA_PRESET_LEFT_VIEW] = gSavedSettings.getControl("CameraOffsetLeftShoulderView");
+	mCameraOffsetInitial[CAMERA_PRESET_RIGHT_VIEW] = gSavedSettings.getControl("CameraOffsetRightShoulderView");
 
 	mFocusOffsetInitial[CAMERA_PRESET_REAR_VIEW] = gSavedSettings.getControl("FocusOffsetRearView");
 	mFocusOffsetInitial[CAMERA_PRESET_FRONT_VIEW] = gSavedSettings.getControl("FocusOffsetFrontView");
 	mFocusOffsetInitial[CAMERA_PRESET_GROUP_VIEW] = gSavedSettings.getControl("FocusOffsetGroupView");
+//	//BD - Left/Right shoulder camera preset
+	mFocusOffsetInitial[CAMERA_PRESET_LEFT_VIEW] = gSavedSettings.getControl("FocusOffsetLeftShoulderView");
+	mFocusOffsetInitial[CAMERA_PRESET_RIGHT_VIEW] = gSavedSettings.getControl("FocusOffsetRightShoulderView");
 
 	mCameraCollidePlane.clearVec();
 	mCurrentCameraDistance = getCameraOffsetInitial().magVec() * gSavedSettings.getF32("CameraOffsetScale");
@@ -1142,14 +1160,6 @@ void LLAgentCamera::updateCamera()
 
 	validateFocusObject();
 
-	if (isAgentAvatarValid() && 
-		gAgentAvatarp->isSitting() &&
-		camera_mode == CAMERA_MODE_MOUSELOOK)
-	{
-		//changed camera_skyward to the new global "mCameraUpVector"
-		mCameraUpVector = mCameraUpVector * gAgentAvatarp->getRenderRotation();
-	}
-
 	if (cameraThirdPerson() && mFocusOnAvatar && LLFollowCamMgr::getActiveFollowCamParams())
 	{
 		changeCameraToFollow();
@@ -1159,6 +1169,28 @@ void LLAgentCamera::updateCamera()
 	if ( camera_mode == CAMERA_MODE_FOLLOW && mFocusOnAvatar )
 	{
 		mCameraUpVector = mFollowCam.getUpVector();
+	}
+
+	if(gSavedSettings.getBOOL("EnableThirdPersonSteering"))
+	{
+		if(gViewerWindow->getRightMouseDown())
+		{
+			LLToolCamera::getInstance()->setMouseCapture(FALSE);
+			gViewerWindow->showCursor();
+		}
+		else if(gViewerWindow->getLeftMouseDown())
+		{
+			LLToolCamera::getInstance()->handleMouseDown(gViewerWindow->getCurrentMouseX(), gViewerWindow->getCurrentMouseY() , 0x0000);
+		}
+		else
+		{
+			if(!LLToolCamera::getInstance()->hasMouseCapture())
+			{
+				LLToolCamera::getInstance()->setMouseCapture(TRUE);
+				gViewerWindow->hideCursor();
+			}
+			gViewerWindow->moveCursorToCenter();
+		}
 	}
 
 	if (mSitCameraEnabled)
@@ -1389,7 +1421,6 @@ void LLAgentCamera::updateCamera()
 	LLVector3 focus_agent = gAgent.getPosAgentFromGlobal(mFocusGlobal);
 	
 	mCameraPositionAgent = gAgent.getPosAgentFromGlobal(camera_pos_global);
-
 	// Move the camera
 
 	LLViewerCamera::getInstance()->updateCameraLocation(mCameraPositionAgent, mCameraUpVector, focus_agent);
@@ -1415,35 +1446,44 @@ void LLAgentCamera::updateCamera()
 	}
 	gAgent.setLastPositionGlobal(global_pos);
 	
-	if (LLVOAvatar::sVisibleInFirstPerson && isAgentAvatarValid() && !gAgentAvatarp->isSitting() && cameraMouselook())
+	if (LLVOAvatar::sVisibleInFirstPerson && isAgentAvatarValid() && cameraMouselook())
 	{
 		LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() + 
-			LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() + 
-			LLVector3(0.1f, 0.f, 0.f) * gAgentAvatarp->mPelvisp->getWorldRotation();
-		LLVector3 diff = mCameraPositionAgent - head_pos;
-		diff = diff * ~gAgentAvatarp->mRoot->getWorldRotation();
-
+ 			LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() + 
+ 			LLVector3(0.1f, 0.f, 0.f) * gAgentAvatarp->mPelvisp->getWorldRotation();
+		
 		LLJoint* torso_joint = gAgentAvatarp->mTorsop;
 		LLJoint* chest_joint = gAgentAvatarp->mChestp;
 		LLVector3 torso_scale = torso_joint->getScale();
 		LLVector3 chest_scale = chest_joint->getScale();
 
-		// shorten avatar skeleton to avoid foot interpenetration
-		if (!gAgentAvatarp->mInAir)
+		if(gSavedSettings.getBOOL("UseRealisticMouselook"))
 		{
-			LLVector3 chest_offset = LLVector3(0.f, 0.f, chest_joint->getPosition().mV[VZ]) * torso_joint->getWorldRotation();
-			F32 z_compensate = llclamp(-diff.mV[VZ], -0.2f, 1.f);
-			F32 scale_factor = llclamp(1.f - ((z_compensate * 0.5f) / chest_offset.mV[VZ]), 0.5f, 1.2f);
-			torso_joint->setScale(LLVector3(1.f, 1.f, scale_factor));
-
-			LLJoint* neck_joint = gAgentAvatarp->mNeckp;
-			LLVector3 neck_offset = LLVector3(0.f, 0.f, neck_joint->getPosition().mV[VZ]) * chest_joint->getWorldRotation();
-			scale_factor = llclamp(1.f - ((z_compensate * 0.5f) / neck_offset.mV[VZ]), 0.5f, 1.2f);
-			chest_joint->setScale(LLVector3(1.f, 1.f, scale_factor));
-			diff.mV[VZ] = 0.f;
+			//BD - Use a realistic camera movement in Mouselook, this will make the camera bob on movement
+			//	   and allow the body to freely move around instead of beeing locked into place below you.
+			LLVector3 at_axis(1.0, 0.0, 0.0);
+			LLQuaternion agent_rot = gAgent.getFrameAgent().getQuaternion();
+			if (isAgentAvatarValid() && gAgentAvatarp->getParent())
+			{
+				LLViewerObject* root_object = (LLViewerObject*)gAgentAvatarp->getRoot();
+ 				if (!root_object->flagCameraDecoupled())
+ 				{
+ 					agent_rot *= ((LLViewerObject*)(gAgentAvatarp->getParent()))->getRenderRotation();
+ 				}
+			}
+			at_axis = at_axis * agent_rot;
+			LLVector3 poi = gAgentAvatarp->mHeadp->getWorldPosition() + at_axis;
+			LLViewerCamera::getInstance()->updateCameraLocation(head_pos, mCameraUpVector, poi);
 		}
-
-		gAgentAvatarp->mPelvisp->setPosition(gAgentAvatarp->mPelvisp->getPosition() + diff);
+		else
+		{
+			//BD - Use the old known Mouselook camera movement style where your body is locked in
+			//     position below you and is not allowed to freely move around, this also eliminates
+			//     all bobbing and additional camera shake effects caused by animations.
+			LLVector3 diff = mCameraPositionAgent - head_pos;
+			diff = diff * ~gAgentAvatarp->mRoot->getWorldRotation();
+			gAgentAvatarp->mPelvisp->setPosition(gAgentAvatarp->mPelvisp->getPosition() + diff);
+		}
 
 		gAgentAvatarp->mRoot->updateWorldMatrixChildren();
 
@@ -2248,6 +2288,20 @@ void LLAgentCamera::changeCameraToCustomizeAvatar()
 		return;
 	}
 
+// [RLVa:KB] - Checked: 2010-03-07 (RLVa-1.2.0c) | Modified: RLVa-1.0.0g
+	if ( (rlv_handler_t::isEnabled()) && (!RlvActions::canStand()) )
+	{
+		return;
+	}
+// [/RLVa:KB]
+
+// [RLVa:KB] - Checked: 2010-03-07 (RLVa-1.2.0c) | Modified: RLVa-1.0.0g
+	if ( (rlv_handler_t::isEnabled()) && (!RlvActions::canStand()) )
+	{
+		return;
+	}
+// [/RLVa:KB]
+
 	gAgent.standUp(); // force stand up
 	gViewerWindow->getWindow()->resetBusyCount();
 
@@ -2787,6 +2841,32 @@ S32 LLAgentCamera::directionToKey(S32 direction)
 	if (direction > 0) return 1;
 	if (direction < 0) return -1;
 	return 0;
+}
+
+//BD - Load/save camera position.
+void LLAgentCamera::saveCamera()
+{
+	mSavedCameraPos = getCameraPositionGlobal();
+	mSavedCameraFocus = getFocusTargetGlobal();
+	mSavedCameraFocusObject = getFocusObject();
+
+	mSavedCamera = true;
+}
+
+void LLAgentCamera::loadSavedCamera()
+{
+	if (mSavedCamera)
+	{
+		LLUUID focus_id;
+
+		unlockView();
+		if (mSavedCameraFocusObject)
+		{
+			focus_id = mSavedCameraFocusObject->getID();
+		}
+
+		setCameraPosAndFocusGlobal(mSavedCameraPos, mSavedCameraFocus, focus_id);
+	}
 }
 
 

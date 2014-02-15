@@ -384,12 +384,12 @@ bool LLCrashLogger::init()
 	LLCurl::initClass(false);
 
 	// We assume that all the logs we're looking for reside on the current drive
-	gDirUtilp->initAppDirs("SecondLife");
+	gDirUtilp->initAppDirs("BlackDragon");
 
 	LLError::initForApplication(gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
 
 	// Default to the product name "Second Life" (this is overridden by the -name argument)
-	mProductName = "Second Life";
+	mProductName = "Black Dragon";
 
 	// Rename current log file to ".old"
 	std::string old_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "crashreport.log.old");
@@ -423,7 +423,7 @@ bool LLCrashLogger::init()
 	if( gDirUtilp )
 	{
 		std::string marker_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-																 "SecondLife.exec_marker");
+																 "BlackDragon.exec_marker");
 		LLAPRFile::remove( marker_file );
 	}
 	

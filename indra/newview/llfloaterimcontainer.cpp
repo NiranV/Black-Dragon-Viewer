@@ -212,7 +212,7 @@ BOOL LLFloaterIMContainer::postBuild()
 	// a scroller for folder view
 	LLRect scroller_view_rect = mConversationsListPanel->getRect();
 	scroller_view_rect.translate(-scroller_view_rect.mLeft, -scroller_view_rect.mBottom);
-	scroller_view_rect.mBottom += getChild<LLLayoutStack>("conversations_pane_buttons_stack")->getRect().getHeight();
+	//scroller_view_rect.mBottom += getChild<LLLayoutStack>("conversations_pane_buttons_stack")->getRect().getHeight();
 	LLScrollContainer::Params scroller_params(LLUICtrlFactory::getDefaultParams<LLFolderViewScrollContainer>());
 	scroller_params.rect(scroller_view_rect);
 
@@ -749,6 +749,14 @@ void LLFloaterIMContainer::collapseMessagesPane(bool collapse)
 
 		// Save the order in which the panels are closed to reverse user's last action.
 		gSavedPerAccountSettings.setBOOL("ConversationsExpandMessagePaneFirst", mConversationsPane->isCollapsed());
+		
+		// Make sure our floater moves to the right instead of left since we put the list there.
+		translate(msg_pane_width,0);
+	}
+	else
+	{
+		// Revert what we did when we collapsed the floater.
+		translate(-gSavedPerAccountSettings.getS32("ConversationsMessagePaneWidth"),0);
 	}
 
 	mConversationsPane->setIgnoreReshape(collapse);

@@ -461,6 +461,9 @@ BOOL LLFloaterUIPreview::postBuild()
 	getChild<LLUICtrl>("show_rectangles")->setCommitCallback(
 		boost::bind(&LLFloaterUIPreview::onClickShowRectangles, this, _2));
 
+//	//BD - Refresh List button
+	getChild<LLButton>("Refresh_btn")->setClickedCallback(boost::bind(&LLFloaterUIPreview::refreshList, this));
+
 	// get pointers to text fields
 	mEditorPathTextBox = editor_panel_tmp->getChild<LLLineEditor>("executable_path_field");
 	mEditorArgsTextBox = editor_panel_tmp->getChild<LLLineEditor>("executable_args_field");

@@ -76,6 +76,10 @@
 #include "llstartup.h"
 #include "llupdaterservice.h"
 
+//BD - Includes we need for special features
+#include "llenvmanager.h"
+#include "lltoolfocus.h"
+
 // Third party library includes
 #include <boost/algorithm/string.hpp>
 
@@ -604,6 +608,129 @@ void toggle_updater_service_active(const LLSD& new_value)
     }
 }
 
+//BD
+/////////////////////////////////////////////////////////////////////////////
+
+//BD - Make attached lights and particles available everywhere without extra coding
+static bool handleRenderAttachedLightsChanged(const LLSD& newvalue)
+{
+	LLPipeline::sRenderAttachedLights = gSavedSettings.getBOOL("RenderAttachedLights");
+	return true;
+}
+
+static bool handleRenderAttachedParticlesChanged(const LLSD& newvalue)
+{
+	LLPipeline::sRenderAttachedParticles = gSavedSettings.getBOOL("RenderAttachedParticles");
+	return true;
+}
+
+//BD - Glow and Field of View changes
+static bool handleCameraAngleChanged(const LLSD&)
+{
+	gSavedSettings.setF32("CameraAngle" , gSavedSettings.getF32("PrevFoV"));
+	return true;
+}
+
+static bool handleGlowChanged(const LLSD&)
+{
+	gSavedSettings.setF32("RenderGlowStrength" , gSavedSettings.getF32("PrevGlow"));
+	return true;
+}
+
+//BD - Always-on Mouse-steering
+static bool handleMouseSteeringChanged(const LLSD&)
+{
+	//BD - Whenever steering is off and we trigger this we will
+	//     show the cursor here because it would be too hacky in camera
+	//     cpp itself
+	if(!gSavedSettings.getBOOL("EnableThirdPersonSteering"))
+	{
+		LLToolCamera::getInstance()->setMouseCapture(FALSE);
+		gViewerWindow->showCursor();
+	}
+
+	return true;
+}
+
+/*
+//BD - Machinima Sidebar
+static bool handleSidebarAsOverlayChanged(const LLSD&)
+{
+	if(gSavedSettings.getBOOL("MachinimaSidebarOverlay"))
+	{
+		gSavedSettings.setBOOL("MachinimaSidebarOverlay", false);
+		gSavedSettings.setBOOL("MachinimaSidebarPush", true);
+	}
+	else if(gSavedSettings.getBOOL("MachinimaSidebarPush"))
+	{
+		gSavedSettings.setBOOL("MachinimaSidebarPush", false);
+		gSavedSettings.setBOOL("MachinimaSidebarOverlay", true);
+	}
+	//BD - Slide out quick sound controls , otherwise it may overlap with the sidebar
+	gSavedSettings.setBOOL("QuickSoundMediaPrefs", false);
+	return true;
+}
+
+//BD - New designed preferences panel
+static bool handlePreferencesPanelChanged(const LLSD&)
+{
+	//BD - Since we got a whole new DoF preset which will cause
+	//the FPS to drop to zero we need to cirumvent that, setting
+	//RenderResolutionDivisor to 6 should be good enough to get
+	//a halfway good blur effect in background.
+
+	//BD - Only blur background if user wants to.
+	if(gSavedSettings.getBOOL("BlurBackgroundPrefs"))
+	{
+		if(gSavedSettings.getBOOL("PreferencesPanelOpen"))
+			gSavedSettings.setU32("RenderResolutionDivisor" , 6);
+		else
+			gSavedSettings.setU32("RenderResolutionDivisor" , 1);
+	}
+	else
+		gSavedSettings.setU32("RenderResolutionDivisor" , 1);
+
+	if(gSavedSettings.getBOOL("PreferencesPanelOpen"))
+		gPrefsPanel->onOpen();
+
+	return true;
+}*/
+
+//BD - Give UseEnvironmentFromRegion a purpose and make it able to
+//     switch between Region/Fixed Windlight from everywhere via UI
+static bool handleUseRegioLight(const LLSD& newvalue)
+{
+	LLEnvManagerNew& envmgr = LLEnvManagerNew::instance();
+	gSavedSettings.setBOOL("UseEnvironmentFromRegion" , newvalue.asBoolean());
+	bool fixed = gSavedSettings.getBOOL("UseEnvironmentFromRegion");
+	if (fixed)
+		envmgr.setUseRegionSettings(true);
+	else
+		envmgr.setUseRegionSettings(false);
+	return true;
+}
+
+//BD
+/*static bool handleAutohideTopbar(const LLSD& newvalue)
+{
+	gTopBar->onAutohideChange();
+	return true;
+}*/
+
+static bool handleTerrainScaleChanged(const LLSD& inputvalue)
+{
+	LLSD newvalue = 1.f / inputvalue.asReal();
+	LLDrawPoolTerrain::sDetailScale = newvalue.asReal();
+	return true;
+}
+
+static bool handleWaterResolutionChanged(const LLSD& newvalue)
+{
+	gPipeline.handleReflectionChanges();
+	return true;
+}
+//BD
+
 ////////////////////////////////////////////////////////////////////////////
 
 void settings_setup_listeners()
@@ -627,8 +754,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderSpecularResY")->getSignal()->connect(boost::bind(&handleLUTBufferChanged, _2));
 	gSavedSettings.getControl("RenderSpecularExponent")->getSignal()->connect(boost::bind(&handleLUTBufferChanged, _2));
 	gSavedSettings.getControl("RenderAnisotropic")->getSignal()->connect(boost::bind(&handleAnisotropicChanged, _2));
-	gSavedSettings.getControl("RenderShadowResolutionScale")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
-	gSavedSettings.getControl("RenderGlow")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
+	gSavedSettings.getControl("RenderShadowResolution")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderGlow")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderGlowResolutionPow")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderAvatarCloth")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
@@ -760,6 +886,26 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("SpellCheck")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));
 	gSavedSettings.getControl("SpellCheckDictionary")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));
 	gSavedSettings.getControl("LoginLocation")->getSignal()->connect(boost::bind(&handleLoginLocationChanged));
+
+//	//BD - Special Debugs and handles
+	gSavedSettings.getControl("PrevGlow")->getSignal()->connect(boost::bind(&handleGlowChanged, _2));
+	gSavedSettings.getControl("PrevFoV")->getSignal()->connect(boost::bind(&handleCameraAngleChanged, _2));
+	//gSavedSettings.getControl("AutohideTopbar")->getSignal()->connect(boost::bind(&handleAutohideTopbar, _2));
+	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
+	//gSavedSettings.getControl("UseMachinimaSidebarAsOverlay")->getSignal()->connect(boost::bind(&handleSidebarAsOverlayChanged, _2));
+	//gSavedSettings.getControl("PreferencesPanelOpen")->getSignal()->connect(boost::bind(&handlePreferencesPanelChanged, _2));
+	//gSavedSettings.getControl("ShooterKeyLayout")->getSignal()->connect(boost::bind(&handleKeyboardLayoutChanged, _2));
+	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
+	gSavedSettings.getControl("RenderTerrainScale")->getSignal()->connect(boost::bind(&handleTerrainScaleChanged, _2));
+	gSavedSettings.getControl("RenderWaterRefResolution")->getSignal()->connect(boost::bind(&handleWaterResolutionChanged, _2));
+	gSavedSettings.getControl("RenderAttachedLights")->getSignal()->connect(boost::bind(&handleRenderAttachedLightsChanged, _2));
+	gSavedSettings.getControl("RenderAttachedParticles")->getSignal()->connect(boost::bind(&handleRenderAttachedParticlesChanged, _2));
+	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderPostPosterization")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderPostGreyscale")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderPostSepia")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderNormalMapScale")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
+//	//BD
 }
 
 #if TEST_CACHED_CONTROL

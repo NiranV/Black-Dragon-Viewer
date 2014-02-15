@@ -37,10 +37,21 @@ void LLUrlRegistryNullCallback(const std::string &url, const std::string &label,
 
 LLUrlRegistry::LLUrlRegistry()
 {
-	mUrlEntry.reserve(20);
+//	mUrlEntry.reserve(26);
+// [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
+	mUrlEntry.reserve(27);
+// [/RLVa:KB]
 
 	// Urls are matched in the order that they were registered
 	registerUrl(new LLUrlEntryNoLink());
+//	//BD
+	registerUrl(new LLUrlEntryRed());
+	registerUrl(new LLUrlEntryGreen());
+	registerUrl(new LLUrlEntryBlue());
+	registerUrl(new LLUrlEntryUnderline());
+	registerUrl(new LLUrlEntryBold());
+	registerUrl(new LLUrlEntryItalic());
+//	//BD
 	registerUrl(new LLUrlEntryIcon());
 	registerUrl(new LLUrlEntrySLURL());
 	registerUrl(new LLUrlEntryHTTP());
@@ -48,6 +59,9 @@ LLUrlRegistry::LLUrlRegistry()
 	registerUrl(new LLUrlEntryAgentCompleteName());
 	registerUrl(new LLUrlEntryAgentDisplayName());
 	registerUrl(new LLUrlEntryAgentUserName());
+// [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
+	registerUrl(new LLUrlEntryAgentRLVAnonymizedName());
+// [/RLVa:KB]
 	// LLUrlEntryAgent*Name must appear before LLUrlEntryAgent since 
 	// LLUrlEntryAgent is a less specific (catchall for agent urls)
 	registerUrl(new LLUrlEntryAgent());
@@ -142,7 +156,14 @@ static bool stringHasUrl(const std::string &text)
 			text.find(".edu") != std::string::npos ||
 			text.find(".org") != std::string::npos ||
 			text.find("<nolink>") != std::string::npos ||
-			text.find("<icon") != std::string::npos);
+			text.find("<icon") != std::string::npos ||
+//			//BD
+			text.find("<red>") != std::string::npos ||
+			text.find("<green>") != std::string::npos ||
+			text.find("<blue>") != std::string::npos ||
+			text.find("<u>") != std::string::npos ||
+			text.find("<b>") != std::string::npos ||
+			text.find("<i>") != std::string::npos);
 }
 
 bool LLUrlRegistry::findUrl(const std::string &text, LLUrlMatch &match, const LLUrlLabelCallback &cb)

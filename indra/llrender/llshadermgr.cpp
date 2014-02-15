@@ -1099,7 +1099,7 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("ssao_max_radius");
 	mReservedUniforms.push_back("ssao_factor");
 	mReservedUniforms.push_back("ssao_factor_inv");
-	mReservedUniforms.push_back("ssao_effect_mat");
+	mReservedUniforms.push_back("ssao_effect");
 	mReservedUniforms.push_back("screen_res");
 	mReservedUniforms.push_back("near_clip");
 	mReservedUniforms.push_back("shadow_offset");
@@ -1150,6 +1150,22 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("projectionMap");
 	mReservedUniforms.push_back("norm_mat");
 
+	// <exodus>
+	mReservedUniforms.push_back("exo_gamma");
+	mReservedUniforms.push_back("exo_exposure");
+	mReservedUniforms.push_back("exo_offset");
+	mReservedUniforms.push_back("exo_vignette");
+	mReservedUniforms.push_back("textureLUT");
+	mReservedUniforms.push_back("exo_screen");
+	mReservedUniforms.push_back("invGammaFunc");
+
+	mReservedUniforms.push_back("exo_advToneUA");
+	mReservedUniforms.push_back("exo_advToneUB");
+	mReservedUniforms.push_back("exo_advToneUC");
+
+	//llassert(mReservedUniforms.size() == LLShaderMgr::EXO_RENDER_SCREEN+1);
+	// </exodus>
+	
 	mReservedUniforms.push_back("global_gamma");
 	mReservedUniforms.push_back("texture_gamma");
 	
@@ -1158,6 +1174,11 @@ void LLShaderMgr::initAttribsAndUniforms()
 
 	mReservedUniforms.push_back("matrixPalette");
 	mReservedUniforms.push_back("translationPalette");
+	
+//	//BD - Post Effects
+	mReservedUniforms.push_back("num_colors");
+	mReservedUniforms.push_back("greyscale_str");
+	mReservedUniforms.push_back("sepia_str");
 	
 	mReservedUniforms.push_back("screenTex");
 	mReservedUniforms.push_back("screenDepth");

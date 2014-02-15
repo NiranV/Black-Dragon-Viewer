@@ -1,40 +1,74 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Sounds" name="Preference Media panel">
-	<panel.string name="middle_mouse">
-		Mittlere Maustaste
-	</panel.string>
-	<slider label="Master-Lautstärke" name="System Volume"/>
-	<check_box initial_value="true" name="mute_when_minimized"/>
-	<text name="mute_chb_label">
-		Stummschalten, wenn minimiert
-	</text>
-	<slider label="Schaltflächen" name="UI Volume"/>
-	<slider label="Umgebung" name="Wind Volume"/>
-	<slider label="Soundeffekte" name="SFX Volume"/>
-	<slider label="Musik wird gestreamt" name="Music Volume"/>
-	<check_box label="Aktiviert" name="enable_music"/>
-	<slider label="Medien" name="Media Volume"/>
-	<check_box label="Aktiviert" name="enable_media"/>
-	<slider label="Voice-Chat" name="Voice Volume"/>
-	<check_box label="Aktiviert" name="enable_voice_check"/>
-	<check_box label="Automatische Wiedergabe zulassen" name="media_auto_play_btn" tool_tip="Hier aktivieren, um Medien automatisch wiederzugeben." value="true"/>
-	<check_box label="Medien, die an andere Avatare angehängt sind, wiedergeben." name="media_show_on_others_btn" tool_tip="Diese Option deaktivieren, um Medien für andere Avataren, die sich in der Nähe befinden, auszublenden." value="true"/>
-	<check_box label="Sounds von Gesten abspielen" name="gesture_audio_play_btn" tool_tip="Markieren, um Sounds von Gesten zu hören" value="true"/>
-	<text name="voice_chat_settings">
-		Voice-Chat-Einstellungen
-	</text>
-	<text name="Listen from">
-		Zuhören von:
-	</text>
-	<radio_group name="ear_location">
-		<radio_item label="Kameraposition" name="0"/>
-		<radio_item label="Avatarposition" name="1"/>
-	</radio_group>
-	<check_box label="Avatarlippen beim Sprechen bewegen" name="enable_lip_sync"/>
-	<check_box label="Sprachfunktion beim Drücken folgender Taste(n) ein-/ausschalten:" name="push_to_talk_toggle_check" tool_tip="Wenn der Umschaltmodus aktiviert ist, drücken Sie die Auslöse-Taste EINMAL, um Ihr Mikrofon ein- oder auszuschalten. Wenn der Umschaltmodus nicht aktiviert ist, ist das Mikrofon nur dann eingeschaltet, wenn Sie die Auslösetaste gedrückt halten."/>
-	<line_editor label="Auslöser für Zum-Sprechen-drücken:" name="modifier_combo"/>
-	<button label="Taste festlegen" name="set_voice_hotkey_button"/>
-	<button name="set_voice_middlemouse_button" tool_tip="Auf mittlere Maustaste zurücksetzen"/>
-	<button label="Eingabe-/Ausgabegeräte" name="device_settings_btn"/>
-	<panel label="Geräte-Einstellungen" name="device_settings_panel"/>
+     <scroll_container name="panel_scroll">
+	  <panel name="audio_media_panel">
+	       <panel.string name="middle_mouse">
+		       Mittlere Maustaste
+	       </panel.string>
+	       <slider label="Master-Lautstärke" name="System Volume"/>
+	       <slider label="Benutzeroberfläche" name="UI Volume"/>
+	       <slider label="Umgebung" name="Ambient Volume"/>
+	       <slider label="Wind" name="Wind Volume"/>
+	       <slider label="Soundeffekte" name="SFX Volume"/>
+	       <slider label="Musikstream" name="Music Volume"/>
+	       <check_box label="Aktiviert" name="music_enabled"/>
+	       <slider label="Medien" name="Media Volume"/>
+	       <slider label="Medienabfall" name="MediaRollOffRate"/>
+	       <check_box label="Aktiviert" name="enable_media"/>
+	       <slider label="Voice-Chat" name="Voice Volume"/>
+	       <check_box label="Aktiviert" name="enable_voice_check"/>
+	       <check_box label="Stimmmorph" name="enable_morphing_check"/>
+	       <slider label="Geräuschabfall" name="Rolloff"/>
+	       <slider label="Medienabfall Anfang" name="MediaRollOffMin"/>
+	       <slider label="Medienabfall Ende" name="MediaRollOffMax"/>
+	       <check_box label="Zeige Titel/Artist wenn ein Song wechselt" name="media_meta_data_show" tool_tip="Zeigt den Titelnamen und Artist Namen des neuen Songs an wenn der nächste Song started im Stream."/>
+	       <check_box label="Soundeffekte von Gesten abspielen" name="gesture_audio_play_btn"/>
+	       <check_box label="Automatische Wiedergabe zulassen" name="media_auto_play_btn" tool_tip="Hier aktivieren, um Medien automatisch wiederzugeben."/>
+	       <check_box label="Medien auf anderen Avataren zulassen." name="media_show_on_others_btn" tool_tip="Diese Option deaktivieren, um Medien für andere Avataren, die sich in der Nähe befinden, auszublenden."/>
+	       <check_box label="Den Viewer bei Minimierung stummschalten" name="mute_when_minimized"/>
+	       <check_box label="IM Fenster des Angerufenen öffnen" name="OpenIMOnVoice"/>
+	       <check_box label="Alle Gruppen Sprachkonferenzen ablehnen" name="VoiceCallsRejectGroup"/>
+	       <check_box label="Mikrofon automatisch abschalten beim beenden eines Anrufes" name="auto_disengage_mic_check"/>
+	       <check_box label="Lippensyncronisation in IM erlauben" name="ShowVoiceVisualizersInCalls"/>
+	       <text name="voice_chat_settings">
+		    Voice-Chat-Einstellungen
+	       </text>
+	       <text name="Listen from">
+		    Zuhören von:
+	       </text>
+	       <radio_group name="ear_location">
+		    <radio_item label="Kameraposition" name="0"/>
+		    <radio_item label="Avatarposition" name="1"/>
+	       </radio_group>
+	       <button label="Eingabe-/Ausgabegeräte" name="device_settings_btn"/>
+	       <panel label="Geräte-Einstellungen" name="device_settings_panel">
+		    <check_box label="Sprachfunktion ein-/ausschalten bei:" name="push_to_talk_toggle_check" tool_tip="Wenn der Umschaltmodus aktiviert ist, drücken Sie die Auslöse-Taste EINMAL, um Ihr Mikrofon an oder aus zu stellen. Wenn der Umschaltmodus nicht motiviert ist, ist das Mikro nur dann eingeschaltet, wenn Sie die Auslösetaste gedrückt halten."/>
+		    <line_editor label="Auslöser für Zum-Sprechen-drücken:" name="modifier_combo"/>
+		    <button label="Taste festlegen" name="set_voice_hotkey_button"/>
+		    <button label="Mittlere Maustaste" name="set_voice_middlemouse_button" tool_tip="Auf mittlere Maustaste zurücksetzen"/>
+		    <panel.string name="default_text">
+			 Standard
+		    </panel.string>
+		    <panel.string name="default system device">
+			 Standardgerät
+		    </panel.string>
+		    <panel.string name="no device">
+			 Kein Gerät
+		    </panel.string>
+		    <text name="Input">
+			 Eingabe
+		    </text>
+		    <text name="My volume label">
+			 Meine Lautstärke:
+		    </text>
+		    <slider_bar name="mic_volume_slider" tool_tip="Ändern Sie die Lautstärke mit dem Regler"/>
+		    <text name="wait_text">
+			 Bitte warten
+		    </text>
+		    <text name="Output">
+			 Ausgabe
+		    </text>
+	       </panel>
+	  </panel>
+     </scroll_container>
 </panel>

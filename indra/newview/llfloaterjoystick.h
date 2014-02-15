@@ -44,6 +44,7 @@ public:
 	virtual void cancel();	// Cancel the changed values.
 	virtual void draw();
 	static  void setSNDefaults();
+	static  void setXboxDefaults();
 
 private:
 
@@ -54,6 +55,7 @@ private:
 	
 	static void onCommitJoystickEnabled(LLUICtrl*, void*);
 	static void onClickRestoreSNDefaults(void*);
+	static void onClickRestoreXboxDefaults(void*);
 	static void onClickCancel(void*);
 	static void onClickOK(void*);
 
@@ -86,6 +88,8 @@ private:
 	// stats view 
 	LLStat* mAxisStats[6];
 	LLStatBar* mAxisStatsBar[6];
+
+	LLButton* mAxisButton[16];
 };
 
 #endif

@@ -60,6 +60,10 @@
 #include "llviewerchat.h"
 #include "llnotificationmanager.h"
 #include "llautoreplace.h"
+// [RLVa:KB] - Checked: 2013-05-10 (RLVa-1.4.9)
+#include "rlvactions.h"
+#include "rlvcommon.h"
+// [/RLVa:KB]
 
 const F32 ME_TYPING_TIMEOUT = 4.0f;
 const F32 OTHER_TYPING_TIMEOUT = 9.0f;
@@ -252,6 +256,36 @@ void LLFloaterIMSession::sendMsgFromInputEditor()
 				// Truncate and convert to UTF8 for transport
 				std::string utf8_text = wstring_to_utf8str(text);
 
+				if (gSavedSettings.getBOOL("AutoCloseOOC"))
+				{
+					// Try to find any unclosed OOC chat (i.e. an opening
+					// double parenthesis without a matching closing double
+					// parenthesis.
+					if (utf8_text.find("((") != -1 && utf8_text.find("))") == -1)
+					{
+						if (utf8_text.at(utf8_text.length() - 1) == ')')
+						{
+							// cosmetic: add a space first to avoid a closing triple parenthesis
+							utf8_text += " ";
+						}
+						// add the missing closing double parenthesis.
+						utf8_text += "))";
+					}
+				}
+			
+				// Convert MU*s style poses into IRC emotes here.
+				if (gSavedSettings.getBOOL("AllowMUpose") && utf8_text.find(":") == 0 && utf8_text.length() > 3)
+				{
+					if (utf8_text.find(":'") == 0)
+					{
+						utf8_text.replace(0, 1, "/me");
+					}
+					else if (isalpha(utf8_text.at(1)))	// Do not prevent smileys and such.
+					{
+						utf8_text.replace(0, 1, "/me ");
+					}
+				}
+
 				sendMsg(utf8_text);
 
 				mInputEditor->setText(LLStringUtil::null);
@@ -266,7 +300,60 @@ void LLFloaterIMSession::sendMsgFromInputEditor()
 
 void LLFloaterIMSession::sendMsg(const std::string& msg)
 {
-	const std::string utf8_text = utf8str_truncate(msg, MAX_MSG_BUF_SIZE - 1);
+//	const std::string utf8_text = utf8str_truncate(msg, MAX_MSG_BUF_SIZE - 1);
+// [RLVa:KB] - Checked: 2010-11-30 (RLVa-1.3.0)
+	std::string utf8_text = utf8str_truncate(msg, MAX_MSG_BUF_SIZE - 1);
+
+	if ( (RlvActions::hasBehaviour(RLV_BHVR_SENDIM)) || (RlvActions::hasBehaviour(RLV_BHVR_SENDIMTO)) )
+	{
+		const LLIMModel::LLIMSession* pIMSession = LLIMModel::instance().findIMSession(mSessionID);
+		RLV_ASSERT(pIMSession);
+
+		bool fRlvFilter = !pIMSession;
+		if (pIMSession)
+		{
+			switch (pIMSession->mSessionType)
+			{
+				case LLIMModel::LLIMSession::P2P_SESSION:	// One-on-one IM
+					fRlvFilter = !RlvActions::canSendIM(mOtherParticipantUUID);
+					break;
+				case LLIMModel::LLIMSession::GROUP_SESSION:	// Group chat
+					fRlvFilter = !RlvActions::canSendIM(mSessionID);
+					break;
+				case LLIMModel::LLIMSession::ADHOC_SESSION:	// Conference chat: allow if all participants can be sent an IM
+					{
+						if (!pIMSession->mSpeakers)
+						{
+							fRlvFilter = true;
+							break;
+						}
+
+						LLSpeakerMgr::speaker_list_t speakers;
+						pIMSession->mSpeakers->getSpeakerList(&speakers, TRUE);
+						for (LLSpeakerMgr::speaker_list_t::const_iterator itSpeaker = speakers.begin(); 
+								itSpeaker != speakers.end(); ++itSpeaker)
+						{
+							const LLSpeaker* pSpeaker = *itSpeaker;
+							if ( (gAgent.getID() != pSpeaker->mID) && (!RlvActions::canSendIM(pSpeaker->mID)) )
+							{
+								fRlvFilter = true;
+								break;
+							}
+						}
+					}
+					break;
+				default:
+					fRlvFilter = true;
+					break;
+			}
+		}
+
+		if (fRlvFilter)
+		{
+			utf8_text = RlvStrings::getString(RLV_STRING_BLOCKED_SENDIM);
+		}
+	}
+// [/RLVa:KB]
 
 	if (mSessionInitialized)
 	{

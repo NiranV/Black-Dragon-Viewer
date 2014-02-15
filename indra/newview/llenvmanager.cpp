@@ -35,6 +35,10 @@
 #include "llwaterparammanager.h"
 #include "llwlhandlers.h"
 #include "llwlparammanager.h"
+// [RLVa:KB] - Checked: 2011-09-04 (RLVa-1.4.1a) | Added: RLVa-1.4.1a
+#include <boost/algorithm/string.hpp>
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 std::string LLEnvPrefs::getWaterPresetName() const
 {
@@ -194,7 +198,7 @@ bool LLEnvManagerNew::useWaterParams(const LLSD& params)
 	return true;
 }
 
-bool LLEnvManagerNew::useSkyPreset(const std::string& name)
+bool LLEnvManagerNew::useSkyPreset(const std::string& name, bool interpolate)
 {
 	LLWLParamManager& sky_mgr = LLWLParamManager::instance();
 	LLWLParamSet param_set;
@@ -206,7 +210,7 @@ bool LLEnvManagerNew::useSkyPreset(const std::string& name)
 	}
 
 	LL_DEBUGS("Windlight") << "Displaying sky preset " << name << LL_ENDL;
-	sky_mgr.applySkyParams(param_set.getAll());
+	sky_mgr.applySkyParams(param_set.getAll(), interpolate);
 	return true;
 }
 
@@ -248,14 +252,14 @@ bool LLEnvManagerNew::useDayCycleParams(const LLSD& params, LLEnvKey::EScope sco
 	return LLWLParamManager::instance().applyDayCycleParams(params, scope);
 }
 
-void LLEnvManagerNew::setUseRegionSettings(bool val)
+void LLEnvManagerNew::setUseRegionSettings(bool val, bool interpolate)
 {
 	mUserPrefs.setUseRegionSettings(val);
 	saveUserPrefs();
-	updateManagersFromPrefs(false);
+	updateManagersFromPrefs(interpolate);
 }
 
-void LLEnvManagerNew::setUseWaterPreset(const std::string& name)
+void LLEnvManagerNew::setUseWaterPreset(const std::string& name, bool interpolate)
 {
 	// *TODO: make sure the preset exists.
 	if (name.empty())
@@ -266,10 +270,10 @@ void LLEnvManagerNew::setUseWaterPreset(const std::string& name)
 
 	mUserPrefs.setUseWaterPreset(name);
 	saveUserPrefs();
-	updateManagersFromPrefs(false);
+	updateManagersFromPrefs(interpolate);
 }
 
-void LLEnvManagerNew::setUseSkyPreset(const std::string& name)
+void LLEnvManagerNew::setUseSkyPreset(const std::string& name, bool interpolate)
 {
 	// *TODO: make sure the preset exists.
 	if (name.empty())
@@ -280,10 +284,10 @@ void LLEnvManagerNew::setUseSkyPreset(const std::string& name)
 
 	mUserPrefs.setUseSkyPreset(name);
 	saveUserPrefs();
-	updateManagersFromPrefs(false);
+	updateManagersFromPrefs(interpolate);
 }
 
-void LLEnvManagerNew::setUseDayCycle(const std::string& name)
+void LLEnvManagerNew::setUseDayCycle(const std::string& name, bool interpolate)
 {
 	if (!LLDayCycleManager::instance().presetExists(name))
 	{
@@ -293,7 +297,7 @@ void LLEnvManagerNew::setUseDayCycle(const std::string& name)
 
 	mUserPrefs.setUseDayCycle(name);
 	saveUserPrefs();
-	updateManagersFromPrefs(false);
+	updateManagersFromPrefs(interpolate);
 }
 
 void LLEnvManagerNew::loadUserPrefs()
@@ -478,7 +482,10 @@ void LLEnvManagerNew::onRegionSettingsResponse(const LLSD& content)
 	LLWLParamManager::instance().refreshRegionPresets();
 
 	// If using server settings, update managers.
-	if (getUseRegionSettings())
+//	if (getUseRegionSettings())
+// [RLVa:KB] - Checked: 2011-08-29 (RLVa-1.4.1a) | Added: RLVa-1.4.1a
+	if ( (getUseRegionSettings()) && (LLWLParamManager::getInstance()->mAnimator.getIsRunning()) )
+// [/RLVa:KB]
 	{
 		updateManagersFromPrefs(mInterpNextChangeMessage);
 	}
@@ -510,7 +517,7 @@ void LLEnvManagerNew::initSingleton()
 	loadUserPrefs();
 }
 
-void LLEnvManagerNew::updateSkyFromPrefs()
+void LLEnvManagerNew::updateSkyFromPrefs(bool interpolate)
 {
 	bool success = true;
 
@@ -527,7 +534,7 @@ void LLEnvManagerNew::updateSkyFromPrefs()
 		}
 		else
 		{
-			success = useSkyPreset(getSkyPresetName());
+			success = useSkyPreset(getSkyPresetName(), interpolate);
 		}
 	}
 
@@ -589,11 +596,18 @@ void LLEnvManagerNew::updateWaterFromPrefs(bool interpolate)
 void LLEnvManagerNew::updateManagersFromPrefs(bool interpolate)
 {
 	LL_DEBUGS("Windlight")<<LL_ENDL;
+// [RLVa:KB] - Checked: 2011-09-04 (RLVa-1.4.1a) | Added: RLVa-1.4.1a
+	if (gRlvHandler.hasBehaviour(RLV_BHVR_SETENV))
+	{
+		return;
+	}
+// [/RLVa:KB]
+
 	// Apply water settings.
 	updateWaterFromPrefs(interpolate);
 
 	// Apply sky settings.
-	updateSkyFromPrefs();
+	updateSkyFromPrefs(interpolate);
 }
 
 bool LLEnvManagerNew::useRegionSky()

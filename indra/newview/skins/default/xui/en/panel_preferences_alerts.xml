@@ -1,113 +1,235 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- border="true"
  height="408"
  label="Popups"
  layout="topleft"
  left="0"
  name="popups"
- top="500"
- width="517">
-    <text
-     type="string"
-     length="1"
-     follows="top|left"
-     height="12"
-     layout="topleft"
-     left="10"
-     name="tell_me_label"
-     top="10"
-     width="300">
-        Tell me:
-    </text>
-    <check_box
-     control_name="NotifyMoneyChange"
-     height="16"
-     label="When I spend or get L$"
-     layout="topleft"
-     left_delta="50"
-     name="notify_money_change_checkbox"
-     top_pad="4"
-     width="300" />
-    <check_box
-     control_name="ChatOnlineNotification"
-     height="16"
-     label="When my friends log in or out"
-     layout="topleft"
-     left_delta="0"
-     name="friends_online_notify_checkbox"
-     top_pad="4"
-     width="300" />
-    <text
-     type="string"
-     length="1"
-     follows="top|left"
-     height="12"
-     layout="topleft"
-     left="10"
-     name="show_label"
-     top_pad="8"
-     width="450">
-        Always show:
-    </text>
-    <scroll_list
-     follows="top|left|right"
-     height="140"
-     layout="topleft"
-     left="10"
-     multi_select="true"
-     name="enabled_popups"
-     sort_column="0"
-     sort_ascending="true" 
-     width="495" />
-	 <button
-	 enabled_control="FirstSelectedDisabledPopups"
-     follows="top|left"
-     height="23"
-     image_overlay="Arrow_Up"
-     hover_glow_amount="0.15"
-     layout="topleft"
-     left="200"
-     name="enable_this_popup"
-     top_pad="5"
-     width="40">
-        <button.commit_callback
-         function="Pref.ClickEnablePopup" />
-    </button>
-    <button
-	 enabled_control="FirstSelectedEnabledPopups"
-	 follows="top|left"
-     height="23"
-     image_overlay="Arrow_Down"
-     hover_glow_amount="0.15"
-     layout="topleft"
-     left_pad="20"
-     name="disable_this_popup"
-     top_delta="0"
-     width="40">
-        <button.commit_callback
-         function="Pref.ClickDisablePopup" />
-    </button>
-    <text
-     type="string"
-     length="1"
-     follows="top|left"
-     height="12"
-     layout="topleft"
-     left="10"
-     name="dont_show_label"
-     top_pad="-10"
-     width="450">
-        Never show:
-    </text>
-    <scroll_list
-     follows="top|left|right"
-     height="140"
-     layout="topleft"
-     left="10"
-     sort_column="0"
-     sort_ascending="true"
-     multi_select="true"
-     name="disabled_popups"
-     width="495" />
+ top="45"
+ width="510">
+<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="515"/>
+      <text
+       type="string"
+       length="1"
+       follows="top|left"
+       height="12"
+       layout="topleft"
+       left="10"
+       name="tell_me_label"
+       top_delta="4"
+       width="300">
+	  Notification Options:
+      </text>
+      <check_box
+       control_name="NotifyMoneyChange"
+       height="16"
+       label="When I spend or get L$"
+       layout="topleft"
+       left="10"
+       name="notify_money_change_checkbox"
+       top_pad="15"
+       width="300" />
+      <check_box
+       control_name="ChatOnlineNotification"
+       height="16"
+       label="When my friends log in or out"
+       layout="topleft"
+       left_delta="0"
+       name="friends_online_notify_checkbox"
+       top_pad="0"
+       width="300" />
+      <check_box
+	control_name="DebugAvatarRezTime"
+	height="16"
+	initial_value="false"
+	label="How much time Avatars took to rez"
+	layout="topleft"
+	left_delta="0"
+	name="DebugAvatarRezTime"
+	top_pad="0"
+	width="256" />
+	  
+<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="515"/>
+      <text
+       type="string"
+       length="1"
+       follows="top|left"
+       height="12"
+       layout="topleft"
+       left="10"
+       name="tell_me_label"
+       top_delta="4"
+       width="300">
+	  Notification Appearance Options:
+      </text>
+	  <spinner
+      control_name="NotificationTipToastLifeTime"
+      decimal_digits="0"
+      follows="left|top"
+      height="16"
+      increment="1"
+      initial_value="10"
+      label="Notification Tip Life Time"
+      label_width="170"
+      layout="topleft"
+      left="10"
+      tool_tip="Sets the Seconds which will pass until Notifications like 'no room to sit here' will start to fade"
+      max_val="30"
+      min_val="0"
+      name="NotificationTipToastLifeTime"
+      top_pad="15"
+      width="220" />
+      <spinner
+      control_name="NotificationToastLifeTime"
+      decimal_digits="0"
+      follows="left|top"
+      height="16"
+      increment="1"
+      initial_value="15"
+      label="Notification Life Time"
+      label_width="170"
+      layout="topleft"
+      left_delta="0"
+      tool_tip="Controls the Time Notifications remain on screen before starting to fade"
+      max_val="60"
+      min_val="1"
+      name="NotificationToastLifeTime"
+      top_pad="6"
+      width="220" />
+      <spinner
+      control_name="ChannelBottomPanelMargin"
+      decimal_digits="0"
+      follows="left|top"
+      height="16"
+      increment="1"
+      initial_value="10"
+      label="Bottom Space:"
+      label_width="170"
+      layout="topleft"
+      left_delta="0"
+      tool_tip="Set the space from Notification to IM chiclet tray"
+      max_val="80"
+      min_val="0"
+      name="ChannelBottomPanelMargin"
+      top_pad="6"
+      width="220" />
+	  
+	  <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="15"
+ width="515"/>
+      <text
+       type="string"
+       length="1"
+       follows="top|left"
+       height="12"
+       layout="topleft"
+       left="10"
+       name="show_label"
+       top_delta="4"
+       width="300">
+	  Always show Notification:
+      </text>
+      <scroll_list
+       follows="top|left"
+       height="67"
+       layout="topleft"
+       left="10"
+       top_pad="15"
+       multi_select="true"
+       name="enabled_popups"
+       background_visible="true"
+       sort_column="0"
+       sort_ascending="true" 
+       width="470" />
+	  <button
+       enabled_control="FirstSelectedEnabledPopups"
+       follows="top|left"
+       height="67"
+       image_overlay="Arrow_Down"
+       hover_glow_amount="0.15"
+       layout="topleft"
+       left_pad="2"
+       name="disable_this_popup"
+       top_delta="0"
+       width="25">
+		  <button.commit_callback
+                                 function="Pref.ClickDisablePopup"/>
+      </button>
+	  <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="11"
+ width="515"/>
+      <text
+       type="string"
+       length="1"
+       follows="top|left"
+       height="12"
+       layout="topleft"
+       left="10"
+       name="dont_show_label"
+       top_delta="4"
+       width="300">
+	  Never show Notification:
+      </text>
+      <scroll_list
+       follows="top|left"
+       height="67"
+       layout="topleft"
+       left="10"
+       top_pad="15"
+       background_visible="true"
+       sort_column="0"
+       sort_ascending="true"
+       multi_select="true"
+       name="disabled_popups"
+       width="470" />
+      <button
+       enabled_control="FirstSelectedDisabledPopups"
+       follows="top|left"
+       height="67"
+       image_overlay="Arrow_Up"
+       hover_glow_amount="0.15"
+       layout="topleft"
+       left_pad="2"
+       name="enable_this_popup"
+       top_delta="0"
+       width="25">
+		  <button.commit_callback
+                                 function="Pref.ClickEnablePopup"/>
+      </button>
 </panel>

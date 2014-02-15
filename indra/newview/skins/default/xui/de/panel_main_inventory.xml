@@ -1,28 +1,97 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Sonstiges" name="main inventory panel">
 	<panel.string name="ItemcountFetching">
-		Inventar ([ITEM_COUNT] Artikel werden abgerufen... [FILTER]
+	([ITEM_COUNT])...
 	</panel.string>
 	<panel.string name="ItemcountCompleted">
-		[ITEM_COUNT] Objekte [FILTER]
+	[ITEM_COUNT]
 	</panel.string>
 	<text name="ItemcountText">
-		Objekte:
+		---
 	</text>
-	<filter_editor label="Inventar filtern" name="inventory search editor"/>
+	<menu_bar name="menu_gear_default">
+		<menu name="File" label="Datei">
+			<menu label="Hochladen" name="upload">
+				<menu_item_call label="Bild ([COST] L$)..." name="Upload Image"/>
+				<menu_item_call label="Sound ([COST] L$)..." name="Upload Sound"/>
+				<menu_item_call label="Animation ([COST] L$)..." name="Upload Animation"/>
+				<menu_item_call label="Modell..." name="Upload Model"/>
+				<menu_item_call label="Mehrfach-Upload ([COST] L$ pro Datei)..." name="Bulk Upload"/>
+				<menu_item_call label="Standard-Berechtigungen festlegen" name="perm prefs"/>
+			</menu>
+			<menu name="create" label="Erstellen">
+				<menu_item_call label="Neuer Ordner" name="New Folder"/>
+				<menu_item_call label="Neues Skript" name="New Script"/>
+				<menu_item_call label="Neue Notizkarte" name="New Note"/>
+				<menu_item_call label="Neue Geste" name="New Gesture"/>
+				<menu label="Neue Kleider" name="New Clothes">
+					<menu_item_call label="Neues Hemd" name="New Shirt"/>
+					<menu_item_call label="Neue Hose" name="New Pants"/>
+					<menu_item_call label="Neue Schuhe" name="New Shoes"/>
+					<menu_item_call label="Neue Socken" name="New Socks"/>
+					<menu_item_call label="Neue Jacke" name="New Jacket"/>
+					<menu_item_call label="Neuer Rock" name="New Skirt"/>
+					<menu_item_call label="Neue Handschuhe" name="New Gloves"/>
+					<menu_item_call label="Neues Unterhemd" name="New Undershirt"/>
+					<menu_item_call label="Neue Unterhose" name="New Underpants"/>
+					<menu_item_call label="Neues Alpha" name="New Alpha"/>
+					<menu_item_call label="Neue Tätowierung" name="New Tattoo"/>
+					<menu_item_call label="Neue Physik" name="New Physics"/>
+				</menu>
+				<menu label="Neue Körperteile" name="New Body Parts">
+					<menu_item_call label="Neue Form/Gestalt" name="New Shape"/>
+					<menu_item_call label="Neue Haut" name="New Skin"/>
+					<menu_item_call label="Neues Haar" name="New Hair"/>
+					<menu_item_call label="Neue Augen" name="New Eyes"/>
+				</menu>
+			</menu>
+			<menu_item_call label="Neues Inventar-Fenster" name="new_window"/>
+			<menu_item_call label="Textur speichern als" name="Save Texture As"/>
+			<menu_item_call label="Teilen" name="Share"/>
+			<menu_item_call label="Original suchen" name="Find Original"/>
+			<menu_item_call label="Alle Links suchen" name="Find All Links"/>
+		</menu>
+		<menu name="Filters" label="Filter">
+			<menu_item_call label="Filter anzeigen" name="show_filters"/>
+			<menu_item_call label="Filter zurücksetzen" name="reset_filters"/>
+		</menu>
+		<menu name="Edit" label="Bearbeiten">
+			<menu_item_call label="Papierkorb ausleeren" name="empty_trash"/>
+			<menu_item_call label="Alle Ordner schließen" name="close_folders"/>
+			<menu_item_call label="Fundbüro ausleeren" name="empty_lostnfound"/>
+		</menu>
+	</menu_bar>
+	<text name="sort_options">
+		Sortierung:
+	</text>
+	<button tool_tip="Inventar Objekte nach Datum sortieren" name="sort_by_date"/>
+	<button tool_tip="Inventar Ordner nach Namen sortieren" name="sort_folders_by_name"/>
+	<button tool_tip="Systemordner immer an die Spitze setzen" name="sys_folders_on_top"/>
 	<tab_container name="inventory filter tabs">
-		<inventory_panel label="MEIN INVENTAR" name="All Items"/>
-		<recent_inventory_panel label="AKTUELL" name="Recent Items"/>
+		<inventory_panel label="Mein Inventar" name="All Items"/>
+		<recent_inventory_panel label="Aktuell" name="Recent Items"/>
+		<inventory_panel label="Getragen" name="cof_tab"/>
 	</tab_container>
 	<layout_stack name="bottom_panel">
-		<layout_panel name="options_gear_btn_panel">
-			<button name="options_gear_btn" tool_tip="Zusätzliche Optionen anzeigen"/>
+		<layout_panel name="close_folders_btn_panel">
+			<button name="close_folders_btn" tool_tip="Alle Ordner schließen  "/>
 		</layout_panel>
-		<layout_panel name="add_btn_panel">
-			<button name="add_btn" tool_tip="Neues Objekt hinzufügen"/>
+		<layout_panel name="dummy_panel">
+			<text name="ItemcountText">
+				Objekte:
+			</text>
+		</layout_panel>
+		<layout_panel name="copy_btn_panel">
+			<button name="copy_btn" tool_tip="Ausgewähltes Inventarobjekt kopieren"/>
+		</layout_panel>
+		<layout_panel name="dummy_panel">
+			<filter_editor label="Inventar durchsuchen nach..." name="inventory search editor"/>
+		</layout_panel>
+		<layout_panel name="paste_btn_panel">
+			<button name="paste_btn" tool_tip="Kopierte Inventarobjekte in das ausgewählte Verzeichnis einfügen"/>
 		</layout_panel>
 		<layout_panel name="trash_btn_panel">
-			<dnd_button name="trash_btn" tool_tip="Auswahl löschen"/>
+			<dnd_button name="trash_btn" tool_tip="Auswahl löschen "/>
 		</layout_panel>
 	</layout_stack>
 </panel>

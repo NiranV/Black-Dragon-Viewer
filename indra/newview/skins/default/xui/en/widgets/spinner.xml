@@ -3,6 +3,7 @@
          text_disabled_color="LabelDisabledColor"
          font="SansSerifSmall" 
          decimal_digits="3"
+         allow_scrolling="true"
          label_width="40" >
   <spinner.up_button name="SpinCtrl Up"
                      image_unselected="Stepper_Up_Off"

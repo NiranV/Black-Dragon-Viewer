@@ -1,0 +1,61 @@
+﻿<panel name="Custom UI">
+  <scroll_container name="ui_scroll">
+   <panel name="ui_panel">
+    <text name="main_label">Status/Nav/Favoritenleiste Optionen:</text>
+    <check_box label="Parzellenregeln in der Navleiste zeigen" name="NavBarShowParcelProperties"/>
+    <check_box label="Positionskoordinaten in der Navleiste zeigen" name="NavBarShowCoordinates"/>
+    <check_box label="Favoritenleiste anzeigen" name="ShowFavbar"/>
+    <check_box label="Suchen in der Navigationsleiste erlauben" name="SearchFromAddressBar"/>
+    <check_box label="Schnell-Sichtweitenregler anzeigen" name="ShowQuickDDSlider"/>
+    <check_box label="Schnell-Windlight Schaltfläche anzeigen" name="ShowQuickWindlight"/>
+    <check_box label="Schnell-Himmels Schaltfläche anzeigen" name="ShowQuickSky"/>
+    <check_box label="Schnell-Wasser Schaltfläche anzeigen" name="ShowQuickWater"/>
+    <check_box label="Schnell-Browser Schaltfläche anzeigen" name="ShowQuickBrowser"/>
+    <check_box label="Schnell-Heim TP Schaltfläche anzeigen" name="ShowQuickHome"/>
+    <check_box label="Schnell-Landinfo Schaltfläche anzeigen" name="ShowQuickLand"/>
+    <check_box label="Statusleiste automatisch verstecken" name="AutoHideTopBar"/>
+        <slider label="nach(s):" name="autohide_time" tool_tip="Stell die Sekunden ein die verstreichen bevor sich die Statusleiste automatisch versteckt"/>
+        <check_box label="Suchenleiste anzeigen" name="ShowTopSearchBar"/>
+        <check_box label="Netzwerkstatistiken anzeigen" name="ShowNetStats"/>
+        <check_box label="FPS Zähler als Text anzeigen" name="FPSCounterAsText"/>
+        <check_box label="Linden $ Guthaben verstecken" name="HideL$Balance"/>
+        <text name="pie_label">Aktionsrad Optionen:</text>
+        <check_box label="Aktionsrad statt Aufklappmenü nutzen" name="UsePieMenu"/>
+        <slider label="Deckkraft:" name="pie_menu_opacity" tool_tip="Stell die Deckkraft oder auch Transparenz des Aktionsrädes ein"/>
+        <slider label="Ausblenden:" name="pie_menu_fade_out" tool_tip="Stell die Stärke des Ausblend-Effekts des Aktionrädes nach außen ein"/>
+        <button name="pie_colors_btn" label="Hier klicken um die Aktionsrad Farben zu bearbeiten"/>
+        <text name="pie_colors_label">Aktionsrad Farben:</text>
+        <text name="text_box4">Aktionsrad Hintergrund</text>
+        <text name="text_box5">Aktionsrad Linien</text>
+        <text name="text_box6">Aktionsrad Ausgewählt</text>
+        <text name="text_box7">Aktionsrad Text</text>
+        <text name="info_label">Info/Schwebetipp/Inspector Optionen:</text>
+        <spinner label="Infotip Verzögerung" name="ToolTipDelay"/>
+        <spinner label="Infotip Ausblendzeit" name="ToolTipFadeTime"/>
+        <spinner label="Infotip Verbleibzeit" name="ToolTipVisibleTimeFar"/>
+        <spinner label="Infotip Auto ausblenden" name="ToolTipVisibleTimeNear"/>
+        <spinner label="Inspector Ausblendzeit" name="InspectorFadeTime"/>
+        <spinner label="Inspector Verbleibzeit" name="InspectorShowTime"/>
+        <spinner label="Inspector Verbleibzeit" name="InspectorShowTime"/>
+    <text name="other_label">Anderes:</text>
+    <check_box label="Hintergrund des Einstellungsfensters verschwommen zeichnen" name="BlurBackgroundPrefs"/>
+    <check_box label="1-Klick-Teleport bei SLURL´s erlauben" name="SLURLTeleportDirectly"/>
+    <check_box label="'Als Verknüpfung kopieren' Funktion im Inventar" name="InventoryLinking"/>
+    <check_box label="Angebotenes Inventar sofort zeigen" name="ShowOfferedInventory"/>
+    <check_box label="Erlaube Mouseover Infoprofile" name="ShowHoverTips"/>
+        <check_box label="Zeige Land Infoprofile" name="ShowLandHoverTip"/>
+        <check_box label="Zeige Objekt Infoprofile" name="ShowAllHoverTips"/>
+        <check_box label="Skripte können die Benutzeroberfläche ansteuern" name="ScriptsCanShowUI"/>
+        <text name="exp_label">Experimentell:</text>
+        <check_box label="Experimentellen Loginbildschirm anzeigen" name="ExperimentalLogin"/>
+        <check_box label="Das alte Vertikale Baufenster benutzen" name="UseVerticalToolsFloater"/>
+        <check_box label="Machinima Sidebar als HUD öffnen" name="UseMachinimaSidebarAsOverlay"/>
+        <text name="minimap_label">Minikarten Optionen:</text>
+        <check_box label="Rotierende Minikarte" name="MiniMapRotate"/>
+        <check_box label="Doppelklick auf der Minikarte öffnet die Weltkarte" name="DoubleClickShowWorldMap"/>
+        <check_box label="Minikarte im Leute Fenster anzeigen" name="ShowSidebarMinimap"/>
+        <check_box label="Chatreichweiten Ringe auf der Minikarte zeigen" name="MiniMapChatRing"/>
+        <spinner label="Max Prim Größe auf der Minikarte" name="MaxPrimSize" tool_tip="Setzt eine Grenze für die Primgröße auf der Minikarte, alle Prims über diesem Wert werden nur bis zu diesem Wert an Umfang gezeigt (Meter)"/>
+   </panel>
+  </scroll_container>
+</panel>

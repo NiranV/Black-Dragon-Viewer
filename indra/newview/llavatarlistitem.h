@@ -81,10 +81,9 @@ public:
 
 	virtual BOOL postBuild();
 
-	/**
-	 * Processes notification from speaker indicator to update children when indicator's visibility is changed.
-	 */
-    virtual void handleVisibilityChange ( BOOL new_visibility );
+	/*virtual*/ void draw();
+	
+	//Processes notification from speaker indicator to update children when indicator's visibility is changed.
 	virtual S32	notifyParent(const LLSD& info);
 	virtual void onMouseLeave(S32 x, S32 y, MASK mask);
 	virtual void onMouseEnter(S32 x, S32 y, MASK mask);
@@ -98,39 +97,37 @@ public:
 	void setHighlight(const std::string& highlight);
 	void setState(EItemState item_style);
 	void setAvatarId(const LLUUID& id, const LLUUID& session_id, bool ignore_status_changes = false, bool is_resident = true);
-	void setLastInteractionTime(U32 secs_since);
-	//Show/hide profile/info btn, translating speaker indicator and avatar name coordinates accordingly
-	void setShowProfileBtn(bool show);
-	void setShowInfoBtn(bool show);
+	void setExtraInformation(const std::string& information);
 	void showSpeakingIndicator(bool show);
 	void setShowPermissions(bool show) { mShowPermissions = show; };
-	void showLastInteractionTime(bool show);
-	void setAvatarIconVisible(bool visible);
+	void setLastInteractionTime(U32 secs_since);
+	void showExtraInformation(bool show);
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+	void setRlvCheckShowNames(bool fRlvCheckShowNames) { mRlvCheckShowNames = fRlvCheckShowNames; }
+// [/RLVa:KB]
 	
 	const LLUUID& getAvatarId() const;
 	std::string getAvatarName() const;
 	std::string getAvatarToolTip() const;
 
 	void onInfoBtnClick();
-	void onProfileBtnClick();
 
 	/*virtual*/ BOOL handleDoubleClick(S32 x, S32 y, MASK mask);
 
 protected:
-	/**
-	 * Contains indicator to show voice activity. 
-	 */
+	
+	//Contains indicator to show voice activity.  
 	LLOutputMonitorCtrl* mSpeakingIndicator;
 
 	LLAvatarIconCtrl* mAvatarIcon;
 
-	/// Indicator for permission to see me online.
+	/// Panel of the Indicator for permission to see me online.
 	LLIconCtrl* mIconPermissionOnline;
-	/// Indicator for permission to see my position on the map.
+	/// Panel of the Indicator for permission to see my position on the map.
 	LLIconCtrl* mIconPermissionMap;
-	/// Indicator for permission to edit my objects.
+	/// Panel of the Indicator for permission to edit my objects.
 	LLIconCtrl* mIconPermissionEditMine;
-	/// Indicator for permission to edit their objects.
+	/// Panel of the Indicator for permission to edit their objects.
 	LLIconCtrl* mIconPermissionEditTheirs;
 
 private:
@@ -141,27 +138,6 @@ private:
 		E_UNKNOWN,
 	} EOnlineStatus;
 
-	/**
-	 * Enumeration of item elements in order from right to left.
-	 * 
-	 * updateChildren() assumes that indexes are in the such order to process avatar icon easier.
-	 *
-	 * @see updateChildren()
-	 */
-	typedef enum e_avatar_item_child {
-		ALIC_SPEAKER_INDICATOR,
-		ALIC_PROFILE_BUTTON,
-		ALIC_INFO_BUTTON,
-		ALIC_PERMISSION_ONLINE,
-		ALIC_PERMISSION_MAP,
-		ALIC_PERMISSION_EDIT_MINE,
-		ALIC_PERMISSION_EDIT_THEIRS,
-		ALIC_INTERACTION_TIME,
-		ALIC_NAME,
-		ALIC_ICON,
-		ALIC_COUNT,
-	} EAvatarListItemChildIndex;
-
 	void setNameInternal(const std::string& name, const std::string& highlight);
 	void onAvatarNameCache(const LLAvatarName& av_name);
 
@@ -170,39 +146,14 @@ private:
 	typedef std::map<EItemState, LLColor4> icon_color_map_t;
 	static icon_color_map_t& getItemIconColorMap();
 
-	/**
-	 * Initializes widths of all children to use them while changing visibility of any of them.
-	 *
-	 * @see updateChildren()
-	 */
-	static void initChildrenWidths(LLAvatarListItem* self);
-
-	/**
-	 * Updates position and rectangle of visible children to fit all available item's width.
-	 */
-	void updateChildren();
-
-	/**
-	 * Update visibility of active permissions icons.
-	 *
-	 * Need to call updateChildren() afterwards to sort out their layout.
-	 */
+	//Update visibility of active permissions icons.
 	bool showPermissions(bool visible);
 
-	/**
-	 * Gets child view specified by index.
-	 *
-	 * This method implemented via switch by all EAvatarListItemChildIndex values.
-	 * It is used to not store children in array or vector to avoid of increasing memory usage.
-	 */
-	LLView* getItemChildView(EAvatarListItemChildIndex child_index);
-
 	LLTextBox* mAvatarName;
-	LLTextBox* mLastInteractionTime;
+	LLTextBox* mExtraInformation;
 	LLStyle::Params mAvatarNameStyle;
 	
 	LLButton* mInfoBtn;
-	LLButton* mProfileBtn;
 
 	LLUUID mAvatarId;
 	std::string mHighlihtSubstring; // substring to highlight
@@ -210,29 +161,18 @@ private:
 	//Flag indicating that info/profile button shouldn't be shown at all.
 	//Speaker indicator and avatar name coords are translated accordingly
 	bool mShowInfoBtn;
-	bool mShowProfileBtn;
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+	bool mRlvCheckShowNames;
+// [/RLVa:KB]
 
 	/// indicates whether to show icons representing permissions granted
 	bool mShowPermissions;
 
 	/// true when the mouse pointer is hovering over this item
 	bool mHovered;
-	
+
 	void fetchAvatarName();
 	boost::signals2::connection mAvatarNameCacheConnection;
-
-	static bool	sStaticInitialized; // this variable is introduced to improve code readability
-	static S32  sLeftPadding; // padding to first left visible child (icon or name)
-	static S32  sNameRightPadding; // right padding from name to next visible child
-
-	/**
-	 * Contains widths of each child specified by EAvatarListItemChildIndex
-	 * including padding to the next right one.
-	 *
-	 * @see initChildrenWidths()
-	 */
-	static S32 sChildrenWidths[ALIC_COUNT];
-
 };
 
 #endif //LL_LLAVATARLISTITEM_H

@@ -64,6 +64,8 @@ namespace LLInitParam
 	{
 		declare("icons_with_text",	BTNTYPE_ICONS_WITH_TEXT);
 		declare("icons_only",		BTNTYPE_ICONS_ONLY);
+		declare("icons_small",		BTNTYPE_ICONS_SMALL);
+		declare("text_only",		BTNTYPE_TEXT_ONLY);
 	}
 
 	void TypeValues<SideType>::declareValues()
@@ -81,6 +83,8 @@ LLToolBar::Params::Params()
 	side("side", SIDE_TOP),
 	button_icon("button_icon"),
 	button_icon_and_text("button_icon_and_text"),
+	button_icon_small("button_icon_small"),
+	button_text("button_text"),
 	read_only("read_only", false),
 	wrap("wrap", true),
 	pad_left("pad_left"),
@@ -122,6 +126,8 @@ LLToolBar::LLToolBar(const LLToolBar::Params& p)
 {
 	mButtonParams[LLToolBarEnums::BTNTYPE_ICONS_WITH_TEXT] = p.button_icon_and_text;
 	mButtonParams[LLToolBarEnums::BTNTYPE_ICONS_ONLY] = p.button_icon;
+	mButtonParams[LLToolBarEnums::BTNTYPE_ICONS_SMALL] = p.button_icon_small;
+	mButtonParams[LLToolBarEnums::BTNTYPE_TEXT_ONLY] = p.button_text;
 }
 
 LLToolBar::~LLToolBar()
@@ -151,7 +157,6 @@ void LLToolBar::createContextMenu()
 
 		if (menu)
 		{
-			menu->setBackgroundColor(LLUIColorTable::instance().getColor("MenuPopupBgColor"));
 			mPopupMenuHandle = menu->getHandle();
 			mRemoveButtonHandle = menu->getChild<LLView>("Remove button")->getHandle();
 		}
@@ -450,6 +455,14 @@ BOOL LLToolBar::isSettingChecked(const LLSD& userdata)
 	{
 		retval = (mButtonType == BTNTYPE_ICONS_ONLY);
 	}
+	else if (setting_name == "icons_small")
+	{
+		retval = (mButtonType == BTNTYPE_ICONS_SMALL);
+	}
+	else if (setting_name == "text_only")
+	{
+		retval = (mButtonType == BTNTYPE_TEXT_ONLY);
+	}
 
 	return retval;
 }
@@ -467,6 +480,14 @@ void LLToolBar::onSettingEnable(const LLSD& userdata)
 	else if (setting_name == "icons_only")
 	{
 		setButtonType(BTNTYPE_ICONS_ONLY);
+	}
+	else if (setting_name == "icons_small")
+	{
+		setButtonType(BTNTYPE_ICONS_SMALL);
+	}
+	else if (setting_name == "text_only")
+	{
+		setButtonType(BTNTYPE_TEXT_ONLY);
 	}
 }
 
@@ -927,7 +948,10 @@ LLToolBarButton* LLToolBar::createButton(const LLCommandId& id)
 	button_p.name = commandp->name();
 	button_p.label = LLTrans::getString(commandp->labelRef());
 	button_p.tool_tip = LLTrans::getString(commandp->tooltipRef());
-	button_p.image_overlay = LLUI::getUIImage(commandp->icon());
+	if (mButtonType != BTNTYPE_TEXT_ONLY)
+	{
+		button_p.image_overlay = LLUI::getUIImage(commandp->icon());
+	}
 	button_p.button_flash_enable = commandp->isFlashingAllowed();
 	button_p.overwriteFrom(mButtonParams[mButtonType]);
 	LLToolBarButton* button = LLUICtrlFactory::create<LLToolBarButton>(button_p);
@@ -1218,6 +1242,9 @@ void LLToolBarButton::setEnabled(BOOL enabled)
 		mImageOverlayColor = mImageOverlayDisabledColor;
 		mImageOverlaySelectedColor = mImageOverlayDisabledColor;
 	}
+// [RLVa:KB] - Checked: 2011-12-17 (RLVa-1.4.5a) | Added: RLVa-1.4.5a
+	LLButton::setEnabled(enabled);
+// [/RLVa:KB]
 }
 
 const std::string LLToolBarButton::getToolTip() const	
