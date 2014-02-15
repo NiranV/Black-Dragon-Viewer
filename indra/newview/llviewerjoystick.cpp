@@ -1226,6 +1226,18 @@ void LLViewerJoystick::setSNDefaults()
 	gSavedSettings.setS32("JoystickAxis4", 3); // roll 
 	gSavedSettings.setS32("JoystickAxis5", 5); // yaw
 	gSavedSettings.setS32("JoystickAxis6", -1);
+
+	gSavedSettings.setS32("JoystickButtonJump", -1);
+	gSavedSettings.setS32("JoystickButtonCrouch", -1);
+	gSavedSettings.setS32("JoystickButtonFly", -1);
+	gSavedSettings.setS32("JoystickButtonRunToggle", -1);
+	gSavedSettings.setS32("JoystickButtonMouselook", -1);
+	gSavedSettings.setS32("JoystickButtonZoomDefault", -1);
+	gSavedSettings.setS32("JoystickButtonFlycam", 0);
+	gSavedSettings.setS32("JoystickButtonZoomOut", -1);
+	gSavedSettings.setS32("JoystickButtonZoomIn", -1);
+	gSavedSettings.setS32("JoystickButtonRollLeft", -1);
+	gSavedSettings.setS32("JoystickButtonRollRight", -1);
 	
 	gSavedSettings.setBOOL("Cursor3D", is_3d_cursor);
 	gSavedSettings.setBOOL("AutoLeveling", true);
@@ -1308,8 +1320,8 @@ void LLViewerJoystick::setXboxDefaults()
 	gSavedSettings.setF32("AvatarAxisScale1", .2f);
 	gSavedSettings.setF32("AvatarAxisScale2", .1f);
 	gSavedSettings.setF32("AvatarAxisScale4", 1.0f);
-	gSavedSettings.setF32("AvatarAxisScale5", 1.2f);
-	gSavedSettings.setF32("AvatarAxisScale3", 1.0f);
+	gSavedSettings.setF32("AvatarAxisScale5", 2.4f);
+	gSavedSettings.setF32("AvatarAxisScale3", 2.0f);
 	gSavedSettings.setF32("BuildAxisScale1", 2.f);
 	gSavedSettings.setF32("BuildAxisScale2", 2.f);
 	gSavedSettings.setF32("BuildAxisScale0", 2.f);
