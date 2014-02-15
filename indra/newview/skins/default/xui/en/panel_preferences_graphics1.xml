@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1700"
+  height="1785"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -689,7 +689,6 @@ width="510">
       tool_tip="Debug testing to prevent memory leaking see STORM-1011"
       width="315" />-->
    <check_box
-              enabled="false"
    control_name="RenderUseImpostors"
    height="16"
    initial_value="false"
@@ -1598,16 +1597,15 @@ width="510">
  name="Antialiasing:"
  top_pad="10"
  width="120">
- FXAA:
+ FX-Anti-aliasing:
  </text>
  <combo_box
  control_name="RenderFSAASamples"
  height="20"
- initial_value="false"
  label=""
  layout="topleft"
  follows="left|top"
- tool_tip="Toggles FXAA (Fast Aprox. Anti-aliasing) on or off. This setting can greatly enhance image quality without having any impact on performance but should be kept off for high resolution snapshots beyond your real window or fullscreen resolution"
+ tool_tip="Toggles FXAA (Fast Aprox. Anti-aliasing) on or off. This setting can greatly enhance image quality without having any impact on performance."
  left="140"
  name="fsaa"
  top_delta="-2"
@@ -2424,6 +2422,214 @@ width="510">
  layout="topleft"
  left="370"
  top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      can_edit_text="true"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="1.0"
+      label="Shoulder Strength:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="3"
+      min_val="0"
+      name="ExodusRenderToneAdvOptA_X"
+      top_pad="1"
+      width="322">
+         <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="ExodusRenderToneAdvOptA"/>
+      </slider>
+      <slider
+      can_edit_text="true"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="1.0"
+      label="Linear Strength:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="3"
+      min_val="0"
+      name="ExodusRenderToneAdvOptA_Y"
+      top_pad="1"
+      width="322">
+         <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="ExodusRenderToneAdvOptA"/>
+      </slider>
+      <slider
+      can_edit_text="true"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="1.0"
+      label="Linear Angle:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="3"
+      min_val="0"
+      name="ExodusRenderToneAdvOptA_Z"
+      top_pad="1"
+      width="322">
+         <slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="ExodusRenderToneAdvOptA"/>
+      </slider>
+      <button
+ follows="left|top"
+ control_name="ExodusRenderToneAdvOptA"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      can_edit_text="true"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="1.0"
+      label="Toe Strength:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="3"
+      min_val="0"
+      name="ExodusRenderToneAdvOptB_X"
+      top_pad="1"
+      width="322">
+         <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="ExodusRenderToneAdvOptB"/>
+      </slider>
+      <slider
+      can_edit_text="true"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="1.0"
+      label="Toe Numerator:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="3"
+      min_val="0"
+      name="ExodusRenderToneAdvOptB_Y"
+      top_pad="1"
+      width="322">
+         <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="ExodusRenderToneAdvOptB"/>
+      </slider>
+      <slider
+      can_edit_text="true"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="1.0"
+      label="Toe Denominator:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="3"
+      min_val="0"
+      name="ExodusRenderToneAdvOptB_Z"
+      top_pad="1"
+      width="322">
+         <slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="ExodusRenderToneAdvOptB"/>
+      </slider>
+      <button
+ follows="left|top"
+ control_name="ExodusRenderToneAdvOptB"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      can_edit_text="true"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="1.0"
+      label="Linear White:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="3"
+      min_val="0"
+      name="ExodusRenderToneAdvOptC_X"
+      top_pad="1"
+      width="322">
+         <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="ExodusRenderToneAdvOptC"/>
+      </slider>
+      <slider
+      can_edit_text="true"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="1.0"
+      label="Exposure Bias:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="3"
+      min_val="0"
+      name="ExodusRenderToneAdvOptC_Y"
+      top_pad="1"
+      width="322">
+         <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="ExodusRenderToneAdvOptC"/>
+      </slider>
+      <button
+ follows="left|top"
+ control_name="ExodusRenderToneAdvOptC"
+ height="30"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-15"
  name="default"
  width="60">
          <button.commit_callback
