@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="640"
+     height="695"
      name="ui_panel"
      top="0"
      left="0"
@@ -518,7 +518,8 @@ width="510">
 	    name="MaxPrimSize"
 	    top_delta="-49"
 	    width="200" />
-		<panel
+		
+	<panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
@@ -528,6 +529,59 @@ width="510">
  left="1"
  name="title"
  top_pad="63"
+ width="515"/>
+	    <text
+	    type="string"
+	    length="1"
+	    follows="left|top"
+	    height="12"
+	    layout="topleft"
+	    left="10"
+	    name="minimap_label"
+	    top_delta="4"
+	    width="240">Floater Transparency Options:</text>
+		<slider
+	    control_name="InactiveFloaterTransparency"
+	    follows="left|top"
+	    height="16"
+	    increment="0.01"
+	    initial_value="0.0"
+	    label="Unfocused:"
+	    layout="topleft"
+	    left="10"
+	    label_width="150"
+	    max_val="1.0"
+	    min_val="0.0"
+	    name="InactiveFloaterTransparency"
+	    tool_tip="Set the transparency of non focused windows"
+	    top_pad="15"
+	    width="319" />
+		<slider
+	    control_name="ActiveFloaterTransparency"
+	    follows="left|top"
+	    height="16"
+	    increment="0.01"
+	    initial_value="0.0"
+	    label="Focused:"
+	    layout="topleft"
+	    left="10"
+	    label_width="150"
+	    max_val="1.0"
+	    min_val="0.0"
+	    name="ActiveFloaterTransparency"
+	    tool_tip="Set the transparency of focused windows"
+	    top_pad="3"
+	    width="319" />
+		<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="Black_50"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
  width="515"/>
 	    <text
 	    type="string"
