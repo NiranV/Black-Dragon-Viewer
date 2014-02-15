@@ -34,6 +34,8 @@
 #include "llhandmotion.h"
 #include "llcriticaldamp.h"
 
+#include "../newview/llviewercontrol.h"
+
 //-----------------------------------------------------------------------------
 // Constants
 //-----------------------------------------------------------------------------
@@ -85,7 +87,10 @@ LLMotion::LLMotionInitStatus LLEditingMotion::onInitialize(LLCharacter *characte
 	mCharacter = character;
 
 	// make sure character skeleton is copacetic
-	if (!mCharacter->getJoint("mShoulderLeft") ||
+	if (!mCharacter->getJoint("mShoulderRight") ||
+		!mCharacter->getJoint("mElbowRight") ||
+		!mCharacter->getJoint("mWristRight") ||
+		!mCharacter->getJoint("mShoulderLeft") ||
 		!mCharacter->getJoint("mElbowLeft") ||
 		!mCharacter->getJoint("mWristLeft"))
 	{
@@ -94,10 +99,23 @@ LLMotion::LLMotionInitStatus LLEditingMotion::onInitialize(LLCharacter *characte
 	}
 
 	// get the shoulder, elbow, wrist joints from the character
-	mParentState->setJoint( mCharacter->getJoint("mShoulderLeft")->getParent() );
-	mShoulderState->setJoint( mCharacter->getJoint("mShoulderLeft") );
-	mElbowState->setJoint( mCharacter->getJoint("mElbowLeft") );
-	mWristState->setJoint( mCharacter->getJoint("mWristLeft") );
+	const bool right_hand = gSavedSettings.getBOOL("AvatarRightHander");
+	if(right_hand)
+	{
+		// get the right shoulder, elbow, wrist joints from the character
+		mParentState->setJoint( mCharacter->getJoint("mShoulderRight")->getParent() );
+		mShoulderState->setJoint( mCharacter->getJoint("mShoulderRight") );
+		mElbowState->setJoint( mCharacter->getJoint("mElbowRight") );
+		mWristState->setJoint( mCharacter->getJoint("mWristRight") );
+	}
+	else
+	{
+		// get the left shoulder, elbow, wrist joints from the character
+		mParentState->setJoint( mCharacter->getJoint("mShoulderLeft")->getParent() );
+		mShoulderState->setJoint( mCharacter->getJoint("mShoulderLeft") );
+		mElbowState->setJoint( mCharacter->getJoint("mElbowLeft") );
+		mWristState->setJoint( mCharacter->getJoint("mWristLeft") );
+	}
 	mTorsoState->setJoint( mCharacter->getJoint("mTorso"));
 
 	if ( ! mParentState->getJoint() )
@@ -130,10 +148,18 @@ LLMotion::LLMotionInitStatus LLEditingMotion::onInitialize(LLCharacter *characte
 	mElbowJoint.setRotation(	mElbowState->getJoint()->getRotation() );
 
 	// connect the ikSolver to the chain
-	mIKSolver.setPoleVector( LLVector3( -1.0f, 1.0f, 0.0f ) );
 	// specifying the elbow's axis will prevent bad IK for the more
-	// singular configurations, but the axis is limb-specific -- Leviathan 
-	mIKSolver.setBAxis( LLVector3( -0.682683f, 0.0f, -0.730714f ) );
+	// singular configurations, but the axis is limb-specific -- Leviathan
+	if(right_hand)
+	{
+		mIKSolver.setPoleVector( LLVector3( 0.0f, -0.9f, -1.0f ) );
+		mIKSolver.setBAxis( LLVector3( -0.01f, 0.0f, 0.9f));
+	}
+	else
+	{
+		mIKSolver.setPoleVector( LLVector3( -1.0f, 1.0f, 0.0f ) );
+		mIKSolver.setBAxis( LLVector3( -0.682683f, 0.0f, -0.730714f ) );
+	}
 	mIKSolver.setupJoints( &mShoulderJoint, &mElbowJoint, &mWristJoint, &mTarget );
 
 	return STATUS_SUCCESS;
@@ -202,14 +228,14 @@ BOOL LLEditingMotion::onUpdate(F32 time, U8* joint_mask)
 
 	edit_plane_normal.rotVec(mTorsoState->getJoint()->getWorldRotation());
 	
-	F32 dot = edit_plane_normal * target;
+	//F32 dot = edit_plane_normal * target;
 
-	if (dot < 0.f)
+	/*if (dot < 0.f)
 	{
 		target = target + (edit_plane_normal * (dot * 2.f));
 		target.mV[VZ] += clamp_rescale(dot, 0.f, -1.f, 0.f, 5.f);
 		target.normVec();
-	}
+	}*/
 
 	target = target * target_dist;
 	if (!target.isFinite())
