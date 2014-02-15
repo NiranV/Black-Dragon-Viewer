@@ -576,6 +576,19 @@ void LLFloaterPreference::refreshGraphicControls()
 	getChild<LLUICtrl>("RenderGlowWarmthWeights_Y")->setValue(gSavedSettings.getVector3("RenderGlowWarmthWeights").mV[VY]);
 	getChild<LLUICtrl>("RenderGlowWarmthWeights_Z")->setValue(gSavedSettings.getVector3("RenderGlowWarmthWeights").mV[VZ]);
 
+	getChild<LLUICtrl>("RenderShadowResolution_X")->setValue(gSavedSettings.getVector3("RenderShadowResolution").mV[VX]);
+	getChild<LLUICtrl>("RenderShadowResolution_Y")->setValue(gSavedSettings.getVector3("RenderShadowResolution").mV[VY]);
+	getChild<LLUICtrl>("RenderShadowResolution_Z")->setValue(gSavedSettings.getVector3("RenderShadowResolution").mV[VZ]);
+
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_X")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptA").mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Y")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptA").mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Z")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptA").mV[VZ]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_X")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptB").mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Y")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptB").mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Z")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptB").mV[VZ]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptC_X")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptC").mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptC_Y")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptC").mV[VY]);
+
 	getChild<LLUICtrl>("ExodusRenderGamma_X")->setValue(gSavedSettings.getVector3("ExodusRenderGamma").mV[VX]);
 	getChild<LLUICtrl>("ExodusRenderGamma_Y")->setValue(gSavedSettings.getVector3("ExodusRenderGamma").mV[VY]);
 	getChild<LLUICtrl>("ExodusRenderGamma_Z")->setValue(gSavedSettings.getVector3("ExodusRenderGamma").mV[VZ]);
