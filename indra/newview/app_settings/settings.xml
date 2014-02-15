@@ -15900,21 +15900,6 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-  <key>XYZ1</key>
-  <map>
-    <key>Comment</key>
-    <string>Raw shadow width (X) and height (Y) by multiplicator (Z)</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector3</string>
-    <key>Value</key>
-    <array>
-      <real>0</real>
-      <real>0</real>
-      <real>0</real>
-    </array>
-  </map>
     
   <!-- Remappable Keys -->
   <key>JoystickButtonFlycam</key>

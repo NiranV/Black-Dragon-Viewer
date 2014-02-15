@@ -7814,7 +7814,6 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 													&result);
 
 					focus_point.set(result.getF32ptr());
-					gSavedSettings.setVector3("XYZ1", focus_point);
 //					//BD - Safeguard against sudden all-blurry-screen in rare
 					//     inconsistent situations caused by unknown reasons.
 					focus_point.clamp(LLVector3(0,0,0),focus_point);
