@@ -2775,7 +2775,8 @@ void LLAgentCamera::lookAtLastChat()
 BOOL LLAgentCamera::setPointAt(EPointAtType target_type, LLViewerObject *object, LLVector3 position)
 {
 	// disallow pointing at attachments and avatars
-	if (object && (object->isAttachment() || object->isAvatar()))
+	if (object && (object->isAttachment() || object->isAvatar() || 
+		!gSavedSettings.getBOOL("ShowSelectionBeam")))
 	{
 		return FALSE;
 	}
