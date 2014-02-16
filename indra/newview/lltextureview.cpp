@@ -582,7 +582,6 @@ void LLGLTexMemBar::draw()
 											 LLFontGL::NORMAL, LLFontGL::NO_SHADOW, S32_MAX, S32_MAX,
 											 &x_right, FALSE);
 
-	left = 560;
 	F32 bandwidth = LLAppViewer::getTextureFetch()->getTextureBandwidth();
 	F32 max_bandwidth = gSavedSettings.getF32("ThrottleBandwidthKBPS");
 	color = bandwidth > max_bandwidth ? LLColor4::red : bandwidth > max_bandwidth * .75f ? LLColor4::yellow : text_color;
