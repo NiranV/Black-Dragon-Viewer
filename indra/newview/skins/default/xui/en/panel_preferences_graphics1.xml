@@ -1725,7 +1725,7 @@ width="510">
  value="16"/>
  </combo_box>
  <slider
-      enabled_control="RenderDeferredSSAO"
+      enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
       height="15"
@@ -1739,7 +1739,7 @@ width="510">
       left="10"
       max_val="4096"
       min_val="256"
-      name="RenderShadowResolution"
+      name="RenderShadowResolution_X"
       top_pad="5"
       width="326">
    <slider.commit_callback
@@ -1747,7 +1747,7 @@ width="510">
       parameter="RenderShadowResolution"/>
       </slider>
  <slider
-      enabled_control="RenderDeferredSSAO"
+      enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
       height="15"
@@ -1761,7 +1761,7 @@ width="510">
       left="10"
       max_val="4096"
       min_val="256"
-      name="RenderShadowResolution"
+      name="RenderShadowResolution_Y"
       top_pad="1"
       width="326">
    <slider.commit_callback
@@ -1769,7 +1769,7 @@ width="510">
       parameter="RenderShadowResolution"/>
       </slider>
  <slider
-      enabled_control="RenderDeferredSSAO"
+      enabled_control="RenderDeferred"
       decimal_digits="1"
       follows="left|top"
       height="15"
@@ -1783,7 +1783,7 @@ width="510">
       left="10"
       max_val="4"
       min_val="0"
-      name="RenderShadowResolution"
+      name="RenderShadowResolution_Z"
       top_pad="1"
       width="315" >
    <slider.commit_callback
@@ -2184,6 +2184,7 @@ width="510">
      
      <slider
       decimal_digits="2"
+      enabled_control="RenderDeferredSSAO"
       control_name="RenderSSAOEffect"
       can_edit_text="true"
       follows="left|top"
@@ -2429,6 +2430,7 @@ width="510">
       </button>
       <slider
       can_edit_text="true"
+      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="15"
@@ -2449,6 +2451,7 @@ width="510">
       </slider>
       <slider
       can_edit_text="true"
+      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="15"
@@ -2469,6 +2472,7 @@ width="510">
       </slider>
       <slider
       can_edit_text="true"
+      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="15"
@@ -2505,6 +2509,7 @@ width="510">
       </button>
       <slider
       can_edit_text="true"
+      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="15"
@@ -2525,6 +2530,7 @@ width="510">
       </slider>
       <slider
       can_edit_text="true"
+      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="15"
@@ -2545,6 +2551,7 @@ width="510">
       </slider>
       <slider
       can_edit_text="true"
+      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="15"
@@ -2581,6 +2588,7 @@ width="510">
       </button>
       <slider
       can_edit_text="true"
+      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="15"
@@ -2601,6 +2609,7 @@ width="510">
       </slider>
       <slider
       can_edit_text="true"
+      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="15"
