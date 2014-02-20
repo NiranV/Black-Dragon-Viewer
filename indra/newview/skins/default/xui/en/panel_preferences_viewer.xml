@@ -180,7 +180,6 @@ width="510">
 		     top_pad="0"
 		     width="256" />
 		     <check_box
-						enabled="false"
 		     control_name="AvatarRightHander"
 		     height="16"
 		     initial_value="false"
@@ -435,8 +434,8 @@ width="510">
    top_delta="2"
    mouse_opaque="false"
    name="text_box5"
-   width="20">
-    MB
+   width="160">
+    MegaBytes
   </text>
   <check_box
 		     top_delta="4"
