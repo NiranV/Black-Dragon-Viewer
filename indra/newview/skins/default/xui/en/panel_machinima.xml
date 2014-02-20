@@ -58,7 +58,7 @@ width="345">
             <panel
             border="false"
             background_visible="false"
-            follows="all"
+            follows="left|top|right"
             height="1285"
             layout="topleft"
             left="0"
