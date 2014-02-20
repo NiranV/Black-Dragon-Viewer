@@ -729,6 +729,15 @@ static bool handleWaterResolutionChanged(const LLSD& newvalue)
 	gPipeline.handleReflectionChanges();
 	return true;
 }
+
+static bool handleTimeFactorChanged(const LLSD& newvalue)
+{
+	if (gSavedSettings.getBOOL("SlowMotionAnimation"))
+	{
+		gAgentAvatarp->setAnimTimeFactor(gSavedSettings.getF32("SlowMotionTimeFactor"));
+	}
+	return true;
+}
 //BD
 
 ////////////////////////////////////////////////////////////////////////////
@@ -905,6 +914,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderPostGreyscale")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderPostSepia")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderNormalMapScale")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
+	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
 //	//BD
 }
 
