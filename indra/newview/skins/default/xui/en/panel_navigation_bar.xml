@@ -261,11 +261,59 @@
 		 </layout_panel>
 		 <layout_panel
 			follows="top|left|right"
+			auto_resize="false"
+			layout="topleft"
+			height="23"
+           name="navigation_layout_panel"
+           width="10">
+									
+		 <view_border
+						bevel_style="in"
+						follows="top|left"
+						height="20"
+						layout="topleft"
+						left="4"
+						name="border1"
+						top="1"
+						width="1"/>
+		 </layout_panel>
+		 <layout_panel
+		  follows="left"
+		  visibility_control="ShowQuickAboutLandButton"
+		  auto_resize="false"
+		  height="23"
+		  left_pad="3"
+		  layout="topleft"
+		  mouse_opaque="false"
+		  name="about_land_panel"
+		  user_resize="false"
+		  width="34">
+			<button
+			image_overlay="toolbar_icons\land.png"
+			image_selected="transparent.j2c"
+			image_unselected="transparent.j2c"
+			image_overlay_color="1 1 1 0.6"
+			follows="left|top"
+			height="23"
+			layout="topleft"
+			left="7"
+			name="About_Land"
+			label="" 
+			tool_tip="Show information about the location you are in"
+			top_pad="-1"
+			width="24">
+			<button.init_callback
+			      function="Button.SetFloaterToggle"
+			      parameter="about_land" />
+			</button>
+		  </layout_panel>
+		 <layout_panel
+			follows="top|left|right"
 			auto_resize="true"
 			layout="topleft"
 			height="23"
            name="navigation_layout_panel"
-           width="312">
+           width="272">
 	        <location_input
                        follows="top|left|right"
 	         halign="right"
@@ -277,7 +325,7 @@
 	         mouse_opaque="false"
 	         name="location_combo"
 	         top="0"
-                width="300">
+                width="260">
              <combo_list
              mouse_wheel_opaque="true"/>
 	        </location_input>
