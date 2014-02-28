@@ -103,7 +103,7 @@
                  auto_resize="true"
                  layout="topleft"
                  name="panel3"
-                 width="1024">
+                 width="934">
     <icon
      bottom="-1"
      layout="topleft"
@@ -112,13 +112,13 @@
      image_name="ProgressTrack"
      color="1 1 1 1"
      left="1"
-     width="1024" />
+     width="934" />
     <progress_bar
      bottom="-1"
      color_bar="0.2 0.75 0.45 1"
      follows="left|bottom|right"
      height="20"
-     width="1024"
+     width="934"
      layout="topleft"
      left="1"
      name="login_progress_bar" />
@@ -129,7 +129,7 @@
      height="20"
      layout="topleft"
      left="0"
-     width="1024"
+     width="934"
      line_spacing.pixels="2"
      name="percent_text"
      text_color="EmphasisColor"
@@ -145,7 +145,7 @@
      layout="topleft"
      left="35"
      right="-1"
-     width="1024"
+     width="934"
      line_spacing.pixels="2"
      name="percent_symbol_text"
      text_color="EmphasisColor"
