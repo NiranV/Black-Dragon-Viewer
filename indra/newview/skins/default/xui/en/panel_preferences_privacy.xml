@@ -112,8 +112,16 @@
      left="10"
      name="log_inventory_chat"
      top_pad="15"
-     width="350">
-    </check_box>
+     width="350"/>
+	  <check_box
+     control_name="LogShowHistory"
+     height="16"
+     label="Show a part of the last conversation in history if available"
+     layout="topleft"
+     left="10"
+     name="log_show_history"
+     top_pad="0"
+     width="350"/>
     <text
         layout="topleft"
         follows="top|left"
