@@ -236,12 +236,16 @@ void LLFloaterEditSky::syncControls()
 	// haze density, horizon, mult, and altitude
 	param_mgr->mHazeDensity = cur_params.getFloat(param_mgr->mHazeDensity.mName, err);
 	childSetValue("WLHazeDensity", (F32) param_mgr->mHazeDensity);
+	childSetValue("WLHazeDensity2", (F32) param_mgr->mHazeDensity);
 	param_mgr->mHazeHorizon = cur_params.getFloat(param_mgr->mHazeHorizon.mName, err);
 	childSetValue("WLHazeHorizon", (F32) param_mgr->mHazeHorizon);
+	childSetValue("WLHazeHorizon2", (F32) param_mgr->mHazeHorizon);
 	param_mgr->mDensityMult = cur_params.getFloat(param_mgr->mDensityMult.mName, err);
 	childSetValue("WLDensityMult", ((F32) param_mgr->mDensityMult) * param_mgr->mDensityMult.mult);
+	childSetValue("WLDensityMult2", ((F32) param_mgr->mDensityMult) * param_mgr->mDensityMult.mult);
 	param_mgr->mMaxAlt = cur_params.getFloat(param_mgr->mMaxAlt.mName, err);
 	childSetValue("WLMaxAltitude", (F32) param_mgr->mMaxAlt);
+	childSetValue("WLMaxAltitude2", (F32) param_mgr->mMaxAlt);
 
 	// blue density
 	param_mgr->mBlueDensity = cur_params.getVector(param_mgr->mBlueDensity.mName, err);
@@ -321,11 +325,13 @@ void LLFloaterEditSky::syncControls()
 
 	param_mgr->mDistanceMult = cur_params.getFloat(param_mgr->mDistanceMult.mName, err);
 	childSetValue("WLDistanceMult", (F32) param_mgr->mDistanceMult);
+	childSetValue("WLDistanceMult2", (F32) param_mgr->mDistanceMult);
 
 	// Tweak extras
 
 	param_mgr->mWLGamma = cur_params.getFloat(param_mgr->mWLGamma.mName, err);
 	childSetValue("WLGamma", (F32) param_mgr->mWLGamma);
+	childSetValue("WLGamma2", (F32) param_mgr->mWLGamma);
 
 	childSetValue("WLStarAlpha", param_mgr->mCurParams.getStarBrightness());
 }
