@@ -354,10 +354,12 @@ BOOL LLToolCamera::handleRightMouseUp(S32 x, S32 y, MASK mask)
 	}
 
 //	//BD - Intercept here if we reached the threshold or if we are in
-	//     Appearance Mode or if we are in Alt-Zoom mode, this prevents 
-	//     a nasty crash.
+	//     Appearance Mode or if we are in any sort of camera movement 
+	//     mode, this prevents crashing.
 	if (mOutsideSlopRightX || mOutsideSlopRightY ||
 		CAMERA_MODE_CUSTOMIZE_AVATAR == gAgentCamera.getCameraMode() ||
+		mask == MASK_PAN || mask == (MASK_PAN | MASK_ALT) ||
+		mask == MASK_ORBIT || mask == (MASK_ALT | MASK_ORBIT) ||
 		mask == MASK_ALT)
 	{
 		return TRUE;
