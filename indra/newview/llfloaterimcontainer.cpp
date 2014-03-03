@@ -1287,7 +1287,7 @@ bool LLFloaterIMContainer::enableContextMenuItem(const LLSD& userdata)
 	}
 
 	//Enable Chat history item for ad-hoc and group conversations
-	if ("can_chat_history" == item && uuids.size() > 0)
+	/*if ("can_chat_history" == item && uuids.size() > 0)
 	{
 		//Disable menu item if selected participant is user agent
 		if(uuids.front() != gAgentID)
@@ -1302,7 +1302,7 @@ bool LLFloaterIMContainer::enableContextMenuItem(const LLSD& userdata)
 				return LLLogChat::isTranscriptExist(uuids.front(),is_group);
 			}
 		}
-	}
+	}*/
 
 	// If nothing is selected(and selected item is not group chat), everything needs to be disabled
 	if (uuids.size() <= 0)

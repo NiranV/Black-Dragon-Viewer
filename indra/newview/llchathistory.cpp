@@ -616,7 +616,8 @@ protected:
 				menu->setItemEnabled("Mute Text", LLAvatarActions::canBlock(mAvatarID));
 			}
 
-			menu->setItemEnabled("Chat History", LLLogChat::isTranscriptExist(mAvatarID));
+			//menu->setItemEnabled("Chat History", LLLogChat::isTranscriptExist(mAvatarID));
+			menu->setItemEnabled("Chat History", true);
 			menu->setItemEnabled("Map", (LLAvatarTracker::instance().isBuddyOnline(mAvatarID) && is_agent_mappable(mAvatarID)) || gAgent.isGodlike() );
 			menu->buildDrawLabels();
 			menu->updateParent(LLMenuGL::sMenuContainer);
