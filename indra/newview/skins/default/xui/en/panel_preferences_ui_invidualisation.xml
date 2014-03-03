@@ -93,11 +93,10 @@ width="510">
 	    top_pad="0"
 	    width="256" />
 	    <check_box
-				   enabled="false"
-	    control_name="HideL$Balance"
+	    control_name="ShowBalance"
 	    height="16"
 	    initial_value="true"
-	    label="Hide L$ Balance in Statusbar"
+	    label="Show L$ Balance in Statusbar"
 	    layout="topleft"
 	    left="10"
 	    name="HideL$Balance"

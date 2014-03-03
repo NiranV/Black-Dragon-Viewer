@@ -35,6 +35,7 @@
     </panel.string>
     <text
      halign="right"
+	 visibility_control="ShowBalance"
      font="SansSerifSmall"
      follows="right|top"
      height="16"

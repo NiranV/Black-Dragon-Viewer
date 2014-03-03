@@ -15781,7 +15781,7 @@
   <key>ShowTopSearchBar</key>
   <map>
     <key>Comment</key>
-    <string>Show Search field in Top bar</string>
+    <string>Show Search field in Topbar</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -15803,7 +15803,7 @@
   <key>ShowQuickWindlightButton</key>
   <map>
     <key>Comment</key>
-    <string>Show Windlight Button in Top bar (Statusbar)</string>
+    <string>Show Windlight Button in Topbar (Statusbar)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -15814,7 +15814,7 @@
   <key>ShowQuickSkyButton</key>
   <map>
     <key>Comment</key>
-    <string>Show Sky Button in Top bar (Statusbar)</string>
+    <string>Show Sky Button in Topbar (Statusbar)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -15825,7 +15825,7 @@
   <key>ShowQuickWaterButton</key>
   <map>
     <key>Comment</key>
-    <string>Show Water Button in Top bar (Statusbar)</string>
+    <string>Show Water Button in Topbar (Statusbar)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -15836,7 +15836,7 @@
   <key>ShowQuickBrowserButton</key>
   <map>
     <key>Comment</key>
-    <string>Show Browser Button in Top bar (Statusbar)</string>
+    <string>Show Browser Button in Topbar (Statusbar)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -15847,7 +15847,7 @@
   <key>ShowQuickHomeButton</key>
   <map>
     <key>Comment</key>
-    <string>Show Home Button in Top bar (Statusbar)</string>
+    <string>Show Home Button in Topbar (Statusbar)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -15858,7 +15858,18 @@
   <key>ShowQuickAboutLandButton</key>
   <map>
     <key>Comment</key>
-    <string>Show About Land Button in Top bar (Statusbar)</string>
+    <string>Show About Land Button in Topbar (Statusbar)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>ShowBalance</key>
+  <map>
+    <key>Comment</key>
+    <string>Show your current Linden Dollar balance in Topbar (Statusbar)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
