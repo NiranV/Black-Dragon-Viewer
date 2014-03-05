@@ -9365,7 +9365,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>2.1</real>
+    <real>1.0</real>
   </map>
   <key>RenderShadowBlurSamples</key>
   <map>
