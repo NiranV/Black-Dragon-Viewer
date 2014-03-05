@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1785"
+  height="1800"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -1807,27 +1807,29 @@ width="510">
                                  function="Pref.Default"/>
       </button>
  <slider
-      control_name="RenderShadowBlurSize"
       enabled_control="RenderDeferredSSAO"
-      decimal_digits="1"
+      decimal_digits="3"
       follows="left|top"
       height="15"
-      increment="0.1"
-      initial_value="3"
+      increment="0.001"
       can_edit_text="true"
       label="Shadow Blur Size:"
       label_width="150"
-      tool_tip="Set the strength of each blur pass of shadows and SSAO"
+      tool_tip="Set the strength of each blur pass of shadows"
       layout="topleft"
       left="10"
-      max_val="6"
-      min_val="0"
-      name="BlurSize"
+      max_val="3"
+      min_val="0.001"
+      name="RenderShadowGaussian_X"
       top_pad="1"
-      width="315" />
+      width="329">
+   <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="RenderShadowGaussian"/>
+      </slider>
  <button
  follows="left|top"
- control_name="RenderShadowBlurSize"
+ control_name="RenderShadowGaussian"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
@@ -1844,7 +1846,7 @@ width="510">
  
       <slider
       control_name="RenderShadowBlurDistFactor"
-      enabled_control="RenderDeferredSSAO"
+      enabled="false"
       decimal_digits="2"
       follows="left|top"
       can_edit_text="true"
@@ -2183,6 +2185,43 @@ width="510">
    width="115" />
      
      <slider
+      enabled_control="RenderDeferredSSAO"
+      decimal_digits="3"
+      follows="left|top"
+      height="15"
+      increment="0.001"
+      can_edit_text="true"
+      label="SSAO Blur Size:"
+      label_width="150"
+      tool_tip="Set the strength of each blur pass of SSAO"
+      layout="topleft"
+      left="10"
+      max_val="3"
+      min_val="0.001"
+      name="RenderShadowGaussian_Y"
+      top_pad="10"
+      width="329">
+   <slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="RenderShadowGaussian"/>
+      </slider>
+ <button
+ follows="left|top"
+ control_name="RenderShadowGaussian"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+     <slider
       decimal_digits="2"
       enabled_control="RenderDeferredSSAO"
       control_name="RenderSSAOEffect"
@@ -2198,7 +2237,7 @@ width="510">
       max_val="4"
       min_val="-1"
       name="SSAOEffect"
-      top_pad="10"
+      top_pad="1"
       width="326"/>
      <button
  follows="left|top"
