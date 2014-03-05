@@ -615,13 +615,6 @@ void LLFloaterIMNearbyChat::sendChat( EChatType type )
 	}
 
 	gAgent.stopTyping();
-
-	// If the user wants to stop chatting on hitting return, lose focus
-	// and go out of chat mode.
-	if (gSavedSettings.getBOOL("CloseChatOnReturn"))
-	{
-		stopChat();
-	}
 }
 
 void LLFloaterIMNearbyChat::addMessage(const LLChat& chat,bool archive,const LLSD &args)
@@ -664,6 +657,12 @@ void LLFloaterIMNearbyChat::onChatBoxCommit()
 	sendChat(CHAT_TYPE_NORMAL);
 
 	gAgent.stopTyping();
+
+	if(gSavedSettings.getBOOL("CloseChatOnReturn"))
+	{
+		setFocus(false);
+	}
+
 	if(!isMessagePaneExpanded() && gSavedSettings.getBOOL("AutohideChatOnReturn"))
 	{
 		setVisible(false);

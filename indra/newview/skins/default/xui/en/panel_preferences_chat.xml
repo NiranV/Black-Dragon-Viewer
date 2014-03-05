@@ -122,23 +122,21 @@ width="510">
  </text>
  <check_box
  control_name="CloseChatOnReturn"
- enabled="false"
  follows="left|top"
  height="16"
- label="Deselect the Local Chat window"
+ label="Deselect the Local Chat window (hides chat if always hide on focus loss is enabled)"
  layout="topleft"
  left="10"
  name="CloseChatOnReturn"
  top_pad="15"
  width="100" />
  <check_box
- control_name="AutohideChatBar"
- enabled="false"
+ control_name="AutohideChatOnReturn"
  follows="left|top"
  layout="topleft"
  top_pad="0"
  height="16"
- label="Hide the Local Chat window"
+ label="Hide the Local Chat window (overwrites deselecting)"
  left_delta="0"
  name="AutohideChatbar"
  width="100" />
@@ -186,13 +184,13 @@ width="510">
  top_pad="0"
  width="256" />
  <check_box
- control_name="AlwaysAutohideChatBar"
+ control_name="EnableAutohidingChat"
  follows="left|top"
  height="16"
- label="Always hide chatbar when losing focus"
+ label="Hide Local Chat window on focus loss"
  layout="topleft"
  left="10"
- name="AlwaysAutohideChatBar"
+ name="EnableAutohidingChat"
  top_pad="0"
  width="256" />
  <check_box
