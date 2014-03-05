@@ -2943,10 +2943,10 @@ void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id)
 								  LLInventoryModel::EXCLUDE_TRASH);
 	for (S32 i=0; i<item_array.count(); i++)
 	{
-		const LLInventoryItem* item = item_array.get(i).get();
+// [RLVa:KB] - Checked: 2013-02-12 (RLVa-1.4.8)
+		const LLViewerInventoryItem* item = item_array.get(i).get();
 		if (item->getIsLinkType() && item->getLinkedUUID() == item_id)
 		{
-// [RLVa:KB] - Checked: 2013-02-12 (RLVa-1.4.8)
 #if LL_RELEASE_WITH_DEBUG_INFO || LL_DEBUG
 			// NOTE-RLVa: debug-only, can be removed down the line
 			if (rlv_handler_t::isEnabled())
@@ -2954,10 +2954,14 @@ void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id)
 				RLV_ASSERT(rlvPredCanRemoveItem(item));
 			}
 #endif // LL_RELEASE_WITH_DEBUG_INFO || LL_DEBUG
-// [/RLVa:KB]
-
 			gInventory.purgeObject(item->getUUID());
 		}
+// [/RLVa:KB]
+//		const LLInventoryItem* item = item_array.get(i).get();
+//		if (item->getIsLinkType() && item->getLinkedUUID() == item_id)
+//		{
+//			gInventory.purgeObject(item->getUUID());
+//		}
 	}
 }
 
