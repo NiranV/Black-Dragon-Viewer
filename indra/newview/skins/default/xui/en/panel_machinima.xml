@@ -972,7 +972,7 @@ width="345">
                   </text>
                   <slider
                   control_name="RenderShadowBlurSize"
-                  enabled_control="RenderDeferred"
+                  enabled="false"
                   decimal_digits="1"
                   follows="left|top"
                   height="16"
@@ -991,7 +991,7 @@ width="345">
                   width="283" />
                   <slider
                   control_name="RenderShadowBlurDistFactor"
-                  enabled_control="RenderDeferred"
+                  enabled="false"
                   decimal_digits="2"
                   follows="left|top"
                   can_edit_text="true"
