@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0"?> 
 <llsd>
 <map>
     <key>installables</key>
@@ -522,9 +522,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>155a18d9675efd334e4dbc4fd1664bdf</string>
+              <string>f564a7d936a35492be490b850b284702</string>
               <key>url</key>
-              <string>http://viewer.catznip.com/downloads/packages/fmodex-4.44.12-windows-20130713.tar.bz2</string>
+              <string>https://bitbucket.org/NiranV/black-dragon-materials/downloads/fmodex-4.44.12-windows-20130611.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
