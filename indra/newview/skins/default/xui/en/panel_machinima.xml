@@ -971,7 +971,6 @@ width="345">
                   Shadows:
                   </text>
                   <slider
-                  control_name="RenderShadowBlurSize"
                   enabled="false"
                   decimal_digits="1"
                   follows="left|top"
@@ -981,14 +980,14 @@ width="345">
                   can_edit_text="true"
                   label="Blur Size:"
                   label_width="110"
-                  tool_tip="Set the strength of each blur pass of shadows and SSAO"
+                  tool_tip="Set the strength of each blur pass of shadows"
                   layout="topleft"
                   left="20"
                   max_val="6"
                   min_val="0"
                   name="BlurSize"
                   top_pad="2"
-                  width="283" />
+                  width="283"/>
                   <slider
                   control_name="RenderShadowBlurDistFactor"
                   enabled="false"
@@ -1094,6 +1093,24 @@ width="345">
                   name="SSAOFactor"
                   top_pad="3"
                   width="289" />
+                  <slider
+                  enabled="false"
+                  decimal_digits="1"
+                  follows="left|top"
+                  height="16"
+                  increment="0.1"
+                  initial_value="3"
+                  can_edit_text="true"
+                  label="Softness:"
+                  label_width="110"
+                  tool_tip="Set the blur strenght to smooth SSAO"
+                  layout="topleft"
+                  left="20"
+                  max_val="6"
+                  min_val="0"
+                  name="BlurSize"
+                  top_pad="2"
+                  width="283"/>
                   <text
                   font="SansSerif"
                   font.style="BOLD"
