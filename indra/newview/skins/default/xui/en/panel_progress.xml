@@ -15,7 +15,7 @@
   <string name="LoadingTip 5">Chuck Norris finished Second Life 3 times already!</string>
   <string name="LoadingTip 6">Never go full potato!</string>
   <!--<string name="LoadingTip 6">Sorry, there was a tip here but it has been temporarly removed.</string>-->
-  <string name="LoadingTip 7">This Viewer is based on Linden Lab's 3.6 codebase. It includes Server Side Baking/Appearance and the Materials Project.</string>
+  <string name="LoadingTip 7">This Viewer is based on Linden Lab's 3.7 codebase. It includes Server Side Appearance (SSB / SSB), the Materials Project, the HTTP Project and is fully compatible to Advanced Inventory System V3 (AISv3).</string>
   <string name="LoadingTip 8">You can open a second Inventory window by clicking at 'File' at the top of the Inventory window and then selecting 'New Inventory Window'.</string>
   <string name="LoadingTip 9">This Viewer supports RLVa, its a good way to live out your 'controlling' side , its often used for BDSM , locks , collars and other restraining actions , the reason why it was called Restrained Life but just because its mainly used for BDSM its not bad its API can also be used to create powerfull and really cool Roleplay games or HUD's , it can even be used to create automatic outfit wear and unwear scripts! so dont hesitiate to try it out! if you dont like it you can always disable it in Preferences -> RLVa , but you will need a relog.</string>-->
   <!--<string name="LoadingTip 9">[#9] This Viewer currently doesnt support RLVa anymore since RLVa is not up to date and might cause issues with the currently targeted Linden Source Code.</string>-->
