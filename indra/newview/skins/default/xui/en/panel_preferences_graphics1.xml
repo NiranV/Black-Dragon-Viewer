@@ -971,6 +971,7 @@ width="510">
    width="115"/>
    <check_box
       control_name="RenderWaterMipNormal"
+      enabled_control="VertexShaderEnable"
       height="16"
       initial_value="true"
       label="Use Water Mip-maps"
