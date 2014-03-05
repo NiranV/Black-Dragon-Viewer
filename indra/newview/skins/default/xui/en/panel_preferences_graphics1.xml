@@ -706,7 +706,6 @@ width="510">
  follows="left|top"
  height="12"
  layout="topleft"
- text_color="White_25"
  left="10"
  name="MaxAvatars"
  top_pad="4"
@@ -972,7 +971,6 @@ width="510">
    width="115"/>
    <check_box
       control_name="RenderWaterMipNormal"
-      visiblity_control="VertexShaderEnable"
       height="16"
       initial_value="true"
       label="Use Water Mip-maps"
