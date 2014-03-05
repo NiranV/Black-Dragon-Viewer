@@ -204,9 +204,8 @@ width="510">
  top_pad="0"
  width="400" />
  <check_box
- control_name="PlayChattingAnim"
+ control_name="PlayChatAnim"
  height="16"
- enabled="false"
  initial_value="true"
  label="Play chatting animation when sending chat"
  layout="topleft"
