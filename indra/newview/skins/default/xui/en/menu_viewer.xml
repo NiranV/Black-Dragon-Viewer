@@ -3619,20 +3619,6 @@
 
         <menu_item_separator/>
 
-        <menu_item_call
-         label="Request Admin Status"
-         name="Request Admin Options"
-         shortcut="control|alt|G">
-            <menu_item_call.on_click
-             function="Advanced.RequestAdminStatus" />
-        </menu_item_call>
-        <menu_item_call
-         label="Leave Admin Status"
-         name="Leave Admin Options"
-         shortcut="control|alt|shift|G">
-            <menu_item_call.on_click
-             function="Advanced.LeaveAdminStatus" />
-        </menu_item_call>
 		<menu_item_check
          label="Show Admin Menu"
          name="View Admin Options">
