@@ -111,7 +111,8 @@
   icon="Command_Machinima_Icon"
   label_ref="Command_Machinima_Label"
   tooltip_ref="Command_Machinima_Tooltip"
-  execute_function="MachinimaSidebar"/>
+  execute_function="ToggleControl"
+  execute_parameters="MachinimaSidebarPush"/>
   <command
   name="map"
   available_in_toybox="true"
