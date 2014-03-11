@@ -13,13 +13,13 @@ width="345">
       <icon
       top="0" 
       scale_image="true"
-      follows="top|left"
+      follows="all"
       layout="topleft"
-      height="42"
-      color="0 0 0 0.75"
-      image_name="Rounded_Rect"
+      height="768"
+      color="0.8 0.8 0.8 1"
+      image_name="Sidebar_BG"
       left="0"
-      width="344" />
+      width="345" />
       <text
       font="SansSerifHuge"
       font.style="BOLD"
@@ -34,16 +34,6 @@ width="345">
       width="320">
       Machinima Sidebar
       </text>
-      <icon
-      top_pad="15" 
-      scale_image="true"
-      follows="all"
-      layout="topleft"
-      height="722"
-      color="0 0 0 0.75"
-      image_name="white.tga"
-      left="2"
-      width="341" />
       <scroll_container
       color="Transparent"
       follows="all"
@@ -1038,7 +1028,7 @@ width="345">
                   min_val="-1"
                   name="SSAOEffect"
                   top_pad="2"
-                  width="293" />
+                  width="294" />
                   <slider
                   control_name="RenderSSAOScale"
                   enabled_control="RenderDeferredSSAO"
@@ -1056,7 +1046,7 @@ width="345">
                   min_val="0"
                   name="SSAOScale"
                   top_pad="3"
-                  width="293" />
+                  width="294" />
                   <slider
                   control_name="RenderSSAOMaxScale"
                   enabled_control="RenderDeferredSSAO"
@@ -1074,7 +1064,7 @@ width="345">
                   min_val="0"
                   name="SSAOMaxScale"
                   top_pad="3"
-                  width="293" />
+                  width="294" />
                   <slider
                   control_name="RenderSSAOFactor"
                   enabled_control="RenderDeferredSSAO"
@@ -1092,7 +1082,7 @@ width="345">
                   min_val="0"
                   name="SSAOFactor"
                   top_pad="3"
-                  width="289" />
+                  width="290" />
                   <slider
                   enabled="false"
                   decimal_digits="1"

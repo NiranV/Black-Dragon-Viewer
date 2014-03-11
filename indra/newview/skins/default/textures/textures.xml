@@ -727,6 +727,8 @@ with the same filename but different name
   
   <texture name="Menu_Bar" file_name="menu_bar.tga" scale.left="1" scale.top="40" scale.right="1025" scale.bottom="0" />
   
+  <texture name="Sidebar_BG" file_name="taskpanel/Sidebar_BG.png" scale.left="2" scale.top="255" scale.right="345" scale.bottom="45" />
+  
   <texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
   <texture name="Command_Script_Limits_Icon" file_name="toolbar_icons/script.png"      preload="true" />
   <texture name="Command_PF_Linksets_Icon"  file_name="toolbar_icons/linksets.png"     preload="true" />
