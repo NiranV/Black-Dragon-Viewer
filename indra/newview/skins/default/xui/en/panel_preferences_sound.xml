@@ -442,6 +442,7 @@ width="510">
    left="10"/>
    <check_box
    name="media_meta_data_show"
+   enabled="false"
    control_name="ShowStreamMetadata"
    enabled_control="AudioStreamingMusic"
    value="true"
