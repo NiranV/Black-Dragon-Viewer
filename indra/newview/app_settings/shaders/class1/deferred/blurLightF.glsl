@@ -31,6 +31,10 @@ out vec4 frag_color;
 #define frag_color gl_FragColor
 #endif
 
+#define DELUXE_SHADOW_SMOOTH
+#define MYKERN
+#define LINEAR
+
 uniform sampler2DRect depthMap;
 uniform sampler2DRect normalMap;
 uniform sampler2DRect lightMap;
@@ -70,16 +74,25 @@ vec3 decode_normal (vec2 enc)
     n.z = 1-f/2;
     return n;
 }
+
 vec3 xxsrgb_to_linear(vec3 cl)
 {
+#ifdef LINEAR
   // very approx
   return cl * cl;
+#else
+  return cl;
+#endif
 }
 
 vec3 xxlinear_to_srgb(vec3 cl)
 {
+#ifdef LINEAR
   // very approx
   return sqrt(cl);
+#else
+  return cl;
+#endif
 }
 
 void main() 
@@ -92,36 +105,42 @@ void main()
 	vec4 ccol = texture2DRect(lightMap, tc).rgba;
 	ccol.gba = xxsrgb_to_linear(ccol.gba);
 
-#define MYKERN 1
-#if MYKERN
+#ifdef MYKERN
 #define KERNCOUNT 8
 	vec3 kern[KERNCOUNT];
 	/*kern[0] = vec3(1.000, 1.00, 0.0);
 	kern[1] = vec3(0.500, 0.95, 1.0);
 	kern[2] = vec3(0.250, 0.85, 2.0);
 	kern[3] = vec3(0.125, 0.70, 3.0);*/
-	kern[0] = vec3(1.000, 1.00, 0.0);
-	kern[1] = vec3(0.333, 1.00, 1.0);
-	kern[2] = vec3(0.111, 0.98, 2.0);
-	kern[3] = vec3(0.080, 0.95, 3.0);
-	kern[4] = vec3(0.060, 0.90, 4.0);
-	kern[5] = vec3(0.040, 0.85, 5.0);
-	kern[6] = vec3(0.020, 0.77, 6.0);
-	kern[7] = vec3(0.001, 0.70, 7.0);
+
+	if (false) {
+	  kern[0] = vec3(1.000, 1.00, 0.0);
+	  kern[1] = vec3(0.333, 1.00, 1.0);
+	  kern[2] = vec3(0.111, 0.98, 2.0);
+	  kern[3] = vec3(0.080, 0.95, 3.0);
+	  kern[4] = vec3(0.060, 0.90, 4.0);
+	  kern[5] = vec3(0.040, 0.85, 5.0);
+	  kern[6] = vec3(0.020, 0.77, 6.0);
+	  kern[7] = vec3(0.001, 0.70, 7.0);
+	}
+	else if (true)
+	{
+	  kern[0] = vec3(1.000*0.50, 1.00*0.50, 0.000);
+	  kern[1] = vec3(0.333*0.50, 1.00*0.50, 0.500);
+	  kern[2] = vec3(0.111*0.75, 0.98*0.75, 1.125);
+	  kern[3] = vec3(0.080*1.00, 0.95*1.00, 2.000);
+	  kern[4] = vec3(0.060*1.00, 0.90*1.00, 3.000);
+	  kern[5] = vec3(0.040*1.00, 0.85*1.00, 4.000);
+	  kern[6] = vec3(0.020*1.00, 0.77*1.00, 5.000);
+	  kern[7] = vec3(0.001*1.00, 0.70*1.00, 6.000);
+	}
+
 #else
 #define KERNCOUNT 4
 #endif
 	
-	//vec2 dlt = kern_scale * delta / (vec2(1.0)+norm.xy*norm.xy);
-	//vec2 dlt = kern_scale * delta * (vec2(1.5,1.5)-norm.xy*norm.xy);
-	//vec2 dlt = kern_scale * delta * (1.0+abs(norm.z*norm.z));
-	//dlt /= max(-pos.z*dist_factor, 1.0);
-	//dlt = kern_scale * delta;
-	//dlt = 1.0 * delta;
-
 	vec2 dlt = kern_scale * (vec2(1.5,1.5)-norm.xy*norm.xy);
 	dlt = delta * ceil(max(dlt.xy, vec2(1.0)));
-	//dlt = 1.0 * delta;
 	
 	vec2 defined_weight = kern[0].xy; // special case the first (centre) sample's weight in the blur; we have to sample it anyway so we get it for 'free'
 	vec4 col = defined_weight.xyyy * ccol;
@@ -131,15 +150,6 @@ void main()
 	pointplanedist_tolerance_pow2 =
 	  pointplanedist_tolerance_pow2// * pointplanedist_tolerance_pow2 * 0.00001
 	  * 0.0001;
-	//pointplanedist_tolerance_pow2 = 99999.0;
-	//float pointplanedist_tolerance_pow2 = (-pos.z * 0.001);
-	//pointplanedist_tolerance_pow2 -= 30.5* ((length(fwidth(norm))));
-	//pointplanedist_tolerance_pow2 -= (0.020* ((length(fwidth(norm)))));
-
-	// tighten tolerance in ambiently dark areas; keeps creases crisp, disguises one artifact in particular...
-	//float lum = dot(ccol.gba, vec3(0.3, 0.59, 0.11));
-	//float oml = 1.0 - lum;
-	//pointplanedist_tolerance_pow2 *= (oml*oml*oml*oml*oml*oml*oml);
 	
 	// perturb sampling origin slightly in screen-space to hide edge-ghosting artifacts where smoothing radius is quite large
 	//vec2 tc_v = fract(0.5 * tc.xy); // we now have floor(mod(tc,2.0))*0.5
@@ -149,39 +159,57 @@ void main()
 	// alternate direction according to grid
 	//dlt.xy = mix(dlt.xy, vec2(dlt.y, -dlt.x), tc_mod); //artifacts strong
 
-	for (int i = KERNCOUNT-1; i > 0; i--)
-	{
-	  vec2 samptc = (tc + kern[i].z * dlt);
-		vec3 samppos = getPosition(samptc).xyz; 
-		vec2 w = kern[i].xy;
+	const float mindp = 0.70;
 
-		float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
-		
-		if (d*d <= pointplanedist_tolerance_pow2)
-		{
-		  vec4 scol = texture2DRect(lightMap, samptc);
-		  scol.gba = xxsrgb_to_linear(scol.gba);
-		  col += scol*w.xyyy;
-		  defined_weight += w.xy;
-		}
-	}
+	for (int i = KERNCOUNT-1; i > 0; i--)
+	  {
+	    vec2 w = kern[i].xy;
+	    vec2 samptc = (tc + kern[i].z * dlt);
+	    vec3 samppos = getPosition(samptc).xyz; 
+#ifdef DELUXE_SHADOW_SMOOTH
+	    vec3 sampnorm = texture2DRect(normalMap, samptc).xyz;
+	    sampnorm = decode_normal(sampnorm.xy); // unpack norm
+#endif // DELUXE_SHADOW_SMOOTH
+	  
+	    float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
+	  
+	    if (d*d <= pointplanedist_tolerance_pow2
+#ifdef DELUXE_SHADOW_SMOOTH
+		&& dot(sampnorm.xyz, norm.xyz) >= mindp
+#endif // DELUXE_SHADOW_SMOOTH
+		)
+	      {
+		vec4 scol = texture2DRect(lightMap, samptc);
+		scol.gba = xxsrgb_to_linear(scol.gba);
+		col += scol*w.xyyy;
+		defined_weight += w.xy;
+	      }
+	  }
 
 	for (int i = 1; i < KERNCOUNT; i++)
-	{
-	  vec2 samptc = (tc - kern[i].z * dlt);
-		vec3 samppos = getPosition(samptc).xyz; 
-		vec2 w = kern[i].xy;
-
-		float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
-		
-		if (d*d <= pointplanedist_tolerance_pow2)
-		{
-		  vec4 scol = texture2DRect(lightMap, samptc);
-		  scol.gba = xxsrgb_to_linear(scol.gba);
-		  col += scol*w.xyyy;
-		  defined_weight += w.xy;
-		}
-	}
+	  {
+	    vec2 w = kern[i].xy;
+	    vec2 samptc = (tc - kern[i].z * dlt);
+	    vec3 samppos = getPosition(samptc).xyz; 
+#ifdef DELUXE_SHADOW_SMOOTH
+	    vec3 sampnorm = texture2DRect(normalMap, samptc).xyz;
+	    sampnorm = decode_normal(sampnorm.xy); // unpack norm
+#endif // DELUXE_SHADOW_SMOOTH
+	  
+	    float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
+	  
+	    if (d*d <= pointplanedist_tolerance_pow2
+#ifdef DELUXE_SHADOW_SMOOTH
+		&& dot(sampnorm.xyz, norm.xyz) >= mindp
+#endif // DELUXE_SHADOW_SMOOTH
+		)
+	      {
+		vec4 scol = texture2DRect(lightMap, samptc);
+		scol.gba = xxsrgb_to_linear(scol.gba);
+		col += scol*w.xyyy;
+		defined_weight += w.xy;
+	      }
+	  }
 
 	col /= defined_weight.xyyy;
 
