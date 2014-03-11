@@ -62,7 +62,7 @@ const F32 FADE_TO_WORLD_TIME = 2.5f;
 const F32 FADE_FROM_LOGIN_TIME = 1.5f;
 const F32 CYCLE_TIMER = 7.0f;
 
-static LLRegisterPanelClassWrapper<LLProgressView> r("progress_view");
+static LLPanelInjector<LLProgressView> r("progress_view");
 
 // XUI: Translate
 LLProgressView::LLProgressView() 

@@ -687,8 +687,11 @@ void LLMenuItemTearOffGL::onCommit()
 {
 	if (getMenu()->getTornOff())
 	{
-		LLTearOffMenu* torn_off_menu = (LLTearOffMenu*)(getMenu()->getParent());
-		torn_off_menu->closeFloater();
+		LLTearOffMenu * torn_off_menu = dynamic_cast<LLTearOffMenu*>(getMenu()->getParent());
+		if (torn_off_menu)
+		{
+			torn_off_menu->closeFloater();
+		}
 	}
 	else
 	{
@@ -1091,7 +1094,8 @@ void LLMenuItemBranchGL::setHighlight( BOOL highlight )
 
 	BOOL auto_open = getEnabled() && (!branch->getVisible() || branch->getTornOff());
 	// torn off menus don't open sub menus on hover unless they have focus
-	if (getMenu()->getTornOff() && !((LLFloater*)getMenu()->getParent())->hasFocus())
+	LLFloater * menu_parent = dynamic_cast<LLFloater *>(getMenu()->getParent());
+	if (getMenu()->getTornOff() && menu_parent && !menu_parent->hasFocus())
 	{
 		auto_open = FALSE;
 	}
@@ -1112,7 +1116,11 @@ void LLMenuItemBranchGL::setHighlight( BOOL highlight )
 	{
 		if (branch->getTornOff())
 		{
-			((LLFloater*)branch->getParent())->setFocus(FALSE);
+			LLFloater * branch_parent = dynamic_cast<LLFloater *>(branch->getParent());
+			if (branch_parent)
+			{
+				branch_parent->setFocus(FALSE);
+			}
 			branch->clearHoverItem();
 		}
 		else
@@ -1169,11 +1177,19 @@ BOOL LLMenuItemBranchGL::handleKeyHere( KEY key, MASK mask )
 			BOOL handled = branch->clearHoverItem();
 			if (branch->getTornOff())
 			{
-				((LLFloater*)branch->getParent())->setFocus(FALSE);
+				LLFloater * branch_parent = dynamic_cast<LLFloater *>(branch->getParent());
+				if (branch_parent)
+				{
+					branch_parent->setFocus(FALSE);
+				}
 			}
 			if (handled && getMenu()->getTornOff())
 			{
-				((LLFloater*)getMenu()->getParent())->setFocus(TRUE);
+				LLFloater * menu_parent = dynamic_cast<LLFloater *>(getMenu()->getParent());
+				if (menu_parent)
+				{
+					menu_parent->setFocus(TRUE);
+				}
 			}
 			return handled;
 		}
@@ -1213,9 +1229,13 @@ void LLMenuItemBranchGL::openMenu()
 
 	if (branch->getTornOff())
 	{
-		gFloaterView->bringToFront((LLFloater*)branch->getParent());
-		// this might not be necessary, as torn off branches don't get focus and hence no highligth
-		branch->highlightNextItem(NULL);
+		LLFloater * branch_parent = dynamic_cast<LLFloater *>(branch->getParent());
+		if (branch_parent)
+		{
+			gFloaterView->bringToFront(branch_parent);
+			// this might not be necessary, as torn off branches don't get focus and hence no highligth
+			branch->highlightNextItem(NULL);
+		}
 	}
 	else if( !branch->getVisible() )
 	{
@@ -1342,7 +1362,11 @@ void LLMenuItemBranchDownGL::openMenu( void )
 	{
 		if (branch->getTornOff())
 		{
-			gFloaterView->bringToFront((LLFloater*)branch->getParent());
+			LLFloater * branch_parent = dynamic_cast<LLFloater *>(branch->getParent());
+			if (branch_parent)
+			{
+				gFloaterView->bringToFront(branch_parent);
+			}
 		}
 		else
 		{
@@ -1397,7 +1421,11 @@ void LLMenuItemBranchDownGL::setHighlight( BOOL highlight )
 	{
 		if (branch->getTornOff())
 		{
-			((LLFloater*)branch->getParent())->setFocus(FALSE);
+			LLFloater * branch_parent = dynamic_cast<LLFloater *>(branch->getParent());
+			if (branch_parent)
+			{
+				branch_parent->setFocus(FALSE);
+			}
 			branch->clearHoverItem();
 		}
 		else
@@ -1820,20 +1848,28 @@ BOOL LLMenuGL::jumpKeysActive()
 {
 	LLMenuItemGL* highlighted_item = getHighlightedItem();
 	BOOL active = getVisible() && getEnabled();
-	if (getTornOff())
-	{
-		// activation of jump keys on torn off menus controlled by keyboard focus
-		active = active && ((LLFloater*)getParent())->hasFocus();
 
-	}
-	else
+	if (active)
 	{
-		// Are we the terminal active menu?
-		// Yes, if parent menu item deems us to be active (just being visible is sufficient for top-level menus)
-		// and we don't have a highlighted menu item pointing to an active sub-menu
-		active = active && (!getParentMenuItem() || getParentMenuItem()->isActive()) // I have a parent that is active...
-		                && (!highlighted_item || !highlighted_item->isActive()); //... but no child that is active
+		if (getTornOff())
+		{
+			// activation of jump keys on torn off menus controlled by keyboard focus
+			LLFloater * parent = dynamic_cast<LLFloater *>(getParent());
+			if (parent)
+			{
+				active = parent->hasFocus();
+			}
+		}
+		else
+		{
+			// Are we the terminal active menu?
+			// Yes, if parent menu item deems us to be active (just being visible is sufficient for top-level menus)
+			// and we don't have a highlighted menu item pointing to an active sub-menu
+			active = (!getParentMenuItem() || getParentMenuItem()->isActive()) // I have a parent that is active...
+					&& (!highlighted_item || !highlighted_item->isActive()); //... but no child that is active
+		}
 	}
+
 	return active;
 }
 
@@ -1849,7 +1885,12 @@ BOOL LLMenuGL::isOpen()
 			return TRUE;
 		}
 		// otherwise we are only active if we have keyboard focus
-		return ((LLFloater*)getParent())->hasFocus();
+		LLFloater * parent = dynamic_cast<LLFloater *>(getParent());
+		if (parent)
+		{
+			return parent->hasFocus();
+		}
+		return FALSE;
 	}
 	else
 	{
@@ -2708,7 +2749,11 @@ LLMenuItemGL* LLMenuGL::highlightNextItem(LLMenuItemGL* cur_item, BOOL skip_disa
 	// same as giving focus to it
 	if (!cur_item && getTornOff())
 	{
-		((LLFloater*)getParent())->setFocus(TRUE);
+		LLFloater * parent = dynamic_cast<LLFloater *>(getParent());
+		if (parent)
+		{
+			parent->setFocus(TRUE);
+		}
 	}
 
 	// Current item position in the items list
@@ -2810,7 +2855,11 @@ LLMenuItemGL* LLMenuGL::highlightPrevItem(LLMenuItemGL* cur_item, BOOL skip_disa
 	// same as giving focus to it
 	if (!cur_item && getTornOff())
 	{
-		((LLFloater*)getParent())->setFocus(TRUE);
+		LLFloater * parent = dynamic_cast<LLFloater *>(getParent());
+		if (parent)
+		{
+			parent->setFocus(TRUE);
+		}
 	}
 
 	// Current item reverse position from the end of the list

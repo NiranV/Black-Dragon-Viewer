@@ -133,6 +133,8 @@ private:
 	LLSaveFolderState*			mSavedFolderState;
 	std::string					mFilterText;
 	std::string					mFilterSubString;
+	S32							mItemCount;
+	std::string 				mItemCountString;
 
 
 	//////////////////////////////////////////////////////////////////////////////////
