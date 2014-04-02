@@ -223,7 +223,7 @@ LLSD LLFloaterAbout::getInfo()
 {
 	return LLAppViewer::instance()->getViewerInfo();
 // [RLVa:KB] - Checked: 2010-04-18 (RLVa-1.2.0)
-	info["RLV_VERSION"] = (RlvActions::isRlvEnabled()) ? RlvStrings::getVersionAbout() : "(disabled)";
+	//info["RLV_VERSION"] = (RlvActions::isRlvEnabled()) ? RlvStrings::getVersionAbout() : "(disabled)";
 // [/RLVa:KB]
 }
 
