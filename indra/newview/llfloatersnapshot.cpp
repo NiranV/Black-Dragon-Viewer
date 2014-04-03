@@ -31,7 +31,10 @@
 #include "llagent.h"
 #include "llfacebookconnect.h"
 #include "llfloaterreg.h"
-#include "llfloatersocial.h"
+#include "llfloaterfacebook.h"
+#include "llfloaterflickr.h"
+#include "llfloatertwitter.h"
+#include "llimagefiltersmanager.h"
 #include "llcheckboxctrl.h"
 #include "llcombobox.h"
 #include "llpostcard.h"
@@ -91,6 +94,7 @@ public:
 	}
 	static void onClickNewSnapshot(void* data);
 	static void onClickAutoSnap(LLUICtrl *ctrl, void* data);
+	static void onClickFilter(LLUICtrl *ctrl, void* data);
 	//static void onClickAdvanceSnap(LLUICtrl *ctrl, void* data);
 	static void onClickMore(void* data) ;
 	static void onClickUICheck(LLUICtrl *ctrl, void* data);
@@ -433,9 +437,8 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshot* floater)
 	image_res_tb->setVisible(got_snap);
 	if (got_snap)
 	{
-		LLPointer<LLImageRaw> img = previewp->getEncodedImage();
-		image_res_tb->setTextArg("[WIDTH]", llformat("%d", img->getWidth()));
-		image_res_tb->setTextArg("[HEIGHT]", llformat("%d", img->getHeight()));
+		image_res_tb->setTextArg("[WIDTH]", llformat("%d", previewp->getEncodedImageWidth()));
+		image_res_tb->setTextArg("[HEIGHT]", llformat("%d", previewp->getEncodedImageHeight()));
 	}
 
 	floater->getChild<LLUICtrl>("file_size_label")->setTextArg("[SIZE]", got_snap ? bytes_string : floater->getString("unknown"));
@@ -468,8 +471,8 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshot* floater)
 	  default:
 		break;
 	}
-
-	if (previewp)
+    
+    if (previewp)
 	{
 		previewp->setSnapshotType(shot_type);
 		previewp->setSnapshotFormat(shot_format);
@@ -562,6 +565,26 @@ void LLFloaterSnapshot::Impl::onClickAutoSnap(LLUICtrl *ctrl, void* data)
 	}
 }
 
+// static
+void LLFloaterSnapshot::Impl::onClickFilter(LLUICtrl *ctrl, void* data)
+{
+	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
+	if (view)
+	{
+		updateControls(view);
+        LLSnapshotLivePreview* previewp = getPreviewView(view);
+        if (previewp)
+        {
+            checkAutoSnapshot(previewp);
+            // Note : index 0 of the filter drop down is assumed to be "No filter" in whichever locale
+            LLComboBox* filterbox = static_cast<LLComboBox *>(view->getChild<LLComboBox>("filters_combobox"));
+            std::string filter_name = (filterbox->getCurrentIndex() ? filterbox->getSimple() : "");
+            previewp->setFilter(filter_name);
+            previewp->updateSnapshot(FALSE, TRUE);
+        }
+	}
+}
+
 void LLFloaterSnapshot::Impl::onClickMore(void* data)
 {
 	BOOL visible = gSavedSettings.getBOOL("AdvanceSnapshot");
@@ -620,9 +643,9 @@ void LLFloaterSnapshot::Impl::applyKeepAspectCheck(LLFloaterSnapshot* view, BOOL
 			previewp->getSize(w, h) ;
 			updateSpinners(view, previewp, w, h, TRUE); // may change w and h
 
-			lldebugs << "updating thumbnail" << llendl;
+			lldebugs << "updating snapshot" << llendl;
 			previewp->setSize(w, h) ;
-			previewp->updateSnapshot(FALSE, TRUE);
+			previewp->updateSnapshot(TRUE);
 			checkAutoSnapshot(previewp, TRUE);
 		}
 	}
@@ -819,8 +842,8 @@ void LLFloaterSnapshot::Impl::updateResolution(LLUICtrl* ctrl, void* data, BOOL 
 
 			// hide old preview as the aspect ratio could be wrong
 			checkAutoSnapshot(previewp, FALSE);
-			lldebugs << "updating thumbnail" << llendl;
-			getPreviewView(view)->updateSnapshot(FALSE, TRUE);
+			lldebugs << "updating snapshot" << llendl;
+			getPreviewView(view)->updateSnapshot(TRUE);
 			if(do_update)
 			{
 				lldebugs << "Will update controls" << llendl;
@@ -857,7 +880,6 @@ void LLFloaterSnapshot::Impl::onImageQualityChange(LLFloaterSnapshot* view, S32 
 	{
 		previewp->setSnapshotQuality(quality_val);
 	}
-	checkAutoSnapshot(previewp, TRUE);
 }
 
 // static
@@ -866,8 +888,6 @@ void LLFloaterSnapshot::Impl::onImageFormatChange(LLFloaterSnapshot* view)
 	if (view)
 	{
 		gSavedSettings.setS32("SnapshotFormat", getImageFormat(view));
-		lldebugs << "image format changed, updating snapshot" << llendl;
-		getPreviewView(view)->updateSnapshot(TRUE);
 		updateControls(view);
 		setNeedRefresh(view, false); // we're refreshing
 	}
@@ -967,8 +987,8 @@ void LLFloaterSnapshot::Impl::applyCustomResolution(LLFloaterSnapshot* view, S32
 
 			previewp->setSize(w,h);
 			checkAutoSnapshot(previewp, FALSE);
-			lldebugs << "applied custom resolution, updating thumbnail" << llendl;
-			previewp->updateSnapshot(FALSE, TRUE);
+			lldebugs << "applied custom resolution, updating snapshot" << llendl;
+			previewp->updateSnapshot(TRUE);
 			comboSetCustom(view, "profile_size_combo");
 			comboSetCustom(view, "postcard_size_combo");
 			comboSetCustom(view, "texture_size_combo");
@@ -1062,7 +1082,26 @@ BOOL LLFloaterSnapshot::postBuild()
 
 	getChild<LLUICtrl>("auto_snapshot_check")->setValue(gSavedSettings.getBOOL("AutoSnapshot"));
 	childSetCommitCallback("auto_snapshot_check", Impl::onClickAutoSnap, this);
-	
+    
+	// Filters
+	LLComboBox* filterbox = getChild<LLComboBox>("filters_combobox");
+    if (gSavedSettings.getBOOL("SnapshotFiltersEnabled"))
+    {
+        // Update filter list if setting is on (experimental)
+        std::vector<std::string> filter_list = LLImageFiltersManager::getInstance()->getFiltersList();
+        for (U32 i = 0; i < filter_list.size(); i++)
+        {
+            filterbox->add(filter_list[i]);
+        }
+        childSetCommitCallback("filters_combobox", Impl::onClickFilter, this);
+    }
+    else
+    {
+        // Hide Filter UI if setting is off (default)
+        getChild<LLUICtrl>("filter_list_label")->setVisible(FALSE);
+        filterbox->setVisible(FALSE);
+    }
+    
 	LLWebProfile::setImageUploadResultCallback(boost::bind(&LLFloaterSnapshot::Impl::onSnapshotUploadFinished, _1));
 	LLPostCard::setPostResultCallback(boost::bind(&LLFloaterSnapshot::Impl::onSendingPostcardFinished, _1));
 
@@ -1092,6 +1131,7 @@ BOOL LLFloaterSnapshot::postBuild()
 	getChild<LLComboBox>("local_format_combo")->selectNthItem(0);
 
 	impl.mPreviewHandle = previewp->getHandle();
+    previewp->setContainer(this);
 	impl.updateControls(this);
 	impl.updateLayout(this);
 	
@@ -1253,6 +1293,32 @@ S32 LLFloaterSnapshot::notify(const LLSD& info)
 		impl.setStatus(Impl::STATUS_FINISHED, data["ok"].asBoolean(), data["msg"].asString());
 		return 1;
 	}
+    
+	if (info.has("snapshot-updating"))
+	{
+        // Disable the send/post/save buttons until snapshot is ready.
+        impl.updateControls(this);
+        // Force hiding the "Refresh to save" hint because we know we've just started refresh.
+        impl.setNeedRefresh(this, false);
+		return 1;
+	}
+
+	if (info.has("snapshot-updated"))
+	{
+        // Enable the send/post/save buttons.
+        impl.updateControls(this);
+        // We've just done refresh.
+        impl.setNeedRefresh(this, false);
+            
+        // The refresh button is initially hidden. We show it after the first update,
+        // i.e. when preview appears.
+        if (!mRefreshBtn->getVisible())
+        {
+            mRefreshBtn->setVisible(true);
+        }
+		return 1;
+	}    
+    
 	return 0;
 }
 
@@ -1260,9 +1326,11 @@ S32 LLFloaterSnapshot::notify(const LLSD& info)
 void LLFloaterSnapshot::update()
 {
 	LLFloaterSnapshot* inst = LLFloaterReg::findTypedInstance<LLFloaterSnapshot>("snapshot");
-	LLFloaterSocial* floater_social  = LLFloaterReg::findTypedInstance<LLFloaterSocial>("social"); 
+	LLFloaterFacebook* floater_facebook = LLFloaterReg::findTypedInstance<LLFloaterFacebook>("facebook"); 
+	LLFloaterFlickr* floater_flickr = LLFloaterReg::findTypedInstance<LLFloaterFlickr>("flickr"); 
+	LLFloaterTwitter* floater_twitter = LLFloaterReg::findTypedInstance<LLFloaterTwitter>("twitter"); 
 
-	if (!inst && !floater_social)
+	if (!inst && !floater_facebook && !floater_flickr && !floater_twitter)
 		return;
 	
 	BOOL changed = FALSE;
@@ -1327,43 +1395,6 @@ BOOL LLFloaterSnapshot::saveLocal()
 	}
 
 	return previewp->saveLocal();
-}
-
-// static
-void LLFloaterSnapshot::preUpdate()
-{
-	// FIXME: duplicated code
-	LLFloaterSnapshot* instance = LLFloaterReg::findTypedInstance<LLFloaterSnapshot>("snapshot");
-	if (instance)
-	{
-		// Disable the send/post/save buttons until snapshot is ready.
-		Impl::updateControls(instance);
-
-		// Force hiding the "Refresh to save" hint because we know we've just started refresh.
-		Impl::setNeedRefresh(instance, false);
-	}
-}
-
-// static
-void LLFloaterSnapshot::postUpdate()
-{
-	// FIXME: duplicated code
-	LLFloaterSnapshot* instance = LLFloaterReg::findTypedInstance<LLFloaterSnapshot>("snapshot");
-	if (instance)
-	{
-		// Enable the send/post/save buttons.
-		Impl::updateControls(instance);
-
-		// We've just done refresh.
-		Impl::setNeedRefresh(instance, false);
-
-		// The refresh button is initially hidden. We show it after the first update,
-		// i.e. when preview appears.
-		if (!instance->mRefreshBtn->getVisible())
-		{
-			instance->mRefreshBtn->setVisible(true);
-		}
-	}
 }
 
 // static

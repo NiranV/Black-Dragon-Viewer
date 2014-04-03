@@ -1597,7 +1597,8 @@ void LLViewerRegionImpl::buildCapabilityNames(LLSD& capabilityNames)
 	capabilityNames.append("EstateChangeInfo");
 	capabilityNames.append("EventQueueGet");
 	capabilityNames.append("FacebookConnect");
-	//capabilityNames.append("FacebookRedirect");
+	capabilityNames.append("FlickrConnect");
+	capabilityNames.append("TwitterConnect");
 
 	if (gSavedSettings.getBOOL("UseHTTPInventory"))
 	{

@@ -30,6 +30,8 @@
 #include "lliconctrl.h"
 #include "llfloaterreg.h"
 #include "llfacebookconnect.h"
+#include "llflickrconnect.h"
+#include "lltwitterconnect.h"
 #include "lllayoutstack.h"
 #include "llpluginclassmedia.h"
 #include "llprogressbar.h"
@@ -51,7 +53,8 @@ LLFloaterWebContent::_Params::_Params()
     allow_back_forward_navigation("allow_back_forward_navigation", true),
 	preferred_media_size("preferred_media_size"),
 	trusted_content("trusted_content", false),
-	show_page_title("show_page_title", true)
+	show_page_title("show_page_title", true),
+    clean_browser("clean_browser", false)
 {}
 
 LLFloaterWebContent::LLFloaterWebContent( const Params& params )
@@ -242,7 +245,7 @@ void LLFloaterWebContent::open_media(const Params& p)
 	LLViewerMedia::proxyWindowOpened(p.target(), p.id());
 	mWebBrowser->setHomePageUrl(p.url, "text/html");
 	mWebBrowser->setTarget(p.target);
-	mWebBrowser->navigateTo(p.url, "text/html");
+	mWebBrowser->navigateTo(p.url, "text/html", p.clean_browser);
 	
 	set_current_url(p.url);
 
@@ -252,11 +255,6 @@ void LLFloaterWebContent::open_media(const Params& p)
     mAllowNavigation = p.allow_back_forward_navigation;
 	getChildView("address")->setEnabled(address_entry_enabled);
 	getChildView("popexternal")->setEnabled(address_entry_enabled);
-
-	if (!address_entry_enabled)
-	{
-		mWebBrowser->setFocus(TRUE);
-	}
 
 	if (!p.show_chrome)
 	{
@@ -303,7 +301,24 @@ void LLFloaterWebContent::onClose(bool app_quitting)
             LLFacebookConnect::instance().setConnectionState(LLFacebookConnect::FB_CONNECTION_FAILED);
         }
     }
-    
+	// Same with Flickr
+	LLFloater* flickr_web = LLFloaterReg::getInstance("flickr_web");
+    if (flickr_web == this)
+    {
+        if (!LLFlickrConnect::instance().isConnected())
+        {
+            LLFlickrConnect::instance().setConnectionState(LLFlickrConnect::FLICKR_CONNECTION_FAILED);
+        }
+    }
+	// And Twitter
+	LLFloater* twitter_web = LLFloaterReg::getInstance("twitter_web");
+    if (twitter_web == this)
+    {
+        if (!LLTwitterConnect::instance().isConnected())
+        {
+            LLTwitterConnect::instance().setConnectionState(LLTwitterConnect::TWITTER_CONNECTION_FAILED);
+        }
+    }
 	LLViewerMedia::proxyWindowClosed(mUUID);
 	destroy();
 }
@@ -439,9 +454,6 @@ void LLFloaterWebContent::set_current_url(const std::string& url)
         mAddressCombo->remove(mCurrentURL);
         mAddressCombo->add(mDisplayURL);
         mAddressCombo->selectByValue(mDisplayURL);
-
-        // Set the focus back to the web page. When setting the url, there's no point to leave the focus anywhere else.
-		mWebBrowser->setFocus(TRUE);
     }
 }
 

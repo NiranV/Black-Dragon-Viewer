@@ -1,7 +1,7 @@
 /** 
-* @file   llfloatersocial.h
-* @brief  Header file for llfloatersocial
-* @author Gilbert@lindenlab.com
+* @file   llfloatertwitter.h
+* @brief  Header file for llfloatertwitter
+* @author cho@lindenlab.com
 *
 * $LicenseInfo:firstyear=2013&license=viewerlgpl$
 * Second Life Viewer Source Code
@@ -24,8 +24,8 @@
 * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
 * $/LicenseInfo$
 */
-#ifndef LL_LLFLOATERSOCIAL_H
-#define LL_LLFLOATERSOCIAL_H
+#ifndef LL_LLFLOATERTWITTER_H
+#define LL_LLFLOATERTWITTER_H
 
 #include "llfloater.h"
 #include "lltextbox.h"
@@ -34,97 +34,72 @@
 class LLIconCtrl;
 class LLCheckBoxCtrl;
 class LLSnapshotLivePreview;
+class LLFloaterBigPreview;
 
-class LLSocialStatusPanel : public LLPanel
+class LLTwitterPhotoPanel : public LLPanel
 {
 public:
-    LLSocialStatusPanel();
-	BOOL postBuild();
-	void draw();
-    void onSend();
-	bool onFacebookConnectStateChange(const LLSD& data);
-
-	void sendStatus();
-	void clearAndClose();
-
-private:
-	LLUICtrl* mMessageTextEditor;
-	LLUICtrl* mPostButton;
-	LLUICtrl* mCancelButton;
-};
-
-class LLSocialPhotoPanel : public LLPanel
-{
-public:
-	LLSocialPhotoPanel();
-	~LLSocialPhotoPanel();
+	LLTwitterPhotoPanel();
+	~LLTwitterPhotoPanel();
 
 	BOOL postBuild();
 	void draw();
 
 	LLSnapshotLivePreview* getPreviewView();
 	void onVisibilityChange(const LLSD& new_visibility);
+	void onAddLocationToggled();
+	void onAddPhotoToggled();
+    void onClickBigPreview();
 	void onClickNewSnapshot();
 	void onSend();
-	bool onFacebookConnectStateChange(const LLSD& data);
+	S32 notify(const LLSD& info);
+	bool onTwitterConnectStateChange(const LLSD& data);
 
 	void sendPhoto();
 	void clearAndClose();
 
+	void updateStatusTextLength(BOOL restore_old_status_text);
 	void updateControls();
 	void updateResolution(BOOL do_update);
 	void checkAspectRatio(S32 index);
 	LLUICtrl* getRefreshBtn();
 
 private:
+    bool isPreviewVisible();
+    void attachPreview();
+
 	LLHandle<LLView> mPreviewHandle;
 
 	LLUICtrl * mSnapshotPanel;
 	LLUICtrl * mResolutionComboBox;
+	LLUICtrl * mFilterComboBox;
 	LLUICtrl * mRefreshBtn;
 	LLUICtrl * mWorkingLabel;
 	LLUICtrl * mThumbnailPlaceholder;
-	LLUICtrl * mCaptionTextBox;
+	LLUICtrl * mStatusCounterLabel;
+	LLUICtrl * mStatusTextBox;
+	LLUICtrl * mLocationCheckbox;
+	LLUICtrl * mPhotoCheckbox;
 	LLUICtrl * mPostButton;
-	LLUICtrl* mCancelButton;
+	LLUICtrl * mCancelButton;
+	LLButton * mBtnPreview;
+
+    LLFloaterBigPreview * mBigPreviewFloater;
+    
+	std::string mOldStatusText;
 };
 
-class LLSocialCheckinPanel : public LLPanel
+class LLTwitterAccountPanel : public LLPanel
 {
 public:
-    LLSocialCheckinPanel();
-	BOOL postBuild();
-	void draw();
-    void onSend();
-	bool onFacebookConnectStateChange(const LLSD& data);
-
-	void sendCheckin();
-	void clearAndClose();
-
-private:
-    std::string mMapUrl;
-    LLPointer<LLViewerFetchedTexture> mMapTexture;
-	LLUICtrl* mPostButton;
-	LLUICtrl* mCancelButton;
-	LLUICtrl* mMessageTextEditor;
-    LLUICtrl* mMapLoadingIndicator;
-    LLIconCtrl* mMapPlaceholder;
-    LLIconCtrl* mMapDefault;
-    LLCheckBoxCtrl* mMapCheckBox;
-    bool mReloadingMapTexture;
-};
-
-class LLSocialAccountPanel : public LLPanel
-{
-public:
-	LLSocialAccountPanel();
+	LLTwitterAccountPanel();
 	BOOL postBuild();
 	void draw();
 
 private:
 	void onVisibilityChange(const LLSD& new_visibility);
-	bool onFacebookConnectStateChange(const LLSD& data);
-	bool onFacebookConnectInfoChange();
+	bool onTwitterConnectStateChange(const LLSD& data);
+	bool onTwitterConnectInfoChange();
 	void onConnect();
 	void onUseAnotherAccount();
 	void onDisconnect();
@@ -142,23 +117,23 @@ private:
 };
 
 
-class LLFloaterSocial : public LLFloater
+class LLFloaterTwitter : public LLFloater
 {
 public:
-	LLFloaterSocial(const LLSD& key);
+	LLFloaterTwitter(const LLSD& key);
 	BOOL postBuild();
 	void draw();
+	void onClose(bool app_quitting);
 	void onCancel();
 
-	static void preUpdate();
-	static void postUpdate();
+	void showPhotoPanel();
 
 private:
-	LLSocialPhotoPanel* mSocialPhotoPanel;
+	LLTwitterPhotoPanel* mTwitterPhotoPanel;
     LLTextBox* mStatusErrorText;
     LLTextBox* mStatusLoadingText;
     LLUICtrl*  mStatusLoadingIndicator;
 };
 
-#endif // LL_LLFLOATERSOCIAL_H
+#endif // LL_LLFLOATERTWITTER_H
 
