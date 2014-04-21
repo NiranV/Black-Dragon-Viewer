@@ -1331,12 +1331,12 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32 mem)
 		mem = default_mem;
 	}
 
-	mem = llclamp(mem, getMinVideoRamSetting(), getMaxVideoRamSetting(false, mem_multiplier));
-	/*if (mem != cur_mem)
+	//mem = llclamp(mem, getMinVideoRamSetting(), getMaxVideoRamSetting(false, mem_multiplier));
+	if (mem != cur_mem)
 	{
 		gSavedSettings.setS32("TextureMemory", mem);
 		return; //listener will re-enter this function
-	}*/
+	}
 //	//BD - Allowing higher video card memory usage
 
 	// TODO: set available resident texture mem based on use by other subsystems
@@ -1623,10 +1623,10 @@ LLUIImagePtr LLUIImageList::loadUIImage(LLViewerFetchedTexture* imagep, const st
 	imagep->setAddressMode(LLTexUnit::TAM_CLAMP);
 
 	//don't compress UI images
-	imagep->getGLTexture()->setAllowCompression(false);
+	//imagep->getGLTexture()->setAllowCompression(false);
 
 	//all UI images are non-deletable
-	imagep->setNoDelete();
+	//imagep->setNoDelete();
 
 	LLUIImagePtr new_imagep = new LLUIImage(name, imagep);
 	mUIImages.insert(std::make_pair(name, new_imagep));
@@ -1806,7 +1806,7 @@ bool LLUIImageList::initFromFile()
 	};
 
 //	//BD - Select 3 random numbers for random loadingscreen preloading.
-	CurCount = 0;
+	/*CurCount = 0;
 	for (; CurCount < 3; CurCount++)
 	{
 		srand( (unsigned)time( NULL ) );
@@ -1820,7 +1820,7 @@ bool LLUIImageList::initFromFile()
 //		//BD - Preload our randomly selected images.
 		std::string imagename = llformat("loading%i" , CurCount);
 		preloadUIImage(imagename, filename, false, rect, clip);
-	}
+	}*/
 
 	for (S32 cur_pass = PASS_DECODE_NOW; cur_pass < NUM_PASSES; cur_pass++)
 	{
