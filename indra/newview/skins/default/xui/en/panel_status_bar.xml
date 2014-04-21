@@ -117,15 +117,15 @@
 		font="SansSerifSmallBold"
 		visibility_control="FPSCounterAsText"
 		follows="right|top"
-		text_color="Friend"
+		text_color="1 .32 .36 0.85"
 		halign="left"
 		height="16"
 		top="3"
 		layout="topleft"
-		left_pad="9"
+		left_pad="16"
 		name="FPSText"
 		tool_tip="Your current FPS"
-		width="33">
+		width="16">
 			10.00
 		</text>
 </panel>
