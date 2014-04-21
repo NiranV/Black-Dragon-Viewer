@@ -254,22 +254,8 @@ float nonpcfShadowAtPos(vec4 pos_world)
   vec2 pos_screen = vary_fragcoord.xy;
   vec4 pos = pos_world;
   if (pos.z > -shadow_clip.w) {	
-    vec4 near_split = shadow_clip*-0.75;
     vec4 far_split = shadow_clip*-1.25;
-    
-    if (pos.z < near_split.z) {
-      pos = shadow_matrix[3]*pos;
-      return nonpcfShadow(shadowMap3, pos, pos_screen);
-    }
-    else if (pos.z < near_split.y) {
-      pos = shadow_matrix[2]*pos;
-      return nonpcfShadow(shadowMap2, pos, pos_screen);
-    }
-    else if (pos.z < near_split.x) {
-      pos = shadow_matrix[1]*pos;
-      return nonpcfShadow(shadowMap1, pos, pos_screen);
-    }
-    else if (pos.z > far_split.x) {
+    if (pos.z > far_split.x) {
       pos = shadow_matrix[0]*pos;
       return nonpcfShadow(shadowMap0, pos, pos_screen);
     }
@@ -373,15 +359,15 @@ void calcAtmospherics(vec3 inPositionEye, float ambFactor) {
 	setAmblitColor(vec3(tmpAmbient * .25));
 	setAdditiveColor(getAdditiveColor() * vec3(1.0 - temp1));
     
-    #if GODRAYS
+    #ifdef GODRAYS
         // craptacular rays
-        const int rays = 32;
+        const int rays = 64;
         shadamount = 0.0;
         float last_shadsample = 0.0;
         shaftify = 0.0;
         float roffset = rand(vary_fragcoord.xy + vec2(1));
         vec3 farpos = inPositionEye;
-        const float maxzdist = 128.0;
+        const float maxzdist = 64.0;
         farpos *= min(-farpos.z, maxzdist) / -farpos.z;
         
         vec4 spos = vec4(mix(vec3(0,0,0), farpos, (rays-roffset)/(rays)), 1.0);
@@ -398,7 +384,7 @@ void calcAtmospherics(vec3 inPositionEye, float ambFactor) {
         
         shaftify /= rays-1;
         shaftify *= shaftify;
-        shaftify *= 0.5;
+        shaftify *= 0.15;
     #endif
 }
 
@@ -555,6 +541,7 @@ void main()
 		col *= diffuse.rgb;
 	
 		vec3 refnormpersp = normalize(reflect(pos.xyz, norm.xyz));
+        
 		
 		#if USE_SSR
 			if (spec.a > 0.0) // specular reflection
@@ -740,10 +727,10 @@ void main()
 		col = srgb_to_linear(col);
 	}
     
-    #if GODRAYS
+    #ifdef GODRAYS
         col = col + shaftify * getSunlitColor();
         col = col * (0.5 + shadamount);
-    #endif GODRAYS
+    #endif
 	
 	#if POSTERIZATION
 		col = pow(col, vec3(0.6));
