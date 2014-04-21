@@ -38,18 +38,19 @@
      text_color="white"
      type="string"
      top_delta="2">
-        Email
+        E-mail
     </text>
     <button
      follows="right|top"
      height="23"
      is_toggle="true"
-     label="Message"
+     label=""
+     image_overlay="Command_Chat_Icon"
      layout="topleft"
      name="message_btn"
-     right="-82"
+     right="-35"
      top_delta="-3"
-     width="70">
+     width="25">
       <button.commit_callback
        function="Postcard.Message" />
     </button>
@@ -57,12 +58,13 @@
      follows="right|top"
      height="23"
      is_toggle="true"
-     label="Settings"
+     label=""
+     image_overlay="Command_Preferences_Icon"
      layout="topleft"
      name="settings_btn"
      top_delta="0"
-     right="-10"
-     width="70">
+     left_pad="5"
+     width="25">
       <button.commit_callback
        function="Postcard.Settings" />
     </button>
@@ -73,7 +75,7 @@
      left="10"
      layout="topleft"
      name="hr"
-     right="-10"
+     right="-5"
      top_pad="2"
      />
     <panel_container
