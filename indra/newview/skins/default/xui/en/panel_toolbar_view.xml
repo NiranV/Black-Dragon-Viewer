@@ -10,6 +10,27 @@ top="0"
 mouse_opaque="false"
 tab_stop="false"
 visible="true">
+	<icon
+	follows="top|right"
+	image_name="navbar/sys_bg.png"
+	mouse_opaque="false"
+	name="bg"
+	scale_image="false"
+	visible="true"
+	left="-48"
+	top="40"
+	height="32"
+	width="48"/>
+	<panel
+	follows="left|top|right"
+	height="30"
+	left="-100"
+	mouse_opaque="false"
+	name="chiclet_container"
+	tab_stop="false"
+	top_delta="-3"
+	bg_visible="false"
+	width="100"/>
 	<layout_stack
 	name="main"
 	orientation="horizontal"
@@ -35,19 +56,12 @@ visible="true">
 			height="500"
 			follows="all"
 			mouse_opaque="false">
-				<layout_panel
+				<!--<layout_panel
 				name="top_mini_location_space_panel"
 				auto_resize="false"
 				height="24"
 				width="1024"
-				mouse_opaque="false"/>
-				<layout_panel
-				name="top_navbar_space_panel"
-				visibility_control="ShowNavbarNavigationPanel"
-				auto_resize="false"
-				height="15"
-				width="1024"
-				mouse_opaque="false"/>
+				mouse_opaque="false"/>-->
 				<layout_panel
 				name="top_toolbar_panel"
 				auto_resize="false"
@@ -59,12 +73,12 @@ visible="true">
 					button_panel.bg_opaque_image="transparent.j2c"
 					name="toolbar_top"
 					height="30"
-					left="40"
-					right="-40"
+					width="300"
+					left="0"
 					top="0"
 					side="top"
-					follows="left|right|top"
-					button_display_mode="icons_with_text"
+					follows="left|top"
+					button_display_mode="icons_mini"
 					visible="true">
 						<icon layout="topleft"
 						height="28"
@@ -145,17 +159,6 @@ visible="true">
 							mouse_opaque="false"
 							name="minimized_floaters_region"
 							width="160"/>
-							<panel
-							follows="left|top|right"
-							layout="topleft"
-							height="30"
-							left_pad="10"
-							mouse_opaque="false"
-							name="chiclet_container"
-							tab_stop="false"
-							top="0"
-							bg_visible="false"
-							width="20"/>       
 							<panel
 							bottom="100"
 							follows="left|right|bottom"

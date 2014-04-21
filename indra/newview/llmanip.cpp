@@ -438,18 +438,18 @@ void LLManip::renderXYZ(const LLVector3 &vec)
 
 	gGL.pushMatrix();
 	{
-		LLUIImagePtr imagep = LLUI::getUIImage("Rounded_Square");
+		LLUIImagePtr imagep = LLUI::getUIImage("Splash_Bg");
 		gViewerWindow->setup2DRender();
 		const LLVector2& display_scale = gViewerWindow->getDisplayScale();
 		gGL.scalef(display_scale.mV[VX], display_scale.mV[VY], 1.f);
-		gGL.color4f(0.f, 0.f, 0.f, 0.7f);
+		gGL.color4f(0.f, 0.f, 0.f, 1.0f);
 
 		imagep->draw(
-			window_center_x - 115, 
+			window_center_x - 130, 
 			window_center_y + vertical_offset - PAD, 
-			235,
-			PAD * 2 + 10, 
-			LLColor4(0.f, 0.f, 0.f, 0.7f) );
+			260,
+			60, 
+			LLColor4(0.f, 0.f, 0.f, 1.0f) );
 	}
 	gGL.popMatrix();
 
@@ -459,27 +459,18 @@ void LLManip::renderXYZ(const LLVector3 &vec)
 		LLFontGL* font = LLFontGL::getFontSansSerif();
 		LLLocale locale(LLLocale::USER_LOCALE);
 		LLGLDepthTest gls_depth(GL_FALSE);
-		// render drop shadowed text
-		feedback_string = llformat("X: %.3f", vec.mV[VX]);
-		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, -102.f + 1.f, (F32)vertical_offset - 1.f, LLColor4::black, FALSE);
-
-		feedback_string = llformat("Y: %.3f", vec.mV[VY]);
-		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, -27.f + 1.f, (F32)vertical_offset - 1.f, LLColor4::black, FALSE);
-		
-		feedback_string = llformat("Z: %.3f", vec.mV[VZ]);
-		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, 48.f + 1.f, (F32)vertical_offset - 1.f, LLColor4::black, FALSE);
 
 		// render text on top
 		feedback_string = llformat("X: %.3f", vec.mV[VX]);
-		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, -102.f, (F32)vertical_offset, LLColor4(1.f, 0.5f, 0.5f, 1.f), FALSE);
+		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, -107.f, (F32)vertical_offset + 15.f, LLColor4(1.f, 0.5f, 0.5f, 1.f), FALSE);
 
 		gGL.diffuseColor3f(0.5f, 1.f, 0.5f);
 		feedback_string = llformat("Y: %.3f", vec.mV[VY]);
-		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, -27.f, (F32)vertical_offset, LLColor4(0.5f, 1.f, 0.5f, 1.f), FALSE);
+		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, -32.f, (F32)vertical_offset + 15.f, LLColor4(0.5f, 1.f, 0.5f, 1.f), FALSE);
 		
 		gGL.diffuseColor3f(0.5f, 0.5f, 1.f);
 		feedback_string = llformat("Z: %.3f", vec.mV[VZ]);
-		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, 48.f, (F32)vertical_offset, LLColor4(0.5f, 0.5f, 1.f, 1.f), FALSE);
+		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, 43.f, (F32)vertical_offset + 15.f, LLColor4(0.5f, 0.5f, 1.f, 1.f), FALSE);
 	}
 }
 

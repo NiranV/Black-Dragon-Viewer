@@ -758,6 +758,8 @@ with the same filename but different name
 
   <texture name="transparentj2c" file_name="transparent.j2c" preload="true" />
   
+  <texture name="Splash_Bg"	file_name="navbar/splash_bg.png"/>
+  
   <texture name="Inv_TexturesClosed" file_name="icons/Inv_TexturesClosed.png" preload="false" />
   <texture name="Inv_SoundsClosed" file_name="icons/Inv_SoundsClosed.png" preload="false" />
   <texture name="Inv_CallingCardsClosed" file_name="icons/Inv_CallingCardsClosed.png" preload="false" />

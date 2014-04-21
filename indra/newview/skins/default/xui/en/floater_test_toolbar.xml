@@ -16,7 +16,7 @@
            top="20"
            min_button_width="0"
            max_button_width="100"
-           side="top">
+           side="left">
     <command name="avatar"/>
     <command name="build"/>
     <command name="chat"/>

@@ -40,6 +40,14 @@
     <on_check function="Toolbars.CheckSetting"
               parameter="icons_small" />
   </menu_item_check>
+  <menu_item_check label="Mini Icons"
+                   layout="topleft"
+                   name="icons_mini">
+    <on_click function="Toolbars.EnableSetting"
+              parameter="icons_mini" />
+    <on_check function="Toolbars.CheckSetting"
+              parameter="icons_mini" />
+  </menu_item_check>
   <menu_item_check label="Text only"
                    layout="topleft"
                    name="text_only">
