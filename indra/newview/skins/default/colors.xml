@@ -4,16 +4,16 @@
  <!-- Named Colors -->
  <color
  name="EmphasisColor"
- value="0.38 0.694 0.473 1" />
+ value="1 .32 .36 0.35" />
  <color
  name="EmphasisColor_13"
- value="0.38 0.694 0.473 0.13" />
+ value="1 .32 .36 0.13" />
  <color
  name="EmphasisColor_35"
- value="0.38 0.694 0.473 0.35" />
+ value="1 .32 .36 0.35" />
  <color
  name="BeaconColor"
- value="0.749 0.298 0 0.5" />	 
+ value="0.8 0.56 0.25 0.9" />	 
  <color
  name="White"
  value="1 1 1 1" />
@@ -727,7 +727,7 @@
  reference="Transparent" />
  <color
  name="ScrollBgWriteableColor"
- reference="White_05" />
+ reference="Transparent" />
  <color
  name="ScrollDisabledColor"
  reference="White_25" />
@@ -784,7 +784,7 @@
  reference="White" />
  <color
  name="TextBgReadOnlyColor"
- reference="White_05" />
+ reference="Black_25" />
  <color
  name="TextBgWriteableColor"
  reference="LtGray" />
