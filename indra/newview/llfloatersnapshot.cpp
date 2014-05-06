@@ -291,15 +291,6 @@ void LLFloaterSnapshot::Impl::updateLayout(LLFloaterSnapshot* floaterp)
 	floaterp->getChild<LLUICtrl>("file_size_label")->setVisible(advanced);
 	floaterp->reshape(floater_width, floaterp->getRect().getHeight());
 
-	previewp->mKeepAspectRatio = TRUE;
-
-	floaterp->getChild<LLComboBox>("profile_size_combo")->setCurrentByIndex(0);
-	floaterp->getChild<LLComboBox>("postcard_size_combo")->setCurrentByIndex(0);
-	floaterp->getChild<LLComboBox>("texture_size_combo")->setCurrentByIndex(0);
-	floaterp->getChild<LLComboBox>("local_size_combo")->setCurrentByIndex(0);
-
-	previewp->setSize(gViewerWindow->getWindowWidthRaw(), gViewerWindow->getWindowHeightRaw());
-
 	bool use_freeze_frame = floaterp->getChild<LLUICtrl>("freeze_frame_check")->getValue().asBoolean();
 
 	if (use_freeze_frame)
