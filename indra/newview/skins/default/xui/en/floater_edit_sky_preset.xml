@@ -107,15 +107,6 @@ width="700">
      name="Atmosphere"
      top="60"
      width="698">
-        <icon
-	 height="180"
-	 image_name="lighticon"
-	 layout="topleft"
-	 color="1 1 1 0.3"
-	 left="10"
-	 top_pad="-10"
-	 name="SkyDayCycle"
-	 width="180" />
         <text
          type="string"
          length="1"
@@ -376,15 +367,6 @@ width="700">
          name="Lighting"
          top_delta="4"
          width="698">
-           <icon
-             height="180"
-             image_name="sunicon.png"
-             layout="topleft"
-             color="1 1 1 0.3"
-             left="240"
-             top_pad="-10"
-             name="SkyDayCycle"
-             width="180" />
             <text
              type="string"
              length="1"
@@ -623,15 +605,6 @@ width="700">
          top_delta="4"
          width="698">
 
-           <icon
-             height="180"
-             image_name="airicon.png"
-             layout="topleft"
-             color="1 1 1 0.3"
-             left="480"
-             top_pad="-10"
-             name="SkyDayCycle"
-             width="180" />
             <text
              type="string"
              length="1"

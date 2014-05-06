@@ -81,16 +81,6 @@
     name="make_default_cb"
     top_delta="0"
     width="185"/>
-   
-   <icon
-   height="150"
-   image_name="watericon"
-   layout="topleft"
-   color="1 1 1 0.3"
-   left="535"
-   top_pad="30"
-   name="SkyDayCycle"
-   width="150" />
        <tab_container
        follows="left|top"
        height="180"
