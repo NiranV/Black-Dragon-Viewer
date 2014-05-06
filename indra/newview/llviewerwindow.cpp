@@ -2535,7 +2535,6 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 
 	// let menus handle navigation keys for navigation
 	if ((gMenuBarView && gMenuBarView->handleKey(key, mask, TRUE))
-		||(gLoginMenuBarView && gLoginMenuBarView->handleKey(key, mask, TRUE))
 		||(gMenuHolder && gMenuHolder->handleKey(key, mask, TRUE)))
 	{
 		lldebugs << "LLviewerWindow::handleKey handle nav keys for nav" << llendl;
@@ -2558,8 +2557,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 			return TRUE;
 		}
 
-		if ((gMenuBarView && gMenuBarView->handleAcceleratorKey(key, mask))
-			||(gLoginMenuBarView && gLoginMenuBarView->handleAcceleratorKey(key, mask)))
+		if (gMenuBarView && gMenuBarView->handleAcceleratorKey(key, mask))
 		{
 			LLViewerEventRecorder::instance().logKeyEvent(key,mask);
 			return TRUE;
@@ -2689,8 +2687,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 	}
 
 	// give menus a chance to handle unmodified accelerator keys
-	if ((gMenuBarView && gMenuBarView->handleAcceleratorKey(key, mask))
-		||(gLoginMenuBarView && gLoginMenuBarView->handleAcceleratorKey(key, mask)))
+	if ((gMenuBarView && gMenuBarView->handleAcceleratorKey(key, mask)))
 	{
 		return TRUE;
 	}

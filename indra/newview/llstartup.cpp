@@ -756,18 +756,13 @@ bool idle_startup()
 
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_ARROW);
 
-		// Login screen needs menus for preferences, but we can enter
-		// this startup phase more than once.
-		if (gLoginMenuBarView == NULL)
-		{
-			LL_DEBUGS("AppInit") << "initializing menu bar" << LL_ENDL;
-			display_startup();
-			initialize_edit_menu();
-			initialize_spellcheck_menu();
-			display_startup();
-			init_menus();
-			display_startup();
-		}
+		LL_DEBUGS("AppInit") << "initializing menu bar" << LL_ENDL;
+		display_startup();
+		initialize_edit_menu();
+		initialize_spellcheck_menu();
+		display_startup();
+		init_menus();
+		display_startup();
 
 		if (show_connect_box)
 		{
@@ -822,10 +817,6 @@ bool idle_startup()
 
 		display_startup();
 		gViewerWindow->setNormalControlsVisible( FALSE );	
-		display_startup();
-		gLoginMenuBarView->setVisible( TRUE );
-		display_startup();
-		gLoginMenuBarView->setEnabled( TRUE );
 		display_startup();
 		show_debug_menus();
 		display_startup();
@@ -1397,8 +1388,6 @@ bool idle_startup()
 		{	// This isn't the first logon attempt, so show the UI
 			gViewerWindow->setNormalControlsVisible( TRUE );
 		}	
-		gLoginMenuBarView->setVisible( FALSE );
-		gLoginMenuBarView->setEnabled( FALSE );
 		display_startup();
 
 		// direct logging to the debug console's line buffer
@@ -2803,8 +2792,6 @@ void reset_login()
 	if ( gViewerWindow )
 	{	// Hide menus and normal buttons
 		gViewerWindow->setNormalControlsVisible( FALSE );
-		gLoginMenuBarView->setVisible( TRUE );
-		gLoginMenuBarView->setEnabled( TRUE );
 	}
 
 	// Hide any other stuff

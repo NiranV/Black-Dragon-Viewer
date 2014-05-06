@@ -169,7 +169,6 @@ extern LLMenuBarGL*		gMenuBarView;
 extern LLMenuGL*		gEditMenu;
 extern LLMenuGL*		gPopupMenuView;
 extern LLViewerMenuHolderGL*	gMenuHolder;
-extern LLMenuBarGL*		gLoginMenuBarView;
 
 // Pie menus in 3D scene
 extern PieMenu			*gPieMenuAvatarSelf;

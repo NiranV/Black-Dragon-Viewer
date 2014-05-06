@@ -169,7 +169,6 @@ LLMenuBarGL		*gMenuBarView = NULL;
 LLViewerMenuHolderGL	*gMenuHolder = NULL;
 LLMenuGL		*gPopupMenuView = NULL;
 LLMenuGL		*gEditMenu = NULL;
-LLMenuBarGL		*gLoginMenuBarView = NULL;
 
 // Context menus
 LLContextMenu	*gMenuAvatarSelf	= NULL;
@@ -544,14 +543,6 @@ void init_menus()
 
 	// Let land based option enable when parcel changes
 	gMenuParcelObserver = new LLMenuParcelObserver();
-
-	gLoginMenuBarView = LLUICtrlFactory::getInstance()->createFromFile<LLMenuBarGL>("menu_login.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
-	gLoginMenuBarView->arrangeAndClear();
-	LLRect menuBarRect = gLoginMenuBarView->getRect();
-	menuBarRect.setLeftTopAndSize(0, menu_bar_holder->getRect().getHeight(), menuBarRect.getWidth(), menuBarRect.getHeight());
-	gLoginMenuBarView->setRect(menuBarRect);
-	gLoginMenuBarView->setBackgroundColor( color );
-	menu_bar_holder->addChild(gLoginMenuBarView);
 	
 	// tooltips are on top of EVERYTHING, including menus
 	gViewerWindow->getRootView()->sendChildToFront(gToolTipView);
@@ -5843,12 +5834,6 @@ void show_debug_menus()
 		const bool show_server_menu = (gAgent.getGodLevel() > GOD_NOT || (debug && gAgent.getAdminOverride()));
 		gMenuBarView->setItemVisible("Admin", show_server_menu);
 		gMenuBarView->setItemEnabled("Admin", show_server_menu);
-	}
-	if (gLoginMenuBarView)
-	{
-		BOOL debug = gSavedSettings.getBOOL("UseDebugMenus");
-		gLoginMenuBarView->setItemVisible("Debug", debug);
-		gLoginMenuBarView->setItemEnabled("Debug", debug);
 	}
 }
 
