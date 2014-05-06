@@ -59,6 +59,7 @@ public:
     void ExodusRenderToneMapping(LLRenderTarget* src, LLRenderTarget* dst, S32 type);
     void ExodusRenderColorGrade(LLRenderTarget* src, LLRenderTarget* dst, S32 type);
     void ExodusRenderVignette(LLRenderTarget* src, LLRenderTarget* dst);
+	void ExodusRenderSpecial(LLRenderTarget* src, LLRenderTarget* dst);
     void ExodusRenderPostUpdate();
 	void ExodusRenderPostSettingsUpdate();
 	void ExodusGenerateLUT();
@@ -86,6 +87,10 @@ public:
     static LLVector3	sExodusRenderToneAdvOptB;
     static LLVector3	sExodusRenderToneAdvOptC;
 	static F32			sExodusRenderGammaCurve;
+
+	static F32			sGreyscaleStrength;
+	static F32			sSepiaStrength;
+	static U32			sNumColors;
 	
 	S32					mVertexShaderLevel;
 };

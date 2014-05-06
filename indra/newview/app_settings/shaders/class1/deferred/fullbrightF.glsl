@@ -39,10 +39,6 @@ VARYING vec3 vary_position;
 VARYING vec4 vertex_color;
 VARYING vec2 vary_texcoord0;
 
-uniform float num_colors;
-uniform float greyscale_str;
-uniform float sepia_str;
-
 vec3 srgb_to_linear(vec3 cs)
 {
 	vec3 low_range = cs / vec3(12.92);

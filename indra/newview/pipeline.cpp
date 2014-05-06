@@ -182,12 +182,6 @@ F32 LLPipeline::CameraFocalLength;
 F32 LLPipeline::CameraFieldOfView;
 F32 LLPipeline::CameraUnderWaterDistortion;
 F32 LLPipeline::CameraOverWaterDistortion;
-BOOL LLPipeline::RenderPostPosterization;
-U32 LLPipeline::RenderPostPosterizationSamples;
-BOOL LLPipeline::RenderPostGreyscale;
-F32 LLPipeline::RenderPostGreyscaleStrength;
-BOOL LLPipeline::RenderPostSepia;
-F32 LLPipeline::RenderPostSepiaStrength;
 F32 LLPipeline::RenderShadowNoise;
 F32 LLPipeline::RenderShadowBlurSize;
 F32 LLPipeline::RenderSSAOScale;
@@ -657,11 +651,8 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("CameraFieldOfView");
 	connectRefreshCachedSettingsSafe("CameraOverWaterDistortion");
 	connectRefreshCachedSettingsSafe("CameraUnderWaterDistortion");
-	connectRefreshCachedSettingsSafe("RenderPostGreyscale");
 	connectRefreshCachedSettingsSafe("RenderPostGreyscaleStrength");
-	connectRefreshCachedSettingsSafe("RenderPostSepia");
 	connectRefreshCachedSettingsSafe("RenderPostSepiaStrength");
-	connectRefreshCachedSettingsSafe("RenderPostPosterization");
 	connectRefreshCachedSettingsSafe("RenderPostPosterizationSamples");
 	connectRefreshCachedSettingsSafe("RenderShadowNoise");
 	connectRefreshCachedSettingsSafe("RenderShadowBlurSize");
@@ -1206,12 +1197,6 @@ void LLPipeline::refreshCachedSettings()
 	CameraFieldOfView = gSavedSettings.getF32("CameraFieldOfView");
 	CameraOverWaterDistortion = gSavedSettings.getF32("CameraOverWaterDistortion");
 	CameraUnderWaterDistortion = gSavedSettings.getF32("CameraUnderWaterDistortion");
-	RenderPostPosterization = gSavedSettings.getBOOL("RenderPostPosterization");
-	RenderPostPosterizationSamples = gSavedSettings.getU32("RenderPostPosterizationSamples");
-	RenderPostGreyscale = gSavedSettings.getBOOL("RenderPostGreyscale");
-	RenderPostGreyscaleStrength = gSavedSettings.getF32("RenderPostGreyscaleStrength");
-	RenderPostSepia = gSavedSettings.getBOOL("RenderPostSepia");
-	RenderPostSepiaStrength = gSavedSettings.getF32("RenderPostSepiaStrength");
 	RenderShadowNoise = gSavedSettings.getF32("RenderShadowNoise");
 	RenderShadowBlurSize = gSavedSettings.getF32("RenderShadowBlurSize");
 	RenderSSAOScale = gSavedSettings.getF32("RenderSSAOScale");
@@ -8458,12 +8443,6 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform2f(LLShaderMgr::DEFERRED_PROJ_SHADOW_RES, mShadow[4].getWidth(), mShadow[4].getHeight());
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);
-
-//	//BD - Post Effects
-	shader.uniform1f(LLShaderMgr::DEFERRED_NUM_COLORS, RenderPostPosterizationSamples);
-	shader.uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, RenderPostGreyscaleStrength);
-	shader.uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, RenderPostSepiaStrength);
-
 
 	if (shader.getUniformLocation(LLShaderMgr::DEFERRED_NORM_MATRIX) >= 0)
 	{

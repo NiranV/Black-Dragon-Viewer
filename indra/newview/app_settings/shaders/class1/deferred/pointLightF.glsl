@@ -39,10 +39,6 @@ uniform sampler2D noiseMap;
 uniform sampler2D lightFunc;
 uniform sampler2DRect depthMap;
 
-uniform float num_colors;
-uniform float greyscale_str;
-uniform float sepia_str;
-
 uniform vec3 env_mat[3];
 uniform float sun_wash;
 
@@ -154,19 +150,6 @@ void main()
 	{
 		discard;
 	}
-	
-	#if POSTERIZATION
-		col = pow(col, vec3(0.6));
-		col = col * num_colors;
-		col = floor(col);
-		col = col / num_colors;
-		col = pow(col, vec3(1.0/0.6));
-	#endif
-	
-	#if GREY_SCALE
-		vec3 col_gr = vec3((0.299 * col.r) + (0.587 * col.g) + (0.114 * col.b));
-		col = mix(col, col_gr, greyscale_str);
-	#endif
 		
 	frag_color.rgb = col;	
 	frag_color.a = 0.0;

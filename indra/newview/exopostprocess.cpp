@@ -38,6 +38,9 @@ LLVector3	exoPostProcess::sExodusRenderToneAdvOptA;
 LLVector3	exoPostProcess::sExodusRenderToneAdvOptB;
 LLVector3	exoPostProcess::sExodusRenderToneAdvOptC;
 F32			exoPostProcess::sExodusRenderGammaCurve;
+F32			exoPostProcess::sGreyscaleStrength;
+F32			exoPostProcess::sSepiaStrength;
+U32			exoPostProcess::sNumColors;
 
 exoPostProcess::exoPostProcess()
 {
@@ -69,6 +72,9 @@ exoPostProcess::exoPostProcess()
 	sExodusRenderToneAdvOptB = LLVector3(1.f, 1.f, 1.f);
 	sExodusRenderToneAdvOptC = LLVector3(1.f,1.f,1.f);
 	sExodusRenderGammaCurve = 2.2f;
+	sGreyscaleStrength = 0.0f;
+	sSepiaStrength = 0.0f;
+	sNumColors = 0;
 }
 
 exoPostProcess::~exoPostProcess()
@@ -105,6 +111,9 @@ void exoPostProcess::ExodusRenderPostStack(LLRenderTarget *src, LLRenderTarget *
 		
 		if (sExodusRenderVignette.mV[0] > 0 && LLPipeline::sRenderDeferred)
 			ExodusRenderVignette(src, dst); // Don't render vignette here in non-deferred. Do it in the glow combine shader.
+
+		if (sGreyscaleStrength > 0.0f || sNumColors > 0 || sSepiaStrength > 0.0f)
+			ExodusRenderSpecial(src, dst);
 	}
 }
 void exoPostProcess::ExodusRenderPostSettingsUpdate()
@@ -118,6 +127,9 @@ void exoPostProcess::ExodusRenderPostSettingsUpdate()
 	sExodusRenderToneMapping = gSavedSettings.getBOOL("ExodusRenderToneMapping");
 	sExodusRenderVignette = gSavedSettings.getVector3("ExodusRenderVignette");
 	sExodusRenderToneMappingTech = gSavedSettings.getS32("ExodusRenderToneMappingTech");
+	sGreyscaleStrength = gSavedSettings.getF32("RenderPostGreyscaleStrength");
+	sSepiaStrength = gSavedSettings.getF32("RenderPostSepiaStrength");
+	sNumColors = gSavedSettings.getU32("RenderPostPosterizationSamples");
 	if (mVertexShaderLevel > 0)  // Don't even bother with fetching the color grading texture if our vertex shader level isn't above 0.
 	{
 		LLViewerFetchedTexture::sExodusColorGradeTexp = LLViewerTextureManager::getFetchedTexture(LLUUID(gSavedSettings.getString("ExodusRenderColorGradeTexture")), FTT_DEFAULT, TRUE, LLGLTexture::BOOST_UI);
@@ -283,6 +295,26 @@ void exoPostProcess::ExodusRenderVignette(LLRenderTarget* src, LLRenderTarget* d
     exoShader::BindRenderTarget(dst, shader, LLShaderMgr::EXO_RENDER_SCREEN);
     
     shader->uniform3fv(LLShaderMgr::EXO_RENDER_VIGNETTE, 1, sExodusRenderVignette.mV);
+    mExoPostBuffer->drawArrays(LLRender::TRIANGLES, 0, 3);
+    stop_glerror();
+    
+    shader->unbind();
+    dst->flush();
+}
+
+void exoPostProcess::ExodusRenderSpecial(LLRenderTarget* src, LLRenderTarget* dst)
+{
+    dst->bindTarget();
+    LLGLSLShader *shader = &gSpecialPost;
+    shader->bind();
+    
+    mExoPostBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
+    
+    exoShader::BindRenderTarget(dst, shader, LLShaderMgr::EXO_RENDER_SCREEN);
+    
+	shader->uniform1i(LLShaderMgr::DEFERRED_NUM_COLORS, sNumColors);
+	shader->uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, sGreyscaleStrength);
+	shader->uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, sSepiaStrength);
     mExoPostBuffer->drawArrays(LLRender::TRIANGLES, 0, 3);
     stop_glerror();
     

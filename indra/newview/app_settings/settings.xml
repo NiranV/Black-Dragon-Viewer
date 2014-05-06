@@ -15569,17 +15569,6 @@
     <key>Value</key>
     <integer>16</integer>
   </map>
-  <key>RenderPostPosterization</key>
-  <map>
-    <key>Comment</key>
-    <string>Render the screen with a given number of color-shades only to posterize the final image.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
   <key>RenderPostGreyscaleStrength</key>
   <map>
     <key>Comment</key>
@@ -15591,17 +15580,6 @@
     <key>Value</key>
     <integer>1.0</integer>
   </map>
-  <key>RenderPostGreyscale</key>
-  <map>
-    <key>Comment</key>
-    <string>Render the scene in greyscale</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
   <key>RenderPostSepiaStrength</key>
   <map>
     <key>Comment</key>
@@ -15612,17 +15590,6 @@
     <string>F32</string>
     <key>Value</key>
     <integer>0.1</integer>
-  </map>
-  <key>RenderPostSepia</key>
-  <map>
-    <key>Comment</key>
-    <string>Render the scene in sepia</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
   </map>
   <key>EnableThirdPersonSteering</key>
   <map>
