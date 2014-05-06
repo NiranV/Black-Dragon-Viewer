@@ -3,7 +3,7 @@
 	 background_visible="true"
      bevel_style="in"
      bg_opaque_color="Black" 
-     bg_alpha_color="DkGray_66"
+     bg_alpha_color="1 .32 .36 0.15"
      follows="top|left|right"
      height="24"
      label="im_header"
