@@ -25,17 +25,6 @@
    name="ItemcountUnknown">
 			---
   </panel.string>
-  <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="Black_50"
- layout="topleft"
- mouse_opaque="false"
- left="4"
- name="title"
- top="0"
- width="292"/>
   <text
 	    type="string"
 	    length="1"
@@ -49,7 +38,7 @@
 	    name="ItemcountText"
 	    font="SansSerifSmall"
 	    text_color="Friend"
-	    top_delta="4"
+	    top="3"
 	    width="100">
 					---
 				</text>
@@ -63,16 +52,16 @@
    left="300"
    top_delta="-1"
    width="16" />
-     <!--<view_border
+				<view_border
 	 bevel_style="in"
 	 follows="top|left|right"
 	 height="1"
 	 layout="topleft"
 	 left="10"
 	 name="border1"
-	 top="19"
+	 top="18"
 	 right="-10"
-	 width="250"/>-->
+	 width="250"/>
     <menu_bar
    height="18"
    layout="topleft"
@@ -82,7 +71,7 @@
    tool_tip="General Operations"
    left="10"
    name="menu_gear_default"
-   top="1">
+   top="0">
     <menu
      label="File"
      layout="topleft"
@@ -466,7 +455,7 @@
    layout="topleft"
    color="1 1 1 1"
    height="16"
-   image_name="ObjectsByDate_Off.png"
+   image_name="Objects_By_Date_Off"
    left_pad="10"
    top_delta="0"
    width="16" />
@@ -490,7 +479,7 @@
    follows="left|top"
    color="1 1 1 1"
    height="16"
-   image_name="FoldersByName_Off.png"
+   image_name="Folders_By_Name_Off"
    left_pad="10"
    top_delta="0"
    width="16" />
@@ -514,7 +503,7 @@
    follows="left|top"
    color="1 1 1 1"
    height="16"
-   image_name="SysFoldersToTop_Off.png"
+   image_name="Sys_Folders_To_Top_Off"
    left_pad="10"
    top_delta="0"
    width="16"/>
@@ -619,7 +608,7 @@
            follows="bottom|left"
            height="25"
            image_hover_unselected="Toolbar_Middle_Over"
-           image_overlay="CloseFolders_Off.png"
+           image_overlay="CloseFolders_Off"
            image_selected="Toolbar_Middle_Selected"
            image_unselected="Toolbar_Middle_Off"
            layout="topleft"
@@ -678,7 +667,7 @@
            follows="bottom|left"
            height="25"
            image_hover_unselected="Toolbar_Middle_Over"
-           image_overlay="CopyItem_Off.png"
+           image_overlay="CopyItem_Off"
            image_selected="Toolbar_Middle_Selected"
            image_unselected="Toolbar_Middle_Off"
            layout="topleft"
@@ -705,7 +694,7 @@
            follows="bottom|left"
            height="25"
            image_hover_unselected="Toolbar_Middle_Over"
-           image_overlay="PasteItem_Off.png"
+           image_overlay="PasteItem_Off"
            image_selected="Toolbar_Middle_Selected"
            image_unselected="Toolbar_Middle_Off"
            layout="topleft"
