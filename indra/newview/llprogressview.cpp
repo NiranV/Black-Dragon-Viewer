@@ -58,9 +58,9 @@ LLProgressView* LLProgressView::sInstance = NULL;
 
 S32 gStartImageWidth = 1;
 S32 gStartImageHeight = 1;
-const F32 FADE_TO_WORLD_TIME = 2.5f;
-const F32 FADE_FROM_LOGIN_TIME = 1.5f;
-const F32 CYCLE_TIMER = 7.0f;
+const F32 FADE_TO_WORLD_TIME = 1.0f;
+const F32 FADE_FROM_LOGIN_TIME = 0.7f;
+//const F32 CYCLE_TIMER = 7.0f;
 
 static LLPanelInjector<LLProgressView> r("progress_view");
 
@@ -71,7 +71,7 @@ LLProgressView::LLProgressView()
 	mMouseDownInActiveArea( false ),
 	mUpdateEvents("LLProgressView"),
 	mFadeToWorldTimer(),
-	mTipCycleTimer(),
+	//mTipCycleTimer(),
 	mFadeFromLoginTimer(),
 	mStartupComplete(false)
 {
@@ -85,10 +85,10 @@ BOOL LLProgressView::postBuild()
 	mCancelBtn = getChild<LLButton>("cancel_btn");
 	mCancelBtn->setClickedCallback(  LLProgressView::onCancelButtonClicked, NULL );
 	mFadeToWorldTimer.stop();
-	mTipCycleTimer.getStarted();
+	//mTipCycleTimer.getStarted();
 	mFadeFromLoginTimer.stop();
 
-	mMessageText = getChild<LLUICtrl>("message_text");
+	//mMessageText = getChild<LLUICtrl>("message_text");
 	mPercentText = getChild<LLTextBox>("percent_text");
 
 	// hidden initially, until we need it
@@ -170,7 +170,7 @@ void LLProgressView::fade(BOOL in)
 }
 // ## Zi: Fade teleport screens
 
-void LLProgressView::setTip()
+/*void LLProgressView::setTip()
 {
 	if(mTipCycleTimer.getElapsedTimeAndResetF32() > CYCLE_TIMER)
 	{
@@ -188,40 +188,22 @@ void LLProgressView::drawStartTexture(F32 alpha)
 	gGL.color4f(0.f, 0.f, 0.f, alpha);		// ## Zi: Fade teleport screens
 	gl_rect_2d(getRect());
 	gGL.popMatrix();
-}
+}*/
 
 
 void LLProgressView::draw()
 {
 	static LLTimer timer;
-	F32 glow;
-	F32 fov;
 	F32 alpha;
+	F32 greyscale;
 
 	if (mFadeFromLoginTimer.getStarted())
 	{
-		if(gSavedSettings.controlExists("PrevGlow"))
-		{
-			glow = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, gSavedSettings.getF32("PrevGlow"), 1.f);
-		}
-		else
-		{
-			glow = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.21f, 1.f);
-		}
-		if(gSavedSettings.controlExists("PrevFoV"))
-		{
-			fov = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, gSavedSettings.getF32("PrevFoV"), 1.7f);
-		}
-		else
-		{
-			fov = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 1.1f, 1.7f);
-		}
 		alpha = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.f, 1.f);
+		greyscale = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.f, 1.f);
 		LLViewDrawContext context(alpha);
-		gSavedSettings.setF32("RenderGlowStrength" , glow);
-		gSavedSettings.setF32("CameraAngle" , fov);
-
-		drawStartTexture(alpha);
+		gSavedSettings.setF32("RenderPostGreyscaleStrength" , greyscale);
+		gSavedSettings.setVector3("ExodusRenderVignette" , LLVector3(greyscale*1.1f ,1.f, 3.f));
 
 		LLPanel::draw();
 
@@ -239,27 +221,12 @@ void LLProgressView::draw()
 	{
 		// draw fading panel
 		alpha = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
-		if(gSavedSettings.controlExists("PrevGlow"))
-		{
-			glow = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, gSavedSettings.getF32("PrevGlow"));
-		}
-		else
-		{
-			glow = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.21f);
-		}
-		if(gSavedSettings.controlExists("PrevFoV"))
-		{
-			fov = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.7f, gSavedSettings.getF32("PrevFoV"));
-		}
-		else
-		{
-			fov = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.7f, 1.1f);
-		}
+		greyscale = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
+
 		LLViewDrawContext context(alpha);
 		
-		gSavedSettings.setF32("RenderGlowStrength" , glow);
-		gSavedSettings.setF32("CameraAngle" , fov);
-		drawStartTexture(alpha);
+		gSavedSettings.setF32("RenderPostGreyscaleStrength" , greyscale);
+		gSavedSettings.setVector3("ExodusRenderVignette" , LLVector3(greyscale*1.1f ,1.f, 3.f));
 		LLPanel::draw();
 
 		// faded out completely - remove panel and reveal world
@@ -278,8 +245,7 @@ void LLProgressView::draw()
 		return;
 	}
 
-	setTip();
-	drawStartTexture(1.0f);
+	//setTip();
 	// draw children
 	LLPanel::draw();
 }
@@ -311,22 +277,8 @@ void LLProgressView::onCancelButtonClicked(void*)
 	}
 	else
 	{
-		if(gSavedSettings.controlExists("PrevGlow"))
-		{
-			gSavedSettings.setF32("RenderGlowStrength" , gSavedPerAccountSettings.getF32("PrevGlow"));
-		}
-		else
-		{
-			gSavedSettings.setF32("RenderGlowStrength" , 0.21f);
-		}
-		if(gSavedSettings.controlExists("PrevFoV"))
-		{
-			gSavedSettings.setF32("CameraAngle" , gSavedPerAccountSettings.getF32("PrevFoV"));
-		}
-		else
-		{
-			gSavedSettings.setF32("CameraAngle" , 1.1f);
-		}
+		gSavedSettings.setF32("RenderPostGreyscaleStrength" , 0.f);
+		gSavedSettings.setVector3("ExodusRenderVignette" , LLVector3(0.f ,1.f, 3.f));
 		gAgent.teleportCancel();
 		sInstance->mCancelBtn->setEnabled(FALSE);
 		sInstance->setVisible(FALSE);

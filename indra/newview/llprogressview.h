@@ -48,7 +48,7 @@ public:
 	BOOL postBuild();
 
 	/*virtual*/ void draw();
-	void drawStartTexture(F32 alpha);
+	//void drawStartTexture(F32 alpha);
 
 	/*virtual*/ BOOL handleHover(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL handleKeyHere(KEY key, MASK mask);
@@ -57,7 +57,7 @@ public:
 	void setPercent(const F32 percent);
 
 	// Set a random Tip every X seconds
-	void setTip();
+	//void setTip();
 	
 	// turns on (under certain circumstances) the into video after login
 	void revealIntroPanel();
@@ -71,7 +71,7 @@ public:
 	static void onCancelButtonClicked( void* );
 	bool onAlertModal(const LLSD& sd);
 
-	LLUICtrl* mMessageText;
+	//LLUICtrl* mMessageText;
 	LLTextBox* mPercentText;
 
 	// note - this is not just hiding the intro panel - it also hides the parent panel
@@ -81,7 +81,7 @@ public:
 protected:
 	LLProgressBar* mProgressBar;
 	F32 mPercentDone;
-	std::string mMessage;
+	//std::string mMessage;
 	LLButton*	mCancelBtn;
 	LLFrameTimer mFadeToWorldTimer;
 	LLFrameTimer mTipCycleTimer;
