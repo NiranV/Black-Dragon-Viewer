@@ -273,7 +273,7 @@
   <command
   name="sky"
   available_in_toybox="true"
-  icon="Skybutton.tga"
+  icon="Command_Sky_Icon"
   label_ref="Command_Sky_Label"
   tooltip_ref="Command_Sky_Tooltip"
   execute_function="Floater.ToggleOrBringToFront"
@@ -336,7 +336,7 @@
   <command
   name="water"
   available_in_toybox="true"
-  icon="Waterbutton.tga"
+  icon="Command_Water_Icon"
   label_ref="Command_Water_Label"
   tooltip_ref="Command_Water_Tooltip"
   execute_function="Floater.ToggleOrBringToFront"
@@ -346,7 +346,7 @@
   <command
   name="windlight"
   available_in_toybox="true"
-  icon="Windlightbutton.tga"
+  icon="Command_Windlight_Icon"
   label_ref="Command_Windlight_Label"
   tooltip_ref="Command_Windlight_Tooltip"
   execute_function="Floater.ToggleOrBringToFront"
@@ -356,21 +356,31 @@
   <command
   name="spacer"
   available_in_toybox="true"
-  icon="transparent.j2c"/>
+  icon="transparent.j2c"
+  label_ref="Command_Spacer_Label"
+  tooltip_ref="Command_Spacer_Tooltip"/>
   <command
   name="spacer2"
   available_in_toybox="true"
-  icon="transparent.j2c"/>
+  icon="transparent.j2c"
+  label_ref="Command_Spacer_Label"
+  tooltip_ref="Command_Spacer_Tooltip"/>
   <command
   name="spacer3"
   available_in_toybox="true"
-  icon="transparent.j2c"/>
+  icon="transparent.j2c"
+  label_ref="Command_Spacer_Label"
+  tooltip_ref="Command_Spacer_Tooltip"/>
   <command
   name="spacer4"
   available_in_toybox="true"
-  icon="transparent.j2c"/>
+  icon="transparent.j2c"
+  label_ref="Command_Spacer_Label"
+  tooltip_ref="Command_Spacer_Tooltip"/>
   <command
   name="spacer5"
   available_in_toybox="true"
-  icon="transparent.j2c"/>
+  icon="transparent.j2c"
+  label_ref="Command_Spacer_Label"
+  tooltip_ref="Command_Spacer_Tooltip"/>
 </commands>
