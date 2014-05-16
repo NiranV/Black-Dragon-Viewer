@@ -67,6 +67,10 @@ public:
 	/*virtual*/ void dump();
 
 	/*virtual*/ BOOL isAnimatable() const { return FALSE; }
+
+	F32*						mLastMatrixPalette;  //for motion blur effect, 
+													//copy of matrix palette used to render previous frame
+	U32							mLastMatrixPaletteUpdated;
 	
 private:
 

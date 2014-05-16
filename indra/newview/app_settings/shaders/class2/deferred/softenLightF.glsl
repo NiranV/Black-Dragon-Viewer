@@ -89,10 +89,8 @@ uniform float ssao_effect;
 
 float shadamount;
 float shaftify;
-
-uniform float num_colors;
-uniform float greyscale_str;
-uniform float sepia_str;
+uniform int godray_res;
+uniform float godray_multiplier;
 
 uniform vec3 sun_dir;
 VARYING vec2 vary_fragcoord;
@@ -254,12 +252,27 @@ float nonpcfShadowAtPos(vec4 pos_world)
   vec2 pos_screen = vary_fragcoord.xy;
   vec4 pos = pos_world;
   if (pos.z > -shadow_clip.w) {	
+    vec4 near_split = shadow_clip*-0.75;
     vec4 far_split = shadow_clip*-1.25;
-    if (pos.z > far_split.x) {
+    
+    if (pos.z < near_split.z) {
+      pos = shadow_matrix[3]*pos;
+      return nonpcfShadow(shadowMap3, pos, pos_screen);
+    }
+    else if (pos.z < near_split.y) {
+      pos = shadow_matrix[2]*pos;
+      return nonpcfShadow(shadowMap2, pos, pos_screen);
+    }
+    else if (pos.z < near_split.x) {
+      pos = shadow_matrix[1]*pos;
+      return nonpcfShadow(shadowMap1, pos, pos_screen);
+    }
+    else if (pos.z > far_split.x) {
       pos = shadow_matrix[0]*pos;
       return nonpcfShadow(shadowMap0, pos, pos_screen);
     }
   }
+
   return 1.0;
 }
 
@@ -359,32 +372,31 @@ void calcAtmospherics(vec3 inPositionEye, float ambFactor) {
 	setAmblitColor(vec3(tmpAmbient * .25));
 	setAdditiveColor(getAdditiveColor() * vec3(1.0 - temp1));
     
-    #ifdef GODRAYS
+    #if GOD_RAYS
         // craptacular rays
-        const int rays = 64;
         shadamount = 0.0;
         float last_shadsample = 0.0;
         shaftify = 0.0;
         float roffset = rand(vary_fragcoord.xy + vec2(1));
         vec3 farpos = inPositionEye;
-        const float maxzdist = 64.0;
+        const float maxzdist = 96.0;
         farpos *= min(-farpos.z, maxzdist) / -farpos.z;
         
-        vec4 spos = vec4(mix(vec3(0,0,0), farpos, (rays-roffset)/(rays)), 1.0);
+        vec4 spos = vec4(mix(vec3(0,0,0), farpos, (godray_res-roffset)/(godray_res)), 1.0);
         last_shadsample = shadamount = nonpcfShadowAtPos(spos);
     
-        for (int i=rays-1; i>0; --i) {
-          vec4 spos = vec4(mix(vec3(0,0,0), farpos, (i-roffset)/(rays)), 1.0);
+        for (int i=godray_res-1; i>0; --i) {
+          vec4 spos = vec4(mix(vec3(0,0,0), farpos, (i-roffset)/(godray_res)), 1.0);
           float this_shadsample = nonpcfShadowAtPos(spos);
           float this_shaftify = abs(this_shadsample - last_shadsample);
           last_shadsample = this_shadsample;
-          shadamount = mix(shadamount, this_shadsample, (1.0+1.0*haze_density)/rays);
+          shadamount = mix(shadamount, this_shadsample, (1.0+1.0*haze_density)/godray_res);
           shaftify += this_shaftify;
         }
         
-        shaftify /= rays-1;
+        shaftify /= godray_res-1;
         shaftify *= shaftify;
-        shaftify *= 0.15;
+        shaftify *= godray_multiplier;
     #endif
 }
 
@@ -500,7 +512,6 @@ void main()
 {
 	vec2 tc = vary_fragcoord.xy;
 	float depth = texture2DRect(depthMap, tc.xy).r;
-    if (depth == 1.0) depth = 0.999; // utterly fudge sky distance
 	vec3 pos = getPosition_d(tc, depth).xyz;
 	vec4 norm = texture2DRect(normalMap, tc);
 	float envIntensity = norm.z;
@@ -727,9 +738,9 @@ void main()
 		col = srgb_to_linear(col);
 	}
     
-    #ifdef GODRAYS
+    #if GOD_RAYS
         col = col + shaftify * getSunlitColor();
-        col = col * (0.5 + shadamount);
+        col = col * (godray_multiplier + shadamount);
     #endif
 	
 	frag_color.rgb = col;

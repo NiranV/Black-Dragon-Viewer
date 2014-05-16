@@ -98,6 +98,11 @@ public:
 	virtual S32 getNumPostDeferredPasses();
 	virtual void renderPostDeferred(S32 pass = 0);
 
+	virtual void beginMotionBlurPass(S32 pass);
+	virtual void endMotionBlurPass(S32 pass);
+	virtual S32 getNumMotionBlurPasses();
+	virtual void renderMotionBlur(S32 pass = 0);
+
 	virtual void beginShadowPass(S32 pass);
 	virtual void endShadowPass(S32 pass);
 	virtual S32 getNumShadowPasses();

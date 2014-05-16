@@ -401,6 +401,87 @@ void LLDrawPoolAvatar::renderPostDeferred(S32 pass)
 	is_post_deferred_render = false;
 }
 
+void LLDrawPoolAvatar::beginMotionBlurPass(S32 pass)
+{
+	glh::matrix4f last(gGLLastModelView);
+
+	if (pass == 0)
+	{
+		gAvatarVelocityProgram.bind();
+		sVertexProgram = &gAvatarVelocityProgram;
+
+		glh::matrix4f last_inv = last.inverse();
+		sVertexProgram->uniformMatrix4fv(LLShaderMgr::LAST_MODELVIEW_MATRIX_INVERSE, 1, GL_FALSE, last_inv.m);
+
+	}
+	else if (pass == 1)
+	{
+		gSkinnedVelocityProgram.bind();
+		sVertexProgram = &gSkinnedVelocityProgram;
+	}
+	else if (pass == 2)
+	{
+		gSkinnedVelocityAlphaProgram.bind();
+		sVertexProgram = &gSkinnedVelocityAlphaProgram;
+	}
+
+	sVertexProgram->uniform4f(LLShaderMgr::VIEWPORT, (F32) gGLViewport[0],
+										(F32) gGLViewport[1],
+										(F32) gGLViewport[2],
+										(F32) gGLViewport[3]);
+		
+
+	sVertexProgram->uniformMatrix4fv(LLShaderMgr::LAST_MODELVIEW_MATRIX, 1, GL_FALSE, gGLLastModelView);
+	sVertexProgram->uniformMatrix4fv(LLShaderMgr::CURRENT_MODELVIEW_MATRIX, 1, GL_FALSE, gGLModelView);
+
+}
+
+void LLDrawPoolAvatar::endMotionBlurPass(S32 pass)
+{
+	sVertexProgram->unbind();
+	sVertexProgram = NULL;
+}
+
+S32 LLDrawPoolAvatar::getNumMotionBlurPasses()
+{
+	return 3;
+}
+
+void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
+{
+	if (pass == 0)
+	{
+		render(2);
+	}
+	else if (!mDrawFace.empty())
+	{
+		const LLFace *facep = mDrawFace[0];
+		if (!facep->getDrawable())
+		{
+			return;
+		}
+		LLVOAvatar* avatarp = (LLVOAvatar *)facep->getDrawable()->getVObj().get();
+
+		if (pass == 1)
+		{
+			renderDeferredRiggedSimple(avatarp);
+			renderDeferredRiggedBump(avatarp);
+			U32 CurCount = 0;
+			for (; CurCount < 13; CurCount++)
+			{
+				renderDeferredRiggedMaterial(avatarp, CurCount);
+			}
+			renderRiggedFullbright(avatarp);
+			renderRiggedFullbrightShiny(avatarp);
+			renderRiggedShinySimple(avatarp);
+		}
+		else
+		{
+			renderRiggedAlpha(avatarp);
+			renderRiggedFullbrightAlpha(avatarp);
+		}
+	}
+}
 
 S32 LLDrawPoolAvatar::getNumShadowPasses()
 {
@@ -1763,6 +1844,21 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 
 				LLDrawPoolAvatar::sVertexProgram->uniform3fv(LLShaderMgr::AVATAR_TRANSLATION, count, transp);
 
+				if (LLDrawPoolAvatar::sVertexProgram == &gSkinnedVelocityProgram ||
+					LLDrawPoolAvatar::sVertexProgram == &gSkinnedVelocityAlphaProgram)
+				{
+					if (face->mLastMatrixPalette)
+					{
+						LLDrawPoolAvatar::sVertexProgram->uniformMatrix4fv(LLShaderMgr::AVATAR_LAST_MATRIX, skin->mJointNames.size(), 
+							FALSE, (GLfloat*) face->mLastMatrixPalette[0].mMatrix);
+					}
+					else
+					{
+						face->mLastMatrixPalette = new LLMatrix4[64];
+					}
+
+					memcpy(face->mLastMatrixPalette->mMatrix, mat[0].mMatrix, sizeof(LLMatrix4)*skin->mJointNames.size());
+				}
 				
 				stop_glerror();
 			}

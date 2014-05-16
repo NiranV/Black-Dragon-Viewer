@@ -99,6 +99,7 @@ void LLDrawable::init()
 	mPositionGroup.clear();
 	mExtents[0].clear();
 	mExtents[1].clear();
+	mLastRenderMatrix = NULL;
 
 	mState     = 0;
 	mVObjp   = NULL;
@@ -152,6 +153,12 @@ void LLDrawable::destroy()
 		llinfos << "- Zombie drawables: " << sNumZombieDrawables << llendl;
 	}*/	
 
+	if (mLastRenderMatrix)
+	{
+		delete mLastRenderMatrix;
+		mLastRenderMatrix = NULL;
+	}
+
 }
 
 void LLDrawable::markDead()
@@ -192,6 +199,22 @@ LLVOVolume* LLDrawable::getVOVolume() const
 const LLMatrix4& LLDrawable::getRenderMatrix() const
 { 
 	return isRoot() ? getWorldMatrix() : getParent()->getWorldMatrix();
+}
+
+LLMatrix4& LLDrawable::getLastRenderMatrix() 
+{ 
+	if (isState(LLDrawable::ANIMATED_CHILD) || isRoot())
+	{
+		if (!mLastRenderMatrix)
+		{
+			mLastRenderMatrix = new LLMatrix4(getWorldMatrix());
+		}
+		return *mLastRenderMatrix;
+	}
+	else
+	{
+		return getParent()->getLastRenderMatrix();
+	}
 }
 
 BOOL LLDrawable::isLight() const
@@ -540,6 +563,11 @@ void LLDrawable::makeStatic(BOOL warning_enabled)
 // Returns "distance" between target destination and resulting xfrom
 F32 LLDrawable::updateXform(BOOL undamped)
 {
+	if (mLastRenderMatrix)
+	{
+		*mLastRenderMatrix = mXform.getWorldMatrix();
+	}
+
 	BOOL damped = !undamped;
 
 	// Position

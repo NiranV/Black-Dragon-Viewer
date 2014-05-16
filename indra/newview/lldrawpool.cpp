@@ -199,6 +199,30 @@ void LLDrawPool::renderPostDeferred(S32 pass)
 
 }
 
+//virtual 
+void LLDrawPool::beginMotionBlurPass(S32 pass)
+{
+
+}
+
+//virtual 
+void LLDrawPool::endMotionBlurPass(S32 pass)
+{
+
+}
+
+//virtual 
+S32 LLDrawPool::getNumMotionBlurPasses()
+{
+	return 0;
+}
+
+//virtual 
+void LLDrawPool::renderMotionBlur(S32 pass)
+{
+
+}
+
 //virtual
 void LLDrawPool::endRenderPass( S32 pass )
 {

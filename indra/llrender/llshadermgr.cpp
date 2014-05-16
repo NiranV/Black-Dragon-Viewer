@@ -481,6 +481,14 @@ BOOL LLShaderMgr::attachShaderFeatures(LLGLSLShader * shader)
 		}
 	}
 
+	if (features->hasMotionBlur)
+	{
+		if (!shader->attachObject("deferred/velocityFuncV.glsl"))
+		{
+			return FALSE;
+		}
+	}
+
 	return TRUE;
 }
 
@@ -1006,7 +1014,12 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("texture_matrix3");
 	mReservedUniforms.push_back("object_plane_s");
 	mReservedUniforms.push_back("object_plane_t");
-	llassert(mReservedUniforms.size() == LLShaderMgr::OBJECT_PLANE_T+1);
+	mReservedUniforms.push_back("current_modelview_matrix");
+	mReservedUniforms.push_back("last_modelview_matrix");
+	mReservedUniforms.push_back("last_modelview_matrix_inverse");
+	mReservedUniforms.push_back("current_object_matrix");
+	mReservedUniforms.push_back("last_object_matrix");
+	llassert(mReservedUniforms.size() == LLShaderMgr::LAST_OBJECT_MATRIX+1);
 
 	mReservedUniforms.push_back("viewport");
 
@@ -1173,7 +1186,14 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("env_intensity");
 
 	mReservedUniforms.push_back("matrixPalette");
+	mReservedUniforms.push_back("lastMatrixPalette");
 	mReservedUniforms.push_back("translationPalette");
+
+	mReservedUniforms.push_back("time_step");
+	mReservedUniforms.push_back("mblur_strength");
+
+	mReservedUniforms.push_back("godray_res");
+	mReservedUniforms.push_back("godray_multiplier");
 	
 //	//BD - Post Effects
 	mReservedUniforms.push_back("num_colors");
@@ -1218,6 +1238,8 @@ void LLShaderMgr::initAttribsAndUniforms()
 
 	mReservedUniforms.push_back("origin");
 	mReservedUniforms.push_back("display_gamma");
+
+	mReservedUniforms.push_back("seconds60");
 	llassert(mReservedUniforms.size() == END_RESERVED_UNIFORMS);
 
 	std::set<std::string> dupe_check;

@@ -276,6 +276,8 @@ public:
 	void postSort(LLCamera& camera);
 	void forAllVisibleDrawables(void (*func)(LLDrawable*));
 
+	void renderMotionBlur(U32 type);
+	void renderMotionBlurWithTexture(U32 type);
 	void renderObjects(U32 type, U32 mask, BOOL texture = TRUE, BOOL batch_texture = FALSE);
 	void renderMaskedObjects(U32 type, U32 mask, BOOL texture = TRUE, BOOL batch_texture = FALSE);
 
@@ -295,6 +297,8 @@ public:
 	void renderGeomDeferred(LLCamera& camera);
 	void renderGeomPostDeferred(LLCamera& camera, bool do_occlusion=true);
 	void renderGeomShadow(LLCamera& camera);
+	void renderGeomMotionBlur();
+
 	void bindDeferredShader(LLGLSLShader& shader, U32 light_index = 0, U32 noise_map = 0xFFFFFFFF);
 	void setupSpotLight(LLGLSLShader& shader, LLDrawable* drawablep);
 
@@ -630,6 +634,7 @@ public:
 	LLRenderTarget			mDeferredLight;
 	LLRenderTarget			mHighlight;
 	LLRenderTarget			mPhysicsDisplay;
+	LLRenderTarget			mVelocityMap;
 
 	//utility buffer for rendering post effects, gets abused by renderDeferredLighting
 	LLPointer<LLVertexBuffer> mDeferredVB;
@@ -968,6 +973,11 @@ public:
 	static F32 CameraDoFResScale;
 	static BOOL CameraFreeDoFFocus;
 	static F32 RenderAutoHideSurfaceAreaLimit;
+	static BOOL RenderMotionBlur;
+	static U32 RenderMotionBlurStrength;
+	static BOOL RenderGodrays;
+	static U32 RenderGodraysResolution;
+	static F32 RenderGodraysMultiplier;
 };
 
 void render_bbox(const LLVector3 &min, const LLVector3 &max);

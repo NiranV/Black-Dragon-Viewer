@@ -611,45 +611,6 @@ width="345">
                   name="shaders"
                   top_pad="0"
                   width="10">
-                  ┃
-                  </text>
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_pad="7"
-                  name="shaders"
-                  top_delta="0"
-                  width="10">
-                  ┗
-                  </text>
-                  <check_box
-                  control_name="RenderUnderWaterDistortion"
-                  height="16"
-                  enabled="false"
-                  label="Underwater Distortion"
-                  tool_tip="Controls weither this Viewer should render a faked underwater distortion effect done with Depth of Field or not"
-                  layout="topleft"
-                  left_pad="0"
-                  name="RenderUWDistortion"
-                  top_delta="0"
-                  width="115"/>
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_delta="-27"
-                  name="shaders"
-                  top_pad="0"
-                  width="10">
                   ┣
                   </text>
                   <check_box
@@ -750,15 +711,15 @@ width="345">
                   ┣
                   </text>
                   <check_box
-                  control_name="RenderPostGreyscale"
+                  control_name="RenderMotionBlur"
                   enabled_control="RenderDeferred"
                   height="16"
                   initial_value="false"
-                  label="Greyscale"
-                  tool_tip="Toggles if we should render everything in greyscale"
+                  label="Motion Blur"
+                  tool_tip="Toggles if fast movement should be blurred"
                   layout="topleft"
                   left_pad="0"
-                  name="PostGreyscale"
+                  name="MotionBlur"
                   top_delta="0"
                   width="115" />
                   <text
@@ -773,58 +734,18 @@ width="345">
                   name="shaders"
                   top_pad="0"
                   width="10">
-                  ┣
-                  </text>
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_pad="7"
-                  name="shaders"
-                  top_delta="0"
-                  width="10">
                   ┗
                   </text>
                   <check_box
-                  control_name="RenderPostSepia"
+                  control_name="RenderGodrays"
                   enabled_control="RenderDeferred"
                   height="16"
                   initial_value="false"
-                  label="Sepia"
-                  tool_tip="Toggles if we should render everything in sepia, needs greyscale in order to look like real sepia"
+                  label="Godrays"
+                  tool_tip="Toggles if sunshafts should be rendered"
                   layout="topleft"
                   left_pad="0"
-                  name="PostSepia"
-                  top_delta="0"
-                  width="115" />
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_delta="-27"
-                  name="shaders"
-                  top_pad="0"
-                  width="10">
-                  ┗
-                  </text>
-                  <check_box
-                  control_name="RenderPostPosterization"
-                  enabled_control="RenderDeferred"
-                  height="16"
-                  initial_value="false"
-                  label="Posterization"
-                  tool_tip="Toggles if we should render everything with a set amount of color shades"
-                  layout="topleft"
-                  left_pad="0"
-                  name="PostPosterization"
+                  name="Godrays"
                   top_delta="0"
                   width="115" />
                   <text

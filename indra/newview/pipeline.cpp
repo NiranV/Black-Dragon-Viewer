@@ -213,6 +213,11 @@ F32 LLPipeline::CameraMaxCoF;
 F32 LLPipeline::CameraDoFResScale;
 BOOL LLPipeline::CameraFreeDoFFocus;
 F32 LLPipeline::RenderAutoHideSurfaceAreaLimit;
+BOOL LLPipeline::RenderMotionBlur;
+U32 LLPipeline::RenderMotionBlurStrength;
+BOOL LLPipeline::RenderGodrays;
+U32 LLPipeline::RenderGodraysResolution;
+F32 LLPipeline::RenderGodraysMultiplier;
 
 const F32 BACKLIGHT_DAY_MAGNITUDE_AVATAR = 0.2f;
 const F32 BACKLIGHT_NIGHT_MAGNITUDE_AVATAR = 0.1f;
@@ -686,6 +691,11 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("CameraDoFResScale");
 	connectRefreshCachedSettingsSafe("CameraFreeDoFFocus");
 	connectRefreshCachedSettingsSafe("RenderAutoHideSurfaceAreaLimit");
+	connectRefreshCachedSettingsSafe("RenderMotionBlur");
+	connectRefreshCachedSettingsSafe("RenderMotionBlurStrength");
+	connectRefreshCachedSettingsSafe("RenderGodrays");
+	connectRefreshCachedSettingsSafe("RenderGodraysResolution");
+	connectRefreshCachedSettingsSafe("RenderGodraysMultiplier");
 	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
 	connectRefreshCachedSettingsSafe("ExodusRenderOffset");
 	connectRefreshCachedSettingsSafe("ExodusRenderExposure");
@@ -1071,6 +1081,16 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			}
 		}
 
+		if (RenderMotionBlur)
+		{
+			//allocate velocity map
+			mVelocityMap.allocate(resX, resY, GL_RGB, FALSE, FALSE, LLTexUnit::TT_RECT_TEXTURE);
+		}
+		else
+		{
+			mVelocityMap.release();
+		}
+
 		//HACK make screenbuffer allocations start failing after 30 seconds
 		if (gSavedSettings.getBOOL("SimulateFBOFailure"))
 		{
@@ -1090,6 +1110,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		mScreen.release();
 		mDeferredScreen.release(); //make sure to release any render targets that share a depth buffer with mDeferredScreen first
 		mDeferredDepth.release();
+		mVelocityMap.release();
 		mOcclusionDepth.release();
 						
 		if (!mScreen.allocate(resX, resY, GL_RGBA, TRUE, TRUE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
@@ -1098,6 +1119,10 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 	if (LLPipeline::sRenderDeferred)
 	{ //share depth buffer between deferred targets
 		mDeferredScreen.shareDepthBuffer(mScreen);
+		if (RenderMotionBlur)
+		{
+			mDeferredScreen.shareDepthBuffer(mVelocityMap);
+		}
 	}
 
 	gGL.getTexUnit(0)->disable();
@@ -1228,6 +1253,11 @@ void LLPipeline::refreshCachedSettings()
 	CameraDoFResScale = gSavedSettings.getF32("CameraDoFResScale");
 	CameraFreeDoFFocus = gSavedSettings.getBOOL("CameraFreeDoFFocus");
 	RenderAutoHideSurfaceAreaLimit = gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit");
+	RenderMotionBlur = gSavedSettings.getBOOL("RenderMotionBlur");
+	RenderMotionBlurStrength = gSavedSettings.getU32("RenderMotionBlurStrength");
+	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");
+	RenderGodraysResolution = gSavedSettings.getU32("RenderGodraysResolution");
+	RenderGodraysMultiplier = gSavedSettings.getF32("RenderGodraysMultiplier");
 
 	// <exodus>
 	exoPostProcess::instance().ExodusRenderPostSettingsUpdate();
@@ -1301,6 +1331,7 @@ void LLPipeline::releaseScreenBuffers()
 	mDeferredScreen.release();
 	mDeferredDepth.release();
 	mDeferredLight.release();
+	mVelocityMap.release();
 	mOcclusionDepth.release();
 		
 	for (U32 i = 0; i < 6; i++)
@@ -7481,6 +7512,105 @@ void LLPipeline::doResetVertexBuffers()
 	LLVOPartGroup::restoreGL();
 }
 
+void LLPipeline::renderMotionBlur(U32 type)
+{
+	//draw motion blurred primitives
+	for (LLCullResult::drawinfo_iterator i = gPipeline.beginRenderMap(type); i != gPipeline.endRenderMap(type); ++i)	
+	{
+		LLDrawInfo* params = *i;
+
+		if (params) 
+		{
+			if (params->mVertexBuffer.notNull() && params->mLastModelMatrix)
+			{
+				LLRenderPass::applyModelMatrix(*params);
+				
+				if (params->mGroup)
+				{
+					params->mGroup->rebuildMesh();
+				}
+									
+				LLGLSLShader::sCurBoundShaderPtr->uniformMatrix4fv(LLShaderMgr::LAST_OBJECT_MATRIX, 1, GL_FALSE, (F32*) params->mLastModelMatrix->mMatrix);
+				LLGLSLShader::sCurBoundShaderPtr->uniformMatrix4fv(LLShaderMgr::CURRENT_OBJECT_MATRIX, 1, GL_FALSE, (F32*) params->mModelMatrix->mMatrix);
+
+				params->mVertexBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
+				params->mVertexBuffer->drawRange(params->mDrawMode, params->mStart, params->mEnd, params->mCount, params->mOffset);
+				gPipeline.addTrianglesDrawn(params->mCount, params->mDrawMode);
+			}
+		}
+	}	
+}
+
+
+void LLPipeline::renderMotionBlurWithTexture(U32 type)
+{
+	//draw motion blurred primitives
+	for (LLCullResult::drawinfo_iterator i = gPipeline.beginRenderMap(type); i != gPipeline.endRenderMap(type); ++i)	
+	{
+		LLDrawInfo* params = *i;
+
+		if (params) 
+		{
+			if (params->mVertexBuffer.notNull() && params->mLastModelMatrix)
+			{
+
+				LLRenderPass::applyModelMatrix(*params);
+
+				bool tex_setup = false;
+
+				if (params->mTextureList.size() > 1)
+				{
+					for (U32 i = 0; i < params->mTextureList.size(); ++i)
+					{
+						if (params->mTextureList[i].notNull())
+						{
+							gGL.getTexUnit(i)->bind(params->mTextureList[i], TRUE);
+						}
+					}
+				}
+				else
+				{ //not batching textures or batch has only 1 texture -- might need a texture matrix
+					if (params->mTexture.notNull())
+					{
+						params->mTexture->addTextureStats(params->mVSize);
+						gGL.getTexUnit(0)->bind(params->mTexture, TRUE) ;
+						if (params->mTextureMatrix)
+						{
+							tex_setup = true;
+							gGL.getTexUnit(0)->activate();
+							gGL.matrixMode(LLRender::MM_TEXTURE);
+							gGL.loadMatrix((GLfloat*) params->mTextureMatrix->mMatrix);
+							gPipeline.mTextureMatrixOps++;
+						}
+					}
+					else
+					{
+						gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
+					}
+				}
+								
+				if (params->mGroup)
+				{
+					params->mGroup->rebuildMesh();
+				}
+									
+				LLGLSLShader::sCurBoundShaderPtr->uniformMatrix4fv(LLShaderMgr::LAST_OBJECT_MATRIX, 1, GL_FALSE, (F32*) params->mLastModelMatrix->mMatrix);
+				LLGLSLShader::sCurBoundShaderPtr->uniformMatrix4fv(LLShaderMgr::CURRENT_OBJECT_MATRIX, 1, GL_FALSE, (F32*) params->mModelMatrix->mMatrix);
+
+				params->mVertexBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_COLOR | LLVertexBuffer::MAP_TEXCOORD0);
+				params->mVertexBuffer->drawRange(params->mDrawMode, params->mStart, params->mEnd, params->mCount, params->mOffset);
+				gPipeline.addTrianglesDrawn(params->mCount, params->mDrawMode);
+			
+				if (tex_setup)
+				{
+					gGL.loadIdentity();
+					gGL.matrixMode(LLRender::MM_MODELVIEW);
+				}
+			}
+		}
+	}	
+}
+
 void LLPipeline::renderObjects(U32 type, U32 mask, BOOL texture, BOOL batch_texture)
 {
 	assertInitialized();
@@ -8191,6 +8321,47 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 		
 	}
 
+	if (LLPipeline::sRenderDeferred && LLPipeline::RenderMotionBlur)
+	{ //motion blur
+
+		gMotionBlurProgram.bind();
+
+		S32 channel = 0;
+		channel = gMotionBlurProgram.enableTexture(LLShaderMgr::DEFERRED_DIFFUSE, mScreen.getUsage());
+		if (channel > -1)
+		{
+			mScreen.bindTexture(0,channel);
+			glCopyTexSubImage2D(LLTexUnit::getInternalType(mScreen.getUsage()), 0, 0, 0, 0, 0, mScreen.getWidth(), mScreen.getHeight());
+		}
+		
+		channel = gMotionBlurProgram.enableTexture(LLShaderMgr::DEFERRED_NORMAL, mVelocityMap.getUsage());
+		if (channel > -1)
+		{
+			mVelocityMap.bindTexture(0, channel);
+		}
+		
+		gMotionBlurProgram.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, mScreen.getWidth(), mScreen.getHeight());
+		gMotionBlurProgram.uniform1f(LLShaderMgr::TIME_STEP, gFrameIntervalSeconds);
+		gMotionBlurProgram.uniform1f(LLShaderMgr::MBLUR_STRENGTH, RenderMotionBlurStrength);
+
+		gGL.begin(LLRender::TRIANGLE_STRIP);
+		gGL.texCoord2f(tc1.mV[0], tc1.mV[1]);
+		gGL.vertex2f(-1,-1);
+		
+		gGL.texCoord2f(tc1.mV[0], tc2.mV[1]);
+		gGL.vertex2f(-1,3);
+		
+		gGL.texCoord2f(tc2.mV[0], tc1.mV[1]);
+		gGL.vertex2f(3,-1);
+		
+		gGL.end();
+
+		gGL.flush();
+
+		gMotionBlurProgram.unbind();
+			
+	}
+
 	gGL.setSceneBlendType(LLRender::BT_ALPHA);
 
 	if (hasRenderDebugMask(LLPipeline::RENDER_DEBUG_PHYSICS_SHAPES))
@@ -8428,6 +8599,8 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	F32 ssao_effect = RenderSSAOEffect;
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_EFFECT, ssao_effect);
 
+	shader.uniform1f(LLShaderMgr::SECONDS60, (F32)fmod(LLTimer::getElapsedSeconds(), 60.0));
+
 	//F32 shadow_offset_error = 1.f + RenderShadowOffsetError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]);
 	F32 shadow_bias_error = RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2])/3000.f;
 
@@ -8443,6 +8616,9 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform2f(LLShaderMgr::DEFERRED_PROJ_SHADOW_RES, mShadow[4].getWidth(), mShadow[4].getHeight());
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);
+
+	shader.uniform1i(LLShaderMgr::GODRAY_RES, RenderGodraysResolution);
+	shader.uniform1f(LLShaderMgr::GODRAY_MULTIPLIER, RenderGodraysMultiplier);
 
 	if (shader.getUniformLocation(LLShaderMgr::DEFERRED_NORM_MATRIX) >= 0)
 	{
@@ -9066,6 +9242,11 @@ void LLPipeline::renderDeferredLighting()
 		popRenderTypeMask();
 	}
 
+	if (LLPipeline::RenderMotionBlur)
+	{
+		renderGeomMotionBlur();
+	}
+
 	{
 		//render highlights, etc.
 		renderHighlights();
@@ -9616,6 +9797,134 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 	}
 
 	//target->flush();				
+}
+
+static LLFastTimer::DeclareTimer FTM_RENDER_MOTION_BLUR("Motion Blur");
+
+void LLPipeline::renderGeomMotionBlur()
+{
+	LLFastTimer t(FTM_RENDER_MOTION_BLUR);
+	mVelocityMap.bindTarget();
+	mVelocityMap.clear(GL_COLOR_BUFFER_BIT);
+	//generate velocity map
+	gVelocityProgram.bind();
+	gVelocityProgram.uniform4f(LLShaderMgr::VIEWPORT, (F32) gGLViewport[0],
+								(F32) gGLViewport[1],
+								(F32) gGLViewport[2],
+								(F32) gGLViewport[3]);
+
+	gVelocityProgram.uniformMatrix4fv(LLShaderMgr::LAST_MODELVIEW_MATRIX, 1, GL_FALSE, gGLLastModelView);
+	gVelocityProgram.uniformMatrix4fv(LLShaderMgr::CURRENT_MODELVIEW_MATRIX, 1, GL_FALSE, gGLModelView);
+	
+	renderMotionBlur(LLRenderPass::PASS_SIMPLE);
+	renderMotionBlur(LLRenderPass::PASS_FULLBRIGHT);
+	renderMotionBlur(LLRenderPass::PASS_BUMP);
+	U32 CurCount = 28;
+	for (; CurCount < 44; CurCount++)
+	{
+		renderMotionBlur(CurCount);
+	}
+	/*renderMotionBlur(LLRenderPass::PASS_MATERIAL);
+	renderMotionBlur(LLRenderPass::PASS_MATERIAL_ALPHA);
+	renderMotionBlur(LLRenderPass::PASS_MATERIAL_ALPHA_MASK);
+	renderMotionBlur(LLRenderPass::PASS_MATERIAL_ALPHA_EMISSIVE);
+	renderMotionBlur(LLRenderPass::PASS_SPECMAP);
+	renderMotionBlur(LLRenderPass::PASS_SPECMAP_BLEND);
+	renderMotionBlur(LLRenderPass::PASS_SPECMAP_MASK);
+	renderMotionBlur(LLRenderPass::PASS_SPECMAP_EMISSIVE);
+	renderMotionBlur(LLRenderPass::PASS_NORMMAP);
+	renderMotionBlur(LLRenderPass::PASS_NORMMAP_BLEND);
+	renderMotionBlur(LLRenderPass::PASS_NORMMAP_MASK);
+	renderMotionBlur(LLRenderPass::PASS_NORMMAP_EMISSIVE);
+	renderMotionBlur(LLRenderPass::PASS_NORMSPEC);
+	renderMotionBlur(LLRenderPass::PASS_NORMSPEC_BLEND);
+	renderMotionBlur(LLRenderPass::PASS_NORMSPEC_MASK);
+	renderMotionBlur(LLRenderPass::PASS_NORMSPEC_EMISSIVE);*/
+
+	gVelocityProgram.unbind();
+
+	gGLLastMatrix = NULL;
+	gGL.loadMatrix(gGLModelView);
+
+	gVelocityAlphaProgram.bind();
+	gVelocityAlphaProgram.uniform4f(LLShaderMgr::VIEWPORT, (F32) gGLViewport[0],
+								(F32) gGLViewport[1],
+								(F32) gGLViewport[2],
+								(F32) gGLViewport[3]);
+
+	gVelocityAlphaProgram.uniformMatrix4fv(LLShaderMgr::LAST_MODELVIEW_MATRIX, 1, GL_FALSE, gGLLastModelView);
+	gVelocityAlphaProgram.uniformMatrix4fv(LLShaderMgr::CURRENT_MODELVIEW_MATRIX, 1, GL_FALSE, gGLModelView);
+	
+	renderMotionBlurWithTexture(LLRenderPass::PASS_ALPHA_MASK);
+	renderMotionBlurWithTexture(LLRenderPass::PASS_FULLBRIGHT_ALPHA_MASK);
+	renderMotionBlurWithTexture(LLRenderPass::PASS_ALPHA);
+
+	gVelocityAlphaProgram.unbind();
+
+	//make sure channel 0 is active channel
+	gGL.getTexUnit(0)->activate();
+
+	gGLLastMatrix = NULL;
+	gGL.loadMatrix(gGLModelView);
+
+	pool_set_t::iterator iter1 = mPools.begin();
+
+	U32 cur_type = 0;
+
+	while ( iter1 != mPools.end() )
+	{
+		LLDrawPool *poolp = *iter1;
+		
+		cur_type = poolp->getType();
+				
+		pool_set_t::iterator iter2 = iter1;
+		if (hasRenderType(poolp->getType()) && poolp->getNumMotionBlurPasses() > 0)
+		{
+			gGLLastMatrix = NULL;
+			gGL.loadMatrix(gGLModelView);
+		
+			for( S32 i = 0; i < poolp->getNumMotionBlurPasses(); i++ )
+			{
+				LLVertexBuffer::unbind();
+				poolp->beginMotionBlurPass(i);
+				for (iter2 = iter1; iter2 != mPools.end(); iter2++)
+				{
+					LLDrawPool *p = *iter2;
+					if (p->getType() != cur_type)
+					{
+						break;
+					}
+										
+					p->renderMotionBlur(i);
+				}
+				poolp->endMotionBlurPass(i);
+				LLVertexBuffer::unbind();
+
+				if (gDebugGL || gDebugPipeline)
+				{
+					LLGLState::checkStates();
+				}
+			}
+		}
+		else
+		{
+			// Skip all pools of this type
+			for (iter2 = iter1; iter2 != mPools.end(); iter2++)
+			{
+				LLDrawPool *p = *iter2;
+				if (p->getType() != cur_type)
+				{
+					break;
+				}
+			}
+		}
+		iter1 = iter2;
+		stop_glerror();
+	}
+	mVelocityMap.flush();
+
+	gGLLastMatrix = NULL;
+	gGL.loadMatrix(gGLModelView);
 }
 
 void LLPipeline::setupSpotLight(LLGLSLShader& shader, LLDrawable* drawablep)

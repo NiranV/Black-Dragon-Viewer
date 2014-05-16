@@ -261,6 +261,7 @@ public:
 	LLMatrix4*	mSpecMapMatrix;
 	LLMatrix4*	mNormalMapMatrix;
 	LLDrawInfo* mDrawInfo;
+	LLMatrix4*  mLastMatrixPalette;
 
 private:
 	LLPointer<LLVertexBuffer> mVertexBuffer;

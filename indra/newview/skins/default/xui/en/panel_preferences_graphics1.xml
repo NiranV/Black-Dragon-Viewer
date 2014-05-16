@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1800"
+  height="1930"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -2367,6 +2367,154 @@ width="510">
      name="RenderScreenSpaceReflections"
      top_pad="3"
      width="115" />
+      <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="EmphasisColor_13"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="515"/>
+   <check_box
+   control_name="RenderMotionBlur"
+   height="16"
+   initial_value="false"
+   label="Motion Blur"
+   tool_tip="Toggles if fast movement should be blurred"
+   layout="topleft"
+   left="5"
+   name="MotionBlur"
+   top_delta="4"
+   width="115" />
+
+   <slider
+      can_edit_text="true"
+      control_name="RenderMotionBlurStrength"
+      enabled_control="RenderMotionBlur"
+      decimal_digits="0"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="100"
+      label="Blur Strength:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="160"
+      min_val="15"
+      name="MotionBlurStrength"
+      top_pad="10"
+      width="322"/>
+   <button
+ follows="left|top"
+ control_name="RenderMotionBlurStrength"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="EmphasisColor_13"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="515"/>
+   <check_box
+   control_name="RenderGodrays"
+   height="16"
+   initial_value="false"
+   label="Godrays"
+   tool_tip="Toggles if sunshafts should be rendered"
+   layout="topleft"
+   left="5"
+   name="Godrays"
+   top_delta="4"
+   width="115" />
+
+   <slider
+      can_edit_text="true"
+      control_name="RenderGodraysResolution"
+      enabled_control="RenderGodrays"
+      decimal_digits="0"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="64"
+      label="Sunshaft Resolution:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="128"
+      min_val="16"
+      name="GodraysResolution"
+      top_pad="10"
+      width="322"/>
+   <button
+ follows="left|top"
+ control_name="RenderGodraysResolution"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <slider
+      can_edit_text="true"
+      control_name="RenderGodraysMultiplier"
+      enabled_control="RenderGodrays"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="0.2"
+      label="Sunshaft Multiplier:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="1"
+      min_val="0.01"
+      name="GodraysMultiplier"
+      top_pad="1"
+      width="322"/>
+   <button
+ follows="left|top"
+ control_name="RenderGodraysMultiplier"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
      <panel
  follows="left|top|right"
  height="20"

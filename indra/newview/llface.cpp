@@ -159,6 +159,7 @@ void LLFace::init(LLDrawable* drawablep, LLViewerObject* objp)
 
 	mTextureMatrix = NULL;
 	mDrawInfo = NULL;
+	mLastMatrixPalette = NULL;
 
 	mFaceColor = LLColor4(1,0,0,1);
 
@@ -217,6 +218,12 @@ void LLFace::destroy()
 				gPipeline.markRebuild(group, TRUE);
 			}
 		}
+	}
+
+	if (mLastMatrixPalette)
+	{
+		delete [] mLastMatrixPalette;
+		mLastMatrixPalette = NULL;
 	}
 	
 	setDrawInfo(NULL);
