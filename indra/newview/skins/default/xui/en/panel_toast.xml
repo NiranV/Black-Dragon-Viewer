@@ -66,7 +66,7 @@
  </panel>
   <button
     layout="topleft"
-    top="3"
+    top="0"
     right="313"
     width="17"
     height="17"

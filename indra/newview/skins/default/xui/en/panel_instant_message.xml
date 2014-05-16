@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- background_visible="true"
+ background_visible="false"
  height="152"
  label="im_panel"
  layout="topleft"
@@ -13,7 +13,7 @@
         6
     </string>
     <panel
-     background_visible="true"
+     background_visible="false"
      bevel_style="in"
      bg_alpha_color="Black"
      follows="top"
@@ -30,20 +30,20 @@
          height="18"
          image_name="Generic_Person"
          layout="topleft"
-         left="3"
+         left="0"
          mouse_opaque="false"
          name="avatar_icon"
-         top="3"
+         top="0"
          width="18" />
         <group_icon
          follows="right"
          height="18"
          default_icon_name="Generic_Group"
          layout="topleft"
-         left="3"
+         left="0"
          mouse_opaque="false"
          name="group_icon"
-         top="3"
+         top="0"
          width="18" />
         <avatar_icon
          color="Green"
@@ -51,21 +51,20 @@
          height="18"
          image_name="Generic_Person"
          layout="topleft"
-         left="3"
+         left="0"
          mouse_opaque="false"
          name="adhoc_icon"
-         top="3"
+         top="0"
          width="18" />
         <text
          follows="left|right"
-         font.style="BOLD"
          height="12"
          layout="topleft"
          left_pad="5"
          name="user_name"
          parse_urls="false"
          text_color="White"
-         top="8"
+         top="4"
          translate="false"
          use_ellipses="true"
          value="TestString PleaseIgnore"
@@ -79,7 +78,7 @@
 	 halign="right"
          right="-5"
          name="time_box"
-         top="8"
+         top="4"
          value="23:30"
          width="50" />
     </panel>
