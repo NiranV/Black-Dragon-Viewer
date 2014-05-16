@@ -1160,6 +1160,14 @@ void LLAgentCamera::updateCamera()
 
 	validateFocusObject();
 
+	if (isAgentAvatarValid() && 
+		gAgentAvatarp->isSitting() &&
+		camera_mode == CAMERA_MODE_MOUSELOOK)
+	{
+		//changed camera_skyward to the new global "mCameraUpVector"
+		mCameraUpVector = mCameraUpVector * gAgentAvatarp->getRenderRotation();
+	}
+
 	if (cameraThirdPerson() && mFocusOnAvatar && LLFollowCamMgr::getActiveFollowCamParams())
 	{
 		changeCameraToFollow();
@@ -1446,7 +1454,8 @@ void LLAgentCamera::updateCamera()
 	}
 	gAgent.setLastPositionGlobal(global_pos);
 	
-	if (LLVOAvatar::sVisibleInFirstPerson && isAgentAvatarValid() && cameraMouselook())
+	if (LLVOAvatar::sVisibleInFirstPerson && isAgentAvatarValid() && cameraMouselook()
+		&& (!gAgentAvatarp->isSitting() || gSavedSettings.getBOOL("UseRealisticMouselook")))
 	{
 		LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() + 
  			LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() + 
