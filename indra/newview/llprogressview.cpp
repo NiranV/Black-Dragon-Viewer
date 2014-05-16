@@ -203,7 +203,7 @@ void LLProgressView::draw()
 		greyscale = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.f, 1.f);
 		LLViewDrawContext context(alpha);
 		gSavedSettings.setF32("RenderPostGreyscaleStrength" , greyscale);
-		gSavedSettings.setVector3("ExodusRenderVignette" , LLVector3(greyscale*1.1f ,1.f, 3.f));
+		gSavedSettings.setVector3("ExodusRenderVignette" , LLVector3(greyscale*0.7f ,3.0f, 0.6f));
 
 		LLPanel::draw();
 
@@ -226,7 +226,7 @@ void LLProgressView::draw()
 		LLViewDrawContext context(alpha);
 		
 		gSavedSettings.setF32("RenderPostGreyscaleStrength" , greyscale);
-		gSavedSettings.setVector3("ExodusRenderVignette" , LLVector3(greyscale*1.1f ,1.f, 3.f));
+		gSavedSettings.setVector3("ExodusRenderVignette" , LLVector3(greyscale*0.7f ,3.0f, 0.6f));
 		LLPanel::draw();
 
 		// faded out completely - remove panel and reveal world
@@ -239,6 +239,8 @@ void LLProgressView::draw()
 
 			// turn off panel that hosts intro so we see the world
 			LLPanel::setVisible(FALSE);
+
+			gSavedSettings.setVector3("ExodusRenderVignette" , LLVector3(0.0f ,1.0f, 3.0f));
 
 			gStartTexture = NULL;
 		}
