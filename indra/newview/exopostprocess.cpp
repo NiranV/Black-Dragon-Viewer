@@ -112,8 +112,11 @@ void exoPostProcess::ExodusRenderPostStack(LLRenderTarget *src, LLRenderTarget *
 		if (sExodusRenderVignette.mV[0] > 0 && LLPipeline::sRenderDeferred)
 			ExodusRenderVignette(src, dst); // Don't render vignette here in non-deferred. Do it in the glow combine shader.
 
-		if (sGreyscaleStrength > 0.0f || sNumColors > 0 || sSepiaStrength > 0.0f)
-			ExodusRenderSpecial(src, dst);
+		if(LLPipeline::sRenderDeferred)
+		{
+			if (sGreyscaleStrength > 0.0f || sNumColors > 2 || sSepiaStrength > 0.0f)
+				ExodusRenderSpecial(src, dst);
+		}
 	}
 }
 void exoPostProcess::ExodusRenderPostSettingsUpdate()
