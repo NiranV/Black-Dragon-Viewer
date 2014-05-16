@@ -17,30 +17,12 @@
   width="580">
  
  <!-- Sky/Day Cycle Settings -->
-             <icon
-             height="20"
-             image_name="sunicon"
-             layout="topleft"
-             color="1 1 1 0.8"
-             left="0"
-             top_pad="-3"
-             name="SkyDayCycle"
-             width="20" />
-	     <icon
-             height="20"
-             image_name="watericon"
-             layout="topleft"
-             color="1 1 1 0.8"
-             left="280"
-             top_delta="0"
-             name="SkyDayCycle"
-             width="20" />
  <text
   name="sky_dayc_settings_title"
   follows="top|left"
   height="16"
   layout="topleft"
-  left="25"
+  left="5"
   top="0"
   width="250">
   		Sky / Day Cycle
