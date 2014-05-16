@@ -4042,7 +4042,7 @@
 			<menu_item_check
              label="Enable DoF Focus via Mouse"
              layout="topleft"
-	     shortcut="control|X"
+	     shortcut="shift|control|X"
              name="CameraFreeDoFFocus">
         	<menu_item_check.on_check
                  function="CheckControl"
