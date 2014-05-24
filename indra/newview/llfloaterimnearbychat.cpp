@@ -933,6 +933,7 @@ void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channe
 	}
 // [/RLVa:KB]
 
+
 	LLMessageSystem* msg = gMessageSystem;
 	msg->newMessageFast(_PREHASH_ChatFromViewer);
 	msg->nextBlockFast(_PREHASH_AgentData);

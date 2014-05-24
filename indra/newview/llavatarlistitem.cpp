@@ -72,6 +72,8 @@ LLAvatarListItem::LLAvatarListItem(bool not_from_ui_factory/* = true*/)
 // [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
 	mRlvCheckShowNames(false),
 // [/RLVa:KB]
+	mRlvCheckShowNames(false),
+// [/RLVa:KB]
 	mShowPermissions(false),
 	mHovered(false),
 	mAvatarNameCacheConnection()
@@ -301,6 +303,7 @@ BOOL LLAvatarListItem::handleDoubleClick(S32 x, S32 y, MASK mask)
 		onInfoBtnClick();
 		return TRUE;
 	}
+
 	return LLPanel::handleDoubleClick(x, y, mask);
 }
 

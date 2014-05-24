@@ -926,8 +926,12 @@ void LLPanelPeople::updateButtons()
 		LLPanel* cur_panel = mTabContainer->getCurrentPanel();
 		if (cur_panel)
 		{
+// [RLVa:KB] - Checked: 2010-07-20 (RLVa-1.2.2a) | Added: RLVa-1.2.0h
 			if (cur_panel->hasChild("add_friend_btn", TRUE))
-				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self);
+				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self && ((!nearby_tab_active) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))));
+// [/RLBa:KB]
+//			if (cur_panel->hasChild("add_friend_btn", TRUE))
+//				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self);
 
 //			cur_panel->getChildView("add_friend_btn")->setEnabled(!is_friend);
 // [RLVa:KB] - Checked: 2010-07-20 (RLVa-1.2.2a) | Added: RLVa-1.2.0h
@@ -1142,6 +1146,13 @@ void LLPanelPeople::onTabSelected(const LLSD& param)
 
 void LLPanelPeople::onAvatarListDoubleClicked(LLUICtrl* ctrl)
 {
+// [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
+	if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && (NEARBY_TAB_NAME == getActiveTabName()) )
+	{
+		return;
+	}
+// [/RLVa:KB]
+
 	LLAvatarListItem* item = dynamic_cast<LLAvatarListItem*>(ctrl);
 	if(!item)
 	{
@@ -1267,6 +1278,13 @@ void LLPanelPeople::onGearButtonClicked(LLUICtrl* btn)
 
 void LLPanelPeople::onImButtonClicked()
 {
+// [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
+	if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && (NEARBY_TAB_NAME == getActiveTabName()) )
+	{
+		return;
+	}
+// [/RLVa:KB]
+
 	uuid_vec_t selected_uuids;
 	getCurrentItemIDs(selected_uuids);
 	if ( selected_uuids.size() == 1 )
