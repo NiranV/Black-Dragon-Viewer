@@ -163,6 +163,14 @@
   is_running_function="Floater.IsOpen"
   is_running_parameters="moveview"/>
   <command
+  name="navbar"
+  available_in_toybox="true"
+  icon="Toast_CloseBtn"
+  label_ref="Command_Spacer_Label"
+  tooltip_ref="Command_Navbar_Tooltip"
+  execute_function="ToggleControl"
+  execute_parameters="HideTopbar"/>
+  <command
   name="outbox"
   available_in_toybox="false"
   icon="Command_Outbox_Icon"
