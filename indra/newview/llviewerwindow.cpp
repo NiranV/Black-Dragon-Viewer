@@ -46,6 +46,8 @@
 #include "llviewerkeyboard.h"
 #include "llviewermenu.h"
 
+#include "bdtopbarholder.h"
+
 #include "llviewquery.h"
 #include "llxmltree.h"
 #include "llslurl.h"
@@ -1963,6 +1965,12 @@ void LLViewerWindow::initWorldUI()
 	gStatusBar->setBackgroundColor( gMenuBarView->getBackgroundColor().get() );
 	status_bar_container->addChildInBack(gStatusBar);
 	status_bar_container->setVisible(TRUE);
+
+	LLPanel* top_bar_container = getRootView()->getChild<LLPanel>("top_bar_container");
+	gTopBar = new LLTopBar(top_bar_container->getLocalRect());
+	gTopBar->setShape(top_bar_container->getLocalRect());
+	top_bar_container->addChild(gTopBar);
+	top_bar_container->setVisible(TRUE);
 
 	// Navigation bar
 	LLPanel* nav_bar_container = getRootView()->getChild<LLPanel>("nav_bar_container");

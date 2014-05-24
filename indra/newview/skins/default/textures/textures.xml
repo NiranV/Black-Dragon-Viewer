@@ -765,6 +765,8 @@ with the same filename but different name
   
   <texture name="Splash_Bg"	file_name="navbar/splash_bg.png"/>
   
+  <texture name="NavBar_BG_l3"	file_name="navbar/NavBar_BG_l3.png" scale.left="170" scale.top="51" scale.right="550" scale.bottom="21"/>
+  
   <texture name="Inv_TexturesClosed" file_name="icons/Inv_TexturesClosed.png" preload="false" />
   <texture name="Inv_SoundsClosed" file_name="icons/Inv_SoundsClosed.png" preload="false" />
   <texture name="Inv_CallingCardsClosed" file_name="icons/Inv_CallingCardsClosed.png" preload="false" />

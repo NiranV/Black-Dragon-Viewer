@@ -42,7 +42,7 @@
      left="-320" 
      name="balance"
      tool_tip="Click to refresh your L$ balance"
-     top="3"
+     top="6"
      wrap="false" 
      value="L$20" 
      width="80" />
@@ -60,7 +60,7 @@
      label_shadow="true"
      name="buyL"
      tool_tip="Click to buy more L$"
-     top="2"
+     top="5"
      width="16" />
     <text
      type="string"
@@ -69,7 +69,7 @@
      follows="right|top"
      halign="right"
      height="16"
-     top="3"
+     top="6"
      layout="topleft"
      left_pad="0"
      name="TimeText"
@@ -86,7 +86,7 @@
      image_pressed_selected="Play_Press"
      lele="true"
      left_pad="5"
-     top="1"
+     top="4"
      name="media_toggle_btn"
      tool_tip="Start/Stop All Media (Music, Video, Web pages)"
      width="16" >
@@ -99,7 +99,7 @@
      image_unselected="Audio_Off"
      is_toggle="true"
      left_pad="5"
-     top="2"
+     top="5"
      name="volume_btn"
      width="16" />
 				<icon
@@ -107,7 +107,7 @@
 						height="16"
 						image_name="Draw_Distance"
 						left_pad="8"
-						top="2"
+						top="5"
 						name="draw_distance_icon"
 						tool_tip="Set the rendering distance in meters here"
 						width="16" />
@@ -119,7 +119,7 @@
 		text_color="1 .32 .36 0.85"
 		halign="left"
 		height="16"
-		top="3"
+		top="6"
 		layout="topleft"
 		left_pad="16"
 		name="FPSText"

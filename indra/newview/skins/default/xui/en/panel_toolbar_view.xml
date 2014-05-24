@@ -64,6 +64,7 @@ visible="true">
 				mouse_opaque="false"/>-->
 				<layout_panel
 				name="top_toolbar_panel"
+				visibility_control="HideTopbar"
 				auto_resize="false"
 				height="30"
 				width="1024"
@@ -72,6 +73,7 @@ visible="true">
 					layout="topleft"
 					button_panel.bg_opaque_image="transparent.j2c"
 					name="toolbar_top"
+					visibility_control="HideTopbar"
 					height="30"
 					width="300"
 					left="0"

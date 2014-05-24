@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<panel
+ background_visible="false"
+ bg_opaque_color="MouseGray"
+ follows="left|top|right"
+ height="31"
+ layout="topleft"
+ left="0"
+ mouse_opaque="false"
+ name="topbar"
+ top="0"
+ width="1024">
+</panel>

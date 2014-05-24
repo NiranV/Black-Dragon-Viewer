@@ -52,6 +52,8 @@
 #include "lluictrlfactory.h"
 #include "llpanellogin.h"
 
+#include "bdtopbarholder.h"
+
 #include <time.h>
 
 LLProgressView* LLProgressView::sInstance = NULL;
@@ -219,6 +221,8 @@ void LLProgressView::draw()
 	// handle fade out to world view when we're asked to
 	if (mFadeToWorldTimer.getStarted())
 	{
+		gTopBar->hideTopbar();
+
 		// draw fading panel
 		alpha = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
 		greyscale = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
