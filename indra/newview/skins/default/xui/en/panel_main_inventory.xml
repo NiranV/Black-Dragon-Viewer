@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
  background_visible="false"
- default_tab_group="1"
  follows="all"
  height="393"
  label="Things"
@@ -533,7 +532,6 @@
      left="7"
      name="inventory filter tabs"
      tab_height="20"
-     tab_group="1"
      tab_position="top"
      tab_min_width="146"
      top_pad="1"

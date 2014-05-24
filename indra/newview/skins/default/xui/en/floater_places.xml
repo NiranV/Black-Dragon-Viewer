@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <floater
   positioning="cascading"
+  default_tab_group="1"
   legacy_header_height="18"
   can_resize="true"
   height="588"
@@ -15,6 +16,7 @@
   width="333">
     <panel
       top="18"
+      tab_group="1"
       class="panel_places"
       name="main_panel"
       filename="panel_places.xml"

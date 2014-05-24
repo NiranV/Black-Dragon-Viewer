@@ -637,7 +637,7 @@ void LLPanelObject::getState( )
 		}
 		else
 		{
-			llinfos << "Unknown path " << (S32) path << " profile " << (S32) profile << " in getState" << llendl;
+			LL_INFOS() << "Unknown path " << (S32) path << " profile " << (S32) profile << " in getState" << LL_ENDL;
 			selected_item = MI_BOX;
 		}
 
@@ -1187,11 +1187,11 @@ void LLPanelObject::sendIsPhysical()
 		LLSelectMgr::getInstance()->selectionUpdatePhysics(value);
 		mIsPhysical = value;
 
-		llinfos << "update physics sent" << llendl;
+		LL_INFOS() << "update physics sent" << LL_ENDL;
 	}
 	else
 	{
-		llinfos << "update physics not changed" << llendl;
+		LL_INFOS() << "update physics not changed" << LL_ENDL;
 	}
 }
 
@@ -1203,11 +1203,11 @@ void LLPanelObject::sendIsTemporary()
 		LLSelectMgr::getInstance()->selectionUpdateTemporary(value);
 		mIsTemporary = value;
 
-		llinfos << "update temporary sent" << llendl;
+		LL_INFOS() << "update temporary sent" << LL_ENDL;
 	}
 	else
 	{
-		llinfos << "update temporary not changed" << llendl;
+		LL_INFOS() << "update temporary not changed" << LL_ENDL;
 	}
 }
 
@@ -1220,11 +1220,11 @@ void LLPanelObject::sendIsPhantom()
 		LLSelectMgr::getInstance()->selectionUpdatePhantom(value);
 		mIsPhantom = value;
 
-		llinfos << "update phantom sent" << llendl;
+		LL_INFOS() << "update phantom sent" << LL_ENDL;
 	}
 	else
 	{
-		llinfos << "update phantom not changed" << llendl;
+		LL_INFOS() << "update phantom not changed" << LL_ENDL;
 	}
 }
 
@@ -1334,8 +1334,8 @@ void LLPanelObject::getVolumeParams(LLVolumeParams& volume_params)
 		break;
 		
 	default:
-		llwarns << "Unknown base type " << selected_type 
-			<< " in getVolumeParams()" << llendl;
+		LL_WARNS() << "Unknown base type " << selected_type 
+			<< " in getVolumeParams()" << LL_ENDL;
 		// assume a box
 		selected_type = MI_BOX;
 		profile = LL_PCODE_PROFILE_SQUARE;
@@ -1652,11 +1652,11 @@ void LLPanelObject::sendScale(BOOL btn_down)
 		}
 
 		LLSelectMgr::getInstance()->adjustTexturesByScale(TRUE, !dont_stretch_textures);
-//		llinfos << "scale sent" << llendl;
+//		LL_INFOS() << "scale sent" << LL_ENDL;
 	}
 	else
 	{
-//		llinfos << "scale not changed" << llendl;
+//		LL_INFOS() << "scale not changed" << LL_ENDL;
 	}
 }
 

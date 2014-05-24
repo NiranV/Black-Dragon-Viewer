@@ -358,7 +358,7 @@ BOOL LLManipTranslate::handleMouseDownOnPart( S32 x, S32 y, MASK mask )
 	if (!selectNode)
 	{
 		// didn't find the object in our selection...oh well
-		llwarns << "Trying to translate an unselected object" << llendl;
+		LL_WARNS() << "Trying to translate an unselected object" << LL_ENDL;
 		return TRUE;
 	}
 
@@ -366,7 +366,7 @@ BOOL LLManipTranslate::handleMouseDownOnPart( S32 x, S32 y, MASK mask )
 	if (!selected_object)
 	{
 		// somehow we lost the object!
-		llwarns << "Translate manip lost the object, no selected object" << llendl;
+		LL_WARNS() << "Translate manip lost the object, no selected object" << LL_ENDL;
 		gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 		return TRUE;
 	}
@@ -387,7 +387,7 @@ BOOL LLManipTranslate::handleMouseDownOnPart( S32 x, S32 y, MASK mask )
 		if (!LLViewerCamera::getInstance()->projectPosAgentToScreen(select_center_agent, mouse_pos))
 		{
 			// mouse_pos may be nonsense
-			llwarns << "Failed to project object center to screen" << llendl;
+			LL_WARNS() << "Failed to project object center to screen" << LL_ENDL;
 		}
 		else if (gSavedSettings.getBOOL("SnapToMouseCursor"))
 		{
@@ -415,7 +415,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 	// Bail out if mouse not down.
 	if( !hasMouseCapture() )
 	{
-		lldebugst(LLERR_USER_INPUT) << "hover handled by LLManipTranslate (inactive)" << llendl;		
+		LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (inactive)" << LL_ENDL;		
 		// Always show cursor
 		// gViewerWindow->setCursor(UI_CURSOR_ARROW);
 		gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
@@ -451,7 +451,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 	// rotation above.
 	if( x == mLastHoverMouseX && y == mLastHoverMouseY && !rotated)
 	{
-		lldebugst(LLERR_USER_INPUT) << "hover handled by LLManipTranslate (mouse unmoved)" << llendl;
+		LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (mouse unmoved)" << LL_ENDL;
 		gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 		return TRUE;
 	}
@@ -464,7 +464,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 	{
 		if (abs(mMouseDownX - x) < MOUSE_DRAG_SLOP && abs(mMouseDownY - y) < MOUSE_DRAG_SLOP )
 		{
-			lldebugst(LLERR_USER_INPUT) << "hover handled by LLManipTranslate (mouse inside slop)" << llendl;
+			LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (mouse inside slop)" << LL_ENDL;
 			gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 			return TRUE;
 		}
@@ -481,7 +481,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 
 				// When we make the copy, we don't want to do any other processing.
 				// If so, the object will also be moved, and the copy will be offset.
-				lldebugst(LLERR_USER_INPUT) << "hover handled by LLManipTranslate (made copy)" << llendl;
+				LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (made copy)" << LL_ENDL;
 				gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 			}
 		}
@@ -498,7 +498,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 	if (!selectNode)
 	{
 		// somehow we lost the object!
-		llwarns << "Translate manip lost the object, no selectNode" << llendl;
+		LL_WARNS() << "Translate manip lost the object, no selectNode" << LL_ENDL;
 		gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 		return TRUE;
 	}
@@ -507,7 +507,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 	if (!object)
 	{
 		// somehow we lost the object!
-		llwarns << "Translate manip lost the object, no object in selectNode" << llendl;
+		LL_WARNS() << "Translate manip lost the object, no object in selectNode" << LL_ENDL;
 		gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 		return TRUE;
 	}
@@ -534,7 +534,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 
 		if (relative_move.magVecSquared() > max_drag_distance * max_drag_distance)
 		{
-			lldebugst(LLERR_USER_INPUT) << "hover handled by LLManipTranslate (too far)" << llendl;
+			LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (too far)" << LL_ENDL;
 			gViewerWindow->setCursor(UI_CURSOR_NOLOCKED);
 			return TRUE;
 		}
@@ -779,7 +779,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 	gAgentCamera.clearFocusObject();
 	dialog_refresh_all();		// ??? is this necessary?
 
-	lldebugst(LLERR_USER_INPUT) << "hover handled by LLManipTranslate (active)" << llendl;
+	LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (active)" << LL_ENDL;
 	gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 	return TRUE;
 }
@@ -1908,18 +1908,18 @@ void LLManipTranslate::renderTranslationHandles()
 			{
 				if (index == mManipPart - LL_X_ARROW || index == mHighlightedPart - LL_X_ARROW)
 				{
-					mArrowScales.mV[index] = lerp(mArrowScales.mV[index], SELECTED_ARROW_SCALE, LLCriticalDamp::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
-					mPlaneScales.mV[index] = lerp(mPlaneScales.mV[index], 1.f, LLCriticalDamp::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
+					mArrowScales.mV[index] = lerp(mArrowScales.mV[index], SELECTED_ARROW_SCALE, LLSmoothInterpolation::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
+					mPlaneScales.mV[index] = lerp(mPlaneScales.mV[index], 1.f, LLSmoothInterpolation::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
 				}
 				else if (index == mManipPart - LL_YZ_PLANE || index == mHighlightedPart - LL_YZ_PLANE)
 				{
-					mArrowScales.mV[index] = lerp(mArrowScales.mV[index], 1.f, LLCriticalDamp::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
-					mPlaneScales.mV[index] = lerp(mPlaneScales.mV[index], SELECTED_ARROW_SCALE, LLCriticalDamp::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
+					mArrowScales.mV[index] = lerp(mArrowScales.mV[index], 1.f, LLSmoothInterpolation::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
+					mPlaneScales.mV[index] = lerp(mPlaneScales.mV[index], SELECTED_ARROW_SCALE, LLSmoothInterpolation::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
 				}
 				else
 				{
-					mArrowScales.mV[index] = lerp(mArrowScales.mV[index], 1.f, LLCriticalDamp::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
-					mPlaneScales.mV[index] = lerp(mPlaneScales.mV[index], 1.f, LLCriticalDamp::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
+					mArrowScales.mV[index] = lerp(mArrowScales.mV[index], 1.f, LLSmoothInterpolation::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
+					mPlaneScales.mV[index] = lerp(mPlaneScales.mV[index], 1.f, LLSmoothInterpolation::getInterpolant(MANIPULATOR_SCALE_HALF_LIFE ));
 				}
 			}
 
@@ -2254,7 +2254,7 @@ void LLManipTranslate::renderArrow(S32 which_arrow, S32 selected_arrow, F32 box_
 			axis.mV[0] = 1.0f;
 			break;
 		default:
-			llerrs << "renderArrow called with bad arrow " << which_arrow << llendl;
+			LL_ERRS() << "renderArrow called with bad arrow " << which_arrow << LL_ENDL;
 			break;
 		}
 
