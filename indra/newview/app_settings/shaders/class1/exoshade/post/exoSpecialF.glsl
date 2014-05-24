@@ -18,7 +18,6 @@ uniform float greyscale_str;
 uniform int num_colors;
 uniform float sepia_str;
 
-
 void main ()
 {
 	vec4 col = texture2DRect(exo_screen, vary_fragcoord.xy);
