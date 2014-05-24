@@ -4173,7 +4173,18 @@ void handle_reset_view()
 	}
 
 //	//BD - Do not change our camera preset on reset view.
-	//gAgentCamera.switchCameraPreset(CAMERA_PRESET_REAR_VIEW);
+	ECameraPreset c_preset;
+	if(gSavedSettings.getU32("CameraPreset") == 0)
+		c_preset = CAMERA_PRESET_REAR_VIEW;
+	else if(gSavedSettings.getU32("CameraPreset") == 1)
+		c_preset = CAMERA_PRESET_FRONT_VIEW;
+	else if(gSavedSettings.getU32("CameraPreset") == 2)
+		c_preset = CAMERA_PRESET_GROUP_VIEW;
+	else if(gSavedSettings.getU32("CameraPreset") == 3)
+		c_preset = CAMERA_PRESET_LEFT_VIEW;
+	else
+		c_preset = CAMERA_PRESET_RIGHT_VIEW;
+	gAgentCamera.switchCameraPreset(c_preset);
 	reset_view_final( TRUE );
 	LLFloaterCamera::resetCameraMode();
 }
