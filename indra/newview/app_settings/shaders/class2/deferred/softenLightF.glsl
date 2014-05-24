@@ -529,11 +529,6 @@ void main()
 	
 	vec3 col;
 	float bloom = 0.0;
-    
-    //float ambfactor = dot(1.0, vec3(0.333333);
-	vec3 ambfactor = vec3(1.0); // doesn't matter
-	vec3 atmos_pos = pos.xyz;
-	calcAtmospherics(atmos_pos.xyz, ambfactor);
 
 	{
 		vec4 spec = texture2DRect(specularRect, vary_fragcoord.xy);
