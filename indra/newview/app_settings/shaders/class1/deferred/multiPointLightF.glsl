@@ -39,6 +39,7 @@ uniform samplerCube environmentMap;
 uniform sampler2D noiseMap;
 uniform sampler2D lightFunc;
 
+
 uniform vec3 env_mat[3];
 uniform float sun_wash;
 
@@ -156,6 +157,7 @@ void main()
 		}
 	}
 	}
+	
 	
 	frag_color.rgb = out_col;
 	frag_color.a = 0.0;

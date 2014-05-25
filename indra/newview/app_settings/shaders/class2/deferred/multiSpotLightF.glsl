@@ -352,6 +352,7 @@ void main()
 			}
 		}
 	}
+	
 
 	//not sure why, but this line prevents MATBUG-194
 	col = max(col, vec3(0.0));

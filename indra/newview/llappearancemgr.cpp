@@ -2172,6 +2172,7 @@ void LLAppearanceMgr::updateAgentWearables(LLWearableHoldingPattern* holder, boo
 	}
 // [/RLVa:KB]
 
+	if(wearables.size() > 0)
 	{
 		gAgentWearables.setWearableOutfit(items, wearables, !append);
 	}
@@ -2370,6 +2371,7 @@ void LLAppearanceMgr::updateAppearanceFromCOF(bool update_base_outfit_ordering)
 	}
 // [/SL:KB]
 
+	if(!wear_items.size())
 	{
 		LLNotificationsUtil::add("CouldNotPutOnOutfit");
 		return;
