@@ -562,12 +562,12 @@ bool RlvUIEnabler::canViewParcelProperties()
 			const LLUUID& idOwner = pParcel->getOwnerID();
 			if ( (idOwner != gAgent.getID()) )
 			{
-				S32 count = gAgent.mGroups.count();
+				S32 count = gAgent.mGroups.size();
 				for (S32 i = 0; i < count; ++i)
 				{
-					if (gAgent.mGroups.get(i).mID == idOwner)
+					if (gAgent.mGroups.at(i).mID == idOwner)
 					{
-						fShow = ((gAgent.mGroups.get(i).mPowers & GP_LAND_RETURN) > 0);
+						fShow = ((gAgent.mGroups.at(i).mPowers & GP_LAND_RETURN) > 0);
 						break;
 					}
 				}
@@ -589,9 +589,9 @@ bool RlvUIEnabler::canViewRegionProperties()
 	if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC))
 	{
 		// [See LLRegion::canManageEstate() but without the "god-like" exception]
-		const LLViewerRegion* pRegion = gAgent.getRegion();
-		if (pRegion)
-			fShow = (pRegion->isEstateManager()) || (pRegion->getOwner() == gAgent.getID());
+		//const LLViewerRegion* pRegion = gAgent.getRegion();
+		//if (pRegion)
+		//	fShow = (gAgent.getRegion()->isEstateManager()) || (pRegion->getOwner() == gAgent.getID());
 	}
 	return fShow;
 }

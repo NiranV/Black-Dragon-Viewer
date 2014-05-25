@@ -1025,7 +1025,4 @@ BOOL LLSnapshotLivePreview::saveLocal()
 	}
 	return success;
 }
-
-    // Update mFormattedImage if necessary
-    getFormattedImage();
     

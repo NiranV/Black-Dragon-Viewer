@@ -471,7 +471,7 @@ void QToolAlign::align()
 	{
 		cmdline_printchat("Please hold, the align tool is busy working.");
 		AlignThread::sInstance = new AlignThread();
-		AlignThread::sInstance->start();
+		AlignThread::sInstance->run();
 	}
 }
 

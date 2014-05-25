@@ -47,7 +47,7 @@ public:
 	void draw();
 
 	LLSnapshotLivePreview* getPreviewView();
-	void onVisibilityChange(const LLSD& new_visibility);
+	void onVisibilityChange(BOOL new_visibility);
 	void onClickNewSnapshot();
     void onClickBigPreview();
 	void onSend();
@@ -93,7 +93,7 @@ public:
 	void draw();
 
 private:
-	void onVisibilityChange(const LLSD& new_visibility);
+	void onVisibilityChange(BOOL new_visibility);
 	bool onFlickrConnectStateChange(const LLSD& data);
 	bool onFlickrConnectInfoChange();
 	void onConnect();
@@ -132,4 +132,3 @@ private:
 };
 
 #endif // LL_LLFLOATERFLICKR_H
-

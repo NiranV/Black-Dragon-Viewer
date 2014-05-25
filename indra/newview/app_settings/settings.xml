@@ -15456,7 +15456,6 @@
     <key>Value</key>
     <integer>7000</integer>
   </map>
-  </map>
 		
 		
   <!-- Black Dragon Debugs -->
@@ -16110,7 +16109,7 @@
   <key>RenderMotionBlurStrength</key>
   <map>
       <key>Comment</key>
-      <string>.</string>
+      <string>Test</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -16121,7 +16120,7 @@
   <key>RenderGodrays</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -16132,7 +16131,7 @@
   <key>RenderGodraysResolution</key>
   <map>
       <key>Comment</key>
-      <string>.</string>
+      <string>Test</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -16143,7 +16142,7 @@
   <key>RenderGodraysMultiplier</key>
   <map>
       <key>Comment</key>
-      <string>.</string>
+      <string>Test</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -16156,7 +16155,7 @@
   <key>JoystickButtonFlycam</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16167,7 +16166,7 @@
   <key>JoystickButtonJump</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16178,7 +16177,7 @@
   <key>JoystickButtonFly</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16189,7 +16188,7 @@
   <key>JoystickButtonCrouch</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16200,7 +16199,7 @@
   <key>JoystickButtonRunToggle</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16211,7 +16210,7 @@
   <key>JoystickButtonMouselook</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16222,7 +16221,7 @@
   <key>JoystickButtonZoomIn</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16233,7 +16232,7 @@
   <key>JoystickButtonZoomOut</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16244,7 +16243,7 @@
   <key>JoystickButtonZoomDefault</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16255,7 +16254,7 @@
   <key>JoystickButtonRollLeft</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16266,7 +16265,7 @@
   <key>JoystickButtonRollRight</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16279,7 +16278,7 @@
   <key>WLGamma</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -16290,7 +16289,7 @@
   <key>WLMaxAltitude</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -16301,7 +16300,7 @@
   <key>WLDistancMult</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -16312,7 +16311,7 @@
   <key>WLDensityMult</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -16323,7 +16322,7 @@
   <key>WLHazeDensity</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -16334,7 +16333,7 @@
   <key>WLHazeHorizon</key>
   <map>
     <key>Comment</key>
-    <string>.</string>
+    <string>Test</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -16536,6 +16535,7 @@
       <real>-0.07</real>
       <real>-0.07</real>
     </array>
+  </map>
   <key>VersionChannelName</key>
     <map>
       <key>Comment</key>

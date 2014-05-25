@@ -790,8 +790,8 @@ void LLWearableHoldingPattern::onAllComplete()
 //	// Update attachments to match those requested.
 //	if (isAgentAvatarValid())
 //	{
-//		LL_DEBUGS("Avatar") << self_av_string() << "Updating " << mObjItems.count() << " attachments" << LL_ENDL;
-//		llinfos << "Updating " << mObjItems.count() << " attachments" << llendl;
+//		LL_DEBUGS("Avatar") << self_av_string() << "Updating " << mObjItems.size() << " attachments" << LL_ENDL;
+//		llinfos << "Updating " << mObjItems.size() << " attachments" << llendl;
 //		LLAgentWearables::userUpdateAttachments(mObjItems);
 //	}
 
@@ -1219,15 +1219,15 @@ static void removeDuplicateItems(LLInventoryModel::item_array_t& items)
 static void removeDuplicateWearableItemsByAssetID(LLInventoryModel::item_array_t& items)
 {
 	std::set<LLUUID> idsAsset;
-	for (S32 idxItem = items.count() - 1; idxItem >= 0; idxItem--)
+	for (S32 idxItem = items.size() - 1; idxItem >= 0; idxItem--)
 	{
-		const LLViewerInventoryItem* pItem = items.get(idxItem);
+		const LLViewerInventoryItem* pItem = items.at(idxItem);
 		if (!pItem->isWearableType())
 			continue;
 		if (idsAsset.end() == idsAsset.find(pItem->getAssetUUID()))
 			idsAsset.insert(pItem->getAssetUUID());
 		else
-			items.remove(idxItem);
+			items.push_back(items.at(idxItem));
 	}
 }
 // [/SL:KB]
@@ -1798,9 +1798,9 @@ void LLAppearanceMgr::syncCOF(const LLInventoryModel::item_array_t& items,
 	gInventory.collectDescendents(getCOF(), cats, cur_cof_items, LLInventoryModel::EXCLUDE_TRASH);
 
 	// Purge everything in cur_cof_items that isn't part of new_cof_items
-	for (S32 idxCurItem = 0, cntCurItem = cur_cof_items.count(); idxCurItem < cntCurItem; idxCurItem++)
+	for (S32 idxCurItem = 0, cntCurItem = cur_cof_items.size(); idxCurItem < cntCurItem; idxCurItem++)
 	{
-		LLViewerInventoryItem* pItem = cur_cof_items.get(idxCurItem);
+		LLViewerInventoryItem* pItem = cur_cof_items.at(idxCurItem);
 		if (std::find_if(new_cof_items.begin(), new_cof_items.end(), RlvPredIsEqualOrLinkedItem(pItem)) == new_cof_items.end())
 		{
 			// Item doesn't exist in new_cof_items => purge (if it's a link)
@@ -1820,9 +1820,9 @@ void LLAppearanceMgr::syncCOF(const LLInventoryModel::item_array_t& items,
 	}
 
 	// Whatever remains in new_cof_items will need to have a link created
-	for (S32 idxNewItem = 0, cntNewItem = new_cof_items.count(); idxNewItem < cntNewItem; idxNewItem++)
+	for (S32 idxNewItem = 0, cntNewItem = new_cof_items.size(); idxNewItem < cntNewItem; idxNewItem++)
 	{
-		LLViewerInventoryItem* pItem = new_cof_items.get(idxNewItem);
+		LLViewerInventoryItem* pItem = new_cof_items.at(idxNewItem);
 		if (items_to_add.end() == std::find(items_to_add.begin(), items_to_add.end(), pItem))
 		{
 			items_to_add.push_back(pItem);
@@ -2165,9 +2165,9 @@ void LLAppearanceMgr::updateAgentWearables(LLWearableHoldingPattern* holder, boo
 			if (pWearable)
 				RlvBehaviourNotifyHandler::onTakeOff(pWearable->getType(), true);
 		}
-		for (S32 idxItem = 0, cntItem = itemsNew.count(); idxItem < cntItem; idxItem++)
+		for (S32 idxItem = 0, cntItem = itemsNew.size(); idxItem < cntItem; idxItem++)
 		{
-			RlvBehaviourNotifyHandler::onWear(itemsNew.get(idxItem)->getWearableType(), true);
+			RlvBehaviourNotifyHandler::onWear(itemsNew.at(idxItem)->getWearableType(), true);
 		}
 	}
 // [/RLVa:KB]
@@ -2365,7 +2365,7 @@ void LLAppearanceMgr::updateAppearanceFromCOF(bool update_base_outfit_ordering)
 		}
 
 		// Don't remove attachments until avatar is fully loaded (should reduce random attaching/detaching/reattaching at log-on)
-		LL_DEBUGS("Avatar") << self_av_string() << "Updating " << obj_items.count() << " attachments" << LL_ENDL;
+		LL_DEBUGS("Avatar") << self_av_string() << "Updating " << obj_items.size() << " attachments" << LL_ENDL;
 		LLAgentWearables::userUpdateAttachments(obj_items, !gAgentAvatarp->isFullyLoaded());
 	}
 // [/SL:KB]
@@ -2940,7 +2940,7 @@ void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id)
 	for (S32 i=0; i<item_array.size(); i++)
 	{
 // [RLVa:KB] - Checked: 2013-02-12 (RLVa-1.4.8)
-		const LLViewerInventoryItem* item = item_array.get(i).get();
+		const LLViewerInventoryItem* item = item_array.at(i).get();
 		if (item->getIsLinkType() && item->getLinkedUUID() == item_id)
 		{
 #if LL_RELEASE_WITH_DEBUG_INFO || LL_DEBUG

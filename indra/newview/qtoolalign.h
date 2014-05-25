@@ -7,6 +7,7 @@
 #define Q_QTOOLALIGN_H
 
 #include "lltool.h"
+#include "llthread.h"
 #include "llbbox.h"
 
 class LLViewerObject;

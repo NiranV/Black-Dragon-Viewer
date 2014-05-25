@@ -9861,11 +9861,11 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 	//target->flush();				
 }
 
-static LLFastTimer::DeclareTimer FTM_RENDER_MOTION_BLUR("Motion Blur");
+LLTrace::BlockTimerStatHandle FTM_RENDER_MOTION_BLUR("Motion Blur");
 
 void LLPipeline::renderGeomMotionBlur()
 {
-	LLFastTimer t(FTM_RENDER_MOTION_BLUR);
+	LL_RECORD_BLOCK_TIME(FTM_RENDER_MOTION_BLUR);
 	mVelocityMap.bindTarget();
 	mVelocityMap.clear(GL_COLOR_BUFFER_BIT);
 	//generate velocity map
