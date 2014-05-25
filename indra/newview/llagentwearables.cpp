@@ -1733,7 +1733,7 @@ void LLAgentWearables::userAttachMultipleAttachments(LLInventoryModel::item_arra
 			const LLInventoryItem* pItem = obj_item_array.at(idxItem).get();
 			if (!gRlvAttachmentLocks.canAttach(pItem))
 			{
-				obj_item_array.push_back(obj_item_array.at(idxItem).get());
+				obj_item_array.push_back(obj_item_array.at(idxItem));
 				RLV_ASSERT(false);
 			}
 		}

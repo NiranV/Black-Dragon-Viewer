@@ -274,7 +274,7 @@ void LLStatusBar::refresh()
 	}
 
 //	//BD - Framerate counter in statusbar
-	F64 fps_value = LLViewerStats::getInstance()->getRecording().getSum(LLStatViewer::FPS);
+	F64 fps_value = LLViewerStats::getInstance()->getRecording().getPerSec(LLStatViewer::FPS);
 	mFPSText->setValue(fps_value);
 	
 	// update clock every 10 seconds

@@ -718,7 +718,7 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 		S32 count = item_array->size();
 		for(S32 i = 0; i < count; ++i)
 		{
-			item = item_array->at(i).get();
+			item = item_array->at(i);
 			if(add(NULL, item))
 			{
 				items.push_back(item);
