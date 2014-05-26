@@ -236,13 +236,6 @@ private:
 
 	void setOutfitLocked(bool locked);
 
-// [SL:KB] - Checked: 2010-04-24 (RLVa-1.2.0f) | Added: RLVa-1.2.0f
-	void purgeItems(const LLInventoryModel::item_array_t& items);
-	void purgeItemsOfType(LLAssetType::EType asset_type);
-	void syncCOF(const LLInventoryModel::item_array_t& items, 
-	             LLInventoryModel::item_array_t& items_to_add, LLInventoryModel::item_array_t& items_to_remove);
-// [/SL:KB]
-
 	bool mAttachmentInvLinkEnabled;
 	bool mOutfitIsDirty;
 	bool mIsInUpdateAppearanceFromCOF; // to detect recursive calls.
@@ -260,14 +253,6 @@ private:
 	doomed_temp_attachments_t	mDoomedTempAttachmentIDs;
 
 	void addDoomedTempAttachment(const LLUUID& id_to_remove);
-
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-18 (Catznip-2.1)
-public:
-	void linkPendingAttachments();
-	void onRegisterAttachmentComplete(const LLUUID& idItem);
-private:
-	uuid_vec_t mPendingAttachLinks;
-// [/SL:KB]
 
 	//////////////////////////////////////////////////////////////////////////////////
 	// Item-specific convenience functions 
@@ -294,17 +279,6 @@ private:
 	U32 mFireCount;
 	bool mUpdateBaseOrder;
 };
-
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-08-31 (Catznip-2.1)
-class LLRegisterAttachmentCallback : public LLInventoryCallback
-{
-public:
-	/*virtual*/ void fire(const LLUUID& idItem)
-	{
-		LLAppearanceMgr::instance().onRegisterAttachmentComplete(idItem);
-	}
-};
-// [/SL:KB]
 
 #define SUPPORT_ENSEMBLES 0
 

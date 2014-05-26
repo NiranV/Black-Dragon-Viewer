@@ -60,9 +60,6 @@
 LLAgentWearables gAgentWearables;
 
 BOOL LLAgentWearables::mInitialWearablesUpdateReceived = FALSE;
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.1)
-bool LLAgentWearables::mInitialWearablesLoaded = false;
-// [/SL:KB]
 
 using namespace LLAvatarAppearanceDefines;
 
@@ -1345,13 +1342,6 @@ void LLAgentWearables::setWearableOutfit(const LLInventoryItem::item_array_t& it
 	// Start rendering & update the server
 	mWearablesLoaded = TRUE; 
 	checkWearablesLoaded();
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-09-22 (Catznip-2.2)
-	if (!mInitialWearablesLoaded)
-	{
-		mInitialWearablesLoaded = true;
-		mInitialWearablesLoadedSignal();
-	}
-// [/SL:KB]
 	notifyLoadingFinished();
 	queryWearableCache();
 	updateServer();
@@ -1362,46 +1352,46 @@ void LLAgentWearables::setWearableOutfit(const LLInventoryItem::item_array_t& it
 }
 
 
-//// User has picked "wear on avatar" from a menu.
-//void LLAgentWearables::setWearableItem(LLInventoryItem* new_item, LLViewerWearable* new_wearable, bool do_append)
-//{
-//	//LLAgentDumper dumper("setWearableItem");
-//	if (isWearingItem(new_item->getUUID()))
-//	{
-//		llwarns << "wearable " << new_item->getUUID() << " is already worn" << llendl;
-//		return;
-//	}
-//	
-//	const LLWearableType::EType type = new_wearable->getType();
-//
-//	if (!do_append)
-//	{
-//		// Remove old wearable, if any
-//		// MULTI_WEARABLE: hardwired to 0
-//		LLViewerWearable* old_wearable = getViewerWearable(type,0);
-//		if (old_wearable)
-//		{
-//			const LLUUID& old_item_id = old_wearable->getItemID();
-//			if ((old_wearable->getAssetID() == new_wearable->getAssetID()) &&
-//				(old_item_id == new_item->getUUID()))
-//			{
-//				lldebugs << "No change to wearable asset and item: " << LLWearableType::getTypeName(type) << llendl;
-//				return;
-//			}
-//			
-//			if (old_wearable->isDirty())
-//			{
-//				// Bring up modal dialog: Save changes? Yes, No, Cancel
-//				LLSD payload;
-//				payload["item_id"] = new_item->getUUID();
-//				LLNotificationsUtil::add("WearableSave", LLSD(), payload, boost::bind(onSetWearableDialog, _1, _2, new_wearable));
-//				return;
-//			}
-//		}
-//	}
-//
-//	setWearableFinal(new_item, new_wearable, do_append);
-//}
+// User has picked "wear on avatar" from a menu.
+void LLAgentWearables::setWearableItem(LLInventoryItem* new_item, LLViewerWearable* new_wearable, bool do_append)
+{
+	//LLAgentDumper dumper("setWearableItem");
+	if (isWearingItem(new_item->getUUID()))
+	{
+		LL_WARNS() << "wearable " << new_item->getUUID() << " is already worn" << LL_ENDL;
+		return;
+	}
+	
+	const LLWearableType::EType type = new_wearable->getType();
+
+	if (!do_append)
+	{
+		// Remove old wearable, if any
+		// MULTI_WEARABLE: hardwired to 0
+		LLViewerWearable* old_wearable = getViewerWearable(type,0);
+		if (old_wearable)
+		{
+			const LLUUID& old_item_id = old_wearable->getItemID();
+			if ((old_wearable->getAssetID() == new_wearable->getAssetID()) &&
+				(old_item_id == new_item->getUUID()))
+			{
+				LL_DEBUGS() << "No change to wearable asset and item: " << LLWearableType::getTypeName(type) << LL_ENDL;
+				return;
+			}
+			
+			if (old_wearable->isDirty())
+			{
+				// Bring up modal dialog: Save changes? Yes, No, Cancel
+				LLSD payload;
+				payload["item_id"] = new_item->getUUID();
+				LLNotificationsUtil::add("WearableSave", LLSD(), payload, boost::bind(onSetWearableDialog, _1, _2, new_wearable));
+				return;
+			}
+		}
+	}
+
+	setWearableFinal(new_item, new_wearable, do_append);
+}
 
 // static 
 bool LLAgentWearables::onSetWearableDialog(const LLSD& notification, const LLSD& response, LLViewerWearable* wearable)
@@ -1551,32 +1541,28 @@ void LLAgentWearables::invalidateBakedTextureHash(LLMD5& hash) const
 }
 
 // User has picked "remove from avatar" from a menu.
-// static
-//void LLAgentWearables::userRemoveWearable(const LLWearableType::EType &type, const U32 &index)
-//{
-//	if (!(type==LLWearableType::WT_SHAPE || type==LLWearableType::WT_SKIN || type==LLWearableType::WT_HAIR || type==LLWearableType::WT_EYES)) //&&
-//		//!((!gAgent.isTeen()) && (type==LLWearableType::WT_UNDERPANTS || type==LLWearableType::WT_UNDERSHIRT)))
-//	{
-//		gAgentWearables.removeWearable(type,false,index);
-//	}
-//}
+void LLAgentWearables::userRemoveWearable(const LLWearableType::EType &type, const U32 &index)
+{
+	if (!(type==LLWearableType::WT_SHAPE || type==LLWearableType::WT_SKIN || type==LLWearableType::WT_HAIR || type==LLWearableType::WT_EYES)) //&&
+		//!((!gAgent.isTeen()) && (type==LLWearableType::WT_UNDERPANTS || type==LLWearableType::WT_UNDERSHIRT)))
+	{
+		gAgentWearables.removeWearable(type,false,index);
+	}
+}
 
 //static 
-//void LLAgentWearables::userRemoveWearablesOfType(const LLWearableType::EType &type)
-//{
-//	if (!(type==LLWearableType::WT_SHAPE || type==LLWearableType::WT_SKIN || type==LLWearableType::WT_HAIR || type==LLWearableType::WT_EYES)) //&&
-//		//!((!gAgent.isTeen()) && (type==LLWearableType::WT_UNDERPANTS || type==LLWearableType::WT_UNDERSHIRT)))
-//	{
-//		gAgentWearables.removeWearable(type,true,0);
-//	}
-//}
+void LLAgentWearables::userRemoveWearablesOfType(const LLWearableType::EType &type)
+{
+	if (!(type==LLWearableType::WT_SHAPE || type==LLWearableType::WT_SKIN || type==LLWearableType::WT_HAIR || type==LLWearableType::WT_EYES)) //&&
+		//!((!gAgent.isTeen()) && (type==LLWearableType::WT_UNDERPANTS || type==LLWearableType::WT_UNDERSHIRT)))
+	{
+		gAgentWearables.removeWearable(type,true,0);
+	}
+}
 
 // Combines userRemoveMulipleAttachments() and userAttachMultipleAttachments() logic to
 // get attachments into desired state with minimal number of adds/removes.
-//void LLAgentWearables::userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_array)
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-22 (Catznip-2.2)
-void LLAgentWearables::userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_array, bool attach_only)
-// [/SL:KB]
+void LLAgentWearables::userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_array)
 {
 	// Possible cases:
 	// already wearing but not in request set -> take off.
@@ -1656,13 +1642,7 @@ void LLAgentWearables::userUpdateAttachments(LLInventoryModel::item_array_t& obj
 	// LL_INFOS() << "remove " << remove_count << " add " << add_count << LL_ENDL;
 
 	// Remove everything in objects_to_remove
-//	userRemoveMultipleAttachments(objects_to_remove);
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-22 (Catznip-2.2)
-	if (!attach_only)
-	{
-		userRemoveMultipleAttachments(objects_to_remove);
-	}
-// [/SL:KB]
+	userRemoveMultipleAttachments(objects_to_remove);
 
 	// Add everything in items_to_add
 	userAttachMultipleAttachments(items_to_add);
@@ -2020,13 +2000,6 @@ bool LLAgentWearables::changeInProgress() const
 {
 	return mCOFChangeInProgress;
 }
-
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.1)
-boost::signals2::connection LLAgentWearables::addInitialWearablesLoadedCallback(loaded_callback_t cb)
-{
-	return mInitialWearablesLoadedSignal.connect(cb);
-}
-// [/SL:KB]
 
 void LLAgentWearables::notifyLoadingStarted()
 {

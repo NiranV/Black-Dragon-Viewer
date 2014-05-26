@@ -76,9 +76,6 @@ public:
 
 	BOOL			isWearableCopyable(LLWearableType::EType type, U32 index /*= 0*/) const;
 	BOOL			areWearablesLoaded() const;
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.1)
-	bool			areInitalWearablesLoaded() const { return mInitialWearablesLoaded; }
-// [/SL:KB]
 	bool			isCOFChangeInProgress() const { return mCOFChangeInProgress; }
 	void			updateWearablesLoaded();
 	void			checkWearablesLoaded() const;
@@ -113,7 +110,7 @@ public:
 private:
 	/*virtual*/void	wearableUpdated(LLWearable *wearable, BOOL removed);
 public:
-//	void			setWearableItem(LLInventoryItem* new_item, LLViewerWearable* wearable, bool do_append = false);
+	void			setWearableItem(LLInventoryItem* new_item, LLViewerWearable* wearable, bool do_append = false);
 	void			setWearableOutfit(const LLInventoryItem::item_array_t& items, const std::vector< LLViewerWearable* >& wearables, BOOL remove);
 	void			setWearableName(const LLUUID& item_id, const std::string& new_name);
 	// *TODO: Move this into llappearance/LLWearableData ?
@@ -203,16 +200,12 @@ public:
 	// Static UI hooks
 	//--------------------------------------------------------------------
 public:
-//	static void		userRemoveWearable(const LLWearableType::EType &type, const U32 &index);
-//	static void		userRemoveWearablesOfType(const LLWearableType::EType &type);
+	static void		userRemoveWearable(const LLWearableType::EType &type, const U32 &index);
+	static void		userRemoveWearablesOfType(const LLWearableType::EType &type);
 	
 	typedef std::vector<LLViewerObject*> llvo_vec_t;
 
-//	static void 	userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_array);
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-22 (Catznip-2.2)
-	// Not the best way to go about this but other attempts changed far too much LL code to be a viable solution
-	static void 	userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_array, bool attach_only = false);
-// [/SL:KB]
+	static void 	userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_array);
 	static void		userRemoveMultipleAttachments(llvo_vec_t& llvo_array);
 	static void		userAttachMultipleAttachments(LLInventoryModel::item_array_t& obj_item_array);
 
@@ -230,9 +223,6 @@ public:
 	typedef boost::function<void()>			loaded_callback_t;
 	typedef boost::signals2::signal<void()>	loaded_signal_t;
 	boost::signals2::connection				addLoadedCallback(loaded_callback_t cb);
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.1)
-	boost::signals2::connection				addInitialWearablesLoadedCallback(loaded_callback_t cb);
-// [/SL:KB]
 
 	bool									changeInProgress() const;
 	void									notifyLoadingStarted();
@@ -241,18 +231,12 @@ public:
 private:
 	loading_started_signal_t				mLoadingStartedSignal; // should be called before wearables are changed
 	loaded_signal_t							mLoadedSignal; // emitted when all agent wearables get loaded
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.1)
-	loaded_signal_t							mInitialWearablesLoadedSignal; // emitted once when the initial wearables are loaded
-// [/SL:KB]
 
 	//--------------------------------------------------------------------
 	// Member variables
 	//--------------------------------------------------------------------
 private:
 	static BOOL		mInitialWearablesUpdateReceived;
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.2)
-	static bool		mInitialWearablesLoaded;
-// [/SL:KB]
 	BOOL			mWearablesLoaded;
 	std::set<LLUUID>	mItemsAwaitingWearableUpdate;
 
