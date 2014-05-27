@@ -34,7 +34,7 @@ out vec4 frag_color;
 
 #define FXAA_PC 1
 //#define FXAA_GLSL_130 1
-#define FXAA_QUALITY__PRESET 12
+#define FXAA_QUALITY__PRESET 13
 
 /*============================================================================
 
@@ -238,7 +238,7 @@ A. Or use FXAA_GREEN_AS_LUMA.
     // FXAA Quality
     // The high quality PC algorithm.
     //
-    #define FXAA_PC 0
+    #define FXAA_PC 1
 #endif
 /*--------------------------------------------------------------------------*/
 #ifndef FXAA_PC_CONSOLE
@@ -303,7 +303,7 @@ A. Or use FXAA_GREEN_AS_LUMA.
     // 1 = On.
     // 0 = Off.
     //
-    #define FXAA_EARLY_EXIT 1
+    #define FXAA_EARLY_EXIT 0
 #endif
 /*--------------------------------------------------------------------------*/
 #ifndef FXAA_DISCARD
@@ -440,7 +440,7 @@ NOTE the other tuning knobs are now in the shader function inputs!
     //  _ = the lowest digit is directly related to performance
     // _  = the highest digit is directly related to style
     // 
-    #define FXAA_QUALITY__PRESET 12
+    #define FXAA_QUALITY__PRESET 13
 #endif
 
 
@@ -2110,10 +2110,10 @@ void main()
 										rcp_frame_opt2,				//fxaaConsole360RcpFrameOpt2
 										1.0,						//fxaaQualitySubpix
 										0.01,						//fxaaQualityEdgeThreshold
-										0.00,						//fxaaQualityEdgeThresholdMin
+										0.01,						//fxaaQualityEdgeThresholdMin
 										8.0,						//fxaaConsoleEdgeSharpness
-										0.125,						//fxaaConsoleEdgeThreshold
-										0.05,						//fxaaConsoleEdgeThresholdMin
+										0.01,						//fxaaConsoleEdgeThreshold
+										0.001,						//fxaaConsoleEdgeThresholdMin
 										vec4(0,0,0,0));				//fxaaConsole360ConstDir
 
 
