@@ -6769,7 +6769,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <integer>130</integer>
+      <integer>4800</integer>
     </map>
     <key>NewObjectCreationThrottle</key>
     <map>
