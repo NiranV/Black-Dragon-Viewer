@@ -115,6 +115,8 @@ private:
 	LLButton	*mMediaToggle;
 	LLView		*mScriptOut;
 	LLFrameTimer	mClockUpdateTimer;
+//	//BD - Framerate counter in statusbar
+	LLFrameTimer	mFPSTimer;
 //	//BD - Draw Distance mouse-over slider
 	LLIconCtrl	*mDrawDistance;
 
@@ -122,6 +124,9 @@ private:
 	S32				mHealth;
 	S32				mSquareMetersCredit;
 	S32				mSquareMetersCommitted;
+//	//BD - Framerate counter in statusbar
+	S32				mFrames;
+	F32				mLastInterval;
 	LLFrameTimer*	mBalanceTimer;
 	LLFrameTimer*	mHealthTimer;
 	LLPanelVolumePulldown* mPanelVolumePulldown;

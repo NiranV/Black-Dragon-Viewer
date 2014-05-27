@@ -121,10 +121,10 @@
 		height="16"
 		top="6"
 		layout="topleft"
-		left_pad="16"
+		left_pad="12"
 		name="FPSText"
 		tool_tip="Your current FPS"
-		width="16">
+		width="36">
 			10.00
 		</text>
 </panel>
