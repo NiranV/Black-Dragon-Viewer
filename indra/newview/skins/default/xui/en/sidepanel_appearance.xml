@@ -72,7 +72,7 @@ width="333">
       width="23" />
       <text
       font="SansSerifSmall"
-      text_color="EmphasisColor"
+      text_color="BeaconColor"
       width="300"
       height="10"
       follows="top|left|right"
