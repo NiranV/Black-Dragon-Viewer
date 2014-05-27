@@ -536,10 +536,10 @@
  value="1 1 1 0.85" />
  <color
  name="MenuItemHighlightBgColor"
- value="1 .32 .36 0.35" />
+ value="1 .32 .36 0.30" />
  <color
  name="MenuItemFlashBgColor"
- reference="BeaconColor" />
+ value="1 0.5 0.0 0.20" />
  <color
  name="MenuItemHighlightFgColor"
  reference="White" />
