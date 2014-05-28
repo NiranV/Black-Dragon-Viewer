@@ -181,17 +181,13 @@
              function="Floater.Toggle"
              parameter="inventory" />
         </menu_item_check>
-	<menu_item_check
+	<menu_item_call
          label="Second Inventory"
          name="Second Inventory"
          shortcut="control|shift|I">
-            <menu_item_check.on_check
-             function="Floater.Visible"
-             parameter="second_inventory" />
-	    <menu_item_check.on_click
-             function="Floater.Toggle"
-             parameter="second_inventory" />
-        </menu_item_check>
+	    <menu_item_call.on_click
+             function="Inventory.NewWindow"/>
+        </menu_item_call>
         <menu_item_check
          label="Gestures"
          name="Gestures"
