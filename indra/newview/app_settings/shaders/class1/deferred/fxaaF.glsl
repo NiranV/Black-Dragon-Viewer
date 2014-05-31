@@ -2109,8 +2109,8 @@ void main()
 										rcp_frame_opt,				//fxaaConsoleRcpFrameOpt2
 										rcp_frame_opt2,				//fxaaConsole360RcpFrameOpt2
 										1.0,						//fxaaQualitySubpix
-										0.01,						//fxaaQualityEdgeThreshold
-										0.01,						//fxaaQualityEdgeThresholdMin
+										0.085,						//fxaaQualityEdgeThreshold
+										0.075,						//fxaaQualityEdgeThresholdMin
 										8.0,						//fxaaConsoleEdgeSharpness
 										0.01,						//fxaaConsoleEdgeThreshold
 										0.001,						//fxaaConsoleEdgeThresholdMin
