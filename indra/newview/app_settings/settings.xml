@@ -10863,17 +10863,6 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>ShowAdvancedGraphicsSettings</key>
-    <map>
-      <key>Comment</key>
-      <string>Show advanced graphics settings</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
     <key>ShowAllObjectHoverTip</key>
     <map>
       <key>Comment</key>
@@ -10911,28 +10900,6 @@
     <map>
       <key>Comment</key>
       <string>Show in-world ban/access borders</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>ShowBuildButton</key>
-    <map>
-      <key>Comment</key>
-      <string>Shows/hides build button in the bottom tray.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>ShowCameraButton</key>
-    <map>
-      <key>Comment</key>
-      <string>Show/hide view button in the bottom tray.</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -11039,17 +11006,6 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>ShowGestureButton</key>
-    <map>
-      <key>Comment</key>
-      <string>Shows/hides gesture button in the bottom tray.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
     <key>ShowHoverTips</key>
     <map>
       <key>Comment</key>
@@ -11071,28 +11027,6 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
-    </map>    
-    <key>ShowMiniMapButton</key>
-    <map>
-      <key>Comment</key>
-      <string>Shows/hides mini-map button in the bottom tray.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>ShowMoveButton</key>
-    <map>
-      <key>Comment</key>
-      <string>Shows/hides move button in the bottom tray.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
     </map>
 	<key>ShowScriptErrors</key>
     <map>
@@ -11113,28 +11047,6 @@
       <integer>1</integer>
       <key>Type</key>
       <string>S32</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>ShowSearchButton</key>
-    <map>
-      <key>Comment</key>
-      <string>Shows/hides search button in the bottom tray.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>ShowSnapshotButton</key>
-    <map>
-      <key>Comment</key>
-      <string>Shows/hides snapshot button button in the bottom tray.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
       <key>Value</key>
       <integer>1</integer>
     </map>
@@ -11170,17 +11082,6 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>1</integer>   
-    </map>
-    <key>ShowWorldMapButton</key>
-    <map>
-      <key>Comment</key>
-      <string>Shows/hides map button in the bottom tray.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
     </map>
     <key>ShowMiniLocationPanel</key>
     <map>
@@ -15941,72 +15842,6 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-  <key>ShowQuickWindlightButton</key>
-  <map>
-    <key>Comment</key>
-    <string>Show Windlight Button in Topbar (Statusbar)</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>ShowQuickSkyButton</key>
-  <map>
-    <key>Comment</key>
-    <string>Show Sky Button in Topbar (Statusbar)</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>ShowQuickWaterButton</key>
-  <map>
-    <key>Comment</key>
-    <string>Show Water Button in Topbar (Statusbar)</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>ShowQuickBrowserButton</key>
-  <map>
-    <key>Comment</key>
-    <string>Show Browser Button in Topbar (Statusbar)</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>ShowQuickHomeButton</key>
-  <map>
-    <key>Comment</key>
-    <string>Show Home Button in Topbar (Statusbar)</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>ShowQuickAboutLandButton</key>
-  <map>
-    <key>Comment</key>
-    <string>Show About Land Button in Topbar (Statusbar)</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
   <key>ShowBalance</key>
   <map>
     <key>Comment</key>
@@ -16074,17 +15909,6 @@
     <integer>1</integer>
   </map>
   <key>CameraFreeDoFFocus</key>
-  <map>
-    <key>Comment</key>
-    <string>Enable using flycam mode like Depth of Field focus point selection via mouse cursor in normal camera mode.</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>CameraDoFLocked</key>
   <map>
     <key>Comment</key>
     <string>Enable using flycam mode like Depth of Field focus point selection via mouse cursor in normal camera mode.</string>
