@@ -984,15 +984,26 @@
              height="18"
              initial_value="Loading..."
              layout="topleft"
-             left_pad="23"
+             left_pad="14"
              name="Group Name Proxy"
-             width="142" />
+             width="160" />
+			<text
+			follows="left|top"
+			height="18"
+			word_wrap="true"
+			visible="false"
+			layout="topleft"
+			parse_urls="true"
+			top_delta="0"
+			left_delta="0"
+			name="Group Name Label"
+			width="160" />
             <button
 			 follows="top|left"
 			 height="23"
 			 image_overlay="Edit_Wrench"
 			 layout="topleft"
-			 left_pad="13"
+			 left_pad="4"
 			 name="button set group"
 			 tab_stop="false"
 			 tool_tip="Choose a group to share this object's permissions"

@@ -37,6 +37,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class LLNameBox;
+class LLTextBox;
 
 class LLPanelPermissions : public LLPanel
 {
@@ -82,6 +83,7 @@ protected:
 	
 private:
 	LLNameBox*		mLabelGroupName;		// group name
+	LLTextBox*		mGroupNameSLURL;
 
 	LLUUID			mCreatorID;
 	LLUUID			mOwnerID;
