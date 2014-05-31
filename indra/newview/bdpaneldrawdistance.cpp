@@ -76,7 +76,7 @@ void BDPanelDrawDistance::onMouseLeave(S32 x, S32 y, MASK mask)
 }
 
 /*virtual*/ 
-void BDPanelDrawDistance::handleVisibilityChange ( BOOL new_visibility )
+void BDPanelDrawDistance::onVisibilityChange ( BOOL new_visibility )
 {
 	if (new_visibility)	
 	{
