@@ -1158,6 +1158,14 @@ void LLFloaterIMContainer::doToParticipants(const std::string& command, uuid_vec
 		{
 			toggleAllowTextChat(userID);
 		}
+		else if ("get_uuid" == command)
+		{
+			LLAvatarActions::copyUUIDToClipboard(userID);
+		}
+		else if ("get_slurl" == command)
+		{
+			LLAvatarActions::copySLURLToClipboard(userID);
+		}
 	}
 	else if (selectedIDS.size() > 1)
 	{
@@ -1270,6 +1278,10 @@ void LLFloaterIMContainer::doToSelectedGroup(const LLSD& userdata)
     else if (action == "leave_group")
     {
         LLGroupActions::leave(mSelectedSession);
+    }
+	else if (action == "get_slurl")
+    {
+        LLGroupActions::copySLURL(mSelectedSession);
     }
 }
 

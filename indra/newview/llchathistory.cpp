@@ -246,6 +246,14 @@ public:
 		{
 			mute(getAvatarId(), LLMute::flagTextChat);
 		}
+		if (level == "get_uuid")
+		{
+			LLAvatarActions::copyUUIDToClipboard(getAvatarId());
+		}
+		if (level == "get_slurl")
+		{
+			LLAvatarActions::copySLURLToClipboard(getAvatarId());
+		}
 	}
 
 	bool onAvatarIconContextMenuItemChecked(const LLSD& userdata)

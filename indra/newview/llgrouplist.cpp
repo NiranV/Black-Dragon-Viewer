@@ -274,6 +274,11 @@ bool LLGroupList::onContextMenuItemClick(const LLSD& userdata)
 	{
 		LLGroupActions::leave(selected_group);
 	}
+//	//BD - Copy SLURL/UUID feature
+	else if (action == "copy_slurl")
+	{
+		LLGroupActions::copySLURL(selected_group);
+	}
 
 	return true;
 }

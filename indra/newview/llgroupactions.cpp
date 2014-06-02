@@ -38,6 +38,7 @@
 #include "llgroupmgr.h"
 #include "llfloaterimcontainer.h"
 #include "llimview.h" // for gIMMgr
+#include "llurlaction.h"
 #include "llnotificationsutil.h"
 #include "llstatusbar.h"	// can_afford_transaction()
 #include "groupchatlistener.h"
@@ -195,6 +196,17 @@ public:
 };
 
 LLFetchLeaveGroupData* gFetchLeaveGroupData = NULL;
+
+//BD - Copy SLURL/UUID feature
+// static
+void LLGroupActions::copySLURL(const LLUUID& group_id)
+{
+	// copy a SLURL for the group to the clipboard
+	std::string id = group_id.asString();
+	std::string sltype = "group";
+	std::string slurl = "secondlife:///app/" + sltype + "/" + id + "/about";
+	LLUrlAction::copyURLToClipboard(slurl);
+}
 
 // static
 void LLGroupActions::search()

@@ -168,6 +168,13 @@
         <on_click function="Group.DoToSelected" parameter="leave_group"/>
         <on_enable function="Avatar.EnableItem" parameter="can_leave_group" />
     </menu_item_call>
+	<menu_item_separator layout="topleft" name="copy_group_separator"/>
+	<menu_item_call
+	 label="Copy Group SLURL"
+	 layout="topleft"
+	 name="CopyGroupSLURL">
+		<on_click function="Group.DoToSelected" parameter="get_slurl" />
+	</menu_item_call>
 	<menu_item_separator layout="topleft" name="Moderator Options Separator"/>
 	<context_menu
 	 label="Moderator Options"
@@ -213,4 +220,17 @@
 			<on_enable function="Avatar.EnableItem" parameter="can_moderate_voice" />
 		</menu_item_call>
 	</context_menu>
+	<menu_item_separator layout="topleft" name="copy_avatar_separator"/>
+	<menu_item_call
+	 label="Copy Avatar UUID"
+	 layout="topleft"
+	 name="CopyUUID">
+		<on_click function="Avatar.DoToSelected" parameter="get_uuid" />
+	</menu_item_call>
+	<menu_item_call
+	 label="Copy Avatar SLURL"
+	 layout="topleft"
+	 name="CopySLURL">
+		<on_click function="Avatar.DoToSelected" parameter="get_slurl" />
+	</menu_item_call>
 </toggleable_menu>

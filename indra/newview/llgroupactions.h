@@ -36,6 +36,10 @@
 class LLGroupActions
 {
 public:
+
+	//BD - Copy SLURL/UUID feature
+	static void copySLURL(const LLUUID& group_id);
+
 	/**
 	 * Invokes group search floater.
 	 */

@@ -147,6 +147,9 @@ void LLConversationItem::buildParticipantMenuOptions(menuentry_vec_t& items, U32
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("block_unblock"));
 		items.push_back(std::string("MuteText"));
+		items.push_back(std::string("copy_avatar_separator"));
+		items.push_back(std::string("CopyUUID"));
+		items.push_back(std::string("CopySLURL"));
 
 		if ((getType() != CONV_SESSION_1_ON_1) && mDisplayModeratorOptions)
 		{
@@ -383,6 +386,8 @@ void LLConversationItemSession::buildContextMenu(LLMenuGL& menu, U32 flags)
         items.push_back(std::string("group_profile"));
         items.push_back(std::string("activate_group"));
         items.push_back(std::string("leave_group"));
+		items.push_back(std::string("copy_group_separator"));
+		items.push_back(std::string("CopyGroupSLURL"));
     }
     else if(this->getType() == CONV_SESSION_AD_HOC)
     {

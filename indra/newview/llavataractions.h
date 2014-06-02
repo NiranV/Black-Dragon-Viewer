@@ -66,6 +66,10 @@ public:
 	static void offerTeleport(const LLUUID& invitee);
 	static void offerTeleport(const uuid_vec_t& ids);
 
+	//BD - Copy SLURL/UUID feature
+	static void copyUUIDToClipboard(const LLUUID& id);
+	static void copySLURLToClipboard(const LLUUID& user_id);
+
 	/**
 	 * Start instant messaging session.
 	 */

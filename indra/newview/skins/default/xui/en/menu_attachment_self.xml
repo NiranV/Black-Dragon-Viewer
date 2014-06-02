@@ -154,4 +154,21 @@ name="Edit Outfit">
     <menu_item_call.on_enable
      function="EnableMuteParticle" />
   </menu_item_call>
+  
+  <menu_item_separator
+       layout="topleft" />
+  <menu_item_call
+   label="Copy Avatar UUID"
+   name="CopyUUID"
+   enabled="true">
+   <menu_item_call.on_click
+      function="Avatar.GetUUID" />
+   </menu_item_call>
+  <menu_item_call
+   label="Copy Avatar SLURL"
+   name="CopySLURL"
+   enabled="true">
+   <menu_item_call.on_click
+      function="Avatar.GetSLURL" />
+   </menu_item_call>
 </context_menu>

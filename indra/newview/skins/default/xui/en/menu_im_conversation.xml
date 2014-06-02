@@ -97,5 +97,17 @@
     </menu_item_check>
     <menu_item_separator
      layout="topleft"/>
+    <menu_item_call
+     label="Copy Avatar UUID"
+     layout="topleft"
+     name="CopyUUID">
+      <on_click function="Avatar.DoToSelected" parameter="get_uuid" />
+    </menu_item_call>
+    <menu_item_call
+     label="Copy Avatar SLURL"
+     layout="topleft"
+     name="CopySLURL">
+      <on_click function="Avatar.DoToSelected" parameter="get_slurl" />
+    </menu_item_call>
 </toggleable_menu>
 

@@ -122,6 +122,7 @@
 #include "lluilistener.h"
 #include "llappearancemgr.h"
 #include "lltrans.h"
+#include "llurlaction.h"
 #include "lleconomy.h"
 #include "lltoolgrab.h"
 #include "llwindow.h"
@@ -8953,6 +8954,52 @@ void show_topinfobar_context_menu(LLView* ctrl, S32 x, S32 y)
 	LLMenuGL::showPopup(ctrl, show_topbarinfo_context_menu, x, y);
 }
 
+//BD - Global copy UUID / SLURL
+// static
+void handle_copy_uuid()
+{
+	// copy the uuid of the object to the clipboard
+	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
+	if (select_mgr)
+	{
+		LLUrlAction::copyURLToClipboard(select_mgr->getSelection()->
+										getFirstRootObject()->getID().asString());
+	}
+}
+
+
+class LLAvatarCopyUUID : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object( LLSelectMgr::getInstance()->getSelection()->getPrimaryObject() );
+//		if(avatar)
+// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.0d) | Added: RLVa-1.2.0d
+		if ( (avatar) && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) )
+// [/RLVa:KB]
+		{
+			LLAvatarActions::copyUUIDToClipboard(avatar->getID());
+		}
+		return true;
+	}
+};
+
+class LLAvatarCopySLURL : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object( LLSelectMgr::getInstance()->getSelection()->getPrimaryObject() );
+//		if(avatar)
+// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.0d) | Added: RLVa-1.2.0d
+		if ( (avatar) && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) )
+// [/RLVa:KB]
+		{
+			LLAvatarActions::copySLURLToClipboard(avatar->getID());
+		}
+		return true;
+	}
+};
+
 void initialize_edit_menu()
 {
 	view_listener_t::addMenu(new LLEditUndo(), "Edit.Undo");
@@ -9471,6 +9518,11 @@ void initialize_menus()
 
 	commit.add("World.SaveCamera", boost::bind(&LLAgentCamera::saveCamera, &gAgentCamera));
 	commit.add("World.LoadCamera", boost::bind(&LLAgentCamera::loadSavedCamera, &gAgentCamera));
+
+	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));
+
+	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
+	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");
 
 // [RLVa:KB] - Checked: 2010-04-23 (RLVa-1.2.0g) | Added: RLVa-1.2.0
 	commit.add("RLV.ToggleEnabled", boost::bind(&rlvMenuToggleEnabled));

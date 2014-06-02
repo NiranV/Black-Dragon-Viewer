@@ -64,6 +64,7 @@
 #include "llpanelprofile.h"
 #include "llrecentpeople.h"
 #include "lltrans.h"
+#include "llurlaction.h"
 #include "llviewercontrol.h"
 #include "llviewerobjectlist.h"
 #include "llviewermessage.h"	// for handle_lure
@@ -199,6 +200,24 @@ static void on_avatar_name_cache_start_im(const LLUUID& agent_id,
 		LLFloaterIMContainer::getInstance()->showConversation(session_id);
 	}
 	make_ui_sound("UISndStartIM");
+}
+
+//BD - Copy SLURL/UUID feature
+// static
+void LLAvatarActions::copyUUIDToClipboard(const LLUUID& id)
+{
+	// copy the name of the avatar to the clipboard
+	LLUrlAction::copyURLToClipboard(id.asString());
+}
+
+// static
+void LLAvatarActions::copySLURLToClipboard(const LLUUID& user_id)
+{
+	// copy a SLURL for the avatar to the clipboard
+	std::string id = user_id.asString();
+	std::string sltype = "agent";
+	std::string slurl = "secondlife:///app/" + sltype + "/" + id + "/about";
+	LLUrlAction::copyURLToClipboard(slurl);
 }
 
 // static

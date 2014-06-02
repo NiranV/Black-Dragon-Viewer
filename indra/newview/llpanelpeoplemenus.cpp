@@ -82,6 +82,9 @@ LLContextMenu* PeopleContextMenu::createMenu()
 		registrar.add("Avatar.TeleportRequest",	boost::bind(&PeopleContextMenu::requestTeleport,		this));
 		registrar.add("Avatar.Calllog",			boost::bind(&LLAvatarActions::viewChatHistory,			id));
 
+		registrar.add("Avatar.GetUUID",			boost::bind(&LLAvatarActions::copyUUIDToClipboard,		id));
+		registrar.add("Avatar.GetSLURL",		boost::bind(&LLAvatarActions::copySLURLToClipboard,		id));
+
 		enable_registrar.add("Avatar.EnableItem", boost::bind(&PeopleContextMenu::enableContextMenuItem, this, _2));
 		enable_registrar.add("Avatar.CheckItem",  boost::bind(&PeopleContextMenu::checkContextMenuItem,	this, _2));
 
@@ -143,6 +146,9 @@ void PeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("share"));
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("block_unblock"));
+		items.push_back(std::string("copy_avatar_separator"));
+		items.push_back(std::string("CopyUUID"));
+		items.push_back(std::string("CopySLURL"));
 	}
 
     hide_context_entries(menu, items, disabled_items);
@@ -347,6 +353,9 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("share"));
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("block_unblock"));
+		items.push_back(std::string("copy_avatar_separator"));
+		items.push_back(std::string("CopyUUID"));
+		items.push_back(std::string("CopySLURL"));
 	}
 
     hide_context_entries(menu, items, disabled_items);
