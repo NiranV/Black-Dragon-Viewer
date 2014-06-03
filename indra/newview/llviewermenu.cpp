@@ -95,6 +95,7 @@
 #include "llselectmgr.h"
 #include "llspellcheckmenuhandler.h"
 #include "llstatusbar.h"
+#include "llteleporthistory.h"
 #include "lltextureview.h"
 #include "lltoolcomp.h"
 #include "lltoolmgr.h"
@@ -9000,6 +9001,25 @@ class LLAvatarCopySLURL : public view_listener_t
 	}
 };
 
+class LLWorldTeleportBack : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLTeleportHistory::getInstance()->goBack();
+		return true;
+	}
+};
+
+class LLWorldTeleportForward : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLTeleportHistory::getInstance()->goForward();
+		return true;
+	}
+};
+
+
 void initialize_edit_menu()
 {
 	view_listener_t::addMenu(new LLEditUndo(), "Edit.Undo");
@@ -9520,6 +9540,9 @@ void initialize_menus()
 	commit.add("World.LoadCamera", boost::bind(&LLAgentCamera::loadSavedCamera, &gAgentCamera));
 
 	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));
+
+	view_listener_t::addMenu(new LLWorldTeleportBack(), "World.TeleportBack");
+	view_listener_t::addMenu(new LLWorldTeleportForward(), "World.TeleportForward");
 
 	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
 	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");

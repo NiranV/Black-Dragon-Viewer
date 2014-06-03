@@ -332,6 +332,20 @@
   is_running_function="Agent.IsMicrophoneOn"
   is_running_parameters="speak"/>
   <command
+  name="back"
+  available_in_toybox="true"
+  icon="Arrow_Left_Off"
+  label_ref="Command_Back_Label"
+  tooltip_ref="Command_Back_Tooltip"
+  execute_function="World.TeleportBack"/>
+  <command
+  name="forward"
+  available_in_toybox="true"
+  icon="Arrow_Right_Off"
+  label_ref="Command_Forward_Label"
+  tooltip_ref="Command_Forward_Tooltip"
+  execute_function="World.TeleportForward"/>
+  <command
   name="view"
   available_in_toybox="true"
   icon="Command_View_Icon"
