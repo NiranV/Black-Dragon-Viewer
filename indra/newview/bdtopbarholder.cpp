@@ -52,13 +52,13 @@ LLTopBar::~LLTopBar()
 void LLTopBar::draw()
 {
 	//NV - Get the time in seconds after which the topbar should hide.
-	F32 hide_time = 10.f;
+	//F32 hide_time = 10.f;
 
 	//NV - If time runs out, hide everything.
-	if(mHoverTimer.getElapsedTimeF32() > hide_time)
+	/*if(mHoverTimer.getElapsedTimeF32() > hide_time)
 	{
 		hideTopbar();
-	}
+	}*/
 	
 	//NV - If we disable the feature, unhide everything, including
 	//     the Favoritesbar if we had it enabled previously, but dont
@@ -67,6 +67,7 @@ void LLTopBar::draw()
 	{
 		unhideTopbar();
 	}*/
+	mShown = gSavedSettings.getBOOL("HideTopbar");
 	LLPanel::draw();
 }
 
@@ -77,7 +78,7 @@ BOOL LLTopBar::postBuild()
 	//     once yet.
 	//mStop = true;
 
-	mShown = false;
+	mShown = gSavedSettings.getBOOL("HideTopbar");
 	return TRUE;
 }
 
@@ -123,16 +124,16 @@ void LLTopBar::hideTopbar()
 {
 	gSavedSettings.setBOOL("HideTopbar", true);
 	//gSavedSettings.setBOOL("ShowNavbarFavoritesPanel", false);
-	mStop = false;
-	mShown = true;
+	//mStop = false;
+	//mShown = true;
 }
 
 void LLTopBar::unhideTopbar()
 {
 	//gSavedSettings.setBOOL("ShowNavbarFavoritesPanel", gSavedPerAccountSettings.getBOOL("PrevFavbarUsed"));
 	gSavedSettings.setBOOL("HideTopbar", false);
-	mStop = true;
-	mShown = false;
+	//mStop = true;
+	//mShown = false;
 }
 
 void LLTopBar::onMouseEnter(S32 x, S32 y, MASK mask)
@@ -144,8 +145,8 @@ void LLTopBar::onMouseEnter(S32 x, S32 y, MASK mask)
 		//NV - We entered the Topbar region, reset our timer and stop
 		//     it to prevent it from running out while our mouse is
 		//     still in the Topbar region.
-		mHoverTimer.reset();
-		mHoverTimer.pause();
+		//mHoverTimer.reset();
+		//mHoverTimer.pause();
 
 		//NV - Unhide everything.
 		//unhideTopbar();
@@ -158,7 +159,7 @@ void LLTopBar::onMouseLeave(S32 x, S32 y, MASK mask)
 	//if(gSavedSettings.getBOOL("AutohideTopbar"))
 	//{
 		//NV - We left the Topbar region again, resume the timer.
-		mHoverTimer.unpause();
+		//mHoverTimer.unpause();
 	//}
 } 
 
@@ -172,7 +173,7 @@ BOOL LLTopBar::handleMouseDown(S32 x, S32 y, MASK mask)
 	}
 	else
 	{
-	ret = FALSE;
+		ret = FALSE;
 	}
 	return ret;
 }
