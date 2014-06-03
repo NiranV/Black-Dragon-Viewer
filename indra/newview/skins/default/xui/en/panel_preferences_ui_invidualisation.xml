@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="695"
+     height="635"
      name="ui_panel"
      top="0"
      left="0"
@@ -88,9 +88,9 @@ width="510">
 	    initial_value="true"
 	    label="Show Network Stats (top right)"
 	    layout="topleft"
-	    left="10"
+	    left="270"
 	    name="ShowNetStats"
-	    top_pad="0"
+	    top="31"
 	    width="256" />
 	    <check_box
 	    control_name="ShowBalance"
@@ -98,11 +98,11 @@ width="510">
 	    initial_value="true"
 	    label="Show L$ Balance in Statusbar"
 	    layout="topleft"
-	    left="10"
+	    left_delta="0"
 	    name="HideL$Balance"
 	    top_pad="0"
 	    width="256" />
-	<check_box
+	<!--<check_box
 			   enabled="false"
 	control_name="AutohideTopbar"
 	height="16"
@@ -202,7 +202,7 @@ width="510">
 	    left_delta="0"
 	    name="ShowTopSearchBar"
 	    top_pad="0"
-	    width="256" />
+	    width="256" />-->
     
 	<panel
  follows="left|top|right"
@@ -213,7 +213,7 @@ width="510">
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="10"
+ top_pad="26"
  width="515"/>
 	    <text
 	    type="string"
