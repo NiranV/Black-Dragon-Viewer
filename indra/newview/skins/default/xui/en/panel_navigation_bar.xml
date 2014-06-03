@@ -4,14 +4,14 @@
  background_visible="false"
  follows="left|top|right"
  focus_root="true" 
- height="45"
+ height="51"
  layout="topleft"
  name="navigation_bar"
  chrome="true"
  width="800">
 	 <layout_stack
        follows="top|left|right"
-       height="50"
+       height="51"
        layout="topleft"
        border_size="-5"
        left="0"
@@ -49,199 +49,6 @@
        top="0"
 	   right="-48"
        width="800">
-			   <!--<layout_panel
-			visibility_control="ShowQuickHomeButton"
-			follows="top|left|right"
-			auto_resize="false"
-			layout="topleft"
-			height="23"
-           name="navigation_layout_panel"
-           width="26">
-	        <button
-	         follows="left|top"
-	         height="18"
-	         image_bottom_pad="1"
-	         image_overlay="Home_Off"
-										image_selected="transparent.j2c"
-										image_unselected="transparent.j2c"
-	         layout="topleft"
-	         left="2"
-	         name="home_btn"
-	         tool_tip="Teleport to my home location"
-	         top_pad="0"
-	         width="18" />
-		 </layout_panel>
-         <layout_panel
-			follows="top|left|right"
-			auto_resize="false"
-			layout="topleft"
-			height="23"
-           name="navigation_layout_panel"
-           width="46">
-	         <pull_button
-	         follows="left|top"
-	         direction="down"
-	         height="18"
-	         image_overlay="Arrow_Left_Off"
-										image_selected="transparent.j2c"
-										image_unselected="transparent.j2c"
-	         image_bottom_pad="1"
-	         layout="topleft"
-	         left="0"
-	         name="back_btn"
-	         tool_tip="Go back to previous location"
-	         top="0"
-	         width="18" />
-	        <pull_button
-	         follows="left|top"
-	         direction="down"
-	         height="18"
-	         image_overlay="Arrow_Right_Off"
-										image_selected="transparent.j2c"
-										image_unselected="transparent.j2c"
-	         image_bottom_pad="1"
-	         layout="topleft"
-	         left_pad="-3"
-	         name="forward_btn"
-	         tool_tip="Go forward one location"
-	         top="0"
-	         width="18" />
-		 </layout_panel>
-		 <layout_panel
-					   visibility_control="ShowQuickWindlightButton"
-			follows="top|left|right"
-			auto_resize="false"
-			layout="topleft"
-			height="23"
-           name="navigation_layout_panel"
-           width="26">
-			<button
-			image_overlay="Windlightbutton.tga"
-			image_selected="Transparent.j2c"
-			image_unselected="Transparent.j2c"
-			follows="left|top"
-			height="18"
-			layout="topleft"
-			left="2"
-			name="Windlight"
-			label=""
-			tool_tip="Opens Windlight Floater"
-			top_pad="-1"
-			width="18">
-			<button.init_callback
-			      function="Button.SetFloaterToggle"
-			      parameter="env_settings" />
-			</button>
-		 </layout_panel>
-		 <layout_panel
-					   visibility_control="ShowQuickSkyButton"
-			follows="top|left|right"
-			auto_resize="false"
-			layout="topleft"
-			height="23"
-           name="navigation_layout_panel"
-           width="26">
-			<button
-			image_overlay="Skybutton.tga"
-			image_selected="Transparent.j2c"
-			image_unselected="Transparent.j2c"
-			halign="center"
-			follows="left|top"
-			height="18"
-			layout="topleft"
-			left="2"
-			name="Sky"
-			label=""
-			tool_tip="Opens Sky Settings Floater"
-			top_pad="-1"
-			width="18">
-			<button.init_callback
-			      function="Button.SetFloaterToggle"
-			      parameter="env_edit_sky" />
-			</button>
-		 </layout_panel>
-		 <layout_panel
-					   visibility_control="ShowQuickWaterButton"
-			follows="top|left|right"
-			auto_resize="false"
-			layout="topleft"
-			height="23"
-           name="navigation_layout_panel"
-           width="36">
-			<button
-			image_overlay="Waterbutton.tga"
-			image_selected="Transparent.j2c"
-			image_unselected="Transparent.j2c"
-			follows="left|top"
-			height="18"
-			layout="topleft"
-			left="2"
-			name="Water"
-			label=""
-			tool_tip="Opens Water Settings Floater"
-			top_pad="-1"
-			width="18">
-			<button.init_callback
-			      function="Button.SetFloaterToggle"
-			      parameter="env_edit_water" />
-			</button>
-		 </layout_panel>-->
-		 <!--<layout_panel
-					   visibility_control="ShowQuickBrowserButton"
-			follows="top|left|right"
-			auto_resize="false"
-			layout="topleft"
-			height="23"
-           name="navigation_layout_panel"
-           width="26">
-			<button
-			image_overlay="icons\ExternalBrowser_Off.png"
-			image_selected="Transparent.j2c"
-			image_unselected="Transparent.j2c"
-			follows="left|top"
-			height="18"
-			layout="topleft"
-			left="2"
-			name="Browser"
-			label=""
-			tool_tip="Opens a new Browser Window"
-			top_pad="-1"
-			width="18">
-			<button.commit_callback
-			      function="Advanced.WebContentTest"
-			      parameter="www.google.com" />
-			</button>
-		 </layout_panel>-->
-		 <!--<layout_panel
-		  follows="left"
-		  visibility_control="ShowQuickAboutLandButton"
-		  auto_resize="false"
-		  height="23"
-		  left_pad="3"
-		  layout="topleft"
-		  mouse_opaque="false"
-		  name="about_land_panel"
-		  user_resize="false"
-		  width="26">
-			<button
-			image_overlay="toolbar_icons\land.png"
-			image_selected="transparent.j2c"
-			image_unselected="transparent.j2c"
-			image_overlay_color="1 1 1 0.6"
-			follows="left|top"
-			height="18"
-			layout="topleft"
-			left="2"
-			name="About_Land"
-			label="" 
-			tool_tip="Show information about the location you are in"
-			top_pad="-1"
-			width="18">
-			<button.init_callback
-			      function="Button.SetFloaterToggle"
-			      parameter="about_land" />
-			</button>
-		  </layout_panel>-->
 		 <layout_panel
 			follows="top|left|right"
 			auto_resize="true"
@@ -324,13 +131,54 @@
 	 top_pad="-1"
 	 height="30"
 	 width="268"/>
+	         <pull_button
+	         follows="left|top"
+	         direction="down"
+	         height="18"
+	         image_overlay="Arrow_Left_Off"
+										image_selected="transparent.j2c"
+										image_unselected="transparent.j2c"
+	         image_bottom_pad="1"
+	         layout="topleft"
+	         left="8"
+	         name="back_btn"
+	         tool_tip="Go back to previous location"
+	         top="6"
+	         width="18" />
+			 <button
+	         follows="left|top"
+	         height="18"
+	         image_bottom_pad="1"
+	         image_overlay="Home_Off"
+										image_selected="transparent.j2c"
+										image_unselected="transparent.j2c"
+	         layout="topleft"
+	         left_pad="0"
+	         name="home_btn"
+	         tool_tip="Teleport to my home location"
+	         top_delta="0"
+	         width="18" />
+	        <pull_button
+	         follows="left|top"
+	         direction="down"
+	         height="18"
+	         image_overlay="Arrow_Right_Off"
+										image_selected="transparent.j2c"
+										image_unselected="transparent.j2c"
+	         image_bottom_pad="1"
+	         layout="topleft"
+	         left_pad="0"
+	         name="forward_btn"
+	         tool_tip="Go forward one location"
+	         top_delta="0"
+	         width="18" />
 	        <location_input
                        follows="top|left|right"
 	         halign="right"
 	         height="23"
 	         label="Location"
 	         layout="topleft"
-	         left="5"
+	         left="67"
 			 right="-28"
 	         max_chars="254"
 	         mouse_opaque="false"
@@ -358,21 +206,22 @@
          <layout_panel
            follows="top|left|right"
 	         layout="topleft"
-										height="18"
-										min_width="18"
+										height="19"
+										min_width="19"
 										auto_resize="false"
+										invisibility_control="HideTopbar"
            name="favorites_layout_panel"
-		   visible="true"
+		   visible="false"
            width="320">
 
            <favorites_bar
              follows="left|right|top"
              font="SansSerifSmall"
 			 invisibility_control="HideTopbar"
-             height="15"
+             height="18"
              layout="topleft"
-             left="5"
-             top="0"
+             left="2"
+             top="1"
              name="favorite"
              image_drag_indication="Accordion_ArrowOpened_Off"
              tool_tip="Drag Landmarks here for quick access to your favorite places in Second Life!"
@@ -385,10 +234,9 @@
              name="favorites_bar_label"
              text_color="LtGray"
              tool_tip="Drag Landmarks here for quick access to your favorite places in Second Life!"
-             top="13"
-	     valign="bottom"
+             top="14"
              width="102">
-              Favorites Bar
+              | Favorites Bar |
 			</label>
               <!-- More button actually is a text box. -->
               <more_button
@@ -396,7 +244,7 @@
                 name=">>"
                 tab_stop="false"
                 tool_tip="Show more of My Favorites"
-                top="13"
+                top="14"
                 width="50"
                 bottom="0"
                 valign="bottom">
