@@ -3969,6 +3969,7 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_Sky_Label">Sky Editor</string>
   <string name="Command_Water_Label">Water Editor</string>
   <string name="Command_Spacer_Label"></string>
+  <string name="Command_Home_Label"></string>
   <string name="Command_Back_Label"></string>
   <string name="Command_Forward_Label"></string>
 
@@ -4009,6 +4010,7 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_Sky_Tooltip">Edit a sky preset or create a new one</string>
   <string name="Command_Water_Tooltip">Edit a water preset or create a new one</string>
   <string name="Command_Spacer_Tooltip">This is a spacer, use it to put a space between buttons and organize them into categories</string>
+  <string name="Command_Home_Tooltip">Teleport to your place set as home</string>
   <string name="Command_Back_Tooltip">Teleport back to your previous location</string>
   <string name="Command_Forward_Tooltip">Teleport to your next location in teleport history</string>
 
