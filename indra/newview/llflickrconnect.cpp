@@ -242,7 +242,7 @@ public:
 	{
 		if (isGoodStatus(status))
 		{
-			llinfos << "Flickr: Info received" << llendl;
+			LL_INFOS() << "Flickr: Info received" << LL_ENDL;
 			LL_DEBUGS("FlickrConnect") << "Getting Flickr info successful. info: " << info << LL_ENDL;
 			LLFlickrConnect::instance().storeInfo(info);
 		}
@@ -371,7 +371,7 @@ void LLFlickrConnect::uploadPhoto(LLPointer<LLImageFormatted> image, const std::
 	}
 	else
 	{
-		llwarns << "Image to upload is not a PNG or JPEG" << llendl;
+		LL_WARNS() << "Image to upload is not a PNG or JPEG" << LL_ENDL;
 		return;
 	}
 	

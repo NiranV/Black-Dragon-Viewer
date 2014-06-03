@@ -337,7 +337,7 @@ bool LLToolBarView::loadToolbars(bool force_default)
 		{
 			if (addCommandInternal(LLCommandId(command_params), mToolbars[LLToolBarEnums::TOOLBAR_TOP]))
 			{
-				llwarns << "Error adding command '" << command_params.name() << "' to top toolbar." << llendl;
+				LL_WARNS() << "Error adding command '" << command_params.name() << "' to top toolbar." << LL_ENDL;
 			}
 		}
 	}

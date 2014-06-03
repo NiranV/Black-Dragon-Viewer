@@ -242,7 +242,7 @@ public:
 	{
 		if (isGoodStatus(status))
 		{
-			llinfos << "Twitter: Info received" << llendl;
+			LL_INFOS() << "Twitter: Info received" << LL_ENDL;
 			LL_DEBUGS("TwitterConnect") << "Getting Twitter info successful. info: " << info << LL_ENDL;
 			LLTwitterConnect::instance().storeInfo(info);
 		}
@@ -368,7 +368,7 @@ void LLTwitterConnect::uploadPhoto(LLPointer<LLImageFormatted> image, const std:
 	}
 	else
 	{
-		llwarns << "Image to upload is not a PNG or JPEG" << llendl;
+		LL_WARNS() << "Image to upload is not a PNG or JPEG" << LL_ENDL;
 		return;
 	}
 	

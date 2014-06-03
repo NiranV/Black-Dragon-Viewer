@@ -594,7 +594,7 @@ void LLSnapshotLivePreview::generateThumbnailImage(BOOL force_update)
             }
             else
             {
-                llwarns << "Couldn't find a path to the following filter : " << getFilter() << llendl;
+                LL_WARNS() << "Couldn't find a path to the following filter : " << getFilter() << LL_ENDL;
             }
         }
         // Scale to a power of 2 so it can be mapped to a texture
@@ -642,7 +642,7 @@ LLViewerTexture* LLSnapshotLivePreview::getBigThumbnailImage()
             }
             else
             {
-                llwarns << "Couldn't find a path to the following filter : " << getFilter() << llendl;
+                LL_WARNS() << "Couldn't find a path to the following filter : " << getFilter() << LL_ENDL;
             }
         }
         // Scale to a power of 2 so it can be mapped to a texture
@@ -775,7 +775,7 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
         previewp->setVisible(gSavedSettings.getBOOL("UseFreezeFrame") && previewp->mAllowFullScreenPreview); // only show fullscreen preview when in freeze frame mode
         previewp->mSnapshotDelayTimer.stop();
         previewp->mSnapshotActive = FALSE;
-        lldebugs << "done creating snapshot" << llendl;
+        LL_DEBUGS() << "done creating snapshot" << LL_ENDL;
     }
     
     if (!previewp->getThumbnailUpToDate())
@@ -825,7 +825,7 @@ LLPointer<LLImageRaw> LLSnapshotLivePreview::getEncodedImage()
 		if (getSnapshotType() == SNAPSHOT_TEXTURE)
 		{
             // We don't store the intermediate formatted image in mFormattedImage in the J2C case 
-			lldebugs << "Encoding new image of format J2C" << llendl;
+			LL_DEBUGS() << "Encoding new image of format J2C" << LL_ENDL;
 			LLPointer<LLImageJ2C> formatted = new LLImageJ2C;
             // Copy the preview
 			LLPointer<LLImageRaw> scaled = new LLImageRaw(
@@ -910,13 +910,13 @@ LLPointer<LLImageFormatted>	LLSnapshotLivePreview::getFormattedImage()
             }
             else
             {
-                llwarns << "Couldn't find a path to the following filter : " << getFilter() << llendl;
+                LL_WARNS() << "Couldn't find a path to the following filter : " << getFilter() << LL_ENDL;
             }
         }
         
         // Create the new formatted image of the appropriate format.
         LLFloaterSnapshot::ESnapshotFormat format = getSnapshotFormat();
-        lldebugs << "Encoding new image of format " << format << llendl;
+        LL_DEBUGS() << "Encoding new image of format " << format << LL_ENDL;
             
         switch (format)
         {

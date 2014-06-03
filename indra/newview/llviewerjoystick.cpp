@@ -1290,7 +1290,7 @@ void LLViewerJoystick::setSNDefaults()
 
 void LLViewerJoystick::setXboxDefaults()
 {
-	llinfos << "restoring Xbox360 Controller defaults..." << llendl;
+	LL_INFOS() << "restoring Xbox360 Controller defaults..." << LL_ENDL;
 	
 	gSavedSettings.setS32("JoystickAxis0", 1); // z (at)
 	gSavedSettings.setS32("JoystickAxis1", 0); // x (slide)

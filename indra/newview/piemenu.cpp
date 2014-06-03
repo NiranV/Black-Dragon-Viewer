@@ -59,7 +59,7 @@ S32 PIE_Y[]={ 0,73,105, 73,  0,-73,-105,-73};
 PieMenu::PieMenu(const LLContextMenu::Params& p) :
 	LLContextMenu(p)
 {
-	lldebugs << "PieMenu::PieMenu()" << llendl;
+	LL_DEBUGS() << "PieMenu::PieMenu()" << LL_ENDL;
 	// radius, so we need this *2
 	reshape(PIE_OUTER_SIZE*2,PIE_OUTER_SIZE*2,FALSE);
 	// set up the font for the menu
@@ -67,7 +67,7 @@ PieMenu::PieMenu(const LLContextMenu::Params& p) :
 	mFont=LLFontGL::getFont(LLFontDescriptor("SansSerif","Small",LLFontGL::NORMAL));
 	if(!mFont)
 	{
-		llwarns << "Could not find font size for Pie menu, falling back to Small font." << llendl;
+		LL_WARNS() << "Could not find font size for Pie menu, falling back to Small font." << LL_ENDL;
 		mFont=LLFontGL::getFont(LLFontDescriptor("SansSerif","Small",LLFontGL::NORMAL));
 	}
 	// set slices pointer to our own slices
@@ -123,7 +123,7 @@ void PieMenu::show(S32 x, S32 y, LLView* spawning_view)
 	// play a sound
 	make_ui_sound("UISndPieMenuAppear");
 
-	lldebugs << "PieMenu::show(): " << x << " " << y << llendl;
+	LL_DEBUGS() << "PieMenu::show(): " << x << " " << y << LL_ENDL;
 
 	// make sure the menu is always the correct size
 	reshape(PIE_OUTER_SIZE*2,PIE_OUTER_SIZE*2,FALSE);
@@ -187,7 +187,7 @@ void PieMenu::hide()
 	// make a sound when hiding
 	make_ui_sound("UISndPieMenuHide");
 
-	lldebugs << "Clearing selections" << llendl;
+	LL_DEBUGS() << "Clearing selections" << LL_ENDL;
 
 	mSlices=&mMySlices;
 #if PIE_POPUP_EFFECT
@@ -333,7 +333,7 @@ void PieMenu::draw( void )
 				// disable it if it's not visible, pie slices never really disappear
 				if(!currentSlice->getVisible())
 				{
-					lldebugs << label << " is not visible" << llendl;
+					LL_DEBUGS() << label << " is not visible" << LL_ENDL;
 					currentSlice->setEnabled(FALSE);
 				}
 
@@ -375,7 +375,7 @@ void PieMenu::draw( void )
 				currentSlice->updateEnabled();
 				if(!currentSlice->getEnabled())
 				{
-					lldebugs << label << " is disabled" << llendl;
+					LL_DEBUGS() << label << " is disabled" << LL_ENDL;
 					// fade the item color alpha to mark the item as disabled
 					itemColor%=(F32)0.3;
 				}
@@ -438,11 +438,11 @@ void PieMenu::draw( void )
 
 BOOL PieMenu::appendContextSubMenu(PieMenu* menu)
 {
-	lldebugs << "PieMenu::appendContextSubMenu()" << llendl;
+	LL_DEBUGS() << "PieMenu::appendContextSubMenu()" << LL_ENDL;
 	if(!menu)
 		return FALSE;
 
-	lldebugs << "PieMenu::appendContextSubMenu() appending " << menu->getLabel() << " to " << getLabel() << llendl;
+	LL_DEBUGS() << "PieMenu::appendContextSubMenu() appending " << menu->getLabel() << " to " << getLabel() << LL_ENDL;
 
 	// add the submenu to the list of items
 	mSlices->push_back(menu);
