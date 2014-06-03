@@ -2,33 +2,33 @@
 <toolbars>
   <top_toolbar
    button_display_mode="icons_mini">
-      <command
-       name="speak" />
-      <command
-       name="chat" />
-      <command
-       name="people" />
-      <command
-       name="inventory" />
-      <command
-       name="appearance" />
-      <command
-       name="spacer5" />
-      <command
-       name="home" />
-      <command
-       name="spacer3" />
-      <command
-       name="windlight" />
-      <command
-       name="sky" />
-      <command
-       name="water" />
-      <command
-       name="spacer4" />
-      <command
-       name="machinima" />
-      <command
-       name="preferences" />
+    <command
+     name="back" />
+    <command
+     name="home" />
+    <command
+     name="forward" />
+    <command
+     name="spacer5" />
+    <command
+     name="windlight" />
+    <command
+     name="spacer3" />
+    <command
+     name="speak" />
+    <command
+     name="chat" />
+    <command
+     name="people" />
+    <command
+     name="appearance" />
+    <command
+     name="inventory" />
+    <command
+     name="spacer" />
+    <command
+     name="machinima" />
+    <command
+     name="navbar" />
   </top_toolbar>
 </toolbars>
