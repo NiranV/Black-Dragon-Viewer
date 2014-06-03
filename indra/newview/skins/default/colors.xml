@@ -401,7 +401,7 @@
  value="0.43 0.06 0.06 1" />
  <color
  name="HTMLLinkColor"
- reference="Friend" />
+ reference="0.8 0.66 0.25 0.9" />
  <color
  name="HealthTextColor"
  reference="White" />
