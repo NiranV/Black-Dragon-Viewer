@@ -190,7 +190,7 @@
 	        </location_input>
 			<button
 					control_name="HideTopbar"
-			image_overlay="Toast_CloseBtn"
+			image_overlay="Command_Navbar_Hide_Icon"
 			image_selected="Transparent.j2c"
 			image_unselected="Transparent.j2c"
 			follows="right|top"

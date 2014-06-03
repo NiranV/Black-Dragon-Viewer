@@ -165,8 +165,8 @@
   <command
   name="navbar"
   available_in_toybox="true"
-  icon="Toast_CloseBtn"
-  label_ref="Command_Spacer_Label"
+  icon="Command_Navbar_Show_Icon"
+  label_ref="Command_Navbar_Label"
   tooltip_ref="Command_Navbar_Tooltip"
   execute_function="ToggleControl"
   execute_parameters="HideTopbar"/>

@@ -732,6 +732,8 @@ with the same filename but different name
   <texture name="Command_Sky_Icon"          file_name="toolbar_icons/sky.png"          preload="true" />
   <texture name="Command_Water_Icon"        file_name="toolbar_icons/water.png"        preload="true" />
   <texture name="Command_Windlight_Icon"    file_name="toolbar_icons/windlight.png"    preload="true" />
+  <texture name="Command_Navbar_Show_Icon"    file_name="toolbar_icons/navbarshow.png"    preload="true" />
+  <texture name="Command_Navbar_Hide_Icon"    file_name="toolbar_icons/navbarhide.png"    preload="true" />
   
   <texture name="Balance" file_name="icons/Balance.png" preload="true"/>
   <texture name="Draw_Distance" file_name="icons/Draw_Distance.png" preload="true" />

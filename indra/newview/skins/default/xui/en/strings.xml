@@ -3972,6 +3972,7 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_Home_Label"></string>
   <string name="Command_Back_Label"></string>
   <string name="Command_Forward_Label"></string>
+  <string name="Command_Navbar_Label">Navigationbar</string>
 
   <string name="Command_AboutLand_Tooltip">Information about the land you're visiting</string>
   <string name="Command_Appearance_Tooltip">Change your avatar</string>
@@ -4013,6 +4014,7 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_Home_Tooltip">Teleport to your place set as home</string>
   <string name="Command_Back_Tooltip">Teleport back to your previous location</string>
   <string name="Command_Forward_Tooltip">Teleport to your next location in teleport history</string>
+  <string name="Command_Navbar_Tooltip">Show the Navigationbar and your Favorites</string>
 
   <string name="Toolbar_Bottom_Tooltip">currently in your bottom toolbar</string>
   <string name="Toolbar_Left_Tooltip"  >currently in your left toolbar</string>
