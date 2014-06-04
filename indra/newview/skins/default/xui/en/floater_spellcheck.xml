@@ -1,46 +1,35 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
- border="true"
+ border="false"
  can_close="true"
  can_minimize="true"
  save_rect="true"
- help_topic="spelling_settings"
  can_resize="false"
- height="315"
- width="490"
+ height="277"
+ width="415"
+ background_color="FloaterColorPreferences"
  name="spellcheck_floater"
  title="Spell Checker Settings">
   <check_box
-   bottom_delta="30"
+   top="5"
    control_name="SpellCheck"
-   left_delta="15"
+   left="10"
    height="16"
    width="100"
    follows="left|top"
    label="Enable spell checker"
    name="spellcheck_enable" />
-  <view_border
-   top_pad="10"
-   left="2"
-   height="0"
-   width="491"
-   follows="left|top"
-   bevel_style="none"
-   border_thickness="1"
-   mouse_opaque="false"
-   name="divisor1"/>
   <text
    enabled_control="SpellCheck"
    follows="top|left"
-   height="10"
+   height="16"
    layout="topleft"
-   left="38"
+   left="10"
    mouse_opaque="false"
    name="spellcheck_main"
-   top_pad="15"
+   top_pad="5"
    type="string"
-   width="90"
-  >
+   width="90">
     Main dictionary :
   </text>
   <combo_box
@@ -50,32 +39,30 @@
    layout="topleft"
    left_pad="10"
    name="spellcheck_main_combo"
-   top_pad="-15"
-   width="175"
-  />
+   top_delta="-3"
+   width="175"/>
   <text
    enabled_control="SpellCheck"
    follows="top|left"
-   height="10"
+   height="14"
    label="Logs:"
    layout="topleft"
-   left="38"
+   left="10"
    mouse_opaque="false"
    name="spellcheck_additional"
-   top_pad="15"
+   top_pad="5"
    type="string"
-   width="190"
-  >
+   width="190">
     Additional dictionaries :
   </text>
   <text
    follows="top|left"
    height="12"
    layout="topleft"
-   left="55"
+   left="10"
    length="1"
    name="spellcheck_available"
-   top_pad="10"
+   top_pad="5"
    type="string"
    width="175">
       Available
@@ -96,7 +83,7 @@
    follows="top|left"
    height="155"
    layout="topleft"
-   left="55"
+   left="10"
    multi_select="true"
    name="spellcheck_available_list"
    sort_column="0"
@@ -136,15 +123,14 @@
    sort_column="0"
    sort_ascending="true" 
    top_pad="-105"
-   width="175"
-  />
+   width="175"/>
   <button
    enabled="false"
    follows="left|top"
    height="23"
    label="Remove"
    layout="topleft"
-   left="55"
+   right="-105"
    name="spellcheck_remove_btn"
    top_pad="5"
    width="80" />
