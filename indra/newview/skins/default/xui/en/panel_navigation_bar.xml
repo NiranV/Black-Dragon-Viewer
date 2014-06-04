@@ -1,257 +1,254 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- background_opaque="false"
- background_visible="false"
- follows="left|top|right"
- focus_root="true" 
- height="51"
- layout="topleft"
- name="navigation_bar"
- chrome="true"
- width="800">
-	 <layout_stack
-       follows="top|left|right"
-       height="51"
-       layout="topleft"
-       border_size="-5"
-       left="0"
-       mouse_opaque="false"
-       name="nvp_stack"
-       orientation="vertical"
-       top="0"
-       width="800">
-         <layout_panel
-			follows="top|left|right"
-			auto_resize="false"
-			visibility_control="HideTopbar"
-			layout="topleft"
-			height="32"
-			min_height="32"
-           name="navigation_layout_panel"
-           width="800">
-	        <panel
-	         follows="left|top|right"
-	         top="0"
-	         height="27"
-	         layout="topleft"
-          left="0"
-	         name="navigation_panel"
-          width="800">
+background_opaque="false"
+background_visible="false"
+follows="left|top|right"
+focus_root="true" 
+height="51"
+layout="topleft"
+name="navigation_bar"
+chrome="true"
+width="800">
+   <layout_stack
+   follows="top|left|right"
+   height="51"
+   layout="topleft"
+   border_size="-5"
+   left="0"
+   mouse_opaque="false"
+   name="nvp_stack"
+   orientation="vertical"
+   top="0"
+   width="800">
+	  <layout_panel
+	  follows="top|left|right"
+	  auto_resize="false"
+	  visibility_control="HideTopbar"
+	  layout="topleft"
+	  height="32"
+	  min_height="32"
+	  name="navigation_layout_panel"
+	  width="800">
+		 <panel
+		 follows="left|top|right"
+		 top="0"
+		 height="27"
+		 layout="topleft"
+		 left="0"
+		 name="navigation_panel"
+		 width="800">
 			<layout_stack
-       follows="top|left|right"
-       height="30"
-       layout="topleft"
-       border_size="-5"
-       left="385"
-       mouse_opaque="false"
-       name="nvp_stack"
-       orientation="horizontal"
-       top="0"
-	   right="-48"
-       width="800">
-		 <layout_panel
 			follows="top|left|right"
-			auto_resize="true"
-			layout="topleft"
-			height="23"
-           name="navigation_layout_panel"
-           width="272">
-		 </layout_panel>
-		 <layout_panel
-			visibility_control="ShowTopSearchBar"
-			follows="top|left|right"
-			auto_resize="false"
-			layout="topleft"
-			visible="false"
 			height="30"
-           name="navigation_layout_panel"
-           width="160">
-									
-									<search_combo_box
-			follows="left|top"
-			height="23"
-			label="Search"
 			layout="topleft"
-			left="3"
+			border_size="-5"
+			left="385"
 			mouse_opaque="false"
-			name="search_combo_box"
-			tool_tip="Search for something in Second Life"
-			top_pad="1"
-			width="114" >
-			<combo_editor
-			label="Search"
-			text_pad_right="8" 
-			name="search_combo_editor"/>
-			<combo_list
-			draw_border="false"
-			border.highlight_light_color="FocusColor"
-			border.highlight_dark_color="FocusColor"
-			border.shadow_light_color="FocusColor"
-			border.shadow_dark_color="FocusColor"
-			mouse_wheel_opaque="true" />
-			</search_combo_box>
-		 </layout_panel>
-		 <layout_panel
-			follows="top|left|right"
-			visibility_control="ShowBalance"
-			auto_resize="false"
-			layout="topleft"
-			height="23"
-           name="navigation_layout_panel"
-           width="63"/>
-		 <layout_panel
-			follows="top|left|right"
-			visibility_control="ShowBalance"
-			auto_resize="false"
-			layout="topleft"
-			height="23"
-           name="navigation_layout_panel"
-           width="205"/>
+			name="nvp_stack"
+			orientation="horizontal"
+			top="0"
+			right="-48"
+			width="800">
+			   <layout_panel
+			   follows="top|left|right"
+			   auto_resize="true"
+			   layout="topleft"
+			   height="23"
+			   name="navigation_layout_panel"
+			   width="272"/>
+			   <layout_panel
+			   visibility_control="ShowTopSearchBar"
+			   follows="top|left|right"
+			   auto_resize="false"
+			   layout="topleft"
+			   visible="false"
+			   height="30"
+			   name="navigation_layout_panel"
+			   width="160">
+				  <search_combo_box
+				  follows="left|top"
+				  height="23"
+				  label="Search"
+				  layout="topleft"
+				  left="3"
+				  mouse_opaque="false"
+				  name="search_combo_box"
+				  tool_tip="Search for something in Second Life"
+				  top_pad="1"
+				  width="114" >
+				  <combo_editor
+				  label="Search"
+				  text_pad_right="8" 
+				  name="search_combo_editor"/>
+				  <combo_list
+				  draw_border="false"
+				  border.highlight_light_color="FocusColor"
+				  border.highlight_dark_color="FocusColor"
+				  border.shadow_light_color="FocusColor"
+				  border.shadow_dark_color="FocusColor"
+				  mouse_wheel_opaque="true" />
+				  </search_combo_box>
+			   </layout_panel>
+			   <layout_panel
+			   follows="top|left|right"
+			   visibility_control="ShowBalance"
+			   auto_resize="false"
+			   layout="topleft"
+			   height="23"
+			   name="navigation_layout_panel"
+			   width="63"/>
+			   <layout_panel
+			   follows="top|left|right"
+			   visibility_control="ShowBalance"
+			   auto_resize="false"
+			   layout="topleft"
+			   height="23"
+			   name="navigation_layout_panel"
+			   width="205"/>
 			</layout_stack>
-         </panel>
-        </layout_panel>
-		 <layout_panel
-			follows="top|left|right"
-			auto_resize="false"
+		 </panel>
+	  </layout_panel>
+	  <layout_panel
+	  follows="top|left|right"
+	  auto_resize="false"
+	  layout="topleft"
+	  invisibility_control="HideTopbar"
+	  height="32"
+	  min_height="32"
+	  visible="false"
+	  name="navigation_layout_panel"
+	  width="272">
+		 <icon
+		 follows="top|right|left"
+		 image_name="Window_NoTitle_Foreground"
+		 invisibility_control="HideTopbar"
+		 mouse_opaque="false"
+		 name="bg_icon_l1"
+		 scale_image="false"
+		 visible="true"
+		 left="2"
+		 top_pad="-1"
+		 height="30"
+		 width="268"/>
+		 <pull_button
+		 follows="left|top"
+		 direction="down"
+		 height="18"
+		 image_overlay="Arrow_Left_Off"
+		 image_selected="transparent.j2c"
+		 image_unselected="transparent.j2c"
+		 image_bottom_pad="1"
+		 layout="topleft"
+		 left="8"
+		 name="back_btn"
+		 tool_tip="Go back to previous location"
+		 top="6"
+		 width="18" />
+		 <button
+		 follows="left|top"
+		 height="18"
+		 image_bottom_pad="1"
+		 image_overlay="Home_Off"
+		 image_selected="transparent.j2c"
+		 image_unselected="transparent.j2c"
+		 layout="topleft"
+		 left_pad="0"
+		 name="home_btn"
+		 tool_tip="Teleport to my home location"
+		 top_delta="0"
+		 width="18" />
+		 <pull_button
+		 follows="left|top"
+		 direction="down"
+		 height="18"
+		 image_overlay="Arrow_Right_Off"
+		 image_selected="transparent.j2c"
+		 image_unselected="transparent.j2c"
+		 image_bottom_pad="1"
+		 layout="topleft"
+		 left_pad="0"
+		 name="forward_btn"
+		 tool_tip="Go forward one location"
+		 top_delta="0"
+		 width="18" />
+		 <location_input
+		 follows="top|left|right"
+		 halign="right"
+		 height="23"
+		 label="Location"
+		 layout="topleft"
+		 left="67"
+		 right="-28"
+		 max_chars="254"
+		 mouse_opaque="false"
+		 name="location_combo"
+		 top="3"
+		 width="266">
+		 <combo_list
+		 mouse_wheel_opaque="true"/>
+		 </location_input>
+		 <button
+		 control_name="HideTopbar"
+		 image_overlay="Command_Navbar_Hide_Icon"
+		 image_selected="Transparent.j2c"
+		 image_unselected="Transparent.j2c"
+		 follows="right|top"
+		 height="20"
+		 layout="topleft"
+		 right="-8"
+		 is_toggle="true"
+		 name="Close"
+		 label=""
+		 top="5"
+		 width="20"/>
+	  </layout_panel>
+	  <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="19"
+	  min_width="19"
+	  auto_resize="false"
+	  invisibility_control="HideTopbar"
+	  name="favorites_layout_panel"
+	  visible="false"
+	  width="320">
+		 <favorites_bar
+		 follows="left|right|top"
+		 font="SansSerifSmall"
+		 invisibility_control="HideTopbar"
+		 height="18"
+		 layout="topleft"
+		 left="2"
+		 top="1"
+		 name="favorite"
+		 image_drag_indication="Accordion_ArrowOpened_Off"
+		 tool_tip="Drag Landmarks here for quick access to your favorite places in Second Life!"
+		 width="320">
+			<label
+			follows="left|top"
+			height="13"
 			layout="topleft"
-			invisibility_control="HideTopbar"
-			height="32"
-			min_height="32"
-           name="navigation_layout_panel"
-           width="272">
-			<icon
-	 follows="top|right|left"
-	 image_name="Window_NoTitle_Foreground"
-	 invisibility_control="HideTopbar"
-	 mouse_opaque="false"
-	 name="bg_icon_l1"
-	 scale_image="false"
-	 visible="true"
-	 left="2"
-	 top_pad="-1"
-	 height="30"
-	 width="268"/>
-	         <pull_button
-	         follows="left|top"
-	         direction="down"
-	         height="18"
-	         image_overlay="Arrow_Left_Off"
-										image_selected="transparent.j2c"
-										image_unselected="transparent.j2c"
-	         image_bottom_pad="1"
-	         layout="topleft"
-	         left="8"
-	         name="back_btn"
-	         tool_tip="Go back to previous location"
-	         top="6"
-	         width="18" />
-			 <button
-	         follows="left|top"
-	         height="18"
-	         image_bottom_pad="1"
-	         image_overlay="Home_Off"
-										image_selected="transparent.j2c"
-										image_unselected="transparent.j2c"
-	         layout="topleft"
-	         left_pad="0"
-	         name="home_btn"
-	         tool_tip="Teleport to my home location"
-	         top_delta="0"
-	         width="18" />
-	        <pull_button
-	         follows="left|top"
-	         direction="down"
-	         height="18"
-	         image_overlay="Arrow_Right_Off"
-										image_selected="transparent.j2c"
-										image_unselected="transparent.j2c"
-	         image_bottom_pad="1"
-	         layout="topleft"
-	         left_pad="0"
-	         name="forward_btn"
-	         tool_tip="Go forward one location"
-	         top_delta="0"
-	         width="18" />
-	        <location_input
-                       follows="top|left|right"
-	         halign="right"
-	         height="23"
-	         label="Location"
-	         layout="topleft"
-	         left="67"
-			 right="-28"
-	         max_chars="254"
-	         mouse_opaque="false"
-	         name="location_combo"
-	         top="3"
-                width="266">
-             <combo_list
-             mouse_wheel_opaque="true"/>
-	        </location_input>
-			<button
-					control_name="HideTopbar"
-			image_overlay="Command_Navbar_Hide_Icon"
-			image_selected="Transparent.j2c"
-			image_unselected="Transparent.j2c"
-			follows="right|top"
-			height="20"
-			layout="topleft"
-			right="-8"
-			is_toggle="true"
-			name="Close"
-			label=""
-			top="5"
-			width="20"/>
-		 </layout_panel>
-         <layout_panel
-           follows="top|left|right"
-	         layout="topleft"
-										height="19"
-										min_width="19"
-										auto_resize="false"
-										invisibility_control="HideTopbar"
-           name="favorites_layout_panel"
-		   visible="false"
-           width="320">
-
-           <favorites_bar
-             follows="left|right|top"
-             font="SansSerifSmall"
-			 invisibility_control="HideTopbar"
-             height="18"
-             layout="topleft"
-             left="2"
-             top="1"
-             name="favorite"
-             image_drag_indication="Accordion_ArrowOpened_Off"
-             tool_tip="Drag Landmarks here for quick access to your favorite places in Second Life!"
-             width="320">
-            <label
-             follows="left|top"
-             height="13"
-             layout="topleft"
-             left="0"
-             name="favorites_bar_label"
-             text_color="LtGray"
-             tool_tip="Drag Landmarks here for quick access to your favorite places in Second Life!"
-             top="14"
-             width="102">
-              | Favorites Bar |
+			left="0"
+			name="favorites_bar_label"
+			text_color="LtGray"
+			tool_tip="Drag Landmarks here for quick access to your favorite places in Second Life!"
+			top="14"
+			width="102">
+			| Favorites Bar |
 			</label>
-              <!-- More button actually is a text box. -->
-              <more_button
-                follows="left|bottom"
-                name=">>"
-                tab_stop="false"
-                tool_tip="Show more of My Favorites"
-                top="14"
-                width="50"
-                bottom="0"
-                valign="bottom">
-                More &#9660;
-                </more_button>
-         </favorites_bar>
-         </layout_panel>
-     
-     </layout_stack>
+			<!-- More button actually is a text box. -->
+			<more_button
+			follows="left|bottom"
+			name=">>"
+			tab_stop="false"
+			tool_tip="Show more of My Favorites"
+			top="14"
+			width="50"
+			bottom="0"
+			valign="bottom">
+			More &#9660;
+			</more_button>
+		 </favorites_bar>
+	  </layout_panel>
+   </layout_stack>
 </panel>
