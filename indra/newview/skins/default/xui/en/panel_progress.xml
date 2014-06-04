@@ -83,7 +83,7 @@ width="1024">
       layout="topleft"
       height="96"
       color="1 1 1 1"
-      image_name="windows/Loading_BG.png"
+      image_name="Loading_BG"
       left="0"
       width="720" />
     <icon
