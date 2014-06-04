@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- bg_opaque_image="Volume_Background" 
- bg_alpha_image="Volume_Background" 
+ bg_opaque_image="Window_NoTitle_Foreground" 
+ bg_alpha_image="Window_NoTitle_Foreground" 
   background_opaque="true"
 	background_visible="true"
 	layout="topleft"
-	width="328"
-	height="230"
+	width="324"
+	height="225"
 	name="nearby_media"
 	help_topic="nearby_media">
   <string name="media_item_count_format">(%ld media items)</string>
@@ -18,15 +18,15 @@
 	  bevel_style="in"
     background_visible="false" 
 	  follows="left|right|top"
-	  top="0"
-	  height="35"
+	  top="1"
+	  height="30"
 	  name="minimized_controls" 
 	  left="0">
 	<button
 		name="all_nearby_media_disable_btn"
 		follows="left"
 		tool_tip="Turn all nearby media off"
-		left="8"
+		left="5"
 		width="95"
 		height="22"
 		label="Stop All">
@@ -65,7 +65,7 @@
 		follows="right"
 		tool_tip="Advanced Controls"
 		top_delta="0"
-		right="-8"
+		right="-5"
 		width="66"
 		height="22"
 		is_toggle="true"
@@ -91,7 +91,7 @@
 		length="1"
 		follows="top|left"
 		font="SansSerif"
-		left="10"
+		left="6"
 		name="nearby_media_title"
 		width="100">
 	  Nearby Media
@@ -102,7 +102,7 @@
 		follows="top|left"
 		font="SansSerif"
 		top_pad="15"
-		left="10"
+		left="6"
 		name="show_text"
 		width="62">
 	  Show:
@@ -139,8 +139,8 @@
 		draw_stripes="true"
 		bg_stripe_color="0.25 0.25 0.25 0.25"
 		top_pad="8"
-		left="10"
-		right="-10"
+		left="6"
+		right="-6"
 		name="media_list">
 	  <scroll_list.columns
 		  type="checkbox"
@@ -178,8 +178,8 @@
 		name="media_controls_panel"
 		top_pad="5"
 		height="30"
-		left="10"
-		right="-10">
+		left="3"
+		right="-3">
 	  <layout_stack
 		  name="media_controls"
 		  follows="left|right|top"
@@ -187,8 +187,8 @@
 		  height="26"
 		  layout="topleft"
 		  top="4"
-		  left="8"
-		  right="-10"
+		  left="1"
+		  right="-1"
 		  border_size="0"
 		  mouse_opaque="false"
 		  orientation="horizontal">
