@@ -227,7 +227,9 @@ BOOL LLToolPie::handleLeftClickPick()
 			break;
 		case CLICK_ACTION_SIT:
 			{
-				if (isAgentAvatarValid() && !gAgentAvatarp->isSitting()) // agent not already sitting
+				static LLUICachedControl<bool> disallow_sit("DisallowLeftClickSit", 0);
+				if (isAgentAvatarValid() && !gAgentAvatarp->isSitting()
+					&& !disallow_sit) // agent not already sitting
 				{
 					handle_object_sit_or_stand();
 					// put focus in world when sitting on an object
@@ -326,9 +328,11 @@ BOOL LLToolPie::handleLeftClickPick()
 					 || (parent && parent->flagHandleTouch());
 
 	// Switch to grab tool if physical or triggerable
+	static LLUICachedControl<bool> disallow_grab("DisallowLeftClickGrab", 0);
 	if (object && 
-		!object->isAvatar() && 
-		((object->flagUsePhysics() || (parent && !parent->isAvatar() && parent->flagUsePhysics())) || touchable) 
+		!object->isAvatar() &&
+		((object->flagUsePhysics() || (parent && !parent->isAvatar() 
+		&& parent->flagUsePhysics())) || touchable && !disallow_grab) 
 		)
 	{
 // [RLVa:KB] - Checked: 2010-03-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l

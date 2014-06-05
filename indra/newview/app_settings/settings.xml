@@ -15974,6 +15974,28 @@
       <key>Value</key>
       <real>0.8</real>
   </map>
+  <key>DisallowLeftClickSit</key>
+  <map>
+    <key>Comment</key>
+    <string>Dont allow sitting down when left clicking objects.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>DisallowLeftClickGrab</key>
+  <map>
+    <key>Comment</key>
+    <string>Dont allow grabbing objects when left clicking-and-holding objects.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
     
   <!-- Remappable Keys -->
   <key>JoystickButtonFlycam</key>
