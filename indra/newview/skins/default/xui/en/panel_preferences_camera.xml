@@ -142,41 +142,16 @@
    width="329"
    top_pad="2"/>
    <check_box
-   control_name="DisableCameraConstraints"
-   follows="left|top"
-   height="16"
-   initial_value="false"
-   label="Disable Camera Constrains"
-   layout="topleft"
-   left="10"
-   name="DisableCameraConstraints"
-   tool_tip="Disables the Camera Constrains which prevent your Camera from moving infinite in all directions dependless of the View Distance"
-   width="250"
-   top_pad="4"/>
-   <check_box
-              enabled="false"
-   control_name="ClickOnAvatarKeepsCamera"
-   follows="left|top"
-   height="16"
-   initial_value="false"
-   label="Disable Mouse-Steering"
-   layout="topleft"
-   left="10"
-   name="ClickOnAvatarKeepsCamera"
-   tool_tip="Prevents your camera from reseting behind you and fakes a held-down Alt Zoom behavior that makes it impossible to mouse-steer"
-   width="200"
-   top_pad="0"/>
-   <check_box
    control_name="EditCameraMovement"
    height="16"
    follows="left|top"
    label="Turn Camera for Build/Edit Mode"
    layout="topleft"
-   left="270"
+   left="10"
    name="edit_camera_movement"
    tool_tip="Use automatic camera positioning when entering and exiting edit mode"
    width="300"
-   top_delta="-16" />
+   top_pad="4" />
    <check_box
    control_name="AppearanceCameraMovement"
    follows="left|top"
@@ -187,6 +162,18 @@
    name="appearance_camera_movement"
    tool_tip="Use automatic camera positioning while in edit mode. Also disables Appearance Mode alltogether"
    width="300" />
+   <check_box
+   control_name="DisableCameraConstraints"
+   follows="left|top"
+   height="16"
+   initial_value="false"
+   label="Disable Camera Constrains"
+   layout="topleft"
+   left="270"
+   name="DisableCameraConstraints"
+   tool_tip="Disables the Camera Constrains which prevent your Camera from moving infinite in all directions dependless of the View Distance"
+   width="250"
+   top_delta="-16"/>
    <button
  height="22"
  follows="top|left"
@@ -194,7 +181,7 @@
  label="Flycam Setup"
  name="joystick_setup_button"
  width="130"
- top_pad="3"
+ top_pad="19"
  left="10">
    <button.commit_callback
    function="Floater.Show"
