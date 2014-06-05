@@ -22,7 +22,7 @@ width="510">
       <panel
       layout="topleft"
       follows="left|top|right"
-      height="724"
+      height="634"
       name="ui_colors_panel"
       top="0"
       left="0"
@@ -1992,67 +1992,8 @@ NOTE: Most of them wont need a restart.
 	 function="Pref.applyUIColor"
 	 parameter="MapChatRingColor" />
 	 </color_swatch>
-	 <text
-	 type="string"
-	 length="1"
-	 follows="left|top"
-	 height="10"
-	 layout="topleft"
-	 left="10"
-	 mouse_opaque="false"
-	 name="topbar_text"
-	 top_delta="27"
-	 width="150">
-	   Top Bar
-	 </text>
-	 <color_swatch
-	 can_apply_immediately="true"
-	 follows="left|top"
-	 height="40"
-	 enabled="false"
-	 layout="topleft"
-	 left_pad="0"
-	 name="topbar"
-	 top_delta="-2"
-	 width="40" >
-	 <color_swatch.init_callback
-	 function="Pref.getUIColor"
-	 parameter="TopBarColor" />
-	 <color_swatch.commit_callback
-	 function="Pref.applyUIColor"
-	 parameter="TopBarColor" />
-	 </color_swatch>
-	 <text
-	 type="string"
-	 length="1"
-	 follows="left|top"
-	 height="10"
-	 layout="topleft"
-	 left="270"
-	 mouse_opaque="false"
-	 name="menu_text"
-	 top_delta="2"
-	 width="150">
-	   Menu Bar BG
-	 </text>
-	 <color_swatch
-	 can_apply_immediately="true"
-	 follows="left|top"
-	 height="40"
-	 enabled="false"
-	 layout="topleft"
-	 left_pad="0"
-	 name="menu"
-	 top_delta="-2"
-	 width="40" >
-	 <color_swatch.init_callback
-	 function="Pref.getUIColor"
-	 parameter="MenuBarFadeColor" />
-	 <color_swatch.commit_callback
-	 function="Pref.applyUIColor"
-	 parameter="MenuBarFadeColor" />
-	 </color_swatch>
-	 <text
+	 
+	 <!--<text
 	 type="string"
 	 length="1"
 	 follows="left|top"
@@ -2111,7 +2052,7 @@ NOTE: Most of them wont need a restart.
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
 	 parameter="VoiceDotColor" />
-	 </color_swatch>
+	 </color_swatch>-->
 	 <text
 	 type="string"
 	 length="1"
@@ -2201,36 +2142,6 @@ NOTE: Most of them wont need a restart.
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
 	 parameter="LabelDisabledColor" />
-	 </color_swatch>
-	 <text
-	 type="string"
-	 length="1"
-	 follows="left|top"
-	 height="10"
-	 layout="topleft"
-	 left="10"
-	 mouse_opaque="false"
-	 name="inspector_text"
-	 top_delta="27"
-	 width="150">
-	   Inspector
-	 </text>
-	 <color_swatch
-	 can_apply_immediately="true"
-	 follows="left|top"
-	 height="40"
-	 enabled="false"
-	 layout="topleft"
-	 left_pad="0"
-	 name="inspector"
-	 top_delta="-2"
-	 width="40" >
-	 <color_swatch.init_callback
-	 function="Pref.getUIColor"
-	 parameter="FloaterColorInspectors" />
-	 <color_swatch.commit_callback
-	 function="Pref.applyUIColor"
-	 parameter="FloaterColorInspectors" />
 	 </color_swatch>
       </panel>
    </scroll_container>
