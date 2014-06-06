@@ -223,8 +223,7 @@ width="510">
 		     width="120">Security Options:</text>
 		     
 		     <check_box
-						enabled="false"
-		     control_name="_NACL_DisableClickSit"
+		     control_name="DisallowLeftClickSit"
 		     height="16"
 		     initial_value="false"
 		     label="Disable left-click sit"
@@ -234,11 +233,10 @@ width="510">
 		     top_pad="15"
 		     width="256" />
 		     <check_box
-						enabled="false"
-		     control_name="_NACL_DisableClickTouch"
+		     control_name="DisallowLeftClickGrab"
 		     height="16"
 		     initial_value="false"
-		     label="Disable left-click touch"
+		     label="Disable left-click touch/grab"
 		     layout="topleft"
 		     left="10"
 		     name="LeftClickTouch"
