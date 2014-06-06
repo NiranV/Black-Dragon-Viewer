@@ -276,18 +276,11 @@ void LLStatusBar::refresh()
 //	//BD - Framerate counter in statusbar
 	++mFrames;
 	F64 time_now = mFPSTimer.getElapsedTimeF32();
-	if(mFPSText)
+	if(time_now > mLastInterval + 0.1f)
 	{
-		if(time_now > mLastInterval + 0.1f)
-		{
-			mFPSText->setValue(mFrames / (time_now - mLastInterval));
-			mFrames = 0;
-			mLastInterval = time_now;
-		}
-	}
-	else
-	{
-		mFPSText = getChild<LLTextBox>("FPSText");
+		mFPSText->setValue(mFrames / (time_now - mLastInterval));
+		mFrames = 0;
+		mLastInterval = time_now;
 	}
 	
 	// update clock every 10 seconds
