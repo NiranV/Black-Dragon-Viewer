@@ -84,7 +84,7 @@
      image_unselected="Pause_Off"
      image_pressed="Pause_Press"
      image_pressed_selected="Play_Press"
-     lele="true"
+     is_toggle="true"
      left_pad="5"
      top="4"
      name="media_toggle_btn"
@@ -114,7 +114,6 @@
 				<text
 		type="string"
 		font="SansSerifSmallBold"
-		visibility_control="FPSCounterAsText"
 		follows="right|top"
 		text_color="1 .32 .36 0.85"
 		halign="left"
