@@ -50,8 +50,10 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 
 	mGroupIcon = getChild<LLGroupIconCtrl>("group_icon");
 	mAvatarIcon = getChild<LLAvatarIconCtrl>("avatar_icon");
+	mAvatarOfGroupIcon = getChild<LLAvatarIconCtrl>("avatar_of_grp_icon");
 	mAdhocIcon = getChild<LLAvatarIconCtrl>("adhoc_icon");
 	mAvatarName = getChild<LLTextBox>("user_name");
+	mAvatarNameOfGroup = getChild<LLTextBox>("user_name_of_grp");
 	mTime = getChild<LLTextBox>("time_box");
 	mMessage = getChild<LLTextBox>("message");
 
@@ -66,10 +68,15 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 	mIsGroupMsg = (im_session && im_session->mSessionType == LLIMModel::LLIMSession::GROUP_SESSION);
 	if(mIsGroupMsg)
 	{
-		mAvatarName->setValue(im_session->mName);
+		mAvatarName->setVisible(FALSE);
 		LLAvatarName avatar_name;
 		LLAvatarNameCache::get(p.avatar_id, &avatar_name);
-		p.message = "[From " + avatar_name.getDisplayName() + "]\n" + p.message;
+		mAvatarNameOfGroup->setValue(avatar_name.getDisplayName());
+		mAvatarOfGroupIcon->setValue(p.avatar_id);
+	}
+	else
+	{
+		mAvatarNameOfGroup->setVisible(FALSE);
 	}
 	
 	//Handle IRC styled /me messages.
@@ -210,6 +217,7 @@ void LLToastIMPanel::initIcon()
 	mAvatarIcon->setVisible(FALSE);
 	mGroupIcon->setVisible(FALSE);
 	mAdhocIcon->setVisible(FALSE);
+	mAvatarOfGroupIcon->setVisible(FALSE);
 
 	if(mAvatarName->getValue().asString() == SYSTEM_FROM)
 	{
@@ -235,6 +243,7 @@ void LLToastIMPanel::initIcon()
 		case LLIMModel::LLIMSession::GROUP_SESSION:
 			mGroupIcon->setVisible(TRUE);
 			mGroupIcon->setValue(mSessionID);
+			mAvatarOfGroupIcon->setVisible(TRUE);
 			break;
 		case LLIMModel::LLIMSession::ADHOC_SESSION:
 			mAdhocIcon->setVisible(TRUE);

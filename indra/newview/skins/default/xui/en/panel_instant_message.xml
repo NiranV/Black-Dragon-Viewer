@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
  background_visible="false"
- height="152"
+ height="130"
  label="im_panel"
  layout="topleft"
  left="0"
@@ -10,14 +10,14 @@
  width="305">
     <string
      name="message_max_lines_count">
-        6
+        7
     </string>
     <panel
      background_visible="false"
      bevel_style="in"
      bg_alpha_color="Black"
      follows="top"
-     height="24"
+     height="22"
      label="im_header"
      layout="topleft"
      left="5"
@@ -30,7 +30,7 @@
          height="18"
          image_name="Generic_Person"
          layout="topleft"
-         left="0"
+         left="2"
          mouse_opaque="false"
          name="avatar_icon"
          top="0"
@@ -40,10 +40,20 @@
          height="18"
          default_icon_name="Generic_Group"
          layout="topleft"
-         left="0"
+         left="2"
          mouse_opaque="false"
          name="group_icon"
          top="0"
+         width="18" />
+		<avatar_icon
+         follows="right"
+         height="18"
+         image_name="Generic_Person"
+         layout="topleft"
+         left_pad="2"
+         mouse_opaque="false"
+         name="avatar_of_grp_icon"
+         top_delta="0"
          width="18" />
         <avatar_icon
          color="Green"
@@ -51,7 +61,7 @@
          height="18"
          image_name="Generic_Person"
          layout="topleft"
-         left="0"
+         left="2"
          mouse_opaque="false"
          name="adhoc_icon"
          top="0"
@@ -60,7 +70,7 @@
          follows="left|right"
          height="12"
          layout="topleft"
-         left_pad="5"
+         left="25"
          name="user_name"
          parse_urls="false"
          text_color="White"
@@ -68,7 +78,20 @@
          translate="false"
          use_ellipses="true"
          value="TestString PleaseIgnore"
-         width="205" />
+         width="195" />
+		<text
+         follows="left|right"
+         height="12"
+         layout="topleft"
+         left="47"
+         name="user_name_of_grp"
+         parse_urls="false"
+         text_color="White"
+         top="4"
+         translate="false"
+         use_ellipses="true"
+         value="TestString PleaseIgnore"
+         width="195" />
 	 <!-- TIME STAMP -->
         <text
         font="SansSerifSmall"
@@ -76,7 +99,7 @@
          height="13"
          layout="topleft"
 	 halign="right"
-         right="-5"
+         right="-2"
          name="time_box"
          top="4"
          value="23:30"
@@ -90,7 +113,7 @@
      left="10"
      name="message"
      text_color="White"
-     top="33"
+     top="28"
      use_ellipses="true"
      value=""
      width="285"
