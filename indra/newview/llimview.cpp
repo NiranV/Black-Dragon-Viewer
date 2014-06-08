@@ -1325,9 +1325,9 @@ void LLIMModel::sendMessage(const std::string& utf8_text,
 	   (other_participant_id.notNull()))
 	{
 		// Do we have to replace the /me's here?
-		std::string from;
-		LLAgentUI::buildFullname(from);
-		LLIMModel::getInstance()->addMessage(im_session_id, from, gAgentID, utf8_text);
+		LLAvatarName user;
+		LLAvatarNameCache::get(gAgentID, &user);
+		LLIMModel::getInstance()->addMessage(im_session_id, user.getDisplayName(), gAgentID, utf8_text);
 
 		//local echo for the legacy communicate panel
 		std::string history_echo;
@@ -2741,7 +2741,9 @@ void LLIMMgr::addMessage(
 
 	if (!LLMuteList::getInstance()->isMuted(other_participant_id, LLMute::flagTextChat) && !skip_message)
 	{
-		LLIMModel::instance().addMessage(new_session_id, from, other_participant_id, msg);
+		LLAvatarName user;
+		LLAvatarNameCache::get(other_participant_id, &user);
+		LLIMModel::instance().addMessage(new_session_id, user.getDisplayName(), other_participant_id, msg);
 	}
 
 	// Open conversation floater if offline messages are present
