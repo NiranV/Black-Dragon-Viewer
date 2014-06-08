@@ -649,6 +649,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("CameraFieldOfView");
 	connectRefreshCachedSettingsSafe("CameraOverWaterDistortion");
 	connectRefreshCachedSettingsSafe("CameraUnderWaterDistortion");
+	connectRefreshCachedSettingsSafe("RenderLensFlare");
 	connectRefreshCachedSettingsSafe("RenderPostGreyscaleStrength");
 	connectRefreshCachedSettingsSafe("RenderPostSepiaStrength");
 	connectRefreshCachedSettingsSafe("RenderPostPosterizationSamples");

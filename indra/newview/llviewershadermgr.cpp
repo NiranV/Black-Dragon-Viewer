@@ -247,6 +247,7 @@ LLGLSLShader            gColorGradePostLegacy;
 LLGLSLShader            gFilmicToneMappingAdv;
 
 LLGLSLShader            gSpecialPost;
+LLGLSLShader            gLensFlare;
 
 // Deferred materials shaders
 LLGLSLShader			gDeferredMaterialProgram[LLMaterial::SHADER_COUNT*2];
@@ -2091,6 +2092,7 @@ void LLViewerShaderMgr::unloadExodusPostShaders()
     gFilmicToneMappingAdv.unload();
 
 	gSpecialPost.unload();
+	gLensFlare.unload();
 }
 
 BOOL LLViewerShaderMgr::loadExodusPostShaders()
@@ -2128,6 +2130,16 @@ BOOL LLViewerShaderMgr::loadExodusPostShaders()
         gVignettePost.mShaderFiles.push_back(make_pair("exoshade/post/exoVignetteF.glsl", GL_FRAGMENT_SHADER_ARB));
         gVignettePost.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
         success = gVignettePost.createShader(NULL, NULL);
+    }
+
+	if (success)
+    {
+        gLensFlare.mName = "Lens Flare";
+        gLensFlare.mShaderFiles.clear();
+        gLensFlare.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gLensFlare.mShaderFiles.push_back(make_pair("exoshade/post/exoLensF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gLensFlare.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gLensFlare.createShader(NULL, NULL);
     }
 
 	if (success)

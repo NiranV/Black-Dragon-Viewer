@@ -24,6 +24,7 @@
 #include "llviewershadermgr.h"
 #include "pipeline.h"
 #include "llviewercontrol.h"
+#include "llsky.h"
 
 LLVector3	exoPostProcess::sExodusRenderGamma;
 LLVector3	exoPostProcess::sExodusRenderExposure;
@@ -41,6 +42,7 @@ F32			exoPostProcess::sExodusRenderGammaCurve;
 F32			exoPostProcess::sGreyscaleStrength;
 F32			exoPostProcess::sSepiaStrength;
 U32			exoPostProcess::sNumColors;
+BOOL		exoPostProcess::sRenderLensFlare;
 
 exoPostProcess::exoPostProcess()
 {
@@ -114,7 +116,11 @@ void exoPostProcess::ExodusRenderPostStack(LLRenderTarget *src, LLRenderTarget *
 
 		if(LLPipeline::sRenderDeferred)
 		{
-			if (sGreyscaleStrength > 0.0f || sNumColors > 2 || sSepiaStrength > 0.0f)
+			if (sRenderLensFlare)
+				ExodusRenderLens(src, dst);
+
+			if (sGreyscaleStrength > 0.0f || sNumColors > 2 
+				|| sSepiaStrength > 0.0f)
 				ExodusRenderSpecial(src, dst);
 		}
 	}
@@ -133,6 +139,7 @@ void exoPostProcess::ExodusRenderPostSettingsUpdate()
 	sGreyscaleStrength = gSavedSettings.getF32("RenderPostGreyscaleStrength");
 	sSepiaStrength = gSavedSettings.getF32("RenderPostSepiaStrength");
 	sNumColors = gSavedSettings.getU32("RenderPostPosterizationSamples");
+	sRenderLensFlare = gSavedSettings.getBOOL("RenderLensFlare");
 	if (mVertexShaderLevel > 0)  // Don't even bother with fetching the color grading texture if our vertex shader level isn't above 0.
 	{
 		LLViewerFetchedTexture::sExodusColorGradeTexp = LLViewerTextureManager::getFetchedTexture(LLUUID(gSavedSettings.getString("ExodusRenderColorGradeTexture")), FTT_DEFAULT, TRUE, LLGLTexture::BOOST_UI);
@@ -318,6 +325,24 @@ void exoPostProcess::ExodusRenderSpecial(LLRenderTarget* src, LLRenderTarget* ds
 	shader->uniform1i(LLShaderMgr::DEFERRED_NUM_COLORS, sNumColors);
 	shader->uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, sGreyscaleStrength);
 	shader->uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, sSepiaStrength);
+    mExoPostBuffer->drawArrays(LLRender::TRIANGLES, 0, 3);
+    stop_glerror();
+    shader->unbind();
+    dst->flush();
+}
+
+void exoPostProcess::ExodusRenderLens(LLRenderTarget* src, LLRenderTarget* dst)
+{
+    dst->bindTarget();
+    LLGLSLShader *shader = &gLensFlare;
+    shader->bind();
+    
+    mExoPostBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
+    
+    exoShader::BindRenderTarget(dst, shader, LLShaderMgr::EXO_RENDER_SCREEN);
+
+	shader->uniform3fv(LLShaderMgr::DEFERRED_SUN_DIR, 1, gPipeline.mTransformedSunDir.mV);
+	shader->uniform4fv(LLShaderMgr::SUNLIGHT_COLOR, 1, gSky.getSunDiffuseColor().mV);
     mExoPostBuffer->drawArrays(LLRender::TRIANGLES, 0, 3);
     stop_glerror();
     

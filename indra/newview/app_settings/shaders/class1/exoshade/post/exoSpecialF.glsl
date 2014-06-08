@@ -41,4 +41,5 @@ void main ()
 	col.rgb = mix(col.rgb, col_sep, sepia_str);
 	
 	frag_color = col;
+  
 }

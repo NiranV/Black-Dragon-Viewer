@@ -292,6 +292,7 @@ extern LLGLSLShader         gVignettePost;
 extern LLGLSLShader         gColorGradePostLegacy;
 extern LLGLSLShader         gFilmicToneMappingAdv;
 
+extern LLGLSLShader         gLensFlare;
 extern LLGLSLShader         gSpecialPost;
 
 // Deferred rendering shaders

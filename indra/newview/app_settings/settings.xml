@@ -15974,6 +15974,17 @@
       <key>Value</key>
       <real>0.8</real>
   </map>
+  <key>RenderLensFlare</key>
+  <map>
+    <key>Comment</key>
+    <string>This enables and disables Lens Flare effects from the sun.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>DisallowLeftClickSit</key>
   <map>
     <key>Comment</key>

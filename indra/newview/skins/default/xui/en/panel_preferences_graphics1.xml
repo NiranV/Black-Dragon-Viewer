@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1930"
+  height="1980"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -2515,6 +2515,38 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+   <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="EmphasisColor_13"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="515"/>
+   <text
+   name="general_label"
+   follows="left|top"
+   layout="topleft"
+   top_delta="4" 
+   left="10" 
+   height="12"
+   width="220">
+   Post Processing Effects:
+   </text>
+   <check_box
+   control_name="RenderLensFlare"
+   height="16"
+   initial_value="true"
+   label="Lens Flare Effect"
+   tool_tip="Toggles the sun light reflection on your camera on or off."
+   layout="topleft"
+   left="5"
+   name="LensFlare"
+   top_pad="12"
+   width="115"/>
      <panel
  follows="left|top|right"
  height="20"

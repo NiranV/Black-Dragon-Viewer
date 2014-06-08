@@ -255,19 +255,7 @@ float nonpcfShadowAtPos(vec4 pos_world)
     vec4 near_split = shadow_clip*-0.75;
     vec4 far_split = shadow_clip*-1.25;
     
-    if (pos.z < near_split.z) {
-      pos = shadow_matrix[3]*pos;
-      return nonpcfShadow(shadowMap3, pos, pos_screen);
-    }
-    else if (pos.z < near_split.y) {
-      pos = shadow_matrix[2]*pos;
-      return nonpcfShadow(shadowMap2, pos, pos_screen);
-    }
-    else if (pos.z < near_split.x) {
-      pos = shadow_matrix[1]*pos;
-      return nonpcfShadow(shadowMap1, pos, pos_screen);
-    }
-    else if (pos.z > far_split.x) {
+    if (pos.z > far_split.x) {
       pos = shadow_matrix[0]*pos;
       return nonpcfShadow(shadowMap0, pos, pos_screen);
     }
@@ -507,6 +495,27 @@ vec3 fullbrightScaleSoftClip(vec3 light)
 	return light;
 }
 
+vec3 flare(vec2 spos, vec2 fpos, vec3 clr)
+{
+	vec3 color;
+	float fade;
+    fade = 0.01 / clamp(abs(sun_dir.x / sun_dir.y), 0.01, 0.01);
+    if(abs(sun_dir.x) > 0.25 || abs(sun_dir.y) > 0.05)
+     fade -= clamp(abs((sun_dir.x * sun_dir.x * 2) + (sun_dir.y * sun_dir.y * 4)), 0.0 , 1.0);
+	color += clr * max(0.0, 0.5 - distance(spos, fpos * (-sun_dir.z * 1.25))) * (1 * sunlight_color.a) * fade;
+	color += clr * max(0.0, 0.1 / distance(spos, -fpos * (-sun_dir.z * 0.5))) * (0.5 * sunlight_color.a) * fade ;
+	color += clr * max(0.0, 0.25 - distance(spos, -fpos * (-sun_dir.z *1.1))) * (1.6 * sunlight_color.a) * fade;
+	color += clr * max(0.0, 0.15 - distance(spos, -fpos * (-sun_dir.z *2.5))) * (1 * sunlight_color.a) * fade;
+	
+	
+	return color;
+}
+
+float noise(vec2 pos)
+{
+	return fract(1111. * sin(111. * dot(pos, vec2(2222., 22.))));	
+}
+
 
 void main() 
 {
@@ -740,4 +749,14 @@ void main()
 	
 	frag_color.rgb = col;
 	frag_color.a = bloom;
+    
+    /*if(sun_dir.x > -0.75 && sun_dir.x < 0.75
+    && sun_dir.y > -0.55 && sun_dir.y < 0.55
+    && sun_dir.z < 0.5)
+    {
+      vec2 position = ( gl_FragCoord.xy / screen_res.xy * 2.0 ) - 1.0;
+      position.x *= screen_res.x / screen_res.y;
+       vec3 color = flare(position, vec2(sun_dir.xy) * 1.15 , vec3(sunlight_color));
+      frag_color += vec4( color * 0.05, 0.0 );
+    }*/
 }
