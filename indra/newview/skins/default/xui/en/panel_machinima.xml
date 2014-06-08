@@ -49,7 +49,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1300"
+            height="1340"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -734,7 +734,7 @@ width="345">
                   name="shaders"
                   top_pad="0"
                   width="10">
-                  ┗
+                  ┣
                   </text>
                   <check_box
                   control_name="RenderGodrays"
@@ -746,6 +746,32 @@ width="345">
                   layout="topleft"
                   left_pad="0"
                   name="Godrays"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_delta="-10"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┗
+                  </text>
+                  <check_box
+                  control_name="RenderLensFlare"
+                  enabled_control="RenderDeferred"
+                  height="16"
+                  initial_value="false"
+                  label="Lens Flare"
+                  tool_tip="Toggles if lens flare post effects should be rendered when facing the sun"
+                  layout="topleft"
+                  left_pad="0"
+                  name="LensFlare"
                   top_delta="0"
                   width="115" />
                   <text
@@ -1240,6 +1266,63 @@ width="345">
                   name="PosterizationSamples"
                   top_pad="2"
                   width="287" />
+                  <slider
+                  control_name="RenderMotionBlurStrength"
+                  enabled_control="RenderDeferred"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="16"
+                  increment="1"
+                  initial_value="1"
+                  can_edit_text="true"
+                  label="Motionblur Strength:"
+                  label_width="110"
+                  tool_tip="Set the strength of Motionblur, lower values means stronger"
+                  layout="topleft"
+                  left="20"
+                  max_val="100"
+                  min_val="10"
+                  name="MotionBlurStrength"
+                  top_pad="2"
+                  width="299" />
+                  <slider
+                  control_name="RenderGodraysResolution"
+                  enabled_control="RenderDeferred"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="16"
+                  increment="1"
+                  initial_value="64"
+                  can_edit_text="true"
+                  label="Godray Resolution:"
+                  label_width="110"
+                  tool_tip="Set the resolution of each godray"
+                  layout="topleft"
+                  left="20"
+                  max_val="192"
+                  min_val="16"
+                  name="GodrayResolution"
+                  top_pad="2"
+                  width="299" />
+                  <slider
+                  control_name="RenderMotionBlurStrength"
+                  enabled_control="RenderDeferred"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="16"
+                  increment="0.01"
+                  initial_value="1"
+                  can_edit_text="true"
+                  label="Godray Brightness:"
+                  label_width="110"
+                  tool_tip="Set the brightness of each godray"
+                  layout="topleft"
+                  left="20"
+                  max_val="1"
+                  min_val="0"
+                  name="GodrayMultiplier"
+                  top_pad="2"
+                  width="290" />
                   <text
                   font="SansSerif"
                   font.style="BOLD"
