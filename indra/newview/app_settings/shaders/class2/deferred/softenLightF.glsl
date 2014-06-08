@@ -255,9 +255,21 @@ float nonpcfShadowAtPos(vec4 pos_world)
     vec4 near_split = shadow_clip*-0.75;
     vec4 far_split = shadow_clip*-1.25;
     
-    if (pos.z > far_split.x) {
+    if (pos.z < near_split.z) {
+      pos = shadow_matrix[3]*pos;
+      return nonpcfShadow(shadowMap3, pos, pos.zw);
+    }
+    else if (pos.z < near_split.y) {
+      pos = shadow_matrix[2]*pos;
+      return nonpcfShadow(shadowMap2, pos, pos.zw);
+    }
+    else if (pos.z < near_split.x) {
+      pos = shadow_matrix[1]*pos;
+      return nonpcfShadow(shadowMap1, pos, pos.zw);
+    }
+    else if (pos.z > far_split.x) {
       pos = shadow_matrix[0]*pos;
-      return nonpcfShadow(shadowMap0, pos, pos_screen);
+      return nonpcfShadow(shadowMap0, pos, pos.zw);
     }
   }
 
@@ -367,7 +379,7 @@ void calcAtmospherics(vec3 inPositionEye, float ambFactor) {
         shaftify = 0.0;
         float roffset = rand(vary_fragcoord.xy + vec2(1));
         vec3 farpos = inPositionEye;
-        const float maxzdist = 96.0;
+        const float maxzdist = 512.0;
         farpos *= min(-farpos.z, maxzdist) / -farpos.z;
         
         vec4 spos = vec4(mix(vec3(0,0,0), farpos, (godray_res-roffset)/(godray_res)), 1.0);
