@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
  background_visible="false"
- height="130"
+ height="150"
  label="im_panel"
  layout="topleft"
  left="0"
@@ -10,7 +10,7 @@
  width="305">
     <string
      name="message_max_lines_count">
-        7
+        8
     </string>
     <panel
      background_visible="false"
@@ -106,9 +106,9 @@
          width="50" />
     </panel>
     <text
-        font="SansSerifSmall"
+        font="SansSerif"
      follows="all"
-     height="97"
+     height="108"
      layout="topleft"
      left="10"
      name="message"
@@ -118,5 +118,6 @@
      value=""
      width="285"
      word_wrap="true"
-     max_length="350" />
+     max_length="350" >
+	</text>
 </panel>
