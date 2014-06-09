@@ -401,7 +401,7 @@
  value="0.43 0.06 0.06 1" />
  <color
  name="HTMLLinkColor"
- reference="0.866 0.239 0.329 0.9" />
+ value="0.866 0.639 0.429 0.9" />
  <color
  name="HealthTextColor"
  reference="White" />
@@ -634,7 +634,7 @@
  reference="DkGray_66" />
  <color
  name="ObjectChatColor"
- value="0.866 0.239 0.329 0.9" />
+ value="0.866 0.639 0.429 0.9" />
  <color
  name="OverdrivenColor"
  reference="Red" />
@@ -685,13 +685,13 @@
  reference="Red_80" />
  <color
  name="PieMenuBgColor"
- value="0.0 0.1742666 0.1479834 0.8" />
+ value="0 0 0 0.8" />
  <color
  name="PieMenuLineColor"
- value="0.0 0.0 0.0 0.9" />
+ value="0.307617 0.161133 0.161133 0.9" />
  <color
  name="PieMenuSelectedColor"
- value="0.0 0.742666 0.679834 0.3" />
+ value="0.844269 0.187128 0.171356 0.3" />
  <color
  name="PieMenuTextColor"
  value="0.90387 0.886446 0.744568 1" />
