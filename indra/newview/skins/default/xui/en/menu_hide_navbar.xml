@@ -40,7 +40,7 @@
              function="CheckControl"
              parameter="ShowNavbarNavigationPanel" />
     </menu_item_check>
-    <menu_item_check
+    <!--<menu_item_check
          label="Show Mini-Location Bar"
          layout="topleft"
          name="ShowMiniLocationPanel">
@@ -50,5 +50,5 @@
              <on_check
              function="CheckControl"
              parameter="ShowMiniLocationPanel" />
-    </menu_item_check>
+    </menu_item_check>-->
 </menu>
