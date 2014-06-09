@@ -683,6 +683,7 @@ set(viewer_SOURCE_FILES
     llxmlrpclistener.cpp
     llxmlrpctransaction.cpp
     bdpaneldrawdistance.cpp
+	bdtopbarholder.cpp
 	qtoolalign.cpp
     exopostprocess.cpp
     noise.cpp
@@ -1285,6 +1286,7 @@ set(viewer_HEADER_FILES
     llxmlrpclistener.h
     llxmlrpctransaction.h
     bdpaneldrawdistance.h
+	bdtopbarholder.h
 	qtoolalign.h
     exopostprocess.h
     macmain.h
