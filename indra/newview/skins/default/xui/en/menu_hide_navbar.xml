@@ -8,7 +8,7 @@
  top="624"
  visible="false"
  width="128">
-   <menu_item_check
+   <!--<menu_item_check
          label="Show Coordinates"
          name="Show Coordinates">
            <menu_item_check.on_click
@@ -40,7 +40,7 @@
              function="CheckControl"
              parameter="ShowNavbarNavigationPanel" />
     </menu_item_check>
-    <!--<menu_item_check
+    <menu_item_check
          label="Show Mini-Location Bar"
          layout="topleft"
          name="ShowMiniLocationPanel">
