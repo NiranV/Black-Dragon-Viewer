@@ -761,14 +761,4 @@ void main()
 	
 	frag_color.rgb = col;
 	frag_color.a = bloom;
-    
-    /*if(sun_dir.x > -0.75 && sun_dir.x < 0.75
-    && sun_dir.y > -0.55 && sun_dir.y < 0.55
-    && sun_dir.z < 0.5)
-    {
-      vec2 position = ( gl_FragCoord.xy / screen_res.xy * 2.0 ) - 1.0;
-      position.x *= screen_res.x / screen_res.y;
-       vec3 color = flare(position, vec2(sun_dir.xy) * 1.15 , vec3(sunlight_color));
-      frag_color += vec4( color * 0.05, 0.0 );
-    }*/
 }
