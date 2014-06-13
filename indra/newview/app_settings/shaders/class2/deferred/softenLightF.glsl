@@ -396,7 +396,7 @@ void calcAtmospherics(vec3 inPositionEye, float ambFactor) {
         
         shaftify /= godray_res-1;
         shaftify *= shaftify;
-        shaftify *= godray_multiplier;
+        shaftify *= 0.5f;
     #endif
 }
 
@@ -755,8 +755,8 @@ void main()
 	}
     
     #if GOD_RAYS
-        col = col + shaftify * getSunlitColor();
-        col = col * (godray_multiplier + shadamount);
+        col += (shaftify * godray_multiplier ) * getSunlitColor();
+        col *= (0.5 + shadamount);
     #endif
 	
 	frag_color.rgb = col;
