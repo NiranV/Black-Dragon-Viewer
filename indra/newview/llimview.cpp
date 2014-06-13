@@ -2743,7 +2743,14 @@ void LLIMMgr::addMessage(
 	{
 		LLAvatarName user;
 		LLAvatarNameCache::get(other_participant_id, &user);
-		LLIMModel::instance().addMessage(new_session_id, user.getDisplayName(), other_participant_id, msg);
+		if(!user.getDisplayName().empty())
+		{
+			LLIMModel::instance().addMessage(new_session_id, user.getDisplayName(), other_participant_id, msg);
+		}
+		else
+		{
+			LLIMModel::instance().addMessage(new_session_id, from, other_participant_id, msg);
+		}
 	}
 
 	// Open conversation floater if offline messages are present
