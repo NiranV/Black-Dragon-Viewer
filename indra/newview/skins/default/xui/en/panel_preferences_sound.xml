@@ -444,7 +444,6 @@ width="510">
    name="media_meta_data_show"
    enabled="false"
    control_name="ShowStreamMetadata"
-   enabled_control="AudioStreamingMusic"
    value="true"
    follows="left|top|right"
    height="16"
