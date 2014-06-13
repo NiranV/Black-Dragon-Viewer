@@ -1305,7 +1305,7 @@ width="345">
                   top_pad="2"
                   width="299" />
                   <slider
-                  control_name="RenderMotionBlurStrength"
+                  control_name="RenderGodraysMultiplier"
                   enabled_control="RenderDeferred"
                   decimal_digits="2"
                   follows="left|top"
