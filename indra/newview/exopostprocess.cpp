@@ -111,10 +111,10 @@ void exoPostProcess::ExodusRenderPostStack(LLRenderTarget *src, LLRenderTarget *
 				ExodusRenderColorGrade(src, dst, exoPostProcess::EXODUS_RENDER_COLOR_GRADE_LEGACY); // Temporary work around: only render legacy color correction in non-deferred.
 		}
 		
-		if (sExodusRenderVignette.mV[0] > 0 && LLPipeline::sRenderDeferred)
+		if (sExodusRenderVignette.mV[0] > 0 && gPipeline.sRenderDeferred)
 			ExodusRenderVignette(src, dst); // Don't render vignette here in non-deferred. Do it in the glow combine shader.
 
-		if(LLPipeline::sRenderDeferred)
+		if(gPipeline.sRenderDeferred)
 		{
 			if (sRenderLensFlare)
 				ExodusRenderLens(src, dst);
