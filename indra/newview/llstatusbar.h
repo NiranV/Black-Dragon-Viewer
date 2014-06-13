@@ -125,6 +125,7 @@ private:
 	S32				mSquareMetersCredit;
 	S32				mSquareMetersCommitted;
 //	//BD - Framerate counter in statusbar
+
 	S32				mFrames;
 	F32				mLastInterval;
 	LLFrameTimer*	mBalanceTimer;

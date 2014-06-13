@@ -275,22 +275,8 @@ void LLStatusBar::refresh()
 	}
 
 //	//BD - Framerate counter in statusbar
-	if(mFPSText)
-	{
-		++mFrames;
-		F64 time_now = mFPSTimer.getElapsedTimeF32();
-		if(time_now > mLastInterval + 0.1f)
-		{
-			mFPSText->setValue(mFrames / (time_now - mLastInterval));
-			mFrames = 0;
-			mLastInterval = time_now;
-		}
-	}
-	else
-	{
-		LL_INFOS("StatusBar") << "FPS Counter not found for some reason. Retrying." << LL_ENDL;
-		mFPSText = getChild<LLTextBox>("FPSText");
-	}
+	LLTrace::PeriodicRecording& frame_recording = LLTrace::get_frame_recording();
+	mFPSText->setValue(frame_recording.getPrevRecording(1).getPerSec(LLStatViewer::FPS));
 	
 	// update clock every 10 seconds
 	if(mClockUpdateTimer.getElapsedTimeF32() > 10.f)
