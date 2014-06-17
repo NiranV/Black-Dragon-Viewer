@@ -2399,13 +2399,13 @@ width="510">
       height="15"
       increment="1"
       initial_value="100"
-      label="Blur Strength:"
+      label="Blur Quality:"
       label_width="150"
       layout="topleft"
       left="10"
       max_val="160"
       min_val="15"
-      name="MotionBlurStrength"
+      name="MotionBlurQuality"
       top_pad="10"
       width="322"/>
    <button
