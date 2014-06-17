@@ -61,6 +61,7 @@
 #include "llresmgr.h"
 #include "llworld.h"
 #include "llstatgraph.h"
+#include "lltoolbarview.h"
 #include "llviewermedia.h"
 #include "llviewermenu.h"	// for gMenuBarView
 #include "llviewerparcelmgr.h"
@@ -337,7 +338,17 @@ void LLStatusBar::refresh()
 
 void LLStatusBar::setVisibleForMouselook(bool visible)
 {
-	gSavedSettings.setBOOL("HideTopbar", !visible);
+	getRootView()->getChild<LLUICtrl>("bg_icon_l1")->setVisible(
+		visible && gSavedSettings.getBOOL("AllowUIHidingInML")
+		&& gSavedSettings.getBOOL("HideTopbar"));
+	getRootView()->getChild<LLUICtrl>("bg_icon_l2")->setVisible(
+		visible && gSavedSettings.getBOOL("AllowUIHidingInML")
+		&& gSavedSettings.getBOOL("HideTopbar"));
+	gToolBarView->getChild<LLUICtrl>("bg")->setVisible(
+		visible && gSavedSettings.getBOOL("AllowUIHidingInML")
+		&& gSavedSettings.getBOOL("HideTopbar"));
+	setVisible(visible && gSavedSettings.getBOOL("AllowUIHidingInML")
+		&& gSavedSettings.getBOOL("HideTopbar"));
 }
 
 void LLStatusBar::debitBalance(S32 debit)

@@ -1980,11 +1980,6 @@ void LLViewerWindow::initWorldUI()
 	navbar->setBackgroundColor(gMenuBarView->getBackgroundColor().get());
 	nav_bar_container->addChild(navbar);
 	nav_bar_container->setVisible(TRUE);
-	
-	if (!gSavedSettings.getBOOL("ShowNavbarNavigationPanel"))
-	{
-		navbar->setVisible(FALSE);
-	}
 
 	// Top Info bar
 	LLPanel* topinfo_bar_container = getRootView()->getChild<LLPanel>("topinfo_bar_container");
@@ -1993,12 +1988,7 @@ void LLViewerWindow::initWorldUI()
 	topinfo_bar->setShape(topinfo_bar_container->getLocalRect());
 
 	topinfo_bar_container->addChild(topinfo_bar);
-	topinfo_bar_container->setVisible(TRUE);
-
-	if (!gSavedSettings.getBOOL("ShowMiniLocationPanel"))
-	{
-		topinfo_bar->setVisible(FALSE);
-	}
+	//topinfo_bar_container->setVisible(TRUE);
 
 	if ( gHUDView == NULL )
 	{
@@ -2099,6 +2089,7 @@ void LLViewerWindow::shutdownViews()
 	gStatusBar = NULL;
 	gIMMgr = NULL;
 	gToolTipView = NULL;
+	gTopBar = NULL;
 
 	gToolBarView = NULL;
 	gFloaterView = NULL;
