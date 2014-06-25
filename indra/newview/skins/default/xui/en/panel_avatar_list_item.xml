@@ -86,7 +86,7 @@
     use_ellipses="true"
     value="(loading)"
     width="292"/>
-    <!--<text
+    <text
     follows="top|left|right"
     font="SansSerifSmall"
     font_shadow="soft"
@@ -98,7 +98,7 @@
     name="extra_information"
     text_color="1 1 1 0.7"
     value=""
-    width="100" />-->
+    width="100" />
     <icon
     height="16"
     follows="right|top"

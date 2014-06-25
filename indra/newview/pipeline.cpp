@@ -176,7 +176,6 @@ F32 LLPipeline::RenderGlowWidth;
 F32 LLPipeline::RenderGlowStrength;
 BOOL LLPipeline::RenderDepthOfField;
 BOOL LLPipeline::RenderDepthOfFieldInEditMode;
-BOOL LLPipeline::RenderDepthOfFieldUnderwater;
 F32 LLPipeline::CameraFocusTransitionTime;
 F32 LLPipeline::CameraFNumber;
 F32 LLPipeline::CameraFocalLength;
@@ -642,7 +641,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderGlowStrength");
 	connectRefreshCachedSettingsSafe("RenderDepthOfField");
 	connectRefreshCachedSettingsSafe("RenderDepthOfFieldInEditMode");
-	connectRefreshCachedSettingsSafe("RenderDepthOfFieldUnderWater");
 	connectRefreshCachedSettingsSafe("CameraFocusTransitionTime");
 	connectRefreshCachedSettingsSafe("CameraFNumber");
 	connectRefreshCachedSettingsSafe("CameraFocalLength");
@@ -1209,7 +1207,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderGlowStrength = gSavedSettings.getF32("RenderGlowStrength");
 	RenderDepthOfField = gSavedSettings.getBOOL("RenderDepthOfField");
 	RenderDepthOfFieldInEditMode = gSavedSettings.getBOOL("RenderDepthOfFieldInEditMode");
-	RenderDepthOfFieldUnderwater = gSavedSettings.getBOOL("RenderDepthOfFieldUnderwater");
 	CameraFocusTransitionTime = gSavedSettings.getF32("CameraFocusTransitionTime");
 	CameraFNumber = gSavedSettings.getF32("CameraFNumber");
 	CameraFocalLength = gSavedSettings.getF32("CameraFocalLength");
@@ -7932,8 +7929,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 	if (LLPipeline::sRenderDeferred)
 	{
 
-		bool dof_enabled = (RenderDepthOfFieldUnderwater ||
-							!LLViewerCamera::getInstance()->cameraUnderWater()) &&
+		bool dof_enabled = (!LLViewerCamera::getInstance()->cameraUnderWater()) &&
 							(RenderDepthOfFieldInEditMode || 
 							!LLToolMgr::getInstance()->inBuildMode()) &&
 							RenderDepthOfField;

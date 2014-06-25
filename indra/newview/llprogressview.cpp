@@ -265,7 +265,6 @@ void LLProgressView::setPercent(const F32 percent)
 
 void LLProgressView::setCancelButtonVisible(BOOL b, const std::string& label)
 {
-	getChildView("cancel_panel")->setVisible( b );
 	mCancelBtn->setEnabled( b );
 	mCancelBtn->setLabelSelected(label);
 	mCancelBtn->setLabelUnselected(label);

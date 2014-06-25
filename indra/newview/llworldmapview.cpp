@@ -137,7 +137,7 @@ void LLWorldMapView::initClass()
 	sTrackCircleImage =		LLUI::getUIImage("map_track_16.tga");
 	sTrackArrowImage =		LLUI::getUIImage("direction_arrow.tga");
 	sClassifiedsImage =		LLUI::getUIImage("icon_top_pick.tga");
-	sForSaleImage =			LLUI::getUIImage("icon_for_sale.tga");
+	sForSaleImage =			LLUI::getUIImage("Icon_For_Sale");
 	// To Do: update the image resource for adult lands on sale.
 	sForSaleAdultImage =    LLUI::getUIImage("icon_for_sale_adult.tga");
 	

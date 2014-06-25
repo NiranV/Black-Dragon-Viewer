@@ -109,11 +109,9 @@ private:
 	LLStatGraph *mSGBandwidth;
 	LLStatGraph *mSGPacketLoss;
 
-	LLView		*mBtnStats;
 	LLButton	*mBtnVolume;
 	LLTextBox	*mBoxBalance;
 	LLButton	*mMediaToggle;
-	LLView		*mScriptOut;
 	LLFrameTimer	mClockUpdateTimer;
 //	//BD - Draw Distance mouse-over slider
 	LLIconCtrl	*mDrawDistance;

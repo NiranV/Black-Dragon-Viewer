@@ -115,7 +115,6 @@ LLStatusBar::LLStatusBar(const LLRect& rect)
 	mTextTime(NULL),
 	mSGBandwidth(NULL),
 	mSGPacketLoss(NULL),
-	mBtnStats(NULL),
 	mBtnVolume(NULL),
 	mBoxBalance(NULL),
 	mBalance(0),
@@ -173,12 +172,8 @@ BOOL LLStatusBar::postBuild()
 	getChild<LLUICtrl>("buyL")->setCommitCallback(
 		boost::bind(&LLStatusBar::onClickBuyCurrency, this));
 
-	getChild<LLUICtrl>("goShop")->setCommitCallback(boost::bind(&LLWeb::loadURLExternal, gSavedSettings.getString("MarketplaceURL")));
-
 	mBoxBalance = getChild<LLTextBox>("balance");
 	mBoxBalance->setClickedCallback( &LLStatusBar::onClickBalance, this );
-	
-	mBtnStats = getChildView("stat_btn");
 
 	mBtnVolume = getChild<LLButton>( "volume_btn" );
 	mBtnVolume->setClickedCallback( onClickVolume, this );
@@ -191,8 +186,6 @@ BOOL LLStatusBar::postBuild()
 //	//BD - Draw Distance mouse-over slider
 	mDrawDistance = getChild<LLIconCtrl>("draw_distance_icon");
 	mDrawDistance->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterDrawDistance, this));
-
-	LLHints::registerHintTarget("linden_balance", getChild<LLView>("balance_bg")->getHandle());
 
 	gSavedSettings.getControl("MuteAudio")->getSignal()->connect(boost::bind(&LLStatusBar::onVolumeChanged, this, _2));
 
@@ -251,8 +244,6 @@ BOOL LLStatusBar::postBuild()
 	addChild(mPanelDrawDistance);
 	mPanelDrawDistance->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
 	mPanelDrawDistance->setVisible(FALSE);
-
-	mScriptOut = getChildView("scriptout");
 
 	return TRUE;
 }
@@ -318,7 +309,6 @@ void LLStatusBar::refresh()
 
 	mSGBandwidth->setVisible(net_stats_visible);
 	mSGPacketLoss->setVisible(net_stats_visible);
-	mBtnStats->setEnabled(net_stats_visible);
 
 	// update the master volume button state
 	bool mute_audio = LLAppViewer::instance()->getMasterSystemAudioMute();
@@ -374,18 +364,6 @@ void LLStatusBar::setBalance(S32 balance)
 	string_args["[AMT]"] = llformat("%s", money_str.c_str());
 	std::string label_str = getString("buycurrencylabel", string_args);
 	mBoxBalance->setValue(label_str);
-
-	// Resize the L$ balance background to be wide enough for your balance plus the buy button
-	{
-		const S32 HPAD = 24;
-		LLRect balance_rect = mBoxBalance->getTextBoundingRect();
-		LLRect buy_rect = getChildView("buyL")->getRect();
-		LLRect shop_rect = getChildView("goShop")->getRect();
-		LLView* balance_bg_view = getChildView("balance_bg");
-		LLRect balance_bg_rect = balance_bg_view->getRect();
-		balance_bg_rect.mLeft = balance_bg_rect.mRight - (buy_rect.getWidth() + shop_rect.getWidth() + balance_rect.getWidth() + HPAD);
-		balance_bg_view->setShape(balance_bg_rect);
-	}
 
 	if (mBalance && (fabs((F32)(mBalance - balance)) > gSavedSettings.getF32("UISndMoneyChangeThreshold")))
 	{

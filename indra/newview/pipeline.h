@@ -915,7 +915,6 @@ public:
 	static F32 RenderGlowStrength;
 	static BOOL RenderDepthOfField;
 	static BOOL RenderDepthOfFieldInEditMode;
-	static BOOL RenderDepthOfFieldUnderwater;
 	static F32 CameraFocusTransitionTime;
 	static F32 CameraFNumber;
 	static F32 CameraFocalLength;
