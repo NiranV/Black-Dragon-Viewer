@@ -401,7 +401,7 @@ void LLViewerJoystick::agentFly(F32 inc)
 		if (! (gAgent.getFlying() ||
 		       !gAgent.canFly() ||
 		       gAgent.upGrabbed() ||
-		       !gSavedSettings.getBOOL("AutomaticFly")) )
+		       !gSavedSettings.getBOOL("AutomaticFly")))
 		{
 			gAgent.setFlying(true);
 		}
@@ -486,6 +486,15 @@ void LLViewerJoystick::moveObjects(bool reset)
 		gSavedSettings.getS32("JoystickAxis5"),
 	};
 
+//	//BD - Remappable joystick controls
+	S32 buttons[] =
+	{
+		gSavedSettings.getS32("JoystickButtonRollLeft"),
+		gSavedSettings.getS32("JoystickButtonRollRight"),
+		gSavedSettings.getS32("JoystickButtonJump"), 
+		gSavedSettings.getS32("JoystickButtonCrouch")
+	};
+
 	if (reset || mResetFlag)
 	{
 		resetDeltas(axis);
@@ -528,6 +537,17 @@ void LLViewerJoystick::moveObjects(bool reset)
 	for (U32 i = 0; i < 6; i++)
 	{
 		cur_delta[i] = -mAxes[axis[i]];
+
+//		//BD - Remappable joystick controls
+		cur_delta[3] -= getJoystickButton(buttons[0]);
+		cur_delta[3] += getJoystickButton(buttons[1]);
+		cur_delta[2] += getJoystickButton(buttons[2]); 
+		cur_delta[2] -= getJoystickButton(buttons[3]);
+
+//		//BD - Invertable pitch controls
+		if(gSavedSettings.getBOOL("JoystickInvertPitch"))
+			cur_delta[4] *= -1.f;
+
 		F32 tmp = cur_delta[i];
 		if (absolute)
 		{
@@ -552,53 +572,6 @@ void LLViewerJoystick::moveObjects(bool reset)
 		}
 
 		sDelta[i] = sDelta[i] + (cur_delta[i]-sDelta[i])*time*feather;
-	}
-
-//	//BD - Remappable joystick controls
-	{
-		//BD - Zoom in
-		if (mBtn[gSavedSettings.getS32("JoystickButtonZoomIn")] == 1)
-		{
-			LLViewerCamera::getInstance()->setDefaultFOV(
-				LLViewerCamera::getInstance()->getDefaultFOV() * 0.99);
-		}
-
-//		//BD - Zoom Out
-		if (mBtn[gSavedSettings.getS32("JoystickButtonZoomOut")] == 1)
-		{
-			LLViewerCamera::getInstance()->setDefaultFOV(
-				LLViewerCamera::getInstance()->getDefaultFOV() * 1.01);
-		}
-
-//		//BD - Default Zoom
-		if (mBtn[gSavedSettings.getS32("JoystickButtonZoomDefault")] == 1)
-		{
-			LLViewerCamera::getInstance()->setDefaultFOV(DEFAULT_FIELD_OF_VIEW);
-		}
-
-//		//BD - Roll Left
-		if (mBtn[gSavedSettings.getS32("JoystickButtonRollLeft")] == 1)
-		{
-			sDelta[3] -= 0.0015f * axis_scale[3];
-		}
-
-//		//BD - Roll Right
-		if (mBtn[gSavedSettings.getS32("JoystickButtonRollRight")] == 1)
-		{
-			sDelta[3] += 0.0015f * axis_scale[3];
-		}
-
-//		//BD - Jump / Y Up
-		if (mBtn[gSavedSettings.getS32("JoystickButtonJump")] == 1)
-		{
-			sDelta[2] += 0.001f * axis_scale[2]; 
-		}
-
-//		//BD - Crouch / Y Down
-		if (mBtn[gSavedSettings.getS32("JoystickButtonCrouch")] == 1)
-		{
-			sDelta[2] -= 0.001f * axis_scale[2]; 
-		}
 	}
 
 	U32 upd_type = UPD_NONE;
@@ -657,6 +630,16 @@ void LLViewerJoystick::moveAvatar(bool reset)
 		gSavedSettings.getS32("JoystickAxis5")
 	};
 
+//	//BD - Remappable joystick controls
+	S32 buttons[] =
+	{
+		gSavedSettings.getS32("JoystickButtonFly"),
+		gSavedSettings.getS32("JoystickButtonJump"), 
+		gSavedSettings.getS32("JoystickButtonCrouch"), 
+		gSavedSettings.getS32("JoystickButtonRunToggle"),
+		gSavedSettings.getS32("JoystickButtonMouselook")
+	};
+
 	if (reset || mResetFlag)
 	{
 		resetDeltas(axis);
@@ -675,93 +658,38 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	static bool m_button_held = false;
 
 //	//BD - Remappable joystick controls
+	if (getJoystickButton(buttons[0]) && !button_held)
 	{
-//		//BD - Flying
-		if (mBtn[gSavedSettings.getS32("JoystickButtonFly")] == 1 && !button_held)
-		{
-			button_held = true;
-			if(gAgent.getFlying())
-			{
-				gAgent.setFlying(FALSE);
-			}
-			else
-			{
-				gAgent.setFlying(TRUE);
-			}
-		}
-		else if (mBtn[gSavedSettings.getS32("JoystickButtonFly")] == 0 && button_held)
-		{
-			button_held = false;
-		}
-
-//		//BD - Jumping
-		if (mBtn[gSavedSettings.getS32("JoystickButtonJump")] == 1)
-		{
-			agentJump();
-		}
-
-//		//BD - Crouching
-		if (mBtn[gSavedSettings.getS32("JoystickButtonCrouch")] == 1)
-		{
-			gAgent.moveUp(-1, false);
-		}
-
-//		//BD - Walking/Running toggle
-		if (mBtn[gSavedSettings.getS32("JoystickButtonRunToggle")] == 1 && !w_button_held)
-		{
-			w_button_held = true;
-			if(gAgent.getAlwaysRun())
-			{
-				gAgent.clearAlwaysRun();
-			}
-			else
-			{
-				gAgent.setAlwaysRun();
-			}
-		}
-		else if (mBtn[gSavedSettings.getS32("JoystickButtonRunToggle")] == 0 && w_button_held)
-		{
-			w_button_held = false;
-		}
-
-//		//BD - Zoom in
-		if (mBtn[gSavedSettings.getS32("JoystickButtonZoomIn")] == 1)
-		{
-			LLViewerCamera::getInstance()->setDefaultFOV(
-				LLViewerCamera::getInstance()->getDefaultFOV() * 0.99);
-		}
-
-//		//BD - Zoom Out
-		if (mBtn[gSavedSettings.getS32("JoystickButtonZoomOut")] == 1)
-		{
-			LLViewerCamera::getInstance()->setDefaultFOV(
-				LLViewerCamera::getInstance()->getDefaultFOV() * 1.01);
-		}
-
-//		//BD - Default Zoom
-		if (mBtn[gSavedSettings.getS32("JoystickButtonZoomDefault")] == 1)
-		{
-			LLViewerCamera::getInstance()->setDefaultFOV(DEFAULT_FIELD_OF_VIEW);
-		}
-
-//		//BD - Toggle Mouselook
-		if (mBtn[gSavedSettings.getS32("JoystickButtonMouselook")] == 1 && !m_button_held)
-		{
-			m_button_held = true;
-			if(gAgentCamera.cameraMouselook())
-			{
-				gAgentCamera.changeCameraToDefault();
-			}
-			else
-			{
-				gAgentCamera.changeCameraToMouselook();
-			}
-		}
-		else if (mBtn[gSavedSettings.getS32("JoystickButtonMouselook")] == 0 && m_button_held)
-		{
-			m_button_held = false;
-		}
+		button_held = true;
+		if(gAgent.getFlying())
+			gAgent.setFlying(FALSE);
+		else
+			gAgent.setFlying(TRUE);
 	}
+	else if (!getJoystickButton(buttons[0]) && button_held)
+		button_held = false;
+
+	if (getJoystickButton(buttons[3]) && !w_button_held)
+	{
+		w_button_held = true;
+		if(gAgent.getAlwaysRun())
+			gAgent.clearAlwaysRun();
+		else
+			gAgent.setAlwaysRun();
+	}
+	else if (!getJoystickButton(buttons[3]) && w_button_held)
+		w_button_held = false;
+
+	if (getJoystickButton(buttons[4]) && !m_button_held)
+	{
+		m_button_held = true;
+		if(gAgentCamera.cameraMouselook())
+			gAgentCamera.changeCameraToDefault();
+		else
+			gAgentCamera.changeCameraToMouselook();
+	}
+	else if (!getJoystickButton(buttons[4]) && m_button_held)
+		m_button_held = false;
 
 	F32 axis_scale[] =
 	{
@@ -807,6 +735,11 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	for (U32 i = 0; i < 6; i++)
 	{
 		cur_delta[i] = -mAxes[axis[i]];
+
+//		//BD - Remappable joystick controls
+		cur_delta[2] += getJoystickButton(buttons[1]);
+		cur_delta[2] -= getJoystickButton(buttons[2]);
+
 		if (absolute)
 		{
 			F32 tmp = cur_delta[i];
@@ -848,6 +781,10 @@ void LLViewerJoystick::moveAvatar(bool reset)
 		
 		setCameraNeedsUpdate(true);
 	}
+
+//	//BD - Invertable pitch controls
+	if(!gSavedSettings.getBOOL("JoystickInvertPitch"))
+		cur_delta[RX_I] *= -1.f;
 
 	// forward|backward movements overrule the real dominant movement if 
 	// they're bigger than its 20%. This is what you want 'cos moving forward
@@ -911,6 +848,18 @@ void LLViewerJoystick::moveFlycam(bool reset)
 		gSavedSettings.getS32("JoystickAxis6")
 	};
 
+//	//BD - Remappable joystick controls
+	S32 buttons[] =
+	{
+		gSavedSettings.getS32("JoystickButtonRollLeft"),
+		gSavedSettings.getS32("JoystickButtonRollRight"),
+		gSavedSettings.getS32("JoystickButtonZoomOut"),
+		gSavedSettings.getS32("JoystickButtonZoomIn"),
+		gSavedSettings.getS32("JoystickButtonJump"),
+		gSavedSettings.getS32("JoystickButtonCrouch"), 
+		gSavedSettings.getS32("JoystickButtonZoomDefault")
+	};
+
 	bool in_build_mode = LLToolMgr::getInstance()->inBuildMode();
 	if (reset || mResetFlag)
 	{
@@ -962,6 +911,21 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	{
 		cur_delta[i] = -getJoystickAxis(axis[i]);
 
+//		//BD - Remappable joystick controls
+		cur_delta[3] -= getJoystickButton(buttons[0]);
+		cur_delta[3] += getJoystickButton(buttons[1]);
+		cur_delta[6] -= getJoystickButton(buttons[2]);
+		cur_delta[6] += getJoystickButton(buttons[3]);
+		cur_delta[2] += getJoystickButton(buttons[4]); 
+		cur_delta[2] -= getJoystickButton(buttons[5]); 
+
+//		//BD - Invertable pitch controls
+		if(!gSavedSettings.getBOOL("JoystickInvertPitch"))
+			cur_delta[4] *= -1.f;
+
+		if (getJoystickButton(buttons[6]))
+			sFlycamZoom = DEFAULT_FIELD_OF_VIEW;
+
 
 		F32 tmp = cur_delta[i];
 		if (absolute)
@@ -1008,54 +972,6 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	if (!is_zero && gAwayTimer.getElapsedTimeF32() > LLAgent::MIN_AFK_TIME)
 	{
 		gAgent.clearAFK();
-	}
-
-//	//BD - Remappable joystick controls
-	//     We need to cheat alot here because buttons only have 1/0, so we just
-	//     give 1 the maximum value of a default setup and multiply it with the
-	//     axis scales
-	{
-//		//BD - Roll Left
-		if (mBtn[gSavedSettings.getS32("JoystickButtonRollLeft")] == 1)
-		{
-			sDelta[3] -= 0.0015f * axis_scale[3];
-		}
-
-//		//BD - Roll Right
-		if (mBtn[gSavedSettings.getS32("JoystickButtonRollRight")] == 1)
-		{
-			sDelta[3] += 0.0015f * axis_scale[3];
-		}
-
-//		//BD - Zoom in
-		if (mBtn[gSavedSettings.getS32("JoystickButtonZoomIn")] == 1)
-		{
-			sDelta[6] += 0.001f * axis_scale[6];
-		}
-
-//		//BD - Zoom Out
-		if (mBtn[gSavedSettings.getS32("JoystickButtonZoomOut")] == 1)
-		{
-			sDelta[6] -= 0.001f * axis_scale[6];
-		}
-
-//		//BD - Jump / Y Up
-		if (mBtn[gSavedSettings.getS32("JoystickButtonJump")] == 1)
-		{
-			sDelta[2] += 0.001f * axis_scale[2]; 
-		}
-
-//		//BD - Crouch / Y Down
-		if (mBtn[gSavedSettings.getS32("JoystickButtonCrouch")] == 1)
-		{
-			sDelta[2] -= 0.001f * axis_scale[2]; 
-		}
-
-//		//BD - Default Zoom
-		if (mBtn[gSavedSettings.getS32("JoystickButtonZoomDefault")] == 1)
-		{
-			sFlycamZoom = DEFAULT_FIELD_OF_VIEW;
-		}
 	}
 
 	sFlycamPosition += LLVector3(sDelta) * sFlycamRotation;
@@ -1122,7 +1038,6 @@ bool LLViewerJoystick::toggleFlycam()
 	if (mOverrideCamera)
 	{
 		moveFlycam(true);
-		
 	}
 	else 
 	{

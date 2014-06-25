@@ -25,7 +25,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="679"
+  height="699"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -127,6 +127,14 @@
      layout="topleft"
      left="390"
      name="AutoLeveling"
+     width="60" />
+    <check_box
+     top_pad="8"
+     control_name="JoystickInvertPitch"
+     label="Invert Pitch"
+     layout="topleft"
+     left="150"
+     name="InvertPitch"
      width="60" />
     <panel
  follows="left|top|right"
@@ -1196,61 +1204,55 @@
      layout="topleft"
      left="325"
      name="axis_view"
-     show_label="true"
+     show_label="false"
      top="372"
      width="200">
         <stat_bar
-         bar_max="2"
-         bar_min="-2"
+         bar_max="1"
+         bar_min="-1"
+         show_bar="true"
          height="0"
          label="Axis 0"
-         label_spacing="1"
          layout="topleft"
          left="0"
          name="axis0"
-         tick_spacing="0.5"
          top="20"
          width="0" />
         <stat_bar
-         bar_max="2"
-         bar_min="-2"
+         bar_max="1"
+         bar_min="-1"
+         show_bar="true"
          label="Axis 1"
-         label_spacing="1"
          layout="topleft"
-         name="axis1"
-         tick_spacing="0.5" />
+         name="axis1"/>
         <stat_bar
-         bar_max="2"
-         bar_min="-2"
+         bar_max="1"
+         bar_min="-1"
+         show_bar="true"
          label="Axis 2"
-         label_spacing="1"
          layout="topleft"
-         name="axis2"
-         tick_spacing="0.5" />
+         name="axis2"/>
         <stat_bar
-         bar_max="2"
-         bar_min="-2"
+         bar_max="1"
+         bar_min="-1"
+         show_bar="true"
          label="Axis 3"
-         label_spacing="1"
          layout="topleft"
-         name="axis3"
-         tick_spacing="0.5" />
+         name="axis3"/>
         <stat_bar
-         bar_max="2"
-         bar_min="-2"
+         bar_max="1"
+         bar_min="-1"
+         show_bar="true"
          label="Axis 4"
-         label_spacing="1"
          layout="topleft"
-         name="axis4"
-         tick_spacing="0.5" />
+         name="axis4"/>
         <stat_bar
-         bar_max="2"
-         bar_min="-2"
+         bar_max="1"
+         bar_min="-1"
+         show_bar="true"
          label="Axis 5"
-         label_spacing="1"
          layout="topleft"
-         name="axis5"
-         tick_spacing="0.5" />
+         name="axis5"/>
     </stat_view>
     <button
      follows="left|top"
