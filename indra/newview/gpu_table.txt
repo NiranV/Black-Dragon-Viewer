@@ -288,7 +288,8 @@ AMD RV770 (HD 4800)						.*RV770.*											3	1	0	0
 AMD RV790 (HD 4800)						.*RV790.*											3	1	0	0
 ATI 760G/Radeon 3000					.*ATI.*AMD 760G.*									1	1	1	3.3
 ATI 780L/Radeon 3000					.*ATI.*AMD 780L.*									1	1	0	0
-AMD Radeon R9 200 Series                .*ATI.*(Radeon|ASUS).* R9 200.*                     5   1   0   4.2
+AMD Radeon R7 200 Series				.*ATI.*(Radeon|ASUS).* R7 2[0-9]0.*					4	1	0	4.2
+AMD Radeon R9 200 Series			    .*ATI.*(Radeon|ASUS).* R9 2[0-9]0.*					5	1	0	4.2
 ATI Radeon DDR							.*ATI.*Radeon ?DDR.*								0	1	0	0
 ATI FirePro 2000						.*ATI.*FirePro [V]*2.*									2	1	1	4.2
 ATI FirePro 3000						.*ATI.*FirePro [V]*3.*									2	1	0	0
