@@ -1370,6 +1370,7 @@ BOOL LLViewerObjectList::killObject(LLViewerObject *objectp)
 
 	if (objectp)
 	{
+		mDerenderList.insert(objectp->getID());
 		objectp->markDead(); // does the right thing if object already dead
 		return TRUE;
 	}
@@ -2017,6 +2018,11 @@ LLViewerObject *LLViewerObjectList::createObjectFromCache(const LLPCode pcode, L
 		return NULL;
 	}
 
+	if( mDerenderList.end() != mDerenderList.find(uuid))
+	{
+		return NULL;
+	}
+
 	objectp->mLocalID = local_id;
 	mUUIDObjectMap[uuid] = objectp;
 	setUUIDAndLocal(uuid,
@@ -2033,7 +2039,6 @@ LLViewerObject *LLViewerObjectList::createObjectFromCache(const LLPCode pcode, L
 LLViewerObject *LLViewerObjectList::createObject(const LLPCode pcode, LLViewerRegion *regionp,
 												 const LLUUID &uuid, const U32 local_id, const LLHost &sender)
 {
-	
 	LLUUID fullid;
 	if (uuid == LLUUID::null)
 	{
@@ -2042,6 +2047,11 @@ LLViewerObject *LLViewerObjectList::createObject(const LLPCode pcode, LLViewerRe
 	else
 	{
 		fullid = uuid;
+	}
+
+	if( mDerenderList.end() != mDerenderList.find(uuid))
+	{
+		return NULL;
 	}
 
 	LLViewerObject *objectp = LLViewerObject::createObject(fullid, pcode, regionp);
