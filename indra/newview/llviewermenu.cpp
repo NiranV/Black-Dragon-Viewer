@@ -2583,7 +2583,7 @@ class LLObjectDerender : public view_listener_t
         {
             LLViewerObject *objectp = gObjectList.findObject(id);
             {
-                gObjectList.killObject(objectp);
+                gObjectList.killObject(objectp, true);
             }
         }
         return true;
