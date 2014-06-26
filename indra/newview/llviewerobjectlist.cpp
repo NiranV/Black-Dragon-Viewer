@@ -316,6 +316,11 @@ LLViewerObject* LLViewerObjectList::processObjectUpdateFromCache(LLVOCacheEntry*
 
 	objectp = findObject(fullid);
 
+	if( mDerenderList.end() != mDerenderList.find(fullid))
+	{
+		return NULL;
+	}
+
 	if (objectp)
 	{
 		if(!objectp->isDead() && (objectp->mLocalID != entry->getLocalID() ||
