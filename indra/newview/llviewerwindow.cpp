@@ -2291,14 +2291,6 @@ void LLViewerWindow::setNormalControlsVisible( BOOL visible )
 		gStatusBar->setVisible( visible );	
 		gStatusBar->setEnabled( visible );	
 	}
-	
-	LLNavigationBar* navbarp = LLUI::getRootView()->findChild<LLNavigationBar>("navigation_bar");
-	if (navbarp)
-	{
-		// when it's time to show navigation bar we need to ensure that the user wants to see it
-		// i.e. ShowNavbarNavigationPanel option is true
-		navbarp->setVisible( visible && gSavedSettings.getBOOL("ShowNavbarNavigationPanel") );
-	}
 }
 
 void LLViewerWindow::setMenuBackgroundColor(bool god_mode, bool dev_grid)
@@ -2454,12 +2446,6 @@ void LLViewerWindow::draw()
 
 		// Draw tool specific overlay on world
 		LLToolMgr::getInstance()->getCurrentTool()->draw();
-
-		/*gViewerWindow->getRootView()->getChild<LLIconCtrl>("bg_icon_l2")->setVisible
-									(!gAgentCamera.cameraMouselook()
-									&&	gSavedSettings.getBOOL("ShowNavbarNavigationPanel")
-									||	gAgentCamera.cameraMouselook()	
-									&&	!gSavedSettings.getBOOL("AllowUIHidingInML"));*/
 
 		// Draw all nested UI views.
 		// No translation needed, this view is glued to 0,0
@@ -5230,8 +5216,6 @@ void LLViewerWindow::setUIVisibility(bool visible)
 		gToolBarView->setToolBarsVisible(visible);
 	}
 
-	LLNavigationBar::getInstance()->setVisible(visible ? gSavedSettings.getBOOL("ShowNavbarNavigationPanel") : FALSE);
-	LLPanelTopInfoBar::getInstance()->setVisible(visible? gSavedSettings.getBOOL("ShowMiniLocationPanel") : FALSE);
 	mRootView->getChildView("status_bar_container")->setVisible(visible);
 }
 
