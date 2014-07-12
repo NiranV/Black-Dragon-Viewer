@@ -196,17 +196,17 @@ void LLViewerJointMesh::uploadJointMatrices()
 			{
 				if (!mLastMatrixPalette)
 				{
-					mLastMatrixPalette = new F32[45*4];
+					mLastMatrixPalette = new F32[52*4];
 				}
 
 				if (mLastMatrixPaletteUpdated < gFrameCount-1)
 				{
-					memcpy(mLastMatrixPalette, mat, sizeof(F32)*45*4);
+					memcpy(mLastMatrixPalette, mat, sizeof(F32)*52*4);
 				}
 					
-				LLGLSLShader::sCurBoundShaderPtr->uniform4fv(LLShaderMgr::AVATAR_LAST_MATRIX, 45, (GLfloat*) mLastMatrixPalette);
+				LLGLSLShader::sCurBoundShaderPtr->uniform4fv(LLShaderMgr::AVATAR_LAST_MATRIX, 52, (GLfloat*) mLastMatrixPalette);
 								
-				memcpy(mLastMatrixPalette, mat, sizeof(F32)*45*4);
+				memcpy(mLastMatrixPalette, mat, sizeof(F32)*52*4);
 				mLastMatrixPaletteUpdated = gFrameCount;
 
 			}
