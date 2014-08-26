@@ -8269,7 +8269,7 @@ void handle_report_bug(const LLSD& param)
 	replace["[ENVIRONMENT]"] = LLURI::escape(LLAppViewer::instance()->getViewerInfoString());
 	LLSLURL location_url;
 	LLAgentUI::buildSLURL(location_url);
-	replace["[LOCATION]"] = location_url.getSLURLString();
+	replace["[LOCATION]"] = LLURI::escape(location_url.getSLURLString());
 
 	LLUIString file_bug_url = gSavedSettings.getString("ReportBugURL");
 	file_bug_url.setArgs(replace);
@@ -8293,6 +8293,7 @@ void handle_buy_currency_test(void*)
 	LLFloaterReg::showInstance("buy_currency_html", LLSD(url));
 }
 
+// SUNSHINE CLEANUP - is only the request update at the end needed now?
 void handle_rebake_textures(void*)
 {
 	if (!isAgentAvatarValid()) return;

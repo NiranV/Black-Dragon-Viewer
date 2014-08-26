@@ -179,6 +179,7 @@ public:
 	void onClickBlockList();
 	void onClickProxySettings();
 	void onClickTranslationSettings();
+	void onClickPermsDefault();
 	void onClickAutoReplace();
 	void onClickSpellChecker();
 	void applyUIColor(LLUICtrl* ctrl, const LLSD& param);

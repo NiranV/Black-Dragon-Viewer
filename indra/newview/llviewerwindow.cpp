@@ -267,7 +267,7 @@ std::string	LLViewerWindow::sMovieBaseName;
 LLTrace::SampleStatHandle<> LLViewerWindow::sMouseVelocityStat("Mouse Velocity");
 
 
-class RecordToChatConsole : public LLError::Recorder, public LLSingleton<RecordToChatConsole>
+class RecordToChatConsoleRecorder : public LLError::Recorder
 {
 public:
 	virtual void recordMessage(LLError::ELevel level,
@@ -289,6 +289,22 @@ public:
 			//}
 		//}
 	}
+};
+
+class RecordToChatConsole : public LLSingleton<RecordToChatConsole>
+{
+public:
+	RecordToChatConsole()
+		: LLSingleton<RecordToChatConsole>(),
+		mRecorder(new RecordToChatConsoleRecorder())
+	{
+	}
+
+	void startRecorder() { LLError::addRecorder(mRecorder); }
+	void stopRecorder() { LLError::removeRecorder(mRecorder); }
+
+private:
+	LLError::RecorderPtr mRecorder;
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1892,11 +1908,11 @@ void LLViewerWindow::initBase()
 	// optionally forward warnings to chat console/chat floater
 	// for qa runs and dev builds
 #if  !LL_RELEASE_FOR_DOWNLOAD
-	LLError::addRecorder(RecordToChatConsole::getInstance());
+	RecordToChatConsole::getInstance()->startRecorder();
 #else
 	if(gSavedSettings.getBOOL("QAMode"))
 	{
-		LLError::addRecorder(RecordToChatConsole::getInstance());
+		RecordToChatConsole::getInstance()->startRecorder();
 	}
 #endif
 
@@ -1913,9 +1929,7 @@ void LLViewerWindow::initBase()
 	setProgressCancelButtonVisible(FALSE);
 
 	gMenuHolder = getRootView()->getChild<LLViewerMenuHolderGL>("Menu Holder");
-
 	LLMenuGL::sMenuContainer = gMenuHolder;
-
 }
 
 void LLViewerWindow::initWorldUI()
@@ -2025,7 +2039,7 @@ void LLViewerWindow::initWorldUI()
 		destinations->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
 		std::string url = gSavedSettings.getString("DestinationGuideURL");
 		url = LLWeb::expandURLSubstitutions(url, LLSD());
-		destinations->navigateTo(url, "text/html");
+		destinations->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
 	}
 	LLMediaCtrl* avatar_picker = LLFloaterReg::getInstance("avatar")->findChild<LLMediaCtrl>("avatar_picker_contents");
 	if (avatar_picker)
@@ -2033,7 +2047,7 @@ void LLViewerWindow::initWorldUI()
 		avatar_picker->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
 		std::string url = gSavedSettings.getString("AvatarPickerURL");
 		url = LLWeb::expandURLSubstitutions(url, LLSD());
-		avatar_picker->navigateTo(url, "text/html");
+		avatar_picker->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
 	}
 }
 
@@ -2041,8 +2055,7 @@ void LLViewerWindow::initWorldUI()
 void LLViewerWindow::shutdownViews()
 {
 	// clean up warning logger
-	LLError::removeRecorder(RecordToChatConsole::getInstance());
-
+	RecordToChatConsole::getInstance()->stopRecorder();
 	LL_INFOS() << "Warning logger is cleaned." << LL_ENDL ;
 
 	delete mDebugText;
@@ -2077,6 +2090,9 @@ void LLViewerWindow::shutdownViews()
 	// access to gMenuHolder
 	cleanup_menus();
 	LL_INFOS() << "menus destroyed." << LL_ENDL ;
+
+	view_listener_t::cleanup();
+	LL_INFOS() << "view listeners destroyed." << LL_ENDL ;
 	
 	// Delete all child views.
 	delete mRootView;
@@ -2153,6 +2169,12 @@ LLViewerWindow::~LLViewerWindow()
 
 	delete mDebugText;
 	mDebugText = NULL;
+
+	if (LLViewerShaderMgr::sInitialized)
+	{
+		LLViewerShaderMgr::releaseInstance();
+		LLViewerShaderMgr::sInitialized = FALSE;
+	}
 }
 
 

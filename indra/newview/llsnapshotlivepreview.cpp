@@ -151,7 +151,7 @@ F32 LLSnapshotLivePreview::getImageAspect()
 
 void LLSnapshotLivePreview::updateSnapshot(BOOL new_snapshot, BOOL new_thumbnail, F32 delay)
 {
-	LL_DEBUGS() << "updateSnapshot: mSnapshotUpToDate = " << getSnapshotUpToDate() << LL_ENDL;
+	lldebugs << "updateSnapshot: mSnapshotUpToDate = " << getSnapshotUpToDate() << llendl;
 
 	// Update snapshot if requested.
 	if (new_snapshot)
@@ -594,7 +594,7 @@ void LLSnapshotLivePreview::generateThumbnailImage(BOOL force_update)
             }
             else
             {
-                LL_WARNS() << "Couldn't find a path to the following filter : " << getFilter() << LL_ENDL;
+                llwarns << "Couldn't find a path to the following filter : " << getFilter() << llendl;
             }
         }
         // Scale to a power of 2 so it can be mapped to a texture
@@ -642,7 +642,7 @@ LLViewerTexture* LLSnapshotLivePreview::getBigThumbnailImage()
             }
             else
             {
-                LL_WARNS() << "Couldn't find a path to the following filter : " << getFilter() << LL_ENDL;
+                llwarns << "Couldn't find a path to the following filter : " << getFilter() << llendl;
             }
         }
         // Scale to a power of 2 so it can be mapped to a texture
@@ -695,7 +695,7 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 	// time to produce a snapshot
 	if(!previewp->getSnapshotUpToDate())
     {
-	LL_DEBUGS() << "producing snapshot" << LL_ENDL;
+        lldebugs << "producing snapshot" << llendl;
         if (!previewp->mPreviewImage)
         {
             previewp->mPreviewImage = new LLImageRaw;
@@ -775,7 +775,7 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
         previewp->setVisible(gSavedSettings.getBOOL("UseFreezeFrame") && previewp->mAllowFullScreenPreview); // only show fullscreen preview when in freeze frame mode
         previewp->mSnapshotDelayTimer.stop();
         previewp->mSnapshotActive = FALSE;
-        LL_DEBUGS() << "done creating snapshot" << LL_ENDL;
+        lldebugs << "done creating snapshot" << llendl;
     }
     
     if (!previewp->getThumbnailUpToDate())
@@ -910,13 +910,13 @@ LLPointer<LLImageFormatted>	LLSnapshotLivePreview::getFormattedImage()
             }
             else
             {
-                LL_WARNS() << "Couldn't find a path to the following filter : " << getFilter() << LL_ENDL;
+                llwarns << "Couldn't find a path to the following filter : " << getFilter() << llendl;
             }
         }
         
         // Create the new formatted image of the appropriate format.
         LLFloaterSnapshot::ESnapshotFormat format = getSnapshotFormat();
-        LL_DEBUGS() << "Encoding new image of format " << format << LL_ENDL;
+        lldebugs << "Encoding new image of format " << format << llendl;
             
         switch (format)
         {
@@ -996,8 +996,8 @@ void LLSnapshotLivePreview::saveTexture()
 			LLFolderType::FT_SNAPSHOT_CATEGORY,
 			LLInventoryType::IT_SNAPSHOT,
 			PERM_ALL,  // Note: Snapshots to inventory is a special case of content upload
-			LLFloaterPerms::getGroupPerms(), // that is more permissive than other uploads
-			LLFloaterPerms::getEveryonePerms(),
+			LLFloaterPerms::getGroupPerms("Uploads"), // that is more permissive than other uploads
+			LLFloaterPerms::getEveryonePerms("Uploads"),
 			"Snapshot : " + pos_string,
 			callback, expected_upload_cost, userdata);
 		gViewerWindow->playSnapshotAnimAndSound();
@@ -1009,6 +1009,8 @@ void LLSnapshotLivePreview::saveTexture()
 	}
 
 	add(LLStatViewer::SNAPSHOT, 1);
+
+	mDataSize = 0;
 }
 
 BOOL LLSnapshotLivePreview::saveLocal()
@@ -1025,4 +1027,4 @@ BOOL LLSnapshotLivePreview::saveLocal()
 	}
 	return success;
 }
-    
+

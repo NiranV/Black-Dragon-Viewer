@@ -104,6 +104,7 @@ private:
 
 	LLTextBox*			mEstateNameText;
 	LLTextBox*			mEstateRatingText;
+	LLIconCtrl*			mEstateRatingIcon;
 	LLTextBox*			mEstateOwnerText;
 	LLTextEditor*		mCovenantText;
 
