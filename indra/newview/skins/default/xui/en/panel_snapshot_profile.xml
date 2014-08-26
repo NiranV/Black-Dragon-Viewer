@@ -12,7 +12,7 @@
      left="12"
      mouse_opaque="true"
      name="title_icon"
-     top="5"
+     top="7"
      width="18" />
     <text
      follows="top|left|right"
@@ -32,7 +32,7 @@
      bevel_style="in"
      follows="left|top|right" 
      height="1"
-     left="10"
+     left="9"
      layout="topleft"
      name="hr"
      right="-5"
@@ -76,14 +76,14 @@
      height="20"
      increment="32"
      label="Width x Height"
-     label_width="80"
+     label_width="90"
      layout="topleft"
      left="10"
      max_val="6016"
      min_val="32"
      name="profile_snapshot_width"
      top_pad="7"
-     width="134" />
+     width="144" />
     <spinner
      allow_text_entry="false"
      decimal_digits="0"
@@ -100,7 +100,7 @@
      top_delta="0"
      width="54" />
     <check_box
-     bottom_delta="20"
+     top_pad="12"
      label="Constrain proportions"
      layout="topleft"
      left="10"
@@ -148,7 +148,7 @@
      name="cancel_btn"
      right="-5"
      top="337"
-     width="90">
+     width="97">
       <button.commit_callback
        function="PostToProfile.Cancel" />
     </button>
@@ -160,7 +160,7 @@
      left="10"
      name="post_btn"
      top_delta="0"
-     width="95">
+     width="97">
       <button.commit_callback
        function="PostToProfile.Send" />
     </button>

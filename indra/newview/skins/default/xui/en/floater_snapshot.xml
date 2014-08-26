@@ -59,11 +59,11 @@
  	    Saved to Computer!
  	</string>
  	<string
-        name="facebook_failed_str">
+     name="facebook_failed_str">
  	    Failed to upload image to your Facebook timeline.
  	</string>
  	<string
-        name="profile_failed_str">
+     name="profile_failed_str">
  	    Failed to upload image to your Profile Feed.
  	</string>
  	<string
@@ -80,27 +80,59 @@
  	</string>
     <button
      follows="left|top"
-     height="18"
+     height="25"
      image_overlay="Refresh_Off"
+	 image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      image_overlay_alignment="left"
      imgoverlay_label_space="5"
+	 pad_bottom="0"
 	 halign="left"
-	 image_selected="transparent.j2c"
-	 image_unselected="transparent.j2c"
      layout="topleft"
-     left="5"
+     left="10"
 	 label="REFRESH"
      name="new_snapshot_btn"
      top_pad="26"
-     width="195" />
+     width="167" />
+	<button
+       follows="left|top"
+	   control_name="AdvanceSnapshot"
+	   invisibility_control="AdvanceSnapshot"
+       height="25"
+	   is_toggle="true"
+       layout="topleft"
+	   image_hover_unselected="Toolbar_Middle_Over"
+	   image_selected="Toolbar_Middle_Off"
+	   image_unselected="Toolbar_Middle_Off"
+	   image_overlay="Conv_toolbar_expand"
+       name="retract_btn"
+       left_pad="1"
+	   top_delta="0"
+       width="31" />
+   <button
+       follows="left|top"
+	   control_name="AdvanceSnapshot"
+	   visibility_control="AdvanceSnapshot"
+       height="25"
+	   is_toggle="true"
+       layout="topleft"
+	   image_overlay="Conv_toolbar_collapse"
+	   image_hover_unselected="Toolbar_Middle_Over"
+	   image_selected="Toolbar_Middle_Off"
+	   image_unselected="Toolbar_Middle_Off"
+       name="extend_btn"
+       left_delta="0"
+	   top_delta="0"
+       width="31" />
 	<panel
      height="154"
      layout="topleft"
 	 follows="top|left"
      left="0"
      name="advanced_options_panel"
-     top_pad="0"
-     width="200">
+     top_pad="-6"
+     width="210">
         <view_border 
          bevel_style="in"
          follows="left|top|right" 
@@ -144,28 +176,32 @@
          label="Interface"
          layout="topleft"
          left="30"
-         top_pad="10"
+		 height="16"
+         top_pad="8"
          width="180"
          name="ui_check" />
         <check_box
          label="HUDs"
          layout="topleft"
+		 height="16"
          left="30"
-         top_pad="7"
+         top_pad="1"
          width="180"
          name="hud_check" />
         <check_box
          label="Freeze frame (fullscreen)"
          layout="topleft"
+		 height="16"
          left="10"
-         top_pad="7"
+         top_pad="1"
          width="180"
          name="freeze_frame_check" />
         <check_box
          label="Auto-refresh"
          layout="topleft"
+		 height="16"
          left="10"
-         top_pad="7"
+         top_pad="1"
          width="180"
          name="auto_snapshot_check" />
         <text
@@ -195,18 +231,7 @@
             name="NoFilter"
             value="NoFilter" />
         </combo_box>
-		<!--<button
-                follows="right|top"
-                height="23"
-                label="Preview"
-                left="30"
-                top_pad="0"
-                name="big_preview_btn"
-                tool_tip="Click to toggle preview"
-                is_toggle="true"
-                visible="true"
-                width="100" />-->
-				<view_border 
+		 <view_border 
          bevel_style="in"
          follows="left|top|right" 
          height="1"
@@ -214,7 +239,7 @@
          layout="topleft"
          name="advanced_options_hr"
          right="-1"
-         top_pad="10"
+         top_pad="7"
          />
     </panel>
 	<panel_container
@@ -225,7 +250,7 @@
      name="panel_container"
      default_panel_name="panel_snapshot_options"
      top_pad="10"
-     width="205">
+     width="215">
       <panel
        class="llpanelsnapshotoptions"
        filename="panel_snapshot_options.xml"
@@ -266,11 +291,10 @@
          left="10"
          layout="topleft"
          name="status_hr"
-         width="188"
+         width="199"
          top_pad="-16"/>
 	<panel
-       background_visible="true"
-       bg_alpha_color="0 0 0 0.25"
+       background_visible="false"
        follows="left|top"
        font="SansSerifLarge"
        halign="center"
@@ -279,7 +303,7 @@
        left="10"
        length="1"
        name="succeeded_panel"
-	   width="188"
+	   width="198"
        top_pad="1"
        type="string"
        visible="false">
@@ -301,8 +325,7 @@
           </text>
       </panel>
       <panel
-       background_visible="true"
-       bg_alpha_color="0 0 0 0.25"
+       background_visible="false"
        follows="left|top"
        font="SansSerifLarge"
        halign="center"
@@ -311,7 +334,7 @@
        left="10"
        length="1"
        name="failed_panel"
-	   width="188"
+	   width="198"
        top_delta="0"
        type="string"
        visible="false">
@@ -337,7 +360,7 @@
        height="24"
        layout="topleft"
        name="working_indicator"
-       left="95"
+       left="10"
        top_delta="0"
        visible="false"
        width="24" />
@@ -346,15 +369,15 @@
        font="SansSerifBold"
        height="14"
        layout="topleft"
-       left="10"
+       left_pad="3"
        length="1"
-       halign="right"
+       halign="left"
        name="working_lbl"
-       top_delta="4"
+       top_delta="5"
        translate="false"
        type="string"
        visible="false"
-       width="80">
+       width="162">
           Working
       </text>
       <text
@@ -395,10 +418,11 @@
     type="string"
     font="SansSerifSmall"
     length="1"
-    follows="left|top"
+    follows="left|top|right"
     height="14"
     layout="topleft"
-    left_delta="5"
+    left="220"
+	right="-20"
     halign="left"
     name="image_res_text"
     top_delta="5"
@@ -419,25 +443,4 @@
     width="50">
        [SIZE] KB
    </text>
-   <button
-       follows="left|top"
-       height="422"
-       layout="topleft"
-       name="preview_btn"
-       left="203"
-	   top="25"
-       width="8" />
-   <!--<button
-       follows="all"
-       height="422"
-       layout="topleft"
-       name="new_snapshot_btn"
-	   image_unselected="transparent.j2c"
-	   image_selected="transparent.j2c"
-       left="215"
-	   top="25"
-	   bottom="-35"
-	   right="-10"
-       visible="false"
-       width="8" />-->
 </floater>
