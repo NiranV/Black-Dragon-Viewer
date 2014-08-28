@@ -1674,19 +1674,6 @@
 
         <menu
          create_jump_keys="true"
-         label="Performance Tools"
-         name="Performance Tools"
-         tear_off="true">
-            <menu_item_call
-             label="Lag Meter"
-             name="Lag Meter">
-                <menu_item_call.on_click
-                 function="Floater.Show"
-                 parameter="lagmeter" />
-            </menu_item_call>
-        </menu>
-        <menu
-         create_jump_keys="true"
          label="Highlighting and Visibility"
          name="Highlighting and Visibility"
          tear_off="true">
@@ -3894,6 +3881,11 @@
                 <menu_item_call.on_click
                  function="Advanced.RebakeTextures" />
             </menu_item_call>
+			<menu
+         create_jump_keys="true"
+         label="Performance Tools"
+         name="Performance Tools"
+         tear_off="true">
             <menu_item_call
              label="Lag Meter"
              name="Lag Meter">
@@ -3922,6 +3914,7 @@
             function="Advanced.ToggleInfoDisplay"
             parameter="shame" />
        </menu_item_check>
+			</menu>
       <menu_item_separator/>
       <menu
          create_jump_keys="true"
