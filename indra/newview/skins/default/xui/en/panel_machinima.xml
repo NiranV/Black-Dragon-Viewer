@@ -1176,25 +1176,6 @@ width="345">
                   tool_tip="Set the Resolution (Quality) of each DoF pixel"
                   top_pad="3"
                   width="291" />
-                  <slider
-                  control_name="CameraUnderWaterDistortion"
-                  enabled_control="RenderDepthOfField"
-                  can_edit_text="true"
-                  decimal_digits="1"
-                  follows="left|top"
-                  height="16"
-                  increment="0.1"
-                  initial_value="0"
-                  label="Waterdistortion:"
-                  label_width="110"
-                  layout="topleft"
-                  left="20"
-                  max_val="180"
-                  min_val="0"
-                  name="CameraUWD"
-                  tool_tip="Second Field of View Option to set strength (FoV) of underwater distortion , 0 means extreme , everywhere and is default"
-                  top_pad="3"
-                  width="298" />
                   <text
                   font="SansSerif"
                   font.style="BOLD"
