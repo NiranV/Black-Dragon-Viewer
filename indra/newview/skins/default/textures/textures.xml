@@ -738,7 +738,8 @@ with the same filename but different name
   <texture name="transparentj2c" file_name="transparent.j2c" preload="true" />
   
   <texture name="Splash_Bg"	file_name="navbar/splash_bg.png"/>
-  <texture name="NavBar_BG_l3"	file_name="navbar/NavBar_BG_l3.png" scale.left="170" scale.top="51" scale.right="550" scale.bottom="21" preload="true"/>
+  <texture name="TopBar_BG"	file_name="navbar/TopBar_BG.png" scale.left="406" scale.top="48" scale.right="608" scale.bottom="0" preload="true"/>
+  <texture name="WorldView_Rect"	file_name="navbar/WorldView_Rect.png" scale.left="15" scale.top="15" scale.right="1009" scale.bottom="1009" preload="true"/>
   <texture name="Loading_BG"	file_name="windows/Loading_BG.png" preload="true"/>
   
   <texture name="Inv_TexturesClosed" file_name="icons/Inv_TexturesClosed.png" preload="false" />

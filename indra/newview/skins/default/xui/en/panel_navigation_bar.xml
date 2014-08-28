@@ -20,7 +20,7 @@ width="800">
    orientation="vertical"
    top="0"
    width="800">
-	  <layout_panel
+	  <!--<layout_panel
 	  follows="top|left|right"
 	  auto_resize="false"
 	  visibility_control="HideTopbar"
@@ -107,7 +107,7 @@ width="800">
 			   width="205"/>
 			</layout_stack>
 		 </panel>
-	  </layout_panel>
+	  </layout_panel>-->
 	  <layout_panel
 	  follows="top|left|right"
 	  auto_resize="false"
