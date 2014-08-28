@@ -128,7 +128,7 @@ void RlvSettings::initClass()
 // Checked: 2013-04-17 (RLVa-1.4.8)
 bool RlvSettings::onChangedAvatarOffset(const LLSD& sdValue)
 {
-	if ( (isAgentAvatarValid()) && (!gAgentAvatarp->isUsingServerBakes()) )
+	if ( (isAgentAvatarValid())) //&& (!gAgentAvatarp->isUsingServerBakes()) )
 	{
 		gAgentAvatarp->computeBodySize();
 	}

@@ -722,10 +722,7 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 			{
 				cats.push_back(cat);
 			}
-// [RLVa:KB] - Checked: 2013-04-15 (RLVa-1.4.8)
-			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add, follow_folder_links);
-// [/RLVa:KB]
-//			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add);
+			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add);
 		}
 	}
 
@@ -745,15 +742,6 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 			}
 		}
 	}
-
-// [RLVa:KB] - Checked: 2010-09-30 (RLVa-1.2.1d) | Added: RLVa-1.2.1d
-	// The problem is that we want some way for the functor to know that it's being asked to decide on a folder link
-	// but it won't know that until after it has encountered the folder link item (which doesn't happen until *after* 
-	// it has already collected all items from it the way the code was originally laid out)
-	// This breaks the "finish collecting all folders before collecting items (top to bottom and then bottom to top)" 
-	// assumption but no functor is (currently) relying on it (and likely never should since it's an implementation detail?)
-	// [Only LLAppearanceMgr actually ever passes in 'follow_folder_links == TRUE']
-// [/RLVa:KB]
 }
 
 void LLInventoryModel::addChangedMaskForLinks(const LLUUID& object_id, U32 mask)

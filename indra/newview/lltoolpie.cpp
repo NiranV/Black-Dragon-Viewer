@@ -1815,6 +1815,15 @@ BOOL LLToolPie::handleRightClickPick()
 			{
 				name = node->mName;
 			}
+			std::string mute_msg;
+			if (LLMuteList::getInstance()->isMuted(object->getID(), name))
+			{
+				mute_msg = LLTrans::getString("UnmuteObject");
+			}
+			else
+			{
+				mute_msg = LLTrans::getString("MuteObject2");
+			}
 
 // [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.el) | Modified: RLVa-1.1.0l
 			// Don't show the pie menu on empty selection when fartouch/interaction restricted

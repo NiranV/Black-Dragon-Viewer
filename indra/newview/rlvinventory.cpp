@@ -133,7 +133,7 @@ void RlvInventory::fetchSharedLinks()
 
 	// Grab all the inventory links under the shared root
 	LLInventoryModel::cat_array_t folders; LLInventoryModel::item_array_t items; RlvIsLinkType f;
-	gInventory.collectDescendentsIf(pRlvRoot->getUUID(), folders, items, FALSE, f, FALSE);
+	gInventory.collectDescendentsIf(pRlvRoot->getUUID(), folders, items, FALSE, f);
 
 	// Add them to the "to fetch" list based on link type
 	uuid_vec_t idFolders, idItems;
@@ -406,7 +406,7 @@ void RlvRenameOnWearObserver::doneIdle()
 		if (gInventory.isObjectDescendentOf(idAttachItem, pRlvRoot->getUUID()))
 			items.push_back(gInventory.getItem(idAttachItem));
 		else
-			items = gInventory.collectLinkedItems(idAttachItem, pRlvRoot->getUUID());
+			items = gInventory.collectLinksTo(idAttachItem);
 		if (items.empty())
 			continue;
 
@@ -462,8 +462,7 @@ void RlvRenameOnWearObserver::doneIdle()
 					else
 					{
 						// "No modify" item with a non-renameable parent: create a new folder named and move the item into it
-						LLUUID idFolder = gInventory.createNewCategory(pFolder->getUUID(), LLFolderType::FT_NONE, strFolderName,
-						                                               &RlvRenameOnWearObserver::onCategoryCreate, new LLUUID(pItem->getUUID()));
+						LLUUID idFolder = gInventory.createNewCategory(pFolder->getUUID(), LLFolderType::FT_NONE, strFolderName);
 						if (idFolder.notNull())
 						{
 							// Not using the new 'CreateInventoryCategory' cap so manually invoke the callback
@@ -520,7 +519,7 @@ bool RlvGiveToRLVOffer::createDestinationFolder(const std::string& strPath)
 			}
 			else
 			{
-				const LLUUID idTemp = gInventory.createNewCategory(gInventory.getRootFolderID(), LLFolderType::FT_NONE, RLV_ROOT_FOLDER, onCategoryCreateCallback, (void*)this);
+				const LLUUID idTemp = gInventory.createNewCategory(gInventory.getRootFolderID(), LLFolderType::FT_NONE, RLV_ROOT_FOLDER);
 				if (idTemp.notNull())
 					onCategoryCreateCallback(LLSD().with("folder_id", idTemp), this);
 			}
@@ -557,7 +556,7 @@ void RlvGiveToRLVOffer::onCategoryCreateCallback(const LLSD& sdData, void* pInst
 		else
 		{
 			LLInventoryObject::correctInventoryName(strFolder);
-			const LLUUID idTemp = gInventory.createNewCategory(idFolder, LLFolderType::FT_NONE, strFolder, onCategoryCreateCallback, pInstance);
+			const LLUUID idTemp = gInventory.createNewCategory(idFolder, LLFolderType::FT_NONE, strFolder);
 			if (idTemp.notNull())
 				onCategoryCreateCallback(LLSD().with("folder_id", idTemp), pInstance);
 			return;

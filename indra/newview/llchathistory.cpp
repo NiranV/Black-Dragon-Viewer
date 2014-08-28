@@ -655,7 +655,7 @@ protected:
 			S32 icon_x = llmin(sticky_rect.mLeft + mUserNameTextBox->getTextBoundingRect().getWidth() + 7, sticky_rect.mRight - 3);
 			mInfoCtrl->setOrigin(icon_x, sticky_rect.getCenterY() - mInfoCtrl->getRect().getHeight() / 2 ) ;
 		}
-		mInfoCtrl->setVisible(isVisible);
+		//mInfoCtrl->setVisible(isVisible);
 	}
 
 	void hideInfoCtrl()
