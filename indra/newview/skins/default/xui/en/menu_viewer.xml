@@ -524,6 +524,7 @@
              function="Floater.Toggle"
              parameter="world_map" />
         </menu_item_check>
+		 <menu_item_separator/>
 		 <menu_item_call
          label="Destinations"
          name="Destinations">
@@ -542,6 +543,7 @@
              function="Floater.Toggle"
              parameter="search" />
         </menu_item_check>
+		<menu_item_separator/>
       <menu_item_call
              label="Landmark This Place"
              name="Create Landmark Here">
@@ -1682,17 +1684,6 @@
                  function="Floater.Show"
                  parameter="lagmeter" />
             </menu_item_call>
-            <menu_item_check
-             label="Statistics Bar"
-             name="Statistics Bar"
-             shortcut="control|shift|1">
-                <menu_item_check.on_check
-                 function="Floater.Visible"
-                 parameter="stats" />
-                <menu_item_check.on_click
-                 function="Floater.Toggle"
-                 parameter="stats" />
-            </menu_item_check>
       <menu_item_check
         label="Show Draw Weight for Avatars"
         name="Avatar Rendering Cost">
