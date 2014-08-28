@@ -52,7 +52,6 @@ vec3 reflight;
 float bloomdamp;
 
 float rnd2;
-float guessnumfp;
 float gnfrac;
 float rd;
 float rdpow2;
@@ -61,8 +60,8 @@ vec2 ref2d;
 float refdepth;
 vec3 refcol;
 
-const int its = 26;
-const float itsf = 26.0;
+const int its = 10;
+const float itsf = 10.0;
 
 // Inputs
 uniform vec4 morphFactor;
@@ -579,14 +578,12 @@ void main()
 				float sa = dot(refnormpersp, sun_dir.xyz);
 				sa = pow(sa, light_gamma);
 	
-				float magic = 1.0/2.6; // TODO: work out what shadow val is being pre-div'd by
 				vec3 dumbshiny = vary_SunlitColor*scol_ambocc.r*(texture2D(lightFunc, vec2(sa, spec.a)).r);
 				//dumbshiny = min(dumbshiny, vec3(1));
 	
 				// Screen-space cheapish fakey reflection map
 				//
 				vec3 refnorm = normalize(reflect(vec3(0,0,-1), norm.xyz));
-				depth -= 0.5;
 				
 				// First figure out where we'll make our 2D guess from
 				vec2 orig_ref2d = (norm.xy);
@@ -598,7 +595,7 @@ void main()
 				// The goal of the blur is to soften reflections in surfaces
 				// with low shinyness, and also to disguise our lameness.
 				
-				float checkerboard = floor(mod(tc.x+tc.y, 2.0));
+				float checkerboard = floor(mod(tc.x+tc.y, 0.5));
 	
 				best_refn = vec3(0);
 				best_refshad = 0;
@@ -612,13 +609,10 @@ void main()
 				for (int guessnum = 1; guessnum <= its; ++guessnum)
 				{
 					rnd2 = rand(vec2(guessnum+rnd, tc.x));
-					guessnumfp = float(guessnum);
-					gnfrac = guessnumfp / itsf;
-					guessnumfp -= (checkerboard*0.5 + rnd);
-					rd = guessnumfp / itsf;
-					rdpow2 = rd * rd;
-					refdist = (-2.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * (rdpow2));// / (-depth) ;
-					ref2d = (orig_ref2d + (1.0 - spec.a)*0.25*vec2(rnd2*2.0-1.0)) * refdist;
+					gnfrac = float(guessnum) / itsf;
+					rd = (float(guessnum) - checkerboard*1.0 + rnd) / itsf;
+					refdist = (-2.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * rd);// / (-depth) ;
+					ref2d = (orig_ref2d + (1.0 - spec.a)*0.5*vec2(rnd2*2.0-1.0)) * refdist;
 					
 					ref2d += tc.xy; // use as offset from destination
 					
