@@ -464,13 +464,6 @@
              function="Floater.Toggle"
              parameter="conversation" />
         </menu_item_check>
-	<menu_item_call
-         label="Earned Achievements"
-         name="Achievements">
-            <menu_item_call.on_click
-             function="Floater.Toggle"
-             parameter="achievements" />
-        </menu_item_call>
 	 <menu_item_separator/>
 	 <menu_item_call
           label="Movement Controls"
