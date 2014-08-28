@@ -3922,16 +3922,6 @@
                  function="Floater.Toggle"
                  parameter="stats" />
             </menu_item_check>
-	    <menu_item_check
-	    label="Loadingscreen Tips"
-	    name="Loadingscreen Tips">
-	       <menu_item_check.on_check
-		function="Floater.Visible"
-		parameter="loading_tips" />
-	       <menu_item_check.on_click
-		function="Floater.Toggle"
-		parameter="loading_tips" />
-	   </menu_item_check>
       <menu_item_check
         label="Show Avatar Rendering Cost"
         name="Avatar Rendering Cost">
