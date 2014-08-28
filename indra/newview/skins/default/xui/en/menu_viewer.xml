@@ -1279,8 +1279,7 @@
                 </menu_item_check>
                 <menu_item_call
                  label="Snap Object XY to Grid"
-                 name="Snap Object XY to Grid"
-                 shortcut="shift|X">
+                 name="Snap Object XY to Grid">
                     <menu_item_call.on_click
                      function="Tools.SnapObjectXY" />
                     <menu_item_call.on_enable
