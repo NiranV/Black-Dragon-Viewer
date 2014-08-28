@@ -464,14 +464,6 @@
              function="Floater.Toggle"
              parameter="conversation" />
         </menu_item_check>
-        <menu_item_call
-         label="Nearby Speakers"
-         name="Active Speakers"
-         shortcut="control|shift|A">
-            <menu_item_call.on_click
-             function="SideTray.PanelPeopleTab"
-             parameter="nearby_panel" />
-            </menu_item_call>
         <menu_item_check
          label="Nearby Voice"
          name="Nearby Voice">
