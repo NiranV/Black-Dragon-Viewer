@@ -1937,24 +1937,43 @@ void LLFloater::draw()
 
 void	LLFloater::drawShadow(LLPanel* panel)
 {
-	S32 left = LLPANEL_BORDER_WIDTH;
-	S32 top = panel->getRect().getHeight() - LLPANEL_BORDER_WIDTH;
-	S32 right = panel->getRect().getWidth() - LLPANEL_BORDER_WIDTH;
-	S32 bottom = LLPANEL_BORDER_WIDTH;
-
-	static LLUICachedControl<S32> shadow_offset_S32 ("DropShadowFloater", 0);
+	LLUIImage* image = getShadowImage();
 	static LLUIColor shadow_color_cached = LLUIColorTable::instance().getColor("ColorDropShadow");
 	LLColor4 shadow_color = shadow_color_cached;
-	F32 shadow_offset = (F32)shadow_offset_S32;
 
-	if (!panel->isBackgroundOpaque())
+	S32 left, top, right, bottom;
+	if(image != NULL)
 	{
-		shadow_offset *= 0.2f;
-		shadow_color.mV[VALPHA] *= 0.5f;
+		//BD - If we have a custom shadow image, use that one.
+		left = -16;
+		top = panel->getRect().getHeight() + 10;
+		right = panel->getRect().getWidth() + 14;
+		bottom = -12;
+
+		LLRect rect = LLRect(left,top,right,bottom);
+
+		image->draw(rect, shadow_color);
 	}
-	gl_drop_shadow(left, top, right, bottom, 
-		shadow_color % getCurrentTransparency(),
-		llround(shadow_offset));
+	else
+	{
+		//BD - Otherwise use the normal gl_drop_shadow.
+		left = LLPANEL_BORDER_WIDTH;
+		top = panel->getRect().getHeight() - LLPANEL_BORDER_WIDTH;
+		right = panel->getRect().getWidth() - LLPANEL_BORDER_WIDTH;
+		bottom = LLPANEL_BORDER_WIDTH;
+
+		static LLUICachedControl<S32> shadow_offset_S32 ("DropShadowFloater", 0);
+		F32 shadow_offset = (F32)shadow_offset_S32;
+
+		if (!panel->isBackgroundOpaque())
+		{
+			shadow_offset *= 0.2f;
+			shadow_color.mV[VALPHA] *= 0.5f;
+		}
+		gl_drop_shadow(left, top, right, bottom, 
+			shadow_color % getCurrentTransparency(),
+			llround(shadow_offset));
+	}
 }
 
 void LLFloater::updateTransparency(LLView* view, ETypeTransparency transparency_type)
