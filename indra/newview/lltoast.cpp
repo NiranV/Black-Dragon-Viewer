@@ -338,20 +338,17 @@ void LLToast::insertPanel(LLPanel* panel)
 //--------------------------------------------------------------------------
 void LLToast::draw()
 {
-	LLFloater::draw();
+	// Floater background is invisible, lets make wrapper panel look like a 
+	// floater - draw shadow.
+	drawShadow(mWrapperPanel);
 
-	if(!isBackgroundVisible())
+	// Shadow will probably overlap close button, lets redraw the button
+	if(mHideBtn)
 	{
-		// Floater background is invisible, lets make wrapper panel look like a 
-		// floater - draw shadow.
-		drawShadow(mWrapperPanel);
-
-		// Shadow will probably overlap close button, lets redraw the button
-		if(mHideBtn)
-		{
-			drawChild(mHideBtn);
-		}
+		drawChild(mHideBtn);
 	}
+
+	LLFloater::draw();
 }
 
 //--------------------------------------------------------------------------
