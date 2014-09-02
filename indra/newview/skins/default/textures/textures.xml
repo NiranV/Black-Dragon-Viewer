@@ -740,6 +740,7 @@ with the same filename but different name
   <texture name="Splash_Bg"	file_name="navbar/splash_bg.png"/>
   <texture name="TopBar_BG"	file_name="navbar/TopBar_BG.png" scale.left="406" scale.top="48" scale.right="608" scale.bottom="0" preload="true"/>
   <texture name="WorldView_Rect"	file_name="navbar/WorldView_Rect.png" scale.left="15" scale.top="15" scale.right="1009" scale.bottom="1009" preload="true"/>
+  <texture name="Floater_Shadow_Rect"	file_name="navbar/Floater_Shadow_Rect.png" scale.left="17" scale.top="244" scale.right="241" scale.bottom="12" preload="true"/>
   <texture name="Loading_BG"	file_name="windows/Loading_BG.png" preload="true"/>
   
   <texture name="Inv_TexturesClosed" file_name="icons/Inv_TexturesClosed.png" preload="false" />
