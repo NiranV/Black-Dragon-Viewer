@@ -646,16 +646,15 @@ protected:
 
 	void showInfoCtrl()
 	{
-//		const bool isVisible = !mAvatarID.isNull() && !mFrom.empty() && CHAT_SOURCE_SYSTEM != mSourceType;
-// [RLVa:KB] - Checked: 2010-04-22 (RLVa-1.2.2a) | Added: RLVa-1.2.0f
-		if ( (!mShowInfoCtrl) || (mAvatarID.isNull() || mFrom.empty() || CHAT_SOURCE_SYSTEM == mSourceType) ) return;
-// [/RLVa:KB]
+		const bool isVisible = !mAvatarID.isNull() && !mFrom.empty() && CHAT_SOURCE_SYSTEM != mSourceType;
+		if (isVisible)
 		{
 			const LLRect sticky_rect = mUserNameTextBox->getRect();
 			S32 icon_x = llmin(sticky_rect.mLeft + mUserNameTextBox->getTextBoundingRect().getWidth() + 7, sticky_rect.mRight - 3);
 			mInfoCtrl->setOrigin(icon_x, sticky_rect.getCenterY() - mInfoCtrl->getRect().getHeight() / 2 ) ;
 		}
-		//mInfoCtrl->setVisible(isVisible);
+		mInfoCtrl->setVisible(isVisible);
+
 	}
 
 	void hideInfoCtrl()
