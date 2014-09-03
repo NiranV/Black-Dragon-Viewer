@@ -239,7 +239,7 @@ width="510">
 	    <slider
 	    control_name="PieMenuOpacity"
 	    follows="left|top"
-	    height="16"
+	    height="15"
 	    increment="0.05"
 	    initial_value="0.0"
 	    label="Pie Menu Opacity:"
@@ -250,12 +250,12 @@ width="510">
 	    min_val="0.0"
 	    name="pie_menu_opacity"
 	    tool_tip="Choose pie menu opacity"
-	    top_pad="3"
+	    top_pad="2"
 	    width="319" />
 	    <slider
 	    control_name="PieMenuFade"
 	    follows="left|top"
-	    height="16"
+	    height="15"
 	    increment="0.05"
 	    initial_value="0.0"
 	    label="Background Fade out:"
@@ -265,7 +265,7 @@ width="510">
 	    min_val="0.0"
 	    name="pie_menu_fade_out"
 	    tool_tip="Choose the amount of fade out to the pie edges"
-	    top_pad="3"
+	    top_pad="1"
 	    width="319" />
 		
 		<panel
@@ -541,7 +541,7 @@ width="510">
 		<slider
 	    control_name="InactiveFloaterTransparency"
 	    follows="left|top"
-	    height="16"
+	    height="15"
 	    increment="0.01"
 	    initial_value="0.0"
 	    label="Unfocused:"
@@ -557,7 +557,7 @@ width="510">
 		<slider
 	    control_name="ActiveFloaterTransparency"
 	    follows="left|top"
-	    height="16"
+	    height="15"
 	    increment="0.01"
 	    initial_value="0.0"
 	    label="Focused:"
@@ -568,7 +568,7 @@ width="510">
 	    min_val="0.0"
 	    name="ActiveFloaterTransparency"
 	    tool_tip="Set the transparency of focused windows"
-	    top_pad="3"
+	    top_pad="1"
 	    width="319" />
 		<panel
  follows="left|top|right"
