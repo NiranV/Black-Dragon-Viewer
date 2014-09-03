@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1980"
+  height="1990"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -144,7 +144,7 @@ width="510">
    control_name="RenderAttachedLights"
    height="16"
    initial_value="true"
-   label="Render Attached Lights (Facelights)"
+   label="Render Attached Lights"
    tool_tip="Toggles rendering of lights which are attached to your or other Avatars on or off. Usefull for annoying facelights"
    layout="topleft"
    left="270"
@@ -229,41 +229,6 @@ width="510">
  top_pad="5"
  width="319" />
  <slider
- disabled_control="VertexShaderEnable"
- control_name="RenderFogRatio"
- decimal_digits="3"
- can_edit_text="true"
- follows="left|top"
- height="15"
- increment="0.01"
- initial_value="4"
- label="Fog Distance:"
- label_width="150"
- layout="topleft"
- left="10"
- max_val="4"
- min_val="0"
- name="FogRatio"
- tool_tip="Controls the distance at which fog should be rendered (only works on settings lower than Vertex Shader e.g everything off)"
- top_pad="1"
- width="329" />
- <button
- follows="left|top"
- control_name="RenderFogRatio"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
- <slider
  control_name="RenderFarClip"
  decimal_digits="0"
  can_edit_text="true"
@@ -314,7 +279,7 @@ width="510">
  name="MaxParticles"
  tool_tip="Controls the maximum amount of Particles rendered on screen."
  top_pad="1"
- width="326" />
+ width="325" />
  <button
  follows="left|top"
  control_name="RenderMaxPartCount"
@@ -677,17 +642,6 @@ width="510">
    name="UseOcclusion"
    top_pad="0"
    width="115" />
-      <!--<check_box
-      control_name="RenderVBOMappingDisable"
-      height="16"
-      initial_value="false"
-      label="Disable VBO glMapBufferARB (Memory tweak)"
-      layout="topleft"
-      left_delta="0"
-      name="vbomembuffer"
-      top_pad="2"
-      tool_tip="Debug testing to prevent memory leaking see STORM-1011"
-      width="315" />-->
    <check_box
    control_name="RenderUseImpostors"
    height="16"
@@ -829,12 +783,45 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+      
+      <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="MaxAvatars"
+ top_pad="8"
+ width="120">
+ Adv. Autoderender:
+ </text>
+      <combo_box
+ control_name="RenderAutoMuteFunctions"
+ enabled_control="RenderUseImpostors"
+ height="20"
+ layout="topleft"
+ follows="left|top"
+ left="140"
+ tool_tip="Enable advanced options to determite which avatars should be rendered and which shouldn't"
+ top_pad="-15"
+ name="AutoDerenderDropdown"
+ width="100">
+ <combo_box.item
+ label="Disabled"
+ name="0"
+ value="0"/>
+ <combo_box.item
+ label="Enabled"
+ name="1"
+ value="7"/>
+ </combo_box>
       <slider
       control_name="RenderAutoMuteByteLimit"
+      enabled_control="RenderUseImpostors"
       decimal_digits="0"
-      enabled="false"
       follows="left|top"
-      height="16"
+      height="15"
       increment="16"
       initial_value="0"
       can_edit_text="true"
@@ -845,13 +832,13 @@ width="510">
       max_val="20480000"
       min_val="0"
       name="RenderAutoMuteByteLimit"
-      top_pad="1"
-      width="354" />
+      top_pad="5"
+      width="349" />
       <button
  follows="left|top"
  control_name="RenderAutoMuteByteLimit"
+ enabled_control="RenderUseImpostors"
  height="15"
- enabled="false"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="transparent.j2c"
@@ -866,8 +853,8 @@ width="510">
       </button>
       <slider
       control_name="RenderAutoMuteSurfaceAreaLimit"
+      enabled_control="RenderUseImpostors"
       decimal_digits="0"
-      enabled="false"
       follows="left|top"
       can_edit_text="true"
       height="15"
@@ -885,13 +872,13 @@ width="510">
       <button
  follows="left|top"
  control_name="RenderAutoMuteSurfaceAreaLimit"
+ enabled_control="RenderUseImpostors"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- enabled="false"
  left="370"
  top_delta="0"
  name="default"
@@ -901,8 +888,8 @@ width="510">
       </button>
       <slider
       control_name="RenderAutoHideSurfaceAreaLimit"
+      enabled_control="RenderUseImpostors"
       decimal_digits="0"
-      enabled="false"
       follows="left|top"
       can_edit_text="true"
       height="15"
@@ -920,6 +907,7 @@ width="510">
       <button
  follows="left|top"
  control_name="RenderAutoHideSurfaceAreaLimit"
+ enabled_control="RenderUseImpostors"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
@@ -927,7 +915,41 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- enabled="false"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderAutoMuteRenderWeightLimit"
+      enabled_control="RenderUseImpostors"
+      decimal_digits="0"
+      follows="left|top"
+      can_edit_text="true"
+      height="15"
+      increment="1"
+      initial_value="0"
+      label="Derender Avatars > AR:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="400000"
+      min_val="0"
+      name="RenderAutoMuteRenderWeightLimit"
+      top_pad="1"
+      width="337" />
+      <button
+ follows="left|top"
+ control_name="RenderAutoMuteRenderWeightLimit"
+ enabled_control="RenderUseImpostors"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
  top_delta="0"
  name="default"
  width="60">
@@ -1187,7 +1209,7 @@ width="510">
       decimal_digits="0"
       follows="left|top"
       layout="topleft"
-      height="16"
+      height="15"
       can_edit_text="true"
       increment="1" 
       initial_value="1"
@@ -1200,7 +1222,7 @@ width="510">
       mouse_opaque="true"
       name="Iterations"
       show_text="true"
-      width="305" />
+      width="306" />
       <button
  follows="left|top"
  control_name="RenderGlowIterations"
@@ -1235,7 +1257,7 @@ width="510">
       mouse_opaque="true"
       name="Strength"
       show_text="true"
-      width="329" />
+      width="327" />
       <button
  follows="left|top"
  control_name="PrevGlow"
@@ -1307,7 +1329,7 @@ width="510">
       mouse_opaque="true"
       name="Warmth"
       show_text="true"
-      width="322" />
+      width="321" />
       <button
  follows="left|top"
  control_name="RenderGlowWarmthAmount"
@@ -1362,22 +1384,22 @@ width="510">
       <slider  
       control_name="RenderGlowMaxExtractAlpha"
       enabled_control="RenderGlow"
-      decimal_digits="4"
+      decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
       height="15"
       top_pad="1"
       increment="0.001" 
-      initial_value="0.020" 
+      initial_value="0.010" 
       label="Glow Max. Alpha:"
       label_width="150"
       left="10"
-      max_val="0.1"
+      max_val="1.0"
       min_val="0"
       mouse_opaque="true"
       name="MaxAlpha"
       show_text="true"
-      width="329" />
+      width="327" />
       <button
  follows="left|top"
  control_name="RenderGlowMaxExtractAlpha"
@@ -1413,7 +1435,7 @@ width="510">
       mouse_opaque="true"
       name="RenderGlowLumWeights_X"
       show_text="true"
-      width="329" >
+      width="327" >
          <slider.commit_callback
       function="Pref.ArrayX"
       parameter="RenderGlowLumWeights"/>
@@ -1435,7 +1457,7 @@ width="510">
       mouse_opaque="true"
       name="RenderGlowLumWeights_Y"
       show_text="true"
-      width="329" >
+      width="327" >
          <slider.commit_callback
       function="Pref.ArrayY"
       parameter="RenderGlowLumWeights"/>
@@ -1457,7 +1479,7 @@ width="510">
       mouse_opaque="true"
       name="RenderGlowLumWeights_Z"
       show_text="true"
-      width="329" >
+      width="327" >
       <slider.commit_callback
       function="Pref.ArrayZ"
       parameter="RenderGlowLumWeights"/>
@@ -1498,7 +1520,7 @@ width="510">
       mouse_opaque="true"
       name="RenderGlowWarmthWeights_X"
       show_text="true"
-      width="329" >
+      width="327" >
          <slider.commit_callback
       function="Pref.ArrayX"
       parameter="RenderGlowWarmthWeights"/>
@@ -1520,7 +1542,7 @@ width="510">
       mouse_opaque="true"
       name="RenderGlowWarmthWeights_Y"
       show_text="true"
-      width="329" >
+      width="327" >
          <slider.commit_callback
       function="Pref.ArrayY"
       parameter="RenderGlowWarmthWeights"/>
@@ -1542,7 +1564,7 @@ width="510">
       mouse_opaque="true"
       name="RenderGlowWarmthWeights_Z"
       show_text="true"
-      width="329" >
+      width="327" >
       <slider.commit_callback
       function="Pref.ArrayZ"
       parameter="RenderGlowWarmthWeights"/>
@@ -1723,6 +1745,38 @@ width="510">
  name="5"
  value="16"/>
  </combo_box>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="ShadowAmount"
+ top_pad="4"
+ width="120">
+ Softening Style:
+ </text>
+ <combo_box
+ control_name="RenderShadowStyle"
+ enabled_control="RenderDeferred"
+ height="20"
+ follows="left|top"
+ layout="topleft"
+ left="140"
+ top_pad="-15" 
+ name="ShadowStyle"
+ tool_tip="Toggle between Tofu's new Shadow softening algorythm or the old original one"
+ width="100">
+ <combo_box.item
+ label="Tofu's New"
+ name="1"
+ value="1"/>
+ <combo_box.item
+ label="Original"
+ name="0"
+ value="0"/>
+ </combo_box>
  <slider
       enabled_control="RenderDeferred"
       decimal_digits="0"
@@ -1740,7 +1794,7 @@ width="510">
       min_val="256"
       name="RenderShadowResolution_X"
       top_pad="5"
-      width="326">
+      width="324">
    <slider.commit_callback
       function="Pref.ArrayX"
       parameter="RenderShadowResolution"/>
@@ -1762,7 +1816,7 @@ width="510">
       min_val="256"
       name="RenderShadowResolution_Y"
       top_pad="1"
-      width="326">
+      width="324">
    <slider.commit_callback
       function="Pref.ArrayY"
       parameter="RenderShadowResolution"/>
@@ -1806,7 +1860,7 @@ width="510">
                                  function="Pref.Default"/>
       </button>
  <slider
-      enabled_control="RenderDeferredSSAO"
+      enabled_control="RenderShadowBlurSize"
       decimal_digits="3"
       follows="left|top"
       height="15"
@@ -1819,52 +1873,12 @@ width="510">
       left="10"
       max_val="3"
       min_val="0.001"
-      name="RenderShadowGaussian_X"
+      name="RenderShadowBlurSize"
       top_pad="1"
-      width="329">
-   <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="RenderShadowGaussian"/>
-      </slider>
+      width="327"/>
  <button
  follows="left|top"
- control_name="RenderShadowGaussian"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
- 
-      <slider
-      control_name="RenderShadowBlurDistFactor"
-      enabled="false"
-      decimal_digits="2"
-      follows="left|top"
-      can_edit_text="true"
-      height="15"
-      increment="0.01"
-      initial_value="1"
-      label="Distance Blur Strength:"
-      tool_tip="Set how much shadows and SSAO should be blurred on distance , higher values mean more blur"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="1"
-      min_val="0"
-      name="BlurDistance"
-      top_pad="1"
-      width="322" />
-      <button
- follows="left|top"
- control_name="RenderShadowBlurDistFactor"
+ control_name="RenderShadowBlurSize"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
@@ -1920,7 +1934,7 @@ width="510">
       name="CameraFOV"
       tool_tip="Vertical camera field of view for Depth of Field effect (in degrees)"
       top_pad="10"
-      width="319" />
+      width="318" />
      <button
  follows="left|top"
  control_name="CameraOverWaterDistortion"
@@ -1955,7 +1969,7 @@ width="510">
       name="CameraFNum"
       tool_tip="Camera f-number value for Depth of Field effect"
       top_pad="1"
-      width="329" />
+      width="327" />
       <button
  follows="left|top"
  control_name="CameraFNumber"
@@ -1990,7 +2004,7 @@ width="510">
       name="CameraFocal"
       tool_tip="Camera focal length for Depth of Field effect (in millimeters)"
       top_pad="1"
-      width="319" />
+      width="318"/>
       <button
  follows="left|top"
  control_name="CameraFocalLength"
@@ -2025,7 +2039,7 @@ width="510">
       name="CameraCoF"
       tool_tip="Set the Camera circle of confusion"
       top_pad="1"
-      width="329" />
+      width="327" />
       <button
  follows="left|top"
  control_name="CameraMaxCoF"
@@ -2060,7 +2074,7 @@ width="510">
       name="CameraFocusTrans"
       tool_tip="Time taken to alter focus from one place to the next"
       top_pad="1"
-      width="329" />
+      width="327" />
       <button
  follows="left|top"
  control_name="CameraFocusTransitionTime"
@@ -2095,58 +2109,10 @@ width="510">
       name="CameraDoFRes"
       tool_tip="Set the Resolution (Quality) of each DoF pixel"
       top_pad="1"
-      width="322" />
+      width="321" />
       <button
  follows="left|top"
  control_name="CameraDoFResScale"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <check_box
-     control_name="RenderUnderWaterDistortion"
-     height="16"
-     follows="top|left"
-     initial_value="true"
-     enabled="false"
-     label="Render Underwater Distortion"
-     tool_tip="Controls weither this Viewer should render a faked underwater distortion effect done with Depth of Field or not"
-     layout="topleft"
-     left="10"
-     name="RenderUWDistortion"
-     top_pad="5"
-     width="115"/>
-      <slider
-      control_name="CameraUnderWaterDistortion"
-      enabled_control="RenderDepthOfField"
-      can_edit_text="true"
-      decimal_digits="1"
-      follows="left|top"
-      height="15"
-      increment="0.1"
-      initial_value="0"
-      label="Waterdistortion strength:"
-      label_width="150"
-      layout="topleft"
-      left_delta="0"
-      max_val="120"
-      min_val="0"
-      name="CameraUWD"
-      tool_tip="Second Field of View Option to set strength (FoV) of underwater distortion , 0 means extreme , everywhere and is default"
-      top_pad="4"
-      width="329" />
-      <button
- follows="left|top"
- control_name="CameraUnderWaterDistortion"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
@@ -2199,7 +2165,7 @@ width="510">
       min_val="0.001"
       name="RenderShadowGaussian_Y"
       top_pad="10"
-      width="329">
+      width="327">
    <slider.commit_callback
       function="Pref.ArrayX"
       parameter="RenderShadowGaussian"/>
@@ -2237,7 +2203,7 @@ width="510">
       min_val="-1"
       name="SSAOEffect"
       top_pad="1"
-      width="326"/>
+      width="325"/>
      <button
  follows="left|top"
  control_name="RenderSSAOEffect"
@@ -2271,7 +2237,7 @@ width="510">
       min_val="0"
       name="SSAOScale"
       top_pad="1"
-      width="326" />
+      width="324" />
       <button
  follows="left|top"
  control_name="RenderSSAOScale"
@@ -2305,7 +2271,7 @@ width="510">
       min_val="0"
       name="SSAOMaxScale"
       top_pad="1"
-      width="326" />
+      width="324" />
       <button
  follows="left|top"
  control_name="RenderSSAOMaxScale"
@@ -2339,7 +2305,7 @@ width="510">
       min_val="0"
       name="SSAOFactor"
       top_pad="1"
-      width="333" />
+      width="330" />
       <button
  follows="left|top"
  control_name="RenderSSAOFactor"
@@ -2367,6 +2333,40 @@ width="510">
      name="RenderScreenSpaceReflections"
      top_pad="3"
      width="115" />
+      <slider
+      control_name="RenderSSRResolution"
+      enabled_control="RenderScreenSpaceReflections"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="10"
+      label="SSR Resolution:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="64"
+      min_val="2"
+      name="RenderSSRResolution"
+      top_pad="1"
+      width="312" />
+      <button
+ follows="left|top"
+ control_name="RenderSSRResolution"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
       <panel
  follows="left|top|right"
  height="20"
@@ -2403,11 +2403,11 @@ width="510">
       label_width="150"
       layout="topleft"
       left="10"
-      max_val="160"
+      max_val="120"
       min_val="15"
       name="MotionBlurQuality"
       top_pad="10"
-      width="322"/>
+      width="318"/>
    <button
  follows="left|top"
  control_name="RenderMotionBlurStrength"
@@ -2460,11 +2460,11 @@ width="510">
       label_width="150"
       layout="topleft"
       left="10"
-      max_val="192"
+      max_val="256"
       min_val="16"
       name="GodraysResolution"
       top_pad="10"
-      width="322"/>
+      width="318"/>
    <button
  follows="left|top"
  control_name="RenderGodraysResolution"
@@ -2498,7 +2498,7 @@ width="510">
       min_val="0.01"
       name="GodraysMultiplier"
       top_pad="1"
-      width="322"/>
+      width="327"/>
    <button
  follows="left|top"
  control_name="RenderGodraysMultiplier"
@@ -2986,7 +2986,7 @@ width="510">
       min_val="-0.5"
       name="ExodusRenderOffset_X"
       top_pad="1"
-      width="333">
+      width="332">
          <slider.commit_callback
       function="Pref.ArrayX"
       parameter="ExodusRenderOffset"/>
@@ -3006,7 +3006,7 @@ width="510">
       min_val="-0.5"
       name="ExodusRenderOffset_Y"
       top_pad="1"
-      width="333">
+      width="332">
          <slider.commit_callback
       function="Pref.ArrayY"
       parameter="ExodusRenderOffset"/>
@@ -3026,7 +3026,7 @@ width="510">
       min_val="-0.5"
       name="ExodusRenderOffset_Z"
       top_pad="1"
-      width="333">
+      width="332">
       <slider.commit_callback
       function="Pref.ArrayZ"
       parameter="ExodusRenderOffset"/>
