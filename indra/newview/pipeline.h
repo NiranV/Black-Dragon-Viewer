@@ -957,6 +957,7 @@ public:
 	static BOOL RenderGodrays;
 	static U32 RenderGodraysResolution;
 	static F32 RenderGodraysMultiplier;
+	static U32 RenderSSRResolution;
 };
 
 void render_bbox(const LLVector3 &min, const LLVector3 &max);

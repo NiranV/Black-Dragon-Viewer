@@ -218,6 +218,7 @@ U32 LLPipeline::RenderMotionBlurStrength;
 BOOL LLPipeline::RenderGodrays;
 U32 LLPipeline::RenderGodraysResolution;
 F32 LLPipeline::RenderGodraysMultiplier;
+U32 LLPipeline::RenderSSRResolution;
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
 const F32 BACKLIGHT_DAY_MAGNITUDE_AVATAR = 0.2f;
@@ -689,6 +690,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderGodrays");
 	connectRefreshCachedSettingsSafe("RenderGodraysResolution");
 	connectRefreshCachedSettingsSafe("RenderGodraysMultiplier");
+	connectRefreshCachedSettingsSafe("RenderSSRResolution");
 	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
 	connectRefreshCachedSettingsSafe("ExodusRenderOffset");
 	connectRefreshCachedSettingsSafe("ExodusRenderExposure");
@@ -1250,6 +1252,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");
 	RenderGodraysResolution = gSavedSettings.getU32("RenderGodraysResolution");
 	RenderGodraysMultiplier = gSavedSettings.getF32("RenderGodraysMultiplier");
+	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
 
 	// <exodus>
 	exoPostProcess::instance().ExodusRenderPostSettingsUpdate();
@@ -8622,6 +8625,8 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 
 	shader.uniform1i(LLShaderMgr::GODRAY_RES, RenderGodraysResolution);
 	shader.uniform1f(LLShaderMgr::GODRAY_MULTIPLIER, RenderGodraysMultiplier);
+
+	shader.uniform1i(LLShaderMgr::SSR_RES, RenderSSRResolution);
 
 	if (shader.getUniformLocation(LLShaderMgr::DEFERRED_NORM_MATRIX) >= 0)
 	{

@@ -16008,6 +16008,17 @@
     <key>Value</key>
     <real>0</real>
   </map>
+  <key>RenderSSRResolution</key>
+  <map>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>10</integer>
+  </map>
   <key>SlowMotionTimeFactor</key>
   <map>
     <key>Comment</key>

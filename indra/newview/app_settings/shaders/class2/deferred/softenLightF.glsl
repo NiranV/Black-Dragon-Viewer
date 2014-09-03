@@ -60,8 +60,7 @@ vec2 ref2d;
 float refdepth;
 vec3 refcol;
 
-const int its = 10;
-const float itsf = 10.0;
+uniform int ssr_res = 10;
 
 // Inputs
 uniform vec4 morphFactor;
@@ -606,12 +605,12 @@ void main()
 				reflight = sun_dir.xyz;
 				bloomdamp = 0.0;
 				
-				for (int guessnum = 1; guessnum <= its; ++guessnum)
+				for (int guessnum = 1; guessnum <= ssr_res; ++guessnum)
 				{
 					rnd2 = rand(vec2(guessnum+rnd, tc.x));
-					gnfrac = float(guessnum) / itsf;
-					rd = (float(guessnum) - checkerboard*1.0 + rnd) / itsf;
-					refdist = (-2.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * rd);// / (-depth) ;
+					gnfrac = float(guessnum) / float(ssr_res);
+					rd = (float(guessnum) - checkerboard*1.0 + rnd) / float(ssr_res);
+					refdist = (-2.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * rd);
 					ref2d = (orig_ref2d + (1.0 - spec.a)*0.5*vec2(rnd2*2.0-1.0)) * refdist;
 					
 					ref2d += tc.xy; // use as offset from destination
@@ -673,7 +672,7 @@ void main()
 				}
 				if (total_refapprop > 0.0) {
 					// We must have the power of >= 25% voters, else damp progressively
-					float use_refapprop = max(itsf*0.25, (total_refapprop));
+					float use_refapprop = max(float(ssr_res)*0.25, (total_refapprop));
 	
 					best_refn = normalize(best_refn);
 					best_refshad /= use_refapprop;

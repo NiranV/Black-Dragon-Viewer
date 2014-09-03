@@ -1194,6 +1194,8 @@ void LLShaderMgr::initAttribsAndUniforms()
 
 	mReservedUniforms.push_back("godray_res");
 	mReservedUniforms.push_back("godray_multiplier");
+
+	mReservedUniforms.push_back("ssr_res");
 	
 //	//BD - Post Effects
 	mReservedUniforms.push_back("num_colors");
