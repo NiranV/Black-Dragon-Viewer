@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
- bg_opaque_image="Window_NoTitle_Foreground"
- bg_alpha_image="Window_NoTitle_Background"
  positioning="cascading"
  can_minimize="false" 
  can_resize="true"
- bg_visible="true"
  chrome="true"
  height="220"
  layout="topleft"
@@ -13,7 +10,6 @@
  min_width="128"
  legacy_header_height="25"
  name=""
- background_color="Transparent"
  title=""
  save_rect="true"
  save_visibility="true"

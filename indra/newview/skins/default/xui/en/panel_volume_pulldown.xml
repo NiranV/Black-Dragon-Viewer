@@ -27,11 +27,7 @@
      name="System Volume"
      show_text="false"
      top="8"
-     volume="true">
-        <slider.commit_callback
-         function="Pref.setControlFalse"
-         parameter="MuteAudio" />
-    </slider>
+     volume="true"/>
     <button
      control_name="MuteAudio"
      follows="top|left"
@@ -60,11 +56,7 @@
         name="UI Volume"
         show_text="false"
         top_pad="1"
-        volume="true">
-    <slider.commit_callback
-        function="Pref.setControlFalse"
-        parameter="MuteUI" />
-    </slider>
+        volume="true"/>
     <button
         control_name="MuteUI"
         disabled_control="MuteAudio"
@@ -94,11 +86,7 @@
      name="Wind Volume"
      show_text="false"
      top_pad="1"
-     volume="true">
-        <slider.commit_callback
-         function="Pref.setControlFalse"
-         parameter="MuteAmbient" />
-    </slider>
+     volume="true"/>
     <button
      control_name="MuteAmbient"
      disabled_control="MuteAudio"
@@ -128,11 +116,7 @@
      name="SFX Volume"
      show_text="false"
      top_pad="1"
-     volume="true">
-        <slider.commit_callback
-         function="Pref.setControlFalse"
-         parameter="MuteSounds" />
-    </slider>
+     volume="true"/>
     <button
      control_name="MuteSounds"
      disabled_control="MuteAudio"
@@ -146,10 +130,7 @@
      top_delta="0"
      name="mute_audio"
      tab_stop="false"
-     width="16">
-      <button.commit_callback
-      function="Pref.SetSounds"/>
-    </button>
+     width="16"/>
     <slider
      control_name="AudioLevelMusic"
      disabled_control="MuteAudio"
@@ -165,11 +146,7 @@
      name="Music Volume"
      show_text="false"
      top_pad="1"
-     volume="true">
-        <slider.commit_callback
-         function="Pref.setControlFalse"
-         parameter="MuteMusic" />
-    </slider>
+     volume="true"/>
     <button
      control_name="MuteMusic"
      disabled_control="MuteAudio"
@@ -199,11 +176,7 @@
         name="Media Volume"
         show_text="false"
         top_pad="1"
-        volume="true">
-      <slider.commit_callback
-        function="Pref.setControlFalse"
-        parameter="MuteMedia" />
-    </slider>
+        volume="true"/>
     <button
         control_name="MuteMedia"
         disabled_control="MuteAudio"
@@ -233,11 +206,7 @@
         top_pad="1"
         name="Voice Volume"
         show_text="false"
-        volume="true">
-    <slider.commit_callback
-        function="Pref.setControlFalse"
-        parameter="MuteVoice" />
-    </slider>
+        volume="true"/>
     <button
         control_name="MuteVoice"
         disabled_control="MuteAudio"
@@ -270,10 +239,7 @@
         left_delta="0"
         name="enable_music"
         top_pad="0"
-        width="350">
-        <check_box.commit_callback
-            function="Pref.updateMediaAutoPlayCheckbox"/>
-    </check_box>
+        width="350"/>
     <check_box
         label_text.halign="left"
         follows="left|top"
@@ -284,10 +250,7 @@
         top_pad="0"
         left_delta="0"
         name="enable_media"
-        width="110">
-        <check_box.commit_callback
-            function="Pref.updateMediaAutoPlayCheckbox"/>
-    </check_box>
+        width="110"/>
     <check_box
         label_text.halign="left"
         follows="left|top"

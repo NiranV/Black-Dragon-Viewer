@@ -4179,7 +4179,7 @@
                 <menu_item_check.on_click
                  function="World.AlwaysRun" />
             </menu_item_check>
-	    <menu_item_seperator/>
+	    <menu_item_separator/>
             <menu_item_check
              label="Double Click TP"
              layout="topleft"
