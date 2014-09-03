@@ -576,7 +576,7 @@ width="510">
 		     control_name="PrecachingDelay"
 		     decimal_digits="0"
 		     follows="left|top"
-		     height="16"
+		     height="15"
 		     increment="1"
 		     initial_value="6"
 		     label="Precaching Delay"
@@ -587,7 +587,7 @@ width="510">
 		     max_val="10"
 		     min_val="1"
 		     name="PrecachingDelay"
-		     top_pad="5"
+		     top_pad="2"
 		     width="319" />
 			 
 			 <!--<text
