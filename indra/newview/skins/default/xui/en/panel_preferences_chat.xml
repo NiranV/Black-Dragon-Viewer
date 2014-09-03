@@ -328,7 +328,7 @@ width="510">
  <slider
  control_name="ChatBubbleOpacity"
  follows="left|top"
- height="16"
+ height="15"
  increment="0.05"
  initial_value="1"
  label="Bubble Chat Opacity:"
