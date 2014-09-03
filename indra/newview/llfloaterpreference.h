@@ -167,6 +167,9 @@ public:
 //	//BD - Revert to Default
 	void resetToDefault(LLUICtrl* ctrl);
 
+//	//BD - Revert to Default
+	void inputOutput();
+
 //	//BD - Refresh all controls
 	void refreshGraphicControls();
 	void refreshCameraControls();

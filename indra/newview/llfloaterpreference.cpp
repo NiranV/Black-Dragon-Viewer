@@ -368,6 +368,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 //	//BD - Revert to Default
 	mCommitCallbackRegistrar.add("Pref.Default",           boost::bind(&LLFloaterPreference::resetToDefault, this,_1));
 
+//	//BD - Input/Output resizer
+	mCommitCallbackRegistrar.add("Pref.InputOutput",           boost::bind(&LLFloaterPreference::inputOutput, this));
+
 	sSkin = gSavedSettings.getString("SkinCurrent");
 
 	mCommitCallbackRegistrar.add("Pref.ClickActionChange",		boost::bind(&LLFloaterPreference::onClickActionChange, this));
@@ -569,6 +572,23 @@ void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
 {
 	ctrl->getControlVariable()->resetToDefault(true);
 	refreshGraphicControls();
+}
+
+//BD - Input/Output resizer
+void LLFloaterPreference::inputOutput()
+{
+	LLPanel* panel = getChild<LLPanel>("audio_media_panel");
+	if(panel)
+	{
+		if(gSavedSettings.getBOOL("ShowDeviceSettings"))
+		{
+			panel->reshape(panel->getRect().getWidth(), 665);
+		}
+		else
+		{
+			panel->reshape(panel->getRect().getWidth(), 480);
+		}
+	}
 }
 
 //BD - Refresh all controls
@@ -925,6 +945,11 @@ void LLFloaterPreference::onClose(bool app_quitting)
 	{
 		cancel();
 	}
+
+	// when closing this window, turn of visiblity control so that 
+	// next time preferences is opened we don't suspend voice
+	gSavedSettings.setBOOL("ShowDeviceSettings", FALSE);
+	inputOutput();
 }
 
 void LLFloaterPreference::onOpenHardwareSettings()

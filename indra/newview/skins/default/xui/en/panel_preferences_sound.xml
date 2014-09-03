@@ -24,7 +24,7 @@ width="510">
  height="407">
   <panel
   follows="top|left"
-  height="670"
+  height="480"
   label="Sounds"
   layout="topleft"
   left="0"
@@ -613,6 +613,8 @@ width="510">
    top_pad="5"
    name="device_settings_btn"
    width="190">
+    <button.commit_callback
+         function="Pref.InputOutput"/>
    </button>
    <panel
    background_visible="false"
