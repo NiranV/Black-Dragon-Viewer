@@ -72,7 +72,7 @@
     <text
      font="SansSerifSmall"
      type="string"
-     text_color="EmphasisColor"
+     text_color="BeaconColor"
      length="1"
      follows="left|top"
      height="18"
@@ -94,53 +94,51 @@
      width="200">
         I want to access content rated:
     </text>
-    <combo_box
-     control_name="PreferredMaturity"
-     follows="left|top"
-     height="23"
-     layout="topleft"
-     left_pad="0"
-     top_delta="-3"
-     name="maturity_desired_combobox"
-     width="170">
-        <combo_box.item
-         label="General, Moderate, Adult"
-         name="Desired_Adult"
-         value="42" />
-        <combo_box.item
-         label="General and Moderate"
-         name="Desired_Mature"
-         value="21" />
-        <combo_box.item
-         label="General"
-         name="Desired_PG"
-         value="13" />
-    </combo_box>
-    <icon
-     follows="left|top"
-     height="16"
-     image_name="Parcel_PG_Dark"
-     layout="topleft"
-     left_pad="5"
-     name="rating_icon_general"
-     top_delta="3"
-     width="18"/>
-    <icon
-     follows="left|top"
-     height="16"
-     image_name="Parcel_M_Dark"
-     layout="topleft"
-     left_pad="2"
-     name="rating_icon_moderate"
-     width="18"/>
-    <icon
-     follows="left|top"
-     height="16"
-     image_name="Parcel_R_Dark"
-     layout="topleft"
-     left_pad="2"
-     name="rating_icon_adult"
-     width="18"/>
+    <icons_combo_box
+      follows="left|top"
+      height="23"
+      label="Moderate"
+      layout="topleft"
+      name="maturity_desired_combobox"
+      top_delta="-3"
+      left_pad="0"
+      width="170">
+      <icons_combo_box.drop_down_button
+        image_overlay="Parcel_M_Light"
+        image_overlay_alignment="left"
+        imgoverlay_label_space="3"
+        pad_left="3"/>
+      <icons_combo_box.item
+        label="General"
+        name="PG"
+        value="13">
+        <item.columns
+          halign="left"
+          type="icon"
+          value="Parcel_PG_Light"
+          width="20"/>
+      </icons_combo_box.item>
+      <icons_combo_box.item
+        label="Moderate"
+        name="Mature"
+        value="21">
+        <item.columns
+          halign="left"
+          type="icon"
+          value="Parcel_M_Light"
+          width="20"/>
+      </icons_combo_box.item>
+      <icons_combo_box.item
+        label="Adult"
+        name="Adult"
+        value="42">
+        <item.columns
+          halign="left"
+          type="icon"
+          value="Parcel_R_Light"
+          width="0"/>
+      </icons_combo_box.item>
+    </icons_combo_box>
     <text
      type="string"
      length="1"
@@ -149,7 +147,7 @@
      layout="topleft"
      left="10"
      name="start_location_textbox"
-     top_pad="9"
+     top_pad="5"
      width="200">
         Start location:
     </text>
@@ -291,7 +289,7 @@
       min_val="0.1"
       label_width="150"
       name="name_fade_slider"
-      top_pad="3"
+      top_pad="4"
       width="319" />
    <slider
       can_edit_text="true"
@@ -308,7 +306,7 @@
       min_val="1"
       label_width="150"
       name="name_start_fade_slider"
-      top_pad="2"
+      top_pad="1"
       width="316" />
     <check_box
      follows="left|top"
@@ -320,7 +318,7 @@
      tool_tip="Allow display names in chat, IM, Name tags, etc."
      name="display_names_check"
      width="300"
-     top_pad="4"/>
+     top_pad="7"/>
    <check_box
      enabled_control="UseDisplayNames"
      control_name="NameTagShowDisplayNames"
@@ -350,7 +348,7 @@
      height="16"
      label="Show Group Titles"
      layout="topleft"
-     left_delta="200"
+     left="270"
      top_delta="-33"
      name="show_all_title_checkbox1"
      width="200" />
@@ -413,7 +411,7 @@
      height="16"
      label="Remember flying state at Logout"
      layout="topleft"
-     left_pad="0"
+     left="270"
      top_delta="0"
      tool_tip="Automatically activates flying on Login when you were flying at Logout"
      name="Flying_At_Exit"
@@ -454,7 +452,7 @@
      left="10"
      top_pad="13"
      name="busy_response"
-     width="495"
+     width="490"
      word_wrap="true">
        log_in_to_change
     </line_editor>
