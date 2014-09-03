@@ -585,7 +585,6 @@ void LLFloaterPreference::refreshGraphicControls()
 	getChild<LLUICtrl>("RenderShadowResolution_Y")->setValue(gSavedSettings.getVector3("RenderShadowResolution").mV[VY]);
 	getChild<LLUICtrl>("RenderShadowResolution_Z")->setValue(gSavedSettings.getVector3("RenderShadowResolution").mV[VZ]);
 
-	getChild<LLUICtrl>("RenderShadowGaussian_X")->setValue(gSavedSettings.getVector3("RenderShadowGaussian").mV[VX]);
 	getChild<LLUICtrl>("RenderShadowGaussian_Y")->setValue(gSavedSettings.getVector3("RenderShadowGaussian").mV[VY]);
 
 	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_X")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptA").mV[VX]);
