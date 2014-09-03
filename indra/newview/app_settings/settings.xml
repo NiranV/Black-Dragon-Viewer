@@ -15997,6 +15997,17 @@
     <key>Value</key>
     <real>1</real>
   </map>
+  <key>RenderShadowType</key>
+  <map>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>RenderScreenSpaceReflections</key>
   <map>
     <key>Comment</key>

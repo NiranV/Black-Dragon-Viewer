@@ -32,7 +32,6 @@ out vec4 frag_color;
 #endif
 
 #define DELUXE_SHADOW_SMOOTH
-#define MYKERN
 #define LINEAR
 
 uniform sampler2DRect depthMap;
@@ -105,35 +104,18 @@ void main()
 	vec4 ccol = texture2DRect(lightMap, tc).rgba;
 	ccol.gba = xxsrgb_to_linear(ccol.gba);
 
-#ifdef MYKERN
+#if MYKERN
 #define KERNCOUNT 8
 	vec3 kern[KERNCOUNT];
-	/*kern[0] = vec3(1.000, 1.00, 0.0);
-	kern[1] = vec3(0.500, 0.95, 1.0);
-	kern[2] = vec3(0.250, 0.85, 2.0);
-	kern[3] = vec3(0.125, 0.70, 3.0);*/
 
-	if (false) {
-	  kern[0] = vec3(1.000, 1.00, 0.0);
-	  kern[1] = vec3(0.333, 1.00, 1.0);
-	  kern[2] = vec3(0.111, 0.98, 2.0);
-	  kern[3] = vec3(0.080, 0.95, 3.0);
-	  kern[4] = vec3(0.060, 0.90, 4.0);
-	  kern[5] = vec3(0.040, 0.85, 5.0);
-	  kern[6] = vec3(0.020, 0.77, 6.0);
-	  kern[7] = vec3(0.001, 0.70, 7.0);
-	}
-	else if (true)
-	{
-	  kern[0] = vec3(1.000*0.50, 1.00*0.50, 0.000 * blur_size);
-	  kern[1] = vec3(0.333*0.50, 1.00*0.50, 0.500 * blur_size);
-	  kern[2] = vec3(0.111*0.75, 0.98*0.75, 1.000 * blur_size);
-	  kern[3] = vec3(0.080*1.00, 0.95*1.00, 2.000 * blur_size);
-	  kern[4] = vec3(0.060*1.00, 0.90*1.00, 3.000 * blur_size);
-	  kern[5] = vec3(0.040*1.00, 0.85*1.00, 4.000 * blur_size);
-	  kern[6] = vec3(0.020*1.00, 0.77*1.00, 5.000 * blur_size);
-	  kern[7] = vec3(0.001*1.00, 0.70*1.00, 6.000 * blur_size);
-	}
+	kern[0] = vec3(1.000*0.50, 1.00*0.50, 0.000 * blur_size);
+	kern[1] = vec3(0.333*0.50, 1.00*0.50, 0.500 * blur_size);
+	kern[2] = vec3(0.111*0.75, 0.98*0.75, 1.000 * blur_size);
+	kern[3] = vec3(0.080*1.00, 0.95*1.00, 2.000 * blur_size);
+	kern[4] = vec3(0.060*1.00, 0.90*1.00, 3.000 * blur_size);
+	kern[5] = vec3(0.040*1.00, 0.85*1.00, 4.000 * blur_size);
+	kern[6] = vec3(0.020*1.00, 0.77*1.00, 5.000 * blur_size);
+	kern[7] = vec3(0.001*1.00, 0.70*1.00, 6.000 * blur_size);
 
 #else
 #define KERNCOUNT 4

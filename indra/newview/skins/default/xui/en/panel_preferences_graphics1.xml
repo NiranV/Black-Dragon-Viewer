@@ -1758,7 +1758,7 @@ width="510">
  Softening Style:
  </text>
  <combo_box
- control_name="RenderShadowStyle"
+ control_name="RenderShadowType"
  enabled_control="RenderDeferred"
  height="20"
  follows="left|top"
