@@ -142,8 +142,6 @@ private:
 protected:
 	void initListCommandsHandlers();
 	void updateListCommands();
-	void onAddButtonClick();
-	void showActionMenu(LLMenuGL* menu, std::string spawning_view_name);
 	void onTrashButtonClick();
 	void onClipboardAction(const LLSD& userdata);
 	BOOL isActionEnabled(const LLSD& command_name);
@@ -156,9 +154,6 @@ protected:
 	void setUploadCostIfNeeded();
 private:
 	LLDragAndDropButton*		mTrashButton;
-	LLToggleableMenu*			mMenuGearDefault;
-	LLMenuGL*					mMenuAdd;
-	LLMenuButton*				mGearMenuButton;
 
 	bool						mNeedUploadCost;
 	// List Commands                                                              //

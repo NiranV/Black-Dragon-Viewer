@@ -103,8 +103,6 @@ LLPanelMainInventory::LLPanelMainInventory(const LLPanel::Params& p)
 	  mActivePanel(NULL),
 	  mSavedFolderState(NULL),
 	  mFilterText(""),
-	  mMenuGearDefault(NULL),
-	  mMenuAdd(NULL),
 	  mNeedUploadCost(true)
 {
 	// Menu Callbacks (non contex menus)
@@ -192,16 +190,7 @@ BOOL LLPanelMainInventory::postBuild()
 		mFilterEditor->setCommitCallback(boost::bind(&LLPanelMainInventory::onFilterEdit, this, _2));
 	}
 
-	mGearMenuButton = getChild<LLMenuButton>("options_gear_btn");
-
 	initListCommandsHandlers();
-
-	// *TODO:Get the cost info from the server
-	const std::string upload_cost("10");
-	mMenuAdd->getChild<LLMenuItemGL>("Upload Image")->setLabelArg("[COST]", upload_cost);
-	mMenuAdd->getChild<LLMenuItemGL>("Upload Sound")->setLabelArg("[COST]", upload_cost);
-	mMenuAdd->getChild<LLMenuItemGL>("Upload Animation")->setLabelArg("[COST]", upload_cost);
-	mMenuAdd->getChild<LLMenuItemGL>("Bulk Upload")->setLabelArg("[COST]", upload_cost);
 
 	// Trigger callback for focus received so we can deselect items in inbox/outbox
 	LLFocusableElement::setFocusReceivedCallback(boost::bind(&LLPanelMainInventory::onFocusReceived, this));
@@ -925,7 +914,6 @@ void LLFloaterInventoryFinder::selectNoTypes(void* user_data)
 void LLPanelMainInventory::initListCommandsHandlers()
 {
 	childSetAction("trash_btn", boost::bind(&LLPanelMainInventory::onTrashButtonClick, this));
-	childSetAction("add_btn", boost::bind(&LLPanelMainInventory::onAddButtonClick, this));
 
 	mTrashButton = getChild<LLDragAndDropButton>("trash_btn");
 	mTrashButton->setDragAndDropHandler(boost::bind(&LLPanelMainInventory::handleDragAndDropToTrash, this
@@ -937,9 +925,6 @@ void LLPanelMainInventory::initListCommandsHandlers()
 	mCommitCallbackRegistrar.add("Inventory.GearDefault.Custom.Action", boost::bind(&LLPanelMainInventory::onCustomAction, this, _2));
 	mEnableCallbackRegistrar.add("Inventory.GearDefault.Check", boost::bind(&LLPanelMainInventory::isActionChecked, this, _2));
 	mEnableCallbackRegistrar.add("Inventory.GearDefault.Enable", boost::bind(&LLPanelMainInventory::isActionEnabled, this, _2));
-	mMenuGearDefault = LLUICtrlFactory::getInstance()->createFromFile<LLToggleableMenu>("menu_inventory_gear_default.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
-	mGearMenuButton->setMenu(mMenuGearDefault);
-	mMenuAdd = LLUICtrlFactory::getInstance()->createFromFile<LLMenuGL>("menu_inventory_add.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
 
 	// Update the trash button when selected item(s) get worn or taken off.
 	LLOutfitObserver::instance().addCOFChangedCallback(boost::bind(&LLPanelMainInventory::updateListCommands, this));
@@ -950,33 +935,6 @@ void LLPanelMainInventory::updateListCommands()
 	bool trash_enabled = isActionEnabled("delete");
 
 	mTrashButton->setEnabled(trash_enabled);
-}
-
-void LLPanelMainInventory::onAddButtonClick()
-{
-// Gray out the "New Folder" option when the Recent tab is active as new folders will not be displayed
-// unless "Always show folders" is checked in the filter options.
-	bool recent_active = ("Recent Items" == mActivePanel->getName());
-	mMenuAdd->getChild<LLMenuItemGL>("New Folder")->setEnabled(!recent_active);
-
-	setUploadCostIfNeeded();
-
-	showActionMenu(mMenuAdd,"add_btn");
-}
-
-void LLPanelMainInventory::showActionMenu(LLMenuGL* menu, std::string spawning_view_name)
-{
-	if (menu)
-	{
-		menu->buildDrawLabels();
-		menu->updateParent(LLMenuGL::sMenuContainer);
-		LLView* spawning_view = getChild<LLView> (spawning_view_name);
-		S32 menu_x, menu_y;
-		//show menu in co-ordinates of panel
-		spawning_view->localPointToOtherView(0, spawning_view->getRect().getHeight(), &menu_x, &menu_y, this);
-		menu_y += menu->getRect().getHeight();
-		LLMenuGL::showPopup(this, menu, menu_x, menu_y);
-	}
 }
 
 void LLPanelMainInventory::onTrashButtonClick()
@@ -1218,9 +1176,9 @@ void LLPanelMainInventory::setUploadCostIfNeeded()
 	// have two instances of Inventory panel at the moment(and two instances of context menu),
 	// call to gMenuHolder->childSetLabelArg() sets upload cost only for one of the instances.
 
-	if(mNeedUploadCost && mMenuAdd)
+	if(mNeedUploadCost)
 	{
-		LLMenuItemBranchGL* upload_menu = mMenuAdd->findChild<LLMenuItemBranchGL>("upload");
+		LLMenuItemBranchGL* upload_menu = this->findChild<LLMenuItemBranchGL>("upload");
 		if(upload_menu)
 		{
 			S32 upload_cost = LLGlobalEconomy::Singleton::getInstance()->getPriceUpload();
