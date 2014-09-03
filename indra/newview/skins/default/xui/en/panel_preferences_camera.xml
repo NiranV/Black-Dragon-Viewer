@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="879"
+  height="870"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -85,8 +85,8 @@
    min_val="0"
    name="camera_lag"
    show_text="true"
-   width="326"
-   top_pad="2"/>
+   width="327"
+   top_pad="1"/>
    <slider
    can_edit_text="true"
    control_name="CameraOffsetScale"
@@ -103,8 +103,8 @@
    min_val="0.5"
    name="camera_offset_scale"
    show_text="true"
-   width="322"
-   top_pad="2"/>
+   width="324"
+   top_pad="1"/>
    <slider
    can_edit_text="true"
    control_name="CameraPositionSmoothing"
@@ -121,8 +121,8 @@
    min_val="0.5"
    name="camera_position_smoothing"
    show_text="true"
-   width="329"
-   top_pad="2"/>
+   width="330"
+   top_pad="1"/>
    <slider
    can_edit_text="true"
    control_name="ZoomTime"
@@ -139,8 +139,8 @@
    min_val="0"
    name="zoomtime"
    show_text="true"
-   width="329"
-   top_pad="2"/>
+   width="330"
+   top_pad="1"/>
    <check_box
    control_name="EditCameraMovement"
    height="16"
@@ -243,8 +243,8 @@
    min_val="0"
    name="yawfrommouse"
    show_text="true"
-   width="319"
-   top_pad="2"/>
+   width="318"
+   top_pad="1"/>
    
    <slider
    can_edit_text="true"
@@ -262,8 +262,8 @@
    min_val="2"
    name="camrotateslow"
    show_text="true"
-   width="319"
-   top_pad="2"/>
+   width="318"
+   top_pad="1"/>
    <slider
    can_edit_text="true"
    control_name="AvatarRotateThresholdFast"
@@ -281,7 +281,7 @@
    name="camrotatefast"
    show_text="true"
    width="312"
-   top_pad="2"/>
+   top_pad="1"/>
    
    <panel
  follows="left|top|right"
@@ -398,11 +398,11 @@
    max_val="15"
    name="mouse_sensitivity"
    top_pad="19"
-   width="336" />
+   width="334" />
    <check_box
    enabled_control="EnableMouselook"
    control_name="InvertMouse"
-   height="16"
+   height="15"
    label="Invert"
    layout="topleft"
    left_pad="2"
@@ -426,7 +426,7 @@
    name="camrotateml"
    show_text="true"
    width="319"
-   top_pad="2"/>
+   top_pad="1"/>
    
    <panel
  follows="left|top|right"
