@@ -4,8 +4,6 @@
  legacy_header_height="18"
  height="590"
  layout="topleft"
- bg_opaque_image="Window_NoTitle_Foreground"
- bg_alpha_image="Window_NoTitle_Background"
  name="toolbox floater"
  save_rect="true"
  short_title="Build Tools"
