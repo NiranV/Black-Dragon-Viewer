@@ -1860,7 +1860,7 @@ width="510">
                                  function="Pref.Default"/>
       </button>
  <slider
-      enabled_control="RenderShadowBlurSize"
+      control_name="RenderShadowBlurSize"
       decimal_digits="3"
       follows="left|top"
       height="15"
