@@ -101,13 +101,13 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
              <net_map
                bg_color="Transparent"
                follows="all"
-               height="143"
+               height="142"
                layout="topleft"
                left="3"
                mouse_opaque="false"
                name="Net Map"
                right="-3"
-               top="4" />
+               top="2" />
            </layout_panel>
            <layout_panel
              height="213"
@@ -133,7 +133,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 									<panel
              follows="left|bottom|right"
 												 background_visible="true"
-												 bg_alpha_color="Black_25"
+												 bg_alpha_color="White_02"
              height="25"
              label="bottom_panel"
              layout="topleft"
@@ -243,14 +243,15 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          right="-1"
          top="0">
             <accordion
-       		 background_visible="false"
+       		 background_visible="true"
+			 bg_alpha_color="White_02"
              follows="all"
              height="408"
+			 width="322"
              layout="topleft"
              left="2"
              name="friends_accordion"
-             right="-2"
-             top_pad="2">
+             top_pad="1">
                 <accordion_tab
                  layout="topleft"
                  height="172"
@@ -259,6 +260,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  title="Online">
                         <avatar_list
                          allow_select="true"
+						 color="Transparent"
                          follows="all"
                          height="172"
                          layout="topleft"
@@ -276,6 +278,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  title="All">
                         <avatar_list
                          allow_select="true"
+						 color="Transparent"
                          follows="all"
                          height="173"
                          layout="topleft"
@@ -430,12 +433,12 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
             <group_list
              allow_select="true" 
              follows="all"
-             height="406"
+             height="408"
              layout="topleft"
              left="2"
              name="group_list"
              right="-2"
-             top_pad="4" />
+             top_pad="1" />
 												<panel
              follows="left|bottom|right"
              background_visible="true"
@@ -542,14 +545,14 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
             <avatar_list
              allow_select="true"
              follows="all"
-             height="351"
+             height="353"
              layout="topleft"
              left="3"
              multi_select="true"
              name="avatar_list"
              show_last_interaction_time="true"
              right="-2"
-             top_pad="4" />
+             top_pad="1" />
 												<panel
              follows="left|bottom|right"
              background_visible="true"
@@ -662,13 +665,13 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 		 help_topic="blocked_list">
 			<block_list
 			 follows="all"
-			 height="273"
+			 height="275"
 			 layout="topleft"
 			 left="2"
 			 name="blocked"
 			 tool_tip="List of currently blocked Residents"
-			 top_pad="4"
-			 right="-1"/>
+			 top_pad="1"
+			 right="-2"/>
 			<panel
 			  follows="left|bottom|right"
 			  background_visible="true"
@@ -678,7 +681,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 			  layout="topleft"
 			  left="0"
 			  name="blocked_buttons_panel"
-			  right="-1"
+			  right="-2"
 			  top="-27">
 				<icon
 				follows="left|top|right"
