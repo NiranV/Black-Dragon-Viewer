@@ -20,7 +20,7 @@ width="510">
  name="panel_scroll"
  mouse_opaque="false"
  top="0"
- width="510"
+ width="509"
  height="407">
   <panel
   follows="top|left"

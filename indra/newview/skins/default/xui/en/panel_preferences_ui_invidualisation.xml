@@ -18,7 +18,7 @@ width="510">
     name="ui_scroll"
     opaque="true"
     height="407"
-    width="510"
+    width="509"
     top="0">
      <panel
      layout="topleft"
@@ -319,7 +319,7 @@ width="510">
 	    left="10"
 	    tool_tip="Controls how long Tooltips take to fade away"
 	    max_val="5"
-	    min_val="0"
+	    min_val="0.1"
 	    name="ToolTipFadeTime"
 	    top_pad="6"
 	    width="210" />

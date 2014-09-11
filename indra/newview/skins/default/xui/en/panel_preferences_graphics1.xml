@@ -18,7 +18,7 @@ width="510">
  name="gfx_scroll"
  opaque="true"
  height="407"
- width="510"
+ width="509"
  top="0">
   <panel
   layout="topleft"
