@@ -17,6 +17,7 @@
         label_color_disabled_selected="ButtonLabelSelectedDisabledColor"
         image_color="ButtonImageColor"
         image_color_disabled="ButtonImageColor"
+        image_overlay_alignment="center"
         flash_color="ButtonFlashBgColor"
         font="SansSerifSmall"
         hover_glow_amount="0.15"
