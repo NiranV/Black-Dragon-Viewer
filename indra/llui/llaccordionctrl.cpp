@@ -255,9 +255,9 @@ void	LLAccordionCtrl::showScrollbar(S32 width, S32 height)
 
 	ctrlSetLeftTopAndSize(mScrollbar
 		,width-scrollbar_size - PARENT_BORDER_MARGIN/2
-		,height-PARENT_BORDER_MARGIN
+		,height
 		,scrollbar_size
-		,height-2*PARENT_BORDER_MARGIN);
+		,height);
 	
 	mScrollbar->setPageSize(height);
 	mScrollbar->setDocParams(mInnerRect.getHeight(),mScrollbar->getDocPos());
