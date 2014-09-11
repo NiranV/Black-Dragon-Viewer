@@ -37,6 +37,7 @@
 #include "llfloatermap.h"
 #include "llfloatermodelpreview.h"
 #include "llfloatersnapshot.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llimage.h"
 #include "llimagebmp.h"
 #include "llimagepng.h"
@@ -47,6 +48,7 @@
 #include "llresourcedata.h"
 #include "llfloaterperms.h"
 #include "llstatusbar.h"
+#include "llsidepanelinventory.h"
 #include "llviewercontrol.h"	// gSavedSettings
 #include "llviewertexturelist.h"
 #include "lluictrlfactory.h"
@@ -83,7 +85,8 @@ class LLFileEnableUpload : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-		bool new_value = gStatusBar && LLGlobalEconomy::Singleton::getInstance() && (gStatusBar->getBalance() >= LLGlobalEconomy::Singleton::getInstance()->getPriceUpload());
+		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+		bool new_value = sidepanel_inventory && LLGlobalEconomy::Singleton::getInstance() && (sidepanel_inventory->getBalance() >= LLGlobalEconomy::Singleton::getInstance()->getPriceUpload());
 		return new_value;
 	}
 };
@@ -924,8 +927,9 @@ void upload_done_callback(
 				}
 				else if(region)
 				{
+					LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 					// Charge user for upload
-					gStatusBar->debitBalance(expected_upload_cost);
+					sidepanel_inventory->debitBalance(expected_upload_cost);
 					
 					LLMessageSystem* msg = gMessageSystem;
 					msg->newMessageFast(_PREHASH_MoneyTransferRequest);
@@ -1176,7 +1180,8 @@ void upload_new_resource(
 			LLAssetType::AT_TEXTURE == asset_type ||
 			LLAssetType::AT_ANIMATION == asset_type)
 		{
-			S32 balance = gStatusBar->getBalance();
+			LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+			S32 balance = sidepanel_inventory->getBalance();
 			if (balance < expected_upload_cost)
 			{
 				// insufficient funds, bail on this upload

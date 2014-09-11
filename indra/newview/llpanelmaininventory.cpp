@@ -122,12 +122,8 @@ LLPanelMainInventory::LLPanelMainInventory(const LLPanel::Params& p)
 
 BOOL LLPanelMainInventory::postBuild()
 {
-	gInventory.addObserver(this);
-	
 	mFilterTabs = getChild<LLTabContainer>("inventory filter tabs");
 	mFilterTabs->setCommitCallback(boost::bind(&LLPanelMainInventory::onFilterSelected, this));
-	
-    mCounterCtrl = getChild<LLUICtrl>("ItemcountText");
     
 	//panel->getFilter().markDefault();
 
@@ -241,7 +237,6 @@ LLPanelMainInventory::~LLPanelMainInventory( void )
 	else
 		filtersFile.close();
 
-	gInventory.removeObserver(this);
 	delete mSavedFolderState;
 }
 
@@ -534,12 +529,6 @@ BOOL LLPanelMainInventory::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 	return handled;
 }
 
-// virtual
-void LLPanelMainInventory::changed(U32)
-{
-	updateItemcountText();
-}
-
 void LLPanelMainInventory::setFocusFilterEditor()
 {
 	if(mFilterEditor)
@@ -567,38 +556,6 @@ void LLPanelMainInventory::draw()
 		mResortActivePanel = false;
 	}
 	LLPanel::draw();
-	updateItemcountText();
-}
-
-void LLPanelMainInventory::updateItemcountText()
-{
-	if(mItemCount != gInventory.getItemCount())
-	{
-		mItemCount = gInventory.getItemCount();
-		mItemCountString = "";
-		LLLocale locale(LLLocale::USER_LOCALE);
-		LLResMgr::getInstance()->getIntegerString(mItemCountString, mItemCount);
-	}
-
-	LLStringUtil::format_map_t string_args;
-	string_args["[ITEM_COUNT]"] = mItemCountString;
-
-	std::string text = "";
-
-	if (LLInventoryModelBackgroundFetch::instance().folderFetchActive())
-	{
-		text = getString("ItemcountFetching", string_args);
-	}
-	else if (LLInventoryModelBackgroundFetch::instance().isEverythingFetched())
-	{
-		text = getString("ItemcountCompleted", string_args);
-	}
-	else
-	{
-		text = getString("ItemcountUnknown");
-	}
-	
-    mCounterCtrl->setValue(text);
 }
 
 void LLPanelMainInventory::onFocusReceived()

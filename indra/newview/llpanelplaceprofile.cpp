@@ -48,7 +48,8 @@
 #include "llcallbacklist.h"
 #include "llbuycurrencyhtml.h"
 #include "llslurl.h"
-#include "llstatusbar.h"
+#include "llsidepanelinventory.h"
+#include "llfloatersidepanelcontainer.h"
 #include "lltabcontainer.h"
 #include "llviewercontrol.h"
 #include "llviewerparcelmgr.h"
@@ -634,7 +635,8 @@ void LLPanelPlaceProfile::onForSaleBannerClick()
 		{
 			S32 price = parcel->getSalePrice();
 
-			if(price - gStatusBar->getBalance() > 0)
+			LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+			if(price - sidepanel_inventory->getBalance() > 0)
 			{
 				LLStringUtil::format_map_t args;
 				args["AMOUNT"] = llformat("%d", price);

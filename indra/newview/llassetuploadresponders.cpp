@@ -41,7 +41,7 @@
 #include "llpreviewscript.h"
 #include "llpreviewgesture.h"
 #include "llgesturemgr.h"
-#include "llstatusbar.h"		// sendMoneyBalanceRequest()
+#include "llsidepanelinventory.h"		// sendMoneyBalanceRequest()
 #include "llsdserialize.h"
 #include "lluploaddialog.h"
 #include "llviewerobject.h"
@@ -84,7 +84,7 @@ void on_new_single_inventory_upload_complete(
 	{
 		// this upload costed us L$, update our balance
 		// and display something saying that it cost L$
-		LLStatusBar::sendMoneyBalanceRequest();
+		LLSidepanelInventory::sendMoneyBalanceRequest();
 
 		LLSD args;
 		args["AMOUNT"] = llformat("%d", upload_price);

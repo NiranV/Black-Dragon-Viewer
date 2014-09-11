@@ -55,7 +55,8 @@
 #include "llviewertexture.h"
 #include "lltrans.h"
 #include "llscrollcontainer.h"
-#include "llstatusbar.h"
+#include "llsidepanelinventory.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llviewertexture.h"
 
 const S32 MINIMUM_PRICE_FOR_LISTING = 50;	// L$
@@ -1027,7 +1028,8 @@ void LLPanelClassifiedEdit::onSaveClick()
 	}
 	if(isNew() || isNewWithErrors())
 	{
-		if(gStatusBar->getBalance() < getPriceForListing())
+		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+		if(sidepanel_inventory->getBalance() < getPriceForListing())
 		{
 			LLNotificationsUtil::add("ClassifiedInsufficientFunds");
 			return;

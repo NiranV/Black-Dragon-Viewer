@@ -59,37 +59,19 @@ public:
 	/*virtual*/ BOOL handleRightMouseDown(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL postBuild();
 
-	// MANIPULATORS
-	void		setBalance(S32 balance);
-	void		debitBalance(S32 debit);
-	void		creditBalance(S32 credit);
-
-	// Request the latest currency balance from the server
-	static void sendMoneyBalanceRequest();
-
 	void		setHealth(S32 percent);
-
-	void setLandCredit(S32 credit);
-	void setLandCommitted(S32 committed);
 
 	void		refresh();
 	void setVisibleForMouselook(bool visible);
 		// some elements should hide in mouselook
 
 	// ACCESSORS
-	S32			getBalance() const;
 	S32			getHealth() const;
-
-	BOOL isUserTiered() const;
-	S32 getSquareMetersCredit() const;
-	S32 getSquareMetersCommitted() const;
-	S32 getSquareMetersLeft() const;
 
 	LLPanelNearByMedia* getNearbyMediaPanel() { return mPanelNearByMedia; }
 
 private:
 	
-	void onClickBuyCurrency();
 	void onVolumeChanged(const LLSD& newvalue);
 
 	void onMouseEnterVolume();
@@ -99,7 +81,6 @@ private:
 	void onMouseEnterDrawDistance();
 
 	static void onClickMediaToggle(void* data);
-	static void onClickBalance(void* data);
 
 private:
 	LLTextBox	*mTextTime;
@@ -116,11 +97,7 @@ private:
 //	//BD - Draw Distance mouse-over slider
 	LLIconCtrl	*mDrawDistance;
 
-	S32				mBalance;
 	S32				mHealth;
-	S32				mSquareMetersCredit;
-	S32				mSquareMetersCommitted;
-	LLFrameTimer*	mBalanceTimer;
 	LLFrameTimer*	mHealthTimer;
 	LLPanelVolumePulldown* mPanelVolumePulldown;
 	LLPanelNearByMedia*	mPanelNearByMedia;

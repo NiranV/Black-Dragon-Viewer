@@ -44,6 +44,7 @@
 #include "llcallbacklist.h"
 #include "llbuycurrencyhtml.h"
 #include "llfloaterreg.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llfolderview.h"
 #include "llinventorybridge.h"
 #include "llinventorydefines.h"
@@ -58,7 +59,7 @@
 #include "llpreviewtexture.h"
 #include "llscrollcontainer.h"
 #include "llselectmgr.h"
-#include "llstatusbar.h"
+#include "llsidepanelinventory.h"
 #include "lltooldraganddrop.h"
 #include "lltrans.h"
 #include "llviewerassettype.h"
@@ -680,7 +681,8 @@ void LLTaskInvFVBridge::performAction(LLInventoryModel* model, std::string actio
 		}
 		else
 		{
-			if (price > 0 && price > gStatusBar->getBalance())
+			LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+			if (price > 0 && price > sidepanel_inventory->getBalance())
 			{
 				LLStringUtil::format_map_t args;
 				args["AMOUNT"] = llformat("%d", price);

@@ -32,8 +32,9 @@
 #include "llcurrencyuimanager.h"
 #include "llfloater.h"
 #include "llfloaterreg.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llnotificationsutil.h"
-#include "llstatusbar.h"
+#include "llsidepanelinventory.h"
 #include "lltextbox.h"
 #include "llviewchildren.h"
 #include "llviewerwindow.h"
@@ -114,7 +115,8 @@ void LLFloaterBuyCurrencyUI::target(const std::string& name, S32 price)
 	mTargetName = name;
 	mTargetPrice = price;
 	
-	S32 balance = gStatusBar->getBalance();
+	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+	S32 balance = sidepanel_inventory->getBalance();
 	S32 need = price - balance;
 	if (need < 0)
 	{
@@ -232,7 +234,8 @@ void LLFloaterBuyCurrencyUI::updateUI()
 			}
 		}
 		
-		S32 balance = gStatusBar->getBalance();
+		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+		S32 balance = sidepanel_inventory->getBalance();
 		getChildView("balance_label")->setVisible(TRUE);
 		getChildView("balance_amount")->setVisible(TRUE);
 		getChild<LLUICtrl>("balance_amount")->setTextArg("[AMT]", llformat("%d", balance));
@@ -268,14 +271,14 @@ void LLFloaterBuyCurrencyUI::onClickBuy()
 	mManager.buy(getString("buy_currency"));
 	updateUI();
 	// Update L$ balance
-	LLStatusBar::sendMoneyBalanceRequest();
+	LLSidepanelInventory::sendMoneyBalanceRequest();
 }
 
 void LLFloaterBuyCurrencyUI::onClickCancel()
 {
 	closeFloater();
 	// Update L$ balance
-	LLStatusBar::sendMoneyBalanceRequest();
+	LLSidepanelInventory::sendMoneyBalanceRequest();
 }
 
 void LLFloaterBuyCurrencyUI::onClickErrorWeb()
@@ -283,7 +286,7 @@ void LLFloaterBuyCurrencyUI::onClickErrorWeb()
 	LLWeb::loadURLExternal(mManager.errorURI());
 	closeFloater();
 	// Update L$ balance
-	LLStatusBar::sendMoneyBalanceRequest();
+	LLSidepanelInventory::sendMoneyBalanceRequest();
 }
 
 // static

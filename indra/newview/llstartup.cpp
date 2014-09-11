@@ -132,9 +132,9 @@
 #include "llproxy.h"
 #include "llproductinforequest.h"
 #include "llselectmgr.h"
+#include "llsidepanelinventory.h"
 #include "llsky.h"
 #include "llstatview.h"
-#include "llstatusbar.h"		// sendMoneyBalanceRequest(), owns L$ balance
 #include "llsurface.h"
 #include "lltexturecache.h"
 #include "lltexturefetch.h"
@@ -1822,7 +1822,7 @@ bool idle_startup()
 		display_startup();
 		// Get L$ and ownership credit information
 		LL_INFOS() << "Requesting Money Balance" << LL_ENDL;
-		LLStatusBar::sendMoneyBalanceRequest();
+		LLSidepanelInventory::sendMoneyBalanceRequest();
 		display_startup();
 		// request all group information
 		LL_INFOS() << "Requesting Agent Data" << LL_ENDL;

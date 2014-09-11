@@ -29,7 +29,6 @@
 #define LL_LLPANELMAININVENTORY_H
 
 #include "llpanel.h"
-#include "llinventoryobserver.h"
 #include "lldndbutton.h"
 
 #include "llfolderview.h"
@@ -52,7 +51,7 @@ class LLFloater;
 // including all the fixin's (e.g. AllItems/RecentItems tabs, filter floaters).
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-class LLPanelMainInventory : public LLPanel, LLInventoryObserver
+class LLPanelMainInventory : public LLPanel
 {
 public:
 	friend class LLFloaterInventoryFinder;
@@ -70,7 +69,6 @@ public:
 									   void* cargo_data,
 									   EAcceptance* accept,
 									   std::string& tooltip_msg);
-	/*virtual*/ void changed(U32);
 	/*virtual*/ void draw();
 
 	LLInventoryPanel* getPanel() { return mActivePanel; }
@@ -126,15 +124,12 @@ private:
 
 	LLFilterEditor*				mFilterEditor;
 	LLTabContainer*				mFilterTabs;
-    LLUICtrl*                   mCounterCtrl;
 	LLHandle<LLFloater>			mFinderHandle;
 	LLInventoryPanel*			mActivePanel;
 	bool						mResortActivePanel;
 	LLSaveFolderState*			mSavedFolderState;
 	std::string					mFilterText;
 	std::string					mFilterSubString;
-	S32							mItemCount;
-	std::string 				mItemCountString;
 
 
 	//////////////////////////////////////////////////////////////////////////////////

@@ -35,12 +35,11 @@
 #include "llcommandhandler.h"
 #include "llfirstuse.h"
 #include "llviewercontrol.h"
-#include "llfloaterbuycurrency.h"
-#include "llbuycurrencyhtml.h"
 #include "llpanelnearbymedia.h"
 #include "llpanelvolumepulldown.h"
 #include "llfloaterregioninfo.h"
 #include "llfloaterscriptdebug.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llhints.h"
 #include "llhudicon.h"
 #include "lliconctrl.h"
@@ -60,6 +59,7 @@
 #include "llvoavatarself.h"
 #include "llresmgr.h"
 #include "llworld.h"
+#include "llsidepanelinventory.h"
 #include "llstatgraph.h"
 #include "lltoolbarview.h"
 #include "llviewermedia.h"
@@ -116,18 +116,13 @@ LLStatusBar::LLStatusBar(const LLRect& rect)
 	mSGBandwidth(NULL),
 	mSGPacketLoss(NULL),
 	mBtnVolume(NULL),
-	mBoxBalance(NULL),
-	mBalance(0),
-	mHealth(100),
-	mSquareMetersCredit(0),
-	mSquareMetersCommitted(0)
+	mHealth(100)
 {
 	setRect(rect);
 	
 	// status bar can possible overlay menus?
 	setMouseOpaque(FALSE);
 
-	mBalanceTimer = new LLFrameTimer();
 	mHealthTimer = new LLFrameTimer();
 
 	buildFromFile("panel_status_bar.xml");
@@ -135,9 +130,6 @@ LLStatusBar::LLStatusBar(const LLRect& rect)
 
 LLStatusBar::~LLStatusBar()
 {
-	delete mBalanceTimer;
-	mBalanceTimer = NULL;
-
 	delete mHealthTimer;
 	mHealthTimer = NULL;
 
@@ -168,12 +160,6 @@ BOOL LLStatusBar::postBuild()
 	mTextTime = getChild<LLTextBox>("TimeText" );
 //	//BD - Framerate counter in statusbar
 	mFPSText = getChild<LLTextBox>("FPSText");
-	
-	getChild<LLUICtrl>("buyL")->setCommitCallback(
-		boost::bind(&LLStatusBar::onClickBuyCurrency, this));
-
-	mBoxBalance = getChild<LLTextBox>("balance");
-	mBoxBalance->setClickedCallback( &LLStatusBar::onClickBalance, this );
 
 	mBtnVolume = getChild<LLButton>( "volume_btn" );
 	mBtnVolume->setClickedCallback( onClickVolume, this );
@@ -341,61 +327,6 @@ void LLStatusBar::setVisibleForMouselook(bool visible)
 		&& gSavedSettings.getBOOL("HideTopbar"));
 }
 
-void LLStatusBar::debitBalance(S32 debit)
-{
-	setBalance(getBalance() - debit);
-}
-
-void LLStatusBar::creditBalance(S32 credit)
-{
-	setBalance(getBalance() + credit);
-}
-
-void LLStatusBar::setBalance(S32 balance)
-{
-	if (balance > getBalance() && getBalance() != 0)
-	{
-		LLFirstUse::receiveLindens();
-	}
-
-	std::string money_str = LLResMgr::getInstance()->getMonetaryString( balance );
-
-	LLStringUtil::format_map_t string_args;
-	string_args["[AMT]"] = llformat("%s", money_str.c_str());
-	std::string label_str = getString("buycurrencylabel", string_args);
-	mBoxBalance->setValue(label_str);
-
-	if (mBalance && (fabs((F32)(mBalance - balance)) > gSavedSettings.getF32("UISndMoneyChangeThreshold")))
-	{
-		if (mBalance > balance)
-			make_ui_sound("UISndMoneyChangeDown");
-		else
-			make_ui_sound("UISndMoneyChangeUp");
-	}
-
-	if( balance != mBalance )
-	{
-		mBalanceTimer->reset();
-		mBalanceTimer->setTimerExpirySec( ICON_TIMER_EXPIRY );
-		mBalance = balance;
-	}
-}
-
-
-// static
-void LLStatusBar::sendMoneyBalanceRequest()
-{
-	LLMessageSystem* msg = gMessageSystem;
-	msg->newMessageFast(_PREHASH_MoneyBalanceRequest);
-	msg->nextBlockFast(_PREHASH_AgentData);
-	msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-	msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-	msg->nextBlockFast(_PREHASH_MoneyData);
-	msg->addUUIDFast(_PREHASH_TransactionID, LLUUID::null );
-	gAgent.sendReliableMessage();
-}
-
-
 void LLStatusBar::setHealth(S32 health)
 {
 	//LL_INFOS() << "Setting health to: " << buffer << LL_ENDL;
@@ -423,52 +354,9 @@ void LLStatusBar::setHealth(S32 health)
 	mHealth = health;
 }
 
-S32 LLStatusBar::getBalance() const
-{
-	return mBalance;
-}
-
-
 S32 LLStatusBar::getHealth() const
 {
 	return mHealth;
-}
-
-void LLStatusBar::setLandCredit(S32 credit)
-{
-	mSquareMetersCredit = credit;
-}
-void LLStatusBar::setLandCommitted(S32 committed)
-{
-	mSquareMetersCommitted = committed;
-}
-
-BOOL LLStatusBar::isUserTiered() const
-{
-	return (mSquareMetersCredit > 0);
-}
-
-S32 LLStatusBar::getSquareMetersCredit() const
-{
-	return mSquareMetersCredit;
-}
-
-S32 LLStatusBar::getSquareMetersCommitted() const
-{
-	return mSquareMetersCommitted;
-}
-
-S32 LLStatusBar::getSquareMetersLeft() const
-{
-	return mSquareMetersCredit - mSquareMetersCommitted;
-}
-
-void LLStatusBar::onClickBuyCurrency()
-{
-	// open a currency floater - actual one open depends on 
-	// value specified in settings.xml
-	LLBuyCurrencyHTML::openCurrencyFloater();
-	LLFirstUse::receiveLindens(false);
 }
 
 void LLStatusBar::onMouseEnterVolume()
@@ -553,14 +441,6 @@ static void onClickVolume(void* data)
 }
 
 //static 
-void LLStatusBar::onClickBalance(void* )
-{
-	// Force a balance request message:
-	LLStatusBar::sendMoneyBalanceRequest();
-	// The refresh of the display (call to setBalance()) will be done by process_money_balance_reply()
-}
-
-//static 
 void LLStatusBar::onClickMediaToggle(void* data)
 {
 	LLStatusBar *status_bar = (LLStatusBar*)data;
@@ -571,7 +451,8 @@ void LLStatusBar::onClickMediaToggle(void* data)
 
 BOOL can_afford_transaction(S32 cost)
 {
-	return((cost <= 0)||((gStatusBar) && (gStatusBar->getBalance() >=cost)));
+	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+	return((cost <= 0)||((sidepanel_inventory) && (sidepanel_inventory->getBalance() >=cost)));
 }
 
 void LLStatusBar::onVolumeChanged(const LLSD& newvalue)
@@ -591,7 +472,7 @@ public:
 		if (tokens.size() == 1
 			&& tokens[0].asString() == "request")
 		{
-			LLStatusBar::sendMoneyBalanceRequest();
+			LLSidepanelInventory::sendMoneyBalanceRequest();
 			return true;
 		}
 		return false;

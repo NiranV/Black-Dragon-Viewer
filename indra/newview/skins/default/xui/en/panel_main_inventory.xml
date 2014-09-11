@@ -9,58 +9,6 @@
  min_width="250"
  name="main inventory panel"
  width="297">
-  <panel.string
-   name="Itemcount">
-  </panel.string>
-  <panel.string
-   name="ItemcountFetching">
-   ([ITEM_COUNT])...
-  </panel.string>
-  <panel.string
-   name="ItemcountCompleted">
-   [ITEM_COUNT]
-  </panel.string>
-  <panel.string
-   name="ItemcountUnknown">
-			---
-  </panel.string>
-  <text
-	    type="string"
-	    length="1"
-	    follows="left|top"
-	    height="25"
-	    layout="topleft"
-		halign="right"
-	    left="195"
-	    word_wrap="false"
-	    font.style="ITALIC"
-	    name="ItemcountText"
-	    font="SansSerifSmall"
-	    text_color="Friend"
-	    top="3"
-	    width="100">
-					---
-				</text>
-				<icon 
-   scale_image="true"
-   follows="left|top"
-   layout="topleft"
-   color="1 1 1 1"
-   height="16"
-   image_name="Inv_Object"
-   left="300"
-   top_delta="-1"
-   width="16" />
-				<view_border
-	 bevel_style="in"
-	 follows="top|left|right"
-	 height="1"
-	 layout="topleft"
-	 left="10"
-	 name="border1"
-	 top="18"
-	 right="-10"
-	 width="250"/>
     <menu_bar
    height="18"
    layout="topleft"
@@ -430,37 +378,22 @@
         <on_click
          function="Inventory.EmptyTrash"
          parameter="empty_trash" />
-    </menu_item_call> -->
+    </menu_item_call>
     </menu>
     </menu_bar>
-	<text
-   type="string"
-   length="1"
-   follows="left|top"
-   font="SansSerifSmall"
-   height="12"
-   halign="right"
-   layout="topleft"
-   left="65"
-   mouse_opaque="true"
-   name="sort_options"
-   width="128"
-   top_pad="3">
-   Sorting:
-   </text>
   <icon 
    scale_image="true"
-   follows="left|top"
+   follows="right|top"
    layout="topleft"
    color="1 1 1 1"
    height="16"
    image_name="Objects_By_Date_Off"
-   left_pad="10"
+   right="-110"
    top_delta="0"
    width="16" />
    <button
    height="16"
-   follows="top|left"
+   follows="top|right"
    is_toggle="true"
 			control_name="InventorySortObjectsByDate"
    image_selected="icons/check_mark.png"
@@ -468,23 +401,23 @@
    tool_tip="Sort your Inventory Objects by Date"
    label=""
    layout="topleft"
-   left_pad="0"
+   right="-94"
    name="sort_by_date"
    top_delta="0"
    width="16"/>
    <icon 
    scale_image="true"
    layout="topleft"
-   follows="left|top"
+   follows="right|top"
    color="1 1 1 1"
    height="16"
    image_name="Folders_By_Name_Off"
-   left_pad="10"
-   top_delta="0"
+   right="-70"
+   top_delta="-1"
    width="16" />
    <button
    height="16"
-   follows="top|left"
+   follows="top|right"
    control_name="InventorySortFoldersByName"
    image_selected="icons/check_mark.png"
    image_unselected="Checkbox_Off"
@@ -492,23 +425,23 @@
    tool_tip="Sort your Inventory folders by Name"
    label=""
    layout="topleft"
-   left_pad="0"
+   right="-54"
    name="sort_folders_by_name"
-   top_delta="0"
+   top_delta="1"
    width="16"/>
    <icon 
    scale_image="true"
    layout="topleft"
-   follows="left|top"
+   follows="right|top"
    color="1 1 1 1"
    height="16"
    image_name="Sys_Folders_To_Top_Off"
-   left_pad="10"
-   top_delta="0"
+   right="-30"
+   top_delta="-1"
    width="16"/>
    <button
    height="16"
-   follows="top|left"
+   follows="top|right"
    control_name="InventorySystemFoldersToTop"
    image_selected="icons/check_mark.png"
    image_unselected="Checkbox_Off"
@@ -516,9 +449,9 @@
    label=""
    is_toggle="true"
    layout="topleft"
-   left_pad="0"
+   right="-14"
    name="sys_folders_on_top"
-   top_delta="0"
+   top_delta="1"
    width="16"/>
   <tab_container
      bg_alpha_color="DkGray"
@@ -527,18 +460,18 @@
      background_opaque="true"
      follows="all"
      halign="center"
-     height="323"
+     height="343"
      layout="topleft"
      left="7"
      name="inventory filter tabs"
      tab_height="20"
      tab_position="top"
      tab_min_width="146"
-     top_pad="1"
+     top_pad="2"
      width="282">
     <inventory_panel
-     bg_opaque_color="Black_50"
-     bg_alpha_color="Black_50"
+     bg_opaque_color="White_02"
+     bg_alpha_color="White_02"
      background_visible="true"
      background_opaque="true"
      border="false"
@@ -547,15 +480,16 @@
      height="323"
      label="My Inventory"
      layout="topleft"
-     left="0"
+     left_delta="18"
      name="All Items"
      sort_order_setting="InventorySortOrder"
      show_item_link_overlays="true"
-     top="0"
-     width="282" />
+     top_pad="1"
+     width="220" >
+	</inventory_panel>
     <recent_inventory_panel
-     bg_opaque_color="Black_50"
-     bg_alpha_color="Black_50"
+     bg_opaque_color="White_02"
+     bg_alpha_color="White_02"
      background_visible="true"
      background_opaque="true"
      border="false"
@@ -564,9 +498,10 @@
      height="323"
      label="Recent"
      layout="topleft"
-     left="0"
+     left_delta="18"
+	 top_pad="1"
      name="Recent Items"
-     width="282" />
+     width="220" />
       <!--<inventory_panel
 	bg_opaque_color="Black_50"
 	bg_alpha_color="Black_50"
@@ -595,8 +530,8 @@
    width="277">
       <layout_panel
        background_visible="true"
-       bg_opaque_color="Black_75"
-       bg_alpha_color="Black_75"
+       bg_opaque_color="White_02"
+       bg_alpha_color="White_02"
        auto_resize="false"
        height="25"
        layout="topleft"
@@ -622,13 +557,13 @@
       </layout_panel>
       <layout_panel
        background_visible="true"
-       bg_opaque_color="Black_75"
-       bg_alpha_color="Black_75"
+       bg_opaque_color="White_02"
+       bg_alpha_color="White_02"
        auto_resize="true"
        height="25"
        layout="topleft"
        name="dummy_panel"
-       width="212">
+       width="211">
           <icon
            follows="bottom|left|right"
            height="25"
@@ -637,25 +572,25 @@
            left="1"
            top="0"
            name="dummy_icon"
-           width="211" />
+           width="210" />
 					<filter_editor
    follows="left|top|right"
    height="23"
    label="Search Inventory for..."
    layout="topleft"
-   left="1"
+   left="2"
    name="inventory search editor"
    tool_tip="Type in one or more words to search for, separated by '+' "
    top="2"
-   width="210"
+   width="208"
 			background_image="TextField_Off"
 			background_image_disabled="TextField_Disabled"
 			background_image_focused="TextField_Active"/>
       </layout_panel>
       <layout_panel
        background_visible="true"
-       bg_opaque_color="Black_75"
-       bg_alpha_color="Black_75"
+       bg_opaque_color="White_02"
+       bg_alpha_color="White_02"
        auto_resize="false"
        height="25"
        layout="topleft"
@@ -681,8 +616,8 @@
       </layout_panel>
       <layout_panel
        background_visible="true"
-       bg_opaque_color="Black_75"
-       bg_alpha_color="Black_75"
+       bg_opaque_color="White_02"
+       bg_alpha_color="White_02"
        auto_resize="false"
        height="25"
        layout="topleft"
@@ -708,8 +643,8 @@
       </layout_panel>
       <layout_panel
        background_visible="true"
-       bg_opaque_color="Black_75"
-       bg_alpha_color="Black_75"
+       bg_opaque_color="White_02"
+       bg_alpha_color="White_02"
        auto_resize="false"
        height="25"
        layout="topleft"

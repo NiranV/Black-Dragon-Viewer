@@ -51,8 +51,9 @@
 #include "lltrans.h"
 #include "lluictrlfactory.h"
 
-#include "llstatusbar.h"
+#include "llsidepanelinventory.h"
 #include "llfloaterworldmap.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llviewermessage.h"
 
 static LLPanelInjector<LLPanelGroupLandMoney> t_panel_group_money("panel_group_land_money");
@@ -308,9 +309,10 @@ bool LLPanelGroupLandMoney::impl::applyContribution()
 	your_contribution = getStoredContribution();
 	sqm_avail = your_contribution;
 	
-	if(gStatusBar)
+	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+	if(sidepanel_inventory)
 	{
-		sqm_avail += gStatusBar->getSquareMetersLeft();
+		sqm_avail += sidepanel_inventory->getSquareMetersLeft();
 	}
 
 	// get new contribution and compare to available
@@ -588,9 +590,10 @@ void LLPanelGroupLandMoney::activate()
 		//We need to have the status bar have observers
 		//or find better way of distributing up to date land data. - jwolk
 		S32 max_avail = mImplementationp->getStoredContribution();
-		if(gStatusBar)
+		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+		if(sidepanel_inventory)
 		{
-			max_avail += gStatusBar->getSquareMetersLeft();
+			max_avail += sidepanel_inventory->getSquareMetersLeft();
 		}
 		mImplementationp->setYourMaxContributionTextBox(max_avail);
 	}

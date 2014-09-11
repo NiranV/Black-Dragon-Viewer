@@ -74,6 +74,7 @@
 #include "llfloatertools.h"
 #include "llfloaterworldmap.h"
 #include "llfloaterbuildoptions.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llavataractions.h"
 #include "lllandmarkactions.h"
 #include "llgroupmgr.h"
@@ -95,6 +96,7 @@
 #include "llselectmgr.h"
 #include "llspellcheckmenuhandler.h"
 #include "llstatusbar.h"
+#include "llsidepanelinventory.h"
 #include "llteleporthistory.h"
 #include "lltextureview.h"
 #include "lltoolcomp.h"
@@ -4990,7 +4992,8 @@ void handle_buy_or_take()
 	{
 		S32 total_price = selection_price();
 
-		if (total_price <= gStatusBar->getBalance() || total_price == 0)
+		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+		if (total_price <= sidepanel_inventory->getBalance() || total_price == 0)
 		{
 			handle_buy();
 		}
@@ -5137,7 +5140,8 @@ void handle_buy()
 
 	S32 price = sale_info.getSalePrice();
 	
-	if (price > 0 && price > gStatusBar->getBalance())
+	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+	if (price > 0 && price > sidepanel_inventory->getBalance())
 	{
 		LLStringUtil::format_map_t args;
 		args["AMOUNT"] = llformat("%d", price);

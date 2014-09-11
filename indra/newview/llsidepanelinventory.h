@@ -29,6 +29,8 @@
 
 #include "llpanel.h"
 
+#include "llinventoryobserver.h"
+
 class LLButton;
 class LLFolderViewItem;
 class LLInboxAddedObserver;
@@ -39,8 +41,9 @@ class LLLayoutPanel;
 class LLPanelMainInventory;
 class LLSidepanelItemInfo;
 class LLSidepanelTaskInfo;
+class LLTextBox;
 
-class LLSidepanelInventory : public LLPanel
+class LLSidepanelInventory : public LLPanel, LLInventoryObserver
 {
 public:
 	LLSidepanelInventory();
@@ -48,13 +51,36 @@ public:
 
 private:
 	void updateInbox();
+	void onClickBuyCurrency();
+	static void onClickBalance(void* data);
 	
 public:
 	void observeInboxCreation();
 	void observeInboxModifications(const LLUUID& inboxID);
 
 	/*virtual*/ BOOL postBuild();
+	/*virtual*/ void draw();
 	/*virtual*/ void onOpen(const LLSD& key);
+
+	/*virtual*/ void changed(U32);
+
+	void		setBalance(S32 balance);
+	void		debitBalance(S32 debit);
+	void		creditBalance(S32 credit);
+
+	S32			getBalance() const;
+
+	void setLandCredit(S32 credit);
+	void setLandCommitted(S32 committed);
+
+	BOOL isUserTiered() const;
+
+	S32 getSquareMetersCommitted() const;
+	S32 getSquareMetersLeft() const;
+	S32 getSquareMetersCredit() const;
+
+	// Request the latest currency balance from the server
+	static void sendMoneyBalanceRequest();
 
 	LLInventoryPanel* getActivePanel(); // Returns an active inventory panel, if any.
 	LLInventoryPanel* getInboxPanel() const { return mInventoryPanelInbox.get(); }
@@ -94,6 +120,8 @@ protected:
 
 	void onInboxChanged(const LLUUID& inbox_id);
 
+	void updateItemcountText();
+
 	//
 	// UI Elements
 	//
@@ -122,6 +150,19 @@ private:
 	LLButton*					mTeleportBtn;
 	LLButton*					mOverflowBtn;
 	LLButton*					mShopBtn;
+
+	LLUICtrl*                   mCounterCtrl;
+
+	S32							mBalance;
+	S32							mItemCount;
+	S32							mSquareMetersCredit;
+	S32				mSquareMetersCommitted;
+
+	std::string 				mItemCountString;
+
+	LLTextBox					*mBoxBalance;
+
+	LLFrameTimer*				mBalanceTimer;
 
 	bool						mInboxEnabled;
 

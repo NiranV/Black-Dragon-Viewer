@@ -78,6 +78,7 @@
 #include "llscriptfloater.h"
 #include "llselectmgr.h"
 #include "llstartup.h"
+#include "llsidepanelinventory.h"
 #include "llsky.h"
 #include "llslurl.h"
 #include "llstatenums.h"
@@ -5811,11 +5812,12 @@ void process_money_balance_reply( LLMessageSystem* msg, void** )
 	LL_INFOS("Messaging") << "L$, credit, committed: " << balance << " " << credit << " "
 			<< committed << LL_ENDL;
     
-	if (gStatusBar)
+	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+	if (sidepanel_inventory)
 	{
-		gStatusBar->setBalance(balance);
-		gStatusBar->setLandCredit(credit);
-		gStatusBar->setLandCommitted(committed);
+		sidepanel_inventory->setBalance(balance);
+		sidepanel_inventory->setLandCredit(credit);
+		sidepanel_inventory->setLandCommitted(committed);
 	}
 
 	if (desc.empty()

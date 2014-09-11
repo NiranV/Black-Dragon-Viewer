@@ -32,9 +32,11 @@
 #include "llappviewer.h"
 #include "llavataractions.h"
 #include "llbutton.h"
+#include "llbuycurrencyhtml.h"
 #include "lldate.h"
 #include "llfirstuse.h"
 #include "llfloatersidepanelcontainer.h"
+#include "llfloaterbuycurrency.h"
 #include "llfoldertype.h"
 #include "llfolderview.h"
 #include "llhttpclient.h"
@@ -48,6 +50,7 @@
 #include "lloutfitobserver.h"
 #include "llpanelmaininventory.h"
 #include "llpanelmarketplaceinbox.h"
+#include "llresmgr.h"
 #include "llselectmgr.h"
 #include "llsidepaneliteminfo.h"
 #include "llsidepaneltaskinfo.h"
@@ -75,6 +78,8 @@ static const char * const MAIN_INVENTORY_LAYOUT_PANEL_NAME = "main_inventory_lay
 static const char * const INVENTORY_LAYOUT_STACK_NAME = "inventory_layout_stack";
 
 static const char * const MARKETPLACE_INBOX_PANEL = "marketplace_inbox";
+
+const F32 ICON_TIMER_EXPIRY		= 3.f; // How long the balance and health icons should flash after a change.
 
 //
 // Helpers
@@ -119,16 +124,25 @@ private:
 LLSidepanelInventory::LLSidepanelInventory()
 	: LLPanel()
 	, mItemPanel(NULL)
+	, mBoxBalance(NULL)
+	, mBalance(0)
+	, mSquareMetersCredit(0)
+	, mSquareMetersCommitted(0)
 	, mPanelMainInventory(NULL)
 	, mInboxEnabled(false)
 	, mCategoriesObserver(NULL)
 	, mInboxAddedObserver(NULL)
 {
+
+	mBalanceTimer = new LLFrameTimer();
 	//buildFromFile( "panel_inventory.xml"); // Called from LLRegisterPanelClass::defaultPanelClassBuilder()
 }
 
 LLSidepanelInventory::~LLSidepanelInventory()
 {
+	delete mBalanceTimer;
+	mBalanceTimer = NULL;
+
 	LLLayoutPanel* inbox_layout_panel = getChild<LLLayoutPanel>(INBOX_LAYOUT_PANEL_NAME);
 
 	// Save the InventoryMainPanelHeight in settings per account
@@ -145,6 +159,8 @@ LLSidepanelInventory::~LLSidepanelInventory()
 		gInventory.removeObserver(mInboxAddedObserver);
 	}
 	delete mInboxAddedObserver;
+
+	gInventory.removeObserver(this);
 }
 
 void handleInventoryDisplayInboxChanged()
@@ -158,9 +174,19 @@ void handleInventoryDisplayInboxChanged()
 
 BOOL LLSidepanelInventory::postBuild()
 {
+	gInventory.addObserver(this);
+
 	// UI elements from inventory panel
 	{
 		mInventoryPanel = getChild<LLPanel>("sidepanel_inventory_panel");
+
+		mCounterCtrl = getChild<LLUICtrl>("ItemcountText");
+
+		getChild<LLUICtrl>("buyL")->setCommitCallback(
+		boost::bind(&LLSidepanelInventory::onClickBuyCurrency, this));
+
+		mBoxBalance = getChild<LLTextBox>("balance");
+		mBoxBalance->setClickedCallback( &LLSidepanelInventory::onClickBalance, this );
 
 		mInfoBtn = mInventoryPanel->getChild<LLButton>("info_btn");
 		mInfoBtn->setClickedCallback(boost::bind(&LLSidepanelInventory::onInfoButtonClicked, this));
@@ -250,6 +276,13 @@ BOOL LLSidepanelInventory::postBuild()
 	updateVerbs();
 
 	return TRUE;
+}
+
+// virtual
+void LLSidepanelInventory::draw()
+{
+	LLPanel::draw();
+	updateItemcountText();
 }
 
 void LLSidepanelInventory::updateInbox()
@@ -646,6 +679,148 @@ bool LLSidepanelInventory::canWearSelected()
 	}
 
 	return true;
+}
+
+// virtual
+void LLSidepanelInventory::changed(U32)
+{
+	updateItemcountText();
+}
+
+void LLSidepanelInventory::updateItemcountText()
+{
+	if(mItemCount != gInventory.getItemCount())
+	{
+		mItemCount = gInventory.getItemCount();
+		mItemCountString = "";
+		LLLocale locale(LLLocale::USER_LOCALE);
+		LLResMgr::getInstance()->getIntegerString(mItemCountString, mItemCount);
+	}
+
+	LLStringUtil::format_map_t string_args;
+	string_args["[ITEM_COUNT]"] = mItemCountString;
+
+	std::string text = "";
+
+	if (LLInventoryModelBackgroundFetch::instance().folderFetchActive())
+	{
+		text = getString("ItemcountFetching", string_args);
+	}
+	else if (LLInventoryModelBackgroundFetch::instance().isEverythingFetched())
+	{
+		text = getString("ItemcountCompleted", string_args);
+	}
+	else
+	{
+		text = getString("ItemcountUnknown");
+	}
+	
+    mCounterCtrl->setValue(text);
+}
+
+void LLSidepanelInventory::setBalance(S32 balance)
+{
+	if (balance > getBalance() && getBalance() != 0)
+	{
+		LLFirstUse::receiveLindens();
+	}
+
+	std::string money_str = LLResMgr::getInstance()->getMonetaryString( balance );
+
+	LLStringUtil::format_map_t string_args;
+	string_args["[AMT]"] = llformat("%s", money_str.c_str());
+	std::string label_str = getString("buycurrencylabel", string_args);
+	mBoxBalance->setValue(label_str);
+
+	if (mBalance && (fabs((F32)(mBalance - balance)) > gSavedSettings.getF32("UISndMoneyChangeThreshold")))
+	{
+		if (mBalance > balance)
+			make_ui_sound("UISndMoneyChangeDown");
+		else
+			make_ui_sound("UISndMoneyChangeUp");
+	}
+
+	if( balance != mBalance )
+	{
+		mBalanceTimer->reset();
+		mBalanceTimer->setTimerExpirySec( ICON_TIMER_EXPIRY );
+		mBalance = balance;
+	}
+}
+
+
+// static
+void LLSidepanelInventory::sendMoneyBalanceRequest()
+{
+	LLMessageSystem* msg = gMessageSystem;
+	msg->newMessageFast(_PREHASH_MoneyBalanceRequest);
+	msg->nextBlockFast(_PREHASH_AgentData);
+	msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+	msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+	msg->nextBlockFast(_PREHASH_MoneyData);
+	msg->addUUIDFast(_PREHASH_TransactionID, LLUUID::null );
+	gAgent.sendReliableMessage();
+}
+
+//static 
+void LLSidepanelInventory::onClickBalance(void* )
+{
+	// Force a balance request message:
+	LLSidepanelInventory::sendMoneyBalanceRequest();
+	// The refresh of the display (call to setBalance()) will be done by process_money_balance_reply()
+}
+
+void LLSidepanelInventory::onClickBuyCurrency()
+{
+	// open a currency floater - actual one open depends on 
+	// value specified in settings.xml
+	LLBuyCurrencyHTML::openCurrencyFloater();
+	LLFirstUse::receiveLindens(false);
+}
+
+void LLSidepanelInventory::setLandCredit(S32 credit)
+{
+	mSquareMetersCredit = credit;
+}
+
+S32 LLSidepanelInventory::getBalance() const
+{
+	return mBalance;
+}
+
+void LLSidepanelInventory::debitBalance(S32 debit)
+{
+	setBalance(getBalance() - debit);
+}
+
+void LLSidepanelInventory::creditBalance(S32 credit)
+{
+	setBalance(getBalance() + credit);
+}
+
+void LLSidepanelInventory::setLandCommitted(S32 committed)
+{
+	mSquareMetersCommitted = committed;
+}
+
+S32 LLSidepanelInventory::getSquareMetersCredit() const
+{
+	return mSquareMetersCredit;
+}
+
+BOOL LLSidepanelInventory::isUserTiered() const
+{
+	return (mSquareMetersCredit > 0);
+}
+
+S32 LLSidepanelInventory::getSquareMetersCommitted() const
+{
+	return mSquareMetersCommitted;
+}
+
+S32 LLSidepanelInventory::getSquareMetersLeft() const
+{
+	return mSquareMetersCredit - mSquareMetersCommitted;
 }
 
 LLInventoryItem *LLSidepanelInventory::getSelectedItem()

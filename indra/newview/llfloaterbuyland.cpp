@@ -39,6 +39,7 @@
 #include "llfloater.h"
 #include "llfloaterreg.h"
 #include "llfloatertools.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llframetimer.h"
 #include "lliconctrl.h"
 #include "lllineeditor.h"
@@ -46,6 +47,7 @@
 #include "llparcel.h"
 #include "llslurl.h"
 #include "llstatusbar.h"
+#include "llsidepanelinventory.h"
 #include "lltextbox.h"
 #include "lltexturectrl.h"
 #include "lltrans.h"
@@ -329,8 +331,9 @@ void LLFloaterBuyLandUI::SelectionObserver::changed()
 
 void LLFloaterBuyLandUI::updateAgentInfo()
 {
-	mAgentCommittedTier = gStatusBar->getSquareMetersCommitted();
-	mAgentCashBalance = gStatusBar->getBalance();
+	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+	mAgentCommittedTier = sidepanel_inventory->getSquareMetersCommitted();
+	mAgentCashBalance = sidepanel_inventory->getBalance();
 
 	// *TODO: This is an approximation, we should send this value down
 	// to the viewer. See SL-10728 for details.
