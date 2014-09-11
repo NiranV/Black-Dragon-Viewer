@@ -252,10 +252,22 @@ void LLInventoryPanel::initFromParams(const LLInventoryPanel::Params& params)
 	mFolderRoot.get()->setCallbackRegistrar(&mCommitCallbackRegistrar);
 	
 	// Scroller
-		LLRect scroller_view_rect = getRect();
-		scroller_view_rect.translate(-scroller_view_rect.mLeft, -scroller_view_rect.mBottom);
-	LLScrollContainer::Params scroller_params(mParams.scroll());
-		scroller_params.rect(scroller_view_rect);
+	static LLUICachedControl<S32> scrollbar_size ("UIScrollbarSize", 0);
+
+	LLRect scroll_rect;
+	scroll_rect.setOriginAndSize( 
+		params.left_delta() - scrollbar_size,
+		0,
+		params.rect().getWidth() - 4,
+		getRect().getHeight() - params.top_pad());
+	
+	//LLScrollbar::Params sbparams;
+	//sbparams.rect(scroll_rect);
+		//LLRect scroller_view_rect = getRect();
+		//scroller_view_rect.translate(-scroller_view_rect.mLeft+3, -scroller_view_rect.mBottom);
+		//scroller_view_rect.setLeftTopAndSize(
+		LLScrollContainer::Params scroller_params(mParams.scroll());
+		scroller_params.rect(scroll_rect);
 		mScroller = LLUICtrlFactory::create<LLFolderViewScrollContainer>(scroller_params);
 		addChild(mScroller);
 		mScroller->addChild(mFolderRoot.get());
