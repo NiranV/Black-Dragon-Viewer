@@ -256,6 +256,7 @@
                                  font="SansSerifSmall"
                                  follows="all"
                                  name="chat_history"
+                                 bg_color="White"
                                  parse_highlights="true"
                                  parse_urls="true"
                                  left="1"
