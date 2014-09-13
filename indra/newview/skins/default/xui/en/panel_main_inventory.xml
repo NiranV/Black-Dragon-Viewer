@@ -578,11 +578,11 @@
    height="23"
    label="Search Inventory for..."
    layout="topleft"
-   left="2"
+   left="3"
    name="inventory search editor"
    tool_tip="Type in one or more words to search for, separated by '+' "
    top="2"
-   width="208"
+   width="206"
 			background_image="TextField_Off"
 			background_image_disabled="TextField_Disabled"
 			background_image_focused="TextField_Active"/>
