@@ -22,29 +22,30 @@
    </panel.string>
    <tab_container
      follows="all"
-     height="539"
+     height="564"
      layout="topleft"
      left="5"
      name="appearance_tabs"
-     tab_min_width="150"
+     tab_min_width="155"
      tab_height="20"
      tab_position="top"
      halign="center"
      top="8"
-     width="310">
+     width="320">
          <panel
            class="outfits_list"
            filename="panel_outfits_list.xml"
            height="520"
            name="outfitslist_tab"
-           background_visible="false"
+           background_visible="true"
+		   bg_alpha_color="White_02"
            follows="all"
            label="My Outfits"
            layout="topleft"
            width="315" />
          <panel
-           background_visible="false"
-           bg_alpha_color="DkGray"
+           background_visible="true"
+           bg_alpha_color="White_02"
            class="panel_wearing"
            filename="panel_outfits_wearing.xml"
            follows="all"
@@ -60,77 +61,50 @@
        follows="bottom|left|right"
        height="27"
        layout="topleft"
-       left="8"
-       top_pad="1"
+       left="40"
+	   clip="true"
+	   drag_handle_thickness="0"
+       bottom="-5"
        visible="true"
        name="bottom_panel"
-       width="310">
-	    <layout_stack
-	     follows="bottom|left|right"
-	     height="23"
-	     layout="topleft"
-	     mouse_opaque="false"
-	     name="bottom_panel_ls"
-	     left="0"
-	     orientation="horizontal"
-	     top="0"
-	     width="308">	
-		<layout_panel
-		     follows="bottom|left|right"
-		     height="23"
-                     layout="bottomleft"
-                     left="0"			
-                     mouse_opaque="false"
-                     name="save_btn_lp"
-                     auto_resize="true"
-                     width="156">
+       width="242">
+	    
                     <button
                          follows="bottom|left|right"
-                         height="23"
+                         height="25"
                          label="Save As"
                          left="1"
                          layout="topleft"
                          name="save_btn"
                          top="0"
-																									image_selected="SegmentedBtn_Left_Selected_Press"
-                         image_unselected="SegmentedBtn_Left_Off"
-                         image_pressed="SegmentedBtn_Left_Press"
-                         image_pressed_selected="SegmentedBtn_Left_Selected_Press"
-                         width="132" />
+                         image_hover_unselected="Toolbar_Middle_Over"
+						  image_selected="Toolbar_Middle_Selected"
+						  image_unselected="Toolbar_Middle_Off"
+                         width="122" />
                     <button
                          follows="bottom|right"
-                         height="23"
+                         height="25"
                          name="save_flyout_btn"
                          label=""
                          layout="topleft"
-                         left_pad="-1"
+                         left_pad="1"
                          tab_stop="false"
-                         image_selected="SegmentedBtn_Right_Selected_Press"
-                         image_unselected="SegmentedBtn_Right_Off"
-                         image_pressed="SegmentedBtn_Right_Press"
-                         image_pressed_selected="SegmentedBtn_Right_Selected_Press"
+                         image_hover_unselected="Toolbar_Middle_Over"
+						  image_selected="Toolbar_Middle_Selected"
+						  image_unselected="Toolbar_Middle_Off"
                          image_overlay="Arrow_Small_Up"
-                         width="20"/>
-			    </layout_panel>
-			    <layout_panel
-                     follows="bottom|left|right"
-                     height="23"
-                     layout="bottomleft"
-                     left_pad="3"			
-                     mouse_opaque="false"
-                     name="wear_btn_lp"
-                     auto_resize="true"
-                     width="147">
+                         width="31"/>
                     <button
-                         follows="bottom|left|right"
-                         height="23"
+                         follows="bottom|right"
+                         height="25"
                          label="Wear"
                          layout="topleft"
                          name="wear_btn"
-                         left="1"
+						 image_hover_unselected="Toolbar_Middle_Over"
+						  image_selected="Toolbar_Middle_Selected"
+						  image_unselected="Toolbar_Middle_Off"
+                         left_pad="1"
                          top="0"
-                         width="146" />
-			    </layout_panel>
-			</layout_stack>
+                         width="95" />
    </panel>
 </panel>

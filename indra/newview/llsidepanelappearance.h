@@ -78,8 +78,7 @@ private:
 	void onFilterEdit(const std::string& search_string);
 	void onVisibilityChanged ( const LLSD& new_visibility );
 
-	void onOpenOutfitButtonClicked();
-	void onEditAppearanceButtonClicked();
+	void onSearchButtonClicked();
 
 	void toggleMyOutfitsPanel(BOOL visible);
 	void toggleOutfitEditPanel(BOOL visible, BOOL disable_camera_switch = FALSE);
@@ -90,8 +89,7 @@ private:
 	LLPanelOutfitEdit*		mOutfitEdit;
 	LLPanelEditWearable*	mEditWearable;
 
-	LLButton*					mOpenOutfitBtn;
-	LLButton*					mEditAppearanceBtn;
+	LLButton*					mSearchBtn;
 	LLButton*					mNewOutfitBtn;
 	LLPanel*					mCurrOutfitPanel;
 

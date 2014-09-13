@@ -11,15 +11,13 @@
    width="312">
     <accordion
      background_visible="false"
-	 bg_alpha_color="Black_50"
-     bg_opaque_color="Black_50"
      follows="all"
      height="400"
      layout="topleft"
      left="3"
      name="outfits_accordion"
-     top="0"
-     width="309">
+     top="1"
+     width="310">
        <no_matched_tabs_text
          name="no_matched_outfits_msg"
          value="Didn't find what you're looking for? Try [secondlife:///app/search/all/[SEARCH_TERM] Search]."
@@ -30,8 +28,8 @@
     </accordion>
     <panel
      background_visible="true"
-     bg_alpha_color="Black_75"
-     bg_opaque_color="Black_75"
+     bg_alpha_color="White_02"
+     bg_opaque_color="White_02"
 	 follows="bottom|left|right"
 	 height="26"
 	 layout="topleft"
@@ -49,18 +47,18 @@
        image_selected="Toolbar_Middle_Selected"
        image_unselected="Toolbar_Middle_Off"
        layout="topleft"
-       left="1"
+       left="0"
        name="options_gear_btn"
        top="1"
        width="31" />
      <icon
        follows="bottom|left|right"
        height="25"
-       image_name="Toolbar_Middle_Off"
+       image_name="transparent.j2c"
        layout="topleft"
        left_pad="1"
        name="dummy_icon"
-       width="242"/>
+       width="244"/>
       <button
        follows="bottom|right"
        height="25"

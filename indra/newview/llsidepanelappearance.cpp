@@ -94,11 +94,8 @@ LLSidepanelAppearance::~LLSidepanelAppearance()
 // virtual
 BOOL LLSidepanelAppearance::postBuild()
 {
-	mOpenOutfitBtn = getChild<LLButton>("openoutfit_btn");
-	mOpenOutfitBtn->setClickedCallback(boost::bind(&LLSidepanelAppearance::onOpenOutfitButtonClicked, this));
-
-	mEditAppearanceBtn = getChild<LLButton>("editappearance_btn");
-	mEditAppearanceBtn->setClickedCallback(boost::bind(&LLSidepanelAppearance::onEditAppearanceButtonClicked, this));
+	mSearchBtn = getChild<LLButton>("show_search_btn");
+	mSearchBtn->setClickedCallback(boost::bind(&LLSidepanelAppearance::onSearchButtonClicked, this));
 
 	childSetAction("edit_outfit_btn", boost::bind(&LLSidepanelAppearance::showOutfitEditPanel, this));
 
@@ -248,40 +245,12 @@ void LLSidepanelAppearance::onFilterEdit(const std::string& search_string)
 	}
 }
 
-void LLSidepanelAppearance::onOpenOutfitButtonClicked()
+void LLSidepanelAppearance::onSearchButtonClicked()
 {
-	const LLViewerInventoryItem *outfit_link = LLAppearanceMgr::getInstance()->getBaseOutfitLink();
-	if (!outfit_link)
-		return;
-	if (!outfit_link->getIsLinkType())
-		return;
-
-	LLAccordionCtrlTab* tab_outfits = mPanelOutfitsInventory->findChild<LLAccordionCtrlTab>("tab_outfits");
-	if (tab_outfits)
-	{
-		tab_outfits->changeOpenClose(FALSE);
-		LLInventoryPanel *inventory_panel = tab_outfits->findChild<LLInventoryPanel>("outfitslist_tab");
-		if (inventory_panel)
-		{
-			LLFolderView* root = inventory_panel->getRootFolder();
-			LLFolderViewItem *outfit_folder =    inventory_panel->getItemByID(outfit_link->getLinkedUUID());
-			if (outfit_folder)
-			{
-				outfit_folder->setOpen(!outfit_folder->isOpen());
-				root->setSelection(outfit_folder,TRUE);
-				root->scrollToShowSelection();
-			}
-		}
-	}
-}
-
-// *TODO: obsolete?
-void LLSidepanelAppearance::onEditAppearanceButtonClicked()
-{
-	if (gAgentWearables.areWearablesLoaded())
-	{
-		LLVOAvatarSelf::onCustomizeStart();
-	}
+	LLPanel* panel = getChild<LLPanel>("search_lp");
+	panel->setVisible(!panel->getVisible());
+	panel = getChild<LLPanel>("outfit_name_lp");
+	panel->setVisible(!panel->getVisible());
 }
 
 void LLSidepanelAppearance::onNewOutfitButtonClicked()
@@ -436,13 +405,11 @@ void LLSidepanelAppearance::refreshCurrentOutfitName(const std::string& name)
 
 		std::string string_name = gAgentWearables.isCOFChangeInProgress() ? "Changing outfits" : "No Outfit";
 		mCurrentLookName->setText(getString(string_name));
-		mOpenOutfitBtn->setEnabled(FALSE);
 	}
 	else
 	{
 		mCurrentLookName->setText(name);
 		// Can't just call update verbs since the folder link may not have been created yet.
-		mOpenOutfitBtn->setEnabled(TRUE);
 	}
 }
 
