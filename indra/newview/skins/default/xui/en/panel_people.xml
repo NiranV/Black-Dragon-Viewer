@@ -246,7 +246,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
        		 background_visible="true"
 			 bg_alpha_color="White_02"
              follows="all"
-             height="408"
+             height="409"
 			 width="322"
              layout="topleft"
              left="2"
@@ -433,7 +433,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
             <group_list
              allow_select="true" 
              follows="all"
-             height="408"
+             height="409"
              layout="topleft"
              left="2"
              name="group_list"
@@ -545,7 +545,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
             <avatar_list
              allow_select="true"
              follows="all"
-             height="353"
+             height="354"
              layout="topleft"
              left="3"
              multi_select="true"
@@ -665,7 +665,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 		 help_topic="blocked_list">
 			<block_list
 			 follows="all"
-			 height="275"
+			 height="276"
 			 layout="topleft"
 			 left="2"
 			 name="blocked"
@@ -675,7 +675,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 			<panel
 			  follows="left|bottom|right"
 			  background_visible="true"
-						  bg_alpha_color="Black_25"
+			  bg_alpha_color="Black_25"
 			  height="25"
 			  label="bottom_panel"
 			  layout="topleft"
