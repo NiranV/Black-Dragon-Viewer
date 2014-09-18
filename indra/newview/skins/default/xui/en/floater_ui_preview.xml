@@ -28,8 +28,8 @@ or specifying its path in the "Editor Path" field.</string>
      top="0">
       <panel
          bevel_style="in"
-         bg_alpha_color="0 0 0 0"
-         bg_opaque_color="0 0 0 0.3"
+         bg_alpha_color="White_02"
+         background_visible="true"
          border="true"
          follows="left|right|top"
          height="90"
@@ -237,8 +237,8 @@ or specifying its path in the "Editor Path" field.</string>
         </scroll_list>
         <panel
          bevel_style="in"
-         bg_alpha_color="0 0 0 0"
-         bg_opaque_color="0 0 0 0.3"
+         bg_alpha_color="White_02"
+         background_visible="true"
          border="true"
          bottom_delta="65"
          follows="left|right|bottom"
@@ -315,8 +315,8 @@ or specifying its path in the "Editor Path" field.</string>
         </panel>
         <panel
          bevel_style="in"
-         bg_alpha_color="0 0 0 0"
-         bg_opaque_color="0 0 0 0.3"
+         bg_alpha_color="White_02"
+         background_visible="true"
          border="true"
          bottom_delta="40"
          follows="left|right|bottom"
