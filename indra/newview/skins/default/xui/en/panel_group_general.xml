@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
  label="General"
- height="604"
- width="304"
+ height="404"
+ width="308"
  follows="left|top"
  layout="topleft"
  class="panel_group_general"
@@ -22,95 +22,117 @@ Hover your mouse over the options for more help.
         Retrieving member data
     </panel.string>
     <scroll_container
-         color="Transparent"
+         color="White_02"
          follows="all"
          layout="topleft"
          mouse_opaque="false"
          left="0"
          name="roles_scroll"
          opaque="true"
-         height="603"
-         width="302"
-         top="0">
+         height="402"
+         width="307"
+         top="1">
       <panel
          bevel_style="none"
          border="false"
-         follows="top|left"
-         height="580"
+         follows="top|left|right"
+         height="440"
          width="292"
          layout="topleft"
          left="0"
          name="preferences_container"
          top="0">
+    <icon
+      follows="top|left|right"
+      height="25"
+      name="bg"
+      mouse_opaque="false"
+      image_name="Toolbar_Middle_Off"
+      left="5"
+      top="5"
+      width="210" />
+    <text
+      font="SansSerifSmall"
+      width="206"
+      follows="top|left|right"
+      layout="topleft"
+      mouse_opaque="false"
+     type="string"
+     height="10"
+     length="1"
+     left="8"
+     name="prepend_founded_by"
+     top="5">
+      Founder:
+    </text>
+     <text
+      follows="left|top|right"
+     height="10"
+     layout="topleft"
+     left_delta="0"
+     name="founder_name"
+     top_pad="1"
+     use_ellipses="true"
+     width="206" />
+     <button
+     follows="right|top"
+     left_pad="2"
+     top="5"
+     height="25"
+     pad_bottom="-3"
+     label="JOIN NOW!"
+     image_hover_unselected="Toolbar_Middle_Over"
+       image_selected="Toolbar_Middle_Selected"
+       image_unselected="Toolbar_Middle_Off"
+     name="btn_join"
+     visible="true"
+     width="76" />
+     <icon
+      follows="top|right"
+      height="25"
+      name="btn_no_join"
+      mouse_opaque="false"
+      image_name="Toolbar_Middle_Off"
+      left_delta="0"
+      top="5"
+      width="76" />
+    <text
+    font="SansSerifSmall"
+    text_color="BeaconColor"
+     type="string"
+     follows="top|right"
+     height="10"
+     layout="topleft"
+     halign="center"
+     right_pad="0"
+     name="join_cost_text"
+     top_delta="0"
+     visible="true"
+     width="77">
+      Free
+    </text>
     <texture_picker
      default_image_name="Generic_Group_Large"
      follows="left|top"
      height="110"
      label=""
      layout="topleft"
-     left="5"
+     left="6"
      name="insignia"
      no_commit_on_selection="true"
      tool_tip="Click to choose a picture"
-     top="5"
-     width="100" />
-    <text
-      font="SansSerifSmall"
-      text_color="White_50"
-      width="190"
-      follows="top|left|right"
-      layout="topleft"
-      mouse_opaque="false"
-     type="string"
-     height="16"
-     length="1"
-     left_pad="8"
-     name="prepend_founded_by"
-     top_delta="0">
-      Founder:
-    </text>
-     <text
-      follows="left|top|right"
-     height="16"
-     layout="topleft"
-     left_delta="-2"
-     name="founder_name"
-     top_pad="2"
-     use_ellipses="true"
-     width="168" />
-    <text
-    font="SansSerifMedium"
-    text_color="EmphasisColor"
-     type="string"
-     follows="left|top"
-     height="16"
-     layout="topleft"
-     left_delta="0"
-     name="join_cost_text"
-     top_pad="10"
-     visible="true"
-     width="190">
-      Free
-    </text>
-    <button
-     follows="left|top"
-     left_delta="0"
-     top_pad="6"
-     height="23"
-     label="JOIN NOW!"
-     name="btn_join"
-     visible="true"
-     width="120" />
+     top_pad="20"
+     width="90" />
     <text_editor
      type="string"
      follows="left|top|right"
-     left="5"
-     height="80"
+     left_pad="1"
+     height="86"
+     width="195"
      layout="topleft"
      max_length="511"
      name="charter"
-     top="105"
-     right="-4"
+     top_delta="1"
     bg_readonly_color="DkGray2"
     text_readonly_color="White"
      word_wrap="true">
@@ -121,9 +143,10 @@ Hover your mouse over the options for more help.
      draw_heading="true"
      follows="left|top|right"
      heading_height="23"
+     width="291"
      height="160"
      layout="topleft"
-     left="5"
+     left="3"
      name="visible_members"
      short_names="false" 
      top_pad="2">
@@ -140,38 +163,57 @@ Hover your mouse over the options for more help.
          name="status"
          relative_width="0.2" />
       </name_list>
+    <icon
+      follows="top|left"
+      height="25"
+      name="bg"
+      mouse_opaque="false"
+      image_name="Toolbar_Middle_Off"
+      left="5"
+      top_pad="5"
+      width="74" />
          <text
          follows="left|top|right"
          type="string"
-         height="12"
-         layout="left|top|right"
-         left="5"
-         text_color="EmphasisColor"
+         height="10"
+         layout="topleft"
+         left="8"
          name="my_group_settngs_label"
-         top_pad="10"
-         width="300">
+         top_delta="1"
+         width="63">
            Me
         </text>
          <text
          follows="left|top|right"
          type="string"
-         height="12"
-         layout="left|top|right"
-         left="10"
+         height="10"
+         layout="topleft"
+         left="8"
          name="active_title_label"
-         top_pad="5"
-         width="300">
+         top_pad="1"
+         width="63">
             My title:
         </text>
         <combo_box
          follows="left|top|right"
-         height="23"
+         height="25"
          layout="topleft"
-         left="10"
-         right="-5"
+         left_pad="9"
+         width="212"
          name="active_title"
          tool_tip="Sets the title that appears in your avatar&apos;s name tag when this group is active."
-         top_pad="2" />
+         top_delta="-12" >
+            <combo_box.combo_button
+            image_unselected="Toolbar_Middle_Off"
+            image_selected="Toolbar_Middle_Selected"
+            image_disabled="Toolbar_Middle_Off" />
+            <combo_box.drop_down_button
+            image_unselected="Toolbar_Middle_Off"
+            image_selected="Toolbar_Middle_Selected"
+            image_pressed="Toolbar_Middle_Selected" 
+            image_pressed_selected="Toolbar_Middle_Selected"
+            image_disabled="Toolbar_Middle_Off" />
+        </combo_box>
         <check_box
          follows="left|top"
          height="16"
@@ -191,25 +233,86 @@ Hover your mouse over the options for more help.
          left="10"
          name="list_groups_in_profile"
          tool_tip="Sets whether you want to show this group in your profile"
-         top_pad="5"
+         top_pad="1"
          width="295" />
+      <icon
+      follows="top|left"
+      height="25"
+      name="bg"
+      mouse_opaque="false"
+      image_name="Toolbar_Middle_Off"
+      left="5"
+      top_pad="5"
+      width="74" />
         <text
-         follows="left|top|right"
+         follows="left|top"
          type="string"
          height="12"
          layout="topleft"
-         left="5"
-         text_color="EmphasisColor"
+         left="8"
+         top_delta="1"
          name="group_settngs_label"
-         width="300">
+         width="65">
          Group
         </text>
+      <icons_combo_box
+         follows="left|top|right"
+         height="25"
+         layout="topleft"
+         left_pad="7"
+         name="group_mature_check"
+         tool_tip="Sets whether your group contains information rated as Moderate"
+         top_delta="-1"
+         width="212">
+            <icons_combo_box.combo_button
+            image_unselected="Toolbar_Middle_Off"
+            image_selected="Toolbar_Middle_Selected"
+            image_disabled="Toolbar_Middle_Off" />
+            <icons_combo_box.drop_down_button
+            image_unselected="Toolbar_Middle_Off"
+            image_selected="Toolbar_Middle_Selected"
+            image_pressed="Toolbar_Middle_Selected" 
+            image_pressed_selected="Toolbar_Middle_Selected"
+            image_disabled="Toolbar_Middle_Off" />
+            <icons_combo_box.item
+               label="General Content"
+               name="pg"
+               value="Not Mature">
+               <item.columns
+                 halign="right"
+                 type="icon"
+                 value="Parcel_PG_Light"
+                 width="20"/>
+             </icons_combo_box.item>
+            <icons_combo_box.item
+               label="Mature Content"
+               name="mature"
+               value="Mature">
+               <item.columns
+                 halign="right"
+                 type="icon"
+                 value="Parcel_M_Light"
+                 width="20"/>
+             </icons_combo_box.item>
+        </icons_combo_box>
+      <check_box
+         follows="left|top"
+         height="16"
+         initial_value="true"
+         label="Show in search"
+         layout="topleft"
+         left="10"
+         name="show_in_group_list"
+         tool_tip="Let people see this group in search results"
+         top_pad="5"
+         width="300" />
         <check_box
          follows="right|top|left"
          height="16"
          label="Anyone can join"
          layout="topleft"
          left="10"
+         top_pad="1"
          name="open_enrollement"
          tool_tip="Sets whether this group allows new members to join without being invited."
          width="90" />
@@ -221,54 +324,21 @@ Hover your mouse over the options for more help.
          left_delta="0"
          name="check_enrollment_fee"
          tool_tip="Sets whether to require an enrollment fee to join the group"
-         top_pad="5"
-         width="300" />
+         top_pad="1"
+         width="120" />
         <spinner
          decimal_digits="0"
          follows="left|top"
          halign="left"
          height="23"
          increment="1"
-         label_width="15"
-         label="L$"
          layout="topleft"
          max_val="99999"
-         left="30"
+         left_pad="5"
+         top_delta="-4"
          name="spin_enrollment_fee"
          tool_tip="New members must pay this fee to join the group when Enrollment Fee is checked."
-         width="170" />
-        <combo_box
-         follows="left|top"
-         height="23"
-         layout="topleft"
-         left="10"
-         name="group_mature_check"
-         tool_tip="Sets whether your group contains information rated as Moderate"
-         top_pad="4"
-         width="190">
-			<combo_item name="select_mature" value="Select">
-			- Select maturity rating -
-			</combo_item>
-            <combo_box.item
-             label="Moderate Content"
-             name="mature"
-             value="Mature" />
-            <combo_box.item
-             label="General Content"
-             name="pg"
-             value="Not Mature" />
-        </combo_box>
-        <check_box
-         follows="left|top"
-         height="16"
-         initial_value="true"
-         label="Show in search"
-         layout="topleft"
-         left="10"
-         name="show_in_group_list"
-         tool_tip="Let people see this group in search results"
-         top_pad="4"
-         width="300" />
+         width="100" />
 
     </panel>
     </scroll_container>
