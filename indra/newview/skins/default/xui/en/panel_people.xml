@@ -59,7 +59,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
      layout="topleft"
      left="3"
      name="tabs"
-     tab_min_width="59"
+     tab_min_width="62"
      tab_height="20"
      tab_position="top"
      top="0"
@@ -310,7 +310,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 												<panel
              follows="left|bottom|right"
              background_visible="true"
-												 bg_alpha_color="Black_25"
+												 bg_alpha_color="White_02"
              height="25"
              label="bottom_panel"
              layout="topleft"
@@ -442,7 +442,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 												<panel
              follows="left|bottom|right"
              background_visible="true"
-												 bg_alpha_color="Black_25"
+												 bg_alpha_color="White_02"
              height="25"
              label="bottom_panel"
              layout="topleft"
@@ -505,7 +505,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                 top_delta="6"
 				width="63"
                 name="groupcount">
-              [COUNT] + [REMAINING] / 42
+              [COUNT] + [REMAINING] | 42
             </text>
                 <menu_button
                  follows="right"
@@ -556,7 +556,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 												<panel
              follows="left|bottom|right"
              background_visible="true"
-												 bg_alpha_color="Black_25"
+												 bg_alpha_color="White_02"
              height="25"
              label="bottom_panel"
              layout="topleft"
@@ -675,7 +675,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 			<panel
 			  follows="left|bottom|right"
 			  background_visible="true"
-			  bg_alpha_color="Black_25"
+			  bg_alpha_color="White_02"
 			  height="25"
 			  label="bottom_panel"
 			  layout="topleft"
