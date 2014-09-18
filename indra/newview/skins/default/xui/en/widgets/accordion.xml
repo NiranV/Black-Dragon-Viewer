@@ -13,6 +13,8 @@
      follows="all"
      height="100"
      h_pad="10"
+     single_expansion="false"
+     fit_parent="false"
      name="no_matched_tabs_msg"
      v_pad="15"
      width="200"
