@@ -126,7 +126,7 @@ void LLGridManager::initialize(const std::string& grid_file)
 				  DEFAULT_LOGIN_PAGE,
 				  SL_UPDATE_QUERY_URL,
 				  "Agni");
-	addSystemGrid("Second Life Beta Test Grid (Aditi)",
+	addSystemGrid("Second Life Beta Grid (Aditi)",
 				  "util.aditi.lindenlab.com",
 				  "https://login.aditi.lindenlab.com/cgi-bin/login.cgi",
 				  "http://aditi-secondlife.webdev.lindenlab.com/helpers/",

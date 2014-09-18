@@ -718,6 +718,9 @@ with the same filename but different name
   <texture name="Objects_By_Name_Off" file_name="icons/ObjectsByName_Off.png"/>
   <texture name="Sys_Folders_To_Top_Off" file_name="icons/SysFoldersToTop_Off.png"/>
   
+  <texture name="R" file_name="icons/secondlife_16.png"/>
+  <texture name="S" file_name="icons/secondlife_beta_16.png"/>
+  
   <texture name="NavBar_BG_middle" file_name="navbar/NavBar_BG_middle.png" preload="true" />
   
   <texture name="Menu_Bar" file_name="menu_bar.tga" scale.left="1" scale.top="40" scale.right="1025" scale.bottom="0" />
