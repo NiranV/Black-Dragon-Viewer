@@ -172,7 +172,7 @@
       top_pad="-1"
       left="6"
       height="25"
-      width="316"
+      width="312"
       layout="topleft">
    		   <layout_stack
 	     	follows="bottom|left|right"
@@ -183,7 +183,7 @@
 			left="0"
 			orientation="horizontal"
 			top="0"
-			width="311">
+			width="312">
 	
 				<layout_panel
 				follows="bottom|left|right"

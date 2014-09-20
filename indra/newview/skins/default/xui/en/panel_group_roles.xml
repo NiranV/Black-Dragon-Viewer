@@ -72,7 +72,7 @@ clicking on their names.
          left="0"
          name="roles_scroll"
          opaque="true"
-         height="502"
+         height="503"
          width="315"
          top="1">
          <panel
@@ -247,10 +247,11 @@ clicking on their names.
         <panel
          border="false"
          height="503"
+         follows="all"
          label="Roles"
+         width="316"
          layout="topleft"
          left="0"
-         right="-1"
          help_topic="roles_roles_tab"
          name="roles_sub_tab"
          class="panel_group_roles_subtab">
@@ -294,41 +295,74 @@ including the Everyone and Owner Roles.
          left="0"
          name="roles_scroll"
          opaque="true"
-         height="504"
-         width="308"
-         top="0">
+         height="503"
+         width="315"
+         top="1">
          <panel
          border="false"
-         follows="top|left"
-         height="661"
-         width="287"
+         follows="top|left|right"
+         height="517"
+         width="300"
          layout="topleft"
          left="0"
          name="members_panel">
-         <filter_editor
-         layout="topleft"
+            <button
+             follows="top|left"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_overlay="AddItem_Off"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             height="25"
+             layout="topleft"
+             left="5"
+             top="5"
+             name="role_create"
+             width="31" />
+            <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="1"
          top="5"
-         left="5"
-         right="-5"
-         height="22"
+         width="231" />
+         <filter_editor
+         background_image="TextField_Off"
+         background_image_disabled="TextField_Disabled"
+         background_image_focused="TextField_Active"
+         layout="topleft"
+         top_delta="1"
+         left_delta="2"
+         right="-34"
+         height="23"
          search_button_visible="false"
          follows="left|top|right"
          label="Filter Roles"
          name="filter_input" />
-            <scroll_list
-             column_padding="0"
-             draw_heading="true"
-             draw_stripes="false"
-             heading_height="23"
-             height="132"
+            <button
+             height="25"
+             follows="top|right"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_overlay="TrashItem_Off"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
-             search_column="1"
-             left="5"
+             left_pad="3"
+             top_delta="-1"
+             name="role_delete"
+             width="31" />
+            <scroll_list
+             column_padding="2"
+             draw_heading="true"
+             height="120"
              follows="left|top|right"
-             right="-1"
+             layout="topleft"
+             left="3"
+             width="299"
+             multi_select="true"
              name="role_list"
-             top_pad="5"
-             width="310">
+             top_pad="0">
                 <scroll_list.columns
                  label="Role"
                  name="name"
@@ -342,147 +376,208 @@ including the Everyone and Owner Roles.
                  name="members"
                relative_width="0.15"  />
             </scroll_list>
-            <button
-            follows="top|left"
-             height="23"
-             label="New Role"
-             layout="topleft"
-             left="5"
-             name="role_create"
-             width="120" />
-            <button
-             height="23"
-             follows="top|left"
-             label="Delete Role"
-             layout="topleft"
-             left_pad="10"
-             name="role_delete"
-             width="120" />
+            <icon
+         follows="top|left"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top_pad="1"
+         width="85" />
             <text
          type="string"
          height="16"
          layout="topleft"
          follows="left|top"
-         left="5"
-         top_pad="5"
+         left="8"
+         top_delta="5"
          name="static"
-         width="300">
+         width="85">
            Role Name
         </text>
+         <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="-2"
+         top_delta="-5"
+         width="209" />
         <line_editor
          type="string"
-         height="20"
+         height="23"
          layout="topleft"
-         left="5"
+         left_delta="2"
          follows="left|top|right"
-         right="-1"
+         right="-3"
          max_length_bytes="20"
          name="role_name"
-         top_pad="0"
-         width="300">
+         top_delta="1"
+         width="203">
         </line_editor>
-        <text
+        <icon
+         follows="top|left"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top_pad="5"
+         width="85" />
+            <text
          type="string"
          height="16"
          layout="topleft"
          follows="left|top"
-         left="5"
+         left="8"
+         top_delta="5"
          name="static3"
-         top_pad="5"
-         width="300">
+         width="85">
            Role Title
         </text>
+        <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="-2"
+         top_delta="-5"
+         width="209" />
         <line_editor
          type="string"
-         height="20"
+         height="23"
          layout="topleft"
-         left="5"
+         left_delta="2"
          follows="left|top|right"
-         right="-1"
+         right="-3"
          max_length_bytes="20"
          name="role_title"
-         top_pad="0"
-         width="300">
+         top_delta="1"
+         width="203">
         </line_editor>
-               <text
+               <icon
+         follows="top|left"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top_pad="5"
+         width="85" />
+            <text
          type="string"
          height="16"
          layout="topleft"
          follows="left|top"
-         left="5"
+         left="8"
+         top_delta="5"
          name="static2"
-         top_pad="5"
-         width="200">
+         width="85">
             Description
         </text>
-        <text_editor
+        <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="-2"
+         top_delta="-5"
+         width="209" />
+        <line_editor
          type="string"
+         height="23"
          layout="topleft"
-         left="5"
+         left_delta="2"
          follows="left|top|right"
-         right="-1"
-         max_length="295"
-         height="35"
+         right="-3"
+         max_length_bytes="20"
          name="role_description"
-         top_pad="0"
-         width="300"
-         word_wrap="true">
-        </text_editor>
-        <text
+         top_delta="1"
+         width="203"/>
+        <icon
+         follows="top|left"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top_pad="5"
+         width="125" />
+            <text
          type="string"
          height="16"
          layout="topleft"
          follows="left|top"
-         left="5"
-         text_color="EmphasisColor"
+         left="8"
+         top_delta="5"
          name="static4"
-         top_pad="5"
-         width="300">
+         width="120">
             Assigned Members
         </text>
-        <name_list
-         draw_stripes="true"
-         height="128"
-         layout="topleft"
-         left="5"
-         follows="left|top|right"
-         right="-1"
-         name="role_assigned_members"
-         top_pad="0"
-         width="300" />
-        <check_box
+            <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="3"
+         top_delta="-5"
+         width="169" />
+         <check_box
          height="15"
          label="Reveal members"
-         left="5"
+         left_delta="5"
          layout="topleft"
          name="role_visible_in_list"
          tool_tip="Sets whether members of this role are visible in the General tab to people outside of the group."
-         top_pad="4"
-         width="300" />
-         <text
+         top_delta="6"
+         width="160" />
+        <name_list
+         draw_stripes="true"
+         column_padding="2"
+             follows="left|top|right"
+         height="115"
+         layout="topleft"
+         left="3"
+         width="299"
+         name="role_assigned_members"
+         top_pad="2"/>
+         <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top_pad="3"
+         width="295" />
+            <text
          type="string"
          height="16"
          layout="topleft"
          follows="left|top"
-         left="5"
-         text_color="EmphasisColor"
+         left="8"
+         top_delta="5"
          name="static5"
-         top_pad="2"
-         width="300">
+         width="200">
             Allowed Abilities
         </text>
         <scroll_list
          draw_stripes="true"
-         height="140"
+         column_padding="2"
+             follows="left|top|right"
+         height="115"
          layout="topleft"
-         left="5"
-         follows="left|top|right"
-         right="-1"
+         left="3"
+         width="299"
          name="role_allowed_actions"
          search_column="2"
          tool_tip="For details of each allowed ability see the abilities tab"
-         top_pad="0"
-         width="300">
+         top_pad="2">
             <scroll_list.columns
              label=""
              name="icon"
@@ -501,11 +596,12 @@ including the Everyone and Owner Roles.
         </panel>
         <panel
          border="false"
+         follows="all"
          height="503"
          label="Abilities"
          layout="topleft"
          left="0"
-         right="-1"
+         width="316"
          help_topic="roles_actions_tab"
          name="actions_sub_tab"
          class="panel_group_actions_subtab"
@@ -535,40 +631,51 @@ things in this group. There&apos;s a broad variety of Abilities.
          left="0"
          name="roles_scroll"
          opaque="true"
-         height="504"
-         width="308"
-         top="0">
+         height="503"
+         width="315"
+         top="1">
          <panel
          border="false"
-         follows="top|left"
-         height="656"
-         width="287"
+         follows="top|left|right"
+         height="526"
+         width="300"
          layout="topleft"
          left="0"
          name="members_panel">
+         <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top="5"
+         width="295" />
          <filter_editor
          layout="topleft"
-         top="5"
-         left="5"
-         right="-5"
-         height="22"
+         background_image="TextField_Off"
+         background_image_disabled="TextField_Disabled"
+         background_image_focused="TextField_Active"
+         top_delta="1"
+         left_delta="2"
+         right="-2"
+         height="23"
          search_button_visible="false"
          follows="left|top|right"
          label="Filter Abilities"
          name="filter_input" />
         <scroll_list
-         column_padding="0"
-         draw_stripes="true"
-         height="200"
+         column_padding="2"
+         height="120"
          follows="left|top|right"
          layout="topleft"
-         left="5"
-         right="-1"
+         left="3"
+         width="299"
+         multi_select="true"
          name="action_list"
          search_column="2"
          tool_tip="Select an Ability to view more details"
-         top_pad="5"
-         width="300">
+         top_pad="1">
             <scroll_list.columns
              label=""
              name="icon"
@@ -582,9 +689,9 @@ things in this group. There&apos;s a broad variety of Abilities.
              name="action"
              width="270" />
         </scroll_list>
-                <text_editor
-       bg_readonly_color="Transparent"
-       text_readonly_color="EmphasisColor"
+         <text_editor
+         bg_readonly_color="Transparent"
+         text_readonly_color="EmphasisColor"
          type="string"
          enabled="false"
          layout="topleft"
@@ -598,46 +705,66 @@ things in this group. There&apos;s a broad variety of Abilities.
          word_wrap="true">
             This Ability is &apos;Eject Members from this Group&apos;. Only an Owner can eject another Owner.
         </text_editor>
+         <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top_pad="1"
+         width="295" />
         <text
          type="string"
          height="16"
          layout="topleft"
          follows="left|top"
-         left="5"
+         left="8"
          name="static2"
-         top_pad="1"
-         width="300">
+         top_delta="5"
+         width="280">
             Roles with this ability
         </text>
         <scroll_list
-         height="145"
-         layout="topleft"
+         column_padding="2"
+         height="120"
          follows="left|top|right"
-         left="5"
-         right="-1"
+         layout="topleft"
+         left="3"
+         width="299"
+         multi_select="true"
          name="action_roles"
-         top_pad="0"
-         width="300" />
+         top_pad="0"/>
+        <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top_pad="1"
+         width="295" />
         <text
          type="string"
          height="16"
          layout="topleft"
          follows="left|top"
-         left="5"
+         left="8"
          name="static3"
-         top_pad="5"
-         width="300">
+         top_delta="5"
+         width="280">
             Members with this ability
         </text>
         <name_list
-         height="145"
+         column_padding="2"
+         height="120"
          follows="left|top|right"
          layout="topleft"
-         left="5"
-         right="-1"
+         left="3"
+         width="299"
+         multi_select="true"
          name="action_members"
-         top_pad="0"
-         width="300" />
+         top_pad="0"/>
          </panel>
             </scroll_container>
         </panel>
