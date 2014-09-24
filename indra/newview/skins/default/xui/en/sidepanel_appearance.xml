@@ -95,7 +95,7 @@ width="333">
          <icon
       follows="top|left|right"
       height="25"
-      name="bg"
+      name="bg_appearance"
       mouse_opaque="false"
       image_name="Toolbar_Middle_Off"
       left="0"

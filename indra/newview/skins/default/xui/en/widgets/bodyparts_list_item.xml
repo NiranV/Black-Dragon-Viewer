@@ -14,7 +14,7 @@
    layout="topleft"
    left="0"
    name="item_icon"
-   top="2"
+   top="3"
    width="16" />
   <item_name
    follows="left|right"
@@ -63,11 +63,12 @@
    name="btn_edit"
    layout="topleft"
    follows="top|right"
-   image_overlay="Edit_Wrench"
-   top="0"
+   image_unselected="Edit_Wrench"
+   image_selected="Edit_Wrench"
+   top="3"
    left="0"
-   height="23"
-   width="23"
+   height="18"
+   width="18"
    tab_stop="false"
    tool_tip="Edit this shape"/>
 </bodyparts_list_item>

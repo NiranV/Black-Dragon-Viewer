@@ -91,7 +91,6 @@ private:
 
 	LLButton*					mSearchBtn;
 	LLButton*					mNewOutfitBtn;
-	LLPanel*					mCurrOutfitPanel;
 
 	LLTextBox*					mCurrentLookName;
 	LLTextBox*					mOutfitStatus;
@@ -105,6 +104,8 @@ private:
 
 	// Gets set to true when we're opened for the first time.
 	bool mOpened;
+
+	bool mCoFLoading;
 };
 
 #endif //LL_LLSIDEPANELAPPEARANCE_H

@@ -623,6 +623,7 @@ void LLPanelOutfitEdit::showAddWearablesPanel(bool show_add_wearables)
 
 		mFolderViewFilterCmbBox->setVisible(false);
 		mListViewFilterCmbBox->setVisible(false);
+		getChild<LLIconCtrl>("bg_filters")->setVisible(true);
 
 		showWearablesFilter();
 
@@ -687,6 +688,9 @@ void LLPanelOutfitEdit::updateFiltersVisibility()
 {
 	mListViewFilterCmbBox->setVisible(mWearablesListViewPanel->getVisible());
 	mFolderViewFilterCmbBox->setVisible(mInventoryItemsPanel->getVisible());
+	bool visible = !mInventoryItemsPanel->getVisible() 
+				&& !mWearablesListViewPanel->getVisible();
+	getChild<LLIconCtrl>("bg_filters")->setVisible(visible);
 }
 
 void LLPanelOutfitEdit::onFolderViewFilterCommitted(LLUICtrl* ctrl)
@@ -1305,7 +1309,6 @@ void LLPanelOutfitEdit::onOutfitChanging(bool started)
 	S32 delta = started ? indicator_delta : 0;
 	S32 right_border = status_panel->getRect().getWidth() - delta;
 
-	update_status_widget_rect(mCurrentOutfitName, right_border);
 	update_status_widget_rect(mStatus, right_border);
 
 	indicator->setVisible(started);

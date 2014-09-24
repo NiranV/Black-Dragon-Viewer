@@ -61,7 +61,7 @@
        follows="bottom|left|right"
        height="27"
        layout="topleft"
-       left="40"
+       left="42"
 	   clip="true"
 	   drag_handle_thickness="0"
        bottom="-5"

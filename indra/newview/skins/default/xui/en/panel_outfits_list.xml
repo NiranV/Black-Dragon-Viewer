@@ -33,7 +33,7 @@
 	 follows="bottom|left|right"
 	 height="26"
 	 layout="topleft"
-	 left="3"
+	 left="5"
 	 top_pad="0"
 	 visible="true"
 	 name="bottom_panel"

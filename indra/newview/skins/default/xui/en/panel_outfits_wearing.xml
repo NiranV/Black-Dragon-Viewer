@@ -39,7 +39,7 @@
          image_selected="Toolbar_Middle_Selected"
          image_unselected="Toolbar_Middle_Off"
          layout="topleft"
-         left="0"
+         left="2"
          name="options_gear_btn"
          tool_tip="Show additional options"
          top="1"

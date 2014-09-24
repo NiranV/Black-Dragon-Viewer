@@ -14,7 +14,7 @@
    layout="topleft"
    left="21"
    name="item_icon"
-   top="2"
+   top="3"
    width="16" />
   <item_name
    follows="left|right"
@@ -32,21 +32,23 @@
    name="btn_move_up"
    layout="topleft"
    follows="top|right"
-   image_overlay="UpArrow_Off"
-   top="1"
+   image_unselected="UpArrow_Off"
+   image_selected="UpArrow_Off"
+   top="3"
    left="0"
-   height="23"
-   width="23"
+   height="18"
+   width="18"
    tab_stop="false" />
   <down_btn
    name="btn_move_down"
    layout="topleft"
    follows="top|right"
-   image_overlay="DownArrow_Off"
-   top="1"
+   image_unselected="DownArrow_Off"
+   image_selected="DownArrow_Off"
+   top="3"
    left="26"
-   height="23"
-   width="23"
+   height="18"
+   width="18"
    tab_stop="false" />
   <lock_panel
    background_visible="false"
@@ -83,11 +85,12 @@
    name="btn_edit"
    layout="topleft"
    follows="top|right"
-   image_overlay="Edit_Wrench"
-   top="1"
+   image_unselected="Edit_Wrench"
+   image_selected="Edit_Wrench"
+   top="3"
    left="0"
-   height="23"
-   width="23"
+   height="18"
+   width="18"
    tab_stop="false"
    tool_tip="Edit this wearable"/>
 </clothing_list_item>
