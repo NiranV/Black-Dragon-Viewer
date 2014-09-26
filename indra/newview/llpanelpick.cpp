@@ -87,10 +87,6 @@ LLPanelPickInfo::LLPanelPickInfo()
  , mPickId(LLUUID::null)
  , mParcelId(LLUUID::null)
  , mRequestedId(LLUUID::null)
- , mScrollingPanelMinHeight(0)
- , mScrollingPanelWidth(0)
- , mScrollingPanel(NULL)
- , mScrollContainer(NULL)
 {
 }
 
@@ -142,33 +138,7 @@ BOOL LLPanelPickInfo::postBuild()
 	childSetAction("show_on_map_btn", boost::bind(&LLPanelPickInfo::onClickMap, this));
 	childSetAction("back_btn", boost::bind(&LLPanelPickInfo::onClickBack, this));
 
-	mScrollingPanel = getChild<LLPanel>("scroll_content_panel");
-	mScrollContainer = getChild<LLScrollContainer>("profile_scroll");
-
-	mScrollingPanelMinHeight = mScrollContainer->getScrolledViewRect().getHeight();
-	mScrollingPanelWidth = mScrollingPanel->getRect().getWidth();
-
 	return TRUE;
-}
-
-void LLPanelPickInfo::reshape(S32 width, S32 height, BOOL called_from_parent)
-{
-	LLPanel::reshape(width, height, called_from_parent);
-
-	if (!mScrollContainer || !mScrollingPanel)
-		return;
-
-	static LLUICachedControl<S32> scrollbar_size ("UIScrollbarSize", 0);
-
-	S32 scroll_height = mScrollContainer->getRect().getHeight();
-	if (mScrollingPanelMinHeight >= scroll_height)
-	{
-		mScrollingPanel->reshape(mScrollingPanelWidth, mScrollingPanelMinHeight);
-	}
-	else
-	{
-		mScrollingPanel->reshape(mScrollingPanelWidth + scrollbar_size, scroll_height);
-	}
 }
 
 void LLPanelPickInfo::processProperties(void* data, EAvatarProcessorType type)
