@@ -7,7 +7,7 @@
  left="0"
  name="land_money_tab"
  top="0"
- width="304">
+ width="316">
     <panel.string
      name="help_text">
    A warning appears until the Total Land in Use is less than or = to the Total Contribution.
@@ -40,15 +40,15 @@
          left="0"
          name="roles_scroll"
          opaque="true"
-         height="499"
-         width="302"
-         top="0">
+         height="498"
+         width="315"
+         top="1">
       <panel
          bevel_style="none"
          border="false"
-         follows="top|left"
-         height="493"
-         width="290"
+         follows="top|left|right"
+         height="440"
+         width="299"
          layout="topleft"
          left="0"
          name="preferences_container"
@@ -69,22 +69,139 @@
           name="layout_panel_landmoney"
           follows="top|left|right"
           left="0"
-          right="-1"
-          height="250"
-          width="290"
+          top="1"
+          height="235"
+          width="299"
           >
-    <scroll_list
-     draw_heading="true"
-     follows="top|left|right"
-     height="130"
+      <icon
+   follows="top|left"
+   height="25"
+   name="bg"
+   mouse_opaque="false"
+   image_name="Toolbar_Middle_Off"
+   left="5"
+   top="4"
+   width="98" />
+    <text
+     type="string"
+     follows="left|top"
+     halign="center"
+     height="16"
      layout="topleft"
+     left="8"
+     top_delta="1"
+     name="total_contributed_land_label"
+     width="92">
+        Contributions
+    </text>
+    <text
+     type="string"
+     text_color="BeaconColor"
+     follows="left|top"
+     height="16"
+     halign="center"
+     layout="topleft"
+     left_delta="0"
+     name="total_contributed_land_value"
+     top_pad="-5"
+     width="92">
+        [AREA] m²
+    </text>
+    <icon
+   follows="top|right|left"
+   height="25"
+   name="bg"
+   mouse_opaque="false"
+   image_name="Toolbar_Middle_Off"
+   left_pad="4"
+   top_delta="-12"
+   width="97" />
+    <text
+     type="string"
+     follows="left|top|right"
+     halign="center"
+     height="16"
+     layout="topleft"
+     left_delta="3"
+     name="total_land_in_use_label"
+     top_delta="1"
+     width="91">
+        In use
+    </text>
+    <text
+     type="string"
+     text_color="BeaconColor"
+     follows="left|top|right"
+     height="16"
+     layout="topleft"
+     left_delta="0"
+     halign="center"
+     name="total_land_in_use_value"
+     top_pad="-5"
+     width="91">
+        [AREA] m²
+    </text>
+    <icon
+   follows="top|right"
+   height="25"
+   name="bg"
+   mouse_opaque="false"
+   image_name="Toolbar_Middle_Off"
+   left_pad="4"
+   top_delta="-12"
+   width="98" />
+    <text
+     type="string"
+     follows="right|top"
+     halign="center"
+     height="16"
+     layout="topleft"
+     left_delta="3"
+     name="land_available_label"
+     top_delta="1"
+     width="92">
+        Available
+    </text>
+    <text
+    text_color="BeaconColor"
+     type="string"
+     follows="right|top"
+     height="16"
+     layout="topleft"
+     halign="center"
+     left_delta="0"
+     name="land_available_value"
+     top_pad="-5"
+     width="92">
+        [AREA] m²
+    </text>
+    <button
+     follows="top|right|left"
+     height="23"
+     label="Map"
+     label_selected="Map"
+     image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     name="map_button"
+     top_pad="1"
      left="5"
-     right="-1"
-     top="0"
+     width="295"
+     enabled="false" />
+    <scroll_list
+     column_padding="2"
+      draw_heading="true"
+      height="120"
+      follows="left|top|right"
+      layout="topleft"
+      left="3"
+      top_pad="0"
+      width="299"
+      multi_select="true"
      sort_column="0"
      sort_ascending="true"
-     name="group_parcel_list"
-     width="313">
+     name="group_parcel_list">
         <scroll_list.columns
          label="Parcel"
          name="name"
@@ -106,157 +223,122 @@
          name="hidden"
          relative_width="0.2" />
     </scroll_list>
+    <icon
+   follows="top|left|right"
+   height="25"
+   name="bg"
+   mouse_opaque="false"
+   image_name="Toolbar_Middle_Off"
+   left="5"
+   top_pad="3"
+   width="108" />
     <text
      type="string"
-     follows="left|top"
-     halign="right"
+     follows="left|right|top"
      height="16"
      layout="topleft"
-     left="0"
-     name="total_contributed_land_label"
-     width="130">
-        Total contribution:
-    </text>
-    <text
-    text_color="EmphasisColor"
-     type="string"
-     follows="left|top"
-     height="16"
-     layout="topleft"
-     left_pad="5"
-     name="total_contributed_land_value"
-     top_delta="0"
-     width="90">
-        [AREA] m²
-    </text>
-    <button
-     follows="top"
-     height="23"
-     label="Map"
-     label_selected="Map"
-     layout="topleft"
-     name="map_button"
-     top_delta="-4"
-     left_pad="0"
-     width="57"
-     enabled="false" />
-    <text
-     type="string"
-     follows="left|top"
-     halign="right"
-     height="16"
-     layout="topleft"
-     left="0"
-     name="total_land_in_use_label"
-     top_pad="-3"
-     width="130">
-        Total land in use:
-    </text>
-    <text
-    text_color="EmphasisColor"
-     type="string"
-     follows="left|top"
-     height="16"
-     layout="topleft"
-     left_pad="5"
-     name="total_land_in_use_value"
-     top_delta="0"
-     width="120">
-        [AREA] m²
-    </text>
-    <text
-     type="string"
-     follows="left|top"
-     halign="right"
-     height="16"
-     layout="topleft"
-     left="0"
-     name="land_available_label"
-     top_pad="0"
-     width="130">
-        Land available:
-    </text>
-    <text
-    text_color="EmphasisColor"
-     type="string"
-     follows="left|top"
-     height="16"
-     layout="topleft"
-     left_pad="5"
-     name="land_available_value"
-     top_delta="0"
-     width="120">
-        [AREA] m²
-    </text>
-    <text
-     type="string"
-     follows="left|top"
-     halign="right"
-     height="16"
-     layout="topleft"
-     left="0"
+     left="8"
      name="your_contribution_label"
-     top_pad="0"
-     width="130">
+     top_delta="5"
+     width="102">
         Your contribution:
     </text>
+    <icon
+   follows="top|right"
+   height="25"
+   name="bg"
+   mouse_opaque="false"
+   image_name="Toolbar_Middle_Off"
+   left_pad="4"
+   top_delta="-5"
+   width="84" />
     <line_editor
-     follows="left|top"
-     height="19"
+     follows="right|top"
+     height="23"
      layout="topleft"
-     left_pad="5"
+     left_delta="2"
      max_length_bytes="10"
      name="your_contribution_line_editor"
-     top_delta="0"
+     top_delta="1"
      width="80" />
+    <icon
+   follows="top|right"
+   height="25"
+   name="bg"
+   mouse_opaque="false"
+   image_name="Toolbar_Middle_Off"
+   left_pad="3"
+   top_delta="-1"
+   width="23" />
     <text
      type="string"
-     follows="left|top"
+     follows="right|top"
      height="16"
      layout="topleft"
-     left_pad="3"
+     left_delta="3"
      name="your_contribution_units"
-     top_delta="2"
-     width="40"
+     top_delta="5"
+     width="22"
       >
         m²
     </text>
-     <text
-     type="string"
-     follows="left|top"
-     halign="left"
-     height="16"
-     layout="topleft"
-     left="140"
-     name="your_contribution_max_value"
-     top_pad="2"
-     width="170">
-        ([AMOUNT] max)
-    </text>
     <icon
      height="16"
+     follows="top|right"
      image_name="Parcel_Exp_Color"
      layout="topleft"
-     left="75"
+     left_delta="-1"
      name="group_over_limit_icon"
-     color="Green"
-     top_pad="0"
+     top_delta="-1"
      visible="true"
      width="18" />
+    <icon
+   follows="top|right"
+   height="25"
+   name="bg"
+   mouse_opaque="false"
+   image_name="Toolbar_Middle_Off"
+   left_pad="4"
+   top_delta="-4"
+   width="77" />
+     <text
+     type="string"
+     follows="right|top"
+     halign="center"
+     height="16"
+     layout="topleft"
+     left_delta="3"
+     name="your_contribution_max_label"
+     top_delta="1"
+     width="71">
+        Max
+    </text>
+     <text
+     type="string"
+     follows="right|top"
+     text_color="BeaconColor"
+     halign="center"
+     height="16"
+     layout="topleft"
+     left_delta="0"
+     name="your_contribution_max_value"
+     top_pad="-6"
+     width="71">
+[AMOUNT] m²
+    </text>
     <text
      follows="left|top"
      type="string"
      word_wrap="true"
      height="20"
      layout="topleft"
-     left_pad="2"
+     left="5"
      name="group_over_limit_text"
-     text_color="ColorPaletteEntry29"
-     top_delta="0"
-     width="213">
+     top_pad="1"
+     width="295">
         More land credits are needed to support land in use
     </text>
-    <text
+    <!--<text
      type="string"
      follows="left|top"
      font="SansSerifBig"
@@ -268,19 +350,19 @@
      top_pad="-15"
      width="100">
         Group L$
-    </text>
+    </text>-->
     </panel>
     <tab_container
-     follows="top|left"
+     follows="top|left|right"
      height="230"
      halign="center"
      layout="topleft"
      left="0"
      name="group_money_tab_container"
      tab_position="top"
-     top_pad="2"
-     tab_min_width="93"
-     width="291">
+     top_pad="1"
+     tab_min_width="100"
+     width="314">
         <panel
          border="false"
          follows="all"
@@ -290,19 +372,20 @@
          help_topic="group_money_planning_tab"
          name="group_money_planning_tab"
          top="0"
-         width="313">
+         width="290">
             <text_editor
              font="Monospace"
              enabled="false"
              type="string"
-             follows="all"
-             height="200"
+             follows="top|left|right"
+             height="180"
              layout="topleft"
              left="4"
+             right="-13"
              max_length="4096"
              name="group_money_planning_text"
              top="2"
-             width="313"
+             width="290"
              word_wrap="true">
                 Loading...
             </text_editor>
@@ -320,36 +403,52 @@
           <text_editor
              enabled="false"
              type="string"
-             follows="all"
-             height="185"
+             follows="top|left|right"
+             height="150"
              layout="topleft"
              left="4"
+             right="-13"
              max_length="4096"
              name="group_money_details_text"
              top="2"
-             width="313"
+             width="290"
              word_wrap="true">
                 Loading...
             </text_editor>
             <button
 	     follows="left|top"
-	     height="18"
+	     height="25"
 	     image_overlay="Arrow_Left_Off"
+         image_hover_unselected="Toolbar_Middle_Over"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
 	     layout="topleft"
 	     name="earlier_details_button"
 	     tool_tip="Back"
-             left="200"
-             top_pad="0"
-	     width="25" />
+             left="4"
+             top_pad="5"
+	     width="140" />
+            <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="1"
+         top_delta="0"
+         width="13" />
              <button
-	     follows="left|top"
-	     height="18"
+	     follows="right|top"
+	     height="25"
 	     image_overlay="Arrow_Right_Off"
+         image_hover_unselected="Toolbar_Middle_Over"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
 	     layout="topleft"
        name="later_details_button"
 	     tool_tip="Next"
-             left_pad="15"
-	     width="25" />
+             left_pad="1"
+	     width="140" />
         </panel>
       <panel
          border="false"
@@ -364,36 +463,52 @@
             <text_editor
              enabled="false"
              type="string"
-             follows="all"
-             height="185"
+             follows="top|left|right"
+             height="150"
              layout="topleft"
              left="4"
+             right="-13"
              max_length="4096"
              name="group_money_sales_text"
              top="2"
-             width="313"
+             width="290"
              word_wrap="true">
                 Loading...
             </text_editor>
            <button
 	     follows="left|top"
-	     height="18"
+	     height="25"
 	     image_overlay="Arrow_Left_Off"
+         image_hover_unselected="Toolbar_Middle_Over"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
 	     layout="topleft"
 	     name="earlier_sales_button"
 	     tool_tip="Back"
-             left="200"
-             top_pad="0"
-	     width="25" />
+             left="4"
+             top_pad="5"
+	     width="140" />
+            <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="1"
+         top_delta="0"
+         width="13" />
              <button
-	     follows="left|top"
-	     height="18"
+	     follows="right|top"
+	     height="25"
 	     image_overlay="Arrow_Right_Off"
+         image_hover_unselected="Toolbar_Middle_Over"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
 	     layout="topleft"
-	     left_pad="15"
-         name="later_sales_button"
+       name="later_sales_button"
 	     tool_tip="Next"
-	     width="25" />
+             left_pad="1"
+	     width="140" />
         </panel>
     </tab_container>
       </panel>
