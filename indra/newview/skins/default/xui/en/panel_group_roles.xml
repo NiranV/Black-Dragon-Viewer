@@ -690,8 +690,7 @@ things in this group. There&apos;s a broad variety of Abilities.
              width="270" />
         </scroll_list>
          <text_editor
-         bg_readonly_color="Transparent"
-         text_readonly_color="EmphasisColor"
+         bg_readonly_color="White_02"
          type="string"
          enabled="false"
          layout="topleft"

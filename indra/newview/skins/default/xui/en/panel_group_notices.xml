@@ -68,7 +68,6 @@ You can turn off Notices on the General tab.
      height="24"
      halign="left"
      layout="topleft"
-     text_color="White_50"
      left_delta="3"
      name="lbl2"
      top="5"
@@ -303,25 +302,24 @@ Maximum 200 per group daily
          right="-90"
          name="string"
          top_delta="5"
-         word_wrap="true"
          width="200">
             Drag and drop item here to attach it:
         </text>
         <icon
-         follows="top|left|right"
+         follows="top|right"
          height="25"
          name="bg"
          mouse_opaque="false"
          image_name="Toolbar_Middle_Off"
-         left_pad="1"
+         left_pad="3"
          top_delta="-5"
-         width="31" />
+         width="29" />
         <icon
          height="22"
          follows="top|right"
          image_name="DropTarget"
          layout="topleft"
-         left_delta="3"
+         left_delta="1"
          mouse_opaque="true"
          name="drop_icon"
          top_delta="1"

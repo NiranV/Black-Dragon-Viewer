@@ -151,9 +151,9 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 															top="0"/>
                 <filter_editor
                  follows="left|top|right"
-																	background_image="TextField_Off"
-															  background_image_disabled="TextField_Disabled"
-																	background_image_focused="TextField_Active"
+			     background_image="TextField_Off"
+			     background_image_disabled="TextField_Disabled"
+			     background_image_focused="TextField_Active"
                  height="23"
                  layout="topleft"
                  left="4"
