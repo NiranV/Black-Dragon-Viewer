@@ -620,6 +620,10 @@ void LLPanelLogin::closePanel()
 {
 	if (sInstance)
 	{
+		LLViewerFetchedTexture* image = LLViewerTextureManager::getFetchedTextureFromFile("login_bg.png", FTT_LOCAL_FILE, MIPMAP_NO, LLViewerFetchedTexture::BOOST_UI);
+		image->setBoostLevel(0);
+		image->destroyTexture();
+
 		LLPanelLogin::sInstance->getParent()->removeChild( LLPanelLogin::sInstance );
 
 		delete sInstance;
