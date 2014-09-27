@@ -451,6 +451,13 @@ NVIDIA GT 750M							.*NVIDIA .*GT *75[0-9]M.*							3	1	0	4.3
 NVIDIA GTX 760M							.*NVIDIA .*GTX *76[0-9]M.*							5	1	0	4.3
 NVIDIA GTX 770M							.*NVIDIA .*GTX *77[0-9]M.*							5	1	0	4.3
 NVIDIA GTX 780M							.*NVIDIA .*GTX *78[0-9]M.*							5	1	0	4.3
+NVIDIA 820M							    .*NVIDIA.* 82[0-9]M.*							    5	1	0	4.4
+NVIDIA 830M							    .*NVIDIA.* 83[0-9]M.*							    5	1	0	4.4
+NVIDIA 840M							    .*NVIDIA.* 84[0-9]M.*							    5	1	0	4.4
+NVIDIA GTX 850M							.*NVIDIA .*GTX *85[0-9]M.*							5	1	0	4.4
+NVIDIA GTX 860M							.*NVIDIA .*GTX *86[0-9]M.*							5	1	0	4.4
+NVIDIA GTX 870M							.*NVIDIA .*GTX *87[0-9]M.*							5	1	0	4.4
+NVIDIA GTX 880M							.*NVIDIA .*GTX *88[0-9]M.*							5	1	0	4.4
 NVIDIA G100								.*NVIDIA .*G10.*									3	1	1	4.2
 NVIDIA GT 120							.*NVIDIA .*GT 12.*									2	1	0	3.3
 NVIDIA GT 130							.*NVIDIA .*GT 13.*									2	1	0	3.3
@@ -521,6 +528,8 @@ NVIDIA GTX 75x							.*NVIDIA .*GTX *75.*								3	1	0	4.3
 NVIDIA GTX 76x							.*NVIDIA .*GTX *76.*								5	1	0	4.3
 NVIDIA GTX 77x							.*NVIDIA .*GTX *77.*								5	1	0	4.3
 NVIDIA GTX 78x							.*NVIDIA .*GTX *78.*								5	1	0	4.3
+NVIDIA GTX 97x							.*NVIDIA .*GTX *97.*								5	1	0	4.4
+NVIDIA GTX 98x							.*NVIDIA .*GTX *98.*								5	1	0	4.4
 NVIDIA GTX TITAN						.*NVIDIA .*GTX *TITAN.*								5	1	0	4.3
 NVIDIA C51								.*NVIDIA .*C51.*									0	1	1	2
 NVIDIA G72								.*NVIDIA .*G72.*									1	1	0	0
