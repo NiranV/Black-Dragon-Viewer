@@ -1963,12 +1963,17 @@ void LLPanelObjectInventory::refresh()
 	}
 	if(!has_inventory)
 	{
-		mTaskUUID = LLUUID::null;
-		removeVOInventoryListener();
-		clearContents();
+		clearInventoryTask();
 	}
 	mInventoryViewModel.setTaskID(mTaskUUID);
 	//LL_INFOS() << "LLPanelObjectInventory::refresh() " << mTaskUUID << LL_ENDL;
+}
+
+void LLPanelObjectInventory::clearInventoryTask()
+{
+	mTaskUUID = LLUUID::null;
+	removeVOInventoryListener();
+	clearContents();
 }
 
 void LLPanelObjectInventory::removeSelectedItem()

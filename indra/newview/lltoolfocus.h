@@ -71,6 +71,7 @@ protected:
 	BOOL	mOutsideSlopRightX;
 	BOOL	mOutsideSlopRightY;
 	BOOL	mValidClickPoint;
+	BOOL	mValidSelection;
 	BOOL	mMouseSteering;
 	S32		mMouseUpX;	// needed for releaseMouse()
 	S32		mMouseUpY;

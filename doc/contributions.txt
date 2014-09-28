@@ -323,6 +323,7 @@ Cinder Roxley
     STORM-1951
     STORM-2035
     STORM-2036
+    STORM-2037
 Clara Young
 Coaldust Numbers
     VWR-1095
@@ -712,6 +713,9 @@ Jonathan Yap
 	STORM-1986
 	STORM-1981
 	STORM-2015
+	STORM-2031
+	STORM-2030
+	STORM-2034
 	STORM-2018
 Kadah Coba
 	STORM-1060
@@ -1215,6 +1219,7 @@ Sovereign Engineer
     OPEN-189
     STORM-1972
     OPEN-195
+    OPEN-217
 SpacedOut Frye
 	VWR-34
 	VWR-45
@@ -1390,6 +1395,7 @@ Whirly Fizzle
 	VWR-29543
 	MAINT-873
 	STORM-1930
+	BUG-6659
 Whoops Babii
 	VWR-631
 	VWR-1640

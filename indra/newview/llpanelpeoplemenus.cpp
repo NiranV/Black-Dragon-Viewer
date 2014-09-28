@@ -97,7 +97,7 @@ LLContextMenu* PeopleContextMenu::createMenu()
 		// Set up for multi-selected People
 
 		// registrar.add("Avatar.AddFriend",	boost::bind(&LLAvatarActions::requestFriendshipDialog,	mUUIDs)); // *TODO: unimplemented
-		registrar.add("Avatar.IM",				boost::bind(&LLAvatarActions::startConference,			mUUIDs, LLUUID::null));
+		registrar.add("Avatar.IM",				boost::bind(&PeopleContextMenu::startConference,		this));
 		registrar.add("Avatar.Call",			boost::bind(&LLAvatarActions::startAdhocCall,			mUUIDs, LLUUID::null));
 		registrar.add("Avatar.OfferTeleport",	boost::bind(&PeopleContextMenu::offerTeleport,			this));
 		registrar.add("Avatar.RemoveFriend",	boost::bind(&LLAvatarActions::removeFriendsDialog,		mUUIDs));
@@ -298,6 +298,19 @@ void PeopleContextMenu::offerTeleport()
 	RlvActions::setShowName(RlvActions::SNC_TELEPORTOFFER, true);
 // [/RLVa:KB]
 //	LLAvatarActions::offerTeleport(mUUIDs);
+}
+
+void PeopleContextMenu::startConference()
+{
+	uuid_vec_t uuids;
+	for (uuid_vec_t::const_iterator it = mUUIDs.begin(); it != mUUIDs.end(); ++it)
+	{
+		if(*it != gAgentID)
+		{
+			uuids.push_back(*it);
+		}
+	}
+	LLAvatarActions::startConference(uuids);
 }
 
 //== NearbyPeopleContextMenu ===============================================================

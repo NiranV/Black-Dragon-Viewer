@@ -1716,6 +1716,8 @@ BOOL LLWorldMapView::handleHover( S32 x, S32 y, MASK mask )
 			sPanY += delta_y;
 			sTargetPanX = sPanX;
 			sTargetPanY = sPanY;
+
+			gViewerWindow->moveCursorToCenter();
 		}
 
 		// doesn't matter, cursor should be hidden

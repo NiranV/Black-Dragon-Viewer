@@ -50,6 +50,7 @@ private:
 	bool enableContextMenuItem(const LLSD& userdata);
 	bool checkContextMenuItem(const LLSD& userdata);
 	void offerTeleport();
+	void startConference();
 	void requestTeleport();
 
 // [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
