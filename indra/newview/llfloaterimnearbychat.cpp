@@ -516,7 +516,7 @@ void LLFloaterIMNearbyChat::onChatBoxKeystroke()
 		{
 			std::string rest_of_match = utf8_out_str.substr(utf8_trigger.size());
 			mInputEditor->setText(utf8_trigger + rest_of_match + " "); // keep original capitalization for user-entered part
-			mInputEditor->endOfDoc();
+			mInputEditor->selectByCursorPosition(utf8_out_str.size()-rest_of_match.size(),utf8_out_str.size());
 		}
 
 		//LL_INFOS() << "GESTUREDEBUG " << trigger 
