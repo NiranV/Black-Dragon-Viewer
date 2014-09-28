@@ -6,7 +6,6 @@
  layout="topleft"
  min_height="300"
  min_width="400"
- background_color="FloaterDefaultBackgroundColor"
  name="inspect"
  save_rect="true"
  title="INSPECT OBJECTS"
