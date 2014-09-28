@@ -205,24 +205,6 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 
 }
 
-void LLPanelLogin::addUsersWithFavoritesToUsername()
-{
-	LLComboBox* combo = getChild<LLComboBox>("username_combo");
-	if (!combo) return;
-	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "stored_favorites.xml");
-	LLSD fav_llsd;
-	llifstream file;
-	file.open(filename);
-	if (!file.is_open()) return;
-	LLSDSerialize::fromXML(fav_llsd, file);
-	for (LLSD::map_const_iterator iter = fav_llsd.beginMap();
-		iter != fav_llsd.endMap(); ++iter)
-	{
-		combo->add(iter->first);
-	}
-}
-
-
 void LLPanelLogin::addFavoritesToStartLocation()
 {
 	// Clear the combo.
