@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- background_visible="true"
- height="90"
+ background_visible="false"
+ height="64"
  label="instant_message"
  layout="topleft"
  left="0"
@@ -19,35 +19,56 @@
      value="SANSSERIF" />
     <panel
      background_visible="true"
+	 bg_alpha_color="White_02"
      follows="top"
-     height="30"
+     height="25"
      label="header"
      layout="topleft"
      left="0"
      name="header"
-     top="0"
-     width="305">
+     top="5"
+     width="299">
+	  <icon
+	  follows="top|left|right"
+	  height="25"
+	  name="bg"
+	  mouse_opaque="false"
+	  image_name="Toolbar_Middle_Off"
+	  left="7"
+	  top="0"
+	  width="258" />
         <icon
          follows="all"
          height="20"
          layout="topleft"
-         left="5"
+         left_delta="2"
          mouse_opaque="true"
          name="group_icon"
-         top="5"
+         top_delta="2"
          width="20" />
         <text
          follows="all"
-         font="SansSerifBig"
          height="20"
          layout="topleft"
-         left_pad="10"
+         left_pad="4"
          name="title"
          text_color="GroupNotifyTextColor"
-         top="5"
+         top_delta="3"
          use_ellipses="true"
          value="Sender Name / Group Name"
-         width="230" />
+         width="231" />
+		<button
+     top_delta="-5"
+     follows="top|left"
+     height="25"
+     label="OK"
+	 image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     left_pad="2"
+     name="btn_ok"
+     width="31" />
     </panel>
     <text_editor
      parse_urls="true"
@@ -55,48 +76,40 @@
      follows="all"
      height="0"
      layout="topleft"
-     left="25"
+     left="7"
      max_length="2147483647"
      name="message"
      parse_highlights="true"
      read_only="true"
      text_color="GroupNotifyTextColor"
-     top="40"
+	 bg_readonly_color="White_02"
+     top_pad="0"
      type="string"
      use_ellipses="true"
      value="message"
-     width="270"
+     width="290"
 	 word_wrap="true" >
     </text_editor>
     <icon
-     bottom="60"
+     bottom="57"
      follows="left|bottom|right"
      height="15"
      layout="topleft"
-     left="25"
+     left="7"
      mouse_opaque="true"
      name="attachment_icon"
      width="15" />
     <text
-     bottom="60"
+     bottom="57"
      follows="left|bottom|right"
      font="SansSerif"
      height="15"
      layout="topleft"
-     left="45"
+     left_pad="5"
      name="attachment"
      parse_urls="false"
      text_color="GroupNotifyTextColor"
      value="Attachment"
      use_ellipses="true"
-     width="250" />
-    <button
-     bottom="85"
-     follows="bottom"
-     height="20"
-     label="OK"
-     layout="topleft"
-     right="-10"
-     name="btn_ok"
-     width="70" />
+     width="271" />
 </panel>
