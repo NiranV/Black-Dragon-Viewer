@@ -417,8 +417,6 @@ BOOL LLPanelGroupRoles::hasModal()
 ////////////////////////////
 LLPanelGroupSubTab::LLPanelGroupSubTab()
 :	LLPanelGroupTab(),
-	mHeader(NULL),
-	mFooter(NULL),
 	mActivated(false),
 	mSearchEditor(NULL)
 {
@@ -497,15 +495,6 @@ void LLPanelGroupSubTab::deactivate()
 
 void LLPanelGroupSubTab::setOthersVisible(BOOL b)
 {
-	if (mHeader)
-	{
-		mHeader->setVisible( b );
-	}
-
-	if (mFooter)
-	{
-		mFooter->setVisible( b );
-	}
 }
 
 bool LLPanelGroupSubTab::matchesActionSearchFilter(std::string action)
@@ -721,10 +710,6 @@ void LLPanelGroupSubTab::buildActionCategory(LLScrollListCtrl* ctrl,
 
 void LLPanelGroupSubTab::setFooterEnabled(BOOL enable)
 {
-	if (mFooter)
-	{
-		mFooter->setAllChildrenEnabled(enable);
-	}
 }
 
 ////////////////////////////
@@ -761,8 +746,6 @@ BOOL LLPanelGroupMembersSubTab::postBuildSubTab(LLView* root)
 
 	// Look recursively from the parent to find all our widgets.
 	bool recurse = true;
-	mHeader = parent->getChild<LLPanel>("members_header", recurse);
-	mFooter = parent->getChild<LLPanel>("members_footer", recurse);
 
 	mMembersList 		= parent->getChild<LLNameListCtrl>("member_list", recurse);
 	mAssignedRolesList	= parent->getChild<LLScrollListCtrl>("member_assigned_roles", recurse);
@@ -1744,9 +1727,6 @@ BOOL LLPanelGroupRolesSubTab::postBuildSubTab(LLView* root)
 
 	// Look recursively from the parent to find all our widgets.
 	bool recurse = true;
-	mHeader = parent->getChild<LLPanel>("roles_header", recurse);
-	mFooter = parent->getChild<LLPanel>("roles_footer", recurse);
-
 
 	mRolesList 		= parent->getChild<LLScrollListCtrl>("role_list", recurse);
 	mAssignedMembersList	= parent->getChild<LLNameListCtrl>("role_assigned_members", recurse);
@@ -2448,8 +2428,6 @@ BOOL LLPanelGroupActionsSubTab::postBuildSubTab(LLView* root)
 
 	// Look recursively from the parent to find all our widgets.
 	bool recurse = true;
-	mHeader = parent->getChild<LLPanel>("actions_header", recurse);
-	mFooter = parent->getChild<LLPanel>("actions_footer", recurse);
 
 	mActionDescription = parent->getChild<LLTextEditor>("action_description", recurse);
 
