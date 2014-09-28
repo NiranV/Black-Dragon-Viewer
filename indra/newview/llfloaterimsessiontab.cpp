@@ -239,7 +239,7 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	mTearOffBtn = getChild<LLButton>("tear_off_btn");
 	mTearOffBtn->setCommitCallback(boost::bind(&LLFloaterIMSessionTab::onTearOffClicked, this));
 
-	mGearBtn = getChild<LLButton>("gear_btn");
+	mGearBtn = getChild<LLButton>("gear_btn_panel");
     mAddBtn = getChild<LLButton>("add_btn");
 	mVoiceButton = getChild<LLButton>("voice_call_btn");
     mTranslationCheckBox = getChild<LLUICtrl>("translate_chat_checkbox_lp");
@@ -320,7 +320,6 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	// Zero expiry time is set only once to allow initial update.
 	mRefreshTimer->setTimerExpirySec(0);
 	mRefreshTimer->start();
-	initBtns();
 
 	if (mIsParticipantListExpanded != (bool)gSavedSettings.getBOOL("IMShowControlPanel"))
 	{
@@ -754,6 +753,7 @@ void LLFloaterIMSessionTab::updateHeaderAndToolbar()
 
 
 	mCloseBtn->setVisible(is_not_torn_off && !mIsNearbyChat);
+	getChild<LLPanel>("close_btn_panel")->setVisible(is_not_torn_off && !mIsNearbyChat);
 
 	enableDisableCallBtn();
 
@@ -962,48 +962,8 @@ void LLFloaterIMSessionTab::onTearOffClicked()
 
 void LLFloaterIMSessionTab::updateGearBtn()
 {
-
-	BOOL prevVisibility = mGearBtn->getVisible();
 	mGearBtn->setVisible(checkIfTornOff() && mIsP2PChat);
-
-
-	// Move buttons if Gear button changed visibility
-	if(prevVisibility != mGearBtn->getVisible())
-	{
-		LLRect gear_btn_rect =  mGearBtn->getRect();
-		LLRect add_btn_rect = mAddBtn->getRect();
-		LLRect call_btn_rect = mVoiceButton->getRect();
-		S32 gap_width = call_btn_rect.mLeft - add_btn_rect.mRight;
-		S32 right_shift = gear_btn_rect.getWidth() + gap_width;
-		if(mGearBtn->getVisible())
-		{
-			// Move buttons to the right to give space for Gear button
-			add_btn_rect.translate(right_shift,0);
-			call_btn_rect.translate(right_shift,0);
-		}
-		else
-		{
-			add_btn_rect.translate(-right_shift,0);
-			call_btn_rect.translate(-right_shift,0);
-		}
-		mAddBtn->setRect(add_btn_rect);
-		mVoiceButton->setRect(call_btn_rect);
-	}
-}
-
-void LLFloaterIMSessionTab::initBtns()
-{
-	LLRect gear_btn_rect =  mGearBtn->getRect();
-	LLRect add_btn_rect = mAddBtn->getRect();
-	LLRect call_btn_rect = mVoiceButton->getRect();
-	S32 gap_width = call_btn_rect.mLeft - add_btn_rect.mRight;
-	S32 right_shift = gear_btn_rect.getWidth() + gap_width;
-
-	add_btn_rect.translate(-right_shift,0);
-	call_btn_rect.translate(-right_shift,0);
-
-	mAddBtn->setRect(add_btn_rect);
-	mVoiceButton->setRect(call_btn_rect);
+	getChild<LLPanel>("gear_btn_panel")->setVisible(checkIfTornOff() && mIsP2PChat);
 }
 
 // static
