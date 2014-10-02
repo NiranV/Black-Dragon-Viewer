@@ -16360,6 +16360,17 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
+  <key>WorldMapShowLegend</key>
+  <map>
+    <key>Comment</key>
+    <string>Show the legend panel on the world map floater</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
     
   <!-- Remappable Keys -->
   <key>JoystickButtonFlycam</key>
