@@ -842,7 +842,7 @@ void LLFloaterInventoryFinder::draw()
 	mPanelMainInventory->setFilterTextFromFilter();
 	mPanelMainInventory->getPanel()->setDateSearchDirection(getDateSearchDirection());
 
-	LLPanel::draw();
+	LLFloater::draw();
 }
 
 BOOL LLFloaterInventoryFinder::getCheckShowEmpty()
