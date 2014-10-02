@@ -727,10 +727,10 @@
  reference="Transparent" />
  <color
  name="ScrollBgReadOnlyColor"
- reference="Transparent" />
+ reference="White_02" />
  <color
  name="ScrollBgWriteableColor"
- reference="Transparent" />
+ reference="White_02" />
  <color
  name="ScrollDisabledColor"
  reference="White_25" />
