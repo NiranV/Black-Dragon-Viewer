@@ -598,6 +598,8 @@ with the same filename but different name
   <texture name="Toolbar_Middle_Off" file_name="containers/Toolbar_Middle_Off.png" preload="true" scale.left="1" scale.bottom="2" scale.top="24" scale.right="30" />
   <texture name="Toolbar_Middle_Over" file_name="containers/Toolbar_Middle_Over.png" preload="true" scale.left="1" scale.bottom="2" scale.top="24" scale.right="30" />
   <texture name="Toolbar_Middle_Selected" file_name="containers/Toolbar_Middle_Selected.png" preload="true" scale.left="1" scale.bottom="2" scale.top="24" scale.right="30" />
+  <texture name="Toolbar_Middle_Dropdown_Off" file_name="containers/Toolbar_Middle_Dropdown_Off.png" preload="true" scale.left="2" scale.bottom="2" scale.top="24" scale.right="30" />
+  <texture name="Toolbar_Middle_Dropdown_Selected" file_name="containers/Toolbar_Middle_Dropdown_Selected.png" preload="true" scale.left="2" scale.bottom="2" scale.top="24" scale.right="30" />
   <texture name="Toolbar_Middle_Flash" file_name="containers/Toolbar_Middle_Flash.png" preload="false" scale.left="5" scale.bottom="4" scale.top="24" scale.right="30" />
   <texture name="Toolbar_Right_Off" file_name="containers/Toolbar_Right_Off.png" preload="false" scale.left="1" scale.bottom="4" scale.top="24" scale.right="26" />
   <texture name="Toolbar_Right_Over" file_name="containers/Toolbar_Right_Over.png" preload="false" scale.left="1" scale.bottom="4" scale.top="24" scale.right="26" />
