@@ -24,13 +24,14 @@ visible="true">
 	<panel
 	follows="left|top|right"
 	height="30"
-	left="-100"
+	left="1"
+	right="-1"
 	mouse_opaque="false"
 	name="chiclet_container"
 	tab_stop="false"
 	top_delta="-3"
 	bg_visible="false"
-	width="100"/>
+	width="1024"/>
 	<layout_stack
 	name="main"
 	orientation="horizontal"
