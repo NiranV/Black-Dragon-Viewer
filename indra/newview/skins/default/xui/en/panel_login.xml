@@ -70,7 +70,7 @@ top="600"
   
   <icon
   follows="top|left|right"
-  height="100"
+  height="65"
   image_name="Toolbar_Middle_Selected"
   color="0 0 0 1"
   layout="topleft"
@@ -82,7 +82,7 @@ top="600"
   top="0"/>
   <icon
   follows="top|left|right"
-  height="100"
+  height="65"
   image_name="Toolbar_Middle_Selected"
   color="0 0 0.15 1"
   layout="topleft"
@@ -99,7 +99,7 @@ top="600"
     layout="topleft"
     left="1"
     name="cost_text_border"
-    top="100"
+    top="65"
     width="994"/>
   <button
        follows="left|top|right"
@@ -209,7 +209,7 @@ top="600"
       mouse_opaque="false"
       name="root_panel"
       top_pad="0"
-      width="555">
+      width="495">
        <button
         follows="left|top"
         height="18"
@@ -300,7 +300,7 @@ top="600"
         top_delta="0"
         left_pad="1"
         name="server_combo"
-        width="217"
+        width="157"
         visible="true">
           <combo_box.combo_editor
           font="SansSerif"
@@ -315,9 +315,9 @@ top="600"
           <combo_box.combo_button
           scale_image="true"
           image_overlay="R"
-          image_unselected="Toolbar_Middle_Off"
-          image_selected="Toolbar_Middle_Selected"
-          image_disabled="Toolbar_Middle_Off" />
+          image_unselected="Toolbar_Middle_Dropdown_Off"
+          image_selected="Toolbar_Middle_Dropdown_Selected"
+          image_disabled="Toolbar_Middle_Dropdown_Off" />
             <combo_box.combo_list
               bg_writeable_color="White_02"
               background_visible="true"/>
@@ -328,7 +328,7 @@ top="600"
         follows="left|top"
         height="22"
         label="Username"
-        left="193"
+        left="163"
         max_chars="128"
         tool_tip="The username you chose when you registered, like bobsmith12 or Steller Sunshine"
         top_pad="12"
@@ -363,7 +363,7 @@ top="600"
         height="23"
         max_chars="128"
         top_pad="5"
-        left="193"
+        left="163"
         name="start_location_combo"
         width="164">
           <combo_box.combo_editor
@@ -405,7 +405,7 @@ top="600"
        font.style="BOLD"
        label_color="1 1 1 0.8"
        layout="topleft"
-       left="193"
+       left="163"
        name="connect_btn"
        top_pad="3"
        width="152"/>
