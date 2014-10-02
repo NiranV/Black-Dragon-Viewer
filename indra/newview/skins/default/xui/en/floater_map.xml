@@ -23,6 +23,10 @@
      name="AltToolTipMsg">
       [REGION](Double-click to teleport, shift-drag to pan)
     </floater.string>
+	<floater.string
+     name="RegionCoords">
+      [X_COORD] | [Y_COORD] | [Z_COORD]
+    </floater.string>
     <floater.string name="mini_map_caption">
 	Mini-map
     </floater.string>
@@ -45,6 +49,8 @@
      left="0"
      name="floater_map_north"
      right="10"
+	 bg_writeable_color="Black_75"
+     bg_visible="true"
      text_color="1 0.3 0 1"
      top="189">
         N
@@ -58,6 +64,8 @@
      left="0"
      name="floater_map_east"
      right="10"
+	 bg_writeable_color="Black_75"
+     bg_visible="true"
      text_color="1 1 0 1"
      top="189">
         E
@@ -71,6 +79,8 @@
      left="0"
      name="floater_map_west"
      right="11"
+	 bg_writeable_color="Black_75"
+     bg_visible="true"
      text_color="0 1 0 1"
      top="175">
         W
@@ -84,10 +94,38 @@
      left="0"
      name="floater_map_south"
      right="10"
+	 bg_writeable_color="Black_75"
+     bg_visible="true"
      text_color="0 0.75 0.9 1"
      top="189">
         S
     </text>
+	<text
+   follows="top|left|right"
+   height="17"
+   layout="topleft"
+   halign="center"
+   word_wrap="false"
+   bg_writeable_color="Black_75"
+   bg_visible="true"
+   name="sim_coords"
+   font="SansSerifSmall"
+   top="2"
+   width="220"/>
+	<text
+   follows="top|left|right"
+   height="17"
+   layout="topleft"
+   halign="center"
+   word_wrap="false"
+   bg_writeable_color="Black_75"
+   bg_visible="true"
+   name="sim_name"
+   font="SansSerifSmall"
+   top="-22"
+   width="220">
+      Region Name
+   </text>
 
 
 </floater>
