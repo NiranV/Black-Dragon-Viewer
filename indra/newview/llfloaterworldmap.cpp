@@ -309,6 +309,9 @@ BOOL LLFloaterWorldMap::postBuild()
 	setDefaultBtn(NULL);
 	
 	mZoomTimer.stop();
+
+	// keep onscreen
+	gFloaterView->adjustToFitScreen(this, FALSE);
 	
 	onChangeMaturity();
 	
@@ -529,6 +532,8 @@ void LLFloaterWorldMap::draw()
 	getChildView("event_chk")->setEnabled(enable);
 	getChildView("events_mature_chk")->setEnabled(enable);
 	getChildView("events_adult_chk")->setEnabled(enable);
+
+
 	
 	LLFloater::draw();
 }
