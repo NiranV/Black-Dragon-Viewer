@@ -2830,7 +2830,7 @@ void LLFloaterView::adjustToFitScreen(LLFloater* floater, BOOL allow_partial_out
 	S32 delta_left = mToolbarLeftRect.notEmpty() ? mToolbarLeftRect.mRight - floater_rect.mRight : 0;
 	S32 delta_bottom = mToolbarBottomRect.notEmpty() ? mToolbarBottomRect.mTop - floater_rect.mTop : 0;
 	S32 delta_right = mToolbarRightRect.notEmpty() ? mToolbarRightRect.mLeft - floater_rect.mLeft : 0;
-	S32 delta_top = mToolbarTopRect.notEmpty() ? mToolbarTopRect.mLeft - floater_rect.mBottom : 0;
+	S32 delta_top = mToolbarTopRect.notEmpty() ? mToolbarTopRect.mBottom - floater_rect.mBottom : 0;
 
 
 	// move window fully onscreen
@@ -2852,7 +2852,7 @@ void LLFloaterView::adjustToFitScreen(LLFloater* floater, BOOL allow_partial_out
 	}
 	else if (delta_top < 0 && floater_rect.mLeft < mToolbarTopRect.mLeft	&& floater_rect.mRight > mToolbarTopRect.mRight)
 	{
-		floater->translate(delta_right, 0);
+		floater->translate(0, delta_top);
 	}
 }
 
