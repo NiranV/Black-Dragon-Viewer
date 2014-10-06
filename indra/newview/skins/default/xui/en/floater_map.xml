@@ -113,7 +113,7 @@
    top="2"
    width="220"/>
 	<text
-   follows="top|left|right"
+   follows="bottom|left|right"
    height="17"
    layout="topleft"
    halign="center"
@@ -122,7 +122,7 @@
    bg_visible="true"
    name="sim_name"
    font="SansSerifSmall"
-   top="-22"
+   top="-15"
    width="220">
       Region Name
    </text>
