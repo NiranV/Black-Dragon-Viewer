@@ -47,18 +47,6 @@
     mouse_opaque="true"
     top="2"
     width="18" />
-    <output_monitor
-    auto_update="true"
-    follows="top|left"
-    draw_border="false"
-    height="20"
-    layout="topleft"
-    left="1"
-    top="0"
-    visible="true"
-    mouse_opaque="true"
-    name="speaking_indicator"
-    width="320" />
     <button
     follows="top|left"
     height="18"
@@ -77,12 +65,11 @@
     font_shadow="soft"
     height="13"
     layout="topleft"
-    font.style="BOLD"
     left="25"
     word_wrap="false"
     name="avatar_name"
     parse_urls="false"
-    top="4"
+    top="5"
     use_ellipses="true"
     value="(loading)"
     width="292"/>
@@ -93,12 +80,24 @@
     height="11"
     layout="topleft"
     halign="right"
-    right="-2"
+    right="-4"
     top="5"
     name="extra_information"
     text_color="1 1 1 0.7"
     value=""
     width="100" />
+    <output_monitor
+    auto_update="true"
+    follows="top|right"
+    draw_border="false"
+    height="20"
+    layout="topleft"
+    right="-62"
+    top="0"
+    visible="true"
+    mouse_opaque="true"
+    name="speaking_indicator"
+    width="20" />
     <icon
     height="16"
     follows="right|top"
