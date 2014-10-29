@@ -95,6 +95,7 @@
         I want to access content rated:
     </text>
     <icons_combo_box
+      control_name="PreferredMaturity"
       follows="left|top"
       height="23"
       label="Moderate"
