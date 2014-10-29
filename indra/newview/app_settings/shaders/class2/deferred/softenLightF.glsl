@@ -386,15 +386,15 @@ void calcAtmospherics(vec3 inPositionEye, float ambFactor) {
         for (int i=godray_res-1; i>0; --i) {
           vec4 spos = vec4(mix(vec3(0,0,0), farpos, (i-roffset)/(godray_res)), 1.0);
           float this_shadsample = nonpcfShadowAtPos(spos);
-          float this_shaftify = abs(this_shadsample - last_shadsample);
+          float this_shaftify = abs(this_shadsample);
           last_shadsample = this_shadsample;
           shadamount = mix(shadamount, this_shadsample, (1.0+1.0*haze_density)/godray_res);
-          shaftify += this_shaftify;
+          shaftify += this_shaftify * haze_density;
         }
         
+        shadamount /= 32;
         shaftify /= godray_res-1;
-        shaftify *= shaftify;
-        shaftify *= 0.5f;
+        setAdditiveColor(getAdditiveColor() * (max(shadamount,1.0)) + 0.0 * haze_weight.a * (shadamount) * shaftify * getSunlitColor());
     #endif
 }
 
@@ -748,8 +748,7 @@ void main()
 	}
     
     #if GOD_RAYS
-        col += (shaftify * godray_multiplier ) * getSunlitColor();
-        col *= (0.5 + shadamount);
+        col += ((shaftify * (godray_multiplier / 5)) * (getSunlitColor()) * shadamount);
     #endif
 	
 	frag_color.rgb = col;
