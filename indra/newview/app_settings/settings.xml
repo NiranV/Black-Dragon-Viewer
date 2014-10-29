@@ -16303,7 +16303,7 @@
       <key>Type</key>
       <string>U32</string>
       <key>Value</key>
-      <integer>64</integer>
+      <integer>32</integer>
   </map>
   <key>RenderGodraysMultiplier</key>
   <map>
@@ -16314,7 +16314,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>4.0</real>
+      <real>2.0</real>
   </map>
   <key>RenderLensFlare</key>
   <map>
