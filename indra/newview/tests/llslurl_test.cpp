@@ -6,7 +6,7 @@
  *
  * $LicenseInfo:firstyear=2009&license=viewerlgpl$
  * Second Life Viewer Source Code
- * Copyright (C) 2010, Linden Research, Inc.
+ * Copyright (C) 2014, Linden Research, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,34 +32,14 @@
 #include "../../llxml/llcontrol.h"
 #include "llsdserialize.h"
 
-// [RLVa:KB] - Checked: 2010-11-12 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
-// Stub implementation to get the test to compile properly
-#include "../rlvhandler.h"
-
-const std::string& RlvStrings::getString(const std::string& strStringName)
+namespace
 {
-	static const std::string strMissing = "(Missing RLVa string)";
-	return strMissing;
+
+// Should not collide with other test programs creating temp files.
+static const char * const TEST_FILENAME("llslurl_test.xml");
+
 }
-
-bool RlvUtil::isNearbyRegion(const std::string& strRegion)
-{
-	return false;
-}
-
-RlvHandler::RlvHandler() : m_pGCTimer(NULL), m_pWLSnapshot(NULL)
-{
-	// Array auto-initialization to 0 is non-standard? (Compiler warning in VC-8.0)
-	memset(m_Behaviours, 0, sizeof(S16) * RLV_BHVR_COUNT);
-}
-
-RlvHandler::~RlvHandler()
-{
-}
-
-RlvHandler gRlvHandler;
-// [/RLVa:KB]
-
+	
 //----------------------------------------------------------------------------
 // Mock objects for the dependencies of the code we're testing
 
@@ -172,11 +152,11 @@ namespace tut
 	template<> template<>
 	void slurlTestObject::test<1>()
 	{
-		llofstream gridfile("grid_test.xml");
+		llofstream gridfile(TEST_FILENAME);
 		gridfile << gSampleGridFile;
 		gridfile.close();
 
-		LLGridManager::getInstance()->initialize("grid_test.xml");
+		LLGridManager::getInstance()->initialize(TEST_FILENAME);
 
 		LLGridManager::getInstance()->setGridChoice("util.agni.lindenlab.com");
 
@@ -289,11 +269,11 @@ namespace tut
 	template<> template<>
 	void slurlTestObject::test<2>()
 	{
-		llofstream gridfile("grid_test.xml");
+		llofstream gridfile(TEST_FILENAME);
 		gridfile << gSampleGridFile;
 		gridfile.close();
 
-		LLGridManager::getInstance()->initialize("grid_test.xml");
+		LLGridManager::getInstance()->initialize(TEST_FILENAME);
 
 		LLSLURL slurl = LLSLURL("my.grid.com", "my region");
 		ensure_equals("grid/region - type", slurl.getType(), LLSLURL::LOCATION);
@@ -322,11 +302,11 @@ namespace tut
 	template<> template<>
 	void slurlTestObject::test<3>()
 	{
-		llofstream gridfile("grid_test.xml");
+		llofstream gridfile(TEST_FILENAME);
 		gridfile << gSampleGridFile;
 		gridfile.close();
 
-		LLGridManager::getInstance()->initialize("grid_test.xml");
+		LLGridManager::getInstance()->initialize(TEST_FILENAME);
 
 		LLGridManager::getInstance()->setGridChoice("my.grid.com");
 		LLSLURL slurl = LLSLURL("https://my.grid.com/region/my%20region/1/2/3");
