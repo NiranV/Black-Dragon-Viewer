@@ -21,8 +21,6 @@
  left="0"
  top="0"
  background_visible="false"
- bg_opaque_image=""
- bg_alpha_image=""
  can_minimize="false"
  can_tear_off="false"
  can_resize="false"
@@ -33,7 +31,7 @@
  <panel
   background_opaque="false"
   border_visible="false"
-  background_visible="false"
+  background_visible="true"
   bg_opaque_image="Toast_Over"
   bg_alpha_image="Toast_Background"
   label="wrapper_panel"
@@ -67,7 +65,7 @@
   <button
     layout="topleft"
     top="0"
-    right="313"
+    right="306"
     width="17"
     height="17"
     follows="top|right"

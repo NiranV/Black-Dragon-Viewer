@@ -62,6 +62,19 @@
     <floater.string
      name="expcol_button_tearoff_and_collapsed_tooltip"
      value="Expand participant list"/>
+    <icon
+	  follows="all"
+	  height="220"
+	  color="1 1 1 1"
+	  image_name="Panel_Background"
+	  layout="topleft"
+	  name="vicon"
+	  mouse_opaque="false"
+	  visible="true"
+	  width="383"
+	  top="0"
+	  bottom="-1"
+	  left="5"/>
     <view
      follows="all"
      layout="topleft"
@@ -86,6 +99,7 @@
          tab_group="1">
             <layout_panel
              auto_resize="false"
+             bg_visible="true"
              name="toolbar_panel"
              height="27"
              right="-1"
@@ -328,7 +342,6 @@
                                  font="SansSerifSmall"
                                  follows="all"
                                  name="chat_history"
-                                 bg_color="White"
                                  parse_highlights="true"
                                  parse_urls="true"
                                  left="1"
@@ -367,16 +380,18 @@
                   name="bg"
                   mouse_opaque="false"
                   image_name="Toolbar_Middle_Off"
-                  left="1"
+                  left="0"
                   top="0"
-                  width="375" />
+                  width="376" />
                         <chat_editor
                          layout="topleft"
                          follows="top|left|right"
                          font="SansSerifBig"
                          height="22"
                          is_expandable="false"
-                         text_tentative_color="TextFgTentativeColor"
+                         text_tentative_color="0.4 0.4 0.4 1"
+                         cursor_color="TextCursorColor"
+                         text_color="Black_75"
                          name="chat_editor"
                          max_length="1023"
                          spellcheck="true"
@@ -385,7 +400,7 @@
                          line_spacing.pixels="-1" 
                          top_delta="1"
                          left_delta="2"
-                         width="371"
+                         width="372"
                          wrap="true" />
                     </layout_panel>
                     <layout_panel

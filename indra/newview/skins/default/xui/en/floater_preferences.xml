@@ -10,7 +10,19 @@
  save_rect="true"
  single_instance="true"
  title="Preferences"
- width="658">
+ width="668">
+   <icon
+        follows="top|left"
+        height="408"
+        color="1 1 1 1"
+        image_name="Panel_Background"
+        layout="topleft"
+        name="vicon"
+        mouse_opaque="false"
+        visible="true"
+        width="142"
+		top="21"
+        left="7"/>
     <button
      follows="right|bottom"
      height="23"
@@ -19,7 +31,7 @@
      layout="topleft"
      right="-105"
      name="OK"
-     top="433"
+     top="431"
      width="90">
         <button.commit_callback
          function="Pref.OK" />
@@ -42,7 +54,7 @@
      halign="left"
      height="410"
      layout="topleft"
-     left="0"
+     left="5"
      name="pref core"
      tab_group="1"
      tab_position="left"

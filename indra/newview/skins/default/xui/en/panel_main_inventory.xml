@@ -9,6 +9,19 @@
  min_width="250"
  name="main inventory panel"
  width="297">
+  <icon
+  follows="all"
+  height="300"
+  color="1 1 1 1"
+  image_name="Panel_Background"
+  layout="topleft"
+  name="vicon"
+  mouse_opaque="false"
+  visible="true"
+  width="280"
+  top="37"
+  bottom="-6"
+  left="9"/>
     <menu_bar
    height="18"
    layout="topleft"
@@ -396,7 +409,7 @@
    follows="top|right"
    is_toggle="true"
 			control_name="InventorySortObjectsByDate"
-   image_selected="icons/check_mark.png"
+   image_selected="Checkbox_On"
    image_unselected="Checkbox_Off"
    tool_tip="Sort your Inventory Objects by Date"
    label=""
@@ -419,7 +432,7 @@
    height="16"
    follows="top|right"
    control_name="InventorySortFoldersByName"
-   image_selected="icons/check_mark.png"
+   image_selected="Checkbox_On"
    image_unselected="Checkbox_Off"
    is_toggle="true"
    tool_tip="Sort your Inventory folders by Name"
@@ -443,7 +456,7 @@
    height="16"
    follows="top|right"
    control_name="InventorySystemFoldersToTop"
-   image_selected="icons/check_mark.png"
+   image_selected="Checkbox_On"
    image_unselected="Checkbox_Off"
    tool_tip="Put your System folders always at the top"
    label=""
@@ -454,10 +467,7 @@
    top_delta="1"
    width="16"/>
   <tab_container
-     bg_alpha_color="DkGray"
-     bg_opaque_color="DkGray"
      background_visible="false"
-     background_opaque="true"
      follows="all"
      halign="center"
      height="343"
@@ -470,10 +480,8 @@
      top_pad="2"
      width="282">
     <inventory_panel
-     bg_opaque_color="White_02"
-     bg_alpha_color="White_02"
-     background_visible="true"
-     background_opaque="true"
+     bg_opaque_image="Panel_Background"
+     background_visible="false"
      border="false"
      bevel_style="none"
      follows="all"
@@ -488,10 +496,7 @@
      width="220" >
 	</inventory_panel>
     <recent_inventory_panel
-     bg_opaque_color="White_02"
-     bg_alpha_color="White_02"
-     background_visible="true"
-     background_opaque="true"
+     background_visible="false"
      border="false"
      bevel_style="none"
      follows="all"

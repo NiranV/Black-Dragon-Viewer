@@ -90,28 +90,18 @@ width="320">
     width="330">
      <string name="InboxLabelWithArg">[NUM] Received items</string>
      <string name="InboxLabelNoArg">No Received items</string>
-     <button
-     control_name="InventoryInboxToggleState"
-     label="Received items"
-     font="SansSerifMedium"
-     name="inbox_btn"
-     height="23"
-     width="309"
-     image_hover_unselected="Toolbar_Middle_Over"
-     image_overlay="Command_Marketplace_Icon"
-     image_selected="Toolbar_Middle_Selected"
-     image_unselected="Toolbar_Middle_Off"
-     image_overlay_alignment="left"
-        imgoverlay_label_space="10"
-     handle_right_mouse="false"
-     halign="left"
-     image_bottom_pad="3"
-     follows="top|left|right"
-     is_toggle="true"
-     tab_stop="false"
-     pad_left="7"
-     top="0"
-     left="11" />
+	 <icon
+	  follows="all"
+	  height="220"
+	  image_name="Panel_Background"
+	  layout="topleft"
+	  name="vicon"
+	  mouse_opaque="false"
+	  visible="true"
+	  width="313"
+	  top="0"
+	  bottom="-1"
+	  left="9"/>
      <text
      type="string"
      length="1"
@@ -145,6 +135,8 @@ width="320">
        background_visible="false"
        top="5"
        left_delta="0"
+	   h_pad="5"
+	   v_pad="4"
        width="313"
        height="196"
        wrap="true"
@@ -152,6 +144,28 @@ width="320">
        Purchases from the marketplace will be delivered here.
        </text>
       </panel>
+	  <button
+     control_name="InventoryInboxToggleState"
+     label="Received items"
+     font="SansSerifMedium"
+     name="inbox_btn"
+     height="23"
+     width="309"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_overlay="Command_Marketplace_Icon"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
+     image_overlay_alignment="left"
+        imgoverlay_label_space="10"
+     handle_right_mouse="false"
+     halign="left"
+     image_bottom_pad="3"
+     follows="top|left|right"
+     is_toggle="true"
+     tab_stop="false"
+     pad_left="7"
+     top="0"
+     left="11" />
      </panel>
     </layout_panel>
   </layout_stack>

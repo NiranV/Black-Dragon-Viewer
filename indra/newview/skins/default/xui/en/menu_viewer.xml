@@ -2,6 +2,7 @@
 <menu_bar
  bg_visible="false"
  follows="left|top|right"
+ bg_opaque_image="Window_Foreground"
  name="Main Menu">
     <menu
      label="Dragon"

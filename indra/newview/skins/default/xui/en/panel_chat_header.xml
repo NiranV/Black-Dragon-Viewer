@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
-	 background_visible="true"
+	 background_visible="false"
      bevel_style="in"
-     bg_opaque_color="Black" 
-     bg_alpha_color="1 .32 .36 0.15"
      follows="top|left|right"
      height="24"
      label="im_header"
 	 layout="topleft"
      name="im_header"
      width="310">
+    <icon
+    follows="top|left|right"
+    height="22"
+    name="bg"
+    mouse_opaque="false"
+    color="1 1 1 0.4"
+    image_name="Chat_Separator"
+    left="1"
+    top="1"
+    width="310" />
 	<avatar_icon
          follows="left"
          height="18"
@@ -32,8 +40,7 @@
       left_pad="5"
       right="-120"
       name="user_name"
-      text_color="white"
-      bg_readonly_color="black"
+      text_color="0.2 0.9 0.3 1"
       top="0"
       translate="false"
       use_ellipses="true"
@@ -48,7 +55,7 @@
     layout="topleft"
     left_pad="5"
     name="time_box"
-    right="-5"
+    right="-1"
     top="7"
     value="23:30"
     width="110" />

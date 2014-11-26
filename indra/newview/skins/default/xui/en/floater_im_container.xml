@@ -39,11 +39,21 @@
          user_resize="true"
          name="messages_layout_panel"
          expanded_min_dim="222">
+         <icon
+         follows="all"
+         height="210"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Panel_Background"
+         left="6"
+         right="-7"
+         top="0"
+         bottom="-1"/>
             <panel_container
              bottom="-1"
              follows="all"
              layout="topleft"
-             left="0"
+             left="1"
              name="im_box_tab_container"
              right="-1"
              top="0">
@@ -54,7 +64,7 @@
                name="stub_panel"
                opaque="true"
                top_pad="0"
-               left="0"
+               left="1"
                right="-1">
                  <button
                  follows="right|top"
@@ -98,7 +108,7 @@
              follows="left|top|right"
              height="30"
              layout="topleft"
-             left="0"
+             left="1"
              border_size="0"
              name="conversations_pane_buttons_stack"
              orientation="horizontal"
@@ -176,7 +186,7 @@
              name="conversations_list_panel"
              opaque="true"
              top="30"
-             left="1"/>
+             left="2"/>
         </layout_panel>
     </layout_stack>
 </multi_floater>

@@ -35,27 +35,15 @@ width="1024">
          width="1024"/>
          <icon
          follows="top|left|right"
-         visibility_control="HideTopbar"
-         image_name="TopBar_BG"
+         image_name="Window_Background"
          mouse_opaque="false"
          name="bg_icon_l1"
          scale_image="false"
          visible="true"
-         left_delta="0"
-         top_delta="0"
+         left_delta="-1"
+         top_delta="-1"
          height="48"
-         width="1024"/>
-         <icon
-         follows="all"
-         image_name="WorldView_Rect"
-         mouse_opaque="false"
-         name="bg_icon"
-         scale_image="false"
-         visible="true"
-         left="0"
-         top_delta="0"
-         height="768"
-         width="1024"/>
+         width="1026"/>
          <panel
          follows="left|top|right"
          height="50"
@@ -89,21 +77,19 @@ width="1024">
          mouse_opaque="false"
          follows="left|right|top"
          name="status_bar_container"
-         visibility_control="HideTopbar"
          tab_stop="false"
-         height="19"
+         height="23"
          left="0"
-         top="0"
+         top="20"
          width="1024"
          auto_resize="false"
          visible="true">
             <view
             mouse_opaque="false"
             follows="all"
-            visibility_control="HideTopbar"
             name="menu_bar_holder"
-            left="305"
-            top="0"
+            left="10"
+            top="3"
             width="60"
             height="19"/>
          </panel>

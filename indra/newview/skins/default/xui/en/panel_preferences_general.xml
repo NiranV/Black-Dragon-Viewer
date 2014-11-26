@@ -72,7 +72,6 @@
     <text
      font="SansSerifSmall"
      type="string"
-     text_color="BeaconColor"
      length="1"
      follows="left|top"
      height="18"

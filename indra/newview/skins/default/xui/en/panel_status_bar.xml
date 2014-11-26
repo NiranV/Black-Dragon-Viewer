@@ -68,9 +68,9 @@
      follows="right|top"
      halign="right"
      height="16"
-     top="6"
+     top="7"
      layout="topleft"
-     left="-221"
+     left="-276"
      name="TimeText"
      tool_tip="Current time (Pacific)"
      width="80">
@@ -85,7 +85,7 @@
      image_pressed_selected="Play_Press"
      is_toggle="true"
      left_pad="5"
-     top="4"
+     top="5"
      name="media_toggle_btn"
      tool_tip="Start/Stop All Media (Music, Video, Web pages)"
      width="16" >
@@ -98,7 +98,7 @@
      image_unselected="Audio_Off"
      is_toggle="true"
      left_pad="5"
-     top="5"
+     top="6"
      name="volume_btn"
      width="16" />
 				<icon
@@ -114,10 +114,10 @@
 		type="string"
 		font="SansSerifSmallBold"
 		follows="right|top"
-		text_color="1 .32 .36 0.85"
+		text_color="0.2 0.9 0.3 1"
 		halign="left"
 		height="16"
-		top="6"
+		top="7"
 		layout="topleft"
 		left_pad="12"
 		name="FPSText"

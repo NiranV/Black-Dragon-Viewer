@@ -279,7 +279,6 @@
      mouse_opaque="false"
      name="block_list_label"
      top_delta="4"
-     text_color="BeaconColor"
      width="300">
        (People and/or Objects you have blocked)
     </text>
@@ -306,7 +305,6 @@
      mouse_opaque="false"
      name="cache_size_label_l"
      top_delta="3"
-     text_color="BeaconColor"
      width="300">
        (Locations, Images, Web, Search History)
     </text>

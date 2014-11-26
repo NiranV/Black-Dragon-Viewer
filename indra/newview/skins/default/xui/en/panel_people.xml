@@ -69,7 +69,8 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 <!-- ================================= NEARBY tab =========================== -->
 
         <panel
-         background_visible="false"
+         background_image="Panel_BG"
+			   background_visible="true"
          bottom="-1"
          follows="all"
          label="Radar"
@@ -82,7 +83,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          <layout_stack
            clip="false"
            follows="all"
-           height="412"
+           height="413"
            layout="topleft"
            left="0"
            mouse_opaque="false"
@@ -106,7 +107,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                left="3"
                mouse_opaque="false"
                name="Net Map"
-               right="-3"
+               right="-2"
                top="2" />
            </layout_panel>
            <layout_panel
@@ -114,10 +115,12 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
              layout="topleft"
              min_dim="100"
              mouse_opaque="false"
+			 background_visible="false"
              right="-1"
              user_resize="true">
              <avatar_list
                allow_select="true"
+			   color="Transparent"
                follows="all"
                height="211"
                ignore_online_status="true"
@@ -132,20 +135,18 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          </layout_stack>
 									<panel
              follows="left|bottom|right"
-												 background_visible="true"
-												 bg_alpha_color="White_02"
              height="25"
              label="bottom_panel"
              layout="topleft"
-             left="0"
+             left="1"
              name="nearby_buttons_panel"
              right="-1"
-             top="-27">
+             top="-25">
 												<icon
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
 															height="25"
-															width="192"
+															width="191"
 															layout="topleft"
 															left="2"
 															top="0"/>
@@ -154,16 +155,15 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 			     background_image="TextField_Off"
 			     background_image_disabled="TextField_Disabled"
 			     background_image_focused="TextField_Active"
-                 height="23"
+                 height="22"
                  layout="topleft"
                  left="4"
                  label="Filter People"
                  max_length_chars="300"
                  name="nearby_filter_input"
-                 text_color="Black"
                  text_pad_left="10"
                  top="1"
-                 width="188" />
+                 width="187" />
                 <button
                  commit_callback.function="People.Gear"
                  follows="right"
@@ -232,21 +232,20 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 <!-- ================================= FRIENDS tab ========================== -->
 
         <panel
-         background_visible="false"
+         background_visible="true"
          bottom="-1"
          follows="all"
          label="Friends"
          layout="topleft"
+		 background_image="Panel_BG"
          left="0"
          help_topic="people_friends_tab"
          name="friends_panel"
          right="-1"
          top="0">
             <accordion
-       		 background_visible="true"
-			 bg_alpha_color="White_02"
              follows="all"
-             height="409"
+             height="411"
 			 width="322"
              layout="topleft"
              left="2"
@@ -297,6 +296,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                 <avatar_list
                  ignore_online_status="true"
                  allow_select="true"
+				 color="Transparent"
                  follows="all"
                  height="173"
                  layout="topleft"
@@ -309,20 +309,19 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
             </accordion>
 												<panel
              follows="left|bottom|right"
-             background_visible="true"
-												 bg_alpha_color="White_02"
+             background_visible="false"
              height="25"
              label="bottom_panel"
              layout="topleft"
-             left="0"
+             left="1"
              name="friends_buttons_panel"
              right="-1"
-             top="-27">
+             top="-25">
 															<icon
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
 															height="25"
-															width="192"
+															width="191"
 															layout="topleft"
 															left="2"
 															top="0"/>
@@ -331,16 +330,15 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 																	background_image="TextField_Off"
 															  background_image_disabled="TextField_Disabled"
 																	background_image_focused="TextField_Active"
-                 height="23"
+                 height="22"
                  layout="topleft"
                  left="4"
                  label="Filter People"
                  max_length_chars="300"
                  name="friends_filter_input"
-                 text_color="Black"
                  text_pad_left="10"
                  top="1"
-                 width="188" />
+                 width="187" />
                 <button
                  commit_callback.function="People.Gear"
                  follows="right"
@@ -416,7 +414,8 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 <!-- ================================= GROUPS tab =========================== -->
 
         <panel
-         background_visible="false"
+         background_visible="true"
+		 background_image="Panel_BG"
          bottom="-1"
          follows="all"
          label="Groups"
@@ -433,7 +432,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
             <group_list
              allow_select="true" 
              follows="all"
-             height="409"
+             height="411"
              layout="topleft"
              left="2"
              name="group_list"
@@ -441,20 +440,19 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
              top_pad="1" />
 												<panel
              follows="left|bottom|right"
-             background_visible="true"
-												 bg_alpha_color="White_02"
+             background_visible="false"
              height="25"
              label="bottom_panel"
              layout="topleft"
-             left="0"
+             left="1"
              name="groups_buttons_panel"
              right="-1"
-             top="-27">
+             top="-25">
 															<icon
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
 															height="25"
-															width="192"
+															width="191"
 															layout="topleft"
 															left="2"
 															top="0"/>
@@ -463,16 +461,15 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 																	background_image="TextField_Off"
 															  background_image_disabled="TextField_Disabled"
 																	background_image_focused="TextField_Active"
-                 height="23"
+                 height="22"
                  layout="topleft"
                  left="4"
                  label="Filter Groups"
                  max_length_chars="300"
                  name="groups_filter_input"
-                 text_color="Black"
                  text_pad_left="10"
                  top="1"
-                 width="188" />
+                 width="187" />
                 <menu_button
                  follows="right"
                  height="25"
@@ -532,20 +529,20 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 <!-- ================================= RECENT tab =========================== -->
 
         <panel
-         background_visible="false"
+         background_visible="true"
+		 background_image="Panel_BG"
+         bottom="-1"
          follows="all"
-         height="383"
-         label="Recent"
+         label="Groups"
          layout="topleft"
          left="0"
-         help_topic="people_recent_tab"
          name="recent_panel"
          right="-1"
          top="0">
             <avatar_list
              allow_select="true"
              follows="all"
-             height="354"
+             height="411"
              layout="topleft"
              left="3"
              multi_select="true"
@@ -555,20 +552,19 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
              top_pad="1" />
 												<panel
              follows="left|bottom|right"
-             background_visible="true"
-												 bg_alpha_color="White_02"
+             background_visible="false"
              height="25"
              label="bottom_panel"
              layout="topleft"
-             left="0"
+             left="1"
              name="recent_buttons_panel"
              right="-1"
-             top="-27">
+             top="-25">
 															<icon
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
 															height="25"
-															width="192"
+															width="191"
 															layout="topleft"
 															left="2"
 															top="0"/>
@@ -577,16 +573,15 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 																	background_image="TextField_Off"
 															  background_image_disabled="TextField_Disabled"
 																	background_image_focused="TextField_Active"
-                 height="23"
+                 height="22"
                  layout="topleft"
                  left="4"
                  label="Filter People"
                  max_length_chars="300"
                  name="recent_filter_input"
-                 text_color="Black"
                  text_pad_left="10"
                  top="1"
-                 width="188" />
+                 width="187" />
                 <button
                  commit_callback.function="People.Gear"
                  follows="right"
@@ -655,17 +650,20 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 <!-- ================================= BLOCKED tab ========================== -->
 
         <panel
-		 background_visible="false"
-		 follows="left|top|right|bottom"
-		 height="305"
-		 layout="topleft"
-		 label="Blocked"
-		 left="0"
+		 background_visible="true"
+         bottom="-1"
+         follows="all"
+         label="Friends"
+         layout="topleft"
+		 background_image="Panel_BG"
+         left="0"
+         right="-1"
+         top="0"
 		 name="block_list_panel"
 		 help_topic="blocked_list">
 			<block_list
 			 follows="all"
-			 height="276"
+			 height="411"
 			 layout="topleft"
 			 left="2"
 			 name="blocked"
@@ -674,20 +672,19 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 			 right="-2"/>
 			<panel
 			  follows="left|bottom|right"
-			  background_visible="true"
-			  bg_alpha_color="White_02"
+			  background_visible="false"
 			  height="25"
 			  label="bottom_panel"
 			  layout="topleft"
-			  left="0"
+			  left="1"
 			  name="blocked_buttons_panel"
 			  right="-2"
-			  top="-27">
+			  top="-25">
 				<icon
 				follows="left|top|right"
 				image_name="Toolbar_Middle_Off"
 				height="25"
-				width="192"
+				width="191"
 				layout="topleft"
 				left="2"
 				top="0"/>
@@ -696,16 +693,15 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 				  background_image="TextField_Off"
 				  background_image_disabled="TextField_Disabled"
 				  background_image_focused="TextField_Active"
-				  height="23"
+				  height="22"
 				  layout="topleft"
 				  left="4"
 				  label="Filter"
 				  max_length_chars="300"
 				  name="blocked_filter_input"
-				  text_color="Black"
 				  text_pad_left="10"
 				  top="1"
-				  width="188" />
+				  width="187" />
 				 <menu_button
 				  follows="right"
 				  height="25"

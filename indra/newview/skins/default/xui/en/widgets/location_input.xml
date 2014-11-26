@@ -4,9 +4,9 @@
        Currently that doesn't work because LLUIImage::getWidth/getHeight() return 1 for the images.
 -->
 <location_input font="SansSerifSmall"
-                icon_maturity_general="Parcel_PG_Light"
-                icon_maturity_adult="Parcel_R_Light"
-                icon_maturity_moderate="Parcel_M_Light"
+                icon_maturity_general="Parcel_PG_Dark"
+                icon_maturity_adult="Parcel_R_Dark"
+                icon_maturity_moderate="Parcel_M_Dark"
                 maturity_help_topic="maturity_rating"
                 add_landmark_image_enabled="Favorite_Star_Active"
                 add_landmark_image_disabled="Favorite_Star_Off"
@@ -54,8 +54,8 @@
     />
   <for_sale_button
     name="for_sale_btn"
-    image_unselected="Parcel_ForSale_Light"
-    image_selected="Parcel_ForSale_Light"
+    image_unselected="Parcel_ForSale_Dark"
+    image_selected="Parcel_ForSale_Dark"
     width="22"
     height="18"
     follows="right|top"
@@ -69,7 +69,7 @@
     height="18"
     top="21"
     follows="right|top"
-    image_name="Parcel_VoiceNo_Light"
+    image_name="Parcel_VoiceNo_Dark"
     />
   <fly_icon
     name="fly_icon"
@@ -77,7 +77,7 @@
     height="18"
     top="21"
     follows="right|top"
-    image_name="Parcel_FlyNo_Light"
+    image_name="Parcel_FlyNo_Dark"
     />
   <push_icon
     name="push_icon"
@@ -85,7 +85,7 @@
     height="18"
     top="21"
     follows="right|top"
-    image_name="Parcel_PushNo_Light"
+    image_name="Parcel_PushNo_Dark"
     />
   <build_icon
     name="build_icon"
@@ -93,7 +93,7 @@
     height="18"
     top="21"
     follows="right|top"
-    image_name="Parcel_BuildNo_Light"
+    image_name="Parcel_BuildNo_Dark"
     />
   <scripts_icon
     name="scripts_icon"
@@ -101,16 +101,7 @@
     height="18"
     top="21"
     follows="right|top"
-    image_name="Parcel_ScriptsNo_Light"
-    />
-  <damage_icon
-    name="damage_icon"
-    width="14"
-    height="13"
-    top="19"
-    left="2"
-    follows="right|top"
-    image_name="Parcel_Health_Dark"
+    image_name="Parcel_ScriptsNo_Dark"
     />
   <pathfinding_dirty_icon
     name="pathfinding_dirty_icon"
@@ -127,6 +118,15 @@
     top="21"
     follows="right|top"
     image_name="Pathfinding_Disabled"
+    />
+  <damage_icon
+    name="damage_icon"
+    width="22"
+    height="18"
+    top="19"
+    left="2"
+    follows="right|top"
+    image_name="Parcel_Health_Dark"
     />
   <!-- Default text color is invisible on top of nav bar background -->
   <damage_text
@@ -145,7 +145,7 @@
     height="18"
     top="21"
     follows="right|top"
-    image_name="Parcel_SeeAVsOff_Light"
+    image_name="Parcel_SeeAVsOff_Dark"
     />
   <combo_button
 		name="Location History"

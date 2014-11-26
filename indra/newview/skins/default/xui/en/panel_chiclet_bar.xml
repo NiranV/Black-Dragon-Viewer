@@ -3,47 +3,84 @@
  background_visible="false"
  chrome="true"
  follows="left|top|right"
- height="30"
+ height="55"
  layout="topleft"
  mouse_opaque="false"
  name="chiclet_bar"
  width="1310">
   <layout_stack
-     border_size="0"
      clip="false"
      follows="all"
-     height="30"
+     height="55"
      layout="topleft"
      left="0"
      mouse_opaque="false"
      name="toolbar_stack"
-     orientation="horizontal"
+     orientation="vertical"
      top="0"
      width="1310">
-        <layout_panel
+    <layout_panel
+         auto_resize="false"
+         follows="top|left"
+         height="26"
+         min_height="26"
+         layout="topleft"
+         name="notification_well_panel"
+         width="75">
+      <chiclet_notification
+             follows="right|top|left"
+             height="26"
+             layout="topleft"
+             left="0"
+             max_displayed_count="99"
+             name="notification_well"
+             top="0"
+             width="50">
+        <button
+                 auto_resize="false"
+                 follows="top|right"
+                 layout="topleft"
+                 halign="left"
+                 height="26"
+                 image_pressed="Sys_BG_Pressed"
+                 image_pressed_selected="Sys_BG_Pressed"
+                 image_selected="Sys_BG"
+                 image_unselected="Sys_BG"
+                 left="0"
+                 top_delta="0"
+                 name="Unread"
+                 tool_tip="Notifications"
+                 width="48">
+          <init_callback
+                     function="Button.SetDockableFloaterToggle"
+                     parameter="notification_well_window" />
+        </button>
+      </chiclet_notification>
+    </layout_panel>
+    <layout_panel
          follows="left|right"
-         height="30"
+         height="29"
          layout="topleft"
          min_width="95"
          mouse_opaque="false"
          name="chiclet_list_panel"
-         auto_resize="true"
+         auto_resize="false"
          top="0"
          width="189">
       <chiclet_panel
              chiclet_padding="4"
-             follows="left|right"
-             height="24"
+             follows="left|top|right"
+             height="29"
              layout="topleft"
              left="1"
              min_width="95"
              mouse_opaque="false"
              name="chiclet_list"
-             top="7"
+             top="0"
              width="189">
         <button
                  auto_resize="false"
-                 follows="right"
+                 follows="top|right"
                  height="29"
                  image_hover_selected="SegmentedBtn_Left_Over"
                  image_hover_unselected="SegmentedBtn_Left_Over"
@@ -55,12 +92,12 @@
                  layout="topleft"
                  name="chicklet_left_scroll_button"
                  tab_stop="false"
-                 top="-28"
+                 top="0"
                  visible="false"
                  width="12" />
         <button
                  auto_resize="false"
-                 follows="right"
+                 follows="top|right"
                  height="29"
                  image_hover_selected="SegmentedBtn_Right_Over"
                  image_hover_unselected="SegmentedBtn_Right_Over"
@@ -72,55 +109,10 @@
                  layout="topleft"
                  name="chicklet_right_scroll_button"
                  tab_stop="false"
-                 top="-28"
+                 top="0"
                  visible="false"
                  width="12" />
       </chiclet_panel>
-    </layout_panel>
-    <layout_panel auto_resize="false"
-                      width="4"
-                      min_width="4"/>
-    <layout_panel
-         auto_resize="false"
-         follows="right"
-         height="28"
-         layout="topleft"
-         min_height="28"
-         min_width="37"
-         name="notification_well_panel"
-         top="0"
-         width="37">
-      <chiclet_notification
-             follows="right"
-             height="23"
-             layout="topleft"
-             left="0"
-             max_displayed_count="99"
-             name="notification_well"
-             top="5"
-             width="35">
-        <button
-                 auto_resize="false"
-                 bottom_pad="3"
-                 follows="right"
-                 halign="center"
-                 height="23"
-                 image_overlay="Notices_Unread"
-                 image_overlay_alignment="center"
-                 image_pressed="transparent.j2c"
-                 image_pressed_selected="transparent.j2c"
-                 image_selected="transparent.j2c"
-                 image_unselected="transparent.j2c"
-                 label_color="Black"
-                 left="0"
-                 name="Unread"
-                 tool_tip="Notifications"
-                 width="34">
-          <init_callback
-                     function="Button.SetDockableFloaterToggle"
-                     parameter="notification_well_window" />
-        </button>
-      </chiclet_notification>
     </layout_panel>
   </layout_stack>
 </panel>

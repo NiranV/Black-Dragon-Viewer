@@ -488,10 +488,10 @@ with the same filename but different name
   <texture name="ScrollArrow_Right" file_name="widgets/ScrollArrow_Right.png" preload="true" scale.left="2" scale.top="13" scale.right="13" scale.bottom="2" />
   <texture name="ScrollArrow_Up" file_name="widgets/ScrollArrow_Up.png"	preload="true" scale.left="2" scale.top="13" scale.right="13" scale.bottom="2" />
 
-  <texture name="ScrollThumb_Horiz" file_name="widgets/ScrollThumb_Horiz.png" preload="true" scale.left="10" scale.top="4" scale.bottom="4" scale.right="53" />
-  <texture name="ScrollThumb_Vert" file_name="widgets/ScrollThumb_Vert.png" preload="true" scale.left="4" scale.top="53" scale.bottom="10" scale.right="4" />
-  <texture name="ScrollTrack_Vert" file_name="widgets/ScrollTrack_Vert.png" preload="true" scale.left="2" scale.top="40" scale.bottom="13" scale.right="0" />
-  <texture name="ScrollTrack_Horiz" file_name="widgets/ScrollTrack_Horiz.png" preload="true" scale.left="4" scale.top="13" scale.bottom="0" scale.right="2" />
+  <texture name="ScrollThumb_Horiz" file_name="widgets/ScrollThumb_Horiz.png" preload="true" scale.left="7" scale.top="13" scale.bottom="2" scale.right="8" />
+  <texture name="ScrollThumb_Vert" file_name="widgets/ScrollThumb_Vert.png" preload="true" scale.left="2" scale.top="8" scale.bottom="7" scale.right="13" />
+  <texture name="ScrollTrack_Vert" file_name="widgets/ScrollTrack_Vert.png" preload="true" scale.left="1" scale.top="39" scale.bottom="1" scale.right="15" />
+  <texture name="ScrollTrack_Horiz" file_name="widgets/ScrollTrack_Horiz.png" preload="true" scale.left="0" scale.top="15" scale.bottom="0" scale.right="40" />
 
 
   <texture name="Search" file_name="navbar/Search.png" preload="false" />
@@ -532,8 +532,8 @@ with the same filename but different name
   <texture name="SkipBackward_Off" file_name="icons/SkipBackward_Off.png" preload="false" />
   <texture name="SkipForward_Off" file_name="icons/SkipForward_Off.png" preload="false" />
 
-  <texture name="SliderTrack_Horiz" file_name="widgets/SliderTrack_Horiz.png" scale.left="4" scale.top="4" scale.right="100" scale.bottom="2" />
-  <texture name="SliderTrack_Vert" file_name="widgets/SliderTrack_Vert.png" scale.left="2" scale.top="100" scale.right="4" scale.bottom="4" />
+  <texture name="SliderTrack_Horiz" file_name="widgets/SliderTrack_Horiz.png" scale.left="16" scale.top="12" scale.right="88" scale.bottom="0" />
+  <texture name="SliderTrack_Vert" file_name="widgets/SliderTrack_Vert.png" scale.left="0" scale.top="88" scale.right="12" scale.bottom="16" />
   <texture name="SliderThumb_Off" file_name="widgets/SliderThumb_Off.png" />
   <texture name="SliderThumb_Disabled" file_name="widgets/SliderThumb_Disabled.png" />
   <texture name="SliderThumb_Press" file_name="widgets/SliderThumb_Press.png" />
@@ -645,13 +645,13 @@ with the same filename but different name
   <texture name="WellButton_Lit_Selected" file_name="bottomtray/WellButton_Lit_Selected.png" preload="true" scale.left="4" scale.top="19" scale.right="28" scale.bottom="4" />
 
   <texture name="Window_Background" file_name="windows/Window_Background.png" preload="true"
-           scale.left="4" scale.top="24" scale.right="26" scale.bottom="4" />
+           scale.left="3" scale.top="25" scale.right="27" scale.bottom="3" />
   <texture name="Window_Foreground" file_name="windows/Window_Foreground.png" preload="true"
-           scale.left="4" scale.top="24" scale.right="26" scale.bottom="4" />
+           scale.left="3" scale.top="25" scale.right="27" scale.bottom="3" />
   <texture name="Window_NoTitle_Background" file_name="windows/Window_NoTitle_Background.png" preload="true"
-           scale.left="4" scale.top="56" scale.right="26" scale.bottom="4" />
+           scale.left="3" scale.top="57" scale.right="27" scale.bottom="3" />
   <texture name="Window_NoTitle_Foreground" file_name="windows/Window_NoTitle_Foreground.png" preload="true"
-           scale.left="4" scale.top="56" scale.right="26" scale.bottom="4" />
+           scale.left="3" scale.top="57" scale.right="27" scale.bottom="3" />
 
   <texture name="YouAreHere_Badge" file_name="icons/YouAreHere_Badge.png" preload="false" />
 
@@ -730,6 +730,9 @@ with the same filename but different name
   <texture name="Objects_By_Name_Off" file_name="icons/ObjectsByName_Off.png"/>
   <texture name="Sys_Folders_To_Top_Off" file_name="icons/SysFoldersToTop_Off.png"/>
   
+  <texture name="Sys_BG" file_name="navbar/sys_bg.png"/>
+  <texture name="Sys_BG_Pressed" file_name="navbar/sys_bg_pressed.png"/>
+  
   <texture name="R" file_name="icons/secondlife_16.png"/>
   
   <texture name="NavBar_BG_middle" file_name="navbar/NavBar_BG_middle.png" preload="true" />
@@ -748,6 +751,7 @@ with the same filename but different name
   
   <texture name="Balance" file_name="icons/Balance.png" preload="true"/>
   <texture name="Draw_Distance" file_name="icons/Draw_Distance.png" preload="true" />
+  <texture name="Chat_Separator" file_name="widgets/Chat_Separator.png" preload="true" scale.left="2" scale.top="20" scale.right="128" scale.bottom="2" />
 
   <texture name="transparentj2c" file_name="transparent.j2c" preload="true" />
   
@@ -758,6 +762,7 @@ with the same filename but different name
   <texture name="WorldView_Rect"	file_name="navbar/WorldView_Rect.png" scale.left="15" scale.top="15" scale.right="1009" scale.bottom="1009" preload="true"/>
   <texture name="Floater_Shadow_Rect"	file_name="navbar/Floater_Shadow_Rect.png" scale.left="17" scale.top="244" scale.right="241" scale.bottom="12" preload="true"/>
   <texture name="Loading_BG"	file_name="windows/Loading_BG.png" preload="true"/>
+  <texture name="Panel_Background"	file_name="windows/Panel_Background.png" scale.left="2" scale.top="58" scale.bottom="2" scale.right="28" preload="true"/>
   
   <texture name="Inv_TexturesClosed" file_name="icons/Inv_TexturesClosed.png" preload="false" />
   <texture name="Inv_SoundsClosed" file_name="icons/Inv_SoundsClosed.png" preload="false" />
