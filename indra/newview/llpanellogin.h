@@ -49,7 +49,13 @@ public:
 				void *callback_data);
 	~LLPanelLogin();
 
+	virtual BOOL handleKeyHere(KEY key, MASK mask);
+	virtual void draw();
 	virtual void setFocus( BOOL b );
+
+	// Show the XUI first name, last name, and password widgets.  They are
+	// hidden on startup for reg-in-client
+	static void showLoginWidgets();
 
 	static void show(const LLRect &rect,
 		void (*callback)(S32 option, void* user_data), 
@@ -61,11 +67,8 @@ public:
 
 	static BOOL areCredentialFieldsDirty();
 	static void setLocation(const LLSLURL& slurl);
-	static void autologinToLocation(const LLSLURL& slurl);
 
 	static void closePanel();
-
-	void showLoginWidgets();
 
 	static void loadLoginPage();	
 	static void giveFocus();
@@ -76,20 +79,12 @@ public:
 	/// to be called from LLStartUp::setStartSLURL
 	static void onUpdateStartSLURL(const LLSLURL& new_start_slurl);
 
-	// called from prefs when initializing panel
-	static bool getShowFavorites();
-
 private:
 	friend class LLPanelLoginListener;
 	void addFavoritesToStartLocation();
-	void onLocationEditChanged(LLUICtrl* ctrl);
-	void onSelectFavorite();
 	void onSelectServer();
 	void onLocationSLURL();
 
-	static void onClickConnectLast(void*);
-	static void onClickConnectFavorite(void*);
-	static void onClickConnectLocation(void*);
 	static void onClickConnect(void*);
 	static void onClickNewAccount(void*);
 	static void onClickVersion(void*);
@@ -103,23 +98,16 @@ private:
 	static void onClickClassic(void*);
 
 private:
+	LLPointer<LLUIImage> mLogoImage;
 	boost::scoped_ptr<LLPanelLoginListener> mListener;
-
-	void updateLoginButtons();
 
 	void			(*mCallback)(S32 option, void *userdata);
 	void*			mCallbackData;
 
 	BOOL            mPasswordModified;
-	bool			mShowFavorites;
 
 	static LLPanelLogin* sInstance;
 	static BOOL		sCapslockDidNotification;
-	bool			mFirstLoginThisInstall;
-	bool mFavoriteSelected;
-	unsigned int mUsernameLength;
-	unsigned int mPasswordLength;
-	unsigned int mLocationLength;
 };
 
 #endif
