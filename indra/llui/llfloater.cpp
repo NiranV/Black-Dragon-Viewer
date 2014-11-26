@@ -1965,11 +1965,11 @@ void	LLFloater::drawShadow(LLPanel* panel)
 		static LLUICachedControl<S32> shadow_offset_S32 ("DropShadowFloater", 0);
 		F32 shadow_offset = (F32)shadow_offset_S32;
 
-		if (!panel->isBackgroundOpaque())
+		/*if (!panel->isBackgroundOpaque())
 		{
 			shadow_offset *= 0.2f;
 			shadow_color.mV[VALPHA] *= 0.5f;
-		}
+		}*/
 		gl_drop_shadow(left, top, right, bottom, 
 			shadow_color % getCurrentTransparency(),
 			llround(shadow_offset));
