@@ -521,7 +521,7 @@ void LLScrollbar::draw()
 		
 		if(mOrientation == HORIZONTAL)
 		{
-			mTrackImageH->drawSolid(mThickness								//S32 x
+			mTrackImageH->draw(mThickness								//S32 x
 								   , 0										//S32 y
 								   , getRect().getWidth() - 2 * mThickness  //S32 width
 								   , getRect().getHeight()					//S32 height
@@ -543,7 +543,7 @@ void LLScrollbar::draw()
 		}
 		else if(mOrientation == VERTICAL)
 		{
-			mTrackImageV->drawSolid(  0										//S32 x
+			mTrackImageV->draw(  0										//S32 x
 								   , mThickness								//S32 y
 								   , getRect().getWidth()					//S32 width
 								   , getRect().getHeight() - 2 * mThickness	//S32 height
