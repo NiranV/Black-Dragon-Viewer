@@ -387,7 +387,7 @@ void calcAtmospherics(vec3 inPositionEye, float ambFactor) {
           vec4 spos = vec4(mix(vec3(0,0,0), farpos, (i-roffset)/(godray_res)), 1.0);
           float this_shadsample = nonpcfShadowAtPos(spos);
           float this_shaftify = abs(this_shadsample);
-          last_shadsample = this_shadsample;
+          //last_shadsample = this_shadsample;
           shadamount = mix(shadamount, this_shadsample, (1.0+1.0*haze_density)/godray_res);
           shaftify += this_shaftify * haze_density;
         }
