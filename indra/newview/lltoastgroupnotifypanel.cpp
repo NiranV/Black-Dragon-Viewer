@@ -73,7 +73,7 @@ LLToastGroupNotifyPanel::LLToastGroupNotifyPanel(const LLNotificationPtr& notifi
 	from_name = LLCacheName::buildUsername(from_name);
 
 	std::stringstream from;
-	from << from_name << "/" << groupData.mName;
+	from << from_name << " / " << groupData.mName;
 	LLTextBox* pTitleText = getChild<LLTextBox>("title");
 	pTitleText->setValue(from.str());
 	pTitleText->setToolTip(from.str());
