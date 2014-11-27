@@ -18,8 +18,7 @@
      name="date_font"
      value="SANSSERIF" />
     <panel
-     background_visible="true"
-	 bg_alpha_color="White_02"
+     background_visible="false"
      follows="top"
      height="25"
      label="header"
@@ -81,8 +80,8 @@
      name="message"
      parse_highlights="true"
      read_only="true"
-     text_color="GroupNotifyTextColor"
-	 bg_readonly_color="White_02"
+     text_color="LabelTextColor"
+	 text_readonly_color="LabelTextColor"
      top_pad="0"
      type="string"
      use_ellipses="true"

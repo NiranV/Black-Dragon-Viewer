@@ -4,7 +4,6 @@
  can_resize="true"
  height="200"
  layout="topleft"
- background_color="FloaterDefaultBackgroundColor"
  min_height="50"
  name="notification"
  title="Notification Console"

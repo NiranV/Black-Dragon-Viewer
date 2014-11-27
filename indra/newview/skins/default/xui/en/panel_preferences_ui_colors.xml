@@ -170,7 +170,7 @@ Friendnames
 	 left_delta="-49"
 	 name="usernames"
 	 top_pad="5"
-	 width="44">-
+	 width="44">
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
 	 parameter="NameTagLegacy" />

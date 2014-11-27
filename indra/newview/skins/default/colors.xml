@@ -404,7 +404,7 @@
  value="0.43 0.06 0.06 1" />
  <color
  name="HTMLLinkColor"
- value="0.866 0.639 0.429 0.9" />
+ value="0.419922 0.693176 0.892578 0.9" />
  <color
  name="HealthTextColor"
  reference="White" />
@@ -589,7 +589,7 @@
  reference="White" />
  <color
  name="NameTagFriend"
- value="0.447 0.784 0.663 1" />
+ value="0.294082 0.936918 0.379459 1" />
  <color
  name="NameTagLegacy"
  reference="White" />
