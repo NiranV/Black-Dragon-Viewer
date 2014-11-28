@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<panel
+ background_visible="false"
+ follows="all"
+ height="438"
+ layout="topleft"
+ left="0"
+ name="block_list_panel"
+ help_topic="blocked_list"
+ width="324">
+     <block_list
+    follows="left|top|right|bottom"
+    height="411"
+    layout="topleft"
+    left="2"
+    name="blocked"
+    tool_tip="List of currently blocked Residents"
+    top_pad="1"
+    right="-2"/>
+    <panel
+     follows="left|bottom|right"
+     background_visible="false"
+     height="25"
+     label="bottom_panel"
+     layout="topleft"
+     left="1"
+     name="blocked_buttons_panel"
+     right="-2"
+     top="-25">
+       <icon
+       follows="left|top|right"
+       image_name="Toolbar_Middle_Off"
+       height="25"
+       width="167"
+       layout="topleft"
+       left="2"
+       top="0"/>
+        <filter_editor
+         follows="left|top|right"
+         background_image="TextField_Off"
+         background_image_disabled="TextField_Disabled"
+         background_image_focused="TextField_Active"
+         height="22"
+         layout="topleft"
+         left="4"
+         label="Filter"
+         max_length_chars="300"
+         name="blocked_filter_input"
+         text_pad_left="10"
+         top="1"
+         width="163" />
+        <menu_button
+         follows="right"
+         height="25"
+         image_hover_unselected="Toolbar_Middle_Over"
+         image_overlay="OptionsMenu_Off"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
+         layout="topleft"
+         left_pad="3"
+         menu_filename="menu_people_blocked_gear.xml"
+         menu_position="bottomleft"
+         name="blocked_gear_btn"
+         tool_tip="Actions on selected person or object"
+         top="0"
+         width="31" />
+        <menu_button
+         follows="right"
+         height="25"
+         image_hover_unselected="Toolbar_Middle_Over"
+         image_overlay="Conv_toolbar_sort"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
+         layout="topleft"
+         left_pad="1"
+         menu_filename="menu_people_blocked_view.xml"
+         menu_position="bottomleft"
+         name="view_btn"
+         tool_tip="Sort options"
+         top_delta="0"
+         width="31" />
+        <menu_button
+         follows="right"
+         height="25"
+         image_hover_unselected="Toolbar_Middle_Over"
+         image_overlay="AddItem_Off"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
+         layout="topleft"
+         left_pad="1"
+         menu_filename="menu_people_blocked_plus.xml"
+         menu_position="bottomleft"
+         name="plus_btn"
+         tool_tip="Pick a Resident or an object to block"
+         top_delta="0"
+         width="31"/>
+         <button
+         follows="right"
+         height="25"
+         image_hover_unselected="Toolbar_Middle_Over"
+         image_overlay="TrashItem_Off"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
+         left_pad="1"
+         layout="topleft"
+         name="unblock_btn"
+         tool_tip="Remove Resident or object from blocked list"
+         top_delta="0"
+         width="31"/>
+    </panel>
+</panel>
