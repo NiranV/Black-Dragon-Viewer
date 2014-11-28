@@ -506,7 +506,7 @@ void LLTextBase::drawCursor()
 				text_color = segmentp->getColor();
 				fontp = segmentp->getStyle()->getFont();
 				fontp->render(text, mCursorPos, cursor_rect, 
-					LLColor4(1.f - text_color.mV[VRED], 1.f - text_color.mV[VGREEN], 1.f - text_color.mV[VBLUE], alpha),
+					LLColor4(text_color.mV[VRED],text_color.mV[VGREEN],text_color.mV[VBLUE], alpha),
 					LLFontGL::LEFT, mVAlign,
 					LLFontGL::NORMAL,
 					LLFontGL::NO_SHADOW,
