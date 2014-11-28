@@ -411,17 +411,15 @@ void LLStatusBar::onMouseEnterNearbyMedia()
 //BD - Draw Distance mouse-over slider
 void LLStatusBar::onMouseEnterDrawDistance()
 {
-	LLView* popup_holder = gViewerWindow->getRootView()->getChildView("popup_holder");
 	LLRect draw_distance_rect = mPanelDrawDistance->getRect();
 	LLIconCtrl* draw_distance_icon =  getChild<LLIconCtrl>( "draw_distance_icon" );
 	LLRect draw_distance_icon_rect = draw_distance_icon->getRect();
+
 	draw_distance_rect.setLeftTopAndSize(draw_distance_icon_rect.mLeft -
-										(draw_distance_rect.getWidth() - draw_distance_icon_rect.getWidth()),
-										draw_distance_icon_rect.mBottom,
-										draw_distance_rect.getWidth(),
-										draw_distance_rect.getHeight());
-	// force onscreen
-	draw_distance_rect.translate(popup_holder->getRect().getWidth() - draw_distance_rect.mRight - 67, 0);
+	     (draw_distance_rect.getWidth() - (draw_distance_icon_rect.getWidth() + 7 )),
+			       draw_distance_icon_rect.mBottom,
+			       draw_distance_rect.getWidth(),
+			       draw_distance_rect.getHeight());
 	
 	// show the draw distance pull-down
 	mPanelDrawDistance->setShape(draw_distance_rect);
