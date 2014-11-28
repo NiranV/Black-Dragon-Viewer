@@ -67,7 +67,7 @@
      name="user_slid"
      font="SansSerifSmallBold"
      parse_urls="false"
-     text_color="EmphasisColor"
+     text_color="White"
      translate="false"
      value="teststring.pleaseignore"
      width="185"
