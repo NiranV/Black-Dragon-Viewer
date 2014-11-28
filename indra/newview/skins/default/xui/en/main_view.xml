@@ -54,26 +54,6 @@ width="1024">
          left="0"
          top="0"/>
          <panel
-         follows="left|top|right"
-         height="35"
-         mouse_opaque="false"
-         name="top_bar_container"
-         tab_stop="false"
-         width="1024"
-         left="410"
-         right="-500"
-         top="0"/>
-         <panel
-         follows="left|top|right"
-         height="19"
-         left="0"
-         mouse_opaque="false"
-         name="topinfo_bar_container"
-         tab_stop="false"
-         top="0"
-         visible="false"
-         width="1024"/>
-         <panel
          mouse_opaque="false"
          follows="left|right|top"
          name="status_bar_container"

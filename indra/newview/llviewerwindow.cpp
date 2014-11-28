@@ -1987,12 +1987,6 @@ void LLViewerWindow::initWorldUI()
 	status_bar_container->addChildInBack(gStatusBar);
 	status_bar_container->setVisible(TRUE);
 
-	LLPanel* top_bar_container = getRootView()->getChild<LLPanel>("top_bar_container");
-	gTopBar = new LLTopBar(top_bar_container->getLocalRect());
-	gTopBar->setShape(top_bar_container->getLocalRect());
-	top_bar_container->addChild(gTopBar);
-	top_bar_container->setVisible(TRUE);
-
 	// Navigation bar
 	LLPanel* nav_bar_container = getRootView()->getChild<LLPanel>("nav_bar_container");
 
@@ -2003,12 +1997,12 @@ void LLViewerWindow::initWorldUI()
 	nav_bar_container->setVisible(TRUE);
 
 	// Top Info bar
-	LLPanel* topinfo_bar_container = getRootView()->getChild<LLPanel>("topinfo_bar_container");
-	LLPanelTopInfoBar* topinfo_bar = LLPanelTopInfoBar::getInstance();
+	//LLPanel* topinfo_bar_container = getRootView()->getChild<LLPanel>("topinfo_bar_container");
+	//LLPanelTopInfoBar* topinfo_bar = LLPanelTopInfoBar::getInstance();
 
-	topinfo_bar->setShape(topinfo_bar_container->getLocalRect());
+	//topinfo_bar->setShape(topinfo_bar_container->getLocalRect());
 
-	topinfo_bar_container->addChild(topinfo_bar);
+	//topinfo_bar_container->addChild(topinfo_bar);
 	//topinfo_bar_container->setVisible(TRUE);
 
 	if ( gHUDView == NULL )
