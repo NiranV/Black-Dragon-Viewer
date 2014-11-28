@@ -357,7 +357,7 @@
 				<combo_box.item label="Zylinder" name="Cylinder"/>
 			</combo_box>
 		</panel>
-		<panel label="Eigenschaften" name="Features">
+		<panel label="Merkmale" name="Features">
 			<panel.string name="None">
 				Keine
 			</panel.string>
