@@ -24,12 +24,14 @@
          follows="top|left"
          height="26"
          min_height="26"
+         mouse_opaque="false"
          layout="topleft"
          name="notification_well_panel"
          width="75">
       <chiclet_notification
              follows="right|top|left"
              height="26"
+             mouse_opaque="false"
              layout="topleft"
              left="0"
              max_displayed_count="99"
