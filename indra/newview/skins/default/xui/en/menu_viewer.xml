@@ -3590,7 +3590,6 @@
      create_jump_keys="true"
      visible="false"
      label="Debug"
-     label_color="EmphasisColor"
      name="Debug"
      tear_off="true">
         <menu_item_call
@@ -3678,19 +3677,16 @@
     <menu
      create_jump_keys="true"
      label="Admin"
-     label_color="0.95 0.5 0.3 0.8"
      name="Admin"
      tear_off="true"
      visible="false">
         <menu
          create_jump_keys="true"
          label="Object"
-	 label_color="0.95 0.5 0.3 0.8"
          name="AdminObject"
          tear_off="true">
             <menu_item_call
              label="Take Copy"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Admin Take Copy"
              shortcut="control|alt|shift|O">
                 <menu_item_call.on_click
@@ -3700,7 +3696,6 @@
             </menu_item_call>
             <menu_item_call
              label="Force Owner To Me"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Force Owner To Me">
                 <menu_item_call.on_click
                  function="Admin.HandleObjectOwnerSelf" />
@@ -3709,7 +3704,6 @@
             </menu_item_call>
             <menu_item_call
              label="Force Owner Permissive"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Force Owner Permissive">
                 <menu_item_call.on_click
                  function="Admin.HandleObjectOwnerPermissive" />
@@ -3718,7 +3712,6 @@
             </menu_item_call>
             <menu_item_call
              label="Delete"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Delete"
              shortcut="control|alt|shift|Del">
                 <menu_item_call.on_click
@@ -3728,7 +3721,6 @@
             </menu_item_call>
             <menu_item_call
              label="Lock"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Lock"
              shortcut="control|alt|shift|L">
                 <menu_item_call.on_click
@@ -3738,7 +3730,6 @@
             </menu_item_call>
             <menu_item_call
              label="Get Assets IDs"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Get Assets IDs"
              shortcut="control|alt|shift|I">
                 <menu_item_call.on_click
@@ -3750,12 +3741,10 @@
         <menu
          create_jump_keys="true"
          label="Parcel"
-	 label_color="0.95 0.5 0.3 0.8"
          name="Parcel"
          tear_off="true">
             <menu_item_call
              label="Force Owner To Me"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Owner To Me">
                 <menu_item_call.on_click
                  function="Admin.HandleForceParcelOwnerToMe" />
@@ -3764,7 +3753,6 @@
             </menu_item_call>
             <menu_item_call
              label="Set to Linden Content"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Set to Linden Content"
              shortcut="control|alt|shift|C">
                 <menu_item_call.on_click
@@ -3774,7 +3762,6 @@
             </menu_item_call>
             <menu_item_call
              label="Claim Public Land"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Claim Public Land">
                 <menu_item_call.on_click
                  function="Admin.HandleClaimPublicLand" />
@@ -3785,12 +3772,10 @@
         <menu
          create_jump_keys="true"
          label="Region"
-	 label_color="0.95 0.5 0.3 0.8"
          name="Region"
          tear_off="true">
             <menu_item_call
              label="Dump Temp Asset Data"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Dump Temp Asset Data">
                 <menu_item_call.on_click
                  function="Admin.HandleRegionDumpTempAssetData" />
@@ -3799,7 +3784,6 @@
             </menu_item_call>
             <menu_item_call
              label="Save Region State"
-	     label_color="0.95 0.5 0.3 0.8"
              name="Save Region State">
                 <menu_item_call.on_click
                  function="Admin.OnSaveState" />
@@ -3809,7 +3793,6 @@
         </menu>
         <menu_item_call
          label="God Tools"
-	 label_color="0.95 0.5 0.3 0.8"
          name="God Tools">
             <menu_item_call.on_click
              function="Floater.Show"
@@ -3822,7 +3805,6 @@
 	
 	<menu_item_call
          label="Request Admin Status"
-	 label_color="0.95 0.5 0.3 0.8"
          name="Request Admin Options"
          shortcut="control|alt|G">
             <menu_item_call.on_click
@@ -3830,7 +3812,6 @@
         </menu_item_call>
         <menu_item_call
          label="Leave Admin Status"
-	 label_color="0.95 0.5 0.3 0.8"
          name="Leave Admin Options"
          shortcut="control|alt|shift|G">
             <menu_item_call.on_click
@@ -4277,7 +4258,6 @@
 
         <menu_item_call
          label="Exit [APP_NAME]"
-	 label_color="0.95 0.5 0.3 0.8"
          name="Quit"
          shortcut="control|Q">
             <menu_item_call.on_click
