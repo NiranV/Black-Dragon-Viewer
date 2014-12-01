@@ -1,34 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <toolbars>
   <top_toolbar
-   button_display_mode="icons_mini">
-    <command
-     name="back" />
-    <command
-     name="home" />
-    <command
-     name="forward" />
-    <command
-     name="spacer5" />
-    <command
-     name="windlight" />
-    <command
-     name="spacer3" />
-    <command
-     name="speak" />
-    <command
-     name="chat" />
-    <command
-     name="people" />
-    <command
-     name="appearance" />
-    <command
-     name="inventory" />
-    <command
-     name="spacer" />
-    <command
-     name="machinima" />
-    <command
-     name="navbar" />
+  button_display_mode="icons_small">
+     <command
+      name="speak" />
+     <command
+      name="chat" />
+     <command
+      name="people" />
+     <command
+      name="places" />
+     <command
+      name="picks" />
+     <command
+      name="appearance" />
+     <command
+      name="inventory" />
   </top_toolbar>
 </toolbars>
