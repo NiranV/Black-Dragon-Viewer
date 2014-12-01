@@ -69,7 +69,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 <!-- ================================= NEARBY tab =========================== -->
 
         <panel
-         background_image="Panel_BG"
+         bg_alpha_image="Panel_Background"
 			   background_visible="true"
          bottom="-1"
          follows="all"
@@ -237,7 +237,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          follows="all"
          label="Friends"
          layout="topleft"
-		 background_image="Panel_BG"
+		 bg_alpha_image="Panel_Background"
          left="0"
          help_topic="people_friends_tab"
          name="friends_panel"
@@ -415,7 +415,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 
         <panel
          background_visible="true"
-		 background_image="Panel_BG"
+		 bg_alpha_image="Panel_Background"
          bottom="-1"
          follows="all"
          label="Groups"
@@ -530,7 +530,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 
         <panel
          background_visible="true"
-		 background_image="Panel_BG"
+		 bg_alpha_image="Panel_Background"
          bottom="-1"
          follows="all"
          label="Recent"
@@ -655,7 +655,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          follows="all"
          label="Blocked"
          layout="topleft"
-		 background_image="Panel_BG"
+		 bg_alpha_image="Panel_Background"
          left="0"
          right="-1"
          top="0"
