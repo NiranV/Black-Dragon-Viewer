@@ -22,7 +22,6 @@ Hover your mouse over the options for more help.
         Retrieving member data
     </panel.string>
     <scroll_container
-         color="White_02"
          follows="all"
          layout="topleft"
          mouse_opaque="false"
@@ -98,7 +97,7 @@ Hover your mouse over the options for more help.
       width="76" />
     <text
     font="SansSerifSmall"
-    text_color="BeaconColor"
+    text_color="0.2 0.9 0.3 1"
      type="string"
      follows="top|right"
      height="10"
@@ -132,8 +131,9 @@ Hover your mouse over the options for more help.
      max_length="511"
      name="charter"
      top_delta="1"
-    bg_readonly_color="DkGray2"
-    text_readonly_color="White"
+     cursor_color="TextCursorColor"
+     text_color="Black"
+     text_readonly_color="White_50"
      word_wrap="true">
      Group Charter
     </text_editor>
