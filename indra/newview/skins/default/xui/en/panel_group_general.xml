@@ -104,7 +104,6 @@ Hover your mouse over the options for more help.
      height="10"
      layout="topleft"
      halign="center"
-     right_pad="0"
      name="join_cost_text"
      top_delta="0"
      visible="true"
