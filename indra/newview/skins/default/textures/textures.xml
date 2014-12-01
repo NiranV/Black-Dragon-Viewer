@@ -417,8 +417,7 @@ with the same filename but different name
   <texture name="Parcel_VoiceNo_Dark" file_name="icons/Parcel_VoiceNo_Dark.png" preload="false" />
   <texture name="Parcel_SeeAVsOff_Dark" file_name="icons/Parcel_SeeAVsOff_Dark.png" preload="false" />
   <texture name="Parcel_SeeAVsOn_Dark" file_name="icons/Parcel_SeeAVsOn_Dark.png" preload="false" />
-  <texture name="Parcel_SeeAVsOff_Light" file_name="icons/Parcel_SeeAVsOff_Light.png" preload="false" />
-  <texture name="Parcel_SeeAVsOn_Light" file_name="icons/Parcel_SeeAVsOn_Light.png" preload="false" />
+  <texture name="Parcel_ForSale_Dark" file_name="icons/Parcel_ForSale_Dark.png" preload="false" />
 
   <texture name="Parcel_BuildNo_Light" file_name="icons/Parcel_BuildNo_Light.png" preload="false" />
   <texture name="Parcel_FlyNo_Light" file_name="icons/Parcel_FlyNo_Light.png" preload="false" />
@@ -430,7 +429,9 @@ with the same filename but different name
   <texture name="Parcel_ScriptsNo_Light" file_name="icons/Parcel_ScriptsNo_Dark.png" preload="false" />
   <texture name="Parcel_Voice_Light" file_name="icons/Parcel_Voice_Light.png" preload="false" />
   <texture name="Parcel_VoiceNo_Light" file_name="icons/Parcel_VoiceNo_Light.png" preload="false" />
-
+  <texture name="Parcel_SeeAVsOff_Light" file_name="icons/Parcel_SeeAVsOff_Light.png" preload="false" />
+  <texture name="Parcel_SeeAVsOn_Light" file_name="icons/Parcel_SeeAVsOn_Light.png" preload="false" />
+    
   <texture name="Pathfinding_Dirty" file_name="icons/Pathfinding_Dirty.png" preload="false" />
   <texture name="Pathfinding_Disabled" file_name="icons/Pathfinding_Disabled.png" preload="false" />
 
