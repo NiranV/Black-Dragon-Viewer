@@ -948,7 +948,7 @@
   <!-- syntax highlighting (LSL Scripts) -->
   <color
     name="ScriptText"
-    reference=".7 .7 .7 1" />
+    value=".7 .7 .7 1" />
   <color
     name="ScriptBackground"
     reference="DkGray" />
