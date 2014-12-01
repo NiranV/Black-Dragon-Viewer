@@ -3,6 +3,10 @@
  height="100"
  name="accordion"
  width="200">
+    <!--
+    single_expansion="false"
+    fit_parent="false"
+    -->
   <!-- It is possible to override attributes of "no_matched_tabs_text" and "no_visible_tabs_text" with a short form:
     no_matched_tabs_text.value="Overridden text" (placed among <accordion> attributes)
     But unfortunatly such form is not supported by VLT Tool. It requires to have the overridden "value"
@@ -13,8 +17,6 @@
      follows="all"
      height="100"
      h_pad="10"
-     single_expansion="false"
-     fit_parent="false"
      name="no_matched_tabs_msg"
      v_pad="15"
      width="200"
