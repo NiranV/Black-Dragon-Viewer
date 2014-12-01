@@ -28,8 +28,6 @@
     <panel
       name="group_info_top"
       follows="top|left|right"
-      background_visible="true"
-      bg_alpha_color="White_02"
       top="1"
       left="10"
       height="25"
@@ -71,8 +69,10 @@
      use_draw_context_alpha="false" />-->
     <text_editor
      allow_scroll="false"
-     bg_visible="false"
-     read_only = "true"
+     read_only="true"
+     cursor_color="TextCursorColor"
+     text_color="Black"
+     text_readonly_color="LtGray"
      layout="topleft"
      name="group_name"
      v_pad="0"
@@ -81,7 +81,6 @@
      h_pad="0"
       height="14"
       left_delta="3"
-     text_color="LtGray"
       top="6"
      use_ellipses="true"
       width="267"
