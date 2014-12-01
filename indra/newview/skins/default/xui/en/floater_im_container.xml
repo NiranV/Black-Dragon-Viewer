@@ -62,7 +62,6 @@
                follows="all"
                layout="topleft"
                name="stub_panel"
-               opaque="true"
                top_pad="0"
                left="1"
                right="-1">
@@ -184,7 +183,6 @@
              follows="all"
              layout="topleft"
              name="conversations_list_panel"
-             opaque="true"
              top="30"
              left="2"/>
         </layout_panel>
