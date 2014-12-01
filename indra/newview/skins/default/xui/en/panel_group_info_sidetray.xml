@@ -116,6 +116,8 @@
                    <panel
                       border="false"
                       class="panel_group_general"
+                      background_visible="true"
+                      bg_alpha_image="Panel_Background"
                       filename="panel_group_general.xml"
                       layout="topleft"
                       left="0"
@@ -127,9 +129,9 @@
                 <panel
                    border="false"
                    class="panel_group_roles"
-                   background_visible="true"
-     bg_alpha_color="White_02"
                    filename="panel_group_roles.xml"
+                   background_visible="true"
+                   bg_alpha_image="Panel_Background"
                    follows="left|top|right"
                    layout="topleft"
                    left="0"
@@ -139,9 +141,9 @@
                 <panel
                     border="false"
                     class="panel_group_notices"
-                    background_visible="true"
-     bg_alpha_color="White_02"
                     filename="panel_group_notices.xml"
+                    background_visible="true"
+                    bg_alpha_image="Panel_Background"
                     follows="left|top|right"
                     layout="topleft"
                     left="0"
@@ -152,9 +154,9 @@
                  <panel
 					 border="false"
                      class="panel_group_land_money"
-                     background_visible="true"
-     bg_alpha_color="White_02"
                      filename="panel_group_land_money.xml"
+                     background_visible="true"
+                     bg_alpha_image="Panel_Background"
                      follows="left|top|right"
                      layout="topleft"
                      left="0"
@@ -167,11 +169,11 @@
       name="group_info_top"
       follows="bottom|left|right"
       background_visible="true"
-      bg_alpha_color="White_02"
-      top_pad="-1"
-      left="6"
+      bg_alpha_color="0.1 0.1 0.1 1"
+      top_pad="-2"
+      left="7"
       height="25"
-      width="312"
+      width="311"
       layout="topleft">
    		   <layout_stack
 	     	follows="bottom|left|right"
@@ -181,8 +183,8 @@
             border_size="0"
 			left="0"
 			orientation="horizontal"
-			top="0"
-			width="312">
+			top="1"
+			width="310">
 	
 				<layout_panel
 				follows="bottom|left|right"
@@ -212,7 +214,7 @@
 				layout="bottomleft"
 				name="btn_chat_lp"
 			    auto_resize="true"
-				width="95">
+				width="94">
                   <icon
                   follows="left|bottom|right"
                   height="25"
@@ -222,7 +224,7 @@
                   image_name="Toolbar_Middle_Off"
                   left="1"
                   top="0"
-                  width="94" />
+                  width="93" />
 					<button
 				     follows="bottom|left|right"
 				     label="Chat"
@@ -233,7 +235,7 @@
 				     left="1"     
 				     height="25"
 				     top="0"
-				     width="94" />		
+				     width="93" />		
 				</layout_panel>
 				
 				<layout_panel
@@ -242,7 +244,7 @@
 				layout="bottomleft"
 				name="call_btn_lp"
 			    auto_resize="true"
-				width="95">
+				width="94">
                   <icon
                   follows="left|bottom|right"
                   height="25"
@@ -252,7 +254,7 @@
                   image_name="Toolbar_Middle_Off"
                   left="1"
                   top="0"
-                  width="94" />
+                  width="93" />
 					<button
 			         follows="bottom|left|right"
 			         left="1"
@@ -265,7 +267,7 @@
 			         layout="topleft"
 			         tool_tip="Call this group"
 			         top="0"
-			         width="94" />		
+			         width="93" />		
 				</layout_panel>
 				
 				<layout_panel
