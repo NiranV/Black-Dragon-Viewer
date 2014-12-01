@@ -27,7 +27,6 @@ Hover your mouse over the options for more help.
          mouse_opaque="false"
          left="0"
          name="roles_scroll"
-         opaque="true"
          height="402"
          width="307"
          top="1">
@@ -35,7 +34,7 @@ Hover your mouse over the options for more help.
          bevel_style="none"
          border="false"
          follows="top|left|right"
-         height="440"
+         height="280"
          width="292"
          layout="topleft"
          left="0"
@@ -137,31 +136,6 @@ Hover your mouse over the options for more help.
      word_wrap="true">
      Group Charter
     </text_editor>
-    <name_list
-     column_padding="0"
-     draw_heading="true"
-     follows="left|top|right"
-     heading_height="23"
-     width="291"
-     height="160"
-     layout="topleft"
-     left="3"
-     name="visible_members"
-     short_names="false" 
-     top_pad="2">
-        <name_list.columns
-         label="Member"
-         name="name"
-         relative_width="0.4" />
-        <name_list.columns
-         label="Title"
-         name="title"
-         relative_width="0.4" />
-        <name_list.columns
-         label="Status"
-         name="status"
-         relative_width="0.2" />
-      </name_list>
     <icon
       follows="top|left"
       height="25"
