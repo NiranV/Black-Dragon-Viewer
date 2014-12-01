@@ -188,7 +188,7 @@ width="345">
                   height="20"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_delta=""
+                  left_delta="0"
                   name="shaders"
                   top_pad="-4"
                   width="10">
@@ -196,7 +196,6 @@ width="345">
                   </text>
                   <radio_group
                   control_name="RenderReflectionDetail"
-                  draw_border="false"
                   height="38"
                   layout="topleft"
                   left_pad="0"
@@ -424,7 +423,6 @@ width="345">
                   </text>
                   <radio_group
                   control_name="RenderShadowDetail"
-                  draw_border="false"
                   height="38"
                   layout="topleft"
                   left_pad="0"
@@ -655,7 +653,6 @@ width="345">
                   </text>
                   <radio_group
                   control_name="ExodusRenderColorGradeTech"
-                  draw_border="false"
                   height="16"
                   layout="topleft"
                   left_pad="0"
