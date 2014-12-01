@@ -948,41 +948,41 @@
   <!-- syntax highlighting (LSL Scripts) -->
   <color
     name="ScriptText"
-    reference="Black" />
+    reference=".7 .7 .7 1" />
   <color
     name="ScriptBackground"
-    reference="White" />
+    reference="DkGray" />
   <color
     name="ScriptCursorColor"
-    reference="Black" />
+    reference="White" />
   <color
     name="SyntaxLslComment"
-    value="0 0.5 0 1" />
+    value=".33 .89 .51 1" />
   <color
     name="SyntaxLslConstant"
-    value="0 0.6 0.6 1" />
+    value=".5 .5 .9 1" />
   <color
     name="SyntaxLslControlFlow"
-    value="0.4 0 0.8 1" />
+    value="0.55 0.45 1 1" />
   <color
     name="SyntaxLslControlLabel"
-    value="0 0 0.8 1" />
+    value="0 0 .8 1" />
   <color
     name="SyntaxLslDataType"
-    value="0.8 0.4 0 1" />
+    value=".35 .65 .4 1" />
    <color
     name="SyntaxLslDeprecated"
     value="0.9 0.0 0.66, 1" />
   <color
    name="SyntaxLslEvent"
-   value="0 0.3 0.5 1" />
+   value="0.2 .6 .9 1" />
   <color
    name="SyntaxLslFunction"
-   value="0.3 0 0.5 1" />
+   value="1.0 0.4 .15 1" />
   <color
    name="SyntaxLslGodMode"
    value="0.7 .2 .35 1" />
   <color
     name="SyntaxLslStringLiteral"
-    value="1 0.14 0 1" />
+    value="0.8 .5 0.35 1" />
 </colors>
