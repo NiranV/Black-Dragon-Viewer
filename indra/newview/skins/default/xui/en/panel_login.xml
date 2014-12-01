@@ -323,13 +323,11 @@ top="600"
               background_visible="true"/>
         </combo_box>
         <line_editor
-        allow_text_entry="true"
         commit_on_focus_lost="false"
         follows="left|top"
         height="22"
         label="Username"
         left="163"
-        max_chars="128"
         tool_tip="The username you chose when you registered, like bobsmith12 or Steller Sunshine"
         top_pad="12"
         name="username_combo"
