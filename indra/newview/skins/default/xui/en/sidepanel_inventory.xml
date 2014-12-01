@@ -132,7 +132,6 @@ width="320">
        type="string"
        follows="all"
        layout="topleft"
-       background_visible="false"
        top="5"
        left_delta="0"
 	   h_pad="5"
