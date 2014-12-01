@@ -83,7 +83,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          <layout_stack
            clip="false"
            follows="all"
-           height="413"
+           height="412"
            layout="topleft"
            left="0"
            mouse_opaque="false"
@@ -141,7 +141,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
              left="1"
              name="nearby_buttons_panel"
              right="-1"
-             top="-25">
+             top="-26">
 												<icon
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
@@ -245,7 +245,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          top="0">
             <accordion
              follows="all"
-             height="411"
+             height="410"
 			 width="322"
              layout="topleft"
              left="2"
@@ -316,7 +316,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
              left="1"
              name="friends_buttons_panel"
              right="-1"
-             top="-25">
+             top="-26">
 															<icon
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
@@ -432,7 +432,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
             <group_list
              allow_select="true" 
              follows="all"
-             height="411"
+             height="410"
              layout="topleft"
              left="2"
              name="group_list"
@@ -447,7 +447,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
              left="1"
              name="groups_buttons_panel"
              right="-1"
-             top="-25">
+             top="-26">
 															<icon
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
@@ -542,7 +542,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
             <avatar_list
              allow_select="true"
              follows="all"
-             height="411"
+             height="410"
              layout="topleft"
              left="3"
              multi_select="true"
@@ -559,7 +559,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
              left="1"
              name="recent_buttons_panel"
              right="-1"
-             top="-25">
+             top="-26">
 															<icon
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"

@@ -10,7 +10,7 @@
  width="324">
      <block_list
     follows="left|top|right|bottom"
-    height="411"
+    height="410"
     layout="topleft"
     left="2"
     name="blocked"
@@ -26,7 +26,7 @@
      left="1"
      name="blocked_buttons_panel"
      right="-2"
-     top="-25">
+     top="-26">
        <icon
        follows="left|top|right"
        image_name="Toolbar_Middle_Off"
