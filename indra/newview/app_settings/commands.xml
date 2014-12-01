@@ -162,14 +162,14 @@
   execute_parameters="moveview"
   is_running_function="Floater.IsOpen"
   is_running_parameters="moveview"/>
-  <command
+  <!--<command
   name="navbar"
   available_in_toybox="true"
   icon="Command_Navbar_Show_Icon"
   label_ref="Command_Navbar_Label"
   tooltip_ref="Command_Navbar_Tooltip"
   execute_function="ToggleControl"
-  execute_parameters="HideTopbar"/>
+  execute_parameters="HideTopbar"/>-->
   <command
   name="outbox"
   available_in_toybox="false"
@@ -331,7 +331,7 @@
   is_enabled_parameters="speak"
   is_running_function="Agent.IsMicrophoneOn"
   is_running_parameters="speak"/>
-  <command
+  <!--<command
   name="back"
   available_in_toybox="true"
   icon="Arrow_Left_Off"
@@ -344,7 +344,7 @@
   icon="Arrow_Right_Off"
   label_ref="Command_Forward_Label"
   tooltip_ref="Command_Forward_Tooltip"
-  execute_function="World.TeleportForward"/>
+  execute_function="World.TeleportForward"/>-->
   <command
   name="view"
   available_in_toybox="true"
@@ -375,7 +375,7 @@
   execute_parameters="env_settings"
   is_running_function="Floater.IsOpen"
   is_running_parameters="env_settings"/>
-  <command
+  <!--<command
   name="spacer"
   available_in_toybox="true"
   icon="transparent.j2c"
@@ -404,5 +404,5 @@
   available_in_toybox="true"
   icon="transparent.j2c"
   label_ref="Command_Spacer_Label"
-  tooltip_ref="Command_Spacer_Tooltip"/>
+  tooltip_ref="Command_Spacer_Tooltip"/>-->
 </commands>
