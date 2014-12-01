@@ -70,7 +70,6 @@
 	<tab_container name="inventory filter tabs">
 		<inventory_panel label="Mein Inventar" name="All Items"/>
 		<recent_inventory_panel label="Aktuell" name="Recent Items"/>
-		<inventory_panel label="Getragen" name="cof_tab"/>
 	</tab_container>
 	<layout_stack name="bottom_panel">
 		<layout_panel name="close_folders_btn_panel">
@@ -85,7 +84,7 @@
 			<button name="copy_btn" tool_tip="Ausgewähltes Inventarobjekt kopieren"/>
 		</layout_panel>
 		<layout_panel name="dummy_panel">
-			<filter_editor label="Inventar durchsuchen nach..." name="inventory search editor"/>
+			<filter_editor label="Durchsuchen nach..." name="inventory search editor"/>
 		</layout_panel>
 		<layout_panel name="paste_btn_panel">
 			<button name="paste_btn" tool_tip="Kopierte Inventarobjekte in das ausgewählte Verzeichnis einfügen"/>

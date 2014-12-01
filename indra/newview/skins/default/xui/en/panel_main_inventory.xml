@@ -581,7 +581,7 @@
 					<filter_editor
    follows="left|top|right"
    height="23"
-   label="Search Inventory for..."
+   label="Search for..."
    layout="topleft"
    left="3"
    name="inventory search editor"
