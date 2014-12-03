@@ -62,8 +62,6 @@
        height="27"
        layout="topleft"
        left="42"
-	   clip="true"
-	   drag_handle_thickness="0"
        bottom="-5"
        visible="true"
        name="bottom_panel"
