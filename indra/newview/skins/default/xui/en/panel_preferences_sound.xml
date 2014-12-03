@@ -24,7 +24,7 @@ width="510">
  height="407">
   <panel
   follows="top|left"
-  height="480"
+  height="470"
   label="Sounds"
   layout="topleft"
   left="0"
@@ -440,7 +440,7 @@ width="510">
    label="Play sounds from gestures"
    top_pad="1"
    left="10"/>
-   <check_box
+   <!--<check_box
    name="media_meta_data_show"
    enabled="false"
    control_name="ShowStreamMetadata"
@@ -450,7 +450,7 @@ width="510">
    tool_tip="Enables Title/Atrist Information to be Shown on Screen when Music Stream is active"
    label="Show Title/Artist Information when Songs change"
    top_pad="1"
-   left="10"/>
+   left="10"/>-->
    <check_box
    name="media_auto_play_btn"
    control_name="ParcelMediaAutoPlayEnable"
@@ -459,7 +459,7 @@ width="510">
    height="16"
    tool_tip="Check this to let media auto-play if it wants"
    label="Allow Media to auto-play"
-   top_delta="-34"
+   top_delta="-17"
    left="270"
    width="200"/>
    <check_box
@@ -484,7 +484,7 @@ width="510">
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="26"
+ top_pad="10"
  width="515"/>
  <text
  name="show_ims_in_label"
