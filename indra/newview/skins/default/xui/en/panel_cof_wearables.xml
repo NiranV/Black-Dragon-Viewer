@@ -28,7 +28,6 @@
              allow_select="true"
              follows="all"
              height="10"
-			 background_visible="false"
              keep_selection_visible_on_reshape="true"
              layout="topleft"
              left="0"
