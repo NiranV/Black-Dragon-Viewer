@@ -383,7 +383,7 @@ It is calculated as border_size + 2*UIResizeBarOverlap
 	 left="2"
 	 mouse_opaque="false"
 	 width="307"
-	 top_top="4">
+	 top="4">
 	 <button
 	 follows="bottom|left|right"
 	 height="25"
