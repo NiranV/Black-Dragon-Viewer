@@ -380,6 +380,23 @@ width="510">
  name="2"
  value="3"/>
  </combo_box>
+ <slider
+ control_name="TextureMemory"
+ decimal_digits="0"
+ can_edit_text="true"
+ follows="left|top"
+ height="15"
+ increment="8"
+ initial_value="128"
+ label="Video Memory (MB):"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="2048"
+ min_val="32"
+ name="VideoMemory"
+ top_pad="5"
+ width="325" />
  
  <panel
  follows="left|top|right"
