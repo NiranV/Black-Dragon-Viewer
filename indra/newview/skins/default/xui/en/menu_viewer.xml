@@ -128,7 +128,7 @@
      	create_jump_keys="true"
      	tear_off="true">
 	 <menu_item_call
-	 label="Preferences Panel"
+	 label="Preferences"
 	 shortcut="control|P"
 	 name="Prefs_panel">
 												<menu_item_call.on_click
