@@ -7,7 +7,6 @@
  min_height="230"
  min_width="560"
  name="gui_preview_tool"
- background_color="FloaterDefaultBackgroundColor"
  single_instance="true"
  title="XUI PREVIEW TOOL"
  translate="false"
