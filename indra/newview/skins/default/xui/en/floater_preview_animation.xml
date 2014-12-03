@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
  legacy_header_height="18"
- height="85"
+ height="94"
  layout="topleft"
  background_color="FloaterDefaultBackgroundColor"
  name="preview_anim"
- width="280">
+ width="283">
     <floater.string
      name="Title">
         Animation: [NAME]
@@ -43,7 +43,7 @@
      layout="topleft"
      left="8"
      name="timefactor"
-     top_pad="4"
+     top_pad="7"
      tool_tip="Play animations with a custom set speed factor"
      width="315" />
     <spinner
@@ -56,7 +56,7 @@
       label=""
       label_width="0"
       layout="topleft"
-      left="195"
+      left="205"
       max_val="15"
       min_val="-15"
       name="Factor"
@@ -70,8 +70,8 @@
      left="10"
      name="Inworld"
      tool_tip="Play this animation so that others can see it"
-     top_pad="1"
-     width="125">
+     top_pad="5"
+     width="130">
        <button.commit_callback
         function="PreviewAnim.Play"
         parameter="Inworld" /> 
@@ -85,7 +85,7 @@
      name="Locally"
      tool_tip="Play this animation so that only you can see it"
      top_delta="0"
-     width="125">
+     width="130">
        <button.commit_callback
         function="PreviewAnim.Play"
         parameter="Locally" /> 
