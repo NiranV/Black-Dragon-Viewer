@@ -92,7 +92,7 @@ width="510">
 	    name="ShowNetStats"
 	    top="31"
 	    width="256" />
-	    <check_box
+	    <!--<check_box
 	    control_name="ShowBalance"
 	    height="16"
 	    initial_value="true"
@@ -101,7 +101,7 @@ width="510">
 	    left_delta="0"
 	    name="HideL$Balance"
 	    top_pad="0"
-	    width="256" />
+	    width="256" />-->
 	<!--<check_box
 			   enabled="false"
 	control_name="AutohideTopbar"
@@ -213,7 +213,7 @@ width="510">
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="26"
+ top_pad="42"
  width="515"/>
 	    <text
 	    type="string"
