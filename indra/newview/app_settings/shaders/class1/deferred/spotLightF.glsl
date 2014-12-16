@@ -326,12 +326,7 @@ void main()
 
 			if (stc.z > 0.0)
 			{
-				stc.xy /= stc.w;
-
-				float fatten = clamp(envIntensity*envIntensity+envIntensity*0.5, 0.25, 1.0);
-				
-				//stc.xy = (stc.xy - vec2(0.5)) * fatten + vec2(0.5);
-				stc.xy = (stc.xy - vec2(0.5)) * fatten + vec2(0.5);
+				stc /= stc.w;
 								
 				if (stc.x < 1.0 &&
 					stc.y < 1.0 &&
