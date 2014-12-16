@@ -54,8 +54,6 @@ width="320">
 
    <panel
    name="bg_panel"
-   background_visible="true"
-   bg_alpha_color="White_02"
    layout="topleft"
    follows="left|right|top"
    border="false"
