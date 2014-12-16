@@ -5,7 +5,7 @@ can_minimize="false"
 can_resize="true"
 height="310"
 layout="topleft"
-min_height="330"
+min_height="310"
 min_width="410"
 name="texture picker"
 title="Pick a Texture"
@@ -80,10 +80,49 @@ width="410">
      width="75" />
     </radio_group>
     <!-- -->
+    <icon
+       follows="all"
+       height="225"
+       image_name="Panel_Background"
+       layout="topleft"
+       left="175"
+       top_pad="-2"
+       name="dummy_icon"
+       width="226"/>
+    <icon
+       follows="all"
+       height="1"
+       image_name="transparent.j2c"
+       layout="topleft"
+       left="156"
+       top_delta="0"
+       name="dummy_icon"
+       width="1"/>
+    
+    <inventory_panel
+    allow_multi_select="false"
+    bg_visible="false"
+    border="false"
+    follows="all"
+    height="221"
+    layout="topleft"
+    left_delta="18"
+    name="inventory panel"
+    top_delta="2"
+    width="226"/>
+    <check_box
+    height="14"
+    initial_value="false"
+    label="Show folders"
+    layout="topleft"
+    name="show_folders_check"
+    top_pad="5"
+    left_delta="0"
+    width="200"/>
     <button
     enabled="false"
     follows="left|top"
-    height="18"
+    height="19"
     label="Default"
     label_selected="Default"
     layout="topleft"
@@ -93,7 +132,7 @@ width="410">
     top="230"/>
     <button
     follows="left|top"
-    height="20"
+    height="19"
     label="Blank"
     label_selected="Blank"
     layout="topleft"
@@ -104,7 +143,7 @@ width="410">
     <button
     enabled="false"
     follows="left|top"
-    height="20"
+    height="19"
     label="None"
     label_selected="None"
     layout="topleft"
@@ -123,39 +162,23 @@ width="410">
     name="Pipette"
     width="32"/>
     <filter_editor
+    background_image="TextField_Off"
+    background_image_disabled="TextField_Disabled"
+    background_image_focused="TextField_Active"
+    max_length_chars="300"
+    text_pad_left="10"
     follows="left|top|right"
-    height="23"
+    height="22"
     label="Filter Textures"
     layout="topleft"
-    left="175"
+    left="176"
     name="inventory search editor"
     top="20"
-    width="223"/>
-    <inventory_panel
-    allow_multi_select="false"
-    bg_visible="true"
-    bg_opaque_color="Black_50"
-    border="false"
-    follows="all"
-    height="220"
-    layout="topleft"
-    left_delta="0"
-    name="inventory panel"
-    top_pad="4"
     width="224"/>
-    <check_box
-    height="14"
-    initial_value="false"
-    label="Show folders"
-    layout="topleft"
-    name="show_folders_check"
-    top_pad="4"
-    left_delta="-2"
-    width="200"/>
     <!--  middle: local mode -->
     <button
      follows="left|top"
-     height="18"
+     height="19"
      label="Add"
      layout="topleft"
      left="5"
@@ -166,7 +189,7 @@ width="410">
     <button
      enabled="false"
      follows="left|top"
-     height="20"
+     height="19"
      label="Remove"
      layout="topleft"
      left_delta="0"
@@ -177,7 +200,7 @@ width="410">
     <button
      enabled="false"
      follows="left|top"
-     height="20"
+     height="19"
      label="Upload"
      layout="topleft"
      left_delta="0"
@@ -187,16 +210,16 @@ width="410">
      visible="false"/>
     <scroll_list
      name="l_name_list"
-     left="170"
-     top="22"
-     width="235"
-     height="260"
+     left="174"
+     top="18"
+     width="227"
+     height="250"
      follows="left|top|right|bottom"
-     column_padding="0"
+     heading_height="23"
      can_resize="false"
      draw_heading="true"
      multi_select="true"
-     search_column="1"
+     background_visible="false"
      visible="false">
         <column name="unit_name" label="Name" dynamicwidth="true" />
         <column name="unit_id_HIDDEN" label="ID" width="0" />
@@ -207,27 +230,27 @@ width="410">
     label="OK"
     label_selected="OK"
     layout="topleft"
-    left="-220"
+    left="-234"
     top="-24"
     name="Select"
-    width="100"/>
+    width="110"/>
     <button
     follows="bottom"
     height="20"
     label="Cancel"
     label_selected="Cancel"
     layout="topleft"
-    left_delta="110"
+    left_delta="114"
     top_delta="0"
     name="Cancel"
-    width="100"/>
+    width="109"/>
     <check_box
     follows="left|bottom"
     height="20"
     initial_value="true"
     label="Apply now"
     layout="topleft"
-    left="6"
+    left="2"
     name="apply_immediate_check"
     top_delta="2"
     width="120" />
