@@ -20,7 +20,7 @@
      left="10"
      name="desc txt"
      top="21"
-     width="80">
+     width="90">
         Description:
     </text>
     <line_editor
