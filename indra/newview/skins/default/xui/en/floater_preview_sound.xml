@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
  legacy_header_height="18"
- height="85"
+ height="74"
  layout="topleft"
  name="preview_sound"
  background_color="FloaterDefaultBackgroundColor"
- width="280">
+ width="283">
     <floater.string
      name="Title">
         Sound: [NAME]
@@ -30,7 +30,7 @@
      font="SansSerif"
      height="19"
      layout="topleft"
-     left_pad="0"
+     left_delta="95"
      max_length_bytes="127"
      name="desc"
      width="170" />
@@ -42,10 +42,10 @@
      layout="topleft"
      name="Sound play btn"
      sound_flags="0"
-     top="55"
+     top_pad="3"
      left="10"
      tool_tip="Play this sound so that others can hear it"
-     width="125" />
+     width="130" />
     <button
      follows="left|top"
      height="22"
@@ -55,6 +55,6 @@
      name="Sound audition btn"
      sound_flags="0"
      tool_tip="Play this sound so that only you can hear it"
-     left_pad="10"
-     width="125" />
+     left_pad="5"
+     width="130" />
 </floater>
