@@ -69,7 +69,7 @@ with the same filename but different name
   <texture name="BackButton_Over" file_name="icons/back_arrow_over.png" preload="false" scale.left="22" scale.top="12" scale.right="25" scale.bottom="12" />
   <texture name="BackButton_Press" file_name="icons/back_arrow_press.png" preload="false" scale.left="22" scale.top="12" scale.right="25" scale.bottom="12" />
 
-  <texture name="Error_Tag_Background" file_name="widgets/Error_Tag_Background.png" preload="true" scale.left="12" scale.top="2" scale.right="36" scale.bottom="2" />
+  <texture name="Error_Tag_Background" file_name="widgets/Error_Tag_Background.png" preload="true" scale.left="8" scale.top="1" scale.right="10" scale.bottom="1" />
   <texture name="New_Tag_Background" file_name="widgets/New_Tag_Background.png" preload="true" scale.left="12" scale.top="2" scale.right="36" scale.bottom="2" />
   <texture name="New_Tag_Border" file_name="widgets/New_Tag_Border.png" preload="true" scale.left="12" scale.top="2" scale.right="36" scale.bottom="2" />
 
@@ -730,6 +730,8 @@ with the same filename but different name
   <texture name="transparentj2c" file_name="transparent.j2c" preload="true" />
   
   <texture name="Login_BG"	file_name="login_bg.png" preload="true"/>
+  
+  <texture name="Warning_Tag_Background" file_name="widgets/Warning_Tag_Background.png" preload="true" scale.left="8" scale.top="1" scale.right="10" scale.bottom="1" />
   
   <texture name="Panel_Background"	file_name="windows/Panel_Background.png" scale.left="2" scale.top="58" scale.bottom="2" scale.right="28" preload="true"/>
   

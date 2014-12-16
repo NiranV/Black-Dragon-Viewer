@@ -74,6 +74,15 @@ width="1024">
             height="19"/>
          </panel>
          <panel
+         top="50"
+         left="20"
+         follows="top|left"
+         height="18"
+         mouse_opaque="false"
+         filename="panel_connection.xml"
+         name="connection_issues_panel"
+         width="220"/>
+         <panel
          top="0"
          left="0"
          follows="all"
