@@ -47,38 +47,45 @@
      name="title"
      text_color="LtGray"
      top="1"
+     halign="right"
      value="Edit Pick"
      use_ellipses="true"
-     width="274" />
+     width="267" />
+   <icon
+       follows="all"
+       height="513"
+       image_name="Panel_Background"
+       layout="topleft"
+       left="10"
+       top="29"
+       name="dummy_icon"
+       width="314"/>
    <scroll_container
-     color="White_02"
-     opaque="true"
+     opaque="false"
      follows="all"
-     height="502"
+     height="488"
      layout="topleft"
-     left="11"
-     top_pad="0"
+     left="12"
+     top="29"
      name="profile_scroll"
-     width="304">
+     width="311">
     <panel
      name="scroll_content_panel"
      follows="top|left|right"
      layout="topleft"
      top="0"
-     background_visible="false"
      height="369"
      left="0"
-     width="284">
+     width="290">
     <texture_picker
          fallback_image="default_land_picture.j2c"
-         enabled="false"
          follows="left|top|right"
          height="197"
          layout="topleft"
          left="0"
          name="pick_snapshot"
          top="10"
-         width="289" />
+         width="295" />
           <icon
        follows="top|left|right"
        height="25"
@@ -108,7 +115,7 @@
        left_pad="1"
        top_delta="-5"
        name="dummy_icon"
-       width="208"/>
+       width="214"/>
         <line_editor
          follows="left|top|right"
          font="SansSerif"
@@ -116,10 +123,10 @@
          layout="topleft"
          left_delta="2"
          top_delta="1"
+         text_pad_left="4"
          max_length_bytes="63"
          name="pick_name"
-         text_color="black"
-         width="204" />
+         width="210" />
         <icon
        follows="top|left|right"
        height="25"
@@ -149,11 +156,11 @@
        left_pad="1"
        top_delta="-5"
        name="dummy_icon"
-       width="208"/>
+       width="214"/>
         <text_editor
          follows="left|top|right"
          height="85"
-         width="202"
+         width="209"
          hide_scrollbar="false"
          layout="topleft"
          left_delta="3"
@@ -192,7 +199,7 @@
        left_pad="1"
        top_delta="-5"
        name="dummy_icon"
-       width="208"/>
+       width="214"/>
         <text
          type="string"
          length="1"
@@ -202,7 +209,7 @@
          left_delta="3"
          name="pick_location"
          top_delta="5"
-         width="280">
+         width="208">
             loading...
         </text>
         <button
@@ -216,7 +223,7 @@
          left="0"
          top_pad="10"
          name="set_to_curr_location_btn"
-         width="289" />
+         width="295" />
     </panel>
     </scroll_container>
     <panel
@@ -224,10 +231,10 @@
      height="23"
      label="bottom_panel"
      layout="topleft"
-     left="10"
+     left="11"
      name="bottom_panel"
      top_pad="1"
-     width="315">
+     width="314">
 		        <button
 		         follows="bottom|left"
 		         height="23"
@@ -239,7 +246,7 @@
 		         name="save_changes_btn"
 		         top="0"
 		         left="1"
-		         width="155" />
+		         width="154" />
 			  
 		        <button
 		         follows="bottom|right"
