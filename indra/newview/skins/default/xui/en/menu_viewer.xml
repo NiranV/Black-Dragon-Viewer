@@ -3607,8 +3607,7 @@
         <menu_item_call
          label="Textbox"
          name="Textbox"
-         translate="false"
-         shortcut="control|1">
+         translate="false">
           <menu_item_call.on_click
            function="Floater.Show"
            parameter="test_textbox" />
@@ -3616,8 +3615,7 @@
         <menu_item_call
          label="Text Editor"
          name="Text Editor"
-         translate="false"
-         shortcut="control|2">
+         translate="false">
           <menu_item_call.on_click
            function="Floater.Show"
            parameter="test_text_editor" />
@@ -3625,8 +3623,7 @@
         <menu_item_call
          label="Widgets"
          name="Widgets"
-         translate="false"
-         shortcut="control|shift|T">
+         translate="false">
           <menu_item_call.on_click
            function="Floater.Show"
            parameter="test_widgets" />
