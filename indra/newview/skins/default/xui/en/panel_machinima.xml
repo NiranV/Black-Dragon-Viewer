@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
 border="false"
-bg_alpha_color="TopBarColor"
 background_visible="false"
 follows="all"
 height="768"

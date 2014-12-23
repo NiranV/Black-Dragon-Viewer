@@ -52,6 +52,16 @@ width="510">
 	width="300">Status- / Nav- / Favbar Options:</text>
 
 	<check_box
+	control_name="ShowNavbarFavoritesPanel"
+	height="16"
+	initial_value="true"
+	label="Show Favorites Panel"
+	layout="topleft"
+	left="10"
+	name="ShowNavbarFavoritesPanel"
+	top_pad="15"
+	width="256" />
+	<check_box
 	control_name="NavBarShowParcelProperties"
 	height="16"
 	initial_value="true"
@@ -59,7 +69,7 @@ width="510">
 	layout="topleft"
 	left="10"
 	name="NavBarShowParcelProperties"
-	top_pad="15"
+	top_pad="0"
 	width="256" />
 	<check_box
 	control_name="NavBarShowCoordinates"
@@ -69,16 +79,6 @@ width="510">
 	layout="topleft"
 	left="10"
 	name="NavBarShowCoordinates"
-	top_pad="0"
-	width="256" />
-	<check_box
-	control_name="SearchFromAddressBar"
-	height="16"
-	initial_value="true"
-	label="Allow searching via Adressbar"
-	layout="topleft"
-	left="10"
-	name="SearchFromAddressBar"
 	top_pad="0"
 	width="256" />
 	
@@ -92,6 +92,16 @@ width="510">
 	    name="ShowNetStats"
 	    top="31"
 	    width="256" />
+		<check_box
+		control_name="SearchFromAddressBar"
+		height="16"
+		initial_value="true"
+		label="Allow searching via Adressbar"
+		layout="topleft"
+		left="270"
+		name="SearchFromAddressBar"
+		top_pad="0"
+		width="256" />
 	    <!--<check_box
 	    control_name="ShowBalance"
 	    height="16"
@@ -213,7 +223,7 @@ width="510">
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="42"
+ top_pad="28"
  width="515"/>
 	    <text
 	    type="string"

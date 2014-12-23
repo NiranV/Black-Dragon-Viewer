@@ -16,6 +16,8 @@ width="800">
    border_size="-5"
    left="0"
    mouse_opaque="false"
+   open_time_constant="0.23"
+   close_time_constant="0.23"
    name="nvp_stack"
    orientation="vertical"
    top="0"
@@ -114,6 +116,7 @@ width="800">
 	  height="19"
 	  min_width="19"
 	  auto_resize="false"
+	  visibility_control="ShowNavbarFavoritesPanel"
 	  name="favorites_layout_panel"
 	  width="320">
 		 <favorites_bar
