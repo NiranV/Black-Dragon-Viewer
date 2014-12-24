@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!-- All our XML is utf-8 encoded. -->
+<panel
+  name="connection_panel"
+  width="220"
+  height="18"
+  follows="all">
+     <icon
+        follows="left|top"
+        height="18"
+        image_name="Warning_Tag_Background"
+        layout="topleft"
+        left="8"
+        mouse_opaque="true"
+        name="bg"
+        top="0"
+        width="220" />
+	 <icon
+        follows="left|top"
+        height="15"
+        image_name="Popup_Caution"
+        layout="topleft"
+        left="10"
+        mouse_opaque="true"
+        name="caution"
+        top="1"
+        width="16" />
+	 <text
+     type="string"
+     length="1"
+     follows="left|top"
+     font="SansSerifBold"
+     height="16"
+     layout="topleft"
+	 text_color="1 0.4 0.25 1"
+     left_pad="2"
+     top="2"
+     name="connection_label"
+     width="200">
+        Warning! High Ping.
+    </text>
+</panel>

@@ -2510,13 +2510,16 @@ void LLViewerWindow::draw()
 		if(LLStartUp::getStartupState() == STATE_STARTED)
 		{
 			LLCircuitData *cdp = gMessageSystem->mCircuitInfo.findCircuit(gAgent.getRegion()->getHost());
-			if(cdp->getPingDelay().value() >= 500.f )
+			if(cdp->getPingDelay().value() >= 600.f )
 			{
 				mRootView->getChildView("connection_issues_panel")->setVisible(TRUE);
 			}
 			else
+			{
 				mRootView->getChildView("connection_issues_panel")->setVisible(FALSE);
+			}
 		}
+
 
 		LLUI::setScaleFactor(old_scale_factor);
 	}
