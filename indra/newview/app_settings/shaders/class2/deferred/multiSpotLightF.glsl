@@ -341,7 +341,7 @@ void main()
 
 			if (stc.z > 0.0)
 			{
-                stc /= stc.w;
+				stc /= stc.w;
 								
 				if (stc.x < 1.0 &&
 					stc.y < 1.0 &&
@@ -353,6 +353,7 @@ void main()
 			}
 		}
 	}
+	
 
 	//not sure why, but this line prevents MATBUG-194
 	col = max(col, vec3(0.0));

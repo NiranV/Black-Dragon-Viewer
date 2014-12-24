@@ -63,7 +63,7 @@ mat4 getObjectSkinnedTransform()
 	ret[3] = vec4(trans, 1.0);
 				
 	return ret;
-
+	
 #ifdef IS_AMD_CARD
    // If it's AMD make sure the GLSL compiler sees the arrays referenced once by static index. Otherwise it seems to optimise the storage awawy which leads to unfun crashes and artifacts.
    mat3 dummy1 = matrixPalette[0];
@@ -71,6 +71,5 @@ mat4 getObjectSkinnedTransform()
    mat3 dummy3 = matrixPalette[51];
    vec3 dummy4 = translationPalette[51];
 #endif
-
 }
 
