@@ -120,7 +120,6 @@ LLAvatarList::LLAvatarList(const Params& p)
 , mExtraDataUpdateTimer(new LLTimer())
 , mShowSpeakingIndicator(p.show_speaking_indicator)
 , mShowPermissions(p.show_permissions_granted)
-, mShowExtraInformation(p.show_speaking_indicator) // May be overridden later.
 // [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
 , mRlvCheckShowNames(false)
 // [/RLVa:KB]

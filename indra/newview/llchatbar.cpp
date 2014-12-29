@@ -609,6 +609,22 @@ void LLChatBar::sendChatFromViewer(const LLWString &wtext, EChatType type, BOOL 
 	}
 // [/RLVa:KB]
 
+// [RLVa:KB] - Checked: 2010-03-27 (RLVa-1.2.0b) | Modified: RLVa-1.2.0b
+	// RELEASE-RLVa: [SL-2.0.0] This entire class appears to be dead/non-functional?
+	if ( (0 == channel) && (rlv_handler_t::isEnabled()) )
+	{
+		// Adjust the (public) chat "volume" on chat and gestures (also takes care of playing the proper animation)
+		if ( ((CHAT_TYPE_SHOUT == type) || (CHAT_TYPE_NORMAL == type)) && (gRlvHandler.hasBehaviour(RLV_BHVR_CHATNORMAL)) )
+			type = CHAT_TYPE_WHISPER;
+		else if ( (CHAT_TYPE_SHOUT == type) && (gRlvHandler.hasBehaviour(RLV_BHVR_CHATSHOUT)) )
+			type = CHAT_TYPE_NORMAL;
+		else if ( (CHAT_TYPE_WHISPER == type) && (gRlvHandler.hasBehaviour(RLV_BHVR_CHATWHISPER)) )
+			type = CHAT_TYPE_NORMAL;
+
+		animate &= !gRlvHandler.hasBehaviour( (!RlvUtil::isEmote(utf8_text)) ? RLV_BHVR_REDIRCHAT : RLV_BHVR_REDIREMOTE );
+	}
+// [/RLVa:KB]
+
 	// Don't animate for chats people can't hear (chat to scripts)
 	if (animate && (channel == 0))
 	{

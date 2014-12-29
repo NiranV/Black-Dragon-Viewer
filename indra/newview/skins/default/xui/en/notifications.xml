@@ -10342,6 +10342,13 @@ Cannot create large prims that intersect other players.  Please re-try when othe
    type="alertmodal">
 Changes won't take effect until after you restart [APP_NAME].
   </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="RLVChangeStrings"
+   type="alertmodal">
+Changes won't take effect until after you restart [APP_NAME].
+  </notification>
   
   <notification
    icon="alertmodal.tga"

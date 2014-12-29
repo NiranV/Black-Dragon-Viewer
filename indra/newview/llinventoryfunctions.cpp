@@ -435,6 +435,13 @@ BOOL get_is_category_renameable(const LLInventoryModel* model, const LLUUID& id)
 	}
 // [/RLVa:KB]
 
+// [RLVa:KB] - Checked: 2011-03-29 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
+	if ( (rlv_handler_t::isEnabled()) && (model == &gInventory) && (!RlvFolderLocks::instance().canRenameFolder(id)) )
+	{
+		return FALSE;
+	}
+// [/RLVa:KB]
+
 	LLViewerInventoryCategory* cat = model->getCategory(id);
 
 	if (cat && !LLFolderType::lookupIsProtectedType(cat->getPreferredType()) &&

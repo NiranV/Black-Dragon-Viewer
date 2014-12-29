@@ -112,7 +112,7 @@ public:
 	virtual void done();
 protected:
 	void doneIdle();
-	static void onCategoryCreate(const LLSD& sdData, void* pParam);
+	static void onCategoryCreate(const LLUUID& idFolder, const LLUUID idItem);
 };
 
 // ============================================================================

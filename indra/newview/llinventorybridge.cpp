@@ -5417,7 +5417,7 @@ void rez_attachment(LLViewerInventoryItem* item, LLViewerJointAttachment* attach
 {
 // [RLVa:KB] - Checked: 2010-08-25 (RLVa-1.2.1)
 	// If no attachment point was specified, try looking it up from the item name
-	static LLCachedControl<bool> fRlvDeprecateAttachPt(gSavedSettings, "RLVaDebugDeprecateExplicitPoint", false);
+	static LLCachedControl<bool> fRlvDeprecateAttachPt(gSavedSettings, "RLVaDebugDeprecateExplicitPoint");
 	if ( (rlv_handler_t::isEnabled()) && (!fRlvDeprecateAttachPt) && 
 	     (!attachment) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
 	{

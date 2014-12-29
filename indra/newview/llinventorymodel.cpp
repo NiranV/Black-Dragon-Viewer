@@ -728,11 +728,19 @@ void LLInventoryModel::collectDescendents(const LLUUID& id,
 	collectDescendentsIf(id, cats, items, include_trash, always);
 }
 
+//void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
+//											cat_array_t& cats,
+//											item_array_t& items,
+//											BOOL include_trash,
+//											LLInventoryCollectFunctor& add)
+// [RLVa:KB]
 void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 											cat_array_t& cats,
 											item_array_t& items,
 											BOOL include_trash,
-											LLInventoryCollectFunctor& add)
+											LLInventoryCollectFunctor& add,
+											BOOL follow_folder_links)
+// [/RLVa:KB]
 {
 	// Start with categories
 	if(!include_trash)
@@ -752,7 +760,10 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 			{
 				cats.push_back(cat);
 			}
-			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add);
+// [RLVa:KB] - Checked: 2013-04-15 (RLVa-1.4.8)
+			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add, follow_folder_links);
+// [/RLVa:KB]
+//			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add);
 		}
 	}
 
@@ -772,6 +783,40 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 			}
 		}
 	}
+
+// [RLVa:KB] - Checked: 2010-09-30 (RLVa-1.2.1d) | Added: RLVa-1.2.1d
+	// The problem is that we want some way for the functor to know that it's being asked to decide on a folder link
+	// but it won't know that until after it has encountered the folder link item (which doesn't happen until *after* 
+	// it has already collected all items from it the way the code was originally laid out)
+	// This breaks the "finish collecting all folders before collecting items (top to bottom and then bottom to top)" 
+	// assumption but no functor is (currently) relying on it (and likely never should since it's an implementation detail?)
+
+	// Follow folder links recursively.  Currently never goes more
+	// than one level deep (for current outfit support)
+	// Note: if making it fully recursive, need more checking against infinite loops.
+	if ( (follow_folder_links) && (item_array) )
+	{
+		for (S32 i = 0, count = item_array->count(); i < count; ++i)
+		{
+			item = item_array->get(i);
+			if (item && item->getActualType() == LLAssetType::AT_LINK_FOLDER)
+			{
+				LLViewerInventoryCategory* linked_cat = item->getLinkedCategory();
+				if (linked_cat && linked_cat->getPreferredType() != LLFolderType::FT_OUTFIT)
+				{
+					if (add(linked_cat,NULL))
+					{
+						// BAP should this be added here?  May not
+						// matter if it's only being used in current
+						// outfit traversal.
+						cats.put(LLPointer<LLViewerInventoryCategory>(linked_cat));
+					}
+					collectDescendentsIf(linked_cat->getUUID(), cats, items, include_trash, add, FALSE);
+				}
+			}
+		}
+	}
+// [/RLVa:KB]
 }
 
 void LLInventoryModel::addChangedMaskForLinks(const LLUUID& object_id, U32 mask)

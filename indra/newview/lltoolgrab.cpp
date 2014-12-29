@@ -454,6 +454,22 @@ BOOL LLToolGrab::handleHover(S32 x, S32 y, MASK mask)
 	}
 // [/RLVa:KB]
 
+// [RLVa:KB] - Checked: 2010-03-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
+	// Block dragging an object beyond touch range when @fartouch=n restricted
+	if ( (rlv_handler_t::isEnabled()) && (GRAB_INACTIVE != mMode) && (GRAB_NOOBJECT != mMode) && (hasMouseCapture()) &&
+		 (gRlvHandler.hasBehaviour(RLV_BHVR_FARTOUCH)) && (!gRlvHandler.canTouch(mGrabPick.getObject(), mGrabPick.mObjectOffset)) )
+	{
+		if (gGrabTransientTool)
+		{
+			// Prevent the grab tool from popping up as soon as we kill the drag operation
+			gBasicToolset->selectTool(gGrabTransientTool);
+			gGrabTransientTool = NULL;
+		}
+		setMouseCapture(FALSE);
+		return TRUE;
+	}
+// [/RLVa:KB]
+
 	// Do the right hover based on mode
 	switch( mMode )
 	{
