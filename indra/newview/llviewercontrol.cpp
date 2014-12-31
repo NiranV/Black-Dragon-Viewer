@@ -77,6 +77,7 @@
 #include "llupdaterservice.h"
 
 //BD - Includes we need for special features
+#include "llappviewer.h"
 #include "llenvmanager.h"
 #include "lltoolfocus.h"
 
@@ -643,6 +644,13 @@ static bool handleMouseSteeringChanged(const LLSD&)
 	return true;
 }
 
+//BD - Change control scheme on the fly
+bool handleKeyboardLayoutChanged(const LLSD& newvalue)
+{
+	LLAppViewer::loadKeyboardlayout();
+	return true;
+}
+
 /*
 //BD - Machinima Sidebar
 static bool handleSidebarAsOverlayChanged(const LLSD&)
@@ -893,7 +901,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
 	//gSavedSettings.getControl("UseMachinimaSidebarAsOverlay")->getSignal()->connect(boost::bind(&handleSidebarAsOverlayChanged, _2));
 	//gSavedSettings.getControl("PreferencesPanelOpen")->getSignal()->connect(boost::bind(&handlePreferencesPanelChanged, _2));
-	//gSavedSettings.getControl("ShooterKeyLayout")->getSignal()->connect(boost::bind(&handleKeyboardLayoutChanged, _2));
+	gSavedSettings.getControl("ShooterKeyLayout")->getSignal()->connect(boost::bind(&handleKeyboardLayoutChanged, _2));
 	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
 	gSavedSettings.getControl("RenderTerrainScale")->getSignal()->connect(boost::bind(&handleTerrainScaleChanged, _2));
 	gSavedSettings.getControl("RenderWaterRefResolution")->getSignal()->connect(boost::bind(&handleWaterResolutionChanged, _2));
