@@ -315,17 +315,10 @@ void LLStatusBar::refresh()
 
 void LLStatusBar::setVisibleForMouselook(bool visible)
 {
-	getRootView()->getChild<LLUICtrl>("bg_icon_l1")->setVisible(
-		visible && gSavedSettings.getBOOL("AllowUIHidingInML")
-		&& gSavedSettings.getBOOL("HideTopbar"));
-	getRootView()->getChild<LLUICtrl>("bg_icon_l2")->setVisible(
-		visible && gSavedSettings.getBOOL("AllowUIHidingInML")
-		&& gSavedSettings.getBOOL("HideTopbar"));
-	gToolBarView->getChild<LLUICtrl>("bg")->setVisible(
-		visible && gSavedSettings.getBOOL("AllowUIHidingInML")
-		&& gSavedSettings.getBOOL("HideTopbar"));
-	setVisible(visible && gSavedSettings.getBOOL("AllowUIHidingInML")
-		&& gSavedSettings.getBOOL("HideTopbar"));
+	if(gSavedSettings.getBOOL("AllowUIHidingInML"))
+	{
+		setVisible(visible);
+	}
 }
 
 void LLStatusBar::setHealth(S32 health)

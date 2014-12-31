@@ -51,16 +51,6 @@ width="1024">
             auto_resize="true"
             width="1024"
             mouse_opaque="false">
-               <icon
-               follows="all"
-               image_name="Window_Background"
-               mouse_opaque="false"
-               name="bg_icon_l1"
-               scale_image="false"
-               left_pad="-1025"
-               top_pad="-1"
-               height="51"
-               width="1026"/>
                <panel
                follows="all"
                height="50"

@@ -9,6 +9,16 @@ layout="topleft"
 name="navigation_bar"
 chrome="true"
 width="800">
+   <icon
+   follows="all"
+   image_name="Window_Background"
+   mouse_opaque="false"
+   name="bg_icon_l1"
+   scale_image="false"
+   left_pad="-801"
+   top_pad="-1"
+   height="51"
+   width="802"/>
    <layout_stack
    follows="top|left|right"
    height="51"
