@@ -7,7 +7,6 @@
  min_height="320"
  min_width="459"
  name="worldmap"
- background_color="FloaterDefaultBackgroundColor"
  save_rect="true"
  save_visibility="true"
  single_instance="true"
