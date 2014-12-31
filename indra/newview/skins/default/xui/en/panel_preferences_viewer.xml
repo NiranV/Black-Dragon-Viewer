@@ -23,7 +23,7 @@ width="510">
 	      <panel
 	      layout="topleft"
 	      follows="left|top|right"
-	      height="710"
+	      height="726"
 	      name="viewer_scroll_panel"
 	      top="0"
 	      left="0"
@@ -568,6 +568,16 @@ width="510">
 		     left="10"
 		     tool_tip="Allow use of http inventory transfers instead of UDP"
 		     name="UseHTTPInventory"
+		     top_pad="0"
+		     width="256" />
+			 <check_box
+		     control_name="InventoryOutboxMakeVisible"
+		     height="16"
+		     initial_value="false"
+		     label="Show Merchant Outbox and Inbox in Inventory"
+		     layout="topleft"
+		     left="10"
+		     name="InventoryOutboxMakeVisible"
 		     top_pad="0"
 		     width="256" />
 			 <slider
