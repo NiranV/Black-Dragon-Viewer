@@ -119,7 +119,6 @@ void swap();
 void render_hud_attachments();
 void render_ui_3d();
 void render_ui_2d();
-void render_disconnected_background();
 
 void display_startup()
 {
@@ -1313,10 +1312,6 @@ void render_ui(F32 zoom_factor, int subfield)
 				render_ui_3d();
 				LLGLState::checkStates();
 			}
-			else
-			{
-				render_disconnected_background();
-			}
 
 			render_ui_2d();
 			LLGLState::checkStates();
@@ -1570,90 +1565,6 @@ void render_ui_2d()
 
 	// reset current origin for font rendering, in case of tiling render
 	LLFontGL::sCurOrigin.set(0, 0);
-}
-
-void render_disconnected_background()
-{
-	if (LLGLSLShader::sNoFixedFunction)
-	{
-		gUIProgram.bind();
-	}
-
-	gGL.color4f(1,1,1,1);
-	if (!gDisconnectedImagep && gDisconnected)
-	{
-		LL_INFOS() << "Loading last bitmap..." << LL_ENDL;
-
-		std::string temp_str;
-		temp_str = gDirUtilp->getLindenUserDir() + gDirUtilp->getDirDelimiter() + SCREEN_LAST_FILENAME;
-
-		LLPointer<LLImageBMP> image_bmp = new LLImageBMP;
-		if( !image_bmp->load(temp_str) )
-		{
-			//LL_INFOS() << "Bitmap load failed" << LL_ENDL;
-			return;
-		}
-		
-		LLPointer<LLImageRaw> raw = new LLImageRaw;
-		if (!image_bmp->decode(raw, 0.0f))
-		{
-			LL_INFOS() << "Bitmap decode failed" << LL_ENDL;
-			gDisconnectedImagep = NULL;
-			return;
-		}
-
-		U8 *rawp = raw->getData();
-		S32 npixels = (S32)image_bmp->getWidth()*(S32)image_bmp->getHeight();
-		for (S32 i = 0; i < npixels; i++)
-		{
-			S32 sum = 0;
-			sum = *rawp + *(rawp+1) + *(rawp+2);
-			sum /= 3;
-			*rawp = ((S32)sum*6 + *rawp)/7;
-			rawp++;
-			*rawp = ((S32)sum*6 + *rawp)/7;
-			rawp++;
-			*rawp = ((S32)sum*6 + *rawp)/7;
-			rawp++;
-		}
-
-		
-		raw->expandToPowerOfTwo();
-		gDisconnectedImagep = LLViewerTextureManager::getLocalTexture(raw.get(), FALSE );
-		gStartTexture = gDisconnectedImagep;
-		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-	}
-
-	// Make sure the progress view always fills the entire window.
-	S32 width = gViewerWindow->getWindowWidthScaled();
-	S32 height = gViewerWindow->getWindowHeightScaled();
-
-	if (gDisconnectedImagep)
-	{
-		LLGLSUIDefault gls_ui;
-		gViewerWindow->setup2DRender();
-		gGL.pushMatrix();
-		{
-			// scale ui to reflect UIScaleFactor
-			// this can't be done in setup2DRender because it requires a
-			// pushMatrix/popMatrix pair
-			const LLVector2& display_scale = gViewerWindow->getDisplayScale();
-			gGL.scalef(display_scale.mV[VX], display_scale.mV[VY], 1.f);
-
-			gGL.getTexUnit(0)->bind(gDisconnectedImagep);
-			gGL.color4f(1.f, 1.f, 1.f, 1.f);
-			gl_rect_2d_simple_tex(width, height);
-			gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-		}
-		gGL.popMatrix();
-	}
-	gGL.flush();
-
-	if (LLGLSLShader::sNoFixedFunction)
-	{
-		gUIProgram.unbind();
-	}
-
 }
 
 void display_cleanup()

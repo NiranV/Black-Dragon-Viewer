@@ -1751,8 +1751,6 @@ bool LLAppViewer::cleanup()
 
 	display_cleanup(); 
 
-	release_start_screen(); // just in case
-
 	LLError::logToFixedBuffer(NULL);
 
 	LL_INFOS() << "Cleaning Up" << LL_ENDL;
@@ -4669,12 +4667,6 @@ void LLAppViewer::saveFinalSnapshot()
 		gAgentCamera.changeCameraToThirdPerson( FALSE );	// don't animate, need immediate switch
 		gSavedSettings.setBOOL("ShowParcelOwners", FALSE);
 		idle();
-
-		std::string snap_filename = gDirUtilp->getLindenUserDir();
-		snap_filename += gDirUtilp->getDirDelimiter();
-		snap_filename += SCREEN_LAST_FILENAME;
-		// use full pixel dimensions of viewer window (not post-scale dimensions)
-		gViewerWindow->saveSnapshot(snap_filename, gViewerWindow->getWindowWidthRaw(), gViewerWindow->getWindowHeightRaw(), FALSE, TRUE);
 		mSavedFinalSnapshot = TRUE;
 	}
 }

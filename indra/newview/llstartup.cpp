@@ -210,7 +210,6 @@ bool gAgentMovementCompleted = false;
 S32  gMaxAgentGroups;
 
 std::string SCREEN_HOME_FILENAME = "screen_home.bmp";
-std::string SCREEN_LAST_FILENAME = "screen_last.bmp";
 
 LLPointer<LLViewerTexture> gStartTexture;
 
@@ -265,8 +264,6 @@ void use_circuit_callback(void**, S32 result);
 void register_viewer_callbacks(LLMessageSystem* msg);
 void asset_callback_nothing(LLVFS*, const LLUUID&, LLAssetType::EType, void*, S32);
 bool callback_choose_gender(const LLSD& notification, const LLSD& response);
-void init_start_screen(S32 location_id);
-void release_start_screen();
 void reset_login();
 LLSD transform_cert_args(LLPointer<LLCertificate> cert);
 void general_cert_done(const LLSD& notification, const LLSD& response);
@@ -1021,8 +1018,6 @@ bool idle_startup()
 		  }
 
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_WAIT);
-
-		init_start_screen(agent_location_id);
 
 		// Display the startup progress bar.
 		gViewerWindow->setShowProgress(TRUE);
@@ -2648,76 +2643,6 @@ void LLStartUp::saveInitialOutfit()
 std::string& LLStartUp::getInitialOutfitName()
 {
 	return sInitialOutfit;
-}
-
-// Loads a bitmap to display during load
-void init_start_screen(S32 location_id)
-{
-	if (gStartTexture.notNull())
-	{
-		gStartTexture = NULL;
-		LL_INFOS("AppInit") << "re-initializing start screen" << LL_ENDL;
-	}
-
-	LL_DEBUGS("AppInit") << "Loading startup bitmap..." << LL_ENDL;
-
-	std::string temp_str = gDirUtilp->getLindenUserDir() + gDirUtilp->getDirDelimiter();
-
-	if ((S32)START_LOCATION_ID_LAST == location_id)
-	{
-		temp_str += SCREEN_LAST_FILENAME;
-	}
-	else
-	{
-		temp_str += SCREEN_HOME_FILENAME;
-	}
-
-	LLPointer<LLImageBMP> start_image_bmp = new LLImageBMP;
-	
-	// Turn off start screen to get around the occasional readback 
-	// driver bug
-	if(!gSavedSettings.getBOOL("UseStartScreen"))
-	{
-		LL_INFOS("AppInit")  << "Bitmap load disabled" << LL_ENDL;
-		return;
-	}
-	else if(!start_image_bmp->load(temp_str) )
-	{
-		LL_WARNS("AppInit") << "Bitmap load failed" << LL_ENDL;
-		gStartTexture = NULL;
-	}
-	else
-	{
-		gStartImageWidth = start_image_bmp->getWidth();
-		gStartImageHeight = start_image_bmp->getHeight();
-
-		LLPointer<LLImageRaw> raw = new LLImageRaw;
-		if (!start_image_bmp->decode(raw, 0.0f))
-		{
-			LL_WARNS("AppInit") << "Bitmap decode failed" << LL_ENDL;
-			gStartTexture = NULL;
-		}
-		else
-		{
-			raw->expandToPowerOfTwo();
-			gStartTexture = LLViewerTextureManager::getLocalTexture(raw.get(), FALSE) ;
-		}
-	}
-
-	if(gStartTexture.isNull())
-	{
-		gStartTexture = LLViewerTexture::sBlackImagep ;
-		gStartImageWidth = gStartTexture->getWidth() ;
-		gStartImageHeight = gStartTexture->getHeight() ;
-	}
-}
-
-
-// frees the bitmap
-void release_start_screen()
-{
-	LL_DEBUGS("AppInit") << "Releasing bitmap..." << LL_ENDL;
-	gStartTexture = NULL;
 }
 
 

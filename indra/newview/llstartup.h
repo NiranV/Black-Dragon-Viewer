@@ -43,7 +43,6 @@ bool login_alert_done(const LLSD& notification, const LLSD& response);
 
 // constants, variables,  & enumerations
 extern std::string SCREEN_HOME_FILENAME;
-extern std::string SCREEN_LAST_FILENAME;
 
 // start location constants
 enum EStartLocation
