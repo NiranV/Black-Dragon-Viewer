@@ -60,7 +60,6 @@
 #include "llnavigationbar.h" // to show/hide navigation bar when changing mouse look state
 #include "llfloaterimnearbychat.h"
 #include "llnotificationsutil.h"
-#include "llpaneltopinfobar.h"
 #include "llparcel.h"
 #include "llrendersphere.h"
 #include "llsdmessage.h"
@@ -2181,8 +2180,6 @@ void LLAgent::endAnimationUpdateUI()
 			gMenuBarView->setVisible(FALSE);
 			LLNavigationBar::getInstance()->setVisible(FALSE);
 			gStatusBar->setVisibleForMouselook(false);
-
-			LLPanelTopInfoBar::getInstance()->setVisible(FALSE);
 
 			LLChicletBar::getInstance()->setVisible(FALSE);
 

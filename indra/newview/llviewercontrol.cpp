@@ -70,7 +70,6 @@
 #include "llfloatertools.h"
 #include "llpaneloutfitsinventory.h"
 #include "llpanellogin.h"
-#include "llpaneltopinfobar.h"
 #include "llspellcheck.h"
 #include "llslurl.h"
 #include "llstartup.h"

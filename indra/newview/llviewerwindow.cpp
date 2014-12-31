@@ -134,7 +134,6 @@
 #include "llmoveview.h"
 #include "llnavigationbar.h"
 #include "llnotificationhandler.h"
-#include "llpaneltopinfobar.h"
 #include "llpopupview.h"
 #include "llpreviewtexture.h"
 #include "llprogressview.h"
@@ -209,7 +208,6 @@
 
 #include "llwindowlistener.h"
 #include "llviewerwindowlistener.h"
-#include "llpaneltopinfobar.h"
 
 // [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c)
 #include "rlvhandler.h"
@@ -1995,15 +1993,6 @@ void LLViewerWindow::initWorldUI()
 	navbar->setBackgroundColor(gMenuBarView->getBackgroundColor().get());
 	nav_bar_container->addChild(navbar);
 	nav_bar_container->setVisible(TRUE);
-
-	// Top Info bar
-	//LLPanel* topinfo_bar_container = getRootView()->getChild<LLPanel>("topinfo_bar_container");
-	//LLPanelTopInfoBar* topinfo_bar = LLPanelTopInfoBar::getInstance();
-
-	//topinfo_bar->setShape(topinfo_bar_container->getLocalRect());
-
-	//topinfo_bar_container->addChild(topinfo_bar);
-	//topinfo_bar_container->setVisible(TRUE);
 
 	if ( gHUDView == NULL )
 	{

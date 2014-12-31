@@ -30,7 +30,6 @@
 #include "llpanelpeople.h"				// "People" sidebar panel
 #include "llpanelwearing.h"				// "Current Outfit" sidebar panel
 #include "llparcel.h"
-#include "llpaneltopinfobar.h"
 #include "llsidepanelappearance.h"
 #include "lltabcontainer.h"
 #include "llteleporthistory.h"
@@ -266,8 +265,6 @@ void RlvUIEnabler::onToggleShowLoc()
 
 	if (LLNavigationBar::instanceExists())
 		LLNavigationBar::instance().refreshLocationCtrl();
-	if (LLPanelTopInfoBar::instanceExists())
-		LLPanelTopInfoBar::instance().update();
 
 	if (!fEnable)
 	{
