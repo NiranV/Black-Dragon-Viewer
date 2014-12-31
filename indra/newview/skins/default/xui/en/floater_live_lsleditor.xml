@@ -4,10 +4,10 @@
  bevel_style="none"
  border_style="line"
  can_resize="true"
- height="575"
+ height="545"
  layout="topleft"
  min_height="271"
- min_width="400"
+ min_width="410"
  name="script ed float"
  background_color="FloaterDefaultBackgroundColor"
  save_rect="true"
@@ -35,9 +35,19 @@
      name="script ed panel"
      top="15"
      width="497" />
+    <button
+     follows="right|bottom"
+     height="23"
+     label="Reset"
+     top_pad="-26"
+     label_selected="Reset"
+     layout="topleft"
+     name="Reset"
+     right="-185"
+     width="81" />
     <check_box
-     left="10"
-     top_pad="0"
+     left="7"
+     top_pad="-44"
      enabled="false"
      follows="left|bottom"
      font="SansSerif"
@@ -46,10 +56,10 @@
      label="Running"
      layout="topleft"
      name="running"
-     width="205" />
+     width="105" />
     <check_box
-     left_delta="0"
-     top_pad="-2"
+     left_pad="0"
+     top_delta="0"
      enabled="true"
      follows="left|bottom"
      font="SansSerif"
@@ -59,14 +69,4 @@
      layout="topleft"
      name="mono"
      width="100" />
-    <button
-     follows="right|bottom"
-     height="23"
-     label="Reset"
-     top_delta="-13"
-     label_selected="Reset"
-     layout="topleft"
-     name="Reset"
-     right="-11"
-     width="85" />
 </floater>

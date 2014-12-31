@@ -40,10 +40,10 @@
      font="SansSerif"
      height="19"
      layout="topleft"
-     left="13"
+     left="10"
      name="desc txt"
-     top="19"
-     width="80">
+     top="22"
+     width="100">
         Description:
     </text>
     <line_editor
@@ -53,9 +53,9 @@
      font="SansSerif"
      height="19"
      layout="topleft"
-     left_delta="80"
+     left_pad="0"
      max_length_bytes="127"
      name="desc"
      top_delta="0"
-     width="394" />
+     width="387" />
 </floater>
