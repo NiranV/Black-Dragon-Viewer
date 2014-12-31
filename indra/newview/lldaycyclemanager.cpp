@@ -76,18 +76,6 @@ const std::string& LLDayCycleManager::findPreset(const std::string& strPresetNam
 }
 // [/RLVa:KB]
 
-// [RLVa:KB] - Checked: 2011-09-04 (RLVa-1.4.1a) | Added: RLVa-1.4.1a
-const std::string& LLDayCycleManager::findPreset(const std::string& strPresetName)
-{
-	for (dc_map_t::const_iterator itCycle = mDayCycleMap.begin(); itCycle != mDayCycleMap.end(); ++itCycle)
-	{
-		if (boost::iequals(itCycle->first, strPresetName))
-			return itCycle->first;
-	}
-	return LLStringUtil::null;
-}
-// [/RLVa:KB]
-
 void LLDayCycleManager::getUserPresetNames(preset_name_list_t& user) const
 {
 	preset_name_list_t sys; // unused

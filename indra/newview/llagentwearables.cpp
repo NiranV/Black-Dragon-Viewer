@@ -51,6 +51,7 @@
 #include "llwearablelist.h"
 #include "llfloaterperms.h"
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
+#include "rlvhelper.h"
 #include "rlvhandler.h"
 #include "rlvlocks.h"
 // [/RLVa:KB]
@@ -1445,12 +1446,13 @@ void LLAgentWearables::userAttachMultipleAttachments(LLInventoryModel::item_arra
 	if ( (rlv_handler_t::isEnabled()) && (sInitialAttachmentsRequested) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
 	{
 		// Fall-back code: everything should really already have been pruned before we get this far
-		for (S32 idxItem = obj_item_array.count() - 1; idxItem >= 0; idxItem--)
+		for (S32 idxItem = obj_item_array.size() - 1; idxItem >= 0; idxItem--)
 		{
-			const LLInventoryItem* pItem = obj_item_array.get(idxItem).get();
+			const LLViewerInventoryItem* pItem = obj_item_array.at(idxItem).get();
 			if (!gRlvAttachmentLocks.canAttach(pItem))
 			{
-				obj_item_array.remove(idxItem);
+				obj_item_array.erase(
+					std::remove_if(obj_item_array.begin(), obj_item_array.end(), RlvPredIsEqualOrLinkedItem(pItem)), obj_item_array.end());
 				RLV_ASSERT(false);
 			}
 		}

@@ -216,12 +216,6 @@ BOOL LLFloaterAbout::postBuild()
 LLSD LLFloaterAbout::getInfo()
 {
 	return LLAppViewer::instance()->getViewerInfo();
-// [RLVa:KB] - Checked: 2010-04-18 (RLVa-1.2.0)
-	//info["RLV_VERSION"] = (RlvActions::isRlvEnabled()) ? RlvStrings::getVersionAbout() : "(disabled)";
-// [/RLVa:KB]
-// [RLVa:KB] - Checked: 2010-04-18 (RLVa-1.4.0a) | Added: RLVa-1.2.0e
-	info["RLV_VERSION"] = (rlv_handler_t::isEnabled()) ? RlvStrings::getVersionAbout() : "(disabled)";
-// [/RLVa:KB]
 }
 
 class LLFloaterAboutListener: public LLEventAPI

@@ -796,9 +796,9 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 	// Note: if making it fully recursive, need more checking against infinite loops.
 	if ( (follow_folder_links) && (item_array) )
 	{
-		for (S32 i = 0, count = item_array->count(); i < count; ++i)
+		for (S32 i = 0, count = item_array->size(); i < count; ++i)
 		{
-			item = item_array->get(i);
+			item = item_array->at(i);
 			if (item && item->getActualType() == LLAssetType::AT_LINK_FOLDER)
 			{
 				LLViewerInventoryCategory* linked_cat = item->getLinkedCategory();
@@ -809,7 +809,7 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 						// BAP should this be added here?  May not
 						// matter if it's only being used in current
 						// outfit traversal.
-						cats.put(LLPointer<LLViewerInventoryCategory>(linked_cat));
+						cats.push_back(LLPointer<LLViewerInventoryCategory>(linked_cat));
 					}
 					collectDescendentsIf(linked_cat->getUUID(), cats, items, include_trash, add, FALSE);
 				}

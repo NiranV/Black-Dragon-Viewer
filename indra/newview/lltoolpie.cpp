@@ -1800,13 +1800,6 @@ BOOL LLToolPie::handleRightClickPick()
 					{
 						gMenuAvatarOther->show(x, y);
 					}
-// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
-			}
-			else
-			{
-				make_ui_sound("UISndInvalidOp");
-			}
-// [/RLVa:KB]
 				}
 // [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
 			}

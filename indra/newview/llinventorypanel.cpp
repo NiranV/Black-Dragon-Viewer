@@ -1106,10 +1106,6 @@ bool LLInventoryPanel::beginIMSession()
 	bool fRlvCanStartIM = true;
 // [/RLVa:KB]
 
-// [RLVa:KB] - Checked: 2013-05-08 (RLVa-1.4.9)
-	bool fRlvCanStartIM = true;
-// [/RLVa:KB]
-
 	std::set<LLFolderViewItem*>::const_iterator iter;
 	for (iter = selected_items.begin(); iter != selected_items.end(); iter++)
 	{
@@ -1150,15 +1146,9 @@ bool LLInventoryPanel::beginIMSession()
 // [RLVa:KB] - Checked: 2013-05-08 (RLVa-1.4.9)
 						if ( (at.isBuddyOnline(id)) && (members.end() == std::find(members.begin(), members.end(), id)) )
 						{
-// [RLVa:KB] - Checked: 2013-05-08 (RLVa-1.4.9)
 							fRlvCanStartIM &= RlvActions::canStartIM(id);
 // [/RLVa:KB]
 						}
-// [/RLVa:KB]
-//						if(at.isBuddyOnline(id))
-//						{
-//							members.put(id);
-//						}
 					}
 				}
 			}
@@ -1178,7 +1168,6 @@ bool LLInventoryPanel::beginIMSession()
 // [RLVa:KB] - Checked: 2013-05-08 (RLVa-1.4.9)
 						if ( (at.isBuddyOnline(id)) && (members.end() == std::find(members.begin(), members.end(), id)) )
 						{
-// [RLVa:KB] - Checked: 2013-05-08 (RLVa-1.4.9)
 							fRlvCanStartIM &= RlvActions::canStartIM(id);
 // [/RLVa:KB]
 						}

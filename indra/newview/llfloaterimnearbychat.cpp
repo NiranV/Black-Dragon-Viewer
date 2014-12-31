@@ -903,34 +903,6 @@ void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channe
 			// Redirect chat if needed
 			if ( ( (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT) || (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE)) ) && 
 				 (gRlvHandler.redirectChatOrEmote(utf8_out_text)) ) )
-		{
-				return;
-			}
-
-			// Filter public chat if sendchat restricted
-			if (gRlvHandler.hasBehaviour(RLV_BHVR_SENDCHAT))
-				gRlvHandler.filterChat(utf8_out_text, true);
-		}
-		else
-		{
-			// Don't allow chat on a non-public channel if sendchannel restricted (unless the channel is an exception)
-			if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SENDCHANNEL)) && (!gRlvHandler.isException(RLV_BHVR_SENDCHANNEL, channel)) )
-				return;
-
-			// Don't allow chat on debug channel if @sendchat, @redirchat or @rediremote restricted (shows as public chat on viewers)
-			if (CHAT_CHANNEL_DEBUG == channel)
-		{
-			// (We already did this before, but LLChatHandler::handle() calls this directly)
-			if ( ((CHAT_TYPE_SHOUT == type) || (CHAT_TYPE_NORMAL == type)) && (gRlvHandler.hasBehaviour(RLV_BHVR_CHATNORMAL)) )
-				type = CHAT_TYPE_WHISPER;
-			else if ( (CHAT_TYPE_SHOUT == type) && (gRlvHandler.hasBehaviour(RLV_BHVR_CHATSHOUT)) )
-				type = CHAT_TYPE_NORMAL;
-			else if ( (CHAT_TYPE_WHISPER == type) && (gRlvHandler.hasBehaviour(RLV_BHVR_CHATWHISPER)) )
-				type = CHAT_TYPE_NORMAL;
-
-			// Redirect chat if needed
-			if ( ( (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT) || (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE)) ) && 
-				 (gRlvHandler.redirectChatOrEmote(utf8_out_text)) ) )
 			{
 				return;
 			}
@@ -950,8 +922,8 @@ void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channe
 			{
 				bool fIsEmote = RlvUtil::isEmote(utf8_out_text);
 				if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SENDCHAT)) || 
-					 ((!fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT))) || 
-					 ((fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE))) )
+						((!fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT))) || 
+						((fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE))) )
 				{
 					return;
 				}
