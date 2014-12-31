@@ -122,10 +122,10 @@ private:
 		PUSH_ICON,			      // 2
 		BUILD_ICON,			      // 3
 		SCRIPTS_ICON,		      // 4
-		DAMAGE_ICON,		      // 5
-		SEE_AVATARS_ICON,         // 6
-		PATHFINDING_DIRTY_ICON,   // 7
-		PATHFINDING_DISABLED_ICON,// 8
+		SEE_AVATARS_ICON,         // 5
+		PATHFINDING_DIRTY_ICON,   // 6
+		PATHFINDING_DISABLED_ICON,// 7
+		DAMAGE_ICON,		      // 8
 		ICON_COUNT			      // 9 total
 	};
 

@@ -119,16 +119,22 @@
     follows="right|top"
     image_name="Pathfinding_Disabled"
     />
+  <see_avatars_icon
+    name="see_avatars_icon"
+    width="22"
+    height="18"
+    top="21"
+    follows="right|top"
+    image_name="Parcel_SeeAVsOff_Dark"
+    />
   <damage_icon
     name="damage_icon"
     width="22"
     height="18"
-    top="19"
-    left="2"
+    top="21"
     follows="right|top"
     image_name="Parcel_Health_Dark"
     />
-  <!-- Default text color is invisible on top of nav bar background -->
   <damage_text
     name="damage_text"
 	width="35"
@@ -139,14 +145,7 @@
 	font="SansSerifSmall"
 	text_color="TextFgColor"
 	/>
-  <see_avatars_icon
-    name="see_avatars_icon"
-    width="22"
-    height="18"
-    top="21"
-    follows="right|top"
-    image_name="Parcel_SeeAVsOff_Dark"
-    />
+  <!-- Default text color is invisible on top of nav bar background -->
   <combo_button
 		name="Location History"
                 label=""
