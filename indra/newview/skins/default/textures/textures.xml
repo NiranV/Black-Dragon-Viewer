@@ -73,8 +73,8 @@ with the same filename but different name
   <texture name="New_Tag_Background" file_name="widgets/New_Tag_Background.png" preload="true" scale.left="12" scale.top="2" scale.right="36" scale.bottom="2" />
   <texture name="New_Tag_Border" file_name="widgets/New_Tag_Border.png" preload="true" scale.left="12" scale.top="2" scale.right="36" scale.bottom="2" />
 
-  <texture name="Badge_Background" file_name="widgets/Badge_Background.png" preload="true" scale.left="9" scale.top="12" scale.right="248" scale.bottom="12" />
-  <texture name="Badge_Border" file_name="widgets/Badge_Border.png" preload="true" scale.left="9" scale.top="12" scale.right="248" scale.bottom="12" />
+  <texture name="Badge_Background" file_name="widgets/Badge_Background.png" preload="false" scale.left="9" scale.top="12" scale.right="248" scale.bottom="12" />
+  <texture name="Badge_Border" file_name="widgets/Badge_Border.png" preload="false" scale.left="9" scale.top="12" scale.right="248" scale.bottom="12" />
 
   <texture name="Blank" file_name="Blank.png" preload="false" />
 
@@ -312,8 +312,8 @@ with the same filename but different name
 
   <texture name="Map_Placeholder_Icon" file_name="icons/map_placeholder.png" preload="true" />
     
-  <texture name="MarketplaceBtn_Off" file_name="widgets/MarketplaceBtn_Off.png" preload="true" scale.left="30" scale.top="35" scale.right="37" scale.bottom="0" />
-  <texture name="MarketplaceBtn_Selected" file_name="widgets/MarketplaceBtn_Selected.png" preload="true" scale.left="30" scale.top="35" scale.right="37" scale.bottom="0" />
+  <!--<texture name="MarketplaceBtn_Off" file_name="widgets/MarketplaceBtn_Off.png" preload="true" scale.left="30" scale.top="35" scale.right="37" scale.bottom="0" />
+  <texture name="MarketplaceBtn_Selected" file_name="widgets/MarketplaceBtn_Selected.png" preload="true" scale.left="30" scale.top="35" scale.right="37" scale.bottom="0" />-->
 
   <texture name="Microphone_On" file_name="icons/Microphone_On.png" preload="false" />
 
@@ -461,9 +461,9 @@ with the same filename but different name
   <texture name="PushButton_Selected_Press" file_name="widgets/PushButton_Selected_Press.png" preload="true" scale.left="4" scale.top="19" scale.right="28" scale.bottom="4" />
   <texture name="PushButton_Selected_Disabled" file_name="widgets/PushButton_Selected_Disabled.png" preload="true" scale.left="4" scale.top="19" scale.right="28" scale.bottom="4" />
 
-  <texture name="PushButton_Login" file_name="widgets/PushButton_Login.png" preload="true" scale.left="4" scale.top="19" scale.right="28" scale.bottom="4" />
+  <!--<texture name="PushButton_Login" file_name="widgets/PushButton_Login.png" preload="true" scale.left="4" scale.top="19" scale.right="28" scale.bottom="4" />
   <texture name="PushButton_Login_Over" file_name="widgets/PushButton_Login_Over.png" preload="true" scale.left="4" scale.top="19" scale.right="28" scale.bottom="4" />
-  <texture name="PushButton_Login_Pressed" file_name="widgets/PushButton_Login_Pressed.png" preload="true" scale.left="4" scale.top="19" scale.right="28" scale.bottom="4" />
+  <texture name="PushButton_Login_Pressed" file_name="widgets/PushButton_Login_Pressed.png" preload="true" scale.left="4" scale.top="19" scale.right="28" scale.bottom="4" />-->
 
 
   <texture name="RadioButton_Press" file_name="widgets/RadioButton_Press.png" preload="true" />
@@ -476,7 +476,7 @@ with the same filename but different name
 
   <texture name="Refresh_Off" file_name="icons/Refresh_Off.png" preload="true" />
 
-  <texture name="Rounded_Square"	file_name="rounded_square.j2c" preload="true" scale.left="16" scale.top="16" scale.right="112" scale.bottom="16" />
+  <texture name="Rounded_Square"	file_name="rounded_square.j2c" preload="false" scale.left="16" scale.top="16" scale.right="112" scale.bottom="16" />
 
   <texture name="ScrollArrow_Down" file_name="widgets/ScrollArrow_Down.png"	preload="true" scale.left="2" scale.top="13" scale.right="13" scale.bottom="2" />
   <texture name="ScrollArrow_Left"	file_name="widgets/ScrollArrow_Left.png" preload="true" scale.left="2" scale.top="13" scale.right="13" scale.bottom="2" />
@@ -649,13 +649,6 @@ with the same filename but different name
   <texture name="foot_shadow.j2c" use_mips="true" />
   <texture name="transparent.j2c" use_mips="true" />
 
-  <!--WARNING OLD ART BELOW *do not use*-->
-
-  <texture name="jump_left_out.tga" file_name="widgets/jump_left_out.png" />
-  <texture name="jump_left_in.tga" file_name="widgets/jump_left_in.png" />
-  <texture name="jump_right_out.tga" file_name="widgets/jump_right_out.png" />
-  <texture name="jump_right_in.tga" file_name="widgets/jump_right_in.png" />
-
   <texture name="scrollbutton_left_out_blue.tga" file_name="widgets/ScrollArrow_Left_Opaque.png" />
   <texture name="scrollbutton_left_in_blue.tga" file_name="widgets/ScrollArrow_Left_Over_Opaque.png" />
   <texture name="scrollbutton_right_out_blue.tga" file_name="widgets/ScrollArrow_Right_Opaque.png" />
@@ -748,4 +741,12 @@ with the same filename but different name
   <texture name="Inv_AnimationsClosed" file_name="icons/Inv_AnimationsClosed.png" preload="false" />
   <texture name="Inv_GexturesClosed" file_name="icons/Inv_GesturesClosed.png" preload="false" />
   <texture name="Inv_FavouritesClosed" file_name="icons/Inv_FavouritesClosed.png" preload="false" />
+  
+  
+  <!--WARNING OLD ART BELOW *do not use*-->
+
+  <!--<texture name="jump_left_out.tga" file_name="widgets/jump_left_out.png" />
+  <texture name="jump_left_in.tga" file_name="widgets/jump_left_in.png" />
+  <texture name="jump_right_out.tga" file_name="widgets/jump_right_out.png" />
+  <texture name="jump_right_in.tga" file_name="widgets/jump_right_in.png" />-->
 </textures>
