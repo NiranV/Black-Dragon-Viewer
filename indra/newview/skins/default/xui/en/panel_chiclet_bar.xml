@@ -66,19 +66,19 @@
          min_width="95"
          mouse_opaque="false"
          name="chiclet_list_panel"
-         auto_resize="false"
+         auto_resize="true"
          top="0"
          width="189">
       <chiclet_panel
              chiclet_padding="4"
-             follows="left|top|right"
+             follows="left|bottom|right"
              height="29"
              layout="topleft"
              left="1"
              min_width="95"
              mouse_opaque="false"
              name="chiclet_list"
-             top="0"
+             bottom="-40"
              width="189">
         <button
                  auto_resize="false"

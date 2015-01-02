@@ -38,7 +38,7 @@ visible="true">
 			<panel
 			follows="top|right"
 			height="55"
-			right="-1"
+			right="-5"
 			mouse_opaque="false"
 			name="chiclet_container"
 			tab_stop="false"
