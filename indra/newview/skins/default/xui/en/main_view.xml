@@ -93,6 +93,7 @@ width="1024">
          left="20"
          follows="top|left"
          height="18"
+         visible="false"
          mouse_opaque="false"
          filename="panel_connection.xml"
          name="connection_issues_panel"
