@@ -1878,10 +1878,10 @@ width="510">
       </button>
  <slider
       control_name="RenderShadowBlurSize"
-      decimal_digits="3"
+      decimal_digits="1"
       follows="left|top"
       height="15"
-      increment="0.001"
+      increment="0.1"
       can_edit_text="true"
       label="Shadow Blur Size:"
       label_width="150"
@@ -1889,10 +1889,10 @@ width="510">
       layout="topleft"
       left="10"
       max_val="3"
-      min_val="0.001"
+      min_val="0.0"
       name="RenderShadowBlurSize"
       top_pad="1"
-      width="327"/>
+      width="315"/>
  <button
  follows="left|top"
  control_name="RenderShadowBlurSize"
