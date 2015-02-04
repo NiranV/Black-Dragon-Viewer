@@ -57,7 +57,7 @@ public:
 	// when voice is available
 	/*virtual*/ void onChange(EStatusType status, const std::string &channelURI, bool proximal);
 
-    bool mTryToConnectToFacebook;
+    //bool mTryToConnectToFacebook;
 
 // [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.0d) | Added: RLVa-1.2.0d
 	LLAvatarList* getNearbyList() { return mNearbyList; }
@@ -81,10 +81,10 @@ private:
 	// methods indirectly called by the updaters
 	void					updateFriendListHelpText();
 	void					updateFriendList();
-	bool					updateSuggestedFriendList();
+	//bool					updateSuggestedFriendList();
 	void					updateNearbyList();
 	void					updateRecentList();
-	void					updateFacebookList(bool visible);
+	//void					updateFacebookList(bool visible);
 
 	bool					isItemsFreeOfFriends(const uuid_vec_t& uuids);
 
@@ -123,15 +123,15 @@ private:
 	// misc callbacks
 	static void				onAvatarPicked(const uuid_vec_t& ids, const std::vector<LLAvatarName> names);
 
-	void					onFriendsAccordionExpandedCollapsed(LLUICtrl* ctrl, const LLSD& param, LLAvatarList* avatar_list);
+	//void					onFriendsAccordionExpandedCollapsed(LLUICtrl* ctrl, const LLSD& param, LLAvatarList* avatar_list);
 
 	void					showAccordion(const std::string name, bool show);
 
-	void					showFriendsAccordionsIfNeeded();
+	//void					showFriendsAccordionsIfNeeded();
 
-	void					onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param);
+	//void					onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param);
 
-	bool					onConnectedToFacebook(const LLSD& data);
+	//bool					onConnectedToFacebook(const LLSD& data);
 
 	void					setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed);
 	void					setAccordionCollapsedByUser(const std::string& name, bool collapsed);
@@ -139,9 +139,9 @@ private:
 	bool					isAccordionCollapsedByUser(const std::string& name);
 
 	LLTabContainer*			mTabContainer;
-	LLAvatarList*			mOnlineFriendList;
+	//LLAvatarList*			mOnlineFriendList;
 	LLAvatarList*			mAllFriendList;
-	LLAvatarList*			mSuggestedFriends;
+	//LLAvatarList*			mSuggestedFriends;
 	LLAvatarList*			mNearbyList;
 	LLAvatarList*			mRecentList;
 	LLGroupList*			mGroupList;
@@ -153,7 +153,7 @@ private:
 	Updater*				mFriendListUpdater;
 	Updater*				mNearbyListUpdater;
 	Updater*				mRecentListUpdater;
-	Updater*				mFacebookListUpdater;
+	//Updater*				mFacebookListUpdater;
 	Updater*				mButtonsUpdater;
     LLHandle< LLFloater >	mPicker;
 };

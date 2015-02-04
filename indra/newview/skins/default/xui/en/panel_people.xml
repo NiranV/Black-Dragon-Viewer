@@ -243,7 +243,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          name="friends_panel"
          right="-1"
          top="0">
-            <accordion
+            <!--<accordion
              follows="all"
              height="410"
 			 width="322"
@@ -269,25 +269,25 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                          show_permissions_granted="true"
                          top="0"
                          width="307" />
-                </accordion_tab>
+				</accordion_tab>
                 <accordion_tab
                  layout="topleft"
                  height="173"
                  name="tab_all"
-                 title="All">
+                 title="All">-->
                         <avatar_list
                          allow_select="true"
 						 color="Transparent"
                          follows="all"
-                         height="173"
+                         height="410"
                          layout="topleft"
                          left="0"
                          multi_select="true"
                          name="avatars_all"
                          show_permissions_granted="true"
-                         top="0"
-                         width="307" />
-                </accordion_tab>
+                         top="1"
+                         width="322" />
+                <!--</accordion_tab>
               <accordion_tab
                layout="topleft"
                height="173"
@@ -306,7 +306,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  top="0"
                  width="307" />
               </accordion_tab>              
-            </accordion>
+		</accordion>-->
 												<panel
              follows="left|bottom|right"
              background_visible="false"
