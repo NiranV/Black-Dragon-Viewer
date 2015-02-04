@@ -103,7 +103,7 @@ width="333">
       width="215" />
          <text
          font="SansSerifSmall"
-         text_color="BeaconColor"
+         text_color="Friend"
          width="210"
          height="10"
          follows="top|left|right"
