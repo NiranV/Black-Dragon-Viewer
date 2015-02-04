@@ -2498,14 +2498,17 @@ void LLViewerWindow::draw()
 		// BD - Connection issues display.
 		if(LLStartUp::getStartupState() == STATE_STARTED)
 		{
-			LLCircuitData *cdp = gMessageSystem->mCircuitInfo.findCircuit(gAgent.getRegion()->getHost());
-			if(cdp->getPingDelay().value() >= 600.f )
+			if(gAgent.getRegion())
 			{
-				mRootView->getChildView("connection_issues_panel")->setVisible(TRUE);
-			}
-			else
-			{
-				mRootView->getChildView("connection_issues_panel")->setVisible(FALSE);
+				LLCircuitData *cdp = gMessageSystem->mCircuitInfo.findCircuit(gAgent.getRegionHost());
+				if(cdp->getPingDelay().value() >= 600.f )
+				{
+					mRootView->getChildView("connection_issues_panel")->setVisible(TRUE);
+				}
+				else
+				{
+					mRootView->getChildView("connection_issues_panel")->setVisible(FALSE);
+				}
 			}
 		}
 
