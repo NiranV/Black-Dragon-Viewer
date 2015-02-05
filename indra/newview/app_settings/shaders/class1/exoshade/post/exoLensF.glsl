@@ -52,6 +52,26 @@ void main ()
       col += vec4( color * 0.05, 0.0 );
     }
 	
+	/*float blend =0.0;
+	float scene = 70.;
+	blend=min(2.0*abs(sin((50+0.0)*3.1415/scene)),1.0); 
+	vec2 uv3=vary_fragcoord.xy/(screen_res.xy*0.25);
+	float g2 = (blend/2.)+3.39;
+	float g1 = ((1.-blend)/2.);
+	if (uv3.y >=g2+0.11) col*=0.0;
+	if (uv3.y >=g2+0.09) col*=0.4;
+	if (uv3.y >=g2+0.07) {if (mod(uv3.x-0.06*10,0.18)<=0.16) col*=0.5;}
+	if (uv3.y >=g2+0.05) {if (mod(uv3.x-0.04*10,0.12)<=0.10) col*=0.6;}
+	if (uv3.y >=g2+0.03) {if (mod(uv3.x-0.02*10,0.08)<=0.06) col*=0.7;}
+	if (uv3.y >=g2+0.01) {if (mod(uv3.x-0.01*10,0.04)<=0.02) col*=0.8;}
+	if (uv3.y <=g1+0.10) {if (mod(uv3.x+0.01*10,0.04)<=0.02) col*=0.8;}
+	if (uv3.y <=g1+0.08) {if (mod(uv3.x+0.02*10,0.08)<=0.06) col*=0.7;}
+	if (uv3.y <=g1+0.06) {if (mod(uv3.x+0.04*10,0.12)<=0.10) col*=0.6;}
+	if (uv3.y <=g1+0.04) {if (mod(uv3.x+0.06*10,0.18)<=0.16) col*=0.5;}
+	if (uv3.y <=g1+0.02) col*=0.4;
+	if (uv3.y <=g1+0.00) col*=0.0;*/
+
+	
 	frag_color = col;
   
 }
