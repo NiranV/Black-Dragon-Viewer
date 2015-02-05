@@ -3915,6 +3915,10 @@ void LLAgent::restartFailedTeleportRequest()
 
 void LLAgent::clearTeleportRequest()
 {
+    if(LLVoiceClient::instanceExists())
+    {
+        LLVoiceClient::getInstance()->setHidden(FALSE);
+    }
 	mTeleportRequest.reset();
 }
 
@@ -3933,6 +3937,10 @@ bool LLAgent::hasPendingTeleportRequest()
 
 void LLAgent::startTeleportRequest()
 {
+    if(LLVoiceClient::instanceExists())
+    {
+        LLVoiceClient::getInstance()->setHidden(TRUE);
+    }
 	if (hasPendingTeleportRequest())
 	{
 		if  (!isMaturityPreferenceSyncedWithServer())
@@ -3978,6 +3986,11 @@ void LLAgent::handleTeleportFinished()
 
 void LLAgent::handleTeleportFailed()
 {
+    if(LLVoiceClient::instanceExists())
+    {
+        LLVoiceClient::getInstance()->setHidden(FALSE);
+    }
+
 	if (mTeleportRequest != NULL)
 	{
 		mTeleportRequest->setStatus(LLTeleportRequest::kFailed);
@@ -4275,8 +4288,8 @@ void LLAgent::stopCurrentAnimations()
 		      anim_it != gAgentAvatarp->mPlayingAnimations.end();
 		      anim_it++)
 		{
-			if (anim_it->first ==
-			    ANIM_AGENT_SIT_GROUND_CONSTRAINED)
+			if ((anim_it->first == ANIM_AGENT_DO_NOT_DISTURB)||
+				(anim_it->first == ANIM_AGENT_SIT_GROUND_CONSTRAINED))
 			{
 				// don't cancel a ground-sit anim, as viewers
 				// use this animation's status in
