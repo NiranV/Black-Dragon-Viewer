@@ -53,6 +53,10 @@
 #include "lltransactiontypes.h"
 #include "lluictrlfactory.h"
 
+//BD
+#include "llsidepanelinventory.h"
+#include "llfloatersidepanelcontainer.h"
+
 ///----------------------------------------------------------------------------
 /// Local function declarations, constants, enums, and typedefs
 ///----------------------------------------------------------------------------
@@ -490,7 +494,9 @@ void LLFloaterPay::onGive(void* data)
 		{
 			amount = atoi(floater->getChild<LLUICtrl>("amount")->getValue().asString().c_str());
 		}
-		if (amount > PAY_AMOUNT_NOTIFICATION && gStatusBar && gStatusBar->getBalance() > amount)
+
+		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+		if (amount > PAY_AMOUNT_NOTIFICATION && gStatusBar && sidepanel_inventory->getBalance() > amount)
 		{
 			LLUUID payee_id;
 			BOOL is_group;
