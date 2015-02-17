@@ -15748,6 +15748,28 @@
 		
   <!-- Black Dragon Debugs -->
   
+  <key>SystemMemory</key>
+    <map>
+    <key>Comment</key>
+    <string>.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>S32</string>
+    <key>Value</key>
+    <integer>386</integer>
+  </map>
+  <key>CustomSystemMemory</key>
+  <map>
+    <key>Comment</key>
+    <string>.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>AllowUIHidingInML</key>
   <map>
     <key>Comment</key>

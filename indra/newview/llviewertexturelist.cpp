@@ -1332,51 +1332,64 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 	S32Megabytes cur_mem(gSavedSettings.getS32("TextureMemory"));
 	F32 mem_multiplier = gSavedSettings.getF32("RenderTextureMemoryMultiple");
 	S32Megabytes default_mem = getMaxVideoRamSetting(true, mem_multiplier); // recommended default
-	if (mem == (S32Bytes)0)
-	{
-		mem = cur_mem > (S32Bytes)0 ? cur_mem : default_mem;
-	}
-	else if (mem < (S32Bytes)0)
-	{
-		mem = default_mem;
-	}
 
-	//mem = llclamp(mem, getMinVideoRamSetting(), getMaxVideoRamSetting(false, mem_multiplier));
-	if (mem != cur_mem)
-	{
-		gSavedSettings.setS32("TextureMemory", mem.value());
-		return; //listener will re-enter this function
-	}
-//	//BD - Allowing higher video card memory usage
+	//BD - Allow seperate system memory settings
+	S32Megabytes avail_mem(gSavedSettings.getS32("AvailableMemory"));
+	S32Megabytes custom_sys_mem(gSavedSettings.getS32("SystemMemory"));
 
-	// TODO: set available resident texture mem based on use by other subsystems
-	// currently max(12MB, VRAM/4) assumed...
+	if(gSavedSettings.getBOOL("CustomSystemMemory"))
+	{
+		mMaxResidentTexMemInMegaBytes = cur_mem;
+		mMaxTotalTextureMemInMegaBytes = custom_sys_mem;
+	}
+	else
+	{
+		if (mem == (S32Bytes)0)
+		{
+			mem = cur_mem > (S32Bytes)0 ? cur_mem : default_mem;
+		}
+		else if (mem < (S32Bytes)0)
+		{
+			mem = default_mem;
+		}
+
+		//mem = llclamp(mem, getMinVideoRamSetting(), getMaxVideoRamSetting(false, mem_multiplier));
+		if (mem != cur_mem)
+		{
+			gSavedSettings.setS32("TextureMemory", mem.value());
+			return; //listener will re-enter this function
+		}
+	//	//BD - Allowing higher video card memory usage
+
+		// TODO: set available resident texture mem based on use by other subsystems
+		// currently max(12MB, VRAM/4) assumed...
 	
-	S32Megabytes vb_mem = mem;
-	S32Megabytes fb_mem = llmax(VIDEO_CARD_FRAMEBUFFER_MEM, vb_mem/4);
-	mMaxResidentTexMemInMegaBytes = (vb_mem - fb_mem) ; //in MB
+		S32Megabytes vb_mem = mem;
+		S32Megabytes fb_mem = llmax(VIDEO_CARD_FRAMEBUFFER_MEM, vb_mem/4);
+		mMaxResidentTexMemInMegaBytes = (vb_mem - fb_mem) ; //in MB
 	
-	mMaxTotalTextureMemInMegaBytes = mMaxResidentTexMemInMegaBytes * 2;
-	if (mMaxResidentTexMemInMegaBytes > (S32Megabytes)640)
-	{
-		mMaxTotalTextureMemInMegaBytes -= (mMaxResidentTexMemInMegaBytes / 4);
-	}
+		mMaxTotalTextureMemInMegaBytes = mMaxResidentTexMemInMegaBytes * 2;
+		if (mMaxResidentTexMemInMegaBytes > (S32Megabytes)640)
+		{
+			mMaxTotalTextureMemInMegaBytes -= (mMaxResidentTexMemInMegaBytes / 4);
+		}
 
-	//system mem
-	S32Megabytes system_ram = gSysMemory.getPhysicalMemoryClamped();
+		//system mem
+		S32Megabytes system_ram = gSysMemory.getPhysicalMemoryClamped();
 
-	//minimum memory reserved for non-texture use.
-	//if system_raw >= 1GB, reserve at least 512MB for non-texture use;
-	//otherwise reserve half of the system_ram for non-texture use.
-	S32Megabytes min_non_texture_mem = llmin(system_ram / 2, MIN_MEM_FOR_NON_TEXTURE) ; 
+		//minimum memory reserved for non-texture use.
+		//if system_raw >= 1GB, reserve at least 512MB for non-texture use;
+		//otherwise reserve half of the system_ram for non-texture use.
+		S32Megabytes min_non_texture_mem = llmin(system_ram / 2, MIN_MEM_FOR_NON_TEXTURE) ; 
 
-	if (mMaxTotalTextureMemInMegaBytes > system_ram - min_non_texture_mem)
-	{
-		mMaxTotalTextureMemInMegaBytes = system_ram - min_non_texture_mem ;
-	}
+		if (mMaxTotalTextureMemInMegaBytes > system_ram - min_non_texture_mem)
+		{
+			mMaxTotalTextureMemInMegaBytes = system_ram - min_non_texture_mem ;
+		}
 	
-	LL_INFOS() << "Total Video Memory set to: " << vb_mem << " MB" << LL_ENDL;
-	LL_INFOS() << "Available Texture Memory set to: " << (vb_mem - fb_mem) << " MB" << LL_ENDL;
+		LL_INFOS() << "Total Video Memory set to: " << vb_mem << " MB" << LL_ENDL;
+		LL_INFOS() << "Available Texture Memory set to: " << (vb_mem - fb_mem) << " MB" << LL_ENDL;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
