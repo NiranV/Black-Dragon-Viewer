@@ -42,7 +42,7 @@ visible="true">
 			mouse_opaque="false"
 			name="chiclet_container"
 			tab_stop="false"
-			top="6"
+			top="5"
 			width="190"/>
 			<layout_stack
 			name="main"

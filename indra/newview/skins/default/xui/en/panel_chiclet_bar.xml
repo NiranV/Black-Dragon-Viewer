@@ -22,8 +22,8 @@
     <layout_panel
          auto_resize="false"
          follows="top|left"
-         height="26"
-         min_height="26"
+         height="21"
+         min_height="21"
          mouse_opaque="false"
          layout="topleft"
          name="notification_well_panel"
@@ -43,7 +43,7 @@
                  follows="top|right"
                  layout="topleft"
                  halign="left"
-                 height="26"
+                 height="22"
                  image_pressed="Sys_BG_Pressed"
                  image_pressed_selected="Sys_BG_Pressed"
                  image_selected="Sys_BG"
@@ -61,7 +61,7 @@
     </layout_panel>
     <layout_panel
          follows="left|right"
-         height="29"
+         height="34"
          layout="topleft"
          min_width="95"
          mouse_opaque="false"
@@ -71,14 +71,14 @@
          width="189">
       <chiclet_panel
              chiclet_padding="4"
-             follows="left|bottom|right"
+             follows="left|top|right"
              height="29"
              layout="topleft"
              left="1"
              min_width="95"
              mouse_opaque="false"
              name="chiclet_list"
-             bottom="-40"
+             top_pad="0"
              width="189">
         <button
                  auto_resize="false"
