@@ -32,220 +32,6 @@
      width="318">
         <panel
          border="false"
-         follows="all"
-         height="503"
-         label="Members"
-         layout="topleft"
-         width="316"
-         left="0"
-         help_topic="roles_members_tab"
-         name="members_sub_tab"
-         tool_tip="Members"
-         class="panel_group_members_subtab">
-            <panel.string
-             name="help_text">
-                You can add or remove Roles assigned to Members.
-Select multiple Members by holding the Ctrl key and
-clicking on their names.
-            </panel.string>
-            <panel.string
-             name="donation_area">
-                [AREA] m²
-            </panel.string>
-            <panel.string
-             name="power_folder_icon" translate="false">
-                Inv_FolderClosed
-            </panel.string>
-            <panel.string
-             name="power_all_have_icon" translate="false">
-                Checkbox_On
-            </panel.string>
-            <panel.string
-             name="power_partial_icon" translate="false">
-                Checkbox_Off
-            </panel.string>
-            <scroll_container
-         color="Transparent"
-         follows="all"
-         layout="topleft"
-         mouse_opaque="false"
-         left="0"
-         name="roles_scroll"
-         opaque="true"
-         height="503"
-         width="315"
-         top="1">
-         <panel
-         border="false"
-         follows="top|left|right"
-         height="412"
-         width="300"
-         layout="topleft"
-         left="0"
-         name="members_panel">
-            <button
-         height="25"
-         follows="top|left"
-         image_hover_unselected="Toolbar_Middle_Over"
-         image_overlay="AddItem_Off"
-         image_selected="Toolbar_Middle_Selected"
-         image_unselected="Toolbar_Middle_Off"
-         left="5"
-         top="5"
-         name="member_invite"
-         width="31" />
-         <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="1"
-         top="5"
-         width="231" />
-         <filter_editor
-         background_image="TextField_Off"
-         background_image_disabled="TextField_Disabled"
-         background_image_focused="TextField_Active"
-         layout="topleft"
-         top_delta="1"
-         left_delta="2"
-         right="-34"
-         height="23"
-         search_button_visible="false"
-         follows="left|top|right"
-         label="Filter Members"
-         name="filter_input" />
-         <button
-             height="25"
-             image_hover_unselected="Toolbar_Middle_Over"
-                 image_overlay="TrashItem_Off"
-                 image_selected="Toolbar_Middle_Selected"
-                 image_unselected="Toolbar_Middle_Off"
-             follows="top|right"
-             top_delta="-1"
-             left_pad="3"
-             name="member_eject"
-             width="31" />
-            <name_list
-             column_padding="2"
-             draw_heading="true"
-             height="120"
-             follows="left|top|right"
-             layout="topleft"
-             left="3"
-             width="299"
-             multi_select="true"
-             name="member_list"
-             short_names="false" 
-             top_pad="0">
-                <name_list.columns
-                 label="Member"
-                 name="name"
-               relative_width="0.44" />
-                <name_list.columns
-                 label="Donation"
-                 name="donated"
-         		 relative_width="0.2" />
-                <name_list.columns
-                 label="Status"
-                 name="online"
-                 relative_width="0.18" />
-                <name_list.columns
-                 label="Title"
-                 name="title"
-                 relative_width="0.18" />
-            </name_list>
-            <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="1"
-         width="295" />
-            <text
-         type="string"
-         height="16"
-         layout="topleft"
-         follows="left|top"
-         left="8"
-         top_delta="5"
-         name="static"
-         width="200">
-            Assigned Roles
-        </text>
-        <scroll_list
-         draw_stripes="true"
-        follows="left|top|right"
-         height="100"
-         layout="topleft"
-         column_padding="2"
-         search_column="2"
-         left="3"
-         width="299"
-         name="member_assigned_roles"
-         top_pad="2">
-            <scroll_list.columns
-             label=""
-             name="checkbox"
-             width="25" />
-            <scroll_list.columns
-             label=""
-             name="role"
-             width="270" />
-        </scroll_list>
-        <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="3"
-         width="295" />
-          <text
-         type="string"
-         height="16"
-         layout="topleft"
-         follows="left|top"
-         left="8"
-         top_delta="5"
-         name="static2"
-         width="200">
-            Allowed Abilities
-        </text>
-        <scroll_list
-         draw_stripes="true"
-         column_padding="2"
-             follows="left|top|right"
-         height="115"
-         layout="topleft"
-         left="3"
-         width="299"
-         name="member_allowed_actions"
-         search_column="2"
-         tool_tip="For details of each allowed ability see the abilities tab"
-         top_pad="2">
-            <scroll_list.columns
-             label=""
-             name="icon"
-             width="2" />
-            <scroll_list.columns
-             label=""
-             name="checkbox"
-             width="20" />
-            <scroll_list.columns
-             label=""
-             name="action"
-             width="270" />
-        </scroll_list>
-         </panel>
-            </scroll_container>
-        </panel>
-        <panel
-         border="false"
          height="503"
          follows="all"
          label="Roles"
@@ -575,6 +361,220 @@ including the Everyone and Owner Roles.
          left="3"
          width="299"
          name="role_allowed_actions"
+         search_column="2"
+         tool_tip="For details of each allowed ability see the abilities tab"
+         top_pad="2">
+            <scroll_list.columns
+             label=""
+             name="icon"
+             width="2" />
+            <scroll_list.columns
+             label=""
+             name="checkbox"
+             width="20" />
+            <scroll_list.columns
+             label=""
+             name="action"
+             width="270" />
+        </scroll_list>
+         </panel>
+            </scroll_container>
+        </panel>
+        <panel
+         border="false"
+         follows="all"
+         height="503"
+         label="Members"
+         layout="topleft"
+         width="316"
+         left="0"
+         help_topic="roles_members_tab"
+         name="members_sub_tab"
+         tool_tip="Members"
+         class="panel_group_members_subtab">
+            <panel.string
+             name="help_text">
+                You can add or remove Roles assigned to Members.
+Select multiple Members by holding the Ctrl key and
+clicking on their names.
+            </panel.string>
+            <panel.string
+             name="donation_area">
+                [AREA] m²
+            </panel.string>
+            <panel.string
+             name="power_folder_icon" translate="false">
+                Inv_FolderClosed
+            </panel.string>
+            <panel.string
+             name="power_all_have_icon" translate="false">
+                Checkbox_On
+            </panel.string>
+            <panel.string
+             name="power_partial_icon" translate="false">
+                Checkbox_Off
+            </panel.string>
+            <scroll_container
+         color="Transparent"
+         follows="all"
+         layout="topleft"
+         mouse_opaque="false"
+         left="0"
+         name="roles_scroll"
+         opaque="true"
+         height="503"
+         width="315"
+         top="1">
+         <panel
+         border="false"
+         follows="top|left|right"
+         height="412"
+         width="300"
+         layout="topleft"
+         left="0"
+         name="members_panel">
+            <button
+         height="25"
+         follows="top|left"
+         image_hover_unselected="Toolbar_Middle_Over"
+         image_overlay="AddItem_Off"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
+         left="5"
+         top="5"
+         name="member_invite"
+         width="31" />
+         <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="1"
+         top="5"
+         width="231" />
+         <filter_editor
+         background_image="TextField_Off"
+         background_image_disabled="TextField_Disabled"
+         background_image_focused="TextField_Active"
+         layout="topleft"
+         top_delta="1"
+         left_delta="2"
+         right="-34"
+         height="23"
+         search_button_visible="false"
+         follows="left|top|right"
+         label="Filter Members"
+         name="filter_input" />
+         <button
+             height="25"
+             image_hover_unselected="Toolbar_Middle_Over"
+                 image_overlay="TrashItem_Off"
+                 image_selected="Toolbar_Middle_Selected"
+                 image_unselected="Toolbar_Middle_Off"
+             follows="top|right"
+             top_delta="-1"
+             left_pad="3"
+             name="member_eject"
+             width="31" />
+            <name_list
+             column_padding="2"
+             draw_heading="true"
+             height="120"
+             follows="left|top|right"
+             layout="topleft"
+             left="3"
+             width="299"
+             multi_select="true"
+             name="member_list"
+             short_names="false" 
+             top_pad="0">
+                <name_list.columns
+                 label="Member"
+                 name="name"
+               relative_width="0.44" />
+                <name_list.columns
+                 label="Donation"
+                 name="donated"
+         		 relative_width="0.2" />
+                <name_list.columns
+                 label="Status"
+                 name="online"
+                 relative_width="0.18" />
+                <name_list.columns
+                 label="Title"
+                 name="title"
+                 relative_width="0.18" />
+            </name_list>
+            <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top_pad="1"
+         width="295" />
+            <text
+         type="string"
+         height="16"
+         layout="topleft"
+         follows="left|top"
+         left="8"
+         top_delta="5"
+         name="static"
+         width="200">
+            Assigned Roles
+        </text>
+        <scroll_list
+         draw_stripes="true"
+        follows="left|top|right"
+         height="100"
+         layout="topleft"
+         column_padding="2"
+         search_column="2"
+         left="3"
+         width="299"
+         name="member_assigned_roles"
+         top_pad="2">
+            <scroll_list.columns
+             label=""
+             name="checkbox"
+             width="25" />
+            <scroll_list.columns
+             label=""
+             name="role"
+             width="270" />
+        </scroll_list>
+        <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top_pad="3"
+         width="295" />
+          <text
+         type="string"
+         height="16"
+         layout="topleft"
+         follows="left|top"
+         left="8"
+         top_delta="5"
+         name="static2"
+         width="200">
+            Allowed Abilities
+        </text>
+        <scroll_list
+         draw_stripes="true"
+         column_padding="2"
+             follows="left|top|right"
+         height="115"
+         layout="topleft"
+         left="3"
+         width="299"
+         name="member_allowed_actions"
          search_column="2"
          tool_tip="For details of each allowed ability see the abilities tab"
          top_pad="2">
