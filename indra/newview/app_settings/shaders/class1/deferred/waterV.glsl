@@ -78,7 +78,7 @@ void main()
 	
 	//get wave position parameter (create sweeping horizontal waves)
 	vec3 v = pos.xyz;
-	v.x += (cos(v.x*0.08/*+time*0.01*/)+sin(v.y*0.02))*6.0;
+	v.x += (cos(v.x*0.02/*+time*0.02*/)+sin(v.y*0.02))*12.0;
 	    
 	//push position for further horizon effect.
 	pos.xyz = oEyeVec.xyz*(waterHeight/oEyeVec.z);
