@@ -135,6 +135,12 @@
          layout="topleft"
          name="viewer" />
 		<panel
+		 class="panel_preference"
+         filename="panel_preferences_browser.xml"
+         label="Browser"
+         layout="topleft"
+         name="browser" />
+		<panel
          class="panel_preference_rlva"
          filename="panel_preferences_rlva.xml"
          label="Restrained Love"
