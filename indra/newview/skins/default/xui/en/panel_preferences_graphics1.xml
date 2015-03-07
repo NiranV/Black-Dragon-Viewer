@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="2015"
+  height="2095"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -904,41 +904,6 @@ width="510">
                                  function="Pref.Default"/>
       </button>
       <slider
-      control_name="RenderAutoHideSurfaceAreaLimit"
-      enabled_control="RenderUseImpostors"
-      decimal_digits="0"
-      follows="left|top"
-      can_edit_text="true"
-      height="15"
-      increment="1"
-      initial_value="0"
-      label="Hide Surfaces > m²:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="200"
-      min_val="0"
-      name="RenderAutoHideSurfaceAreaLimit"
-      top_pad="1"
-      width="319" />
-      <button
- follows="left|top"
- control_name="RenderAutoHideSurfaceAreaLimit"
- enabled_control="RenderUseImpostors"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <slider
       control_name="RenderAutoMuteRenderWeightLimit"
       enabled_control="RenderUseImpostors"
       decimal_digits="0"
@@ -959,6 +924,41 @@ width="510">
       <button
  follows="left|top"
  control_name="RenderAutoMuteRenderWeightLimit"
+ enabled_control="RenderUseImpostors"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderAutoHideSurfaceAreaLimit"
+      enabled_control="RenderUseImpostors"
+      decimal_digits="0"
+      follows="left|top"
+      can_edit_text="true"
+      height="15"
+      increment="1"
+      initial_value="0"
+      label="Hide Surfaces > m²:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="200"
+      min_val="0"
+      name="RenderAutoHideSurfaceAreaLimit"
+      top_pad="1"
+      width="319" />
+      <button
+ follows="left|top"
+ control_name="RenderAutoHideSurfaceAreaLimit"
  enabled_control="RenderUseImpostors"
  height="15"
  is_toggle="false"
@@ -997,6 +997,17 @@ width="510">
    top_delta="4"
    width="115"/>
    <check_box
+   control_name="RenderAvatarVP"
+   height="16"
+   initial_value="true"
+   label="Enable Hardware Skinning"
+   layout="topleft"
+   left_delta="5"
+   tool_tip="Toggles skinning by your Hardware and enables some advanced rendering features like Avatar cloth simulation. Needed for Deferred Rendering!"
+   name="AvatarVertexProgram"
+   top_pad="12"
+   width="115"/>
+   <check_box
    control_name="WindLightUseAtmosShaders"
    enabled_control="VertexShaderEnable"
    height="16"
@@ -1004,22 +1015,10 @@ width="510">
    label="Use Atmospheric Shader"
    tool_tip="Toggles the Atmospheric Shader rendering the scene more realistic by adding additional light calculations. Needs Vertex Shader!"
    layout="topleft"
-   left_delta="5"
+   left_delta="0"
    name="WindLightUseAtmosShaders"
-   top_pad="12"
+   top_pad="0"
    width="115"/>
-   <check_box
-      control_name="RenderWaterMipNormal"
-      enabled_control="VertexShaderEnable"
-      height="16"
-      initial_value="true"
-      label="Use Water Mip-maps"
-      tool_tip="Use Mip-maps on distance for water (blurrier/low resolution textures to prevent usage of high resolution textures on distance which results in extreme water pixelation)"
-      layout="topleft"
-      left_delta="0"
-      name="MipMaps"
-      top_pad="0"
-      width="256" />
    <text
  type="string"
  length="1"
@@ -1111,28 +1110,17 @@ width="510">
  name="5"
  value="2048"/>
  </combo_box>
- <check_box
-   control_name="RenderAvatarVP"
+   <check_box
+   control_name="RenderWaterMipNormal"
+   enabled_control="VertexShaderEnable"
    height="16"
    initial_value="true"
-   label="Enable Hardware Skinning"
+   label="Use Water Mip-maps"
+   tool_tip="Use Mip-maps on distance for water (blurrier/low resolution textures to prevent usage of high resolution textures on distance which results in extreme water pixelation)"
    layout="topleft"
    left="270"
-   tool_tip="Toggles skinning by your Hardware and enables some advanced rendering features like Avatar cloth simulation. Needed for Deferred Rendering!"
-   name="AvatarVertexProgram"
+   name="MipMaps"
    top_delta="-58"
-   width="115"/>
-   <check_box
-   control_name="RenderGlow"
-   disabled_control="RenderDeferred"
-   height="16"
-   initial_value="true"
-   label="Render Post Process Glow"
-   tool_tip="Toggles the glowing of Prims and environment in some circumstances. Glow appearance and strength can be manipulated in the 'Lighting Tab' - needs Vertex Shader to run and is needed for Deferred Rendering"
-   layout="topleft"
-   left_delta="0"
-   name="Glow"
-   top_pad="0"
    width="115" />
  <text
  type="string"
@@ -1141,45 +1129,8 @@ width="510">
  height="12"
  layout="topleft"
  left="270"
- name="GlowResolution"
- top_pad="7"
- width="120">
- Post-Process Quality:
- </text>
- <combo_box
- control_name="RenderGlowResolutionPow"
- enabled_control="RenderGlow"
- height="20"
- layout="topleft"
- follows="left|top"
- left="390"
- initial_value="10"
- tool_tip="Controls the resolution of Post Process Glow"
- top_pad="-15"
- name="PostProcessDrop"
- width="100">
- <combo_box.item
- label="Low"
- name="1"
- value="7"/>
- <combo_box.item
- label="Medium*"
- name="2"
- value="9"/>
- <combo_box.item
- label="High"
- name="3"
- value="10"/>
- </combo_box>
- <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="270"
  name="SkyLOD"
- top_pad="5"
+ top_pad="21"
  width="120">
  Sky Quality:
  </text>
@@ -1220,6 +1171,57 @@ width="510">
  value="256"/>
  </combo_box>
  
+ <check_box
+   control_name="RenderGlow"
+   disabled_control="RenderDeferred"
+   height="16"
+   initial_value="true"
+   label="Render Post Process Glow"
+   tool_tip="Toggles the glowing of Prims and environment in some circumstances. Glow appearance and strength can be manipulated in the 'Lighting Tab' - needs Vertex Shader to run and is needed for Deferred Rendering"
+   layout="topleft"
+   left="10"
+   name="Glow"
+   top_pad="28"
+   width="115" />
+ 
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="GlowResolution"
+ top_pad="4"
+ width="120">
+ Post-Process Quality:
+ </text>
+ <combo_box
+ control_name="RenderGlowResolutionPow"
+ enabled_control="RenderGlow"
+ height="20"
+ layout="topleft"
+ follows="left|top"
+ left="140"
+ initial_value="10"
+ tool_tip="Controls the resolution of Post Process Glow"
+ top_pad="-15"
+ name="PostProcessDrop"
+ width="100">
+ <combo_box.item
+ label="Low"
+ name="1"
+ value="7"/>
+ <combo_box.item
+ label="Medium*"
+ name="2"
+ value="9"/>
+ <combo_box.item
+ label="High"
+ name="3"
+ value="10"/>
+ </combo_box>
+ 
       <slider  
       control_name="RenderGlowIterations"
       enabled_control="RenderGlow"
@@ -1230,7 +1232,7 @@ width="510">
       can_edit_text="true"
       increment="1" 
       initial_value="1"
-      top_pad="5"
+      top_pad="1"
       label="Glow Iterations:"
       label_width="150"
       left="10"
@@ -1441,7 +1443,7 @@ width="510">
       layout="topleft"
       can_edit_text="true"
       height="15"
-      top_pad="1"
+      top_pad="7"
       increment="0.05" 
       initial_value="0.6" 
       label="Luminance Weight Red:"
@@ -1525,7 +1527,7 @@ width="510">
       layout="topleft"
       can_edit_text="true"
       height="15"
-      top_pad="1"
+      top_pad="7"
       increment="0.05" 
       initial_value="1.0" 
       label="Warmth Red:"
@@ -2677,7 +2679,7 @@ width="510">
       max_val="3"
       min_val="0"
       name="ExodusRenderToneAdvOptA_X"
-      top_pad="1"
+      top_pad="7"
       width="322">
          <slider.commit_callback
       function="Pref.ArrayX"
@@ -2756,7 +2758,7 @@ width="510">
       max_val="3"
       min_val="0"
       name="ExodusRenderToneAdvOptB_X"
-      top_pad="1"
+      top_pad="7"
       width="322">
          <slider.commit_callback
       function="Pref.ArrayX"
@@ -2835,7 +2837,7 @@ width="510">
       max_val="3"
       min_val="0"
       name="ExodusRenderToneAdvOptC_X"
-      top_pad="1"
+      top_pad="7"
       width="322">
          <slider.commit_callback
       function="Pref.ArrayX"
@@ -3001,7 +3003,7 @@ width="510">
       max_val="0.5"
       min_val="-0.5"
       name="ExodusRenderOffset_X"
-      top_pad="1"
+      top_pad="7"
       width="332">
          <slider.commit_callback
       function="Pref.ArrayX"
@@ -3079,7 +3081,7 @@ width="510">
       max_val="3"
       min_val="0"
       name="ExodusRenderGamma_X"
-      top_pad="1"
+      top_pad="7"
       width="322">
          <slider.commit_callback
       function="Pref.ArrayX"
