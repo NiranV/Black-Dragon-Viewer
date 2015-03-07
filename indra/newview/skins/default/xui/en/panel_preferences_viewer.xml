@@ -478,7 +478,6 @@ width="510">
    height="23"
    layout="topleft"
    left="10"
-   max_length="4096"
    name="cache_location"
    top_pad="15"
    width="300" />

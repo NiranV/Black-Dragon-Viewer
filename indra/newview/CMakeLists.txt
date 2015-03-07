@@ -224,7 +224,6 @@ set(viewer_SOURCE_FILES
     llfloatercolorpicker.cpp
     llfloaterconversationlog.cpp
     llfloaterconversationpreview.cpp
-    llfloaterdeleteenvpreset.cpp
     llfloaterdestinations.cpp
     llfloaterdisplayname.cpp
     llfloatereditdaycycle.cpp
@@ -462,7 +461,6 @@ set(viewer_SOURCE_FILES
     llpanelteleporthistory.cpp
     llpaneltiptoast.cpp
     llpanelvoiceeffect.cpp
-    llpanelvoicedevicesettings.cpp
     llpanelvolume.cpp
     llpanelvolumepulldown.cpp
     llpanelwearing.cpp
@@ -844,7 +842,6 @@ set(viewer_HEADER_FILES
     llfloatercolorpicker.h
     llfloaterconversationlog.h
     llfloaterconversationpreview.h
-    llfloaterdeleteenvpreset.h
     llfloaterdestinations.h
     llfloaterdisplayname.h
     llfloatereditdaycycle.h
@@ -1070,7 +1067,6 @@ set(viewer_HEADER_FILES
     llpanelsnapshot.h
     llpanelteleporthistory.h
     llpaneltiptoast.h
-    llpanelvoicedevicesettings.h
     llpanelvoiceeffect.h
     llpanelvolume.h
     llpanelvolumepulldown.h

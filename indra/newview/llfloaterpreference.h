@@ -116,13 +116,6 @@ protected:
 	void setHardwareDefaults();
 	// callback for when client turns on shaders
 	void onVertexShaderEnable();
-
-	// callback for commit in the "Single click on land" and "Double click on land" comboboxes.
-	void onClickActionChange();
-	// updates click/double-click action settings depending on controls values
-	void updateClickActionSettings();
-	// updates click/double-click action controls depending on values from settings.xml
-	void updateClickActionControls();
 	
 	// This function squirrels away the current values of the controls so that
 	// cancel() can restore them.	
@@ -151,10 +144,8 @@ public:
 	void setPersonalInfo(const std::string& visibility, bool im_via_email);
 	void refreshEnabledState();
 	void disableUnavailableSettings();
-	void onCommitWindowedMode();
+	//void onCommitWindowedMode();
 	void refresh();	// Refresh enable/disable
-	// if the quality radio buttons are changed
-	void onChangeQuality(const LLSD& data);
 	
 	void updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box);
 	void refreshUI();
@@ -181,7 +172,6 @@ public:
 	void onCommitMediaEnabled();
 	void onCommitMusicEnabled();
 	void applyResolution();
-	void onChangeMaturity();
 	void onClickBlockList();
 	void onClickProxySettings();
 	void onClickTranslationSettings();

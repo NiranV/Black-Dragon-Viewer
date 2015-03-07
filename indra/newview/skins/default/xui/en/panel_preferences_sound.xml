@@ -617,8 +617,6 @@ width="510">
          function="Pref.InputOutput"/>
    </button>
    <panel
-   background_visible="false"
-   bg_alpha_color="DkGray"
    visiblity_control="ShowDeviceSettings"
    border="false"
    follows="top|left"
@@ -627,7 +625,6 @@ width="510">
    layout="topleft"
    left="0"
    name="device_settings_panel"
-   class="panel_voice_device_settings"
    width="501"
    top_pad="1">
     <panel.string

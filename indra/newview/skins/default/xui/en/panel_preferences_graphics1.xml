@@ -1507,7 +1507,6 @@ width="510">
  height="45"
  is_toggle="false"
  label="⌊default⌉"
- wrap="true"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
@@ -2900,7 +2899,7 @@ width="510">
    follows="top|left"
    left="140"
    top_delta="-2"
-   name="Reflections"
+   name="ExodusRenderColorGradeTech"
    width="100">
    <combo_box.item
    label="None"
@@ -3240,35 +3239,6 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
- <!--<text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="545"
- name="Fullscreen Ratio:"
- top="38"
- width="300">
- Fullscreen Ratio:
- </text>
- <spinner
- enabled_control="FullScreen"
- control_name="FullScreenAspectRatio"
- decimal_digits="3"
- follows="left|top"
- height="16"
- increment="0.01"
- initial_value="3"
- label=""
- label_width="80"
- layout="topleft"
- left_delta="5"
- max_val="6"
- min_val="0.01"
- name="Ratio"
- top_delta="12"
- width="75" />-->
   </panel>
    </scroll_container>
 </panel>

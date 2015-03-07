@@ -443,17 +443,14 @@
     <line_editor
      control_name="DoNotDisturbModeResponse"
      text_readonly_color="LabelDisabledColor"
-     bg_writeable_color="LtGray"
-     use_ellipses="true"
      commit_on_focus_lost = "true"
      follows="left|top|right"
      height="22"
      layout="topleft"
      left="10"
      top_pad="13"
-     name="busy_response"
-     width="490"
-     word_wrap="true">
+     name="do_not_disturb_response"
+     width="490">
        log_in_to_change
     </line_editor>
 </panel>

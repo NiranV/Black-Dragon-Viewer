@@ -59,7 +59,6 @@
 #include "llnotificationsutil.h"
 #include "llnotificationtemplate.h"
 #include "llpanellogin.h"
-#include "llpanelvoicedevicesettings.h"
 #include "llradiogroup.h"
 #include "llsearchcombobox.h"
 #include "llsky.h"
@@ -344,12 +343,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.HardwareSettings",		boost::bind(&LLFloaterPreference::onOpenHardwareSettings, this));
 	mCommitCallbackRegistrar.add("Pref.HardwareDefaults",		boost::bind(&LLFloaterPreference::setHardwareDefaults, this));
 	mCommitCallbackRegistrar.add("Pref.VertexShaderEnable",		boost::bind(&LLFloaterPreference::onVertexShaderEnable, this));
-	mCommitCallbackRegistrar.add("Pref.WindowedMod",			boost::bind(&LLFloaterPreference::onCommitWindowedMode, this));
 	mCommitCallbackRegistrar.add("Pref.UpdateSliderText",		boost::bind(&LLFloaterPreference::refreshUI,this));
-	mCommitCallbackRegistrar.add("Pref.QualityPerformance",		boost::bind(&LLFloaterPreference::onChangeQuality, this, _2));
 	mCommitCallbackRegistrar.add("Pref.applyUIColor",			boost::bind(&LLFloaterPreference::applyUIColor, this ,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.getUIColor",				boost::bind(&LLFloaterPreference::getUIColor, this ,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.MaturitySettings",		boost::bind(&LLFloaterPreference::onChangeMaturity, this));
 	mCommitCallbackRegistrar.add("Pref.BlockList",				boost::bind(&LLFloaterPreference::onClickBlockList, this));
 	mCommitCallbackRegistrar.add("Pref.Proxy",					boost::bind(&LLFloaterPreference::onClickProxySettings, this));
 	mCommitCallbackRegistrar.add("Pref.TranslationSettings",	boost::bind(&LLFloaterPreference::onClickTranslationSettings, this));
@@ -372,8 +368,6 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.InputOutput",           boost::bind(&LLFloaterPreference::inputOutput, this));
 
 	sSkin = gSavedSettings.getString("SkinCurrent");
-
-	mCommitCallbackRegistrar.add("Pref.ClickActionChange",		boost::bind(&LLFloaterPreference::onClickActionChange, this));
 
 	gSavedSettings.getControl("NameTagShowUsernames")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged,  _2));	
 	gSavedSettings.getControl("NameTagShowFriends")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged,  _2));	
@@ -455,8 +449,6 @@ BOOL LLFloaterPreference::postBuild()
 	gSavedSettings.getControl("ChatFontSize")->getSignal()->connect(boost::bind(&LLViewerChat::signalChatFontChanged));
 
 	gSavedSettings.getControl("ChatBubbleOpacity")->getSignal()->connect(boost::bind(&LLFloaterPreference::onNameTagOpacityChange, this, _2));
-
-	gSavedSettings.getControl("PreferredMaturity")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeMaturity, this));
 
 	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
 	if (!tabcontainer->selectTab(gSavedSettings.getS32("LastPrefTab")))
@@ -760,12 +752,6 @@ void LLFloaterPreference::apply()
 	}
 
 	saveAvatarProperties();
-
-	if (mClickActionDirty)
-	{
-		updateClickActionSettings();
-		mClickActionDirty = false;
-	}
 }
 
 void LLFloaterPreference::cancel()
@@ -802,11 +788,7 @@ void LLFloaterPreference::cancel()
 	// reverts any changes to current skin
 	gSavedSettings.setString("SkinCurrent", sSkin);
 
-	if (mClickActionDirty)
-	{
-		updateClickActionControls();
-		mClickActionDirty = false;
-	}
+
 
 	LLFloaterPreferenceProxy * advanced_proxy_settings = LLFloaterReg::findTypedInstance<LLFloaterPreferenceProxy>("prefs_proxy");
 	if (advanced_proxy_settings)
@@ -873,17 +855,10 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 
 	// Forget previous language changes.
 	mLanguageChanged = false;
-
-	// Display selected maturity icons.
-	onChangeMaturity();
-	
-	// Load (double-)click to walk/teleport settings.
-	updateClickActionControls();
 	
 	// Enabled/disabled popups, might have been changed by user actions
 	// while preferences floater was closed.
 	buildPopupLists();
-
 
 	//get the options that were checked
 	onNotificationsChange("FriendIMOptions");
@@ -1124,7 +1099,8 @@ void LLFloaterPreference::onNotificationsChange(const std::string& OptionName)
 		}
 	}
 
-	getChild<LLTextBox>("notifications_alert")->setVisible(show_notifications_alert);
+	//BD - We might want to add this later again.
+	//getChild<LLTextBox>("notifications_alert")->setVisible(show_notifications_alert);
 }
 
 void LLFloaterPreference::onNameTagOpacityChange(const LLSD& newvalue)
@@ -1269,7 +1245,6 @@ void LLFloaterPreference::buildPopupLists()
 void LLFloaterPreference::refreshEnabledState()
 {	
 	LLComboBox* ctrl_reflections = getChild<LLComboBox>("Reflections");
-	LLRadioGroup* radio_reflection_detail = getChild<LLRadioGroup>("ReflectionDetailRadio");
 	
 // [RLVa:KB] - Checked: 2013-05-11 (RLVa-1.4.9)
 	if (rlv_handler_t::isEnabled())
@@ -1288,8 +1263,6 @@ void LLFloaterPreference::refreshEnabledState()
 	LLCheckBoxCtrl* bumpshiny_ctrl = getChild<LLCheckBoxCtrl>("BumpShiny");
 	bool bumpshiny = gGLManager.mHasCubeMap && LLCubeMap::sUseCubeMaps && LLFeatureManager::getInstance()->isFeatureAvailable("RenderObjectBump");
 	bumpshiny_ctrl->setEnabled(bumpshiny ? TRUE : FALSE);
-	
-	radio_reflection_detail->setEnabled(reflections);
 	
 	// Avatar Mode
 	// Enable Avatar Shaders
@@ -1319,8 +1292,6 @@ void LLFloaterPreference::refreshEnabledState()
 	// Vertex Shaders
 	// Global Shader Enable
 	LLCheckBoxCtrl* ctrl_shader_enable   = getChild<LLCheckBoxCtrl>("BasicShaders");
-	// radio set for terrain detail mode
-	LLRadioGroup*   mRadioTerrainDetail = getChild<LLRadioGroup>("TerrainDetailRadio");   // can be linked with control var
 	
 //	ctrl_shader_enable->setEnabled(LLFeatureManager::getInstance()->isFeatureAvailable("VertexShaderEnable"));
 // [RLVa:KB] - Checked: 2010-03-18 (RLVa-1.2.0a) | Modified: RLVa-0.2.0a
@@ -1331,15 +1302,6 @@ void LLFloaterPreference::refreshEnabledState()
 // [/RLVa:KB]
 
 	BOOL shaders = ctrl_shader_enable->get();
-	if (shaders)
-	{
-		mRadioTerrainDetail->setValue(1);
-		mRadioTerrainDetail->setEnabled(FALSE);
-	}
-	else
-	{
-		mRadioTerrainDetail->setEnabled(TRUE);		
-	}
 	
 	// WindLight
 	LLCheckBoxCtrl* ctrl_wind_light = getChild<LLCheckBoxCtrl>("WindLightUseAtmosShaders");
@@ -1356,7 +1318,6 @@ void LLFloaterPreference::refreshEnabledState()
 
 	//Deferred/SSAO/Shadows
 	LLCheckBoxCtrl* ctrl_deferred = getChild<LLCheckBoxCtrl>("UseLightShaders");
-	LLCheckBoxCtrl* ctrl_deferred2 = getChild<LLCheckBoxCtrl>("UseLightShaders2");
 
 	
 	BOOL enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
@@ -1367,7 +1328,6 @@ void LLFloaterPreference::refreshEnabledState()
 						(ctrl_wind_light->get()) ? TRUE : FALSE;
 
 	ctrl_deferred->setEnabled(enabled);
-	ctrl_deferred2->setEnabled(enabled);
 
 	LLCheckBoxCtrl* ctrl_ssao = getChild<LLCheckBoxCtrl>("UseSSAO");
 	LLCheckBoxCtrl* ctrl_dof = getChild<LLCheckBoxCtrl>("UseDoF");
@@ -1391,26 +1351,29 @@ void LLFloaterPreference::refreshEnabledState()
 
 	getChildView("block_list")->setEnabled(LLLoginInstance::getInstance()->authSuccess());
 
+	//BD - We might want to add this later.
 	// Cannot have floater active until caps have been received
-	getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
+	//getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
 }
 
 void LLFloaterPreference::disableUnavailableSettings()
 {	
-	LLComboBox* ctrl_reflections   = getChild<LLComboBox>("Reflections");
+	/*LLComboBox* ctrl_reflections   = getChild<LLComboBox>("Reflections");
 	LLCheckBoxCtrl* ctrl_avatar_vp     = getChild<LLCheckBoxCtrl>("AvatarVertexProgram");
 	LLCheckBoxCtrl* ctrl_avatar_cloth  = getChild<LLCheckBoxCtrl>("AvatarCloth");
 	LLCheckBoxCtrl* ctrl_shader_enable = getChild<LLCheckBoxCtrl>("BasicShaders");
 	LLCheckBoxCtrl* ctrl_wind_light    = getChild<LLCheckBoxCtrl>("WindLightUseAtmosShaders");
 	LLCheckBoxCtrl* ctrl_avatar_impostors = getChild<LLCheckBoxCtrl>("AvatarImpostors");
 	LLCheckBoxCtrl* ctrl_deferred = getChild<LLCheckBoxCtrl>("UseLightShaders");
-	LLCheckBoxCtrl* ctrl_deferred2 = getChild<LLCheckBoxCtrl>("UseLightShaders2");
 	LLComboBox* ctrl_shadows = getChild<LLComboBox>("ShadowDetail");
 	LLCheckBoxCtrl* ctrl_ssao = getChild<LLCheckBoxCtrl>("UseSSAO");
-	LLCheckBoxCtrl* ctrl_dof = getChild<LLCheckBoxCtrl>("UseDoF");
+	LLCheckBoxCtrl* ctrl_dof = getChild<LLCheckBoxCtrl>("UseDoF");*/
 
+	//BD - We really shouldn't disable everything twice. We might use this later tho for
+	//     features that should be disabled if one or another option is missing or for
+	//     options that need not just one but 2 or more previous features.
 	// if vertex shaders off, disable all shader related products
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("VertexShaderEnable"))
+	/*if (!LLFeatureManager::getInstance()->isFeatureAvailable("VertexShaderEnable"))
 	{
 		ctrl_shader_enable->setEnabled(FALSE);
 		ctrl_shader_enable->setValue(FALSE);
@@ -1438,8 +1401,6 @@ void LLFloaterPreference::disableUnavailableSettings()
 
 		ctrl_deferred->setEnabled(FALSE);
 		ctrl_deferred->setValue(FALSE);
-		ctrl_deferred2->setEnabled(FALSE);
-		ctrl_deferred2->setValue(FALSE);
 	}
 	
 	// disabled windlight
@@ -1460,8 +1421,6 @@ void LLFloaterPreference::disableUnavailableSettings()
 
 		ctrl_deferred->setEnabled(FALSE);
 		ctrl_deferred->setValue(FALSE);
-		ctrl_deferred2->setEnabled(FALSE);
-		ctrl_deferred2->setValue(FALSE);
 	}
 
 	// disabled deferred
@@ -1479,8 +1438,6 @@ void LLFloaterPreference::disableUnavailableSettings()
 
 		ctrl_deferred->setEnabled(FALSE);
 		ctrl_deferred->setValue(FALSE);
-		ctrl_deferred2->setEnabled(FALSE);
-		ctrl_deferred2->setValue(FALSE);
 	}
 	
 	// disabled deferred SSAO
@@ -1525,8 +1482,6 @@ void LLFloaterPreference::disableUnavailableSettings()
 
 		ctrl_deferred->setEnabled(FALSE);
 		ctrl_deferred->setValue(FALSE);
-		ctrl_deferred2->setEnabled(FALSE);
-		ctrl_deferred2->setValue(FALSE);
 	}
 
 	// disabled cloth
@@ -1541,41 +1496,24 @@ void LLFloaterPreference::disableUnavailableSettings()
 	{
 		ctrl_avatar_impostors->setEnabled(FALSE);
 		ctrl_avatar_impostors->setValue(FALSE);
-	}
+	}*/
 }
 
 void LLFloaterPreference::refresh()
 {
 	LLPanel::refresh();
 
-	// sliders and their text boxes
-	//	mPostProcess = gSavedSettings.getS32("RenderGlowResolutionPow");
-	// slider text boxes
-	updateSliderText(getChild<LLSliderCtrl>("ObjectMeshDetail",		true), getChild<LLTextBox>("ObjectMeshDetailText",		true));
-	updateSliderText(getChild<LLSliderCtrl>("FlexibleMeshDetail",	true), getChild<LLTextBox>("FlexibleMeshDetailText",	true));
-	updateSliderText(getChild<LLSliderCtrl>("TreeMeshDetail",		true), getChild<LLTextBox>("TreeMeshDetailText",		true));
-	updateSliderText(getChild<LLSliderCtrl>("AvatarMeshDetail",		true), getChild<LLTextBox>("AvatarMeshDetailText",		true));
-	updateSliderText(getChild<LLSliderCtrl>("AvatarMeshDetail2",		true), getChild<LLTextBox>("AvatarMeshDetailText2",		true));
-	updateSliderText(getChild<LLSliderCtrl>("AvatarPhysicsDetail",	true), getChild<LLTextBox>("AvatarPhysicsDetailText",		true));
-	updateSliderText(getChild<LLSliderCtrl>("TerrainMeshDetail",	true), getChild<LLTextBox>("TerrainMeshDetailText",		true));
-	updateSliderText(getChild<LLSliderCtrl>("RenderPostProcess",	true), getChild<LLTextBox>("PostProcessText",			true));
-	updateSliderText(getChild<LLSliderCtrl>("SkyMeshDetail",		true), getChild<LLTextBox>("SkyMeshDetailText",			true));
+	//BD - We might want to use this for later warnings of too high graphic options.
+	//updateSliderText(getChild<LLSliderCtrl>("ObjectMeshDetail",		true), getChild<LLTextBox>("ObjectMeshDetailText",		true));
 	
 	refreshEnabledState();
 }
 
-void LLFloaterPreference::onCommitWindowedMode()
+//BD - We might want to use this for later warnings in preferences
+/*void LLFloaterPreference::onCommitWindowedMode()
 {
 	refresh();
-}
-
-void LLFloaterPreference::onChangeQuality(const LLSD& data)
-{
-	U32 level = (U32)(data.asReal());
-	LLFeatureManager::getInstance()->setGraphicsLevel(level, true);
-	refreshEnabledGraphics();
-	refresh();
-}
+}*/
 
 void LLFloaterPreference::onClickSetKey()
 {
@@ -1842,20 +1780,6 @@ void LLFloaterPreference::updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_b
 	}
 }
 
-void LLFloaterPreference::onChangeMaturity()
-{
-	U8 sim_access = gSavedSettings.getU32("PreferredMaturity");
-
-	getChild<LLIconCtrl>("rating_icon_general")->setVisible(sim_access == SIM_ACCESS_PG
-															|| sim_access == SIM_ACCESS_MATURE
-															|| sim_access == SIM_ACCESS_ADULT);
-
-	getChild<LLIconCtrl>("rating_icon_moderate")->setVisible(sim_access == SIM_ACCESS_MATURE
-															|| sim_access == SIM_ACCESS_ADULT);
-
-	getChild<LLIconCtrl>("rating_icon_adult")->setVisible(sim_access == SIM_ACCESS_ADULT);
-}
-
 // FIXME: this will stop you from spawning the sidetray from preferences dialog on login screen
 // but the UI for this will still be enabled
 void LLFloaterPreference::onClickBlockList()
@@ -1882,11 +1806,6 @@ void LLFloaterPreference::onClickAutoReplace()
 void LLFloaterPreference::onClickSpellChecker()
 {
 		LLFloaterReg::showInstance("prefs_spellchecker");
-}
-
-void LLFloaterPreference::onClickActionChange()
-{
-	mClickActionDirty = true;
 }
 
 void LLFloaterPreference::onClickPermsDefault()
@@ -1919,26 +1838,6 @@ void LLFloaterPreference::onLogChatHistorySaved()
 	{
 		delete_transcripts_buttonp->setEnabled(true);
 	}
-}
-
-void LLFloaterPreference::updateClickActionSettings()
-{
-	const int single_clk_action = getChild<LLComboBox>("single_click_action_combo")->getValue().asInteger();
-	const int double_clk_action = getChild<LLComboBox>("double_click_action_combo")->getValue().asInteger();
-
-	gSavedSettings.setBOOL("ClickToWalk",			single_clk_action == 1);
-	gSavedSettings.setBOOL("DoubleClickAutoPilot",	double_clk_action == 1);
-	gSavedSettings.setBOOL("DoubleClickTeleport",	double_clk_action == 2);
-}
-
-void LLFloaterPreference::updateClickActionControls()
-{
-	const bool click_to_walk = gSavedSettings.getBOOL("ClickToWalk");
-	const bool dbl_click_to_walk = gSavedSettings.getBOOL("DoubleClickAutoPilot");
-	const bool dbl_click_to_teleport = gSavedSettings.getBOOL("DoubleClickTeleport");
-
-	getChild<LLComboBox>("single_click_action_combo")->setValue((int)click_to_walk);
-	getChild<LLComboBox>("double_click_action_combo")->setValue(dbl_click_to_teleport ? 2 : (int)dbl_click_to_walk);
 }
 
 void LLFloaterPreference::applyUIColor(LLUICtrl* ctrl, const LLSD& param)
