@@ -230,6 +230,7 @@ LLGLSLShader			gAvatarVelocityProgram;
 LLGLSLShader			gSkinnedVelocityProgram;
 LLGLSLShader			gSkinnedVelocityAlphaProgram;
 LLGLSLShader			gMotionBlurProgram;
+LLGLSLShader			gVolumetricLightProgram;
 LLGLSLShader			gDeferredWLSkyProgram;
 LLGLSLShader			gDeferredWLCloudProgram;
 LLGLSLShader			gDeferredStarProgram;
@@ -353,6 +354,7 @@ LLViewerShaderMgr::LLViewerShaderMgr() :
 	mShaderList.push_back(&gDeferredAvatarAlphaProgram);
 	mShaderList.push_back(&gDeferredWLSkyProgram);
 	mShaderList.push_back(&gDeferredWLCloudProgram);
+	mShaderList.push_back(&gVolumetricLightProgram);
 }
 
 LLViewerShaderMgr::~LLViewerShaderMgr()
@@ -1175,6 +1177,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gSkinnedVelocityProgram.unload();
 		gSkinnedVelocityAlphaProgram.unload();
 		gMotionBlurProgram.unload();
+		gVolumetricLightProgram.unload();
 		gDeferredCoFProgram.unload();		
 		gDeferredDoFCombineProgram.unload();
 		gDeferredPostGammaCorrectProgram.unload();
@@ -2043,6 +2046,16 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gMotionBlurProgram.mShaderFiles.push_back(make_pair("deferred/motionBlurF.glsl", GL_FRAGMENT_SHADER_ARB));
 		gMotionBlurProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 		success = gMotionBlurProgram.createShader(NULL, NULL);
+	}
+
+	if (success)
+ 	{
+		gVolumetricLightProgram.mName = "Volumetric Light Shader";
+		gVolumetricLightProgram.mShaderFiles.clear();
+		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER_ARB));
+		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/volumetricLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gVolumetricLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+		success = gVolumetricLightProgram.createShader(NULL, NULL);
 	}
 
 	if (success)

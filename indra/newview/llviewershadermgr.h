@@ -355,6 +355,7 @@ extern LLGLSLShader			gAvatarVelocityProgram;
 extern LLGLSLShader			gSkinnedVelocityProgram;
 extern LLGLSLShader			gSkinnedVelocityAlphaProgram;
 extern LLGLSLShader			gMotionBlurProgram;
+extern LLGLSLShader			gVolumetricLightProgram;
 
 // Deferred materials shaders
 extern LLGLSLShader			gDeferredMaterialProgram[LLMaterial::SHADER_COUNT*2];

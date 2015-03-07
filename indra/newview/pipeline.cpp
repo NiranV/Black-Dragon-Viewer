@@ -8385,6 +8385,35 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 			
 	}
 
+	if (LLPipeline::sRenderDeferred && LLPipeline::RenderShadowDetail)
+	{ //volumetric light
+
+		LLGLSLShader* shader = &gVolumetricLightProgram;
+
+		bindDeferredShader(*shader);
+
+		S32 channel = shader->enableTexture(LLShaderMgr::DEFERRED_DIFFUSE, mScreen.getUsage());
+		if (channel > -1)
+		{
+			mScreen.bindTexture(0, channel);
+		}
+
+		gGL.begin(LLRender::TRIANGLE_STRIP);
+		gGL.texCoord2f(tc1.mV[0], tc1.mV[1]);
+		gGL.vertex2f(-1,-1);
+		
+		gGL.texCoord2f(tc1.mV[0], tc2.mV[1]);
+		gGL.vertex2f(-1,3);
+		
+		gGL.texCoord2f(tc2.mV[0], tc1.mV[1]);
+		gGL.vertex2f(3,-1);
+		
+		gGL.end();
+
+		unbindDeferredShader(*shader);
+			
+	}
+
 	gGL.setSceneBlendType(LLRender::BT_ALPHA);
 
 	if (hasRenderDebugMask(LLPipeline::RENDER_DEBUG_PHYSICS_SHAPES))
