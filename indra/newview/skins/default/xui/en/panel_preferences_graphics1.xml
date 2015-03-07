@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1990"
+  height="2015"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
