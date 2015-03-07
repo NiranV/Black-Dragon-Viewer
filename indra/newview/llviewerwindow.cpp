@@ -3766,9 +3766,9 @@ void LLViewerWindow::pickAsync(S32 x, S32 y_from_bot, MASK mask, void (*callback
 		pick_transparent = TRUE;
 	}
 
-//	LLPickInfo pick_info(LLCoordGL(x, y_from_bot), mask, pick_transparent, TRUE, callback);
+//	LLPickInfo pick_info(LLCoordGL(x, y_from_bot), mask, pick_transparent, FALSE, TRUE, callback);
 // [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
-	LLPickInfo pick_info(LLCoordGL(x, y_from_bot), mask, pick_transparent, pick_rigged, TRUE, callback);
+	LLPickInfo pick_info(LLCoordGL(x, y_from_bot), mask, pick_transparent, pick_rigged, FALSE, TRUE, callback);
 // [/SL:KB]
 	schedulePick(pick_info);
 }
@@ -3825,9 +3825,10 @@ void LLViewerWindow::returnEmptyPicks()
 }
 
 // Performs the GL object/land pick.
-//LLPickInfo LLViewerWindow::pickImmediate(S32 x, S32 y_from_bot,  BOOL pick_transparent)
+//LLPickInfo LLViewerWindow::pickImmediate(S32 x, S32 y_from_bot,  BOOL pick_transparent, BOOL pick_particle)
+
 // [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
-LLPickInfo LLViewerWindow::pickImmediate(S32 x, S32 y_from_bot,  BOOL pick_transparent, BOOL pick_rigged)
+LLPickInfo LLViewerWindow::pickImmediate(S32 x, S32 y_from_bot,  BOOL pick_transparent, BOOL pick_rigged, BOOL pick_particle)
 // [/SL:KB]
 {
 	BOOL in_build_mode = LLFloaterReg::instanceVisible("build");
@@ -3840,9 +3841,9 @@ LLPickInfo LLViewerWindow::pickImmediate(S32 x, S32 y_from_bot,  BOOL pick_trans
 	
 	// shortcut queueing in mPicks and just update mLastPick in place
 	MASK	key_mask = gKeyboard->currentMask(TRUE);
-//	mLastPick = LLPickInfo(LLCoordGL(x, y_from_bot), key_mask, pick_transparent, TRUE, NULL);
+//	mLastPick = LLPickInfo(LLCoordGL(x, y_from_bot), key_mask, pick_transparent, pick_particle, TRUE, NULL);
 // [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
-	mLastPick = LLPickInfo(LLCoordGL(x, y_from_bot), key_mask, pick_transparent, pick_rigged, TRUE, NULL);
+	mLastPick = LLPickInfo(LLCoordGL(x, y_from_bot), key_mask, pick_transparent, pick_rigged, pick_particle, TRUE, NULL);
 // [/SL:KB]
 	mLastPick.fetchResults();
 
@@ -3953,24 +3954,23 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 		if (this_object->isHUDAttachment()) // is a HUD object?
 		{
 //			if (this_object->lineSegmentIntersect(mouse_hud_start, mouse_hud_end, this_face, pick_transparent,
-//												  face_hit, intersection, uv, normal, binormal))
+//												  face_hit, intersection, uv, normal, tangent))
 // [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
-			if (this_object->lineSegmentIntersect(mouse_hud_start, mouse_hud_end, this_face, pick_transparent, pick_rigged,
- 												  face_hit, intersection, uv, normal, binormal))
+			if (this_object->lineSegmentIntersect(mh_start, mh_end, this_face, pick_transparent, pick_rigged,
+ 												  face_hit, intersection, uv, normal, tangent))
 // [/SL:KB]
 			{
 				found = this_object;
 			}
 		}
-//			if (this_object->lineSegmentIntersect(mouse_world_start, mouse_world_end, this_face, pick_transparent,
-//												  face_hit, intersection, uv, normal, binormal))
-// [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
-			if (this_object->lineSegmentIntersect(mouse_world_start, mouse_world_end, this_face, pick_transparent, pick_rigged,
- 												  face_hit, intersection, uv, normal, binormal))
-// [/SL:KB]
+		else // is a world object
 		{
-			if (this_object->lineSegmentIntersect(mw_start, mw_end, this_face, pick_transparent,
-												  face_hit, intersection, uv, normal, tangent))
+//			if (this_object->lineSegmentIntersect(mouse_world_start, mouse_world_end, this_face, pick_transparent,
+//												  face_hit, intersection, uv, normal, tangent))
+// [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
+			if (this_object->lineSegmentIntersect(mw_start, mw_end, this_face, pick_transparent, pick_rigged,
+ 												  face_hit, intersection, uv, normal, tangent))
+// [/SL:KB]
 			{
 				found = this_object;
 			}
@@ -3991,10 +3991,10 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 		if (!found) // if not found in HUD, look in world:
 		{
 //			found = gPipeline.lineSegmentIntersectInWorld(mouse_world_start, mouse_world_end, pick_transparent,
-//														  face_hit, intersection, uv, normal, binormal);
+//														  face_hit, intersection, uv, normal, tangent);
 // [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
-			found = gPipeline.lineSegmentIntersectInWorld(mouse_world_start, mouse_world_end, pick_transparent, pick_rigged,
- 														  face_hit, intersection, uv, normal, binormal);
+			found = gPipeline.lineSegmentIntersectInWorld(mw_start, mw_end, pick_transparent, pick_rigged,
+ 														  face_hit, intersection, uv, normal, tangent);
 // [/SL:KB]
 			if (found && !pick_transparent)
 			{
@@ -5306,7 +5306,7 @@ LLPickInfo::LLPickInfo()
 	  mHUDIcon(NULL),
 // [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
 	  mPickTransparent(FALSE),
-	  mPickRigged(FALSE)
+	  mPickRigged(FALSE),
 // [/SL:KB]
 //	  mPickTransparent(FALSE)
 	  mPickParticle(FALSE)
@@ -5337,7 +5337,7 @@ LLPickInfo::LLPickInfo(const LLCoordGL& mouse_pos,
 	  mHUDIcon(NULL),
 // [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
 	  mPickTransparent(pick_transparent),
-	  mPickRigged(pick_rigged)
+	  mPickRigged(pick_rigged),
 // [/SL:KB]
 //	  mPickTransparent(pick_transparent)
 	  mPickParticle(pick_particle)
@@ -5522,18 +5522,19 @@ void LLPickInfo::getSurfaceInfo()
 //		if (gViewerWindow->cursorIntersect(llround((F32)mMousePt.mX), llround((F32)mMousePt.mY), 1024.f,
 //										   objectp, -1, mPickTransparent,
 //										   &mObjectFace,
-//										   &mIntersection,
+//										   &intersection,
 //										   &mSTCoords,
-//										   &mNormal,
-//										   &mBinormal))
+//										   &normal,
+//										   &tangent))
+
 // [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
 		if (gViewerWindow->cursorIntersect(llround((F32)mMousePt.mX), llround((F32)mMousePt.mY), 1024.f,
 										   objectp, -1, mPickTransparent, mPickRigged,
- 										   &mObjectFace,
- 										   &mIntersection,
- 										   &mSTCoords,
- 										   &mNormal,
- 										   &mBinormal))
+										   &mObjectFace,
+										   &intersection,
+										   &mSTCoords,
+										   &normal,
+										   &tangent))
 // [/SL:KB]
 		{
 			// if we succeeded with the intersect above, compute the texture coordinates:
