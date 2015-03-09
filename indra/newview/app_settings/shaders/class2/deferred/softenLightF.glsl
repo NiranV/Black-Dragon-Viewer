@@ -42,23 +42,22 @@ uniform sampler2D	  lightFunc;
 uniform float blur_size;
 uniform float blur_fidelity;
 
+vec2 ref2d;
+vec3 refcol;
 vec3 best_refn;
+vec3 best_refcol;
+vec3 reflight;
 float best_refshad;
 float best_refapprop;
-vec3 best_refcol;
 float total_refapprop;
 float rnd;
-vec3 reflight;
 float bloomdamp;
-
 float rnd2;
 float gnfrac;
 float rd;
 float rdpow2;
 float refdist;
-vec2 ref2d;
 float refdepth;
-vec3 refcol;
 
 uniform int ssr_res = 10;
 
@@ -84,11 +83,6 @@ uniform float scene_light_strength;
 uniform mat3 env_mat;
 uniform vec4 shadow_clip;
 uniform float ssao_effect;
-
-float shadamount;
-float shaftify;
-uniform int godray_res;
-uniform float godray_multiplier;
 
 uniform vec3 sun_dir;
 VARYING vec2 vary_fragcoord;
@@ -221,71 +215,6 @@ void setAtmosAttenuation(vec3 v)
 	vary_AtmosAttenuation = v;
 }
 
-// Inputs
-uniform mat4 shadow_matrix[6];
-
-uniform sampler2DShadow shadowMap0;
-uniform sampler2DShadow shadowMap1;
-uniform sampler2DShadow shadowMap2;
-uniform sampler2DShadow shadowMap3;
-uniform sampler2DShadow shadowMap4;
-uniform sampler2DShadow shadowMap5;
-
-uniform vec2 shadow_res;
-
-uniform float shadow_bias;
-
-float nonpcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen)
-{
-  vec2 recip_shadow_res = 1.0 / shadow_res.xy;
-  stc.xyz /= stc.w;
-  stc.z += shadow_bias;
-  
-  stc.x = floor(stc.x*shadow_res.x + fract(pos_screen.y*0.666666666)) * recip_shadow_res.x;
-  return shadow2D(shadowMap, stc.xyz).x;
-}
-
-float nonpcfShadowAtPos(vec4 pos_world)
-{
-  vec2 pos_screen = vary_fragcoord.xy;
-  vec4 pos = pos_world;
-  if (pos.z > -shadow_clip.w) {	
-    vec4 near_split = shadow_clip*-0.75;
-    vec4 far_split = shadow_clip*-1.25;
-    
-    if (pos.z < near_split.z) {
-      pos = shadow_matrix[3]*pos;
-      return nonpcfShadow(shadowMap3, pos, pos.zw);
-    }
-    else if (pos.z < near_split.y) {
-      pos = shadow_matrix[2]*pos;
-      return nonpcfShadow(shadowMap2, pos, pos.zw);
-    }
-    else if (pos.z < near_split.x) {
-      pos = shadow_matrix[1]*pos;
-      return nonpcfShadow(shadowMap1, pos, pos.zw);
-    }
-    else if (pos.z > far_split.x) {
-      pos = shadow_matrix[0]*pos;
-      return nonpcfShadow(shadowMap0, pos, pos.zw);
-    }
-  }
-
-  return 1.0;
-}
-
-vec3 shadOffsetdp(vec3 norm, float dp_directional_light)
-{
-  vec3 samshad_offset = norm * (1.0 - dp_directional_light);
-  return samshad_offset * 0.2;
-}
-
-vec3 shadOffset(vec3 norm)
-{
-  float dp_directional_light = max(0.0, dot(norm, sun_dir.xyz));
-  return shadOffsetdp(norm, dp_directional_light);
-}
-
 float rand(vec2 co)
 {
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -369,33 +298,6 @@ void calcAtmospherics(vec3 inPositionEye, float ambFactor) {
 	setSunlitColor(vec3(sunlight * .5));
 	setAmblitColor(vec3(tmpAmbient * .25));
 	setAdditiveColor(getAdditiveColor() * vec3(1.0 - temp1));
-    
-    #if GOD_RAYS
-        // craptacular rays
-        shadamount = 0.0;
-        float last_shadsample = 0.0;
-        shaftify = 0.0;
-        float roffset = rand(vary_fragcoord.xy + vec2(1));
-        vec3 farpos = inPositionEye;
-        const float maxzdist = 512.0;
-        farpos *= min(-farpos.z, maxzdist) / -farpos.z;
-        
-        vec4 spos = vec4(mix(vec3(0,0,0), farpos, (godray_res-roffset)/(godray_res)), 1.0);
-        last_shadsample = shadamount = nonpcfShadowAtPos(spos);
-    
-        for (int i=godray_res-1; i>0; --i) {
-          vec4 spos = vec4(mix(vec3(0,0,0), farpos, (i-roffset)/(godray_res)), 1.0);
-          float this_shadsample = nonpcfShadowAtPos(spos);
-          float this_shaftify = abs(this_shadsample);
-          //last_shadsample = this_shadsample;
-          shadamount = mix(shadamount, this_shadsample, (1.0+1.0*haze_density)/godray_res);
-          shaftify += this_shaftify * haze_density;
-        }
-        
-        shadamount /= 32;
-        shaftify /= godray_res-1;
-        setAdditiveColor(getAdditiveColor() * (max(shadamount,1.0)) + 0.0 * haze_weight.a * (shadamount) * shaftify * getSunlitColor());
-    #endif
 }
 
 #ifdef WATER_FOG
@@ -746,10 +648,6 @@ void main()
 
 		col = srgb_to_linear(col);
 	}
-    
-    #if GOD_RAYS
-        col += ((shaftify * (godray_multiplier / 5)) * (getSunlitColor()) * shadamount);
-    #endif
 	
 	frag_color.rgb = col;
 	frag_color.a = bloom;
