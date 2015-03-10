@@ -133,50 +133,48 @@ vec4 getPosition_d(vec2 pos_screen, float depth)
 void main() 
 {
 	vec2 tc = vary_fragcoord.xy;
-	//float depth = texture2DRect(normalMap, tc).a;
-	float depth = texture2DRect(depthMap, tc).r;
-	vec3 pos = getPosition_d(tc, depth).xyz;
-	vec4 diff = texture2DRect(diffuseRect, vary_fragcoord.xy);
-	
-	vec4 haze_weight;
-	vec4 temp1 = blue_density + vec4(haze_density);
-	haze_weight = vec4(haze_density) / temp1;
-	
-	// craptacular rays
-	shadamount = 0.0;
-	last_shadsample = 0.0;
-	shaftify = 0.0;
-	float roffset = rand(vary_fragcoord.xy + vec2(seconds60));
-	vec3 farpos = pos;
-	const float maxzdist = 128.0;
-	farpos *= min(-farpos.z, maxzdist) / -farpos.z;
-	
-	vec4 spos = vec4(mix(vec3(0,0,0), farpos, (godray_res-roffset)/(godray_res)), 1.0);
-	last_shadsample = shadamount = nonpcfShadowAtPos(spos);
-
-	for (int i=godray_res-1; i>0; --i) {
-	  vec4 spos = vec4(mix(vec3(0,0,0), farpos, (i-roffset)/(godray_res)), 1.0);
-	  float this_shadsample = 0.5 * nonpcfShadowAtPos(spos);
-	  float this_shaftify = 0.125 * (abs(this_shadsample + last_shadsample));
-	  last_shadsample = this_shadsample;
-	  shadamount += this_shadsample;
-	  shaftify += this_shaftify;
-	}
-	shadamount /= godray_res;
-	shaftify /= godray_res-1;
+	vec4 diff = texture2DRect(diffuseRect, tc.xy);
 	
 	if(sun_dir.x > -0.95 && sun_dir.x < 0.95
     && sun_dir.y > -0.65 && sun_dir.y < 0.65
     && sun_dir.z < 0.5)
-    {
-      vec2 position = ( gl_FragCoord.xy / screen_res.xy * 2.0 ) - 1.0;
-      position.x *= screen_res.x / screen_res.y;
-	  float fade;
-	  if(abs(sun_dir.x) > 0.25 || abs(sun_dir.y) > 0.00)
-	   fade = vec3(1) - clamp(abs((sun_dir.x * sun_dir.x * 1) + (sun_dir.y * sun_dir.y * 4.5)), 0.0 , 1.0);
-	  diff += ((((shaftify * godray_multiplier) * haze_weight.a) * (0.5) * shadamount) * fade * (sunlight_color / 2));
-    }
-	//float depth2 = texture2DRect(normalMap, tc).r;
-	//frag_color.r = depth2;
+	{
+	   //float depth = texture2DRect(normalMap, tc).a;
+	   float depth = texture2DRect(depthMap, tc).r;
+	   vec3 pos = getPosition_d(tc, depth).xyz;
+	   
+	   vec4 haze_weight;
+	   vec4 temp1 = blue_density + vec4(haze_density);
+	   haze_weight = vec4(haze_density) / temp1;
+	   
+	   // craptacular rays
+	   shadamount = 0.0;
+	   last_shadsample = 0.0;
+	   shaftify = 0.0;
+	   float roffset = rand(vary_fragcoord.xy + vec2(seconds60));
+	   vec3 farpos = pos;
+	   const float maxzdist = 128.0;
+	   farpos *= min(-farpos.z, maxzdist) / -farpos.z;
+	   
+	   vec4 spos = vec4(mix(vec3(0,0,0), farpos, (godray_res-roffset)/(godray_res)), 1.0);
+	   last_shadsample = shadamount = nonpcfShadowAtPos(spos);
+   
+	   for (int i=godray_res-1; i>0; --i)
+	   {
+		 vec4 spos = vec4(mix(vec3(0,0,0), farpos, (i-roffset)/(godray_res)), 1.0);
+		 float this_shadsample = 0.5 * nonpcfShadowAtPos(spos);
+		 float this_shaftify = 0.125 * (abs(this_shadsample + last_shadsample));
+		 last_shadsample = this_shadsample;
+		 shadamount += this_shadsample;
+		 shaftify += this_shaftify;
+	   }
+	   shadamount /= godray_res;
+	   shaftify /= godray_res-1;
+	   
+	   float fade = 1.0;
+	   if(abs(sun_dir.x) > 0.25 || abs(sun_dir.y) > 0.00)
+		fade = vec3(1) - clamp(abs((sun_dir.x * sun_dir.x * 1) + (sun_dir.y * sun_dir.y * 4.5)), 0.0 , 1.0);
+	   diff += ((((shaftify * godray_multiplier) * haze_weight.a) * (0.5) * shadamount) * fade * (sunlight_color / 2));
+	}
 	frag_color = diff;
 }
