@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="2095"
+  height="2125"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -397,6 +397,23 @@ width="510">
  name="VideoMemory"
  top_pad="5"
  width="325" />
+ <button
+ follows="left|top"
+ control_name="TextureMemory"
+ height="15"
+ is_toggle="false"
+ label_color="White"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
  <slider
  control_name="SystemMemory"
  decimal_digits="0"
@@ -414,6 +431,23 @@ width="510">
  name="SystemMemory"
  top_pad="1"
  width="325" />
+ <button
+ follows="left|top"
+ control_name="SystemMemory"
+ height="15"
+ is_toggle="false"
+ label_color="White"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
  
  <panel
  follows="left|top|right"
@@ -1676,6 +1710,64 @@ width="510">
  value="2" />
  </combo_box>
  <check_box
+   control_name="RenderObjectBump"
+   height="16"
+   initial_value="true"
+   label="Render Advanced Materials"
+   tool_tip="Toggles Bumpmapping and shiny surfaces which reflect lights of the environment"
+   layout="topleft"
+   left="10"
+   name="BumpShiny"
+   top_pad="3"
+   width="115" />
+   <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="BumpStrength"
+ top_pad="4"
+ width="120">
+ Normalmap Scale:
+ </text>
+ <combo_box
+ control_name="RenderNormalMapScale"
+ height="20"
+ follows="left|top"
+ layout="topleft"
+ left="140"
+ tool_tip="Controls the strength and resolution ration when generating Normal Maps on Bumpmaps (needs turning on/off any higher graphic relevant option)"
+ top_delta="-2"
+ name="BumpStrengthSelection"
+ width="100">
+ <combo_box.item
+ label="Very Fine"
+ name="0"
+ value="512"/>
+ <combo_box.item
+ label="Finer"
+ name="1"
+ value="256"/>
+ <combo_box.item
+ label="Fine"
+ name="2"
+ value="128"/>
+ <combo_box.item
+ label="Normal*"
+ name="3"
+ value="64"/>
+ <combo_box.item
+ label="Rough"
+ name="4"
+ value="32"/>
+ <combo_box.item
+ label="Rougher"
+ name="5"
+ value="16"/>
+ </combo_box>
+ <check_box
    control_name="RenderLocalLights"
    height="16"
    initial_value="true"
@@ -1722,73 +1814,15 @@ width="510">
  name="2"
  value="2"/>
  </combo_box>
- <check_box
-   control_name="RenderObjectBump"
-   height="16"
-   initial_value="true"
-   label="Render Advanced Materials"
-   tool_tip="Toggles Bumpmapping and shiny surfaces which reflect lights of the environment"
-   layout="topleft"
-   left="270"
-   name="BumpShiny"
-   top_delta="-17"
-   width="115" />
-   <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="270"
- name="BumpStrength"
- top_pad="4"
- width="120">
- Normalmap Strength:
- </text>
- <combo_box
- control_name="RenderNormalMapScale"
- height="20"
- follows="left|top"
- layout="topleft"
- left="390"
- tool_tip="Controls the strength and resolution ration when generating Normal Maps on Bumpmaps (needs turning on/off any higher graphic relevant option)"
- top_delta="-2"
- name="BumpStrengthSelection"
- width="100">
- <combo_box.item
- label="Very Fine"
- name="0"
- value="512"/>
- <combo_box.item
- label="Finer"
- name="1"
- value="256"/>
- <combo_box.item
- label="Fine"
- name="2"
- value="128"/>
- <combo_box.item
- label="Normal*"
- name="3"
- value="64"/>
- <combo_box.item
- label="Rough"
- name="4"
- value="32"/>
- <combo_box.item
- label="Rougher"
- name="5"
- value="16"/>
- </combo_box>
  <text
  type="string"
  length="1"
  follows="left|top"
  height="12"
  layout="topleft"
- left="10"
+ left="270"
  name="ShadowAmount"
- top_pad="4"
+ top_pad="-17"
  width="120">
  Softening Style:
  </text>
@@ -1798,7 +1832,7 @@ width="510">
  height="20"
  follows="left|top"
  layout="topleft"
- left="140"
+ left="390"
  top_pad="-15" 
  name="ShadowStyle"
  tool_tip="Toggle between Tofu's new Shadow softening algorythm or the old original one"
