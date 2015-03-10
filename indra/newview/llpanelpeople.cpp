@@ -782,6 +782,14 @@ void LLPanelPeople::updateFriendList()
 	mAllFriendList->setDirty(true, !mAllFriendList->filterHasMatches());
 	//update trash and other buttons according to a selected item
 	updateButtons();
+
+	//BD - Make sure we sort the list again after it is done loading incase it got mixed up.
+	ESortOrder order;
+	if(gSavedSettings.getU32("FriendsSortOrder"))
+		order = E_SORT_BY_STATUS;
+	else
+		order = E_SORT_BY_NAME;
+	setSortOrder(mAllFriendList, order);
 	//updateSuggestedFriendList();
 	//showFriendsAccordionsIfNeeded();
 }
