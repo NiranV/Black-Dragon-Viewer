@@ -388,7 +388,7 @@ width="510">
  height="15"
  increment="8"
  initial_value="128"
- label="Video Memory (MB):"
+ label="Scene Memory (MB):"
  label_width="150"
  layout="topleft"
  left="10"
@@ -396,6 +396,23 @@ width="510">
  min_val="32"
  name="VideoMemory"
  top_pad="5"
+ width="325" />
+ <slider
+ control_name="SystemMemory"
+ decimal_digits="0"
+ can_edit_text="true"
+ follows="left|top"
+ height="15"
+ increment="8"
+ initial_value="128"
+ label="Texture Memory (MB):"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1024"
+ min_val="32"
+ name="SystemMemory"
+ top_pad="1"
  width="325" />
  
  <panel
