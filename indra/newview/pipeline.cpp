@@ -180,8 +180,6 @@ F32 LLPipeline::CameraFocusTransitionTime;
 F32 LLPipeline::CameraFNumber;
 F32 LLPipeline::CameraFocalLength;
 F32 LLPipeline::CameraFieldOfView;
-F32 LLPipeline::CameraUnderWaterDistortion;
-F32 LLPipeline::CameraOverWaterDistortion;
 F32 LLPipeline::RenderShadowNoise;
 F32 LLPipeline::RenderShadowBlurSize;
 F32 LLPipeline::RenderSSAOScale;
@@ -647,8 +645,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("CameraFNumber");
 	connectRefreshCachedSettingsSafe("CameraFocalLength");
 	connectRefreshCachedSettingsSafe("CameraFieldOfView");
-	connectRefreshCachedSettingsSafe("CameraOverWaterDistortion");
-	connectRefreshCachedSettingsSafe("CameraUnderWaterDistortion");
 	connectRefreshCachedSettingsSafe("RenderLensFlare");
 	connectRefreshCachedSettingsSafe("RenderPostGreyscaleStrength");
 	connectRefreshCachedSettingsSafe("RenderPostSepiaStrength");
@@ -1214,8 +1210,6 @@ void LLPipeline::refreshCachedSettings()
 	CameraFNumber = gSavedSettings.getF32("CameraFNumber");
 	CameraFocalLength = gSavedSettings.getF32("CameraFocalLength");
 	CameraFieldOfView = gSavedSettings.getF32("CameraFieldOfView");
-	CameraOverWaterDistortion = gSavedSettings.getF32("CameraOverWaterDistortion");
-	CameraUnderWaterDistortion = gSavedSettings.getF32("CameraUnderWaterDistortion");
 	RenderShadowNoise = gSavedSettings.getF32("RenderShadowNoise");
 	RenderShadowBlurSize = gSavedSettings.getF32("RenderShadowBlurSize");
 	RenderSSAOScale = gSavedSettings.getF32("RenderSSAOScale");
@@ -7924,15 +7918,6 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 						focus_point = face->getPositionAgent();
 					}
 				}
-			}
-
-			if(LLViewerCamera::getInstance()->cameraUnderWater())
-			{
-				gSavedSettings.setF32("CameraFieldOfView", CameraUnderWaterDistortion);
-			}
-			else
-			{
-				gSavedSettings.setF32("CameraFieldOfView", CameraOverWaterDistortion);
 			}
 
 			if(gSavedSettings.getBOOL("CameraDoFLocked"))

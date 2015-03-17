@@ -1022,14 +1022,14 @@ width="345">
                   Depth of Field:
                   </text>
                   <slider
-                  control_name="CameraOverWaterDistortion"
+                  control_name="CameraFieldOfView"
                   enabled_control="RenderDepthOfField"
                   can_edit_text="true"
                   decimal_digits="0"
                   follows="left|top"
                   height="15"
                   increment="1"
-                  initial_value="62"
+                  initial_value="67"
                   label="Field of View(°):"
                   label_width="110"
                   layout="topleft"

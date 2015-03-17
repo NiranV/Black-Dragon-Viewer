@@ -1986,7 +1986,7 @@ width="510">
      top_delta="4"
      width="115" />
      <slider
-      control_name="CameraOverWaterDistortion"
+      control_name="CameraFieldOfView"
       enabled_control="RenderDepthOfField"
       can_edit_text="true"
       decimal_digits="0"
@@ -2006,7 +2006,7 @@ width="510">
       width="318" />
      <button
  follows="left|top"
- control_name="CameraOverWaterDistortion"
+ control_name="CameraFieldOfView"
  height="15"
  is_toggle="false"
  label="⌊default⌉"

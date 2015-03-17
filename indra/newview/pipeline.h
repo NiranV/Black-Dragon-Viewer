@@ -922,8 +922,6 @@ public:
 	static F32 CameraFNumber;
 	static F32 CameraFocalLength;
 	static F32 CameraFieldOfView;
-	static F32 CameraOverWaterDistortion;
-	static F32 CameraUnderWaterDistortion;
 	static F32 RenderShadowNoise;
 	static F32 RenderShadowBlurSize;
 	static F32 RenderSSAOScale;
