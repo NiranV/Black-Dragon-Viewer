@@ -16416,6 +16416,17 @@
       <key>Value</key>
       <real>2.0</real>
   </map>
+  <key>RenderGodraysDirectional</key>
+  <map>
+    <key>Comment</key>
+    <string>Fade out volumetric lighting if we don't face the sun.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>RenderLensFlare</key>
   <map>
     <key>Comment</key>
