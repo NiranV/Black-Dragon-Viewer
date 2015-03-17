@@ -615,19 +615,6 @@ static bool handleRenderAttachedParticlesChanged(const LLSD& newvalue)
 	return true;
 }
 
-//BD - Glow and Field of View changes
-static bool handleCameraAngleChanged(const LLSD&)
-{
-	gSavedSettings.setF32("CameraAngle" , gSavedSettings.getF32("PrevFoV"));
-	return true;
-}
-
-static bool handleGlowChanged(const LLSD&)
-{
-	gSavedSettings.setF32("RenderGlowStrength" , gSavedSettings.getF32("PrevGlow"));
-	return true;
-}
-
 //BD - Always-on Mouse-steering
 static bool handleMouseSteeringChanged(const LLSD&)
 {
@@ -650,50 +637,6 @@ bool handleKeyboardLayoutChanged(const LLSD& newvalue)
 	return true;
 }
 
-/*
-//BD - Machinima Sidebar
-static bool handleSidebarAsOverlayChanged(const LLSD&)
-{
-	if(gSavedSettings.getBOOL("MachinimaSidebarOverlay"))
-	{
-		gSavedSettings.setBOOL("MachinimaSidebarOverlay", false);
-		gSavedSettings.setBOOL("MachinimaSidebarPush", true);
-	}
-	else if(gSavedSettings.getBOOL("MachinimaSidebarPush"))
-	{
-		gSavedSettings.setBOOL("MachinimaSidebarPush", false);
-		gSavedSettings.setBOOL("MachinimaSidebarOverlay", true);
-	}
-	//BD - Slide out quick sound controls , otherwise it may overlap with the sidebar
-	gSavedSettings.setBOOL("QuickSoundMediaPrefs", false);
-	return true;
-}
-
-//BD - New designed preferences panel
-static bool handlePreferencesPanelChanged(const LLSD&)
-{
-	//BD - Since we got a whole new DoF preset which will cause
-	//the FPS to drop to zero we need to cirumvent that, setting
-	//RenderResolutionDivisor to 6 should be good enough to get
-	//a halfway good blur effect in background.
-
-	//BD - Only blur background if user wants to.
-	if(gSavedSettings.getBOOL("BlurBackgroundPrefs"))
-	{
-		if(gSavedSettings.getBOOL("PreferencesPanelOpen"))
-			gSavedSettings.setU32("RenderResolutionDivisor" , 6);
-		else
-			gSavedSettings.setU32("RenderResolutionDivisor" , 1);
-	}
-	else
-		gSavedSettings.setU32("RenderResolutionDivisor" , 1);
-
-	if(gSavedSettings.getBOOL("PreferencesPanelOpen"))
-		gPrefsPanel->onOpen();
-
-	return true;
-}*/
-
 //BD - Give UseEnvironmentFromRegion a purpose and make it able to
 //     switch between Region/Fixed Windlight from everywhere via UI
 static bool handleUseRegioLight(const LLSD& newvalue)
@@ -707,13 +650,6 @@ static bool handleUseRegioLight(const LLSD& newvalue)
 		envmgr.setUseRegionSettings(false);
 	return true;
 }
-
-//BD
-/*static bool handleAutohideTopbar(const LLSD& newvalue)
-{
-	gTopBar->onAutohideChange();
-	return true;
-}*/
 
 static bool handleTerrainScaleChanged(const LLSD& inputvalue)
 {
@@ -894,12 +830,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("LoginLocation")->getSignal()->connect(boost::bind(&handleLoginLocationChanged));
 
 //	//BD - Special Debugs and handles
-	gSavedSettings.getControl("PrevGlow")->getSignal()->connect(boost::bind(&handleGlowChanged, _2));
-	gSavedSettings.getControl("PrevFoV")->getSignal()->connect(boost::bind(&handleCameraAngleChanged, _2));
-	//gSavedSettings.getControl("AutohideTopbar")->getSignal()->connect(boost::bind(&handleAutohideTopbar, _2));
 	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
-	//gSavedSettings.getControl("UseMachinimaSidebarAsOverlay")->getSignal()->connect(boost::bind(&handleSidebarAsOverlayChanged, _2));
-	//gSavedSettings.getControl("PreferencesPanelOpen")->getSignal()->connect(boost::bind(&handlePreferencesPanelChanged, _2));
 	gSavedSettings.getControl("ShooterKeyLayout")->getSignal()->connect(boost::bind(&handleKeyboardLayoutChanged, _2));
 	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
 	gSavedSettings.getControl("RenderTerrainScale")->getSignal()->connect(boost::bind(&handleTerrainScaleChanged, _2));

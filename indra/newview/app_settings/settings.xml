@@ -15804,19 +15804,6 @@
     <real>120</real>
   </map>
   
-  <!-- Machinima Sidebar Debugs-->
-  <key>MachinimaSidebarPush</key>
-  <map>
-    <key>Comment</key>
-    <string>Open the pushing version of the Sidebar</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  
   <!-- Pie Menus -->
   <key>PieMenuOpacity</key>
   <map>
@@ -15996,30 +15983,7 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
-  
-  <key>PrevGlow</key>
-  <map>
-	<key>Comment</key>
-	<string>test</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>F32</string>
-	<key>Value</key>
-	<real>0.210</real>
-  </map>
-  <key>PrevFoV</key>
-  <map>
-	<key>Comment</key>
-	<string>test</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>F32</string>
-	<key>Value</key>
-	<real>1.10</real>
-  </map>
-  
+
   <key>RenderPostPosterizationSamples</key>
   <map>
     <key>Comment</key>
