@@ -293,7 +293,8 @@ static bool handleMaxPartCountChanged(const LLSD& newvalue)
 
 static bool handleVideoMemoryChanged(const LLSD& newvalue)
 {
-	gTextureList.updateMaxResidentTexMem(S32Megabytes(newvalue.asInteger()));
+	if(!gSavedSettings.getBOOL("CustomSystemMemory"))
+		gTextureList.updateMaxResidentTexMem(S32Megabytes(newvalue.asInteger()));
 	return true;
 }
 
@@ -843,6 +844,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderNormalMapScale")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
 	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
 	gSavedSettings.getControl("RenderShadowType")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
 //	//BD
 }
 
