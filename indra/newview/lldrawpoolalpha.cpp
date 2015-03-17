@@ -77,7 +77,8 @@ S32 LLDrawPoolAlpha::getNumPostDeferredPasses()
 	{ //skip depth buffer filling pass when rendering impostors
 		return 1;
 	}
-	else if (gSavedSettings.getBOOL("RenderDepthOfField"))
+	else if (gSavedSettings.getBOOL("RenderDepthOfField")
+			&& gSavedSettings.getBOOL("RenderDepthOfFieldAlphas"))
 	{
 		return 2; 
 	}

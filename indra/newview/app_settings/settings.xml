@@ -16097,6 +16097,17 @@
     <key>Value</key>
     <real>120.0</real>
   </map>
+  <key>RenderDepthOfFieldAlphas</key>
+  <map>
+    <key>Comment</key>
+    <string>Use pass 2 in alpha rendering when depth of field is enabled.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>RenderEnableFullbright</key>
   <map>
     <key>Comment</key>
