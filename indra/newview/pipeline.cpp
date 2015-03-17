@@ -8212,6 +8212,45 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 			}
 		}
 
+		if (LLPipeline::sRenderDeferred && LLPipeline::RenderShadowDetail
+			&& LLPipeline::RenderGodrays)
+		{ //volumetric light
+
+			if (multisample)
+			{
+				mDeferredLight.bindTarget();
+			}
+
+			LLGLSLShader* shader = &gVolumetricLightProgram;
+
+			bindDeferredShader(*shader);
+
+			S32 channel = shader->enableTexture(LLShaderMgr::DEFERRED_DIFFUSE, mScreen.getUsage());
+			if (channel > -1)
+			{
+				mScreen.bindTexture(0, channel);
+			}
+
+			gGL.begin(LLRender::TRIANGLE_STRIP);
+			gGL.texCoord2f(tc1.mV[0], tc1.mV[1]);
+			gGL.vertex2f(-1,-1);
+		
+			gGL.texCoord2f(tc1.mV[0], tc2.mV[1]);
+			gGL.vertex2f(-1,3);
+		
+			gGL.texCoord2f(tc2.mV[0], tc1.mV[1]);
+			gGL.vertex2f(3,-1);
+		
+			gGL.end();
+
+			unbindDeferredShader(*shader);
+
+			if (multisample)
+			{
+				mDeferredLight.flush();
+			}
+		}
+
 		if (multisample)
 		{
 			//bake out texture2D with RGBL for FXAA shader
@@ -8382,36 +8421,6 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 		gGL.flush();
 
 		gMotionBlurProgram.unbind();
-			
-	}
-
-	if (LLPipeline::sRenderDeferred && LLPipeline::RenderShadowDetail
-		&& LLPipeline::RenderGodrays)
-	{ //volumetric light
-
-		LLGLSLShader* shader = &gVolumetricLightProgram;
-
-		bindDeferredShader(*shader);
-
-		S32 channel = shader->enableTexture(LLShaderMgr::DEFERRED_DIFFUSE, mScreen.getUsage());
-		if (channel > -1)
-		{
-			mScreen.bindTexture(0, channel);
-		}
-
-		gGL.begin(LLRender::TRIANGLE_STRIP);
-		gGL.texCoord2f(tc1.mV[0], tc1.mV[1]);
-		gGL.vertex2f(-1,-1);
-		
-		gGL.texCoord2f(tc1.mV[0], tc2.mV[1]);
-		gGL.vertex2f(-1,3);
-		
-		gGL.texCoord2f(tc2.mV[0], tc1.mV[1]);
-		gGL.vertex2f(3,-1);
-		
-		gGL.end();
-
-		unbindDeferredShader(*shader);
 			
 	}
 

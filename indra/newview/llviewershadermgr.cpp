@@ -1930,6 +1930,16 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 	}
 
 	if (success)
+ 	{
+		gVolumetricLightProgram.mName = "Volumetric Light Shader";
+		gVolumetricLightProgram.mShaderFiles.clear();
+		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER_ARB));
+		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/volumetricLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gVolumetricLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+		success = gVolumetricLightProgram.createShader(NULL, NULL);
+	}
+
+	if (success)
 	{
 		gFXAAProgram.mName = "FXAA Shader";
 		gFXAAProgram.mShaderFiles.clear();
@@ -2046,16 +2056,6 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gMotionBlurProgram.mShaderFiles.push_back(make_pair("deferred/motionBlurF.glsl", GL_FRAGMENT_SHADER_ARB));
 		gMotionBlurProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 		success = gMotionBlurProgram.createShader(NULL, NULL);
-	}
-
-	if (success)
- 	{
-		gVolumetricLightProgram.mName = "Volumetric Light Shader";
-		gVolumetricLightProgram.mShaderFiles.clear();
-		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER_ARB));
-		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/volumetricLightF.glsl", GL_FRAGMENT_SHADER_ARB));
-		gVolumetricLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
-		success = gVolumetricLightProgram.createShader(NULL, NULL);
 	}
 
 	if (success)
