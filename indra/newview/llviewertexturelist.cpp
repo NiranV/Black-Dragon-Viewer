@@ -1339,6 +1339,14 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 
 	if(gSavedSettings.getBOOL("CustomSystemMemory"))
 	{
+		if (cur_mem == (S32Bytes)0)
+		{
+			//BD - Give us a default memory value in case we set it to 0.
+			//     Take 1/2 of the system memory as scene memory.
+			custom_sys_mem = default_mem;
+			cur_mem = custom_sys_mem / 2;
+		}
+
 		mMaxResidentTexMemInMegaBytes = cur_mem;
 		mMaxTotalTextureMemInMegaBytes = custom_sys_mem;
 	}
@@ -1353,13 +1361,13 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 			mem = default_mem;
 		}
 
+		//	//BD - Allowing higher video card memory usage
 		//mem = llclamp(mem, getMinVideoRamSetting(), getMaxVideoRamSetting(false, mem_multiplier));
 		if (mem != cur_mem)
 		{
 			gSavedSettings.setS32("TextureMemory", mem.value());
 			return; //listener will re-enter this function
 		}
-	//	//BD - Allowing higher video card memory usage
 
 		// TODO: set available resident texture mem based on use by other subsystems
 		// currently max(12MB, VRAM/4) assumed...
