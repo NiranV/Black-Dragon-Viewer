@@ -69,7 +69,6 @@ width="1024">
                left="0"
                top="23"
                width="1024"
-               auto_resize="false"
                visible="true">
                   <view
                   mouse_opaque="false"
