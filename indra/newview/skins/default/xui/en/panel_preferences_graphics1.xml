@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="2125"
+  height="2185"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -2034,6 +2034,18 @@ width="510">
      name="UseDoF"
      top_delta="4"
      width="115" />
+ <check_box
+   control_name="RenderDepthOfFieldAlphas"
+   enabled_control="RenderDepthOfField"
+   height="16"
+   initial_value="true"
+   label="Enable Alphas in Depth of Field calculations"
+   layout="topleft"
+   left="10"
+   tool_tip="Toggle if the Viewer should include alphas and particles into the depth map (can cause some erratic behavior with Depth of Field blurring on Alphas and Volumetric Lighting on Alphas). If disabled this will cause Depth of Field and Volumetric Lighting to ignore Alphas entirely and they will change their lighting back to as if Depth of Field is disabled."
+   name="RenderDepthOfFieldAlphas"
+   top_pad="12"
+   width="115"/>
      <slider
       control_name="CameraFieldOfView"
       enabled_control="RenderDepthOfField"
@@ -2051,7 +2063,7 @@ width="510">
       min_val="0"
       name="CameraFOV"
       tool_tip="Vertical camera field of view for Depth of Field effect (in degrees)"
-      top_pad="10"
+      top_pad="1"
       width="318" />
      <button
  follows="left|top"
