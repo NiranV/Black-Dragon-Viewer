@@ -380,22 +380,69 @@ width="510">
  name="2"
  value="3"/>
  </combo_box>
+ <check_box
+   control_name="CustomSystemMemory"
+   height="16"
+   initial_value="true"
+   label="Custom Memory"
+   layout="topleft"
+   left="10"
+   tool_tip="Toggle if the Viewer should use the default Texture Memory calculation or if you should be able to set Scene and System memory invidually."
+   name="CustomSystemMemory"
+   top_pad="3"
+   width="115"/>
  <slider
- control_name="TextureMemory"
+ control_name="SystemMemory"
+ visibility_control="CustomSystemMemory"
  decimal_digits="0"
  can_edit_text="true"
  follows="left|top"
  height="15"
  increment="8"
  initial_value="128"
- label="Scene Memory (MB):"
+ label="Texture Memory (MB):"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1024"
+ min_val="32"
+ name="SystemMemory"
+ top_pad="5"
+ width="325" />
+ <button
+ follows="left|top"
+ control_name="SystemMemory"
+ height="15"
+ is_toggle="false"
+ label_color="White"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+ <slider
+ control_name="TextureMemory"
+ invisibility_control="CustomSystemMemory"
+ decimal_digits="0"
+ can_edit_text="true"
+ follows="left|top"
+ height="15"
+ increment="8"
+ initial_value="128"
+ label="Texture Memory (MB):"
  label_width="150"
  layout="topleft"
  left="10"
  max_val="1024"
  min_val="32"
  name="VideoMemory"
- top_pad="5"
+ top_delta="0"
  width="325" />
  <button
  follows="left|top"
@@ -415,25 +462,27 @@ width="510">
                                  function="Pref.Default"/>
       </button>
  <slider
- control_name="SystemMemory"
+ control_name="TextureMemory"
+ enabled_control="CustomSystemMemory"
  decimal_digits="0"
  can_edit_text="true"
  follows="left|top"
  height="15"
  increment="8"
  initial_value="128"
- label="Texture Memory (MB):"
+ label="Scene Memory (MB):"
  label_width="150"
  layout="topleft"
  left="10"
  max_val="1024"
  min_val="32"
- name="SystemMemory"
+ name="VideoMemory2"
  top_pad="1"
  width="325" />
  <button
  follows="left|top"
- control_name="SystemMemory"
+ control_name="TextureMemory"
+ enabled_control="CustomSystemMemory"
  height="15"
  is_toggle="false"
  label_color="White"
@@ -2523,7 +2572,7 @@ width="510">
    layout="topleft"
    left_delta="5"
    tool_tip="Toggle if Volumtric Lighting should fade out the further you look away from the Sun. Mimics original Godrays behavior a bit."
-   name="AvatarVertexProgram"
+   name="RenderGodraysDirectional"
    top_pad="12"
    width="115"/>
 
