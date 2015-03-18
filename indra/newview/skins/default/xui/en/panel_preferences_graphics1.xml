@@ -2515,6 +2515,17 @@ width="510">
    name="RenderGodrays"
    top_delta="4"
    width="115" />
+   <check_box
+   control_name="RenderGodraysDirectional"
+   height="16"
+   initial_value="true"
+   label="Directional Volumetric Lighting"
+   layout="topleft"
+   left_delta="5"
+   tool_tip="Toggle if Volumtric Lighting should fade out the further you look away from the Sun. Mimics original Godrays behavior a bit."
+   name="AvatarVertexProgram"
+   top_pad="12"
+   width="115"/>
 
    <slider
       can_edit_text="true"
@@ -2532,7 +2543,7 @@ width="510">
       max_val="256"
       min_val="16"
       name="GodraysResolution"
-      top_pad="10"
+      top_pad="1"
       width="318"/>
    <button
  follows="left|top"
