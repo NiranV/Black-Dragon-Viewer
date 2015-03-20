@@ -15938,6 +15938,19 @@
 	<string>c1f334fb-a5be-8fe7-22b3-29631c21cf0b</string>
   </map>
   
+  <!-- Machinima Sidebar Debugs-->
+  <key>MachinimaSidebar</key>
+  <map>
+    <key>Comment</key>
+    <string>Debug option to open the Machinima Sidebar</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  
   <!-- Inventory Filters -->
   <key>InventorySortObjectsByName</key>
   <map>

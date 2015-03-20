@@ -257,7 +257,7 @@ visible="true">
 				tab_stop="false" 
 				name="machinima2_layout_panel"
 				width="345"
-				visibility_control="MachinimaSidebarPush">
+				visibility_control="MachinimaSidebar">
 					<panel
 					top="0"
 					follows="top|right|bottom"

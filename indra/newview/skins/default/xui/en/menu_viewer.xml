@@ -3836,10 +3836,10 @@
              name="Machinima Sidebar">
 		   <menu_item_check.on_check
              function="CheckControl"
-             parameter="MachinimaSidebarPush" />
+             parameter="MachinimaSidebar" />
         	<menu_item_check.on_click
 		  function="ToggleControl"
-		  parameter="MachinimaSidebarPush"/>
+		  parameter="MachinimaSidebar"/>
 	    </menu_item_check>
             <menu_item_call
              label="Stop Animating Me"
