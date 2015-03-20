@@ -1203,6 +1203,7 @@ void LLShaderMgr::initAttribsAndUniforms()
 
 	mReservedUniforms.push_back("godray_res");
 	mReservedUniforms.push_back("godray_multiplier");
+	mReservedUniforms.push_back("falloff_multiplier");
 
 	mReservedUniforms.push_back("ssr_res");
 	

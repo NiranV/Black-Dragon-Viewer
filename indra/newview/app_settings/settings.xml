@@ -16360,6 +16360,17 @@
       <key>Value</key>
       <real>2.0</real>
   </map>
+  <key>RenderGodraysFalloffMultiplier</key>
+  <map>
+      <key>Comment</key>
+      <string>Test</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>24.0</real>
+  </map>
   <key>RenderGodraysDirectional</key>
   <map>
     <key>Comment</key>

@@ -43,6 +43,7 @@ VARYING vec2 vary_fragcoord;
 
 uniform int godray_res;
 uniform float godray_multiplier;
+uniform float falloff_multiplier;
 uniform vec3 sun_dir;
 
 uniform vec4 shadow_clip;
@@ -149,8 +150,8 @@ void main()
     for (int i=godray_res-1; i>0; --i)
     {
       vec4 spos = vec4(mix(vec3(0,0,0), farpos, (i-roffset)/(godray_res)), 1.0);
-      float this_shadsample = 0.334 * nonpcfShadowAtPos(spos);
-      float this_shaftify = 0.125 * (abs(this_shadsample + last_shadsample));
+      float this_shadsample = 0.275 * nonpcfShadowAtPos(spos);
+      float this_shaftify = 0.15 * (abs(this_shadsample + last_shadsample));
       last_shadsample = this_shadsample;
       shadamount += this_shadsample;
       shaftify += this_shaftify;
@@ -167,7 +168,16 @@ void main()
     }
 #endif
     
+    farpos = pos * (min(-pos.z, godray_res / 8) / -pos.z);
+    if(falloff_multiplier > 8)
+        fade *= abs(farpos.z / falloff_multiplier);
     shaftify *= (godray_multiplier * fade);
     diff += ((shaftify * haze_weight.a) * shadamount) * sunlight_color;
+    
+#if HAS_NO_DOF
+    vec4 bloom = texture2D(bloomMap, tc/screen_res);
+    diff.rgb += bloom.rgb;
+#endif
+
     frag_color = diff;
 }

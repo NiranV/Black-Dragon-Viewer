@@ -958,6 +958,7 @@ public:
 	static BOOL RenderGodrays;
 	static U32 RenderGodraysResolution;
 	static F32 RenderGodraysMultiplier;
+	static F32 RenderGodraysFalloffMultiplier;
 	static U32 RenderSSRResolution;
 };
 

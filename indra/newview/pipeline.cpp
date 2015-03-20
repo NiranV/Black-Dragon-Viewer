@@ -216,6 +216,7 @@ U32 LLPipeline::RenderMotionBlurStrength;
 BOOL LLPipeline::RenderGodrays;
 U32 LLPipeline::RenderGodraysResolution;
 F32 LLPipeline::RenderGodraysMultiplier;
+F32 LLPipeline::RenderGodraysFalloffMultiplier;
 U32 LLPipeline::RenderSSRResolution;
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
@@ -686,6 +687,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderGodrays");
 	connectRefreshCachedSettingsSafe("RenderGodraysResolution");
 	connectRefreshCachedSettingsSafe("RenderGodraysMultiplier");
+	connectRefreshCachedSettingsSafe("RenderGodraysFalloffMultiplier");
 	connectRefreshCachedSettingsSafe("RenderSSRResolution");
 	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
 	connectRefreshCachedSettingsSafe("ExodusRenderOffset");
@@ -1246,6 +1248,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");
 	RenderGodraysResolution = gSavedSettings.getU32("RenderGodraysResolution");
 	RenderGodraysMultiplier = gSavedSettings.getF32("RenderGodraysMultiplier");
+	RenderGodraysFalloffMultiplier = gSavedSettings.getF32("RenderGodraysFalloffMultiplier");
 	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
 
 	// <exodus>
@@ -8200,7 +8203,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 		if (LLPipeline::sRenderDeferred && LLPipeline::RenderShadowDetail
 			&& LLPipeline::RenderGodrays)
 		{ //volumetric light
-
+			
 			if (multisample)
 			{
 				mDeferredLight.bindTarget();
@@ -8666,6 +8669,7 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 
 	shader.uniform1i(LLShaderMgr::GODRAY_RES, RenderGodraysResolution);
 	shader.uniform1f(LLShaderMgr::GODRAY_MULTIPLIER, RenderGodraysMultiplier);
+	shader.uniform1f(LLShaderMgr::FALLOFF_MULTIPLIER, RenderGodraysFalloffMultiplier);
 
 	shader.uniform1i(LLShaderMgr::SSR_RES, RenderSSRResolution);
 
