@@ -9653,9 +9653,9 @@
       <string>Vector3</string>
       <key>Value</key>
       <array>
-        <real>0.6</real>
-        <real>0.2</real>
-        <real>0.2</real>
+        <real>0.4</real>
+        <real>0.3</real>
+        <real>0.3</real>
       </array>
     </map>
     <key>RenderGlowMaxExtractAlpha</key>
@@ -9700,7 +9700,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.24</real>
+      <real>0.23</real>
     </map>
     <key>RenderGlowWarmthAmount</key>
     <map>
