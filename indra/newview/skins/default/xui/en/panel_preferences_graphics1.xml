@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="2185"
+  height="2200"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -2643,6 +2643,40 @@ width="510">
    <button
  follows="left|top"
  control_name="RenderGodraysMultiplier"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <slider
+      can_edit_text="true"
+      control_name="RenderGodraysFalloffMultiplier"
+      enabled_control="RenderGodrays"
+      decimal_digits="1"
+      follows="left|top"
+      height="15"
+      increment="0.1"
+      initial_value="8"
+      label="Light Falloff:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="48"
+      min_val="8"
+      name="GodraysFalloffMultiplier"
+      top_pad="1"
+      width="321"/>
+   <button
+ follows="left|top"
+ control_name="RenderGodraysFalloffMultiplier"
  height="15"
  is_toggle="false"
  label="⌊default⌉"

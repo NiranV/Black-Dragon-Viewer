@@ -1295,6 +1295,25 @@ width="345">
                   name="GodrayMultiplier"
                   top_pad="1"
                   width="296" />
+                  <slider
+                  control_name="RenderGodraysFalloffMultiplier"
+                  enabled_control="RenderDeferred"
+                  decimal_digits="1"
+                  follows="left|top"
+                  height="15"
+                  increment="0.1"
+                  initial_value="8"
+                  can_edit_text="true"
+                  label="Light Falloff:"
+                  label_width="110"
+                  tool_tip="Set the strength of the brightness falloff over distance"
+                  layout="topleft"
+                  left="20"
+                  max_val="48"
+                  min_val="8"
+                  name="GodrayFalloffMultiplier"
+                  top_pad="1"
+                  width="290" />
                   <text
                   font="SansSerif"
                   font.style="BOLD"
