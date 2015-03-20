@@ -48,7 +48,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1150"
+            height="1200"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -608,6 +608,45 @@ width="345">
                   name="shaders"
                   top_pad="0"
                   width="10">
+                  ┃
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_pad="7"
+                  name="shaders"
+                  top_delta="0"
+                  width="10">
+                  ┗
+                  </text>
+                  <check_box
+                  control_name="RenderDepthOfFieldAlphas"
+                  height="16"
+                  initial_value="true"
+                  label="Include Alphas into Depth"
+                  tool_tip="Toggle if the Viewer should include alphas and particles into the depth map (can cause some erratic behavior with Depth of Field blurring on Alphas and Volumetric Lighting on Alphas). If disabled this will cause Depth of Field and Volumetric Lighting to ignore Alphas entirely and they will change their lighting back to as if Depth of Field is disabled."
+                  layout="topleft"
+                  left_pad="0"
+                  name="RenderDepthOfFieldAlphas"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_delta="-27"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
                   ┣
                   </text>
                   <check_box
@@ -753,6 +792,45 @@ width="345">
                   text_color="BeaconColor"
                   layout="topleft"
                   left_delta="-10"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┃
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_pad="7"
+                  name="shaders"
+                  top_delta="0"
+                  width="10">
+                  ┗
+                  </text>
+                  <check_box
+                  control_name="RenderGodraysDirectional"
+                  height="16"
+                  initial_value="false"
+                  label="Directional Volumetric Lighting"
+                  tool_tip="Toggle if Volumtric Lighting should fade out the further you look away from the Sun. Mimics original Godrays behavior a bit."
+                  layout="topleft"
+                  left_pad="0"
+                  name="RenderGodraysDirectional"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_delta="-27"
                   name="shaders"
                   top_pad="0"
                   width="10">
