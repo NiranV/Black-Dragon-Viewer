@@ -1359,7 +1359,7 @@ width="510">
                                  function="Pref.Default"/>
       </button>
       <slider  
-      control_name="PrevGlow"
+      control_name="RenderGlowStrength"
       enabled_control="RenderGlow"
       decimal_digits="3"
       follows="left|top"
@@ -1379,7 +1379,7 @@ width="510">
       width="327" />
       <button
  follows="left|top"
- control_name="PrevGlow"
+ control_name="RenderGlowStrength"
  height="15"
  is_toggle="false"
  label="⌊default⌉"

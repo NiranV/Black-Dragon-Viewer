@@ -1330,7 +1330,7 @@ width="345">
                   show_text="true"
                   width="276" />
                   <slider  
-                  control_name="PrevGlow"
+                  control_name="RenderGlowStrength"
                   visiblity_control="RenderGlow"
                   decimal_digits="3"
                   enabled="true"
