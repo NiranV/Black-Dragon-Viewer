@@ -564,6 +564,7 @@ void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
 {
 	ctrl->getControlVariable()->resetToDefault(true);
 	refreshGraphicControls();
+	//refreshWarning();
 }
 
 //BD - Input/Output resizer
@@ -656,6 +657,35 @@ void LLFloaterPreference::refreshCameraControls()
 	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetRightShoulderView").mV[VY]);
 	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetRightShoulderView").mV[VZ]);
 }
+
+/*void LLFloaterPreference::refreshWarnings()
+{
+	//BD - General Options
+	getChild<LLUICtrl>("warning_compress_textures")->setVisible(gSavedSettings.getBOOL("RenderCompressTextures"));
+	getChild<LLUICtrl>("warning_draw_distance")->setVisible(gSavedSettings.getF32("RenderFarClip") > 128);
+	getChild<LLUICtrl>("warning_particle_amount")->setVisible(gSavedSettings.getF32("") > 4096);
+	getChild<LLUICtrl>("warning_particle_amount")->setVisible(gSavedSettings.getF32("TextureMemory") > 768);
+	getChild<LLUICtrl>("warning_particle_amount")->setVisible(gSavedSettings.getF32("SceneMemory") > 512);
+
+	//BD - LOD Options
+
+	//BD - Performance Options
+	getChild<LLUICtrl>("warning_object_occlusion")->setVisible(gSavedSettings.getBOOL("RenderDeferred") 
+														&& gSavedSettings.getBOOL("UseObjectCacheOcclusion"));
+
+
+	//BD - Vertex Shader Options
+	getChild<LLUICtrl>("warning_reflection_res")->setVisible(gSavedSettings.getU32("RenderReflectionRes") > 512);
+
+	//BD - Deferred Rendering Options
+	getChild<LLUICtrl>("warning_missing_aa")->setVisible(!gSavedSettings.getBOOL("RenderFXAA"));
+	getChild<LLUICtrl>("warning_shadow_res")->setVisible(gSavedSettings.getVector3("RenderShadowResolution").mV[VX] > 2048 
+														|| gSavedSettings.getVector3("RenderShadowResolution").mV[VY] > 2048);
+	getChild<LLUICtrl>("warning_shadow_multiplier")->setVisible(gSavedSettings.getVector3("RenderShadowResolution").mV[VX] > 1.0f);
+
+	//BD - Depth of Field Options
+	getChild<LLUICtrl>("warning_reflection_res")->setVisible(gSavedSettings.getU32("RenderReflectionRes") > 512);
+}*/
 
 void LLFloaterPreference::draw()
 {
@@ -873,6 +903,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 
 	refreshGraphicControls();
 	refreshCameraControls();
+	//refreshWarnings();
 
 	// Make sure the current state of prefs are saved away when
 	// when the floater is opened.  That will make cancel do its
