@@ -195,12 +195,9 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 
 	loadLoginPage();
 			
-	// Show last logged in user favorites in "Start at" combo.
-	LLLineEditor* username_combo(getChild<LLLineEditor>("username_combo"));
 	addFavoritesToStartLocation();
 	// STEAM-14: When user presses Enter with this field in focus, initiate login
 	username_combo->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
-
 	getChild<LLButton>("connect_btn")->setFocus(true);
 
 }

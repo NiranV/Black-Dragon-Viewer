@@ -27,6 +27,7 @@
 
 #include "linden_common.h"
 #include "llurlregistry.h"
+#include "lluriparser.h"
 
 #include <boost/regex.hpp>
 
@@ -55,6 +56,10 @@ LLUrlRegistry::LLUrlRegistry()
 	registerUrl(new LLUrlEntryItalic());
 //	//BD
 	registerUrl(new LLUrlEntrySLURL());
+
+	// decorated links for host names like: secondlife.com and lindenlab.com
+	registerUrl(new LLUrlEntrySeconlifeURL());
+
 	registerUrl(new LLUrlEntryHTTP());
 	mUrlEntryHTTPLabel = new LLUrlEntryHTTPLabel();
 	registerUrl(mUrlEntryHTTPLabel);
@@ -224,6 +229,11 @@ bool LLUrlRegistry::findUrl(const std::string &text, LLUrlMatch &match, const LL
 	{
 		// fill in the LLUrlMatch object and return it
 		std::string url = text.substr(match_start, match_end - match_start + 1);
+
+		LLUriParser up(url);
+		up.normalize();
+		url = up.normalizedUri();
+
 		match.setValues(match_start, match_end,
 						match_entry->getUrl(url),
 						match_entry->getLabel(url, cb),
@@ -233,7 +243,8 @@ bool LLUrlRegistry::findUrl(const std::string &text, LLUrlMatch &match, const LL
 						match_entry->getMenuName(),
 						match_entry->getLocation(url),
 						match_entry->getID(url),
-						match_entry->underlineOnHoverOnly(url));
+						match_entry->underlineOnHoverOnly(url),
+						match_entry->isTrusted());
 		return true;
 	}
 
