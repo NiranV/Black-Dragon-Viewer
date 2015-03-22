@@ -2363,7 +2363,7 @@ Von einer Webseite zu diesem Formular linken, um anderen leichten Zugang zu dies
 		Betreff: [SUBJECT], Nachricht: [MESSAGE]
 	</notification>
 	<notification name="FriendOnlineOffline">
-		&lt;nolink&gt;[NAME]&lt;/nolink&gt; ist [STATUS]
+		[NAME] ist [STATUS]
 	</notification>
 	<notification name="AddSelfFriend">
 		Obwohl Sie ein sehr netter Mensch sind, können Sie sich nicht selbst als Freund hinzufügen.
