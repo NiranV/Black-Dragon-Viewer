@@ -925,7 +925,14 @@
  value="0.35 1 0.4 1"/>
  <color
  name="Blue_Chat"
- value="0.35 0.6 1 1"/> 
+ value="0.35 0.6 1 1"/>
+ 
+ <color
+ name="FriendChatColor"
+ value="0.45 0.76 1 1" />
+ <color
+ name="FriendHTMLLinkColor"
+ value="0.294082 0.936918 0.379459 1" />
 
  <!--Resize bar colors -->
 
