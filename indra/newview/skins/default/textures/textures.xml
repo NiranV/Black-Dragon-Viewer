@@ -744,6 +744,8 @@ with the same filename but different name
   <texture name="Inv_GexturesClosed" file_name="icons/Inv_GesturesClosed.png" preload="false" />
   <texture name="Inv_FavouritesClosed" file_name="icons/Inv_FavouritesClosed.png" preload="false" />
   
+  <texture name="icon_avatar_offline.tga" />
+  <texture name="icon_avatar_online.tga" />
   
   <!--WARNING OLD ART BELOW *do not use*-->
 
