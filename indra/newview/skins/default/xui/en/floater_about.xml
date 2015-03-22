@@ -40,6 +40,7 @@ width="470">
    font="SansSerif"
    height="355"
    bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
    left="5"
    max_length="65536"
    name="support_editor"
@@ -76,6 +77,7 @@ Second Life is brought to you by the Lindens:
    height="98"
    left="5"
    bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
    max_length="65536"
    name="linden_names"
    top_pad="10"
@@ -99,6 +101,7 @@ with open source contributions from:
    follows="top|left"
    height="98"
    bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
    left="5"
    max_length="65536"
    name="contrib_names"
@@ -123,6 +126,7 @@ and translations from:
    follows="top|left"
    height="98"
    bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
    left="5"
    max_length="65536"
    name="trans_names"
@@ -142,7 +146,7 @@ Dummy Name replaced at run time
    height="382"
    bg_readonly_color="Transparent"
    left="5"
-   text_color="LtGray"
+   text_readonly_color="LabelTextColor"
    max_length="65536"
    name="credits_editor"
    top="1"
@@ -190,6 +194,7 @@ Voice chat Audio coding: Polycom(R) Siren14(TM) (ITU-T Rec. G.722.1 Annex C)
    parse_urls="true"
    height="382"
    bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
    left="5"
    max_length="65536"
    name="credits_editor"
@@ -210,9 +215,6 @@ Aimee Arcana:
 
 Andromeda Rage:
  Derender
- 
-Ansariel Hiller
- *Unknown distance in Minimap
  
 Armin Weatherwax
  Misc. Fixes
@@ -236,22 +238,17 @@ Geenz Spad:
  Vignette Effect
 
 Kitty Barnett:
- *RLVa Support &amp; Updates
+ RLVa Support &amp; Updates
  
 L4n4:
  Donations
 
 Luna Jubilee:
- *Windlight Presets (from her blog)
+ Windlight Presets (from her blog)
 
 Marine Kelley:
  *Mouselook grabbing
- *Non-hiding UI in Mouselook
- *Right-click in Mouselook
- 
-MartinRJ Fayray:
- *STORM-1890 Fix
- *VWR-29094 Fix
+ Non-hiding UI in Mouselook
  
 Mechatoy Mekanic:
  Sponsoring
@@ -279,7 +276,6 @@ NiranV Dean:
  Switchable Keyboard Layouts
  Top Toolbar
  Teleport Warp Effects
- *Viewer 1 Style Volume Controls
  Windows Releases
  Whisper Range Ring in Minimap
  Script Editor Goto-line function revised
