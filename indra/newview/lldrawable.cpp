@@ -1145,7 +1145,14 @@ LLSpatialPartition* LLDrawable::getSpatialPartition()
 		retval = gPipeline.getSpatialPartition((LLViewerObject*) mVObjp);
 	}
 	else if (isRoot())
-	{	//must be an active volume
+	{
+		if (mSpatialBridge && (mSpatialBridge->asPartition()->mPartitionType == LLViewerRegion::PARTITION_HUD) != mVObjp->isHUDAttachment())
+		{
+			// remove obsolete bridge
+			mSpatialBridge->markDead();
+			setSpatialBridge(NULL);
+		}
+		//must be an active volume
 		if (!mSpatialBridge)
 		{
 			if (mVObjp->isHUDAttachment())

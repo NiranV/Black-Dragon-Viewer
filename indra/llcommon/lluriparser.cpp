@@ -118,6 +118,12 @@ void LLUriParser::fragment(const std::string& s)
 
 void LLUriParser::textRangeToString(UriTextRangeA& textRange, std::string& str)
 {
+	if(&textRange == NULL)
+	{
+		LL_WARNS() << "textRange is NULL for uri: " << mNormalizedUri << LL_ENDL;
+		return;
+	}
+
 	S32 len = textRange.afterLast - textRange.first;
 	if (len)
 	{
@@ -128,6 +134,12 @@ void LLUriParser::textRangeToString(UriTextRangeA& textRange, std::string& str)
 
 void LLUriParser::extractParts()
 {
+	if(&mUri == NULL)
+	{
+		LL_WARNS() << "mUri is NULL for uri: " << mNormalizedUri << LL_ENDL;
+		return;
+	}
+
 	if (mTmpScheme)
 	{
 		mScheme.clear();
@@ -175,9 +187,16 @@ S32 LLUriParser::normalize()
 				if (!mRes)
 				{
 					mNormalizedUri = &label_buf[mTmpScheme ? 7 : 0];
+					mTmpScheme = false;
 				}
 			}
 		}
+	}
+
+	if(mTmpScheme)
+	{
+		mNormalizedUri = mNormalizedUri.substr(7);
+		mTmpScheme = false;
 	}
 
 	return mRes;
@@ -185,18 +204,40 @@ S32 LLUriParser::normalize()
 
 void LLUriParser::glue(std::string& uri) const
 {
+	std::string first_part;
+	glueFirst(first_part);
+
+	std::string second_part;
+	glueSecond(second_part);
+
+	uri = first_part + second_part;
+}
+
+void LLUriParser::glueFirst(std::string& uri) const
+{
 	if (mScheme.size())
 	{
 		uri = mScheme;
 		uri += "://";
 	}
+	else
+	{
+		uri.clear();
+	}
 
 	uri += mHost;
+}
 
+void LLUriParser::glueSecond(std::string& uri) const
+{
 	if (mPort.size())
 	{
-		uri += ':';
+		uri = ':';
 		uri += mPort;
+	}
+	else
+	{
+		uri.clear();
 	}
 
 	uri += mPath;

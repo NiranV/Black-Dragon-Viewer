@@ -933,8 +933,8 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			if (gSavedSettings.getBOOL("RenderDepthPrePass") && LLGLSLShader::sNoFixedFunction)
 			{
 				gGL.setColorMask(false, false);
-				
-				U32 types[] = { 
+
+				static const U32 types[] = { 
 					LLRenderPass::PASS_SIMPLE, 
 					LLRenderPass::PASS_FULLBRIGHT, 
 					LLRenderPass::PASS_SHINY 
@@ -1345,6 +1345,14 @@ void swap()
 		gViewerWindow->getWindow()->swapBuffers();
 	}
 	gDisplaySwapBuffers = TRUE;
+}
+
+void restoreGLContext()
+{
+	if(gViewerWindow && gViewerWindow->getWindow()) 
+	{
+		gViewerWindow->getWindow()->restoreGLContext();
+	}
 }
 
 void renderCoordinateAxes()

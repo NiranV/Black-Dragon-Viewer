@@ -63,6 +63,7 @@
 #include "llviewerregion.h"
 #include "llviewerstats.h"
 #include "llviewertexture.h"
+#include "llviewerwindow.h"
 #include "llworldmap.h"
 #include "llworldmapmessage.h"
 #include "llworldmapview.h"
@@ -949,7 +950,7 @@ void LLFloaterWorldMap::buildAvatarIDList()
 	end = collector.mMappable.end();
 	for( ; it != end; ++it)
 	{
-		list->addSimpleElement((*it).first, ADD_BOTTOM, (*it).second);
+		list->addSimpleElement((*it).second, ADD_BOTTOM, (*it).first);
 	}
 	
 	list->setCurrentByID( LLAvatarTracker::instance().getAvatarID() );
@@ -1692,4 +1693,11 @@ void LLFloaterWorldMap::onChangeMaturity()
 	{
 		gSavedSettings.setBOOL("ShowAdultEvents", FALSE);
 	}
+}
+
+void LLFloaterWorldMap::onFocusLost()
+{
+	gViewerWindow->showCursor();
+	LLWorldMapView* map_panel = (LLWorldMapView*)gFloaterWorldMap->mPanel;
+	map_panel->mPanning = FALSE;
 }
