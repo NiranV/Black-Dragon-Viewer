@@ -369,7 +369,7 @@ public:
 
 // [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
 	void			pickAsync(S32 x, S32 y_from_bot, MASK mask, void (*callback)(const LLPickInfo& pick_info), BOOL pick_transparent = FALSE, BOOL pick_rigged = FALSE, BOOL pick_unselectable = FALSE);
-	LLPickInfo		pickImmediate(S32 x, S32 y, BOOL pick_transparent, BOOL pick_rigged, BOOL pick_particle = FALSE, );
+	LLPickInfo		pickImmediate(S32 x, S32 y, BOOL pick_transparent, BOOL pick_rigged, BOOL pick_particle = FALSE );
 // [/SL:KB]
 //	void			pickAsync(S32 x, S32 y_from_bot, MASK mask, void (*callback)(const LLPickInfo& pick_info), BOOL pick_transparent = FALSE, BOOL pick_unselectable = FALSE);
 //	LLPickInfo		pickImmediate(S32 x, S32 y, BOOL pick_transparent, BOOL pick_particle = FALSE);
