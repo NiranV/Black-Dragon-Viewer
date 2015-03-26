@@ -120,7 +120,7 @@
   label_ref="Command_Machinima_Label"
   tooltip_ref="Command_Machinima_Tooltip"
   execute_function="ToggleControl"
-  execute_parameters="MachinimaSidebarPush"/>
+  execute_parameters="MachinimaSidebar"/>
   <command
   name="map"
   available_in_toybox="true"
