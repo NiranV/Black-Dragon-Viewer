@@ -53,7 +53,7 @@
  </text>
    <slider
    can_edit_text="true"
-   control_name="PrevFoV"
+   control_name="CameraAngle"
    decimal_digits="4"
    follows="left|top"
    height="15"
