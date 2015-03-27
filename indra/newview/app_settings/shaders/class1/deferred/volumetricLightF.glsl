@@ -38,6 +38,7 @@ uniform sampler2D bloomMap;
 
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
+uniform float res_scale;
 
 VARYING vec2 vary_fragcoord;
 
@@ -129,7 +130,7 @@ vec4 getPosition_d(vec2 pos_screen, float depth)
 void main() 
 {
     vec2 tc = vary_fragcoord.xy;
-    vec4 diff = texture2DRect(diffuseRect, tc);
+    vec4 diff = texture2DRect(diffuseRect, tc*res_scale);
     
     float depth = texture2DRect(depthMap, tc).r;
     vec3 pos = getPosition_d(tc, depth).xyz;
@@ -166,7 +167,7 @@ void main()
 	{
         fade = vec3(1) - clamp(abs((sun_dir.x * sun_dir.x * 1) + (sun_dir.y * sun_dir.y * 4.5)), 0.0 , 1.0);
     }
-#endif
+#endif 
     
     farpos = pos * (min(-pos.z, godray_res / 8) / -pos.z);
     if(falloff_multiplier > 8)
