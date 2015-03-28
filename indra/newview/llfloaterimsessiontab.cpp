@@ -274,7 +274,7 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	mInputEditor->setMouseUpCallback(boost::bind(&LLFloaterIMSessionTab::onInputEditorClicked, this));
 	mInputEditor->setCommitOnFocusLost( FALSE );
 	mInputEditor->setPassDelete(TRUE);
-	mInputEditor->enableSingleLineMode(true);
+	mInputEditor->enableSingleLineMode((bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 
 	mChatLayoutPanelHeight = mChatLayoutPanel->getRect().getHeight();
 	mInputEditorPad = mChatLayoutPanelHeight - mInputEditor->getRect().getHeight();
@@ -871,6 +871,7 @@ void LLFloaterIMSessionTab::onCollapseToLine(LLFloaterIMSessionTab* self)
 		self->mExpandCollapseLineBtn->setImageOverlay(self->getString(expand ? "collapseline_icon" : "expandline_icon"));
 		self->mContentPanel->setVisible(!expand);
 		self->mToolbarPanel->setVisible(!expand);
+		self->mInputEditor->enableSingleLineMode(expand || (bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 		self->reshapeFloater(expand);
 		self->setMessagePaneExpanded(!expand);
 	}
@@ -916,7 +917,7 @@ void LLFloaterIMSessionTab::restoreFloater()
 		mExpandCollapseLineBtn->setImageOverlay(getString("expandline_icon"));
 		setMessagePaneExpanded(true);
 		saveCollapsedState();
-		mInputEditor->enableSingleLineMode(true);
+		mInputEditor->enableSingleLineMode((bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 		enableResizeCtrls(true, true, true);
 	}
 }

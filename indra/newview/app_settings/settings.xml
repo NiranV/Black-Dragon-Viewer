@@ -15775,6 +15775,17 @@
 		
   <!-- Black Dragon Debugs -->
   
+  <key>ForceChatSingleLineMode</key>
+  <map>
+    <key>Comment</key>
+    <string>Force Chat editors into single line mode, disabling their auto expanding feature.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>SystemMemory</key>
     <map>
     <key>Comment</key>

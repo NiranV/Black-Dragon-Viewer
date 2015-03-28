@@ -354,7 +354,7 @@
             <layout_panel
              top_delta="0"
              top="0"
-             height="25"
+             height="26"
              auto_resize="false"
              name="chat_layout_panel">
                 <layout_stack
@@ -375,7 +375,7 @@
                      top="0"
                      bottom="-1">
                      <icon
-                  follows="top|left|right"
+                  follows="all"
                   height="25"
                   name="bg"
                   mouse_opaque="false"
@@ -385,10 +385,11 @@
                   width="376" />
                         <chat_editor
                          layout="topleft"
-                         follows="top|left|right"
+                         follows="bottom|left|right"
                          font="SansSerifBig"
                          height="22"
-                         is_expandable="false"
+						 expand_lines_count="5"
+                         is_expandable="true"
                          text_tentative_color="0.4 0.4 0.4 1"
                          cursor_color="TextCursorColor"
                          text_color="Black"
@@ -398,7 +399,7 @@
                          tab_group="3"
                          v_pad="2"
                          line_spacing.pixels="-1" 
-                         top_delta="1"
+                         top_delta="-1"
                          left_delta="2"
                          width="372"
                          wrap="true" />
@@ -417,7 +418,7 @@
                          top="0"
                          height="25"
                          width="31"
-                         follows="left|top"
+                         follows="left|top|bottom"
                          image_hover_unselected="Toolbar_Middle_Over"
                          image_overlay="Conv_expand_one_line"
                          image_selected="Toolbar_Middle_Selected"
