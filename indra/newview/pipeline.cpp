@@ -7886,7 +7886,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 	{
 
 		bool dof_enabled = (RenderDepthOfFieldInEditMode || 
-							!LLToolMgr::getInstance()->inBuildMode()) &&
+							!LLFloaterReg::getInstance("build")->getVisible()) &&
 							RenderDepthOfField;
 
 
