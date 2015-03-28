@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="645"
+  height="655"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -213,13 +213,24 @@ width="510">
  name="play_chat_animation"
  top_pad="0"
  width="400" />
+ <check_box
+ control_name="ForceChatSingleLineMode"
+ height="16"
+ initial_value="true"
+ label="Disable multi-line chat editor"
+ tool_tip="Force chat editors in IM and Local chat into single line mode."
+ layout="topleft"
+ left_delta="0"
+ name="ForceChatSingleLineMode"
+ top_pad="0"
+ width="256" />
      <check_box
         control_name="PlaySoundNewConversation"
         height="16"
         label="Play 'New Conversation' Sound"
         layout="topleft"
         left="270"
-        top_delta="-64"
+        top_delta="-80"
         name="new_conversation"
         width="150" />
     <check_box
@@ -255,7 +266,7 @@ width="510">
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="25"
+ top_pad="39"
  width="515"/>
  <text
  type="string"
@@ -285,7 +296,7 @@ width="510">
  label="Show script errors in:" 
  layout="topleft" 
  left="10"
- top_pad="2"
+ top_pad="0"
  name="show_script_errors" 
  width="250" />
  <radio_group 
@@ -353,7 +364,7 @@ width="510">
  max_val="120"
  min_val="0"
  name="ChatStartFromBottomPixels"
- top="282"
+ top="295"
  width="200" />
  <spinner
  control_name="NearbyToastLifeTime"
@@ -397,7 +408,7 @@ width="510">
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="53"
+ top_pad="47"
  width="515"/>
  <text
  type="string"
