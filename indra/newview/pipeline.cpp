@@ -7885,8 +7885,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 	if (LLPipeline::sRenderDeferred)
 	{
 
-		bool dof_enabled = (!LLViewerCamera::getInstance()->cameraUnderWater()) &&
-							(RenderDepthOfFieldInEditMode || 
+		bool dof_enabled = (RenderDepthOfFieldInEditMode || 
 							!LLToolMgr::getInstance()->inBuildMode()) &&
 							RenderDepthOfField;
 
