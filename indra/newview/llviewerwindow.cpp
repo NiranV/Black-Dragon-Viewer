@@ -2909,9 +2909,9 @@ void LLViewerWindow::updateUI()
 	// animate layout stacks so we have up to date rect for world view
 	LLLayoutStack::updateClass();
 
+	//BD - Always use full window for rendering the world view
 	// use full window for world view when not rendering UI
-	bool world_view_uses_full_window = gAgentCamera.cameraMouselook() || !gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI);
-	updateWorldViewRect(world_view_uses_full_window);
+	updateWorldViewRect(true);
 
 	LLView::sMouseHandlerMessage.clear();
 
@@ -3470,7 +3470,7 @@ void LLViewerWindow::updateWorldViewRect(bool use_full_window)
 
 	// start off using whole window to render world
 	LLRect new_world_rect = mWindowRectRaw;
-
+	/*
 	if (use_full_window == false && mWorldViewPlaceholder.get())
 	{
 		new_world_rect = mWorldViewPlaceholder.get()->calcScreenRect();
@@ -3483,6 +3483,7 @@ void LLViewerWindow::updateWorldViewRect(bool use_full_window)
 		new_world_rect.mBottom = llround((F32)new_world_rect.mBottom * mDisplayScale.mV[VY]);
 		new_world_rect.mTop = llround((F32)new_world_rect.mTop * mDisplayScale.mV[VY]);
 	}
+	*/
 
 	if (mWorldViewRectRaw != new_world_rect)
 	{
@@ -4457,8 +4458,9 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 		LLPipeline::sShowHUDAttachments = FALSE;
 	}
 
+	//BD - Always use full window to render world view.
 	// if not showing ui, use full window to render world view
-	updateWorldViewRect(!show_ui);
+	updateWorldViewRect(true);
 
 	// Copy screen to a buffer
 	// crop sides or top and bottom, if taking a snapshot of different aspect ratio
