@@ -169,10 +169,9 @@ void main()
     }
 #endif 
     
-    farpos = pos * (min(-pos.z, godray_res / 8) / -pos.z);
-    if(falloff_multiplier > 8)
-        fade *= abs(farpos.z / falloff_multiplier);
-    shaftify *= (godray_multiplier * fade);
+    farpos = pos * (min(-pos.z, godray_res) / -pos.z);
+    fade *= max(abs(falloff_multiplier / farpos.z), 1.0);
+    shaftify = (shaftify / fade) * godray_multiplier;
     diff += ((shaftify * haze_weight.a) * shadamount) * sunlight_color;
     
 #if HAS_NO_DOF
