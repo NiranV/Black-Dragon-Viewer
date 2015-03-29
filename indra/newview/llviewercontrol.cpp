@@ -293,8 +293,7 @@ static bool handleMaxPartCountChanged(const LLSD& newvalue)
 
 static bool handleVideoMemoryChanged(const LLSD& newvalue)
 {
-	if(!gSavedSettings.getBOOL("CustomSystemMemory"))
-		gTextureList.updateMaxResidentTexMem(S32Megabytes(newvalue.asInteger()));
+	gTextureList.updateMaxResidentTexMem(S32Megabytes(newvalue.asInteger()));
 	return true;
 }
 
