@@ -58,6 +58,39 @@ typedef enum
 		
 	} EGraphicsSettings;
 
+class LLPanelVoiceDeviceSettings : public LLPanel
+{
+public:
+	LLPanelVoiceDeviceSettings();
+	~LLPanelVoiceDeviceSettings();
+
+	/*virtual*/ void draw();
+	/*virtual*/ BOOL postBuild();
+	void apply();
+	void cancel();
+	void refresh();
+	void initialize();
+	void cleanup();
+
+	/*virtual*/ void onVisibilityChange ( BOOL new_visibility );
+
+	void setUseTuningMode(bool use) { mUseTuningMode = use; };
+	
+protected:
+	std::string getLocalizedDeviceName(const std::string& en_dev_name);
+
+	void onCommitInputDevice();
+	void onCommitOutputDevice();
+
+	F32 mMicVolume;
+	std::string mInputDevice;
+	std::string mOutputDevice;
+	class LLComboBox		*mCtrlInputDevices;
+	class LLComboBox		*mCtrlOutputDevices;
+	BOOL mDevicesUpdated;
+	bool mUseTuningMode;
+	std::map<std::string, std::string> mLocalizedDeviceNames;
+};
 
 // Floater to control preferences (display, audio, bandwidth, general.
 class LLFloaterPreference : public LLFloater, public LLAvatarPropertiesObserver, public LLConversationLogObserver
