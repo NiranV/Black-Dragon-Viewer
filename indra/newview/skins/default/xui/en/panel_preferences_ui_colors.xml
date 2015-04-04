@@ -22,7 +22,7 @@ width="510">
       <panel
       layout="topleft"
       follows="left|top|right"
-      height="634"
+      height="669"
       name="ui_colors_panel"
       top="0"
       left="0"
@@ -568,6 +568,35 @@ highlights
 	 top_delta="6"
 	 width="95">
 	 Direct
+	 </text>
+	 <color_swatch
+	 can_apply_immediately="true"
+	 follows="left|top"
+	 height="47"
+	 layout="topleft"
+	 left="20"
+	 name="friend"
+	 top_pad="17"
+	 width="44" >
+	 <color_swatch.init_callback
+	 function="Pref.getUIColor"
+	 parameter="FriendChatColor" />
+	 <color_swatch.commit_callback
+	 function="Pref.applyUIColor"
+	 parameter="FriendChatColor" />
+	 </color_swatch>
+	 <text
+	 type="string"
+	 length="1"
+	 follows="left|top"
+	 height="10"
+	 layout="topleft"
+	 left_pad="5"
+	 mouse_opaque="false"
+	 name="text_box30"
+	 top_delta="5"
+	 width="95">
+	 Friends
 	 </text>
 	 
 	 <panel
