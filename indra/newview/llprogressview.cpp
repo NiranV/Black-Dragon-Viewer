@@ -254,7 +254,7 @@ void LLProgressView::draw()
 
 void LLProgressView::setPercent(const F32 percent)
 {
-	S32 percent_label = percent;
+	S32 percent_label = std::min(100.f, percent);
 	mProgressBar->setValue(percent);
 	mPercentText->setValue(percent_label);
 }
