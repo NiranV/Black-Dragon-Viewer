@@ -695,9 +695,9 @@ void LLPanelLogin::onClickConnect(void *)
 		// JC - Make sure the fields all get committed.
 		sInstance->setFocus(FALSE);
 
-		//NV - Set final login location where we will start now here when pressing connect,
-		//we dont need to set it every time we change it. It gets saved into a debug and
-		//read and set when we press connect, so it will always save and work as intended.
+		// BD - Set final login location where we will start now here when pressing connect,
+		//      we dont need to set it every time we change it. It gets saved into a debug and
+		//      set when we press connect, so it will always save and work as intended.
 		LLSLURL slurl(gSavedSettings.getString("LoginLocation"));
 		LLStartUp::setStartSLURL(slurl);
 
