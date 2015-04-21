@@ -329,7 +329,7 @@ bool idle_startup()
 
 	// until this is encapsulated, this little hack for the
 	// auth/transform loop will do.
-	static F32 progress = 0.10f;
+	static F32 progress = 0.0f;
 
 	static std::string auth_desc;
 	static std::string auth_message;
@@ -2083,7 +2083,7 @@ bool idle_startup()
 		else
 		{
 			update_texture_fetch();
-			set_startup_status(0.60f + 0.30f * timeout_frac,
+			set_startup_status(0.60f + 0.10f * timeout_frac,
 				LLTrans::getString("LoginPrecaching"),
 					gAgent.mMOTD.c_str());
 			display_startup();
