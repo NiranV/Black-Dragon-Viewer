@@ -2501,24 +2501,6 @@ void LLViewerWindow::draw()
 				LLFontGL::HCENTER, LLFontGL::TOP);
 		}
 
-		// BD - Connection issues display.
-		if(LLStartUp::getStartupState() == STATE_STARTED)
-		{
-			if(gAgent.getRegion())
-			{
-				LLCircuitData *cdp = gMessageSystem->mCircuitInfo.findCircuit(gAgent.getRegionHost());
-				if(cdp->getPingDelay().value() >= 600.f )
-				{
-					mRootView->getChildView("connection_issues_panel")->setVisible(TRUE);
-				}
-				else
-				{
-					mRootView->getChildView("connection_issues_panel")->setVisible(FALSE);
-				}
-			}
-		}
-
-
 		LLUI::setScaleFactor(old_scale_factor);
 	}
 	LLUI::popMatrix();
