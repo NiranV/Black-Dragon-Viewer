@@ -21,6 +21,7 @@ width="510">
  name="title"
  top="0"
  width="515"/>
+ 
  <text
  name="show_ims_in_label"
  follows="left|top"
@@ -512,4 +513,6 @@ width="510">
  name="RotationSpeed"
  top_delta="-16"
  width="200" />
+ 
+ 
 </panel>
