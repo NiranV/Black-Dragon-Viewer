@@ -426,7 +426,8 @@ public:
 		}
 		else
 		{
-			LL_ERRS() << "Empty leaf" << LL_ENDL;
+			LL_WARNS() << "Empty leaf" << LL_ENDL;
+			return;
 		}
 
 		for (S32 i = 0; i < branch->getChildCount(); ++i)
