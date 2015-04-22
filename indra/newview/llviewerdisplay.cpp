@@ -399,7 +399,6 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		LL_RECORD_BLOCK_TIME(FTM_TELEPORT_DISPLAY);
 		LLAppViewer::instance()->pingMainloopTimeout("Display:Teleport");
 		static LLCachedControl<F32> teleport_arrival_delay(gSavedSettings, "TeleportArrivalDelay");
-		static LLCachedControl<F32> teleport_local_delay(gSavedSettings, "TeleportLocalDelay");
 
 		S32 attach_count = 0;
 		if (isAgentAvatarValid())
@@ -484,11 +483,8 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			// Short delay when teleporting in the same sim (progress screen active but not shown - did not
 			// fall-through from TELEPORT_START)
 			{
-				if( gTeleportDisplayTimer.getElapsedTimeF32() > teleport_local_delay() )
-				{
-					//LLFirstUse::useTeleport();
-					gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
-				}
+				//LLFirstUse::useTeleport();
+				gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
 			}
 			break;
 
