@@ -126,7 +126,7 @@
     <binding key="D" mask="ALT" command="spin_around_ccw"/>
     <binding key="W" mask="ALT" command="move_forward"/>
     <binding key="S" mask="ALT" command="move_backward"/>
-    <binding key="E" mask="ALT" command="spin_over"/>
+    <binding key="SPACE" mask="ALT" command="spin_over"/>
     <binding key="C" mask="ALT" command="spin_under"/>
 
     <binding key="PAD_LEFT" mask="ALT" command="spin_around_cw"/>
