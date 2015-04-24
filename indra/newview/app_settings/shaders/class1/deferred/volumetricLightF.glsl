@@ -168,7 +168,7 @@ void main()
     fade = 0.0;
     if(sun_dir.z < 0.3)
 	{
-        fade = vec3(1) - clamp(abs((sun_dir.x * sun_dir.x * 1) + (sun_dir.y * sun_dir.y * 4.5)), 0.0 , 1.0);
+        fade = 1 - clamp(abs((sun_dir.x * sun_dir.x * 1) + (sun_dir.y * sun_dir.y * 4.5)), 0.0 , 1.0);
     }
     shaftify *= fade;
 #endif 
