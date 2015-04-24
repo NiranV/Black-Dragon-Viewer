@@ -92,10 +92,8 @@ private:
 	static void onPassKey(LLLineEditor* caller, void* user_data);
 	static void updateServerCombo();
 
-	//NV - Convert them to non-static?
+	//BD
 	static void onClickQuit(void*);
-	static void onClickShooter(void*);
-	static void onClickClassic(void*);
 
 private:
 	LLPointer<LLUIImage> mLogoImage;

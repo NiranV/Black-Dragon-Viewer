@@ -680,7 +680,6 @@ void LLPanelLogin::loadLoginPage()
 // Protected methods
 //---------------------------------------------------------------------------
 
-//static
 void LLPanelLogin::onClickQuit(void *)
 {
 	LLAppViewer::instance()->userQuit();

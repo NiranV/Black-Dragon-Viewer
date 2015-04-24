@@ -63,7 +63,7 @@ PieMenu::PieMenu(const LLContextMenu::Params& p) :
 	// radius, so we need this *2
 	reshape(PIE_OUTER_SIZE*2,PIE_OUTER_SIZE*2,FALSE);
 	// set up the font for the menu
-	//NV - Always use small font
+	//BD - Always use small font
 	mFont=LLFontGL::getFont(LLFontDescriptor("SansSerif","Small",LLFontGL::NORMAL));
 	if(!mFont)
 	{

@@ -38,7 +38,7 @@
 #include "llwlparamset.h"
 #include "llwlparammanager.h"
 
-//NV
+//BD
 #include "llviewercontrol.h"
 
 LLFloaterEnvironmentSettings::LLFloaterEnvironmentSettings(const LLSD &key)
