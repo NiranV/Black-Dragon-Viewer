@@ -866,6 +866,7 @@ bool LLAppViewer::init()
 	settings_map["ignores"] = &gWarningSettings;
 	settings_map["floater"] = &gSavedSettings; // *TODO: New settings file
 	settings_map["account"] = &gSavedPerAccountSettings;
+	settings_map["controls"] = &gControlSettings;
 
 	LLUI::initClass(settings_map,
 		LLUIImageList::getInstance(),
@@ -1211,7 +1212,7 @@ bool LLAppViewer::init()
 	return true;
 }
 
-void LLAppViewer::loadKeyboardlayout()
+void LLAppViewer::loadKeyboardlayout(bool exportsettings)
 {
 	std::string key_bindings_file;
 	if (gSavedSettings.getBOOL("ShooterKeyLayout"))
@@ -1223,7 +1224,7 @@ void LLAppViewer::loadKeyboardlayout()
 		key_bindings_file = gDirUtilp->findFile("keys.xml",	gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
 	}
 
-	if (!gViewerKeyboard.loadBindingsXML(key_bindings_file))
+	if (!gViewerKeyboard.loadBindingsXML(key_bindings_file, exportsettings))
 	{
 		LL_ERRS("InitInfo") << "Unable to open keys.ini" << LL_ENDL;
 	}
@@ -2461,6 +2462,9 @@ bool LLAppViewer::initConfiguration()
 	// Note: can't use LL_PATH_PER_SL_ACCOUNT for any of these since we haven't logged in yet
 	gSavedSettings.setString("ClientSettingsFile", 
         gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, getSettingsFilename("Default", "Global")));
+
+	gSavedSettings.setString("ControlSettingsFile", 
+        gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, getSettingsFilename("User", "Controls")));
 
 #ifndef	LL_RELEASE_FOR_DOWNLOAD
 	// provide developer build only overrides for these control variables that are not
@@ -5473,8 +5477,7 @@ void LLAppViewer::disconnectViewer()
 	}
 	//
 	// Cleanup after quitting.
-	//	
-	// Save snapshot for next time, if we made it through initialization
+	//
 
 	LL_INFOS() << "Disconnecting viewer!" << LL_ENDL;
 

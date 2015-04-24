@@ -194,6 +194,10 @@ public:
 //	//BD - Revert to Default
 	void resetToDefault(LLUICtrl* ctrl);
 
+//	//BD - Custom Keyboard Layout
+	void onBindKey(LLUICtrl* ctrl, const LLSD& param);
+	void onExportControls();
+
 //	//BD - Revert to Default
 	void inputOutput();
 

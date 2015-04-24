@@ -71,6 +71,7 @@
 #include "llviewercontrol.h"
 #include "llviewercamera.h"
 #include "llviewerwindow.h"
+#include "llviewerkeyboard.h"
 #include "llviewermessage.h"
 #include "llviewershadermgr.h"
 #include "llviewerthrottle.h"
@@ -647,6 +648,8 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.AutoReplace",            boost::bind(&LLFloaterPreference::onClickAutoReplace, this));
 	mCommitCallbackRegistrar.add("Pref.PermsDefault",           boost::bind(&LLFloaterPreference::onClickPermsDefault, this));
 	mCommitCallbackRegistrar.add("Pref.SpellChecker",           boost::bind(&LLFloaterPreference::onClickSpellChecker, this));
+	mCommitCallbackRegistrar.add("Pref.BindKey",                boost::bind(&LLFloaterPreference::onBindKey, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ExportControls",         boost::bind(&LLFloaterPreference::onExportControls, this));
 
 //	//BD - Array Debugs
 	mCommitCallbackRegistrar.add("Pref.ArrayX",           boost::bind(&LLFloaterPreference::onCommitX, this,_1, _2));
@@ -862,6 +865,61 @@ void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
 	ctrl->getControlVariable()->resetToDefault(true);
 	refreshGraphicControls();
 	//refreshWarning();
+}
+
+//BD - Custom Keyboard Layout
+void LLFloaterPreference::onBindKey(LLUICtrl* ctrl, const LLSD& param)
+{
+	// MASK_CONTROL | MASK_SHIFT | MASK_NONE | MASK_ALT
+	MASK mask = gKeyboard->currentMask(FALSE);
+	KEY key = gKeyboard->currentKey();
+	S32 mode;
+	std::string function = ctrl->getName();
+	LLSD binds;
+
+	if(param == "1")
+		mode = 1;
+	else if(param == "2")
+		mode = 2;
+	else
+		mode = 0;
+
+	binds["key"] = gKeyboard->stringFromKey(key);
+	//binds["mask"] = mask;
+	binds["mode"] = mode;
+
+	if(mask == (MASK_NONE))
+		binds["mask"] = "NONE";
+	else if(mask == (MASK_CONTROL))
+		binds["mask"] = "CTL";
+	else if(mask == (MASK_ALT))
+		binds["mask"] = "ALT";
+	else if(mask == (MASK_SHIFT))
+		binds["mask"] = "SHIFT";
+	else if(mask == (MASK_ALT | MASK_CONTROL))
+		binds["mask"] = "CTL_ALT";
+	else if(mask == (MASK_SHIFT | MASK_ALT))
+		binds["mask"] = "ALT_SHIFT";
+	else if(mask == (MASK_SHIFT | MASK_CONTROL))
+		binds["mask"] = "CTL_SHIFT";
+	else if(mask == (MASK_SHIFT | MASK_CONTROL | MASK_ALT))
+		binds["mask"] = "CTL_ALT_SHIFT";
+
+	if(!gControlSettings.controlExists(ctrl->getName()))
+		gControlSettings.declareLLSD(ctrl->getName(), binds, ctrl->getToolTip());
+	gControlSettings.setLLSD(ctrl->getName(), binds);
+	gControlSettings.saveToFile(gSavedSettings.getString("ControlSettingsFile"), FALSE);
+	//BD - Add a systematic check to prevent binding one key twice or more.
+	gViewerKeyboard.bindKey(mode, key, mask, function);
+	//gViewerKeyboard.bindKey(mode, key, MASK_NONE, function);
+	LL_INFOS() << "Bound: " << key << " + " << mask << " to " << function << " in mode " << mode << LL_ENDL;
+	//LL_INFOS() << "Bound: " << key << " + " << MASK_NONE << " to " << function << " in mode " << mode << LL_ENDL;
+}
+
+void LLFloaterPreference::onExportControls()
+{
+	//BD - Do nothing yet.
+	LLAppViewer::loadKeyboardlayout(true);
 }
 
 //BD - Input/Output resizer

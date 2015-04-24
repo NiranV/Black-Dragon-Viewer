@@ -104,6 +104,12 @@
          label="Controls"
          layout="topleft"
          name="controls" />
+		<panel
+		 class="panel_preference"
+         filename="panel_preferences_keybinds.xml"
+         label="Keybindings"
+         layout="topleft"
+         name="keybinds" />
         <panel
 		 class="panel_preference"
          filename="panel_preferences_alerts.xml"
