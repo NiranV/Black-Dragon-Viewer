@@ -2267,14 +2267,9 @@ void LLViewerWindow::reshape(S32 width, S32 height)
 
 		if (!maximized)
 		{
-			// U32 min_window_width=gSavedSettings.getU32("MinWindowWidth");
-			// U32 min_window_height=gSavedSettings.getU32("MinWindowHeight");
-
-			//NV - Aww this is a horrible hack
-			width = width + 16;
-			height = height + 38;
-			gSavedSettings.setS32("WindowWidth", width);
-			gSavedSettings.setS32("WindowHeight", height);
+			//BD - Fudge Factor
+			gSavedSettings.setS32("WindowWidth", (width + 16));
+			gSavedSettings.setS32("WindowHeight", (height + 38));
 		}
 
 		sample(LLStatViewer::WINDOW_WIDTH, width);
@@ -4432,7 +4427,7 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 		LLPipeline::toggleRenderDebugFeature((void*)LLPipeline::RENDER_DEBUG_FEATURE_UI);
 	}
 
-	bool snapshot_open;
+	bool snapshot_open = false;
 	if(LLFloaterReg::getInstance("snapshot")->getVisible())
 	{
 		LLFloaterReg::findInstance("snapshot")->setVisible(false);
