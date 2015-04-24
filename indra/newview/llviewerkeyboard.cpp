@@ -946,6 +946,7 @@ S32 LLViewerKeyboard::loadBindingsSettings(const std::string& filename)
 
 	//LL_DEBUGS("Controls") << "Loaded " << binding_count << " settings from " << filename << LL_ENDL;
 	return binding_count;*/
+	return 1;
 }
 
 S32 LLViewerKeyboard::loadBindings(const std::string& filename)
