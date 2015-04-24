@@ -218,6 +218,7 @@ U32 LLPipeline::RenderGodraysResolution;
 F32 LLPipeline::RenderGodraysMultiplier;
 F32 LLPipeline::RenderGodraysFalloffMultiplier;
 U32 LLPipeline::RenderSSRResolution;
+F32 LLPipeline::RenderChromaStrength;
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
 const F32 BACKLIGHT_DAY_MAGNITUDE_AVATAR = 0.2f;
@@ -650,6 +651,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderPostGreyscaleStrength");
 	connectRefreshCachedSettingsSafe("RenderPostSepiaStrength");
 	connectRefreshCachedSettingsSafe("RenderPostPosterizationSamples");
+	connectRefreshCachedSettingsSafe("RenderChromaStrength");
 	connectRefreshCachedSettingsSafe("RenderShadowNoise");
 	connectRefreshCachedSettingsSafe("RenderShadowBlurSize");
 	connectRefreshCachedSettingsSafe("RenderSSAOScale");
@@ -1250,6 +1252,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderGodraysMultiplier = gSavedSettings.getF32("RenderGodraysMultiplier");
 	RenderGodraysFalloffMultiplier = gSavedSettings.getF32("RenderGodraysFalloffMultiplier");
 	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
+	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
 
 	// <exodus>
 	exoPostProcess::instance().ExodusRenderPostSettingsUpdate();
@@ -8209,7 +8212,6 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 			}
 
 			LLGLSLShader* shader = &gVolumetricLightProgram;
-
 			bindDeferredShader(*shader);
 
 			shader->uniform1f(LLShaderMgr::DOF_RES_SCALE, (bool)gSavedSettings.getBOOL("RenderDepthOfField") ? CameraDoFResScale : 1.0f);
@@ -8651,6 +8653,8 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_EFFECT, ssao_effect);
 
 	shader.uniform1f(LLShaderMgr::SECONDS60, (F32)fmod(LLTimer::getElapsedSeconds(), 60.0));
+
+	shader.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
 
 	//F32 shadow_offset_error = 1.f + RenderShadowOffsetError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]);
 	F32 shadow_bias_error = RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2])/3000.f;

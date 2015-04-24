@@ -16068,6 +16068,17 @@
     <key>Value</key>
     <integer>0.0</integer>
   </map>
+  <key>RenderChromaStrength</key>
+  <map>
+    <key>Comment</key>
+    <string>Set the strength of chromatic abberation.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <integer>0.0</integer>
+  </map>
   <key>EnableThirdPersonSteering</key>
   <map>
     <key>Comment</key>

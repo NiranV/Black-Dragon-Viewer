@@ -79,6 +79,8 @@ vec3 vary_AtmosAttenuation;
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
 
+uniform float chroma_str;
+
 vec3 srgb_to_linear(vec3 cs)
 {
 	vec3 low_range = cs / vec3(12.92);
@@ -398,7 +400,17 @@ void main()
           final_da = min(final_da, 1.0f);
 	      final_da = pow(final_da, 1.0/1.3);
 
-	vec4 diffuse = texture2DRect(diffuseRect, tc);
+	vec4 diffuse;
+    vec2 fromCentre;
+    if(chroma_str > 0.0)
+    {
+        fromCentre = (tc / screen_res) - vec2(0.5);
+        float radius = length(fromCentre);
+        fromCentre = ((1*chroma_str) * (radius*radius)) / vec2(1);
+    }
+    diffuse.b= texture2DRect(diffuseRect, tc-vec2(fromCentre)).b;
+	diffuse.r= texture2DRect(diffuseRect, tc+vec2(fromCentre)).r;
+	diffuse.ga= texture2DRect(diffuseRect, tc).ga;
 
 	//convert to gamma space
 	diffuse.rgb = linear_to_srgb(diffuse.rgb);
