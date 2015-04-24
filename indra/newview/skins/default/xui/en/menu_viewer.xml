@@ -1995,17 +1995,6 @@
                  parameter="dynamic textures" />
             </menu_item_check>
             <menu_item_check
-             label="Foot Shadows"
-             name="Foot Shadows"
-             shortcut="control|alt|F5">
-                <menu_item_check.on_check
-                 function="Advanced.CheckFeature"
-                 parameter="foot shadows" />
-                <menu_item_check.on_click
-                 function="Advanced.ToggleFeature"
-                 parameter="foot shadows" />
-            </menu_item_check>
-            <menu_item_check
              label="Fog"
              name="Fog"
              shortcut="control|alt|F6">

@@ -861,10 +861,6 @@ U32 feature_from_string(std::string feature)
 	{
 		return LLPipeline::RENDER_DEBUG_FEATURE_DYNAMIC_TEXTURES;
 	}
-	else if ("foot shadows" == feature)
-	{
-		return LLPipeline::RENDER_DEBUG_FEATURE_FOOT_SHADOWS;
-	}
 	else if ("fog" == feature)
 	{
 		return LLPipeline::RENDER_DEBUG_FEATURE_FOG;
