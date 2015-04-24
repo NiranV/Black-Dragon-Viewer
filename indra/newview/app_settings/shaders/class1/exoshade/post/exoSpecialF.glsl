@@ -12,11 +12,13 @@ out vec4 frag_color;
 #endif
 
 uniform sampler2DRect exo_screen;
+
 uniform vec2 screen_res;
-VARYING vec2 vary_fragcoord;
 uniform float greyscale_str;
 uniform int num_colors;
 uniform float sepia_str;
+
+VARYING vec2 vary_fragcoord;
 
 void main ()
 {
@@ -39,7 +41,7 @@ void main ()
 	col_sep.g = (col.r*0.299) + (col.g*0.5870) + (col.b*0.114);
 	col_sep.b = (col.r*0.2392) + (col.g*0.4696) + (col.b*0.0912);
 	col.rgb = mix(col.rgb, col_sep, sepia_str);
-	
+    
 	frag_color = col;
   
 }
