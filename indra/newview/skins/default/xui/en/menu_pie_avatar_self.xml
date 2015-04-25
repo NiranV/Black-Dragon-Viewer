@@ -259,5 +259,15 @@
         <pie_slice.on_click
             function="Avatar.Debug" />
     </pie_slice>
+    
+    <pie_slice
+        label="Hover Height"
+        enabled="true"
+        name="Hover Height">
+        <pie_slice.on_click
+            function="HoverHeight" />
+        <pie_slice.on_enable
+            function="Edit.EnableHoverHeight" />
+    </pie_slice>
 
 </pie_menu>
