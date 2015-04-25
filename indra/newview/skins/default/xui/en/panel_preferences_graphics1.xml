@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="2200"
+  height="2265"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -2722,6 +2722,142 @@ width="510">
    name="LensFlare"
    top_pad="12"
    width="115"/>
+   <slider
+      can_edit_text="true"
+      control_name="RenderPostGreyscaleStrength"
+      enabled_control="RenderDeferred"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="0"
+      label="Greyscale Strength:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="1"
+      min_val="0"
+      name="GreyscaleStrength"
+      top_pad="1"
+      width="321"/>
+   <button
+ follows="left|top"
+ control_name="RenderPostGreyscaleStrength"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <slider
+      can_edit_text="true"
+      control_name="RenderPostSepiaStrength"
+      enabled_control="RenderDeferred"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="0"
+      label="Sepia Strength:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="1"
+      min_val="0"
+      name="SepiaStrength"
+      top_pad="1"
+      width="321"/>
+   <button
+ follows="left|top"
+ control_name="RenderPostSepiaStrength"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <slider
+      can_edit_text="true"
+      control_name="RenderPostPosterizationSamples"
+      enabled_control="RenderDeferred"
+      decimal_digits="0"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="1"
+      label="Posterize Samples:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="64"
+      min_val="1"
+      name="PosterizeSamples"
+      top_pad="1"
+      width="312"/>
+   <button
+ follows="left|top"
+ control_name="RenderPostPosterizationSamples"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <slider
+      can_edit_text="true"
+      control_name="RenderChromaStrength"
+      enabled_control="RenderDeferred"
+      decimal_digits="1"
+      follows="left|top"
+      height="15"
+      increment="0.1"
+      initial_value="0"
+      label="Chromatic Aberration:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="50"
+      min_val="0"
+      name="ChromaStrength"
+      top_pad="1"
+      width="321"/>
+   <button
+ follows="left|top"
+ control_name="RenderChromaStrength"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
      <panel
  follows="left|top|right"
  height="20"
