@@ -445,16 +445,16 @@ void main()
 	float light_gamma = 1.0/1.3;
 	da = pow(da, light_gamma);
 	
-    vec4 diffuse;
-    vec2 fromCentre;
+    vec4 diffuse ;
+    vec2 fromCentre = vec2(0.0);
     if(chroma_str > 0.0)
     {
         fromCentre = (tc / screen_res) - vec2(0.5);
         float radius = length(fromCentre);
-        fromCentre = ((1*chroma_str) * (radius*radius)) / vec2(1);
+        fromCentre = (chroma_str * (radius*radius)) / vec2(1);
     }
-    diffuse.b= texture2DRect(diffuseRect, tc-vec2(fromCentre)).b;
-	diffuse.r= texture2DRect(diffuseRect, tc+vec2(fromCentre)).r;
+    diffuse.b= texture2DRect(diffuseRect, tc-fromCentre).b;
+	diffuse.r= texture2DRect(diffuseRect, tc+fromCentre).r;
 	diffuse.ga= texture2DRect(diffuseRect, tc).ga;
 
 	// Convert to gamma space
