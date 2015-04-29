@@ -16172,7 +16172,7 @@
     <key>Comment</key>
     <string>Hide the Local Chat floater automatically whenever it loses focus</string>
     <key>Persist</key>
-    <integer>0</integer>
+    <integer>1</integer>
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
@@ -16183,7 +16183,7 @@
     <key>Comment</key>
     <string>Hide the Local Chat floater whenever you press the return key, no matter if the Chat is empty or not</string>
     <key>Persist</key>
-    <integer>0</integer>
+    <integer>1</integer>
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
@@ -16194,7 +16194,7 @@
     <key>Comment</key>
     <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
     <key>Persist</key>
-    <integer>0</integer>
+    <integer>1</integer>
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
@@ -16216,7 +16216,7 @@
     <key>Comment</key>
     <string>Smoothly animate Windlight Preset changes</string>
     <key>Persist</key>
-    <integer>0</integer>
+    <integer>1</integer>
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
