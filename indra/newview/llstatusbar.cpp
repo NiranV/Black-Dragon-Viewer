@@ -179,7 +179,7 @@ BOOL LLStatusBar::postBuild()
 	S32 x = getRect().getWidth() - 2;
 	S32 y = 0;
 	LLRect r;
-	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+1, x, y+1);
+	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+33, x, y+33);
 	LLStatGraph::Params sgp;
 	sgp.name("BandwidthGraph");
 	sgp.rect(r);
@@ -193,7 +193,7 @@ BOOL LLStatusBar::postBuild()
 	addChild(mSGBandwidth);
 	x -= SIM_STAT_WIDTH + 2;
 
-	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+1, x, y+1);
+	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+33, x, y+33);
 	//these don't seem to like being reused
 	LLStatGraph::Params pgp;
 	pgp.name("PacketLossPercent");

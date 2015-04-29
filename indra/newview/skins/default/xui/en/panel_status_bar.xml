@@ -5,7 +5,7 @@
  bg_opaque_color="DkGray"
  chrome="true"
  follows="top|right"
- height="19"
+ height="55"
  layout="topleft"
  left="0"
  mouse_opaque="false"
@@ -29,6 +29,16 @@
      name="timeTooltip">
         [weekday, datetime, slt], [day, datetime, slt] [month, datetime, slt] [year, datetime, slt]
     </panel.string>
+	<panel
+	  follows="top|right"
+	  layout="topleft"
+	  height="55"
+	  left="-193"
+	  mouse_opaque="false"
+	  name="chiclet_container"
+	  tab_stop="false"
+	  top_pad="-1"
+	  width="190"/>
     <text
      halign="right"
 	 visibility_control="-"
@@ -86,7 +96,7 @@
      is_toggle="true"
      left_pad="5"
      top="5"
-     name="media_toggle_btn"
+     name="media_toggle_btn2"
      tool_tip="Start/Stop All Media (Music, Video, Web pages)"
      width="16" >
     </button>

@@ -61,7 +61,7 @@ LLRect LLScreenChannelBase::getChannelRect()
 	
 	if (mChicletRegion == NULL)
 	{
-		mChicletRegion = gViewerWindow->getRootView()->getChildView("chiclet_container");
+		mChicletRegion = gViewerWindow->getRootView()->getChildView("status_bar_container");
 	}
 	
 	LLRect channel_rect;
@@ -109,7 +109,7 @@ BOOL LLScreenChannelBase::postBuild()
 	
 	if (mChicletRegion == NULL)
 	{
-		mChicletRegion = gViewerWindow->getRootView()->getChildView("chiclet_container");
+		mChicletRegion = gViewerWindow->getRootView()->getChildView("status_bar_container");
 	}
 	
 	return TRUE;

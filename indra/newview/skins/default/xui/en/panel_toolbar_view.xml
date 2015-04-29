@@ -35,15 +35,6 @@ visible="true">
 		auto_resize="true"
 		width="1024"
 		mouse_opaque="false">
-			<panel
-			follows="top|right"
-			height="55"
-			right="-5"
-			mouse_opaque="false"
-			name="chiclet_container"
-			tab_stop="false"
-			top="5"
-			width="190"/>
 			<layout_stack
 			name="main"
 			orientation="horizontal"
