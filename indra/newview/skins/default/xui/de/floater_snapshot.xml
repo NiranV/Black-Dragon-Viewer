@@ -58,6 +58,7 @@
 		<check_box label="HUDs" name="hud_check"/>
 		<check_box label="Standbild (Vollbild)" name="freeze_frame_check"/>
 		<check_box label="Automatisch aktualisieren" name="auto_snapshot_check"/>
+		<check_box label="Speichermodus beibehalten" name="remember_mode_check"/>
 		<text name="filter_list_label">
 			Filter:
 		</text>

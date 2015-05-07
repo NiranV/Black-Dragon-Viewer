@@ -142,8 +142,7 @@
          layout="topleft"
          name="advanced_options_hr"
          right="-1"
-         top_pad="5"
-         />
+         top_pad="5"/>
         <text
          type="string"
          length="1"
@@ -152,8 +151,8 @@
          layout="topleft"
          left="10"
          name="layer_type_label"
-         top_pad="10"
-         width="100">
+         top_delta="10"
+         width="90">
             Capture:
         </text>
         <combo_box
@@ -161,7 +160,8 @@
          height="23"
          label="Image Layers"
          layout="topleft"
-         left="30"
+         left="100"
+		 top_delta="-4"
          name="layer_types"
          right="-2">
             <combo_box.item
@@ -176,25 +176,34 @@
         <check_box
          label="Interface"
          layout="topleft"
-         left="30"
+         left="10"
 		 height="16"
-         top_pad="8"
+         top_pad="7"
          width="180"
          name="ui_check" />
         <check_box
          label="HUDs"
          layout="topleft"
 		 height="16"
-         left="30"
+         left="10"
          top_pad="1"
          width="180"
          name="hud_check" />
+		<view_border 
+         bevel_style="in"
+         follows="left|top|right" 
+         height="1"
+         left="10"
+         layout="topleft"
+         name="advanced_options_hr"
+         right="-1"
+         top_pad="5"/>
         <check_box
          label="Freeze frame (fullscreen)"
          layout="topleft"
 		 height="16"
          left="10"
-         top_pad="1"
+         top_pad="7"
          width="180"
          name="freeze_frame_check" />
         <check_box
@@ -205,6 +214,15 @@
          top_pad="1"
          width="180"
          name="auto_snapshot_check" />
+		<check_box
+         label="Remember snapshot mode"
+		 control_name="RememberSnapshotMode"
+         layout="topleft"
+		 height="16"
+         left="10"
+         top_pad="1"
+         width="180"
+         name="remember_mode_check" />
         <text
          type="string"
          length="1"
@@ -213,8 +231,8 @@
          layout="topleft"
          left="10"
          name="filter_list_label"
-         top_pad="10"
-         width="50">
+         top_pad="7"
+         width="90">
             Filter:
         </text>
         <combo_box
@@ -222,9 +240,9 @@
             follows="left|right|top"
             name="filters_combobox"
             tool_tip="Image filters"
-            top_delta="-3"
-            left="50"
-			right="-1"
+            top_delta="-4"
+            left="100"
+			right="-2"
             height="21"
             width="135">
             <combo_box.item
@@ -240,7 +258,7 @@
          layout="topleft"
          name="advanced_options_hr"
          right="-1"
-         top_pad="7"
+         top_pad="4"
          />
     </panel>
 	<panel_container

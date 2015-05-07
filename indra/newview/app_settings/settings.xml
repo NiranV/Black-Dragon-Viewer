@@ -16373,6 +16373,17 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
+  <key>RememberSnapshotMode</key>
+  <map>
+    <key>Comment</key>
+    <string>Remember the last used snapshot mode in our snapshot floater</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
     
   <!-- Remappable Keys -->
   <key>JoystickButtonFlycam</key>
