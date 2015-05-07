@@ -96,7 +96,7 @@
      is_toggle="true"
      left_pad="5"
      top="5"
-     name="media_toggle_btn2"
+     name="media_toggle_btn"
      tool_tip="Start/Stop All Media (Music, Video, Web pages)"
      width="16" >
     </button>
