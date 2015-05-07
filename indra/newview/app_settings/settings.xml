@@ -8717,21 +8717,6 @@
     <integer>1</integer>
   </map>
 
-  <key>RenderShadowNearDist</key>
-  <map>
-    <key>Comment</key>
-    <string>Near clip plane of shadow camera (affects precision of depth shadows).</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector3</string>
-    <key>Value</key>
-    <array>
-      <real>256</real>
-      <real>256</real>
-      <real>256</real>
-    </array>
-  </map>
   <key>RenderShadowClipPlanes</key>
   <map>
     <key>Comment</key>
@@ -8781,17 +8766,6 @@
   <map>
     <key>Comment</key>
     <string>Amount to scale distance to virtual origin of shadow perspective projection.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.0</real>
-  </map>
-  <key>RenderShadowSlopeThreshold</key>
-  <map>
-    <key>Comment</key>
-    <string>Cutoff slope value for points to affect perspective shadow generation</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -9257,71 +9231,6 @@
     <string>F32</string>
     <key>Value</key>
     <real>1.0</real>
-  </map>
-
-  <key>RenderHoverGlowEnable</key>
-  <map>
-    <key>Comment</key>
-    <string>Show glow effect when hovering on interactive objects.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-
-  <key>RenderHighlightFadeTime</key>
-  <map>
-    <key>Comment</key>
-    <string>Transition time for mouseover highlights.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.1</real>
-  </map>
-  
-  <key>RenderHighlightBrightness</key>
-  <map>
-    <key>Comment</key>
-    <string>Brightness of mouseover highlights.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>4.0</real>
-  </map>
-
-  <key>RenderHighlightThickness</key>
-  <map>
-    <key>Comment</key>
-    <string>Thickness of mouseover highlights.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.6</real>
-  </map>
-  
-  <key>RenderHighlightColor</key>
-  <map>
-    <key>Comment</key>
-    <string>Brightness of mouseover highlights.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Color4</string>
-    <key>Value</key>
-    <array>
-      <real>0.4</real>
-      <real>0.98</real>
-      <real>0.93</real>
-      <real>1.0</real>
-    </array>
   </map>
 
   <key>RenderSpecularPrecision</key>
@@ -10770,17 +10679,6 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>1</integer>
-    </map>
-    <key>SecondLifeEnterprise</key>
-    <map>
-      <key>Comment</key>
-      <string>Enables Second Life Enterprise features</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
     </map>	
     <key>SelectMovableOnly</key>
     <map>
@@ -11111,17 +11009,6 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>1</integer>   
-    </map>
-    <key>ShowMiniLocationPanel</key>
-    <map>
-      <key>Comment</key>
-      <string>Show/hide mini-location panel</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
     </map>
     <key>GroupListShowIcons</key>
     <map>
@@ -16983,6 +16870,7 @@
       <key>Value</key>
       <string />
     </map>
+    
 </map>
 </llsd>
 

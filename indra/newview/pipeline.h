@@ -892,9 +892,6 @@ public:
 	static BOOL RenderAnimateRes;
 	static BOOL FreezeTime;
 	static S32 DebugBeaconLineWidth;
-	static F32 RenderHighlightBrightness;
-	static LLColor4 RenderHighlightColor;
-	static F32 RenderHighlightThickness;
 	static BOOL RenderSpotLightsInNondeferred;
 	static LLColor4 PreviewAmbientColor;
 	static LLColor4 PreviewDiffuse0;
@@ -942,7 +939,6 @@ public:
 	static F32 RenderHighlightFadeTime;
 	static LLVector3 RenderShadowClipPlanes;
 	static LLVector3 RenderShadowOrthoClipPlanes;
-	static LLVector3 RenderShadowNearDist;
 	static F32 RenderFarClip;
 	static LLVector3 RenderShadowSplitExponent;
 	static F32 RenderShadowErrorCutoff;

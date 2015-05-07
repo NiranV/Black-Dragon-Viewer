@@ -151,9 +151,6 @@ BOOL LLPipeline::RenderDelayCreation;
 BOOL LLPipeline::RenderAnimateRes;
 BOOL LLPipeline::FreezeTime;
 S32 LLPipeline::DebugBeaconLineWidth;
-F32 LLPipeline::RenderHighlightBrightness;
-LLColor4 LLPipeline::RenderHighlightColor;
-F32 LLPipeline::RenderHighlightThickness;
 BOOL LLPipeline::RenderSpotLightsInNondeferred;
 LLColor4 LLPipeline::PreviewAmbientColor;
 LLColor4 LLPipeline::PreviewDiffuse0;
@@ -201,7 +198,6 @@ S32 LLPipeline::RenderReflectionDetail;
 F32 LLPipeline::RenderHighlightFadeTime;
 LLVector3 LLPipeline::RenderShadowClipPlanes;
 LLVector3 LLPipeline::RenderShadowOrthoClipPlanes;
-LLVector3 LLPipeline::RenderShadowNearDist;
 F32 LLPipeline::RenderFarClip;
 LLVector3 LLPipeline::RenderShadowSplitExponent;
 F32 LLPipeline::RenderShadowErrorCutoff;
@@ -618,9 +614,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderAnimateRes");
 	connectRefreshCachedSettingsSafe("FreezeTime");
 	connectRefreshCachedSettingsSafe("DebugBeaconLineWidth");
-	connectRefreshCachedSettingsSafe("RenderHighlightBrightness");
-	connectRefreshCachedSettingsSafe("RenderHighlightColor");
-	connectRefreshCachedSettingsSafe("RenderHighlightThickness");
 	connectRefreshCachedSettingsSafe("RenderSpotLightsInNondeferred");
 	connectRefreshCachedSettingsSafe("PreviewAmbientColor");
 	connectRefreshCachedSettingsSafe("PreviewDiffuse0");
@@ -674,7 +667,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderScreenSpaceReflections");
 	connectRefreshCachedSettingsSafe("RenderShadowClipPlanes");
 	connectRefreshCachedSettingsSafe("RenderShadowOrthoClipPlanes");
-	connectRefreshCachedSettingsSafe("RenderShadowNearDist");
 	connectRefreshCachedSettingsSafe("RenderFarClip");
 	connectRefreshCachedSettingsSafe("RenderShadowSplitExponent");
 	connectRefreshCachedSettingsSafe("RenderShadowErrorCutoff");
@@ -703,7 +695,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptA");
     connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptB");
     connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptC");
-
 }
 
 LLPipeline::~LLPipeline()
@@ -1185,9 +1176,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderAnimateRes = gSavedSettings.getBOOL("RenderAnimateRes");
 	FreezeTime = gSavedSettings.getBOOL("FreezeTime");
 	DebugBeaconLineWidth = gSavedSettings.getS32("DebugBeaconLineWidth");
-	RenderHighlightBrightness = gSavedSettings.getF32("RenderHighlightBrightness");
-	RenderHighlightColor = gSavedSettings.getColor4("RenderHighlightColor");
-	RenderHighlightThickness = gSavedSettings.getF32("RenderHighlightThickness");
 	RenderSpotLightsInNondeferred = gSavedSettings.getBOOL("RenderSpotLightsInNondeferred");
 	PreviewAmbientColor = gSavedSettings.getColor4("PreviewAmbientColor");
 	PreviewDiffuse0 = gSavedSettings.getColor4("PreviewDiffuse0");
@@ -1235,7 +1223,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderHighlightFadeTime = gSavedSettings.getF32("RenderHighlightFadeTime");
 	RenderShadowClipPlanes = gSavedSettings.getVector3("RenderShadowClipPlanes");
 	RenderShadowOrthoClipPlanes = gSavedSettings.getVector3("RenderShadowOrthoClipPlanes");
-	RenderShadowNearDist = gSavedSettings.getVector3("RenderShadowNearDist");
 	RenderFarClip = gSavedSettings.getF32("RenderFarClip");
 	RenderShadowSplitExponent = gSavedSettings.getVector3("RenderShadowSplitExponent");
 	RenderShadowErrorCutoff = gSavedSettings.getF32("RenderShadowErrorCutoff");
@@ -4206,103 +4193,6 @@ void LLPipeline::renderHighlights()
 	LLColor4 color(1.f, 1.f, 1.f, 0.5f);
 	LLGLEnable color_mat(GL_COLOR_MATERIAL);
 	disableLights();
-
-	if (!hasRenderType(LLPipeline::RENDER_TYPE_HUD) && !mHighlightSet.empty())
-	{ //draw blurry highlight image over screen
-		LLGLEnable blend(GL_BLEND);
-		LLGLDepthTest depth(GL_TRUE, GL_FALSE, GL_ALWAYS);
-		LLGLDisable test(GL_ALPHA_TEST);
-
-		LLGLEnable stencil(GL_STENCIL_TEST);
-		gGL.flush();
-		glStencilMask(0xFFFFFFFF);
-		glClearStencil(1);
-		glClear(GL_STENCIL_BUFFER_BIT);
-
-		glStencilFunc(GL_ALWAYS, 0, 0xFFFFFFFF);
-		glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
-				
-		gGL.setColorMask(false, false);
-		for (std::set<HighlightItem>::iterator iter = mHighlightSet.begin(); iter != mHighlightSet.end(); ++iter)
-		{
-			renderHighlight(iter->mItem->getVObj(), 1.f);
-		}
-		gGL.setColorMask(true, false);
-
-		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-		glStencilFunc(GL_NOTEQUAL, 0, 0xFFFFFFFF);
-		
-		//gGL.setSceneBlendType(LLRender::BT_ADD_WITH_ALPHA);
-
-		gGL.pushMatrix();
-		gGL.loadIdentity();
-		gGL.matrixMode(LLRender::MM_PROJECTION);
-		gGL.pushMatrix();
-		gGL.loadIdentity();
-
-		gGL.getTexUnit(0)->bind(&mHighlight);
-
-		LLVector2 tc1;
-		LLVector2 tc2;
-
-		tc1.setVec(0,0);
-		tc2.setVec(2,2);
-
-		gGL.begin(LLRender::TRIANGLES);
-				
-		F32 scale = RenderHighlightBrightness;
-		LLColor4 color = RenderHighlightColor;
-		F32 thickness = RenderHighlightThickness;
-
-		for (S32 pass = 0; pass < 2; ++pass)
-		{
-			if (pass == 0)
-			{
-				gGL.setSceneBlendType(LLRender::BT_ADD_WITH_ALPHA);
-			}
-			else
-			{
-				gGL.setSceneBlendType(LLRender::BT_ALPHA);
-			}
-
-			for (S32 i = 0; i < 8; ++i)
-			{
-				for (S32 j = 0; j < 8; ++j)
-				{
-					LLVector2 tc(i-4+0.5f, j-4+0.5f);
-
-					F32 dist = 1.f-(tc.length()/sqrtf(32.f));
-					dist *= scale/64.f;
-
-					tc *= thickness;
-					tc.mV[0] = (tc.mV[0])/mHighlight.getWidth();
-					tc.mV[1] = (tc.mV[1])/mHighlight.getHeight();
-
-					gGL.color4f(color.mV[0],
-								color.mV[1],
-								color.mV[2],
-								color.mV[3]*dist);
-					
-					gGL.texCoord2f(tc.mV[0]+tc1.mV[0], tc.mV[1]+tc2.mV[1]);
-					gGL.vertex2f(-1,3);
-					
-					gGL.texCoord2f(tc.mV[0]+tc1.mV[0], tc.mV[1]+tc1.mV[1]);
-					gGL.vertex2f(-1,-1);
-					
-					gGL.texCoord2f(tc.mV[0]+tc2.mV[0], tc.mV[1]+tc1.mV[1]);
-					gGL.vertex2f(3,-1);
-				}
-			}
-		}
-
-		gGL.end();
-
-		gGL.popMatrix();
-		gGL.matrixMode(LLRender::MM_MODELVIEW);
-		gGL.popMatrix();
-		
-		//gGL.setSceneBlendType(LLRender::BT_ALPHA);
-	}
 
 	if ((LLViewerShaderMgr::instance()->getVertexShaderLevel(LLViewerShaderMgr::SHADER_INTERFACE) > 0))
 	{
@@ -11046,17 +10936,11 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 	//clip contains parallel split distances for 3 splits
 	LLVector3 clip = RenderShadowClipPlanes;
 
-	//F32 slope_threshold = gSavedSettings.getF32("RenderShadowSlopeThreshold");
-
 	//far clip on last split is minimum of camera view distance and 128
 	mSunClipPlanes = LLVector4(clip, clip.mV[2] * clip.mV[2]/clip.mV[1]);
 
 	clip = RenderShadowOrthoClipPlanes;
 	mSunOrthoClipPlanes = LLVector4(clip, clip.mV[2]*clip.mV[2]/clip.mV[1]);
-
-	//currently used for amount to extrude frusta corners for constructing shadow frusta
-	//LLVector3 n = RenderShadowNearDist;
-	//F32 nearDist[] = { n.mV[0], n.mV[1], n.mV[2], n.mV[2] };
 
 	//put together a universal "near clip" plane for shadow frusta
 	LLPlane shadow_near_clip;
