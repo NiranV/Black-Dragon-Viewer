@@ -1160,28 +1160,24 @@ void LLAgentCamera::updateCamera()
 	mCameraUpVector = LLVector3::z_axis;
 	//LLVector3	camera_skyward(0.f, 0.f, 1.f);
 
-	U32 camera_mode = mCameraAnimating ? mLastCameraMode : mCameraMode;
+	//U32 camera_mode = mCameraAnimating ? mLastCameraMode : mCameraMode;
 
 	validateFocusObject();
-
-	if (isAgentAvatarValid() && 
-		gAgentAvatarp->isSitting() &&
-		camera_mode == CAMERA_MODE_MOUSELOOK)
-	{
-		//changed camera_skyward to the new global "mCameraUpVector"
-		mCameraUpVector = mCameraUpVector * gAgentAvatarp->getRenderRotation();
-	}
 
 	if (cameraThirdPerson() && mFocusOnAvatar && LLFollowCamMgr::getActiveFollowCamParams())
 	{
 		changeCameraToFollow();
 	}
 
-	//NOTE - this needs to be integrated into a general upVector system here within llAgent. 
-	if ( camera_mode == CAMERA_MODE_FOLLOW && mFocusOnAvatar )
+	if (isAgentAvatarValid() && 
+		gAgentAvatarp->isSitting() && mFocusOnAvatar &&
+		(mCameraMode == CAMERA_MODE_MOUSELOOK || mCameraMode == CAMERA_MODE_THIRD_PERSON))
 	{
-		mCameraUpVector = mFollowCam.getUpVector();
+		//changed camera_skyward to the new global "mCameraUpVector"
+		mCameraUpVector = mCameraUpVector * gAgentAvatarp->getRenderRotation();
 	}
+
+	//NOTE - this needs to be integrated into a general upVector system here within llAgent. 
 
 	if(gSavedSettings.getBOOL("EnableThirdPersonSteering"))
 	{
@@ -1431,7 +1427,28 @@ void LLAgentCamera::updateCamera()
 //	LL_INFOS() << "Current FOV Zoom: " << mCameraCurrentFOVZoomFactor << " Target FOV Zoom: " << mCameraFOVZoomFactor << " Object penetration: " << mFocusObjectDist << LL_ENDL;
 
 	LLVector3 focus_agent = gAgent.getPosAgentFromGlobal(mFocusGlobal);
-	
+	if (isAgentAvatarValid() && gSavedSettings.getBOOL("UseCinematicCamera")
+		&& mFocusOnAvatar && mCameraMode == CAMERA_MODE_THIRD_PERSON)
+	{
+		LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() + 
+ 			LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() + 
+ 			LLVector3(0.1f, 0.f, 0.f) * gAgentAvatarp->mPelvisp->getWorldRotation();
+		//focus_agent -= gAgent.getPositionAgent();
+		//focus_agent -= gAgent.getPosAgentFromGlobal(gAgent.getPositionGlobal());
+		/*LLVector3 at_axis(0.0, 0.0, 0.1);
+		LLQuaternion agent_rot = gAgent.getFrameAgent().getQuaternion();
+		if (isAgentAvatarValid() && gAgentAvatarp->getParent())
+		{
+			LLViewerObject* root_object = (LLViewerObject*)gAgentAvatarp->getRoot();
+ 			if (!root_object->flagCameraDecoupled())
+ 			{
+ 				agent_rot *= ((LLViewerObject*)(gAgentAvatarp->getParent()))->getRenderRotation();
+ 			}
+		}
+		at_axis = at_axis * agent_rot;*/
+		LLVector3 head_offset = gAgentAvatarp->mHeadp->getWorldPosition() - head_pos;
+		focus_agent += head_offset; // + at_axis + focus_agent;
+	}
 	mCameraPositionAgent = gAgent.getPosAgentFromGlobal(camera_pos_global);
 	// Move the camera
 
