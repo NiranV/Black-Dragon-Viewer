@@ -1080,21 +1080,40 @@ BOOL LLViewerWindow::handleRightMouseDown(LLWindow *window,  LLCoordGL pos, MASK
 	x = llround((F32)x / mDisplayScale.mV[VX]);
 	y = llround((F32)y / mDisplayScale.mV[VY]);
 
-//	//BD - Redirect right clicks to LLToolCamera and check if it wants to
-	//	   handle the right click before the actual main Window does.
-	return LLToolCamera::getInstance()->handleRightMouseDown(x, y, mask);
+//	//BD - Check if we are in Mouselook or if we are holding the ALT key.
+	if(gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK
+		|| gAgentCamera.getCameraMode() == CAMERA_MODE_CUSTOMIZE_AVATAR
+		|| gKeyboard->currentMask(false) == MASK_ALT)
+	{
+		return LLToolPie::getInstance()->handleRightMouseDown(x, y, mask);
+	}
+	else
+	{
+//		//BD - Redirect right clicks to LLToolCamera and check if it wants to
+		//	   handle the right click before the actual main Window does.
+		return LLToolCamera::getInstance()->handleRightMouseDown(x, y, mask);
+	}
 }
 
 BOOL LLViewerWindow::handleRightMouseUp(LLWindow *window,  LLCoordGL pos, MASK mask)
 {
-	S32 x = pos.mX;
-	S32 y = pos.mY;
-	x = llround((F32)x / mDisplayScale.mV[VX]);
-	y = llround((F32)y / mDisplayScale.mV[VY]);
+	if(gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK
+		|| gAgentCamera.getCameraMode() == CAMERA_MODE_CUSTOMIZE_AVATAR
+		|| gKeyboard->currentMask(false) == MASK_ALT)
+	{
+		return handleAnyMouseClick(window,pos,mask,LLMouseHandler::CLICK_RIGHT,FALSE);
+	}
+	else
+	{
+		S32 x = pos.mX;
+		S32 y = pos.mY;
+		x = llround((F32)x / mDisplayScale.mV[VX]);
+		y = llround((F32)y / mDisplayScale.mV[VY]);
 
-//	//BD - Redirect right clicks to LLToolCamera and check if it wants to
-	//	   handle the right click before the actual main Window does.
-	return LLToolCamera::getInstance()->handleRightMouseUp(x, y, mask);
+//		//BD - Redirect right clicks to LLToolCamera and check if it wants to
+		//	   handle the right click before the actual main Window does.
+		return LLToolCamera::getInstance()->handleRightMouseUp(x, y, mask);
+	}
 }
 
 BOOL LLViewerWindow::handleMiddleMouseDown(LLWindow *window,  LLCoordGL pos, MASK mask)
