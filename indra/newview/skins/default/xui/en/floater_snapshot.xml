@@ -163,7 +163,7 @@
          left="100"
 		 top_delta="-4"
          name="layer_types"
-         right="-2">
+         right="-1">
             <combo_box.item
              label="Colors"
              name="Colors"
@@ -242,7 +242,7 @@
             tool_tip="Image filters"
             top_delta="-4"
             left="100"
-			right="-2"
+			right="-1"
             height="21"
             width="135">
             <combo_box.item
