@@ -8104,7 +8104,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 			LLGLSLShader* shader = &gVolumetricLightProgram;
 			bindDeferredShader(*shader);
 
-			shader->uniform1f(LLShaderMgr::DOF_RES_SCALE, (bool)gSavedSettings.getBOOL("RenderDepthOfField") ? CameraDoFResScale : 1.0f);
+			shader->uniform1f(LLShaderMgr::DOF_RES_SCALE, dof_enabled ? CameraDoFResScale : 1.0f);
 
 			S32 channel = shader->enableTexture(LLShaderMgr::DEFERRED_DIFFUSE, mScreen.getUsage());
 			if (channel > -1)
