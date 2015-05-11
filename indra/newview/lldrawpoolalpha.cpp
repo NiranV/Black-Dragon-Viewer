@@ -366,6 +366,7 @@ void LLDrawPoolAlpha::renderAlphaHighlight(U32 mask)
 
 static LLTrace::BlockTimerStatHandle FTM_RENDER_ALPHA_GROUP_LOOP("Alpha Group");
 static LLTrace::BlockTimerStatHandle FTM_RENDER_ALPHA_PUSH("Alpha Push Verts");
+static LLTrace::BlockTimerStatHandle FTM_RENDER_ALPHA_GLOW("Alpha Glow");
 
 void LLDrawPoolAlpha::renderAlpha(U32 mask, S32 pass)
 {
@@ -594,22 +595,17 @@ void LLDrawPoolAlpha::renderAlpha(U32 mask, S32 pass)
 					draw_glow_for_this_partition &&
 					params.mVertexBuffer->hasDataType(LLVertexBuffer::TYPE_EMISSIVE))
 				{
+					LL_RECORD_BLOCK_TIME(FTM_RENDER_ALPHA_GLOW);
+
 					// install glow-accumulating blend mode
 					gGL.blendFunc(LLRender::BF_ZERO, LLRender::BF_ONE, // don't touch color
 						      LLRender::BF_ONE, LLRender::BF_ONE); // add to alpha (glow)
-
-					emissive_shader->bind();
 					
-					params.mVertexBuffer->setBuffer((mask & ~LLVertexBuffer::MAP_COLOR) | LLVertexBuffer::MAP_EMISSIVE);
+					params.mVertexBuffer->setBuffer(mask | LLVertexBuffer::MAP_EMISSIVE);
 					
 					// do the actual drawing, again
 					params.mVertexBuffer->drawRange(params.mDrawMode, params.mStart, params.mEnd, params.mCount, params.mOffset);
 					gPipeline.addTrianglesDrawn(params.mCount, params.mDrawMode);
-
-					// restore our alpha blend mode
-					gGL.blendFunc(mColorSFactor, mColorDFactor, mAlphaSFactor, mAlphaDFactor);
-
-					current_shader->bind();
 				}
 			
 				if (tex_setup)

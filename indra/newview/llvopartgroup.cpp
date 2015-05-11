@@ -49,11 +49,18 @@ const F32 MAX_PART_LIFETIME = 120.f;
 extern U64MicrosecondsImplicit gFrameTime;
 
 LLPointer<LLVertexBuffer> LLVOPartGroup::sVB = NULL;
-S32 LLVOPartGroup::sVBSlotCursor = 0;
+//S32 LLVOPartGroup::sVBSlotCursor = 0;
+S32 LLVOPartGroup::sVBSlotFree[];
+S32* LLVOPartGroup::sVBSlotCursor = NULL;
 
 void LLVOPartGroup::initClass()
 {
-	
+	for (S32 i = 0; i < LL_MAX_PARTICLE_COUNT; ++i)
+    {
+    	sVBSlotFree[i] = i;
+    }
+    
+    sVBSlotCursor = sVBSlotFree;
 }
 
 //static
@@ -118,12 +125,16 @@ void LLVOPartGroup::destroyGL()
 //static
 S32 LLVOPartGroup::findAvailableVBSlot()
 {
-	if (sVBSlotCursor >= LL_MAX_PARTICLE_COUNT)
+	//if (sVBSlotCursor >= LL_MAX_PARTICLE_COUNT)
+    if (sVBSlotCursor >= sVBSlotFree + LL_MAX_PARTICLE_COUNT)
 	{ //no more available slots
 		return -1;
 	}
 
-	return sVBSlotCursor++;
+	//return sVBSlotCursor++;
+    S32 ret = *sVBSlotCursor;
+    sVBSlotCursor++;
+	return ret;
 }
 
 bool ll_is_part_idx_allocated(S32 idx, S32* start, S32* end)
@@ -138,13 +149,25 @@ bool ll_is_part_idx_allocated(S32 idx, S32* start, S32* end)
 	}*/
 
 	//allocated (not in free list)
-	return false;
+	//return false;
+    
+    while (start < end)
+    {
+    	if (*start == idx)
+    	{ //not allocated (in free list)
+    		return false;
+    	}
+    	++start;
+    }
+    
+    //allocated (not in free list)
+    return true;
 }
 
 //static
 void LLVOPartGroup::freeVBSlot(S32 idx)
 {
-	/*llassert(idx < LL_MAX_PARTICLE_COUNT && idx >= 0);
+	llassert(idx < LL_MAX_PARTICLE_COUNT && idx >= 0);
 	//llassert(sVBSlotCursor > sVBSlotFree);
 	//llassert(ll_is_part_idx_allocated(idx, sVBSlotCursor, sVBSlotFree+LL_MAX_PARTICLE_COUNT));
 
@@ -152,7 +175,7 @@ void LLVOPartGroup::freeVBSlot(S32 idx)
 	{
 		sVBSlotCursor--;
 		*sVBSlotCursor = idx;
-	}*/
+	}
 }
 
 LLVOPartGroup::LLVOPartGroup(const LLUUID &id, const LLPCode pcode, LLViewerRegion *regionp)
@@ -865,7 +888,7 @@ void LLParticlePartition::getGeometry(LLSpatialGroup* group)
 		LLFace* facep = *i;
 		LLAlphaObject* object = (LLAlphaObject*) facep->getViewerObject();
 
-		//if (!facep->isState(LLFace::PARTICLE))
+		if (!facep->isState(LLFace::PARTICLE))
 		{ //set the indices of this face
 			S32 idx = LLVOPartGroup::findAvailableVBSlot();
 			if (idx >= 0)
@@ -874,7 +897,7 @@ void LLParticlePartition::getGeometry(LLSpatialGroup* group)
 				facep->setIndicesIndex(idx*6);
 				facep->setVertexBuffer(LLVOPartGroup::sVB);
 				facep->setPoolType(LLDrawPool::POOL_ALPHA);
-				//facep->setState(LLFace::PARTICLE);
+				facep->setState(LLFace::PARTICLE);
 			}
 			else
 			{
