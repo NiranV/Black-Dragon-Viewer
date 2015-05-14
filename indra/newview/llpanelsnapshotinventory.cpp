@@ -91,6 +91,6 @@ void LLPanelSnapshotInventory::updateControls(const LLSD& info)
 
 void LLPanelSnapshotInventory::onSend()
 {
-	LLFloaterSnapshot::saveTexture();
+	LLFloaterSnapshot::saveTexture(false);
 	LLFloaterSnapshot::postSave();
 }

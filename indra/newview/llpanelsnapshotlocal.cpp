@@ -154,7 +154,7 @@ void LLPanelSnapshotLocal::onSaveFlyoutCommit(LLUICtrl* ctrl)
 	LLFloaterSnapshot* floater = LLFloaterSnapshot::getInstance();
 
 	floater->notify(LLSD().with("set-working", true));
-	BOOL saved = LLFloaterSnapshot::saveLocal();
+	BOOL saved = LLFloaterSnapshot::saveTexture(true);
 	if (saved)
 	{
 		LLFloaterSnapshot::postSave();

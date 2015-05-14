@@ -57,8 +57,7 @@ public:
 	// TODO: create a snapshot model instead
 	static LLFloaterSnapshot* getInstance();
 	static LLFloaterSnapshot* findInstance();
-	static void saveTexture();
-	static BOOL saveLocal();
+	static BOOL saveTexture(bool local = true);
 	static void postSave();
 	static void postPanelSwitch();
 	static LLPointer<LLImageFormatted> getImageData();

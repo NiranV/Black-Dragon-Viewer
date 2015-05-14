@@ -500,9 +500,6 @@ void LLFloaterSnapshot::Impl::onClickNewSnapshot(void* data)
 // static
 void LLFloaterSnapshot::Impl::onClickAutoSnap(LLUICtrl *ctrl, void* data)
 {
-	LLCheckBoxCtrl *check = (LLCheckBoxCtrl *)ctrl;
-	gSavedSettings.setBOOL( "AutoSnapshot", check->get() );
-	
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;		
 	if (view)
 	{
@@ -602,7 +599,7 @@ void LLFloaterSnapshot::Impl::handleFreezeWorld(void* data , bool closing)
 		view->mRotateFast = gSavedSettings.getF32("AvatarRotateThresholdFast");
 		view->mRotateSlow = gSavedSettings.getF32("AvatarRotateThresholdSlow");
 		view->mRotateMouselook = gSavedSettings.getF32("AvatarRotateThresholdMouselook");
-		view->mMotionBlurEnabled = gSavedSettings.getF32("RenderMotionBlur");
+		view->mMotionBlurEnabled = gSavedSettings.getBOOL("RenderMotionBlur");
 
 		//BD - Use some little tricks to prevent prim eyes and other attachments to possibly
 		//     bug out of their correct position due to movement afterwards.
@@ -628,7 +625,7 @@ void LLFloaterSnapshot::Impl::handleFreezeWorld(void* data , bool closing)
 	}
 	else // turning off freeze world mode, either temporarily or not.
 	{
-		//BD - Undo our little tricks.
+		//BD - Undo our little tricks again.
 		gSavedSettings.setF32("AvatarRotateThresholdFast", view->mRotateFast);
 		gSavedSettings.setF32("AvatarRotateThresholdSlow", view->mRotateSlow);
 		gSavedSettings.setF32("AvatarRotateThresholdMouselook", view->mRotateMouselook);
@@ -648,7 +645,6 @@ void LLFloaterSnapshot::Impl::onCommitFreezeWorld(LLUICtrl* ctrl, void* data)
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
 
 	handleFreezeWorld(data);
-
 	updateLayout(view);
 }
 
@@ -1064,7 +1060,6 @@ BOOL LLFloaterSnapshot::postBuild()
 
 	childSetCommitCallback("freeze_frame_check", Impl::onCommitFreezeWorld, this);
 
-	getChild<LLUICtrl>("auto_snapshot_check")->setValue(gSavedSettings.getBOOL("AutoSnapshot"));
 	childSetCommitCallback("auto_snapshot_check", Impl::onClickAutoSnap, this);
     
 
@@ -1110,6 +1105,8 @@ BOOL LLFloaterSnapshot::postBuild()
 	impl.updateControls(this);
 	impl.updateLayout(this);
 	
+	//BD - Save our option here so we don't possibly end up disabling it on first start.
+	mMotionBlurEnabled = gSavedSettings.getF32("RenderMotionBlur");
 
 	previewp->setThumbnailPlaceholderRect(getThumbnailPlaceholderRect());
 
@@ -1177,6 +1174,10 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 	gSnapshotFloaterView->setVisible(TRUE);
 	gSnapshotFloaterView->adjustToFitScreen(this, FALSE);
 
+	if(gSavedSettings.getBOOL("UseFreezeFrame"))
+	{
+		impl.handleFreezeWorld(this);
+	}
 	impl.updateControls(this);
 	impl.updateLayout(this);
 
@@ -1196,7 +1197,10 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 		previewp->setEnabled(FALSE);
 	}
 
-	impl.handleFreezeWorld(this, true);
+	if(gSavedSettings.getBOOL("UseFreezeFrame"))
+	{
+		impl.handleFreezeWorld(this, true);
+	}
 
 	if (impl.mLastToolset)
 	{
@@ -1324,32 +1328,8 @@ LLFloaterSnapshot* LLFloaterSnapshot::findInstance()
 }
 
 // static
-void LLFloaterSnapshot::saveTexture()
+BOOL LLFloaterSnapshot::saveTexture(bool local)
 {
-	LL_DEBUGS() << "saveTexture" << LL_ENDL;
-
-	// FIXME: duplicated code
-	LLFloaterSnapshot* instance = findInstance();
-	if (!instance)
-	{
-		llassert(instance != NULL);
-		return;
-	}
-	LLSnapshotLivePreview* previewp = Impl::getPreviewView(instance);
-	if (!previewp)
-	{
-		llassert(previewp != NULL);
-		return;
-	}
-
-	previewp->saveTexture();
-}
-
-// static
-BOOL LLFloaterSnapshot::saveLocal()
-{
-	LL_DEBUGS() << "saveLocal" << LL_ENDL;
-	// FIXME: duplicated code
 	LLFloaterSnapshot* instance = findInstance();
 	if (!instance)
 	{
@@ -1363,7 +1343,17 @@ BOOL LLFloaterSnapshot::saveLocal()
 		return FALSE;
 	}
 
-	return previewp->saveLocal();
+	if(local)
+	{
+		LL_DEBUGS() << "saveLocal" << LL_ENDL;
+		return previewp->saveLocal();
+	}
+	else
+	{
+		LL_DEBUGS() << "saveTexture" << LL_ENDL;
+		previewp->saveTexture();
+		return TRUE;
+	}
 }
 
 // static
