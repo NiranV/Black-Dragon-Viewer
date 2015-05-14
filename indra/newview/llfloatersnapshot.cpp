@@ -94,12 +94,12 @@ public:
 	static void onClickNewSnapshot(void* data);
 	static void onClickAutoSnap(LLUICtrl *ctrl, void* data);
 	static void onClickFilter(LLUICtrl *ctrl, void* data);
-	//static void onClickAdvanceSnap(LLUICtrl *ctrl, void* data);
 	static void onClickUICheck(LLUICtrl *ctrl, void* data);
 	static void onClickHUDCheck(LLUICtrl *ctrl, void* data);
 	static void applyKeepAspectCheck(LLFloaterSnapshot* view, BOOL checked);
 	static void updateResolution(LLUICtrl* ctrl, void* data, BOOL do_update = TRUE);
-	static void onCommitFreezeFrame(LLUICtrl* ctrl, void* data);
+	static void onCommitFreezeWorld(LLUICtrl* ctrl, void* data);
+	static void handleFreezeWorld(void* data , bool closing = false);
 	static void onCommitLayerTypes(LLUICtrl* ctrl, void*data);
 	static void onImageQualityChange(LLFloaterSnapshot* view, S32 quality_val);
 	static void onImageFormatChange(LLFloaterSnapshot* view);
@@ -258,7 +258,7 @@ void LLFloaterSnapshot::Impl::setResolution(LLFloaterSnapshot* floater, const st
 //static 
 void LLFloaterSnapshot::Impl::updateLayout(LLFloaterSnapshot* floaterp)
 {
-	LLSnapshotLivePreview* previewp = getPreviewView(floaterp);
+	//LLSnapshotLivePreview* previewp = getPreviewView(floaterp);
 
 	BOOL advanced = gSavedSettings.getBOOL("AdvanceSnapshot");
 
@@ -290,66 +290,6 @@ void LLFloaterSnapshot::Impl::updateLayout(LLFloaterSnapshot* floaterp)
 	if(!floaterp->isMinimized())
 	{
 		floaterp->reshape(floater_width, floaterp->getRect().getHeight());
-	}
-
-	bool use_freeze_frame = floaterp->getChild<LLUICtrl>("freeze_frame_check")->getValue().asBoolean();
-
-	if (use_freeze_frame)
-	{
-		// stop all mouse events at fullscreen preview layer
-		floaterp->getParent()->setMouseOpaque(TRUE);
-		
-		// shrink to smaller layout
-		// *TODO: unneeded?
-		floaterp->reshape(floaterp->getRect().getWidth(), floaterp->getRect().getHeight());
-
-		// can see and interact with fullscreen preview now
-		if (previewp)
-		{
-			previewp->setVisible(TRUE);
-			previewp->setEnabled(TRUE);
-		}
-
-		//RN: freeze all avatars
-		LLCharacter* avatarp;
-		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
-			iter != LLCharacter::sInstances.end(); ++iter)
-		{
-			avatarp = *iter;
-			floaterp->impl.mAvatarPauseHandles.push_back(avatarp->requestPause());
-		}
-
-		// freeze everything else
-		gSavedSettings.setBOOL("FreezeTime", TRUE);
-
-		if (LLToolMgr::getInstance()->getCurrentToolset() != gCameraToolset)
-		{
-			floaterp->impl.mLastToolset = LLToolMgr::getInstance()->getCurrentToolset();
-			LLToolMgr::getInstance()->setCurrentToolset(gCameraToolset);
-		}
-	}
-	else // turning off freeze frame mode
-	{
-		floaterp->getParent()->setMouseOpaque(FALSE);
-		// *TODO: unneeded?
-		floaterp->reshape(floaterp->getRect().getWidth(), floaterp->getRect().getHeight());
-		if (previewp)
-		{
-			previewp->setVisible(FALSE);
-			previewp->setEnabled(FALSE);
-		}
-
-		//RN: thaw all avatars
-		floaterp->impl.mAvatarPauseHandles.clear();
-
-		// thaw everything else
-		gSavedSettings.setBOOL("FreezeTime", FALSE);
-
-		// restore last tool (e.g. pie menu, etc)
-		if (floaterp->impl.mLastToolset)
-		{
-			LLToolMgr::getInstance()->setCurrentToolset(floaterp->impl.mLastToolset);
-		}
 	}
 }
 
@@ -650,18 +590,64 @@ void LLFloaterSnapshot::Impl::applyKeepAspectCheck(LLFloaterSnapshot* view, BOOL
 	}
 }
 
-// static
-void LLFloaterSnapshot::Impl::onCommitFreezeFrame(LLUICtrl* ctrl, void* data)
+//static 
+void LLFloaterSnapshot::Impl::handleFreezeWorld(void* data , bool closing)
 {
-	LLCheckBoxCtrl* check_box = (LLCheckBoxCtrl*)ctrl;
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
-		
-	if (!view || !check_box)
-	{
-		return;
-	}
+	bool use_freeze_frame = gSavedSettings.getBOOL("UseFreezeFrame");
 
-	gSavedSettings.setBOOL("UseFreezeFrame", check_box->get());
+	if (use_freeze_frame && !closing)
+	{
+		//BD - Save our options here so we can restore them later.
+		view->mRotateFast = gSavedSettings.getF32("AvatarRotateThresholdFast");
+		view->mRotateSlow = gSavedSettings.getF32("AvatarRotateThresholdSlow");
+		view->mRotateMouselook = gSavedSettings.getF32("AvatarRotateThresholdMouselook");
+		view->mMotionBlurEnabled = gSavedSettings.getF32("RenderMotionBlur");
+
+		//BD - Use some little tricks to prevent prim eyes and other attachments to possibly
+		//     bug out of their correct position due to movement afterwards.
+		gSavedSettings.setF32("AvatarRotateThresholdFast", 360.0f);
+		gSavedSettings.setF32("AvatarRotateThresholdSlow", 360.0f);
+		gSavedSettings.setF32("AvatarRotateThresholdMouselook", 360.0f);
+
+		//BD - We should temporarily disable Motion Blur here until we can make it properly work
+		//     with a completely frozen world.
+		gSavedSettings.setBOOL("RenderMotionBlur", false);
+
+		// freeze all avatars
+		LLCharacter* avatarp;
+		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+			iter != LLCharacter::sInstances.end(); ++iter)
+		{
+			avatarp = *iter;
+			view->impl.mAvatarPauseHandles.push_back(avatarp->requestPause());
+		}
+
+		// freeze everything else
+		gSavedSettings.setBOOL("FreezeTime", TRUE);
+	}
+	else // turning off freeze world mode, either temporarily or not.
+	{
+		//BD - Undo our little tricks.
+		gSavedSettings.setF32("AvatarRotateThresholdFast", view->mRotateFast);
+		gSavedSettings.setF32("AvatarRotateThresholdSlow", view->mRotateSlow);
+		gSavedSettings.setF32("AvatarRotateThresholdMouselook", view->mRotateMouselook);
+		gSavedSettings.setBOOL("RenderMotionBlur", view->mMotionBlurEnabled);
+
+		// thaw all avatars
+		view->impl.mAvatarPauseHandles.clear();
+
+		// thaw everything else
+		gSavedSettings.setBOOL("FreezeTime", FALSE);
+	}
+}
+
+// static
+void LLFloaterSnapshot::Impl::onCommitFreezeWorld(LLUICtrl* ctrl, void* data)
+{
+	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
+
+	handleFreezeWorld(data);
 
 	updateLayout(view);
 }
@@ -1076,8 +1062,7 @@ BOOL LLFloaterSnapshot::postBuild()
 	getChild<LLUICtrl>("layer_types")->setValue("colors");
 	getChildView("layer_types")->setEnabled(FALSE);
 
-	getChild<LLUICtrl>("freeze_frame_check")->setValue(gSavedSettings.getBOOL("UseFreezeFrame"));
-	childSetCommitCallback("freeze_frame_check", Impl::onCommitFreezeFrame, this);
+	childSetCommitCallback("freeze_frame_check", Impl::onCommitFreezeWorld, this);
 
 	getChild<LLUICtrl>("auto_snapshot_check")->setValue(gSavedSettings.getBOOL("AutoSnapshot"));
 	childSetCommitCallback("auto_snapshot_check", Impl::onClickAutoSnap, this);
@@ -1211,8 +1196,7 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 		previewp->setEnabled(FALSE);
 	}
 
-	gSavedSettings.setBOOL("FreezeTime", FALSE);
-	impl.mAvatarPauseHandles.clear();
+	impl.handleFreezeWorld(this, true);
 
 	if (impl.mLastToolset)
 	{
@@ -1481,12 +1465,6 @@ LLSnapshotFloaterView::~LLSnapshotFloaterView()
 
 BOOL LLSnapshotFloaterView::handleKey(KEY key, MASK mask, BOOL called_from_parent)
 {
-	// use default handler when not in freeze-frame mode
-	if(!gSavedSettings.getBOOL("FreezeTime"))
-	{
-		return LLFloaterView::handleKey(key, mask, called_from_parent);
-	}
-
 	if (called_from_parent)
 	{
 		// pass all keystrokes down
@@ -1496,51 +1474,6 @@ BOOL LLSnapshotFloaterView::handleKey(KEY key, MASK mask, BOOL called_from_paren
 	{
 		// bounce keystrokes back down
 		LLFloaterView::handleKey(key, mask, TRUE);
-	}
-	return TRUE;
-}
-
-BOOL LLSnapshotFloaterView::handleMouseDown(S32 x, S32 y, MASK mask)
-{
-	// use default handler when not in freeze-frame mode
-	if(!gSavedSettings.getBOOL("FreezeTime"))
-	{
-		return LLFloaterView::handleMouseDown(x, y, mask);
-	}
-	// give floater a change to handle mouse, else camera tool
-	if (childrenHandleMouseDown(x, y, mask) == NULL)
-	{
-		LLToolMgr::getInstance()->getCurrentTool()->handleMouseDown( x, y, mask );
-	}
-	return TRUE;
-}
-
-BOOL LLSnapshotFloaterView::handleMouseUp(S32 x, S32 y, MASK mask)
-{
-	// use default handler when not in freeze-frame mode
-	if(!gSavedSettings.getBOOL("FreezeTime"))
-	{
-		return LLFloaterView::handleMouseUp(x, y, mask);
-	}
-	// give floater a change to handle mouse, else camera tool
-	if (childrenHandleMouseUp(x, y, mask) == NULL)
-	{
-		LLToolMgr::getInstance()->getCurrentTool()->handleMouseUp( x, y, mask );
-	}
-	return TRUE;
-}
-
-BOOL LLSnapshotFloaterView::handleHover(S32 x, S32 y, MASK mask)
-{
-	// use default handler when not in freeze-frame mode
-	if(!gSavedSettings.getBOOL("FreezeTime"))
-	{
-		return LLFloaterView::handleHover(x, y, mask);
-	}	
-	// give floater a change to handle mouse, else camera tool
-	if (childrenHandleHover(x, y, mask) == NULL)
-	{
-		LLToolMgr::getInstance()->getCurrentTool()->handleHover( x, y, mask );
 	}
 	return TRUE;
 }

@@ -67,6 +67,11 @@ public:
 
 	static const LLRect& getThumbnailPlaceholderRect() { return sThumbnailPlaceholder->getRect(); }
 
+	F32 mRotateFast;
+	F32 mRotateSlow;
+	F32 mRotateMouselook;
+	bool mMotionBlurEnabled;
+
 private:
 	static LLUICtrl* sThumbnailPlaceholder;
 	LLUICtrl *mRefreshBtn, *mRefreshLabel;
@@ -92,9 +97,6 @@ public:
 	virtual ~LLSnapshotFloaterView();
 
 	/*virtual*/	BOOL handleKey(KEY key, MASK mask, BOOL called_from_parent);
-	/*virtual*/	BOOL handleMouseDown(S32 x, S32 y, MASK mask);
-	/*virtual*/	BOOL handleMouseUp(S32 x, S32 y, MASK mask);
-	/*virtual*/	BOOL handleHover(S32 x, S32 y, MASK mask);
 };
 
 extern LLSnapshotFloaterView* gSnapshotFloaterView;

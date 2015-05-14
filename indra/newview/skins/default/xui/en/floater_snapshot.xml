@@ -200,6 +200,7 @@
          top_pad="5"/>
         <check_box
          label="Freeze frame (fullscreen)"
+		 control_name="UseFreezeFrame"
          layout="topleft"
 		 height="16"
          left="10"

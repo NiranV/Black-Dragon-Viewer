@@ -158,7 +158,7 @@ void LLPanelSnapshot::updateImageQualityLevel()
 	getChild<LLTextBox>("image_quality_level")->setTextArg("[QLVL]", quality_lvl);
 }
 
-void LLPanelSnapshot::goBack()
+void LLPanelSnapshot::cancel()
 {
 	LLSideTrayPanelContainer* parent = getParentContainer();
 	if (parent)
@@ -166,11 +166,6 @@ void LLPanelSnapshot::goBack()
 		parent->openPreviousPanel();
 		parent->getCurrentPanel()->onOpen(LLSD());
 	}
-}
-
-void LLPanelSnapshot::cancel()
-{
-	goBack();
 	LLFloaterSnapshot::getInstance()->notify(LLSD().with("set-ready", true));
 }
 

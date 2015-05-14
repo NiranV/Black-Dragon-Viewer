@@ -273,185 +273,7 @@ void LLSnapshotLivePreview::drawPreviewRect(S32 offset_x, S32 offset_y)
 //called when the frame is frozen.
 void LLSnapshotLivePreview::draw()
 {
-	if (getCurrentImage() &&
-		mPreviewImageEncoded.notNull() &&
-		getSnapshotUpToDate())
-	{
-		LLColor4 bg_color(0.f, 0.f, 0.3f, 0.4f);
-		gl_rect_2d(getRect(), bg_color);
-		const LLRect& rect = getImageRect();
-		LLRect shadow_rect = rect;
-		shadow_rect.stretch(BORDER_WIDTH);
-		gl_drop_shadow(shadow_rect.mLeft, shadow_rect.mTop, shadow_rect.mRight, shadow_rect.mBottom, LLColor4(0.f, 0.f, 0.f, mNeedsFlash ? 0.f :0.5f), 10);
-
-		LLColor4 image_color(1.f, 1.f, 1.f, 1.f);
-		gGL.color4fv(image_color.mV);
-		gGL.getTexUnit(0)->bind(getCurrentImage());
-		// calculate UV scale
-		F32 uv_width = isImageScaled() ? 1.f : llmin((F32)getWidth() / (F32)getCurrentImage()->getWidth(), 1.f);
-		F32 uv_height = isImageScaled() ? 1.f : llmin((F32)getHeight() / (F32)getCurrentImage()->getHeight(), 1.f);
-		gGL.pushMatrix();
-		{
-			gGL.translatef((F32)rect.mLeft, (F32)rect.mBottom, 0.f);
-			gGL.begin(LLRender::QUADS);
-			{
-				gGL.texCoord2f(uv_width, uv_height);
-				gGL.vertex2i(rect.getWidth(), rect.getHeight() );
-
-				gGL.texCoord2f(0.f, uv_height);
-				gGL.vertex2i(0, rect.getHeight() );
-
-				gGL.texCoord2f(0.f, 0.f);
-				gGL.vertex2i(0, 0);
-
-				gGL.texCoord2f(uv_width, 0.f);
-				gGL.vertex2i(rect.getWidth(), 0);
-			}
-			gGL.end();
-		}
-		gGL.popMatrix();
-
-		gGL.color4f(1.f, 1.f, 1.f, mFlashAlpha);
-		gl_rect_2d(getRect());
-		if (mNeedsFlash)
-		{
-			if (mFlashAlpha < 1.f)
-			{
-				mFlashAlpha = lerp(mFlashAlpha, 1.f, LLCriticalDamp::getInterpolant(0.02f));
-			}
-			else
-			{
-				mNeedsFlash = FALSE;
-			}
-		}
-		else
-		{
-			mFlashAlpha = lerp(mFlashAlpha, 0.f, LLCriticalDamp::getInterpolant(0.15f));
-		}
-
-		// Draw shining animation if appropriate.
-		if (mShineCountdown > 0)
-		{
-			mShineCountdown--;
-			if (mShineCountdown == 0)
-			{
-				mShineAnimTimer.start();
-			}
-		}
-		else if (mShineAnimTimer.getStarted())
-		{
-			LL_DEBUGS() << "Drawing shining animation" << LL_ENDL;
-			F32 shine_interp = llmin(1.f, mShineAnimTimer.getElapsedTimeF32() / SHINE_TIME);
-
-			// draw "shine" effect
-			LLLocalClipRect clip(getLocalRect());
-			{
-				// draw diagonal stripe with gradient that passes over screen
-				S32 x1 = gViewerWindow->getWindowWidthScaled() * llround((clamp_rescale(shine_interp, 0.f, 1.f, -1.f - SHINE_WIDTH, 1.f)));
-				S32 x2 = x1 + llround(gViewerWindow->getWindowWidthScaled() * SHINE_WIDTH);
-				S32 x3 = x2 + llround(gViewerWindow->getWindowWidthScaled() * SHINE_WIDTH);
-				S32 y1 = 0;
-				S32 y2 = gViewerWindow->getWindowHeightScaled();
-
-				gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-				gGL.begin(LLRender::QUADS);
-				{
-					gGL.color4f(1.f, 1.f, 1.f, 0.f);
-					gGL.vertex2i(x1, y1);
-					gGL.vertex2i(x1 + gViewerWindow->getWindowWidthScaled(), y2);
-					gGL.color4f(1.f, 1.f, 1.f, SHINE_OPACITY);
-					gGL.vertex2i(x2 + gViewerWindow->getWindowWidthScaled(), y2);
-					gGL.vertex2i(x2, y1);
-
-					gGL.color4f(1.f, 1.f, 1.f, SHINE_OPACITY);
-					gGL.vertex2i(x2, y1);
-					gGL.vertex2i(x2 + gViewerWindow->getWindowWidthScaled(), y2);
-					gGL.color4f(1.f, 1.f, 1.f, 0.f);
-					gGL.vertex2i(x3 + gViewerWindow->getWindowWidthScaled(), y2);
-					gGL.vertex2i(x3, y1);
-				}
-				gGL.end();
-			}
-
-			// if we're at the end of the animation, stop
-			if (shine_interp >= 1.f)
-			{
-				mShineAnimTimer.stop();
-			}
-		}
-	}
-
-	// draw framing rectangle
-	{
-		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-		gGL.color4f(1.f, 1.f, 1.f, 1.f);
-		const LLRect& outline_rect = getImageRect();
-		gGL.begin(LLRender::QUADS);
-		{
-			gGL.vertex2i(outline_rect.mLeft - BORDER_WIDTH, outline_rect.mTop + BORDER_WIDTH);
-			gGL.vertex2i(outline_rect.mRight + BORDER_WIDTH, outline_rect.mTop + BORDER_WIDTH);
-			gGL.vertex2i(outline_rect.mRight, outline_rect.mTop);
-			gGL.vertex2i(outline_rect.mLeft, outline_rect.mTop);
-
-			gGL.vertex2i(outline_rect.mLeft, outline_rect.mBottom);
-			gGL.vertex2i(outline_rect.mRight, outline_rect.mBottom);
-			gGL.vertex2i(outline_rect.mRight + BORDER_WIDTH, outline_rect.mBottom - BORDER_WIDTH);
-			gGL.vertex2i(outline_rect.mLeft - BORDER_WIDTH, outline_rect.mBottom - BORDER_WIDTH);
-
-			gGL.vertex2i(outline_rect.mLeft, outline_rect.mTop);
-			gGL.vertex2i(outline_rect.mLeft, outline_rect.mBottom);
-			gGL.vertex2i(outline_rect.mLeft - BORDER_WIDTH, outline_rect.mBottom - BORDER_WIDTH);
-			gGL.vertex2i(outline_rect.mLeft - BORDER_WIDTH, outline_rect.mTop + BORDER_WIDTH);
-
-			gGL.vertex2i(outline_rect.mRight, outline_rect.mBottom);
-			gGL.vertex2i(outline_rect.mRight, outline_rect.mTop);
-			gGL.vertex2i(outline_rect.mRight + BORDER_WIDTH, outline_rect.mTop + BORDER_WIDTH);
-			gGL.vertex2i(outline_rect.mRight + BORDER_WIDTH, outline_rect.mBottom - BORDER_WIDTH);
-		}
-		gGL.end();
-	}
-
-	// draw old image dropping away
-	if (mFallAnimTimer.getStarted())
-	{
-		S32 old_image_index = (mCurImageIndex + 1) % 2;
-		if (mViewerImage[old_image_index].notNull() && mFallAnimTimer.getElapsedTimeF32() < FALL_TIME)
-		{
-			LL_DEBUGS() << "Drawing fall animation" << LL_ENDL;
-			F32 fall_interp = mFallAnimTimer.getElapsedTimeF32() / FALL_TIME;
-			F32 alpha = clamp_rescale(fall_interp, 0.f, 1.f, 0.8f, 0.4f);
-			LLColor4 image_color(1.f, 1.f, 1.f, alpha);
-			gGL.color4fv(image_color.mV);
-			gGL.getTexUnit(0)->bind(mViewerImage[old_image_index]);
-			// calculate UV scale
-			// *FIX get this to work with old image
-			BOOL rescale = !mImageScaled[old_image_index] && mViewerImage[mCurImageIndex].notNull();
-			F32 uv_width = rescale ? llmin((F32)mWidth[old_image_index] / (F32)mViewerImage[mCurImageIndex]->getWidth(), 1.f) : 1.f;
-			F32 uv_height = rescale ? llmin((F32)mHeight[old_image_index] / (F32)mViewerImage[mCurImageIndex]->getHeight(), 1.f) : 1.f;
-			gGL.pushMatrix();
-			{
-				LLRect& rect = mImageRect[old_image_index];
-				gGL.translatef((F32)rect.mLeft, (F32)rect.mBottom - llround(getRect().getHeight() * 2.f * (fall_interp * fall_interp)), 0.f);
-				gGL.rotatef(-45.f * fall_interp, 0.f, 0.f, 1.f);
-				gGL.begin(LLRender::QUADS);
-				{
-					gGL.texCoord2f(uv_width, uv_height);
-					gGL.vertex2i(rect.getWidth(), rect.getHeight() );
-
-					gGL.texCoord2f(0.f, uv_height);
-					gGL.vertex2i(0, rect.getHeight() );
-
-					gGL.texCoord2f(0.f, 0.f);
-					gGL.vertex2i(0, 0);
-
-					gGL.texCoord2f(uv_width, 0.f);
-					gGL.vertex2i(rect.getWidth(), 0);
-				}
-				gGL.end();
-			}
-			gGL.popMatrix();
-		}
-	}
+	//BD - Do nothing.
 }
 
 /*virtual*/ 
@@ -673,8 +495,8 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 	// If we're in freeze-frame mode and camera has moved, update snapshot.
 	LLVector3 new_camera_pos = LLViewerCamera::getInstance()->getOrigin();
 	LLQuaternion new_camera_rot = LLViewerCamera::getInstance()->getQuaternion();
-	if (previewp->mForceUpdateSnapshot || (gSavedSettings.getBOOL("FreezeTime") && previewp->mAllowFullScreenPreview &&
-		(new_camera_pos != previewp->mCameraPos || dot(new_camera_rot, previewp->mCameraRot) < 0.995f)))
+	if (previewp->mForceUpdateSnapshot &&
+		(new_camera_pos != previewp->mCameraPos || dot(new_camera_rot, previewp->mCameraRot) < 0.995f))
 	{
 		previewp->mCameraPos = new_camera_pos;
 		previewp->mCameraRot = new_camera_rot;
@@ -731,43 +553,6 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
             // Update the data size
             previewp->estimateDataSize();
 
-            // Full size preview is set: get the decoded image result and save it for animation
-            if (gSavedSettings.getBOOL("UseFreezeFrame") && previewp->mAllowFullScreenPreview)
-            {
-                // Get the decoded version of the formatted image
-                previewp->getEncodedImage();
-            
-                // We need to scale that a bit for display...
-                LLPointer<LLImageRaw> scaled = new LLImageRaw(
-                    previewp->mPreviewImageEncoded->getData(),
-                    previewp->mPreviewImageEncoded->getWidth(),
-                    previewp->mPreviewImageEncoded->getHeight(),
-                    previewp->mPreviewImageEncoded->getComponents());
-
-                if (!scaled->isBufferInvalid())
-                {
-                    // leave original image dimensions, just scale up texture buffer
-                    if (previewp->mPreviewImageEncoded->getWidth() > 1024 || previewp->mPreviewImageEncoded->getHeight() > 1024)
-                    {
-                        // go ahead and shrink image to appropriate power of 2 for display
-                        scaled->biasedScaleToPowerOfTwo(1024);
-                        previewp->setImageScaled(TRUE);
-                    }
-                    else
-                    {
-                        // expand image but keep original image data intact
-                        scaled->expandToPowerOfTwo(1024, FALSE);
-                    }
-
-                    previewp->mViewerImage[previewp->mCurImageIndex] = LLViewerTextureManager::getLocalTexture(scaled.get(), FALSE);
-                    LLPointer<LLViewerTexture> curr_preview_image = previewp->mViewerImage[previewp->mCurImageIndex];
-                    gGL.getTexUnit(0)->bind(curr_preview_image);
-                    curr_preview_image->setFilteringOption(previewp->getSnapshotType() == SNAPSHOT_TEXTURE ? LLTexUnit::TFO_ANISOTROPIC : LLTexUnit::TFO_POINT);
-                    curr_preview_image->setAddressMode(LLTexUnit::TAM_CLAMP);
-
-                    previewp->mShineCountdown = 4; // wait a few frames to avoid animation glitch due to readback this frame
-                }
-            }
             // The snapshot is updated now...
             previewp->mSnapshotUpToDate = TRUE;
         
@@ -776,7 +561,6 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
             previewp->generateThumbnailImage(TRUE) ;
         }
         previewp->getWindow()->decBusyCount();
-        previewp->setVisible(gSavedSettings.getBOOL("UseFreezeFrame") && previewp->mAllowFullScreenPreview); // only show fullscreen preview when in freeze frame mode
         previewp->mSnapshotDelayTimer.stop();
         previewp->mSnapshotActive = FALSE;
         LL_DEBUGS() << "done creating snapshot" << LL_ENDL;

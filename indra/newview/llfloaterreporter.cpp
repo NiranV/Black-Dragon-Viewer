@@ -755,14 +755,6 @@ void LLFloaterReporter::takeScreenshot()
 	const S32 IMAGE_WIDTH = 1024;
 	const S32 IMAGE_HEIGHT = 768;
 
-	//BD - Make sure we don't use Freeze Frame for Abuse Report snapshots or
-	//     we might end up causing graphical glitches.
-	bool freeze = gSavedSettings.getBOOL("UseFreezeFrame");
-	if(freeze)
-	{
-		gSavedSettings.setBOOL("UseFreezeFrame", false);
-	}
-
 	LLPointer<LLImageRaw> raw = new LLImageRaw;
 	if( !gViewerWindow->rawSnapshot(raw, IMAGE_WIDTH, IMAGE_HEIGHT, TRUE, FALSE, TRUE, FALSE))
 	{
@@ -770,9 +762,6 @@ void LLFloaterReporter::takeScreenshot()
 		return;
 	}
 	LLPointer<LLImageJ2C> upload_data = LLViewerTextureList::convertToUploadFile(raw);
-
-	//BD - Restore the Freeze Frame option.
-	gSavedSettings.setBOOL("UseFreezeFrame", freeze);
 
 	// create a resource data
 	mResourceDatap->mInventoryType = LLInventoryType::IT_NONE;
