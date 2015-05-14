@@ -14528,6 +14528,9 @@
 	      <string>snapshot</string>
 	      <string>postcard</string>
 	      <string>mini_map</string>
+          <string>flickr</string>
+          <string>twitter</string>
+          <string>facebook</string>
       </array>
     </map>
     <key>LandmarksSortedByDate</key>
