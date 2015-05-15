@@ -162,8 +162,7 @@ void LLSnapshotLivePreview::updateSnapshot(BOOL new_snapshot, BOOL new_thumbnail
         {
             S32 old_image_index = mCurImageIndex;
             mCurImageIndex = (mCurImageIndex + 1) % 2; 
-            setSize(mWidth[old_image_index], mHeight[old_image_index]);
-            mFallAnimTimer.start();		
+            setSize(mWidth[old_image_index], mHeight[old_image_index]);	
         }
         mSnapshotUpToDate = FALSE; 		
 
@@ -192,8 +191,6 @@ void LLSnapshotLivePreview::updateSnapshot(BOOL new_snapshot, BOOL new_thumbnail
             }
         }
 
-        // Stop shining animation.
-        mShineAnimTimer.stop();
 		mSnapshotDelayTimer.start();
 		mSnapshotDelayTimer.setTimerExpirySec(delay);
         
@@ -495,19 +492,31 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 	// If we're in freeze-frame mode and camera has moved, update snapshot.
 	LLVector3 new_camera_pos = LLViewerCamera::getInstance()->getOrigin();
 	LLQuaternion new_camera_rot = LLViewerCamera::getInstance()->getQuaternion();
-	if ((previewp->mForceUpdateSnapshot || gSavedSettings.getBOOL("AutoSnapshot")) &&
-		(new_camera_pos != previewp->mCameraPos || dot(new_camera_rot, previewp->mCameraRot) < 0.995f))
+	BOOL Autosnap = gSavedSettings.getBOOL("AutoSnapshot");
+
+	if (previewp->mForceUpdateSnapshot 
+		|| (!LLToolCamera::getInstance()->hasMouseCapture() && Autosnap
+		&& previewp->mPrevCameraPos == new_camera_pos && previewp->mPrevCameraRot == new_camera_rot
+		&& (new_camera_pos != previewp->mCameraPos || dot(new_camera_rot, previewp->mCameraRot) < 0.995f)))
 	{
 		previewp->mCameraPos = new_camera_pos;
 		previewp->mCameraRot = new_camera_rot;
+		previewp->mPrevCameraPos = new_camera_pos;
+		previewp->mPrevCameraRot = new_camera_rot;
 		// request a new snapshot whenever the camera moves, with a time delay
-		BOOL new_snapshot = gSavedSettings.getBOOL("AutoSnapshot") || previewp->mForceUpdateSnapshot;
+		BOOL new_snapshot = Autosnap || previewp->mForceUpdateSnapshot;
 		LL_DEBUGS() << "camera moved, updating thumbnail" << LL_ENDL;
 		previewp->updateSnapshot(
 			new_snapshot, // whether a new snapshot is needed or merely invalidate the existing one
 			FALSE, // or if 1st arg is false, whether to produce a new thumbnail image.
-			new_snapshot ? AUTO_SNAPSHOT_TIME_DELAY : 0.f); // shutter delay if 1st arg is true.
+			2.5f); // shutter delay if 1st arg is true.
 		previewp->mForceUpdateSnapshot = FALSE;
+	}
+
+	if(Autosnap && previewp->mPrevCameraPos != new_camera_pos || previewp->mPrevCameraRot != new_camera_rot)
+	{
+		previewp->mPrevCameraPos = new_camera_pos;
+		previewp->mPrevCameraRot = new_camera_rot;
 	}
 
 	// see if it's time yet to snap the shot and bomb out otherwise.
@@ -521,61 +530,61 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 
 	// time to produce a snapshot
 	if(!previewp->getSnapshotUpToDate())
-    {
-        LL_DEBUGS() << "producing snapshot" << LL_ENDL;
-        if (!previewp->mPreviewImage)
-        {
-            previewp->mPreviewImage = new LLImageRaw;
-        }
+	{
+		LL_DEBUGS() << "producing snapshot" << LL_ENDL;
+		if (!previewp->mPreviewImage)
+		{
+			previewp->mPreviewImage = new LLImageRaw;
+		}
 
-        previewp->setVisible(FALSE);
-        previewp->setEnabled(FALSE);
+		previewp->setVisible(FALSE);
+		previewp->setEnabled(FALSE);
 
-        previewp->getWindow()->incBusyCount();
-        previewp->setImageScaled(FALSE);
+		previewp->getWindow()->incBusyCount();
+		previewp->setImageScaled(FALSE);
 
-        // grab the raw image
-        if (gViewerWindow->rawSnapshot(
-                previewp->mPreviewImage,
-                previewp->getWidth(),
-                previewp->getHeight(),
-                previewp->mKeepAspectRatio,//gSavedSettings.getBOOL("KeepAspectForSnapshot"),
-                previewp->getSnapshotType() == LLSnapshotLivePreview::SNAPSHOT_TEXTURE,
-                previewp->mAllowRenderUI && gSavedSettings.getBOOL("RenderUIInSnapshot"),
-                FALSE,
-                previewp->mSnapshotBufferType,
-                previewp->getMaxImageSize()))
-        {
-            // Invalidate/delete any existing encoded image
-            previewp->mPreviewImageEncoded = NULL;
-            // Invalidate/delete any existing formatted image
-            previewp->mFormattedImage = NULL;
-            // Update the data size
-            previewp->estimateDataSize();
+		// grab the raw image
+		if (gViewerWindow->rawSnapshot(
+				previewp->mPreviewImage,
+				previewp->getWidth(),
+				previewp->getHeight(),
+				previewp->mKeepAspectRatio,//gSavedSettings.getBOOL("KeepAspectForSnapshot"),
+				previewp->getSnapshotType() == LLSnapshotLivePreview::SNAPSHOT_TEXTURE,
+				previewp->mAllowRenderUI && gSavedSettings.getBOOL("RenderUIInSnapshot"),
+				FALSE,
+				previewp->mSnapshotBufferType,
+				previewp->getMaxImageSize()))
+		{
+			// Invalidate/delete any existing encoded image
+			previewp->mPreviewImageEncoded = NULL;
+			// Invalidate/delete any existing formatted image
+			previewp->mFormattedImage = NULL;
+			// Update the data size
+			previewp->estimateDataSize();
 
-            // The snapshot is updated now...
-            previewp->mSnapshotUpToDate = TRUE;
+			// The snapshot is updated now...
+			previewp->mSnapshotUpToDate = TRUE;
         
-            // We need to update the thumbnail though
-            previewp->setThumbnailImageSize();
-            previewp->generateThumbnailImage(TRUE) ;
-        }
-        previewp->getWindow()->decBusyCount();
-        previewp->mSnapshotDelayTimer.stop();
-        previewp->mSnapshotActive = FALSE;
-        LL_DEBUGS() << "done creating snapshot" << LL_ENDL;
-    }
+			// We need to update the thumbnail though
+			previewp->setThumbnailImageSize();
+			previewp->generateThumbnailImage(TRUE) ;
+		}
+		previewp->getWindow()->decBusyCount();
+		previewp->mSnapshotDelayTimer.stop();
+		previewp->mSnapshotActive = FALSE;
+		LL_DEBUGS() << "done creating snapshot" << LL_ENDL;
+	}
     
-    if (!previewp->getThumbnailUpToDate())
+	if (!previewp->getThumbnailUpToDate())
 	{
 		previewp->generateThumbnailImage() ;
 	}
     
-    // Tell the floater container that the snapshot is updated now
-    if (previewp->mViewContainer)
-    {
-        previewp->mViewContainer->notify(LLSD().with("snapshot-updated", true));
-    }
+	// Tell the floater container that the snapshot is updated now
+	if (previewp->mViewContainer)
+	{
+		previewp->mViewContainer->notify(LLSD().with("snapshot-updated", true));
+	}
 
 	return TRUE;
 }

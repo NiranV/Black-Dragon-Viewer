@@ -175,6 +175,8 @@ private:
 	LLFrameTimer				mFallAnimTimer;
 	LLVector3					mCameraPos;
 	LLQuaternion				mCameraRot;
+	LLVector3					mPrevCameraPos;
+	LLQuaternion				mPrevCameraRot;
 	BOOL						mSnapshotActive;
 	LLViewerWindow::ESnapshotType mSnapshotBufferType;
     std::string                 mFilterName;

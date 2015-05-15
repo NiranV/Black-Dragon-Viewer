@@ -1197,6 +1197,9 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 		previewp->setEnabled(FALSE);
 	}
 
+	//BD - We will run into problems if we don't disable it when the floater is closed.
+	gSavedSettings.setBOOL("AutoSnapshot", false);
+
 	if(gSavedSettings.getBOOL("UseFreezeFrame"))
 	{
 		impl.handleFreezeWorld(this, true);
