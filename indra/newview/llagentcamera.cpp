@@ -83,8 +83,6 @@ const F32 AVATAR_ZOOM_MIN_Z_FACTOR = 1.15f;
 
 const F32 MAX_CAMERA_DISTANCE_FROM_AGENT = 50.f;
 
-const F32 MAX_CAMERA_SMOOTH_DISTANCE = 50.0f;
-
 const F32 HEAD_BUFFER_SIZE = 0.3f;
 
 const F32 CUSTOMIZE_AVATAR_CAMERA_ANIM_SLOP = 0.1f;
@@ -1400,19 +1398,13 @@ void LLAgentCamera::updateCamera()
 				// the avatar moves too jerkily w/r/t global space to smooth there.
 
 				LLVector3d delta = camera_pos_agent - mCameraSmoothingLastPositionAgent;
-				if (delta.magVec() < MAX_CAMERA_SMOOTH_DISTANCE)  // only smooth over short distances please
-				{
-					camera_pos_agent = lerp(mCameraSmoothingLastPositionAgent, camera_pos_agent, smoothing);
-					camera_pos_global = camera_pos_agent + agent_pos;
-				}
+				camera_pos_agent = lerp(mCameraSmoothingLastPositionAgent, camera_pos_agent, smoothing);
+				camera_pos_global = camera_pos_agent + agent_pos;
 			}
 			else
 			{
 				LLVector3d delta = camera_pos_global - mCameraSmoothingLastPositionGlobal;
-				if (delta.magVec() < MAX_CAMERA_SMOOTH_DISTANCE) // only smooth over short distances please
-				{
-					camera_pos_global = lerp(mCameraSmoothingLastPositionGlobal, camera_pos_global, smoothing);
-				}
+				camera_pos_global = lerp(mCameraSmoothingLastPositionGlobal, camera_pos_global, smoothing);
 			}
 		}
 								 
