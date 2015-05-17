@@ -68,7 +68,6 @@ void LLPanelSnapshot::onOpen(const LLSD& key)
 	S32 old_format = gSavedSettings.getS32("SnapshotFormat");
 	S32 new_format = (S32) getImageFormat();
 
-	gSavedSettings.setS32("SnapshotFormat", new_format);
 	setCtrlsEnabled(true);
 
 	// Switching panels will likely change image format.
