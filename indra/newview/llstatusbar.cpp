@@ -255,13 +255,6 @@ void LLStatusBar::refresh()
 //	//BD - Framerate counter in statusbar
 	LLTrace::PeriodicRecording& frame_recording = LLTrace::get_frame_recording();
 	mFPSText->setValue(frame_recording.getPrevRecording(1).getPerSec(LLStatViewer::FPS));
-
-//	//BD - Prevent our old mini locationbar from showing up until we properly removed it.
-	static LLUICachedControl<bool> mini_locationbar("ShowNavbarNavigationPanel", 0);
-	if (!mini_locationbar)
-	{
-		gSavedSettings.setBOOL("ShowNavbarNavigationPanel", true);
-	}
 	
 	// update clock every 10 seconds
 	if(mClockUpdateTimer.getElapsedTimeF32() > 10.f)
