@@ -70,6 +70,7 @@ public:
 	F32 mRotateSlow;
 	F32 mRotateMouselook;
 	bool mMotionBlurEnabled;
+	bool mFloaterOpen;
 
 private:
 	static LLUICtrl* sThumbnailPlaceholder;

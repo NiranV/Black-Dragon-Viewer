@@ -1173,7 +1173,7 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 	gSnapshotFloaterView->setVisible(TRUE);
 	gSnapshotFloaterView->adjustToFitScreen(this, FALSE);
 
-	if(gSavedSettings.getBOOL("UseFreezeFrame"))
+	if(gSavedSettings.getBOOL("UseFreezeFrame") && !mFloaterOpen)
 	{
 		impl.handleFreezeWorld(this);
 	}
@@ -1182,6 +1182,10 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 
 	// Initialize default tab.
 	getChild<LLSideTrayPanelContainer>("panel_container")->getCurrentPanel()->onOpen(LLSD());
+
+	//BD - Save if the snapshot floater is open, so we can stop it from repeatedly
+	//     calling the freeze world call.
+	mFloaterOpen = true;
 }
 
 void LLFloaterSnapshot::onClose(bool app_quitting)
@@ -1208,6 +1212,8 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 	{
 		LLToolMgr::getInstance()->setCurrentToolset(impl.mLastToolset);
 	}
+
+	mFloaterOpen = false;
 }
 
 // virtual
