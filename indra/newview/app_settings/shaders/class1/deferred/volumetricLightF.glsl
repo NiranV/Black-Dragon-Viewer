@@ -166,18 +166,17 @@ void main()
     shaftify = (shaftify / fade) * godray_multiplier;
 #if GODRAYS_FADE
     fade = 0.0;
-    if(sun_dir.z < 0.3)
+    if(sun_dir.z < 0.0)
 	{
-        fade = 1 - clamp(abs((sun_dir.x * sun_dir.x * 1) + (sun_dir.y * sun_dir.y * 4.5)), 0.0 , 1.0);
+        fade = clamp(1 - dot(sun_dir.xy * 1.2, sun_dir.xy * 1.8), 0, 1);
     }
     shaftify *= fade;
-#endif 
+#endif
     diff += ((shaftify * haze_weight.a) * shadamount) * sunlight_color;
     
 #if HAS_NO_DOF
     vec4 bloom = texture2D(bloomMap, tc/screen_res);
     diff.rgb += bloom.rgb;
 #endif
-
     frag_color = diff;
 }
