@@ -3692,7 +3692,9 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 			// Set the root rotation, but do so incrementally so that it
 			// lags in time by some fixed amount.
 			//F32 u = LLSmoothInterpolation::getInterpolant(PELVIS_LAG);
-			F32 pelvis_lag_time = 0.f;
+//			//BD - Custom turnaround speed.
+			static LLCachedControl<F32> s_pelvis_rot_speed(gSavedSettings, "MovementRotationSpeed");
+			F32 pelvis_lag_time = s_pelvis_rot_speed;
 			if (self_in_mouselook)
 			{
 				pelvis_lag_time = PELVIS_LAG_MOUSELOOK;
@@ -3702,11 +3704,6 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 				pelvis_lag_time = PELVIS_LAG_FLYING;
 				// increase pelvis lag time when moving slowly
 				pelvis_lag_time *= clamp_rescale(mSpeedAccum, 0.f, 15.f, 3.f, 1.f);
-			}
-			else
-			{
-//				//BD - Custom turnaround speed.
-				pelvis_lag_time = gSavedSettings.getF32("MovementRotationSpeed");
 			}
 
 			F32 u = llclamp((deltaTime / pelvis_lag_time), 0.0f, 1.0f);	
