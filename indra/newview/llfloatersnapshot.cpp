@@ -29,6 +29,7 @@
 #include "llfloatersnapshot.h"
 
 #include "llagent.h"
+#include "llfloaterbigpreview.h"
 #include "llfacebookconnect.h"
 #include "llfloaterreg.h"
 #include "llfloaterfacebook.h"
@@ -1016,8 +1017,10 @@ LLFloaterSnapshot::LLFloaterSnapshot(const LLSD& key)
 	  mRefreshLabel(NULL),
 	  mSucceessLblPanel(NULL),
 	  mFailureLblPanel(NULL),
+	  mBigPreviewFloater(NULL),
 	  impl (*(new Impl))
 {
+	mCommitCallbackRegistrar.add("SocialSharing.BigPreview", boost::bind(&LLFloaterSnapshot::onClickBigPreview, this));
 }
 
 // Destroys the object
@@ -1044,6 +1047,7 @@ BOOL LLFloaterSnapshot::postBuild()
 	mRefreshLabel = getChild<LLUICtrl>("refresh_lbl");
 	mSucceessLblPanel = getChild<LLUICtrl>("succeeded_panel");
 	mFailureLblPanel = getChild<LLUICtrl>("failed_panel");
+	mBigPreviewFloater = dynamic_cast<LLFloaterBigPreview*>(LLFloaterReg::getInstance("big_preview"));
 
 	childSetCommitCallback("ui_check", Impl::onClickUICheck, this);
 	getChild<LLUICtrl>("ui_check")->setValue(gSavedSettings.getBOOL("RenderUIInSnapshot"));
@@ -1061,7 +1065,6 @@ BOOL LLFloaterSnapshot::postBuild()
 
 	childSetCommitCallback("auto_snapshot_check", Impl::onClickAutoSnap, this);
     
-
 	// Filters
 	LLComboBox* filterbox = getChild<LLComboBox>("filters_combobox");
     std::vector<std::string> filter_list = LLImageFiltersManager::getInstance()->getFiltersList();
@@ -1123,6 +1126,10 @@ void LLFloaterSnapshot::draw()
 	}
 
 	LLFloater::draw();
+
+	// Toggle the button state as appropriate
+    bool preview_active = (isPreviewVisible() && mBigPreviewFloater->isFloaterOwner(getParentByType<LLFloater>()));
+	getChild<LLButton>("big_preview_btn")->setToggleState(preview_active);
 
 	if (previewp && !isMinimized() && sThumbnailPlaceholder->getVisible())
 	{		
@@ -1214,6 +1221,35 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 	}
 
 	mFloaterOpen = false;
+}
+
+void LLFloaterSnapshot::onClickBigPreview()
+{
+    // Toggle the preview
+    if (isPreviewVisible())
+    {
+        LLFloaterReg::hideInstance("big_preview");
+    }
+    else
+    {
+        attachPreview();
+        LLFloaterReg::showInstance("big_preview");
+    }
+}
+
+bool LLFloaterSnapshot::isPreviewVisible()
+{
+    return (mBigPreviewFloater && mBigPreviewFloater->getVisible());
+}
+
+void LLFloaterSnapshot::attachPreview()
+{
+    if (mBigPreviewFloater)
+    {
+        LLSnapshotLivePreview* previewp = impl.getPreviewView(this);
+        mBigPreviewFloater->setPreview(previewp);
+        mBigPreviewFloater->setFloaterOwner(getParentByType<LLFloater>());
+    }
 }
 
 // virtual

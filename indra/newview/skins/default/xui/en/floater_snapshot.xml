@@ -95,7 +95,28 @@
 	 label="REFRESH"
      name="new_snapshot_btn"
      top_pad="26"
-     width="167" />
+     width="86" />
+	<button
+       follows="left|top"
+       height="25"
+	   is_toggle="true"
+       layout="topleft"
+	   image_hover_unselected="Toolbar_Middle_Over"
+	   image_selected="Toolbar_Middle_Off"
+	   image_unselected="Toolbar_Middle_Off"
+	   image_overlay="Conv_toolbar_arrow_ne"
+	   image_overlay_alignment="left"
+       imgoverlay_label_space="5"
+       name="big_preview_btn"
+	   label="PREVIEW"
+	   pad_bottom="0"
+	   halign="left"
+       left_pad="1"
+	   top_delta="0"
+       width="80" >
+		 <button.commit_callback
+		 function="SocialSharing.BigPreview" />
+	   </button>
 	<button
        follows="left|top"
 	   control_name="AdvanceSnapshot"

@@ -28,8 +28,11 @@
 #define LL_LLFLOATERSNAPSHOT_H
 
 #include "llfloater.h"
+#include "llviewertexture.h"
 
 class LLSpinCtrl;
+class LLSnapshotLivePreview;
+class LLFloaterBigPreview;
 
 class LLFloaterSnapshot : public LLFloater
 {
@@ -64,6 +67,8 @@ public:
 	static const LLVector3d& getPosTakenGlobal();
 	static void setAgentEmail(const std::string& email);
 
+	void onClickBigPreview();
+
 	static const LLRect& getThumbnailPlaceholderRect() { return sThumbnailPlaceholder->getRect(); }
 
 	F32 mRotateFast;
@@ -76,6 +81,11 @@ private:
 	static LLUICtrl* sThumbnailPlaceholder;
 	LLUICtrl *mRefreshBtn, *mRefreshLabel;
 	LLUICtrl *mSucceessLblPanel, *mFailureLblPanel;
+	LLHandle<LLView> mPreviewHandle;
+	LLFloaterBigPreview * mBigPreviewFloater;
+
+	bool isPreviewVisible();
+    void attachPreview();
 
 	class Impl;
 	Impl& impl;
