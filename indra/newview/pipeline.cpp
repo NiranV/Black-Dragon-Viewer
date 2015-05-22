@@ -8264,7 +8264,9 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 		
 	}
 
-	if (LLPipeline::sRenderDeferred && LLPipeline::RenderMotionBlur)
+	//BD - We should temporarily disable Motion Blur when we are in Freeze World mode.
+	if (LLPipeline::sRenderDeferred && LLPipeline::RenderMotionBlur
+		&& !(gSavedSettings.getBOOL("UseFreezeFrame") && LLFloaterReg::instanceVisible("snapshot")))
 	{ //motion blur
 
 		gMotionBlurProgram.bind();

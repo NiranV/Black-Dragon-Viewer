@@ -71,10 +71,6 @@ public:
 
 	static const LLRect& getThumbnailPlaceholderRect() { return sThumbnailPlaceholder->getRect(); }
 
-	F32 mRotateFast;
-	F32 mRotateSlow;
-	F32 mRotateMouselook;
-	bool mMotionBlurEnabled;
 	bool mFloaterOpen;
 
 private:

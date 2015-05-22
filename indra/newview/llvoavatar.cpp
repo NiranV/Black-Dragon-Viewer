@@ -99,6 +99,8 @@
 #include "rlvhandler.h"
 // [/RLVa:KB]
 
+#include "llfloaterreg.h"
+
 #include "llgesturemgr.h" //needed to trigger the voice gesticulations
 #include "llvoiceclient.h"
 #include "llvoicevisualizer.h" // Ventrella
@@ -3616,15 +3618,22 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 
 			LLVector3 pelvisDir( mRoot->getWorldMatrix().getFwdRow4().mV );
 
-			static LLCachedControl<F32> s_pelvis_rot_threshold_slow(gSavedSettings, "AvatarRotateThresholdSlow", 60.0);
-			static LLCachedControl<F32> s_pelvis_rot_threshold_fast(gSavedSettings, "AvatarRotateThresholdFast", 2.0);
-			static LLCachedControl<F32> s_pelvis_rot_threshold_ml(gSavedSettings, "AvatarRotateThresholdMouselook", 120.0);
+			static LLCachedControl<F32> s_pelvis_rot_threshold_slow(gSavedSettings, "AvatarRotateThresholdSlow");
+			static LLCachedControl<F32> s_pelvis_rot_threshold_fast(gSavedSettings, "AvatarRotateThresholdFast");
+			static LLCachedControl<F32> s_pelvis_rot_threshold_ml(gSavedSettings, "AvatarRotateThresholdMouselook");
 
 			F32 pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, s_pelvis_rot_threshold_slow, s_pelvis_rot_threshold_fast);
 						
 			if (self_in_mouselook)
 			{
 				pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, s_pelvis_rot_threshold_ml, s_pelvis_rot_threshold_fast);
+			}
+
+			//BD - Stop Avatars from rotating while we are in Freeze World mode.
+			if (gSavedSettings.getBOOL("UseFreezeFrame") 
+				&& LLFloaterReg::instanceVisible("snapshot"))
+			{
+				pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, 360.0f, 360.0f);
 			}
 			pelvis_rot_threshold *= DEG_TO_RAD;
 

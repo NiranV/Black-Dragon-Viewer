@@ -596,22 +596,6 @@ void LLFloaterSnapshot::Impl::handleFreezeWorld(void* data , bool closing)
 
 	if (use_freeze_frame && !closing)
 	{
-		//BD - Save our options here so we can restore them later.
-		view->mRotateFast = gSavedSettings.getF32("AvatarRotateThresholdFast");
-		view->mRotateSlow = gSavedSettings.getF32("AvatarRotateThresholdSlow");
-		view->mRotateMouselook = gSavedSettings.getF32("AvatarRotateThresholdMouselook");
-		view->mMotionBlurEnabled = gSavedSettings.getBOOL("RenderMotionBlur");
-
-		//BD - Use some little tricks to prevent prim eyes and other attachments to possibly
-		//     bug out of their correct position due to movement afterwards.
-		gSavedSettings.setF32("AvatarRotateThresholdFast", 360.0f);
-		gSavedSettings.setF32("AvatarRotateThresholdSlow", 360.0f);
-		gSavedSettings.setF32("AvatarRotateThresholdMouselook", 360.0f);
-
-		//BD - We should temporarily disable Motion Blur here until we can make it properly work
-		//     with a completely frozen world.
-		gSavedSettings.setBOOL("RenderMotionBlur", false);
-
 		// freeze all avatars
 		LLCharacter* avatarp;
 		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
@@ -626,12 +610,6 @@ void LLFloaterSnapshot::Impl::handleFreezeWorld(void* data , bool closing)
 	}
 	else // turning off freeze world mode, either temporarily or not.
 	{
-		//BD - Undo our little tricks again.
-		gSavedSettings.setF32("AvatarRotateThresholdFast", view->mRotateFast);
-		gSavedSettings.setF32("AvatarRotateThresholdSlow", view->mRotateSlow);
-		gSavedSettings.setF32("AvatarRotateThresholdMouselook", view->mRotateMouselook);
-		gSavedSettings.setBOOL("RenderMotionBlur", view->mMotionBlurEnabled);
-
 		// thaw all avatars
 		view->impl.mAvatarPauseHandles.clear();
 
@@ -1106,9 +1084,6 @@ BOOL LLFloaterSnapshot::postBuild()
     previewp->setContainer(this);
 	impl.updateControls(this);
 	impl.updateLayout(this);
-	
-	//BD - Save our option here so we don't possibly end up disabling it on first start.
-	mMotionBlurEnabled = gSavedSettings.getF32("RenderMotionBlur");
 
 	previewp->setThumbnailPlaceholderRect(getThumbnailPlaceholderRect());
 
