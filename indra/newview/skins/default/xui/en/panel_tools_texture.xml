@@ -434,12 +434,23 @@
              follows="top|left"
              height="16"
              initial_value="false"
-             label="Align"
+             label="Lock"
              layout="topleft"
              left_pad="10"
+             name="lock_check"
+             tool_tip="Apply all scaling, rotation, repeat and offset changes to all 3 texture channels"
+             top_delta="-16"
+             width="260" />
+            <check_box
+             follows="top|left"
+             height="16"
+             initial_value="false"
+             label="Align"
+             layout="topleft"
+             left_delta="0"
              name="checkbox planar align"
              tool_tip="Align textures on all selected faces with the last selected face. Requires Planar texture mapping."
-             top_delta="5"
+             top_pad="5"
              width="260" />
             <spinner
              follows="left|top"

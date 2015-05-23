@@ -163,18 +163,6 @@ protected:
 	//
 	static void		onCommitTextureInfo( 	LLUICtrl* ctrl, void* userdata);
 
-	static void		onCommitMaterialBumpyScaleX(	LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialBumpyScaleY(	LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialBumpyRot(		LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialBumpyOffsetX(	LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialBumpyOffsetY(	LLUICtrl* ctrl, void* userdata);
-
-	static void		onCommitMaterialShinyScaleX(	LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialShinyScaleY(	LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialShinyRot(		LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialShinyOffsetX(	LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialShinyOffsetY(	LLUICtrl* ctrl, void* userdata);
-
 	static void		onCommitMaterialGloss(			LLUICtrl* ctrl, void* userdata);
 	static void		onCommitMaterialEnv(				LLUICtrl* ctrl, void* userdata);
 	static void		onCommitMaterialMaskCutoff(	LLUICtrl* ctrl, void* userdata);
@@ -186,7 +174,7 @@ protected:
 	static void		onCommitShiny(				LLUICtrl* ctrl, void* userdata);
 	static void		onCommitAlphaMode(		LLUICtrl* ctrl, void* userdata);
 	static void		onCommitFullbright(		LLUICtrl* ctrl, void* userdata);
-	static void    onCommitGlow(				LLUICtrl* ctrl, void *userdata);
+	static void     onCommitGlow(				LLUICtrl* ctrl, void *userdata);
 	static void		onCommitPlanarAlign(		LLUICtrl* ctrl, void* userdata);
 	static void		onCommitRepeatsPerMeter(	LLUICtrl* ctrl, void* userinfo);
 	static void		onClickAutoFix(void*);
