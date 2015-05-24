@@ -4446,11 +4446,19 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 		LLPipeline::toggleRenderDebugFeature((void*)LLPipeline::RENDER_DEBUG_FEATURE_UI);
 	}
 
+	bool big_preview_open = false;
 	bool snapshot_open = false;
+
 	if(LLFloaterReg::getInstance("snapshot")->getVisible())
 	{
 		LLFloaterReg::findInstance("snapshot")->setVisible(false);
 		snapshot_open = true;
+	}
+
+	if(LLFloaterReg::getInstance("big_preview")->getVisible())
+	{
+		LLFloaterReg::findInstance("big_preview")->setVisible(false);
+		big_preview_open = true;
 	}
 
 	BOOL hide_hud = !gSavedSettings.getBOOL("RenderHUDInSnapshot") && LLPipeline::sShowHUDAttachments;
@@ -4460,7 +4468,6 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 	}
 
 	//BD - Always use full window to render world view.
-	// if not showing ui, use full window to render world view
 	updateWorldViewRect(true);
 
 	// Copy screen to a buffer
@@ -4680,6 +4687,11 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 	if(snapshot_open)
 	{
 		LLFloaterReg::findInstance("snapshot")->setVisible(true);
+	}
+
+	if(big_preview_open)
+	{
+		LLFloaterReg::findInstance("big_preview")->setVisible(true);
 	}
 
 	if (hide_hud)
