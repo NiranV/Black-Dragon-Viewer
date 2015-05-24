@@ -376,35 +376,14 @@ void LLSnapshotLivePreview::generateThumbnailImage(BOOL force_update)
 	}		
 
 	LLPointer<LLImageRaw> raw = new LLImageRaw;
-    
-    if (mThumbnailSubsampled)
-    {
-        // The thumbnail is be a subsampled version of the preview (used in SL Share previews, i.e. Flickr, Twitter, Facebook)
+
+	if (raw)
+	{
 		raw->resize( mPreviewImage->getWidth(),
                      mPreviewImage->getHeight(),
                      mPreviewImage->getComponents());
         raw->copy(mPreviewImage);
-        // Scale to the thumbnail size
-        if (!raw->scale(mThumbnailWidth, mThumbnailHeight))
-        {
-            raw = NULL ;
-        }
-    }
-    else
-    {
-        // The thumbnail is a screen view with screen grab positioning preview
-        if(!gViewerWindow->thumbnailSnapshot(raw,
-                                         mThumbnailWidth, mThumbnailHeight,
-                                         mAllowRenderUI && gSavedSettings.getBOOL("RenderUIInSnapshot"),
-                                         FALSE,
-                                         mSnapshotBufferType) )
-        {
-            raw = NULL ;
-        }
-    }
-    
-	if (raw)
-	{
+
         // Filter the thumbnail
         // Note: filtering needs to be done *before* the scaling to power of 2 or the effect is distorted
         if (getFilter() != "")
