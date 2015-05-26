@@ -130,6 +130,7 @@ void LLPanelSnapshotLocal::updateControls(const LLSD& info)
 void LLPanelSnapshotLocal::onFormatComboCommit(LLUICtrl* ctrl)
 {
 	// will call updateControls()
+	gSavedSettings.setS32("SnapshotFormat", getImageFormat());
 	LLFloaterSnapshot::getInstance()->notify(LLSD().with("image-format-change", true));
 }
 

@@ -1093,7 +1093,6 @@ BOOL LLFloaterSnapshot::postBuild()
 void LLFloaterSnapshot::draw()
 {
 	LLSnapshotLivePreview* previewp = impl.getPreviewView(this);
-
 	if (previewp && (previewp->isSnapshotActive() || previewp->getThumbnailLock()))
 	{
 		// don't render snapshot window in snapshot, even if "show ui" is turned on
