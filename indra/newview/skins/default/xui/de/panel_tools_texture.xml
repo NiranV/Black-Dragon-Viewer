@@ -26,7 +26,7 @@
 		<combo_box.item label="Unebenheit (normal)" name="Bumpiness (normal)"/>
 		<combo_box.item label="Glanzlicht (Spiegel)" name="Shininess (specular)"/>
 	</combo_box>
-	<texture_picker label="Textur" name="texture control" tool_tip="Klicken, um ein Bild zu wählen"/>
+	<texture_picker label="" name="texture control" tool_tip="Klicken, um ein Bild zu wählen"/>
 	<text name="label alphamode">
 		Alpha-Modus
 	</text>
@@ -39,7 +39,7 @@
 	<text name="label maskcutoff">
 		Maskenabgrenzung
 	</text>
-	<texture_picker label="Textur" name="bumpytexture control" tool_tip="Klicken, um ein Bild auszuwählen"/>
+	<texture_picker label="" name="bumpytexture control" tool_tip="Klicken, um ein Bild auszuwählen"/>
 	<text name="label bumpiness">
 		Unebenheit
 	</text>
@@ -63,7 +63,7 @@
 		<combo_box.item label="Saugkraft" name="suction"/>
 		<combo_box.item label="Gewebe" name="weave"/>
 	</combo_box>
-	<texture_picker label="Textur" name="shinytexture control" tool_tip="Klicken, um ein Bild auszuwählen"/>
+	<texture_picker label="" name="shinytexture control" tool_tip="Klicken, um ein Bild auszuwählen"/>
 	<text name="label shininess">
 		Glanz
 	</text>
@@ -96,12 +96,12 @@
 		<combo_box.item label="Standard" name="Default"/>
 		<combo_box.item label="Planar" name="Planar"/>
 	</combo_box>
-	<spinner label="Horizontale Skalierung" name="TexScaleU"/>
-	<spinner label="Vertikale Skalierung" name="TexScaleV"/>
-	<spinner label="Wiederholungen pro Meter" name="rptctrl"/>
+	<spinner label="Größe Horizontal | Vertikal" name="TexScaleU"/>
+	<spinner label="|" name="TexScaleV"/>
+	<spinner label="Wiederholungen" name="rptctrl"/>
 	<spinner label="Drehung (Grad)" name="TexRot"/>
-	<spinner label="Horizontaler Versatz" name="TexOffsetU"/>
-	<spinner label="Vertikaler Versatz" name="TexOffsetV"/>
+	<spinner label="Versatz Horizontal | Vertikal" name="TexOffsetU"/>
+	<spinner label="|" name="TexOffsetV"/>
 	<spinner label="Horizontale Skalierung" name="bumpyScaleU"/>
 	<spinner label="Vertikale Skalierung" name="bumpyScaleV"/>
 	<spinner label="Drehung (Grad)" name="bumpyRot"/>
@@ -112,5 +112,5 @@
 	<spinner label="Drehung (Grad)" name="shinyRot"/>
 	<spinner label="Horizontaler Versatz" name="shinyOffsetU"/>
 	<spinner label="Vertikaler Versatz" name="shinyOffsetV"/>
-	<check_box initial_value="false" label="Planare Flächen ausrichten" name="checkbox planar align" tool_tip="Texturen auf allen ausgewählten Flächen an der zuletzt ausgewählten Fläche ausrichten. Erfordert planares Texture Mapping."/>
+	<check_box initial_value="false" label="Justieren" name="checkbox planar align" tool_tip="Texturen auf allen ausgewählten Flächen an der zuletzt ausgewählten Fläche ausrichten. Erfordert planares Texture Mapping."/>
 </panel>

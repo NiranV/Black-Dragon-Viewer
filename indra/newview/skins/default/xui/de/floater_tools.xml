@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="toolbox floater" short_title="BAU-WERKZEUGE" title="">
+<floater name="toolbox floater" short_title="BAU-WERKZEUGE" title="Bauwerkzeuge">
 	<floater.string name="grid_screen_text">
 		Bildschirm
 	</floater.string>
@@ -74,8 +74,10 @@
 	<button label="Ver-" name="link_btn"/>
 	<button label="Ent-linken" name="unlink_btn"/>
 	<check_box label="Beide Seiten dehnen" name="checkbox uniform"/>
-	<check_box initial_value="true" label="Texturen dehnen" name="checkbox stretch textures"/>
-	<check_box initial_value="true" label="Einrasten" name="checkbox snap to grid"/>
+	<check_box label="Texturen dehnen" name="checkbox stretch textures"/>
+	<check_box label="Nur eigene Objekte" name="checkbox only my objects"/>
+	<check_box label="Nur physik Objekte" name="checkbox only physical objects"/>
+	<button label="Einrasten" name="checkbox snap to grid"/>
 	<combo_box name="combobox grid mode" tool_tip="Wählen Sie das gewünschte Rasterlineal zum Positionieren des Objekts aus.">
 		<combo_box.item label="Welt" name="World"/>
 		<combo_box.item label="Lokal" name="Local"/>
@@ -186,9 +188,9 @@
 				Gruppe:
 			</text>
 			<name_box initial_value="Wird geladen..." name="Group Name Proxy"/>
-			<button label="Festlegen..." label_selected="Festlegen..." name="button set group" tool_tip="Eine Gruppe auswählen, um die Berechtigungen des Objekts zu teilen."/>
+			<button label="Festlegen" label_selected="Festlegen" name="button set group" tool_tip="Eine Gruppe auswählen, um die Berechtigungen des Objekts zu teilen."/>
 			<check_box label="Teilen" name="checkbox share with group" tool_tip="Mit allen Mitgliedern der zugeordneten Gruppe, Ihre Berechtigungen dieses Objekt zu ändern teilen. Sie müssen Übereignen, um Rollenbeschränkungen zu aktivieren."/>
-			<button label="Übertragung" label_selected="Übertragung" name="button deed" tool_tip="Eine Übertragung bedeutet, dass das Objekt mit den Berechtigungen „Nächster Eigentümer“ weitergegeben wird. Mit der Gruppe geteilte Objekte können von einem Gruppen-Officer übertragen werden."/>
+			<button label="Übertragen" label_selected="Übertragen" name="button deed" tool_tip="Eine Übertragung bedeutet, dass das Objekt mit den Berechtigungen „Nächster Eigentümer“ weitergegeben wird. Mit der Gruppe geteilte Objekte können von einem Gruppen-Officer übertragen werden."/>
 			<text name="label click action">
 				Bei Linksklick:
 			</text>
@@ -200,14 +202,14 @@
 				<combo_box.item label="Öffnen" name="Open"/>
 				<combo_box.item label="Zoom" name="Zoom"/>
 			</combo_box>
-			<check_box label="Zum Verkauf:" name="checkbox for sale"/>
+			<check_box label="Verkaufen:" name="checkbox for sale"/>
 			<spinner label="L$" name="Edit Cost"/>
 			<combo_box name="sale type">
 				<combo_box.item label="Kopie" name="Copy"/>
 				<combo_box.item label="Inhalt" name="Contents"/>
 				<combo_box.item label="Original" name="Original"/>
 			</combo_box>
-			<check_box label="In Suche anzeigen" name="search_check" tool_tip="Dieses Objekt in Suchergebnissen anzeigen"/>
+			<check_box label="In der Suche anzeigen" name="search_check" tool_tip="Dieses Objekt in Suchergebnissen anzeigen"/>
 			<panel name="perms_build">
 				<text name="perm_modify">
 					Sie können dieses Objekt bearbeiten.
@@ -368,7 +370,7 @@
 				Konvexe Hülle
 			</panel.string>
 			<text name="select_single">
-				Wählen Sie nur einen einzelnen Baustein aus, um Eigenschaften zu bearbeiten.
+				Wähle einzelne Prims aus um Merkmale zu ändern.
 			</text>
 			<text name="edit_object">
 				Objekteigenschaften bearbeiten:
@@ -406,7 +408,7 @@
 			</combo_box>
 			<spinner label="Schwerkraft" name="Physics Gravity"/>
 			<spinner label="Reibung" name="Physics Friction"/>
-			<spinner label="Dichte in 100 kg/m^3" name="Physics Density"/>
+			<spinner label="Dichte" name="Physics Density"/>
 			<spinner label="Restitution" name="Physics Restitution"/>
 		</panel>
 		<panel label="Textur" name="Texture">

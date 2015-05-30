@@ -1901,8 +1901,6 @@ void LLPanelObject::clearCtrls()
 	mLabelRevolutions->setEnabled( FALSE );
 
 	getChildView("select_single")->setVisible( FALSE);
-	getChildView("edit_object")->setVisible( TRUE);	
-	getChildView("edit_object")->setEnabled(FALSE);
 	
 	getChildView("scale_hole")->setEnabled(FALSE);
 	getChildView("scale_taper")->setEnabled(FALSE);

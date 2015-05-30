@@ -245,9 +245,11 @@ BOOL	LLFloaterTools::postBuild()
 	mBtnLink			= getChild<LLButton>("link_btn");
 	mBtnUnlink			= getChild<LLButton>("unlink_btn");
 	
+	mCheckMyObjects			= getChild<LLUICtrl>("checkbox only my objects");
+	mCheckPhysicalObjects	= getChild<LLUICtrl>("checkbox only physical objects");
 	mCheckSelectIndividual	= getChild<LLCheckBoxCtrl>("checkbox edit linked parts");	
 	getChild<LLUICtrl>("checkbox edit linked parts")->setValue((BOOL)gSavedSettings.getBOOL("EditLinkedParts"));
-	mCheckSnapToGrid		= getChild<LLCheckBoxCtrl>("checkbox snap to grid");
+	mCheckSnapToGrid		= getChild<LLUICtrl>("checkbox snap to grid");
 	getChild<LLUICtrl>("checkbox snap to grid")->setValue((BOOL)gSavedSettings.getBOOL("SnapEnabled"));
 	mCheckStretchUniform	= getChild<LLCheckBoxCtrl>("checkbox uniform");
 	getChild<LLUICtrl>("checkbox uniform")->setValue((BOOL)gSavedSettings.getBOOL("ScaleUniform"));
@@ -328,6 +330,8 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 
 	mCheckSelectIndividual(NULL),
 
+	mCheckMyObjects(NULL),
+	mCheckPhysicalObjects(NULL),
 	mCheckSnapToGrid(NULL),
 	mBtnGridOptions(NULL),
 	mTitleMedia(NULL),
@@ -724,6 +728,8 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	// Snap to grid disabled for grab tool - very confusing
 	if (mCheckSnapToGrid) mCheckSnapToGrid->setVisible( edit_visible /* || tool == LLToolGrab::getInstance() */ );
 	if (mBtnGridOptions) mBtnGridOptions->setVisible( edit_visible /* || tool == LLToolGrab::getInstance() */ );
+	if (mCheckMyObjects) mCheckMyObjects->setVisible( edit_visible);
+	if (mCheckPhysicalObjects) mCheckPhysicalObjects->setVisible( edit_visible);
 
 	//mCheckSelectLinked	->setVisible( edit_visible );
 	if (mCheckStretchUniform) mCheckStretchUniform->setVisible( edit_visible );

@@ -6,11 +6,12 @@
  layout="topleft"
  name="toolbox floater"
  save_rect="true"
+ title="Build Tools"
  short_title="Build Tools"
  single_instance="true"
  save_visibility="true"
  sound_flags="0"
- width="295">
+ width="305">
   <floater.string
      name="grid_screen_text">
     Screen
@@ -71,15 +72,36 @@
      name="status_remaining_capacity">
         Remaining capacity [LAND_CAPACITY].
     </floater.string>
+	<view_border
+    bevel_style="none"
+    follows="top|left"
+    height="145"
+    layout="topleft"
+    left="10"
+    name="cost_text_border"
+    top="18"
+	visible="false"
+    width="285"/>
+	<view_border
+    bevel_style="none"
+    follows="top|left"
+    height="410"
+    layout="topleft"
+    left="10"
+    name="cost_text_border"
+	visible="false"
+    top_pad="5"
+    width="285"/>
     <button
-     follows="left|top"
+     follows="right|top"
      height="16"
      image_bottom_pad="1"
      image_overlay="Tool_Zoom"
-     image_selected="PushButton_Selected_Press"
+     image_selected="transparent.j2c"
+	 image_unselected="transparent.j2c"
      layout="topleft"
-     left="8"
-					top="0"
+     left="160"
+					top="1"
      name="button focus"
      tool_tip="Focus"
      width="16">
@@ -92,7 +114,8 @@
       height="16"
      image_bottom_pad="1"
      image_overlay="Tool_Grab"
-     image_selected="PushButton_Selected_Press"
+     image_selected="transparent.j2c"
+	 image_unselected="transparent.j2c"
      layout="topleft"
      left_pad="5"
      name="button move"
@@ -107,7 +130,8 @@
      height="16"
      image_bottom_pad="1"
      image_overlay="Tool_Face"
-     image_selected="PushButton_Selected_Press"
+     image_selected="transparent.j2c"
+	 image_unselected="transparent.j2c"
      layout="topleft"
      left_pad="5"
      name="button edit"
@@ -122,7 +146,8 @@
       height="16"
      image_bottom_pad="1"
      image_overlay="Tool_Create"
-     image_selected="PushButton_Selected_Press"
+     image_selected="transparent.j2c"
+	 image_unselected="transparent.j2c"
      layout="topleft"
      left_pad="5"
      name="button create"
@@ -137,7 +162,8 @@
       height="16"
      image_bottom_pad="1"
      image_overlay="Tool_Dozer"
-     image_selected="PushButton_Selected_Press"
+     image_selected="transparent.j2c"
+	 image_unselected="transparent.j2c"
      layout="topleft"
      left_pad="5"
      name="button land"
@@ -147,7 +173,7 @@
 	     function="BuildTool.setTool"
 	     parameter="Land" />
 	</button>
-    <text
+    <!--<text
      height="30"
      word_wrap="true"
      use_ellipses="true"
@@ -161,12 +187,12 @@
      top_pad="3"
      width="285">
         Drag to move, shift-drag to copy
-    </text>
+	</text>-->
    <radio_group
      layout="topleft"
-     left="5"
+     left="8"
       height="70"
-      top_pad="3"
+      top="27"
      name="focus_radio_group">
         <radio_item
          top_pad="6"
@@ -194,16 +220,16 @@
      layout="topleft"
      max_val="0.5"
      top_delta="-2"
-     left_delta="100"
+     left="145"
      name="slider zoom"
-     width="134">
+     width="158">
 	 <slider_bar.commit_callback
 	     function="BuildTool.commitZoom"/>
 			</slider_bar>
    <radio_group
-      left="5"
+      left="8"
       height="70"
-      top="52"
+      top="27"
      layout="topleft"
      name="move_radio_group">
         <radio_item
@@ -226,8 +252,8 @@
 	</radio_group>
 	<radio_group
      follows="left|top"
-	 left="5"
-	 top="52"
+	 left="8"
+	 top="29"
 	 height="70"
      layout="topleft"
 	 name="edit_radio_group">
@@ -236,22 +262,22 @@
 		 layout="topleft"
 		 name="radio position" />
         <radio_item
-		 top_pad="6"
+		 top_pad="5"
          label="Rotate (Ctrl)"
          layout="topleft"
          name="radio rotate" />
         <radio_item
-		 top_pad="6"
+		 top_pad="5"
          label="Stretch (Ctrl+Shift)"
          layout="topleft"
          name="radio stretch" />
         <radio_item
-		 top_pad="6"
+		 top_pad="5"
          label="Select Face"
          layout="topleft"
          name="radio select face" />
-								<radio_item
-		 top_pad="6"
+		<radio_item
+		 top_pad="5"
          label="Align"
          layout="topleft"
          name="radio align" />
@@ -266,7 +292,7 @@
      layout="topleft"
      left="143"
      name="checkbox uniform"
-     top="50"
+     top="27"
      width="20" />
     <check_box
      control_name="ScaleStretchTextures"
@@ -279,40 +305,28 @@
      top_pad="0"
      follows="left|top"
      width="134" />
-   <check_box
-     control_name="SnapEnabled"
+	<check_box
+     control_name="SelectMovableOnly"
      height="16"
      initial_value="true"
-     label="Snap"
+     label="Only Physical Objects"
      layout="topleft"
+     left="143"
+     name="checkbox only physical objects"
      top_pad="0"
-     name="checkbox snap to grid"
+     follows="left|top"
      width="134" />
-    <combo_box
-      height="20"
-      layout="topleft"
-      follows="left|top"
-      name="combobox grid mode"
-      tool_tip="Choose the type of grid ruler for positioning the object"
-      top="78"
-      left="215"
-      top_pad="0"
-      width="60">
-      <combo_box.item
-      label="World"
-      name="World"
-      value="World" />
-      <combo_box.item
-      label="Local"
-      name="Local"
-      value="Local" />
-      <combo_box.item
-      label="Reference"
-      name="Reference"
-      value="Reference" />
-      <combo_box.commit_callback
-      function="BuildTool.gridMode"/>
-    </combo_box>
+	<check_box
+     control_name="SelectOwnedOnly"
+     height="16"
+     initial_value="true"
+     label="Only My Objects"
+     layout="topleft"
+     left="143"
+     name="checkbox only my objects"
+     top_pad="0"
+     follows="left|top"
+     width="134" />
 				<check_box
      left="143"
      follows="left|top"
@@ -329,11 +343,11 @@
      follows="left|top"
      height="20"
      label="Link"
-     top="114"
+     top="110"
      layout="topleft"
-     left="143"
+     left="10"
      name="link_btn"
-     width="50">
+     width="43">
 	  <button.commit_callback
 	     function="BuildTool.LinkObjects"/>
     </button>
@@ -342,24 +356,65 @@
      height="20"
      label="Unlink"
      layout="topleft"
-     left_pad="2"
+     left_pad="1"
      name="unlink_btn"
-     width="80">
+     width="69">
 	  <button.commit_callback
 	     function="BuildTool.UnlinkObjects"/>
-    </button>
-  
-  <button
-     left="275"
+	</button>
+	<button
+	 control_name="SnapEnabled"
+     follows="left|top"
+	 is_toggle="true"
+     height="20"
+     label="Snap to"
+     layout="topleft"
+     left_pad="1"
+     name="checkbox snap to grid"
+     width="66"/>
+   <!--<check_box
+     control_name="SnapEnabled"
+     height="16"
+     initial_value="true"
+     label="Snap"
+     layout="topleft"
+     top_pad="0"
+     name="checkbox snap to grid"
+     width="134" />-->
+    <combo_box
+      height="20"
+      layout="topleft"
+      follows="left|top"
+      name="combobox grid mode"
+      tool_tip="Choose the type of grid ruler for positioning the object"
+      top_delta="0"
+      left_pad="1"
+      width="84">
+      <combo_box.item
+      label="World"
+      name="World"
+      value="World" />
+      <combo_box.item
+      label="Local"
+      name="Local"
+      value="Local" />
+      <combo_box.item
+      label="Reference"
+      name="Reference"
+      value="Reference" />
+      <combo_box.commit_callback
+      function="BuildTool.gridMode"/>
+    </combo_box>
+	<button
+     left_pad="1"
      label=""
-     image_selected="ForwardArrow_Press"
-     image_unselected="ForwardArrow_Off"
+	 image_overlay="Conv_toolbar_expand"
      layout="topleft"
      follows="top|left"
      name="Options..."
      tool_tip="See more grid options"
-     top="78"
-     width="20"
+     top_delta="0"
+     width="19"
      height="20" >
 	 <button.commit_callback
 	     function="BuildTool.gridOptions"/>
@@ -376,7 +431,7 @@
      left="10"
      name="ToolCube"
      tool_tip="Cube"
-     top="58"
+     top="27"
      width="20" />
 				<button
      follows="left|top"
@@ -386,7 +441,7 @@
      image_selected="Object_Sphere_Selected"
      image_unselected="Object_Sphere"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolSphere"
      tool_tip="Sphere"
      top_delta="0"
@@ -399,7 +454,7 @@
      image_selected="Object_Cylinder_Selected"
      image_unselected="Object_Cylinder"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolCylinder"
      tool_tip="Cylinder"
      top_delta="0"
@@ -412,7 +467,7 @@
      image_selected="Object_Pyramid_Selected"
      image_unselected="Object_Pyramid"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolPyramid"
      tool_tip="Pyramid"
      top_delta="0"
@@ -425,7 +480,7 @@
      image_selected="Object_Cone_Selected"
      image_unselected="Object_Cone"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolCone"
      tool_tip="Cone"
      top_delta="0"
@@ -441,7 +496,7 @@
      left="10"
      name="ToolPrism"
      tool_tip="Prism"
-     top="84"
+     top_pad="5"
      width="20" />
 				<button
      follows="left|top"
@@ -451,7 +506,7 @@
      image_selected="Object_Hemi_Sphere_Selected"
      image_unselected="Object_Hemi_Sphere"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolHemiSphere"
      tool_tip="Hemisphere"
      top_delta="0"
@@ -464,7 +519,7 @@
      image_selected="Object_Hemi_Cylinder_Selected"
      image_unselected="Object_Hemi_Cylinder"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolHemiCylinder"
      tool_tip="Hemicylinder"
      top_delta="0"
@@ -490,7 +545,7 @@
      image_selected="Object_Hemi_Cone_Selected"
      image_unselected="Object_Hemi_Cone"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolHemiCone"
      tool_tip="Hemicone"
      top_delta="0"
@@ -506,7 +561,7 @@
      left="10"
      name="ToolTorus"
      tool_tip="Torus"
-     top="109"
+     top_pad="5"
      width="20" />
     <button
      follows="left|top"
@@ -516,7 +571,7 @@
      image_selected="Object_Ring_Selected"
      image_unselected="Object_Ring"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolRing"
      tool_tip="Ring"
      top_delta="0"
@@ -529,7 +584,7 @@
      image_selected="Object_Tube_Selected"
      image_unselected="Object_Tube"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolTube"
      tool_tip="Tube"
      top_delta="0"
@@ -542,7 +597,7 @@
      image_selected="Object_Tree_Selected"
      image_unselected="Object_Tree"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolTree"
      tool_tip="Tree"
      top_delta="0"
@@ -557,54 +612,54 @@
      image_overlay_color="1 0 0 .75"
      image_overlay_selected_color="1 0 0 1"
      layout="topleft"
-     left_delta="29"
+     left_delta="27"
      name="ToolGrass"
      tool_tip="Grass"
      top_delta="0"
      width="20" />
     <check_box
      control_name="CreateToolKeepSelected"
-     height="19"
+     height="16"
      label="Keep Tool selected"
      layout="topleft"
-     left="150"
+     left="143"
      name="checkbox sticky"
-     top="55"
+     top="27"
      width="128" />
     <check_box
      control_name="CreateToolCopySelection"
-     height="19"
+     height="16"
      label="Copy selection"
      layout="topleft"
      left_delta="0"
      name="checkbox copy selection"
-     top_delta="15"
+     top_pad="0"
      width="134" />
     <check_box
      control_name="CreateToolCopyCenters"
-     height="19"
+     height="16"
      initial_value="true"
      label="Center Copy"
      layout="topleft"
-     left_delta="10"
+     left_delta="0"
      name="checkbox copy centers"
-     top="85"
+     top_pad="0"
      width="134" />
     <check_box
      control_name="CreateToolCopyRotates"
-     height="19"
+     height="16"
      label="Rotate Copy"
      layout="topleft"
      left_delta="0"
      name="checkbox copy rotates"
-     top_delta="16"
+     top_pad="0"
      width="134" />
     <radio_group
-     height="105"
+     height="103"
      layout="topleft"
-     left="5"
+     left="8"
      name="land_radio_group"
-     top="48"
+     top="27"
      width="114">
         <radio_item
          height="19"
@@ -669,11 +724,11 @@
      type="string"
      length="1"
      follows="left|top"
-     height="12"
+     height="14"
      layout="topleft"
-     left="135"
+     left="145"
      name="Bulldozer:"
-     top="57"
+     top="27"
      width="100">
         Bulldozer:
     </text>
@@ -681,60 +736,60 @@
      type="string"
      length="1"
      follows="left|top"
-     height="12"
+     height="14"
      layout="topleft"
      name="Dozer Size:"
-     left="135"
-     top_pad="5"
-     width="50">
+     left="145"
+     top_pad="1"
+     width="68">
         Size
     </text>
     <slider_bar
 	 control_name ="LandBrushSize"
      follows="left|top"
-     height="19"
+     height="15"
      initial_value="2.0"
      layout="topleft"
      max_val="11"
      min_val="1"
      left_pad="0"
      name="slider brush size"
-     top_delta="-3"
-     width="80" />
+     top_delta="-2"
+     width="90" />
     <text
      type="string"
      length="1"
      follows="left|top"
-     height="12"
+     height="14"
      layout="topleft"
      name="Strength:"
-     left="135"
-     top_pad="5"
-     width="50">
+     left="145"
+     top_pad="1"
+     width="68">
         Strength
     </text>
     <slider_bar
      follows="left|top"
-     height="19"
+     height="15"
      left_pad="0"
      initial_value="0.00"
      layout="topleft"
      max_val="2"
      min_val="-1"
      name="slider force"
-     top_delta="-3"
-     width="80" >
+     top_delta="-2"
+     width="90" >
 	  <slider_bar.commit_callback
 	     function="BuildTool.LandBrushForce"/>
     </slider_bar>
     <button
      follows="left|top"
-     height="23"
+     height="20"
      label="Apply"
      label_selected="Apply"
      top_pad="5"
      layout="topleft"
-     left="135"
+     left="145"
      name="button apply to selection"
      tool_tip="Modify selected land"
      width="82">
@@ -746,12 +801,11 @@
     follows="top|left"
     height="0"
     layout="topleft"
-    left="6"
+    left="10"
     name="cost_text_border"
-    top="138"
-    width="284"/>
+    top="132"
+    width="285"/>
 				<text
-	 text_color="LtGray_50"
 	  type="string"
 	  length="1"
 	  height="16"
@@ -760,12 +814,11 @@
 	  layout="topleft"
 	  left="10"
 	  name="selection_empty"
-	  top_pad="2"
-	  width="100">
+	  top_pad="4"
+	  width="285">
 		Nothing selected.
 	</text>
 	<text
-	 text_color="LtGray_50"
 	  type="string"
 	  length="1"
 	  height="16"
@@ -775,11 +828,9 @@
 	  left="10"
 	  name="selection_count"
 	  top_delta="0"
-	  visible="false"
-	  width="280">
+	  width="285">
 	</text>
 	<text
-	 text_color="LtGray_50"
 	  type="string"
 	  length="1"
 	  height="16"
@@ -788,23 +839,23 @@
 	  layout="topleft"
 	  left="10"
 	  name="remaining_capacity"
-	  top_pad="0"
-	  visible="false"
-	  width="280">
+	  top_pad="-3"
+	  visible="true"
+	  width="285">
 	  [CAPACITY_STRING] [secondlife:///app/openfloater/object_weights More info]
 	</text>
     <tab_container
      follows="left|top"
      height="410"
      halign="center"
-     left="0"
+     left="4"
      name="Object Info Tabs"
      tab_max_width="100"
      tab_min_width="40"
      tab_position="top"
-     tab_height="25"
+     tab_height="21"
      open_tabs_on_drag_and_drop="true"
-     top="173"
+     top="168"
      width="295">
 	
 <panel
@@ -876,7 +927,7 @@
             <text
              follows="left|top"
              height="10"
-             left="10"
+             left="5"
              name="Name:"
              top="5"
              width="90">
@@ -890,11 +941,11 @@
              name="Object Name"
              select_on_focus="true"
              top_delta="0"
-             width="170" />
+             width="197" />
             <text
              follows="left|top"
              height="10"
-             left="10"
+             left="5"
              name="Description:"
              top_pad="3"
              width="90">
@@ -908,20 +959,19 @@
              name="Object Description"
              select_on_focus="true"
              top_delta="0"
-             width="170" />
+             width="197" />
             <text
              type="string"
-             left="10"
+             left="5"
              length="1"
              follows="left|top"
              height="29"
              layout="topleft"
              name="Creator:"
-             top_pad="7"
+             top_pad="3"
              width="90">
                 Creator:
             </text>
-            <!-- *NOTE: Intentionally wide for long names -->
             <text
              type="string"
              length="1"
@@ -932,7 +982,7 @@
              name="Creator Name"
              top_delta="0"
              translate="false"
-             width="190"
+             width="195"
              word_wrap="true"
              use_ellipses="true">
                 TestString PleaseIgnore (please.ignore)
@@ -940,7 +990,7 @@
             <text
              type="string"
              length="1"
-             left="10"
+             left="5"
              follows="left|top"
              height="29"
              layout="topleft"
@@ -949,7 +999,6 @@
              width="90">
                 Owner:
             </text>
-            <!-- *NOTE: Intentionally wide for long names -->
             <text
              type="string"
              length="1"
@@ -960,7 +1009,7 @@
              left_pad="0"
              top_delta="0"
              translate="false"
-             width="190"
+             width="195"
              word_wrap="true"
              use_ellipses="true">
                 TestString PleaseIgnore (please.ignore)
@@ -970,11 +1019,11 @@
              length="1"
              follows="left|top"
              layout="topleft"
-             left="10"
+             left="5"
              height="18"
              name="Group:"
              top_pad="3"
-             width="75">
+             width="90">
                 Group:
             </text>
             <name_box
@@ -982,9 +1031,9 @@
              height="18"
              initial_value="Loading..."
              layout="topleft"
-             left_pad="14"
+             left_pad="0"
              name="Group Name Proxy"
-             width="160" />
+             width="195" />
 			<text
 			follows="left|top"
 			height="18"
@@ -995,55 +1044,73 @@
 			top_delta="0"
 			left_delta="0"
 			name="Group Name Label"
-			width="160" />
+			width="195" />
             <button
 			 follows="top|left"
-			 height="23"
+			 height="20"
 			 image_overlay="Edit_Wrench"
+			 image_overlay_alignment="left"
+			 imgoverlay_label_space="7"
 			 layout="topleft"
-			 left_pad="4"
+			 label="Change Group"
+			 halign="left"
+			 left="5"
 			 name="button set group"
 			 tab_stop="false"
 			 tool_tip="Choose a group to share this object's permissions"
-			 width="23" />
+			 top_pad="3"
+			 width="110" />
+			<button
+             follows="top|left"
+             height="20"
+             label="Deed"
+             label_selected="Deeded"
+			 image_overlay="Conv_toolbar_expand"
+			 image_overlay_alignment="left"
+			 imgoverlay_label_space="3"
+			 halign="left"
+             layout="topleft"
+             name="button deed"
+             left_pad="1"
+             tool_tip="Deeding gives this item away with next owner permissions. Group shared objects can be deeded by a group officer."
+             width="100" />
             <check_box
-             height="19"
+             height="17"
              follows="left|top"
              label="Share"
              layout="topleft"
              name="checkbox share with group"
              tool_tip="Allow all members of the set group to share your modify permissions for this object. You must Deed to enable role restrictions."
-             top_pad="5"
-             left="100"
+             top_delta="2"
+             left_pad="1"
              width="87" />
-            <button
-             follows="top|left"
-             height="23"
-             label="Deed"
-             label_selected="Deed"
-             layout="topleft"
-             name="button deed"
-             left_pad="19"
-             tool_tip="Deeding gives this item away with next owner permissions. Group shared objects can be deeded by a group officer."
-             width="80" />
+			<view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="3"
+			width="285"/>
             <text
              type="string"
              length="1"
              follows="left|top"
              height="16"
              layout="topleft"
-             top_pad="10"
-             left="10"
+             top_pad="14"
+             left="5"
              name="label click action"
-             width="82">
+             width="80">
                 Click to:
             </text>
             <combo_box
              follows="left|top"
-             height="23"
+             height="20"
              layout="topleft"
              name="clickaction"
-             width="130"
+             width="195"
              left_pad="10">
                 <combo_box.item
                  label="Touch  (default)"
@@ -1071,43 +1138,38 @@
                  value="Zoom" />
             </combo_box>
             <check_box
-             height="23"
+             height="20"
              label="For Sale:"
              layout="topleft"
              name="checkbox for sale"
-             left="7"
-             width="97" />
-  <!-- NEW PRICE SPINNER
-Objects are allowed to be for sale for L$0 to invoke buy UI behavior
-even though the user gets a free copy.
--->
+             left="5"
+			 top_pad="3"
+             width="95" />
   <spinner
       follows="left|top"
       decimal_digits="0"
       increment="1"
-      left_pad="0"
+      left_pad="-7"
       control_name="Edit Cost"
       name="Edit Cost"
-      label="L$"
-      label_width="15"
+      label_width="0"
       valign="center"
-      width="85"
+      width="86"
       min_val="0"
       height="20"
       max_val="999999999" />
-  <!-- NEW SALE TYPE COMBO BOX -->
       <combo_box
-            left_pad="8"
+            left_pad="1"
             layout="topleft"
             follows="left|top"
             allow_text_entry="false"
-            height="23"
-            top_pad="-23"
+            height="22"
+            top_pad="-20"
             initial_value="2"
             max_chars="20"
             mouse_opaque="true"
             name="sale type"
-            width="89">
+            width="110">
         <combo_box.item
            name="Copy"
            label="Copy"
@@ -1122,178 +1184,203 @@ even though the user gets a free copy.
            value="1" />
       </combo_box>
       <check_box
-	   height="15"
+	   height="16"
 	   width="110"
-	   top_pad="5"
-	   label="Show in search"
+	   top_pad="3"
+	   label="Show this object in search"
        layout="topleft"
-	   left="7"
+	   left="5"
        name="search_check"
        tool_tip="Let people see this object in search results" />
+	  <view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="3"
+			width="285"/>
 		<panel
          border="false"
          follows="left|top"
          layout="topleft"
          mouse_opaque="false"
          background_visible="false"
-         bg_alpha_color="DkGray"
          name="perms_build"
          left="0"
-         top_pad="4"
-         height="121"
+         top_pad="10"
+         height="97"
          width="290">
             <text
              type="string"
              length="1"
-             left="10"
+             left="5"
              word_wrap="true"
-             top_pad="9"
-             text_color="EmphasisColor"
-             height="32"
+             top_pad="1"
+             text_color="HTMLLinkColor"
+             height="26"
              follows="left|top|right"
              layout="topleft"
              name="perm_modify"
-             width="264">
-                You can modify this object
+             width="285">
+                You can't modify these objects across a region boundary
             </text>
-            <text
+			<text
                type="string"
                follows="left|top"
-               name="Anyone can:"
-               width="250"
-               left="10">
-                 Anyone:
-            </text>
-            <check_box
-             height="19"
-             label="Move"
-             layout="topleft"
-             name="checkbox allow everyone move"
-             left="10"
-             width="85" />
-            <check_box
-             height="19"
-             label="Copy"
-             layout="topleft"
-             left_pad="0"
-             name="checkbox allow everyone copy"
-             width="90" />
-            <text
-               type="string"
-               follows="left|top"
-               height="19"
+               height="14"
                name="Next owner can:"
                width="250"
-               left="10">
+			   top_pad="4"
+               left="5">
                   Next owner:
             </text>
             <check_box
              follows="left|top|right"
              label="Modify"
              layout="topleft"
-             left="10"
-             height="10"
+             left_delta="0"
+			 top_pad="4"
+             height="16"
              name="checkbox next owner can modify"
-             width="85" />
+             width="100" />
             <check_box
              follows="left|top|right"
-             height="19"
+             height="16"
              label="Copy"
              layout="topleft"
-             left_pad="0"
+             left_delta="0"
+			 top_pad="0"
              name="checkbox next owner can copy"
-             width="80" />
+             width="100" />
             <check_box
              follows="left|top|right"
-             height="19"
+             height="16"
              label="Transfer"
              layout="topleft"
              name="checkbox next owner can transfer"
-             left_pad="0"
-             top_delta="0"
+             left_delta="0"
+             top_pad="0"
              tool_tip="Next owner can give away or resell this object"
              width="100" />
-<!-- *NOTE: These "B/O/G/E/N/F fields may overlap "perm_modify" above, 
-     but that's OK, this is used only for debugging. -->
+            <text
+               type="string"
+               follows="left|top"
+               name="Anyone can:"
+			   height="14"
+               width="100"
+			   top_pad="-66"
+               left_pad="40">
+                 Anyone:
+            </text>
+            <check_box
+             height="16"
+             label="Move"
+             layout="topleft"
+             name="checkbox allow everyone move"
+             left_delta="0"
+			 top_pad="4"
+             width="100" />
+            <check_box
+             height="16"
+             label="Copy"
+             layout="topleft"
+             left_delta="0"
+			 top_pad="0"
+             name="checkbox allow everyone copy"
+             width="100" />
             <text
              type="string"
-             text_color="EmphasisColor"
+             text_color="HTMLLinkColor"
              length="1"
              top="23"
              follows="left|top"
              layout="topleft"
              left="230"
              name="B:"
+			 visible="false"
              height="10"
              width="80">
                 B:
             </text>
             <text
              type="string"
-             text_color="White"
              length="1"
              follows="left|top"
              layout="topleft"
              left_delta="0"
              top_pad="2"
              name="O:"
+			 visible="false"
              height="10"
              width="80">
                 O:
             </text>
             <text
              type="string"
-             text_color="EmphasisColor"
+             text_color="HTMLLinkColor"
              length="1"
              follows="left|top"
              layout="topleft"
              left_delta="0"
              top_pad="2"
              name="G:"
+			 visible="false"
              height="10"
              width="80">
                 G:
             </text>
             <text
              type="string"
-             text_color="White"
              length="1"
              follows="left|top"
              left_delta="0"
              top_pad="2"
              layout="topleft"
              name="E:"
+			 visible="false"
              height="10"
              width="80">
                 E:
             </text>
             <text
              type="string"
-             text_color="EmphasisColor"
+             text_color="HTMLLinkColor"
              length="1"
              follows="left|top"
              layout="topleft"
              left_delta="0"
              top_pad="2"
              name="N:"
+			 visible="false"
              height="10"
              width="80">
                 N:
             </text>
             <text
              type="string"
-             text_color="White"
              length="1"
              follows="left|top"
              layout="topleft"
              left_delta="0"
              top_pad="2"
              name="F:"
+			 visible="false"
              height="10"
              width="80">
                 F:
             </text>
         </panel>
+		<view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="3"
+			width="285"/>
 		<panel
          border="false"
          follows="left|top"
@@ -1301,30 +1388,33 @@ even though the user gets a free copy.
          mouse_opaque="false"
          name="pathfinding_attrs_panel"
          left="0"
-         top_pad="0"
+         top_pad="12"
          height="25"
          width="290">
       <text
          type="string"
+		 height="14"
          follows="left|top"
          name="pathfinding_attributes_label"
-         top_pad="4"
+         top_pad="0"
          width="150"
-         left="10">
+         left="5">
         Pathfinding attributes:
       </text>
       <text
          type="string"
          follows="left|top"
-         text_color="EmphasisColor"
+         text_color="HTMLLinkColor"
          name="pathfinding_attributes_value"
          width="130"
          word_wrap="false"
-         left_pad="0">
+		 top_pad="0"
+		 height="14"
+         left_delta="0">
+	   Physical
       </text>
     </panel>
-  </panel>
-      <!-- Object tab -->
+</panel>
       <panel
          border="false"
          follows="all"
@@ -1336,231 +1426,27 @@ even though the user gets a free copy.
          help_topic="toolbox_object_tab"
          name="Object"
          top="16"
-         width="295">
-            <check_box
-             height="19"
-             label="Locked"
-             layout="topleft"
-             name="checkbox locked"
-             tool_tip="Prevents object from being moved or deleted. Frequently useful during building to avoid unintended edits."
-             top_pad="5"
-             left="10"
-             width="123" />
-            <check_box
-             height="19"
-             label="Physical"
-             layout="topleft"
-             name="Physical Checkbox Ctrl"
-             tool_tip="Allows object to be pushed and affected by gravity"
-             top_pad="0"
-             width="123" />
-            <check_box
-             height="19"
-             label="Temporary"
-             layout="topleft"
-             name="Temporary Checkbox Ctrl"
-             tool_tip="Causes object to be deleted 1 minute after creation"
-             top_pad="0"
-             width="123" />
-            <check_box
-             height="19"
-             label="Phantom"
-             layout="topleft"
-             name="Phantom Checkbox Ctrl"
-             tool_tip="Causes object to not collide with other objects or avatars"
-             top_pad="0"
-             width="123" />
-        <text
+         width="290">
+	   <text
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
-             name="label position"
-             top_pad="10"
-             width="121">
-                Position (meters)
-            </text>
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.01"
-             initial_value="0"
-             label="X"
-             label_width="10"
-             layout="topleft"
-             left_delta="0"
-             max_val="512"
-             min_val="-256"
-             name="Pos X"
-             text_enabled_color="1 0 0.3 .7"
-             top_pad="5"
-             width="87" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.01"
-             initial_value="0"
-             label="Y"
-             label_width="10"
-             layout="topleft"
-             left_delta="0"
-             max_val="512"
-             min_val="-256"
-             name="Pos Y"
-             text_enabled_color="EmphasisColor"
-             top_pad="3"
-             width="87" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.01"
-             initial_value="0"
-             label="Z"
-             label_width="10"
-             layout="topleft"
-             left_delta="0"
-             max_val="4096"
-             name="Pos Z"
-             text_enabled_color="0 0.8 1 .65"
-             top_pad="3"
-             width="87" />
-            <text
-             type="string"
-             length="1"
-             follows="left|top"
-             height="10"
-             layout="topleft"
-             left_delta="0"
-             name="label size"
-             top_pad="6"
-             width="121">
-                Size (meters)
-            </text>
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.01"
-             initial_value="0"
-             label="X"
-             label_width="10"
-             layout="topleft"
-             left_delta="0"
-             max_val="64"
-             min_val="0.01"
-             name="Scale X"
-             text_enabled_color="1 1 1 1"
-             top_pad="5"
-             width="87" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.01"
-             initial_value="0"
-             label="Y"
-             label_width="10"
-             layout="topleft"
-             left_delta="0"
-             max_val="64"
-             min_val="0.01"
-             name="Scale Y"
-             text_enabled_color="1 1 1 1"
-             top_pad="3"
-             width="87" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.01"
-             initial_value="0"
-             label="Z"
-             label_width="10"
-             layout="topleft"
-             left_delta="0"
-             max_val="64"
-             min_val="0.01"
-             name="Scale Z"
-             text_enabled_color="1 1 1 1"
-             top_pad="3"
-             width="87" />
-            <text
-             type="string"
-             length="1"
-             follows="left|top"
-             height="10"
-             layout="topleft"
-             left_delta="0"
-             name="label rotation"
-             top_pad="10"
-             width="121">
-                Rotation (degrees)
-            </text>
-            <spinner
-             decimal_digits="2"
-             follows="left|top"
-             height="19"
-             increment="1"
-             initial_value="0"
-             label="X"
-             label_width="10"
-             layout="topleft"
-             left_delta="0"
-             max_val="9999"
-             min_val="-9999"
-             name="Rot X"
-             text_enabled_color="1 1 1 1"
-             top_pad="5"
-             width="87" />
-            <spinner
-             decimal_digits="2"
-             follows="left|top"
-             height="19"
-             increment="1"
-             initial_value="0"
-             label="Y"
-             label_width="10"
-             layout="topleft"
-             left_delta="0"
-             max_val="9999"
-             min_val="-9999"
-             name="Rot Y"
-             text_enabled_color="1 1 1 1"
-             top_pad="3"
-             width="87" />
-            <spinner
-             decimal_digits="2"
-             follows="left|top"
-             height="19"
-             increment="1"
-             initial_value="0"
-             label="Z"
-             label_width="10"
-             layout="topleft"
-             left_delta="0"
-             max_val="9999"
-             min_val="-9999"
-             name="Rot Z"
-             text_enabled_color="1 1 1 1"
-             top_pad="3"
-             width="87" />
- <!--           <text
-             type="string"
-             length="1"
-             follows="left|top"
-             height="10"
-             layout="topleft"
-             left="125"
+             left="5"
              name="label basetype"
              top="5"
-             width="150">
+             width="80">
                 Prim Type
-            </text>-->
+            </text>
             <combo_box
-             height="19"
+             height="20"
              layout="topleft"
+			 follows="top|left"
              name="comboBaseType"
-             top="6"
-             left="125"
-             width="150">
+             top_pad="3"
+             left="5"
+             width="90">
                 <combo_box.item
                  label="Box"
                  name="Box"
@@ -1594,21 +1480,228 @@ even though the user gets a free copy.
                  name="Sculpted"
                  value="Sculpted" />
             </combo_box>
+            <check_box
+             height="16"
+             label="Locked"
+             layout="topleft"
+             name="checkbox locked"
+             tool_tip="Prevents object from being moved or deleted. Frequently useful during building to avoid unintended edits."
+             top_pad="7"
+             left="5"
+             width="123" />
+            <check_box
+             height="16"
+             label="Physical"
+             layout="topleft"
+             name="Physical Checkbox Ctrl"
+             tool_tip="Allows object to be pushed and affected by gravity"
+             top_pad="0"
+             width="123" />
+            <check_box
+             height="16"
+             label="Temporary"
+             layout="topleft"
+			 left="5"
+             name="Temporary Checkbox Ctrl"
+             tool_tip="Causes object to be deleted 1 minute after creation"
+             top_pad="0"
+             width="123" />
+            <check_box
+             height="16"
+             label="Phantom"
+             layout="topleft"
+             name="Phantom Checkbox Ctrl"
+             tool_tip="Causes object to not collide with other objects or avatars"
+             top_pad="0"
+             width="123" />
+        <text
+             type="string"
+             length="1"
+             follows="left|top"
+             height="14"
+             layout="topleft"
+             name="label position"
+			 left="5"
+             top_pad="5"
+             width="121">
+                Position (meters)
+            </text>
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.01"
+             initial_value="0"
+             label="X"
+             label_width="10"
+             layout="topleft"
+             left_delta="0"
+             max_val="512"
+             min_val="-256"
+             name="Pos X"
+             text_enabled_color="1 0 0.3 .7"
+             top_pad="3"
+             width="87" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.01"
+             initial_value="0"
+             label="Y"
+             label_width="10"
+             layout="topleft"
+             left_delta="0"
+             max_val="512"
+             min_val="-256"
+             name="Pos Y"
+             text_enabled_color="EmphasisColor"
+             top_pad="3"
+             width="87" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.01"
+             initial_value="0"
+             label="Z"
+             label_width="10"
+             layout="topleft"
+             left_delta="0"
+             max_val="4096"
+             name="Pos Z"
+             text_enabled_color="0 0.8 1 .65"
+             top_pad="3"
+             width="87" />
             <text
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left_delta="0"
-             name="text cut"
+             name="label size"
              top_pad="5"
+             width="121">
+                Size (meters)
+            </text>
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.01"
+             initial_value="0"
+             label="X"
+             label_width="10"
+             layout="topleft"
+             left_delta="0"
+             max_val="64"
+             min_val="0.01"
+             name="Scale X"
+             text_enabled_color="1 1 1 1"
+             top_pad="3"
+             width="87" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.01"
+             initial_value="0"
+             label="Y"
+             label_width="10"
+             layout="topleft"
+             left_delta="0"
+             max_val="64"
+             min_val="0.01"
+             name="Scale Y"
+             text_enabled_color="1 1 1 1"
+             top_pad="3"
+             width="87" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.01"
+             initial_value="0"
+             label="Z"
+             label_width="10"
+             layout="topleft"
+             left_delta="0"
+             max_val="64"
+             min_val="0.01"
+             name="Scale Z"
+             text_enabled_color="1 1 1 1"
+             top_pad="3"
+             width="87" />
+            <text
+             type="string"
+             length="1"
+             follows="left|top"
+             height="14"
+             layout="topleft"
+             left_delta="0"
+             name="label rotation"
+             top_pad="5"
+             width="121">
+                Rotation (degrees)
+            </text>
+            <spinner
+             decimal_digits="2"
+             follows="left|top"
+             height="20"
+             increment="1"
+             initial_value="0"
+             label="X"
+             label_width="10"
+             layout="topleft"
+             left_delta="0"
+             max_val="9999"
+             min_val="-9999"
+             name="Rot X"
+             text_enabled_color="1 1 1 1"
+             top_pad="3"
+             width="87" />
+            <spinner
+             decimal_digits="2"
+             follows="left|top"
+             height="20"
+             increment="1"
+             initial_value="0"
+             label="Y"
+             label_width="10"
+             layout="topleft"
+             left_delta="0"
+             max_val="9999"
+             min_val="-9999"
+             name="Rot Y"
+             text_enabled_color="1 1 1 1"
+             top_pad="3"
+             width="87" />
+            <spinner
+             decimal_digits="2"
+             follows="left|top"
+             height="20"
+             increment="1"
+             initial_value="0"
+             label="Z"
+             label_width="10"
+             layout="topleft"
+             left_delta="0"
+             max_val="9999"
+             min_val="-9999"
+             name="Rot Z"
+             text_enabled_color="1 1 1 1"
+             top_pad="3"
+             width="87" />
+            <text
+             type="string"
+             length="1"
+             follows="left|top"
+             height="14"
+             layout="topleft"
+             left="125"
+             name="text cut"
+             top="5"
              width="150">
                 Path Cut (begin/end)
             </text>
             <spinner
              follows="left|top"
-             height="16"
+             height="20"
              increment="0.025"
              initial_value="0"
              label="B"
@@ -1617,88 +1710,93 @@ even though the user gets a free copy.
              left_delta="0"
              max_val="0.98"
              name="cut begin"
-             top_pad="4"
-             width="68" />
+             top_pad="3"
+             width="77" />
             <spinner
              follows="left|top"
-             height="16"
+             height="20"
              increment="0.025"
              initial_value="1"
              label="E"
              label_width="10"
              layout="topleft"
-             left_pad="10"
+             left_pad="12"
              min_val="0.02"
              name="cut end"
              top_delta="0"
-             width="68" />
+             width="76" />
             <text
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left="125"
              name="text hollow"
-             top_pad="6"
-             width="68">
+             top_pad="5"
+             width="77">
                 Hollow
             </text>
             <text
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
-             left_pad="10"
+             left_pad="12"
              name="text skew"
-             width="63">
+             width="76">
                 Skew
             </text>
             <spinner
              decimal_digits="1"
              follows="left|top"
-             height="19"
+             height="20"
              increment="5"
              initial_value="0"
+			 label="H"
+             label_width="10"
              layout="topleft"
              left="125"
              max_val="95"
              name="Scale 1"
-             top_pad="4"
-             width="68" />
+             top_pad="3"
+             width="77" />
             <spinner
              decimal_digits="2"
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.05"
              initial_value="0"
+			 label="S"
+             label_width="10"
              layout="topleft"
-             left_pad="10"
+             left_pad="12"
              max_val="0.95"
              min_val="-0.95"
              name="Skew"
              top_delta="0"
-             width="68" />
+             width="76" />
             <text
              type="string"
              length="1"
              follows="left|top"
-             height="15"
+             height="14"
              layout="topleft"
              left="125"
              name="Hollow Shape"
-             top_pad="4"
+             top_pad="5"
              width="150">
                 Hollow Shape
             </text>
             <combo_box
-             height="23"
+             height="20"
              layout="topleft"
+			 follows="top|left"
              left_delta="0"
              name="hole"
-             top_pad="-2"
-             width="150">
+             top_pad="3"
+             width="165">
                 <combo_box.item
                  label="Default"
                  name="Default"
@@ -1720,7 +1818,7 @@ even though the user gets a free copy.
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left_delta="0"
              name="text twist"
@@ -1731,7 +1829,7 @@ even though the user gets a free copy.
             <spinner
              decimal_digits="0"
              follows="left|top"
-             height="19"
+             height="20"
              increment="9"
              initial_value="0"
              label="B"
@@ -1741,32 +1839,32 @@ even though the user gets a free copy.
              max_val="180"
              min_val="-180"
              name="Twist Begin"
-             top_pad="4"
-             width="68" />
+             top_pad="3"
+             width="77" />
             <spinner
              decimal_digits="0"
              follows="left|top"
-             height="19"
+             height="20"
              increment="9"
              initial_value="0"
              label="E"
              label_width="10"
              layout="topleft"
-             left_pad="10"
+             left_pad="12"
              max_val="180"
              min_val="-180"
              name="Twist End"
              top_delta="0"
-             width="68" />
+             width="76" />
             <text
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left="125"
              name="scale_taper"
-             top_pad="3"
+             top_pad="5"
              width="150">
                 Taper
             </text>
@@ -1775,7 +1873,7 @@ even though the user gets a free copy.
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left_delta="0"
              name="scale_hole"
@@ -1786,7 +1884,7 @@ even though the user gets a free copy.
             <spinner
              decimal_digits="2"
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.05"
              initial_value="0"
              label="X"
@@ -1795,38 +1893,38 @@ even though the user gets a free copy.
              left_delta="0"
              min_val="-1"
              name="Taper Scale X"
-             top_pad="4"
-             width="68" />
+             top_pad="3"
+             width="77" />
             <spinner
              decimal_digits="2"
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.05"
              initial_value="0"
              label="Y"
              label_width="10"
              layout="topleft"
-             left_pad="10"
+             left_pad="12"
              min_val="-1"
              name="Taper Scale Y"
              top_delta="0"
-             width="68" />
+             width="76" />
             <text
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left="125"
              name="text topshear"
-             top_pad="3"
+             top_pad="5"
              width="141">
                 Top Shear
             </text>
             <spinner
              decimal_digits="2"
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.05"
              initial_value="0"
              label="X"
@@ -1836,33 +1934,33 @@ even though the user gets a free copy.
              max_val="0.5"
              min_val="-0.5"
              name="Shear X"
-             top_pad="4"
-             width="68" />
+             top_pad="3"
+             width="77" />
             <spinner
              decimal_digits="2"
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.05"
              initial_value="0"
              label="Y"
              label_width="10"
              layout="topleft"
-             left_pad="10"
+             left_pad="12"
              max_val="0.5"
              min_val="-0.5"
              name="Shear Y"
              top_delta="0"
-             width="68" />
+             width="76" />
             <text
-			 visible="false"
+			 visible="true"
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left="125"
              name="advanced_cut"
-             top_pad="3"
+             top_pad="5"
              width="150">
                 Profile Cut (begin/end)
             </text>
@@ -1871,7 +1969,7 @@ even though the user gets a free copy.
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left_delta="0"
              name="advanced_dimple"
@@ -1883,7 +1981,7 @@ even though the user gets a free copy.
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left_delta="0"
              name="advanced_slice"
@@ -1893,7 +1991,7 @@ even though the user gets a free copy.
             </text>
             <spinner
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.02"
              initial_value="0"
              label="B"
@@ -1903,38 +2001,38 @@ even though the user gets a free copy.
              max_val="0.98"
              name="Path Limit Begin"
              top_pad="3"
-             width="68" />
+             width="77" />
             <spinner
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.02"
              initial_value="1"
              label="E"
              label_width="10"
              layout="topleft"
-             left_pad="10"
+             left_pad="12"
              min_val="0.02"
              name="Path Limit End"
              top_delta="0"
-             width="68" />
+             width="76" />
             <text
-			 visible="false"
+			 visible="true"
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left="125"
              name="text taper2"
-             top_pad="3"
+             top_pad="5"
              width="150">
                 Taper
             </text>
             <spinner
-			 visible="false"
+			 visible="true"
              decimal_digits="2"
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.05"
              initial_value="0"
              label="X"
@@ -1944,114 +2042,132 @@ even though the user gets a free copy.
              min_val="-1"
              name="Taper X"
              top_pad="3"
-             width="68" />
+             width="77" />
             <spinner
-			 visible="false"
+			 visible="true"
              decimal_digits="2"
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.05"
              initial_value="0"
              label="Y"
              label_width="10"
              layout="topleft"
-             left_pad="10"
+             left_pad="12"
              min_val="-1"
              name="Taper Y"
              top_delta="0"
-             width="68" />
+             width="76" />
             <text
-			 visible="false"
+			 visible="true"
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left="125"
              name="text radius delta"
-             top_pad="2"
-             width="78">
+             top_pad="5"
+             width="77">
                 Radius
             </text>
             <text
-			 visible="false"
+			 visible="true"
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
-             left_delta="78"
+             left_pad="12"
              name="text revolutions"
-             width="68">
+             width="80">
                 Revolutions
             </text>
             <spinner
-			 visible="false"
+			 visible="true"
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.05"
              initial_value="0"
+			 label="R"
+             label_width="10"
              layout="topleft"
              left="125"
              min_val="-1"
              name="Radius Offset"
-             top_pad="4"
-             width="68" />
+             top_pad="3"
+             width="77" />
             <spinner
-			 visible="false"
+			 visible="true"
              decimal_digits="2"
              follows="left|top"
-             height="19"
+             height="20"
              initial_value="1"
+			 label="R"
+             label_width="10"
              layout="topleft"
-             left_pad="10"
+             left_pad="12"
              max_val="4"
              min_val="1"
              name="Revolutions"
              top_delta="0"
-             width="68" />
+             width="76" />
+			<text
+			 visible="false"
+             type="string"
+             length="1"
+             follows="left|top"
+             height="14"
+             layout="topleft"
+			 left="125"
+             top="5"
+             name="text sculpt texture"
+             width="76">
+                Sculpt Texture
+            </text>
             <texture_picker
              can_apply_immediately="true"
              default_image_name="Default"
              follows="left|top"
-             height="141"
-             label="Sculpt Texture"
+             height="100"
              layout="topleft"
              left="125"
              name="sculpt texture control"
              tool_tip="Click to choose a picture"
-             top="70"
+             top_pad="2"
              visible="false"
-             width="145" />
+             width="78" />
             <check_box
-             height="19"
+             height="16"
              label="Mirror"
              layout="topleft"
-             left_delta="0"
+			 follows="top|left"
+             left_pad="5"
              name="sculpt mirror control"
              tool_tip="Flips sculpted prim along the X axis"
-             top_pad="8"
+             top_delta="0"
              visible="false"
              width="130" />
             <check_box
-             height="19"
+             height="16"
              label="Inside-out"
+			 follows="top|left"
              layout="topleft"
              left_delta="0"
              name="sculpt invert control"
              tool_tip="Inverts the sculpted prims normals, making it appear inside-out"
-             top_pad="4"
+             top_pad="0"
              visible="false"
              width="121" />
             <text
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
              left_delta="0"
              name="label sculpt type"
-             top_pad="10"
+             top_pad="3"
              visible="false"
              width="130">
                 Stitching type
@@ -2061,9 +2177,9 @@ even though the user gets a free copy.
              layout="topleft"
              left_delta="0"
              name="sculpt type control"
-             top_pad="4"
+             top_pad="3"
              visible="false"
-             width="150">
+             width="79">
                 <combo_box.item
                  label="Sphere"
                  name="Sphere"
@@ -2093,7 +2209,7 @@ even though the user gets a free copy.
          help_topic="toolbox_features_tab"
          name="Features"
          top_delta="0"
-         width="295">
+         width="290">
 	<panel.string name="None">None</panel.string>
 	<panel.string name="Prim">Prim</panel.string>
 	<panel.string name="Convex Hull">Convex Hull</panel.string>
@@ -2101,280 +2217,48 @@ even though the user gets a free copy.
              type="string"
              length="1"
              follows="left|top"
-             height="20"
+             height="14"
              layout="topleft"
-             left="10"
+			 text_color="HTMLLinkColor"
+             left="5"
              name="select_single"
              top="5"
-             width="252"
+             width="280"
              word_wrap="true">
-                Select only one primitive to edit features.
+             Select only one primitive to edit features.
             </text>
             <text
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
              layout="topleft"
-             left="10"
+             left_delta="0"
              name="edit_object"
-             top="5"
-             width="252">
+             top_delta="0"
+             width="280">
                 Edit object features:
-            </text>
-            <check_box
-             height="19"
-             label="Flexible Path"
-             layout="topleft"
-             left="10"
-             name="Flexible1D Checkbox Ctrl"
-             tool_tip="Allows object to flex about the Z axis (Client-side only)"
-             top_pad="20"
-             width="121" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="1"
-             initial_value="2"
-             label="Softness"
-             label_width="70"
-             layout="topleft"
-             left_delta="0"
-             max_val="3"
-             name="FlexNumSections"
-             top_pad="10"
-             width="128" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.5"
-             initial_value="0.3"
-             label="Gravity"
-             label_width="70"
-             layout="topleft"
-             left_delta="0"
-             max_val="10"
-             min_val="-10"
-             name="FlexGravity"
-             top_pad="4"
-             width="128" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.5"
-             initial_value="2"
-             label="Drag"
-             label_width="70"
-             layout="topleft"
-             left_delta="0"
-             max_val="10"
-             name="FlexFriction"
-             top_pad="4"
-             width="128" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.5"
-             initial_value="0"
-             label="Wind"
-             label_width="70"
-             layout="topleft"
-             left_delta="0"
-             max_val="10"
-             name="FlexWind"
-             top_pad="4"
-             width="128" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.5"
-             initial_value="1"
-             label="Tension"
-             label_width="70"
-             layout="topleft"
-             left_delta="0"
-             max_val="10"
-             name="FlexTension"
-             top_pad="4"
-             width="128" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.01"
-             initial_value="0"
-             label="Force X"
-             label_width="70"
-             layout="topleft"
-             left_delta="0"
-             max_val="10"
-             min_val="-10"
-             name="FlexForceX"
-             top_pad="4"
-             width="128" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.01"
-             initial_value="0"
-             label="Force Y"
-             label_width="70"
-             layout="topleft"
-             left_delta="0"
-             max_val="10"
-             min_val="-10"
-             name="FlexForceY"
-             top_pad="4"
-             width="128" />
-            <spinner
-             follows="left|top"
-             height="19"
-             increment="0.01"
-             initial_value="0"
-             label="Force Z"
-             label_width="70"
-             layout="topleft"
-             left_delta="0"
-             max_val="10"
-             min_val="-10"
-             name="FlexForceZ"
-             top_pad="4"
-             width="128" />
-
-            <check_box
-             height="16"
-             label="Light"
-             layout="topleft"
-             left="10"
-             name="Light Checkbox Ctrl"
-             tool_tip="Causes object to emit light"
-             top_pad="15"
-             width="60" />
-            <color_swatch
-             can_apply_immediately="true"
-             color="0.5 0.5 0.5 1"
-	     border.border_thickness="0"
-             follows="left|top"
-             height="50"
-             layout="topleft"
-             left_pad="10"
-             top_pad="-17"
-             name="colorswatch"
-             tool_tip="Click to open color picker"
-             width="40" />
-         <texture_picker
-            allow_no_texture="true"
-            top_delta="0"
-            can_apply_immediately="true"
-            default_image_name="Default"
-            follows="left|top"
-            height="48"
-            label=""
-            left_delta="57"
-            mouse_opaque="true"
-            name="light texture control"
-            tool_tip="Click to choose a projection image (only has effect with deferred rendering enabled)"
-            width="32" />
-          <spinner
-             follows="left|top"
-             height="19"
-             initial_value="0.5"
-             label="Intensity"
-             label_width="70"
-             layout="topleft"
-             left="10"
-             name="Light Intensity"
-             top_pad="3"
-             width="128" />
-          <spinner bottom_delta="0"
-                   decimal_digits="3"
-                   follows="left|top"
-                   height="16"
-                   increment="0.1"
-                   initial_value="0.5"
-                   label="FOV"
-                   label_width="55"
-                   left="144"
-                   max_val="3"
-                   min_val="0"
-                   mouse_opaque="true"
-                   name="Light FOV"
-                   width="120" />
-          <spinner follows="left|top"
-                   height="19"
-                   initial_value="5"
-                   label="Radius"
-                   label_width="70"
-                   layout="topleft"
-                   left="10"
-                   max_val="20"
-                   name="Light Radius"
-                   top_pad="3"
-                   width="128" />
-          <spinner bottom_delta="0"
-                   decimal_digits="3"
-                   follows="left|top"
-                   height="16"
-                   increment="0.5"
-                   initial_value="0.5"
-                   label="Focus"
-                   label_width="55"
-                   left="144"
-                   max_val="20"
-                   min_val="-20"
-                   mouse_opaque="true"
-                   name="Light Focus"
-                   width="120" />
-          <spinner follows="left|top"
-                   height="19"
-                   increment="0.25"
-                   initial_value="1"
-                   label="Falloff"
-                   label_width="70"
-                   layout="topleft"
-                   left="10"
-                   max_val="2"
-                   name="Light Falloff"
-                   top_pad="3"
-                   width="128" />
-          <spinner bottom_delta="0"
-                   decimal_digits="3"
-                   follows="left|top"
-                   height="16"
-                   increment="0.05"
-                   initial_value="1"
-                   label="Ambiance"
-                   label_width="55"
-                   left="144"
-                   max_val="1"
-                   min_val="0"
-                   mouse_opaque="true"
-                   name="Light Ambiance"
-                   width="120" />
-            <text
+			</text>
+			<text
              type="string"
              length="1"
              follows="left|top"
-             height="10"
+             height="14"
+			 left="5"
              layout="topleft"
-             name="label physicsshapetype"
-             top="38"
-             width="121">
-                Physics Shape Type:
-            </text>
-			<combo_box
-			   height="19"
-			   top_delta="15" 
-			   layout="topleft"
-			   follows="left|top"
-			   name="Physics Shape Type Combo Ctrl"
-			   tool_tip="Choose the physics shape type"
-			   width="108"/>
-            <combo_box
-             height="19"
-             layout="topleft"
-             name="material"
+             name="label materialtype"
              top_pad="5"
              width="150">
+                Physics Material:
+            </text>
+            <combo_box
+             height="20"
+             layout="topleft"
+			 follows="top|left"
+             name="material"
+             top_pad="3"
+			 left_delta="0"
+             width="135">
                 <combo_box.item
                  label="Stone"
                  name="Stone"
@@ -2404,24 +2288,46 @@ even though the user gets a free copy.
                  name="Rubber"
                  value="Rubber" />
             </combo_box>
+			<text
+             type="string"
+             length="1"
+             follows="left|top"
+             height="14"
+			 left="155"
+             layout="topleft"
+             name="label physicsshapetype"
+             top_pad="-37"
+             width="150">
+                Physics Shape Type:
+            </text>
+			<combo_box
+			   height="20"
+			   top_pad="3"
+			   left_delta="0"
+			   layout="topleft"
+			   follows="left|top"
+			   name="Physics Shape Type Combo Ctrl"
+			   tool_tip="Choose the physics shape type"
+			   width="135"/>
 
             <spinner
              follows="left|top"
-             height="19"
+             height="20"
              increment="1"
              initial_value="1"
              label="Gravity"
              label_width="70"
              layout="topleft"
+			 left="5"
              min_val="-1"
              max_val="28"
              name="Physics Gravity"
-             top_pad="10"
-             width="132" />
+             top_pad="5"
+             width="135" />
 
             <spinner
              follows="left|top"
-             height="19"
+             height="20"
              increment="0.1"
              initial_value="0"
              label="Friction"
@@ -2431,15 +2337,28 @@ even though the user gets a free copy.
              max_val="255"
              min_val="0"
              name="Physics Friction"
-             top_pad="4"
-             width="132" />
-
+             top_pad="3"
+             width="135" />
             <spinner
              follows="left|top"
-             height="19"
+             height="20"
+             increment="0.01"
+             initial_value="0"
+             label="Restitution"
+             label_width="70"
+             layout="topleft"
+             left="155"
+             max_val="1"
+             min_val="0"
+             name="Physics Restitution"
+             top_pad="-43"
+             width="135" />
+			<spinner
+             follows="left|top"
+             height="20"
              increment="0.1"
              initial_value="0"
-             label="Density in 100 kg/m^3"
+             label="Density"
              label_width="70"
              label_wrap="true"
              layout="topleft"
@@ -2447,23 +2366,283 @@ even though the user gets a free copy.
              max_val="22587"
              min_val="1"
              name="Physics Density"
-             top_pad="4"
-             width="132" />
+             top_pad="3"
+             width="135" />
+			<text
+             type="string"
+             length="1"
+             follows="left|top"
+             height="10"
+			 left="155"
+             layout="topleft"
+			 text_readonly_color="LabelDisabledColor"
+             name="label density"
+             top_delta="10"
+             width="150">
+                (100 kg/m^3)
+            </text>
 
+			 <view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="5"
+			width="285"/>
+            <check_box
+             height="16"
+             label="Flexible Path"
+             layout="topleft"
+             left="5"
+             name="Flexible1D Checkbox Ctrl"
+             tool_tip="Allows object to flex about the Z axis (Client-side only)"
+             top_pad="12"
+             width="121" />
             <spinner
              follows="left|top"
-             height="19"
-             increment="0.01"
-             initial_value="0"
-             label="Restitution"
+             height="20"
+             increment="1"
+             initial_value="2"
+             label="Softness"
              label_width="70"
              layout="topleft"
              left_delta="0"
-             max_val="1"
-             min_val="0"
-             name="Physics Restitution"
-             top_pad="8"
-             width="132" />
+             max_val="3"
+             name="FlexNumSections"
+             top_pad="5"
+             width="135" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.5"
+             initial_value="0.3"
+             label="Gravity"
+             label_width="70"
+             layout="topleft"
+             left_delta="0"
+             max_val="10"
+             min_val="-10"
+             name="FlexGravity"
+             top_pad="3"
+             width="135" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.5"
+             initial_value="2"
+             label="Drag"
+             label_width="70"
+             layout="topleft"
+             left_delta="0"
+             max_val="10"
+             name="FlexFriction"
+             top_pad="3"
+             width="135" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.5"
+             initial_value="0"
+             label="Wind"
+             label_width="70"
+             layout="topleft"
+             left_delta="0"
+             max_val="10"
+             name="FlexWind"
+             top_pad="3"
+             width="135" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.5"
+             initial_value="1"
+             label="Tension"
+             label_width="70"
+             layout="topleft"
+             left="155"
+             max_val="10"
+             name="FlexTension"
+             top_pad="-89"
+             width="135" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.01"
+             initial_value="0"
+             label="Force X"
+             label_width="70"
+             layout="topleft"
+             left_delta="0"
+             max_val="10"
+             min_val="-10"
+             name="FlexForceX"
+             top_pad="3"
+             width="135" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.01"
+             initial_value="0"
+             label="Force Y"
+             label_width="70"
+             layout="topleft"
+             left_delta="0"
+             max_val="10"
+             min_val="-10"
+             name="FlexForceY"
+             top_pad="3"
+             width="135" />
+            <spinner
+             follows="left|top"
+             height="20"
+             increment="0.01"
+             initial_value="0"
+             label="Force Z"
+             label_width="70"
+             layout="topleft"
+             left_delta="0"
+             max_val="10"
+             min_val="-10"
+             name="FlexForceZ"
+             top_pad="3"
+             width="135" />
+			
+			<view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="5"
+			width="285"/>
+            <check_box
+             height="16"
+             label="Light"
+             layout="topleft"
+             left="5"
+             name="Light Checkbox Ctrl"
+             tool_tip="Causes object to emit light"
+             top_pad="12"
+             width="60" />
+          <spinner
+             follows="left|top"
+             height="20"
+             initial_value="0.5"
+             label="Intensity"
+             label_width="70"
+             layout="topleft"
+             left="5"
+             name="Light Intensity"
+             top_pad="5"
+             width="135" />
+          <spinner bottom_delta="0"
+                   decimal_digits="3"
+                   follows="left|top"
+                   height="20"
+                   increment="0.1"
+                   initial_value="0.5"
+                   label="FOV"
+                   label_width="70"
+                   left="155"
+                   max_val="3"
+                   min_val="0"
+                   mouse_opaque="true"
+                   name="Light FOV"
+                   width="135" />
+          <spinner follows="left|top"
+                   height="20"
+                   initial_value="5"
+                   label="Radius"
+                   label_width="70"
+                   layout="topleft"
+                   left="5"
+                   max_val="20"
+                   name="Light Radius"
+                   top_pad="3"
+                   width="135" />
+          <spinner top_delta="0"
+                   decimal_digits="3"
+                   follows="left|top"
+                   height="20"
+                   increment="0.5"
+                   initial_value="0.5"
+                   label="Focus"
+                   label_width="70"
+                   left="155"
+                   max_val="20"
+                   min_val="-20"
+                   mouse_opaque="true"
+                   name="Light Focus"
+                   width="135" />
+          <spinner follows="left|top"
+                   height="20"
+                   increment="0.25"
+                   initial_value="1"
+                   label="Falloff"
+                   label_width="70"
+                   layout="topleft"
+                   left="5"
+                   max_val="2"
+                   name="Light Falloff"
+                   top_pad="3"
+                   width="135" />
+          <spinner top_delta="0"
+                   decimal_digits="3"
+                   follows="left|top"
+				   layout="topleft"
+                   height="20"
+                   increment="0.05"
+                   initial_value="1"
+                   label="Ambiance"
+                   label_width="70"
+                   left="155"
+                   max_val="1"
+                   min_val="0"
+                   mouse_opaque="true"
+                   name="Light Ambiance"
+                   width="135" />
+		  <text
+             type="string"
+             length="1"
+             follows="left|top"
+             height="45"
+			 left="5"
+             layout="topleft"
+			 text_readonly_color="LabelDisabledColor"
+             name="label lights"
+             top_pad="6"
+             width="170">
+                ( Selecting a texture will turn
+the light into a projected light )
+            </text>
+		  <texture_picker
+            allow_no_texture="true"
+            top_delta="0"
+            can_apply_immediately="true"
+            default_image_name="Default"
+            follows="left|top"
+            height="66"
+            label=""
+            left="195"
+            mouse_opaque="true"
+            name="light texture control"
+            tool_tip="Click to choose a projection image (only has effect with deferred rendering enabled)"
+            width="44" />
+            <color_swatch
+             can_apply_immediately="true"
+             color="0.5 0.5 0.5 1"
+	     border.border_thickness="0"
+             follows="left|top"
+             height="66"
+             layout="topleft"
+             left_pad="7"
+             top_delta="0"
+             name="colorswatch"
+             tool_tip="Click to open color picker"
+             width="44" />
         </panel>
          <panel
          label="Texture"
@@ -2474,6 +2653,7 @@ even though the user gets a free copy.
        <panel
          border="false"
          follows="all"
+		 height="367"
          label="Content"
          layout="topleft"
          left_delta="0"
@@ -2481,46 +2661,46 @@ even though the user gets a free copy.
          help_topic="toolbox_contents_tab"
          name="Contents"
          top_delta="0"
-         width="295">
+         width="290">
             <button
              follows="left|top"
              height="23"
              label="New Script"
              label_selected="New Script"
              layout="topleft"
-             left="10"
+             left="5"
              name="button new script"
-             top="10"
-             width="134" />
+             top="5"
+             width="142" />
             <button
              follows="left|top"
              height="23"
              label="Permissions"
              layout="topleft"
-             left_pad="8"
+             left_pad="1"
              name="button permissions"
-             width="134" />
+             width="142" />
             <panel_inventory_object
              border="true"
              border_visible="true"
              bevel_style="in"
              follows="left|top|right"
-             height="325"
+             height="354"
              layout="topleft"
-             left="10"
+             left="6"
              name="contents_inventory"
-             top="50"
-             width="275" />
+             top_pad="6"
+             width="281" />
 		</panel>
-        </tab_container>
+	</tab_container>
 	<panel
 	 follows="left|top"
-     height="384"
+     height="367"
      layout="topleft"
-     left_delta="0"
+     left="6"
      name="land info panel"
      top_delta="0"
-     width="295">
+     width="290">
     <text
          type="string"
          length="1"
@@ -2528,7 +2708,7 @@ even though the user gets a free copy.
          follows="left|top"
          height="19"
          layout="topleft"
-         left="20"
+         left="4"
          name="label_parcel_info"
          top="24"
          width="240">
@@ -2540,9 +2720,9 @@ even though the user gets a free copy.
          follows="left|top"
          height="19"
          layout="topleft"
-         left="30"
+         left="5"
          name="label_area_price"
-         top="48"
+         top_pad="3"
          width="150">
             Price: L$[PRICE] for [AREA] m²
         </text>
@@ -2566,7 +2746,7 @@ even though the user gets a free copy.
          layout="topleft"
          left_delta="0"
          name="button about land"
-         top_pad="4"
+         top_pad="2"
          width="125" />
         <check_box
          control_name="ShowParcelOwners"
@@ -2576,7 +2756,7 @@ even though the user gets a free copy.
          left_delta="0"
          name="checkbox show owners"
          tool_tip="Colorize the parcels according to the type of owner: &#10;&#10;Green = Your land &#10;Aqua = Your group&apos;s land &#10;Red = Owned by others &#10;Yellow = For sale &#10;Purple = For auction &#10;Grey = Public"
-         top_pad="8"
+         top_pad="5"
          width="205" />
         <text
          type="string"
@@ -2585,9 +2765,9 @@ even though the user gets a free copy.
          follows="left|top"
          height="19"
          layout="topleft"
-         left="20"
+         left="4"
          name="label_parcel_modify"
-         top="152"
+         top_pad="30"
          width="240">
             Modify Parcel
         </text>
@@ -2597,9 +2777,9 @@ even though the user gets a free copy.
          label="Subdivide"
          label_selected="Subdivide"
          layout="topleft"
-         left="30"
+         left="5"
          name="button subdivide land"
-         top="172"
+         top_pad="3"
          width="125" />
         <button
          follows="left|top"
@@ -2618,9 +2798,9 @@ even though the user gets a free copy.
          follows="left|top"
          height="19"
          layout="topleft"
-         left="20"
+         left="4"
          name="label_parcel_trans"
-         top="256"
+         top_pad="30"
          width="240">
             Land Transactions
         </text>
@@ -2630,9 +2810,9 @@ even though the user gets a free copy.
          label="Buy Land"
          label_selected="Buy Land"
          layout="topleft"
-         left="30"
+         left="5"
          name="button buy land"
-         top="276"
+         top_pad="3"
          width="125" />
         <button
          follows="left|top"

@@ -706,14 +706,19 @@ void LLPanelFace::updateUI()
 			combobox_shininess->selectNthItem((S32)shiny);
 		}
 
-		getChildView("lock_check")->setEnabled(editable);
+		getChildView("lock_diffuse_check")->setEnabled(editable);
+		getChildView("lock_spec_check")->setEnabled(editable && specmap_id.notNull());
 
+		getChild<LLTextBase>("shininess_label")->setReadOnly(!editable);
 		getChildView("combobox shininess")->setEnabled(editable);
-		
-		getChildView("glossiness")->setEnabled(editable);
 
-		getChildView("environment")->setEnabled(editable);
-					
+		LLComboBox* comboShiny = getChild<LLComboBox>("combobox shininess");
+		U32 shiny_value = comboShiny->getCurrentIndex();
+		bool show_shinyctrls = (shiny_value == SHINY_TEXTURE); // Use texture
+		getChildView("glossiness")->setEnabled(editable && show_shinyctrls);
+		getChildView("environment")->setEnabled(editable && show_shinyctrls);
+		getChild<LLUICtrl>("shinycolorswatch")->setEnabled(editable && show_shinyctrls);
+
 		getChild<LLUICtrl>("combobox shininess")->setTentative(!identical_spec);
 		getChild<LLUICtrl>("glossiness")->setTentative(!identical_spec);
 		getChild<LLUICtrl>("environment")->setTentative(!identical_spec);			
@@ -722,8 +727,11 @@ void LLPanelFace::updateUI()
 		LLColorSwatchCtrl*	mShinyColorSwatch = getChild<LLColorSwatchCtrl>("shinycolorswatch");
 		if(mShinyColorSwatch)
 		{
-			mShinyColorSwatch->setValid(editable);
+			if(!editable) mShinyColorSwatch->setOriginal(color);
+			if(!editable) mShinyColorSwatch->set(color, TRUE);
 			mShinyColorSwatch->setEnabled( editable );
+			mShinyColorSwatch->setFallbackImage(LLUI::getUIImage("locked_image.j2c") );
+			mShinyColorSwatch->setValid(editable);
 			mShinyColorSwatch->setCanApplyImmediately( editable );
 		}
 
@@ -747,8 +755,10 @@ void LLPanelFace::updateUI()
 				LL_WARNS() << "failed childGetSelectionInterface for 'combobox bumpiness'" << LL_ENDL;
 			}
 
+			getChild<LLTextBase>("normalmap_label")->setReadOnly(!editable);
 			getChildView("combobox bumpiness")->setEnabled(editable);
 			getChild<LLUICtrl>("combobox bumpiness")->setTentative(!identical_bumpy);
+			getChildView("lock_bump_check")->setEnabled(editable && norm_map_id.notNull());
 		}
 
 		// Texture
@@ -823,6 +833,7 @@ void LLPanelFace::updateUI()
 				{
 					texture_ctrl->setEnabled( editable );
 					texture_ctrl->setImageAssetID( id );
+					getChild<LLTextBase>("alphamode_label")->setReadOnly(!(editable && mIsAlpha && transparency <= 0.f));
 					getChildView("combobox alphamode")->setEnabled(editable && mIsAlpha && transparency <= 0.f);
 					getChildView("maskcutoff")->setEnabled(editable && mIsAlpha);
 				}
@@ -831,6 +842,7 @@ void LLPanelFace::updateUI()
 					// None selected
 					texture_ctrl->setEnabled( FALSE );
 					texture_ctrl->setImageAssetID( LLUUID::null );
+					getChild<LLTextBase>("alphamode_label")->setReadOnly( TRUE );
 					getChildView("combobox alphamode")->setEnabled( FALSE );
 					getChildView("maskcutoff")->setEnabled( FALSE);
 				}
@@ -839,6 +851,7 @@ void LLPanelFace::updateUI()
 					// Tentative: multiple selected with different textures
 					texture_ctrl->setEnabled( editable );
 					texture_ctrl->setImageAssetID( id );
+					getChild<LLTextBase>("alphamode_label")->setReadOnly(!(editable && mIsAlpha && transparency <= 0.f));
 					getChildView("combobox alphamode")->setEnabled(editable && mIsAlpha && transparency <= 0.f);
 					getChildView("maskcutoff")->setEnabled(editable && mIsAlpha);
 				}
@@ -1355,7 +1368,9 @@ void LLPanelFace::updateUI()
 		getChildView("rpt")->setEnabled(FALSE);
 		getChildView("tex offset")->setEnabled(FALSE);
 		getChildView("tex gen")->setEnabled(FALSE);
-		getChildView("lock_check")->setEnabled(FALSE);
+		getChildView("lock_diffuse_check")->setEnabled(FALSE);
+		getChildView("lock_bump_check")->setEnabled(FALSE);
+		getChildView("lock_spec_check")->setEnabled(FALSE);
 		
 		updateVisibility();
 
@@ -1532,12 +1547,6 @@ void LLPanelFace::updateShinyControls(bool is_setting_texture, bool mess_with_sh
 			}
 		}
 	}
-
-	U32 shiny_value = comboShiny->getCurrentIndex();
-	bool show_shinyctrls = (shiny_value == SHINY_TEXTURE); // Use texture
-	getChildView("glossiness")->setVisible(show_shinyctrls);
-	getChildView("environment")->setVisible(show_shinyctrls);
-	getChildView("shinycolorswatch")->setVisible(show_shinyctrls);
 }
 
 // static
@@ -1595,15 +1604,11 @@ void LLPanelFace::onCommitShiny(LLUICtrl* ctrl, void* userdata)
 // static
 void LLPanelFace::updateAlphaControls()
 {
-	LLComboBox* comboAlphaMode = getChild<LLComboBox>("combobox alphamode");
+	/*LLComboBox* comboAlphaMode = getChild<LLComboBox>("combobox alphamode");
 	if (!comboAlphaMode)
 	{
 		return;
-	}
-	U32 alpha_value = comboAlphaMode->getCurrentIndex();
-	bool show_alphactrls = (alpha_value == ALPHAMODE_MASK); // Alpha masking
-    
-	getChildView("maskcutoff")->setVisible(show_alphactrls);
+	}*/
 }
 
 // static
@@ -1780,16 +1785,18 @@ void LLPanelFace::onCommitTextureInfo( LLUICtrl* ctrl, void* userdata )
 	bool has_norm = self->getCurrentNormalMap().notNull();
 	bool shininess = material_type == MATTYPE_SPECULAR;
 	bool has_spec = self->getCurrentSpecularMap().notNull();
-	bool locked = self->getChild<LLUICtrl>("lock_check")->getValue().asBoolean();
+	bool diffuse_locked = self->getChild<LLUICtrl>("lock_diffuse_check")->getValue().asBoolean();
+	bool bump_locked = self->getChild<LLUICtrl>("lock_bump_check")->getValue().asBoolean();
+	bool spec_locked = self->getChild<LLUICtrl>("lock_spec_check")->getValue().asBoolean();
 
 	if(ctrl->getName() == "TexScaleU")
 	{
-		if(texture || locked)
+		if(texture || diffuse_locked)
 		{
 			self->sendTextureInfo();
 		}
 		
-		if((bumpiness || locked) && has_norm)
+		if((bumpiness || bump_locked) && has_norm)
 		{
 			F32 bumpy_scale_u = self->getCurrentBumpyScaleU();
 			if (self->isIdenticalPlanarTexgen())
@@ -1799,7 +1806,7 @@ void LLPanelFace::onCommitTextureInfo( LLUICtrl* ctrl, void* userdata )
 			LLSelectedTEMaterial::setNormalRepeatX(self,bumpy_scale_u);
 		}
 
-		if((shininess || locked) && has_spec)
+		if((shininess || spec_locked) && has_spec)
 		{
 			F32 shiny_scale_u = self->getCurrentShinyScaleU();
 			if (self->isIdenticalPlanarTexgen())
@@ -1812,12 +1819,12 @@ void LLPanelFace::onCommitTextureInfo( LLUICtrl* ctrl, void* userdata )
 
 	if(ctrl->getName() == "TexScaleV")
 	{
-		if(texture || locked)
+		if(texture || diffuse_locked)
 		{
 			self->sendTextureInfo();
 		}
 		
-		if((bumpiness || locked) && has_norm)
+		if((bumpiness || bump_locked) && has_norm)
 		{
 			F32 bumpy_scale_v = self->getCurrentBumpyScaleV();
 			if (self->isIdenticalPlanarTexgen())
@@ -1827,7 +1834,7 @@ void LLPanelFace::onCommitTextureInfo( LLUICtrl* ctrl, void* userdata )
 			LLSelectedTEMaterial::setNormalRepeatY(self,bumpy_scale_v);
 		}
 
-		if((shininess || locked) && has_spec)
+		if((shininess || spec_locked) && has_spec)
 		{
 			F32 shiny_scale_v = self->getCurrentShinyScaleV();
 			if (self->isIdenticalPlanarTexgen())
@@ -1840,17 +1847,17 @@ void LLPanelFace::onCommitTextureInfo( LLUICtrl* ctrl, void* userdata )
 
 	if(ctrl->getName() == "TexRot")
 	{
-		if(texture || locked)
+		if(texture || diffuse_locked)
 		{
 			self->sendTextureInfo();
 		}
 		
-		if((bumpiness || locked) && has_norm)
+		if((bumpiness || bump_locked) && has_norm)
 		{
 			LLSelectedTEMaterial::setNormalRotation(self,self->getCurrentBumpyRot() * DEG_TO_RAD);
 		}
 
-		if((shininess || locked) && has_spec)
+		if((shininess || spec_locked) && has_spec)
 		{
 			LLSelectedTEMaterial::setSpecularRotation(self,self->getCurrentShinyRot() * DEG_TO_RAD);
 		}
@@ -1858,17 +1865,17 @@ void LLPanelFace::onCommitTextureInfo( LLUICtrl* ctrl, void* userdata )
 
 	if(ctrl->getName() == "TexOffsetU")
 	{
-		if(texture || locked)
+		if(texture || diffuse_locked)
 		{
 			self->sendTextureInfo();
 		}
 		
-		if((bumpiness || locked) && has_norm)
+		if((bumpiness || bump_locked) && has_norm)
 		{
 			LLSelectedTEMaterial::setNormalOffsetX(self,self->getCurrentBumpyOffsetU());
 		}
 
-		if((shininess || locked) && has_spec)
+		if((shininess || spec_locked) && has_spec)
 		{
 			LLSelectedTEMaterial::setSpecularOffsetX(self,self->getCurrentShinyOffsetU());
 		}
@@ -1876,17 +1883,17 @@ void LLPanelFace::onCommitTextureInfo( LLUICtrl* ctrl, void* userdata )
 
 	if(ctrl->getName() == "TexOffsetV")
 	{
-		if(texture || locked)
+		if(texture || diffuse_locked)
 		{
 			self->sendTextureInfo();
 		}
 		
-		if((bumpiness || locked) && has_norm)
+		if((bumpiness || bump_locked) && has_norm)
 		{
 			LLSelectedTEMaterial::setNormalOffsetY(self,self->getCurrentBumpyOffsetV());
 		}
 
-		if((shininess || locked) && has_spec)
+		if((shininess || spec_locked) && has_spec)
 		{
 			LLSelectedTEMaterial::setSpecularOffsetY(self,self->getCurrentShinyOffsetV());
 		}
