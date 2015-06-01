@@ -55,7 +55,7 @@
             can_edit_text="true"
             follows="left|top"
             height="16"
-            increment="1"
+            increment="0.01"
             initial_value="0"
             label="Glow"
             label_width="70"
