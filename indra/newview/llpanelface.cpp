@@ -155,9 +155,9 @@ BOOL	LLPanelFace::postBuild()
 	LLCheckBoxCtrl	*mCheckFullbright;
 	
 	LLTextBox*		mLabelColorTransp;
-	LLSpinCtrl*		mCtrlColorTransp;		// transparency = 1 - alpha
+	LLUICtrl*		mCtrlColorTransp;		// transparency = 1 - alpha
 
-	LLSpinCtrl*     mCtrlGlow;
+	LLUICtrl*     mCtrlGlow;
 
 	setMouseOpaque(FALSE);
 
@@ -227,7 +227,7 @@ BOOL	LLPanelFace::postBuild()
 
 	mLabelColorTransp = getChild<LLTextBox>("color trans");
 
-	mCtrlColorTransp = getChild<LLSpinCtrl>("ColorTrans");
+	mCtrlColorTransp = getChild<LLUICtrl>("ColorTrans");
 	if(mCtrlColorTransp)
 	{
 		mCtrlColorTransp->setCommitCallback(boost::bind(&LLPanelFace::onCommitAlpha, this, _2));
@@ -252,7 +252,7 @@ BOOL	LLPanelFace::postBuild()
 		mRadioMatType->selectNthItem(MATTYPE_DIFFUSE);
 	}
 
-	mCtrlGlow = getChild<LLSpinCtrl>("glow");
+	mCtrlGlow = getChild<LLUICtrl>("glow");
 	if(mCtrlGlow)
 	{
 		mCtrlGlow->setCommitCallback(LLPanelFace::onCommitGlow, this);
@@ -383,9 +383,9 @@ void LLPanelFace::sendColor()
 
 void LLPanelFace::sendAlpha()
 {	
-	LLSpinCtrl*	mCtrlColorTransp = getChild<LLSpinCtrl>("ColorTrans");
+	LLUICtrl*	mCtrlColorTransp = getChild<LLUICtrl>("ColorTrans");
 	if(!mCtrlColorTransp)return;
-	F32 alpha = (100.f - mCtrlColorTransp->get()) / 100.f;
+	F32 alpha = (100.f - mCtrlColorTransp->getValue().asReal()) / 100.f;
 
 	LLSelectMgr::getInstance()->selectionSetAlphaOnly( alpha );
 }
@@ -393,11 +393,11 @@ void LLPanelFace::sendAlpha()
 
 void LLPanelFace::sendGlow()
 {
-	LLSpinCtrl* mCtrlGlow = getChild<LLSpinCtrl>("glow");
+	LLUICtrl* mCtrlGlow = getChild<LLUICtrl>("glow");
 	llassert(mCtrlGlow);
 	if (mCtrlGlow)
 	{
-		F32 glow = mCtrlGlow->get();
+		F32 glow = mCtrlGlow->getValue().asReal();
 		LLSelectMgr::getInstance()->selectionSetGlow( glow );
 	}
 }
