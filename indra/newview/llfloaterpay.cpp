@@ -123,7 +123,6 @@ protected:
 };
 
 
-const S32 MAX_AMOUNT_LENGTH = 10;
 const S32 FASTPAY_BUTTON_WIDTH = 80;
 const S32 PAY_AMOUNT_NOTIFICATION = 200;
 
@@ -372,7 +371,8 @@ void LLFloaterPay::payViaObject(money_callback callback, LLSafeHandle<LLObjectSe
 	LLSelectNode* node = selection->getFirstRootNode();
 	if (!node) 
 	{
-		//FIXME: notify user object no longer exists
+		// object no longer exists
+		LLNotificationsUtil::add("PayObjectFailed");
 		floater->closeFloater();
 		return;
 	}
@@ -498,12 +498,22 @@ void LLFloaterPay::onGive(void* data)
 		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 		if (amount > PAY_AMOUNT_NOTIFICATION && gStatusBar && sidepanel_inventory->getBalance() > amount)
 		{
-			LLUUID payee_id;
-			BOOL is_group;
+			LLUUID payee_id = LLUUID::null;
+			BOOL is_group = false;
 			if (floater->mObjectSelection.notNull())
 			{
 				LLSelectNode* node = floater->mObjectSelection->getFirstRootNode();
-				node->mPermissions->getOwnership(payee_id, is_group);
+				if (node)
+				{
+					node->mPermissions->getOwnership(payee_id, is_group);
+				}
+				else
+				{
+					// object no longer exists
+					LLNotificationsUtil::add("PayObjectFailed");
+					floater->closeFloater();
+					return;
+				}
 			}
 			else
 			{
@@ -568,6 +578,10 @@ void LLFloaterPay::give(S32 amount)
 					msg->addUUIDFast(_PREHASH_ObjectID, 	mTargetUUID);
 					msg->sendReliable( region->getHost() );
 				}
+			}
+			else
+			{
+				LLNotificationsUtil::add("PayObjectFailed");
 			}
 		}
 		else

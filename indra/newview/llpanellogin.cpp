@@ -76,9 +76,6 @@
 
 #include "llsdserialize.h"
 
-const S32 BLACK_BORDER_HEIGHT = 160;
-const S32 MAX_PASSWORD = 16;
-
 LLPanelLogin *LLPanelLogin::sInstance = NULL;
 BOOL LLPanelLogin::sCapslockDidNotification = FALSE;
 
@@ -120,7 +117,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 		login_holder->addChild(this);
 	}
 
-	buildFromFile( "panel_login.xml");
+		buildFromFile( "panel_login.xml");
 	
 	reshape(rect.getWidth(), rect.getHeight());
 
@@ -130,10 +127,11 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	password_edit->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 
 	getChild<LLComboBox>("start_location_combo")->setFocusLostCallback(boost::bind(&LLPanelLogin::onLocationSLURL, this));
+	favorites_combo->setReturnCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 	
 	LLComboBox* server_choice_combo = getChild<LLComboBox>("server_combo");
 	server_choice_combo->setCommitCallback(boost::bind(&LLPanelLogin::onSelectServer, this));
-
+	
 	// Load all of the grids, sorted, and then add a bar and the current grid at the top
 	server_choice_combo->removeall();
 
@@ -210,7 +208,7 @@ void LLPanelLogin::addFavoritesToStartLocation()
 	LLComboBox* combo = getChild<LLComboBox>("start_location_combo");
 	if (!combo) return;
 	int num_items = combo->getItemCount();
-	for (int i = num_items - 1; i > 2; i--)
+	for (int i = num_items - 1; i > 1; i--)
 	{
 		combo->remove(i);
 	}
@@ -222,10 +220,10 @@ void LLPanelLogin::addFavoritesToStartLocation()
 	std::string old_filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "stored_favorites.xml");
 	LLSD fav_llsd;
 	llifstream file;
-	file.open(filename);
+	file.open(filename.c_str());
 	if (!file.is_open())
 	{
-		file.open(old_filename);
+		file.open(old_filename.c_str());
 		if (!file.is_open()) return;
 	}
 	LLSDSerialize::fromXML(fav_llsd, file);
@@ -253,6 +251,10 @@ void LLPanelLogin::addFavoritesToStartLocation()
 			if(label != "" && value != "")
 			{
 				combo->add(label, value);
+				if ( LLStartUp::getStartSLURL().getSLURLString() == value)
+				{
+					combo->selectByValue(value);
+				}
 			}
 		}
 		break;
@@ -588,7 +590,16 @@ void LLPanelLogin::onUpdateStartSLURL(const LLSLURL& new_start_slurl)
 
 				updateServer(); // to change the links and splash screen
 			}
-			location_combo->setTextEntry(new_start_slurl.getLocationString());
+			if ( new_start_slurl.getLocationString().length() )
+			{
+				if (location_combo->getCurrentIndex() == -1)
+				{
+					location_combo->setLabel(new_start_slurl.getLocationString());
+				}
+				sInstance->mLocationLength = new_start_slurl.getLocationString().length();
+				sInstance->updateLoginButtons();
+			}
+
 		}
 		else
 		{
@@ -679,7 +690,6 @@ void LLPanelLogin::loadLoginPage()
 //---------------------------------------------------------------------------
 // Protected methods
 //---------------------------------------------------------------------------
-
 void LLPanelLogin::onClickQuit(void *)
 {
 	LLAppViewer::instance()->userQuit();
@@ -831,6 +841,7 @@ void LLPanelLogin::updateServer()
 		}
 	}
 }
+
 
 void LLPanelLogin::onSelectServer()
 {

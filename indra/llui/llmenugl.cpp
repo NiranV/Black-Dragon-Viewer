@@ -105,8 +105,6 @@ BOOL LLMenuGL::sKeyboardMode = FALSE;
 
 LLHandle<LLView> LLMenuHolderGL::sItemLastSelectedHandle;
 LLFrameTimer LLMenuHolderGL::sItemActivationTimer;
-//LLColor4 LLMenuGL::sBackgroundColor( 0.8f, 0.8f, 0.0f, 1.0f );
-
 const F32 ACTIVATE_HIGHLIGHT_TIME = 0.3f;
 
 static MenuRegistry::Register<LLMenuItemGL> register_menu_item("menu_item");
@@ -1583,7 +1581,7 @@ void LLMenuItemBranchDownGL::draw( void )
 		std::string::size_type offset = upper_case_label.find(getJumpKey());
 		if (offset != std::string::npos)
 		{
-			S32 x_offset = llround((F32)getRect().getWidth() / 2.f - getFont()->getWidthF32(mLabel.getString(), 0, S32_MAX) / 2.f);
+			S32 x_offset = ll_round((F32)getRect().getWidth() / 2.f - getFont()->getWidthF32(mLabel.getString(), 0, S32_MAX) / 2.f);
 			S32 x_begin = x_offset + getFont()->getWidth(mLabel, 0, offset);
 			S32 x_end = x_offset + getFont()->getWidth(mLabel, 0, offset + 1);
 			gl_line_2d(x_begin, LABEL_BOTTOM_PAD_PIXELS, x_end, LABEL_BOTTOM_PAD_PIXELS);
@@ -3020,8 +3018,8 @@ BOOL LLMenuGL::handleHover( S32 x, S32 y, MASK mask )
 	LLVector2 mouse_avg_dir((F32)mMouseVelX, (F32)mMouseVelY);
 	mouse_avg_dir.normVec();
 	F32 interp = 0.5f * (llclamp(mouse_dir * mouse_avg_dir, 0.f, 1.f));
-	mMouseVelX = llround(lerp((F32)mouse_delta_x, (F32)mMouseVelX, interp));
-	mMouseVelY = llround(lerp((F32)mouse_delta_y, (F32)mMouseVelY, interp));
+	mMouseVelX = ll_round(lerp((F32)mouse_delta_x, (F32)mMouseVelX, interp));
+	mMouseVelY = ll_round(lerp((F32)mouse_delta_y, (F32)mMouseVelY, interp));
 	mLastMouseX = x;
 	mLastMouseY = y;
 

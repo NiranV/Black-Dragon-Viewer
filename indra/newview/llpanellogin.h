@@ -106,6 +106,7 @@ private:
 
 	static LLPanelLogin* sInstance;
 	static BOOL		sCapslockDidNotification;
+
 };
 
 #endif
