@@ -510,16 +510,16 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>5aa7b826e7c1cf95e9cd3ef77e314f35</string>
+              <string>e66122237534c860d14e7656e49ae120</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/fmodex_3p-update-fmodex/rev/297261/arch/CYGWIN/installer/fmodex-4.44.31.297261-windows-297261.tar.bz2</string>
+              <string>https://bitbucket.org/NiranV/black-dragon-viewer/downloads/fmodex-4.44.54-windows-20150605.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
           </map>
         </map>
         <key>version</key>
-        <string>4.44.31.297261</string>
+        <string>4.44.54.20150605</string>
       </map>
       <key>fontconfig</key>
       <map>
