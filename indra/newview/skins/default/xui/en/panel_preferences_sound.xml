@@ -9,10 +9,6 @@ left="0"
 name="Preference Media panel"
 top="45"
 width="510">
- <panel.string
- name="middle_mouse">
- Middle Mouse
- </panel.string>
  <scroll_container
  color="Transparent"
  follows="all"
@@ -640,6 +636,10 @@ width="510">
     name="name_default_system_device">
     Default System Device
     </string>
+    <string
+    name="middle_mouse">
+    Middle Mouse
+    </string>
     <panel
  follows="left|top|right"
  height="20"
@@ -774,7 +774,10 @@ width="510">
     left_pad="3"
     top_delta="0"
     name="set_voice_hotkey_button"
-    width="100"/>
+    width="100">
+    <button.commit_callback
+         function="Pref.VoiceSetKey"/>
+    </button>
     <button
     enabled_control="EnableVoiceChat"
     follows="top|left"
@@ -786,7 +789,10 @@ width="510">
     name="set_voice_middlemouse_button"
     left_pad="3"
     top_delta="0"
-    width="25"/>
+    width="25">
+    <button.commit_callback
+         function="Pref.VoiceSetMiddleMouse"/>
+    </button>
     
     <panel
  follows="left|top|right"
