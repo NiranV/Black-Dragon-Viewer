@@ -5555,6 +5555,7 @@ void LLPickInfo::getSurfaceInfo()
 //										   &tangent))
 
 // [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
+		if (gViewerWindow->cursorIntersect(ll_round((F32)mMousePt.mX), ll_round((F32)mMousePt.mY), 1024.f,
 										   objectp, -1, mPickTransparent, mPickRigged,
 										   &mObjectFace,
 										   &intersection,
@@ -5571,7 +5572,7 @@ void LLPickInfo::getSurfaceInfo()
 				if (facep)
 				{
 					mUVCoords = facep->surfaceToTexture(mSTCoords, intersection, normal);
-			}
+				}
 			}
 
 			mIntersection.set(intersection.getF32ptr());

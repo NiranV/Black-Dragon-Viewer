@@ -750,9 +750,9 @@ void LLTaskInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	}
 	else if (canOpenItem())
 	{
-		items.push_back(std::string("Task Open"));
+		//items.push_back(std::string("Task Open"));
 // [RLVa:KB] - Checked: 2010-03-01 (RLVa-1.2.0b) | Modified: RLVa-1.1.0a
-		else if (rlv_handler_t::isEnabled())
+		if (rlv_handler_t::isEnabled())
 		{
 			LLViewerObject* pAttachObj = gObjectList.findObject(mPanel->getTaskUUID());
 			bool fLocked = (pAttachObj) ? gRlvAttachmentLocks.isLockedAttachment(pAttachObj->getRootEdit()) : false;
@@ -764,6 +764,10 @@ void LLTaskInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 			}
 		}
 // [/RLVa:KB]
+		else
+		{
+			items.push_back(std::string("Task Open"));
+		}
 	}
 	items.push_back(std::string("Task Properties"));
 //	if(isItemRenameable())

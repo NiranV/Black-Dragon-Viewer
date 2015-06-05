@@ -1439,11 +1439,11 @@ void LLAppearanceMgr::wearItemsOnAvatar(const uuid_vec_t& item_ids_to_wear,
         }
 
 // [RLVa:KB] - Checked: 2013-02-12 (RLVa-1.4.8)
-	replace |= (LLAssetType::AT_BODYPART == item_to_wear->getType()); // Body parts should always replace
-	if ( (rlv_handler_t::isEnabled()) && (!rlvPredCanWearItem(item_to_wear, (replace) ? RLV_WEAR_REPLACE : RLV_WEAR_ADD)) )
-	{
-		return false;
-	}
+		replace |= (LLAssetType::AT_BODYPART == item_to_wear->getType()); // Body parts should always replace
+		if ( (rlv_handler_t::isEnabled()) && (!rlvPredCanWearItem(item_to_wear, (replace) ? RLV_WEAR_REPLACE : RLV_WEAR_ADD)) )
+		{
+			return;
+		}
 // [/RLVa:KB]
 
         switch (item_to_wear->getType())
@@ -2010,9 +2010,6 @@ void LLAppearanceMgr::filterWearableItems(
             if (size <= 0)
                 continue;
             S32 start_index = llmax(0,size-max_per_type);
-// [SL:KB] - Patch: Appearance-Misc | Checked: 2010-05-11 (Catznip-2.0)
-		S32 start_index = llmax(0, size - ((LLAssetType::AT_BODYPART == LLWearableType::getAssetType((LLWearableType::EType)i)) ? 1 : max_per_type));
-// [/SL:KB[
             for (S32 j = start_index; j<size; j++)
             {
                 items.push_back(items_by_type[i][j]);
@@ -2505,7 +2502,7 @@ void LLAppearanceMgr::updateAppearanceFromCOF(bool enforce_item_restrictions,
 	removeDuplicateItems(wear_items);
 	removeDuplicateItems(obj_items);
 	removeDuplicateItems(gest_items);
-	filterWearableItems(wear_items, LLAgentWearables::MAX_CLOTHING_PER_TYPE);
+	filterWearableItems(wear_items, LLAgentWearables::MAX_CLOTHING_LAYERS, LLAgentWearables::MAX_CLOTHING_LAYERS);
 // [/SL:KB]
 // [SL:KB] - Patch: Appearance-WearableDuplicateAssets | Checked: 2011-07-24 (Catznip-2.6.0e) | Added: Catznip-2.6.0e
 	// Wearing two wearables that share the same asset causes some issues
@@ -3087,16 +3084,6 @@ void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInve
 		const LLInventoryItem* item = item_array.at(i).get();
 		if (item->getIsLinkType() && item->getLinkedUUID() == item_id)
 		{
-// [RLVa:KB] - Checked: 2013-02-12 (RLVa-1.4.8)
-#if LL_RELEASE_WITH_DEBUG_INFO || LL_DEBUG
-			// NOTE-RLVa: debug-only, can be removed down the line
-			if (rlv_handler_t::isEnabled())
-			{
-				RLV_ASSERT(rlvPredCanRemoveItem(item));
-			}
-#endif // LL_RELEASE_WITH_DEBUG_INFO || LL_DEBUG
-// [/RLVa:KB]
-
 			bool immediate_delete = false;
 			if (item->getType() == LLAssetType::AT_OBJECT)
 			{

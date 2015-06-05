@@ -932,7 +932,7 @@ void LLWearableItemsList::ContextMenu::updateItemsVisibility(LLContextMenu* menu
 	setMenuItemVisible(menu, "wear_replace",		n_worn == 0 && n_already_worn != 0 && can_be_worn);
 // [RLVa:KB] - Checked: 2010-09-04 (RLVa-1.2.1a) | Added: RLVa-1.2.1a
 	setMenuItemEnabled(menu, "wear_wear", 			n_already_worn == 0 && n_worn == 0 && rlvCanWearReplace);
-	setMenuItemEnabled(menu, "wear_add",			LLAppearanceMgr::instance().canAddWearables(ids)) && rlvCanWearAdd);
+	setMenuItemEnabled(menu, "wear_add",			LLAppearanceMgr::instance().canAddWearables(ids) && rlvCanWearAdd);
 	setMenuItemEnabled(menu, "wear_replace",		rlvCanWearReplace);
 // [/RLVa:KB]
 	//visible only when one item selected and this item is worn

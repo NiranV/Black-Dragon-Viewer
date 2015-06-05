@@ -127,7 +127,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	password_edit->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 
 	getChild<LLComboBox>("start_location_combo")->setFocusLostCallback(boost::bind(&LLPanelLogin::onLocationSLURL, this));
-	favorites_combo->setReturnCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
+	//favorites_combo->setReturnCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 	
 	LLComboBox* server_choice_combo = getChild<LLComboBox>("server_combo");
 	server_choice_combo->setCommitCallback(boost::bind(&LLPanelLogin::onSelectServer, this));
@@ -596,8 +596,8 @@ void LLPanelLogin::onUpdateStartSLURL(const LLSLURL& new_start_slurl)
 				{
 					location_combo->setLabel(new_start_slurl.getLocationString());
 				}
-				sInstance->mLocationLength = new_start_slurl.getLocationString().length();
-				sInstance->updateLoginButtons();
+				//sInstance->mLocationLength = new_start_slurl.getLocationString().length();
+				//sInstance->updateLoginButtons();
 			}
 
 		}
