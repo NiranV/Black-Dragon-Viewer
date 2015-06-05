@@ -103,6 +103,7 @@ void LLWearableData::pushWearable(const LLWearableType::EType type,
 	}
 	if (canAddWearable(type))
 	{
+		mWearableDatas[type].push_back(wearable);
 		if (trigger_updated)
 		{
 			const BOOL removed = FALSE;
