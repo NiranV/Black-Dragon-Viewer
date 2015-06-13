@@ -211,7 +211,8 @@
          width="180"
          name="hud_check" />
         <check_box
-         label="Freeze frame (fullscreen)"
+         label="Freeze World"
+		 control_name="UseFreezeFrame"
          layout="topleft"
 		 height="16"
          left="10"
