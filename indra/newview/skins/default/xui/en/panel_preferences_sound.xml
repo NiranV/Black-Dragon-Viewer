@@ -9,6 +9,10 @@ left="0"
 name="Preference Media panel"
 top="45"
 width="510">
+ <panel.string
+    name="middle_mouse">
+    Middle Mouse
+ </panel.string>
  <scroll_container
  color="Transparent"
  follows="all"
@@ -636,31 +640,27 @@ width="510">
     name="name_default_system_device">
     Default System Device
     </string>
-    <string
-    name="middle_mouse">
-    Middle Mouse
-    </string>
     <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
- <text
- name="show_ims_in_label"
- follows="left|top"
- layout="topleft"
- left="25"
- height="12"
- width="350"
- top_delta="4">
- Input Options:
- </text>
+    follows="left|top|right"
+    height="20"
+    bg_visible="true"
+    bg_alpha_color="EmphasisColor_13"
+    layout="topleft"
+    mouse_opaque="false"
+    left="1"
+    name="title"
+    top_pad="10"
+    width="515"/>
+    <text
+    name="show_ims_in_label"
+    follows="left|top"
+    layout="topleft"
+    left="25"
+    height="12"
+    width="350"
+    top_delta="4">
+    Input Options:
+    </text>
     <icon
     height="18"
     image_name="Command_Speak_Icon"
