@@ -57,10 +57,6 @@
 #include "llwindow.h"
 #include "llworld.h"
 
-F32 SHINE_TIME = 0.5f;
-F32 SHINE_WIDTH = 0.6f;
-F32 SHINE_OPACITY = 0.3f;
-F32 FALL_TIME = 0.6f;
 S32 BORDER_WIDTH = 6;
 
 const S32 MAX_TEXTURE_SIZE = 512 ; //max upload texture size 512 * 512

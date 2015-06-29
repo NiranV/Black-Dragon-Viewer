@@ -168,7 +168,6 @@ private:
 	ESnapshotType				mSnapshotType;
 	LLFloaterSnapshot::ESnapshotFormat	mSnapshotFormat;
 	BOOL						mSnapshotUpToDate;
-	LLFrameTimer				mFallAnimTimer;
 	LLVector3					mCameraPos;
 	LLQuaternion				mCameraRot;
 	BOOL						mSnapshotActive;
