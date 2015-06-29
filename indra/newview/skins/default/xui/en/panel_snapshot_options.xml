@@ -18,7 +18,7 @@
    layout="topleft"
    left="9"
    name="save_to_computer_btn"
-   top_pad="9">
+   top_pad="0">
     <button.commit_callback
      function="Snapshot.SaveToComputer" />
   </button>

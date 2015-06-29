@@ -55,8 +55,6 @@
 LLUICtrl* LLFloaterSnapshot::sThumbnailPlaceholder = NULL;
 LLSnapshotFloaterView* gSnapshotFloaterView = NULL;
 
-const F32 AUTO_SNAPSHOT_TIME_DELAY = 1.f;
-
 const S32 MAX_POSTCARD_DATASIZE = 1024 * 1024; // one megabyte
 const S32 MAX_TEXTURE_SIZE = 512 ; //max upload texture size 512 * 512
 
@@ -93,7 +91,6 @@ public:
 
 	}
 	static void onClickNewSnapshot(void* data);
-	static void onClickAutoSnap(LLUICtrl *ctrl, void* data);
 	static void onClickFilter(LLUICtrl *ctrl, void* data);
 	//static void onClickAdvanceSnap(LLUICtrl *ctrl, void* data);
 	static void onClickUICheck(LLUICtrl *ctrl, void* data);
@@ -131,7 +128,6 @@ public:
 private:
 	static LLViewerWindow::ESnapshotType getLayerType(LLFloaterSnapshot* floater);
 	static void comboSetCustom(LLFloaterSnapshot *floater, const std::string& comboname);
-	static void checkAutoSnapshot(LLSnapshotLivePreview* floater, BOOL update_thumbnail = FALSE);
 	static void checkAspectRatio(LLFloaterSnapshot *view, S32 index) ;
 	static void setWorking(LLFloaterSnapshot* floater, bool working);
 	static void setFinished(LLFloaterSnapshot* floater, bool finished, bool ok = true, const std::string& msg = LLStringUtil::null);
@@ -463,25 +459,8 @@ void LLFloaterSnapshot::Impl::setNeedRefresh(LLFloaterSnapshot* floater, bool ne
 {
 	if (!floater) return;
 
-	// Don't display the "Refresh to save" message if we're in auto-refresh mode.
-	if (gSavedSettings.getBOOL("AutoSnapshot"))
-	{
-		need = false;
-	}
-
 	floater->mRefreshLabel->setVisible(need);
 	floater->impl.mNeedRefresh = need;
-}
-
-// static
-void LLFloaterSnapshot::Impl::checkAutoSnapshot(LLSnapshotLivePreview* previewp, BOOL update_thumbnail)
-{
-	if (previewp)
-	{
-		BOOL autosnap = gSavedSettings.getBOOL("AutoSnapshot");
-		LL_DEBUGS() << "updating " << (autosnap ? "snapshot" : "thumbnail") << LL_ENDL;
-		previewp->updateSnapshot(autosnap, update_thumbnail, autosnap ? AUTO_SNAPSHOT_TIME_DELAY : 0.f);
-	}
 }
 
 // static
@@ -498,20 +477,6 @@ void LLFloaterSnapshot::Impl::onClickNewSnapshot(void* data)
 }
 
 // static
-void LLFloaterSnapshot::Impl::onClickAutoSnap(LLUICtrl *ctrl, void* data)
-{
-	LLCheckBoxCtrl *check = (LLCheckBoxCtrl *)ctrl;
-	gSavedSettings.setBOOL( "AutoSnapshot", check->get() );
-	
-	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;		
-	if (view)
-	{
-		checkAutoSnapshot(getPreviewView(view));
-		updateControls(view);
-	}
-}
-
-// static
 void LLFloaterSnapshot::Impl::onClickFilter(LLUICtrl *ctrl, void* data)
 {
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
@@ -521,7 +486,6 @@ void LLFloaterSnapshot::Impl::onClickFilter(LLUICtrl *ctrl, void* data)
         LLSnapshotLivePreview* previewp = getPreviewView(view);
         if (previewp)
         {
-            checkAutoSnapshot(previewp);
             // Note : index 0 of the filter drop down is assumed to be "No filter" in whichever locale
             LLComboBox* filterbox = static_cast<LLComboBox *>(view->getChild<LLComboBox>("filters_combobox"));
             std::string filter_name = (filterbox->getCurrentIndex() ? filterbox->getSimple() : "");
@@ -540,7 +504,6 @@ void LLFloaterSnapshot::Impl::onClickUICheck(LLUICtrl *ctrl, void* data)
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
 	if (view)
 	{
-		checkAutoSnapshot(getPreviewView(view), TRUE);
 		updateControls(view);
 	}
 }
@@ -554,7 +517,6 @@ void LLFloaterSnapshot::Impl::onClickHUDCheck(LLUICtrl *ctrl, void* data)
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
 	if (view)
 	{
-		checkAutoSnapshot(getPreviewView(view), TRUE);
 		updateControls(view);
 	}
 }
@@ -585,7 +547,6 @@ void LLFloaterSnapshot::Impl::applyKeepAspectCheck(LLFloaterSnapshot* view, BOOL
 			LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
 			previewp->setSize(w, h) ;
 			previewp->updateSnapshot(TRUE);
-			checkAutoSnapshot(previewp, TRUE);
 		}
 	}
 }
@@ -816,7 +777,6 @@ void LLFloaterSnapshot::Impl::updateResolution(LLUICtrl* ctrl, void* data, BOOL 
 			previewp->setSize(width, height);
 
 			// hide old preview as the aspect ratio could be wrong
-			checkAutoSnapshot(previewp, FALSE);
 			LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
 			getPreviewView(view)->updateSnapshot(TRUE);
 			if(do_update)
@@ -842,7 +802,6 @@ void LLFloaterSnapshot::Impl::onCommitLayerTypes(LLUICtrl* ctrl, void*data)
 		{
 			previewp->setSnapshotBufferType((LLViewerWindow::ESnapshotType)combobox->getCurrentIndex());
 		}
-		checkAutoSnapshot(previewp, TRUE);
 	}
 }
 
@@ -963,7 +922,6 @@ void LLFloaterSnapshot::Impl::applyCustomResolution(LLFloaterSnapshot* view, S32
 			previewp->setMaxImageSize((S32) getWidthSpinner(view)->getMaxValue()) ;
 
 			previewp->setSize(w,h);
-			checkAutoSnapshot(previewp, FALSE);
 			comboSetCustom(view, "profile_size_combo");
 			comboSetCustom(view, "postcard_size_combo");
 			comboSetCustom(view, "texture_size_combo");
@@ -1043,10 +1001,6 @@ BOOL LLFloaterSnapshot::postBuild()
 	getChildView("layer_types")->setEnabled(FALSE);
 
 	childSetCommitCallback("freeze_frame_check", Impl::onCommitFreezeWorld, this);
-
-	getChild<LLUICtrl>("auto_snapshot_check")->setValue(gSavedSettings.getBOOL("AutoSnapshot"));
-	childSetCommitCallback("auto_snapshot_check", Impl::onClickAutoSnap, this);
-    
 
 	// Filters
 	LLComboBox* filterbox = getChild<LLComboBox>("filters_combobox");

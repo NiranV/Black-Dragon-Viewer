@@ -57,8 +57,6 @@
 #include "llwindow.h"
 #include "llworld.h"
 
-const F32 AUTO_SNAPSHOT_TIME_DELAY = 1.f;
-
 F32 SHINE_TIME = 0.5f;
 F32 SHINE_WIDTH = 0.6f;
 F32 SHINE_OPACITY = 0.3f;
@@ -466,21 +464,13 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 		return FALSE;
 	}
 
-	// If we're in freeze-frame mode and camera has moved, update snapshot.
-	LLVector3 new_camera_pos = LLViewerCamera::getInstance()->getOrigin();
-	LLQuaternion new_camera_rot = LLViewerCamera::getInstance()->getQuaternion();
-	if (previewp->mForceUpdateSnapshot || (gSavedSettings.getBOOL("FreezeTime") && previewp->mAllowFullScreenPreview &&
-		(new_camera_pos != previewp->mCameraPos || dot(new_camera_rot, previewp->mCameraRot) < 0.995f)))
+	if (previewp->mForceUpdateSnapshot)
 	{
-		previewp->mCameraPos = new_camera_pos;
-		previewp->mCameraRot = new_camera_rot;
 		// request a new snapshot whenever the camera moves, with a time delay
-		BOOL new_snapshot = gSavedSettings.getBOOL("AutoSnapshot") || previewp->mForceUpdateSnapshot;
-		LL_DEBUGS() << "camera moved, updating thumbnail" << LL_ENDL;
 		previewp->updateSnapshot(
-			new_snapshot, // whether a new snapshot is needed or merely invalidate the existing one
+			TRUE, // whether a new snapshot is needed or merely invalidate the existing one
 			FALSE, // or if 1st arg is false, whether to produce a new thumbnail image.
-			new_snapshot ? AUTO_SNAPSHOT_TIME_DELAY : 0.f); // shutter delay if 1st arg is true.
+			0.f); // shutter delay if 1st arg is true.
 		previewp->mForceUpdateSnapshot = FALSE;
 	}
 

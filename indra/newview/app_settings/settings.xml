@@ -467,17 +467,6 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>AutoSnapshot</key>
-    <map>
-      <key>Comment</key>
-      <string>Update snapshot when camera stops moving, or any parameter changes</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
     <key>AutomaticFly</key>
     <map>
       <key>Comment</key>
