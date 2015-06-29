@@ -162,10 +162,6 @@ private:
     BOOL                        mAllowRenderUI;
     BOOL                        mAllowFullScreenPreview;
 	LLFrameTimer				mSnapshotDelayTimer;
-	S32							mShineCountdown;
-	LLFrameTimer				mShineAnimTimer;
-	F32							mFlashAlpha;
-	BOOL						mNeedsFlash;
 	LLVector3d					mPosTakenGlobal;
 	S32							mSnapshotQuality;
 	S32							mDataSize;
