@@ -98,7 +98,6 @@ public:
 	static void applyKeepAspectCheck(LLFloaterSnapshot* view, BOOL checked);
 	static void updateResolution(LLUICtrl* ctrl, void* data, BOOL do_update = TRUE);
 	static void onCommitFreezeWorld(LLUICtrl* ctrl, void* data);
-	static void handleFreezeWorld(void* data, bool closing = false);
 	static void onCommitLayerTypes(LLUICtrl* ctrl, void*data);
 	static void onImageQualityChange(LLFloaterSnapshot* view, S32 quality_val);
 	static void onImageFormatChange(LLFloaterSnapshot* view);
@@ -140,6 +139,9 @@ public:
 	LLHandle<LLView> mPreviewHandle;
 	bool mAspectRatioCheckOff ;
 	bool mNeedRefresh;
+	// 0 = do nothing | 1 = was enabled, disable it again 
+	// 2 = was enabled before, don't disable | 3 = enable it on close
+	S32 mSnapshotFreezeWorld;
 	EStatus mStatus;
 };
 
@@ -555,42 +557,20 @@ void LLFloaterSnapshot::Impl::applyKeepAspectCheck(LLFloaterSnapshot* view, BOOL
 	}
 }
 
-//static 
-void LLFloaterSnapshot::Impl::handleFreezeWorld(void* data, bool closing)
-{
-	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
-	bool use_freeze_frame = gSavedSettings.getBOOL("UseFreezeFrame");
-
-	if (use_freeze_frame && !closing)
-	{
-		// freeze all avatars
-		LLCharacter* avatarp;
-		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
-			iter != LLCharacter::sInstances.end(); ++iter)
-		{
-			avatarp = *iter;
-			view->impl.mAvatarPauseHandles.push_back(avatarp->requestPause());
-		}
-
-		// freeze everything else
-		gSavedSettings.setBOOL("FreezeTime", TRUE);
-	}
-	else // turning off freeze world mode, either temporarily or not.
-	{
-		// thaw all avatars
-		view->impl.mAvatarPauseHandles.clear();
-
-		// thaw everything else
-		gSavedSettings.setBOOL("FreezeTime", FALSE);
-	}
-}
-
 // static
 void LLFloaterSnapshot::Impl::onCommitFreezeWorld(LLUICtrl* ctrl, void* data)
 {
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
 
-	handleFreezeWorld(data);
+	if (view->impl.mSnapshotFreezeWorld != 2)
+	{
+		view->impl.mSnapshotFreezeWorld = ctrl->getValue().asInteger();
+	}
+	else if (!ctrl->getValue().asBoolean() 
+		&& view->impl.mSnapshotFreezeWorld == 2)
+	{
+		view->impl.mSnapshotFreezeWorld = 3;
+	}
 
 	updateLayout(view);
 }
@@ -1119,20 +1099,19 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 	gSnapshotFloaterView->setVisible(TRUE);
 	gSnapshotFloaterView->adjustToFitScreen(this, FALSE);
 
-	if (gSavedSettings.getBOOL("UseFreezeFrame") && !mFloaterOpen)
+	if (gSavedSettings.getBOOL("UseFreezeWorld"))
 	{
-		impl.handleFreezeWorld(this);
+		impl.mSnapshotFreezeWorld = 2;
 	}
-
+	else if (impl.mSnapshotFreezeWorld == 1)
+	{
+		gSavedSettings.setBOOL("UseFreezeWorld", true);
+	}
 	impl.updateControls(this);
 	impl.updateLayout(this);
 
 	// Initialize default tab.
 	getChild<LLSideTrayPanelContainer>("panel_container")->getCurrentPanel()->onOpen(LLSD());
-
-	// Save if the snapshot floater is open, so we can stop it from repeatedly
-	// calling the freeze world call.
-	mFloaterOpen = true;
 }
 
 void LLFloaterSnapshot::onClose(bool app_quitting)
@@ -1146,18 +1125,25 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 		previewp->setVisible(FALSE);
 		previewp->setEnabled(FALSE);
 	}
-
-	if (gSavedSettings.getBOOL("UseFreezeFrame"))
+	if (impl.mSnapshotFreezeWorld == 3)
 	{
-		impl.handleFreezeWorld(this, true);
+		gSavedSettings.setBOOL("UseFreezeWorld", true);
+		impl.mSnapshotFreezeWorld = 2;
+	}
+	else if (!gSavedSettings.getBOOL("UseFreezeWorld")
+		&& impl.mSnapshotFreezeWorld == 2)
+	{
+		impl.mSnapshotFreezeWorld = 0;
+	}
+	else if (impl.mSnapshotFreezeWorld == 1)
+	{
+		gSavedSettings.setBOOL("UseFreezeWorld", false);
 	}
 
 	if (impl.mLastToolset)
 	{
 		LLToolMgr::getInstance()->setCurrentToolset(impl.mLastToolset);
 	}
-
-	mFloaterOpen = false;
 }
 
 void LLFloaterSnapshot::onClickBigPreview()

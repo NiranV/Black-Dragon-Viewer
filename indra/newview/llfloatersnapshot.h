@@ -72,8 +72,6 @@ public:
 
 	static const LLRect& getThumbnailPlaceholderRect() { return sThumbnailPlaceholder->getRect(); }
 
-	bool mFloaterOpen;
-
 private:
 	static LLUICtrl* sThumbnailPlaceholder;
 	LLUICtrl *mRefreshBtn, *mRefreshLabel;

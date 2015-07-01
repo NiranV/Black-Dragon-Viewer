@@ -221,13 +221,13 @@
          top_pad="5"/>
         <check_box
          label="Freeze World"
-		 control_name="UseFreezeFrame"
+		 control_name="UseFreezeWorld"
          layout="topleft"
 		 height="16"
          left="10"
          top_pad="7"
          width="180"
-         name="freeze_frame_check" />
+         name="freeze_world_check" />
 		<check_box
          label="Remember snapshot mode"
 		 control_name="RememberSnapshotMode"

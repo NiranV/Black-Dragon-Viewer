@@ -1091,7 +1091,7 @@ void LLPipeline::refreshCachedSettings()
 			&& gSavedSettings.getBOOL("UseOcclusion") 
 			&& gGLManager.mHasOcclusionQuery) ? 2 : 0
 			&& !(LLFloaterReg::findInstance("snapshot")->getVisible()
-			&& gSavedSettings.getBOOL("UseFreezeFrame"));
+			&& gSavedSettings.getBOOL("UseFreezeWorld"));
 	
 	VertexShaderEnable = gSavedSettings.getBOOL("VertexShaderEnable");
 	RenderAvatarVP = gSavedSettings.getBOOL("RenderAvatarVP");
@@ -7508,7 +7508,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 		&& gSavedSettings.getBOOL("UseOcclusion")
 		&& gGLManager.mHasOcclusionQuery) ? 2 : 0
 		&& !(LLFloaterReg::findInstance("snapshot")->getVisible()
-		&& gSavedSettings.getBOOL("UseFreezeFrame"));
+		&& gSavedSettings.getBOOL("UseFreezeWorld"));
 
 	LLVertexBuffer::unbind();
 	LLGLState::checkStates();

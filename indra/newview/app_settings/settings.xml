@@ -13306,7 +13306,7 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>UseFreezeFrame</key>
+    <key>UseFreezeWorld</key>
     <map>
       <key>Comment</key>
       <string>Freeze time when taking snapshots.</string>
