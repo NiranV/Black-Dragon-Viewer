@@ -6790,13 +6790,6 @@ void notify_cautioned_script_question(const LLSD& notification, const LLSD& resp
 				chat_msg.mSourceType = CHAT_SOURCE_SYSTEM;
 				nearby_chat->addMessage(chat_msg);
 			}
-			}
-// [/RLVa:KB]
-//		if (caution)
-//		{
-//			LLChat chat(notice.getString());
-//	//		LLFloaterChat::addChat(chat, FALSE, FALSE);
-//		}
 		}
 // [/RLVa:KB]
 //		if (caution)

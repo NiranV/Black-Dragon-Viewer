@@ -364,17 +364,6 @@ private:
 	LLUUID mItemID;
 };
 
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-08-31 (Catznip-2.1)
-class LLRegisterAttachmentCallback : public LLInventoryCallback
-{
-public:
-	/*virtual*/ void fire(const LLUUID& idItem)
-	{
-		LLAppearanceMgr::instance().onRegisterAttachmentComplete(idItem);
-	}
-};
-// [/SL:KB]
-
 LLUUID findDescendentCategoryIDByName(const LLUUID& parent_id,const std::string& name);
 
 // Invoke a given callable after category contents are fully fetched.

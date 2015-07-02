@@ -581,7 +581,10 @@ void LLToolPie::selectionPropertiesReceived()
 
 BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 {
-	mHoverPick = gViewerWindow->pickImmediate(x, y, FALSE);
+//	mHoverPick = gViewerWindow->pickImmediate(x, y, FALSE);
+// [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
+	mHoverPick = gViewerWindow->pickImmediate(x, y, FALSE, FALSE);
+// [/SL:KB]
 	LLViewerObject *parent = NULL;
 	LLViewerObject *object = mHoverPick.getObject();
 // [RLVa:KB] - Checked: 2010-03-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
@@ -1795,27 +1798,20 @@ BOOL LLToolPie::handleRightClickPick()
 					}
 					else
 					{
-					gMenuAttachmentOther->show(x, y);
-				}
+						gMenuAttachmentOther->show(x, y);
+					}
 				}
 				else
 				{
 					gMenuAvatarOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
-					if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
+					if (gSavedPerAccountSettings.getBOOL("UsePieMenu"))
 					{
 						gPieMenuAvatarOther->show(x, y);
 					}
 					else
 					{
-					gMenuAvatarOther->show(x, y);
-				}
-// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
-			}
-			else
-			{
-				make_ui_sound("UISndInvalidOp");
-			}
-// [/RLVa:KB]
+						gMenuAvatarOther->show(x, y);
+					}
 				}
 // [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
 			}

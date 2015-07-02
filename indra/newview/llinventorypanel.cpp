@@ -1089,7 +1089,7 @@ bool LLInventoryPanel::beginIMSession()
 
 	std::string name;
 
-//	LLDynamicArray<LLUUID> members;
+	std::vector<LLUUID> members;
 //	EInstantMessage type = IM_SESSION_CONFERENCE_START;
 
 // [RLVa:KB] - Checked: 2013-05-08 (RLVa-1.4.9)
