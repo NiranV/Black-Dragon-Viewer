@@ -79,6 +79,8 @@ void RlvSettings::initClass()
 	static bool fInitialized = false;
 	if (!fInitialized)
 	{
+		gSavedSettings.getControl(RLV_SETTING_MAIN)->getSignal()->connect(boost::bind(&onChangedSettingMain, _2));
+
 		#ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
 		fCompositeFolders = rlvGetSetting<bool>(RLV_SETTING_ENABLECOMPOSITES, false);
 		if (gSavedSettings.controlExists(RLV_SETTING_ENABLECOMPOSITES))
@@ -140,6 +142,19 @@ bool RlvSettings::onChangedSettingBOOL(const LLSD& sdValue, bool* pfSetting)
 	return true;
 }
 
+// Checked: 2015-05-25 (RLVa-1.5.0)
+void RlvSettings::onChangedSettingMain(const LLSD& sdValue)
+{
+	if (sdValue.asBoolean() != (bool)rlv_handler_t::isEnabled())
+	{
+		LLNotificationsUtil::add(
+			"GenericAlert",
+			LLSD().with("MESSAGE", llformat(RlvStrings::getString("message_toggle_restart").c_str(), 
+				(sdValue.asBoolean()) ? RlvStrings::getString("message_toggle_restart_enabled").c_str()
+				                      : RlvStrings::getString("message_toggle_restart_disabled").c_str())));
+	}
+}
+
 // ============================================================================
 // RlvStrings
 //
@@ -157,7 +172,7 @@ void RlvStrings::initClass()
 		// Load the default string values
 		std::vector<std::string> files = gDirUtilp->findSkinnedFilenames(LLDir::XUI, RLV_STRINGS_FILE, LLDir::ALL_SKINS);
 		m_StringMapPath = (!files.empty()) ? files.front() : LLStringUtil::null;
-		for (auto itFile = files.cbegin(); itFile != files.cend(); ++itFile)
+		for (std::vector<std::string>::const_iterator itFile = files.begin(); itFile != files.end(); ++itFile)
 		{
 			loadFromFile(*itFile, false);
 		}
@@ -515,7 +530,7 @@ bool RlvUtil::sendChatReply(S32 nChannel, const std::string& strUTF8Text)
 	gMessageSystem->addU8Fast(_PREHASH_Type, CHAT_TYPE_SHOUT);
 	gMessageSystem->addS32("Channel", nChannel);
 	gAgent.sendReliableMessage();
-	//LLViewerStats::getInstance()->incStat(LLViewerStats::CHAT_COUNT);
+	add(LLStatViewer::CHAT_COUNT, 1);
 
 	return true;
 }
@@ -524,22 +539,18 @@ bool RlvUtil::sendChatReply(S32 nChannel, const std::string& strUTF8Text)
 // Generic menu enablers
 //
 
-// Checked: 2010-04-23 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g
-bool rlvMenuCheckEnabled()
+// Checked: 2015-05-25 (RLVa-1.5.0)
+bool rlvMenuMainToggleVisible(LLUICtrl* pMenuCtrl)
 {
-	return rlv_handler_t::isEnabled();
-}
-
-// Checked: 2010-04-23 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g
-bool rlvMenuToggleEnabled()
-{
-	gSavedSettings.setBOOL(RLV_SETTING_MAIN, !rlv_handler_t::isEnabled());
-
-	LLSD args;
-	args["MESSAGE"] = 
-		llformat("RestrainedLove Support will be %s after you restart", (rlv_handler_t::isEnabled()) ? "disabled" : "enabled" );
-	LLNotificationsUtil::add("GenericAlert", args);
-	
+	LLMenuItemCheckGL* pMenuItem = dynamic_cast<LLMenuItemCheckGL*>(pMenuCtrl);
+	if (pMenuItem)
+	{
+		static std::string strLabel = pMenuItem->getLabel();
+		if (gSavedSettings.getBOOL(RLV_SETTING_MAIN) == rlv_handler_t::isEnabled())
+			pMenuItem->setLabel(strLabel);
+		else
+			pMenuItem->setLabel(strLabel + RlvStrings::getString("message_toggle_restart_pending"));
+	}
 	return true;
 }
 
@@ -664,10 +675,30 @@ bool rlvPredCanNotWearItem(const LLViewerInventoryItem* pItem, ERlvWearMask eWea
 	return !rlvPredCanWearItem(pItem, eWearMask);
 }
 
-// Checked: 2010-03-22 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
+// Checked: 2014-11-02 (RLVa-1.4.11)
+bool rlvPredCanRemoveItem(const LLUUID& idItem)
+{
+	// Check the inventory item if it's available
+	const LLViewerInventoryItem* pItem = gInventory.getItem(idItem);
+	if (pItem)
+	{
+		return rlvPredCanRemoveItem(pItem);
+	}
+
+	// Temporary attachments don't have inventory items associated with them so check the attachment itself
+	if (isAgentAvatarValid())
+	{
+		const LLViewerObject* pAttachObj = gAgentAvatarp->getWornAttachment(idItem);
+		return (pAttachObj) && (!gRlvAttachmentLocks.isLockedAttachment(pAttachObj));
+	}
+
+	return false;
+}
+
+// Checked: 2010-03-22 (RLVa-1.2.0)
 bool rlvPredCanRemoveItem(const LLViewerInventoryItem* pItem)
 {
-	if ( (pItem) && (RlvForceWear::isWearableItem(pItem)) )
+	if (pItem)
 	{
 		switch (pItem->getType())
 		{
@@ -679,12 +710,10 @@ bool rlvPredCanRemoveItem(const LLViewerInventoryItem* pItem)
 			case LLAssetType::AT_GESTURE:
 				return true;
 			default:
-				RLV_ASSERT(false);
+				RLV_ASSERT(!RlvForceWear::isWearableItem(pItem));
 		}
 	}
-	// HACK-RLVa: Until LL supports temporary attachment detection assume that no inventory item means a temporary 
-	//            attachment which are always removeable
-	return true;
+	return false;
 }
 
 // Checked: 2010-03-22 (RLVa-1.2.0c) | Added: RLVa-1.2.0a

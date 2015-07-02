@@ -40,6 +40,7 @@
 // General viewer source
 //
 class LLInventoryItem;
+class LLUICtrl;
 class LLViewerInventoryCategory;
 class LLViewerInventoryItem;
 class LLViewerJointAttachment;
@@ -106,6 +107,7 @@ public:
 protected:
 	static bool onChangedMenuLevel();
 	static bool onChangedSettingBOOL(const LLSD& sdValue, bool* pfSetting);
+	static void onChangedSettingMain(const LLSD& sdValue);
 
 	#ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
 	static BOOL fCompositeFolders;
@@ -196,8 +198,7 @@ typedef bool (RlvCommandHandler::*rlvCommandHandler)(const RlvCommand& rlvCmd, E
 // Generic menu enablers
 //
 
-bool rlvMenuCheckEnabled();
-bool rlvMenuToggleEnabled();
+bool rlvMenuMainToggleVisible(LLUICtrl* pMenuItem);
 void rlvMenuToggleVisible();
 bool rlvMenuEnableIfNot(const LLSD& sdParam);
 
@@ -235,7 +236,9 @@ protected:
 
 bool rlvPredCanWearItem(const LLViewerInventoryItem* pItem, ERlvWearMask eWearMask);
 bool rlvPredCanNotWearItem(const LLViewerInventoryItem* pItem, ERlvWearMask eWearMask);
+bool rlvPredCanRemoveItem(const LLUUID& idItem);
 bool rlvPredCanRemoveItem(const LLViewerInventoryItem* pItem);
+bool rlvPredCanNotRemoveItem(const LLUUID& idItem);
 bool rlvPredCanNotRemoveItem(const LLViewerInventoryItem* pItem);
 
 struct RlvPredCanWearItem

@@ -2690,6 +2690,14 @@ bool enable_object_touch(LLUICtrl* ctrl)
 	}
 // [/RLVa:KB]
 
+// [RLVa:KB] - Checked: 2010-11-12 (RLVa-1.2.1g) | Added: RLVa-1.2.1g
+	if ( (rlv_handler_t::isEnabled()) && (new_value) )
+	{
+		// RELEASE-RLVa: [RLVa-1.2.1] Make sure this stays in sync with handle_object_touch()
+		new_value = gRlvHandler.canTouch(obj, LLToolPie::getInstance()->getPick().mObjectOffset);
+	}
+// [/RLVa:KB]
+
 	std::string item_name = ctrl->getName();
 	init_default_item_label(item_name);
 
@@ -3737,10 +3745,10 @@ class LLSelfSitDown : public view_listener_t
 
 bool enable_sitdown_self()
 {
-//    return isAgentAvatarValid() && !gAgentAvatarp->isSitting() && !gAgentAvatarp->isEditingAppearance() && !gAgent.getFlying();
+// [RLVa:KB] - Checked: 2010-08-28 (RLVa-1.2.1a) | Added: RLVa-1.2.1a
 	return isAgentAvatarValid() && !gAgentAvatarp->isSitting() && !gAgentAvatarp->isEditingAppearance() && !gAgent.getFlying() && !gRlvHandler.hasBehaviour(RLV_BHVR_SIT);
 // [/RLVa:KB]
-//    return isAgentAvatarValid() && !gAgentAvatarp->isSitting() && !gAgent.getFlying();
+//    return isAgentAvatarValid() && !gAgentAvatarp->isSitting() && !gAgentAvatarp->isEditingAppearance() && !gAgent.getFlying();
 }
 
 class LLCheckPanelPeopleTab : public view_listener_t
@@ -7198,7 +7206,7 @@ BOOL object_selected_and_point_valid(const LLSD& sdParam)
 		if ( ((!pAttachPt) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY))) ||		// Can't wear on default attach point
 			 ((pAttachPt) && ((RLV_WEAR_ADD & gRlvAttachmentLocks.canAttach(pAttachPt)) == 0)) ||	// or non-attachable attach point
 			 (gRlvHandler.hasBehaviour(RLV_BHVR_REZ)) )												// Attach on object == "Take"
-	{
+		{
 			return FALSE;
 		}
 	}
@@ -9595,23 +9603,14 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
 
-	commit.add("World.SaveCamera", boost::bind(&LLAgentCamera::saveCamera, &gAgentCamera));
-	commit.add("World.LoadCamera", boost::bind(&LLAgentCamera::loadSavedCamera, &gAgentCamera));
-
-	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));
-
-	view_listener_t::addMenu(new LLWorldTeleportBack(), "World.TeleportBack");
-	view_listener_t::addMenu(new LLWorldTeleportForward(), "World.TeleportForward");
-
-	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
-	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");
-
 // [RLVa:KB] - Checked: 2010-04-23 (RLVa-1.2.0g) | Added: RLVa-1.2.0
-	commit.add("RLV.ToggleEnabled", boost::bind(&rlvMenuToggleEnabled));
-	enable.add("RLV.CheckEnabled", boost::bind(&rlvMenuCheckEnabled));
+	enable.add("RLV.MainToggleVisible", boost::bind(&rlvMenuMainToggleVisible, _1));
 	if (rlv_handler_t::isEnabled())
 	{
 		enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
 	}
 // [/RLVa:KB]
+
+	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
+	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");
 }

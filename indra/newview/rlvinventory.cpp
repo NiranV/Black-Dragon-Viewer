@@ -133,7 +133,7 @@ void RlvInventory::fetchSharedLinks()
 
 	// Grab all the inventory links under the shared root
 	LLInventoryModel::cat_array_t folders; LLInventoryModel::item_array_t items; RlvIsLinkType f;
-	gInventory.collectDescendentsIf(pRlvRoot->getUUID(), folders, items, FALSE, f);
+	gInventory.collectDescendentsIf(pRlvRoot->getUUID(), folders, items, FALSE, f, false);
 
 	// Add them to the "to fetch" list based on link type
 	uuid_vec_t idFolders, idItems;
@@ -405,8 +405,9 @@ void RlvRenameOnWearObserver::doneIdle()
 		LLInventoryModel::item_array_t items;
 		if (gInventory.isObjectDescendentOf(idAttachItem, pRlvRoot->getUUID()))
 			items.push_back(gInventory.getItem(idAttachItem));
-		else
-			items = gInventory.collectLinksTo(idAttachItem);
+//		// LL kind of messed up the collectLinkedItems (now collectLinksTo) function but I'm not sure if this use-case if worth fixing it for
+//		else
+//			items = gInventory.collectLinkedItems(idAttachItem, pRlvRoot->getUUID());
 		if (items.empty())
 			continue;
 
@@ -482,10 +483,8 @@ void RlvRenameOnWearObserver::doneIdle()
 // Checked: 2012-03-22 (RLVa-1.4.6) | Added: RLVa-1.4.6
 void RlvRenameOnWearObserver::onCategoryCreate(const LLUUID& idFolder, const LLUUID idItem)
 {
-	if ( (idFolder.notNull()) && (gInventory.getItem(idItem)) )
-	{
+	if ( (idFolder.notNull()) && (idItem.notNull()) )
 		move_inventory_item(gAgent.getID(), gAgent.getSessionID(), idItem, idFolder, std::string(), NULL);
-	}
 }
 
 // ============================================================================
@@ -517,7 +516,8 @@ bool RlvGiveToRLVOffer::createDestinationFolder(const std::string& strPath)
 			}
 			else
 			{
-				const LLUUID idTemp = gInventory.createNewCategory(gInventory.getRootFolderID(), LLFolderType::FT_NONE, RLV_ROOT_FOLDER);
+				inventory_func_type f = boost::bind(RlvGiveToRLVOffer::onCategoryCreateCallback, _1, this);
+				const LLUUID idTemp = gInventory.createNewCategory(gInventory.getRootFolderID(), LLFolderType::FT_NONE, RLV_ROOT_FOLDER, f);
 				if (idTemp.notNull())
 					onCategoryCreateCallback(LLSD().with("folder_id", idTemp), this);
 			}
@@ -529,22 +529,19 @@ bool RlvGiveToRLVOffer::createDestinationFolder(const std::string& strPath)
 }
 
 // Checked: 2014-01-07 (RLVa-1.4.10)
-void RlvGiveToRLVOffer::onCategoryCreateCallback(const LLSD& sdData, void* pInstance)
+void RlvGiveToRLVOffer::onCategoryCreateCallback(LLUUID idFolder, RlvGiveToRLVOffer* pInstance)
 {
-	RlvGiveToRLVOffer* pThis = (RlvGiveToRLVOffer*)pInstance;
-
-	LLUUID idFolder = sdData["folder_id"].asUUID();
 	if (idFolder.isNull())
 	{
 		// Problem encountered, abort move
-		pThis->onDestinationCreated(LLUUID::null, LLStringUtil::null);
+		pInstance->onDestinationCreated(LLUUID::null, LLStringUtil::null);
 		return;
 	}
 
-	while (pThis->m_DestPath.size() > 1)
+	while (pInstance->m_DestPath.size() > 1)
 	{
-		std::string strFolder = pThis->m_DestPath.front();
-		pThis->m_DestPath.pop_front();
+		std::string strFolder = pInstance->m_DestPath.front();
+		pInstance->m_DestPath.pop_front();
 
 		const LLViewerInventoryCategory* pFolder = RlvInventory::instance().getSharedFolder(idFolder, strFolder, false);
 		if (pFolder)
@@ -554,15 +551,16 @@ void RlvGiveToRLVOffer::onCategoryCreateCallback(const LLSD& sdData, void* pInst
 		else
 		{
 			LLInventoryObject::correctInventoryName(strFolder);
-			const LLUUID idTemp = gInventory.createNewCategory(idFolder, LLFolderType::FT_NONE, strFolder);
+			inventory_func_type f = boost::bind(RlvGiveToRLVOffer::onCategoryCreateCallback, _1, pInstance);
+			const LLUUID idTemp = gInventory.createNewCategory(idFolder, LLFolderType::FT_NONE, strFolder, f);
 			if (idTemp.notNull())
-				onCategoryCreateCallback(LLSD().with("folder_id", idTemp), pInstance);
+				onCategoryCreateCallback(idTemp, pInstance);
 			return;
 		}
 	}
 
 	// Destination folder should exist at this point (we'll be deallocated when the function returns)
-	pThis->onDestinationCreated(idFolder, pThis->m_DestPath.front());
+	pInstance->onDestinationCreated(idFolder, pInstance->m_DestPath.front());
 }
 
 // Checked: 2014-01-07 (RLVa-1.4.10)

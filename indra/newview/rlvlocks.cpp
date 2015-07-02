@@ -1071,7 +1071,11 @@ bool RlvFolderLocks::getLockedItems(const LLUUID& idFolder, LLInventoryModel::it
 		// Check the parent folders of any links to this item that exist under #RLV
 		if (!fItemLocked)
 		{
-			LLInventoryModel::item_array_t itemLinks = gInventory.collectLinksTo(pItem->getUUID());
+			LLInventoryModel::item_array_t itemLinks;
+			LLInventoryModel::cat_array_t cats;
+			LLLinkedItemIDMatches f(pItem->getUUID());
+			gInventory.collectDescendentsIf(RlvInventory::instance().getSharedRootID(), cats, itemLinks, LLInventoryModel::EXCLUDE_TRASH, f);
+
 			for (LLInventoryModel::item_array_t::iterator itItemLink = itemLinks.begin(); 
 					(itItemLink < itemLinks.end()) && (!fItemLocked); ++itItemLink)
 			{
@@ -1110,7 +1114,7 @@ bool RlvFolderLocks::hasLockedFolderDescendent(const LLUUID& idFolder, int eSour
 
 	LLInventoryModel::cat_array_t folders; LLInventoryModel::item_array_t items;
 	RlvLockedDescendentsCollector f(eSourceTypeMask, ePermMask, eLockTypeMask);
-	gInventory.collectDescendentsIf(idFolder, folders, items, FALSE, f);
+	gInventory.collectDescendentsIf(idFolder, folders, items, FALSE, f, false);
 	return !folders.empty();
 }
 

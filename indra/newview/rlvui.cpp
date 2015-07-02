@@ -36,6 +36,7 @@
 #include "llteleporthistorystorage.h"
 #include "lltoolmgr.h"
 #include "llviewerparcelmgr.h"
+#include "llviewerregion.h"
 #include "llvoavatar.h"
 #include "roles_constants.h"			// Group "powers"
 

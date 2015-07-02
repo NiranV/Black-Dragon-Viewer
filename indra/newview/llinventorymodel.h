@@ -243,13 +243,13 @@ public:
 							cat_array_t& categories,
 							item_array_t& items,
 							BOOL include_trash);
-// [RLVa:KB]
+// [RLVa:KB] - Checked: 2013-04-15 (RLVa-1.4.8)
 	void collectDescendentsIf(const LLUUID& id,
 							  cat_array_t& categories,
 							  item_array_t& items,
 							  BOOL include_trash,
 							  LLInventoryCollectFunctor& add,
-							  BOOL follow_folder_links = FALSE);
+							  bool follow_folder_links = false);
 // [/RLVa:KB]
 //	void collectDescendentsIf(const LLUUID& id,
 //							  cat_array_t& categories,

@@ -5505,7 +5505,7 @@ void rez_attachment(LLViewerInventoryItem* item, LLViewerJointAttachment* attach
 {
 // [RLVa:KB] - Checked: 2010-08-25 (RLVa-1.2.1)
 	// If no attachment point was specified, try looking it up from the item name
-	static LLCachedControl<bool> fRlvDeprecateAttachPt(gSavedSettings, "RLVaDebugDeprecateExplicitPoint");
+	static LLCachedControl<bool> fRlvDeprecateAttachPt(gSavedSettings, "RLVaDebugDeprecateExplicitPoint", false);
 	if ( (rlv_handler_t::isEnabled()) && (!fRlvDeprecateAttachPt) && 
 	     (!attachment) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
 	{
@@ -5962,7 +5962,10 @@ void LLWearableBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 					if (LLWearableType::getAllowMultiwear(mWearableType))
 					{
 						items.push_back(std::string("Wearable Add"));
-						if (!gAgentWearables.canAddWearable(mWearableType))
+//						if (!gAgentWearables.canAddWearable(mWearableType))
+// [SL:KB] - Patch: Appearance-WearableDuplicateAssets | Checked: 2011-07-24 (Catznip-2.6.0e) | Added: Catznip-2.6.0e
+						if ( (!gAgentWearables.canAddWearable(mWearableType)) || (gAgentWearables.getWearableFromAssetID(item->getAssetUUID())) )
+// [/SL:KB]
 						{
 							disabled_items.push_back(std::string("Wearable Add"));
 						}

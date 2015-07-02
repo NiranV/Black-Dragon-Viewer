@@ -59,7 +59,7 @@ public:
 // [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0a) | Added: RLVa-1.2.0a
 	void updateCOF(LLInventoryModel::item_array_t& body_items_new, LLInventoryModel::item_array_t& wear_items_new,
 				   LLInventoryModel::item_array_t& obj_items_new, LLInventoryModel::item_array_t& gest_items_new,
-				   bool append = false, const LLUUID& idOutfit = LLUUID::null);
+				   bool append = false, const LLUUID& idOutfit = LLUUID::null, LLPointer<LLInventoryCallback> link_waiter = NULL);
 // [/RLVa:KB]
 	void wearInventoryCategory(LLInventoryCategory* category, bool copy, bool append);
 	void wearInventoryCategoryOnAvatar(LLInventoryCategory* category, bool append);
@@ -163,7 +163,10 @@ public:
 	bool isLinkedInCOF(const LLUUID& item_id);
 
 	// Remove COF entries
-	void removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInventoryCallback> cb = NULL);
+//	void removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInventoryCallback> cb = NULL);
+// [SL:KB] - Patch: Appearance-AISFilter | Checked: 2015-05-02 (Catznip-3.7)
+	void removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInventoryCallback> cb = NULL, bool immediate_delete = false);
+// [/SL:KB]
 	void removeCOFLinksOfType(LLWearableType::EType type, LLPointer<LLInventoryCallback> cb = NULL);
 	void removeAllClothesFromAvatar();
 	void removeAllAttachmentsFromAvatar();
@@ -196,8 +199,15 @@ public:
 	bool updateBaseOutfit();
 
 	//Remove clothing or detach an object from the agent (a bodypart cannot be removed)
-	void removeItemsFromAvatar(const uuid_vec_t& item_ids);
-	void removeItemFromAvatar(const LLUUID& item_id);
+// [SL:KB] - Patch: Appearance-Misc | Checked: 2015-05-05 (Catznip-3.7)
+	void removeItemFromAvatar(const LLUUID& id_to_remove) { removeItemFromAvatar(id_to_remove, NULL, false); }
+	void removeItemFromAvatar(const LLUUID& id_to_remove, LLPointer<LLInventoryCallback> cb /*= NULL*/, bool immediate_delete /*= false*/);
+
+	void removeItemsFromAvatar(const uuid_vec_t& ids_to_remove) { removeItemsFromAvatar(ids_to_remove, NULL, false); }
+	void removeItemsFromAvatar(const uuid_vec_t& ids_to_remove, LLPointer<LLInventoryCallback> cb /*= NULL*/, bool immediate_delete /*= false*/);
+// [/SL:KB]
+//	void removeItemsFromAvatar(const uuid_vec_t& item_ids);
+//	void removeItemFromAvatar(const LLUUID& item_id);
 
 
 	void onOutfitFolderCreated(const LLUUID& folder_id, bool show_panel);
@@ -290,7 +300,8 @@ private:
 // [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-18 (Catznip-2.1)
 public:
 	void linkPendingAttachments();
-	void onRegisterAttachmentComplete(const LLUUID& idItem);
+	void clearPendingAttachment(const LLUUID& idItem);
+	void onRegisterAttachmentComplete(const LLUUID& idAttachItem);
 private:
 	uuid_vec_t mPendingAttachLinks;
 // [/SL:KB]
@@ -324,6 +335,21 @@ private:
 	bool mEnforceOrdering;
 	nullary_func_t mPostUpdateFunc;
 };
+
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-08-31 (Catznip-2.1)
+class LLRegisterAttachmentCallback : public LLInventoryCallback
+{
+public:
+	LLRegisterAttachmentCallback(const LLUUID& idAttachItem) : m_idAttachItem(idAttachItem) {}
+	/*virtual*/ void fire(const LLUUID&)
+	{
+		// NOTE: AISCommand::getResponseUUID() currently returns false so the passed UUID is NULL and hence useless
+		LLAppearanceMgr::instance().onRegisterAttachmentComplete(m_idAttachItem);
+	}
+protected:
+	LLUUID m_idAttachItem;
+};
+// [/SL:KB]
 
 class LLUpdateAppearanceAndEditWearableOnDestroy: public LLInventoryCallback
 {

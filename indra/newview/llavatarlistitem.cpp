@@ -301,7 +301,6 @@ BOOL LLAvatarListItem::handleDoubleClick(S32 x, S32 y, MASK mask)
 		onInfoBtnClick();
 		return TRUE;
 	}
-
 	return LLPanel::handleDoubleClick(x, y, mask);
 }
 

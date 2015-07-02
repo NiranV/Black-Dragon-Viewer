@@ -153,6 +153,15 @@ protected:
 	uuid_vec_t m_idItems;
 };
 
+struct RlvCommandOptionAdjustHeight : public RlvCommandOption
+{
+	RlvCommandOptionAdjustHeight(const RlvCommand& rlvCmd);
+
+	F32 m_nPelvisToFoot;
+	F32 m_nPelvisToFootDeltaMult;
+	F32 m_nPelvisToFootOffset;
+};
+
 struct RlvCommandOptionTpTo : public RlvCommandOption
 {
 	RlvCommandOptionTpTo(const RlvCommand& rlvCmd);
@@ -276,6 +285,15 @@ protected:
 		return std::find(m_remWearables.begin(), m_remWearables.end(), pWearable) != m_remWearables.end();
 	}
 
+	/*
+	 * Pending attachments
+	 */
+public:
+	static void updatePendingAttachments();
+protected:
+	void addPendingAttachment(const LLUUID& idItem, U8 idxPoint);
+	void remPendingAttachment(const LLUUID& idItem);
+
 protected:
 	typedef std::pair<LLWearableType::EType, LLInventoryModel::item_array_t> addwearable_pair_t;
 	typedef std::map<LLWearableType::EType, LLInventoryModel::item_array_t> addwearables_map_t;
@@ -287,6 +305,9 @@ protected:
 	std::vector<LLViewerObject*>     m_remAttachments;	// This should match the definition of LLAgentWearables::llvo_vec_t
 	std::list<const LLViewerWearable*> m_remWearables;
 	LLInventoryModel::item_array_t   m_remGestures;
+
+	typedef std::map<LLUUID, U8> pendingattachments_map_t;
+	pendingattachments_map_t         m_pendingAttachments;
 
 private:
 	friend class LLSingleton<RlvForceWear>;
@@ -374,6 +395,7 @@ public:
 	virtual BOOL tick();
 };
 
+// NOTE: Unused as of SL-3.7.2
 class RlvCallbackTimerOnce : public LLEventTimer
 {
 public:
@@ -389,6 +411,7 @@ protected:
 	nullary_func_t m_Callback;
 };
 
+// NOTE: Unused as of SL-3.7.2
 inline void rlvCallbackTimerOnce(F32 nPeriod, RlvCallbackTimerOnce::nullary_func_t cb)
 {
 	// Timer will automatically delete itself after the callback

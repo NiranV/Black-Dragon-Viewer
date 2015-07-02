@@ -1311,6 +1311,16 @@ set(viewer_HEADER_FILES
     macmain.h
     noise.h
     pipeline.h
+    rlvactions.h
+    rlvdefines.h
+    rlvhandler.h
+    rlvhelper.h
+    rlvcommon.h
+    rlvlocks.h
+    rlvinventory.h
+    rlvextensions.h
+    rlvfloaters.h
+    rlvui.h
     roles_constants.h
 	piemenu.h
     pieseparator.h

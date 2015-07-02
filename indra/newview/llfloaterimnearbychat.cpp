@@ -922,8 +922,8 @@ void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channe
 			{
 				bool fIsEmote = RlvUtil::isEmote(utf8_out_text);
 				if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SENDCHAT)) || 
-						((!fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT))) || 
-						((fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE))) )
+					 ((!fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT))) || 
+					 ((fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE))) )
 				{
 					return;
 				}

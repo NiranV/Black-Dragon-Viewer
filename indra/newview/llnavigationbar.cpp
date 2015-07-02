@@ -721,6 +721,12 @@ void LLNavigationBar::refreshLocationCtrl()
 }
 // [/RLVa:KB]
 
+{
+	if (mCmbLocation)
+		mCmbLocation->refresh();
+}
+// [/RLVa:KB]
+
 void LLNavigationBar::clearHistoryCache()
 {
 	mCmbLocation->removeall();

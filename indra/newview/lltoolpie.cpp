@@ -581,13 +581,9 @@ void LLToolPie::selectionPropertiesReceived()
 
 BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 {
-//	mHoverPick = gViewerWindow->pickImmediate(x, y, FALSE);
-// [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
-	mHoverPick = gViewerWindow->pickImmediate(x, y, FALSE, FALSE);
-// [/SL:KB]
+	mHoverPick = gViewerWindow->pickImmediate(x, y, FALSE);
 	LLViewerObject *parent = NULL;
 	LLViewerObject *object = mHoverPick.getObject();
-	LLSelectMgr::getInstance()->setHoverObject(object, mHoverPick.mObjectFace);
 // [RLVa:KB] - Checked: 2010-03-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
 	// Block all special click action cursors when:
 	//   - @fartouch=n restricted and the object is out of range
@@ -600,6 +596,7 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		return TRUE;
 	}
 // [/RLVa:KB]
+	LLSelectMgr::getInstance()->setHoverObject(object, mHoverPick.mObjectFace);
 
 	if (object)
 	{
@@ -1798,8 +1795,8 @@ BOOL LLToolPie::handleRightClickPick()
 					}
 					else
 					{
-						gMenuAttachmentOther->show(x, y);
-					}
+					gMenuAttachmentOther->show(x, y);
+				}
 				}
 				else
 				{
@@ -1810,8 +1807,15 @@ BOOL LLToolPie::handleRightClickPick()
 					}
 					else
 					{
-						gMenuAvatarOther->show(x, y);
-					}
+					gMenuAvatarOther->show(x, y);
+				}
+// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
+			}
+			else
+			{
+				make_ui_sound("UISndInvalidOp");
+			}
+// [/RLVa:KB]
 				}
 // [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
 			}

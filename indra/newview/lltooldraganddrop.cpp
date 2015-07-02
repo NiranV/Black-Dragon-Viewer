@@ -1302,6 +1302,15 @@ void LLToolDragAndDrop::dropObject(LLViewerObject* raycast_target,
 		return;
 	}
 
+
+// [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0e) | Modified: RLVa-1.2.0a
+	// Fallback in case there's a new code path that leads here (see behaviour notes)
+	if ( (rlv_handler_t::isEnabled()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_REZ)) || (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT))) )
+	{
+		return;
+	}
+// [/RLVa:KB]
+
 	//LL_INFOS() << "Rezzing object" << LL_ENDL;
 // [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0e) | Modified: RLVa-1.2.0a
 	// Fallback in case there's a new code path that leads here (see behaviour notes)
@@ -1843,11 +1852,11 @@ EAcceptance LLToolDragAndDrop::dad3dRezAttachmentFromInv(
 		}
 		else
 		{
-//			rez_attachment(item, 0);
 // [SL:KB] - Patch: Appearance-DnDWear | Checked: 2010-09-28 (Catznip-2.2)
 			// Make this behave consistent with dad3dWearItem
 			rez_attachment(item, 0, !(mask & MASK_CONTROL));
 // [/SL:KB]
+//			rez_attachment(item, 0);
 		}
 	}
 	return ACCEPT_YES_SINGLE;
