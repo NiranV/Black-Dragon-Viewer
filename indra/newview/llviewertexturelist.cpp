@@ -78,7 +78,7 @@ LLViewerTextureList::LLViewerTextureList()
 	mUpdateStats(FALSE),
 	mMaxResidentTexMemInMegaBytes(0),
 	mMaxTotalTextureMemInMegaBytes(0),
-	mInitialized(FALSE)
+	mInitialized(FALSE)	
 {
 }
 
@@ -1848,23 +1848,6 @@ bool LLUIImageList::initFromFile()
 		PASS_DECODE_LATER,
 		NUM_PASSES
 	};
-
-//	//BD - Select 3 random numbers for random loadingscreen preloading.
-	/*CurCount = 0;
-	for (; CurCount < 3; CurCount++)
-	{
-		srand( (unsigned)time( NULL ) );
-		int random_number = rand()%7;
-		std::string filename = llformat("loadingscreens/loading%i.jpg" , random_number);
-
-//		//BD - Set their rectangle.
-		LLRect rect(0, 1058, 1920, 0);
-		LLRect clip;
-
-//		//BD - Preload our randomly selected images.
-		std::string imagename = llformat("loading%i" , CurCount);
-		preloadUIImage(imagename, filename, false, rect, clip);
-	}*/
 
 	for (S32 cur_pass = PASS_DECODE_NOW; cur_pass < NUM_PASSES; cur_pass++)
 	{
