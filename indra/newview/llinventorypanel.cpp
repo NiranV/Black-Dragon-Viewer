@@ -1137,7 +1137,7 @@ bool LLInventoryPanel::beginIMSession()
 						if ( (at.isBuddyOnline(id)) && (members.end() == std::find(members.begin(), members.end(), id)) )
 						{
 							fRlvCanStartIM &= RlvActions::canStartIM(id);
-// [/RLVa:KB]
+							members.push_back(id);
 						}
 // [/RLVa:KB]
 //						if(at.isBuddyOnline(id))
@@ -1164,7 +1164,7 @@ bool LLInventoryPanel::beginIMSession()
 						if ( (at.isBuddyOnline(id)) && (members.end() == std::find(members.begin(), members.end(), id)) )
 						{
 							fRlvCanStartIM &= RlvActions::canStartIM(id);
-// [/RLVa:KB]
+							members.push_back(id);
 						}
 // [/RLVa:KB]
 //						if(at.isBuddyOnline(id))

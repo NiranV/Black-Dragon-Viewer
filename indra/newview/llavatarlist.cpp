@@ -599,11 +599,7 @@ void LLAvatarList::updateExtraData()
 
 void LLAvatarList::onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask)
 {
-//	mItemDoubleClickSignal(ctrl, x, y, mask);
-// [RLVa:KB] - Checked: 2010-06-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
-	if ( (!mRlvCheckShowNames) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) )
-		mItemDoubleClickSignal(ctrl, x, y, mask);
-// [/RLVa:KB]
+	mItemDoubleClickSignal(ctrl, x, y, mask);
 }
 
 bool LLAvatarItemComparator::compare(const LLPanel* item1, const LLPanel* item2) const
