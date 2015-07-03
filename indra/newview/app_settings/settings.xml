@@ -709,17 +709,6 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>AutoSnapshot</key>
-    <map>
-      <key>Comment</key>
-      <string>Update snapshot when camera stops moving, or any parameter changes</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
     <key>AutomaticFly</key>
     <map>
       <key>Comment</key>
@@ -8429,6 +8418,17 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
+	<key>RememberSnapshotMode</key>
+  <map>
+    <key>Comment</key>
+    <string>Remember the last used snapshot mode in our snapshot floater</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>OctreeMaxNodeCapacity</key>
   <map>
     <key>Comment</key>
@@ -13452,7 +13452,7 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>UseFreezeFrame</key>
+    <key>UseFreezeWorld</key>
     <map>
       <key>Comment</key>
       <string>Freeze time when taking snapshots.</string>
@@ -14550,9 +14550,9 @@
 	      <string>snapshot</string>
 	      <string>postcard</string>
 	      <string>mini_map</string>
-          <string>flickr</string>
-          <string>twitter</string>
-          <string>facebook</string>
+		  <string>flickr</string>
+	      <string>twitter</string>
+	      <string>facebook</string>
       </array>
     </map>
     <key>LandmarksSortedByDate</key>

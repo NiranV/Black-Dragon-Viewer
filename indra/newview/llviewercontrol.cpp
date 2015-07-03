@@ -97,6 +97,7 @@ LLControlGroup gWarningSettings("Warnings"); // persists ignored dialogs/warning
 LLControlGroup gControlSettings("Controls"); //BD - Customizable Controls
 
 std::string gLastRunVersion;
+std::vector<LLAnimPauseRequest>	mAvatarPauseHandles;
 
 extern BOOL gResizeScreenTexture;
 extern BOOL gDebugGL;
@@ -558,6 +559,33 @@ bool handleSpellCheckChanged()
 	return true;
 }
 
+bool toggle_freeze_world(const LLSD& newvalue)
+{
+	if ( newvalue.asBoolean() )
+	{
+		// freeze all avatars
+		LLCharacter* avatarp;
+		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+			iter != LLCharacter::sInstances.end(); ++iter)
+		{
+			avatarp = *iter;
+			mAvatarPauseHandles.push_back(avatarp->requestPause());
+		}
+
+		// freeze everything else
+		gSavedSettings.setBOOL("FreezeTime", TRUE);
+	}
+	else // turning off freeze world mode, either temporarily or not.
+	{
+		// thaw all avatars
+		mAvatarPauseHandles.clear();
+
+		// thaw everything else
+		gSavedSettings.setBOOL("FreezeTime", FALSE);
+	}
+	return true;
+}
+
 bool toggle_agent_pause(const LLSD& newvalue)
 {
 	if ( newvalue.asBoolean() )
@@ -829,7 +857,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("SpellCheck")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));
 	gSavedSettings.getControl("SpellCheckDictionary")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));
 	gSavedSettings.getControl("LoginLocation")->getSignal()->connect(boost::bind(&handleLoginLocationChanged));
-
+	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
+	
 //	//BD - Special Debugs and handles
 	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
 	gSavedSettings.getControl("ShooterKeyLayout")->getSignal()->connect(boost::bind(&handleKeyboardLayoutChanged, _2));

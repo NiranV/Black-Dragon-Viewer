@@ -57,12 +57,6 @@
 #include "llwindow.h"
 #include "llworld.h"
 
-const F32 AUTO_SNAPSHOT_TIME_DELAY = 1.f;
-
-F32 SHINE_TIME = 0.5f;
-F32 SHINE_WIDTH = 0.6f;
-F32 SHINE_OPACITY = 0.3f;
-F32 FALL_TIME = 0.6f;
 S32 BORDER_WIDTH = 6;
 
 const S32 MAX_TEXTURE_SIZE = 512 ; //max upload texture size 512 * 512
@@ -81,9 +75,6 @@ LLSnapshotLivePreview::LLSnapshotLivePreview (const LLSnapshotLivePreview::Param
     mThumbnailSubsampled(FALSE),
 	mPreviewImageEncoded(NULL),
 	mFormattedImage(NULL),
-	mShineCountdown(0),
-	mFlashAlpha(0.f),
-	mNeedsFlash(TRUE),
 	mSnapshotQuality(gSavedSettings.getS32("SnapshotQuality")),
 	mDataSize(0),
 	mSnapshotType(SNAPSHOT_POSTCARD),
@@ -267,10 +258,10 @@ void LLSnapshotLivePreview::drawPreviewRect(S32 offset_x, S32 offset_y)
 	}
 }
 
-//called when the frame is frozen.
+//called when the world is frozen.
 void LLSnapshotLivePreview::draw()
 {
-	//BD - Do nothing.
+	// Do nothing.
 }
 
 /*virtual*/ 
@@ -468,34 +459,14 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 		return FALSE;
 	}
 
-	// If we're in freeze-frame mode and camera has moved, update snapshot.
-	LLVector3 new_camera_pos = LLViewerCamera::getInstance()->getOrigin();
-	LLQuaternion new_camera_rot = LLViewerCamera::getInstance()->getQuaternion();
-	BOOL Autosnap = gSavedSettings.getBOOL("AutoSnapshot");
-
-	if (previewp->mForceUpdateSnapshot 
-		|| (!LLToolCamera::getInstance()->hasMouseCapture() && Autosnap
-		&& previewp->mPrevCameraPos == new_camera_pos && previewp->mPrevCameraRot == new_camera_rot
-		&& (new_camera_pos != previewp->mCameraPos || dot(new_camera_rot, previewp->mCameraRot) < 0.995f)))
+	if (previewp->mForceUpdateSnapshot)
 	{
-		previewp->mCameraPos = new_camera_pos;
-		previewp->mCameraRot = new_camera_rot;
-		previewp->mPrevCameraPos = new_camera_pos;
-		previewp->mPrevCameraRot = new_camera_rot;
 		// request a new snapshot whenever the camera moves, with a time delay
-		BOOL new_snapshot = Autosnap || previewp->mForceUpdateSnapshot;
-		LL_DEBUGS() << "camera moved, updating thumbnail" << LL_ENDL;
 		previewp->updateSnapshot(
-			new_snapshot, // whether a new snapshot is needed or merely invalidate the existing one
+			TRUE, // whether a new snapshot is needed or merely invalidate the existing one
 			FALSE, // or if 1st arg is false, whether to produce a new thumbnail image.
-			2.5f); // shutter delay if 1st arg is true.
+			0.f); // shutter delay if 1st arg is true.
 		previewp->mForceUpdateSnapshot = FALSE;
-	}
-
-	if(Autosnap && previewp->mPrevCameraPos != new_camera_pos || previewp->mPrevCameraRot != new_camera_rot)
-	{
-		previewp->mPrevCameraPos = new_camera_pos;
-		previewp->mPrevCameraRot = new_camera_rot;
 	}
 
 	// see if it's time yet to snap the shot and bomb out otherwise.

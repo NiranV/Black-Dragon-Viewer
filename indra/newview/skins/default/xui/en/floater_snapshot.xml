@@ -220,23 +220,14 @@
          right="-1"
          top_pad="5"/>
         <check_box
-         label="Freeze frame (fullscreen)"
-		 control_name="UseFreezeFrame"
+         label="Freeze World"
+		 control_name="UseFreezeWorld"
          layout="topleft"
 		 height="16"
          left="10"
          top_pad="7"
          width="180"
-         name="freeze_frame_check" />
-        <check_box
-		 control_name="AutoSnapshot"
-         label="Auto-refresh"
-         layout="topleft"
-		 height="16"
-         left="10"
-         top_pad="1"
-         width="180"
-         name="auto_snapshot_check" />
+         name="freeze_world_check" />
 		<check_box
          label="Remember snapshot mode"
 		 control_name="RememberSnapshotMode"
@@ -286,12 +277,12 @@
     </panel>
 	<panel_container
      follows="left|top"
-     height="230"
+     height="240"
      layout="topleft"
      left="0"
      name="panel_container"
      default_panel_name="panel_snapshot_options"
-     top_pad="10"
+     top_pad="1"
      width="215">
       <panel
        class="llpanelsnapshotoptions"

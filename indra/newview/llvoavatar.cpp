@@ -52,6 +52,7 @@
 #include "lleditingmotion.h"
 #include "llemote.h"
 #include "llfloatertools.h"
+#include "llfloaterreg.h"
 #include "llheadrotmotion.h"
 #include "llhudeffecttrail.h"
 #include "llhudmanager.h"
@@ -3618,9 +3619,10 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 				pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, s_pelvis_rot_threshold_ml, s_pelvis_rot_threshold_fast);
 			}
 
-			//BD - Stop Avatars from rotating while we are in Freeze World mode.
-			if (gSavedSettings.getBOOL("UseFreezeFrame") 
-				&& LLFloaterReg::instanceVisible("snapshot"))
+			static LLCachedControl<bool> freeze_frame(gSavedSettings, "UseFreezeWorld");
+
+			// Stop Avatars from rotating while we are in Freeze World mode.
+			if (freeze_frame)
 			{
 				pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, 360.0f, 360.0f);
 			}
