@@ -984,7 +984,7 @@ BOOL LLFloaterSnapshot::postBuild()
 	getChild<LLUICtrl>("layer_types")->setValue("colors");
 	getChildView("layer_types")->setEnabled(FALSE);
 
-	childSetCommitCallback("freeze_frame_check", Impl::onCommitFreezeWorld, this);
+	childSetCommitCallback("freeze_world_check", Impl::onCommitFreezeWorld, this);
 
 	// Filters
 	LLComboBox* filterbox = getChild<LLComboBox>("filters_combobox");
