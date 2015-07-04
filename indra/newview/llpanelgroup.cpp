@@ -369,7 +369,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 	std::string str_group_id;
 	group_id.toString(str_group_id);
 
-	bool is_same_id = group_id == mID;
+	//bool is_same_id = group_id == mID;
 	
 	LLGroupMgr::getInstance()->removeObserver(this);
 	mID = group_id;
@@ -420,14 +420,14 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 
 	getChild<LLUICtrl>("prepend_founded_by")->setVisible(!is_null_group_id);
 
-	LLAccordionCtrl* tab_ctrl = getChild<LLAccordionCtrl>("groups_accordion");
+	/*LLAccordionCtrl* tab_ctrl = getChild<LLAccordionCtrl>("groups_accordion");
 	tab_ctrl->reset();
 
 	LLAccordionCtrlTab* tab_general = getChild<LLAccordionCtrlTab>("group_general_tab");
 	LLAccordionCtrlTab* tab_roles = getChild<LLAccordionCtrlTab>("group_roles_tab");
 	LLAccordionCtrlTab* tab_notices = getChild<LLAccordionCtrlTab>("group_notices_tab");
 	LLAccordionCtrlTab* tab_land = getChild<LLAccordionCtrlTab>("group_land_tab");
-	LLAccordionCtrlTab* tab_experiences = getChild<LLAccordionCtrlTab>("group_experiences_tab");
+	LLAccordionCtrlTab* tab_experiences = getChild<LLAccordionCtrlTab>("group_experiences_tab");*/
 
 	if(mButtonJoin)
 		mButtonJoin->setVisible(false);
@@ -435,7 +435,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 
 	if(is_null_group_id)//creating new group
 	{
-		if(!tab_general->getDisplayChildren())
+		/*if(!tab_general->getDisplayChildren())
 			tab_general->changeOpenClose(tab_general->getDisplayChildren());
 		
 		if(tab_roles->getDisplayChildren())
@@ -450,7 +450,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 		tab_roles->setVisible(false);
 		tab_notices->setVisible(false);
 		tab_land->setVisible(false);
-		tab_experiences->setVisible(false);
+		tab_experiences->setVisible(false);*/
 
 		getChild<LLUICtrl>("group_name")->setVisible(false);
 		getChild<LLUICtrl>("group_name_editor")->setVisible(true);
@@ -466,7 +466,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 	}
 	else 
 	{
-		if(!is_same_id)
+		/*if(!is_same_id)
 		{
 			if(!tab_general->getDisplayChildren())
 				tab_general->changeOpenClose(tab_general->getDisplayChildren());
@@ -478,15 +478,15 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 				tab_land->changeOpenClose(tab_land->getDisplayChildren());
 			if(tab_experiences->getDisplayChildren())
 				tab_experiences->changeOpenClose(tab_land->getDisplayChildren());
-		}
+		}*/
 
 		LLGroupData agent_gdatap;
 		bool is_member = gAgent.getGroupData(mID,agent_gdatap) || gAgent.isGodlike();
 		
-		tab_roles->setVisible(is_member);
+		/*tab_roles->setVisible(is_member);
 		tab_notices->setVisible(is_member);
 		tab_land->setVisible(is_member);
-		tab_experiences->setVisible(is_member);
+		tab_experiences->setVisible(is_member);*/
 
 		getChild<LLUICtrl>("group_name")->setVisible(true);
 		getChild<LLUICtrl>("group_name_editor")->setVisible(false);
@@ -503,7 +503,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 			no_chat->setVisible(!is_member);
 	}
 
-	tab_ctrl->arrange();
+	//tab_ctrl->arrange();
 
 	reposButtons();
 	update(GC_ALL);//show/hide "join" button if data is already ready
