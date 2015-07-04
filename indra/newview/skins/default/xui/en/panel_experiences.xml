@@ -2,10 +2,12 @@
 
 <panel
   layout="topleft"
-  top="0"
-  left="0"
-  width="316"
-  height="500"
+  top="3"
+  left="3"
+  width="200"
+  height="300"
+  label="Experiences"
+  bg_opaque_color="0 0.5 0 0.3"
   follows="all">
   <string
     name="loading_experiences"
@@ -19,44 +21,46 @@
   <layout_stack
     layout="topleft"
     top="0"
-    left="3"
-    width="311"
-    height="499"
+    left="4" 
+    right="-1"
+    bottom="-4"
     orientation="vertical"
     follows="all">
     <layout_panel
       layout="topleft"
-      auto_resize="true"
       top="0"
       left="1"
       right="-1"
-      height="474"
+      height="250"
       follows="all">
       <flat_list_view
         name="experiences_list"
-        color="Transparent"
         layout="topleft"
         top="0"
-        left="0"
+        left="1"
+        right="-1"
+        bottom="-1"
         follows="all">
       </flat_list_view>
     </layout_panel>
     <layout_panel
       layout="topleft"
       top="0"
-      left="0"
+      left="1"
+      right="-1"
       height="24"
       min_height="24"
       follows="all"
       name="button_panel"
-      visible="true">
+      visible="false">
       <button
         layout="topleft"
-        left="0"
+        left="2"
         top="0"
-        follows="top|left|right"
-        name="btn_action2"
+        follows="top|left"
+        name="btn_action"
         enabled="true"/>
     </layout_panel>
   </layout_stack>
 </panel>
+
