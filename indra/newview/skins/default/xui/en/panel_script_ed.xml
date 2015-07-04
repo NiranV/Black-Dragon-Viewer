@@ -200,13 +200,14 @@
     name="lsl errors"
      width="487" />
   <combo_box
-    follows="left|bottom"
+    follows="left|bottom|right"
     height="23"
      top_pad="25"
+     left="0"
     label="Insert..."
     layout="topleft"
     name="Insert..."
-     width="128" />
+     width="243" />
   <button
     follows="right|bottom"
     height="23"
@@ -224,7 +225,7 @@
     label="Edit..."
     layout="topleft"
     top_pad="-23"
-     right="400"
+     right="405"
     name="Edit_btn"
     width="81" />
 </panel>
