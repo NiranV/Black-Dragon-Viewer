@@ -1110,10 +1110,6 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 
 	// Initialize default tab.
 	getChild<LLSideTrayPanelContainer>("panel_container")->getCurrentPanel()->onOpen(LLSD());
-
-	//BD - Save if the snapshot floater is open, so we can stop it from repeatedly
-	//     calling the freeze world call.
-	mFloaterOpen = true;
 }
 
 void LLFloaterSnapshot::onClose(bool app_quitting)
@@ -1146,8 +1142,6 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 	{
 		LLToolMgr::getInstance()->setCurrentToolset(impl.mLastToolset);
 	}
-
-	mFloaterOpen = false;
 }
 
 void LLFloaterSnapshot::onClickBigPreview()
@@ -1177,35 +1171,6 @@ void LLFloaterSnapshot::attachPreview()
         mBigPreviewFloater->setPreview(previewp);
         mBigPreviewFloater->setFloaterOwner(getParentByType<LLFloater>());
     }
-}
-
-void LLFloaterSnapshot::onClickBigPreview()
-{
-	// Toggle the preview
-	if (isPreviewVisible())
-	{
-		LLFloaterReg::hideInstance("big_preview");
-	}
-	else
-	{
-		attachPreview();
-		LLFloaterReg::showInstance("big_preview");
-	}
-}
-
-bool LLFloaterSnapshot::isPreviewVisible()
-{
-	return (mBigPreviewFloater && mBigPreviewFloater->getVisible());
-}
-
-void LLFloaterSnapshot::attachPreview()
-{
-	if (mBigPreviewFloater)
-	{
-		LLSnapshotLivePreview* previewp = impl.getPreviewView(this);
-		mBigPreviewFloater->setPreview(previewp);
-		mBigPreviewFloater->setFloaterOwner(getParentByType<LLFloater>());
-	}
 }
 
 // virtual

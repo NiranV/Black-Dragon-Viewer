@@ -7118,24 +7118,23 @@ void process_script_question(LLMessageSystem *msg, void **user_data)
 				}
 			}
 
-			if ( (!caution) && (!questions) )
-			{
-				LLNotifications::instance().forceResponse(
-					LLNotification::Params("ScriptQuestion").substitutions(args).payload(payload), 0/*YES*/);
-			}
-			else if (gSavedSettings.getBOOL("PermissionsCautionEnabled"))
-// [/RLVa:KB]
 			// check whether cautions are even enabled or not
 			const char* notification = "ScriptQuestion";
 
-			if(caution && gSavedSettings.getBOOL("PermissionsCautionEnabled"))
+			if ( (!caution) && (!questions) )
+			{
+				LLNotifications::instance().forceResponse(
+				LLNotification::Params("ScriptQuestion").substitutions(args).payload(payload), 0/*YES*/);
+			}
+// [/RLVa:KB]
+			else if (caution && gSavedSettings.getBOOL("PermissionsCautionEnabled"))
 			{
 				args["FOOTERTEXT"] = (count > 1) ? LLTrans::getString("AdditionalPermissionsRequestHeader") + "\n\n" + script_question : "";
 				notification = "ScriptQuestionCaution";
 			}
-			else if(experienceid.notNull())
+			else if (experienceid.notNull())
 			{
-				payload["experience"]=experienceid;
+				payload["experience"] = experienceid;
 				LLExperienceCache::get(experienceid, boost::bind(process_script_experience_details, _1, args, payload));
 				return;
 			}
