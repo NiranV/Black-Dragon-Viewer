@@ -110,7 +110,7 @@
      name="roles_tab_container"
      tab_position="top"
      tab_height="21"
-     tab_min_width="77"
+     tab_min_width="57"
      top_pad="13"
      width="316">
                    <panel
@@ -163,23 +163,18 @@
                      label="Land"
                      name="group_land_tab_panel"
                      top="0" />
-      </tab_container>
-         <accordion_tab
-             expanded="false"
-             layout="topleft"
-             name="group_experiences_tab"
-             title="Experiences"
-             fit_panel="false">
-           <panel
+                 <panel
                border="false"
                class="panel_group_experiences"
                filename="panel_experiences.xml"
+               background_visible="true"
                follows="left|top|right"
                layout="topleft"
                left="0"
+               label="Experiences"
                name="group_experiences_tab_panel"
                top="0" />
-         </accordion_tab>
+      </tab_container>
    
       <panel
       name="group_info_top"
