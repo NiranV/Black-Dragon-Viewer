@@ -396,6 +396,8 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 	LLButton* button_chat = findChild<LLButton>("btn_chat");
 	LLUICtrl* no_chat = findChild<LLUICtrl>("no_chat");
 	LLUICtrl* no_call = findChild<LLUICtrl>("no_call");
+	LLUICtrl* no_apply = findChild<LLUICtrl>("no_apply");
+	LLUICtrl* no_refresh = findChild<LLUICtrl>("no_refresh");
 
 
 	bool is_null_group_id = group_id == LLUUID::null;
@@ -417,6 +419,8 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 		no_chat->setVisible(is_null_group_id);
 	if(no_call)
 		no_call->setVisible(is_null_group_id);
+	if (no_refresh)
+		no_refresh->setVisible(is_null_group_id);
 
 	getChild<LLUICtrl>("prepend_founded_by")->setVisible(!is_null_group_id);
 
@@ -463,6 +467,8 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 			no_call->setVisible(true);
 		if(no_chat)
 			no_chat->setVisible(true);
+		if(no_refresh)
+			no_refresh->setVisible(true);
 	}
 	else 
 	{
@@ -501,6 +507,8 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 			no_call->setVisible(!is_member);
 		if(no_chat)
 			no_chat->setVisible(!is_member);
+		if (no_apply)
+			no_apply->setVisible(!is_member);
 	}
 
 	//tab_ctrl->arrange();

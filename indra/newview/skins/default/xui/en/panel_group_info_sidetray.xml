@@ -205,6 +205,16 @@
 				name="btn_refresh_lp"
 			    auto_resize="false"
 				width="32">
+                  <icon
+                  follows="left|bottom|right"
+                  height="25"
+                  name="no_refresh"
+                  mouse_opaque="false"
+                  layout="topleft"
+                  image_name="Toolbar_Middle_Off"
+                  left="1"
+                  top_pad="-1"
+                  width="31" />
 					<button
 				     follows="bottom|left|right"
 				     height="25"
@@ -234,12 +244,13 @@
                   mouse_opaque="false"
                   image_name="Toolbar_Middle_Off"
                   left="1"
-                  top="0"
+                  top_pad="-1"
                   width="93" />
 					<button
 				     follows="bottom|left|right"
 				     label="Chat"
 				     name="btn_chat"
+                     layout="topleft"
                      image_hover_unselected="Toolbar_Middle_Over"
                      image_selected="Toolbar_Middle_Selected"
                      image_unselected="Toolbar_Middle_Off"
@@ -264,7 +275,7 @@
                   layout="topleft"
                   image_name="Toolbar_Middle_Off"
                   left="1"
-                  top="0"
+                  top_pad="-1"
                   width="93" />
 					<button
 			         follows="bottom|left|right"
@@ -288,12 +299,23 @@
 				name="btn_apply_lp"
 			    auto_resize="true"
 				width="95">
+                  <icon
+                  follows="left|bottom|right"
+                  height="25"
+                  name="no_apply"
+                  mouse_opaque="false"
+                  layout="topleft"
+                  image_name="Toolbar_Middle_Off"
+                  left="1"
+                  top_pad="-1"
+                  width="94" />
 					<button
 				     follows="bottom|left|right"
 				     height="25"
 				     label="Save"
 				     label_selected="Save"
 				     name="btn_apply"
+                     layout="topleft"
                      image_hover_unselected="Toolbar_Middle_Over"
                      image_selected="Toolbar_Middle_Selected"
                      image_unselected="Toolbar_Middle_Off"

@@ -499,7 +499,8 @@ void LLPanelGroupGeneral::update(LLGroupChange gc)
 
 	if (mComboActiveTitle)
 	{
-		mComboActiveTitle->setVisible(is_member);
+		mComboActiveTitle->clear();
+		mComboActiveTitle->removeall();
 		mComboActiveTitle->setEnabled(mAllowEdit);
 		
 		if ( mActiveTitleLabel) mActiveTitleLabel->setVisible(is_member);
@@ -507,9 +508,6 @@ void LLPanelGroupGeneral::update(LLGroupChange gc)
 		if (is_member)
 		{
 			LLUUID current_title_role;
-
-			mComboActiveTitle->clear();
-			mComboActiveTitle->removeall();
 			bool has_selected_title = false;
 
 			if (1 == gdatap->mTitles.size())
@@ -689,8 +687,6 @@ void LLPanelGroupGeneral::reset()
 	mSpinEnrollmentFee->set((F32)0);
 
 	mGroupNameEditor->setVisible(true);
-
-	mComboActiveTitle->setVisible(false);
 
 	mInsignia->setImageAssetID(LLUUID::null);
 	
