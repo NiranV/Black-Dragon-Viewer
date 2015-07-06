@@ -11029,7 +11029,7 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 		//far_clip = llmin(far_clip, 128.f);
 		far_clip = llmin(far_clip, camera.getFar());
 
-		F32 range = far_clip-near_clip;
+		F32 range = gSavedSettings.getF32("RenderShadowFarClip");
 
 		LLVector3 split_exp = RenderShadowSplitExponent;
 
