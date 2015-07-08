@@ -879,7 +879,10 @@
  <color
  name="ToolbarDropZoneColor"
  value=".48 .69 1 .5" />
- 
+    <color
+      name="PanelNotificationListItem"
+      value="0.3 0.3 0.3 .3" />
+
  <!-- Black Dragon Colors -->
  <color
  name="Friend"

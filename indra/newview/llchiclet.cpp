@@ -35,6 +35,7 @@
 #include "llscriptfloater.h"
 #include "llsingleton.h"
 #include "llsyswellwindow.h"
+#include "llfloaternotificationstabbed.h"
 // [SL:KB] - Patch: UI-Notifications | Checked: 2013-05-09 (Catznip-3.5)
 #include "llchannelmanager.h"
 // [/SL:KB]
@@ -168,7 +169,7 @@ LLNotificationChiclet::LLNotificationChiclet(const Params& p)
 	mNotificationChannel.reset(new ChicletNotificationChannel(this));
 	// ensure that notification well window exists, to synchronously
 	// handle toast add/delete events.
-	LLNotificationWellWindow::getInstance()->setSysWellChiclet(this);
+	LLFloaterNotificationsTabbed::getInstance()->setSysWellChiclet(this);
 }
 
 void LLNotificationChiclet::onMenuItemClicked(const LLSD& user_data)
@@ -176,7 +177,7 @@ void LLNotificationChiclet::onMenuItemClicked(const LLSD& user_data)
 	std::string action = user_data.asString();
 	if("close all" == action)
 	{
-		LLNotificationWellWindow::getInstance()->closeAll();
+		LLFloaterNotificationsTabbed::getInstance()->closeAll();
 		LLIMWellWindow::getInstance()->closeAll();
 	}
 }
@@ -227,7 +228,8 @@ bool LLNotificationChiclet::ChicletNotificationChannel::filterNotification( LLNo
 	bool displayNotification;
 	if (   (notification->getName() == "ScriptDialog") // special case for scripts
 		// if there is no toast window for the notification, filter it
-		|| (!LLNotificationWellWindow::getInstance()->findItemByID(notification->getID()))
+		//|| (!LLNotificationWellWindow::getInstance()->findItemByID(notification->getID()))
+        || (!LLFloaterNotificationsTabbed::getInstance()->findItemByID(notification->getID(), notification->getName()))
 		)
 	{
 		displayNotification = false;

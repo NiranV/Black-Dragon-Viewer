@@ -9,7 +9,7 @@
  title="NOTIFICATIONS"
  width="320"
  min_width="320"
- height="55"
+ height="23"
  can_minimize="false"
  can_tear_off="false"
  can_resize="true"
@@ -23,30 +23,14 @@
      name="title_im_well_window">
         CONVERSATIONS
     </string>
-    <string
-     name="title_notification_well_window">
-        NOTIFICATIONS
-    </string>
 
     <flat_list_view
+	    color="FloaterDefaultBackgroundColor"
 	    follows="all"
-		color="Transparent"
 	    layout="topleft"
 	    name="notification_list"
 	    left="1"
-		right="-7"
 	    top="20"
-		bottom="25"
 	    height="0"
 	    width="318"/>
-	<button
- height="22"
- follows="bottom|left|right"
- layout="topleft"
- label="Close all Notifications"
- name="close_all_notifications"
- width="303"
- right="-10"
- top="27"
- left="10"/>
 </floater>
