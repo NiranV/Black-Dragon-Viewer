@@ -72,7 +72,10 @@ void AISCommand::setCommandFunc(command_func_type command_func)
 }
 	
 // virtual
-bool AISCommand::getResponseUUID(const LLSD& content, LLUUID& id)
+//bool AISCommand::getResponseUUID(const LLSD& content, LLUUID& id)
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2015-06-24 (Catznip-3.7)
+bool AISCommand::getResponseUUIDs(const LLSD& content, uuid_list_t& ids)
+// [/SL:KB]
 {
 	return false;
 }
@@ -96,9 +99,17 @@ void AISCommand::httpSuccess()
 
 	if (mCallback)
 	{
-		LLUUID id; // will default to null if parse fails.
-		getResponseUUID(content,id);
-		mCallback->fire(id);
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2015-06-24 (Catznip-3.7)
+		// If we were feeling daring we'd call LLInventoryCallback::fire for every item but it would take additional work to investigate whether all LLInventoryCallback derived classes
+		// were designed to handle multiple fire calls (with legacy link creation only one would ever fire per link creation) so we'll be cautious and only call for the first one for now
+		// (note that the LL code as written below will always call fire once with the NULL UUID for anything but CopyLibraryCategoryCommand so even the above is an improvement)
+		uuid_list_t ids;
+		getResponseUUIDs(content, ids);
+		mCallback->fire( (!ids.empty()) ? *ids.begin() : LLUUID::null );
+// [/SL:KB]
+//		LLUUID id; // will default to null if parse fails.
+//		getResponseUUID(content,id);
+//		mCallback->fire(id);
 	}
 }
 
@@ -197,6 +208,28 @@ RemoveItemCommand::RemoveItemCommand(const LLUUID& item_id,
 	command_func_type cmd = boost::bind(&LLHTTPClient::del, url, responder, headers, timeout);
 	setCommandFunc(cmd);
 }
+
+// [SL:KB] - Patch: Appearance-AISFilter | Checked: 2015-06-27 (Catznip-3.7)
+// virtual
+void RemoveItemCommand::httpFailure()
+{
+	S32 status = getStatus();
+
+	// 410 - Gone (remote deleted but not local deleted)
+	if (410 == status)
+	{
+		if (mContent.has("item_id"))
+		{
+			gInventory.onObjectDeletedFromServer(mContent["item_id"].asUUID());
+		}
+
+		// No use in retrying
+		mRetryPolicy->cancelRetry();
+	}
+
+	AISCommand::httpFailure();
+}
+// [/SL:KB]
 
 RemoveCategoryCommand::RemoveCategoryCommand(const LLUUID& item_id,
 											 LLPointer<LLInventoryCallback> callback):
@@ -305,6 +338,16 @@ CreateInventoryCommand::CreateInventoryCommand(const LLUUID& parent_id,
 	setCommandFunc(cmd);
 }
 
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2015-06-24 (Catznip-3.7)
+bool CreateInventoryCommand::getResponseUUIDs(const LLSD& content, uuid_list_t& ids)
+{
+	uuid_list_t::size_type cntInitial = ids.size();
+	AISUpdate::parseUUIDArray(content, "_created_items", ids);
+	AISUpdate::parseUUIDArray(content, "_created_categories", ids);
+	return cntInitial != ids.size();
+}
+// [/SL:KB]
+
 SlamFolderCommand::SlamFolderCommand(const LLUUID& folder_id, const LLSD& contents, LLPointer<LLInventoryCallback> callback):
 	mContents(contents),
 	AISCommand(callback)
@@ -350,15 +393,26 @@ CopyLibraryCategoryCommand::CopyLibraryCategoryCommand(const LLUUID& source_id,
 	setCommandFunc(cmd);
 }
 
-bool CopyLibraryCategoryCommand::getResponseUUID(const LLSD& content, LLUUID& id)
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2015-06-24 (Catznip-3.7)
+bool CopyLibraryCategoryCommand::getResponseUUIDs(const LLSD& content, uuid_list_t& ids)
 {
 	if (content.has("category_id"))
 	{
-		id = content["category_id"];
+		ids.insert(content["category_id"]);
 		return true;
 	}
 	return false;
 }
+// [/SL:KB]
+//bool CopyLibraryCategoryCommand::getResponseUUID(const LLSD& content, LLUUID& id)
+//{
+//	if (content.has("category_id"))
+//	{
+//		id = content["category_id"];
+//		return true;
+//	}
+//	return false;
+//}
 
 AISUpdate::AISUpdate(const LLSD& update)
 {
