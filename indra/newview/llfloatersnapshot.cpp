@@ -562,14 +562,19 @@ void LLFloaterSnapshot::Impl::onCommitFreezeWorld(LLUICtrl* ctrl, void* data)
 {
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
 
-	if (view->impl.mSnapshotFreezeWorld != 2)
+	if (ctrl->getValue().asBoolean()
+		&& view->impl.mSnapshotFreezeWorld == 3)
 	{
-		view->impl.mSnapshotFreezeWorld = ctrl->getValue().asInteger();
+		view->impl.mSnapshotFreezeWorld = 2;
 	}
-	else if (!ctrl->getValue().asBoolean() 
+	else if (!ctrl->getValue().asBoolean()
 		&& view->impl.mSnapshotFreezeWorld == 2)
 	{
 		view->impl.mSnapshotFreezeWorld = 3;
+	}
+	else if (view->impl.mSnapshotFreezeWorld != 2)
+	{
+		view->impl.mSnapshotFreezeWorld = ctrl->getValue().asInteger();
 	}
 
 	updateLayout(view);
@@ -985,7 +990,7 @@ BOOL LLFloaterSnapshot::postBuild()
 	getChild<LLUICtrl>("layer_types")->setValue("colors");
 	getChildView("layer_types")->setEnabled(FALSE);
 
-	childSetCommitCallback("freeze_frame_check", Impl::onCommitFreezeWorld, this);
+	childSetCommitCallback("freeze_world_check", Impl::onCommitFreezeWorld, this);
 	// Filters
 	LLComboBox* filterbox = getChild<LLComboBox>("filters_combobox");
     std::vector<std::string> filter_list = LLImageFiltersManager::getInstance()->getFiltersList();
@@ -1123,6 +1128,7 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 		previewp->setVisible(FALSE);
 		previewp->setEnabled(FALSE);
 	}
+
 	if (impl.mSnapshotFreezeWorld == 3)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", true);
