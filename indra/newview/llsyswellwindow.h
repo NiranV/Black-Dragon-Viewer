@@ -53,6 +53,9 @@ public:
 	// check is window empty
 	bool isWindowEmpty();
 
+//	//BD - Close all button.
+	void onCloseAll();
+
 	// Operating with items
 	void removeItemByID(const LLUUID& id);
 	LLPanel * findItemByID(const LLUUID& id);

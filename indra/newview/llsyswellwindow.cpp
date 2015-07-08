@@ -57,6 +57,9 @@ BOOL LLSysWellWindow::postBuild()
 	// get a corresponding channel
 	initChannel();
 
+//	//BD - Close all button.
+	getChild<LLButton>("close_all_notifications")->setCommitCallback(boost::bind(&LLSysWellWindow::onCloseAll, this));
+
 	return LLTransientDockableFloater::postBuild();
 }
 
@@ -214,6 +217,14 @@ void LLSysWellWindow::reshapeWindow()
 bool LLSysWellWindow::isWindowEmpty()
 {
 	return mMessageList->size() == 0;
+}
+
+//---------------------------------------------------------------------------------
+//BD - Close all button
+void LLSysWellWindow::onCloseAll()
+{
+	LLNotificationWellWindow::getInstance()->closeAll();
+	LLIMWellWindow::getInstance()->closeAll();
 }
 
 /************************************************************************/
