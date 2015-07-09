@@ -62,7 +62,7 @@
     label_selected="Reset"
     layout="topleft"
     name="Reset"
-     right="-171"
+     right="-173"
      width="81" />
   <check_box
      left="7"

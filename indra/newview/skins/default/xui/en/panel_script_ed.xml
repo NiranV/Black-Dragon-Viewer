@@ -207,7 +207,7 @@
     label="Insert..."
     layout="topleft"
     name="Insert..."
-     width="243" />
+     width="241" />
   <button
     follows="right|bottom"
     height="23"
