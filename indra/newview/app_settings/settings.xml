@@ -8804,7 +8804,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>300.0</real>
+    <real>750.0</real>
   </map>
   <key>RenderSSAOMaxScale</key>
   <map>
@@ -8815,7 +8815,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>300</integer>
+    <integer>100</integer>
   </map>
   <key>RenderSSAOFactor</key>
   <map>
@@ -8837,7 +8837,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.7</real>
+    <real>0.6</real>
   </map>
   <key>RenderBumpmapMinDistanceSquared</key>
     <map>
