@@ -9,7 +9,7 @@
  title="NOTIFICATIONS"
  width="350"
  min_width="320"
- height="550"
+ height="543"
  can_minimize="false"
  can_tear_off="false"
  can_resize="true"
@@ -40,100 +40,88 @@
    name="title_notification_tabbed_window">
     NOTIFICATIONS
   </string>
-  <layout_stack width="336" height="550" enabled="true" orientation="vertical" name="TabButtonsStack" follows="left|top|right|bottom">
-  <layout_panel width="336" height="550" enabled="true" name="TabButtonsLayoutPanel">
+  <layout_stack width="350" height="550" enabled="true" orientation="vertical" name="TabButtonsStack" follows="left|top|right|bottom">
+  <layout_panel width="350" height="550" enabled="true" name="TabButtonsLayoutPanel">
     <tab_container
-     follows="left|top|right|bottom"
-     halign="center"
+     follows="all"
      layout="topleft"
      tab_position="top"
      left="7"
-     top="24"
-     width="336"
+     right="-7"
+     top="18"
+     width="335"
      height="491"
      mouse_opaque="true"
      name="notifications_tab_container">
       <panel
-       border="true"
-       bevel_style="none"
        follows="left|top|right|bottom"
        label="System (0)"
        layout="topleft"
        name="system_notification_list_tab">
         <notification_list_view
-          color="FloaterDefaultBackgroundColor"
+          color="Black_50"
           follows="all"
           layout="topleft"
           name="system_notification_list"
           left="0"
           top="5"
           height="0"
-          width="330"/>
+          width="335"/>
       </panel>
       <panel
-       border="true"
-       bevel_style="none"
        follows="left|top|right|bottom"
        label="Transactions (0)"
        layout="topleft"
        name="transaction_notifications_tab">
         <notification_list_view
-          color="FloaterDefaultBackgroundColor"
+          color="Black_50"
           follows="all"
           layout="topleft"
           name="transaction_notification_list"
           left="0"
           top="5"
           height="0"
-          width="328"/>
+          width="335"/>
       </panel>
       <panel
-       border="true"
-       bevel_style="none"
        follows="left|top|right|bottom"
        label="Invitations (0)"
        layout="topleft"
        name="group_invite_notifications_tab">
         <notification_list_view
-          color="FloaterDefaultBackgroundColor"
+          color="Black_50"
           follows="all"
           layout="topleft"
           name="group_invite_notification_list"
           left="0"
           top="5"
           height="0"
-          width="328"/>
+          width="335"/>
       </panel>
       <panel
-       border="true"
-       bevel_style="none"
        follows="left|top|right|bottom"
        label="Group (0)"
        layout="topleft"
        name="group_notice_notifications_tab">
         <notification_list_view
-          color="FloaterDefaultBackgroundColor"
+          color="Black_50"
           follows="all"
           layout="topleft"
           name="group_notice_notification_list"
           left="0"
           top="5"
           height="0"
-          width="328"/>
+          width="335"/>
       </panel>
     </tab_container>
     
-    <layout_stack width="336" height="26" enabled="true" orientation="horizontal"  follows="left|right" name="ButtonsStack">
-      <layout_panel width="336" height="30" enabled="true" orientation="horizontal" name="CondenseAllButtonPanel">
-        <button width="93" height="21" left="2" label="Collapse all" name="collapse_all_button">
+    <layout_stack width="335" height="21" top_pad="0" enabled="true" orientation="horizontal"  follows="left|right" name="ButtonsStack">
+      <layout_panel width="100" height="21" enabled="true" orientation="horizontal" auto_resize="true" name="CondenseAllButtonPanel">
+        <button width="100" follows="top|left|right" layout="topleft" top="0" height="21" left="3" label="Collapse all" name="collapse_all_button">
         </button>
       </layout_panel>
-      <layout_panel width="336" height="30" enabled="true" orientation="horizontal" name="GapLayoutPanel">
-        <panel width="90" height="21" left="2" label="Gap Panel" border="false" name="GapPanel">
-        </panel>
-      </layout_panel>
-      <layout_panel width="336" height="30" enabled="true" orientation="horizontal" name="DeleteAllButtonPanel">
-        <button width="93" height="21" left="2" label="Delete all" name="delete_all_button">
+      <layout_panel width="100" height="21" enabled="true" orientation="horizontal" auto_resize="true" name="DeleteAllButtonPanel">
+        <button width="100" follows="top|left|right" layout="topleft" top="0" height="21" left="0" label="Delete all" name="delete_all_button">
         </button>
       </layout_panel>
     </layout_stack>
