@@ -54,7 +54,7 @@ public:
 	bool isWindowEmpty();
 
 //	//BD - Close all button.
-	void onCloseAll();
+	//void onCloseAll();
 
 	// Operating with items
 	void removeItemByID(const LLUUID& id);

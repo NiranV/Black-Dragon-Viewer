@@ -58,7 +58,7 @@ BOOL LLSysWellWindow::postBuild()
 	initChannel();
 
 //	//BD - Close all button.
-	getChild<LLButton>("close_all_notifications")->setCommitCallback(boost::bind(&LLSysWellWindow::onCloseAll, this));
+	//getChild<LLButton>("close_all_notifications")->setCommitCallback(boost::bind(&LLSysWellWindow::onCloseAll, this));
 
 	return LLTransientDockableFloater::postBuild();
 }
@@ -221,11 +221,11 @@ bool LLSysWellWindow::isWindowEmpty()
 
 //---------------------------------------------------------------------------------
 //BD - Close all button
-void LLSysWellWindow::onCloseAll()
+/*void LLSysWellWindow::onCloseAll()
 {
 	LLNotificationWellWindow::getInstance()->closeAll();
 	LLIMWellWindow::getInstance()->closeAll();
-}
+}*/
 
 /************************************************************************/
 /*         ObjectRowPanel implementation                                */
