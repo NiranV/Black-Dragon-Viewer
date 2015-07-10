@@ -2809,6 +2809,7 @@ void handle_object_edit()
 
 	if (gAgentCamera.getFocusOnAvatar() && !LLToolMgr::getInstance()->inEdit())
 	{
+		LLFloaterTools::sPreviousFocusOnAvatar = true;
 		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
 
 		if (selection->getSelectType() == SELECT_TYPE_HUD || !gSavedSettings.getBOOL("EditCameraMovement"))
@@ -7492,11 +7493,10 @@ void handle_selected_texture_info(void*)
    			{
    				msg.append( llformat("%d ", (S32)(it->second[i])));
    			}
-
-			LLSD args;
-			args["MESSAGE"] = msg;
-			LLNotificationsUtil::add("SystemMessage", args);
    		}
+   		LLSD args;
+   		args["MESSAGE"] = msg;
+   		LLNotificationsUtil::add("SystemMessage", args);
 	}
 }
 

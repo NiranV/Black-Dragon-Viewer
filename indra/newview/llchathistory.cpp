@@ -399,6 +399,10 @@ public:
 			|| mSourceType == CHAT_SOURCE_SYSTEM)
 		{
 			mFrom = LLTrans::getString("SECOND_LIFE");
+			if(!chat.mFromName.empty() && (mFrom != chat.mFromName))
+			{
+				mFrom += " (" + chat.mFromName + ")";
+			}
 			user_name->setValue(mFrom);
 			updateMinUserNameWidth();
 		}
@@ -996,7 +1000,7 @@ void LLChatHistory::appendMessage(const LLChat& chat, const LLSD &args, const LL
 	// compact mode: show a timestamp and name
 	if (use_plain_text_chat_history)
 	{
-		square_brackets = chat.mFromName == SYSTEM_FROM;
+		square_brackets = chat.mSourceType == CHAT_SOURCE_SYSTEM;
 
 		LLStyle::Params timestamp_style(body_message_params);
 

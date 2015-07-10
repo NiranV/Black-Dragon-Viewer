@@ -46,6 +46,11 @@ public:
 	static  void setSNDefaults();
 	static  void setXboxDefaults();
 
+protected:
+
+	void onClose(bool app_quitting);
+	void onClickCloseBtn(bool app_quitting);
+
 private:
 
 	LLFloaterJoystick(const LLSD& data);

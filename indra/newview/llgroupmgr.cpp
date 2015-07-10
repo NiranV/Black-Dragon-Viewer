@@ -1970,7 +1970,8 @@ void LLGroupMgr::processGroupBanRequest(const LLSD& content)
 	LLGroupMgrGroupData* gdatap = LLGroupMgr::getInstance()->getGroupData(group_id);
 	if (!gdatap)
 		return;
-	
+
+	gdatap->clearBanList();
 	LLSD::map_const_iterator i		= content["ban_list"].beginMap();
 	LLSD::map_const_iterator iEnd	= content["ban_list"].endMap();
 	for(;i != iEnd; ++i)
@@ -2082,11 +2083,6 @@ void LLGroupMgr::processCapGroupMembersRequest(const LLSD& content)
 		return;
 	}
 
-	// If we have no members, there's no reason to do anything else
-	S32	num_members	= content["member_count"];
-	if(num_members < 1)
-		return;
-	
 	LLUUID group_id = content["group_id"].asUUID();
 
 	LLGroupMgrGroupData* group_datap = LLGroupMgr::getInstance()->getGroupData(group_id);
@@ -2096,6 +2092,18 @@ void LLGroupMgr::processCapGroupMembersRequest(const LLSD& content)
 		return;
 	}
 
+	// If we have no members, there's no reason to do anything else
+	S32	num_members	= content["member_count"];
+	if (num_members < 1)
+	{
+		LL_INFOS("GrpMgr") << "Received empty group members list for group id: " << group_id.asString() << LL_ENDL;
+		// Set mMemberDataComplete for correct handling of empty responses. See MAINT-5237
+		group_datap->mMemberDataComplete = true;
+		group_datap->mChanged = TRUE;
+		LLGroupMgr::getInstance()->notifyObservers(GC_MEMBER_DATA);
+		return;
+	}
+	
 	group_datap->mMemberCount = num_members;
 
 	LLSD	member_list	= content["members"];

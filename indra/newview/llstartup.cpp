@@ -245,7 +245,8 @@ static LLVector3 gAgentStartLookAt(1.0f, 0.f, 0.f);
 static std::string gAgentStartLocation = "safe";
 static bool mLoginStatePastUI = false;
 
-const S32 DEFAULT_MAX_AGENT_GROUPS = 25;
+const S32 DEFAULT_MAX_AGENT_GROUPS = 42;
+const S32 ALLOWED_MAX_AGENT_GROUPS = 500;
 
 boost::scoped_ptr<LLEventPump> LLStartUp::sStateWatcher(new LLEventStream("StartupState"));
 boost::scoped_ptr<LLStartupListener> LLStartUp::sListener(new LLStartupListener());
@@ -428,9 +429,7 @@ bool idle_startup()
 		gSavedSettings.setS32("LastFeatureVersion", LLFeatureManager::getInstance()->getVersion());
 		gSavedSettings.setString("LastGPUString", thisGPU);
 
-		// load dynamic GPU/feature tables from website (S3)
-		LLFeatureManager::getInstance()->fetchHTTPTables();
-		
+
 		std::string xml_file = LLUI::locateSkin("xui_version.xml");
 		LLXMLNodePtr root;
 		bool xml_ok = false;
@@ -3175,6 +3174,23 @@ bool process_login_success_response()
 			LLStringUtil::trim(gDisplayName);
 		}
 	}
+	std::string first_name;
+	if(response.has("first_name"))
+	{
+		first_name = response["first_name"].asString();
+		LLStringUtil::replaceChar(first_name, '"', ' ');
+		LLStringUtil::trim(first_name);
+		gAgentUsername = first_name;
+	}
+
+	if(response.has("last_name") && !gAgentUsername.empty() && (gAgentUsername != "Resident"))
+	{
+		std::string last_name = response["last_name"].asString();
+		LLStringUtil::replaceChar(last_name, '"', ' ');
+		LLStringUtil::trim(last_name);
+		gAgentUsername = gAgentUsername + " " + last_name;
+	}
+
 	if(gDisplayName.empty())
 	{
 		if(response.has("first_name"))
@@ -3195,6 +3211,7 @@ bool process_login_success_response()
 			gDisplayName += text;
 		}
 	}
+
 	if(gDisplayName.empty())
 	{
 		gDisplayName.assign(gUserCredential->asString());
@@ -3440,15 +3457,24 @@ bool process_login_success_response()
 		LLViewerMedia::openIDSetup(openid_url, openid_token);
 	}
 
-	if(response.has("max-agent-groups")) {		
-		std::string max_agent_groups(response["max-agent-groups"]);
-		gMaxAgentGroups = atoi(max_agent_groups.c_str());
-		LL_INFOS("LLStartup") << "gMaxAgentGroups read from login.cgi: "
-							  << gMaxAgentGroups << LL_ENDL;
+	gMaxAgentGroups = DEFAULT_MAX_AGENT_GROUPS;
+	if(response.has("max-agent-groups"))
+	{
+		S32 agent_groups = atoi(std::string(response["max-agent-groups"]).c_str());
+		if (agent_groups > 0 && agent_groups <= ALLOWED_MAX_AGENT_GROUPS)
+		{
+			gMaxAgentGroups = agent_groups;
+			LL_INFOS("LLStartup") << "gMaxAgentGroups read from login.cgi: "
+				<< gMaxAgentGroups << LL_ENDL;
+		}
+		else
+		{
+			LL_INFOS("LLStartup") << "Invalid value received, using defaults for gMaxAgentGroups: "
+				<< gMaxAgentGroups << LL_ENDL;
+		}
 	}
 	else {
-		gMaxAgentGroups = DEFAULT_MAX_AGENT_GROUPS;
-		LL_INFOS("LLStartup") << "using gMaxAgentGroups default: "
+		LL_INFOS("LLStartup") << "Missing max-agent-groups, using default value for gMaxAgentGroups: "
 							  << gMaxAgentGroups << LL_ENDL;
 	}
 		

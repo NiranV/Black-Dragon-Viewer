@@ -57,6 +57,7 @@
 #include "llcallingcard.h"
 #include "llbuycurrencyhtml.h"
 #include "llfirstuse.h"
+#include "llfloaterbump.h"
 #include "llfloaterbuyland.h"
 #include "llfloaterland.h"
 #include "llfloaterregioninfo.h"
@@ -2482,7 +2483,8 @@ static void god_message_name_cb(const LLAvatarName& av_name, LLChat chat, std::s
 	LLNotificationsUtil::add("GodMessage", args);
 
 	// Treat like a system message and put in chat history.
-	chat.mText = av_name.getCompleteName() + ": " + message;
+	chat.mSourceType = CHAT_SOURCE_SYSTEM;
+	chat.mText = message;
 
 	LLFloaterIMNearbyChat* nearby_chat = LLFloaterReg::getTypedInstance<LLFloaterIMNearbyChat>("nearby_chat");
 	if (nearby_chat)
@@ -2866,6 +2868,13 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 		break;
 	case IM_GROUP_INVITATION:
 		{
+			if (!is_muted)
+			{
+				// group is not blocked, but we still need to check agent that sent the invitation
+				// and we have no agent's id
+				// Note: server sends username "first.last".
+				is_muted |= LLMuteList::getInstance()->isMuted(name);
+			}
 			if (is_do_not_disturb || is_muted)
 			{
 				send_do_not_disturb_message(msg, from_id);
@@ -3845,6 +3854,11 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 	is_linden = chat.mSourceType != CHAT_SOURCE_OBJECT &&
 		LLMuteList::getInstance()->isLinden(from_name);
 
+	if (is_muted && (chat.mSourceType == CHAT_SOURCE_OBJECT))
+	{
+		return;
+	}
+
 	BOOL is_audible = (CHAT_AUDIBLE_FULLY == chat.mAudible);
 	chatter = gObjectList.findObject(from_id);
 	if (chatter)
@@ -4186,11 +4200,15 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 			}
 		}
 
-		LLSD msg_notify = LLSD(LLSD::emptyMap());
-		msg_notify["session_id"] = LLUUID();
-        msg_notify["from_id"] = chat.mFromID;
-		msg_notify["source_type"] = chat.mSourceType;
-        on_new_message(msg_notify);
+		if (mesg != "")
+		{
+			LLSD msg_notify = LLSD(LLSD::emptyMap());
+			msg_notify["session_id"] = LLUUID();
+			msg_notify["from_id"] = chat.mFromID;
+			msg_notify["source_type"] = chat.mSourceType;
+			on_new_message(msg_notify);
+		}
+
 	}
 }
 
@@ -6680,6 +6698,11 @@ void process_mean_collision_alert_message(LLMessageSystem *msgsystem, void **use
 			gMeanCollisionList.push_front(mcd);
 			gCacheName->get(perp, false, boost::bind(&mean_name_callback, _1, _2, _3));
 		}
+	}
+	LLFloaterBump* bumps_floater = LLFloaterBump::getInstance();
+	if(bumps_floater && bumps_floater->isInVisibleChain())
+	{
+		bumps_floater->populateCollisionList();
 	}
 }
 

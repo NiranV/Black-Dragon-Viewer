@@ -55,9 +55,21 @@
          name="FSAADisabled"
          value="0" />
         <combo_box.item
-         label="Enabled"
-         name="On"
+         label="2x"
+         name="2x"
          value="2" />
+        <combo_box.item
+         label="4x"
+         name="4x"
+         value="4" />
+        <combo_box.item
+         label="8x"
+         name="8x"
+         value="8" />
+        <combo_box.item
+         label="16x"
+         name="16x"
+         value="16" />
     </combo_box>
    <text
      type="string"
@@ -153,7 +165,6 @@
      label_width="195"
      layout="topleft"
      left="10"
-     min_val="0"
      max_val="4096"
      name="GraphicsCardTextureMemory"
      tool_tip="Amount of memory to allocate for textures. Defaults to video card memory. Reducing this may improve performance but may also make textures blurry."
@@ -180,8 +191,18 @@
      label="OK"
      label_selected="OK"
      layout="topleft"
-     left="-102"
+     right="-105"
      name="OK"
      top="192"
+     width="90" />
+    <button
+     follows="right|bottom"
+     height="22"
+     label="Cancel"
+     label_selected="Cancel"
+     layout="topleft"
+     left_pad="5"
+     name="Cancel"
+     right="-10"
      width="90" />
 </floater>

@@ -148,7 +148,7 @@ private:
 class CopyLibraryCategoryCommand: public AISCommand
 {
 public:
-	CopyLibraryCategoryCommand(const LLUUID& source_id, const LLUUID& dest_id, LLPointer<LLInventoryCallback> callback);
+	CopyLibraryCategoryCommand(const LLUUID& source_id, const LLUUID& dest_id, LLPointer<LLInventoryCallback> callback, bool copy_subfolders = true);
 
 protected:
 // [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2015-06-24 (Catznip-3.7)

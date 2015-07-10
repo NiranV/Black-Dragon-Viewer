@@ -1823,9 +1823,15 @@ bool LLAppearanceMgr::getCanRemoveFromCOF(const LLUUID& outfit_cat_id)
 	{
 		return false;
 	}
-
+	LLInventoryModel::cat_array_t cats;
+	LLInventoryModel::item_array_t items;
 	LLFindWearablesEx is_worn(/*is_worn=*/ true, /*include_body_parts=*/ false);
-	return gInventory.hasMatchingDirectDescendent(outfit_cat_id, is_worn);
+	gInventory.collectDescendentsIf(outfit_cat_id,
+		cats,
+		items,
+		LLInventoryModel::EXCLUDE_TRASH,
+		is_worn);
+	return items.size() > 0;
 }
 
 // static
@@ -1902,6 +1908,10 @@ bool LLAppearanceMgr::canAddWearables(const uuid_vec_t& item_ids)
 		else if (item->getType() == LLAssetType::AT_CLOTHING)
 		{
 			++n_clothes;
+		}
+		else if (item->getType() == LLAssetType::AT_BODYPART)
+		{
+			return isAgentAvatarValid();
 		}
 		else
 		{
@@ -2744,7 +2754,7 @@ void LLAppearanceMgr::wearInventoryCategory(LLInventoryCategory* category, bool 
 		LLPointer<LLInventoryCallback> copy_cb = new LLWearCategoryAfterCopy(append);
 		LLPointer<LLInventoryCallback> track_cb = new LLTrackPhaseWrapper(
 													std::string("wear_inventory_category_callback"), copy_cb);
-		LLPointer<AISCommand> cmd_ptr = new CopyLibraryCategoryCommand(category->getUUID(), parent_id, track_cb);
+		LLPointer<AISCommand> cmd_ptr = new CopyLibraryCategoryCommand(category->getUUID(), parent_id, track_cb, false);
 		ais_ran=cmd_ptr->run_command();
 	}
 

@@ -72,6 +72,7 @@ private:
 	 */
 	S32					mSelectedParcelID;
 	LLUUID				mLastSelectedRegionID;
+	F64					mNextCovenantUpdateTime;  //seconds since client start
 
 	LLPanel*			mForSalePanel;
 	LLPanel*			mYouAreHerePanel;

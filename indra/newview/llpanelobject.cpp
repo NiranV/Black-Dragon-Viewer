@@ -2010,7 +2010,11 @@ void LLPanelObject::onCancelSculpt(const LLSD& data)
 	LLTextureCtrl* mTextureCtrl = getChild<LLTextureCtrl>("sculpt texture control");
 	if(!mTextureCtrl)
 		return;
-	
+
+	if(mSculptTextureRevert == LLUUID::null)
+	{
+		mSculptTextureRevert = LLUUID(SCULPT_DEFAULT_TEXTURE);
+	}
 	mTextureCtrl->setImageAssetID(mSculptTextureRevert);
 	
 	sendSculpt();
