@@ -139,9 +139,6 @@ public:
 	LLHandle<LLView> mPreviewHandle;
 	bool mAspectRatioCheckOff ;
 	bool mNeedRefresh;
-	// 0 = do nothing | 1 = was enabled, disable it again 
-	// 2 = was enabled before, don't disable | 3 = enable it on close
-	S32 mSnapshotFreezeWorld;
 	EStatus mStatus;
 };
 
@@ -563,18 +560,18 @@ void LLFloaterSnapshot::Impl::onCommitFreezeWorld(LLUICtrl* ctrl, void* data)
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
 
 	if (ctrl->getValue().asBoolean()
-		&& view->impl.mSnapshotFreezeWorld == 3)
+		&& view->mSnapshotFreezeWorld == 3)
 	{
-		view->impl.mSnapshotFreezeWorld = 2;
+		view->mSnapshotFreezeWorld = 2;
 	}
 	else if (!ctrl->getValue().asBoolean()
-		&& view->impl.mSnapshotFreezeWorld == 2)
+		&& view->mSnapshotFreezeWorld == 2)
 	{
-		view->impl.mSnapshotFreezeWorld = 3;
+		view->mSnapshotFreezeWorld = 3;
 	}
-	else if (view->impl.mSnapshotFreezeWorld != 2)
+	else if (view->mSnapshotFreezeWorld != 2)
 	{
-		view->impl.mSnapshotFreezeWorld = ctrl->getValue().asInteger();
+		view->mSnapshotFreezeWorld = ctrl->getValue().asInteger();
 	}
 
 	updateLayout(view);
@@ -1106,9 +1103,9 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 
 	if (gSavedSettings.getBOOL("UseFreezeWorld"))
 	{
-		impl.mSnapshotFreezeWorld = 2;
+		mSnapshotFreezeWorld = 2;
 	}
-	else if (impl.mSnapshotFreezeWorld == 1)
+	else if (mSnapshotFreezeWorld == 1)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", true);
 	}
@@ -1131,17 +1128,17 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 		previewp->setEnabled(FALSE);
 	}
 
-	if (impl.mSnapshotFreezeWorld == 3)
+	if (mSnapshotFreezeWorld == 3)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", true);
-		impl.mSnapshotFreezeWorld = 2;
+		mSnapshotFreezeWorld = 2;
 	}
 	else if (!gSavedSettings.getBOOL("UseFreezeWorld")
-		&& impl.mSnapshotFreezeWorld == 2)
+		&& mSnapshotFreezeWorld == 2)
 	{
-		impl.mSnapshotFreezeWorld = 0;
+		mSnapshotFreezeWorld = 0;
 	}
-	else if (impl.mSnapshotFreezeWorld == 1)
+	else if (mSnapshotFreezeWorld == 1)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", false);
 	}

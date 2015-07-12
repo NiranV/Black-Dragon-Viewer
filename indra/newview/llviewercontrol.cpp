@@ -68,6 +68,7 @@
 #include "llrender.h"
 #include "llnavigationbar.h"
 #include "llfloatertools.h"
+#include "llfloatersnapshot.h"
 #include "llpaneloutfitsinventory.h"
 #include "llpanellogin.h"
 #include "llpaneltopinfobar.h"
@@ -556,6 +557,7 @@ bool handleSpellCheckChanged()
 
 bool toggle_freeze_world(const LLSD& newvalue)
 {
+	LLFloaterSnapshot* floater_snapshot = LLFloaterSnapshot::getInstance();
 	if ( newvalue.asBoolean() )
 	{
 		// freeze all avatars
@@ -569,6 +571,8 @@ bool toggle_freeze_world(const LLSD& newvalue)
 
 		// freeze everything else
 		gSavedSettings.setBOOL("FreezeTime", TRUE);
+
+		floater_snapshot->mSnapshotFreezeWorld = 2;
 	}
 	else // turning off freeze world mode, either temporarily or not.
 	{
@@ -577,6 +581,11 @@ bool toggle_freeze_world(const LLSD& newvalue)
 
 		// thaw everything else
 		gSavedSettings.setBOOL("FreezeTime", FALSE);
+
+		if (floater_snapshot->mSnapshotFreezeWorld != 1)
+		{
+			floater_snapshot->mSnapshotFreezeWorld == 0;
+		}
 	}
 	return true;
 }
