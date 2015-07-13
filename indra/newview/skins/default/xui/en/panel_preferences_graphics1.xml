@@ -2026,7 +2026,7 @@ width="510">
       min_val="16"
       name="RenderShadowFarClip"
       top_pad="1"
-      width="318"/>
+      width="324"/>
  <button
  follows="left|top"
  control_name="RenderShadowFarClip"
