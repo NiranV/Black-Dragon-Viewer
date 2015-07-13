@@ -139,9 +139,6 @@ public:
 	LLHandle<LLView> mPreviewHandle;
 	bool mAspectRatioCheckOff ;
 	bool mNeedRefresh;
-	// 0 = do nothing | 1 = was enabled, disable it again 
-	// 2 = was enabled before, don't disable | 3 = enable it on close
-	S32 mSnapshotFreezeWorld;
 	EStatus mStatus;
 };
 
@@ -507,7 +504,10 @@ void LLFloaterSnapshot::Impl::onClickUICheck(LLUICtrl *ctrl, void* data)
 	if (view)
 	{
 		LLSnapshotLivePreview* previewp = getPreviewView(view);
-		previewp->updateSnapshot(TRUE);
+		if (previewp)
+		{
+			previewp->updateSnapshot(TRUE);
+		}
 		updateControls(view);
 	}
 }
@@ -522,7 +522,10 @@ void LLFloaterSnapshot::Impl::onClickHUDCheck(LLUICtrl *ctrl, void* data)
 	if (view)
 	{
 		LLSnapshotLivePreview* previewp = getPreviewView(view);
-		previewp->updateSnapshot(TRUE);
+		if (previewp)
+		{
+			previewp->updateSnapshot(TRUE);
+		}
 		updateControls(view);
 	}
 }
@@ -561,22 +564,7 @@ void LLFloaterSnapshot::Impl::applyKeepAspectCheck(LLFloaterSnapshot* view, BOOL
 void LLFloaterSnapshot::Impl::onCommitFreezeWorld(LLUICtrl* ctrl, void* data)
 {
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
-
-	if (ctrl->getValue().asBoolean()
-		&& view->impl.mSnapshotFreezeWorld == 3)
-	{
-		view->impl.mSnapshotFreezeWorld = 2;
-	}
-	else if (!ctrl->getValue().asBoolean()
-		&& view->impl.mSnapshotFreezeWorld == 2)
-	{
-		view->impl.mSnapshotFreezeWorld = 3;
-	}
-	else if (view->impl.mSnapshotFreezeWorld != 2)
-	{
-		view->impl.mSnapshotFreezeWorld = ctrl->getValue().asInteger();
-	}
-
+	view->mSnapshotFreezeWorld = ctrl->getValue().asBoolean();
 	updateLayout(view);
 }
 
@@ -1102,14 +1090,11 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 	gSnapshotFloaterView->setVisible(TRUE);
 	gSnapshotFloaterView->adjustToFitScreen(this, FALSE);
 
-	if (gSavedSettings.getBOOL("UseFreezeWorld"))
-	{
-		impl.mSnapshotFreezeWorld = 2;
-	}
-	else if (impl.mSnapshotFreezeWorld == 1)
+	if (mSnapshotFreezeWorld)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", true);
 	}
+
 	impl.updateControls(this);
 	impl.updateLayout(this);
 
@@ -1129,17 +1114,7 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 		previewp->setEnabled(FALSE);
 	}
 
-	if (impl.mSnapshotFreezeWorld == 3)
-	{
-		gSavedSettings.setBOOL("UseFreezeWorld", true);
-		impl.mSnapshotFreezeWorld = 2;
-	}
-	else if (!gSavedSettings.getBOOL("UseFreezeWorld")
-		&& impl.mSnapshotFreezeWorld == 2)
-	{
-		impl.mSnapshotFreezeWorld = 0;
-	}
-	else if (impl.mSnapshotFreezeWorld == 1)
+	if (mSnapshotFreezeWorld)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", false);
 	}

@@ -78,6 +78,7 @@ private:
 	LLHandle<LLView> mPreviewHandle;
 	LLFloaterBigPreview * mBigPreviewFloater;
 
+	bool mSnapshotFreezeWorld;
 	bool isPreviewVisible();
 	void attachPreview();
 

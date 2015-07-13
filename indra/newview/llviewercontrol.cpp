@@ -68,6 +68,7 @@
 #include "llrender.h"
 #include "llnavigationbar.h"
 #include "llfloatertools.h"
+#include "llfloatersnapshot.h"
 #include "llpaneloutfitsinventory.h"
 #include "llpanellogin.h"
 #include "llspellcheck.h"
