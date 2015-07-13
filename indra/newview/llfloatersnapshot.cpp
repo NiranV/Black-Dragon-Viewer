@@ -504,7 +504,10 @@ void LLFloaterSnapshot::Impl::onClickUICheck(LLUICtrl *ctrl, void* data)
 	if (view)
 	{
 		LLSnapshotLivePreview* previewp = getPreviewView(view);
-		previewp->updateSnapshot(TRUE);
+		if (previewp)
+		{
+			previewp->updateSnapshot(TRUE);
+		}
 		updateControls(view);
 	}
 }
@@ -519,7 +522,10 @@ void LLFloaterSnapshot::Impl::onClickHUDCheck(LLUICtrl *ctrl, void* data)
 	if (view)
 	{
 		LLSnapshotLivePreview* previewp = getPreviewView(view);
-		previewp->updateSnapshot(TRUE);
+		if (previewp)
+		{
+			previewp->updateSnapshot(TRUE);
+		}
 		updateControls(view);
 	}
 }
