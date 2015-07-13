@@ -54,10 +54,6 @@ public:
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/ void onClose(bool app_quitting);
 	/*virtual*/ S32 notify(const LLSD& info);
-
-	// 0 = do nothing | 1 = was enabled, disable it again 
-	// 2 = was enabled before, don't disable | 3 = enable it on close
-	S32 mSnapshotFreezeWorld;
 	
 	static void update();
 
@@ -83,6 +79,7 @@ private:
 	LLHandle<LLView> mPreviewHandle;
 	LLFloaterBigPreview * mBigPreviewFloater;
 
+	bool mSnapshotFreezeWorld;
 	bool isPreviewVisible();
 	void attachPreview();
 

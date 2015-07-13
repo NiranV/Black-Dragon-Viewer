@@ -558,22 +558,7 @@ void LLFloaterSnapshot::Impl::applyKeepAspectCheck(LLFloaterSnapshot* view, BOOL
 void LLFloaterSnapshot::Impl::onCommitFreezeWorld(LLUICtrl* ctrl, void* data)
 {
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
-
-	if (ctrl->getValue().asBoolean()
-		&& view->mSnapshotFreezeWorld == 3)
-	{
-		view->mSnapshotFreezeWorld = 2;
-	}
-	else if (!ctrl->getValue().asBoolean()
-		&& view->mSnapshotFreezeWorld == 2)
-	{
-		view->mSnapshotFreezeWorld = 3;
-	}
-	else if (view->mSnapshotFreezeWorld != 2)
-	{
-		view->mSnapshotFreezeWorld = ctrl->getValue().asInteger();
-	}
-
+	view->mSnapshotFreezeWorld = ctrl->getValue().asBoolean();
 	updateLayout(view);
 }
 
@@ -1101,14 +1086,11 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 	gSnapshotFloaterView->setVisible(TRUE);
 	gSnapshotFloaterView->adjustToFitScreen(this, FALSE);
 
-	if (gSavedSettings.getBOOL("UseFreezeWorld"))
-	{
-		mSnapshotFreezeWorld = 2;
-	}
-	else if (mSnapshotFreezeWorld == 1)
+	if (mSnapshotFreezeWorld)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", true);
 	}
+
 	impl.updateControls(this);
 	impl.updateLayout(this);
 
@@ -1128,17 +1110,7 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 		previewp->setEnabled(FALSE);
 	}
 
-	if (mSnapshotFreezeWorld == 3)
-	{
-		gSavedSettings.setBOOL("UseFreezeWorld", true);
-		mSnapshotFreezeWorld = 2;
-	}
-	else if (!gSavedSettings.getBOOL("UseFreezeWorld")
-		&& mSnapshotFreezeWorld == 2)
-	{
-		mSnapshotFreezeWorld = 0;
-	}
-	else if (mSnapshotFreezeWorld == 1)
+	if (mSnapshotFreezeWorld)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", false);
 	}
