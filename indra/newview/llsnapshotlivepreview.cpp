@@ -182,8 +182,8 @@ void LLSnapshotLivePreview::updateSnapshot(BOOL new_snapshot, BOOL new_thumbnail
             }
         }
 
-		mSnapshotDelayTimer.start();
 		mSnapshotDelayTimer.setTimerExpirySec(delay);
+		mSnapshotDelayTimer.start();
         
 		mPosTakenGlobal = gAgentCamera.getCameraPositionGlobal();
 
