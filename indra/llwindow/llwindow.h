@@ -70,9 +70,19 @@ public:
 	virtual void minimize() = 0;
 	virtual void restore() = 0;
 	BOOL getFullscreen()	{ return mFullscreen; };
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-04-13 (Catznip-2.1.2a) | Added: Catznip-2.0.0a
+	virtual BOOL getFullscreenWindow() = 0;
+	virtual void setFullscreenWindow(BOOL fFullscreen) = 0;
+// [/SL:KB]
 	virtual BOOL getPosition(LLCoordScreen *position) = 0;
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
+	virtual BOOL getRestoredPosition(LLCoordScreen *position) = 0;
+// [/SL:KB]
 	virtual BOOL getSize(LLCoordScreen *size) = 0;
 	virtual BOOL getSize(LLCoordWindow *size) = 0;
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
+	virtual BOOL getRestoredSize(LLCoordScreen *size) = 0;
+// [/SL:KB]
 	virtual BOOL setPosition(LLCoordScreen position) = 0;
 	BOOL setSize(LLCoordScreen size);
 	BOOL setSize(LLCoordWindow size);

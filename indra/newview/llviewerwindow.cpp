@@ -2281,15 +2281,32 @@ void LLViewerWindow::reshape(S32 width, S32 height)
 		sendShapeToSim();
 
 		// store new settings for the mode we are in, regardless
-		BOOL maximized = mWindow->getMaximized();
-		gSavedSettings.setBOOL("WindowMaximized", maximized);
-
-		if (!maximized)
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-88-26 (Catznip-2.1.2a) | Modified: Catznip-2.1.1a
+#ifndef LL_WINDOWS
+		if (!gViewerWindow->getFullscreenWindow())
+#endif // LL_WINDOWS
 		{
-			//BD - Fudge Factor
-			gSavedSettings.setS32("WindowWidth", (width + 16));
-			gSavedSettings.setS32("WindowHeight", (height + 38));
+// [/SL:KB]
+			BOOL maximized = mWindow->getMaximized();
+			gSavedSettings.setBOOL("WindowMaximized", maximized);
+
+			LLCoordScreen window_size;
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
+#ifndef LL_WINDOWS
+			if (!maximized
+				&& mWindow->getSize(&window_size))
+#else
+			if (mWindow->getRestoredSize(&window_size))
+#endif // LL_WINDOWS
+// [/SL:KB]
+			{
+				//BD - Fudge Factor
+				gSavedSettings.setS32("WindowWidth", (width + 16));
+				gSavedSettings.setS32("WindowHeight", (height + 38));
+			}
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Modified: Catznip-2.1.2a
 		}
+// [/SL:KB]
 
 		sample(LLStatViewer::WINDOW_WIDTH, width);
 		sample(LLStatViewer::WINDOW_HEIGHT, height);
@@ -5034,6 +5051,32 @@ void LLViewerWindow::initFonts(F32 zoom_factor)
 	// Force font reloads, which can be very slow
 	LLFontGL::loadDefaultFonts();
 }
+
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Added: Catznip-2.1.1a
+bool LLViewerWindow::canFullscreenWindow()
+{
+#ifdef LL_WINDOWS
+	return true;
+#else
+	return false;
+#endif // LL_WINDOWS
+}
+
+bool LLViewerWindow::getFullscreenWindow()
+{
+	return (mWindow) && (mWindow->getFullscreenWindow());
+}
+
+void LLViewerWindow::setFullscreenWindow(BOOL fFullscreen)
+{
+	if ((!canFullscreenWindow()) || (!mWindow))
+		return;
+
+	if (mWindow->getFullscreenWindow() != fFullscreen)
+		mWindow->setFullscreenWindow(fFullscreen);
+	gSavedSettings.setBOOL("FullScreenWindow", fFullscreen);
+}
+// [/SL:KB]
 
 void LLViewerWindow::requestResolutionUpdate()
 {

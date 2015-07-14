@@ -3421,7 +3421,7 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
-      <integer>1</integer>
+      <integer>0</integer>
     </map>
     <key>EnableGroupChatPopups</key>
     <map>
@@ -16632,6 +16632,19 @@
     <string>F32</string>
     <key>Value</key>
     <real>0.0</real>
+  </map>
+  
+  <!-- Catznip -->
+  <key>FullScreenWindow</key>
+  <map>
+    <key>Comment</key>
+    <string>Run SL in a fullscreen window</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
   </map>
   
   <!-- Tonemapping -->
