@@ -77,10 +77,6 @@ void main ()
     && sun_dir.y > -0.55 && sun_dir.y < 0.55
     && sun_dir.z < 0.5)
     {
-      //vec2 position = ( gl_FragCoord.xy / screen_res.xy * 2.0 ) - 1.0;
-      //position.x *= screen_res.x / screen_res.y;
-      //vec3 color = flare(position, vec2(sun_dir.xy) * 1.15 , vec3(sunlight_color_copy.rgb));
-	  //color *= sun_dir.z;
 	  if(sun_dir.z < 0.0)
 	  {
 		  fade = clamp(0.6 - dot(sun_dir.xy * 1, sun_dir.xy * 1), 0, 1);
