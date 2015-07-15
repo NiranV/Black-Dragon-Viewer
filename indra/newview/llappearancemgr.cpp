@@ -2555,23 +2555,23 @@ void LLAppearanceMgr::updateAppearanceFromCOF(bool enforce_item_restrictions,
 	if (isAgentAvatarValid())
 	{
 		// Include attachments which should be in COF but don't have their link created yet
-		uuid_vec_t::iterator itPendingAttachLink = mPendingAttachLinks.begin();
-		while (itPendingAttachLink != mPendingAttachLinks.end())
+		std::set<LLUUID> pendingAttachments;
+		if (LLAttachmentsMgr::instance().getPendingAttachments(pendingAttachments))
 		{
-			const LLUUID& idItem = *itPendingAttachLink;
-			if ( (!gAgentAvatarp->isWearingAttachment(idItem)) || (isLinkInCOF(idItem)) )
+			for (const LLUUID& idAttachItem : pendingAttachments)
 			{
-				itPendingAttachLink = mPendingAttachLinks.erase(itPendingAttachLink);
-				continue;
-			}
+				if ((!gAgentAvatarp->isWearingAttachment(idAttachItem)) || (isLinkedInCOF(idAttachItem)))
+				{
+					LLAttachmentsMgr::instance().clearPendingAttachmentLink(idAttachItem);
+					continue;
+				}
 
-			LLViewerInventoryItem* pItem = gInventory.getItem(idItem);
-			if (pItem)
-			{
-				obj_items.push_back(pItem);
+				LLViewerInventoryItem* pAttachItem = gInventory.getItem(idAttachItem);
+				if (pAttachItem)
+				{
+					obj_items.push_back(pAttachItem);
+				}
 			}
-
-			++itPendingAttachLink;
 		}
 
 		LL_DEBUGS("Avatar") << self_av_string() << "Updating " << obj_items.size() << " attachments" << LL_ENDL;
@@ -2594,15 +2594,14 @@ void LLAppearanceMgr::updateAppearanceFromCOF(bool enforce_item_restrictions,
 			LL_DEBUGS("Avatar") << self_av_string() << "Removing " << objects_to_remove.size() << " attachments" << LL_ENDL;
 			LLAgentWearables::userRemoveMultipleAttachments(objects_to_remove);
 		}
-		
-		// Restore attachment pos overrides for the attachments that
-		// are remaining in the outfit.
+
+		// Restore attachment pos overrides for the attachments that are remaining in the outfit.
 		for (LLAgentWearables::llvo_vec_t::iterator it = objects_to_retain.begin(); it != objects_to_retain.end(); ++it)
 		{
 			LLViewerObject *objectp = *it;
 			gAgentAvatarp->addAttachmentPosOverridesForObject(objectp);
 		}
-		
+
 		// Add new attachments to match those requested.
 		LL_DEBUGS("Avatar") << self_av_string() << "Adding " << items_to_add.size() << " attachments" << LL_ENDL;
 		LLAgentWearables::userAttachMultipleAttachments(items_to_add);
@@ -4447,12 +4446,6 @@ void LLAppearanceMgr::setAttachmentInvLinkEnable(bool val)
 {
 	LL_DEBUGS("Avatar") << "setAttachmentInvLinkEnable => " << (int) val << LL_ENDL;
 	mAttachmentInvLinkEnabled = val;
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-10-05 (Catznip-2.2)
-	if (mAttachmentInvLinkEnabled)
-	{
-		linkPendingAttachments();
-	}
-// [/SL:KB]
 }
 
 void dumpAttachmentSet(const std::set<LLUUID>& atts, const std::string& msg)

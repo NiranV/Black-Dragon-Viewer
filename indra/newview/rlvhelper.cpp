@@ -910,7 +910,7 @@ void RlvForceWear::updatePendingAttachments()
 	{
 		RlvForceWear* pThis = RlvForceWear::getInstance();
 		for (const pendingattachments_map_t::value_type& itAttach : pThis->m_pendingAttachments)
-			LLAttachmentsMgr::instance().addAttachment(itAttach.first, itAttach.second & ~ATTACHMENT_ADD, itAttach.second & ATTACHMENT_ADD);
+			LLAttachmentsMgr::instance().addAttachmentRequest(itAttach.first, itAttach.second & ~ATTACHMENT_ADD, itAttach.second & ATTACHMENT_ADD);
 		pThis->m_pendingAttachments.clear();
 	}
 }

@@ -64,6 +64,9 @@ BOOL LLAgentWearables::mInitialWearablesUpdateReceived = FALSE;
 // [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.1)
 bool LLAgentWearables::mInitialWearablesLoaded = false;
 // [/SL:KB]
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
+bool LLAgentWearables::mInitialAttachmentsRequested = false;
+// [/RLVa:KB]
 
 using namespace LLAvatarAppearanceDefines;
 
@@ -1422,7 +1425,7 @@ void LLAgentWearables::userRemoveMultipleAttachments(llvo_vec_t& objects_to_remo
 				itObj = objects_to_remove.erase(itObj);
 
 				// Fall-back code: re-add the attachment if it got removed from COF somehow (compensates for possible bugs elsewhere)
-				bool fInCOF = LLAppearanceMgr::isLinkInCOF(pAttachObj->getAttachmentItemID());
+				bool fInCOF = LLAppearanceMgr::instance().isLinkedInCOF(pAttachObj->getAttachmentItemID());
 				RLV_ASSERT(fInCOF);
 				if (!fInCOF)
 				{
@@ -1464,20 +1467,6 @@ void LLAgentWearables::userRemoveMultipleAttachments(llvo_vec_t& objects_to_remo
 
 void LLAgentWearables::userAttachMultipleAttachments(LLInventoryModel::item_array_t& obj_item_array)
 {
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
-	static bool sInitialAttachmentsRequested = false;
-
-	// RELEASE-RLVa: [SL-3.4] Check our callers and verify that erasing elements from the passed vector won't break random things
-	if ( (rlv_handler_t::isEnabled()) && (sInitialAttachmentsRequested) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
-	{
-		// Fall-back code: everything should really already have been pruned before we get this far
-		LLInventoryModel::item_array_t::size_type cntAttach = obj_item_array.size();
-		obj_item_array.erase(std::remove_if(obj_item_array.begin(), obj_item_array.end(), RlvPredCanNotWearItem(RLV_WEAR)), obj_item_array.end());
-		RLV_ASSERT(cntAttach == obj_item_array.size());
-	}
-// [/RLVa:KB]
-
-
 	// Build a compound message to send all the objects that need to be rezzed.
 	S32 obj_count = obj_item_array.size();
 	if (obj_count > 0)
@@ -1488,21 +1477,15 @@ void LLAgentWearables::userAttachMultipleAttachments(LLInventoryModel::item_arra
     for(LLInventoryModel::item_array_t::const_iterator it = obj_item_array.begin();
         it != obj_item_array.end();
         ++it)
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
-		if ( (rlv_handler_t::isEnabled()) && (sInitialAttachmentsRequested) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
-		{
-			RlvAttachmentLockWatchdog::instance().onWearAttachment(item, RLV_WEAR_ADD);
-		}
-// [/RLVa:KB]
     {
 		const LLInventoryItem* item = *it;
         LLAttachmentsMgr::instance().addAttachmentRequest(item->getLinkedUUID(), 0, TRUE);
     }
-}
 
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
-	sInitialAttachmentsRequested = true;
+	mInitialAttachmentsRequested = true;
 // [/RLVa:KB]
+}
 
 // Returns false if the given wearable is already topmost/bottommost
 // (depending on closer_to_body parameter).

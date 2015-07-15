@@ -152,6 +152,9 @@ public:
 	// Attachment link management
 	void unregisterAttachment(const LLUUID& item_id);
 	void registerAttachment(const LLUUID& item_id);
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2015-06-24 (Catznip-3.7)
+	bool getAttachmentInvLinkEnable() { return mAttachmentInvLinkEnabled; }
+// [/SL:KB]
 	void setAttachmentInvLinkEnable(bool val);
 
 	// Add COF link to individual item.
@@ -295,15 +298,6 @@ private:
 
 	void addDoomedTempAttachment(const LLUUID& id_to_remove);
 
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-18 (Catznip-2.1)
-public:
-	void linkPendingAttachments();
-	void clearPendingAttachment(const LLUUID& idItem);
-	void onRegisterAttachmentComplete(const LLUUID& idAttachItem);
-private:
-	uuid_vec_t mPendingAttachLinks;
-// [/SL:KB]
-
 	//////////////////////////////////////////////////////////////////////////////////
 	// Item-specific convenience functions 
 public:
@@ -328,21 +322,6 @@ private:
 	bool mEnforceOrdering;
 	nullary_func_t mPostUpdateFunc;
 };
-
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-08-31 (Catznip-2.1)
-class LLRegisterAttachmentCallback : public LLInventoryCallback
-{
-public:
-	LLRegisterAttachmentCallback(const LLUUID& idAttachItem) : m_idAttachItem(idAttachItem) {}
-	/*virtual*/ void fire(const LLUUID&)
-	{
-		// NOTE: AISCommand::getResponseUUID() currently returns false so the passed UUID is NULL and hence useless
-		LLAppearanceMgr::instance().onRegisterAttachmentComplete(m_idAttachItem);
-	}
-protected:
-	LLUUID m_idAttachItem;
-};
-// [/SL:KB]
 
 class LLUpdateAppearanceAndEditWearableOnDestroy: public LLInventoryCallback
 {

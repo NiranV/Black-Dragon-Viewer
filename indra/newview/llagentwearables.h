@@ -74,6 +74,9 @@ public:
 // [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.1)
 	bool			areInitalWearablesLoaded() const { return mInitialWearablesLoaded; }
 // [/SL:KB]
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
+	bool			areInitialAttachmentsRequested() const { return mInitialAttachmentsRequested; }
+// [/RLVa:KB]
 	bool			isCOFChangeInProgress() const { return mCOFChangeInProgress; }
 	F32				getCOFChangeTime() const { return mCOFChangeTimer.getElapsedTimeF32(); }
 	void			updateWearablesLoaded();
@@ -230,6 +233,9 @@ private:
 // [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.2)
 	static bool		mInitialWearablesLoaded;
 // [/SL:KB]
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
+	static bool		mInitialAttachmentsRequested;
+// [/RLVa:KB]
 	BOOL			mWearablesLoaded;
 
 	/**
