@@ -9636,6 +9636,19 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
 
+//	//BD - Additional features
+	commit.add("World.SaveCamera", boost::bind(&LLAgentCamera::saveCamera, &gAgentCamera));
+	commit.add("World.LoadCamera", boost::bind(&LLAgentCamera::loadSavedCamera, &gAgentCamera));
+
+	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));
+
+	view_listener_t::addMenu(new LLWorldTeleportBack(), "World.TeleportBack");
+	view_listener_t::addMenu(new LLWorldTeleportForward(), "World.TeleportForward");
+
+	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
+	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");
+
+
 // [RLVa:KB] - Checked: 2010-04-23 (RLVa-1.2.0g) | Added: RLVa-1.2.0
 	enable.add("RLV.MainToggleVisible", boost::bind(&rlvMenuMainToggleVisible, _1));
 	if (rlv_handler_t::isEnabled())
@@ -9643,7 +9656,4 @@ void initialize_menus()
 		enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
 	}
 // [/RLVa:KB]
-
-	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
-	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");
 }
