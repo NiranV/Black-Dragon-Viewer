@@ -17,60 +17,77 @@ VARYING vec2 vary_fragcoord;
 uniform vec3 sun_dir;
 uniform vec4 sunlight_color_copy;
 
-vec3 flare(vec2 spos, vec2 fpos, vec3 clr)
+vec3 lensflare(vec2 uv,vec2 pos)
 {
-	vec3 color;
-	float fade;
-    fade = 0.01 / clamp(abs(sun_dir.x / sun_dir.y), 0.01, 0.01);
-    if(abs(sun_dir.x) > 0.25 || abs(sun_dir.y) > 0.05)
-     fade -= clamp(abs((sun_dir.x * sun_dir.x * 2) + (sun_dir.y * sun_dir.y * 4)), 0.0 , 1.0);
-	color = clr * max(0.0, 0.5 - distance(spos, fpos * (-sun_dir.z * 1.25))) * (4 * sunlight_color_copy.a) * fade;
-	color += clr * max(0.0, 0.1 / distance(spos, -fpos * (-sun_dir.z * 0.7))) * (1.5 * sunlight_color_copy.a) * fade ;
-	color += clr * max(0.0, 0.25 - distance(spos, -fpos * (-sun_dir.z *1.2))) * (24 * sunlight_color_copy.a) * fade;
-	color += clr * max(0.0, 0.15 - distance(spos, -fpos * (-sun_dir.z *3.0))) * (22 * sunlight_color_copy.a) * fade;
+	vec2 main = uv-pos;
+	vec2 uvd = uv*(length(uv));
 	
+	float f1 = max(0.01-pow(length(uv+1.2*pos),1.9),.0)*7.0;
+
+	float f2 = max(1.0/(1.0+32.0*pow(length(uvd+0.8*pos),2.0)),.0)*00.25;
+	float f22 = max(1.0/(1.0+32.0*pow(length(uvd+0.85*pos),2.0)),.0)*00.23;
+	float f23 = max(1.0/(1.0+32.0*pow(length(uvd+0.9*pos),2.0)),.0)*00.21;
 	
-	return color;
+	vec2 uvx = mix(uv,uvd,-0.5);
+	
+	float f4 = max(0.01-pow(length(uvx+0.4*pos),2.4),.0)*6.0;
+	float f42 = max(0.01-pow(length(uvx+0.45*pos),2.4),.0)*5.0;
+	float f43 = max(0.01-pow(length(uvx+0.5*pos),2.4),.0)*3.0;
+	
+	uvx = mix(uv,uvd,-.4);
+	
+	float f5 = max(0.01-pow(length(uvx+0.2*pos),5.5),.0)*2.0;
+	float f52 = max(0.01-pow(length(uvx+0.4*pos),5.5),.0)*2.0;
+	float f53 = max(0.01-pow(length(uvx+0.6*pos),5.5),.0)*2.0;
+	
+	uvx = mix(uv,uvd,-0.5);
+	
+	float f6 = max(0.01-pow(length(uvx-0.3*pos),1.6),.0)*6.0;
+	float f62 = max(0.01-pow(length(uvx-0.325*pos),1.6),.0)*3.0;
+	float f63 = max(0.01-pow(length(uvx-0.35*pos),1.6),.0)*5.0;
+	
+	vec3 c = vec3(.0);
+	
+	c.r+=f2+f4+f5+f6; 
+    c.g+=f22+f42+f52+f62; 
+    c.b+=f23+f43+f53+f63;
+	c = c*1.3 - vec3(length(uvd)*.05);
+	
+	return c;
 }
 
-float noise(vec2 pos)
+vec3 cc(vec3 color, float factor,float factor2) // color modifier
 {
-	return fract(1111. * sin(111. * dot(pos, vec2(2222., 22.))));	
+	float w = color.x+color.y+color.z;
+	return mix(color,vec3(w)*factor,w*factor2);
 }
 
 void main ()
 {
 	vec4 col = texture2DRect(exo_screen, vary_fragcoord.xy);
 	
+	vec2 uv = vary_fragcoord.xy / screen_res.xy - 0.5;
+	uv.x *= screen_res.x/screen_res.y; //fix aspect ratio
+	
+	vec3 color = vec3(1.4,1.2,1.0)*lensflare(uv,sun_dir.xy);
+	color = cc(color,.5,.1);
+	
+	float fade = 0.0;
 	if(sun_dir.x > -0.75 && sun_dir.x < 0.75
     && sun_dir.y > -0.55 && sun_dir.y < 0.55
     && sun_dir.z < 0.5)
     {
-      vec2 position = ( gl_FragCoord.xy / screen_res.xy * 2.0 ) - 1.0;
-      position.x *= screen_res.x / screen_res.y;
-      vec3 color = flare(position, vec2(sun_dir.xy) * 1.15 , vec3(sunlight_color_copy.rgb));
-      col += vec4( color * 0.05, 0.0 );
+      //vec2 position = ( gl_FragCoord.xy / screen_res.xy * 2.0 ) - 1.0;
+      //position.x *= screen_res.x / screen_res.y;
+      //vec3 color = flare(position, vec2(sun_dir.xy) * 1.15 , vec3(sunlight_color_copy.rgb));
+	  //color *= sun_dir.z;
+	  if(sun_dir.z < 0.0)
+	  {
+		  fade = clamp(0.6 - dot(sun_dir.xy * 1, sun_dir.xy * 1), 0, 1);
+	  }
+	  color *= fade;
+	  col.rgb += color;
     }
-	
-	/*float blend =0.0;
-	float scene = 70.;
-	blend=min(2.0*abs(sin((50+0.0)*3.1415/scene)),1.0); 
-	vec2 uv3=vary_fragcoord.xy/(screen_res.xy*0.25);
-	float g2 = (blend/2.)+3.39;
-	float g1 = ((1.-blend)/2.);
-	if (uv3.y >=g2+0.11) col*=0.0;
-	if (uv3.y >=g2+0.09) col*=0.4;
-	if (uv3.y >=g2+0.07) {if (mod(uv3.x-0.06*10,0.18)<=0.16) col*=0.5;}
-	if (uv3.y >=g2+0.05) {if (mod(uv3.x-0.04*10,0.12)<=0.10) col*=0.6;}
-	if (uv3.y >=g2+0.03) {if (mod(uv3.x-0.02*10,0.08)<=0.06) col*=0.7;}
-	if (uv3.y >=g2+0.01) {if (mod(uv3.x-0.01*10,0.04)<=0.02) col*=0.8;}
-	if (uv3.y <=g1+0.10) {if (mod(uv3.x+0.01*10,0.04)<=0.02) col*=0.8;}
-	if (uv3.y <=g1+0.08) {if (mod(uv3.x+0.02*10,0.08)<=0.06) col*=0.7;}
-	if (uv3.y <=g1+0.06) {if (mod(uv3.x+0.04*10,0.12)<=0.10) col*=0.6;}
-	if (uv3.y <=g1+0.04) {if (mod(uv3.x+0.06*10,0.18)<=0.16) col*=0.5;}
-	if (uv3.y <=g1+0.02) col*=0.4;
-	if (uv3.y <=g1+0.00) col*=0.0;*/
-
 	
 	frag_color = col;
   
