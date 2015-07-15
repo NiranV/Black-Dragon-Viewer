@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="2280"
+  height="2296"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -52,7 +52,23 @@ width="510">
    </text>
    
    <check_box
+   control_name="FullScreenWindow"
+   disabled_control="FullScreen"
+   height="16"
+   initial_value="false"
+   label="Borderless Window Mode"
+   tool_tip="Toggle between borderless window mode and normal window mode"
+   layout="topleft"
+   left="10"
+   name="FullscreenWindow"
+   top_pad="15"
+   width="115" >
+   <check_box.commit_callback
+      function="Pref.FullscreenWindow"/>
+   </check_box>
+   <check_box
    control_name="FullScreen"
+   disabled_control="FullScreenWindow"
    height="16"
    initial_value="false"
    label="Fullscreen Mode"
@@ -60,7 +76,7 @@ width="510">
    layout="topleft"
    left="10"
    name="Fullscreen"
-   top_pad="15"
+   top_pad="0"
    width="115" />
    <check_box
    control_name="FullScreenAutoDetectAspectRatio"
@@ -128,7 +144,7 @@ width="510">
    layout="topleft"
    left="270"
    name="EnableFullbright"
-   top_delta="-80"
+   top_delta="-96"
    width="115" />
    <check_box
       control_name="RenderUnloadedAvatar"
@@ -183,7 +199,7 @@ width="510">
  layout="topleft"
  left="10"
  name="InterfaceSize"
- top_pad="20"
+ top_pad="36"
  width="220">
  Interface Size:
  </text>

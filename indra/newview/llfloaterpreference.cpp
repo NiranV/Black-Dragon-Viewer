@@ -662,6 +662,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 //	//BD - Input/Output resizer
 	mCommitCallbackRegistrar.add("Pref.InputOutput",           boost::bind(&LLFloaterPreference::inputOutput, this));
 
+//	//BD - Catznip's Borderless Window Mode
+	mCommitCallbackRegistrar.add("Pref.FullscreenWindow",		boost::bind(&LLFloaterPreference::toggleFullscreenWindow, this));
+
 	sSkin = gSavedSettings.getString("SkinCurrent");
 
 	gSavedSettings.getControl("NameTagShowUsernames")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged,  _2));	
@@ -934,6 +937,13 @@ void LLFloaterPreference::inputOutput()
 			panel->reshape(panel->getRect().getWidth(), 480);
 		}
 	}
+}
+
+//BD - Catznip's Borderless Window Mode
+void LLFloaterPreference::toggleFullscreenWindow()
+{
+	if ((gViewerWindow) && (gViewerWindow->canFullscreenWindow()))
+		gViewerWindow->setFullscreenWindow(!gViewerWindow->getFullscreenWindow());
 }
 
 //BD - Refresh all controls
