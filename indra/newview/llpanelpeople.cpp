@@ -590,7 +590,7 @@ BOOL LLPanelPeople::postBuild()
 	getChild<LLFilterEditor>("friends_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
 	getChild<LLFilterEditor>("groups_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
 	getChild<LLFilterEditor>("recent_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
-	getChild<LLFilterEditor>("fbc_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
+	//getChild<LLFilterEditor>("fbc_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
 	getChild<LLTextBox>("groupcount")->setURLClickedCallback(boost::bind(&LLPanelPeople::onGroupLimitInfo, this));
 
 	mTabContainer = getChild<LLTabContainer>("tabs");
@@ -1122,10 +1122,10 @@ void LLPanelPeople::onFilterEdit(const std::string& search_string)
 	else if (cur_tab == FRIENDS_TAB_NAME)
 	{
 		// store accordion tabs opened/closed state before any manipulation with accordion tabs
-		if (!saved_filter.empty())
+		/*if (!saved_filter.empty())
         {
             notifyChildren(LLSD().with("action","store_state"));
-        }
+        }*/
 
 		//mOnlineFriendList->setNameFilter(filter);
 		mAllFriendList->setNameFilter(filter);
@@ -1137,10 +1137,10 @@ void LLPanelPeople::onFilterEdit(const std::string& search_string)
         //showFriendsAccordionsIfNeeded();
 
 		// restore accordion tabs state _after_ all manipulations
-		if(saved_filter.empty())
+		/*if(saved_filter.empty())
         {
             notifyChildren(LLSD().with("action","restore_state"));
-        }
+        }*/
     }
 	else if (cur_tab == GROUP_TAB_NAME)
 	{
