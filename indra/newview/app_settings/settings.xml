@@ -9254,6 +9254,18 @@
     <key>Value</key>
     <real>1.0</real>
   </map>
+  
+  <key>RenderHighlightFadeTime</key>
+  <map>
+    <key>Comment</key>
+    <string>Transition time for mouseover highlights.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.1</real>
+  </map>
 
   <key>RenderSpecularPrecision</key>
   <map>
