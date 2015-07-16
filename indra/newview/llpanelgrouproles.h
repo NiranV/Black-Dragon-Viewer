@@ -256,7 +256,7 @@ public:
 	
 	static void onPropertiesKey(LLLineEditor*, void*);
 
-	void onDescriptionKeyStroke(LLTextEditor* caller);
+	void onDescriptionKeyStroke(LLLineEditor* caller);
 
 	static void onDescriptionCommit(LLUICtrl*, void*);
 
@@ -285,7 +285,7 @@ protected:
 
 	LLLineEditor* mRoleName;
 	LLLineEditor* mRoleTitle;
-	LLTextEditor* mRoleDescription;
+	LLLineEditor* mRoleDescription;
 
 	LLCheckBoxCtrl* mMemberVisibleCheck;
 	LLButton*       mDeleteRoleButton;

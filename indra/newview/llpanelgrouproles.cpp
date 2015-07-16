@@ -1946,7 +1946,7 @@ BOOL LLPanelGroupRolesSubTab::postBuildSubTab(LLView* root)
 
 	mRoleName = parent->getChild<LLLineEditor>("role_name", recurse);
 	mRoleTitle = parent->getChild<LLLineEditor>("role_title", recurse);
-	mRoleDescription = parent->getChild<LLTextEditor>("role_description", recurse);
+	mRoleDescription = parent->getChild<LLLineEditor>("role_description", recurse);
 
 	mMemberVisibleCheck = parent->getChild<LLCheckBoxCtrl>("role_visible_in_list", recurse);
 
@@ -1991,7 +1991,7 @@ BOOL LLPanelGroupRolesSubTab::postBuildSubTab(LLView* root)
 	mRoleTitle->setKeystrokeCallback(onPropertiesKey, this);
 
 	mRoleDescription->setCommitOnFocusLost(TRUE);
-	mRoleDescription->setKeystrokeCallback(boost::bind(&LLPanelGroupRolesSubTab::onDescriptionKeyStroke, this, _1));
+	mRoleDescription->setKeystrokeCallback(boost::bind(&LLPanelGroupRolesSubTab::onDescriptionKeyStroke, this, _1), NULL);
 
 	setFooterEnabled(FALSE);
 
@@ -2523,7 +2523,7 @@ void LLPanelGroupRolesSubTab::onPropertiesKey(LLLineEditor* ctrl, void* user_dat
 	self->notifyObservers();
 }
 
-void LLPanelGroupRolesSubTab::onDescriptionKeyStroke(LLTextEditor* caller)
+void LLPanelGroupRolesSubTab::onDescriptionKeyStroke(LLLineEditor* caller)
 {
 	mHasRoleChange = TRUE;
 	notifyObservers();
