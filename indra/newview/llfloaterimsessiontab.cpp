@@ -240,7 +240,7 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	mTearOffBtn = getChild<LLButton>("tear_off_btn");
 	mTearOffBtn->setCommitCallback(boost::bind(&LLFloaterIMSessionTab::onTearOffClicked, this));
 
-	mGearBtn = getChild<LLButton>("gear_btn_panel");
+	mGearBtn = getChild<LLButton>("gear_btn");
     mAddBtn = getChild<LLButton>("add_btn");
 	mVoiceButton = getChild<LLButton>("voice_call_btn");
     mTranslationCheckBox = getChild<LLUICtrl>("translate_chat_checkbox_lp");
