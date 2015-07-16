@@ -1343,7 +1343,6 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 	S32Megabytes default_mem = getMaxVideoRamSetting(true, mem_multiplier); // recommended default
 
 	//BD - Allow seperate system memory settings
-	S32Megabytes avail_mem(gSavedSettings.getS32("AvailableMemory"));
 	S32Megabytes custom_sys_mem(gSavedSettings.getS32("SystemMemory"));
 
 	if(gSavedSettings.getBOOL("CustomSystemMemory"))
