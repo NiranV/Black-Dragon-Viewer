@@ -588,5 +588,16 @@ public:
 	/*virtual*/ LLStyle::Params getStyle() const;
 };
 
+///
+/// LLUrlEntryEmail Describes a generic mailto: Urls
+///
+class LLUrlEntryEmail : public LLUrlEntryBase
+{
+public:
+	LLUrlEntryEmail();
+	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
+	/*virtual*/ std::string getUrl(const std::string &string) const;
+};
+
 
 #endif
