@@ -3768,11 +3768,13 @@ BOOL LLViewerWindow::clickPointOnSurfaceGlobal(const S32 x, const S32 y, LLViewe
 	return intersect;
 }
 
-//void LLViewerWindow::pickAsync(S32 x, S32 y_from_bot, MASK mask, void (*callback)(const LLPickInfo& info), BOOL pick_transparent)
-// [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
-void LLViewerWindow::pickAsync(S32 x, S32 y_from_bot, MASK mask, void (*callback)(const LLPickInfo& info), BOOL pick_transparent, BOOL pick_rigged, BOOL pick_unselectable)
-// [/SL:KB]
-								BOOL pick_rigged,
+void LLViewerWindow::pickAsync(S32 x,
+	S32 y_from_bot,
+	MASK mask,
+	void(*callback)(const LLPickInfo& info),
+	BOOL pick_transparent,
+	BOOL pick_rigged,
+	BOOL pick_unselectable)
 {
 	BOOL in_build_mode = LLFloaterReg::instanceVisible("build");
 	if (in_build_mode || LLDrawPoolAlpha::sShowDebugAlpha)

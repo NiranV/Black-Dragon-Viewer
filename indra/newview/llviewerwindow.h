@@ -89,7 +89,7 @@ public:
 	LLPickInfo(const LLCoordGL& mouse_pos, 
 		MASK keyboard_mask, 
 		BOOL pick_transparent,
-		BOOL pick_rigged,]
+		BOOL pick_rigged,
 		BOOL pick_particle,
 		BOOL pick_surface_info,
 		BOOL pick_unselectable,
@@ -363,12 +363,13 @@ public:
 	void			performPick();
 	void			returnEmptyPicks();
 
-	void			pickAsync(	S32 x,
-								S32 y_from_bot,
-								MASK mask,
-								void (*callback)(const LLPickInfo& pick_info),
-								BOOL pick_transparent = FALSE,
-								BOOL pick_rigged = FALSE,
+	void			pickAsync(S32 x,
+					S32 y_from_bot,
+					MASK mask,
+					void(*callback)(const LLPickInfo& pick_info),
+					BOOL pick_transparent = FALSE,
+					BOOL pick_rigged = FALSE,
+					BOOL pick_unselectable = FALSE);
 	LLPickInfo		pickImmediate(S32 x, S32 y, BOOL pick_transparent, BOOL pick_rigged = FALSE, BOOL pick_particle = FALSE);
 	LLHUDIcon* cursorIntersectIcon(S32 mouse_x, S32 mouse_y, F32 depth,
 										   LLVector4a* intersection);
