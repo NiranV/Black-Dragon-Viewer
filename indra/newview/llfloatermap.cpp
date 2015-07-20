@@ -43,8 +43,9 @@
 #include "lldraghandle.h"
 #include "lltextbox.h"
 #include "llfloaterworldmap.h"
-#include "llviewerregion.h"
 #include "llagent.h"
+//BD - Minimap Region Coordinates
+#include "llviewerregion.h"
 
 //
 // Constants
@@ -197,6 +198,7 @@ void LLFloaterMap::draw()
 	setDirectionPos( mTextBoxSouthWest, rotation + F_PI +				F_PI_BY_TWO / 2);
 	setDirectionPos( mTextBoxSouthEast, rotation + F_PI + F_PI_BY_TWO + F_PI_BY_TWO / 2);
 
+//	//BD - Minimap Region Coordinates
 	std::string msg = getString("RegionCoords");
 	LLStringUtil::format_map_t args;
 	LLSD coord_x = gAgent.getPositionGlobal().mdV[VX];
