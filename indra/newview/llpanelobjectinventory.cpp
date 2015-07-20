@@ -750,7 +750,7 @@ void LLTaskInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	}
 	else if (canOpenItem())
 	{
-		//items.push_back(std::string("Task Open"));
+		items.push_back(std::string("Task Open"));
 // [RLVa:KB] - Checked: 2010-03-01 (RLVa-1.2.0b) | Modified: RLVa-1.1.0a
 		if (rlv_handler_t::isEnabled())
 		{
@@ -764,23 +764,6 @@ void LLTaskInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 			}
 		}
 // [/RLVa:KB]
-		else
-		{
-			items.push_back(std::string("Task Open"));
-// [RLVa:KB] - Checked: 2010-03-01 (RLVa-1.2.0b) | Modified: RLVa-1.1.0a
-		if (rlv_handler_t::isEnabled())
-		{
-			LLViewerObject* pAttachObj = gObjectList.findObject(mPanel->getTaskUUID());
-			bool fLocked = (pAttachObj) ? gRlvAttachmentLocks.isLockedAttachment(pAttachObj->getRootEdit()) : false;
-			if ( ((LLAssetType::AT_NOTECARD == item->getType()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_VIEWNOTE)) || (fLocked))) || 
-				 ((LLAssetType::AT_LSL_TEXT == item->getType()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_VIEWSCRIPT)) || (fLocked))) ||
-				 ((LLAssetType::AT_TEXTURE == item->getType()) && (gRlvHandler.hasBehaviour(RLV_BHVR_VIEWTEXTURE))) )
-			{
-				disabled_items.push_back(std::string("Task Open"));
-			}
-		}
-// [/RLVa:KB]
-		}
 	}
 	items.push_back(std::string("Task Properties"));
 // [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Added: RLVa-1.2.1f

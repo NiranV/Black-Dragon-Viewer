@@ -455,10 +455,7 @@ void LLAvatarList::addNewItem(const LLUUID& id, const std::string& name, BOOL is
 BOOL LLAvatarList::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
 	BOOL handled = LLUICtrl::handleRightMouseDown(x, y, mask);
-//	if ( mContextMenu && !isAvalineItemSelected())
-// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.2a) | Modified: RLVa-1.2.0d
-	if ( (mContextMenu && !isAvalineItemSelected()) && ((!mRlvCheckShowNames) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))) )
-// [/RLVa:KB]
+	if (mContextMenu && !isAvalineItemSelected())
 	{
 		uuid_vec_t selected_uuids;
 		getSelectedUUIDs(selected_uuids);

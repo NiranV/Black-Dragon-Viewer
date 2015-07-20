@@ -7140,16 +7140,18 @@ void process_script_question(LLMessageSystem *msg, void **user_data)
 				}
 			}
 
-			// check whether cautions are even enabled or not
-			const char* notification = "ScriptQuestion";
-
 			if ( (!caution) && (!questions) )
 			{
 				LLNotifications::instance().forceResponse(
 				LLNotification::Params("ScriptQuestion").substitutions(args).payload(payload), 0/*YES*/);
+				return;
 			}
 // [/RLVa:KB]
-			else if (caution && gSavedSettings.getBOOL("PermissionsCautionEnabled"))
+
+			// check whether cautions are even enabled or not
+			const char* notification = "ScriptQuestion";
+
+			if (caution && gSavedSettings.getBOOL("PermissionsCautionEnabled"))
 			{
 				args["FOOTERTEXT"] = (count > 1) ? LLTrans::getString("AdditionalPermissionsRequestHeader") + "\n\n" + script_question : "";
 				notification = "ScriptQuestionCaution";

@@ -28,7 +28,6 @@
 #include "llviewerjointattachment.h"
 #include "llviewerobjectlist.h"
 #include "llvoavatarself.h"
-#include "lltrans.h"
 
 #include "rlvfloaters.h"
 #include "rlvhelper.h"

@@ -596,13 +596,6 @@ void LLEnvManagerNew::updateWaterFromPrefs(bool interpolate)
 
 void LLEnvManagerNew::updateManagersFromPrefs(bool interpolate)
 {
-// [RLVa:KB] - Checked: 2011-09-04 (RLVa-1.4.1a) | Added: RLVa-1.4.1a
-	if (gRlvHandler.hasBehaviour(RLV_BHVR_SETENV))
-	{
-		return;
-	}
-// [/RLVa:KB]
-
 	LL_DEBUGS("Windlight")<<LL_ENDL;
 
 // [RLVa:KB] - Checked: 2011-09-04 (RLVa-1.4.1a) | Added: RLVa-1.4.1a

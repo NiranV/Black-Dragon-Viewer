@@ -4650,16 +4650,6 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 		LLFloaterReg::findInstance("big_preview")->setVisible(true);
 	}
 
-	if(snapshot_open)
-	{
-		LLFloaterReg::findInstance("snapshot")->setVisible(true);
-	}
-
-	if(big_preview_open)
-	{
-		LLFloaterReg::findInstance("big_preview")->setVisible(true);
-	}
-
 	if (hide_hud)
 	{
 		LLPipeline::sShowHUDAttachments = TRUE;

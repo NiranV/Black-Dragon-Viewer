@@ -586,9 +586,9 @@ bool RlvUIEnabler::canViewRegionProperties()
 	if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC))
 	{
 		// [See LLRegion::canManageEstate() but without the "god-like" exception]
-		//const LLViewerRegion* pRegion = gAgent.getRegion();
-		//if (pRegion)
-		//	fShow = (gAgent.getRegion()->isEstateManager()) || (pRegion->getOwner() == gAgent.getID());
+		const LLViewerRegion* pRegion = gAgent.getRegion();
+		if (pRegion)
+			fShow = (pRegion->isEstateManager()) || (pRegion->getOwner() == gAgent.getID());
 	}
 	return fShow;
 }

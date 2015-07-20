@@ -617,7 +617,7 @@ public:
 	bool pollMissingWearables();
 	bool isMissingCompleted();
 	void recoverMissingWearable(LLWearableType::EType type);
-	void clearCOFLinksForMissingWearables();
+//	void clearCOFLinksForMissingWearables();
 	
 	void onWearableAssetFetch(LLViewerWearable *wearable);
 	void onAllComplete();
@@ -1043,19 +1043,19 @@ bool LLWearableHoldingPattern::isMissingCompleted()
 	return mTypesToLink.size()==0 && mTypesToRecover.size()==0;
 }
 
-void LLWearableHoldingPattern::clearCOFLinksForMissingWearables()
-{
-	for (found_list_t::iterator it = getFoundList().begin(); it != getFoundList().end(); ++it)
-	{
-		LLFoundData &data = *it;
-		if ((data.mWearableType < LLWearableType::WT_COUNT) && (!data.mWearable))
-		{
-			// Wearable link that was never resolved; remove links to it from COF
-			LL_INFOS("Avatar") << self_av_string() << "HP " << index() << " removing link for unresolved item " << data.mItemID.asString() << LL_ENDL;
-			LLAppearanceMgr::instance().removeCOFItemLinks(data.mItemID);
-		}
-	}
-}
+//void LLWearableHoldingPattern::clearCOFLinksForMissingWearables()
+//{
+//	for (found_list_t::iterator it = getFoundList().begin(); it != getFoundList().end(); ++it)
+//	{
+//		LLFoundData &data = *it;
+//		if ((data.mWearableType < LLWearableType::WT_COUNT) && (!data.mWearable))
+//		{
+//			// Wearable link that was never resolved; remove links to it from COF
+//			LL_INFOS("Avatar") << self_av_string() << "HP " << index() << " removing link for unresolved item " << data.mItemID.asString() << LL_ENDL;
+//			LLAppearanceMgr::instance().removeCOFItemLinks(data.mItemID);
+//		}
+//	}
+//}
 
 // [SL:KB] - Patch: Appearance-COFCorruption | Checked: 2010-04-14 (Catznip-2.0)
 bool LLWearableHoldingPattern::pollStopped()

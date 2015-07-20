@@ -1311,13 +1311,6 @@ void LLToolDragAndDrop::dropObject(LLViewerObject* raycast_target,
 // [/RLVa:KB]
 
 	//LL_INFOS() << "Rezzing object" << LL_ENDL;
-// [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0e) | Modified: RLVa-1.2.0a
-	// Fallback in case there's a new code path that leads here (see behaviour notes)
-	if ( (rlv_handler_t::isEnabled()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_REZ)) || (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT))) )
-	{
-		return;
-	}
-// [/RLVa:KB]
 
 	make_ui_sound("UISndObjectRezIn");
 	LLViewerInventoryItem* item;
