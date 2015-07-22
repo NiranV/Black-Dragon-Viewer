@@ -2603,25 +2603,27 @@ void LLInventoryAction::doToSelected(LLInventoryModel* model, LLFolderView* root
 
 void LLInventoryAction::removeItemFromDND(LLFolderView* root)
 {
-    if(gAgent.isDoNotDisturb())
-    {
-        //Get selected items
-        LLFolderView::selected_items_t selectedItems = root->getSelectedItems();
-        LLFolderViewModelItemInventory * viewModel = NULL;
+	if (gAgent.isDoNotDisturb())
+	{
+		//Get selected items
+		LLFolderView::selected_items_t selectedItems = root->getSelectedItems();
+		LLFolderViewModelItemInventory * viewModel = NULL;
 
-        //If user is in DND and deletes item, make sure the notification is not displayed by removing the notification
-        //from DND history and .xml file. Once this is done, upon exit of DND mode the item deleted will not show a notification.
-        for(LLFolderView::selected_items_t::iterator it = selectedItems.begin(); it != selectedItems.end(); ++it)
-        {
-            viewModel = dynamic_cast<LLFolderViewModelItemInventory *>((*it)->getViewModelItem());
+		//If user is in DND and deletes item, make sure the notification is not displayed by removing the notification
+		//from DND history and .xml file. Once this is done, upon exit of DND mode the item deleted will not show a notification.
+		for (LLFolderView::selected_items_t::iterator it = selectedItems.begin(); it != selectedItems.end(); ++it)
+		{
+			viewModel = dynamic_cast<LLFolderViewModelItemInventory *>((*it)->getViewModelItem());
 
-            if(viewModel && viewModel->getUUID().notNull())
-            {
-                //Will remove the item offer notification
-                LLDoNotDisturbNotificationStorage::instance().removeNotification(LLDoNotDisturbNotificationStorage::offerName, viewModel->getUUID());
-            }
-        }
-    }
+			if (viewModel && viewModel->getUUID().notNull())
+			{
+				//Will remove the item offer notification
+				LLDoNotDisturbNotificationStorage::instance().removeNotification(LLDoNotDisturbNotificationStorage::offerName, viewModel->getUUID());
+			}
+		}
+	}
+}
+
 void LLInventoryAction::buildMarketplaceFolders(LLFolderView* root)
 {
     // Make a list of all marketplace folders containing the elements in the selected list

@@ -54,6 +54,7 @@ public:
 
 	bool			inEdit();
 	bool			canEdit();
+	bool            canAccessMarketplace();
 // [RLVa:KB] - Checked: 2012-04-26 (RLVa-1.4.6) | Added: RLVa-1.4.6
 	void			toggleBuildMode();
 // [/RLVa:KB]
