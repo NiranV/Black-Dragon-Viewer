@@ -15,6 +15,7 @@
 		<menu label="Bearbeiten" name="Edit">
 			<menu_item_call label="Freunde" name="My Friends"/>
 			<menu_item_call label="Liste geblockter Einwohner und Objekte" name="Block List"/>
+		<menu_item_call label="Marktplatz-Auflistungen..." name="MarketplaceListings"/>
 			<menu_item_call label="Gruppen" name="My Groups"/>
 			<menu_item_call label="Einstellungen" name="Prefs_panel"/>
 			<menu_item_call label="Werkzeugleisten" name="Toolbars"/>
@@ -288,6 +289,7 @@
 				<menu_item_check label="Fehler beseitigen" name="Debug Console"/>
 				<menu_item_call label="Meldungen" name="Notifications"/>
 				<menu_item_check label="Texturgröße" name="Texture Size"/>
+			<menu_item_check label="Regions-Debug-Konsole" name="Region Debug Console"/>
 				<menu_item_check label="Texture-Kategorie" name="Texture Category"/>
 				<menu_item_check label="Schnelle Timer" name="Fast Timers"/>
 				<menu_item_check label="Speicher" name="Memory"/>

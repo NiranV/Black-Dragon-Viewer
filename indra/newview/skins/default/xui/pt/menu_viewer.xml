@@ -15,7 +15,7 @@
 			<menu_item_check label="Voar" name="Fly"/>
 			<menu_item_check label="Correr sempre" name="Always Run"/>
 			<menu_item_call label="Parar minha animação" name="Stop Animating My Avatar"/>
-			<menu_item_call label="Andar/correr/voar..." name="WalkRunFly"/>
+			<menu_item_call label="Andar/correr/voar..." name="Walk / run / fly"/>
 		</menu>
 		<menu label="Status" name="Status">
 			<menu_item_check label="Ausente" name="Away"/>
@@ -23,6 +23,7 @@
 		</menu>
 		<menu_item_call label="Comprar L$..." name="Buy and Sell L$"/>
 		<menu_item_call label="Caixa de saída do lojista..." name="MerchantOutbox"/>
+		<menu_item_call label="Listagens do Marketplace..." name="MarketplaceListings"/>
 		<menu_item_call label="Painel da conta..." name="Manage My Account">
 			<menu_item_call.on_click name="ManageMyAccount_url" parameter="WebLaunchJoinNow,http://secondlife.com/account/index.php?lang=pt"/>
 		</menu_item_call>
@@ -63,7 +64,7 @@
 		<menu_item_call label="Foto" name="Take Snapshot"/>
 		<menu_item_call label="Perfil da região" name="Place Profile"/>
 		<menu_item_call label="Sobre terrenos" name="About Land"/>
-		<menu_item_call label="Região/Propriedade" name="RegionEstate"/>
+		<menu_item_call label="Região/Propriedade" name="Region/Estate"/>
 		<menu_item_call label="Meus terrenos..." name="My Land"/>
 		<menu_item_call label="Comprar este terreno" name="Buy Land"/>
 		<menu label="Mostrar" name="LandShow">
@@ -177,7 +178,7 @@
 		<menu_item_call label="Blogs do [SECOND_LIFE]" name="Second Life Blogs"/>
 		<menu_item_call label="Denunciar abuso" name="Report Abuse"/>
 		<menu_item_call label="Relatar bug" name="Report Bug"/>
-		<menu_item_call label="Empurrões, trombadas e tapas" name="Bumps, Pushes &amp;amp; Hits"/>
+		<menu_item_call label="Bumps, Pushes &amp; Hits" name="Bumps, Pushes &amp;amp; Hits"/>
 		<menu_item_call label="Sobre [APP_NAME]" name="About Second Life"/>
 	</menu>
 	<menu label="Avançado" name="Advanced">
@@ -250,6 +251,7 @@
 			<menu_item_check label="Painel de textura" name="Texture Console"/>
 			<menu_item_check label="Console de depuração" name="Debug Console"/>
 			<menu_item_call label="Painel de avisos" name="Notifications"/>
+			<menu_item_check label="Console de depuração de região" name="Region Debug Console"/>
 			<menu_item_check label="Tempos" name="Fast Timers"/>
 			<menu_item_check label="Memória" name="Memory"/>
 			<menu_item_check label="Estatísticas da cena" name="Scene Statistics"/>
@@ -325,7 +327,7 @@
 		<menu label="Rede" name="Network">
 			<menu_item_check label="Pausar avatar" name="AgentPause"/>
 			<menu_item_call label="Drop a Packet" name="Drop a Packet"/>
-		</menu>		
+		</menu>
 		<menu label="Mundo" name="DevelopWorld">
 			<menu_item_check label="Impor sobre sol de simulação" name="Sim Sun Override"/>
 			<menu_item_check label="Clima fixo" name="Fixed Weather"/>
