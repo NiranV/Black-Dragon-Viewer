@@ -260,13 +260,6 @@
             parameter="marketplace_listings" />
         </menu_item_call>
 	<menu_item_call
-         label="Merchant Outbox"
-         name="MerchantOutbox">
-        <menu_item_call.on_click
-         function="Floater.ToggleOrBringToFront"
-         parameter="outbox" />
-        </menu_item_call>
-	<menu_item_call
          label="List of muted Residents and Objects"
          name="Block List">
             <menu_item_call.on_click
