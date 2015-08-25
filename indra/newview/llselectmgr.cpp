@@ -651,6 +651,19 @@ void LLSelectMgr::confirmUnlinkObjects(const LLSD& notification, const LLSD& res
 	return;
 }
 
+void LLSelectMgr::confirmUnlinkObjects(const LLSD& notification, const LLSD& response)
+{
+	S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
+	// if Cancel pressed
+	if (option == 1)
+	{
+		return;
+	}
+
+	LLSelectMgr::getInstance()->sendDelink();
+	return;
+}
+
 // in order to link, all objects must have the same owner, and the
 // agent must have the ability to modify all of the objects. However,
 // we're not answering that question with this method. The question

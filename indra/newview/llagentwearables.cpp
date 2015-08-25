@@ -1148,6 +1148,15 @@ void LLAgentWearables::setWearableOutfit(const LLInventoryItem::item_array_t& it
 
 	// updating agent avatar
 
+	if (mismatched == 0)
+	{
+		LL_DEBUGS("Avatar") << "inventory updated, wearable assets not changed, bailing out" << LL_ENDL;
+		mCOFChangeInProgress = false;
+		return;
+	}
+
+	// updating agent avatar
+
 	if (isAgentAvatarValid())
 	{
 		gAgentAvatarp->setCompositeUpdatesEnabled(TRUE);
