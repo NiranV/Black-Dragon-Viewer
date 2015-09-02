@@ -2929,6 +2929,9 @@ struct LLFilenameAndTask
 {
 	LLUUID mTaskID;
 	std::string mFilename;
+
+	// for sequencing in case of multiple updates
+	S16 mSerial;
 #ifdef _DEBUG
 	static S32 sCount;
 	LLFilenameAndTask()
@@ -2964,9 +2967,17 @@ void LLViewerObject::processTaskInv(LLMessageSystem* msg, void** user_data)
 		return;
 	}
 
-	msg->getS16Fast(_PREHASH_InventoryData, _PREHASH_Serial, object->mInventorySerialNum);
 	LLFilenameAndTask* ft = new LLFilenameAndTask;
 	ft->mTaskID = task_id;
+	// we can receive multiple task updates simultaneously, make sure we will not rewrite newer with older update
+	msg->getS16Fast(_PREHASH_InventoryData, _PREHASH_Serial, ft->mSerial);
+
+	if (ft->mSerial < object->mInventorySerialNum)
+	{
+		// viewer did some changes to inventory that were not saved yet.
+		LL_DEBUGS() << "Task inventory serial might be out of sync, server serial: " << ft->mSerial << " client serial: " << object->mInventorySerialNum << LL_ENDL;
+		object->mInventorySerialNum = ft->mSerial;
+	}
 
 	std::string unclean_filename;
 	msg->getStringFast(_PREHASH_InventoryData, _PREHASH_Filename, unclean_filename);
@@ -3006,9 +3017,13 @@ void LLViewerObject::processTaskInvFile(void** user_data, S32 error_code, LLExtS
 {
 	LLFilenameAndTask* ft = (LLFilenameAndTask*)user_data;
 	LLViewerObject* object = NULL;
-	if(ft && (0 == error_code) &&
-	   (object = gObjectList.findObject(ft->mTaskID)))
+
+	if (ft
+		&& (0 == error_code)
+		&& (object = gObjectList.findObject(ft->mTaskID))
+		&& ft->mSerial >= object->mInventorySerialNum)
 	{
+		object->mInventorySerialNum = ft->mSerial;
 		if (object->loadTaskInvFile(ft->mFilename))
 		{
 
@@ -3039,7 +3054,7 @@ void LLViewerObject::processTaskInvFile(void** user_data, S32 error_code, LLExtS
 	}
 	else
 	{
-		// This Occurs When to requests were made, and the first one
+		// This Occurs When two requests were made, and the first one
 		// has already handled it.
 		LL_DEBUGS() << "Problem loading task inventory. Return code: "
 				 << error_code << LL_ENDL;
@@ -4119,7 +4134,6 @@ LLViewerObject* LLViewerObject::getRootEdit() const
 BOOL LLViewerObject::lineSegmentIntersect(const LLVector4a& start, const LLVector4a& end,
 										  S32 face,
 										  BOOL pick_transparent,
-										  BOOL pick_rigged,
 										  S32* face_hit,
 										  LLVector4a* intersection,
 										  LLVector2* tex_coord,
