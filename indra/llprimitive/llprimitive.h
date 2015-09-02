@@ -259,8 +259,9 @@ public:
 	operator LLSD() const { return asLLSD(); }
 	bool fromLLSD(LLSD& sd);
 
-	void setSculptTexture(const LLUUID& texture_id, U8 sculpt_type);
+	void setSculptTexture(const LLUUID& id) { mSculptTexture = id; }
 	LLUUID getSculptTexture() const         { return mSculptTexture; }
+	void setSculptType(U8 type)             { mSculptType = type; }
 	U8 getSculptType() const                { return mSculptType; }
 };
 

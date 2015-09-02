@@ -1904,12 +1904,9 @@ BOOL LLSculptParams::pack(LLDataPacker &dp) const
 
 BOOL LLSculptParams::unpack(LLDataPacker &dp)
 {
-	U8 type;
-	LLUUID id;
-	dp.unpackUUID(id, "texture");
-	dp.unpackU8(type, "type");
-
-	setSculptTexture(id, type);
+	dp.unpackUUID(mSculptTexture, "texture");
+	dp.unpackU8(mSculptType, "type");
+	
 	return TRUE;
 }
 
@@ -1934,7 +1931,8 @@ bool LLSculptParams::operator==(const LLNetworkData& data) const
 void LLSculptParams::copy(const LLNetworkData& data)
 {
 	const LLSculptParams *param = (LLSculptParams*)&data;
-	setSculptTexture(param->mSculptTexture, param->mSculptType);
+	mSculptTexture = param->mSculptTexture;
+	mSculptType = param->mSculptType;
 }
 
 
@@ -1952,38 +1950,20 @@ LLSD LLSculptParams::asLLSD() const
 bool LLSculptParams::fromLLSD(LLSD& sd)
 {
 	const char *w;
-	U8 type;
-	w = "type";
-	if (sd.has(w))
-	{
-		type = sd[w].asInteger();
-	}
-	else return false;
-
 	w = "texture";
 	if (sd.has(w))
 	{
-		setSculptTexture(sd[w], type);
-	}
-	else return false;
-
+		setSculptTexture( sd[w] );
+	} else goto fail;
+	w = "type";
+	if (sd.has(w))
+	{
+		setSculptType( (U8)sd[w].asInteger() );
+	} else goto fail;
+	
 	return true;
-}
-
-void LLSculptParams::setSculptTexture(const LLUUID& texture_id, U8 sculpt_type)
-{
-	U8 type = sculpt_type & LL_SCULPT_TYPE_MASK;
-	U8 flags = sculpt_type & LL_SCULPT_FLAG_MASK;
-	if (sculpt_type != (type | flags) || type > LL_SCULPT_TYPE_MAX)
-	{
-		mSculptTexture.set(SCULPT_DEFAULT_TEXTURE);
-		mSculptType = LL_SCULPT_TYPE_SPHERE;
-	}
-	else
-	{
-		mSculptTexture = texture_id;
-		mSculptType = sculpt_type;
-	}
+ fail:
+	return false;
 }
 
 //============================================================================
