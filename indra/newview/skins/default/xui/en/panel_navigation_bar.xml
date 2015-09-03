@@ -9,16 +9,47 @@ layout="topleft"
 name="navigation_bar"
 chrome="true"
 width="800">
-   <icon
-   follows="all"
-   image_name="Window_Background"
+   <layout_stack
+   follows="top|left|right"
+   height="45"
+   layout="topleft"
+   border_size="-5"
+   left="0"
    mouse_opaque="false"
-   name="bg_icon_l1"
-   scale_image="false"
-   left_pad="-801"
-   top_pad="-1"
-   height="51"
-   width="802"/>
+   open_time_constant="0.11"
+   close_time_constant="0.11"
+   name="nvp_stack"
+   orientation="vertical"
+   top="0"
+   width="800">
+	  <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="45"
+	  min_width="30"
+	  auto_resize="true"
+	  name="favorites_layout_panel"
+	  width="800">
+		 <icon
+		 follows="all"
+		 image_name="Window_Background"
+		 mouse_opaque="false"
+		 name="bg_icon_l1"
+		 left_pad="-801"
+		 top_pad="-1"
+		 height="45"
+		 width="802"/>
+	  </layout_panel>
+	  <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="17"
+	  min_width="17"
+	  auto_resize="false"
+	  invisibility_control="ShowNavbarFavoritesPanel"
+	  name="favorites_layout_panel"
+	  width="800"/>
+   </layout_stack>
    <layout_stack
    follows="top|left|right"
    height="51"
@@ -26,8 +57,8 @@ width="800">
    border_size="-5"
    left="0"
    mouse_opaque="false"
-   open_time_constant="0.23"
-   close_time_constant="0.23"
+   open_time_constant="0.11"
+   close_time_constant="0.11"
    name="nvp_stack"
    orientation="vertical"
    top="0"
