@@ -1422,9 +1422,8 @@ BOOL LLViewerWindow::handleTranslatedKeyUp(KEY key,  MASK mask)
 		tool_inspectp->keyUp(key, mask);
 	}
 
-	return FALSE;
+	return gViewerKeyboard.handleKeyUp(key, mask);
 }
-
 
 void LLViewerWindow::handleScanKey(KEY key, BOOL key_down, BOOL key_up, BOOL key_level)
 {
@@ -2357,15 +2356,15 @@ void LLViewerWindow::setMenuBackgroundColor(bool god_mode, bool dev_grid)
 		}
     }
     else
-    {
+	{
         switch (LLVersionInfo::getViewerMaturity())
-        {
+	{
         case LLVersionInfo::TEST_VIEWER:
             new_bg_color = LLUIColorTable::instance().getColor( "MenuBarTestBgColor" );
             break;
 
         case LLVersionInfo::PROJECT_VIEWER:
-            new_bg_color = LLUIColorTable::instance().getColor( "MenuBarProjectBgColor" );
+		new_bg_color = LLUIColorTable::instance().getColor( "MenuBarProjectBgColor" );
             break;
             
         case LLVersionInfo::BETA_VIEWER:
@@ -2374,13 +2373,13 @@ void LLViewerWindow::setMenuBackgroundColor(bool god_mode, bool dev_grid)
             
         case LLVersionInfo::RELEASE_VIEWER:
             if(!LLGridManager::getInstance()->isInProductionGrid())
-            {
-                new_bg_color = LLUIColorTable::instance().getColor( "MenuNonProductionBgColor" );
-            }
-            else 
-            {
-                new_bg_color = LLUIColorTable::instance().getColor( "MenuBarBgColor" );
-            }
+	{
+		new_bg_color = LLUIColorTable::instance().getColor( "MenuNonProductionBgColor" );
+	}
+	else 
+	{
+		new_bg_color = LLUIColorTable::instance().getColor( "MenuBarBgColor" );
+	}
             break;
         }
     }
@@ -2544,6 +2543,41 @@ void LLViewerWindow::draw()
 //#if LL_DEBUG
 	LLView::sIsDrawing = FALSE;
 //#endif
+}
+
+// Takes a single keydown event, usually when UI is visible
+BOOL LLViewerWindow::handleKeyUp(KEY key, MASK mask)
+{
+	if (gFocusMgr.getKeyboardFocus()
+		&& !(mask & (MASK_CONTROL | MASK_ALT))
+		&& !gFocusMgr.getKeystrokesOnly())
+	{
+		// We have keyboard focus, and it's not an accelerator
+		if (key < 0x80)
+		{
+			// Not a special key, so likely (we hope) to generate a character.  Let it fall through to character handler first.
+			return (gFocusMgr.getKeyboardFocus() != NULL);
+		}
+	}
+
+	LLFocusableElement* keyboard_focus = gFocusMgr.getKeyboardFocus();
+	if (keyboard_focus)
+	{
+		if (keyboard_focus->handleKeyUp(key, mask, FALSE))
+		{
+			LL_DEBUGS() << "LLviewerWindow::handleKeyUp - in 'traverse up' - no loops seen... just called keyboard_focus->handleKeyUp an it returned true" << LL_ENDL;
+			LLViewerEventRecorder::instance().logKeyEvent(key, mask);
+			return TRUE;
+		}
+		else {
+			LL_DEBUGS() << "LLviewerWindow::handleKeyUp - in 'traverse up' - no loops seen... just called keyboard_focus->handleKeyUp an it returned FALSE" << LL_ENDL;
+		}
+	}
+
+	// don't pass keys on to world when something in ui has focus
+	return gFocusMgr.childHasKeyboardFocus(mRootView)
+		|| LLMenuGL::getKeyboardMode()
+		|| (gMenuBarView && gMenuBarView->getHighlightedItem() && gMenuBarView->getHighlightedItem()->isActive());
 }
 
 // Takes a single keydown event, usually when UI is visible

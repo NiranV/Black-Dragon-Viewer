@@ -218,6 +218,9 @@ protected:
 	U32				mKeyCharCode;
 	U32				mKeyScanCode;
 	U32				mKeyVirtualKey;
+	U32				mRawMsg;
+	U32				mRawWParam;
+	U32				mRawLParam;
 
 // [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
 	WINDOWPLACEMENT mRestoredPlacement;				// Only valid when the window is "fullscreen" sized (see setFullscreenWindow)
