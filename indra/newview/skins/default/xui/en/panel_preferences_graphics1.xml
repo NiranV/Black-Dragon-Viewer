@@ -23,23 +23,50 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="2296"
+  height="282"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
   left="0"
   width="495">
-   <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top="0"
- width="515"/>
+   <layout_stack
+   follows="top|left|right"
+   height="2882"
+   layout="topleft"
+   border_size="-5"
+   left="0"
+   mouse_opaque="false"
+   open_time_constant="0.11"
+   close_time_constant="0.11"
+   name="gfx_stack"
+   orientation="vertical"
+   top="0"
+   width="515">
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+   <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="viewer_expand"
+		 top="0"
+		 width="495">
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="viewer_layout_panel"/>
+   </button>
    <text
    name="general_label"
    follows="left|top"
@@ -48,9 +75,18 @@ width="510">
    left="10" 
    height="12"
    width="220">
-   General Options:
+   Viewer Options:
    </text>
    
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="167"
+	  auto_resize="false"
+      visible="false"
+	  name="viewer_layout_panel"
+	  width="515">
    <check_box
    control_name="FullScreenWindow"
    disabled_control="FullScreen"
@@ -66,7 +102,7 @@ width="510">
    <check_box.commit_callback
       function="Pref.FullscreenWindow"/>
    </check_box>
-   <check_box
+   <!--<check_box
    control_name="FullScreen"
    disabled_control="FullScreenWindow"
    height="16"
@@ -77,7 +113,11 @@ width="510">
    left="10"
    name="Fullscreen"
    top_pad="0"
-   width="115" />
+   width="115" >
+         <check_box.check_button
+         image_overlay="Caution_Widget"
+         image_overlay_alignment="left"/>
+      </check_box>
    <check_box
    control_name="FullScreenAutoDetectAspectRatio"
    enabled_control="FullScreen"
@@ -101,84 +141,8 @@ width="510">
    left_delta="0"
    name="AvatarCloth"
    top_pad="0"
-   width="115" />
-   <check_box
-   control_name="AvatarPhysics"
-   height="16"
-   initial_value="true"
-   label="Enable Avatar Physics Simulation"
-   layout="topleft"
-   tool_tip="Toggles Avatar Physics on or off, causing breasts aswell as butts and stomachs to simulate physical movement and interaction with gravity."
-   left_delta="0"
-   name="AvatarPhysics"
-   top_pad="0"
-   width="115"/>
-   <check_box
-      control_name="RenderAnisotropic"
-      height="16"
-      initial_value="true"
-      label="Enable Anisotropic Filtering"
-      tool_tip="Allows Anisotropic Filtering to unblur textures in certain camera angles"
-      layout="topleft"
-      left_delta="0"
-      name="ani"
-      top_pad="0"
-      width="256" />
-      <check_box
-      control_name="RenderCompressTextures"
-      height="16"
-      initial_value="false"
-      label="Enable OpenGL 3.0 Texture Compression"
-      layout="topleft"
-      left_delta="0"
-      tool_tip="Enable texture compression on OpenGL 2.1 and later implementations which should reduce video memory bloat (Experimental, requires restart)"
-      name="CompressTextures"
-      top_pad="0"
-      width="256"/>
-   <check_box
-   control_name="RenderEnableFullbright"
-   height="16"
-   initial_value="true"
-   label="Enable Fullbright"
-   tool_tip="Tell the Viewer to ignore the Fullbright flags on Object creation resulting in no Fullbrights until restart/revisit - WARNING! , does not work with Objects that use an old set prim attribute LIGHT script command!"
-   layout="topleft"
-   left="270"
-   name="EnableFullbright"
-   top_delta="-96"
-   width="115" />
-   <check_box
-      control_name="RenderUnloadedAvatar"
-      height="16"
-      initial_value="true"
-      label="Render Unloaded Avatars"
-      layout="topleft"
-      left_delta="0"
-      name="UnloadedAvatars"
-      top_pad="0"
-      width="315" />
-   <check_box
-   control_name="RenderAttachedLights"
-   height="16"
-   initial_value="true"
-   label="Render Attached Lights"
-   tool_tip="Toggles rendering of lights which are attached to your or other Avatars on or off. Usefull for annoying facelights"
-   layout="topleft"
-   left="270"
-   name="attached_lights"
-   top_pad="0"
-   width="115" />
-   <check_box
-   control_name="RenderAttachedParticles"
-   height="16"
-   initial_value="true"
-   label="Render Attached Particles"
-   tool_tip="Toggles rendering of particles which are attached to your or other Avatars on or off. Usefull for particle spammers"
-   layout="topleft"
-   left="270"
-   name="attached_particles"
-   top_pad="0"
-   width="115" />
-   <check_box
+   width="115" />-->
+   <!--<check_box
    control_name="RenderTransparentWater"
    disabled_control="VertexShaderEnable"
    height="16"
@@ -186,10 +150,10 @@ width="510">
    label="Render Transparent Water"
    tool_tip="Toggles transparent water, false renders water as opaque with a simple texture applied. Must be enabled for Vertex Shader water reflections in some cases"
    layout="topleft"
-   left="270"
+   left="10"
    name="RenderTransparentWater"
    top_pad="0"
-   width="115" />
+   width="115" />-->
    
    <text
  type="string"
@@ -199,11 +163,11 @@ width="510">
  layout="topleft"
  left="10"
  name="InterfaceSize"
- top_pad="36"
+ top_pad="5"
  width="220">
  Interface Size:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="UIScaleFactor"
  height="20"
  follows="left|top"
@@ -226,7 +190,71 @@ width="510">
  label="Big"
  name="2"
  value="1.2"/>
- </combo_box>
+ </combo_box>-->
+                  <radio_group
+                  control_name="UIScaleFactor"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="UIScaleFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Small"
+                        value="0.8"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Medium"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Big"
+                        halign="right"
+                        value="1.2"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
  <slider
  control_name="FontScreenDPI"
  decimal_digits="0"
@@ -244,158 +272,7 @@ width="510">
  name="DPI"
  top_pad="5"
  width="319" />
- <slider
- control_name="RenderFarClip"
- decimal_digits="0"
- can_edit_text="true"
- follows="left|top"
- height="15"
- increment="2"
- initial_value="96"
- label="Draw Distance:"
- label_width="150"
- layout="topleft"
- left="10"
- max_val="768"
- min_val="0"
- name="FarClip"
- tool_tip="Controls the view distance of Objects starting from your avatar in meters"
- top_pad="1"
- width="319" />
- <button
- follows="left|top"
- control_name="RenderFarClip"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
- <slider
- control_name="RenderMaxPartCount"
- decimal_digits="0"
- can_edit_text="true"
- follows="left|top"
- height="15"
- increment="8"
- initial_value="1024"
- label="Particle Amount:"
- label_width="150"
- layout="topleft"
- left="10"
- max_val="8192"
- min_val="0"
- name="MaxParticles"
- tool_tip="Controls the maximum amount of Particles rendered on screen."
- top_pad="1"
- width="325" />
- <button
- follows="left|top"
- control_name="RenderMaxPartCount"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
- <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="10"
- name="TerrainTexQuality"
- top_pad="9"
- width="120">
- Terrain Texture Quality:
- </text>
- <combo_box
- control_name="RenderTerrainScale"
- enabled_control="VertexShaderEnable"
- height="20"
- layout="topleft"
- follows="left|top"
- left="140"
- tool_tip="Controls the overall sharpness of default ground textures by increasing the repeats. Too high settings may cause the ground to repeat every meter making it look bad!"
- top_pad="-15"
- name="TerrainTexDrop"
- width="100">
- <combo_box.item
- label="Very Low"
- name="0"
- value="20"/>
- <combo_box.item
- label="Low"
- name="1"
- value="16"/>
- <combo_box.item
- label="Medium*"
- name="2"
- value="12"/>
- <combo_box.item
- label="High"
- name="3"
- value="9"/>
- <combo_box.item
- label="Very High"
- name="4"
- value="6"/>
- <combo_box.item
- label="Ultra"
- name="5"
- value="5"/>
- </combo_box>
- <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="270"
- name="LightAmount"
- top_delta="3"
- width="120">
- Basic Light Amount:
- </text>
- <combo_box
- control_name="RenderShaderLightingMaxLevel"
- disabled_control="RenderDeferred"
- height="20"
- follows="left|top"
- layout="topleft"
- left="390"
- top_pad="-15" 
- name="Lightcount"
- tool_tip="Control wether you want to see all lights , just a few lights or none"
- width="100">
- <combo_box.item
- label="Sun/Moon Only"
- name="0"
- value="1"/>
- <combo_box.item
- label="Some Lights"
- name="1"
- value="2"/>
- <combo_box.item
- label="All Lights"
- name="2"
- value="3"/>
- </combo_box>
+ 
  <check_box
    control_name="CustomSystemMemory"
    height="16"
@@ -405,8 +282,12 @@ width="510">
    left="10"
    tool_tip="Toggle if the Viewer should use the default Texture Memory calculation or if you should be able to set Scene and System memory invidually."
    name="CustomSystemMemory"
-   top_pad="3"
-   width="115"/>
+   top_pad="5"
+   width="115">
+         <check_box.check_button
+         image_overlay="Caution_Widget"
+         image_overlay_alignment="left"/>
+      </check_box>
  <slider
  control_name="SystemMemory"
  visibility_control="CustomSystemMemory"
@@ -514,17 +395,486 @@ width="510">
                                  function="Pref.Default"/>
       </button>
  
- <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+   <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="basic_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="basic_layout_panel"/>
+   </button>
+   <text
+   name="general_label"
+   follows="left|top"
+   layout="topleft"
+   top_delta="4" 
+   left="10" 
+   height="12"
+   width="220">
+   Basic Options:
+   </text>
+   
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="260"
+	  auto_resize="false"
+      visible="false"
+	  name="basic_layout_panel"
+	  width="515">
+   <check_box
+   control_name="AvatarPhysics"
+   height="16"
+   initial_value="true"
+   label="Enable Avatar Physics Simulation"
+   layout="topleft"
+   tool_tip="Toggles Avatar Physics on or off, causing breasts aswell as butts and stomachs to simulate physical movement and interaction with gravity."
+   left="10"
+   name="AvatarPhysics"
+   top_pad="15"
+   width="115"/>
+   <check_box
+      control_name="RenderAnisotropic"
+      height="16"
+      initial_value="true"
+      label="Enable Anisotropic Filtering"
+      tool_tip="Allows Anisotropic Filtering to unblur textures in certain camera angles"
+      layout="topleft"
+      left_delta="0"
+      name="ani"
+      top_pad="0"
+      width="256" />
+      <check_box
+      control_name="RenderCompressTextures"
+      height="16"
+      initial_value="false"
+      label="Enable OpenGL 3.0 Texture Compression"
+      layout="topleft"
+      left_delta="0"
+      tool_tip="Enable texture compression on OpenGL 2.1 and later implementations which should reduce video memory bloat (Experimental, requires restart)"
+      name="CompressTextures"
+      top_pad="0"
+      width="256">
+         <check_box.check_button
+         image_overlay="Caution_Widget"
+         image_overlay_alignment="left"/>
+      </check_box>
+   <check_box
+   control_name="RenderEnableFullbright"
+   height="16"
+   initial_value="true"
+   label="Enable Fullbright"
+   tool_tip="Tell the Viewer to ignore the Fullbright flags on Object creation resulting in no Fullbrights until restart/revisit - WARNING! , does not work with Objects that use an old set prim attribute LIGHT script command!"
+   layout="topleft"
+   left="10"
+   name="EnableFullbright"
+   top_pad="0"
+   width="115" />
+   <check_box
+      control_name="RenderUnloadedAvatar"
+      height="16"
+      initial_value="true"
+      label="Render Unloaded Avatars"
+      layout="topleft"
+      left_delta="0"
+      name="UnloadedAvatars"
+      top_pad="0"
+      width="315" />
+   <check_box
+   control_name="RenderAttachedLights"
+   height="16"
+   initial_value="true"
+   label="Render Attached Lights"
+   tool_tip="Toggles rendering of lights which are attached to your or other Avatars on or off. Usefull for annoying facelights"
+   layout="topleft"
+   left="10"
+   name="attached_lights"
+   top_pad="0"
+   width="115" />
+   <check_box
+   control_name="RenderAttachedParticles"
+   height="16"
+   initial_value="true"
+   label="Render Attached Particles"
+   tool_tip="Toggles rendering of particles which are attached to your or other Avatars on or off. Usefull for particle spammers"
+   layout="topleft"
+   left="10"
+   name="attached_particles"
+   top_pad="0"
+   width="115" />
+
+ <slider
+ control_name="RenderFarClip"
+ decimal_digits="0"
+ can_edit_text="true"
+ follows="left|top"
+ height="15"
+ increment="2"
+ initial_value="96"
+ label="Draw Distance:"
+ label_width="150"
  layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
+ left="10"
+ max_val="768"
+ min_val="0"
+ name="FarClip"
+ tool_tip="Controls the view distance of Objects starting from your avatar in meters"
+ top_pad="5"
+ width="319" />
+ <button
+ follows="left|top"
+ control_name="RenderFarClip"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+ <slider
+ control_name="RenderMaxPartCount"
+ decimal_digits="0"
+ can_edit_text="true"
+ follows="left|top"
+ height="15"
+ increment="8"
+ initial_value="1024"
+ label="Particle Amount:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="8192"
+ min_val="0"
+ name="MaxParticles"
+ tool_tip="Controls the maximum amount of Particles rendered on screen."
+ top_pad="1"
+ width="325" />
+ <button
+ follows="left|top"
+ control_name="RenderMaxPartCount"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="TerrainTexQuality"
+ top_pad="9"
+ width="150">
+ Terrain Texture Quality:
+ </text>
+ <!--<combo_box
+ control_name="RenderTerrainScale"
+ enabled_control="VertexShaderEnable"
+ height="20"
+ layout="topleft"
+ follows="left|top"
+ left="140"
+ tool_tip="Controls the overall sharpness of default ground textures by increasing the repeats. Too high settings may cause the ground to repeat every meter making it look bad!"
+ top_pad="-15"
+ name="TerrainTexDrop"
+ width="100">
+ <combo_box.item
+ label="Very Low"
+ name="0"
+ value="20"/>
+ <combo_box.item
+ label="Low"
+ name="1"
+ value="16"/>
+ <combo_box.item
+ label="Medium*"
+ name="2"
+ value="12"/>
+ <combo_box.item
+ label="High"
+ name="3"
+ value="9"/>
+ <combo_box.item
+ label="Very High"
+ name="4"
+ value="6"/>
+ <combo_box.item
+ label="Ultra"
+ name="5"
+ value="5"/>
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderTerrainScale"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderTerrainScale"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Very Low"
+                        value="20"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Low"
+                        value="16"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Medium"
+                        halign="right"
+                        value="12"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        halign="right"
+                        value="9"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Very High"
+                        halign="right"
+                        value="6"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Ultra"
+                        halign="right"
+                        value="5"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="LightAmount"
+ top_pad="5"
+ width="120">
+ Basic Light Amount:
+ </text>
+ <!--<combo_box
+ control_name="RenderShaderLightingMaxLevel"
+ disabled_control="RenderDeferred"
+ height="20"
+ follows="left|top"
+ layout="topleft"
+ left="390"
+ top_pad="-15" 
+ name="Lightcount"
+ tool_tip="Control wether you want to see all lights , just a few lights or none"
+ width="100">
+ <combo_box.item
+ label="Sun/Moon Only"
+ name="0"
+ value="1"/>
+ <combo_box.item
+ label="Some Lights"
+ name="1"
+ value="2"/>
+ <combo_box.item
+ label="All Lights"
+ name="2"
+ value="3"/>
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderShaderLightingMaxLevel"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderShaderLightingMaxLevel"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Sun/Moon"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Objects"
+                        value="2"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="All Lights"
+                        halign="right"
+                        value="3"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+ 
+ </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+ <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="lod_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="lod_layout_panel"/>
+   </button>
    <text
    name="general_label"
    follows="left|top"
@@ -535,6 +885,30 @@ width="510">
    width="220">
    Level of Detail Options:
    </text>
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="205"
+      visible="false"
+	  auto_resize="false"
+	  name="lod_layout_panel"
+	  width="515">
+         <check_box
+   control_name="RenderDynamicLOD"
+   height="16"
+   initial_value="true"
+   label="Use Dynamic Level of Detail"
+   tool_tip="Toggles dynamic Level-of-Detail which automatically adjusts the detail of meshes, prims and sculpts on increasing distance. Can boost your performance but should be kept off if you want to have all objects on a 'full-rezzed' like state at all times
+   _____________________________________
+   Graphics +++ | Performance ─ ─ ─
+   Graphics ++    | Performance ─ ─ ─
+   Graphics +       | Performance ─ ─ ─"
+   layout="topleft"
+   left="10"
+   name="DynamicLOD"
+   top_pad="15"
+   width="115" />
  <text
  type="string"
  length="1"
@@ -543,11 +917,11 @@ width="510">
  layout="topleft"
  left="10"
  name="ObjectLOD"
- top_pad="15"
+ top_pad="5"
  width="120">
  Object Quality:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderVolumeLODFactor"
  height="20"
  layout="topleft"
@@ -581,7 +955,129 @@ width="510">
  label="Ultra"
  name="5"
  value="15"/>
- </combo_box>
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderVolumeLODFactor"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderVolumeLODFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Very Low"
+                        value="0.5"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Low"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Medium"
+                        halign="right"
+                        value="2"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Default_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        halign="right"
+                        value="5"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Very High"
+                        halign="right"
+                        value="10"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Ultra"
+                        halign="right"
+                        value="15"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
  <text
  type="string"
  length="1"
@@ -594,7 +1090,7 @@ width="510">
  width="120">
  Avatar Quality:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderAvatarLODFactor"
  height="20"
  layout="topleft"
@@ -624,20 +1120,122 @@ width="510">
  label="Very High"
  name="4"
  value="10"/>
- </combo_box>
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderAvatarLODFactor"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderAvatarLODFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Very Low"
+                        value="0.5"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Low"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Medium"
+                        halign="right"
+                        value="2"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Default_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        halign="right"
+                        value="5"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Very High"
+                        halign="right"
+                        value="10"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
  <text
  type="string"
  length="1"
  follows="left|top"
  height="12"
  layout="topleft"
- left="270"
+ left="10"
  name="TerrainLOD"
- top_delta="-19"
+ top_pad="5"
  width="120">
  Terrain Quality:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderTerrainLODFactor"
  height="20"
  layout="topleft"
@@ -671,20 +1269,142 @@ width="510">
  label="Ultra"
  name="5"
  value="15"/>
- </combo_box>
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderTerrainLODFactor"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderTerrainLODFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Very Low"
+                        value="0.5"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Low"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Medium"
+                        halign="right"
+                        value="2"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Default_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        halign="right"
+                        value="5"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Very High"
+                        halign="right"
+                        value="10"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Ultra"
+                        halign="right"
+                        value="15"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
  <text
  type="string"
  length="1"
  follows="left|top"
  height="12"
  layout="topleft"
- left="270"
+ left="10"
  name="AVPhys"
  top_pad="5"
  width="120">
  Avatar Physics:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderAvatarPhysicsLODFactor"
  height="20"
  layout="topleft"
@@ -719,19 +1439,150 @@ width="510">
  label="Ultra*"
  name="5"
  value="1"/>
- </combo_box>
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderAvatarPhysicsLODFactor"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderAvatarPhysicsLODFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Very Low"
+                        value="0.1"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Low"
+                        value="0.2"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Medium"
+                        halign="right"
+                        value="0.4"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        halign="right"
+                        value="0.6"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Very High"
+                        halign="right"
+                        value="0.8"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Ultra"
+                        halign="right"
+                        value="1"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Default_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
  
-   <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
+ </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+   <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="general_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="performance_layout_panel"/>
+   </button>
    <text
    name="general_label"
    follows="left|top"
@@ -742,28 +1593,27 @@ width="510">
    width="220">
    Performance Options:
    </text>
-   <check_box
+   
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="268"
+	  auto_resize="false"
+      visible="false"
+	  name="performance_layout_panel"
+	  width="515">
+   <!--<check_box
       control_name="RenderVBOEnable"
       height="16"
       initial_value="true"
       label="Enable OpenGL Vertex Buffer Objects"
       layout="topleft"
-      left_delta="0"
+      left="10"
       top_pad="15"
       name="vbo"
       tool_tip="Enabling this on modern hardware gives a performance gain.  However, older hardware often has poor implementations of VBOs and you may get crashes when this is enabled."
-      width="315" />
-      <check_box
-   control_name="RenderDynamicLOD"
-   height="16"
-   initial_value="true"
-   label="Use Dynamic Level of Detail"
-   tool_tip="Toggles dynamic Level-of-Detail which automatically adjusts the detail of meshes, prims and sculpts on increasing distance. Can boost your performance but should be kept off if you want to have all objects on a 'full-rezzed' like state at all times"
-   layout="topleft"
-   left_delta="0"
-   name="DynamicLOD"
-   top_pad="0"
-   width="115" />
+      width="315" />-->
    <check_box
    control_name="UseOcclusion"
    height="16"
@@ -771,10 +1621,80 @@ width="510">
    label="Use Object-Object Occlusion"
    tool_tip="Toggles Occlusion which prevents objects behind other objects beeing rendered which can boost your performance depending on how much it is used in the scene e.g in empty places it will just hurt your performance rather than increasing it."
    layout="topleft"
-   left_delta="0"
+   left="10"
    name="UseOcclusion"
-   top_pad="0"
+   top_pad="15"
    width="115" />
+   <check_box
+      control_name="RenderPreferStreamDraw"
+      height="16"
+      initial_value="false"
+      label="Use Stream Draw"
+      layout="topleft"
+      left_delta="0"
+      name="vbostream"
+      top_pad="0" 
+      tool_tip="Dynamic draw updates per frame, Stream draw per render. Driver/GPU tweak may alter Graphics Bandwidth"
+      width="315" />
+      <check_box
+      control_name="PluginUseReadThread"
+      height="16"
+      initial_value="true"
+      label="Use Plugin Read Thread"
+      layout="topleft"
+      left_delta="0"
+      tool_tip="Use a seperate Thread to read incoming messages from Plugins like Webprims etc."
+      name="PluginUseReadThread"
+      top_pad="0"
+      width="256" />
+      <check_box
+      control_name="RenderUseFarClip"
+      height="16"
+      initial_value="true"
+      label="Use Far Clip"
+      layout="topleft"
+      left_delta="0"
+      tool_tip="Switches between the normal Camera Mode where Objects get derendered when moving your Camera away from them and a more -from Avatar- like rendering method where everything until your Render Range gets rendered no matter if you are zooming away"
+      name="RenderUseFarClip"
+      top_pad="0"
+      width="256" />
+   
+   <slider
+      control_name="BackgroundYieldTime"
+      decimal_digits="0"
+      follows="left|top"
+      height="15"
+      can_edit_text="true"
+      increment="1"
+      initial_value="40"
+      label="Background Yield Time:"
+      label_width="150"
+      layout="topleft"
+      tool_tip="Set the amount of time in ms which the Viewer should be held back when not beeing focused , 40 equals ~18 FPS"
+      left="10"
+      max_val="300"
+      min_val="0"
+      name="BackgroundYieldTime"
+      top_pad="5"
+      width="319" />
+   <button
+ follows="left|top"
+ control_name="BackgroundYieldTime"
+ height="15"
+ is_toggle="false"
+ label_color="White"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   
    <check_box
    control_name="RenderUseImpostors"
    height="16"
@@ -784,10 +1704,10 @@ width="510">
    layout="topleft"
    left="10"
    name="AvatarImpostors"
-   top_pad="0"
+   top_pad="5"
    width="115" />
    
- <text
+ <!--<text
  type="string"
  length="1"
  follows="left|top"
@@ -834,74 +1754,30 @@ width="510">
  label="25 Avatars"
  name="5"
  value="25"/>
- </combo_box>
- 
- <check_box
-      control_name="RenderGammaFull"
-      height="16"
-      initial_value="true"
-      label="Use Full Control Gamma"
-      layout="topleft"
-      left="270"
-      name="RenderGammaFull"
-      tool_tip="Use fully controllable gamma correction, instead of faster, hard-coded gamma correction."
-      top_delta="-65"
-      width="256" />
-      <check_box
-      control_name="RenderPreferStreamDraw"
-      height="16"
-      initial_value="false"
-      label="Use Stream Draw"
-      layout="topleft"
-      left_delta="0"
-      name="vbostream"
-      top_pad="0" 
-      tool_tip="Dynamic draw updates per frame, Stream draw per render. Driver/GPU tweak may alter Graphics Bandwidth"
-      width="315" />
-      <check_box
-      control_name="PluginUseReadThread"
-      height="16"
-      initial_value="true"
-      label="Use Plugin Read Thread"
-      layout="topleft"
-      left_delta="0"
-      tool_tip="Use a seperate Thread to read incoming messages from Plugins like Webprims etc."
-      name="PluginUseReadThread"
-      top_pad="0"
-      width="256" />
-      <check_box
-      control_name="RenderUseFarClip"
-      height="16"
-      initial_value="true"
-      label="Use Far Clip"
-      layout="topleft"
-      left_delta="0"
-      tool_tip="Switches between the normal Camera Mode where Objects get derendered when moving your Camera away from them and a more -from Avatar- like rendering method where everything until your Render Range gets rendered no matter if you are zooming away"
-      name="RenderUseFarClip"
-      top_pad="0"
-      width="256" />
- 
+ </combo_box>-->
  <slider
-      control_name="BackgroundYieldTime"
+      control_name="RenderAvatarMaxVisible"
+      enabled_control="RenderUseImpostors"
       decimal_digits="0"
       follows="left|top"
       height="15"
       can_edit_text="true"
       increment="1"
-      initial_value="40"
-      label="Background Yield Time:"
+      initial_value="5"
+      label="Max. Avatars Visible:"
       label_width="150"
       layout="topleft"
-      tool_tip="Set the amount of time in ms which the Viewer should be held back when not beeing focused , 40 equals ~18 FPS"
+      tool_tip="Controls the maximum amount of Avatars rendered on screen"
       left="10"
-      max_val="300"
+      max_val="50"
       min_val="0"
-      name="BackgroundYieldTime"
-      top_pad="27"
-      width="319" />
-      <button
+      name="RenderAvatarMaxVisible"
+      top_pad="5"
+      width="313" />
+ <button
  follows="left|top"
- control_name="BackgroundYieldTime"
+ control_name="RenderAvatarMaxVisible"
+ enabled_control="RenderUseImpostors"
  height="15"
  is_toggle="false"
  label_color="White"
@@ -916,8 +1792,21 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-      
-      <text
+ 
+ <!--<check_box
+      control_name="RenderGammaFull"
+      height="16"
+      initial_value="true"
+      label="Use Full Control Gamma"
+      layout="topleft"
+      left="270"
+      name="RenderGammaFull"
+      tool_tip="Use fully controllable gamma correction, instead of faster, hard-coded gamma correction."
+      top_delta="-65"
+      width="256" />-->
+
+   
+   <text
  type="string"
  length="1"
  follows="left|top"
@@ -926,10 +1815,53 @@ width="510">
  left="10"
  name="MaxAvatars"
  top_pad="8"
- width="120">
- Adv. Autoderender:
+ width="200">
+ Advanced Autoderender:
  </text>
-      <combo_box
+   <radio_group
+                  control_name="RenderAutoMuteFunctions"
+                  enabled_control="RenderUseImpostors"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderAutoMuteFunctions"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Disabled"
+                        value="0"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Enabled"
+                        value="7"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+      <!--<combo_box
  control_name="RenderAutoMuteFunctions"
  enabled_control="RenderUseImpostors"
  height="20"
@@ -948,7 +1880,7 @@ width="510">
  label="Enabled"
  name="1"
  value="7"/>
- </combo_box>
+ </combo_box>-->
       <slider
       control_name="RenderAutoMuteByteLimit"
       enabled_control="RenderUseImpostors"
@@ -1089,30 +2021,53 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-   
-   <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
-   <check_box
-   control_name="VertexShaderEnable"
-   height="16"
-   initial_value="true"
-   label="Vertex Shader"
-   tool_tip="Toggles the Vertex Shader allowing ripple water, reflections on water and a much more realistic sky with clouds aswell as Post Process Glow. Known as 'Windlight'"
+      </layout_panel>
+	  <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+      visible="true"
+	  name="title_layout_panel"
+	  width="515">
+   <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="general_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="vertex_layout_panel"/>
+   </button>
+   <text
+   name="general_label"
+   follows="left|top"
    layout="topleft"
-   left="5"
-   name="BasicShaders"
-   top_delta="4"
-   width="115"/>
-   <check_box
+   top_delta="4" 
+   left="10" 
+   height="12"
+   width="220">
+   Windlight Options:
+   </text>
+      </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="423"
+	  auto_resize="false"
+      visible="false"
+	  name="vertex_layout_panel"
+	  width="515">
+   <!--<check_box
    control_name="RenderAvatarVP"
    height="16"
    initial_value="true"
@@ -1134,7 +2089,19 @@ width="510">
    left_delta="0"
    name="WindLightUseAtmosShaders"
    top_pad="0"
-   width="115"/>
+   width="115"/>-->
+   <check_box
+   control_name="RenderWaterMipNormal"
+   enabled_control="VertexShaderEnable"
+   height="16"
+   initial_value="true"
+   label="Use Water Mip-maps"
+   tool_tip="Use Mip-maps on distance for water (blurrier/low resolution textures to prevent usage of high resolution textures on distance which results in extreme water pixelation)"
+   layout="topleft"
+   left="10"
+   name="MipMaps"
+   top_pad="15"
+   width="115" />
    <text
  type="string"
  length="1"
@@ -1147,7 +2114,7 @@ width="510">
  width="120">
  Reflection Amount:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderReflectionDetail"
  enabled_control="VertexShaderEnable"
  height="20"
@@ -1177,7 +2144,101 @@ width="510">
  label="Everything*"
  name="4"
  value="4"/>
- </combo_box>
+ </combo_box>-->
+ 
+ <radio_group
+                  control_name="RenderVolumeLODFactor"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderVolumeLODFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="None"
+                        value="0"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Terrain"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Objects"
+                        value="2"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Avatars"
+                        value="3"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Everything"
+                        value="4"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
  <text
  type="string"
  length="1"
@@ -1190,7 +2251,7 @@ width="510">
  width="120">
  Reflection Quality:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderWaterRefResolution"
  enabled_control="VertexShaderEnable"
  height="20"
@@ -1225,32 +2286,139 @@ width="510">
  label="Supreme"
  name="5"
  value="2048"/>
- </combo_box>
-   <check_box
-   control_name="RenderWaterMipNormal"
-   enabled_control="VertexShaderEnable"
-   height="16"
-   initial_value="true"
-   label="Use Water Mip-maps"
-   tool_tip="Use Mip-maps on distance for water (blurrier/low resolution textures to prevent usage of high resolution textures on distance which results in extreme water pixelation)"
-   layout="topleft"
-   left="270"
-   name="MipMaps"
-   top_delta="-58"
-   width="115" />
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderWaterRefResolution"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderVolumeLODFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Very Low"
+                        value="256"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Low"
+                        value="512"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Normal"
+                        value="768"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Default_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        value="1024"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Very High"
+                        value="1536"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Ultra"
+                        value="2048"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                     
+                  </radio_group>
  <text
  type="string"
  length="1"
  follows="left|top"
  height="12"
  layout="topleft"
- left="270"
+ left="10"
  name="SkyLOD"
- top_pad="21"
+ top_pad="7"
  width="120">
  Sky Quality:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="WLSkyDetail"
  enabled_control="WindLightUseAtmosShaders"
  height="20"
@@ -1285,9 +2453,126 @@ width="510">
  label="Ultra"
  name="5"
  value="256"/>
- </combo_box>
+ </combo_box>-->
+ <radio_group
+                  control_name="WLSkyDetail"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderVolumeLODFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Very Low"
+                        value="16"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Low"
+                        value="32"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Normal"
+                        value="64"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        value="128"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Default_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Very High"
+                        value="192"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Ultra"
+                        value="256"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                     
+                  </radio_group>
  
- <check_box
+ <!--<check_box
    control_name="RenderGlow"
    disabled_control="RenderDeferred"
    height="16"
@@ -1298,7 +2583,7 @@ width="510">
    left="10"
    name="Glow"
    top_pad="28"
-   width="115" />
+   width="115" />-->
  
  <text
  type="string"
@@ -1308,11 +2593,11 @@ width="510">
  layout="topleft"
  left="10"
  name="GlowResolution"
- top_pad="4"
+ top_pad="7"
  width="120">
  Post-Process Quality:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderGlowResolutionPow"
  enabled_control="RenderGlow"
  height="20"
@@ -1336,7 +2621,68 @@ width="510">
  label="High"
  name="3"
  value="10"/>
- </combo_box>
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderGlowResolutionPow"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderVolumeLODFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Low"
+                        value="7"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Normal"
+                        value="9"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Default_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        value="10"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
  
       <slider  
       control_name="RenderGlowIterations"
@@ -1719,17 +3065,33 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-   <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
+      </layout_panel>
+      
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+   <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="general_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="deferred_layout_panel"/>
+   </button>
    <check_box
    control_name="RenderDeferred"
    enabled_control="RenderGlow"
@@ -1742,6 +3104,26 @@ width="510">
    name="Deferred"
    top_delta="4"
    width="115" />
+      </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="290"
+	  auto_resize="false"
+      visible="false"
+	  name="deferred_layout_panel"
+	  width="515">
+         <check_box
+   control_name="RenderLocalLights"
+   height="16"
+   initial_value="true"
+   label="Render Deferred Lights"
+   tool_tip="Toggles normal lights and projected lights in Deferred Rendering on or off altogether. Warning this might also disable lights in Windlight!"
+   layout="topleft"
+   left="10"
+   name="UseLightShaders"
+   top_pad="15"
+   width="115" />
    <text
  type="string"
  length="1"
@@ -1750,11 +3132,11 @@ width="510">
  layout="topleft"
  left="10"
  name="Antialiasing:"
- top_pad="10"
+ top_pad="4"
  width="120">
- FX-Anti-aliasing:
+ Antialiasing:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderFSAASamples"
  height="20"
  label=""
@@ -1773,8 +3155,51 @@ width="510">
  label="Enabled"
  name="2x"
  value="2" />
- </combo_box>
- <check_box
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderFSAASamples"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderFSAASamples"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Disabled"
+                        value="0"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="FXAA"
+                        value="2"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+ 
+ <!--<check_box
    control_name="RenderObjectBump"
    height="16"
    initial_value="true"
@@ -1784,7 +3209,7 @@ width="510">
    left="10"
    name="BumpShiny"
    top_pad="3"
-   width="115" />
+   width="115" />-->
    <text
  type="string"
  length="1"
@@ -1797,7 +3222,7 @@ width="510">
  width="120">
  Normalmap Scale:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderNormalMapScale"
  height="20"
  follows="left|top"
@@ -1831,18 +3256,101 @@ width="510">
  label="Rougher"
  name="5"
  value="16"/>
- </combo_box>
- <check_box
-   control_name="RenderLocalLights"
-   height="16"
-   initial_value="true"
-   label="Render Deferred Lights"
-   tool_tip="Toggles normal lights and projected lights in Deferred Rendering on or off altogether. Warning this might also disable lights in Windlight!"
-   layout="topleft"
-   left="10"
-   name="UseLightShaders"
-   top_pad="3"
-   width="115" />
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderNormalMapScale"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderNormalMapScale"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Very Fine"
+                        value="256"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Fine"
+                        value="128"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Normal"
+                        value="64"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Rough"
+                        value="32"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Very Rough"
+                        value="16"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+
  <text
  type="string"
  length="1"
@@ -1855,7 +3363,7 @@ width="510">
  width="120">
  Shadows:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderShadowDetail"
  enabled_control="RenderDeferred"
  height="20"
@@ -1878,20 +3386,80 @@ width="510">
  label="Projectors"
  name="2"
  value="2"/>
- </combo_box>
+ </combo_box>-->
+ <radio_group
+                  control_name="RenderShadowDetail"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderShadowDetail"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Disabled"
+                        value="0"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Sun/Moon"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Projectors"
+                        value="2"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+ 
  <text
  type="string"
  length="1"
  follows="left|top"
  height="12"
  layout="topleft"
- left="270"
+ left="10"
  name="ShadowAmount"
- top_pad="-17"
+ top_pad="4"
  width="120">
- Softening Style:
+ Softening Kernel:
  </text>
- <combo_box
+ <!--<combo_box
  control_name="RenderShadowType"
  enabled_control="RenderDeferred"
  height="20"
@@ -1910,7 +3478,50 @@ width="510">
  label="Original"
  name="0"
  value="0"/>
- </combo_box>
+ </combo_box>-->
+ 
+ <radio_group
+                  control_name="RenderShadowType"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderShadowType"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Default"
+                        value="0"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Tofu's"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
  <slider
       enabled_control="RenderDeferred"
       decimal_digits="0"
@@ -2059,19 +3670,33 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-       
+       </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
  
- <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
+ <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="general_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="dof_layout_panel"/>
+   </button>
  <check_box
      control_name="RenderDepthOfField"
      height="16"
@@ -2083,6 +3708,15 @@ width="510">
      name="UseDoF"
      top_delta="4"
      width="115" />
+ </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="145"
+	  auto_resize="false"
+      visible="false"
+	  name="dof_layout_panel"
+	  width="515">
  <check_box
    control_name="RenderDepthOfFieldAlphas"
    enabled_control="RenderDepthOfField"
@@ -2093,7 +3727,7 @@ width="510">
    left="10"
    tool_tip="Toggle if the Viewer should include alphas and particles into the depth map (can cause some erratic behavior with Depth of Field blurring on Alphas and Volumetric Lighting on Alphas). If disabled this will cause Depth of Field and Volumetric Lighting to ignore Alphas entirely and they will change their lighting back to as if Depth of Field is disabled."
    name="RenderDepthOfFieldAlphas"
-   top_pad="12"
+   top_pad="15"
    width="115"/>
      <slider
       control_name="CameraFieldOfView"
@@ -2112,7 +3746,7 @@ width="510">
       min_val="0"
       name="CameraFOV"
       tool_tip="Vertical camera field of view for Depth of Field effect (in degrees)"
-      top_pad="1"
+      top_pad="4"
       width="318" />
      <button
  follows="left|top"
@@ -2305,17 +3939,32 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-     <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
+      </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+     <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="general_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="ao_layout_panel"/>
+   </button>
  <check_box
    control_name="RenderDeferredSSAO"
    height="16"
@@ -2328,6 +3977,16 @@ width="510">
    top_delta="4"
    width="115" />
      
+     
+     </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="142"
+	  auto_resize="false"
+      visible="false"
+	  name="ao_layout_panel"
+	  width="515">
      <slider
       enabled_control="RenderDeferredSSAO"
       decimal_digits="3"
@@ -2510,7 +4169,7 @@ width="510">
      layout="topleft"
      left="10"
      name="RenderScreenSpaceReflections"
-     top_pad="3"
+     top_pad="4"
      width="115" />
       <slider
       control_name="RenderSSRResolution"
@@ -2528,7 +4187,7 @@ width="510">
       max_val="64"
       min_val="2"
       name="RenderSSRResolution"
-      top_pad="1"
+      top_pad="4"
       width="312" />
       <button
  follows="left|top"
@@ -2546,17 +4205,32 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-      <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
+      </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+      <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="general_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="motionblur_layout_panel"/>
+   </button>
    <check_box
    control_name="RenderMotionBlur"
    height="16"
@@ -2569,6 +4243,15 @@ width="510">
    top_delta="4"
    width="115" />
 
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="41"
+	  auto_resize="false"
+      visible="false"
+	  name="motionblur_layout_panel"
+	  width="515">
    <slider
       can_edit_text="true"
       control_name="RenderMotionBlurStrength"
@@ -2603,17 +4286,32 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-   <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+   <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="general_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="godrays_layout_panel"/>
+   </button>
    <check_box
    control_name="RenderGodrays"
    height="16"
@@ -2625,6 +4323,15 @@ width="510">
    name="RenderGodrays"
    top_delta="4"
    width="115" />
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="98"
+	  auto_resize="false"
+      visible="false"
+	  name="godrays_layout_panel"
+	  width="515">
    <check_box
    control_name="RenderGodraysDirectional"
    height="16"
@@ -2634,7 +4341,7 @@ width="510">
    left_delta="5"
    tool_tip="Toggle if Volumtric Lighting should fade out the further you look away from the Sun. Mimics original Godrays behavior a bit."
    name="RenderGodraysDirectional"
-   top_pad="12"
+   top_pad="15"
    width="115"/>
 
    <slider
@@ -2653,7 +4360,7 @@ width="510">
       max_val="128"
       min_val="16"
       name="GodraysResolution"
-      top_pad="1"
+      top_pad="4"
       width="318"/>
    <button
  follows="left|top"
@@ -2739,17 +4446,32 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-   <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+   <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="general_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="post_layout_panel"/>
+   </button>
    <text
    name="general_label"
    follows="left|top"
@@ -2760,6 +4482,15 @@ width="510">
    width="220">
    Post Processing Effects:
    </text>
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="114"
+	  auto_resize="false"
+      visible="false"
+	  name="post_layout_panel"
+	  width="515">
    <check_box
    control_name="RenderLensFlare"
    height="16"
@@ -2769,7 +4500,7 @@ width="510">
    layout="topleft"
    left="5"
    name="LensFlare"
-   top_pad="12"
+   top_pad="15"
    width="115"/>
    <slider
       can_edit_text="true"
@@ -2787,7 +4518,7 @@ width="510">
       max_val="1"
       min_val="0"
       name="GreyscaleStrength"
-      top_pad="1"
+      top_pad="4"
       width="321"/>
    <button
  follows="left|top"
@@ -2907,17 +4638,32 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-     <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="515"/>
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+     <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="general_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="tonemapping_layout_panel"/>
+   </button>
    <check_box
    control_name="ExodusRenderToneMapping"
    height="16"
@@ -2930,6 +4676,15 @@ width="510">
    top_delta="4"
    width="115" />
 
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="437"
+	  auto_resize="false"
+      visible="false"
+	  name="tonemapping_layout_panel"
+	  width="515">
 <text
       type="string"
       length="1"
@@ -2943,7 +4698,7 @@ width="510">
       width="140">
       Tone Mapping Style:
       </text>
-      <combo_box
+      <!--<combo_box
       control_name="ExodusRenderToneMappingTech"
       height="20"
       initial_value="false"
@@ -2971,7 +4726,84 @@ width="510">
       label="Custom"
       name="Custom"
       value="3" />
-      </combo_box>
+      </combo_box>-->
+      <radio_group
+                  control_name="ExodusRenderToneMappingTech"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderVolumeLODFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Filmic"
+                        value="0"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Linear"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Rheinard"
+                        value="2"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Custom"
+                        value="3"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+      
       <slider
       can_edit_text="true"
       control_name="ExodusRenderToneExposure"
@@ -2988,7 +4820,7 @@ width="510">
       max_val="4"
       min_val="0"
       name="ExodusRenderToneExposure"
-      top_pad="5"
+      top_pad="4"
       width="322"/>
       <button
  follows="left|top"
@@ -3236,7 +5068,7 @@ width="510">
    name="color_corr_label">
    Color Correction:
    </text>
-   <combo_box
+   <!--<combo_box
    control_name="ExodusRenderColorGradeTech"
    height="20"
    layout="topleft"
@@ -3253,7 +5085,50 @@ width="510">
    label="Linear"
    name="0"
    value="0"/>
-   </combo_box>
+   </combo_box>-->
+   <radio_group
+                  control_name="ExodusRenderColorGradeTech"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="ExodusRenderColorGradeTech"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="None"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Linear"
+                        value="0"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+   
 
       <slider
       can_edit_text="true"
@@ -3269,7 +5144,7 @@ width="510">
       max_val="4"
       min_val="-4"
       name="ExodusRenderExposure_X"
-      top_pad="5"
+      top_pad="4"
       width="326">
       <slider.commit_callback
       function="Pref.ArrayX"
@@ -3486,17 +5361,32 @@ width="510">
                                  function="Pref.Default"/>
       </button>
       
-      <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="12"
- width="515"/>
+      </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
+      <button
+		 follows="left|top"
+		 height="20"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="general_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="vignette_layout_panel"/>
+   </button>
    <text
    name="vignette_label"
    follows="left|top"
@@ -3507,6 +5397,15 @@ width="510">
    width="220">
    Vignette:
    </text>
+   </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="70"
+	  auto_resize="false"
+      visible="false"
+	  name="vignette_layout_panel"
+	  width="515">
       <slider
       can_edit_text="true"
       decimal_digits="1"
@@ -3583,6 +5482,8 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+      </layout_panel>
+      </layout_stack>
   </panel>
    </scroll_container>
 </panel>

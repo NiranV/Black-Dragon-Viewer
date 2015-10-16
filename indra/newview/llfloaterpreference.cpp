@@ -648,6 +648,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.BindKey",                boost::bind(&LLFloaterPreference::onBindKey, this,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.ExportControls",         boost::bind(&LLFloaterPreference::onExportControls, this));
 
+//	//BD - Expandable Tabs
+	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::onTab, this, _1, _2));
+
 //	//BD - Array Debugs
 	mCommitCallbackRegistrar.add("Pref.ArrayX",           boost::bind(&LLFloaterPreference::onCommitX, this,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayY",           boost::bind(&LLFloaterPreference::onCommitY, this,_1, _2));
@@ -914,6 +917,25 @@ void LLFloaterPreference::onBindKey(LLUICtrl* ctrl, const LLSD& param)
 	//gViewerKeyboard.bindKey(mode, key, MASK_NONE, function);
 	LL_INFOS() << "Bound: " << key << " + " << mask << " to " << function << " in mode " << mode << LL_ENDL;
 	//LL_INFOS() << "Bound: " << key << " + " << MASK_NONE << " to " << function << " in mode " << mode << LL_ENDL;
+}
+
+//BD - Expandable Tabs
+void LLFloaterPreference::onTab(LLUICtrl* ctrl, const LLSD& param)
+{
+	getChild<LLLayoutPanel>(param.asString())->setVisible(ctrl->getValue());
+	LLRect rect = getChild<LLPanel>("gfx_scroll_panel")->getRect();
+	S32 modifier = getChild<LLLayoutPanel>(param.asString())->getRect().getHeight();
+	if (ctrl->getValue().asBoolean())
+	{
+		rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (rect.getHeight() + modifier));
+		getChild<LLLayoutStack>("gfx_stack")->translate(0, modifier);
+	}
+	else
+	{
+		rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (rect.getHeight() - modifier));
+		getChild<LLLayoutStack>("gfx_stack")->translate(0, -modifier);
+	}
+	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
 }
 
 void LLFloaterPreference::onExportControls()

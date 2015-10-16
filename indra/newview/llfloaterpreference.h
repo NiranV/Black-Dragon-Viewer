@@ -183,6 +183,9 @@ public:
 	void updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box);
 	void refreshUI();
 
+//	//BD - Expandable Tabs
+	void onTab(LLUICtrl* ctrl, const LLSD& param);
+
 //	//BD - Debug Arrays
 	void onCommitX(LLUICtrl* ctrl, const LLSD& param);
 	void onCommitY(LLUICtrl* ctrl, const LLSD& param);

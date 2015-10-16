@@ -704,6 +704,9 @@ with the same filename but different name
   
   <!-- Back Dragon textures-->
   
+  <texture name="Caution_Widget" file_name="icons/caution_widget.png"/>
+  <texture name="Default_Widget" file_name="icons/default_widget.png"/>
+  
   <texture name="Caret_Top_Icon" file_name="toolbar_icons/caret_top.png" preload="true" scale.left="1" scale.top="27" scale.right="15" scale.bottom="5" />
   
   <texture name="TabIcon_Close_Off" file_name="taskpanel/TabIcon_Close_Off.png" preload="false" />
