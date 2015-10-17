@@ -41,12 +41,12 @@ width="1024">
          width="1024"
          open_time_constant="0.11"
          close_time_constant="0.11"
-         height="50"
+         height="80"
          follows="top|left|right"
          mouse_opaque="false">
             <layout_panel
             name="bar_panel"
-            height="50"
+            height="80"
             min_height="19"
             auto_resize="true"
             width="1024"
@@ -83,7 +83,7 @@ width="1024">
             <layout_panel
             name="spacer_panel"
             invisibility_control="ShowNavbarFavoritesPanel"
-            height="31"
+            height="20"
             width="1024"
             mouse_opaque="false"/>
          </layout_stack>

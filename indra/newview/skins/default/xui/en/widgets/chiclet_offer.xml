@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <chiclet_offer
- height="23"
+ height="24"
  name="offer_chiclet"
  width="25">
  <chiclet_offer.chiclet_button
-  height="25"
-  image_selected="PushButton_On"
-  image_unselected="PushButton_Off"
+  height="26"
+  image_selected="Window_NoTitle_Background"
+  image_unselected="Window_NoTitle_Background"
   name="chiclet_button"
   tab_stop="false"
   width="25" />
  <chiclet_offer.icon
-  bottom="3"
-  default_icon="Generic_Object_Small"
+  bottom="5"
+  default_icon="Inv_Object"
   follows="all"
-  height="20"
-  left="2"
+  height="16"
+  left="4"
   mouse_opaque="false"
   name="chiclet_icon"
-  width="21" />
+  width="16" />
  <chiclet_offer.new_message_icon
   bottom="11"
   height="14"
