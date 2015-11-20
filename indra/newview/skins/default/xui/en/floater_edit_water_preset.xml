@@ -335,7 +335,7 @@
       initial_value="0"
       layout="topleft"
       left_delta="14"
-      max_val="0.16"
+      max_val="6.0"
       name="WaterBlurMult"
       top_pad="2"
       width="200"/>
