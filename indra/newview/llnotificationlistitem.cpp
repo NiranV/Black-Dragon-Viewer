@@ -38,6 +38,8 @@
 #include "lluicolortable.h"
 #include "message.h"
 #include "llnotificationsutil.h"
+#include <boost/regex.hpp>
+
 LLNotificationListItem::LLNotificationListItem(const Params& p) : LLPanel(p),
     mParams(p),
     mTitleBox(NULL),
@@ -48,7 +50,8 @@ LLNotificationListItem::LLNotificationListItem(const Params& p) : LLPanel(p),
     mExpandedViewPanel(NULL),
     mCondensedHeight(0),
     mExpandedHeight(0),
-    mExpandedHeightResize(0)
+    mExpandedHeightResize(0),
+    mExpanded(false)
 {
     mNotificationName = p.notification_name;
 }
@@ -58,7 +61,7 @@ BOOL LLNotificationListItem::postBuild()
     BOOL rv = LLPanel::postBuild();
     mTitleBox = getChild<LLTextBox>("notification_title");
     mTitleBoxExp = getChild<LLTextBox>("notification_title_exp"); 
-    mNoticeTextExp = getChild<LLViewerTextEditor>("notification_text_exp");
+    mNoticeTextExp = getChild<LLChatEntry>("notification_text_exp");
 
     mTimeBox = getChild<LLTextBox>("notification_time");
     mTimeBoxExp = getChild<LLTextBox>("notification_time_exp");
@@ -70,6 +73,12 @@ BOOL LLNotificationListItem::postBuild()
     mTitleBox->setValue(mParams.title);
     mTitleBoxExp->setValue(mParams.title);
     mNoticeTextExp->setValue(mParams.title);
+    mNoticeTextExp->setEnabled(FALSE);
+    mNoticeTextExp->setTextExpandedCallback(boost::bind(&LLNotificationListItem::reshapeNotification, this));
+
+    mTitleBox->setContentTrusted(false);
+    mTitleBoxExp->setContentTrusted(false);
+    mNoticeTextExp->setContentTrusted(false);
 
     mTimeBox->setValue(buildNotificationDate(mParams.time_stamp));
     mTimeBoxExp->setValue(buildNotificationDate(mParams.time_stamp));
@@ -91,6 +100,7 @@ BOOL LLNotificationListItem::postBuild()
     mCondensedHeight = (S32)atoi(condensed_height_str.c_str());
     
     setExpanded(FALSE);
+
     return rv;
 }
 
@@ -147,6 +157,18 @@ BOOL LLNotificationListItem::handleMouseUp(S32 x, S32 y, MASK mask)
     return res;
 }
 
+void LLNotificationListItem::onMouseEnter(S32 x, S32 y, MASK mask)
+{
+	mCondensedViewPanel->setTransparentColor(LLUIColorTable::instance().getColor( "ScrollHoveredColor" ));
+	mExpandedViewPanel->setTransparentColor(LLUIColorTable::instance().getColor( "ScrollHoveredColor" ));
+}
+
+void LLNotificationListItem::onMouseLeave(S32 x, S32 y, MASK mask)
+{
+	mCondensedViewPanel->setTransparentColor(LLUIColorTable::instance().getColor( "SysWellItemUnselected" ));
+	mExpandedViewPanel->setTransparentColor(LLUIColorTable::instance().getColor( "SysWellItemUnselected" ));
+}
+
 //static
 LLNotificationListItem* LLNotificationListItem::create(const Params& p)
 {
@@ -193,19 +215,31 @@ void LLNotificationListItem::onClickCondenseBtn()
     setExpanded(FALSE);
 }
 
+void LLNotificationListItem::reshapeNotification()
+{
+    if(mExpanded)
+    {
+        S32 width = this->getRect().getWidth();
+        this->reshape(width, mNoticeTextExp->getRect().getHeight() + mExpandedHeight, FALSE);
+    }
+}
+
 void LLNotificationListItem::setExpanded(BOOL value)
 {
     mCondensedViewPanel->setVisible(!value);
     mExpandedViewPanel->setVisible(value);
     S32 width = this->getRect().getWidth();
+
     if (value)
     {
-        this->reshape(width, mExpandedHeight + mExpandedHeightResize, FALSE);
+       this->reshape(width, mNoticeTextExp->getRect().getHeight() + mExpandedHeight, FALSE);
     }
     else
     {
         this->reshape(width, mCondensedHeight, FALSE);
     }
+    mExpanded = value;
+
 }
 
 std::set<std::string> LLGroupInviteNotificationListItem::getTypes()
@@ -251,6 +285,16 @@ BOOL LLGroupInviteNotificationListItem::postBuild()
     mJoinBtn = getChild<LLButton>("join_btn");
     mDeclineBtn = getChild<LLButton>("decline_btn");
     mInfoBtn = getChild<LLButton>("info_btn");
+
+    //invitation with any non-default group role, doesn't have newline characters at the end unlike simple invitations
+    std::string invitation_desc = mNoticeTextExp->getValue().asString();
+    boost::regex pattern = boost::regex("\n\n$", boost::regex::perl|boost::regex::icase);
+    boost::match_results<std::string::const_iterator> matches;
+    if(!boost::regex_search(invitation_desc, matches, pattern))
+    {
+        invitation_desc += "\n\n";
+        mNoticeTextExp->setValue(invitation_desc);
+    }
 
     mJoinBtn->setClickedCallback(boost::bind(&LLGroupInviteNotificationListItem::onClickJoinBtn,this));
     mDeclineBtn->setClickedCallback(boost::bind(&LLGroupInviteNotificationListItem::onClickDeclineBtn,this));
@@ -549,6 +593,14 @@ BOOL LLTransactionNotificationListItem::postBuild()
     mAvatarIcon->setValue("System_Notification");
     mAvatarIconExp->setValue("System_Notification");
 
+    mAvatarIcon->setVisible(TRUE);
+    mAvatarIconExp->setVisible(TRUE);
+    if((GOVERNOR_LINDEN_ID == mParams.paid_to_id) ||
+       (GOVERNOR_LINDEN_ID == mParams.paid_from_id))
+    {
+        return rv;
+    }
+
     if (mParams.notification_name == "PaymentReceived")
     {
         mAvatarIcon->setValue(mParams.paid_from_id);
@@ -559,16 +611,25 @@ BOOL LLTransactionNotificationListItem::postBuild()
         mAvatarIcon->setValue(mParams.paid_to_id);
         mAvatarIconExp->setValue(mParams.paid_to_id);
     }
-    mAvatarIcon->setVisible(TRUE);
-    mAvatarIconExp->setVisible(TRUE);
+
     return rv;
 }
 
 LLSystemNotificationListItem::LLSystemNotificationListItem(const Params& p)
     : LLNotificationListItem(p),
-    mSystemNotificationIcon(NULL)
+    mSystemNotificationIcon(NULL),
+    mIsCaution(false)
 {
     buildFromFile("panel_notification_list_item.xml");
+    mIsCaution = p.notification_priority >= NOTIFICATION_PRIORITY_HIGH;
+    if (mIsCaution)
+    {
+        mTitleBox->setColor(LLUIColorTable::instance().getColor("NotifyCautionBoxColor"));
+        mTitleBoxExp->setColor(LLUIColorTable::instance().getColor("NotifyCautionBoxColor"));
+        mNoticeTextExp->setReadOnlyColor(LLUIColorTable::instance().getColor("NotifyCautionBoxColor"));
+        mTimeBox->setColor(LLUIColorTable::instance().getColor("NotifyCautionBoxColor"));
+        mTimeBoxExp->setColor(LLUIColorTable::instance().getColor("NotifyCautionBoxColor"));
+    }
 }
 
 BOOL LLSystemNotificationListItem::postBuild()

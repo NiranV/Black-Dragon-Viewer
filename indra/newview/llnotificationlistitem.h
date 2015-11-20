@@ -34,7 +34,7 @@
 #include "llbutton.h"
 #include "llgroupiconctrl.h"
 #include "llavatariconctrl.h"
-
+#include "llchatentry.h"
 #include "llgroupmgr.h"
 #include "llviewermessage.h"
 
@@ -59,6 +59,7 @@ public:
         LLDate          time_stamp;
         LLDate          received_time;
         LLSD            inventory_offer;
+        e_notification_priority notification_priority;
         Params()        {};
     };
 
@@ -78,6 +79,8 @@ public:
 
     // handlers
     virtual BOOL handleMouseUp(S32 x, S32 y, MASK mask);
+	virtual void onMouseEnter(S32 x, S32 y, MASK mask);
+	virtual void onMouseLeave(S32 x, S32 y, MASK mask);
 
     //callbacks
     typedef boost::function<void (LLNotificationListItem* item)> item_callback_t;
@@ -87,8 +90,10 @@ public:
     boost::signals2::connection setOnItemCloseCallback(item_callback_t cb) { return mOnItemClose.connect(cb); }
     boost::signals2::connection setOnItemClickCallback(item_callback_t cb) { return mOnItemClick.connect(cb); }
     
+    virtual bool showPopup() { return true; }
     void setExpanded(BOOL value);
     virtual BOOL postBuild();
+    void reshapeNotification();
 
     typedef enum e_time_type
 	{
@@ -110,7 +115,7 @@ protected:
     Params              mParams;
     LLTextBox*          mTitleBox;
     LLTextBox*          mTitleBoxExp;
-    LLViewerTextEditor* mNoticeTextExp;
+    LLChatEntry* mNoticeTextExp;
     LLTextBox*          mTimeBox;
     LLTextBox*          mTimeBoxExp;
     LLButton*           mExpandBtn;
@@ -124,6 +129,7 @@ protected:
     S32                 mCondensedHeight;
     S32                 mExpandedHeight;
     S32                 mExpandedHeightResize;
+    bool                mExpanded;
 };
 
 class LLGroupNotificationListItem
@@ -162,6 +168,8 @@ public:
     static std::set<std::string> getTypes();
     virtual BOOL postBuild();
 
+    /*virtual*/ bool showPopup() { return false; }
+
 private:
     friend class LLNotificationListItem;
     LLGroupInviteNotificationListItem(const Params& p);
@@ -187,6 +195,8 @@ public:
 	~LLGroupNoticeNotificationListItem();
     static std::set<std::string> getTypes();
     virtual BOOL postBuild();
+
+    /*virtual*/ bool showPopup() { return false; }
 
 private:
     friend class LLNotificationListItem;
@@ -232,6 +242,7 @@ private:
     LLSystemNotificationListItem & operator=(LLSystemNotificationListItem &);
     LLIconCtrl* mSystemNotificationIcon;
     LLIconCtrl* mSystemNotificationIconExp;
+    bool mIsCaution;
 };
 
 #endif // LL_LLNOTIFICATIONLISTITEM_H
