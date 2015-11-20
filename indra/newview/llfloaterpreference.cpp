@@ -787,6 +787,24 @@ BOOL LLFloaterPreference::postBuild()
 	refreshGraphicControls();
 	refreshCameraControls();
 
+	toggleTabs();
+	if (!gSavedSettings.getBOOL("RememberPreferencesTabs"))
+	{
+		gSavedSettings.setBOOL("PrefsViewerVisible", false);
+		gSavedSettings.setBOOL("PrefsBasicVisible", false);
+		gSavedSettings.setBOOL("PrefsLoDVisible", false);
+		gSavedSettings.setBOOL("PrefsPerformanceVisible", false);
+		gSavedSettings.setBOOL("PrefsVertexVisible", false);
+		gSavedSettings.setBOOL("PrefsDeferredVisible", false);
+		gSavedSettings.setBOOL("PrefsDoFVisible", false);
+		gSavedSettings.setBOOL("PrefsAOVisible", false);
+		gSavedSettings.setBOOL("PrefsMotionBlurVisible", false);
+		gSavedSettings.setBOOL("PrefsGodraysVisible", false);
+		gSavedSettings.setBOOL("PrefsPostVisible", false);
+		gSavedSettings.setBOOL("PrefsToneMappingVisible", false);
+		gSavedSettings.setBOOL("PrefsVignetteVisible", false);
+	}
+
 	return TRUE;
 }
 
@@ -936,6 +954,43 @@ void LLFloaterPreference::onTab(LLUICtrl* ctrl, const LLSD& param)
 		getChild<LLLayoutStack>("gfx_stack")->translate(0, -modifier);
 	}
 	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
+}
+
+//BD - Tab Toggles
+void LLFloaterPreference::toggleTabs()
+{
+	LLRect rect = getChild<LLPanel>("gfx_scroll_panel")->getRect();
+	S32 modifier = 0;
+	if (gSavedSettings.getBOOL("PrefsViewerVisible"))
+		modifier += getChild<LLLayoutPanel>("viewer_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsBasicVisible"))
+		modifier += getChild<LLLayoutPanel>("basic_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsLoDVisible"))
+		modifier += getChild<LLLayoutPanel>("lod_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsPerformanceVisible"))
+		modifier += getChild<LLLayoutPanel>("performance_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsVertexVisible"))
+		modifier += getChild<LLLayoutPanel>("vertex_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsDeferredVisible"))
+		modifier += getChild<LLLayoutPanel>("deferred_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsDoFVisible"))
+		modifier += getChild<LLLayoutPanel>("dof_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsAOVisible"))
+		modifier += getChild<LLLayoutPanel>("ao_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsMotionBlurVisible"))
+		modifier += getChild<LLLayoutPanel>("motionblur_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsGodraysVisible"))
+		modifier += getChild<LLLayoutPanel>("godrays_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsPostVisible"))
+		modifier += getChild<LLLayoutPanel>("post_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsToneMappingVisible"))
+		modifier += getChild<LLLayoutPanel>("tonemapping_layout_panel")->getRect().getHeight();
+	if (gSavedSettings.getBOOL("PrefsVignetteVisible"))
+		modifier += getChild<LLLayoutPanel>("vignette_layout_panel")->getRect().getHeight();
+
+	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (rect.getHeight() + modifier));
+	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
+	getChild<LLLayoutStack>("gfx_stack")->translate(0, modifier);
 }
 
 void LLFloaterPreference::onExportControls()
@@ -1732,7 +1787,7 @@ void LLFloaterPreference::refreshEnabledState()
 // [/RLVa:KB]
 
 	//Deferred/SSAO/Shadows
-	LLCheckBoxCtrl* ctrl_deferred = getChild<LLCheckBoxCtrl>("UseLightShaders");
+	LLCheckBoxCtrl* ctrl_deferred = getChild<LLCheckBoxCtrl>("Deferred");
 
 	
 	BOOL enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
@@ -1921,7 +1976,7 @@ void LLFloaterPreference::refresh()
 	//BD - We might want to use this for later warnings of too high graphic options.
 	//updateSliderText(getChild<LLSliderCtrl>("ObjectMeshDetail",		true), getChild<LLTextBox>("ObjectMeshDetailText",		true));
 	
-	refreshEnabledState();
+	//refreshEnabledState();
 }
 
 //BD - We might want to use this for later warnings in preferences

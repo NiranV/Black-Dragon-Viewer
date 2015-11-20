@@ -17,7 +17,7 @@ width="510">
  left="0"
  name="gfx_scroll"
  opaque="true"
- height="407"
+ height="387"
  width="509"
  top="0">
   <panel
@@ -51,6 +51,7 @@ width="510">
 	  width="515">
    <button
 		 follows="left|top"
+         control_name="PrefsViewerVisible"
 		 height="20"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -81,6 +82,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      visibility_control="PrefsViewerVisible"
 	  layout="topleft"
 	  height="167"
 	  auto_resize="false"
@@ -405,6 +407,7 @@ width="510">
 	  width="515">
    <button
 		 follows="left|top"
+         control_name="PrefsBasicVisible"
 		 height="20"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -435,6 +438,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      visibility_control="PrefsBasicVisible"
 	  layout="topleft"
 	  height="260"
 	  auto_resize="false"
@@ -888,6 +892,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsLoDVisible"
 	  layout="topleft"
 	  height="205"
       visible="false"
@@ -1597,6 +1602,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsPerformanceVisible"
 	  layout="topleft"
 	  height="268"
 	  auto_resize="false"
@@ -2061,6 +2067,7 @@ width="510">
       </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsVertexVisible"
 	  layout="topleft"
 	  height="423"
 	  auto_resize="false"
@@ -2147,11 +2154,11 @@ width="510">
  </combo_box>-->
  
  <radio_group
-                  control_name="RenderVolumeLODFactor"
+                  control_name="RenderReflectionDetail"
                   height="19"
                   layout="topleft"
                   left="10"
-                  name="RenderVolumeLODFactor"
+                  name="RenderReflectionDetail"
                   top_pad="5"
                   width="600">
                         <radio_item
@@ -3107,6 +3114,7 @@ width="510">
       </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsDeferredVisible"
 	  layout="topleft"
 	  height="290"
 	  auto_resize="false"
@@ -3711,6 +3719,7 @@ width="510">
  </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsDoFVisible"
 	  layout="topleft"
 	  height="145"
 	  auto_resize="false"
@@ -3981,6 +3990,7 @@ width="510">
      </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsAOVisible"
 	  layout="topleft"
 	  height="142"
 	  auto_resize="false"
@@ -4246,6 +4256,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsMotionBlurVisible"
 	  layout="topleft"
 	  height="41"
 	  auto_resize="false"
@@ -4326,6 +4337,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsGodraysVisible"
 	  layout="topleft"
 	  height="98"
 	  auto_resize="false"
@@ -4485,6 +4497,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsPostVisible"
 	  layout="topleft"
 	  height="114"
 	  auto_resize="false"
@@ -4679,6 +4692,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsToneMappingVisible"
 	  layout="topleft"
 	  height="437"
 	  auto_resize="false"
@@ -5400,6 +5414,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
+      control_name="PrefsVignetteVisible"
 	  layout="topleft"
 	  height="70"
 	  auto_resize="false"
@@ -5486,5 +5501,15 @@ width="510">
       </layout_stack>
   </panel>
    </scroll_container>
+   <check_box
+   control_name="RememberPreferencesTabs"
+   height="16"
+   initial_value="true"
+   label="Remember Tabs"
+   layout="topleft"
+   left_delta="5"
+   name="RememberPreferencesTabs"
+   top="-17"
+   width="115"/>
 </panel>
 

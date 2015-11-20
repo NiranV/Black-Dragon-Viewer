@@ -186,6 +186,9 @@ public:
 //	//BD - Expandable Tabs
 	void onTab(LLUICtrl* ctrl, const LLSD& param);
 
+//	//BD - Expandable Tabs
+	void toggleTabs();
+
 //	//BD - Debug Arrays
 	void onCommitX(LLUICtrl* ctrl, const LLSD& param);
 	void onCommitY(LLUICtrl* ctrl, const LLSD& param);
