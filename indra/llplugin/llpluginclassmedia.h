@@ -133,6 +133,8 @@ public:
 	// Text may be unicode (utf8 encoded)
 	bool textInput(const std::string &text, MASK modifiers, LLSD native_key_data);
 	
+	void setCookie(std::string uri, std::string name, std::string value, std::string domain, std::string path, bool httponly, bool secure);
+
 	void loadURI(const std::string &uri);
 	
 	// "Loading" means uninitialized or any state prior to fully running (processing commands)
@@ -191,7 +193,7 @@ public:
 	bool	canPaste() const { return mCanPaste; };
 	
 	// These can be called before init(), and they will be queued and sent before the media init message.
-	void	setUserDataPath(const std::string &user_data_path);
+	void	setUserDataPath(const std::string &user_data_path_cache, const std::string &user_data_path_cookies);
 	void	setLanguageCode(const std::string &language_code);
 	void	setPluginsEnabled(const bool enabled);
 	void	setJavascriptEnabled(const bool enabled);
@@ -372,7 +374,7 @@ protected:
 	int			mPadding;
 	
 	
-	LLPluginProcessParent *mPlugin;
+	LLPluginProcessParent::ptr_t mPlugin;
 	
 	LLRect mDirtyRect;
 	

@@ -48,7 +48,6 @@ static int nextPowerOf2( int value )
 LLPluginClassMedia::LLPluginClassMedia(LLPluginClassMediaOwner *owner)
 {
 	mOwner = owner;
-	mPlugin = NULL;
 	reset();
 
 	//debug use
@@ -68,7 +67,7 @@ bool LLPluginClassMedia::init(const std::string &launcher_filename, const std::s
 	LL_DEBUGS("Plugin") << "dir: " << plugin_dir << LL_ENDL;
 	LL_DEBUGS("Plugin") << "plugin: " << plugin_filename << LL_ENDL;
 
-	mPlugin = new LLPluginProcessParent(this);
+	mPlugin = LLPluginProcessParent::create(this);
 	mPlugin->setSleepTime(mSleepTime);
 
 	// Queue up the media init message -- it will be sent after all the currently queued messages.
@@ -84,10 +83,10 @@ bool LLPluginClassMedia::init(const std::string &launcher_filename, const std::s
 
 void LLPluginClassMedia::reset()
 {
-	if(mPlugin != NULL)
+	if(mPlugin)
 	{
-		delete mPlugin;
-		mPlugin = NULL;
+        mPlugin->requestShutdown();
+        mPlugin.reset();
 	}
 
 	mTextureParamsReceived = false;
@@ -148,7 +147,7 @@ void LLPluginClassMedia::reset()
 	mStatusCode = 0;
 
 	mClickEnforceTarget = false;
-	
+
 	// media_time class
 	mCurrentTime = 0.0f;
 	mDuration = 0.0f;
@@ -672,6 +671,21 @@ bool LLPluginClassMedia::textInput(const std::string &text, MASK modifiers, LLSD
 	return true;
 }
 
+void LLPluginClassMedia::setCookie(std::string uri, std::string name, std::string value, std::string domain, std::string path, bool httponly, bool secure)
+{
+	LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "set_cookie");
+
+	message.setValue("uri", uri);
+	message.setValue("name", name);
+	message.setValue("value", value);
+	message.setValue("domain", domain);
+	message.setValue("path", path);
+	message.setValueBoolean("httponly", httponly);
+	message.setValueBoolean("secure", secure);
+
+	sendMessage(message);
+}
+
 void LLPluginClassMedia::loadURI(const std::string &uri)
 {
 	LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "load_uri");
@@ -816,10 +830,11 @@ void LLPluginClassMedia::paste()
 	sendMessage(message);
 }
 
-void LLPluginClassMedia::setUserDataPath(const std::string &user_data_path)
+void LLPluginClassMedia::setUserDataPath(const std::string &user_data_path_cache, const std::string &user_data_path_cookies)
 {
 	LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "set_user_data_path");
-	message.setValue("path", user_data_path);
+	message.setValue("cache_path", user_data_path_cache);
+	message.setValue("cookies_path", user_data_path_cookies);
 	sendMessage(message);
 }
 
@@ -1458,4 +1473,3 @@ void LLPluginClassMedia::initializeUrlHistory(const LLSD& url_history)
 
 	LL_DEBUGS("Plugin") << "Sending history" << LL_ENDL;
 }
-
