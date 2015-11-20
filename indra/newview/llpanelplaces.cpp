@@ -295,9 +295,6 @@ BOOL LLPanelPlaces::postBuild()
 	mOverflowBtn = getChild<LLMenuButton>("overflow_btn");
 	mOverflowBtn->setMouseDownCallback(boost::bind(&LLPanelPlaces::onOverflowButtonClicked, this));
 
-	mPlaceInfoBtn = getChild<LLButton>("profile_btn");
-	mPlaceInfoBtn->setClickedCallback(boost::bind(&LLPanelPlaces::onProfileButtonClicked, this));
-
 	LLUICtrl::CommitCallbackRegistry::ScopedRegistrar registrar;
 	registrar.add("Places.OverflowMenu.Action",  boost::bind(&LLPanelPlaces::onOverflowMenuItemClicked, this, _2));
 	LLUICtrl::EnableCallbackRegistry::ScopedRegistrar enable_registrar;
@@ -822,14 +819,6 @@ void LLPanelPlaces::onOverflowButtonClicked()
 	mOverflowBtn->setMenu(menu, LLMenuButton::MP_TOP_RIGHT);
 }
 
-void LLPanelPlaces::onProfileButtonClicked()
-{
-	if (!mActivePanel)
-		return;
-
-	mActivePanel->onShowProfile();
-}
-
 bool LLPanelPlaces::onOverflowMenuItemEnable(const LLSD& param)
 {
 	std::string value = param.asString();
@@ -1144,47 +1133,24 @@ void LLPanelPlaces::updateVerbs()
 		is_place_info_visible = false;
 	}
 
-	bool is_agent_place_info_visible = mPlaceInfoType == AGENT_INFO_TYPE;
 	bool is_create_landmark_visible = mPlaceInfoType == CREATE_LANDMARK_INFO_TYPE;
 	bool is_pick_panel_visible = false;
 	if(mPickPanel)
 	{
 		is_pick_panel_visible = mPickPanel->isInVisibleChain();
 	}
-	bool have_3d_pos = ! mPosGlobal.isExactlyZero();
 
-	mTeleportBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible);
-	mShowOnMapBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible);
-	mOverflowBtn->setVisible(is_place_info_visible && !is_create_landmark_visible && !isLandmarkEditModeOn);
-	mEditBtn->setVisible(mPlaceInfoType == LANDMARK_INFO_TYPE && !isLandmarkEditModeOn);
-	mSaveBtn->setVisible(isLandmarkEditModeOn);
-	mCancelBtn->setVisible(isLandmarkEditModeOn);
-	mCloseBtn->setVisible(is_create_landmark_visible && !isLandmarkEditModeOn);
-	mPlaceInfoBtn->setVisible(!is_place_info_visible && !is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible);
+	mTeleportBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible && is_place_info_visible);
+	mShowOnMapBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible && is_place_info_visible);
+	mOverflowBtn->setVisible(is_place_info_visible && !is_create_landmark_visible && !isLandmarkEditModeOn && is_place_info_visible);
+	mEditBtn->setVisible(mPlaceInfoType == LANDMARK_INFO_TYPE && !isLandmarkEditModeOn && is_place_info_visible);
+	mSaveBtn->setVisible(isLandmarkEditModeOn && is_place_info_visible);
+	mCancelBtn->setVisible(isLandmarkEditModeOn && is_place_info_visible);
+	mCloseBtn->setVisible(is_create_landmark_visible && !isLandmarkEditModeOn && is_place_info_visible);
 
-	mPlaceInfoBtn->setEnabled(!is_create_landmark_visible && !isLandmarkEditModeOn && have_3d_pos);
 
-	if (is_place_info_visible)
-	{
-		mShowOnMapBtn->setEnabled(have_3d_pos);
-
-		if (is_agent_place_info_visible)
-		{
-			// We don't need to teleport to the current location
-			// so check if the location is not within the current parcel.
-			mTeleportBtn->setEnabled(have_3d_pos &&
-									 !LLViewerParcelMgr::getInstance()->inAgentParcel(mPosGlobal));
-		}
-		else if (mPlaceInfoType == LANDMARK_INFO_TYPE || mPlaceInfoType == REMOTE_PLACE_INFO_TYPE)
-		{
-			mTeleportBtn->setEnabled(have_3d_pos);
-		}
-	}
-	else
-	{
-		if (mActivePanel)
-			mActivePanel->updateVerbs();
-	}
+	if (mActivePanel)
+		mActivePanel->updateVerbs();
 }
 
 LLPanelPlaceInfo* LLPanelPlaces::getCurrentInfoPanel()

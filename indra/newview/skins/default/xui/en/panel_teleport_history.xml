@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
 	   name="Teleport History"
+	   bg_alpha_image="Panel_Background"
+			   background_visible="true"
 	   bottom="0"
 	   height="400"
 	   left="0"
 	   width="313"
      help_topic="panel_teleport_history"
-     border="false" follows="left|top|right|bottom"
-     background_visible="false">     
+     border="false" follows="left|top|right|bottom">     
     <accordion
      follows="left|top|right|bottom"
-     height="373"
+     height="371"
      layout="topleft"
      left="3"
-     top="0"
+     top="2"
      name="history_accordion"
-     background_visible="true"
+     background_visible="false"
      bg_alpha_color="Black_50"
-     width="307">
+     width="310">
         <no_matched_tabs_text
          name="no_matched_teleports_msg"
          value="Didn't find what you're looking for? Try [secondlife:///app/search/places/[SEARCH_TERM] Search]." />
@@ -161,16 +162,39 @@
 	    </accordion_tab>
     </accordion>
     <panel
-     background_visible="true"
+     background_visible="false"
 	 bg_alpha_color="Black_50"
      bevel_style="none"
-     bottom="2"
+     bottom="1"
      follows="left|right|bottom"
      height="25"
      layout="bottomleft"
      left="3"
      name="bottom_panel"
      width="307">
+	  <layout_stack
+		   animate="false"
+		   border_size="0"
+		   follows="left|right|bottom"
+		   height="25"
+		   layout="topleft"
+		   orientation="horizontal"
+		   top="0"
+		   left="1"
+		   name="bottom_panel"
+		   width="307">
+           <layout_panel
+		       auto_resize="true"
+		       height="25"
+		       layout="topleft"
+		       name="dummy_panel"
+		       width="209"/>
+		   <layout_panel
+		       auto_resize="false"
+		       height="25"
+		       layout="topleft"
+		       name="gear_btn_panel"
+		       width="96">
         <menu_button
          follows="bottom|left"
          tool_tip="Show additional options"
@@ -184,14 +208,15 @@
          name="gear_btn"
          top="0"
          width="31" />
-        <icon
-         follows="bottom|left|right"
-         height="25"
-         image_name="Toolbar_Middle_Off"
-         layout="topleft"
-         left_pad="1"
-         name="dummy_icon"
-         width="273"
-        />
+		<icon
+		 follows="left|top|right"
+		 image_name="Toolbar_Middle_Off"
+		 height="25"
+		 width="63"
+		 layout="topleft"
+		 left_pad="1"
+		 top="0"/>
+		   </layout_panel>
+	  </layout_stack>
     </panel>
 </panel>

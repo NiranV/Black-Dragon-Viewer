@@ -96,7 +96,6 @@ private:
 	bool onOverflowMenuItemEnable(const LLSD& param);
 	void onCreateLandmarkButtonClicked(const LLUUID& folder_id);
 	void onBackButtonClicked();
-	void onProfileButtonClicked();
 
 	void toggleMediaPanel();
 	void togglePickPanel(BOOL visible);
@@ -126,7 +125,6 @@ private:
 	LLButton*					mCancelBtn;
 	LLButton*					mCloseBtn;
 	LLMenuButton*				mOverflowBtn;
-	LLButton*					mPlaceInfoBtn;
 
 	LLPlacesInventoryObserver*	mInventoryObserver;
 	LLPlacesParcelObserver*		mParcelObserver;
