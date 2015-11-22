@@ -42,8 +42,10 @@ class LLUICtrl;
 class LLUUID;
 class LLFrameTimer;
 class LLStatGraph;
+class LLPanelPresetsPulldown;
 class LLPanelVolumePulldown;
 class LLPanelNearByMedia;
+class LLIconCtrl;
 //BD - Draw Distance mouse-over slider
 class BDPanelDrawDistance;
 
@@ -74,6 +76,7 @@ private:
 	
 	void onVolumeChanged(const LLSD& newvalue);
 
+	void onMouseEnterPresets();
 	void onMouseEnterVolume();
 	void onMouseEnterNearbyMedia();
 	void onClickScreen(S32 x, S32 y);
@@ -90,6 +93,7 @@ private:
 	LLStatGraph *mSGBandwidth;
 	LLStatGraph *mSGPacketLoss;
 
+	LLIconCtrl	*mIconPresets;
 	LLButton	*mBtnVolume;
 	LLTextBox	*mBoxBalance;
 	LLButton	*mMediaToggle;
@@ -99,6 +103,7 @@ private:
 
 	S32				mHealth;
 	LLFrameTimer*	mHealthTimer;
+	LLPanelPresetsPulldown* mPanelPresetsPulldown;
 	LLPanelVolumePulldown* mPanelVolumePulldown;
 	LLPanelNearByMedia*	mPanelNearByMedia;
 //	//BD - Draw Distance mouse-over slider

@@ -23,7 +23,7 @@
         width="142"
 		top="21"
         left="7"/>
-    <button
+   <button
      follows="right|bottom"
      height="23"
      label="OK"

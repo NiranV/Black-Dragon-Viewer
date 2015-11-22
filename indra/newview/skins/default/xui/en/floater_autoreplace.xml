@@ -154,6 +154,7 @@ title="Auto-Replace Settings">
  name="autoreplace_delete_entry"
  label="Remove"/>
  <text
+   name="autoreplace_keyword_txt"
  type="string"
  follows="left|top"
  height="16"
@@ -173,6 +174,7 @@ title="Auto-Replace Settings">
  top_delta="-5"
  width="150"/>
  <text
+   name="autoreplace_replacement_txt"
  type="string"
  follows="left|top"
  height="16"

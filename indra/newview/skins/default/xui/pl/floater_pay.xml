@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="Give Money" title="">
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<floater name="Give Money">
 	<string name="payee_group">Zapłać grupie</string>
 	<string name="payee_resident">Zapłać Rezydentowi</string>
 	<text name="paying_text">Płacisz:</text>
@@ -12,6 +12,9 @@
 	</panel>
 	<panel label="Szukaj" name="InputPanel">
 		<text name="amount text">Inna kwota:</text>
+		<button label="Płać 20L$" label_selected="Płać 20L$" name="fastpay 20" />
+	</panel>
+	<panel label="Szukaj" name="InputPanel">
 		<button label="Zapłać" label_selected="Zapłać" name="pay btn"/>
 		<button label="Anuluj" label_selected="Anuluj" name="cancel btn"/>
 	</panel>

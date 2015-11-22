@@ -251,9 +251,10 @@ public:
 	// force all name tags to rebuild, useful when display names turned on/off
 	static void		invalidateNameTags();
 	void			addNameTagLine(const std::string& line, const LLColor4& color, S32 style, const LLFontGL* font);
-	void 			idleUpdateRenderCost();
-	void			calculateUpdateRenderCost();
-	void			updateVisualComplexity() { mVisualComplexityStale = TRUE; }
+	void 			idleUpdateRenderComplexity();
+	void			calculateUpdateRenderComplexity();
+	static const S32 VISUAL_COMPLEXITY_UNKNOWN;
+	void			updateVisualComplexity();
 	
 	S32				getVisualComplexity()			{ return mVisualComplexity;				};		// Numbers calculated here by rendering AV
 	S32				getAttachmentGeometryBytes()	{ return mAttachmentGeometryBytes;		};		// number of bytes in attached geometry
@@ -264,7 +265,7 @@ public:
 	
 	S32				getUpdatePeriod()				{ return mUpdatePeriod;			};
 	const LLColor4 &  getMutedAVColor()				{ return mMutedAVColor;			};
-
+	static void     updateImpostorRendering(U32 newMaxNonImpostorsValue);
 
 	void 			idleUpdateBelowWater();
 
@@ -274,10 +275,12 @@ public:
 public:
 	static S32		sRenderName;
 	static BOOL		sRenderGroupTitles;
-	static U32		sMaxVisible; //(affected by control "RenderAvatarMaxVisible")
+	static const U32 IMPOSTORS_OFF; /* Must equal the maximum allowed the RenderAvatarMaxNonImpostors
+									 * slider in panel_preferences_graphics1.xml */
+	static U32		sMaxNonImpostors; //(affected by control "RenderAvatarMaxNonImpostors")
 	static F32		sRenderDistance; //distance at which avatars will render.
 	static BOOL		sShowAnimationDebug; // show animation debug info
-	static BOOL		sUseImpostors; //use impostors for far away avatars
+	static bool		sUseImpostors; //use impostors for far away avatars
 	static BOOL		sShowFootPlane;	// show foot collision plane reported by server
 	static BOOL		sShowCollisionVolumes;	// show skeletal collision volumes
 	static BOOL		sVisibleInFirstPerson;
@@ -301,9 +304,9 @@ public:
 	//--------------------------------------------------------------------
 public:
 	BOOL			isFullyLoaded() const;
-	bool			isTooComplex() const;
+	bool 			isTooComplex() const;
 	bool 			visualParamWeightsAreDefault();
-	virtual BOOL	getIsCloud() const;
+	virtual bool	getIsCloud() const;
 	BOOL			isFullyTextured() const;
 	BOOL			hasGray() const; 
 	S32				getRezzedStatus() const; // 0 = cloud, 1 = gray, 2 = textured, 3 = textured and fully downloaded.
@@ -319,7 +322,7 @@ public:
 	static void 	logPendingPhasesAllAvatars();
 	void 			logMetricsTimerRecord(const std::string& phase_name, F32 elapsed, bool completed);
 
-	static LLColor4 calcMutedAVColor(F32 value, S32 range_low, S32 range_high);
+	static LLColor4 calcMutedAVColor(const LLUUID av_id);
 
 protected:
 	LLViewerStats::PhaseMap& getPhases() { return mPhases; }
@@ -334,8 +337,6 @@ private:
 	BOOL			mPreviousFullyLoaded;
 	BOOL			mFullyLoadedInitialized;
 	S32				mFullyLoadedFrameCounter;
-	S32				mVisualComplexity;
-	BOOL			mVisualComplexityStale;
 	LLColor4		mMutedAVColor;
 	LLFrameTimer	mFullyLoadedTimer;
 	LLFrameTimer	mRuthTimer;
@@ -382,16 +383,14 @@ public:
 
 public:
 	U32 		renderImpostor(LLColor4U color = LLColor4U(255,255,255,255), S32 diffuse_channel = 0);
-	bool		isVisuallyMuted();
-	bool 		isInMuteList();
-	void		setCachedVisualMute(bool muted)						{ mCachedVisualMute = muted;	};
+	bool		isVisuallyMuted() const;
 	void		forceUpdateVisualMuteSettings();
 
 	enum VisualMuteSettings
 	{
-		VISUAL_MUTE_NOT_SET = 0,
-		ALWAYS_VISUAL_MUTE  = 1,
-		NEVER_VISUAL_MUTE   = 2
+		AV_RENDER_NORMALLY = 0,
+		AV_DO_NOT_RENDER   = 1,
+		AV_ALWAYS_RENDER   = 2
 	};
 	void		setVisualMuteSettings(VisualMuteSettings set)		{ mVisuallyMuteSetting = set;	};
 	VisualMuteSettings  getVisualMuteSettings()						{ return mVisuallyMuteSetting;	};
@@ -409,8 +408,6 @@ public:
 	S32			mAttachmentGeometryBytes; //number of bytes in attached geometry
 	F32			mAttachmentSurfaceArea; //estimated surface area of attachments
 
-	S32			mReportedVisualComplexity;			// Numbers as reported by the SL server
-
 private:
 	bool		shouldAlphaMask();
 
@@ -420,11 +417,11 @@ private:
 	S32	 		mUpdatePeriod;
 	S32  		mNumInitFaces; //number of faces generated when creating the avatar drawable, does not inculde splitted faces due to long vertex buffer.
 
-	bool		mCachedVisualMute;				// cached return value for isVisuallyMuted()
-	F64			mCachedVisualMuteUpdateTime;	// Time to update mCachedVisualMute
+	// the isTooComplex method uses these mutable values to avoid recalculating too frequently
+	mutable S32  mVisualComplexity;
+	mutable bool mVisualComplexityStale;
+	S32          mReportedVisualComplexity; // from other viewers through the simulator
 
-	bool		mCachedInMuteList;
-	F64			mCachedMuteListUpdateTime;
 
 	VisualMuteSettings		mVisuallyMuteSetting;			// Always or never visually mute this AV
 
@@ -467,6 +464,7 @@ private:
 	//--------------------------------------------------------------------
 public:
 	BOOL 		isImpostor();
+	BOOL 		shouldImpostor(const U32 rank_factor = 1) const;
 	BOOL 	    needsImpostorUpdate() const;
 	const LLVector3& getImpostorOffset() const;
 	const LLVector2& getImpostorDim() const;
@@ -701,7 +699,6 @@ private:
 public:
 	BOOL			isVisible() const;
 	void			setVisibilityRank(U32 rank);
-	U32				getVisibilityRank()  const { return mVisibilityRank; } // unused
 	static S32 		sNumVisibleAvatars; // Number of instances of this class
 /**                    Appearance
  **                                                                            **
