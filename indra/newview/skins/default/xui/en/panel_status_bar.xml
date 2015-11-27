@@ -80,7 +80,7 @@
      height="16"
      top="7"
      layout="topleft"
-     left="-276"
+     left="-300"
      name="TimeText"
      tool_tip="Current time (Pacific)"
      width="80">
@@ -111,15 +111,24 @@
      top="6"
      name="volume_btn"
      width="16" />
-				<icon
-						follows="right|top"
-						height="16"
-						image_name="Draw_Distance"
-						left_pad="8"
-						top="5"
-						name="draw_distance_icon"
-						tool_tip="Set the rendering distance in meters here"
-						width="16" />
+	  <icon
+	  follows="right|top"
+	  height="16"
+	  image_name="Draw_Distance"
+	  left_pad="8"
+	  top="5"
+	  name="draw_distance_icon"
+	  tool_tip="Set the rendering distance in meters here"
+	  width="16" />
+	  <icon
+	  follows="right|top"
+	  height="16"
+	  image_name="Presets_Icon"
+	  left_pad="8"
+	  top="5"
+	  name="presets_icon"
+	  width="18" />
+
 				<text
 		type="string"
 		font="SansSerifSmallBold"

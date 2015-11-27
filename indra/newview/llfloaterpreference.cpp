@@ -50,7 +50,6 @@
 #include "llfloaterreg.h"
 #include "llfloaterabout.h"
 #include "llfavoritesbar.h"
-#include "llfloaterhardwaresettings.h"
 #include "llfloatersidepanelcontainer.h"
 #include "llfloaterimsession.h"
 #include "llkeyboard.h"
@@ -116,6 +115,12 @@
 
 #include "lllogininstance.h"        // to check if logged in yet
 #include "llsdserialize.h"
+#include "llpresetsmanager.h"
+#include "llviewercontrol.h"
+#include "llpresetsmanager.h"
+#include "llfeaturemanager.h"
+#include "llviewertexturelist.h"
+
 
 const F32 BANDWIDTH_UPDATER_TIMEOUT = 0.5f;
 char const* const VISIBILITY_DEFAULT = "default";
@@ -405,6 +410,18 @@ void LLPanelVoiceDeviceSettings::onCommitOutputDevice()
 			mCtrlInputDevices->getValue().asString());
 	}
 }
+
+/// This must equal the maximum value set for the IndirectMaxComplexity slider in panel_preferences_graphics1.xml
+static const U32 INDIRECT_MAX_ARC_OFF = 101; // all the way to the right == disabled
+static const U32 MIN_INDIRECT_ARC_LIMIT = 1; // must match minimum of IndirectMaxComplexity in panel_preferences_graphics1.xml
+static const U32 MAX_INDIRECT_ARC_LIMIT = INDIRECT_MAX_ARC_OFF - 1; // one short of all the way to the right...
+
+/// These are the effective range of values for RenderAvatarMaxComplexity
+static const F32 MIN_ARC_LIMIT = 20000.0f;
+static const F32 MAX_ARC_LIMIT = 300000.0f;
+static const F32 MIN_ARC_LOG = log(MIN_ARC_LIMIT);
+static const F32 MAX_ARC_LOG = log(MAX_ARC_LIMIT);
+static const F32 ARC_LIMIT_MAP_SCALE = (MAX_ARC_LOG - MIN_ARC_LOG) / (MAX_INDIRECT_ARC_LIMIT - MIN_INDIRECT_ARC_LIMIT);
 
 //control value for middle mouse as talk2push button
 const static std::string MIDDLE_MOUSE_CV = "MiddleMouse";
@@ -944,14 +961,15 @@ void LLFloaterPreference::onTab(LLUICtrl* ctrl, const LLSD& param)
 	getChild<LLLayoutPanel>(param.asString())->setVisible(ctrl->getValue());
 	LLRect rect = getChild<LLPanel>("gfx_scroll_panel")->getRect();
 	S32 modifier = getChild<LLLayoutPanel>(param.asString())->getRect().getHeight();
+	modifier -= 5;
 	if (ctrl->getValue().asBoolean())
 	{
-		rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (rect.getHeight() + modifier));
+		rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), rect.getHeight() + modifier);
 		getChild<LLLayoutStack>("gfx_stack")->translate(0, modifier);
 	}
 	else
 	{
-		rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (rect.getHeight() - modifier));
+		rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), rect.getHeight() - modifier);
 		getChild<LLLayoutStack>("gfx_stack")->translate(0, -modifier);
 	}
 	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
@@ -963,31 +981,31 @@ void LLFloaterPreference::toggleTabs()
 	LLRect rect = getChild<LLPanel>("gfx_scroll_panel")->getRect();
 	S32 modifier = 0;
 	if (gSavedSettings.getBOOL("PrefsViewerVisible"))
-		modifier += getChild<LLLayoutPanel>("viewer_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("viewer_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsBasicVisible"))
-		modifier += getChild<LLLayoutPanel>("basic_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("basic_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsLoDVisible"))
-		modifier += getChild<LLLayoutPanel>("lod_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("lod_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsPerformanceVisible"))
-		modifier += getChild<LLLayoutPanel>("performance_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("performance_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsVertexVisible"))
-		modifier += getChild<LLLayoutPanel>("vertex_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("vertex_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsDeferredVisible"))
-		modifier += getChild<LLLayoutPanel>("deferred_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("deferred_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsDoFVisible"))
-		modifier += getChild<LLLayoutPanel>("dof_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("dof_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsAOVisible"))
-		modifier += getChild<LLLayoutPanel>("ao_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("ao_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsMotionBlurVisible"))
-		modifier += getChild<LLLayoutPanel>("motionblur_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("motionblur_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsGodraysVisible"))
-		modifier += getChild<LLLayoutPanel>("godrays_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("godrays_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsPostVisible"))
-		modifier += getChild<LLLayoutPanel>("post_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("post_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsToneMappingVisible"))
-		modifier += getChild<LLLayoutPanel>("tonemapping_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("tonemapping_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsVignetteVisible"))
-		modifier += getChild<LLLayoutPanel>("vignette_layout_panel")->getRect().getHeight();
+		modifier += (getChild<LLLayoutPanel>("vignette_layout_panel")->getRect().getHeight() - 5);
 
 	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (rect.getHeight() + modifier));
 	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
@@ -1171,12 +1189,6 @@ void LLFloaterPreference::apply()
 		if (panel)
 			panel->apply();
 	}
-	// hardware menu apply
-	LLFloaterHardwareSettings* hardware_settings = LLFloaterReg::getTypedInstance<LLFloaterHardwareSettings>("prefs_hardware_settings");
-	if (hardware_settings)
-	{
-		hardware_settings->apply();
-	}
 	
 	gViewerWindow->requestResolutionUpdate(); // for UIScaleFactor
 
@@ -1247,13 +1259,6 @@ void LLFloaterPreference::cancel()
 	
 	// hide spellchecker settings folder
 	LLFloaterReg::hideInstance("prefs_spellchecker");
-	
-	// cancel hardware menu
-	LLFloaterHardwareSettings* hardware_settings = LLFloaterReg::getTypedInstance<LLFloaterHardwareSettings>("prefs_hardware_settings");
-	if (hardware_settings)
-	{
-		hardware_settings->cancel();
-	}
 	
 	// reverts any changes to current skin
 	gSavedSettings.setString("SkinCurrent", sSkin);
@@ -1349,6 +1354,19 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	// when the floater is opened.  That will make cancel do its
 	// job
 	saveSettings();
+
+	// Make sure there is a default preference file
+	LLPresetsManager::getInstance()->createMissingDefault();
+
+	bool started = (LLStartUp::getStartupState() == STATE_STARTED);
+
+	LLButton* load_btn = findChild<LLButton>("PrefLoadButton");
+	LLButton* save_btn = findChild<LLButton>("PrefSaveButton");
+	LLButton* delete_btn = findChild<LLButton>("PrefDeleteButton");
+
+	load_btn->setEnabled(started);
+	save_btn->setEnabled(started);
+	delete_btn->setEnabled(started);
 }
 
 void LLFloaterPreference::onVertexShaderEnable()
@@ -1379,7 +1397,15 @@ void LLFloaterPreference::updateShowFavoritesCheckbox(bool val)
 void LLFloaterPreference::setHardwareDefaults()
 {
 	LLFeatureManager::getInstance()->applyRecommendedSettings();
+
+	// reset indirects before refresh because we may have changed what they control
+	setIndirectControls();
+
 	refreshEnabledGraphics();
+
+	gSavedSettings.setString("PresetGraphicActive", "");
+	LLPresetsManager::getInstance()->triggerChangeSignal();
+
 	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
 	child_list_t::const_iterator iter = tabcontainer->getChildList()->begin();
 	child_list_t::const_iterator end = tabcontainer->getChildList()->end();
@@ -1389,6 +1415,42 @@ void LLFloaterPreference::setHardwareDefaults()
 		LLPanelPreference* panel = dynamic_cast<LLPanelPreference*>(view);
 		if (panel)
 			panel->setHardwareDefaults();
+	}
+}
+
+void LLFloaterPreference::getControlNames(std::vector<std::string>& names)
+{
+	LLView* view = findChild<LLView>("display");
+	if (view)
+	{
+		std::list<LLView*> stack;
+		stack.push_back(view);
+		while (!stack.empty())
+		{
+			// Process view on top of the stack
+			LLView* curview = stack.front();
+			stack.pop_front();
+
+			LLUICtrl* ctrl = dynamic_cast<LLUICtrl*>(curview);
+			if (ctrl)
+			{
+				LLControlVariable* control = ctrl->getControlVariable();
+				if (control)
+				{
+					std::string control_name = control->getName();
+					if (std::find(names.begin(), names.end(), control_name) == names.end())
+					{
+						names.push_back(control_name);
+					}
+				}
+			}
+
+			for (child_list_t::const_iterator iter = curview->getChildList()->begin();
+				iter != curview->getChildList()->end(); ++iter)
+			{
+				stack.push_back(*iter);
+			}
+		}
 	}
 }
 
@@ -1526,11 +1588,6 @@ void LLFloaterPreference::refreshEnabledGraphics()
 	{
 		instance->refresh();
 		//instance->refreshEnabledState();
-	}
-	LLFloaterHardwareSettings* hardware_settings = LLFloaterReg::getTypedInstance<LLFloaterHardwareSettings>("prefs_hardware_settings");
-	if (hardware_settings)
-	{
-		hardware_settings->refreshEnabledState();
 	}
 }
 
@@ -1825,6 +1882,48 @@ void LLFloaterPreference::refreshEnabledState()
 	//BD - We might want to add this later.
 	// Cannot have floater active until caps have been received
 	//getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
+}
+
+// static
+void LLFloaterPreference::setIndirectControls()
+{
+	/*
+	* We have controls that have an indirect relationship between the control
+	* values and adjacent text and the underlying setting they influence.
+	* In each case, the control and its associated setting are named Indirect<something>
+	* This method interrogates the controlled setting and establishes the
+	* appropriate value for the indirect control. It must be called whenever the
+	* underlying setting may have changed other than through the indirect control,
+	* such as when the 'Reset all to recommended settings' button is used...
+	*/
+	setIndirectMaxNonImpostors();
+	setIndirectMaxArc();
+}
+
+// static
+void LLFloaterPreference::setIndirectMaxNonImpostors()
+{
+	U32 max_non_impostors = gSavedSettings.getU32("RenderAvatarMaxNonImpostors");
+	// for this one, we just need to make zero, which means off, the max value of the slider
+	U32 indirect_max_non_impostors = (0 == max_non_impostors) ? LLVOAvatar::IMPOSTORS_OFF : max_non_impostors;
+	gSavedSettings.setU32("IndirectMaxNonImpostors", indirect_max_non_impostors);
+}
+
+void LLFloaterPreference::setIndirectMaxArc()
+{
+	U32 max_arc = gSavedSettings.getU32("RenderAvatarMaxComplexity");
+	U32 indirect_max_arc;
+	if (0 == max_arc)
+	{
+		// the off position is all the way to the right, so set to control max
+		indirect_max_arc = INDIRECT_MAX_ARC_OFF;
+	}
+	else
+	{
+		// This is the inverse of the calculation in updateMaxComplexity
+		indirect_max_arc = (U32)((log(max_arc) - MIN_ARC_LOG) / ARC_LIMIT_MAP_SCALE) + MIN_INDIRECT_ARC_LIMIT;
+	}
+	gSavedSettings.setU32("IndirectMaxComplexity", indirect_max_arc);
 }
 
 void LLFloaterPreference::disableUnavailableSettings()
@@ -2222,7 +2321,7 @@ void LLFloaterPreference::refreshUI()
 	refresh();
 }
 
-void LLFloaterPreference::updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box)
+/*void LLFloaterPreference::updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box)
 {
 	if (text_box == NULL || ctrl== NULL)
 		return;
@@ -2248,6 +2347,72 @@ void LLFloaterPreference::updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_b
 	else
 	{
 		text_box->setText(LLTrans::getString("GraphicsQualityHigh"));
+	}
+}*/
+
+void LLFloaterPreference::updateMaxNonImpostors()
+{
+	// Called when the IndirectMaxNonImpostors control changes
+	// Responsible for fixing the slider label (IndirectMaxNonImpostorsText) and setting RenderAvatarMaxNonImpostors
+	LLSliderCtrl* ctrl = getChild<LLSliderCtrl>("IndirectMaxNonImpostors", true);
+	U32 value = ctrl->getValue().asInteger();
+
+	if (0 == value || LLVOAvatar::IMPOSTORS_OFF <= value)
+	{
+		value = 0;
+	}
+	gSavedSettings.setU32("RenderAvatarMaxNonImpostors", value);
+	LLVOAvatar::updateImpostorRendering(value); // make it effective immediately
+	setMaxNonImpostorsText(value, getChild<LLTextBox>("IndirectMaxNonImpostorsText"));
+}
+
+void LLFloaterPreference::setMaxNonImpostorsText(U32 value, LLTextBox* text_box)
+{
+	if (0 == value)
+	{
+		text_box->setText(LLTrans::getString("no_limit"));
+	}
+	else
+	{
+		text_box->setText(llformat("%d", value));
+	}
+}
+
+void LLFloaterPreference::updateMaxComplexity()
+{
+	// Called when the IndirectMaxComplexity control changes
+	// Responsible for fixing the slider label (IndirectMaxComplexityText) and setting RenderAvatarMaxComplexity
+	LLSliderCtrl* ctrl = getChild<LLSliderCtrl>("IndirectMaxComplexity");
+	U32 indirect_value = ctrl->getValue().asInteger();
+	U32 max_arc;
+
+	if (INDIRECT_MAX_ARC_OFF == indirect_value)
+	{
+		// The 'off' position is when the slider is all the way to the right, 
+		// which is a value of INDIRECT_MAX_ARC_OFF,
+		// so it is necessary to set max_arc to 0 disable muted avatars.
+		max_arc = 0;
+	}
+	else
+	{
+		// if this is changed, the inverse calculation in setIndirectMaxArc
+		// must be changed to match
+		max_arc = (U32)exp(MIN_ARC_LOG + (ARC_LIMIT_MAP_SCALE * (indirect_value - MIN_INDIRECT_ARC_LIMIT)));
+	}
+
+	gSavedSettings.setU32("RenderAvatarMaxComplexity", (U32)max_arc);
+	setMaxComplexityText(max_arc, getChild<LLTextBox>("IndirectMaxComplexityText"));
+}
+
+void LLFloaterPreference::setMaxComplexityText(U32 value, LLTextBox* text_box)
+{
+	if (0 == value)
+	{
+		text_box->setText(LLTrans::getString("no_limit"));
+	}
+	else
+	{
+		text_box->setText(llformat("%d", value));
 	}
 }
 
@@ -2411,6 +2576,10 @@ LLPanelPreference::LLPanelPreference()
 {
 	mCommitCallbackRegistrar.add("Pref.setControlFalse",	boost::bind(&LLPanelPreference::setControlFalse,this, _2));
 	mCommitCallbackRegistrar.add("Pref.updateMediaAutoPlayCheckbox",	boost::bind(&LLPanelPreference::updateMediaAutoPlayCheckbox, this, _1));
+	mCommitCallbackRegistrar.add("Pref.PrefDelete", boost::bind(&LLPanelPreference::deletePreset, this, _2));
+	mCommitCallbackRegistrar.add("Pref.PrefSave", boost::bind(&LLPanelPreference::savePreset, this, _2));
+	mCommitCallbackRegistrar.add("Pref.PrefLoad", boost::bind(&LLPanelPreference::loadPreset, this, _2));
+	LLPresetsManager::instance().setPresetListChangeCallback(boost::bind(&LLPanelPreference::onPresetsListChange, this));
 }
 
 //virtual
@@ -2490,6 +2659,11 @@ BOOL LLPanelPreference::postBuild()
 		mBandWidthUpdater = new LLPanelPreference::Updater(boost::bind(&handleBandwidthChanged, _1), BANDWIDTH_UPDATER_TIMEOUT);
 		gSavedSettings.getControl("ThrottleBandwidthKBPS")->getSignal()->connect(boost::bind(&LLPanelPreference::Updater::update, mBandWidthUpdater, _2));
 	}
+
+	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
+
+	EDefaultOptions option = DEFAULT_TOP;
+	LLPresetsManager::getInstance()->setPresetNamesInComboBox("graphic", combo, option);
 
 #ifdef EXTERNAL_TOS
 	LLRadioGroup* ext_browser_settings = getChild<LLRadioGroup>("preferred_browser_behavior");
@@ -2628,6 +2802,56 @@ void LLPanelPreference::updateMediaAutoPlayCheckbox(LLUICtrl* ctrl)
 	}
 }
 
+void LLPanelPreference::deletePreset(const LLSD& user_data)
+{
+	std::string subdirectory = user_data.asString();
+	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
+	std::string name = combo->getSimple();
+
+	if (!LLPresetsManager::getInstance()->deletePreset(subdirectory, name)
+		&& name != "Default")
+	{
+		LLSD args;
+		args["NAME"] = name;
+		LLNotificationsUtil::add("PresetNotDeleted", args);
+	}
+}
+
+void LLPanelPreference::savePreset(const LLSD& user_data)
+{
+	std::string subdirectory = user_data.asString();
+	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
+	std::string name = combo->getSimple();
+
+	if (!LLPresetsManager::getInstance()->savePreset(subdirectory, name)
+		&& name != "Default")
+	{
+		LLSD args;
+		args["NAME"] = name;
+		LLNotificationsUtil::add("PresetNotSaved", args);
+	}
+}
+
+void LLPanelPreference::loadPreset(const LLSD& user_data)
+{
+	std::string subdirectory = user_data.asString();
+	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
+	std::string name = combo->getSimple();
+
+	LLPresetsManager::getInstance()->loadPreset(subdirectory, name);
+}
+
+void LLPanelPreference::onPresetsListChange()
+{
+	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
+	LLButton* delete_btn = getChild<LLButton>("delete");
+
+	EDefaultOptions option = DEFAULT_TOP;
+	LLPresetsManager::getInstance()->setPresetNamesInComboBox("graphic", combo, option);
+
+	delete_btn->setEnabled(0 != combo->getItemCount());
+}
+
 class LLPanelPreferencePrivacy : public LLPanelPreference
 {
 public:
@@ -2673,19 +2897,45 @@ BOOL LLPanelPreferenceGraphics::postBuild()
 {
 	return LLPanelPreference::postBuild();
 }
+
 void LLPanelPreferenceGraphics::draw()
 {
+	setPresetText();
 	LLPanelPreference::draw();
-	
-	LLButton* button_apply = findChild<LLButton>("Apply");
-	
-	if (button_apply && button_apply->getVisible())
-	{
-		bool enable = hasDirtyChilds();
-
-		button_apply->setEnabled(enable);
-	}
 }
+
+void LLPanelPreferenceGraphics::onPresetsListChange()
+{
+	setPresetText();
+}
+
+void LLPanelPreferenceGraphics::setPresetText()
+{
+	LLTextBox* preset_text = getChild<LLTextBox>("preset_text");
+
+	std::string preset_graphic_active = gSavedSettings.getString("PresetGraphicActive");
+
+	if (hasDirtyChilds() && !preset_graphic_active.empty())
+	{
+		gSavedSettings.setString("PresetGraphicActive", "");
+		preset_graphic_active.clear();
+		// This doesn't seem to cause an infinite recursion.  This trigger is needed to cause the pulldown
+		// panel to update.
+		LLPresetsManager::getInstance()->triggerChangeSignal();
+	}
+
+	if (!preset_graphic_active.empty())
+	{
+		preset_text->setText(preset_graphic_active);
+	}
+	else
+	{
+		preset_text->setText(LLTrans::getString("none_paren_cap"));
+	}
+
+	preset_text->resetDirty();
+}
+
 bool LLPanelPreferenceGraphics::hasDirtyChilds()
 {
 	std::list<LLView*> view_stack;

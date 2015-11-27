@@ -126,6 +126,7 @@ public:
 	void saveAvatarProperties( void );
 	void selectPrivacyPanel();
 	void selectChatPanel();
+	void getControlNames(std::vector<std::string>& names);
 
 protected:	
 	void		onBtnOK();
@@ -149,6 +150,8 @@ protected:
 	void setHardwareDefaults();
 	// callback for when client turns on shaders
 	void onVertexShaderEnable();
+	// callback for when client turns on impostors
+	void onAvatarImpostorsEnable();
 	
 	// This function squirrels away the current values of the controls so that
 	// cancel() can restore them.	
@@ -237,6 +240,14 @@ private:
 	void onDeleteTranscriptsResponse(const LLSD& notification, const LLSD& response);
 	void updateDeleteTranscriptsButton();
 
+	void updateMaxNonImpostors();
+	void setMaxNonImpostorsText(U32 value, LLTextBox* text_box);
+	void updateMaxComplexity();
+	void setMaxComplexityText(U32 value, LLTextBox* text_box);
+	static void setIndirectControls();
+	static void setIndirectMaxNonImpostors();
+	static void setIndirectMaxArc();
+
 	static std::string sSkin;
 	notifications_map mNotificationOptions;
 	bool mClickActionDirty; ///< Set to true when the click/double-click options get changed by user.
@@ -250,6 +261,7 @@ private:
 	std::string mDirectoryVisibility;
 	
 	LLAvatarData mAvatarProperties;
+	LOG_CLASS(LLFloaterPreference);
 };
 
 class LLPanelPreference : public LLPanel
@@ -272,6 +284,10 @@ public:
 	// This function squirrels away the current values of the controls so that
 	// cancel() can restore them.
 	virtual void saveSettings();
+
+	void deletePreset(const LLSD& user_data);
+	void savePreset(const LLSD& user_data);
+	void loadPreset(const LLSD& user_data);
 	
 	class Updater;
 
@@ -285,10 +301,13 @@ private:
 	//for "Show my Favorite Landmarks at Login"
 	static void handleFavoritesOnLoginChanged(LLUICtrl* checkbox, const LLSD& value);
 
+	void onPresetsListChange();
+
 	typedef std::map<std::string, LLColor4> string_color_map_t;
 	string_color_map_t mSavedColors;
 
 	Updater* mBandWidthUpdater;
+	LOG_CLASS(LLPanelPreference);
 };
 
 class LLPanelPreferenceGraphics : public LLPanelPreference
@@ -300,10 +319,18 @@ public:
 	void cancel();
 	void saveSettings();
 	void setHardwareDefaults();
+	void setPresetText();
+
+	static const std::string getPresetsPath();
+
 protected:
 	bool hasDirtyChilds();
 	void resetDirtyChilds();
-	
+
+private:
+
+	void onPresetsListChange();
+	LOG_CLASS(LLPanelPreferenceGraphics);
 };
 
 class LLFloaterPreferenceProxy : public LLFloater

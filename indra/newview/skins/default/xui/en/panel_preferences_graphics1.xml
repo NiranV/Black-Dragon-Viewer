@@ -864,6 +864,7 @@ width="510">
  <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsLoDVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -892,7 +893,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsLoDVisible"
+      visibility_control="PrefsLoDVisible"
 	  layout="topleft"
 	  height="205"
       visible="false"
@@ -1573,6 +1574,7 @@ width="510">
    <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsPerformanceVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -1602,9 +1604,9 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsPerformanceVisible"
+      visibility_control="PrefsPerformanceVisible"
 	  layout="topleft"
-	  height="268"
+	  height="224"
 	  auto_resize="false"
       visible="false"
 	  name="performance_layout_panel"
@@ -1701,7 +1703,7 @@ width="510">
                                  function="Pref.Default"/>
       </button>
    
-   <check_box
+   <!--<check_box
    control_name="RenderUseImpostors"
    height="16"
    initial_value="false"
@@ -1711,7 +1713,7 @@ width="510">
    left="10"
    name="AvatarImpostors"
    top_pad="5"
-   width="115" />
+   width="115" />-->
    
  <!--<text
  type="string"
@@ -1761,43 +1763,6 @@ width="510">
  name="5"
  value="25"/>
  </combo_box>-->
- <slider
-      control_name="RenderAvatarMaxVisible"
-      enabled_control="RenderUseImpostors"
-      decimal_digits="0"
-      follows="left|top"
-      height="15"
-      can_edit_text="true"
-      increment="1"
-      initial_value="5"
-      label="Max. Avatars Visible:"
-      label_width="150"
-      layout="topleft"
-      tool_tip="Controls the maximum amount of Avatars rendered on screen"
-      left="10"
-      max_val="50"
-      min_val="0"
-      name="RenderAvatarMaxVisible"
-      top_pad="5"
-      width="313" />
- <button
- follows="left|top"
- control_name="RenderAvatarMaxVisible"
- enabled_control="RenderUseImpostors"
- height="15"
- is_toggle="false"
- label_color="White"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
  
  <!--<check_box
       control_name="RenderGammaFull"
@@ -1824,7 +1789,42 @@ width="510">
  width="200">
  Advanced Autoderender:
  </text>
-   <radio_group
+   <slider
+      control_name="RenderAvatarMaxNonImpostors"
+      decimal_digits="0"
+      follows="left|top"
+      height="15"
+      can_edit_text="true"
+      increment="1"
+      initial_value="5"
+      label="Max. Avatars Visible:"
+      label_width="150"
+      layout="topleft"
+      tool_tip="Controls the maximum amount of Avatars rendered on screen"
+      left="10"
+      max_val="50"
+      min_val="0"
+      name="RenderAvatarMaxVisible"
+      top_pad="8"
+      width="313" />
+ <button
+ follows="left|top"
+ control_name="RenderAvatarMaxNonImpostors"
+ height="15"
+ is_toggle="false"
+ label_color="White"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <!--<radio_group
                   control_name="RenderAutoMuteFunctions"
                   enabled_control="RenderUseImpostors"
                   height="19"
@@ -1866,7 +1866,7 @@ width="510">
                               image_pressed="Checkbox_Press"
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
-                  </radio_group>
+                  </radio_group>-->
       <!--<combo_box
  control_name="RenderAutoMuteFunctions"
  enabled_control="RenderUseImpostors"
@@ -1889,7 +1889,6 @@ width="510">
  </combo_box>-->
       <slider
       control_name="RenderAutoMuteByteLimit"
-      enabled_control="RenderUseImpostors"
       decimal_digits="0"
       follows="left|top"
       height="15"
@@ -1903,12 +1902,11 @@ width="510">
       max_val="20480000"
       min_val="0"
       name="RenderAutoMuteByteLimit"
-      top_pad="5"
+      top_pad="1"
       width="349" />
       <button
  follows="left|top"
  control_name="RenderAutoMuteByteLimit"
- enabled_control="RenderUseImpostors"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
@@ -1924,7 +1922,6 @@ width="510">
       </button>
       <slider
       control_name="RenderAutoMuteSurfaceAreaLimit"
-      enabled_control="RenderUseImpostors"
       decimal_digits="0"
       follows="left|top"
       can_edit_text="true"
@@ -1943,7 +1940,6 @@ width="510">
       <button
  follows="left|top"
  control_name="RenderAutoMuteSurfaceAreaLimit"
- enabled_control="RenderUseImpostors"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
@@ -1958,8 +1954,7 @@ width="510">
                                  function="Pref.Default"/>
       </button>
       <slider
-      control_name="RenderAutoMuteRenderWeightLimit"
-      enabled_control="RenderUseImpostors"
+      control_name="RenderAvatarMaxComplexity"
       decimal_digits="0"
       follows="left|top"
       can_edit_text="true"
@@ -1977,8 +1972,7 @@ width="510">
       width="337" />
       <button
  follows="left|top"
- control_name="RenderAutoMuteRenderWeightLimit"
- enabled_control="RenderUseImpostors"
+ control_name="RenderAvatarMaxComplexity"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
@@ -1994,7 +1988,6 @@ width="510">
       </button>
       <slider
       control_name="RenderAutoHideSurfaceAreaLimit"
-      enabled_control="RenderUseImpostors"
       decimal_digits="0"
       follows="left|top"
       can_edit_text="true"
@@ -2013,7 +2006,6 @@ width="510">
       <button
  follows="left|top"
  control_name="RenderAutoHideSurfaceAreaLimit"
- enabled_control="RenderUseImpostors"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
@@ -2039,6 +2031,7 @@ width="510">
    <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsVertexVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -2067,7 +2060,7 @@ width="510">
       </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsVertexVisible"
+      visibility_control="PrefsVertexVisible"
 	  layout="topleft"
 	  height="423"
 	  auto_resize="false"
@@ -3084,6 +3077,7 @@ width="510">
    <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsDeferredVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -3114,7 +3108,7 @@ width="510">
       </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsDeferredVisible"
+      visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
 	  height="290"
 	  auto_resize="false"
@@ -3690,6 +3684,7 @@ width="510">
  <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsDoFVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -3719,7 +3714,7 @@ width="510">
  </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsDoFVisible"
+      visibility_control="PrefsDoFVisible"
 	  layout="topleft"
 	  height="145"
 	  auto_resize="false"
@@ -3959,6 +3954,7 @@ width="510">
      <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsAOVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -3990,7 +3986,7 @@ width="510">
      </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsAOVisible"
+      visibility_control="PrefsAOVisible"
 	  layout="topleft"
 	  height="142"
 	  auto_resize="false"
@@ -4226,6 +4222,7 @@ width="510">
       <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsMotionBlurVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -4256,7 +4253,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsMotionBlurVisible"
+      visibility_control="PrefsMotionBlurVisible"
 	  layout="topleft"
 	  height="41"
 	  auto_resize="false"
@@ -4308,6 +4305,7 @@ width="510">
    <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsGodraysVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -4337,7 +4335,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsGodraysVisible"
+      visibility_control="PrefsGodraysVisible"
 	  layout="topleft"
 	  height="98"
 	  auto_resize="false"
@@ -4469,6 +4467,7 @@ width="510">
    <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsPostVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -4497,7 +4496,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsPostVisible"
+      visibility_control="PrefsPostVisible"
 	  layout="topleft"
 	  height="114"
 	  auto_resize="false"
@@ -4662,6 +4661,7 @@ width="510">
      <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsToneMappingVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -4692,7 +4692,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsToneMappingVisible"
+      visibility_control="PrefsToneMappingVisible"
 	  layout="topleft"
 	  height="437"
 	  auto_resize="false"
@@ -5386,6 +5386,7 @@ width="510">
       <button
 		 follows="left|top"
 		 height="20"
+         control_name="PrefsVignetteVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
          image_overlay_alignment="right"
@@ -5414,7 +5415,7 @@ width="510">
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-      control_name="PrefsVignetteVisible"
+      visibility_control="PrefsVignetteVisible"
 	  layout="topleft"
 	  height="70"
 	  auto_resize="false"
@@ -5511,5 +5512,76 @@ width="510">
    name="RememberPreferencesTabs"
    top="-17"
    width="115"/>
+   
+   <button
+    follows="top|left"
+    height="20"
+    label="Save"
+    layout="topleft"
+    image_overlay_alignment="left"
+    image_overlay="Icon_Dock_Foreground"
+    image_selected="transparent.j2c"
+    image_unselected="transparent.j2c"
+    halign="left"
+    pad_bottom="0"
+    left="189"
+    name="PrefSaveButton"
+    top="-20"
+    width="60">
+    <button.commit_callback
+      function="Pref.PrefSave"
+      parameter="graphic" />
+  </button>
+   
+   <button
+    follows="top|left"
+    height="20"
+    label="Load"
+    layout="topleft"
+    image_overlay_alignment="left"
+    image_overlay="windows/Icon_Undock_Foreground.png"
+    image_selected="transparent.j2c"
+    image_unselected="transparent.j2c"
+    halign="left"
+    pad_bottom="0"
+    left_pad="1"
+    name="PrefLoadButton"
+    top_delta="0"
+    width="61">
+    <button.commit_callback
+      function="Pref.PrefLoad"
+	  parameter="graphic"/>
+  </button>
+
+  <button
+    follows="top|left"
+    height="20"
+    label="Delete"
+    layout="topleft"
+    image_overlay_alignment="left"
+    image_overlay="TrashItem_Off"
+    image_selected="transparent.j2c"
+    image_unselected="transparent.j2c"
+    halign="left"
+    pad_bottom="0"
+    left_pad="1"
+    name="PrefDeleteButton"
+    top_delta="0"
+    width="71">
+    <button.commit_callback
+      function="Pref.PrefDelete"
+	  parameter="graphic"/>
+  </button>
+  
+  <combo_box
+     follows="top|left"
+     layout="topleft"
+     left_pad="7"
+     height="20"
+     name="preset_combo"
+     allow_text_entry="true"
+     top="-20"
+     width="125"/>
+
 </panel>
 
