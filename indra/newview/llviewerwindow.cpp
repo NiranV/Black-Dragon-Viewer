@@ -2550,62 +2550,26 @@ void LLViewerWindow::draw()
 //#endif
 }
 
-// Takes a single keyup event, usually when UI is visible
 BOOL LLViewerWindow::handleKeyUp(KEY key, MASK mask)
 {
-    LLFocusableElement* keyboard_focus = gFocusMgr.getKeyboardFocus();
-
-    if (keyboard_focus
-		&& !(mask & (MASK_CONTROL | MASK_ALT))
-		&& !gFocusMgr.getKeystrokesOnly())
-	{
-		// We have keyboard focus, and it's not an accelerator
-        if (keyboard_focus && keyboard_focus->wantsKeyUpKeyDown())
-        {
-            return keyboard_focus->handleKeyUp(key, mask, FALSE);
-        }
-        else if (key < 0x80)
-		{
-			// Not a special key, so likely (we hope) to generate a character.  Let it fall through to character handler first.
-			return (gFocusMgr.getKeyboardFocus() != NULL);
-		}
-	}
-
-	if (keyboard_focus)
-	{
-		if (keyboard_focus->handleKeyUp(key, mask, FALSE))
-		{
-			LL_DEBUGS() << "LLviewerWindow::handleKeyUp - in 'traverse up' - no loops seen... just called keyboard_focus->handleKeyUp an it returned true" << LL_ENDL;
-			LLViewerEventRecorder::instance().logKeyEvent(key, mask);
-			return TRUE;
-		}
-		else {
-			LL_DEBUGS() << "LLviewerWindow::handleKeyUp - in 'traverse up' - no loops seen... just called keyboard_focus->handleKeyUp an it returned FALSE" << LL_ENDL;
-		}
-	}
-
-	// don't pass keys on to world when something in ui has focus
-	return gFocusMgr.childHasKeyboardFocus(mRootView)
-		|| LLMenuGL::getKeyboardMode()
-		|| (gMenuBarView && gMenuBarView->getHighlightedItem() && gMenuBarView->getHighlightedItem()->isActive());
-}
-
-// Takes a single keydown event, usually when UI is visible
-BOOL LLViewerWindow::handleKeyUp(KEY key, MASK mask)
-{
-	if (gFocusMgr.getKeyboardFocus()
-		&& !(mask & (MASK_CONTROL | MASK_ALT))
-		&& !gFocusMgr.getKeystrokesOnly())
-	{
-		// We have keyboard focus, and it's not an accelerator
-		if (key < 0x80)
-		{
-			// Not a special key, so likely (we hope) to generate a character.  Let it fall through to character handler first.
-			return (gFocusMgr.getKeyboardFocus() != NULL);
-		}
-	}
-
 	LLFocusableElement* keyboard_focus = gFocusMgr.getKeyboardFocus();
+
+	if (keyboard_focus
+		&& !(mask & (MASK_CONTROL | MASK_ALT))
+		&& !gFocusMgr.getKeystrokesOnly())
+	{
+		// We have keyboard focus, and it's not an accelerator
+		if (keyboard_focus && keyboard_focus->wantsKeyUpKeyDown())
+		{
+			return keyboard_focus->handleKeyUp(key, mask, FALSE);
+		}
+		else if (key < 0x80)
+		{
+			// Not a special key, so likely (we hope) to generate a character.  Let it fall through to character handler first.
+			return (gFocusMgr.getKeyboardFocus() != NULL);
+		}
+	}
+
 	if (keyboard_focus)
 	{
 		if (keyboard_focus->handleKeyUp(key, mask, FALSE))
@@ -2631,30 +2595,30 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 	// hide tooltips on keypress
 	LLToolTipMgr::instance().blockToolTips();
 
-    LLFocusableElement* keyboard_focus = gFocusMgr.getKeyboardFocus();
+	LLFocusableElement* keyboard_focus = gFocusMgr.getKeyboardFocus();
 
-    if (keyboard_focus
+	if (keyboard_focus
 		&& !(mask & (MASK_CONTROL | MASK_ALT))
 		&& !gFocusMgr.getKeystrokesOnly())
 	{
 		// We have keyboard focus, and it's not an accelerator
-        if (keyboard_focus && keyboard_focus->wantsKeyUpKeyDown())
-        {
-            return keyboard_focus->handleKey(key, mask, FALSE );
-        }
+		if (keyboard_focus && keyboard_focus->wantsKeyUpKeyDown())
+		{
+			return keyboard_focus->handleKey(key, mask, FALSE);
+		}
 		else if (key < 0x80)
 		{
 			// Not a special key, so likely (we hope) to generate a character.  Let it fall through to character handler first.
-            return (keyboard_focus != NULL);
+			return (keyboard_focus != NULL);
 		}
 	}
 
 	// let menus handle navigation keys for navigation
 	if ((gMenuBarView && gMenuBarView->handleKey(key, mask, TRUE))
-		||(gMenuHolder && gMenuHolder->handleKey(key, mask, TRUE)))
+		|| (gMenuHolder && gMenuHolder->handleKey(key, mask, TRUE)))
 	{
 		LL_DEBUGS() << "LLviewerWindow::handleKey handle nav keys for nav" << LL_ENDL;
-		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
+		LLViewerEventRecorder::instance().logKeyEvent(key, mask);
 		return TRUE;
 	}
 
@@ -2665,16 +2629,16 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 	{
 		// Check the current floater's menu first, if it has one.
 		if (gFocusMgr.keyboardFocusHasAccelerators()
-			&& keyboard_focus 
-			&& keyboard_focus->handleKey(key,mask,FALSE))
+			&& keyboard_focus
+			&& keyboard_focus->handleKey(key, mask, FALSE))
 		{
-			LLViewerEventRecorder::instance().logKeyEvent(key,mask);
+			LLViewerEventRecorder::instance().logKeyEvent(key, mask);
 			return TRUE;
 		}
 
-		if (gMenuBarView && gMenuBarView->handleAcceleratorKey(key, mask))
+		if ((gMenuBarView && gMenuBarView->handleAcceleratorKey(key, mask)))
 		{
-			LLViewerEventRecorder::instance().logKeyEvent(key,mask);
+			LLViewerEventRecorder::instance().logKeyEvent(key, mask);
 			return TRUE;
 		}
 	}
@@ -2682,7 +2646,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 	// give floaters first chance to handle TAB key
 	// so frontmost floater gets focus
 	// if nothing has focus, go to first or last UI element as appropriate
-    if (key == KEY_TAB && (mask & MASK_CONTROL || keyboard_focus == NULL))
+	if (key == KEY_TAB && (mask & MASK_CONTROL || keyboard_focus == NULL))
 	{
 		LL_WARNS() << "LLviewerWindow::handleKey give floaters first chance at tab key " << LL_ENDL;
 		if (gMenuHolder) gMenuHolder->hideMenus();
@@ -2699,20 +2663,20 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 		{
 			mRootView->focusNextRoot();
 		}
-		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
+		LLViewerEventRecorder::instance().logKeyEvent(key, mask);
 		return TRUE;
 	}
 	// hidden edit menu for cut/copy/paste
 	if (gEditMenu && gEditMenu->handleAcceleratorKey(key, mask))
 	{
-		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
+		LLViewerEventRecorder::instance().logKeyEvent(key, mask);
 		return TRUE;
 	}
 
 	LLFloater* focused_floaterp = gFloaterView->getFocusedFloater();
 	std::string focusedFloaterName = (focused_floaterp ? focused_floaterp->getInstanceName() : "");
 
-	if( keyboard_focus )
+	if (keyboard_focus)
 	{
 		if ((focusedFloaterName == "nearby_chat") || (focusedFloaterName == "im_container") || (focusedFloaterName == "impanel"))
 		{
@@ -2724,7 +2688,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 					&& !(key == KEY_UP && mask == MASK_ALT)
 					&& !(key == KEY_DOWN && mask == MASK_ALT))
 				{
-					switch(key)
+					switch (key)
 					{
 					case KEY_LEFT:
 					case KEY_RIGHT:
@@ -2747,17 +2711,18 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 		{
 
 			LL_DEBUGS() << "LLviewerWindow::handleKey - in 'traverse up' - no loops seen... just called keyboard_focus->handleKey an it returned true" << LL_ENDL;
-			LLViewerEventRecorder::instance().logKeyEvent(key,mask); 
+			LLViewerEventRecorder::instance().logKeyEvent(key, mask);
 			return TRUE;
-		} else {
+		}
+		else {
 			LL_DEBUGS() << "LLviewerWindow::handleKey - in 'traverse up' - no loops seen... just called keyboard_focus->handleKey an it returned FALSE" << LL_ENDL;
 		}
 	}
 
-	if( LLToolMgr::getInstance()->getCurrentTool()->handleKey(key, mask) )
+	if (LLToolMgr::getInstance()->getCurrentTool()->handleKey(key, mask))
 	{
 		LL_DEBUGS() << "LLviewerWindow::handleKey toolbar handling?" << LL_ENDL;
-		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
+		LLViewerEventRecorder::instance().logKeyEvent(key, mask);
 		return TRUE;
 	}
 
@@ -2765,7 +2730,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 	if (LLGestureMgr::instance().triggerGesture(key, mask))
 	{
 		LL_DEBUGS() << "LLviewerWindow::handleKey new gesture feature" << LL_ENDL;
-		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
+		LLViewerEventRecorder::instance().logKeyEvent(key, mask);
 		return TRUE;
 	}
 
@@ -2774,20 +2739,20 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 	if (gGestureList.trigger(key, mask))
 	{
 		LL_DEBUGS() << "LLviewerWindow::handleKey check gesture trigger" << LL_ENDL;
-		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
+		LLViewerEventRecorder::instance().logKeyEvent(key, mask);
 		return TRUE;
 	}
 
 	// If "Pressing letter keys starts local chat" option is selected, we are not in mouselook, 
 	// no view has keyboard focus, this is a printable character key (and no modifier key is 
 	// pressed except shift), then give focus to nearby chat (STORM-560)
-	if ( gSavedSettings.getS32("LetterKeysFocusChatBar") && !gAgentCamera.cameraMouselook() && 
-		!keyboard_focus && key < 0x80 && (mask == MASK_NONE || mask == MASK_SHIFT) )
+	if (gSavedSettings.getS32("LetterKeysFocusChatBar") && !gAgentCamera.cameraMouselook() &&
+		!keyboard_focus && key < 0x80 && (mask == MASK_NONE || mask == MASK_SHIFT))
 	{
 		// Initialize nearby chat if it's missing
 		LLFloaterIMNearbyChat* nearby_chat = LLFloaterReg::findTypedInstance<LLFloaterIMNearbyChat>("nearby_chat");
 		if (!nearby_chat)
-		{	
+		{
 			LLSD name("im_container");
 			LLFloaterReg::toggleInstanceOrBringToFront(name);
 		}
@@ -2808,8 +2773,8 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 	}
 
 	// don't pass keys on to world when something in ui has focus
-	return gFocusMgr.childHasKeyboardFocus(mRootView) 
-		|| LLMenuGL::getKeyboardMode() 
+	return gFocusMgr.childHasKeyboardFocus(mRootView)
+		|| LLMenuGL::getKeyboardMode()
 		|| (gMenuBarView && gMenuBarView->getHighlightedItem() && gMenuBarView->getHighlightedItem()->isActive());
 }
 
