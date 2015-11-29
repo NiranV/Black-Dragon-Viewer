@@ -16537,6 +16537,21 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <key>RenderProjectorShadowResolution</key>
+  <map>
+    <key>Comment</key>
+    <string>Raw projector shadow width (X) and height (Y) by multiplicator (Z)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>2048</real>
+      <real>2048</real>
+      <real>1.0</real>
+    </array>
+  </map>
   <key>RenderMotionBlurStrength</key>
   <map>
       <key>Comment</key>
