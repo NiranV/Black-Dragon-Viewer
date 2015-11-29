@@ -146,6 +146,7 @@ BOOL LLPipeline::RenderUIBuffer;
 S32 LLPipeline::RenderShadowDetail;
 BOOL LLPipeline::RenderDeferredSSAO;
 LLVector3 LLPipeline::RenderShadowResolution;
+LLVector3 LLPipeline::RenderProjectorShadowResolution;
 BOOL LLPipeline::RenderLocalLights;
 BOOL LLPipeline::RenderDelayCreation;
 BOOL LLPipeline::RenderAnimateRes;
@@ -593,6 +594,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderShadowDetail");
 	connectRefreshCachedSettingsSafe("RenderDeferredSSAO");
 	connectRefreshCachedSettingsSafe("RenderShadowResolution");
+	connectRefreshCachedSettingsSafe("RenderProjectorShadowResolution");
 	connectRefreshCachedSettingsSafe("RenderLocalLights");
 	connectRefreshCachedSettingsSafe("RenderDelayCreation");
 	connectRefreshCachedSettingsSafe("RenderAnimateRes");
@@ -1015,6 +1017,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		}
 
 		LLVector3 scale = RenderShadowResolution;
+		LLVector3 proj_scale = RenderProjectorShadowResolution;
 
 		if (shadow_detail > 0)
 		{ //allocate 4 sun shadow maps
@@ -1038,7 +1041,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		{ //allocate two spot shadow maps
 			for (U32 i = 4; i < 6; i++)
 			{
-				if (!mShadow[i].allocate(U32(scale[0]*scale[2]), U32(scale[1]*scale[2]), 0, TRUE, FALSE)) return false;
+				if (!mShadow[i].allocate(U32(proj_scale[0]*proj_scale[2]), U32(proj_scale[1]*proj_scale[2]), 0, TRUE, FALSE)) return false;
 				if (!mShadowOcclusion[i].allocate(mShadow[i].getWidth()/occlusion_divisor, mShadow[i].getHeight()/occlusion_divisor, 0, TRUE, FALSE)) return false;
 			}
 		}
@@ -1157,6 +1160,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderShadowDetail = gSavedSettings.getS32("RenderShadowDetail");
 	RenderDeferredSSAO = gSavedSettings.getBOOL("RenderDeferredSSAO");
 	RenderShadowResolution = gSavedSettings.getVector3("RenderShadowResolution");
+	RenderProjectorShadowResolution = gSavedSettings.getVector3("RenderProjectorShadowResolution");
 	RenderLocalLights = gSavedSettings.getBOOL("RenderLocalLights");
 	RenderDelayCreation = gSavedSettings.getBOOL("RenderDelayCreation");
 	RenderAnimateRes = gSavedSettings.getBOOL("RenderAnimateRes");
