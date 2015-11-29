@@ -43,7 +43,7 @@
   <panel top="0" left="0" width="331" height="196" bevel_style="none" layout="topleft" follows="left|top|right|bottom" name="panel_total_view">
     <layout_stack top="0" left="0" width="331" height="196" orientation="vertical" follows="left|top|right|bottom" name="item_vertical_stack">
       <layout_panel top="0" left="0" height="30" follows="left|top|right|bottom" layout="topleft" name="layout_panel_condensed_view" visible="false" background_opaque="false" background_visible="true" bg_alpha_color="SysWellItemUnselected">
-        <panel border="true" top="0" left="5" height="30" bevel_style="none" layout="topleft" follows="left|top|right|bottom" name="panel_condensed_view">
+        <panel background_opaque="true" background_visible="true" bg_opaque_image="Window_NoTitle_Foreground" bg_alpha_image="Window_NoTitle_Foreground" border="false" top="0" left="5" height="30" bevel_style="none" layout="topleft" follows="left|top|right|bottom" name="panel_condensed_view">
           <layout_stack top="0" left="0" width="325" height="50" orientation="horizontal" follows="left|top|right|bottom" name="horizontal_stack">
             <layout_panel width="30" height="39" orientation="horizontal" follows="left|top|right|bottom" name="layout_panel_right">
               <group_icon left="5" top="6" width="25" height="25" mouse_opaque="true" name="group_icon" tool_tip="Group" default_icon_name="Generic_Group" visible="true"/>
@@ -81,7 +81,7 @@
         </panel>
       </layout_panel>
       <layout_panel top="0" left="0" height="196" follows="left|top|right|bottom" layout="topleft" name="layout_panel_expanded_view" visible="true" background_opaque="false" background_visible="true" bg_alpha_color="SysWellItemUnselected">
-        <panel border="true" top="0" left="5" height="196" bevel_style="none" follows="left|top|right|bottom" layout="topleft" name="panel_expanded_view">
+        <panel background_opaque="true" background_visible="true" bg_opaque_image="Window_NoTitle_Foreground" bg_alpha_image="Window_NoTitle_Foreground"  border="false" top="0" left="5" height="196" bevel_style="none" follows="left|top|right|bottom" layout="topleft" name="panel_expanded_view">
           <layout_stack top="0" left="0" width="325" height="196" orientation="horizontal" follows="left|top|right|bottom" name="horizontal_stack">
             <layout_panel width="30" height="170" orientation="horizontal" follows="left|top|bottom" name="layout_panel_right_exp">
               <group_icon left="5" top="6" width="25" height="25" mouse_opaque="true" name="group_icon_exp" tool_tip="Group" default_icon_name="Generic_Group" visible="true"/>
@@ -110,7 +110,7 @@
                         name="notification_time_exp" value="2014/12/24 23:30" />
                     </panel>
                     <panel border="false" left="0" height="115" width="230" bevel_style="none" follows="all" layout="topleft" name="notification_text_panel_exp" visible="true">
-                      <chat_editor is_expandable="true" top="0" left="0" width="230" height="110" layout="topleft" follows="left|right"
+                      <chat_editor is_expandable="true" top="1" left="0" width="230" height="110" layout="topleft" follows="left|right"
                             word_wrap="true" max_length="65536" name="notification_text_exp" parse_urls="true">
                         Notice text goes here b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a b l a bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla. bla bla bla bla bla bla bla bla bla bla bla bla bla .
                       </chat_editor>
@@ -130,7 +130,7 @@
             </layout_panel>             
             <layout_panel width="18" orientation="horizontal" follows="right|top|bottom" name="layout_panel_left_exp">
               <panel top="0" left="0" width="17" follows="left|top|right|bottom" layout="topleft" name="close_expand_panel_exp">
-                <button top="0" left="2" width="17" height="17" layout="topleft" follows="top" name="close_expanded_btn" mouse_opaque="true"
+                <button top="5" left="2" width="17" height="17" layout="topleft" follows="top" name="close_expanded_btn" mouse_opaque="true"
                   tab_stop="false" image_unselected="Icon_Close_Foreground" image_selected="Icon_Close_Press" />
                 <button bottom="5" left="0" width="17" height="17" layout="topleft" follows="bottom" name="condense_btn" mouse_opaque="true"
                   tab_stop="false" image_unselected="Notification_Condense" image_selected="Notification_Condense" />
