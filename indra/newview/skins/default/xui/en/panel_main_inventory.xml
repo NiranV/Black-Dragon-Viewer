@@ -474,6 +474,7 @@
      width="282">
     <inventory_panel
      bg_opaque_image="Panel_Background"
+	 folder_view.use_ellipses="true"
      background_visible="false"
      border="false"
      bevel_style="none"
@@ -490,6 +491,7 @@
 	</inventory_panel>
     <recent_inventory_panel
      background_visible="false"
+	 folder_view.use_ellipses="true"
      border="false"
      bevel_style="none"
      follows="all"
