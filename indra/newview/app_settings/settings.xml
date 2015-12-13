@@ -10248,7 +10248,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>10000000</integer>
+    <integer>12000000</integer>
   </map>
   <key>RenderAvatarMaxNonImpostors</key>
   <map>
@@ -10284,7 +10284,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>200</integer>
+    <integer>120000</integer>
   </map>
   <key>RenderAutoMuteSurfaceAreaLimit</key>
   <map>
@@ -10295,7 +10295,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <integer>0</integer>
+    <integer>100</integer>
   </map>
   <key>RenderAutoMuteLogging</key>
   <map>
@@ -10317,7 +10317,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>1.0E6</real>
+    <real>0</real>
   </map>
 
     <key>RenderVBOEnable</key>
@@ -16291,7 +16291,7 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Boolean</string>
+    <string>U32</string>
     <key>Value</key>
     <integer>1</integer>
   </map>
