@@ -32,118 +32,121 @@ background_visible="false"
      tab_group="2"
      tab_position="top"
      top="4"/>
-	<icon
-															follows="left|bottom|right"
-															image_name="Toolbar_Middle_Off"
-															height="25"
-															width="220"
-															layout="topleft"
-															left="8"
-															top_pad="-27"/>
-	<filter_editor
-     text_pad_left="10"
-     follows="left|bottom|right"
-	 background_image="TextField_Off"
-			     background_image_disabled="TextField_Disabled"
-			     background_image_focused="TextField_Active"
-     font="SansSerifSmall"
-     height="22"
-     layout="topleft"
-     left="10"
-     label="Filter My Places"
-     max_length="300"
-     name="Filter"
-     tab_group="1"
-     top_delta="1"
-     width="216" />
     <panel
      class="panel_place_profile"
      filename="panel_place_profile.xml"
      follows="all"
      height="533"
      layout="topleft"
-     left="0"
+     left="7"
      name="panel_place_profile"
-     top="5"
+     top="35"
      visible="false"
-     width="315" />
+     width="300" />
     <panel
      class="panel_landmark_info"
      filename="panel_landmark_info.xml"
      follows="all"
      height="533"
      layout="topleft"
-     left="0"
+     left="7"
      name="panel_landmark_info"
-     top="5"
+     top="35"
      visible="false"
-     width="315" />
+     width="300" />
     <panel
      follows="bottom|left|right"
-     height="23"
+     height="25"
      layout="topleft"
      left="4"
+	 bottom="-9"
      name="button_panel"
      width="315">
-     
-			
-
-	 <button
-	  follows="bottom|left|right"
-	  height="23"
-	  label="Teleport"
-	  layout="topleft"
-	  left="1"
-	  name="teleport_btn"
-	  tool_tip="Teleport to the selected area"
-	  top="0"
-	  width="108" />		
-
-	 <button
-	  follows="bottom|left|right"
-	  height="23"
-	  label="Map"
-	  layout="topleft"
-	  left="1"
-	  name="map_btn"
-	  tool_tip="Show the corresponding area on the World Map"
-	  top="0"
-	  width="85" />		
-				
-		
-	      <button
-	       follows="bottom|left|right"
-	       height="23"
-	       label="Edit"
-	       layout="topleft"
-	       left="1"
-	       mouse_opaque="false"
-	       name="edit_btn"
-	       tool_tip="Edit landmark information"
-	       top="0"
-	       width="83" />
+	  <filter_editor
+     text_pad_left="10"
+     follows="left|bottom|right"
+	 background_image="TextField_Off"
+	 background_image_disabled="TextField_Disabled"
+	 background_image_focused="TextField_Active"
+     font="SansSerifSmall"
+     height="22"
+     layout="topleft"
+     left="6"
+     label="Filter My Places"
+     max_length="300"
+     name="Filter"
+     tab_group="1"
+     top="1"
+     width="216" />
+   
 	      <menu_button
-	       follows="bottom|right"
-	       height="23"
+	       follows="bottom|left"
+		   image_hover_unselected="Toolbar_Middle_Over"
+		   image_selected="Toolbar_Middle_Selected"
+		   image_unselected="Toolbar_Middle_Off"
+	       height="25"
 		   label="▼"
 	       layout="topleft"
 	       mouse_opaque="false"
 	       name="overflow_btn"
 	       tool_tip="Show additional options"
 	       top="0"
-	       left="1"		         
-	       width="23" />
+	       left="5"		         
+	       width="30" />
+		  <button
+	       follows="bottom|left|right"
+		   image_hover_unselected="Toolbar_Middle_Over"
+		   image_selected="Toolbar_Middle_Selected"
+		   image_unselected="Toolbar_Middle_Off"
+	       height="25"
+	       label="Edit"
+	       layout="topleft"
+	       left_pad="1"
+	       mouse_opaque="false"
+	       name="edit_btn"
+	       tool_tip="Edit landmark information"
+	       top="0"
+	       width="93" />
 		
-				
+			<button
+	  follows="bottom|right"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+	  height="25"
+	  label="Teleport"
+	  layout="topleft"
+	  left_pad="1"
+	  name="teleport_btn"
+	  tool_tip="Teleport to the selected area"
+	  top="0"
+	  width="106" />		
+
+	 <button
+	  follows="bottom|right"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+	  height="25"
+	  label="Map"
+	  layout="topleft"
+	  left_pad="1"
+	  name="map_btn"
+	  tool_tip="Show the corresponding area on the World Map"
+	  top="0"
+	  width="83" />	
 		  
 		     <button
-		      follows="bottom|left|right"
-		      height="23"
+		      follows="bottom|right"
+			  image_hover_unselected="Toolbar_Middle_Over"
+			  image_selected="Toolbar_Middle_Selected"
+			  image_unselected="Toolbar_Middle_Off"
+		      height="25"
 		      label="Close"
 		      layout="topleft"
 		      mouse_opaque="false"
 		      name="close_btn"
-		      left="1"
+		      left_pad="1"
 		      top="0"
 		      width="50" />
 	
@@ -151,23 +154,29 @@ background_visible="false"
 	 
 	   <button
 	    follows="bottom|left|right"
-	    height="23"
+		image_hover_unselected="Toolbar_Middle_Over"
+		image_selected="Toolbar_Middle_Selected"
+		image_unselected="Toolbar_Middle_Off"
+	    height="25"
 	    label="Save"
 	    layout="topleft"
 	    mouse_opaque="false"
 	    name="save_btn"
-	    left_pad="1"
-	    top_pad="0"
-	    width="152"/>
+	    left="5"
+	    top="0"
+	    width="157"/>
 	   <button
-	    follows="bottom|left|right"
-	    height="23"
+	    follows="bottom|right"
+		image_hover_unselected="Toolbar_Middle_Over"
+		image_selected="Toolbar_Middle_Selected"
+		image_unselected="Toolbar_Middle_Off"
+	    height="25"
 	    label="Cancel"
 	    layout="topleft"
 	    mouse_opaque="false"
 	    name="cancel_btn"
-	    left_delta="0"
+	    left_pad="1"
 	    top="0"
-	    width="153" />
+	    width="157" />
 </panel>
 </panel>
