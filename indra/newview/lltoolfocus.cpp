@@ -54,6 +54,7 @@
 #include "llfloaterreg.h"
 #include "llfloatercamera.h"
 #include "llmenugl.h"
+#include "lltoolpie.h"
 
 // Globals
 BOOL gCameraBtnZoom = TRUE;
@@ -369,9 +370,7 @@ BOOL LLToolCamera::handleRightMouseUp(S32 x, S32 y, MASK mask)
 	//     mode, this prevents crashing.
 	if (mOutsideSlopRightX || mOutsideSlopRightY ||
 		CAMERA_MODE_CUSTOMIZE_AVATAR == gAgentCamera.getCameraMode() ||
-		mask == MASK_PAN || mask == (MASK_PAN | MASK_ALT) ||
-		mask == MASK_ORBIT || mask == (MASK_ALT | MASK_ORBIT) ||
-		mask == MASK_ALT)
+		LLToolMgr::getInstance()->getCurrentTool() == LLToolCamera::getInstance())
 	{
 		return TRUE;
 	}
