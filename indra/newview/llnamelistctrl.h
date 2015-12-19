@@ -44,22 +44,30 @@ class LLNameListItem : public LLScrollListItem, public LLHandleProvider<LLNameLi
 public:
 	bool isGroup() const { return mIsGroup; }
 	void setIsGroup(bool is_group) { mIsGroup = is_group; }
+	bool isExperience() const { return mIsExperience; }
+	void setIsExperience(bool is_experience) { mIsExperience = is_experience; }
 
 protected:
 	friend class LLNameListCtrl;
 
 	LLNameListItem( const LLScrollListItem::Params& p )
-	:	LLScrollListItem(p), mIsGroup(false)
+	:	LLScrollListItem(p), mIsGroup(false), mIsExperience(false)
 	{
 	}
 
 	LLNameListItem( const LLScrollListItem::Params& p, bool is_group )
-	:	LLScrollListItem(p), mIsGroup(is_group)
+	:	LLScrollListItem(p), mIsGroup(is_group), mIsExperience(false)
+	{
+	}
+
+	LLNameListItem( const LLScrollListItem::Params& p, bool is_group, bool is_experience )
+	:	LLScrollListItem(p), mIsGroup(is_group), mIsExperience(is_experience)
 	{
 	}
 
 private:
 	bool mIsGroup;
+	bool mIsExperience;
 };
 
 
@@ -73,7 +81,8 @@ public:
 	{
 		INDIVIDUAL,
 		GROUP,
-		SPECIAL
+		SPECIAL,
+		EXPERIENCE
 	} ENameType;
 
 	// provide names for enums
@@ -129,11 +138,12 @@ public:
 	// Add a user to the list by name.  It will be added, the name
 	// requested from the cache, and updated as necessary.
 	LLScrollListItem* addNameItem(const LLUUID& agent_id, EAddPosition pos = ADD_BOTTOM,
-					 BOOL enabled = TRUE, const std::string& suffix = LLStringUtil::null);
+					 BOOL enabled = TRUE, const std::string& suffix = LLStringUtil::null, const std::string& prefix = LLStringUtil::null);
 	LLScrollListItem* addNameItem(NameItem& item, EAddPosition pos = ADD_BOTTOM);
 
 	/*virtual*/ LLScrollListItem* addElement(const LLSD& element, EAddPosition pos = ADD_BOTTOM, void* userdata = NULL);
-	LLScrollListItem* addNameItemRow(const NameItem& value, EAddPosition pos = ADD_BOTTOM, const std::string& suffix = LLStringUtil::null);
+	LLScrollListItem* addNameItemRow(const NameItem& value, EAddPosition pos = ADD_BOTTOM, const std::string& suffix = LLStringUtil::null,
+																							const std::string& prefix = LLStringUtil::null);
 
 	// Add a user to the list by name.  It will be added, the name
 	// requested from the cache, and updated as necessary.
@@ -159,7 +169,7 @@ public:
 
 	/*virtual*/ void mouseOverHighlightNthItem( S32 index );
 private:
-	void showInspector(const LLUUID& avatar_id, bool is_group);
+	void showInspector(const LLUUID& avatar_id, bool is_group, bool is_experience = false);
 	void onAvatarNameCache(const LLUUID& agent_id, const LLAvatarName& av_name, std::string suffix, LLHandle<LLNameListItem> item);
 
 private:

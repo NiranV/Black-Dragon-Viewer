@@ -28,6 +28,9 @@
     <file name="Warnings"
           file_name="ignorable_dialogs.xml"
           file_name_setting="WarningSettingsFile"/>
+    <file name="Controls"
+          file_name="controls.xml"
+          file_name_setting="ControlSettingsFile"/>
   </group>
   <group name="Account"
          path_index="3">

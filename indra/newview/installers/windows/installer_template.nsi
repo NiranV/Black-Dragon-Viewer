@@ -165,7 +165,9 @@ lbl_configure_default_lang:
 	StrCpy $LANGUAGE $0
 
 # For silent installs, no language prompt, use default
-    IfSilent lbl_return
+    IfSilent 0 +3
+    StrCpy $SKIP_AUTORUN "true"
+    Goto lbl_return
     StrCmp $SKIP_DIALOGS "true" lbl_return
   
 lbl_build_menu:
@@ -297,6 +299,11 @@ CreateShortCut "$INSTDIR\$INSTSHORTCUT.lnk" \
         "$INSTDIR\$INSTEXE" "$SHORTCUT_LANG_PARAM"
 CreateShortCut "$INSTDIR\Uninstall $INSTSHORTCUT.lnk" \
 				'"$INSTDIR\uninst.exe"' ''
+
+# Create *.bat file to specify lang params on first run from installer - see MAINT-5259
+FileOpen $9 "$INSTDIR\autorun.bat" w
+FileWrite $9 'start "$INSTDIR\$INSTEXE" "$INSTDIR\$INSTEXE" $SHORTCUT_LANG_PARAM$\r$\n'
+FileClose $9
 
 # Write registry
 WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Linden Research, Inc.\$INSTPROG" "" "$INSTDIR"
@@ -682,7 +689,7 @@ Call CheckWindowsServPack		# Warn if not on the latest SP before asking to launc
 	Push $R0					# Option value, unused
 	StrCmp $SKIP_AUTORUN "true" +2;
 # Assumes SetOutPath $INSTDIR
-	Exec '"$WINDIR\explorer.exe" "$INSTDIR\$INSTEXE"'
+	Exec '"$WINDIR\explorer.exe" "$INSTDIR\autorun.bat"'
 	Pop $R0
 
 FunctionEnd

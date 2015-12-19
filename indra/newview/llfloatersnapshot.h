@@ -28,8 +28,11 @@
 #define LL_LLFLOATERSNAPSHOT_H
 
 #include "llfloater.h"
+#include "llviewertexture.h"
 
 class LLSpinCtrl;
+class LLSnapshotLivePreview;
+class LLFloaterBigPreview;
 
 class LLFloaterSnapshot : public LLFloater
 {
@@ -57,13 +60,14 @@ public:
 	// TODO: create a snapshot model instead
 	static LLFloaterSnapshot* getInstance();
 	static LLFloaterSnapshot* findInstance();
-	static void saveTexture();
-	static BOOL saveLocal();
+	static BOOL saveTexture(bool local = true);
 	static void postSave();
 	static void postPanelSwitch();
 	static LLPointer<LLImageFormatted> getImageData();
 	static const LLVector3d& getPosTakenGlobal();
 	static void setAgentEmail(const std::string& email);
+
+	void onClickBigPreview();
 
 	static const LLRect& getThumbnailPlaceholderRect() { return sThumbnailPlaceholder->getRect(); }
 
@@ -71,6 +75,12 @@ private:
 	static LLUICtrl* sThumbnailPlaceholder;
 	LLUICtrl *mRefreshBtn, *mRefreshLabel;
 	LLUICtrl *mSucceessLblPanel, *mFailureLblPanel;
+	LLHandle<LLView> mPreviewHandle;
+	LLFloaterBigPreview * mBigPreviewFloater;
+
+	bool mSnapshotFreezeWorld;
+	bool isPreviewVisible();
+	void attachPreview();
 
 	class Impl;
 	Impl& impl;
@@ -92,9 +102,6 @@ public:
 	virtual ~LLSnapshotFloaterView();
 
 	/*virtual*/	BOOL handleKey(KEY key, MASK mask, BOOL called_from_parent);
-	/*virtual*/	BOOL handleMouseDown(S32 x, S32 y, MASK mask);
-	/*virtual*/	BOOL handleMouseUp(S32 x, S32 y, MASK mask);
-	/*virtual*/	BOOL handleHover(S32 x, S32 y, MASK mask);
 };
 
 extern LLSnapshotFloaterView* gSnapshotFloaterView;

@@ -109,6 +109,10 @@ public:
 	LLLineEditor*			getTextEntry() const { return mTextEntry; }
 	void					handleLoginComplete();
 
+// [RLVa:KB] - Checked: 2014-03-23 (RLVa-1.4.10)
+	void					refresh();
+// [/RLVa:KB]
+
 private:
 
 	enum EParcelIcon
@@ -118,10 +122,10 @@ private:
 		PUSH_ICON,			      // 2
 		BUILD_ICON,			      // 3
 		SCRIPTS_ICON,		      // 4
-		DAMAGE_ICON,		      // 5
-		SEE_AVATARS_ICON,         // 6
-		PATHFINDING_DIRTY_ICON,   // 7
-		PATHFINDING_DISABLED_ICON,// 8
+		SEE_AVATARS_ICON,         // 5
+		PATHFINDING_DIRTY_ICON,   // 6
+		PATHFINDING_DISABLED_ICON,// 7
+		DAMAGE_ICON,		      // 8
 		ICON_COUNT			      // 9 total
 	};
 
@@ -135,7 +139,7 @@ private:
 	 * depending on whether current parcel has been landmarked.
 	 */
 	void					enableAddLandmarkButton(bool val);
-	void					refresh();
+//	void					refresh();
 	void					refreshLocation();
 	void					refreshParcelIcons();
 	// Refresh the value in the health percentage text field

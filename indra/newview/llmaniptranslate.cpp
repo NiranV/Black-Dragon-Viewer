@@ -62,6 +62,9 @@
 #include "pipeline.h"
 #include "llviewershadermgr.h"
 #include "lltrans.h"
+// [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0a)
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 const S32 NUM_AXES = 3;
 const S32 MOUSE_DRAG_SLOP = 2;       // pixels
@@ -1285,12 +1288,12 @@ void LLManipTranslate::renderSnapGuides()
 				{
 					tick_start = selection_center + (translate_axis * (smallest_grid_unit_scale * (F32)i - offset_nearest_grid_unit));
 
-					F32 cur_subdivisions = getSubdivisionLevel(tick_start, translate_axis, getMinGridScale());
-
-					if (fmodf((F32)(i + sub_div_offset), (max_subdivisions / cur_subdivisions)) != 0.f)
+					//No need check this condition to prevent tick position scaling (FIX MAINT-5207/5208)
+					//F32 cur_subdivisions = getSubdivisionLevel(tick_start, translate_axis, getMinGridScale());
+					/*if (fmodf((F32)(i + sub_div_offset), (max_subdivisions / cur_subdivisions)) != 0.f)
 					{
 						continue;
-					}
+					}*/
 
 					// add in off-axis offset
 					tick_start += (mSnapOffsetAxis * mSnapOffsetMeters);

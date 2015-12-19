@@ -75,7 +75,6 @@ LLSidepanelAppearance::LLSidepanelAppearance() :
 	mFilterSubString(LLStringUtil::null),
 	mFilterEditor(NULL),
 	mOutfitEdit(NULL),
-	mCurrOutfitPanel(NULL),
 	mOpened(false)
 {
 	LLOutfitObserver& outfit_observer =  LLOutfitObserver::instance();
@@ -94,11 +93,8 @@ LLSidepanelAppearance::~LLSidepanelAppearance()
 // virtual
 BOOL LLSidepanelAppearance::postBuild()
 {
-	mOpenOutfitBtn = getChild<LLButton>("openoutfit_btn");
-	mOpenOutfitBtn->setClickedCallback(boost::bind(&LLSidepanelAppearance::onOpenOutfitButtonClicked, this));
-
-	mEditAppearanceBtn = getChild<LLButton>("editappearance_btn");
-	mEditAppearanceBtn->setClickedCallback(boost::bind(&LLSidepanelAppearance::onEditAppearanceButtonClicked, this));
+	mSearchBtn = getChild<LLButton>("show_search_btn");
+	mSearchBtn->setClickedCallback(boost::bind(&LLSidepanelAppearance::onSearchButtonClicked, this));
 
 	childSetAction("edit_outfit_btn", boost::bind(&LLSidepanelAppearance::showOutfitEditPanel, this));
 
@@ -138,9 +134,6 @@ BOOL LLSidepanelAppearance::postBuild()
 	mCurrentLookName = getChild<LLTextBox>("currentlook_name");
 
 	mOutfitStatus = getChild<LLTextBox>("currentlook_status");
-	
-	mCurrOutfitPanel = getChild<LLPanel>("panel_currentlook");
-
 
 	setVisibleCallback(boost::bind(&LLSidepanelAppearance::onVisibilityChanged,this,_2));
 
@@ -249,40 +242,12 @@ void LLSidepanelAppearance::onFilterEdit(const std::string& search_string)
 	}
 }
 
-void LLSidepanelAppearance::onOpenOutfitButtonClicked()
+void LLSidepanelAppearance::onSearchButtonClicked()
 {
-	const LLViewerInventoryItem *outfit_link = LLAppearanceMgr::getInstance()->getBaseOutfitLink();
-	if (!outfit_link)
-		return;
-	if (!outfit_link->getIsLinkType())
-		return;
-
-	LLAccordionCtrlTab* tab_outfits = mPanelOutfitsInventory->findChild<LLAccordionCtrlTab>("tab_outfits");
-	if (tab_outfits)
-	{
-		tab_outfits->changeOpenClose(FALSE);
-		LLInventoryPanel *inventory_panel = tab_outfits->findChild<LLInventoryPanel>("outfitslist_tab");
-		if (inventory_panel)
-		{
-			LLFolderView* root = inventory_panel->getRootFolder();
-			LLFolderViewItem *outfit_folder =    inventory_panel->getItemByID(outfit_link->getLinkedUUID());
-			if (outfit_folder)
-			{
-				outfit_folder->setOpen(!outfit_folder->isOpen());
-				root->setSelection(outfit_folder,TRUE);
-				root->scrollToShowSelection();
-			}
-		}
-	}
-}
-
-// *TODO: obsolete?
-void LLSidepanelAppearance::onEditAppearanceButtonClicked()
-{
-	if (gAgentWearables.areWearablesLoaded())
-	{
-		LLVOAvatarSelf::onCustomizeStart();
-	}
+	LLPanel* panel = getChild<LLPanel>("search_lp");
+	panel->setVisible(!panel->getVisible());
+	panel = getChild<LLPanel>("outfit_name_lp");
+	panel->setVisible(!panel->getVisible());
 }
 
 void LLSidepanelAppearance::onNewOutfitButtonClicked()
@@ -346,9 +311,11 @@ void LLSidepanelAppearance::toggleMyOutfitsPanel(BOOL visible)
 
 	// *TODO: Move these controls to panel_outfits_inventory.xml
 	// so that we don't need to toggle them explicitly.
-	mFilterEditor->setVisible(visible);
 	mNewOutfitBtn->setVisible(visible);
-	mCurrOutfitPanel->setVisible(visible);
+	mOutfitStatus->setVisible(visible);
+	findChild<LLButton>("edit_outfit_btn")->setVisible(visible);
+	findChild<LLLayoutStack>("appearance_panel_ls")->setVisible(visible);
+	getChildView("wearables_loading_indicator")->setVisible(mCoFLoading && visible);
 
 	if (visible)
 	{
@@ -437,13 +404,11 @@ void LLSidepanelAppearance::refreshCurrentOutfitName(const std::string& name)
 
 		std::string string_name = gAgentWearables.isCOFChangeInProgress() ? "Changing outfits" : "No Outfit";
 		mCurrentLookName->setText(getString(string_name));
-		mOpenOutfitBtn->setEnabled(FALSE);
 	}
 	else
 	{
 		mCurrentLookName->setText(name);
 		// Can't just call update verbs since the folder link may not have been created yet.
-		mOpenOutfitBtn->setEnabled(TRUE);
 	}
 }
 
@@ -520,7 +485,10 @@ void LLSidepanelAppearance::inventoryFetched()
 void LLSidepanelAppearance::setWearablesLoading(bool val)
 {
 	getChildView("wearables_loading_indicator")->setVisible( val);
-	getChildView("edit_outfit_btn")->setVisible( !val);
+	if(!getChildView("outfit_edit")->getVisible())
+		getChildView("edit_outfit_btn")->setVisible( !val);
+
+	mCoFLoading = val;
 
 	if (!val)
 	{
@@ -544,3 +512,15 @@ void LLSidepanelAppearance::updateScrollingPanelList()
 		mEditWearable->updateScrollingPanelList();
 	}
 }
+
+// [RLVa:KB] - Checked: 2010-09-16 (RLVa-1.2.1a) | Added: RLVa-1.2.1a
+bool LLSidepanelAppearance::isOutfitEditPanelVisible() const
+{
+	return (mOutfitEdit) && (mOutfitEdit->getVisible());
+}
+
+bool LLSidepanelAppearance::isWearableEditPanelVisible() const
+{
+	return (mEditWearable) && (mEditWearable->getVisible());
+}
+// [/RLVa:KB]

@@ -55,6 +55,9 @@
 #include "llviewerregion.h"
 #include "llviewerwindow.h"
 #include "lltrans.h"
+// [RLVa:KB] - Checked: 2010-04-19 (RLVa-1.2.0f)
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 #include "llglheaders.h"
 
@@ -133,7 +136,7 @@ void LLWorldMapView::initClass()
 	sTrackCircleImage =		LLUI::getUIImage("map_track_16.tga");
 	sTrackArrowImage =		LLUI::getUIImage("direction_arrow.tga");
 	sClassifiedsImage =		LLUI::getUIImage("icon_top_pick.tga");
-	sForSaleImage =			LLUI::getUIImage("icon_for_sale.tga");
+	sForSaleImage =			LLUI::getUIImage("Icon_For_Sale");
 	// To Do: update the image resource for adult lands on sale.
 	sForSaleAdultImage =    LLUI::getUIImage("icon_for_sale_adult.tga");
 	
@@ -453,17 +456,28 @@ void LLWorldMapView::draw()
 			std::string mesg;
 			if (info->isDown())
 			{
-				mesg = llformat( "%s (%s)", info->getName().c_str(), sStringsMap["offline"].c_str());
+				mesg = llformat( "%s (%s) ", info->getName().c_str(), sStringsMap["offline"].c_str());
 			}
 			else
 			{
-				mesg = info->getName();
+//				//BD - Take ourself into account for our agent counter
+				S32 agent_count = info->getAgentCount();
+				if (info->getName() == gAgent.getRegion()->getName())
+				{
+					++agent_count;
+				}
+
+//				//BD - Show an avatar count behind the SIM name
+				mesg = llformat( "%s (%d *) ", info->getName().c_str(), agent_count);
 			}
-			if (!mesg.empty())
+//			if (!mesg.empty())
+// [RLVa:KB] - Checked: 2012-02-08 (RLVa-1.4.5) | Added: RLVa-1.4.5
+			if ( (!mesg.empty()) && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)) )
+// [/RLVa:KB]
 			{
 				font->renderUTF8(
 					mesg, 0,
-					llfloor(left + 3), llfloor(bottom + 2),
+					llfloor(left + 3), llfloor(bottom + 5),
 					LLColor4::white,
 					LLFontGL::LEFT, LLFontGL::BASELINE, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW);
 			}
@@ -993,7 +1007,10 @@ void LLWorldMapView::drawTracking(const LLVector3d& pos_global, const LLColor4& 
 	text_x = llclamp(text_x, half_text_width + TEXT_PADDING, getRect().getWidth() - half_text_width - TEXT_PADDING);
 	text_y = llclamp(text_y + vert_offset, TEXT_PADDING + vert_offset, getRect().getHeight() - font->getLineHeight() - TEXT_PADDING - vert_offset);
 
-	if (label != "")
+//	if (label != "")
+// [RLVa:KB] - Checked: 2009-07-04 (RLVa-1.4.5) | Added: RLVa-1.0.0
+	if ( (label != "") && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)) )
+// [/RLVa:KB]
 	{
 		font->renderUTF8(
 			label, 0,
@@ -1053,7 +1070,12 @@ BOOL LLWorldMapView::handleToolTip( S32 x, S32 y, MASK mask )
 	{
 		LLViewerRegion *region = gAgent.getRegion();
 
-		std::string message = llformat("%s (%s)", info->getName().c_str(), info->getAccessString().c_str());
+// [RLVa:KB] - Checked: 2010-04-19 (RLVa-1.4.5) | Modified: RLVa-1.4.5
+		std::string message = llformat("%s (%s)", 
+			(!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)) ? info->getName().c_str() : RlvStrings::getString(RLV_STRING_HIDDEN_REGION).c_str(), 
+			info->getAccessString().c_str());
+// [/RLVa:KB]
+//		std::string message = llformat("%s (%s)", info->getName().c_str(), info->getAccessString().c_str());
 
 		if (!info->isDown())
 		{

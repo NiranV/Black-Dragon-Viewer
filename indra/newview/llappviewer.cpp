@@ -94,6 +94,15 @@
 #include "llprogressview.h"
 #include "llvocache.h"
 #include "llvopartgroup.h"
+// [SL:KB] - Patch: Appearance-Misc | Checked: 2013-02-12 (Catznip-3.4)
+#include "llappearancemgr.h"
+// [/SL:KB]
+// [RLVa:KB] - Checked: 2010-05-03 (RLVa-1.2.0g)
+#include "rlvactions.h"
+#include "rlvhandler.h"
+// [/RLVa:KB]
+
+
 #include "llweb.h"
 #include "llupdaterservice.h"
 #include "llfloatertexturefetchdebugger.h"
@@ -124,13 +133,15 @@
 #include "llleap.h"
 #include "stringize.h"
 #include "llcoros.h"
+#if !LL_LINUX
+#include "cef/llceflib.h"
+#endif
 
 // Third party library includes
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
-
 
 #if LL_WINDOWS
 #	include <share.h> // For _SH_DENYWR in processMarkerFiles
@@ -355,16 +366,16 @@ BOOL gLogoutInProgress = FALSE;
 // Internal globals... that should be removed.
 static std::string gArgs;
 const int MAX_MARKER_LENGTH = 1024;
-const std::string MARKER_FILE_NAME("SecondLife.exec_marker");
-const std::string START_MARKER_FILE_NAME("SecondLife.start_marker");
-const std::string ERROR_MARKER_FILE_NAME("SecondLife.error_marker");
-const std::string LLERROR_MARKER_FILE_NAME("SecondLife.llerror_marker");
-const std::string LOGOUT_MARKER_FILE_NAME("SecondLife.logout_marker");
+const std::string MARKER_FILE_NAME("BlackDragon.exec_marker");
+const std::string START_MARKER_FILE_NAME("BlackDragon.start_marker");
+const std::string ERROR_MARKER_FILE_NAME("BlackDragon.error_marker");
+const std::string LLERROR_MARKER_FILE_NAME("BlackDragon.llerror_marker");
+const std::string LOGOUT_MARKER_FILE_NAME("BlackDragon.logout_marker");
 static BOOL gDoDisconnect = FALSE;
 static std::string gLaunchFileOnQuit;
 
 // Used on Win32 for other apps to identify our window (eg, win_setup)
-const char* const VIEWER_WINDOW_CLASSNAME = "Second Life";
+const char* const VIEWER_WINDOW_CLASSNAME = "Black Dragon";
 
 //-- LLDeferredTaskList ------------------------------------------------------
 
@@ -478,7 +489,15 @@ void idle_afk_check()
 {
 	// check idle timers
 	F32 current_idle = gAwayTriggerTimer.getElapsedTimeF32();
-	F32 afk_timeout  = gSavedSettings.getS32("AFKTimeout");
+//	F32 afk_timeout  = gSavedSettings.getS32("AFKTimeout");
+// [RLVa:KB] - Checked: 2010-05-03 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g
+#ifdef RLV_EXTENSION_CMD_ALLOWIDLE
+	// Enforce an idle time of 30 minutes if @allowidle=n restricted
+	F32 afk_timeout = (!gRlvHandler.hasBehaviour(RLV_BHVR_ALLOWIDLE)) ? gSavedSettings.getS32("AFKTimeout") : 60 * 30;
+#else
+	F32 afk_timeout = gSavedSettings.getS32("AFKTimeout");
+#endif // RLV_EXTENSION_CMD_ALLOWIDLE
+// [/RLVa:KB]
 	if (afk_timeout && (current_idle > afk_timeout) && ! gAgent.getAFK())
 	{
 		LL_INFOS("IdleAway") << "Idle more than " << afk_timeout << " seconds: automatically changing to Away status" << LL_ENDL;
@@ -704,7 +723,7 @@ LLAppViewer::LLAppViewer()
 
 	// Need to do this initialization before we do anything else, since anything
 	// that touches files should really go through the lldir API
-	gDirUtilp->initAppDirs("SecondLife");
+	gDirUtilp->initAppDirs("BlackDragon");
 	//
 	// IMPORTANT! Do NOT put anything that will write
 	// into the log files during normal startup until AFTER
@@ -858,6 +877,7 @@ bool LLAppViewer::init()
 	settings_map["ignores"] = &gWarningSettings;
 	settings_map["floater"] = &gSavedSettings; // *TODO: New settings file
 	settings_map["account"] = &gSavedPerAccountSettings;
+	settings_map["controls"] = &gControlSettings;
 
 	LLUI::initClass(settings_map,
 		LLUIImageList::getInstance(),
@@ -1024,22 +1044,7 @@ bool LLAppViewer::init()
 	gGLManager.getGLInfo(gDebugInfo);
 	gGLManager.printGLInfoString();
 
-	// Load Default bindings
-	std::string key_bindings_file = gDirUtilp->findFile("keys.xml",
-														gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, ""),
-														gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
-
-
-	if (!gViewerKeyboard.loadBindingsXML(key_bindings_file))
-	{
-		std::string key_bindings_file = gDirUtilp->findFile("keys.ini",
-															gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, ""),
-															gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
-		if (!gViewerKeyboard.loadBindings(key_bindings_file))
-		{
-			LL_ERRS("InitInfo") << "Unable to open keys.ini" << LL_ENDL;
-		}
-	}
+	loadKeyboardlayout();
 
 	// If we don't have the right GL requirements, exit.
 	if (!gGLManager.mHasRequirements)
@@ -1216,6 +1221,24 @@ bool LLAppViewer::init()
 	LLAgentLanguage::init();
 
 	return true;
+}
+
+void LLAppViewer::loadKeyboardlayout(bool exportsettings)
+{
+	std::string key_bindings_file;
+	if (gSavedSettings.getBOOL("ShooterKeyLayout"))
+	{
+		key_bindings_file = gDirUtilp->findFile("keys_shooter.xml",	gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
+	}
+	else
+	{
+		key_bindings_file = gDirUtilp->findFile("keys.xml",	gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
+	}
+
+	if (!gViewerKeyboard.loadBindingsXML(key_bindings_file, exportsettings))
+	{
+		LL_ERRS("InitInfo") << "Unable to open keys.ini" << LL_ENDL;
+	}
 }
 
 void LLAppViewer::initMaxHeapSize()
@@ -1727,6 +1750,9 @@ bool LLAppViewer::cleanup()
 	// to ensure shutdown order
 	LLMortician::setZealous(TRUE);
 
+    // Give any remaining SLPlugin instances a chance to exit cleanly.
+    LLPluginProcessParent::shutdown();
+
 	LLVoiceClient::getInstance()->terminate();
 	
 	disconnectViewer();
@@ -1734,8 +1760,6 @@ bool LLAppViewer::cleanup()
 	LL_INFOS() << "Viewer disconnected" << LL_ENDL;
 
 	display_cleanup(); 
-
-	release_start_screen(); // just in case
 
 	LLError::logToFixedBuffer(NULL);
 
@@ -2197,7 +2221,14 @@ void errorCallback(const std::string &error_string)
 	//Set the ErrorActivated global so we know to create a marker file
 	gLLErrorActivated = true;
 	
+//	LLError::crashAndLoop(error_string);
+// [SL:KB] - Patch: Viewer-Build | Checked: 2010-12-04 (Catznip-2.4)
+#if !LL_RELEASE_FOR_DOWNLOAD && LL_WINDOWS
+	DebugBreak();
+#else
 	LLError::crashAndLoop(error_string);
+#endif // LL_RELEASE_WITH_DEBUG_INFO && LL_WINDOWS
+// [/SL:KB]
 }
 
 void LLAppViewer::initLoggingAndGetLastDuration()
@@ -2212,12 +2243,12 @@ void LLAppViewer::initLoggingAndGetLastDuration()
 
 	// Remove the last ".old" log file.
 	std::string old_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-							     "SecondLife.old");
+							     "BlackDragon.old");
 	LLFile::remove(old_log_file);
 
 	// Get name of the log file
 	std::string log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-							     "SecondLife.log");
+							     "BlackDragon.log");
  	/*
 	 * Before touching any log files, compute the duration of the last run
 	 * by comparing the ctime of the previous start marker file with the ctime
@@ -2438,6 +2469,9 @@ bool LLAppViewer::initConfiguration()
 	// Note: can't use LL_PATH_PER_SL_ACCOUNT for any of these since we haven't logged in yet
 	gSavedSettings.setString("ClientSettingsFile", 
         gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, getSettingsFilename("Default", "Global")));
+
+	gSavedSettings.setString("ControlSettingsFile", 
+        gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, getSettingsFilename("User", "Controls")));
 
 #ifndef	LL_RELEASE_FOR_DOWNLOAD
 	// provide developer build only overrides for these control variables that are not
@@ -2783,10 +2817,12 @@ bool LLAppViewer::initConfiguration()
 	//
 	gWindowTitle = LLTrans::getString("APP_NAME");
 #if LL_DEBUG
-	gWindowTitle += std::string(" [DEBUG] ") + gArgs;
-#else
-	gWindowTitle += std::string(" ") + gArgs;
+    gWindowTitle += std::string(" [DEBUG]");
 #endif
+	if (!gArgs.empty())
+	{
+	gWindowTitle += std::string(" ") + gArgs;
+	}
 	LLStringUtil::truncate(gWindowTitle, 255);
 
 	//RN: if we received a URL, hand it off to the existing instance.
@@ -3090,8 +3126,8 @@ void LLAppViewer::initUpdater()
 	U32 check_period = gSavedSettings.getU32("UpdaterServiceCheckPeriod");
 	bool willing_to_test;
 	LL_DEBUGS("UpdaterService") << "channel " << channel << LL_ENDL;
-	static const boost::regex is_test_channel("\\bTest$");
-	if (boost::regex_search(channel, is_test_channel)) 
+
+	if (LLVersionInfo::TEST_VIEWER == LLVersionInfo::getViewerMaturity()) 
 	{
 		LL_INFOS("UpdaterService") << "Test build: overriding willing_to_test by sending testno" << LL_ENDL;
 		willing_to_test = false;
@@ -3324,16 +3360,28 @@ LLSD LLAppViewer::getViewerInfo() const
 	LLViewerRegion* region = gAgent.getRegion();
 	if (region)
 	{
-		LLVector3d pos = gAgent.getPositionGlobal();
-		info["POSITION"] = ll_sd_from_vector3d(pos);
-		info["POSITION_LOCAL"] = ll_sd_from_vector3(gAgent.getPosAgentFromGlobal(pos));
-		info["REGION"] = gAgent.getRegion()->getName();
-		info["HOSTNAME"] = gAgent.getRegion()->getHost().getHostName();
-		info["HOSTIP"] = gAgent.getRegion()->getHost().getString();
+// [RLVa:KB] - Checked: 2014-02-24 (RLVa-1.4.10)
+		if (RlvActions::canShowLocation())
+		{
+// [/RLVa:KB]
+			LLVector3d pos = gAgent.getPositionGlobal();
+			info["POSITION"] = ll_sd_from_vector3d(pos);
+			info["POSITION_LOCAL"] = ll_sd_from_vector3(gAgent.getPosAgentFromGlobal(pos));
+			info["REGION"] = gAgent.getRegion()->getName();
+			info["HOSTNAME"] = gAgent.getRegion()->getHost().getHostName();
+			info["HOSTIP"] = gAgent.getRegion()->getHost().getString();
+//			info["SERVER_VERSION"] = gLastVersionChannel;
+			LLSLURL slurl;
+			LLAgentUI::buildSLURL(slurl);
+			info["SLURL"] = slurl.getSLURLString();
+// [RLVa:KB] - Checked: 2014-02-24 (RLVa-1.4.10)
+		}
+		else
+		{
+			info["REGION"] = RlvStrings::getString(RLV_STRING_HIDDEN_REGION);
+		}
 		info["SERVER_VERSION"] = gLastVersionChannel;
-		LLSLURL slurl;
-		LLAgentUI::buildSLURL(slurl);
-		info["SLURL"] = slurl.getSLURLString();
+// [/RLVa:KB]
 	}
 
 	// CPU
@@ -3352,6 +3400,9 @@ LLSD LLAppViewer::getViewerInfo() const
 	}
 #endif
 
+// [RLVa:KB] - Checked: 2010-04-18 (RLVa-1.2.0)
+	info["RLV_VERSION"] = (rlv_handler_t::isEnabled()) ? RlvStrings::getVersionAbout() : "(disabled)";
+// [/RLVa:KB]
 	info["OPENGL_VERSION"] = (const char*)(glGetString(GL_VERSION));
 	info["LIBCURL_VERSION"] = LLCurl::getVersionString();
 	info["J2C_VERSION"] = LLImageJ2C::getEngineInfo();
@@ -3369,8 +3420,11 @@ LLSD LLAppViewer::getViewerInfo() const
 		info["VOICE_VERSION"] = LLTrans::getString("NotConnected");
 	}
 
-	// TODO: Implement media plugin version query
-	info["QT_WEBKIT_VERSION"] = "4.7.1 (version number hard-coded)";
+#if !LL_LINUX
+	info["LLCEFLIB_VERSION"] = LLCEFLIB_VERSION;
+#else
+	info["LLCEFLIB_VERSION"] = "Undefined";
+#endif
 
 	S32 packets_in = LLViewerStats::instance().getRecording().getSum(LLStatViewer::PACKETS_IN);
 	if (packets_in > 0)
@@ -3445,7 +3499,10 @@ std::string LLAppViewer::getViewerInfoString() const
 	support << LLTrans::getString("AboutHeader", args);
 	if (info.has("REGION"))
 	{
-		support << "\n\n" << LLTrans::getString("AboutPosition", args);
+// [RLVa:KB] - Checked: 2014-02-24 (RLVa-1.4.10)
+		support << "\n\n" << LLTrans::getString( (RlvActions::canShowLocation()) ? "AboutPosition" : "AboutPositionRLVShowLoc", args);
+// [/RLVa:KB]
+//		support << "\n\n" << LLTrans::getString("AboutPosition", args);
 	}
 	support << "\n\n" << LLTrans::getString("AboutSystem", args);
 	support << "\n";
@@ -3484,12 +3541,25 @@ void LLAppViewer::cleanupSavedSettings()
 	// as we don't track it in callbacks
 	if(NULL != gViewerWindow)
 	{
-		BOOL maximized = gViewerWindow->getWindow()->getMaximized();
-		if (!maximized)
+		//	BOOL maximized = gViewerWindow->mWindow->getMaximized();
+		//	if (!maximized)
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
+#ifndef LL_WINDOWS
+		if ((!gViewerWindow->mWindow->getMaximized()) || (!gViewerWindow->mWindow->getFullscreenWindow()))
+#endif // !LL_WINDOWS
+// [/SL:KB]
 		{
 			LLCoordScreen window_pos;
 			
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
+#ifndef LL_WINDOWS
+// [/SL:KB]
 			if (gViewerWindow->getWindow()->getPosition(&window_pos))
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
+#else
+			if (gViewerWindow->mWindow->getRestoredPosition(&window_pos))
+#endif // !LL_WINDOWS
+// [/SL:KB]
 			{
 				gSavedSettings.setS32("WindowX", window_pos.mX);
 				gSavedSettings.setS32("WindowY", window_pos.mY);
@@ -4636,12 +4706,6 @@ void LLAppViewer::saveFinalSnapshot()
 		gAgentCamera.changeCameraToThirdPerson( FALSE );	// don't animate, need immediate switch
 		gSavedSettings.setBOOL("ShowParcelOwners", FALSE);
 		idle();
-
-		std::string snap_filename = gDirUtilp->getLindenUserDir();
-		snap_filename += gDirUtilp->getDirDelimiter();
-		snap_filename += SCREEN_LAST_FILENAME;
-		// use full pixel dimensions of viewer window (not post-scale dimensions)
-		gViewerWindow->saveSnapshot(snap_filename, gViewerWindow->getWindowWidthRaw(), gViewerWindow->getWindowHeightRaw(), FALSE, TRUE);
 		mSavedFinalSnapshot = TRUE;
 	}
 }
@@ -4947,6 +5011,7 @@ void LLAppViewer::idle()
 		
 		gIdleCallbacks.callFunctions();
 		gInventory.idleNotifyObservers();
+		LLAvatarTracker::instance().idleNotifyObservers();
 	}
 	
 	// Metrics logging (LLViewerAssetStats, etc.)
@@ -5495,8 +5560,7 @@ void LLAppViewer::disconnectViewer()
 	}
 	//
 	// Cleanup after quitting.
-	//	
-	// Save snapshot for next time, if we made it through initialization
+	//
 
 	LL_INFOS() << "Disconnecting viewer!" << LL_ENDL;
 
@@ -5531,6 +5595,11 @@ void LLAppViewer::disconnectViewer()
 
 	// close inventory interface, close all windows
 	LLFloaterInventory::cleanup();
+
+// [SL:KB] - Patch: Appearance-Misc | Checked: 2013-02-12 (Catznip-3.4)
+	// Destroying all objects below will trigger attachment detaching code and attempt to remove the COF links for them
+	LLAppearanceMgr::instance().setAttachmentInvLinkEnable(false);
+// [/SL:KB]
 
 	gAgentWearables.cleanup();
 	gAgentCamera.cleanup();

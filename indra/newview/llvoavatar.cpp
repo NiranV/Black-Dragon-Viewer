@@ -53,6 +53,7 @@
 #include "lleditingmotion.h"
 #include "llemote.h"
 #include "llfloatertools.h"
+#include "llfloaterreg.h"
 #include "llheadrotmotion.h"
 #include "llhudeffecttrail.h"
 #include "llhudmanager.h"
@@ -96,6 +97,11 @@
 #include "llanimstatelabels.h"
 #include "lltrans.h"
 #include "llappearancemgr.h"
+// [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.2.0c)
+#include "rlvhandler.h"
+// [/RLVa:KB]
+
+#include "llfloaterreg.h"
 
 #include "llgesturemgr.h" //needed to trigger the voice gesticulations
 #include "llvoiceclient.h"
@@ -157,6 +163,9 @@ const S32 TEX_IMAGE_SIZE_OTHER = 512 / 4;  // The size of local textures for oth
 const F32 HEAD_MOVEMENT_AVG_TIME = 0.9f;
 
 const S32 MORPH_MASK_REQUESTED_DISCARD = 0;
+
+const F32 MAX_STANDOFF_FROM_ORIGIN = 3;
+const F32 MAX_STANDOFF_DISTANCE_CHANGE = 32;
 
 // Discard level at which to switch to baked textures
 // Should probably be 4 or 3, but didn't want to change it while change other logic - SJB
@@ -2126,7 +2135,7 @@ void LLVOAvatar::idleUpdate(LLAgent &agent, const F64 &time)
 	
 	// animate the character
 	// store off last frame's root position to be consistent with camera position
-	LLVector3 root_pos_last = mRoot->getWorldPosition();
+	mLastRootPos = mRoot->getWorldPosition();
 	BOOL detailed_update = updateCharacter(agent);
 
 	static LLUICachedControl<bool> visualizers_in_calls("ShowVoiceVisualizersInCalls", false);
@@ -2144,7 +2153,7 @@ void LLVOAvatar::idleUpdate(LLAgent &agent, const F64 &time)
 		idleUpdateWindEffect();
 	}
 		
-	idleUpdateNameTag( root_pos_last );
+	idleUpdateNameTag( mLastRootPos );
 	idleUpdateRenderComplexity();
 }
 
@@ -2613,12 +2622,18 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 	const F32 time_visible = mTimeVisible.getElapsedTimeF32();
 	const F32 NAME_SHOW_TIME = gSavedSettings.getF32("RenderNameShowTime");	// seconds
 	const F32 FADE_DURATION = gSavedSettings.getF32("RenderNameFadeDuration"); // seconds
+// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.2a) | Added: RLVa-0.2.0b
+	bool fRlvShowNames = gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES);
+// [/RLVa:KB]
 	BOOL visible_avatar = isVisible() || mNeedsAnimUpdate;
 	BOOL visible_chat = gSavedSettings.getBOOL("UseChatBubbles") && (mChats.size() || mTyping);
 	BOOL render_name =	visible_chat ||
-		(visible_avatar &&
-		 ((sRenderName == RENDER_NAME_ALWAYS) ||
-		  (sRenderName == RENDER_NAME_FADE && time_visible < NAME_SHOW_TIME)));
+		                (visible_avatar &&
+// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.2a) | Added: RLVa-1.0.0h
+						( (!fRlvShowNames) || (RlvSettings::getShowNameTags()) ) &&
+// [/RLVa:KB]
+		                ((sRenderName == RENDER_NAME_ALWAYS) ||
+		                 (sRenderName == RENDER_NAME_FADE && time_visible < NAME_SHOW_TIME)));
 	// If it's your own avatar, don't draw in mouselook, and don't
 	// draw if we're specifically hiding our own name.
 	if (isSelf())
@@ -2648,7 +2663,18 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 		new_name = TRUE;
 	}
 
-	if (sRenderGroupTitles != mRenderGroupTitles)
+// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.2a) | Added: RLVa-0.2.0b
+	if (fRlvShowNames)
+	{
+		if (mRenderGroupTitles)
+		{
+			mRenderGroupTitles = FALSE;
+			new_name = TRUE;
+		}
+	}
+	else if (sRenderGroupTitles != mRenderGroupTitles)
+// [/RLVa]
+//	if (sRenderGroupTitles != mRenderGroupTitles)
 	{
 		mRenderGroupTitles = sRenderGroupTitles;
 		new_name = TRUE;
@@ -2715,6 +2741,9 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 	// Avatars must have a first and last name
 	if (!firstname || !lastname) return;
 
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
+	bool fRlvShowNames = gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES);
+// [/RLVa:KB]
 	bool is_away = mSignaledAnimations.find(ANIM_AGENT_AWAY)  != mSignaledAnimations.end();
 	bool is_do_not_disturb = mSignaledAnimations.find(ANIM_AGENT_DO_NOT_DISTURB) != mSignaledAnimations.end();
 	bool is_appearance = mSignaledAnimations.find(ANIM_AGENT_CUSTOMIZE) != mSignaledAnimations.end();
@@ -2727,7 +2756,10 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 	{
 		is_muted = LLMuteList::getInstance()->isMuted(getID());
 	}
-	bool is_friend = LLAvatarTracker::instance().isBuddy(getID());
+//	bool is_friend = LLAvatarTracker::instance().isBuddy(getID());
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
+	bool is_friend = (!fRlvShowNames) && (LLAvatarTracker::instance().isBuddy(getID()));
+// [/RLVa:KB]
 	bool is_cloud = getIsCloud();
 
 	if (is_appearance != mNameAppearance)
@@ -2792,7 +2824,10 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 				LLFontGL::getFontSansSerifSmall());
 		}
 
-		if (sRenderGroupTitles
+//		if (sRenderGroupTitles
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
+		if (sRenderGroupTitles && !fRlvShowNames
+// [/RLVa:KB]
 			&& title && title->getString() && title->getString()[0] != '\0')
 		{
 			std::string title_str = title->getString();
@@ -2814,25 +2849,42 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 				clearNameTag();
 			}
 
-			// Might be blank if name not available yet, that's OK
-			if (show_display_names)
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
+			if ( (!fRlvShowNames) || (isSelf()) )
 			{
-				addNameTagLine(av_name.getDisplayName(), name_tag_color, LLFontGL::NORMAL,
-					LLFontGL::getFontSansSerif());
-			}
-			// Suppress SLID display if display name matches exactly (ugh)
-			if (show_usernames && !av_name.isDisplayNameDefault())
-			{
-				// *HACK: Desaturate the color
-				LLColor4 username_color = name_tag_color * 0.83f;
-				addNameTagLine(av_name.getUserName(), username_color, LLFontGL::NORMAL,
+// [/RLVa:KB]
+				// Might be blank if name not available yet, that's OK
+				if (show_display_names)
+				{
+					addNameTagLine(av_name.getDisplayName(), name_tag_color, LLFontGL::NORMAL,
+						LLFontGL::getFontSansSerif());
+				}
+				// Suppress SLID display if display name matches exactly (ugh)
+				if (show_usernames && !av_name.isDisplayNameDefault())
+				{
+					// *HACK: Desaturate the color
+					LLColor4 username_color = name_tag_color * 0.83f;
+					addNameTagLine(av_name.getUserName(), username_color, LLFontGL::NORMAL,
 					LLFontGL::getFontSansSerifSmall());
+				}
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
 			}
+			else
+			{
+				addNameTagLine(RlvStrings::getAnonym(av_name), name_tag_color, LLFontGL::NORMAL, LLFontGL::getFontSansSerif());
+			}
+// [/RLVa:KB]
 		}
 		else
 		{
 			const LLFontGL* font = LLFontGL::getFontSansSerif();
 			std::string full_name = LLCacheName::buildFullName( firstname->getString(), lastname->getString() );
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
+			if ( (fRlvShowNames) && (!isSelf()) )
+			{
+				full_name = RlvStrings::getAnonym(full_name);
+			}
+// [/RLVa:KB]
 			addNameTagLine(full_name, name_tag_color, LLFontGL::NORMAL, font);
 		}
 
@@ -3427,7 +3479,8 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 			}
 			LLVector3 velDir = getVelocity();
 			velDir.normalize();
-			if ( mSignaledAnimations.find(ANIM_AGENT_WALK) != mSignaledAnimations.end())
+//			//BD - Backwards walking feature
+			if (!gSavedSettings.getBOOL("AllowWalkingBackwards") && (mSignaledAnimations.find(ANIM_AGENT_WALK) != mSignaledAnimations.end()))
 			{
 				F32 vpD = velDir * primDir;
 				if (vpD < -0.5f)
@@ -3470,14 +3523,23 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 
 			LLVector3 pelvisDir( mRoot->getWorldMatrix().getFwdRow4().mV );
 
-			static LLCachedControl<F32> s_pelvis_rot_threshold_slow(gSavedSettings, "AvatarRotateThresholdSlow", 60.0);
-			static LLCachedControl<F32> s_pelvis_rot_threshold_fast(gSavedSettings, "AvatarRotateThresholdFast", 2.0);
+			static LLCachedControl<F32> s_pelvis_rot_threshold_slow(gSavedSettings, "AvatarRotateThresholdSlow");
+			static LLCachedControl<F32> s_pelvis_rot_threshold_fast(gSavedSettings, "AvatarRotateThresholdFast");
+			static LLCachedControl<F32> s_pelvis_rot_threshold_ml(gSavedSettings, "AvatarRotateThresholdMouselook");
 
 			F32 pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, s_pelvis_rot_threshold_slow, s_pelvis_rot_threshold_fast);
 						
 			if (self_in_mouselook)
 			{
-				pelvis_rot_threshold *= MOUSELOOK_PELVIS_FOLLOW_FACTOR;
+				pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, s_pelvis_rot_threshold_ml, s_pelvis_rot_threshold_fast);
+			}
+
+			static LLCachedControl<bool> freeze_frame(gSavedSettings, "UseFreezeWorld");
+
+			// Stop Avatars from rotating while we are in Freeze World mode.
+			if (freeze_frame)
+			{
+				pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, 360.0f, 360.0f);
 			}
 			pelvis_rot_threshold *= DEG_TO_RAD;
 
@@ -3536,7 +3598,9 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 			// Set the root rotation, but do so incrementally so that it
 			// lags in time by some fixed amount.
 			//F32 u = LLSmoothInterpolation::getInterpolant(PELVIS_LAG);
-			F32 pelvis_lag_time = 0.f;
+//			//BD - Custom turnaround speed.
+			static LLCachedControl<F32> s_pelvis_rot_speed(gSavedSettings, "MovementRotationSpeed");
+			F32 pelvis_lag_time = s_pelvis_rot_speed;
 			if (self_in_mouselook)
 			{
 				pelvis_lag_time = PELVIS_LAG_MOUSELOOK;
@@ -3546,10 +3610,6 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 				pelvis_lag_time = PELVIS_LAG_FLYING;
 				// increase pelvis lag time when moving slowly
 				pelvis_lag_time *= clamp_rescale(mSpeedAccum, 0.f, 15.f, 3.f, 1.f);
-			}
-			else
-			{
-				pelvis_lag_time = PELVIS_LAG_WALKING;
 			}
 
 			F32 u = llclamp((deltaTime / pelvis_lag_time), 0.0f, 1.0f);	
@@ -5944,6 +6004,13 @@ void LLVOAvatar::sitDown(BOOL bSitting)
 	{
 		// Update Movement Controls according to own Sitting mode
 		LLFloaterMove::setSittingMode(bSitting);
+
+// [RLVa:KB] - Checked: 2010-08-29 (RLVa-1.2.1c) | Modified: RLVa-1.2.1c
+		if (rlv_handler_t::isEnabled())
+		{
+			gRlvHandler.onSitOrStand(bSitting);
+		}
+// [/RLVa:KB]
 	}
 }
 
@@ -6004,10 +6071,10 @@ void LLVOAvatar::getOffObject()
 	{
 		return;
 	}
-	
+
 	LLViewerObject* sit_object = (LLViewerObject*)getParent();
 
-	if (sit_object) 
+	if (sit_object)
 	{
 		stopMotionFromSource(sit_object->getID());
 		LLFollowCamMgr::setCameraActive(sit_object->getID(), FALSE);
@@ -6024,8 +6091,18 @@ void LLVOAvatar::getOffObject()
 	}
 
 	// assumes that transform will not be updated with drawable still having a parent
+	// or that drawable had no parent from the start
 	LLVector3 cur_position_world = mDrawable->getWorldPosition();
 	LLQuaternion cur_rotation_world = mDrawable->getWorldRotation();
+
+	if (mLastRootPos.length() >= MAX_STANDOFF_FROM_ORIGIN
+		&& (cur_position_world.length() < MAX_STANDOFF_FROM_ORIGIN
+			|| dist_vec(cur_position_world, mLastRootPos) > MAX_STANDOFF_DISTANCE_CHANGE))
+	{
+		// Most likely drawable got updated too early or some updates were missed - we got relative position to non-existing parent
+		// restore coordinates from cache
+		cur_position_world = mLastRootPos;
+	}
 
 	// set *local* position based on last *world* position, since we're unparenting the avatar
 	mDrawable->mXform.setPosition(cur_position_world);
@@ -6202,6 +6279,7 @@ void LLVOAvatar::onGlobalColorChanged(const LLTexGlobalColor* global_color)
 BOOL LLVOAvatar::isVisible() const
 {
 	return mDrawable.notNull()
+		&& (!mOrphaned || isSelf())
 		&& (mDrawable->isVisible() || mIsDummy);
 }
 
@@ -6458,7 +6536,11 @@ BOOL LLVOAvatar::processFullyLoadedChange(bool loading)
 
 BOOL LLVOAvatar::isFullyLoaded() const
 {
-	return (mRenderUnloadedAvatar || mFullyLoaded);
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-22 (Catznip-2.2)
+	// Changes to LLAppearanceMgr::updateAppearanceFromCOF() expect this function to actually return mFullyLoaded for gAgentAvatarp
+	return (mRenderUnloadedAvatar && !isSelf()) ||(mFullyLoaded);
+// [/SL:KB]
+//	return (mRenderUnloadedAvatar || mFullyLoaded);
 }
 
 bool LLVOAvatar::isTooComplex() const

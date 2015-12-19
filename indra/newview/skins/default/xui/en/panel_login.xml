@@ -1,173 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
+follows="all"
+height="600"
+layout="topleft"
+left="0"
+name="panel_login"
+focus_root="false" 
+top="600"
+ width="996">
+<panel.string name="create_account_url">
+       http://join.secondlife.com/
+</panel.string>
+<string name="reg_in_client_url" translate="false">
+     http://secondlife.eniac15.lindenlab.com/reg-in-client/
+</string>
+<panel.string name="forgot_password_url">
+       http://secondlife.com/account/request.php
+</panel.string>
+  <!--<web_browser
+  visibility_control="ExperimentalLogin"
+  tab_stop="false" 
+  trusted_content="true" 
+  bg_opaque_color="Black"
+  border_visible="false"
+  top="-600"
   follows="all"
-  height="768"
-  layout="topleft"
-  name="panel_login"
-  focus_root="true"
-  background_visible="true"
-  bg_opaque_color="0.16 0.16 0.16 1"
-  background_opaque="true"
-  width="1024">
-  <panel.string
-    name="forgot_password_url">
-    http://secondlife.com/account/request.php
-  </panel.string>
-  <layout_stack
-  follows="left|right|top"
-  height="172"
-  min_height="172"
+  start_url="https://lh4.googleusercontent.com/f26pNcNMvmKjQJ9tcwcGRu5wq16gjaYxVNxf0ckdoW0=s1920"
   left="0"
-  name="ui_stack"
-  orientation="horizontal"
-  top="10"
-  width="1024">
-    <layout_panel
-      height="172"
-      auto_resize="true"
-      name="ui_elastic_pad_left"
-      width="32" />
-    <layout_panel
-      auto_resize="false"
-      follows="left|right|top"
-      name="ui_container"
-      width="1000"
-      left="0"
-      top="0"
-      height="172">
+  name="html"
+  height="640"
+  width="996" />-->
+  
   <icon
-    height="73"
-    width="165"
-    image_name="login_sl_logo"
-    left="0"
-    top="25"
-    name="sl_logo_small" />
-  <combo_box
-    left_pad="22"
-    bottom_delta="-7"
-    allow_text_entry="true"
-    follows="left|top"
-    height="32"
-    label="Username"
-    combo_editor.font="SansSerifLarge"
-    max_chars="128"
-    commit_on_focus_lost="false"
-    combo_editor.prevalidate_callback="ascii"
-    tool_tip="The username you chose when you registered, like bobsmith12 or Steller Sunshine"
-    name="username_combo"
-    width="232">
-    <combo_box.combo_editor
-      text_pad_left="8" 
-      bg_image_always_focused="true"/>
-    <combo_box.combo_button
-      visible="false" />
-    <combo_box.drop_down_button
-      visible="false" />
-  </combo_box>
-  <line_editor
-    follows="left|top"
-    height="32"
-    left_pad="-11"
-    max_length_bytes="16"
-    text_pad_left="8"
-    name="password_edit"
-    label="Password"
-  	bg_image_always_focused="true"
-    font="SansSerifLarge"
-    is_password="true"
-    select_on_focus="true"
-    commit_on_focus_lost="false"
-    bottom_delta="0"
-    width="165" />
-  <combo_box
-    allow_text_entry="true"
-    control_name="NextLoginLocation"    
-    follows="left|top"
-    label="My favorite places"
-    height="32"
-    max_chars="128"
-    combo_editor.font="SansSerifLarge"
-    left_pad="15"
-    bottom_delta="0"
-    name="start_location_combo"
-    width="175"
-    combo_button.scale_image="true">
-    <combo_box.combo_editor
-      bg_image_always_focused="true"
-      text_pad_left="8"/>
-    <combo_box.item
-      label="My last location"
-      name="MyLastLocation"
-      value="last" />
-    <combo_box.item
-      label="My home"
-      name="MyHome"
-      value="home" />     
-  </combo_box>
-  <button
-    follows="left|top"
-    image_unselected="PushButton_Login"
-    image_pressed="PushButton_Login_Pressed"
-    image_hover="PushButton_Login_Over"
-    label="Log In"
-    label_color="White"
-    font="SansSerifMedium"
-    name="connect_btn"
-    enabled="true"    
-    width="120"
-    height="32"
-  	left_pad="15"
-    bottom_delta="0" />  
-  <check_box
-    control_name="RememberPassword"
-    follows="left|top"
-    font="SansSerifMedium"
-    left="185"
-    bottom_delta="21"  	
-    height="24"
-    label="Remember me"
-    check_button.bottom="3"
-    name="remember_check"
-    width="145" />
-  <text
-    follows="left|top"
-    font="SansSerifMedium"
-    text_color="EmphasisColor"
-    height="16"
-    name="forgot_password_text"
-    left="408"    
-    bottom_delta="0"
-    width="200">
-    Forgotten password
-  </text> 
-  <combo_box
-    allow_text_entry="false"
-    font="SansSerifTiny"
-    follows="left|top"
-    height="26"
-  	left="588"
-  	bottom_delta="10"
-    max_chars="128"
-    label="Select grid"    
+  follows="all"
+  height="600"
+  image_name="Login_BG"
+  color="1 1 1 1"
+  layout="topleft"
+  name="login_bg"
+  mouse_opaque="false"
+  visible="true"
+  width="1016"
+  left="0"
+  top="-600"/>
+  <icon
+  follows="bottom|left|right"
+  height="125"
+  image_name="Toolbar_Middle_Selected"
+  color="0 0 0.15 1"
+  layout="topleft"
+  name="login_bg"
+  mouse_opaque="false"
+  visible="true"
+  width="996"
+  left="0"
+  top="-125"/>
+  <icon
+  follows="bottom|left|right"
+  height="125"
+  image_name="Toolbar_Middle_Selected"
+  color="0 0 0 1"
+  layout="topleft"
+  name="login_bg"
+  mouse_opaque="false"
+  visible="true"
+  width="996"
+  left="0"
+  top="-125"/>
+  
+  <icon
+  follows="top|left|right"
+  height="25"
+  image_name="Toolbar_Middle_Selected"
+  color="0 0 0 1"
+  layout="topleft"
+  name="login_bg"
+  mouse_opaque="false"
+  visible="true"
+  width="996"
+  left="0"
+  top="0"/>
+  <icon
+  follows="top|left|right"
+  height="25"
+  image_name="Toolbar_Middle_Selected"
+  color="0 0 0.15 1"
+  layout="topleft"
+  name="login_bg"
+  mouse_opaque="false"
+  visible="true"
+  width="996"
+  left="0"
+  top="0"/>
+  <view_border
+    bevel_style="in"
+    follows="top|left|right"
+    height="1"
     layout="topleft"
-    name="server_combo"
-    width="149" />	
-  </layout_panel>
-  <layout_panel
-      height="172"
-      auto_resize="true"
-      name="ui_elastic_pad_right"
-      width="32" />
-  </layout_stack>
-  <web_browser
-    tab_stop="false"
-    trusted_content="true"
-    bg_opaque_color="Black"
-    border_visible="false"
+    left="1"
+    name="cost_text_border"
+    top="25"
+    width="994"/>
+  <button
+       follows="left|top|right"
+       height="20"
+       image_unselected="transparentj2c"
+       image_selected="transparentj2c"
+       label="[CHANNEL] [VERSION] - [2.4.4.4]"
+       font="SansSerifSmall"
+       layout="topleft"
+       left="3"
+       halign="left"
+       name="channel_text"
+       top="3"
+       width="200">
+       <button.commit_callback
+         function="Floater.Show"
+         parameter="sl_about"/>
+       </button>
+  <panel
+  follows="right|left|bottom"
+  height="145"
+  layout="topleft"
+  left="0"
+  name="panel_login2"
+  focus_root="true" 
+  bottom="-7"
+  width="996">
+    <layout_stack
+    border_size="0"
     follows="all"
+    height="145"
+    layout="topleft"
     left="0"
-    name="login_html"
-    start_url=""
-    top="154"
-    height="600"
-    width="1024" />
+    mouse_opaque="false"
+    name="root_stack"
+    orientation="horizontal"
+    top="0"
+    width="996">
+      <layout_panel
+      auto_resize="true"
+      follows="all"
+      height="120"
+      layout="topleft"
+      mouse_opaque="false"
+      name="info_panel"
+      top_pad="0"
+      width="200">
+       <button
+       follows="left|top"
+       height="18"
+       image_unselected="Toolbar_Middle_Off"
+        image_selected="Toolbar_Middle_Selected"
+       label="Changelogs"
+       font="SansSerif"
+       font.style="BOLD"
+       layout="topleft"
+       left="1"
+       halign="center"
+       name="version_info_link"
+       top="17"
+       width="120">
+       <button.commit_callback
+         function="Advanced.WebContentTest"
+         parameter="http://niranv-sl.blogspot.com/p/these-are-listed-from-newest-to-oldest_5310.html"/>
+       </button>
+       <view_border
+    bevel_style="in"
+    follows="top|left|right"
+    height="1"
+    layout="topleft"
+    left_pad="1"
+    name="cost_text_border"
+    top="25"
+    width="78"/>
+        <icon
+        follows="bottom|left"
+        height="76"
+        color="1 1 1 0.55"
+        image_name="SL_Logo"
+        layout="topleft"
+        name="vicon"
+        mouse_opaque="false"
+        visible="true"
+        width="76"
+        right="40"
+        top_pad="45"/>
+        <text
+        follows="left|bottom"
+        font="SansSerifBig"
+        font_shadow="soft"
+        font.style="BOLD"
+        halign="left"
+        height="17"
+        bottom="-3"
+        left_pad="2"
+        name="app_name_text"
+        width="180"
+        word_wrap="true">
+           [APP_NAME] - Rawr
+        </text>
+      </layout_panel>
+      <layout_panel
+      auto_resize="false"
+      follows="all"
+      height="130"
+      layout="topleft"
+      mouse_opaque="false"
+      name="root_panel"
+      top_pad="0"
+      width="395">
+       <button
+        follows="left|top"
+        height="18"
+        control_name="PreferencesLogin"
+        image_overlay_alignment="left"
+        pad_bottom="0"
+        image_overlay="Command_Preferences_Icon"
+        image_unselected="Toolbar_Middle_Off"
+        image_selected="Toolbar_Middle_Selected"
+        label="Preferences"
+        is_toggle="false"
+        font="SansSerif"
+        font.style="BOLD"
+        label_color="1 1 1 0.7"
+        layout="topleft"
+        left="1"
+        halign="center"
+        name="pref_btn"
+        top="17"
+        width="122">
+              <button.commit_callback
+              function="Floater.Toggle"
+              parameter="preferences"/>
+        </button>
+        <!--<button
+        follows="right|top"
+        height="18"
+        image_overlay_alignment="left"
+        image_bottom_pad="1"
+        pad_bottom="0"
+        image_overlay="Command_Profile_Icon"
+        image_unselected="Toolbar_Middle_Off"
+        image_selected="Toolbar_Middle_Selected"
+        label="Sign Up"
+        font="SansSerif"
+        font.style="BOLD"
+        label_color="1 1 1 0.7"
+        layout="topleft"
+        left_pad="1"
+        halign="center"
+        name="create_new_account_text"
+        top_delta="0"
+        width="100"/>-->
+        <!--<button
+        follows="right|top"
+        height="18"
+        image_unselected="transparentj2c"
+        image_selected="transparentj2c"
+        label="Forgot Login details?"
+        font="SansSerifBig"
+        font.style="BOLD"
+        label_color="1 1 1 0.7"
+        layout="topleft"
+        left="0"
+        halign="right"
+        name="forgot_password_text"
+        top_pad="0"
+        width="100"/>-->
+        <button
+        follows="right|top"
+        height="18"
+        image_overlay_alignment="left"
+        pad_bottom="0"
+        image_overlay="Command_AboutLand_Icon"
+        image_unselected="Toolbar_Middle_Off"
+        image_selected="Toolbar_Middle_Selected"
+        label="Grid Status"
+        font="SansSerif"
+        font.style="BOLD"
+        label_color="1 1 1 0.7"
+        layout="topleft"
+        left_pad="1"
+        halign="center"
+        name="grid_btn"
+        top_delta="0"
+        width="111">
+        <button.commit_callback
+          function="PromptShowURL"
+          parameter="WebLaunchExternalTarget,http://status.secondlifegrid.net/"/>
+        </button>
+        <combo_box
+        allow_text_entry="true"
+        follows="left|top"
+        height="18"
+        max_chars="256"
+        layout="topleft"
+        label="Select a Grid"
+        top_delta="0"
+        left_pad="1"
+        name="server_combo"
+        width="157"
+        visible="true">
+          <combo_box.combo_editor
+          font="SansSerif"
+          font.style="BOLD"
+          font_shadow="soft"
+          text_tentative_color="0.7 0.7 0.7 0.7"
+          cursor_color="White"
+          text_color="0.75 0.75 0.75 0.7"
+          background_image="Toolbar_Middle_Off"
+          background_image_disabled="Toolbar_Middle_Selected"
+          background_image_focused="Toolbar_Middle_Off"/>
+          <combo_box.combo_button
+          scale_image="true"
+          image_overlay="R"
+          image_unselected="Toolbar_Middle_Dropdown_Off"
+          image_selected="Toolbar_Middle_Dropdown_Selected"
+          image_disabled="Toolbar_Middle_Dropdown_Off" />
+            <combo_box.combo_list
+              bg_writeable_color="White_02"
+              background_visible="true"/>
+        </combo_box>
+        <line_editor
+        commit_on_focus_lost="false"
+        follows="left|top"
+        height="22"
+        label="Username"
+        left="113"
+        tool_tip="The username you chose when you registered, like bobsmith12 or Steller Sunshine"
+        top_pad="12"
+        name="username_combo"
+        width="152"/>
+        <line_editor
+        follows="left|top"
+        commit_on_focus_lost="false"
+        height="22"
+        max_length_bytes="16"
+        name="password_edit"
+        label="Password"
+        is_password="true" 
+        select_on_focus="true"
+        left_delta="0"
+        top_pad="3"
+        width="152" />
+        <check_box
+        control_name="RememberPassword"
+        follows="left|top"
+        font="SansSerifSmall"
+        height="18"
+        left_pad="0"
+        label="remember"
+        top_delta="2"
+        name="remember_check"
+        width="200"/>
+        <combo_box
+        allow_text_entry="true"
+        control_name="LoginLocation"
+        follows="left|top"
+        height="23"
+        max_chars="128"
+        top_pad="5"
+        left="113"
+        name="start_location_combo"
+        width="152">
+          <combo_box.combo_editor
+          background_image="TextField_Off"
+          background_image_disabled="TextField_Disabled"
+          background_image_focused="TextField_Active"/>
+          <combo_box.item
+          label="My last location"
+          name="MyLastLocation"
+          value="last" />
+          <combo_box.item
+          label="My home"
+          name="MyHome"
+          value="home" />
+          <combo_box.item
+          label="&lt;Type region name&gt;"
+          name="Typeregionname"
+          value="" />
+          <combo_box.combo_button
+          scale_image="true"
+          image_unselected="Toolbar_Middle_Off"
+          image_selected="Toolbar_Middle_Selected"
+          image_pressed="Toolbar_Middle_Selected" 
+          image_pressed_selected="Toolbar_Middle_Selected"
+          image_overlay="DownArrow_Off"/>
+          <combo_box.drop_down_button
+          scale_image="false"
+          image_unselected="Toolbar_Middle_Unselected"
+          image_selected="Toolbar_Middle_Selected"
+          image_pressed="Toolbar_Middle_Selected" 
+          image_pressed_selected="Toolbar_Middle_Selected"
+          image_disabled="Toolbar_Middle_Selected"/>
+        </combo_box>
+       <button
+       follows="left|top"
+       height="23"
+       image_unselected="Toolbar_Middle_Off"
+       image_selected="Toolbar_Middle_Selected"
+       label="Connect"
+       font="SansSerif"
+       font.style="BOLD"
+       label_color="1 1 1 0.8"
+       layout="topleft"
+       left="113"
+       name="connect_btn"
+       top_pad="3"
+       width="152"/>
+      </layout_panel>
+      <layout_panel
+      auto_resize="true"
+      follows="all"
+      height="100"
+      layout="topleft"
+      mouse_opaque="false"
+      name="help_panel"
+      top_pad="0"
+      width="200">
+       <view_border
+    bevel_style="in"
+    follows="top|left|right"
+    height="1"
+    layout="topleft"
+    left="0"
+    name="cost_text_border"
+    top="25"
+    width="120"/>
+       <button
+        follows="right|top"
+        height="18"
+        control_name="FirstStart"
+        image_unselected="Toolbar_Middle_Off"
+        image_selected="Toolbar_Middle_Selected"
+        label="Quit"
+        font="SansSerif"
+        font.style="BOLD"
+        label_color="1 1 1 0.7"
+        layout="topleft"
+        left_pad="1"
+        halign="center"
+        name="quit_btn"
+        top_delta="-8"
+        width="77"/>
+      </layout_panel>
+    </layout_stack>
+  </panel>
 </panel>

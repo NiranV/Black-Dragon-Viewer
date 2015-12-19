@@ -7,14 +7,14 @@
   follows="all">
      <avatar_icon
         follows="left|top"
-        height="18"
+        height="20"
         image_name="Generic_Person"
         layout="topleft"
-        left="3"
+        left="5"
         mouse_opaque="true"
         name="avatar_icon"
-        top="3"
-        width="18" />
+        top="4"
+        width="20" />
 	<text_chat
       top="3"
       left="30"

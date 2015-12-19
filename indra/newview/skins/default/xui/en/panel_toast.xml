@@ -16,22 +16,18 @@
  title=""
  visible="false"
  layout="topleft"
- height="47"  
+ height="28"  
  width="310"
  left="0"
  top="0"
  background_visible="false"
- bg_opaque_image="Toast_Over"
- bg_alpha_image="Toast_Background"
  can_minimize="false"
  can_tear_off="false"
  can_resize="false"
  can_drag_on_left="false"
  can_close="false"
- can_dock="false"
  border_visible = "false"
- border = "false"
->
+ border = "false">
  <panel
   background_opaque="false"
   border_visible="false"
@@ -42,8 +38,8 @@
   layout="topleft"
   left="0"
   name="wrapper_panel"
-  top="7"
-  height="40"
+  top="2"
+  height="25"
   follows="all" 
   translate="false"
   width="305">
@@ -59,7 +55,7 @@
    name="toast_text"
    word_wrap="true"
    text_color="White"
-   top="5"
+   top="2"
    translate="false"
    use_ellipses="true"
    width="260">
@@ -69,7 +65,7 @@
   <button
     layout="topleft"
     top="0"
-    right="310"
+    right="306"
     width="17"
     height="17"
     follows="top|right"

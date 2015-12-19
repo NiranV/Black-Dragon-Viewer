@@ -69,7 +69,10 @@
 #include "llconversationlog.h"
 #include "message.h"
 #include "llviewerregion.h"
-
+// [RLVa:KB] - Checked: 2013-05-10 (RLVa-1.4.9)
+#include "rlvactions.h"
+#include "rlvcommon.h"
+// [/RLVa:KB]
 
 const static std::string ADHOC_NAME_SUFFIX(" Conference");
 
@@ -330,7 +333,8 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
     		(CLOSED == conversations_floater_status
 		|| NOT_ON_TOP == conversations_floater_status)
 		&& !is_session_focused
-		&& !is_dnd_msg) //prevent flashing FUI button because the conversation floater will have already opened
+		&& !is_dnd_msg //prevent flashing FUI button because the conversation floater will have already opened
+		&& session_id.notNull()) //prevent local chat from making the chat button flash
 	{
 		if(!LLMuteList::getInstance()->isMuted(participant_id))
     {
@@ -1295,8 +1299,15 @@ void LLIMModel::sendMessage(const std::string& utf8_text,
 		gAgent.sendReliableMessage();
 	}
 
+	bool is_group_chat = false;
+	LLIMModel::LLIMSession* session = LLIMModel::getInstance()->findIMSession(im_session_id);
+	if(session)
+	{
+		is_group_chat = session->isGroupSessionType();
+	}
+
 	// If there is a mute list and this is not a group chat...
-	if ( LLMuteList::getInstance() )
+	if ( LLMuteList::getInstance() && !is_group_chat)
 	{
 		// ... the target should not be in our mute list for some message types.
 		// Auto-remove them if present.
@@ -1322,9 +1333,9 @@ void LLIMModel::sendMessage(const std::string& utf8_text,
 	   (other_participant_id.notNull()))
 	{
 		// Do we have to replace the /me's here?
-		std::string from;
-		LLAgentUI::buildFullname(from);
-		LLIMModel::getInstance()->addMessage(im_session_id, from, gAgentID, utf8_text);
+		LLAvatarName user;
+		LLAvatarNameCache::get(gAgentID, &user);
+		LLIMModel::getInstance()->addMessage(im_session_id, user.getDisplayName(), gAgentID, utf8_text);
 
 		//local echo for the legacy communicate panel
 		std::string history_echo;
@@ -1345,7 +1356,6 @@ void LLIMModel::sendMessage(const std::string& utf8_text,
 
 	if (is_not_group_id)
 	{
-		LLIMModel::LLIMSession* session = LLIMModel::getInstance()->findIMSession(im_session_id);
 		if( session == 0)//??? shouldn't really happen
 		{
 			LLRecentPeople::instance().add(other_participant_id);
@@ -2746,7 +2756,16 @@ void LLIMMgr::addMessage(
 
 	if (!LLMuteList::getInstance()->isMuted(other_participant_id, LLMute::flagTextChat) && !skip_message)
 	{
-		LLIMModel::instance().addMessage(new_session_id, from, other_participant_id, msg);
+		LLAvatarName user;
+		LLAvatarNameCache::get(other_participant_id, &user);
+		if(!user.getDisplayName().empty())
+		{
+			LLIMModel::instance().addMessage(new_session_id, user.getDisplayName(), other_participant_id, msg);
+		}
+		else
+		{
+			LLIMModel::instance().addMessage(new_session_id, from, other_participant_id, msg);
+		}
 	}
 
 	// Open conversation floater if offline messages are present
@@ -3642,6 +3661,20 @@ public:
 			{
 				return;
 			}
+// [RLVa:KB] - Checked: 2010-11-30 (RLVa-1.3.0)
+			if ( (RlvActions::hasBehaviour(RLV_BHVR_RECVIM)) || (RlvActions::hasBehaviour(RLV_BHVR_RECVIMFROM)) )
+			{
+				if (gAgent.isInGroup(session_id))						// Group chat: don't accept the invite if not an exception
+				{
+					if (!RlvActions::canReceiveIM(session_id))
+						return;
+				}
+				else if (!RlvActions::canReceiveIM(from_id))			// Conference chat: don't block; censor if not an exception
+				{
+					message = RlvStrings::getString(RLV_STRING_BLOCKED_RECVIM);
+				}
+			}
+// [/RLVa:KB]
 
 			// standard message, not from system
 			std::string saved;

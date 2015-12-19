@@ -399,6 +399,87 @@ void LLDrawPoolAvatar::renderPostDeferred(S32 pass)
 	is_post_deferred_render = false;
 }
 
+void LLDrawPoolAvatar::beginMotionBlurPass(S32 pass)
+{
+	glh::matrix4f last(gGLLastModelView);
+
+	if (pass == 0)
+	{
+		gAvatarVelocityProgram.bind();
+		sVertexProgram = &gAvatarVelocityProgram;
+
+		glh::matrix4f last_inv = last.inverse();
+		sVertexProgram->uniformMatrix4fv(LLShaderMgr::LAST_MODELVIEW_MATRIX_INVERSE, 1, GL_FALSE, last_inv.m);
+
+	}
+	else if (pass == 1)
+	{
+		gSkinnedVelocityProgram.bind();
+		sVertexProgram = &gSkinnedVelocityProgram;
+	}
+	else if (pass == 2)
+	{
+		gSkinnedVelocityAlphaProgram.bind();
+		sVertexProgram = &gSkinnedVelocityAlphaProgram;
+	}
+
+	sVertexProgram->uniform4f(LLShaderMgr::VIEWPORT, (F32) gGLViewport[0],
+										(F32) gGLViewport[1],
+										(F32) gGLViewport[2],
+										(F32) gGLViewport[3]);
+		
+
+	sVertexProgram->uniformMatrix4fv(LLShaderMgr::LAST_MODELVIEW_MATRIX, 1, GL_FALSE, gGLLastModelView);
+	sVertexProgram->uniformMatrix4fv(LLShaderMgr::CURRENT_MODELVIEW_MATRIX, 1, GL_FALSE, gGLModelView);
+
+}
+
+void LLDrawPoolAvatar::endMotionBlurPass(S32 pass)
+{
+	sVertexProgram->unbind();
+	sVertexProgram = NULL;
+}
+
+S32 LLDrawPoolAvatar::getNumMotionBlurPasses()
+{
+	return 3;
+}
+
+void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
+{
+	if (pass == 0)
+	{
+		render(2);
+	}
+	else if (!mDrawFace.empty())
+	{
+		const LLFace *facep = mDrawFace[0];
+		if (!facep->getDrawable())
+		{
+			return;
+		}
+		LLVOAvatar* avatarp = (LLVOAvatar *)facep->getDrawable()->getVObj().get();
+
+		if (pass == 1)
+		{
+			renderDeferredRiggedSimple(avatarp);
+			renderDeferredRiggedBump(avatarp);
+			U32 CurCount = 0;
+			for (; CurCount < 13; CurCount++)
+			{
+				renderDeferredRiggedMaterial(avatarp, CurCount);
+			}
+			renderRiggedFullbright(avatarp);
+			renderRiggedFullbrightShiny(avatarp);
+			renderRiggedShinySimple(avatarp);
+		}
+		else
+		{
+			renderRiggedAlpha(avatarp);
+			renderRiggedFullbrightAlpha(avatarp);
+		}
+	}
+}
 
 S32 LLDrawPoolAvatar::getNumShadowPasses()
 {
@@ -1546,7 +1627,8 @@ void LLDrawPoolAvatar::updateRiggedFaceVertexBuffer(LLVOAvatar* avatar, LLFace* 
 		(drawable && drawable->isState(LLDrawable::REBUILD_ALL)))
 	{
 		if (drawable && drawable->isState(LLDrawable::REBUILD_ALL))
-		{ //rebuild EVERY face in the drawable, not just this one, to avoid missing drawable wide rebuild issues
+		{
+            //rebuild EVERY face in the drawable, not just this one, to avoid missing drawable wide rebuild issues
 			for (S32 i = 0; i < drawable->getNumFaces(); ++i)
 			{
 				LLFace* facep = drawable->getFace(i);
@@ -1563,13 +1645,15 @@ void LLDrawPoolAvatar::updateRiggedFaceVertexBuffer(LLVOAvatar* avatar, LLFace* 
 			buffer = face->getVertexBuffer();
 		}
 		else
-		{ //just rebuild this face
+		{
+			//just rebuild this face
 			getRiggedGeometry(face, buffer, data_mask, skin, volume, vol_face);
 		}
 	}
 
 	if (sShaderLevel <= 0 && face->mLastSkinTime < avatar->getLastSkinTime())
-	{ //perform software vertex skinning for this face
+	{
+		//perform software vertex skinning for this face
 		LLStrider<LLVector3> position;
 		LLStrider<LLVector3> normal;
 
@@ -1593,6 +1677,10 @@ void LLDrawPoolAvatar::updateRiggedFaceVertexBuffer(LLVOAvatar* avatar, LLFace* 
 		for (U32 j = 0; j < count; ++j)
 		{
 			LLJoint* joint = avatar->getJoint(skin->mJointNames[j]);
+			if (!joint)
+			{
+				joint = avatar->getJoint("mPelvis");
+			}
 			if (joint)
 			{
 				mat[j] = skin->mInvBindMatrix[j];
@@ -1617,12 +1705,13 @@ void LLDrawPoolAvatar::updateRiggedFaceVertexBuffer(LLVOAvatar* avatar, LLFace* 
 			{
 				F32 w = weight[j][k];
 
-				idx[k] = llclamp((S32) floorf(w), 0, JOINT_COUNT-1);
+				idx[k] = llclamp((S32) floorf(w), (S32)0, (S32)JOINT_COUNT-1);
 
 				wght[k] = w - floorf(w);
 				scale += wght[k];
 			}
-
+            // This is enforced  in unpackVolumeFaces()
+            llassert(scale>0.f);
 			wght *= 1.f/scale;
 
 			for (U32 k = 0; k < 4; k++)
@@ -1722,6 +1811,10 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 				for (U32 i = 0; i < count; ++i)
 				{
 					LLJoint* joint = avatar->getJoint(skin->mJointNames[i]);
+                    if (!joint)
+                    {
+                        joint = avatar->getJoint("mPelvis");
+                    }
 					if (joint)
 					{
 						mat[i] = skin->mInvBindMatrix[i];
@@ -1766,7 +1859,6 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 					(GLfloat*) mp);
 
 				LLDrawPoolAvatar::sVertexProgram->uniform3fv(LLShaderMgr::AVATAR_TRANSLATION, count, transp);
-
 				
 				stop_glerror();
 			}
@@ -1790,9 +1882,12 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 
 			if (mat)
 			{
-				gGL.getTexUnit(sDiffuseChannel)->bind(face->getTexture(LLRender::DIFFUSE_MAP));
-				gGL.getTexUnit(normal_channel)->bind(face->getTexture(LLRender::NORMAL_MAP));
+				//order is important here LLRender::DIFFUSE_MAP should be last, becouse it change 
+				//(gGL).mCurrTextureUnitIndex
 				gGL.getTexUnit(specular_channel)->bind(face->getTexture(LLRender::SPECULAR_MAP));
+				gGL.getTexUnit(normal_channel)->bind(face->getTexture(LLRender::NORMAL_MAP));
+				gGL.getTexUnit(sDiffuseChannel)->bind(face->getTexture(LLRender::DIFFUSE_MAP), false, true);
+
 
 				LLColor4 col = mat->getSpecularLightColor();
 				F32 spec = mat->getSpecularLightExponent()/255.f;

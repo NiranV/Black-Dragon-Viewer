@@ -157,19 +157,6 @@ public:
 	/*virtual*/ std::string getUrl(const std::string &string) const;
 };
 
-///
-/// LLUrlEntryHTTPNoProtocol Describes generic Urls like www.google.com
-///
-class LLUrlEntryHTTPNoProtocol : public LLUrlEntryBase
-{
-public:
-	LLUrlEntryHTTPNoProtocol();
-	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
-	/*virtual*/ std::string getQuery(const std::string &url) const;
-	/*virtual*/ std::string getUrl(const std::string &string) const;
-	/*virtual*/ std::string getTooltip(const std::string &url) const;
-};
-
 class LLUrlEntryInvalidSLURL : public LLUrlEntryBase
 {
 public:
@@ -307,6 +294,21 @@ public:
 private:
 	/*virtual*/ std::string getName(const LLAvatarName& avatar_name);
 };
+
+// [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
+///
+/// LLUrlEntryAgentRLVAnonymizedName Describes an RLV anonymized agent name Url, e.g.,
+/// secondlife:///app/agent/0e346d8b-4433-4d66-a6b0-fd37083abc4c/rlvanonym
+/// that diplays an anonym (based on the display name) for an avatar
+/// such as "An individual"
+class LLUrlEntryAgentRLVAnonymizedName : public LLUrlEntryAgentName
+{
+public:
+	LLUrlEntryAgentRLVAnonymizedName();
+private:
+	/*virtual*/ std::string getName(const LLAvatarName& avatar_name);
+};
+// [/RLVa:KB]
 
 ///
 /// LLUrlEntryExperienceProfile Describes a Second Life experience profile Url, e.g.,
@@ -504,6 +506,84 @@ public:
 	/*virtual*/ std::string getUrl(const std::string &string) const;
 	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
 	/*virtual*/ std::string getIcon(const std::string &url);
+};
+
+/// BD
+/// LLUrlEntryRed lets us turn text to red with <red>...</red> tags
+///
+class LLUrlEntryRed : public LLUrlEntryBase
+{
+public:
+	LLUrlEntryRed();
+	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
+	/*virtual*/ std::string getUrl(const std::string &string) const;
+	/*virtual*/ LLStyle::Params getStyle() const;
+};
+
+/// LLUrlEntryGreen lets us turn text to green with <green>...</green> tags
+///
+class LLUrlEntryGreen : public LLUrlEntryBase
+{
+public:
+	LLUrlEntryGreen();
+	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
+	/*virtual*/ std::string getUrl(const std::string &string) const;
+	/*virtual*/ LLStyle::Params getStyle() const;
+};
+
+/// LLUrlEntryBlue lets us turn text to blue with <blue>...</blue> tags
+///
+class LLUrlEntryBlue : public LLUrlEntryBase
+{
+public:
+	LLUrlEntryBlue();
+	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
+	/*virtual*/ std::string getUrl(const std::string &string) const;
+	/*virtual*/ LLStyle::Params getStyle() const;
+};
+
+/// LLUrlEntryUnderline lets us underline text with <u>...</u> tags
+///
+class LLUrlEntryUnderline : public LLUrlEntryBase
+{
+public:
+	LLUrlEntryUnderline();
+	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
+	/*virtual*/ std::string getUrl(const std::string &string) const;
+	/*virtual*/ LLStyle::Params getStyle() const;
+};
+
+/// LLUrlEntryBold lets us write fat letters with <b>...</b> tags
+///
+class LLUrlEntryBold : public LLUrlEntryBase
+{
+public:
+	LLUrlEntryBold();
+	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
+	/*virtual*/ std::string getUrl(const std::string &string) const;
+	/*virtual*/ LLStyle::Params getStyle() const;
+};
+
+/// LLUrlEntryItalic lets us write in italic style with <i>...</i> tags
+///
+class LLUrlEntryItalic : public LLUrlEntryBase
+{
+public:
+	LLUrlEntryItalic();
+	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
+	/*virtual*/ std::string getUrl(const std::string &string) const;
+	/*virtual*/ LLStyle::Params getStyle() const;
+};
+
+///
+/// LLUrlEntryEmail Describes a generic mailto: Urls
+///
+class LLUrlEntryEmail : public LLUrlEntryBase
+{
+public:
+	LLUrlEntryEmail();
+	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
+	/*virtual*/ std::string getUrl(const std::string &string) const;
 };
 
 

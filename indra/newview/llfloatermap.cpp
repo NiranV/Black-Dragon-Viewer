@@ -44,6 +44,8 @@
 #include "lltextbox.h"
 #include "llfloaterworldmap.h"
 #include "llagent.h"
+//BD - Minimap Region Coordinates
+#include "llviewerregion.h"
 
 //
 // Constants
@@ -195,6 +197,26 @@ void LLFloaterMap::draw()
 	setDirectionPos( mTextBoxNorthWest, rotation + F_PI_BY_TWO +		F_PI_BY_TWO / 2);
 	setDirectionPos( mTextBoxSouthWest, rotation + F_PI +				F_PI_BY_TWO / 2);
 	setDirectionPos( mTextBoxSouthEast, rotation + F_PI + F_PI_BY_TWO + F_PI_BY_TWO / 2);
+
+//	//BD - Minimap Region Coordinates
+	std::string msg = getString("RegionCoords");
+	LLStringUtil::format_map_t args;
+	LLSD coord_x = gAgent.getPositionGlobal().mdV[VX];
+	LLSD coord_y = gAgent.getPositionGlobal().mdV[VY];
+	LLSD coord_z = gAgent.getPositionGlobal().mdV[VZ];
+	if(gSavedSettings.getBOOL("MiniMapShowLocalCoords"))
+	{
+		coord_x = coord_x.asInteger() % 256;
+		coord_y = coord_y.asInteger() % 256;
+	}
+	args["[X_COORD]"] = coord_x.asString();
+	args["[Y_COORD]"] = coord_y.asString();
+	args["[Z_COORD]"] = coord_z.asString();
+	LLStringUtil::format(msg, args);
+	getChild<LLTextBox>("sim_coords")->setValue(msg);
+
+	LLViewerRegion*	region = gAgent.getRegion();
+	getChild<LLTextBox>("sim_name")->setValue(region->getName());
 
 	// Note: we can't just gAgent.check cameraMouselook() because the transition states are wrong.
 	if(gAgentCamera.cameraMouselook())

@@ -86,6 +86,10 @@
 #include "llviewerwindow.h"
 #include "llvoavatarself.h"
 #include "llwearablelist.h"
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
+#include "rlvhandler.h"
+#include "rlvlocks.h"
+// [/RLVa:KB]
 
 #include <boost/foreach.hpp>
 
@@ -509,10 +513,11 @@ BOOL get_is_item_worn(const LLUUID& id)
 		return FALSE;
 
 	// Consider the item as worn if it has links in COF.
-	if (LLAppearanceMgr::instance().isLinkedInCOF(id))
-	{
-		return TRUE;
-	}
+// [SL:KB] - The code below causes problems across the board so it really just needs to go
+//	if (LLAppearanceMgr::instance().isLinkedInCOF(id))
+//	{
+//		return TRUE;
+//	}
 
 	switch(item->getType())
 	{
@@ -623,6 +628,14 @@ BOOL get_is_item_removable(const LLInventoryModel* model, const LLUUID& id)
 		}
 	}
 
+// [RLVa:KB] - Checked: 2011-03-29 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
+	if ( (rlv_handler_t::isEnabled()) && 
+		 (RlvFolderLocks::instance().hasLockedFolder(RLV_LOCK_ANY)) && (!RlvFolderLocks::instance().canRemoveItem(id)) )
+	{
+		return FALSE;
+	}
+// [/RLVa:KB]
+
 	const LLInventoryObject *obj = model->getItem(id);
 	if (obj && obj->getIsLinkType())
 	{
@@ -650,6 +663,14 @@ BOOL get_is_category_removable(const LLInventoryModel* model, const LLUUID& id)
 	{
 		return FALSE;
 	}
+
+// [RLVa:KB] - Checked: 2011-03-29 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
+	if ( ((rlv_handler_t::isEnabled()) && 
+		 (RlvFolderLocks::instance().hasLockedFolder(RLV_LOCK_ANY)) && (!RlvFolderLocks::instance().canRemoveFolder(id))) )
+	{
+		return FALSE;
+	}
+// [/RLVa:KB]
 
 	if (!isAgentAvatarValid()) return FALSE;
 
@@ -685,6 +706,13 @@ BOOL get_is_category_renameable(const LLInventoryModel* model, const LLUUID& id)
 	{
 		return FALSE;
 	}
+
+// [RLVa:KB] - Checked: 2011-03-29 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
+	if ( (rlv_handler_t::isEnabled()) && (model == &gInventory) && (!RlvFolderLocks::instance().canRenameFolder(id)) )
+	{
+		return FALSE;
+	}
+// [/RLVa:KB]
 
 	LLViewerInventoryCategory* cat = model->getCategory(id);
 
@@ -737,7 +765,7 @@ void show_item_original(const LLUUID& item_uuid)
 	{
 		return;
 	}
-	active_panel->setSelection(gInventory.getLinkedItemID(item_uuid), TAKE_FOCUS_NO);
+	active_panel->setSelection(gInventory.getLinkedItemID(item_uuid), TAKE_FOCUS_YES);
 	
 	if(do_reset_inventory_filter)
 	{
@@ -2473,7 +2501,7 @@ void LLInventoryAction::doToSelected(LLInventoryModel* model, LLFolderView* root
 	{
 		LLSD args;
 		args["QUESTION"] = LLTrans::getString(root->getSelectedCount() > 1 ? "DeleteItems" :  "DeleteItem");
-		LLNotificationsUtil::add("DeleteItems", args, LLSD(), boost::bind(&LLInventoryAction::onItemsRemovalConfirmation, _1, _2, root));
+		LLNotificationsUtil::add("DeleteItems", args, LLSD(), boost::bind(&LLInventoryAction::onItemsRemovalConfirmation, _1, _2, root->getHandle()));
         // Note: marketplace listings will be updated in the callback if delete confirmed
 		return;
 	}
@@ -2562,39 +2590,40 @@ void LLInventoryAction::doToSelected(LLInventoryModel* model, LLFolderView* root
 
 void LLInventoryAction::removeItemFromDND(LLFolderView* root)
 {
-    if(gAgent.isDoNotDisturb())
-    {
-        //Get selected items
-        LLFolderView::selected_items_t selectedItems = root->getSelectedItems();
-        LLFolderViewModelItemInventory * viewModel = NULL;
+	if (gAgent.isDoNotDisturb())
+	{
+		//Get selected items
+		LLFolderView::selected_items_t selectedItems = root->getSelectedItems();
+		LLFolderViewModelItemInventory * viewModel = NULL;
 
-        //If user is in DND and deletes item, make sure the notification is not displayed by removing the notification
-        //from DND history and .xml file. Once this is done, upon exit of DND mode the item deleted will not show a notification.
-        for(LLFolderView::selected_items_t::iterator it = selectedItems.begin(); it != selectedItems.end(); ++it)
-        {
-            viewModel = dynamic_cast<LLFolderViewModelItemInventory *>((*it)->getViewModelItem());
+		//If user is in DND and deletes item, make sure the notification is not displayed by removing the notification
+		//from DND history and .xml file. Once this is done, upon exit of DND mode the item deleted will not show a notification.
+		for (LLFolderView::selected_items_t::iterator it = selectedItems.begin(); it != selectedItems.end(); ++it)
+		{
+			viewModel = dynamic_cast<LLFolderViewModelItemInventory *>((*it)->getViewModelItem());
 
-            if(viewModel && viewModel->getUUID().notNull())
-            {
-                //Will remove the item offer notification
-                LLDoNotDisturbNotificationStorage::instance().removeNotification(LLDoNotDisturbNotificationStorage::offerName, viewModel->getUUID());
-            }
-        }
-    }
+			if (viewModel && viewModel->getUUID().notNull())
+			{
+				//Will remove the item offer notification
+				LLDoNotDisturbNotificationStorage::instance().removeNotification(LLDoNotDisturbNotificationStorage::offerName, viewModel->getUUID());
+			}
+		}
+	}
 }
 
-void LLInventoryAction::onItemsRemovalConfirmation( const LLSD& notification, const LLSD& response, LLFolderView* root )
+void LLInventoryAction::onItemsRemovalConfirmation(const LLSD& notification, const LLSD& response, LLHandle<LLFolderView> root)
 {
 	S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
-	if (option == 0)
+	if (option == 0 && !root.isDead() && !root.get()->isDead())
 	{
-        //Need to remove item from DND before item is removed from root folder view
-        //because once removed from root folder view the item is no longer a selected item
-        removeItemFromDND(root);
-		root->removeSelectedItems();
-        
-        // Update the marketplace listings that have been affected by the operation
-        updateMarketplaceFolders();
+		LLFolderView* folder_root = root.get();
+		//Need to remove item from DND before item is removed from root folder view
+		//because once removed from root folder view the item is no longer a selected item
+		removeItemFromDND(folder_root);
+		folder_root->removeSelectedItems();
+
+		// Update the marketplace listings that have been affected by the operation
+		updateMarketplaceFolders();
 	}
 }
 
@@ -2648,6 +2677,5 @@ void LLInventoryAction::updateMarketplaceFolders()
         sMarketplaceFolders.pop_back();
     }
 }
-
 
 

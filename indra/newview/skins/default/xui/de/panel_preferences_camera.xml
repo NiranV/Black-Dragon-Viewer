@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<panel label="Kamera" name="camera">
+	<scroll_container name="camera_scroll">
+		<panel name="camera_scroll_panel">
+			<slider label="Sichtwinkel" name="camera_fov"/>
+			<slider label="Abstand" name="camera_offset_scale"/>
+			<slider label="Nachzug" name="camera_lag"/>
+			<slider label="Weichheit" name="camera_position_smoothing"/>
+			<slider label="Zoom Zeit" name="zoomtime"/>
+			<check_box label="Kamera Begrenzungen deaktivieren" name="DisableCameraConstraints" tool_tip="Deaktiviert die Kamerabegrenzungen die deine Kamera daran hintern sich außerhalb der Sichtweite zu bewegen"/>
+			<check_box label="Maussteuerung bei Avatar-klick verbieten" name="ClickOnAvatarKeepsCamera" tool_tip="Deaktiviert das zurücksetzen der Kamera hinter den Avatar sofern dieser angeklickt wird und emuliert ein kontinuirliches Alt-Zoom Verhalten"/>
+			<text name="Headtrackingtext">
+				Maus - Kopfverfolgung
+			</text>
+			<slider label="Vertikal" name="pitchfrommouse"/>
+			<check_box label="Bei 'Bauen' Kamera repositionieren" name="edit_camera_movement" tool_tip="Schwenkt die Kamera beim Bauem und Bearbeiten Modus in eine auf das Objekt fokussierte und etwas angehobene Position"/>
+			<check_box label="Bei 'Aussehen' Kamera repositionieren" name="appearance_camera_movement" tool_tip="Schwenkt die Kamera beim Aussehensmodus oder bei Bearbeitung des Outfits in eine auf den Avatar fokussierte Position. Schaltet zudem den Aussehensmodus ab"/>
+			<slider label="Versatz° [stehend]" name="camrotateslow"/>
+			<slider label="Versatz° [bewegend]" name="camrotatefast"/>
+			<button label="Einleitung" label_selected="Einleitung" name="GraphicsHardwareButton"/>
+			<text name="fronttext">
+				Überkopfansicht
+			</text>
+			<text name="sidetext">
+				Schulteransicht
+			</text>
+			<text name="reartext">
+				Hinteransicht
+			</text>
+			<text name="lefttext">
+				Linke Schulter
+			</text>
+			<text name="righttext">
+				Rechte Schulter
+			</text>
+			<text name="XText">
+				X Versatz
+			</text>
+			<text name="YText">
+				Y Versatz
+			</text>
+			<text name="ZText">
+				Z Versatz
+			</text>
+			<text name="XFocusText">
+				X Fokuspunkt
+			</text>
+			<text name="YFocusText">
+				Y Fokuspunkt
+			</text>
+			<text name="ZFocusText">
+				Z Fokuspunkt
+			</text>
+			<check_box label="Ego Perspektive erlauben" name="AllowMouselook"/>
+			<check_box label="Bewegungsglättung erlauben" name="MouseSmooth"/>
+			<check_box label="Benutzeroberfläche verstecken" name="MLInterfaceHide"/>
+			<check_box label="Packen/Ziehen/Drücken erlauben" name="MLGrab"/>
+			<check_box label="Meinen Avatar anzeigen" name="first_person_avatar_visible"/>
+			<check_box label="Zielfadenkreuz anzeigen" name="ShowCrosshairs"/>
+			<text name="Mouselook:">
+				Ego Perspektive (Mouselook)
+			</text>
+			<check_box label="Umkehren" name="invert_mouse"/>
+			<slider name="mouse_sensitivity" label="Maussensibilität"/>
+		</panel>
+	</scroll_container>
+</panel>

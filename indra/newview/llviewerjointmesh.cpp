@@ -80,6 +80,8 @@ LLViewerJointMesh::LLViewerJointMesh()
 	:
 	LLAvatarJointMesh()
 {
+	mLastMatrixPalette = NULL;
+	mLastMatrixPaletteUpdated = 0;
 }
 
 
@@ -89,6 +91,10 @@ LLViewerJointMesh::LLViewerJointMesh()
 //-----------------------------------------------------------------------------
 LLViewerJointMesh::~LLViewerJointMesh()
 {
+	if (mLastMatrixPalette)
+	{
+		delete [] mLastMatrixPalette;
+	}
 }
 
 const S32 NUM_AXES = 3;
@@ -186,6 +192,24 @@ void LLViewerJointMesh::uploadJointMatrices()
 		if (LLGLSLShader::sCurBoundShaderPtr)
 		{
 			LLGLSLShader::sCurBoundShaderPtr->uniform4fv(LLViewerShaderMgr::AVATAR_MATRIX, 45, mat);
+			if (LLGLSLShader::sCurBoundShaderPtr == &gAvatarVelocityProgram)
+			{
+				if (!mLastMatrixPalette)
+				{
+					mLastMatrixPalette = new F32[52*4];
+				}
+
+				if (mLastMatrixPaletteUpdated < gFrameCount-1)
+				{
+					memcpy(mLastMatrixPalette, mat, sizeof(F32)*52*4);
+				}
+					
+				LLGLSLShader::sCurBoundShaderPtr->uniform4fv(LLShaderMgr::AVATAR_LAST_MATRIX, 52, (GLfloat*) mLastMatrixPalette);
+								
+				memcpy(mLastMatrixPalette, mat, sizeof(F32)*52*4);
+				mLastMatrixPaletteUpdated = gFrameCount;
+
+			}
 		}
 		stop_glerror();
 	}

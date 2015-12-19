@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
- positioning="specified"
- right="-693"
- bottom="-50"
  legacy_header_height="18"
- can_dock="false"
  can_minimize="true"
  can_close="true"
  height="110"
  layout="topleft"
  name="move_floater"
- help_topic="move_floater"
+ background_color="FloaterColorMove"
  save_rect="true"
  save_visibility="true"
- single_instance="true"
- chrome="true"
- title="WALK / RUN / FLY"
- width="133">
+ width="105">
     <string
      name="walk_forward_tooltip">
         Walk Forward (press Up Arrow or W)
@@ -102,7 +95,7 @@
      mouse_opaque="false"
      name="panel_actions"
      top="0"
-     width="133">
+     width="113">
         <!-- Buttons in panel are organized in 3 columns to enable their easy vertical adjustment via top_pad-->
         <!-- Left column -->
         <button
@@ -112,7 +105,7 @@
          image_pressed_selected="Movement_TurnLeft_On"
          image_unselected="Movement_TurnLeft_Off"
          layout="topleft"
-         left="30"
+         left="5"
          name="turn left btn"
          scale_image="false"
          tool_tip="Turn left (press Left Arrow or A)"
@@ -168,7 +161,7 @@
          image_pressed_selected="Movement_Forward_On"
          image_unselected="Movement_Forward_Off"
          layout="topleft"
-         left="54"
+         left="34"
          name="forward btn"
          quadrant="up"
          scale_image="false"
@@ -197,11 +190,11 @@
          image_pressed_selected="Movement_Up_On"
          image_unselected="Movement_Up_Off"
          layout="topleft"
-         right="-11"
+         right="-18"
          name="move up btn"
          scale_image="false"
          tool_tip="Fly up (press E)"
-         top="22"
+         top="25"
          width="10" />
         <button
          follows="left|bottom"
@@ -225,23 +218,23 @@
      left="0"
      name="panel_modes"
      top_pad="0"
-     width="133">
+     width="113">
         <button
          follows="left|bottom"
-         height="23"
+         height="21"
          image_overlay="Move_Walk_Off"
          image_selected="PushButton_Selected_Press"
 	 label=""
          layout="topleft"
          name="mode_walk_btn"
-         left="20"
+         left="6"
          pad_right="0"
          tool_tip="Walking mode"
          top="2"
          width="31" />
         <button
          follows="left|bottom"
-         height="23"
+         height="21"
          image_overlay="Move_Run_Off"
          image_selected="PushButton_Selected_Press"
 	 label=""
@@ -255,7 +248,7 @@
          width="31" />
         <button
          follows="left|bottom"
-         height="23"
+         height="21"
          image_overlay="Move_Fly_Off"
          image_selected="PushButton_Selected_Press"
 	 label=""

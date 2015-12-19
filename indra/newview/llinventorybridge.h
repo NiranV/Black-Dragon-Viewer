@@ -274,7 +274,7 @@ public:
 	{}
 		
 	BOOL dragItemIntoFolder(LLInventoryItem* inv_item, BOOL drop, std::string& tooltip_msg, BOOL user_confirm = TRUE);
-	BOOL dragCategoryIntoFolder(LLInventoryCategory* inv_category, BOOL drop, std::string& tooltip_msg, BOOL user_confirm = TRUE);
+	BOOL dragCategoryIntoFolder(LLInventoryCategory* inv_category, BOOL drop, std::string& tooltip_msg, BOOL is_link = FALSE, BOOL user_confirm = TRUE);
     void callback_dropItemIntoFolder(const LLSD& notification, const LLSD& response, LLInventoryItem* inv_item);
     void callback_dropCategoryIntoFolder(const LLSD& notification, const LLSD& response, LLInventoryCategory* inv_category);
 
@@ -541,10 +541,10 @@ public:
 
 	static void		onWearOnAvatar( void* userdata );	// Access to wearOnAvatar() from menu
 	static BOOL		canWearOnAvatar( void* userdata );
-	static void		onWearOnAvatarArrived( LLViewerWearable* wearable, void* userdata );
+//	static void		onWearOnAvatarArrived( LLViewerWearable* wearable, void* userdata );
 	void			wearOnAvatar();
 
-	static void		onWearAddOnAvatarArrived( LLViewerWearable* wearable, void* userdata );
+//	static void		onWearAddOnAvatarArrived( LLViewerWearable* wearable, void* userdata );
 	void			wearAddOnAvatar();
 
 	static BOOL		canEditOnAvatar( void* userdata );	// Access to editOnAvatar() from menu

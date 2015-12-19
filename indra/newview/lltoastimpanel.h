@@ -68,9 +68,11 @@ private:
 	LLUUID				mSessionID;
 	LLUUID				mAvatarID;
 	LLAvatarIconCtrl*	mAvatarIcon;
+	LLAvatarIconCtrl*	mAvatarOfGroupIcon;
 	LLGroupIconCtrl*	mGroupIcon;
 	LLAvatarIconCtrl*	mAdhocIcon;
 	LLTextBox*			mAvatarName;
+	LLTextBox*			mAvatarNameOfGroup;
 	LLTextBox*			mTime;
 	LLTextBox*			mMessage;
 

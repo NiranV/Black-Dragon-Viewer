@@ -89,6 +89,9 @@ public:
 	S32 mDebugColor;
 	const LLMatrix4* mTextureMatrix;
 	const LLMatrix4* mModelMatrix;
+	LLMatrix4* mLastModelMatrix;
+	U32		mMatrixUpdateFrame;
+
 	U16 mStart;
 	U16 mEnd;
 	U32 mCount;

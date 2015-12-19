@@ -95,7 +95,28 @@
 	 label="REFRESH"
      name="new_snapshot_btn"
      top_pad="26"
-     width="167" />
+     width="86" />
+	<button
+       follows="left|top"
+       height="25"
+	   is_toggle="true"
+       layout="topleft"
+	   image_hover_unselected="Toolbar_Middle_Over"
+	   image_selected="Toolbar_Middle_Off"
+	   image_unselected="Toolbar_Middle_Off"
+	   image_overlay="Conv_toolbar_arrow_ne"
+	   image_overlay_alignment="left"
+       imgoverlay_label_space="5"
+       name="big_preview_btn"
+	   label="PREVIEW"
+	   pad_bottom="0"
+	   halign="left"
+       left_pad="1"
+	   top_delta="0"
+       width="80" >
+		 <button.commit_callback
+		 function="SocialSharing.BigPreview" />
+	   </button>
 	<button
        follows="left|top"
 	   control_name="AdvanceSnapshot"
@@ -142,8 +163,7 @@
          layout="topleft"
          name="advanced_options_hr"
          right="-1"
-         top_pad="5"
-         />
+         top_pad="5"/>
         <text
          type="string"
          length="1"
@@ -152,8 +172,8 @@
          layout="topleft"
          left="10"
          name="layer_type_label"
-         top_pad="10"
-         width="100">
+         top_delta="10"
+         width="90">
             Capture:
         </text>
         <combo_box
@@ -161,9 +181,10 @@
          height="23"
          label="Image Layers"
          layout="topleft"
-         left="30"
+         left="100"
+		 top_delta="-4"
          name="layer_types"
-         right="-2">
+         right="-1">
             <combo_box.item
              label="Colors"
              name="Colors"
@@ -176,35 +197,46 @@
         <check_box
          label="Interface"
          layout="topleft"
-         left="30"
+         left="10"
 		 height="16"
-         top_pad="8"
+         top_pad="7"
          width="180"
          name="ui_check" />
         <check_box
          label="HUDs"
          layout="topleft"
 		 height="16"
-         left="30"
+         left="10"
          top_pad="1"
          width="180"
          name="hud_check" />
+		<view_border 
+         bevel_style="in"
+         follows="left|top|right" 
+         height="1"
+         left="10"
+         layout="topleft"
+         name="advanced_options_hr"
+         right="-1"
+         top_pad="5"/>
         <check_box
-         label="Freeze frame (fullscreen)"
+         label="Freeze World"
+		 control_name="UseFreezeWorld"
+         layout="topleft"
+		 height="16"
+         left="10"
+         top_pad="7"
+         width="180"
+         name="freeze_world_check" />
+		<check_box
+         label="Remember snapshot mode"
+		 control_name="RememberSnapshotMode"
          layout="topleft"
 		 height="16"
          left="10"
          top_pad="1"
          width="180"
-         name="freeze_frame_check" />
-        <check_box
-         label="Auto-refresh"
-         layout="topleft"
-		 height="16"
-         left="10"
-         top_pad="1"
-         width="180"
-         name="auto_snapshot_check" />
+         name="remember_mode_check" />
         <text
          type="string"
          length="1"
@@ -213,8 +245,8 @@
          layout="topleft"
          left="10"
          name="filter_list_label"
-         top_pad="10"
-         width="50">
+         top_pad="7"
+         width="90">
             Filter:
         </text>
         <combo_box
@@ -222,8 +254,8 @@
             follows="left|right|top"
             name="filters_combobox"
             tool_tip="Image filters"
-            top_delta="-3"
-            left="50"
+            top_delta="-4"
+            left="100"
 			right="-1"
             height="21"
             width="135">
@@ -240,17 +272,17 @@
          layout="topleft"
          name="advanced_options_hr"
          right="-1"
-         top_pad="7"
+         top_pad="4"
          />
     </panel>
 	<panel_container
      follows="left|top"
-     height="230"
+     height="240"
      layout="topleft"
      left="0"
      name="panel_container"
      default_panel_name="panel_snapshot_options"
-     top_pad="10"
+     top_pad="1"
      width="215">
       <panel
        class="llpanelsnapshotoptions"

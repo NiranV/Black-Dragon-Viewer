@@ -193,5 +193,22 @@
              function="ParticipantList.EnableItem.Moderate"
              parameter="can_moderate_voice" />
         </menu_item_call>
+        <menu_item_separator
+         layout="topleft"
+         name="saparator" />
+        <menu_item_call
+         label="Copy Avatar UUID"
+         layout="topleft"
+         name="CopyUUID">
+            <on_click
+             function="Avatar.GetUUID"/>
+        </menu_item_call>
+        <menu_item_call
+         label="Copy Avatar SLURL"
+         layout="topleft"
+         name="CopySLURL">
+            <on_click
+             function="Avatar.GetSLURL"/>
+        </menu_item_call>
     </context_menu>
 </context_menu>

@@ -32,6 +32,7 @@
 class LLAccordionCtrl;
 class LLIconCtrl;
 class LLTextEditor;
+class LLTabContainer;
 
 class LLPanelPlaceProfile : public LLPanelPlaceInfo
 {
@@ -71,6 +72,7 @@ private:
 	 */
 	S32					mSelectedParcelID;
 	LLUUID				mLastSelectedRegionID;
+	F64					mNextCovenantUpdateTime;  //seconds since client start
 
 	LLPanel*			mForSalePanel;
 	LLPanel*			mYouAreHerePanel;

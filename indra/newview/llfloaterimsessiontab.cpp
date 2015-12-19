@@ -274,7 +274,7 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	mInputEditor->setMouseUpCallback(boost::bind(&LLFloaterIMSessionTab::onInputEditorClicked, this));
 	mInputEditor->setCommitOnFocusLost( FALSE );
 	mInputEditor->setPassDelete(TRUE);
-	mInputEditor->setFont(LLViewerChat::getChatFont());
+	mInputEditor->enableSingleLineMode((bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 
 	mChatLayoutPanelHeight = mChatLayoutPanel->getRect().getHeight();
 	mInputEditorPad = mChatLayoutPanelHeight - mInputEditor->getRect().getHeight();
@@ -321,7 +321,6 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	// Zero expiry time is set only once to allow initial update.
 	mRefreshTimer->setTimerExpirySec(0);
 	mRefreshTimer->start();
-	initBtns();
 
 	if (mIsParticipantListExpanded != (bool)gSavedSettings.getBOOL("IMShowControlPanel"))
 	{
@@ -398,6 +397,13 @@ void LLFloaterIMSessionTab::onFocusReceived()
 void LLFloaterIMSessionTab::onFocusLost()
 {
 	setBackgroundOpaque(false);
+	//	//BD - Autoclose Chat
+	if(gSavedSettings.getBOOL("EnableAutohidingChat") 
+		&& mIsNearbyChat
+		&& !isMessagePaneExpanded())
+    {
+		setVisible(false);
+    }
 	LLTransientDockableFloater::onFocusLost();
 }
 
@@ -748,6 +754,7 @@ void LLFloaterIMSessionTab::updateHeaderAndToolbar()
 
 
 	mCloseBtn->setVisible(is_not_torn_off && !mIsNearbyChat);
+	getChild<LLPanel>("close_btn_panel")->setVisible(is_not_torn_off && !mIsNearbyChat);
 
 	enableDisableCallBtn();
 
@@ -765,7 +772,7 @@ void LLFloaterIMSessionTab::forceReshape()
 
 void LLFloaterIMSessionTab::reshapeChatLayoutPanel()
 {
-	mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + mInputEditorPad, FALSE);
+	mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + 6.f, FALSE);
 }
 
 void LLFloaterIMSessionTab::showTranslationCheckbox(BOOL show)
@@ -864,7 +871,7 @@ void LLFloaterIMSessionTab::onCollapseToLine(LLFloaterIMSessionTab* self)
 		self->mExpandCollapseLineBtn->setImageOverlay(self->getString(expand ? "collapseline_icon" : "expandline_icon"));
 		self->mContentPanel->setVisible(!expand);
 		self->mToolbarPanel->setVisible(!expand);
-		self->mInputEditor->enableSingleLineMode(expand);
+		self->mInputEditor->enableSingleLineMode(expand || (bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 		self->reshapeFloater(expand);
 		self->setMessagePaneExpanded(!expand);
 	}
@@ -878,7 +885,7 @@ void LLFloaterIMSessionTab::reshapeFloater(bool collapse)
 	{
 		mFloaterHeight = floater_rect.getHeight();
 		S32 height = mContentPanel->getRect().getHeight() + mToolbarPanel->getRect().getHeight()
-			+ mChatLayoutPanel->getRect().getHeight() - mChatLayoutPanelHeight + 2;
+			+ mChatLayoutPanel->getRect().getHeight() - mChatLayoutPanelHeight;
 		floater_rect.mTop -= height;
 	}
 	else
@@ -910,7 +917,7 @@ void LLFloaterIMSessionTab::restoreFloater()
 		mExpandCollapseLineBtn->setImageOverlay(getString("expandline_icon"));
 		setMessagePaneExpanded(true);
 		saveCollapsedState();
-		mInputEditor->enableSingleLineMode(false);
+		mInputEditor->enableSingleLineMode((bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 		enableResizeCtrls(true, true, true);
 	}
 }
@@ -957,48 +964,8 @@ void LLFloaterIMSessionTab::onTearOffClicked()
 
 void LLFloaterIMSessionTab::updateGearBtn()
 {
-
-	BOOL prevVisibility = mGearBtn->getVisible();
 	mGearBtn->setVisible(checkIfTornOff() && mIsP2PChat);
-
-
-	// Move buttons if Gear button changed visibility
-	if(prevVisibility != mGearBtn->getVisible())
-	{
-		LLRect gear_btn_rect =  mGearBtn->getRect();
-		LLRect add_btn_rect = mAddBtn->getRect();
-		LLRect call_btn_rect = mVoiceButton->getRect();
-		S32 gap_width = call_btn_rect.mLeft - add_btn_rect.mRight;
-		S32 right_shift = gear_btn_rect.getWidth() + gap_width;
-		if(mGearBtn->getVisible())
-		{
-			// Move buttons to the right to give space for Gear button
-			add_btn_rect.translate(right_shift,0);
-			call_btn_rect.translate(right_shift,0);
-		}
-		else
-		{
-			add_btn_rect.translate(-right_shift,0);
-			call_btn_rect.translate(-right_shift,0);
-		}
-		mAddBtn->setRect(add_btn_rect);
-		mVoiceButton->setRect(call_btn_rect);
-	}
-}
-
-void LLFloaterIMSessionTab::initBtns()
-{
-	LLRect gear_btn_rect =  mGearBtn->getRect();
-	LLRect add_btn_rect = mAddBtn->getRect();
-	LLRect call_btn_rect = mVoiceButton->getRect();
-	S32 gap_width = call_btn_rect.mLeft - add_btn_rect.mRight;
-	S32 right_shift = gear_btn_rect.getWidth() + gap_width;
-
-	add_btn_rect.translate(-right_shift,0);
-	call_btn_rect.translate(-right_shift,0);
-
-	mAddBtn->setRect(add_btn_rect);
-	mVoiceButton->setRect(call_btn_rect);
+	getChild<LLPanel>("gear_btn_panel")->setVisible(checkIfTornOff() && mIsP2PChat);
 }
 
 // static

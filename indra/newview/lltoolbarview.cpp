@@ -64,7 +64,9 @@ LLToolBarView::Toolbar::Toolbar()
 LLToolBarView::ToolbarSet::ToolbarSet()
 :	left_toolbar("left_toolbar"),
 	right_toolbar("right_toolbar"),
-	bottom_toolbar("bottom_toolbar")
+	bottom_toolbar("bottom_toolbar"),
+//	//BD - Top Toolbar
+	top_toolbar("top_toolbar")
 {}
 
 
@@ -104,6 +106,10 @@ BOOL LLToolBarView::postBuild()
 
 	mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM] = getChild<LLToolBar>("toolbar_bottom");
 	mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]->getCenterLayoutPanel()->setLocationId(LLToolBarEnums::TOOLBAR_BOTTOM);
+	
+//	//BD - Top Toolbar
+	mToolbars[LLToolBarEnums::TOOLBAR_TOP] = getChild<LLToolBar>("toolbar_top");
+	mToolbars[LLToolBarEnums::TOOLBAR_TOP]->getCenterLayoutPanel()->setLocationId(LLToolBarEnums::TOOLBAR_TOP);
 
 	mBottomToolbarPanel = getChild<LLView>("bottom_toolbar_panel");
 
@@ -319,6 +325,22 @@ bool LLToolBarView::loadToolbars(bool force_default)
 			}
 		}
 	}
+//	//BD - Top Toolbar
+	if (toolbar_set.top_toolbar.isProvided() && mToolbars[LLToolBarEnums::TOOLBAR_TOP])
+	{
+		if (toolbar_set.top_toolbar.button_display_mode.isProvided())
+		{
+			LLToolBarEnums::ButtonType button_type = toolbar_set.top_toolbar.button_display_mode;
+			mToolbars[LLToolBarEnums::TOOLBAR_TOP]->setButtonType(button_type);
+		}
+		BOOST_FOREACH(const LLCommandId::Params& command_params, toolbar_set.top_toolbar.commands)
+		{
+			if (addCommandInternal(LLCommandId(command_params), mToolbars[LLToolBarEnums::TOOLBAR_TOP]))
+			{
+				LL_WARNS() << "Error adding command '" << command_params.name() << "' to top toolbar." << LL_ENDL;
+			}
+		}
+	}
 	mToolbarsLoaded = true;
 	return true;
 }
@@ -391,6 +413,12 @@ void LLToolBarView::saveToolbars() const
 	{
 		toolbar_set.bottom_toolbar.button_display_mode = mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]->getButtonType();
 		addToToolset(mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]->getCommandsList(), toolbar_set.bottom_toolbar);
+	}
+//	//BD - Top Toolbar
+	if (mToolbars[LLToolBarEnums::TOOLBAR_TOP])
+	{
+		toolbar_set.top_toolbar.button_display_mode = mToolbars[LLToolBarEnums::TOOLBAR_TOP]->getButtonType();
+		addToToolset(mToolbars[LLToolBarEnums::TOOLBAR_TOP]->getCommandsList(), toolbar_set.top_toolbar);
 	}
 	
 	// Serialize the parameter tree

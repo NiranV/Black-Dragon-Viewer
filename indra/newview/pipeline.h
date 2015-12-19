@@ -38,6 +38,7 @@
 #include "llgl.h"
 #include "lldrawable.h"
 #include "llrendertarget.h"
+#include "exopostprocess.h"
 
 #include <stack>
 
@@ -98,12 +99,16 @@ public:
 	LLPipeline();
 	~LLPipeline();
 
+	//BD - Change water reflection resolution on the way
+	void handleReflectionChanges();
+
 	void destroyGL();
 	void restoreGL();
 	void resetVertexBuffers();
 	void doResetVertexBuffers(bool forced = false);
 	void resizeScreenTexture();
 	void releaseGLBuffers();
+	void createGLBuffers(U32 width, U32 height);
 	void releaseLUTBuffers();
 	void releaseScreenBuffers();
 	void createGLBuffers();
@@ -258,6 +263,8 @@ public:
 	void postSort(LLCamera& camera);
 	void forAllVisibleDrawables(void (*func)(LLDrawable*));
 
+	void renderMotionBlur(U32 type);
+	void renderMotionBlurWithTexture(U32 type);
 	void renderObjects(U32 type, U32 mask, BOOL texture = TRUE, BOOL batch_texture = FALSE);
 	void renderMaskedObjects(U32 type, U32 mask, BOOL texture = TRUE, BOOL batch_texture = FALSE);
 
@@ -277,6 +284,8 @@ public:
 	void renderGeomDeferred(LLCamera& camera);
 	void renderGeomPostDeferred(LLCamera& camera, bool do_occlusion=true);
 	void renderGeomShadow(LLCamera& camera);
+	void renderGeomMotionBlur();
+
 	void bindDeferredShader(LLGLSLShader& shader, U32 light_index = 0, U32 noise_map = 0xFFFFFFFF);
 	void setupSpotLight(LLGLSLShader& shader, LLDrawable* drawablep);
 
@@ -495,8 +504,7 @@ public:
 // 		RENDER_DEBUG_FEATURE_HW_LIGHTING		= 0x0010,
 		RENDER_DEBUG_FEATURE_FLEXIBLE			= 0x0010,
 		RENDER_DEBUG_FEATURE_FOG				= 0x0020,
-		RENDER_DEBUG_FEATURE_FR_INFO			= 0x0080,
-		RENDER_DEBUG_FEATURE_FOOT_SHADOWS		= 0x0100,
+		RENDER_DEBUG_FEATURE_FR_INFO			= 0x0080
 	};
 
 	enum LLRenderDebugMask
@@ -586,6 +594,8 @@ public:
 	static S32				sVisibleLightCount;
 	static F32				sMinRenderSize;
 	static BOOL				sRenderingHUDs;
+	static BOOL             sExodusRenderShaderGamma;
+	static BOOL             sExodusRenderToneMapping;
 
 	static LLTrace::EventStatHandle<S64> sStatBatchSize;
 
@@ -603,6 +613,7 @@ public:
 	LLRenderTarget			mDeferredLight;
 	LLRenderTarget			mHighlight;
 	LLRenderTarget			mPhysicsDisplay;
+	LLRenderTarget			mVelocityMap;
 
 	//utility buffer for rendering post effects, gets abused by renderDeferredLighting
 	LLPointer<LLVertexBuffer> mDeferredVB;
@@ -859,6 +870,8 @@ public:
 	//debug use
 	static U32              sCurRenderPoolType ;
 
+	LLVector3 PrevDoFFocusPoint;
+
 	//cached settings
 	static BOOL WindLightUseAtmosShaders;
 	static BOOL VertexShaderEnable;
@@ -870,15 +883,13 @@ public:
 	static BOOL RenderUIBuffer;
 	static S32 RenderShadowDetail;
 	static BOOL RenderDeferredSSAO;
-	static F32 RenderShadowResolutionScale;
+	static LLVector3 RenderShadowResolution;
+	static LLVector3 RenderProjectorShadowResolution;
 	static BOOL RenderLocalLights;
 	static BOOL RenderDelayCreation;
 	static BOOL RenderAnimateRes;
 	static BOOL FreezeTime;
 	static S32 DebugBeaconLineWidth;
-	static F32 RenderHighlightBrightness;
-	static LLColor4 RenderHighlightColor;
-	static F32 RenderHighlightThickness;
 	static BOOL RenderSpotLightsInNondeferred;
 	static LLColor4 PreviewAmbientColor;
 	static LLColor4 PreviewDiffuse0;
@@ -910,7 +921,7 @@ public:
 	static F32 RenderSSAOScale;
 	static U32 RenderSSAOMaxScale;
 	static F32 RenderSSAOFactor;
-	static LLVector3 RenderSSAOEffect;
+	static F32 RenderSSAOEffect;
 	static F32 RenderShadowOffsetError;
 	static F32 RenderShadowBiasError;
 	static F32 RenderShadowOffset;
@@ -926,7 +937,6 @@ public:
 	static F32 RenderHighlightFadeTime;
 	static LLVector3 RenderShadowClipPlanes;
 	static LLVector3 RenderShadowOrthoClipPlanes;
-	static LLVector3 RenderShadowNearDist;
 	static F32 RenderFarClip;
 	static LLVector3 RenderShadowSplitExponent;
 	static F32 RenderShadowErrorCutoff;
@@ -934,7 +944,16 @@ public:
 	static BOOL CameraOffset;
 	static F32 CameraMaxCoF;
 	static F32 CameraDoFResScale;
+	static BOOL CameraFreeDoFFocus;
 	static F32 RenderAutoHideSurfaceAreaLimit;
+	static BOOL RenderMotionBlur;
+	static U32 RenderMotionBlurStrength;
+	static BOOL RenderGodrays;
+	static U32 RenderGodraysResolution;
+	static F32 RenderGodraysMultiplier;
+	static F32 RenderGodraysFalloffMultiplier;
+	static U32 RenderSSRResolution;
+	static F32 RenderChromaStrength;
 };
 
 void render_bbox(const LLVector3 &min, const LLVector3 &max);

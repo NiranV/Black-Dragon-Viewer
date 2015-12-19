@@ -12,7 +12,7 @@
      left="12"
      mouse_opaque="true"
      name="title_icon"
-     top="7"
+     top="0"
      width="18" />
     <text
      follows="top|left|right"
@@ -25,7 +25,7 @@
      right="-10"
      text_color="white"
      type="string"
-     top_delta="4">
+     top_delta="3">
         Profile
     </text>
     <view_border 
@@ -40,7 +40,7 @@
      />
     <combo_box
      follows="left|top|right"
-     height="23"
+     height="20"
      label="Resolution"
      layout="topleft"
      left="10"

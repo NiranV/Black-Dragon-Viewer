@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
-   background_visible="true"
-   bg_alpha_color="DkGray"
+   background_visible="false"
    border="false"
    follows="all"
    height="430"
@@ -11,17 +10,14 @@
    top="0"
    width="312">
     <accordion
-     background_visible="true"
-     bg_alpha_color="DkGray2"
-     bg_opaque_color="DkGray2"
-
+     background_visible="false"
      follows="all"
      height="400"
      layout="topleft"
      left="3"
      name="outfits_accordion"
-     top="0"
-     width="309">
+     top="1"
+     width="310">
        <no_matched_tabs_text
          name="no_matched_outfits_msg"
          value="Didn't find what you're looking for? Try [secondlife:///app/search/all/[SEARCH_TERM] Search]."
@@ -32,22 +28,24 @@
     </accordion>
     <panel
      background_visible="true"
+     bg_alpha_color="White_02"
+     bg_opaque_color="White_02"
 	 follows="bottom|left|right"
-	 height="28"
+	 height="26"
 	 layout="topleft"
-	 left="4"
+	 left="5"
 	 top_pad="0"
 	 visible="true"
 	 name="bottom_panel"
-	 width="312">
+	 width="313">
      <menu_button
        follows="bottom|left"
        tool_tip="Show additional options"
        height="25"
-       image_hover_unselected="Toolbar_Left_Over"
+       image_hover_unselected="Toolbar_Middle_Over"
        image_overlay="OptionsMenu_Off"
-       image_selected="Toolbar_Left_Selected"
-       image_unselected="Toolbar_Left_Off"
+       image_selected="Toolbar_Middle_Selected"
+       image_unselected="Toolbar_Middle_Off"
        layout="topleft"
        left="0"
        name="options_gear_btn"
@@ -56,18 +54,18 @@
      <icon
        follows="bottom|left|right"
        height="25"
-       image_name="Toolbar_Middle_Off"
+       image_name="transparent.j2c"
        layout="topleft"
        left_pad="1"
        name="dummy_icon"
-       width="243"/>
+       width="244"/>
       <button
        follows="bottom|right"
        height="25"
-       image_hover_unselected="Toolbar_Right_Over"
+       image_hover_unselected="Toolbar_Middle_Over"
        image_overlay="TrashItem_Off"
-       image_selected="Toolbar_Right_Selected"
-       image_unselected="Toolbar_Right_Off"
+       image_selected="Toolbar_Middle_Selected"
+       image_unselected="Toolbar_Middle_Off"
        layout="topleft"
        left_pad="1"
        name="trash_btn"

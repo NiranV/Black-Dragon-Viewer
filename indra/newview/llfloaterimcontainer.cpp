@@ -210,7 +210,7 @@ BOOL LLFloaterIMContainer::postBuild()
 	// a scroller for folder view
 	LLRect scroller_view_rect = mConversationsListPanel->getRect();
 	scroller_view_rect.translate(-scroller_view_rect.mLeft, -scroller_view_rect.mBottom);
-	scroller_view_rect.mBottom += getChild<LLLayoutStack>("conversations_pane_buttons_stack")->getRect().getHeight();
+	//scroller_view_rect.mBottom += getChild<LLLayoutStack>("conversations_pane_buttons_stack")->getRect().getHeight();
 	LLScrollContainer::Params scroller_params(LLUICtrlFactory::getDefaultParams<LLFolderViewScrollContainer>());
 	scroller_params.rect(scroller_view_rect);
 
@@ -260,6 +260,8 @@ BOOL LLFloaterIMContainer::postBuild()
 	mGeneralTitle = getTitle();
 	
 	mInitialized = true;
+
+	mIsFirstOpen = true;
 
 	// Add callbacks:
 	// We'll take care of view updates on idle
@@ -636,14 +638,16 @@ void LLFloaterIMContainer::setVisible(BOOL visible)
 	{
 		// Make sure we have the Nearby Chat present when showing the conversation container
 		nearby_chat = LLFloaterReg::findTypedInstance<LLFloaterIMNearbyChat>("nearby_chat");
-		if (nearby_chat == NULL)
+		if ((nearby_chat == NULL) || mIsFirstOpen)
 		{
+			 mIsFirstOpen = false;
 			// If not found, force the creation of the nearby chat conversation panel
 			// *TODO: find a way to move this to XML as a default panel or something like that
 			LLSD name("nearby_chat");
 			LLFloaterReg::toggleInstanceOrBringToFront(name);
             selectConversationPair(LLUUID(NULL), false, false);
 		}
+
 		flashConversationItemWidget(mSelectedSession,false);
 
 		LLFloaterIMSessionTab* session_floater = LLFloaterIMSessionTab::findConversation(mSelectedSession);
@@ -757,6 +761,14 @@ void LLFloaterIMContainer::collapseMessagesPane(bool collapse)
 
 		// Save the order in which the panels are closed to reverse user's last action.
 		gSavedPerAccountSettings.setBOOL("ConversationsExpandMessagePaneFirst", mConversationsPane->isCollapsed());
+		
+		// Make sure our floater moves to the right instead of left since we put the list there.
+		translate(msg_pane_width,0);
+	}
+	else
+	{
+		// Revert what we did when we collapsed the floater.
+		translate(-gSavedPerAccountSettings.getS32("ConversationsMessagePaneWidth"),0);
 	}
 
 	mConversationsPane->setIgnoreReshape(collapse);
@@ -1164,6 +1176,14 @@ void LLFloaterIMContainer::doToParticipants(const std::string& command, uuid_vec
 		{
 			banSelectedMember(userID);
 		}
+		else if ("get_uuid" == command)
+		{
+			LLAvatarActions::copyUUIDToClipboard(userID);
+		}
+		else if ("get_slurl" == command)
+		{
+			LLAvatarActions::copySLURLToClipboard(userID);
+		}
 	}
 	else if (selectedIDS.size() > 1)
 	{
@@ -1216,7 +1236,22 @@ void LLFloaterIMContainer::doToSelectedConversation(const std::string& command, 
         {
 			if (selectedIDS.size() > 0)
 			{
-				LLAvatarActions::viewChatHistory(selectedIDS.front());
+				if(conversationItem->getType() == LLConversationItem::CONV_SESSION_GROUP)
+				{
+					LLFloaterReg::showInstance("preview_conversation", conversationItem->getUUID(), true);
+				}
+				else if(conversationItem->getType() == LLConversationItem::CONV_SESSION_AD_HOC)
+				{
+					LLConversation* conv = LLConversationLog::instance().findConversation(LLIMModel::getInstance()->findIMSession(conversationItem->getUUID()));
+					if(conv)
+					{
+						LLFloaterReg::showInstance("preview_conversation", conv->getSessionID(), true);
+					}
+				}
+				else
+				{
+					LLAvatarActions::viewChatHistory(selectedIDS.front());
+				}
 			}
         }
         else
@@ -1277,6 +1312,10 @@ void LLFloaterIMContainer::doToSelectedGroup(const LLSD& userdata)
     {
         LLGroupActions::leave(mSelectedSession);
     }
+	else if (action == "get_slurl")
+    {
+        LLGroupActions::copySLURL(mSelectedSession);
+    }
 }
 
 bool LLFloaterIMContainer::enableContextMenuItem(const LLSD& userdata)
@@ -1307,7 +1346,7 @@ bool LLFloaterIMContainer::enableContextMenuItem(const LLSD& userdata)
 	}
 
 	//Enable Chat history item for ad-hoc and group conversations
-	if ("can_chat_history" == item && uuids.size() > 0)
+	/*if ("can_chat_history" == item && uuids.size() > 0)
 	{
 		//Disable menu item if selected participant is user agent
 		if(uuids.front() != gAgentID)
@@ -1316,13 +1355,22 @@ bool LLFloaterIMContainer::enableContextMenuItem(const LLSD& userdata)
 			{
 				return LLLogChat::isNearbyTranscriptExist();
 			}
+			else if (getCurSelectedViewModelItem()->getType() == LLConversationItem::CONV_SESSION_AD_HOC)
+			{
+				const LLConversation* conv = LLConversationLog::instance().findConversation(LLIMModel::getInstance()->findIMSession(uuids.front()));
+				if(conv)
+				{
+					return LLLogChat::isAdHocTranscriptExist(conv->getHistoryFileName());
+				}
+				return false;
+			}
 			else
 			{
 				bool is_group = (getCurSelectedViewModelItem()->getType() == LLConversationItem::CONV_SESSION_GROUP);
 				return LLLogChat::isTranscriptExist(uuids.front(),is_group);
 			}
 		}
-	}
+	}*/
 
 	// If nothing is selected(and selected item is not group chat), everything needs to be disabled
 	if (uuids.size() <= 0)
@@ -1881,22 +1929,28 @@ bool LLFloaterIMContainer::canBanSelectedMember(const LLUUID& participant_uuid)
 		return false;
 	}
 
-	if (!gdatap->mMembers.size())
+	if (gdatap->mPendingBanRequest)
 	{
 		return false;
 	}
 
-	LLGroupMgrGroupData::member_list_t::iterator mi = gdatap->mMembers.find((participant_uuid));
-	if (mi == gdatap->mMembers.end())
+	if (gdatap->isRoleMemberDataComplete())
 	{
-		return false;
-	}
+		if (!gdatap->mMembers.size())
+		{
+			return false;
+		}
 
-	LLGroupMemberData* member_data = (*mi).second;
-	// Is the member an owner?
-	if ( member_data && member_data->isInRole(gdatap->mOwnerRole) )
-	{
-		return false;
+		LLGroupMgrGroupData::member_list_t::iterator mi = gdatap->mMembers.find((participant_uuid));
+		if (mi != gdatap->mMembers.end())
+		{
+			LLGroupMemberData* member_data = (*mi).second;
+			// Is the member an owner?
+			if (member_data && member_data->isInRole(gdatap->mOwnerRole))
+			{
+				return false;
+			}
+		}
 	}
 
 	if(	gAgent.hasPowerInGroup(group_uuid, GP_ROLE_REMOVE_MEMBER) &&
@@ -1924,20 +1978,8 @@ void LLFloaterIMContainer::banSelectedMember(const LLUUID& participant_uuid)
 		LL_WARNS("Groups") << "Unable to get group data for group " << group_uuid << LL_ENDL;
 		return;
 	}
-	std::vector<LLUUID> ids;
-	ids.push_back(participant_uuid);
 
-	LLGroupBanData ban_data;
-	gdatap->createBanEntry(participant_uuid, ban_data);
-	LLGroupMgr::getInstance()->sendGroupBanRequest(LLGroupMgr::REQUEST_POST, group_uuid, LLGroupMgr::BAN_CREATE, ids);
-	LLGroupMgr::getInstance()->sendGroupMemberEjects(group_uuid, ids);
-	LLGroupMgr::getInstance()->sendGroupMembersRequest(group_uuid);
-	LLSD args;
-	std::string name;
-	gCacheName->getFullName(participant_uuid, name);
-	args["AVATAR_NAME"] = name;
-	args["GROUP_NAME"] = gdatap->mName;
-	LLNotifications::instance().add(LLNotification::Params("EjectAvatarFromGroup").substitutions(args));
+	gdatap->banMemberById(participant_uuid);
 
 }
 

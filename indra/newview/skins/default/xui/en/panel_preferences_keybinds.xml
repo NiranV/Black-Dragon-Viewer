@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel
+border="false"
+follows="all"
+height="408"
+label="Keybinds"
+mouse_opaque="false"
+layout="topleft"
+left="0"
+name="Keybindings panel"
+top="45"
+width="510">
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="EmphasisColor_13"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="515"/>
+ 
+ <text
+ name="show_ims_in_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Third Person Keybindings:
+ </text>
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="15">
+ Move Forwards:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing left."
+ name="push_forward"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="8">
+ Move Backwards:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing right."
+ name="push_backward"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="8">
+ Strafe Left:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing left."
+ name="slide_left"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="8">
+ Strafe Right:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing right."
+ name="slide_right"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="8">
+ Rotate Left:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing left."
+ name="turn_left"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="8">
+ Rotate Right:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing right."
+ name="turn_right"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ height="12"
+ width="100"
+ top_delta="-126">
+ Jump:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for jumping."
+ name="jump"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ height="12"
+ width="100"
+ top_pad="8">
+ Crouch:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for jumping."
+ name="push_down"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ height="12"
+ width="100"
+ top_pad="8">
+ Stop Movement:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for jumping."
+ name="stop_moving"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ height="12"
+ width="100"
+ top_pad="8">
+ Start Chat:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for jumping."
+ name="start_chat"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ height="12"
+ width="100"
+ top_pad="8">
+ Toggle Flying:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for jumping."
+ name="toggle_fly"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ 
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="EmphasisColor_13"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="33"
+ width="515"/>
+ 
+ <text
+ name="show_ims_in_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ First Person Keybindings:
+ </text>
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="15">
+ Move Forwards:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing left."
+ name="strafe_left"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="8">
+ Move Backwards:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing right."
+ name="strafe_right"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="8">
+ Strafe Left:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing left."
+ name="strafe_left"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="8">
+ Strafe Right:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing right."
+ name="strafe_right"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="8">
+ Rotate Left:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing left."
+ name="strafe_left"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="100"
+ top_pad="8">
+ Rotate Right:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for strafing right."
+ name="strafe_right"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ height="12"
+ width="100"
+ top_delta="-126">
+ Jump:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for jumping."
+ name="jump"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ height="12"
+ width="100"
+ top_pad="8">
+ Crouch:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for jumping."
+ name="jump"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ height="12"
+ width="100"
+ top_pad="8">
+ Stop Movement:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for jumping."
+ name="jump"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ height="12"
+ width="100"
+ top_pad="8">
+ Start Chat:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for jumping."
+ name="jump"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ <text
+ name="label_jump"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ height="12"
+ width="100"
+ top_pad="8">
+ Toggle Flying:
+ </text>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Set Key"
+ tool_tip="Bind a key for jumping."
+ name="jump"
+ width="100"
+ top_delta="-4"
+ left_pad="10">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />
+ 
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Export"
+ name="export"
+ width="100"
+ top_pad="4"
+ left_delta="-102">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.ExportControls"/>
+ </button>
+ 
+</panel>

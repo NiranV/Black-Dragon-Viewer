@@ -93,6 +93,10 @@
 #include "pipeline.h"
 #include "llviewershadermgr.h"
 #include "llpanelface.h"
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
+#include "rlvactions.h"
+#include "rlvhandler.h"
+// [/RLVa:KB]
 #include "llglheaders.h"
 
 LLViewerObject* getSelectedParentObject(LLViewerObject *object) ;
@@ -620,8 +624,31 @@ bool LLSelectMgr::linkObjects()
 
 bool LLSelectMgr::unlinkObjects()
 {
+	S32 min_objects_for_confirm = gSavedSettings.getS32("MinObjectsForUnlinkConfirm");
+	S32 unlink_object_count = mSelectedObjects->getObjectCount(); // clears out nodes with NULL objects
+	if (unlink_object_count >= min_objects_for_confirm
+		&& unlink_object_count > mSelectedObjects->getRootObjectCount())
+	{
+		// total count > root count means that there are childer inside and that there are linksets that will be unlinked
+		LLNotificationsUtil::add("ConfirmUnlink", LLSD(), LLSD(), boost::bind(&LLSelectMgr::confirmUnlinkObjects, this, _1, _2));
+		return true;
+	}
+
 	LLSelectMgr::getInstance()->sendDelink();
 	return true;
+}
+
+void LLSelectMgr::confirmUnlinkObjects(const LLSD& notification, const LLSD& response)
+{
+	S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
+	// if Cancel pressed
+	if (option == 1)
+	{
+		return;
+	}
+
+	LLSelectMgr::getInstance()->sendDelink();
+	return;
 }
 
 // in order to link, all objects must have the same owner, and the
@@ -656,6 +683,16 @@ bool LLSelectMgr::enableLinkObjects()
 			new_value = LLSelectMgr::getInstance()->getSelection()->applyToRootObjects(&func, firstonly);
 		}
 	}
+// [RLVa:KB] - Checked: 2011-03-19 (RLVa-1.3.0f) | Modified: RLVa-0.2.0g
+	if ( (new_value) && ((rlv_handler_t::isEnabled()) && (!RlvActions::canStand())) )
+	{
+		// Allow only if the avie isn't sitting on any of the selected objects
+		LLObjectSelectionHandle hSel = LLSelectMgr::getInstance()->getSelection();
+		RlvSelectIsSittingOn f(gAgentAvatarp);
+		if (hSel->getFirstRootNode(&f, TRUE) != NULL)
+			new_value = false;
+	}
+// [/RLVa:KB]
 	return new_value;
 }
 
@@ -668,7 +705,16 @@ bool LLSelectMgr::enableUnlinkObjects()
 		first_editable_object &&
 		!first_editable_object->isAttachment() && !first_editable_object->isPermanentEnforced() &&
 		((root_object == NULL) || !root_object->isPermanentEnforced());
-
+// [RLVa:KB] - Checked: 2011-03-19 (RLVa-1.3.0f) | Modified: RLVa-0.2.0g
+	if ( (new_value) && ((rlv_handler_t::isEnabled()) && (!RlvActions::canStand())) )
+	{
+		// Allow only if the avie isn't sitting on any of the selected objects
+		LLObjectSelectionHandle hSel = LLSelectMgr::getInstance()->getSelection();
+		RlvSelectIsSittingOn f(gAgentAvatarp);
+		if (hSel->getFirstRootNode(&f, TRUE) != NULL)
+			new_value = false;
+	}
+// [/RLVa:KB]
 	return new_value;
 }
 
@@ -2104,7 +2150,7 @@ void LLSelectMgr::selectionRemoveMaterial()
 			{
 			        LL_DEBUGS("Materials") << "Removing material from object " << object->getID() << " face " << face << LL_ENDL;
 				LLMaterialMgr::getInstance()->remove(object->getID(),face);
-				object->setTEMaterialParams(face, NULL);
+				object->setTEMaterialParams(face, NULL, FALSE);
 			}
 			return true;
 		}
@@ -3465,6 +3511,16 @@ BOOL LLSelectMgr::selectGetPermissions(LLPermissions& result_perm)
 
 void LLSelectMgr::selectDelete()
 {
+// [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0e) | Added: RLVa-1.2.0a
+	if ( (rlv_handler_t::isEnabled()) && (!rlvCanDeleteOrReturn()) )
+	{
+		make_ui_sound("UISndInvalidOp");
+		if (!gFloaterTools->getVisible())
+			deselectAll();
+		return;
+	}
+// [/RLVa:KB]
+
 	S32 deleteable_count = 0;
 
 	BOOL locked_but_deleteable_object = FALSE;
@@ -3777,7 +3833,10 @@ struct LLDuplicateData
 
 void LLSelectMgr::selectDuplicate(const LLVector3& offset, BOOL select_copy)
 {
-	if (mSelectedObjects->isAttachment())
+//	if (mSelectedObjects->isAttachment())
+// [RLVa:KB] - Checked: 2010-03-24 (RLVa-1.2.0e) | Added: RLVa-1.2.0a
+	if ( (mSelectedObjects->isAttachment()) || ((rlv_handler_t::isEnabled()) && (!rlvCanDeleteOrReturn())) )
+// [/RLVa:KB]
 	{
 		//RN: do not duplicate attachments
 		make_ui_sound("UISndInvalidOp");
@@ -4234,10 +4293,38 @@ void LLSelectMgr::convertTransient()
 
 void LLSelectMgr::deselectAllIfTooFar()
 {
+// [RLVa:KB] - Checked: 2010-11-29 (RLVa-1.3.0c) | Modified: RLVa-1.3.0c
+	if ( (!mSelectedObjects->isEmpty()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_EDIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_EDITOBJ))) )
+	{
+		struct NotTransientOrFocusedMediaOrEditable : public LLSelectedNodeFunctor
+		{
+			bool apply(LLSelectNode* pNode)
+			{
+				const LLViewerObject* pObj = pNode->getObject();
+				return (!pNode->isTransient()) && (pObj) && (!gRlvHandler.canEdit(pObj)) &&
+					(pObj->getID() != LLViewerMediaFocus::getInstance()->getFocusedObjectID());
+			}
+		} f;
+		if (mSelectedObjects->getFirstRootNode(&f, TRUE))
+			deselectAll();
+	}
+// [/RLVa:KB]
+
 	if (mSelectedObjects->isEmpty() || mSelectedObjects->mSelectType == SELECT_TYPE_HUD)
 	{
 		return;
 	}
+
+// [RLVa:KB] - Checked: 2010-05-03 (RLVa-1.2.0g) | Modified: RLVa-1.1.0l
+#ifdef RLV_EXTENSION_CMD_INTERACT
+	// [Fall-back code] Don't allow an active selection (except for HUD attachments - see above) when @interact=n restricted
+	if (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT))
+	{
+		deselectAll();
+		return;
+	}
+#endif // RLV_EXTENSION_CMD_INTERACT
+// [/RLVa:KB]
 
 	// HACK: Don't deselect when we're navigating to rate an object's
 	// owner or creator.  JC
@@ -4247,13 +4334,20 @@ void LLSelectMgr::deselectAllIfTooFar()
 	}
 
 	LLVector3d selectionCenter = getSelectionCenterGlobal();
-	if (gSavedSettings.getBOOL("LimitSelectDistance")
+//	if (gSavedSettings.getBOOL("LimitSelectDistance")
+// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-0.2.0f
+	BOOL fRlvFartouch = gRlvHandler.hasBehaviour(RLV_BHVR_FARTOUCH) && gFloaterTools->getVisible();
+	if ( (gSavedSettings.getBOOL("LimitSelectDistance") || (fRlvFartouch) )
+// [/RLVa:KB]
 		&& (!mSelectedObjects->getPrimaryObject() || !mSelectedObjects->getPrimaryObject()->isAvatar())
 		&& (mSelectedObjects->getPrimaryObject() != LLViewerMediaFocus::getInstance()->getFocusedObject())
 		&& !mSelectedObjects->isAttachment()
 		&& !selectionCenter.isExactlyZero())
 	{
-		F32 deselect_dist = gSavedSettings.getF32("MaxSelectDistance");
+//		F32 deselect_dist = gSavedSettings.getF32("MaxSelectDistance");
+// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-0.2.0f
+		F32 deselect_dist = (!fRlvFartouch) ? gSavedSettings.getF32("MaxSelectDistance") : 1.5f;
+// [/RLVa:KB]
 		F32 deselect_dist_sq = deselect_dist * deselect_dist;
 
 		LLVector3d select_delta = gAgent.getPositionGlobal() - selectionCenter;
@@ -4927,12 +5021,15 @@ void LLSelectMgr::sendListToRegions(const std::string& message_name,
 									ESendType send_type)
 {
 	LLSelectNode* node;
+	LLSelectNode* linkset_root = NULL;
 	LLViewerRegion*	last_region;
 	LLViewerRegion*	current_region;
 
 	S32 objects_sent = 0;
 	S32 packets_sent = 0;
 	S32 objects_in_this_packet = 0;
+
+	bool link_operation = message_name == "ObjectLink";
 
 	//clear update override data (allow next update through)
 	struct f : public LLSelectedNodeFunctor
@@ -5042,6 +5139,12 @@ void LLSelectMgr::sendListToRegions(const std::string& message_name,
 			&& (! gMessageSystem->isSendFull(NULL))
 			&& (objects_in_this_packet < MAX_OBJECTS_PER_PACKET))
 		{
+			if (link_operation && linkset_root == NULL)
+			{
+				// linksets over 254 will be split into multiple messages,
+				// but we need to provide same root for all messages or we will get separate linksets
+				linkset_root = node;
+			}
 			// add another instance of the body of the data
 			(*pack_body)(node, user_data);
             // do any related logging
@@ -5069,6 +5172,22 @@ void LLSelectMgr::sendListToRegions(const std::string& message_name,
 
 			gMessageSystem->newMessage(message_name.c_str());
 			(*pack_header)(user_data);
+
+			if (linkset_root != NULL)
+			{
+				if (current_region != last_region)
+				{
+					// root should be in one region with the child, reset it
+					linkset_root = NULL;
+				}
+				else
+				{
+					// add root instance into new message
+					(*pack_body)(linkset_root, user_data);
+					++objects_sent;
+					++objects_in_this_packet;
+				}
+			}
 
 			// don't move to the next object, we still need to add the
 			// body data. 
@@ -6736,7 +6855,10 @@ BOOL LLSelectMgr::canDoDelete() const
 			can_delete = true;
 		}
 	}
-	
+// [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0e) | Added: RLVa-1.2.0a
+	can_delete &= (!rlv_handler_t::isEnabled()) || (rlvCanDeleteOrReturn());
+// [/RLVa:KB]
+
 	return can_delete;
 }
 
@@ -6768,7 +6890,12 @@ void LLSelectMgr::deselect()
 //-----------------------------------------------------------------------------
 BOOL LLSelectMgr::canDuplicate() const
 {
-	return const_cast<LLSelectMgr*>(this)->mSelectedObjects->getFirstCopyableObject() != NULL; // HACK: casting away constness - MG
+//	return const_cast<LLSelectMgr*>(this)->mSelectedObjects->getFirstCopyableObject() != NULL; // HACK: casting away constness - MG
+// [RLVa:KB] - Checked: 2010-03-24 (RLVa-1.2.0e) | Added: RLVa-1.2.0a
+	return 
+		(const_cast<LLSelectMgr*>(this)->mSelectedObjects->getFirstCopyableObject() != NULL) &&
+		( (!rlv_handler_t::isEnabled()) || (rlvCanDeleteOrReturn()) );
+// [/RLVa:KB]
 }
 //-----------------------------------------------------------------------------
 // duplicate()

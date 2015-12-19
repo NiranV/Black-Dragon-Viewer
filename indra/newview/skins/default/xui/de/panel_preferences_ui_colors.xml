@@ -1,0 +1,139 @@
+﻿<panel name="UI Colors">
+   <scroll_container name="ui_scroll">
+     <panel name="ui_colors_panel">
+      <text name="ui_label">Dieser Teil des Invidualisierungsfensters erlaubt es dir die Farben und die Transparenz jedes häufig verwendeten Fensters inviduell anzupassen , welche sich zu den vordefinierten Farben und Transparenzen addieren.
+ANMERKUNG: Weiß ist die Standartfarbe und 1.0 die Standart Transparenz (Erfordert Neustart)
+      </text>
+      <text name="people_text">
+        Leute Fenster
+      </text>
+      <text name="places_text">
+        Orte Fenster
+      </text>
+      <text name="inventory_text">
+        Inventar Fenster
+      </text>
+      <text name="outfits_text">
+        Aussehen Fenster
+      </text>
+      <text name="picks_text">
+        Auswahlen Fenster
+      </text>
+      <text name="prefs_text">
+        Einstellungs Fenster
+      </text>
+      <text name="move_text">
+        Bewegen Fenster
+      </text>
+      <text name="view_text">
+        Ansicht Fenster
+      </text>
+      <text name="map_text">
+        Karten Fenster
+      </text>
+      <text name="chat_text">
+        Chat Fenster
+      </text>
+      <text name="IM_text">
+        IM Fenster
+      </text>
+      <text name="convo_text">
+        Konversationen Fenster
+      </text>
+      <text name="speakers_text">
+        Aktive Sprecher Fenster
+      </text>
+      <text name="tools_text">
+        Bauen Fenster
+      </text>
+      <text name="snaps_text">
+        Foto Fenster
+      </text>
+      <text name="stats_text">
+        Statistiken Fenster
+      </text>
+      <slider name="people_trans" label="Deckkraft:"/>
+      <slider name="places_trans" label="Deckkraft:"/>
+      <slider name="inventory_trans" label="Deckkraft:"/>
+      <slider name="outfits_trans" label="Deckkraft:"/>
+      <slider name="picks_trans" label="Deckkraft:"/>
+      <slider name="prefs_trans" label="Deckkraft:"/>
+      <slider name="move_trans" label="Deckkraft:"/>
+      <slider name="view_trans" label="Deckkraft:"/>
+      <slider name="map_trans" label="Deckkraft:"/>
+      <slider name="chats_trans" label="Deckkraft:"/>
+      <slider name="instant_trans" label="Deckkraft:"/>
+      <slider name="convo_trans" label="Deckkraft:"/>
+      <slider name="speakers_trans" label="Deckkraft:"/>
+      <slider name="tools_trans" label="Deckkraft:"/>
+      <slider name="snaps_trans" label="Deckkraft:"/>
+      <slider name="stats_trans" label="Deckkraft:"/>
+      <text name="widgets_text">Die nachfolgenden Farbauswahlfelder erlauben es dir viele der Benutzeroberflächen Widgets anzupassen , z.B Schaltflächen , Verfolgung , Texte und Beschriftungen etc.
+ANMERKUNG: Die meisten erfordern keinen neustart.
+      </text>
+      <text name="inspector_text">
+        Inspektoren
+      </text>
+      <text name="button_text">
+        Schaltflächen
+      </text>
+      <text name="history_bg_text">
+        Chatverlauf HG
+      </text>
+      <text name="focus_text">
+        Fokus
+      </text>
+      <text name="inventory_item_text">
+        Inventargegenstand
+      </text>
+      <text name="map_avatars_text">
+        Avatar auf der Karte
+      </text>
+      <text name="self_text">
+        Dich auf der Karte
+      </text>
+      <text name="map_track_text">
+        Verfolgungsmarker
+      </text>
+      <text name="topbar_text">
+        Statusleiste
+      </text>
+      <text name="menu_text">
+       Menuleiste
+      </text>
+      <text name="speaking_text">
+        Voiceausschlag
+      </text>
+      <text name="dot_text">
+        Voice Punkt
+      </text>
+      <text name="toolbar_dropzone_text">
+        Werkzeugleisten HG
+      </text>
+      <text name="button_label_text">
+        Schaltflächentexte
+      </text>
+      <text name="history_text_text">
+        Chatverlauf Text
+      </text>
+      <text name="inventory_link_text">
+        Inventarverknüpfung
+      </text>
+      <text name="map_friend_text">
+        Freund auf der Karte
+      </text>
+      <text name="map_frustum_text">
+        Blickwinkel auf der Karte
+      </text>
+      <text name="chatrange_text">
+        Chatreichweiten Ring
+      </text>
+      <text name="labels_text">
+        Text
+      </text>
+      <text name="disabled_labels_text">
+        Deaktivierter Text
+      </text>
+   </panel>
+  </scroll_container>
+</panel>

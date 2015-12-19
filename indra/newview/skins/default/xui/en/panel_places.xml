@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
-background_visible="true"
+background_visible="false"
  default_tab_group="1"
  follows="all"
  height="570"
  label="Places"
+ background_color="FloaterColorPlaces"
  layout="topleft"
  min_height="350"
  name="places panel"
@@ -13,345 +14,169 @@ background_visible="true"
  width="333">
     <string
      name="landmarks_tab_title"
-     value="MY LANDMARKS" />
+     value="My Landmarks" />
     <string
      name="teleport_history_tab_title"
-     value="TELEPORT HISTORY" />
-    <filter_editor
-     text_pad_left="10"
-     follows="left|top|right"
-     font="SansSerifSmall"
-     height="23"
-     layout="topleft"
-     left="10"
-     label="Filter My Places"
-     max_length_chars="300"
-     name="Filter"
-     tab_group="1"
-     top="3"
-     width="303" />
+     value="Teleport History" />
     <tab_container
      follows="all"
      halign="center"
-     height="503"
+	 bottom="-7"
      layout="topleft"
-     left="6"
+     left="4"
+	 right="-6"
      name="Places Tabs"
-     tab_min_width="80"
+     tab_min_width="150"
      tab_max_width="157"
-     tab_height="30"
+     tab_height="20"
      tab_group="2"
      tab_position="top"
-     top_pad="10"
-     width="315" />
+     top="4"/>
     <panel
      class="panel_place_profile"
      filename="panel_place_profile.xml"
      follows="all"
      height="533"
      layout="topleft"
-     left="0"
-     help_topic="place_profile"
+     left="7"
      name="panel_place_profile"
-     top="5"
+     top="35"
      visible="false"
-     width="315" />
+     width="300" />
     <panel
      class="panel_landmark_info"
      filename="panel_landmark_info.xml"
      follows="all"
      height="533"
      layout="topleft"
-     left="0"
-     help_topic="landmark"
+     left="7"
      name="panel_landmark_info"
-     top="5"
+     top="35"
      visible="false"
-     width="315" />
+     width="300" />
     <panel
      follows="bottom|left|right"
-     height="23"
+     height="25"
      layout="topleft"
      left="4"
+	 bottom="-9"
      name="button_panel"
      width="315">
-     
-       <layout_stack
-     	follows="bottom|left|right"
-		height="23"
-		layout="topleft"
-		mouse_opaque="false"
-		name="bottom_bar_ls0"
-		left="4"
-		orientation="horizontal"
-		top="0"
-		width="315">	
-			<layout_panel
-			follows="bottom|left|right"
-			height="23"
-			layout="bottomleft"
-			left="0"			
-			mouse_opaque="false"
-			name="lp1"
-		    auto_resize="true"
-			width="193">
-			
-		<!--*********************** Teleport, Map buttons ***********************-->
-     	
-		       <layout_stack
-		     	follows="bottom|left|right"
-				height="23"
-				layout="topleft"
-				mouse_opaque="false"
-				name="bottom_bar_ls1"
-				left="0"
-				orientation="horizontal"
-				top="0"
-				width="193">	
-					<layout_panel
-					follows="bottom|left|right"
-					height="23"
-					layout="bottomleft"
-					left="0"			
-					mouse_opaque="false"
-					name="teleport_btn_lp"
-				    auto_resize="true"
-					width="109">
-						<button
-				         follows="bottom|left|right"
-				         height="23"
-				         label="Teleport"
-				         layout="topleft"
-				         left="1"
-				         name="teleport_btn"
-				         tool_tip="Teleport to the selected area"
-				         top="0"
-				         width="108" />		
-					</layout_panel>
-					
-					<layout_panel
-					follows="bottom|left|right"
-					height="23"
-					layout="bottomleft"
-					left_pad="3"
-					mouse_opaque="false"
-					name="chat_btn_lp"
-				    auto_resize="true"
-					width="86">
-						<button
-				         follows="bottom|left|right"
-				         height="23"
-				         label="Map"
-				         layout="topleft"
-				         left="1"
-				         name="map_btn"
-				         tool_tip="Show the corresponding area on the World Map"
-				         top="0"
-				         width="85" />		
-					</layout_panel>
-				</layout_stack>
-			</layout_panel>	
-			
-			<layout_panel
-			follows="bottom|left|right"
-			height="23"
-			layout="bottomleft"
-			left_pad="0"			
-			mouse_opaque="false"
-			name="lp2"
-		    auto_resize="true"
-			width="116">
-			
-		<!--*********************** Edit, Options buttons ***********************-->		
+	  <filter_editor
+     text_pad_left="10"
+     follows="left|bottom|right"
+	 background_image="TextField_Off"
+	 background_image_disabled="TextField_Disabled"
+	 background_image_focused="TextField_Active"
+     font="SansSerifSmall"
+     height="22"
+     layout="topleft"
+     left="6"
+     label="Filter My Places"
+     max_length="300"
+     name="Filter"
+     tab_group="1"
+     top="1"
+     width="216" />
+   
+	      <menu_button
+	       follows="bottom|left"
+		   image_hover_unselected="Toolbar_Middle_Over"
+		   image_selected="Toolbar_Middle_Selected"
+		   image_unselected="Toolbar_Middle_Off"
+	       height="25"
+		   label="▼"
+	       layout="topleft"
+	       mouse_opaque="false"
+	       name="overflow_btn"
+	       tool_tip="Show additional options"
+	       top="0"
+	       left="5"		         
+	       width="30" />
+		  <button
+	       follows="bottom|left|right"
+		   image_hover_unselected="Toolbar_Middle_Over"
+		   image_selected="Toolbar_Middle_Selected"
+		   image_unselected="Toolbar_Middle_Off"
+	       height="25"
+	       label="Edit"
+	       layout="topleft"
+	       left_pad="1"
+	       mouse_opaque="false"
+	       name="edit_btn"
+	       tool_tip="Edit landmark information"
+	       top="0"
+	       width="93" />
 		
-				<layout_stack
-		     	follows="bottom|left|right"
-				height="23"
-				layout="topleft"
-				mouse_opaque="false"
-				name="bottom_bar_ls3"
-				left="0"
-				orientation="horizontal"
-				top="0"
-				width="113">
-		
-					<layout_panel
-					follows="bottom|left|right"
-					height="23"
-					layout="bottomleft"
-					left_pad="0"
-					mouse_opaque="false"
-					name="edit_btn_lp"
-				    auto_resize="true"
-					width="84">
-						<button
-				         follows="bottom|left|right"
-				         height="23"
-				         label="Edit"
-				         layout="topleft"
-				         left="1"
-						 mouse_opaque="false"
-				         name="edit_btn"
-				         tool_tip="Edit landmark information"
-				         top="0"
-				         width="83" />
-					</layout_panel>
-					
-					<layout_panel
-					follows="bottom|right"
-					height="23"
-					layout="bottomleft"
-					left_pad="0"
-					mouse_opaque="false"
-					name="overflow_btn_lp"
-				    auto_resize="true"
-					width="24">
-						<menu_button
-				         follows="bottom|right"
-				         height="23"
-						 image_disabled="ComboButton_UpOff"
-						 image_unselected="ComboButton_UpOff"
-						 image_selected="ComboButton_UpSelected"
-				         layout="topleft"
-						 mouse_opaque="false"
-				         name="overflow_btn"
-				         tool_tip="Show additional options"
-				         top="0"
-				         left="1"		         
-				         width="23" />			
-					</layout_panel>
-				</layout_stack>
-		
-		<!--*********************** Profile button ***********************-->		
-				
-				<layout_stack
-		     	follows="bottom|left|right"
-				height="23"
-				layout="topleft"
-				mouse_opaque="false"
-				name="bottom_bar_profile_ls"
-				left="0"
-				orientation="horizontal"
-				top="0"
-				width="110">		
-					<layout_panel
-					follows="bottom|left|right"
-					height="23"
-					layout="bottomleft"
-					left_pad="3"			
-					mouse_opaque="false"
-					name="profile_btn_lp"
-				    auto_resize="true"
-					width="102">
-						<button
-				         follows="bottom|left|right"
-				         height="23"
-				         label="Profile"
-				         layout="topleft"
-						 mouse_opaque="false"
-				         name="profile_btn"
-				         left="1"
-				         tool_tip="Show place profile"
-				         top="0"
-				         width="101" />		
-					</layout_panel>
-				</layout_stack>
-		
-		<!--*********************** Close button ***********************-->
-				
-				<layout_stack
-		     	follows="bottom|left|right"
-				height="23"
-				layout="topleft"
-				mouse_opaque="false"
-				name="bottom_bar_close_ls3"
-				left="0"
-				orientation="horizontal"
-				top="0"
-				width="112">
-					<layout_panel
-					follows="bottom|left|right"
-					height="23"
-					layout="bottomleft"
-					left_pad="3"			
-					mouse_opaque="false"
-					name="close_btn_lp"
-					top="0"
-				    auto_resize="true"
-					width="51">
-						<button
-				         follows="bottom|left|right"
-				         height="23"
-				         label="Close"
-				         layout="topleft"
-						 mouse_opaque="false"
-				         name="close_btn"
-				         left="1"
-				         top="0"
-				         width="50" />	
-					</layout_panel>
-				</layout_stack>
+			<button
+	  follows="bottom|right"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+	  height="25"
+	  label="Teleport"
+	  layout="topleft"
+	  left_pad="1"
+	  name="teleport_btn"
+	  tool_tip="Teleport to the selected area"
+	  top="0"
+	  width="106" />		
 
-					
-			</layout_panel>
-		</layout_stack>	
-
-<!--*********************** Save, Cancel buttons ***********************-->		
+	 <button
+	  follows="bottom|right"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+	  height="25"
+	  label="Map"
+	  layout="topleft"
+	  left_pad="1"
+	  name="map_btn"
+	  tool_tip="Show the corresponding area on the World Map"
+	  top="0"
+	  width="83" />	
+		  
+		     <button
+		      follows="bottom|right"
+			  image_hover_unselected="Toolbar_Middle_Over"
+			  image_selected="Toolbar_Middle_Selected"
+			  image_unselected="Toolbar_Middle_Off"
+		      height="25"
+		      label="Close"
+		      layout="topleft"
+		      mouse_opaque="false"
+		      name="close_btn"
+		      left_pad="1"
+		      top="0"
+		      width="50" />
+	
 		
-		<layout_stack
-     	follows="bottom|left|right"
-		height="23"
-		layout="topleft"
-		mouse_opaque="false"
-		name="bottom_bar_ls2"
-		left="4"
-		orientation="horizontal"
-		top="0"
-		width="313">
-		
-			<layout_panel
-			follows="bottom|left|right"
-			height="23"
-			layout="bottomleft"
-			left_pad="3"
-			mouse_opaque="false"
-			name="save_btn_lp"
-			top="0"
-		    auto_resize="true"
-			width="153">
-				<button
-		         follows="bottom|left|right"
-		         height="23"
-		         label="Save"
-		         layout="topleft"
-				 mouse_opaque="false"
-		         name="save_btn"
-		         left="1"
-		         top_pad="0"
-		         width="152"/>		
-			</layout_panel>
-			
-			<layout_panel
-			follows="bottom|left|right"
-			height="23"
-			layout="bottomleft"
-			left_pad="3"
-			mouse_opaque="false"
-			name="cancel_btn_lp"
-			top="0"
-		    auto_resize="true"
-			width="154">
-				<button
-		         follows="bottom|left|right"
-		         height="23"
-		         label="Cancel"
-		         layout="topleft"
-				 mouse_opaque="false"
-		         name="cancel_btn"
-		         left="1"
-		         top="0"
-		         width="153" />		
-			</layout_panel>		
-		</layout_stack>
-    </panel>
+	 
+	   <button
+	    follows="bottom|left|right"
+		image_hover_unselected="Toolbar_Middle_Over"
+		image_selected="Toolbar_Middle_Selected"
+		image_unselected="Toolbar_Middle_Off"
+	    height="25"
+	    label="Save"
+	    layout="topleft"
+	    mouse_opaque="false"
+	    name="save_btn"
+	    left="5"
+	    top="0"
+	    width="157"/>
+	   <button
+	    follows="bottom|right"
+		image_hover_unselected="Toolbar_Middle_Over"
+		image_selected="Toolbar_Middle_Selected"
+		image_unselected="Toolbar_Middle_Off"
+	    height="25"
+	    label="Cancel"
+	    layout="topleft"
+	    mouse_opaque="false"
+	    name="cancel_btn"
+	    left_pad="1"
+	    top="0"
+	    width="157" />
+</panel>
 </panel>

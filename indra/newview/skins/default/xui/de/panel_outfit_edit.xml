@@ -27,7 +27,7 @@
 		<layout_panel label="IM Steuerkonsole" name="outfit_wearables_panel">
 			<layout_stack name="filter_panels">
 				<layout_panel name="add_button_and_combobox">
-					<button label="Mehr hinzufügen" name="show_add_wearables_btn" tool_tip="Öffnen/Schließen"/>
+					<button name="show_add_wearables_btn" tool_tip="Öffnen/Schließen"/>
 				</layout_panel>
 				<layout_panel name="filter_panel">
 					<filter_editor label="Tragbare Inventarobjekte filtern" name="look_item_filter"/>
@@ -38,20 +38,6 @@
 			<button label="Objekt anziehen" name="plus_btn"/>
 		</layout_panel>
 	</layout_stack>
-	<panel name="no_add_wearables_button_bar">
-		<button name="shop_btn_1" tool_tip="Besuchen Sie den Marktplatz. Sie können auch einen Teil Ihres Outfits auswählen, und dann hier klicken, um ähnliche Artikel anzuzeigen."/>
-	</panel>
-	<panel name="add_wearables_button_bar">
-		<button name="shop_btn_2" tool_tip="Besuchen Sie den Marktplatz. Sie können auch einen Teil Ihres Outfits auswählen, und dann hier klicken, um ähnliche Artikel anzuzeigen."/>
-	</panel>
-	<panel name="save_revert_button_bar">
-		<layout_stack name="button_bar_ls">
-			<layout_panel name="save_btn_lp" width="61">
-				<button label="Speichern" name="save_btn" width="60" />
-			</layout_panel>
-			<layout_panel name="revert_btn_lp">
-				<button label="Änderungen rückgängig machen" name="revert_btn" tool_tip="Zur zuletzt gespeicherten Version zurückkehren"/>
-			</layout_panel>
-		</layout_stack>
-	</panel>
+				<button label="Speichern" name="save_btn"/>
+				<button label="Verwerfen" name="revert_btn" tool_tip="Zur zuletzt gespeicherten Version zurückkehren"/>
 </panel>

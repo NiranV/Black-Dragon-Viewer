@@ -27,6 +27,18 @@
       <menu_item_check.on_check
         control="NavBarShowParcelProperties" />
     </menu_item_check>
+    <menu_item_separator/>
+    <menu_item_check
+         label="Show Favorites Bar"
+         layout="topleft"
+         name="ShowNavbarFavoritesPanel">
+           <on_click
+             function="ToggleControl"
+             parameter="ShowNavbarFavoritesPanel" /> 
+             <on_check
+             function="CheckControl"
+             parameter="ShowNavbarFavoritesPanel" />
+    </menu_item_check>
     <menu_item_separator
      name="Separator" />
     <!-- Label of 'Landmark' item is changing in runtime, 

@@ -7,8 +7,8 @@
 
 	<!-- Default Args - these arguments will be replaced in all strings -->
 	<string name="SECOND_LIFE">Second Life</string>
-	<string name="APP_NAME">Second Life</string>
-	<string name="CAPITALIZED_APP_NAME">SECOND LIFE</string>
+	<string name="APP_NAME">Black Dragon</string>
+	<string name="CAPITALIZED_APP_NAME">BLACK DRAGON</string>
 	<string name="SECOND_LIFE_GRID">Second Life Grid</string>
 	<string name="SUPPORT_SITE">Second Life Support Portal</string>
 
@@ -33,6 +33,11 @@ SLURL: &lt;nolink&gt;[SLURL]&lt;/nolink&gt;
 [SERVER_VERSION]
 [SERVER_RELEASE_NOTES_URL]
 	</string>
+	<string name="AboutPositionRLVShowLoc">
+You are in [REGION]
+[SERVER_VERSION]
+[SERVER_RELEASE_NOTES_URL]
+	</string>
 	<!-- *NOTE: Do not translate text like GPU, Graphics Card, etc -
        Most PC users who know what these mean will be used to the English versions,
        and this info sometimes gets sent to support. -->
@@ -47,10 +52,11 @@ Graphics Card: [GRAPHICS_CARD]
 	<string name="AboutLibs">
 OpenGL Version: [OPENGL_VERSION]
 
+RestrainedLove API: [RLV_VERSION]
 libcurl Version: [LIBCURL_VERSION]
 J2C Decoder Version: [J2C_VERSION]
 Audio Driver Version: [AUDIO_DRIVER_VERSION]
-Qt Webkit Version: [QT_WEBKIT_VERSION]
+LLCEFLib/CEF Version: [LLCEFLIB_VERSION]
 Voice Server Version: [VOICE_VERSION]
 	</string>
 	<string name="AboutTraffic">Packets Lost: [PACKETS_LOST,number,0]/[PACKETS_IN,number,0] ([PACKETS_PCT,number,1]%)</string>
@@ -96,7 +102,10 @@ Voice Server Version: [VOICE_VERSION]
 	<string name="LoginFailed">Login failed.</string>
 	<string name="Quit">Quit</string>
 	<string name="create_account_url">http://join.secondlife.com/?sourceid=[sourceid]</string>
-
+	
+	<string name="AgniGridLabel">Second Life Main Grid (Agni)</string>
+	<string name="AditiGridLabel">Second Life Beta Test Grid (Aditi)</string>
+	
 	<string name="ViewerDownloadURL">http://secondlife.com/download</string>
 	<string name="LoginFailedViewerNotPermitted">
 The viewer you are using can no longer access Second Life. Please visit the following page to download a new viewer:
@@ -235,6 +244,7 @@ Please try logging in again in a minute.</string>
 	<string name="TooltipMustSingleDrop">Only a single item can be dragged here</string>
 	<string name="TooltipTooManyWearables">You can't wear a folder containing more than [AMOUNT] items.  You can change this limit in Advanced > Show Debug Settings > WearFolderLimit.</string>
 	<string name="TooltipPrice" value="L$[AMOUNT]: "/>
+	<string name="TooltipSLIcon">This links to a page on the official SecondLife.com or LindenLab.com domain.</string>
 
     <string name="TooltipOutboxDragToWorld">You can't rez items from the Marketplace Listings folder</string>
     <string name="TooltipOutboxWorn">You can't put items you are wearing in the Marketplace Listings folder</string>
@@ -274,6 +284,7 @@ Please try logging in again in a minute.</string>
 	<string name="TooltipMapUrl">Click to view this location on a map</string>
 	<string name="TooltipSLAPP">Click to run the secondlife:// command</string>
 	<string name="CurrentURL" value=" CurrentURL: [CurrentURL]" />
+	<string name="TooltipEmail">Click to compose an email</string>
 
 	<!-- text for SLURL labels -->
 	<string name="SLurlLabelTeleport">Teleport to</string>
@@ -2255,9 +2266,6 @@ For AI Character: Get the closest navigable point to the point provided.
 	<string name="GraphicsQualityMid">Mid</string>
 	<string name="GraphicsQualityHigh">High</string>
 
-	<!-- mouselook -->
-	<string name="LeaveMouselook">Press ESC to return to World View</string>
-
 	<!-- inventory -->
 	<string name="InventoryNoMatchingItems">Didn't find what you're looking for? Try [secondlife:///app/search/all/[SEARCH_TERM] Search].</string>
 	<string name="PlacesNoMatchingItems">Didn't find what you're looking for? Try [secondlife:///app/search/places/[SEARCH_TERM] Search].</string>
@@ -2299,6 +2307,7 @@ This feature is currently in Beta. Please add your name to this [http://goo.gl/f
         Drag folders to this area to list them for sale on the [[MARKETPLACE_DASHBOARD_URL] Marketplace].
 	</string>
 
+    <string name="Marketplace Validation No Error">No errors or warnings to report</string>
 	<string name="Marketplace Validation Log"></string>
 	<string name="Marketplace Validation Warning Stock">stock folder must be contained by a version folder</string>
 	<string name="Marketplace Validation Error Mixed Stock">: Error: all items in a stock folder must be no-copy and of the same type</string>
@@ -3554,6 +3563,9 @@ If you continue to receive this message, contact the [SUPPORT_SITE].
   <string name="inventory_item_offered-im">
     Inventory item offered
   </string>
+  <string name="inventory_item_offered_rlv">
+    Inventory item offered to [NAME]
+  </string>
   <string name="share_alert">
     Drag items from inventory here
   </string>
@@ -3991,22 +4003,34 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_HowTo_Label">How to</string>
   <string name="Command_Inventory_Label">Inventory</string>
   <string name="Command_Map_Label">Map</string>
+  <string name="Command_Machinima_Label">Machinima Sidebar</string>
   <string name="Command_Marketplace_Label">Marketplace</string>
   <string name="Command_MarketplaceListings_Label">Marketplace</string>
   <string name="Command_MiniMap_Label">Mini-map</string>
   <string name="Command_Move_Label">Walk / run / fly</string>
   <string name="Command_Outbox_Label">Merchant outbox</string>
   <string name="Command_People_Label">People</string>
+  <string name="Command_PF_Linksets_Label">Pathfinding Linksets</string>
+  <string name="Command_PF_Characters_Label">Pathfinding Characters</string>
   <string name="Command_Picks_Label">Picks</string>
   <string name="Command_Places_Label">Places</string>
   <string name="Command_Preferences_Label">Preferences</string>
   <string name="Command_Profile_Label">Profile</string>
+  <string name="Command_Script_Limits_Label">Scripts</string>
   <string name="Command_Search_Label">Search</string>
   <string name="Command_Snapshot_Label">Snapshot</string>
   <string name="Command_Speak_Label">Speak</string>
   <string name="Command_Twitter_Label">Twitter</string>
   <string name="Command_View_Label">Camera controls</string>
   <string name="Command_Voice_Label">Voice settings</string>
+  <string name="Command_Windlight_Label">Environment Editor</string>
+  <string name="Command_Sky_Label">Sky Editor</string>
+  <string name="Command_Water_Label">Water Editor</string>
+  <string name="Command_Spacer_Label"></string>
+  <string name="Command_Home_Label"></string>
+  <string name="Command_Back_Label"></string>
+  <string name="Command_Forward_Label"></string>
+  <string name="Command_Navbar_Label">Navigationbar</string>
 
   <string name="Command_AboutLand_Tooltip">Information about the land you're visiting</string>
   <string name="Command_Appearance_Tooltip">Change your avatar</string>
@@ -4021,6 +4045,7 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_Gestures_Tooltip">Gestures for your avatar</string>
   <string name="Command_HowTo_Tooltip">How to do common tasks</string>
   <string name="Command_Inventory_Tooltip">View and use your belongings</string>
+  <string name="Command_Machinima_Tooltip">Machinima Sidebar with all important display options</string>
   <string name="Command_Map_Tooltip">Map of the world</string>
   <string name="Command_Marketplace_Tooltip">Go shopping</string>
   <string name="Command_MarketplaceListings_Tooltip">Sell your creation</string>
@@ -4028,16 +4053,27 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_Move_Tooltip">Moving your avatar</string>
   <string name="Command_Outbox_Tooltip">Transfer items to your marketplace for sale</string>
   <string name="Command_People_Tooltip">Friends, groups, and nearby people</string>
+  <string name="Command_PF_Linksets_Tooltip">Manipulation of pathfinding linksets</string>
+  <string name="Command_PF_Characters_Tooltip">Manipulation of pathfinding characters</string>
   <string name="Command_Picks_Tooltip">Places to show as favorites in your profile</string>
   <string name="Command_Places_Tooltip">Places you've saved</string>
   <string name="Command_Preferences_Tooltip">Preferences</string>
   <string name="Command_Profile_Tooltip">Edit or view your profile</string>
   <string name="Command_Search_Tooltip">Find places, events, people</string>
+  <string name="Command_Script_Limits_Tooltip">Show the scripts running on your Avatar</string>
   <string name="Command_Snapshot_Tooltip">Take a picture</string>
   <string name="Command_Speak_Tooltip">Speak with people nearby using your microphone</string>
   <string name="Command_Twitter_Tooltip">Twitter</string>
   <string name="Command_View_Tooltip">Changing camera angle</string>
   <string name="Command_Voice_Tooltip">Volume controls for calls and people near you in world</string>
+  <string name="Command_Windlight_Tooltip">Set your preferred sky and water preset</string>
+  <string name="Command_Sky_Tooltip">Edit a sky preset or create a new one</string>
+  <string name="Command_Water_Tooltip">Edit a water preset or create a new one</string>
+  <string name="Command_Spacer_Tooltip">This is a spacer, use it to put a space between buttons and organize them into categories</string>
+  <string name="Command_Home_Tooltip">Teleport to your place set as home</string>
+  <string name="Command_Back_Tooltip">Teleport back to your previous location</string>
+  <string name="Command_Forward_Tooltip">Teleport to your next location in teleport history</string>
+  <string name="Command_Navbar_Tooltip">Show the Navigationbar and your Favorites</string>
 
   <string name="Toolbar_Bottom_Tooltip">currently in your bottom toolbar</string>
   <string name="Toolbar_Left_Tooltip"  >currently in your left toolbar</string>
@@ -4121,4 +4157,5 @@ Try enclosing path to the editor with double quotes.
   <string name="Default">Default</string>
   <string name="none_paren_cap">(None)</string>
   <string name="no_limit">No Limit</string>
-  </strings>
+
+</strings>

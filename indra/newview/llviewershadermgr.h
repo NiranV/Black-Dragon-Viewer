@@ -59,6 +59,8 @@ public:
 	BOOL loadShadersInterface();
 	BOOL loadShadersWindLight();
 	BOOL loadTransformShaders();
+	void unloadExodusPostShaders();
+    BOOL loadExodusPostShaders();
 
 	std::vector<S32> mVertexShaderLevel;
 	S32	mMaxAvatarShaderLevel;
@@ -282,6 +284,17 @@ extern LLGLSLShader			gWLCloudProgram;
 extern LLGLSLShader			gPostColorFilterProgram;
 extern LLGLSLShader			gPostNightVisionProgram;
 
+//Exodus post processing shaders
+extern LLGLSLShader         gColorGradePost;
+extern LLGLSLShader         gLinearToneMapping;
+extern LLGLSLShader         gReinhardToneMapping;
+extern LLGLSLShader         gFilmicToneMapping;
+extern LLGLSLShader         gVignettePost;
+extern LLGLSLShader         gColorGradePostLegacy;
+extern LLGLSLShader         gFilmicToneMappingAdv;
+
+extern LLGLSLShader         gLensFlare;
+extern LLGLSLShader         gSpecialPost;
 
 // Deferred rendering shaders
 extern LLGLSLShader			gDeferredImpostorProgram;
@@ -314,6 +327,7 @@ extern LLGLSLShader			gDeferredShadowAlphaMaskProgram;
 extern LLGLSLShader			gDeferredPostProgram;
 extern LLGLSLShader			gDeferredCoFProgram;
 extern LLGLSLShader			gDeferredDoFCombineProgram;
+extern LLGLSLShader			gVolumetricLightProgram;
 extern LLGLSLShader			gFXAAProgram;
 extern LLGLSLShader			gDeferredPostNoDoFProgram;
 extern LLGLSLShader			gDeferredPostGammaCorrectProgram;
@@ -336,6 +350,12 @@ extern LLGLSLShader			gDeferredFullbrightShinyProgram;
 extern LLGLSLShader			gDeferredSkinnedFullbrightShinyProgram;
 extern LLGLSLShader			gDeferredSkinnedFullbrightProgram;
 extern LLGLSLShader			gNormalMapGenProgram;
+extern LLGLSLShader			gVelocityProgram;
+extern LLGLSLShader			gVelocityAlphaProgram;
+extern LLGLSLShader			gAvatarVelocityProgram;
+extern LLGLSLShader			gSkinnedVelocityProgram;
+extern LLGLSLShader			gSkinnedVelocityAlphaProgram;
+extern LLGLSLShader			gMotionBlurProgram;
 
 // Deferred materials shaders
 extern LLGLSLShader			gDeferredMaterialProgram[LLMaterial::SHADER_COUNT*2];

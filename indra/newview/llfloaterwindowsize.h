@@ -32,18 +32,25 @@
 /// Class LLFloaterWindowSize
 ///----------------------------------------------------------------------------
 class LLFloaterWindowSize
-	:	public LLFloater
+:   public LLFloater
 {
 	friend class LLFloaterReg;
 private:
-	LLFloaterWindowSize(const LLSD& key);
-	virtual ~LLFloaterWindowSize();
+    LLFloaterWindowSize(const LLSD& key);
+    virtual ~LLFloaterWindowSize();
 
 public:
-	/*virtual*/ BOOL postBuild();
-	void initWindowSizeControls();
-	void onClickSet();
-	void onClickCancel();
+    /*virtual*/ BOOL postBuild();
+    void initWindowSizeControls();
+    void onClickSet();
+    void onClickCancel();
+
+	//Template button action
+	void onClick600();
+	void onClick768();
+	void onClick720();
+	void onClick900();
+	void onClick960();
 };
 
 #endif

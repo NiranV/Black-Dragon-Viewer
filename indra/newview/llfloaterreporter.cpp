@@ -35,6 +35,7 @@
 #include "llassetstorage.h"
 #include "llavatarnamecache.h"
 #include "llcachename.h"
+#include "llcheckboxctrl.h"
 #include "llfontgl.h"
 #include "llimagej2c.h"
 #include "llinventory.h"
@@ -76,6 +77,8 @@
 #include "llversioninfo.h"
 #include "lluictrlfactory.h"
 #include "llviewernetwork.h"
+//BD
+#include "llviewercontrol.h"
 
 #include "llassetuploadresponders.h"
 #include "llagentui.h"
@@ -107,14 +110,6 @@ LLFloaterReporter::LLFloaterReporter(const LLSD& key)
 {
 }
 
-// static
-void LLFloaterReporter::processRegionInfo(LLMessageSystem* msg)
-{
-	if ( LLFloaterReg::instanceVisible("reporter") )
-	{
-		LLNotificationsUtil::add("HelpReportAbuseEmailLL");
-	};
-}
 // virtual
 BOOL LLFloaterReporter::postBuild()
 {
@@ -145,19 +140,10 @@ BOOL LLFloaterReporter::postBuild()
 	mOwnerName = LLStringUtil::null;
 
 	getChild<LLUICtrl>("summary_edit")->setFocus(TRUE);
+	getChild<LLCheckBoxCtrl>("screen_check")->set(TRUE);
 
 	mDefaultSummary = getChild<LLUICtrl>("details_edit")->getValue().asString();
 
-	// send a message and ask for information about this region - 
-	// result comes back in processRegionInfo(..)
-	LLMessageSystem* msg = gMessageSystem;
-	msg->newMessage("RequestRegionInfo");
-	msg->nextBlock("AgentData");
-	msg->addUUID("AgentID", gAgent.getID());
-	msg->addUUID("SessionID", gAgent.getSessionID());
-	gAgent.sendReliableMessage();
-	
-	
 	// abuser name is selected from a list
 	LLUICtrl* le = getChild<LLUICtrl>("abuser_name_edit");
 	le->setEnabled( false );
@@ -280,6 +266,14 @@ void LLFloaterReporter::getObjectInfo(const LLUUID& object_id)
 			if (regionp)
 			{
 				getChild<LLUICtrl>("sim_field")->setValue(regionp->getName());
+// [RLVa:KB] - Checked: 2009-07-04 (RLVa-1.0.0a)
+/*
+				if ( (rlv_handler_t::isEnabled()) && (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)) )
+				{
+					childSetText("sim_field", RlvStrings::getString(RLV_STRING_HIDDEN_REGION));
+				}
+*/
+// [/RLVa:KB]
 				LLVector3d global_pos;
 				global_pos.setVec(objectp->getPositionRegion());
 				setPosBox(global_pos);

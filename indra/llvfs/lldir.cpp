@@ -374,7 +374,7 @@ std::string LLDir::buildSLOSCacheDir() const
 	}
 	else
 	{
-		res = add(getOSCacheDir(), "SecondLife");
+		res = add(getOSCacheDir(), "Black Dragon");
 	}
 	return res;
 }

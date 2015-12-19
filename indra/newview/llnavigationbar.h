@@ -33,6 +33,7 @@
 class LLLocationInputCtrl;
 class LLMenuGL;
 class LLSearchEditor;
+//BD - Search Combo Box
 class LLSearchComboBox;
 
 /**
@@ -101,12 +102,18 @@ public:
 	int getDefNavBarHeight();
 	int getDefFavBarHeight();
 	
+// [RLVa:KB] - Checked: 2014-03-23 (RLVa-1.4.10)
+	void refreshLocationCtrl();
+// [/RLVa:KB]
 private:
 	// the distance between navigation panel and favorites panel in pixels
 	const static S32 FAVBAR_TOP_PADDING = 10;
 
 	void rebuildTeleportHistoryMenu();
 	void showTeleportHistoryMenu(LLUICtrl* btn_ctrl);
+//	//BD - Search Combo Box
+	void onSearchCommit();
+	void fillSearchComboBox();
 	void invokeSearch(std::string search_text);
 	// callbacks
 	void onTeleportHistoryMenuItemClicked(const LLSD& userdata);
@@ -139,6 +146,8 @@ private:
 	LLPullButton*				mBtnBack;
 	LLPullButton*				mBtnForward;
 	LLButton*					mBtnHome;
+	//	//BD - Search Combo Box
+	LLSearchComboBox			*mSearchComboBox;
 	LLLocationInputCtrl*		mCmbLocation;
 	LLRect						mDefaultNbRect;
 	LLRect						mDefaultFpRect;

@@ -130,6 +130,7 @@ void LLPanelSnapshotLocal::updateControls(const LLSD& info)
 void LLPanelSnapshotLocal::onFormatComboCommit(LLUICtrl* ctrl)
 {
 	// will call updateControls()
+	gSavedSettings.setS32("SnapshotFormat", getImageFormat());
 	LLFloaterSnapshot::getInstance()->notify(LLSD().with("image-format-change", true));
 }
 
@@ -154,11 +155,10 @@ void LLPanelSnapshotLocal::onSaveFlyoutCommit(LLUICtrl* ctrl)
 	LLFloaterSnapshot* floater = LLFloaterSnapshot::getInstance();
 
 	floater->notify(LLSD().with("set-working", true));
-	BOOL saved = LLFloaterSnapshot::saveLocal();
+	BOOL saved = LLFloaterSnapshot::saveTexture(true);
 	if (saved)
 	{
 		LLFloaterSnapshot::postSave();
-		goBack();
 		floater->notify(LLSD().with("set-finished", LLSD().with("ok", true).with("msg", "local")));
 	}
 	else

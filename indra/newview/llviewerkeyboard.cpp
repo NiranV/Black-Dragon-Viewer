@@ -42,6 +42,10 @@
 #include "llvoavatarself.h"
 #include "llfloatercamera.h"
 #include "llinitparam.h"
+// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
+#include "rlvhandler.h"
+// [/RLVa:KB]
+#include "llsdserialize.h"
 
 //
 // Constants
@@ -89,14 +93,18 @@ void agent_push_down( EKeystate s )
 
 static void agent_check_temporary_run(LLAgent::EDoubleTapRunMode mode)
 {
-	if (gAgent.mDoubleTapRunMode == mode &&
-		gAgent.getRunning() &&
-		!gAgent.getAlwaysRun())
-	{
-		// Turn off temporary running.
-		gAgent.clearRunning();
-		gAgent.sendWalkRun(gAgent.getRunning());
-	}
+// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
+	if ( (gAgent.mDoubleTapRunMode == mode) && (gAgent.getTempRun()) )
+		gAgent.clearTempRun();
+// [/RLVa:KB]
+//	if (gAgent.mDoubleTapRunMode == mode &&
+//		gAgent.getRunning() &&
+//		!gAgent.getAlwaysRun())
+//	{
+//		// Turn off temporary running.
+//		gAgent.clearRunning();
+//		gAgent.sendWalkRun(gAgent.getRunning());
+//	}
 }
 
 static void agent_handle_doubletap_run(EKeystate s, LLAgent::EDoubleTapRunMode mode)
@@ -116,8 +124,11 @@ static void agent_handle_doubletap_run(EKeystate s, LLAgent::EDoubleTapRunMode m
 		{
 			// Same walk-key was pushed again quickly; this is a
 			// double-tap so engage temporary running.
-			gAgent.setRunning();
-			gAgent.sendWalkRun(gAgent.getRunning());
+//			gAgent.setRunning();
+//			gAgent.sendWalkRun(gAgent.getRunning());
+// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
+			gAgent.setTempRun();
+// [/RLVa:KB]
 		}
 
 		// Pressing any walk-key resets the double-tap timer
@@ -729,14 +740,17 @@ BOOL LLViewerKeyboard::handleKey(KEY translated_key,  MASK translated_mask, BOOL
 	return mKeyHandledByUI[translated_key];
 }
 
+BOOL LLViewerKeyboard::handleKeyUp(KEY translated_key, MASK translated_mask)
+{
+	return gViewerWindow->handleKeyUp(translated_key, translated_mask);
+}
 
-
-BOOL LLViewerKeyboard::bindKey(const S32 mode, const KEY key, const MASK mask, const std::string& function_name)
+BOOL LLViewerKeyboard::bindKey(const S32 mode, const KEY key, const MASK mask, const std::string& function_name, bool exportsettings)
 {
 	S32 index;
 	typedef boost::function<void(EKeystate)> function_t;
 	function_t function = NULL;
-	std::string name;
+	LLSD binds;
 
 	// Allow remapping of F2-F12
 	if (function_name[0] == 'F')
@@ -794,6 +808,50 @@ BOOL LLViewerKeyboard::bindKey(const S32 mode, const KEY key, const MASK mask, c
 	mBindings[mode][index].mMask = mask;
 	mBindings[mode][index].mFunction = function;
 
+	if(exportsettings)
+	{
+		binds["key"] = gKeyboard->stringFromKey(key);
+		binds["mode"] = mode;
+		binds["function"] = function_name;
+
+		if(mask == (MASK_NONE))
+			binds["mask"] = "NONE";
+		else if(mask == (MASK_CONTROL))
+			binds["mask"] = "CTL";
+		else if(mask == (MASK_ALT))
+			binds["mask"] = "ALT";
+		else if(mask == (MASK_SHIFT))
+			binds["mask"] = "SHIFT";
+		else if(mask == (MASK_ALT | MASK_CONTROL))
+			binds["mask"] = "CTL_ALT";
+		else if(mask == (MASK_SHIFT | MASK_ALT))
+			binds["mask"] = "ALT_SHIFT";
+		else if(mask == (MASK_SHIFT | MASK_CONTROL))
+			binds["mask"] = "CTL_SHIFT";
+		else if(mask == (MASK_SHIFT | MASK_CONTROL | MASK_ALT))
+			binds["mask"] = "CTL_ALT_SHIFT";
+
+		std::string mode_string;
+
+		if(mode == 0)
+			mode_string = "first_person_";
+		else if(mode == 1)
+			mode_string = "third_person_";
+		else if(mode == 2)
+			mode_string = "edit_";
+		else if(mode == 3)
+			mode_string = "sitting_";
+		else if(mode == 4)
+			mode_string = "edit_avatar_";
+
+		std::string debug_name = mode_string;
+		debug_name += function_name;
+		if(!gControlSettings.controlExists(debug_name))
+			gControlSettings.declareLLSD(debug_name, binds, function_name);
+		gControlSettings.setLLSD(debug_name, binds);
+		gControlSettings.saveToFile(gSavedSettings.getString("ControlSettingsFile"), FALSE);
+	}
+
 	if (index == mBindingCount[mode])
 		mBindingCount[mode]++;
 
@@ -819,7 +877,7 @@ LLViewerKeyboard::Keys::Keys()
 	edit_avatar("edit_avatar", KeyMode(MODE_EDIT_AVATAR))
 {}
 
-S32 LLViewerKeyboard::loadBindingsXML(const std::string& filename)
+S32 LLViewerKeyboard::loadBindingsXML(const std::string& filename, bool exportsettings)
 {
 	S32 binding_count = 0;
 	Keys keys;
@@ -828,16 +886,16 @@ S32 LLViewerKeyboard::loadBindingsXML(const std::string& filename)
 	if (parser.readXUI(filename, keys) 
 		&& keys.validateBlock())
 	{
-		binding_count += loadBindingMode(keys.first_person);
-		binding_count += loadBindingMode(keys.third_person);
-		binding_count += loadBindingMode(keys.edit);
-		binding_count += loadBindingMode(keys.sitting);
-		binding_count += loadBindingMode(keys.edit_avatar);
+		binding_count += loadBindingMode(keys.first_person, exportsettings);
+		binding_count += loadBindingMode(keys.third_person, exportsettings);
+		binding_count += loadBindingMode(keys.edit, exportsettings);
+		binding_count += loadBindingMode(keys.sitting, exportsettings);
+		binding_count += loadBindingMode(keys.edit_avatar, exportsettings);
 	}
 	return binding_count;
 }
 
-S32 LLViewerKeyboard::loadBindingMode(const LLViewerKeyboard::KeyMode& keymode)
+S32 LLViewerKeyboard::loadBindingMode(const LLViewerKeyboard::KeyMode& keymode, bool exportsettings)
 {
 	S32 binding_count = 0;
 	for (LLInitParam::ParamIterator<KeyBinding>::const_iterator it = keymode.bindings.begin(), 
@@ -849,11 +907,48 @@ S32 LLViewerKeyboard::loadBindingMode(const LLViewerKeyboard::KeyMode& keymode)
 		MASK mask;
 		LLKeyboard::keyFromString(it->key, &key);
 		LLKeyboard::maskFromString(it->mask, &mask);
-		bindKey(keymode.mode, key, mask, it->command);
+		bindKey(keymode.mode, key, mask, it->command, exportsettings);
 		binding_count++;
 	}
 
 	return binding_count;
+}
+
+S32 LLViewerKeyboard::loadBindingsSettings(const std::string& filename)
+{
+	/*S32 binding_count = 0;
+	LLSD settings;
+	llifstream infile;
+	infile.open(filename);
+	if(!infile.is_open())
+	{
+		LL_WARNS("Settings") << "Cannot find file " << filename << " to load." << LL_ENDL;
+		return 0;
+	}
+
+	if (LLSDParser::PARSE_FAILURE == LLSDSerialize::fromXML(settings, infile))
+	{
+		infile.close();
+		LL_WARNS("Settings") << "Unable to parse LLSD control file " << filename << ". Trying Legacy Method." << LL_ENDL;
+	}
+	
+	for (LLControlGroup::key_iter ki(LLControlGroup::beginKeys()), kend(LLControlGroup::endKeys());
+		 ki != kend; ++ki)
+	{
+
+			//KEY key;
+			//MASK mask;
+			//LLKeyboard::keyFromString(value_map["key"], &key);
+			//LLKeyboard::maskFromString(value_map["mask"], &mask);
+			//bindKey(value_map["mode"], key, mask, value_map["function"]);
+			LL_INFOS() << *ki << LL_ENDL;
+			//LL_INFOS() << "Bound: " << key << " + " << mask << " to " << function << " in mode " << mode << LL_ENDL;
+		binding_count++;
+	}
+
+	//LL_DEBUGS("Controls") << "Loaded " << binding_count << " settings from " << filename << LL_ENDL;
+	return binding_count;*/
+	return 1;
 }
 
 S32 LLViewerKeyboard::loadBindings(const std::string& filename)

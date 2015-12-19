@@ -75,7 +75,7 @@ static std::string title_string3("Pkt Bnd");
 static std::string title_string4("  W x H (Dis) Mem");
 
 static S32 title_x1 = 0;
-static S32 title_x2 = 460;
+static S32 title_x2 = 450;
 static S32 title_x3 = title_x2 + 40;
 static S32 title_x4 = title_x3 + 46;
 static S32 texture_bar_height = 8;
@@ -196,7 +196,7 @@ void LLTextureBar::draw()
 	S32 bottom = top + 6;
 	LLColor4 clr;
 
-	LLGLSUIDefault gls_ui;
+	//LLGLSUIDefault gls_ui;
 	
 	// Name, pixel_area, requested pixel area, decode priority
 	std::string uuid_str;
@@ -268,7 +268,7 @@ void LLTextureBar::draw()
 
 	// Draw the progress bar.
 	S32 bar_width = 100;
-	S32 bar_left = 260;
+	S32 bar_left = 295;
 	left = bar_left;
 	right = left + bar_width;
 
@@ -340,7 +340,7 @@ void LLTextureBar::draw()
 
 	
 	{
-		LLGLSUIDefault gls_ui;
+		//LLGLSUIDefault gls_ui;
 		// draw the packet data
 // 		{
 // 			std::string num_str = llformat("%3d/%3d", mImagep->mLastPacket+1, mImagep->mPackets);

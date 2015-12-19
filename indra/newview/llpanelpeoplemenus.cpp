@@ -41,6 +41,10 @@
 #include "llviewermenu.h"			// for gMenuHolder
 #include "llconversationmodel.h"
 #include "llviewerobjectlist.h"
+// [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
+#include "rlvactions.h"
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 namespace LLPanelPeopleMenus
 {
@@ -77,6 +81,9 @@ LLContextMenu* PeopleContextMenu::createMenu()
 		registrar.add("Avatar.InviteToGroup",	boost::bind(&LLAvatarActions::inviteToGroup,			id));
 		registrar.add("Avatar.TeleportRequest",	boost::bind(&PeopleContextMenu::requestTeleport,		this));
 		registrar.add("Avatar.Calllog",			boost::bind(&LLAvatarActions::viewChatHistory,			id));
+
+		registrar.add("Avatar.GetUUID",			boost::bind(&LLAvatarActions::copyUUIDToClipboard,		id));
+		registrar.add("Avatar.GetSLURL",		boost::bind(&LLAvatarActions::copySLURLToClipboard,		id));
 
 		enable_registrar.add("Avatar.EnableItem", boost::bind(&PeopleContextMenu::enableContextMenuItem, this, _2));
 		enable_registrar.add("Avatar.CheckItem",  boost::bind(&PeopleContextMenu::checkContextMenuItem,	this, _2));
@@ -139,6 +146,9 @@ void PeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("share"));
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("block_unblock"));
+		items.push_back(std::string("copy_avatar_separator"));
+		items.push_back(std::string("CopyUUID"));
+		items.push_back(std::string("CopySLURL"));
 	}
 
     hide_context_entries(menu, items, disabled_items);
@@ -187,7 +197,10 @@ bool PeopleContextMenu::enableContextMenuItem(const LLSD& userdata)
 			}
 		}
 
-		return result;
+// [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
+		return result && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES));
+// [/RLVa:KB]
+//		return result;
 	}
 	else if (item == std::string("can_delete"))
 	{
@@ -210,7 +223,10 @@ bool PeopleContextMenu::enableContextMenuItem(const LLSD& userdata)
 			}
 		}
 
-		return result;
+// [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
+		return result && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES));
+// [/RLVa:KB]
+//		return result;
 	}
 	else if (item == std::string("can_call"))
 	{
@@ -262,14 +278,26 @@ void PeopleContextMenu::requestTeleport()
 {
 	// boost::bind cannot recognize overloaded method LLAvatarActions::teleportRequest(),
 	// so we have to use a wrapper.
+// [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
+	bool fRlvCanShowName = (!m_fRlvCheck) || (!RlvActions::isRlvEnabled()) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES));
+	RlvActions::setShowName(RlvActions::SNC_TELEPORTREQUEST, fRlvCanShowName);
 	LLAvatarActions::teleportRequest(mUUIDs.front());
+	RlvActions::setShowName(RlvActions::SNC_TELEPORTREQUEST, true);
+// [/RLVa:KB]
+//	LLAvatarActions::teleportRequest(mUUIDs.front());
 }
 
 void PeopleContextMenu::offerTeleport()
 {
 	// boost::bind cannot recognize overloaded method LLAvatarActions::offerTeleport(),
 	// so we have to use a wrapper.
+// [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
+	bool fRlvCanShowName = (!m_fRlvCheck) || (!RlvActions::isRlvEnabled()) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES));
+	RlvActions::setShowName(RlvActions::SNC_TELEPORTOFFER, fRlvCanShowName);
 	LLAvatarActions::offerTeleport(mUUIDs);
+	RlvActions::setShowName(RlvActions::SNC_TELEPORTOFFER, true);
+// [/RLVa:KB]
+//	LLAvatarActions::offerTeleport(mUUIDs);
 }
 
 void PeopleContextMenu::startConference()
@@ -292,7 +320,25 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
     menuentry_vec_t items;
     menuentry_vec_t disabled_items;
 	
-	if (flags & ITEM_IN_MULTI_SELECTION)
+// [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
+	if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))
+	{
+		if (flags & ITEM_IN_MULTI_SELECTION)
+		{
+			items.push_back(std::string("offer_teleport"));
+		}
+		else 
+		{
+			items.push_back(std::string("offer_teleport"));
+			items.push_back(std::string("request_teleport"));
+			items.push_back(std::string("separator_invite_to_group"));
+			items.push_back(std::string("zoom_in"));
+			items.push_back(std::string("block_unblock"));
+		}
+	}
+	else if (flags & ITEM_IN_MULTI_SELECTION)
+// [/RLVa:KB]
+//	if (flags & ITEM_IN_MULTI_SELECTION)
 	{
 		items.push_back(std::string("add_friends"));
 		items.push_back(std::string("remove_friends"));
@@ -320,6 +366,9 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("share"));
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("block_unblock"));
+		items.push_back(std::string("copy_avatar_separator"));
+		items.push_back(std::string("CopyUUID"));
+		items.push_back(std::string("CopySLURL"));
 	}
 
     hide_context_entries(menu, items, disabled_items);

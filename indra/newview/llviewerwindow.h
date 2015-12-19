@@ -134,7 +134,7 @@ private:
 
 };
 
-static const U32 MAX_SNAPSHOT_IMAGE_SIZE = 6 * 1024; // max snapshot image size 6144 * 6144
+static const U32 MAX_SNAPSHOT_IMAGE_SIZE = 16 * 1024; // max snapshot image size 6144 * 6144
 
 class LLViewerWindow : public LLWindowCallbacks
 {
@@ -274,7 +274,6 @@ public:
 	LLVector3		mouseDirectionGlobal(const S32 x, const S32 y) const;
 	LLVector3		mouseDirectionCamera(const S32 x, const S32 y) const;
 	LLVector3       mousePointHUD(const S32 x, const S32 y) const;
-		
 
 	// Is window of our application frontmost?
 	BOOL			getActive() const			{ return mActive; }
@@ -314,7 +313,8 @@ public:
 	LLView*			getHintHolder() { return mHintHolder.get(); }
 	LLView*			getLoginPanelHolder() { return mLoginPanelHolder.get(); }
 	BOOL			handleKey(KEY key, MASK mask);
-	void			handleScrollWheel	(S32 clicks);
+	BOOL			handleKeyUp(KEY key, MASK mask);
+	void			handleScrollWheel(S32 clicks);
 
 	// add and remove views from "popup" layer
 	void			addPopup(LLView* popup);
@@ -362,12 +362,12 @@ public:
 	void			performPick();
 	void			returnEmptyPicks();
 
-	void			pickAsync(	S32 x,
-								S32 y_from_bot,
-								MASK mask,
-								void (*callback)(const LLPickInfo& pick_info),
-								BOOL pick_transparent = FALSE,
-								BOOL pick_unselectable = FALSE);
+	void			pickAsync(S32 x,
+					S32 y_from_bot,
+					MASK mask,
+					void(*callback)(const LLPickInfo& pick_info),
+					BOOL pick_transparent = FALSE,
+					BOOL pick_unselectable = FALSE);
 	LLPickInfo		pickImmediate(S32 x, S32 y, BOOL pick_transparent, BOOL pick_particle = FALSE);
 	LLHUDIcon* cursorIntersectIcon(S32 mouse_x, S32 mouse_y, F32 depth,
 										   LLVector4a* intersection);
@@ -401,6 +401,12 @@ public:
 	// Prints window implementation details
 	void			dumpState();
 
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Added: Catznip-2.1.1a
+	bool			canFullscreenWindow();
+	bool			getFullscreenWindow();
+	void			setFullscreenWindow(BOOL fFullscreen);
+// [/SL:KB]
+
 	// handle shutting down GL and bringing it back up
 	void			requestResolutionUpdate();
 	void			checkSettings();
@@ -412,12 +418,13 @@ public:
 	void			calcDisplayScale();
 	static LLRect 	calcScaledRect(const LLRect & rect, const LLVector2& display_scale);
 
+	LLWindow*		mWindow;						// graphical window object
+
 private:
 	bool                    shouldShowToolTipFor(LLMouseHandler *mh);
 
 	void			switchToolByMask(MASK mask);
 	void			destroyWindow();
-	void			drawMouselookInstructions();
 	void			stopGL(BOOL save_state = TRUE);
 	void			restoreGL(const std::string& progress_message = LLStringUtil::null);
 	void			initFonts(F32 zoom_factor = 1.f);
@@ -426,7 +433,7 @@ private:
 	LLRect			getChatConsoleRect(); // Get optimal cosole rect.
 
 private:
-	LLWindow*		mWindow;						// graphical window object
+
 	bool			mActive;
 	bool			mUIVisible;
 

@@ -35,15 +35,15 @@
 #include "llcommandhandler.h"
 #include "llfirstuse.h"
 #include "llviewercontrol.h"
-#include "llfloaterbuycurrency.h"
-#include "llbuycurrencyhtml.h"
 #include "llpanelnearbymedia.h"
 #include "llpanelpresetspulldown.h"
 #include "llpanelvolumepulldown.h"
 #include "llfloaterregioninfo.h"
 #include "llfloaterscriptdebug.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llhints.h"
 #include "llhudicon.h"
+#include "lliconctrl.h"
 #include "llnavigationbar.h"
 #include "llkeyboard.h"
 #include "lllineeditor.h"
@@ -60,7 +60,9 @@
 #include "llvoavatarself.h"
 #include "llresmgr.h"
 #include "llworld.h"
+#include "llsidepanelinventory.h"
 #include "llstatgraph.h"
+#include "lltoolbarview.h"
 #include "llviewermedia.h"
 #include "llviewermenu.h"	// for gMenuBarView
 #include "llviewerparcelmgr.h"
@@ -85,7 +87,8 @@
 // system includes
 #include <iomanip>
 
-
+// Black Dragon
+#include "bdpaneldrawdistance.h"
 //
 // Globals
 //
@@ -108,20 +111,14 @@ LLStatusBar::LLStatusBar(const LLRect& rect)
 	mTextTime(NULL),
 	mSGBandwidth(NULL),
 	mSGPacketLoss(NULL),
-	mBtnStats(NULL),
 	mBtnVolume(NULL),
-	mBoxBalance(NULL),
-	mBalance(0),
-	mHealth(100),
-	mSquareMetersCredit(0),
-	mSquareMetersCommitted(0)
+	mHealth(100)
 {
 	setRect(rect);
 	
 	// status bar can possible overlay menus?
 	setMouseOpaque(FALSE);
 
-	mBalanceTimer = new LLFrameTimer();
 	mHealthTimer = new LLFrameTimer();
 
 	buildFromFile("panel_status_bar.xml");
@@ -129,9 +126,6 @@ LLStatusBar::LLStatusBar(const LLRect& rect)
 
 LLStatusBar::~LLStatusBar()
 {
-	delete mBalanceTimer;
-	mBalanceTimer = NULL;
-
 	delete mHealthTimer;
 	mHealthTimer = NULL;
 
@@ -160,16 +154,8 @@ BOOL LLStatusBar::postBuild()
 	gMenuBarView->setRightMouseDownCallback(boost::bind(&show_navbar_context_menu, _1, _2, _3));
 
 	mTextTime = getChild<LLTextBox>("TimeText" );
-	
-	getChild<LLUICtrl>("buyL")->setCommitCallback(
-		boost::bind(&LLStatusBar::onClickBuyCurrency, this));
-
-	getChild<LLUICtrl>("goShop")->setCommitCallback(boost::bind(&LLWeb::loadURLExternal, gSavedSettings.getString("MarketplaceURL")));
-
-	mBoxBalance = getChild<LLTextBox>("balance");
-	mBoxBalance->setClickedCallback( &LLStatusBar::onClickBalance, this );
-	
-	mBtnStats = getChildView("stat_btn");
+//	//BD - Framerate counter in statusbar
+	mFPSText = getChild<LLTextBox>("FPSText");
 
 	mIconPresets = getChild<LLIconCtrl>( "presets_icon" );
 	mIconPresets->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterPresets, this));
@@ -182,7 +168,9 @@ BOOL LLStatusBar::postBuild()
 	mMediaToggle->setClickedCallback( &LLStatusBar::onClickMediaToggle, this );
 	mMediaToggle->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterNearbyMedia, this));
 
-	LLHints::registerHintTarget("linden_balance", getChild<LLView>("balance_bg")->getHandle());
+//	//BD - Draw Distance mouse-over slider
+	mDrawDistance = getChild<LLIconCtrl>("draw_distance_icon");
+	mDrawDistance->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterDrawDistance, this));
 
 	gSavedSettings.getControl("MuteAudio")->getSignal()->connect(boost::bind(&LLStatusBar::onVolumeChanged, this, _2));
 
@@ -190,7 +178,7 @@ BOOL LLStatusBar::postBuild()
 	S32 x = getRect().getWidth() - 2;
 	S32 y = 0;
 	LLRect r;
-	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT-1, x, y+1);
+	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+27, x, y+27);
 	LLStatGraph::Params sgp;
 	sgp.name("BandwidthGraph");
 	sgp.rect(r);
@@ -204,7 +192,7 @@ BOOL LLStatusBar::postBuild()
 	addChild(mSGBandwidth);
 	x -= SIM_STAT_WIDTH + 2;
 
-	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT-1, x, y+1);
+	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+27, x, y+27);
 	//these don't seem to like being reused
 	LLStatGraph::Params pgp;
 	pgp.name("PacketLossPercent");
@@ -242,7 +230,11 @@ BOOL LLStatusBar::postBuild()
 	mPanelNearByMedia->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
 	mPanelNearByMedia->setVisible(FALSE);
 
-	mScriptOut = getChildView("scriptout");
+//	//BD - Draw Distance mouse-over slider
+	mPanelDrawDistance = new BDPanelDrawDistance();
+	addChild(mPanelDrawDistance);
+	mPanelDrawDistance->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
+	mPanelDrawDistance->setVisible(FALSE);
 
 	return TRUE;
 }
@@ -263,6 +255,10 @@ void LLStatusBar::refresh()
 		//mSGBandwidth->setThreshold(1, bwtotal);
 		//mSGBandwidth->setThreshold(2, bwtotal);
 	}
+
+//	//BD - Framerate counter in statusbar
+	LLTrace::PeriodicRecording& frame_recording = LLTrace::get_frame_recording();
+	mFPSText->setValue(frame_recording.getPrevRecording(1).getPerSec(LLStatViewer::FPS));
 	
 	// update clock every 10 seconds
 	if(mClockUpdateTimer.getElapsedTimeF32() > 10.f)
@@ -297,7 +293,6 @@ void LLStatusBar::refresh()
 
 	mSGBandwidth->setVisible(net_stats_visible);
 	mSGPacketLoss->setVisible(net_stats_visible);
-	mBtnStats->setEnabled(net_stats_visible);
 
 	// update the master volume button state
 	bool mute_audio = LLAppViewer::instance()->getMasterSystemAudioMute();
@@ -317,82 +312,11 @@ void LLStatusBar::refresh()
 
 void LLStatusBar::setVisibleForMouselook(bool visible)
 {
-	mTextTime->setVisible(visible);
-	getChild<LLUICtrl>("balance_bg")->setVisible(visible);
-	mBoxBalance->setVisible(visible);
-	mBtnVolume->setVisible(visible);
-	mMediaToggle->setVisible(visible);
-	mSGBandwidth->setVisible(visible);
-	mSGPacketLoss->setVisible(visible);
-	setBackgroundVisible(visible);
-}
-
-void LLStatusBar::debitBalance(S32 debit)
-{
-	setBalance(getBalance() - debit);
-}
-
-void LLStatusBar::creditBalance(S32 credit)
-{
-	setBalance(getBalance() + credit);
-}
-
-void LLStatusBar::setBalance(S32 balance)
-{
-	if (balance > getBalance() && getBalance() != 0)
+	if(gSavedSettings.getBOOL("AllowUIHidingInML"))
 	{
-		LLFirstUse::receiveLindens();
-	}
-
-	std::string money_str = LLResMgr::getInstance()->getMonetaryString( balance );
-
-	LLStringUtil::format_map_t string_args;
-	string_args["[AMT]"] = llformat("%s", money_str.c_str());
-	std::string label_str = getString("buycurrencylabel", string_args);
-	mBoxBalance->setValue(label_str);
-
-	// Resize the L$ balance background to be wide enough for your balance plus the buy button
-	{
-		const S32 HPAD = 24;
-		LLRect balance_rect = mBoxBalance->getTextBoundingRect();
-		LLRect buy_rect = getChildView("buyL")->getRect();
-		LLRect shop_rect = getChildView("goShop")->getRect();
-		LLView* balance_bg_view = getChildView("balance_bg");
-		LLRect balance_bg_rect = balance_bg_view->getRect();
-		balance_bg_rect.mLeft = balance_bg_rect.mRight - (buy_rect.getWidth() + shop_rect.getWidth() + balance_rect.getWidth() + HPAD);
-		balance_bg_view->setShape(balance_bg_rect);
-	}
-
-	if (mBalance && (fabs((F32)(mBalance - balance)) > gSavedSettings.getF32("UISndMoneyChangeThreshold")))
-	{
-		if (mBalance > balance)
-			make_ui_sound("UISndMoneyChangeDown");
-		else
-			make_ui_sound("UISndMoneyChangeUp");
-	}
-
-	if( balance != mBalance )
-	{
-		mBalanceTimer->reset();
-		mBalanceTimer->setTimerExpirySec( ICON_TIMER_EXPIRY );
-		mBalance = balance;
+		setVisible(visible);
 	}
 }
-
-
-// static
-void LLStatusBar::sendMoneyBalanceRequest()
-{
-	LLMessageSystem* msg = gMessageSystem;
-	msg->newMessageFast(_PREHASH_MoneyBalanceRequest);
-	msg->nextBlockFast(_PREHASH_AgentData);
-	msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-	msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-	msg->nextBlockFast(_PREHASH_MoneyData);
-	msg->addUUIDFast(_PREHASH_TransactionID, LLUUID::null );
-	gAgent.sendReliableMessage();
-}
-
 
 void LLStatusBar::setHealth(S32 health)
 {
@@ -421,52 +345,9 @@ void LLStatusBar::setHealth(S32 health)
 	mHealth = health;
 }
 
-S32 LLStatusBar::getBalance() const
-{
-	return mBalance;
-}
-
-
 S32 LLStatusBar::getHealth() const
 {
 	return mHealth;
-}
-
-void LLStatusBar::setLandCredit(S32 credit)
-{
-	mSquareMetersCredit = credit;
-}
-void LLStatusBar::setLandCommitted(S32 committed)
-{
-	mSquareMetersCommitted = committed;
-}
-
-BOOL LLStatusBar::isUserTiered() const
-{
-	return (mSquareMetersCredit > 0);
-}
-
-S32 LLStatusBar::getSquareMetersCredit() const
-{
-	return mSquareMetersCredit;
-}
-
-S32 LLStatusBar::getSquareMetersCommitted() const
-{
-	return mSquareMetersCommitted;
-}
-
-S32 LLStatusBar::getSquareMetersLeft() const
-{
-	return mSquareMetersCredit - mSquareMetersCommitted;
-}
-
-void LLStatusBar::onClickBuyCurrency()
-{
-	// open a currency floater - actual one open depends on 
-	// value specified in settings.xml
-	LLBuyCurrencyHTML::openCurrencyFloater();
-	LLFirstUse::receiveLindens(false);
 }
 
 void LLStatusBar::onMouseEnterPresets()
@@ -514,6 +395,8 @@ void LLStatusBar::onMouseEnterVolume()
 	mPanelPresetsPulldown->setVisible(FALSE);
 	mPanelNearByMedia->setVisible(FALSE);
 	mPanelVolumePulldown->setVisible(TRUE);
+//	//BD - Draw Distance mouse-over slider
+	mPanelDrawDistance->setVisible(FALSE);
 }
 
 void LLStatusBar::onMouseEnterNearbyMedia()
@@ -538,22 +421,39 @@ void LLStatusBar::onMouseEnterNearbyMedia()
 	mPanelPresetsPulldown->setVisible(FALSE);
 	mPanelVolumePulldown->setVisible(FALSE);
 	mPanelNearByMedia->setVisible(TRUE);
+//	//BD - Draw Distance mouse-over slider
+	mPanelDrawDistance->setVisible(FALSE);
 }
 
+//BD - Draw Distance mouse-over slider
+void LLStatusBar::onMouseEnterDrawDistance()
+{
+	LLRect draw_distance_rect = mPanelDrawDistance->getRect();
+	LLIconCtrl* draw_distance_icon =  getChild<LLIconCtrl>( "draw_distance_icon" );
+	LLRect draw_distance_icon_rect = draw_distance_icon->getRect();
+
+	draw_distance_rect.setLeftTopAndSize(draw_distance_icon_rect.mLeft -
+	     (draw_distance_rect.getWidth() - (draw_distance_icon_rect.getWidth() + 7 )),
+			       draw_distance_icon_rect.mBottom,
+			       draw_distance_rect.getWidth(),
+			       draw_distance_rect.getHeight());
+	
+	// show the draw distance pull-down
+	mPanelDrawDistance->setShape(draw_distance_rect);
+	LLUI::clearPopups();
+	LLUI::addPopup(mPanelDrawDistance);
+
+	mPanelNearByMedia->setVisible(FALSE);
+	mPanelVolumePulldown->setVisible(FALSE);
+	mPanelDrawDistance->setVisible(TRUE);
+}
+//BD
 
 static void onClickVolume(void* data)
 {
 	// toggle the master mute setting
 	bool mute_audio = LLAppViewer::instance()->getMasterSystemAudioMute();
 	LLAppViewer::instance()->setMasterSystemAudioMute(!mute_audio);	
-}
-
-//static 
-void LLStatusBar::onClickBalance(void* )
-{
-	// Force a balance request message:
-	LLStatusBar::sendMoneyBalanceRequest();
-	// The refresh of the display (call to setBalance()) will be done by process_money_balance_reply()
 }
 
 //static 
@@ -567,7 +467,8 @@ void LLStatusBar::onClickMediaToggle(void* data)
 
 BOOL can_afford_transaction(S32 cost)
 {
-	return((cost <= 0)||((gStatusBar) && (gStatusBar->getBalance() >=cost)));
+	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+	return((cost <= 0)||((sidepanel_inventory) && (sidepanel_inventory->getBalance() >=cost)));
 }
 
 void LLStatusBar::onVolumeChanged(const LLSD& newvalue)
@@ -587,7 +488,7 @@ public:
 		if (tokens.size() == 1
 			&& tokens[0].asString() == "request")
 		{
-			LLStatusBar::sendMoneyBalanceRequest();
+			LLSidepanelInventory::sendMoneyBalanceRequest();
 			return true;
 		}
 		return false;

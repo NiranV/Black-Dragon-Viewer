@@ -224,6 +224,13 @@ LLGLSLShader			gDeferredDoFCombineProgram;
 LLGLSLShader			gDeferredPostGammaCorrectProgram;
 LLGLSLShader			gFXAAProgram;
 LLGLSLShader			gDeferredPostNoDoFProgram;
+LLGLSLShader			gVelocityProgram;
+LLGLSLShader			gVelocityAlphaProgram;
+LLGLSLShader			gAvatarVelocityProgram;
+LLGLSLShader			gSkinnedVelocityProgram;
+LLGLSLShader			gSkinnedVelocityAlphaProgram;
+LLGLSLShader			gMotionBlurProgram;
+LLGLSLShader			gVolumetricLightProgram;
 LLGLSLShader			gDeferredWLSkyProgram;
 LLGLSLShader			gDeferredWLCloudProgram;
 LLGLSLShader			gDeferredStarProgram;
@@ -231,6 +238,17 @@ LLGLSLShader			gDeferredFullbrightShinyProgram;
 LLGLSLShader			gDeferredSkinnedFullbrightShinyProgram;
 LLGLSLShader			gDeferredSkinnedFullbrightProgram;
 LLGLSLShader			gNormalMapGenProgram;
+
+LLGLSLShader            gColorGradePost;
+LLGLSLShader            gLinearToneMapping;
+LLGLSLShader            gReinhardToneMapping;
+LLGLSLShader            gFilmicToneMapping;
+LLGLSLShader            gVignettePost;
+LLGLSLShader            gColorGradePostLegacy;
+LLGLSLShader            gFilmicToneMappingAdv;
+
+LLGLSLShader            gSpecialPost;
+LLGLSLShader            gLensFlare;
 
 // Deferred materials shaders
 LLGLSLShader			gDeferredMaterialProgram[LLMaterial::SHADER_COUNT*2];
@@ -336,6 +354,7 @@ LLViewerShaderMgr::LLViewerShaderMgr() :
 	mShaderList.push_back(&gDeferredAvatarAlphaProgram);
 	mShaderList.push_back(&gDeferredWLSkyProgram);
 	mShaderList.push_back(&gDeferredWLCloudProgram);
+	mShaderList.push_back(&gVolumetricLightProgram);
 }
 
 LLViewerShaderMgr::~LLViewerShaderMgr()
@@ -794,6 +813,7 @@ void LLViewerShaderMgr::unloadShaders()
 	gDeferredSkinnedDiffuseProgram.unload();
 	gDeferredSkinnedBumpProgram.unload();
 	gDeferredSkinnedAlphaProgram.unload();
+	unloadExodusPostShaders();
 
 	gTransformPositionProgram.unload();
 	gTransformTexCoordProgram.unload();
@@ -867,6 +887,7 @@ BOOL LLViewerShaderMgr::loadBasicShaders()
 	if (gGLManager.mGLSLVersionMajor >= 2 || gGLManager.mGLSLVersionMinor >= 30)
 	{
 		shaders.push_back( make_pair( "objects/indexedTextureV.glsl",			1 ) );
+		shaders.push_back( make_pair( "deferred/velocityFuncV.glsl", 1) );
 	}
 	shaders.push_back( make_pair( "objects/nonindexedTextureV.glsl",		1 ) );
 
@@ -1100,6 +1121,8 @@ BOOL LLViewerShaderMgr::loadShadersEffects()
 		}
 	}
 	
+	success = loadExodusPostShaders();
+
 	return success;
 
 }
@@ -1148,6 +1171,13 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredEmissiveProgram.unload();
 		gDeferredAvatarEyesProgram.unload();
 		gDeferredPostProgram.unload();		
+		gVelocityProgram.unload();
+		gVelocityAlphaProgram.unload();
+		gAvatarVelocityProgram.unload();
+		gSkinnedVelocityProgram.unload();
+		gSkinnedVelocityAlphaProgram.unload();
+		gMotionBlurProgram.unload();
+		gVolumetricLightProgram.unload();
 		gDeferredCoFProgram.unload();		
 		gDeferredDoFCombineProgram.unload();
 		gDeferredPostGammaCorrectProgram.unload();
@@ -1167,6 +1197,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 			gDeferredMaterialProgram[i].unload();
 			gDeferredMaterialWaterProgram[i].unload();
 		}
+		unloadExodusPostShaders();
 		return TRUE;
 	}
 
@@ -1483,6 +1514,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredBlurLightProgram.mShaderFiles.clear();
 		gDeferredBlurLightProgram.mShaderFiles.push_back(make_pair("deferred/blurLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredBlurLightProgram.mShaderFiles.push_back(make_pair("deferred/blurLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredBlurLightProgram.addPermutation("MYKERN", gSavedSettings.getU32("RenderShadowType") > 0 ? "1" : "0");
 		gDeferredBlurLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		success = gDeferredBlurLightProgram.createShader(NULL, NULL);
@@ -1754,6 +1786,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSoftenProgram.mShaderFiles.clear();
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredSoftenProgram.addPermutation("USE_SSR", (bool)gSavedSettings.getBOOL("RenderScreenSpaceReflections") ? "1" : "0");
 
 		gDeferredSoftenProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
@@ -1896,6 +1929,18 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 	}
 
 	if (success)
+ 	{
+		gVolumetricLightProgram.mName = "Volumetric Light Shader";
+		gVolumetricLightProgram.mShaderFiles.clear();
+		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER_ARB));
+		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/volumetricLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gVolumetricLightProgram.addPermutation("GODRAYS_FADE", (bool)gSavedSettings.getBOOL("RenderGodraysDirectional") ? "1" : "0");
+		gVolumetricLightProgram.addPermutation("HAS_NO_DOF", (bool)gSavedSettings.getBOOL("RenderDepthOfField") ? "0" : "1");
+		gVolumetricLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+		success = gVolumetricLightProgram.createShader(NULL, NULL);
+	}
+
+	if (success)
 	{
 		gFXAAProgram.mName = "FXAA Shader";
 		gFXAAProgram.mShaderFiles.clear();
@@ -1947,6 +1992,75 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 
 	if (success)
 	{
+		gVelocityProgram.mName = "Velocity Shader";
+		gVelocityProgram.mFeatures.hasMotionBlur = true;
+		gVelocityProgram.mShaderFiles.clear();
+		gVelocityProgram.mShaderFiles.push_back(make_pair("deferred/velocityV.glsl", GL_VERTEX_SHADER_ARB));
+		gVelocityProgram.mShaderFiles.push_back(make_pair("deferred/velocityF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gVelocityProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+		success = gVelocityProgram.createShader(NULL, NULL);
+	}
+
+	if (success)
+	{
+		gVelocityAlphaProgram.mName = "Velocity Alpha Shader";
+		gVelocityAlphaProgram.mFeatures.hasMotionBlur = true;
+		gVelocityAlphaProgram.mFeatures.mIndexedTextureChannels = LLGLSLShader::sIndexedTextureChannels;
+		gVelocityAlphaProgram.mShaderFiles.clear();
+		gVelocityAlphaProgram.mShaderFiles.push_back(make_pair("deferred/velocityAlphaV.glsl", GL_VERTEX_SHADER_ARB));
+		gVelocityAlphaProgram.mShaderFiles.push_back(make_pair("deferred/velocityAlphaF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gVelocityAlphaProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+		success = gVelocityAlphaProgram.createShader(NULL, NULL);
+	}
+
+	if (success)
+	{
+		gAvatarVelocityProgram.mName = "Avatar Velocity Shader";
+		gAvatarVelocityProgram.mFeatures.hasSkinning = true;
+		gAvatarVelocityProgram.mFeatures.hasMotionBlur = true;
+		gAvatarVelocityProgram.mShaderFiles.clear();
+		gAvatarVelocityProgram.mShaderFiles.push_back(make_pair("deferred/avatarVelocityV.glsl", GL_VERTEX_SHADER_ARB));
+		gAvatarVelocityProgram.mShaderFiles.push_back(make_pair("deferred/avatarVelocityF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gAvatarVelocityProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+		success = gAvatarVelocityProgram.createShader(NULL, NULL);
+	}
+
+	if (success)
+	{
+		gSkinnedVelocityProgram.mName = "Skinned Velocity Shader";
+		gSkinnedVelocityProgram.mFeatures.hasMotionBlur = true;
+		gSkinnedVelocityProgram.mFeatures.hasObjectSkinning = true;
+		gSkinnedVelocityProgram.mShaderFiles.clear();
+		gSkinnedVelocityProgram.mShaderFiles.push_back(make_pair("deferred/skinnedVelocityV.glsl", GL_VERTEX_SHADER_ARB));
+		gSkinnedVelocityProgram.mShaderFiles.push_back(make_pair("deferred/velocityF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gSkinnedVelocityProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+		success = gSkinnedVelocityProgram.createShader(NULL, NULL);
+	}
+
+	if (success)
+	{
+		gSkinnedVelocityAlphaProgram.mName = "Skinned Velocity Alpha Shader";
+		gSkinnedVelocityAlphaProgram.mFeatures.hasMotionBlur = true;
+		gSkinnedVelocityAlphaProgram.mFeatures.hasObjectSkinning = true;
+		gSkinnedVelocityAlphaProgram.mShaderFiles.clear();
+		gSkinnedVelocityAlphaProgram.mShaderFiles.push_back(make_pair("deferred/skinnedVelocityAlphaV.glsl", GL_VERTEX_SHADER_ARB));
+		gSkinnedVelocityAlphaProgram.mShaderFiles.push_back(make_pair("deferred/avatarVelocityF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gSkinnedVelocityAlphaProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+		success = gSkinnedVelocityAlphaProgram.createShader(NULL, NULL);
+	}
+
+	if (success)
+	{
+		gMotionBlurProgram.mName = "Motion Blur Shader";
+		gMotionBlurProgram.mShaderFiles.clear();
+		gMotionBlurProgram.mShaderFiles.push_back(make_pair("deferred/motionBlurV.glsl", GL_VERTEX_SHADER_ARB));
+		gMotionBlurProgram.mShaderFiles.push_back(make_pair("deferred/motionBlurF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gMotionBlurProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+		success = gMotionBlurProgram.createShader(NULL, NULL);
+	}
+
+	if (success)
+	{
 		gDeferredWLSkyProgram.mName = "Deferred Windlight Sky Shader";
 		//gWLSkyProgram.mFeatures.hasGamma = true;
 		gDeferredWLSkyProgram.mShaderFiles.clear();
@@ -1991,6 +2105,119 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 	}
 
 	return success;
+}
+
+void LLViewerShaderMgr::unloadExodusPostShaders()
+{
+    gColorGradePost.unload();
+    gLinearToneMapping.unload();
+    gReinhardToneMapping.unload();
+    gFilmicToneMapping.unload();
+    gVignettePost.unload();
+    gFilmicToneMappingAdv.unload();
+
+	gSpecialPost.unload();
+	gLensFlare.unload();
+}
+
+BOOL LLViewerShaderMgr::loadExodusPostShaders()
+{
+    BOOL success = TRUE;
+    //We only ever want to load these in deferred (as we'll probably never use floating point buffers in classic rendering)
+    if (LLPipeline::sRenderDeferred)
+    {      
+        if (success)
+        {
+            gFilmicToneMapping.mName = "Exodus Filmic Tonemapping Post";
+            gFilmicToneMapping.mShaderFiles.clear();
+            gFilmicToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+            gFilmicToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoFilmicToneF.glsl", GL_FRAGMENT_SHADER_ARB));
+            gFilmicToneMapping.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+            success = gFilmicToneMapping.createShader(NULL, NULL);
+        }
+        
+        if (success)
+        {
+            gFilmicToneMappingAdv.mName = "Exodus Advanced Filmic Tonemapping";
+            gFilmicToneMappingAdv.mShaderFiles.clear();
+            gFilmicToneMappingAdv.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+            gFilmicToneMappingAdv.mShaderFiles.push_back(make_pair("exoshade/post/exoFilmicToneAdvancedF.glsl", GL_FRAGMENT_SHADER_ARB));
+            gFilmicToneMappingAdv.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+            success = gFilmicToneMappingAdv.createShader(NULL, NULL);
+        }
+    }
+    
+    if (success)
+    {
+        gVignettePost.mName = "Exodus Vignette Post";
+        gVignettePost.mShaderFiles.clear();
+        gVignettePost.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gVignettePost.mShaderFiles.push_back(make_pair("exoshade/post/exoVignetteF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gVignettePost.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gVignettePost.createShader(NULL, NULL);
+    }
+
+	if (success)
+    {
+        gLensFlare.mName = "Lens Flare";
+        gLensFlare.mShaderFiles.clear();
+        gLensFlare.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gLensFlare.mShaderFiles.push_back(make_pair("exoshade/post/exoLensF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gLensFlare.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gLensFlare.createShader(NULL, NULL);
+    }
+
+	if (success)
+    {
+        gSpecialPost.mName = "Special Post";
+        gSpecialPost.mShaderFiles.clear();
+        gSpecialPost.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gSpecialPost.mShaderFiles.push_back(make_pair("exoshade/post/exoSpecialF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gSpecialPost.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gSpecialPost.createShader(NULL, NULL);
+    }
+    
+    if (success)
+    {
+        gColorGradePost.mName = "Exodus Color Grading Post";
+        gColorGradePost.mShaderFiles.clear();
+        gColorGradePost.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gColorGradePost.mShaderFiles.push_back(make_pair("exoshade/post/exoColorGradeF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gColorGradePost.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gColorGradePost.createShader(NULL, NULL);
+    }
+    
+    if (success)
+    {
+        gLinearToneMapping.mName = "Exodus Linear Tonemapping Post";
+        gLinearToneMapping.mShaderFiles.clear();
+        gLinearToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gLinearToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoLinearToneF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gLinearToneMapping.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gLinearToneMapping.createShader(NULL, NULL);
+    }
+    
+    if (success)
+    {
+        gReinhardToneMapping.mName = "Exodus Reinhard Tonemapping Post";
+        gReinhardToneMapping.mShaderFiles.clear();
+        gReinhardToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gReinhardToneMapping.mShaderFiles.push_back(make_pair("exoshade/post/exoReinhardToneF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gReinhardToneMapping.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gReinhardToneMapping.createShader(NULL, NULL);
+    }
+    
+    if (success)
+    {
+        gColorGradePostLegacy.mName = "Exodus Legacy Color Grading Post";
+        gColorGradePostLegacy.mShaderFiles.clear();
+        gColorGradePostLegacy.mShaderFiles.push_back(make_pair("exoshade/post/exoPostBaseV.glsl", GL_VERTEX_SHADER_ARB));
+        gColorGradePostLegacy.mShaderFiles.push_back(make_pair("exoshade/post/exoColorGradeLegacyF.glsl", GL_FRAGMENT_SHADER_ARB));
+        gColorGradePostLegacy.mShaderLevel = mVertexShaderLevel[SHADER_EFFECT];
+        success = gColorGradePostLegacy.createShader(NULL, NULL);
+    }
+    
+    return success;
 }
 
 BOOL LLViewerShaderMgr::loadShadersObject()

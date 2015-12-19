@@ -102,6 +102,10 @@
 #include "llmediaentry.h"
 #include "llfloaterperms.h"
 #include "llvocache.h"
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
+#include "rlvhandler.h"
+#include "rlvlocks.h"
+// [/RLVa:KB]
 
 //#define DEBUG_UPDATE_TYPE
 
@@ -690,6 +694,12 @@ bool LLViewerObject::isReturnable()
 		return false;
 	}
 		
+// [RLVa:KB] - Checked: 2011-05-28 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
+	if ( (rlv_handler_t::isEnabled()) && (!rlvCanDeleteOrReturn(this)) )
+	{
+		return false;
+	}
+// [/RLVa:KB]
 	std::vector<LLBBox> boxes;
 	boxes.push_back(LLBBox(getPositionRegion(), getRotationRegion(), getScale() * -0.5f, getScale() * 0.5f).getAxisAligned());
 	for (child_list_t::iterator iter = mChildList.begin();
@@ -907,7 +917,10 @@ void LLViewerObject::addThisAndNonJointChildren(std::vector<LLViewerObject*>& ob
 	}
 }
 
-BOOL LLViewerObject::isChild(LLViewerObject *childp) const
+//BOOL LLViewerObject::isChild(LLViewerObject *childp) const
+// [RLVa:KB] - Checked: 2011-05-28 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
+BOOL LLViewerObject::isChild(const LLViewerObject *childp) const
+// [/RLVa:KB]
 {
 	for (child_list_t::const_iterator iter = mChildList.begin();
 		 iter != mChildList.end(); iter++)
@@ -1431,6 +1444,12 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 					coloru.mV[3] = 255 - coloru.mV[3];
 					mText->setColor(LLColor4(coloru));
 					mText->setString(temp_string);
+// [RLVa:KB] - Checked: 2010-03-27 (RLVa-1.4.0a) | Added: RLVa-1.0.0f
+					if (rlv_handler_t::isEnabled())
+					{
+						mText->setObjectText(temp_string);
+					}
+// [/RLVa:KB]
 
 					setChanged(MOVED | SILHOUETTE);
 				}
@@ -1811,6 +1830,12 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 					coloru.mV[3] = 255 - coloru.mV[3];
 					mText->setColor(LLColor4(coloru));
 					mText->setString(temp_string);
+// [RLVa:KB] - Checked: 2010-03-27 (RLVa-1.4.0a) | Added: RLVa-1.0.0f
+					if (rlv_handler_t::isEnabled())
+					{
+						mText->setObjectText(temp_string);
+					}
+// [/RLVa:KB]
 
 					setChanged(TEXTURE);
 				}
@@ -1996,6 +2021,25 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 								gObjectList.killObject(this);
 								return retval;
 							}
+// [RLVa:KB] - Checked: 2010-03-16 (RLVa-1.1.0k) | Added: RLVa-1.1.0k
+							if ( (rlv_handler_t::isEnabled()) && (sent_parentp->isAvatar()) && (sent_parentp->getID() == gAgent.getID()) )
+							{
+								// Rezzed object that's being worn as an attachment (we're assuming this will be due to llAttachToAvatar())
+								S32 idxAttachPt = ATTACHMENT_ID_FROM_STATE(getState());
+								if (gRlvAttachmentLocks.isLockedAttachmentPoint(idxAttachPt, RLV_LOCK_ADD))
+								{
+									// If this will end up on an "add locked" attachment point then treat the attach as a user action
+									LLNameValue* nvItem = getNVPair("AttachItemID");
+									if (nvItem)
+									{
+										LLUUID idItem(nvItem->getString());
+										// URGENT-RLVa: [RLVa-1.2.0] At the moment llAttachToAvatar always seems to *add*
+										if (idItem.notNull())
+											RlvAttachmentLockWatchdog::instance().onWearAttachment(idItem, RLV_WEAR_ADD);
+									}
+								}
+							}
+// [/RLVa:KB]
 							sent_parentp->addChild(this);
 							// make sure this object gets a non-damped update
 							if (sent_parentp->mDrawable.notNull())
@@ -2885,6 +2929,9 @@ struct LLFilenameAndTask
 {
 	LLUUID mTaskID;
 	std::string mFilename;
+
+	// for sequencing in case of multiple updates
+	S16 mSerial;
 #ifdef _DEBUG
 	static S32 sCount;
 	LLFilenameAndTask()
@@ -2920,9 +2967,17 @@ void LLViewerObject::processTaskInv(LLMessageSystem* msg, void** user_data)
 		return;
 	}
 
-	msg->getS16Fast(_PREHASH_InventoryData, _PREHASH_Serial, object->mInventorySerialNum);
 	LLFilenameAndTask* ft = new LLFilenameAndTask;
 	ft->mTaskID = task_id;
+	// we can receive multiple task updates simultaneously, make sure we will not rewrite newer with older update
+	msg->getS16Fast(_PREHASH_InventoryData, _PREHASH_Serial, ft->mSerial);
+
+	if (ft->mSerial < object->mInventorySerialNum)
+	{
+		// viewer did some changes to inventory that were not saved yet.
+		LL_DEBUGS() << "Task inventory serial might be out of sync, server serial: " << ft->mSerial << " client serial: " << object->mInventorySerialNum << LL_ENDL;
+		object->mInventorySerialNum = ft->mSerial;
+	}
 
 	std::string unclean_filename;
 	msg->getStringFast(_PREHASH_InventoryData, _PREHASH_Filename, unclean_filename);
@@ -2962,9 +3017,13 @@ void LLViewerObject::processTaskInvFile(void** user_data, S32 error_code, LLExtS
 {
 	LLFilenameAndTask* ft = (LLFilenameAndTask*)user_data;
 	LLViewerObject* object = NULL;
-	if(ft && (0 == error_code) &&
-	   (object = gObjectList.findObject(ft->mTaskID)))
+
+	if (ft
+		&& (0 == error_code)
+		&& (object = gObjectList.findObject(ft->mTaskID))
+		&& ft->mSerial >= object->mInventorySerialNum)
 	{
+		object->mInventorySerialNum = ft->mSerial;
 		if (object->loadTaskInvFile(ft->mFilename))
 		{
 
@@ -2995,7 +3054,7 @@ void LLViewerObject::processTaskInvFile(void** user_data, S32 error_code, LLExtS
 	}
 	else
 	{
-		// This Occurs When to requests were made, and the first one
+		// This Occurs When two requests were made, and the first one
 		// has already handled it.
 		LL_DEBUGS() << "Problem loading task inventory. Return code: "
 				 << error_code << LL_ENDL;
@@ -4637,7 +4696,7 @@ S32 LLViewerObject::setTEMaterialID(const U8 te, const LLMaterialID& pMaterialID
 	return retval;
 }
 
-S32 LLViewerObject::setTEMaterialParams(const U8 te, const LLMaterialPtr pMaterialParams)
+S32 LLViewerObject::setTEMaterialParams(const U8 te, const LLMaterialPtr pMaterialParams, bool isInitFromServer)
 {
 	S32 retval = 0;
 	const LLTextureEntry *tep = getTE(te);
@@ -4647,13 +4706,14 @@ S32 LLViewerObject::setTEMaterialParams(const U8 te, const LLMaterialPtr pMateri
 		return 0;
 	}
 
-	retval = LLPrimitive::setTEMaterialParams(te, pMaterialParams);
+	setTENormalMap(te, (pMaterialParams) ? pMaterialParams->getNormalID() : LLUUID::null);
+	setTESpecularMap(te, (pMaterialParams) ? pMaterialParams->getSpecularID() : LLUUID::null);
+
+	retval = LLPrimitive::setTEMaterialParams(te, pMaterialParams, isInitFromServer);
 	LL_DEBUGS("Material") << "Changing material params for te " << (S32)te
 							<< ", object " << mID
 			               << " (" << retval << ")"
 							<< LL_ENDL;
-	setTENormalMap(te, (pMaterialParams) ? pMaterialParams->getNormalID() : LLUUID::null);
-	setTESpecularMap(te, (pMaterialParams) ? pMaterialParams->getSpecularID() : LLUUID::null);
 
 	refreshMaterials();
 	return retval;
@@ -5749,7 +5809,10 @@ BOOL LLViewerObject::permTransfer() const
 // given you modify rights to.  JC
 BOOL LLViewerObject::allowOpen() const
 {
-	return !flagInventoryEmpty() && (permYouOwner() || permModify());
+// [RLVa:KB] - Checked: 2010-11-29 (RLVa-1.3.0c) | Modified: RLVa-1.3.0c
+	return !flagInventoryEmpty() && (permYouOwner() || permModify()) && ((!rlv_handler_t::isEnabled()) || (gRlvHandler.canEdit(this)));
+// [/RLVa:KB]
+//	return !flagInventoryEmpty() && (permYouOwner() || permModify());
 }
 
 LLViewerObject::LLInventoryCallbackInfo::~LLInventoryCallbackInfo()

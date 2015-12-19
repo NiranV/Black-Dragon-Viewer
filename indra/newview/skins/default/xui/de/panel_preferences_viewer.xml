@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<panel label="Viewer" name="viewer_panel">
+ <scroll_container name="viewer_scroll">
+  <panel name="viewer_scroll_panel">
+ <check_box label="MU Pose Stil in Chat und IM" name="AllowMUpose"/>
+ <check_box label="Automatisch Inventarangebote annehmen" name="AutoAcceptNewInventory"/>
+ <check_box label="Ganzen Prim auswählen wenn ein Vertice in Auswahl ist" name="RectangleSelectInclusive" tool_tip="Wählt den ganzen Prim aus wenn auch nur ein Vertice/Face in die Auswahl-Box kommt"/>
+ <check_box label="Im Baumodus ausgewählte Objekte verstecken" name="HideSelectedObjects"/>
+ <check_box label="Rechten Arm beim bearbeiten benutzen (Rechtshänder)" name="AvatarRightHander"/>
+ <check_box label="Auswahl Partikelstrahl anzeigen" name="ShowBeam"/>
+ <check_box label="Mehrmals starten erlauben" name="MultiViewers"/>
+ <check_box label="Abgesicherter Modus" name="SafeMode"/>
+ <check_box label="Maus-Warp deaktivieren" name="DisableMouseWarp" tool_tip="Deaktiviert das Automatische zurücksetzen der Maus in die Mitte des Bildschirms wenn gezoomt wird"/>
+ <check_box label="Nur zu Textfeldern tabben" name="TabToTextFieldsOnly"/>
+ <text name="build_label">
+	 Bauoptionen:
+ </text>
+ <text name="sec_label">
+	 Sicherheitsoptionen:
+ </text>
+ <check_box label="Links-Klick sitzen verbieten" name="LeftClickSit"/>
+ <check_box label="Links-Klick berühren verbieten" name="LeftClickTouch"/>
+ <text name="debug_label">
+	 Debug Optionen:
+ </text>
+ <check_box label="Admin Optionen anzeigen" name="ShowAdmin"/>
+ <check_box label="Alt + Maus zoomen erlauben" name="EnableAltZoom"/>
+ <check_box label="Strg + Maus Objekt greifen und ziehen erlauben" name="EnableGrab"/>
+ <spinner label="Vorcache Länge:" name="PrecachingDelay"/>
+ <line_editor name="DefaultObjectTexture" tool_tip="Stellen sie hier ihre Standard Bautextur ein - benötigt einen Neustart von Kirsten!"/>
+ <text name="head_label1">
+	 Standart Objekttextur eingeben:
+ </text>
+ <text name="head_label2">
+	 Externen Skripteditor eingeben:
+ </text>
+ <text name="default_label">
+	 (89556747-24cb-43ed-920b-47caed15465f)
+ </text>
+ <text name="requieres_restart_label1">
+	 (Neustart erforderlich)
+ </text>
+ <text name="requieres_restart_label2">
+	 (Neustart erforderlich)
+ </text>
+ <text name="requieres_restart_label3">
+	 (Neustart erforderlich)
+ </text>
+ <text name="network_label">
+			Netzwerk Optionen:
+		</text>
+		<slider name="max_bandwidth" label="Maximale Bandbreite"/>
+		<text name="text_box2">
+			kbit/s
+		</text>
+		<check_box label="Eigener Port" name="connection_port_enabled"/>
+		<spinner label="Port-Nummer:" name="connection_port"/>
+		<text name="cache_label">
+			Cache:
+		</text>
+		<text name="cache_size_label_l">
+			Cachegröße
+		</text>
+		<text name="text_box5">
+			Mega Bytes
+		</text>
+		<text name="Cache location">
+			Cache-Ordner:
+		</text>
+		<text name="Proxy Settings:">
+			Proxy Einstellungen:
+		</text>
+		<text name="Other:">
+				Anderes:
+		</text>
+		<button label="Leeren" label_selected="Cache Leeren" name="clear_cache"/>
+		<button label="..." label_selected="Durchsuchen" name="set_cache"/>
+		<button label="Zurücksetzen" label_selected="Zurücksetzen" name="reset_cache"/>
+		<button label="Proxy anpassen" label_selected="Durchsuchen" name="set_proxy"/>
+		<check_box label="Objekt Cache erlauben" name="ObjectCacheEnabled"/>
+		<check_box label="LL Standart Inventarbibliothek deaktivieren" name="no_library"/>
+		<check_box label="Inventar mit HTTP statt UDP beziehen" name="UseHTTPInventory"/>
+  </panel>
+ </scroll_container>
+</panel>

@@ -13,28 +13,28 @@
 		Um den Tageszyklus zu bearbeiten, passen Sie die Steuerungen unten an und klicken Sie auf „Speichern“.
 	</string>
 	<string name="combo_label">
-		-Voreinstellung auswählen-
+		-auswählen-
 	</string>
 	<text name="label">
-		Name der Voreinstellung:
+		Einstellungsname:
 	</text>
 	<text name="note">
 		Hinweis: Wenn Sie den Namen Ihrer Voreinstellung ändern, entsteht eine neue Voreinstellung; die vorhandene Voreinstellung wird nicht geändert.
 	</text>
 	<text name="hint_item1">
-		- Klicken Sie auf eine Registerkarte, um die Himmeleinstellungen und die Uhrzeit zu bearbeiten.
+		- Wähle einen Knotenpunkt um ihn zu bearbeiten.
 	</text>
 	<text name="hint_item2">
-		- Klicken und ziehen Sie die Registerkarten, um die Übergangszeiten einzustellen.
+		- Ziehe Knotenpunkte um die Übergangszeit einzustellen.
 	</text>
 	<text name="hint_item3">
-		- Anhand des Scrubbers können Sie eine Vorschau Ihres Tageszyklus anzeigen.
+		- Mit dem Pfeil kannst du eine Vorschau durchgehen.
 	</text>
 	<panel name="day_cycle_slider_panel">
 		<multi_slider initial_value="0" name="WLTimeSlider"/>
 		<multi_slider initial_value="0" name="WLDayCycleKeys"/>
-		<button label="Schlüssel hinzufügen" label_selected="Schlüssel hinzufügen" name="WLAddKey"/>
-		<button label="Schlüssel löschen" label_selected="Schlüssel löschen" name="WLDeleteKey"/>
+		<button label="+" label_selected="+" name="WLAddKey"/>
+		<button label="-" label_selected="-" name="WLDeleteKey"/>
 		<text name="WL12am">
 			0:00
 		</text>
@@ -100,5 +100,6 @@
 	<time name="time" value="6:00"/>
 	<check_box label="Zu meinem neuen Tageszyklus machen" name="make_default_cb"/>
 	<button label="Speichern" name="save"/>
+	<button label="Löschen" name="delete"/>
 	<button label="Abbrechen" name="cancel"/>
 </floater>

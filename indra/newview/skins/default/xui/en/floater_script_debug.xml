@@ -4,7 +4,7 @@
  height="233"
  layout="topleft"
  name="script debug floater"
- help_topic="script_debug_floater"
+ background_color="FloaterDefaultBackgroundColor"
  save_rect="true"
  title="Script Warning/Error"
  width="450">

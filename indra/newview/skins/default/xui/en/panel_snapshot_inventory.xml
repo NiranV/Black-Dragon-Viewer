@@ -12,7 +12,7 @@
      left="12"
      mouse_opaque="true"
      name="title_icon"
-     top="6"
+     top="0"
      width="18" />
     <text
      follows="top|left|right"

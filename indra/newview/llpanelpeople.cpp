@@ -74,6 +74,10 @@
 
 #include "llagentui.h"
 #include "llslurl.h"
+// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.2a)
+#include "rlvhandler.h"
+// [/RLVa:KB]
+
 
 #define FRIEND_LIST_UPDATE_TIMEOUT	0.5
 #define NEARBY_LIST_UPDATE_INTERVAL 1
@@ -85,6 +89,8 @@ static const std::string RECENT_TAB_NAME	= "recent_panel";
 static const std::string BLOCKED_TAB_NAME	= "blocked_panel"; // blocked avatars
 static const std::string COLLAPSED_BY_USER  = "collapsed_by_user";
 
+const S32 BASE_MAX_AGENT_GROUPS = 42;
+const S32 PREMIUM_MAX_AGENT_GROUPS = 60;
 
 extern S32 gMaxAgentGroups;
 
@@ -505,9 +511,9 @@ public:
 
 LLPanelPeople::LLPanelPeople()
 	:	LLPanel(),
-		mTryToConnectToFacebook(true),
+		//mTryToConnectToFacebook(true),
 		mTabContainer(NULL),
-		mOnlineFriendList(NULL),
+		//mOnlineFriendList(NULL),
 		mAllFriendList(NULL),
 		mNearbyList(NULL),
 		mRecentList(NULL),
@@ -552,7 +558,7 @@ LLPanelPeople::~LLPanelPeople()
 	}
 }
 
-void LLPanelPeople::onFriendsAccordionExpandedCollapsed(LLUICtrl* ctrl, const LLSD& param, LLAvatarList* avatar_list)
+/*void LLPanelPeople::onFriendsAccordionExpandedCollapsed(LLUICtrl* ctrl, const LLSD& param, LLAvatarList* avatar_list)
 {
 	if(!avatar_list)
 	{
@@ -567,7 +573,7 @@ void LLPanelPeople::onFriendsAccordionExpandedCollapsed(LLUICtrl* ctrl, const LL
 	{
 		avatar_list->resetSelection();
 	}
-}
+}*/
 
 
 void LLPanelPeople::removePicker()
@@ -584,7 +590,8 @@ BOOL LLPanelPeople::postBuild()
 	getChild<LLFilterEditor>("friends_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
 	getChild<LLFilterEditor>("groups_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
 	getChild<LLFilterEditor>("recent_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
-	getChild<LLFilterEditor>("fbc_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
+	//getChild<LLFilterEditor>("fbc_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
+	getChild<LLTextBox>("groupcount")->setURLClickedCallback(boost::bind(&LLPanelPeople::onGroupLimitInfo, this));
 
 	mTabContainer = getChild<LLTabContainer>("tabs");
 	mTabContainer->setCommitCallback(boost::bind(&LLPanelPeople::onTabSelected, this, _2));
@@ -595,16 +602,14 @@ BOOL LLPanelPeople::postBuild()
 	// updater is active only if panel is visible to user.
 	friends_tab->setVisibleCallback(boost::bind(&Updater::setActive, mFriendListUpdater, _2));
     friends_tab->setVisibleCallback(boost::bind(&LLPanelPeople::removePicker, this));
-	friends_tab->setVisibleCallback(boost::bind(&LLPanelPeople::updateFacebookList, this, _2));
+	//friends_tab->setVisibleCallback(boost::bind(&LLPanelPeople::updateFacebookList, this, _2));
 
-	mOnlineFriendList = friends_tab->getChild<LLAvatarList>("avatars_online");
+	//mOnlineFriendList = friends_tab->getChild<LLAvatarList>("avatars_online");
 	mAllFriendList = friends_tab->getChild<LLAvatarList>("avatars_all");
-	mSuggestedFriends = friends_tab->getChild<LLAvatarList>("suggested_friends");
-	mOnlineFriendList->setNoItemsCommentText(getString("no_friends_online"));
-	mOnlineFriendList->setShowIcons("FriendsListShowIcons");
-	mOnlineFriendList->showPermissions("FriendsListShowPermissions");
+	//mSuggestedFriends = friends_tab->getChild<LLAvatarList>("suggested_friends");
+	//mOnlineFriendList->setNoItemsCommentText(getString("no_friends_online"));
+	//mOnlineFriendList->showPermissions("FriendsListShowPermissions");
 	mAllFriendList->setNoItemsCommentText(getString("no_friends"));
-	mAllFriendList->setShowIcons("FriendsListShowIcons");
 	mAllFriendList->showPermissions("FriendsListShowPermissions");
 
 	LLPanel* nearby_tab = getChild<LLPanel>(NEARBY_TAB_NAME);
@@ -613,7 +618,9 @@ BOOL LLPanelPeople::postBuild()
 	mNearbyList->setNoItemsCommentText(getString("no_one_near"));
 	mNearbyList->setNoItemsMsg(getString("no_one_near"));
 	mNearbyList->setNoFilteredItemsMsg(getString("no_one_filtered_near"));
-	mNearbyList->setShowIcons("NearbyListShowIcons");
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+	mNearbyList->setRlvCheckShowNames(true);
+// [/RLVa:KB]
 	mMiniMap = (LLNetMap*)getChildView("Net Map",true);
 	mMiniMap->setToolTipMsg(gSavedSettings.getBOOL("DoubleClickTeleport") ? 
 		getString("AltMiniMapToolTipMsg") :	getString("MiniMapToolTipMsg"));
@@ -622,7 +629,6 @@ BOOL LLPanelPeople::postBuild()
 	mRecentList->setNoItemsCommentText(getString("no_recent_people"));
 	mRecentList->setNoItemsMsg(getString("no_recent_people"));
 	mRecentList->setNoFilteredItemsMsg(getString("no_filtered_recent_people"));
-	mRecentList->setShowIcons("RecentListShowIcons");
 
 	mGroupList = getChild<LLGroupList>("group_list");
 	mGroupList->setNoItemsMsg(getString("no_groups_msg"));
@@ -631,25 +637,25 @@ BOOL LLPanelPeople::postBuild()
 	mNearbyList->setContextMenu(&LLPanelPeopleMenus::gNearbyPeopleContextMenu);
 	mRecentList->setContextMenu(&LLPanelPeopleMenus::gPeopleContextMenu);
 	mAllFriendList->setContextMenu(&LLPanelPeopleMenus::gPeopleContextMenu);
-	mOnlineFriendList->setContextMenu(&LLPanelPeopleMenus::gPeopleContextMenu);
-	mSuggestedFriends->setContextMenu(&LLPanelPeopleMenus::gSuggestedFriendsContextMenu);
+	//mOnlineFriendList->setContextMenu(&LLPanelPeopleMenus::gPeopleContextMenu);
+	//mSuggestedFriends->setContextMenu(&LLPanelPeopleMenus::gSuggestedFriendsContextMenu);
 
 	setSortOrder(mRecentList,		(ESortOrder)gSavedSettings.getU32("RecentPeopleSortOrder"),	false);
 	setSortOrder(mAllFriendList,	(ESortOrder)gSavedSettings.getU32("FriendsSortOrder"),		false);
 	setSortOrder(mNearbyList,		(ESortOrder)gSavedSettings.getU32("NearbyPeopleSortOrder"),	false);
 
-	mOnlineFriendList->setItemDoubleClickCallback(boost::bind(&LLPanelPeople::onAvatarListDoubleClicked, this, _1));
+	//mOnlineFriendList->setItemDoubleClickCallback(boost::bind(&LLPanelPeople::onAvatarListDoubleClicked, this, _1));
 	mAllFriendList->setItemDoubleClickCallback(boost::bind(&LLPanelPeople::onAvatarListDoubleClicked, this, _1));
 	mNearbyList->setItemDoubleClickCallback(boost::bind(&LLPanelPeople::onAvatarListDoubleClicked, this, _1));
 	mRecentList->setItemDoubleClickCallback(boost::bind(&LLPanelPeople::onAvatarListDoubleClicked, this, _1));
 
-	mOnlineFriendList->setCommitCallback(boost::bind(&LLPanelPeople::onAvatarListCommitted, this, mOnlineFriendList));
+	//mOnlineFriendList->setCommitCallback(boost::bind(&LLPanelPeople::onAvatarListCommitted, this, mOnlineFriendList));
 	mAllFriendList->setCommitCallback(boost::bind(&LLPanelPeople::onAvatarListCommitted, this, mAllFriendList));
 	mNearbyList->setCommitCallback(boost::bind(&LLPanelPeople::onAvatarListCommitted, this, mNearbyList));
 	mRecentList->setCommitCallback(boost::bind(&LLPanelPeople::onAvatarListCommitted, this, mRecentList));
 
 	// Set openning IM as default on return action for avatar lists
-	mOnlineFriendList->setReturnCallback(boost::bind(&LLPanelPeople::onImButtonClicked, this));
+	//mOnlineFriendList->setReturnCallback(boost::bind(&LLPanelPeople::onImButtonClicked, this));
 	mAllFriendList->setReturnCallback(boost::bind(&LLPanelPeople::onImButtonClicked, this));
 	mNearbyList->setReturnCallback(boost::bind(&LLPanelPeople::onImButtonClicked, this));
 	mRecentList->setReturnCallback(boost::bind(&LLPanelPeople::onImButtonClicked, this));
@@ -671,13 +677,13 @@ BOOL LLPanelPeople::postBuild()
 		LL_WARNS() << "People->Groups list menu not found" << LL_ENDL;
 	}
 
-	LLAccordionCtrlTab* accordion_tab = getChild<LLAccordionCtrlTab>("tab_all");
+	/*LLAccordionCtrlTab* accordion_tab = getChild<LLAccordionCtrlTab>("tab_all");
 	accordion_tab->setDropDownStateChangedCallback(
 		boost::bind(&LLPanelPeople::onFriendsAccordionExpandedCollapsed, this, _1, _2, mAllFriendList));
 
 	accordion_tab = getChild<LLAccordionCtrlTab>("tab_online");
 	accordion_tab->setDropDownStateChangedCallback(
-		boost::bind(&LLPanelPeople::onFriendsAccordionExpandedCollapsed, this, _1, _2, mOnlineFriendList));
+		boost::bind(&LLPanelPeople::onFriendsAccordionExpandedCollapsed, this, _1, _2, mOnlineFriendList));*/
 
 	// Must go after setting commit callback and initializing all pointers to children.
 	mTabContainer->selectTabByName(NEARBY_TAB_NAME);
@@ -687,8 +693,8 @@ BOOL LLPanelPeople::postBuild()
 	// call this method in case some list is empty and buttons can be in inconsistent state
 	updateButtons();
 
-	mOnlineFriendList->setRefreshCompleteCallback(boost::bind(&LLPanelPeople::onFriendListRefreshComplete, this, _1, _2));
-	mAllFriendList->setRefreshCompleteCallback(boost::bind(&LLPanelPeople::onFriendListRefreshComplete, this, _1, _2));
+	//mOnlineFriendList->setRefreshCompleteCallback(boost::bind(&LLPanelPeople::onFriendListRefreshComplete, this, _1, _2));
+	//mAllFriendList->setRefreshCompleteCallback(boost::bind(&LLPanelPeople::onFriendListRefreshComplete, this, _1, _2));
 
 	return TRUE;
 }
@@ -711,7 +717,7 @@ void LLPanelPeople::updateFriendListHelpText()
 
 	// Seems sometimes all_friends can be empty because of issue with Inventory loading (clear cache, slow connection...)
 	// So, lets check all lists to avoid overlapping the text with online list. See EXT-6448.
-	bool any_friend_exists = mAllFriendList->filterHasMatches() || mOnlineFriendList->filterHasMatches() || mSuggestedFriends->filterHasMatches();
+	bool any_friend_exists = mAllFriendList->filterHasMatches(); //|| mOnlineFriendList->filterHasMatches() || mSuggestedFriends->filterHasMatches();
 	no_friends_text->setVisible(!any_friend_exists);
 	if (no_friends_text->getVisible())
 	{
@@ -727,7 +733,8 @@ void LLPanelPeople::updateFriendListHelpText()
 
 void LLPanelPeople::updateFriendList()
 {
-	if (!mOnlineFriendList || !mAllFriendList)
+	//if (!mOnlineFriendList || !mAllFriendList)
+	if (!mAllFriendList)
 		return;
 
 	// get all buddies we know about
@@ -736,11 +743,11 @@ void LLPanelPeople::updateFriendList()
 	av_tracker.copyBuddyList(all_buddies);
 
 	// save them to the online and all friends vectors
-	uuid_vec_t& online_friendsp = mOnlineFriendList->getIDs();
+	//uuid_vec_t& online_friendsp = mOnlineFriendList->getIDs();
 	uuid_vec_t& all_friendsp = mAllFriendList->getIDs();
 
 	all_friendsp.clear();
-	online_friendsp.clear();
+	//online_friendsp.clear();
 
 	uuid_vec_t buddies_uuids;
 	LLAvatarTracker::buddy_map_t::const_iterator buddies_iter;
@@ -761,28 +768,36 @@ void LLPanelPeople::updateFriendList()
 		LL_DEBUGS() << "No friends found" << LL_ENDL;
 	}
 
-	LLAvatarTracker::buddy_map_t::const_iterator buddy_it = all_buddies.begin();
+	/*LLAvatarTracker::buddy_map_t::const_iterator buddy_it = all_buddies.begin();
 	for (; buddy_it != all_buddies.end(); ++buddy_it)
 	{
 		LLUUID buddy_id = buddy_it->first;
 		if (av_tracker.isBuddyOnline(buddy_id))
 			online_friendsp.push_back(buddy_id);
-	}
+	}*/
 
 	/*
 	 * Avatarlists  will be hidden by showFriendsAccordionsIfNeeded(), if they do not have items.
 	 * But avatarlist can be updated only if it is visible @see LLAvatarList::draw();   
 	 * So we need to do force update of lists to avoid inconsistency of data and view of avatarlist. 
 	 */
-	mOnlineFriendList->setDirty(true, !mOnlineFriendList->filterHasMatches());// do force update if list do NOT have items
+	//mOnlineFriendList->setDirty(true, !mOnlineFriendList->filterHasMatches());// do force update if list do NOT have items
 	mAllFriendList->setDirty(true, !mAllFriendList->filterHasMatches());
 	//update trash and other buttons according to a selected item
 	updateButtons();
-	updateSuggestedFriendList();
-	showFriendsAccordionsIfNeeded();
+
+	//BD - Make sure we sort the list again after it is done loading incase it got mixed up.
+	ESortOrder order;
+	if(gSavedSettings.getU32("FriendsSortOrder"))
+		order = E_SORT_BY_STATUS;
+	else
+		order = E_SORT_BY_NAME;
+	setSortOrder(mAllFriendList, order);
+	//updateSuggestedFriendList();
+	//showFriendsAccordionsIfNeeded();
 }
 
-bool LLPanelPeople::updateSuggestedFriendList()
+/*bool LLPanelPeople::updateSuggestedFriendList()
 {
 	const LLAvatarTracker& av_tracker = LLAvatarTracker::instance();
 	uuid_vec_t& suggested_friends = mSuggestedFriends->getIDs();
@@ -810,7 +825,7 @@ bool LLPanelPeople::updateSuggestedFriendList()
 	showFriendsAccordionsIfNeeded();
 
 	return false;
-}
+}*/
 
 void LLPanelPeople::updateNearbyList()
 {
@@ -835,7 +850,7 @@ void LLPanelPeople::updateRecentList()
 	mRecentList->setDirty();
 }
 
-bool LLPanelPeople::onConnectedToFacebook(const LLSD& data)
+/*bool LLPanelPeople::onConnectedToFacebook(const LLSD& data)
 {
 	LLSD::Integer connection_state = data.get("enum").asInteger();
 
@@ -849,9 +864,9 @@ bool LLPanelPeople::onConnectedToFacebook(const LLSD& data)
 	};
 
 	return false;
-}
+}*/
 
-void LLPanelPeople::updateFacebookList(bool visible)
+/*void LLPanelPeople::updateFacebookList(bool visible)
 {
 	if (visible)
 	{
@@ -878,11 +893,14 @@ void LLPanelPeople::updateFacebookList(bool visible)
 		LLEventPumps::instance().obtain("FacebookConnectState").stopListening("LLPanelPeople");
 		LLEventPumps::instance().obtain("FacebookConnectContent").stopListening("LLPanelPeople");
 	}
-}
+}*/
 
 void LLPanelPeople::updateButtons()
 {
 	std::string cur_tab		= getActiveTabName();
+// [RLVa:KB] - Checked: 2013-05-06 (RLVa-1.4.9)
+	bool nearby_tab_active = (cur_tab == NEARBY_TAB_NAME);
+// [/RLVa:KB]
 	bool friends_tab_active = (cur_tab == FRIENDS_TAB_NAME);
 	bool group_tab_active	= (cur_tab == GROUP_TAB_NAME);
 	//bool recent_tab_active	= (cur_tab == RECENT_TAB_NAME);
@@ -902,8 +920,11 @@ void LLPanelPeople::updateButtons()
 
 		LLPanel* groups_panel = mTabContainer->getCurrentPanel();
 		groups_panel->getChildView("minus_btn")->setEnabled(item_selected && selected_id.notNull()); // a real group selected
-		groups_panel->getChild<LLUICtrl>("groupcount")->setTextArg("[COUNT]", llformat("%d",gAgent.mGroups.size()));
-		groups_panel->getChild<LLUICtrl>("groupcount")->setTextArg("[REMAINING]", llformat("%d",(gMaxAgentGroups-gAgent.mGroups.size())));
+
+		U32 groups_count = gAgent.mGroups.size();
+		U32 groups_ramaining = gMaxAgentGroups > groups_count ? gMaxAgentGroups - groups_count : 0;
+		groups_panel->getChild<LLUICtrl>("groupcount")->setTextArg("[COUNT]", llformat("%d", groups_count));
+		groups_panel->getChild<LLUICtrl>("groupcount")->setTextArg("[REMAINING]", llformat("%d", groups_ramaining));
 	}
 	else
 	{
@@ -920,9 +941,12 @@ void LLPanelPeople::updateButtons()
 		LLPanel* cur_panel = mTabContainer->getCurrentPanel();
 		if (cur_panel)
 		{
+// [RLVa:KB] - Checked: 2010-07-20 (RLVa-1.2.2a) | Added: RLVa-1.2.0h
 			if (cur_panel->hasChild("add_friend_btn", TRUE))
-				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self);
-
+				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self && ((!nearby_tab_active) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))));
+// [/RLBa:KB]
+//			if (cur_panel->hasChild("add_friend_btn", TRUE))
+//				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self);
 			if (friends_tab_active)
 			{
 				cur_panel->getChildView("friends_del_btn")->setEnabled(multiple_selected);
@@ -934,6 +958,13 @@ void LLPanelPeople::updateButtons()
 			}
 		}
 	}
+
+// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.2a) | Modified: RLVa-1.2.0d
+	if ( (nearby_tab_active) && (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) )
+	{
+		item_selected = multiple_selected = false;
+	}
+// [/RLBa:KB]
 }
 
 std::string LLPanelPeople::getActiveTabName() const
@@ -947,10 +978,10 @@ LLUUID LLPanelPeople::getCurrentItemID() const
 
 	if (cur_tab == FRIENDS_TAB_NAME) // this tab has two lists
 	{
-		LLUUID cur_online_friend;
+		//LLUUID cur_online_friend;
 
-		if ((cur_online_friend = mOnlineFriendList->getSelectedUUID()).notNull())
-			return cur_online_friend;
+		//if ((cur_online_friend = mOnlineFriendList->getSelectedUUID()).notNull())
+		//	return cur_online_friend;
 
 		return mAllFriendList->getSelectedUUID();
 	}
@@ -978,7 +1009,7 @@ void LLPanelPeople::getCurrentItemIDs(uuid_vec_t& selected_uuids) const
 	if (cur_tab == FRIENDS_TAB_NAME)
 	{
 		// friends tab has two lists
-		mOnlineFriendList->getSelectedUUIDs(selected_uuids);
+		//mOnlineFriendList->getSelectedUUIDs(selected_uuids);
 		mAllFriendList->getSelectedUUIDs(selected_uuids);
 	}
 	else if (cur_tab == NEARBY_TAB_NAME)
@@ -1045,7 +1076,8 @@ void LLPanelPeople::setSortOrder(LLAvatarList* list, ESortOrder order, bool save
 	{
 		std::string setting;
 
-		if (list == mAllFriendList || list == mOnlineFriendList)
+		//if (list == mAllFriendList || list == mOnlineFriendList)
+		if (list == mAllFriendList)
 			setting = "FriendsSortOrder";
 		else if (list == mRecentList)
 			setting = "RecentPeopleSortOrder";
@@ -1084,25 +1116,25 @@ void LLPanelPeople::onFilterEdit(const std::string& search_string)
 	else if (cur_tab == FRIENDS_TAB_NAME)
 	{
 		// store accordion tabs opened/closed state before any manipulation with accordion tabs
-		if (!saved_filter.empty())
+		/*if (!saved_filter.empty())
         {
             notifyChildren(LLSD().with("action","store_state"));
-        }
+        }*/
 
-		mOnlineFriendList->setNameFilter(filter);
+		//mOnlineFriendList->setNameFilter(filter);
 		mAllFriendList->setNameFilter(filter);
-		mSuggestedFriends->setNameFilter(filter);
+		//mSuggestedFriends->setNameFilter(filter);
 
-        setAccordionCollapsedByUser("tab_online", false);
-        setAccordionCollapsedByUser("tab_all", false);
-		setAccordionCollapsedByUser("tab_suggested_friends", false);
-        showFriendsAccordionsIfNeeded();
+        //setAccordionCollapsedByUser("tab_online", false);
+        //setAccordionCollapsedByUser("tab_all", false);
+		//setAccordionCollapsedByUser("tab_suggested_friends", false);
+        //showFriendsAccordionsIfNeeded();
 
 		// restore accordion tabs state _after_ all manipulations
-		if(saved_filter.empty())
+		/*if(saved_filter.empty())
         {
             notifyChildren(LLSD().with("action","restore_state"));
-        }
+        }*/
     }
 	else if (cur_tab == GROUP_TAB_NAME)
 	{
@@ -1114,16 +1146,31 @@ void LLPanelPeople::onFilterEdit(const std::string& search_string)
 	}
 }
 
+void LLPanelPeople::onGroupLimitInfo()
+{
+	LLSD args;
+	args["MAX_BASIC"] = BASE_MAX_AGENT_GROUPS;
+	args["MAX_PREMIUM"] = PREMIUM_MAX_AGENT_GROUPS;
+	LLNotificationsUtil::add("GroupLimitInfo", args);
+}
+
 void LLPanelPeople::onTabSelected(const LLSD& param)
 {
 	std::string tab_name = getChild<LLPanel>(param.asString())->getName();
 	updateButtons();
 
-	showFriendsAccordionsIfNeeded();
+	//showFriendsAccordionsIfNeeded();
 }
 
 void LLPanelPeople::onAvatarListDoubleClicked(LLUICtrl* ctrl)
 {
+// [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
+	if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && (NEARBY_TAB_NAME == getActiveTabName()) )
+	{
+		return;
+	}
+// [/RLVa:KB]
+
 	LLAvatarListItem* item = dynamic_cast<LLAvatarListItem*>(ctrl);
 	if(!item)
 	{
@@ -1152,15 +1199,15 @@ void LLPanelPeople::onAvatarListCommitted(LLAvatarList* list)
 		mMiniMap->setSelected(selected_uuids);
 	} else
 	// Make sure only one of the friends lists (online/all) has selection.
-	if (getActiveTabName() == FRIENDS_TAB_NAME)
+	/*if (getActiveTabName() == FRIENDS_TAB_NAME)
 	{
 		if (list == mOnlineFriendList)
 			mAllFriendList->resetSelection(true);
-		else if (list == mAllFriendList)
+		if (list == mAllFriendList)
 			mOnlineFriendList->resetSelection(true);
 		else
 			llassert(0 && "commit on unknown friends list");
-	}
+	}*/
 
 	updateButtons();
 }
@@ -1249,6 +1296,13 @@ void LLPanelPeople::onGearButtonClicked(LLUICtrl* btn)
 
 void LLPanelPeople::onImButtonClicked()
 {
+// [RLVa:KB] - Checked: 2014-03-31 (Catznip-3.6)
+	if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && (NEARBY_TAB_NAME == getActiveTabName()) )
+	{
+		return;
+	}
+// [/RLVa:KB]
+
 	uuid_vec_t selected_uuids;
 	getCurrentItemIDs(selected_uuids);
 	if ( selected_uuids.size() == 1 )
@@ -1310,20 +1364,15 @@ void LLPanelPeople::onFriendsViewSortMenuItemClicked(const LLSD& userdata)
 	{
 		setSortOrder(mAllFriendList, E_SORT_BY_STATUS);
 	}
-	else if (chosen_item == "view_icons")
-	{
-		mAllFriendList->toggleIcons();
-		mOnlineFriendList->toggleIcons();
-	}
 	else if (chosen_item == "view_permissions")
 	{
 		bool show_permissions = !gSavedSettings.getBOOL("FriendsListShowPermissions");
 		gSavedSettings.setBOOL("FriendsListShowPermissions", show_permissions);
 
 		mAllFriendList->showPermissions(show_permissions);
-		mOnlineFriendList->showPermissions(show_permissions);
+		//mOnlineFriendList->showPermissions(show_permissions);
 	}
-	}
+}
 
 void LLPanelPeople::onGroupsViewSortMenuItemClicked(const LLSD& userdata)
 {
@@ -1346,10 +1395,6 @@ void LLPanelPeople::onNearbyViewSortMenuItemClicked(const LLSD& userdata)
 	else if (chosen_item == "sort_name")
 	{
 		setSortOrder(mNearbyList, E_SORT_BY_NAME);
-	}
-	else if (chosen_item == "view_icons")
-	{
-		mNearbyList->toggleIcons();
 	}
 	else if (chosen_item == "sort_distance")
 	{
@@ -1383,10 +1428,6 @@ void LLPanelPeople::onRecentViewSortMenuItemClicked(const LLSD& userdata)
 	else if (chosen_item == "sort_name")
 	{
 		setSortOrder(mRecentList, E_SORT_BY_NAME);
-	}
-	else if (chosen_item == "view_icons")
-	{
-		mRecentList->toggleIcons();
 	}
 }
 
@@ -1474,7 +1515,7 @@ void LLPanelPeople::showAccordion(const std::string name, bool show)
 	}
 }
 
-void LLPanelPeople::showFriendsAccordionsIfNeeded()
+/*void LLPanelPeople::showFriendsAccordionsIfNeeded()
 {
 	if(FRIENDS_TAB_NAME == getActiveTabName())
 	{
@@ -1492,9 +1533,9 @@ void LLPanelPeople::showFriendsAccordionsIfNeeded()
 		// keep help text in a synchronization with accordions visibility.
 		updateFriendListHelpText();
 	}
-}
+}*/
 
-void LLPanelPeople::onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param)
+/*void LLPanelPeople::onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param)
 {
 	if(ctrl == mOnlineFriendList)
 	{
@@ -1504,7 +1545,7 @@ void LLPanelPeople::onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param
 	{
 		showAccordion("tab_all", param.asInteger());
 	}
-}
+}*/
 
 void LLPanelPeople::setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed)
 {

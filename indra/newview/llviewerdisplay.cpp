@@ -78,6 +78,10 @@
 #include "llwaterparammanager.h"
 #include "llpostprocess.h"
 #include "llscenemonitor.h"
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
+#include "rlvhandler.h"
+#include "rlvlocks.h"
+// [/RLVa:KB]
 
 extern LLPointer<LLViewerTexture> gStartTexture;
 extern bool gShiftFrame;
@@ -115,7 +119,6 @@ void swap();
 void render_hud_attachments();
 void render_ui_3d();
 void render_ui_2d();
-void render_disconnected_background();
 
 void display_startup()
 {
@@ -396,7 +399,6 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		LL_RECORD_BLOCK_TIME(FTM_TELEPORT_DISPLAY);
 		LLAppViewer::instance()->pingMainloopTimeout("Display:Teleport");
 		static LLCachedControl<F32> teleport_arrival_delay(gSavedSettings, "TeleportArrivalDelay");
-		static LLCachedControl<F32> teleport_local_delay(gSavedSettings, "TeleportLocalDelay");
 
 		S32 attach_count = 0;
 		if (isAgentAvatarValid())
@@ -481,11 +483,8 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			// Short delay when teleporting in the same sim (progress screen active but not shown - did not
 			// fall-through from TELEPORT_START)
 			{
-				if( gTeleportDisplayTimer.getElapsedTimeF32() > teleport_local_delay() )
-				{
-					//LLFirstUse::useTeleport();
-					gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
-				}
+				//LLFirstUse::useTeleport();
+				gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
 			}
 			break;
 
@@ -959,15 +958,6 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			}
 			
 			gGL.setColorMask(true, true);
-
-			//store this frame's modelview matrix for use
-			//when rendering next frame's occlusion queries
-			for (U32 i = 0; i < 16; i++)
-			{
-				gGLLastModelView[i] = gGLModelView[i];
-				gGLLastProjection[i] = gGLProjection[i];
-			}
-			stop_glerror();
 		}
 
 		{
@@ -1016,6 +1006,15 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		{
 			gPipeline.renderDeferredLighting();
 		}
+
+		//store this frame's modelview matrix for use
+		//when rendering next frame's occlusion queries
+		for (U32 i = 0; i < 16; i++)
+		{
+			gGLLastModelView[i] = gGLModelView[i];
+			gGLLastProjection[i] = gGLProjection[i];
+		}
+		stop_glerror();
 
 		LLPipeline::sUnderWaterRender = FALSE;
 
@@ -1073,7 +1072,11 @@ void render_hud_attachments()
 	glh::matrix4f current_mod = glh_get_current_modelview();
 
 	// clamp target zoom level to reasonable values
-	gAgentCamera.mHUDTargetZoom = llclamp(gAgentCamera.mHUDTargetZoom, 0.1f, 1.f);
+//	gAgentCamera.mHUDTargetZoom = llclamp(gAgentCamera.mHUDTargetZoom, 0.1f, 1.f);
+// [RLVa:KB] - Checked: 2010-08-22 (RLVa-1.2.1a) | Modified: RLVa-1.0.0c
+	gAgentCamera.mHUDTargetZoom = llclamp(gAgentCamera.mHUDTargetZoom, (!gRlvAttachmentLocks.hasLockedHUD()) ? 0.1f : 0.85f, 1.f);
+// [/RLVa:KB]
+
 	// smoothly interpolate current zoom level
 	gAgentCamera.mHUDCurZoom = lerp(gAgentCamera.mHUDCurZoom, gAgentCamera.mHUDTargetZoom, LLSmoothInterpolation::getInterpolant(0.03f));
 
@@ -1304,10 +1307,6 @@ void render_ui(F32 zoom_factor, int subfield)
 			{
 				render_ui_3d();
 				LLGLState::checkStates();
-			}
-			else
-			{
-				render_disconnected_background();
 			}
 
 			render_ui_2d();
@@ -1562,90 +1561,6 @@ void render_ui_2d()
 
 	// reset current origin for font rendering, in case of tiling render
 	LLFontGL::sCurOrigin.set(0, 0);
-}
-
-void render_disconnected_background()
-{
-	if (LLGLSLShader::sNoFixedFunction)
-	{
-		gUIProgram.bind();
-	}
-
-	gGL.color4f(1,1,1,1);
-	if (!gDisconnectedImagep && gDisconnected)
-	{
-		LL_INFOS() << "Loading last bitmap..." << LL_ENDL;
-
-		std::string temp_str;
-		temp_str = gDirUtilp->getLindenUserDir() + gDirUtilp->getDirDelimiter() + SCREEN_LAST_FILENAME;
-
-		LLPointer<LLImageBMP> image_bmp = new LLImageBMP;
-		if( !image_bmp->load(temp_str) )
-		{
-			//LL_INFOS() << "Bitmap load failed" << LL_ENDL;
-			return;
-		}
-		
-		LLPointer<LLImageRaw> raw = new LLImageRaw;
-		if (!image_bmp->decode(raw, 0.0f))
-		{
-			LL_INFOS() << "Bitmap decode failed" << LL_ENDL;
-			gDisconnectedImagep = NULL;
-			return;
-		}
-
-		U8 *rawp = raw->getData();
-		S32 npixels = (S32)image_bmp->getWidth()*(S32)image_bmp->getHeight();
-		for (S32 i = 0; i < npixels; i++)
-		{
-			S32 sum = 0;
-			sum = *rawp + *(rawp+1) + *(rawp+2);
-			sum /= 3;
-			*rawp = ((S32)sum*6 + *rawp)/7;
-			rawp++;
-			*rawp = ((S32)sum*6 + *rawp)/7;
-			rawp++;
-			*rawp = ((S32)sum*6 + *rawp)/7;
-			rawp++;
-		}
-
-		
-		raw->expandToPowerOfTwo();
-		gDisconnectedImagep = LLViewerTextureManager::getLocalTexture(raw.get(), FALSE );
-		gStartTexture = gDisconnectedImagep;
-		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-	}
-
-	// Make sure the progress view always fills the entire window.
-	S32 width = gViewerWindow->getWindowWidthScaled();
-	S32 height = gViewerWindow->getWindowHeightScaled();
-
-	if (gDisconnectedImagep)
-	{
-		LLGLSUIDefault gls_ui;
-		gViewerWindow->setup2DRender();
-		gGL.pushMatrix();
-		{
-			// scale ui to reflect UIScaleFactor
-			// this can't be done in setup2DRender because it requires a
-			// pushMatrix/popMatrix pair
-			const LLVector2& display_scale = gViewerWindow->getDisplayScale();
-			gGL.scalef(display_scale.mV[VX], display_scale.mV[VY], 1.f);
-
-			gGL.getTexUnit(0)->bind(gDisconnectedImagep);
-			gGL.color4f(1.f, 1.f, 1.f, 1.f);
-			gl_rect_2d_simple_tex(width, height);
-			gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-		}
-		gGL.popMatrix();
-	}
-	gGL.flush();
-
-	if (LLGLSLShader::sNoFixedFunction)
-	{
-		gUIProgram.unbind();
-	}
-
 }
 
 void display_cleanup()

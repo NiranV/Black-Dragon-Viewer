@@ -15,7 +15,7 @@
     layout="topleft"
     left="20"
     name="item_icon"
-    top="2"
+    top="3"
     width="16" />
   <item_name
     follows="left|right"
@@ -42,11 +42,12 @@
      name="btn_add"
      layout="topleft"
      follows="top|right"
-     image_overlay="AddItem_Off"
-     top="0"
+     image_unselected="AddItem_Off"
+     image_selected="AddItem_Off"
+     top="3"
      left="0"
-     height="23"
-     width="23"
+     height="18"
+     width="18"
      tab_stop="false"
      tool_tip="Add more items of this type" />
 </dummy_clothing_list_item>

@@ -99,6 +99,9 @@ public:
 		 */
 		Optional<bool>						use_ellipses;
 
+		//BD - Toggle for jump buttons.
+		Optional<bool>						use_jump_buttons;
+
 		/**
 		 * Use LLCustomButtonIconCtrl or LLButton in LLTabTuple
 		 */
@@ -280,9 +283,8 @@ private:
 
 	BOOL							mIsVertical;
 
-	// Horizontal specific
-	LLButton*						mJumpPrevArrowBtn;
-	LLButton*						mJumpNextArrowBtn;
+	//BD - Toggle for jump buttons.
+	BOOL							mUseJumpButtons;
 
 	S32								mRightTabBtnOffset; // Extra room to the right of the tab buttons.
 

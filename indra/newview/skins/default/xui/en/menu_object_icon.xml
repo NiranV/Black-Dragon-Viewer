@@ -42,4 +42,14 @@
          function="ObjectIcon.Action"
          parameter="teleport" />
     </menu_item_call>
+    
+    <menu_item_separator
+       layout="topleft" />
+  <menu_item_call
+   label="Copy Object UUID"
+   name="CopyUUID"
+   enabled="true">
+   <menu_item_call.on_click
+      function="Object.GetUUID" />
+   </menu_item_call>
 </menu>

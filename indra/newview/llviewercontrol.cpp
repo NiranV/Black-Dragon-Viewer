@@ -68,13 +68,18 @@
 #include "llrender.h"
 #include "llnavigationbar.h"
 #include "llfloatertools.h"
+#include "llfloatersnapshot.h"
 #include "llpaneloutfitsinventory.h"
 #include "llpanellogin.h"
-#include "llpaneltopinfobar.h"
 #include "llspellcheck.h"
 #include "llslurl.h"
 #include "llstartup.h"
 #include "llupdaterservice.h"
+
+//BD - Includes we need for special features
+#include "llappviewer.h"
+#include "llenvmanager.h"
+#include "lltoolfocus.h"
 
 // Third party library includes
 #include <boost/algorithm/string.hpp>
@@ -90,8 +95,10 @@ LLControlGroup gSavedSettings("Global");	// saved at end of session
 LLControlGroup gSavedPerAccountSettings("PerAccount"); // saved at end of session
 LLControlGroup gCrashSettings("CrashSettings");	// saved at end of session
 LLControlGroup gWarningSettings("Warnings"); // persists ignored dialogs/warnings
+LLControlGroup gControlSettings("Controls"); //BD - Customizable Controls
 
 std::string gLastRunVersion;
+std::vector<LLAnimPauseRequest>	mAvatarPauseHandles;
 
 extern BOOL gResizeScreenTexture;
 extern BOOL gDebugGL;
@@ -536,6 +543,33 @@ bool handleSpellCheckChanged()
 	return true;
 }
 
+bool toggle_freeze_world(const LLSD& newvalue)
+{
+	if ( newvalue.asBoolean() )
+	{
+		// freeze all avatars
+		LLCharacter* avatarp;
+		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+			iter != LLCharacter::sInstances.end(); ++iter)
+		{
+			avatarp = *iter;
+			mAvatarPauseHandles.push_back(avatarp->requestPause());
+		}
+
+		// freeze everything else
+		gSavedSettings.setBOOL("FreezeTime", TRUE);
+	}
+	else // turning off freeze world mode, either temporarily or not.
+	{
+		// thaw all avatars
+		mAvatarPauseHandles.clear();
+
+		// thaw everything else
+		gSavedSettings.setBOOL("FreezeTime", FALSE);
+	}
+	return true;
+}
+
 bool toggle_agent_pause(const LLSD& newvalue)
 {
 	if ( newvalue.asBoolean() )
@@ -559,16 +593,6 @@ bool toggle_show_navigation_panel(const LLSD& newvalue)
 	return true;
 }
 
-bool toggle_show_mini_location_panel(const LLSD& newvalue)
-{
-	bool value = newvalue.asBoolean();
-
-	LLPanelTopInfoBar::getInstance()->setVisible(value);
-	gSavedSettings.setBOOL("ShowNavbarNavigationPanel", !value);
-
-	return true;
-}
-
 bool toggle_show_object_render_cost(const LLSD& newvalue)
 {
 	LLFloaterTools::sShowObjectCost = newvalue.asBoolean();
@@ -588,6 +612,81 @@ void toggle_updater_service_active(const LLSD& new_value)
     }
 }
 
+//BD
+/////////////////////////////////////////////////////////////////////////////
+
+//BD - Make attached lights and particles available everywhere without extra coding
+static bool handleRenderAttachedLightsChanged(const LLSD& newvalue)
+{
+	LLPipeline::sRenderAttachedLights = gSavedSettings.getBOOL("RenderAttachedLights");
+	return true;
+}
+
+static bool handleRenderAttachedParticlesChanged(const LLSD& newvalue)
+{
+	LLPipeline::sRenderAttachedParticles = gSavedSettings.getBOOL("RenderAttachedParticles");
+	return true;
+}
+
+//BD - Always-on Mouse-steering
+static bool handleMouseSteeringChanged(const LLSD&)
+{
+	//BD - Whenever steering is off and we trigger this we will
+	//     show the cursor here because it would be too hacky in camera
+	//     cpp itself
+	if(!gSavedSettings.getBOOL("EnableThirdPersonSteering"))
+	{
+		LLToolCamera::getInstance()->setMouseCapture(FALSE);
+		gViewerWindow->showCursor();
+	}
+
+	return true;
+}
+
+//BD - Change control scheme on the fly
+bool handleKeyboardLayoutChanged(const LLSD& newvalue)
+{
+	LLAppViewer::loadKeyboardlayout();
+	return true;
+}
+
+//BD - Give UseEnvironmentFromRegion a purpose and make it able to
+//     switch between Region/Fixed Windlight from everywhere via UI
+static bool handleUseRegioLight(const LLSD& newvalue)
+{
+	LLEnvManagerNew& envmgr = LLEnvManagerNew::instance();
+	gSavedSettings.setBOOL("UseEnvironmentFromRegion" , newvalue.asBoolean());
+	bool fixed = gSavedSettings.getBOOL("UseEnvironmentFromRegion");
+	if (fixed)
+		envmgr.setUseRegionSettings(true);
+	else
+		envmgr.setUseRegionSettings(false);
+	return true;
+}
+
+static bool handleTerrainScaleChanged(const LLSD& inputvalue)
+{
+	LLSD newvalue = 1.f / inputvalue.asReal();
+	LLDrawPoolTerrain::sDetailScale = newvalue.asReal();
+	return true;
+}
+
+static bool handleWaterResolutionChanged(const LLSD& newvalue)
+{
+	gPipeline.handleReflectionChanges();
+	return true;
+}
+
+static bool handleTimeFactorChanged(const LLSD& newvalue)
+{
+	if (gSavedSettings.getBOOL("SlowMotionAnimation"))
+	{
+		gAgentAvatarp->setAnimTimeFactor(gSavedSettings.getF32("SlowMotionTimeFactor"));
+	}
+	return true;
+}
+//BD
+
 ////////////////////////////////////////////////////////////////////////////
 
 void settings_setup_listeners()
@@ -605,14 +704,14 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderAvatarVP")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("VertexShaderEnable")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderUIBuffer")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
-	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
+	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderFSAASamples")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderSpecularResX")->getSignal()->connect(boost::bind(&handleLUTBufferChanged, _2));
 	gSavedSettings.getControl("RenderSpecularResY")->getSignal()->connect(boost::bind(&handleLUTBufferChanged, _2));
 	gSavedSettings.getControl("RenderSpecularExponent")->getSignal()->connect(boost::bind(&handleLUTBufferChanged, _2));
 	gSavedSettings.getControl("RenderAnisotropic")->getSignal()->connect(boost::bind(&handleAnisotropicChanged, _2));
-	gSavedSettings.getControl("RenderShadowResolutionScale")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
-	gSavedSettings.getControl("RenderGlow")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
+	gSavedSettings.getControl("RenderShadowResolution")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderGlow")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderGlowResolutionPow")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderAvatarCloth")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
@@ -732,8 +831,6 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("QAMode")->getSignal()->connect(boost::bind(&show_debug_menus));
 	gSavedSettings.getControl("UseDebugMenus")->getSignal()->connect(boost::bind(&show_debug_menus));
 	gSavedSettings.getControl("AgentPause")->getSignal()->connect(boost::bind(&toggle_agent_pause, _2));
-	gSavedSettings.getControl("ShowNavbarNavigationPanel")->getSignal()->connect(boost::bind(&toggle_show_navigation_panel, _2));
-	gSavedSettings.getControl("ShowMiniLocationPanel")->getSignal()->connect(boost::bind(&toggle_show_mini_location_panel, _2));
 	gSavedSettings.getControl("ShowObjectRenderingCost")->getSignal()->connect(boost::bind(&toggle_show_object_render_cost, _2));
 	gSavedSettings.getControl("UpdaterServiceSetting")->getSignal()->connect(boost::bind(&toggle_updater_service_active, _2));
 	gSavedSettings.getControl("ForceShowGrid")->getSignal()->connect(boost::bind(&handleForceShowGrid, _2));
@@ -741,6 +838,25 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("SpellCheck")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));
 	gSavedSettings.getControl("SpellCheckDictionary")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));
 	gSavedSettings.getControl("LoginLocation")->getSignal()->connect(boost::bind(&handleLoginLocationChanged));
+	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
+	
+//	//BD - Special Debugs and handles
+	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
+	gSavedSettings.getControl("ShooterKeyLayout")->getSignal()->connect(boost::bind(&handleKeyboardLayoutChanged, _2));
+	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
+	gSavedSettings.getControl("RenderTerrainScale")->getSignal()->connect(boost::bind(&handleTerrainScaleChanged, _2));
+	gSavedSettings.getControl("RenderWaterRefResolution")->getSignal()->connect(boost::bind(&handleWaterResolutionChanged, _2));
+	gSavedSettings.getControl("RenderAttachedLights")->getSignal()->connect(boost::bind(&handleRenderAttachedLightsChanged, _2));
+	gSavedSettings.getControl("RenderAttachedParticles")->getSignal()->connect(boost::bind(&handleRenderAttachedParticlesChanged, _2));
+	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
+	gSavedSettings.getControl("RenderGodraysDirectional")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderNormalMapScale")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
+	gSavedSettings.getControl("RenderProjectorShadowResolution")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
+	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
+	gSavedSettings.getControl("RenderShadowType")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
+//	//BD
 }
 
 #if TEST_CACHED_CONTROL

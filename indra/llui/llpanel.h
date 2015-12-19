@@ -77,7 +77,8 @@ public:
 								bg_opaque_image_overlay,
 								bg_alpha_image_overlay;
 		// opaque image is for "panel in foreground" look
-		Optional<LLUIImage*>	bg_opaque_image,
+		Optional<LLUIImage*>	bg_shadow_image,
+								bg_opaque_image,
 								bg_alpha_image;
 
 		Optional<S32>			min_width,
@@ -139,6 +140,7 @@ public:
 	const LLColor4& getTransparentColor() const { return mBgAlphaColor; }
 	void			setBackgroundImage(LLUIImage* image) { mBgOpaqueImage = image; }
 	void			setTransparentImage(LLUIImage* image) { mBgAlphaImage = image; }
+	LLPointer<LLUIImage> getShadowImage() const { return mBgShadowImage; }
 	LLPointer<LLUIImage> getBackgroundImage() const { return mBgOpaqueImage; }
 	LLPointer<LLUIImage> getTransparentImage() const { return mBgAlphaImage; }
 	LLColor4		getBackgroundImageOverlay() { return mBgOpaqueImageOverlay; }
@@ -243,6 +245,7 @@ private:
 	LLUIColor		mBgAlphaColor;
 	LLUIColor		mBgOpaqueImageOverlay;
 	LLUIColor		mBgAlphaImageOverlay;
+	LLPointer<LLUIImage> mBgShadowImage;
 	LLPointer<LLUIImage> mBgOpaqueImage;	// "panel in front" look
 	LLPointer<LLUIImage> mBgAlphaImage;		// "panel in back" look
 	LLViewBorder*	mBorder;

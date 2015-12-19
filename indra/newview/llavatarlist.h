@@ -51,12 +51,12 @@ public:
 	{
 		Optional<bool>	ignore_online_status, // show all items as online
 						show_last_interaction_time, // show most recent interaction time. *HACK: move this to a derived class
-						show_info_btn,
-						show_profile_btn,
 						show_speaking_indicator,
 						show_permissions_granted;
 		Params();
 	};
+
+	typedef boost::signals2::signal<std::string(const LLUUID&)> extra_data_signal_t;
 
 	LLAvatarList(const Params&);
 	virtual	~LLAvatarList();
@@ -76,12 +76,10 @@ public:
 	void setSessionID(const LLUUID& session_id) { mSessionID = session_id; }
 	const LLUUID& getSessionID() { return mSessionID; }
 
-	void toggleIcons();
 	void setSpeakingIndicatorsVisible(bool visible);
+	void setShowExtraInformation(bool visible);
 	void showPermissions(bool visible);
 	void sortByName();
-	void setShowIcons(std::string param_name);
-	bool getIconsVisible() const { return mShowIcons; }
 	const std::string getIconParamName() const{return mIconParamName;}
 	virtual BOOL handleRightMouseDown(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL handleMouseDown( S32 x, S32 y, MASK mask );
@@ -91,9 +89,18 @@ public:
 	// Return true if filter has at least one match.
 	bool filterHasMatches();
 
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+	void setRlvCheckShowNames(bool fRlvCheckShowNames) { mRlvCheckShowNames = fRlvCheckShowNames; }
+	// We need this to be public since we call it from RlvUIEnabler::onToggleShowNames()
+	void updateAvatarNames();
+// [/RLVa:KB]
+
 	boost::signals2::connection setRefreshCompleteCallback(const commit_signal_t::slot_type& cb);
 
 	boost::signals2::connection setItemDoubleClickCallback(const mouse_signal_t::slot_type& cb);
+
+	boost::signals2::connection setExtraDataCallback(const extra_data_signal_t::slot_type& cb);
+	void setExtraDataUpdatePeriod(F32 period);
 
 	virtual S32 notifyParent(const LLSD& info);
 
@@ -108,10 +115,11 @@ protected:
 		const uuid_vec_t& vnew,
 		uuid_vec_t& vadded,
 		uuid_vec_t& vremoved);
-	void updateLastInteractionTimes();	
+	void updateLastInteractionTimes();
+	void updateExtraData();
 	void rebuildNames();
 	void onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
-	void updateAvatarNames();
+//	void updateAvatarNames();
 
 private:
 
@@ -121,13 +129,15 @@ private:
 	bool mShowLastInteractionTime;
 	bool mDirty;
 	bool mNeedUpdateNames;
-	bool mShowIcons;
-	bool mShowInfoBtn;
-	bool mShowProfileBtn;
+	bool mShowExtraInformation;
 	bool mShowSpeakingIndicator;
 	bool mShowPermissions;
+	F32 mExtraDataUpdatePeriod;
+// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
+	bool mRlvCheckShowNames;
+// [/RLVa:KB]
 
-	LLTimer*				mLITUpdateTimer; // last interaction time update timer
+	LLTimer*                mExtraDataUpdateTimer;
 	std::string				mIconParamName;
 	std::string				mNameFilter;
 	uuid_vec_t				mIDs;
@@ -137,6 +147,7 @@ private:
 
 	commit_signal_t mRefreshCompleteSignal;
 	mouse_signal_t mItemDoubleClickSignal;
+	extra_data_signal_t mExtraDataSignal;
 };
 
 /** Abstract comparator for avatar items */

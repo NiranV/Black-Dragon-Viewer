@@ -3,6 +3,7 @@
  bottom="825"
  layout="topleft"
  name="Popup"
+ mouse_opaque="false"
  visible="false">
     <menu_item_call
      label="Teleport"

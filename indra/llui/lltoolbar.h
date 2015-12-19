@@ -113,6 +113,9 @@ namespace LLToolBarEnums
 	{
 		BTNTYPE_ICONS_WITH_TEXT = 0,
 		BTNTYPE_ICONS_ONLY,
+		BTNTYPE_ICONS_SMALL,
+		BTNTYPE_ICONS_MINI,
+		BTNTYPE_TEXT_ONLY,
 
 		BTNTYPE_COUNT
 	};
@@ -131,11 +134,13 @@ namespace LLToolBarEnums
 		TOOLBAR_LEFT,
 		TOOLBAR_RIGHT,
 		TOOLBAR_BOTTOM,
+//		//BD - Top Toolbar
+		TOOLBAR_TOP,
 
 		TOOLBAR_COUNT,
 
 		TOOLBAR_FIRST = TOOLBAR_LEFT,
-		TOOLBAR_LAST = TOOLBAR_BOTTOM,
+		TOOLBAR_LAST = TOOLBAR_TOP,
 	};
 
 	LLView::EOrientation getOrientation(SideType sideType);
@@ -192,7 +197,10 @@ public:
 		Mandatory<LLToolBarEnums::SideType>		side;
 
 		Optional<LLToolBarButton::Params>		button_icon,
-												button_icon_and_text;
+												button_icon_and_text,
+												button_icon_small,
+												button_icon_mini,
+												button_text;
 
 		Optional<bool>							read_only,
 												wrap;

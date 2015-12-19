@@ -64,8 +64,6 @@ public:
 
 	/*virtual*/ BOOL postBuild();
 
-	/*virtual*/ void reshape(S32 width, S32 height, BOOL called_from_parent = TRUE);
-
 	/*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
 
 	/**
@@ -150,10 +148,6 @@ protected:
 
 protected:
 
-	S32						mScrollingPanelMinHeight;
-	S32						mScrollingPanelWidth;
-	LLScrollContainer*		mScrollContainer;
-	LLPanel*				mScrollingPanel;
 	LLTextureCtrl*			mSnapshotCtrl;
 
 	LLUUID mAvatarId;

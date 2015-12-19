@@ -1,4 +1,4 @@
-/** 
+/**
  * @file llpanellogin.h
  * @brief Login username entry fields.
  *
@@ -49,7 +49,13 @@ public:
 				void *callback_data);
 	~LLPanelLogin();
 
+	virtual BOOL handleKeyHere(KEY key, MASK mask);
+	virtual void draw();
 	virtual void setFocus( BOOL b );
+
+	// Show the XUI first name, last name, and password widgets.  They are
+	// hidden on startup for reg-in-client
+	static void showLoginWidgets();
 
 	static void show(const LLRect &rect,
 		void (*callback)(S32 option, void* user_data), 
@@ -61,35 +67,21 @@ public:
 
 	static BOOL areCredentialFieldsDirty();
 	static void setLocation(const LLSLURL& slurl);
-	static void autologinToLocation(const LLSLURL& slurl);
-	
-	/// Call when preferences that control visibility may have changed
-	static void updateLocationSelectorsVisibility();
 
 	static void closePanel();
 
-	void setSiteIsAlive( bool alive );
-
-	void showLoginWidgets();
-
 	static void loadLoginPage();	
 	static void giveFocus();
-	static void setAlwaysRefresh(bool refresh); 
 	
 	// inherited from LLViewerMediaObserver
-	/*virtual*/ void handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
 	static void updateServer();  // update the combo box, change the login page to the new server, clear the combo
 
 	/// to be called from LLStartUp::setStartSLURL
 	static void onUpdateStartSLURL(const LLSLURL& new_start_slurl);
 
-	// called from prefs when initializing panel
-	static bool getShowFavorites();
-
 private:
 	friend class LLPanelLoginListener;
 	void addFavoritesToStartLocation();
-	void addUsersWithFavoritesToUsername();
 	void onSelectServer();
 	void onLocationSLURL();
 
@@ -97,28 +89,24 @@ private:
 	static void onClickNewAccount(void*);
 	static void onClickVersion(void*);
 	static void onClickForgotPassword(void*);
-	static void onClickHelp(void*);
 	static void onPassKey(LLLineEditor* caller, void* user_data);
 	static void updateServerCombo();
 
-private:
-	boost::scoped_ptr<LLPanelLoginListener> mListener;
+	//BD
+	static void onClickQuit(void*);
 
-	void updateLoginButtons();
+private:
+	LLPointer<LLUIImage> mLogoImage;
+	boost::scoped_ptr<LLPanelLoginListener> mListener;
 
 	void			(*mCallback)(S32 option, void *userdata);
 	void*			mCallbackData;
 
 	BOOL            mPasswordModified;
-	bool			mShowFavorites;
 
 	static LLPanelLogin* sInstance;
 	static BOOL		sCapslockDidNotification;
-	bool			mFirstLoginThisInstall;
 
-	unsigned int mUsernameLength;
-	unsigned int mPasswordLength;
-	unsigned int mLocationLength;
 };
 
 #endif

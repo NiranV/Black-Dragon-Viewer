@@ -52,6 +52,9 @@ extern LLControlGroup gSavedSettings;
 extern LLControlGroup gSavedPerAccountSettings;
 extern LLControlGroup gWarningSettings;
 
+//BD - Customizable Controls
+extern LLControlGroup gControlSettings;
+
 // Saved at end of session
 extern LLControlGroup gCrashSettings;
 

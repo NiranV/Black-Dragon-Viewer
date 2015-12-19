@@ -68,7 +68,6 @@ void LLPanelSnapshot::onOpen(const LLSD& key)
 	S32 old_format = gSavedSettings.getS32("SnapshotFormat");
 	S32 new_format = (S32) getImageFormat();
 
-	gSavedSettings.setS32("SnapshotFormat", new_format);
 	setCtrlsEnabled(true);
 
 	// Switching panels will likely change image format.
@@ -158,7 +157,7 @@ void LLPanelSnapshot::updateImageQualityLevel()
 	getChild<LLTextBox>("image_quality_level")->setTextArg("[QLVL]", quality_lvl);
 }
 
-void LLPanelSnapshot::goBack()
+void LLPanelSnapshot::cancel()
 {
 	LLSideTrayPanelContainer* parent = getParentContainer();
 	if (parent)
@@ -166,11 +165,6 @@ void LLPanelSnapshot::goBack()
 		parent->openPreviousPanel();
 		parent->getCurrentPanel()->onOpen(LLSD());
 	}
-}
-
-void LLPanelSnapshot::cancel()
-{
-	goBack();
 	LLFloaterSnapshot::getInstance()->notify(LLSD().with("set-ready", true));
 }
 

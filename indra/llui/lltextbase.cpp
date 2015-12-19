@@ -37,6 +37,7 @@
 #include "lltextparser.h"
 #include "lltextutil.h"
 #include "lltooltip.h"
+#include "lltrans.h"
 #include "lluictrl.h"
 #include "llurlaction.h"
 #include "llurlregistry.h"
@@ -506,7 +507,7 @@ void LLTextBase::drawCursor()
 				text_color = segmentp->getColor();
 				fontp = segmentp->getStyle()->getFont();
 				fontp->render(text, mCursorPos, cursor_rect, 
-					LLColor4(1.f - text_color.mV[VRED], 1.f - text_color.mV[VGREEN], 1.f - text_color.mV[VBLUE], alpha),
+					LLColor4(text_color.mV[VRED],text_color.mV[VGREEN],text_color.mV[VBLUE], alpha),
 					LLFontGL::LEFT, mVAlign,
 					LLFontGL::NORMAL,
 					LLFontGL::NO_SHADOW,
@@ -1939,11 +1940,17 @@ void LLTextBase::createUrlContextMenu(S32 x, S32 y, const std::string &in_url)
 	registrar.add("Url.OpenExternal", boost::bind(&LLUrlAction::openURLExternal, url));
 	registrar.add("Url.Execute", boost::bind(&LLUrlAction::executeSLURL, url));
 	registrar.add("Url.Block", boost::bind(&LLUrlAction::blockObject, url));
+	registrar.add("Url.Mute", boost::bind(&LLUrlAction::blockAvatar, url));
 	registrar.add("Url.Teleport", boost::bind(&LLUrlAction::teleportToLocation, url));
 	registrar.add("Url.ShowProfile", boost::bind(&LLUrlAction::showProfile, url));
+	registrar.add("Url.SendIM", boost::bind(&LLUrlAction::sendIM, url));
+	registrar.add("Url.VoiceCall", boost::bind(&LLUrlAction::callVoice, url));
+	registrar.add("Url.SendTeleport", boost::bind(&LLUrlAction::sendTeleport, url));
+	registrar.add("Url.Share", boost::bind(&LLUrlAction::share, url));
+	registrar.add("Url.Pay", boost::bind(&LLUrlAction::pay, url));
+	registrar.add("Url.Map", boost::bind(&LLUrlAction::showOnMap, url));
 	registrar.add("Url.AddFriend", boost::bind(&LLUrlAction::addFriend, url));
 	registrar.add("Url.RemoveFriend", boost::bind(&LLUrlAction::removeFriend, url));
-	registrar.add("Url.SendIM", boost::bind(&LLUrlAction::sendIM, url));
 	registrar.add("Url.ShowOnMap", boost::bind(&LLUrlAction::showLocationOnMap, url));
 	registrar.add("Url.CopyLabel", boost::bind(&LLUrlAction::copyLabelToClipboard, url));
 	registrar.add("Url.CopyUrl", boost::bind(&LLUrlAction::copyURLToClipboard, url));
@@ -2061,27 +2068,33 @@ void LLTextBase::appendTextImpl(const std::string &new_text, const LLStyle::Para
 
 			// add icon before url if need
 			LLTextUtil::processUrlMatch(&match, this, isContentTrusted() || match.isTrusted());
+			if ((isContentTrusted() || match.isTrusted()) && !match.getIcon().empty() )
+			{
+				setLastSegmentToolTip(LLTrans::getString("TooltipSLIcon"));
+			}
 
 			// output the styled Url
 			appendAndHighlightTextImpl(match.getLabel(), part, link_params, match.underlineOnHoverOnly());
+			bool tooltip_required =  !match.getTooltip().empty();
 
-			// show query part of url with gray color only for LLUrlEntryHTTP and LLUrlEntryHTTPNoProtocol url entries
+			// set the tooltip for the Url label
+			if (tooltip_required)
+			{
+				setLastSegmentToolTip(match.getTooltip());
+			}
+
+			// show query part of url with gray color only for LLUrlEntryHTTP url entries
 			std::string label = match.getQuery();
 			if (label.size())
 			{
 				link_params.color = LLColor4::grey;
 				link_params.readonly_color = LLColor4::grey;
 				appendAndHighlightTextImpl(label, part, link_params, match.underlineOnHoverOnly());
-			}
-			
-			// set the tooltip for the Url label
-			if (! match.getTooltip().empty())
-			{
-				segment_set_t::iterator it = getSegIterContaining(getLength()-1);
-				if (it != mSegments.end())
+
+				// set the tooltip for the query part of url
+				if (tooltip_required)
 				{
-					LLTextSegmentPtr segment = *it;
-					segment->setToolTip(match.getTooltip());
+					setLastSegmentToolTip(match.getTooltip());
 				}
 			}
 
@@ -2105,6 +2118,16 @@ void LLTextBase::appendTextImpl(const std::string &new_text, const LLStyle::Para
 	else
 	{
 		appendAndHighlightText(new_text, part, style_params);
+	}
+}
+
+void LLTextBase::setLastSegmentToolTip(const std::string &tooltip)
+{
+	segment_set_t::iterator it = getSegIterContaining(getLength()-1);
+	if (it != mSegments.end())
+	{
+		LLTextSegmentPtr segment = *it;
+		segment->setToolTip(tooltip);
 	}
 }
 
@@ -3556,6 +3579,22 @@ S32	 LLImageTextSegment::getNumChars(S32 num_pixels, S32 segment_offset, S32 lin
 	}
 
 	return 0;
+}
+
+BOOL LLImageTextSegment::handleToolTip(S32 x, S32 y, MASK mask)
+{
+	if (!mTooltip.empty())
+	{
+		LLToolTipMgr::instance().show(mTooltip);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+void LLImageTextSegment::setToolTip(const std::string& tooltip)
+{
+	mTooltip = tooltip;
 }
 
 F32	LLImageTextSegment::draw(S32 start, S32 end, S32 selection_start, S32 selection_end, const LLRect& draw_rect)

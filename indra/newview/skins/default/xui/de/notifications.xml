@@ -2494,7 +2494,7 @@ Von einer Webseite zu diesem Formular linken, um anderen leichten Zugang zu dies
 		Betreff: [SUBJECT], Nachricht: [MESSAGE]
 	</notification>
 	<notification name="FriendOnlineOffline">
-		&lt;nolink&gt;[NAME]&lt;/nolink&gt; ist [STATUS]
+		[NAME] ist [STATUS]
 	</notification>
 	<notification name="AddSelfFriend">
 		Obwohl Sie ein sehr netter Mensch sind, können Sie sich nicht selbst als Freund hinzufügen.
@@ -2801,9 +2801,6 @@ Versuchen Sie es in einigen Minuten erneut.
 	</notification>
 	<notification name="NoValidCircuit">
 		Kein gültiger Verbindungscode.
-	</notification>
-	<notification name="NoValidTimestamp">
-		Kein gültiger Zeitstempel.
 	</notification>
 	<notification name="NoPendingConnection">
 		Verbindung kann nicht hergestellt werden.

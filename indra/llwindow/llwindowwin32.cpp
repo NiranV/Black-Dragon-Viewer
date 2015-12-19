@@ -42,6 +42,7 @@
 #include "llgl.h"
 #include "llstring.h"
 #include "lldir.h"
+#include "llsdutil.h"
 #include "llglslshader.h"
 
 // System includes
@@ -702,6 +703,39 @@ void LLWindowWin32::restore()
 	SetFocus(mWindowHandle);
 }
 
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-04-13 (Catznip-2.1.2a) | Added: Catznip-2.0.0a
+BOOL LLWindowWin32::getFullscreenWindow()
+{
+	return (mWindowHandle) && (~GetWindowLong(mWindowHandle, GWL_STYLE) & WS_OVERLAPPEDWINDOW);
+}
+
+void LLWindowWin32::setFullscreenWindow(BOOL fFullscreen)
+{
+	if (getFullscreenWindow() == fFullscreen)
+		return;
+
+	DWORD dwStyle = GetWindowLong(mWindowHandle, GWL_STYLE);
+	if (fFullscreen)
+	{
+		HMONITOR hMonitor = MonitorFromWindow(mWindowHandle, MONITOR_DEFAULTTONULL);
+		MONITORINFO infoMonitor = { sizeof(infoMonitor) };
+		if ((GetWindowPlacement(mWindowHandle, &mRestoredPlacement)) && (hMonitor) && (GetMonitorInfo(hMonitor, &infoMonitor)))
+		{
+			SetWindowLong(mWindowHandle, GWL_STYLE, dwStyle & ~WS_OVERLAPPEDWINDOW);
+			SetWindowPos(mWindowHandle, HWND_TOP,
+				infoMonitor.rcMonitor.left, infoMonitor.rcMonitor.top,
+				infoMonitor.rcMonitor.right - infoMonitor.rcMonitor.left, infoMonitor.rcMonitor.bottom - infoMonitor.rcMonitor.top,
+				SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+		}
+	}
+	else
+	{
+		SetWindowLong(mWindowHandle, GWL_STYLE, dwStyle | WS_OVERLAPPEDWINDOW);
+		SetWindowPlacement(mWindowHandle, &mRestoredPlacement);
+		SetWindowPos(mWindowHandle, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+	}
+}
+// [/SL:KB]
 
 // close() destroys all OS-specific code associated with a window.
 // Usually called from LLWindowManager::destroyWindow()
@@ -832,6 +866,32 @@ BOOL LLWindowWin32::getPosition(LLCoordScreen *position)
 	return TRUE;
 }
 
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
+BOOL LLWindowWin32::getRestoredPosition(LLCoordScreen *position)
+{
+	if ((!mWindowHandle) || (!position))
+		return FALSE;
+
+	RECT* prctWindow = NULL;
+	if (getFullscreenWindow())
+	{
+		prctWindow = &mRestoredPlacement.rcNormalPosition;
+	}
+	else
+	{
+		WINDOWPLACEMENT wp;
+		wp.length = sizeof(WINDOWPLACEMENT);
+		if (!GetWindowPlacement(mWindowHandle, &wp))
+			return FALSE;
+		prctWindow = &wp.rcNormalPosition;
+	}
+
+	position->mX = prctWindow->left;
+	position->mY = prctWindow->top;
+	return TRUE;
+}
+// [/SL:KB]
+
 BOOL LLWindowWin32::getSize(LLCoordScreen *size)
 {
 	RECT window_rect;
@@ -847,6 +907,32 @@ BOOL LLWindowWin32::getSize(LLCoordScreen *size)
 	size->mY = window_rect.bottom - window_rect.top;
 	return TRUE;
 }
+
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
+BOOL LLWindowWin32::getRestoredSize(LLCoordScreen *size)
+{
+	if ((!mWindowHandle) || (!size))
+		return FALSE;
+
+	RECT* prctWindow = NULL;
+	if (getFullscreenWindow())
+	{
+		prctWindow = &mRestoredPlacement.rcNormalPosition;
+	}
+	else
+	{
+		WINDOWPLACEMENT wp;
+		wp.length = sizeof(WINDOWPLACEMENT);
+		if (!GetWindowPlacement(mWindowHandle, &wp))
+			return FALSE;
+		prctWindow = &wp.rcNormalPosition;
+	}
+
+	size->mX = prctWindow->right - prctWindow->left;
+	size->mY = prctWindow->bottom - prctWindow->top;
+	return TRUE;
+}
+// [/SL:KB]
 
 BOOL LLWindowWin32::getSize(LLCoordWindow *size)
 {
@@ -2068,6 +2154,9 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
 			window_imp->mKeyCharCode = 0; // don't know until wm_char comes in next
 			window_imp->mKeyScanCode = ( l_param >> 16 ) & 0xff;
 			window_imp->mKeyVirtualKey = w_param;
+			window_imp->mRawMsg = u_msg;
+			window_imp->mRawWParam = w_param;
+			window_imp->mRawLParam = l_param;
 
 			window_imp->mCallbacks->handlePingWatchdog(window_imp, "Main:WM_KEYDOWN");
 			{
@@ -2090,6 +2179,9 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
 		{
 			window_imp->mKeyScanCode = ( l_param >> 16 ) & 0xff;
 			window_imp->mKeyVirtualKey = w_param;
+			window_imp->mRawMsg = u_msg;
+			window_imp->mRawWParam = w_param;
+			window_imp->mRawLParam = l_param;
 
 			window_imp->mCallbacks->handlePingWatchdog(window_imp, "Main:WM_KEYUP");
 			LL_RECORD_BLOCK_TIME(FTM_KEYHANDLER);
@@ -2177,6 +2269,9 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
 
 		case WM_CHAR:
 			window_imp->mKeyCharCode = w_param;
+			window_imp->mRawMsg = u_msg;
+			window_imp->mRawWParam = w_param;
+			window_imp->mRawLParam = l_param;
 
 			// Should really use WM_UNICHAR eventually, but it requires a specific Windows version and I need
 			// to figure out how that works. - Doug
@@ -2292,6 +2387,7 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
 					sHandleLeftMouseUp = true;
 					break;
 				}
+				sHandleDoubleClick = true;
 
 				//if (gDebugClicks)
 				//{
@@ -3238,6 +3334,9 @@ LLSD LLWindowWin32::getNativeKeyData()
 
 	result["scan_code"] = (S32)mKeyScanCode;
 	result["virtual_key"] = (S32)mKeyVirtualKey;
+	result["msg"] = ll_sd_from_U32(mRawMsg);
+	result["w_param"] = ll_sd_from_U32(mRawWParam);
+	result["l_param"] = ll_sd_from_U32(mRawLParam);
 
 	return result;
 }

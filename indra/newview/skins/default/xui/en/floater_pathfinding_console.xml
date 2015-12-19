@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
     positioning="cascading"
+    background_color="FloaterDefaultBackgroundColor"
     can_tear_off="false"
     height="498"
     layout="topleft"
     name="floater_pathfinding_console"
-    help_topic="floater_pathfinding_console"
     reuse_instance="true"
     save_rect="true"
     single_instance="true"

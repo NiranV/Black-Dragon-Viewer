@@ -110,4 +110,17 @@
        <on_click function="AvatarIcon.Action" parameter="mute_unmute" />
        <on_check function="AvatarIcon.Check" parameter="is_muted" />   
   </menu_item_check>
+    <menu_item_separator layout="topleft" name="copy_avatar_separator"/>
+    <menu_item_call
+     label="Copy Avatar UUID"
+     layout="topleft"
+     name="CopyUUID">
+      <on_click function="AvatarIcon.Action" parameter="get_uuid" />
+    </menu_item_call>
+    <menu_item_call
+     label="Copy Avatar SLURL"
+     layout="topleft"
+     name="CopySLURL">
+      <on_click function="AvatarIcon.Action" parameter="get_slurl" />
+    </menu_item_call>
 </menu>

@@ -93,7 +93,6 @@ public:
 	void setSortOrder(const LLConversationSort& order);
 	virtual void onTearOffClicked();
 	void updateGearBtn();
-	void initBtns();
 	virtual void updateMessages() {}
 	LLConversationItem* getCurSelectedViewModelItem();
 	void forceReshape();

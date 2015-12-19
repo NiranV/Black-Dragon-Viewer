@@ -4,15 +4,14 @@
   bevel_style="none"
   border_style="line"
   can_resize="true"
-  height="582"
+ height="520"
   layout="topleft"
   min_height="271"
-  min_width="328"
+ min_width="472"
   name="script ed float"
-  help_topic="script_ed_float"
   save_rect="true"
   title="SCRIPT: NEW SCRIPT"
-  width="508">
+  width="510">
   <floater.string
     name="not_allowed">
     You can not view or edit this script, since it has been set as &quot;no copy&quot;. You need full permissions to view or edit a script inside an object.
@@ -47,27 +46,27 @@
   </floater.string>
   <panel
     bevel_style="none"
-     
     border_style="line"
     follows="left|top|right|bottom"
     height="499"
     layout="topleft"
     left="10"
     name="script ed panel"
-    top="16"
+     top="15"
     width="501" />
   <button
-    follows="left|bottom"
+     follows="right|bottom"
     height="23"
     label="Reset"
+     top_pad="-26"
     label_selected="Reset"
     layout="topleft"
     name="Reset"
-    left="10"
-    width="85" />
+     right="-173"
+     width="81" />
   <check_box
-    left_delta="90"
-    top_delta="3"
+     left="7"
+     top_pad="-44"
     enabled="false"
     follows="left|bottom"
     font="SansSerif"
@@ -76,9 +75,10 @@
     label="Running"
     layout="topleft"
     name="running"
-    width="205" />
+     width="105" />
   <check_box
-    left_delta="140"
+     left_pad="0"
+     top_delta="0"
     enabled="true"
     follows="left|bottom"
     font="SansSerif"
@@ -87,12 +87,12 @@
     label="Mono"
     layout="topleft"
     name="mono"
-    width="100" />
-  <check_box width="130"
-             height="21"
+    width="105" />
+  <check_box width="115"
+             height="18"
              enabled="false"
-             left="9"
-             top_pad="10"
+             left_pad="0"
+             top_delta="0"
              layout="topleft"
              follows="bottom|left"
              label="Use Experience:"
@@ -100,19 +100,19 @@
   <combo_box
     label=""
     top_pad="-21"
-    left="149"
-    right="467"
+    left_pad="0"
+    right="-33"
     layout="topleft"
     follows="left|bottom|right"
-    visible="false"
+    visible="true"
     name="Experiences..."/>
   <button label="&gt;"
           name="view_profile"
           height="23"
           width="23"
-          right="496"
+          left_pad="1"
           layout="topleft"
-          top_pad="-23"
+          top_delta="0"
           follows="right"
-          visible="false"/>
+          visible="true"/>
 </floater>

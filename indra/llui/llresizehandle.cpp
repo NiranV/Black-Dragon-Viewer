@@ -57,10 +57,6 @@ LLResizeHandle::LLResizeHandle(const LLResizeHandle::Params& p)
 	mMinHeight( p.min_height ),
 	mCorner( p.corner )
 {
-	if( RIGHT_BOTTOM == mCorner)
-	{
-		mImage = LLUI::getUIImage("Resize_Corner");
-	}
 	switch( p.corner )
 	{
 		case LEFT_TOP:		setFollows( FOLLOWS_LEFT | FOLLOWS_TOP );		break;

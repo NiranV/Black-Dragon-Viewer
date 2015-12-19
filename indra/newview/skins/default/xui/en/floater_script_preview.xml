@@ -5,9 +5,8 @@
  height="570"
  layout="topleft"
  min_height="271"
- min_width="290"
+ min_width="350"
  name="preview lsl text"
- help_topic="preview_lsl_text"
  save_rect="true"
  title="SCRIPT: ROTATION SCRIPT"
  width="508">
@@ -40,10 +39,10 @@
      font="SansSerif"
      height="19"
      layout="topleft"
-     left="13"
+     left="10"
      name="desc txt"
-     top="19"
-     width="80">
+     top="22"
+     width="100">
         Description:
     </text>
     <line_editor
@@ -53,9 +52,9 @@
      font="SansSerif"
      height="19"
      layout="topleft"
-     left_delta="80"
+     left_pad="0"
      max_length_bytes="127"
      name="desc"
      top_delta="0"
-     width="394" />
+     width="387" />
 </floater>

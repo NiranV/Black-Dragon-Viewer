@@ -1937,24 +1937,43 @@ void LLFloater::draw()
 
 void	LLFloater::drawShadow(LLPanel* panel)
 {
-	S32 left = LLPANEL_BORDER_WIDTH;
-	S32 top = panel->getRect().getHeight() - LLPANEL_BORDER_WIDTH;
-	S32 right = panel->getRect().getWidth() - LLPANEL_BORDER_WIDTH;
-	S32 bottom = LLPANEL_BORDER_WIDTH;
-
-	static LLUICachedControl<S32> shadow_offset_S32 ("DropShadowFloater", 0);
+	LLUIImage* image = getShadowImage();
 	static LLUIColor shadow_color_cached = LLUIColorTable::instance().getColor("ColorDropShadow");
 	LLColor4 shadow_color = shadow_color_cached;
-	F32 shadow_offset = (F32)shadow_offset_S32;
 
-	if (!panel->isBackgroundOpaque())
+	S32 left, top, right, bottom;
+	if(image != NULL)
 	{
-		shadow_offset *= 0.2f;
-		shadow_color.mV[VALPHA] *= 0.5f;
+		//BD - If we have a custom shadow image, use that one.
+		left = -16;
+		top = panel->getRect().getHeight() + 10;
+		right = panel->getRect().getWidth() + 14;
+		bottom = -12;
+
+		LLRect rect = LLRect(left,top,right,bottom);
+
+		image->draw(rect, shadow_color);
 	}
-	gl_drop_shadow(left, top, right, bottom, 
-		shadow_color % getCurrentTransparency(),
+	else
+	{
+		//BD - Otherwise use the normal gl_drop_shadow.
+		left = LLPANEL_BORDER_WIDTH;
+		top = panel->getRect().getHeight() - LLPANEL_BORDER_WIDTH;
+		right = panel->getRect().getWidth() - LLPANEL_BORDER_WIDTH;
+		bottom = LLPANEL_BORDER_WIDTH;
+
+		static LLUICachedControl<S32> shadow_offset_S32 ("DropShadowFloater", 0);
+		F32 shadow_offset = (F32)shadow_offset_S32;
+
+		/*if (!panel->isBackgroundOpaque())
+		{
+			shadow_offset *= 0.2f;
+			shadow_color.mV[VALPHA] *= 0.5f;
+		}*/
+		gl_drop_shadow(left, top, right, bottom, 
+			shadow_color % getCurrentTransparency(),
 		ll_round(shadow_offset));
+	}
 }
 
 void LLFloater::updateTransparency(LLView* view, ETypeTransparency transparency_type)
@@ -2811,6 +2830,8 @@ void LLFloaterView::adjustToFitScreen(LLFloater* floater, BOOL allow_partial_out
 	S32 delta_left = mToolbarLeftRect.notEmpty() ? mToolbarLeftRect.mRight - floater_rect.mRight : 0;
 	S32 delta_bottom = mToolbarBottomRect.notEmpty() ? mToolbarBottomRect.mTop - floater_rect.mTop : 0;
 	S32 delta_right = mToolbarRightRect.notEmpty() ? mToolbarRightRect.mLeft - floater_rect.mLeft : 0;
+	S32 delta_top = mToolbarTopRect.notEmpty() ? mToolbarTopRect.mBottom - floater_rect.mBottom : 0;
+
 
 	// move window fully onscreen
 	if (floater->translateIntoRect( snap_in_toolbars ? getSnapRect() : gFloaterView->getRect(), allow_partial_outside ? FLOATER_MIN_VISIBLE_PIXELS : S32_MAX ))
@@ -2828,6 +2849,10 @@ void LLFloaterView::adjustToFitScreen(LLFloater* floater, BOOL allow_partial_out
 	else if (delta_right < 0 && floater_rect.mTop < mToolbarRightRect.mTop	&& floater_rect.mBottom > mToolbarRightRect.mBottom)
 	{
 		floater->translate(delta_right, 0);
+	}
+	else if (delta_top < 0 && floater_rect.mLeft < mToolbarTopRect.mLeft	&& floater_rect.mRight > mToolbarTopRect.mRight)
+	{
+		floater->translate(0, delta_top);
 	}
 }
 
@@ -3036,6 +3061,9 @@ void LLFloaterView::setToolbarRect(LLToolBarEnums::EToolBarLocation tb, const LL
 		break;
 	case LLToolBarEnums::TOOLBAR_RIGHT:
 		mToolbarRightRect = toolbar_rect;
+		break;
+	case LLToolBarEnums::TOOLBAR_TOP:
+		mToolbarTopRect = toolbar_rect;
 		break;
 	default:
 		LL_WARNS() << "setToolbarRect() passed odd toolbar number " << (S32) tb << LL_ENDL;

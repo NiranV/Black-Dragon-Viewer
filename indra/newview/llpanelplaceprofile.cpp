@@ -48,10 +48,17 @@
 #include "llcallbacklist.h"
 #include "llbuycurrencyhtml.h"
 #include "llslurl.h"
-#include "llstatusbar.h"
+#include "llsidepanelinventory.h"
+#include "llfloatersidepanelcontainer.h"
+#include "lltabcontainer.h"
 #include "llviewercontrol.h"
 #include "llviewerparcelmgr.h"
 #include "llviewerregion.h"
+// [RLVa:KB] - Checked: 2010-09-02 (RLVa-1.2.1b)
+#include "rlvhandler.h"
+// [/RLVa:KB]
+
+const F64 COVENANT_REFRESH_TIME_SEC = 60.0f;
 
 static LLPanelInjector<LLPanelPlaceProfile> t_place_profile("panel_place_profile");
 
@@ -76,6 +83,7 @@ static std::string icon_see_avs_off;
 
 LLPanelPlaceProfile::LLPanelPlaceProfile()
 :	LLPanelPlaceInfo(),
+	mNextCovenantUpdateTime(0),
 	mForSalePanel(NULL),
 	mYouAreHerePanel(NULL),
 	mSelectedParcelID(-1),
@@ -162,6 +170,9 @@ BOOL LLPanelPlaceProfile::postBuild()
 	icon_see_avs_on = getString("icon_SeeAVs_On");
 	icon_see_avs_off = getString("icon_SeeAVs_Off");
 
+	mLastSelectedRegionID = LLUUID::null;
+	mNextCovenantUpdateTime = 0;
+
 	return TRUE;
 }
 
@@ -169,6 +180,9 @@ BOOL LLPanelPlaceProfile::postBuild()
 void LLPanelPlaceProfile::resetLocation()
 {
 	LLPanelPlaceInfo::resetLocation();
+
+	mLastSelectedRegionID = LLUUID::null;
+	mNextCovenantUpdateTime = 0;
 
 	mForSalePanel->setVisible(FALSE);
 	mYouAreHerePanel->setVisible(FALSE);
@@ -228,7 +242,7 @@ void LLPanelPlaceProfile::setInfoType(EInfoType type)
 	getChild<LLTextBox>("owner_label")->setVisible(is_info_type_agent);
 	mParcelOwner->setVisible(is_info_type_agent);
 
-	getChild<LLAccordionCtrl>("advanced_info_accordion")->setVisible(is_info_type_agent);
+	getChild<LLTabContainer>("advanced_info_tab")->setVisible(is_info_type_agent);
 
 	// If we came from search we want larger description area, approx. 10 lines (see STORM-1311).
 	// Don't use the maximum available space because that leads to nasty artifacts
@@ -330,13 +344,20 @@ void LLPanelPlaceProfile::displaySelectedParcelInfo(LLParcel* parcel,
 	if (!region || !parcel)
 		return;
 
-	// send EstateCovenantInfo message
-	LLMessageSystem *msg = gMessageSystem;
-	msg->newMessage("EstateCovenantRequest");
-	msg->nextBlockFast(_PREHASH_AgentData);
-	msg->addUUIDFast(_PREHASH_AgentID,	gAgent.getID());
-	msg->addUUIDFast(_PREHASH_SessionID,gAgent.getSessionID());
-	msg->sendReliable(region->getHost());
+	if (mLastSelectedRegionID != region->getRegionID()
+		|| mNextCovenantUpdateTime < LLTimer::getElapsedSeconds())
+	{
+		// send EstateCovenantInfo message
+		// Note: LLPanelPlaceProfile doesn't change Covenant's content and any
+		// changes made by Estate floater should be requested by Estate floater
+		LLMessageSystem *msg = gMessageSystem;
+		msg->newMessage("EstateCovenantRequest");
+		msg->nextBlockFast(_PREHASH_AgentData);
+		msg->addUUIDFast(_PREHASH_AgentID,	gAgent.getID());
+		msg->addUUIDFast(_PREHASH_SessionID,gAgent.getSessionID());
+		msg->sendReliable(region->getHost());
+		mNextCovenantUpdateTime = LLTimer::getElapsedSeconds() + COVENANT_REFRESH_TIME_SEC;
+	}
 
 	LLParcelData parcel_data;
 
@@ -596,7 +617,10 @@ void LLPanelPlaceProfile::displaySelectedParcelInfo(LLParcel* parcel,
 	mLastSelectedRegionID = region->getRegionID();
 	LLPanelPlaceInfo::processParcelInfo(parcel_data);
 
-	mYouAreHerePanel->setVisible(is_current_parcel);
+//	mYouAreHerePanel->setVisible(is_current_parcel);
+// [RLVa:KB] - Checked: 2010-09-02 (RLVa-1.4.5) | Added: RLVa-1.2.1
+	mYouAreHerePanel->setVisible(is_current_parcel && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)));
+// [/RLVa:KB]
 	getChild<LLAccordionCtrlTab>("sales_tab")->setVisible(for_sale);
 }
 
@@ -627,7 +651,8 @@ void LLPanelPlaceProfile::onForSaleBannerClick()
 		{
 			S32 price = parcel->getSalePrice();
 
-			if(price - gStatusBar->getBalance() > 0)
+			LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+			if(price - sidepanel_inventory->getBalance() > 0)
 			{
 				LLStringUtil::format_map_t args;
 				args["AMOUNT"] = llformat("%d", price);
@@ -663,6 +688,9 @@ void LLPanelPlaceProfile::updateYouAreHereBanner(void* userdata)
 		BOOL display_banner = gAgent.getRegion()->getRegionID() == self->mLastSelectedRegionID &&
 										LLAgentUI::checkAgentDistance(self->mPosRegion, radius);
 
-		self->mYouAreHerePanel->setVisible(display_banner);
+//		self->mYouAreHerePanel->setVisible(display_banner);
+// [RLVa:KB] - Checked: 2010-09-02 (RLVa-1.4.5) | Added: RLVa-1.2.1
+		self->mYouAreHerePanel->setVisible(display_banner && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)));
+// [/RLVa:KB]
 	}
 }

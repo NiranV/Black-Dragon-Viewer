@@ -2,10 +2,9 @@
 <texture_picker border_color="DefaultHighlightLight"
                 name="texture picker"
                 mouse_opaque="true"
-                follows="left|top"
-                >
+                follows="left|top" >
   <multiselect_text font="SansSerifSmall"/>
-  <caption_text text="Multiple" 
+  <caption_text value="Multiple" 
                 halign="center" 
                 font="SansSerifSmall"
                 v_pad="2"/>

@@ -1,99 +1,108 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="Text-Chat" name="chat">
-	<panel name="general_chat_settings">
-		<check_box initial_value="true" label="Beim Chatten Tippanimation abspielen" name="play_typing_animation"/>
-		<check_box label="IMs per E-Mail zustellen, wenn ich offline bin" name="send_im_to_email"/>
-		<check_box label="Nur IMs und Anrufe von Freunden oder Gruppen durchstellen" name="voice_call_friends_only_check"/>
-		<text name="font_size">
-			Schriftgröße:
-		</text>
-		<combo_box name="chat_font_size">
-			<item label="Klein" name="Small" value="0"/>
-			<item label="Mittel" name="Medium" value="1"/>
-			<item label="Groß" name="Large" value="2"/>
-		</combo_box>
-		<check_box label="Blasen-Chat" name="bubble_text_chat"/>
-	</panel>
-	<panel name="im_notification_settings">
-		<text name="friend_ims">
-			IMs von Freunden:
-		</text>
-		<combo_box name="FriendIMOptions">
-			<item label="Unterhaltungsfenster öffnen" name="OpenConversationsWindow" value="openconversations"/>
-			<item label="Nachricht in Popup anzeigen" name="PopUpMessage" value="toast"/>
-			<item label="Flash-Symbolleistenschaltfläche" name="FlashToolbarButton" value="flash"/>
-			<item label="Keine Aktion" name="NoAction" value="noaction"/>
-		</combo_box>
-		<check_box label="Sound abspielen" name="play_sound_friend_im"/>
-		<text name="non_friend_ims">
-			IMs von anderen:
-		</text>
-		<combo_box name="NonFriendIMOptions">
-			<item label="Unterhaltungsfenster öffnen" name="OpenConversationsWindow" value="openconversations"/>
-			<item label="Nachricht in Popup anzeigen" name="PopUpMessage" value="toast"/>
-			<item label="Flash-Symbolleistenschaltfläche" name="FlashToolbarButton" value="flash"/>
-			<item label="Keine Aktion" name="NoAction" value="noaction"/>
-		</combo_box>
-		<check_box label="Sound abspielen" name="play_sound_non_friend_im"/>
-		<text name="conference_ims">
-			Konferenz-IMs:
-		</text>
-		<combo_box name="ConferenceIMOptions">
-			<item label="Unterhaltungsfenster öffnen" name="OpenConversationsWindow" value="openconversations"/>
-			<item label="Nachricht in Popup anzeigen" name="PopUpMessage" value="toast"/>
-			<item label="Flash-Symbolleistenschaltfläche" name="FlashToolbarButton" value="flash"/>
-			<item label="Keine Aktion" name="NoAction" value="noaction"/>
-		</combo_box>
-		<check_box label="Sound abspielen" name="play_sound_conference_im"/>
-		<text name="group_chat">
-			Gruppen-Chat:
-		</text>
-		<combo_box name="GroupChatOptions">
-			<item label="Unterhaltungsfenster öffnen" name="OpenConversationsWindow" value="openconversations"/>
-			<item label="Nachricht in Popup anzeigen" name="PopUpMessage" value="toast"/>
-			<item label="Flash-Symbolleistenschaltfläche" name="FlashToolbarButton" value="flash"/>
-			<item label="Keine Aktion" name="NoAction" value="noaction"/>
-		</combo_box>
-		<check_box label="Sound abspielen" name="play_sound_group_chat_im"/>
-		<text name="nearby_chat">
-			Chat in der Nähe:
-		</text>
-		<combo_box name="NearbyChatOptions">
-			<item label="Unterhaltungsfenster öffnen" name="OpenConversationsWindow" value="openconversations"/>
-			<item label="Nachricht in Popup anzeigen" name="PopUpMessage" value="toast"/>
-			<item label="Flash-Symbolleistenschaltfläche" name="FlashToolBarButton" value="flash"/>
-			<item label="Keine Aktion" name="NoAction" value="noaction"/>
-		</combo_box>
-		<check_box label="Sound abspielen" name="play_sound_nearby_chat_im"/>
-		<text name="object_ims">
-			IMs von Objekten:
-		</text>
-		<combo_box name="ObjectIMOptions">
-			<item label="Unterhaltungsfenster öffnen" name="OpenConversationsWindow" value="openconversations"/>
-			<item label="Nachricht in Popup anzeigen" name="PopUpMessage" value="toast"/>
-			<item label="Flash-Symbolleistenschaltfläche" name="FlashToolBarButton" value="flash"/>
-			<item label="Keine Aktion" name="NoAction" value="noaction"/>
-		</combo_box>
-		<check_box label="Sound abspielen" name="play_sound_object_im"/>
-		<text name="notifications_alert">
-			Um vorübergehend alle Benachrichtigungen zu stoppen, wählen Sie „Unterhalten“ &gt; „Nicht stören“.
-		</text>
-	</panel>
-	<panel name="play_sound_settings">
-		<text name="play_sound">
-			Sound abspielen:
-		</text>
-		<check_box label="Neue Unterhaltung" name="new_conversation"/>
-		<check_box label="Eingehender Anruf" name="incoming_voice_call"/>
-		<check_box label="Teleport-Angebot" name="teleport_offer"/>
-		<check_box label="Inventarangebot" name="inventory_offer"/>
-	</panel>
-	<panel name="log_settings">
-		<button label="Protokoll löschen..." name="clear_log"/>
-		<button label="Transkripte löschen..." name="delete_transcripts"/>
-		<button label="Durchsuchen..." label_selected="Durchblättern" name="log_path_button"/>
-	</panel>
-	<button label="Übersetzen..." name="ok_btn"/>
-	<button label="Automatisch ersetzen..." name="autoreplace_showgui"/>
-	<button label="Rechtschreibprüfung..." name="spellcheck_showgui"/>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<panel label="Text Chat" name="chat">
+     <text name="font_size">
+	     Schriftgröße:
+     </text>
+     <radio_group name="chat_font_size">
+	     <radio_item label="Klein" name="radio"/>
+	     <radio_item label="Mittel" name="radio2"/>
+	     <radio_item label="Groß" name="radio3"/>
+     </radio_group>
+     <text name="font_colors">
+	     Schriftfarben:
+     </text>
+     <color_swatch label="Sie" name="user"/>
+     <text name="text_box1">
+	     Ich
+     </text>
+     <color_swatch label="Andere" name="agent"/>
+     <text name="text_box2">
+	     Andere
+     </text>
+     <color_swatch label="IM" name="im"/>
+     <text name="text_box3">
+	     IM
+     </text>
+     <color_swatch label="System" name="system"/>
+     <text name="text_box4">
+	     System
+     </text>
+     <color_swatch label="Skriptfehler" name="script_error"/>
+     <text name="text_box5">
+	     Skriptfehler
+     </text>
+     <color_swatch label="Objekte" name="objects"/>
+     <text name="text_box6">
+	     Objekte
+     </text>
+     <color_swatch label="Eigentümer" name="owner"/>
+     <text name="text_box7">
+	     Eigentümer
+     </text>
+     <color_swatch label="URLs" name="links"/>
+     <text name="text_box9">
+	     URLs
+     </text>
+     <text name="text_box11">
+	     Direkt
+     </text>
+     <text name="text_box10">
+	     Blasenchat / Namensschilder
+     </text>
+     <text name="send_label">
+	     Nach gesendeter Chatnachricht:
+     </text>
+     <text name="chat_options_label">
+	     Chat Einstellungen:
+     </text>
+     <check_box label="Blasenchat" name="bubble_text_chat"/>
+     <slider label="Deckkraft" name="bubble_chat_opacity"/>
+     <check_box label="Chat deselektieren" name="CloseChatOnReturn"/>
+     <check_box label="Chat verstecken" name="AutohideChatbar"/>
+     <check_box label="Chat bei Fokusverlust immer verstecken" name="AlwaysAutohideChatBar"/>
+     <check_box initial_value="true" label="Beim Chatten Tippanimation abspielen" name="play_typing_animation"/>
+     <check_box label="Kompakten IM- und Text-Chatverlauf aktivieren" name="plain_text_chat_history"/>
+     <check_box label="OOC Chat automatisch schließen (mit '))')" name="AutoCloseOOC"/>
+     <check_box label="MU* Pose Stil in Chat und IM verwenden" name="AllowMUpose"/>
+     <check_box label="Script Fehler anzeigen in:" name="show_script_errors"/>
+     <radio_group name="show_location">
+	     <radio_item label="Lokalen Chat" name="0"/>
+	     <radio_item label="Eigenem Fenster" name="1"/>
+     </radio_group>
+     <check_box label="Übersetzen Chat" name="translate_chat_checkbox" />
+     <text name="translate_language_text">
+	     Chat-Sprache:
+     </text>
+     <combo_box name="translate_language_combobox" width="200">
+	     <combo_box.item name="System Default Language" label="Betriebssystem-Einstellung" />
+	     <combo_box.item name="English" label="English (Englisch)" />
+	     <combo_box.item name="Danish" label="Danks (Dänisch)" />
+	     <combo_box.item name="German" label="Deutsch" />
+	     <combo_box.item name="Spanish" label="Español (Spanisch)" />
+	     <combo_box.item name="French" label="Français (Französisch)" />
+	     <combo_box.item name="Italian" label="Italiano (Italienisch)" />
+	     <combo_box.item name="Hungarian" label="Magyar (Ungarisch)" />
+	     <combo_box.item name="Dutch" label="Nederlands (Niederländisch)" />
+	     <combo_box.item name="Polish" label="Polski (Polnisch)" />
+	     <combo_box.item name="Portugese" label="Português (Portugiesisch)" />
+	     <combo_box.item name="Russian" label="Русский (Russian)" />
+	     <combo_box.item name="Turkish" label="Türkçe (Türkisch)" />
+	     <combo_box.item name="Ukrainian" label="Українська (Ukrainisch)" />
+	     <combo_box.item name="Chinese" label="中文 (简体) (Chinesisch)" />
+	     <combo_box.item name="Japanese" label="日本語 (Japanisch)" />
+	     <combo_box.item name="Korean" label="한국어 (Koreanisch)" />
+     </combo_box>
+     <text name="requires_restart_label4">
+	     (Neustart erforderlich)
+     </text>
+     <text name="requires_restart_label5">
+	     (Neustart erforderlich)
+     </text>
+     <text name="requires_restart_label6">
+	     (Neustart erforderlich)
+     </text>
+     <spinner label="Chat Absatz:" name="ChatStartFromBottomPixels"/>
+     <spinner label="Chat Lebenszeit:" name="NearbyToastLifeTime"/>
+     <spinner label="Chat Blendzeit:" name="NearbyToastFadingTime"/>
+     <button label="Chat Übersetzungsoptionen" name="chat_translation_btn"/>
 </panel>

@@ -44,7 +44,6 @@ include(OPENAL)
 include(OpenGL)
 include(OpenSSL)
 include(PNG)
-include(Prebuilt)
 include(TemplateCheck)
 include(UI)
 include(UnixInstall)
@@ -61,9 +60,6 @@ endif (NOT HAVOK_TPV)
 if(FMODEX)
   include_directories(${FMODEX_INCLUDE_DIR})
 endif(FMODEX)
-
-# install SLPlugin host executable and its dynamic-library plugins
-use_prebuilt_binary(slplugins)
 
 include_directories(
     ${DBUSGLIB_INCLUDE_DIRS}
@@ -140,7 +136,6 @@ set(viewer_SOURCE_FILES
     llbreadcrumbview.cpp
     llbrowsernotification.cpp
     llbuycurrencyhtml.cpp
-    llcallbacklist.cpp
     llcallingcard.cpp
     llcapabilitylistener.cpp
     llcaphttpsender.cpp
@@ -232,7 +227,6 @@ set(viewer_SOURCE_FILES
     llfloatercolorpicker.cpp
     llfloaterconversationlog.cpp
     llfloaterconversationpreview.cpp
-    llfloaterdeleteenvpreset.cpp
     llfloaterdeleteprefpreset.cpp
     llfloaterdestinations.cpp
     llfloaterdisplayname.cpp
@@ -276,6 +270,7 @@ set(viewer_SOURCE_FILES
     llfloatermodeluploadbase.cpp
     llfloaternamedesc.cpp
     llfloaternotificationsconsole.cpp
+    llfloaternotificationstabbed.cpp 
     llfloaterobjectweights.cpp
     llfloateropenobject.cpp
     llfloateroutbox.cpp
@@ -302,7 +297,6 @@ set(viewer_SOURCE_FILES
     llfloatersettingsdebug.cpp
     llfloatersidepanelcontainer.cpp
     llfloatersnapshot.cpp
-    llfloatersounddevices.cpp
     llfloaterspellchecksettings.cpp
     llfloatertelehub.cpp
     llfloatertestinspectors.cpp
@@ -411,6 +405,8 @@ set(viewer_SOURCE_FILES
     llnotificationgrouphandler.cpp
     llnotificationhandlerutil.cpp
     llnotificationhinthandler.cpp
+    llnotificationlistitem.cpp
+    llnotificationlistview.cpp
     llnotificationmanager.cpp
     llnotificationofferhandler.cpp
     llnotificationscripthandler.cpp
@@ -483,8 +479,6 @@ set(viewer_SOURCE_FILES
     llpanelteleporthistory.cpp
     llpaneltiptoast.cpp
     llpanelvoiceeffect.cpp
-    llpaneltopinfobar.cpp
-    llpanelvoicedevicesettings.cpp
     llpanelvolume.cpp
     llpanelvolumepulldown.cpp
     llpanelwearing.cpp
@@ -714,11 +708,27 @@ set(viewer_SOURCE_FILES
     llworldmapview.cpp
     llxmlrpclistener.cpp
     llxmlrpctransaction.cpp
+    bdpaneldrawdistance.cpp
+	bdtopbarholder.cpp
+	qtoolalign.cpp
+    exopostprocess.cpp
     noise.cpp
     pipeline.cpp
+	piemenu.cpp
+    pieseparator.cpp
+    pieslice.cpp
+    rlvactions.cpp
+    rlvhandler.cpp
+    rlvhelper.cpp
+    rlvcommon.cpp
+    rlvlocks.cpp
+    rlvinventory.cpp
+    rlvextensions.cpp
+    rlvfloaters.cpp
+    rlvui.cpp
     )
 
-set(VIEWER_BINARY_NAME "secondlife-bin" CACHE STRING
+set(VIEWER_BINARY_NAME "blackdragon-bin" CACHE STRING
     "The name of the viewer executable to create.")
 
 set(viewer_HEADER_FILES
@@ -760,7 +770,6 @@ set(viewer_HEADER_FILES
     llbox.h
     llbreadcrumbview.h
     llbuycurrencyhtml.h
-    llcallbacklist.h
     llcallingcard.h
     llcapabilitylistener.h
     llcapabilityprovider.h
@@ -854,7 +863,6 @@ set(viewer_HEADER_FILES
     llfloaterconversationlog.h
     llfloaterconversationpreview.h
     llfloaterdeleteprefpreset.h
-    llfloaterdeleteenvpreset.h
     llfloaterdestinations.h
     llfloaterdisplayname.h
     llfloatereditdaycycle.h
@@ -900,6 +908,7 @@ set(viewer_HEADER_FILES
     llfloatermodeluploadbase.h
     llfloaternamedesc.h
     llfloaternotificationsconsole.h
+    llfloaternotificationstabbed.h 
     llfloaterobjectweights.h
     llfloateropenobject.h
     llfloateroutbox.h
@@ -926,7 +935,6 @@ set(viewer_HEADER_FILES
     llfloatersettingsdebug.h
     llfloatersidepanelcontainer.h
     llfloatersnapshot.h
-    llfloatersounddevices.h
     llfloaterspellchecksettings.h
     llfloatertelehub.h
     llfloatertestinspectors.h
@@ -1028,6 +1036,8 @@ set(viewer_HEADER_FILES
     llnavigationbar.h
     llnetmap.h
     llnotificationhandler.h
+    llnotificationlistitem.h
+    llnotificationlistview.h
     llnotificationmanager.h
     llnotificationstorage.h
     lloutfitslist.h
@@ -1092,9 +1102,7 @@ set(viewer_HEADER_FILES
     llpanelsnapshot.h
     llpanelteleporthistory.h
     llpaneltiptoast.h
-    llpanelvoicedevicesettings.h
     llpanelvoiceeffect.h
-    llpaneltopinfobar.h
     llpanelvolume.h
     llpanelvolumepulldown.h
     llpanelwearing.h
@@ -1326,10 +1334,37 @@ set(viewer_HEADER_FILES
     llworldmapview.h
     llxmlrpclistener.h
     llxmlrpctransaction.h
+    bdpaneldrawdistance.h
+	bdtopbarholder.h
+	qtoolalign.h
+    exopostprocess.h
     macmain.h
     noise.h
     pipeline.h
+    rlvactions.h
+    rlvdefines.h
+    rlvhandler.h
+    rlvhelper.h
+    rlvcommon.h
+    rlvlocks.h
+    rlvinventory.h
+    rlvextensions.h
+    rlvfloaters.h
+    rlvui.h
     roles_constants.h
+	piemenu.h
+    pieseparator.h
+    pieslice.h
+    rlvactions.h
+    rlvdefines.h
+    rlvhandler.h
+    rlvhelper.h
+    rlvcommon.h
+    rlvlocks.h
+    rlvinventory.h
+    rlvextensions.h
+    rlvfloaters.h
+    rlvui.h
     VertexCache.h
     VorbisFramework.h
     )
@@ -1438,19 +1473,9 @@ if (WINDOWS)
 
     # Replace the icons with the appropriate ones for the channel
     # ('test' is the default)
-    set(ICON_PATH "test")
-    set(VIEWER_MACOSX_PHASE "d")
-    string(TOLOWER ${VIEWER_CHANNEL} channel_lower)
-    if(channel_lower MATCHES "^second life release")
-        set(ICON_PATH "release")
-        set(VIEWER_MACOSX_PHASE "f")
-    elseif(channel_lower MATCHES "^second life beta")
-        set(ICON_PATH "beta")
-        set(VIEWER_MACOSX_PHASE "b")
-    elseif(channel_lower MATCHES "^second life project")
-        set(ICON_PATH "project")
-        set(VIEWER_MACOSX_PHASE "a")
-    endif()
+    set(ICON_PATH "release")
+    set(VIEWER_MACOSX_PHASE "f")
+
     message("Copying icons for ${ICON_PATH}")
     execute_process(
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -1477,7 +1502,8 @@ if (WINDOWS)
         res/arrowcopmulti.cur
         res/arrowdrag.cur
         res/circleandline.cur
-        res/icon1.ico
+        res/iconBD.ico
+        res/ico00001.ico
         res/llarrow.cur
         res/llarrowdrag.cur
         res/llarrowdragmulti.cur
@@ -1703,7 +1729,7 @@ if (WINDOWS)
         # *TODO -reenable this once we get server usage sorted out
         LINK_FLAGS "/debug /NODEFAULTLIB:LIBCMT /SUBSYSTEM:WINDOWS ${TCMALLOC_LINK_FLAGS} /LARGEADDRESSAWARE"
         LINK_FLAGS_DEBUG "/NODEFAULTLIB:\"LIBCMT;LIBCMTD;MSVCRT\" /INCREMENTAL:NO /LARGEADDRESSAWARE"
-        LINK_FLAGS_RELEASE "/FORCE:MULTIPLE /MAP\"secondlife-bin.MAP\" /OPT:REF /LARGEADDRESSAWARE"
+        LINK_FLAGS_RELEASE "/FORCE:MULTIPLE /MAP\"blackdragon-bin.MAP\" /OPT:REF /LARGEADDRESSAWARE"
         )
 
     add_dependencies(${VIEWER_BINARY_NAME} generate_viewer_version)
@@ -1774,44 +1800,12 @@ if (WINDOWS)
       ${CMAKE_CURRENT_SOURCE_DIR}/featuretable.txt
       ${CMAKE_CURRENT_SOURCE_DIR}/featuretable_xp.txt
       ${ARCH_PREBUILT_DIRS_RELEASE}/libeay32.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/qtcore4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/qtgui4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/qtnetwork4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/qtopengl4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/qtwebkit4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/qtxmlpatterns4.dll
       ${ARCH_PREBUILT_DIRS_RELEASE}/ssleay32.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/imageformats/qgif4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/imageformats/qico4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/imageformats/qjpeg4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/imageformats/qmng4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/imageformats/qsvg4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/imageformats/qtiff4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/codecs/qcncodecs4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/codecs/qjpcodecs4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/codecs/qkrcodecs4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/codecs/qtwcodecs4.dll
       ${ARCH_PREBUILT_DIRS_DEBUG}/libeay32.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/qtcored4.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/qtguid4.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/qtnetworkd4.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/qtopengld4.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/qtwebkitd4.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/qtxmlpatternsd4.dll
       ${ARCH_PREBUILT_DIRS_DEBUG}/ssleay32.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/imageformats/qgifd4.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/imageformats/qicod4.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/imageformats/qjpegd4.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/imageformats/qmngd4.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/imageformats/qsvgd4.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/imageformats/qtiffd4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/codecs/qcncodecsd4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/codecs/qjpcodecsd4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/codecs/qkrcodecsd4.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/codecs/qtwcodecsd4.dll
       SLPlugin
       media_plugin_quicktime
-      media_plugin_webkit
+      media_plugin_cef
       winmm_shim
       windows-crash-logger
       )
@@ -1856,10 +1850,10 @@ if (WINDOWS)
       add_dependencies(${VIEWER_BINARY_NAME} copy_win_scripts)
     endif (EXISTS ${CMAKE_SOURCE_DIR}/copy_win_scripts)
 
-##  add_dependencies(${VIEWER_BINARY_NAME}
-##    SLPlugin
-##    windows-crash-logger
-##    )
+    add_dependencies(${VIEWER_BINARY_NAME}
+      SLPlugin
+   windows-crash-logger
+    )
 
     # sets the 'working directory' for debugging from visual studio.
     if (NOT UNATTENDED)
@@ -2020,15 +2014,14 @@ set(ARTWORK_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE PATH
     "Path to artwork files.")
 
 if (LINUX)
-  set(product SecondLife-${ARCH}-${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION})
+  set(product BlackDragon-${ARCH}-${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION})
 
   # These are the generated targets that are copied to package/
   set(COPY_INPUT_DEPENDENCIES
     ${VIEWER_BINARY_NAME}
     linux-crash-logger
-##  SLPlugin
-##  media_plugin_webkit
-##  media_plugin_gstreamer010
+    SLPlugin
+    media_plugin_gstreamer010
     llcommon
     )
 
@@ -2092,16 +2085,15 @@ endif (LINUX)
 
 if (DARWIN)
   # These all get set with PROPERTIES
-  set(product "Second Life")
-  set(MACOSX_BUNDLE_INFO_STRING "Second Life Viewer")
-  set(MACOSX_BUNDLE_ICON_FILE "secondlife.icns")
+  set(MACOSX_BUNDLE_INFO_STRING "Black Dragon")
+  set(MACOSX_BUNDLE_ICON_FILE "blackdragon.icns")
   set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.secondlife.indra.viewer")
   set(MACOSX_BUNDLE_LONG_VERSION_STRING "${VIEWER_CHANNEL} ${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
-  set(MACOSX_BUNDLE_BUNDLE_NAME "SecondLife")
+  set(MACOSX_BUNDLE_BUNDLE_NAME "BlackDragon")
   set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VIEWER_SHORT_VERSION}")
   set(MACOSX_BUNDLE_BUNDLE_VERSION "${VIEWER_SHORT_VERSION}${VIEWER_MACOSX_PHASE}${VIEWER_REVISION}")
   set(MACOSX_BUNDLE_COPYRIGHT "Copyright © Linden Research, Inc. 2007")
-  set(MACOSX_BUNDLE_NSMAIN_NIB_FILE "SecondLife.nib")
+  set(MACOSX_BUNDLE_NSMAIN_NIB_FILE "BlackDragon.nib")
   set(MACOSX_BUNDLE_NSPRINCIPAL_CLASS "NSApplication")
   
   set_target_properties(
@@ -2140,7 +2132,7 @@ if (DARWIN)
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
 
-##add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_quicktime media_plugin_webkit mac-crash-logger)
+  add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_quicktime media_plugin_cef mac-crash-logger)
   add_dependencies(${VIEWER_BINARY_NAME} mac-crash-logger)
 
   if (ENABLE_SIGNING)
@@ -2185,7 +2177,7 @@ if (PACKAGE)
   set(SYMBOL_SEARCH_DIRS "")
   if (WINDOWS)
     list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}")
-    set(VIEWER_SYMBOL_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/secondlife-symbols-windows.tar.bz2")
+    set(VIEWER_SYMBOL_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/blackdragon-symbols-windows.tar.bz2")
     # slplugin.exe failing symbols dump - need to debug, might have to do with updated version of google breakpad
     # set(VIEWER_EXE_GLOBS "${VIEWER_BINARY_NAME}${CMAKE_EXECUTABLE_SUFFIX} slplugin.exe")
     set(VIEWER_EXE_GLOBS "${VIEWER_BINARY_NAME}${CMAKE_EXECUTABLE_SUFFIX}")
@@ -2195,21 +2187,20 @@ if (PACKAGE)
   if (DARWIN)
     list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}")
     # *TODO: Generate these search dirs in the cmake files related to each binary.
-##  list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_BINARY_DIR}/llplugin/slplugin/${CMAKE_CFG_INTDIR}")
+    list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_BINARY_DIR}/llplugin/slplugin/${CMAKE_CFG_INTDIR}")
     list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_BINARY_DIR}/mac_crash_logger/${CMAKE_CFG_INTDIR}")
-##  list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_BINARY_DIR}/media_plugins/gstreamer010/${CMAKE_CFG_INTDIR}")
-##  list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_BINARY_DIR}/media_plugins/quicktime/${CMAKE_CFG_INTDIR}")
-##  list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_BINARY_DIR}/media_plugins/webkit/${CMAKE_CFG_INTDIR}")
-    set(VIEWER_SYMBOL_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/secondlife-symbols-darwin.tar.bz2")
-##  set(VIEWER_EXE_GLOBS "'Second Life' SLPlugin mac-crash-logger")
+    list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_BINARY_DIR}/media_plugins/gstreamer010/${CMAKE_CFG_INTDIR}")
+    list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_BINARY_DIR}/media_plugins/quicktime/${CMAKE_CFG_INTDIR}")
+
+    set(VIEWER_EXE_GLOBS "'Second Life' SLPlugin mac-crash-logger")
     set(VIEWER_EXE_GLOBS "'Second Life' mac-crash-logger")
     set(VIEWER_LIB_GLOB "*.dylib")
   endif (DARWIN)
   if (LINUX)
     list(APPEND SYMBOL_SEARCH_DIRS "${CMAKE_CURRENT_BINARY_DIR}/packaged")
-    set(VIEWER_SYMBOL_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/secondlife-symbols-linux.tar.bz2")
-##  set(VIEWER_EXE_GLOBS "do-not-directly-run-secondlife-bin SLPlugin")
-    set(VIEWER_EXE_GLOBS "do-not-directly-run-secondlife-bin")
+    set(VIEWER_SYMBOL_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/blackdragon-symbols-linux.tar.bz2")
+    set(VIEWER_EXE_GLOBS "do-not-directly-run-blackdragon-bin SLPlugin")
+    set(VIEWER_EXE_GLOBS "do-not-directly-run-blackdragon-bin")
     set(VIEWER_LIB_GLOB "*${CMAKE_SHARED_MODULE_SUFFIX}*")
     set(VIEWER_COPY_MANIFEST copy_l_viewer_manifest)
   endif (LINUX)

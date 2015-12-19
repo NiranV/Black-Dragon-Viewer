@@ -241,8 +241,8 @@
     <binding key="D" mask="ALT" command="spin_around_ccw"/>
     <binding key="W" mask="ALT" command="move_forward"/>
     <binding key="S" mask="ALT" command="move_backward"/>
-    <binding key="E" mask="ALT" command="spin_over_sitting"/>
-    <binding key="C" mask="ALT" command="spin_under_sitting"/>
+    <binding key="E" mask="ALT" command="spin_over"/>
+    <binding key="C" mask="ALT" command="spin_under"/>
 
     <binding key="LEFT" mask="ALT" command="spin_around_cw"/>
     <binding key="RIGHT" mask="ALT" command="spin_around_ccw"/>

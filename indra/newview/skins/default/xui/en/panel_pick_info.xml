@@ -1,112 +1,151 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- background_visible="true"
  follows="all"
- height="570"
+ height="560"
  layout="topleft"
  left="0"
  min_height="350"
  name="panel_pick_info"
  help_topic="profile_pick_info"
  top="0"
- width="333">
+ width="325">
     <button
      follows="top|left"
-     height="24"
-     image_hover_unselected="BackButton_Over"
-     image_pressed="BackButton_Press"
-     image_unselected="BackButton_Off"
+     height="25"
+     image_overlay="BackArrow_Off"
+     image_hover_unselected="Toolbar_Middle_Over"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
      layout="topleft"
      name="back_btn"
-     left="10"
+     left="11"
      tab_stop="false"
-     top="2"
-     width="30"
+     top="0"
+     width="31"
      use_draw_context_alpha="false" />
+    <icon
+       follows="top|left|right"
+       height="25"
+       image_name="Toolbar_Middle_Off"
+       layout="topleft"
+       left_pad="1"
+       top_delta="0"
+       name="dummy_icon"
+       width="207"/>
     <text
      follows="top|left|right"
-     font="SansSerifHugeBold"
-     height="26"
+     height="14"
      layout="topleft"
-     left_pad="4"
+     left_delta="3"
      name="title"
      text_color="LtGray"
-     top="2"
+     top="1"
      value="Pick Info"
      use_ellipses="true"
-     width="275" />
+     width="204" />
+      <button
+      follows="top|right"
+      height="25"
+      layout="topleft"
+      image_overlay="Command_Map_Icon"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+      name="show_on_map_btn"
+      left_pad="1"
+      top_delta="-1"
+      width="32" />
+      <button
+      follows="top|right"
+      height="25"
+      image_overlay="Edit_Wrench"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+      layout="topleft"
+      name="edit_btn"
+      top_delta="0"
+      left_pad="1"
+      width="31" />
     <scroll_container
-     color="DkGray2"
+     color="White_02"
      opaque="true"
      follows="all"
-     height="503"
+     height="502"
      layout="topleft"
-     left="8"
-     top_pad="10"
+     left="11"
+     top_pad="0"
      name="profile_scroll"
-     width="312">
+     width="304">
     <panel
      name="scroll_content_panel"
-     follows="left|top|right"
-     min_height="300"
+     follows="top|left|right"
      layout="topleft"
      top="0"
      background_visible="false"
-     height="400"
+     height="502"
      left="0"
-     width="285">
+     width="284">
         <texture_picker
          fallback_image="default_land_picture.j2c"
          enabled="false"
          follows="left|top|right"
          height="197"
          layout="topleft"
-         left="11"
+         left="0"
          name="pick_snapshot"
          top="10"
-         width="272" />
+         width="289" />
+        <icon
+       follows="top|left|right"
+       height="25"
+       image_name="Toolbar_Middle_Off"
+       layout="topleft"
+       left="0"
+       top_pad="-20"
+       name="dummy_icon"
+       width="289"/>
+        <text_editor
+      allow_scroll="false"
+      bg_visible="false"
+      follows="left|top|right"
+      h_pad="0"
+      height="14"
+      width="284"
+      layout="topleft"
+      left_delta="3"
+      top_delta="1"
+      name="pick_name"
+      read_only="true"
+      text_color="white"
+      v_pad="0"
+      value="[name]"
+      use_ellipses="true" />
         <text_editor
          allow_scroll="false"
          bg_visible="false"
          follows="left|top|right"
          h_pad="0"
-         height="35"
-         width="280"
+         height="14"
+         top_pad="-4"
          layout="topleft"
-         font="SansSerifBig"
-         font.style="BOLD"
-         left="10"
-         top_pad="10"
-         name="pick_name"
-         read_only="true"
-         text_color="white"
-         v_pad="0"
-         value="[name]"
-         use_ellipses="true" />
-        <text_editor
-         allow_scroll="false"
-         bg_visible="false"
-         follows="left|top|right"
-         h_pad="0"
-         height="25"
-         layout="topleft"
-         left="10"
+         left_delta="0"
          name="pick_location"
          read_only="true"
-         width="280"
+         width="284"
          word_wrap="true"
          v_pad="0"
          value="[loading...]" />
         <text_editor
-         bg_readonly_color="DkGray2"
+         bg_readonly_color="White_02"
          follows="all"
-         height="100"
-         width="280"
+         height="290"
+         width="289"
          parse_urls="true"	
          hide_scrollbar="false"
          layout="topleft"
-         left="10"
-         top_pad="2"
+         left="0"
+         top_pad="0"
          max_length="1023"
          name="pick_desc"
          read_only="true"
@@ -117,75 +156,24 @@
     </scroll_container>
     <panel
      follows="left|right|bottom"
-     height="23"
+     background_visible="true"
+     bg_alpha_color="White_02"
+     height="25"
      layout="topleft"
-     top_pad="5"
-     left="8"
+     top_pad="1"
+     width="304"
+     left="11"
      name="buttons">
-       
-       <layout_stack
-		  follows="bottom|left|right"
-		  height="23"
-		  layout="topleft"
-		  name="layout_stack1"
-		  left="0"
-		  orientation="horizontal"
-		  top_pad="0"
-		  width="312">
-		  
-		  <layout_panel
-			  follows="bottom|left|right"
-			  height="23"
-			  layout="bottomleft"
-			  left="0"
-			  name="layout_panel1"
-		      auto_resize="true"
-			  width="101">
 			  <button
 			  	 follows="bottom|left|right"
-		         height="23"
+		         height="25"
 		         label="Teleport"
 		         layout="topleft"
+                 image_hover_unselected="Toolbar_Middle_Over"
+          image_selected="Toolbar_Middle_Selected"
+          image_unselected="Toolbar_Middle_Off"
 		         name="teleport_btn"
 		         top="0"
-		         width="101" />
-		  </layout_panel>
-		  
-		  <layout_panel
-			  follows="bottom|left|right"
-			  height="23"
-			  layout="bottomleft"
-			  left_pad="3"
-			  name="show_on_map_btn_lp"
-		      auto_resize="true"
-			  width="100">
-			  <button
-		         follows="bottom|left|right"
-		         height="23"
-		         label="Map"
-		         layout="topleft"
-		         name="show_on_map_btn"
-		         top_pad="0"
-		         width="100" />
-		  </layout_panel>	  
-		  
-		  <layout_panel
-			  follows="bottom|left|right"
-			  height="23"
-			  layout="bottomleft"
-			  left_pad="3"
-			  name="edit_btn_lp"
-		      auto_resize="true"
-			  width="101">
-			  <button
-		         follows="bottom|left|right"
-		         height="23"
-		         label="Edit"
-		         layout="topleft"
-		         name="edit_btn"
-		         top_pad="0"
-		         width="101" />
-		  </layout_panel>
-	   </layout_stack>
+		         width="304" />
     </panel>
 </panel>

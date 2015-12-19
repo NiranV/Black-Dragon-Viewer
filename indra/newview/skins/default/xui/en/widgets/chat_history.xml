@@ -5,6 +5,7 @@
   left_text_pad="10"
   right_text_pad="15"
   left_widget_pad="0"
+  bg_visible="false"
   right_widget_pad="10"
   top_separator_pad="1"
   bottom_separator_pad="1"

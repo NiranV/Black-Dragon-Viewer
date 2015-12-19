@@ -7,8 +7,8 @@
  layout="topleft"
  min_height="243"
  min_width="234"
+ background_color="FloaterDefaultBackgroundColor"
  name="preview notecard"
- help_topic="preview_notecard"
  title="NOTECARD:"
  width="400">
     <floater.string
@@ -43,7 +43,7 @@
      left="10"
      name="desc txt"
      top="22"
-     width="90">
+     width="100">
         Description:
     </text>
     <line_editor
@@ -56,26 +56,28 @@
      left_pad="0"
      max_length_bytes="127"
      name="desc"
-     width="296" />
+     width="285" />
     <text_editor
      type="string"
      length="1"
      embedded_items="true"
      follows="left|top|right|bottom"
-     font="SansSerif"
+     font="DejaVuSans2.ttf"
      height="281"
      ignore_tab="false"
      layout="topleft"
-     left="4"
+     left="5"
      max_length="65536"
      name="Notecard Editor"
-     parse_urls="false" 
+     parse_urls="false"
+     cursor_color="TextCursorColor"
+     text_color="Black"
+     text_readonly_color="White_50"
      spellcheck="true"
      tab_group="1"
      top="46"
-     width="392"
+     width="390"
      word_wrap="true">
-        Loading...
     </text_editor>
     <button
      follows="right|bottom"
@@ -83,7 +85,7 @@
      label="Save"
      label_selected="Save"
      layout="topleft"
-     left="178"
+     left="188"
      name="Save"
      top="332"
      width="100" />
@@ -93,7 +95,7 @@
      label="Delete"
      label_selected="Delete"
      layout="topleft"
-     left="288"
+     left="295"
      name="Delete"
      top="332"
      width="100" />

@@ -4,9 +4,9 @@
  can_close="true"
  can_resize="true"
  height="572"
- help_topic="sidebar_me"
  min_width="333"
  min_height="440"
+ background_color="FloaterColorPicks"
  name="floater_picks"
  save_rect="true"
  save_visibility="true"
@@ -15,6 +15,7 @@
  width="333" >
    <panel
     class="panel_me"
+    background_visible="false"
     name="main_panel"
     filename="panel_me.xml"
     follows="all"/>

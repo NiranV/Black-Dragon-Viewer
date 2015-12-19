@@ -67,6 +67,9 @@
 #include "llviewerchat.h"
 #include "lltranslate.h"
 #include "llautoreplace.h"
+// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0b)
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 S32 LLFloaterIMNearbyChat::sLastSpecialChatChannel = 0;
 
@@ -75,7 +78,10 @@ const S32 COLLAPSED_HEIGHT = 60;
 const S32 EXPANDED_MIN_HEIGHT = 150;
 
 // legacy callback glue
-void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel);
+//void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel);
+// [RLVa:KB] - Checked: 2010-02-27 (RLVa-0.2.2)
+void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channel);
+// [/RLVa:KB]
 
 struct LLChatTypeTrigger {
 	std::string name;
@@ -259,10 +265,12 @@ void LLFloaterIMNearbyChat::setVisible(BOOL visible)
 {
 	LLFloaterIMSessionTab::setVisible(visible);
 
+	/* BD - Nope.
 	if(visible)
 	{
 		removeScreenChat();
 	}
+	*/
 }
 
 
@@ -270,7 +278,7 @@ void LLFloaterIMNearbyChat::setVisibleAndFrontmost(BOOL take_focus, const LLSD& 
 {
 	LLFloaterIMSessionTab::setVisibleAndFrontmost(take_focus, key);
 
-	if(matchesKey(key))
+	if(!isTornOff() && matchesKey(key))
 	{
 		LLFloaterIMContainer::getInstance()->selectConversationPair(mSessionID, true, take_focus);
 	}
@@ -310,20 +318,25 @@ void LLFloaterIMNearbyChat::onClose(bool app_quitting)
 void LLFloaterIMNearbyChat::onClickCloseBtn(bool)
 
 {
+	/* BD - Nope.
 	if (!isTornOff())
 	{
 		return;
 	}
 	closeHostedFloater();
+	*/
+	setVisible(false);
 }
 
 void LLFloaterIMNearbyChat::onChatFontChange(LLFontGL* fontp)
 {
 	// Update things with the new font whohoo
+	/*
 	if (mInputEditor)
 	{
 		mInputEditor->setFont(fontp);
 	}
+	*/
 }
 
 
@@ -503,7 +516,7 @@ void LLFloaterIMNearbyChat::onChatBoxKeystroke()
 		{
 			std::string rest_of_match = utf8_out_str.substr(utf8_trigger.size());
 			mInputEditor->setText(utf8_trigger + rest_of_match + " "); // keep original capitalization for user-entered part
-			mInputEditor->endOfDoc();
+			mInputEditor->selectByCursorPosition(utf8_out_str.size()-rest_of_match.size(),utf8_out_str.size());
 		}
 
 		//LL_INFOS() << "GESTUREDEBUG " << trigger 
@@ -601,13 +614,6 @@ void LLFloaterIMNearbyChat::sendChat( EChatType type )
 	}
 
 	gAgent.stopTyping();
-
-	// If the user wants to stop chatting on hitting return, lose focus
-	// and go out of chat mode.
-	if (gSavedSettings.getBOOL("CloseChatOnReturn"))
-	{
-		stopChat();
-	}
 }
 
 void LLFloaterIMNearbyChat::addMessage(const LLChat& chat,bool archive,const LLSD &args)
@@ -650,6 +656,16 @@ void LLFloaterIMNearbyChat::onChatBoxCommit()
 	sendChat(CHAT_TYPE_NORMAL);
 
 	gAgent.stopTyping();
+
+	if(gSavedSettings.getBOOL("CloseChatOnReturn"))
+	{
+		setFocus(false);
+	}
+
+	if(!isMessagePaneExpanded() && gSavedSettings.getBOOL("AutohideChatOnReturn"))
+	{
+		setVisible(false);
+	}
 }
 
 void LLFloaterIMNearbyChat::displaySpeakingIndicator()
@@ -720,6 +736,36 @@ void LLFloaterIMNearbyChat::sendChatFromViewer(const LLWString &wtext, EChatType
 		if (type != CHAT_TYPE_START && type != CHAT_TYPE_STOP)
 		{
 			LL_DEBUGS() << "Channel chat: " << utf8_text << LL_ENDL;
+		}
+	}
+
+	if (gSavedSettings.getBOOL("AutoCloseOOC"))
+	{
+		// Try to find any unclosed OOC chat (i.e. an opening
+		// double parenthesis without a matching closing double
+		// parenthesis.
+		if (utf8_out_text.find("((") != -1 && utf8_out_text.find("))") == -1)
+		{
+			if (utf8_out_text.at(utf8_out_text.length() - 1) == ')')
+			{
+				// cosmetic: add a space first to avoid a closing triple parenthesis
+				utf8_out_text += " ";
+			}
+			// add the missing closing double parenthesis.
+			utf8_out_text += "))";
+		}
+	}
+			
+	// Convert MU*s style poses into IRC emotes here.
+	if (gSavedSettings.getBOOL("AllowMUpose") && utf8_out_text.find(":") == 0 && utf8_out_text.length() > 3)
+	{
+		if (utf8_out_text.find(":'") == 0)
+		{
+			utf8_out_text.replace(0, 1, "/me");
+		}
+		else if (isalpha(utf8_out_text.at(1)))	// Do not prevent smileys and such.
+		{
+			utf8_out_text.replace(0, 1, "/me ");
 		}
 	}
 
@@ -835,8 +881,57 @@ LLWString LLFloaterIMNearbyChat::stripChannelNumber(const LLWString &mesg, S32* 
 	}
 }
 
-void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel)
+//void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel)
+// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0b) | Modified: RLVa-0.2.2a
+void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channel)
+// [/RLVa:KB]
 {
+// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0b) | Modified: RLVa-1.2.0a
+	// Only process chat messages (ie not CHAT_TYPE_START, CHAT_TYPE_STOP, etc)
+	if ( (rlv_handler_t::isEnabled()) && ( (CHAT_TYPE_WHISPER == type) || (CHAT_TYPE_NORMAL == type) || (CHAT_TYPE_SHOUT == type) ) )
+	{
+		if (0 == channel)
+		{
+			// (We already did this before, but LLChatHandler::handle() calls this directly)
+			if ( ((CHAT_TYPE_SHOUT == type) || (CHAT_TYPE_NORMAL == type)) && (gRlvHandler.hasBehaviour(RLV_BHVR_CHATNORMAL)) )
+				type = CHAT_TYPE_WHISPER;
+			else if ( (CHAT_TYPE_SHOUT == type) && (gRlvHandler.hasBehaviour(RLV_BHVR_CHATSHOUT)) )
+				type = CHAT_TYPE_NORMAL;
+			else if ( (CHAT_TYPE_WHISPER == type) && (gRlvHandler.hasBehaviour(RLV_BHVR_CHATWHISPER)) )
+				type = CHAT_TYPE_NORMAL;
+
+			// Redirect chat if needed
+			if ( ( (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT) || (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE)) ) && 
+				 (gRlvHandler.redirectChatOrEmote(utf8_out_text)) ) )
+			{
+				return;
+			}
+
+			// Filter public chat if sendchat restricted
+			if (gRlvHandler.hasBehaviour(RLV_BHVR_SENDCHAT))
+				gRlvHandler.filterChat(utf8_out_text, true);
+		}
+		else
+		{
+			// Don't allow chat on a non-public channel if sendchannel restricted (unless the channel is an exception)
+			if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SENDCHANNEL)) && (!gRlvHandler.isException(RLV_BHVR_SENDCHANNEL, channel)) )
+				return;
+
+			// Don't allow chat on debug channel if @sendchat, @redirchat or @rediremote restricted (shows as public chat on viewers)
+			if (CHAT_CHANNEL_DEBUG == channel)
+			{
+				bool fIsEmote = RlvUtil::isEmote(utf8_out_text);
+				if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SENDCHAT)) || 
+					 ((!fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT))) || 
+					 ((fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE))) )
+				{
+					return;
+				}
+			}
+		}
+	}
+// [/RLVa:KB]
+
 	LLMessageSystem* msg = gMessageSystem;
 	msg->newMessageFast(_PREHASH_ChatFromViewer);
 	msg->nextBlockFast(_PREHASH_AgentData);

@@ -24,8 +24,8 @@
 	<text name="note">
 		Hinweis: Wenn Sie den Namen Ihrer Voreinstellung ändern, entsteht eine neue Voreinstellung; die vorhandene Voreinstellung wird nicht geändert.
 	</text>
-	<tab_container name="WindLight Tabs">
-		<panel label="ATMOSPHÄRE" name="Atmosphere">
+	<tab_container name="WindLight">
+		<panel label="Atmosphäre" name="Atmosphere">
 			<text name="BHText">
 				Blauer Horizont
 			</text>
@@ -48,7 +48,7 @@
 				Max. Höhe
 			</text>
 		</panel>
-		<panel label="BELEUCHTUNG" name="Lighting">
+		<panel label="Beleuchtung" name="Lighting">
 			<text name="SLCText">
 				Sonne/Mond-Farbe
 			</text>
@@ -105,7 +105,7 @@
 				Ostausrichtung
 			</text>
 		</panel>
-		<panel label="WOLKEN" name="Clouds">
+		<panel label="Wolken" name="Clouds">
 			<text name="WLCloudColorText">
 				Wolkenfarbe
 			</text>
@@ -135,9 +135,21 @@
 				Wolkenbewegung Y
 			</text>
 			<check_box label="Sperren" name="WLCloudLockY"/>
+			<text name="CloudNoiseImageText">
+				Wolken Noise Textur
+			</text>
+			<combo_box	name="CloudNoiseImage">
+				<combo_box.item	label="Standard"	name="0"/>
+				<combo_box.item	label="Hochauflösend"	name="1"/>
+			</combo_box>
+			<text	name="requires_restart_label">
+			(Erfordert Neustart)
+			</text>
 		</panel>
 	</tab_container>
-	<check_box label="Diese Voreinstellung zu meiner neuen Himmeleinstellung machen" name="make_default_cb"/>
+	<button label="Als mein neuen Himmel setzen" name="make_default_cb"/>
 	<button label="Speichern" name="save"/>
+	<button label="Löschen" name="delete"/>
+	<button label="Tageszyklus Editor" name="day_cycle_editor"/>
 	<button label="Abbrechen" name="cancel"/>
 </floater>

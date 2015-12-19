@@ -6,8 +6,8 @@
 ## prior to 2.8, the add_custom_target commands used in setting the version did not work correctly
 cmake_minimum_required(VERSION 2.8.8 FATAL_ERROR)
 
-set(ROOT_PROJECT_NAME "SecondLife" CACHE STRING
-    "The root project/makefile/solution name. Defaults to SecondLife.")
+set(ROOT_PROJECT_NAME "BlackDragon" CACHE STRING
+    "The root project/makefile/solution name. Defaults to BlackDragon.")
 project(${ROOT_PROJECT_NAME})
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -57,12 +57,6 @@ add_subdirectory(${VIEWER_PREFIX}test)
 if (ENABLE_MEDIA_PLUGINS)
 # viewer media plugins
 add_subdirectory(${LIBS_OPEN_PREFIX}media_plugins)
-
-  # llplugin testbed code (is this the right way to include it?)
-  if (LL_TESTS AND NOT LINUX)
-    add_subdirectory(${VIEWER_PREFIX}test_apps/llplugintest)
-    add_subdirectory(${VIEWER_PREFIX}test_apps/llfbconnecttest)
-  endif (LL_TESTS AND NOT LINUX)
 endif (ENABLE_MEDIA_PLUGINS)
 
 if (LINUX)
@@ -89,7 +83,7 @@ elseif (SOLARIS)
 endif (LINUX)
 
 add_subdirectory(${VIEWER_PREFIX}newview)
-add_dependencies(viewer secondlife-bin)
+add_dependencies(viewer blackdragon-bin)
 
 if (LL_TESTS)
   # Define after the custom targets are created so

@@ -90,6 +90,16 @@ void LLFloaterJoystick::draw()
 		}
 	}
 
+	for (U32 i = 0; i < 16; i++)
+	{
+		U32 value = joystick->getJoystickButton(i);
+		if(!mAxisButton[i]->getEnabled() && joystick->getJoystickButton(i))
+		{
+			mAxisButton[i]->setEnabled(TRUE);
+		}
+		mAxisButton[i]->setToggleState(value);
+	}
+
 	LLFloater::draw();
 }
 
@@ -109,6 +119,12 @@ BOOL LLFloaterJoystick::postBuild()
 			mAxisStatsBar[i]->setRange(-range, range);
 		}
 	}
+
+	for (U32 i = 0; i < 16; i++)
+	{
+		std::string btn_name = llformat("btn%d", i);
+		mAxisButton[i] = getChild<LLButton>(btn_name);
+	}
 	
 	mCheckJoystickEnabled = getChild<LLCheckBoxCtrl>("enable_joystick");
 	childSetCommitCallback("enable_joystick",onCommitJoystickEnabled,this);
@@ -116,6 +132,7 @@ BOOL LLFloaterJoystick::postBuild()
 	childSetCommitCallback("JoystickFlycamEnabled",onCommitJoystickEnabled,this);
 
 	childSetAction("SpaceNavigatorDefaults", onClickRestoreSNDefaults, this);
+	childSetAction("Xbox360Defaults", onClickRestoreXboxDefaults, this);
 	childSetAction("cancel_btn", onClickCancel, this);
 	childSetAction("ok_btn", onClickOK, this);
 
@@ -299,6 +316,11 @@ void LLFloaterJoystick::onClickRestoreSNDefaults(void *joy_panel)
 	setSNDefaults();
 }
 
+void LLFloaterJoystick::onClickRestoreXboxDefaults(void *joy_panel)
+{
+	setXboxDefaults();
+}
+
 void LLFloaterJoystick::onClickCancel(void *joy_panel)
 {
 	if (joy_panel)
@@ -329,4 +351,9 @@ void LLFloaterJoystick::onClickOK(void *joy_panel)
 void LLFloaterJoystick::setSNDefaults()
 {
 	LLViewerJoystick::getInstance()->setSNDefaults();
+}
+
+void LLFloaterJoystick::setXboxDefaults()
+{
+	LLViewerJoystick::getInstance()->setXboxDefaults();
 }

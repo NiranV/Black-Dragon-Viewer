@@ -94,9 +94,6 @@ void LLPanelVoiceDeviceSettings::onVisibilityChange ( BOOL new_visibility )
 	else
 	{
 		cleanup();
-		// when closing this window, turn of visiblity control so that 
-		// next time preferences is opened we don't suspend voice
-		gSavedSettings.setBOOL("ShowDeviceSettings", FALSE);
 	}
 }
 void LLPanelVoiceDeviceSettings::draw()

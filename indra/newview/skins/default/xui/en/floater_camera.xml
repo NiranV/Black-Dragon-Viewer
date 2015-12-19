@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
- positioning="specified"
- right="-460"
- bottom="-50"
- follows="left|bottom"
- legacy_header_height="18"
  can_minimize="true"
  can_close="true"
- height="164"
+ height="95"
  layout="topleft"
+ background_color="FloaterColorView"
  name="camera_floater"
- help_topic="camera_floater"
+ save_rect="true"
  save_visibility="true"
  single_instance="true"
- title="CAMERA CONTROLS"
- chrome="true"
- save_rect="true"
- width="228">
+ width="210">
     <floater.string
      name="rotate_tooltip">
         Rotate Camera Around Focus
@@ -30,29 +23,40 @@
         Move Camera Up and Down, Left and Right
     </floater.string>
     <floater.string
+     name="camera_modes_title">
+       Modes
+    </floater.string>
+    <floater.string
+     name="pan_mode_title">
+       Camera
+    </floater.string>
+    <floater.string
+     name="presets_mode_title">
+        Presets
+    </floater.string>
+    <floater.string
      name="free_mode_title">
         View Object
     </floater.string>
     <panel
      border="false"
-     height="123"
+     height="100"
      layout="topleft"
      left="2"
      top="0"
      mouse_opaque="false"
      name="controls"
-     width="226">
+     width="206">
        <panel
-         color="Transparent"
          follows="all"
          height="102"
          layout="topleft"
          left="8"
+									clip="true"
          name="preset_views_list"
-         opaque="true"
-         top="24"
-         width="212"
-         visible="false">
+         top="0"
+         width="162"
+         visible="true">
         <panel_camera_item
           name="front_view">
           <panel_camera_item.mousedown_callback
@@ -64,7 +68,7 @@
             image_name="Cam_Preset_Front_On" />
           <panel_camera_item.text
             name="front_view_text">
-            Front View
+            Top Down View
           </panel_camera_item.text>
         </panel_camera_item>
         <panel_camera_item
@@ -79,7 +83,37 @@
             image_name="Cam_Preset_Side_On" />
           <panel_camera_item.text
             name="side_view_text">
-            Side View
+            Shoulder View
+          </panel_camera_item.text>
+        </panel_camera_item>
+	<panel_camera_item
+          name="left_shoulder_view"
+          top_pad="4">
+          <panel_camera_item.mousedown_callback
+            function="CameraPresets.ChangeView"
+            parameter="left_shoulder_view" />
+          <panel_camera_item.picture
+            image_name="Cam_Preset_Side_Off" />
+          <panel_camera_item.selected_picture
+            image_name="Cam_Preset_Side_On" />
+          <panel_camera_item.text
+            name="left_shoulder_view_text">
+            Left Shoulder View
+          </panel_camera_item.text>
+        </panel_camera_item>
+	<panel_camera_item
+          name="right_shoulder_view"
+          top_pad="4">
+          <panel_camera_item.mousedown_callback
+            function="CameraPresets.ChangeView"
+            parameter="right_shoulder_view" />
+          <panel_camera_item.picture
+            image_name="Cam_Preset_Side_Off" />
+          <panel_camera_item.selected_picture
+            image_name="Cam_Preset_Side_On" />
+          <panel_camera_item.text
+            name="right_shoulder_view_text">
+            Right Shoulder View
           </panel_camera_item.text>
         </panel_camera_item>
         <panel_camera_item
@@ -100,16 +134,13 @@
         </panel_camera_item>
       </panel>
       <panel
-          color="Transparent"
           follows="all"
           height="68"
-          item_pad="4"
           layout="topleft"
           left="8"
           name="camera_modes_list"
-          opaque="true"
-          top="24"
-          width="212"
+          top="0"
+          width="162"
           visible="false">
         <panel_camera_item
           name="object_view">
@@ -145,24 +176,29 @@
          <panel
             border="false"
             class="camera_zoom_panel"
-            height="114"
+            height="97"
             layout="topleft"
             left="0"
+												visible="false"
             mouse_opaque="false"
             name="zoom"
-            top="20"
-            width="226">
+            top="0"
+            width="206">
            <joystick_rotate
               follows="top|left"
               height="78"
+              image_selected="Cam_Rotate_In"
+              image_unselected="Cam_Rotate_Out"
               layout="topleft"
-              left="7"
+              left="2"
+              mouse_opaque="false"
               name="cam_rotate_stick"
               quadrant="left"
+              scale_image="false"
               sound_flags="3"
               visible="true"
               tool_tip="Orbit camera around focus"
-              top="20"
+              top="10"
               width="78" />                      
            <button
               follows="top|left"
@@ -171,10 +207,10 @@
               image_selected="AddItem_Press"
               image_unselected="AddItem_Off"
               layout="topleft"
-              left_pad="14" 
+              left_pad="1" 
               name="zoom_plus_btn"
               width="18"
-              top="18">
+              top="8">
              <commit_callback
                 function="Zoom.plus" />
              <mouse_held_callback
@@ -213,47 +249,48 @@
          image_selected="Cam_Tracking_In"
          image_unselected="Cam_Tracking_Out"
          layout="topleft"
-         left="133"
+         left="100"
          name="cam_track_stick"
          quadrant="left"
          scale_image="false"
          sound_flags="3"
          tool_tip="Move camera up and down, left and right"
-         top="20"
+         top="10"
          width="78"/>
         </panel>
     </panel>
     <panel
      border="false"
-     height="42"
      layout="topleft"
-     left="2"
-     top_pad="0"
-     name="buttons"
-     width="226">
+     left_pad="-27"
+     height="80"
+     width="25"
+     top_pad="-92"
+     name="buttons">
         <button
          height="23"
          label=""
          layout="topleft"
-         left="70"
+         right_pad="0"
          is_toggle="true"
          image_overlay="Cam_Avatar_Off"
          image_selected="PushButton_Selected_Press"
          name="presets_btn"
          tab_stop="false"
          tool_tip="Preset Views"
-         top="13" 
+         top="5" 
          width="25">
         </button>
         <button
          height="23"
          label=""
          layout="topleft"
-         left_pad="1"
+         left_delta="0"
          is_toggle="true"
          image_overlay="PanOrbit_Off"
          image_selected="PushButton_Selected_Press"
          name="pan_btn"
+	 top_pad="0"
          tab_stop="false"
          tool_tip="Orbit Zoom Pan"
          width="25">
@@ -262,7 +299,8 @@
          height="23"
          label=""
          layout="topleft"
-         left_pad="1"
+         left_delta="0"
+	 top_pad="0"
          image_overlay="Cam_FreeCam_Off"
          image_selected="PushButton_Selected_Press"
          name="avatarview_btn"

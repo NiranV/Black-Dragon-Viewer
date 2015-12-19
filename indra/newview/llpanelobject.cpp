@@ -66,6 +66,10 @@
 #include "llviewercontrol.h"
 #include "lluictrlfactory.h"
 //#include "llfirstuse.h"
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
+#include "rlvhandler.h"
+#include "llvoavatarself.h"
+// [/RLVa:KB]
 
 #include "lldrawpool.h"
 
@@ -356,6 +360,14 @@ void LLPanelObject::getState( )
 		enable_scale = FALSE;
 		enable_rotate = FALSE;
 	}
+
+// [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c) | Modified: RLVa-1.0.0g
+	if ( (rlv_handler_t::isEnabled()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP))) )
+	{
+		if ( (isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (gAgentAvatarp->getRoot() == objectp->getRootEdit()) )
+			enable_move = enable_scale = enable_rotate = FALSE;
+	}
+// [/RLVa:KB]
 
 	LLVector3 vec;
 	if (enable_move)
@@ -1889,8 +1901,6 @@ void LLPanelObject::clearCtrls()
 	mLabelRevolutions->setEnabled( FALSE );
 
 	getChildView("select_single")->setVisible( FALSE);
-	getChildView("edit_object")->setVisible( TRUE);	
-	getChildView("edit_object")->setEnabled(FALSE);
 	
 	getChildView("scale_hole")->setEnabled(FALSE);
 	getChildView("scale_taper")->setEnabled(FALSE);
@@ -2000,7 +2010,11 @@ void LLPanelObject::onCancelSculpt(const LLSD& data)
 	LLTextureCtrl* mTextureCtrl = getChild<LLTextureCtrl>("sculpt texture control");
 	if(!mTextureCtrl)
 		return;
-	
+
+	if(mSculptTextureRevert == LLUUID::null)
+	{
+		mSculptTextureRevert = LLUUID(SCULPT_DEFAULT_TEXTURE);
+	}
 	mTextureCtrl->setImageAssetID(mSculptTextureRevert);
 	
 	sendSculpt();

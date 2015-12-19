@@ -464,6 +464,54 @@ void LLScriptLibrary::init()
 	addFunction(10.f, 0.f, dummy_func, "llGetEnv", "s", "s");
 	addFunction(10.f, 0.f, dummy_func, "llRegionSayTo", NULL, "kis");
 
+	// Black Dragon's new script functions
+    addFunction(10.f, 0.f, dummy_func, "llAvatarOnLinkSitTarget", "k", "i");
+    addFunction(10.f, 0.f, dummy_func, "llCastRay", "kv", "vvl"); //Energy | Sleep unknown
+    addFunction(0.f, 0.f, dummy_func, "llClearLinkMedia", "i", "ii");
+    addFunction(0.f, 0.f, dummy_func, "llGetAgentList", "l", "il");
+    addFunction(0.f, 0.f, dummy_func, "llGetLinkMedia", "l", "iil");
+    addFunction(10.f, 0.f, dummy_func, "llGetLinkNumberOfSides", "i", "i");
+    addFunction(10.f, 0.f, dummy_func, "llGetMassMKS", "f", NULL); //Energy unknown
+    addFunction(10.f, 0.f, dummy_func, "llGetMemoryLimit", "i", NULL); //Energy unknown
+    addFunction(10.f, 0.f, dummy_func, "llGetParcelMusicURL", "s", NULL); //Energy | Sleep unknown
+    addFunction(10.f, 0.f, dummy_func, "llGetSPMaxMemory", "i", NULL); //Energy unknown
+    addFunction(10.f, 0.f, dummy_func, "llGetUsedMemory", "i", NULL);
+    addFunction(10.f, 0.f, dummy_func, "llLinkSitTarget", NULL, "ivr");
+    addFunction(10.f, 0.f, dummy_func, "llManageEstateAccess", "i", "ik"); //Energy | Sleep unknown
+    addFunction(10.f, 0.f, dummy_func, "llScriptProfiler", NULL, "i");
+    addFunction(10.f, 0.f, dummy_func, "llSetAngularVelocity", NULL, "vi"); //Energy unknown
+    addFunction(10.f, 0.f, dummy_func, "llSetContenType", NULL, "ki"); //Energy | Sleep unknown
+    addFunction(10.f, 0.f, dummy_func, "llSetKeyframedMotion", NULL, "ll"); //Energy | Sleep unknown
+    addFunction(10.f, 0.f, dummy_func, "llSetLinkCamera", NULL, "ivv");
+    addFunction(0.f, 0.f, dummy_func, "llSetLinkMedia", "i", "iil");
+    addFunction(10.f, 0.f, dummy_func, "llSetMemoryLimit", "i", "i"); //Energy unknown
+    addFunction(0.f, 0.f, dummy_func, "llSetRegionPos", "i", "v");
+    addFunction(10.f, 0.f, dummy_func, "llSetVelocity", NULL, "vi"); //Energy unknown
+    addFunction(10.f, 0.f, dummy_func, "llTransferLindenDollars", "k", "ki"); //Energy unknown
+    addFunction(10.f, 0.f, dummy_func, "llTeleportAgent", NULL, "ksvv");
+    addFunction(10.f, 0.f, dummy_func, "llAttachToAvatarTemp", NULL, "i"); //Energy | Sleep unknown
+    addFunction(10.f, 0.f, dummy_func, "llTeleportAgentGlobalCoords", NULL, "kvvv"); //Energy | Sleep unknown
+    
+	// Server Side AO
+	addFunction(10.f, 0.f, dummy_func, "llSetAnimationOverride", NULL, "ss"); //Energy | Sleep unknown
+    addFunction(10.f, 0.f, dummy_func, "llGetAnimationOverride", "s", "s"); //Energy | Sleep unknown
+    addFunction(10.f, 0.f, dummy_func, "llResetAnimationOverride", NULL, "s"); //Energy | Sleep unknown
+
+    // Pathfinding
+	addFunction(0.f, 0.f, dummy_func, "llGenerateKey", "k", NULL);
+	addFunction(0.f, 0.f, dummy_func, "llNavigateTo", NULL, "vl");
+	addFunction(0.f, 0.f, dummy_func, "llCreateCharacter", NULL, "l");
+	addFunction(0.f, 0.f, dummy_func, "llPursue", NULL, "kl");
+	addFunction(0.f, 0.f, dummy_func, "llWanderWithin", NULL, "vfl");
+	addFunction(0.f, 0.f, dummy_func, "llFleeFrom", NULL, "vfl");
+	addFunction(0.f, 0.f, dummy_func, "llPatrolPoints", NULL, "ll");
+	addFunction(0.f, 0.f, dummy_func, "llExecCharacterCmd", NULL, "il");
+	addFunction(0.f, 0.f, dummy_func, "llDeleteCharacter", NULL, NULL);
+	addFunction(0.f, 0.f, dummy_func, "llUpdateCharacter", NULL, "l");
+	addFunction(0.f, 0.f, dummy_func, "llEvade", NULL, "kl");
+	addFunction(0.f, 0.f, dummy_func, "llGetClosestNavPoint", "l", "vl");
+	addFunction(0.f, 0.f, dummy_func, "llGetStaticPath", "l", "vvfl");
+
 	// energy, sleep, dummy_func, name, return type, parameters, help text, gods-only
 
 	// IF YOU ADD NEW SCRIPT CALLS, YOU MUST PUT THEM AT THE END OF THIS LIST.

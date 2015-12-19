@@ -37,9 +37,11 @@
 #include "llagent.h"
 #include "llfloaterreg.h"
 #include "llfloaterworldmap.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llproductinforequest.h"
 #include "llscrolllistctrl.h"
 #include "llstatusbar.h"
+#include "llsidepanelinventory.h"
 #include "lltextbox.h"
 #include "llscrolllistctrl.h"
 #include "llscrolllistitem.h"
@@ -322,9 +324,10 @@ void LLFloaterLandHoldings::onGrantList(void* data)
 
 void LLFloaterLandHoldings::refreshAggregates()
 {
-	S32 allowed_area = gStatusBar->getSquareMetersCredit();
-	S32 current_area = gStatusBar->getSquareMetersCommitted();
-	S32 available_area = gStatusBar->getSquareMetersLeft();
+	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+	S32 allowed_area = sidepanel_inventory->getSquareMetersCredit();
+	S32 current_area = sidepanel_inventory->getSquareMetersCommitted();
+	S32 available_area = sidepanel_inventory->getSquareMetersLeft();
 
 	getChild<LLUICtrl>("allowed_text")->setTextArg("[AREA]", llformat("%d",allowed_area));
 	getChild<LLUICtrl>("current_text")->setTextArg("[AREA]", llformat("%d",current_area));

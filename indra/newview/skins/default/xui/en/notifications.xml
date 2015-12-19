@@ -819,6 +819,33 @@ If you no longer wish to have these abilities granted to this role, disable them
       notext="Cancel"
       yestext="Eject"/>
   </notification>
+  
+  <notification
+    icon="alertmodal.tga"
+    name="BanGroupMemberWarning"
+    type="alertmodal">
+     You are about to ban [AVATAR_NAME] from the group.
+     <tag>group</tag>
+     <tag>confirm</tag>
+     <usetemplate
+      ignoretext="Confirm banning a participant from group"
+      name="okcancelignore"
+      notext="Cancel"
+      yestext="Ban"/>
+  </notification>
+  <notification
+    icon="alertmodal.tga"
+    name="BanGroupMembersWarning"
+    type="alertmodal">
+     You are about to ban [COUNT] members from group.
+     <tag>group</tag>
+     <tag>confirm</tag>
+     <usetemplate
+      ignoretext="Confirm banning multiple members from group"
+      name="okcancelignore"
+      notext="Cancel"
+      yestext="Ban"/>
+  </notification>
 
   <notification
    icon="alertmodal.tga"
@@ -1025,7 +1052,7 @@ Objects: [N]
    icon="alertmodal.tga"
    name="ReturnAllTopObjects"
    type="alertmodal">
-Are you sure you want to return all listed objects back to their owner&apos;s inventory?
+Are you sure you want to return all listed objects back to their owner&apos;s inventory? This will return ALL scripted objects in the region!
     <tag>confirm</tag>
     <usetemplate
      name="okcancelbuttons"
@@ -3893,6 +3920,53 @@ see [[INFO_URL] Information about this update]
      name="okbutton"
      yestext="OK"/>
   </notification>
+  
+  <notification
+ icon="alertmodal.tga"
+ name="UpdateDownloadInProgress"
+ type="alertmodal">
+An update is available!
+It's downloading in the background and we will prompt you to restart your viewer to finish installing it as soon as it's ready.
+    <tag>confirm</tag>
+    <usetemplate
+     name="okbutton"
+     yestext="OK"/>
+  </notification>
+  
+  <notification
+ icon="alertmodal.tga"
+ name="UpdateDownloadComplete"
+ type="alertmodal">
+An update was downloaded. It will be installed during restart.
+    <tag>confirm</tag>
+    <usetemplate
+     name="okbutton"
+     yestext="OK"/>
+  </notification>
+
+  <notification
+ icon="alertmodal.tga"
+ name="UpdateCheckError"
+ type="alertmodal">
+An error occured while checking for update.
+Please try again later.
+    <tag>confirm</tag>
+    <usetemplate
+     name="okbutton"
+     yestext="OK"/>
+  </notification>
+
+  <notification
+ icon="alertmodal.tga"
+ name="UpdateViewerUpToDate"
+ type="alertmodal">
+Your viewer is up to date!
+If you can't wait to try out the latest features and fixes, check out the Alternate Viewers page. http://wiki.secondlife.com/wiki/Linden_Lab_Official:Alternate_Viewers.
+    <tag>confirm</tag>
+    <usetemplate
+     name="okbutton"
+     yestext="OK"/>
+  </notification>
 
   <notification
    icon="alertmodal.tga"
@@ -4192,6 +4266,21 @@ You have reached your maximum number of groups. Please leave some group before j
     <usetemplate
      name="okbutton"
      yestext="OK"/>
+  </notification>
+
+  <notification
+   icon="alert.tga"
+   name="GroupLimitInfo"
+   type="alert">
+The group limit for base accounts is [MAX_BASIC], and for [https://secondlife.com/premium/ premium]
+accounts is [MAX_PREMIUM].
+If you downgraded your account, you will need to get below [MAX_BASIC] group limit before you can join more.
+
+[https://secondlife.com/my/account/membership.php Upgrade today!]
+    <tag>group</tag>
+    <usetemplate
+     name="okbutton"
+     yestext="Close"/>
   </notification>
 
   <notification
@@ -5688,16 +5777,19 @@ You cannot undo this action.
      notext="Cancel"
      yestext="OK"/>
   </notification>
-
+  
   <notification
-   icon="alertmodal.tga"
-   name="HelpReportAbuseEmailLL"
-   type="alert">
+     icon="alertmodal.tga"
+     name="ConfirmUnlink"
+     type="alertmodal">
     <unique/>
-    
-Use this tool to report violations of the [http://secondlife.com/corporate/tos.php Terms of Service] and [http://secondlife.com/corporate/cs.php Community Standards].
-
-All reported abuses are investigated and resolved.
+    This is a large selection with linksets. If you unlink it, you may not be able to link it again. You may wish to take copies of linksets into your inventory as a precaution.
+    <tag>confirm</tag>
+    <usetemplate
+     ignoretext="Confirm when unlinking a linkset"
+     name="okcancelignore"
+     notext="Cancel"
+     yestext="Unlink"/>
   </notification>
 
   <notification
@@ -6188,7 +6280,7 @@ Topic: [SUBJECT], Message: [MESSAGE]
    log_to_chat="false"
    type="notifytip">
     <tag>friendship</tag>
-&lt;nolink&gt;[NAME]&lt;/nolink&gt; is [STATUS]
+[NAME] is [STATUS]
     <unique combine="cancel_old">
       <context>NAME</context>
     </unique>
@@ -7005,15 +7097,6 @@ No valid circuit code.
 
   <notification
 	icon="notify.tga"
-	name="NoValidTimestamp"
-   persist="true"
-	type="notify">
-   <tag>fail</tag>
-No valid timestamp.
-  </notification>
-
-  <notification
-	icon="notify.tga"
 	name="NoPendingConnection"
    persist="true"
 	type="notify">
@@ -7109,6 +7192,7 @@ Your object named &lt;nolink&gt;[OBJECTFROMNAME]&lt;/nolink&gt; has given you th
   <notification
    icon="notify.tga"
    name="UserGiveItem"
+   label="Inventory offer from [NAME_LABEL]"
    log_to_im ="true"
    type="offer"
    sound="UISndNewIncomingIMSession">
@@ -7166,6 +7250,7 @@ Your object named &lt;nolink&gt;[OBJECTFROMNAME]&lt;/nolink&gt; has given you th
   <notification
    icon="notify.tga"
    name="TeleportOffered"
+   label="Teleport offer from [NAME_LABEL]"
    log_to_im="true"
    log_to_chat="false"
    type="offer"
@@ -7281,6 +7366,7 @@ Offer a teleport?
   <notification
    icon="notify.tga"
    name="OfferFriendship"
+   label="Friendship offer from [NAME_LABEL]"
    log_to_im="true"
    type="offer">
     <tag>friendship</tag>
@@ -7314,6 +7400,7 @@ Offer a teleport?
   <notification
    icon="notify.tga"
    name="OfferFriendshipNoMessage"
+   label="Friendship offer from [NAME_LABEL]"
    persist="true"
    type="notify">
     <tag>friendship</tag>
@@ -8257,9 +8344,8 @@ Select residents to share with.
     name="MeshUploadError"
     icon="alert.tga"
     type="alert">
-    [LABEL] failed to upload: [MESSAGE] [IDENTIFIER] 
-
-See the log file for details.
+      [LABEL] failed to upload: [MESSAGE] [IDENTIFIER]
+[DETAILS]See SecondLife.log for details
   </notification>
    
   <notification
@@ -8500,7 +8586,7 @@ We cannot display a preview of this texture because it is no-copy and/or no-tran
   <notification
    icon="alertmodal.tga"
    name="ConfirmLeaveCall"
-   type="alert">
+   type="alertmodal">
 Are you sure you want to leave this call?
     <tag>confirm</tag>
     <tag>voice</tag>
@@ -10852,6 +10938,13 @@ An internal error prevented us from properly updating your viewer.  The L$ balan
    type="notify">
    <tag>fail</tag>
 Cannot create large prims that intersect other players.  Please re-try when other players have moved.
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="RLVChangeStrings"
+   type="alertmodal">
+Changes won't take effect until after you restart [APP_NAME].
   </notification>
   
   <notification

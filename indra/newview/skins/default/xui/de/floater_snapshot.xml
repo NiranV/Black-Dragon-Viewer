@@ -39,7 +39,13 @@
 	<string name="local_failed_str">
 		Fehler beim Speichern auf dem Computer.
 	</string>
-	<button label="AKTUALISIEREN" name="new_snapshot_btn"/>
+	<button name="advanced_options_btn" tool_tip="Erweiterte Optionen"/>
+	<text name="image_res_text">
+		[WIDTH]px (Breite) x [HEIGHT]px (Höhe)
+	</text>
+	<text name="file_size_label">
+		[SIZE] KB
+	</text>
 	<panel name="advanced_options_panel">
 		<text name="layer_type_label">
 			Aufnehmen:
@@ -50,8 +56,9 @@
 		</combo_box>
 		<check_box label="Benutzeroberfläche" name="ui_check"/>
 		<check_box label="HUDs" name="hud_check"/>
-		<check_box label="Standbild (Vollbild)" name="freeze_frame_check"/>
+		<check_box label="Welt anhalten" name="freeze_world_check"/>
 		<check_box label="Automatisch aktualisieren" name="auto_snapshot_check"/>
+		<check_box label="Speichermodus beibehalten" name="remember_mode_check"/>
 		<text name="filter_list_label">
 			Filter:
 		</text>
@@ -59,10 +66,4 @@
 			<combo_box.item label="Kein Filter" name="NoFilter"/>
 		</combo_box>
 	</panel>
-	<text name="image_res_text">
-		[WIDTH] px (Breite) x [HEIGHT] px (Höhe)
-	</text>
-	<text name="file_size_label">
-		[SIZE] KB
-	</text>
 </floater>

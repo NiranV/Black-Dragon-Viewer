@@ -317,6 +317,11 @@ LLViewerObject* LLViewerObjectList::processObjectUpdateFromCache(LLVOCacheEntry*
 
 	objectp = findObject(fullid);
 
+	if( mDerenderList.end() != mDerenderList.find(fullid))
+	{
+		return NULL;
+	}
+
 	if (objectp)
 	{
 		if(!objectp->isDead() && (objectp->mLocalID != entry->getLocalID() ||
@@ -1356,7 +1361,7 @@ void LLViewerObjectList::removeDrawable(LLDrawable* drawablep)
 	}
 }
 
-BOOL LLViewerObjectList::killObject(LLViewerObject *objectp)
+BOOL LLViewerObjectList::killObject(LLViewerObject *objectp, bool derendered)
 {
 	// Don't ever kill gAgentAvatarp, just force it to the agent's region
 	// unless region is NULL which is assumed to mean you are logging out.
@@ -1371,6 +1376,10 @@ BOOL LLViewerObjectList::killObject(LLViewerObject *objectp)
 
 	if (objectp)
 	{
+		if(derendered)
+		{
+			mDerenderList.insert(objectp->getID());
+		}
 		objectp->markDead(); // does the right thing if object already dead
 		return TRUE;
 	}
@@ -2018,6 +2027,11 @@ LLViewerObject *LLViewerObjectList::createObjectFromCache(const LLPCode pcode, L
 		return NULL;
 	}
 
+	if( mDerenderList.end() != mDerenderList.find(uuid))
+	{
+		return NULL;
+	}
+
 	objectp->mLocalID = local_id;
 	mUUIDObjectMap[uuid] = objectp;
 	setUUIDAndLocal(uuid,
@@ -2034,7 +2048,6 @@ LLViewerObject *LLViewerObjectList::createObjectFromCache(const LLPCode pcode, L
 LLViewerObject *LLViewerObjectList::createObject(const LLPCode pcode, LLViewerRegion *regionp,
 												 const LLUUID &uuid, const U32 local_id, const LLHost &sender)
 {
-	
 	LLUUID fullid;
 	if (uuid == LLUUID::null)
 	{
@@ -2043,6 +2056,11 @@ LLViewerObject *LLViewerObjectList::createObject(const LLPCode pcode, LLViewerRe
 	else
 	{
 		fullid = uuid;
+	}
+
+	if( mDerenderList.end() != mDerenderList.find(uuid))
+	{
+		return NULL;
 	}
 
 	LLViewerObject *objectp = LLViewerObject::createObject(fullid, pcode, regionp);

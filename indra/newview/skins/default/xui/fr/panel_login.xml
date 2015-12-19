@@ -12,7 +12,7 @@
 			<button label="Connexion" name="connect_btn"/>
 			<check_box label="Mémoriser mes informations" name="remember_check"/>
 			<text name="forgot_password_text">Mot de passe oublié</text>
-			<combo_box label="Sélectionner la grille" name="server_combo"/>
+			<combo_box label="Sélectionner la grille" name="server_combo" left_pad="20"/>
 		</layout_panel>
 	</layout_stack>
 </panel>

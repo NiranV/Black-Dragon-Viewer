@@ -8,10 +8,22 @@
  min_height="190"
  min_width="285"
  name="objectcontents"
- help_topic="objectcontents"
  save_rect="true"
- title="OBJECT CONTENTS"
+ title="Object Contents"
  width="300">
+  <icon
+  follows="all"
+  height="300"
+  color="1 1 1 1"
+  image_name="Panel_Background"
+  layout="topleft"
+  name="vicon"
+  mouse_opaque="false"
+  visible="true"
+  width="283"
+  top="37"
+  bottom="-10"
+  left="8"/>
    <text
      type="string"
      length="1"
@@ -33,7 +45,7 @@
      follows="all"
      height="240"
      layout="topleft"
-     left="10"
+     left="8"
      name="object_contents"
      top_pad="0"
      width="284" />
@@ -46,7 +58,7 @@
      left="10"
      name="border"
      top_pad="5"
-     width="270"/> 
+     width="280"/> 
   	<text
   	 follows="bottom|left"
   	 height="15"
@@ -76,9 +88,9 @@
      label="Replace outfit"
      label_selected="Replace outfit"
      layout="topleft"
-     left_pad="5"
+     left_pad="1"
      name="copy_and_replace_button"
-     width="120">
+     width="134">
         <button.commit_callback
          function="OpenObject.ReplaceOutfit" />
     </button>  
@@ -88,11 +100,11 @@
      label="Only copy to inventory"
      label_selected="Only copy to inventory"
      layout="topleft"
-     left="15"
+     left="9"
      name="copy_to_inventory_button"
      tab_group="1"
      top_pad="9"
-     width="135">
+     width="141">
         <button.commit_callback
          function="OpenObject.MoveToInventory" />
     </button>
@@ -102,9 +114,9 @@
      label="Cancel"
      label_selected="Cancel"
      layout="topleft"
-     left_pad="5"
+     left_pad="1"
      name="cancel_button"
-     width="120">
+     width="139">
         <button.commit_callback
          function="OpenObject.Cancel" />
     </button>

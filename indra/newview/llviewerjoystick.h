@@ -68,6 +68,7 @@ public:
 	void setOverrideCamera(bool val);
 	bool toggleFlycam();
 	void setSNDefaults();
+	void setXboxDefaults();
 	std::string getDescription();
 	
 protected:

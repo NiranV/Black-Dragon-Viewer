@@ -37,8 +37,7 @@ mat4 getObjectSkinnedTransform()
 		 index = min(index, vec4(51.0));
 		 index = max(index, vec4( 0.0));
 
-	float scale = 1.0/(w.x+w.y+w.z+w.w);
-	w *= scale;
+    w *= 1.0/(w.x+w.y+w.z+w.w);
 	
 	int i1 = int(index.x);
 	int i2 = int(index.y);
@@ -63,7 +62,7 @@ mat4 getObjectSkinnedTransform()
 	ret[3] = vec4(trans, 1.0);
 				
 	return ret;
-
+	
 #ifdef IS_AMD_CARD
    // If it's AMD make sure the GLSL compiler sees the arrays referenced once by static index. Otherwise it seems to optimise the storage awawy which leads to unfun crashes and artifacts.
    mat3 dummy1 = matrixPalette[0];
@@ -71,6 +70,5 @@ mat4 getObjectSkinnedTransform()
    mat3 dummy3 = matrixPalette[51];
    vec3 dummy4 = translationPalette[51];
 #endif
-
 }
 

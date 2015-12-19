@@ -58,6 +58,40 @@ typedef enum
 		
 	} EGraphicsSettings;
 
+class LLPanelVoiceDeviceSettings : public LLPanel
+{
+public:
+	LLPanelVoiceDeviceSettings();
+	~LLPanelVoiceDeviceSettings();
+
+	/*virtual*/ void draw();
+	/*virtual*/ BOOL postBuild();
+	void apply();
+	void cancel();
+	void refresh();
+	void initialize();
+	void cleanup();
+
+	/*virtual*/ void onVisibilityChange ( BOOL new_visibility );
+
+	void setUseTuningMode(bool use) { mUseTuningMode = use; };
+	
+protected:
+	std::string getLocalizedDeviceName(const std::string& en_dev_name);
+
+	void onCommitInputDevice();
+	void onCommitOutputDevice();
+
+	F32 mMicVolume;
+	std::string mInputDevice;
+	std::string mOutputDevice;
+	class LLComboBox		*mCtrlInputDevices;
+	class LLComboBox		*mCtrlOutputDevices;
+	BOOL mDevicesUpdated;
+	bool mUseTuningMode;
+	std::map<std::string, std::string> mLocalizedDeviceNames;
+};
+
 // Floater to control preferences (display, audio, bandwidth, general.
 class LLFloaterPreference : public LLFloater, public LLAvatarPropertiesObserver, public LLConversationLogObserver
 {
@@ -95,8 +129,9 @@ public:
 	void getControlNames(std::vector<std::string>& names);
 
 protected:	
-	void		onBtnOK(const LLSD& userdata);
-	void		onBtnCancel(const LLSD& userdata);
+	void		onBtnOK();
+	void		onBtnCancel();
+	void		onBtnApply();
 
 	void		onClickClearCache();			// Clear viewer texture cache, vfs, and VO cache on next startup
 	void		onClickBrowserClearCache();		// Clear web history and caches as well as viewer caches above
@@ -110,21 +145,14 @@ protected:
 	// if the custom settings box is clicked
 	void onChangeCustom();
 	void updateMeterText(LLUICtrl* ctrl);
+	void onOpenHardwareSettings();
 	// callback for defaults
 	void setHardwareDefaults();
-	void setRecommended();
 	// callback for when client turns on shaders
 	void onVertexShaderEnable();
 	// callback for when client turns on impostors
 	void onAvatarImpostorsEnable();
-
-	// callback for commit in the "Single click on land" and "Double click on land" comboboxes.
-	void onClickActionChange();
-	// updates click/double-click action settings depending on controls values
-	void updateClickActionSettings();
-	// updates click/double-click action controls depending on values from settings.xml
-	void updateClickActionControls();
-
+	
 	// This function squirrels away the current values of the controls so that
 	// cancel() can restore them.	
 	void saveSettings();
@@ -151,25 +179,54 @@ public:
 	void enableHistory();
 	void setPersonalInfo(const std::string& visibility, bool im_via_email);
 	void refreshEnabledState();
-	void onCommitWindowedMode();
+	void disableUnavailableSettings();
+	//void onCommitWindowedMode();
 	void refresh();	// Refresh enable/disable
-	// if the quality radio buttons are changed
-	void onChangeQuality(const LLSD& data);
 	
+	void updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box);
 	void refreshUI();
+
+//	//BD - Expandable Tabs
+	void onTab(LLUICtrl* ctrl, const LLSD& param);
+
+//	//BD - Expandable Tabs
+	void toggleTabs();
+
+//	//BD - Debug Arrays
+	void onCommitX(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitY(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitZ(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitXd(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitYd(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitZd(LLUICtrl* ctrl, const LLSD& param);
+
+//	//BD - Revert to Default
+	void resetToDefault(LLUICtrl* ctrl);
+
+//	//BD - Custom Keyboard Layout
+	void onBindKey(LLUICtrl* ctrl, const LLSD& param);
+	void onExportControls();
+
+//	//BD - Revert to Default
+	void inputOutput();
+
+//	//BD - Catznip's Borderless Window Mode
+	void toggleFullscreenWindow();
+
+//	//BD - Refresh all controls
+	void refreshGraphicControls();
+	void refreshCameraControls();
 
 	void onCommitParcelMediaAutoPlayEnable();
 	void onCommitMediaEnabled();
 	void onCommitMusicEnabled();
 	void applyResolution();
-	void onChangeMaturity();
 	void onClickBlockList();
 	void onClickProxySettings();
 	void onClickTranslationSettings();
 	void onClickPermsDefault();
 	void onClickAutoReplace();
 	void onClickSpellChecker();
-	void onClickAdvanced();
 	void applyUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void getUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void onLogChatHistorySaved();	
@@ -182,6 +239,14 @@ private:
 	void onDeleteTranscripts();
 	void onDeleteTranscriptsResponse(const LLSD& notification, const LLSD& response);
 	void updateDeleteTranscriptsButton();
+
+	void updateMaxNonImpostors();
+	void setMaxNonImpostorsText(U32 value, LLTextBox* text_box);
+	void updateMaxComplexity();
+	void setMaxComplexityText(U32 value, LLTextBox* text_box);
+	static void setIndirectControls();
+	static void setIndirectMaxNonImpostors();
+	static void setIndirectMaxArc();
 
 	static std::string sSkin;
 	notifications_map mNotificationOptions;
@@ -210,7 +275,7 @@ public:
 	virtual void apply();
 	virtual void cancel();
 	void setControlFalse(const LLSD& user_data);
-	virtual void setHardwareDefaults();
+	virtual void setHardwareDefaults(){};
 
 	// Disables "Allow Media to auto play" check box only when both
 	// "Streaming Music" and "Media" are unchecked. Otherwise enables it.
@@ -223,7 +288,7 @@ public:
 	void deletePreset(const LLSD& user_data);
 	void savePreset(const LLSD& user_data);
 	void loadPreset(const LLSD& user_data);
-
+	
 	class Updater;
 
 protected:
@@ -234,7 +299,9 @@ private:
 	//for "Only friends and groups can call or IM me"
 	static void showFriendsOnlyWarning(LLUICtrl*, const LLSD&);
 	//for "Show my Favorite Landmarks at Login"
-	static void showFavoritesOnLoginWarning(LLUICtrl* checkbox, const LLSD& value);
+	static void handleFavoritesOnLoginChanged(LLUICtrl* checkbox, const LLSD& value);
+
+	void onPresetsListChange();
 
 	typedef std::map<std::string, LLColor4> string_color_map_t;
 	string_color_map_t mSavedColors;
@@ -248,9 +315,9 @@ class LLPanelPreferenceGraphics : public LLPanelPreference
 public:
 	BOOL postBuild();
 	void draw();
+	void apply();
 	void cancel();
 	void saveSettings();
-	void resetDirtyChilds();
 	void setHardwareDefaults();
 	void setPresetText();
 
@@ -258,34 +325,12 @@ public:
 
 protected:
 	bool hasDirtyChilds();
+	void resetDirtyChilds();
 
 private:
 
 	void onPresetsListChange();
 	LOG_CLASS(LLPanelPreferenceGraphics);
-};
-
-class LLFloaterPreferenceGraphicsAdvanced : public LLFloater
-{
-public: 
-	LLFloaterPreferenceGraphicsAdvanced(const LLSD& key);
-	~LLFloaterPreferenceGraphicsAdvanced();
-
-	void disableUnavailableSettings();
-	void refreshEnabledGraphics();
-	void refreshEnabledState();
-	void updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box);
-	void updateMaxNonImpostors();
-	void setMaxNonImpostorsText(U32 value, LLTextBox* text_box);
-	void updateMaxComplexity();
-	void setMaxComplexityText(U32 value, LLTextBox* text_box);
-	static void setIndirectControls();
-	static void setIndirectMaxNonImpostors();
-	static void setIndirectMaxArc();
-	void refresh();
-	// callback for when client turns on shaders
-	void onVertexShaderEnable();
-	LOG_CLASS(LLFloaterPreferenceGraphicsAdvanced);
 };
 
 class LLFloaterPreferenceProxy : public LLFloater
@@ -305,6 +350,7 @@ protected:
 	void saveSettings();
 	void onBtnOk();
 	void onBtnCancel();
+	void onClickCloseBtn(bool app_quitting = false);
 
 	void onChangeSocksSettings();
 
@@ -313,7 +359,7 @@ private:
 	bool mSocksSettingsDirty;
 	typedef std::map<LLControlVariable*, LLSD> control_values_map_t;
 	control_values_map_t mSavedValues;
-	LOG_CLASS(LLFloaterPreferenceProxy);
+
 };
 
 

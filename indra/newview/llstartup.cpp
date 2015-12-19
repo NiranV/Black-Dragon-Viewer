@@ -133,9 +133,9 @@
 #include "llproxy.h"
 #include "llproductinforequest.h"
 #include "llselectmgr.h"
+#include "llsidepanelinventory.h"
 #include "llsky.h"
 #include "llstatview.h"
-#include "llstatusbar.h"		// sendMoneyBalanceRequest(), owns L$ balance
 #include "llsurface.h"
 #include "lltexturecache.h"
 #include "lltexturefetch.h"
@@ -191,6 +191,10 @@
 #include "llvoicechannel.h"
 #include "llpathfindingmanager.h"
 
+// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0a)
+#include "rlvhandler.h"
+// [/RLVa:KB]
+
 #include "lllogin.h"
 #include "llevents.h"
 #include "llstartuplistener.h"
@@ -208,7 +212,6 @@ bool gAgentMovementCompleted = false;
 S32  gMaxAgentGroups;
 
 std::string SCREEN_HOME_FILENAME = "screen_home.bmp";
-std::string SCREEN_LAST_FILENAME = "screen_last.bmp";
 
 LLPointer<LLViewerTexture> gStartTexture;
 
@@ -242,7 +245,8 @@ static LLVector3 gAgentStartLookAt(1.0f, 0.f, 0.f);
 static std::string gAgentStartLocation = "safe";
 static bool mLoginStatePastUI = false;
 
-const S32 DEFAULT_MAX_AGENT_GROUPS = 25;
+const S32 DEFAULT_MAX_AGENT_GROUPS = 42;
+const S32 ALLOWED_MAX_AGENT_GROUPS = 500;
 
 boost::scoped_ptr<LLEventPump> LLStartUp::sStateWatcher(new LLEventStream("StartupState"));
 boost::scoped_ptr<LLStartupListener> LLStartUp::sListener(new LLStartupListener());
@@ -263,8 +267,6 @@ void use_circuit_callback(void**, S32 result);
 void register_viewer_callbacks(LLMessageSystem* msg);
 void asset_callback_nothing(LLVFS*, const LLUUID&, LLAssetType::EType, void*, S32);
 bool callback_choose_gender(const LLSD& notification, const LLSD& response);
-void init_start_screen(S32 location_id);
-void release_start_screen();
 void reset_login();
 LLSD transform_cert_args(LLPointer<LLCertificate> cert);
 void general_cert_done(const LLSD& notification, const LLSD& response);
@@ -330,7 +332,7 @@ bool idle_startup()
 
 	// until this is encapsulated, this little hack for the
 	// auth/transform loop will do.
-	static F32 progress = 0.10f;
+	static F32 progress = 0.0f;
 
 	static std::string auth_desc;
 	static std::string auth_message;
@@ -388,6 +390,13 @@ bool idle_startup()
 		std::string lastGPU = gSavedSettings.getString("LastGPUString");
 		std::string thisGPU = LLFeatureManager::getInstance()->getGPUString();
 		
+// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0a) | Modified: RLVa-0.2.1d
+		if ( (gSavedSettings.controlExists(RLV_SETTING_MAIN)) && (gSavedSettings.getBOOL(RLV_SETTING_MAIN)) )
+		{
+			rlv_handler_t::setEnabled(TRUE);
+		}
+// [/RLVa:KB]
+
 		if (LLFeatureManager::getInstance()->isSafe())
 		{
 			LLNotificationsUtil::add("DisplaySetToSafe");
@@ -420,9 +429,7 @@ bool idle_startup()
 		gSavedSettings.setS32("LastFeatureVersion", LLFeatureManager::getInstance()->getVersion());
 		gSavedSettings.setString("LastGPUString", thisGPU);
 
-		// load dynamic GPU/feature tables from website (S3)
-		LLFeatureManager::getInstance()->fetchHTTPTables();
-		
+
 		std::string xml_file = LLUI::locateSkin("xui_version.xml");
 		LLXMLNodePtr root;
 		bool xml_ok = false;
@@ -748,18 +755,13 @@ bool idle_startup()
 
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_ARROW);
 
-		// Login screen needs menus for preferences, but we can enter
-		// this startup phase more than once.
-		if (gLoginMenuBarView == NULL)
-		{
-			LL_DEBUGS("AppInit") << "initializing menu bar" << LL_ENDL;
-			display_startup();
-			initialize_edit_menu();
-			initialize_spellcheck_menu();
-			display_startup();
-			init_menus();
-			display_startup();
-		}
+		LL_DEBUGS("AppInit") << "initializing menu bar" << LL_ENDL;
+		display_startup();
+		initialize_edit_menu();
+		initialize_spellcheck_menu();
+		display_startup();
+		init_menus();
+		display_startup();
 
 		if (show_connect_box)
 		{
@@ -814,10 +816,6 @@ bool idle_startup()
 
 		display_startup();
 		gViewerWindow->setNormalControlsVisible( FALSE );	
-		display_startup();
-		gLoginMenuBarView->setVisible( TRUE );
-		display_startup();
-		gLoginMenuBarView->setEnabled( TRUE );
 		display_startup();
 		show_debug_menus();
 		display_startup();
@@ -995,6 +993,18 @@ bool idle_startup()
 		// their last location, or some URL "-url //sim/x/y[/z]"
 		// All accounts have both a home and a last location, and we don't support
 		// more locations than that.  Choose the appropriate one.  JC
+// [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.2.0c) | Modified: RLVa-0.2.1d
+#ifndef RLV_EXTENSION_STARTLOCATION
+		if (rlv_handler_t::isEnabled())
+#else
+		if ( (rlv_handler_t::isEnabled()) && (RlvSettings::getLoginLastLocation()) )
+#endif // RLV_EXTENSION_STARTLOCATION
+		{
+			// Force login at the last location
+			LLStartUp::setStartSLURL(LLSLURL(LLSLURL::SIM_LOCATION_LAST));
+		}
+// [/RLVa:KB]
+
 		switch (LLStartUp::getStartSLURL().getType())
 		  {
 		  case LLSLURL::LOCATION:
@@ -1009,8 +1019,6 @@ bool idle_startup()
 		  }
 
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_WAIT);
-
-		init_start_screen(agent_location_id);
 
 		// Display the startup progress bar.
 		gViewerWindow->setShowProgress(TRUE);
@@ -1221,6 +1229,13 @@ bool idle_startup()
 	{
 		set_startup_status(0.30f, LLTrans::getString("LoginInitializingWorld"), gAgent.mMOTD);
 		display_startup();
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Added: Catznip-2.1.1a
+		if ((gSavedSettings.getBOOL("FullScreenWindow")) && (gViewerWindow->canFullscreenWindow()))
+		{
+			gViewerWindow->setFullscreenWindow(TRUE);
+		}
+// [/SL:KB]
+
 		// We should have an agent id by this point.
 		llassert(!(gAgentID == LLUUID::null));
 
@@ -1383,8 +1398,6 @@ bool idle_startup()
 		{	// This isn't the first logon attempt, so show the UI
 			gViewerWindow->setNormalControlsVisible( TRUE );
 		}	
-		gLoginMenuBarView->setVisible( FALSE );
-		gLoginMenuBarView->setEnabled( FALSE );
 		display_startup();
 
 		// direct logging to the debug console's line buffer
@@ -1815,7 +1828,7 @@ bool idle_startup()
 		display_startup();
 		// Get L$ and ownership credit information
 		LL_INFOS() << "Requesting Money Balance" << LL_ENDL;
-		LLStatusBar::sendMoneyBalanceRequest();
+		LLSidepanelInventory::sendMoneyBalanceRequest();
 		display_startup();
 		// request all group information
 		LL_INFOS() << "Requesting Agent Data" << LL_ENDL;
@@ -1825,6 +1838,14 @@ bool idle_startup()
 		LL_INFOS() << "Creating Inventory Views" << LL_ENDL;
 		LLFloaterReg::getInstance("inventory");
 		display_startup();
+
+// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0a) | Added: RLVa-1.1.0f
+		if (rlv_handler_t::isEnabled())
+		{
+			// Regularly process a select subset of retained commands during logon
+			gIdleCallbacks.addFunction(RlvHandler::onIdleStartup, new LLTimer());
+		}
+// [/RLVa:KB]
 		LLStartUp::setStartupState( STATE_MISC );
 		display_startup();
 		return FALSE;
@@ -2078,7 +2099,7 @@ bool idle_startup()
 		else
 		{
 			update_texture_fetch();
-			set_startup_status(0.60f + 0.30f * timeout_frac,
+			set_startup_status(0.60f + 0.10f * timeout_frac,
 				LLTrans::getString("LoginPrecaching"),
 					gAgent.mMOTD.c_str());
 			display_startup();
@@ -2642,76 +2663,6 @@ std::string& LLStartUp::getInitialOutfitName()
 	return sInitialOutfit;
 }
 
-// Loads a bitmap to display during load
-void init_start_screen(S32 location_id)
-{
-	if (gStartTexture.notNull())
-	{
-		gStartTexture = NULL;
-		LL_INFOS("AppInit") << "re-initializing start screen" << LL_ENDL;
-	}
-
-	LL_DEBUGS("AppInit") << "Loading startup bitmap..." << LL_ENDL;
-
-	std::string temp_str = gDirUtilp->getLindenUserDir() + gDirUtilp->getDirDelimiter();
-
-	if ((S32)START_LOCATION_ID_LAST == location_id)
-	{
-		temp_str += SCREEN_LAST_FILENAME;
-	}
-	else
-	{
-		temp_str += SCREEN_HOME_FILENAME;
-	}
-
-	LLPointer<LLImageBMP> start_image_bmp = new LLImageBMP;
-	
-	// Turn off start screen to get around the occasional readback 
-	// driver bug
-	if(!gSavedSettings.getBOOL("UseStartScreen"))
-	{
-		LL_INFOS("AppInit")  << "Bitmap load disabled" << LL_ENDL;
-		return;
-	}
-	else if(!start_image_bmp->load(temp_str) )
-	{
-		LL_WARNS("AppInit") << "Bitmap load failed" << LL_ENDL;
-		gStartTexture = NULL;
-	}
-	else
-	{
-		gStartImageWidth = start_image_bmp->getWidth();
-		gStartImageHeight = start_image_bmp->getHeight();
-
-		LLPointer<LLImageRaw> raw = new LLImageRaw;
-		if (!start_image_bmp->decode(raw, 0.0f))
-		{
-			LL_WARNS("AppInit") << "Bitmap decode failed" << LL_ENDL;
-			gStartTexture = NULL;
-		}
-		else
-		{
-			raw->expandToPowerOfTwo();
-			gStartTexture = LLViewerTextureManager::getLocalTexture(raw.get(), FALSE) ;
-		}
-	}
-
-	if(gStartTexture.isNull())
-	{
-		gStartTexture = LLViewerTexture::sBlackImagep ;
-		gStartImageWidth = gStartTexture->getWidth() ;
-		gStartImageHeight = gStartTexture->getHeight() ;
-	}
-}
-
-
-// frees the bitmap
-void release_start_screen()
-{
-	LL_DEBUGS("AppInit") << "Releasing bitmap..." << LL_ENDL;
-	gStartTexture = NULL;
-}
-
 
 // static
 std::string LLStartUp::startupStateToString(EStartupState state)
@@ -2781,8 +2732,6 @@ void reset_login()
 	if ( gViewerWindow )
 	{	// Hide menus and normal buttons
 		gViewerWindow->setNormalControlsVisible( FALSE );
-		gLoginMenuBarView->setVisible( TRUE );
-		gLoginMenuBarView->setEnabled( TRUE );
 	}
 
 	// Hide any other stuff
@@ -3237,6 +3186,23 @@ bool process_login_success_response()
 			LLStringUtil::trim(gDisplayName);
 		}
 	}
+	std::string first_name;
+	if(response.has("first_name"))
+	{
+		first_name = response["first_name"].asString();
+		LLStringUtil::replaceChar(first_name, '"', ' ');
+		LLStringUtil::trim(first_name);
+		gAgentUsername = first_name;
+	}
+
+	if(response.has("last_name") && !gAgentUsername.empty() && (gAgentUsername != "Resident"))
+	{
+		std::string last_name = response["last_name"].asString();
+		LLStringUtil::replaceChar(last_name, '"', ' ');
+		LLStringUtil::trim(last_name);
+		gAgentUsername = gAgentUsername + " " + last_name;
+	}
+
 	if(gDisplayName.empty())
 	{
 		if(response.has("first_name"))
@@ -3257,6 +3223,7 @@ bool process_login_success_response()
 			gDisplayName += text;
 		}
 	}
+
 	if(gDisplayName.empty())
 	{
 		gDisplayName.assign(gUserCredential->asString());
@@ -3494,13 +3461,6 @@ bool process_login_success_response()
 		LLAppearanceMgr::instance().setAppearanceServiceURL(agent_appearance_url);
 	}
 
-	// Set the location of the snapshot sharing config endpoint
-	std::string snapshot_config_url = response["snapshot_config_url"];
-	if(!snapshot_config_url.empty())
-	{
-		gSavedSettings.setString("SnapshotConfigURL", snapshot_config_url);
-	}
-
 	// Start the process of fetching the OpenID session cookie for this user login
 	std::string openid_url = response["openid_url"];
 	if(!openid_url.empty())
@@ -3509,15 +3469,24 @@ bool process_login_success_response()
 		LLViewerMedia::openIDSetup(openid_url, openid_token);
 	}
 
-	if(response.has("max-agent-groups")) {		
-		std::string max_agent_groups(response["max-agent-groups"]);
-		gMaxAgentGroups = atoi(max_agent_groups.c_str());
-		LL_INFOS("LLStartup") << "gMaxAgentGroups read from login.cgi: "
-							  << gMaxAgentGroups << LL_ENDL;
+	gMaxAgentGroups = DEFAULT_MAX_AGENT_GROUPS;
+	if(response.has("max-agent-groups"))
+	{
+		S32 agent_groups = atoi(std::string(response["max-agent-groups"]).c_str());
+		if (agent_groups > 0 && agent_groups <= ALLOWED_MAX_AGENT_GROUPS)
+		{
+			gMaxAgentGroups = agent_groups;
+			LL_INFOS("LLStartup") << "gMaxAgentGroups read from login.cgi: "
+				<< gMaxAgentGroups << LL_ENDL;
+		}
+		else
+		{
+			LL_INFOS("LLStartup") << "Invalid value received, using defaults for gMaxAgentGroups: "
+				<< gMaxAgentGroups << LL_ENDL;
+		}
 	}
 	else {
-		gMaxAgentGroups = DEFAULT_MAX_AGENT_GROUPS;
-		LL_INFOS("LLStartup") << "using gMaxAgentGroups default: "
+		LL_INFOS("LLStartup") << "Missing max-agent-groups, using default value for gMaxAgentGroups: "
 							  << gMaxAgentGroups << LL_ENDL;
 	}
 		

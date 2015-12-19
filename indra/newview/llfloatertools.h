@@ -143,7 +143,9 @@ public:
 	LLButton*		mBtnLink;
 	LLButton*		mBtnUnlink;
 
-	LLCheckBoxCtrl*	mCheckSnapToGrid;
+	LLUICtrl*		mCheckSnapToGrid;
+	LLUICtrl*		mCheckMyObjects;
+	LLUICtrl*		mCheckPhysicalObjects;
 	LLButton*		mBtnGridOptions;
 	LLComboBox*		mComboGridMode;
 	LLCheckBoxCtrl*	mCheckStretchUniform;
@@ -201,11 +203,13 @@ private:
 
 	std::map<std::string, std::string> mStatusText;
 
+
 protected:
 	LLSD				mMediaSettings;
 
 public:
 	static bool		sShowObjectCost;
+	static bool		sPreviousFocusOnAvatar;
 	
 };
 

@@ -49,10 +49,10 @@ if (WINDOWS)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /Zi /MDd /MP -D_SCL_SECURE_NO_WARNINGS=1"
       CACHE STRING "C++ compiler debug options" FORCE)
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO 
-      "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Od /Zi /Zo /MD /MP /Ob0 -D_SECURE_STL=0"
+      "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Od /Zi /Zo /MD /Gm /Ob0 -D_SECURE_STL=0"
       CACHE STRING "C++ compiler release-with-debug options" FORCE)
   set(CMAKE_CXX_FLAGS_RELEASE
-      "${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Zi /Zo /MD /MP /Ob2 -D_SECURE_STL=0 -D_HAS_ITERATOR_DEBUGGING=0"
+      "${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Zi /Zo /MD /MP /Ob2 /Oi /Ot /GF /Gy /arch:SSE2 -D_SECURE_STL=0 -D_HAS_ITERATOR_DEBUGGING=0"
       CACHE STRING "C++ compiler release options" FORCE)
   # zlib has assembly-language object files incompatible with SAFESEH
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE /SAFESEH:NO /NODEFAULTLIB:LIBCMT")
@@ -166,6 +166,9 @@ if (LINUX)
       -pthread
       )
 
+  # force this platform to accept TOS via external browser
+  add_definitions(-DEXTERNAL_TOS)
+
   add_definitions(-DAPPID=secondlife)
   add_definitions(-fvisibility=hidden)
   # don't catch SIGCHLD in our base application class for the viewer - some of our 3rd party libs may need their *own* SIGCHLD handler to work.  Sigh!  The viewer doesn't need to catch SIGCHLD anyway.
@@ -191,7 +194,7 @@ if (DARWIN)
   add_definitions(-DLL_DARWIN=1)
   set(CMAKE_CXX_LINK_FLAGS "-Wl,-no_compact_unwind -Wl,-headerpad_max_install_names,-search_paths_first")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_CXX_LINK_FLAGS}")
-  set(DARWIN_extra_cstar_flags "-g")
+  set(DARWIN_extra_cstar_flags "-g -Wno-unused-local-typedef -Wno-deprecated-declarations")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${DARWIN_extra_cstar_flags}")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  ${DARWIN_extra_cstar_flags}")
   # NOTE: it's critical that the optimization flag is put in front.

@@ -192,7 +192,15 @@ void LLHUDEffectBeam::setSourceObject(LLViewerObject *objp)
 			{
 				LLViewerObject *objp = mSourceObject;
 				LLVOAvatar *avatarp = (LLVOAvatar *)objp;
-				LLVector3d hand_pos_global = gAgent.getPosGlobalFromAgent(avatarp->mWristLeftp->getWorldPosition());
+				LLVector3d hand_pos_global;
+				if(gSavedSettings.getBOOL("AvatarRightHander"))
+				{
+					hand_pos_global = gAgent.getPosGlobalFromAgent(avatarp->mWristRightp->getWorldPosition());
+				}
+				else
+				{
+					hand_pos_global = gAgent.getPosGlobalFromAgent(avatarp->mWristLeftp->getWorldPosition());
+				}
 				mInterp[i].setStartVal(hand_pos_global);
 				mInterp[i].start();
 			}
@@ -317,7 +325,14 @@ void LLHUDEffectBeam::setupParticle(const S32 i)
 	{
 		LLViewerObject *objp = mSourceObject;
 		LLVOAvatar *avatarp = (LLVOAvatar *)objp;
-		start_pos_global = gAgent.getPosGlobalFromAgent(avatarp->mWristLeftp->getWorldPosition());
+		if(gSavedSettings.getBOOL("AvatarRightHander"))
+		{
+			start_pos_global = gAgent.getPosGlobalFromAgent(avatarp->mWristRightp->getWorldPosition());
+		}
+		else
+		{
+			start_pos_global = gAgent.getPosGlobalFromAgent(avatarp->mWristLeftp->getWorldPosition());
+		}
 	}
 	else
 	{

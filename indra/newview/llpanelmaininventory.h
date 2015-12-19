@@ -29,7 +29,6 @@
 #define LL_LLPANELMAININVENTORY_H
 
 #include "llpanel.h"
-#include "llinventoryobserver.h"
 #include "lldndbutton.h"
 
 #include "llfolderview.h"
@@ -52,7 +51,7 @@ class LLFloater;
 // including all the fixin's (e.g. AllItems/RecentItems tabs, filter floaters).
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-class LLPanelMainInventory : public LLPanel, LLInventoryObserver
+class LLPanelMainInventory : public LLPanel
 {
 public:
 	friend class LLFloaterInventoryFinder;
@@ -70,7 +69,6 @@ public:
 									   void* cargo_data,
 									   EAcceptance* accept,
 									   std::string& tooltip_msg);
-	/*virtual*/ void changed(U32);
 	/*virtual*/ void draw();
 
 	LLInventoryPanel* getPanel() { return mActivePanel; }
@@ -112,7 +110,9 @@ protected:
 	void newWindow();
 	void doCreate(const LLSD& userdata);
 	void resetFilters();
-	void setSortBy(const LLSD& userdata);
+	void setSortObjects();
+	void setSortSystemOnTop();
+	void setSortFoldersByName();
 	void saveTexture(const LLSD& userdata);
 	bool isSaveTextureEnabled(const LLSD& userdata);
 	void updateItemcountText();
@@ -124,15 +124,12 @@ private:
 
 	LLFilterEditor*				mFilterEditor;
 	LLTabContainer*				mFilterTabs;
-    LLUICtrl*                   mCounterCtrl;
 	LLHandle<LLFloater>			mFinderHandle;
 	LLInventoryPanel*			mActivePanel;
 	bool						mResortActivePanel;
 	LLSaveFolderState*			mSavedFolderState;
 	std::string					mFilterText;
 	std::string					mFilterSubString;
-	S32							mItemCount;
-	std::string 				mItemCountString;
 
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -140,8 +137,6 @@ private:
 protected:
 	void initListCommandsHandlers();
 	void updateListCommands();
-	void onAddButtonClick();
-	void showActionMenu(LLMenuGL* menu, std::string spawning_view_name);
 	void onTrashButtonClick();
 	void onClipboardAction(const LLSD& userdata);
 	BOOL isActionEnabled(const LLSD& command_name);
@@ -154,9 +149,6 @@ protected:
 	void setUploadCostIfNeeded();
 private:
 	LLDragAndDropButton*		mTrashButton;
-	LLToggleableMenu*			mMenuGearDefault;
-	LLMenuGL*					mMenuAdd;
-	LLMenuButton*				mGearMenuButton;
 
 	bool						mNeedUploadCost;
 	// List Commands                                                              //

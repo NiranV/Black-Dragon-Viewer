@@ -410,18 +410,35 @@ void LLMediaCtrl::onOpenWebInspector()
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-BOOL LLMediaCtrl::handleKeyHere( KEY key, MASK mask )
+BOOL LLMediaCtrl::handleKeyHere(KEY key, MASK mask)
 {
 	BOOL result = FALSE;
-	
+
 	if (mMediaSource)
 	{
 		result = mMediaSource->handleKeyHere(key, mask);
 	}
-	
-	if ( ! result )
+
+	if (!result)
 		result = LLPanel::handleKeyHere(key, mask);
-		
+
+	return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+BOOL LLMediaCtrl::handleKeyUpHere(KEY key, MASK mask)
+{
+	BOOL result = FALSE;
+
+	if (mMediaSource)
+	{
+		result = mMediaSource->handleKeyUpHere(key, mask);
+	}
+
+	if (!result)
+		result = LLPanel::handleKeyUpHere(key, mask);
+
 	return result;
 }
 
@@ -682,7 +699,8 @@ bool LLMediaCtrl::ensureMediaSourceExists()
 			mMediaSource->addObserver( this );
 			mMediaSource->setBackgroundColor( getBackgroundColor() );
 			mMediaSource->setTrustedBrowser(mTrusted);
-			mMediaSource->setPageZoomFactor( LLUI::getScaleFactor().mV[ VX ] );
+//			//BD - Webmedia UI Scaling fix, dont scale websites according to our UI size.
+			mMediaSource->setPageZoomFactor( 1.0f );
 
 			if(mClearCache)
 			{
@@ -765,7 +783,8 @@ void LLMediaCtrl::draw()
 	{
 		gGL.pushUIMatrix();
 		{
-			mMediaSource->setPageZoomFactor( LLUI::getScaleFactor().mV[ VX ] );
+//			//BD - Webmedia UI Scaling fix, dont scale websites according to our UI size.
+			mMediaSource->setPageZoomFactor( 1.0f );
 
 			// scale texture to fit the space using texture coords
 			gGL.getTexUnit(0)->bind(media_texture);
@@ -970,25 +989,29 @@ void LLMediaCtrl::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event)
 
 		case MEDIA_EVENT_CLICK_LINK_HREF:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CLICK_LINK_HREF, target is \"" << self->getClickTarget() << "\", uri is " << self->getClickURL() << LL_ENDL;
 			// retrieve the event parameters
 			std::string url = self->getClickURL();
-			std::string target = self->getClickTarget();
+			std::string target = self->isOverrideClickTarget() ? self->getOverrideClickTarget() : self->getClickTarget();
 			std::string uuid = self->getClickUUID();
+			LL_DEBUGS("Media") << "Media event:  MEDIA_EVENT_CLICK_LINK_HREF, target is \"" << target << "\", uri is " << url << LL_ENDL;
 
-			LLNotification::Params notify_params;
-			notify_params.name = "PopupAttempt";
-			notify_params.payload = LLSD().with("target", target).with("url", url).with("uuid", uuid).with("media_id", mMediaTextureID);
-			notify_params.functor.function = boost::bind(&LLMediaCtrl::onPopup, this, _1, _2);
+			LLWeb::loadURL(url, target, std::string());
 
-			if (mTrusted)
-			{
-				LLNotifications::instance().forceResponse(notify_params, 0);
-			}
-			else
-			{
-				LLNotifications::instance().add(notify_params);
-			}
+			// CP: removing this code because we no longer support popups so this breaks the flow.
+			//     replaced with a bare call to LLWeb::LoadURL(...)
+			//LLNotification::Params notify_params;
+			//notify_params.name = "PopupAttempt";
+			//notify_params.payload = LLSD().with("target", target).with("url", url).with("uuid", uuid).with("media_id", mMediaTextureID);
+			//notify_params.functor.function = boost::bind(&LLMediaCtrl::onPopup, this, _1, _2);
+
+			//if (mTrusted)
+			//{
+			//	LLNotifications::instance().forceResponse(notify_params, 0);
+			//}
+			//else
+			//{
+			//	LLNotifications::instance().add(notify_params);
+			//}
 			break;
 		};
 
@@ -1136,4 +1159,14 @@ void LLMediaCtrl::setTrustedContent(bool trusted)
 void LLMediaCtrl::updateContextMenuParent(LLView* pNewParent)
 {
 	mContextMenu->updateParent(pNewParent);
+}
+
+bool LLMediaCtrl::wantsKeyUpKeyDown() const
+{
+    return true;
+}
+
+bool LLMediaCtrl::wantsReturnKey() const
+{
+    return true;
 }
