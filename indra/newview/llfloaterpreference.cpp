@@ -1022,15 +1022,16 @@ void LLFloaterPreference::onExportControls()
 void LLFloaterPreference::inputOutput()
 {
 	LLPanel* panel = getChild<LLPanel>("audio_media_panel");
+	LLPanel* panel2 = getChild<LLPanel>("device_settings_panel");
 	if(panel)
 	{
 		if(gSavedSettings.getBOOL("ShowDeviceSettings"))
 		{
-			panel->reshape(panel->getRect().getWidth(), 665);
+			panel->reshape(panel->getRect().getWidth(), panel->getRect().getHeight() + panel2->getRect().getHeight());
 		}
 		else
 		{
-			panel->reshape(panel->getRect().getWidth(), 480);
+			panel->reshape(panel->getRect().getWidth(), panel->getRect().getHeight() - panel2->getRect().getHeight());
 		}
 	}
 }
