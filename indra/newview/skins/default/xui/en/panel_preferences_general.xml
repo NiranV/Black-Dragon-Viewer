@@ -10,17 +10,37 @@
  name="general_panel"
  top="45"
  width="510">
+ <scroll_container
+ color="Transparent"
+ follows="all"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="general_scroll"
+ opaque="true"
+ height="407"
+ width="509"
+ top="0">
+  <panel
+  layout="topleft"
+  follows="left|top|right"
+  height="465"
+  name="general_scroll_panel"
+  top="0"
+  mouse_opaque="false"
+  left="0"
+  width="495">
   <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="515"/>
+ width="492"/>
   <text
  follows="left|top"
  layout="topleft"
@@ -219,13 +239,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
    <text
     type="string"
     length="1"
@@ -238,7 +258,7 @@
     width="300">
        Avatar Name Options:
    </text>
-   <radio_group
+   <!--<radio_group
      control_name="AvatarNameTagMode"
      height="16"
      width="300"
@@ -273,7 +293,68 @@
          value="2"
          height="16"
          width="100" />
-    </radio_group>
+   </radio_group>-->
+   <radio_group
+   control_name="AvatarNameTagMode"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="Name_Tag_Preference"
+   top_pad="15"
+   width="600">
+         <radio_item
+         height="16"
+         label="On"
+         value="1"
+         layout="topleft"
+         name="0"
+         top="0"
+         width="70">
+               <radio_item.check_button
+               image_overlay="Default_Widget"
+               image_overlay_alignment="left"
+               image_unselected="Checkbox_Off"
+               image_selected="Checkbox_On"
+               image_disabled="Checkbox_Off_Disabled"
+               image_disabled_selected="Checkbox_On_Disabled"
+               image_pressed="Checkbox_Press"
+               image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
+         <radio_item
+         height="16"
+         label="Off"
+         value="0"
+         layout="topleft"
+         name="0"
+         left_pad="10"
+         top_delta="0"
+         width="70">
+               <radio_item.check_button
+               image_unselected="Checkbox_Off"
+               image_selected="Checkbox_On"
+               image_disabled="Checkbox_Off_Disabled"
+               image_disabled_selected="Checkbox_On_Disabled"
+               image_pressed="Checkbox_Press"
+               image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
+         <radio_item
+         height="16"
+         label="Show briefly"
+         value="2"
+         layout="topleft"
+         name="0"
+         left_pad="10"
+         top_delta="0"
+         width="70">
+               <radio_item.check_button
+               image_unselected="Checkbox_Off"
+               image_selected="Checkbox_On"
+               image_disabled="Checkbox_Off_Disabled"
+               image_disabled_selected="Checkbox_On_Disabled"
+               image_pressed="Checkbox_Press"
+               image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
+   </radio_group>
    <slider
       can_edit_text="true"
       control_name="RenderNameFadeDuration"
@@ -291,6 +372,22 @@
       name="name_fade_slider"
       top_pad="4"
       width="319" />
+   <button
+ follows="left|top"
+ control_name="RenderNameFadeDuration"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
    <slider
       can_edit_text="true"
       control_name="RenderNameShowTime"
@@ -301,13 +398,29 @@
       label="Start fading after (s):"
       initial_value="10"
       layout="topleft"
-      left_delta="0"
+      left="10"
       max_val="60"
       min_val="1"
       label_width="150"
       name="name_start_fade_slider"
       top_pad="1"
       width="316" />
+   <button
+ follows="left|top"
+ control_name="RenderNameShowTime"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
     <check_box
      follows="left|top"
      layout="topleft"
@@ -348,8 +461,8 @@
      height="16"
      label="Show Group Titles"
      layout="topleft"
-     left="270"
-     top_delta="-33"
+     left_delta="0"
+     top_pad="0"
      name="show_all_title_checkbox1"
      width="200" />
    <check_box
@@ -377,13 +490,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
     <text
      type="string"
      length="1"
@@ -411,8 +524,8 @@
      height="16"
      label="Remember flying state at Logout"
      layout="topleft"
-     left="270"
-     top_delta="0"
+     left_delta="0"
+     top_pad="0"
      tool_tip="Automatically activates flying on Login when you were flying at Logout"
      name="Flying_At_Exit"
      width="200" />
@@ -420,13 +533,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="9"
- width="515"/>
+ width="492"/>
     <text
      type="string"
      length="1"
@@ -450,7 +563,9 @@
      left="10"
      top_pad="13"
      name="do_not_disturb_response"
-     width="490">
+     width="475">
        log_in_to_change
     </line_editor>
+  </panel>
+ </scroll_container>
 </panel>
