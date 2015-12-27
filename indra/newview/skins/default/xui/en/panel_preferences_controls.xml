@@ -14,13 +14,13 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="515"/>
+ width="506"/>
  
  <text
  name="show_ims_in_label"
@@ -62,7 +62,7 @@ width="510">
  name="AutomaticFly"
  top_pad="0"
  width="256" />
- <radio_group
+ <!--<radio_group
  control_name="LetterKeysFocusChatBar" 
  height="27"
  layout="topleft"
@@ -88,18 +88,72 @@ width="510">
   name="radio_move"
   value="0"
   width="75" />
+ </radio_group>-->
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="font_size"
+ top_pad="4"
+ width="450">
+ Letter keys are used to (A, W, S, D for example):
+ </text>
+ <radio_group
+ control_name="LetterKeysFocusChatBar"
+ height="19"
+ layout="topleft"
+ left="10"
+ name="inworld_typing_preference"
+ top_pad="5"
+ width="600">
+       <radio_item
+       height="16"
+       label="Chat"
+       value="0"
+       layout="topleft"
+       name="radio_start_chat"
+       top="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
+       <radio_item
+       height="16"
+       label="Move"
+       value="1"
+       layout="topleft"
+       name="radio_move"
+       left_pad="10"
+       top_delta="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
  </radio_group>
  <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="31"
- width="515"/>
+ top_pad="9"
+ width="506"/>
  <text
  name="show_ims_in_label"
  follows="left|top"
@@ -162,13 +216,13 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="506"/>
  <text
  name="show_ims_in_label"
  follows="left|top"
@@ -179,7 +233,7 @@ width="510">
  top_delta="4">
  Keyboard Layout Options:
  </text>
- <text
+ <!--<text
  type="string"
  length="1"
  follows="left|top"
@@ -220,8 +274,8 @@ width="510">
  top_delta="0"
  width="125">
     Shooter/RPG
-</text>
- <radio_group
+ </text>-->
+ <!--<radio_group
  control_name="ShooterKeyLayout"
  height="18"
  layout="topleft"
@@ -247,8 +301,70 @@ width="510">
  value="true"
  top_delta="0"
  width="16" />
- </radio_group>
+ </radio_group>-->
  <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="font_size"
+ top_pad="15"
+ width="450">
+ Avatar Movement Key Layout:
+ </text>
+ <radio_group
+ control_name="ShooterKeyLayout"
+ height="19"
+ layout="topleft"
+ left="10"
+ name="ShooterKeyLayout"
+ top_pad="5"
+ width="600">
+       <radio_item
+       height="16"
+       label="Classic"
+       value=""
+       layout="topleft"
+       name="Classic"
+       tool_tip=" Move Left / Right: Shift + A / D    
+       Rotate Left / Right: A / D                
+       Jump: E                                    
+       Stop Motion: X"
+       top="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
+       <radio_item
+       height="16"
+       label="Shooter"
+       value="true"
+       layout="topleft"
+       name="Shooter"
+       tool_tip=" Move Left / Right: A / D                
+       Rotate Left / Right: Q / E                
+       Jump: Spacebar                            
+       Stop Motion: X"
+       left_pad="10"
+       top_delta="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
+ </radio_group>
+ <!--<text
  type="string"
  length="1"
  follows="left|top"
@@ -256,7 +372,7 @@ width="510">
  halign="left"
  layout="topleft"
  font.style="ITALIC"
- left="175"
+ left="10"
  name="ClassicWalk"
  top_pad="3"
  width="125">
@@ -269,7 +385,7 @@ width="510">
  height="14"
  halign="left"
  layout="topleft"
- left="10"
+ left="333"
  name="Walkleftright"
  top_delta="0"
  width="400">
@@ -283,7 +399,7 @@ width="510">
  halign="left"
  font.style="ITALIC"
  layout="topleft"
- left="333"
+ left="150"
  name="ShooterWalk"
  top_delta="0"
  width="125">
@@ -452,18 +568,18 @@ width="510">
  top_delta="0"
  width="125">
     Spacebar
-</text>
+</text>-->
  <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="506"/>
  <text
  name="show_ims_in_label"
  follows="left|top"
@@ -497,7 +613,7 @@ width="510">
  tool_tip="Make the Avatar turn around when pressing back instead of the Avatar walking backwards"
  width="200"
  top_pad="0"/>
- <spinner
+ <!--<spinner
  decimal_digits="2"
  follows="left|top"
  height="16"
@@ -512,7 +628,41 @@ width="510">
  min_val="0"
  name="RotationSpeed"
  top_delta="-16"
- width="200" />
+ width="200" />-->
+ <slider
+   can_edit_text="true"
+   control_name="MovementRotationSpeed"
+   decimal_digits="2"
+   follows="left|top"
+   height="15"
+   increment="0.01"
+   initial_value="0.15"
+   layout="topleft"
+   label_width="150"
+   label="Rotation Speed:"
+   left="10"
+   top_pad="4"
+   max_val="1"
+   min_val="0"
+   name="RotationSpeed"
+   show_text="true"
+   width="324" />
+   <button
+ follows="left|top"
+ control_name="MovementRotationSpeed"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
  
  
 </panel>
