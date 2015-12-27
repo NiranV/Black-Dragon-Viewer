@@ -15,7 +15,7 @@
 	<text name="nots_label">
 		Meldungseinstellungen:
 	</text>
-	<spinner label="Nachrichten-Tipp Lebenszeit:" name="NotificationTipToastLifeTime"/>
-	<spinner label="Nachrichten Lebenszeit:" name="NotificationToastLifeTime"/>
+	<spinner label="Meldungstipp Anzeigezeit:" name="NotificationTipToastLifeTime"/>
+	<spinner label="Meldungen Anzeigezeit:" name="NotificationToastLifeTime"/>
 	<spinner label="Bodenfreiraum in pixel:" name="ChannelBottomPanelMargin"/>
 </panel>

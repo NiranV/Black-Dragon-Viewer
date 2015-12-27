@@ -17,7 +17,7 @@
 	       <check_box label="Aktiviert" name="enable_media"/>
 	       <slider label="Voice-Chat" name="Voice Volume"/>
 	       <check_box label="Aktiviert" name="enable_voice_check"/>
-	       <check_box label="Stimmmorph" name="enable_morphing_check"/>
+	       <check_box label="Erlaube Stimmverzerrung" name="enable_morphing_check"/>
 	       <slider label="Geräuschabfall" name="Rolloff"/>
 	       <slider label="Medienabfall Anfang" name="MediaRollOffMin"/>
 	       <slider label="Medienabfall Ende" name="MediaRollOffMax"/>
@@ -37,15 +37,15 @@
 		    Zuhören von:
 	       </text>
 	       <radio_group name="ear_location">
-		    <radio_item label="Kameraposition" name="0"/>
-		    <radio_item label="Avatarposition" name="1"/>
+		    <radio_item label="Kamera" name="0"/>
+		    <radio_item label="Avatar" name="1"/>
 	       </radio_group>
 	       <button label="Eingabe-/Ausgabegeräte" name="device_settings_btn"/>
 	       <panel label="Geräte-Einstellungen" name="device_settings_panel">
 		    <check_box label="Sprachfunktion ein-/ausschalten bei:" name="push_to_talk_toggle_check" tool_tip="Wenn der Umschaltmodus aktiviert ist, drücken Sie die Auslöse-Taste EINMAL, um Ihr Mikrofon an oder aus zu stellen. Wenn der Umschaltmodus nicht motiviert ist, ist das Mikro nur dann eingeschaltet, wenn Sie die Auslösetaste gedrückt halten."/>
 		    <line_editor label="Auslöser für Zum-Sprechen-drücken:" name="modifier_combo"/>
-		    <button label="Taste festlegen" name="set_voice_hotkey_button"/>
-		    <button label="Mittlere Maustaste" name="set_voice_middlemouse_button" tool_tip="Auf mittlere Maustaste zurücksetzen"/>
+		    <!--<button label="Taste festlegen" name="set_voice_hotkey_button"/>-->
+		    <!--<button label="Maus 3" name="set_voice_middlemouse_button" tool_tip="Auf mittlere Maustaste zurücksetzen"/>-->
 		    <panel.string name="default_text">
 			 Standard
 		    </panel.string>
