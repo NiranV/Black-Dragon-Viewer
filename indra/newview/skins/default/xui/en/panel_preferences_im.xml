@@ -13,7 +13,7 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
@@ -54,7 +54,7 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
@@ -71,7 +71,175 @@ width="510">
  top_delta="4">
  Appearance Options:
  </text>
- <spinner
+ <slider
+      control_name="ToastFadingTime"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="1"
+      label="Toast Fade Time:"
+      label_width="150"
+      tool_tip="Sets the seconds Toasts (small Messages in the right bottom corner) need to fade out after they got transparent (started to fade)"
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="0"
+      name="ToastFadingTime"
+      top_pad="14"
+      width="312" />
+      <button
+ follows="left|top"
+ control_name="ToastFadingTime"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+       <slider
+      control_name="ToastGap"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="1"
+      label="Toast Gap:"
+      label_width="150"
+      tool_tip="Sets the Space between Toasts in pixels"
+      layout="topleft"
+      left="10"
+      max_val="25"
+      min_val="0"
+      name="ToastGap"
+      top_pad="1"
+      width="312" />
+      <button
+ follows="left|top"
+ control_name="ToastGap"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+       <slider
+      control_name="ChannelBottomPanelMargin"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="35"
+      label="Toast Margin:"
+      label_width="150"
+      tool_tip="Sets the Space in pixels between System Messages/IM Message Floaters and Bottom Bar"
+      layout="topleft"
+      left="10"
+      max_val="100"
+      min_val="0"
+      name="ChannelBottomPanelMargin"
+      top_pad="1"
+      width="318" />
+      <button
+ follows="left|top"
+ control_name="ChannelBottomPanelMargin"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+       <slider
+      control_name="WellIconFlashCount"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="4"
+      label="IM Flash Count:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="100"
+      min_val="1"
+      name="WellIconFlashCount"
+      top_pad="1"
+      width="318" />
+      <button
+ follows="left|top"
+ control_name="WellIconFlashCount"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+       <slider
+      control_name="WellIconFlashPeriod"
+      decimal_digits="1"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="0.1"
+      initial_value="0.2"
+      label="IM Flash Period:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="5"
+      min_val="01"
+      name="WellIconFlashPeriod"
+      top_pad="1"
+      width="315" />
+      <button
+ follows="left|top"
+ control_name="WellIconFlashPeriod"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+ <!--<spinner
  control_name="ToastFadingTime"
  decimal_digits="0"
  follows="left|top"
@@ -153,5 +321,5 @@ width="510">
  min_val="0.1"
  name="WellIconFlashPeriod"
  top_pad="6"
- width="175" />
+ width="175" />-->
 </panel>
