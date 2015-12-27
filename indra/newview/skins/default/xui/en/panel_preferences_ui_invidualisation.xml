@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="635"
+     height="730"
      name="ui_panel"
      top="0"
      left="0"
@@ -33,13 +33,13 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="515"/>
+ width="492"/>
 	<text
 	type="string"
 	length="1"
@@ -88,9 +88,9 @@ width="510">
 	    initial_value="true"
 	    label="Show Network Stats (top right)"
 	    layout="topleft"
-	    left="270"
+	    left="10"
 	    name="ShowNetStats"
-	    top="31"
+	    top_pad="0"
 	    width="256" />
 		<check_box
 		control_name="SearchFromAddressBar"
@@ -98,7 +98,7 @@ width="510">
 		initial_value="true"
 		label="Allow searching via Adressbar"
 		layout="topleft"
-		left="270"
+		left="10"
 		name="SearchFromAddressBar"
 		top_pad="0"
 		width="256" />
@@ -218,37 +218,28 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="28"
- width="515"/>
-	    <text
-	    type="string"
-	    length="1"
-	    follows="left|top"
-	    height="12"
-	    layout="topleft"
-	    left="10"
-	    name="pie_label"
-	    top_delta="4"
-	    width="300">Pie Menu Options:</text>
+ top_pad="10"
+ width="492"/>
 	    
 	    <check_box
 	    control_name="UsePieMenu"
 	    height="16"
 	    initial_value="true"
-	    label="Use right-click pie menus instead of dropdowns"
+	    label="Use Pie Menu"
 	    layout="topleft"
 	    left="10"
 	    name="UsePieMenu"
-	    top_pad="15"
+	    top_delta="4"
 	    width="256" />
 	    <slider
 	    control_name="PieMenuOpacity"
 	    follows="left|top"
+		can_edit_text="true"
 	    height="15"
 	    increment="0.05"
 	    initial_value="0.0"
@@ -260,35 +251,69 @@ width="510">
 	    min_val="0.0"
 	    name="pie_menu_opacity"
 	    tool_tip="Choose pie menu opacity"
-	    top_pad="2"
+	    top_pad="10"
 	    width="319" />
+		<button
+ follows="left|top"
+ control_name="PieMenuOpacity"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
 	    <slider
 	    control_name="PieMenuFade"
 	    follows="left|top"
+		can_edit_text="true"
 	    height="15"
 	    increment="0.05"
 	    initial_value="0.0"
 	    label="Background Fade out:"
 	    layout="topleft"
 	    label_width="150"
+		left="10"
 	    max_val="1.0"
 	    min_val="0.0"
 	    name="pie_menu_fade_out"
 	    tool_tip="Choose the amount of fade out to the pie edges"
 	    top_pad="1"
 	    width="319" />
+		<button
+ follows="left|top"
+ control_name="PieMenuFade"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
 		
 		<panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
 	    <text
 	    type="string"
 	    length="1"
@@ -299,7 +324,7 @@ width="510">
 	    name="info_label"
 	    top_delta="4"
 	    width="300">Info / Hovertip / Inspector Options:</text>
-	    <spinner
+	    <!--<spinner
 	    control_name="ToolTipDelay"
 	    decimal_digits="1"
 	    follows="left|top"
@@ -400,19 +425,223 @@ width="510">
 	    min_val="1"
 	    name="InspectorShowTime"
 	    top_pad="6"
-	    width="210" />
+	    width="210" />-->
+		<slider
+	    control_name="ToolTipDelay"
+	    follows="left|top"
+		can_edit_text="true"
+		decimal_digits="1"
+	    height="15"
+	    increment="0.1"
+	    initial_value="0.7"
+	    label="Tooltip Delay"
+	    layout="topleft"
+	    left="10"
+	    label_width="150"
+	    max_val="20"
+	    min_val="0"
+	    name="ToolTipDelay"
+	    tool_tip="Sets how many Seconds your Mouse has to hover over something to show a Tooltip (if available)"
+	    top_pad="15"
+	    width="313" />
+		<button
+ follows="left|top"
+ control_name="ToolTipDelay"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+		<slider
+	    control_name="ToolTipFadeTime"
+	    follows="left|top"
+		can_edit_text="true"
+		decimal_digits="1"
+	    height="15"
+	    increment="0.1"
+	    initial_value="1.1"
+	    label="Tooltip Fade Time"
+	    layout="topleft"
+	    left="10"
+	    label_width="150"
+	    max_val="5.0"
+	    min_val="0.1"
+	    name="ToolTipFadeTime"
+	    tool_tip="Controls how long Tooltips take to fade away"
+	    top_pad="1"
+	    width="307" />
+		<button
+ follows="left|top"
+ control_name="ToolTipFadeTime"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+		<slider
+	    control_name="ToolTipVisibleTimeFar"
+	    follows="left|top"
+		can_edit_text="true"
+		decimal_digits="1"
+	    height="15"
+	    increment="0.1"
+	    initial_value="1.0"
+	    label="Tooltip Show Time"
+	    layout="topleft"
+	    left="10"
+	    label_width="150"
+	    max_val="10"
+	    min_val="0"
+	    name="ToolTipVisibleTimeFar"
+	    tool_tip="Controls how long Tooltips will be shown after Mouse moved away"
+	    top_pad="1"
+	    width="313" />
+		<button
+ follows="left|top"
+ control_name="ToolTipVisibleTimeFar"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+		<slider
+	    control_name="ToolTipVisibleTimeNear"
+	    follows="left|top"
+		can_edit_text="true"
+		decimal_digits="1"
+	    height="15"
+	    increment="0.1"
+	    initial_value="1"
+	    label="Tooltip Auto Fade"
+	    layout="topleft"
+	    left="10"
+	    label_width="150"
+	    max_val="30"
+	    min_val="0"
+	    name="ToolTipVisibleTimeNear"
+	    tool_tip="Sets the Seconds which will pass until the Tooltip will fade away automatically"
+	    top_pad="1"
+	    width="313" />
+		<button
+ follows="left|top"
+ control_name="ToolTipVisibleTimeNear"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+		<slider
+	    control_name="InspectorFadeTime"
+	    follows="left|top"
+		can_edit_text="true"
+		decimal_digits="1"
+	    height="15"
+	    increment="1"
+	    initial_value="6"
+	    label="Inspector Fade Time"
+	    layout="topleft"
+	    left="10"
+	    label_width="150"
+	    max_val="60"
+	    min_val="1"
+	    name="InspectorFadeTime"
+	    tool_tip="Controls Fade Time in Seconds for Inspectors"
+	    top_pad="1"
+	    width="310" />
+		<button
+ follows="left|top"
+ control_name="InspectorFadeTime"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+		<slider
+	    control_name="InspectorShowTime"
+	    follows="left|top"
+		can_edit_text="true"
+		decimal_digits="1"
+	    height="15"
+	    increment="1"
+	    initial_value="6"
+	    label="Inspector Show Time"
+	    layout="topleft"
+	    left="10"
+	    label_width="150"
+	    max_val="60"
+	    min_val="1"
+	    name="InspectorShowTime"
+	    tool_tip="Controls the Time Inspectors remain on screen before starting to fade"
+	    top_pad="1"
+	    width="310" />
+		<button
+ follows="left|top"
+ control_name="InspectorShowTime"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
     
 	<panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="16"
- width="515"/>
+ top_pad="10"
+ width="492"/>
 	    <text
 	    type="string"
 	    length="1"
@@ -451,13 +680,13 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
 	    <text
 	    type="string"
 	    length="1"
@@ -509,7 +738,7 @@ width="510">
 	    name="MiniMapChatRing"
 	    top_pad="0"
 	    width="125" />
-	    <spinner
+	    <!--<spinner
 	    control_name="MiniMapPrimMaxRadius"
 	    decimal_digits="1"
 	    follows="left|top"
@@ -525,19 +754,53 @@ width="510">
 	    min_val="0"
 	    name="MaxPrimSize"
 	    top_delta="-49"
-	    width="200" />
+	    width="200" />-->
+		<slider
+	    control_name="MiniMapPrimMaxRadius"
+	    follows="left|top"
+		can_edit_text="true"
+		decimal_digits="0"
+	    height="15"
+	    increment="0.5"
+	    initial_value="5"
+	    label="Max Prim Size on Minimap:"
+	    layout="topleft"
+	    left="10"
+	    label_width="150"
+	    max_val="256"
+	    min_val="0"
+	    name="InactiveFloaterTransparency"
+	    tool_tip="Controls the maximum size of Prims shown on the Minimap , Prims bigger than this value will be cut to this size (meters)"
+	    top_pad="4"
+	    width="313" />
+		<button
+ follows="left|top"
+ control_name="MiniMapPrimMaxRadius"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
 		
 	<panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="63"
- width="515"/>
+ top_pad="10"
+ width="492"/>
 	    <text
 	    type="string"
 	    length="1"
@@ -551,6 +814,7 @@ width="510">
 		<slider
 	    control_name="InactiveFloaterTransparency"
 	    follows="left|top"
+		can_edit_text="true"
 	    height="15"
 	    increment="0.01"
 	    initial_value="0.0"
@@ -564,9 +828,26 @@ width="510">
 	    tool_tip="Set the transparency of non focused windows"
 	    top_pad="15"
 	    width="319" />
+		<button
+ follows="left|top"
+ control_name="InspectorShowTime"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
 		<slider
 	    control_name="ActiveFloaterTransparency"
 	    follows="left|top"
+		can_edit_text="true"
 	    height="15"
 	    increment="0.01"
 	    initial_value="0.0"
@@ -580,17 +861,33 @@ width="510">
 	    tool_tip="Set the transparency of focused windows"
 	    top_pad="1"
 	    width="319" />
+		<button
+ follows="left|top"
+ control_name="InspectorShowTime"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
 		<panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
 	    <text
 	    type="string"
 	    length="1"
@@ -651,9 +948,9 @@ width="510">
 	    initial_value="true"
 	    label="Enable mouseover Inspectors"
 	    layout="topleft"
-	    left="270"
+	    left="10"
 	    name="ShowHoverTips"
-	    top_delta="-47"
+	    top_pad="0"
 	    width="256" />
 	    <check_box
 	    control_name="ShowLandHoverTip"
