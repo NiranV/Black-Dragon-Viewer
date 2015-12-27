@@ -8,17 +8,35 @@ left="0"
 name="RLVa panel"
 top="45"
 width="510">
+ <scroll_container
+       color="Transparent"
+       follows="all"
+       layout="topleft"
+       left="0"
+       name="viewer_scroll"
+       opaque="true"
+       height="407"
+       width="509"
+       top="0">
+	      <panel
+	      layout="topleft"
+	      follows="left|top|right"
+	      height="545"
+	      name="rlva_scroll_panel"
+	      top="0"
+	      left="0"
+	      width="495">
  <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="515"/>
+ width="492"/>
 	<check_box
 	control_name="RestrainedLove"
 	height="16"
@@ -70,13 +88,13 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
 	<text
 	name="header2"
 	follows="left|top"
@@ -153,11 +171,11 @@ width="510">
 	initial_value="true"
 	label="Hide locked wearable layers"
 	layout="topleft"
-	left="270"
+	left="10"
 	tool_tip="Hides 'remove outfit' restricted worn clothing layers from @getoufit"
 	follows="left|top"
 	name="RLVaHidelocked"
-	top_delta="-64"
+	top_pad="0"
 	width="256" />
 	<check_box
 	control_name="RLVaHideLockedAttachments"
@@ -213,13 +231,13 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
 	<check_box
 	control_name="RestrainedLoveDebug"
 	height="16"
@@ -258,13 +276,13 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
 	<text
 	name="head_label1"
 	follows="left|top"
@@ -274,63 +292,63 @@ width="510">
 	left="10" 
 	height="12"
 	width="315">
-	 'Add' or 'Replace' wearables in a folder beginning with:
+	 Add / Replace Wearable Options:
 	</text>
 	<text
 	name="head_label2"
 	follows="left|top"
 	layout="topleft"
 	word_wrap="true"
-	top_pad="17"
+	top_pad="15"
 	left="10" 
 	height="12"
-	width="50">
-	 Add:
+	width="400">
+	 'Add' wearables in a folder beginning with:
 	</text>
 	<line_editor
 	control_name="RestrainedLoveReplaceWhenFolderBeginsWith"
-	follows="left|top"
+	follows="left|top|right"
 	font="SansSerif"
 	height="23"
 	layout="topleft"
-	left_pad="10"
+	left="10"
 	name="RLVaReplacebegins"
 	tool_tip="If a folder name begins with this string, its attach behavior will always be 'replace', never 'stack'. Default is blank (disabled)."
-	top_delta="-3"
-	width="150" />
+	top_pad="4"
+	width="475" />
 	<text
 	name="head_label2"
 	follows="left|top"
 	layout="topleft"
 	word_wrap="true"
-	top_delta="3"
-	left="270" 
+	top_pad="7"
+	left="10" 
 	height="12"
-	width="50">
-	 Replace:
+	width="400">
+	 'Replace' wearables in a folder beginning with:
 	</text>
 	<line_editor
 	control_name="RestrainedLoveStackWhenFolderBeginsWith"
-	follows="left|top"
+	follows="left|top|right"
 	font="SansSerif"
 	height="23"
 	layout="topleft"
-	left_pad="10"
+	left="10"
 	name="RLVaReplacebegins"
 	tool_tip="If a folder name begins with this string, its attach behavior will always be 'stack', never 'replace'. Default is '+'."
-	top_delta="-3"
-	width="150" />
+	top_pad="4"
+	width="475" />
 	<panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
  <text
 	name="head_label3"
 	follows="left|top"
@@ -341,7 +359,7 @@ width="510">
 	width="200">
 	 Notification Embedding Behavior:
 	</text>
- <radio_group
+ <!--<radio_group
 	height="48"
 	layout="topleft"
 	left_delta="0"
@@ -377,5 +395,66 @@ width="510">
 	name="radio_never"
 	value="2"
 	width="100" />
-	</radio_group>
+ </radio_group>-->
+ <radio_group
+ control_name="ShooterKeyLayout"
+ height="19"
+ layout="topleft"
+ left="10"
+ name="ShooterKeyLayout"
+ top_pad="9"
+ width="600">
+       <radio_item
+       height="16"
+       label="Default"
+       value="0"
+       layout="topleft"
+       name="radio_default"
+       top="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
+       <radio_item
+       height="16"
+       label="Focused"
+       value="1"
+       layout="topleft"
+       name="radio_focused"
+       left_pad="10"
+       top_delta="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
+	   <radio_item
+       height="16"
+       label="Never"
+       value="2"
+       layout="topleft"
+       name="radio_never"
+       left_pad="10"
+       top_delta="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
+ </radio_group>
+		  </panel>
+ </scroll_container>
 </panel>
