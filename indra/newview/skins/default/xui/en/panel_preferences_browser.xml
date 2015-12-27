@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
 follows="all"
-height="508"
+height="408"
 label="Browser"
 layout="topleft"
 left="0"
@@ -12,13 +12,13 @@ width="517">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="515"/>
+ width="506"/>
 		     <text
 		     type="string"
 		     length="1"
@@ -131,7 +131,7 @@ width="517">
       name="AutoLoadWebProfiles"
       width="400"
       top_pad="0"/>
-      <text
+      <!--<text
       type="string"
       length="1"
       follows="left|top"
@@ -159,19 +159,53 @@ width="517">
       min_val="0"
       name="MediaBrowserWindowLimit"
       top_delta="-2"
-      width="63" />
+      width="63" />-->
+	  <slider
+   control_name="MediaBrowserWindowLimit"
+   can_edit_text="true"
+   decimal_digits="0"
+   follows="left|top"
+   height="15"
+   increment="1"
+   initial_value="8"
+   label="Max Browser Limit:"
+   label_width="150"
+   layout="topleft"
+   left="10"
+   max_val="100"
+   min_val="0"
+   tool_tip="Sets maximum opened Browsers , 0 = unlimited"
+   top_pad="5"
+   name="MediaBrowserWindowLimit"
+   width="310" />
+  <button
+ follows="left|top"
+ control_name="CacheSize"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
       
       <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="506"/>
 		     <check_box
       enabled="true"
       follows="left|top"
@@ -189,7 +223,7 @@ width="517">
       <line_editor
       control_name="BrowserProxyAddress"
       enabled_control="BrowserProxyEnabled"
-      follows="left|top"
+      follows="left|top|right"
       font="SansSerif"
       height="23"
       layout="topleft"
@@ -197,8 +231,8 @@ width="517">
       name="web_proxy_editor"
       tool_tip="The name or IP address of the proxy you would like to use"
       top_pad="12"
-      width="385" />
-      <text
+      width="488" />
+      <!--<text
       type="string"
       length="1"
       follows="left|top"
@@ -226,18 +260,52 @@ width="517">
       min_val="10"
       name="web_proxy_port"
       top_delta="-4"
-      width="63" />
+      width="63" />-->
+	  <slider
+   control_name="BrowserProxyPort"
+   enabled_control="BrowserProxyEnabled"
+   can_edit_text="true"
+   decimal_digits="0"
+   follows="left|top"
+   height="15"
+   increment="1"
+   initial_value="80"
+   label="Port:"
+   label_width="150"
+   layout="topleft"
+   left="10"
+   max_val="12000"
+   min_val="10"
+   top_pad="5"
+   name="web_proxy_port"
+   width="322" />
+  <button
+ follows="left|top"
+ control_name="BrowserProxyPort"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
       <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="506"/>
 		     <text
 		     type="string"
 		     length="1"
@@ -280,7 +348,7 @@ width="517">
       name="PrimMediaDragNDrop"
       width="300"
       top_pad="0"/>
-      <text
+      <!--<text
       type="string"
       length="1"
       follows="left|top"
@@ -337,6 +405,74 @@ width="517">
       min_val="1"
       name="PluginInstancesTotal"
       top_delta="-2"
-      width="63" />
+      width="63" />-->
+	  <slider
+   control_name="MediaControlTimeout"
+   can_edit_text="true"
+   decimal_digits="1"
+   follows="left|top"
+   height="15"
+   increment="0.5"
+   initial_value="8"
+   label="Media UI Timeout:"
+   label_width="150"
+   tool_tip="Sets seconds after which Media UI starts to fade out"
+   layout="topleft"
+   left="10"
+   max_val="100"
+   min_val="0"
+   top_pad="5"
+   name="MediaControlTimeout"
+   width="319" />
+  <button
+ follows="left|top"
+ control_name="MediaControlTimeout"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+  <slider
+   control_name="PluginInstancesTotal"
+   can_edit_text="true"
+   decimal_digits="0"
+   follows="left|top"
+   height="15"
+   increment="1"
+   initial_value="8"
+   label="Max Plugin Limit:"
+   label_width="150"
+   layout="topleft"
+   tool_tip="Sets maximum running Prim Media plugins at the same time"
+   left="10"
+   max_val="100"
+   min_val="10"
+   top_pad="1"
+   name="PluginInstancesTotal"
+   width="310" />
+  <button
+ follows="left|top"
+ control_name="PluginInstancesTotal"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
 </panel>
 
