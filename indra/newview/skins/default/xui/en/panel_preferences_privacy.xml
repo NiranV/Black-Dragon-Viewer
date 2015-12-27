@@ -17,13 +17,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="515"/>
+ width="506"/>
       <text
        type="string"
        length="1"
@@ -84,13 +84,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="506"/>
      <text
      type="string"
      length="1"
@@ -157,13 +157,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="506"/>
     <text
      type="string"
      length="1"
@@ -188,14 +188,14 @@
      mouse_opaque="false"
      name="log_path_string"
      top_pad="15"
-     width="285"/>
+     width="286"/>
     <button
      follows="left|top"
      height="23"
      label="..."
      label_selected="..."
      layout="topleft"
-     left_pad="5"
+     left_pad="1"
      name="log_path_button"
      top_delta="0"
      width="25">
@@ -237,13 +237,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="506"/>
     <text
      type="string"
      length="1"
@@ -260,7 +260,7 @@
     <button
      follows="left|top"
      height="23"
-     label="Personal Block/Ignore List"
+     label="Block / Ignore List"
      layout="topleft"
      left="10"
      name="block_list"
