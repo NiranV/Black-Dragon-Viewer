@@ -46,13 +46,13 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="515"/>
+ width="492"/>
 	 <text
 	 type="string"
 	 length="1"
@@ -197,13 +197,13 @@ Usernames
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="13"
- width="515"/>
+ width="492"/>
 	 <text
 	 follows="left|top"
 	 layout="topleft"
@@ -279,13 +279,13 @@ highlights
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="13"
- width="515"/>
+ width="492"/>
 	 <text
 	 follows="left|top"
 	 layout="topleft"
@@ -603,13 +603,13 @@ highlights
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="22"
- width="515"/>
+ width="492"/>
 	 <text
 	 type="string"
 	 length="1"
@@ -1612,13 +1612,13 @@ NOTE: Most of them wont need a restart.
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="23"
- width="515"/>
+ width="492"/>
 	 <text
 	 type="string"
 	 length="1"
