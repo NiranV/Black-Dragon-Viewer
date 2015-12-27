@@ -23,34 +23,24 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="655"
+  height="760"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
   left="0"
   width="495">
- <panel
+ <!--<panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="515"/>
- <text
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- name="font_size"
- width="120"
- top_delta="4">
- Font Size:
- </text>
- <radio_group
+ width="515"/>-->
+ <!--<radio_group
  height="16"
  layout="topleft"
  left="10"
@@ -96,17 +86,17 @@ width="510">
   <radio_item.label_text
   v_pad="-2"/>
  </radio_item>
- </radio_group>
+ </radio_group>-->
  <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="10"
+ top="0"
  width="515"/>
  <text
  layout="topleft"
@@ -144,7 +134,7 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
@@ -214,6 +204,39 @@ width="510">
  top_pad="0"
  width="400" />
  <check_box
+ control_name="PlaySoundNewConversation"
+ height="16"
+ label="Play 'New Conversation' Sound"
+ layout="topleft"
+ left="10"
+ top_pad="0"
+ name="new_conversation"
+ width="150" />
+ <check_box
+ control_name="PlaySoundIncomingVoiceCall"
+ height="16"
+ label="Play 'Incoming Voice Call' Sound"
+ layout="topleft"
+ top_pad="0"
+ name="incoming_voice_call"
+ width="150" />
+ <check_box
+ control_name="PlaySoundTeleportOffer"
+ height="16"
+ label="Play 'Teleport Offer' Sound"
+ layout="topleft"
+ top_pad="0"
+ name="teleport_offer"
+ width="150" />
+ <check_box
+ control_name="PlaySoundInventoryOffer"
+ height="16"
+ label="Play 'Inventory Offer' Sound"
+ layout="topleft"
+ top_pad="0"
+ name="inventory_offer"
+ width="150" />
+ <check_box
  control_name="ForceChatSingleLineMode"
  height="16"
  initial_value="true"
@@ -224,49 +247,16 @@ width="510">
  name="ForceChatSingleLineMode"
  top_pad="0"
  width="256" />
-     <check_box
-        control_name="PlaySoundNewConversation"
-        height="16"
-        label="Play 'New Conversation' Sound"
-        layout="topleft"
-        left="270"
-        top_delta="-80"
-        name="new_conversation"
-        width="150" />
-    <check_box
-        control_name="PlaySoundIncomingVoiceCall"
-        height="16"
-        label="Play 'Incoming Voice Call' Sound"
-        layout="topleft"
-        top_pad="0"
-        name="incoming_voice_call"
-        width="150" />
-    <check_box
-        control_name="PlaySoundTeleportOffer"
-        height="16"
-        label="Play 'Teleport Offer' Sound"
-        layout="topleft"
-        top_pad="0"
-        name="teleport_offer"
-        width="150" />
-    <check_box
-        control_name="PlaySoundInventoryOffer"
-        height="16"
-        label="Play 'Inventory Offer' Sound"
-        layout="topleft"
-        top_pad="0"
-        name="inventory_offer"
-        width="150" />
  <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="39"
+ top_pad="10"
  width="515"/>
  <text
  type="string"
@@ -289,17 +279,7 @@ width="510">
  name="plain_text_chat_history"
  top_pad="15"
  width="250" />
- <check_box
- control_name="ShowScriptErrors" 
- follows="left|top"
- height="16"
- label="Show script errors in:" 
- layout="topleft" 
- left="10"
- top_pad="0"
- name="show_script_errors" 
- width="250" />
- <radio_group 
+ <!--<radio_group 
  control_name="ShowScriptErrorsLocation"
  enabled_control="ShowScriptErrors" 
  follows="top|left"
@@ -325,7 +305,242 @@ width="510">
  name="1" 
  top_pad="0" 
  width="315" />
+ </radio_group>-->
+ <check_box
+ control_name="ShowScriptErrors" 
+ follows="left|top"
+ height="16"
+ label="Show script errors when they happen" 
+ layout="topleft" 
+ left="10"
+ top_pad="0"
+ name="show_script_errors" 
+ width="250" />
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="show_errors_in"
+ top_pad="4"
+ width="150">
+ Show script errors in:
+ </text>
+ <radio_group
+ control_name="ShowScriptErrorsLocation"
+ enabled_control="ShowScriptErrors" 
+ height="19"
+ layout="topleft"
+ left="10"
+ name="show_location"
+ top_pad="5"
+ width="600">
+       <radio_item
+       height="16"
+       label="Chat"
+       value="0"
+       layout="topleft"
+       name="0"
+       top="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
+       <radio_item
+       height="16"
+       label="Error Window"
+       value="1"
+       layout="topleft"
+       name="0"
+       left_pad="10"
+       top_delta="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
  </radio_group>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="font_size"
+ top_pad="4"
+ width="150">
+ Font Size:
+ </text>
+ <radio_group
+ control_name="ChatFontSize"
+ height="19"
+ layout="topleft"
+ left="10"
+ name="chat_font_size"
+ top_pad="5"
+ width="600">
+       <radio_item
+       height="16"
+       label="Small"
+       value="0"
+       layout="topleft"
+       name="0"
+       top="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
+       <radio_item
+       height="16"
+       label="Medium"
+       value="1"
+       layout="topleft"
+       name="0"
+       left_pad="10"
+       top_delta="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
+       <radio_item
+       height="16"
+       label="Large"
+       value="2"
+       layout="topleft"
+       name="0"
+       left_pad="10"
+       top_delta="0"
+       width="70">
+             <radio_item.check_button
+             image_unselected="Checkbox_Off"
+             image_selected="Checkbox_On"
+             image_disabled="Checkbox_Off_Disabled"
+             image_disabled_selected="Checkbox_On_Disabled"
+             image_pressed="Checkbox_Press"
+             image_pressed_selected="Checkbox_On_Press" />
+       </radio_item>
+ </radio_group>
+ <slider
+      control_name="ChatStartFromBottomPixels"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="10"
+      label="Space from bottom to chat:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="120"
+      min_val="2"
+      name="ChatStartFromBottomPixels"
+      top_pad="4"
+      width="318" />
+      <button
+ follows="left|top"
+ control_name="ChatStartFromBottomPixels"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="NearbyToastLifeTime"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="4"
+      label="Chattext Life Time:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="40"
+      min_val="1"
+      name="NearbyToastLifeTime"
+      top_pad="1"
+      width="312" />
+      <button
+ follows="left|top"
+ control_name="NearbyToastLifeTime"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="NearbyToastFadingTime"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="4"
+      label="Chattext Fade Time:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="40"
+      min_val="1"
+      name="NearbyToastFadingTime"
+      top_pad="1"
+      width="312" />
+      <button
+ follows="left|top"
+ control_name="NearbyToastFadingTime"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
  <check_box
  control_name="UseChatBubbles"
  follows="left|top"
@@ -333,10 +548,10 @@ width="510">
  label="Use Bubble Chat"
  layout="topleft"
  left="10"
- top_pad="0"
+ top_pad="4"
  name="bubble_text_chat"
  width="120" />
- <slider
+ <!--<slider
  control_name="ChatBubbleOpacity"
  follows="left|top"
  height="15"
@@ -349,8 +564,42 @@ width="510">
  decimal_digits="2"
  label_width="150"
  name="bubble_chat_opacity"
- width="319"/>
- <spinner
+ width="319"/>-->
+ <slider
+      control_name="ChatBubbleOpacity"
+      enabled_control="UseChatBubbles"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="10"
+      label="Bubble Chat Opacity:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="64"
+      min_val="2"
+      name="bubble_chat_opacity"
+      top_pad="4"
+      width="312" />
+      <button
+ follows="left|top"
+ control_name="ChatBubbleOpacity"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+ <!--<spinner
  control_name="ChatStartFromBottomPixels"
  decimal_digits="0"
  follows="left|top"
@@ -397,18 +646,18 @@ width="510">
  min_val="1"
  name="NearbyToastFadingTime"
  top_pad="2"
- width="200" />
+ width="200" />-->
 
  <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="47"
+ top_pad="10"
  width="515"/>
  <text
  type="string"
@@ -709,7 +958,7 @@ width="510">
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
