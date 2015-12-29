@@ -17,7 +17,7 @@ top="600"
 <panel.string name="forgot_password_url">
        http://secondlife.com/account/request.php
 </panel.string>
-  <!--<web_browser
+  <web_browser
   visibility_control="ExperimentalLogin"
   tab_stop="false" 
   trusted_content="true" 
@@ -25,13 +25,13 @@ top="600"
   border_visible="false"
   top="-600"
   follows="all"
-  start_url="https://lh4.googleusercontent.com/f26pNcNMvmKjQJ9tcwcGRu5wq16gjaYxVNxf0ckdoW0=s1920"
+  start_url="https://www.youtube.com/embed/53euICErnVg?autoplay=1&amp;loop=1&amp;playlist=53euICErnVg"
   left="0"
   name="html"
-  height="640"
-  width="996" />-->
+  height="650"
+  width="996" />
   
-  <icon
+  <!--<icon
   follows="all"
   height="600"
   image_name="Login_BG"
@@ -42,7 +42,7 @@ top="600"
   visible="true"
   width="1016"
   left="0"
-  top="-600"/>
+  top="-600"/>-->
   <icon
   follows="bottom|left|right"
   height="125"
@@ -70,7 +70,7 @@ top="600"
   
   <icon
   follows="top|left|right"
-  height="25"
+  height="20"
   image_name="Toolbar_Middle_Selected"
   color="0 0 0 1"
   layout="topleft"
@@ -82,7 +82,7 @@ top="600"
   top="0"/>
   <icon
   follows="top|left|right"
-  height="25"
+  height="20"
   image_name="Toolbar_Middle_Selected"
   color="0 0 0.15 1"
   layout="topleft"
@@ -99,20 +99,20 @@ top="600"
     layout="topleft"
     left="1"
     name="cost_text_border"
-    top="25"
+    top="20"
     width="994"/>
   <button
        follows="left|top|right"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.4.4.4]"
+       label="[CHANNEL] [VERSION] - [2.4.4.6]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
        halign="left"
        name="channel_text"
-       top="3"
+       top="1"
        width="200">
        <button.commit_callback
          function="Floater.Show"
@@ -120,17 +120,17 @@ top="600"
        </button>
   <panel
   follows="right|left|bottom"
-  height="145"
+  height="150"
   layout="topleft"
   left="0"
   name="panel_login2"
   focus_root="true" 
-  bottom="-7"
+  bottom="-1"
   width="996">
     <layout_stack
     border_size="0"
     follows="all"
-    height="145"
+    height="150"
     layout="topleft"
     left="0"
     mouse_opaque="false"
