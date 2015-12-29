@@ -186,6 +186,7 @@ Ansariel Hiller
 	STORM-1984
 	STORM-1979
 	MAINT-5533
+	MAINT-5756
 	STORM-2083
 	STORM-2094
 	MAINT-4677
@@ -777,6 +778,7 @@ Kitty Barnett
 	STORM-1905
     VWR-24217
 	STORM-1804
+	MAINT-5416
 Kolor Fall
 Komiko Okamoto
 Korvel Noh

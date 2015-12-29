@@ -62,6 +62,9 @@
 #include "glh/glh_linear.h"
 #include "llmatrix4a.h"
 
+#include <boost/regex.hpp>
+#include <boost/algorithm/string/replace.hpp>
+
 std::string colladaVersion[VERSIONTYPE_COUNT+1] = 
 {
 	"1.4.0",
@@ -236,7 +239,10 @@ LLModel::EModelStatus load_face_from_dom_triangles(std::vector<LLVolumeFace>& fa
 
 					// Don't share verts within the same tri, degenerate
 					//
-					if ((indices.size() % 3) && (indices[indices.size()-1] != shared_index))
+                    U32 indx_size = indices.size();
+                    U32 verts_new_tri = indx_size % 3;
+                    if ((verts_new_tri < 1 || indices[indx_size - 1] != shared_index)
+                        && (verts_new_tri < 2 || indices[indx_size - 2] != shared_index))
 					{
 						found = true;
 						indices.push_back(shared_index);
@@ -845,7 +851,9 @@ bool LLDAELoader::OpenFile(const std::string& filename)
 {
 	//no suitable slm exists, load from the .dae file
 	DAE dae;
-	domCOLLADA* dom = dae.open(filename);
+	
+	std::string fileURI = "from memory"; // set to a null device
+	domCOLLADA* dom = dae.openFromMemory(fileURI, preprocessDAE(filename).c_str());
 	
 	if (!dom)
 	{
@@ -873,7 +881,7 @@ bool LLDAELoader::OpenFile(const std::string& filename)
 	
 	daeInt count = db->getElementCount(NULL, COLLADA_TYPE_MESH);
 	
-	daeDocument* doc = dae.getDoc(mFilename);
+	daeDocument* doc = dae.getDoc(fileURI);
 	if (!doc)
 	{
 		LL_WARNS() << "can't find internal doc" << LL_ENDL;
@@ -1049,6 +1057,41 @@ bool LLDAELoader::OpenFile(const std::string& filename)
 	}
 	
 	return true;
+}
+
+std::string LLDAELoader::preprocessDAE(std::string filename)
+{
+	// Open a DAE file for some preprocessing (like removing space characters in IDs), see MAINT-5678
+	std::ifstream inFile;
+	inFile.open(filename.c_str(), std::ios_base::in);
+	std::stringstream strStream;
+	strStream << inFile.rdbuf();
+	std::string buffer = strStream.str();
+
+	LL_INFOS() << "Preprocessing dae file to remove spaces from the names, ids, etc." << LL_ENDL;
+
+	try
+	{
+		boost::regex re("\"[\\w\\.@#$-]*(\\s[\\w\\.@#$-]*)+\"");
+		boost::sregex_iterator next(buffer.begin(), buffer.end(), re);
+		boost::sregex_iterator end;
+		while (next != end)
+		{
+			boost::smatch match = *next;
+			std::string s = match.str();
+			LL_INFOS() << s << " found" << LL_ENDL;
+			boost::replace_all(s, " ", "_");
+			LL_INFOS() << "Replacing with " << s << LL_ENDL;
+			boost::replace_all(buffer, match.str(), s);
+			next++;
+		}
+	}
+	catch (boost::regex_error &)
+	{
+		LL_INFOS() << "Regex error" << LL_ENDL;
+	}
+
+	return buffer;
 }
 
 void LLDAELoader::processDomModel(LLModel* model, DAE* dae, daeElement* root, domMesh* mesh, domSkin* skin)
@@ -1578,9 +1621,9 @@ void LLDAELoader::processChildJoints( domNode* pParentNode )
 //-----------------------------------------------------------------------------
 bool LLDAELoader::isNodeAJoint( domNode* pNode )
 {
-	if ( !pNode )
+    if ( !pNode || !pNode->getName() )
 	{
-		LL_INFOS()<<"Created node is NULL"<<LL_ENDL;
+		LL_INFOS()<<"Created node is NULL or invalid"<<LL_ENDL;
 		return false;
 	}
 	

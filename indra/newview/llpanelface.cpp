@@ -49,6 +49,7 @@
 #include "llmaterialmgr.h"
 #include "llmediaentry.h"
 #include "llnotificationsutil.h"
+#include "llradiogroup.h"
 #include "llresmgr.h"
 #include "llradiogroup.h"
 #include "llselectmgr.h"
@@ -91,6 +92,7 @@ LLRender::eTexIndex LLPanelFace::getTextureChannelToEdit()
 	LLRadioGroup* radio_mattype		= getChild<LLRadioGroup>("radio mattype");
 
 	LLRender::eTexIndex channel_to_edit = (LLRender::eTexIndex)radio_mattype->getSelectedIndex();
+	                                                    (radio_mat_type ? (LLRender::eTexIndex)radio_mat_type->getSelectedIndex() : LLRender::DIFFUSE_MAP) : LLRender::DIFFUSE_MAP;
 
 	channel_to_edit = (channel_to_edit == LLRender::NORMAL_MAP)		? (getCurrentNormalMap().isNull()		? LLRender::DIFFUSE_MAP : channel_to_edit) : channel_to_edit;
 	channel_to_edit = (channel_to_edit == LLRender::SPECULAR_MAP)	? (getCurrentSpecularMap().isNull()		? LLRender::DIFFUSE_MAP : channel_to_edit) : channel_to_edit;
@@ -245,10 +247,10 @@ BOOL	LLPanelFace::postBuild()
 
 	mRadioMatType = getChild<LLRadioGroup>("radio mattype");
 	if(mRadioMatType)
-	{
+    {
 		mRadioMatType->setCommitCallback(LLPanelFace::onCommitMaterialType, this);
 		mRadioMatType->selectNthItem(MATTYPE_DIFFUSE);
-	}
+    }
 
 	mCtrlGlow = getChild<LLUICtrl>("glow");
 	if(mCtrlGlow)
@@ -644,8 +646,20 @@ void LLPanelFace::updateUI()
 		}
 		getChildView("radio mattype")->setEnabled(editable);
 
-		U32 material_type = radio_mattype->getSelectedIndex();
+		if(mRadioMatType)
+		{
+		    if (mRadioMatType->getSelectedIndex() < MATTYPE_DIFFUSE)
+		    {
+		        mRadioMatType->selectNthItem(MATTYPE_DIFFUSE);
+		    }
 
+		}
+		else
+		{
+		    LL_WARNS("Materials") << "failed getChild for 'mRadioMatType'" << LL_ENDL;
+		}
+
+		getChildView("radio_material_type")->setEnabled(editable);
 		updateVisibility();
 
 		bool identical			= true;	// true because it is anded below
@@ -1906,7 +1920,7 @@ void LLPanelFace::onCommitRepeatsPerMeter(LLUICtrl* ctrl, void* userdata)
 	
 	LLUICtrl*	repeats_ctrl	= self->getChild<LLUICtrl>("rptctrl");
 	LLRadioGroup* radio_mattype	= self->getChild<LLRadioGroup>("radio mattype");
-
+	U32 material_type           = (materials_media == MATMEDIA_MATERIAL) ? radio_mat_type->getSelectedIndex() : 0;
 	U32 material_type			= radio_mattype->getSelectedIndex();
 	F32 repeats_per_meter	= repeats_ctrl->getValue().asReal();
 	
@@ -2034,7 +2048,7 @@ void LLPanelFace::onTextureSelectionChanged(LLInventoryItem* itemp)
 	LLRadioGroup* radio_mattype = getChild<LLRadioGroup>("radio mattype");
 	if (!radio_mattype)
 	{
-		return;
+	    return;
 	}
 	U32 mattype = radio_mattype->getSelectedIndex();
 	std::string which_control="texture control";

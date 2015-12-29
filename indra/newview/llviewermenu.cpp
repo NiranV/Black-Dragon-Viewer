@@ -1305,6 +1305,15 @@ class LLAdvancedToggleWireframe : public view_listener_t
 		gWindowResized = TRUE;
 		LLPipeline::updateRenderDeferred();
 		gPipeline.resetVertexBuffers();
+
+		if (!gUseWireframe && !gInitialDeferredModeForWireframe && LLPipeline::sRenderDeferred != gInitialDeferredModeForWireframe && gPipeline.isInit())
+		{
+			LLPipeline::refreshCachedSettings();
+			gPipeline.releaseGLBuffers();
+			gPipeline.createGLBuffers();
+			LLViewerShaderMgr::instance()->setShaders();
+		}
+
 		return true;
 	}
 };

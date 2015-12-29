@@ -281,9 +281,24 @@ bool LLAgent::isActionAllowed(const LLSD& sdname)
 
 	if (param == "speak")
 	{
-		if ( gAgent.isVoiceConnected() && 
-			LLViewerParcelMgr::getInstance()->allowAgentVoice() &&
-				! LLVoiceClient::getInstance()->inTuningMode() )
+        bool allow_agent_voice = false;
+        LLVoiceChannel* channel = LLVoiceChannel::getCurrentVoiceChannel();
+        if (channel != NULL)
+        {
+            if (channel->getSessionName().empty() && channel->getSessionID().isNull())
+            {
+                // default channel
+                allow_agent_voice = LLViewerParcelMgr::getInstance()->allowAgentVoice();
+            }
+            else
+            {
+                allow_agent_voice = channel->isActive() && channel->callStarted();
+            }
+        }
+
+        if (gAgent.isVoiceConnected() &&
+            allow_agent_voice &&
+            !LLVoiceClient::getInstance()->inTuningMode())
 		{
 			retval = true;
 		}
@@ -3941,6 +3956,7 @@ void LLAgent::startTeleportRequest()
     }
 	if (hasPendingTeleportRequest())
 	{
+        mTeleportCanceled.reset();
 		if  (!isMaturityPreferenceSyncedWithServer())
 		{
 			gTeleportDisplay = TRUE;
@@ -3970,6 +3986,7 @@ void LLAgent::startTeleportRequest()
 void LLAgent::handleTeleportFinished()
 {
 	clearTeleportRequest();
+    mTeleportCanceled.reset();
 	if (mIsMaturityRatingChangingDuringTeleport)
 	{
 		// notify user that the maturity preference has been changed
@@ -4136,13 +4153,25 @@ void LLAgent::teleportCancel()
 			msg->addUUIDFast(_PREHASH_AgentID, getID());
 			msg->addUUIDFast(_PREHASH_SessionID, getSessionID());
 			sendReliableMessage();
-		}	
+		}
+		mTeleportCanceled = mTeleportRequest;
 	}
 	clearTeleportRequest();
 	gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
 	gPipeline.resetVertexBuffers();
 }
 
+void LLAgent::restoreCanceledTeleportRequest()
+{
+    if (mTeleportCanceled != NULL)
+    {
+        gAgent.setTeleportState( LLAgent::TELEPORT_REQUESTED );
+        mTeleportRequest = mTeleportCanceled;
+        mTeleportCanceled.reset();
+        gTeleportDisplay = TRUE;
+        gTeleportDisplayTimer.reset();
+    }
+}
 
 void LLAgent::teleportViaLocation(const LLVector3d& pos_global)
 {

@@ -91,7 +91,8 @@ LLToolPie::LLToolPie()
 	mBlockClickToWalk(false),
 	mClickAction(0),
 	mClickActionBuyEnabled( gSavedSettings.getBOOL("ClickActionBuyEnabled") ),
-	mClickActionPayEnabled( gSavedSettings.getBOOL("ClickActionPayEnabled") )
+	mClickActionPayEnabled( gSavedSettings.getBOOL("ClickActionPayEnabled") ),
+	mDoubleClickTimer()
 {
 }
 
@@ -107,12 +108,17 @@ BOOL LLToolPie::handleAnyMouseClick(S32 x, S32 y, MASK mask, EClickType clicktyp
 
 BOOL LLToolPie::handleMouseDown(S32 x, S32 y, MASK mask)
 {
-	mMouseOutsideSlop = FALSE;
+    if (mDoubleClickTimer.getStarted())
+    {
+        mDoubleClickTimer.stop();
+    }
+
+    mMouseOutsideSlop = FALSE;
 	mMouseDownX = x;
 	mMouseDownY = y;
 
 	//left mouse down always picks transparent (but see handleMouseUp)
-	mPick = gViewerWindow->pickImmediate(x, y, TRUE);
+	mPick = gViewerWindow->pickImmediate(x, y, TRUE, FALSE);
 	mPick.mKeyMask = mask;
 
 	mMouseButtonDown = true;
@@ -127,7 +133,7 @@ BOOL LLToolPie::handleMouseDown(S32 x, S32 y, MASK mask)
 BOOL LLToolPie::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
 	// don't pick transparent so users can't "pay" transparent objects
-	mPick = gViewerWindow->pickImmediate(x, y, FALSE, TRUE);
+	mPick = gViewerWindow->pickImmediate(x, y, /*BOOL pick_transparent*/ FALSE, /*BOOL pick_rigged*/ TRUE, /*BOOL pick_particle*/ TRUE);
 	mPick.mKeyMask = mask;
 
 	// claim not handled so UI focus stays same
@@ -576,7 +582,7 @@ void LLToolPie::selectionPropertiesReceived()
 
 BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 {
-	mHoverPick = gViewerWindow->pickImmediate(x, y, FALSE);
+	mHoverPick = gViewerWindow->pickImmediate(x, y, FALSE, FALSE);
 	LLViewerObject *parent = NULL;
 	LLViewerObject *object = mHoverPick.getObject();
 // [RLVa:KB] - Checked: 2010-03-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
@@ -635,7 +641,7 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 	else
 	{
 		// perform a separate pick that detects transparent objects since they respond to 1-click actions
-		LLPickInfo click_action_pick = gViewerWindow->pickImmediate(x, y, TRUE);
+		LLPickInfo click_action_pick = gViewerWindow->pickImmediate(x, y, TRUE, FALSE);
 
 		LLViewerObject* click_action_object = click_action_pick.getObject();
 
@@ -693,7 +699,15 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 
 BOOL LLToolPie::handleMouseUp(S32 x, S32 y, MASK mask)
 {
-	LLViewerObject* obj = mPick.getObject();
+    if (!mDoubleClickTimer.getStarted())
+    {
+        mDoubleClickTimer.start();
+    }
+    else
+    {
+        mDoubleClickTimer.reset();
+    }
+    LLViewerObject* obj = mPick.getObject();
 	U8 click_action = final_click_action(obj);
 
 	// let media have first pass at click
@@ -787,10 +801,17 @@ BOOL LLToolPie::handleDoubleClick(S32 x, S32 y, MASK mask)
 		LL_INFOS() << "LLToolPie handleDoubleClick (becoming mouseDown)" << LL_ENDL;
 	}
 
-    if (handleMediaDblClick(mPick))
-    {
-        return TRUE;
-    }
+	if (handleMediaDblClick(mPick))
+	{
+		return TRUE;
+	}
+    
+    	if (!mDoubleClickTimer.getStarted() || (mDoubleClickTimer.getElapsedTimeF32() > 0.3f))
+	{
+		mDoubleClickTimer.stop();
+		return FALSE;
+	}
+	mDoubleClickTimer.stop();
 
 	if (gSavedSettings.getBOOL("DoubleClickAutoPilot"))
 	{
@@ -802,6 +823,15 @@ BOOL LLToolPie::handleDoubleClick(S32 x, S32 y, MASK mask)
         mPick = gViewerWindow->pickImmediate(savedPick.mMousePt.mX, savedPick.mMousePt.mY,
                                              FALSE /* ignore transparent */,
                                              FALSE /* ignore particles */);
+
+        if(mPick.mPickType == LLPickInfo::PICK_OBJECT)
+        {
+            if (mPick.getObject() && mPick.getObject()->isHUDAttachment())
+            {
+                mPick = savedPick;
+                return FALSE;
+            }
+        }
 
 		if ((mPick.mPickType == LLPickInfo::PICK_LAND && !mPick.mPosGlobal.isExactlyZero()) ||
 			(mPick.mObjectID.notNull()  && !mPick.mPosGlobal.isExactlyZero()))
