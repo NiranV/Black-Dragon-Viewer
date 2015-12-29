@@ -10784,7 +10784,6 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>1</integer>
-    </map>	
     </map>
     <key>SelectMovableOnly</key>
     <map>
@@ -17232,7 +17231,6 @@
       <key>Value</key>
       <string />
     </map>
-    
 </map>
 </llsd>
 
