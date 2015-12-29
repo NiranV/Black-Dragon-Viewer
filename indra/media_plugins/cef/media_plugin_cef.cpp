@@ -68,6 +68,7 @@ private:
 	void onNavigateURLCallback(std::string url, std::string target);
 	bool onHTTPAuthCallback(const std::string host, const std::string realm, std::string& username, std::string& password);
 	void onCursorChangedCallback(LLCEFLib::ECursorType type, unsigned int handle);
+	void onFileDownloadCallback(std::string filename);
 
 	void postDebugMessage(const std::string& msg);
 	void authResponse(LLPluginMessage &message);
@@ -245,7 +246,7 @@ void MediaPluginCEF::onAddressChangeCallback(std::string url)
 {
 	LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA_BROWSER, "location_changed");
 	message.setValue("uri", url);
-	sendMessage(message);
+	sendMessage(message); 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -290,6 +291,18 @@ bool MediaPluginCEF::onHTTPAuthCallback(const std::string host, const std::strin
 	}
 
 	return mAuthOK;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+void MediaPluginCEF::onFileDownloadCallback(const std::string filename)
+{
+	mAuthOK = false;
+
+	LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "file_download");
+	message.setValue("filename", filename);
+
+	sendMessage(message);
 }
 
 void MediaPluginCEF::onCursorChangedCallback(LLCEFLib::ECursorType type, unsigned int handle)
@@ -425,6 +438,7 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
 				mLLCEFLib->setOnAddressChangeCallback(boost::bind(&MediaPluginCEF::onAddressChangeCallback, this, _1));
 				mLLCEFLib->setOnNavigateURLCallback(boost::bind(&MediaPluginCEF::onNavigateURLCallback, this, _1, _2));
 				mLLCEFLib->setOnHTTPAuthCallback(boost::bind(&MediaPluginCEF::onHTTPAuthCallback, this, _1, _2, _3, _4));
+				mLLCEFLib->setOnFileDownloadCallback(boost::bind(&MediaPluginCEF::onFileDownloadCallback, this, _1));
 				mLLCEFLib->setOnCursorChangedCallback(boost::bind(&MediaPluginCEF::onCursorChangedCallback, this, _1, _2));
 				mLLCEFLib->setOnRequestExitCallback(boost::bind(&MediaPluginCEF::onRequestExitCallback, this));
 
@@ -438,7 +452,7 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
 				settings.cache_enabled = true;
 				settings.cache_path = mCachePath;
 				settings.accept_language_list = mHostLanguage;
-				settings.user_agent_substring = mUserAgentSubtring;
+				settings.user_agent_substring = mLLCEFLib->makeCompatibleUserAgentString(mUserAgentSubtring);
 
 				bool result = mLLCEFLib->init(settings);
 				if (!result)
@@ -526,15 +540,13 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
 				S32 x = message_in.getValueS32("x");
 				S32 y = message_in.getValueS32("y");
 
-				//std::string modifiers = message_in.getValue("modifiers");
-
+				// only even send left mouse button events to LLCEFLib
+				// (partially prompted by crash in OS X CEF when sending right button events)
+				// we catch the right click in viewer and display our own context menu anyway
 				S32 button = message_in.getValueS32("button");
 				LLCEFLib::EMouseButton btn = LLCEFLib::MB_MOUSE_BUTTON_LEFT;
-				if (button == 0) btn = LLCEFLib::MB_MOUSE_BUTTON_LEFT;
-				if (button == 1) btn = LLCEFLib::MB_MOUSE_BUTTON_RIGHT;
-				if (button == 2) btn = LLCEFLib::MB_MOUSE_BUTTON_MIDDLE;
 
-				if (event == "down")
+				if (event == "down" && button == 0)
 				{
 					mLLCEFLib->mouseButton(btn, LLCEFLib::ME_MOUSE_DOWN, x, y);
 					mLLCEFLib->setFocus(true);
@@ -543,7 +555,7 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
 					str << "Mouse down at = " << x << ", " << y;
 					postDebugMessage(str.str());
 				}
-				else if (event == "up")
+				else if (event == "up" && button == 0)
 				{
 					mLLCEFLib->mouseButton(btn, LLCEFLib::ME_MOUSE_UP, x, y);
 
@@ -553,7 +565,7 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
 				}
 				else if (event == "double_click")
 				{
-					// TODO: do we need this ?
+					mLLCEFLib->mouseButton(btn, LLCEFLib::ME_MOUSE_DOUBLE_CLICK, x, y);
 				}
 				else
 				{
@@ -765,16 +777,17 @@ void MediaPluginCEF::keyEvent(LLCEFLib::EKeyEvent key_event, int key, LLCEFLib::
         return;
     
     uint32_t eventType = native_key_data["event_type"].asInteger();
+    if (!eventType)
+        return;
     uint32_t eventModifiers = native_key_data["event_modifiers"].asInteger();
     uint32_t eventKeycode = native_key_data["event_keycode"].asInteger();
     char eventChars = static_cast<char>(native_key_data["event_chars"].isUndefined() ? 0 : native_key_data["event_chars"].asInteger());
     char eventUChars = static_cast<char>(native_key_data["event_umodchars"].isUndefined() ? 0 : native_key_data["event_umodchars"].asInteger());
     bool eventIsRepeat = native_key_data["event_isrepeat"].asBoolean();
-
     
     mLLCEFLib->keyboardEventOSX(eventType, eventModifiers, (eventChars) ? &eventChars : NULL,
                                 (eventUChars) ? &eventUChars : NULL, eventIsRepeat, eventKeycode);
-        
+    
 #elif LL_WINDOWS
 	U32 msg = ll_U32_from_sd(native_key_data["msg"]);
 	U32 wparam = ll_U32_from_sd(native_key_data["w_param"]);
@@ -789,6 +802,16 @@ void MediaPluginCEF::unicodeInput(const std::string &utf8str, LLCEFLib::EKeyboar
 #if LL_DARWIN
 	//mLLCEFLib->keyPress(utf8str[0], true);
 	//mLLCEFLib->keyboardEvent(LLCEFLib::KE_KEY_DOWN, (uint32_t)(utf8str[0]), 0, LLCEFLib::KM_MODIFIER_NONE, 0, 0, 0);
+    if (!native_key_data.has("event_chars") || !native_key_data.has("event_umodchars") ||
+            !native_key_data.has("event_keycode") || !native_key_data.has("event_modifiers"))
+        return;
+    uint32_t unicodeChar = native_key_data["event_chars"].asInteger();
+    uint32_t unmodifiedChar = native_key_data["event_umodchars"].asInteger();
+    uint32_t keyCode = native_key_data["event_keycode"].asInteger();
+    uint32_t rawmodifiers = native_key_data["event_modifiers"].asInteger();
+    
+    mLLCEFLib->injectUnicodeText(unicodeChar, unmodifiedChar, keyCode, rawmodifiers);
+    
 #elif LL_WINDOWS
 	U32 msg = ll_U32_from_sd(native_key_data["msg"]);
 	U32 wparam = ll_U32_from_sd(native_key_data["w_param"]);
