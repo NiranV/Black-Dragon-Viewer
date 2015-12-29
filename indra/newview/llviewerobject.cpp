@@ -5100,7 +5100,7 @@ void LLViewerObject::updateText()
 		    LLVOAvatar* avatar = getAvatar();
 		    if (avatar)
 		    {
-		        mText->setHidden(avatar->isInMuteList());
+		        mText->setHidden(avatar->isVisuallyMuted());
 		    }
 
 		    LLVector3 up_offset(0,0,0);
