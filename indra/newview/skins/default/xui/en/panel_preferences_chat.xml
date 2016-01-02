@@ -39,7 +39,7 @@ width="510">
  left="1"
  name="title"
  top="0"
- width="515"/>-->
+ width="492"/>-->
  <!--<radio_group
  height="16"
  layout="topleft"
@@ -97,7 +97,7 @@ width="510">
  left="1"
  name="title"
  top="0"
- width="515"/>
+ width="492"/>
  <text
  layout="topleft"
  follows="top|left"
@@ -140,7 +140,7 @@ width="510">
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
  <text
  type="string"
  layout="topleft"
@@ -257,7 +257,7 @@ width="510">
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
  <text
  type="string"
  layout="topleft"
@@ -568,21 +568,21 @@ width="510">
  <slider
       control_name="ChatBubbleOpacity"
       enabled_control="UseChatBubbles"
-      decimal_digits="0"
+      decimal_digits="2"
       can_edit_text="true"
       follows="left|top"
       height="15"
-      increment="1"
-      initial_value="10"
+      increment="0.05"
+      initial_value="1"
       label="Bubble Chat Opacity:"
       label_width="150"
       layout="topleft"
       left="10"
-      max_val="64"
-      min_val="2"
+      max_val="1"
+      min_val="0"
       name="bubble_chat_opacity"
       top_pad="4"
-      width="312" />
+      width="321" />
       <button
  follows="left|top"
  control_name="ChatBubbleOpacity"
@@ -658,7 +658,7 @@ width="510">
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
  <text
  type="string"
  layout="topleft"
@@ -964,7 +964,7 @@ width="510">
  left="1"
  name="title"
  top_pad="10"
- width="515"/>
+ width="492"/>
  <text
  type="string"
  layout="topleft"
