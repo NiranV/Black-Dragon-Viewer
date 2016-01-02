@@ -41,13 +41,14 @@ uniform sampler2DRect lightMap;
 uniform float dist_factor;
 uniform float blur_size;
 uniform vec2 delta;
-uniform vec3 kern[4];
 uniform float kern_scale;
 
 VARYING vec2 vary_fragcoord;
 
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
+
+vec3 kern[8];
 
 vec4 getPosition(vec2 pos_screen)
 {
@@ -104,25 +105,18 @@ void main()
 	vec4 ccol = texture2DRect(lightMap, tc).rgba;
 	ccol.gba = xxsrgb_to_linear(ccol.gba);
 
-#if MYKERN
-#define KERNCOUNT 8
-	vec3 kern[KERNCOUNT];
-
-	kern[0] = vec3(1.000*0.50, 1.00*0.50, 0.000 * blur_size);
-	kern[1] = vec3(0.333*0.50, 1.00*0.50, 0.500 * blur_size);
-	kern[2] = vec3(0.111*0.75, 0.98*0.75, 1.000 * blur_size);
-	kern[3] = vec3(0.080*1.00, 0.95*1.00, 2.000 * blur_size);
-	kern[4] = vec3(0.060*1.00, 0.90*1.00, 3.000 * blur_size);
-	kern[5] = vec3(0.040*1.00, 0.85*1.00, 4.000 * blur_size);
-	kern[6] = vec3(0.020*1.00, 0.77*1.00, 5.000 * blur_size);
-	kern[7] = vec3(0.001*1.00, 0.70*1.00, 6.000 * blur_size);
-
-#else
-#define KERNCOUNT 4
-#endif
+	kern[0] = vec3(0.5, 1.0, 0.250);
+	kern[1] = vec3(0.333, 1.0, 1.200);
+	kern[2] = vec3(0.151, 1.0, 1.740);
+	kern[3] = vec3(0.100, 1.0, 3.300);
+	kern[4] = vec3(0.090, 1.0, 4.200);
+	kern[5] = vec3(0.070, 1.0, 4.800);
+	kern[6] = vec3(0.040, 1.0, 6.000);
+	kern[7] = vec3(0.020, 1.0, 7.200);
 	
-	vec2 dlt = kern_scale * (vec2(1.5,1.5)-norm.xy*norm.xy);
+	vec2 dlt =(vec2(1.5,1.5)-norm.xy*norm.xy);
 	dlt = delta * ceil(max(dlt.xy, vec2(1.0)));
+	dlt /= max(-pos.z*dist_factor, 1.0);
 	
 	vec2 defined_weight = kern[0].xy; // special case the first (centre) sample's weight in the blur; we have to sample it anyway so we get it for 'free'
 	vec4 col = defined_weight.xyyy * ccol;
@@ -134,65 +128,34 @@ void main()
 	  * 0.0001;
 	
 	// perturb sampling origin slightly in screen-space to hide edge-ghosting artifacts where smoothing radius is quite large
-	//vec2 tc_v = fract(0.5 * tc.xy); // we now have floor(mod(tc,2.0))*0.5
-	//float tc_mod = 2.0 * abs(tc_v.x - tc_v.y); // diff of x,y makes checkerboard
+	vec2 tc_v = fract(0.5 * tc.xy); // we now have floor(mod(tc,2.0))*0.5
+	float tc_mod = 2.0 * abs(tc_v.x - tc_v.y); // diff of x,y makes checkerboard
 	//tc += ( (tc_mod - 0.5) * kern[1].z * dlt * 0.5 ); // messes with purity
-	//tc += ( (tc_mod - 0.5) * kern[1].z * dlt * 0.66667 ); // a, ab, b, bc, c // but messes w/pur.
+	tc += ( (tc_mod - 0.5) * kern[1].z * dlt * 0.66667 ); // a, ab, b, bc, c // but messes w/pur.
 	// alternate direction according to grid
-	//dlt.xy = mix(dlt.xy, vec2(dlt.y, -dlt.x), tc_mod); //artifacts strong
+	dlt.xy = mix(dlt.xy, vec2(dlt.y, -dlt.x), tc_mod); //artifacts strong
 
 	const float mindp = 0.70;
-
-	for (int i = KERNCOUNT-1; i > 0; i--)
+	for (int i = 8-1; i > 0; i--)
+	{
+	  vec2 w = kern[i].xy;
+	  vec2 samptc = (tc + kern[i].z * dlt);
+	  vec3 samppos = getPosition(samptc).xyz; 
+	  vec3 sampnorm = texture2DRect(normalMap, samptc).xyz;
+	  sampnorm = decode_normal(sampnorm.xy); // unpack norm
+	
+	  float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
+	
+	  if (d*d <= pointplanedist_tolerance_pow2
+	  && dot(sampnorm.xyz, norm.xyz) >= mindp)
 	  {
-	    vec2 w = kern[i].xy;
-	    vec2 samptc = (tc + kern[i].z * dlt);
-	    vec3 samppos = getPosition(samptc).xyz; 
-#ifdef DELUXE_SHADOW_SMOOTH
-	    vec3 sampnorm = texture2DRect(normalMap, samptc).xyz;
-	    sampnorm = decode_normal(sampnorm.xy); // unpack norm
-#endif // DELUXE_SHADOW_SMOOTH
-	  
-	    float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
-	  
-	    if (d*d <= pointplanedist_tolerance_pow2
-#ifdef DELUXE_SHADOW_SMOOTH
-		&& dot(sampnorm.xyz, norm.xyz) >= mindp
-#endif // DELUXE_SHADOW_SMOOTH
-		)
-	      {
 		vec4 scol = texture2DRect(lightMap, samptc);
 		scol.gba = xxsrgb_to_linear(scol.gba);
 		col += scol*w.xyyy;
 		defined_weight += w.xy;
-	      }
 	  }
-
-	for (int i = 1; i < KERNCOUNT; i++)
-	  {
-	    vec2 w = kern[i].xy;
-	    vec2 samptc = (tc - kern[i].z * dlt);
-	    vec3 samppos = getPosition(samptc).xyz; 
-#ifdef DELUXE_SHADOW_SMOOTH
-	    vec3 sampnorm = texture2DRect(normalMap, samptc).xyz;
-	    sampnorm = decode_normal(sampnorm.xy); // unpack norm
-#endif // DELUXE_SHADOW_SMOOTH
-	  
-	    float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
-	  
-	    if (d*d <= pointplanedist_tolerance_pow2
-#ifdef DELUXE_SHADOW_SMOOTH
-		&& dot(sampnorm.xyz, norm.xyz) >= mindp
-#endif // DELUXE_SHADOW_SMOOTH
-		)
-	      {
-		vec4 scol = texture2DRect(lightMap, samptc);
-		scol.gba = xxsrgb_to_linear(scol.gba);
-		col += scol*w.xyyy;
-		defined_weight += w.xy;
-	      }
-	  }
-
+	}
+	
 	col /= defined_weight.xyyy;
 
 	col.gba = xxlinear_to_srgb(col.gba);

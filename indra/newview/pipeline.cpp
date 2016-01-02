@@ -8715,27 +8715,12 @@ void LLPipeline::renderDeferredLighting()
 			bindDeferredShader(gDeferredBlurLightProgram);
 			mDeferredVB->setBuffer(LLVertexBuffer::MAP_VERTEX);
 			LLVector3 go = RenderShadowGaussian;
-			const U32 kern_length = 4;
 			F32 blur_size = RenderShadowBlurSize;
 			F32 dist_factor = RenderShadowBlurDistFactor;
 
-			// sample symmetrically with the middle sample falling exactly on 0.0
-			F32 x = 0.f;
-
-			LLVector3 gauss[32]; // xweight, yweight, offset
-
-			for (U32 i = 0; i < kern_length; i++)
-			{
-				gauss[i].mV[0] = llgaussian(x, go.mV[0]);
-				gauss[i].mV[1] = llgaussian(x, go.mV[1]);
-				gauss[i].mV[2] = x;
-				x += 1.f;
-			}
-
 			gDeferredBlurLightProgram.uniform2f(sDelta, 1.f, 0.f);
 			gDeferredBlurLightProgram.uniform1f(sDistFactor, dist_factor);
-			gDeferredBlurLightProgram.uniform3fv(sKern, kern_length, gauss[0].mV);
-			gDeferredBlurLightProgram.uniform1f(sKernScale, blur_size * (kern_length/2.f - 0.5f));
+			gDeferredBlurLightProgram.uniform1f(sKernScale, blur_size);
 		
 			{
 				LLGLDisable blend(GL_BLEND);
