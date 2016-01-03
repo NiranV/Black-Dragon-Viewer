@@ -1133,12 +1133,14 @@ void LLPanelPlaces::updateVerbs()
 		is_place_info_visible = false;
 	}
 
+	bool is_agent_place_info_visible = mPlaceInfoType == AGENT_INFO_TYPE;
 	bool is_create_landmark_visible = mPlaceInfoType == CREATE_LANDMARK_INFO_TYPE;
 	bool is_pick_panel_visible = false;
 	if(mPickPanel)
 	{
 		is_pick_panel_visible = mPickPanel->isInVisibleChain();
 	}
+	bool have_3d_pos = !mPosGlobal.isExactlyZero();
 
 	mTeleportBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible && is_place_info_visible);
 	mShowOnMapBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible && is_place_info_visible);
@@ -1149,8 +1151,27 @@ void LLPanelPlaces::updateVerbs()
 	mCloseBtn->setVisible(is_create_landmark_visible && !isLandmarkEditModeOn && is_place_info_visible);
 
 
-	if (mActivePanel)
-		mActivePanel->updateVerbs();
+	if (is_place_info_visible)
+	{
+		mShowOnMapBtn->setEnabled(have_3d_pos);
+
+		if (is_agent_place_info_visible)
+		{
+			// We don't need to teleport to the current location
+			// so check if the location is not within the current parcel.
+			mTeleportBtn->setEnabled(have_3d_pos &&
+				!LLViewerParcelMgr::getInstance()->inAgentParcel(mPosGlobal));
+		}
+		else if (mPlaceInfoType == LANDMARK_INFO_TYPE || mPlaceInfoType == REMOTE_PLACE_INFO_TYPE)
+		{
+			mTeleportBtn->setEnabled(have_3d_pos);
+		}
+	}
+	else
+	{
+		if (mActivePanel)
+			mActivePanel->updateVerbs();
+	}
 }
 
 LLPanelPlaceInfo* LLPanelPlaces::getCurrentInfoPanel()
