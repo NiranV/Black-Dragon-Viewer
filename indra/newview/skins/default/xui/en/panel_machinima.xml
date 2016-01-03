@@ -1032,6 +1032,24 @@ width="345">
                   Ambient Occlusion (SSAO):
                   </text>
                   <slider
+                  control_name="RenderSSAOBlurSize"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="15"
+                  increment="0.001"
+                  initial_value="0.2"
+                  can_edit_text="true"
+                  label="Blur Size:"
+                  label_width="110"
+                  tool_tip="Set the strength of each blur pass of SSAO"
+                  layout="topleft"
+                  left="20"
+                  max_val="0.4"
+                  min_val="0"
+                  name="SSAOBlurSize"
+                  top_pad="2"
+                  width="296"/>
+                  <slider
                   control_name="RenderSSAOEffect"
                   enabled_control="RenderDeferredSSAO"
                   decimal_digits="2"
@@ -1047,7 +1065,7 @@ width="345">
                   max_val="4"
                   min_val="-1"
                   name="SSAOEffect"
-                  top_pad="2"
+                  top_pad="1"
                   width="294" />
                   <slider
                   control_name="RenderSSAOScale"
