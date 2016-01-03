@@ -931,7 +931,7 @@ public:
 	static F32 RenderSpotShadowBias;
 	static F32 RenderEdgeDepthCutoff;
 	static F32 RenderEdgeNormCutoff;
-	static LLVector3 RenderShadowGaussian;
+	static F32 RenderSSAOBlurSize;
 	static F32 RenderShadowBlurDistFactor;
 	static BOOL RenderDeferredAtmospheric;
 	static S32 RenderReflectionDetail;

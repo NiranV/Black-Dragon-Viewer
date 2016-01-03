@@ -192,7 +192,7 @@ F32 LLPipeline::RenderSpotShadowOffset;
 F32 LLPipeline::RenderSpotShadowBias;
 F32 LLPipeline::RenderEdgeDepthCutoff;
 F32 LLPipeline::RenderEdgeNormCutoff;
-LLVector3 LLPipeline::RenderShadowGaussian;
+F32 LLPipeline::RenderSSAOBlurSize;
 F32 LLPipeline::RenderShadowBlurDistFactor;
 BOOL LLPipeline::RenderDeferredAtmospheric;
 S32 LLPipeline::RenderReflectionDetail;
@@ -276,6 +276,7 @@ static LLStaticHashedString sOffset("offset");
 static LLStaticHashedString sScreenRes("screenRes");
 static LLStaticHashedString sDelta("delta");
 static LLStaticHashedString sDistFactor("dist_factor");
+static LLStaticHashedString sGaussian("gaussian");
 static LLStaticHashedString sKern("kern");
 static LLStaticHashedString sKernScale("kern_scale");
 
@@ -645,7 +646,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderSpotShadowBias");
 	connectRefreshCachedSettingsSafe("RenderEdgeDepthCutoff");
 	connectRefreshCachedSettingsSafe("RenderEdgeNormCutoff");
-	connectRefreshCachedSettingsSafe("RenderShadowGaussian");
+	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
 	connectRefreshCachedSettingsSafe("RenderShadowBlurDistFactor");
 	connectRefreshCachedSettingsSafe("RenderDeferredAtmospheric");
 	connectRefreshCachedSettingsSafe("RenderReflectionDetail");
@@ -1206,7 +1207,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderSpotShadowBias = gSavedSettings.getF32("RenderSpotShadowBias");
 	RenderEdgeDepthCutoff = gSavedSettings.getF32("RenderEdgeDepthCutoff");
 	RenderEdgeNormCutoff = gSavedSettings.getF32("RenderEdgeNormCutoff");
-	RenderShadowGaussian = gSavedSettings.getVector3("RenderShadowGaussian");
+	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
 	RenderShadowBlurDistFactor = gSavedSettings.getF32("RenderShadowBlurDistFactor");
 	RenderDeferredAtmospheric = gSavedSettings.getBOOL("RenderDeferredAtmospheric");
 	RenderReflectionDetail = gSavedSettings.getS32("RenderReflectionDetail");
@@ -8714,13 +8715,11 @@ void LLPipeline::renderDeferredLighting()
 			
 			bindDeferredShader(gDeferredBlurLightProgram);
 			mDeferredVB->setBuffer(LLVertexBuffer::MAP_VERTEX);
-			LLVector3 go = RenderShadowGaussian;
-			F32 blur_size = RenderShadowBlurSize;
 			F32 dist_factor = RenderShadowBlurDistFactor;
 
 			gDeferredBlurLightProgram.uniform2f(sDelta, 1.f, 0.f);
 			gDeferredBlurLightProgram.uniform1f(sDistFactor, dist_factor);
-			gDeferredBlurLightProgram.uniform1f(sKernScale, blur_size);
+			gDeferredBlurLightProgram.uniform2f(sGaussian, RenderShadowBlurSize, RenderSSAOBlurSize);
 		
 			{
 				LLGLDisable blend(GL_BLEND);

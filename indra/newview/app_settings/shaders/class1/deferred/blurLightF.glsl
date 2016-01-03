@@ -42,6 +42,7 @@ uniform float dist_factor;
 uniform float blur_size;
 uniform vec2 delta;
 uniform float kern_scale;
+uniform vec2 gaussian;
 
 VARYING vec2 vary_fragcoord;
 
@@ -105,16 +106,16 @@ void main()
 	vec4 ccol = texture2DRect(lightMap, tc).rgba;
 	ccol.gba = xxsrgb_to_linear(ccol.gba);
 
-	kern[0] = vec3(0.5, 1.0, 0.250);
-	kern[1] = vec3(0.333, 1.0, 1.200);
-	kern[2] = vec3(0.151, 1.0, 1.740);
-	kern[3] = vec3(0.100, 1.0, 3.300);
-	kern[4] = vec3(0.090, 1.0, 4.200);
-	kern[5] = vec3(0.070, 1.0, 4.800);
-	kern[6] = vec3(0.040, 1.0, 6.000);
-	kern[7] = vec3(0.020, 1.0, 7.200);
+	kern[0] = vec3(0.500, 1, 0.250);
+	kern[1] = vec3(0.333, 1, 1.200);
+	kern[2] = vec3(0.151, 1, 1.740);
+	kern[3] = vec3(0.100, 1, 3.300);
+	kern[4] = vec3(0.090, 1, 4.200);
+	kern[5] = vec3(0.070, 1, 4.800);
+	kern[6] = vec3(0.040, 1, 6.000);
+	kern[7] = vec3(0.020, 1, 7.200);
 	
-	vec2 dlt =(vec2(1.5,1.5)-norm.xy*norm.xy);
+	vec2 dlt = gaussian.x * (vec2(1.5,1.5)-norm.xy*norm.xy);
 	dlt = delta * ceil(max(dlt.xy, vec2(1.0)));
 	dlt /= max(-pos.z*dist_factor, 1.0);
 	
@@ -139,6 +140,7 @@ void main()
 	for (int i = 8-1; i > 0; i--)
 	{
 	  vec2 w = kern[i].xy;
+	  w.y = gaussian.y;
 	  vec2 samptc = (tc + kern[i].z * dlt);
 	  vec3 samppos = getPosition(samptc).xyz; 
 	  vec3 sampnorm = texture2DRect(normalMap, samptc).xyz;
