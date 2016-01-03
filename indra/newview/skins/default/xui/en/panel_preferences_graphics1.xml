@@ -3110,7 +3110,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="341"
+	  height="298"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -3449,7 +3449,7 @@ width="510">
                         </radio_item>
                   </radio_group>
  
- <text
+ <!--<text
  type="string"
  length="1"
  follows="left|top"
@@ -3460,7 +3460,7 @@ width="510">
  top_pad="4"
  width="120">
  Softening Kernel:
- </text>
+ </text>-->
  <!--<combo_box
  control_name="RenderShadowType"
  enabled_control="RenderDeferred"
@@ -3482,7 +3482,7 @@ width="510">
  value="0"/>
  </combo_box>-->
  
- <radio_group
+ <!--<radio_group
                   control_name="RenderShadowType"
                   height="19"
                   layout="topleft"
@@ -3523,7 +3523,7 @@ width="510">
                               image_pressed="Checkbox_Press"
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
-                  </radio_group>
+                  </radio_group>-->
  <slider
       enabled_control="RenderDeferred"
       decimal_digits="0"
