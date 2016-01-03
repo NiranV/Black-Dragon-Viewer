@@ -4076,6 +4076,7 @@ width="510">
 	  name="ao_layout_panel"
 	  width="515">
      <slider
+      control_name="RenderSSAOBlurSize"
       enabled_control="RenderDeferredSSAO"
       decimal_digits="3"
       follows="left|top"
@@ -4087,18 +4088,14 @@ width="510">
       tool_tip="Set the strength of each blur pass of SSAO"
       layout="topleft"
       left="10"
-      max_val="3"
-      min_val="0.001"
-      name="RenderShadowGaussian_Y"
+      max_val="0.4"
+      min_val="0.0"
+      name="RenderSSAOBlurSize"
       top_pad="10"
-      width="327">
-   <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="RenderShadowGaussian"/>
-      </slider>
+      width="327"/>
  <button
  follows="left|top"
- control_name="RenderShadowGaussian"
+ control_name="RenderSSAOBlurSize"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
