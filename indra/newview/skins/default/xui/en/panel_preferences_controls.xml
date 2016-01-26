@@ -111,10 +111,10 @@ width="510">
  width="600">
        <radio_item
        height="16"
-       label="Chat"
+       label="Move"
        value="0"
        layout="topleft"
-       name="radio_start_chat"
+       name="radio_move"
        top="0"
        width="70">
              <radio_item.check_button
@@ -127,10 +127,10 @@ width="510">
        </radio_item>
        <radio_item
        height="16"
-       label="Move"
+       label="Chat"
        value="1"
        layout="topleft"
-       name="radio_move"
+       name="radio_start_chat"
        left_pad="10"
        top_delta="0"
        width="70">
@@ -326,6 +326,7 @@ width="510">
        height="16"
        label="Classic"
        value=""
+       enabled="false"
        layout="topleft"
        name="Classic"
        tool_tip=" Move Left / Right: Shift + A / D    
@@ -346,6 +347,7 @@ width="510">
        height="16"
        label="Shooter"
        value="true"
+       enabled="false"
        layout="topleft"
        name="Shooter"
        tool_tip=" Move Left / Right: A / D                
