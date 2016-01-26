@@ -112,8 +112,8 @@ void main()
 	kern[3] = vec3(0.100, 1, 3.300);
 	kern[4] = vec3(0.090, 1, 4.200);
 	kern[5] = vec3(0.070, 1, 4.800);
-	kern[6] = vec3(0.040, 1, 6.000);
-	kern[7] = vec3(0.020, 1, 7.200);
+	kern[6] = vec3(0.040, 1, 5.800);
+	kern[7] = vec3(0.020, 1, 6.800);
 	
 	vec2 dlt = gaussian.x * (vec2(1.5,1.5)-norm.xy*norm.xy);
 	dlt = delta * ceil(max(dlt.xy, vec2(1.0)));
@@ -129,12 +129,12 @@ void main()
 	  * 0.0001;
 	
 	// perturb sampling origin slightly in screen-space to hide edge-ghosting artifacts where smoothing radius is quite large
-	vec2 tc_v = fract(0.5 * tc.xy); // we now have floor(mod(tc,2.0))*0.5
-	float tc_mod = 2.0 * abs(tc_v.x - tc_v.y); // diff of x,y makes checkerboard
+	//vec2 tc_v = fract(0.5 * tc.xy); // we now have floor(mod(tc,2.0))*0.5
+	//float tc_mod = 2.0 * abs(tc_v.x - tc_v.y); // diff of x,y makes checkerboard
 	//tc += ( (tc_mod - 0.5) * kern[1].z * dlt * 0.5 ); // messes with purity
-	tc += ( (tc_mod - 0.5) * kern[1].z * dlt * 0.66667 ); // a, ab, b, bc, c // but messes w/pur.
+	//tc += ( (tc_mod - 0.5) * kern[1].z * dlt * 0.66667 ); // a, ab, b, bc, c // but messes w/pur.
 	// alternate direction according to grid
-	dlt.xy = mix(dlt.xy, vec2(dlt.y, -dlt.x), tc_mod); //artifacts strong
+	//dlt.xy = mix(dlt.xy, vec2(dlt.y, -dlt.x), tc_mod); //artifacts strong
 
 	const float mindp = 0.70;
 	for (int i = 8-1; i > 0; i--)
