@@ -60,7 +60,7 @@
 			<text name="Mouselook:">
 				Ego Perspektive (Mouselook)
 			</text>
-			<check_box label="Umkehren" name="invert_mouse"/>
+			<check_box label="Ego Perspektive Y Achse umkehren." name="invert_mouse"/>
 			<slider name="mouse_sensitivity" label="Maussensibilität"/>
 		</panel>
 	</scroll_container>
