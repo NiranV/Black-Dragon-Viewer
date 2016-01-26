@@ -16957,9 +16957,9 @@
       <string>Vector3</string>
       <key>Value</key>
       <array>
-          <real>0.12</real>
-          <real>0.32</real>
           <real>0.14</real>
+          <real>0.44</real>
+          <real>0.15</real>
       </array>
   </map>
   <key>ExodusRenderToneAdvOptB</key>
@@ -16972,9 +16972,9 @@
       <string>Vector3</string>
       <key>Value</key>
       <array>
-          <real>0.22</real>
+          <real>0.24</real>
           <real>0.02</real>
-          <real>0.15</real>
+          <real>0.18</real>
       </array>
   </map>
   <key>ExodusRenderToneAdvOptC</key>
@@ -16987,8 +16987,8 @@
       <string>Vector3</string>
       <key>Value</key>
       <array>
-          <real>11.0</real>
-          <real>2.3</real>
+          <real>25.0</real>
+          <real>3.0</real>
           <real>0</real>
       </array>
   </map>
@@ -17001,7 +17001,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>1.80</real>
+    <real>2.00</real>
   </map>
   <key>ExodusRenderToneMapping</key>
   <map>
