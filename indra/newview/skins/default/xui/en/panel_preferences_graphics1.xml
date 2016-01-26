@@ -425,7 +425,7 @@ width="510">
       parameter="basic_layout_panel"/>
    </button>
    <text
-   name="general_label"
+   name="basic_label"
    follows="left|top"
    layout="topleft"
    top_delta="4" 
@@ -881,7 +881,7 @@ width="510">
       parameter="lod_layout_panel"/>
    </button>
    <text
-   name="general_label"
+   name="lod_label"
    follows="left|top"
    layout="topleft"
    top_delta="4" 
@@ -1583,7 +1583,7 @@ width="510">
 		 image_unselected="SegmentedBtn_Right_Selected"
 		 layout="topleft"
 		 left="1"
-		 name="general_expand"
+		 name="performance_expand"
 		 top="0"
 		 width="495" >
       <button.commit_callback
@@ -1591,7 +1591,7 @@ width="510">
       parameter="performance_layout_panel"/>
    </button>
    <text
-   name="general_label"
+   name="performance_label"
    follows="left|top"
    layout="topleft"
    top_delta="4" 
@@ -2040,7 +2040,7 @@ width="510">
 		 image_unselected="SegmentedBtn_Right_Selected"
 		 layout="topleft"
 		 left="1"
-		 name="general_expand"
+		 name="vertex_expand"
 		 top="0"
 		 width="495" >
       <button.commit_callback
@@ -2048,7 +2048,7 @@ width="510">
       parameter="vertex_layout_panel"/>
    </button>
    <text
-   name="general_label"
+   name="vertex_label"
    follows="left|top"
    layout="topleft"
    top_delta="4" 
@@ -3086,7 +3086,7 @@ width="510">
 		 image_unselected="SegmentedBtn_Right_Selected"
 		 layout="topleft"
 		 left="1"
-		 name="general_expand"
+		 name="deferred_expand"
 		 top="0"
 		 width="495" >
       <button.commit_callback
@@ -3775,7 +3775,7 @@ width="510">
 		 image_unselected="SegmentedBtn_Right_Selected"
 		 layout="topleft"
 		 left="1"
-		 name="general_expand"
+		 name="dof_expand"
 		 top="0"
 		 width="495" >
       <button.commit_callback
@@ -4045,7 +4045,7 @@ width="510">
 		 image_unselected="SegmentedBtn_Right_Selected"
 		 layout="topleft"
 		 left="1"
-		 name="general_expand"
+		 name="ao_expand"
 		 top="0"
 		 width="495" >
       <button.commit_callback
@@ -4310,7 +4310,7 @@ width="510">
 		 image_unselected="SegmentedBtn_Right_Selected"
 		 layout="topleft"
 		 left="1"
-		 name="general_expand"
+		 name="motionblur_expand"
 		 top="0"
 		 width="495" >
       <button.commit_callback
@@ -4393,7 +4393,7 @@ width="510">
 		 image_unselected="SegmentedBtn_Right_Selected"
 		 layout="topleft"
 		 left="1"
-		 name="general_expand"
+		 name="godrays_expand"
 		 top="0"
 		 width="495" >
       <button.commit_callback
@@ -4555,7 +4555,7 @@ width="510">
 		 image_unselected="SegmentedBtn_Right_Selected"
 		 layout="topleft"
 		 left="1"
-		 name="general_expand"
+		 name="post_expand"
 		 top="0"
 		 width="495" >
       <button.commit_callback
@@ -4749,7 +4749,7 @@ width="510">
 		 image_unselected="SegmentedBtn_Right_Selected"
 		 layout="topleft"
 		 left="1"
-		 name="general_expand"
+		 name="tonemapping_expand"
 		 top="0"
 		 width="495" >
       <button.commit_callback
@@ -5474,7 +5474,7 @@ width="510">
 		 image_unselected="SegmentedBtn_Right_Selected"
 		 layout="topleft"
 		 left="1"
-		 name="general_expand"
+		 name="vignette_expand"
 		 top="0"
 		 width="495" >
       <button.commit_callback
@@ -5588,7 +5588,7 @@ width="510">
    label="Remember Tabs"
    layout="topleft"
    left_delta="5"
-   name="RememberPreferencesTabs"
+   name="remember_tabs"
    top="-17"
    width="115"/>
    
