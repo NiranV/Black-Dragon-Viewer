@@ -488,6 +488,134 @@ void LLVoiceSetKeyDialog::onCancel(void* user_data)
 }
 
 
+
+//BD - Custom Keyboard Layout
+class LLSetKeyDialog : public LLModalDialog
+{
+public:
+	LLSetKeyDialog(const LLSD& key);
+	~LLSetKeyDialog();
+
+	/*virtual*/ BOOL postBuild();
+
+	void setParent(LLFloaterPreference* parent) { mParent = parent; }
+	void setFunction(LLUICtrl* ctrl) { mCtrl = ctrl; }
+	void setMode(S32 mode) { mMode = mode; }
+
+	BOOL handleKeyHere(KEY key, MASK mask);
+	void onCancel();
+	void onBind();
+	void onMasks();
+	void onOpen(const LLSD& key);
+
+	LLUICtrl* mCtrl;
+	S32 mMode;
+	MASK mMask;
+	KEY mKey;
+private:
+	LLFloaterPreference* mParent;
+};
+
+LLSetKeyDialog::LLSetKeyDialog(const LLSD& key)
+	: LLModalDialog(key),
+	mParent(NULL),
+	mCtrl(NULL),
+	mMode(NULL),
+	mMask(MASK_NONE),
+	mKey(NULL)
+{
+	mCommitCallbackRegistrar.add("Set.Masks", boost::bind(&LLSetKeyDialog::onMasks, this));
+	mCommitCallbackRegistrar.add("Set.Bind", boost::bind(&LLSetKeyDialog::onBind, this));
+	mCommitCallbackRegistrar.add("Set.Cancel", boost::bind(&LLSetKeyDialog::onCancel, this));
+}
+
+//virtual
+BOOL LLSetKeyDialog::postBuild()
+{
+	//BD - We block off keypresses like space and enter with this so it doesn't
+	//     accidentally press cancel or bind but is still handled by the floater.
+	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
+	gFocusMgr.setKeystrokesOnly(TRUE);
+
+	return TRUE;
+}
+
+LLSetKeyDialog::~LLSetKeyDialog()
+{
+}
+
+void LLSetKeyDialog::onOpen(const LLSD& key)
+{
+	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
+
+	ctrl->setTextArg("[KEY]", gKeyboard->stringFromKey(mKey));
+	ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
+}
+
+BOOL LLSetKeyDialog::handleKeyHere(KEY key, MASK mask)
+{
+	mKey = key;
+
+	//BD - Ensure we have at least MASK_NONE set, always, otherwise set our typed mask.
+	if (!mMask)
+	{
+		mMask = MASK_NONE;
+	}
+	else if (mask != MASK_NONE && mask != NULL)
+	{
+		mMask = mask;
+	}
+
+	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
+	ctrl->setTextArg("[KEY]", gKeyboard->stringFromKey(mKey));
+	ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
+	LL_INFOS() << "Pressed: " << key << +"(" + gKeyboard->stringFromKey(key) << ") + "
+				<< mask << +"(" << gKeyboard->stringFromMask(mask) << LL_ENDL;
+
+	return TRUE;
+}
+
+void LLSetKeyDialog::onMasks()
+{
+	mMask = MASK_NONE;
+
+	if (getChild<LLUICtrl>("CTRL")->getValue())
+	{
+		mMask += MASK_CONTROL;
+	}
+
+	if (getChild<LLUICtrl>("SHIFT")->getValue())
+	{
+		mMask += MASK_SHIFT;
+	}
+
+	if (getChild<LLUICtrl>("ALT")->getValue())
+	{
+		mMask += MASK_ALT;
+	}
+
+	//BD - We block off keypresses like space and enter with this so it doesn't
+	//     accidentally press cancel or bind but is still handled by the floater.
+	getChild<LLUICtrl>("key_display")->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
+	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
+	gFocusMgr.setKeystrokesOnly(TRUE);
+}
+
+void LLSetKeyDialog::onCancel()
+{
+	this->closeFloater();
+}
+
+void LLSetKeyDialog::onBind()
+{
+	if (mParent && mKey != NULL)
+	{
+		mParent->onBindKey(mKey, mMask, mCtrl, mMode);
+	}
+	this->closeFloater();
+}
+
+
 // global functions 
 
 // helper functions for getting/freeing the web browser media
@@ -628,10 +756,18 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 
 	//Build Floater is now Called from 	LLFloaterReg::add("preferences", "floater_preferences.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterPreference>);
 	
+	static bool registered_voice_dialog = false;
+	if (!registered_voice_dialog)
+	{
+		LLFloaterReg::add("voice_set_key", "floater_select_key.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLVoiceSetKeyDialog>);
+		registered_voice_dialog = true;
+	}
+
+	//BD - Custom Keyboard Layout
 	static bool registered_dialog = false;
 	if (!registered_dialog)
 	{
-		LLFloaterReg::add("voice_set_key", "floater_select_key.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLVoiceSetKeyDialog>);
+		LLFloaterReg::add("set_any_key", "floater_select_key.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLSetKeyDialog>);
 		registered_dialog = true;
 	}
 	
@@ -663,8 +799,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.AutoReplace",            boost::bind(&LLFloaterPreference::onClickAutoReplace, this));
 	mCommitCallbackRegistrar.add("Pref.PermsDefault",           boost::bind(&LLFloaterPreference::onClickPermsDefault, this));
 	mCommitCallbackRegistrar.add("Pref.SpellChecker",           boost::bind(&LLFloaterPreference::onClickSpellChecker, this));
-	mCommitCallbackRegistrar.add("Pref.BindKey",                boost::bind(&LLFloaterPreference::onBindKey, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.BindKey",                boost::bind(&LLFloaterPreference::onClickSetAnyKey, this,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.ExportControls",         boost::bind(&LLFloaterPreference::onExportControls, this));
+	mCommitCallbackRegistrar.add("Pref.UnbindAll",				boost::bind(&LLFloaterPreference::onUnbindControls, this));
 
 //	//BD - Expandable Tabs
 	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::onTab, this, _1, _2));
@@ -907,52 +1044,64 @@ void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
 }
 
 //BD - Custom Keyboard Layout
-void LLFloaterPreference::onBindKey(LLUICtrl* ctrl, const LLSD& param)
+void LLFloaterPreference::onBindKey(KEY key, MASK mask, LLUICtrl* ctrl, const LLSD& param)
 {
-	// MASK_CONTROL | MASK_SHIFT | MASK_NONE | MASK_ALT
-	MASK mask = gKeyboard->currentMask(FALSE);
-	KEY key = gKeyboard->currentKey();
 	S32 mode;
-	std::string function = ctrl->getName();
-	LLSD binds;
+	LLSD settings;
+	llifstream infile;
+	std::string filename = gDirUtilp->findFile(gSavedSettings.getString("ControlSettingsFile"), 
+												gDirUtilp->getExpandedFilename(LL_PATH_CHARACTER, ""));
+	bool bound = false;
 
-	if(param == "1")
-		mode = 1;
-	else if(param == "2")
-		mode = 2;
-	else
-		mode = 0;
+	infile.open(filename);
+	if (!infile.is_open())
+	{
+		LL_WARNS("Settings") << "Cannot find file " << filename << " to load." << LL_ENDL;
+		return;
+	}
 
-	binds["key"] = gKeyboard->stringFromKey(key);
-	//binds["mask"] = mask;
-	binds["mode"] = mode;
+	//BD - We need to unbind all keys, to ensure that everything is empty and properly rebound,
+	//     this prevents a whole bunch of issues but makes it a tedious work to fix if something breaks.
+	gViewerKeyboard.unbindAllKeys(true);
+	while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(settings, infile))
+	{
+		mode = settings["mode"].asInteger();
+		if (!bound && settings["slot"].asInteger() == param.asInteger())
+		{
+			gViewerKeyboard.bindKey(mode, key, mask, settings["function"].asString());
+			LL_INFOS() << "Rebound: " << key << +"(" + gKeyboard->stringFromKey(key) << ") + " 
+				<< mask << +"(" << gKeyboard->stringFromMask(mask) << ") to "
+				<< settings["function"].asString() << " in mode "
+				<< settings["mode"].asInteger() << LL_ENDL;
+			bound = true;
+		}
+		else
+		{
+			MASK old_mask = MASK_NONE;
+			KEY old_key = NULL;
+			LLKeyboard::keyFromString(settings["key"], &old_key);
+			LLKeyboard::maskFromString(settings["mask"], &old_mask);
+			LL_INFOS() << "Kept: " << old_key << +"(" + settings["key"].asString() << ") + "
+				<< mask << +"(" << settings["mask"].asString() << ") to " 
+				<< settings["function"].asString() << " in mode "
+				<< settings["mode"].asInteger() << LL_ENDL;
+			gViewerKeyboard.bindKey(mode, old_key, old_mask, settings["function"].asString());
+		}
+	}
+	infile.close();
+	//BD - We can now safely rewrite the entire file now that we filled all bindings in.
+	gViewerKeyboard.exportBindingsXML(filename);
+}
 
-	if(mask == (MASK_NONE))
-		binds["mask"] = "NONE";
-	else if(mask == (MASK_CONTROL))
-		binds["mask"] = "CTL";
-	else if(mask == (MASK_ALT))
-		binds["mask"] = "ALT";
-	else if(mask == (MASK_SHIFT))
-		binds["mask"] = "SHIFT";
-	else if(mask == (MASK_ALT | MASK_CONTROL))
-		binds["mask"] = "CTL_ALT";
-	else if(mask == (MASK_SHIFT | MASK_ALT))
-		binds["mask"] = "ALT_SHIFT";
-	else if(mask == (MASK_SHIFT | MASK_CONTROL))
-		binds["mask"] = "CTL_SHIFT";
-	else if(mask == (MASK_SHIFT | MASK_CONTROL | MASK_ALT))
-		binds["mask"] = "CTL_ALT_SHIFT";
+void LLFloaterPreference::onExportControls()
+{
+	std::string filename = gDirUtilp->findFile("controls.xml", gDirUtilp->getExpandedFilename(LL_PATH_CHARACTER, ""));
+	gViewerKeyboard.exportBindingsXML(filename);
+}
 
-	if(!gControlSettings.controlExists(ctrl->getName()))
-		gControlSettings.declareLLSD(ctrl->getName(), binds, ctrl->getToolTip());
-	gControlSettings.setLLSD(ctrl->getName(), binds);
-	gControlSettings.saveToFile(gSavedSettings.getString("ControlSettingsFile"), FALSE);
-	//BD - Add a systematic check to prevent binding one key twice or more.
-	gViewerKeyboard.bindKey(mode, key, mask, function);
-	//gViewerKeyboard.bindKey(mode, key, MASK_NONE, function);
-	LL_INFOS() << "Bound: " << key << " + " << mask << " to " << function << " in mode " << mode << LL_ENDL;
-	//LL_INFOS() << "Bound: " << key << " + " << MASK_NONE << " to " << function << " in mode " << mode << LL_ENDL;
+void LLFloaterPreference::onUnbindControls()
+{
+	gViewerKeyboard.unbindAllKeys(false);
 }
 
 //BD - Expandable Tabs
@@ -1010,12 +1159,6 @@ void LLFloaterPreference::toggleTabs()
 	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (rect.getHeight() + modifier));
 	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
 	getChild<LLLayoutStack>("gfx_stack")->translate(0, modifier);
-}
-
-void LLFloaterPreference::onExportControls()
-{
-	//BD - Do nothing yet.
-	LLAppViewer::loadKeyboardlayout(true);
 }
 
 //BD - Input/Output resizer
@@ -2087,6 +2230,18 @@ void LLFloaterPreference::refresh()
 {
 	refresh();
 }*/
+
+//BD - Set Key dialog
+void LLFloaterPreference::onClickSetAnyKey(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLSetKeyDialog* dialog = LLFloaterReg::showTypedInstance<LLSetKeyDialog>("set_any_key", LLSD(), TRUE);
+	if (dialog)
+	{
+		dialog->setParent(this);
+		dialog->setFunction(ctrl);
+		dialog->setMode(param.asInteger());
+	}
+}
 
 void LLFloaterPreference::onClickSetKey()
 {

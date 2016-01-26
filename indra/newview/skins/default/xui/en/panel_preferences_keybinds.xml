@@ -10,20 +10,40 @@ left="0"
 name="Keybindings panel"
 top="45"
 width="510">
+ <scroll_container
+ color="Transparent"
+ follows="all"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="gfx_scroll"
+ opaque="true"
+ height="407"
+ width="509"
+ top="0">
+  <panel
+  layout="topleft"
+  follows="left|top|right"
+  height="1195"
+  name="gfx_scroll_panel"
+  top="0"
+  mouse_opaque="false"
+  left="0"
+  width="495">
  <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="515"/>
+ width="492"/>
  
  <text
- name="show_ims_in_label"
+ name="third_person_label"
  follows="left|top"
  layout="topleft"
  left="10"
@@ -33,30 +53,51 @@ width="510">
  Third Person Keybindings:
  </text>
  <text
- name="label_jump"
+ name="0_forward"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
+ height="15"
+ width="200"
  top_pad="15">
  Move Forwards:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for strafing left."
+ tool_tip="Bind a key for walking forward."
  name="push_forward"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="12"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for walking forward."
+ name="push_forward2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="12"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -67,32 +108,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="0_backwards"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
- top_pad="8">
+ height="15"
+ width="200"
+ top_pad="4">
  Move Backwards:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for strafing right."
+ tool_tip="Bind a key for walking backwards."
  name="push_backward"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="13"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for walking backwards."
+ name="push_backward2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -103,32 +165,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="0_left"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
- top_pad="8">
+ height="15"
+ width="200"
+ top_pad="4">
  Strafe Left:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
  tool_tip="Bind a key for strafing left."
  name="slide_left"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="14"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for strafing left."
+ name="slide_left2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -139,32 +222,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="0_right"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
- top_pad="8">
+ height="15"
+ width="200"
+ top_pad="4">
  Strafe Right:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
  tool_tip="Bind a key for strafing right."
  name="slide_right"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="15"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for strafing right."
+ name="slide_right2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -175,32 +279,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="0_rleft"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
- top_pad="8">
+ height="15"
+ width="200"
+ top_pad="4">
  Rotate Left:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for strafing left."
+ tool_tip="Bind a key for rotating left."
  name="turn_left"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="16"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for rotating left."
+ name="turn_left2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -211,32 +336,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="0_rright"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
- top_pad="8">
+ height="15"
+ width="200"
+ top_pad="4">
  Rotate Right:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for strafing right."
+ tool_tip="Bind a key for rotating right."
  name="turn_right"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="17"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for rotating right."
+ name="turn_right2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -247,32 +393,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="0_jump"
  follows="left|top"
  layout="topleft"
- left="270"
- height="12"
- width="100"
- top_delta="-126">
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
  Jump:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
  tool_tip="Bind a key for jumping."
  name="jump"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="18"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for jumping."
+ name="jump2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -283,32 +450,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="0_crouch"
  follows="left|top"
  layout="topleft"
- left="270"
- height="12"
- width="100"
- top_pad="8">
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
  Crouch:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for jumping."
+ tool_tip="Bind a key for crouching."
  name="push_down"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="19"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for crouching."
+ name="push_down2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -319,32 +507,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="0_stop"
  follows="left|top"
  layout="topleft"
- left="270"
- height="12"
- width="100"
- top_pad="8">
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
  Stop Movement:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for jumping."
+ tool_tip="Bind a key to stop movement."
  name="stop_moving"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="21"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to stop movement."
+ name="stop_moving2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -355,32 +564,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="0_chat"
  follows="left|top"
  layout="topleft"
- left="270"
- height="12"
- width="100"
- top_pad="8">
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
  Start Chat:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for jumping."
+ tool_tip="Bind a key for opening chat."
  name="start_chat"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="22"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -391,32 +621,109 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
- <text
- name="label_jump"
+   width="30" />-->
+   <text
+ name="0_gesture"
  follows="left|top"
  layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Start Chat with "/":</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for starting chat with '/'."
+ name="start_gesture"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
  left="270"
- height="12"
- width="100"
- top_pad="8">
+ top_delta="0">
+   <button.commit_callback
+   parameter="23"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for starting chat with '/'."
+ name="start_gesture2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+ <text
+ name="0_fly"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
  Toggle Flying:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for jumping."
+ tool_tip="Bind a key for toggling fly mode."
  name="toggle_fly"
- width="100"
- top_delta="-4"
- left_pad="10">
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="20"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for toggling fly mode."
+ name="toggle_fly2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -427,22 +734,584 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
+   <text
+ name="0_spin_cw"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Clockwise:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera clockwise."
+ name="spin_around_cw"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="24"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera clockwise."
+ name="spin_around_cw2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="24"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="0_spin_ccw"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Counter-Clockwise:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera counter-clockwise."
+ name="spin_around_ccw"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="25"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera counter-clockwise."
+ name="spin_around_ccw2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="25"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="0_zoom_in"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Zoom In:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera in."
+ name="move_forward"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="26"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera in."
+ name="move_forward2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="26"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="0_zoom_out"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Zoom Out:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera out."
+ name="move_backward"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="27"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera out."
+ name="move_backward2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="27"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="0_spin_over"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Over:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera over."
+ name="spin_over"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="28"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera over."
+ name="spin_over2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="28"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="0_spin_under"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Under:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera under."
+ name="spin_under"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="29"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera under."
+ name="spin_under2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="29"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="0_pan_left"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Pan Left:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to pan the camera to the left."
+ name="pan_left"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="30"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to pan the camera to the left."
+ name="pan_left2"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="30"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="0_pan_right"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Pan Right:
+ </text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to pan the camera to the right."
+ name="pan_right"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="31"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to pan the camera to the right."
+ name="pan_right2"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="31"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="0_pan_up"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Pan Up:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to pan the camera up."
+ name="pan_up"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="32"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to pan the camera up."
+ name="pan_up2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="32"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="0_pan_down"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Pan Down:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to pan the camera down."
+ name="pan_down"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="33"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to pan the camera down."
+ name="pan_down2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="33"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+ 
+ 
+ 
  
  <panel
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="EmphasisColor_13"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="33"
- width="515"/>
+ top_pad="10"
+ width="492"/>
  
  <text
- name="show_ims_in_label"
+ name="first_person_label"
  follows="left|top"
  layout="topleft"
  left="10"
@@ -452,30 +1321,51 @@ width="510">
  First Person Keybindings:
  </text>
  <text
- name="label_jump"
+ name="1_forward"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
+ height="15"
+ width="200"
  top_pad="15">
  Move Forwards:
  </text>
  <button
- height="22"
  follows="top|left"
+ tool_tip="Bind a key for walking forward."
+ name="push_forward"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
  layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for strafing left."
- name="strafe_left"
- width="100"
- top_delta="-4"
- left_pad="10">
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="0"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for walking forward."
+ name="push_forward2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="0"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -486,32 +1376,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="1_backwards"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
- top_pad="8">
+ height="15"
+ width="200"
+ top_pad="4">
  Move Backwards:
  </text>
  <button
- height="22"
  follows="top|left"
+ tool_tip="Bind a key for walking backwards."
+ name="push_backward"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
  layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for strafing right."
- name="strafe_right"
- width="100"
- top_delta="-4"
- left_pad="10">
+ left="270"
+ top_delta="0">
    <button.commit_callback
    parameter="1"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for walking backwards."
+ name="push_backward2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -522,32 +1433,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="1_left"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
- top_pad="8">
+ height="15"
+ width="200"
+ top_pad="4">
  Strafe Left:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
  tool_tip="Bind a key for strafing left."
- name="strafe_left"
- width="100"
- top_delta="-4"
- left_pad="10">
+ name="slide_left"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="2"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for strafing left."
+ name="slide_left2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -558,32 +1490,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="1_right"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
- top_pad="8">
+ height="15"
+ width="200"
+ top_pad="4">
  Strafe Right:
  </text>
  <button
- height="22"
  follows="top|left"
- layout="topleft"
- label="Set Key"
  tool_tip="Bind a key for strafing right."
- name="strafe_right"
- width="100"
- top_delta="-4"
- left_pad="10">
+ name="slide_right"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="3"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for strafing right."
+ name="slide_right2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="3"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -594,32 +1547,53 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="1_rleft"
  follows="left|top"
  layout="topleft"
  left="10"
- height="12"
- width="100"
- top_pad="8">
+ height="15"
+ width="200"
+ top_pad="4">
  Rotate Left:
  </text>
  <button
- height="22"
  follows="top|left"
+ tool_tip="Bind a key for rotating left."
+ name="turn_left"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
  layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for strafing left."
- name="strafe_left"
- width="100"
- top_delta="-4"
- left_pad="10">
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="4"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for rotating left."
+ name="turn_left2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="4"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -630,68 +1604,476 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
  <text
- name="label_jump"
+ name="1_rright"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Rotate Right:
+ </text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for rotating right."
+ name="turn_right"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="5"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for rotating right."
+ name="turn_right2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+ <text
+ name="1_jump"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Jump:
+ </text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for jumping."
+ name="jump"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="6"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for jumping."
+ name="jump2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="6"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+ <text
+ name="1_crouch"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Crouch:
+ </text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for crouching."
+ name="push_down"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="7"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for crouching."
+ name="push_down2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="7"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+ <text
+ name="1_stop"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Stop Movement:
+ </text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to stop movement."
+ name="stop_moving"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="11"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to stop movement."
+ name="stop_moving2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="11"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+ <text
+ name="1_chat"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Start Chat:
+ </text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="9"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="9"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="1_gesture"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Start Chat with "/":</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for starting chat with '/'."
+ name="start_gesture"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="10"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for starting chat with '/'."
+ name="start_gesture2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="10"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+ <text
+ name="1_fly"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Toggle Flying:
+ </text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for toggling fly mode."
+ name="toggle_fly"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="8"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for toggling fly mode."
+ name="toggle_fly2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="8"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   
+   
+   
+   
+   <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="492"/>
+ 
+ <text
+ name="editing_label"
  follows="left|top"
  layout="topleft"
  left="10"
  height="12"
- width="100"
- top_pad="8">
- Rotate Right:
+ width="350"
+ top_delta="4">
+ Editing Keybindings:
  </text>
- <button
- height="22"
- follows="top|left"
- layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for strafing right."
- name="strafe_right"
- width="100"
- top_delta="-4"
- left_pad="10">
-   <button.commit_callback
-   parameter="1"
-   function="Pref.BindKey"/>
- </button>
- <line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />
  <text
- name="label_jump"
+ name="2_chat"
  follows="left|top"
  layout="topleft"
- left="270"
- height="12"
- width="100"
- top_delta="-126">
- Jump:
- </text>
+ left="10"
+ height="15"
+ width="200"
+ top_pad="15">
+ Start Chat:</text>
  <button
- height="22"
  follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
  layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for jumping."
- name="jump"
- width="100"
- top_delta="-4"
- left_pad="10">
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="52"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="52"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -702,32 +2084,52 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
- <text
- name="label_jump"
+   width="30" />-->
+   <text
+ name="2_gesture"
  follows="left|top"
  layout="topleft"
- left="270"
- height="12"
- width="100"
- top_pad="8">
- Crouch:
- </text>
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Start Chat with "/":</text>
  <button
- height="22"
  follows="top|left"
+ tool_tip="Bind a key for starting chat with '/'."
+ name="start_gesture"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
  layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for jumping."
- name="jump"
- width="100"
- top_delta="-4"
- left_pad="10">
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="53"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for starting chat with '/'."
+ name="start_gesture"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="53"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -738,68 +2140,78 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
+   
+   
+   
+   
+   <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="492"/>
+ 
  <text
- name="label_jump"
+ name="appearance_mode_label"
  follows="left|top"
  layout="topleft"
- left="270"
+ left="10"
  height="12"
- width="100"
- top_pad="8">
- Stop Movement:
+ width="350"
+ top_delta="4">
+ Appearance Mode Keybindings:
  </text>
- <button
- height="22"
- follows="top|left"
- layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for jumping."
- name="jump"
- width="100"
- top_delta="-4"
- left_pad="10">
-   <button.commit_callback
-   parameter="1"
-   function="Pref.BindKey"/>
- </button>
- <line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />
  <text
- name="label_jump"
+ name="3_chat"
  follows="left|top"
  layout="topleft"
- left="270"
- height="12"
- width="100"
- top_pad="8">
- Start Chat:
- </text>
+ left="10"
+ height="15"
+ width="200"
+ top_pad="15">
+ Start Chat:</text>
  <button
- height="22"
  follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
  layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for jumping."
- name="jump"
- width="100"
- top_delta="-4"
- left_pad="10">
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="60"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="60"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -810,32 +2222,52 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
- <text
- name="label_jump"
+   width="30" />-->
+   <text
+ name="3_gesture"
  follows="left|top"
  layout="topleft"
- left="270"
- height="12"
- width="100"
- top_pad="8">
- Toggle Flying:
- </text>
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Start Chat with "/":</text>
  <button
- height="22"
  follows="top|left"
+ tool_tip="Bind a key for starting chat with '/'."
+ name="start_gesture"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
  layout="topleft"
- label="Set Key"
- tool_tip="Bind a key for jumping."
- name="jump"
- width="100"
- top_delta="-4"
- left_pad="10">
+ left="270"
+ top_delta="0">
    <button.commit_callback
-   parameter="1"
+   parameter="61"
    function="Pref.BindKey"/>
  </button>
- <line_editor
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for starting chat with '/'."
+ name="start_gesture2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="61"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
    control_name="jump"
    border_style="line"
    border_thickness="1"
@@ -846,7 +2278,816 @@ width="510">
    left_pad="2"
    name="keybind"
    top_delta="0"
-   width="30" />
+   width="30" />-->
+ <text
+ name="3_spin_cw"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Clockwise:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera clockwise."
+ name="spin_around_cw_sitting"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="56"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera clockwise."
+ name="spin_around_cw_sitting2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="56"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="3_spin_ccw"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Counter-Clockwise:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera counter-clockwise."
+ name="spin_around_ccw_sitting"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="57"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera counter-clockwise."
+ name="spin_around_ccw_sitting2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="57"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="3_forward"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Zoom In:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera in."
+ name="move_forward_sitting"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="54"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera in."
+ name="move_forward_sitting2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="54"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="3_backwards"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Zoom Out:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera out."
+ name="move_backward_sitting"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="55"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera out."
+ name="move_backward_sitting2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="55"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="3_spin_over"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Over:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera over."
+ name="spin_over_sitting"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="58"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera over."
+ name="spin_over_sitting2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="58"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="3_spin_under"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Under:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera under."
+ name="spin_over_sitting"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="59"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera under."
+ name="spin_over_sitting2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="59"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+
+   
+   
+   <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="492"/>
+ 
+ <text
+ name="sitting_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Sitting Keybindings:
+ </text>
+ <text
+ name="4_chat"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="15">
+ Start Chat:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="68"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="68"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="4_gesture"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ Start Chat with "/":</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="69"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for opening chat."
+ name="start_chat2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="69"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+ <text
+ name="4_spin_cw"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Clockwise:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera clockwise."
+ name="edit_avatar_spin_cw"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="64"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera clockwise."
+ name="edit_avatar_spin_cw2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="64"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="4_spin_ccw"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Counter-Clockwise:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera counter-clockwise."
+ name="edit_avatar_spin_ccw"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="65"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for spinning the camera counter-clockwise."
+ name="edit_avatar_spin_ccw2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="65"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="4_forward"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Zoom In:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera in."
+ name="edit_avatar_move_forward"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="62"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera in."
+ name="edit_avatar_move_forward"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="62"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="4_backwards"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Zoom Out:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera out."
+ name="edit_avatar_move_backward"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="63"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key for zooming the camera out."
+ name="edit_avatar_move_backward2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="63"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="4_spin_over"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Over:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera over."
+ name="edit_avatar_spin_over"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="66"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera over."
+ name="edit_avatar_spin_over2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="66"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
+   <text
+ name="4_spin_under"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="15"
+ width="200"
+ top_pad="4">
+ (Camera) Spin Under:</text>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera under."
+ name="edit_avatar_spin_under"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set key⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="270"
+ top_delta="0">
+   <button.commit_callback
+   parameter="67"
+   function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Bind a key to spin the camera under."
+ name="edit_avatar_spin_under2"
+ enabled="false"
+ height="15"
+ width="80"
+ is_toggle="false"
+ label="⌊set alt⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0">
+   <button.commit_callback
+   parameter="67"
+   function="Pref.BindKey"/>
+ </button>
+ <!--<line_editor
+   control_name="jump"
+   border_style="line"
+   border_thickness="1"
+   follows="left|top"
+   font="SansSerif"
+   height="22"
+   layout="topleft"
+   left_pad="2"
+   name="keybind"
+   top_delta="0"
+   width="30" />-->
  
  <button
  height="22"
@@ -856,10 +3097,24 @@ width="510">
  name="export"
  width="100"
  top_pad="4"
- left_delta="-102">
+ left="10">
    <button.commit_callback
    parameter="1"
    function="Pref.ExportControls"/>
  </button>
- 
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Unbind All"
+ name="unbind"
+ width="100"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.UnbindAll"/>
+ </button>
+  </panel>
+ </scroll_container>
 </panel>

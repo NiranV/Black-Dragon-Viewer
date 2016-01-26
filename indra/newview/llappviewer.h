@@ -192,7 +192,8 @@ public:
 	// llcorehttp init/shutdown/config information.
 	LLAppCoreHttp & getAppCoreHttp()			{ return mAppCoreHttp; }
 
-	static void loadKeyboardlayout(bool exportsettings = false);
+//	//BD - Custom Keyboard Layout
+	static void loadKeyboardlayout();
 	
 protected:
 	virtual bool initWindow(); // Initialize the viewer's window.

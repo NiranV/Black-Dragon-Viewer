@@ -186,6 +186,9 @@ public:
 	void updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box);
 	void refreshUI();
 
+//	//BD - Set Key dialog
+	void onClickSetAnyKey(LLUICtrl* ctrl, const LLSD& param);
+
 //	//BD - Expandable Tabs
 	void onTab(LLUICtrl* ctrl, const LLSD& param);
 
@@ -204,8 +207,9 @@ public:
 	void resetToDefault(LLUICtrl* ctrl);
 
 //	//BD - Custom Keyboard Layout
-	void onBindKey(LLUICtrl* ctrl, const LLSD& param);
+	void onBindKey(KEY key, MASK mask, LLUICtrl* ctrl, const LLSD& param);
 	void onExportControls();
+	void onUnbindControls();
 
 //	//BD - Revert to Default
 	void inputOutput();

@@ -745,9 +745,9 @@ BOOL LLViewerKeyboard::handleKeyUp(KEY translated_key, MASK translated_mask)
 	return gViewerWindow->handleKeyUp(translated_key, translated_mask);
 }
 
-BOOL LLViewerKeyboard::bindKey(const S32 mode, const KEY key, const MASK mask, const std::string& function_name, bool exportsettings)
+//BD - Custom Keyboard Layout
+BOOL LLViewerKeyboard::bindKey(const S32 mode, const KEY key, const MASK mask, const std::string& function_name)
 {
-	S32 index;
 	typedef boost::function<void(EKeystate)> function_t;
 	function_t function = NULL;
 	LLSD binds;
@@ -761,18 +761,17 @@ BOOL LLViewerKeyboard::bindKey(const S32 mode, const KEY key, const MASK mask, c
 		{
 			int idx = c1;
 			if (c2 >= 0)
-				idx = idx*10 + c2;
-			if (idx >=2 && idx <= 12)
+				idx = idx * 10 + c2;
+			if (idx >= 2 && idx <= 12)
 			{
-				U32 keyidx = ((mask<<16)|key);
-				(mRemapKeys[mode])[keyidx] = ((0<<16)|(KEY_F1+(idx-1)));
+				U32 keyidx = ((mask << 16) | key);
+				(mRemapKeys[mode])[keyidx] = ((0 << 16) | (KEY_F1 + (idx - 1)));
 				return TRUE;
 			}
 		}
 	}
 
 	// Not remapped, look for a function
-	
 	function_t* result = LLKeyboardActionRegistry::getValue(function_name);
 	if (result)
 	{
@@ -785,14 +784,7 @@ BOOL LLViewerKeyboard::bindKey(const S32 mode, const KEY key, const MASK mask, c
 		return FALSE;
 	}
 
-	// check for duplicate first and overwrite
-	for (index = 0; index < mBindingCount[mode]; index++)
-	{
-		if (key == mBindings[mode][index].mKey && mask == mBindings[mode][index].mMask)
-			break;
-	}
-
-	if (index >= MAX_KEY_BINDINGS)
+	if (mBindingCount[mode] >= MAX_KEY_BINDINGS)
 	{
 		LL_ERRS() << "LLKeyboard::bindKey() - too many keys for mode " << mode << LL_ENDL;
 		return FALSE;
@@ -804,56 +796,32 @@ BOOL LLViewerKeyboard::bindKey(const S32 mode, const KEY key, const MASK mask, c
 		return FALSE;
 	}
 
-	mBindings[mode][index].mKey = key;
-	mBindings[mode][index].mMask = mask;
-	mBindings[mode][index].mFunction = function;
+	mBindings[mode][mBindingCount[mode]].mKey = key;
+	mBindings[mode][mBindingCount[mode]].mMask = mask;
+	mBindings[mode][mBindingCount[mode]].mFunction = function;
+	mBindings[mode][mBindingCount[mode]].mFunctionName = function_name;
+	mBindingCount[mode]++;
 
-	if(exportsettings)
+	return TRUE;
+}
+
+//BD - Custom Keyboard Layout
+BOOL LLViewerKeyboard::unbindAllKeys(bool reset)
+{
+	for (S32 i = 0; i < 5; i++)
 	{
-		binds["key"] = gKeyboard->stringFromKey(key);
-		binds["mode"] = mode;
-		binds["function"] = function_name;
+		for (S32 it = 0, end_it = mBindingCount[i]; it < end_it; it++)
+		{
+			mBindings[i][it].mKey = NULL;
+			mBindings[i][it].mMask = NULL;
+		}
 
-		if(mask == (MASK_NONE))
-			binds["mask"] = "NONE";
-		else if(mask == (MASK_CONTROL))
-			binds["mask"] = "CTL";
-		else if(mask == (MASK_ALT))
-			binds["mask"] = "ALT";
-		else if(mask == (MASK_SHIFT))
-			binds["mask"] = "SHIFT";
-		else if(mask == (MASK_ALT | MASK_CONTROL))
-			binds["mask"] = "CTL_ALT";
-		else if(mask == (MASK_SHIFT | MASK_ALT))
-			binds["mask"] = "ALT_SHIFT";
-		else if(mask == (MASK_SHIFT | MASK_CONTROL))
-			binds["mask"] = "CTL_SHIFT";
-		else if(mask == (MASK_SHIFT | MASK_CONTROL | MASK_ALT))
-			binds["mask"] = "CTL_ALT_SHIFT";
-
-		std::string mode_string;
-
-		if(mode == 0)
-			mode_string = "first_person_";
-		else if(mode == 1)
-			mode_string = "third_person_";
-		else if(mode == 2)
-			mode_string = "edit_";
-		else if(mode == 3)
-			mode_string = "sitting_";
-		else if(mode == 4)
-			mode_string = "edit_avatar_";
-
-		std::string debug_name = mode_string;
-		debug_name += function_name;
-		if(!gControlSettings.controlExists(debug_name))
-			gControlSettings.declareLLSD(debug_name, binds, function_name);
-		gControlSettings.setLLSD(debug_name, binds);
-		gControlSettings.saveToFile(gSavedSettings.getString("ControlSettingsFile"), FALSE);
+		//BD -  We need to seperate this to prevent evil things from happening.
+		if (reset)
+		{
+			mBindingCount[i] = 0;
+		}
 	}
-
-	if (index == mBindingCount[mode])
-		mBindingCount[mode]++;
 
 	return TRUE;
 }
@@ -877,78 +845,73 @@ LLViewerKeyboard::Keys::Keys()
 	edit_avatar("edit_avatar", KeyMode(MODE_EDIT_AVATAR))
 {}
 
-S32 LLViewerKeyboard::loadBindingsXML(const std::string& filename, bool exportsettings)
+//BD - Custom Keyboard Layout
+BOOL LLViewerKeyboard::exportBindingsXML(const std::string& filename)
 {
-	S32 binding_count = 0;
-	Keys keys;
-	LLSimpleXUIParser parser;
+	S32 slot = 0;
+	llofstream file;
+	LL_INFOS("Settings") << "Control settings path: " << filename << "" << LL_ENDL;
 
-	if (parser.readXUI(filename, keys) 
-		&& keys.validateBlock())
+	//BD - Open the file and go through all modes, while in all modes go through all
+	//     bindings and write them into the file.
+	//     We need to rewrite the entire file due to toXML()'s limitations and to prevent
+	//     bad things from happening.
+	file.open(filename.c_str());
+	for (S32 i = 0; i < 5; i++)
 	{
-		binding_count += loadBindingMode(keys.first_person, exportsettings);
-		binding_count += loadBindingMode(keys.third_person, exportsettings);
-		binding_count += loadBindingMode(keys.edit, exportsettings);
-		binding_count += loadBindingMode(keys.sitting, exportsettings);
-		binding_count += loadBindingMode(keys.edit_avatar, exportsettings);
+		for (S32 it = 0, end_it = mBindingCount[i];	it < end_it; it++)
+		{
+			KEY key = mBindings[i][it].mKey;
+			MASK mask = mBindings[i][it].mMask;
+			LLSD record;
+			record["function"] = mBindings[i][it].mFunctionName;
+			record["key"] = gKeyboard->stringFromKey(key, false);
+			record["mode"] = i;
+			record["mask"] = gKeyboard->stringFromMask(mask);
+			record["slot"] = slot;
+
+			LLSDSerialize::toXML(record, file);
+			slot++;
+			LL_INFOS() << "Exported: " << key << +"(" + record["key"].asString() << ") + " 
+						<< mask << +"(" << record["mask"].asString() << ") to " 
+						<< record["function"] << " in mode " 
+						<< i << LL_ENDL;
+		}
 	}
-	return binding_count;
+	return true;
 }
 
-S32 LLViewerKeyboard::loadBindingMode(const LLViewerKeyboard::KeyMode& keymode, bool exportsettings)
-{
-	S32 binding_count = 0;
-	for (LLInitParam::ParamIterator<KeyBinding>::const_iterator it = keymode.bindings.begin(), 
-			end_it = keymode.bindings.end();
-		it != end_it;
-		++it)
-	{
-		KEY key;
-		MASK mask;
-		LLKeyboard::keyFromString(it->key, &key);
-		LLKeyboard::maskFromString(it->mask, &mask);
-		bindKey(keymode.mode, key, mask, it->command, exportsettings);
-		binding_count++;
-	}
-
-	return binding_count;
-}
-
+//BD - Custom Keyboard Layout
 S32 LLViewerKeyboard::loadBindingsSettings(const std::string& filename)
 {
-	/*S32 binding_count = 0;
 	LLSD settings;
 	llifstream infile;
+
 	infile.open(filename);
 	if(!infile.is_open())
 	{
 		LL_WARNS("Settings") << "Cannot find file " << filename << " to load." << LL_ENDL;
-		return 0;
+		return FALSE;
 	}
 
-	if (LLSDParser::PARSE_FAILURE == LLSDSerialize::fromXML(settings, infile))
+	//BD - This is only used once in the entire lifetime of a session, its the first initial
+	//     keybinding load that will happen on viewer start.
+	while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(settings, infile))
 	{
-		infile.close();
-		LL_WARNS("Settings") << "Unable to parse LLSD control file " << filename << ". Trying Legacy Method." << LL_ENDL;
-	}
-	
-	for (LLControlGroup::key_iter ki(LLControlGroup::beginKeys()), kend(LLControlGroup::endKeys());
-		 ki != kend; ++ki)
-	{
+		KEY key;
+		MASK mask;
+		S32 mode = settings["mode"].asInteger();
+		std::string function = settings["function"].asString();
 
-			//KEY key;
-			//MASK mask;
-			//LLKeyboard::keyFromString(value_map["key"], &key);
-			//LLKeyboard::maskFromString(value_map["mask"], &mask);
-			//bindKey(value_map["mode"], key, mask, value_map["function"]);
-			LL_INFOS() << *ki << LL_ENDL;
-			//LL_INFOS() << "Bound: " << key << " + " << mask << " to " << function << " in mode " << mode << LL_ENDL;
-		binding_count++;
+		LLKeyboard::keyFromString(settings["key"], &key);
+		LLKeyboard::maskFromString(settings["mask"], &mask);
+		bindKey(mode, key, mask, function);
+		LL_INFOS() << "Setting: " << key << +"(" + settings["key"].asString() << ") + " 
+					<< mask << +"(" << settings["mask"].asString() << ") to " 
+					<< function << " in mode " 
+					<< mode << LL_ENDL;
 	}
-
-	//LL_DEBUGS("Controls") << "Loaded " << binding_count << " settings from " << filename << LL_ENDL;
-	return binding_count;*/
-	return 1;
+	return TRUE;
 }
 
 S32 LLViewerKeyboard::loadBindings(const std::string& filename)

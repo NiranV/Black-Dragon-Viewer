@@ -95,7 +95,6 @@ LLControlGroup gSavedSettings("Global");	// saved at end of session
 LLControlGroup gSavedPerAccountSettings("PerAccount"); // saved at end of session
 LLControlGroup gCrashSettings("CrashSettings");	// saved at end of session
 LLControlGroup gWarningSettings("Warnings"); // persists ignored dialogs/warnings
-LLControlGroup gControlSettings("Controls"); //BD - Customizable Controls
 
 std::string gLastRunVersion;
 std::vector<LLAnimPauseRequest>	mAvatarPauseHandles;

@@ -880,7 +880,6 @@ bool LLAppViewer::init()
 	settings_map["ignores"] = &gWarningSettings;
 	settings_map["floater"] = &gSavedSettings; // *TODO: New settings file
 	settings_map["account"] = &gSavedPerAccountSettings;
-	settings_map["controls"] = &gControlSettings;
 
 	LLUI::initClass(settings_map,
 		LLUIImageList::getInstance(),
@@ -1226,21 +1225,18 @@ bool LLAppViewer::init()
 	return true;
 }
 
-void LLAppViewer::loadKeyboardlayout(bool exportsettings)
+//BD - Custom Keyboard Layout
+void LLAppViewer::loadKeyboardlayout()
 {
 	std::string key_bindings_file;
-	if (gSavedSettings.getBOOL("ShooterKeyLayout"))
-	{
-		key_bindings_file = gDirUtilp->findFile("keys_shooter.xml",	gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
-	}
-	else
-	{
-		key_bindings_file = gDirUtilp->findFile("keys.xml",	gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
-	}
+	
+	//BD - We could allow presets to be loaded or give the controls file different names.
+	key_bindings_file = gDirUtilp->findFile(gSavedSettings.getString("ControlSettingsFile"),
+											gDirUtilp->getExpandedFilename(LL_PATH_CHARACTER, ""));
 
-	if (!gViewerKeyboard.loadBindingsXML(key_bindings_file, exportsettings))
+	if (!gViewerKeyboard.loadBindingsSettings(key_bindings_file))
 	{
-		LL_ERRS("InitInfo") << "Unable to open keys.ini" << LL_ENDL;
+		LL_WARNS("InitInfo") << "Unable to open " << key_bindings_file << LL_ENDL;
 	}
 }
 
@@ -2472,9 +2468,6 @@ bool LLAppViewer::initConfiguration()
 	// Note: can't use LL_PATH_PER_SL_ACCOUNT for any of these since we haven't logged in yet
 	gSavedSettings.setString("ClientSettingsFile", 
         gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, getSettingsFilename("Default", "Global")));
-
-	gSavedSettings.setString("ControlSettingsFile", 
-        gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, getSettingsFilename("User", "Controls")));
 
 #ifndef	LL_RELEASE_FOR_DOWNLOAD
 	// provide developer build only overrides for these control variables that are not

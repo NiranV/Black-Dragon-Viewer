@@ -91,8 +91,11 @@ public:
 	BOOL			handleKey(KEY key, MASK mask, BOOL repeated);
 	BOOL			handleKeyUp(KEY key, MASK mask);
 
+//	//BD - Custom Keyboard Layout
+	BOOL			exportBindingsXML(const std::string& filename);
+	BOOL			unbindAllKeys(bool reset);
+
 	S32				loadBindings(const std::string& filename);										// returns number bound, 0 on error
-	S32				loadBindingsXML(const std::string& filename, bool exportsettings = false);										// returns number bound, 0 on error
 	S32				loadBindingsSettings(const std::string& filename);
 	EKeyboardMode	getMode();
 
@@ -100,11 +103,9 @@ public:
 
 	void			scanKey(KEY key, BOOL key_down, BOOL key_up, BOOL key_level);
 
-	BOOL			bindKey(const S32 mode, const KEY key, const MASK mask, const std::string& function_name, bool exportsettings = false);
+	BOOL			bindKey(const S32 mode, const KEY key, const MASK mask, const std::string& function_name);
 
 private:
-	S32				loadBindingMode(const LLViewerKeyboard::KeyMode& keymode, bool exportsettings = false);
-
 	// Hold all the ugly stuff torn out to make LLKeyboard non-viewer-specific here
 	S32				mBindingCount[MODE_COUNT];
 	LLKeyBinding	mBindings[MODE_COUNT][MAX_KEY_BINDINGS];

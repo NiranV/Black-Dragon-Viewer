@@ -326,8 +326,9 @@ BOOL LLKeyboard::keyFromString(const std::string& str, KEY *key)
 }
 
 
+//BD - Custom Keyboard Layout
 // static
-std::string LLKeyboard::stringFromKey(KEY key)
+std::string LLKeyboard::stringFromKey(KEY key, bool translate)
 {
 	std::string res = get_if_there(sKeysToNames, key, std::string());
 	if (res.empty())
@@ -339,7 +340,7 @@ std::string LLKeyboard::stringFromKey(KEY key)
 	}
 
 	LLKeyStringTranslatorFunc *trans = gKeyboard->mStringTranslator;
-	if (trans != NULL)
+	if (translate && trans != NULL)
 	{
 		res = trans(res.c_str());
 	}
@@ -407,6 +408,30 @@ std::string LLKeyboard::stringFromAccelerator( MASK accel_mask, KEY key )
 	return res;
 }
 
+//BD - Custom Keyboard Layout
+//static
+std::string LLKeyboard::stringFromMask(MASK mask)
+{
+	std::string res;
+	if (mask == (MASK_NONE))
+		res = "NONE";
+	else if (mask == (MASK_CONTROL))
+		res = "CTL";
+	else if (mask == (MASK_ALT))
+		res = "ALT";
+	else if (mask == (MASK_SHIFT))
+		res = "SHIFT";
+	else if (mask == (MASK_ALT | MASK_CONTROL))
+		res = "CTL_ALT";
+	else if (mask == (MASK_SHIFT | MASK_ALT))
+		res = "ALT_SHIFT";
+	else if (mask == (MASK_SHIFT | MASK_CONTROL))
+		res = "CTL_SHIFT";
+	else if (mask == (MASK_SHIFT | MASK_CONTROL | MASK_ALT))
+		res = "CTL_ALT_SHIFT";
+
+	return res;
+}
 
 //static
 BOOL LLKeyboard::maskFromString(const std::string& str, MASK *mask)

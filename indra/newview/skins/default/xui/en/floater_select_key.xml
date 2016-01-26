@@ -4,31 +4,109 @@
  border="false"
  can_close="false"
  can_minimize="false"
- height="90"
+ height="85"
  layout="topleft"
  name="modal container"
- width="240">
+ width="200">
+   <button
+     height="1"
+     label=""
+     image_selected="transparent.j2c"
+     image_unselected="transparent.j2c"
+     layout="topleft"
+     left="10"
+     name="FocusButton"
+     top_pad="2"
+     width="10" />
     <text
      type="string"
      halign="center"
      length="1"
      follows="left|top"
-     height="30"
+     height="14"
      layout="topleft"
-     left="30"
+     left="0"
      name="Save item as:"
-     top="25"
+     top="0"
      word_wrap="true"
-     width="180">
-        Press a key to set your Speak button trigger.
+     width="200">
+        Press a key.
     </text>
+    <text
+     type="string"
+     halign="center"
+     length="1"
+     follows="left|top"
+     height="14"
+     layout="topleft"
+     left="0"
+     name="key_display"
+     top_pad="0"
+     word_wrap="true"
+     width="200">
+        [KEY] + [MASK]
+    </text>
+    <check_box
+   height="16"
+   initial_value="false"
+   is_toggle="true"
+   label="⌊Ctrl⌉"
+   layout="topleft"
+   left="7"
+   name="CTRL"
+   top_pad="7"
+   width="60" >
+   <check_box.commit_callback
+      function="Set.Masks"/>
+   </check_box>
+    <check_box
+   height="16"
+   initial_value="false"
+   is_toggle="true"
+   label="⌊Shift⌉"
+   layout="topleft"
+   left_pad="10"
+   name="SHIFT"
+   top_delta="0"
+   width="60" >
+   <check_box.commit_callback
+      function="Set.Masks"/>
+   </check_box>
+    <check_box
+   height="16"
+   initial_value="false"
+   is_toggle="true"
+   label="⌊Alt⌉"
+   layout="topleft"
+   left_pad="10"
+   name="ALT"
+   top_delta="0"
+   width="60" >
+   <check_box.commit_callback
+      function="Set.Masks"/>
+   </check_box>
     <button
      height="23"
      label="Cancel"
      label_selected="Cancel"
      layout="topleft"
-     right="-10"
+     left="10"
      name="Cancel"
-     top_pad="8"
-     width="100" />
+     top_pad="2"
+     width="90" >
+      <button.commit_callback
+      function="Set.Cancel"/>
+   </button>
+    <button
+     height="23"
+     label="Bind"
+     label_selected="Bind"
+     layout="topleft"
+     left_pad="1"
+     name="Bind"
+     top_delta="0"
+     width="90" >
+    <button.commit_callback
+      function="Set.Bind"/>
+   </button>
 </floater>
