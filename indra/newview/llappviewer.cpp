@@ -1231,12 +1231,25 @@ void LLAppViewer::loadKeyboardlayout()
 	std::string key_bindings_file;
 	
 	//BD - We could allow presets to be loaded or give the controls file different names.
-	key_bindings_file = gDirUtilp->findFile(gSavedSettings.getString("ControlSettingsFile"),
-											gDirUtilp->getExpandedFilename(LL_PATH_CHARACTER, ""));
+	key_bindings_file = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
+	LL_INFOS("InitInfo") << "Trying to load " << key_bindings_file << LL_ENDL;
 
-	if (!gViewerKeyboard.loadBindingsSettings(key_bindings_file))
+	if (gDirUtilp->fileExists(key_bindings_file))
 	{
-		LL_WARNS("InitInfo") << "Unable to open " << key_bindings_file << LL_ENDL;
+		gViewerKeyboard.loadBindingsSettings(key_bindings_file);
+	}
+	else
+	{
+		key_bindings_file = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "controls.xml");
+		LL_INFOS("InitInfo") << "Couldn't find custom controls yet, loading default from " << key_bindings_file << LL_ENDL;
+		if (gDirUtilp->fileExists(key_bindings_file))
+		{
+			gViewerKeyboard.loadBindingsSettings(key_bindings_file);
+		}
+		else
+		{
+			LL_WARNS("InitInfo") << "Couldn't find default " << key_bindings_file << " either, we're in for trouble. " << LL_ENDL;
+		}
 	}
 }
 

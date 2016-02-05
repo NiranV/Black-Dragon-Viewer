@@ -780,19 +780,19 @@ BOOL LLViewerKeyboard::bindKey(const S32 mode, const KEY key, const MASK mask, c
 
 	if (!function)
 	{
-		LL_ERRS() << "Can't bind key to function " << function_name << ", no function with this name found" << LL_ENDL;
+		LL_WARNS() << "Can't bind key to function " << function_name << ", no function with this name found" << LL_ENDL;
 		return FALSE;
 	}
 
 	if (mBindingCount[mode] >= MAX_KEY_BINDINGS)
 	{
-		LL_ERRS() << "LLKeyboard::bindKey() - too many keys for mode " << mode << LL_ENDL;
+		LL_WARNS() << "LLKeyboard::bindKey() - too many keys for mode " << mode << LL_ENDL;
 		return FALSE;
 	}
 
 	if (mode >= MODE_COUNT)
 	{
-		LL_ERRS() << "LLKeyboard::bindKey() - unknown mode passed" << mode << LL_ENDL;
+		LL_WARNS() << "LLKeyboard::bindKey() - unknown mode passed" << mode << LL_ENDL;
 		return FALSE;
 	}
 
@@ -894,12 +894,11 @@ S32 LLViewerKeyboard::loadBindingsSettings(const std::string& filename)
 		return FALSE;
 	}
 
-	//BD - This is only used once in the entire lifetime of a session, its the first initial
-	//     keybinding load that will happen on viewer start.
+	//BD - This is used for loading the default bindings from the local Viewer foldler.
 	while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(settings, infile))
 	{
-		KEY key;
-		MASK mask;
+		KEY key = NULL;
+		MASK mask = MASK_NONE;
 		S32 mode = settings["mode"].asInteger();
 		std::string function = settings["function"].asString();
 
@@ -913,102 +912,6 @@ S32 LLViewerKeyboard::loadBindingsSettings(const std::string& filename)
 	}
 	return TRUE;
 }
-
-S32 LLViewerKeyboard::loadBindings(const std::string& filename)
-{
-	LLFILE *fp;
-	const S32 BUFFER_SIZE = 2048;
-	char buffer[BUFFER_SIZE];	/* Flawfinder: ignore */
-	// *NOTE: This buffer size is hard coded into scanf() below.
-	char mode_string[MAX_STRING] = "";	/* Flawfinder: ignore */
-	char key_string[MAX_STRING] = "";	/* Flawfinder: ignore */
-	char mask_string[MAX_STRING] = "";	/* Flawfinder: ignore */
-	char function_string[MAX_STRING] = "";	/* Flawfinder: ignore */
-	S32 mode = MODE_THIRD_PERSON;
-	KEY key = 0;
-	MASK mask = 0;
-	S32 tokens_read;
-	S32 binding_count = 0;
-	S32 line_count = 0;
-
-	if(filename.empty())
-	{
-		LL_ERRS() << " No filename specified" << LL_ENDL;
-		return 0;
-	}
-
-	fp = LLFile::fopen(filename, "r");
-
-	if (!fp)
-	{
-		return 0;
-	}
-
-
-	while (!feof(fp))
-	{
-		line_count++;
-		if (!fgets(buffer, BUFFER_SIZE, fp))
-			break;
-
-		// skip over comments, blank lines
-		if (buffer[0] == '#' || buffer[0] == '\n') continue;
-
-		// grab the binding strings
-		tokens_read = sscanf(	/* Flawfinder: ignore */
-			buffer,
-			"%254s %254s %254s %254s",
-			mode_string,
-			key_string,
-			mask_string,
-			function_string);
-
-		if (tokens_read == EOF)
-		{
-			LL_INFOS() << "Unexpected end-of-file at line " << line_count << " of key binding file " << filename << LL_ENDL;
-			fclose(fp);
-			return 0;
-		}
-		else if (tokens_read < 4)
-		{
-			LL_INFOS() << "Can't read line " << line_count << " of key binding file " << filename << LL_ENDL;
-			continue;
-		}
-
-		// convert mode
-		if (!modeFromString(mode_string, &mode))
-		{
-			LL_INFOS() << "Unknown mode on line " << line_count << " of key binding file " << filename << LL_ENDL;
-			LL_INFOS() << "Mode must be one of FIRST_PERSON, THIRD_PERSON, EDIT, EDIT_AVATAR" << LL_ENDL;
-			continue;
-		}
-
-		// convert key
-		if (!LLKeyboard::keyFromString(key_string, &key))
-		{
-			LL_INFOS() << "Can't interpret key on line " << line_count << " of key binding file " << filename << LL_ENDL;
-			continue;
-		}
-
-		// convert mask
-		if (!LLKeyboard::maskFromString(mask_string, &mask))
-		{
-			LL_INFOS() << "Can't interpret mask on line " << line_count << " of key binding file " << filename << LL_ENDL;
-			continue;
-		}
-
-		// bind key
-		if (bindKey(mode, key, mask, function_string))
-		{
-			binding_count++;
-		}
-	}
-
-	fclose(fp);
-
-	return binding_count;
-}
-
 
 EKeyboardMode LLViewerKeyboard::getMode()
 {

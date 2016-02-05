@@ -24,7 +24,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1195"
+  height="1205"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -76,14 +76,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="12"
+   parameter="24"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="24"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for walking forward."
  name="push_forward2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -92,10 +110,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="12"
+   parameter="46"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="46"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -116,7 +152,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Move Backwards:
  </text>
  <button
@@ -133,14 +169,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="13"
+   parameter="25"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="25"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for walking backwards."
  name="push_backward2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -149,10 +203,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="47"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="47"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -173,7 +245,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Strafe Left:
  </text>
  <button
@@ -190,14 +262,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="14"
+   parameter="26"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="26"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for strafing left."
  name="slide_left2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -206,10 +296,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="48"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="48"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -230,7 +338,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Strafe Right:
  </text>
  <button
@@ -247,14 +355,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="15"
+   parameter="27"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="27"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for strafing right."
  name="slide_right2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -263,10 +389,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="49"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="49"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -287,7 +431,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Rotate Left:
  </text>
  <button
@@ -304,14 +448,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="16"
+   parameter="28"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="28"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for rotating left."
  name="turn_left2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -320,10 +482,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="50"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="50"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -344,7 +524,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Rotate Right:
  </text>
  <button
@@ -361,14 +541,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="17"
+   parameter="29"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="29"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for rotating right."
  name="turn_right2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -377,10 +575,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="51"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="51"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -401,7 +617,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Jump:
  </text>
  <button
@@ -418,14 +634,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="18"
+   parameter="30"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="30"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for jumping."
  name="jump2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -434,10 +668,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="52"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="52"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -458,7 +710,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Crouch:
  </text>
  <button
@@ -475,14 +727,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="19"
+   parameter="31"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="31"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for crouching."
  name="push_down2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -491,10 +761,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="53"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="53"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -515,7 +803,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Stop Movement:
  </text>
  <button
@@ -532,14 +820,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="21"
+   parameter="33"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="33"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key to stop movement."
  name="stop_moving2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -548,10 +854,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="55"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="55"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -572,7 +896,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Start Chat:
  </text>
  <button
@@ -589,14 +913,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="22"
+   parameter="34"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="34"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for opening chat."
  name="start_chat2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -605,11 +947,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="48"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -629,7 +971,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Start Chat with "/":</text>
  <button
  follows="top|left"
@@ -645,14 +987,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="23"
+   parameter="35"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="35"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for starting chat with '/'."
  name="start_gesture2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -661,11 +1021,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="49"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -685,7 +1045,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Toggle Flying:
  </text>
  <button
@@ -702,14 +1062,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="20"
+   parameter="32"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="32"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for toggling fly mode."
  name="toggle_fly2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -718,10 +1096,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="54"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="54"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -742,7 +1138,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Clockwise:</text>
  <button
  follows="top|left"
@@ -758,14 +1154,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="24"
+   parameter="36"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="36"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera clockwise."
  name="spin_around_cw2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -774,10 +1188,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="24"
+   parameter="50"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="50"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -798,7 +1230,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Counter-Clockwise:</text>
  <button
  follows="top|left"
@@ -814,14 +1246,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="25"
+   parameter="37"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="37"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera counter-clockwise."
  name="spin_around_ccw2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -830,10 +1280,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="25"
+   parameter="51"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="51"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -854,7 +1322,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Zoom In:</text>
  <button
  follows="top|left"
@@ -870,14 +1338,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="26"
+   parameter="38"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="38"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera in."
  name="move_forward2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -886,10 +1372,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="26"
+   parameter="52"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="52"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -910,7 +1414,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Zoom Out:</text>
  <button
  follows="top|left"
@@ -926,14 +1430,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="27"
+   parameter="39"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="39"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera out."
  name="move_backward2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -942,10 +1464,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="27"
+   parameter="53"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="53"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -966,7 +1506,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Over:</text>
  <button
  follows="top|left"
@@ -982,14 +1522,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="28"
+   parameter="40"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="40"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera over."
  name="spin_over2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -998,10 +1556,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="28"
+   parameter="54"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="54"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1022,7 +1598,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Under:</text>
  <button
  follows="top|left"
@@ -1038,14 +1614,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="29"
+   parameter="41"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="41"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera under."
  name="spin_under2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1054,10 +1648,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="29"
+   parameter="55"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="55"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1078,7 +1690,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Pan Left:</text>
  <button
  follows="top|left"
@@ -1094,8 +1706,26 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="30"
+   parameter="42"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="42"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
@@ -1109,10 +1739,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="30"
+   parameter="56"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="56"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1133,7 +1781,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Pan Right:
  </text>
  <button
@@ -1150,8 +1798,26 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="31"
+   parameter="43"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="43"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
@@ -1165,10 +1831,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="31"
+   parameter="57"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="57"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1189,7 +1873,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Pan Up:</text>
  <button
  follows="top|left"
@@ -1205,14 +1889,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="32"
+   parameter="44"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="44"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key to pan the camera up."
  name="pan_up2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1221,10 +1923,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="32"
+   parameter="58"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="58"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1245,7 +1965,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Pan Down:</text>
  <button
  follows="top|left"
@@ -1261,14 +1981,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="33"
+   parameter="45"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="45"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key to pan the camera down."
  name="pan_down2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1277,10 +2015,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="33"
+   parameter="59"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="59"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1349,9 +2105,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="0"
+   function="Pref.UnbindKey"/>
+ </button>
+ <button
+ follows="top|left"
  tool_tip="Bind a key for walking forward."
  name="push_forward2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1360,10 +2134,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="0"
+   parameter="12"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="12"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1384,7 +2176,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Move Backwards:
  </text>
  <button
@@ -1406,9 +2198,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="1"
+   function="Pref.UnbindKey"/>
+ </button>
+ <button
+ follows="top|left"
  tool_tip="Bind a key for walking backwards."
  name="push_backward2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1417,10 +2227,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="1"
+   parameter="13"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="13"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1441,7 +2269,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Strafe Left:
  </text>
  <button
@@ -1463,9 +2291,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="2"
+   function="Pref.UnbindKey"/>
+ </button>
+ <button
+ follows="top|left"
  tool_tip="Bind a key for strafing left."
  name="slide_left2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1474,10 +2320,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="17"
+   parameter="14"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="14"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1498,7 +2362,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Strafe Right:
  </text>
  <button
@@ -1520,9 +2384,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="3"
+   function="Pref.UnbindKey"/>
+ </button>
+ <button
+ follows="top|left"
  tool_tip="Bind a key for strafing right."
  name="slide_right2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1531,10 +2413,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="3"
+   parameter="15"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="15"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1555,7 +2455,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Rotate Left:
  </text>
  <button
@@ -1577,9 +2477,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="4"
+   function="Pref.UnbindKey"/>
+ </button>
+ <button
+ follows="top|left"
  tool_tip="Bind a key for rotating left."
  name="turn_left2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1588,10 +2506,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="4"
+   parameter="16"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="16"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1612,7 +2548,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Rotate Right:
  </text>
  <button
@@ -1634,9 +2570,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="5"
+   function="Pref.UnbindKey"/>
+ </button>
+ <button
+ follows="top|left"
  tool_tip="Bind a key for rotating right."
  name="turn_right2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1645,10 +2599,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
    parameter="17"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="17"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1669,7 +2641,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Jump:
  </text>
  <button
@@ -1691,9 +2663,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="6"
+   function="Pref.UnbindKey"/>
+ </button>
+ <button
+ follows="top|left"
  tool_tip="Bind a key for jumping."
  name="jump2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1702,10 +2692,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="6"
+   parameter="18"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="18"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1726,7 +2734,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Crouch:
  </text>
  <button
@@ -1748,9 +2756,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="7"
+   function="Pref.UnbindKey"/>
+ </button>
+ <button
+ follows="top|left"
  tool_tip="Bind a key for crouching."
  name="push_down2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1759,10 +2785,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="7"
+   parameter="19"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="19"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1783,7 +2827,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Stop Movement:
  </text>
  <button
@@ -1805,9 +2849,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="11"
+   function="Pref.UnbindKey"/>
+ </button>
+ <button
+ follows="top|left"
  tool_tip="Bind a key to stop movement."
  name="stop_moving2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1816,10 +2878,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="11"
+   parameter="23"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="23"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -1840,7 +2920,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Start Chat:
  </text>
  <button
@@ -1862,9 +2942,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="9"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for opening chat."
  name="start_chat2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1873,11 +2971,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="9"
+   parameter="21"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -1897,7 +2995,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Start Chat with "/":</text>
  <button
  follows="top|left"
@@ -1918,9 +3016,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="10"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for starting chat with '/'."
  name="start_gesture2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1929,11 +3045,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="10"
+   parameter="22"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -1953,7 +3069,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Toggle Flying:
  </text>
  <button
@@ -1975,9 +3091,27 @@ width="510">
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="8"
+   function="Pref.UnbindKey"/>
+ </button>
+ <button
+ follows="top|left"
  tool_tip="Bind a key for toggling fly mode."
  name="toggle_fly2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -1986,10 +3120,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="8"
+   parameter="20"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="20"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -2052,14 +3204,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="52"
+   parameter="86"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="86"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for opening chat."
  name="start_chat2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2068,11 +3238,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="52"
+   parameter="88"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2092,7 +3262,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Start Chat with "/":</text>
  <button
  follows="top|left"
@@ -2108,14 +3278,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="53"
+   parameter="87"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="87"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for starting chat with '/'."
  name="start_gesture"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2124,11 +3312,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="53"
+   parameter="89"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2190,14 +3378,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="60"
+   parameter="96"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="96"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for opening chat."
  name="start_chat2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2206,11 +3412,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="60"
+   parameter="96"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2230,7 +3436,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Start Chat with "/":</text>
  <button
  follows="top|left"
@@ -2246,14 +3452,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="61"
+   parameter="97"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="97"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for starting chat with '/'."
  name="start_gesture2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2262,11 +3486,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="61"
+   parameter="97"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2286,7 +3510,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Clockwise:</text>
  <button
  follows="top|left"
@@ -2302,14 +3526,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="56"
+   parameter="92"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="92"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for spinning the camera clockwise."
  name="spin_around_cw_sitting2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2318,11 +3560,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="56"
+   parameter="92"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2342,7 +3584,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Counter-Clockwise:</text>
  <button
  follows="top|left"
@@ -2358,14 +3600,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="57"
+   parameter="93"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="93"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for spinning the camera counter-clockwise."
  name="spin_around_ccw_sitting2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2374,11 +3634,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="57"
+   parameter="93"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2398,7 +3658,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Zoom In:</text>
  <button
  follows="top|left"
@@ -2414,14 +3674,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="54"
+   parameter="90"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="90"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for zooming the camera in."
  name="move_forward_sitting2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2430,11 +3708,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="54"
+   parameter="90"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2454,7 +3732,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Zoom Out:</text>
  <button
  follows="top|left"
@@ -2470,14 +3748,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="55"
+   parameter="91"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="91"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for zooming the camera out."
  name="move_backward_sitting2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2486,11 +3782,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="55"
+   parameter="91"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2510,7 +3806,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Over:</text>
  <button
  follows="top|left"
@@ -2526,14 +3822,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="58"
+   parameter="94"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="94"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key to spin the camera over."
  name="spin_over_sitting2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2542,11 +3856,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="58"
+   parameter="94"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2566,7 +3880,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Under:</text>
  <button
  follows="top|left"
@@ -2582,14 +3896,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="59"
+   parameter="95"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="95"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key to spin the camera under."
  name="spin_over_sitting2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2598,11 +3930,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="59"
+   parameter="95"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2663,14 +3995,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="68"
+   parameter="104"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="104"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for opening chat."
  name="start_chat2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2679,11 +4029,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="68"
+   parameter="112"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2703,7 +4053,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  Start Chat with "/":</text>
  <button
  follows="top|left"
@@ -2719,14 +4069,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="69"
+   parameter="105"
    function="Pref.BindKey"/>
  </button>
  <button
  follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="105"
+   function="Pref.UnbindKey"/>
+ </button>
+<!-- <button
+ follows="top|left"
  tool_tip="Bind a key for opening chat."
  name="start_chat2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2735,11 +4103,11 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="69"
+   parameter="113"
    function="Pref.BindKey"/>
- </button>
+ </button>-->
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -2759,7 +4127,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Clockwise:</text>
  <button
  follows="top|left"
@@ -2775,14 +4143,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="64"
+   parameter="100"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="100"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera clockwise."
  name="edit_avatar_spin_cw2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2791,10 +4177,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="64"
+   parameter="108"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="108"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -2815,7 +4219,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Counter-Clockwise:</text>
  <button
  follows="top|left"
@@ -2831,14 +4235,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="65"
+   parameter="101"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="101"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera counter-clockwise."
  name="edit_avatar_spin_ccw2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2847,10 +4269,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="65"
+   parameter="109"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="109"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -2871,7 +4311,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Zoom In:</text>
  <button
  follows="top|left"
@@ -2887,14 +4327,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="62"
+   parameter="98"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="98"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera in."
  name="edit_avatar_move_forward"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2903,10 +4361,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="62"
+   parameter="106"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="106"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -2927,7 +4403,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Zoom Out:</text>
  <button
  follows="top|left"
@@ -2943,14 +4419,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="63"
+   parameter="99"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="99"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera out."
  name="edit_avatar_move_backward2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -2959,10 +4453,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="63"
+   parameter="107"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="107"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -2983,7 +4495,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Over:</text>
  <button
  follows="top|left"
@@ -2999,14 +4511,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="66"
+   parameter="102"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="102"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera over."
  name="edit_avatar_spin_over2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -3015,10 +4545,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="66"
+   parameter="110"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="110"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"
@@ -3039,7 +4587,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="4">
+ top_pad="2">
  (Camera) Spin Under:</text>
  <button
  follows="top|left"
@@ -3055,14 +4603,32 @@ width="510">
  left="270"
  top_delta="0">
    <button.commit_callback
-   parameter="67"
+   parameter="103"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="103"
+   function="Pref.UnbindKey"/>
  </button>
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera under."
  name="edit_avatar_spin_under2"
- enabled="false"
+ enabled="true"
  height="15"
  width="80"
  is_toggle="false"
@@ -3071,10 +4637,28 @@ width="510">
  image_unselected="transparent.j2c"
  layout="topleft"
  left="370"
- top_delta="0">
+ top_delta="1">
    <button.commit_callback
-   parameter="67"
+   parameter="111"
    function="Pref.BindKey"/>
+ </button>
+ <button
+ follows="top|left"
+ tool_tip="Remove this bind."
+ name="remove"
+ height="18"
+ width="30"
+ is_toggle="false"
+ label="⌊    ⌉"
+ image_overlay="TrashItem_Off"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left_pad="-15"
+ top_delta="-1">
+   <button.commit_callback
+   parameter="111"
+   function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
    control_name="jump"

@@ -104,8 +104,11 @@ public:
 
 	static BOOL		maskFromString(const std::string& str, MASK *mask);		// False on failure
 	static BOOL		keyFromString(const std::string& str, KEY *key);			// False on failure
+
+//	//BD - Custom Keyboard Layout
 	static std::string stringFromMask(MASK mask);
 	static std::string stringFromKey(KEY key, bool translate = true);
+
 	static std::string stringFromAccelerator( MASK accel_mask, KEY key );
 
 	void setCallbacks(LLWindowCallbacks *cbs) { mCallbacks = cbs; }

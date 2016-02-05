@@ -799,9 +799,13 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.AutoReplace",            boost::bind(&LLFloaterPreference::onClickAutoReplace, this));
 	mCommitCallbackRegistrar.add("Pref.PermsDefault",           boost::bind(&LLFloaterPreference::onClickPermsDefault, this));
 	mCommitCallbackRegistrar.add("Pref.SpellChecker",           boost::bind(&LLFloaterPreference::onClickSpellChecker, this));
+
+//	//BD - Custom Keyboard Layout
 	mCommitCallbackRegistrar.add("Pref.BindKey",                boost::bind(&LLFloaterPreference::onClickSetAnyKey, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.UnbindKey",				boost::bind(&LLFloaterPreference::onUnbindKey, this, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.ExportControls",         boost::bind(&LLFloaterPreference::onExportControls, this));
 	mCommitCallbackRegistrar.add("Pref.UnbindAll",				boost::bind(&LLFloaterPreference::onUnbindControls, this));
+	mCommitCallbackRegistrar.add("Pref.DefaultControls",		boost::bind(&LLFloaterPreference::onDefaultControls, this));
 
 //	//BD - Expandable Tabs
 	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::onTab, this, _1, _2));
@@ -1049,8 +1053,7 @@ void LLFloaterPreference::onBindKey(KEY key, MASK mask, LLUICtrl* ctrl, const LL
 	S32 mode;
 	LLSD settings;
 	llifstream infile;
-	std::string filename = gDirUtilp->findFile(gSavedSettings.getString("ControlSettingsFile"), 
-												gDirUtilp->getExpandedFilename(LL_PATH_CHARACTER, ""));
+	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
 	bool bound = false;
 
 	infile.open(filename);
@@ -1063,6 +1066,7 @@ void LLFloaterPreference::onBindKey(KEY key, MASK mask, LLUICtrl* ctrl, const LL
 	//BD - We need to unbind all keys, to ensure that everything is empty and properly rebound,
 	//     this prevents a whole bunch of issues but makes it a tedious work to fix if something breaks.
 	gViewerKeyboard.unbindAllKeys(true);
+	LL_INFOS("Settings") << "Writing bound controls to " << filename << LL_ENDL;
 	while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(settings, infile))
 	{
 		mode = settings["mode"].asInteger();
@@ -1093,9 +1097,15 @@ void LLFloaterPreference::onBindKey(KEY key, MASK mask, LLUICtrl* ctrl, const LL
 	gViewerKeyboard.exportBindingsXML(filename);
 }
 
+void LLFloaterPreference::onUnbindKey(LLUICtrl* ctrl, const LLSD& param)
+{
+	onBindKey(NULL, MASK_NONE, ctrl, param);
+}
+
 void LLFloaterPreference::onExportControls()
 {
-	std::string filename = gDirUtilp->findFile("controls.xml", gDirUtilp->getExpandedFilename(LL_PATH_CHARACTER, ""));
+	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
+	LL_INFOS("Settings") << "Exporting controls to " << filename << LL_ENDL;
 	gViewerKeyboard.exportBindingsXML(filename);
 }
 
@@ -1103,6 +1113,40 @@ void LLFloaterPreference::onUnbindControls()
 {
 	gViewerKeyboard.unbindAllKeys(false);
 }
+
+void LLFloaterPreference::onDefaultControls()
+{
+	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "controls.xml");
+	LL_INFOS("Settings") << "Loading default controls file from " << filename << LL_ENDL;
+	gViewerKeyboard.loadBindingsSettings(filename);
+}
+
+/*void LLFloaterPreference::refreshKeys()
+{
+	LLSD settings;
+	llifstream infile;
+	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
+
+	infile.open(filename);
+	if (!infile.is_open())
+	{
+		LL_WARNS("Settings") << "Cannot find file " << filename << " to load." << LL_ENDL;
+		return;
+	}
+
+	LLUICtrl* ctrl;
+	while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(settings, infile))
+	{
+		ctrl = getChild<LLTextBox>("label_slot_" + settings["slot"].asString());
+		if (ctrl)
+		{
+			ctrl->setTextArg("[KEY]", settings["key"].asString());
+			ctrl->setTextArg("[MASK]", settings["mask"].asString());
+		}
+	}
+	infile.close();
+}*/
+
 
 //BD - Expandable Tabs
 void LLFloaterPreference::onTab(LLUICtrl* ctrl, const LLSD& param)

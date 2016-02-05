@@ -208,8 +208,11 @@ public:
 
 //	//BD - Custom Keyboard Layout
 	void onBindKey(KEY key, MASK mask, LLUICtrl* ctrl, const LLSD& param);
+	void onUnbindKey(LLUICtrl* ctrl, const LLSD& param);
 	void onExportControls();
 	void onUnbindControls();
+	void onDefaultControls();
+	//void refreshKeys();
 
 //	//BD - Revert to Default
 	void inputOutput();
