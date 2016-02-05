@@ -4683,7 +4683,6 @@ width="510">
  top_pad="4"
  left="10">
    <button.commit_callback
-   parameter="1"
    function="Pref.ExportControls"/>
  </button>
  <button
@@ -4696,8 +4695,19 @@ width="510">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   parameter="1"
    function="Pref.UnbindAll"/>
+ </button>
+ <button
+ height="22"
+ follows="top|left"
+ layout="topleft"
+ label="Load Defaults"
+ name="default"
+ width="100"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pref.DefaultControls"/>
  </button>
   </panel>
  </scroll_container>
