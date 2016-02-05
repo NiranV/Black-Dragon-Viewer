@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<floater
+ legacy_header_height="18"
+ positioning="centered"
+ border="false"
+ can_close="false"
+ can_minimize="false"
+ height="45"
+ layout="topleft"
+ name="modal container"
+ width="160">
+   <button
+     height="1"
+     label=""
+     image_selected="transparent.j2c"
+     image_unselected="transparent.j2c"
+     layout="topleft"
+     left="10"
+     name="FocusButton"
+     top_pad="2"
+     width="10" />
+    <text
+     type="string"
+     halign="center"
+     length="1"
+     follows="left|top"
+     height="14"
+     layout="topleft"
+     left="0"
+     name="Save item as:"
+     top="12"
+     word_wrap="true"
+     width="160">
+        Press a key.
+    </text>
+</floater>

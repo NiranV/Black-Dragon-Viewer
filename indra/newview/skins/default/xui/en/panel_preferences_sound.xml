@@ -649,20 +649,6 @@ width="510">
                image_pressed_selected="Checkbox_On_Press" />
          </radio_item>
    </radio_group>
-   <!--<button
-   control_name="ShowDeviceSettings"
-   follows="left|top"
-   height="23"
-   is_toggle="true"
-   label="Input/Output devices"
-   layout="topleft"
-   left="10"
-   top_pad="5"
-   name="device_settings_btn"
-   width="190">
-    <button.commit_callback
-         function="Pref.InputOutput"/>
-   </button>-->
    <button
 		 follows="left|top|right"
          control_name="ShowDeviceSettings"

@@ -759,7 +759,7 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	static bool registered_voice_dialog = false;
 	if (!registered_voice_dialog)
 	{
-		LLFloaterReg::add("voice_set_key", "floater_select_key.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLVoiceSetKeyDialog>);
+		LLFloaterReg::add("voice_set_key", "floater_select_key_voice.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLVoiceSetKeyDialog>);
 		registered_voice_dialog = true;
 	}
 
@@ -1656,8 +1656,11 @@ void LLFloaterPreference::onClose(bool app_quitting)
 
 	// when closing this window, turn of visiblity control so that 
 	// next time preferences is opened we don't suspend voice
-	gSavedSettings.setBOOL("ShowDeviceSettings", FALSE);
-	inputOutput();
+	if (gSavedSettings.getBOOL("ShowDeviceSettings"))
+	{
+		gSavedSettings.setBOOL("ShowDeviceSettings", FALSE);
+		inputOutput();
+	}
 }
 
 void LLFloaterPreference::onOpenHardwareSettings()
