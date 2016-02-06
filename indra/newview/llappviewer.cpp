@@ -1245,6 +1245,7 @@ void LLAppViewer::loadKeyboardlayout()
 		if (gDirUtilp->fileExists(key_bindings_file))
 		{
 			gViewerKeyboard.loadBindingsSettings(key_bindings_file);
+			gViewerKeyboard.exportBindingsXML(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml"));
 		}
 		else
 		{
