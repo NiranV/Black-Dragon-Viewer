@@ -1094,7 +1094,7 @@ void LLFloaterPreference::onBindKey(KEY key, MASK mask, LLUICtrl* ctrl, const LL
 	}
 	infile.close();
 	//BD - We can now safely rewrite the entire file now that we filled all bindings in.
-	gViewerKeyboard.exportBindingsXML(filename);
+	onExportControls();
 }
 
 void LLFloaterPreference::onUnbindKey(LLUICtrl* ctrl, const LLSD& param)
@@ -1111,14 +1111,21 @@ void LLFloaterPreference::onExportControls()
 
 void LLFloaterPreference::onUnbindControls()
 {
-	gViewerKeyboard.unbindAllKeys(false);
+	if (gViewerKeyboard.unbindAllKeys(false))
+	{
+		onExportControls();
+	}
 }
 
 void LLFloaterPreference::onDefaultControls()
 {
+	gViewerKeyboard.unbindAllKeys(true);
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "controls.xml");
 	LL_INFOS("Settings") << "Loading default controls file from " << filename << LL_ENDL;
-	gViewerKeyboard.loadBindingsSettings(filename);
+	if (gViewerKeyboard.loadBindingsSettings(filename))
+	{
+		onExportControls();
+	}
 }
 
 /*void LLFloaterPreference::refreshKeys()
