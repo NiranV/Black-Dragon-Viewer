@@ -9745,27 +9745,7 @@ void LLPipeline::renderGeomMotionBlur()
 	renderMotionBlur(LLRenderPass::PASS_SIMPLE);
 	renderMotionBlur(LLRenderPass::PASS_FULLBRIGHT);
 	renderMotionBlur(LLRenderPass::PASS_BUMP);
-	U32 CurCount = 28;
-	for (; CurCount < 44; CurCount++)
-	{
-		renderMotionBlur(CurCount);
-	}
-	/*renderMotionBlur(LLRenderPass::PASS_MATERIAL);
-	renderMotionBlur(LLRenderPass::PASS_MATERIAL_ALPHA);
-	renderMotionBlur(LLRenderPass::PASS_MATERIAL_ALPHA_MASK);
-	renderMotionBlur(LLRenderPass::PASS_MATERIAL_ALPHA_EMISSIVE);
-	renderMotionBlur(LLRenderPass::PASS_SPECMAP);
-	renderMotionBlur(LLRenderPass::PASS_SPECMAP_BLEND);
-	renderMotionBlur(LLRenderPass::PASS_SPECMAP_MASK);
-	renderMotionBlur(LLRenderPass::PASS_SPECMAP_EMISSIVE);
-	renderMotionBlur(LLRenderPass::PASS_NORMMAP);
-	renderMotionBlur(LLRenderPass::PASS_NORMMAP_BLEND);
-	renderMotionBlur(LLRenderPass::PASS_NORMMAP_MASK);
-	renderMotionBlur(LLRenderPass::PASS_NORMMAP_EMISSIVE);
-	renderMotionBlur(LLRenderPass::PASS_NORMSPEC);
-	renderMotionBlur(LLRenderPass::PASS_NORMSPEC_BLEND);
-	renderMotionBlur(LLRenderPass::PASS_NORMSPEC_MASK);
-	renderMotionBlur(LLRenderPass::PASS_NORMSPEC_EMISSIVE);*/
+	renderMotionBlur(LLRenderPass::PASS_MATERIAL);
 
 	gVelocityProgram.unbind();
 
