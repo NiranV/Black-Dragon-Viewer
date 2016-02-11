@@ -1859,6 +1859,22 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 					(GLfloat*) mp);
 
 				LLDrawPoolAvatar::sVertexProgram->uniform3fv(LLShaderMgr::AVATAR_TRANSLATION, count, transp);
+
+				if (LLDrawPoolAvatar::sVertexProgram == &gSkinnedVelocityProgram ||
+					LLDrawPoolAvatar::sVertexProgram == &gSkinnedVelocityAlphaProgram)
+				{
+					if (face->mLastMatrixPalette)
+					{
+						LLDrawPoolAvatar::sVertexProgram->uniformMatrix4fv(LLShaderMgr::AVATAR_LAST_MATRIX, skin->mJointNames.size(),
+							FALSE, (GLfloat*)face->mLastMatrixPalette[0].mMatrix);
+					}
+					else
+					{
+						face->mLastMatrixPalette = new LLMatrix4[64];
+					}
+
+					memcpy(face->mLastMatrixPalette->mMatrix, mat[0].mMatrix, sizeof(LLMatrix4)*skin->mJointNames.size());
+				}
 				
 				stop_glerror();
 			}
