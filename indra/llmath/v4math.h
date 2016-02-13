@@ -30,6 +30,8 @@
 #include "llerror.h"
 #include "llmath.h"
 #include "v3math.h"
+//BD - Vector4
+#include "v3dmath.h"
 
 class LLMatrix3;
 class LLMatrix4;
@@ -43,6 +45,10 @@ class LLVector4
 {
 	public:
 		F32 mV[LENGTHOFVECTOR4];
+
+//		//BD - Vector4
+		static const LLVector4 zero;
+
 		LLVector4();						// Initializes LLVector4 to (0, 0, 0, 1)
 		explicit LLVector4(const F32 *vec);			// Initializes LLVector4 to (vec[0]. vec[1], vec[2], vec[3])
 		explicit LLVector4(const F64 *vec);			// Initialized LLVector4 to ((F32) vec[0], (F32) vec[1], (F32) vec[3], (F32) vec[4]);
@@ -51,7 +57,20 @@ class LLVector4
 		LLVector4(F32 x, F32 y, F32 z);		// Initializes LLVector4 to (x. y, z, 1)
 		LLVector4(F32 x, F32 y, F32 z, F32 w);
 
-		LLSD getValue() const
+//		//BD - Vector4
+		explicit LLVector4(const LLVector2 &vec);				// Initializes LLVector2 to (vec[0]. vec[1], 0, 0)
+		explicit LLVector4(const LLVector3d &vec);				// Initializes LLVector3 to (vec[0]. vec[1], vec[2], 0)
+		explicit LLVector4(const LLSD& sd);
+
+		void LLVector4::setValue(const LLSD& sd)
+		{
+			mV[0] = (F32)sd[0].asReal();
+			mV[1] = (F32)sd[1].asReal();
+			mV[2] = (F32)sd[2].asReal();
+			mV[3] = (F32)sd[3].asReal();
+		}
+
+		LLSD LLVector4::getValue() const
 		{
 			LLSD ret;
 			ret[0] = mV[0];
@@ -122,6 +141,9 @@ class LLVector4
 		friend const LLVector4& operator/=(LLVector4 &a, F32 k);				// Return a divided by scaler k
 
 		friend LLVector4 operator-(const LLVector4 &a);					// Return vector -a
+
+//		//BD - Vector4
+		static BOOL parseVector4(const std::string& buf, LLVector4* value);
 };
 
 // Non-member functions 

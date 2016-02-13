@@ -69,6 +69,8 @@ class LLVector3;
 class LLVector3d;
 class LLColor4;
 class LLColor3;
+//BD - Vector4
+class LLVector4;
 
 typedef enum e_control_type
 {
@@ -83,6 +85,8 @@ typedef enum e_control_type
 	TYPE_COL4,
 	TYPE_COL3,
 	TYPE_LLSD,
+//	//BD - Vector4
+	TYPE_VEC4,
 	TYPE_COUNT
 } eControlType;
 
@@ -224,6 +228,9 @@ public:
 	LLControlVariable* declareColor3(const std::string& name, const LLColor3 &initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
 	LLControlVariable* declareLLSD(const std::string& name, const LLSD &initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
 
+//	//BD - Vector4
+	LLControlVariable* declareVec4(const std::string& name, const LLVector4 &initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
+
 	std::string getString(const std::string& name);
 	std::string getText(const std::string& name);
 	BOOL		getBOOL(const std::string& name);
@@ -237,6 +244,8 @@ public:
 	LLRect		getRect(const std::string& name);
 	LLSD        getLLSD(const std::string& name);
 
+//	//BD - Vector4
+	LLVector4	getVector4(const std::string& name);
 
 	LLColor4	getColor(const std::string& name);
 	LLColor4	getColor4(const std::string& name);
@@ -272,6 +281,9 @@ public:
 	void	setRect(const std::string& name, const LLRect &val);
 	void	setColor4(const std::string& name, const LLColor4 &val);
 	void    setLLSD(const std::string& name, const LLSD& val);
+
+//	//BD - Vector4
+	void	setVector4(const std::string& name, const LLVector4 &val);
 
 	// type agnostic setter that takes LLSD
 	void	setUntypedValue(const std::string& name, const LLSD& val);
@@ -437,12 +449,18 @@ template <> eControlType get_control_type<LLColor4>();
 template <> eControlType get_control_type<LLColor3>();
 template <> eControlType get_control_type<LLSD>();
 
+//BD - Vector4
+template <> eControlType get_control_type<LLVector4>();
+
 template <> LLSD convert_to_llsd<U32>(const U32& in);
 template <> LLSD convert_to_llsd<LLVector3>(const LLVector3& in);
 template <> LLSD convert_to_llsd<LLVector3d>(const LLVector3d& in); 
 template <> LLSD convert_to_llsd<LLRect>(const LLRect& in);
 template <> LLSD convert_to_llsd<LLColor4>(const LLColor4& in);
 template <> LLSD convert_to_llsd<LLColor3>(const LLColor3& in);
+
+//BD - Vector4
+template <> LLSD convert_to_llsd<LLVector4>(const LLVector4& in);
 
 template<> std::string convert_from_llsd<std::string>(const LLSD& sd, eControlType type, const std::string& control_name);
 template<> LLWString convert_from_llsd<LLWString>(const LLSD& sd, eControlType type, const std::string& control_name);
@@ -456,6 +474,9 @@ template<> U32 convert_from_llsd<U32>(const LLSD& sd, eControlType type, const s
 template<> LLColor3 convert_from_llsd<LLColor3>(const LLSD& sd, eControlType type, const std::string& control_name);
 template<> LLColor4 convert_from_llsd<LLColor4>(const LLSD& sd, eControlType type, const std::string& control_name);
 template<> LLSD convert_from_llsd<LLSD>(const LLSD& sd, eControlType type, const std::string& control_name);
+
+//BD - Vector4
+template<> LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, const std::string& control_name);
 
 //#define TEST_CACHED_CONTROL 1
 #ifdef TEST_CACHED_CONTROL

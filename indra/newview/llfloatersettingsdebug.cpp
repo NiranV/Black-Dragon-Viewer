@@ -116,6 +116,8 @@ void LLFloaterSettingsDebug::onCommitSettings()
 	LLColor3 col3;
 	LLColor4U col4U;
 	LLColor4 color_with_alpha;
+//	//BD - Vector4
+	LLVector4 vector4;
 
 	switch(controlp->type())
 	{		
@@ -165,6 +167,13 @@ void LLFloaterSettingsDebug::onCommitSettings()
 		//col3.mV[VBLUE] = (F32)floaterp->getChild<LLUICtrl>("val_spinner_3")->getValue().asReal();
 		//controlp->set(col3.getValue());
 		break;
+//	  //BD - Vector4
+	  case TYPE_VEC4:
+		vector4.mV[VX] = (F32)getChild<LLUICtrl>("val_spinner_1")->getValue().asReal();
+		vector4.mV[VY] = (F32)getChild<LLUICtrl>("val_spinner_2")->getValue().asReal();
+		vector4.mV[VZ] = (F32)getChild<LLUICtrl>("val_spinner_3")->getValue().asReal();
+		vector4.mV[VW] = (F32)getChild<LLUICtrl>("val_spinner_4")->getValue().asReal();
+		controlp->set(vector4.getValue());
 	  default:
 		break;
 	}
@@ -443,6 +452,41 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 			color_swatch->setVisible(TRUE);
 			color_swatch->setValue(sd);
 			break;
+		  }
+//		  //BD - Vector4
+		  case TYPE_VEC4:
+		  {
+			  LLVector4 v;
+			  v.setValue(sd);
+			  spinner1->setVisible(TRUE);
+			  spinner1->setLabel(std::string("X"));
+			  spinner2->setVisible(TRUE);
+			  spinner2->setLabel(std::string("Y"));
+			  spinner3->setVisible(TRUE);
+			  spinner3->setLabel(std::string("Z"));
+			  spinner4->setVisible(TRUE);
+			  spinner4->setLabel(std::string("W"));
+			  if (!spinner1->hasFocus())
+			  {
+				  spinner1->setPrecision(3);
+				  spinner1->setValue(v[VX]);
+			  }
+			  if (!spinner2->hasFocus())
+			  {
+				  spinner2->setPrecision(3);
+				  spinner2->setValue(v[VY]);
+			  }
+			  if (!spinner3->hasFocus())
+			  {
+				  spinner3->setPrecision(3);
+				  spinner3->setValue(v[VZ]);
+			  }
+			  if (!spinner4->hasFocus())
+			  {
+				  spinner4->setPrecision(3);
+				  spinner4->setValue(v[VW]);
+			  }
+			  break;
 		  }
 		  default:
 			mComment->setText(std::string("unknown"));

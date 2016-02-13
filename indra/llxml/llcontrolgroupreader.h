@@ -35,6 +35,8 @@
 #include "v3color.h"
 #include "v4color.h"
 #include "llrect.h"
+//BD - Vector4
+#include "v4math.h"
 
 class LLControlGroupReader
 {
@@ -54,6 +56,9 @@ public:
 	virtual U32			getU32(const std::string& name) {return 0; }
 	virtual LLSD        getLLSD(const std::string& name) { return LLSD(); }
 
+//	//BD - Vector4
+	virtual LLVector4	getVector4(const std::string& name) { return LLVector4(); }
+
 	virtual LLColor4	getColor(const std::string& name) { return LLColor4(); }
 	virtual LLColor4	getColor4(const std::string& name) { return LLColor4(); }
 	virtual LLColor3	getColor3(const std::string& name) { return LLColor3(); }
@@ -68,6 +73,9 @@ public:
 	virtual void		setRect(const std::string& name, const LLRect &val) {}
 	virtual void		setColor4(const std::string& name, const LLColor4 &val) {}
 	virtual void    	setLLSD(const std::string& name, const LLSD& val) {}
+
+//	//BD - Vector4
+	virtual LLVector4	setVector4(const std::string& name, const LLVector4 &val) {}
 };
 
 #endif /* LL_LLCONTROLGROUPREADER_H */

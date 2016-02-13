@@ -26,12 +26,18 @@
 
 #include "linden_common.h"
 
+//BD - Vector4
+#include "v2math.h"
+
 //#include "vmath.h"
 #include "v3math.h"
 #include "v4math.h"
 #include "m4math.h"
 #include "m3math.h"
 #include "llquaternion.h"
+
+//BD - Vector4
+const LLVector4 LLVector4::zero(0, 0, 0, 0);
 
 // LLVector4
 
@@ -140,3 +146,48 @@ LLVector4 vec3to4(const LLVector3 &vec)
 	return LLVector4(vec.mV[VX], vec.mV[VY], vec.mV[VZ]);
 }
 
+//BD - Vector4
+LLVector4::LLVector4(const LLVector2 &vec)
+{
+	mV[VX] = (F32)vec.mV[VX];
+	mV[VY] = (F32)vec.mV[VY];
+	mV[VZ] = 0;
+	mV[VW] = 0;
+}
+
+LLVector4::LLVector4(const LLVector3d &vec)
+{
+	mV[VX] = (F32)vec.mdV[VX];
+	mV[VY] = (F32)vec.mdV[VY];
+	mV[VZ] = (F32)vec.mdV[VZ];
+	mV[VW] = 0;
+}
+
+LLVector4::LLVector4(const LLSD& sd)
+{
+	setValue(sd);
+}
+
+// static 
+BOOL LLVector4::parseVector4(const std::string& buf, LLVector4* value)
+{
+	if (buf.empty() || value == NULL)
+	{
+		return FALSE;
+	}
+
+	LLVector4 v;
+	S32 count = sscanf(buf.c_str(), "%f, %f, %f, %f", v.mV + 0, v.mV + 1, v.mV + 2, v.mV + 3);
+	if (1 == count)
+	{
+		// try this format
+		count = sscanf(buf.c_str(), "%f %f %f %f", v.mV + 0, v.mV + 1, v.mV + 2, v.mV + 3);
+	}
+	if (4 == count)
+	{
+		value->setVec(v);
+		return TRUE;
+	}
+
+	return FALSE;
+}

@@ -305,6 +305,12 @@ BOOL LLXmlTreeNode::getFastAttributeString(LLStdStringHandle canonical_name, std
 	return TRUE;
 }
 
+//BD - Vector4
+BOOL LLXmlTreeNode::getFastAttributeVector4(LLStdStringHandle canonical_name, LLVector4& value)
+{
+	const std::string *s = getAttribute(canonical_name);
+	return s ? LLVector4::parseVector4(*s, &value) : FALSE;
+}
 
 //////////////////////////////////////////////////////////////
 
@@ -408,6 +414,13 @@ BOOL LLXmlTreeNode::getAttributeString(const std::string& name, std::string& val
 {
 	LLStdStringHandle canonical_name = LLXmlTree::sAttributeKeys.addString( name );
 	return getFastAttributeString(canonical_name, value);
+}
+
+//BD - Vector4
+BOOL LLXmlTreeNode::getAttributeVector4(const std::string& name, LLVector4& value)
+{
+	LLStdStringHandle canonical_name = LLXmlTree::sAttributeKeys.addString(name);
+	return getFastAttributeVector4(canonical_name, value);
 }
 
 /*
