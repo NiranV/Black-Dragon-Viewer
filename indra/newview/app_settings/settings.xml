@@ -9276,16 +9276,17 @@
   <key>RenderShadowResolution</key>
   <map>
     <key>Comment</key>
-    <string>Raw shadow width (X) and height (Y) by multiplicator (Z)</string>
+    <string>Raw shadow width and height of each of the four shadow maps, closest (X), mid (Y), far (Z) furthest. (W)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Vector3</string>
+    <string>Vector4</string>
     <key>Value</key>
     <array>
       <real>2048</real>
       <real>2048</real>
-      <real>1.0</real>
+      <real>2048</real>
+      <real>2048</real>
     </array>
   </map>
   <key>RenderDeferredTreeShadowBias</key>

@@ -195,6 +195,12 @@ public:
 //	//BD - Expandable Tabs
 	void toggleTabs();
 
+//	//BD - Vector4
+	void onCommitVec4X(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitVec4Y(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitVec4Z(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitVec4W(LLUICtrl* ctrl, const LLSD& param);
+
 //	//BD - Debug Arrays
 	void onCommitX(LLUICtrl* ctrl, const LLSD& param);
 	void onCommitY(LLUICtrl* ctrl, const LLSD& param);

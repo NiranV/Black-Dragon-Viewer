@@ -1128,6 +1128,7 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("shadow_bias");
 	mReservedUniforms.push_back("spot_shadow_bias");
 	mReservedUniforms.push_back("spot_shadow_offset");
+	mReservedUniforms.push_back("spot_shadow_amount");
 	mReservedUniforms.push_back("sun_dir");
 	mReservedUniforms.push_back("shadow_res");
 	mReservedUniforms.push_back("proj_shadow_res");

@@ -145,7 +145,7 @@ U32 LLPipeline::RenderResolutionDivisor;
 BOOL LLPipeline::RenderUIBuffer;
 S32 LLPipeline::RenderShadowDetail;
 BOOL LLPipeline::RenderDeferredSSAO;
-LLVector3 LLPipeline::RenderShadowResolution;
+LLVector4 LLPipeline::RenderShadowResolution;
 LLVector3 LLPipeline::RenderProjectorShadowResolution;
 BOOL LLPipeline::RenderLocalLights;
 BOOL LLPipeline::RenderDelayCreation;
@@ -1017,15 +1017,14 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			mDeferredLight.release();
 		}
 
-		LLVector3 scale = RenderShadowResolution;
+		LLVector4 scale = RenderShadowResolution;
 		LLVector3 proj_scale = RenderProjectorShadowResolution;
 
 		if (shadow_detail > 0)
 		{ //allocate 4 sun shadow maps
-			U32 sun_shadow_map_width = ((U32(scale[0]*scale[2])+1)&~1); // must be even to avoid a stripe in the horizontal shadow blur
 			for (U32 i = 0; i < 4; i++)
 			{
-				if (!mShadow[i].allocate(sun_shadow_map_width,U32(scale[1]*scale[2]), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE)) return false;
+				if (!mShadow[i].allocate(U32(scale.mV[i]),U32(scale.mV[i]), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE)) return false;
 				if (!mShadowOcclusion[i].allocate(mShadow[i].getWidth()/occlusion_divisor, mShadow[i].getHeight()/occlusion_divisor, 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE)) return false;
 			}
 		}
@@ -1042,7 +1041,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		{ //allocate two spot shadow maps
 			for (U32 i = 4; i < 6; i++)
 			{
-				if (!mShadow[i].allocate(U32(proj_scale[0]*proj_scale[2]), U32(proj_scale[1]*proj_scale[2]), 0, TRUE, FALSE)) return false;
+				if (!mShadow[i].allocate(U32(proj_scale[i-4]), U32(proj_scale[i-4]), 0, TRUE, FALSE)) return false;
 				if (!mShadowOcclusion[i].allocate(mShadow[i].getWidth()/occlusion_divisor, mShadow[i].getHeight()/occlusion_divisor, 0, TRUE, FALSE)) return false;
 			}
 		}
@@ -1160,7 +1159,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderUIBuffer = gSavedSettings.getBOOL("RenderUIBuffer");
 	RenderShadowDetail = gSavedSettings.getS32("RenderShadowDetail");
 	RenderDeferredSSAO = gSavedSettings.getBOOL("RenderDeferredSSAO");
-	RenderShadowResolution = gSavedSettings.getVector3("RenderShadowResolution");
+	RenderShadowResolution = gSavedSettings.getVector4("RenderShadowResolution");
 	RenderProjectorShadowResolution = gSavedSettings.getVector3("RenderProjectorShadowResolution");
 	RenderLocalLights = gSavedSettings.getBOOL("RenderLocalLights");
 	RenderDelayCreation = gSavedSettings.getBOOL("RenderDelayCreation");
@@ -8552,7 +8551,7 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform1f(LLShaderMgr::DEFERRED_SPOT_SHADOW_BIAS, RenderSpotShadowBias);	
 
 	shader.uniform3fv(LLShaderMgr::DEFERRED_SUN_DIR, 1, mTransformedSunDir.mV);
-	shader.uniform2f(LLShaderMgr::DEFERRED_SHADOW_RES, mShadow[0].getWidth(), mShadow[0].getWidth());
+	shader.uniform4fv(LLShaderMgr::DEFERRED_SHADOW_RES, 1, RenderShadowResolution.mV);
 	shader.uniform2f(LLShaderMgr::DEFERRED_PROJ_SHADOW_RES, mShadow[4].getWidth(), mShadow[4].getHeight());
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);

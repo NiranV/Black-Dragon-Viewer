@@ -771,9 +771,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 		registered_dialog = true;
 	}
 	
-	mCommitCallbackRegistrar.add("Pref.Apply",				boost::bind(&LLFloaterPreference::onBtnApply, this));
-	mCommitCallbackRegistrar.add("Pref.Cancel",				boost::bind(&LLFloaterPreference::onBtnCancel, this));
-	mCommitCallbackRegistrar.add("Pref.OK",					boost::bind(&LLFloaterPreference::onBtnOK, this));
+	mCommitCallbackRegistrar.add("Pref.Apply",					boost::bind(&LLFloaterPreference::onBtnApply, this));
+	mCommitCallbackRegistrar.add("Pref.Cancel",					boost::bind(&LLFloaterPreference::onBtnCancel, this));
+	mCommitCallbackRegistrar.add("Pref.OK",						boost::bind(&LLFloaterPreference::onBtnOK, this));
 	
 	mCommitCallbackRegistrar.add("Pref.ClearCache",				boost::bind(&LLFloaterPreference::onClickClearCache, this));
 	mCommitCallbackRegistrar.add("Pref.WebClearCache",			boost::bind(&LLFloaterPreference::onClickBrowserClearCache, this));
@@ -808,21 +808,27 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.DefaultControls",		boost::bind(&LLFloaterPreference::onDefaultControls, this));
 
 //	//BD - Expandable Tabs
-	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::onTab, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.Tab",					boost::bind(&LLFloaterPreference::onTab, this, _1, _2));
+
+//	//BD - Vector4
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4X",				boost::bind(&LLFloaterPreference::onCommitVec4X, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4Y",				boost::bind(&LLFloaterPreference::onCommitVec4Y, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4Z",				boost::bind(&LLFloaterPreference::onCommitVec4Z, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4W",				boost::bind(&LLFloaterPreference::onCommitVec4W, this, _1, _2));
 
 //	//BD - Array Debugs
-	mCommitCallbackRegistrar.add("Pref.ArrayX",           boost::bind(&LLFloaterPreference::onCommitX, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayY",           boost::bind(&LLFloaterPreference::onCommitY, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayZ",           boost::bind(&LLFloaterPreference::onCommitZ, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayXD",           boost::bind(&LLFloaterPreference::onCommitXd, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayYD",           boost::bind(&LLFloaterPreference::onCommitYd, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayZD",           boost::bind(&LLFloaterPreference::onCommitZd, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayX",					boost::bind(&LLFloaterPreference::onCommitX, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayY",					boost::bind(&LLFloaterPreference::onCommitY, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayZ",					boost::bind(&LLFloaterPreference::onCommitZ, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayXD",				boost::bind(&LLFloaterPreference::onCommitXd, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayYD",				boost::bind(&LLFloaterPreference::onCommitYd, this,_1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayZD",				boost::bind(&LLFloaterPreference::onCommitZd, this,_1, _2));
 
 //	//BD - Revert to Default
-	mCommitCallbackRegistrar.add("Pref.Default",           boost::bind(&LLFloaterPreference::resetToDefault, this,_1));
+	mCommitCallbackRegistrar.add("Pref.Default",				boost::bind(&LLFloaterPreference::resetToDefault, this,_1));
 
 //	//BD - Input/Output resizer
-	mCommitCallbackRegistrar.add("Pref.InputOutput",           boost::bind(&LLFloaterPreference::inputOutput, this));
+	mCommitCallbackRegistrar.add("Pref.InputOutput",			boost::bind(&LLFloaterPreference::inputOutput, this));
 
 //	//BD - Catznip's Borderless Window Mode
 	mCommitCallbackRegistrar.add("Pref.FullscreenWindow",		boost::bind(&LLFloaterPreference::toggleFullscreenWindow, this));
@@ -996,26 +1002,55 @@ LLFloaterPreference::~LLFloaterPreference()
 	LLConversationLog::instance().removeObserver(this);
 }
 
+//BD - Vector4
+void LLFloaterPreference::onCommitVec4W(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLVector4 value = gSavedSettings.getVector4(param.asString());
+	value.mV[VW] = ctrl->getValue().asReal();
+	gSavedSettings.setVector4(param.asString(), value);
+}
+
+void LLFloaterPreference::onCommitVec4X(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLVector4 value = gSavedSettings.getVector4(param.asString());
+	value.mV[VX] = ctrl->getValue().asReal();
+	gSavedSettings.setVector4(param.asString(), value);
+}
+
+void LLFloaterPreference::onCommitVec4Y(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLVector4 value = gSavedSettings.getVector4(param.asString());
+	value.mV[VY] = ctrl->getValue().asReal();
+	gSavedSettings.setVector4(param.asString(), value);
+}
+
+void LLFloaterPreference::onCommitVec4Z(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLVector4 value = gSavedSettings.getVector4(param.asString());
+	value.mV[VZ] = ctrl->getValue().asReal();
+	gSavedSettings.setVector4( param.asString() , value);
+}
+
 //BD - Array Debugs
 void LLFloaterPreference::onCommitX(LLUICtrl* ctrl, const LLSD& param)
 {
 	LLVector3 value = gSavedSettings.getVector3(param.asString());
 	value.mV[VX] = ctrl->getValue().asReal();
-	gSavedSettings.setVector3( param.asString() , value);
+	gSavedSettings.setVector3(param.asString(), value);
 }
 
 void LLFloaterPreference::onCommitY(LLUICtrl* ctrl, const LLSD& param)
 {
 	LLVector3 value = gSavedSettings.getVector3(param.asString());
 	value.mV[VY] = ctrl->getValue().asReal();
-	gSavedSettings.setVector3( param.asString() , value);
+	gSavedSettings.setVector3(param.asString(), value);
 }
 
 void LLFloaterPreference::onCommitZ(LLUICtrl* ctrl, const LLSD& param)
 {
 	LLVector3 value = gSavedSettings.getVector3(param.asString());
 	value.mV[VZ] = ctrl->getValue().asReal();
-	gSavedSettings.setVector3( param.asString() , value);
+	gSavedSettings.setVector3(param.asString(), value);
 }
 
 void LLFloaterPreference::onCommitXd(LLUICtrl* ctrl, const LLSD& param)
@@ -1247,9 +1282,10 @@ void LLFloaterPreference::refreshGraphicControls()
 	getChild<LLUICtrl>("RenderGlowWarmthWeights_Y")->setValue(gSavedSettings.getVector3("RenderGlowWarmthWeights").mV[VY]);
 	getChild<LLUICtrl>("RenderGlowWarmthWeights_Z")->setValue(gSavedSettings.getVector3("RenderGlowWarmthWeights").mV[VZ]);
 
-	getChild<LLUICtrl>("RenderShadowResolution_X")->setValue(gSavedSettings.getVector3("RenderShadowResolution").mV[VX]);
-	getChild<LLUICtrl>("RenderShadowResolution_Y")->setValue(gSavedSettings.getVector3("RenderShadowResolution").mV[VY]);
-	getChild<LLUICtrl>("RenderShadowResolution_Z")->setValue(gSavedSettings.getVector3("RenderShadowResolution").mV[VZ]);
+	getChild<LLUICtrl>("RenderShadowResolution_X")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VX]);
+	getChild<LLUICtrl>("RenderShadowResolution_Y")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VY]);
+	getChild<LLUICtrl>("RenderShadowResolution_Z")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VZ]);
+	getChild<LLUICtrl>("RenderShadowResolution_W")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VW]);
 
 	getChild<LLUICtrl>("RenderProjectorShadowResolution_X")->setValue(gSavedSettings.getVector3("RenderProjectorShadowResolution").mV[VX]);
 	getChild<LLUICtrl>("RenderProjectorShadowResolution_Y")->setValue(gSavedSettings.getVector3("RenderProjectorShadowResolution").mV[VY]);
