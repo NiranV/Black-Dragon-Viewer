@@ -61,7 +61,7 @@ uniform sampler2DShadow shadowMap1;
 uniform sampler2DShadow shadowMap2;
 uniform sampler2DShadow shadowMap3;
 
-uniform vec2 shadow_res;
+uniform vec4 shadow_res;
 
 uniform mat4 shadow_matrix[6];
 uniform vec4 shadow_clip;
@@ -198,20 +198,20 @@ vec3 calcPointLightOrSpotLight(vec3 light_col, vec3 diffuse, vec3 v, vec3 n, vec
 }
 
 #if HAS_SHADOW
-float pcfShadow(sampler2DShadow shadowMap, vec4 stc)
+float pcfShadow(sampler2DShadow shadowMap, vec4 stc, float shad_res)
 {
 	stc.xyz /= stc.w;
 	stc.z += shadow_bias;
 		
-	stc.x = floor(stc.x*shadow_res.x + fract(stc.y*shadow_res.y*12345))/shadow_res.x; // add some chaotic jitter to X sample pos according to Y to disguise the snapping going on here
+	stc.x = floor(stc.x*shad_res + fract(stc.y*shad_res*12345))/shadow_res.x; // add some chaotic jitter to X sample pos according to Y to disguise the snapping going on here
 	
 	float cs = shadow2D(shadowMap, stc.xyz).x;
 	float shadow = cs;
 	
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(2.0/shadow_res.x, 1.5/shadow_res.y, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(1.0/shadow_res.x, -1.5/shadow_res.y, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(-1.0/shadow_res.x, 1.5/shadow_res.y, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(-2.0/shadow_res.x, -1.5/shadow_res.y, 0.0)).x;
+    shadow += shadow2D(shadowMap, stc.xyz+vec3(2.0/shad_res, 1.5/shad_res, 0.0)).x;
+    shadow += shadow2D(shadowMap, stc.xyz+vec3(1.0/shad_res, -1.5/shad_res, 0.0)).x;
+    shadow += shadow2D(shadowMap, stc.xyz+vec3(-1.0/shad_res, 1.5/shad_res, 0.0)).x;
+    shadow += shadow2D(shadowMap, stc.xyz+vec3(-2.0/shad_res, -1.5/shad_res, 0.0)).x;
                        
     return shadow*0.2;
 }
@@ -478,7 +478,7 @@ void main()
 			
 			float w = 1.0;
 			w -= max(spos.z-far_split.z, 0.0)/transition_domain.z;
-			shadow += pcfShadow(shadowMap3, lpos)*w;
+			shadow += pcfShadow(shadowMap3, lpos, shadow_res.w)*w;
 			weight += w;
 			shadow += max((pos.z+shadow_clip.z)/(shadow_clip.z-shadow_clip.w)*2.0-1.0, 0.0);
 		}
@@ -490,7 +490,7 @@ void main()
 			float w = 1.0;
 			w -= max(spos.z-far_split.y, 0.0)/transition_domain.y;
 			w -= max(near_split.z-spos.z, 0.0)/transition_domain.z;
-			shadow += pcfShadow(shadowMap2, lpos)*w;
+			shadow += pcfShadow(shadowMap2, lpos, shadow_res.z)*w;
 			weight += w;
 		}
 
@@ -501,7 +501,7 @@ void main()
 			float w = 1.0;
 			w -= max(spos.z-far_split.x, 0.0)/transition_domain.x;
 			w -= max(near_split.y-spos.z, 0.0)/transition_domain.y;
-			shadow += pcfShadow(shadowMap1, lpos)*w;
+			shadow += pcfShadow(shadowMap1, lpos, shadow_res.y)*w;
 			weight += w;
 		}
 
@@ -512,7 +512,7 @@ void main()
 			float w = 1.0;
 			w -= max(near_split.x-spos.z, 0.0)/transition_domain.x;
 				
-			shadow += pcfShadow(shadowMap0, lpos)*w;
+			shadow += pcfShadow(shadowMap0, lpos, shadow_res.x)*w;
 			weight += w;
 		}
 		
