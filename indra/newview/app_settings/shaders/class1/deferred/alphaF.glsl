@@ -55,7 +55,6 @@ uniform mat3 ssao_effect_mat;
 
 uniform vec3 sun_dir;
 
-#if HAS_SHADOW
 uniform sampler2DShadow shadowMap0;
 uniform sampler2DShadow shadowMap1;
 uniform sampler2DShadow shadowMap2;
@@ -67,20 +66,14 @@ uniform mat4 shadow_matrix[6];
 uniform vec4 shadow_clip;
 uniform float shadow_bias;
 
-#endif
-
-#ifdef USE_DIFFUSE_TEX
 uniform sampler2D diffuseMap;
-#endif
 
 VARYING vec3 vary_fragcoord;
 VARYING vec3 vary_position;
 VARYING vec2 vary_texcoord0;
 VARYING vec3 vary_norm;
 
-#ifdef USE_VERTEX_COLOR
 VARYING vec4 vertex_color;
-#endif
 
 vec3 vary_PositionEye;
 vec3 vary_SunlitColor;
@@ -95,6 +88,11 @@ uniform vec4 light_position[8];
 uniform vec3 light_direction[8];
 uniform vec3 light_attenuation[8]; 
 uniform vec3 light_diffuse[8];
+
+uniform vec4 waterPlane;
+uniform vec4 waterFogColor;
+uniform float waterFogDensity;
+uniform float waterFogKS;
 
 vec3 srgb_to_linear(vec3 cs)
 {
@@ -111,7 +109,6 @@ vec3 srgb_to_linear(vec3 cs)
 #else
 	return mix(high_range, low_range, lte);
 #endif
-
 }
 
 vec3 linear_to_srgb(vec3 cl)
@@ -130,7 +127,6 @@ vec3 linear_to_srgb(vec3 cl)
 #else
 	return mix(high_range, low_range, lt);
 #endif
-
 }
 
 vec2 encode_normal(vec3 n)
@@ -197,32 +193,6 @@ vec3 calcPointLightOrSpotLight(vec3 light_col, vec3 diffuse, vec3 v, vec3 n, vec
 	return max(col, vec3(0.0,0.0,0.0));
 }
 
-#if HAS_SHADOW
-float pcfShadow(sampler2DShadow shadowMap, vec4 stc, float shad_res)
-{
-	stc.xyz /= stc.w;
-	stc.z += shadow_bias;
-		
-	stc.x = floor(stc.x*shad_res + fract(stc.y*shad_res*12345))/shadow_res.x; // add some chaotic jitter to X sample pos according to Y to disguise the snapping going on here
-	
-	float cs = shadow2D(shadowMap, stc.xyz).x;
-	float shadow = cs;
-	
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(2.0/shad_res, 1.5/shad_res, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(1.0/shad_res, -1.5/shad_res, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(-1.0/shad_res, 1.5/shad_res, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(-2.0/shad_res, -1.5/shad_res, 0.0)).x;
-                       
-    return shadow*0.2;
-}
-#endif
-
-#ifdef WATER_FOG
-uniform vec4 waterPlane;
-uniform vec4 waterFogColor;
-uniform float waterFogDensity;
-uniform float waterFogKS;
-
 vec4 applyWaterFogDeferred(vec3 pos, vec4 color)
 {
 	//normalize view vector
@@ -261,20 +231,22 @@ vec4 applyWaterFogDeferred(vec3 pos, vec4 color)
 	
 	return color;
 }
-#endif
 
 vec3 getSunlitColor()
 {
 	return vary_SunlitColor;
 }
+
 vec3 getAmblitColor()
 {
 	return vary_AmblitColor;
 }
+
 vec3 getAdditiveColor()
 {
 	return vary_AdditiveColor;
 }
+
 vec3 getAtmosAttenuation()
 {
 	return vary_AtmosAttenuation;
@@ -400,6 +372,7 @@ vec3 atmosTransport(vec3 light) {
 	light += getAdditiveColor() * 2.0;
 	return light;
 }
+
 vec3 atmosGetDiffuseSunlightColor()
 {
 	return getSunlitColor();
@@ -449,8 +422,28 @@ vec3 fullbrightScaleSoftClip(vec3 light)
 	return light;
 }
 
+float pcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen, float shad_res)
+{
+	float recip_shadow_res = 1.0 / shad_res;
+	stc.xyz /= stc.w;
+	stc.z += shadow_bias;
+	
+	stc.x = floor(stc.x*shad_res + fract(pos_screen.y*0.5)) * recip_shadow_res;
+	float cs = shadow2D(shadowMap, stc.xyz).x;
+	
+	float shadow = cs;
+	
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.60*recip_shadow_res, 0.55*recip_shadow_res, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.72*recip_shadow_res, -0.65*recip_shadow_res, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.60*recip_shadow_res, 0.55*recip_shadow_res, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.72*recip_shadow_res, -0.65*recip_shadow_res, 0.0)).x;
+	         
+    return shadow*0.2;
+}
+
 void main() 
 {
+    vec2 pos_screen = vary_fragcoord.xy;
 	vec2 frag = vary_fragcoord.xy/vary_fragcoord.z*0.5+0.5;
 	frag *= screen_res;
 	
@@ -478,7 +471,7 @@ void main()
 			
 			float w = 1.0;
 			w -= max(spos.z-far_split.z, 0.0)/transition_domain.z;
-			shadow += pcfShadow(shadowMap3, lpos, shadow_res.w)*w;
+			shadow += pcfShadow(shadowMap3, lpos, pos_screen, shadow_res.w)*w;
 			weight += w;
 			shadow += max((pos.z+shadow_clip.z)/(shadow_clip.z-shadow_clip.w)*2.0-1.0, 0.0);
 		}
@@ -490,7 +483,7 @@ void main()
 			float w = 1.0;
 			w -= max(spos.z-far_split.y, 0.0)/transition_domain.y;
 			w -= max(near_split.z-spos.z, 0.0)/transition_domain.z;
-			shadow += pcfShadow(shadowMap2, lpos, shadow_res.z)*w;
+			shadow += pcfShadow(shadowMap2, lpos, pos_screen, shadow_res.z)*w;
 			weight += w;
 		}
 
@@ -501,7 +494,7 @@ void main()
 			float w = 1.0;
 			w -= max(spos.z-far_split.x, 0.0)/transition_domain.x;
 			w -= max(near_split.y-spos.z, 0.0)/transition_domain.y;
-			shadow += pcfShadow(shadowMap1, lpos, shadow_res.y)*w;
+			shadow += pcfShadow(shadowMap1, lpos, pos_screen, shadow_res.y)*w;
 			weight += w;
 		}
 
@@ -512,7 +505,7 @@ void main()
 			float w = 1.0;
 			w -= max(near_split.x-spos.z, 0.0)/transition_domain.x;
 				
-			shadow += pcfShadow(shadowMap0, lpos, shadow_res.x)*w;
+			shadow += pcfShadow(shadowMap0, lpos, pos_screen, shadow_res.x)*w;
 			weight += w;
 		}
 		
