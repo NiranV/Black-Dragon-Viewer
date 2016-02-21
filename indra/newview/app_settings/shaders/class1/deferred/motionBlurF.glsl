@@ -35,7 +35,7 @@ uniform sampler2DRect diffuseRect;
 uniform sampler2DRect normalMap;
 
 uniform float time_step;
-uniform float mblur_strength;
+uniform int mblur_strength;
 
 VARYING vec4 vary_fragcoord;
 uniform vec2 screen_res;

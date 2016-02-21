@@ -22,7 +22,7 @@
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
- 
+
 #ifdef DEFINE_GL_FRAGCOLOR
 out vec4 frag_color;
 #else
@@ -34,8 +34,8 @@ VARYING vec3 vary_velocity;
 void main() 
 {
 	vec2 ref = vary_velocity.xy - vec2(0.5,0.5);
-
-	if (dot(ref,ref) <= 0.035)
+	
+	if (dot(ref,ref) < 0.035)
 	{
 		discard;
 	}

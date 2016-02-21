@@ -464,8 +464,7 @@ void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
 		{
 			renderDeferredRiggedSimple(avatarp);
 			renderDeferredRiggedBump(avatarp);
-			U32 CurCount = 0;
-			for (; CurCount < 13; CurCount++)
+			for (S32 CurCount = 0; CurCount < 16; CurCount++)
 			{
 				renderDeferredRiggedMaterial(avatarp, CurCount);
 			}

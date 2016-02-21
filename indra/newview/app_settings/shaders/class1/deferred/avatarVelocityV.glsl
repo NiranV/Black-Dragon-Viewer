@@ -24,7 +24,7 @@
  */
  
 uniform mat4 projection_matrix;
-uniform vec4 lastMatrixPalette[45];
+uniform vec4 lastMatrixPalette[52];
 uniform mat4 last_modelview_matrix;
 uniform mat4 current_modelview_matrix;
 uniform mat4 last_modelview_matrix_inverse;

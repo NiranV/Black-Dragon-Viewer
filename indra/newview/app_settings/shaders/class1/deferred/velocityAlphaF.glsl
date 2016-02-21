@@ -46,8 +46,8 @@ void main()
 	}
 
 	vec2 ref = vary_velocity.xy - vec2(0.5,0.5);
-
-	if (dot(ref,ref) <= 0.035)
+	
+	if (dot(ref,ref) < 0.035)
 	{
 		discard;
 	}

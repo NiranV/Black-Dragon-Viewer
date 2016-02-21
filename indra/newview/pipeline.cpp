@@ -8257,8 +8257,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 	}
 
 	//BD - We should temporarily disable Motion Blur when we are in Freeze World mode.
-	if (LLPipeline::sRenderDeferred && LLPipeline::RenderMotionBlur
-		&& !(gSavedSettings.getBOOL("UseFreezeWorld") && LLFloaterReg::instanceVisible("snapshot")))
+	if (LLPipeline::sRenderDeferred && LLPipeline::RenderMotionBlur)
 	{ //motion blur
 
 		gMotionBlurProgram.bind();
@@ -8279,7 +8278,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 		
 		gMotionBlurProgram.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, mScreen.getWidth(), mScreen.getHeight());
 		gMotionBlurProgram.uniform1f(LLShaderMgr::TIME_STEP, gFrameIntervalSeconds);
-		gMotionBlurProgram.uniform1f(LLShaderMgr::MBLUR_STRENGTH, RenderMotionBlurStrength);
+		gMotionBlurProgram.uniform1i(LLShaderMgr::MBLUR_STRENGTH, RenderMotionBlurStrength);
 
 		gGL.begin(LLRender::TRIANGLE_STRIP);
 		gGL.texCoord2f(tc1.mV[0], tc1.mV[1]);
@@ -9745,6 +9744,7 @@ void LLPipeline::renderGeomMotionBlur()
 	renderMotionBlur(LLRenderPass::PASS_FULLBRIGHT);
 	renderMotionBlur(LLRenderPass::PASS_BUMP);
 	renderMotionBlur(LLRenderPass::PASS_MATERIAL);
+	renderMotionBlur(LLRenderPass::PASS_MATERIAL_ALPHA_MASK);
 
 	gVelocityProgram.unbind();
 
