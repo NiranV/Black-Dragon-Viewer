@@ -80,6 +80,7 @@
 #include "llappviewer.h"
 #include "llenvmanager.h"
 #include "lltoolfocus.h"
+#include "llviewerobjectlist.h"
 
 // Third party library includes
 #include <boost/algorithm/string.hpp>
@@ -684,6 +685,15 @@ static bool handleTimeFactorChanged(const LLSD& newvalue)
 	}
 	return true;
 }
+
+static bool handleFullbrightChanged(const LLSD& newvalue)
+{
+	if (!gSavedSettings.getBOOL("RenderEnableFullbright"))
+	{
+		gObjectList.killAllFullbrights();
+	}
+	return true;
+}
 //BD
 
 ////////////////////////////////////////////////////////////////////////////
@@ -855,6 +865,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
 	gSavedSettings.getControl("RenderShadowType")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
+	gSavedSettings.getControl("RenderEnableFullbright")->getSignal()->connect(boost::bind(&handleFullbrightChanged, _2));
 //	//BD
 }
 

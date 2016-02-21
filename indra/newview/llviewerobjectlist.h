@@ -75,6 +75,10 @@ public:
 	BOOL killObject(LLViewerObject *objectp, bool derendered = false);
 	void killObjects(LLViewerRegion *regionp); // Kill all objects owned by a particular region.
 	void killAllObjects();
+
+//	//BD - Fullbright Toggle
+	void killAllFullbrights();
+
 	void removeDrawable(LLDrawable* drawablep);
 
 	void cleanDeadObjects(const BOOL use_timer = TRUE);	// Clean up the dead object list.

@@ -149,6 +149,7 @@ public:
 
 	U8	 getBumpmap() const { return mBump & TEM_BUMP_MASK; }
 	U8	 getFullbright() const { return (mBump>>TEM_FULLBRIGHT_SHIFT) & TEM_FULLBRIGHT_MASK; }
+	bool getFullbrightFlag() const { return (mBump >> TEM_FULLBRIGHT_SHIFT) & TEM_FULLBRIGHT_MASK; }
 	U8	 getShiny() const { return (mBump>>TEM_SHINY_SHIFT) & TEM_SHINY_MASK; }
 	U8	 getBumpShiny() const { return mBump & TEM_BUMP_SHINY_MASK; }
  	U8	 getBumpShinyFullbright() const { return mBump; }

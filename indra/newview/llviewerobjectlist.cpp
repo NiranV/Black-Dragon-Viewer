@@ -1406,6 +1406,54 @@ void LLViewerObjectList::killObjects(LLViewerRegion *regionp)
 	cleanDeadObjects(FALSE);
 }
 
+char itoc(int in)
+{
+	if (in < 0)
+	{
+		return (char)0;
+	}
+	if (in <= 9)
+	{
+		return (char)in + '0';
+	}
+	if (in >= 9)
+	{
+		return (char)in + 'a' - 10;
+	}
+	return (char)0;
+}
+
+int ctoi(char c)
+{
+	if (c >= '0' && c <= '9')
+	{
+		return c - '0';
+	}
+	return 0;
+}
+
+//BD - Fullbright Toggle
+void LLViewerObjectList::killAllFullbrights()
+{
+	LLViewerObject *objectp;
+	for (vobj_list_t::iterator iter = mObjects.begin(); iter != mObjects.end(); ++iter)
+	{
+		objectp = *iter;
+		for (S32 i = 0; i < objectp->getNumTEs(); i++)
+		{
+			const LLTextureEntry* te = objectp->getTE(i);
+			if (te->getFullbrightFlag())
+			{
+				if (objectp != gAgentAvatarp)
+				{
+					LL_INFOS() << itoc(te->getFullbright()) << LL_ENDL;
+					objectp->setTEFullbright(i, 0);
+				}
+			}
+		}
+	}
+}
+
 void LLViewerObjectList::killAllObjects()
 {
 	// Used only on global destruction.
