@@ -951,6 +951,7 @@ BOOL LLFloaterPreference::postBuild()
 //	//BD - Refresh our controls at the start
 	refreshGraphicControls();
 	refreshCameraControls();
+	refreshKeys();
 
 	toggleTabs();
 	if (!gSavedSettings.getBOOL("RememberPreferencesTabs"))
@@ -1142,6 +1143,7 @@ void LLFloaterPreference::onExportControls()
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
 	LL_INFOS("Settings") << "Exporting controls to " << filename << LL_ENDL;
 	gViewerKeyboard.exportBindingsXML(filename);
+	refreshKeys();
 }
 
 void LLFloaterPreference::onUnbindControls()
@@ -1163,7 +1165,7 @@ void LLFloaterPreference::onDefaultControls()
 	}
 }
 
-/*void LLFloaterPreference::refreshKeys()
+void LLFloaterPreference::refreshKeys()
 {
 	LLSD settings;
 	llifstream infile;
@@ -1179,15 +1181,27 @@ void LLFloaterPreference::onDefaultControls()
 	LLUICtrl* ctrl;
 	while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(settings, infile))
 	{
-		ctrl = getChild<LLTextBox>("label_slot_" + settings["slot"].asString());
+		ctrl = getChild<LLButton>("label_slot_" + settings["slot"].asString());
 		if (ctrl)
 		{
-			ctrl->setTextArg("[KEY]", settings["key"].asString());
-			ctrl->setTextArg("[MASK]", settings["mask"].asString());
+			MASK mask;
+			std::string mask_string = "";
+			gKeyboard->maskFromString(settings["mask"].asString(), &mask);
+			ctrl->setLabelArg("[KEY]", settings["key"].asString());
+			
+			if (mask != MASK_NONE)
+			{
+				mask_string = " + [" + gKeyboard->stringFromMask(mask, true) + "]";
+				ctrl->setLabelArg("[MASK]", mask_string);
+			}
+			else
+			{
+				ctrl->setLabelArg("[MASK]", mask_string);
+			}
 		}
 	}
 	infile.close();
-}*/
+}
 
 
 //BD - Expandable Tabs

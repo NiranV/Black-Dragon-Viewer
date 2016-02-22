@@ -218,7 +218,7 @@ public:
 	void onExportControls();
 	void onUnbindControls();
 	void onDefaultControls();
-	//void refreshKeys();
+	void refreshKeys();
 
 //	//BD - Revert to Default
 	void inputOutput();

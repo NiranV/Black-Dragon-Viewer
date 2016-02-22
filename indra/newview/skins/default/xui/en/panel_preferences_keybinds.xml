@@ -65,15 +65,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for walking forward."
- name="push_forward"
+ name="label_slot_24"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="24"
@@ -91,7 +92,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="24"
@@ -100,16 +101,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for walking forward."
- name="push_forward2"
+ name="label_slot_46"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="46"
@@ -127,7 +129,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="46"
@@ -158,15 +160,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for walking backwards."
- name="push_backward"
+ name="label_slot_25"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="25"
@@ -184,7 +187,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="25"
@@ -193,16 +196,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for walking backwards."
- name="push_backward2"
+ name="label_slot_47"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="47"
@@ -220,7 +224,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="47"
@@ -251,15 +255,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for strafing left."
- name="slide_left"
+ name="label_slot_26"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="26"
@@ -277,7 +282,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="26"
@@ -286,16 +291,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for strafing left."
- name="slide_left2"
+ name="label_slot_48"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="48"
@@ -313,7 +319,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="48"
@@ -344,15 +350,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for strafing right."
- name="slide_right"
+ name="label_slot_27"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="27"
@@ -370,7 +377,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="27"
@@ -379,16 +386,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for strafing right."
- name="slide_right2"
+ name="label_slot_49"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="49"
@@ -406,7 +414,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="49"
@@ -437,15 +445,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for rotating left."
- name="turn_left"
+ name="label_slot_28"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="28"
@@ -463,7 +472,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="28"
@@ -472,16 +481,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for rotating left."
- name="turn_left2"
+ name="label_slot_50"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="50"
@@ -499,7 +509,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="50"
@@ -530,15 +540,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for rotating right."
- name="turn_right"
+ name="label_slot_29"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="29"
@@ -556,7 +567,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="29"
@@ -565,16 +576,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for rotating right."
- name="turn_right2"
+ name="label_slot_51"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="51"
@@ -592,7 +604,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="51"
@@ -623,15 +635,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for jumping."
- name="jump"
+ name="label_slot_30"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="30"
@@ -649,7 +662,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="30"
@@ -658,16 +671,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for jumping."
- name="jump2"
+ name="label_slot_52"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="52"
@@ -685,7 +699,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="52"
@@ -716,15 +730,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for crouching."
- name="push_down"
+ name="label_slot_31"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="31"
@@ -742,7 +757,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="31"
@@ -751,16 +766,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for crouching."
- name="push_down2"
+ name="label_slot_53"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="53"
@@ -778,7 +794,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="53"
@@ -809,15 +825,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to stop movement."
- name="stop_moving"
+ name="label_slot_33"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="33"
@@ -835,7 +852,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="33"
@@ -844,16 +861,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to stop movement."
- name="stop_moving2"
+ name="label_slot_55"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="55"
@@ -871,7 +889,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="55"
@@ -902,15 +920,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for opening chat."
- name="start_chat"
+ name="label_slot_34"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="34"
@@ -928,7 +947,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="34"
@@ -940,13 +959,14 @@ width="510">
  name="start_chat2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="48"
@@ -976,15 +996,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for starting chat with '/'."
- name="start_gesture"
+ name="label_slot_35"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="35"
@@ -1002,7 +1023,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="35"
@@ -1014,13 +1035,14 @@ width="510">
  name="start_gesture2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="49"
@@ -1051,15 +1073,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for toggling fly mode."
- name="toggle_fly"
+ name="label_slot_32"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="32"
@@ -1077,7 +1100,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="32"
@@ -1086,16 +1109,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for toggling fly mode."
- name="toggle_fly2"
+ name="label_slot_54"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="54"
@@ -1113,7 +1137,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="54"
@@ -1143,15 +1167,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera clockwise."
- name="spin_around_cw"
+ name="label_slot_36"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="36"
@@ -1169,7 +1194,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="36"
@@ -1178,19 +1203,20 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera clockwise."
- name="spin_around_cw2"
+ name="label_slot_58"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
-   parameter="50"
+   parameter="58"
    function="Pref.BindKey"/>
  </button>
  <button
@@ -1205,10 +1231,10 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
-   parameter="50"
+   parameter="58"
    function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
@@ -1235,15 +1261,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera counter-clockwise."
- name="spin_around_ccw"
+ name="label_slot_37"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="37"
@@ -1261,7 +1288,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="37"
@@ -1270,19 +1297,20 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera counter-clockwise."
- name="spin_around_ccw2"
+ name="label_slot_59"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
-   parameter="51"
+   parameter="59"
    function="Pref.BindKey"/>
  </button>
  <button
@@ -1297,10 +1325,10 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
-   parameter="51"
+   parameter="59"
    function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
@@ -1327,15 +1355,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera in."
- name="move_forward"
+ name="label_slot_38"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="38"
@@ -1353,7 +1382,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="38"
@@ -1362,19 +1391,20 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera in."
- name="move_forward2"
+ name="label_slot_60"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
-   parameter="52"
+   parameter="60"
    function="Pref.BindKey"/>
  </button>
  <button
@@ -1389,10 +1419,10 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
-   parameter="52"
+   parameter="60"
    function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
@@ -1419,15 +1449,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera out."
- name="move_backward"
+ name="label_slot_39"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="39"
@@ -1445,7 +1476,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="39"
@@ -1454,19 +1485,20 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera out."
- name="move_backward2"
+ name="label_slot_61"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
-   parameter="53"
+   parameter="61"
    function="Pref.BindKey"/>
  </button>
  <button
@@ -1481,10 +1513,10 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
-   parameter="53"
+   parameter="61"
    function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
@@ -1511,15 +1543,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera over."
- name="spin_over"
+ name="label_slot_40"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="40"
@@ -1537,7 +1570,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="40"
@@ -1546,19 +1579,20 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera over."
- name="spin_over2"
+ name="label_slot_62"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
-   parameter="54"
+   parameter="62"
    function="Pref.BindKey"/>
  </button>
  <button
@@ -1573,10 +1607,10 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
-   parameter="54"
+   parameter="62"
    function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
@@ -1603,15 +1637,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera under."
- name="spin_under"
+ name="label_slot_41"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="41"
@@ -1629,7 +1664,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="41"
@@ -1638,19 +1673,20 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera under."
- name="spin_under2"
+ name="label_slot_63"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
-   parameter="55"
+   parameter="63"
    function="Pref.BindKey"/>
  </button>
  <button
@@ -1665,10 +1701,10 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
-   parameter="55"
+   parameter="63"
    function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
@@ -1695,15 +1731,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to pan the camera to the left."
- name="pan_left"
+ name="label_slot_42"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="42"
@@ -1721,7 +1758,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="42"
@@ -1730,18 +1767,20 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to pan the camera to the left."
- name="pan_left2"
+ name="label_slot_64"
+ enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
-   parameter="56"
+   parameter="64"
    function="Pref.BindKey"/>
  </button>
  <button
@@ -1756,10 +1795,10 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
-   parameter="56"
+   parameter="64"
    function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
@@ -1787,15 +1826,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to pan the camera to the right."
- name="pan_right"
+ name="label_slot_43"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="43"
@@ -1813,7 +1853,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="43"
@@ -1822,18 +1862,20 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to pan the camera to the right."
- name="pan_right2"
+ name="label_slot_65"
+ enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
-   parameter="57"
+   parameter="65"
    function="Pref.BindKey"/>
  </button>
  <button
@@ -1848,10 +1890,10 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
-   parameter="57"
+   parameter="65"
    function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
@@ -1878,15 +1920,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to pan the camera up."
- name="pan_up"
+ name="label_slot_44"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="44"
@@ -1904,7 +1947,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="44"
@@ -1913,19 +1956,20 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to pan the camera up."
- name="pan_up2"
+ name="label_slot_66"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
-   parameter="58"
+   parameter="66"
    function="Pref.BindKey"/>
  </button>
  <button
@@ -1940,10 +1984,10 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
-   parameter="58"
+   parameter="66"
    function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
@@ -1970,15 +2014,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to pan the camera down."
- name="pan_down"
+ name="label_slot_45"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="45"
@@ -1996,7 +2041,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="45"
@@ -2005,19 +2050,20 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to pan the camera down."
- name="pan_down2"
+ name="label_slot_67"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
-   parameter="59"
+   parameter="67"
    function="Pref.BindKey"/>
  </button>
  <button
@@ -2032,10 +2078,10 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
-   parameter="59"
+   parameter="67"
    function="Pref.UnbindKey"/>
  </button>
  <!--<line_editor
@@ -2089,15 +2135,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for walking forward."
- name="push_forward"
+ name="label_slot_0"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="0"
@@ -2115,7 +2162,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="0"
@@ -2124,16 +2171,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for walking forward."
- name="push_forward2"
+ name="label_slot_12"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="12"
@@ -2151,7 +2199,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="12"
@@ -2182,15 +2230,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for walking backwards."
- name="push_backward"
+ name="label_slot_1"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="1"
@@ -2208,7 +2257,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="1"
@@ -2217,16 +2266,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for walking backwards."
- name="push_backward2"
+ name="label_slot_13"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="13"
@@ -2244,7 +2294,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="13"
@@ -2275,15 +2325,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for strafing left."
- name="slide_left"
+ name="label_slot_2"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="2"
@@ -2301,7 +2352,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="2"
@@ -2310,16 +2361,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for strafing left."
- name="slide_left2"
+ name="label_slot_14"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="14"
@@ -2337,7 +2389,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="14"
@@ -2368,15 +2420,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for strafing right."
- name="slide_right"
+ name="label_slot_3"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="3"
@@ -2394,7 +2447,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="3"
@@ -2403,16 +2456,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for strafing right."
- name="slide_right2"
+ name="label_slot_15"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="15"
@@ -2430,7 +2484,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="15"
@@ -2461,15 +2515,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for rotating left."
- name="turn_left"
+ name="label_slot_4"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="4"
@@ -2487,7 +2542,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="4"
@@ -2496,16 +2551,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for rotating left."
- name="turn_left2"
+ name="label_slot_16"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="16"
@@ -2523,7 +2579,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="16"
@@ -2554,15 +2610,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for rotating right."
- name="turn_right"
+ name="label_slot_5"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="5"
@@ -2580,7 +2637,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="5"
@@ -2589,16 +2646,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for rotating right."
- name="turn_right2"
+ name="label_slot_17"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="17"
@@ -2616,7 +2674,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="17"
@@ -2647,15 +2705,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for jumping."
- name="jump"
+ name="label_slot_6"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="6"
@@ -2673,7 +2732,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="6"
@@ -2682,16 +2741,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for jumping."
- name="jump2"
+ name="label_slot_18"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="18"
@@ -2709,7 +2769,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="18"
@@ -2740,15 +2800,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for crouching."
- name="push_down"
+ name="label_slot_7"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="7"
@@ -2766,7 +2827,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="7"
@@ -2775,16 +2836,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for crouching."
- name="push_down2"
+ name="label_slot_19"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="19"
@@ -2802,7 +2864,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="19"
@@ -2833,15 +2895,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to stop movement."
- name="stop_moving"
+ name="label_slot_11"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="11"
@@ -2859,7 +2922,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="11"
@@ -2868,16 +2931,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to stop movement."
- name="stop_moving2"
+ name="label_slot_23"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="23"
@@ -2895,7 +2959,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="23"
@@ -2926,15 +2990,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for opening chat."
- name="start_chat"
+ name="label_slot_9"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="9"
@@ -2952,7 +3017,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="9"
@@ -2964,13 +3029,14 @@ width="510">
  name="start_chat2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="21"
@@ -3000,15 +3066,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for starting chat with '/'."
- name="start_gesture"
+ name="label_slot_10"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="10"
@@ -3026,7 +3093,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="10"
@@ -3038,13 +3105,14 @@ width="510">
  name="start_gesture2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="22"
@@ -3075,15 +3143,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for toggling fly mode."
- name="toggle_fly"
+ name="label_slot_8"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="8"
@@ -3101,7 +3170,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="8"
@@ -3110,16 +3179,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for toggling fly mode."
- name="toggle_fly2"
+ name="label_slot_20"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="20"
@@ -3137,7 +3207,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="20"
@@ -3193,15 +3263,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for opening chat."
- name="start_chat"
+ name="label_slot_86"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="86"
@@ -3219,7 +3290,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="86"
@@ -3231,13 +3302,14 @@ width="510">
  name="start_chat2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="88"
@@ -3267,15 +3339,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for starting chat with '/'."
- name="start_gesture"
+ name="label_slot_87"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="87"
@@ -3293,7 +3366,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="87"
@@ -3305,13 +3378,14 @@ width="510">
  name="start_gesture"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="89"
@@ -3367,15 +3441,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for opening chat."
- name="start_chat"
+ name="label_slot_96"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="96"
@@ -3393,7 +3468,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="96"
@@ -3405,13 +3480,14 @@ width="510">
  name="start_chat2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="96"
@@ -3441,15 +3517,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for starting chat with '/'."
- name="start_gesture"
+ name="label_slot_97"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="97"
@@ -3467,7 +3544,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="97"
@@ -3479,13 +3556,14 @@ width="510">
  name="start_gesture2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="97"
@@ -3515,15 +3593,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera clockwise."
- name="spin_around_cw_sitting"
+ name="label_slot_92"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="92"
@@ -3541,7 +3620,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="92"
@@ -3553,13 +3632,14 @@ width="510">
  name="spin_around_cw_sitting2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="92"
@@ -3589,15 +3669,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera counter-clockwise."
- name="spin_around_ccw_sitting"
+ name="label_slot_93"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="93"
@@ -3615,7 +3696,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="93"
@@ -3627,13 +3708,14 @@ width="510">
  name="spin_around_ccw_sitting2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="93"
@@ -3663,15 +3745,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera in."
- name="move_forward_sitting"
+ name="label_slot_90"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="90"
@@ -3689,7 +3772,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="90"
@@ -3701,13 +3784,14 @@ width="510">
  name="move_forward_sitting2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="90"
@@ -3737,15 +3821,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera out."
- name="move_backward_sitting"
+ name="label_slot_91"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="91"
@@ -3763,7 +3848,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="91"
@@ -3775,13 +3860,14 @@ width="510">
  name="move_backward_sitting2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="91"
@@ -3811,15 +3897,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera over."
- name="spin_over_sitting"
+ name="label_slot_94"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="94"
@@ -3837,7 +3924,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="94"
@@ -3849,13 +3936,14 @@ width="510">
  name="spin_over_sitting2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="94"
@@ -3885,15 +3973,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera under."
- name="spin_over_sitting"
+ name="label_slot_95"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="95"
@@ -3911,7 +4000,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="95"
@@ -3923,13 +4012,14 @@ width="510">
  name="spin_over_sitting2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="95"
@@ -3984,15 +4074,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for opening chat."
- name="start_chat"
+ name="label_slot_104"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="104"
@@ -4010,7 +4101,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="104"
@@ -4022,13 +4113,14 @@ width="510">
  name="start_chat2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="112"
@@ -4058,15 +4150,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for opening chat."
- name="start_chat"
+ name="label_slot_105"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="105"
@@ -4084,7 +4177,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="105"
@@ -4096,13 +4189,14 @@ width="510">
  name="start_chat2"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="113"
@@ -4132,15 +4226,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera clockwise."
- name="edit_avatar_spin_cw"
+ name="label_slot_100"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="100"
@@ -4158,7 +4253,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="100"
@@ -4167,16 +4262,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera clockwise."
- name="edit_avatar_spin_cw2"
+ name="label_slot_108"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="108"
@@ -4194,7 +4290,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="108"
@@ -4224,15 +4320,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera counter-clockwise."
- name="edit_avatar_spin_ccw"
+ name="label_slot_101"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="101"
@@ -4250,7 +4347,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="101"
@@ -4259,16 +4356,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for spinning the camera counter-clockwise."
- name="edit_avatar_spin_ccw2"
+ name="label_slot_109"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="109"
@@ -4286,7 +4384,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="109"
@@ -4316,15 +4414,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera in."
- name="edit_avatar_move_forward"
+ name="label_slot_98"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="98"
@@ -4342,7 +4441,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="98"
@@ -4351,16 +4450,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera in."
- name="edit_avatar_move_forward"
+ name="label_slot_106"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="106"
@@ -4378,7 +4478,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="106"
@@ -4408,15 +4508,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera out."
- name="edit_avatar_move_backward"
+ name="label_slot_99"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="99"
@@ -4434,7 +4535,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="99"
@@ -4443,16 +4544,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key for zooming the camera out."
- name="edit_avatar_move_backward2"
+ name="label_slot_107"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="107"
@@ -4470,7 +4572,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="107"
@@ -4500,15 +4602,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera over."
- name="edit_avatar_spin_over"
+ name="label_slot_102"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="102"
@@ -4526,7 +4629,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="102"
@@ -4535,16 +4638,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera over."
- name="edit_avatar_spin_over2"
+ name="label_slot_110"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="110"
@@ -4562,7 +4666,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="110"
@@ -4592,15 +4696,16 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera under."
- name="edit_avatar_spin_under"
+ name="label_slot_103"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set key⌉"
+ label="⌊[KEY][MASK]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="270"
+ left="225"
  top_delta="0">
    <button.commit_callback
    parameter="103"
@@ -4618,7 +4723,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="205"
  top_delta="-1">
    <button.commit_callback
    parameter="103"
@@ -4627,16 +4732,17 @@ width="510">
  <button
  follows="top|left"
  tool_tip="Bind a key to spin the camera under."
- name="edit_avatar_spin_under2"
+ name="label_slot_111"
  enabled="true"
  height="15"
- width="80"
+ width="125"
+ halign="left"
  is_toggle="false"
- label="⌊set alt⌉"
+ label="⌊[MASK][KEY]⌉"
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left="370"
+ left="365"
  top_delta="1">
    <button.commit_callback
    parameter="111"
@@ -4654,7 +4760,7 @@ width="510">
  image_selected="transparent.j2c"
  image_unselected="transparent.j2c"
  layout="topleft"
- left_pad="-15"
+ left="345"
  top_delta="-1">
    <button.commit_callback
    parameter="111"

@@ -410,25 +410,47 @@ std::string LLKeyboard::stringFromAccelerator( MASK accel_mask, KEY key )
 
 //BD - Custom Keyboard Layout
 //static
-std::string LLKeyboard::stringFromMask(MASK mask)
+std::string LLKeyboard::stringFromMask(MASK mask, bool for_ui)
 {
 	std::string res;
-	if (mask == (MASK_NONE))
-		res = "NONE";
-	else if (mask == (MASK_CONTROL))
-		res = "CTL";
-	else if (mask == (MASK_ALT))
-		res = "ALT";
-	else if (mask == (MASK_SHIFT))
-		res = "SHIFT";
-	else if (mask == (MASK_ALT | MASK_CONTROL))
-		res = "CTL_ALT";
-	else if (mask == (MASK_SHIFT | MASK_ALT))
-		res = "ALT_SHIFT";
-	else if (mask == (MASK_SHIFT | MASK_CONTROL))
-		res = "CTL_SHIFT";
-	else if (mask == (MASK_SHIFT | MASK_CONTROL | MASK_ALT))
-		res = "CTL_ALT_SHIFT";
+	if (for_ui)
+	{
+		if (mask == (MASK_NONE))
+			res = "";
+		else if (mask == (MASK_CONTROL))
+			res = "Ctrl";
+		else if (mask == (MASK_ALT))
+			res = "Alt";
+		else if (mask == (MASK_SHIFT))
+			res = "Shift";
+		else if (mask == (MASK_ALT | MASK_CONTROL))
+			res = "Ctl Alt";
+		else if (mask == (MASK_SHIFT | MASK_ALT))
+			res = "Alt Shift";
+		else if (mask == (MASK_SHIFT | MASK_CONTROL))
+			res = "Ctl Shift";
+		else if (mask == (MASK_SHIFT | MASK_CONTROL | MASK_ALT))
+			res = "Ctl Alt Shift";
+	}
+	else
+	{
+		if (mask == (MASK_NONE))
+			res = "NONE";
+		else if (mask == (MASK_CONTROL))
+			res = "CTL";
+		else if (mask == (MASK_ALT))
+			res = "ALT";
+		else if (mask == (MASK_SHIFT))
+			res = "SHIFT";
+		else if (mask == (MASK_ALT | MASK_CONTROL))
+			res = "CTL_ALT";
+		else if (mask == (MASK_SHIFT | MASK_ALT))
+			res = "ALT_SHIFT";
+		else if (mask == (MASK_SHIFT | MASK_CONTROL))
+			res = "CTL_SHIFT";
+		else if (mask == (MASK_SHIFT | MASK_CONTROL | MASK_ALT))
+			res = "CTL_ALT_SHIFT";
+	}
 
 	return res;
 }

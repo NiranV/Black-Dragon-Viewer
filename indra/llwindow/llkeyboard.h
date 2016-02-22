@@ -106,7 +106,7 @@ public:
 	static BOOL		keyFromString(const std::string& str, KEY *key);			// False on failure
 
 //	//BD - Custom Keyboard Layout
-	static std::string stringFromMask(MASK mask);
+	static std::string stringFromMask(MASK mask, bool for_ui = false);
 	static std::string stringFromKey(KEY key, bool translate = true);
 
 	static std::string stringFromAccelerator( MASK accel_mask, KEY key );
