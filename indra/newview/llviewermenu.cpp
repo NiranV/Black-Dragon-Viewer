@@ -9121,6 +9121,12 @@ void handle_copy_uuid()
 	}
 }
 
+//BD - Clear derender list
+void handle_derender_clear()
+{
+	gObjectList.mDerenderList.clear();
+}
+
 
 class LLAvatarCopyUUID : public view_listener_t
 {
@@ -9703,6 +9709,8 @@ void initialize_menus()
 //	//BD - Additional features
 	commit.add("World.SaveCamera", boost::bind(&LLAgentCamera::saveCamera, &gAgentCamera));
 	commit.add("World.LoadCamera", boost::bind(&LLAgentCamera::loadSavedCamera, &gAgentCamera));
+
+	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));
 
 	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));
 
