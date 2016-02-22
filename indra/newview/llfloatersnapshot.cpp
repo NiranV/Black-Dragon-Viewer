@@ -959,6 +959,7 @@ LLFloaterSnapshot::~LLFloaterSnapshot()
 
 BOOL LLFloaterSnapshot::postBuild()
 {
+	mSnapshotFreezeWorld = false;
 	mRefreshBtn = getChild<LLUICtrl>("new_snapshot_btn");
 	childSetAction("new_snapshot_btn", Impl::onClickNewSnapshot, this);
 	mRefreshLabel = getChild<LLUICtrl>("refresh_lbl");

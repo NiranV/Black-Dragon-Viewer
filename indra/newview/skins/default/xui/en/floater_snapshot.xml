@@ -222,6 +222,7 @@
         <check_box
          label="Freeze World"
 		 control_name="UseFreezeWorld"
+		 initial_value="false"
          layout="topleft"
 		 height="16"
          left="10"
