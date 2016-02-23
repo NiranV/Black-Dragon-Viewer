@@ -850,7 +850,7 @@ BOOL LLViewerKeyboard::exportBindingsXML(const std::string& filename)
 {
 	S32 slot = 0;
 	llofstream file;
-	LL_INFOS("Settings") << "Control settings path: " << filename << "" << LL_ENDL;
+	//LL_INFOS("Settings") << "Control settings path: " << filename << "" << LL_ENDL;
 
 	//BD - Open the file and go through all modes, while in all modes go through all
 	//     bindings and write them into the file.
@@ -872,10 +872,10 @@ BOOL LLViewerKeyboard::exportBindingsXML(const std::string& filename)
 
 			LLSDSerialize::toXML(record, file);
 			slot++;
-			LL_INFOS() << "Exported: " << key << +"(" + record["key"].asString() << ") + " 
-						<< mask << +"(" << record["mask"].asString() << ") to " 
-						<< record["function"] << " in mode " 
-						<< i << LL_ENDL;
+			//LL_INFOS() << "Exported: " << key << +"(" + record["key"].asString() << ") + " 
+			//			<< mask << +"(" << record["mask"].asString() << ") to " 
+			//			<< record["function"] << " in mode " 
+			//			<< i << LL_ENDL;
 		}
 	}
 	return true;
@@ -905,10 +905,10 @@ S32 LLViewerKeyboard::loadBindingsSettings(const std::string& filename)
 		LLKeyboard::keyFromString(settings["key"], &key);
 		LLKeyboard::maskFromString(settings["mask"], &mask);
 		bindKey(mode, key, mask, function);
-		LL_INFOS() << "Setting: " << key << +"(" + settings["key"].asString() << ") + " 
-					<< mask << +"(" << settings["mask"].asString() << ") to " 
-					<< function << " in mode " 
-					<< mode << LL_ENDL;
+		//LL_INFOS() << "Setting: " << key << +"(" + settings["key"].asString() << ") + " 
+		//			<< mask << +"(" << settings["mask"].asString() << ") to " 
+		//			<< function << " in mode " 
+		//			<< mode << LL_ENDL;
 	}
 	return TRUE;
 }
