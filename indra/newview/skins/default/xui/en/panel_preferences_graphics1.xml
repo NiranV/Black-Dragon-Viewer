@@ -79,6 +79,46 @@ width="510">
    Viewer Options:
    </text>
    
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_ui_size"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Using 'small' or 'big' interface size requires a restart. The UI is not designed for the 'small' or 'big' size, you may encounter problems."
+  width="16"
+  left="445"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_font_dpi"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Using a different DPI other than 96 may cause clipping text, broken labels, spacing issues and broken layouts, use with caution."
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_texture_memory"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Too high texture memory may cause drastic negative performance impact. Too low texture memory will cause faster texture trashing issues."
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -434,6 +474,33 @@ width="510">
    width="220">
    Basic Options:
    </text>
+   
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_texture_compression"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Using texture compression will save some texture memory but at a massive negative performance impact while loading textures and possible overarll as the Viewer spends most of its time processing textures."
+  width="16"
+  left="445"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_draw_distance"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Draw Distance has a high impact on performance, high draw distances may cause the Viewer to become virtually unusable, especially in combination with weak hardware and Deferred Rendering."
+  width="16"
+  left_delta="-18"
+  top="2"/>
    
    </layout_panel>
       <layout_panel
@@ -890,6 +957,34 @@ width="510">
    width="220">
    Level of Detail Options:
    </text>
+   
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_dynamic_lod"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Disabling Dynamic Level of Detail will make the overall object quality equally dependant on the 'Object Quality' setting, all objects will use the same level of detail no matter their distance to the camera."
+  width="16"
+  left="445"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_object_lod"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Object Quality beyond 'medium' may have a negative impact on performance especially with sculpts and meshes."
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -1601,6 +1696,85 @@ width="510">
    Performance Options:
    </text>
    
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_object_occlusion"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Object-Object Occlusion may cause overall performance degradation in combination with Deferred Rendering, its gains are negligible in open but can be quite heavy in enclosed areas."
+  width="16"
+  left="445"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_avatas_visibe"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: A lot maximum visible avatars on screen may cause absolutely unusable performance depending on hardware, Deferred Rendering and the detail of said avatars"
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_derender_kb"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Heavy weight avatars (in KB) may cause a lot of traffic, high performance degradation and quick texture trashing."
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_derender_m2"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Avatars with a lot of attachment surface (in m²) may cause high performance degradation and even crash you as high square meters are often a possible indicator for graphic crashers."
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_derender_ar"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: High complexity avatars (AR) may cause high performance degradation, quick texture trashing, unstable framerates and possibly even freezes or crashes in combination with Deferred Rendering depending on your hardware."
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_derender_surface"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: High surface areas are often used for crashing purposes, everything beyond 200m² can safely be ignored as its very likely that it is of malicious nature."
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -2057,6 +2231,34 @@ width="510">
    width="220">
    Windlight Options:
    </text>
+   
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_reflection_quality"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Higher than 'normal' Reflection Quality may noticably impact performance negatively."
+  width="16"
+  left="445"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_sky_quality"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Higher than 'high' Sky Quality may have a slight negative impact on performance without any noticable visual improvements."
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   
       </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -3105,6 +3307,46 @@ width="510">
    name="Deferred"
    top_delta="4"
    width="115" />
+   
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_fxaa"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: FXAA has basically zero impact on performance, not using it will cause aliasing on edges and may impact overall visual fidelity negatively."
+  width="16"
+  left="445"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_shadow_resolution"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Shadow resolutions beyond 2048 may have a huge negative impact on performance depending on the complexity of the scene."
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_projector_resolution"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Projector resolutions beyond 2048 may have a slight to medium impact on performance."
+  width="16"
+  left_delta="-18"
+  top="2"/>
       </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -4085,6 +4327,20 @@ width="510">
    name="UseSSAO"
    top_delta="4"
    width="115" />
+ 
+ <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_ssr"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Screen Space Reflections may cause drastic performance degradation depending on the surface it is rendered on and the SSR Resolution used."
+  width="16"
+  left="445"
+  top="2"/>
      
      
      </layout_panel>
@@ -4350,6 +4606,20 @@ width="510">
    name="MotionBlur"
    top_delta="4"
    width="115" />
+   
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_blur_quality"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Motion Blur may look very blurry with a low Motion Blur Quality setting."
+  width="16"
+  left="445"
+  top="2"/>
 
    </layout_panel>
       <layout_panel
@@ -4426,13 +4696,27 @@ width="510">
    control_name="RenderGodrays"
    height="16"
    initial_value="false"
-   label="Volumtric Lighting"
+   label="Volumetric Lighting"
    tool_tip="Toggles if experimental volumetric light should be rendered, causing godrays in certain circumstances"
    layout="topleft"
    left="5"
    name="RenderGodrays"
    top_delta="4"
    width="115" />
+   
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_light_resolution"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: A high light resolution may have medium performance impact depending on the scene and shadow resolution."
+  width="16"
+  left="445"
+  top="2"/>
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -4454,7 +4738,7 @@ width="510">
    name="RenderGodraysDirectional"
    top_pad="15"
    width="115"/>
-
+   
    <slider
       can_edit_text="true"
       control_name="RenderGodraysResolution"
