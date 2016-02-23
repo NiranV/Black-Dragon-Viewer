@@ -186,6 +186,9 @@ public:
 	void updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box);
 	void refreshUI();
 
+//	//BD - Warning system
+	void refreshWarnings();
+
 //	//BD - Set Key dialog
 	void onClickSetAnyKey(LLUICtrl* ctrl, const LLSD& param);
 

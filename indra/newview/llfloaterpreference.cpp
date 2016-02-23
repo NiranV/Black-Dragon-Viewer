@@ -1080,7 +1080,6 @@ void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
 {
 	ctrl->getControlVariable()->resetToDefault(true);
 	refreshGraphicControls();
-	//refreshWarning();
 }
 
 //BD - Custom Keyboard Layout
@@ -1362,34 +1361,55 @@ void LLFloaterPreference::refreshCameraControls()
 	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetRightShoulderView").mV[VZ]);
 }
 
-/*void LLFloaterPreference::refreshWarnings()
+//BD - Warning system
+void LLFloaterPreference::refreshWarnings()
 {
-	//BD - General Options
-	getChild<LLUICtrl>("warning_compress_textures")->setVisible(gSavedSettings.getBOOL("RenderCompressTextures"));
-	getChild<LLUICtrl>("warning_draw_distance")->setVisible(gSavedSettings.getF32("RenderFarClip") > 128);
-	getChild<LLUICtrl>("warning_particle_amount")->setVisible(gSavedSettings.getF32("") > 4096);
-	getChild<LLUICtrl>("warning_particle_amount")->setVisible(gSavedSettings.getF32("TextureMemory") > 768);
-	getChild<LLUICtrl>("warning_particle_amount")->setVisible(gSavedSettings.getF32("SceneMemory") > 512);
+	//BD - Viewer Options
+	getChild<LLUICtrl>("warning_ui_size")->setVisible(gSavedSettings.getF32("UIScaleFactor") != 1.0);
+	getChild<LLUICtrl>("warning_font_dpi")->setVisible(gSavedSettings.getF32("FontScreenDPI") != 96.0);
+	getChild<LLUICtrl>("warning_texture_memory")->setVisible(gSavedSettings.getU32("TextureMemory") > 768
+														|| ((gSavedSettings.getU32("TextureMemory") 
+														+ gSavedSettings.getU32("SystemMemory")) > 768
+														&& gSavedSettings.getBOOL("CustomSystemMemory")));
+
+	//BD - Basic Options
+	getChild<LLUICtrl>("warning_texture_compression")->setVisible(gSavedSettings.getBOOL("RenderCompressTextures"));
+	getChild<LLUICtrl>("warning_draw_distance")->setVisible(gPipeline.RenderFarClip > 128);
 
 	//BD - LOD Options
+	getChild<LLUICtrl>("warning_dynamic_lod")->setVisible(!gPipeline.sDynamicLOD);
+	getChild<LLUICtrl>("warning_object_lod")->setVisible(LLVOVolume::sLODFactor > 2.0);
 
 	//BD - Performance Options
-	getChild<LLUICtrl>("warning_object_occlusion")->setVisible(gSavedSettings.getBOOL("RenderDeferred") 
-														&& gSavedSettings.getBOOL("UseObjectCacheOcclusion"));
+	getChild<LLUICtrl>("warning_object_occlusion")->setVisible(gPipeline.RenderDeferred && gPipeline.sUseOcclusion);
+	getChild<LLUICtrl>("warning_avatars_visible")->setVisible(gSavedSettings.getU32("RenderAvatarMaxNonImpostors") > 15);
+	getChild<LLUICtrl>("warning_derender_kb")->setVisible(gSavedSettings.getU32("RenderAutoMuteByteLimit") > 12000000);
+	getChild<LLUICtrl>("warning_derender_m2")->setVisible(gSavedSettings.getU32("RenderAutoMuteSurfaceAreaLimit") > 200);
+	getChild<LLUICtrl>("warning_derender_ar")->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 120000);
+	getChild<LLUICtrl>("warning_derender_surface")->setVisible(gSavedSettings.getU32("RenderAutoHideSurfaceAreaLimit") > 200);
 
-
-	//BD - Vertex Shader Options
-	getChild<LLUICtrl>("warning_reflection_res")->setVisible(gSavedSettings.getU32("RenderReflectionRes") > 512);
+	//BD - Windlight Options
+	getChild<LLUICtrl>("warning_reflection_quality")->setVisible(gSavedSettings.getU32("RenderReflectionRes") > 768);
+	getChild<LLUICtrl>("warning_sky_quality")->setVisible(gSavedSettings.getU32("WLSkyDetail") > 128);
 
 	//BD - Deferred Rendering Options
-	getChild<LLUICtrl>("warning_missing_aa")->setVisible(!gSavedSettings.getBOOL("RenderFXAA"));
-	getChild<LLUICtrl>("warning_shadow_res")->setVisible(gSavedSettings.getVector3("RenderShadowResolution").mV[VX] > 2048 
-														|| gSavedSettings.getVector3("RenderShadowResolution").mV[VY] > 2048);
-	getChild<LLUICtrl>("warning_shadow_multiplier")->setVisible(gSavedSettings.getVector3("RenderShadowResolution").mV[VX] > 1.0f);
+	getChild<LLUICtrl>("warning_fxaa")->setVisible(gPipeline.RenderFSAASamples == 0);
+	getChild<LLUICtrl>("warning_shadow_resolution")->setVisible(gPipeline.RenderShadowResolution.mV[VX] > 2048 
+															|| gPipeline.RenderShadowResolution.mV[VY] > 2048
+															|| gPipeline.RenderShadowResolution.mV[VZ] > 2048
+															|| gPipeline.RenderShadowResolution.mV[VW] > 2048);
+	getChild<LLUICtrl>("warning_projector_resolution")->setVisible(gPipeline.RenderProjectorShadowResolution.mV[VX] > 2048
+																|| gPipeline.RenderProjectorShadowResolution.mV[VY] > 2048);
 
-	//BD - Depth of Field Options
-	getChild<LLUICtrl>("warning_reflection_res")->setVisible(gSavedSettings.getU32("RenderReflectionRes") > 512);
-}*/
+	//BD - SSR Options
+	getChild<LLUICtrl>("warning_ssr")->setVisible(gSavedSettings.getBOOL("RenderScreenSpaceReflections"));
+
+	//BD - Motion Blur Options
+	getChild<LLUICtrl>("warning_blur_quality")->setVisible(gSavedSettings.getU32("RenderMotionBlurStrength") < 100);
+
+	//BD - Volumetric Lighting Options
+	getChild<LLUICtrl>("warning_light_resolution")->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 32);
+}
 
 void LLFloaterPreference::draw()
 {
@@ -1398,6 +1418,8 @@ void LLFloaterPreference::draw()
 	
 	has_first_selected = (getChildRef<LLScrollListCtrl>("enabled_popups").getFirstSelected()!=NULL);
 	gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
+
+	refreshWarnings();
 	
 	LLFloater::draw();
 }
@@ -1594,7 +1616,6 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 
 	refreshGraphicControls();
 	refreshCameraControls();
-	//refreshWarnings();
 
 	// Make sure the current state of prefs are saved away when
 	// when the floater is opened.  That will make cancel do its
