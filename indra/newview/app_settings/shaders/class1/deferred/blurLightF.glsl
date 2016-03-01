@@ -127,14 +127,6 @@ void main()
 	pointplanedist_tolerance_pow2 =
 	  pointplanedist_tolerance_pow2// * pointplanedist_tolerance_pow2 * 0.00001
 	  * 0.0001;
-	
-	// perturb sampling origin slightly in screen-space to hide edge-ghosting artifacts where smoothing radius is quite large
-	//vec2 tc_v = fract(0.5 * tc.xy); // we now have floor(mod(tc,2.0))*0.5
-	//float tc_mod = 2.0 * abs(tc_v.x - tc_v.y); // diff of x,y makes checkerboard
-	//tc += ( (tc_mod - 0.5) * kern[1].z * dlt * 0.5 ); // messes with purity
-	//tc += ( (tc_mod - 0.5) * kern[1].z * dlt * 0.66667 ); // a, ab, b, bc, c // but messes w/pur.
-	// alternate direction according to grid
-	//dlt.xy = mix(dlt.xy, vec2(dlt.y, -dlt.x), tc_mod); //artifacts strong
 
 	const float mindp = 0.70;
 	for (int i = 8-1; i > 0; i--)
@@ -142,6 +134,27 @@ void main()
 	  vec2 w = kern[i].xy;
 	  w.y = gaussian.y;
 	  vec2 samptc = (tc + kern[i].z * dlt);
+	  vec3 samppos = getPosition(samptc).xyz; 
+	  vec3 sampnorm = texture2DRect(normalMap, samptc).xyz;
+	  sampnorm = decode_normal(sampnorm.xy); // unpack norm
+	
+	  float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
+	
+	  if (d*d <= pointplanedist_tolerance_pow2
+	  && dot(sampnorm.xyz, norm.xyz) >= mindp)
+	  {
+		vec4 scol = texture2DRect(lightMap, samptc);
+		scol.gba = xxsrgb_to_linear(scol.gba);
+		col += scol*w.xyyy;
+		defined_weight += w.xy;
+	  }
+	}
+	
+	for (int i = 8-1; i > 0; i--)
+	{
+	  vec2 w = kern[i].xy;
+	  w.y = gaussian.y;
+	  vec2 samptc = (tc - kern[i].z * dlt);
 	  vec3 samppos = getPosition(samptc).xyz; 
 	  vec3 sampnorm = texture2DRect(normalMap, samptc).xyz;
 	  sampnorm = decode_normal(sampnorm.xy); // unpack norm
