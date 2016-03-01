@@ -1041,7 +1041,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		{ //allocate two spot shadow maps
 			for (U32 i = 4; i < 6; i++)
 			{
-				if (!mShadow[i].allocate(U32(proj_scale[i-4]), U32(proj_scale[i-4]), 0, TRUE, FALSE)) return false;
+				if (!mShadow[i].allocate(U32(proj_scale.mV[VX]), U32(proj_scale.mV[VY]), 0, TRUE, FALSE)) return false;
 				if (!mShadowOcclusion[i].allocate(mShadow[i].getWidth()/occlusion_divisor, mShadow[i].getHeight()/occlusion_divisor, 0, TRUE, FALSE)) return false;
 			}
 		}
