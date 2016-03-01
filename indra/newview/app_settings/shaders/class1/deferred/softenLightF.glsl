@@ -64,7 +64,7 @@ uniform vec4 glow;
 uniform float global_gamma;
 uniform float scene_light_strength;
 uniform mat3 env_mat;
-uniform mat3 ssao_effect_mat;
+uniform float ssao_effect;
 
 uniform vec3 sun_dir;
 VARYING vec2 vary_fragcoord;
@@ -101,6 +101,7 @@ vec3 srgb_to_linear(vec3 cs)
 
 vec3 linear_to_srgb(vec3 cl)
 {
+	cl = clamp(cl, vec3(0), vec3(1));
 	vec3 low_range  = cl * 12.92;
 	vec3 high_range = 1.055 * pow(cl, vec3(0.41666)) - 0.055;
 	bvec3 lt = lessThan(cl,vec3(0.0031308));
@@ -301,23 +302,20 @@ void calcAtmospherics(vec3 inPositionEye, float ambFactor) {
 	//increase ambient when there are more clouds
 	vec4 tmpAmbient = ambient + (vec4(1.) - ambient) * cloud_shadow * 0.5;
 	
-	/*  decrease value and saturation (that in HSV, not HSL) for occluded areas
-	 * // for HSV color/geometry used here, see http://gimp-savvy.com/BOOK/index.html?node52.html
-	 * // The following line of code performs the equivalent of:
-	 * float ambAlpha = tmpAmbient.a;
-	 * float ambValue = dot(vec3(tmpAmbient), vec3(0.577)); // projection onto <1/rt(3), 1/rt(3), 1/rt(3)>, the neutral white-black axis
-	 * vec3 ambHueSat = vec3(tmpAmbient) - vec3(ambValue);
-	 * tmpAmbient = vec4(RenderSSAOEffect.valueFactor * vec3(ambValue) + RenderSSAOEffect.saturationFactor *(1.0 - ambFactor) * ambHueSat, ambAlpha);
-	 */
-	tmpAmbient = vec4(mix(ssao_effect_mat * tmpAmbient.rgb, tmpAmbient.rgb, ambFactor), tmpAmbient.a);
-
 	//haze color
 	setAdditiveColor(
 		vec3(blue_horizon * blue_weight * (sunlight*(1.-cloud_shadow) + tmpAmbient)
 	  + (haze_horizon * haze_weight) * (sunlight*(1.-cloud_shadow) * temp2.x
 		  + tmpAmbient)));
+		  
+	// decrease ambient value for occluded areas
+	tmpAmbient *= mix(ssao_effect, 1.0, ambFactor);
 
 	//brightness of surface both sunlight and ambient
+	/*setSunlitColor(pow(vec3(sunlight * .5), vec3(global_gamma)) * global_gamma);
+	setAmblitColor(pow(vec3(tmpAmbient * .25), vec3(global_gamma)) * global_gamma);
+	setAdditiveColor(pow(getAdditiveColor() * vec3(1.0 - temp1), vec3(global_gamma)) * global_gamma);*/
+
 	setSunlitColor(vec3(sunlight * .5));
 	setAmblitColor(vec3(tmpAmbient * .25));
 	setAdditiveColor(getAdditiveColor() * vec3(1.0 - temp1));
