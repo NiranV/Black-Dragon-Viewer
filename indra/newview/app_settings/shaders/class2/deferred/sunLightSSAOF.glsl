@@ -173,7 +173,7 @@ float pcfShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_screen,
 	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.60*recip_shadow_res, 0.55*recip_shadow_res, 0.0)).x;
 	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.72*recip_shadow_res, -0.65*recip_shadow_res, 0.0)).x;
 	         
-        return shadow*0.2;
+    return shadow*0.2;
 }
 
 float pcfSpotShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_screen)
@@ -190,25 +190,16 @@ float pcfSpotShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_scr
 	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.45/proj_shadow_res.x, 0.45/shadow_res.y, 0.0)).x;
 	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.65/proj_shadow_res.x, -0.65/shadow_res.y, 0.0)).x;
 
-        return shadow*0.2;
+	return shadow*0.2;
 }
 
 void main() 
 {
 	vec2 pos_screen = vary_fragcoord.xy;
-	
-	//try doing an unproject here
-	
 	vec4 pos = getPosition(pos_screen);
-	
 	vec3 norm = texture2DRect(normalMap, pos_screen).xyz;
+	
 	norm = decode_normal(norm.xy); // unpack norm
-		
-	/*if (pos.z == 0.0) // do nothing for sky *FIX: REMOVE THIS IF/WHEN THE POSITION MAP IS BEING USED AS A STENCIL
-	{
-		frag_color = vec4(0.0); // doesn't matter
-		return;
-	}*/
 	
 	float shadow = 0.0;
 	float dp_directional_light = max(0.0, dot(norm, sun_dir.xyz));
