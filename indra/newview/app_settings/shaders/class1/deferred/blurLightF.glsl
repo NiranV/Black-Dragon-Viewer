@@ -31,7 +31,6 @@ out vec4 frag_color;
 #define frag_color gl_FragColor
 #endif
 
-#define DELUXE_SHADOW_SMOOTH
 #define LINEAR
 
 uniform sampler2DRect depthMap;
@@ -117,7 +116,7 @@ void main()
 	
 	vec2 dlt = gaussian.x * (vec2(1.5,1.5)-norm.xy*norm.xy);
 	dlt = delta * ceil(max(dlt.xy, vec2(1.0)));
-	dlt /= max(-pos.z*dist_factor, 1.0);
+	dlt /= max(pos.z, 1.0);
 	
 	vec2 defined_weight = kern[0].xy; // special case the first (centre) sample's weight in the blur; we have to sample it anyway so we get it for 'free'
 	vec4 col = defined_weight.xyyy * ccol;
