@@ -955,6 +955,9 @@ public:
 	static F32 RenderGodraysFalloffMultiplier;
 	static U32 RenderSSRResolution;
 	static F32 RenderChromaStrength;
+
+//	//BD - Special Options
+	static U32 RenderShadowBlurSamples;
 };
 
 void render_bbox(const LLVector3 &min, const LLVector3 &max);

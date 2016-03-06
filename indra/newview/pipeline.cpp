@@ -216,6 +216,10 @@ F32 LLPipeline::RenderGodraysMultiplier;
 F32 LLPipeline::RenderGodraysFalloffMultiplier;
 U32 LLPipeline::RenderSSRResolution;
 F32 LLPipeline::RenderChromaStrength;
+
+//BD - Special Options
+U32 LLPipeline::RenderShadowBlurSamples;
+
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
 const F32 BACKLIGHT_DAY_MAGNITUDE_OBJECT = 0.1f;
@@ -682,6 +686,9 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptA");
     connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptB");
     connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptC");
+
+//	//BD - Special Options
+	connectRefreshCachedSettingsSafe("RenderShadowBlurSamples");
 }
 
 LLPipeline::~LLPipeline()
@@ -1230,6 +1237,9 @@ void LLPipeline::refreshCachedSettings()
 	RenderGodraysFalloffMultiplier = gSavedSettings.getF32("RenderGodraysFalloffMultiplier");
 	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
+
+//	//BD - Special Options
+	RenderShadowBlurSamples = gSavedSettings.getU32("RenderShadowBlurSamples");
 
 	// <exodus>
 	exoPostProcess::instance().ExodusRenderPostSettingsUpdate();
@@ -8566,6 +8576,9 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 		glh::matrix4f norm_mat = glh_get_current_modelview().inverse().transpose();
 		shader.uniformMatrix4fv(LLShaderMgr::DEFERRED_NORM_MATRIX, 1, FALSE, norm_mat.m);
 	}
+
+//	//BD - Special Options
+	shader.uniform1i(LLShaderMgr::DEFERRED_SSAO_SAMPLES, RenderShadowBlurSamples);
 }
 
 LLColor3 pow3f(LLColor3 v, F32 f)

@@ -42,6 +42,7 @@ uniform float blur_size;
 uniform vec2 delta;
 uniform float kern_scale;
 uniform vec2 gaussian;
+uniform int blur_passes;
 
 VARYING vec2 vary_fragcoord;
 
@@ -105,10 +106,10 @@ void main()
 	vec4 ccol = texture2DRect(lightMap, tc).rgba;
 	ccol.gba = xxsrgb_to_linear(ccol.gba);
 
-	kern[0] = vec3(0.500, 1, 0.250);
+	kern[0] = vec3(0.500, 1, 0.50);
 	kern[1] = vec3(0.333, 1, 1.200);
-	kern[2] = vec3(0.151, 1, 1.740);
-	kern[3] = vec3(0.100, 1, 3.300);
+	kern[2] = vec3(0.151, 1, 2.480);
+	kern[3] = vec3(0.100, 1, 3.000);
 	kern[4] = vec3(0.090, 1, 4.200);
 	kern[5] = vec3(0.070, 1, 4.800);
 	kern[6] = vec3(0.040, 1, 5.800);
@@ -128,7 +129,7 @@ void main()
 	  * 0.0001;
 
 	const float mindp = 0.70;
-	for (int i = 8-1; i > 0; i--)
+	for (int i = blur_passes-1; i > 0; i--)
 	{
 	  vec2 w = kern[i].xy;
 	  w.y = gaussian.y;
@@ -149,7 +150,8 @@ void main()
 	  }
 	}
 	
-	for (int i = 8-1; i > 0; i--)
+	
+	for (int i = blur_passes-1; i > 0; i--)
 	{
 	  vec2 w = kern[i].xy;
 	  w.y = gaussian.y;
