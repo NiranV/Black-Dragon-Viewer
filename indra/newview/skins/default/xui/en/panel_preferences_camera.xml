@@ -1171,7 +1171,7 @@ can_edit_text="true"
    width="332">
    <slider.commit_callback
       function="Pref.ArrayX"
-      parameter="CameraOffsetRigthShoulderView"/>
+      parameter="CameraOffsetRightShoulderView"/>
       </slider>
    <slider
    decimal_digits="3"
@@ -1191,7 +1191,7 @@ can_edit_text="true"
    width="332">
     <slider.commit_callback
       function="Pref.ArrayY"
-      parameter="CameraOffsetRigthShoulderView"/>
+      parameter="CameraOffsetRightShoulderView"/>
       </slider>
    <slider
    decimal_digits="3"
@@ -1211,11 +1211,11 @@ can_edit_text="true"
    width="338">
    <slider.commit_callback
       function="Pref.ArrayZ"
-      parameter="CameraOffsetRigthShoulderView"/>
+      parameter="CameraOffsetRightShoulderView"/>
       </slider>
    <button
  follows="left|top"
- control_name="CameraOffsetRigthShoulderView"
+ control_name="CameraOffsetRightShoulderView"
  height="45"
  is_toggle="false"
  label="⌊default⌉"
@@ -1248,7 +1248,7 @@ can_edit_text="true"
    width="332">
    <slider.commit_callback
       function="Pref.ArrayXD"
-      parameter="FocusOffsetRigthShoulderView"/>
+      parameter="FocusOffsetRightShoulderView"/>
       </slider>
    <slider
    decimal_digits="3"
@@ -1267,8 +1267,8 @@ can_edit_text="true"
    top_pad="1"
    width="332">
     <slider.commit_callback
-      function="Pref.ArrayXD"
-      parameter="FocusOffsetRigthShoulderView"/>
+      function="Pref.ArrayYD"
+      parameter="FocusOffsetRightShoulderView"/>
       </slider>
    <slider
    decimal_digits="3"
@@ -1287,12 +1287,12 @@ can_edit_text="true"
    top_pad="1"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayXD"
-      parameter="FocusOffsetRigthShoulderView"/>
+      function="Pref.ArrayZD"
+      parameter="FocusOffsetRightShoulderView"/>
       </slider>
    <button
  follows="left|top"
- control_name="FocusOffsetRigthShoulderView"
+ control_name="FocusOffsetRightShoulderView"
  height="45"
  is_toggle="false"
  label="⌊default⌉"
