@@ -31,7 +31,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="2903"
+   height="2943"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -3352,7 +3352,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="319"
+	  height="359"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -3580,6 +3580,112 @@ width="510">
                         height="16"
                         label="Very Rough"
                         value="16"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+ 
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="BlurSamples"
+ top_pad="4"
+ width="240">
+ Shadow and SSAO Blur Quality:
+ </text>
+ <radio_group
+                  control_name="RenderShadowBlurSamples"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderShadowBlurSamples"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Low"
+                        value="2"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Normal"
+                        value="4"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        value="5"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Very High"
+                        value="6"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Ultra"
+                        value="8"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -5891,6 +5997,7 @@ width="510">
    control_name="RememberPreferencesTabs"
    height="16"
    initial_value="true"
+   follows="bottom|left"
    label="Remember Tabs"
    layout="topleft"
    left_delta="5"
@@ -5899,7 +6006,7 @@ width="510">
    width="115"/>
    
    <button
-    follows="top|left"
+    follows="bottom|left"
     height="20"
     label="Save"
     layout="topleft"
@@ -5919,7 +6026,7 @@ width="510">
   </button>
    
    <button
-    follows="top|left"
+    follows="bottom|left"
     height="20"
     label="Load"
     layout="topleft"
@@ -5939,7 +6046,7 @@ width="510">
   </button>
 
   <button
-    follows="top|left"
+    follows="bottom|left"
     height="20"
     label="Delete"
     layout="topleft"
@@ -5959,7 +6066,7 @@ width="510">
   </button>
   
   <combo_box
-     follows="top|left"
+     follows="bottom|left"
      layout="topleft"
      left_pad="7"
      height="20"
