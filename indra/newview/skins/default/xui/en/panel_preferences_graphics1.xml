@@ -3352,7 +3352,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="359"
+	  height="401"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -4124,6 +4124,51 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+ <check_box
+     control_name="RenderScreenSpaceReflections"
+     height="16"
+     initial_value="true"
+     label="Render Screen Space Reflections"
+     tool_tip="Toggles Screen Space Reflections on shiny surfaces creating very realistic reflective surfaces but will need a monstrous PC"
+     layout="topleft"
+     left="10"
+     name="RenderScreenSpaceReflections"
+     top_pad="5"
+     width="115" />
+      <slider
+      control_name="RenderSSRResolution"
+      enabled_control="RenderScreenSpaceReflections"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="10"
+      label="SSR Resolution:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="64"
+      min_val="2"
+      name="RenderSSRResolution"
+      top_pad="4"
+      width="312" />
+      <button
+ follows="left|top"
+ control_name="RenderSSRResolution"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
        </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -4454,7 +4499,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsAOVisible"
 	  layout="topleft"
-	  height="142"
+	  height="106"
 	  auto_resize="false"
       visible="false"
 	  name="ao_layout_panel"
@@ -4616,51 +4661,6 @@ width="510">
       <button
  follows="left|top"
  control_name="RenderSSAOFactor"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <check_box
-     control_name="RenderScreenSpaceReflections"
-     height="16"
-     initial_value="true"
-     label="Render Screen Space Reflections"
-     tool_tip="Toggles Screen Space Reflections on shiny surfaces creating very realistic reflective surfaces but will need a monstrous PC"
-     layout="topleft"
-     left="10"
-     name="RenderScreenSpaceReflections"
-     top_pad="4"
-     width="115" />
-      <slider
-      control_name="RenderSSRResolution"
-      enabled_control="RenderScreenSpaceReflections"
-      decimal_digits="0"
-      can_edit_text="true"
-      follows="left|top"
-      height="15"
-      increment="1"
-      initial_value="10"
-      label="SSR Resolution:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="64"
-      min_val="2"
-      name="RenderSSRResolution"
-      top_pad="4"
-      width="312" />
-      <button
- follows="left|top"
- control_name="RenderSSRResolution"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
