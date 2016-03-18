@@ -293,7 +293,11 @@ void main()
 	}
 	
 	frag_color[0] = shadow;
+#if USE_SSAO
 	frag_color[1] = calcAmbientOcclusion(pos, norm);
+#else
+	frag_color[1] = 1.0;
+#endif
 	
 	spos = vec4(shadow_pos+norm*spot_shadow_offset, 1.0);
 	
