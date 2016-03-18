@@ -31,7 +31,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="2943"
+   height="2967"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -3352,7 +3352,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="401"
+	  height="425"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -3594,112 +3594,6 @@ width="510">
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
- 
- <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="10"
- name="BlurSamples"
- top_pad="4"
- width="240">
- Shadow and SSAO Blur Quality:
- </text>
- <radio_group
-                  control_name="RenderShadowBlurSamples"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderShadowBlurSamples"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Low"
-                        value="2"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Normal"
-                        value="4"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="High"
-                        value="5"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Very High"
-                        value="6"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Ultra"
-                        value="8"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>
 
  <text
  type="string"
@@ -3873,6 +3767,39 @@ width="510">
                         </radio_item>
                   </radio_group>-->
  <slider
+      control_name="RenderShadowFarClip"
+      decimal_digits="0"
+      follows="left|top"
+      height="15"
+      increment="8"
+      can_edit_text="true"
+      label="Extended Shadow Distance:"
+      label_width="150"
+      tool_tip="Additionally increase the distance you can see shadows, decreases overall shadow precision"
+      layout="topleft"
+      left="10"
+      max_val="1024"
+      min_val="16"
+      name="RenderShadowFarClip"
+      top_pad="5"
+      width="324"/>
+ <button
+ follows="left|top"
+ control_name="RenderShadowFarClip"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+ <slider
       enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
@@ -3888,7 +3815,7 @@ width="510">
       max_val="6144"
       min_val="256"
       name="RenderShadowResolution_X"
-      top_pad="5"
+      top_pad="1"
       width="324">
    <slider.commit_callback
       function="Pref.ArrayVec4X"
@@ -4058,6 +3985,122 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+ <check_box
+     control_name="RenderDeferredBlurLight"
+     height="16"
+     initial_value="true"
+     label="Light Softening"
+     tool_tip="Toggles shadow, ssao and light softening, blurs shadows and ssao to make them look smooth, might have a slight impact on overall look of the lighting in deferred without Shadows or SSAO enabled."
+     layout="topleft"
+     left="10"
+     name="RenderDeferredBlurLight"
+     top_pad="5"
+     width="115" />
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="BlurSamples"
+ top_pad="4"
+ width="240">
+ Light Soften Quality:
+ </text>
+ <radio_group
+                  control_name="RenderShadowBlurSamples"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderShadowBlurSamples"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Low"
+                        value="2"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Normal"
+                        value="4"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        value="5"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Very High"
+                        value="6"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Ultra"
+                        value="8"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
  <slider
       control_name="RenderShadowBlurSize"
       decimal_digits="1"
@@ -4065,15 +4108,15 @@ width="510">
       height="15"
       increment="0.1"
       can_edit_text="true"
-      label="Shadow Blur Size:"
+      label="Soften Blur Size:"
       label_width="150"
-      tool_tip="Set the strength of each blur pass of shadows"
+      tool_tip="Set the strength of each blur pass"
       layout="topleft"
       left="10"
       max_val="3"
       min_val="0.0"
       name="RenderShadowBlurSize"
-      top_pad="1"
+      top_pad="4"
       width="315"/>
  <button
  follows="left|top"
@@ -4091,39 +4134,7 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
- <slider
-      control_name="RenderShadowFarClip"
-      decimal_digits="0"
-      follows="left|top"
-      height="15"
-      increment="8"
-      can_edit_text="true"
-      label="Extended Shadow Distance:"
-      label_width="150"
-      tool_tip="Additionally increase the distance you can see shadows, decreases overall shadow precision"
-      layout="topleft"
-      left="10"
-      max_val="1024"
-      min_val="16"
-      name="RenderShadowFarClip"
-      top_pad="1"
-      width="324"/>
- <button
- follows="left|top"
- control_name="RenderShadowFarClip"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+
  <check_box
      control_name="RenderScreenSpaceReflections"
      height="16"
