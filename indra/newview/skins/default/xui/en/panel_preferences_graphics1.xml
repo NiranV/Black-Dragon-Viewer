@@ -4188,6 +4188,241 @@ width="510">
 	  auto_resize="false"
 	  name="title_layout_panel"
 	  width="515">
+     <button
+		 follows="left|top"
+		 height="20"
+         control_name="PrefsAOVisible"
+		 image_bottom_pad="0"
+		 image_overlay="AddItem_Off"
+         image_overlay_alignment="right"
+         is_toggle="true"
+		 image_selected="SegmentedBtn_Right_Selected_Disabled"
+		 image_unselected="SegmentedBtn_Right_Selected"
+		 layout="topleft"
+		 left="1"
+		 name="ao_expand"
+		 top="0"
+		 width="495" >
+      <button.commit_callback
+      function="Pref.Tab"
+      parameter="ao_layout_panel"/>
+   </button>
+ <check_box
+   control_name="RenderDeferredSSAO"
+   height="16"
+   initial_value="true"
+   label="Screen Space Ambient Occlusion (SSAO)"
+   tool_tip="Toggles SSAO which adds small dark edges and transitions to close objects making them look more realistic."
+   layout="topleft"
+   left="5"
+   name="UseSSAO"
+   top_delta="4"
+   width="115" />
+ 
+ <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_ssr"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Screen Space Reflections may cause drastic performance degradation depending on the surface it is rendered on and the SSR Resolution used."
+  width="16"
+  left="445"
+  top="2"/>
+     
+     
+     </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+      visibility_control="PrefsAOVisible"
+	  layout="topleft"
+	  height="106"
+	  auto_resize="false"
+      visible="false"
+	  name="ao_layout_panel"
+	  width="515">
+     <slider
+      control_name="RenderSSAOBlurSize"
+      enabled_control="RenderDeferredSSAO"
+      decimal_digits="3"
+      follows="left|top"
+      height="15"
+      increment="0.001"
+      can_edit_text="true"
+      label="SSAO Blur Size:"
+      label_width="150"
+      tool_tip="Set the strength of each blur pass of SSAO"
+      layout="topleft"
+      left="10"
+      max_val="0.4"
+      min_val="0.0"
+      name="RenderSSAOBlurSize"
+      top_pad="10"
+      width="327"/>
+ <button
+ follows="left|top"
+ control_name="RenderSSAOBlurSize"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+     <slider
+      decimal_digits="2"
+      enabled_control="RenderDeferredSSAO"
+      control_name="RenderSSAOEffect"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="0.46"
+      label="SSAO Effect:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="4"
+      min_val="-1"
+      name="SSAOEffect"
+      top_pad="1"
+      width="325"/>
+     <button
+ follows="left|top"
+ control_name="RenderSSAOEffect"
+ height="15"
+ is_toggle="true"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderSSAOScale"
+      enabled_control="RenderDeferredSSAO"
+      decimal_digits="0"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="2000"
+      label="SSAO Scale:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="3000"
+      min_val="0"
+      name="SSAOScale"
+      top_pad="1"
+      width="324" />
+      <button
+ follows="left|top"
+ control_name="RenderSSAOScale"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderSSAOMaxScale"
+      enabled_control="RenderDeferredSSAO"
+      decimal_digits="0"
+      follows="left|top"
+      can_edit_text="true"
+      height="15"
+      increment="1"
+      initial_value="2000"
+      label="SSAO Max Scale:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="3000"
+      min_val="0"
+      name="SSAOMaxScale"
+      top_pad="1"
+      width="324" />
+      <button
+ follows="left|top"
+ control_name="RenderSSAOMaxScale"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderSSAOFactor"
+      enabled_control="RenderDeferredSSAO"
+      decimal_digits="2"
+      can_edit_text="true"
+      follows="left|top"
+      height="15"
+      increment="1"
+      initial_value="3"
+      label="SSAO Factor:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="100"
+      min_val="0"
+      name="SSAOFactor"
+      top_pad="1"
+      width="330" />
+      <button
+ follows="left|top"
+ control_name="RenderSSAOFactor"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      </layout_panel>
+      
+	  <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="26"
+	  auto_resize="false"
+	  name="title_layout_panel"
+	  width="515">
  
  <button
 		 follows="left|top"
@@ -4452,241 +4687,7 @@ width="510">
                                  function="Pref.Default"/>
       </button>
       </layout_panel>
-      <layout_panel
-	  follows="top|left|right"
-	  layout="topleft"
-	  height="26"
-	  auto_resize="false"
-	  name="title_layout_panel"
-	  width="515">
-     <button
-		 follows="left|top"
-		 height="20"
-         control_name="PrefsAOVisible"
-		 image_bottom_pad="0"
-		 image_overlay="AddItem_Off"
-         image_overlay_alignment="right"
-         is_toggle="true"
-		 image_selected="SegmentedBtn_Right_Selected_Disabled"
-		 image_unselected="SegmentedBtn_Right_Selected"
-		 layout="topleft"
-		 left="1"
-		 name="ao_expand"
-		 top="0"
-		 width="495" >
-      <button.commit_callback
-      function="Pref.Tab"
-      parameter="ao_layout_panel"/>
-   </button>
- <check_box
-   control_name="RenderDeferredSSAO"
-   height="16"
-   initial_value="true"
-   label="Screen Space Ambient Occlusion (SSAO)"
-   tool_tip="Toggles SSAO which adds small dark edges and transitions to close objects making them look more realistic."
-   layout="topleft"
-   left="5"
-   name="UseSSAO"
-   top_delta="4"
-   width="115" />
- 
- <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_ssr"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Screen Space Reflections may cause drastic performance degradation depending on the surface it is rendered on and the SSR Resolution used."
-  width="16"
-  left="445"
-  top="2"/>
-     
-     
-     </layout_panel>
-      <layout_panel
-	  follows="top|left|right"
-      visibility_control="PrefsAOVisible"
-	  layout="topleft"
-	  height="106"
-	  auto_resize="false"
-      visible="false"
-	  name="ao_layout_panel"
-	  width="515">
-     <slider
-      control_name="RenderSSAOBlurSize"
-      enabled_control="RenderDeferredSSAO"
-      decimal_digits="3"
-      follows="left|top"
-      height="15"
-      increment="0.001"
-      can_edit_text="true"
-      label="SSAO Blur Size:"
-      label_width="150"
-      tool_tip="Set the strength of each blur pass of SSAO"
-      layout="topleft"
-      left="10"
-      max_val="0.4"
-      min_val="0.0"
-      name="RenderSSAOBlurSize"
-      top_pad="10"
-      width="327"/>
- <button
- follows="left|top"
- control_name="RenderSSAOBlurSize"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-     <slider
-      decimal_digits="2"
-      enabled_control="RenderDeferredSSAO"
-      control_name="RenderSSAOEffect"
-      can_edit_text="true"
-      follows="left|top"
-      height="15"
-      increment="0.01"
-      initial_value="0.46"
-      label="SSAO Effect:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="4"
-      min_val="-1"
-      name="SSAOEffect"
-      top_pad="1"
-      width="325"/>
-     <button
- follows="left|top"
- control_name="RenderSSAOEffect"
- height="15"
- is_toggle="true"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <slider
-      control_name="RenderSSAOScale"
-      enabled_control="RenderDeferredSSAO"
-      decimal_digits="0"
-      can_edit_text="true"
-      follows="left|top"
-      height="15"
-      increment="1"
-      initial_value="2000"
-      label="SSAO Scale:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="3000"
-      min_val="0"
-      name="SSAOScale"
-      top_pad="1"
-      width="324" />
-      <button
- follows="left|top"
- control_name="RenderSSAOScale"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <slider
-      control_name="RenderSSAOMaxScale"
-      enabled_control="RenderDeferredSSAO"
-      decimal_digits="0"
-      follows="left|top"
-      can_edit_text="true"
-      height="15"
-      increment="1"
-      initial_value="2000"
-      label="SSAO Max Scale:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="3000"
-      min_val="0"
-      name="SSAOMaxScale"
-      top_pad="1"
-      width="324" />
-      <button
- follows="left|top"
- control_name="RenderSSAOMaxScale"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <slider
-      control_name="RenderSSAOFactor"
-      enabled_control="RenderDeferredSSAO"
-      decimal_digits="2"
-      can_edit_text="true"
-      follows="left|top"
-      height="15"
-      increment="1"
-      initial_value="3"
-      label="SSAO Factor:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="100"
-      min_val="0"
-      name="SSAOFactor"
-      top_pad="1"
-      width="330" />
-      <button
- follows="left|top"
- control_name="RenderSSAOFactor"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      </layout_panel>
-      <layout_panel
+	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="26"
