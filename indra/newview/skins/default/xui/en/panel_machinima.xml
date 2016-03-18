@@ -48,7 +48,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1390"
+            height="1410"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -317,7 +317,7 @@ width="345">
                   height="16"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_pad="60"
+                  left_pad="61"
                   name="shaders"
                   top_delta="0"
                   width="10">
@@ -331,7 +331,7 @@ width="345">
                   height="16"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_pad="63"
+                  left_pad="62"
                   name="shaders"
                   top_delta="0"
                   width="10">
@@ -415,6 +415,31 @@ width="345">
                   width="10">
                   ┣
                   </text>
+                  <check_box
+                  control_name="RenderDeferredBlurLight"
+                  enabled_control="RenderDeferred"
+                  height="16"
+                  label="Light Softening"
+                  tool_tip="Toggles Shadow, SSAO and Light Softening, blurs shadows and ssao to make them look smooth, might have a slight impact on overall look of the lighting in deferred without Shadows or SSAO enabled."
+                  layout="topleft"
+                  left_pad="0"
+                  name="UseBlurLight"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_delta="-10"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┣
+                  </text>
                   <text
                   font="SansSerif"
                   font.style="BOLD"
@@ -427,7 +452,7 @@ width="345">
                   name="shaders"
                   top_delta="16"
                   width="10">
-                  ┣
+                  ┃
                   </text>
                   <radio_group
                   control_name="RenderShadowDetail"
@@ -476,7 +501,7 @@ width="345">
                         value="2"
                         layout="topleft"
                         name="2"
-                        left_pad="10"
+                        left_pad="11"
                         top_delta="0"
                         width="50">
                               <radio_item.check_button
@@ -510,7 +535,7 @@ width="345">
                   height="16"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left="193"
+                  left="184"
                   name="shaders"
                   top_delta="0"
                   width="10">
@@ -524,7 +549,7 @@ width="345">
                   height="20"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_delta="-115"
+                  left_delta="-116"
                   name="shaders"
                   top_pad="0"
                   width="10">
@@ -534,8 +559,8 @@ width="345">
                   control_name="RenderDeferredSSAO"
                   enabled_control="RenderDeferred"
                   height="16"
-                  label="Ambient Occlusion"
-                  tool_tip="Toggles Ambient Occlusion, blurs Shadows (Shadow Softening) and renders SSAO which adds small dark edges and transitions. Deferred Rendering is needed in order to use this!"
+                  label="Screen Space Ambient Occlusion"
+                  tool_tip="Toggles SSAO which adds small dark edges and transitions to close objects making them look more realistic."
                   layout="topleft"
                   left_pad="0"
                   name="UseSSAO"
@@ -553,21 +578,7 @@ width="345">
                   name="shaders"
                   top_pad="0"
                   width="10">
-                  ┃
-                  </text>
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_pad="7"
-                  name="shaders"
-                  top_delta="0"
-                  width="10">
-                  ┗
+                  ┣
                   </text>
                   <check_box
                   control_name="RenderScreenSpaceReflections"
@@ -588,7 +599,7 @@ width="345">
                   height="20"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_delta="-27"
+                  left_delta="-10"
                   name="shaders"
                   top_pad="0"
                   width="10">
@@ -1074,7 +1085,7 @@ width="345">
                   top_delta="4"
                   name="title_label"
                   width="250">
-                  Ambient Occlusion (SSAO):
+                  Screen Space Ambient Occlusion (SSAO):
                   </text>
                   <slider
                   control_name="RenderSSAOBlurSize"
