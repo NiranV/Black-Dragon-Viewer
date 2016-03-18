@@ -958,6 +958,7 @@ public:
 
 //	//BD - Special Options
 	static U32 RenderShadowBlurSamples;
+	static BOOL RenderDeferredBlurLight;
 };
 
 void render_bbox(const LLVector3 &min, const LLVector3 &max);

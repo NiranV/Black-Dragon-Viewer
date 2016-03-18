@@ -219,6 +219,7 @@ F32 LLPipeline::RenderChromaStrength;
 
 //BD - Special Options
 U32 LLPipeline::RenderShadowBlurSamples;
+BOOL LLPipeline::RenderDeferredBlurLight;
 
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
@@ -689,6 +690,7 @@ void LLPipeline::init()
 
 //	//BD - Special Options
 	connectRefreshCachedSettingsSafe("RenderShadowBlurSamples");
+	connectRefreshCachedSettingsSafe("RenderDeferredBlurLight");
 }
 
 LLPipeline::~LLPipeline()
@@ -984,7 +986,6 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 	if (LLPipeline::sRenderDeferred)
 	{
 		S32 shadow_detail = RenderShadowDetail;
-		BOOL ssao = RenderDeferredSSAO;
 		
 		const U32 occlusion_divisor = 3;
 
@@ -1014,9 +1015,12 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		{
 			mFXAABuffer.release();
 		}
-		
-		if (shadow_detail > 0 || ssao || RenderDepthOfField || samples > 0)
-		{ //only need mDeferredLight for shadows OR ssao OR dof OR fxaa
+
+		//BD - Force the deferred light map on, this will fix the issue with lighting being different
+		//     with shader level 1 or higher but everything disabled shader wise compared to the same
+		//     scene with shader level 0 (everything disabled feature-wise)
+		if (RenderDeferred)
+		{
 			if (!mDeferredLight.allocate(resX, resY, GL_RGBA, FALSE, FALSE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
 		}
 		else
@@ -1240,6 +1244,7 @@ void LLPipeline::refreshCachedSettings()
 
 //	//BD - Special Options
 	RenderShadowBlurSamples = gSavedSettings.getU32("RenderShadowBlurSamples");
+	RenderDeferredBlurLight = gSavedSettings.getBOOL("RenderDeferredBlurLight");
 
 	// <exodus>
 	exoPostProcess::instance().ExodusRenderPostSettingsUpdate();
@@ -8669,7 +8674,7 @@ void LLPipeline::renderDeferredLighting()
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 
-		if (RenderDeferredSSAO || RenderShadowDetail > 0)
+		if (RenderDeferred)
 		{
 			mDeferredLight.bindTarget();
 			{ //paint shadow/SSAO light map (direct lighting lightmap)
@@ -8715,7 +8720,7 @@ void LLPipeline::renderDeferredLighting()
 			mDeferredLight.flush();
 		}
 		
-		if (RenderDeferredSSAO)
+		if (RenderDeferredBlurLight)
 		{ //soften direct lighting lightmap
 			LL_RECORD_BLOCK_TIME(FTM_SOFTEN_SHADOW);
 			//blur lightmap
@@ -9266,7 +9271,7 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 
-		if (RenderDeferredSSAO || RenderShadowDetail > 0)
+		if (RenderDeferred)
 		{
 			mDeferredLight.bindTarget();
 			{ //paint shadow/SSAO light map (direct lighting lightmap)
