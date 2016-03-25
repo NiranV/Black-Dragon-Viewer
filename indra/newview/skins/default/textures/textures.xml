@@ -541,6 +541,7 @@ with the same filename but different name
   <texture name="SkipForward_Off" file_name="icons/SkipForward_Off.png" preload="false" />
 
   <texture name="SliderTrack_Horiz" file_name="widgets/SliderTrack_Horiz.png" scale.left="16" scale.top="12" scale.right="88" scale.bottom="0" />
+  <texture name="SliderTrack_Horiz_Progress" file_name="widgets/SliderTrack_Horiz_Progress.png" scale.left="3" scale.top="12" scale.right="101" scale.bottom="0" />
   <texture name="SliderTrack_Vert" file_name="widgets/SliderTrack_Vert.png" scale.left="0" scale.top="88" scale.right="12" scale.bottom="16" />
   <texture name="SliderThumb_Off" file_name="widgets/SliderThumb_Off.png" />
   <texture name="SliderThumb_Disabled" file_name="widgets/SliderThumb_Disabled.png" />
