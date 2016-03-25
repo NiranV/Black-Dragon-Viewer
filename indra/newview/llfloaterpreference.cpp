@@ -956,7 +956,6 @@ BOOL LLFloaterPreference::postBuild()
 	if (!gSavedSettings.getBOOL("RememberPreferencesTabs"))
 	{
 		gSavedSettings.setBOOL("PrefsViewerVisible", false);
-		gSavedSettings.setBOOL("PrefsBasicVisible", false);
 		gSavedSettings.setBOOL("PrefsLoDVisible", false);
 		gSavedSettings.setBOOL("PrefsPerformanceVisible", false);
 		gSavedSettings.setBOOL("PrefsVertexVisible", false);
@@ -1228,8 +1227,6 @@ void LLFloaterPreference::toggleTabs()
 	S32 modifier = 0;
 	if (gSavedSettings.getBOOL("PrefsViewerVisible"))
 		modifier += (getChild<LLLayoutPanel>("viewer_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsBasicVisible"))
-		modifier += (getChild<LLLayoutPanel>("basic_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsLoDVisible"))
 		modifier += (getChild<LLLayoutPanel>("lod_layout_panel")->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsPerformanceVisible"))
@@ -1370,16 +1367,14 @@ void LLFloaterPreference::refreshWarnings()
 														|| ((gSavedSettings.getU32("TextureMemory") 
 														+ gSavedSettings.getU32("SystemMemory")) > 768
 														&& gSavedSettings.getBOOL("CustomSystemMemory")));
-
-	//BD - Basic Options
 	getChild<LLUICtrl>("warning_texture_compression")->setVisible(gSavedSettings.getBOOL("RenderCompressTextures"));
-	getChild<LLUICtrl>("warning_draw_distance")->setVisible(gPipeline.RenderFarClip > 128);
 
-	//BD - LOD Options
+	//BD - Quality Options
 	getChild<LLUICtrl>("warning_dynamic_lod")->setVisible(!gPipeline.sDynamicLOD);
 	getChild<LLUICtrl>("warning_object_lod")->setVisible(LLVOVolume::sLODFactor > 2.0);
 
-	//BD - Performance Options
+	//BD - Rendering Options
+	getChild<LLUICtrl>("warning_draw_distance")->setVisible(gPipeline.RenderFarClip > 128);
 	getChild<LLUICtrl>("warning_object_occlusion")->setVisible(gPipeline.RenderDeferred && gPipeline.sUseOcclusion);
 	getChild<LLUICtrl>("warning_avatars_visible")->setVisible(gSavedSettings.getU32("RenderAvatarMaxNonImpostors") > 15);
 	getChild<LLUICtrl>("warning_derender_kb")->setVisible(gSavedSettings.getU32("RenderAutoMuteByteLimit") > 12000000);
@@ -1399,8 +1394,6 @@ void LLFloaterPreference::refreshWarnings()
 															|| gPipeline.RenderShadowResolution.mV[VW] > 2048);
 	getChild<LLUICtrl>("warning_projector_resolution")->setVisible(gPipeline.RenderProjectorShadowResolution.mV[VX] > 2048
 																|| gPipeline.RenderProjectorShadowResolution.mV[VY] > 2048);
-
-	//BD - SSR Options
 	getChild<LLUICtrl>("warning_ssr")->setVisible(gSavedSettings.getBOOL("RenderScreenSpaceReflections"));
 
 	//BD - Motion Blur Options
