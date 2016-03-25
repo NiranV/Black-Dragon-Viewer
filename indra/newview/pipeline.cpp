@@ -135,9 +135,6 @@
 bool gShiftFrame = false;
 
 //cached settings
-BOOL LLPipeline::RenderAvatarVP;
-BOOL LLPipeline::VertexShaderEnable;
-BOOL LLPipeline::WindLightUseAtmosShaders;
 BOOL LLPipeline::RenderDeferred;
 F32 LLPipeline::RenderDeferredSunWash;
 U32 LLPipeline::RenderFSAASamples;
@@ -394,14 +391,12 @@ BOOL	LLPipeline::sDelayVBUpdate = TRUE;
 BOOL	LLPipeline::sAutoMaskAlphaDeferred = TRUE;
 BOOL	LLPipeline::sAutoMaskAlphaNonDeferred = FALSE;
 BOOL	LLPipeline::sDisableShaders = FALSE;
-BOOL	LLPipeline::sRenderBump = TRUE;
 BOOL	LLPipeline::sBakeSunlight = FALSE;
 BOOL	LLPipeline::sNoAlpha = FALSE;
 BOOL	LLPipeline::sUseTriStrips = TRUE;
 BOOL	LLPipeline::sUseFarClip = TRUE;
 BOOL	LLPipeline::sShadowRender = FALSE;
 BOOL	LLPipeline::sWaterReflections = FALSE;
-BOOL	LLPipeline::sRenderGlow = FALSE;
 BOOL	LLPipeline::sReflectionRender = FALSE;
 BOOL	LLPipeline::sImpostorRender = FALSE;
 BOOL	LLPipeline::sImpostorRenderAlphaDepthPass = FALSE;
@@ -495,7 +490,6 @@ void LLPipeline::init()
 	gOctreeMaxCapacity = gSavedSettings.getU32("OctreeMaxNodeCapacity");
 	gOctreeMinSize = gSavedSettings.getF32("OctreeMinimumNodeSize");
 	sDynamicLOD = gSavedSettings.getBOOL("RenderDynamicLOD");
-	sRenderBump = gSavedSettings.getBOOL("RenderObjectBump");
 	sUseTriStrips = gSavedSettings.getBOOL("RenderUseTriStrips");
 	LLVertexBuffer::sUseStreamDraw = gSavedSettings.getBOOL("RenderUseStreamVBO");
 	LLVertexBuffer::sUseVAO = gSavedSettings.getBOOL("RenderUseVAO");
@@ -589,9 +583,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderAvatarMaxNonImpostors");
 	connectRefreshCachedSettingsSafe("RenderDelayVBUpdate");
 	connectRefreshCachedSettingsSafe("UseOcclusion");
-	connectRefreshCachedSettingsSafe("VertexShaderEnable");
-	connectRefreshCachedSettingsSafe("RenderAvatarVP");
-	connectRefreshCachedSettingsSafe("WindLightUseAtmosShaders");
 	connectRefreshCachedSettingsSafe("RenderDeferred");
 	connectRefreshCachedSettingsSafe("RenderDeferredSunWash");
 	connectRefreshCachedSettingsSafe("RenderFSAASamples");
@@ -823,7 +814,7 @@ void LLPipeline::throttleNewMemoryAllocation(BOOL disable)
 void LLPipeline::resizeScreenTexture()
 {
 	LL_RECORD_BLOCK_TIME(FTM_RESIZE_SCREEN_TEXTURE);
-	if (gPipeline.canUseVertexShaders() && assertInitialized())
+	if (gPipeline.sRenderDeferred && assertInitialized())
 	{
 		GLuint resX = gViewerWindow->getWorldViewWidthRaw();
 		GLuint resY = gViewerWindow->getWorldViewHeightRaw();
@@ -1119,7 +1110,6 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 //static
 void LLPipeline::updateRenderBump()
 {
-	sRenderBump = gSavedSettings.getBOOL("RenderObjectBump");
 }
 
 //static
@@ -1127,19 +1117,11 @@ void LLPipeline::updateRenderDeferred()
 {
 	BOOL deferred = ((RenderDeferred && 
 					 LLRenderTarget::sUseFBO &&
-					 LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&	 
-					 LLPipeline::sRenderBump &&
-					 VertexShaderEnable && 
-					 RenderAvatarVP &&
-					 WindLightUseAtmosShaders) ? TRUE : FALSE) &&
-					!gUseWireframe;
+					 LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred")) &&
+					!gUseWireframe);
 
 	sRenderDeferred = deferred;
 	exoPostProcess::instance().ExodusRenderPostUpdate();
-	if (deferred)
-	{ //must render glow when rendering deferred since post effect pass is needed to present any lighting at all
-		sRenderGlow = TRUE;
-	}
 }
 
 //static
@@ -1160,9 +1142,6 @@ void LLPipeline::refreshCachedSettings()
 			&& gGLManager.mHasOcclusionQuery) ? 2 : 0
 			&& !gSavedSettings.getBOOL("UseFreezeWorld");
 	
-	VertexShaderEnable = gSavedSettings.getBOOL("VertexShaderEnable");
-	RenderAvatarVP = gSavedSettings.getBOOL("RenderAvatarVP");
-	WindLightUseAtmosShaders = gSavedSettings.getBOOL("WindLightUseAtmosShaders");
 	RenderDeferred = gSavedSettings.getBOOL("RenderDeferred");
 	RenderDeferredSunWash = gSavedSettings.getF32("RenderDeferredSunWash");
 	RenderFSAASamples = gSavedSettings.getU32("RenderFSAASamples");
@@ -1369,7 +1348,7 @@ void LLPipeline::createGLBuffers()
 	GLuint resX = gViewerWindow->getWorldViewWidthRaw();
 	GLuint resY = gViewerWindow->getWorldViewHeightRaw();
 	
-	if (LLPipeline::sRenderGlow)
+	if (sRenderDeferred)
 	{ //screen space glow buffers
 		const U32 glow_res = llmax(1, 
 			llmin(512, 1 << gSavedSettings.getS32("RenderGlowResolutionPow")));
@@ -1382,10 +1361,7 @@ void LLPipeline::createGLBuffers()
 		allocateScreenBuffer(resX,resY);
 		mScreenWidth = 0;
 		mScreenHeight = 0;
-	}
-	
-	if (sRenderDeferred)
-	{
+
 		if (!mNoiseMap)
 		{
 			const U32 noiseRes = 128;
@@ -1512,7 +1488,7 @@ void LLPipeline::restoreGL()
 }
 
 
-BOOL LLPipeline::canUseVertexShaders()
+/*BOOL LLPipeline::canUseVertexShaders()
 {
 	static const std::string vertex_shader_enable_feature_string = "VertexShaderEnable";
 
@@ -1541,7 +1517,7 @@ BOOL LLPipeline::canUseWindLightShadersOnObjects() const
 {
 	return (canUseWindLightShaders() 
 		&& LLViewerShaderMgr::instance()->getVertexShaderLevel(LLViewerShaderMgr::SHADER_OBJECT) > 0);
-}
+}*/
 
 BOOL LLPipeline::canUseAntiAliasing() const
 {
@@ -2510,8 +2486,7 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 	BOOL to_texture =	LLPipeline::sUseOcclusion > 1 &&
 						!hasRenderType(LLPipeline::RENDER_TYPE_HUD) && 
 						LLViewerCamera::sCurCameraID == LLViewerCamera::CAMERA_WORLD &&
-						gPipeline.canUseVertexShaders() &&
-						sRenderGlow;
+						sRenderDeferred;
 
 	if (to_texture)
 	{
@@ -2577,7 +2552,7 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 	LLGLDepthTest depth(GL_TRUE, GL_FALSE);
 
 	bool bound_shader = false;
-	if (gPipeline.canUseVertexShaders() && LLGLSLShader::sCurBoundShader == 0)
+	if (gPipeline.sRenderDeferred && LLGLSLShader::sCurBoundShader == 0)
 	{ //if no shader is currently bound, use the occlusion shader instead of fixed function if we can
 		// (shadow render uses a special shader that clamps to clip planes)
 		bound_shader = true;
@@ -2646,7 +2621,7 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 	}
 
 	if (hasRenderType(LLPipeline::RENDER_TYPE_GROUND) && 
-		!gPipeline.canUseWindLightShaders() &&
+		!gPipeline.sRenderDeferred &&
 		gSky.mVOGroundp.notNull() && 
 		gSky.mVOGroundp->mDrawable.notNull() &&
 		!LLPipeline::sWaterReflections)
@@ -4375,7 +4350,7 @@ void LLPipeline::renderGeom(LLCamera& camera, BOOL forceVBOUpdate)
 	// Set fog
 	BOOL use_fog = hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_FOG);
 	LLGLEnable fog_enable(use_fog &&
-						  !gPipeline.canUseWindLightShadersOnObjects() ? GL_FOG : 0);
+							!gPipeline.sRenderDeferred ? GL_FOG : 0);
 	gSky.updateFog(camera.getFar());
 	if (!use_fog)
 	{
@@ -7606,8 +7581,7 @@ static LLTrace::BlockTimerStatHandle FTM_RENDER_BLOOM("Bloom");
 
 void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 {
-	if (!(gPipeline.canUseVertexShaders() &&
-		sRenderGlow))
+	if (!sRenderDeferred)
 	{
 		return;
 	}

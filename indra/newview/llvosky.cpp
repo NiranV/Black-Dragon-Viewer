@@ -679,7 +679,7 @@ LLColor4 LLVOSky::calcSkyColorInDir(const LLVector3 &dir, bool isShiny)
 			}
 			LLColor3 greyscale = smear(brightness);
 			desat_fog = desat_fog * saturation + greyscale * (1.0f - saturation);
-			if (!gPipeline.canUseWindLightShaders())
+			if (!gPipeline.sRenderDeferred)
 			{
 				col = LLColor4(desat_fog, 0.f);
 			}
@@ -868,7 +868,7 @@ LLColor3 LLVOSky::calcSkyColorWLFrag(LLVector3 & Pn, LLColor3 & vary_HazeColor, 
 
 	LLColor3 color0 = vary_HazeColor;
 	
-	if (!gPipeline.canUseWindLightShaders())
+	if (!gPipeline.sRenderDeferred)
 	{
 		LLColor3 color1 = color0 * 2.0f;
 		color1 = smear(1.f) - componentSaturate(color1);

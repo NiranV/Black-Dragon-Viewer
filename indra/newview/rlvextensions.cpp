@@ -388,7 +388,7 @@ RlvExtGetSet::RlvExtGetSet()
 		#ifdef RLV_EXTENSION_CMD_GETSETDEBUG_EX
 			m_DbgAllowed.insert(std::pair<std::string, S16>(RLV_SETTING_FORBIDGIVETORLV, DBG_READ));
 			m_DbgAllowed.insert(std::pair<std::string, S16>(RLV_SETTING_NOSETENV, DBG_READ));
-			m_DbgAllowed.insert(std::pair<std::string, S16>("WindLightUseAtmosShaders", DBG_READ));
+			//m_DbgAllowed.insert(std::pair<std::string, S16>("WindLightUseAtmosShaders", DBG_READ));
 		#endif // RLV_EXTENSION_CMD_GETSETDEBUG_EX
 
 		// Cache persistance of every setting

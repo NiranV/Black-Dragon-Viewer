@@ -149,7 +149,7 @@ protected:
 	// callback for defaults
 	void setHardwareDefaults();
 	// callback for when client turns on shaders
-	void onVertexShaderEnable();
+	//void onVertexShaderEnable();
 	// callback for when client turns on impostors
 	void onAvatarImpostorsEnable();
 	

@@ -162,7 +162,7 @@ void LLDrawPoolWLSky::renderDome(F32 camHeightLocal, LLGLSLShader * shader) cons
 
 void LLDrawPoolWLSky::renderSkyHaze(F32 camHeightLocal) const
 {
-	if (gPipeline.canUseWindLightShaders() && gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_SKY))
+	if (gPipeline.sRenderDeferred && gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_SKY))
 	{
 		LLGLDisable blend(GL_BLEND);
 
@@ -235,7 +235,7 @@ void LLDrawPoolWLSky::renderStars(void) const
 
 void LLDrawPoolWLSky::renderSkyClouds(F32 camHeightLocal) const
 {
-	if (gPipeline.canUseWindLightShaders() && gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_CLOUDS) && sCloudNoiseTexture.notNull())
+	if (gPipeline.sRenderDeferred && gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_CLOUDS) && sCloudNoiseTexture.notNull())
 	{
 		LLGLEnable blend(GL_BLEND);
 		gGL.setSceneBlendType(LLRender::BT_ALPHA);
@@ -286,7 +286,7 @@ void LLDrawPoolWLSky::renderHeavenlyBodies()
 			
 		color.mV[3] = llclamp(a, 0.f, 1.f);
 		
-		if (gPipeline.canUseVertexShaders())
+		if (gPipeline.sRenderDeferred)
 		{
 			gHighlightProgram.bind();
 		}
@@ -295,7 +295,7 @@ void LLDrawPoolWLSky::renderHeavenlyBodies()
 		
 		face->renderIndexed();
 
-		if (gPipeline.canUseVertexShaders())
+		if (gPipeline.sRenderDeferred)
 		{
 			gHighlightProgram.unbind();
 		}

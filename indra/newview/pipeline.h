@@ -227,9 +227,9 @@ public:
 		
 	void		setUseVertexShaders(BOOL use_shaders);
 	BOOL		getUseVertexShaders() const { return mVertexShadersEnabled; }
-	BOOL		canUseVertexShaders();
-	BOOL		canUseWindLightShaders() const;
-	BOOL		canUseWindLightShadersOnObjects() const;
+	//BOOL		canUseVertexShaders();
+	//BOOL		canUseWindLightShaders() const;
+	//BOOL		canUseWindLightShadersOnObjects() const;
 	BOOL		canUseAntiAliasing() const;
 
 	// phases
@@ -572,7 +572,6 @@ public:
 	static BOOL				sAutoMaskAlphaDeferred;
 	static BOOL				sAutoMaskAlphaNonDeferred;
 	static BOOL				sDisableShaders; // if TRUE, rendering will be done without shaders
-	static BOOL				sRenderBump;
 	static BOOL				sBakeSunlight;
 	static BOOL				sNoAlpha;
 	static BOOL				sUseTriStrips;
@@ -585,7 +584,6 @@ public:
 	static BOOL				sImpostorRender;
 	static BOOL				sImpostorRenderAlphaDepthPass;
 	static BOOL				sUnderWaterRender;
-	static BOOL				sRenderGlow;
 	static BOOL				sTextureBindTest;
 	static BOOL				sRenderFrameTest;
 	static BOOL				sRenderAttachedLights;
@@ -874,9 +872,6 @@ public:
 	LLVector3 PrevDoFFocusPoint;
 
 	//cached settings
-	static BOOL WindLightUseAtmosShaders;
-	static BOOL VertexShaderEnable;
-	static BOOL RenderAvatarVP;
 	static BOOL RenderDeferred;
 	static F32 RenderDeferredSunWash;
 	static U32 RenderFSAASamples;

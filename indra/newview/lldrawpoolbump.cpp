@@ -199,31 +199,24 @@ void LLDrawPoolBump::prerender()
 // static
 S32 LLDrawPoolBump::numBumpPasses()
 {
-	if (gSavedSettings.getBOOL("RenderObjectBump"))
+	if (gSavedSettings.getBOOL("RenderDeferred"))
 	{
-		if (mVertexShaderLevel > 1)
-		{
-			if (LLPipeline::sImpostorRender)
-			{
-				return 2;
-			}
-			else
-			{
-				return 3;
-			}
-		}
-		else if (LLPipeline::sImpostorRender)
-		{
-			return 1;
-		}
-		else
+		if (LLPipeline::sImpostorRender)
 		{
 			return 2;
 		}
+		else
+		{
+			return 3;
+		}
 	}
-    else
+	else if (LLPipeline::sImpostorRender)
 	{
-		return 0;
+		return 1;
+	}
+	else
+	{
+		return 2;
 	}
 }
 
@@ -807,7 +800,7 @@ void LLDrawPoolBump::endBump(U32 pass)
 
 S32 LLDrawPoolBump::getNumDeferredPasses()
 { 
-	if (gSavedSettings.getBOOL("RenderObjectBump"))
+	if (gSavedSettings.getBOOL("RenderDeferred"))
 	{
 		return 1;
 	}
@@ -1571,7 +1564,7 @@ void LLDrawPoolInvisible::render(S32 pass)
 { //render invisiprims
 	LL_RECORD_BLOCK_TIME(FTM_RENDER_INVISIBLE);
   
-	if (gPipeline.canUseVertexShaders())
+	if (gPipeline.sRenderDeferred)
 	{
 		gOcclusionProgram.bind();
 	}
@@ -1583,7 +1576,7 @@ void LLDrawPoolInvisible::render(S32 pass)
 	gGL.setColorMask(true, false);
 	glStencilMask(0xFFFFFFFF);
 
-	if (gPipeline.canUseVertexShaders())
+	if (gPipeline.sRenderDeferred)
 	{
 		gOcclusionProgram.unbind();
 	}

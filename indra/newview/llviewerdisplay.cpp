@@ -686,8 +686,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		LLGLState::checkTextureChannels();
 		LLGLState::checkClientArrays();
 
-		BOOL to_texture = gPipeline.canUseVertexShaders() &&
-						LLPipeline::sRenderGlow;
+		BOOL to_texture = gPipeline.RenderDeferred;
 
 		LLAppViewer::instance()->pingMainloopTimeout("Display:Swap");
 		
@@ -908,7 +907,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			else
 			{
 				gPipeline.mScreen.bindTarget();
-				if (LLPipeline::sUnderWaterRender && !gPipeline.canUseWindLightShaders())
+				if (LLPipeline::sUnderWaterRender && !gPipeline.sRenderDeferred)
 				{
 					const LLColor4 &col = LLDrawPoolWater::sWaterFogColor;
 					glClearColor(col.mV[0], col.mV[1], col.mV[2], 0.f);
@@ -1279,8 +1278,7 @@ void render_ui(F32 zoom_factor, int subfield)
 	}
 
 	{
-		BOOL to_texture = gPipeline.canUseVertexShaders() &&
-							LLPipeline::sRenderGlow;
+		BOOL to_texture = gPipeline.RenderDeferred;
 
 		if (to_texture)
 		{

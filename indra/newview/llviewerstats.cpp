@@ -543,13 +543,9 @@ void send_stats()
 			shader_level = 3;
 		}
 	}
-	else if (gPipeline.canUseWindLightShadersOnObjects())
+	else
 	{
-		shader_level = 2;
-	}
-	else if (gPipeline.canUseVertexShaders())
-	{
-		shader_level = 1;
+		shader_level = 0;
 	}
 
 

@@ -789,7 +789,6 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.LogPath",				boost::bind(&LLFloaterPreference::onClickLogPath, this));
 	mCommitCallbackRegistrar.add("Pref.HardwareSettings",		boost::bind(&LLFloaterPreference::onOpenHardwareSettings, this));
 	mCommitCallbackRegistrar.add("Pref.HardwareDefaults",		boost::bind(&LLFloaterPreference::setHardwareDefaults, this));
-	mCommitCallbackRegistrar.add("Pref.VertexShaderEnable",		boost::bind(&LLFloaterPreference::onVertexShaderEnable, this));
 	mCommitCallbackRegistrar.add("Pref.UpdateSliderText",		boost::bind(&LLFloaterPreference::refreshUI,this));
 	mCommitCallbackRegistrar.add("Pref.applyUIColor",			boost::bind(&LLFloaterPreference::applyUIColor, this ,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.getUIColor",				boost::bind(&LLFloaterPreference::getUIColor, this ,_1, _2));
@@ -1636,11 +1635,6 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	delete_btn->setEnabled(started);
 }
 
-void LLFloaterPreference::onVertexShaderEnable()
-{
-	refreshEnabledGraphics();
-}
-
 //static
 void LLFloaterPreference::initDoNotDisturbResponse()
 	{
@@ -2052,66 +2046,56 @@ void LLFloaterPreference::refreshEnabledState()
 // [/RLVa:KB]
 
 	// Reflections
-	BOOL reflections = gSavedSettings.getBOOL("VertexShaderEnable") 
+	BOOL reflections = gSavedSettings.getBOOL("RenderDeferred") 
 		&& gGLManager.mHasCubeMap
 		&& LLCubeMap::sUseCubeMaps;
 	ctrl_reflections->setEnabled(reflections);
 	
 	// Bump & Shiny	
-	LLCheckBoxCtrl* bumpshiny_ctrl = getChild<LLCheckBoxCtrl>("BumpShiny");
-	bool bumpshiny = gGLManager.mHasCubeMap && LLCubeMap::sUseCubeMaps && LLFeatureManager::getInstance()->isFeatureAvailable("RenderObjectBump");
-	bumpshiny_ctrl->setEnabled(bumpshiny ? TRUE : FALSE);
+	//LLCheckBoxCtrl* bumpshiny_ctrl = getChild<LLCheckBoxCtrl>("BumpShiny");
+	//bool bumpshiny = gGLManager.mHasCubeMap && LLCubeMap::sUseCubeMaps && LLFeatureManager::getInstance()->isFeatureAvailable("RenderObjectBump");
+	//bumpshiny_ctrl->setEnabled(bumpshiny ? TRUE : FALSE);
 	
 	// Avatar Mode
 	// Enable Avatar Shaders
-	LLCheckBoxCtrl* ctrl_avatar_vp = getChild<LLCheckBoxCtrl>("AvatarVertexProgram");
+	//LLCheckBoxCtrl* ctrl_avatar_vp = getChild<LLCheckBoxCtrl>("AvatarVertexProgram");
 	// Avatar Render Mode
-	LLCheckBoxCtrl* ctrl_avatar_cloth = getChild<LLCheckBoxCtrl>("AvatarCloth");
+	//LLCheckBoxCtrl* ctrl_avatar_cloth = getChild<LLCheckBoxCtrl>("AvatarCloth");
 	
-	bool avatar_vp_enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderAvatarVP");
-	if (LLViewerShaderMgr::sInitialized)
-	{
-		S32 max_avatar_shader = LLViewerShaderMgr::instance()->mMaxAvatarShaderLevel;
-		avatar_vp_enabled = (max_avatar_shader > 0) ? TRUE : FALSE;
-	}
+	//bool avatar_vp_enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred");
+	//if (LLViewerShaderMgr::sInitialized)
+	//{
+	//	S32 max_avatar_shader = LLViewerShaderMgr::instance()->mMaxAvatarShaderLevel;
+	//	avatar_vp_enabled = (max_avatar_shader > 0) ? TRUE : FALSE;
+	//}
 
-	ctrl_avatar_vp->setEnabled(avatar_vp_enabled);
-	
-	if (gSavedSettings.getBOOL("VertexShaderEnable") == FALSE || 
-		gSavedSettings.getBOOL("RenderAvatarVP") == FALSE)
-	{
-		ctrl_avatar_cloth->setEnabled(false);
-	} 
-	else
-	{
-		ctrl_avatar_cloth->setEnabled(true);
-	}
+	//ctrl_avatar_vp->setEnabled(avatar_vp_enabled);
 	
 	// Vertex Shaders
 	// Global Shader Enable
-	LLCheckBoxCtrl* ctrl_shader_enable   = getChild<LLCheckBoxCtrl>("BasicShaders");
+	//LLCheckBoxCtrl* ctrl_shader_enable   = getChild<LLCheckBoxCtrl>("BasicShaders");
 	
 //	ctrl_shader_enable->setEnabled(LLFeatureManager::getInstance()->isFeatureAvailable("VertexShaderEnable"));
 // [RLVa:KB] - Checked: 2010-03-18 (RLVa-1.2.0a) | Modified: RLVa-0.2.0a
 	// "Basic Shaders" can't be disabled - but can be enabled - under @setenv=n
-	bool fCtrlShaderEnable = LLFeatureManager::getInstance()->isFeatureAvailable("VertexShaderEnable");
-	ctrl_shader_enable->setEnabled(
-		fCtrlShaderEnable && ((!gRlvHandler.hasBehaviour(RLV_BHVR_SETENV)) || (!gSavedSettings.getBOOL("VertexShaderEnable"))) );
+	//bool fCtrlShaderEnable = LLFeatureManager::getInstance()->isFeatureAvailable("VertexShaderEnable");
+	//ctrl_shader_enable->setEnabled(
+	//	fCtrlShaderEnable && ((!gRlvHandler.hasBehaviour(RLV_BHVR_SETENV)) || (!gSavedSettings.getBOOL("VertexShaderEnable"))) );
 // [/RLVa:KB]
 
-	BOOL shaders = ctrl_shader_enable->get();
+	//BOOL shaders = ctrl_shader_enable->get();
 	
 	// WindLight
-	LLCheckBoxCtrl* ctrl_wind_light = getChild<LLCheckBoxCtrl>("WindLightUseAtmosShaders");
+	//LLCheckBoxCtrl* ctrl_wind_light = getChild<LLCheckBoxCtrl>("WindLightUseAtmosShaders");
 	
 	// *HACK just checks to see if we can use shaders... 
 	// maybe some cards that use shaders, but don't support windlight
 //	ctrl_wind_light->setEnabled(ctrl_shader_enable->getEnabled() && shaders);
 // [RLVa:KB] - Checked: 2010-03-18 (RLVa-1.2.0a) | Modified: RLVa-0.2.0a
 	// "Atmospheric Shaders" can't be disabled - but can be enabled - under @setenv=n
-	bool fCtrlWindLightEnable = fCtrlShaderEnable && shaders;
-	ctrl_wind_light->setEnabled(
-		fCtrlWindLightEnable && ((!gRlvHandler.hasBehaviour(RLV_BHVR_SETENV)) || (!gSavedSettings.getBOOL("WindLightUseAtmosShaders"))) );
+	//bool fCtrlWindLightEnable = fCtrlShaderEnable && shaders;
+	//ctrl_wind_light->setEnabled(
+	//	fCtrlWindLightEnable && ((!gRlvHandler.hasBehaviour(RLV_BHVR_SETENV)) || (!gSavedSettings.getBOOL("WindLightUseAtmosShaders"))) );
 // [/RLVa:KB]
 
 	//Deferred/SSAO/Shadows
@@ -2119,11 +2103,9 @@ void LLFloaterPreference::refreshEnabledState()
 
 	
 	BOOL enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
-						((bumpshiny_ctrl && bumpshiny_ctrl->get()) ? TRUE : FALSE) &&
-						shaders && 
-						gGLManager.mHasFramebufferObject &&
-						gSavedSettings.getBOOL("RenderAvatarVP") &&
-						(ctrl_wind_light->get()) ? TRUE : FALSE;
+						//((bumpshiny_ctrl && bumpshiny_ctrl->get()) ? TRUE : FALSE) &&
+						//shaders && 
+						gGLManager.mHasFramebufferObject;
 
 	ctrl_deferred->setEnabled(enabled);
 

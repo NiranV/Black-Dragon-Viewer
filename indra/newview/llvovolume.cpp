@@ -4831,7 +4831,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 						vobj->isMesh() && 
 						gMeshRepo.getSkinInfo(vobj->getVolume()->getParams().getSculptID(), vobj);
 
-			bool bake_sunlight = LLPipeline::sBakeSunlight && drawablep->isStatic();
+			//bool bake_sunlight = LLPipeline::sBakeSunlight && drawablep->isStatic();
 
 			bool is_rigged = false;
 
@@ -4934,8 +4934,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 									pool->addRiggedFace(facep, fullbright ? LLDrawPoolAvatar::RIGGED_FULLBRIGHT_ALPHA : LLDrawPoolAvatar::RIGGED_ALPHA);
 								}
 							}
-							else if (gPipeline.canUseVertexShaders()
-								&& LLPipeline::sRenderBump 
+							else if (gPipeline.sRenderDeferred
 								&& te->getShiny() 
 								&& can_be_shiny)
 							{
@@ -5117,8 +5116,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 							facep->mLastUpdateTime = gFrameTimeSeconds;
 						}
 
-						if (gPipeline.canUseWindLightShadersOnObjects()
-							&& LLPipeline::sRenderBump)
+						if (gPipeline.sRenderDeferred)
 						{
 							if (LLPipeline::sRenderDeferred && te->getMaterialParams().notNull()  && !te->getMaterialID().isNull())
 							{
@@ -5178,7 +5176,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 								}
 							}
 						}
-						else
+						/*else
 						{
 							if (te->getBumpmap() && LLPipeline::sRenderBump)
 							{ //needs normal + tangent
@@ -5203,7 +5201,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 									sFullbrightFaces[fullbright_count++] = facep;
 								}
 							}
-						}
+						}*/
 					}
 				}
 				else
@@ -5911,8 +5909,7 @@ void LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFac
 				{
 					registerFace(group, facep, LLRenderPass::PASS_ALPHA);
 				}
-				else if (gPipeline.canUseVertexShaders()
-					&& LLPipeline::sRenderBump 
+				else if (gPipeline.sRenderDeferred
 					&& te->getShiny() 
 					&& can_be_shiny)
 				{
@@ -5946,8 +5943,7 @@ void LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFac
 					registerFace(group, facep, LLRenderPass::PASS_ALPHA);
 				}
 			}
-			else if (gPipeline.canUseVertexShaders()
-				&& LLPipeline::sRenderBump 
+			else if (gPipeline.sRenderDeferred
 				&& te->getShiny() 
 				&& can_be_shiny)
 			{ //shiny
@@ -6001,14 +5997,14 @@ void LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFac
 					{
 					registerFace(group, facep, LLRenderPass::PASS_FULLBRIGHT);
 					}
-					if (LLPipeline::sRenderDeferred && !hud_group && LLPipeline::sRenderBump && use_legacy_bump)
+					if (LLPipeline::sRenderDeferred && !hud_group && use_legacy_bump)
 					{ //if this is the deferred render and a bump map is present, register in post deferred bump
 						registerFace(group, facep, LLRenderPass::PASS_POST_BUMP);
 					}
 				}
 				else
 				{
-					if (LLPipeline::sRenderDeferred && LLPipeline::sRenderBump && use_legacy_bump)
+					if (LLPipeline::sRenderDeferred && use_legacy_bump)
 					{ //non-shiny or fullbright deferred bump
 						registerFace(group, facep, LLRenderPass::PASS_BUMP);
 					}
@@ -6027,10 +6023,9 @@ void LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFac
 				}
 				
 				
-				if (!gPipeline.canUseVertexShaders() && 
+				if (!gPipeline.sRenderDeferred &&
 					!is_alpha && 
-					te->getShiny() && 
-					LLPipeline::sRenderBump)
+					te->getShiny())
 				{ //shiny as an extra pass when shaders are disabled
 					registerFace(group, facep, LLRenderPass::PASS_SHINY);
 				}
@@ -6042,13 +6037,13 @@ void LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFac
 				llassert((mask & LLVertexBuffer::MAP_NORMAL) || fullbright);
 				facep->setPoolType((fullbright) ? LLDrawPool::POOL_FULLBRIGHT : LLDrawPool::POOL_SIMPLE);
 				
-				if (!force_simple && LLPipeline::sRenderBump && use_legacy_bump)
+				if (!force_simple && use_legacy_bump)
 				{
 					registerFace(group, facep, LLRenderPass::PASS_BUMP);
 				}
 			}
 
-			if (!is_alpha && LLPipeline::sRenderGlow && te->getGlow() > 0.f)
+			if (!is_alpha && LLPipeline::RenderDeferred && te->getGlow() > 0.f)
 			{
 				registerFace(group, facep, LLRenderPass::PASS_GLOW);
 			}

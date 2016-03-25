@@ -348,7 +348,7 @@ void LLWLParamManager::savePreset(LLWLParamKey key)
 
 void LLWLParamManager::updateShaderUniforms(LLGLSLShader * shader)
 {
-	if (gPipeline.canUseWindLightShaders())
+	if (gPipeline.sRenderDeferred)
 	{
 		mCurParams.update(shader);
 	}
@@ -426,7 +426,7 @@ void LLWLParamManager::propagateParameters(void)
 	for(shaders_iter = LLViewerShaderMgr::instance()->beginShaders(); shaders_iter != end_shaders; ++shaders_iter) 
 	{
 		if (shaders_iter->mProgramObject != 0
-			&& (gPipeline.canUseWindLightShaders()
+			&& (gPipeline.sRenderDeferred
 				|| shaders_iter->mShaderGroup == LLGLSLShader::SG_WATER))
 		{
 			shaders_iter->mUniformsDirty = TRUE;
@@ -475,7 +475,7 @@ void LLWLParamManager::update(LLViewerCamera * cam)
 		for(shaders_iter = LLViewerShaderMgr::instance()->beginShaders(); shaders_iter != end_shaders; ++shaders_iter)
 		{
 			if (shaders_iter->mProgramObject != 0
-				&& (gPipeline.canUseWindLightShaders()
+				&& (gPipeline.sRenderDeferred
 				|| shaders_iter->mShaderGroup == LLGLSLShader::SG_WATER))
 			{
 				shaders_iter->mUniformsDirty = TRUE;
