@@ -48,7 +48,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1410"
+            height="1315"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -78,26 +78,16 @@ width="345">
                   Shader Toggles:
                   </text>
                   <check_box
-                  control_name="RenderTransparentWater"
-                  disabled_control="VertexShaderEnable"
+                  control_name="RenderDeferred"
+                  enabled_control="RenderGlow"
                   height="16"
-                  label="Transparent Water"
-                  tool_tip="Toggles transparent water, false renders water as opaque with a simple texture applied. Must be enabled for Vertex Shader water reflections in some cases"
+                  label="Deferred Rendering"
+                  tool_tip="Toggles Deferred Rendering adding shadows cast by and on Prims, Avatars and the World aswell as uses a new lighting which allows Projected Lights/Textures which can also drop shadows. Vertex Shader, Atmospheric Shader, Post Process Glow and Hardware Skinning are needed to use this!"
                   layout="topleft"
                   left="10"
-                  name="RenderTransparentWater"
-                  top_pad="15"
+                  name="Deferred"
+                  top_delta="27"
                   width="115" />
-                  <check_box
-                  control_name="VertexShaderEnable"
-                  height="16"
-                  label="Vertex Shader"
-                  tool_tip="Toggles the Vertex Shader allowing ripple water, reflections on water and a much more realistic sky with clouds aswell as Post Process Glow. Known as 'Windlight'"
-                  layout="topleft"
-                  left="10"
-                  name="BasicShadersᒪ"
-                  top_pad="0"
-                  width="115"/>
                   <text
                   font="SansSerif"
                   font.style="BOLD"
@@ -109,96 +99,6 @@ width="345">
                   left_delta="7"
                   name="shaders"
                   top_pad="0"
-                  width="10">
-                  ┗
-                  </text>
-                  <check_box
-                  control_name="WindLightUseAtmosShaders"
-                  enabled_control="VertexShaderEnable"
-                  height="16"
-                  initial_value="true"
-                  label="Atmospheric Shader"
-                  tool_tip="Toggles the Atmospheric Shader rendering the scene more realistic by adding additional light calculations. Needs Vertex Shader!"
-                  layout="topleft"
-                  left_pad="0"
-                  name="WindLightUseAtmosShaders"
-                  top_delta="0"
-                  width="115"/>
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_delta="7"
-                  name="shaders"
-                  top_pad="0"
-                  width="10">
-                  ┣
-                  </text>
-                  <check_box
-                  control_name="RenderObjectBump"
-                  height="16"
-                  label="Bumpmapping"
-                  tool_tip="Toggles Bumpmapping and shiny surfaces which reflect lights of the environment"
-                  layout="topleft"
-                  left_pad="0"
-                  name="BumpShiny"
-                  top_delta="0"
-                  width="115" />
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_delta="-10"
-                  name="shaders"
-                  top_pad="0"
-                  width="10">
-                  ┣
-                  </text>
-                  <check_box
-                  control_name="RenderAvatarVP"
-                  disabled_control="RenderGlow"
-                  height="16"
-                  initial_value="true"
-                  label="Hardware Skinning"
-                  tool_tip="Enabling Hardware Skinning opens up the basic rendering needed for high end shaders like Deferred Rendering"
-                  layout="topleft"
-                  left_pad="0"
-                  name="AvatarVertexProgram"
-                  top_delta="0"
-                  width="115"/>
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_delta="-10"
-                  name="shaders"
-                  top_pad="0"
-                  width="10">
-                  ┣
-                  </text>
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_delta="0"
-                  name="shaders"
-                  top_pad="-4"
                   width="10">
                   ┣
                   </text>
@@ -208,7 +108,7 @@ width="345">
                   layout="topleft"
                   left_pad="0"
                   name="TerrainDetailRadio"
-                  top_delta="-16"
+                  top_delta="0"
                   width="240">
                         <radio_item
                         height="16"
@@ -303,9 +203,23 @@ width="345">
                   height="20"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_delta="7"
+                  left_delta="-10"
                   name="shaders"
                   top_delta="16"
+                  width="10">
+                  ┃
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_delta="17"
+                  name="shaders"
+                  top_delta="0"
                   width="10">
                   ┗
                   </text>
@@ -361,57 +275,7 @@ width="345">
                   layout="topleft"
                   left_delta="-210"
                   name="shaders"
-                  top_pad="0"
-                  width="10">
-                  ┗
-                  </text>
-                  <check_box
-                  control_name="RenderGlow"
-                  disabled_control="RenderDeferred"
-                  height="16"
-                  label="Post Process Glow"
-                  tool_tip="Toggles the glowing of Prims and environment in some circumstances. Glow appearance and strength can be manipulated in the 'Lighting Tab' - needs Vertex Shader to run and is needed for Deferred Rendering"
-                  layout="topleft"
-                  left_pad="0"
-                  name="Glow"
-                  top_delta="0"
-                  width="115" />
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_delta="7"
-                  name="shaders"
-                  top_pad="0"
-                  width="10">
-                  ┗
-                  </text>
-                  <check_box
-                  control_name="RenderDeferred"
-                  enabled_control="RenderGlow"
-                  height="16"
-                  label="Deferred Rendering"
-                  tool_tip="Toggles Deferred Rendering adding shadows cast by and on Prims, Avatars and the World aswell as uses a new lighting which allows Projected Lights/Textures which can also drop shadows. Vertex Shader, Atmospheric Shader, Post Process Glow and Hardware Skinning are needed to use this!"
-                  layout="topleft"
-                  left_pad="0"
-                  name="Deferred"
-                  top_delta="0"
-                  width="115" />
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_delta="7"
-                  name="shaders"
-                  top_pad="0"
+                  top_delta="16"
                   width="10">
                   ┣
                   </text>
@@ -535,7 +399,7 @@ width="345">
                   height="16"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left="184"
+                  left_delta="100"
                   name="shaders"
                   top_delta="0"
                   width="10">
@@ -549,9 +413,9 @@ width="345">
                   height="20"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_delta="-116"
+                  left_delta="-117"
                   name="shaders"
-                  top_pad="0"
+                  top_pad="1"
                   width="10">
                   ┣
                   </text>
@@ -693,7 +557,7 @@ width="345">
                   name="shaders"
                   top_pad="0"
                   width="10">
-                  ┣
+                  ┃
                   </text>
                   <text
                   font="SansSerif"
