@@ -8871,7 +8871,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>100.0</real>
+    <real>250.0</real>
   </map>
   <key>RenderSSAOMaxScale</key>
   <map>
@@ -8882,7 +8882,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>200</integer>
+    <integer>500</integer>
   </map>
   <key>RenderSSAOFactor</key>
   <map>
@@ -8893,7 +8893,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.3</real>
+    <real>0.1</real>
   </map>
   <key>RenderSSAOEffect</key>
   <map>
@@ -16252,7 +16252,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.2</real>
+    <real>1.0</real>
   </map>
   <key>EnableThirdPersonSteering</key>
   <map>
@@ -17073,9 +17073,9 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
-      <real>0.275</real>
-      <real>0.275</real>
-      <real>0.275</real>
+      <real>-0.07</real>
+      <real>-0.07</real>
+      <real>-0.07</real>
     </array>
   </map>
   <key>ExodusRenderGamma</key>
