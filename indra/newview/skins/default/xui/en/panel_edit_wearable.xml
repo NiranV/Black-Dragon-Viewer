@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- background_visible="true"
+ background_visible="false"
  bevel_style="in"
  follows="all"
  height="570"
@@ -142,53 +142,71 @@
     <!-- Default width of the button should be to show it without label.
      Button will be extedned in code to show whole label when wearable is being changed.
     -->
+    <panel
+      name="group_info_top"
+      follows="top|left|right"
+      top="1"
+      left="10"
+      height="25"
+      width="314"
+      layout="topleft">
     <labeled_back_button
      follows="top|left"
-     height="24"
-     image_hover_unselected="BackButton_Over"
-     image_pressed="BackButton_Press"
-     image_unselected="BackButton_Off"
+     height="25"
+     image_hover_unselected="Toolbar_Middle_Over"
+       image_overlay="BackArrow_Off"
+       image_selected="Toolbar_Middle_Selected"
+       image_unselected="Toolbar_Middle_Off"
+       image_overlay_alignment="left"
+       halign="left"
      layout="topleft"
-     label="Save"
-     left="11"
+     label="  Save"
+     left="0"
      name="back_btn"
-     pad_left="24"
      tool_tip="Return to Edit Outfit"
-     top="3"
-     width="30"
+     top="1"
+     pad_left="7"
+     width="31"
      use_draw_context_alpha="false" />
+    <icon
+      follows="top|left|right"
+      height="25"
+      name="bg"
+      mouse_opaque="false"
+      image_name="Toolbar_Middle_Off"
+      left_pad="1"
+      right="-1"
+      top_delta="0" />
     <text
      follows="top|left|right"
-     font="SansSerifHugeBold"
+     font="SansSerif"
      height="22"
      layout="topleft"
-     left_pad="8"
+     left_delta="3"
      name="edit_wearable_title"
-     text_color="White"
-     top="3"
+     text_color="LtGray"
+     top="6"
      value="Editing Shape"
      use_ellipses="true"
      width="274" />
+    </panel>
     <panel
-     background_opaque="true"
-     background_visible="true"
-     bg_alpha_color="DkGray2"
-     bg_opaque_color="DkGray2"
+     background_visible="false"
      border="false"
      follows="top|left|right"
-     height="60"
+     height="50"
      label="Shirt"
      layout="topleft"
      left="10"
      name="wearable_type_panel"
-     top_pad="10"
+     top_pad="0"
      width="313">
         <text
          follows="top|left|right"
          font="SansSerifSmallBold"
          height="16"
          layout="topleft"
-         left="10"
+         left="0"
          name="description_text"
          text_color="White"
          top="10"
@@ -199,7 +217,7 @@
          follows="top|right"
          height="20"
          layout="topleft"
-         left="210"
+         left="220"
          name="sex_radio"
          top="5"
          width="110">
@@ -230,7 +248,7 @@
          height="16"
          image_name="icons/Male.png"
          layout="topleft"
-         left="230"
+         left="240"
          name="male_icon"
          tool_tip="Male"
          top="7"
@@ -240,7 +258,7 @@
          height="16"
          image_name="icons/Female.png"
          layout="topleft"
-         left="280"
+         left="290"
          name="female_icon"
          tool_tip="Female"
          top="7"
@@ -249,18 +267,18 @@
          follows="all"
          height="23"
          layout="topleft"
-         left="10"
+         left="0"
          max_length_bytes="63"
          name="description"
          prevalidate_callback="ascii"
          select_on_focus="true"
-         text_color="Black"
+         text_color="LtGray"
          top_pad="3"
-         width="290" />
+         width="312" />
     </panel>
     <panel
      follows="all"
-     height="433"
+     height="458"
      layout="topleft"
      left="0"
      name="edit_subpanel_container"
@@ -271,7 +289,7 @@
         <panel
          filename="panel_edit_shape.xml"
          follows="all"
-         height="433"
+         height="458"
          layout="topleft"
          left="0"
          name="edit_shape_panel"
@@ -281,7 +299,7 @@
         <panel
          filename="panel_edit_skin.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_skin_panel"
@@ -291,7 +309,7 @@
         <panel
          filename="panel_edit_hair.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_hair_panel"
@@ -301,7 +319,7 @@
         <panel
          filename="panel_edit_eyes.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_eyes_panel"
@@ -311,7 +329,7 @@
         <panel
          filename="panel_edit_shirt.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_shirt_panel"
@@ -321,7 +339,7 @@
         <panel
          filename="panel_edit_pants.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_pants_panel"
@@ -331,7 +349,7 @@
         <panel
          filename="panel_edit_shoes.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_shoes_panel"
@@ -341,7 +359,7 @@
         <panel
          filename="panel_edit_socks.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_socks_panel"
@@ -351,7 +369,7 @@
         <panel
          filename="panel_edit_jacket.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_jacket_panel"
@@ -361,7 +379,7 @@
         <panel
          filename="panel_edit_skirt.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_skirt_panel"
@@ -371,7 +389,7 @@
         <panel
          filename="panel_edit_gloves.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_gloves_panel"
@@ -381,7 +399,7 @@
         <panel
          filename="panel_edit_undershirt.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_undershirt_panel"
@@ -391,7 +409,7 @@
         <panel
          filename="panel_edit_underpants.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_underpants_panel"
@@ -401,7 +419,7 @@
         <panel
          filename="panel_edit_alpha.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_alpha_panel"
@@ -411,7 +429,7 @@
         <panel
          filename="panel_edit_tattoo.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_tattoo_panel"
@@ -421,7 +439,7 @@
         <panel
          filename="panel_edit_physics.xml"
          follows="all"
-         height="425"
+         height="450"
          layout="topleft"
          left="0"
          name="edit_physics_panel"
@@ -435,18 +453,19 @@
      layout="topleft"
      left="2"
      name="button_panel"
-     top_pad="6"
+     top_pad="1"
      width="333">
         <layout_stack
          follows="bottom|left|right"
          height="23"
          layout="topleft"
+         border_size="0"
          mouse_opaque="false"
          name="button_panel_ls"
-         left="0"
+         left="10"
          orientation="horizontal"
          top="0"
-         width="333">	
+         width="310">	
             <layout_panel
              follows="bottom|left|right"
              height="23"
@@ -455,16 +474,16 @@
              mouse_opaque="false"
              name="save_as_btn_lp"
              auto_resize="true"
-             width="154">
+             width="152">
                 <button
                  follows="bottom|left|right"
                  height="23"
                  label="Save As"
                  layout="topleft"
-                 left="1"
+                 left="0"
                  name="save_as_button"
                  top="0"
-                 width="153" />
+                 width="152" />
             </layout_panel>
             <layout_panel
              follows="bottom|left|right"
@@ -483,7 +502,7 @@
                  left="1"
                  name="revert_button"
                  top="0"
-                 width="148" />
+                 width="152" />
             </layout_panel>
         </layout_stack>
     </panel>

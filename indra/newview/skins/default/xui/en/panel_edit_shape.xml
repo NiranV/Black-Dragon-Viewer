@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
  <panel
-     background_visible="true"
+     background_visible="false"
 	 follows="all"
 	 height="400"
 	 layout="topleft"
@@ -28,7 +28,7 @@
          border="false"
          bg_alpha_color="DkGray2"
          bg_opaque_color="DkGray2"
-         background_visible="true"
+         background_visible="false"
          background_opaque="true"
          follows="all"
          height="388"
@@ -37,7 +37,7 @@
 		 left="10"
          name="accordion_panel"
 		 top_pad="0"
-         width="313">
+         width="315">
 	 <accordion
         layout="topleft"
 		follows="all"
@@ -46,8 +46,8 @@
 		name="wearable_accordion"
 		top="0"
         single_expansion="true"
-        fit_parent="true"
-		width="313">
+        fit_parent="false"
+		width="315">
 		<accordion_tab
 			layout="topleft"
 			min_height="150"
