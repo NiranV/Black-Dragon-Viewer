@@ -347,7 +347,7 @@ width="510">
  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -1283,7 +1283,7 @@ width="510">
  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -1469,7 +1469,7 @@ width="510">
  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -2286,7 +2286,7 @@ width="510">
  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -2319,7 +2319,7 @@ width="510">
    <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -2410,7 +2410,7 @@ width="510">
    <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -2540,7 +2540,7 @@ width="510">
  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -3073,7 +3073,7 @@ width="510">
 	  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -3168,7 +3168,7 @@ width="510">
 	  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -3474,7 +3474,7 @@ width="510">
  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -3934,7 +3934,7 @@ width="510">
  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -4027,7 +4027,7 @@ width="510">
  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -4187,7 +4187,7 @@ width="510">
 <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -5369,7 +5369,7 @@ width="510">
       <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -5414,7 +5414,7 @@ width="510">
 	  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -5504,7 +5504,7 @@ width="510">
 	  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -5594,7 +5594,7 @@ width="510">
 	  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -5663,7 +5663,7 @@ width="510">
 	  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -5748,7 +5748,7 @@ width="510">
    <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -5836,7 +5836,7 @@ width="510">
 	  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
@@ -5924,7 +5924,7 @@ width="510">
 	  <icon
   follows="top|right"
   height="1"
-  image_name="widgets\prefs_separator.png"
+  image_name="Prefs_Separator"
   color="1 1 1 1"
   layout="topleft"
   name="separator"
