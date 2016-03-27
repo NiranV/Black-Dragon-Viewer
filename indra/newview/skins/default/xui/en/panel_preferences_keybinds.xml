@@ -24,7 +24,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1205"
+  height="1225"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -1143,6 +1143,17 @@ width="510">
    parameter="54"
    function="Pref.UnbindKey"/>
  </button>
+ <icon
+  follows="top|right"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="450"
+  left="25"
+  top_pad="2"/>
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -1162,7 +1173,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="2">
+ top_pad="5">
  (Camera) Spin Clockwise:</text>
  <button
  follows="top|left"
@@ -3581,6 +3592,17 @@ width="510">
    name="keybind"
    top_delta="0"
    width="30" />-->
+ <icon
+  follows="top|right"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="450"
+  left="25"
+  top_pad="2"/>
  <text
  name="3_spin_cw"
  follows="left|top"
@@ -3588,7 +3610,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="2">
+ top_pad="5">
  (Camera) Spin Clockwise:</text>
  <button
  follows="top|left"
@@ -4214,6 +4236,17 @@ width="510">
    name="keybind"
    top_delta="0"
    width="30" />-->
+ <icon
+  follows="top|right"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="450"
+  left="25"
+  top_pad="2"/>
  <text
  name="4_spin_cw"
  follows="left|top"
@@ -4221,7 +4254,7 @@ width="510">
  left="10"
  height="15"
  width="200"
- top_pad="2">
+ top_pad="5">
  (Camera) Spin Clockwise:</text>
  <button
  follows="top|left"
