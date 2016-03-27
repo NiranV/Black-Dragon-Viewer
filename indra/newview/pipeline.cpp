@@ -142,8 +142,6 @@ U32 LLPipeline::RenderResolutionDivisor;
 BOOL LLPipeline::RenderUIBuffer;
 S32 LLPipeline::RenderShadowDetail;
 BOOL LLPipeline::RenderDeferredSSAO;
-LLVector4 LLPipeline::RenderShadowResolution;
-LLVector3 LLPipeline::RenderProjectorShadowResolution;
 BOOL LLPipeline::RenderLocalLights;
 BOOL LLPipeline::RenderDelayCreation;
 BOOL LLPipeline::RenderAnimateRes;
@@ -203,20 +201,22 @@ F32 LLPipeline::RenderShadowFOVCutoff;
 BOOL LLPipeline::CameraOffset;
 F32 LLPipeline::CameraMaxCoF;
 F32 LLPipeline::CameraDoFResScale;
-BOOL LLPipeline::CameraFreeDoFFocus;
 F32 LLPipeline::RenderAutoHideSurfaceAreaLimit;
-BOOL LLPipeline::RenderMotionBlur;
-U32 LLPipeline::RenderMotionBlurStrength;
+
+//BD - Special Options
+LLVector4 LLPipeline::RenderShadowResolution;
+LLVector3 LLPipeline::RenderProjectorShadowResolution;
+U32 LLPipeline::RenderShadowBlurSamples;
+BOOL LLPipeline::RenderDeferredBlurLight;
 BOOL LLPipeline::RenderGodrays;
 U32 LLPipeline::RenderGodraysResolution;
 F32 LLPipeline::RenderGodraysMultiplier;
 F32 LLPipeline::RenderGodraysFalloffMultiplier;
+BOOL LLPipeline::RenderMotionBlur;
+U32 LLPipeline::RenderMotionBlurStrength;
 U32 LLPipeline::RenderSSRResolution;
 F32 LLPipeline::RenderChromaStrength;
-
-//BD - Special Options
-U32 LLPipeline::RenderShadowBlurSamples;
-BOOL LLPipeline::RenderDeferredBlurLight;
+BOOL LLPipeline::CameraFreeDoFFocus;
 
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
@@ -8544,6 +8544,9 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);
 
+	//	//BD - Special Options
+	shader.uniform1i(LLShaderMgr::DEFERRED_SSAO_SAMPLES, RenderShadowBlurSamples);
+
 	shader.uniform1i(LLShaderMgr::GODRAY_RES, RenderGodraysResolution);
 	shader.uniform1f(LLShaderMgr::GODRAY_MULTIPLIER, RenderGodraysMultiplier);
 	shader.uniform1f(LLShaderMgr::FALLOFF_MULTIPLIER, RenderGodraysFalloffMultiplier);
@@ -8555,9 +8558,6 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 		glh::matrix4f norm_mat = glh_get_current_modelview().inverse().transpose();
 		shader.uniformMatrix4fv(LLShaderMgr::DEFERRED_NORM_MATRIX, 1, FALSE, norm_mat.m);
 	}
-
-//	//BD - Special Options
-	shader.uniform1i(LLShaderMgr::DEFERRED_SSAO_SAMPLES, RenderShadowBlurSamples);
 }
 
 LLColor3 pow3f(LLColor3 v, F32 f)

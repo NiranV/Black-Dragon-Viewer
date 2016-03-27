@@ -879,8 +879,6 @@ public:
 	static BOOL RenderUIBuffer;
 	static S32 RenderShadowDetail;
 	static BOOL RenderDeferredSSAO;
-	static LLVector4 RenderShadowResolution;
-	static LLVector3 RenderProjectorShadowResolution;
 	static BOOL RenderLocalLights;
 	static BOOL RenderDelayCreation;
 	static BOOL RenderAnimateRes;
@@ -940,20 +938,22 @@ public:
 	static BOOL CameraOffset;
 	static F32 CameraMaxCoF;
 	static F32 CameraDoFResScale;
-	static BOOL CameraFreeDoFFocus;
 	static F32 RenderAutoHideSurfaceAreaLimit;
-	static BOOL RenderMotionBlur;
-	static U32 RenderMotionBlurStrength;
+
+//	//BD - Special Options
+	static LLVector4 RenderShadowResolution;
+	static LLVector3 RenderProjectorShadowResolution;
+	static U32 RenderShadowBlurSamples;
+	static BOOL RenderDeferredBlurLight;
 	static BOOL RenderGodrays;
 	static U32 RenderGodraysResolution;
 	static F32 RenderGodraysMultiplier;
 	static F32 RenderGodraysFalloffMultiplier;
+	static BOOL RenderMotionBlur;
+	static U32 RenderMotionBlurStrength;
 	static U32 RenderSSRResolution;
 	static F32 RenderChromaStrength;
-
-//	//BD - Special Options
-	static U32 RenderShadowBlurSamples;
-	static BOOL RenderDeferredBlurLight;
+	static BOOL CameraFreeDoFFocus;
 };
 
 void render_bbox(const LLVector3 &min, const LLVector3 &max);
