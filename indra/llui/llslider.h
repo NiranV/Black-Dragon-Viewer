@@ -48,7 +48,9 @@ public:
 								track_image_horizontal,
 								track_image_vertical,
 								track_highlight_horizontal_image,
-								track_highlight_vertical_image;
+								track_highlight_vertical_image,
+								track_change_horizontal_image,
+								track_change_vertical_image;
 
 		Optional<CommitCallbackParam>	mouse_down_callback,
 										mouse_up_callback;
@@ -95,6 +97,8 @@ private:
 	LLPointer<LLUIImage>	mTrackImageVertical;
 	LLPointer<LLUIImage>	mTrackHighlightHorizontalImage;
 	LLPointer<LLUIImage>	mTrackHighlightVerticalImage;
+	LLPointer<LLUIImage>	mTrackChangeHorizontalImage;
+	LLPointer<LLUIImage>	mTrackChangeVerticalImage;
 
 	const EOrientation	mOrientation;
 

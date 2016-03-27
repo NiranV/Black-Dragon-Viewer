@@ -52,6 +52,8 @@ LLSlider::Params::Params()
 	track_image_vertical("track_image_vertical"),
 	track_highlight_horizontal_image("track_highlight_horizontal_image"),
 	track_highlight_vertical_image("track_highlight_vertical_image"),
+	track_change_horizontal_image("track_change_horizontal_image"),
+	track_change_vertical_image("track_change_vertical_image"),
 	mouse_down_callback("mouse_down_callback"),
 	mouse_up_callback("mouse_up_callback")
 {}
@@ -70,6 +72,8 @@ LLSlider::LLSlider(const LLSlider::Params& p)
 	mTrackImageVertical(p.track_image_vertical),
 	mTrackHighlightHorizontalImage(p.track_highlight_horizontal_image),
 	mTrackHighlightVerticalImage(p.track_highlight_vertical_image),
+	mTrackChangeHorizontalImage(p.track_change_horizontal_image),
+	mTrackChangeVerticalImage(p.track_change_vertical_image),
 	mMouseDownSignal(NULL),
 	mMouseUpSignal(NULL)
 {
@@ -311,8 +315,13 @@ void LLSlider::draw()
 		? mTrackHighlightHorizontalImage
 		: mTrackHighlightVerticalImage;
 
+	LLPointer<LLUIImage>& trackChangeImage = (mOrientation == HORIZONTAL)
+		? mTrackChangeHorizontalImage
+		: mTrackChangeVerticalImage;
+
 	LLRect track_rect;
 	LLRect highlight_rect;
+	LLRect change_rect;
 
 	if ( mOrientation == HORIZONTAL )
 	{
@@ -321,6 +330,7 @@ void LLSlider::draw()
 					   getRect().getWidth() - mThumbImage->getWidth() / 2,
 					   getLocalRect().getCenterY() - (trackImage->getHeight() / 2) );
 		highlight_rect.set(track_rect.mLeft, track_rect.mTop, mThumbRect.getCenterX(), track_rect.mBottom);
+		change_rect.set(mThumbRect.getCenterX(), track_rect.mTop, track_rect.mRight, track_rect.mBottom);
 	}
 	else
 	{
@@ -328,11 +338,13 @@ void LLSlider::draw()
 					   getRect().getHeight(),
 					   getLocalRect().getCenterX() + (trackImage->getWidth() / 2),
 					   0);
-		highlight_rect.set(track_rect.mLeft, track_rect.mTop, track_rect.mRight, track_rect.mBottom);
+		highlight_rect.set(track_rect.mLeft, mThumbRect.getCenterY(), track_rect.mRight, track_rect.mBottom);
+		change_rect.set(track_rect.mLeft, track_rect.mTop, track_rect.mRight, mThumbRect.getCenterY());
 	}
 
 	trackImage->draw(track_rect, LLColor4::white % alpha);
 	trackHighlightImage->draw(highlight_rect, LLColor4::white % alpha);
+	trackChangeImage->draw(change_rect, LLColor4::white % alpha);
 
 	// Thumb
 	if (hasFocus())
