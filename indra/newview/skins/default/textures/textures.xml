@@ -542,6 +542,7 @@ with the same filename but different name
 
   <texture name="SliderTrack_Horiz" file_name="widgets/SliderTrack_Horiz.png" scale.left="16" scale.top="12" scale.right="88" scale.bottom="0" />
   <texture name="SliderTrack_Horiz_Progress" file_name="widgets/SliderTrack_Horiz_Progress.png" scale.left="3" scale.top="12" scale.right="101" scale.bottom="0" />
+  <texture name="SliderTrack_Horiz_Change" file_name="widgets/SliderTrack_Horiz_Change.png" scale.left="4" scale.top="12" scale.right="102" scale.bottom="0" />
   <texture name="SliderTrack_Vert" file_name="widgets/SliderTrack_Vert.png" scale.left="0" scale.top="88" scale.right="12" scale.bottom="16" />
   <texture name="SliderThumb_Off" file_name="widgets/SliderThumb_Off.png" />
   <texture name="SliderThumb_Disabled" file_name="widgets/SliderThumb_Disabled.png" />
@@ -708,6 +709,8 @@ with the same filename but different name
   <texture name="Icon_Attachment_Large" file_name="icons/Icon_Attachment_Large.png"	preload="true"/>
   
   <!-- Back Dragon textures-->
+  
+  <texture name="Prefs_Separator" file_name="widgets/prefs_separator.png"/>
   
   <texture name="Caution_Widget" file_name="icons/caution_widget.png"/>
   <texture name="Default_Widget" file_name="icons/default_widget.png"/>
