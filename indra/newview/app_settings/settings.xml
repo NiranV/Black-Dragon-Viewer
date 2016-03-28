@@ -16331,6 +16331,17 @@
     <key>Value</key>
     <integer>10</integer>
   </map>
+  <key>RenderBlurPerformanceMode</key>
+  <map>
+    <key>Comment</key>
+    <string>Use a static amount of blur passes to gain a performance boost for the cost of customizability.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>SlowMotionTimeFactor</key>
   <map>
     <key>Comment</key>
