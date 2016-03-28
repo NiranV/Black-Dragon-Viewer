@@ -59,7 +59,7 @@ float rdpow2;
 float refdist;
 float refdepth;
 
-uniform int ssr_res = 10;
+uniform int ssr_res;
 uniform float res_scale;
 uniform float chroma_str;
 
