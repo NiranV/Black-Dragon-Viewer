@@ -1315,11 +1315,7 @@ void LLPipeline::createGLBuffers()
 
 	updateRenderDeferred();
 
-	bool materials_in_water = false;
-
-#if MATERIALS_IN_REFLECTIONS
-	materials_in_water = gSavedSettings.getS32("RenderWaterMaterials");
-#endif
+	bool materials_in_water = gSavedSettings.getS32("RenderWaterMaterials");
 
 	if (LLPipeline::sWaterReflections)
 	{ //water reflection texture
@@ -10070,11 +10066,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 			water_clip = 1;
 		}
 
-		bool materials_in_water = false;
-
-#if MATERIALS_IN_REFLECTIONS
-		materials_in_water = gSavedSettings.getS32("RenderWaterMaterials");
-#endif
+		bool materials_in_water = gSavedSettings.getS32("RenderWaterMaterials");
 
 		if (!LLViewerCamera::getInstance()->cameraUnderWater())
 		{	//generate planar reflection map
