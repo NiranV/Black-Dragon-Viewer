@@ -98,6 +98,10 @@ private:
 	void onRegionSettingsApplied(bool success);
 	void onRegionInfoUpdate();
 
+//	//BD - Animated Daycycles
+	void onAnimatedSkyStart();
+	void onAnimatedSkyStop();
+
 	void onDayCycleNameEdited();
 	void onDayCycleSelected();
 	void onBtnSave();

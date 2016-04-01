@@ -128,6 +128,10 @@ void LLFloaterEditDayCycle::initCallbacks(void)
 	mTimeCtrl->setCommitCallback(boost::bind(&LLFloaterEditDayCycle::onKeyTimeChanged, this));
 	mSkyPresetsCombo->setCommitCallback(boost::bind(&LLFloaterEditDayCycle::onKeyPresetChanged, this));
 
+//	//BD - Animated Daycycles
+	getChild<LLButton>("WLStartAnimSky")->setCommitCallback(boost::bind(&LLFloaterEditDayCycle::onAnimatedSkyStart, this));
+	getChild<LLButton>("WLStopAnimSky")->setCommitCallback(boost::bind(&LLFloaterEditDayCycle::onAnimatedSkyStop, this));
+
 	getChild<LLButton>("WLAddKey")->setClickedCallback(boost::bind(&LLFloaterEditDayCycle::onAddKey, this));
 	getChild<LLButton>("WLDeleteKey")->setClickedCallback(boost::bind(&LLFloaterEditDayCycle::onDeleteKey, this));
 
@@ -150,6 +154,39 @@ void LLFloaterEditDayCycle::initCallbacks(void)
 
 	// Connect to region info updates.
 	LLRegionInfoModel::instance().setUpdateCallback(boost::bind(&LLFloaterEditDayCycle::onRegionInfoUpdate, this));
+}
+
+//BD - Animated Daycycles
+void LLFloaterEditDayCycle::onAnimatedSkyStart()
+{
+	// if no keys, do nothing
+	if (mSliderToKey.size() == 0)
+	{
+		return;
+	}
+
+	LLMultiSliderCtrl* key_slider;
+	key_slider = getChild<LLMultiSliderCtrl>("WLDayCycleKeys");
+	llassert_always(mSliderToKey.size() == key_slider->getValue().size());
+
+	LLMultiSliderCtrl* time_slider;
+	time_slider = getChild<LLMultiSliderCtrl>("WLTimeSlider");
+
+	// set the param manager's track to the new one
+	LLWLParamManager::getInstance()->resetAnimator(time_slider->getCurSliderValue() / sHoursPerDay, true);
+
+	llassert_always(LLWLParamManager::getInstance()->mAnimator.mTimeTrack.size() == key_slider->getValue().size());
+}
+
+void LLFloaterEditDayCycle::onAnimatedSkyStop()
+{
+	// if no keys, do nothing
+	if (mSliderToKey.size() == 0) {
+		return;
+	}
+
+	// turn off animation and using linden time
+	LLWLParamManager::getInstance()->mAnimator.deactivate();
 }
 
 void LLFloaterEditDayCycle::syncTimeSlider()
@@ -311,7 +348,7 @@ void LLFloaterEditDayCycle::onTimeSliderMoved()
 
 	// set the value, turn off animation
 	LLWLParamManager::getInstance()->mAnimator.setDayTime((F64)val);
-	LLWLParamManager::getInstance()->mAnimator.deactivate();
+	//LLWLParamManager::getInstance()->mAnimator.deactivate();
 
 	// then call update once
 	LLWLParamManager::getInstance()->mAnimator.update(

@@ -445,6 +445,22 @@
      visible="false"
      width="23" />
     <button
+         height="23"
+         label="Start"
+         layout="topleft"
+         left="10"
+         name="WLStartAnimSky"
+         top="208"
+         width="70" />
+        <button
+         height="23"
+         label="Stop"
+         layout="topleft"
+         name="WLStopAnimSky"
+         left_pad="3"
+         top="208"
+         width="70" />
+    <button
      follows="bottom|right"
      height="23"
      label="Save"
