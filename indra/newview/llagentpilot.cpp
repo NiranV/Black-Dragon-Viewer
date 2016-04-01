@@ -393,7 +393,7 @@ void LLAgentPilot::updateTarget()
 	}
 	else if (mRecording)
 	{
-		if (mTimer.getElapsedTimeF32() - mLastRecordTime > 1.f)
+		if (mTimer.getElapsedTimeF32() - mLastRecordTime > 0.1f)
 		{
 			addAction(STRAIGHT);
 		}
