@@ -1469,10 +1469,15 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 
 	if (success)
 	{
+		string fragment = "deferred/blurLightF.glsl";
+		if (gSavedSettings.getBOOL("RenderBlurPerformanceMode"))
+		{
+			fragment = "deferred/blurLightFastF.glsl";
+		}
 		gDeferredBlurLightProgram.mName = "Deferred Blur Light Shader";
 		gDeferredBlurLightProgram.mShaderFiles.clear();
 		gDeferredBlurLightProgram.mShaderFiles.push_back(make_pair("deferred/blurLightV.glsl", GL_VERTEX_SHADER_ARB));
-		gDeferredBlurLightProgram.mShaderFiles.push_back(make_pair("deferred/blurLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredBlurLightProgram.mShaderFiles.push_back(make_pair(fragment, GL_FRAGMENT_SHADER_ARB));
 		gDeferredSunProgram.addPermutation("PERFORMANCE_MODE", (bool)gSavedSettings.getBOOL("RenderBlurPerformanceMode") ? "1" : "0");
 		gDeferredBlurLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 

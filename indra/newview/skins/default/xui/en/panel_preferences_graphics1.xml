@@ -3358,7 +3358,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="451"
+	  height="467"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -3366,23 +3366,21 @@ width="510">
          <check_box
    control_name="RenderLocalLights"
    height="16"
-   initial_value="true"
    label="Render Deferred Lights"
    tool_tip="Toggles normal lights and projected lights in Deferred Rendering on or off altogether. Warning this might also disable lights in Windlight!"
    layout="topleft"
    left="10"
-   name="UseLightShaders"
+   name="RenderLocalLights"
    top_pad="15"
    width="115" />
 	  <check_box
    control_name="RenderAttachedLights"
    height="16"
-   initial_value="true"
    label="Render Attached Lights"
-   tool_tip="Toggles rendering of lights which are attached to your or other Avatars on or off. Usefull for annoying facelights"
+   tool_tip="Toggles rendering of lights which are attached to your or other Avatars on or off. Useful for annoying facelights"
    layout="topleft"
    left="10"
-   name="attached_lights"
+   name="RenderAttachedLights"
    top_pad="0"
    width="115" />
    <text
@@ -4046,6 +4044,17 @@ width="510">
      name="RenderDeferredBlurLight"
      top_pad="5"
      width="115" />
+ <check_box
+     control_name="RenderBlurPerformanceMode"
+     height="16"
+     initial_value="true"
+     label="Use Fast Light Softening"
+     tool_tip="Use a static, but much faster blur light shader, disables the ability to customize the blur light quality"
+     layout="topleft"
+     left="10"
+     name="RenderDeferredBlurLight"
+     top_pad="0"
+     width="115" />
  <text
  type="string"
  length="1"
@@ -4060,6 +4069,7 @@ width="510">
  </text>
  <radio_group
                   control_name="RenderShadowBlurSamples"
+				  disabled_control="RenderBlurPerformanceMode"
                   height="19"
                   layout="topleft"
                   left="10"
@@ -4285,7 +4295,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsAOVisible"
 	  layout="topleft"
-	  height="106"
+	  height="104"
 	  auto_resize="false"
       visible="false"
 	  name="ao_layout_panel"
