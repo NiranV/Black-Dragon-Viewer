@@ -28,6 +28,8 @@
 
 #include "llfloater.h"
 
+class LLSpinCtrl;
+
 ///----------------------------------------------------------------------------
 /// Class LLFloaterWindowSize
 ///----------------------------------------------------------------------------
@@ -44,6 +46,9 @@ public:
     void initWindowSizeControls();
     void onClickSet();
     void onClickCancel();
+
+	LLSpinCtrl* mWindowWidth;
+	LLSpinCtrl* mWindowHeight;
 
 	//Template button action
 	void onClick600();

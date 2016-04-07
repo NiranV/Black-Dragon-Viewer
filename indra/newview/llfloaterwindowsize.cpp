@@ -31,7 +31,6 @@
 #include "llviewerwindow.h"
 
 // Linden library includes
-#include "llcombobox.h"
 #include "llspinctrl.h"
 #include "llfloater.h"
 #include "llfloaterreg.h"
@@ -40,24 +39,6 @@
 
 // System libraries
 #include <boost/regex.hpp>
-
-// Extract from strings of the form "<width> x <height>", e.g. "640 x 480".
-bool extractWindowSizeFromString(const std::string& instr, U32 *width, U32 *height)
-{
-    boost::cmatch what;
-    // matches (any number)(any non-number)(any number)
-    const boost::regex expression("([0-9]+)[^0-9]+([0-9]+)");
-    if (boost::regex_match(instr.c_str(), what, expression))
-    {
-        *width = atoi(what[1].first);
-        *height = atoi(what[2].first);
-        return true;
-    }
-        
-    *width = 0;
-    *height = 0;
-    return false;
-}
 
 
 LLFloaterWindowSize::LLFloaterWindowSize(const LLSD& key) 
@@ -75,8 +56,10 @@ BOOL LLFloaterWindowSize::postBuild()
     getChild<LLUICtrl>("cancel_btn")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClickCancel, this));
     setDefaultBtn("set_btn");
 
+	mWindowWidth = getChild<LLSpinCtrl>("window_x");
+	mWindowHeight = getChild<LLSpinCtrl>("window_y");
+
 	//Resolution template buttons
-	getChild<LLButton>("800 x 600")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClick600, this));
 	getChild<LLButton>("1024 x 768")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClick768, this));
 	getChild<LLButton>("1280 x 720")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClick720, this));
 	getChild<LLButton>("1440 x 900")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClick900, this));
@@ -98,10 +81,8 @@ void LLFloaterWindowSize::initWindowSizeControls()
 
 void LLFloaterWindowSize::onClickSet()
 {
-	LLSpinCtrl* window_size_x = getChild<LLSpinCtrl>("window_x");
-	LLSpinCtrl* window_size_y = getChild<LLSpinCtrl>("window_y");
-	S32 width = window_size_x->getValue();
-	S32 height = window_size_y->getValue();
+	S32 width = mWindowWidth->getValue();
+	S32 height = mWindowHeight->getValue();
 
 	LLViewerWindow::movieSize(width , height);
 }
@@ -112,33 +93,27 @@ void LLFloaterWindowSize::onClickCancel()
 }
 
 //TODO: find a better way to do this
-void LLFloaterWindowSize::onClick600()
-{
-    gSavedSettings.setS32("WindowWidth",800);
-	gSavedSettings.setS32("WindowHeight",600);
-	onClickSet();
-}
 void LLFloaterWindowSize::onClick768()
 {
-    gSavedSettings.setS32("WindowWidth",1024);
-	gSavedSettings.setS32("WindowHeight",768);
+	mWindowWidth->setValue(1024);
+	mWindowHeight->setValue(768);
 	onClickSet();
 }
 void LLFloaterWindowSize::onClick720()
 {
-    gSavedSettings.setS32("WindowWidth",1280);
-	gSavedSettings.setS32("WindowHeight",720);
+	mWindowWidth->setValue(1280);
+	mWindowHeight->setValue(720);
 	onClickSet();
 }
 void LLFloaterWindowSize::onClick900()
 {
-    gSavedSettings.setS32("WindowWidth",1440);
-	gSavedSettings.setS32("WindowHeight",900);
+	mWindowWidth->setValue(1440);
+	mWindowHeight->setValue(900);
 	onClickSet();
 }
 void LLFloaterWindowSize::onClick960()
 {
-    gSavedSettings.setS32("WindowWidth",1540);
-	gSavedSettings.setS32("WindowHeight",960);
+	mWindowWidth->setValue(1540);
+	mWindowHeight->setValue(960);
 	onClickSet();
 }

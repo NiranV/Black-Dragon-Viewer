@@ -6,7 +6,7 @@
   layout="topleft"
   name="window_size"
   title="WINDOW SIZE"
-  width="330">
+  width="290">
     <text
      follows="top|left"
      font="SansSerif"
@@ -14,9 +14,9 @@
      left="10"
      top="0" 
      name="windowsize_text"
-     width="330">
-     Click a template on the right or
-set a custom resolution:
+     width="270">
+     Click a template on the right or set a custom
+resolution down below:
     </text>
     <spinner
      decimal_digits="0"
@@ -51,36 +51,19 @@ set a custom resolution:
     <button
      follows="right|bottom"
      height="16"
-     label="800 x 600"
+     label="⌊1024 x 768⌉"
      left="190"
-     label_color="EmphasisColor"
-     font.style="UNDERLINE"
-     image_unselected="Transparent.j2c"
-     image_selected="Transparent.j2c"
-     name="800 x 600"
-     top="20"
-     halign="left"
-     width="80" />
-    <button
-     follows="right|bottom"
-     height="16"
-     label="1024 x 768"
-     left="190"
-     label_color="EmphasisColor"
-     font.style="UNDERLINE"
      image_unselected="Transparent.j2c"
      image_selected="Transparent.j2c"
      name="1024 x 768"
      halign="left"
-     top_pad="2"
-     width="80" />
+     top="37"
+     width="100" />
     <button
      follows="right|bottom"
      height="16"
-     label="1280 x 720 HD"
+     label="⌊1280 x 720⌉"
      left="190"
-     label_color="EmphasisColor"
-     font.style="UNDERLINE"
      image_unselected="Transparent.j2c"
      image_selected="Transparent.j2c"
      halign="left"
@@ -90,29 +73,25 @@ set a custom resolution:
     <button
      follows="right|bottom"
      height="16"
-     label="1440 x 900"
+     label="⌊1440 x 900⌉"
      left="190"
-     label_color="EmphasisColor"
-     font.style="UNDERLINE"
      image_unselected="Transparent.j2c"
      image_selected="Transparent.j2c"
      halign="left"
      name="1440 x 900"
      top_pad="2"
-     width="80" />
+     width="100" />
     <button
      follows="right|bottom"
      height="16"
-     label="1540 x 960 (480p x2)"
-     label_color="EmphasisColor"
-     font.style="UNDERLINE"
+     label="⌊1540 x 960⌉"
      image_unselected="Transparent.j2c"
      image_selected="Transparent.j2c"
      left="190"
      halign="left"
      name="1540 x 960"
      top_pad="2"
-     width="130" />
+     width="100" />
     <button
      follows="right|bottom"
      height="23"
