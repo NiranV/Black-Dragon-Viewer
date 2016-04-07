@@ -3168,7 +3168,7 @@ void LLPanelPreferenceGraphics::onPresetsListChange()
 
 void LLPanelPreferenceGraphics::setPresetText()
 {
-	LLTextBox* preset_text = getChild<LLTextBox>("preset_text");
+	//LLTextBox* preset_text = getChild<LLTextBox>("preset_text");
 
 	std::string preset_graphic_active = gSavedSettings.getString("PresetGraphicActive");
 
@@ -3181,7 +3181,7 @@ void LLPanelPreferenceGraphics::setPresetText()
 		LLPresetsManager::getInstance()->triggerChangeSignal();
 	}
 
-	if (!preset_graphic_active.empty())
+	/*if (!preset_graphic_active.empty())
 	{
 		preset_text->setText(preset_graphic_active);
 	}
@@ -3190,7 +3190,7 @@ void LLPanelPreferenceGraphics::setPresetText()
 		preset_text->setText(LLTrans::getString("none_paren_cap"));
 	}
 
-	preset_text->resetDirty();
+	preset_text->resetDirty();*/
 }
 
 bool LLPanelPreferenceGraphics::hasDirtyChilds()
