@@ -3534,10 +3534,11 @@ void LLWindowWin32::fillCompositionLogfont(LOGFONT *logfont)
 
 	memset(logfont, 0, sizeof(LOGFONT));
 
-	const WORD lang_id = LOWORD(GetKeyboardLayout(0));
+//	//BD - We don't support any language other than German and English.
+	/*const WORD lang_id = LOWORD(GetKeyboardLayout(0));
 	switch (PRIMARYLANGID(lang_id))
 	{
-	case LANG_CHINESE:
+	/*case LANG_CHINESE:
 		// We need to identify one of two Chinese fonts.
 		switch (SUBLANGID(lang_id))
 		{
@@ -3563,11 +3564,11 @@ void LLWindowWin32::fillCompositionLogfont(LOGFONT *logfont)
 		logfont->lfCharSet = HANGUL_CHARSET;
 		lstrcpy(logfont->lfFaceName, TEXT("Gulim"));
 		break;
-	default:
-		logfont->lfCharSet = ANSI_CHARSET;
-		lstrcpy(logfont->lfFaceName, TEXT("Tahoma"));
-		break;
-	}
+	default:*/
+	logfont->lfCharSet = ANSI_CHARSET;
+	lstrcpy(logfont->lfFaceName, TEXT("Tahoma"));
+	/*	break;
+	}*/
 							
 	logfont->lfHeight = mPreeditor->getPreeditFontSize();
 	logfont->lfWeight = FW_NORMAL;
