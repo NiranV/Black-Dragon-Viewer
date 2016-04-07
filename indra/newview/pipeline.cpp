@@ -11869,11 +11869,10 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		}
 		else
 		{ //grey muted avatar
-            LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " set grey" << LL_ENDL;
-			gGL.diffuseColor4ub(64,64,64,255);
+			LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " set grey" << LL_ENDL;
+			gGL.diffuseColor4ub(64, 64, 64, 255);
 		}
 
-		{
 		gGL.begin(LLRender::QUADS);
 		gGL.vertex3f(-1, -1, clip_plane);
 		gGL.vertex3f(1, -1, clip_plane);
@@ -11881,7 +11880,6 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		gGL.vertex3f(-1, 1, clip_plane);
 		gGL.end();
 		gGL.flush();
-		}
 
 		if (LLGLSLShader::sNoFixedFunction)
 		{
