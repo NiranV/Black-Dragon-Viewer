@@ -35,13 +35,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="Black_50"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="560"/>
+ width="550"/>
     <check_box
      control_name="JoystickEnabled"
      halign="left"
@@ -140,13 +140,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="Black_50"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="10"
- width="560"/>
+ width="550"/>
     <text
    name="general_label"
    follows="left|top"
@@ -439,13 +439,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="Black_50"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="17"
- width="560"/>
+ width="550"/>
     <text
    name="general_label"
    follows="left|top"
@@ -551,13 +551,13 @@
  follows="left|top|right"
  height="20"
  bg_visible="true"
- bg_alpha_color="Black_50"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
  left="1"
  name="title"
  top_pad="17"
- width="560"/>
+ width="550"/>
     <text
    name="general_label"
    follows="left|top"
@@ -1153,51 +1153,42 @@
      width="100">
         Feathering
     </text>
-    <slider
+    <spinner
+     top_delta="-4"
      control_name="AvatarFeathering"
-     decimal_digits="0"
-     follows="left|top"
-     height="16"
-     increment="0.05"
-     initial_value="0.7"
-     layout="topleft"
-     left="103"
+     decimal_digits="2"
+     increment="0.01"
+     label_width="0"
      max_val="10"
      min_val="0.1"
+     layout="topleft"
+     left="110"
      name="AvatarFeathering"
-     show_text="false"
+     width="56" />
+    <spinner
      top_delta="0"
-     width="73" />
-    <slider
      control_name="BuildFeathering"
-     decimal_digits="0"
-     follows="left|top"
-     height="16"
-     increment="0.05"
-     initial_value="0.7"
-     layout="topleft"
-     left_delta="70"
+     decimal_digits="2"
+     increment="0.01"
+     label_width="0"
      max_val="5"
      min_val="0.1"
+     layout="topleft"
+     left="180"
      name="BuildFeathering"
-     show_text="false"
+     width="56" />
+    <spinner
      top_delta="0"
-     width="73" />
-    <slider
      control_name="FlycamFeathering"
-     decimal_digits="0"
-     follows="left|top"
-     height="16"
-     increment="0.05"
-     initial_value="1"
-     layout="topleft"
-     left_delta="70"
+     decimal_digits="2"
+     increment="0.01"
+     label_width="0"
      max_val="5"
      min_val="0.1"
+     layout="topleft"
+     left="250"
      name="FlycamFeathering"
-     show_text="false"
-     top_delta="0"
-     width="73" />
+     width="56" />
     <stat_view
      height="250"
      label="Joystick Monitor"
