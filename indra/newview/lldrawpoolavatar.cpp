@@ -732,7 +732,7 @@ void LLDrawPoolAvatar::endImpostor()
 
 void LLDrawPoolAvatar::beginRigid()
 {
-	if (gPipeline.sRenderDeferred)
+	if (gPipeline.canUseVertexShaders())
 	{
 		if (LLPipeline::sUnderWaterRender)
 		{
@@ -844,7 +844,7 @@ void LLDrawPoolAvatar::beginSkinned()
 	}
 	else
 	{
-		if (gPipeline.sRenderDeferred)
+		if (gPipeline.canUseVertexShaders())
 		{
 			// software skinning, use a basic shader for windlight.
 			// TODO: find a better fallback method for software skinning.
@@ -871,7 +871,7 @@ void LLDrawPoolAvatar::endSkinned()
 	}
 	else
 	{
-		if (gPipeline.sRenderDeferred)
+		if (gPipeline.canUseVertexShaders())
 		{
 			// software skinning, use a basic shader for windlight.
 			// TODO: find a better fallback method for software skinning.
@@ -907,7 +907,7 @@ void LLDrawPoolAvatar::beginRiggedSimple()
 		}
 	}
 
-	if (sShaderLevel > 0 || gPipeline.sRenderDeferred)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders())
 	{
 		sDiffuseChannel = 0;
 		sVertexProgram->bind();
@@ -917,7 +917,7 @@ void LLDrawPoolAvatar::beginRiggedSimple()
 void LLDrawPoolAvatar::endRiggedSimple()
 {
 	LLVertexBuffer::unbind();
-	if (sShaderLevel > 0 || gPipeline.sRenderDeferred)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders())
 	{
 		sVertexProgram->unbind();
 		sVertexProgram = NULL;
@@ -970,7 +970,7 @@ void LLDrawPoolAvatar::beginRiggedGlow()
 		}
 	}
 
-	if (sShaderLevel > 0 || gPipeline.sRenderDeferred)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders())
 	{
 		sDiffuseChannel = 0;
 		sVertexProgram->bind();
@@ -1018,7 +1018,7 @@ void LLDrawPoolAvatar::beginRiggedFullbright()
 		}
 	}
 
-	if (sShaderLevel > 0 || gPipeline.sRenderDeferred)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders())
 	{
 		sDiffuseChannel = 0;
 		sVertexProgram->bind();
@@ -1040,7 +1040,7 @@ void LLDrawPoolAvatar::beginRiggedFullbright()
 void LLDrawPoolAvatar::endRiggedFullbright()
 {
 	LLVertexBuffer::unbind();
-	if (sShaderLevel > 0 || gPipeline.sRenderDeferred)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders())
 	{
 		sVertexProgram->unbind();
 		sVertexProgram = NULL;
@@ -1072,7 +1072,7 @@ void LLDrawPoolAvatar::beginRiggedShinySimple()
 		}
 	}
 
-	if (sShaderLevel > 0 || gPipeline.sRenderDeferred)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders())
 	{
 		sVertexProgram->bind();
 		LLDrawPoolBump::bindCubeMap(sVertexProgram, 2, sDiffuseChannel, cube_channel, false);
@@ -1122,7 +1122,7 @@ void LLDrawPoolAvatar::beginRiggedFullbrightShiny()
 		}
 	}
 
-	if (sShaderLevel > 0 || gPipeline.sRenderDeferred)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders())
 	{
 		sVertexProgram->bind();
 		LLDrawPoolBump::bindCubeMap(sVertexProgram, 2, sDiffuseChannel, cube_channel, false);

@@ -69,7 +69,7 @@ void LLDrawPoolSky::render(S32 pass)
 	}
 
 	// Don't draw the sky box if we can and are rendering the WL sky dome.
-	if (gPipeline.sRenderDeferred)
+	if (gPipeline.canUseWindLightShaders())
 	{
 		return;
 	}

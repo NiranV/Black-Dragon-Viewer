@@ -215,7 +215,7 @@ void LLDrawPoolAlpha::endRenderPass( S32 pass )
 	LL_RECORD_BLOCK_TIME(FTM_RENDER_ALPHA);
 	LLRenderPass::endRenderPass(pass);
 
-	if (gPipeline.sRenderDeferred)
+	if (gPipeline.canUseWindLightShaders())
 	{
 		LLGLSLShader::bindNoShader();
 	}
@@ -304,7 +304,7 @@ void LLDrawPoolAlpha::render(S32 pass)
 
 	if (sShowDebugAlpha)
 	{
-		BOOL shaders = gPipeline.sRenderDeferred;
+		BOOL shaders = gPipeline.canUseVertexShaders();
 		if(shaders) 
 		{
 			gHighlightProgram.bind();
@@ -373,7 +373,7 @@ void LLDrawPoolAlpha::renderAlpha(U32 mask, S32 pass)
 	BOOL initialized_lighting = FALSE;
 	BOOL light_enabled = TRUE;
 	
-	BOOL use_shaders = gPipeline.sRenderDeferred;
+	BOOL use_shaders = gPipeline.canUseVertexShaders();
 		
 	for (LLCullResult::sg_iterator i = gPipeline.beginAlphaGroups(); i != gPipeline.endAlphaGroups(); ++i)
 	{

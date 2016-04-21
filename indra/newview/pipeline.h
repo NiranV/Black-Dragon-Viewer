@@ -227,9 +227,9 @@ public:
 		
 	void		setUseVertexShaders(BOOL use_shaders);
 	BOOL		getUseVertexShaders() const { return mVertexShadersEnabled; }
-	//BOOL		canUseVertexShaders();
-	//BOOL		canUseWindLightShaders() const;
-	//BOOL		canUseWindLightShadersOnObjects() const;
+	BOOL		canUseVertexShaders();
+	BOOL		canUseWindLightShaders() const;
+	BOOL		canUseWindLightShadersOnObjects() const;
 	BOOL		canUseAntiAliasing() const;
 
 	// phases

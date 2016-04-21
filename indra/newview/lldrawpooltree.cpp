@@ -73,7 +73,7 @@ void LLDrawPoolTree::beginRenderPass(S32 pass)
 		shader = &gTreeProgram;
 	}
 
-	if (gPipeline.sRenderDeferred)
+	if (gPipeline.canUseVertexShaders())
 	{
 		shader->bind();
 		shader->setMinimumAlpha(0.5f);
@@ -133,7 +133,7 @@ void LLDrawPoolTree::endRenderPass(S32 pass)
 {
 	LL_RECORD_BLOCK_TIME(FTM_RENDER_TREES);
 		
-	if (gPipeline.sRenderDeferred)
+	if (gPipeline.canUseWindLightShadersOnObjects())
 	{
 		shader->unbind();
 	}

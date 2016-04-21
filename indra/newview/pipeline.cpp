@@ -814,7 +814,7 @@ void LLPipeline::throttleNewMemoryAllocation(BOOL disable)
 void LLPipeline::resizeScreenTexture()
 {
 	LL_RECORD_BLOCK_TIME(FTM_RESIZE_SCREEN_TEXTURE);
-	if (gPipeline.sRenderDeferred && assertInitialized())
+	if (gPipeline.canUseVertexShaders() && assertInitialized())
 	{
 		GLuint resX = gViewerWindow->getWorldViewWidthRaw();
 		GLuint resY = gViewerWindow->getWorldViewHeightRaw();
@@ -1027,7 +1027,6 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			for (U32 i = 0; i < 4; i++)
 			{
 				if (!mShadow[i].allocate(U32(scale.mV[i]),U32(scale.mV[i]), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE)) return false;
-				if (!mShadowOcclusion[i].allocate(mShadow[i].getWidth()/occlusion_divisor, mShadow[i].getHeight()/occlusion_divisor, 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE)) return false;
 			}
 		}
 		else
@@ -1035,7 +1034,6 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			for (U32 i = 0; i < 4; i++)
 			{
 				mShadow[i].release();
-				mShadowOcclusion[i].release();
 			}
 		}
 
@@ -1044,7 +1042,6 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			for (U32 i = 4; i < 6; i++)
 			{
 				if (!mShadow[i].allocate(U32(proj_scale.mV[VX]), U32(proj_scale.mV[VY]), 0, TRUE, FALSE)) return false;
-				if (!mShadowOcclusion[i].allocate(mShadow[i].getWidth()/occlusion_divisor, mShadow[i].getHeight()/occlusion_divisor, 0, TRUE, FALSE)) return false;
 			}
 		}
 		else
@@ -1052,7 +1049,6 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			for (U32 i = 4; i < 6; i++)
 			{
 				mShadow[i].release();
-				mShadowOcclusion[i].release();
 			}
 		}
 
@@ -1079,7 +1075,6 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		for (U32 i = 0; i < 6; i++)
 		{
 			mShadow[i].release();
-			mShadowOcclusion[i].release();
 		}
 		mFXAABuffer.release();
 		mScreen.release();
@@ -1303,7 +1298,6 @@ void LLPipeline::releaseScreenBuffers()
 	for (U32 i = 0; i < 6; i++)
 	{
 		mShadow[i].release();
-		mShadowOcclusion[i].release();
 	}
 }
 
@@ -1484,7 +1478,7 @@ void LLPipeline::restoreGL()
 }
 
 
-/*BOOL LLPipeline::canUseVertexShaders()
+BOOL LLPipeline::canUseVertexShaders()
 {
 	static const std::string vertex_shader_enable_feature_string = "VertexShaderEnable";
 
@@ -1513,7 +1507,7 @@ BOOL LLPipeline::canUseWindLightShadersOnObjects() const
 {
 	return (canUseWindLightShaders() 
 		&& LLViewerShaderMgr::instance()->getVertexShaderLevel(LLViewerShaderMgr::SHADER_OBJECT) > 0);
-}*/
+}
 
 BOOL LLPipeline::canUseAntiAliasing() const
 {
@@ -2548,7 +2542,7 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 	LLGLDepthTest depth(GL_TRUE, GL_FALSE);
 
 	bool bound_shader = false;
-	if (gPipeline.sRenderDeferred && LLGLSLShader::sCurBoundShader == 0)
+	if (gPipeline.canUseVertexShaders() && LLGLSLShader::sCurBoundShader == 0)
 	{ //if no shader is currently bound, use the occlusion shader instead of fixed function if we can
 		// (shadow render uses a special shader that clamps to clip planes)
 		bound_shader = true;
@@ -2617,7 +2611,7 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 	}
 
 	if (hasRenderType(LLPipeline::RENDER_TYPE_GROUND) && 
-		!gPipeline.sRenderDeferred &&
+		!gPipeline.canUseWindLightShaders() &&
 		gSky.mVOGroundp.notNull() && 
 		gSky.mVOGroundp->mDrawable.notNull() &&
 		!LLPipeline::sWaterReflections)
@@ -4346,7 +4340,7 @@ void LLPipeline::renderGeom(LLCamera& camera, BOOL forceVBOUpdate)
 	// Set fog
 	BOOL use_fog = hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_FOG);
 	LLGLEnable fog_enable(use_fog &&
-							!gPipeline.sRenderDeferred ? GL_FOG : 0);
+		!gPipeline.canUseWindLightShadersOnObjects() ? GL_FOG : 0);
 	gSky.updateFog(camera.getFar());
 	if (!use_fog)
 	{
@@ -7577,7 +7571,7 @@ static LLTrace::BlockTimerStatHandle FTM_RENDER_BLOOM("Bloom");
 
 void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 {
-	if (!sRenderDeferred)
+	if (!gPipeline.canUseVertexShaders())
 	{
 		return;
 	}
@@ -10424,12 +10418,7 @@ void LLPipeline::renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera
 		gDeferredShadowCubeProgram.bind();
 	}
 
-	LLRenderTarget& occlusion_target = mShadowOcclusion[LLViewerCamera::sCurCameraID-1];
-
-	occlusion_target.bindTarget();
 	updateCull(shadow_cam, result);
-	occlusion_target.flush();
-
 	stateSort(shadow_cam, result);
 	
 	
@@ -10520,10 +10509,6 @@ void LLPipeline::renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera
 	gDeferredShadowCubeProgram.bind();
 	gGLLastMatrix = NULL;
 	gGL.loadMatrix(gGLModelView);
-
-	LLRenderTarget& occlusion_source = mShadow[LLViewerCamera::sCurCameraID-1];
-
-	doOcclusion(shadow_cam, occlusion_source, occlusion_target);
 
 	if (use_shader)
 	{
@@ -10984,12 +10969,12 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 		
 		for (U32 i = 0; i < 4; ++i)
 		{
-			F32 x = (F32)(i+1)/4.f;
+			F32 x = (F32)(i + 1) / 4.f;
 			x = powf(x, sxp);
-			mSunClipPlanes.mV[i] = near_clip+range*x;
+			mSunClipPlanes.mV[i] = near_clip + range*x;
 		}
 
-		mSunClipPlanes.mV[0] *= 1.25f; //bump back first split for transition padding
+		//mSunClipPlanes.mV[0] *= 1.25f; //bump back first split for transition padding
 	}
 
 	// convenience array of 4 near clip plane distances
