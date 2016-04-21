@@ -22,7 +22,7 @@ width="510">
       <panel
       layout="topleft"
       follows="left|top|right"
-      height="669"
+      height="1009"
       name="ui_colors_panel"
       top="0"
       left="0"
@@ -69,12 +69,12 @@ width="510">
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 enabled_control="NameTagShowDisplayNames"
 	 layout="topleft"
 	 left="20"
 	 name="match"
-	 top_pad="11"
+	 top_pad="15"
 	 width="44">
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -87,26 +87,25 @@ width="510">
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 top_delta="-1"
-	 height="25"
+	 top_delta="2"
+	 height="14"
 	 layout="topleft"
 	 word_wrap="true"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="same"
-	 width="165">
-same
-Display &amp; Username
+	 width="265">
+Displayname and Username match
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
 	 left_delta="-49"
 	 enabled_control="NameTagShowDisplayNames"
 	 name="mismatch"
-	 top_pad="5"
+	 top_pad="7"
 	 width="44">
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -119,26 +118,25 @@ Display &amp; Username
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 top_delta="-1"
-	 height="25"
+	 top_delta="2"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="diffs"
-	 width="165">
-differing
-Display &amp; Username
+	 width="265">
+Displayname and Username differ
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
 	 color="EmphasisColor_35"
 	 enabled_control="NameTagShowFriends"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left="270"
+	 left_delta="-49"
 	 name="friends"
-	 top="31"
+	 top_pad="7"
 	 width="44">
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -151,25 +149,24 @@ Display &amp; Username
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 top_delta="-1"
-	 height="25"
+	 top_delta="2"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="highlighted"
-	 width="165">
-highlighted
-Friendnames
+	 width="265">
+Highlighted Friendnames
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
 	 color="EmphasisColor_35"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
 	 left_delta="-49"
 	 name="usernames"
-	 top_pad="5"
+	 top_pad="7"
 	 width="44">
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -182,15 +179,14 @@ Friendnames
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 top_delta="-1"
-	 height="25"
+	 top_delta="2"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="legacy"
-	 width="165">
-legacy
-Usernames
+	 width="265">
+Legacy Usernames
 	 </text>
 	 
 	 <panel
@@ -217,10 +213,10 @@ Usernames
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
 	 left="20"
-	 top_pad="11"
+	 top_pad="15"
 	 name="effect_color_swatch"
 	 tool_tip="Click to open Color Picker"
 	 width="44">
@@ -235,22 +231,21 @@ Usernames
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="25"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 name="effects_color_textbox"
-	 top_delta="-1"
-	 width="165">
-My own
-Particle effects
+	 top_delta="2"
+	 width="265">
+My own particle effects
 	 </text>
   <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left="270"
-	 top_delta="0"
+	 left_delta="-49"
+	 top_pad="7"
 	 name="effect_color_swatch"
 	 tool_tip="Click to open Color Picker"
 	 width="44">
@@ -265,14 +260,13 @@ Particle effects
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="25"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 name="effects_color_textbox"
-	 top_delta="-1"
-	 width="165">
-Object selection
-highlights
+	 top_delta="2"
+	 width="265">
+Object selection highlights
 	 </text>
 	 
 	 <panel
@@ -299,7 +293,7 @@ highlights
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
 	 left="20"
 	 name="user"
@@ -316,23 +310,23 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box1"
-	 top_delta="5"
+	 top_delta="2"
 	 width="95">
 	 Me
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left_pad="25"
+	 left_delta="-49"
 	 name="agent"
-	 top_pad="-17"
+	 top_pad="7"
 	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -345,12 +339,12 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box2"
-	 top_delta="5"
+	 top_delta="2"
 	 width="95">
 	 Others
 	 </text>
@@ -359,10 +353,10 @@ highlights
 	 color="0 0 0 1"
 	 control_name="BackgroundChatColor"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left_pad="25"
-	 top_pad="-17"
+	 left_delta="-49"
+	 top_pad="7"
 	 name="background"
 	 tool_tip="Choose color for bubble chat"
 	 width="44">
@@ -378,25 +372,25 @@ highlights
 	 length="1"
 	 follows="left|top"
 	 word_wrap="true"
-	 height="30"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box10"
-	 top_delta="-1"
-	 width="95">
+	 top_delta="2"
+	 width="195">
 	 Bubblechat / Name Tags
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
 	 color="LtGray"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 label_width="44"
 	 layout="topleft"
 	 left="20"
 	 name="system"
-	 top_pad="4"
+	 top_pad="7"
 	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -409,12 +403,12 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box4"
-	 top_delta="5"
+	 top_delta="2"
 	 width="95">
 	 System
 	 </text>
@@ -422,11 +416,11 @@ highlights
 	 can_apply_immediately="true"
 	 color="Red"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left_pad="25"
+	 left_delta="-49"
 	 name="script_error"
-	 top_pad="-17"
+	 top_pad="7"
 	 width="44">
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -439,12 +433,12 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box5"
-	 top_delta="5"
+	 top_delta="2"
 	 width="95">
 	 Errors
 	 </text>
@@ -452,11 +446,11 @@ highlights
 	 can_apply_immediately="true"
 	 color="EmphasisColor_35"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left_pad="25"
+	 left_delta="-49"
 	 name="objects"
-	 top_pad="-17"
+	 top_pad="7"
 	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -469,12 +463,12 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box6"
-	 top_delta="5"
+	 top_delta="2"
 	 width="95">
 	 Objects
 	 </text>
@@ -482,11 +476,11 @@ highlights
 	 can_apply_immediately="true"
 	 color="LtYellow"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left="20"
+	 left_delta="-49"
 	 name="owner"
-	 top_pad="17"
+	 top_pad="7"
 	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -499,12 +493,12 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box7"
-	 top_delta="5"
+	 top_delta="2"
 	 width="95">
 	 Owner
 	 </text>
@@ -512,11 +506,11 @@ highlights
 	 can_apply_immediately="true"
 	 color="EmphasisColor"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left_pad="25"
+	 left_delta="-49"
 	 name="links"
-	 top_pad="-17"
+	 top_pad="7"
 	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -529,12 +523,12 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box9"
-	 top_delta="5"
+	 top_delta="2"
 	 width="95">
 	 URLs
 	 </text>
@@ -542,10 +536,10 @@ highlights
 	 can_apply_immediately="true"
 	 color="LtOrange"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left_pad="25"
-	 top_pad="-17"
+	 left_delta="-49"
+	 top_pad="7"
 	 name="direct"
 	 tool_tip="Choose color for bubble chat"
 	 width="44">
@@ -560,23 +554,23 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box11"
-	 top_delta="6"
+	 top_delta="2"
 	 width="95">
 	 Direct
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left="20"
+	 left_delta="-49"
 	 name="friend"
-	 top_pad="17"
+	 top_pad="7"
 	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -589,12 +583,12 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box30"
-	 top_delta="5"
+	 top_delta="2"
 	 width="95">
 	 Friends
 	 </text>
@@ -608,7 +602,7 @@ highlights
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="22"
+ top_pad="13"
  width="492"/>
 	 <text
 	 type="string"
@@ -624,11 +618,11 @@ highlights
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
 	 left="20"
 	 name="pie_bg"
-	 top_pad="14"
+	 top_pad="15"
 	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -641,23 +635,23 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box4"
-	 top_delta="5"
+	 top_delta="2"
 	 width="295">
 	     Pie Menu Background
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left="20"
+	 left_delta="-49"
 	 name="pie_line"
-	 top_pad="14"
+	 top_pad="7"
 	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -670,23 +664,23 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box5"
-	 top_delta="5"
+	 top_delta="2"
 	 width="295">
 	     Pie Menu Lines
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left="270"
+	 left_delta="-49"
 	 name="pie_selected"
-	 top_delta="-34"
+	 top_pad="7"
 	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -699,23 +693,23 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box6"
-	 top_delta="5"
+	 top_delta="2"
 	 width="295">
 		     Pie Menu Selected
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
-	 height="47"
+	 height="40"
 	 layout="topleft"
-	 left="270"
+	 left_delta="-49"
 	 name="pie_text"
-	 top_pad="14"
+	 top_pad="7"
 	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -728,12 +722,12 @@ highlights
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
 	 left_pad="5"
 	 mouse_opaque="false"
 	 name="text_box7"
-	 top_delta="5"
+	 top_delta="2"
 	 width="295">
 		     Pie Menu Text
 	 </text>
@@ -811,7 +805,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="people"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -861,7 +855,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="places"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -911,7 +905,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="inventory"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -961,7 +955,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="outfits"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1011,7 +1005,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="picks"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1061,7 +1055,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="prefs"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1111,7 +1105,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="move"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1161,7 +1155,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="view"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1211,7 +1205,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="map"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1261,7 +1255,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="chats"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1311,7 +1305,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="instant"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1361,7 +1355,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="convo"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1411,7 +1405,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="speakers"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1461,7 +1455,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="tools"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1511,7 +1505,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="snaps"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1561,7 +1555,7 @@ NOTE: White is the default color and 1.0 the default transparency. (Needs Restar
 	 layout="topleft"
 	 left_pad="0"
 	 name="stats"
-	 top_delta="-2"
+	 top_pad="7"
 	 width="40" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
@@ -1617,7 +1611,7 @@ NOTE: Most of them wont need a restart.
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="23"
+ top_pad="13"
  width="492"/>
 	 <text
 	 type="string"
@@ -1629,29 +1623,16 @@ NOTE: Most of them wont need a restart.
 	 name="pie_colors_label"
 	 top_delta="4"
 	 width="300">Widget Colors:</text>
-	 <text
-	 type="string"
-	 length="1"
-	 follows="left|top"
-	 height="10"
-	 layout="topleft"
-	 left="10"
-	 mouse_opaque="false"
-	 name="button_text"
-	 top_pad="17"
-	 width="150">
-	   Buttons
-	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
 	 follows="left|top"
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
+	 left="20"
 	 name="buttonimage"
-	 top_delta="-2"
-	 width="40" >
+	 top_pad="15"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
 	 parameter="ButtonImageColor" />
@@ -1663,9 +1644,39 @@ NOTE: Most of them wont need a restart.
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="270"
+	 left_pad="5"
+	 mouse_opaque="false"
+	 name="button_text"
+	 top_delta="2"
+	 width="150">
+	   Buttons
+	 </text>
+	 <color_swatch
+	 can_apply_immediately="true"
+	 follows="left|top"
+	 height="40"
+	 enabled="true"
+	 layout="topleft"
+	 left_delta="-49"
+	 name="buttonlabel"
+	 top_pad="7"
+	 width="44" >
+	 <color_swatch.init_callback
+	 function="Pref.getUIColor"
+	 parameter="ButtonLabelColor" />
+	 <color_swatch.commit_callback
+	 function="Pref.applyUIColor"
+	 parameter="ButtonLabelColor" />
+	 </color_swatch>
+	 <text
+	 type="string"
+	 length="1"
+	 follows="left|top"
+	 height="14"
+	 layout="topleft"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="button_label_text"
 	 top_delta="2"
@@ -1678,27 +1689,27 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="buttonlabel"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="history_bg"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="ButtonLabelColor" />
+	 parameter="ChatHistoryBgColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="ButtonLabelColor" />
+	 parameter="ChatHistoryBgColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="10"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="history_bg_text"
-	 top_delta="27"
+	 top_delta="2"
 	 width="150">
 	   Chat History BG
 	 </text>
@@ -1708,24 +1719,24 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="history_bg"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="historytext"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="ChatHistoryBgColor" />
+	 parameter="ChatHistoryTextColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="ChatHistoryBgColor" />
+	 parameter="ChatHistoryTextColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="270"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="history_text_text"
 	 top_delta="2"
@@ -1738,27 +1749,27 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="historytext"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="focus"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="ChatHistoryTextColor" />
+	 parameter="FocusColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="ChatHistoryTextColor" />
+	 parameter="FocusColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="10"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="focus_text"
-	 top_delta="27"
+	 top_delta="2"
 	 width="150">
 	   Focus
 	 </text>
@@ -1768,27 +1779,27 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="focus"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="inventory_item"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="FocusColor" />
+	 parameter="InventoryItemSuffixColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="FocusColor" />
+	 parameter="InventoryItemSuffixColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="10"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="inventory_item_text"
-	 top_delta="27"
+	 top_delta="2"
 	 width="150">
 	   Inventory Item
 	 </text>
@@ -1798,24 +1809,24 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="inventory_item"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="inventory_link"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="InventoryItemSuffixColor" />
+	 parameter="InventoryItemLinkColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="InventoryItemSuffixColor" />
+	 parameter="InventoryItemLinkColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="270"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="inventory_link_text"
 	 top_delta="2"
@@ -1828,27 +1839,27 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="inventory_link"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="map_avatars"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="InventoryItemLinkColor" />
+	 parameter="MapAvatarColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="InventoryItemLinkColor" />
+	 parameter="MapAvatarColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="10"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="map_avatars_text"
-	 top_delta="27"
+	 top_delta="2"
 	 width="150">
 	   Avatars on Map
 	 </text>
@@ -1858,24 +1869,24 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="map_avatars"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="map_friend"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="MapAvatarColor" />
+	 parameter="MapAvatarFriendColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="MapAvatarColor" />
+	 parameter="MapAvatarFriendColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="270"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="map_friend_text"
 	 top_delta="2"
@@ -1888,27 +1899,27 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="map_friend"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="self"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="MapAvatarFriendColor" />
+	 parameter="MapAvatarSelfColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="MapAvatarFriendColor" />
+	 parameter="MapAvatarSelfColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="10"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="self_text"
-	 top_delta="27"
+	 top_delta="2"
 	 width="150">
 	   Self on Map
 	 </text>
@@ -1918,24 +1929,24 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="self"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="map_frustum"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="MapAvatarSelfColor" />
+	 parameter="MapFrustumColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="MapAvatarSelfColor" />
+	 parameter="MapFrustumColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="270"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="map_frustum_text"
 	 top_delta="2"
@@ -1948,87 +1959,70 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="map_frustum"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="map_track"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="MapFrustumColor" />
+	 parameter="MapTrackColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="MapFrustumColor" />
+	 parameter="MapTrackColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="10"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="map_track_text"
-	 top_delta="27"
+	 top_delta="2"
 	 width="150">
 	   Tracker on Map
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
+	 enabled_control="MiniMapChatRing"
 	 follows="left|top"
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="map_track"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="ring"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="MapTrackColor" />
+	 parameter="MapChatRingColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="MapTrackColor" />
+	 parameter="MapChatRingColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 enabled_control="MiniMapChatRing"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="270"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="chatrange_text"
 	 top_delta="2"
 	 width="150">
 	   Chat-Range Ring
 	 </text>
-	 <color_swatch
-	 can_apply_immediately="true"
-	 enabled_control="MiniMapChatRing"
-	 follows="left|top"
-	 height="40"
-	 enabled="true"
-	 layout="topleft"
-	 left_pad="0"
-	 name="ring"
-	 top_delta="-2"
-	 width="40" >
-	 <color_swatch.init_callback
-	 function="Pref.getUIColor"
-	 parameter="MapChatRingColor" />
-	 <color_swatch.commit_callback
-	 function="Pref.applyUIColor"
-	 parameter="MapChatRingColor" />
-	 </color_swatch>
 	 
 	 <!--<text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="10"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="speaking_text"
 	 top_delta="27"
@@ -2041,10 +2035,10 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="false"
 	 layout="topleft"
-	 left_pad="0"
+	 left_delta="-49"
 	 name="speaking"
-	 top_delta="-2"
-	 width="40" >
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
 	 parameter="VoiceVisualizerColor" />
@@ -2056,9 +2050,9 @@ NOTE: Most of them wont need a restart.
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="270"
+	 left_pad="5""
 	 mouse_opaque="false"
 	 name="dot_text"
 	 top_delta="2"
@@ -2071,10 +2065,10 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="false"
 	 layout="topleft"
-	 left_pad="0"
+	 left_delta="-49"
 	 name="dot"
-	 top_delta="-2"
-	 width="40" >
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
 	 parameter="VoiceDotColor" />
@@ -2082,16 +2076,33 @@ NOTE: Most of them wont need a restart.
 	 function="Pref.applyUIColor"
 	 parameter="VoiceDotColor" />
 	 </color_swatch>-->
+	 <color_swatch
+	 can_apply_immediately="true"
+	 follows="left|top"
+	 height="40"
+	 enabled="true"
+	 layout="topleft"
+	 left_delta="-49"
+	 name="toolbar_dropzone"
+	 top_pad="7"
+	 width="44" >
+	 <color_swatch.init_callback
+	 function="Pref.getUIColor"
+	 parameter="ToolbarDropZoneColor" />
+	 <color_swatch.commit_callback
+	 function="Pref.applyUIColor"
+	 parameter="ToolbarDropZoneColor" />
+	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="10"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="toolbar_dropzone_text"
-	 top_delta="27"
+	 top_delta="2"
 	 width="150">
 	   Toolbar Dropzone
 	 </text>
@@ -2101,27 +2112,27 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="toolbar_dropzone"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="labels"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="ToolbarDropZoneColor" />
+	 parameter="LabelTextColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="ToolbarDropZoneColor" />
+	 parameter="LabelTextColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="10"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="labels_text"
-	 top_delta="27"
+	 top_delta="2"
 	 width="150">
 	   Text
 	 </text>
@@ -2131,47 +2142,30 @@ NOTE: Most of them wont need a restart.
 	 height="40"
 	 enabled="true"
 	 layout="topleft"
-	 left_pad="0"
-	 name="labels"
-	 top_delta="-2"
-	 width="40" >
+	 left_delta="-49"
+	 name="disabled_labels"
+	 top_pad="7"
+	 width="44" >
 	 <color_swatch.init_callback
 	 function="Pref.getUIColor"
-	 parameter="LabelTextColor" />
+	 parameter="LabelDisabledColor" />
 	 <color_swatch.commit_callback
 	 function="Pref.applyUIColor"
-	 parameter="LabelTextColor" />
+	 parameter="LabelDisabledColor" />
 	 </color_swatch>
 	 <text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="10"
+	 height="14"
 	 layout="topleft"
-	 left="270"
+	 left_pad="5"
 	 mouse_opaque="false"
 	 name="disabled_labels_text"
 	 top_delta="2"
 	 width="150">
 	   Disabled Text
 	 </text>
-	 <color_swatch
-	 can_apply_immediately="true"
-	 follows="left|top"
-	 height="40"
-	 enabled="true"
-	 layout="topleft"
-	 left_pad="0"
-	 name="disabled_labels"
-	 top_delta="-2"
-	 width="40" >
-	 <color_swatch.init_callback
-	 function="Pref.getUIColor"
-	 parameter="LabelDisabledColor" />
-	 <color_swatch.commit_callback
-	 function="Pref.applyUIColor"
-	 parameter="LabelDisabledColor" />
-	 </color_swatch>
       </panel>
    </scroll_container>
 </panel>
