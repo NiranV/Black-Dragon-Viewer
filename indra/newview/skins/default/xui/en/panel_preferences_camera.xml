@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1206"
+  height="1218"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -231,7 +231,7 @@
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="4"/>
    <check_box
    control_name="EditCameraMovement"
    height="16"
@@ -723,7 +723,7 @@
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="4"/>
    
    <slider
    decimal_digits="3"
@@ -909,7 +909,7 @@ can_edit_text="true"
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="4"/>
    
    <slider
    decimal_digits="3"
@@ -1096,7 +1096,7 @@ can_edit_text="true"
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="4"/>
    
    <slider
    decimal_digits="3"
@@ -1282,7 +1282,7 @@ can_edit_text="true"
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="4"/>
    
    <slider
    decimal_digits="3"
@@ -1468,7 +1468,7 @@ can_edit_text="true"
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="4"/>
    
    <slider
    decimal_digits="3"

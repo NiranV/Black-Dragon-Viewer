@@ -24,7 +24,7 @@ width="510">
  height="407">
   <panel
   follows="top|left|right"
-  height="540"
+  height="542"
   label="Sounds"
   layout="topleft"
   left="0"
@@ -91,7 +91,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="3"/>
+  top_pad="5"/>
    <slider
    control_name="AudioLevelUI"
    disabled_control="MuteAudio"

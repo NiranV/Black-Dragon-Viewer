@@ -1153,7 +1153,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="4"/>
  <!--<line_editor
    control_name="jump"
    border_style="line"
@@ -3602,7 +3602,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="4"/>
  <text
  name="3_spin_cw"
  follows="left|top"
@@ -4246,7 +4246,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="4"/>
  <text
  name="4_spin_cw"
  follows="left|top"
