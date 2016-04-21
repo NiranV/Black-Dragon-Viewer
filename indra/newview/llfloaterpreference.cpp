@@ -1363,9 +1363,9 @@ void LLFloaterPreference::refreshWarnings()
 	//BD - Viewer Options
 	getChild<LLUICtrl>("warning_ui_size")->setVisible(gSavedSettings.getF32("UIScaleFactor") != 1.0);
 	getChild<LLUICtrl>("warning_font_dpi")->setVisible(gSavedSettings.getF32("FontScreenDPI") != 96.0);
-	getChild<LLUICtrl>("warning_texture_memory")->setVisible(gSavedSettings.getU32("TextureMemory") > 768
-														|| ((gSavedSettings.getU32("TextureMemory") 
-														+ gSavedSettings.getU32("SystemMemory")) > 768
+	getChild<LLUICtrl>("warning_texture_memory")->setVisible(gSavedSettings.getS32("TextureMemory") > 768
+														|| ((gSavedSettings.getS32("TextureMemory") 
+														+ gSavedSettings.getS32("SystemMemory")) > 768
 														&& gSavedSettings.getBOOL("CustomSystemMemory")));
 	getChild<LLUICtrl>("warning_texture_compression")->setVisible(gSavedSettings.getBOOL("RenderCompressTextures"));
 
@@ -1377,13 +1377,13 @@ void LLFloaterPreference::refreshWarnings()
 	getChild<LLUICtrl>("warning_draw_distance")->setVisible(gPipeline.RenderFarClip > 128);
 	getChild<LLUICtrl>("warning_object_occlusion")->setVisible(gPipeline.RenderDeferred && gPipeline.sUseOcclusion);
 	getChild<LLUICtrl>("warning_avatars_visible")->setVisible(gSavedSettings.getU32("RenderAvatarMaxNonImpostors") > 15);
-	getChild<LLUICtrl>("warning_derender_kb")->setVisible(gSavedSettings.getU32("RenderAutoMuteByteLimit") > 12000000);
-	getChild<LLUICtrl>("warning_derender_m2")->setVisible(gSavedSettings.getU32("RenderAutoMuteSurfaceAreaLimit") > 200);
+	getChild<LLUICtrl>("warning_derender_kb")->setVisible(gSavedSettings.getS32("RenderAutoMuteByteLimit") > 12000000);
+	getChild<LLUICtrl>("warning_derender_m2")->setVisible(gSavedSettings.getS32("RenderAutoMuteSurfaceAreaLimit") > 200);
 	getChild<LLUICtrl>("warning_derender_ar")->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 120000);
 	getChild<LLUICtrl>("warning_derender_surface")->setVisible(gSavedSettings.getU32("RenderAutoHideSurfaceAreaLimit") > 200);
 
 	//BD - Windlight Options
-	getChild<LLUICtrl>("warning_reflection_quality")->setVisible(gSavedSettings.getU32("RenderReflectionRes") > 768);
+	getChild<LLUICtrl>("warning_reflection_quality")->setVisible(gSavedSettings.getS32("RenderReflectionRes") > 768);
 	getChild<LLUICtrl>("warning_sky_quality")->setVisible(gSavedSettings.getU32("WLSkyDetail") > 128);
 
 	//BD - Deferred Rendering Options
