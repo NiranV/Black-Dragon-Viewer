@@ -502,10 +502,15 @@ void LLViewerShaderMgr::setShaders()
 		if (LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
 		    gSavedSettings.getBOOL("RenderDeferred"))
 		{
-			//BD - Force deferred shader class 2, we need this to properly toggle SSAO
-			//     seperately and to prevent the lighting from being different without
-			//     at least shadows or blur light enabled.
-			deferred_class = 2;
+			if (gSavedSettings.getS32("RenderShadowDetail") > 0
+				|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
+			{ //shadows
+				deferred_class = 2;
+			}
+			else
+			{ //no shadows
+				deferred_class = 1;
+			}
 
 			//make sure hardware skinning is enabled
 			//gSavedSettings.setBOOL("RenderAvatarVP", TRUE);
@@ -1457,10 +1462,28 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 
 	if (success)
 	{
+		std::string fragment;
+		std::string vertex = "deferred/sunLightV.glsl";
+
+		if (gSavedSettings.getBOOL("RenderDeferredBlurLight")
+			|| gSavedSettings.getBOOL("RenderDeferredSSAO")
+			|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
+		{
+			fragment = "deferred/sunLightSSAOF.glsl";
+		}
+		else
+		{
+			fragment = "deferred/sunLightF.glsl";
+			if (mVertexShaderLevel[SHADER_DEFERRED] == 1)
+			{ //no shadows, no SSAO, no frag coord
+				vertex = "deferred/sunLightNoFragCoordV.glsl";
+			}
+		}
+
 		gDeferredSunProgram.mName = "Deferred Sun Shader";
 		gDeferredSunProgram.mShaderFiles.clear();
-		gDeferredSunProgram.mShaderFiles.push_back(make_pair("deferred/sunLightV.glsl", GL_VERTEX_SHADER_ARB));
-		gDeferredSunProgram.mShaderFiles.push_back(make_pair("deferred/sunLightSSAOF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredSunProgram.mShaderFiles.push_back(make_pair(vertex, GL_VERTEX_SHADER_ARB));
+		gDeferredSunProgram.mShaderFiles.push_back(make_pair(fragment, GL_FRAGMENT_SHADER_ARB));
 		gDeferredSunProgram.addPermutation("USE_SSAO", (bool)gSavedSettings.getBOOL("RenderDeferredSSAO") ? "1" : "0");
 		gDeferredSunProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
@@ -1725,6 +1748,12 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSoftenProgram.addPermutation("USE_SSR", (bool)gSavedSettings.getBOOL("RenderScreenSpaceReflections") ? "1" : "0");
 
 		gDeferredSoftenProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+
+		if (gSavedSettings.getBOOL("RenderDeferredSSAO")
+			|| gSavedSettings.getBOOL("RenderDeferredBlurLight"))
+		{ //if using SSAO, take screen space light map into account as if shadows are enabled
+			gDeferredSoftenProgram.mShaderLevel = llmax(gDeferredSoftenProgram.mShaderLevel, 2);
+		}
 				
 		success = gDeferredSoftenProgram.createShader(NULL, NULL);
 	}
@@ -1739,6 +1768,12 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSoftenWaterProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 		gDeferredSoftenWaterProgram.addPermutation("WATER_FOG", "1");
 		gDeferredSoftenWaterProgram.mShaderGroup = LLGLSLShader::SG_WATER;
+
+		if (gSavedSettings.getBOOL("RenderDeferredSSAO")
+			|| gSavedSettings.getBOOL("RenderDeferredBlurLight"))
+		{ //if using SSAO, take screen space light map into account as if shadows are enabled
+			gDeferredSoftenWaterProgram.mShaderLevel = llmax(gDeferredSoftenWaterProgram.mShaderLevel, 2);
+		}
 
 		success = gDeferredSoftenWaterProgram.createShader(NULL, NULL);
 	}

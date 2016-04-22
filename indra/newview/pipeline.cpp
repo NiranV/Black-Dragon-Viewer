@@ -977,6 +977,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 	if (LLPipeline::sRenderDeferred)
 	{
 		S32 shadow_detail = RenderShadowDetail;
+		BOOL ssao = RenderDeferredSSAO;
 		
 		const U32 occlusion_divisor = 3;
 
@@ -1007,11 +1008,11 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			mFXAABuffer.release();
 		}
 
-		//BD - Force the deferred light map on, this will fix the issue with lighting being different
-		//     with shader level 1 or higher but everything disabled shader wise compared to the same
-		//     scene with shader level 0 (everything disabled feature-wise)
-		if (RenderDeferred)
-		{
+		if (shadow_detail > 0 || ssao 
+			|| RenderDepthOfField || samples > 0 
+			|| RenderDeferredBlurLight
+			|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
+		{ //only need mDeferredLight for shadows OR ssao OR dof OR fxaa
 			if (!mDeferredLight.allocate(resX, resY, GL_RGBA, FALSE, FALSE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
 		}
 		else
@@ -8638,7 +8639,10 @@ void LLPipeline::renderDeferredLighting()
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 
-		if (RenderDeferred)
+		if (RenderDeferredSSAO 
+			|| RenderShadowDetail > 0 
+			|| RenderDeferredBlurLight
+			|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
 		{
 			mDeferredLight.bindTarget();
 			{ //paint shadow/SSAO light map (direct lighting lightmap)
@@ -9235,7 +9239,10 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 
-		if (RenderDeferred)
+		if (RenderDeferredSSAO 
+			|| RenderShadowDetail > 0 
+			|| RenderDeferredBlurLight
+			|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
 		{
 			mDeferredLight.bindTarget();
 			{ //paint shadow/SSAO light map (direct lighting lightmap)
