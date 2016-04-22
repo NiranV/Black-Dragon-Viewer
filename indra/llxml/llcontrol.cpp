@@ -1377,7 +1377,7 @@ template<>
 LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, const std::string& control_name)
 {
 	if (type == TYPE_VEC4)
-		return (LLVector4)sd;
+		return LLVector4(sd);
 	else
 	{
 		CONTROL_ERRS << "Invalid LLVector4 value for " << control_name << ": " << sd << LL_ENDL;
@@ -1401,6 +1401,7 @@ DECL_LLCC(LLRect, LLRect(0, 0, 100, 500));
 DECL_LLCC(LLColor4, LLColor4(0.0f, 0.5f, 1.0f));
 DECL_LLCC(LLColor3, LLColor3(1.0f, 0.f, 0.5f));
 DECL_LLCC(LLColor4U, LLColor4U(255, 200, 100, 255));
+DECL_LLCC(LLVector4, LLVector4(1.0, 2.0f, 3.0, 4.0f));
 
 LLSD test_llsd = LLSD()["testing1"] = LLSD()["testing2"];
 DECL_LLCC(LLSD, test_llsd);
@@ -1422,6 +1423,7 @@ void test_cached_control()
 	TEST_LLCC(LLColor4, LLColor4(0.0f, 0.5f, 1.0f));
 	TEST_LLCC(LLColor3, LLColor3(1.0f, 0.f, 0.5f));
 	TEST_LLCC(LLColor4U, LLColor4U(255, 200, 100, 255));
+	TEST_LLCC(LLVector4, LLVector4(1.0, 2.0f, 3.0, 4.0f));
 //There's no LLSD comparsion for LLCC yet. TEST_LLCC(LLSD, test_llsd); 
 
 	if((std::string)test_BrowserHomePage != "http://www.secondlife.com") LL_ERRS() << "Fail BrowserHomePage" << LL_ENDL;

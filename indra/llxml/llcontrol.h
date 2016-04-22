@@ -244,12 +244,12 @@ public:
 	LLRect		getRect(const std::string& name);
 	LLSD        getLLSD(const std::string& name);
 
-//	//BD - Vector4
-	LLVector4	getVector4(const std::string& name);
-
 	LLColor4	getColor(const std::string& name);
 	LLColor4	getColor4(const std::string& name);
 	LLColor3	getColor3(const std::string& name);
+
+//	//BD - Vector4
+	LLVector4	getVector4(const std::string& name);
 
 	// generic getter
 	template<typename T> T get(const std::string& name)
