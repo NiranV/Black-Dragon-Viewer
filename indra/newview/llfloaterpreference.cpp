@@ -1365,7 +1365,7 @@ void LLFloaterPreference::refreshWarnings()
 	getChild<LLUICtrl>("warning_font_dpi")->setVisible(gSavedSettings.getF32("FontScreenDPI") != 96.0);
 	getChild<LLUICtrl>("warning_texture_memory")->setVisible(gSavedSettings.getS32("TextureMemory") > 768
 														|| ((gSavedSettings.getS32("TextureMemory") 
-														+ gSavedSettings.getS32("SystemMemory")) > 768
+														+ gSavedSettings.getS32("SystemMemory")) > 1024
 														&& gSavedSettings.getBOOL("CustomSystemMemory")));
 	getChild<LLUICtrl>("warning_texture_compression")->setVisible(gSavedSettings.getBOOL("RenderCompressTextures"));
 
