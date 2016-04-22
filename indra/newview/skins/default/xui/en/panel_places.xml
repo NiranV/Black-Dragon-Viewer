@@ -56,6 +56,7 @@ background_visible="false"
      width="300" />
     <panel
      follows="bottom|left|right"
+	 mouse_opaque="false"
      height="25"
      layout="topleft"
      left="4"
