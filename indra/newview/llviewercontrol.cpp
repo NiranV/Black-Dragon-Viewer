@@ -859,7 +859,6 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderProjectorShadowResolution")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderBlurPerformanceMode")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
-	gSavedSettings.getControl("RenderShadowType")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
 	gSavedSettings.getControl("RenderEnableFullbright")->getSignal()->connect(boost::bind(&handleFullbrightChanged, _2));
 //	//BD
