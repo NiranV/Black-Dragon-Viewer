@@ -4328,6 +4328,8 @@ class LLViewMouselook : public view_listener_t
 		if (!gAgentCamera.cameraMouselook())
 		{
 			gAgentCamera.changeCameraToMouselook();
+//			//BD - Make sure we disable third person steering here, it doesn't work in ML.
+			gSavedSettings.setBOOL("EnableThirdPersonSteering", false);
 		}
 		else
 		{

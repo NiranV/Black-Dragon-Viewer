@@ -1176,7 +1176,8 @@ void LLAgentCamera::updateCamera()
 
 	//NOTE - this needs to be integrated into a general upVector system here within llAgent. 
 
-	if(gSavedSettings.getBOOL("EnableThirdPersonSteering"))
+	if(gSavedSettings.getBOOL("EnableThirdPersonSteering")
+		&& !gAgentCamera.cameraMouselook())
 	{
 		if(gViewerWindow->getRightMouseDown())
 		{
