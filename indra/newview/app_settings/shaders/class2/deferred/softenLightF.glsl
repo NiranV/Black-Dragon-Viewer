@@ -572,7 +572,7 @@ void main()
 						refapprop = min(refapprop, max(-refnorm.z, 0.0));
 						
 						// We just plain like the appropriateness of non-sky reflections better where available
-						refapprop *= 0.5;
+						//refapprop *= 0.5;
 	
 						total_refapprop += refapprop;
 						
