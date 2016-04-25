@@ -250,7 +250,13 @@ public:
 	static void refreshSkin(void* data);
 	void selectPanel(const LLSD& name);
 
+	void deletePreset(const LLSD& user_data);
+	void savePreset(const LLSD& user_data);
+	void loadPreset(const LLSD& user_data);
+
 private:
+
+	void onPresetsListChange();
 
 	void onDeleteTranscripts();
 	void onDeleteTranscriptsResponse(const LLSD& notification, const LLSD& response);
@@ -263,6 +269,8 @@ private:
 	static void setIndirectControls();
 	static void setIndirectMaxNonImpostors();
 	static void setIndirectMaxArc();
+
+	S32 mModifier;
 
 	static std::string sSkin;
 	notifications_map mNotificationOptions;
@@ -300,10 +308,6 @@ public:
 	// This function squirrels away the current values of the controls so that
 	// cancel() can restore them.
 	virtual void saveSettings();
-
-	void deletePreset(const LLSD& user_data);
-	void savePreset(const LLSD& user_data);
-	void loadPreset(const LLSD& user_data);
 	
 	class Updater;
 
@@ -316,8 +320,6 @@ private:
 	static void showFriendsOnlyWarning(LLUICtrl*, const LLSD&);
 	//for "Show my Favorite Landmarks at Login"
 	static void handleFavoritesOnLoginChanged(LLUICtrl* checkbox, const LLSD& value);
-
-	void onPresetsListChange();
 
 	typedef std::map<std::string, LLColor4> string_color_map_t;
 	string_color_map_t mSavedColors;

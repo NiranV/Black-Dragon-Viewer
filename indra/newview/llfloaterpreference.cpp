@@ -844,6 +844,11 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 
 	mCommitCallbackRegistrar.add("Pref.ClearLog",				boost::bind(&LLConversationLog::onClearLog, &LLConversationLog::instance()));
 	mCommitCallbackRegistrar.add("Pref.DeleteTranscripts",      boost::bind(&LLFloaterPreference::onDeleteTranscripts, this));
+
+	mCommitCallbackRegistrar.add("Pref.PrefDelete", boost::bind(&LLFloaterPreference::deletePreset, this, _2));
+	mCommitCallbackRegistrar.add("Pref.PrefSave", boost::bind(&LLFloaterPreference::savePreset, this, _2));
+	mCommitCallbackRegistrar.add("Pref.PrefLoad", boost::bind(&LLFloaterPreference::loadPreset, this, _2));
+	LLPresetsManager::instance().setPresetListChangeCallback(boost::bind(&LLFloaterPreference::onPresetsListChange, this));
 }
 
 void LLFloaterPreference::processProperties( void* pData, EAvatarProcessorType type )
@@ -952,7 +957,8 @@ BOOL LLFloaterPreference::postBuild()
 	refreshCameraControls();
 	refreshKeys();
 
-	toggleTabs();
+	mModifier = 0;
+
 	if (!gSavedSettings.getBOOL("RememberPreferencesTabs"))
 	{
 		gSavedSettings.setBOOL("PrefsViewerVisible", false);
@@ -968,6 +974,7 @@ BOOL LLFloaterPreference::postBuild()
 		gSavedSettings.setBOOL("PrefsToneMappingVisible", false);
 		gSavedSettings.setBOOL("PrefsVignetteVisible", false);
 	}
+	toggleTabs();
 
 	return TRUE;
 }
@@ -1223,36 +1230,39 @@ void LLFloaterPreference::onTab(LLUICtrl* ctrl, const LLSD& param)
 //BD - Tab Toggles
 void LLFloaterPreference::toggleTabs()
 {
-	LLRect rect = getChild<LLPanel>("gfx_scroll_panel")->getRect();
-	S32 modifier = 0;
-	if (gSavedSettings.getBOOL("PrefsViewerVisible"))
-		modifier += (getChild<LLLayoutPanel>("viewer_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsLoDVisible"))
-		modifier += (getChild<LLLayoutPanel>("lod_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsPerformanceVisible"))
-		modifier += (getChild<LLLayoutPanel>("performance_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsVertexVisible"))
-		modifier += (getChild<LLLayoutPanel>("vertex_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsDeferredVisible"))
-		modifier += (getChild<LLLayoutPanel>("deferred_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsDoFVisible"))
-		modifier += (getChild<LLLayoutPanel>("dof_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsAOVisible"))
-		modifier += (getChild<LLLayoutPanel>("ao_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsMotionBlurVisible"))
-		modifier += (getChild<LLLayoutPanel>("motionblur_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsGodraysVisible"))
-		modifier += (getChild<LLLayoutPanel>("godrays_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsPostVisible"))
-		modifier += (getChild<LLLayoutPanel>("post_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsToneMappingVisible"))
-		modifier += (getChild<LLLayoutPanel>("tonemapping_layout_panel")->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsVignetteVisible"))
-		modifier += (getChild<LLLayoutPanel>("vignette_layout_panel")->getRect().getHeight() - 5);
+	getChild<LLLayoutStack>("gfx_stack")->translate(0, -mModifier);
 
-	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (rect.getHeight() + modifier));
+	LLRect rect = getChild<LLPanel>("gfx_scroll_panel")->getRect();
+	mModifier = 0;
+
+	if (gSavedSettings.getBOOL("PrefsViewerVisible"))
+		mModifier += (getChild<LLLayoutPanel>("viewer_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsLoDVisible"))
+		mModifier += (getChild<LLLayoutPanel>("lod_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsPerformanceVisible"))
+		mModifier += (getChild<LLLayoutPanel>("performance_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsVertexVisible"))
+		mModifier += (getChild<LLLayoutPanel>("vertex_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsDeferredVisible"))
+		mModifier += (getChild<LLLayoutPanel>("deferred_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsDoFVisible"))
+		mModifier += (getChild<LLLayoutPanel>("dof_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsAOVisible"))
+		mModifier += (getChild<LLLayoutPanel>("ao_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsMotionBlurVisible"))
+		mModifier += (getChild<LLLayoutPanel>("motionblur_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsGodraysVisible"))
+		mModifier += (getChild<LLLayoutPanel>("godrays_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsPostVisible"))
+		mModifier += (getChild<LLLayoutPanel>("post_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsToneMappingVisible"))
+		mModifier += (getChild<LLLayoutPanel>("tonemapping_layout_panel")->getRect().getHeight() - 5);
+	if (gSavedSettings.getBOOL("PrefsVignetteVisible"))
+		mModifier += (getChild<LLLayoutPanel>("vignette_layout_panel")->getRect().getHeight() - 5);
+
+	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (255 + mModifier));
 	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
-	getChild<LLLayoutStack>("gfx_stack")->translate(0, modifier);
+	getChild<LLLayoutStack>("gfx_stack")->translate(0, mModifier);
 }
 
 //BD - Input/Output resizer
@@ -2780,6 +2790,60 @@ void LLFloaterPreference::changed()
 
 }
 
+void LLFloaterPreference::deletePreset(const LLSD& user_data)
+{
+	std::string subdirectory = user_data.asString();
+	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
+	std::string name = combo->getSimple();
+
+	if (!LLPresetsManager::getInstance()->deletePreset(subdirectory, name)
+		&& name != "Default")
+	{
+		LLSD args;
+		args["NAME"] = name;
+		LLNotificationsUtil::add("PresetNotDeleted", args);
+	}
+}
+
+void LLFloaterPreference::savePreset(const LLSD& user_data)
+{
+	std::string subdirectory = user_data.asString();
+	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
+	std::string name = combo->getSimple();
+
+	if (!LLPresetsManager::getInstance()->savePreset(subdirectory, name)
+		&& name != "Default")
+	{
+		LLSD args;
+		args["NAME"] = name;
+		LLNotificationsUtil::add("PresetNotSaved", args);
+	}
+}
+
+void LLFloaterPreference::loadPreset(const LLSD& user_data)
+{
+	std::string subdirectory = user_data.asString();
+	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
+	std::string name = combo->getSimple();
+
+	LLPresetsManager::getInstance()->loadPreset(subdirectory, name);
+
+	//BD - We do this here to make sure the tabs are all correct incase the preset
+	//     changes them.
+	toggleTabs();
+}
+
+void LLFloaterPreference::onPresetsListChange()
+{
+	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
+	LLButton* delete_btn = getChild<LLButton>("delete");
+
+	EDefaultOptions option = DEFAULT_TOP;
+	LLPresetsManager::getInstance()->setPresetNamesInComboBox("graphic", combo, option);
+
+	delete_btn->setEnabled(0 != combo->getItemCount());
+}
+
 //------------------------------Updater---------------------------------------
 
 static bool handleBandwidthChanged(const LLSD& newvalue)
@@ -2833,10 +2897,6 @@ LLPanelPreference::LLPanelPreference()
 {
 	mCommitCallbackRegistrar.add("Pref.setControlFalse",	boost::bind(&LLPanelPreference::setControlFalse,this, _2));
 	mCommitCallbackRegistrar.add("Pref.updateMediaAutoPlayCheckbox",	boost::bind(&LLPanelPreference::updateMediaAutoPlayCheckbox, this, _1));
-	mCommitCallbackRegistrar.add("Pref.PrefDelete", boost::bind(&LLPanelPreference::deletePreset, this, _2));
-	mCommitCallbackRegistrar.add("Pref.PrefSave", boost::bind(&LLPanelPreference::savePreset, this, _2));
-	mCommitCallbackRegistrar.add("Pref.PrefLoad", boost::bind(&LLPanelPreference::loadPreset, this, _2));
-	LLPresetsManager::instance().setPresetListChangeCallback(boost::bind(&LLPanelPreference::onPresetsListChange, this));
 }
 
 //virtual
@@ -3057,56 +3117,6 @@ void LLPanelPreference::updateMediaAutoPlayCheckbox(LLUICtrl* ctrl)
 
 		getChild<LLCheckBoxCtrl>("media_auto_play_btn")->setEnabled(music_enabled || media_enabled);
 	}
-}
-
-void LLPanelPreference::deletePreset(const LLSD& user_data)
-{
-	std::string subdirectory = user_data.asString();
-	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
-	std::string name = combo->getSimple();
-
-	if (!LLPresetsManager::getInstance()->deletePreset(subdirectory, name)
-		&& name != "Default")
-	{
-		LLSD args;
-		args["NAME"] = name;
-		LLNotificationsUtil::add("PresetNotDeleted", args);
-	}
-}
-
-void LLPanelPreference::savePreset(const LLSD& user_data)
-{
-	std::string subdirectory = user_data.asString();
-	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
-	std::string name = combo->getSimple();
-
-	if (!LLPresetsManager::getInstance()->savePreset(subdirectory, name)
-		&& name != "Default")
-	{
-		LLSD args;
-		args["NAME"] = name;
-		LLNotificationsUtil::add("PresetNotSaved", args);
-	}
-}
-
-void LLPanelPreference::loadPreset(const LLSD& user_data)
-{
-	std::string subdirectory = user_data.asString();
-	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
-	std::string name = combo->getSimple();
-
-	LLPresetsManager::getInstance()->loadPreset(subdirectory, name);
-}
-
-void LLPanelPreference::onPresetsListChange()
-{
-	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
-	LLButton* delete_btn = getChild<LLButton>("delete");
-
-	EDefaultOptions option = DEFAULT_TOP;
-	LLPresetsManager::getInstance()->setPresetNamesInComboBox("graphic", combo, option);
-
-	delete_btn->setEnabled(0 != combo->getItemCount());
 }
 
 class LLPanelPreferencePrivacy : public LLPanelPreference
