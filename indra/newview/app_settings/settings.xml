@@ -15859,7 +15859,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.85</real>
+    <real>1.0</real>
   </map>
   <key>PieMenuFade</key>
   <map>
@@ -15870,7 +15870,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.3</real>
+    <real>0.15</real>
   </map>
   <key>UISndPieMenuAppear</key>
   <map>

@@ -688,13 +688,13 @@
  reference="Red_80" />
  <color
  name="PieMenuBgColor"
- reference="DkGray" />
+ value="0.125 0.125 0.125 0.784314" />
  <color
  name="PieMenuLineColor"
- reference="EmphasisColor_13" />
+ value="0.321569 0.321569 0.321569 0.607843" />
  <color
  name="PieMenuSelectedColor"
- reference="EmphasisColor_13" />
+ value="0.107051 0.501615 0.762949 0.607843" />
  <color
  name="PieMenuTextColor"
  value="0.90387 0.886446 0.744568 1" />
