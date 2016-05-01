@@ -58,7 +58,7 @@ class LLFloaterColorPicker
 
 		// implicit methods
 		void createUI ();
-		void initUI ( F32 rValIn, F32 gValIn, F32 bValIn );
+		void initUI ( F32 rValIn, F32 gValIn, F32 bValIn, F32 tValIn );
 		void showUI ();
 		void destroyUI ();
 		void cancelSelection ();
@@ -72,12 +72,22 @@ class LLFloaterColorPicker
 		F32 getOrigG () { return origG; };
 		F32 getOrigB () { return origB; };
 
+//		//BD - Transparency in Color Picker
+		void setOrigT ( F32 origTIn );
+		void getOrigT ( F32& origTOut );
+		F32 getOrigT () { return origT; };
+
 		// mutator / accessors for currernt RGB value
 		void setCurRgb ( F32 curRIn, F32 curGIn, F32 curBIn );
 		void getCurRgb ( F32& curROut, F32& curGOut, F32& curBOut );
 		F32	 getCurR () { return curR; };
 		F32	 getCurG () { return curG; };
 		F32	 getCurB () { return curB; };
+
+//		//BD - Transparency in Color Picker
+		void setCurT ( F32 curTIn );
+		void getCurT( F32& curTOut );
+		F32	 getCurT () { return curT; };
 
 		// mutator / accessors for currernt HSL value
 		void setCurHsl ( F32 curHIn, F32 curSIn, F32 curLIn );
@@ -130,6 +140,10 @@ class LLFloaterColorPicker
 		// mutators for color values, can raise event to preview changes at object
 		void selectCurRgb ( F32 curRIn, F32 curGIn, F32 curBIn );
 		void selectCurHsl ( F32 curHIn, F32 curSIn, F32 curLIn );
+
+//		//BD - Transparency in Color Picker
+		void selectCurT(F32 curTIn);
+
 		// draws color selection palette
 		void drawPalette ();
 
@@ -138,10 +152,14 @@ class LLFloaterColorPicker
 
 		// original RGB values
 		F32 origR, origG, origB;
+//		//BD - Transparency in Color Picker
+		F32 origT;
 
 		// current RGB/HSL values
 		F32 curR, curG, curB;
 		F32 curH, curS, curL;
+//		//BD - Transparency in Color Picker
+		F32 curT;
 
 		const S32 mComponents;
 
