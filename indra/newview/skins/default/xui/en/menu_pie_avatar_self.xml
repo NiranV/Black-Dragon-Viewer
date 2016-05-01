@@ -1,273 +1,301 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <pie_menu
+layout="topleft"
+name="Self Pie">
+    <pie_menu
+    label="&lt; Manage &gt;"
     layout="topleft"
-    name="Self Pie">
-    <pie_slice
-        label="Profile"
+    name="Pie Object Manage">
+        <pie_slice
+        label="My Groups"
+        layout="topleft"
+        name="Groups...">
+            <pie_slice.on_click
+            function="SideTray.PanelPeopleTab"
+            parameter="groups_panel" />
+        </pie_slice>
+        <pie_slice
+        label="My Friends"
+        layout="topleft"
+        name="Friends...">
+            <pie_slice.on_click
+            function="SideTray.PanelPeopleTab"
+            parameter="friends_panel" />
+        </pie_slice>
+        <pie_separator name="seperator"/>
+        <pie_separator name="seperator"/>
+        <pie_slice
+        enabled="false"
+        label="Block Particle Owner"
+        name="Mute Particle">
+            <pie_slice.on_click
+            function="Particle.Mute" />
+            <pie_slice.on_enable
+            function="EnableMuteParticle" />
+        </pie_slice>
+        <pie_separator name="seperator"/>
+        <pie_slice
+        label="My Appearance"
+        layout="topleft"
+        name="Change Outfit">
+            <pie_slice.on_click
+            function="CustomizeAvatar" />
+            <pie_slice.on_enable
+            function="Edit.EnableCustomizeAvatar" />
+        </pie_slice>
+        <pie_slice
+        label="My Profile"
         layout="topleft"
         name="Profile...">
-        <pie_slice.on_click
+            <pie_slice.on_click
             function="ShowAgentProfile"
             parameter="agent" />
-    </pie_slice>
-    <pie_slice
-            enabled="true"
-            label="Tex Refresh"
-            name="Texture Refresh">
-            <pie_slice.on_click
-                function="Avatar.TexRefresh" />
         </pie_slice>
+    </pie_menu>
+    <pie_slice
+    label="Edit My Shape"
+    layout="topleft"
+    name="Edit My Shape">
+    <pie_slice.on_click
+    function="EditShape" />
+    <pie_slice.on_enable
+    function="Edit.EnableEditShape" />
+    </pie_slice>
     <pie_menu
-        label="Take Off"
-        layout="topleft"
-        name="Take Off...">
+    label="Take Off"
+    layout="topleft"
+    name="Take Off...">
         <pie_menu
-            label="Clothes"
+        label="Clothes"
+        layout="topleft"
+        name="Clothes...">
+            <pie_slice
+            enabled="false"
+            label="Shirt"
             layout="topleft"
-            name="Clothes...">
-            <pie_slice
-                enabled="false"
-                label="Shirt"
-                layout="topleft"
-                name="Shirt">
+            name="Shirt">
                 <pie_slice.on_click
-                    function="Edit.TakeOff"
-                    parameter="shirt" />
+                function="Edit.TakeOff"
+                parameter="shirt" />
                 <pie_slice.on_enable
-                    function="Edit.EnableTakeOff"
-                    parameter="shirt" />
+                function="Edit.EnableTakeOff"
+                parameter="shirt" />
             </pie_slice>
             <pie_slice
-                enabled="false"
-                label="Pants"
-                layout="topleft"
-                name="Pants">
+            enabled="false"
+            label="Pants"
+            layout="topleft"
+            name="Pants">
                 <pie_slice.on_click
-                    function="Edit.TakeOff"
-                    parameter="pants" />
+                function="Edit.TakeOff"
+                parameter="pants" />
                 <pie_slice.on_enable
-                    function="Edit.EnableTakeOff"
-                    parameter="pants" />
+                function="Edit.EnableTakeOff"
+                parameter="pants" />
             </pie_slice>
             <pie_slice
-                enabled="false"
-                label="Shoes"
-                layout="topleft"
-                name="Shoes">
+            enabled="false"
+            label="Shoes"
+            layout="topleft"
+            name="Shoes">
                 <pie_slice.on_click
-                    function="Edit.TakeOff"
-                    parameter="shoes" />
+                function="Edit.TakeOff"
+                parameter="shoes" />
                 <pie_slice.on_enable
-                    function="Edit.EnableTakeOff"
-                    parameter="shoes" />
+                function="Edit.EnableTakeOff"
+                parameter="shoes" />
             </pie_slice>
             <pie_slice
-                enabled="false"
-                label="Socks"
-                layout="topleft"
-                name="Socks">
+            enabled="false"
+            label="Socks"
+            layout="topleft"
+            name="Socks">
                 <pie_slice.on_click
-                    function="Edit.TakeOff"
-                    parameter="socks" />
+                function="Edit.TakeOff"
+                parameter="socks" />
                 <pie_slice.on_enable
-                    function="Edit.EnableTakeOff"
-                    parameter="socks" />
+                function="Edit.EnableTakeOff"
+                parameter="socks" />
             </pie_slice>
             <pie_slice
-                enabled="false"
-                label="Jacket"
-                layout="topleft"
-                name="Jacket">
+            enabled="false"
+            label="Jacket"
+            layout="topleft"
+            name="Jacket">
                 <pie_slice.on_click
-                    function="Edit.TakeOff"
-                    parameter="jacket" />
+                function="Edit.TakeOff"
+                parameter="jacket" />
                 <pie_slice.on_enable
-                    function="Edit.EnableTakeOff"
-                    parameter="jacket" />
+                function="Edit.EnableTakeOff"
+                parameter="jacket" />
             </pie_slice>
             <pie_slice
-                enabled="false"
-                label="Gloves"
-                layout="topleft"
-                name="Gloves">
+            enabled="false"
+            label="Gloves"
+            layout="topleft"
+            name="Gloves">
                 <pie_slice.on_click
-                    function="Edit.TakeOff"
-                    parameter="gloves" />
+                function="Edit.TakeOff"
+                parameter="gloves" />
                 <pie_slice.on_enable
-                    function="Edit.EnableTakeOff"
-                    parameter="gloves" />
+                function="Edit.EnableTakeOff"
+                parameter="gloves" />
             </pie_slice>
             <pie_menu
-                label="More..."
-                name="Clothes More">
+            label="More..."
+            name="Clothes More">
                 <pie_slice
-                    enabled="false"
-                    label="Undershirt"
-                    layout="topleft"
-                    name="Self Undershirt">
+                enabled="false"
+                label="Undershirt"
+                layout="topleft"
+                name="Self Undershirt">
                     <pie_slice.on_click
-                        function="Edit.TakeOff"
-                        parameter="undershirt" />
+                    function="Edit.TakeOff"
+                    parameter="undershirt" />
                     <pie_slice.on_enable
-                        function="Edit.EnableTakeOff"
-                        parameter="undershirt" />
+                    function="Edit.EnableTakeOff"
+                    parameter="undershirt" />
                 </pie_slice>
-
-                <pie_separator/>
-
+                <pie_separator name="seperator"/>
                 <pie_slice
-                    label="All Clothes"
-                    layout="topleft"
-                    name="All Clothes">
+                label="All Clothes"
+                layout="topleft"
+                name="All Clothes">
                     <pie_slice.on_click
-                        function="Edit.TakeOff"
-                        parameter="all" />
+                    function="Edit.TakeOff"
+                    parameter="all" />
                 </pie_slice>
-
-                <pie_separator/>
-
+                <pie_separator name="seperator"/>
                 <pie_slice
-                    enabled="false"
-                    label="Underpants"
-                    layout="topleft"
-                    name="Self Underpants">
+                enabled="false"
+                label="Underpants"
+                layout="topleft"
+                name="Self Underpants">
                     <pie_slice.on_click
-                        function="Edit.TakeOff"
-                        parameter="underpants" />
+                    function="Edit.TakeOff"
+                    parameter="underpants" />
                     <pie_slice.on_enable
-                        function="Edit.EnableTakeOff"
-                        parameter="underpants" />
+                    function="Edit.EnableTakeOff"
+                    parameter="underpants" />
                 </pie_slice>
-
                 <pie_slice
-                    enabled="false"
-                    label="Tattoo"
-                    layout="topleft"
-                    name="Self Tattoo">
+                enabled="false"
+                label="Tattoo"
+                layout="topleft"
+                name="Self Tattoo">
                     <pie_slice.on_click
-                        function="Edit.TakeOff"
-                        parameter="tattoo" />
+                    function="Edit.TakeOff"
+                    parameter="tattoo" />
                     <pie_slice.on_enable
-                        function="Edit.EnableTakeOff"
-                        parameter="tattoo" />
+                    function="Edit.EnableTakeOff"
+                    parameter="tattoo" />
                 </pie_slice>
-
                 <pie_slice
-                 enabled="false"
-                 label="Physics"
-                 layout="topleft"
-                 name="Self Physics">
+                enabled="false"
+                label="Physics"
+                layout="topleft"
+                name="Self Physics">
                     <pie_slice.on_click
-                     function="Edit.TakeOff"
-                     parameter="physics" />
+                    function="Edit.TakeOff"
+                    parameter="physics" />
                     <pie_slice.on_enable
-                     function="Edit.EnableTakeOff"
-                     parameter="physics" />
+                    function="Edit.EnableTakeOff"
+                    parameter="physics" />
                 </pie_slice>
-
                 <pie_slice
-                    enabled="false"
-                    label="Alpha"
-                    layout="topleft"
-                    name="Self Alpha">
+                enabled="false"
+                label="Alpha"
+                layout="topleft"
+                name="Self Alpha">
                     <pie_slice.on_click
-                        function="Edit.TakeOff"
-                        parameter="alpha" />
+                    function="Edit.TakeOff"
+                    parameter="alpha" />
                     <pie_slice.on_enable
-                        function="Edit.EnableTakeOff"
-                        parameter="alpha" />
+                    function="Edit.EnableTakeOff"
+                    parameter="alpha" />
                 </pie_slice>
             </pie_menu>
-
             <pie_slice
-                enabled="false"
-                label="Skirt"
-                layout="topleft"
-                name="Skirt">
-                <pie_slice.on_click
-                    function="Edit.TakeOff"
-                    parameter="skirt" />
-                <pie_slice.on_enable
-                    function="Edit.EnableTakeOff"
-                    parameter="skirt" />
-            </pie_slice>
-        </pie_menu>
-
-        <pie_menu
-            label="HUD"
+            enabled="false"
+            label="Skirt"
             layout="topleft"
-            name="Pie Object Detach HUD" />
-        
-            <pie_separator/>
-            <pie_menu
-                label="Detach"
-                layout="topleft"
-                name="Pie Object Detach" />
-            <pie_separator/>
-            <pie_slice
-                label="Detach All"
-                layout="topleft"
-                name="Detach All">
+            name="Skirt">
                 <pie_slice.on_click
-                    function="Self.RemoveAllAttachments"
-                    parameter="" />
+                function="Edit.TakeOff"
+                parameter="skirt" />
                 <pie_slice.on_enable
-                    function="Self.EnableRemoveAllAttachments" />
+                function="Edit.EnableTakeOff"
+                parameter="skirt" />
             </pie_slice>
         </pie_menu>
-
+        <pie_slice
+        label="Detach All"
+        layout="topleft"
+        name="Detach All">
+            <pie_slice.on_click
+            function="Self.RemoveAllAttachments"
+            parameter="" />
+            <pie_slice.on_enable
+            function="Self.EnableRemoveAllAttachments" />
+        </pie_slice>
+        <pie_menu
+        label="Detach"
+        layout="topleft"
+        name="Pie Object Detach" />
+        <pie_separator name="seperator"/>
+        <pie_menu
+        label="HUD"
+        layout="topleft"
+        name="Pie Object Detach HUD" />
+    </pie_menu>
     <pie_slice
-        label="Sit Down"
-        autohide="true"
-        name="Sit Down Here">
+    label="Edit My Outfit" 
+    layout="topleft"
+    name="Edit Outfit">
         <pie_slice.on_click
-            function="Self.SitDown" />
+        function="EditOutfit" />
         <pie_slice.on_enable
-            function="Self.EnableSitDown" />
+        function="Edit.EnableCustomizeAvatar" />
     </pie_slice>
     <pie_slice
-        label="Stand Up"
-        autohide="true"
-        name="Stand Up">
+    label="Copy Avatar SLURL"
+    name="CopySLURL"
+    enabled="true">
         <pie_slice.on_click
-            function="Self.StandUp" />
+        function="Avatar.GetSLURL" />
+    </pie_slice>
+    <pie_slice
+    label="Copy Avatar UUID"
+    enabled="true"
+    name="Copy Avatar UUID">
+        <pie_slice.on_click
+        function="Avatar.GetUUID" />
+    </pie_slice>
+    <pie_slice
+    label="Hover Height"
+    enabled="true"
+    name="Hover Height">
+        <pie_slice.on_click
+        function="HoverHeight" />
         <pie_slice.on_enable
-            function="Self.EnableStandUp" />
+        function="Edit.EnableHoverHeight" />
     </pie_slice>
-    
     <pie_slice
-        label="Copy UUID"
-        enabled="true"
-        name="Copy Avatar UUID">
+    label="Sit Down"
+    autohide="true"
+    name="Sit Down Here">
         <pie_slice.on_click
-             function="Avatar.GetUUID" />
-    </pie_slice>
-    
-    <pie_slice label="Edit Shape"
-       layout="topleft"
-       name="Edit My Shape">
-       <pie_slice.on_click
-           function="EditShape" />
-       <pie_slice.on_enable
-           function="Edit.EnableEditShape" />
-    </pie_slice>
-    
-    <pie_slice
-        label="Debug Textures"
-        enabled="true"
-        name="Debug...">
-        <pie_slice.on_click
-            function="Avatar.Debug" />
-    </pie_slice>
-    
-    <pie_slice
-        label="Hover Height"
-        enabled="true"
-        name="Hover Height">
-        <pie_slice.on_click
-            function="HoverHeight" />
+        function="Self.SitDown" />
         <pie_slice.on_enable
-            function="Edit.EnableHoverHeight" />
+        function="Self.EnableSitDown" />
     </pie_slice>
-
+    <pie_slice
+    label="Stand Up"
+    autohide="true"
+    name="Stand Up">
+        <pie_slice.on_click
+        function="Self.StandUp" />
+        <pie_slice.on_enable
+        function="Self.EnableStandUp" />
+    </pie_slice>
 </pie_menu>

@@ -1,63 +1,67 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <pie_menu
-    layout="topleft"
-    name="Land Pie">
-    <pie_slice
-        label="About Land"
-        name="About Land">
-        <pie_slice.on_click
-            function="Floater.Show"
-            parameter="about_land" />
-    </pie_slice>
-    <pie_slice
-        enabled="false"
-        label="Create"
-        name="Create">
-        <pie_slice.on_click
-            function="Land.Build" />
-        <pie_slice.on_enable
-            function="EnableEdit" />
-    </pie_slice>
-    <pie_slice
-        label="Go Here"
-        name="Go Here">
-        <pie_slice.on_click
-            function="GoToObject" />
-    </pie_slice>
-    <pie_slice
-        label="Sit Here"
-        name="Sit Here">
-        <pie_slice.on_click
-            function="Land.Sit" />
-    </pie_slice>
-    
+layout="topleft"
+name="Land Pie">
     <pie_separator name="seperator"/>
-    
     <pie_slice
-        enabled="false"
-        label="Buy Pass"
-        name="Land Buy Pass">
+    enabled="false"
+    label="Buy Pass"
+    name="Land Buy Pass">
         <pie_slice.on_click
-            function="Land.BuyPass" />
+        function="Land.BuyPass" />
         <pie_slice.on_enable
-            function="Land.EnableBuyPass" />
+        function="Land.EnableBuyPass" />
     </pie_slice>
     <pie_slice
-        enabled="false"
-        label="Edit Terrain"
-        name="Edit Terrain">
+    enabled="false"
+    label="Buy This Land"
+    name="Land Buy">
         <pie_slice.on_click
-            function="Land.Edit" />
+        function="Land.Buy" />
         <pie_slice.on_enable
-            function="EnableEdit" />
+        function="World.EnableBuyLand" />
     </pie_slice>
     <pie_slice
-        enabled="false"
-        label="Buy Land"
-        name="Land Buy">
+    label="About Land"
+    name="About Land">
         <pie_slice.on_click
-            function="Land.Buy" />
+        function="Floater.Show"
+        parameter="about_land" />
         <pie_slice.on_enable
-            function="World.EnableBuyLand" />
+        function="Floater.CanShow"
+        parameter="about_land" />
+    </pie_slice>
+    <pie_slice
+    enabled="false"
+    label="Edit Terrain"
+    name="Edit Terrain">
+        <pie_slice.on_click
+        function="Land.Edit" />
+        <pie_slice.on_enable
+        function="EnableEdit" />
+    </pie_slice>
+    <pie_slice
+    enabled="false"
+    label="Build"
+    name="Build">
+        <pie_slice.on_click
+        function="Land.Build" />
+        <pie_slice.on_enable
+        function="EnableEdit" />
+    </pie_slice>
+    <pie_slice
+    enabled="false"
+    label="Block Particle Owner"
+    name="Mute Particle">
+        <pie_slice.on_click
+        function="Particle.Mute" />
+        <pie_slice.on_enable
+        function="EnableMuteParticle" />
+    </pie_slice>
+    <pie_slice
+    label="Sit Here"
+    name="Sit Here">
+        <pie_slice.on_click
+        function="Land.Sit" />
     </pie_slice>
 </pie_menu>
