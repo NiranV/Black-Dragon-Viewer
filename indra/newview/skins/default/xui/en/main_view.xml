@@ -72,7 +72,7 @@ width="1024">
                visible="true">
                   <view
                   mouse_opaque="false"
-                  follows="left|right|bottom"
+                  follows="left|bottom"
                   name="menu_bar_holder"
                   left="10"
                   top="1"
