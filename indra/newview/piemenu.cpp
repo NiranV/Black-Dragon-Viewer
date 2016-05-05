@@ -306,128 +306,150 @@ void PieMenu::draw( void )
 	do
 	{
 		// standard item text color
-		LLColor4 itemColor=textColor;
+		LLColor4 itemColor = textColor;
 
 		// clear the label and set up the starting angle to draw in
-		std::string label("");
-		F32 segmentStart=F_PI/4.0*(F32) num-F_PI/8.0;
+		std::string label[3];
+		int label_count = 0;
+		F32 segmentStart = F_PI / 4.0*(F32)num - F_PI / 8.0;
 
 		// iterate through the list of slices
-		if(cur_item_iter!=mSlices->end())
+		if (cur_item_iter != mSlices->end())
 		{
 			// get current slice item
-			LLView* item=(*cur_item_iter);
+			LLView* item = (*cur_item_iter);
 
 			// check if this is a submenu or a normal click slice
-			PieSlice* currentSlice=dynamic_cast<PieSlice*>(item);
-			PieMenu* currentSubmenu=dynamic_cast<PieMenu*>(item);
+			PieSlice* currentSlice = dynamic_cast<PieSlice*>(item);
+			PieMenu* currentSubmenu = dynamic_cast<PieMenu*>(item);
 			// advance internally to the next slice item
 			cur_item_iter++;
 
 			// in case it is regular click slice
-			if(currentSlice)
+			if (currentSlice)
 			{
 				// get the slice label and tell the slice to check if it's supposed to be visible
-				label=currentSlice->getLabel();
+				label[0] = currentSlice->getLabel();
 				currentSlice->updateVisible();
 				// disable it if it's not visible, pie slices never really disappear
-				if(!currentSlice->getVisible())
+				if (!currentSlice->getVisible())
 				{
-					LL_DEBUGS() << label << " is not visible" << LL_ENDL;
+					LL_DEBUGS() << label[0] << " is not visible" << LL_ENDL;
 					currentSlice->setEnabled(FALSE);
 				}
 
 				// if the current slice is the start of an autohide chain, clear out previous chains
-				if(currentSlice->getStartAutohide())
-					wasAutohide=FALSE;
+				if (currentSlice->getStartAutohide())
+					wasAutohide = FALSE;
 
 				// check if the current slice is part of an autohide chain
-				if(currentSlice->getAutohide())
+				if (currentSlice->getAutohide())
 				{
 					// if the previous item already won the autohide, skip this item
-					if(wasAutohide)
+					if (wasAutohide)
 						continue;
 					// look at the next item in the pie
-					LLView* lookAhead=(*cur_item_iter);
+					LLView* lookAhead = (*cur_item_iter);
 					// check if this is a normal click slice
-					PieSlice* lookSlice=dynamic_cast<PieSlice*>(lookAhead);
-					if(lookSlice)
+					PieSlice* lookSlice = dynamic_cast<PieSlice*>(lookAhead);
+					if (lookSlice)
 					{
 						// if the next item is part of the current autohide chain as well ...
-						if(lookSlice->getAutohide() && !lookSlice->getStartAutohide())
+						if (lookSlice->getAutohide() && !lookSlice->getStartAutohide())
 						{
 							// ... it's visible and it's enabled, skip the current one.
 							// the first visible and enabled item in autohide chains wins
 							// this is useful for Sit/Stand toggles
 							lookSlice->updateEnabled();
 							lookSlice->updateVisible();
-							if(lookSlice->getVisible() && lookSlice->getEnabled())
+							if (lookSlice->getVisible() && lookSlice->getEnabled())
 								continue;
 							// this item won the autohide contest
-							wasAutohide=TRUE;
+							wasAutohide = TRUE;
 						}
 					}
 				}
 				else
 					// reset autohide chain
-					wasAutohide=FALSE;
+					wasAutohide = FALSE;
 				// check if the slice is currently enabled
 				currentSlice->updateEnabled();
-				if(!currentSlice->getEnabled())
+				if (!currentSlice->getEnabled())
 				{
-					LL_DEBUGS() << label << " is disabled" << LL_ENDL;
+					LL_DEBUGS() << label[0] << " is disabled" << LL_ENDL;
 					// fade the item color alpha to mark the item as disabled
-					itemColor%=(F32)0.3;
+					itemColor %= (F32)0.3;
 				}
 			}
 			// if it's a submenu just get the label
-			else if(currentSubmenu)
-				label=currentSubmenu->getLabel();
+			else if (currentSubmenu)
+			{
+				label[0] = currentSubmenu->getLabel();
+
+				// draw the divider line for this slice
+				gl_washer_segment_2d(PIE_OUTER_SIZE * factor* 1.09, PIE_OUTER_SIZE * factor, segmentStart + 0.02, segmentStart + F_PI / 4.0 - 0.02, 8, selectedColor, selectedColor);
+			}
 
 			// if it's a slice or submenu, the mouse pointer is over the same segment as our counter and the item is enabled
-			if((currentSlice || currentSubmenu) && (currentSegment==num) && item->getEnabled())
+			if ((currentSlice || currentSubmenu) && (currentSegment == num) && item->getEnabled())
 			{
 				// memorize the currently highlighted slice for later
-				mSlice=item;
+				mSlice = item;
 				// if we highlighted a different slice than before, we must play a sound
-				if(mOldSlice!=mSlice)
+				if (mOldSlice != mSlice)
 				{
 					// get the appropriate UI sound and play it
-					char soundNum='0'+num;
-					std::string soundName="UISndPieMenuSliceHighlight";
-					soundName+=soundNum;
+					char soundNum = '0' + num;
+					std::string soundName = "UISndPieMenuSliceHighlight";
+					soundName += soundNum;
 
 					make_ui_sound(soundName.c_str());
 					// remember which slice we highlighted last, so we only play the sound once
-					mOldSlice=mSlice;
+					mOldSlice = mSlice;
 				}
 
 				// draw the currently highlighted pie slice
-				gl_washer_segment_2d(PIE_OUTER_SIZE*factor,PIE_INNER_SIZE,segmentStart+0.02,segmentStart+F_PI/4.0-0.02,8,selectedColor,borderColor);
+				gl_washer_segment_2d(PIE_OUTER_SIZE*factor, PIE_INNER_SIZE, segmentStart + 0.02, segmentStart + F_PI / 4.0 - 0.02, 8, selectedColor, borderColor);
 			}
 		}
-		// draw the divider line for this slice
-		gl_washer_segment_2d(PIE_OUTER_SIZE*factor,PIE_INNER_SIZE,segmentStart-0.02,segmentStart+0.02,4,lineColor,borderColor);
+
+		for (label_count = 0; label_count < 2; label_count++)
+		{
+			std::size_t pos = label[label_count].find(";");
+			if (pos != std::string::npos)
+			{
+				LL_INFOS("Pie Menu") << "Found line break in slice #" << num << " at pos: " << pos << LL_ENDL;
+				label[label_count + 1] = label[label_count].substr(pos + 1);
+				label[label_count] = label[label_count].substr(0, pos);
+				LL_INFOS("Pie Menu") << "Rendering new string in second line: " << label[label_count + 1] << LL_ENDL;
+			}
+		}
 
 		// draw the slice labels around the center
-		mFont->renderUTF8(label,
-							0,
-							PIE_X[num],
-							PIE_Y[num],
-							itemColor,
-							LLFontGL::HCENTER,
-							LLFontGL::VCENTER,
-							LLFontGL::NORMAL,
-							LLFontGL::DROP_SHADOW_SOFT);
+		mFont->renderUTF8(label[0], 0, PIE_X[num], PIE_Y[num], itemColor, 
+							LLFontGL::HCENTER, LLFontGL::VCENTER, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT);
+		if (!label[1].empty())
+		{
+			mFont->renderUTF8(label[1], 0, PIE_X[num], PIE_Y[num] - 13, itemColor,
+								LLFontGL::HCENTER, LLFontGL::VCENTER, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT);
+		}
+		if (!label[2].empty())
+		{
+			mFont->renderUTF8(label[2], 0, PIE_X[num], PIE_Y[num] + 13, itemColor,
+								LLFontGL::HCENTER, LLFontGL::VCENTER, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT);
+		}
 		// next slice
 		num++;
 	}
 	while(num<8);	// do this until the menu is full
 
 	// draw inner and outer circle, outer only if it was not the first click
-	if(!mFirstClick)
-		gl_washer_2d(PIE_OUTER_SIZE*factor,PIE_OUTER_SIZE*factor-2,64,lineColor,borderColor);
-	gl_washer_2d(PIE_INNER_SIZE+1,PIE_INNER_SIZE-1,32,borderColor,lineColor);
+	if (!mFirstClick)
+	{
+		gl_washer_2d(PIE_OUTER_SIZE * factor, PIE_OUTER_SIZE*factor - 2, 64, borderColor, borderColor);
+		gl_washer_2d(PIE_OUTER_SIZE * factor * 1.09, PIE_OUTER_SIZE*factor - 2, 64, borderColor, lineColor);
+	}
+	gl_washer_2d(PIE_INNER_SIZE + 1, PIE_INNER_SIZE - 1, 32, borderColor, lineColor);
 
 	// restore OpenGL drawing matrix
 	gGL.popMatrix();

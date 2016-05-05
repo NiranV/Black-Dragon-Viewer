@@ -2,7 +2,7 @@
 <pie_menu
 name="Object Pie">
    <pie_menu
-   label="&lt; Manage &gt;"
+   label="Manage"
    name="Object Pie Manage">
       <pie_slice
       enabled="false"
@@ -39,7 +39,7 @@ name="Object Pie">
       </pie_slice>
       <pie_slice
       enabled="false"
-      label="Block Particle Owner"
+      label="Particle;Owner;Block"
       name="Mute Particle">
          <pie_slice.on_click
          function="Particle.Mute" />
@@ -84,10 +84,10 @@ name="Object Pie">
       function="Object.EnableOpen" />
    </pie_slice>   
    <pie_menu
-   label="&lt; Wear &gt;"
+   label="Wear"
    name="Wear">
       <pie_menu
-      label="&lt; Attach &gt;"
+      label="Attach"
       name="Pie Object Attach" />
       <pie_slice
       enabled="false"
@@ -109,7 +109,7 @@ name="Object Pie">
          function="Object.EnableWear" />
       </pie_slice>
       <pie_menu
-      label="&lt; Attach HUD &gt;"
+      label="Attach HUD"
       name="Pie Object Attach HUD" />
    </pie_menu>
    <pie_slice
@@ -141,12 +141,12 @@ name="Object Pie">
       function="EnableEdit"/>
    </pie_slice>
    <pie_menu
-   label="&lt; More &gt;"
+   label="More"
    name="Object Pie More">
       
       <pie_slice
-      label="Copy Object UUID"
       enabled="true"
+      label="Object;UUID;Copy"
       name="Copy Object UUID">
          <pie_slice.on_click
          function="Object.GetUUID" />
@@ -154,7 +154,7 @@ name="Object Pie">
       <pie_separator name="seperator"/>
       <pie_slice
       enabled="false"
-      label="Object Profile"
+      label="Profile; ;Object"
       name="Object Profile">
          <pie_slice.on_click
          function="Object.Inspect" />
@@ -190,7 +190,7 @@ name="Object Pie">
       <pie_separator name="seperator"/>
       <pie_slice
       enabled="false"
-      label="Show in Linksets"
+      label="In;Linksets;Show"
       name="Show_in_linksets">
          <pie_slice.on_click
          function="Pathfinding.Linksets.Select" />

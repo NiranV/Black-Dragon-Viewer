@@ -3,7 +3,7 @@
 layout="topleft"
 name="Self Pie">
     <pie_menu
-    label="&lt; Manage &gt;"
+    label="Manage"
     layout="topleft"
     name="Pie Object Manage">
         <pie_slice
@@ -26,7 +26,7 @@ name="Self Pie">
         <pie_separator name="seperator"/>
         <pie_slice
         enabled="false"
-        label="Block Particle Owner"
+        label="Particle;Owner;Block"
         name="Mute Particle">
             <pie_slice.on_click
             function="Particle.Mute" />
@@ -35,7 +35,7 @@ name="Self Pie">
         </pie_slice>
         <pie_separator name="seperator"/>
         <pie_slice
-        label="My Appearance"
+        label="Appearance; ;My"
         layout="topleft"
         name="Change Outfit">
             <pie_slice.on_click
@@ -53,7 +53,7 @@ name="Self Pie">
         </pie_slice>
     </pie_menu>
     <pie_slice
-    label="Edit My Shape"
+    label="My;Shape;Edit"
     layout="topleft"
     name="Edit My Shape">
     <pie_slice.on_click
@@ -249,7 +249,7 @@ name="Self Pie">
         name="Pie Object Detach HUD" />
     </pie_menu>
     <pie_slice
-    label="Edit My Outfit" 
+    label="My;Outfit;Edit" 
     layout="topleft"
     name="Edit Outfit">
         <pie_slice.on_click
@@ -258,21 +258,21 @@ name="Self Pie">
         function="Edit.EnableCustomizeAvatar" />
     </pie_slice>
     <pie_slice
-    label="Copy Avatar SLURL"
+    label="Avatar;SLURL;Copy"
     name="CopySLURL"
     enabled="true">
         <pie_slice.on_click
         function="Avatar.GetSLURL" />
     </pie_slice>
     <pie_slice
-    label="Copy Avatar UUID"
+    label="Avatar;UUID;Copy"
     enabled="true"
     name="Copy Avatar UUID">
         <pie_slice.on_click
         function="Avatar.GetUUID" />
     </pie_slice>
     <pie_slice
-    label="Hover Height"
+    label="Height; ;Hover"
     enabled="true"
     name="Hover Height">
         <pie_slice.on_click

@@ -4,7 +4,7 @@
 <pie_menu
 name="Avatar Pie">
     <pie_menu
-    label="&lt; Manage &gt;"
+    label="Manage"
     layout="topleft"
     name="Pie Object Manage">
         <pie_slice
@@ -27,7 +27,7 @@ name="Avatar Pie">
         <pie_separator name="seperator"/>
         <pie_slice
         enabled="false"
-        label="Block Particle Owner"
+        label="Particle;Owner;Block"
         name="Mute Particle">
             <pie_slice.on_click
             function="Particle.Mute" />
@@ -57,7 +57,7 @@ name="Avatar Pie">
         function="Avatar.SendIM" />
     </pie_slice>
     <pie_slice
-    label="Show Profile"
+    label="Profile; ;Show"
     name="Profile">
         <pie_slice.on_click
         function="ShowAgentProfile"
@@ -81,10 +81,10 @@ name="Avatar Pie">
     </pie_slice>
     <pie_menu
     name="Avatar Pie More"
-    label="&lt; More &gt;">
+    label="More">
         <pie_slice
         name="DoNotRender"
-        label="Do Not Render">
+        label="Not;Render;Do">
             <pie_slice.on_check
             function="Avatar.CheckImpostorMode"
             parameter="1" />
@@ -94,7 +94,7 @@ name="Avatar Pie">
         </pie_slice>
         <pie_slice
         name="RenderNormally"
-        label="Render Normally">
+        label="Normally; ;Render">
             <pie_slice.on_check
             function="Avatar.CheckImpostorMode"
             parameter="0" />
@@ -103,7 +103,7 @@ name="Avatar Pie">
             parameter="0" />
         </pie_slice>
         <pie_slice
-        label="Object Profile"
+        label="Profile; ;Object"
         name="Object Inspect">
             <pie_slice.on_click
             function="Object.Inspect" />
@@ -112,28 +112,28 @@ name="Avatar Pie">
         </pie_slice>
         <pie_separator name="seperator"/>
         <pie_slice
-        label="Copy Avatar SLURL"
+        label="Avatar;SLURL;Copy"
         name="CopySLURL"
         enabled="true">
             <pie_slice.on_click
             function="Avatar.GetSLURL" />
         </pie_slice>
         <pie_slice
-        label="Copy UUID"
+        label="Avatar;UUID;Copy"
         enabled="true"
         name="Copy Avatar UUID">
             <pie_slice.on_click
             function="Avatar.GetUUID" />
         </pie_slice>
         <pie_slice
-        label="Invite to Group"
+        label="To;Group;Invite"
         name="Group Invite">
             <pie_slice.on_click
             function="Avatar.InviteToGroup" />
         </pie_slice>
         <pie_slice
         name="AlwaysRenderFully"
-        label="Always Render Fully">
+        label="Render;Fully;Always">
             <pie_slice.on_check
             function="Avatar.CheckImpostorMode"
             parameter="2" />
