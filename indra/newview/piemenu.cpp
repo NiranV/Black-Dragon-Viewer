@@ -418,16 +418,17 @@ void PieMenu::draw( void )
 			std::size_t pos = label[label_count].find(";");
 			if (pos != std::string::npos)
 			{
-				LL_INFOS("Pie Menu") << "Found line break in slice #" << num << " at pos: " << pos << LL_ENDL;
 				label[label_count + 1] = label[label_count].substr(pos + 1);
 				label[label_count] = label[label_count].substr(0, pos);
-				LL_INFOS("Pie Menu") << "Rendering new string in second line: " << label[label_count + 1] << LL_ENDL;
 			}
 		}
 
 		// draw the slice labels around the center
-		mFont->renderUTF8(label[0], 0, PIE_X[num], PIE_Y[num], itemColor, 
-							LLFontGL::HCENTER, LLFontGL::VCENTER, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT);
+		if (!label[0].empty())
+		{
+			mFont->renderUTF8(label[0], 0, PIE_X[num], PIE_Y[num], itemColor,
+								LLFontGL::HCENTER, LLFontGL::VCENTER, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT);
+		}
 		if (!label[1].empty())
 		{
 			mFont->renderUTF8(label[1], 0, PIE_X[num], PIE_Y[num] - 13, itemColor,
