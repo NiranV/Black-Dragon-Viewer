@@ -34,12 +34,11 @@
 #include "llinventorymodel.h"
 #include "llinventoryobserver.h"
 #include "llviewerinventory.h"
-#include "llhttpclient.h"
+#include "llcorehttputil.h"
 
 class LLWearableHoldingPattern;
 class LLInventoryCallback;
 class LLOutfitUnLockTimer;
-class RequestAgentUpdateAppearanceResponder;
 
 class LLAppearanceMgr: public LLSingleton<LLAppearanceMgr>
 {
@@ -54,7 +53,6 @@ public:
 	void updateAppearanceFromCOF(bool enforce_item_restrictions = true,
 								 bool enforce_ordering = true,
 								 nullary_func_t post_update_func = no_op);
-	bool needToSaveCOF();
 	void updateCOF(const LLUUID& category, bool append = false);
 // [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0a) | Added: RLVa-1.2.0a
 	void updateCOF(LLInventoryModel::item_array_t& body_items_new, LLInventoryModel::item_array_t& wear_items_new,
@@ -242,23 +240,25 @@ public:
 
 	void requestServerAppearanceUpdate();
 
-	void incrementCofVersion(LLHTTPClient::ResponderPtr responder_ptr = NULL);
 // [SL:KB] - Patch: Appearance-Misc | Checked: 2015-06-27 (Catznip-3.7)
 	void syncCofVersionAndRefresh();
 // [/SL:KB]
-
-	U32 getNumAttachmentsInCOF();
-
-	// *HACK Remove this after server side texture baking is deployed on all sims.
-	void incrementCofVersionLegacy();
-
 	void setAppearanceServiceURL(const std::string& url) { mAppearanceServiceURL = url; }
 	std::string getAppearanceServiceURL() const;
 
+
+
 private:
+#ifdef APPEARANCEBAKE_AS_IN_AIS_QUEUE
+    void serverAppearanceUpdateCoro(LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t &httpAdapter);
+#else
+    void serverAppearanceUpdateCoro();
+#endif
+
+    static void debugAppearanceUpdateCOF(const LLSD& content);
+
 	std::string		mAppearanceServiceURL;
 	
-
 protected:
 	LLAppearanceMgr();
 	~LLAppearanceMgr();
@@ -281,14 +281,17 @@ private:
 	bool mAttachmentInvLinkEnabled;
 	bool mOutfitIsDirty;
 	bool mIsInUpdateAppearanceFromCOF; // to detect recursive calls.
-
-	LLPointer<RequestAgentUpdateAppearanceResponder> mAppearanceResponder;
+    bool mOutstandingAppearanceBakeRequest; // A bake request is outstanding.  Do not overlap.
+    bool mRerequestAppearanceBake;
 
 	/**
 	 * Lock for blocking operations on outfit until server reply or timeout exceed
 	 * to avoid unsynchronized outfit state or performing duplicate operations.
 	 */
 	bool mOutfitLocked;
+	S32  mInFlightCounter;
+	LLTimer mInFlightTimer;
+	static bool mActive;
 
 	std::auto_ptr<LLOutfitUnLockTimer> mUnlockOutfitTimer;
 

@@ -417,6 +417,7 @@ LLNotificationTemplate::LLNotificationTemplate(const LLNotificationTemplate::Par
 	mExpireOption(p.expire_option),
 	mURLOption(p.url.option),
 	mURLTarget(p.url.target),
+	mForceUrlsExternal(p.force_urls_external),
 	mUnique(p.unique.isProvided()),
 	mCombineBehavior(p.unique.combine),
 	mPriority(p.priority),
@@ -746,6 +747,11 @@ S32 LLNotification::getURLOption() const
 S32 LLNotification::getURLOpenExternally() const
 {
 	return(mTemplatep? mTemplatep->mURLTarget == "_external": -1);
+}
+
+bool LLNotification::getForceUrlsExternal() const
+{
+    return (mTemplatep ? mTemplatep->mForceUrlsExternal : false);
 }
 
 bool LLNotification::hasUniquenessConstraints() const 
@@ -1715,6 +1721,30 @@ void LLNotifications::cancelByName(const std::string& name)
 	for (std::vector<LLNotificationPtr>::iterator it = notifs_to_cancel.begin(), end_it = notifs_to_cancel.end();
 		it != end_it;
 		++it)
+	{
+		LLNotificationPtr pNotif = *it;
+		pNotif->cancel();
+		updateItem(LLSD().with("sigtype", "delete").with("id", pNotif->id()), pNotif);
+	}
+}
+
+void LLNotifications::cancelByOwner(const LLUUID ownerId)
+{
+	std::vector<LLNotificationPtr> notifs_to_cancel;
+	for (LLNotificationSet::iterator it = mItems.begin(), end_it = mItems.end();
+		 it != end_it;
+		 ++it)
+	{
+		LLNotificationPtr pNotif = *it;
+		if (pNotif && pNotif->getPayload().get("owner_id").asUUID() == ownerId)
+		{
+			notifs_to_cancel.push_back(pNotif);
+		}
+	}
+
+	for (std::vector<LLNotificationPtr>::iterator it = notifs_to_cancel.begin(), end_it = notifs_to_cancel.end();
+		 it != end_it;
+		 ++it)
 	{
 		LLNotificationPtr pNotif = *it;
 		pNotif->cancel();

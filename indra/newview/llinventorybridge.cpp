@@ -131,11 +131,6 @@ bool isRemoveAction(const std::string& action)
 	return ("take_off" == action || "detach" == action || "deactivate" == action);
 }
 
-bool isMarketplaceCopyAction(const std::string& action)
-{
-	return (("copy_to_outbox" == action) || ("move_to_outbox" == action));
-}
-
 bool isMarketplaceSendAction(const std::string& action)
 {
 	return ("send_to_marketplace" == action);
@@ -802,8 +797,8 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id,
 		}
 	}
 
-	// Don't allow items to be pasted directly into the COF or the inbox/outbox
-	if (!isCOFFolder() && !isInboxFolder() && !isOutboxFolder())
+	// Don't allow items to be pasted directly into the COF or the inbox
+	if (!isCOFFolder() && !isInboxFolder())
 	{
 		items.push_back(std::string("Paste"));
 	}
@@ -841,10 +836,6 @@ void LLInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	{
 		addTrashContextMenuOptions(items, disabled_items);
 	}	
-	else if(isOutboxFolder())
-	{
-		addOutboxContextMenuOptions(flags, items, disabled_items);
-	}
 	else
 	{
 		items.push_back(std::string("Share"));
@@ -949,19 +940,6 @@ void LLInvFVBridge::addOpenRightClickMenuOption(menuentry_vec_t &items)
 		items.push_back(std::string("Open Original"));
 	else
 		items.push_back(std::string("Open"));
-}
-
-void LLInvFVBridge::addOutboxContextMenuOptions(U32 flags,
-												menuentry_vec_t &items,
-												menuentry_vec_t &disabled_items)
-{
-	items.push_back(std::string("Rename"));
-	items.push_back(std::string("Delete"));
-	
-	if ((flags & FIRST_SELECTED_ITEM) == 0)
-	{
-		disabled_items.push_back(std::string("Rename"));
-	}
 }
 
 void LLInvFVBridge::addMarketplaceContextMenuOptions(U32 flags,
@@ -1211,41 +1189,6 @@ BOOL LLInvFVBridge::isMarketplaceListingsFolder() const
 	}
 	
 	return gInventory.isObjectDescendentOf(mUUID, folder_id);
-}
-
-BOOL LLInvFVBridge::isOutboxFolder() const
-{
-	const LLUUID outbox_id = getOutboxFolder();
-
-	if (outbox_id.isNull())
-	{
-		return FALSE;
-	}
-
-	return gInventory.isObjectDescendentOf(mUUID, outbox_id);
-}
-
-BOOL LLInvFVBridge::isOutboxFolderDirectParent() const
-{
-	BOOL outbox_is_parent = FALSE;
-	
-	const LLInventoryCategory *cat = gInventory.getCategory(mUUID);
-
-	if (cat)
-	{
-		const LLUUID outbox_id = getOutboxFolder();
-		
-		outbox_is_parent = (outbox_id.notNull() && (outbox_id == cat->getParentUUID()));
-	}
-	
-	return outbox_is_parent;
-}
-
-const LLUUID LLInvFVBridge::getOutboxFolder() const
-{
-	const LLUUID outbox_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_OUTBOX, false);
-
-	return outbox_id;
 }
 
 BOOL LLInvFVBridge::isItemPermissive() const
@@ -1502,56 +1445,6 @@ bool LLInvFVBridge::canListOnMarketplace() const
 	}
 
 	return true;
-}
-
-// *TODO : Suppress canListOnOutboxNow() once we deprecate Merchant Outbox completely
-bool LLInvFVBridge::canListOnOutboxNow() const
-{
-	bool can_list = true;
-
-	// Do not allow listing while import is in progress
-	if (LLMarketplaceInventoryImporter::instanceExists())
-	{
-		can_list = !LLMarketplaceInventoryImporter::instance().isImportInProgress();
-	}
-	
-	const LLInventoryObject* obj = getInventoryObject();
-	can_list &= (obj != NULL);
-
-	if (can_list)
-	{
-		const LLUUID& object_id = obj->getLinkedUUID();
-		can_list = object_id.notNull();
-
-		if (can_list)
-		{
-			LLFolderViewFolder * object_folderp =   mInventoryPanel.get() ? mInventoryPanel.get()->getFolderByID(object_id) : NULL;
-			if (object_folderp)
-			{
-				can_list = !static_cast<LLFolderBridge*>(object_folderp->getViewModelItem())->isLoading();
-			}
-		}
-		
-		if (can_list)
-		{
-			// Get outbox id
-			const LLUUID & outbox_id = getInventoryModel()->findCategoryUUIDForType(LLFolderType::FT_OUTBOX, false);
-			LLFolderViewItem * outbox_itemp =   mInventoryPanel.get() ? mInventoryPanel.get()->getItemByID(outbox_id) : NULL;
-
-			if (outbox_itemp)
-			{
-				MASK mask = 0x0;
-				BOOL drop = FALSE;
-				EDragAndDropType cargo_type = LLViewerAssetType::lookupDragAndDropType(obj->getActualType());
-				void * cargo_data = (void *) obj;
-				std::string tooltip_msg;
-				
-				can_list = outbox_itemp->getViewModelItem()->dragOrDrop(mask, drop, cargo_type, cargo_data, tooltip_msg);
-			}
-		}
-	}
-	
-	return can_list;
 }
 
 bool LLInvFVBridge::canListOnMarketplaceNow() const
@@ -2091,6 +1984,7 @@ BOOL LLItemBridge::removeItem()
 	}
 	
 	LLNotifications::instance().forceResponse(params, 0);
+	model->checkTrashOverflow();
 	return TRUE;
 }
 
@@ -2464,13 +2358,10 @@ BOOL LLFolderBridge::dragCategoryIntoFolder(LLInventoryCategory* inv_cat,
 
 	const LLUUID &cat_id = inv_cat->getUUID();
 	const LLUUID &current_outfit_id = model->findCategoryUUIDForType(LLFolderType::FT_CURRENT_OUTFIT, false);
-	const LLUUID &outbox_id = model->findCategoryUUIDForType(LLFolderType::FT_OUTBOX, false);
 	const LLUUID &marketplacelistings_id = model->findCategoryUUIDForType(LLFolderType::FT_MARKETPLACE_LISTINGS, false);
     const LLUUID from_folder_uuid = inv_cat->getParentUUID();
 	
 	const BOOL move_is_into_current_outfit = (mUUID == current_outfit_id);
-	const BOOL move_is_into_outbox = model->isObjectDescendentOf(mUUID, outbox_id); 
-	const BOOL move_is_from_outbox = model->isObjectDescendentOf(cat_id, outbox_id);
 	const BOOL move_is_into_marketplacelistings = model->isObjectDescendentOf(mUUID, marketplacelistings_id);
     const BOOL move_is_from_marketplacelistings = model->isObjectDescendentOf(cat_id, marketplacelistings_id);
 
@@ -2622,9 +2513,9 @@ BOOL LLFolderBridge::dragCategoryIntoFolder(LLInventoryCategory* inv_cat,
 			}
 		}
         
-		if (is_movable && (move_is_into_outbox || move_is_into_marketplacelistings))
+		if (is_movable && move_is_into_marketplacelistings)
 		{
-            const LLViewerInventoryCategory * master_folder = (move_is_into_outbox ? model->getFirstDescendantOf(outbox_id, mUUID) : model->getFirstDescendantOf(marketplacelistings_id, mUUID));
+            const LLViewerInventoryCategory * master_folder = model->getFirstDescendantOf(marketplacelistings_id, mUUID);
             LLViewerInventoryCategory * dest_folder = getCategory();
             S32 bundle_size = (drop ? 1 : LLToolDragAndDrop::instance().getCargoCount());
             is_movable = can_move_folder_to_marketplace(master_folder, dest_folder, inv_cat, tooltip_msg, bundle_size);
@@ -2743,10 +2634,6 @@ BOOL LLFolderBridge::dragCategoryIntoFolder(LLInventoryCategory* inv_cat,
 				BOOL append = true;
 				LLAppearanceMgr::instance().wearInventoryCategory(inv_cat, false, append);
 			}
-			else if (move_is_into_outbox && !move_is_from_outbox)
-			{
-				copy_folder_to_outbox(inv_cat, mUUID, cat_id, LLToolDragAndDrop::getOperationId());
-			}
 			else if (move_is_into_marketplacelistings)
 			{
 				move_folder_to_marketplacelistings(inv_cat, mUUID);
@@ -2797,7 +2684,7 @@ BOOL LLFolderBridge::dragCategoryIntoFolder(LLInventoryCategory* inv_cat,
 	}
 	else if (LLToolDragAndDrop::SOURCE_WORLD == source)
 	{
-		if (move_is_into_outbox || move_is_into_marketplacelistings)
+		if (move_is_into_marketplacelistings)
 		{
 			tooltip_msg = LLTrans::getString("TooltipOutboxNotInInventory");
 			accept = FALSE;
@@ -2809,7 +2696,7 @@ BOOL LLFolderBridge::dragCategoryIntoFolder(LLInventoryCategory* inv_cat,
 	}
 	else if (LLToolDragAndDrop::SOURCE_LIBRARY == source)
 	{
-		if (move_is_into_outbox || move_is_into_marketplacelistings)
+		if (move_is_into_marketplacelistings)
 		{
 			tooltip_msg = LLTrans::getString("TooltipOutboxNotInInventory");
 			accept = FALSE;
@@ -3593,7 +3480,6 @@ void LLFolderBridge::perform_pasteFromClipboard()
 	if (model && isClipboardPasteable())
 	{
         const LLUUID &current_outfit_id = model->findCategoryUUIDForType(LLFolderType::FT_CURRENT_OUTFIT, false);
-		const LLUUID &outbox_id = model->findCategoryUUIDForType(LLFolderType::FT_OUTBOX, false);
         const LLUUID &marketplacelistings_id = model->findCategoryUUIDForType(LLFolderType::FT_MARKETPLACE_LISTINGS, false);
 		const LLUUID &favorites_id = model->findCategoryUUIDForType(LLFolderType::FT_FAVORITE, false);
 		const LLUUID &my_outifts_id = model->findCategoryUUIDForType(LLFolderType::FT_MY_OUTFITS, false);
@@ -3601,7 +3487,6 @@ void LLFolderBridge::perform_pasteFromClipboard()
 		const BOOL move_is_into_current_outfit = (mUUID == current_outfit_id);
 		const BOOL move_is_into_my_outfits = (mUUID == my_outifts_id) || model->isObjectDescendentOf(mUUID, my_outifts_id);
 		const BOOL move_is_into_outfit = move_is_into_my_outfits || (getCategory() && getCategory()->getPreferredType()==LLFolderType::FT_OUTFIT);
-		const BOOL move_is_into_outbox = model->isObjectDescendentOf(mUUID, outbox_id);
         const BOOL move_is_into_marketplacelistings = model->isObjectDescendentOf(mUUID, marketplacelistings_id);
 		const BOOL move_is_into_favorites = (mUUID == favorites_id);
 
@@ -3609,10 +3494,10 @@ void LLFolderBridge::perform_pasteFromClipboard()
 		LLClipboard::instance().pasteFromClipboard(objects);
         
         LLViewerInventoryCategory * dest_folder = getCategory();
-		if (move_is_into_outbox || move_is_into_marketplacelistings)
+		if (move_is_into_marketplacelistings)
 		{
             std::string error_msg;
-            const LLViewerInventoryCategory * master_folder = (move_is_into_outbox ? model->getFirstDescendantOf(outbox_id, mUUID) : model->getFirstDescendantOf(marketplacelistings_id, mUUID));
+            const LLViewerInventoryCategory * master_folder = model->getFirstDescendantOf(marketplacelistings_id, mUUID);
             int index = 0;
             for (std::vector<LLUUID>::const_iterator iter = objects.begin(); iter != objects.end(); ++iter)
             {
@@ -3791,17 +3676,15 @@ void LLFolderBridge::pasteLinkFromClipboard()
 	if(model)
 	{
 		const LLUUID &current_outfit_id = model->findCategoryUUIDForType(LLFolderType::FT_CURRENT_OUTFIT, false);
-		const LLUUID &outbox_id = model->findCategoryUUIDForType(LLFolderType::FT_OUTBOX, false);
         const LLUUID &marketplacelistings_id = model->findCategoryUUIDForType(LLFolderType::FT_MARKETPLACE_LISTINGS, false);
 		const LLUUID &my_outifts_id = model->findCategoryUUIDForType(LLFolderType::FT_MY_OUTFITS, false);
 
 		const BOOL move_is_into_current_outfit = (mUUID == current_outfit_id);
 		const BOOL move_is_into_my_outfits = (mUUID == my_outifts_id) || model->isObjectDescendentOf(mUUID, my_outifts_id);
 		const BOOL move_is_into_outfit = move_is_into_my_outfits || (getCategory() && getCategory()->getPreferredType()==LLFolderType::FT_OUTFIT);
-		const BOOL move_is_into_outbox = model->isObjectDescendentOf(mUUID, outbox_id);
         const BOOL move_is_into_marketplacelistings = model->isObjectDescendentOf(mUUID, marketplacelistings_id);
 
-		if (move_is_into_outbox || move_is_into_marketplacelistings)
+		if (move_is_into_marketplacelistings)
 		{
 			// Notify user of failure somehow -- play error sound?  modal dialog?
 			return;
@@ -3922,10 +3805,6 @@ void LLFolderBridge::buildContextMenuOptions(U32 flags, menuentry_vec_t&   items
 		items.clear(); // clear any items that used to exist
 		addTrashContextMenuOptions(items, disabled_items);
 	}
-	else if(isOutboxFolder())
-	{
-		addOutboxContextMenuOptions(flags, items, disabled_items);
-	}
 	else if(isAgentInventory()) // do not allow creating in library
 	{
 		LLViewerInventoryCategory *cat = getCategory();
@@ -3933,7 +3812,7 @@ void LLFolderBridge::buildContextMenuOptions(U32 flags, menuentry_vec_t&   items
 		// Not sure what the right thing is to do here.
 		if (!isCOFFolder() && cat && (cat->getPreferredType() != LLFolderType::FT_OUTFIT))
 		{
-			if (!isInboxFolder() && !isOutboxFolder()) // don't allow creation in inbox or outbox
+			if (!isInboxFolder()) // don't allow creation in inbox
 			{
 				// Do not allow to create 2-level subfolder in the Calling Card/Friends folder. EXT-694.
 				if (!LLFriendCardsManager::instance().isCategoryInFriendFolder(cat))
@@ -3995,7 +3874,7 @@ void LLFolderBridge::buildContextMenuOptions(U32 flags, menuentry_vec_t&   items
 		disabled_items.push_back(std::string("Delete System Folder"));
 	}
 
-	if (!isOutboxFolder() && !isMarketplaceListingsFolder())
+	if (!isMarketplaceListingsFolder())
 	{
 		items.push_back(std::string("Share"));
 		if (!canShare())
@@ -4041,7 +3920,6 @@ void LLFolderBridge::buildContextMenuFolderOptions(U32 flags,   menuentry_vec_t&
 	if (trash_id == mUUID) return;
 	if (isItemInTrash()) return;
 	if (!isAgentInventory()) return;
-	if (isOutboxFolder()) return;
     
 	if (!isItemRemovable())
 	{
@@ -4642,7 +4520,6 @@ BOOL LLFolderBridge::dragItemIntoFolder(LLInventoryItem* inv_item,
 	const LLUUID &current_outfit_id = model->findCategoryUUIDForType(LLFolderType::FT_CURRENT_OUTFIT, false);
 	const LLUUID &favorites_id = model->findCategoryUUIDForType(LLFolderType::FT_FAVORITE, false);
 	const LLUUID &landmarks_id = model->findCategoryUUIDForType(LLFolderType::FT_LANDMARK, false);
-	const LLUUID &outbox_id = model->findCategoryUUIDForType(LLFolderType::FT_OUTBOX, false);
 	const LLUUID &marketplacelistings_id = model->findCategoryUUIDForType(LLFolderType::FT_MARKETPLACE_LISTINGS, false);
 	const LLUUID &my_outifts_id = model->findCategoryUUIDForType(LLFolderType::FT_MY_OUTFITS, false);
     const LLUUID from_folder_uuid = inv_item->getParentUUID();
@@ -4652,8 +4529,6 @@ BOOL LLFolderBridge::dragItemIntoFolder(LLInventoryItem* inv_item,
 	const BOOL move_is_into_my_outfits = (mUUID == my_outifts_id) || model->isObjectDescendentOf(mUUID, my_outifts_id);
 	const BOOL move_is_into_outfit = move_is_into_my_outfits || (getCategory() && getCategory()->getPreferredType()==LLFolderType::FT_OUTFIT);
 	const BOOL move_is_into_landmarks = (mUUID == landmarks_id) || model->isObjectDescendentOf(mUUID, landmarks_id);
-	const BOOL move_is_into_outbox = model->isObjectDescendentOf(mUUID, outbox_id);
-	const BOOL move_is_from_outbox = model->isObjectDescendentOf(inv_item->getUUID(), outbox_id);
     const BOOL move_is_into_marketplacelistings = model->isObjectDescendentOf(mUUID, marketplacelistings_id);
     const BOOL move_is_from_marketplacelistings = model->isObjectDescendentOf(inv_item->getUUID(), marketplacelistings_id);
 
@@ -4747,9 +4622,9 @@ BOOL LLFolderBridge::dragItemIntoFolder(LLInventoryItem* inv_item,
 		{
 			accept = can_move_to_landmarks(inv_item);
 		}
-		else if (user_confirm && (move_is_into_outbox || move_is_into_marketplacelistings))
+		else if (user_confirm && move_is_into_marketplacelistings)
 		{
-            const LLViewerInventoryCategory * master_folder = (move_is_into_outbox ? model->getFirstDescendantOf(outbox_id, mUUID) : model->getFirstDescendantOf(marketplacelistings_id, mUUID));
+            const LLViewerInventoryCategory * master_folder = model->getFirstDescendantOf(marketplacelistings_id, mUUID);
             LLViewerInventoryCategory * dest_folder = getCategory();
             accept = can_move_item_to_marketplace(master_folder, dest_folder, inv_item, tooltip_msg, LLToolDragAndDrop::instance().getCargoCount() - LLToolDragAndDrop::instance().getCargoIndex());
 		}
@@ -4833,19 +4708,6 @@ BOOL LLFolderBridge::dragItemIntoFolder(LLInventoryItem* inv_item,
 			else if (move_is_into_current_outfit || move_is_into_outfit)
 			{
 				dropToOutfit(inv_item, move_is_into_current_outfit);
-			}
-            // MERCHANT OUTBOX folder
-            // Move the item
-			else if (move_is_into_outbox)
-			{
-				if (move_is_from_outbox)
-				{
-					move_item_within_outbox(inv_item, mUUID, LLToolDragAndDrop::getOperationId());
-				}
-				else
-				{
-					copy_item_to_outbox(inv_item, mUUID, LLUUID::null, LLToolDragAndDrop::getOperationId());
-				}
 			}
             // MARKETPLACE LISTINGS folder
             // Move the item
@@ -4933,7 +4795,7 @@ BOOL LLFolderBridge::dragItemIntoFolder(LLInventoryItem* inv_item,
 		{
 			accept = FALSE;
 		}
-		else if (move_is_into_outbox || move_is_into_marketplacelistings)
+		else if (move_is_into_marketplacelistings)
 		{
 			tooltip_msg = LLTrans::getString("TooltipOutboxNotInInventory");
 			accept = FALSE;
@@ -4971,7 +4833,7 @@ BOOL LLFolderBridge::dragItemIntoFolder(LLInventoryItem* inv_item,
 	}
 	else if(LLToolDragAndDrop::SOURCE_NOTECARD == source)
 	{
-		if (move_is_into_outbox || move_is_into_marketplacelistings)
+		if (move_is_into_marketplacelistings)
 		{
 			tooltip_msg = LLTrans::getString("TooltipOutboxNotInInventory");
 			accept = FALSE;
@@ -5005,7 +4867,7 @@ BOOL LLFolderBridge::dragItemIntoFolder(LLInventoryItem* inv_item,
 		{
 			accept = TRUE;
 
-			if (move_is_into_outbox || move_is_into_marketplacelistings)
+			if (move_is_into_marketplacelistings)
 			{
 				tooltip_msg = LLTrans::getString("TooltipOutboxNotInInventory");
 				accept = FALSE;
@@ -5174,10 +5036,6 @@ void LLTextureBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	{
 		addTrashContextMenuOptions(items, disabled_items);
 	}	
-	else if(isOutboxFolder())
-	{
-		addOutboxContextMenuOptions(flags, items, disabled_items);
-	}
     else if (isMarketplaceListingsFolder())
     {
 		addMarketplaceContextMenuOptions(flags, items, disabled_items);
@@ -5247,11 +5105,7 @@ void LLSoundBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 
-	if (isOutboxFolder())
-	{
-		addOutboxContextMenuOptions(flags, items, disabled_items);
-	}
-    else if (isMarketplaceListingsFolder())
+    if (isMarketplaceListingsFolder())
     {
 		addMarketplaceContextMenuOptions(flags, items, disabled_items);
 		items.push_back(std::string("Properties"));
@@ -5328,11 +5182,7 @@ void LLLandmarkBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	menuentry_vec_t disabled_items;
 
 	LL_DEBUGS() << "LLLandmarkBridge::buildContextMenu()" << LL_ENDL;
-	if(isOutboxFolder())
-	{
-		addOutboxContextMenuOptions(flags, items, disabled_items);
-	}
-    else if (isMarketplaceListingsFolder())
+    if (isMarketplaceListingsFolder())
     {
 		addMarketplaceContextMenuOptions(flags, items, disabled_items);
 		items.push_back(std::string("Properties"));
@@ -5636,10 +5486,6 @@ void LLCallingCardBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	{
 		addTrashContextMenuOptions(items, disabled_items);
 	}	
-	else if(isOutboxFolder())
-	{
-		items.push_back(std::string("Delete"));
-	}
     else if (isMarketplaceListingsFolder())
     {
 		addMarketplaceContextMenuOptions(flags, items, disabled_items);
@@ -5928,10 +5774,6 @@ void LLGestureBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	{
 		addTrashContextMenuOptions(items, disabled_items);
 	}
-	else if(isOutboxFolder())
-	{
-		items.push_back(std::string("Delete"));
-	}
     else if (isMarketplaceListingsFolder())
     {
 		addMarketplaceContextMenuOptions(flags, items, disabled_items);
@@ -5988,11 +5830,7 @@ void LLAnimationBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	menuentry_vec_t disabled_items;
 
 	LL_DEBUGS() << "LLAnimationBridge::buildContextMenu()" << LL_ENDL;
-	if(isOutboxFolder())
-	{
-		items.push_back(std::string("Delete"));
-	}
-    else if (isMarketplaceListingsFolder())
+    if (isMarketplaceListingsFolder())
     {
 		addMarketplaceContextMenuOptions(flags, items, disabled_items);
 		items.push_back(std::string("Properties"));
@@ -6281,10 +6119,6 @@ void LLObjectBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	{
 		addTrashContextMenuOptions(items, disabled_items);
 	}	
-	else if(isOutboxFolder())
-	{
-		items.push_back(std::string("Delete"));
-	}
     else if (isMarketplaceListingsFolder())
     {
 		addMarketplaceContextMenuOptions(flags, items, disabled_items);
@@ -6519,10 +6353,6 @@ void LLWearableBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	if(isItemInTrash())
 	{
 		addTrashContextMenuOptions(items, disabled_items);
-	}
-	else if(isOutboxFolder())
-	{
-		items.push_back(std::string("Delete"));
 	}
     else if (isMarketplaceListingsFolder())
     {
@@ -6843,10 +6673,6 @@ void LLMeshBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 		}
 
 		items.push_back(std::string("Restore Item"));
-	}
-	else if(isOutboxFolder())
-	{
-		addOutboxContextMenuOptions(flags, items, disabled_items);
 	}
     else if (isMarketplaceListingsFolder())
     {

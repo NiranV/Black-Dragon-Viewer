@@ -2368,9 +2368,6 @@ Spróbuj ponowanie za kilka minut.
 	<notification name="NoValidCircuit">
 		Nieważny obwód kodowania.
 	</notification>
-	<notification name="NoValidTimestamp">
-		Niewłaściwy czas zapisu.
-	</notification>
 	<notification name="NoPendingConnection">
 		Brak możliwości wykonania połączenia.
 	</notification>
@@ -2496,7 +2493,7 @@ Nastąpi wylogowanie jeżeli zostaniesz w tym regionie.
 
 [MESSAGE]
 
-Od obiektu: &lt;nolink&gt;[OBJECTNAME]&lt;/nolink&gt;, właściciel właściciel: [NAME]?
+Od obiektu: &lt;nolink&gt;[OBJECTNAME]&lt;/nolink&gt;, właściciel właściciel: [NAME_SLURL]?
 		<form name="form">
 			<button name="Gotopage" text="Załaduj"/>
 			<button name="Cancel" text="Anuluj"/>

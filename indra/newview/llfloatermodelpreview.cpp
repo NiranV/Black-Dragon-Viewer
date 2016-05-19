@@ -338,25 +338,25 @@ BOOL LLFloaterModelPreview::postBuild()
 		LLTextBox* text = getChild<LLTextBox>(lod_label_name[i]);
 		if (text)
 		{
-			text->setMouseDownCallback(boost::bind(&LLModelPreview::setPreviewLOD, mModelPreview, i));
+			text->setMouseDownCallback(boost::bind(&LLFloaterModelPreview::setPreviewLOD, this, i));
 		}
 
 		text = getChild<LLTextBox>(lod_triangles_name[i]);
 		if (text)
 		{
-			text->setMouseDownCallback(boost::bind(&LLModelPreview::setPreviewLOD, mModelPreview, i));
+			text->setMouseDownCallback(boost::bind(&LLFloaterModelPreview::setPreviewLOD, this, i));
 		}
 
 		text = getChild<LLTextBox>(lod_vertices_name[i]);
 		if (text)
 		{
-			text->setMouseDownCallback(boost::bind(&LLModelPreview::setPreviewLOD, mModelPreview, i));
+			text->setMouseDownCallback(boost::bind(&LLFloaterModelPreview::setPreviewLOD, this, i));
 		}
 
 		text = getChild<LLTextBox>(lod_status_name[i]);
 		if (text)
 		{
-			text->setMouseDownCallback(boost::bind(&LLModelPreview::setPreviewLOD, mModelPreview, i));
+			text->setMouseDownCallback(boost::bind(&LLFloaterModelPreview::setPreviewLOD, this, i));
 		}
 	}
 	std::string current_grid = LLGridManager::getInstance()->getGridId();
@@ -1363,6 +1363,14 @@ void LLFloaterModelPreview::setDetails(F32 x, F32 y, F32 z, F32 streaming_cost, 
 	childSetTextArg("import_dimensions", "[Z]", llformat("%.3f", z));
 }
 
+void LLFloaterModelPreview::setPreviewLOD(S32 lod)
+{
+	if (mModelPreview)
+	{
+		mModelPreview->setPreviewLOD(lod);
+	}
+}
+
 
 void LLModelPreview::rebuildUploadData()
 {
@@ -1550,9 +1558,18 @@ void LLModelPreview::rebuildUploadData()
 					}
 					instance.mLOD[i] = lod_model;
 				}
-				else if (importerDebug)
+				else
 				{
-					LL_INFOS() << "List of models does not include " << instance.mLabel << LL_ENDL;
+					if (i < LLModel::LOD_HIGH && !lodsReady())
+					{
+						// assign a placeholder from previous LOD until lod generation is complete.
+						// Note: we might need to assign it regardless of conditions like named search does, to prevent crashes.
+						instance.mLOD[i] = instance.mLOD[i + 1];
+					}
+					if (importerDebug)
+					{
+						LL_INFOS() << "List of models does not include " << instance.mLabel << LL_ENDL;
+					}
 				}
 			}
 
@@ -1766,7 +1783,8 @@ void LLModelPreview::loadModel(std::string filename, S32 lod, bool force_disable
 		this,
 		mJointTransformMap,
 		mJointsFromNode,
-		gSavedSettings.getU32("ImporterModelLimit"));
+		gSavedSettings.getU32("ImporterModelLimit"),
+		gSavedSettings.getBOOL("ImporterPreprocessDAE"));
 
 	if (force_disable_slm)
 	{
@@ -4480,6 +4498,15 @@ void LLFloaterModelPreview::onPermissionsReceived(const LLSD& result)
 	std::string upload_status = result["mesh_upload_status"].asString();
 	// BAP HACK: handle "" for case that  MeshUploadFlag cap is broken.
 	mHasUploadPerm = (("" == upload_status) || ("valid" == upload_status));
+
+    if (!mHasUploadPerm) 
+    {
+        LL_WARNS() << "Upload permission set to false because upload_status=\"" << upload_status << "\"" << LL_ENDL;
+    }
+    else if (mHasUploadPerm && mUploadModelUrl.empty())
+    {
+        LL_WARNS() << "Upload permission set to true but uploadModelUrl is empty!" << LL_ENDL;
+    }
 
 	// isModelUploadAllowed() includes mHasUploadPerm
 	mUploadBtn->setEnabled(isModelUploadAllowed());

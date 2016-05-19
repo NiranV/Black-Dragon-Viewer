@@ -44,6 +44,7 @@
 #include "llmarketplacefunctions.h"
 #include "llwindow.h"
 #include "llviewercontrol.h"
+#include "llviewernetwork.h"
 #include "llpreview.h" 
 #include "llviewermessage.h"
 #include "llviewerfoldertype.h"
@@ -77,7 +78,8 @@ BOOL LLInventoryModel::sFirstTimeInViewer2 = TRUE;
 ///----------------------------------------------------------------------------
 
 //BOOL decompress_file(const char* src_filename, const char* dst_filename);
-static const char CACHE_FORMAT_STRING[] = "%s.inv"; 
+static const char PRODUCTION_CACHE_FORMAT_STRING[] = "%s.inv";
+static const char GRID_CACHE_FORMAT_STRING[] = "%s.%s.inv";
 static const char * const LOG_INV("Inventory");
 
 struct InventoryIDPtrLess
@@ -153,8 +155,8 @@ LLInventoryModel::LLInventoryModel()
 	mObservers(),
 	mHttpRequestFG(NULL),
 	mHttpRequestBG(NULL),
-	mHttpOptions(NULL),
-	mHttpHeaders(NULL),
+	mHttpOptions(),
+	mHttpHeaders(),
 	mHttpPolicyClass(LLCore::HttpRequest::DEFAULT_POLICY_ID),
 	mHttpPriorityFG(0),
 	mHttpPriorityBG(0),
@@ -183,16 +185,9 @@ void LLInventoryModel::cleanupInventory()
 	mObservers.clear();
 
 	// Run down HTTP transport
-	if (mHttpHeaders)
-	{
-		mHttpHeaders->release();
-		mHttpHeaders = NULL;
-	}
-	if (mHttpOptions)
-	{
-		mHttpOptions->release();
-		mHttpOptions = NULL;
-	}
+    mHttpHeaders.reset();
+    mHttpOptions.reset();
+
 	delete mHttpRequestFG;
 	mHttpRequestFG = NULL;
 	delete mHttpRequestBG;
@@ -529,59 +524,6 @@ const LLUUID LLInventoryModel::findLibraryCategoryUUIDForType(LLFolderType::ETyp
 	return findCategoryUUIDForTypeInRoot(preferred_type, create_folder, gInventory.getLibraryRootFolderID());
 }
 
-class LLCreateInventoryCategoryResponder : public LLHTTPClient::Responder
-{
-	LOG_CLASS(LLCreateInventoryCategoryResponder);
-public:
-	LLCreateInventoryCategoryResponder(LLInventoryModel* model, 
-									   boost::optional<inventory_func_type> callback):
-		mModel(model),
-		mCallback(callback) 
-	{
-	}
-	
-protected:
-	virtual void httpFailure()
-	{
-		LL_WARNS(LOG_INV) << dumpResponse() << LL_ENDL;
-	}
-	
-	virtual void httpSuccess()
-	{
-		//Server has created folder.
-		const LLSD& content = getContent();
-		if (!content.isMap() || !content.has("folder_id"))
-		{
-			failureResult(HTTP_INTERNAL_ERROR, "Malformed response contents", content);
-			return;
-		}
-		LLUUID category_id = content["folder_id"].asUUID();
-		
-		LL_DEBUGS(LOG_INV) << ll_pretty_print_sd(content) << LL_ENDL;
-		// Add the category to the internal representation
-		LLPointer<LLViewerInventoryCategory> cat =
-		new LLViewerInventoryCategory( category_id, 
-									  content["parent_id"].asUUID(),
-									  (LLFolderType::EType)content["type"].asInteger(),
-									  content["name"].asString(), 
-									  gAgent.getID() );
-		cat->setVersion(LLViewerInventoryCategory::VERSION_INITIAL);
-		cat->setDescendentCount(0);
-		LLInventoryModel::LLCategoryUpdate update(cat->getParentUUID(), 1);
-		mModel->accountForUpdate(update);
-		mModel->updateCategory(cat);
-
-		if (mCallback)
-		{
-			mCallback.get()(category_id);
-		}
-	}
-	
-private:
-	boost::optional<inventory_func_type> mCallback;
-	LLInventoryModel* mModel;
-};
-
 // Convenience function to create a new category. You could call
 // updateCategory() with a newly generated UUID category, but this
 // version will take care of details like what the name should be
@@ -589,7 +531,7 @@ private:
 LLUUID LLInventoryModel::createNewCategory(const LLUUID& parent_id,
 										   LLFolderType::EType preferred_type,
 										   const std::string& pname,
-										   boost::optional<inventory_func_type> callback)
+										   inventory_func_type callback)
 {
 	
 	LLUUID id;
@@ -621,7 +563,7 @@ LLUUID LLInventoryModel::createNewCategory(const LLUUID& parent_id,
 	if ( viewer_region )
 		url = viewer_region->getCapability("CreateInventoryCategory");
 	
-	if (!url.empty() && callback.get_ptr())
+	if (!url.empty() && callback)
 	{
 		//Let's use the new capability.
 		
@@ -635,11 +577,8 @@ LLUUID LLInventoryModel::createNewCategory(const LLUUID& parent_id,
 		request["payload"] = body;
 
 		LL_DEBUGS(LOG_INV) << "create category request: " << ll_pretty_print_sd(request) << LL_ENDL;
-		//		viewer_region->getCapAPI().post(request);
-		LLHTTPClient::post(
-			url,
-			body,
-			new LLCreateInventoryCategoryResponder(this, callback) );
+        LLCoros::instance().launch("LLInventoryModel::createNewCategoryCoro",
+            boost::bind(&LLInventoryModel::createNewCategoryCoro, this, url, body, callback));
 
 		return LLUUID::null;
 	}
@@ -666,6 +605,57 @@ LLUUID LLInventoryModel::createNewCategory(const LLUUID& parent_id,
 
 	// return the folder id of the newly created folder
 	return id;
+}
+
+void LLInventoryModel::createNewCategoryCoro(std::string url, LLSD postData, inventory_func_type callback)
+{
+    LLCore::HttpRequest::policy_t httpPolicy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
+    LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t
+        httpAdapter(new LLCoreHttpUtil::HttpCoroutineAdapter("createNewCategoryCoro", httpPolicy));
+    LLCore::HttpRequest::ptr_t httpRequest(new LLCore::HttpRequest);
+    LLCore::HttpOptions::ptr_t httpOpts(new LLCore::HttpOptions);
+    
+
+    httpOpts->setWantHeaders(true);
+
+    LL_INFOS("HttpCoroutineAdapter", "genericPostCoro") << "Generic POST for " << url << LL_ENDL;
+
+    LLSD result = httpAdapter->postAndSuspend(httpRequest, url, postData, httpOpts);
+
+    LLSD httpResults = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
+    LLCore::HttpStatus status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(httpResults);
+
+    if (!status)
+    {
+        LL_WARNS() << "HTTP failure attempting to create category." << LL_ENDL;
+        return;
+    }
+
+    if (!result.has("folder_id"))
+    {
+        LL_WARNS() << "Malformed response contents" << ll_pretty_print_sd(result) << LL_ENDL;
+        return;
+    }
+
+    LLUUID categoryId = result["folder_id"].asUUID();
+
+    // Add the category to the internal representation
+    LLPointer<LLViewerInventoryCategory> cat = new LLViewerInventoryCategory(categoryId,
+        result["parent_id"].asUUID(), (LLFolderType::EType)result["type"].asInteger(),
+        result["name"].asString(), gAgent.getID());
+
+    cat->setVersion(LLViewerInventoryCategory::VERSION_INITIAL);
+    cat->setDescendentCount(0);
+    LLInventoryModel::LLCategoryUpdate update(cat->getParentUUID(), 1);
+    
+    accountForUpdate(update);
+    updateCategory(cat);
+
+    if (callback)
+    {
+        callback(categoryId);
+    }
+
 }
 
 // This is optimized for the case that we just want to know whether a
@@ -822,6 +812,22 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 		}
 	}
 // [/RLVa:KB]
+}
+
+U32 LLInventoryModel::getDescendentsCountRecursive(const LLUUID& id, U32 max_item_limit)
+{
+	LLInventoryModel::cat_array_t cats;
+	LLInventoryModel::item_array_t items;
+	gInventory.collectDescendents(id, cats, items, LLInventoryModel::INCLUDE_TRASH);
+
+	U32 items_found = items.size() + cats.size();
+
+	for (U32 i = 0; i < cats.size() && items_found <= max_item_limit; ++i)
+	{
+		items_found += getDescendentsCountRecursive(cats[i]->getUUID(), max_item_limit - items_found);
+	}
+
+	return items_found;
 }
 
 void LLInventoryModel::addChangedMaskForLinks(const LLUUID& object_id, U32 mask)
@@ -1672,6 +1678,29 @@ bool LLInventoryModel::fetchDescendentsOf(const LLUUID& folder_id) const
 	return cat->fetch();
 }
 
+//static
+std::string LLInventoryModel::getInvCacheAddres(const LLUUID& owner_id)
+{
+    std::string inventory_addr;
+    std::string owner_id_str;
+    owner_id.toString(owner_id_str);
+    std::string path(gDirUtilp->getExpandedFilename(LL_PATH_CACHE, owner_id_str));
+    if (LLGridManager::getInstance()->isInProductionGrid())
+    {
+        inventory_addr = llformat(PRODUCTION_CACHE_FORMAT_STRING, path.c_str());
+    }
+    else
+    {
+        // NOTE: The inventory cache filenames now include the grid name.
+        // Add controls against directory traversal or problematic pathname lengths
+        // if your viewer uses grid names from an untrusted source.
+        const std::string& grid_id_str = LLGridManager::getInstance()->getGridId();
+        const std::string& grid_id_lower = utf8str_tolower(grid_id_str);
+        inventory_addr = llformat(GRID_CACHE_FORMAT_STRING, path.c_str(), grid_id_lower.c_str());
+    }
+    return inventory_addr;
+}
+
 void LLInventoryModel::cache(
 	const LLUUID& parent_folder_id,
 	const LLUUID& agent_id)
@@ -1692,11 +1721,7 @@ void LLInventoryModel::cache(
 		items,
 		INCLUDE_TRASH,
 		can_cache);
-	std::string agent_id_str;
-	std::string inventory_filename;
-	agent_id.toString(agent_id_str);
-	std::string path(gDirUtilp->getExpandedFilename(LL_PATH_CACHE, agent_id_str));
-	inventory_filename = llformat(CACHE_FORMAT_STRING, path.c_str());
+	std::string inventory_filename = getInvCacheAddres(agent_id);
 	saveToFile(inventory_filename, categories, items);
 	std::string gzip_filename(inventory_filename);
 	gzip_filename.append(".gz");
@@ -2000,11 +2025,7 @@ bool LLInventoryModel::loadSkeleton(
 		item_array_t items;
 		item_array_t possible_broken_links;
 		cat_set_t invalid_categories; // Used to mark categories that weren't successfully loaded.
-		std::string owner_id_str;
-		owner_id.toString(owner_id_str);
-		std::string path(gDirUtilp->getExpandedFilename(LL_PATH_CACHE, owner_id_str));
-		std::string inventory_filename;
-		inventory_filename = llformat(CACHE_FORMAT_STRING, path.c_str());
+		std::string inventory_filename = getInvCacheAddres(owner_id);
 		const S32 NO_VERSION = LLViewerInventoryCategory::VERSION_UNKNOWN;
 		std::string gzip_filename(inventory_filename);
 		gzip_filename.append(".gz");
@@ -2495,11 +2516,11 @@ void LLInventoryModel::initHttpRequest()
 
 		mHttpRequestFG = new LLCore::HttpRequest;
 		mHttpRequestBG = new LLCore::HttpRequest;
-		mHttpOptions = new LLCore::HttpOptions;
+		mHttpOptions = LLCore::HttpOptions::ptr_t(new LLCore::HttpOptions);
 		mHttpOptions->setTransferTimeout(300);
 		mHttpOptions->setUseRetryAfter(true);
 		// mHttpOptions->setTrace(2);		// Do tracing of requests
-		mHttpHeaders = new LLCore::HttpHeaders;
+        mHttpHeaders = LLCore::HttpHeaders::ptr_t(new LLCore::HttpHeaders);
 		mHttpHeaders->append(HTTP_OUT_HEADER_CONTENT_TYPE, HTTP_CONTENT_LLSD_XML);
 		mHttpHeaders->append(HTTP_OUT_HEADER_ACCEPT, HTTP_CONTENT_LLSD_XML);
 		mHttpPolicyClass = app_core_http.getPolicy(LLAppCoreHttp::AP_INVENTORY);
@@ -2521,7 +2542,7 @@ void LLInventoryModel::handleResponses(bool foreground)
 LLCore::HttpHandle LLInventoryModel::requestPost(bool foreground,
 												 const std::string & url,
 												 const LLSD & body,
-												 LLCore::HttpHandler * handler,
+												 const LLCore::HttpHandler::ptr_t &handler,
 												 const char * const message)
 {
 	if (! mHttpRequestFG)
@@ -2550,7 +2571,6 @@ LLCore::HttpHandle LLInventoryModel::requestPost(bool foreground,
 						  << ", Status: " << status.toTerseString()
 						  << " Reason: '" << status.toString() << "'"
 						  << LL_ENDL;
-		delete handler;
 	}
 	return handle;
 }
@@ -3408,6 +3428,7 @@ void LLInventoryModel::processMoveInventoryItem(LLMessageSystem* msg, void**)
 //----------------------------------------------------------------------------
 
 // Trash: LLFolderType::FT_TRASH, "ConfirmEmptyTrash"
+// Trash: LLFolderType::FT_TRASH, "TrashIsFull" when trash exceeds maximum capacity
 // Lost&Found: LLFolderType::FT_LOST_AND_FOUND, "ConfirmEmptyLostAndFound"
 
 bool LLInventoryModel::callbackEmptyFolderType(const LLSD& notification, const LLSD& response, LLFolderType::EType preferred_type)
@@ -3489,10 +3510,17 @@ void LLInventoryModel::removeCategory(const LLUUID& category_id)
 			changeCategoryParent(cat, trash_id, TRUE);
 		}
 	}
+
+	checkTrashOverflow();
 }
 
 void LLInventoryModel::removeObject(const LLUUID& object_id)
 {
+	if(object_id.isNull())
+	{
+		return;
+	}
+
 	LLInventoryObject* obj = getObject(object_id);
 	if (dynamic_cast<LLViewerInventoryItem*>(obj))
 	{
@@ -3511,6 +3539,16 @@ void LLInventoryModel::removeObject(const LLUUID& object_id)
 	else
 	{
 		LL_WARNS("Inventory") << "object ID " << object_id << " not found" << LL_ENDL;
+	}
+}
+
+void  LLInventoryModel::checkTrashOverflow()
+{
+	static const U32 trash_max_capacity = gSavedSettings.getU32("InventoryTrashMaxCapacity");
+	const LLUUID trash_id = findCategoryUUIDForType(LLFolderType::FT_TRASH);
+	if (getDescendentsCountRecursive(trash_id, trash_max_capacity) >= trash_max_capacity)
+	{
+		gInventory.emptyFolderType("TrashIsFull", LLFolderType::FT_TRASH);
 	}
 }
 
@@ -4138,9 +4176,6 @@ void LLInventoryModel::FetchItemHttpHandler::onCompleted(LLCore::HttpHandle hand
 		processData(body_llsd, response);
 	}
 	while (false);
-
-	// Must delete on completion.
-	delete this;
 }
 
 void LLInventoryModel::FetchItemHttpHandler::processData(LLSD & content, LLCore::HttpResponse * response)

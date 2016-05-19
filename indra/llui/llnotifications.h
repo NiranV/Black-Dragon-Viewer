@@ -557,7 +557,8 @@ public:
 	std::string getLabel() const;
 	std::string getURL() const;
 	S32 getURLOption() const;
-    S32 getURLOpenExternally() const;
+	S32 getURLOpenExternally() const; //for url responce option
+	bool getForceUrlsExternal() const;
 	bool canLogToChat() const;
 	bool canLogToIM() const;
 	bool canShowToast() const;
@@ -928,6 +929,7 @@ public:
 	void add(const LLNotificationPtr pNotif);
 	void cancel(LLNotificationPtr pNotif);
 	void cancelByName(const std::string& name);
+	void cancelByOwner(const LLUUID ownerId);
 	void update(const LLNotificationPtr pNotif);
 
 	LLNotificationPtr find(LLUUID uuid);

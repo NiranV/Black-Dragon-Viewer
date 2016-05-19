@@ -69,6 +69,7 @@ private:
 	bool onHTTPAuthCallback(const std::string host, const std::string realm, std::string& username, std::string& password);
 	void onCursorChangedCallback(LLCEFLib::ECursorType type, unsigned int handle);
 	void onFileDownloadCallback(std::string filename);
+	const std::string onFileDialogCallback();
 
 	void postDebugMessage(const std::string& msg);
 	void authResponse(LLPluginMessage &message);
@@ -95,6 +96,7 @@ private:
 	bool mCanPaste;
 	std::string mCachePath;
 	std::string mCookiePath;
+	std::string mPickedFile;
 	LLCEFLib* mLLCEFLib;
 
     VolumeCatcher mVolumeCatcher;
@@ -123,6 +125,7 @@ MediaPluginBase(host_send_func, host_user_data)
 	mCanPaste = false;
 	mCachePath = "";
 	mCookiePath = "";
+	mPickedFile = "";
 	mLLCEFLib = new LLCEFLib();
 }
 
@@ -174,7 +177,7 @@ void MediaPluginCEF::onPageChangedCallback(unsigned char* pixels, int x, int y, 
 			{
 				memcpy(mPixels, pixels, mWidth * mHeight * mDepth);
 			}
-			
+
 		}
 		setDirty(0, 0, mWidth, mHeight);
 	}
@@ -246,7 +249,7 @@ void MediaPluginCEF::onAddressChangeCallback(std::string url)
 {
 	LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA_BROWSER, "location_changed");
 	message.setValue("uri", url);
-	sendMessage(message); 
+	sendMessage(message);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -303,6 +306,20 @@ void MediaPluginCEF::onFileDownloadCallback(const std::string filename)
 	message.setValue("filename", filename);
 
 	sendMessage(message);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+const std::string MediaPluginCEF::onFileDialogCallback()
+{
+	mPickedFile.clear();
+
+	LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "pick_file");
+	message.setValueBoolean("blocking_request", true);
+
+	sendMessage(message);
+
+	return mPickedFile;
 }
 
 void MediaPluginCEF::onCursorChangedCallback(LLCEFLib::ECursorType type, unsigned int handle)
@@ -439,6 +456,7 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
 				mLLCEFLib->setOnNavigateURLCallback(boost::bind(&MediaPluginCEF::onNavigateURLCallback, this, _1, _2));
 				mLLCEFLib->setOnHTTPAuthCallback(boost::bind(&MediaPluginCEF::onHTTPAuthCallback, this, _1, _2, _3, _4));
 				mLLCEFLib->setOnFileDownloadCallback(boost::bind(&MediaPluginCEF::onFileDownloadCallback, this, _1));
+				mLLCEFLib->setOnFileDialogCallback(boost::bind(&MediaPluginCEF::onFileDialogCallback, this));
 				mLLCEFLib->setOnCursorChangedCallback(boost::bind(&MediaPluginCEF::onCursorChangedCallback, this, _1, _2));
 				mLLCEFLib->setOnRequestExitCallback(boost::bind(&MediaPluginCEF::onRequestExitCallback, this));
 
@@ -446,6 +464,7 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
 				settings.initial_width = 1024;
 				settings.initial_height = 1024;
 				settings.plugins_enabled = mPluginsEnabled;
+				settings.media_stream_enabled = false; // MAINT-6060 - WebRTC media removed until we can add granualrity/query UI
 				settings.javascript_enabled = mJavascriptEnabled;
 				settings.cookies_enabled = mCookiesEnabled;
 				settings.cookie_store_path = mCookiePath;
@@ -619,9 +638,9 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
                 {
                     key_event = LLCEFLib::KE_KEY_REPEAT;
                 }
-                
+
                 keyEvent(key_event, key, LLCEFLib::KM_MODIFIER_NONE, native_key_data);
-              
+
 #endif
 #elif LL_WINDOWS
 				std::string event = message_in.getValue("event");
@@ -646,6 +665,10 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
 			else if (message_name == "enable_media_plugin_debugging")
 			{
 				mEnableMediaPluginDebugging = message_in.getValueBoolean("enable");
+			}
+			if (message_name == "pick_file_response")
+			{
+				mPickedFile = message_in.getValue("file");
 			}
 			if (message_name == "auth_response")
 			{
@@ -775,7 +798,7 @@ void MediaPluginCEF::keyEvent(LLCEFLib::EKeyEvent key_event, int key, LLCEFLib::
             !native_key_data.has("event_keycode") ||
             !native_key_data.has("event_isrepeat"))
         return;
-    
+
     uint32_t eventType = native_key_data["event_type"].asInteger();
     if (!eventType)
         return;
@@ -784,15 +807,15 @@ void MediaPluginCEF::keyEvent(LLCEFLib::EKeyEvent key_event, int key, LLCEFLib::
     char eventChars = static_cast<char>(native_key_data["event_chars"].isUndefined() ? 0 : native_key_data["event_chars"].asInteger());
     char eventUChars = static_cast<char>(native_key_data["event_umodchars"].isUndefined() ? 0 : native_key_data["event_umodchars"].asInteger());
     bool eventIsRepeat = native_key_data["event_isrepeat"].asBoolean();
-    
+
     mLLCEFLib->keyboardEventOSX(eventType, eventModifiers, (eventChars) ? &eventChars : NULL,
                                 (eventUChars) ? &eventUChars : NULL, eventIsRepeat, eventKeycode);
-    
+
 #elif LL_WINDOWS
 	U32 msg = ll_U32_from_sd(native_key_data["msg"]);
 	U32 wparam = ll_U32_from_sd(native_key_data["w_param"]);
 	U64 lparam = ll_U32_from_sd(native_key_data["l_param"]);
-    
+
 	mLLCEFLib->nativeKeyboardEvent(msg, wparam, lparam);
 #endif
 };
@@ -809,9 +832,9 @@ void MediaPluginCEF::unicodeInput(const std::string &utf8str, LLCEFLib::EKeyboar
     uint32_t unmodifiedChar = native_key_data["event_umodchars"].asInteger();
     uint32_t keyCode = native_key_data["event_keycode"].asInteger();
     uint32_t rawmodifiers = native_key_data["event_modifiers"].asInteger();
-    
+
     mLLCEFLib->injectUnicodeText(unicodeChar, unmodifiedChar, keyCode, rawmodifiers);
-    
+
 #elif LL_WINDOWS
 	U32 msg = ll_U32_from_sd(native_key_data["msg"]);
 	U32 wparam = ll_U32_from_sd(native_key_data["w_param"]);

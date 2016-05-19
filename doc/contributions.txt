@@ -187,6 +187,7 @@ Ansariel Hiller
 	STORM-1979
 	MAINT-5533
 	MAINT-5756
+	MAINT-2199
 	STORM-2083
 	STORM-2094
 	MAINT-4677
@@ -334,6 +335,7 @@ Cinder Roxley
     STORM-2053
     STORM-2113
     STORM-2098
+    STORM-2127
 Clara Young
 Coaldust Numbers
     VWR-1095
@@ -779,6 +781,12 @@ Kitty Barnett
     VWR-24217
 	STORM-1804
 	MAINT-5416
+	MAINT-6041
+	MAINT-6142
+	MAINT-6144
+	MAINT-6152
+	MAINT-6153
+	MAINT-6154
 Kolor Fall
 Komiko Okamoto
 Korvel Noh
@@ -997,6 +1005,7 @@ NickyD
 	MAINT-873
 Nicky Dasmijn
 	VWR-29228
+	MAINT-1392
 	MAINT-873
 	SUN-72
 	BUG-2432
@@ -1252,6 +1261,7 @@ Sovereign Engineer
     OPEN-217
     OPEN-295
     STORM-2107
+    MAINT-6107
 SpacedOut Frye
 	VWR-34
 	VWR-45

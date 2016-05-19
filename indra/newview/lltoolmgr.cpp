@@ -410,6 +410,9 @@ void LLToolMgr::clearTransientTool()
 
 void LLToolMgr::onAppFocusLost()
 {
+	if (LLApp::isQuitting())
+		return;
+
 	if (mSelectedTool)
 	{
 		mSelectedTool->handleDeselect();

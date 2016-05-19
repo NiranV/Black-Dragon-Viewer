@@ -631,25 +631,49 @@ void LLPanelPermissions::refresh()
 																			&next_owner_mask_on,
 																			&next_owner_mask_off);
 
-	
+
 	if (gSavedSettings.getBOOL("DebugPermissions") )
 	{
 		if (valid_base_perms)
 		{
 			getChild<LLUICtrl>("B:")->setValue("B: " + mask_to_string(base_mask_on));
-			getChildView("B:")->setVisible(							TRUE);
-			
+			getChildView("B:")->setVisible(TRUE);
 			getChild<LLUICtrl>("O:")->setValue("O: " + mask_to_string(owner_mask_on));
-			getChildView("O:")->setVisible(							TRUE);
-			
+			getChildView("O:")->setVisible(TRUE);
 			getChild<LLUICtrl>("G:")->setValue("G: " + mask_to_string(group_mask_on));
-			getChildView("G:")->setVisible(							TRUE);
-			
+			getChildView("G:")->setVisible(TRUE);
 			getChild<LLUICtrl>("E:")->setValue("E: " + mask_to_string(everyone_mask_on));
-			getChildView("E:")->setVisible(							TRUE);
-			
+			getChildView("E:")->setVisible(TRUE);
 			getChild<LLUICtrl>("N:")->setValue("N: " + mask_to_string(next_owner_mask_on));
-			getChildView("N:")->setVisible(							TRUE);
+			getChildView("N:")->setVisible(TRUE);
+		}
+		else if(!root_selected)
+		{
+			if(object_count == 1)
+			{
+				LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstNode();
+				if (node && node->mValid)
+				{
+					getChild<LLUICtrl>("B:")->setValue("B: " + mask_to_string( node->mPermissions->getMaskBase()));
+					getChildView("B:")->setVisible(TRUE);
+					getChild<LLUICtrl>("O:")->setValue("O: " + mask_to_string(node->mPermissions->getMaskOwner()));
+					getChildView("O:")->setVisible(TRUE);
+					getChild<LLUICtrl>("G:")->setValue("G: " + mask_to_string(node->mPermissions->getMaskGroup()));
+					getChildView("G:")->setVisible(TRUE);
+					getChild<LLUICtrl>("E:")->setValue("E: " + mask_to_string(node->mPermissions->getMaskEveryone()));
+					getChildView("E:")->setVisible(TRUE);
+					getChild<LLUICtrl>("N:")->setValue("N: " + mask_to_string(node->mPermissions->getMaskNextOwner()));
+					getChildView("N:")->setVisible(TRUE);
+				}
+			}
+		}
+		else
+		{
+		    getChildView("B:")->setVisible(FALSE);
+		    getChildView("O:")->setVisible(FALSE);
+		    getChildView("G:")->setVisible(FALSE);
+		    getChildView("E:")->setVisible(FALSE);
+		    getChildView("N:")->setVisible(FALSE);
 		}
 
 		U32 flag_mask = 0x0;
@@ -1097,28 +1121,25 @@ void LLPanelPermissions::setAllSaleInfo()
 
 	LLSaleInfo new_sale_info(sale_type, price);
 	LLSelectMgr::getInstance()->selectionSetObjectSaleInfo(new_sale_info);
-	
-	U8 old_click_action = 0;
-	LLSelectMgr::getInstance()->selectionGetClickAction(&old_click_action);
 
-	if (old_sale_info.isForSale()
-		&& !new_sale_info.isForSale()
-		&& old_click_action == CLICK_ACTION_BUY)
-	{
-		// If turned off for-sale, make sure click-action buy is turned
-		// off as well
-		LLSelectMgr::getInstance()->
-			selectionSetClickAction(CLICK_ACTION_TOUCH);
-	}
-	else if (new_sale_info.isForSale()
-		&& !old_sale_info.isForSale()
-		&& old_click_action == CLICK_ACTION_TOUCH)
-	{
-		// If just turning on for-sale, preemptively turn on one-click buy
-		// unless user have a different click action set
-		LLSelectMgr::getInstance()->
-			selectionSetClickAction(CLICK_ACTION_BUY);
-	}
+    struct f : public LLSelectedObjectFunctor
+    {
+        virtual bool apply(LLViewerObject* object)
+        {
+            return object->getClickAction() == CLICK_ACTION_BUY
+                || object->getClickAction() == CLICK_ACTION_TOUCH;
+        }
+    } check_actions;
+
+    // Selection should only contain objects that are of target
+    // action already or of action we are aiming to remove.
+    bool default_actions = LLSelectMgr::getInstance()->getSelection()->applyToObjects(&check_actions);
+
+    if (default_actions && old_sale_info.isForSale() != new_sale_info.isForSale())
+    {
+        U8 new_click_action = new_sale_info.isForSale() ? CLICK_ACTION_BUY : CLICK_ACTION_TOUCH;
+        LLSelectMgr::getInstance()->selectionSetClickAction(new_click_action);
+    }
 }
 
 struct LLSelectionPayable : public LLSelectedObjectFunctor

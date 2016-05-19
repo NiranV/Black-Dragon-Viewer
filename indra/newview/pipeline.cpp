@@ -106,7 +106,6 @@
 #include "llspatialpartition.h"
 #include "llmutelist.h"
 #include "lltoolpie.h"
-#include "llcurl.h"
 #include "llnotifications.h"
 #include "llpathinglib.h"
 #include "llfloaterpathfindingconsole.h"
@@ -8838,6 +8837,11 @@ void LLPipeline::renderDeferredLighting()
 						}
 					}
 
+					const LLViewerObject *vobj = drawablep->getVObj();
+					if(vobj && vobj->getAvatar() && vobj->getAvatar()->isInMuteList())
+					{
+						continue;
+					}
 
 					LLVector4a center;
 					center.load3(drawablep->getPositionAgent().mV);
