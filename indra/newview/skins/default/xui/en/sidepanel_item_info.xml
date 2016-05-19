@@ -111,16 +111,6 @@
     use_ellipses="true"
     value="(Inventory)"
     width="150" />
-  <!--<scroll_container
-    color="DkGray2"
-    follows="all"
-    layout="topleft"
-    left="9"
-    name="item_profile_scroll"
-    opaque="true"
-    height="493"
-    width="313"
-    top="45">-->
     <panel
       follows="left|top|bottom"
       height="490"
@@ -188,15 +178,6 @@
         width="90">
         Creator:
       </text>
-      <!--<avatar_icon
-        follows="top|left"
-        height="20"
-        default_icon_name="Generic_Person"
-        layout="topleft"
-        left_pad="0"
-        top_delta="-6"
-        mouse_opaque="true"
-        width="20" />-->
       <text
         type="string"
         follows="left|right|top"
@@ -206,20 +187,11 @@
         left_pad="0"
         name="LabelCreatorName"
         top_delta="0"
+        translate="false"
         use_ellipses="true"
         width="195">
         TestString PleaseIgnore
       </text>
-      <!--<button
-        follows="top|right"
-        height="16"
-        image_selected="Inspector_I"
-        image_unselected="Inspector_I"
-        layout="topleft"
-        right="-5"
-        name="BtnCreator"
-        top_delta="-6"
-        width="16" />-->
       <text
         type="string"
         length="1"
@@ -232,15 +204,6 @@
         width="90">
         Owner:
       </text>
-      <!--<avatar_icon
-        follows="top|left"
-        height="20"
-        default_icon_name="Generic_Person"
-        layout="topleft"
-        left_pad="0"
-        top_delta="-6"
-        mouse_opaque="true"
-        width="20" />-->
       <text
         type="string"
         follows="left|right|top"
@@ -250,20 +213,11 @@
         left_pad="0"
         name="LabelOwnerName"
         top_delta="0"
+        translate="false"
         use_ellipses="true"
         width="195">
         TestString PleaseIgnore
       </text>
-      <!--<button
-        follows="top|right"
-        height="16"
-        image_selected="Inspector_I"
-        image_unselected="Inspector_I"
-        layout="topleft"
-        right="-5"
-        name="BtnOwner"
-        top_delta="-3"
-        width="16" />-->
       <text
         type="string"
         length="1"

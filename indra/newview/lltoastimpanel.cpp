@@ -67,13 +67,11 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 	
 	LLIMModel::LLIMSession* im_session = LLIMModel::getInstance()->findIMSession(p.session_id);
 	mIsGroupMsg = (im_session && im_session->mSessionType == LLIMModel::LLIMSession::GROUP_SESSION);
+	std::string name = "secondlife:///app/agent/" + p.avatar_id.asString() + "/about";
 	if(mIsGroupMsg)
 	{
 		mAvatarName->setVisible(FALSE);
-		LLAvatarName avatar_name;
-		LLAvatarNameCache::get(p.avatar_id, &avatar_name);
-		mAvatarNameOfGroup->setValue(avatar_name.getDisplayName());
-		mAvatarOfGroupIcon->setValue(p.avatar_id);
+		mAvatarNameOfGroup->setValue(name);
 	}
 	else
 	{
@@ -99,9 +97,9 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 		mMessage->setText(p.message, style_params);
 	}
 
-	if(!mIsGroupMsg)
+	if (!mIsGroupMsg)
 	{
-	mAvatarName->setValue(p.from);
+		mAvatarName->setValue(name);
 	}
 	mTime->setValue(p.time);
 	mSessionID = p.session_id;
@@ -235,6 +233,7 @@ void LLToastIMPanel::initIcon()
 			return;
 		}
 
+		LLView* im_icon_slide = getChild<LLPanel>("im_icon_slide");
 		switch(im_session->mSessionType)
 		{
 		case LLIMModel::LLIMSession::P2P_SESSION:
@@ -242,11 +241,13 @@ void LLToastIMPanel::initIcon()
 			mAvatarIcon->setValue(mAvatarID);
 			break;
 		case LLIMModel::LLIMSession::GROUP_SESSION:
+			im_icon_slide->setVisible(TRUE);
 			mGroupIcon->setVisible(TRUE);
 			mGroupIcon->setValue(mSessionID);
 			mAvatarOfGroupIcon->setVisible(TRUE);
 			break;
 		case LLIMModel::LLIMSession::ADHOC_SESSION:
+			im_icon_slide->setVisible(TRUE);
 			mAdhocIcon->setVisible(TRUE);
 			mAdhocIcon->setValue(im_session->mOtherParticipantID);
 			mAdhocIcon->setToolTip(im_session->mName);

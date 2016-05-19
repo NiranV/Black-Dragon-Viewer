@@ -733,7 +733,7 @@ static void on_avatar_name_cache_notify(const LLUUID& agent_id,
 	// Popup a notify box with online status of this agent
 	// Use display name only because this user is your friend
 	LLSD args;
-	args["NAME"] = av_name.getDisplayName();
+	args["NAME"] = "secondlife:///app/agent/" + agent_id.asString() + "/about";
 	args["STATUS"] = online ? LLTrans::getString("OnlineStatus") : LLTrans::getString("OfflineStatus");
 
 	LLNotificationPtr notification;

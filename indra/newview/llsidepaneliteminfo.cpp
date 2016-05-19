@@ -357,24 +357,25 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
 	if (item->getCreatorUUID().notNull())
 	{
 		LLUUID creator_id = item->getCreatorUUID();
-//		std::string name =
-//			LLSLURL("agent", creator_id, "completename").getSLURLString();
+		std::string name = "secondlife:///app/agent/" + creator_id.asString() + "/about";
+//		std::string name = LLSLURL("agent", creator_id, "completename").getSLURLString();
 //		getChildView("BtnCreator")->setEnabled(TRUE);
 // [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
 		// If the object creator matches the object owner we need to anonymize the creator field as well
 		bool fRlvFilterCreator = (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && 
 			( ((perm.isOwned()) && (!perm.isGroupOwned()) && (perm.getOwner() == creator_id) && (perm.getOwner() != gAgent.getID())) ||
 			  (RlvUtil::isNearbyAgent(item->getCreatorUUID())) );
-		std::string name = LLSLURL("agent", creator_id, (!fRlvFilterCreator) ? "completename" : "rlvanonym").getSLURLString();
-		getChildView("BtnCreator")->setEnabled(!fRlvFilterCreator);
+		if (fRlvFilterCreator)
+		{
+			name = LLSLURL("agent", creator_id, "rlvanonym").getSLURLString();
+		}
 // [/RLVa:KB]
 		getChildView("LabelCreatorTitle")->setEnabled(TRUE);
-		getChildView("LabelCreatorName")->setEnabled(FALSE);
+		getChildView("LabelCreatorName")->setEnabled(TRUE);
 		getChild<LLUICtrl>("LabelCreatorName")->setValue(name);
 	}
 	else
 	{
-		getChildView("BtnCreator")->setEnabled(FALSE);
 		getChildView("LabelCreatorTitle")->setEnabled(FALSE);
 		getChildView("LabelCreatorName")->setEnabled(FALSE);
 		getChild<LLUICtrl>("LabelCreatorName")->setValue(getString("unknown_multiple"));
@@ -388,28 +389,28 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
 		std::string name;
 		if (perm.isGroupOwned())
 		{
-			gCacheName->getGroupName(perm.getGroup(), name);
+			LLUUID group_owner_id = perm.getGroup();
+			name = "secondlife:///app/group/" + group_owner_id.asString() + "/about";
 		}
 		else
 		{
 			LLUUID owner_id = perm.getOwner();
+			name = "secondlife:///app/agent/" + owner_id.asString() + "/about";
 //			name = LLSLURL("agent", owner_id, "completename").getSLURLString();
 // [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
 			bool fRlvFilterOwner = (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && (owner_id != gAgent.getID());
-			name = LLSLURL("agent", owner_id, (!fRlvFilterOwner) ? "completename" : "rlvanonym").getSLURLString();
+			if (fRlvFilterOwner)
+			{
+				name = LLSLURL("agent", owner_id, "rlvanonym").getSLURLString();
+			}
 // [/RLVa:KB]
 		}
-//		getChildView("BtnOwner")->setEnabled(TRUE);
-// [RLVa:KB] - Checked: 2010-08-25 (RLVa-1.2.2a) | Added: RLVa-1.0.0e
-		getChildView("BtnOwner")->setEnabled(!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES));
-// [/RLVa:KB]
 		getChildView("LabelOwnerTitle")->setEnabled(TRUE);
-		getChildView("LabelOwnerName")->setEnabled(FALSE);
+		getChildView("LabelOwnerName")->setEnabled(TRUE);
 		getChild<LLUICtrl>("LabelOwnerName")->setValue(name);
 	}
 	else
 	{
-		getChildView("BtnOwner")->setEnabled(FALSE);
 		getChildView("LabelOwnerTitle")->setEnabled(FALSE);
 		getChildView("LabelOwnerName")->setEnabled(FALSE);
 		getChild<LLUICtrl>("LabelOwnerName")->setValue(getString("public"));
