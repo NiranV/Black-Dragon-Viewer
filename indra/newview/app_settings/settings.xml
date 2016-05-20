@@ -8792,13 +8792,13 @@
     <key>RenderAvatarMaxVisible</key>
     <map>
       <key>Comment</key>
-      <string>OBSOLETE and UNUSED. See RenderAvatarMaxNonImpostors</string>
+      <string>Maximum number of avatars to display at any one time</string>
       <key>Persist</key>
-      <integer>0</integer>
+      <integer>1</integer>
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>0</integer>
+      <integer>12</integer>
     </map>
     <key>RenderAvatarPhysicsLODFactor</key>
     <map>
@@ -10172,7 +10172,7 @@
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>1</integer>
+      <integer>2</integer>
     </map>
     <key>RenderTerrainLODFactor</key>
     <map>
@@ -10296,16 +10296,16 @@
     <integer>1</integer>
   </map>
   <key>RenderUseImpostors</key>
-  <map>
-    <key>Comment</key>
-    <string>OBSOLETE and UNUSED. See RenderAvatarMaxNonImpostors and RenderAvatarMaxComplexity.</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
+    <map>
+      <key>Comment</key>
+      <string>Whether we want to use impostors for far away avatars.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
 
   <key>RenderAutoMuteByteLimit</key>
   <map>
@@ -10318,41 +10318,16 @@
     <key>Value</key>
     <integer>12000000</integer>
   </map>
-  <key>RenderAvatarMaxNonImpostors</key>
-  <map>
-    <key>Comment</key>
-    <string>Maximum number of avatars to fully render at one time;
-    over this limit uses impostor rendering (simplified rendering
-    with less frequent updates), reducing client lag.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>U32</string>
-    <key>Value</key>
-    <integer>12</integer>
-  </map>
   <key>RenderAutoMuteRenderWeightLimit</key>
   <map>
     <key>Comment</key>
-    <string>OBSOLETE. This setting has been renamed RenderAvatarMaxNonImpostors.</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>U32</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>RenderAvatarMaxComplexity</key>
-  <map>
-    <key>Comment</key>
-    <string>Maximum Avatar Complexity; above this value, the avatar is
-    rendered as a solid color outline (0 to disable this limit).</string>
+    <string>Maximum render weight before an avatar is rendered as a simple impostor (0 to not use this limit).</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>120000</integer>
+    <integer>0</integer>
   </map>
   <key>RenderAutoMuteSurfaceAreaLimit</key>
   <map>
@@ -10363,7 +10338,18 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <integer>100</integer>
+    <integer>0</integer>
+  </map>
+  <key>RenderAutoMuteFunctions</key>
+  <map>
+    <key>Comment</key>
+    <string>Developing feature to render some avatars using simple impostors or colored silhouettes.  (Set to 7 for all functionality)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>0</integer>
   </map>
   <key>RenderAutoMuteLogging</key>
   <map>
