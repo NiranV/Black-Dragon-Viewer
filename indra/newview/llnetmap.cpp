@@ -145,6 +145,8 @@ void LLNetMap::setScale( F32 scale )
 
 	gSavedSettings.setF32("MiniMapScale", mScale);
 
+	gSavedSettings.setF32("MiniMapScale", mScale);
+
 	mUpdateNow = true;
 }
 

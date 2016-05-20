@@ -36,7 +36,6 @@ include(LLUI)
 include(LLVFS)
 include(LLWindow)
 include(LLXML)
-include(LScript)
 include(Linking)
 include(NDOF)
 include(NVAPI)
@@ -82,8 +81,6 @@ include_directories(
     ${LLVFS_INCLUDE_DIRS}
     ${LLWINDOW_INCLUDE_DIRS}
     ${LLXML_INCLUDE_DIRS}
-    ${LSCRIPT_INCLUDE_DIRS}
-    ${LSCRIPT_INCLUDE_DIRS}/lscript_compile
     ${LLLOGIN_INCLUDE_DIRS}
     ${UPDATER_INCLUDE_DIRS}
     ${LIBS_PREBUILT_DIR}/include/collada
@@ -127,6 +124,7 @@ set(viewer_SOURCE_FILES
     llavatarlist.cpp
     llavatarlistitem.cpp
     llavatarrenderinfoaccountant.cpp
+    llavatarrendernotifier.cpp
     llavatarpropertiesprocessor.cpp
     llblockedlistitem.cpp
     llblocklist.cpp
@@ -221,6 +219,7 @@ set(viewer_SOURCE_FILES
     llfloatercolorpicker.cpp
     llfloaterconversationlog.cpp
     llfloaterconversationpreview.cpp
+    llfloaterdeleteprefpreset.cpp
     llfloaterdeleteprefpreset.cpp
     llfloaterdestinations.cpp
     llfloatereditdaycycle.cpp
@@ -752,6 +751,7 @@ set(viewer_HEADER_FILES
     llavatarlistitem.h
     llavatarpropertiesprocessor.h
     llavatarrenderinfoaccountant.h
+    llavatarrendernotifier.h
     llblockedlistitem.h
     llblocklist.h
     llbox.h
@@ -1132,6 +1132,7 @@ set(viewer_HEADER_FILES
     llscreenchannel.h
     llscripteditor.h
     llscriptfloater.h
+    llscriptruntimeperms.h
     llscrollingpanelparam.h
     llscrollingpanelparambase.h
     llsearchcombobox.h
@@ -1353,16 +1354,14 @@ source_group("CMake Rules" FILES ViewerInstall.cmake)
 # the viewer_version.txt file created here is for passing to viewer_manifest and autobuild
 # the summary.json file is created for the benefit of the TeamCity builds, where
 #   it is used to provide descriptive information to the build results page
-add_custom_target(generate_viewer_version ALL
-                  COMMAND printf '${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}' > ${CMAKE_CURRENT_BINARY_DIR}/viewer_version.txt
-                  COMMAND printf '{"Type":"viewer","Version":"${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}"}' > ${CMAKE_BINARY_DIR}/summary.json
-                  COMMENT Generating viewer_version.txt for manifest processing
-                  )
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/viewer_version.txt"
+           "${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}\n")
+file(WRITE "${CMAKE_BINARY_DIR}/summary.json"
+           "{\"Type\":\"viewer\",\"Version\":\"${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}\"}\n")
 
 set_source_files_properties(
    llversioninfo.cpp tests/llversioninfo_test.cpp 
    PROPERTIES
-   DEPENDS generate_viewer_version  # dummy dependency to force recompile every time
    COMPILE_DEFINITIONS "${VIEWER_CHANNEL_VERSION_DEFINES}" # see BuildVersion.cmake
    )
 
@@ -1561,6 +1560,7 @@ if (WINDOWS)
         oleaut32
         shell32
         Vfw32
+        wer
         winspool
         )
 
@@ -1709,8 +1709,6 @@ if (WINDOWS)
         LINK_FLAGS_DEBUG "/NODEFAULTLIB:\"LIBCMT;LIBCMTD;MSVCRT\" /INCREMENTAL:NO /LARGEADDRESSAWARE"
         LINK_FLAGS_RELEASE "/FORCE:MULTIPLE /MAP\"blackdragon-bin.MAP\" /OPT:REF /LARGEADDRESSAWARE"
         )
-
-    add_dependencies(${VIEWER_BINARY_NAME} generate_viewer_version)
 
     if(USE_PRECOMPILED_HEADERS)
         set_target_properties(
@@ -1953,7 +1951,6 @@ target_link_libraries(${VIEWER_BINARY_NAME}
     ${LLVFS_LIBRARIES}
     ${LLWINDOW_LIBRARIES}
     ${LLXML_LIBRARIES}
-    ${LSCRIPT_LIBRARIES}
     ${LLMATH_LIBRARIES}
     ${LLCOREHTTP_LIBRARIES}
     ${LLCOMMON_LIBRARIES}
@@ -2000,8 +1997,6 @@ if (LINUX)
     media_plugin_gstreamer010
     llcommon
     )
-
-  add_dependencies(${VIEWER_BINARY_NAME} generate_viewer_version)
 
   add_custom_command(
       OUTPUT ${product}.tar.bz2
@@ -2085,8 +2080,6 @@ if (DARWIN)
      "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${product}.app/Contents/Info.plist"
     )
 
-  add_dependencies(${VIEWER_BINARY_NAME} generate_viewer_version)
-
   add_custom_command(
     TARGET ${VIEWER_BINARY_NAME} POST_BUILD
     COMMAND ${PYTHON_EXECUTABLE}
@@ -2119,7 +2112,6 @@ if (DARWIN)
 
   if (PACKAGE)
       add_custom_target(llpackage ALL DEPENDS ${VIEWER_BINARY_NAME})
-      add_dependencies(llpackage generate_viewer_version)
 
       add_custom_command(
         TARGET llpackage POST_BUILD
@@ -2202,8 +2194,11 @@ if (PACKAGE)
     DEPENDS generate_breakpad_symbols.py
         VERBATIM)
 
-  add_custom_target(generate_breakpad_symbols DEPENDS "${VIEWER_SYMBOL_FILE}")
-  add_dependencies(generate_breakpad_symbols "${VIEWER_BINARY_NAME}" "${VIEWER_COPY_MANIFEST}")
+  add_custom_target(generate_breakpad_symbols DEPENDS "${VIEWER_SYMBOL_FILE}" "${VIEWER_BINARY_NAME}" "${VIEWER_COPY_MANIFEST}")
+  add_dependencies(generate_breakpad_symbols "${VIEWER_BINARY_NAME}")
+  if (WINDOWS OR LINUX)
+    add_dependencies(generate_breakpad_symbols "${VIEWER_COPY_MANIFEST}")
+  endif (WINDOWS OR LINUX)
   add_dependencies(llpackage generate_breakpad_symbols)
   endif(RELEASE_CRASH_REPORTING OR NON_RELEASE_CRASH_REPORTING)
 endif (PACKAGE)

@@ -160,6 +160,9 @@ BOOL LLStatusBar::postBuild()
 	mIconPresets = getChild<LLIconCtrl>( "presets_icon" );
 	mIconPresets->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterPresets, this));
 
+	mIconPresets = getChild<LLIconCtrl>( "presets_icon" );
+	mIconPresets->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterPresets, this));
+
 	mBtnVolume = getChild<LLButton>( "volume_btn" );
 	mBtnVolume->setClickedCallback( onClickVolume, this );
 	mBtnVolume->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterVolume, this));
@@ -313,6 +316,7 @@ void LLStatusBar::refresh()
 void LLStatusBar::setVisibleForMouselook(bool visible)
 {
 	if(gSavedSettings.getBOOL("AllowUIHidingInML"))
+	mIconPresets->setVisible(visible);
 	{
 		setVisible(visible);
 	}
@@ -348,6 +352,29 @@ void LLStatusBar::setHealth(S32 health)
 S32 LLStatusBar::getHealth() const
 {
 	return mHealth;
+}
+
+void LLStatusBar::onMouseEnterPresets()
+{
+	LLView* popup_holder = gViewerWindow->getRootView()->getChildView("popup_holder");
+	LLIconCtrl* icon =  getChild<LLIconCtrl>( "presets_icon" );
+	LLRect icon_rect = icon->getRect();
+	LLRect pulldown_rect = mPanelPresetsPulldown->getRect();
+	pulldown_rect.setLeftTopAndSize(icon_rect.mLeft -
+	     (pulldown_rect.getWidth() - icon_rect.getWidth()),
+			       icon_rect.mBottom,
+			       pulldown_rect.getWidth(),
+			       pulldown_rect.getHeight());
+
+	pulldown_rect.translate(popup_holder->getRect().getWidth() - pulldown_rect.mRight, 0);
+	mPanelPresetsPulldown->setShape(pulldown_rect);
+
+	// show the master presets pull-down
+	LLUI::clearPopups();
+	LLUI::addPopup(mPanelPresetsPulldown);
+	mPanelNearByMedia->setVisible(FALSE);
+	mPanelVolumePulldown->setVisible(FALSE);
+	mPanelPresetsPulldown->setVisible(TRUE);
 }
 
 void LLStatusBar::onMouseEnterPresets()

@@ -38,6 +38,7 @@
 #include "llpresetsmanager.h"
 #include "llsliderctrl.h"
 #include "llscrolllistctrl.h"
+#include "lltrans.h"
 
 /* static */ const F32 LLPanelPresetsPulldown::sAutoCloseFadeStartTimeSec = 2.0f;
 /* static */ const F32 LLPanelPresetsPulldown::sAutoCloseTotalTimeSec = 3.0f;
@@ -59,9 +60,10 @@ LLPanelPresetsPulldown::LLPanelPresetsPulldown()
 
 BOOL LLPanelPresetsPulldown::postBuild()
 {
-	LLPresetsManager::instance().setPresetListChangeCallback(boost::bind(&LLPanelPresetsPulldown::populatePanel, this));
+	LLPresetsManager* presetsMgr = LLPresetsManager::getInstance();
+    presetsMgr->setPresetListChangeCallback(boost::bind(&LLPanelPresetsPulldown::populatePanel, this));
 	// Make sure there is a default preference file
-	LLPresetsManager::getInstance()->createMissingDefault();
+    presetsMgr->createMissingDefault();
 
 	populatePanel();
 
@@ -79,22 +81,33 @@ void LLPanelPresetsPulldown::populatePanel()
 	{
 		scroll->clearRows();
 
+		std::string active_preset = gSavedSettings.getString("PresetGraphicActive");
+		if (active_preset == PRESETS_DEFAULT)
+		{
+			active_preset = LLTrans::getString(PRESETS_DEFAULT);
+		}
+
 		for (std::list<std::string>::const_iterator it = mPresetNames.begin(); it != mPresetNames.end(); ++it)
 		{
 			const std::string& name = *it;
-
+            LL_DEBUGS() << "adding '" << name << "'" << LL_ENDL;
+            
 			LLSD row;
 			row["columns"][0]["column"] = "preset_name";
 			row["columns"][0]["value"] = name;
 
-			if (name == gSavedSettings.getString("PresetGraphicActive"))
+			bool is_selected_preset = false;
+			if (name == active_preset)
 			{
 				row["columns"][1]["column"] = "icon";
 				row["columns"][1]["type"] = "icon";
 				row["columns"][1]["value"] = "Check_Mark";
+
+				is_selected_preset = true;
 			}
 
-			scroll->addElement(row);
+			LLScrollListItem* new_item = scroll->addElement(row);
+			new_item->setSelected(is_selected_preset);
 		}
 	}
 }
@@ -110,6 +123,27 @@ void LLPanelPresetsPulldown::onMouseEnter(S32 x, S32 y, MASK mask)
 void LLPanelPresetsPulldown::onTopLost()
 {
 	setVisible(FALSE);
+}
+
+/*virtual*/
+BOOL LLPanelPresetsPulldown::handleMouseDown(S32 x, S32 y, MASK mask)
+{
+    LLPanel::handleMouseDown(x,y,mask);
+    return TRUE;
+}
+
+/*virtual*/
+BOOL LLPanelPresetsPulldown::handleRightMouseDown(S32 x, S32 y, MASK mask)
+{
+    LLPanel::handleRightMouseDown(x, y, mask);
+    return TRUE;
+}
+
+/*virtual*/
+BOOL LLPanelPresetsPulldown::handleDoubleClick(S32 x, S32 y, MASK mask)
+{
+    LLPanel::handleDoubleClick(x, y, mask);
+    return TRUE;
 }
 
 /*virtual*/
@@ -144,11 +178,20 @@ void LLPanelPresetsPulldown::onRowClick(const LLSD& user_data)
 		{
 			std::string name = item->getColumn(1)->getValue().asString();
 
+            LL_DEBUGS() << "selected '" << name << "'" << LL_ENDL;
 			LLPresetsManager::getInstance()->loadPreset(PRESETS_GRAPHIC, name);
 
 			setVisible(FALSE);
 		}
+        else
+        {
+            LL_DEBUGS() << "none selected" << LL_ENDL;
+        }
 	}
+    else
+    {
+        LL_DEBUGS() << "no scroll" << LL_ENDL;
+    }
 }
 
 void LLPanelPresetsPulldown::onGraphicsButtonClick(const LLSD& user_data)

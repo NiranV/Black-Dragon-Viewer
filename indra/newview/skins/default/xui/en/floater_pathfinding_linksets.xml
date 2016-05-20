@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
     positioning="cascading"
-    background_color="FloaterDefaultBackgroundColor"
     can_resize="true"
     can_tear_off="false"
-    height="305"
-    width="990"
+    height="395"
+    width="1075"
     min_height="395"
-    min_width="1015"
+    min_width="990"
     layout="topleft"
     name="floater_pathfinding_linksets"
+    help_topic="floater_pathfinding_linksets"
     reuse_instance="true"
     save_rect="false"
     single_instance="true"
@@ -51,9 +51,8 @@
       bevel_style="none"
       follows="left|top|right|bottom"
       layout="topleft"
-      height="185"
-      top="0"
-      width="986">
+      height="226"
+      width="1059">
     <text
         name="linksets_filter_label"
         height="13"
@@ -64,8 +63,8 @@
         length="1"
         follows="left|top"
         layout="topleft"
-        left="7"
-        top_pad="3"
+        left="20"
+        top_pad="14"
         width="67">
       Filter by:
     </text>
@@ -104,7 +103,7 @@
         length="1"
         follows="left|top"
         layout="topleft"
-        left_pad="21"
+        left_pad="22"
         top_pad="-15"
         width="88">
       Description
@@ -164,7 +163,7 @@
         layout="topleft"
         name="apply_filters"
         top_pad="-21"
-        left_pad="31"
+        left_pad="91"
         width="73"/>
     <button
         follows="right|top"
@@ -181,12 +180,12 @@
         follows="all"
         height="135"
         layout="topleft"
-        left="5"
-        top_pad="5"
+        left="18"
+        top_pad="15"
         tab_stop="false"
         multi_select="true"
         name="objects_scroll_list"
-        width="980">
+        width="1040">
       <scroll_list.columns
           label="Name (root prim)"
           name="name"
@@ -237,14 +236,13 @@
         word_wrap="false"
         use_ellipses="false"
         type="string"
-        left="7"
         text_color="LabelTextColor"
         length="1"
         follows="left|bottom|right"
         layout="topleft"
         name="messaging_status"
-        top_pad="5"
-        width="615">
+        top_pad="17"
+        width="679">
       Linksets:
     </text>
     <button
@@ -282,8 +280,8 @@
       layout="topleft"
       name="horiz_separator"
       top_pad="0"
-      left="5"
-      width="979"/>
+      left="18"
+      width="1039"/>
   <panel
       name="pathfinding_linksets_actions"
       border="false"
@@ -291,8 +289,8 @@
       follows="left|right|bottom"
       layout="topleft"
       left="0"
-      height="46"
-      width="990">
+      height="67"
+      width="1010">
     <text
         name="linksets_actions_label"
         height="13"
@@ -302,10 +300,10 @@
         text_color="LabelTextColor"
         text_readonly_color="LabelDisabledColor"
         length="1"
-        left="7"
+        left="18"
         follows="left|bottom|right"
         layout="topleft"
-        top_pad="3"
+        top_pad="8"
         width="580">
       Actions on selected linksets (If a linkset is removed from the world, its attributes may be lost):
     </text>
@@ -324,8 +322,8 @@
         label="Take"
         layout="topleft"
         name="take_objects"
-        top_pad="3"
-        left="5"
+        top_pad="9"
+        left="18"
         width="95"/>
     <button
         follows="left|bottom"
@@ -343,7 +341,7 @@
         layout="topleft"
         name="teleport_me_to_object"
         top_pad="-21"
-        left_pad="206"
+        left_pad="239"
         width="160"/>
     <button
         follows="right|bottom"
@@ -352,7 +350,7 @@
         layout="topleft"
         name="return_objects"
         top_pad="-21"
-        left_pad="220"
+        left_pad="252"
         width="95"/>
     <button
         follows="right|bottom"
@@ -371,8 +369,8 @@
       layout="topleft"
       name="horiz_separator"
       top_pad="0"
-      left="5"
-      width="979"/>
+      left="18"
+      width="1039"/>
   <panel
       name="pathfinding_linksets_attributes"
       border="false"
@@ -380,8 +378,8 @@
       follows="left|right|bottom"
       layout="topleft"
       left="0"
-      height="63"
-      width="990">
+      height="75"
+      width="1010">
     <text
         name="linksets_attributes_label"
         height="13"
@@ -392,9 +390,9 @@
         length="1"
         follows="left|bottom"
         layout="topleft"
-        left="7"
-        top_pad="3"
-        width="912">
+        left="18"
+        top_pad="8"
+        width="972">
       Edit attributes of selected linksets and press the button to apply changes
     </text>
     <combo_box
@@ -402,8 +400,8 @@
         layout="topleft"
         follows="left|top"
         name="edit_linkset_use"
-        left="5"
-        top_pad="8"
+        left="18"
+        top_pad="17"
         width="199">
     </combo_box>
     <text
@@ -534,7 +532,7 @@
         tool_tip="Walkability for characters of type D.  Example character type is other."
         width="45" />
     <button
-        follows="right|bottom"
+        follows="left|bottom"
         height="21"
         label="Apply changes"
         layout="topleft"
