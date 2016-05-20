@@ -31,18 +31,27 @@
 	  Notification Options:
       </text>
       <check_box
-       control_name="NotifyMoneyChange"
+       control_name="NotifyMoneySpend"
        height="16"
-       label="When I spend or get L$"
+       label="Notify me when I spend L$"
        layout="topleft"
        left="10"
-       name="notify_money_change_checkbox"
+       name="notify_money_spend_checkbox"
        top_pad="15"
        width="300" />
+    <check_box
+     control_name="NotifyMoneyReceived"
+     height="16"
+     label="Notify me when I get L$"
+     layout="topleft"
+     left_delta="0"
+     top_pad="0"	
+     name="notify_money_received_checkbox"     
+     width="300" />
       <check_box
        control_name="ChatOnlineNotification"
        height="16"
-       label="When my friends log in or out"
+       label="Notify me when my friends log in or out"
        layout="topleft"
        left_delta="0"
        name="friends_online_notify_checkbox"
@@ -52,7 +61,7 @@
 	control_name="DebugAvatarRezTime"
 	height="16"
 	initial_value="false"
-	label="How much time Avatars took to rez"
+	label="Notify me how much time Avatars took to rez"
 	layout="topleft"
 	left_delta="0"
 	name="DebugAvatarRezTime"
