@@ -4167,7 +4167,6 @@ Leave Group?
 
   <notification
    icon="alert.tga"
-   icon="alert.tga"
    name="ConfirmKick"
    type="alert">
 Do you REALLY want to kick all Residents off the grid?
