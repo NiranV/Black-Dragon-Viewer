@@ -2084,7 +2084,7 @@ void LLVOAvatarSelf::dumpTotalLocalTextureByteCount()
 	LL_INFOS() << "Total Avatar LocTex GL:" << (gl_bytes/1024) << "KB" << LL_ENDL;
 }
 
-bool LLVOAvatarSelf::getIsCloud() const
+BOOL LLVOAvatarSelf::getIsCloud() const
 {
 	// Let people know why they're clouded without spamming them into oblivion.
 	bool do_warn = false;
@@ -2112,7 +2112,7 @@ bool LLVOAvatarSelf::getIsCloud() const
 					<< (skin_count ? "" : "SKIN ")
 					<< LL_ENDL;
 		}
-		return true;
+		return TRUE;
 	}
 
 	if (!isTextureDefined(TEX_HAIR, 0))
@@ -2121,7 +2121,7 @@ bool LLVOAvatarSelf::getIsCloud() const
 		{
 			LL_INFOS() << "Self is clouded because of no hair texture" << LL_ENDL;
 		}
-		return true;
+		return TRUE;
 	}
 
 	if (!mPreviousFullyLoaded)
@@ -2133,7 +2133,7 @@ bool LLVOAvatarSelf::getIsCloud() const
 			{
 				LL_INFOS() << "Self is clouded because lower textures not baked" << LL_ENDL;
 			}
-			return true;
+			return TRUE;
 		}
 
 		if (!isLocalTextureDataAvailable(getLayerSet(BAKED_UPPER)) &&
@@ -2143,7 +2143,7 @@ bool LLVOAvatarSelf::getIsCloud() const
 			{
 				LL_INFOS() << "Self is clouded because upper textures not baked" << LL_ENDL;
 			}
-			return true;
+			return TRUE;
 		}
 
 		for (U32 i = 0; i < mBakedTextureDatas.size(); i++)
@@ -2164,13 +2164,13 @@ bool LLVOAvatarSelf::getIsCloud() const
 					LL_INFOS() << "Self is clouded because texture at index " << i
 							<< " (texture index is " << texture_data.mTextureIndex << ") is not loaded" << LL_ENDL;
 				}
-				return true;
+				return TRUE;
 			}
 		}
 
 		LL_DEBUGS() << "Avatar de-clouded" << LL_ENDL;
 	}
-	return false;
+	return FALSE;
 }
 
 /*static*/

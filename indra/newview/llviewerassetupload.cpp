@@ -51,6 +51,10 @@
 #include "llpreviewgesture.h"
 #include "llcoproceduremanager.h"
 
+//BD - L$ Balance
+#include "llsidepanelinventory.h"
+#include "llfloatersidepanelcontainer.h"
+
 void dialog_refresh_all();
 
 LLResourceUploadInfo::LLResourceUploadInfo(LLTransactionID transactId,
@@ -738,7 +742,7 @@ void LLViewerAssetUpload::AssetInventoryUploadCoproc(LLCoreHttpUtil::HttpCorouti
         {
             // this upload costed us L$, update our balance
             // and display something saying that it cost L$
-            LLStatusBar::sendMoneyBalanceRequest();
+			LLSidepanelInventory::sendMoneyBalanceRequest();
 
             LLSD args;
             args["AMOUNT"] = llformat("%d", uploadPrice);

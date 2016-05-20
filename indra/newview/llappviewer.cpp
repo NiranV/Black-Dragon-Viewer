@@ -609,7 +609,7 @@ static void settings_to_globals()
 	LLVOTree::sTreeFactor				= gSavedSettings.getF32("RenderTreeLODFactor");
 	LLVOAvatar::sLODFactor				= gSavedSettings.getF32("RenderAvatarLODFactor");
 	LLVOAvatar::sPhysicsLODFactor		= gSavedSettings.getF32("RenderAvatarPhysicsLODFactor");
-	LLVOAvatar::updateImpostorRendering(gSavedSettings.getU32("RenderAvatarMaxNonImpostors"));
+	LLVOAvatar::sMaxVisible				= (U32)gSavedSettings.getS32("RenderAvatarMaxVisible");
 	LLVOAvatar::sVisibleInFirstPerson	= gSavedSettings.getBOOL("FirstPersonAvatarVisible");
 	// clamp auto-open time to some minimum usable value
 	LLFolderView::sAutoOpenTime			= llmax(0.25f, gSavedSettings.getF32("FolderAutoOpenDelay"));
@@ -5150,7 +5150,7 @@ void LLAppViewer::idle()
 	}
 
 	// Update AV render info
-	LLAvatarRenderInfoAccountant::getInstance()->idle();
+	LLAvatarRenderInfoAccountant::idle();
 
 	{
 		LL_RECORD_BLOCK_TIME(FTM_AUDIO_UPDATE);

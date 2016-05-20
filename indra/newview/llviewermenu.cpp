@@ -1090,7 +1090,7 @@ U32 info_display_from_string(std::string info_display)
 	}
 	else if ("avatardrawinfo" == info_display)
 	{
-		return (LLPipeline::RENDER_DEBUG_AVATAR_DRAW_INFO);
+		return (LLPipeline::RENDER_DEBUG_SHAME);
 	}
 	else if ("glow" == info_display)
 	{
@@ -3174,11 +3174,11 @@ class LLAvatarCheckImpostorMode : public view_listener_t
 		switch (mode) 
 		{
 			case 0:
-				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_RENDER_NORMALLY);
+				return (avatar->getVisualMuteSettings() == LLVOAvatar::VISUAL_MUTE_NOT_SET);
 			case 1:
-				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_DO_NOT_RENDER);
+				return (avatar->getVisualMuteSettings() == LLVOAvatar::ALWAYS_VISUAL_MUTE);
 			case 2:
-				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_ALWAYS_RENDER);
+				return (avatar->getVisualMuteSettings() == LLVOAvatar::NEVER_VISUAL_MUTE);
 			default:
 				return false;
 		}
@@ -3200,13 +3200,13 @@ class LLAvatarSetImpostorMode : public view_listener_t
 		switch (mode) 
 		{
 			case 0:
-				avatar->setVisualMuteSettings(LLVOAvatar::AV_RENDER_NORMALLY);
+				avatar->setVisualMuteSettings(LLVOAvatar::VISUAL_MUTE_NOT_SET);
 				break;
 			case 1:
-				avatar->setVisualMuteSettings(LLVOAvatar::AV_DO_NOT_RENDER);
+				avatar->setVisualMuteSettings(LLVOAvatar::ALWAYS_VISUAL_MUTE);
 				break;
 			case 2:
-				avatar->setVisualMuteSettings(LLVOAvatar::AV_ALWAYS_RENDER);
+				avatar->setVisualMuteSettings(LLVOAvatar::NEVER_VISUAL_MUTE);
 				break;
 			default:
 				return false;
@@ -8426,10 +8426,7 @@ void handle_rebake_textures(void*)
 	gAgentAvatarp->forceBakeAllTextures(slam_for_debug);
 	if (gAgent.getRegion() && gAgent.getRegion()->getCentralBakeVersion())
 	{
-// [SL:KB] - Patch: Appearance-Misc | Checked: 2015-06-27 (Catznip-3.7)
-		LLAppearanceMgr::instance().syncCofVersionAndRefresh();
-// [/SL:KB]
-//		LLAppearanceMgr::instance().requestServerAppearanceUpdate();
+		LLAppearanceMgr::instance().requestServerAppearanceUpdate();
 	}
 }
 

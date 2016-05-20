@@ -77,6 +77,10 @@
 #include "lluploaddialog.h"
 #include "llfloaterreg.h"
 
+//BD - L$ Balance
+#include "llsidepanelinventory.h"
+#include "llfloatersidepanelcontainer.h"
+
 #include "boost/lexical_cast.hpp"
 
 #ifndef LL_WINDOWS
@@ -4735,7 +4739,7 @@ void on_new_single_inventory_upload_complete(
     {
         // this upload costed us L$, update our balance
         // and display something saying that it cost L$
-        LLStatusBar::sendMoneyBalanceRequest();
+        LLSidepanelInventory::sendMoneyBalanceRequest();
 
         LLSD args;
         args["AMOUNT"] = llformat("%d", upload_price);

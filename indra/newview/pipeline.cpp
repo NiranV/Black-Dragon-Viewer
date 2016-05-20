@@ -1125,8 +1125,7 @@ void LLPipeline::refreshCachedSettings()
 	LLPipeline::sAutoMaskAlphaDeferred = gSavedSettings.getBOOL("RenderAutoMaskAlphaDeferred");
 	LLPipeline::sAutoMaskAlphaNonDeferred = gSavedSettings.getBOOL("RenderAutoMaskAlphaNonDeferred");
 	LLPipeline::sUseFarClip = gSavedSettings.getBOOL("RenderUseFarClip");
-	LLVOAvatar::sMaxNonImpostors = gSavedSettings.getU32("RenderAvatarMaxNonImpostors");
-	LLVOAvatar::updateImpostorRendering(LLVOAvatar::sMaxNonImpostors);
+	LLVOAvatar::sMaxVisible = (U32)gSavedSettings.getS32("RenderAvatarMaxVisible");
 	LLPipeline::sDelayVBUpdate = gSavedSettings.getBOOL("RenderDelayVBUpdate");
 
 	LLPipeline::sUseOcclusion = 
@@ -6086,7 +6085,7 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 			const Light* light = &(*iter);
 			LLDrawable* drawable = light->drawable;
             const LLViewerObject *vobj = light->drawable->getVObj();
-            if(vobj && vobj->getAvatar() && vobj->getAvatar()->isVisuallyMuted())
+			if (vobj && vobj->getAvatar() && vobj->getAvatar()->isInMuteList())
             {
                 drawable->clearState(LLDrawable::NEARBY_LIGHT);
                 continue;
@@ -11587,28 +11586,19 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 	static LLCullResult result;
 	result.clear();
 	grabReferences(result);
-	
+
 	if (!avatar || !avatar->mDrawable)
 	{
-        LL_WARNS_ONCE("AvatarRenderPipeline") << "Avatar is " << (avatar ? "not drawable" : "null") << LL_ENDL;
 		return;
 	}
-    LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " is drawable" << LL_ENDL;
 
 	assertInitialized();
 
-	bool visually_muted = avatar->isVisuallyMuted();		
-    LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID()
-                              << " is " << ( visually_muted ? "" : "not ") << "visually muted"
-                              << LL_ENDL;
-	bool too_complex = avatar->isTooComplex();		
-    LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID()
-                              << " is " << ( too_complex ? "" : "not ") << "too complex"
-                              << LL_ENDL;
+	bool visually_muted = avatar->isVisuallyMuted();
 
 	pushRenderTypeMask();
-	
-	if (visually_muted || too_complex)
+
+	if (visually_muted)
 	{
 		andRenderTypeMask(LLPipeline::RENDER_TYPE_AVATAR, END_RENDER_TYPES);
 	}
@@ -11618,28 +11608,28 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 			LLPipeline::RENDER_TYPE_FULLBRIGHT,
 			LLPipeline::RENDER_TYPE_VOLUME,
 			LLPipeline::RENDER_TYPE_GLOW,
-						LLPipeline::RENDER_TYPE_BUMP,
-						LLPipeline::RENDER_TYPE_PASS_SIMPLE,
-						LLPipeline::RENDER_TYPE_PASS_ALPHA,
-						LLPipeline::RENDER_TYPE_PASS_ALPHA_MASK,
+			LLPipeline::RENDER_TYPE_BUMP,
+			LLPipeline::RENDER_TYPE_PASS_SIMPLE,
+			LLPipeline::RENDER_TYPE_PASS_ALPHA,
+			LLPipeline::RENDER_TYPE_PASS_ALPHA_MASK,
 			LLPipeline::RENDER_TYPE_PASS_BUMP,
 			LLPipeline::RENDER_TYPE_PASS_POST_BUMP,
-						LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT,
-						LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT_ALPHA_MASK,
-						LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT_SHINY,
+			LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT,
+			LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT_ALPHA_MASK,
+			LLPipeline::RENDER_TYPE_PASS_FULLBRIGHT_SHINY,
 			LLPipeline::RENDER_TYPE_PASS_GLOW,
 			LLPipeline::RENDER_TYPE_PASS_GRASS,
-						LLPipeline::RENDER_TYPE_PASS_SHINY,
-						LLPipeline::RENDER_TYPE_PASS_INVISIBLE,
-						LLPipeline::RENDER_TYPE_PASS_INVISI_SHINY,
+			LLPipeline::RENDER_TYPE_PASS_SHINY,
+			LLPipeline::RENDER_TYPE_PASS_INVISIBLE,
+			LLPipeline::RENDER_TYPE_PASS_INVISI_SHINY,
 			LLPipeline::RENDER_TYPE_AVATAR,
 			LLPipeline::RENDER_TYPE_ALPHA_MASK,
 			LLPipeline::RENDER_TYPE_FULLBRIGHT_ALPHA_MASK,
 			LLPipeline::RENDER_TYPE_INVISIBLE,
 			LLPipeline::RENDER_TYPE_SIMPLE,
-						END_RENDER_TYPES);
+			END_RENDER_TYPES);
 	}
-	
+
 	S32 occlusion = sUseOcclusion;
 	sUseOcclusion = 0;
 
@@ -11653,7 +11643,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 	{
 		LL_RECORD_BLOCK_TIME(FTM_IMPOSTOR_MARK_VISIBLE);
 		markVisible(avatar->mDrawable, *viewer_camera);
-		LLVOAvatar::sUseImpostors = false; // @TODO ???
+		LLVOAvatar::sUseImpostors = FALSE;
 
 		LLVOAvatar::attachment_map_t::iterator iter;
 		for (iter = avatar->mAttachmentPoints.begin();
@@ -11662,8 +11652,8 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		{
 			LLViewerJointAttachment *attachment = iter->second;
 			for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
-				 attachment_iter != attachment->mAttachedObjects.end();
-				 ++attachment_iter)
+				attachment_iter != attachment->mAttachedObjects.end();
+				++attachment_iter)
 			{
 				if (LLViewerObject* attached_object = (*attachment_iter))
 				{
@@ -11674,7 +11664,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 	}
 
 	stateSort(*LLViewerCamera::getInstance(), result);
-	
+
 	LLCamera camera = *viewer_camera;
 	LLVector2 tdim;
 	U32 resY = 0;
@@ -11683,10 +11673,10 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 	{
 		LL_RECORD_BLOCK_TIME(FTM_IMPOSTOR_SETUP);
 		const LLVector4a* ext = avatar->mDrawable->getSpatialExtents();
-		LLVector3 pos(avatar->getRenderPosition()+avatar->getImpostorOffset());
+		LLVector3 pos(avatar->getRenderPosition() + avatar->getImpostorOffset());
 
 		camera.lookAt(viewer_camera->getOrigin(), pos, viewer_camera->getUpAxis());
-	
+
 		LLVector4a half_height;
 		half_height.setSub(ext[1], ext[0]);
 		half_height.mul(0.5f);
@@ -11708,10 +11698,10 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 
 		gGL.matrixMode(LLRender::MM_PROJECTION);
 		gGL.pushMatrix();
-	
-		F32 distance = (pos-camera.getOrigin()).length();
-		F32 fov = atanf(tdim.mV[1]/distance)*2.f*RAD_TO_DEG;
-		F32 aspect = tdim.mV[0]/tdim.mV[1];
+
+		F32 distance = (pos - camera.getOrigin()).length();
+		F32 fov = atanf(tdim.mV[1] / distance)*2.f*RAD_TO_DEG;
+		F32 aspect = tdim.mV[0] / tdim.mV[1];
 		glh::matrix4f persp = gl_perspective(fov, aspect, 1.f, 256.f);
 		glh_set_current_projection(persp);
 		gGL.loadMatrix(persp.m);
@@ -11721,44 +11711,44 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		glh::matrix4f mat;
 		camera.getOpenGLTransform(mat.m);
 
-		mat = glh::matrix4f((GLfloat*) OGL_TO_CFR_ROTATION) * mat;
+		mat = glh::matrix4f((GLfloat*)OGL_TO_CFR_ROTATION) * mat;
 
 		gGL.loadMatrix(mat.m);
 		glh_set_current_modelview(mat);
 
-		glClearColor(0.0f,0.0f,0.0f,0.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		gGL.setColorMask(true, true);
-	
+
 		// get the number of pixels per angle
 		F32 pa = gViewerWindow->getWindowHeightRaw() / (RAD_TO_DEG * viewer_camera->getView());
 
 		//get resolution based on angle width and height of impostor (double desired resolution to prevent aliasing)
-		resY = llmin(nhpo2((U32) (fov*pa)), (U32) 512);
-		resX = llmin(nhpo2((U32) (atanf(tdim.mV[0]/distance)*2.f*RAD_TO_DEG*pa)), (U32) 512);
+		resY = llmin(nhpo2((U32)(fov*pa)), (U32)512);
+		resX = llmin(nhpo2((U32)(atanf(tdim.mV[0] / distance)*2.f*RAD_TO_DEG*pa)), (U32)512);
 
 		if (!avatar->mImpostor.isComplete())
 		{
 			LL_RECORD_BLOCK_TIME(FTM_IMPOSTOR_ALLOCATE);
-			
+
 
 			if (LLPipeline::sRenderDeferred)
 			{
-				avatar->mImpostor.allocate(resX,resY,GL_SRGB8_ALPHA8,TRUE,FALSE);
+				avatar->mImpostor.allocate(resX, resY, GL_SRGB8_ALPHA8, TRUE, FALSE);
 				addDeferredAttachments(avatar->mImpostor);
 			}
 			else
 			{
-				avatar->mImpostor.allocate(resX,resY,GL_RGBA,TRUE,FALSE);
+				avatar->mImpostor.allocate(resX, resY, GL_RGBA, TRUE, FALSE);
 			}
-		
+
 			gGL.getTexUnit(0)->bind(&avatar->mImpostor);
 			gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_POINT);
 			gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 		}
-		else if(resX != avatar->mImpostor.getWidth() || resY != avatar->mImpostor.getHeight())
+		else if (resX != avatar->mImpostor.getWidth() || resY != avatar->mImpostor.getHeight())
 		{
 			LL_RECORD_BLOCK_TIME(FTM_IMPOSTOR_RESIZE);
-			avatar->mImpostor.resize(resX,resY);
+			avatar->mImpostor.resize(resX, resY);
 		}
 
 		avatar->mImpostor.bindTarget();
@@ -11766,7 +11756,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 
 	F32 old_alpha = LLDrawPoolAvatar::sMinimumAlpha;
 
-	if (visually_muted || too_complex)
+	if (visually_muted)
 	{ //disable alpha masking for muted avatars (get whole skin silhouette)
 		LLDrawPoolAvatar::sMinimumAlpha = 0.f;
 	}
@@ -11776,7 +11766,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		avatar->mImpostor.clear();
 		renderGeomDeferred(camera);
 
-		renderGeomPostDeferred(camera);		
+		renderGeomPostDeferred(camera);
 
 		// Shameless hack time: render it all again,
 		// this time writing the depth
@@ -11787,7 +11777,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		sImpostorRenderAlphaDepthPass = true;
 		// depth-only here...
 		//
-		gGL.setColorMask(false,false);
+		gGL.setColorMask(false, false);
 		renderGeomPostDeferred(camera);
 
 		sImpostorRenderAlphaDepthPass = false;
@@ -11810,7 +11800,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 
 		// depth-only here...
 		//
-		gGL.setColorMask(false,false);
+		gGL.setColorMask(false, false);
 		renderGeom(camera);
 
 		sImpostorRenderAlphaDepthPass = false;
@@ -11828,7 +11818,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 
 		LLGLDisable blend(GL_BLEND);
 
-		if (visually_muted || too_complex)
+		if (visually_muted)
 		{
 			gGL.setColorMask(true, true);
 		}
@@ -11836,7 +11826,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		{
 			gGL.setColorMask(false, true);
 		}
-		
+
 		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 
 		LLGLDepthTest depth(GL_TRUE, GL_FALSE, GL_GREATER);
@@ -11857,25 +11847,24 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		}
 
 
-		if (too_complex)
-		{	// Visually muted avatar
-            LLColor4 muted_color(avatar->getMutedAVColor());
-            LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " set jellybaby " << muted_color << LL_ENDL;
-			gGL.diffuseColor4fv( muted_color.mV );
-		}
-		else
+		if (LLMuteList::getInstance()->isMuted(avatar->getID()))
 		{ //grey muted avatar
-			LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " set grey" << LL_ENDL;
 			gGL.diffuseColor4ub(64, 64, 64, 255);
 		}
+		else
+		{	// Visually muted avatar
+			gGL.diffuseColor4fv(avatar->getMutedAVColor().mV);
+		}
 
-		gGL.begin(LLRender::QUADS);
-		gGL.vertex3f(-1, -1, clip_plane);
-		gGL.vertex3f(1, -1, clip_plane);
-		gGL.vertex3f(1, 1, clip_plane);
-		gGL.vertex3f(-1, 1, clip_plane);
-		gGL.end();
-		gGL.flush();
+		{
+			gGL.begin(LLRender::QUADS);
+			gGL.vertex3f(-1, -1, clip_plane);
+			gGL.vertex3f(1, -1, clip_plane);
+			gGL.vertex3f(1, 1, clip_plane);
+			gGL.vertex3f(-1, 1, clip_plane);
+			gGL.end();
+			gGL.flush();
+		}
 
 		if (LLGLSLShader::sNoFixedFunction)
 		{
@@ -11891,7 +11880,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 
 	avatar->setImpostorDim(tdim);
 
-	LLVOAvatar::sUseImpostors = true; // @TODO ???
+	LLVOAvatar::sUseImpostors = TRUE;
 	sUseOcclusion = occlusion;
 	sReflectionRender = FALSE;
 	sImpostorRender = FALSE;

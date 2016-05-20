@@ -1666,9 +1666,6 @@ void LLFloaterPreference::setHardwareDefaults()
 {
 	LLFeatureManager::getInstance()->applyRecommendedSettings();
 
-	// reset indirects before refresh because we may have changed what they control
-	setIndirectControls();
-
 	refreshEnabledGraphics();
 
 	gSavedSettings.setString("PresetGraphicActive", "");
@@ -2143,48 +2140,6 @@ void LLFloaterPreference::refreshEnabledState()
 	//getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
 }
 
-// static
-void LLFloaterPreference::setIndirectControls()
-{
-	/*
-	* We have controls that have an indirect relationship between the control
-	* values and adjacent text and the underlying setting they influence.
-	* In each case, the control and its associated setting are named Indirect<something>
-	* This method interrogates the controlled setting and establishes the
-	* appropriate value for the indirect control. It must be called whenever the
-	* underlying setting may have changed other than through the indirect control,
-	* such as when the 'Reset all to recommended settings' button is used...
-	*/
-	setIndirectMaxNonImpostors();
-	setIndirectMaxArc();
-}
-
-// static
-void LLFloaterPreference::setIndirectMaxNonImpostors()
-{
-	U32 max_non_impostors = gSavedSettings.getU32("RenderAvatarMaxNonImpostors");
-	// for this one, we just need to make zero, which means off, the max value of the slider
-	U32 indirect_max_non_impostors = (0 == max_non_impostors) ? LLVOAvatar::IMPOSTORS_OFF : max_non_impostors;
-	gSavedSettings.setU32("IndirectMaxNonImpostors", indirect_max_non_impostors);
-}
-
-void LLFloaterPreference::setIndirectMaxArc()
-{
-	U32 max_arc = gSavedSettings.getU32("RenderAvatarMaxComplexity");
-	U32 indirect_max_arc;
-	if (0 == max_arc)
-	{
-		// the off position is all the way to the right, so set to control max
-		indirect_max_arc = INDIRECT_MAX_ARC_OFF;
-	}
-	else
-	{
-		// This is the inverse of the calculation in updateMaxComplexity
-		indirect_max_arc = (U32)((log(max_arc) - MIN_ARC_LOG) / ARC_LIMIT_MAP_SCALE) + MIN_INDIRECT_ARC_LIMIT;
-	}
-	gSavedSettings.setU32("IndirectMaxComplexity", indirect_max_arc);
-}
-
 void LLFloaterPreference::disableUnavailableSettings()
 {	
 	/*LLComboBox* ctrl_reflections   = getChild<LLComboBox>("Reflections");
@@ -2620,72 +2575,6 @@ void LLFloaterPreference::refreshUI()
 		text_box->setText(LLTrans::getString("GraphicsQualityHigh"));
 	}
 }*/
-
-void LLFloaterPreference::updateMaxNonImpostors()
-{
-	// Called when the IndirectMaxNonImpostors control changes
-	// Responsible for fixing the slider label (IndirectMaxNonImpostorsText) and setting RenderAvatarMaxNonImpostors
-	LLSliderCtrl* ctrl = getChild<LLSliderCtrl>("IndirectMaxNonImpostors", true);
-	U32 value = ctrl->getValue().asInteger();
-
-	if (0 == value || LLVOAvatar::IMPOSTORS_OFF <= value)
-	{
-		value = 0;
-	}
-	gSavedSettings.setU32("RenderAvatarMaxNonImpostors", value);
-	LLVOAvatar::updateImpostorRendering(value); // make it effective immediately
-	setMaxNonImpostorsText(value, getChild<LLTextBox>("IndirectMaxNonImpostorsText"));
-}
-
-void LLFloaterPreference::setMaxNonImpostorsText(U32 value, LLTextBox* text_box)
-{
-	if (0 == value)
-	{
-		text_box->setText(LLTrans::getString("no_limit"));
-	}
-	else
-	{
-		text_box->setText(llformat("%d", value));
-	}
-}
-
-void LLFloaterPreference::updateMaxComplexity()
-{
-	// Called when the IndirectMaxComplexity control changes
-	// Responsible for fixing the slider label (IndirectMaxComplexityText) and setting RenderAvatarMaxComplexity
-	LLSliderCtrl* ctrl = getChild<LLSliderCtrl>("IndirectMaxComplexity");
-	U32 indirect_value = ctrl->getValue().asInteger();
-	U32 max_arc;
-
-	if (INDIRECT_MAX_ARC_OFF == indirect_value)
-	{
-		// The 'off' position is when the slider is all the way to the right, 
-		// which is a value of INDIRECT_MAX_ARC_OFF,
-		// so it is necessary to set max_arc to 0 disable muted avatars.
-		max_arc = 0;
-	}
-	else
-	{
-		// if this is changed, the inverse calculation in setIndirectMaxArc
-		// must be changed to match
-		max_arc = (U32)exp(MIN_ARC_LOG + (ARC_LIMIT_MAP_SCALE * (indirect_value - MIN_INDIRECT_ARC_LIMIT)));
-	}
-
-	gSavedSettings.setU32("RenderAvatarMaxComplexity", (U32)max_arc);
-	setMaxComplexityText(max_arc, getChild<LLTextBox>("IndirectMaxComplexityText"));
-}
-
-void LLFloaterPreference::setMaxComplexityText(U32 value, LLTextBox* text_box)
-{
-	if (0 == value)
-	{
-		text_box->setText(LLTrans::getString("no_limit"));
-	}
-	else
-	{
-		text_box->setText(llformat("%d", value));
-	}
-}
 
 // FIXME: this will stop you from spawning the sidetray from preferences dialog on login screen
 // but the UI for this will still be enabled

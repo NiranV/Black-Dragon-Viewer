@@ -1416,23 +1416,7 @@ void update_inventory_item(
 	const LLSD& updates,
 	LLPointer<LLInventoryCallback> cb)
 {
-// [SL:KB] - Patch: Appearance-AISFilter | Checked: 2015-03-01 (Catznip-3.7)
-	LLPointer<LLViewerInventoryItem> obj = gInventory.getItem(item_id);
-	LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << (obj ? obj->getName() : "(NOT FOUND)") << LL_ENDL;
-	LLPointer<LLViewerInventoryItem> new_item = NULL;
-
-	if (obj)
-	{
-		new_item = new LLViewerInventoryItem(obj);
-		new_item->fromLLSD(updates,false);
-
-		LLInventoryModel::LLCategoryUpdate up(new_item->getParentUUID(), 0);
-		gInventory.accountForUpdate(up);
-		gInventory.updateItem(new_item);
-	}
-// [/SL:KB]
-
-	if (AISCommand::isAPIAvailable())
+	if (AISAPI::isAvailable())
 	{
         AISAPI::completion_t cr = (cb) ? boost::bind(&doInventoryCb, cb, _1) : AISAPI::completion_t();
         AISAPI::UpdateItem(item_id, updates, cr);

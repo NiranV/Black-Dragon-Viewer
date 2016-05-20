@@ -240,9 +240,6 @@ public:
 
 	void requestServerAppearanceUpdate();
 
-// [SL:KB] - Patch: Appearance-Misc | Checked: 2015-06-27 (Catznip-3.7)
-	void syncCofVersionAndRefresh();
-// [/SL:KB]
 	void setAppearanceServiceURL(const std::string& url) { mAppearanceServiceURL = url; }
 	std::string getAppearanceServiceURL() const;
 

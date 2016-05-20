@@ -262,14 +262,6 @@ private:
 	void onDeleteTranscriptsResponse(const LLSD& notification, const LLSD& response);
 	void updateDeleteTranscriptsButton();
 
-	void updateMaxNonImpostors();
-	void setMaxNonImpostorsText(U32 value, LLTextBox* text_box);
-	void updateMaxComplexity();
-	void setMaxComplexityText(U32 value, LLTextBox* text_box);
-	static void setIndirectControls();
-	static void setIndirectMaxNonImpostors();
-	static void setIndirectMaxArc();
-
 	S32 mModifier;
 
 	static std::string sSkin;
