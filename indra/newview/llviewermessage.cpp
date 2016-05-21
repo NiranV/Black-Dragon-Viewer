@@ -7112,35 +7112,35 @@ void process_script_question(LLMessageSystem *msg, void **user_data)
 			payload["owner_name"] = owner_name;
 
 // [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-			if (rlv_handler_t::isEnabled())
-			{
-				RlvUtil::filterScriptQuestions(questions, payload);
+			//if (rlv_handler_t::isEnabled())
+			//{
+			//	RlvUtil::filterScriptQuestions(questions, payload);
 
-				if ( (questions) && (gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTPERMISSION)) )
-				{
-					const LLViewerObject* pObj = gObjectList.findObject(taskid);
-					if (pObj)
-					{
-						if ( (pObj->permYouOwner()) && (!pObj->isAttachment()) )
-						{
-							questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS] | 
-								LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH]);
-						}
-						else
-						{
-							questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS]);
-						}
-						payload["rlv_notify"] = !pObj->permYouOwner();
-					}
-				}
-			}
+			//	if ( (questions) && (gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTPERMISSION)) )
+			//	{
+			//		const LLViewerObject* pObj = gObjectList.findObject(taskid);
+			//		if (pObj)
+			//		{
+			//			if ( (pObj->permYouOwner()) && (!pObj->isAttachment()) )
+			//			{
+			//				questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS] | 
+			//					LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH]);
+			//			}
+			//			else
+			//			{
+			//				questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS]);
+			//			}
+			//			payload["rlv_notify"] = !pObj->permYouOwner();
+			//		}
+			//	}
+			//}
 
-			if ( (!caution) && (!questions) )
-			{
-				LLNotifications::instance().forceResponse(
-				LLNotification::Params("ScriptQuestion").substitutions(args).payload(payload), 0/*YES*/);
-				return;
-			}
+			//if ( (!caution) && (!questions) )
+			//{
+			//	LLNotifications::instance().forceResponse(
+			//	LLNotification::Params("ScriptQuestion").substitutions(args).payload(payload), 0/*YES*/);
+			//	return;
+			//}
 // [/RLVa:KB]
 
 			// check whether cautions are even enabled or not

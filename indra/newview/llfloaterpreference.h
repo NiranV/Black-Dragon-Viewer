@@ -128,8 +128,9 @@ public:
 	void getControlNames(std::vector<std::string>& names);
 
 protected:	
-	void		onBtnOK(const LLSD& userdata);
-	void		onBtnCancel(const LLSD& userdata);
+	void		onBtnOK();
+	void		onBtnCancel();
+	void		onBtnApply();
 
 	void		onClickClearCache();			// Clear viewer texture cache, vfs, and VO cache on next startup
 	void		onClickBrowserClearCache();		// Clear web history and caches as well as viewer caches above
@@ -145,7 +146,6 @@ protected:
 	void updateMeterText(LLUICtrl* ctrl);
 	// callback for defaults
 	void setHardwareDefaults();
-	void setRecommended();
 	// callback for when client turns on shaders
 	//void onVertexShaderEnable();
 	// callback for when client turns on impostors
@@ -175,6 +175,7 @@ public:
 	void enableHistory();
 	void setPersonalInfo(const std::string& visibility, bool im_via_email);
 	void refreshEnabledState();
+	void disableUnavailableSettings();
 	//void onCommitWindowedMode();
 	void refresh();	// Refresh enable/disable
 	
@@ -237,14 +238,12 @@ public:
 	void onClickPermsDefault();
 	void onClickAutoReplace();
 	void onClickSpellChecker();
-	void onClickAdvanced();
 	void applyUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void getUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void onLogChatHistorySaved();	
 	void buildPopupLists();
 	static void refreshSkin(void* data);
 	void selectPanel(const LLSD& name);
-	void saveGraphicsPreset(std::string& preset);
 
 	void deletePreset(const LLSD& user_data);
 	void savePreset(const LLSD& user_data);
@@ -257,7 +256,6 @@ private:
 	void onDeleteTranscripts();
 	void onDeleteTranscriptsResponse(const LLSD& notification, const LLSD& response);
 	void updateDeleteTranscriptsButton();
-	void updateMaxComplexity();
 
 	S32 mModifier;
 
@@ -328,7 +326,6 @@ public:
 	void draw();
 	void cancel();
 	void saveSettings();
-	void resetDirtyChilds();
 	void setHardwareDefaults();
 	void setPresetText();
 
@@ -336,46 +333,12 @@ public:
 
 protected:
 	bool hasDirtyChilds();
+	void resetDirtyChilds();
 
 private:
 
 	void onPresetsListChange();
 	LOG_CLASS(LLPanelPreferenceGraphics);
-};
-
-class LLFloaterPreferenceGraphicsAdvanced : public LLFloater
-{
-  public: 
-	LLFloaterPreferenceGraphicsAdvanced(const LLSD& key);
-	~LLFloaterPreferenceGraphicsAdvanced();
-	void onOpen(const LLSD& key);
-	void onClickCloseBtn(bool app_quitting);
-	void disableUnavailableSettings();
-	void refreshEnabledGraphics();
-	void refreshEnabledState();
-	void updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box);
-	void updateMaxNonImpostors();
-	void setMaxNonImpostorsText(U32 value, LLTextBox* text_box);
-	void updateMaxComplexity();
-	void setMaxComplexityText(U32 value, LLTextBox* text_box);
-	static void setIndirectControls();
-	static void setIndirectMaxNonImpostors();
-	static void setIndirectMaxArc();
-	void refresh();
-	// callback for when client turns on shaders
-	void onVertexShaderEnable();
-	LOG_CLASS(LLFloaterPreferenceGraphicsAdvanced);
-};
-
-class LLAvatarComplexityControls
-{
-  public: 
-	static void updateMax(LLSliderCtrl* slider, LLTextBox* value_label);
-	static void setText(U32 value, LLTextBox* text_box);
-	static void setIndirectControls();
-	static void setIndirectMaxNonImpostors();
-	static void setIndirectMaxArc();
-	LOG_CLASS(LLAvatarComplexityControls);
 };
 
 class LLFloaterPreferenceProxy : public LLFloater

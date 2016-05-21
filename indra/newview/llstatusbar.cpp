@@ -377,29 +377,6 @@ void LLStatusBar::onMouseEnterPresets()
 	mPanelPresetsPulldown->setVisible(TRUE);
 }
 
-void LLStatusBar::onMouseEnterPresets()
-{
-	LLView* popup_holder = gViewerWindow->getRootView()->getChildView("popup_holder");
-	LLIconCtrl* icon =  getChild<LLIconCtrl>( "presets_icon" );
-	LLRect icon_rect = icon->getRect();
-	LLRect pulldown_rect = mPanelPresetsPulldown->getRect();
-	pulldown_rect.setLeftTopAndSize(icon_rect.mLeft -
-	     (pulldown_rect.getWidth() - icon_rect.getWidth()),
-			       icon_rect.mBottom,
-			       pulldown_rect.getWidth(),
-			       pulldown_rect.getHeight());
-
-	pulldown_rect.translate(popup_holder->getRect().getWidth() - pulldown_rect.mRight, 0);
-	mPanelPresetsPulldown->setShape(pulldown_rect);
-
-	// show the master presets pull-down
-	LLUI::clearPopups();
-	LLUI::addPopup(mPanelPresetsPulldown);
-	mPanelNearByMedia->setVisible(FALSE);
-	mPanelVolumePulldown->setVisible(FALSE);
-	mPanelPresetsPulldown->setVisible(TRUE);
-}
-
 void LLStatusBar::onMouseEnterVolume()
 {
 	LLView* popup_holder = gViewerWindow->getRootView()->getChildView("popup_holder");

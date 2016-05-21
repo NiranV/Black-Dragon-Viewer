@@ -94,7 +94,6 @@ private:
 	LLStatGraph *mSGPacketLoss;
 
 	LLIconCtrl	*mIconPresets;
-	LLIconCtrl	*mIconPresets;
 	LLButton	*mBtnVolume;
 	LLTextBox	*mBoxBalance;
 	LLButton	*mMediaToggle;

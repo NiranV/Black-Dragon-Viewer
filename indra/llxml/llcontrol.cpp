@@ -360,13 +360,12 @@ const std::string LLControlGroup::mTypeString[TYPE_COUNT] = { "U32"
                                                              ,"Color4"
                                                              ,"Color3"
                                                              ,"LLSD"
+															 ,"Vector4" //BD - Vector 4
                                                              };
 
 LLControlGroup::LLControlGroup(const std::string& name)
 :	LLInstanceTracker<LLControlGroup, std::string>(name)
 {
-//	//BD - Vector4
-	mTypeString[TYPE_VEC4] = "Vector4";
 }
 
 LLControlGroup::~LLControlGroup()
@@ -1383,7 +1382,7 @@ LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, const 
 		return LLVector4(sd);
 	else
 	{
-		CONTROL_ERRS << "Invalid LLVector4 value for " << control_name << ": " << sd << LL_ENDL;
+		CONTROL_ERRS << "Invalid LLVector4 value for " << control_name << ": " << LLControlGroup::typeEnumToString(type) << " " << sd << LL_ENDL;
 		return LLVector4::zero;
 	}
 }

@@ -32,7 +32,6 @@
 #include "rlvhandler.h"
 #include "rlvlocks.h"
 
-#include "lscript_byteformat.h"
 #include <boost/algorithm/string.hpp>
 
 // ============================================================================
@@ -417,7 +416,7 @@ void RlvUtil::filterNames(std::string& strUTF8Text, bool fFilterLegacy)
 void RlvUtil::filterScriptQuestions(S32& nQuestions, LLSD& sdPayload)
 {
 	// Check SCRIPT_PERMISSION_ATTACH
-	if ( (!gRlvAttachmentLocks.canAttach()) && (LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH] & nQuestions) )
+	/*if ( (!gRlvAttachmentLocks.canAttach()) && (LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH] & nQuestions) )
 	{
 		// Notify the user that we blocked it since they're not allowed to wear any new attachments
 		sdPayload["rlv_blocked"] = RLV_STRING_BLOCKED_PERMATTACH;
@@ -432,7 +431,7 @@ void RlvUtil::filterScriptQuestions(S32& nQuestions, LLSD& sdPayload)
 		nQuestions &= ~LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TELEPORT];		
 	}
 
-	sdPayload["questions"] = nQuestions;
+	sdPayload["questions"] = nQuestions;*/
 }
 
 // Checked: 2010-08-29 (RLVa-1.2.1c) | Added: RLVa-1.2.1c
