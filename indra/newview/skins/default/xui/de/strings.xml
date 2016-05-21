@@ -38,7 +38,7 @@
 		Grafikinitialisierung fehlgeschlagen. Bitte aktualisieren Sie Ihren Grafiktreiber.
 	</string>
 	<string name="AboutHeader">
-		[APP_NAME] [VIEWER_VERSION_0].[VIEWER_VERSION_1].[VIEWER_VERSION_2] ([VIEWER_VERSION_3]) [BUILD_DATE] [BUILD_TIME] ([CHANNEL])
+		[APP_NAME] [VIEWER_VERSION_0].[VIEWER_VERSION_1].[VIEWER_VERSION_2] ([VIEWER_VERSION_3]) ([CHANNEL])
 [[VIEWER_RELEASE_NOTES_URL] [ReleaseNotes]]
 	</string>
 	<string name="AboutCompiler">
@@ -65,7 +65,6 @@ Grafikkarte: [GRAPHICS_CARD]
 		OpenGL Version: [OPENGL_VERSION]
 
 RestrainedLove API: [RLV_VERSION]
-libcurl Version: [LIBCURL_VERSION]
 J2C Decoder Version: [J2C_VERSION]
 Audiotreiber Version: [AUDIO_DRIVER_VERSION]
 LLCEFLib/CEF Version: [LLCEFLIB_VERSION]
