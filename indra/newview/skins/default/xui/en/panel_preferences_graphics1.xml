@@ -2188,7 +2188,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsPerformanceVisible"
 	  layout="topleft"
-	  height="331"
+	  height="316"
 	  auto_resize="false"
       visible="false"
 	  name="performance_layout_panel"
@@ -2612,39 +2612,6 @@ width="510">
  value="7"/>
  </combo_box>-->
       <slider
-      control_name="RenderAutoMuteByteLimit"
-      decimal_digits="0"
-      follows="left|top"
-      height="14"
-      increment="16"
-      initial_value="0"
-      can_edit_text="true"
-      label="Derender Objects > kb:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="20480000"
-      min_val="0"
-      name="RenderAutoMuteByteLimit"
-      top_pad="5"
-      width="349" />
-      <button
- follows="left|top"
- control_name="RenderAutoMuteByteLimit"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <slider
       control_name="RenderAutoMuteSurfaceAreaLimit"
       decimal_digits="0"
       follows="left|top"
@@ -2659,7 +2626,7 @@ width="510">
       max_val="256"
       min_val="0"
       name="RenderAutoMuteSurfaceAreaLimit"
-      top_pad="1"
+      top_pad="5"
       width="319" />
       <button
  follows="left|top"
