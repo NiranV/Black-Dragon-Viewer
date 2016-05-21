@@ -50,6 +50,13 @@
 			<button name="Cancel_yesnocancelbuttons" text="$canceltext"/>
 		</form>
 	</template>
+	<template name="yesnocancelignorebuttons">
+		<form>
+			<button name="Yes" text="$yestext"/>
+			<button name="No" text="$notext"/>
+			<button name="Cancel" text="$canceltext"/>
+		</form>
+	</template>
 	<notification functor="GenericAcknowledge" label="Unbekannte Meldung" name="MissingAlert">
 		Ihre Version von [APP_NAME] kann die gerade empfangene Benachrichtigung nicht anzeigen.  Bitte vergewissern Sie sich, dass Sie den aktuellsten Viewer installiert haben.
 
@@ -1397,7 +1404,7 @@ Benutzen Sie die Pfeiltasten, um sich fortzubewegen.
 Drücken Sie F1 für Hilfe oder für weitere Informationen über [SECOND_LIFE].
 Bitte wählen Sie einen männlichen oder weiblichen Avatar.
 Sie können sich später noch umentscheiden.
-		<usetemplate name="okcancelbuttons" notext="Weiblich" yestext="Männlich"/>
+		<usetemplate name="yesnocancelbuttons" notext="Weiblich" yestext="Männlich" canceltext="Schließen" ignoretext="Einen Avatar wählen wärend der vorherige läd."/>
 	</notification>
 	<notification name="CantTeleportToGrid">
 		Konnte nicht zu [SLURL] teleportieren, da dieser Standort sich auf einem anderen Grid ([GRID]) befindet. Sie befinden sich im Moment auf dem Grid ([CURRENT_GRID]).  Bitte schließen Sie Ihren Viewer und versuchen Sie es erneut.

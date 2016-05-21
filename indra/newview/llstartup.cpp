@@ -2090,9 +2090,14 @@ bool idle_startup()
 			// to generic outfits. JC
 			LLNotificationsUtil::add("WelcomeChooseSex", LLSD(), LLSD(),
 				callback_choose_gender);
-			LLStartUp::setStartupState( STATE_CLEANUP );
+//			//BD - Don't throw us into cleanup state, the above dialog is 99/100 times
+			//	   a false positive and will result in outfit loading to be stopped until
+			//     we actually select an answer, resulting in a default avatar being
+			//     forced uppon us. Just proceed loading, our Avatar might pop up while
+			//     we still read the dialog which also even indicates it but never lets
+			//     it happen because of this.
+			//LLStartUp::setStartupState( STATE_CLEANUP );
 		}
-		
 		display_startup();
 
 		if (gAgent.isOutfitChosen() && (wearables_time > max_wearables_time))
@@ -2521,6 +2526,8 @@ const S32 OPT_MALE = 0;
 const S32 OPT_FEMALE = 1;
 const S32 OPT_TRUST_CERT = 0;
 const S32 OPT_CANCEL_TRUST = 1;
+//BD - Cancel Sex Selection
+const S32 OPT_CANCEL = 2;
 	
 bool callback_choose_gender(const LLSD& notification, const LLSD& response)
 {
@@ -2534,11 +2541,13 @@ bool callback_choose_gender(const LLSD& notification, const LLSD& response)
 		case OPT_MALE:
 			LLStartUp::loadInitialOutfit( gSavedSettings.getString("DefaultMaleAvatar"), "male" );
 			break;
-			
+		case OPT_CLOSED_WINDOW:
         case OPT_FEMALE:
-        case OPT_CLOSED_WINDOW:
+			LLStartUp::loadInitialOutfit(gSavedSettings.getString("DefaultFemaleAvatar"), "female");
+			break;
+//		//BD - Cancel Sex Selection.
+		case OPT_CANCEL:
         default:
-			LLStartUp::loadInitialOutfit( gSavedSettings.getString("DefaultFemaleAvatar"), "female" );
 			break;
 	}
 	return false;

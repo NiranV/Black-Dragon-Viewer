@@ -115,6 +115,25 @@
        text="$canceltext"/>
     </form>
   </template>
+  
+  <template name="yesnocancelignorebuttons">
+    <form>
+      <button
+       index="0"
+       name="Yes"
+       text="$yestext"/>
+      <button
+       index="1"
+       name="No"
+       text="$notext"/>
+      <button
+	   default="true"
+       index="2"
+       name="Cancel"
+       text="$canceltext"/>
+	  <ignore text="$ignoretext"/>
+    </form>
+  </template>
 
   <notification
  functor="GenericAcknowledge"
@@ -3389,7 +3408,9 @@ Use arrow keys to walk.
 Press the F1 key at any time for help or to learn more about [SECOND_LIFE].
 Please choose the male or female avatar. You can change your mind later.
     <usetemplate
-     name="okcancelbuttons"
+     name="yesnocancelignorebuttons"
+	 ignoretext="Choose a new outfit while previous one is loading"
+	 canceltext="Close"
      notext="Female"
      yestext="Male"/>
   </notification>
