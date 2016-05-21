@@ -1672,9 +1672,9 @@ void LLFloaterPreference::setHardwareDefaults()
 	LLFeatureManager::getInstance()->applyRecommendedSettings();
 
 	refreshEnabledGraphics();
+
 	gSavedSettings.setString("PresetGraphicActive", "");
 	LLPresetsManager::getInstance()->triggerChangeSignal();
-
 
 	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
 	child_list_t::const_iterator iter = tabcontainer->getChildList()->begin();
@@ -1693,13 +1693,11 @@ void LLFloaterPreference::setHardwareDefaults()
 void LLFloaterPreference::getControlNames(std::vector<std::string>& names)
 {
 	LLView* view = findChild<LLView>("display");
-	LLFloater* advanced = LLFloaterReg::findTypedInstance<LLFloater>("prefs_graphics_advanced");
-	if (view && advanced)
+	if (view)
 	{
 		std::list<LLView*> stack;
 		stack.push_back(view);
-		stack.push_back(advanced);
-		while(!stack.empty())
+		while (!stack.empty())
 		{
 			// Process view on top of the stack
 			LLView* curview = stack.front();
@@ -2678,8 +2676,7 @@ void LLFloaterPreference::savePreset(const LLSD& user_data)
 	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
 	std::string name = combo->getSimple();
 
-	if (!LLPresetsManager::getInstance()->savePreset(subdirectory, name)
-		&& name != "Default")
+	if (!LLPresetsManager::getInstance()->savePreset(subdirectory, name))
 	{
 		LLSD args;
 		args["NAME"] = name;
@@ -2764,9 +2761,6 @@ LLPanelPreference::LLPanelPreference()
 {
 	mCommitCallbackRegistrar.add("Pref.setControlFalse",	boost::bind(&LLPanelPreference::setControlFalse,this, _2));
 	mCommitCallbackRegistrar.add("Pref.updateMediaAutoPlayCheckbox",	boost::bind(&LLPanelPreference::updateMediaAutoPlayCheckbox, this, _1));
-	mCommitCallbackRegistrar.add("Pref.PrefDelete",	boost::bind(&LLPanelPreference::deletePreset, this, _2));
-	mCommitCallbackRegistrar.add("Pref.PrefSave",	boost::bind(&LLPanelPreference::savePreset, this, _2));
-	mCommitCallbackRegistrar.add("Pref.PrefLoad",	boost::bind(&LLPanelPreference::loadPreset, this, _2));
 }
 
 //virtual
