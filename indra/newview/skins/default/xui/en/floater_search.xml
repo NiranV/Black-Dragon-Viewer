@@ -7,7 +7,6 @@
   layout="topleft"
   min_height="400"
   min_width="400"
-  background_color="FloaterDefaultBackgroundColor"
   name="floater_search"
   save_rect="true"
   save_visibility="true"

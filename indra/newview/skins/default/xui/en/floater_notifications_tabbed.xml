@@ -115,11 +115,11 @@
     </tab_container>
     
     <layout_stack width="335" height="21" top_pad="0" enabled="true" orientation="horizontal"  follows="left|right" name="ButtonsStack">
-      <layout_panel width="100" height="21" enabled="true" orientation="horizontal" auto_resize="true" name="CondenseAllButtonPanel">
+      <layout_panel width="100" height="21" enabled="true" auto_resize="true" name="CondenseAllButtonPanel">
         <button width="100" follows="top|left|right" layout="topleft" top="0" height="21" left="3" label="Collapse all" name="collapse_all_button">
         </button>
       </layout_panel>
-      <layout_panel width="100" height="21" enabled="true" orientation="horizontal" auto_resize="true" name="DeleteAllButtonPanel">
+      <layout_panel width="100" height="21" enabled="true" auto_resize="true" name="DeleteAllButtonPanel">
         <button width="100" follows="top|left|right" layout="topleft" top="0" height="21" left="0" label="Delete all" name="delete_all_button">
         </button>
       </layout_panel>

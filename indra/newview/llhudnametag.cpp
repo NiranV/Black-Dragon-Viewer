@@ -274,7 +274,7 @@ void LLHUDNameTag::renderText(BOOL for_select)
 	mOffsetY = lltrunc(mHeight * ((mVertAlignment == ALIGN_VERT_CENTER) ? 0.5f : 1.f));
 
 	// *TODO: cache this image
-	LLUIImagePtr imagep = LLUI::getUIImage("Rounded_Rect");
+	LLUIImagePtr imagep = LLUI::getUIImage("Name_Rect");
 
 	// *TODO: make this a per-text setting
 	LLColor4 bg_color = LLUIColorTable::instance().getColor("NameTagBackground");
@@ -308,7 +308,7 @@ void LLHUDNameTag::renderText(BOOL for_select)
 	imagep->draw3D(render_position, x_pixel_vec, y_pixel_vec, screen_rect, bg_color);
 	if (mLabelSegments.size())
 	{
-		LLUIImagePtr rect_top_image = LLUI::getUIImage("Rounded_Rect_Top");
+		LLUIImagePtr rect_top_image = LLUI::getUIImage("Name_Rect");
 		LLRect label_top_rect = screen_rect;
 		const S32 label_height = ll_round((mFontp->getLineHeight() * (F32)mLabelSegments.size() + (VERTICAL_PADDING / 3.f)));
 		label_top_rect.mBottom = label_top_rect.mTop - label_height;
