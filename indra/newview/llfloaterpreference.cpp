@@ -1391,10 +1391,9 @@ void LLFloaterPreference::refreshWarnings()
 	getChild<LLUICtrl>("warning_draw_distance")->setVisible(gPipeline.RenderFarClip > 128);
 	getChild<LLUICtrl>("warning_object_occlusion")->setVisible(gPipeline.RenderDeferred && gPipeline.sUseOcclusion);
 	getChild<LLUICtrl>("warning_avatars_visible")->setVisible(gSavedSettings.getU32("RenderAvatarMaxNonImpostors") > 15);
-	getChild<LLUICtrl>("warning_derender_kb")->setVisible(gSavedSettings.getS32("RenderAutoMuteByteLimit") > 12000000);
-	getChild<LLUICtrl>("warning_derender_m2")->setVisible(gSavedSettings.getS32("RenderAutoMuteSurfaceAreaLimit") > 200);
+	getChild<LLUICtrl>("warning_derender_m2")->setVisible(gSavedSettings.getF32("RenderAutoMuteSurfaceAreaLimit") > 200.f);
 	getChild<LLUICtrl>("warning_derender_ar")->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 120000);
-	getChild<LLUICtrl>("warning_derender_surface")->setVisible(gSavedSettings.getU32("RenderAutoHideSurfaceAreaLimit") > 200);
+	getChild<LLUICtrl>("warning_derender_surface")->setVisible(gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit") > 200.f);
 
 	//BD - Windlight Options
 	getChild<LLUICtrl>("warning_reflection_quality")->setVisible(gSavedSettings.getS32("RenderReflectionRes") > 768);
