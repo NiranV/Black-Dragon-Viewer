@@ -10361,7 +10361,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>0</integer>
+    <integer>120000</integer>
   </map>
   <key>RenderAutoMuteSurfaceAreaLimit</key>
   <map>
