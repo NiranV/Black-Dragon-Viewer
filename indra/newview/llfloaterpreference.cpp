@@ -2873,16 +2873,10 @@ void LLPanelPreference::apply()
 
 void LLPanelPreference::saveSettings()
 {
-	LLFloater* advanced = LLFloaterReg::findTypedInstance<LLFloater>("prefs_graphics_advanced");
-
 	// Save the value of all controls in the hierarchy
 	mSavedValues.clear();
 	std::list<LLView*> view_stack;
 	view_stack.push_back(this);
-	if (advanced)
-	{
-		view_stack.push_back(advanced);
-	}
 	while(!view_stack.empty())
 	{
 		// Process view on top of the stack
@@ -3053,21 +3047,6 @@ static LLPanelInjector<LLPanelPreferencePrivacy> t_pref_privacy("panel_preferenc
 
 BOOL LLPanelPreferenceGraphics::postBuild()
 {
-	LLFloaterReg::showInstance("prefs_graphics_advanced");
-	LLFloaterReg::hideInstance("prefs_graphics_advanced");
-
-// Don't do this on Mac as their braindead GL versioning
-// sets this when 8x and 16x are indeed available
-//
-#if !LL_DARWIN
-	if (gGLManager.mIsIntel || gGLManager.mGLVersion < 3.f)
-	{ //remove FSAA settings above "4x"
-		LLComboBox* combo = getChild<LLComboBox>("fsaa");
-		combo->remove("8x");
-		combo->remove("16x");
-	}
-#endif
-
 	resetDirtyChilds();
 	setPresetText();
 
