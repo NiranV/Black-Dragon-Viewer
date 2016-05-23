@@ -121,8 +121,7 @@ width="510">
 		     left="10"
 		     name="ExternalEditor"
 		     tool_tip="Set an external Script Editor Program to use for LSL Scripts"
-			 label="(e.g.: /usr/bin/gedit -_new_window '%s')"
-			 label_color="LtGray"
+		     label="(e.g.: /usr/bin/gedit -_new_window '%s')"
 		     top_pad="4"
 		     width="475" />
 		     
