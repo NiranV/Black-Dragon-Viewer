@@ -458,7 +458,7 @@
  reference="White_25" />
  <color
  name="InventoryItemLibraryColor"
- reference="EmphasisColor" />
+ reference="LtGray" />
  <color
  name="InventoryItemLinkColor"
  reference="LtGray_50" />
