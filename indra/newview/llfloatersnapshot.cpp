@@ -397,6 +397,7 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshot* floater)
 		break;
 	  case LLSnapshotLivePreview::SNAPSHOT_POSTCARD:
 		layer_type = LLViewerWindow::SNAPSHOT_TYPE_COLOR;
+		shot_format = LLFloaterSnapshot::e_snapshot_format::SNAPSHOT_FORMAT_JPEG;
 		floater->getChild<LLUICtrl>("layer_types")->setValue("colors");
 		setResolution(floater, "postcard_size_combo");
 		break;
@@ -1048,8 +1049,12 @@ void LLFloaterSnapshot::draw()
 		{
 			bool working = impl.getStatus() == Impl::STATUS_WORKING;
 			const LLRect& thumbnail_rect = getThumbnailPlaceholderRect();
-			const S32 thumbnail_w = previewp->getThumbnailWidth();
-			const S32 thumbnail_h = previewp->getThumbnailHeight();
+			S32 thumbnail_w = previewp->getEncodedImageWidth();
+			S32 thumbnail_h = previewp->getEncodedImageHeight();
+
+			F32 ratio = llmax((F32)(thumbnail_w) / (F32)(thumbnail_rect.getWidth()), (F32)(thumbnail_h) / (F32)(thumbnail_rect.getHeight()));
+			thumbnail_w = (S32)((F32)(thumbnail_w) / ratio);
+			thumbnail_h = (S32)((F32)(thumbnail_h) / ratio);
 
 			// calc preview offset within the preview rect
 			const S32 local_offset_x = (thumbnail_rect.getWidth() - thumbnail_w) / 2 ;
@@ -1067,7 +1072,7 @@ void LLFloaterSnapshot::draw()
 					thumbnail_w, thumbnail_h,
 					previewp->getThumbnailImage(), color % alpha);
 
-			previewp->drawPreviewRect(offset_x, offset_y) ;
+			//previewp->drawPreviewRect(offset_x, offset_y) ;
 
 			gGL.pushUIMatrix();
 			LLUI::translate((F32) thumbnail_rect.mLeft, (F32) thumbnail_rect.mBottom);
