@@ -99,8 +99,11 @@ public:
 	LLPipeline();
 	~LLPipeline();
 
-	//BD - Change water reflection resolution on the way
+//	//BD - Change water reflection resolution on the way
 	void handleReflectionChanges();
+
+//	//BD - Shadow Map Allocation
+	void allocateShadowMaps();
 
 	void destroyGL();
 	void restoreGL();

@@ -1102,6 +1102,43 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 	return true;
 }
 
+//BD - Shadow Map Allocation
+void LLPipeline::allocateShadowMaps()
+{
+	LLVector4 scale = RenderShadowResolution;
+	LLVector3 proj_scale = RenderProjectorShadowResolution;
+	//BD - First check if we changed projectors, otherwise its a clear case of sun shadows.
+	if (proj_scale.mV[0] != mShadow[4].getWidth()
+		|| proj_scale.mV[1] != mShadow[4].getHeight())
+	{
+		//BD - Projectors mismatched.
+		for (U32 i = 4; i < 6; i++)
+		{
+			//BD - Clear the projectormap.
+			mShadow[i].release();
+
+			//BD - Now reallocate the released map with the new resolution.
+			mShadow[i].allocate(U32(proj_scale.mV[VX]), U32(proj_scale.mV[VY]), 0, TRUE, FALSE);
+		}
+	}
+	else
+	{
+		//BD - Sun Shadows mismatched.
+		for (U32 i = 0; i < 4; i++)
+		{
+			//BD - We only ever clear one here so we keep the reload hiccups as tiny as possible.
+			if (scale.mV[i] != mShadow[i].getWidth())
+			{
+				//BD - Clear the shadowmap.
+				mShadow[i].release();
+
+				//BD - Now reallocate the released map with the new resolution.
+				mShadow[i].allocate(U32(scale.mV[i]), U32(scale.mV[i]), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE);
+			}
+		}
+	}
+}
+
 //static
 void LLPipeline::updateRenderBump()
 {
