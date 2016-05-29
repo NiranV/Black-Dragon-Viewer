@@ -205,6 +205,27 @@ width="800">
 	  min_height="32"
 	  name="navigation_layout_panel"
 	  width="272">
+		<layout_stack
+		follows="all"
+		height="32"
+		layout="topleft"
+		border_size="-5"
+		left="0"
+		mouse_opaque="false"
+		open_time_constant="0.11"
+		close_time_constant="0.11"
+		name="nvpb_stack"
+		orientation="horizontal"
+		top="0"
+		right="-290"
+		width="272">
+		<layout_panel
+		follows="top|left|right"
+		auto_resize="true"
+		layout="topleft"
+		height="30"
+		name="navigationbar_layout_panel"
+		width="272">
 		 <pull_button
 		 follows="left|top"
 		 direction="down"
@@ -253,15 +274,55 @@ width="800">
 		 label="Location"
 		 layout="topleft"
 		 left="147"
-		 right="-290"
 		 max_chars="254"
 		 mouse_opaque="false"
 		 name="location_combo"
 		 top="7"
-		 width="266">
+		 width="126">
 		 <combo_list
 		 mouse_wheel_opaque="true"/>
 		 </location_input>
+		</layout_panel>
+		 <layout_panel
+		visibility_control="ShowTopSearchBar"
+		follows="top|left|right"
+		auto_resize="false"
+		layout="topleft"
+		visible="false"
+		height="30"
+		name="navigation_layout_panel"
+		width="120">
+		  <search_combo_box
+		  follows="left|top"
+		  height="23"
+		  label="Search"
+		  layout="topleft"
+		  left="0"
+		  mouse_opaque="false"
+		  name="search_combo_box"
+		  tool_tip="Search for something in Second Life"
+		  top="7"
+		  width="118" >
+		  <combo_editor
+		  background_image="TextField_Off"
+		  background_image_disabled="TextField_Disabled"
+		  background_image_focused="TextField_Active"
+		  label="Search"
+		  text_pad_left="20" 
+		  text_pad_right="4" 
+		  name="search_combo_editor"/>
+		  <search_button 
+		  left_pad="4" />
+		  <combo_list
+		  draw_border="false"
+		  border.highlight_light_color="FocusColor"
+		  border.highlight_dark_color="FocusColor"
+		  border.shadow_light_color="FocusColor"
+		  border.shadow_dark_color="FocusColor"
+		  mouse_wheel_opaque="true" />
+		  </search_combo_box>
+		</layout_panel>
+		</layout_stack>
 	  </layout_panel>
    </layout_stack>
 </panel>
