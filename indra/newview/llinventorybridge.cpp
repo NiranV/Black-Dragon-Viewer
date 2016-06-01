@@ -4493,7 +4493,7 @@ void LLFolderBridge::callback_dropCategoryIntoFolder(const LLSD& notification, c
     if (option == 0) // YES
     {
         std::string tooltip_msg;
-        dragCategoryIntoFolder(inv_category, TRUE, tooltip_msg, FALSE);
+		dragCategoryIntoFolder(inv_category, TRUE, tooltip_msg, FALSE, FALSE);
     }
 }
 
