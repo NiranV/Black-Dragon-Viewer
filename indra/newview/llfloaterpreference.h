@@ -188,9 +188,6 @@ public:
 	void onClickSetAnyKey(LLUICtrl* ctrl, const LLSD& param);
 
 //	//BD - Expandable Tabs
-	void onTab(LLUICtrl* ctrl, const LLSD& param);
-
-//	//BD - Expandable Tabs
 	void toggleTabs();
 
 //	//BD - Vector4

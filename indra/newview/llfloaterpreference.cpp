@@ -807,7 +807,7 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.DefaultControls",		boost::bind(&LLFloaterPreference::onDefaultControls, this));
 
 //	//BD - Expandable Tabs
-	mCommitCallbackRegistrar.add("Pref.Tab",					boost::bind(&LLFloaterPreference::onTab, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.Tab",					boost::bind(&LLFloaterPreference::toggleTabs, this));
 
 //	//BD - Vector4
 	mCommitCallbackRegistrar.add("Pref.ArrayVec4X",				boost::bind(&LLFloaterPreference::onCommitVec4X, this, _1, _2));
@@ -1209,26 +1209,6 @@ void LLFloaterPreference::refreshKeys()
 		}
 	}
 	infile.close();
-}
-
-//BD - Expandable Tabs
-void LLFloaterPreference::onTab(LLUICtrl* ctrl, const LLSD& param)
-{
-	getChild<LLLayoutPanel>(param.asString())->setVisible(ctrl->getValue());
-	LLRect rect = getChild<LLPanel>("gfx_scroll_panel")->getRect();
-	S32 modifier = getChild<LLLayoutPanel>(param.asString())->getRect().getHeight();
-	modifier -= 5;
-	if (ctrl->getValue().asBoolean())
-	{
-		rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), rect.getHeight() + modifier);
-		getChild<LLLayoutStack>("gfx_stack")->translate(0, modifier);
-	}
-	else
-	{
-		rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), rect.getHeight() - modifier);
-		getChild<LLLayoutStack>("gfx_stack")->translate(0, -modifier);
-	}
-	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
 }
 
 //BD - Tab Toggles
