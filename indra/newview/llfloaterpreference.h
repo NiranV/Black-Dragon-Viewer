@@ -150,6 +150,8 @@ protected:
 	//void onVertexShaderEnable();
 	// callback for when client turns on impostors
 	void onAvatarImpostorsEnable();
+    // callback for when enhanced skeleton support checkbox toggled.
+    void onEnhancedSkeletonEnable(LLUICtrl *ctrl);
 	
 public:
 	// This function squirrels away the current values of the controls so that

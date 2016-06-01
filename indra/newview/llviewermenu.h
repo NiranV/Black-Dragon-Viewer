@@ -204,7 +204,7 @@ extern LLContextMenu* gAttachScreenPieMenu;
 extern LLContextMenu* gDetachScreenPieMenu;
 extern LLContextMenu* gAttachPieMenu;
 extern LLContextMenu* gDetachPieMenu;
-extern LLContextMenu* gAttachBodyPartPieMenus[8];
-extern LLContextMenu* gDetachBodyPartPieMenus[8];
+extern LLContextMenu* gAttachBodyPartPieMenus[9];
+extern LLContextMenu* gDetachBodyPartPieMenus[9];
 
 #endif

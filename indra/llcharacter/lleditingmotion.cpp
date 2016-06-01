@@ -135,6 +135,7 @@ LLMotion::LLMotionInitStatus LLEditingMotion::onInitialize(LLCharacter *characte
 	addJointState( mWristState );
 
 	// propagate joint positions to kinematic chain
+    // SL-315
 	mParentJoint.setPosition(	mParentState->getJoint()->getWorldPosition() );
 	mShoulderJoint.setPosition(	mShoulderState->getJoint()->getPosition() );
 	mElbowJoint.setPosition(	mElbowState->getJoint()->getPosition() );
@@ -169,6 +170,7 @@ LLMotion::LLMotionInitStatus LLEditingMotion::onInitialize(LLCharacter *characte
 BOOL LLEditingMotion::onActivate()
 {
 	// propagate joint positions to kinematic chain
+    // SL-315
 	mParentJoint.setPosition(	mParentState->getJoint()->getWorldPosition() );
 	mShoulderJoint.setPosition(	mShoulderState->getJoint()->getPosition() );
 	mElbowJoint.setPosition(	mElbowState->getJoint()->getPosition() );
@@ -207,6 +209,7 @@ BOOL LLEditingMotion::onUpdate(F32 time, U8* joint_mask)
 	focus_pt += mCharacter->getCharacterPosition();
 
 	// propagate joint positions to kinematic chain
+    // SL-315
 	mParentJoint.setPosition(	mParentState->getJoint()->getWorldPosition() );
 	mShoulderJoint.setPosition(	mShoulderState->getJoint()->getPosition() );
 	mElbowJoint.setPosition(	mElbowState->getJoint()->getPosition() );
@@ -243,7 +246,8 @@ BOOL LLEditingMotion::onUpdate(F32 time, U8* joint_mask)
 			" and focus point " << focus_pt << LL_ENDL;
 		target.setVec(1.f, 1.f, 1.f);
 	}
-	
+
+    // SL-315
 	mTarget.setPosition( target + mParentJoint.getPosition());
 
 //	LL_INFOS() << "Point At: " << mTarget.getPosition() << LL_ENDL;

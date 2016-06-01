@@ -67,6 +67,7 @@
 #include "llvowlsky.h"
 #include "llrender.h"
 #include "llnavigationbar.h"
+#include "llnotificationsutil.h"
 #include "llfloatertools.h"
 #include "llfloatersnapshot.h"
 #include "llpaneloutfitsinventory.h"
@@ -125,6 +126,19 @@ static bool handleTerrainDetailChanged(const LLSD& newvalue)
 	return true;
 }
 
+
+static bool handleDebugAvatarJointsChanged(const LLSD& newvalue)
+{
+    std::string new_string = newvalue.asString();
+    LLJoint::setDebugJointNames(new_string);
+    return true;
+}
+
+static bool handleDeferredDebugSettingChanged(const LLSD& newvalue)
+{
+    LLNotificationsUtil::add("ChangeDeferredDebugSetting");
+    return true;
+}
 
 static bool handleSetShaderChanged(const LLSD& newvalue)
 {
@@ -847,6 +861,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("SpellCheck")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));
 	gSavedSettings.getControl("SpellCheckDictionary")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));
 	gSavedSettings.getControl("LoginLocation")->getSignal()->connect(boost::bind(&handleLoginLocationChanged));
+	gSavedSettings.getControl("IncludeEnhancedSkeleton")->getCommitSignal()->connect(boost::bind(&handleDeferredDebugSettingChanged, _2));
+    gSavedSettings.getControl("DebugAvatarJoints")->getCommitSignal()->connect(boost::bind(&handleDebugAvatarJointsChanged, _2));
 	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
 	
 //	//BD - Special Debugs and handles

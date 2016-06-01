@@ -789,6 +789,7 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.LogPath",				boost::bind(&LLFloaterPreference::onClickLogPath, this));
 	mCommitCallbackRegistrar.add("Pref.HardwareDefaults",		boost::bind(&LLFloaterPreference::setHardwareDefaults, this));
 	mCommitCallbackRegistrar.add("Pref.AvatarImpostorsEnable",	boost::bind(&LLFloaterPreference::onAvatarImpostorsEnable, this));
+	mCommitCallbackRegistrar.add("Pref.EnhancedSkeletonEnable",	boost::bind(&LLFloaterPreference::onEnhancedSkeletonEnable, this, _1));
 	mCommitCallbackRegistrar.add("Pref.UpdateSliderText",		boost::bind(&LLFloaterPreference::refreshUI,this));
 	mCommitCallbackRegistrar.add("Pref.applyUIColor",			boost::bind(&LLFloaterPreference::applyUIColor, this ,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.getUIColor",				boost::bind(&LLFloaterPreference::getUIColor, this ,_1, _2));
@@ -1626,6 +1627,16 @@ void LLFloaterPreference::onAvatarImpostorsEnable()
 	refreshEnabledGraphics();
 }
 
+void LLFloaterPreference::onEnhancedSkeletonEnable(LLUICtrl *ctrl)
+{
+    bool enabled = ctrl->getValue().asBoolean();
+    bool curr_enabled = gSavedSettings.getBOOL("IncludeEnhancedSkeleton"); 
+    if (enabled != curr_enabled)
+    {
+        gSavedSettings.setBOOL("IncludeEnhancedSkeleton",enabled);
+    }
+}
+
 //static
 void LLFloaterPreference::initDoNotDisturbResponse()
 	{
@@ -2039,6 +2050,10 @@ void LLFloaterPreference::refreshEnabledState()
 	//bool bumpshiny = gGLManager.mHasCubeMap && LLCubeMap::sUseCubeMaps && LLFeatureManager::getInstance()->isFeatureAvailable("RenderObjectBump");
 	//bumpshiny_ctrl->setEnabled(bumpshiny ? TRUE : FALSE);
 
+    LLCheckBoxCtrl* ctrl_enhanced_skel = getChild<LLCheckBoxCtrl>("AvatarEnhancedSkeleton");
+    bool enhanced_skel_enabled = gSavedSettings.getBOOL("IncludeEnhancedSkeleton");
+    ctrl_enhanced_skel->setValue(enhanced_skel_enabled);
+    
 	// Avatar Mode
 	// Enable Avatar Shaders
 	//LLCheckBoxCtrl* ctrl_avatar_vp = getChild<LLCheckBoxCtrl>("AvatarVertexProgram");
@@ -2552,7 +2567,7 @@ void LLFloaterPreference::onClickAutoReplace()
 
 void LLFloaterPreference::onClickSpellChecker()
 {
-		LLFloaterReg::showInstance("prefs_spellchecker");
+    LLFloaterReg::showInstance("prefs_spellchecker");
 }
 
 void LLFloaterPreference::onClickPermsDefault()
