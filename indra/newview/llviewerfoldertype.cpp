@@ -135,14 +135,13 @@ LLViewerFolderDictionary::LLViewerFolderDictionary()
     addEntry(LLFolderType::FT_OUTFIT,               new ViewerFolderEntry("New Outfit",             "Inv_LookFolderOpen",   "Inv_LookFolderClosed",     TRUE,      false));
     addEntry(LLFolderType::FT_MY_OUTFITS,           new ViewerFolderEntry("My Outfits",             "Inv_SysOpen",          "Inv_SysClosed",            TRUE,      true));
     addEntry(LLFolderType::FT_MESH,                 new ViewerFolderEntry("Meshes",                 "Inv_SysOpen",          "Inv_SysClosed",            FALSE,     false));
-        
-	bool boxes_invisible = !gSavedSettings.getBOOL("InventoryOutboxMakeVisible");
-	addEntry(LLFolderType::FT_INBOX, 				new ViewerFolderEntry("Received Items",			"Inv_SysOpen",			"Inv_SysClosed",		FALSE,     boxes_invisible));
+
+	addEntry(LLFolderType::FT_INBOX, 				new ViewerFolderEntry("Received Items",			"Inv_SysOpen",			"Inv_SysClosed",		FALSE,     false));
 	addEntry(LLFolderType::FT_OUTBOX, 				new ViewerFolderEntry("Merchant Outbox",		"Inv_SysOpen",			"Inv_SysClosed",		FALSE,     true));
 
     addEntry(LLFolderType::FT_BASIC_ROOT,           new ViewerFolderEntry("Basic Root",             "Inv_SysOpen",          "Inv_SysClosed",            FALSE,     true));
                  
-	addEntry(LLFolderType::FT_MARKETPLACE_LISTINGS, new ViewerFolderEntry("Marketplace Listings",   "Inv_SysOpen",			"Inv_SysClosed",		FALSE,     boxes_invisible));
+	addEntry(LLFolderType::FT_MARKETPLACE_LISTINGS, new ViewerFolderEntry("Marketplace Listings",   "Inv_SysOpen",			"Inv_SysClosed",		FALSE,     false));
 	addEntry(LLFolderType::FT_MARKETPLACE_STOCK,    new ViewerFolderEntry("New Stock",              "Inv_StockFolderOpen",	"Inv_StockFolderClosed",		FALSE,     false, "default"));
 	addEntry(LLFolderType::FT_MARKETPLACE_VERSION,  new ViewerFolderEntry("New Version",            "Inv_VersionFolderOpen","Inv_VersionFolderClosed",		FALSE,     false, "default"));
 
