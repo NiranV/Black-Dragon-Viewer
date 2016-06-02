@@ -383,7 +383,10 @@ BOOL LLVOAvatarSelf::buildMenus()
 	params.name(params.label);
 	gAttachBodyPartPieMenus[3] = LLUICtrlFactory::create<LLContextMenu> (params);
 
-	gAttachBodyPartPieMenus[4] = NULL;
+	params.label(LLTrans::getString("BodyPartsHands"));
+	params.name(params.label);
+	gAttachBodyPartPieMenus[4] = LLUICtrlFactory::create<LLContextMenu>(params);
+	//gAttachBodyPartPieMenus[4] = NULL;
 
 	params.label(LLTrans::getString("BodyPartsLeftLeg"));
 	params.name(params.label);
@@ -415,7 +418,10 @@ BOOL LLVOAvatarSelf::buildMenus()
 	params.name(params.label);
 	gDetachBodyPartPieMenus[3] = LLUICtrlFactory::create<LLContextMenu> (params);
 
-	gDetachBodyPartPieMenus[4] = NULL;
+	params.label(LLTrans::getString("BodyPartsHands"));
+	params.name(params.label);
+	gDetachBodyPartPieMenus[4] = LLUICtrlFactory::create<LLContextMenu>(params);
+	//gDetachBodyPartPieMenus[4] = NULL;
 
 	params.label(LLTrans::getString("BodyPartsLeftLeg"));
 	params.name(params.label);
@@ -429,12 +435,21 @@ BOOL LLVOAvatarSelf::buildMenus()
 	params.name(params.label);
 	gDetachBodyPartPieMenus[7] = LLUICtrlFactory::create<LLContextMenu> (params);
 
+	params.label(LLTrans::getString("BodyPartsEnhancedSkeleton"));
+	params.name(params.label);
+	gDetachBodyPartPieMenus[8] = LLUICtrlFactory::create<LLContextMenu>(params);
+
 	//-------------------------------------------------------------------------
 	// build the attach and detach pie menus
 	//-------------------------------------------------------------------------
+	
+	//BD - Pie Menu Bento Compatibility
+	PieMenu::Params pieParams;
+	//pieParams.label(LLTrans::getString("BodyPartsEnhancedSkeleton"));
+	//pieParams.name(pieParams.label);
+	//gPieAttachBodyPartMenus[0] = LLUICtrlFactory::create<PieMenu>(pieParams);
 	gPieAttachBodyPartMenus[0] = NULL;
 
-	PieMenu::Params pieParams;
 	pieParams.label(LLTrans::getString("BodyPartsRightArm"));
 	pieParams.name(pieParams.label);
 	pieParams.visible(false);
@@ -448,7 +463,11 @@ BOOL LLVOAvatarSelf::buildMenus()
 	pieParams.name(pieParams.label);
 	gPieAttachBodyPartMenus[3] = LLUICtrlFactory::create<PieMenu> (pieParams);
 
-	gPieAttachBodyPartMenus[4] = NULL;
+	//BD - Pie Menu Bento Compatibility
+	pieParams.label(LLTrans::getString("BodyPartsHands"));
+	pieParams.name(pieParams.label);
+	gPieAttachBodyPartMenus[4] = LLUICtrlFactory::create<PieMenu>(pieParams);
+	//gPieAttachBodyPartMenus[4] = NULL;
 
 	pieParams.label(LLTrans::getString("BodyPartsLeftLeg"));
 	pieParams.name(pieParams.label);
@@ -462,6 +481,10 @@ BOOL LLVOAvatarSelf::buildMenus()
 	pieParams.name(pieParams.label);
 	gPieAttachBodyPartMenus[7] = LLUICtrlFactory::create<PieMenu> (pieParams);
 
+	//BD - Pie Menu Bento Compatibility
+	//pieParams.label(LLTrans::getString("BodyPartsEnhancedSkeleton"));
+	//pieParams.name(pieParams.label);
+	//gPieDetachBodyPartMenus[4] = LLUICtrlFactory::create<PieMenu>(pieParams);
 	gPieDetachBodyPartMenus[0] = NULL;
 
 	pieParams.label(LLTrans::getString("BodyPartsRightArm"));
@@ -476,7 +499,11 @@ BOOL LLVOAvatarSelf::buildMenus()
 	pieParams.name(pieParams.label);
 	gPieDetachBodyPartMenus[3] = LLUICtrlFactory::create<PieMenu> (pieParams);
 
-	gPieDetachBodyPartMenus[4] = NULL;
+	//BD - Pie Menu Bento Compatibility
+	pieParams.label(LLTrans::getString("BodyPartsHands"));
+	pieParams.name(pieParams.label);
+	gPieDetachBodyPartMenus[4] = LLUICtrlFactory::create<PieMenu>(pieParams);
+	//gPieDetachBodyPartMenus[4] = NULL;
 
 	pieParams.label(LLTrans::getString("BodyPartsLeftLeg"));
 	pieParams.name(pieParams.label);
@@ -490,16 +517,16 @@ BOOL LLVOAvatarSelf::buildMenus()
 	pieParams.name(pieParams.label);
 	gPieDetachBodyPartMenus[7] = LLUICtrlFactory::create<PieMenu> (pieParams);
 
-	params.label(LLTrans::getString("BodyPartsEnhancedSkeleton"));
-	params.name(params.label);
-	gDetachBodyPartPieMenus[8] = LLUICtrlFactory::create<LLContextMenu>(params);
-
 	for (S32 i = 0; i < 9; i++)
 	{
 		if (gAttachBodyPartPieMenus[i])
 		{
 			gAttachPieMenu->appendContextSubMenu( gAttachBodyPartPieMenus[i] );
-			gPieAttachMenu->appendContextSubMenu( gPieAttachBodyPartMenus[i] );	// pie menu
+			//BD - Pie Menu Bento Compatibility
+			if (i < 8)
+			{
+				gPieAttachMenu->appendContextSubMenu(gPieAttachBodyPartMenus[i]);	// pie menu
+			}
 		}
 		else
 		{
@@ -552,7 +579,10 @@ BOOL LLVOAvatarSelf::buildMenus()
 		if (gDetachBodyPartPieMenus[i])
 		{
 			gDetachPieMenu->appendContextSubMenu( gDetachBodyPartPieMenus[i] );
-			gPieDetachMenu->appendContextSubMenu( gPieDetachBodyPartMenus[i] );	// pie menu
+			if (i < 8)
+			{
+				gPieDetachMenu->appendContextSubMenu(gPieDetachBodyPartMenus[i]);	// pie menu
+			}
 		}
 		else
 		{
@@ -764,23 +794,27 @@ BOOL LLVOAvatarSelf::buildMenus()
 				item = LLUICtrlFactory::create<LLMenuItemCallGL>(item_params);
 				gDetachBodyPartPieMenus[group]->addChild(item);
 
-				PieSlice::Params slice_params;
-				slice_params.name = attachment->getName();
-				slice_params.label = LLTrans::getString(attachment->getName());
-				slice_params.on_click.function_name = "Object.AttachToAvatar";
-				slice_params.on_click.parameter = attach_index;
-				slice_params.on_enable.function_name = "Object.EnableWear";
-				slice_params.on_enable.parameter = attach_index;
+				//BD - Skip all new bones and skip hands.
+				if (attach_index < 41)
+				{
+					PieSlice::Params slice_params;
+					slice_params.name = attachment->getName();
+					slice_params.label = LLTrans::getString(attachment->getName());
+					slice_params.on_click.function_name = "Object.AttachToAvatar";
+					slice_params.on_click.parameter = attach_index;
+					slice_params.on_enable.function_name = "Object.EnableWear";
+					slice_params.on_enable.parameter = attach_index;
 
-				PieSlice* slice = LLUICtrlFactory::create<PieSlice>(slice_params);
-				gPieAttachBodyPartMenus[group]->addChild(slice);
+					PieSlice* slice = LLUICtrlFactory::create<PieSlice>(slice_params);
+					gPieAttachBodyPartMenus[group]->addChild(slice);
 
-				slice_params.on_click.function_name = "Attachment.DetachFromPoint";
-				slice_params.on_click.parameter = attach_index;
-				slice_params.on_enable.function_name = "Attachment.PointFilled";
-				slice_params.on_enable.parameter = attach_index;
-				slice = LLUICtrlFactory::create<PieSlice>(slice_params);
-				gPieDetachBodyPartMenus[group]->addChild(slice);
+					slice_params.on_click.function_name = "Attachment.DetachFromPoint";
+					slice_params.on_click.parameter = attach_index;
+					slice_params.on_enable.function_name = "Attachment.PointFilled";
+					slice_params.on_enable.parameter = attach_index;
+					slice = LLUICtrlFactory::create<PieSlice>(slice_params);
+					gPieDetachBodyPartMenus[group]->addChild(slice);
+				}
 			}
 		}
 	}

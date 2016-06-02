@@ -2261,7 +2261,8 @@ For AI Character: Get the closest navigable point to the point provided.
 	<string name="BodyPartsLeftLeg">Left Leg</string>
 	<string name="BodyPartsTorso">Torso</string>
 	<string name="BodyPartsRightLeg">Right Leg</string>
-    <string name="BodyPartsEnhancedSkeleton">Enhanced Skeleton</string>
+	<string name="BodyPartsHands">Hands</string>
+	<string name="BodyPartsEnhancedSkeleton">Enhanced Skeleton</string>
 
 	<!-- slider -->
 	<string name="GraphicsQualityLow">Low</string>

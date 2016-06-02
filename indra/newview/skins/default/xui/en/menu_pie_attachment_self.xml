@@ -22,7 +22,13 @@ name="Attachment Pie">
             parameter="friends_panel" />
         </pie_slice>
         <pie_separator name="seperator"/>
-        <pie_separator name="seperator"/>
+        <pie_slice
+        enabled="false"
+        label="Skeleton;;Reset"
+        name="Reset Skeleton">
+            <pie_slice.on_click
+            function="Avatar.ResetSkeleton" />
+        </pie_slice>
         <pie_slice
         enabled="false"
         label="Particle;Owner;Block"
