@@ -25,7 +25,6 @@ name="Avatar Pie">
         </pie_slice>
         <pie_separator name="seperator"/>
         <pie_slice
-        enabled="false"
         label="Skeleton;;Reset"
         name="Reset Skeleton">
             <pie_slice.on_click

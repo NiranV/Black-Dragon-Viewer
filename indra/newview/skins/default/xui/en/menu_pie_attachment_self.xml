@@ -30,7 +30,6 @@ name="Attachment Pie">
             function="Avatar.ResetSkeleton" />
         </pie_slice>
         <pie_slice
-        enabled="false"
         label="Particle;Owner;Block"
         name="Mute Particle">
             <pie_slice.on_click
