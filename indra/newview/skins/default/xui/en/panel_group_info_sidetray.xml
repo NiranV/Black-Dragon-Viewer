@@ -110,7 +110,7 @@
      name="roles_tab_container"
      tab_position="top"
      tab_height="21"
-     tab_min_width="57"
+     tab_min_width="56"
      top_pad="13"
      width="316">
                    <panel
