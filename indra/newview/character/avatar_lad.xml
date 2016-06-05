@@ -14,7 +14,7 @@
      location="ATTACH_CHEST"
      position="0.15 0 -0.1"
      rotation="0 90 90"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="2"
@@ -36,7 +36,7 @@
      location="ATTACH_LSHOULDER"
      position="0 0 0.08"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="4"
@@ -47,11 +47,12 @@
      location="ATTACH_RSHOULDER"
      position="0 0 0.08"
      rotation="0 0 0"
-   visible_in_first_person="true"/>
+     visible_in_first_person="true"/>
 
     <attachment_point
      id="5"
      group="4"
+     pie_slice="4"
      name="Left Hand"
      joint="mWristLeft"
      location="ATTACH_LHAND"
@@ -62,7 +63,8 @@
 
     <attachment_point
      id="6"
-     group="0"
+     group="4"
+     pie_slice="0"
      name="Right Hand"
      joint="mWristRight"
      location="ATTACH_RHAND"
@@ -80,7 +82,7 @@
      location="ATTACH_LFOOT"
      position="0 0.0 0.0"
      rotation="0 0 0"
-   visible_in_first_person="true"/>
+     visible_in_first_person="true"/>
 
     <attachment_point
      id="8"
@@ -91,7 +93,7 @@
      location="ATTACH_RFOOT"
      position="0 0.0 0.0"
      rotation="0 0 0"
-   visible_in_first_person="true"/>
+     visible_in_first_person="true"/>
 
     <attachment_point
      id="9"
@@ -102,7 +104,7 @@
      location="ATTACH_BACK"
      position="-0.15 0 -0.1"
      rotation="0 -90 90"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="10"
@@ -113,7 +115,7 @@
      location="ATTACH_PELVIS"
      position="0 0 -0.15"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="11"
@@ -124,7 +126,7 @@
      location="ATTACH_MOUTH"
      position="0.12 0 0.001"
      rotation="0 0 0"
-   visible_in_first_person="false"/>
+     visible_in_first_person="false"/>
 
     <attachment_point
      id="12"
@@ -135,7 +137,7 @@
      location="ATTACH_CHIN"
      position="0.12 0 -0.04"
      rotation="0 0 0"
-   visible_in_first_person="false" />
+     visible_in_first_person="false" />
 
     <attachment_point
      id="13"
@@ -146,7 +148,7 @@
      location="ATTACH_LEAR"
      position="0.015 0.08 0.017"
      rotation="0 0 0"
-   visible_in_first_person="false" />
+     visible_in_first_person="false" />
 
     <attachment_point
      id="14"
@@ -157,7 +159,7 @@
      location="ATTACH_REAR"
      position="0.015 -0.08 0.017"
      rotation="0 0 0"
-   visible_in_first_person="false" />
+     visible_in_first_person="false" />
 
     <attachment_point
      id="15"
@@ -168,7 +170,7 @@
      location="ATTACH_LEYE"
      position="0 0 0"
      rotation="0 0 0"
-   visible_in_first_person="false"/>
+     visible_in_first_person="false"/>
 
     <attachment_point
      id="16"
@@ -179,7 +181,7 @@
      location="ATTACH_REYE"
      position="0 0 0"
      rotation="0 0 0"
-   visible_in_first_person="false" />
+     visible_in_first_person="false" />
 
     <attachment_point
      id="17"
@@ -190,7 +192,7 @@
      location="ATTACH_NOSE"
      position="0.1 0 0.05"
      rotation="0 0 0"
-   visible_in_first_person="false"/>
+     visible_in_first_person="false"/>
 
     <attachment_point
      id="18"
@@ -201,7 +203,7 @@
      location="ATTACH_RUARM"
      position="0.01 -0.13 0.01"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="19"
@@ -212,7 +214,7 @@
      location="ATTACH_RLARM"
      position="0 -0.12 0"
      rotation="0 0 0"
-   visible_in_first_person="true"/>
+     visible_in_first_person="true"/>
 
     <attachment_point
      id="20"
@@ -223,7 +225,7 @@
      location="ATTACH_LUARM"
      position="0.01 0.15 -0.01"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="21"
@@ -234,7 +236,7 @@
      location="ATTACH_LLARM"
      position="0 0.12 0"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="22"
@@ -245,7 +247,7 @@
      location="ATTACH_RHIP"
      position="0 0 0"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="23"
@@ -256,7 +258,7 @@
      location="ATTACH_RULEG"
      position="-0.017 0.041 -0.310"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="24"
@@ -267,7 +269,7 @@
      location="ATTACH_RLLEG"
      position="-0.044 -0.007 -0.262"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="25"
@@ -278,7 +280,7 @@
      location="ATTACH_LHIP"
      position="0 0 0"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="26"
@@ -289,7 +291,7 @@
      location="ATTACH_LULEG"
      position="-0.017 -0.041 -0.310"
      rotation="0 0 0"
-   visible_in_first_person="true"/>
+     visible_in_first_person="true"/>
 
     <attachment_point
      id="27"
@@ -300,7 +302,7 @@
      location="ATTACH_LLLEG"
      position="-0.044 -0.007 -0.262"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="28"
@@ -311,7 +313,7 @@
      location="ATTACH_BELLY"
      position="0.092 0.0 0.088"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="29"
@@ -322,7 +324,7 @@
      location="ATTACH_LEFT_PEC"
      position="0.104 0.082 0.247"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
      id="30"
@@ -333,7 +335,7 @@
      location="ATTACH_RIGHT_PEC"
      position="0.104 -0.082 0.247"
      rotation="0 0 0"
-   visible_in_first_person="true" />
+     visible_in_first_person="true" />
 
     <attachment_point
        id="31"
