@@ -27,7 +27,7 @@
      name="roles_tab_container"
      tab_position="top"
      tab_height="21"
-     tab_min_width="103"
+     tab_min_width="76"
      top="0"
      width="318">
         <panel
@@ -767,5 +767,129 @@ things in this group. There&apos;s a broad variety of Abilities.
          </panel>
             </scroll_container>
         </panel>
+        <panel
+     border="false"
+     height="303"
+     label="Banned"
+     layout="topleft"
+     left="0"
+     right="-1"
+     help_topic="roles_banlist_tab"
+     name="banlist_sub_tab"
+     class="panel_group_banlist_subtab"
+     tool_tip="View the banned residents from this group."
+     width="310">
+      <panel.string
+       name="help_text">
+        Any resident on the ban list will be unable to join the group.
+      </panel.string>
+      <panel.string
+       name="ban_count_template">
+        Ban count:
+[COUNT] / [LIMIT]
+      </panel.string>
+      <scroll_container
+         color="Transparent"
+         follows="all"
+         layout="topleft"
+         mouse_opaque="false"
+         left="0"
+         name="banned_scroll"
+         opaque="true"
+         height="303"
+         width="316"
+         top="1">
+         <panel
+         border="false"
+         follows="top|left|right"
+         height="432"
+         width="300"
+         layout="topleft"
+         left="0"
+         name="banned_panel">
+      <button
+      follows="top|left"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_overlay="AddItem_Off"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+      height="25"
+      layout="topleft"
+      left="5"
+      top="5"
+      tool_tip="Ban residents from your group"
+      name="ban_create"
+      width="31" />
+      <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="1"
+         top="5"
+         width="200" />
+      <text
+        type="string"
+        height="25"
+        left_delta="3"
+        top_delta="0"
+        line_spacing.pixels="0"
+        follows="top|left|right"
+        layout="topleft"
+        name="ban_count"
+        width="197"/>
+         <button
+      follows="top|right"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_overlay="Refresh_Off"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+      height="25"
+      layout="topleft"
+      left_pad="1"
+      top_delta="0"
+      tool_tip="Ban residents from your group"
+      name="ban_refresh"
+      width="31" />
+            <button
+             height="25"
+             follows="top|right"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_overlay="TrashItem_Off"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             layout="topleft"
+             left_pad="1"
+             top_delta="0"
+             tool_tip="Unban selected residents from your group"
+             name="ban_delete"
+             width="31" />
+            <name_list
+            column_padding="0"
+            draw_heading="true"
+            width="300"
+            height="400"
+            follows="left|top|right"
+            layout="topleft"
+            left="3"
+            multi_select="true"
+            name="ban_list"
+            short_names="false"
+            top_pad="0">
+               <name_list.columns
+                label="Resident"
+                name="name"
+                font.name="SANSSERIF_SMALL"
+                font.style="NORMAL"
+                relative_width="0.7" />
+               <name_list.columns
+                label="Date Banned"
+                name="ban_date"
+                relative_width="0.3" />
+             </name_list>
+         </panel>
+      </scroll_container>
+    </panel>
     </tab_container>
 </panel>
