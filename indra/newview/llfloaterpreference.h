@@ -220,9 +220,6 @@ public:
 //	//BD - Revert to Default
 	void inputOutput();
 
-//	//BD - Catznip's Borderless Window Mode
-	void toggleFullscreenWindow();
-
 //	//BD - Refresh all controls
 	void refreshGraphicControls();
 	void refreshCameraControls();

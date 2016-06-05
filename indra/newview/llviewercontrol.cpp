@@ -629,6 +629,14 @@ void toggle_updater_service_active(const LLSD& new_value)
 //BD
 /////////////////////////////////////////////////////////////////////////////
 
+//BD - Catznip's Borderless Window Mode
+static bool handleFullscreenWindow(const LLSD& newvalue)
+{
+	if ((gViewerWindow) && (gViewerWindow->canFullscreenWindow()))
+		gViewerWindow->setFullscreenWindow(!gViewerWindow->getFullscreenWindow());
+	return true;
+}
+
 //BD - Make attached lights and particles available everywhere without extra coding
 static bool handleRenderAttachedLightsChanged(const LLSD& newvalue)
 {
@@ -864,6 +872,9 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("IncludeEnhancedSkeleton")->getCommitSignal()->connect(boost::bind(&handleDeferredDebugSettingChanged, _2));
     gSavedSettings.getControl("DebugAvatarJoints")->getCommitSignal()->connect(boost::bind(&handleDebugAvatarJointsChanged, _2));
 	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
+
+//	//BD - Catznip's Borderless Window Mode
+	gSavedSettings.getControl("FullScreenWindow")->getSignal()->connect(boost::bind(&handleFullscreenWindow, _2));
 	
 //	//BD - Special Debugs and handles
 	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));

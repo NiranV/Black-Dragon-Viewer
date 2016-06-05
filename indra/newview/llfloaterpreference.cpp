@@ -830,9 +830,6 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 //	//BD - Input/Output resizer
 	mCommitCallbackRegistrar.add("Pref.InputOutput",			boost::bind(&LLFloaterPreference::inputOutput, this));
 
-//	//BD - Catznip's Borderless Window Mode
-	mCommitCallbackRegistrar.add("Pref.FullscreenWindow",		boost::bind(&LLFloaterPreference::toggleFullscreenWindow, this));
-
 	sSkin = gSavedSettings.getString("SkinCurrent");
 
 	gSavedSettings.getControl("NameTagShowUsernames")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged,  _2));	
@@ -979,7 +976,6 @@ BOOL LLFloaterPreference::postBuild()
 		gSavedSettings.setBOOL("PrefsToneMappingVisible", false);
 		gSavedSettings.setBOOL("PrefsVignetteVisible", false);
 	}
-	toggleTabs();
 
 	return TRUE;
 }
@@ -1268,13 +1264,6 @@ void LLFloaterPreference::inputOutput()
 	}
 }
 
-//BD - Catznip's Borderless Window Mode
-void LLFloaterPreference::toggleFullscreenWindow()
-{
-	if ((gViewerWindow) && (gViewerWindow->canFullscreenWindow()))
-		gViewerWindow->setFullscreenWindow(!gViewerWindow->getFullscreenWindow());
-}
-
 //BD - Refresh all controls
 void LLFloaterPreference::refreshGraphicControls()
 {
@@ -1406,6 +1395,7 @@ void LLFloaterPreference::draw()
 	gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
 
 	refreshWarnings();
+	toggleTabs();
 	
 	LLFloater::draw();
 }
@@ -2685,10 +2675,6 @@ void LLFloaterPreference::loadPreset(const LLSD& user_data)
 	std::string name = combo->getSimple();
 
 	LLPresetsManager::getInstance()->loadPreset(subdirectory, name);
-
-	//BD - We do this here to make sure the tabs are all correct incase the preset
-	//     changes them.
-	toggleTabs();
 }
 
 void LLFloaterPreference::onPresetsListChange()
