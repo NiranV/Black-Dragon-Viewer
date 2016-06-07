@@ -211,10 +211,10 @@ LLContextMenu* gDetachBodyPartPieMenus[9];
 
 PieMenu* gPieAttachScreenMenu = NULL;
 PieMenu* gPieAttachMenu = NULL;
-PieMenu* gPieAttachBodyPartMenus[8];
+PieMenu* gPieAttachBodyPartMenus[9];
 PieMenu* gPieDetachMenu = NULL;
 PieMenu* gPieDetachScreenMenu = NULL;
-PieMenu* gPieDetachBodyPartMenus[8];
+PieMenu* gPieDetachBodyPartMenus[9];
 
 //
 // Local prototypes

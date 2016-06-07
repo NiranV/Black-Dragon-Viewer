@@ -184,8 +184,8 @@ extern PieMenu* gPieAttachScreenMenu;
 extern PieMenu* gPieDetachScreenMenu;
 extern PieMenu* gPieAttachMenu;
 extern PieMenu* gPieDetachMenu;
-extern PieMenu* gPieAttachBodyPartMenus[8];
-extern PieMenu* gPieDetachBodyPartMenus[8];
+extern PieMenu* gPieAttachBodyPartMenus[9];
+extern PieMenu* gPieDetachBodyPartMenus[9];
 
 // Context menus in 3D scene
 extern LLContextMenu		*gMenuAvatarSelf;
