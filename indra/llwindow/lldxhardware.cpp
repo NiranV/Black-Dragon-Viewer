@@ -539,7 +539,8 @@ BOOL LLDXHardware::getInfo(BOOL vram_only)
 		  // Dump the string as an int into the structure
 		  char *stopstring;
 		  mVRAM = strtol(ram_str.c_str(), &stopstring, 10); 
-		  LL_INFOS("AppInit") << "VRAM Detected: " << mVRAM << " DX9 string: " << ram_str << LL_ENDL;
+		  //BD - Don't show false information.
+		  //LL_INFOS("AppInit") << "VRAM Detected: " << mVRAM << " DX9 string: " << ram_str << LL_ENDL;
 		}
 
 		if (vram_only)
