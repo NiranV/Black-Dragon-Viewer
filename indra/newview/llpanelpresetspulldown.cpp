@@ -96,14 +96,19 @@ void LLPanelPresetsPulldown::populatePanel()
 			row["columns"][0]["column"] = "preset_name";
 			row["columns"][0]["value"] = name;
 
+			row["columns"][1]["column"] = "icon";
+			row["columns"][1]["type"] = "icon";
+
 			bool is_selected_preset = false;
 			if (name == active_preset)
 			{
-				row["columns"][1]["column"] = "icon";
-				row["columns"][1]["type"] = "icon";
-				row["columns"][1]["value"] = "Check_Mark";
+				row["columns"][1]["value"] = "Checkbox_On";
 
 				is_selected_preset = true;
+			}
+			else
+			{
+				row["columns"][1]["value"] = "Checkbox_Off";
 			}
 
 			LLScrollListItem* new_item = scroll->addElement(row);
