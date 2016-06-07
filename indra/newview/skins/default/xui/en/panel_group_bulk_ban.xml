@@ -13,15 +13,18 @@
   </panel.string>
   <panel.string
      name="ban_selection_too_large">
-    Group bans not sent: too many Residents selected. Group bans are limited to 100 per request.
+    Failed:
+Too many Residents selected. Group bans are limited to 100 per request.
   </panel.string>
   <panel.string
      name="ban_not_permitted">
-    Group ban not sent: you do not have 'Manage ban list' ability.
+    Failed:
+You do not have 'Manage ban list' ability.
   </panel.string>
   <panel.string
      name="ban_limit_fail">
-    Group ban not sent: your group have reached limit of allowed ban records.
+    Failed:
+Your group has reached limit of allowed ban records.
   </panel.string>
   <panel.string
      name="partial_ban">
@@ -89,18 +92,18 @@
    height="20"
    label="Ban Residents"
    layout="topleft"
-   left="4"
+   left="5"
    name="ban_button"
    top_delta="30"
-   width="135" />
+   width="131" />
   <button
    height="20"
    label="Cancel"
    layout="topleft"
-   left_pad="2"
+   left_pad="1"
    name="cancel_button"
    top_delta="0"
-   width="65" />
+   width="68" />
   <string
   name="GroupBulkBan">
     Group Ban

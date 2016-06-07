@@ -4,13 +4,16 @@
 		(wird geladen...)
 	</panel.string>
 	<panel.string name="ban_selection_too_large">
-		Gruppenverbannungen nicht gesendet: zu viele Einwohner ausgewählt. Gruppenverbannungen sind auf 100 pro Anfrage beschränkt.
+		Fehlgeschlagen:
+Es sind mehr als 100 Einwohner gleichzeitig ausgewählt.
 	</panel.string>
 	<panel.string name="ban_not_permitted">
-		Gruppenverbannung nicht gesendet: Sie sind nicht zur Verwaltung der Bannliste berechtigt.
+		Fehlgeschlagen:
+Sie sind nicht zur Verwaltung der Bannliste berechtigt.
 	</panel.string>
 	<panel.string name="ban_limit_fail">
-		Gruppenverbannung nicht gesendet: Ihre Gruppe hat die Höchstzahl möglicher Verbannungen erreicht.
+		Fehlgeschlagen:
+Höchstzahl an Verbannungen erreicht.
 	</panel.string>
 	<panel.string name="partial_ban">
 		Einige Gruppenverbannungen wurden nicht gesendet:
@@ -30,7 +33,7 @@
 		- Sie können sich nicht selbst aus einer Gruppe verbannen.
 	</panel.string>
 	<text name="help_text">
-		Sie können mehrere Einwohner auswählen, um sie aus Ihrer Gruppe zu verbannen. Klicken Sie hierzu auf „Einwohnerliste öffnen“.
+		Klicken Sie auf „Einwohnerliste öffnen“ um mehrere Einwohner aus Ihrer Gruppe zu verbannen.
 	</text>
 	<button label="Einwohnerliste öffnen" name="add_button"/>
 	<name_list name="banned_agent_list" tool_tip="Halten Sie zur Mehrfachauswahl die Strg-Taste gedrückt und klicken Sie auf die Namen."/>
