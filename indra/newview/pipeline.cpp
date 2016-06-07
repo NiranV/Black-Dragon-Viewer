@@ -1108,8 +1108,8 @@ void LLPipeline::allocateShadowMaps()
 	LLVector4 scale = RenderShadowResolution;
 	LLVector3 proj_scale = RenderProjectorShadowResolution;
 	//BD - First check if we changed projectors, otherwise its a clear case of sun shadows.
-	if (proj_scale.mV[0] != mShadow[4].getWidth()
-		|| proj_scale.mV[1] != mShadow[4].getHeight())
+	if (U32(proj_scale.mV[0]) != mShadow[4].getWidth()
+		|| U32(proj_scale.mV[1]) != mShadow[4].getHeight())
 	{
 		//BD - Projectors mismatched.
 		for (U32 i = 4; i < 6; i++)
@@ -1127,7 +1127,7 @@ void LLPipeline::allocateShadowMaps()
 		for (U32 i = 0; i < 4; i++)
 		{
 			//BD - We only ever clear one here so we keep the reload hiccups as tiny as possible.
-			if (scale.mV[i] != mShadow[i].getWidth())
+			if (U32(scale.mV[i]) != mShadow[i].getWidth())
 			{
 				//BD - Clear the shadowmap.
 				mShadow[i].release();
