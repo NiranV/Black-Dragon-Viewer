@@ -58,6 +58,7 @@ LLSpinCtrl::Params::Params()
 	text_disabled_color("text_disabled_color"),
 	up_button("up_button"),
 	down_button("down_button"),
+//	//BD - Optional Mousewheel Spinning
 	allow_scrolling("allow_scrolling", true)
 {}
 
@@ -68,6 +69,7 @@ LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
 	mPrecision(p.decimal_digits),
 	mTextEnabledColor(p.text_enabled_color()),
 	mTextDisabledColor(p.text_disabled_color()),
+//	//BD - Optional Mousewheel Spinning
 	mAllowScrolling(p.allow_scrolling)
 {
 	static LLUICachedControl<S32> spinctrl_spacing ("UISpinctrlSpacing", 0);
@@ -426,6 +428,7 @@ void LLSpinCtrl::reportInvalidData()
 
 BOOL LLSpinCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks)
 {
+//	//BD - Optional Mousewheel Spinning
 	if( mAllowScrolling && mEditor->hasFocus())
 	{
 		if( clicks > 0 )

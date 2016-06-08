@@ -99,7 +99,7 @@ public:
 		 */
 		Optional<bool>						use_ellipses;
 
-		//BD - Toggle for jump buttons.
+//		//BD - Optional Jump To Last Buttons
 		Optional<bool>						use_jump_buttons;
 
 		/**
@@ -283,7 +283,7 @@ private:
 
 	BOOL							mIsVertical;
 
-	//BD - Toggle for jump buttons.
+//	//BD - Optional Jump To Last Buttons
 	BOOL							mUseJumpButtons;
 
 	S32								mRightTabBtnOffset; // Extra room to the right of the tab buttons.

@@ -204,6 +204,35 @@ void LLUrlAction::sendIM(std::string url)
 	}
 }
 
+void LLUrlAction::addFriend(std::string url)
+{
+	std::string id_str = getUserID(url);
+	if (LLUUID::validate(id_str))
+	{
+		executeSLURL("secondlife:///app/agent/" + id_str + "/requestfriend");
+	}
+}
+
+void LLUrlAction::removeFriend(std::string url)
+{
+	std::string id_str = getUserID(url);
+	if (LLUUID::validate(id_str))
+	{
+		executeSLURL("secondlife:///app/agent/" + id_str + "/removefriend");
+	}
+}
+
+void LLUrlAction::blockObject(std::string url)
+{
+	std::string object_id = getObjectId(url);
+	std::string object_name = getObjectName(url);
+	if (LLUUID::validate(object_id))
+	{
+		executeSLURL("secondlife:///app/agent/" + object_id + "/block/" + LLURI::escape(object_name));
+	}
+}
+
+//BD - Common Avatar Functions
 void LLUrlAction::sendTeleport(std::string url)
 {
 	std::string id_str = getUserID(url);
@@ -242,34 +271,6 @@ void LLUrlAction::callVoice(std::string url)
 	if (LLUUID::validate(id_str))
 	{
 		executeSLURL("secondlife:///app/voicecallavatar/" + id_str);
-	}
-}
-
-void LLUrlAction::addFriend(std::string url)
-{
-	std::string id_str = getUserID(url);
-	if (LLUUID::validate(id_str))
-	{
-		executeSLURL("secondlife:///app/agent/" + id_str + "/requestfriend");
-	}
-}
-
-void LLUrlAction::removeFriend(std::string url)
-{
-	std::string id_str = getUserID(url);
-	if (LLUUID::validate(id_str))
-	{
-		executeSLURL("secondlife:///app/agent/" + id_str + "/removefriend");
-	}
-}
-
-void LLUrlAction::blockObject(std::string url)
-{
-	std::string object_id = getObjectId(url);
-	std::string object_name = getObjectName(url);
-	if (LLUUID::validate(object_id))
-	{
-		executeSLURL("secondlife:///app/agent/" + object_id + "/block/" + LLURI::escape(object_name));
 	}
 }
 

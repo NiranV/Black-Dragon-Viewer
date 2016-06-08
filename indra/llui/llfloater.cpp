@@ -1937,6 +1937,7 @@ void LLFloater::draw()
 
 void	LLFloater::drawShadow(LLPanel* panel)
 {
+//	//BD - Custom Background Shadow Image
 	LLUIImage* image = getShadowImage();
 	static LLUIColor shadow_color_cached = LLUIColorTable::instance().getColor("ColorDropShadow");
 	LLColor4 shadow_color = shadow_color_cached;
@@ -2830,6 +2831,7 @@ void LLFloaterView::adjustToFitScreen(LLFloater* floater, BOOL allow_partial_out
 	S32 delta_left = mToolbarLeftRect.notEmpty() ? mToolbarLeftRect.mRight - floater_rect.mRight : 0;
 	S32 delta_bottom = mToolbarBottomRect.notEmpty() ? mToolbarBottomRect.mTop - floater_rect.mTop : 0;
 	S32 delta_right = mToolbarRightRect.notEmpty() ? mToolbarRightRect.mLeft - floater_rect.mLeft : 0;
+//	//BD - Top Toolbar
 	S32 delta_top = mToolbarTopRect.notEmpty() ? mToolbarTopRect.mBottom - floater_rect.mBottom : 0;
 
 
@@ -2850,6 +2852,7 @@ void LLFloaterView::adjustToFitScreen(LLFloater* floater, BOOL allow_partial_out
 	{
 		floater->translate(delta_right, 0);
 	}
+//	//BD - Top Toolbar
 	else if (delta_top < 0 && floater_rect.mLeft < mToolbarTopRect.mLeft	&& floater_rect.mRight > mToolbarTopRect.mRight)
 	{
 		floater->translate(0, delta_top);
@@ -3062,6 +3065,7 @@ void LLFloaterView::setToolbarRect(LLToolBarEnums::EToolBarLocation tb, const LL
 	case LLToolBarEnums::TOOLBAR_RIGHT:
 		mToolbarRightRect = toolbar_rect;
 		break;
+//	//BD - Top Toolbar
 	case LLToolBarEnums::TOOLBAR_TOP:
 		mToolbarTopRect = toolbar_rect;
 		break;

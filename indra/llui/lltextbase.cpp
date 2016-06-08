@@ -509,6 +509,7 @@ void LLTextBase::drawCursor()
 				text_color = segmentp->getColor();
 				fontp = segmentp->getStyle()->getFont();
 				fontp->render(text, mCursorPos, cursor_rect, 
+					//BD
 					LLColor4(text_color.mV[VRED],text_color.mV[VGREEN],text_color.mV[VBLUE], alpha),
 					LLFontGL::LEFT, mVAlign,
 					LLFontGL::NORMAL,
@@ -1942,20 +1943,21 @@ void LLTextBase::createUrlContextMenu(S32 x, S32 y, const std::string &in_url)
 	registrar.add("Url.OpenExternal", boost::bind(&LLUrlAction::openURLExternal, url));
 	registrar.add("Url.Execute", boost::bind(&LLUrlAction::executeSLURL, url, true));
 	registrar.add("Url.Block", boost::bind(&LLUrlAction::blockObject, url));
-	registrar.add("Url.Mute", boost::bind(&LLUrlAction::blockAvatar, url));
 	registrar.add("Url.Teleport", boost::bind(&LLUrlAction::teleportToLocation, url));
 	registrar.add("Url.ShowProfile", boost::bind(&LLUrlAction::showProfile, url));
+	registrar.add("Url.AddFriend", boost::bind(&LLUrlAction::addFriend, url));
+	registrar.add("Url.RemoveFriend", boost::bind(&LLUrlAction::removeFriend, url));
 	registrar.add("Url.SendIM", boost::bind(&LLUrlAction::sendIM, url));
+	registrar.add("Url.ShowOnMap", boost::bind(&LLUrlAction::showLocationOnMap, url));
+	registrar.add("Url.CopyLabel", boost::bind(&LLUrlAction::copyLabelToClipboard, url));
+	registrar.add("Url.CopyUrl", boost::bind(&LLUrlAction::copyURLToClipboard, url));
+//	//BD - Common Avatar Functions
+	registrar.add("Url.Mute", boost::bind(&LLUrlAction::blockAvatar, url));
 	registrar.add("Url.VoiceCall", boost::bind(&LLUrlAction::callVoice, url));
 	registrar.add("Url.SendTeleport", boost::bind(&LLUrlAction::sendTeleport, url));
 	registrar.add("Url.Share", boost::bind(&LLUrlAction::share, url));
 	registrar.add("Url.Pay", boost::bind(&LLUrlAction::pay, url));
 	registrar.add("Url.Map", boost::bind(&LLUrlAction::showOnMap, url));
-	registrar.add("Url.AddFriend", boost::bind(&LLUrlAction::addFriend, url));
-	registrar.add("Url.RemoveFriend", boost::bind(&LLUrlAction::removeFriend, url));
-	registrar.add("Url.ShowOnMap", boost::bind(&LLUrlAction::showLocationOnMap, url));
-	registrar.add("Url.CopyLabel", boost::bind(&LLUrlAction::copyLabelToClipboard, url));
-	registrar.add("Url.CopyUrl", boost::bind(&LLUrlAction::copyURLToClipboard, url));
 
 	// create and return the context menu from the XUI file
 	delete mPopupMenu;

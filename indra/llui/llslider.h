@@ -49,6 +49,7 @@ public:
 								track_image_vertical,
 								track_highlight_horizontal_image,
 								track_highlight_vertical_image,
+//								//BD - Track Difference Visualization
 								track_change_horizontal_image,
 								track_change_vertical_image;
 
@@ -97,6 +98,7 @@ private:
 	LLPointer<LLUIImage>	mTrackImageVertical;
 	LLPointer<LLUIImage>	mTrackHighlightHorizontalImage;
 	LLPointer<LLUIImage>	mTrackHighlightVerticalImage;
+//	//BD - Track Difference Visualization
 	LLPointer<LLUIImage>	mTrackChangeHorizontalImage;
 	LLPointer<LLUIImage>	mTrackChangeVerticalImage;
 

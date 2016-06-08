@@ -1808,15 +1808,16 @@ BOOL LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 			registrar.add("Url.ShowProfile", boost::bind(&LLScrollListCtrl::showProfile, id, is_group));
 			registrar.add("Url.SendIM", boost::bind(&LLScrollListCtrl::sendIM, id));
 			registrar.add("Url.AddFriend", boost::bind(&LLScrollListCtrl::addFriend, id));
+			registrar.add("Url.Execute", boost::bind(&LLScrollListCtrl::showNameDetails, id, is_group));
+			registrar.add("Url.CopyLabel", boost::bind(&LLScrollListCtrl::copyNameToClipboard, id, is_group));
+			registrar.add("Url.CopyUrl", boost::bind(&LLScrollListCtrl::copySLURLToClipboard, id, is_group));
+//			//BD - Common Avatar Functions
 			registrar.add("Url.VoiceCall", boost::bind(&LLScrollListCtrl::callVoice, id));
 			registrar.add("Url.SendTeleport", boost::bind(&LLScrollListCtrl::sendTeleport, id));
 			registrar.add("Url.Share", boost::bind(&LLScrollListCtrl::share, id));
 			registrar.add("Url.Pay", boost::bind(&LLScrollListCtrl::pay, id));
 			registrar.add("Url.Mute", boost::bind(&LLScrollListCtrl::block, id));
 			registrar.add("Url.Map", boost::bind(&LLScrollListCtrl::map, id));
-			registrar.add("Url.Execute", boost::bind(&LLScrollListCtrl::showNameDetails, id, is_group));
-			registrar.add("Url.CopyLabel", boost::bind(&LLScrollListCtrl::copyNameToClipboard, id, is_group));
-			registrar.add("Url.CopyUrl", boost::bind(&LLScrollListCtrl::copySLURLToClipboard, id, is_group));
 
 			// create the context menu from the XUI file and display it
 			std::string menu_name = is_group ? "menu_url_group.xml" : "menu_url_agent.xml";
@@ -1849,48 +1850,6 @@ void LLScrollListCtrl::sendIM(std::string id)
 	// send im to the resident
 	std::string slurl = "secondlife:///app/agent/" + id + "/about";
 	LLUrlAction::sendIM(slurl);
-}
-
-void LLScrollListCtrl::sendTeleport(std::string id)
-{
-	// send teleport offer to the resident
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::sendTeleport(slurl);
-}
-
-void LLScrollListCtrl::map(std::string id)
-{
-	// track this resident down on the world map
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::showOnMap(slurl);
-}
-
-void LLScrollListCtrl::share(std::string id)
-{
-	// share something with this resident
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::share(slurl);
-}
-
-void LLScrollListCtrl::pay(std::string id)
-{
-	// pay linden dollars to this resident
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::pay(slurl);
-}
-
-void LLScrollListCtrl::block(std::string id)
-{
-	// block this resident
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::blockAvatar(slurl);
-}
-
-void LLScrollListCtrl::callVoice(std::string id)
-{
-	// call this resident
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::callVoice(slurl);
 }
 
 void LLScrollListCtrl::addFriend(std::string id)
@@ -1931,6 +1890,49 @@ void LLScrollListCtrl::copySLURLToClipboard(std::string id, bool is_group)
 	std::string sltype = is_group ? "group" : "agent";
 	std::string slurl = "secondlife:///app/" + sltype + "/" + id + "/about";
 	LLUrlAction::copyURLToClipboard(slurl);
+}
+
+//BD - Common Avatar Functions
+void LLScrollListCtrl::sendTeleport(std::string id)
+{
+	// send teleport offer to the resident
+	std::string slurl = "secondlife:///app/agent/" + id + "/about";
+	LLUrlAction::sendTeleport(slurl);
+}
+
+void LLScrollListCtrl::map(std::string id)
+{
+	// track this resident down on the world map
+	std::string slurl = "secondlife:///app/agent/" + id + "/about";
+	LLUrlAction::showOnMap(slurl);
+}
+
+void LLScrollListCtrl::share(std::string id)
+{
+	// share something with this resident
+	std::string slurl = "secondlife:///app/agent/" + id + "/about";
+	LLUrlAction::share(slurl);
+}
+
+void LLScrollListCtrl::pay(std::string id)
+{
+	// pay linden dollars to this resident
+	std::string slurl = "secondlife:///app/agent/" + id + "/about";
+	LLUrlAction::pay(slurl);
+}
+
+void LLScrollListCtrl::block(std::string id)
+{
+	// block this resident
+	std::string slurl = "secondlife:///app/agent/" + id + "/about";
+	LLUrlAction::blockAvatar(slurl);
+}
+
+void LLScrollListCtrl::callVoice(std::string id)
+{
+	// call this resident
+	std::string slurl = "secondlife:///app/agent/" + id + "/about";
+	LLUrlAction::callVoice(slurl);
 }
 
 BOOL LLScrollListCtrl::handleDoubleClick(S32 x, S32 y, MASK mask)

@@ -214,6 +214,7 @@ LLTabContainer::Params::Params()
 	first_tab("first_tab"),
 	middle_tab("middle_tab"),
 	last_tab("last_tab"),
+//	//BD - Optional Jump To Last Buttons
 	use_jump_buttons("use_jump_buttons"),
 	use_custom_icon_ctrl("use_custom_icon_ctrl", false),
 	open_tabs_on_drag_and_drop("open_tabs_on_drag_and_drop", false),
@@ -249,6 +250,7 @@ LLTabContainer::LLTabContainer(const LLTabContainer::Params& p)
 	mFirstTabParams(p.first_tab),
 	mMiddleTabParams(p.middle_tab),
 	mLastTabParams(p.last_tab),
+//	//BD - Optional Jump To Last Buttons
 	mUseJumpButtons(p.use_jump_buttons),
 	mCustomIconCtrlUsed(p.use_custom_icon_ctrl),
 	mOpenTabsOnDragAndDrop(p.open_tabs_on_drag_and_drop),
@@ -421,6 +423,7 @@ void LLTabContainer::draw()
 	else
 	{
 		// Set the leftmost position of the tab buttons.
+//		//BD - Optional Jump To Last Buttons
 		left = LLPANEL_BORDER_WIDTH + (has_scroll_arrows ? tabcntr_arrow_btn_size : tabcntr_tab_h_pad);
 		left -= getScrollPosPixels();
 	}
@@ -515,6 +518,7 @@ BOOL LLTabContainer::handleMouseDown( S32 x, S32 y, MASK mask )
 
 	if (has_scroll_arrows)
 	{
+//		//BD - Optional Jump To Last Buttons
 		if (mPrevArrowBtn && mPrevArrowBtn->getRect().pointInRect(x, y))
 		{
 			S32 local_x = x - mPrevArrowBtn->getRect().mLeft;
@@ -547,6 +551,7 @@ BOOL LLTabContainer::handleMouseDown( S32 x, S32 y, MASK mask )
 		}
 		else
 		{
+//			//BD - Optional Jump To Last Buttons
 			tab_rect = LLRect(mPrevArrowBtn->getRect().mLeft,
 								firsttuple->mButton->getRect().mTop,
 								mNextArrowBtn->getRect().mRight,
@@ -577,6 +582,7 @@ BOOL LLTabContainer::handleHover( S32 x, S32 y, MASK mask )
 
 	if (has_scroll_arrows)
 	{
+//		//BD - Optional Jump To Last Buttons
 		if (mPrevArrowBtn && mPrevArrowBtn->getRect().pointInRect(x, y))
 		{
 			S32 local_x = x - mPrevArrowBtn->getRect().mLeft;
@@ -610,6 +616,7 @@ BOOL LLTabContainer::handleMouseUp( S32 x, S32 y, MASK mask )
 
 	if (has_scroll_arrows)
 	{
+//		//BD - Optional Jump To Last Buttons
 		if (mPrevArrowBtn && mPrevArrowBtn->getRect().pointInRect(x, y))
 		{
 			local_x = x - mPrevArrowBtn->getRect().mLeft;
@@ -670,6 +677,7 @@ BOOL LLTabContainer::handleToolTip( S32 x, S32 y, MASK mask)
 		}
 		else
 		{
+//			//BD - Optional Jump To Last Buttons
 			clip = LLRect(mPrevArrowBtn->getRect().mLeft,
 						  firsttuple->mButton->getRect().mTop,
 						  mNextArrowBtn->getRect().mRight,
@@ -1830,11 +1838,13 @@ void LLTabContainer::initButtons()
 		S32 btn_top = (getTabPosition() == TOP ) ? getRect().getHeight() - getTopBorderHeight() : tabcntr_arrow_btn_size + 1;
 
 		LLRect left_arrow_btn_rect;
+//		//BD - Optional Jump To Last Buttons
 		left_arrow_btn_rect.setLeftTopAndSize(LLPANEL_BORDER_WIDTH + 1, btn_top + arrow_fudge, tabcntr_arrow_btn_size, mTabHeight);
 
 		S32 right_pad = tabcntr_arrow_btn_size + LLPANEL_BORDER_WIDTH + 1;
 
 		LLRect right_arrow_btn_rect;
+//		//BD - Optional Jump To Last Buttons
 		right_arrow_btn_rect.setLeftTopAndSize(getRect().getWidth() - mRightTabBtnOffset - right_pad,
 												btn_top + arrow_fudge,
 												tabcntr_arrow_btn_size, mTabHeight);

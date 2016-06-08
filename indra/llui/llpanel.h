@@ -77,6 +77,7 @@ public:
 								bg_opaque_image_overlay,
 								bg_alpha_image_overlay;
 		// opaque image is for "panel in foreground" look
+//		//BD - Custom Background Shadow Image
 		Optional<LLUIImage*>	bg_shadow_image,
 								bg_opaque_image,
 								bg_alpha_image;
@@ -140,6 +141,7 @@ public:
 	const LLColor4& getTransparentColor() const { return mBgAlphaColor; }
 	void			setBackgroundImage(LLUIImage* image) { mBgOpaqueImage = image; }
 	void			setTransparentImage(LLUIImage* image) { mBgAlphaImage = image; }
+//	//BD - Custom Background Shadow Image
 	LLPointer<LLUIImage> getShadowImage() const { return mBgShadowImage; }
 	LLPointer<LLUIImage> getBackgroundImage() const { return mBgOpaqueImage; }
 	LLPointer<LLUIImage> getTransparentImage() const { return mBgAlphaImage; }
@@ -245,6 +247,7 @@ private:
 	LLUIColor		mBgAlphaColor;
 	LLUIColor		mBgOpaqueImageOverlay;
 	LLUIColor		mBgAlphaImageOverlay;
+//	//BD - Custom Background Shadow Image
 	LLPointer<LLUIImage> mBgShadowImage;
 	LLPointer<LLUIImage> mBgOpaqueImage;	// "panel in front" look
 	LLPointer<LLUIImage> mBgAlphaImage;		// "panel in back" look

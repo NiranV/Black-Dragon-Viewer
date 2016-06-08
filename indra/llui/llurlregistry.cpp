@@ -38,6 +38,7 @@ void LLUrlRegistryNullCallback(const std::string &url, const std::string &label,
 
 LLUrlRegistry::LLUrlRegistry()
 {
+//	//	// BD - Additional Chat Tags
 //	mUrlEntry.reserve(26);
 // [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
 	mUrlEntry.reserve(27);
@@ -50,15 +51,14 @@ LLUrlRegistry::LLUrlRegistry()
 	registerUrl(mUrlEntryIcon);
 	mLLUrlEntryInvalidSLURL = new LLUrlEntryInvalidSLURL();
 	registerUrl(mLLUrlEntryInvalidSLURL);
-//	//BD
+	registerUrl(new LLUrlEntrySLURL());
+//	// BD - Additional Chat Tags
 	registerUrl(new LLUrlEntryRed());
 	registerUrl(new LLUrlEntryGreen());
 	registerUrl(new LLUrlEntryBlue());
 	registerUrl(new LLUrlEntryUnderline());
 	registerUrl(new LLUrlEntryBold());
 	registerUrl(new LLUrlEntryItalic());
-//	//BD
-	registerUrl(new LLUrlEntrySLURL());
 
 	// decorated links for host names like: secondlife.com and lindenlab.com
 	registerUrl(new LLUrlEntrySecondlifeURL());
@@ -171,7 +171,7 @@ static bool stringHasUrl(const std::string &text)
 			text.find("<nolink>") != std::string::npos ||
 			text.find("<icon") != std::string::npos ||
 			text.find("@") != std::string::npos ||
-//			//BD
+//			// BD - Additional Chat Tags
 			text.find("<red>") != std::string::npos ||
 			text.find("<green>") != std::string::npos ||
 			text.find("<blue>") != std::string::npos ||

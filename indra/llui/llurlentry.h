@@ -508,7 +508,19 @@ public:
 	/*virtual*/ std::string getIcon(const std::string &url);
 };
 
-/// BD
+///
+/// LLUrlEntryEmail Describes a generic mailto: Urls
+///
+class LLUrlEntryEmail : public LLUrlEntryBase
+{
+public:
+	LLUrlEntryEmail();
+	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
+	/*virtual*/ std::string getUrl(const std::string &string) const;
+};
+
+// BD - Additional Chat Tags
+/// 
 /// LLUrlEntryRed lets us turn text to red with <red>...</red> tags
 ///
 class LLUrlEntryRed : public LLUrlEntryBase
@@ -574,17 +586,5 @@ public:
 	/*virtual*/ std::string getUrl(const std::string &string) const;
 	/*virtual*/ LLStyle::Params getStyle() const;
 };
-
-///
-/// LLUrlEntryEmail Describes a generic mailto: Urls
-///
-class LLUrlEntryEmail : public LLUrlEntryBase
-{
-public:
-	LLUrlEntryEmail();
-	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
-	/*virtual*/ std::string getUrl(const std::string &string) const;
-};
-
 
 #endif

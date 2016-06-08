@@ -37,13 +37,14 @@
 #include "llstring.h"
 #include "v3math.h"
 #include "v3dmath.h"
-#include "v4math.h"
 #include "v4coloru.h"
 #include "v4color.h"
 #include "v3color.h"
 #include "llrect.h"
 #include "llxmltree.h"
 #include "llsdserialize.h"
+//BD - Vector4
+#include "v4math.h"
 
 #if LL_RELEASE_WITH_DEBUG_INFO || LL_DEBUG
 #define CONTROL_ERRS LL_ERRS("ControlErrors")
@@ -1403,6 +1404,7 @@ DECL_LLCC(LLRect, LLRect(0, 0, 100, 500));
 DECL_LLCC(LLColor4, LLColor4(0.0f, 0.5f, 1.0f));
 DECL_LLCC(LLColor3, LLColor3(1.0f, 0.f, 0.5f));
 DECL_LLCC(LLColor4U, LLColor4U(255, 200, 100, 255));
+//BD - Vector4
 DECL_LLCC(LLVector4, LLVector4(1.0, 2.0f, 3.0, 4.0f));
 
 LLSD test_llsd = LLSD()["testing1"] = LLSD()["testing2"];
@@ -1425,6 +1427,7 @@ void test_cached_control()
 	TEST_LLCC(LLColor4, LLColor4(0.0f, 0.5f, 1.0f));
 	TEST_LLCC(LLColor3, LLColor3(1.0f, 0.f, 0.5f));
 	TEST_LLCC(LLColor4U, LLColor4U(255, 200, 100, 255));
+//	//BD - Vector4
 	TEST_LLCC(LLVector4, LLVector4(1.0, 2.0f, 3.0, 4.0f));
 //There's no LLSD comparsion for LLCC yet. TEST_LLCC(LLSD, test_llsd); 
 

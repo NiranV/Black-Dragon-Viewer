@@ -1419,34 +1419,6 @@ std::string LLUrlEntryEmail::getUrl(const std::string &string) const
 	return escapeUrl(string);
 }
 
-// BD
-// LLUrlEntryRed lets us turn text to red with <red>...</red> tags
-//
-LLUrlEntryRed::LLUrlEntryRed()
-{
-	mPattern = boost::regex("<red>.*?</red>",
-							boost::regex::perl|boost::regex::icase);
-}
-
-std::string LLUrlEntryRed::getUrl(const std::string &url) const
-{
-	// return the text between the <red> and </red> tags
-	return url.substr(5, url.size()-5-6);
-}
-
-std::string LLUrlEntryRed::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
-{
-	getStyle();
-	return getUrl(url);
-}
-
-LLStyle::Params LLUrlEntryRed::getStyle() const 
-{
-	LLStyle::Params style_params;
-	style_params.color = LLUIColorTable::instance().getColor("Red_Chat");
-	style_params.readonly_color = LLUIColorTable::instance().getColor("Red_Chat");
-	return style_params;
-}
 
 LLUrlEntryExperienceProfile::LLUrlEntryExperienceProfile()
 {
@@ -1500,6 +1472,35 @@ void LLUrlEntryExperienceProfile::onExperienceDetails( const LLSD& experience_de
     callObservers(experience_details[LLExperienceCache::EXPERIENCE_ID].asString(), name, LLStringUtil::null);
 }
 
+
+// BD - Additional Chat Tags
+// LLUrlEntryRed lets us turn text to red with <red>...</red> tags
+//
+LLUrlEntryRed::LLUrlEntryRed()
+{
+	mPattern = boost::regex("<red>.*?</red>",
+		boost::regex::perl | boost::regex::icase);
+}
+
+std::string LLUrlEntryRed::getUrl(const std::string &url) const
+{
+	// return the text between the <red> and </red> tags
+	return url.substr(5, url.size() - 5 - 6);
+}
+
+std::string LLUrlEntryRed::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
+{
+	getStyle();
+	return getUrl(url);
+}
+
+LLStyle::Params LLUrlEntryRed::getStyle() const
+{
+	LLStyle::Params style_params;
+	style_params.color = LLUIColorTable::instance().getColor("Red_Chat");
+	style_params.readonly_color = LLUIColorTable::instance().getColor("Red_Chat");
+	return style_params;
+}
 
 // LLUrlEntryGreen lets us turn text to green with <green>...</green> tags
 //

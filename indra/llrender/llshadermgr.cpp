@@ -485,6 +485,7 @@ BOOL LLShaderMgr::attachShaderFeatures(LLGLSLShader * shader)
 		}
 	}
 
+//	//BD - Motion Blur
 	if (features->hasMotionBlur)
 	{
 		if (!shader->attachObject("deferred/velocityFuncV.glsl"))
@@ -1007,6 +1008,7 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("texture_matrix3");
 	mReservedUniforms.push_back("object_plane_s");
 	mReservedUniforms.push_back("object_plane_t");
+//	//BD - Motion Blur
 	mReservedUniforms.push_back("current_modelview_matrix");
 	mReservedUniforms.push_back("last_modelview_matrix");
 	mReservedUniforms.push_back("last_modelview_matrix_inverse");
@@ -1105,6 +1107,7 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("ssao_max_radius");
 	mReservedUniforms.push_back("ssao_factor");
 	mReservedUniforms.push_back("ssao_factor_inv");
+	//BD
 	mReservedUniforms.push_back("ssao_effect");
 	mReservedUniforms.push_back("screen_res");
 	mReservedUniforms.push_back("near_clip");
@@ -1156,7 +1159,7 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("projectionMap");
 	mReservedUniforms.push_back("norm_mat");
 
-	// <exodus>
+//	//BD - Exodus Post Process
 	mReservedUniforms.push_back("exo_gamma");
 	mReservedUniforms.push_back("exo_exposure");
 	mReservedUniforms.push_back("exo_offset");
@@ -1170,7 +1173,6 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("exo_advToneUC");
 
 	//llassert(mReservedUniforms.size() == LLShaderMgr::EXO_RENDER_SCREEN+1);
-	// </exodus>
 	
 	mReservedUniforms.push_back("global_gamma");
 	mReservedUniforms.push_back("texture_gamma");
@@ -1179,17 +1181,9 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("env_intensity");
 
 	mReservedUniforms.push_back("matrixPalette");
-	mReservedUniforms.push_back("lastMatrixPalette");
 	mReservedUniforms.push_back("translationPalette");
-
-	mReservedUniforms.push_back("time_step");
-	mReservedUniforms.push_back("mblur_strength");
-
-	mReservedUniforms.push_back("godray_res");
-	mReservedUniforms.push_back("godray_multiplier");
-	mReservedUniforms.push_back("falloff_multiplier");
-
-	mReservedUniforms.push_back("ssr_res");
+//	//BD - Motion Blur
+	mReservedUniforms.push_back("lastMatrixPalette");
 	
 //	//BD - Post Effects
 	mReservedUniforms.push_back("num_colors");
@@ -1199,6 +1193,13 @@ void LLShaderMgr::initAttribsAndUniforms()
 
 //	//BD - Special Options
 	mReservedUniforms.push_back("blur_passes");
+	mReservedUniforms.push_back("time_step");
+	mReservedUniforms.push_back("mblur_strength");
+	mReservedUniforms.push_back("ssr_res");
+	mReservedUniforms.push_back("godray_res");
+	mReservedUniforms.push_back("godray_multiplier");
+	mReservedUniforms.push_back("falloff_multiplier");
+	mReservedUniforms.push_back("seconds60");
 	
 	mReservedUniforms.push_back("screenTex");
 	mReservedUniforms.push_back("screenDepth");
@@ -1239,7 +1240,6 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("origin");
 	mReservedUniforms.push_back("display_gamma");
 
-	mReservedUniforms.push_back("seconds60");
 	llassert(mReservedUniforms.size() == END_RESERVED_UNIFORMS);
 
 	std::set<std::string> dupe_check;

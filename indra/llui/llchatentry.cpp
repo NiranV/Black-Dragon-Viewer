@@ -247,6 +247,7 @@ void LLChatEntry::enableSingleLineMode(bool single_line_mode)
 
 	mSingleLineMode = single_line_mode;
 	mPrevLinesCount = -1;
-	mIsExpandable = !single_line_mode;
 	setWordWrap(!single_line_mode);
+//	//BD - Optional Single Line Mode
+	mIsExpandable = !single_line_mode;
 }

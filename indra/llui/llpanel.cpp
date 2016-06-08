@@ -76,6 +76,7 @@ LLPanel::Params::Params()
 	bg_alpha_color("bg_alpha_color"),
 	bg_opaque_image_overlay("bg_opaque_image_overlay"),
 	bg_alpha_image_overlay("bg_alpha_image_overlay"),
+//	//BD - Custom Background Shadow Image
 	bg_shadow_image("bg_shadow_image"),
 	bg_opaque_image("bg_opaque_image"),
 	bg_alpha_image("bg_alpha_image"),
@@ -103,6 +104,7 @@ LLPanel::LLPanel(const LLPanel::Params& p)
 	mBgAlphaColor(p.bg_alpha_color()),
 	mBgOpaqueImageOverlay(p.bg_opaque_image_overlay),
 	mBgAlphaImageOverlay(p.bg_alpha_image_overlay),
+//	//BD - Custom Background Shadow Image
 	mBgShadowImage(p.bg_shadow_image()),
 	mBgOpaqueImage(p.bg_opaque_image()),
 	mBgAlphaImage(p.bg_alpha_image()),
@@ -494,6 +496,7 @@ void LLPanel::initFromParams(const LLPanel::Params& p)
 	setBackgroundOpaque(p.background_opaque);
 	setBackgroundColor(p.bg_opaque_color().get());
 	setTransparentColor(p.bg_alpha_color().get());
+//	//BD - Custom Background Shadow Image
 	mBgShadowImage = p.bg_shadow_image();
 	mBgOpaqueImage = p.bg_opaque_image();
 	mBgAlphaImage = p.bg_alpha_image();

@@ -46,6 +46,7 @@ public:
 		Optional<bool> allow_text_entry;
 		Optional<bool> allow_digits_only;
 		Optional<bool> label_wrap;
+//		//BD - Optional Mousewheel Spinning
 		Optional<bool> allow_scrolling;
 
 		Optional<LLUIColor> text_enabled_color;
@@ -120,6 +121,7 @@ private:
 	BOOL			mbHasBeenSet;
 	BOOL			mAllowEdit;
 
+//	//BD - Optional Mousewheel Spinning
 	BOOL			mAllowScrolling;
 };
 

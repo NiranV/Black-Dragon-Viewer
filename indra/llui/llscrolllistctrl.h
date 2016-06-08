@@ -431,16 +431,17 @@ private:
 
 	static void		showProfile(std::string id, bool is_group);
 	static void		sendIM(std::string id);
+	static void		addFriend(std::string id);
+	static void		showNameDetails(std::string id, bool is_group);
+	static void		copyNameToClipboard(std::string id, bool is_group);
+	static void		copySLURLToClipboard(std::string id, bool is_group);
+//	//BD - Common Avatar Functions
 	static void		sendTeleport(std::string id);
 	static void		map(std::string id);
 	static void		share(std::string id);
 	static void		pay(std::string id);
 	static void		block(std::string id);
 	static void		callVoice(std::string id);
-	static void		addFriend(std::string id);
-	static void		showNameDetails(std::string id, bool is_group);
-	static void		copyNameToClipboard(std::string id, bool is_group);
-	static void		copySLURLToClipboard(std::string id, bool is_group);
 
 	S32				mLineHeight;	// the max height of a single line
 	S32				mScrollLines;	// how many lines we've scrolled down

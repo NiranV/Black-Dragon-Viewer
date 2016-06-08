@@ -113,6 +113,7 @@ namespace LLToolBarEnums
 	{
 		BTNTYPE_ICONS_WITH_TEXT = 0,
 		BTNTYPE_ICONS_ONLY,
+//		//BD - Additional Toolbar Button Modes
 		BTNTYPE_ICONS_SMALL,
 		BTNTYPE_ICONS_MINI,
 		BTNTYPE_TEXT_ONLY,
@@ -140,6 +141,7 @@ namespace LLToolBarEnums
 		TOOLBAR_COUNT,
 
 		TOOLBAR_FIRST = TOOLBAR_LEFT,
+//		//BD - Top Toolbar
 		TOOLBAR_LAST = TOOLBAR_TOP,
 	};
 
@@ -198,6 +200,7 @@ public:
 
 		Optional<LLToolBarButton::Params>		button_icon,
 												button_icon_and_text,
+//												//BD - Additional Toolbar Button Modes
 												button_icon_small,
 												button_icon_mini,
 												button_text;
