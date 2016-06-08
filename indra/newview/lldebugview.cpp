@@ -108,6 +108,7 @@ void LLDebugView::init()
 	r.setLeftTopAndSize(25, rect.getHeight() - 50, (S32) (gViewerWindow->getWindowRectScaled().getWidth() * 0.75f), 
 									 (S32) (gViewerWindow->getWindowRectScaled().getHeight() * 0.75f));
 
+	//BD
 	r.set(150, rect.getHeight() - 50, 900, 100);
 	LLTextureView::Params tvp;
 	tvp.name("gTextureView");

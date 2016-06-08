@@ -117,6 +117,7 @@ LLAvatarList::LLAvatarList(const Params& p)
 , mContextMenu(NULL)
 , mDirty(true) // to force initial update
 , mNeedUpdateNames(false)
+//BD
 , mExtraDataUpdateTimer(new LLTimer())
 , mShowSpeakingIndicator(p.show_speaking_indicator)
 , mShowPermissions(p.show_permissions_granted)
@@ -131,6 +132,7 @@ LLAvatarList::LLAvatarList(const Params& p)
 
 	if (mShowLastInteractionTime)
 	{
+		//BD
 		mExtraDataUpdatePeriod = 5;
 		mExtraDataUpdateTimer->setTimerExpirySec(0); // zero to force initial update
 		mExtraDataUpdateTimer->start();
@@ -148,9 +150,11 @@ void LLAvatarList::handleDisplayNamesOptionChanged()
 
 LLAvatarList::~LLAvatarList()
 {
+	//BD
 	delete mExtraDataUpdateTimer;
 }
 
+//BD
 void LLAvatarList::setShowExtraInformation(bool show)
 {
 	 	mShowExtraInformation = show;
@@ -172,6 +176,7 @@ void LLAvatarList::draw()
 	if (mDirty)
 		refresh();
 
+	//BD
 	if (mExtraDataUpdatePeriod && mExtraDataUpdateTimer->hasExpired())
 	{
 		updateExtraData();
@@ -223,6 +228,7 @@ void LLAvatarList::addAvalineItem(const LLUUID& item_id, const LLUUID& session_i
 	LLAvalineListItem* item = new LLAvalineListItem(/*hide_number=*/false);
 	item->setAvatarId(item_id, session_id, true, false);
 	item->setName(item_name);
+	//BD
 	item->showExtraInformation(mShowExtraInformation);
 	item->showSpeakingIndicator(mShowSpeakingIndicator);
 	item->setOnline(false);
@@ -402,6 +408,7 @@ boost::signals2::connection LLAvatarList::setItemDoubleClickCallback(const mouse
 	return mItemDoubleClickSignal.connect(cb);
 }
 
+//BD
 boost::signals2::connection LLAvatarList::setExtraDataCallback(const extra_data_signal_t::slot_type& cb)
 {
 	 	return mExtraDataSignal.connect(cb);
@@ -441,6 +448,7 @@ void LLAvatarList::addNewItem(const LLUUID& id, const std::string& name, BOOL is
 	// This sets the name as a side effect
 	item->setAvatarId(id, mSessionID, mIgnoreOnlineStatus);
 	item->setOnline(mIgnoreOnlineStatus ? true : is_online);
+	//BD
 	item->showExtraInformation(mShowExtraInformation);
 
 	item->showSpeakingIndicator(mShowSpeakingIndicator);
@@ -575,6 +583,7 @@ void LLAvatarList::updateLastInteractionTimes()
 	}
 }
 
+//BD
 void LLAvatarList::updateExtraData()
 {
 	if(mShowLastInteractionTime)
@@ -655,6 +664,7 @@ BOOL LLAvalineListItem::postBuild()
 	if (rv)
 	{
 		setOnline(true);
+		//BD
 		showExtraInformation(false);
 		mAvatarIcon->setValue("Avaline_Icon");
 		mAvatarIcon->setToolTip(std::string(""));

@@ -30,7 +30,6 @@
 
 #include "llcombobox.h"
 #include "llradiogroup.h"
-#include "llcheckboxctrl.h"
 
 #include "lldaycyclemanager.h"
 #include "llenvmanager.h"
@@ -39,10 +38,12 @@
 #include "llwlparammanager.h"
 
 //BD
+#include "llcheckboxctrl.h"
 #include "llviewercontrol.h"
 
 LLFloaterEnvironmentSettings::LLFloaterEnvironmentSettings(const LLSD &key)
 : 	 LLFloater(key)
+	//BD
 	,mRegionSettingsButton(NULL)
 	,mDayCycleSettingsCheck(NULL)
 	,mWaterPresetCombo(NULL)
@@ -53,10 +54,12 @@ LLFloaterEnvironmentSettings::LLFloaterEnvironmentSettings(const LLSD &key)
 
 // virtual
 BOOL LLFloaterEnvironmentSettings::postBuild()
-{	
+{
+	//BD
 	mRegionSettingsButton = getChild<LLButton>("region_settings_radio_group");
 	mRegionSettingsButton->setCommitCallback(boost::bind(&LLFloaterEnvironmentSettings::onSwitchRegionSettings, this));
 
+	//BD
 	mDayCycleSettingsCheck = getChild<LLCheckBoxCtrl>("sky_dayc_settings_check");
 	mDayCycleSettingsCheck->setCommitCallback(boost::bind(&LLFloaterEnvironmentSettings::apply, this));
 
@@ -111,6 +114,7 @@ void LLFloaterEnvironmentSettings::onSelectDayCyclePreset()
 void LLFloaterEnvironmentSettings::onBtnCancel()
 {
 	// Revert environment to user preferences.
+	//BD
 	LLEnvManagerNew::instance().usePrefs();
 	closeFloater();
 }
@@ -122,6 +126,7 @@ void LLFloaterEnvironmentSettings::refresh()
 	bool use_region_settings	= env_mgr.getUseRegionSettings();
 
 	// Set up radio buttons according to user preferences.
+	//BD
 	mRegionSettingsButton->setValue(use_region_settings);
 
 	// Populate the combo boxes with appropriate lists of available presets.
@@ -141,6 +146,7 @@ void LLFloaterEnvironmentSettings::refresh()
 void LLFloaterEnvironmentSettings::apply()
 {
 	// Update environment with the user choice.
+	//BD
 	bool use_region_settings	= gSavedSettings.getBOOL("UseEnvironmentFromRegion");
 	bool use_fixed_sky			= gSavedSettings.getBOOL("UseDayCycle");
 	std::string water_preset	= mWaterPresetCombo->getValue().asString();
@@ -150,19 +156,23 @@ void LLFloaterEnvironmentSettings::apply()
 	LLEnvManagerNew& env_mgr = LLEnvManagerNew::instance();
 	if (use_region_settings)
 	{
+		//BD - Animated Windlight Transition
 		env_mgr.setUseRegionSettings(true, gSavedSettings.getBOOL("RenderInterpolateWindlight"));
 	}
 	else
 	{
 		if(use_fixed_sky)
 		{
+			//BD - Animated Windlight Transition
 			env_mgr.setUseDayCycle(day_cycle, gSavedSettings.getBOOL("RenderInterpolateWindlight"));
 		}
 		else
 		{
+			//BD - Animated Windlight Transition
 			env_mgr.setUseSkyPreset(sky_preset, gSavedSettings.getBOOL("RenderInterpolateWindlight"));
 		}
 
+		//BD - Animated Windlight Transition
 		env_mgr.setUseWaterPreset(water_preset, gSavedSettings.getBOOL("RenderInterpolateWindlight"));
 	}
 }

@@ -81,6 +81,7 @@ public:
 	/*virtual*/ void endPostDeferredPass(S32 pass);
 	/*virtual*/ void renderPostDeferred(S32 pass);
 
+//	//BD - Motion Blur
 	/*virtual*/ void beginMotionBlurPass(S32 pass);
 	/*virtual*/ void endMotionBlurPass(S32 pass);
 	/*virtual*/ S32 getNumMotionBlurPasses();

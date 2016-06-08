@@ -124,6 +124,7 @@ LLAgentCamera::LLAgentCamera() :
 	mCameraMode( CAMERA_MODE_THIRD_PERSON ),
 	mLastCameraMode( CAMERA_MODE_THIRD_PERSON ),
 
+	//BD
 	mCameraPreset(CAMERA_PRESET_GROUP_VIEW),
 
 	mCameraAnimating( FALSE ),
@@ -181,6 +182,7 @@ LLAgentCamera::LLAgentCamera() :
 	mPanInKey(0.f),
 	mPanOutKey(0.f),
 
+//	//BD - Save/Load Camera Position
 	mSavedCameraPos(),
 	mSavedCameraFocus(),
 	mSavedCameraFocusObject(NULL),
@@ -206,6 +208,7 @@ void LLAgentCamera::init()
 
 	LLViewerCamera::getInstance()->setView(DEFAULT_FIELD_OF_VIEW);
 	// Leave at 0.01 meters until we have real near clip management
+	//BD
 	LLViewerCamera::getInstance()->setNear(0.01f);
 	LLViewerCamera::getInstance()->setFar(mDrawDistance);			// if you want to change camera settings, do so in camera.h
 	LLViewerCamera::getInstance()->setAspect( gViewerWindow->getWorldViewAspectRatio() );		// default, overridden in LLViewerWindow::reshape
@@ -1157,6 +1160,7 @@ void LLAgentCamera::updateCamera()
 	mCameraUpVector = LLVector3::z_axis;
 	//LLVector3	camera_skyward(0.f, 0.f, 1.f);
 
+	//BD
 	//U32 camera_mode = mCameraAnimating ? mLastCameraMode : mCameraMode;
 
 	validateFocusObject();
@@ -1166,6 +1170,7 @@ void LLAgentCamera::updateCamera()
 		changeCameraToFollow();
 	}
 
+	//BD
 	if (isAgentAvatarValid() && 
 		gAgentAvatarp->isSitting() && mFocusOnAvatar &&
 		(mCameraMode == CAMERA_MODE_MOUSELOOK || mCameraMode == CAMERA_MODE_THIRD_PERSON))
@@ -1176,6 +1181,7 @@ void LLAgentCamera::updateCamera()
 
 	//NOTE - this needs to be integrated into a general upVector system here within llAgent. 
 
+//	//BD - Third Person Steering
 	if(gSavedSettings.getBOOL("EnableThirdPersonSteering")
 		&& !gAgentCamera.cameraMouselook())
 	{
@@ -1398,12 +1404,14 @@ void LLAgentCamera::updateCamera()
 				// the avatar moves too jerkily w/r/t global space to smooth there.
 
 				LLVector3d delta = camera_pos_agent - mCameraSmoothingLastPositionAgent;
+				//BD
 				camera_pos_agent = lerp(mCameraSmoothingLastPositionAgent, camera_pos_agent, smoothing);
 				camera_pos_global = camera_pos_agent + agent_pos;
 			}
 			else
 			{
 				LLVector3d delta = camera_pos_global - mCameraSmoothingLastPositionGlobal;
+				//BD
 				camera_pos_global = lerp(mCameraSmoothingLastPositionGlobal, camera_pos_global, smoothing);
 			}
 		}
@@ -1419,6 +1427,7 @@ void LLAgentCamera::updateCamera()
 //	LL_INFOS() << "Current FOV Zoom: " << mCameraCurrentFOVZoomFactor << " Target FOV Zoom: " << mCameraFOVZoomFactor << " Object penetration: " << mFocusObjectDist << LL_ENDL;
 
 	LLVector3 focus_agent = gAgent.getPosAgentFromGlobal(mFocusGlobal);
+//	//BD - Cinematic Head Tracking
 	if (isAgentAvatarValid() && gSavedSettings.getBOOL("UseCinematicCamera")
 		&& mFocusOnAvatar && mCameraMode == CAMERA_MODE_THIRD_PERSON)
 	{
@@ -1467,6 +1476,7 @@ void LLAgentCamera::updateCamera()
 	}
 	gAgent.setLastPositionGlobal(global_pos);
 	
+//	//BD - Realistic Mouselook
 	if (LLVOAvatar::sVisibleInFirstPerson && isAgentAvatarValid() && cameraMouselook()
 		&& (!gAgentAvatarp->isSitting() || gSavedSettings.getBOOL("UseRealisticMouselook")))
 	{
@@ -2115,6 +2125,7 @@ void LLAgentCamera::changeCameraToMouselook(BOOL animate)
 
 	//gViewerWindow->stopGrab();
 	LLSelectMgr::getInstance()->deselectAll();
+	//BD
 //	gViewerWindow->hideCursor();
 //	gViewerWindow->moveCursorToCenter();
 
@@ -2801,6 +2812,7 @@ bool LLAgentCamera::isfollowCamLocked()
 BOOL LLAgentCamera::setPointAt(EPointAtType target_type, LLViewerObject *object, LLVector3 position)
 {
 	// disallow pointing at attachments and avatars
+	//BD
 	if (object && (object->isAttachment() || object->isAvatar() || 
 		!gSavedSettings.getBOOL("ShowSelectionBeam")))
 	{
@@ -2870,7 +2882,7 @@ S32 LLAgentCamera::directionToKey(S32 direction)
 	return 0;
 }
 
-//BD - Load/save camera position.
+//BD - Save/Load Camera Position
 void LLAgentCamera::saveCamera()
 {
 	mSavedCameraPos = getCameraPositionGlobal();

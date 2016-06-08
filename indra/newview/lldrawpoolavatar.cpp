@@ -400,6 +400,7 @@ void LLDrawPoolAvatar::renderPostDeferred(S32 pass)
 	is_post_deferred_render = false;
 }
 
+//BD - Motion Blur
 void LLDrawPoolAvatar::beginMotionBlurPass(S32 pass)
 {
 	glh::matrix4f last(gGLLastModelView);
@@ -1085,7 +1086,7 @@ void LLDrawPoolAvatar::beginRiggedShinySimple()
 void LLDrawPoolAvatar::endRiggedShinySimple()
 {
 	LLVertexBuffer::unbind();
-	if (sShaderLevel > 0 || gPipeline.sRenderDeferred)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders)
 	{
 		LLDrawPoolBump::unbindCubeMap(sVertexProgram, 2, sDiffuseChannel, cube_channel, false);
 		sVertexProgram->unbind();
@@ -1146,7 +1147,7 @@ void LLDrawPoolAvatar::beginRiggedFullbrightShiny()
 void LLDrawPoolAvatar::endRiggedFullbrightShiny()
 {
 	LLVertexBuffer::unbind();
-	if (sShaderLevel > 0 || gPipeline.sRenderDeferred)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders)
 	{
 		LLDrawPoolBump::unbindCubeMap(sVertexProgram, 2, sDiffuseChannel, cube_channel, false);
 		sVertexProgram->unbind();
@@ -1829,6 +1830,7 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 
 				LLDrawPoolAvatar::sVertexProgram->uniform3fv(LLShaderMgr::AVATAR_TRANSLATION, count, transp);
 
+//				//BD - Motion Blur
 				if (LLDrawPoolAvatar::sVertexProgram == &gSkinnedVelocityProgram ||
 					LLDrawPoolAvatar::sVertexProgram == &gSkinnedVelocityAlphaProgram)
 				{

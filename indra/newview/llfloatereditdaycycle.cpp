@@ -59,6 +59,7 @@ LLFloaterEditDayCycle::LLFloaterEditDayCycle(const LLSD &key)
 ,	mTimeCtrl(NULL)
 ,	mMakeDefaultCheckBox(NULL)
 ,	mSaveButton(NULL)
+	//BD
 ,	mDeleteButton(NULL)
 {
 }
@@ -74,8 +75,9 @@ BOOL LLFloaterEditDayCycle::postBuild()
 	mSkyPresetsCombo = getChild<LLComboBox>("WLSkyPresets");
 	mTimeCtrl = getChild<LLTimeCtrl>("time");
 	mSaveButton = getChild<LLButton>("save");
-	mDeleteButton = getChild<LLButton>("delete");
 	mMakeDefaultCheckBox = getChild<LLCheckBoxCtrl>("make_default_cb");
+	//BD
+	mDeleteButton = getChild<LLButton>("delete");
 
 	initCallbacks();
 
@@ -138,6 +140,7 @@ void LLFloaterEditDayCycle::initCallbacks(void)
 	mSaveButton->setCommitCallback(boost::bind(&LLFloaterEditDayCycle::onBtnSave, this));
 	mSaveButton->setRightMouseDownCallback(boost::bind(&LLFloaterEditDayCycle::dumpTrack, this));
 	getChild<LLButton>("cancel")->setCommitCallback(boost::bind(&LLFloaterEditDayCycle::onBtnCancel, this));
+	//BD
 	mDeleteButton->setCommitCallback(boost::bind(&LLFloaterEditDayCycle::onDeletePreset, this));
 
 	// Connect to env manager events.
@@ -348,6 +351,7 @@ void LLFloaterEditDayCycle::onTimeSliderMoved()
 
 	// set the value, turn off animation
 	LLWLParamManager::getInstance()->mAnimator.setDayTime((F64)val);
+	//BD
 	//LLWLParamManager::getInstance()->mAnimator.deactivate();
 
 	// then call update once
@@ -797,6 +801,7 @@ void LLFloaterEditDayCycle::onBtnSave()
 
 void LLFloaterEditDayCycle::onBtnCancel()
 {
+	//BD
 	LLEnvManagerNew::instance().usePrefs(); // revert changes made to current day cycle
 	closeFloater();
 }
@@ -853,6 +858,7 @@ std::string LLFloaterEditDayCycle::getRegionName()
 	return gAgent.getRegion() ? gAgent.getRegion()->getName() : LLTrans::getString("Unknown");
 }
 
+//BD
 void LLFloaterEditDayCycle::onDeletePreset()
 {
 	LLWLParamKey selected_day = getSelectedDayCycle();

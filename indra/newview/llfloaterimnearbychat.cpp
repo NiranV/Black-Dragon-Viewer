@@ -265,12 +265,11 @@ void LLFloaterIMNearbyChat::setVisible(BOOL visible)
 {
 	LLFloaterIMSessionTab::setVisible(visible);
 
-	/* BD - Nope.
-	if(visible)
+	//BD - Nope.
+	/*if(visible)
 	{
 		removeScreenChat();
-	}
-	*/
+	}*/
 }
 
 
@@ -278,6 +277,7 @@ void LLFloaterIMNearbyChat::setVisibleAndFrontmost(BOOL take_focus, const LLSD& 
 {
 	LLFloaterIMSessionTab::setVisibleAndFrontmost(take_focus, key);
 
+	//BD
 	if(!isTornOff() && matchesKey(key))
 	{
 		LLFloaterIMContainer::getInstance()->selectConversationPair(mSessionID, true, take_focus);
@@ -318,25 +318,23 @@ void LLFloaterIMNearbyChat::onClose(bool app_quitting)
 void LLFloaterIMNearbyChat::onClickCloseBtn(bool)
 
 {
-	/* BD - Nope.
-	if (!isTornOff())
+	//BD - Nope.
+	/*if (!isTornOff())
 	{
 		return;
 	}
-	closeHostedFloater();
-	*/
+	closeHostedFloater();*/
 	setVisible(false);
 }
 
 void LLFloaterIMNearbyChat::onChatFontChange(LLFontGL* fontp)
 {
 	// Update things with the new font whohoo
-	/*
-	if (mInputEditor)
+	//BD
+	/*if (mInputEditor)
 	{
 		mInputEditor->setFont(fontp);
-	}
-	*/
+	}*/
 }
 
 
@@ -508,6 +506,7 @@ void LLFloaterIMNearbyChat::onChatBoxKeystroke()
 				mInputEditor->setText(utf8_trigger + rest_of_match); // keep original capitalization for user-entered part
 				// Select to end of line, starting from the character
 				// after the last one the user typed.
+				//BD
 				mInputEditor->selectByCursorPosition(utf8_out_str.size()-rest_of_match.size(),utf8_out_str.size());
 			}
 
@@ -657,6 +656,7 @@ void LLFloaterIMNearbyChat::onChatBoxCommit()
 
 	gAgent.stopTyping();
 
+	//BD - Autoclose Chat
 	if(gSavedSettings.getBOOL("CloseChatOnReturn"))
 	{
 		setFocus(false);
@@ -739,6 +739,7 @@ void LLFloaterIMNearbyChat::sendChatFromViewer(const LLWString &wtext, EChatType
 		}
 	}
 
+//	//BD - Auto Close Out Of Character
 	if (gSavedSettings.getBOOL("AutoCloseOOC"))
 	{
 		// Try to find any unclosed OOC chat (i.e. an opening
@@ -755,7 +756,8 @@ void LLFloaterIMNearbyChat::sendChatFromViewer(const LLWString &wtext, EChatType
 			utf8_out_text += "))";
 		}
 	}
-			
+	
+//	//BD - MU Style Pose
 	// Convert MU*s style poses into IRC emotes here.
 	if (gSavedSettings.getBOOL("AllowMUpose") && utf8_out_text.find(":") == 0 && utf8_out_text.length() > 3)
 	{

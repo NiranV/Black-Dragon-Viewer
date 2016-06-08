@@ -45,6 +45,7 @@ class LLFloaterEditSky : public LLFloater
 public:
 	LLFloaterEditSky(const LLSD &key);
 
+	//BD
 	/// when user hits the delete preset button
 	void onDeletePreset();
 
@@ -108,8 +109,10 @@ private:
 
 	LLLineEditor*	mSkyPresetNameEditor;
 	LLComboBox*		mSkyPresetCombo;
+	//BD
 	LLButton*		mMakeDefaultCheckBox;
 	LLButton*		mSaveButton;
+	//BD
 	LLButton*		mDeleteButton;
 };
 

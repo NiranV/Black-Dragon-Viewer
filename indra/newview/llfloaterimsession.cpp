@@ -258,6 +258,7 @@ void LLFloaterIMSession::sendMsgFromInputEditor()
 				// Truncate and convert to UTF8 for transport
 				std::string utf8_text = wstring_to_utf8str(text);
 
+//				//BD - Auto Close Out Of Character
 				if (gSavedSettings.getBOOL("AutoCloseOOC"))
 				{
 					// Try to find any unclosed OOC chat (i.e. an opening
@@ -274,7 +275,8 @@ void LLFloaterIMSession::sendMsgFromInputEditor()
 						utf8_text += "))";
 					}
 				}
-			
+
+//				//BD - MU Style Pose			
 				// Convert MU*s style poses into IRC emotes here.
 				if (gSavedSettings.getBOOL("AllowMUpose") && utf8_text.find(":") == 0 && utf8_text.length() > 3)
 				{

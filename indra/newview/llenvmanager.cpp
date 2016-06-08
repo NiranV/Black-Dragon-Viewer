@@ -198,6 +198,7 @@ bool LLEnvManagerNew::useWaterParams(const LLSD& params)
 	return true;
 }
 
+//BD - Animated Windlight Transitions
 bool LLEnvManagerNew::useSkyPreset(const std::string& name, bool interpolate)
 {
 	LLWLParamManager& sky_mgr = LLWLParamManager::instance();
@@ -210,6 +211,7 @@ bool LLEnvManagerNew::useSkyPreset(const std::string& name, bool interpolate)
 	}
 
 	LL_DEBUGS("Windlight") << "Displaying sky preset " << name << LL_ENDL;
+//	//BD - Animated Windlight Transitions
 	sky_mgr.applySkyParams(param_set.getAll(), interpolate);
 	return true;
 }
@@ -252,6 +254,7 @@ bool LLEnvManagerNew::useDayCycleParams(const LLSD& params, LLEnvKey::EScope sco
 	return LLWLParamManager::instance().applyDayCycleParams(params, scope);
 }
 
+//BD - Animated Windlight Transitions
 void LLEnvManagerNew::setUseRegionSettings(bool val, bool interpolate)
 {
 	mUserPrefs.setUseRegionSettings(val);
@@ -259,6 +262,7 @@ void LLEnvManagerNew::setUseRegionSettings(bool val, bool interpolate)
 	updateManagersFromPrefs(interpolate);
 }
 
+//BD - Animated Windlight Transitions
 void LLEnvManagerNew::setUseWaterPreset(const std::string& name, bool interpolate)
 {
 	// *TODO: make sure the preset exists.
@@ -273,6 +277,7 @@ void LLEnvManagerNew::setUseWaterPreset(const std::string& name, bool interpolat
 	updateManagersFromPrefs(interpolate);
 }
 
+//BD - Animated Windlight Transitions
 void LLEnvManagerNew::setUseSkyPreset(const std::string& name, bool interpolate)
 {
 	// *TODO: make sure the preset exists.
@@ -287,6 +292,7 @@ void LLEnvManagerNew::setUseSkyPreset(const std::string& name, bool interpolate)
 	updateManagersFromPrefs(interpolate);
 }
 
+//BD - Animated Windlight Transitions
 void LLEnvManagerNew::setUseDayCycle(const std::string& name, bool interpolate)
 {
 	if (!LLDayCycleManager::instance().presetExists(name))
@@ -518,6 +524,7 @@ void LLEnvManagerNew::initSingleton()
 	loadUserPrefs();
 }
 
+//BD - Animated Windlight Transitions
 void LLEnvManagerNew::updateSkyFromPrefs(bool interpolate)
 {
 	bool success = true;
@@ -609,6 +616,7 @@ void LLEnvManagerNew::updateManagersFromPrefs(bool interpolate)
 	updateWaterFromPrefs(interpolate);
 
 	// Apply sky settings.
+//	//BD - Animated Windlight Transitions
 	updateSkyFromPrefs(interpolate);
 }
 

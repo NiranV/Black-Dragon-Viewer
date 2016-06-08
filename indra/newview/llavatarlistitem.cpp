@@ -63,6 +63,7 @@ LLAvatarListItem::LLAvatarListItem(bool not_from_ui_factory/* = true*/)
 	LLFriendObserver(),
 	mAvatarIcon(NULL),
 	mAvatarName(NULL),
+	//BD
 	mExtraInformation(NULL),
 	mIconPermissionOnline(NULL),
 	mIconPermissionMap(NULL),
@@ -103,6 +104,7 @@ BOOL  LLAvatarListItem::postBuild()
 {
 	mAvatarIcon = getChild<LLAvatarIconCtrl>("avatar_icon");
 	mAvatarName = getChild<LLTextBox>("avatar_name");
+	//BD
 	mExtraInformation = getChild<LLTextBox>("extra_information");
 
 	mIconPermissionOnline = getChild<LLIconCtrl>("permission_online_icon");
@@ -131,6 +133,7 @@ void LLAvatarListItem::fetchAvatarName()
 }
 
 
+//BD
 void LLAvatarListItem::draw()
 {
 	showPermissions(mShowPermissions);
@@ -264,6 +267,7 @@ void LLAvatarListItem::setAvatarId(const LLUUID& id, const LLUUID& session_id, b
 	}
 }
 
+//BD
 void LLAvatarListItem::showExtraInformation(bool show)
 {
 	if (show)
@@ -441,6 +445,7 @@ LLAvatarListItem::icon_color_map_t& LLAvatarListItem::getItemIconColorMap()
 	return item_icon_color_map;
 }
 
+//BD
 bool LLAvatarListItem::showPermissions(bool visible)
 {
 	const LLRelationship* relation = LLAvatarTracker::instance().getBuddyInfo(getAvatarId());

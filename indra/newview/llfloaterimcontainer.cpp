@@ -210,6 +210,7 @@ BOOL LLFloaterIMContainer::postBuild()
 	// a scroller for folder view
 	LLRect scroller_view_rect = mConversationsListPanel->getRect();
 	scroller_view_rect.translate(-scroller_view_rect.mLeft, -scroller_view_rect.mBottom);
+	//BD
 	//scroller_view_rect.mBottom += getChild<LLLayoutStack>("conversations_pane_buttons_stack")->getRect().getHeight();
 	LLScrollContainer::Params scroller_params(LLUICtrlFactory::getDefaultParams<LLFolderViewScrollContainer>());
 	scroller_params.rect(scroller_view_rect);
@@ -762,12 +763,12 @@ void LLFloaterIMContainer::collapseMessagesPane(bool collapse)
 		// Save the order in which the panels are closed to reverse user's last action.
 		gSavedPerAccountSettings.setBOOL("ConversationsExpandMessagePaneFirst", mConversationsPane->isCollapsed());
 		
-		// Make sure our floater moves to the right instead of left since we put the list there.
+		//BD - Make sure our floater moves to the right instead of left since we put the list there.
 		translate(msg_pane_width,0);
 	}
 	else
 	{
-		// Revert what we did when we collapsed the floater.
+		//BD - Revert what we did when we collapsed the floater.
 		translate(-gSavedPerAccountSettings.getS32("ConversationsMessagePaneWidth"),0);
 	}
 
@@ -1176,6 +1177,7 @@ void LLFloaterIMContainer::doToParticipants(const std::string& command, uuid_vec
 		{
 			banSelectedMember(userID);
 		}
+//		//BD - SSFUI
 		else if ("get_uuid" == command)
 		{
 			LLAvatarActions::copyUUIDToClipboard(userID);
@@ -1312,6 +1314,7 @@ void LLFloaterIMContainer::doToSelectedGroup(const LLSD& userdata)
     {
         LLGroupActions::leave(mSelectedSession);
     }
+//	//BD - SSFUI
 	else if (action == "get_slurl")
     {
         LLGroupActions::copySLURL(mSelectedSession);
@@ -1345,6 +1348,7 @@ bool LLFloaterIMContainer::enableContextMenuItem(const LLSD& userdata)
 		return gSavedPerAccountSettings.getS32("KeepConversationLogTranscripts") > 0;
 	}
 
+	//BD
 	//Enable Chat history item for ad-hoc and group conversations
 	/*if ("can_chat_history" == item && uuids.size() > 0)
 	{

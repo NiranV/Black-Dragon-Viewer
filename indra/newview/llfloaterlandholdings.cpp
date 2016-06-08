@@ -37,11 +37,9 @@
 #include "llagent.h"
 #include "llfloaterreg.h"
 #include "llfloaterworldmap.h"
-#include "llfloatersidepanelcontainer.h"
 #include "llproductinforequest.h"
 #include "llscrolllistctrl.h"
 #include "llstatusbar.h"
-#include "llsidepanelinventory.h"
 #include "lltextbox.h"
 #include "llscrolllistctrl.h"
 #include "llscrolllistitem.h"
@@ -52,6 +50,10 @@
 #include "lluictrlfactory.h"
 
 #include "llgroupactions.h"
+
+//BD
+#include "llfloatersidepanelcontainer.h"
+#include "llsidepanelinventory.h"
 
 // protected
 LLFloaterLandHoldings::LLFloaterLandHoldings(const LLSD& key)
@@ -324,6 +326,7 @@ void LLFloaterLandHoldings::onGrantList(void* data)
 
 void LLFloaterLandHoldings::refreshAggregates()
 {
+	//BD
 	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 	S32 allowed_area = sidepanel_inventory->getSquareMetersCredit();
 	S32 current_area = sidepanel_inventory->getSquareMetersCommitted();

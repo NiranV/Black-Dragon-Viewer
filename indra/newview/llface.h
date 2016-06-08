@@ -257,6 +257,7 @@ public:
 	LLMatrix4*	mSpecMapMatrix;
 	LLMatrix4*	mNormalMapMatrix;
 	LLDrawInfo* mDrawInfo;
+//	//BD - Motion Blur
 	LLMatrix4*  mLastMatrixPalette;
 
 private:

@@ -52,6 +52,7 @@ public:
 	/*virtual*/ void	draw();
 
 	/// when user hits the delete preset button
+	//BD
 	void onDeletePreset();
 	void onDeleteDayCycleConfirmation();
 
@@ -136,6 +137,7 @@ private:
 	LLTimeCtrl*			mTimeCtrl;
 	LLCheckBoxCtrl*		mMakeDefaultCheckBox;
 	LLButton*			mSaveButton;
+	//BD
 	LLButton*			mDeleteButton;
 
 	// map of sliders to parameters

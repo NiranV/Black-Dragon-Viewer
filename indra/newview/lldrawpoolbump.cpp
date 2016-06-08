@@ -199,6 +199,7 @@ void LLDrawPoolBump::prerender()
 // static
 S32 LLDrawPoolBump::numBumpPasses()
 {
+	//BD
 	if (gSavedSettings.getBOOL("RenderDeferred"))
 	{
 		if (LLPipeline::sImpostorRender)
@@ -800,6 +801,7 @@ void LLDrawPoolBump::endBump(U32 pass)
 
 S32 LLDrawPoolBump::getNumDeferredPasses()
 { 
+	//BD
 	if (gSavedSettings.getBOOL("RenderDeferred"))
 	{
 		return 1;

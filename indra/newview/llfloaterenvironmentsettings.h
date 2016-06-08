@@ -31,6 +31,7 @@
 
 class LLComboBox;
 class LLRadioGroup;
+//BD
 class LLCheckBoxCtrl;
 
 class LLFloaterEnvironmentSettings : public LLFloater
@@ -58,6 +59,7 @@ private:
 	void populateSkyPresetsList();
 	void populateDayCyclePresetsList();
 
+	//BD
 	LLButton*		mRegionSettingsButton;
 	LLCheckBoxCtrl*		mDayCycleSettingsCheck;
 

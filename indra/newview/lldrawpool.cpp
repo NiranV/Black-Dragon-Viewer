@@ -199,6 +199,7 @@ void LLDrawPool::renderPostDeferred(S32 pass)
 
 }
 
+//BD - Motion Blur
 //virtual 
 void LLDrawPool::beginMotionBlurPass(S32 pass)
 {

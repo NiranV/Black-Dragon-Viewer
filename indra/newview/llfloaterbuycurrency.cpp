@@ -32,9 +32,7 @@
 #include "llcurrencyuimanager.h"
 #include "llfloater.h"
 #include "llfloaterreg.h"
-#include "llfloatersidepanelcontainer.h"
 #include "llnotificationsutil.h"
-#include "llsidepanelinventory.h"
 #include "lltextbox.h"
 #include "llviewchildren.h"
 #include "llviewerwindow.h"
@@ -42,6 +40,9 @@
 #include "llweb.h"
 #include "llwindow.h"
 #include "llappviewer.h"
+//BD
+#include "llfloatersidepanelcontainer.h"
+#include "llsidepanelinventory.h"
 
 static const S32 STANDARD_BUY_AMOUNT = 2000;
 static const S32 MINIMUM_BALANCE_AMOUNT = 0;
@@ -115,6 +116,7 @@ void LLFloaterBuyCurrencyUI::target(const std::string& name, S32 price)
 	mTargetName = name;
 	mTargetPrice = price;
 	
+	//BD
 	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 	S32 balance = sidepanel_inventory->getBalance();
 	S32 need = price - balance;
@@ -271,6 +273,7 @@ void LLFloaterBuyCurrencyUI::onClickBuy()
 	mManager.buy(getString("buy_currency"));
 	updateUI();
 	// Update L$ balance
+	//BD
 	LLSidepanelInventory::sendMoneyBalanceRequest();
 }
 
@@ -278,6 +281,7 @@ void LLFloaterBuyCurrencyUI::onClickCancel()
 {
 	closeFloater();
 	// Update L$ balance
+	//BD
 	LLSidepanelInventory::sendMoneyBalanceRequest();
 }
 
@@ -286,6 +290,7 @@ void LLFloaterBuyCurrencyUI::onClickErrorWeb()
 	LLWeb::loadURLExternal(mManager.errorURI());
 	closeFloater();
 	// Update L$ balance
+	//BD
 	LLSidepanelInventory::sendMoneyBalanceRequest();
 }
 

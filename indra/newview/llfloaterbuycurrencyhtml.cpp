@@ -28,6 +28,7 @@
 
 #include "llfloaterbuycurrencyhtml.h"
 #include "llhttpconstants.h"
+//BD
 #include "llsidepanelinventory.h"
 #include "llfloatersidepanelcontainer.h"
 
@@ -76,6 +77,8 @@ void LLFloaterBuyCurrencyHTML::navigateToFinalURL()
 	// users' current balance
 	codec.clear();
 	codec.str( "" );
+
+	//BD
 	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 	codec << sidepanel_inventory->getBalance();
 	replace[ "[BAL]" ] = codec.str();
@@ -100,6 +103,7 @@ void LLFloaterBuyCurrencyHTML::handleMediaEvent( LLPluginClassMedia* self, EMedi
 	{
 		// update currency after we complete a navigation since there are many ways 
 		// this can result in a different L$ balance
+		//BD
 		LLSidepanelInventory::sendMoneyBalanceRequest();
 	};
 }
@@ -109,6 +113,7 @@ void LLFloaterBuyCurrencyHTML::handleMediaEvent( LLPluginClassMedia* self, EMedi
 void LLFloaterBuyCurrencyHTML::onClose( bool app_quitting )
 {
 	// Update L$ balance one more time
+	//BD
 	LLSidepanelInventory::sendMoneyBalanceRequest();
 
 	destroy();

@@ -98,7 +98,9 @@ public:
 
 	const LLMatrix4&      getWorldMatrix() const		{ return mXform.getWorldMatrix(); }
 	const LLMatrix4&	  getRenderMatrix() const;
+//	//BD - Motion Blur
 	LLMatrix4&			  getLastRenderMatrix();
+
 	void				  setPosition(LLVector3 v) const { }
 	const LLVector3&	  getPosition() const			{ return mXform.getPosition(); }
 	const LLVector3&      getWorldPosition() const		{ return mXform.getPositionW(); }
@@ -287,6 +289,7 @@ public:
 
 public:
 	LLXformMatrix       mXform;
+//	//BD - Motion Blur
 	LLMatrix4*			mLastRenderMatrix;
 
 	// vis data

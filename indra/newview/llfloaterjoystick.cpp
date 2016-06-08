@@ -90,6 +90,7 @@ void LLFloaterJoystick::draw()
 		}
 	}
 
+//	//BD - Custom Joystick Mapping
 	for (U32 i = 0; i < 16; i++)
 	{
 		U32 value = joystick->getJoystickButton(i);
@@ -120,6 +121,7 @@ BOOL LLFloaterJoystick::postBuild()
 		}
 	}
 
+//	//BD - Custom Joystick Mapping
 	for (U32 i = 0; i < 16; i++)
 	{
 		std::string btn_name = llformat("btn%d", i);
@@ -132,6 +134,7 @@ BOOL LLFloaterJoystick::postBuild()
 	childSetCommitCallback("JoystickFlycamEnabled",onCommitJoystickEnabled,this);
 
 	childSetAction("SpaceNavigatorDefaults", onClickRestoreSNDefaults, this);
+//	//BD - Xbox360 Controller Support
 	childSetAction("Xbox360Defaults", onClickRestoreXboxDefaults, this);
 	childSetAction("cancel_btn", onClickCancel, this);
 	childSetAction("ok_btn", onClickOK, this);
@@ -316,6 +319,7 @@ void LLFloaterJoystick::onClickRestoreSNDefaults(void *joy_panel)
 	setSNDefaults();
 }
 
+//BD - Xbox360 Controller Support
 void LLFloaterJoystick::onClickRestoreXboxDefaults(void *joy_panel)
 {
 	setXboxDefaults();
@@ -353,6 +357,7 @@ void LLFloaterJoystick::setSNDefaults()
 	LLViewerJoystick::getInstance()->setSNDefaults();
 }
 
+//BD - Xbox360 Controller Support
 void LLFloaterJoystick::setXboxDefaults()
 {
 	LLViewerJoystick::getInstance()->setXboxDefaults();

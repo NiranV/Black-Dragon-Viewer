@@ -67,6 +67,7 @@ LLFloaterEditSky::LLFloaterEditSky(const LLSD &key)
 ,	mSkyPresetCombo(NULL)
 ,	mMakeDefaultCheckBox(NULL)
 ,	mSaveButton(NULL)
+	//BD
 ,   mDeleteButton(NULL)
 {
 }
@@ -76,8 +77,10 @@ BOOL LLFloaterEditSky::postBuild()
 {
 	mSkyPresetNameEditor = getChild<LLLineEditor>("sky_preset_name");
 	mSkyPresetCombo = getChild<LLComboBox>("sky_preset_combo");
+	//BD
 	mMakeDefaultCheckBox = getChild<LLButton>("make_default_cb");
 	mSaveButton = getChild<LLButton>("save");
+	//BD
 	mDeleteButton = getChild<LLButton>("delete");
 
 	initCallbacks();
@@ -93,6 +96,7 @@ void LLFloaterEditSky::onOpen(const LLSD& key)
 {
 	bool new_preset = isNewPreset();
 	std::string param = key.asString();
+	//BD
 	std::string floater_title;
 
 	if(!param.empty())
@@ -134,6 +138,7 @@ void LLFloaterEditSky::initCallbacks(void)
 
 	mSaveButton->setCommitCallback(boost::bind(&LLFloaterEditSky::onBtnSave, this));
 	getChild<LLButton>("cancel")->setCommitCallback(boost::bind(&LLFloaterEditSky::onBtnCancel, this));
+	//BD
 	mDeleteButton->setCommitCallback(boost::bind(&LLFloaterEditSky::onDeletePreset, this));
 
 	LLEnvManagerNew::instance().setRegionSettingsChangeCallback(boost::bind(&LLFloaterEditSky::onRegionSettingsChange, this));
@@ -203,11 +208,8 @@ void LLFloaterEditSky::initCallbacks(void)
 	getChild<LLUICtrl>("WLGamma")->setCommitCallback(boost::bind(&LLFloaterEditSky::onFloatControlMoved, this, _1, &param_mgr.mWLGamma));
 	getChild<LLUICtrl>("WLStarAlpha")->setCommitCallback(boost::bind(&LLFloaterEditSky::onStarAlphaMoved, this, _1));
 
-	//
-	//adding a few of those controls a second time and asigning them 
-	//to spinners to allow precise text entry into windlight
-	//
-
+	//BD - adding a few of those controls a second time and asigning them 
+	//     to spinners to allow precise text entry into windlight.
 	// haze density, horizon, mult, and altitude
 	getChild<LLUICtrl>("WLHazeDensity2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onFloatControlMoved, this, _1, &param_mgr.mHazeDensity));
 	getChild<LLUICtrl>("WLHazeHorizon2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onFloatControlMoved, this, _1, &param_mgr.mHazeHorizon));
@@ -236,16 +238,12 @@ void LLFloaterEditSky::syncControls()
 	// haze density, horizon, mult, and altitude
 	param_mgr->mHazeDensity = cur_params.getFloat(param_mgr->mHazeDensity.mName, err);
 	childSetValue("WLHazeDensity", (F32) param_mgr->mHazeDensity);
-	childSetValue("WLHazeDensity2", (F32) param_mgr->mHazeDensity);
 	param_mgr->mHazeHorizon = cur_params.getFloat(param_mgr->mHazeHorizon.mName, err);
 	childSetValue("WLHazeHorizon", (F32) param_mgr->mHazeHorizon);
-	childSetValue("WLHazeHorizon2", (F32) param_mgr->mHazeHorizon);
 	param_mgr->mDensityMult = cur_params.getFloat(param_mgr->mDensityMult.mName, err);
 	childSetValue("WLDensityMult", ((F32) param_mgr->mDensityMult) * param_mgr->mDensityMult.mult);
-	childSetValue("WLDensityMult2", ((F32) param_mgr->mDensityMult) * param_mgr->mDensityMult.mult);
 	param_mgr->mMaxAlt = cur_params.getFloat(param_mgr->mMaxAlt.mName, err);
 	childSetValue("WLMaxAltitude", (F32) param_mgr->mMaxAlt);
-	childSetValue("WLMaxAltitude2", (F32) param_mgr->mMaxAlt);
 
 	// blue density
 	param_mgr->mBlueDensity = cur_params.getVector(param_mgr->mBlueDensity.mName, err);
@@ -325,15 +323,21 @@ void LLFloaterEditSky::syncControls()
 
 	param_mgr->mDistanceMult = cur_params.getFloat(param_mgr->mDistanceMult.mName, err);
 	childSetValue("WLDistanceMult", (F32) param_mgr->mDistanceMult);
-	childSetValue("WLDistanceMult2", (F32) param_mgr->mDistanceMult);
 
 	// Tweak extras
 
 	param_mgr->mWLGamma = cur_params.getFloat(param_mgr->mWLGamma.mName, err);
 	childSetValue("WLGamma", (F32) param_mgr->mWLGamma);
-	childSetValue("WLGamma2", (F32) param_mgr->mWLGamma);
 
 	childSetValue("WLStarAlpha", param_mgr->mCurParams.getStarBrightness());
+
+	//BD
+	childSetValue("WLHazeDensity2", (F32)param_mgr->mHazeDensity);
+	childSetValue("WLHazeHorizon2", (F32)param_mgr->mHazeHorizon);
+	childSetValue("WLDensityMult2", ((F32)param_mgr->mDensityMult) * param_mgr->mDensityMult.mult);
+	childSetValue("WLMaxAltitude2", (F32)param_mgr->mMaxAlt);
+	childSetValue("WLDistanceMult2", (F32)param_mgr->mDistanceMult);
+	childSetValue("WLGamma2", (F32)param_mgr->mWLGamma);
 }
 
 void LLFloaterEditSky::setColorSwatch(const std::string& name, const WLColorControl& from_ctrl, F32 k)
@@ -724,8 +728,9 @@ void LLFloaterEditSky::enableEditing(bool enable)
 {
 	// Enable/disable saving.
 	mSaveButton->setEnabled(enable);
-	mDeleteButton->setEnabled(enable);
 	mMakeDefaultCheckBox->setEnabled(enable);
+	//BD
+	mDeleteButton->setEnabled(enable);
 }
 
 void LLFloaterEditSky::saveRegionSky()
@@ -876,6 +881,7 @@ void LLFloaterEditSky::onBtnSave()
 
 void LLFloaterEditSky::onBtnCancel()
 {
+	//BD
 	LLEnvManagerNew::instance().usePrefs(); // revert changes made to current environment
 	closeFloater();
 }
@@ -884,6 +890,7 @@ void LLFloaterEditSky::onSkyPresetListChange()
 {
 	// A new preset has been added or deleted.
 	// Refresh the presets list, though it may not make sense as the floater is about to be closed.
+	//BD
 	refreshSkyPresetsList();
 }
 
@@ -922,6 +929,7 @@ void LLFloaterEditSky::onRegionInfoUpdate()
 	enableEditing(can_edit);
 }
 
+//BD
 void LLFloaterEditSky::onDeletePreset()
 {
     LLWLParamKey selected_sky = getSelectedSkyPreset();

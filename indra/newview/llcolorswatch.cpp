@@ -136,6 +136,7 @@ void LLColorSwatchCtrl::setOriginal(const LLColor4& color)
 	if (pickerp)
 	{
 		pickerp->setOrigRgb(mColor.mV[VRED], mColor.mV[VGREEN], mColor.mV[VBLUE]);
+//		//BD - Color Picker Transparency
 		pickerp->setOrigT(mColor.mV[VALPHA]);
 	}
 }
@@ -147,6 +148,7 @@ void LLColorSwatchCtrl::set(const LLColor4& color, BOOL update_picker, BOOL from
 	if (pickerp && update_picker)
 	{
 		pickerp->setCurRgb(mColor.mV[VRED], mColor.mV[VGREEN], mColor.mV[VBLUE]);
+//		//BD - Color Picker Transparency
 		pickerp->setCurT(mColor.mV[VALPHA]);
 	}
 	if (!from_event)
@@ -291,6 +293,7 @@ void LLColorSwatchCtrl::onColorChanged ( void* data, EColorPickOp pick_op )
 			LLColor4 updatedColor ( pickerp->getCurR (), 
 									pickerp->getCurG (), 
 									pickerp->getCurB (), 
+//									//BD - Color Picker Transparency
 									pickerp->getCurT ());
 			subject->mColor = updatedColor;
 			subject->setControlValue(updatedColor.getValue());
@@ -353,6 +356,7 @@ void LLColorSwatchCtrl::showPicker(BOOL take_focus)
 	}
 
 	// initialize picker with current color
+//	//BD - Color Picker Transparency
 	pickerp->initUI(mColor.mV[VRED], mColor.mV[VGREEN], mColor.mV[VBLUE], mColor.mV[VALPHA]);
 
 	// display it

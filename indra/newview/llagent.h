@@ -234,7 +234,7 @@ public:
 	void			setHomePosRegion(const U64& region_handle, const LLVector3& pos_region);
 	BOOL			getHomePosGlobal(LLVector3d* pos_global);
 
-//	//BD - Home TP check
+	//BD - Home TP Check
 	BOOL			mIsHomeTP;
 private:
     void            setStartPositionSuccess(const LLSD &result);
@@ -538,8 +538,10 @@ private:
 public:
 	void			moveAt(S32 direction, bool reset_view = true);
 	void			moveAtNudge(S32 direction);
+	//BD
 	void			moveLeft(S32 direction, bool reset_view = true);
 	void			moveLeftNudge(S32 direction);
+	//BD
 	void			moveUp(S32 direction, bool reset_view = true);
 	void			moveYaw(F32 mag, bool reset_view = true);
 	void			movePitch(F32 mag);

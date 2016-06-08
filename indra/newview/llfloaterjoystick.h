@@ -44,6 +44,7 @@ public:
 	virtual void cancel();	// Cancel the changed values.
 	virtual void draw();
 	static  void setSNDefaults();
+//	//BD - Xbox360 Controller Support
 	static  void setXboxDefaults();
 
 private:
@@ -55,9 +56,10 @@ private:
 	
 	static void onCommitJoystickEnabled(LLUICtrl*, void*);
 	static void onClickRestoreSNDefaults(void*);
-	static void onClickRestoreXboxDefaults(void*);
 	static void onClickCancel(void*);
 	static void onClickOK(void*);
+//	//BD - Xbox360 Controller Support
+	static void onClickRestoreXboxDefaults(void*);
 
 private:
 	// Device prefs
@@ -88,6 +90,7 @@ private:
 	// stats view 
 	LLStatBar* mAxisStatsBar[6];
 
+//	//BD - Custom Joystick Mapping
 	LLButton* mAxisButton[16];
 };
 

@@ -274,6 +274,7 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	mInputEditor->setMouseUpCallback(boost::bind(&LLFloaterIMSessionTab::onInputEditorClicked, this));
 	mInputEditor->setCommitOnFocusLost( FALSE );
 	mInputEditor->setPassDelete(TRUE);
+//	//BD - Optional Single Line Mode
 	mInputEditor->enableSingleLineMode((bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 
 	mChatLayoutPanelHeight = mChatLayoutPanel->getRect().getHeight();
@@ -397,7 +398,7 @@ void LLFloaterIMSessionTab::onFocusReceived()
 void LLFloaterIMSessionTab::onFocusLost()
 {
 	setBackgroundOpaque(false);
-	//	//BD - Autoclose Chat
+//	//BD - Autoclose Chat
 	if(gSavedSettings.getBOOL("EnableAutohidingChat") 
 		&& mIsNearbyChat
 		&& !isMessagePaneExpanded())
@@ -754,6 +755,7 @@ void LLFloaterIMSessionTab::updateHeaderAndToolbar()
 
 
 	mCloseBtn->setVisible(is_not_torn_off && !mIsNearbyChat);
+	//BD
 	getChild<LLPanel>("close_btn_panel")->setVisible(is_not_torn_off && !mIsNearbyChat);
 
 	enableDisableCallBtn();
@@ -772,6 +774,7 @@ void LLFloaterIMSessionTab::forceReshape()
 
 void LLFloaterIMSessionTab::reshapeChatLayoutPanel()
 {
+	//BD
 	mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + 6.f, FALSE);
 }
 
@@ -871,9 +874,10 @@ void LLFloaterIMSessionTab::onCollapseToLine(LLFloaterIMSessionTab* self)
 		self->mExpandCollapseLineBtn->setImageOverlay(self->getString(expand ? "collapseline_icon" : "expandline_icon"));
 		self->mContentPanel->setVisible(!expand);
 		self->mToolbarPanel->setVisible(!expand);
-		self->mInputEditor->enableSingleLineMode(expand || (bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 		self->reshapeFloater(expand);
 		self->setMessagePaneExpanded(!expand);
+//		//BD - Optional Single Line Mode
+		self->mInputEditor->enableSingleLineMode(expand || (bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 	}
 }
 
@@ -884,6 +888,7 @@ void LLFloaterIMSessionTab::reshapeFloater(bool collapse)
 	if(collapse)
 	{
 		mFloaterHeight = floater_rect.getHeight();
+		//BD
 		S32 height = mContentPanel->getRect().getHeight() + mToolbarPanel->getRect().getHeight()
 			+ mChatLayoutPanel->getRect().getHeight() - mChatLayoutPanelHeight;
 		floater_rect.mTop -= height;
@@ -917,8 +922,9 @@ void LLFloaterIMSessionTab::restoreFloater()
 		mExpandCollapseLineBtn->setImageOverlay(getString("expandline_icon"));
 		setMessagePaneExpanded(true);
 		saveCollapsedState();
-		mInputEditor->enableSingleLineMode((bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 		enableResizeCtrls(true, true, true);
+//		//BD - Optional Single Line Mode
+		mInputEditor->enableSingleLineMode((bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 	}
 }
 
@@ -965,6 +971,7 @@ void LLFloaterIMSessionTab::onTearOffClicked()
 void LLFloaterIMSessionTab::updateGearBtn()
 {
 	mGearBtn->setVisible(checkIfTornOff() && mIsP2PChat);
+	//BD
 	getChild<LLPanel>("gear_btn_panel")->setVisible(checkIfTornOff() && mIsP2PChat);
 }
 

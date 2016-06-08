@@ -52,6 +52,7 @@ LLFloaterEditWater::LLFloaterEditWater(const LLSD &key)
 ,	mWaterPresetCombo(NULL)
 ,	mMakeDefaultCheckBox(NULL)
 ,	mSaveButton(NULL)
+	//BD
 ,	mDeleteButton(NULL)
 {
 }
@@ -61,8 +62,10 @@ BOOL LLFloaterEditWater::postBuild()
 {
 	mWaterPresetNameEditor = getChild<LLLineEditor>("water_preset_name");
 	mWaterPresetCombo = getChild<LLComboBox>("water_preset_combo");
+	//BD
 	mMakeDefaultCheckBox = getChild<LLButton>("make_default_cb");
 	mSaveButton = getChild<LLButton>("save");
+	//BD
 	mDeleteButton = getChild<LLButton>("delete");
 
 	initCallbacks();
@@ -77,6 +80,7 @@ void LLFloaterEditWater::onOpen(const LLSD& key)
 {
 	bool new_preset = isNewPreset();
 	std::string param = key.asString();
+	//BD
 	std::string floater_title;
 
 	if(!param.empty())
@@ -116,6 +120,7 @@ void LLFloaterEditWater::initCallbacks(void)
 
 	mSaveButton->setCommitCallback(boost::bind(&LLFloaterEditWater::onBtnSave, this));
 	getChild<LLButton>("cancel")->setCommitCallback(boost::bind(&LLFloaterEditWater::onBtnCancel, this));
+	//BD
 	mDeleteButton->setCommitCallback(boost::bind(&LLFloaterEditWater::onDeletePreset, this));
 
 	LLEnvManagerNew::instance().setRegionSettingsChangeCallback(boost::bind(&LLFloaterEditWater::onRegionSettingsChange, this));
@@ -711,6 +716,7 @@ void LLFloaterEditWater::onBtnSave()
 
 void LLFloaterEditWater::onBtnCancel()
 {
+	//BD
 	LLEnvManagerNew::instance().usePrefs(); // revert changes made to current environment
 	closeFloater();
 }
@@ -719,6 +725,7 @@ void LLFloaterEditWater::onWaterPresetListChange()
 {
 	// A new preset has been added.
 	// Refresh the presets list, though it may not make sense as the floater is about to be closed.
+	//BD
 	refreshWaterPresetsList();
 }
 
@@ -757,6 +764,7 @@ void LLFloaterEditWater::onRegionInfoUpdate()
 	enableEditing(can_edit);
 }
 
+//BD
 void LLFloaterEditWater::onDeletePreset()
 {
 	LLEnvKey::EScope scope;

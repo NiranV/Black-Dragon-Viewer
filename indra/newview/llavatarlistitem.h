@@ -81,6 +81,7 @@ public:
 
 	virtual BOOL postBuild();
 
+	//BD
 	/*virtual*/ void draw();
 	
 	//Processes notification from speaker indicator to update children when indicator's visibility is changed.
@@ -97,10 +98,12 @@ public:
 	void setHighlight(const std::string& highlight);
 	void setState(EItemState item_style);
 	void setAvatarId(const LLUUID& id, const LLUUID& session_id, bool ignore_status_changes = false, bool is_resident = true);
+	//BD
 	void setExtraInformation(const std::string& information);
 	void showSpeakingIndicator(bool show);
 	void setShowPermissions(bool show) { mShowPermissions = show; };
 	void setLastInteractionTime(U32 secs_since);
+	//BD
 	void showExtraInformation(bool show);
 // [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
 	void setRlvCheckShowNames(bool fRlvCheckShowNames) { mRlvCheckShowNames = fRlvCheckShowNames; }
@@ -150,6 +153,7 @@ private:
 	bool showPermissions(bool visible);
 
 	LLTextBox* mAvatarName;
+	//BD
 	LLTextBox* mExtraInformation;
 	LLStyle::Params mAvatarNameStyle;
 	

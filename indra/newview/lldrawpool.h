@@ -98,6 +98,7 @@ public:
 	virtual S32 getNumPostDeferredPasses();
 	virtual void renderPostDeferred(S32 pass = 0);
 
+//	//BD - Motion Blur
 	virtual void beginMotionBlurPass(S32 pass);
 	virtual void endMotionBlurPass(S32 pass);
 	virtual S32 getNumMotionBlurPasses();

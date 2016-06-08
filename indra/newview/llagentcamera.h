@@ -230,6 +230,7 @@ private:
 	F32				mFocusDotRadius; 				// Meters
 	BOOL			mTrackFocusObject;
 
+//	//BD - Save/Load Camera Position
 	//--------------------------------------------------------------------
 	// Camera backup
 	//--------------------------------------------------------------------

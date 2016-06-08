@@ -195,12 +195,14 @@ public:
 	bool useRegionSettings();
 	bool useWaterPreset(const std::string& name);
 	bool useWaterParams(const LLSD& params);
+//	//BD - Animated Windlight Transitions
 	bool useSkyPreset(const std::string& name, bool interpolate = false);
 	bool useSkyParams(const LLSD& params);
 	bool useDayCycle(const std::string& name, LLEnvKey::EScope scope);
 	bool useDayCycleParams(const LLSD& params, LLEnvKey::EScope scope, F32 time = 0.5);
 
 	// setters for user env. preferences
+//	//BD - Animated Windlight Transitions
 	void setUseRegionSettings(bool val, bool interpolate = false);
 	void setUseWaterPreset(const std::string& name, bool interpolate = false);
 	void setUseSkyPreset(const std::string& name, bool interpolate = false);
@@ -237,6 +239,7 @@ private:
 	void loadUserPrefs();
 	void saveUserPrefs();
 
+//	//BD - Animated Windlight Transitions
 	void updateSkyFromPrefs(bool interpolate = false);
 	void updateWaterFromPrefs(bool interpolate);
 	void updateManagersFromPrefs(bool interpolate);

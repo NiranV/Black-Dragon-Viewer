@@ -69,7 +69,6 @@
 #include "llstatusbar.h"
 #include "llteleportflags.h"
 #include "lltool.h"
-#include "lltoolfocus.h"
 #include "lltoolbarview.h"
 #include "lltoolpie.h"
 #include "lltoolmgr.h"
@@ -99,6 +98,9 @@
 #include "rlvhelper.h"
 #include "rlvui.h"
 // [/RLVa:KB]
+
+//BD
+#include "lltoolfocus.h"
 
 using namespace LLAvatarAppearanceDefines;
 
@@ -255,6 +257,7 @@ bool handleSlowMotionAnimation(const LLSD& newvalue)
 {
 	if (newvalue.asBoolean())
 	{
+//		//BD - Animation Time Factor Feature
 		gAgentAvatarp->setAnimTimeFactor(gSavedSettings.getF32("SlowMotionTimeFactor"));
 	}
 	else
@@ -534,6 +537,7 @@ LLAgent::~LLAgent()
 //-----------------------------------------------------------------------------
 void LLAgent::onAppFocusGained()
 {
+//	//BD - Don't reset the camera every time we focus the app. It's annoying.
 //	if (CAMERA_MODE_MOUSELOOK == gAgentCamera.getCameraMode())
 //	{
 //		gAgentCamera.changeCameraToDefault();
@@ -575,6 +579,7 @@ void LLAgent::moveAt(S32 direction, bool reset)
 		setControlFlags(AGENT_CONTROL_AT_NEG | AGENT_CONTROL_FAST_AT);
 	}
 
+	//BD - Don't reset our camera while we are using it.
 	if (reset && !LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		gAgentCamera.resetView();
@@ -603,6 +608,7 @@ void LLAgent::moveAtNudge(S32 direction)
 		setControlFlags(AGENT_CONTROL_NUDGE_AT_NEG);
 	}
 
+	//BD - Don't reset our camera while we are using it.
 	if(!LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		gAgentCamera.resetView();
@@ -631,6 +637,7 @@ void LLAgent::moveLeft(S32 direction, bool reset)
 		setControlFlags(AGENT_CONTROL_LEFT_NEG | AGENT_CONTROL_FAST_LEFT);
 	}
 
+	//BD - Don't reset our camera while we are using it.
 	if(reset && !LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		gAgentCamera.resetView();
@@ -659,6 +666,7 @@ void LLAgent::moveLeftNudge(S32 direction)
 		setControlFlags(AGENT_CONTROL_NUDGE_LEFT_NEG);
 	}
 
+	//BD - Don't reset our camera while we are using it.
 	if(!LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		gAgentCamera.resetView();
@@ -687,6 +695,7 @@ void LLAgent::moveUp(S32 direction, bool reset)
 		setControlFlags(AGENT_CONTROL_UP_NEG | AGENT_CONTROL_FAST_UP);
 	}
 
+	//BD - Don't reset our camera while we are using it.
 	if(reset && !LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		gAgentCamera.resetView();
@@ -709,6 +718,7 @@ void LLAgent::moveYaw(F32 mag, bool reset_view)
 		setControlFlags(AGENT_CONTROL_YAW_NEG);
 	}
 
+	//BD - Don't reset our camera while we are using it.
     if (reset_view && !LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		gAgentCamera.resetView();
@@ -1327,7 +1337,7 @@ F32 LLAgent::clampPitchToLimits(F32 angle)
 
 	LLVector3 skyward = getReferenceUpVector();
 
-//	//BD - Mouselook pitch limitations to prevent camera bugging.
+	//BD - Mouselook pitch limitations to prevent camera bugging.
 	const F32 LOOK_DOWN_LIMIT_ML = 160.f * DEG_TO_RAD;
 	const F32 LOOK_UP_LIMIT_ML   =  20.f * DEG_TO_RAD;
 
@@ -1336,8 +1346,9 @@ F32 LLAgent::clampPitchToLimits(F32 angle)
 
 	F32 angle_from_skyward = acos( mFrameAgent.getAtAxis() * skyward );
 
+//	//BD - Realistic Mouselook
 	const bool realistic_ml = gSavedSettings.getBOOL("UseRealisticMouselook");
-//	//BD - clamp pitch in realistic mouselook more than usual.
+	//BD - clamp pitch in realistic mouselook more than usual.
 	if(realistic_ml && gAgentCamera.cameraMouselook())
 	{
 		if ((angle >= 0.f) && (angle_from_skyward + angle > LOOK_DOWN_LIMIT_ML))
@@ -2086,6 +2097,7 @@ void LLAgent::endAnimationUpdateUI()
 		gViewerWindow->showCursor();
 		// show menus
 		gMenuBarView->setVisible(TRUE);
+		//BD
 		LLNavigationBar::getInstance()->setVisible(TRUE);
 		gStatusBar->setVisibleForMouselook(true);
 
@@ -2196,6 +2208,7 @@ void LLAgent::endAnimationUpdateUI()
 	//---------------------------------------------------------------------
 	if (gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK)
 	{
+//		//BD - Hide UI In Mouselook
 		if (gSavedSettings.getBOOL("AllowUIHidingInML"))
 		{
 			// clean up UI
@@ -3903,6 +3916,7 @@ bool LLAgent::teleportCore(bool is_local)
 	}
 	make_ui_sound("UISndTeleportOut");
 
+//	//BD - Derender
 	gObjectList.mDerenderList.clear();
 	
 	// MBW -- Let the voice client know a teleport has begun so it can leave the existing channel.
@@ -4082,7 +4096,7 @@ void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 	}
 // [/RLVa:KB]
 
-//	//BD - Check if our TP is a Home TP
+	//BD - Check if our TP is a Home TP
 	if(landmark_asset_id == LLUUID::null)
 	{
 		mIsHomeTP = true;
@@ -4099,7 +4113,7 @@ void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 void LLAgent::doTeleportViaLandmark(const LLUUID& landmark_asset_id)
 {
 	LLViewerRegion *regionp = getRegion();
-//	//BD - Don't show TP screen if its a Home TP to the same SIM we are on.
+	//BD - Don't show TP screen if its a Home TP to the same SIM we are on.
 	if(regionp && teleportCore((regionp->getHandle() == mHomeRegionHandle) && mIsHomeTP))
 	{
 		LLMessageSystem* msg = gMessageSystem;

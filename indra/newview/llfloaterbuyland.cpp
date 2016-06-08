@@ -39,7 +39,6 @@
 #include "llfloater.h"
 #include "llfloaterreg.h"
 #include "llfloatertools.h"
-#include "llfloatersidepanelcontainer.h"
 #include "llframetimer.h"
 #include "lliconctrl.h"
 #include "lllineeditor.h"
@@ -47,7 +46,6 @@
 #include "llparcel.h"
 #include "llslurl.h"
 #include "llstatusbar.h"
-#include "llsidepanelinventory.h"
 #include "lltextbox.h"
 #include "lltexturectrl.h"
 #include "lltrans.h"
@@ -64,6 +62,9 @@
 #include "llxmlrpctransaction.h"
 #include "llviewernetwork.h"
 #include "roles_constants.h"
+//BD
+#include "llfloatersidepanelcontainer.h"
+#include "llsidepanelinventory.h"
 
 // NOTE: This is duplicated in lldatamoney.cpp ...
 const F32 GROUP_LAND_BONUS_FACTOR = 1.1f;
@@ -328,6 +329,7 @@ void LLFloaterBuyLandUI::SelectionObserver::changed()
 
 void LLFloaterBuyLandUI::updateAgentInfo()
 {
+	//BD
 	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 	mAgentCommittedTier = sidepanel_inventory->getSquareMetersCommitted();
 	mAgentCashBalance = sidepanel_inventory->getBalance();

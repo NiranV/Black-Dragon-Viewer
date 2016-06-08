@@ -56,6 +56,7 @@ public:
 		Params();
 	};
 
+	//BD
 	typedef boost::signals2::signal<std::string(const LLUUID&)> extra_data_signal_t;
 
 	LLAvatarList(const Params&);
@@ -77,6 +78,7 @@ public:
 	const LLUUID& getSessionID() { return mSessionID; }
 
 	void setSpeakingIndicatorsVisible(bool visible);
+	//BD
 	void setShowExtraInformation(bool visible);
 	void showPermissions(bool visible);
 	void sortByName();
@@ -99,6 +101,7 @@ public:
 
 	boost::signals2::connection setItemDoubleClickCallback(const mouse_signal_t::slot_type& cb);
 
+	//BD
 	boost::signals2::connection setExtraDataCallback(const extra_data_signal_t::slot_type& cb);
 	void setExtraDataUpdatePeriod(F32 period);
 
@@ -116,10 +119,11 @@ protected:
 		uuid_vec_t& vadded,
 		uuid_vec_t& vremoved);
 	void updateLastInteractionTimes();
+	//BD
 	void updateExtraData();
 	void rebuildNames();
 	void onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
-//	void updateAvatarNames();
+	void updateAvatarNames();
 
 private:
 
@@ -129,6 +133,7 @@ private:
 	bool mShowLastInteractionTime;
 	bool mDirty;
 	bool mNeedUpdateNames;
+	//BD
 	bool mShowExtraInformation;
 	bool mShowSpeakingIndicator;
 	bool mShowPermissions;
@@ -137,6 +142,7 @@ private:
 	bool mRlvCheckShowNames;
 // [/RLVa:KB]
 
+	//BD
 	LLTimer*                mExtraDataUpdateTimer;
 	std::string				mIconParamName;
 	std::string				mNameFilter;
@@ -147,6 +153,7 @@ private:
 
 	commit_signal_t mRefreshCompleteSignal;
 	mouse_signal_t mItemDoubleClickSignal;
+	//BD
 	extra_data_signal_t mExtraDataSignal;
 };
 

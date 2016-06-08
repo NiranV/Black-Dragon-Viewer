@@ -52,6 +52,7 @@ public:
 	/*virtual*/ void	onOpen(const LLSD& key);
 	/*virtual*/ void	draw();
 
+	//BD
 	/// when user hits the delete preset button
 	void onDeletePreset();
 
@@ -110,8 +111,10 @@ private:
 
 	LLLineEditor*	mWaterPresetNameEditor;
 	LLComboBox*		mWaterPresetCombo;
+	//BD
 	LLButton*		mMakeDefaultCheckBox;
 	LLButton*		mSaveButton;
+	//BD
 	LLButton*		mDeleteButton;
 };
 

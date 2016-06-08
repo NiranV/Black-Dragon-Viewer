@@ -86,6 +86,7 @@ LLFloaterColorPicker::LLFloaterColorPicker (LLColorSwatchCtrl* swatch, BOOL show
 	  mLumMarkerSize		( 6 ),
 	  // *TODO: Specify this in XML
 	  mSwatchRegionLeft		( 12 ),
+	  //BD
 	  mSwatchRegionTop		( 170 ),
 	  mSwatchRegionWidth	( 116 ),
 	  mSwatchRegionHeight	( 60 ),
@@ -227,7 +228,7 @@ BOOL LLFloaterColorPicker::postBuild()
 	childSetCommitCallback("hspin", onTextCommit, (void*)this );
 	childSetCommitCallback("sspin", onTextCommit, (void*)this );
 	childSetCommitCallback("lspin", onTextCommit, (void*)this );
-//	//BD - Transparency in Color Picker
+//	//BD - Color Picker Transparency
 	childSetCommitCallback("tspin", onTextCommit, (void*)this );
 
 	LLToolPipette::getInstance()->setToolSelectCallback(boost::bind(&LLFloaterColorPicker::onColorSelect, this, _1));
@@ -237,13 +238,14 @@ BOOL LLFloaterColorPicker::postBuild()
 
 //////////////////////////////////////////////////////////////////////////////
 //
+//BD - Color Picker Transparency
 void LLFloaterColorPicker::initUI ( F32 rValIn, F32 gValIn, F32 bValIn, F32 tValIn )
 {
 	// under some circumstances, we get rogue values that can be calmed by clamping...
 	rValIn = llclamp ( rValIn, 0.0f, 1.0f );
 	gValIn = llclamp ( gValIn, 0.0f, 1.0f );
 	bValIn = llclamp ( bValIn, 0.0f, 1.0f );
-//	//BD - Transparency in Color Picker
+//	//BD - Color Picker Transparency
 	tValIn = llclamp ( tValIn, 0.0f, 1.0f );
 
 	// store initial value in case cancel or revert is selected
@@ -251,7 +253,7 @@ void LLFloaterColorPicker::initUI ( F32 rValIn, F32 gValIn, F32 bValIn, F32 tVal
 
 	// starting point for current value to
 	setCurRgb ( rValIn, gValIn, bValIn );
-//	//BD - Transparency in Color Picker
+//	//BD - Color Picker Transparency
 	setCurT ( tValIn );
 
 	// unpdate text entry fields
@@ -350,6 +352,7 @@ void LLFloaterColorPicker::setCurRgb ( F32 curRIn, F32 curGIn, F32 curBIn )
 	curB = curBIn;
 
 	// update corresponding HSL values and
+//	//BD - Color Picker Transparency
 	LLColor4(curRIn, curGIn, curBIn, curT).calcHSL(&curH, &curS, &curL);
 
 	// color changed so update text fields
@@ -387,7 +390,7 @@ void LLFloaterColorPicker::getCurHsl ( F32& curHOut, F32& curSOut, F32& curLOut 
 	curLOut = curL;
 }
 
-//BD - Transparency in Color Picker
+//BD - Color Picker Transparency
 //////////////////////////////////////////////////////////////////////////////
 // mutator for original transparency value
 void LLFloaterColorPicker::setOrigT(F32 origTIn)
@@ -698,7 +701,7 @@ void LLFloaterColorPicker::selectCurHsl ( F32 curHIn, F32 curSIn, F32 curLIn )
 	}
 }
 
-//BD - Transparency in Color Picker
+//BD - Color Picker Transparency
 //////////////////////////////////////////////////////////////////////////////
 // set current transparency and rise change event if needed.
 void LLFloaterColorPicker::selectCurT(F32 curTIn)
@@ -773,7 +776,7 @@ void LLFloaterColorPicker::updateTextEntry ()
 	getChild<LLUICtrl>("hspin")->setValue(( getCurH () * 360.0f ) );
 	getChild<LLUICtrl>("sspin")->setValue(( getCurS () * 100.0f ) );
 	getChild<LLUICtrl>("lspin")->setValue(( getCurL () * 100.0f ) );
-//	//BD - Transparency in Color Picker
+//	//BD - Color Picker Transparency
 	getChild<LLUICtrl>("tspin")->setValue(( getCurT () * 255.0f ) );
 }
 
@@ -833,7 +836,7 @@ void LLFloaterColorPicker::onTextEntryChanged ( LLUICtrl* ctrl )
 
 		updateTextEntry ();
 	}
-//	//BD - Transparency in Color Picker
+//	//BD - Color Picker Transparency
 	// value in transparency box changed
 	if (name == "tspin")
 	{
@@ -1136,7 +1139,7 @@ void LLFloaterColorPicker::cancelSelection ()
 {
 	// restore the previous color selection
 	setCurRgb ( getOrigR (), getOrigG (), getOrigB () );
-//	//BD - Transparency in Color Picker
+//	//BD - Color Picker Transparency
 	setCurT ( getOrigT ());
 
 	// update in world item with original color via current swatch
