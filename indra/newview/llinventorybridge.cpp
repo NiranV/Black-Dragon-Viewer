@@ -2340,7 +2340,7 @@ BOOL LLFolderBridge::dragCategoryIntoFolder(LLInventoryCategory* inv_cat,
 											BOOL drop,
 											std::string& tooltip_msg,
 											BOOL is_link,
-                                            BOOL user_confirm)
+											BOOL user_confirm)
 {
 
 	LLInventoryModel* model = getInventoryModel();

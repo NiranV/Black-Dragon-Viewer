@@ -524,7 +524,7 @@ void LLNetMap::reshape(S32 width, S32 height, BOOL called_from_parent)
 	createObjectImage();
 }
 
-LLVector3 LLNetMap::globalPosToView( const LLVector3d& global_pos )
+LLVector3 LLNetMap::globalPosToView(const LLVector3d& global_pos)
 {
 	LLVector3d camera_position = gAgentCamera.getCameraPositionGlobal();
 	LLVector3d relative_pos_global = global_pos - camera_position;
@@ -565,7 +565,7 @@ void LLNetMap::drawRing(const F32 radius, const LLVector3 pos_map, const LLUICol
 void LLNetMap::drawTracking(const LLVector3d& pos_global, const LLColor4& color, 
 							BOOL draw_arrow )
 {
-	LLVector3 pos_local = globalPosToView( pos_global );
+	LLVector3 pos_local = globalPosToView(pos_global);
 	if( (pos_local.mV[VX] < 0) ||
 		(pos_local.mV[VY] < 0) ||
 		(pos_local.mV[VX] >= getRect().getWidth()) ||

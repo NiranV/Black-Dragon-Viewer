@@ -1416,7 +1416,7 @@ void update_inventory_item(
 	const LLSD& updates,
 	LLPointer<LLInventoryCallback> cb)
 {
-	if (AISAPI::isAvailable())
+    if (AISAPI::isAvailable())
 	{
         AISAPI::completion_t cr = (cb) ? boost::bind(&doInventoryCb, cb, _1) : AISAPI::completion_t();
         AISAPI::UpdateItem(item_id, updates, cr);

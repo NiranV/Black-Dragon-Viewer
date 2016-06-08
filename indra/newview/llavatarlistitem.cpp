@@ -27,6 +27,8 @@
 
 #include "llviewerprecompiledheaders.h"
 
+#include <boost/signals2.hpp>
+
 #include "llavataractions.h"
 #include "llavatarlistitem.h"
 
@@ -179,6 +181,8 @@ void LLAvatarListItem::changed(U32 mask)
 
 void LLAvatarListItem::setOnline(bool online)
 {
+	// *FIX: setName() overrides font style set by setOnline(). Not an issue ATM.
+
 	if (mOnlineStatus != E_UNKNOWN && (bool) mOnlineStatus == online)
 		return;
 

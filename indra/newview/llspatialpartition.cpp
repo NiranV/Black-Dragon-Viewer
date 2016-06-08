@@ -3781,7 +3781,7 @@ public:
 	BOOL mPickRigged;
 
 	LLOctreeIntersect(const LLVector4a& start, const LLVector4a& end, BOOL pick_transparent, BOOL pick_rigged,
-		S32* face_hit, LLVector4a* intersection, LLVector2* tex_coord, LLVector4a* normal, LLVector4a* tangent)
+					  S32* face_hit, LLVector4a* intersection, LLVector2* tex_coord, LLVector4a* normal, LLVector4a* tangent)
 		: mStart(start),
 		  mEnd(end),
 		  mFaceHit(face_hit),
@@ -3875,7 +3875,7 @@ public:
 				{
 					LLVOAvatar* avatar = (LLVOAvatar*) vobj;
 					if ((mPickRigged) || ((avatar->isSelf()) && (LLFloater::isVisible(gFloaterTools))))
- 					{
+					{
 						LLViewerObject* hit = avatar->lineSegmentIntersectRiggedAttachments(mStart, mEnd, -1, mPickTransparent, mPickRigged, mFaceHit, &intersection, mTexCoord, mNormal, mTangent);
 						if (hit)
 						{

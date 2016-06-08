@@ -95,7 +95,7 @@ LLViewerTextureList::LLViewerTextureList()
 	mUpdateStats(FALSE),
 	mMaxResidentTexMemInMegaBytes(0),
 	mMaxTotalTextureMemInMegaBytes(0),
-	mInitialized(FALSE)	
+	mInitialized(FALSE)
 {
 }
 
@@ -1710,7 +1710,7 @@ LLUIImagePtr LLUIImageList::loadUIImage(LLViewerFetchedTexture* imagep, const st
 	imagep->setAddressMode(LLTexUnit::TAM_CLAMP);
 
 	//don't compress UI images
-	//imagep->getGLTexture()->setAllowCompression(false);
+	imagep->getGLTexture()->setAllowCompression(false);
 
 	LLUIImagePtr new_imagep = new LLUIImage(name, imagep);
 	new_imagep->setScaleStyle(scale_style);

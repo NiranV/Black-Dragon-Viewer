@@ -411,18 +411,18 @@ void LLMediaCtrl::onOpenWebInspector()
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-BOOL LLMediaCtrl::handleKeyHere(KEY key, MASK mask)
+BOOL LLMediaCtrl::handleKeyHere( KEY key, MASK mask )
 {
 	BOOL result = FALSE;
-
+	
 	if (mMediaSource)
 	{
 		result = mMediaSource->handleKeyHere(key, mask);
 	}
-
-	if (!result)
+	
+	if ( ! result )
 		result = LLPanel::handleKeyHere(key, mask);
-
+		
 	return result;
 }
 

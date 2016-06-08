@@ -2580,20 +2580,21 @@ void LLViewerWindow::draw()
 //#endif
 }
 
+// Takes a single keyup event, usually when UI is visible
 BOOL LLViewerWindow::handleKeyUp(KEY key, MASK mask)
 {
-	LLFocusableElement* keyboard_focus = gFocusMgr.getKeyboardFocus();
+    LLFocusableElement* keyboard_focus = gFocusMgr.getKeyboardFocus();
 
-	if (keyboard_focus
+    if (keyboard_focus
 		&& !(mask & (MASK_CONTROL | MASK_ALT))
 		&& !gFocusMgr.getKeystrokesOnly())
 	{
 		// We have keyboard focus, and it's not an accelerator
-		if (keyboard_focus && keyboard_focus->wantsKeyUpKeyDown())
-		{
-			return keyboard_focus->handleKeyUp(key, mask, FALSE);
-		}
-		else if (key < 0x80)
+        if (keyboard_focus && keyboard_focus->wantsKeyUpKeyDown())
+        {
+            return keyboard_focus->handleKeyUp(key, mask, FALSE);
+        }
+        else if (key < 0x80)
 		{
 			// Not a special key, so likely (we hope) to generate a character.  Let it fall through to character handler first.
 			return (gFocusMgr.getKeyboardFocus() != NULL);
@@ -2625,21 +2626,21 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 	// hide tooltips on keypress
 	LLToolTipMgr::instance().blockToolTips();
 
-	LLFocusableElement* keyboard_focus = gFocusMgr.getKeyboardFocus();
+    LLFocusableElement* keyboard_focus = gFocusMgr.getKeyboardFocus();
 
-	if (keyboard_focus
+    if (keyboard_focus
 		&& !(mask & (MASK_CONTROL | MASK_ALT))
 		&& !gFocusMgr.getKeystrokesOnly())
 	{
 		// We have keyboard focus, and it's not an accelerator
-		if (keyboard_focus && keyboard_focus->wantsKeyUpKeyDown())
-		{
-			return keyboard_focus->handleKey(key, mask, FALSE);
-		}
+        if (keyboard_focus && keyboard_focus->wantsKeyUpKeyDown())
+        {
+            return keyboard_focus->handleKey(key, mask, FALSE );
+        }
 		else if (key < 0x80)
 		{
 			// Not a special key, so likely (we hope) to generate a character.  Let it fall through to character handler first.
-			return (keyboard_focus != NULL);
+            return (keyboard_focus != NULL);
 		}
 	}
 
@@ -2676,7 +2677,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 	// give floaters first chance to handle TAB key
 	// so frontmost floater gets focus
 	// if nothing has focus, go to first or last UI element as appropriate
-	if (key == KEY_TAB && (mask & MASK_CONTROL || keyboard_focus == NULL))
+    if (key == KEY_TAB && (mask & MASK_CONTROL || keyboard_focus == NULL))
 	{
 		LL_WARNS() << "LLviewerWindow::handleKey give floaters first chance at tab key " << LL_ENDL;
 		if (gMenuHolder) gMenuHolder->hideMenus();
@@ -2718,7 +2719,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 					&& !(key == KEY_UP && mask == MASK_ALT)
 					&& !(key == KEY_DOWN && mask == MASK_ALT))
 				{
-					switch (key)
+					switch(key)
 					{
 					case KEY_LEFT:
 					case KEY_RIGHT:
@@ -2782,7 +2783,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 		// Initialize nearby chat if it's missing
 		LLFloaterIMNearbyChat* nearby_chat = LLFloaterReg::findTypedInstance<LLFloaterIMNearbyChat>("nearby_chat");
 		if (!nearby_chat)
-		{
+		{	
 			LLSD name("im_container");
 			LLFloaterReg::toggleInstanceOrBringToFront(name);
 		}
@@ -3853,7 +3854,7 @@ void LLViewerWindow::pickAsync(S32 x,
 	void(*callback)(const LLPickInfo& info),
 	BOOL pick_transparent,
 								BOOL pick_rigged,
-	BOOL pick_unselectable)
+								BOOL pick_unselectable)
 {
 	BOOL in_build_mode = LLFloaterReg::instanceVisible("build");
 	if (in_build_mode || LLDrawPoolAlpha::sShowDebugAlpha)
@@ -4039,7 +4040,7 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 		if (this_object->isHUDAttachment()) // is a HUD object?
 		{
 			if (this_object->lineSegmentIntersect(mh_start, mh_end, this_face, pick_transparent, pick_rigged,
- 												  face_hit, intersection, uv, normal, tangent))
+												  face_hit, intersection, uv, normal, tangent))
 			{
 				found = this_object;
 			}
@@ -4047,7 +4048,7 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 		else // is a world object
 		{
 			if (this_object->lineSegmentIntersect(mw_start, mw_end, this_face, pick_transparent, pick_rigged,
- 												  face_hit, intersection, uv, normal, tangent))
+												  face_hit, intersection, uv, normal, tangent))
 			{
 				found = this_object;
 			}

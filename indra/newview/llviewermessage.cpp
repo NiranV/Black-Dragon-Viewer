@@ -1931,7 +1931,6 @@ bool LLOfferInfo::inventory_task_offer_callback(const LLSD& notification, const 
 				log_message_args["NAME"] = mFromName;
 				log_message = LLTrans::getString("InvOfferDecline", log_message_args);
 
-
 				LLSD args;
 				args["MESSAGE"] = log_message;
 				LLNotificationsUtil::add("SystemMessageTip", args);
@@ -6764,7 +6763,7 @@ void notify_cautioned_script_question(const LLSD& notification, const LLSD& resp
 			if (viewregion)
 			{
 				// got the region, so include the region and 3d coordinates of the object
-				notice.setArg("[REGIONNAME]", viewregion->getName());
+				notice.setArg("[REGIONNAME]", viewregion->getName());				
 				std::string formatpos = llformat("%.1f, %.1f,%.1f", objpos[VX], objpos[VY], objpos[VZ]);
 				notice.setArg("[REGIONPOS]", formatpos);
 
@@ -7146,14 +7145,14 @@ void process_script_question(LLMessageSystem *msg, void **user_data)
 			// check whether cautions are even enabled or not
 			const char* notification = "ScriptQuestion";
 
-			if (caution && gSavedSettings.getBOOL("PermissionsCautionEnabled"))
+			if(caution && gSavedSettings.getBOOL("PermissionsCautionEnabled"))
 			{
 				args["FOOTERTEXT"] = (count > 1) ? LLTrans::getString("AdditionalPermissionsRequestHeader") + "\n\n" + script_question : "";
 				notification = "ScriptQuestionCaution";
 			}
-			else if (experienceid.notNull())
+			else if(experienceid.notNull())
 			{
-				payload["experience"] = experienceid;
+				payload["experience"]=experienceid;
                 LLExperienceCache::instance().get(experienceid, boost::bind(process_script_experience_details, _1, args, payload));
 				return;
 			}

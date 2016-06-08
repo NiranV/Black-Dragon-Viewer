@@ -2088,21 +2088,20 @@ void LLAppearanceMgr::updateCOF(LLInventoryModel::item_array_t& body_items_new,
 	{
 		LLInventoryModel::item_array_t gest_items;
 		getDescendentsOfAssetType(cof, gest_items, LLAssetType::AT_GESTURE);
-		for (S32 i = 0; i < gest_items.size(); ++i)
+		for(S32 i = 0; i  < gest_items.size(); ++i)
 		{
 			LLViewerInventoryItem *gest_item = gest_items.at(i);
-			if (LLGestureMgr::instance().isGestureActive(gest_item->getLinkedUUID()))
+			if ( LLGestureMgr::instance().isGestureActive( gest_item->getLinkedUUID()) )
 			{
-				LLGestureMgr::instance().deactivateGesture(gest_item->getLinkedUUID());
+				LLGestureMgr::instance().deactivateGesture( gest_item->getLinkedUUID() );
 			}
 		}
 	}
-
+	
 	// Collect and filter descendents to determine new COF contents.
 
-	//
-	// - Body parts: always include COF contents as a fallback in case any required parts are missing.
-	//
+	// - Body parts: always include COF contents as a fallback in case any
+	// required parts are missing.
 	// Preserve body parts from COF if appending.
 	LLInventoryModel::item_array_t body_items;
 	getDescendentsOfAssetType(cof, body_items, LLAssetType::AT_BODYPART);
@@ -2120,9 +2119,7 @@ void LLAppearanceMgr::updateCOF(LLInventoryModel::item_array_t& body_items_new,
 	removeDuplicateItems(body_items);
 	filterWearableItems(body_items, 1, 0);
 
-	//
 	// - Wearables: include COF contents only if appending.
-	//
 	LLInventoryModel::item_array_t wear_items;
 	if (append)
 		getDescendentsOfAssetType(cof, wear_items, LLAssetType::AT_CLOTHING);
@@ -2148,9 +2145,7 @@ void LLAppearanceMgr::updateCOF(LLInventoryModel::item_array_t& body_items_new,
 	// [/SL:KB]
 	filterWearableItems(wear_items, 0, LLAgentWearables::MAX_CLOTHING_LAYERS);
 
-	//
 	// - Attachments: include COF contents only if appending.
-	//
 	LLInventoryModel::item_array_t obj_items;
 	if (append)
 		getDescendentsOfAssetType(cof, obj_items, LLAssetType::AT_OBJECT);
@@ -2171,9 +2166,7 @@ void LLAppearanceMgr::updateCOF(LLInventoryModel::item_array_t& body_items_new,
 	// [/RLVa:KB]
 	removeDuplicateItems(obj_items);
 
-	//
 	// - Gestures: include COF contents only if appending.
-	//
 	LLInventoryModel::item_array_t gest_items;
 	if (append)
 		getDescendentsOfAssetType(cof, gest_items, LLAssetType::AT_GESTURE);
@@ -2204,7 +2197,7 @@ void LLAppearanceMgr::updateCOF(LLInventoryModel::item_array_t& body_items_new,
 	LLSD contents = LLSD::emptyArray();
 
 	for (LLInventoryModel::item_array_t::const_iterator it = all_items.begin();
-		it != all_items.end(); ++it)
+		 it != all_items.end(); ++it)
 	{
 		LLSD item_contents;
 		LLInventoryItem *item = *it;
@@ -2215,7 +2208,7 @@ void LLAppearanceMgr::updateCOF(LLInventoryModel::item_array_t& body_items_new,
 		{
 			desc = desc_iter->second;
 			LL_DEBUGS("Avatar") << item->getName() << " overriding desc to: " << desc
-				<< " (was: " << item->getActualDescription() << ")" << LL_ENDL;
+								<< " (was: " << item->getActualDescription() << ")" << LL_ENDL;
 		}
 		else
 		{
@@ -2225,18 +2218,18 @@ void LLAppearanceMgr::updateCOF(LLInventoryModel::item_array_t& body_items_new,
 		item_contents["name"] = item->getName();
 		item_contents["desc"] = desc;
 		item_contents["linked_id"] = item->getLinkedUUID();
-		item_contents["type"] = LLAssetType::AT_LINK;
+		item_contents["type"] = LLAssetType::AT_LINK; 
 		contents.append(item_contents);
 	}
-	const LLUUID& base_id = (append) ? getBaseOutfitUUID() : idOutfit;
-	LLViewerInventoryCategory* base_cat = (base_id.notNull()) ? gInventory.getCategory(base_id) : NULL;
+	const LLUUID& base_id = append ? getBaseOutfitUUID() : category;
+	LLViewerInventoryCategory *base_cat = gInventory.getCategory(base_id);
 	if (base_cat && (base_cat->getPreferredType() == LLFolderType::FT_OUTFIT))
 	{
 		LLSD base_contents;
 		base_contents["name"] = base_cat->getName();
 		base_contents["desc"] = "";
 		base_contents["linked_id"] = base_cat->getLinkedUUID();
-		base_contents["type"] = LLAssetType::AT_LINK_FOLDER;
+		base_contents["type"] = LLAssetType::AT_LINK_FOLDER; 
 		contents.append(base_contents);
 	}
 	if (gSavedSettings.getBOOL("DebugAvatarAppearanceMessage"))
@@ -3178,7 +3171,7 @@ void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInve
 								  LLInventoryModel::EXCLUDE_TRASH);
 	for (S32 i=0; i<item_array.size(); i++)
 	{
-		const LLViewerInventoryItem* item = item_array.at(i).get();
+		const LLInventoryItem* item = item_array.at(i).get();
 		if (item->getIsLinkType() && item->getLinkedUUID() == item_id)
 		{
 // [RLVa:KB] - Checked: 2013-02-12 (RLVa-1.4.8)
@@ -4120,7 +4113,6 @@ void LLAppearanceMgr::removeItemFromAvatar(const LLUUID& id_to_remove, LLPointer
 // [/SL:KB]
 //	removeItemsFromAvatar(ids_to_remove);
 }
-
 
 
 // Adds the given item ID to mDoomedTempAttachmentIDs iff it's a temp attachment

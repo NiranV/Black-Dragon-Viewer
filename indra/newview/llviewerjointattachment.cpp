@@ -166,7 +166,7 @@ void LLViewerJointAttachment::setupDrawable(LLViewerObject *object)
 //-----------------------------------------------------------------------------
 BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 {
-//	object->extractAttachmentItemID();
+	object->extractAttachmentItemID();
 
 	// Same object reattached
 	if (isObjectAttached(object))
@@ -193,6 +193,7 @@ BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 		LLVOAvatarSelf::detachAttachmentIntoInventory(object->getAttachmentItemID());
 		return FALSE;
 	}
+
 	mAttachedObjects.push_back(object);
 	setupDrawable(object);
 	

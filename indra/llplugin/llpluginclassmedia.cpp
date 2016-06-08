@@ -636,8 +636,6 @@ bool LLPluginClassMedia::keyEvent(EKeyEventType type, int key_code, MASK modifie
 
 		message.setValueS32("key", key_code);
 
-
-
 		message.setValue("modifiers", translateModifiers(modifiers));
 		message.setValueLLSD("native_key_data", native_key_data);
 
@@ -1145,7 +1143,7 @@ void LLPluginClassMedia::receivePluginMessage(const LLPluginMessage &message)
 		{
 			mClickURL = message.getValue("uri");
 			mClickTarget = message.getValue("target");
-			//mClickUUID = message.getValue("uuid");
+			mClickUUID = message.getValue("uuid");
 			mediaEvent(LLPluginClassMediaOwner::MEDIA_EVENT_CLICK_LINK_HREF);
 		}
 		else if(message_name == "click_nofollow")
@@ -1290,7 +1288,7 @@ void LLPluginClassMedia::set_cookies(const std::string &cookies)
 
 void LLPluginClassMedia::enable_cookies(bool enable)
 {
-	LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA_BROWSER, "cookies_enabled");
+	LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA_BROWSER, "enable_cookies");
 	message.setValueBoolean("enable", enable);
 	sendMessage(message);
 }

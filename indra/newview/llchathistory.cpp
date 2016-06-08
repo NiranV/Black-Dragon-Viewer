@@ -661,7 +661,6 @@ protected:
 			mInfoCtrl->setOrigin(icon_x, sticky_rect.getCenterY() - mInfoCtrl->getRect().getHeight() / 2 ) ;
 		}
 		mInfoCtrl->setVisible(isVisible);
-
 	}
 
 	void hideInfoCtrl()

@@ -147,7 +147,7 @@ void LLWLParamSet::update(LLGLSLShader * shader) const
 			}
 		}
 	}
-
+	
 	if (LLPipeline::sRenderDeferred && !LLPipeline::sReflectionRender && !LLPipeline::sUnderWaterRender)
 	{
 		shader->uniform1f(LLShaderMgr::GLOBAL_GAMMA, 2.2);

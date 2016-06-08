@@ -1414,7 +1414,6 @@ void LLAgentWearables::findAttachmentsAddRemoveInfo(LLInventoryModel::item_array
 	// S32 remove_count = objects_to_remove.size();
 	// S32 add_count = items_to_add.size();
 	// LL_INFOS() << "remove " << remove_count << " add " << add_count << LL_ENDL;
-
 }
 
 void LLAgentWearables::userRemoveMultipleAttachments(llvo_vec_t& objects_to_remove)

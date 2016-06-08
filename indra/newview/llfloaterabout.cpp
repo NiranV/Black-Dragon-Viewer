@@ -300,7 +300,6 @@ void LLFloaterAbout::setSupportText(const std::string& server_release_notes_url)
 	getWindow()->incBusyCount();
 	getWindow()->setCursor(UI_CURSOR_ARROW);
 #endif
-
 #if LL_WINDOWS
 	getWindow()->decBusyCount();
 	getWindow()->setCursor(UI_CURSOR_ARROW);
@@ -308,7 +307,6 @@ void LLFloaterAbout::setSupportText(const std::string& server_release_notes_url)
 
 	LLViewerTextEditor *support_widget =
 		getChild<LLViewerTextEditor>("support_editor", true);
-
 
 	LLUIColor about_color = LLUIColorTable::instance().getColor("TextFgReadOnlyColor");
 	support_widget->clear();
