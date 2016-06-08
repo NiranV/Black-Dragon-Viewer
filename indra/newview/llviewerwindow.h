@@ -136,7 +136,7 @@ private:
 
 };
 
-static const U32 MAX_SNAPSHOT_IMAGE_SIZE = 16 * 1024; // max snapshot image size 6144 * 6144
+static const U32 MAX_SNAPSHOT_IMAGE_SIZE = 6 * 1024; // max snapshot image size 6144 * 6144
 
 class LLViewerWindow : public LLWindowCallbacks
 {
@@ -277,6 +277,7 @@ public:
 	LLVector3		mouseDirectionGlobal(const S32 x, const S32 y) const;
 	LLVector3		mouseDirectionCamera(const S32 x, const S32 y) const;
 	LLVector3       mousePointHUD(const S32 x, const S32 y) const;
+		
 
 	// Is window of our application frontmost?
 	BOOL			getActive() const			{ return mActive; }
