@@ -9370,8 +9370,8 @@
     <key>Value</key>
     <array>
       <real>2048</real>
-      <real>4096</real>
       <real>2048</real>
+      <real>1024</real>
       <real>512</real>
     </array>
   </map>
