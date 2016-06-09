@@ -683,6 +683,7 @@ void LLViewerPartSourceBeam::updatePart(LLViewerPart &part, const F32 dt)
 		{
 			LLViewerObject *objp = psb->mSourceObjectp;
 			LLVOAvatar *avp = (LLVOAvatar *)objp;
+//			//BD - Right Handed Editing
 			if(gSavedSettings.getBOOL("AvatarRightHander"))
 			{
 				source_pos_agent = avp->mWristRightp->getWorldPosition();
@@ -726,6 +727,7 @@ void LLViewerPartSourceBeam::update(const F32 dt)
 		{
 			LLViewerObject *objp = mSourceObjectp;
 			LLVOAvatar *avp = (LLVOAvatar *)objp;
+//			//BD - Right Handed Editing
 			if(gSavedSettings.getBOOL("AvatarRightHander"))
 			{
 				mPosAgent = avp->mWristRightp->getWorldPosition();

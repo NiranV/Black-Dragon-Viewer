@@ -38,9 +38,11 @@
 #include "llgl.h"
 #include "lldrawable.h"
 #include "llrendertarget.h"
-#include "exopostprocess.h"
 
 #include <stack>
+
+//BD - Exodus Post Process
+#include "exopostprocess.h"
 
 class LLViewerTexture;
 class LLFace;
@@ -99,7 +101,7 @@ public:
 	LLPipeline();
 	~LLPipeline();
 
-//	//BD - Change water reflection resolution on the way
+	//BD - Change water reflection resolution on the way.
 	void handleReflectionChanges();
 
 //	//BD - Shadow Map Allocation
@@ -111,7 +113,9 @@ public:
 	void doResetVertexBuffers(bool forced = false);
 	void resizeScreenTexture();
 	void releaseGLBuffers();
+	//BD
 	void createGLBuffers(U32 width, U32 height);
+
 	void releaseLUTBuffers();
 	void releaseScreenBuffers();
 	void createGLBuffers();
@@ -267,8 +271,10 @@ public:
 	void postSort(LLCamera& camera);
 	void forAllVisibleDrawables(void (*func)(LLDrawable*));
 
+//	//BD - Motion Blur
 	void renderMotionBlur(U32 type);
 	void renderMotionBlurWithTexture(U32 type);
+
 	void renderObjects(U32 type, U32 mask, BOOL texture = TRUE, BOOL batch_texture = FALSE);
 	void renderMaskedObjects(U32 type, U32 mask, BOOL texture = TRUE, BOOL batch_texture = FALSE);
 
@@ -288,6 +294,8 @@ public:
 	void renderGeomDeferred(LLCamera& camera);
 	void renderGeomPostDeferred(LLCamera& camera, bool do_occlusion=true);
 	void renderGeomShadow(LLCamera& camera);
+
+//	//BD - Motion Blur
 	void renderGeomMotionBlur();
 
 	void bindDeferredShader(LLGLSLShader& shader, U32 light_index = 0, U32 noise_map = 0xFFFFFFFF);
@@ -596,6 +604,8 @@ public:
 	static S32				sVisibleLightCount;
 	static F32				sMinRenderSize;
 	static BOOL				sRenderingHUDs;
+
+//	//BD - Exodus Post Process
 	static BOOL             sExodusRenderShaderGamma;
 	static BOOL             sExodusRenderToneMapping;
 
@@ -615,6 +625,8 @@ public:
 	LLRenderTarget			mDeferredLight;
 	LLRenderTarget			mHighlight;
 	LLRenderTarget			mPhysicsDisplay;
+
+//	//BD - Motion Blur
 	LLRenderTarget			mVelocityMap;
 
 	//utility buffer for rendering post effects, gets abused by renderDeferredLighting
@@ -872,6 +884,7 @@ public:
 	//debug use
 	static U32              sCurRenderPoolType ;
 
+	//BD
 	LLVector3 PrevDoFFocusPoint;
 
 	//cached settings
@@ -908,7 +921,6 @@ public:
 	static F32 RenderGlowWidth;
 	static F32 RenderGlowStrength;
 	static BOOL RenderDepthOfField;
-	static BOOL RenderDepthOfFieldInEditMode;
 	static F32 CameraFocusTransitionTime;
 	static F32 CameraFNumber;
 	static F32 CameraFocalLength;
@@ -918,7 +930,6 @@ public:
 	static F32 RenderSSAOScale;
 	static U32 RenderSSAOMaxScale;
 	static F32 RenderSSAOFactor;
-	static F32 RenderSSAOEffect;
 	static F32 RenderShadowOffsetError;
 	static F32 RenderShadowBiasError;
 	static F32 RenderShadowOffset;
@@ -927,7 +938,6 @@ public:
 	static F32 RenderSpotShadowBias;
 	static F32 RenderEdgeDepthCutoff;
 	static F32 RenderEdgeNormCutoff;
-	static F32 RenderSSAOBlurSize;
 	static F32 RenderShadowBlurDistFactor;
 	static BOOL RenderDeferredAtmospheric;
 	static S32 RenderReflectionDetail;
@@ -944,19 +954,28 @@ public:
 	static F32 RenderAutoHideSurfaceAreaLimit;
 
 //	//BD - Special Options
-	static LLVector4 RenderShadowResolution;
-	static LLVector3 RenderProjectorShadowResolution;
+	static F32 RenderSSAOEffect;
+	static F32 RenderSSAOBlurSize;
 	static U32 RenderShadowBlurSamples;
 	static BOOL RenderDeferredBlurLight;
+	static U32 RenderSSRResolution;
+	static F32 RenderChromaStrength;
+	static BOOL CameraFreeDoFFocus;
+	static BOOL RenderDepthOfFieldInEditMode;
+
+//	//BD - Shadow Map Allocation
+	static LLVector4 RenderShadowResolution;
+	static LLVector3 RenderProjectorShadowResolution;
+
+//	//BD - Volumetric Lighting
 	static BOOL RenderGodrays;
 	static U32 RenderGodraysResolution;
 	static F32 RenderGodraysMultiplier;
 	static F32 RenderGodraysFalloffMultiplier;
+
+//	//BD - Motion Blur
 	static BOOL RenderMotionBlur;
 	static U32 RenderMotionBlurStrength;
-	static U32 RenderSSRResolution;
-	static F32 RenderChromaStrength;
-	static BOOL CameraFreeDoFFocus;
 };
 
 void render_bbox(const LLVector3 &min, const LLVector3 &max);

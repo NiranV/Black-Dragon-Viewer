@@ -57,7 +57,9 @@ public:
 	~LLWLAnimator()
 	{
 		delete mInterpBeginWL;
+//		//BD - Animated Windlight Transition
 		delete mInterpEndWL;
+
 		delete mInterpBeginWater;
 		delete mInterpEndWater;
 	}
@@ -90,6 +92,7 @@ public:
 	}
 
 	void startInterpolation(const LLSD& targetWater);
+//	//BD - Animated Windlight Transition
 	void startInterpolationSky(const LLSD& targetSky);
 
 	bool getIsRunning()
@@ -130,8 +133,10 @@ public:
 
 private:
 	ETime mTimeType;
+//	//BD - Animated Windlight Transition
 	bool mIsRunning, mIsInterpolating, mIsInterpolatingSky;
 	LLWLParamSet *mInterpBeginWL, *mInterpEndWL;
+
 	LLWaterParamSet *mInterpBeginWater, *mInterpEndWater;
 	clock_t mInterpStartTime, mInterpEndTime;
 

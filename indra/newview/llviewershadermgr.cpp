@@ -228,13 +228,6 @@ LLGLSLShader			gDeferredDoFCombineProgram;
 LLGLSLShader			gDeferredPostGammaCorrectProgram;
 LLGLSLShader			gFXAAProgram;
 LLGLSLShader			gDeferredPostNoDoFProgram;
-LLGLSLShader			gVelocityProgram;
-LLGLSLShader			gVelocityAlphaProgram;
-LLGLSLShader			gAvatarVelocityProgram;
-LLGLSLShader			gSkinnedVelocityProgram;
-LLGLSLShader			gSkinnedVelocityAlphaProgram;
-LLGLSLShader			gMotionBlurProgram;
-LLGLSLShader			gVolumetricLightProgram;
 LLGLSLShader			gDeferredWLSkyProgram;
 LLGLSLShader			gDeferredWLCloudProgram;
 LLGLSLShader			gDeferredStarProgram;
@@ -243,6 +236,18 @@ LLGLSLShader			gDeferredSkinnedFullbrightShinyProgram;
 LLGLSLShader			gDeferredSkinnedFullbrightProgram;
 LLGLSLShader			gNormalMapGenProgram;
 
+//BD - Motion Blur
+LLGLSLShader			gVelocityProgram;
+LLGLSLShader			gVelocityAlphaProgram;
+LLGLSLShader			gAvatarVelocityProgram;
+LLGLSLShader			gSkinnedVelocityProgram;
+LLGLSLShader			gSkinnedVelocityAlphaProgram;
+LLGLSLShader			gMotionBlurProgram;
+
+//BD - Volumetric Lighting
+LLGLSLShader			gVolumetricLightProgram;
+
+//BD - Exodus Post Process
 LLGLSLShader            gColorGradePost;
 LLGLSLShader            gLinearToneMapping;
 LLGLSLShader            gReinhardToneMapping;
@@ -251,6 +256,7 @@ LLGLSLShader            gVignettePost;
 LLGLSLShader            gColorGradePostLegacy;
 LLGLSLShader            gFilmicToneMappingAdv;
 
+//BD
 LLGLSLShader            gSpecialPost;
 LLGLSLShader            gLensFlare;
 
@@ -358,6 +364,7 @@ LLViewerShaderMgr::LLViewerShaderMgr() :
 	mShaderList.push_back(&gDeferredAvatarAlphaProgram);
 	mShaderList.push_back(&gDeferredWLSkyProgram);
 	mShaderList.push_back(&gDeferredWLCloudProgram);
+//	//BD - Volumetric Lighting
 	mShaderList.push_back(&gVolumetricLightProgram);
 }
 
@@ -433,6 +440,7 @@ void LLViewerShaderMgr::setShaders()
 
 	if (LLRender::sGLCoreProfile)
 	{  
+		//BD
 		if (!gSavedSettings.getBOOL("RenderDeferred"))
 		{
 			gSavedSettings.setBOOL("RenderDeferred", TRUE);
@@ -448,6 +456,7 @@ void LLViewerShaderMgr::setShaders()
 	initAttribsAndUniforms();
 	gPipeline.releaseGLBuffers();
 
+	//BD
 	if (gSavedSettings.getBOOL("RenderDeferred"))
 	{
 		LLPipeline::sWaterReflections = gGLManager.mHasCubeMap;
@@ -481,6 +490,7 @@ void LLViewerShaderMgr::setShaders()
 
 	LLGLSLShader::sNoFixedFunction = false;
 	LLVertexBuffer::unbind();
+	//BD
 	if (LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") 
 		&& (gGLManager.mGLSLVersionMajor > 1 || gGLManager.mGLSLVersionMinor >= 10)
 		&& gSavedSettings.getBOOL("RenderDeferred"))
@@ -503,6 +513,7 @@ void LLViewerShaderMgr::setShaders()
 			transform_class = 0;
 		}
 		
+		//BD
 		if (LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
 		    gSavedSettings.getBOOL("RenderDeferred"))
 		{
@@ -523,7 +534,7 @@ void LLViewerShaderMgr::setShaders()
 			//gSavedSettings.setBOOL("WindLightUseAtmosShaders", TRUE);
 		}
 
-
+		//BD
 		if (!(LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred")
 			  && gSavedSettings.getBOOL("RenderDeferred")))
 		{
@@ -593,6 +604,7 @@ void LLViewerShaderMgr::setShaders()
 				mVertexShaderLevel[SHADER_AVATAR] = 3;
 				mMaxAvatarShaderLevel = 3;
 				
+				//BD
 				if (gSavedSettings.getBOOL("RenderDeferred") && loadShadersObject())
 				{ //hardware skinning is enabled and rigged attachment shaders loaded correctly
 					BOOL avatar_cloth = gSavedSettings.getBOOL("RenderAvatarCloth");
@@ -611,6 +623,7 @@ void LLViewerShaderMgr::setShaders()
 					{
 						if (mVertexShaderLevel[SHADER_AVATAR] == 0)
 						{
+							//BD
 							gSavedSettings.setBOOL("RenderDeferered", FALSE);
 						}
 						if(llmax(mVertexShaderLevel[SHADER_AVATAR]-1,0) >= 3)
@@ -629,6 +642,7 @@ void LLViewerShaderMgr::setShaders()
 					mVertexShaderLevel[SHADER_AVATAR] = 0;
 					mVertexShaderLevel[SHADER_DEFERRED] = 0;
 
+					//BD
 					if (gSavedSettings.getBOOL("RenderDeferred"))
 					{
 						gSavedSettings.setBOOL("RenderDeferred", FALSE);
@@ -640,6 +654,7 @@ void LLViewerShaderMgr::setShaders()
 				}
 			}		
 
+			//BD
 			if (!loaded || !loadShadersDeferred())
 			{ //everything else succeeded but deferred failed, disable deferred and try again
 				gSavedSettings.setBOOL("RenderDeferred", FALSE);
@@ -793,6 +808,7 @@ void LLViewerShaderMgr::unloadShaders()
 	gDeferredSkinnedDiffuseProgram.unload();
 	gDeferredSkinnedBumpProgram.unload();
 	gDeferredSkinnedAlphaProgram.unload();
+//	//BD - Exodus Post Process
 	unloadExodusPostShaders();
 
 	gTransformPositionProgram.unload();
@@ -867,6 +883,7 @@ BOOL LLViewerShaderMgr::loadBasicShaders()
 	if (gGLManager.mGLSLVersionMajor >= 2 || gGLManager.mGLSLVersionMinor >= 30)
 	{
 		shaders.push_back( make_pair( "objects/indexedTextureV.glsl",			1 ) );
+//		//BD - Motion Blur
 		shaders.push_back( make_pair( "deferred/velocityFuncV.glsl", 1) );
 	}
 	shaders.push_back( make_pair( "objects/nonindexedTextureV.glsl",		1 ) );
@@ -1085,6 +1102,7 @@ BOOL LLViewerShaderMgr::loadShadersEffects()
 		success = gGlowProgram.createShader(NULL, NULL);
 		if (!success)
 		{
+			//BD
 			LLPipeline::RenderDeferred = FALSE;
 		}
 	}
@@ -1099,10 +1117,12 @@ BOOL LLViewerShaderMgr::loadShadersEffects()
 		success = gGlowExtractProgram.createShader(NULL, NULL);
 		if (!success)
 		{
+			//BD
 			LLPipeline::RenderDeferred = FALSE;
 		}
 	}
 	
+//	//BD - Exodus Post Process
 	success = loadExodusPostShaders();
 
 	return success;
@@ -1153,13 +1173,6 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredEmissiveProgram.unload();
 		gDeferredAvatarEyesProgram.unload();
 		gDeferredPostProgram.unload();		
-		gVelocityProgram.unload();
-		gVelocityAlphaProgram.unload();
-		gAvatarVelocityProgram.unload();
-		gSkinnedVelocityProgram.unload();
-		gSkinnedVelocityAlphaProgram.unload();
-		gMotionBlurProgram.unload();
-		gVolumetricLightProgram.unload();
 		gDeferredCoFProgram.unload();		
 		gDeferredDoFCombineProgram.unload();
 		gDeferredPostGammaCorrectProgram.unload();
@@ -1179,7 +1192,21 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 			gDeferredMaterialProgram[i].unload();
 			gDeferredMaterialWaterProgram[i].unload();
 		}
+
+//		//BD - Motion Blur
+		gVelocityProgram.unload();
+		gVelocityAlphaProgram.unload();
+		gAvatarVelocityProgram.unload();
+		gSkinnedVelocityProgram.unload();
+		gSkinnedVelocityAlphaProgram.unload();
+		gMotionBlurProgram.unload();
+
+//		//BD - Volumetric Lighting
+		gVolumetricLightProgram.unload();
+
+//		//BD - Exodus Post Process
 		unloadExodusPostShaders();
+
 		return TRUE;
 	}
 
@@ -1471,6 +1498,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		std::string fragment;
 		std::string vertex = "deferred/sunLightV.glsl";
 
+		//BD
 		if (gSavedSettings.getBOOL("RenderDeferredBlurLight")
 			|| gSavedSettings.getBOOL("RenderDeferredSSAO")
 			|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
@@ -1490,7 +1518,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSunProgram.mShaderFiles.clear();
 		gDeferredSunProgram.mShaderFiles.push_back(make_pair(vertex, GL_VERTEX_SHADER_ARB));
 		gDeferredSunProgram.mShaderFiles.push_back(make_pair(fragment, GL_FRAGMENT_SHADER_ARB));
+		//BD
 		gDeferredSunProgram.addPermutation("USE_SSAO", (bool)gSavedSettings.getBOOL("RenderDeferredSSAO") ? "1" : "0");
+		
 		gDeferredSunProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		success = gDeferredSunProgram.createShader(NULL, NULL);
@@ -1498,6 +1528,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 
 	if (success)
 	{
+		//BD
 		string fragment = "deferred/blurLightF.glsl";
 		if (gSavedSettings.getBOOL("RenderBlurPerformanceMode"))
 		{
@@ -1784,10 +1815,12 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSoftenProgram.mShaderFiles.clear();
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		//BD
 		gDeferredSoftenProgram.addPermutation("USE_SSR", (bool)gSavedSettings.getBOOL("RenderScreenSpaceReflections") ? "1" : "0");
 
 		gDeferredSoftenProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
+		//BD
 		if (gSavedSettings.getBOOL("RenderDeferredSSAO")
 			|| gSavedSettings.getBOOL("RenderDeferredBlurLight"))
 		{ //if using SSAO, take screen space light map into account as if shadows are enabled
@@ -1808,6 +1841,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSoftenWaterProgram.addPermutation("WATER_FOG", "1");
 		gDeferredSoftenWaterProgram.mShaderGroup = LLGLSLShader::SG_WATER;
 
+		//BD
 		if (gSavedSettings.getBOOL("RenderDeferredSSAO")
 			|| gSavedSettings.getBOOL("RenderDeferredBlurLight"))
 		{ //if using SSAO, take screen space light map into account as if shadows are enabled
@@ -1931,6 +1965,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		success = gDeferredPostGammaCorrectProgram.createShader(NULL, NULL);
 	}
 
+//	//BD - Volumetric Lighting
 	if (success)
  	{
 		gVolumetricLightProgram.mName = "Volumetric Light Shader";
@@ -2004,6 +2039,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		success = gVelocityProgram.createShader(NULL, NULL);
 	}
 
+//	//BD - Motion Blur
 	if (success)
 	{
 		gVelocityAlphaProgram.mName = "Velocity Alpha Shader";
@@ -2110,6 +2146,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 	return success;
 }
 
+//BD - Exodus Post Process
 void LLViewerShaderMgr::unloadExodusPostShaders()
 {
     gColorGradePost.unload();

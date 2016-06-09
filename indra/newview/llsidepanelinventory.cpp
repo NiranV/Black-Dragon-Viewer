@@ -32,11 +32,9 @@
 #include "llappviewer.h"
 #include "llavataractions.h"
 #include "llbutton.h"
-#include "llbuycurrencyhtml.h"
 #include "lldate.h"
 #include "llfirstuse.h"
 #include "llfloatersidepanelcontainer.h"
-#include "llfloaterbuycurrency.h"
 #include "llfoldertype.h"
 #include "llfolderview.h"
 #include "llinventorybridge.h"
@@ -49,7 +47,6 @@
 #include "lloutfitobserver.h"
 #include "llpanelmaininventory.h"
 #include "llpanelmarketplaceinbox.h"
-#include "llresmgr.h"
 #include "llselectmgr.h"
 #include "llsidepaneliteminfo.h"
 #include "llsidepaneltaskinfo.h"
@@ -60,6 +57,11 @@
 #include "llviewermedia.h"
 #include "llviewernetwork.h"
 #include "llweb.h"
+
+//BD
+#include "llbuycurrencyhtml.h"
+#include "llfloaterbuycurrency.h"
+#include "llresmgr.h"
 
 static LLPanelInjector<LLSidepanelInventory> t_inventory("sidepanel_inventory");
 
@@ -75,6 +77,7 @@ static const char * const INBOX_LAYOUT_PANEL_NAME = "inbox_layout_panel";
 static const char * const INVENTORY_LAYOUT_STACK_NAME = "inventory_layout_stack";
 static const char * const MARKETPLACE_INBOX_PANEL = "marketplace_inbox";
 
+//BD
 const F32 ICON_TIMER_EXPIRY		= 3.f; // How long the balance and health icons should flash after a change.
 
 //
@@ -120,22 +123,25 @@ private:
 LLSidepanelInventory::LLSidepanelInventory()
 	: LLPanel()
 	, mItemPanel(NULL)
-	, mBoxBalance(NULL)
-	, mBalance(0)
-	, mSquareMetersCredit(0)
-	, mSquareMetersCommitted(0)
 	, mPanelMainInventory(NULL)
 	, mInboxEnabled(false)
 	, mCategoriesObserver(NULL)
 	, mInboxAddedObserver(NULL)
+	//BD
+	, mBoxBalance(NULL)
+	, mBalance(0)
+	, mSquareMetersCredit(0)
+	, mSquareMetersCommitted(0)
 {
 
+	//BD
 	mBalanceTimer = new LLFrameTimer();
 	//buildFromFile( "panel_inventory.xml"); // Called from LLRegisterPanelClass::defaultPanelClassBuilder()
 }
 
 LLSidepanelInventory::~LLSidepanelInventory()
 {
+	//BD
 	delete mBalanceTimer;
 	mBalanceTimer = NULL;
 
@@ -156,6 +162,7 @@ LLSidepanelInventory::~LLSidepanelInventory()
 	}
 	delete mInboxAddedObserver;
 
+	//BD
 	gInventory.removeObserver(this);
 }
 
@@ -170,12 +177,14 @@ void handleInventoryDisplayInboxChanged()
 
 BOOL LLSidepanelInventory::postBuild()
 {
+	//BD
 	gInventory.addObserver(this);
 
 	// UI elements from inventory panel
 	{
 		mInventoryPanel = getChild<LLPanel>("sidepanel_inventory_panel");
 
+		//BD
 		mCounterCtrl = getChild<LLUICtrl>("ItemcountText");
 
 		getChild<LLUICtrl>("buyL")->setCommitCallback(
@@ -183,6 +192,7 @@ BOOL LLSidepanelInventory::postBuild()
 
 		mBoxBalance = getChild<LLTextBox>("balance");
 		mBoxBalance->setClickedCallback( &LLSidepanelInventory::onClickBalance, this );
+
 
 		mInfoBtn = mInventoryPanel->getChild<LLButton>("info_btn");
 		mInfoBtn->setClickedCallback(boost::bind(&LLSidepanelInventory::onInfoButtonClicked, this));
@@ -274,6 +284,7 @@ BOOL LLSidepanelInventory::postBuild()
 	return TRUE;
 }
 
+//BD
 // virtual
 void LLSidepanelInventory::draw()
 {
@@ -677,6 +688,96 @@ bool LLSidepanelInventory::canWearSelected()
 	return true;
 }
 
+
+LLInventoryItem *LLSidepanelInventory::getSelectedItem()
+{
+	LLFolderViewItem* current_item = mPanelMainInventory->getActivePanel()->getRootFolder()->getCurSelectedItem();
+
+	if (!current_item)
+	{
+		if (mInventoryPanelInbox.get() && mInventoryPanelInbox.get()->getRootFolder())
+		{
+			current_item = mInventoryPanelInbox.get()->getRootFolder()->getCurSelectedItem();
+		}
+
+		if (!current_item)
+		{
+			return NULL;
+		}
+	}
+	const LLUUID &item_id = static_cast<LLFolderViewModelItemInventory*>(current_item->getViewModelItem())->getUUID();
+	LLInventoryItem *item = gInventory.getItem(item_id);
+	return item;
+}
+
+U32 LLSidepanelInventory::getSelectedCount()
+{
+	int count = 0;
+
+	std::set<LLFolderViewItem*> selection_list = mPanelMainInventory->getActivePanel()->getRootFolder()->getSelectionList();
+	count += selection_list.size();
+
+	if ((count == 0) && mInboxEnabled && mInventoryPanelInbox.get() && mInventoryPanelInbox.get()->getRootFolder())
+	{
+		selection_list = mInventoryPanelInbox.get()->getRootFolder()->getSelectionList();
+
+		count += selection_list.size();
+	}
+
+	return count;
+}
+
+LLInventoryPanel *LLSidepanelInventory::getActivePanel()
+{
+	if (!getVisible())
+	{
+		return NULL;
+	}
+	if (mInventoryPanel->getVisible())
+	{
+		return mPanelMainInventory->getActivePanel();
+	}
+	return NULL;
+}
+
+BOOL LLSidepanelInventory::isMainInventoryPanelActive() const
+{
+	return mInventoryPanel->getVisible();
+}
+
+void LLSidepanelInventory::clearSelections(bool clearMain, bool clearInbox)
+{
+	if (clearMain)
+	{
+		LLInventoryPanel * inv_panel = getActivePanel();
+
+		if (inv_panel)
+		{
+			inv_panel->getRootFolder()->clearSelection();
+		}
+	}
+
+	if (clearInbox && mInboxEnabled && mInventoryPanelInbox.get())
+	{
+		mInventoryPanelInbox.get()->getRootFolder()->clearSelection();
+	}
+
+	updateVerbs();
+}
+
+std::set<LLFolderViewItem*> LLSidepanelInventory::getInboxSelectionList()
+{
+	std::set<LLFolderViewItem*> inventory_selected_uuids;
+
+	if (mInboxEnabled && mInventoryPanelInbox.get() && mInventoryPanelInbox.get()->getRootFolder())
+	{
+		inventory_selected_uuids = mInventoryPanelInbox.get()->getRootFolder()->getSelectionList();
+	}
+
+	return inventory_selected_uuids;
+}
+
+//BD
 // virtual
 void LLSidepanelInventory::changed(U32)
 {
@@ -817,92 +918,4 @@ S32 LLSidepanelInventory::getSquareMetersCommitted() const
 S32 LLSidepanelInventory::getSquareMetersLeft() const
 {
 	return mSquareMetersCredit - mSquareMetersCommitted;
-}
-
-LLInventoryItem *LLSidepanelInventory::getSelectedItem()
-{
-	LLFolderViewItem* current_item = mPanelMainInventory->getActivePanel()->getRootFolder()->getCurSelectedItem();
-	
-	if (!current_item)
-	{
-		if (mInventoryPanelInbox.get() && mInventoryPanelInbox.get()->getRootFolder())
-		{
-			current_item = mInventoryPanelInbox.get()->getRootFolder()->getCurSelectedItem();
-		}
-
-		if (!current_item)
-		{
-			return NULL;
-		}
-	}
-	const LLUUID &item_id = static_cast<LLFolderViewModelItemInventory*>(current_item->getViewModelItem())->getUUID();
-	LLInventoryItem *item = gInventory.getItem(item_id);
-	return item;
-}
-
-U32 LLSidepanelInventory::getSelectedCount()
-{
-	int count = 0;
-
-	std::set<LLFolderViewItem*> selection_list = mPanelMainInventory->getActivePanel()->getRootFolder()->getSelectionList();
-	count += selection_list.size();
-
-	if ((count == 0) && mInboxEnabled && mInventoryPanelInbox.get() && mInventoryPanelInbox.get()->getRootFolder())
-	{
-		selection_list = mInventoryPanelInbox.get()->getRootFolder()->getSelectionList();
-
-		count += selection_list.size();
-	}
-
-	return count;
-}
-
-LLInventoryPanel *LLSidepanelInventory::getActivePanel()
-{
-	if (!getVisible())
-	{
-		return NULL;
-	}
-	if (mInventoryPanel->getVisible())
-	{
-		return mPanelMainInventory->getActivePanel();
-	}
-	return NULL;
-}
-
-BOOL LLSidepanelInventory::isMainInventoryPanelActive() const
-{
-	return mInventoryPanel->getVisible();
-}
-
-void LLSidepanelInventory::clearSelections(bool clearMain, bool clearInbox)
-{
-	if (clearMain)
-	{
-		LLInventoryPanel * inv_panel = getActivePanel();
-		
-		if (inv_panel)
-		{
-			inv_panel->getRootFolder()->clearSelection();
-		}
-	}
-	
-	if (clearInbox && mInboxEnabled && mInventoryPanelInbox.get())
-	{
-		mInventoryPanelInbox.get()->getRootFolder()->clearSelection();
-	}
-	
-	updateVerbs();
-}
-
-std::set<LLFolderViewItem*> LLSidepanelInventory::getInboxSelectionList()
-{
-	std::set<LLFolderViewItem*> inventory_selected_uuids;
-	
-	if (mInboxEnabled && mInventoryPanelInbox.get() && mInventoryPanelInbox.get()->getRootFolder())
-	{
-		inventory_selected_uuids = mInventoryPanelInbox.get()->getRootFolder()->getSelectionList();
-	}
-	
-	return inventory_selected_uuids;
 }

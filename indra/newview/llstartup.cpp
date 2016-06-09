@@ -131,7 +131,6 @@
 #include "llproxy.h"
 #include "llproductinforequest.h"
 #include "llselectmgr.h"
-#include "llsidepanelinventory.h"
 #include "llsky.h"
 #include "llstatview.h"
 #include "llsurface.h"
@@ -189,10 +188,6 @@
 #include "llvoicechannel.h"
 #include "llpathfindingmanager.h"
 
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0a)
-#include "rlvhandler.h"
-// [/RLVa:KB]
-
 #include "lllogin.h"
 #include "llevents.h"
 #include "llstartuplistener.h"
@@ -204,6 +199,14 @@
 #if LL_WINDOWS
 #include "lldxhardware.h"
 #endif
+
+// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0a)
+#include "rlvhandler.h"
+// [/RLVa:KB]
+
+//BD
+#include "llsidepanelinventory.h"
+
 
 //
 // exported globals
@@ -318,6 +321,7 @@ bool idle_startup()
 
 	// until this is encapsulated, this little hack for the
 	// auth/transform loop will do.
+	//BD
 	static F32 progress = 0.0f;
 
 	static std::string auth_desc;
@@ -732,6 +736,7 @@ bool idle_startup()
 
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_ARROW);
 
+		//BD
 		LL_DEBUGS("AppInit") << "initializing menu bar" << LL_ENDL;
 		display_startup();
 		initialize_edit_menu();
@@ -1794,6 +1799,7 @@ bool idle_startup()
 		display_startup();
 		// Get L$ and ownership credit information
 		LL_INFOS() << "Requesting Money Balance" << LL_ENDL;
+		//BD
 		LLSidepanelInventory::sendMoneyBalanceRequest();
 		display_startup();
 		// request all group information
@@ -2065,6 +2071,7 @@ bool idle_startup()
 		else
 		{
 			update_texture_fetch();
+			//BD
 			set_startup_status(0.60f + 0.10f * timeout_frac,
 				LLTrans::getString("LoginPrecaching"),
 					gAgent.mMOTD.c_str());
@@ -2094,7 +2101,7 @@ bool idle_startup()
 			LLNotificationsUtil::add("WelcomeChooseSex", LLSD(), LLSD(),
 				callback_choose_gender);
 //			//BD - Don't throw us into cleanup state, the above dialog is 99/100 times
-			//	   a false positive and will result in outfit loading to be stopped until
+			//     a false positive and will result in outfit loading to be stopped until
 			//     we actually select an answer, resulting in a default avatar being
 			//     forced uppon us. Just proceed loading, our Avatar might pop up while
 			//     we still read the dialog which also even indicates it but never lets
@@ -2544,6 +2551,7 @@ bool callback_choose_gender(const LLSD& notification, const LLSD& response)
 		case OPT_MALE:
 			LLStartUp::loadInitialOutfit( gSavedSettings.getString("DefaultMaleAvatar"), "male" );
 			break;
+//		//BD - Cancel Sex Selection
 		case OPT_CLOSED_WINDOW:
         case OPT_FEMALE:
 			LLStartUp::loadInitialOutfit(gSavedSettings.getString("DefaultFemaleAvatar"), "female");

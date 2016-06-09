@@ -54,7 +54,6 @@
 #include "lleditingmotion.h"
 #include "llemote.h"
 #include "llfloatertools.h"
-#include "llfloaterreg.h"
 #include "llheadrotmotion.h"
 #include "llhudeffecttrail.h"
 #include "llhudmanager.h"
@@ -102,6 +101,7 @@
 #include "rlvhandler.h"
 // [/RLVa:KB]
 
+//BD
 #include "llfloaterreg.h"
 
 #include "llgesturemgr.h" //needed to trigger the voice gesticulations
@@ -3690,7 +3690,7 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 			}
 			LLVector3 velDir = getVelocity();
 			velDir.normalize();
-//			//BD - Backwards walking feature
+//			//BD - Allow Walking Backwards
 			if (!gSavedSettings.getBOOL("AllowWalkingBackwards") && (mSignaledAnimations.find(ANIM_AGENT_WALK) != mSignaledAnimations.end()))
 			{
 				F32 vpD = velDir * primDir;
@@ -3734,20 +3734,22 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 
 			LLVector3 pelvisDir( mRoot->getWorldMatrix().getFwdRow4().mV );
 
+			//BD
 			static LLCachedControl<F32> s_pelvis_rot_threshold_slow(gSavedSettings, "AvatarRotateThresholdSlow");
 			static LLCachedControl<F32> s_pelvis_rot_threshold_fast(gSavedSettings, "AvatarRotateThresholdFast");
 			static LLCachedControl<F32> s_pelvis_rot_threshold_ml(gSavedSettings, "AvatarRotateThresholdMouselook");
 
 			F32 pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, s_pelvis_rot_threshold_slow, s_pelvis_rot_threshold_fast);
-						
+			
+			//BD
 			if (self_in_mouselook)
 			{
 				pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, s_pelvis_rot_threshold_ml, s_pelvis_rot_threshold_fast);
 			}
 
+//			//BD - Freeze World
 			static LLCachedControl<bool> freeze_frame(gSavedSettings, "UseFreezeWorld");
-
-			// Stop Avatars from rotating while we are in Freeze World mode.
+			//BD - Stop Avatars from rotating while we are in Freeze World mode.
 			if (freeze_frame)
 			{
 				pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, 360.0f, 360.0f);
@@ -3809,7 +3811,7 @@ BOOL LLVOAvatar::updateCharacter(LLAgent &agent)
 			// Set the root rotation, but do so incrementally so that it
 			// lags in time by some fixed amount.
 			//F32 u = LLSmoothInterpolation::getInterpolant(PELVIS_LAG);
-//			//BD - Custom turnaround speed.
+//			//BD - Custom Avatar Rotation Speed
 			static LLCachedControl<F32> s_pelvis_rot_speed(gSavedSettings, "MovementRotationSpeed");
 			F32 pelvis_lag_time = s_pelvis_rot_speed;
 			if (self_in_mouselook)

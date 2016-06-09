@@ -40,10 +40,8 @@
 #include "llpanelvolumepulldown.h"
 #include "llfloaterregioninfo.h"
 #include "llfloaterscriptdebug.h"
-#include "llfloatersidepanelcontainer.h"
 #include "llhints.h"
 #include "llhudicon.h"
-#include "lliconctrl.h"
 #include "llnavigationbar.h"
 #include "llkeyboard.h"
 #include "lllineeditor.h"
@@ -60,9 +58,7 @@
 #include "llvoavatarself.h"
 #include "llresmgr.h"
 #include "llworld.h"
-#include "llsidepanelinventory.h"
 #include "llstatgraph.h"
-#include "lltoolbarview.h"
 #include "llviewermedia.h"
 #include "llviewermenu.h"	// for gMenuBarView
 #include "llviewerparcelmgr.h"
@@ -87,8 +83,13 @@
 // system includes
 #include <iomanip>
 
-// Black Dragon
+//BD
+#include "llfloatersidepanelcontainer.h"
+#include "lliconctrl.h"
+#include "llsidepanelinventory.h"
+#include "lltoolbarview.h"
 #include "bdpaneldrawdistance.h"
+
 //
 // Globals
 //
@@ -154,7 +155,7 @@ BOOL LLStatusBar::postBuild()
 	gMenuBarView->setRightMouseDownCallback(boost::bind(&show_navbar_context_menu, _1, _2, _3));
 
 	mTextTime = getChild<LLTextBox>("TimeText" );
-//	//BD - Framerate counter in statusbar
+//	//BD - Statusbar Framerate Count
 	mFPSText = getChild<LLTextBox>("FPSText");
 
 	mIconPresets = getChild<LLIconCtrl>( "presets_icon" );
@@ -171,7 +172,7 @@ BOOL LLStatusBar::postBuild()
 	mMediaToggle->setClickedCallback( &LLStatusBar::onClickMediaToggle, this );
 	mMediaToggle->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterNearbyMedia, this));
 
-//	//BD - Draw Distance mouse-over slider
+//	//BD - Quick Draw Distance Slider
 	mDrawDistance = getChild<LLIconCtrl>("draw_distance_icon");
 	mDrawDistance->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterDrawDistance, this));
 
@@ -181,6 +182,7 @@ BOOL LLStatusBar::postBuild()
 	S32 x = getRect().getWidth() - 2;
 	S32 y = 0;
 	LLRect r;
+	//BD
 	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+27, x, y+27);
 	LLStatGraph::Params sgp;
 	sgp.name("BandwidthGraph");
@@ -195,6 +197,7 @@ BOOL LLStatusBar::postBuild()
 	addChild(mSGBandwidth);
 	x -= SIM_STAT_WIDTH + 2;
 
+	//BD
 	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+27, x, y+27);
 	//these don't seem to like being reused
 	LLStatGraph::Params pgp;
@@ -233,7 +236,7 @@ BOOL LLStatusBar::postBuild()
 	mPanelNearByMedia->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
 	mPanelNearByMedia->setVisible(FALSE);
 
-//	//BD - Draw Distance mouse-over slider
+//	//BD - Quick Draw Distance Slider
 	mPanelDrawDistance = new BDPanelDrawDistance();
 	addChild(mPanelDrawDistance);
 	mPanelDrawDistance->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
@@ -259,7 +262,8 @@ void LLStatusBar::refresh()
 		//mSGBandwidth->setThreshold(2, bwtotal);
 	}
 
-//	//BD - Framerate counter in statusbar
+//	//BD - Statusbar Framerate Count
+	//     TODO: Maybe make a tiny bit slower. 1/10 of a second.
 	LLTrace::PeriodicRecording& frame_recording = LLTrace::get_frame_recording();
 	mFPSText->setValue(frame_recording.getPrevRecording(1).getPerSec(LLStatViewer::FPS));
 	
@@ -315,6 +319,7 @@ void LLStatusBar::refresh()
 
 void LLStatusBar::setVisibleForMouselook(bool visible)
 {
+//	//BD - Hide UI In Mouselook
 	if(gSavedSettings.getBOOL("AllowUIHidingInML"))
 	mIconPresets->setVisible(visible);
 	{
@@ -399,7 +404,7 @@ void LLStatusBar::onMouseEnterVolume()
 	mPanelPresetsPulldown->setVisible(FALSE);
 	mPanelNearByMedia->setVisible(FALSE);
 	mPanelVolumePulldown->setVisible(TRUE);
-//	//BD - Draw Distance mouse-over slider
+//	//BD - Quick Draw Distance Slider
 	mPanelDrawDistance->setVisible(FALSE);
 }
 
@@ -425,11 +430,11 @@ void LLStatusBar::onMouseEnterNearbyMedia()
 	mPanelPresetsPulldown->setVisible(FALSE);
 	mPanelVolumePulldown->setVisible(FALSE);
 	mPanelNearByMedia->setVisible(TRUE);
-//	//BD - Draw Distance mouse-over slider
+//	//BD - Quick Draw Distance Slider
 	mPanelDrawDistance->setVisible(FALSE);
 }
 
-//BD - Draw Distance mouse-over slider
+//BD - Quick Draw Distance Slider
 void LLStatusBar::onMouseEnterDrawDistance()
 {
 	LLRect draw_distance_rect = mPanelDrawDistance->getRect();
@@ -451,7 +456,6 @@ void LLStatusBar::onMouseEnterDrawDistance()
 	mPanelVolumePulldown->setVisible(FALSE);
 	mPanelDrawDistance->setVisible(TRUE);
 }
-//BD
 
 static void onClickVolume(void* data)
 {
@@ -471,6 +475,7 @@ void LLStatusBar::onClickMediaToggle(void* data)
 
 BOOL can_afford_transaction(S32 cost)
 {
+	//BD
 	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 	return((cost <= 0)||((sidepanel_inventory) && (sidepanel_inventory->getBalance() >=cost)));
 }
@@ -492,6 +497,7 @@ public:
 		if (tokens.size() == 1
 			&& tokens[0].asString() == "request")
 		{
+			//BD
 			LLSidepanelInventory::sendMoneyBalanceRequest();
 			return true;
 		}

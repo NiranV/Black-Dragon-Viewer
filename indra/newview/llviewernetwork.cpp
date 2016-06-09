@@ -119,6 +119,7 @@ void LLGridManager::initialize(const std::string& grid_file)
 	mGridFile = grid_file;
 	// as we don't want an attacker to override our grid list
 	// to point the default grid to an invalid grid
+	//BD
   	addSystemGrid("Main Grid (Agni)",
 				  MAINGRID,
 				  MAIN_GRID_LOGIN_URI,
@@ -126,6 +127,7 @@ void LLGridManager::initialize(const std::string& grid_file)
 				  DEFAULT_LOGIN_PAGE,
 				  SL_UPDATE_QUERY_URL,
 				  "Agni");
+	//BD
 	addSystemGrid("Beta Grid (Aditi)",
 				  "util.aditi.lindenlab.com",
 				  "https://login.aditi.lindenlab.com/cgi-bin/login.cgi",

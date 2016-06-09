@@ -182,6 +182,7 @@ void LLSnapshotLivePreview::updateSnapshot(BOOL new_snapshot, BOOL new_thumbnail
             }
         }
 
+		//BD
 		mSnapshotDelayTimer.setTimerExpirySec(delay);
 		mSnapshotDelayTimer.start();
         
@@ -258,7 +259,7 @@ void LLSnapshotLivePreview::drawPreviewRect(S32 offset_x, S32 offset_y)
 	}
 }
 
-//called when the world is frozen.
+//BD - Called when the world is frozen.
 void LLSnapshotLivePreview::draw()
 {
 	// Do nothing.
@@ -371,6 +372,7 @@ void LLSnapshotLivePreview::generateThumbnailImage(BOOL force_update)
 
 	LLPointer<LLImageRaw> raw = new LLImageRaw;
 
+	//BD
 	if (raw)
 	{
 		raw->resize( mPreviewImage->getWidth(),
@@ -462,6 +464,7 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 		return FALSE;
 	}
 
+	//BD
 	if (previewp->mForceUpdateSnapshot)
 	{
 		// request a new snapshot whenever the camera moves, with a time delay
@@ -472,7 +475,7 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 		previewp->mForceUpdateSnapshot = FALSE;
 	}
 
-	// see if it's time yet to snap the shot and bomb out otherwise.
+	//BD - see if it's time yet to snap the shot and bomb out otherwise.
 	previewp->mSnapshotActive = 
 		(previewp->mSnapshotDelayTimer.getStarted() &&	previewp->mSnapshotDelayTimer.hasExpired())
 		&& !LLToolCamera::getInstance()->hasMouseCapture(); // don't take snapshots while ALT-zoom active
@@ -523,6 +526,7 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 			previewp->generateThumbnailImage(TRUE) ;
 		}
 		previewp->getWindow()->decBusyCount();
+		//BD
 		previewp->mSnapshotDelayTimer.stop();
 		previewp->mSnapshotActive = FALSE;
 		LL_DEBUGS() << "done creating snapshot" << LL_ENDL;

@@ -68,11 +68,13 @@ private:
 	LLUUID				mSessionID;
 	LLUUID				mAvatarID;
 	LLAvatarIconCtrl*	mAvatarIcon;
-	LLAvatarIconCtrl*	mAvatarOfGroupIcon;
 	LLGroupIconCtrl*	mGroupIcon;
 	LLAvatarIconCtrl*	mAdhocIcon;
-	LLTextBox*			mAvatarName;
+//	//BD - SSFUI
+	LLAvatarIconCtrl*	mAvatarOfGroupIcon;
 	LLTextBox*			mAvatarNameOfGroup;
+
+	LLTextBox*			mAvatarName;
 	LLTextBox*			mTime;
 	LLTextBox*			mMessage;
 

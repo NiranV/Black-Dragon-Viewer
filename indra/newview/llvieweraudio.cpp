@@ -385,6 +385,7 @@ void init_audio()
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndWindowClose")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndWindowOpen")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndRestart")));
+//		//BD - Pie Menu
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuAppear")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuHide")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight0")));

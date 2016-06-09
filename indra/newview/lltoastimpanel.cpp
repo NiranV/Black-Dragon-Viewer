@@ -50,10 +50,12 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 
 	mGroupIcon = getChild<LLGroupIconCtrl>("group_icon");
 	mAvatarIcon = getChild<LLAvatarIconCtrl>("avatar_icon");
-	mAvatarOfGroupIcon = getChild<LLAvatarIconCtrl>("avatar_of_grp_icon");
 	mAdhocIcon = getChild<LLAvatarIconCtrl>("adhoc_icon");
-	mAvatarName = getChild<LLTextBox>("user_name");
+//	//BD - SSFUI
+	mAvatarOfGroupIcon = getChild<LLAvatarIconCtrl>("avatar_of_grp_icon");
 	mAvatarNameOfGroup = getChild<LLTextBox>("user_name_of_grp");
+
+	mAvatarName = getChild<LLTextBox>("user_name");
 	mTime = getChild<LLTextBox>("time_box");
 	mMessage = getChild<LLTextBox>("message");
 	mMessage->setContentTrusted(false);
@@ -67,6 +69,7 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 	
 	LLIMModel::LLIMSession* im_session = LLIMModel::getInstance()->findIMSession(p.session_id);
 	mIsGroupMsg = (im_session && im_session->mSessionType == LLIMModel::LLIMSession::GROUP_SESSION);
+//	//BD - SSFUI
 	std::string name = "secondlife:///app/agent/" + p.avatar_id.asString() + "/about";
 	if(mIsGroupMsg)
 	{
@@ -97,6 +100,7 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 		mMessage->setText(p.message, style_params);
 	}
 
+//	//BD - SSFUI
 	if (!mIsGroupMsg)
 	{
 		mAvatarName->setValue(name);
@@ -105,7 +109,6 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 	mSessionID = p.session_id;
 	mAvatarID = p.avatar_id;
 	mNotification = p.notification;
-
 
 
 	initIcon();
@@ -216,6 +219,7 @@ void LLToastIMPanel::initIcon()
 	mAvatarIcon->setVisible(FALSE);
 	mGroupIcon->setVisible(FALSE);
 	mAdhocIcon->setVisible(FALSE);
+//	//BD - SSFUI
 	mAvatarOfGroupIcon->setVisible(FALSE);
 
 	if(mAvatarName->getValue().asString() == SYSTEM_FROM)
@@ -233,6 +237,7 @@ void LLToastIMPanel::initIcon()
 			return;
 		}
 
+//		//BD - SSFUI
 		LLView* im_icon_slide = getChild<LLPanel>("im_icon_slide");
 		switch(im_session->mSessionType)
 		{
@@ -241,12 +246,14 @@ void LLToastIMPanel::initIcon()
 			mAvatarIcon->setValue(mAvatarID);
 			break;
 		case LLIMModel::LLIMSession::GROUP_SESSION:
+//			//BD - SSFUI
 			im_icon_slide->setVisible(TRUE);
 			mGroupIcon->setVisible(TRUE);
 			mGroupIcon->setValue(mSessionID);
 			mAvatarOfGroupIcon->setVisible(TRUE);
 			break;
 		case LLIMModel::LLIMSession::ADHOC_SESSION:
+//			//BD - SSFUI
 			im_icon_slide->setVisible(TRUE);
 			mAdhocIcon->setVisible(TRUE);
 			mAdhocIcon->setValue(im_session->mOtherParticipantID);

@@ -69,7 +69,6 @@
 #include "llnavigationbar.h"
 #include "llnotificationsutil.h"
 #include "llfloatertools.h"
-#include "llfloatersnapshot.h"
 #include "llpaneloutfitsinventory.h"
 #include "llpanellogin.h"
 #include "llspellcheck.h"
@@ -80,6 +79,7 @@
 //BD - Includes we need for special features
 #include "llappviewer.h"
 #include "llenvmanager.h"
+#include "llfloatersnapshot.h"
 #include "lltoolfocus.h"
 #include "llviewerobjectlist.h"
 
@@ -99,6 +99,7 @@ LLControlGroup gCrashSettings("CrashSettings");	// saved at end of session
 LLControlGroup gWarningSettings("Warnings"); // persists ignored dialogs/warnings
 
 std::string gLastRunVersion;
+//BD - Freeze World
 std::vector<LLAnimPauseRequest>	mAvatarPauseHandles;
 
 extern BOOL gResizeScreenTexture;
@@ -557,33 +558,6 @@ bool handleSpellCheckChanged()
 	return true;
 }
 
-bool toggle_freeze_world(const LLSD& newvalue)
-{
-	if ( newvalue.asBoolean() )
-	{
-		// freeze all avatars
-		LLCharacter* avatarp;
-		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
-			iter != LLCharacter::sInstances.end(); ++iter)
-		{
-			avatarp = *iter;
-			mAvatarPauseHandles.push_back(avatarp->requestPause());
-		}
-
-		// freeze everything else
-		gSavedSettings.setBOOL("FreezeTime", TRUE);
-	}
-	else // turning off freeze world mode, either temporarily or not.
-	{
-		// thaw all avatars
-		mAvatarPauseHandles.clear();
-
-		// thaw everything else
-		gSavedSettings.setBOOL("FreezeTime", FALSE);
-	}
-	return true;
-}
-
 bool toggle_agent_pause(const LLSD& newvalue)
 {
 	if ( newvalue.asBoolean() )
@@ -629,6 +603,34 @@ void toggle_updater_service_active(const LLSD& new_value)
 //BD
 /////////////////////////////////////////////////////////////////////////////
 
+//BD - Freeze World
+bool toggle_freeze_world(const LLSD& newvalue)
+{
+	if (newvalue.asBoolean())
+	{
+		// freeze all avatars
+		LLCharacter* avatarp;
+		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+			iter != LLCharacter::sInstances.end(); ++iter)
+		{
+			avatarp = *iter;
+			mAvatarPauseHandles.push_back(avatarp->requestPause());
+		}
+
+		// freeze everything else
+		gSavedSettings.setBOOL("FreezeTime", TRUE);
+	}
+	else // turning off freeze world mode, either temporarily or not.
+	{
+		// thaw all avatars
+		mAvatarPauseHandles.clear();
+
+		// thaw everything else
+		gSavedSettings.setBOOL("FreezeTime", FALSE);
+	}
+	return true;
+}
+
 //BD - Catznip's Borderless Window Mode
 static bool handleFullscreenWindow(const LLSD& newvalue)
 {
@@ -637,7 +639,7 @@ static bool handleFullscreenWindow(const LLSD& newvalue)
 	return true;
 }
 
-//BD - Make attached lights and particles available everywhere without extra coding
+//BD - Make attached lights and particles available everywhere without extra coding.
 static bool handleRenderAttachedLightsChanged(const LLSD& newvalue)
 {
 	LLPipeline::sRenderAttachedLights = gSavedSettings.getBOOL("RenderAttachedLights");
@@ -650,7 +652,7 @@ static bool handleRenderAttachedParticlesChanged(const LLSD& newvalue)
 	return true;
 }
 
-//BD - Always-on Mouse-steering
+//BD - Always-on Mouse-steering.
 static bool handleMouseSteeringChanged(const LLSD&)
 {
 	//BD - Whenever steering is off and we trigger this we will
@@ -665,7 +667,7 @@ static bool handleMouseSteeringChanged(const LLSD&)
 	return true;
 }
 
-//BD - Change control scheme on the fly
+//BD - Change control scheme on the fly.
 bool handleKeyboardLayoutChanged(const LLSD& newvalue)
 {
 	LLAppViewer::loadKeyboardlayout();
@@ -673,7 +675,7 @@ bool handleKeyboardLayoutChanged(const LLSD& newvalue)
 }
 
 //BD - Give UseEnvironmentFromRegion a purpose and make it able to
-//     switch between Region/Fixed Windlight from everywhere via UI
+//     switch between Region/Fixed Windlight from everywhere via UI.
 static bool handleUseRegioLight(const LLSD& newvalue)
 {
 	LLEnvManagerNew& envmgr = LLEnvManagerNew::instance();
@@ -739,8 +741,6 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderMaxTextureIndex")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderUseTriStrips")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
 	gSavedSettings.getControl("RenderUIBuffer")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
-	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
-	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderFSAASamples")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderSpecularResX")->getSignal()->connect(boost::bind(&handleLUTBufferChanged, _2));
 	gSavedSettings.getControl("RenderSpecularResY")->getSignal()->connect(boost::bind(&handleLUTBufferChanged, _2));
@@ -871,12 +871,11 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("LoginLocation")->getSignal()->connect(boost::bind(&handleLoginLocationChanged));
 	gSavedSettings.getControl("IncludeEnhancedSkeleton")->getCommitSignal()->connect(boost::bind(&handleDeferredDebugSettingChanged, _2));
     gSavedSettings.getControl("DebugAvatarJoints")->getCommitSignal()->connect(boost::bind(&handleDebugAvatarJointsChanged, _2));
-	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
 
 //	//BD - Catznip's Borderless Window Mode
 	gSavedSettings.getControl("FullScreenWindow")->getSignal()->connect(boost::bind(&handleFullscreenWindow, _2));
 	
-//	//BD - Special Debugs and handles
+	//BD - Special Debugs and handles
 	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
 	gSavedSettings.getControl("ShooterKeyLayout")->getSignal()->connect(boost::bind(&handleKeyboardLayoutChanged, _2));
 	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
@@ -894,6 +893,11 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
 	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
 	gSavedSettings.getControl("RenderEnableFullbright")->getSignal()->connect(boost::bind(&handleFullbrightChanged, _2));
+	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
+
+//	//BD - Motion Blur
+	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 //	//BD
 }
 

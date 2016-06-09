@@ -5041,6 +5041,7 @@ void LLViewerObject::restoreHudText()
     }
 }
 
+//BD - TODO: Check this.
 void LLViewerObject::initDebugTextHud()
 {
 	mText = (LLHUDText *)LLHUDObject::addHUDObject(LLHUDObject::LL_HUD_TEXT);
@@ -5100,6 +5101,7 @@ void LLViewerObject::updateText()
 		    LLVOAvatar* avatar = getAvatar();
 		    if (avatar)
 		    {
+				//BD - TODO: Check this:
 		        mText->setHidden(avatar->isVisuallyMuted());
 		    }
 

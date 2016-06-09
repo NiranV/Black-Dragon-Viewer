@@ -491,6 +491,7 @@ bool LLWLParamManager::applyDayCycleParams(const LLSD& params, LLEnvKey::EScope 
 	return true;
 }
 
+//BD - Animated Windlight Transition
 bool LLWLParamManager::applySkyParams(const LLSD& params, bool interpolate /*= false*/)
 {
 	if (params.size() == 0)

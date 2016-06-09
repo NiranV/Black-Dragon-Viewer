@@ -372,8 +372,9 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
 		}
 // [/RLVa:KB]
 		getChildView("LabelCreatorTitle")->setEnabled(TRUE);
-		getChildView("LabelCreatorName")->setEnabled(TRUE);
 		getChild<LLUICtrl>("LabelCreatorName")->setValue(name);
+//		//BD - SSFUI
+		getChildView("LabelCreatorName")->setEnabled(TRUE);
 	}
 	else
 	{
@@ -390,6 +391,7 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
 		std::string name;
 		if (perm.isGroupOwned())
 		{
+//			//BD - SSFUI
 			LLUUID group_owner_id = perm.getGroup();
 			name = "secondlife:///app/group/" + group_owner_id.asString() + "/about";
 		}
@@ -407,8 +409,9 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
 // [/RLVa:KB]
 		}
 		getChildView("LabelOwnerTitle")->setEnabled(TRUE);
-		getChildView("LabelOwnerName")->setEnabled(TRUE);
 		getChild<LLUICtrl>("LabelOwnerName")->setValue(name);
+//		//BD - SSFUI
+		getChildView("LabelOwnerName")->setEnabled(TRUE);
 	}
 	else
 	{

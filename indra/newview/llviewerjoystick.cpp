@@ -250,6 +250,7 @@ void LLViewerJoystick::init(bool autoenable)
 		}
 		else
 		{
+//			//BD - Xbox360 Controller Support
 			// It's not a Space Navigator, no problem, use Xbox360 defaults.
 			if (gSavedSettings.getString("JoystickInitialized") != "UnknownDevice")
 			{
@@ -364,6 +365,7 @@ void LLViewerJoystick::handleRun(F32 inc)
 // -----------------------------------------------------------------------------
 void LLViewerJoystick::agentJump()
 {
+//	//BD - Xbox360 Controller Support
     gAgent.moveUp(1, false);
 }
 
@@ -372,10 +374,12 @@ void LLViewerJoystick::agentSlide(F32 inc)
 {
 	if (inc < 0.f)
 	{
+//		//BD - Xbox360 Controller Support
 		gAgent.moveLeft(1, false);
 	}
 	else if (inc > 0.f)
 	{
+//		//BD - Xbox360 Controller Support
 		gAgent.moveLeft(-1, false);
 	}
 }
@@ -405,11 +409,13 @@ void LLViewerJoystick::agentFly(F32 inc)
 		{
 			gAgent.setFlying(true);
 		}
+//		//BD - Xbox360 Controller Support
 		gAgent.moveUp(1, false);
 	}
 	else if (inc > 0.f)
 	{
 		// crouch
+//		//BD - Xbox360 Controller Support
 		gAgent.moveUp(-1, false);
 	}
 }
@@ -486,7 +492,7 @@ void LLViewerJoystick::moveObjects(bool reset)
 		gSavedSettings.getS32("JoystickAxis5"),
 	};
 
-//	//BD - Remappable joystick controls
+//	//BD - Remappable Joystick Controls
 	S32 buttons[] =
 	{
 		gSavedSettings.getS32("JoystickButtonRollLeft"),
@@ -538,13 +544,13 @@ void LLViewerJoystick::moveObjects(bool reset)
 	{
 		cur_delta[i] = -mAxes[axis[i]];
 
-//		//BD - Remappable joystick controls
+//		//BD - Remappable Joystick Controls
 		cur_delta[3] -= getJoystickButton(buttons[0]);
 		cur_delta[3] += getJoystickButton(buttons[1]);
 		cur_delta[2] += getJoystickButton(buttons[2]); 
 		cur_delta[2] -= getJoystickButton(buttons[3]);
 
-//		//BD - Invertable pitch controls
+//		//BD - Invertable Pitch Controls
 		if(gSavedSettings.getBOOL("JoystickInvertPitch"))
 			cur_delta[4] *= -1.f;
 
@@ -630,7 +636,7 @@ void LLViewerJoystick::moveAvatar(bool reset)
 		gSavedSettings.getS32("JoystickAxis5")
 	};
 
-//	//BD - Remappable joystick controls
+//	//BD - Remappable Joystick Controls
 	S32 buttons[] =
 	{
 		gSavedSettings.getS32("JoystickButtonFly"),
@@ -654,42 +660,62 @@ void LLViewerJoystick::moveAvatar(bool reset)
 
 	bool is_zero = true;
 	static bool button_held = false;
+	//BD
 	static bool w_button_held = false;
 	static bool m_button_held = false;
 
-//	//BD - Remappable joystick controls
+//	//BD - Remappable Joystick Controls
 	if (getJoystickButton(buttons[0]) && !button_held)
 	{
 		button_held = true;
-		if(gAgent.getFlying())
+		if (gAgent.getFlying())
+		{
 			gAgent.setFlying(FALSE);
+		}
 		else
+		{
 			gAgent.setFlying(TRUE);
+		}
 	}
 	else if (!getJoystickButton(buttons[0]) && button_held)
+	{
 		button_held = false;
+	}
 
 	if (getJoystickButton(buttons[3]) && !w_button_held)
 	{
 		w_button_held = true;
-		if(gAgent.getAlwaysRun())
+		if (gAgent.getAlwaysRun())
+		{
 			gAgent.clearAlwaysRun();
+		}
 		else
+		{
 			gAgent.setAlwaysRun();
+		}
 	}
 	else if (!getJoystickButton(buttons[3]) && w_button_held)
+	{
 		w_button_held = false;
+	}
 
 	if (getJoystickButton(buttons[4]) && !m_button_held)
 	{
 		m_button_held = true;
-		if(gAgentCamera.cameraMouselook())
+		if (gAgentCamera.cameraMouselook())
+		{
 			gAgentCamera.changeCameraToDefault();
+		}
 		else
+		{
 			gAgentCamera.changeCameraToMouselook();
+		}
 	}
 	else if (!getJoystickButton(buttons[4]) && m_button_held)
+	{
 		m_button_held = false;
+	}
+
 
 	F32 axis_scale[] =
 	{
@@ -736,7 +762,7 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	{
 		cur_delta[i] = -mAxes[axis[i]];
 
-//		//BD - Remappable joystick controls
+//		//BD - Remappable Joystick Controls
 		cur_delta[2] += getJoystickButton(buttons[1]);
 		cur_delta[2] -= getJoystickButton(buttons[2]);
 
@@ -782,7 +808,7 @@ void LLViewerJoystick::moveAvatar(bool reset)
 		setCameraNeedsUpdate(true);
 	}
 
-//	//BD - Invertable pitch controls
+//	//BD - Invertable Pitch Controls
 	if(!gSavedSettings.getBOOL("JoystickInvertPitch"))
 		cur_delta[RX_I] *= -1.f;
 
@@ -813,7 +839,8 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	
 	handleRun((F32) sqrt(sDelta[Z_I]*sDelta[Z_I] + sDelta[X_I]*sDelta[X_I]));
 	
-//	//BD - Use raw deltas, do not add any stupid limitations or extra dead zones
+//	//BD - Xbox360 Controller Support
+	//     Use raw deltas, do not add any stupid limitations or extra dead zones
 	//     otherwise alot controllers will cry and camera movement will bug out
 	//     or be completely ignored on some controllers. Especially fixes Xbox 360
 	//     controller avatar movement.
@@ -848,7 +875,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 		gSavedSettings.getS32("JoystickAxis6")
 	};
 
-//	//BD - Remappable joystick controls
+//	//BD - Remappable Joystick Controls
 	S32 buttons[] =
 	{
 		gSavedSettings.getS32("JoystickButtonRollLeft"),
@@ -911,7 +938,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	{
 		cur_delta[i] = -getJoystickAxis(axis[i]);
 
-//		//BD - Remappable joystick controls
+//		//BD - Remappable Joystick Controls
 		cur_delta[3] -= getJoystickButton(buttons[0]);
 		cur_delta[3] += getJoystickButton(buttons[1]);
 		cur_delta[6] -= getJoystickButton(buttons[2]);
@@ -919,7 +946,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 		cur_delta[2] += getJoystickButton(buttons[4]); 
 		cur_delta[2] -= getJoystickButton(buttons[5]); 
 
-//		//BD - Invertable pitch controls
+//		//BD - Invertable Pitch Controls
 		if(!gSavedSettings.getBOOL("JoystickInvertPitch"))
 			cur_delta[4] *= -1.f;
 
@@ -1072,7 +1099,7 @@ void LLViewerJoystick::scanJoystick()
 
 	static long toggle_flycam = 0;
 
-//	//BD - Toggle flycam
+//	//BD - Remappable Joystick Controls
 	if (mBtn[gSavedSettings.getS32("JoystickButtonFlycam")] == 1)
 	{
 		if (mBtn[gSavedSettings.getS32("JoystickButtonFlycam")] != toggle_flycam)
@@ -1142,6 +1169,7 @@ void LLViewerJoystick::setSNDefaults()
 	gSavedSettings.setS32("JoystickAxis5", 5); // yaw
 	gSavedSettings.setS32("JoystickAxis6", -1);
 
+//	//BD - Remappable Joystick Controls
 	gSavedSettings.setS32("JoystickButtonJump", -1);
 	gSavedSettings.setS32("JoystickButtonCrouch", -1);
 	gSavedSettings.setS32("JoystickButtonFly", -1);
@@ -1203,6 +1231,7 @@ void LLViewerJoystick::setSNDefaults()
 	gSavedSettings.setF32("FlycamFeathering", 5.f);
 }
 
+//BD - Xbox360 Controller Support
 void LLViewerJoystick::setXboxDefaults()
 {
 	LL_INFOS() << "restoring Xbox360 Controller defaults..." << LL_ENDL;

@@ -74,6 +74,7 @@ LLSidepanelAppearance::LLSidepanelAppearance() :
 	LLPanel(),
 	mFilterSubString(LLStringUtil::null),
 	mFilterEditor(NULL),
+	//BD
 	mOutfitEdit(NULL),
 	mOpened(false)
 {
@@ -93,6 +94,7 @@ LLSidepanelAppearance::~LLSidepanelAppearance()
 // virtual
 BOOL LLSidepanelAppearance::postBuild()
 {
+	//BD
 	mSearchBtn = getChild<LLButton>("show_search_btn");
 	mSearchBtn->setClickedCallback(boost::bind(&LLSidepanelAppearance::onSearchButtonClicked, this));
 
@@ -242,6 +244,7 @@ void LLSidepanelAppearance::onFilterEdit(const std::string& search_string)
 	}
 }
 
+//BD
 void LLSidepanelAppearance::onSearchButtonClicked()
 {
 	LLPanel* panel = getChild<LLPanel>("search_lp");
@@ -312,6 +315,7 @@ void LLSidepanelAppearance::toggleMyOutfitsPanel(BOOL visible)
 	// *TODO: Move these controls to panel_outfits_inventory.xml
 	// so that we don't need to toggle them explicitly.
 	mNewOutfitBtn->setVisible(visible);
+	//BD
 	mOutfitStatus->setVisible(visible);
 	findChild<LLButton>("edit_outfit_btn")->setVisible(visible);
 	findChild<LLLayoutStack>("appearance_panel_ls")->setVisible(visible);
@@ -485,9 +489,9 @@ void LLSidepanelAppearance::inventoryFetched()
 void LLSidepanelAppearance::setWearablesLoading(bool val)
 {
 	getChildView("wearables_loading_indicator")->setVisible( val);
+	//BD
 	if(!getChildView("outfit_edit")->getVisible())
 		getChildView("edit_outfit_btn")->setVisible( !val);
-
 	mCoFLoading = val;
 
 	if (!val)

@@ -483,6 +483,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			// Short delay when teleporting in the same sim (progress screen active but not shown - did not
 			// fall-through from TELEPORT_START)
 			{
+				//BD
 				//LLFirstUse::useTeleport();
 				gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
 			}
@@ -686,6 +687,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		LLGLState::checkTextureChannels();
 		LLGLState::checkClientArrays();
 
+		//BD
 		BOOL to_texture = gPipeline.canUseVertexShaders() &&
 							gPipeline.RenderDeferred;
 
@@ -1007,6 +1009,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			gPipeline.renderDeferredLighting();
 		}
 
+//		//BD - Motion Blur
 		//store this frame's modelview matrix for use
 		//when rendering next frame's occlusion queries
 		for (U32 i = 0; i < 16; i++)
@@ -1279,6 +1282,7 @@ void render_ui(F32 zoom_factor, int subfield)
 	}
 
 	{
+		//BD
 		BOOL to_texture = gPipeline.canUseVertexShaders();
 
 		if (to_texture)

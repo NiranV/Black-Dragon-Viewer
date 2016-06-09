@@ -68,7 +68,9 @@ public:
 	void setOverrideCamera(bool val);
 	bool toggleFlycam();
 	void setSNDefaults();
+//	//BD - Xbox360 Controller Support
 	void setXboxDefaults();
+
 	std::string getDescription();
 	
 protected:

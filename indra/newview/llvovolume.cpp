@@ -4431,6 +4431,7 @@ void LLVolumeGeometryManager::registerFace(LLSpatialGroup* group, LLFace* facep,
 	}
 
 	const LLMatrix4* model_mat = NULL;
+//	//BD - Motion Blur
 	LLMatrix4* last_model_mat = NULL;
 
 	LLDrawable* drawable = facep->getDrawable();
@@ -4438,6 +4439,7 @@ void LLVolumeGeometryManager::registerFace(LLSpatialGroup* group, LLFace* facep,
 	if (drawable->isState(LLDrawable::ANIMATED_CHILD))
 	{
 		model_mat = &drawable->getWorldMatrix();
+//		//BD - Motion Blur
 		if (LLPipeline::RenderMotionBlur)
 		{
 			last_model_mat = &drawable->getLastRenderMatrix();
@@ -4446,6 +4448,7 @@ void LLVolumeGeometryManager::registerFace(LLSpatialGroup* group, LLFace* facep,
 	else if (drawable->isActive())
 	{
 		model_mat = &drawable->getRenderMatrix();
+//		//BD - Motion Blur
 		if (LLPipeline::RenderMotionBlur)
 		{
 			last_model_mat = &drawable->getLastRenderMatrix();
@@ -4552,6 +4555,7 @@ void LLVolumeGeometryManager::registerFace(LLSpatialGroup* group, LLFace* facep,
 		draw_vec.push_back(draw_info);
 		draw_info->mTextureMatrix = tex_mat;
 		draw_info->mModelMatrix = model_mat;
+//		//BD - Motion Blur
 		draw_info->mLastModelMatrix = last_model_mat;
 		
 		draw_info->mBump  = bump;
@@ -5992,6 +5996,7 @@ void LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFac
 				}
 			}
 
+			//BD
 			if (!is_alpha && LLPipeline::RenderDeferred && te->getGlow() > 0.f)
 			{
 				registerFace(group, facep, LLRenderPass::PASS_GLOW);

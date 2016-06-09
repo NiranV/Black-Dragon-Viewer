@@ -192,7 +192,7 @@ void LLHUDEffectBeam::setSourceObject(LLViewerObject *objp)
 			{
 				LLViewerObject *objp = mSourceObject;
 				LLVOAvatar *avatarp = (LLVOAvatar *)objp;
-				//BD
+//				//BD - Right Handed Editing
 				LLVector3d hand_pos_global;
 				if(gSavedSettings.getBOOL("AvatarRightHander"))
 				{
@@ -326,7 +326,7 @@ void LLHUDEffectBeam::setupParticle(const S32 i)
 	{
 		LLViewerObject *objp = mSourceObject;
 		LLVOAvatar *avatarp = (LLVOAvatar *)objp;
-		//BD
+//		//BD - Right Handed Editing
 		if(gSavedSettings.getBOOL("AvatarRightHander"))
 		{
 			start_pos_global = gAgent.getPosGlobalFromAgent(avatarp->mWristRightp->getWorldPosition());

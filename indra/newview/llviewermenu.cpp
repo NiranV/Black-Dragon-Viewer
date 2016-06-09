@@ -35,7 +35,6 @@
 // linden library includes
 #include "llavatarnamecache.h"	// IDEVO
 #include "llfloaterreg.h"
-#include "llfloatersidepanelcontainer.h"
 #include "llcombobox.h"
 #include "llinventorypanel.h"
 #include "llnotifications.h"
@@ -100,8 +99,6 @@
 #include "llselectmgr.h"
 #include "llspellcheckmenuhandler.h"
 #include "llstatusbar.h"
-#include "llsidepanelinventory.h"
-#include "llteleporthistory.h"
 #include "lltextureview.h"
 #include "lltoolbarview.h"
 #include "lltoolcomp.h"
@@ -130,19 +127,26 @@
 #include "lluilistener.h"
 #include "llappearancemgr.h"
 #include "lltrans.h"
-#include "llurlaction.h"
 #include "lleconomy.h"
 #include "lltoolgrab.h"
 #include "llwindow.h"
 #include "llpathfindingmanager.h"
 #include "llstartup.h"
 #include "boost/unordered_map.hpp"
+
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
 #include "rlvactions.h"
 #include "rlvhandler.h"
 #include "rlvlocks.h"
 // [/RLVa:KB]
-#include "piemenu.h"	// pie Menu
+
+//BD
+#include "llfloatersidepanelcontainer.h"
+#include "llsidepanelinventory.h"
+#include "llteleporthistory.h"
+#include "llurlaction.h"
+//BD - Pie Menu
+#include "piemenu.h"
 
 using namespace LLAvatarAppearanceDefines;
 
@@ -189,7 +193,7 @@ LLContextMenu	*gMenuAttachmentOther = NULL;
 LLContextMenu	*gMenuLand	= NULL;
 LLContextMenu	*gMenuMuteParticle = NULL;
 
-// Pie menus
+//BD - Pie Menu
 PieMenu		*gPieMenuAvatarSelf	= NULL;
 PieMenu		*gPieMenuAvatarOther = NULL;
 PieMenu		*gPieMenuObject = NULL;
@@ -209,6 +213,7 @@ LLContextMenu* gDetachPieMenu = NULL;
 LLContextMenu* gDetachScreenPieMenu = NULL;
 LLContextMenu* gDetachBodyPartPieMenus[9];
 
+//BD - Pie Menu
 PieMenu* gPieAttachScreenMenu = NULL;
 PieMenu* gPieAttachMenu = NULL;
 PieMenu* gPieAttachBodyPartMenus[9];
@@ -489,6 +494,7 @@ void init_menus()
 	gMenuMuteParticle = LLUICtrlFactory::createFromFile<LLContextMenu>(
 		"menu_mute_particle.xml", gMenuHolder, registry);
 
+//	//BD - Pie Menu
 	///
 	/// Pie menus
 	///
@@ -522,6 +528,7 @@ void init_menus()
 	///
 	LLColor4 color;
 
+	//BD
 	LLColor4 context_menu_color = LLUIColorTable::instance().getColor("MenuDefaultBgColor");
 	
 	gMenuAvatarSelf->setBackgroundColor( context_menu_color );
@@ -532,6 +539,7 @@ void init_menus()
 
 	gMenuLand->setBackgroundColor( context_menu_color );
 
+	//BD
 	color = LLUIColorTable::instance().getColor( "MenuDefaultBgColor" );
 	gPopupMenuView->setBackgroundColor( color );
 
@@ -820,6 +828,7 @@ U32 render_type_from_string(std::string render_type)
 	{
 		return LLPipeline::RENDER_TYPE_BUMP;
 	}
+	//BD
 	else if ("fullbright" == render_type)
 	{
 		return LLPipeline::RENDER_TYPE_FULLBRIGHT;
@@ -2622,6 +2631,7 @@ void cleanup_menus()
 // Object pie menu
 //-----------------------------------------------------------------------------
 
+//BD - Derender
 class LLObjectDerender : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
@@ -4243,7 +4253,7 @@ void handle_reset_view()
 		LLFloaterSidePanelContainer::showPanel("appearance", LLSD().with("type", "my_outfits"));
 	}
 
-//	//BD - Do not change our camera preset on reset view.
+	//BD - Do not change our camera preset on reset view.
 	ECameraPreset c_preset;
 	if(gSavedSettings.getU32("CameraPreset") == 0)
 		c_preset = CAMERA_PRESET_REAR_VIEW;
@@ -4297,7 +4307,7 @@ class LLViewMouselook : public view_listener_t
 		if (!gAgentCamera.cameraMouselook())
 		{
 			gAgentCamera.changeCameraToMouselook();
-//			//BD - Make sure we disable third person steering here, it doesn't work in ML.
+			//BD - Make sure we disable third person steering here, it doesn't work in ML.
 			gSavedSettings.setBOOL("EnableThirdPersonSteering", false);
 		}
 		else
@@ -5094,6 +5104,7 @@ void handle_buy_or_take()
 	{
 		S32 total_price = selection_price();
 
+		//BD
 		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 		if (total_price <= sidepanel_inventory->getBalance() || total_price == 0)
 		{
@@ -5242,6 +5253,7 @@ void handle_buy()
 
 	S32 price = sale_info.getSalePrice();
 	
+	//BD
 	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 	if (price > 0 && price > sidepanel_inventory->getBalance())
 	{
@@ -6041,16 +6053,22 @@ class LLWorldAlwaysRun : public view_listener_t
 		if (gAgent.getAlwaysRun())
 		{
 			gAgent.clearAlwaysRun();
+//			// [RLVa:KB]
 //			gAgent.clearRunning();
+//			// [/RLVa:KB]
 		}
 		else
 		{
 			gAgent.setAlwaysRun();
+//			// [RLVa:KB]
 //			gAgent.setRunning();
+//			// [/RLVa:KB]
 		}
 
 		// tell the simulator.
+//		// [RLVa:KB]
 //		gAgent.sendWalkRun(gAgent.getAlwaysRun());
+//		// [/RLVa:KB]
 
 		// Update Movement Controls according to AlwaysRun mode
 		LLFloaterMove::setAlwaysRunMode(gAgent.getAlwaysRun());
@@ -9091,7 +9109,13 @@ void show_topinfobar_context_menu(LLView* ctrl, S32 x, S32 y)
 	LLMenuGL::showPopup(ctrl, show_topbarinfo_context_menu, x, y);
 }
 
-//BD - Global copy UUID / SLURL
+//BD - Derender
+void handle_derender_clear()
+{
+	gObjectList.mDerenderList.clear();
+}
+
+//BD - SSFUI
 // static
 void handle_copy_uuid()
 {
@@ -9103,13 +9127,6 @@ void handle_copy_uuid()
 										getFirstRootObject()->getID().asString());
 	}
 }
-
-//BD - Clear derender list
-void handle_derender_clear()
-{
-	gObjectList.mDerenderList.clear();
-}
-
 
 class LLAvatarCopyUUID : public view_listener_t
 {
@@ -9143,6 +9160,7 @@ class LLAvatarCopySLURL : public view_listener_t
 	}
 };
 
+//BD
 class LLWorldTeleportBack : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
@@ -9264,6 +9282,7 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLViewHighlightTransparent(), "View.HighlightTransparent");
 	view_listener_t::addMenu(new LLViewToggleRenderType(), "View.ToggleRenderType");
 	view_listener_t::addMenu(new LLViewShowHUDAttachments(), "View.ShowHUDAttachments");
+	//BD
 	view_listener_t::addMenu(new LLZoomer(1.1f), "View.ZoomOut");
 	view_listener_t::addMenu(new LLZoomer(1/1.1f), "View.ZoomIn");
 	view_listener_t::addMenu(new LLZoomer(DEFAULT_FIELD_OF_VIEW, false), "View.ZoomDefault");
@@ -9602,7 +9621,6 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLObjectReturn(), "Object.Return");
 	view_listener_t::addMenu(new LLObjectReportAbuse(), "Object.ReportAbuse");
 	view_listener_t::addMenu(new LLObjectMute(), "Object.Mute");
-	view_listener_t::addMenu(new LLObjectDerender(), "Object.Derender");
 
 	enable.add("Object.VisibleTake", boost::bind(&visible_take_object));
 	enable.add("Object.VisibleBuy", boost::bind(&visible_buy_object));
@@ -9690,17 +9708,20 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
 
-//	//BD - Additional features
+//	//BD - Derender
+	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));
+	view_listener_t::addMenu(new LLObjectDerender(), "Object.Derender");
+
+//	//BD - Save/Load Camera Position
 	commit.add("World.SaveCamera", boost::bind(&LLAgentCamera::saveCamera, &gAgentCamera));
 	commit.add("World.LoadCamera", boost::bind(&LLAgentCamera::loadSavedCamera, &gAgentCamera));
 
-	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));
-
-	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));
-
+//	//BD - Additional features
 	view_listener_t::addMenu(new LLWorldTeleportBack(), "World.TeleportBack");
 	view_listener_t::addMenu(new LLWorldTeleportForward(), "World.TeleportForward");
 
+//	//BD - SSFUI
+	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));
 	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
 	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");
 

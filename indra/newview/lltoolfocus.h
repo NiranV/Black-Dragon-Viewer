@@ -40,9 +40,10 @@ public:
 
 	virtual BOOL	handleMouseDown(S32 x, S32 y, MASK mask);
 	virtual BOOL	handleMouseUp(S32 x, S32 y, MASK mask);
+	virtual BOOL	handleHover(S32 x, S32 y, MASK mask);
+//	//BD - Right Click Steering
 	virtual BOOL	handleRightMouseDown(S32 x, S32 y, MASK mask);
 	virtual BOOL	handleRightMouseUp(S32 x, S32 y, MASK mask);
-	virtual BOOL	handleHover(S32 x, S32 y, MASK mask);
 
 	virtual void	onMouseCaptureLost();
 
@@ -54,6 +55,7 @@ public:
 	static void pickCallback(const LLPickInfo& pick_info);
 	BOOL mouseSteerMode() { return mMouseSteering; }
 
+//	//BD - Right Click Steering
 	BOOL	mRightMouse;
 
 protected:
@@ -68,14 +70,15 @@ protected:
 	S32		mMouseDownY;
 	BOOL	mOutsideSlopX;
 	BOOL	mOutsideSlopY;
-	BOOL	mOutsideSlopRightX;
-	BOOL	mOutsideSlopRightY;
 	BOOL	mValidClickPoint;
 	BOOL	mValidSelection;
 	BOOL	mMouseSteering;
 	S32		mMouseUpX;	// needed for releaseMouse()
 	S32		mMouseUpY;
 	MASK	mMouseUpMask;
+//	//BD - Right Click Steering
+	BOOL	mOutsideSlopRightX;
+	BOOL	mOutsideSlopRightY;
 	S32		mMouseRightUpX;
 	S32		mMouseRightUpY;
 };

@@ -37,7 +37,6 @@
 #include "llfloatermap.h"
 #include "llfloatermodelpreview.h"
 #include "llfloatersnapshot.h"
-#include "llfloatersidepanelcontainer.h"
 #include "llimage.h"
 #include "llimagebmp.h"
 #include "llimagepng.h"
@@ -48,7 +47,6 @@
 #include "llresourcedata.h"
 #include "llfloaterperms.h"
 #include "llstatusbar.h"
-#include "llsidepanelinventory.h"
 #include "llviewercontrol.h"	// gSavedSettings
 #include "llviewertexturelist.h"
 #include "lluictrlfactory.h"
@@ -79,6 +77,10 @@
 
 // system libraries
 #include <boost/tokenizer.hpp>
+
+//BD
+#include "llfloatersidepanelcontainer.h"
+#include "llsidepanelinventory.h"
 
 class LLFileEnableUpload : public view_listener_t
 {
@@ -680,6 +682,7 @@ void upload_done_callback(
 				}
 				else if(region)
 				{
+					//BD
 					LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 					// Charge user for upload
 					sidepanel_inventory->debitBalance(expected_upload_cost);
@@ -806,6 +809,7 @@ void upload_new_resource(
             LLAssetType::AT_TEXTURE == uploadInfo->getAssetType() ||
             LLAssetType::AT_ANIMATION == uploadInfo->getAssetType())
 		{
+			//BD
 			LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 			S32 balance = sidepanel_inventory->getBalance();
 			if (balance < uploadInfo->getExpectedUploadCost())

@@ -409,7 +409,9 @@ public:
 
 	void setCanSelect(BOOL canSelect);
 
+	//BD - TODO: Check this.
 	void initDebugTextHud();
+
 	void setDebugText(const std::string &utf8text);
 	void initHudText();
 	void restoreHudText();

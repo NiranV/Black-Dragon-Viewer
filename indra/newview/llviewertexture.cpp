@@ -74,12 +74,14 @@ LLPointer<LLViewerTexture>        LLViewerTexture::sCheckerBoardImagep = NULL;
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sMissingAssetImagep = NULL;
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sWhiteImagep = NULL;
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sDefaultImagep = NULL;
-LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sExodusColorGradeTexp = NULL;
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sSmokeImagep = NULL;
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sFlatNormalImagep = NULL;
 LLViewerMediaTexture::media_map_t LLViewerMediaTexture::sMediaMap;
 LLTexturePipelineTester* LLViewerTextureManager::sTesterp = NULL;
 const std::string sTesterName("TextureTester");
+
+//BD - Exodus Post Process
+LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sExodusColorGradeTexp = NULL;
 
 S32 LLViewerTexture::sImageCount = 0;
 S32 LLViewerTexture::sRawCount = 0;
@@ -400,6 +402,7 @@ void LLViewerTextureManager::init()
  	LLViewerFetchedTexture::sSmokeImagep = LLViewerTextureManager::getFetchedTexture(IMG_SMOKE, FTT_DEFAULT, TRUE, LLGLTexture::BOOST_UI);
 	LLViewerFetchedTexture::sSmokeImagep->setNoDelete();
 
+//	//BD - Exodus Post Process
 	LLViewerFetchedTexture::sExodusColorGradeTexp = LLViewerFetchedTexture::sDefaultImagep;
 
 	image_raw = new LLImageRaw(32,32,3);
@@ -449,6 +452,8 @@ void LLViewerTextureManager::cleanup()
 	LLViewerFetchedTexture::sWhiteImagep = NULL;
 	
 	LLViewerFetchedTexture::sFlatNormalImagep = NULL;
+
+//	//BD - Exodus Post Process
 	LLViewerFetchedTexture::sExodusColorGradeTexp = NULL;
 
 	LLViewerMediaTexture::cleanUpClass();	

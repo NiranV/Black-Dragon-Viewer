@@ -136,6 +136,7 @@ void LLWorldMapView::initClass()
 	sTrackCircleImage =		LLUI::getUIImage("map_track_16.tga");
 	sTrackArrowImage =		LLUI::getUIImage("direction_arrow.tga");
 	sClassifiedsImage =		LLUI::getUIImage("icon_top_pick.tga");
+	//BD
 	sForSaleImage =			LLUI::getUIImage("Icon_For_Sale");
 	// To Do: update the image resource for adult lands on sale.
 	sForSaleAdultImage =    LLUI::getUIImage("icon_for_sale_adult.tga");
@@ -460,14 +461,14 @@ void LLWorldMapView::draw()
 			}
 			else
 			{
-//				//BD - Take ourself into account for our agent counter
+				//BD - Take ourself into account for our agent counter
 				S32 agent_count = info->getAgentCount();
 				if (info->getName() == gAgent.getRegion()->getName())
 				{
 					++agent_count;
 				}
 
-//				//BD - Show an avatar count behind the SIM name
+				//BD - Show an avatar count behind the SIM name
 				mesg = llformat( "%s (%d *) ", info->getName().c_str(), agent_count);
 			}
 //			if (!mesg.empty())
@@ -475,6 +476,7 @@ void LLWorldMapView::draw()
 			if ( (!mesg.empty()) && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)) )
 // [/RLVa:KB]
 			{
+				//BD
 				font->renderUTF8(
 					mesg, 0,
 					llfloor(left + 3), llfloor(bottom + 5),

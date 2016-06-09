@@ -182,6 +182,8 @@ BOOL LLVOWater::updateGeometry(LLDrawable *drawable)
 
 	F32 size_inv = 1.f / size;
 
+	//BD - Don't mess with the water at all.
+
 	for (y = 0; y < size; y++)
 	{
 		for (x = 0; x < size; x++)

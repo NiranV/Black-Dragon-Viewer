@@ -111,7 +111,7 @@ protected:
 
 LLViewerFolderDictionary::LLViewerFolderDictionary()
 {
-//	//BD - Custom Inventory folder icons.
+//	//BD - Custom Inventory Folder Icons
 	//       													    	  NEW CATEGORY NAME         FOLDER OPEN             FOLDER CLOSED          QUIET?      HIDE IF EMPTY?
 	//      												  		     |-------------------------|-----------------------|----------------------|-----------|--------------|
 	addEntry(LLFolderType::FT_TEXTURE,				new ViewerFolderEntry("Textures",               "Inv_SysOpen",          "Inv_TexturesClosed",       FALSE,     true));
@@ -136,21 +136,20 @@ LLViewerFolderDictionary::LLViewerFolderDictionary()
     addEntry(LLFolderType::FT_MY_OUTFITS,           new ViewerFolderEntry("My Outfits",             "Inv_SysOpen",          "Inv_SysClosed",            TRUE,      true));
     addEntry(LLFolderType::FT_MESH,                 new ViewerFolderEntry("Meshes",                 "Inv_SysOpen",          "Inv_SysClosed",            FALSE,     false));
 
-	addEntry(LLFolderType::FT_INBOX, 				new ViewerFolderEntry("Received Items",			"Inv_SysOpen",			"Inv_SysClosed",		FALSE,     false));
-	addEntry(LLFolderType::FT_OUTBOX, 				new ViewerFolderEntry("Merchant Outbox",		"Inv_SysOpen",			"Inv_SysClosed",		FALSE,     true));
+	addEntry(LLFolderType::FT_INBOX, 				new ViewerFolderEntry("Received Items",			"Inv_SysOpen",			"Inv_SysClosed",            FALSE,     false));
+	addEntry(LLFolderType::FT_OUTBOX, 				new ViewerFolderEntry("Merchant Outbox",		"Inv_SysOpen",			"Inv_SysClosed",            FALSE,     true));
 
     addEntry(LLFolderType::FT_BASIC_ROOT,           new ViewerFolderEntry("Basic Root",             "Inv_SysOpen",          "Inv_SysClosed",            FALSE,     true));
                  
-	addEntry(LLFolderType::FT_MARKETPLACE_LISTINGS, new ViewerFolderEntry("Marketplace Listings",   "Inv_SysOpen",			"Inv_SysClosed",		FALSE,     false));
-	addEntry(LLFolderType::FT_MARKETPLACE_STOCK,    new ViewerFolderEntry("New Stock",              "Inv_StockFolderOpen",	"Inv_StockFolderClosed",		FALSE,     false, "default"));
-	addEntry(LLFolderType::FT_MARKETPLACE_VERSION,  new ViewerFolderEntry("New Version",            "Inv_VersionFolderOpen","Inv_VersionFolderClosed",		FALSE,     false, "default"));
+	addEntry(LLFolderType::FT_MARKETPLACE_LISTINGS, new ViewerFolderEntry("Marketplace Listings",   "Inv_SysOpen",			"Inv_SysClosed",            FALSE,     false));
+	addEntry(LLFolderType::FT_MARKETPLACE_STOCK,    new ViewerFolderEntry("New Stock",              "Inv_StockFolderOpen",	"Inv_StockFolderClosed",    FALSE,     false, "default"));
+	addEntry(LLFolderType::FT_MARKETPLACE_VERSION,  new ViewerFolderEntry("New Version",            "Inv_VersionFolderOpen","Inv_VersionFolderClosed",  FALSE,     false, "default"));
 
     addEntry(LLFolderType::FT_NONE,                 new ViewerFolderEntry("New Folder",             "Inv_FolderOpen",       "Inv_FolderClosed",         FALSE,     false, "default"));
-//	//BD - Custom Inventory folder icons.
 
 	for (U32 type = (U32)LLFolderType::FT_ENSEMBLE_START; type <= (U32)LLFolderType::FT_ENSEMBLE_END; ++type)
 	{
-		addEntry((LLFolderType::EType)type, 		new ViewerFolderEntry("New Folder",				"Inv_FolderOpen",		"Inv_FolderClosed",		FALSE,     false));
+		addEntry((LLFolderType::EType)type, 		new ViewerFolderEntry("New Folder",				"Inv_FolderOpen",		"Inv_FolderClosed",         FALSE,     false));
 	}
 }
 

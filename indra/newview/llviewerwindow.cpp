@@ -47,8 +47,6 @@
 #include "llviewerkeyboard.h"
 #include "llviewermenu.h"
 
-#include "bdtopbarholder.h"
-
 #include "llviewquery.h"
 #include "llxmltree.h"
 #include "llslurl.h"
@@ -212,6 +210,9 @@
 // [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c)
 #include "rlvhandler.h"
 // [/RLVa:KB]
+
+//BD
+#include "bdtopbarholder.h"
 
 #if LL_WINDOWS
 #include <tchar.h> // For Unicode conversion methods
@@ -1092,7 +1093,7 @@ BOOL LLViewerWindow::handleRightMouseDown(LLWindow *window,  LLCoordGL pos, MASK
 	x = ll_round((F32)x / mDisplayScale.mV[VX]);
 	y = ll_round((F32)y / mDisplayScale.mV[VY]);
 
-//	//BD - Check if we are in Mouselook or if we are holding the ALT key.
+	//BD - Check if we are in Mouselook or if we are holding the ALT key.
 	if(gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK
 		|| gAgentCamera.getCameraMode() == CAMERA_MODE_CUSTOMIZE_AVATAR
 		|| gKeyboard->currentMask(false) == MASK_ALT)
@@ -1101,7 +1102,7 @@ BOOL LLViewerWindow::handleRightMouseDown(LLWindow *window,  LLCoordGL pos, MASK
 	}
 	else
 	{
-//		//BD - Redirect right clicks to LLToolCamera and check if it wants to
+		//BD - Redirect right clicks to LLToolCamera and check if it wants to
 		//	   handle the right click before the actual main Window does.
 		return LLToolCamera::getInstance()->handleRightMouseDown(x, y, mask);
 	}
@@ -1122,7 +1123,7 @@ BOOL LLViewerWindow::handleRightMouseUp(LLWindow *window,  LLCoordGL pos, MASK m
 		x = llround((F32)x / mDisplayScale.mV[VX]);
 		y = llround((F32)y / mDisplayScale.mV[VY]);
 
-//		//BD - Redirect right clicks to LLToolCamera and check if it wants to
+		//BD - Redirect right clicks to LLToolCamera and check if it wants to
 		//	   handle the right click before the actual main Window does.
 		return LLToolCamera::getInstance()->handleRightMouseUp(x, y, mask);
 	}
@@ -2019,7 +2020,7 @@ void LLViewerWindow::initWorldUI()
 	// Force gFloaterTools to initialize
 	LLFloaterReg::getInstance("build");
 
-	//BD - Force preferences to initialize
+	//BD - Force preferences to initialize.
 	LLFloaterReg::getInstance("preferences");
 
 
@@ -2033,6 +2034,7 @@ void LLViewerWindow::initWorldUI()
 	status_bar_container->addChildInBack(gStatusBar);
 	status_bar_container->setVisible(TRUE);
 
+	//BD
 	LLPanel* chiclet_container = gStatusBar->getChild<LLPanel>("chiclet_container");
 	LLChicletBar* chiclet_bar = LLChicletBar::getInstance();
 	chiclet_bar->setShape(chiclet_container->getLocalRect());
@@ -2151,6 +2153,7 @@ void LLViewerWindow::shutdownViews()
 	gStatusBar = NULL;
 	gIMMgr = NULL;
 	gToolTipView = NULL;
+	//BD
 	gTopBar = NULL;
 
 	gToolBarView = NULL;
@@ -2331,7 +2334,7 @@ void LLViewerWindow::reshape(S32 width, S32 height)
 #endif // LL_WINDOWS
 // [/SL:KB]
 			{
-				//BD - Fudge Factor
+				//BD - Fix for Window resizing with an offset.
 				gSavedSettings.setS32("WindowWidth", (width + 16));
 				gSavedSettings.setS32("WindowHeight", (height + 38));
 			}
@@ -3001,8 +3004,7 @@ void LLViewerWindow::updateUI()
 	// animate layout stacks so we have up to date rect for world view
 	LLLayoutStack::updateClass();
 
-	//BD - Always use full window for rendering the world view
-	// use full window for world view when not rendering UI
+	//BD - Always use full window for rendering the world view.
 	updateWorldViewRect(true);
 
 	LLView::sMouseHandlerMessage.clear();
@@ -3407,6 +3409,7 @@ void LLViewerWindow::updateLayout()
 			MASK	mask = gKeyboard->currentMask(TRUE);
 			gFloaterTools->updatePopup( select_center_screen, mask );
 		}
+//		//BD - Right Click Steering
 		else if(!LLToolCamera::getInstance()->mRightMouse)
 		{
 			gFloaterTools->setVisible(FALSE);
@@ -3561,8 +3564,8 @@ void LLViewerWindow::updateWorldViewRect(bool use_full_window)
 
 	// start off using whole window to render world
 	LLRect new_world_rect = mWindowRectRaw;
-	/*
-	if (use_full_window == false && mWorldViewPlaceholder.get())
+	//BD
+	/* if (use_full_window == false && mWorldViewPlaceholder.get())
 	{
 		new_world_rect = mWorldViewPlaceholder.get()->calcScreenRect();
 		// clamp to at least a 1x1 rect so we don't try to allocate zero width gl buffers
@@ -3573,8 +3576,7 @@ void LLViewerWindow::updateWorldViewRect(bool use_full_window)
 		new_world_rect.mRight = ll_round((F32)new_world_rect.mRight * mDisplayScale.mV[VX]);
 		new_world_rect.mBottom = ll_round((F32)new_world_rect.mBottom * mDisplayScale.mV[VY]);
 		new_world_rect.mTop = ll_round((F32)new_world_rect.mTop * mDisplayScale.mV[VY]);
-	}
-	*/
+	} */
 
 	if (mWorldViewRectRaw != new_world_rect)
 	{
@@ -4482,6 +4484,7 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 		LLPipeline::toggleRenderDebugFeature((void*)LLPipeline::RENDER_DEBUG_FEATURE_UI);
 	}
 
+	//BD - Fix for snapshot floaters appearing in the snapshot.
 	bool big_preview_open = false;
 	bool snapshot_open = false;
 
@@ -4720,6 +4723,7 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 		LLPipeline::toggleRenderDebugFeature((void*)LLPipeline::RENDER_DEBUG_FEATURE_UI);
 	}
 
+	//BD - Fix for snapshot floaters appearing in the snapshot.
 	if (snapshot_open)
 	{
 		LLFloaterReg::findInstance("snapshot")->setVisible(true);
@@ -4900,6 +4904,7 @@ void LLViewerWindow::revealIntroPanel()
 {
 	if (mProgressView)
 	{
+		//BD
 		//mProgressView->revealIntroPanel();
 	}
 }
@@ -4908,6 +4913,7 @@ void LLViewerWindow::setShowProgress(const BOOL show)
 {
 	if (mProgressView)
 	{
+		// ## Zi: Fade teleport screens
 		mProgressView->fade(show);
 	}
 }
@@ -4929,6 +4935,7 @@ void LLViewerWindow::setProgressString(const std::string& string)
 {
 	if (mProgressView)
 	{
+		//BD
 		//mProgressView->setText(string);
 	}
 }
@@ -4937,6 +4944,7 @@ void LLViewerWindow::setProgressMessage(const std::string& msg)
 {
 	if(mProgressView)
 	{
+		//BD
 		//mProgressView->setMessage(msg);
 	}
 }

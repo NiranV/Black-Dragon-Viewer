@@ -54,6 +54,8 @@
 #include "llfloaterreg.h"
 #include "llfloatercamera.h"
 #include "llmenugl.h"
+
+//BD - Right Click Steering
 #include "lltoolpie.h"
 
 // Globals
@@ -62,6 +64,7 @@ BOOL gCameraBtnOrbit = FALSE;
 BOOL gCameraBtnPan = FALSE;
 
 const S32 SLOP_RANGE = 4;
+//BD - Right Click Steering
 const S32 SLOP_RANGE_RIGHT = 24;
 
 //
@@ -76,17 +79,18 @@ LLToolCamera::LLToolCamera()
 	mMouseDownY(0),
 	mOutsideSlopX(FALSE),
 	mOutsideSlopY(FALSE),
-	mOutsideSlopRightX(FALSE),
-	mOutsideSlopRightY(FALSE),
 	mValidClickPoint(FALSE),
 	mValidSelection(FALSE),
 	mMouseSteering(FALSE),
-	mRightMouse(FALSE),
 	mMouseUpX(0),
 	mMouseUpY(0),
+	mMouseUpMask(MASK_NONE),
+//	//BD - Right Click Steering
+	mRightMouse(FALSE),
 	mMouseRightUpX(0),
 	mMouseRightUpY(0),
-	mMouseUpMask(MASK_NONE)
+	mOutsideSlopRightX(FALSE),
+	mOutsideSlopRightY(FALSE)
 { }
 
 
@@ -147,7 +151,7 @@ BOOL LLToolCamera::handleMouseDown(S32 x, S32 y, MASK mask)
 	return TRUE;
 }
 
-//BD - Hold Right-Mouse-Button to turn
+//BD - Right Click Steering
 BOOL LLToolCamera::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
 	// Ensure a mouseup
@@ -349,7 +353,7 @@ BOOL LLToolCamera::handleMouseUp(S32 x, S32 y, MASK mask)
 	return TRUE;
 }
 
-//BD - Hold Right-Mouse-Button to turn
+//BD - Right Click Steering
 BOOL LLToolCamera::handleRightMouseUp(S32 x, S32 y, MASK mask)
 {
 	gViewerWindow->showCursor();
@@ -391,6 +395,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 	S32 dx = gViewerWindow->getCurrentMouseDX();
 	S32 dy = gViewerWindow->getCurrentMouseDY();
 	
+//	//BD - Third Person Steering
 	if (hasMouseCapture() && mValidClickPoint || 
 		(gSavedSettings.getBOOL("EnableThirdPersonSteering") &&
 		!gAgentCamera.cameraMouselook()) ||
@@ -399,6 +404,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		mAccumX += llabs(dx);
 		mAccumY += llabs(dy);
 
+//		//BD - Right Click Steering
 		if (!mRightMouse)
 		{
 			if (mAccumX >= SLOP_RANGE)
@@ -427,6 +433,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 
 	if (mOutsideSlopX || mOutsideSlopY)
 	{
+//		//BD - Third Person Steering
 		if (!mValidClickPoint && !gSavedSettings.getBOOL("EnableThirdPersonSteering"))
 		{
 			LL_DEBUGS("UserInput") << "hover handled by LLToolFocus [invalid point]" << LL_ENDL;
@@ -438,6 +445,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		if (gCameraBtnOrbit ||
 			mask == MASK_ORBIT || 
 			mask == (MASK_ALT | MASK_ORBIT) ||
+//			//BD - Third Person Steering
 			(gSavedSettings.getBOOL("EnableThirdPersonSteering") &&
 			!gAgentCamera.cameraMouselook()))
 		{
@@ -521,6 +529,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 			LL_DEBUGS("UserInput") << "hover handled by LLToolZoom" << LL_ENDL;		
 		}
 	}
+//	//BD - Right Click Steering
 	else if (mRightMouse && mOutsideSlopRightX || mRightMouse && mOutsideSlopRightY)
 	{
 //		//BD - Handle right click threshold breaks as a seperate camera tool to
@@ -543,6 +552,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		}
 	}
 
+//	//BD - Third Person Steering
 	if((gSavedSettings.getBOOL("EnableThirdPersonSteering") &&
 		!gAgentCamera.cameraMouselook()) ||
 		mRightMouse)

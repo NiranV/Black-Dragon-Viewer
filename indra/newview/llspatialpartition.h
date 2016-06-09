@@ -89,6 +89,7 @@ public:
 	S32 mDebugColor;
 	const LLMatrix4* mTextureMatrix;
 	const LLMatrix4* mModelMatrix;
+//	//BD - Motion Blur
 	LLMatrix4* mLastModelMatrix;
 	U32		mMatrixUpdateFrame;
 

@@ -27,7 +27,6 @@
 #include "llviewerprecompiledheaders.h"
 
 #include "pipeline.h"
-#include "exopostprocess.h"
 
 // library includes
 #include "llaudioengine.h" // For debugging.
@@ -120,6 +119,9 @@
 #include "rlvlocks.h"
 // [/RLVa:KB]
 
+//BD - Exodus Post Process
+#include "exopostprocess.h"
+
 #ifdef _DEBUG
 // Debug indices is disabled for now for debug performance - djs 4/24/02
 //#define DEBUG_INDICES
@@ -177,7 +179,6 @@ F32 LLPipeline::RenderShadowBlurSize;
 F32 LLPipeline::RenderSSAOScale;
 U32 LLPipeline::RenderSSAOMaxScale;
 F32 LLPipeline::RenderSSAOFactor;
-F32 LLPipeline::RenderSSAOEffect;
 F32 LLPipeline::RenderShadowOffsetError;
 F32 LLPipeline::RenderShadowBiasError;
 F32 LLPipeline::RenderShadowOffset;
@@ -186,7 +187,6 @@ F32 LLPipeline::RenderSpotShadowOffset;
 F32 LLPipeline::RenderSpotShadowBias;
 F32 LLPipeline::RenderEdgeDepthCutoff;
 F32 LLPipeline::RenderEdgeNormCutoff;
-F32 LLPipeline::RenderSSAOBlurSize;
 F32 LLPipeline::RenderShadowBlurDistFactor;
 BOOL LLPipeline::RenderDeferredAtmospheric;
 S32 LLPipeline::RenderReflectionDetail;
@@ -203,6 +203,8 @@ F32 LLPipeline::CameraDoFResScale;
 F32 LLPipeline::RenderAutoHideSurfaceAreaLimit;
 
 //BD - Special Options
+F32 LLPipeline::RenderSSAOEffect;
+F32 LLPipeline::RenderSSAOBlurSize;
 LLVector4 LLPipeline::RenderShadowResolution;
 LLVector3 LLPipeline::RenderProjectorShadowResolution;
 U32 LLPipeline::RenderShadowBlurSamples;
@@ -277,9 +279,10 @@ static LLStaticHashedString sOffset("offset");
 static LLStaticHashedString sScreenRes("screenRes");
 static LLStaticHashedString sDelta("delta");
 static LLStaticHashedString sDistFactor("dist_factor");
-static LLStaticHashedString sGaussian("gaussian");
 static LLStaticHashedString sKern("kern");
 static LLStaticHashedString sKernScale("kern_scale");
+//BD
+static LLStaticHashedString sGaussian("gaussian");
 
 //----------------------------------------
 std::string gPoolNames[] = 
@@ -589,8 +592,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderUIBuffer");
 	connectRefreshCachedSettingsSafe("RenderShadowDetail");
 	connectRefreshCachedSettingsSafe("RenderDeferredSSAO");
-	connectRefreshCachedSettingsSafe("RenderShadowResolution");
-	connectRefreshCachedSettingsSafe("RenderProjectorShadowResolution");
 	connectRefreshCachedSettingsSafe("RenderLocalLights");
 	connectRefreshCachedSettingsSafe("RenderDelayCreation");
 	connectRefreshCachedSettingsSafe("RenderAnimateRes");
@@ -632,7 +633,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderSSAOScale");
 	connectRefreshCachedSettingsSafe("RenderSSAOMaxScale");
 	connectRefreshCachedSettingsSafe("RenderSSAOFactor");
-	connectRefreshCachedSettingsSafe("RenderSSAOEffect");
 	connectRefreshCachedSettingsSafe("RenderShadowOffsetError");
 	connectRefreshCachedSettingsSafe("RenderShadowBiasError");
 	connectRefreshCachedSettingsSafe("RenderShadowOffset");
@@ -641,7 +641,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderSpotShadowBias");
 	connectRefreshCachedSettingsSafe("RenderEdgeDepthCutoff");
 	connectRefreshCachedSettingsSafe("RenderEdgeNormCutoff");
-	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
 	connectRefreshCachedSettingsSafe("RenderShadowBlurDistFactor");
 	connectRefreshCachedSettingsSafe("RenderDeferredAtmospheric");
 	connectRefreshCachedSettingsSafe("RenderReflectionDetail");
@@ -656,15 +655,31 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("CameraOffset");
 	connectRefreshCachedSettingsSafe("CameraMaxCoF");
 	connectRefreshCachedSettingsSafe("CameraDoFResScale");
+
+//	//BD - Special Options
+	connectRefreshCachedSettingsSafe("RenderSSAOEffect");
+	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
+	connectRefreshCachedSettingsSafe("RenderShadowBlurSamples");
+	connectRefreshCachedSettingsSafe("RenderDeferredBlurLight");
 	connectRefreshCachedSettingsSafe("CameraFreeDoFFocus");
 	connectRefreshCachedSettingsSafe("RenderAutoHideSurfaceAreaLimit");
-	connectRefreshCachedSettingsSafe("RenderMotionBlur");
-	connectRefreshCachedSettingsSafe("RenderMotionBlurStrength");
+	connectRefreshCachedSettingsSafe("RenderSSRResolution");
+
+//	//BD - Shadow Map Allocation
+	connectRefreshCachedSettingsSafe("RenderShadowResolution");
+	connectRefreshCachedSettingsSafe("RenderProjectorShadowResolution");
+
+//	//BD - Volumetric Lighting
 	connectRefreshCachedSettingsSafe("RenderGodrays");
 	connectRefreshCachedSettingsSafe("RenderGodraysResolution");
 	connectRefreshCachedSettingsSafe("RenderGodraysMultiplier");
 	connectRefreshCachedSettingsSafe("RenderGodraysFalloffMultiplier");
-	connectRefreshCachedSettingsSafe("RenderSSRResolution");
+
+//	//BD - Motion Blur
+	connectRefreshCachedSettingsSafe("RenderMotionBlur");
+	connectRefreshCachedSettingsSafe("RenderMotionBlurStrength");
+
+//	//BD - Exodus Post Process
 	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
 	connectRefreshCachedSettingsSafe("ExodusRenderOffset");
 	connectRefreshCachedSettingsSafe("ExodusRenderExposure");
@@ -675,12 +690,8 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("ExodusRenderColorGradeTexture");
 	connectRefreshCachedSettingsSafe("ExodusRenderColorGradeTech");
 	connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptA");
-    connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptB");
-    connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptC");
-
-//	//BD - Special Options
-	connectRefreshCachedSettingsSafe("RenderShadowBlurSamples");
-	connectRefreshCachedSettingsSafe("RenderDeferredBlurLight");
+	connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptB");
+	connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptC");
 }
 
 LLPipeline::~LLPipeline()
@@ -1007,6 +1018,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			mFXAABuffer.release();
 		}
 
+		//BD
 		if (shadow_detail > 0 || ssao 
 			|| RenderDepthOfField || samples > 0 
 			|| RenderDeferredBlurLight
@@ -1019,6 +1031,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			mDeferredLight.release();
 		}
 
+//		//BD - Shadow Map Allocation
 		LLVector4 scale = RenderShadowResolution;
 		LLVector3 proj_scale = RenderProjectorShadowResolution;
 
@@ -1026,6 +1039,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		{ //allocate 4 sun shadow maps
 			for (U32 i = 0; i < 4; i++)
 			{
+//				//BD - Shadow Map Allocation
 				if (!mShadow[i].allocate(U32(scale.mV[i]),U32(scale.mV[i]), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE)) return false;
 			}
 		}
@@ -1041,6 +1055,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		{ //allocate two spot shadow maps
 			for (U32 i = 4; i < 6; i++)
 			{
+//				//BD - Shadow Map Allocation
 				if (!mShadow[i].allocate(U32(proj_scale.mV[VX]), U32(proj_scale.mV[VY]), 0, TRUE, FALSE)) return false;
 			}
 		}
@@ -1052,6 +1067,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			}
 		}
 
+//		//BD - Motion Blur
 		if (RenderMotionBlur)
 		{
 			//allocate velocity map
@@ -1080,8 +1096,9 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		mScreen.release();
 		mDeferredScreen.release(); //make sure to release any render targets that share a depth buffer with mDeferredScreen first
 		mDeferredDepth.release();
-		mVelocityMap.release();
 		mOcclusionDepth.release();
+//		//BD - Motion Blur
+		mVelocityMap.release();
 						
 		if (!mScreen.allocate(resX, resY, GL_RGBA, TRUE, TRUE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
 	}
@@ -1089,6 +1106,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 	if (LLPipeline::sRenderDeferred)
 	{ //share depth buffer between deferred targets
 		mDeferredScreen.shareDepthBuffer(mScreen);
+//		//BD - Motion Blur
 		if (RenderMotionBlur)
 		{
 			mDeferredScreen.shareDepthBuffer(mVelocityMap);
@@ -1147,12 +1165,15 @@ void LLPipeline::updateRenderBump()
 //static
 void LLPipeline::updateRenderDeferred()
 {
+	//BD
 	BOOL deferred = ((RenderDeferred && 
 					 LLRenderTarget::sUseFBO &&
 					 LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred")) &&
 					!gUseWireframe);
 
 	sRenderDeferred = deferred;
+
+//	//BD - Exodus Post Process
 	exoPostProcess::instance().ExodusRenderPostUpdate();
 }
 
@@ -1166,6 +1187,7 @@ void LLPipeline::refreshCachedSettings()
 	LLVOAvatar::updateImpostorRendering(LLVOAvatar::sMaxNonImpostors);
 	LLPipeline::sDelayVBUpdate = gSavedSettings.getBOOL("RenderDelayVBUpdate");
 
+//	//BD - Freeze World
 	LLPipeline::sUseOcclusion = 
 			(!gUseWireframe
 			&& LLGLSLShader::sNoFixedFunction
@@ -1181,8 +1203,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderUIBuffer = gSavedSettings.getBOOL("RenderUIBuffer");
 	RenderShadowDetail = gSavedSettings.getS32("RenderShadowDetail");
 	RenderDeferredSSAO = gSavedSettings.getBOOL("RenderDeferredSSAO");
-	RenderShadowResolution = gSavedSettings.getVector4("RenderShadowResolution");
-	RenderProjectorShadowResolution = gSavedSettings.getVector3("RenderProjectorShadowResolution");
 	RenderLocalLights = gSavedSettings.getBOOL("RenderLocalLights");
 	RenderDelayCreation = gSavedSettings.getBOOL("RenderDelayCreation");
 	RenderAnimateRes = gSavedSettings.getBOOL("RenderAnimateRes");
@@ -1219,7 +1239,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderSSAOScale = gSavedSettings.getF32("RenderSSAOScale");
 	RenderSSAOMaxScale = gSavedSettings.getU32("RenderSSAOMaxScale");
 	RenderSSAOFactor = gSavedSettings.getF32("RenderSSAOFactor");
-	RenderSSAOEffect = gSavedSettings.getF32("RenderSSAOEffect");
 	RenderShadowOffsetError = gSavedSettings.getF32("RenderShadowOffsetError");
 	RenderShadowBiasError = gSavedSettings.getF32("RenderShadowBiasError");
 	RenderShadowOffset = gSavedSettings.getF32("RenderShadowOffset");
@@ -1228,7 +1247,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderSpotShadowBias = gSavedSettings.getF32("RenderSpotShadowBias");
 	RenderEdgeDepthCutoff = gSavedSettings.getF32("RenderEdgeDepthCutoff");
 	RenderEdgeNormCutoff = gSavedSettings.getF32("RenderEdgeNormCutoff");
-	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
 	RenderShadowBlurDistFactor = gSavedSettings.getF32("RenderShadowBlurDistFactor");
 	RenderDeferredAtmospheric = gSavedSettings.getBOOL("RenderDeferredAtmospheric");
 	RenderReflectionDetail = gSavedSettings.getS32("RenderReflectionDetail");
@@ -1242,29 +1260,39 @@ void LLPipeline::refreshCachedSettings()
 	CameraOffset = gSavedSettings.getBOOL("CameraOffset");
 	CameraMaxCoF = gSavedSettings.getF32("CameraMaxCoF");
 	CameraDoFResScale = gSavedSettings.getF32("CameraDoFResScale");
-	CameraFreeDoFFocus = gSavedSettings.getBOOL("CameraFreeDoFFocus");
 	RenderAutoHideSurfaceAreaLimit = gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit");
-	RenderMotionBlur = gSavedSettings.getBOOL("RenderMotionBlur");
-	RenderMotionBlurStrength = gSavedSettings.getU32("RenderMotionBlurStrength");
+
+
+//	//BD - Special Options
+	RenderSSAOEffect = gSavedSettings.getF32("RenderSSAOEffect");
+	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
+	RenderShadowBlurSamples = gSavedSettings.getU32("RenderShadowBlurSamples");
+	RenderDeferredBlurLight = gSavedSettings.getBOOL("RenderDeferredBlurLight");
+	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
+	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
+	CameraFreeDoFFocus = gSavedSettings.getBOOL("CameraFreeDoFFocus");
+
+//	//BD - Volumetric Lighting
 	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");
 	RenderGodraysResolution = gSavedSettings.getU32("RenderGodraysResolution");
 	RenderGodraysMultiplier = gSavedSettings.getF32("RenderGodraysMultiplier");
 	RenderGodraysFalloffMultiplier = gSavedSettings.getF32("RenderGodraysFalloffMultiplier");
-	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
-	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
 
-//	//BD - Special Options
-	RenderShadowBlurSamples = gSavedSettings.getU32("RenderShadowBlurSamples");
-	RenderDeferredBlurLight = gSavedSettings.getBOOL("RenderDeferredBlurLight");
+//	//BD - Shadow Map Allocation
+	RenderShadowResolution = gSavedSettings.getVector4("RenderShadowResolution");
+	RenderProjectorShadowResolution = gSavedSettings.getVector3("RenderProjectorShadowResolution");
 
-	// <exodus>
+//	//BD - Motion Blur
+	RenderMotionBlur = gSavedSettings.getBOOL("RenderMotionBlur");
+	RenderMotionBlurStrength = gSavedSettings.getU32("RenderMotionBlurStrength");
+
+//	//BD - Exodus Post Process
 	exoPostProcess::instance().ExodusRenderPostSettingsUpdate();
-	// </exodus>
 	
 	updateRenderDeferred();
 }
 
-//BD - Refresh reflections on the fly
+//BD - Refresh reflections on the fly.
 void LLPipeline::handleReflectionChanges()
 {
 	mWaterRef.release();
@@ -1329,8 +1357,9 @@ void LLPipeline::releaseScreenBuffers()
 	mDeferredScreen.release();
 	mDeferredDepth.release();
 	mDeferredLight.release();
-	mVelocityMap.release();
 	mOcclusionDepth.release();
+//	//BD - Motion Blur
+	mVelocityMap.release();
 		
 	for (U32 i = 0; i < 6; i++)
 	{
@@ -1346,6 +1375,7 @@ void LLPipeline::createGLBuffers()
 
 	updateRenderDeferred();
 
+	//BD
 	bool materials_in_water = gSavedSettings.getS32("RenderWaterMaterials");
 
 	if (LLPipeline::sWaterReflections)
@@ -1362,10 +1392,10 @@ void LLPipeline::createGLBuffers()
 		}
 		else
 		{
-		mWaterRef.allocate(res,res,GL_RGBA,TRUE,FALSE);
-		//always use FBO for mWaterDis so it can be used for avatar texture bakes
-		mWaterDis.allocate(res,res,GL_RGBA,TRUE,FALSE,LLTexUnit::TT_TEXTURE, true);
-	}
+			mWaterRef.allocate(res,res,GL_RGBA,TRUE,FALSE);
+			//always use FBO for mWaterDis so it can be used for avatar texture bakes
+			mWaterDis.allocate(res,res,GL_RGBA,TRUE,FALSE,LLTexUnit::TT_TEXTURE, true);
+		}
 	}
 
 	mHighlight.allocate(256,256,GL_RGBA, FALSE, FALSE);
@@ -1375,6 +1405,7 @@ void LLPipeline::createGLBuffers()
 	GLuint resX = gViewerWindow->getWorldViewWidthRaw();
 	GLuint resY = gViewerWindow->getWorldViewHeightRaw();
 	
+	//BD
 	if (sRenderDeferred)
 	{ //screen space glow buffers
 		const U32 glow_res = llmax(1, 
@@ -1426,6 +1457,8 @@ void LLPipeline::createGLBuffers()
 
 		createLUTBuffers();
 	}
+
+//	//BD - Exodus Post Process
 	exoPostProcess::instance().ExodusGenerateLUT();
 
 	gBumpImageList.restoreGL();
@@ -2510,9 +2543,11 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 
 	sCull->clear();
 
+	//BD
 	BOOL to_texture =	LLPipeline::sUseOcclusion > 1 &&
 						!hasRenderType(LLPipeline::RENDER_TYPE_HUD) && 
 						LLViewerCamera::sCurCameraID == LLViewerCamera::CAMERA_WORLD &&
+						gPipeline.canUseVertexShaders && 
 						sRenderDeferred;
 
 	if (to_texture)
@@ -7428,6 +7463,7 @@ void LLPipeline::doResetVertexBuffers(bool forced)
 	LLVOPartGroup::restoreGL();
 }
 
+//BD - Motion Blur
 void LLPipeline::renderMotionBlur(U32 type)
 {
 	//draw motion blurred primitives
@@ -7618,8 +7654,8 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 	}
 
 
-	// Disable the use of Occlusion when we are in Freeze World Mode to prevent
-	// attachments from becoming desyncronized with their attached positions.
+	//BD - Disable the use of Occlusion when we are in Freeze World Mode to prevent
+	//     attachments from becoming desyncronized with their attached positions.
 	LLPipeline::sUseOcclusion =
 		(!gUseWireframe
 		&& LLGLSLShader::sNoFixedFunction
@@ -7662,7 +7698,10 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 
 	gGL.setColorMask(true, true);
 	glClearColor(0,0,0,0);
+
+//	//BD - Exodus Post Process
 	exoPostProcess::instance().ExodusRenderPostStack(&mScreen, &mScreen);
+
 	{
 		{
 			LL_RECORD_BLOCK_TIME(FTM_RENDER_BLOOM_FBO);
@@ -7794,13 +7833,15 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 
 	if (LLPipeline::sRenderDeferred)
 	{
-
+		//BD
 		bool dof_enabled = (RenderDepthOfFieldInEditMode || 
 							!LLFloaterReg::getInstance("build")->getVisible()) &&
 							RenderDepthOfField;
 
 
 		bool multisample = RenderFSAASamples > 1 && mFXAABuffer.isComplete();
+
+//		//BD - Exodus Post Process
 		exoPostProcess::instance().multisample = multisample;
 
 		gViewerWindow->setup3DViewport();
@@ -7816,6 +7857,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 			static F32 transition_time = 1.f;
 
 			LLVector3 focus_point;
+			//BD
 			LLVector3 prev_focus_point;
 
 			LLViewerObject* obj = LLViewerMediaFocus::getInstance()->getFocusedObject();
@@ -7832,6 +7874,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 				}
 			}
 
+			//BD
 			if(gSavedSettings.getBOOL("CameraDoFLocked"))
 			{
 				focus_point = PrevDoFFocusPoint;
@@ -7842,6 +7885,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 				{ //focus on point under cursor
 					focus_point.set(gDebugRaycastIntersection.getF32ptr());
 				}
+				//BD
 				else if (gAgentCamera.cameraMouselook() ||
 					!LLViewerJoystick::getInstance()->getOverrideCamera() && 
 					CameraFreeDoFFocus)
@@ -7854,7 +7898,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
  													&result);
 
 					focus_point.set(result.getF32ptr());
-//					//BD - Safeguard against sudden all-blurry-screen in rare
+					//BD - Safeguard against sudden all-blurry-screen in rare
 					//     inconsistent situations caused by unknown reasons.
 					focus_point.clamp(LLVector3(0,0,0),focus_point);
 
@@ -7870,6 +7914,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 
 				}
 
+				//BD
 				if(!focus_point.isExactlyZero())
 				{
 					PrevDoFFocusPoint = focus_point;
@@ -7981,6 +8026,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 				if (channel > -1)
 				{
 					mDeferredLight.bindTexture(0, channel);
+					//BD
 					gGL.getTexUnit(channel)->setTextureFilteringOption(LLTexUnit::TFO_BILINEAR); // scale fairly pleasantly
 				}
 
@@ -8104,9 +8150,10 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 			}
 		}
 
+//		//BD - Volumetric Lighting
 		if (LLPipeline::sRenderDeferred && LLPipeline::RenderShadowDetail
 			&& LLPipeline::RenderGodrays)
-		{ //volumetric light
+		{
 			
 			if (multisample)
 			{
@@ -8243,6 +8290,7 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 		if (LLGLSLShader::sNoFixedFunction)
 		{
 			gGlowCombineProgram.bind();
+//			//BD - Exodus Post Process
 			gGlowCombineProgram.uniform3fv(LLShaderMgr::EXO_RENDER_VIGNETTE, 1, exoPostProcess::sExodusRenderVignette.mV); // Work around for ExodusRenderVignette in non-deferred.
 		}
 		else
@@ -8276,9 +8324,9 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 		
 	}
 
-	//BD - We should temporarily disable Motion Blur when we are in Freeze World mode.
+//	//BD - Motion Blur
 	if (LLPipeline::sRenderDeferred && LLPipeline::RenderMotionBlur)
-	{ //motion blur
+	{
 
 		gMotionBlurProgram.bind();
 
@@ -8552,13 +8600,6 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_FACTOR, ssao_factor);
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_FACTOR_INV, 1.0/ssao_factor);
 
-	F32 ssao_effect = RenderSSAOEffect;
-	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_EFFECT, ssao_effect);
-
-	shader.uniform1f(LLShaderMgr::SECONDS60, (F32)fmod(LLTimer::getElapsedSeconds(), 60.0));
-
-	shader.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
-
 	//F32 shadow_offset_error = 1.f + RenderShadowOffsetError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]);
 	F32 shadow_bias_error = RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2])/3000.f;
 
@@ -8575,14 +8616,18 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);
 
-	//	//BD - Special Options
+	//BD - Special Options
+	F32 ssao_effect = RenderSSAOEffect;
+	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_EFFECT, ssao_effect);
 	shader.uniform1i(LLShaderMgr::DEFERRED_SSAO_SAMPLES, RenderShadowBlurSamples);
+	shader.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
+	shader.uniform1i(LLShaderMgr::SSR_RES, RenderSSRResolution);
+	shader.uniform1f(LLShaderMgr::SECONDS60, (F32)fmod(LLTimer::getElapsedSeconds(), 60.0));
 
+//	//BD - Volumetric Lighting
 	shader.uniform1i(LLShaderMgr::GODRAY_RES, RenderGodraysResolution);
 	shader.uniform1f(LLShaderMgr::GODRAY_MULTIPLIER, RenderGodraysMultiplier);
 	shader.uniform1f(LLShaderMgr::FALLOFF_MULTIPLIER, RenderGodraysFalloffMultiplier);
-
-	shader.uniform1i(LLShaderMgr::SSR_RES, RenderSSRResolution);
 
 	if (shader.getUniformLocation(LLShaderMgr::DEFERRED_NORM_MATRIX) >= 0)
 	{
@@ -8679,6 +8724,7 @@ void LLPipeline::renderDeferredLighting()
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 
+		//BD
 		if (RenderDeferredSSAO 
 			|| RenderShadowDetail > 0 
 			|| RenderDeferredBlurLight
@@ -8728,6 +8774,7 @@ void LLPipeline::renderDeferredLighting()
 			mDeferredLight.flush();
 		}
 		
+		//BD
 		if (RenderDeferredBlurLight)
 		{ //soften direct lighting lightmap
 			LL_RECORD_BLOCK_TIME(FTM_SOFTEN_SHADOW);
@@ -8743,6 +8790,7 @@ void LLPipeline::renderDeferredLighting()
 
 			gDeferredBlurLightProgram.uniform2f(sDelta, 1.f, 0.f);
 			gDeferredBlurLightProgram.uniform1f(sDistFactor, dist_factor);
+			//BD
 			gDeferredBlurLightProgram.uniform2f(sGaussian, RenderShadowBlurSize, RenderSSAOBlurSize);
 		
 			{
@@ -9197,6 +9245,7 @@ void LLPipeline::renderDeferredLighting()
 		popRenderTypeMask();
 	}
 
+//	//BD - Motion Blur
 	if (LLPipeline::RenderMotionBlur)
 	{
 		renderGeomMotionBlur();
@@ -9284,6 +9333,7 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 
+		//BD
 		if (RenderDeferredSSAO 
 			|| RenderShadowDetail > 0 
 			|| RenderDeferredBlurLight
@@ -9757,6 +9807,7 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 	//target->flush();				
 }
 
+//BD - Motion Blur
 LLTrace::BlockTimerStatHandle FTM_RENDER_MOTION_BLUR("Motion Blur");
 
 void LLPipeline::renderGeomMotionBlur()
@@ -10112,6 +10163,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 			water_clip = 1;
 		}
 
+		//BD
 		bool materials_in_water = gSavedSettings.getS32("RenderWaterMaterials");
 
 		if (!LLViewerCamera::getInstance()->cameraUnderWater())
@@ -11009,6 +11061,7 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 		//far_clip = llmin(far_clip, 128.f);
 		far_clip = llmin(far_clip, camera.getFar());
 
+		//BD
 		F32 range = gSavedSettings.getF32("RenderShadowFarClip");
 
 		LLVector3 split_exp = RenderShadowSplitExponent;
@@ -11026,6 +11079,7 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 			mSunClipPlanes.mV[i] = near_clip + range*x;
 		}
 
+		//
 		//mSunClipPlanes.mV[0] *= 1.25f; //bump back first split for transition padding
 	}
 

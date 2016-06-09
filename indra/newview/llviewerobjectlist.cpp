@@ -321,6 +321,7 @@ LLViewerObject* LLViewerObjectList::processObjectUpdateFromCache(LLVOCacheEntry*
 
 	objectp = findObject(fullid);
 
+//	//BD - Derender
 	if( mDerenderList.end() != mDerenderList.find(fullid))
 	{
 		return NULL;
@@ -1319,6 +1320,7 @@ void LLViewerObjectList::removeDrawable(LLDrawable* drawablep)
 	}
 }
 
+//BD - Derender
 BOOL LLViewerObjectList::killObject(LLViewerObject *objectp, bool derendered)
 {
 	// Don't ever kill gAgentAvatarp, just force it to the agent's region
@@ -1334,6 +1336,7 @@ BOOL LLViewerObjectList::killObject(LLViewerObject *objectp, bool derendered)
 
 	if (objectp)
 	{
+//		//BD - Derender
 		if(derendered)
 		{
 			mDerenderList.insert(objectp->getID());
@@ -1364,6 +1367,7 @@ void LLViewerObjectList::killObjects(LLViewerRegion *regionp)
 	cleanDeadObjects(FALSE);
 }
 
+//BD
 char itoc(int in)
 {
 	if (in < 0)
@@ -2031,6 +2035,7 @@ LLViewerObject *LLViewerObjectList::createObjectFromCache(const LLPCode pcode, L
 		return NULL;
 	}
 
+//	//BD - Derender
 	if( mDerenderList.end() != mDerenderList.find(uuid))
 	{
 		return NULL;
@@ -2062,6 +2067,7 @@ LLViewerObject *LLViewerObjectList::createObject(const LLPCode pcode, LLViewerRe
 		fullid = uuid;
 	}
 
+//	//BD - Derender
 	if( mDerenderList.end() != mDerenderList.find(uuid))
 	{
 		return NULL;

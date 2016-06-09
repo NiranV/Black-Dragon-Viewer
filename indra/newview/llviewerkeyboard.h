@@ -104,6 +104,7 @@ public:
 
 	BOOL			bindKey(const S32 mode, const KEY key, const MASK mask, const std::string& function_name);
 
+//BD
 private:
 	// Hold all the ugly stuff torn out to make LLKeyboard non-viewer-specific here
 	S32				mBindingCount[MODE_COUNT];

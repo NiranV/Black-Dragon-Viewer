@@ -29,7 +29,6 @@
 
 // newview includes
 #include "llagent.h" 	// gAgent		
-#include "llavataractions.h"
 #include "llslurl.h"
 #include "lluicolor.h"
 #include "lluicolortable.h"
@@ -37,6 +36,9 @@
 #include "llviewerregion.h"
 #include "llworld.h"
 #include "llinstantmessage.h" //SYSTEM_FROM
+
+//BD
+#include "llavataractions.h"
 
 // LLViewerChat
 LLViewerChat::font_change_signal_t LLViewerChat::sChatFontChangedSignal;
@@ -68,6 +70,7 @@ void LLViewerChat::getChatColor(const LLChat& chat, LLColor4& r_color)
 					}
 					else
 					{
+						//BD
 						if(LLAvatarActions::isFriend(chat.mFromID))
 						{
 							r_color = LLUIColorTable::instance().getColor("FriendChatColor");

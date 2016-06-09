@@ -36,12 +36,15 @@ extern LLControlGroup gSavedSettings;
 
 F64 LLWLAnimator::INTERP_TOTAL_SECONDS = 3.f;
 
+//BD - Animated Windlight Transition
 LLWLAnimator::LLWLAnimator() : mStartTime(0.f), mDayRate(1.f), mDayTime(0.f),
 							mIsRunning(FALSE), mIsInterpolating(FALSE), mIsInterpolatingSky(FALSE),
 							mTimeType(TIME_LINDEN), mInterpStartTime(), mInterpEndTime()
 {
 	mInterpBeginWL = new LLWLParamSet();
+//	//BD - Animated Windlight Transition
 	mInterpEndWL = new LLWLParamSet();
+
 	mInterpBeginWater = new LLWaterParamSet();
 	mInterpEndWater = new LLWaterParamSet();
 }
@@ -119,6 +122,7 @@ void LLWLAnimator::update(LLWLParamSet& curParams)
 		clock_t current = clock();
 		if(current >= mInterpEndTime)
 		{
+//			//BD - Animated Windlight Transition
 			if (mIsInterpolatingSky)
 			{
 				deactivate();
@@ -127,10 +131,12 @@ void LLWLAnimator::update(LLWLParamSet& curParams)
 				curParams.setAll(mInterpEndWL->getAll());
 			}
 			mIsInterpolating = false;
+//			//BD - Animated Windlight Transition
 			mIsInterpolatingSky = false;
 			return;
 		}
 
+//		//BD - Animated Windlight Transition
 		// <FS:Ansariel> Custom Windlight interpolate time
      	static LLCachedControl<F32> interpolate_time(gSavedSettings, "RenderWindlightInterpolateTime", 10.0);
 		
@@ -246,6 +252,7 @@ void LLWLAnimator::startInterpolation(const LLSD& targetWater)
 	mInterpBeginWater->setAll(LLWaterParamManager::getInstance()->mCurParams.getAll());
 	
 	mInterpStartTime = clock();
+//	//BD - Animated Windlight Transition
 	mInterpEndTime = mInterpStartTime + clock_t((F64)gSavedSettings.getF32("RenderWindlightInterpolateTime")) * CLOCKS_PER_SEC;
 
 	// Don't set any ending WL -- this is continuously calculated as the animator updates since it's a moving target
@@ -254,6 +261,7 @@ void LLWLAnimator::startInterpolation(const LLSD& targetWater)
 	mIsInterpolating = true;
 }
 
+//BD - Animated Windlight Transition
 void LLWLAnimator::startInterpolationSky(const LLSD& targetSky)
 {
 	mInterpEndWL->setAll(targetSky);

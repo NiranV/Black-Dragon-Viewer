@@ -74,7 +74,8 @@
 #include "rlvhandler.h"
 // [/RLVa:KB]
 
-#include "piemenu.h"	// pie menu
+//BD - Pie Menu
+#include "piemenu.h"
 
 extern BOOL gDebugClicks;
 
@@ -233,6 +234,7 @@ BOOL LLToolPie::handleLeftClickPick()
 			break;
 		case CLICK_ACTION_SIT:
 			{
+				//BD
 				static LLUICachedControl<bool> disallow_sit("DisallowLeftClickSit", 0);
 				if (isAgentAvatarValid() && !gAgentAvatarp->isSitting()
 					&& !disallow_sit) // agent not already sitting
@@ -1818,7 +1820,7 @@ BOOL LLToolPie::handleRightClickPick()
 	// Spawn pie menu
 	if (mPick.mPickType == LLPickInfo::PICK_LAND)
 	{
-//		//BD - Make sure our selection is empty before we try to select a new one
+		//BD - Make sure our selection is empty before we try to select a new one
 		//	   otherwise we will end up not updating our selection correctly
 		if(!LLViewerParcelMgr::getInstance()->selectionEmpty())
 		{
@@ -1827,6 +1829,7 @@ BOOL LLToolPie::handleRightClickPick()
 		LLParcelSelectionHandle selection = LLViewerParcelMgr::getInstance()->selectParcelAt( mPick.mPosGlobal );
 		gMenuHolder->setParcelSelection(selection);
 
+//		//BD - Pie Menu
 		if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
 		{
 			gPieMenuLand->show(x, y);
@@ -1841,6 +1844,7 @@ BOOL LLToolPie::handleRightClickPick()
 	}
 	else if (mPick.mObjectID == gAgent.getID() )
 	{
+//		//BD - Pie Menu
 		if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
 		{
 			if(!gPieMenuAvatarSelf)
@@ -1906,6 +1910,7 @@ BOOL LLToolPie::handleRightClickPick()
 				if (is_other_attachment)
 				{
 					gMenuAttachmentOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
+//					//BD - Pie Menu
 					if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
 					{
 						gPieMenuAttachmentOther->show(x, y);
@@ -1918,6 +1923,7 @@ BOOL LLToolPie::handleRightClickPick()
 				else
 				{
 					gMenuAvatarOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
+//					//BD - Pie Menu
 					if (gSavedPerAccountSettings.getBOOL("UsePieMenu"))
 					{
 						gPieMenuAvatarOther->show(x, y);
@@ -1937,6 +1943,7 @@ BOOL LLToolPie::handleRightClickPick()
 		}
 		else if (object->isAttachment())
 		{
+//			//BD - Pie Menu
 			if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
 			{
 				gPieMenuAttachmentSelf->show(x, y);
@@ -1955,6 +1962,7 @@ BOOL LLToolPie::handleRightClickPick()
 			{
 				name = node->mName;
 			}
+			//BD - TODO: Check if we need this.
 			std::string mute_msg;
 			if (LLMuteList::getInstance()->isMuted(object->getID(), name))
 			{
@@ -1973,6 +1981,7 @@ BOOL LLToolPie::handleRightClickPick()
 			{
 // [/RLVa:KB]
 				gMenuHolder->getChild<LLUICtrl>("Object Mute")->setValue(mute_msg);
+//				//BD - Pie Menu
 				if(gSavedPerAccountSettings.getBOOL("UsePieMenu"))
 				{
 					gPieMenuObject->show(x, y);

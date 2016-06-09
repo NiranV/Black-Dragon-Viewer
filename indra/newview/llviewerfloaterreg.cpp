@@ -55,7 +55,6 @@
 #include "llfloaterconversationlog.h"
 #include "llfloaterconversationpreview.h"
 #include "llfloaterdeleteprefpreset.h"
-#include "llfloaterdeleteprefpreset.h"
 #include "llfloaterdestinations.h"
 #include "llfloatereditdaycycle.h"
 #include "llfloatereditsky.h"

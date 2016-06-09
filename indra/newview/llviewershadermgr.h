@@ -59,6 +59,7 @@ public:
 	BOOL loadShadersInterface();
 	BOOL loadShadersWindLight();
 	BOOL loadTransformShaders();
+//	//BD - Exodus Post Process
 	void unloadExodusPostShaders();
     BOOL loadExodusPostShaders();
 
@@ -284,7 +285,7 @@ extern LLGLSLShader			gWLCloudProgram;
 extern LLGLSLShader			gPostColorFilterProgram;
 extern LLGLSLShader			gPostNightVisionProgram;
 
-//Exodus post processing shaders
+//BD - Exodus Post Process
 extern LLGLSLShader         gColorGradePost;
 extern LLGLSLShader         gLinearToneMapping;
 extern LLGLSLShader         gReinhardToneMapping;
@@ -327,7 +328,6 @@ extern LLGLSLShader			gDeferredShadowAlphaMaskProgram;
 extern LLGLSLShader			gDeferredPostProgram;
 extern LLGLSLShader			gDeferredCoFProgram;
 extern LLGLSLShader			gDeferredDoFCombineProgram;
-extern LLGLSLShader			gVolumetricLightProgram;
 extern LLGLSLShader			gFXAAProgram;
 extern LLGLSLShader			gDeferredPostNoDoFProgram;
 extern LLGLSLShader			gDeferredPostGammaCorrectProgram;
@@ -350,6 +350,11 @@ extern LLGLSLShader			gDeferredFullbrightShinyProgram;
 extern LLGLSLShader			gDeferredSkinnedFullbrightShinyProgram;
 extern LLGLSLShader			gDeferredSkinnedFullbrightProgram;
 extern LLGLSLShader			gNormalMapGenProgram;
+
+//BD - Volumetric Lighting
+extern LLGLSLShader			gVolumetricLightProgram;
+
+//BD - Motion Blur
 extern LLGLSLShader			gVelocityProgram;
 extern LLGLSLShader			gVelocityAlphaProgram;
 extern LLGLSLShader			gAvatarVelocityProgram;

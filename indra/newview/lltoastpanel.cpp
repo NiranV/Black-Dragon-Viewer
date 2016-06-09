@@ -34,6 +34,7 @@
 #include "lltoastscriptquestion.h"
 
 //static
+//BD
 const S32 LLToastPanel::MIN_PANEL_HEIGHT = 20; // VPAD(4)*2 + ICON_HEIGHT(32)
 
 LLToastPanel::LLToastPanel(const LLNotificationPtr& notification)

@@ -33,7 +33,6 @@
 extern S32 STATUS_BAR_HEIGHT;
 
 class LLButton;
-class LLIconCtrl;
 class LLLineEditor;
 class LLMessageSystem;
 class LLTextBox;
@@ -45,8 +44,9 @@ class LLStatGraph;
 class LLPanelPresetsPulldown;
 class LLPanelVolumePulldown;
 class LLPanelNearByMedia;
+//BD
 class LLIconCtrl;
-//BD - Draw Distance mouse-over slider
+//BD - Quick Draw Distance Slider
 class BDPanelDrawDistance;
 
 class LLStatusBar
@@ -80,14 +80,14 @@ private:
 	void onMouseEnterVolume();
 	void onMouseEnterNearbyMedia();
 	void onClickScreen(S32 x, S32 y);
-//	//BD - Draw Distance mouse-over slider
+//	//BD - Quick Draw Distance Slider
 	void onMouseEnterDrawDistance();
 
 	static void onClickMediaToggle(void* data);
 
 private:
 	LLTextBox	*mTextTime;
-//	//BD - Framerate counter in statusbar
+//	//BD - Statusbar Framerate Count
 	LLTextBox	*mFPSText;
 
 	LLStatGraph *mSGBandwidth;
@@ -98,7 +98,7 @@ private:
 	LLTextBox	*mBoxBalance;
 	LLButton	*mMediaToggle;
 	LLFrameTimer	mClockUpdateTimer;
-//	//BD - Draw Distance mouse-over slider
+//	//BD - Quick Draw Distance Slider
 	LLIconCtrl	*mDrawDistance;
 
 	S32				mHealth;
@@ -106,7 +106,7 @@ private:
 	LLPanelPresetsPulldown* mPanelPresetsPulldown;
 	LLPanelVolumePulldown* mPanelVolumePulldown;
 	LLPanelNearByMedia*	mPanelNearByMedia;
-//	//BD - Draw Distance mouse-over slider
+//	//BD - Quick Draw Distance Slider
 	BDPanelDrawDistance* mPanelDrawDistance;
 };
 

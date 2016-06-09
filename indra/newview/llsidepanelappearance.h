@@ -78,6 +78,7 @@ private:
 	void onFilterEdit(const std::string& search_string);
 	void onVisibilityChanged ( const LLSD& new_visibility );
 
+	//BD
 	void onSearchButtonClicked();
 
 	void toggleMyOutfitsPanel(BOOL visible);
@@ -89,6 +90,7 @@ private:
 	LLPanelOutfitEdit*		mOutfitEdit;
 	LLPanelEditWearable*	mEditWearable;
 
+	//BD
 	LLButton*					mSearchBtn;
 	LLButton*					mNewOutfitBtn;
 
@@ -102,6 +104,7 @@ private:
 	// Gets set to true when we're opened for the first time.
 	bool mOpened;
 
+	//BD
 	bool mCoFLoading;
 };
 

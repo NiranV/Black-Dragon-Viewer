@@ -29,6 +29,7 @@
 
 #include "llpanel.h"
 
+//BD
 #include "llinventoryobserver.h"
 
 class LLButton;
@@ -41,8 +42,10 @@ class LLLayoutPanel;
 class LLPanelMainInventory;
 class LLSidepanelItemInfo;
 class LLSidepanelTaskInfo;
+//BD
 class LLTextBox;
 
+//BD
 class LLSidepanelInventory : public LLPanel, LLInventoryObserver
 {
 public:
@@ -51,6 +54,7 @@ public:
 
 private:
 	void updateInbox();
+	//BD
 	void onClickBuyCurrency();
 	static void onClickBalance(void* data);
 	
@@ -59,9 +63,9 @@ public:
 	void observeInboxModifications(const LLUUID& inboxID);
 
 	/*virtual*/ BOOL postBuild();
-	/*virtual*/ void draw();
 	/*virtual*/ void onOpen(const LLSD& key);
-
+	//BD
+	/*virtual*/ void draw();
 	/*virtual*/ void changed(U32);
 
 	void		setBalance(S32 balance);
@@ -81,6 +85,7 @@ public:
 
 	// Request the latest currency balance from the server
 	static void sendMoneyBalanceRequest();
+
 
 	LLInventoryPanel* getActivePanel(); // Returns an active inventory panel, if any.
 	LLInventoryPanel* getInboxPanel() const { return mInventoryPanelInbox.get(); }
@@ -120,6 +125,7 @@ protected:
 
 	void onInboxChanged(const LLUUID& inbox_id);
 
+	//BD
 	void updateItemcountText();
 
 	//
@@ -151,23 +157,24 @@ private:
 	LLButton*					mOverflowBtn;
 	LLButton*					mShopBtn;
 
+	bool						mInboxEnabled;
+
+	LLInventoryCategoriesObserver* 	mCategoriesObserver;
+	LLInboxAddedObserver*			mInboxAddedObserver;
+
+	//BD
 	LLUICtrl*                   mCounterCtrl;
 
 	S32							mBalance;
 	S32							mItemCount;
 	S32							mSquareMetersCredit;
-	S32				mSquareMetersCommitted;
+	S32							mSquareMetersCommitted;
 
 	std::string 				mItemCountString;
 
 	LLTextBox					*mBoxBalance;
 
 	LLFrameTimer*				mBalanceTimer;
-
-	bool						mInboxEnabled;
-
-	LLInventoryCategoriesObserver* 	mCategoriesObserver;
-	LLInboxAddedObserver*			mInboxAddedObserver;
 };
 
 #endif //LL_LLSIDEPANELINVENTORY_H

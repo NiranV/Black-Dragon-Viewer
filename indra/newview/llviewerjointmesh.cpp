@@ -80,6 +80,7 @@ LLViewerJointMesh::LLViewerJointMesh()
 	:
 	LLAvatarJointMesh()
 {
+//	//BD - Motion Blur
 	mLastMatrixPalette = NULL;
 	mLastMatrixPaletteUpdated = 0;
 }
@@ -91,6 +92,7 @@ LLViewerJointMesh::LLViewerJointMesh()
 //-----------------------------------------------------------------------------
 LLViewerJointMesh::~LLViewerJointMesh()
 {
+//	//BD - Motion Blur
 	if (mLastMatrixPalette)
 	{
 		delete [] mLastMatrixPalette;
@@ -192,6 +194,7 @@ void LLViewerJointMesh::uploadJointMatrices()
 		if (LLGLSLShader::sCurBoundShaderPtr)
 		{
 			LLGLSLShader::sCurBoundShaderPtr->uniform4fv(LLViewerShaderMgr::AVATAR_MATRIX, 45, mat);
+//			//BD - Motion Blur
 			if (LLGLSLShader::sCurBoundShaderPtr == &gAvatarVelocityProgram)
 			{
 				if (!mLastMatrixPalette)
@@ -208,7 +211,6 @@ void LLViewerJointMesh::uploadJointMatrices()
 								
 				memcpy(mLastMatrixPalette, mat, sizeof(F32)*45*4);
 				mLastMatrixPaletteUpdated = gFrameCount;
-
 			}
 		}
 		stop_glerror();

@@ -62,7 +62,6 @@
 #include "llfloaterregioninfo.h"
 #include "llfloaterlandholdings.h"
 #include "llfloaterpreference.h"
-#include "llfloatersidepanelcontainer.h"
 #include "llfloatersnapshot.h"
 #include "llhudeffecttrail.h"
 #include "llhudmanager.h"
@@ -115,12 +114,16 @@
 #include "llpanelplaceprofile.h"
 #include "llviewerregion.h"
 #include "llfloaterregionrestarting.h"
+
 // [RLVa:KB] - Checked: 2010-03-09 (RLVa-1.2.0a)
 #include "rlvactions.h"
 #include "rlvhandler.h"
 #include "rlvinventory.h"
 #include "rlvui.h"
 // [/RLVa:KB]
+
+//BD
+#include "llfloatersidepanelcontainer.h"
 
 #include <boost/algorithm/string/split.hpp> //
 #include <boost/regex.hpp>
@@ -5796,6 +5799,7 @@ void process_money_balance_reply( LLMessageSystem* msg, void** )
 	LL_INFOS("Messaging") << "L$, credit, committed: " << balance << " " << credit << " "
 			<< committed << LL_ENDL;
     
+	//BD
 	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 	if (sidepanel_inventory)
 	{

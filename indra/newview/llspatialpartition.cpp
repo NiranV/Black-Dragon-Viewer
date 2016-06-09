@@ -3933,8 +3933,6 @@ LLDrawInfo::LLDrawInfo(U16 start, U16 end, U32 count, U32 offset,
 	mVertexBuffer(buffer),
 	mTexture(texture),
 	mTextureMatrix(NULL),
-	mModelMatrix(NULL),
-	mLastModelMatrix(NULL),
 	mMatrixUpdateFrame(0),
 	mStart(start),
 	mEnd(end),
@@ -3957,7 +3955,10 @@ LLDrawInfo::LLDrawInfo(U16 start, U16 end, U32 count, U32 offset,
 	mHasGlow(FALSE),
 	mEnvIntensity(0.0f),
 	mAlphaMaskCutoff(0.5f),
-	mDiffuseAlphaMode(0)
+	mDiffuseAlphaMode(0),
+//	//BD - Motion Blur
+	mModelMatrix(NULL),
+	mLastModelMatrix(NULL)
 {
 	mVertexBuffer->validateRange(mStart, mEnd, mCount, mOffset);
 	

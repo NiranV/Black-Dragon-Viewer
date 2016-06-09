@@ -170,8 +170,10 @@ private:
 	BOOL						mSnapshotUpToDate;
 	LLVector3					mCameraPos;
 	LLQuaternion				mCameraRot;
+	//BD
 	LLVector3					mPrevCameraPos;
 	LLQuaternion				mPrevCameraRot;
+
 	BOOL						mSnapshotActive;
 	LLViewerWindow::ESnapshotType mSnapshotBufferType;
     std::string                 mFilterName;

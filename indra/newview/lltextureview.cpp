@@ -75,6 +75,7 @@ static std::string title_string3("Pkt Bnd");
 static std::string title_string4("  W x H (Dis) Mem");
 
 static S32 title_x1 = 0;
+//BD
 static S32 title_x2 = 450;
 static S32 title_x3 = title_x2 + 40;
 static S32 title_x4 = title_x3 + 46;
@@ -196,6 +197,7 @@ void LLTextureBar::draw()
 	S32 bottom = top + 6;
 	LLColor4 clr;
 
+	//BD
 	//LLGLSUIDefault gls_ui;
 	
 	// Name, pixel_area, requested pixel area, decode priority
@@ -268,7 +270,9 @@ void LLTextureBar::draw()
 
 	// Draw the progress bar.
 	S32 bar_width = 100;
+	//BD
 	S32 bar_left = 295;
+
 	left = bar_left;
 	right = left + bar_width;
 
@@ -340,6 +344,7 @@ void LLTextureBar::draw()
 
 	
 	{
+		//BD
 		//LLGLSUIDefault gls_ui;
 		// draw the packet data
 // 		{
@@ -481,6 +486,7 @@ public:
 		:	texture_view("texture_view")
 		{
 			S32 line_height = LLFontGL::getFontMonospace()->getLineHeight();
+			//BD
 			changeDefault(rect, LLRect(0,0,100,line_height * 9));
 		}
 	};
@@ -514,14 +520,15 @@ void LLGLTexMemBar::draw()
 	U32 total_http_requests = LLAppViewer::getTextureFetch()->getTotalNumHTTPRequests();
 	U32 total_active_cached_objects = LLWorld::getInstance()->getNumOfActiveCachedObjects();
 	U32 total_objects = gObjectList.getNumObjects();
+	//BD
 	//F32 x_right = 0.0;
-	S32 bar_width = 300;
 	//S32 bar_left = 120;
+	//S32 bottom = top + 6;
+	F32 data_progress;
+	S32 bar_width = 300;
 	S32 left = 140;
 	S32 right;
 	S32 top = v_offset + line_height * 9;
-	//S32 bottom = top + 6;
-	F32 data_progress;
 	S32 max_vram = gGLManager.mVRAM;
 	S32 used_vram;
 	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &used_vram);
@@ -542,7 +549,7 @@ void LLGLTexMemBar::draw()
 											 text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
 	//----------------------------------------------------------------------------
-	// GPU Memory
+	//BD - GPU Memory
 
 	text = llformat("VRAM:          %d MB",
 					used_vram);
@@ -570,7 +577,7 @@ void LLGLTexMemBar::draw()
 	}
 
 	//----------------------------------------------------------------------------
-	// Total System (Viewer) Memory
+	//BD - Total System (Viewer) Memory
 
 	text = llformat("GL Total:      %d MB",
 					total_mem.value());
@@ -599,7 +606,7 @@ void LLGLTexMemBar::draw()
 	}
 
 	//----------------------------------------------------------------------------
-	// Current Scene Memory
+	//BD - Current Scene Memory
 
 	text = llformat("Bound:         %d MB",
 					bound_mem.value());
@@ -628,8 +635,7 @@ void LLGLTexMemBar::draw()
 	}
 
 	//----------------------------------------------------------------------------
-	// Memory
-	//text = llformat("                           |                           |                           |                           |",
+	//BD - Memory
 
 	text = llformat("FBO: %d MB",
 					LLRenderTarget::sBytesAllocated / (1024 * 1024));
@@ -646,7 +652,7 @@ void LLGLTexMemBar::draw()
 
 
 	//----------------------------------------------------------------------------
-	// Textures
+	//BD - Textures
 
 	U32 cache_read(0U), cache_write(0U), res_wait(0U);
 	LLAppViewer::getTextureFetch()->getStateStats(&cache_read, &cache_write, &res_wait);
@@ -687,7 +693,7 @@ void LLGLTexMemBar::draw()
 		res_wait);*/
 
 	//----------------------------------------------------------------------------
-	// Cache
+	//BD - Cache
 
 	text = llformat("Cache: %.1f / %.1f MB",
 					cache_usage,
@@ -734,7 +740,7 @@ void LLGLTexMemBar::draw()
 											 &x_right, FALSE);*/
 
 	//----------------------------------------------------------------------------
-	// Objects
+	//BD - Objects
 
 	text = llformat("Objects (Cached): %d (%d)",
 					total_objects,
@@ -758,7 +764,7 @@ void LLGLTexMemBar::draw()
 
 
 	//----------------------------------------------------------------------------
-	// Connection
+	//BD - Connection
 
 	F32Kilobits bandwidth(LLAppViewer::getTextureFetch()->getTextureBandwidth());
 	F32Kilobits max_bandwidth(gSavedSettings.getF32("ThrottleBandwidthKBPS"));
@@ -799,6 +805,8 @@ void LLGLTexMemBar::draw()
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, v_offset + line_height*2,
 											 text_color, LLFontGL::LEFT, LLFontGL::TOP);*/
+
+	//----------------------------------------------------------------------------
 
 	// Header for texture table columns
 	S32 dx1 = 0;
@@ -843,6 +851,7 @@ BOOL LLGLTexMemBar::handleMouseDown(S32 x, S32 y, MASK mask)
 LLRect LLGLTexMemBar::getRequiredRect()
 {
 	LLRect rect;
+	//BD
 	rect.mTop = 118; //LLFontGL::getFontMonospace()->getLineHeight() * 6;
 	return rect;
 }
