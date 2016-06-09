@@ -15848,7 +15848,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>2.0</real>
+    <real>0.0</real>
   </map>
   <key>TeleportLocalDelay</key>
   <map>
