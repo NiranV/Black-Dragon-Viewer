@@ -1039,7 +1039,7 @@ width="345">
                   min_val="0"
                   name="SSAOFactor"
                   top_pad="1"
-                  width="296" />
+                  width="302" />
                   <panel
                   follows="left|top|right"
                   height="20"
