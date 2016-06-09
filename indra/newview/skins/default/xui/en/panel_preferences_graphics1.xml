@@ -3257,7 +3257,6 @@ width="510">
    </button>
    <check_box
    control_name="RenderDeferred"
-   enabled_control="RenderGlow"
    height="16"
    initial_value="true"
    label="Deferred Rendering"

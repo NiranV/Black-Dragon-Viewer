@@ -79,7 +79,6 @@ width="345">
                   </text>
                   <check_box
                   control_name="RenderDeferred"
-                  enabled_control="RenderGlow"
                   height="16"
                   label="Deferred Rendering"
                   tool_tip="Toggles Deferred Rendering adding shadows cast by and on Prims, Avatars and the World aswell as uses a new lighting which allows Projected Lights/Textures which can also drop shadows. Vertex Shader, Atmospheric Shader, Post Process Glow and Hardware Skinning are needed to use this!"
