@@ -3678,6 +3678,8 @@ width="510">
                         top_delta="0"
                         width="70">
                               <radio_item.check_button
+										image_overlay="Default_Widget"
+										image_overlay_alignment="left"
                               image_unselected="Checkbox_Off"
                               image_selected="Checkbox_On"
                               image_disabled="Checkbox_Off_Disabled"
