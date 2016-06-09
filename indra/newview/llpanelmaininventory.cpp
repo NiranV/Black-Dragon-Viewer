@@ -179,6 +179,7 @@ BOOL LLPanelMainInventory::postBuild()
 
 	}
 
+	//BD
 	getChild<LLButton>("sort_by_date")->setCommitCallback(boost::bind(&LLPanelMainInventory::setSortObjects, this));
 	getChild<LLButton>("sort_folders_by_name")->setCommitCallback(boost::bind(&LLPanelMainInventory::setSortFoldersByName, this));
 	getChild<LLButton>("sys_folders_on_top")->setCommitCallback(boost::bind(&LLPanelMainInventory::setSortSystemOnTop, this));
@@ -323,6 +324,7 @@ void LLPanelMainInventory::resetFilters()
 	setFilterTextFromFilter();
 }
 
+//BD
 void LLPanelMainInventory::setSortSystemOnTop()
 {
 	U32 sort_order_mask = getActivePanel()->getSortOrder();
@@ -844,6 +846,7 @@ void LLFloaterInventoryFinder::draw()
 	mPanelMainInventory->setFilterTextFromFilter();
 	mPanelMainInventory->getPanel()->setDateSearchDirection(getDateSearchDirection());
 
+	//BD
 	LLFloater::draw();
 }
 
@@ -1174,8 +1177,10 @@ void LLPanelMainInventory::setUploadCostIfNeeded()
 	// have two instances of Inventory panel at the moment(and two instances of context menu),
 	// call to gMenuHolder->childSetLabelArg() sets upload cost only for one of the instances.
 
+	//BD
 	if(mNeedUploadCost)
 	{
+		//BD
 		LLMenuItemBranchGL* upload_menu = this->findChild<LLMenuItemBranchGL>("upload");
 		if(upload_menu)
 		{

@@ -29,15 +29,19 @@
 
 #include "llpanel.h"
 #include "llframetimer.h"
-#include "lltextbox.h"
 #include "llevents.h"
+//BD - TODO: Remove?
 #include <boost/concept_check.hpp>
+
+//BD
+#include "lltextbox.h"
 
 class LLImageRaw;
 class LLButton;
 class LLProgressBar;
 
 class LLProgressView : 
+	//BD
 	public LLPanel
 
 {
@@ -48,6 +52,7 @@ public:
 	BOOL postBuild();
 
 	/*virtual*/ void draw();
+	// ## Zi: Fade teleport screens
 	//void drawStartTexture(F32 alpha);
 
 	/*virtual*/ BOOL handleHover(S32 x, S32 y, MASK mask);
@@ -56,6 +61,7 @@ public:
 
 	void setPercent(const F32 percent);
 
+	//BD
 	// Set a random Tip every X seconds
 	//void setTip();
 	
@@ -71,6 +77,7 @@ public:
 	static void onCancelButtonClicked( void* );
 	bool onAlertModal(const LLSD& sd);
 
+	//BD
 	//LLUICtrl* mMessageText;
 	LLTextBox* mPercentText;
 
@@ -81,12 +88,15 @@ public:
 protected:
 	LLProgressBar* mProgressBar;
 	F32 mPercentDone;
-	//std::string mMessage;
 	LLButton*	mCancelBtn;
 	LLFrameTimer mFadeToWorldTimer;
-	LLFrameTimer mTipCycleTimer;
 	LLFrameTimer mFadeFromLoginTimer;
+	//BD
+	LLFrameTimer mTipCycleTimer;
+	//std::string mMessage;
+
 	LLRect mOutlineRect;
+
 	bool mMouseDownInActiveArea;
 	bool mStartupComplete;
 

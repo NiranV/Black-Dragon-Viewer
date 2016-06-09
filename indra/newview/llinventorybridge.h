@@ -531,10 +531,14 @@ public:
 
 	static void		onWearOnAvatar( void* userdata );	// Access to wearOnAvatar() from menu
 	static BOOL		canWearOnAvatar( void* userdata );
+// [RLVa:KB]
 //	static void		onWearOnAvatarArrived( LLViewerWearable* wearable, void* userdata );
+// [/RLVa:KB]
 	void			wearOnAvatar();
 
+// [RLVa:KB]
 //	static void		onWearAddOnAvatarArrived( LLViewerWearable* wearable, void* userdata );
+// [/RLVa:KB]
 	void			wearAddOnAvatar();
 
 	static BOOL		canEditOnAvatar( void* userdata );	// Access to editOnAvatar() from menu

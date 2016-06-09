@@ -265,6 +265,7 @@ void LLHandlerUtil::updateIMFLoaterMesages(const LLUUID& session_id)
 	}
 }
 
+//BD
 //// static
 //void LLHandlerUtil::updateVisibleIMFLoaterMesages(const LLNotificationPtr& notification)
 //{

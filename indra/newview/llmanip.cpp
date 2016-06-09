@@ -55,6 +55,7 @@
 #include "llglheaders.h"
 #include "lluiimage.h"
 // Local constants...
+//BD
 const S32 VERTICAL_OFFSET = 105;
 
 F32		LLManip::sHelpTextVisibleTime = 2.f;
@@ -439,12 +440,15 @@ void LLManip::renderXYZ(const LLVector3 &vec)
 
 	gGL.pushMatrix();
 	{
+		//BD
 		LLUIImagePtr imagep = LLUI::getUIImage("Toast_Background");
 		gViewerWindow->setup2DRender();
 		const LLVector2& display_scale = gViewerWindow->getDisplayScale();
 		gGL.scalef(display_scale.mV[VX], display_scale.mV[VY], 1.f);
+		//BD
 		gGL.color4f(0.f, 0.f, 0.f, 1.0f);
 
+		//BD
 		imagep->draw(
 			window_center_x - 135, 
 			window_center_y + vertical_offset - PAD, 
@@ -463,14 +467,17 @@ void LLManip::renderXYZ(const LLVector3 &vec)
 
 		// render text on top
 		feedback_string = llformat("X: %.3f", vec.mV[VX]);
+		//BD
 		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, -107.f, (F32)vertical_offset - 1.f, LLColor4(1.f, 0.5f, 0.5f, 1.f), FALSE);
 
 		gGL.diffuseColor3f(0.5f, 1.f, 0.5f);
 		feedback_string = llformat("Y: %.3f", vec.mV[VY]);
+		//BD
 		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, -32.f, (F32)vertical_offset - 1.f, LLColor4(0.5f, 1.f, 0.5f, 1.f), FALSE);
 		
 		gGL.diffuseColor3f(0.5f, 0.5f, 1.f);
 		feedback_string = llformat("Z: %.3f", vec.mV[VZ]);
+		//BD
 		hud_render_text(utf8str_to_wstring(feedback_string), camera_pos, *font, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, 43.f, (F32)vertical_offset - 1.f, LLColor4(0.5f, 0.5f, 1.f, 1.f), FALSE);
 	}
 }

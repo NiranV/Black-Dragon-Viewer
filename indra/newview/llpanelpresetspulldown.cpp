@@ -96,16 +96,19 @@ void LLPanelPresetsPulldown::populatePanel()
 			row["columns"][0]["column"] = "preset_name";
 			row["columns"][0]["value"] = name;
 
+			//BD
 			row["columns"][1]["column"] = "icon";
 			row["columns"][1]["type"] = "icon";
 
 			bool is_selected_preset = false;
 			if (name == active_preset)
 			{
+				//BD
 				row["columns"][1]["value"] = "Checkbox_On";
 
 				is_selected_preset = true;
 			}
+			//BD
 			else
 			{
 				row["columns"][1]["value"] = "Checkbox_Off";

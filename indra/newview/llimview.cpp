@@ -336,7 +336,8 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 		|| NOT_ON_TOP == conversations_floater_status)
 		&& !is_session_focused
 		&& !is_dnd_msg //prevent flashing FUI button because the conversation floater will have already opened
-		&& session_id.notNull()) //prevent local chat from making the chat button flash
+		//BD - Prevent local chat from making the chat button flash.
+		&& session_id.notNull())
 	{
 		if(!LLMuteList::getInstance()->isMuted(participant_id))
     {
@@ -1459,6 +1460,7 @@ void LLIMModel::sendMessage(const std::string& utf8_text,
 	   (other_participant_id.notNull()))
 	{
 		// Do we have to replace the /me's here?
+		//BD - Fix for emotes not using the display name if the user wishes to.
 		LLAvatarName user;
 		LLAvatarNameCache::get(gAgentID, &user);
 		LLIMModel::getInstance()->addMessage(im_session_id, user.getDisplayName(), gAgentID, utf8_text);
@@ -2720,6 +2722,7 @@ void LLIMMgr::addMessage(
 
 	if (!LLMuteList::getInstance()->isMuted(other_participant_id, LLMute::flagTextChat) && !skip_message)
 	{
+		//BD - Fix for emotes not using the display name if the user wishes to.
 		LLAvatarName user;
 		LLAvatarNameCache::get(other_participant_id, &user);
 		if(!user.getDisplayName().empty())

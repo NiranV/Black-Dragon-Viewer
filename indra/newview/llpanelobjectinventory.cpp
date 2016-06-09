@@ -44,7 +44,6 @@
 #include "llcallbacklist.h"
 #include "llbuycurrencyhtml.h"
 #include "llfloaterreg.h"
-#include "llfloatersidepanelcontainer.h"
 #include "llfolderview.h"
 #include "llinventorybridge.h"
 #include "llinventorydefines.h"
@@ -59,7 +58,6 @@
 #include "llpreviewtexture.h"
 #include "llscrollcontainer.h"
 #include "llselectmgr.h"
-#include "llsidepanelinventory.h"
 #include "lltooldraganddrop.h"
 #include "lltrans.h"
 #include "llviewerassettype.h"
@@ -71,6 +69,10 @@
 #include "rlvhandler.h"
 #include "rlvlocks.h"
 // [/RLVa:KB]
+
+//BD
+#include "llfloatersidepanelcontainer.h"
+#include "llsidepanelinventory.h"
 
 const LLColor4U DEFAULT_WHITE(255, 255, 255);
 
@@ -681,6 +683,7 @@ void LLTaskInvFVBridge::performAction(LLInventoryModel* model, std::string actio
 		}
 		else
 		{
+			//BD
 			LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 			if (price > 0 && price > sidepanel_inventory->getBalance())
 			{

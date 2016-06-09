@@ -275,6 +275,7 @@ void MandatoryUpdateMachine::CheckingForUpdate::enter(void)
 	LL_INFOS() << "entering checking for update" << LL_ENDL;
 	
 	mProgressView = gViewerWindow->getProgressView();
+	//BD
 	//mProgressView->setMessage("Looking for update...");
 	//mProgressView->setText("There is a required update for your Black Dragon installation.");
 	mProgressView->setPercent(0);
@@ -430,6 +431,7 @@ void MandatoryUpdateMachine::WaitingForDownload::enter(void)
 	std::ostringstream stream;
 	stream << "There is a required update for your Black Dragon installation." << std::endl <<
 		"Version " << mMachine.mUpdaterService.updatedVersion();
+	//BD
 	//mProgressView->setText(stream.str());
 	mProgressView->setPercent(0);
 	mProgressView->setVisible(true);

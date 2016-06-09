@@ -168,6 +168,7 @@ BOOL LLPanelPermissions::postBuild()
 	childSetCommitCallback("search_check",LLPanelPermissions::onCommitIncludeInSearch,this);
 	
 	mLabelGroupName = getChild<LLNameBox>("Group Name Proxy");
+//	//BD - SSFUI
 	mGroupNameSLURL = getChild<LLTextBox>("Group Name Label");
 
 	return TRUE;
@@ -436,6 +437,7 @@ void LLPanelPermissions::refresh()
 	getChild<LLUICtrl>("Group Name")->setValue(LLStringUtil::null);
 	LLUUID group_id;
 	BOOL groups_identical = LLSelectMgr::getInstance()->selectGetGroup(group_id);
+//	//BD - SSFUI
 	std::string group_slurl = "secondlife:///app/group/" + group_id.asString() + "/about";
 	if (groups_identical)
 	{
@@ -463,6 +465,7 @@ void LLPanelPermissions::refresh()
 		mGroupNameSLURL->setVisible(FALSE);
 		mLabelGroupName->setVisible(TRUE);
 	}
+
 	
 	getChildView("button set group")->setEnabled(root_selected && owners_identical && (mOwnerID == gAgent.getID()) && is_nonpermanent_enforced);
 

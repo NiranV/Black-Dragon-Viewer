@@ -31,14 +31,16 @@
 #include "llviewerwindow.h"
 
 // Linden library includes
-#include "llspinctrl.h"
 #include "llfloater.h"
 #include "llfloaterreg.h"
 #include "lluictrl.h"
-#include "llviewercontrol.h"
 
 // System libraries
 #include <boost/regex.hpp>
+
+//BD
+#include "llspinctrl.h"
+#include "llviewercontrol.h"
 
 
 LLFloaterWindowSize::LLFloaterWindowSize(const LLSD& key) 
@@ -50,6 +52,7 @@ LLFloaterWindowSize::~LLFloaterWindowSize()
 
 BOOL LLFloaterWindowSize::postBuild()
 {
+	//BD
     center();
     initWindowSizeControls();
     getChild<LLUICtrl>("set_btn")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClickSet, this));
@@ -69,18 +72,20 @@ BOOL LLFloaterWindowSize::postBuild()
 }
 
 void LLFloaterWindowSize::initWindowSizeControls()
-{  
+{
+	//BD
     // Look to see if current window size matches existing window sizes, if so then
     // just set the selection value...
     U32 height = gViewerWindow->getWindowHeightRaw();
     U32 width = gViewerWindow->getWindowWidthRaw();
-	// ugh... make the spinners show the correct value on first creation
+	//BD - Ugh... make the spinners show the correct value on first creation
 	height = height - 38;
 	width = width - 16;
 }
 
 void LLFloaterWindowSize::onClickSet()
 {
+	//BD
 	S32 width = mWindowWidth->getValue();
 	S32 height = mWindowHeight->getValue();
 
@@ -92,7 +97,7 @@ void LLFloaterWindowSize::onClickCancel()
 	closeFloater();
 }
 
-//TODO: find a better way to do this
+//BD - TODO: Find a better way to do this
 void LLFloaterWindowSize::onClick768()
 {
 	mWindowWidth->setValue(1024);

@@ -53,10 +53,12 @@
 #include "llviewertexture.h"
 #include "lltrans.h"
 #include "llscrollcontainer.h"
-#include "llsidepanelinventory.h"
-#include "llfloatersidepanelcontainer.h"
 #include "llviewertexture.h"
 #include "llcorehttputil.h"
+
+//BD
+#include "llfloatersidepanelcontainer.h"
+#include "llsidepanelinventory.h"
 
 const S32 MINIMUM_PRICE_FOR_LISTING = 50;	// L$
 
@@ -1034,6 +1036,7 @@ void LLPanelClassifiedEdit::onSaveClick()
 	}
 	if(isNew() || isNewWithErrors())
 	{
+		//BD
 		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 		if(sidepanel_inventory->getBalance() < getPriceForListing())
 		{

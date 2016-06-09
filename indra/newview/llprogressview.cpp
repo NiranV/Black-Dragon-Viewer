@@ -52,6 +52,7 @@
 #include "lluictrlfactory.h"
 #include "llpanellogin.h"
 
+//BD
 #include "bdtopbarholder.h"
 
 #include <time.h>
@@ -61,6 +62,7 @@ LLProgressView* LLProgressView::sInstance = NULL;
 S32 gStartImageWidth = 1;
 S32 gStartImageHeight = 1;
 const F32 FADE_TO_WORLD_TIME = 1.0f;
+// ## Zi: Fade teleport screens
 const F32 FADE_FROM_LOGIN_TIME = 0.7f;
 //const F32 CYCLE_TIMER = 7.0f;
 
@@ -73,6 +75,7 @@ LLProgressView::LLProgressView()
 	mMouseDownInActiveArea( false ),
 	mUpdateEvents("LLProgressView"),
 	mFadeToWorldTimer(),
+	//BD
 	//mTipCycleTimer(),
 	mFadeFromLoginTimer(),
 	mStartupComplete(false)
@@ -86,15 +89,18 @@ BOOL LLProgressView::postBuild()
 
 	mCancelBtn = getChild<LLButton>("cancel_btn");
 	mCancelBtn->setClickedCallback(  LLProgressView::onCancelButtonClicked, NULL );
+	// ## Zi: Fade teleport screens
 	mFadeToWorldTimer.stop();
-	//mTipCycleTimer.getStarted();
 	mFadeFromLoginTimer.stop();
+	//BD
+	//mTipCycleTimer.getStarted();
 
+	//BD
 	//mMessageText = getChild<LLUICtrl>("message_text");
 	mPercentText = getChild<LLTextBox>("percent_text");
 
 	// hidden initially, until we need it
-	LLPanel::setVisible(FALSE);
+	setVisible(FALSE);
 
 	LLNotifications::instance().getChannel("AlertModal")->connectChanged(boost::bind(&LLProgressView::onAlertModal, this, _1));
 
@@ -134,6 +140,7 @@ void LLProgressView::setStartupComplete()
 {
 	mStartupComplete = true;
 
+	// ## Zi: Fade teleport screens
 	mFadeFromLoginTimer.stop();
 	mFadeToWorldTimer.start();
 }
@@ -174,8 +181,8 @@ void LLProgressView::fade(BOOL in)
 		// set visibility will be done in the draw() method after fade
 	}
 }
-// ## Zi: Fade teleport screens
 
+// ## Zi: Fade teleport screens
 /*void LLProgressView::setTip()
 {
 	if(mTipCycleTimer.getElapsedTimeAndResetF32() > CYCLE_TIMER)
@@ -200,18 +207,22 @@ void LLProgressView::drawStartTexture(F32 alpha)
 void LLProgressView::draw()
 {
 	static LLTimer timer;
+	//BD
 	F32 alpha;
 	F32 greyscale;
 
 	if (mFadeFromLoginTimer.getStarted())
 	{
+		//BD
 		alpha = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.f, 1.f);
 		greyscale = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.f, 1.f);
-		LLViewDrawContext context(alpha);
 		gSavedSettings.setF32("RenderPostGreyscaleStrength" , greyscale);
+
+		LLViewDrawContext context(alpha);
 
 		LLPanel::draw();
 
+		// ## Zi: Fade teleport screens
 		if (mFadeFromLoginTimer.getElapsedTimeF32() > FADE_FROM_LOGIN_TIME )
 		{
 			mFadeFromLoginTimer.stop();
@@ -224,15 +235,17 @@ void LLProgressView::draw()
 	// handle fade out to world view when we're asked to
 	if (mFadeToWorldTimer.getStarted())
 	{
+		//BD
 		gTopBar->hideTopbar();
 
 		// draw fading panel
+		//BD
 		alpha = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
 		greyscale = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
+		gSavedSettings.setF32("RenderPostGreyscaleStrength", greyscale);
 
 		LLViewDrawContext context(alpha);
-		
-		gSavedSettings.setF32("RenderPostGreyscaleStrength" , greyscale);
+
 		LLPanel::draw();
 
 		// faded out completely - remove panel and reveal world
@@ -244,13 +257,14 @@ void LLProgressView::draw()
 			gFocusMgr.releaseFocusIfNeeded( this );
 
 			// turn off panel that hosts intro so we see the world
-			LLPanel::setVisible(FALSE);
+			setVisible(FALSE);
 
 			gStartTexture = NULL;
 		}
 		return;
 	}
 
+	//BD
 	//setTip();
 	// draw children
 	LLPanel::draw();
@@ -258,9 +272,10 @@ void LLProgressView::draw()
 
 void LLProgressView::setPercent(const F32 percent)
 {
+	//BD
 	S32 percent_label = std::min(100.f, percent);
-	mProgressBar->setValue(percent);
 	mPercentText->setValue(percent_label);
+	mProgressBar->setValue(percent);
 }
 
 void LLProgressView::setCancelButtonVisible(BOOL b, const std::string& label)
@@ -282,7 +297,9 @@ void LLProgressView::onCancelButtonClicked(void*)
 	}
 	else
 	{
+		//BD
 		gSavedSettings.setF32("RenderPostGreyscaleStrength" , 0.f);
+
 		gAgent.teleportCancel();
 		sInstance->mCancelBtn->setEnabled(FALSE);
 		sInstance->setVisible(FALSE);

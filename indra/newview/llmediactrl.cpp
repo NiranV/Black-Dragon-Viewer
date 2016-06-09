@@ -700,7 +700,7 @@ bool LLMediaCtrl::ensureMediaSourceExists()
 			mMediaSource->addObserver( this );
 			mMediaSource->setBackgroundColor( getBackgroundColor() );
 			mMediaSource->setTrustedBrowser(mTrusted);
-//			//BD - Webmedia UI Scaling fix, dont scale websites according to our UI size.
+			//BD - Webmedia UI Scaling fix, dont scale websites according to our UI size.
 			mMediaSource->setPageZoomFactor( 1.0f );
 
 			if(mClearCache)
@@ -784,7 +784,7 @@ void LLMediaCtrl::draw()
 	{
 		gGL.pushUIMatrix();
 		{
-//			//BD - Webmedia UI Scaling fix, dont scale websites according to our UI size.
+			//BD - Webmedia UI Scaling fix, dont scale websites according to our UI size.
 			mMediaSource->setPageZoomFactor( 1.0f );
 
 			// scale texture to fit the space using texture coords

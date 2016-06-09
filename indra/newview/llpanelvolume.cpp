@@ -298,6 +298,7 @@ void LLPanelVolume::getState( )
 			LightTextureCtrl->setValid(TRUE);
 			LightTextureCtrl->setImageAssetID(volobjp->getLightTextureID());
 		}
+		//BD
 		getChild<LLTextBase>("label lights")->setReadOnly(false);
 
 		getChildView("Light Intensity")->setEnabled(true);
@@ -338,6 +339,7 @@ void LLPanelVolume::getState( )
 			LightTextureCtrl->setEnabled(FALSE);
 			LightTextureCtrl->setValid(FALSE);
 		}
+		//BD
 		getChild<LLTextBase>("label lights")->setReadOnly(true);
 
 		getChildView("Light Intensity")->setEnabled(false);
@@ -533,6 +535,7 @@ void LLPanelVolume::refresh()
 	getChildView("Light Focus")->setVisible( visible);
 	getChildView("Light Ambiance")->setVisible( visible);
 	getChildView("light texture control")->setVisible( visible);
+	//BD
 	getChildView("label lights")->setVisible( visible);
 
 	bool enable_mesh = false;
@@ -546,8 +549,10 @@ void LLPanelVolume::refresh()
 		enable_mesh = sim_features.has("PhysicsShapeTypes");
 	}
 	getChildView("label physicsshapetype")->setVisible(enable_mesh);
+	//BD
 	getChildView("label materialtype")->setVisible(enable_mesh);
 	getChild<LLTextBase>("label density")->setReadOnly(!enable_mesh);
+
 	getChildView("Physics Shape Type Combo Ctrl")->setVisible(enable_mesh);
 	getChildView("Physics Gravity")->setVisible(enable_mesh);
 	getChildView("Physics Friction")->setVisible(enable_mesh);
@@ -573,7 +578,9 @@ void LLPanelVolume::clearCtrls()
 	getChildView("edit_object")->setEnabled(false);
 	getChildView("edit_object")->setVisible(false);
 	getChildView("Light Checkbox Ctrl")->setEnabled(false);
+	//BD
 	getChild<LLTextBase>("label lights")->setReadOnly(true);
+
 	LLColorSwatchCtrl* LightColorSwatch = getChild<LLColorSwatchCtrl>("colorswatch");
 	if(LightColorSwatch)
 	{
@@ -591,9 +598,11 @@ void LLPanelVolume::clearCtrls()
 	getChildView("Light Radius")->setEnabled(false);
 	getChildView("Light Falloff")->setEnabled(false);
 
+	//BD
 	getChildView("label physicsshapetype")->setVisible(false);
 	getChildView("label materialtype")->setVisible(false);
 	getChildView("label density")->setVisible(false);
+	getChild<LLTextBase>("label density")->setReadOnly(TRUE);
 
 	getChildView("Flexible1D Checkbox Ctrl")->setEnabled(false);
 	getChildView("FlexNumSections")->setEnabled(false);
@@ -608,7 +617,6 @@ void LLPanelVolume::clearCtrls()
 	mSpinPhysicsGravity->setEnabled(FALSE);
 	mSpinPhysicsFriction->setEnabled(FALSE);
 	mSpinPhysicsDensity->setEnabled(FALSE);
-	getChild<LLTextBase>("label density")->setReadOnly(TRUE);
 	mSpinPhysicsRestitution->setEnabled(FALSE);
 
 	mComboMaterial->setEnabled( FALSE );

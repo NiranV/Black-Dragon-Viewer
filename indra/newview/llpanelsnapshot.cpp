@@ -65,6 +65,7 @@ BOOL LLPanelSnapshot::postBuild()
 // virtual
 void LLPanelSnapshot::onOpen(const LLSD& key)
 {
+	//BD
 	S32 old_format = gSavedSettings.getS32("SnapshotFormat");
 	S32 new_format = (S32) getImageFormat();
 

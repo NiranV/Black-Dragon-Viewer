@@ -306,9 +306,11 @@ void LLPreviewTexture::reshape(S32 width, S32 height, BOOL called_from_parent)
 {
 	LLPreview::reshape(width, height, called_from_parent);
 
+	//BD
 	S32 horiz_pad = 10;
 
 	LLRect client_rect(horiz_pad, getRect().getHeight(), getRect().getWidth() - horiz_pad, 0);
+	//BD
 	client_rect.mTop -= 50;
 	client_rect.mBottom += 35;
 

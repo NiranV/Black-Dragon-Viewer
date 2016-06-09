@@ -77,7 +77,7 @@
 #include "lluploaddialog.h"
 #include "llfloaterreg.h"
 
-//BD - L$ Balance
+//BD
 #include "llsidepanelinventory.h"
 #include "llfloatersidepanelcontainer.h"
 
@@ -4748,6 +4748,7 @@ void on_new_single_inventory_upload_complete(
     {
         // this upload costed us L$, update our balance
         // and display something saying that it cost L$
+		//BD
         LLSidepanelInventory::sendMoneyBalanceRequest();
 
         LLSD args;

@@ -89,6 +89,7 @@
 #include "lluictrlfactory.h"
 #include "llmeshrepository.h"
 
+//BD - Qarl's Aligning Tool
 #include "qtoolalign.h"
 
 // Globals
@@ -246,10 +247,13 @@ BOOL	LLFloaterTools::postBuild()
 	mBtnLink			= getChild<LLButton>("link_btn");
 	mBtnUnlink			= getChild<LLButton>("unlink_btn");
 	
+	//BD
 	mCheckMyObjects			= getChild<LLUICtrl>("checkbox only my objects");
 	mCheckPhysicalObjects	= getChild<LLUICtrl>("checkbox only physical objects");
+
 	mCheckSelectIndividual	= getChild<LLCheckBoxCtrl>("checkbox edit linked parts");	
 	getChild<LLUICtrl>("checkbox edit linked parts")->setValue((BOOL)gSavedSettings.getBOOL("EditLinkedParts"));
+	//BD
 	mCheckSnapToGrid		= getChild<LLUICtrl>("checkbox snap to grid");
 	getChild<LLUICtrl>("checkbox snap to grid")->setValue((BOOL)gSavedSettings.getBOOL("SnapEnabled"));
 	mCheckStretchUniform	= getChild<LLCheckBoxCtrl>("checkbox uniform");
@@ -330,9 +334,10 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mRadioGroupEdit(NULL),
 
 	mCheckSelectIndividual(NULL),
-
+	//BD
 	mCheckMyObjects(NULL),
 	mCheckPhysicalObjects(NULL),
+
 	mCheckSnapToGrid(NULL),
 	mBtnGridOptions(NULL),
 	mTitleMedia(NULL),
@@ -666,8 +671,9 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 						tool == LLToolCompScale::getInstance() ||
 						tool == LLToolFace::getInstance() ||
 						tool == LLToolIndividual::getInstance() ||
-						tool == QToolAlign::getInstance() ||
-						tool == LLToolPipette::getInstance();
+						tool == LLToolPipette::getInstance() ||
+//						//BD - Qarl's Aligning Tool
+						tool == QToolAlign::getInstance();
 
 	mBtnEdit	->setToggleState( edit_visible );
 	mRadioGroupEdit->setVisible( edit_visible );
@@ -702,6 +708,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	{
 		mRadioGroupEdit->setValue("radio select face");
 	}
+//	//BD - Qarl's Aligning Tool
 	else if ( tool == QToolAlign::getInstance() )
 	{
 		mRadioGroupEdit->setValue("radio align");
@@ -737,6 +744,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	// Snap to grid disabled for grab tool - very confusing
 	if (mCheckSnapToGrid) mCheckSnapToGrid->setVisible( edit_visible /* || tool == LLToolGrab::getInstance() */ );
 	if (mBtnGridOptions) mBtnGridOptions->setVisible( edit_visible /* || tool == LLToolGrab::getInstance() */ );
+	//BD
 	if (mCheckMyObjects) mCheckMyObjects->setVisible( edit_visible);
 	if (mCheckPhysicalObjects) mCheckPhysicalObjects->setVisible( edit_visible);
 
@@ -1013,10 +1021,12 @@ void commit_radio_group_edit(LLUICtrl *ctrl)
 	{
 		LLFloaterTools::setEditTool( LLToolFace::getInstance() );
 	}
+//	//BD - Qarl's Aligning Tool
 	else if (selected == "radio align")
 	{
 		LLFloaterTools::setEditTool( QToolAlign::getInstance() );
 	}
+
 	gSavedSettings.setBOOL("ShowParcelOwners", show_owners);
 }
 

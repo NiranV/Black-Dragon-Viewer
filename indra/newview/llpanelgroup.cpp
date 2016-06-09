@@ -343,6 +343,7 @@ void LLPanelGroup::update(LLGroupChange gc)
 		
 		mButtonJoin->setVisible(join_btn_visible);
 		mJoinText->setVisible(join_btn_visible);
+		//BD
 		getChild<LLUICtrl>("btn_no_join")->setVisible(!join_btn_visible);
 
 		if(join_btn_visible)
@@ -369,6 +370,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 	std::string str_group_id;
 	group_id.toString(str_group_id);
 
+	//BD
 	//bool is_same_id = group_id == mID;
 	
 	LLGroupMgr::getInstance()->removeObserver(this);
@@ -394,6 +396,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 	LLButton* button_cancel = findChild<LLButton>("btn_cancel");
 	LLButton* button_call = findChild<LLButton>("btn_call");
 	LLButton* button_chat = findChild<LLButton>("btn_chat");
+	//BD
 	LLUICtrl* no_chat = findChild<LLUICtrl>("no_chat");
 	LLUICtrl* no_call = findChild<LLUICtrl>("no_call");
 	LLUICtrl* no_apply = findChild<LLUICtrl>("no_apply");
@@ -415,6 +418,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 		button_call->setVisible(!is_null_group_id);
 	if(button_chat)
 		button_chat->setVisible(!is_null_group_id);
+	//BD
 	if(no_chat)
 		no_chat->setVisible(is_null_group_id);
 	if(no_call)
@@ -424,6 +428,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 
 	getChild<LLUICtrl>("prepend_founded_by")->setVisible(!is_null_group_id);
 
+	//BD
 	/*LLAccordionCtrl* tab_ctrl = getChild<LLAccordionCtrl>("groups_accordion");
 	tab_ctrl->reset();
 
@@ -439,6 +444,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 
 	if(is_null_group_id)//creating new group
 	{
+		//BD
 		/*if(!tab_general->getDisplayChildren())
 			tab_general->changeOpenClose(tab_general->getDisplayChildren());
 		
@@ -463,6 +469,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 			button_call->setVisible(false);
 		if(button_chat)
 			button_chat->setVisible(false);
+		//BD
 		if(no_call)
 			no_call->setVisible(true);
 		if(no_chat)
@@ -472,6 +479,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 	}
 	else 
 	{
+		//BD
 		/*if(!is_same_id)
 		{
 			if(!tab_general->getDisplayChildren())
@@ -489,6 +497,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 		LLGroupData agent_gdatap;
 		bool is_member = gAgent.getGroupData(mID,agent_gdatap) || gAgent.isGodlikeWithoutAdminMenuFakery();
 		
+		//BD
 		/*tab_roles->setVisible(is_member);
 		tab_notices->setVisible(is_member);
 		tab_land->setVisible(is_member);
@@ -503,6 +512,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 			button_call->setVisible(is_member);
 		if(button_chat)
 			button_chat->setVisible(is_member);
+		//BD
 		if(no_call)
 			no_call->setVisible(!is_member);
 		if(no_chat)
@@ -511,6 +521,7 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 			no_apply->setVisible(!is_member);
 	}
 
+	//BD
 	//tab_ctrl->arrange();
 
 	reposButtons();

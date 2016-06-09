@@ -28,6 +28,7 @@
 
 #include "llfloater.h"
 
+//BD
 class LLSpinCtrl;
 
 ///----------------------------------------------------------------------------
@@ -47,10 +48,11 @@ public:
     void onClickSet();
     void onClickCancel();
 
+	//BD
 	LLSpinCtrl* mWindowWidth;
 	LLSpinCtrl* mWindowHeight;
 
-	//Template button action
+	//BD - Template button actions.
 	void onClick600();
 	void onClick768();
 	void onClick720();

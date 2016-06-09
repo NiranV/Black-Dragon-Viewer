@@ -332,9 +332,10 @@ public:
 	 */
 	static void updateIMFLoaterMesages(const LLUUID& session_id);
 
-//	/**
-//	 * Updates messages of visible IM floater.
-//	 */
+	//BD
+	/**
+	 * Updates messages of visible IM floater.
+	 */
 //	static void updateVisibleIMFLoaterMesages(const LLNotificationPtr& notification);
 
 	/**

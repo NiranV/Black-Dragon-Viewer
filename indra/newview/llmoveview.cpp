@@ -331,11 +331,15 @@ void LLFloaterMove::setMovementMode(const EMovementMode mode)
 	{
 	case MM_RUN:
 		gAgent.setAlwaysRun();
+// [RLVa:KB]
 //		gAgent.setRunning();
+// [/RLVa:KB]
 		break;
 	case MM_WALK:
 		gAgent.clearAlwaysRun();
+// [RLVa:KB]
 //		gAgent.clearRunning();
+// [/RLVa:KB]
 		break;
 	default:
 		//do nothing for other modes (MM_FLY)

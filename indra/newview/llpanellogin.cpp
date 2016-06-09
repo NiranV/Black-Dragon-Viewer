@@ -66,7 +66,6 @@
 #include "llglheaders.h"
 #include "llpanelloginlistener.h"
 
-//#include "nvprefspanel.h"
 
 #if LL_WINDOWS
 #pragma warning(disable: 4355)      // 'this' used in initializer list
@@ -77,10 +76,12 @@
 LLPanelLogin *LLPanelLogin::sInstance = NULL;
 BOOL LLPanelLogin::sCapslockDidNotification = FALSE;
 
+//BD
 class LLLoginRefreshHandler : public LLCommandHandler
 {
 public:
 	// don't allow from external browsers
+	//BD
 	LLLoginRefreshHandler() : LLCommandHandler("login_refresh", UNTRUSTED_BLOCK) { }
 	bool handle(const LLSD& tokens, const LLSD& query_map, LLMediaCtrl* web)
 	{	
@@ -124,6 +125,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	// STEAM-14: When user presses Enter with this field in focus, initiate login
 	password_edit->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 
+	//BD
 	getChild<LLComboBox>("start_location_combo")->setFocusLostCallback(boost::bind(&LLPanelLogin::onLocationSLURL, this));
 	//favorites_combo->setReturnCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 	
@@ -176,6 +178,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	}
 	
 	childSetAction("connect_btn", onClickConnect, this);
+	//BD
 	childSetAction("quit_btn", onClickQuit, this);
 	childSetAction("forgot_password_text", onClickForgotPassword, this);
 	childSetAction("create_new_account_text", onClickNewAccount, this);
@@ -184,6 +187,8 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	std::string version = llformat("%s (%d)",
 								   LLVersionInfo::getShortVersion().c_str(),
 								   LLVersionInfo::getBuild());
+
+	//BD
 	LLButton* channel_text = getChild<LLButton>("channel_text");
 	channel_text->setLabelArg("[CHANNEL]", channel);
 	channel_text->setLabelArg("[VERSION]", version);
@@ -191,10 +196,14 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	loadLoginPage();
 	
 	// Show last logged in user favorites in "Start at" combo.
+	//BD
 	LLLineEditor* username_combo(getChild<LLLineEditor>("username_combo"));
 	addFavoritesToStartLocation();
+
 	// STEAM-14: When user presses Enter with this field in focus, initiate login
 	username_combo->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
+
+	//BD
 	getChild<LLButton>("connect_btn")->setFocus(true);
 
 }
@@ -211,6 +220,7 @@ void LLPanelLogin::addFavoritesToStartLocation()
 	}
 
 	// Load favorites into the combo.
+	//BD
 	std::string user_defined_name = getChild<LLLineEditor>("username_combo")->getValue();
 	std::replace(user_defined_name.begin(), user_defined_name.end(), '.', ' ');
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "stored_favorites_" + LLGridManager::getInstance()->getGrid() + ".xml");
@@ -267,6 +277,7 @@ LLPanelLogin::~LLPanelLogin()
 	gFocusMgr.setDefaultKeyboardFocus(NULL);
 }
 
+//BD
 // virtual
 void LLPanelLogin::draw()
 {
@@ -308,6 +319,7 @@ void LLPanelLogin::giveFocus()
 		BOOL have_pass = !pass.empty();
 
 		LLLineEditor* edit = NULL;
+		//BD
 		LLLineEditor* combo = NULL;
 		if (have_username && !have_pass)
 		{
@@ -318,6 +330,7 @@ void LLPanelLogin::giveFocus()
 		else
 		{
 			// User doesn't have a name, so start there.
+			//BD
 			combo = sInstance->getChild<LLLineEditor>("username_combo");
 		}
 
@@ -391,15 +404,18 @@ void LLPanelLogin::setFields(LLPointer<LLCredential> credential,
 		    login_id += " ";
 		    login_id += lastname;
 	    }
+		//BD
 		sInstance->getChild<LLLineEditor>("username_combo")->setValue(login_id);	
 	}
 	else if((std::string)identifier["type"] == "account")
 	{
+		//BD
 		sInstance->getChild<LLLineEditor>("username_combo")->setValue((std::string)identifier["account_name"]);		
 	}
 	else
 	{
-	  sInstance->getChild<LLLineEditor>("username_combo")->setValue(std::string());	
+		//BD
+		sInstance->getChild<LLLineEditor>("username_combo")->setValue(std::string());	
 	}
 	sInstance->addFavoritesToStartLocation();
 	// if the password exists in the credential, set the password field with
@@ -414,8 +430,9 @@ void LLPanelLogin::setFields(LLPointer<LLCredential> credential,
 		// This is a MD5 hex digest of a password.
 		// We don't actually use the password input field, 
 		// fill it with MAX_PASSWORD characters so we get a 
-		// nice row of asterixes.
+		// nice row of asterisks.
 		const std::string filler("123456789!123456");
+		//BD
 		sInstance->getChild<LLUICtrl>("password_edit")->setValue(std::string("123456789!123456"));
 	}
 	else
@@ -529,6 +546,7 @@ BOOL LLPanelLogin::areCredentialFieldsDirty()
 		std::string username = sInstance->getChild<LLUICtrl>("username_combo")->getValue().asString();
 		LLStringUtil::trim(username);
 		std::string password = sInstance->getChild<LLUICtrl>("password_edit")->getValue().asString();
+		//BD
 		LLLineEditor* combo = sInstance->getChild<LLLineEditor>("username_combo");
 		if(combo && combo->isDirty())
 		{
@@ -586,6 +604,7 @@ void LLPanelLogin::onUpdateStartSLURL(const LLSLURL& new_start_slurl)
 				{
 					location_combo->setLabel(new_start_slurl.getLocationString());
 				}
+				//BD
 				//sInstance->mLocationLength = new_start_slurl.getLocationString().length();
 				//sInstance->updateLoginButtons();
 			}
@@ -600,17 +619,14 @@ void LLPanelLogin::onUpdateStartSLURL(const LLSLURL& new_start_slurl)
 		}
 	  }
  	break;
-
-	case LLSLURL::HOME_LOCATION:
-		location_combo->setCurrentByIndex(1); // home location
-		break;
 		
+	//BD
 	case LLSLURL::LAST_LOCATION:
 		location_combo->setCurrentByIndex(0); // last location
 		break;
-
+	case LLSLURL::HOME_LOCATION:
 	default:
-		LL_WARNS("AppInit")<<"invalid login slurl, using home"<<LL_ENDL;
+		//LL_WARNS("AppInit")<<"invalid login slurl, using home"<<LL_ENDL;
 		location_combo->setCurrentByIndex(1); // home location
 		break;
 	}
@@ -627,6 +643,7 @@ void LLPanelLogin::closePanel()
 {
 	if (sInstance)
 	{
+		//BD - TODO: Look at this and replace with proper load and unload code from login snapshot.
 		LLViewerFetchedTexture* image = LLViewerTextureManager::getFetchedTextureFromFile("login_bg.png", FTT_LOCAL_FILE, MIPMAP_NO, LLViewerFetchedTexture::BOOST_UI);
 		image->setBoostLevel(0);
 		image->destroyTexture();
@@ -680,6 +697,7 @@ void LLPanelLogin::loadLoginPage()
 //---------------------------------------------------------------------------
 // Protected methods
 //---------------------------------------------------------------------------
+//BD
 void LLPanelLogin::onClickQuit(void *)
 {
 	LLAppViewer::instance()->userQuit();
@@ -694,9 +712,9 @@ void LLPanelLogin::onClickConnect(void *)
 		// JC - Make sure the fields all get committed.
 		sInstance->setFocus(FALSE);
 
-		// BD - Set final login location where we will start now here when pressing connect,
-		//      we dont need to set it every time we change it. It gets saved into a debug and
-		//      set when we press connect, so it will always save and work as intended.
+		//BD - Set final login location where we will start now here when pressing connect,
+		//     we dont need to set it every time we change it. It gets saved into a debug and
+		//     set when we press connect, so it will always save and work as intended.
 		LLSLURL slurl(gSavedSettings.getString("LoginLocation"));
 		LLStartUp::setStartSLURL(slurl);
 
@@ -764,6 +782,7 @@ void LLPanelLogin::onClickConnect(void *)
 	}
 }
 
+//BD
 // static
 void LLPanelLogin::onClickNewAccount(void*)
 {
@@ -792,8 +811,8 @@ void LLPanelLogin::onClickForgotPassword(void*)
 // static
 void LLPanelLogin::onPassKey(LLLineEditor* caller, void* user_data)
 {
-	LLPanelLogin *This = (LLPanelLogin *) user_data;
-	This->mPasswordModified = TRUE;
+	LLPanelLogin *self = (LLPanelLogin *) user_data;
+	self->mPasswordModified = TRUE;
 	if (gKeyboard->getKeyDown(KEY_CAPSLOCK) && sCapslockDidNotification == FALSE)
 	{
 		// *TODO: use another way to notify user about enabled caps lock, see EXT-6858
@@ -820,6 +839,7 @@ void LLPanelLogin::updateServer()
 			// update the login panel links 
 			bool system_grid = LLGridManager::getInstance()->isSystemGrid();
 
+			//BD
 			sInstance->getChildView("create_new_account_text")->setVisible( system_grid);
 			sInstance->getChildView("forgot_password_text")->setVisible(system_grid);
 

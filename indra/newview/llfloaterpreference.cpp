@@ -71,7 +71,6 @@
 #include "llviewercontrol.h"
 #include "llviewercamera.h"
 #include "llviewerwindow.h"
-#include "llviewerkeyboard.h"
 #include "llviewermessage.h"
 #include "llviewershadermgr.h"
 #include "llviewerthrottle.h"
@@ -113,6 +112,9 @@
 #include "rlvhandler.h"
 // [/RLVa:KB]
 
+//BD
+#include "llviewerkeyboard.h"
+
 #include "lllogininstance.h"        // to check if logged in yet
 #include "llsdserialize.h"
 #include "llpresetsmanager.h"
@@ -121,14 +123,13 @@
 #include "llfeaturemanager.h"
 #include "llviewertexturelist.h"
 
-
 const F32 BANDWIDTH_UPDATER_TIMEOUT = 0.5f;
 char const* const VISIBILITY_DEFAULT = "default";
 char const* const VISIBILITY_HIDDEN = "hidden";
 
+//BD
 static LLPanelInjector<LLPanelVoiceDeviceSettings> t_panel_group_general("panel_voice_device_settings");
 static const std::string DEFAULT_DEVICE("Default");
-
 
 LLPanelVoiceDeviceSettings::LLPanelVoiceDeviceSettings()
 	: LLPanel()
@@ -411,18 +412,6 @@ void LLPanelVoiceDeviceSettings::onCommitOutputDevice()
 	}
 }
 
-/// This must equal the maximum value set for the IndirectMaxComplexity slider in panel_preferences_graphics1.xml
-static const U32 INDIRECT_MAX_ARC_OFF = 101; // all the way to the right == disabled
-static const U32 MIN_INDIRECT_ARC_LIMIT = 1; // must match minimum of IndirectMaxComplexity in panel_preferences_graphics1.xml
-static const U32 MAX_INDIRECT_ARC_LIMIT = INDIRECT_MAX_ARC_OFF - 1; // one short of all the way to the right...
-
-/// These are the effective range of values for RenderAvatarMaxComplexity
-static const F32 MIN_ARC_LIMIT = 20000.0f;
-static const F32 MAX_ARC_LIMIT = 300000.0f;
-static const F32 MIN_ARC_LOG = log(MIN_ARC_LIMIT);
-static const F32 MAX_ARC_LOG = log(MAX_ARC_LIMIT);
-static const F32 ARC_LIMIT_MAP_SCALE = (MAX_ARC_LOG - MIN_ARC_LOG) / (MAX_INDIRECT_ARC_LIMIT - MIN_INDIRECT_ARC_LIMIT);
-
 //control value for middle mouse as talk2push button
 const static std::string MIDDLE_MOUSE_CV = "MiddleMouse";
 
@@ -486,7 +475,6 @@ void LLVoiceSetKeyDialog::onCancel(void* user_data)
 	LLVoiceSetKeyDialog* self = (LLVoiceSetKeyDialog*)user_data;
 	self->closeFloater();
 }
-
 
 
 //BD - Custom Keyboard Layout
@@ -615,6 +603,18 @@ void LLSetKeyDialog::onBind()
 	this->closeFloater();
 }
 
+
+/// This must equal the maximum value set for the IndirectMaxComplexity slider in panel_preferences_graphics1.xml
+static const U32 INDIRECT_MAX_ARC_OFF = 101; // all the way to the right == disabled
+static const U32 MIN_INDIRECT_ARC_LIMIT = 1; // must match minimum of IndirectMaxComplexity in panel_preferences_graphics1.xml
+static const U32 MAX_INDIRECT_ARC_LIMIT = INDIRECT_MAX_ARC_OFF - 1; // one short of all the way to the right...
+
+/// These are the effective range of values for RenderAvatarMaxComplexity
+static const F32 MIN_ARC_LIMIT = 20000.0f;
+static const F32 MAX_ARC_LIMIT = 300000.0f;
+static const F32 MIN_ARC_LOG = log(MIN_ARC_LIMIT);
+static const F32 MAX_ARC_LOG = log(MAX_ARC_LIMIT);
+static const F32 ARC_LIMIT_MAP_SCALE = (MAX_ARC_LOG - MIN_ARC_LOG) / (MAX_INDIRECT_ARC_LIMIT - MIN_INDIRECT_ARC_LIMIT);
 
 // global functions 
 
@@ -756,6 +756,7 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 
 	//Build Floater is now Called from 	LLFloaterReg::add("preferences", "floater_preferences.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterPreference>);
 	
+	//BD
 	static bool registered_voice_dialog = false;
 	if (!registered_voice_dialog)
 	{
@@ -763,7 +764,7 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 		registered_voice_dialog = true;
 	}
 
-	//BD - Custom Keyboard Layout
+//	//BD - Custom Keyboard Layout
 	static bool registered_dialog = false;
 	if (!registered_dialog)
 	{
@@ -800,36 +801,6 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.PermsDefault",           boost::bind(&LLFloaterPreference::onClickPermsDefault, this));
 	mCommitCallbackRegistrar.add("Pref.SpellChecker",           boost::bind(&LLFloaterPreference::onClickSpellChecker, this));
 
-//	//BD - Custom Keyboard Layout
-	mCommitCallbackRegistrar.add("Pref.BindKey",                boost::bind(&LLFloaterPreference::onClickSetAnyKey, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.UnbindKey",				boost::bind(&LLFloaterPreference::onUnbindKey, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ExportControls",         boost::bind(&LLFloaterPreference::onExportControls, this));
-	mCommitCallbackRegistrar.add("Pref.UnbindAll",				boost::bind(&LLFloaterPreference::onUnbindControls, this));
-	mCommitCallbackRegistrar.add("Pref.DefaultControls",		boost::bind(&LLFloaterPreference::onDefaultControls, this));
-
-//	//BD - Expandable Tabs
-	mCommitCallbackRegistrar.add("Pref.Tab",					boost::bind(&LLFloaterPreference::toggleTabs, this));
-
-//	//BD - Vector4
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4X",				boost::bind(&LLFloaterPreference::onCommitVec4X, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4Y",				boost::bind(&LLFloaterPreference::onCommitVec4Y, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4Z",				boost::bind(&LLFloaterPreference::onCommitVec4Z, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4W",				boost::bind(&LLFloaterPreference::onCommitVec4W, this, _1, _2));
-
-//	//BD - Array Debugs
-	mCommitCallbackRegistrar.add("Pref.ArrayX",					boost::bind(&LLFloaterPreference::onCommitX, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayY",					boost::bind(&LLFloaterPreference::onCommitY, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayZ",					boost::bind(&LLFloaterPreference::onCommitZ, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayXD",				boost::bind(&LLFloaterPreference::onCommitXd, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayYD",				boost::bind(&LLFloaterPreference::onCommitYd, this,_1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayZD",				boost::bind(&LLFloaterPreference::onCommitZd, this,_1, _2));
-
-//	//BD - Revert to Default
-	mCommitCallbackRegistrar.add("Pref.Default",				boost::bind(&LLFloaterPreference::resetToDefault, this,_1));
-
-//	//BD - Input/Output resizer
-	mCommitCallbackRegistrar.add("Pref.InputOutput",			boost::bind(&LLFloaterPreference::inputOutput, this));
-
 	sSkin = gSavedSettings.getString("SkinCurrent");
 
 	gSavedSettings.getControl("NameTagShowUsernames")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged,  _2));	
@@ -843,6 +814,37 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ClearLog",				boost::bind(&LLConversationLog::onClearLog, &LLConversationLog::instance()));
 	mCommitCallbackRegistrar.add("Pref.DeleteTranscripts",      boost::bind(&LLFloaterPreference::onDeleteTranscripts, this));
 
+//	//BD - Custom Keyboard Layout
+	mCommitCallbackRegistrar.add("Pref.BindKey", boost::bind(&LLFloaterPreference::onClickSetAnyKey, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.UnbindKey", boost::bind(&LLFloaterPreference::onUnbindKey, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ExportControls", boost::bind(&LLFloaterPreference::onExportControls, this));
+	mCommitCallbackRegistrar.add("Pref.UnbindAll", boost::bind(&LLFloaterPreference::onUnbindControls, this));
+	mCommitCallbackRegistrar.add("Pref.DefaultControls", boost::bind(&LLFloaterPreference::onDefaultControls, this));
+
+//	//BD - Expandable Tabs
+	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::toggleTabs, this));
+
+//	//BD - Vector4
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4X", boost::bind(&LLFloaterPreference::onCommitVec4X, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4Y", boost::bind(&LLFloaterPreference::onCommitVec4Y, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4Z", boost::bind(&LLFloaterPreference::onCommitVec4Z, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4W", boost::bind(&LLFloaterPreference::onCommitVec4W, this, _1, _2));
+
+//	//BD - Array Debugs
+	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayXD", boost::bind(&LLFloaterPreference::onCommitXd, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayYD", boost::bind(&LLFloaterPreference::onCommitYd, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayZD", boost::bind(&LLFloaterPreference::onCommitZd, this, _1, _2));
+
+//	//BD - Revert to Default
+	mCommitCallbackRegistrar.add("Pref.Default", boost::bind(&LLFloaterPreference::resetToDefault, this, _1));
+
+//	//BD - Input/Output resizer
+	mCommitCallbackRegistrar.add("Pref.InputOutput", boost::bind(&LLFloaterPreference::inputOutput, this));
+
+//	//BD - Quick Graphics Presets
 	mCommitCallbackRegistrar.add("Pref.PrefDelete", boost::bind(&LLFloaterPreference::deletePreset, this, _2));
 	mCommitCallbackRegistrar.add("Pref.PrefSave", boost::bind(&LLFloaterPreference::savePreset, this, _2));
 	mCommitCallbackRegistrar.add("Pref.PrefLoad", boost::bind(&LLFloaterPreference::loadPreset, this, _2));
@@ -954,11 +956,13 @@ BOOL LLFloaterPreference::postBuild()
 	fov_slider->setMinValue(LLViewerCamera::getInstance()->getMinView());
 	fov_slider->setMaxValue(LLViewerCamera::getInstance()->getMaxView());
 
-//	//BD - Refresh our controls at the start
+	//BD - Refresh our controls at the start
 	refreshGraphicControls();
 	refreshCameraControls();
+//	//BD - Custom Keyboard Layout
 	refreshKeys();
 
+//	//BD - Expandable Tabs
 	mModifier = 0;
 
 	if (!gSavedSettings.getBOOL("RememberPreferencesTabs"))
@@ -1208,7 +1212,7 @@ void LLFloaterPreference::refreshKeys()
 	infile.close();
 }
 
-//BD - Tab Toggles
+//BD - Expandable Tabs
 void LLFloaterPreference::toggleTabs()
 {
 	getChild<LLLayoutStack>("gfx_stack")->translate(0, -mModifier);
@@ -1341,7 +1345,7 @@ void LLFloaterPreference::refreshCameraControls()
 	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetRightShoulderView").mV[VZ]);
 }
 
-//BD - Warning system
+//BD - Warning System
 void LLFloaterPreference::refreshWarnings()
 {
 	//BD - Viewer Options
@@ -1394,7 +1398,9 @@ void LLFloaterPreference::draw()
 	has_first_selected = (getChildRef<LLScrollListCtrl>("enabled_popups").getFirstSelected()!=NULL);
 	gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
 
+//	//BD - Warning System
 	refreshWarnings();
+//	//BD - Expandable Tabs
 	toggleTabs();
 	
 	LLFloater::draw();
@@ -1587,9 +1593,11 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	onNotificationsChange("NearbyChatOptions");
 	onNotificationsChange("ObjectIMOptions");
 
+	//BD
 	//LLPanelLogin::setAlwaysRefresh(true);
 	refresh();
 
+	//BD
 	refreshGraphicControls();
 	refreshCameraControls();
 
@@ -1673,6 +1681,7 @@ void LLFloaterPreference::setHardwareDefaults()
 void LLFloaterPreference::getControlNames(std::vector<std::string>& names)
 {
 	LLView* view = findChild<LLView>("display");
+	//BD
 	if (view)
 	{
 		std::list<LLView*> stack;
@@ -1710,14 +1719,15 @@ void LLFloaterPreference::getControlNames(std::vector<std::string>& names)
 void LLFloaterPreference::onClose(bool app_quitting)
 {
 	gSavedSettings.setS32("LastPrefTab", getChild<LLTabContainer>("pref core")->getCurrentPanelIndex());
+	//BD
 	//LLPanelLogin::setAlwaysRefresh(false);
 	if (!app_quitting)
 	{
 		cancel();
 	}
 
-	// when closing this window, turn of visiblity control so that 
-	// next time preferences is opened we don't suspend voice
+	//BD - when closing this window, turn of visiblity control so that 
+	//     next time preferences is opened we don't suspend voice
 	if (gSavedSettings.getBOOL("ShowDeviceSettings"))
 	{
 		gSavedSettings.setBOOL("ShowDeviceSettings", FALSE);
@@ -1725,7 +1735,8 @@ void LLFloaterPreference::onClose(bool app_quitting)
 	}
 }
 
-// static 
+//BD
+// static
 void LLFloaterPreference::onBtnOK()
 {
 	// commit any outstanding text entry
@@ -1742,6 +1753,7 @@ void LLFloaterPreference::onBtnOK()
 	{
 		saveSettings();
 		apply();
+		//BD
 		closeFloater(false);
 
 		//Conversation transcript and log path changed so reload conversations based on new location
@@ -1776,6 +1788,7 @@ void LLFloaterPreference::onBtnOK()
 		LL_INFOS() << "Can't close preferences!" << LL_ENDL;
 	}
 
+	//BD
 	//LLPanelLogin::updateLocationSelectorsVisibility();	
 	//Need to reload the navmesh if the pathing console is up
 	LLHandle<LLFloaterPathfindingConsole> pathfindingConsoleHandle = LLFloaterPathfindingConsole::getInstanceHandle();
@@ -1787,6 +1800,7 @@ void LLFloaterPreference::onBtnOK()
 
 }
 
+//BD - We really have an apply button still? TODO: Remove.
 // static 
 void LLFloaterPreference::onBtnApply()
 {
@@ -1804,6 +1818,7 @@ void LLFloaterPreference::onBtnApply()
 	//LLPanelLogin::updateLocationSelectorsVisibility();
 }
 
+//BD
 // static 
 void LLFloaterPreference::onBtnCancel()
 {
@@ -1817,6 +1832,7 @@ void LLFloaterPreference::onBtnCancel()
 		refresh();
 	}
 	cancel();
+	//BD
 	closeFloater();
 }
 
@@ -2035,6 +2051,7 @@ void LLFloaterPreference::refreshEnabledState()
 		&& LLCubeMap::sUseCubeMaps;
 	ctrl_reflections->setEnabled(reflections);
 
+	//BD
 	// Bump & Shiny	
 	//LLCheckBoxCtrl* bumpshiny_ctrl = getChild<LLCheckBoxCtrl>("BumpShiny");
 	//bool bumpshiny = gGLManager.mHasCubeMap && LLCubeMap::sUseCubeMaps && LLFeatureManager::getInstance()->isFeatureAvailable("RenderObjectBump");
@@ -2044,6 +2061,7 @@ void LLFloaterPreference::refreshEnabledState()
     bool enhanced_skel_enabled = gSavedSettings.getBOOL("IncludeEnhancedSkeleton");
     ctrl_enhanced_skel->setValue(enhanced_skel_enabled);
     
+	//BD
 	// Avatar Mode
 	// Enable Avatar Shaders
 	//LLCheckBoxCtrl* ctrl_avatar_vp = getChild<LLCheckBoxCtrl>("AvatarVertexProgram");
@@ -2091,6 +2109,7 @@ void LLFloaterPreference::refreshEnabledState()
 
 
 	BOOL enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
+		//BD
 		//((bumpshiny_ctrl && bumpshiny_ctrl->get()) ? TRUE : FALSE) &&
 		//shaders && 
 		gGLManager.mHasFramebufferObject;
@@ -2124,8 +2143,10 @@ void LLFloaterPreference::refreshEnabledState()
 	//getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
 }
 
+//BD - TODO: Remove it, we don't use it.
 void LLFloaterPreference::disableUnavailableSettings()
 {
+	//BD
 	/*LLComboBox* ctrl_reflections   = getChild<LLComboBox>("Reflections");
 	LLCheckBoxCtrl* ctrl_avatar_vp     = getChild<LLCheckBoxCtrl>("AvatarVertexProgram");
 	LLCheckBoxCtrl* ctrl_avatar_cloth  = getChild<LLCheckBoxCtrl>("AvatarCloth");
@@ -2274,6 +2295,7 @@ void LLFloaterPreference::refresh()
 	//BD - We might want to use this for later warnings of too high graphic options.
 	//updateSliderText(getChild<LLSliderCtrl>("ObjectMeshDetail",		true), getChild<LLTextBox>("ObjectMeshDetailText",		true));
 
+	//BD - TODO: Remove it, we don't use it.
 	//refreshEnabledState();
 }
 
@@ -2639,6 +2661,7 @@ void LLFloaterPreference::changed()
 
 }
 
+//BD - Quick Graphics Presets
 void LLFloaterPreference::deletePreset(const LLSD& user_data)
 {
 	std::string subdirectory = user_data.asString();
@@ -2800,6 +2823,7 @@ BOOL LLPanelPreference::postBuild()
 	if (hasChild("favorites_on_login_check", TRUE))
 	{
 		getChild<LLCheckBoxCtrl>("favorites_on_login_check")->setCommitCallback(boost::bind(&handleFavoritesOnLoginChanged, _1, _2));
+		//BD
 		//bool show_favorites_at_login = LLPanelLogin::getShowFavorites();
 		//getChild<LLCheckBoxCtrl>("favorites_on_login_check")->setValue(show_favorites_at_login);
 	}
@@ -2821,6 +2845,7 @@ BOOL LLPanelPreference::postBuild()
 		gSavedSettings.getControl("ThrottleBandwidthKBPS")->getSignal()->connect(boost::bind(&LLPanelPreference::Updater::update, mBandWidthUpdater, _2));
 	}
 
+//	//BD - Quick Graphics Presets
 	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
 
 	EDefaultOptions option = DEFAULT_TOP;
@@ -2963,24 +2988,6 @@ void LLPanelPreference::updateMediaAutoPlayCheckbox(LLUICtrl* ctrl)
 	}
 }
 
-void LLPanelPreference::deletePreset(const LLSD& user_data)
-{
-	std::string subdirectory = user_data.asString();
-	LLFloaterReg::showInstance("delete_pref_preset", subdirectory);
-}
-
-void LLPanelPreference::savePreset(const LLSD& user_data)
-{
-	std::string subdirectory = user_data.asString();
-	LLFloaterReg::showInstance("save_pref_preset", subdirectory);
-}
-
-void LLPanelPreference::loadPreset(const LLSD& user_data)
-{
-	std::string subdirectory = user_data.asString();
-	LLFloaterReg::showInstance("load_pref_preset", subdirectory);
-}
-
 void LLPanelPreference::setHardwareDefaults()
 {
 }
@@ -3051,6 +3058,7 @@ void LLPanelPreferenceGraphics::onPresetsListChange()
 
 void LLPanelPreferenceGraphics::setPresetText()
 {
+//	//BD - Quick Graphics Presets
 	//LLTextBox* preset_text = getChild<LLTextBox>("preset_text");
 
 	std::string preset_graphic_active = gSavedSettings.getString("PresetGraphicActive");
@@ -3064,6 +3072,7 @@ void LLPanelPreferenceGraphics::setPresetText()
 		LLPresetsManager::getInstance()->triggerChangeSignal();
 	}
 
+//	//BD - Quick Graphics Presets
 	/*if (!preset_graphic_active.empty())
 	{
 		preset_text->setText(preset_graphic_active);
@@ -3138,6 +3147,7 @@ void LLPanelPreferenceGraphics::resetDirtyChilds()
 }
 void LLPanelPreferenceGraphics::cancel()
 {
+	//BD
 	resetDirtyChilds();
 	LLPanelPreference::cancel();
 }
@@ -3149,6 +3159,7 @@ void LLPanelPreferenceGraphics::saveSettings()
 void LLPanelPreferenceGraphics::setHardwareDefaults()
 {
 	resetDirtyChilds();
+	//BD
 	LLPanelPreference::setHardwareDefaults();
 }
 

@@ -255,6 +255,7 @@ void LLInventoryPanel::initFromParams(const LLInventoryPanel::Params& params)
 	mFolderRoot.get()->setCallbackRegistrar(&mCommitCallbackRegistrar);
 	
 	// Scroller
+	//BD - Fix for the inventory's broken scrollbar layout.
 	static LLUICachedControl<S32> scrollbar_size ("UIScrollbarSize", 0);
 
 	LLRect scroll_rect;

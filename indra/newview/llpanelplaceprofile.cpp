@@ -48,8 +48,6 @@
 #include "llcallbacklist.h"
 #include "llbuycurrencyhtml.h"
 #include "llslurl.h"
-#include "llsidepanelinventory.h"
-#include "llfloatersidepanelcontainer.h"
 #include "lltabcontainer.h"
 #include "llviewercontrol.h"
 #include "llviewerparcelmgr.h"
@@ -57,6 +55,10 @@
 // [RLVa:KB] - Checked: 2010-09-02 (RLVa-1.2.1b)
 #include "rlvhandler.h"
 // [/RLVa:KB]
+
+//BD
+#include "llfloatersidepanelcontainer.h"
+#include "llsidepanelinventory.h"
 
 const F64 COVENANT_REFRESH_TIME_SEC = 60.0f;
 
@@ -244,6 +246,7 @@ void LLPanelPlaceProfile::setInfoType(EInfoType type)
 	getChild<LLTextBox>("owner_label")->setVisible(is_info_type_agent);
 	mParcelOwner->setVisible(is_info_type_agent);
 
+	//BD
 	getChild<LLTabContainer>("advanced_info_tab")->setVisible(is_info_type_agent);
 
 	// If we came from search we want larger description area, approx. 10 lines (see STORM-1311).
@@ -653,6 +656,7 @@ void LLPanelPlaceProfile::onForSaleBannerClick()
 		{
 			S32 price = parcel->getSalePrice();
 
+			//BD
 			LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 			if(price - sidepanel_inventory->getBalance() > 0)
 			{

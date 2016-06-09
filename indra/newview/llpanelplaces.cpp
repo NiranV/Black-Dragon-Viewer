@@ -1142,6 +1142,7 @@ void LLPanelPlaces::updateVerbs()
 	}
 	bool have_3d_pos = !mPosGlobal.isExactlyZero();
 
+	//BD
 	mTeleportBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible && is_place_info_visible);
 	mShowOnMapBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible && is_place_info_visible);
 	mOverflowBtn->setVisible(is_place_info_visible && !is_create_landmark_visible && !isLandmarkEditModeOn && is_place_info_visible);
@@ -1149,7 +1150,6 @@ void LLPanelPlaces::updateVerbs()
 	mSaveBtn->setVisible(isLandmarkEditModeOn && is_place_info_visible);
 	mCancelBtn->setVisible(isLandmarkEditModeOn && is_place_info_visible);
 	mCloseBtn->setVisible(is_create_landmark_visible && !isLandmarkEditModeOn && is_place_info_visible);
-
 
 	if (is_place_info_visible)
 	{

@@ -58,6 +58,7 @@ typedef enum
 		
 	} EGraphicsSettings;
 
+//BD
 class LLPanelVoiceDeviceSettings : public LLPanel
 {
 public:
@@ -128,8 +129,10 @@ public:
 	void getControlNames(std::vector<std::string>& names);
 
 protected:	
+	//BD
 	void		onBtnOK();
 	void		onBtnCancel();
+	//BD - TODO: Maybe remove it?
 	void		onBtnApply();
 
 	void		onClickClearCache();			// Clear viewer texture cache, vfs, and VO cache on next startup
@@ -147,6 +150,7 @@ protected:
 	// callback for defaults
 	void setHardwareDefaults();
 	// callback for when client turns on shaders
+	//BD
 	//void onVertexShaderEnable();
 	// callback for when client turns on impostors
 	void onAvatarImpostorsEnable();
@@ -177,13 +181,31 @@ public:
 	void enableHistory();
 	void setPersonalInfo(const std::string& visibility, bool im_via_email);
 	void refreshEnabledState();
+	//BD
 	void disableUnavailableSettings();
 	//void onCommitWindowedMode();
 	void refresh();	// Refresh enable/disable
 	
 	void refreshUI();
 
-//	//BD - Warning system
+	void onCommitParcelMediaAutoPlayEnable();
+	void onCommitMediaEnabled();
+	void onCommitMusicEnabled();
+	void applyResolution();
+	void onClickBlockList();
+	void onClickProxySettings();
+	void onClickTranslationSettings();
+	void onClickPermsDefault();
+	void onClickAutoReplace();
+	void onClickSpellChecker();
+	void applyUIColor(LLUICtrl* ctrl, const LLSD& param);
+	void getUIColor(LLUICtrl* ctrl, const LLSD& param);
+	void onLogChatHistorySaved();	
+	void buildPopupLists();
+	static void refreshSkin(void* data);
+	void selectPanel(const LLSD& name);
+
+//	//BD - Warning System
 	void refreshWarnings();
 
 //	//BD - Set Key dialog
@@ -224,35 +246,21 @@ public:
 	void refreshGraphicControls();
 	void refreshCameraControls();
 
-	void onCommitParcelMediaAutoPlayEnable();
-	void onCommitMediaEnabled();
-	void onCommitMusicEnabled();
-	void applyResolution();
-	void onClickBlockList();
-	void onClickProxySettings();
-	void onClickTranslationSettings();
-	void onClickPermsDefault();
-	void onClickAutoReplace();
-	void onClickSpellChecker();
-	void applyUIColor(LLUICtrl* ctrl, const LLSD& param);
-	void getUIColor(LLUICtrl* ctrl, const LLSD& param);
-	void onLogChatHistorySaved();	
-	void buildPopupLists();
-	static void refreshSkin(void* data);
-	void selectPanel(const LLSD& name);
-
+//	//BD - Quick Graphics Presets
 	void deletePreset(const LLSD& user_data);
 	void savePreset(const LLSD& user_data);
 	void loadPreset(const LLSD& user_data);
 
 private:
 
+//	//BD - Quick Graphics Presets
 	void onPresetsListChange();
 
 	void onDeleteTranscripts();
 	void onDeleteTranscriptsResponse(const LLSD& notification, const LLSD& response);
 	void updateDeleteTranscriptsButton();
 
+//	//BD - Expandable Tabs
 	S32 mModifier;
 
 	static std::string sSkin;
@@ -292,6 +300,7 @@ public:
 	// cancel() can restore them.
 	virtual void saveSettings();
 
+//	//BD - Quick Graphics Presets
 	void deletePreset(const LLSD& user_data);
 	void savePreset(const LLSD& user_data);
 	void loadPreset(const LLSD& user_data);
@@ -329,6 +338,7 @@ public:
 
 protected:
 	bool hasDirtyChilds();
+	//BD
 	void resetDirtyChilds();
 
 private:

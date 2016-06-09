@@ -76,6 +76,7 @@ const F32 DOT_SCALE = 0.75f;
 const F32 MIN_PICK_SCALE = 2.f;
 const S32 MOUSE_DRAG_SLOP = 2;		// How far the mouse needs to move before we think it's a drag
 
+//BD - Chat Range Rings
 const F32 WIDTH_PIXELS = 2.f;
 const S32 CIRCLE_STEPS = 64;
 
@@ -145,8 +146,6 @@ void LLNetMap::setScale( F32 scale )
 
 	gSavedSettings.setF32("MiniMapScale", mScale);
 
-	gSavedSettings.setF32("MiniMapScale", mScale);
-
 	mUpdateNow = true;
 }
 
@@ -162,6 +161,7 @@ void LLNetMap::draw()
 	//static LLUIColor map_track_disabled_color = LLUIColorTable::instance().getColor("MapTrackDisabledColor", LLColor4::white);
 	static LLUIColor map_frustum_color = LLUIColorTable::instance().getColor("MapFrustumColor", LLColor4::white);
 	static LLUIColor map_frustum_rotating_color = LLUIColorTable::instance().getColor("MapFrustumRotatingColor", LLColor4::white);
+//	//BD - Chat Range Rings6
 	static LLUIColor map_chat_ring_color = LLUIColorTable::instance().getColor("MapChatRingColor", LLColor4::white);
 
 	if (mObjectImagep.isNull())
@@ -350,7 +350,7 @@ void LLNetMap::draw()
 
 		LLWorld::getInstance()->getAvatars(&avatar_ids, &positions, gAgentCamera.getCameraPositionGlobal());
 
-//		//BD - Draw chat range ring(s)
+//		//BD - Chat Range Rings
 		static LLUICachedControl<bool> chat_ring("MiniMapChatRing", true);
 
 		// Draw avatars
@@ -416,7 +416,7 @@ void LLNetMap::draw()
 				mClosestAgentToCursor = uuid;
 			}
 
-//			//BD - Draw chat range ring(s)
+//			//BD - Chat Range Rings
 			if(chat_ring)
 			{
 				drawRing(CHAT_NORMAL_RADIUS, pos_map, map_chat_ring_color);
@@ -461,7 +461,7 @@ void LLNetMap::draw()
 				mClosestAgentToCursor = gAgent.getID();
 			}
 
-//			//BD - Draw chat range ring(s)
+//			//BD - Chat Range Rings
 			if(chat_ring)
 			{
 				drawRing(5.0, pos_map, map_chat_ring_color);
@@ -549,6 +549,7 @@ LLVector3 LLNetMap::globalPosToView(const LLVector3d& global_pos)
 	return pos_local;
 }
 
+//BD - Chat Range Rings
 void LLNetMap::drawRing(const F32 radius, const LLVector3 pos_map, const LLUIColor& color)
 
 {
@@ -687,6 +688,7 @@ BOOL LLNetMap::handleToolTip( S32 x, S32 y, MASK mask )
 		}
 	}
 
+	//BD
 //	LLStringUtil::format_map_t args;
 	args["[REGION]"] = region_name;
 	std::string msg = mToolTipMsg;

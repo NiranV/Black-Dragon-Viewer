@@ -143,9 +143,11 @@ public:
 	LLButton*		mBtnLink;
 	LLButton*		mBtnUnlink;
 
+	//BD
 	LLUICtrl*		mCheckSnapToGrid;
 	LLUICtrl*		mCheckMyObjects;
 	LLUICtrl*		mCheckPhysicalObjects;
+
 	LLButton*		mBtnGridOptions;
 	LLComboBox*		mComboGridMode;
 	LLCheckBoxCtrl*	mCheckStretchUniform;

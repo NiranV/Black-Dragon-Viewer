@@ -62,7 +62,9 @@ protected:
 
 	virtual void onTabSelected(const LLSD& param);
 
+// [RLVa:KB]
 //	const LLUUID& getAvatarId() { return mAvatarId; }
+// [/RLVa:KB]
 
 	void setAvatarId(const LLUUID& avatar_id) { mAvatarId = avatar_id; }
 

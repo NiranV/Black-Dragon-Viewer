@@ -128,6 +128,7 @@ bool isAddAction(const std::string& action)
 
 bool isRemoveAction(const std::string& action)
 {
+	//BD
 	return ("take_off" == action || "detach" == action || "deactivate" == action);
 }
 
@@ -5688,6 +5689,7 @@ void LLGestureBridge::performAction(LLInventoryModel* model, std::string action)
 		gInventory.updateItem(item);
 		gInventory.notifyObservers();
 	}
+	//BD
 	else if (isRemoveAction(action))
 	{
 		LLGestureMgr::instance().deactivateGesture(mUUID);
@@ -5983,6 +5985,7 @@ void LLObjectBridge::performAction(LLInventoryModel* model, std::string action)
 void LLObjectBridge::openItem()
 {
 	// object double-click action is to wear/unwear object
+	//BD - Add attachments by default instead of replacing others.
 	performAction(getInventoryModel(),
 		      get_is_item_worn(mUUID) ? "detach" : "wear_add");
 }
@@ -6513,6 +6516,7 @@ void LLWearableBridge::wearAddOnAvatar()
 	}
 }
 
+// [RLVa:KB]
 // static
 //void LLWearableBridge::onWearOnAvatarArrived( LLViewerWearable* wearable, void* userdata )
 //{
@@ -6564,6 +6568,7 @@ void LLWearableBridge::wearAddOnAvatar()
 //	}
 //	delete item_id;
 //}
+// [/RLVa:KB]
 
 // static
 BOOL LLWearableBridge::canEditOnAvatar(void* user_data)

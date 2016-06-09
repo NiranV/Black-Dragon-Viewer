@@ -37,6 +37,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class LLNameBox;
+//BD - SSFUI
 class LLTextBox;
 
 class LLPanelPermissions : public LLPanel
@@ -83,6 +84,7 @@ protected:
 	
 private:
 	LLNameBox*		mLabelGroupName;		// group name
+//	//BD - SSFUI
 	LLTextBox*		mGroupNameSLURL;
 
 	LLUUID			mCreatorID;

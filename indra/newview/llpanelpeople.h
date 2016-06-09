@@ -81,9 +81,10 @@ private:
 	// methods indirectly called by the updaters
 	void					updateFriendListHelpText();
 	void					updateFriendList();
-	//bool					updateSuggestedFriendList();
 	void					updateNearbyList();
 	void					updateRecentList();
+	//BD
+	//bool					updateSuggestedFriendList();
 	//void					updateFacebookList(bool visible);
 
 	bool					isItemsFreeOfFriends(const uuid_vec_t& uuids);
@@ -124,14 +125,14 @@ private:
 	// misc callbacks
 	static void				onAvatarPicked(const uuid_vec_t& ids, const std::vector<LLAvatarName> names);
 
+	//BD
 	//void					onFriendsAccordionExpandedCollapsed(LLUICtrl* ctrl, const LLSD& param, LLAvatarList* avatar_list);
 
 	void					showAccordion(const std::string name, bool show);
 
+	//BD
 	//void					showFriendsAccordionsIfNeeded();
-
 	//void					onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param);
-
 	//bool					onConnectedToFacebook(const LLSD& data);
 
 	void					setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed);
@@ -140,12 +141,15 @@ private:
 	bool					isAccordionCollapsedByUser(const std::string& name);
 
 	LLTabContainer*			mTabContainer;
-	//LLAvatarList*			mOnlineFriendList;
+
 	LLAvatarList*			mAllFriendList;
-	//LLAvatarList*			mSuggestedFriends;
 	LLAvatarList*			mNearbyList;
 	LLAvatarList*			mRecentList;
 	LLGroupList*			mGroupList;
+	//BD
+	//LLAvatarList*			mOnlineFriendList;
+	//LLAvatarList*			mSuggestedFriends;
+
 	LLNetMap*				mMiniMap;
 
 	std::vector<std::string> mSavedOriginalFilters;

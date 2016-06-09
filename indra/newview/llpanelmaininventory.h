@@ -51,6 +51,7 @@ class LLFloater;
 // including all the fixin's (e.g. AllItems/RecentItems tabs, filter floaters).
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//BD
 class LLPanelMainInventory : public LLPanel
 {
 public:
@@ -110,9 +111,11 @@ protected:
 	void newWindow();
 	void doCreate(const LLSD& userdata);
 	void resetFilters();
+	//BD
 	void setSortObjects();
 	void setSortSystemOnTop();
 	void setSortFoldersByName();
+
 	void saveTexture(const LLSD& userdata);
 	bool isSaveTextureEnabled(const LLSD& userdata);
 	void updateItemcountText();

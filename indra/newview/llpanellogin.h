@@ -49,10 +49,13 @@ public:
 				void *callback_data);
 	~LLPanelLogin();
 
+	//BD
 	virtual BOOL handleKeyHere(KEY key, MASK mask);
 	virtual void draw();
+
 	virtual void setFocus( BOOL b );
 
+	//BD - TODO: Look at this.
 	// Show the XUI first name, last name, and password widgets.  They are
 	// hidden on startup for reg-in-client
 	static void showLoginWidgets();
@@ -96,7 +99,9 @@ private:
 	static void onClickQuit(void*);
 
 private:
+	//BD
 	LLPointer<LLUIImage> mLogoImage;
+
 	boost::scoped_ptr<LLPanelLoginListener> mListener;
 
 	void			(*mCallback)(S32 option, void *userdata);

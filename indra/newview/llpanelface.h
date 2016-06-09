@@ -161,20 +161,20 @@ protected:
 
 	// Callback funcs for individual controls
 	//
-	static void		onCommitTextureInfo( 	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureInfo( 		LLUICtrl* ctrl, void* userdata);
 
-	static void		onCommitMaterialGloss(			LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialEnv(				LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialGloss(		LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialEnv(		LLUICtrl* ctrl, void* userdata);
 	static void		onCommitMaterialMaskCutoff(	LLUICtrl* ctrl, void* userdata);
 
-	static void		onCommitMaterialsMedia(	LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialType(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialsMedia(		LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialType(		LLUICtrl* ctrl, void* userdata);
 	static void		onCommitBump(				LLUICtrl* ctrl, void* userdata);
-	static void		onCommitTexGen(			LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTexGen(				LLUICtrl* ctrl, void* userdata);
 	static void		onCommitShiny(				LLUICtrl* ctrl, void* userdata);
-	static void		onCommitAlphaMode(		LLUICtrl* ctrl, void* userdata);
-	static void		onCommitFullbright(		LLUICtrl* ctrl, void* userdata);
-	static void     onCommitGlow(				LLUICtrl* ctrl, void *userdata);
+	static void		onCommitAlphaMode(			LLUICtrl* ctrl, void* userdata);
+	static void		onCommitFullbright(			LLUICtrl* ctrl, void* userdata);
+	static void		onCommitGlow(				LLUICtrl* ctrl, void *userdata);
 	static void		onCommitPlanarAlign(		LLUICtrl* ctrl, void* userdata);
 	static void		onCommitRepeatsPerMeter(	LLUICtrl* ctrl, void* userinfo);
 	static void		onClickAutoFix(void*);

@@ -227,6 +227,7 @@ void LLGroupList::addNewItem(const LLUUID& id, const std::string& name, const LL
 	item->setName(name, mNameFilter);
 	item->setGroupIconID(icon_id);
 
+	//BD
 	if (id.notNull()) // don't show the info button for the "none" group
 	{
 		getChildView("profile_btn")->setVisible(true);
@@ -276,7 +277,7 @@ bool LLGroupList::onContextMenuItemClick(const LLSD& userdata)
 	{
 		LLGroupActions::leave(selected_group);
 	}
-//	//BD - Copy SLURL/UUID feature
+//	//BD - SSFUI
 	else if (action == "copy_slurl")
 	{
 		LLGroupActions::copySLURL(selected_group);

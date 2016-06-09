@@ -150,13 +150,14 @@ private:
 	LLPullButton*				mBtnBack;
 	LLPullButton*				mBtnForward;
 	LLButton*					mBtnHome;
-	//	//BD - Search Combo Box
-	LLSearchComboBox			*mSearchComboBox;
 	LLLocationInputCtrl*		mCmbLocation;
 	LLRect						mDefaultNbRect;
 	LLRect						mDefaultFpRect;
 	LLLayoutPanel* 				mNavigationPanel;
 	LLLayoutPanel* 				mFavoritePanel;
+//	//BD - Search Combo Box
+	LLSearchComboBox			*mSearchComboBox;
+
 	boost::signals2::connection	mTeleportFailedConnection;
 	boost::signals2::connection	mTeleportFinishConnection;
 	boost::signals2::connection	mHistoryMenuConnection;

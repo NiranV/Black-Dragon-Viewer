@@ -494,6 +494,7 @@ void LLPanelGroupGeneral::update(LLGroupChange gc)
 
 	if (mComboActiveTitle)
 	{
+		//BD
 		mComboActiveTitle->clear();
 		mComboActiveTitle->removeall();
 		mComboActiveTitle->setEnabled(mAllowEdit);

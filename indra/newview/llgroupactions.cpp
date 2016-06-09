@@ -38,7 +38,6 @@
 #include "llgroupmgr.h"
 #include "llfloaterimcontainer.h"
 #include "llimview.h" // for gIMMgr
-#include "llurlaction.h"
 #include "llnotificationsutil.h"
 #include "llstatusbar.h"	// can_afford_transaction()
 #include "groupchatlistener.h"
@@ -48,6 +47,9 @@
 #include "rlvcommon.h"
 #include "rlvhandler.h"
 // [/RLVa:KB]
+
+//BD
+#include "llurlaction.h"
 
 //
 // Globals
@@ -194,7 +196,7 @@ public:
 
 LLFetchLeaveGroupData* gFetchLeaveGroupData = NULL;
 
-//BD - Copy SLURL/UUID feature
+//BD - SSFUI
 // static
 void LLGroupActions::copySLURL(const LLUUID& group_id)
 {
