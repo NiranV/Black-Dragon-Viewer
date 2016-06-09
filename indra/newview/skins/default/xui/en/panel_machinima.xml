@@ -852,11 +852,11 @@ width="345">
                   <slider
                   control_name="RenderWindlightInterpolateTime"
                   enabled_control="VertexShaderEnable"
-                  decimal_digits="1"
+                  decimal_digits="0"
                   follows="left|top"
                   can_edit_text="true"
                   height="15"
-                  increment="0.1"
+                  increment="1"
                   initial_value="5"
                   label="Transition Time:"
                   tool_tip="Set how much seconds Windlight transitions between preset selections should take"
@@ -867,7 +867,7 @@ width="345">
                   min_val="0"
                   name="BlurDistance"
                   top_pad="3"
-                  width="290" />
+                  width="282" />
                   <panel
                   follows="left|top|right"
                   height="20"
