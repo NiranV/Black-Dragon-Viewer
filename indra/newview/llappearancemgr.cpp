@@ -2221,7 +2221,7 @@ void LLAppearanceMgr::updateCOF(LLInventoryModel::item_array_t& body_items_new,
 		item_contents["type"] = LLAssetType::AT_LINK; 
 		contents.append(item_contents);
 	}
-	const LLUUID& base_id = append ? getBaseOutfitUUID() : category;
+	const LLUUID& base_id = append ? getBaseOutfitUUID() : idOutfit;
 	LLViewerInventoryCategory *base_cat = gInventory.getCategory(base_id);
 	if (base_cat && (base_cat->getPreferredType() == LLFolderType::FT_OUTFIT))
 	{
@@ -3177,7 +3177,7 @@ void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInve
 // [RLVa:KB] - Checked: 2013-02-12 (RLVa-1.4.8)
 			if (rlv_handler_t::isEnabled())
 			{
-				RLV_ASSERT(rlvPredCanRemoveItem(item));
+				RLV_ASSERT(rlvPredCanRemoveItem(item->getUUID()));
 			}
 // [/RLVa:KB]
 //			bool immediate_delete = false;

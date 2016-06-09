@@ -1086,7 +1086,7 @@ void LLDrawPoolAvatar::beginRiggedShinySimple()
 void LLDrawPoolAvatar::endRiggedShinySimple()
 {
 	LLVertexBuffer::unbind();
-	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders())
 	{
 		LLDrawPoolBump::unbindCubeMap(sVertexProgram, 2, sDiffuseChannel, cube_channel, false);
 		sVertexProgram->unbind();
@@ -1147,7 +1147,7 @@ void LLDrawPoolAvatar::beginRiggedFullbrightShiny()
 void LLDrawPoolAvatar::endRiggedFullbrightShiny()
 {
 	LLVertexBuffer::unbind();
-	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders)
+	if (sShaderLevel > 0 || gPipeline.canUseVertexShaders())
 	{
 		LLDrawPoolBump::unbindCubeMap(sVertexProgram, 2, sDiffuseChannel, cube_channel, false);
 		sVertexProgram->unbind();

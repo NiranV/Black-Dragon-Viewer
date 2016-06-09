@@ -123,7 +123,8 @@ protected:
 	void updateExtraData();
 	void rebuildNames();
 	void onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
-	void updateAvatarNames();
+	//BD - TODO: Check this.
+	//void updateAvatarNames();
 
 private:
 

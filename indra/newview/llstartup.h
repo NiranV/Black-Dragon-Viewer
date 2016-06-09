@@ -38,7 +38,8 @@ class LLSLURL;
 
 // functions
 bool idle_startup();
-void release_start_screen();
+//BD
+//void release_start_screen();
 bool login_alert_done(const LLSD& notification, const LLSD& response);
 
 // constants, variables,  & enumerations

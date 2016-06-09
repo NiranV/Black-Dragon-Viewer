@@ -1751,7 +1751,8 @@ bool LLAppViewer::cleanup()
 
 	display_cleanup(); 
 
-	release_start_screen(); // just in case
+	//BD
+	//release_start_screen(); // just in case
 
 	LLError::logToFixedBuffer(NULL);
 
