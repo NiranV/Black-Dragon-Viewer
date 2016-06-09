@@ -4405,12 +4405,12 @@ width="510">
       <slider
       control_name="RenderSSAOFactor"
       enabled_control="RenderDeferredSSAO"
-      decimal_digits="2"
+      decimal_digits="3"
       can_edit_text="true"
       follows="left|top"
       height="14"
-      increment="0.01"
-      initial_value="3"
+      increment="0.001"
+      initial_value="0.1"
       label="SSAO Factor:"
       label_width="150"
       layout="topleft"
@@ -4419,7 +4419,7 @@ width="510">
       min_val="0"
       name="SSAOFactor"
       top_pad="1"
-      width="321" />
+      width="333" />
       <button
  follows="left|top"
  control_name="RenderSSAOFactor"

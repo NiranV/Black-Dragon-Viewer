@@ -1025,11 +1025,11 @@ width="345">
                   <slider
                   control_name="RenderSSAOFactor"
                   enabled_control="RenderDeferredSSAO"
-                  decimal_digits="2"
+                  decimal_digits="3"
                   can_edit_text="true"
                   follows="left|top"
                   height="15"
-                  increment="0.01"
+                  increment="0.001"
                   initial_value="100"
                   label="Factor:"
                   label_width="110"
@@ -1039,7 +1039,7 @@ width="345">
                   min_val="0"
                   name="SSAOFactor"
                   top_pad="1"
-                  width="290" />
+                  width="296" />
                   <panel
                   follows="left|top|right"
                   height="20"
