@@ -1060,6 +1060,12 @@ namespace LLError
 			return false;
 		}
 		
+		//BD
+		if (Settings::getInstance()->destroyed())
+		{
+			return false;
+		}
+
 		SettingsConfigPtr s = Settings::getInstance()->getSettingsConfig();
 		
 		s->mShouldLogCallCounter++;
