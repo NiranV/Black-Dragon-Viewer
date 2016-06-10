@@ -2350,12 +2350,12 @@ width="510">
  label_width="150"
  layout="topleft"
  left="10"
- max_val="768"
- min_val="0"
+ max_val="1024"
+ min_val="8"
  name="FarClip"
  tool_tip="Controls the view distance of Objects starting from your avatar in meters"
  top_pad="12"
- width="319" />
+ width="325" />
  <button
  follows="left|top"
  control_name="RenderFarClip"
