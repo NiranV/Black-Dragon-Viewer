@@ -26,7 +26,7 @@ uniform mat4 projection_matrix;
 uniform mat4 modelview_matrix;
 uniform mat4 last_modelview_matrix;
 
-uniform mat4 lastMatrixPalette[52];
+uniform mat4 lastMatrixPalette[110];
 
 ATTRIBUTE vec3 position;
 ATTRIBUTE vec4 weight4;  

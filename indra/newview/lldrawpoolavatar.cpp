@@ -1841,7 +1841,7 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 					}
 					else
 					{
-						face->mLastMatrixPalette = new LLMatrix4[64];
+						face->mLastMatrixPalette = new LLMatrix4[LL_MAX_JOINTS_PER_MESH_OBJECT];
 					}
 
 					memcpy(face->mLastMatrixPalette->mMatrix, mat[0].mMatrix, sizeof(LLMatrix4)*skin->mJointNames.size());
