@@ -56,16 +56,6 @@
   is_running_function="Floater.IsOpen"
   is_running_parameters="im_container"/>
   <command
-  name="compass"
-  available_in_toybox="false"
-  icon="Command_Compass_Icon"
-  label_ref="Command_Compass_Label"
-  tooltip_ref="Command_Compass_Tooltip"
-  execute_function="Floater.ToggleOrBringToFront"
-  execute_parameters="compass"
-  is_running_function="Floater.IsOpen"
-  is_running_parameters="compass"/>
-  <command
   name="destinations"
   available_in_toybox="true"
   icon="Command_Destinations_Icon"
@@ -141,18 +131,17 @@
   tooltip_ref="Command_Marketplace_Tooltip"
   execute_function="Avatar.OpenMarketplace"/>
   <command name="marketplacelistings"
-           available_in_toybox="true"
-           icon="Command_MktListings_Icon"
-           label_ref="Command_MarketplaceListings_Label"
-           tooltip_ref="Command_MarketplaceListings_Tooltip"
-           execute_function="Marketplace.Toggle"
-           execute_parameters="marketplace"
-           is_enabled_function="Marketplace.Enabled"
-           is_enabled_parameters="marketplace"
-           is_running_function="Floater.IsOpen"
-           is_running_parameters="marketplace_listings"
-           />
-<command
+  available_in_toybox="true"
+  icon="Command_MktListings_Icon"
+  label_ref="Command_MarketplaceListings_Label"
+  tooltip_ref="Command_MarketplaceListings_Tooltip"
+  execute_function="Marketplace.Toggle"
+  execute_parameters="marketplace"
+  is_enabled_function="Marketplace.Enabled"
+  is_enabled_parameters="marketplace"
+  is_running_function="Floater.IsOpen"
+  is_running_parameters="marketplace_listings"/>
+  <command
   name="minimap"
   available_in_toybox="true"
   icon="Command_MiniMap_Icon"
@@ -174,24 +163,6 @@
   execute_parameters="moveview"
   is_running_function="Floater.IsOpen"
   is_running_parameters="moveview"/>
-  <!--<command
-  name="navbar"
-  available_in_toybox="true"
-  icon="Command_Navbar_Show_Icon"
-  label_ref="Command_Navbar_Label"
-  tooltip_ref="Command_Navbar_Tooltip"
-  execute_function="ToggleControl"
-  execute_parameters="HideTopbar"/>-->
-  <command
-  name="outbox"
-  available_in_toybox="false"
-  icon="Command_Outbox_Icon"
-  label_ref="Command_Outbox_Label"
-  tooltip_ref="Command_Outbox_Tooltip"
-  execute_function="Floater.ToggleOrBringToFront"
-  execute_parameters="outbox"
-  is_running_function="Floater.IsOpen"
-  is_running_parameters="outbox"/>
   <command
   name="script_limits"
   available_in_toybox="true"
@@ -343,20 +314,6 @@
   is_enabled_parameters="speak"
   is_running_function="Agent.IsMicrophoneOn"
   is_running_parameters="speak"/>
-  <!--<command
-  name="back"
-  available_in_toybox="true"
-  icon="Arrow_Left_Off"
-  label_ref="Command_Back_Label"
-  tooltip_ref="Command_Back_Tooltip"
-  execute_function="World.TeleportBack"/>
-  <command
-  name="forward"
-  available_in_toybox="true"
-  icon="Arrow_Right_Off"
-  label_ref="Command_Forward_Label"
-  tooltip_ref="Command_Forward_Tooltip"
-  execute_function="World.TeleportForward"/>-->
   <command
   name="view"
   available_in_toybox="true"
@@ -387,34 +344,4 @@
   execute_parameters="env_settings"
   is_running_function="Floater.IsOpen"
   is_running_parameters="env_settings"/>
-  <!--<command
-  name="spacer"
-  available_in_toybox="true"
-  icon="transparent.j2c"
-  label_ref="Command_Spacer_Label"
-  tooltip_ref="Command_Spacer_Tooltip"/>
-  <command
-  name="spacer2"
-  available_in_toybox="true"
-  icon="transparent.j2c"
-  label_ref="Command_Spacer_Label"
-  tooltip_ref="Command_Spacer_Tooltip"/>
-  <command
-  name="spacer3"
-  available_in_toybox="true"
-  icon="transparent.j2c"
-  label_ref="Command_Spacer_Label"
-  tooltip_ref="Command_Spacer_Tooltip"/>
-  <command
-  name="spacer4"
-  available_in_toybox="true"
-  icon="transparent.j2c"
-  label_ref="Command_Spacer_Label"
-  tooltip_ref="Command_Spacer_Tooltip"/>
-  <command
-  name="spacer5"
-  available_in_toybox="true"
-  icon="transparent.j2c"
-  label_ref="Command_Spacer_Label"
-  tooltip_ref="Command_Spacer_Tooltip"/>-->
 </commands>
