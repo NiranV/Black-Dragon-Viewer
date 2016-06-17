@@ -1935,7 +1935,6 @@ void slam_inventory_folder(const LLUUID& folder_id,
 	}
 	else // no cap
 	{
-// [RLVa:KB] - Checked: 2014-11-02 (RLVa-1.4.11)
 		LL_DEBUGS(LOG_INV) << "using item-by-item calls to slam folder, id " << folder_id
 						   << " new contents: " << ll_pretty_print_sd(contents) << LL_ENDL;
 
@@ -1946,25 +1945,7 @@ void slam_inventory_folder(const LLUUID& folder_id,
 			pItem->fromLLSD(*itItem);
 			items.push_back(pItem);
 		}
-
-		LLInventoryModel::item_array_t items_to_add, items_to_remove;
-		sync_inventory_folder(folder_id, items, items_to_add, items_to_remove);
-
-		link_inventory_items(folder_id, items_to_add, cb);
-		remove_inventory_items(items_to_remove, cb);
-// [/RLVa:KB]
-//		LL_DEBUGS(LOG_INV) << "using item-by-item calls to slam folder, id " << folder_id
-//						   << " new contents: " << ll_pretty_print_sd(contents) << LL_ENDL;
-//		for (LLSD::array_const_iterator it = contents.beginArray();
-//			 it != contents.endArray();
-//			 ++it)
-//		{
-//			const LLSD& item_contents = *it;
-//			LLViewerInventoryItem *item = new LLViewerInventoryItem;
-//			item->fromLLSD(item_contents);
-//			link_inventory_object(folder_id, item, cb);
-//		}
-//		remove_folder_contents(folder_id,false,cb);
+		remove_folder_contents(folder_id,false,cb);
 	}
 }
 

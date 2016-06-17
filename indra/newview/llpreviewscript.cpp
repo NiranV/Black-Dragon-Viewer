@@ -2200,6 +2200,14 @@ void LLLiveLSLEditor::saveIfNeeded(bool sync /*= true*/)
 	}
 // [/RLVa:KB]
 
+// [RLVa:KB] - Checked: 2010-11-25 (RLVa-1.2.2b) | Modified: RLVa-1.2.2b
+	if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.isLockedAttachment(object->getRootEdit())) )
+	{
+		RlvUtil::notifyBlockedGeneric();
+		return;
+	}
+// [/RLVa:KB]
+
     // get the latest info about it. We used to be losing the script
     // name on save, because the viewer object version of the item,
     // and the editor version would get out of synch. Here's a good

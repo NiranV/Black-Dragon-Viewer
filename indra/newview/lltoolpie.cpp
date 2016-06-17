@@ -1286,7 +1286,15 @@ BOOL LLToolPie::handleToolTip(S32 local_x, S32 local_y, MASK mask)
 // [/RLVa:KB]
 
 	LLViewerObject* hover_object = mHoverPick.getObject();
-	
+
+// [RLVa:KB] - Checked: RLVa-1.2.0
+	// NOTE: handleTooltipObject() will block HUD tooltips anyway but technically interact should only interfere with world interaction
+	if ( (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT)) && (hover_object) && (!hover_object->isHUDAttachment()) )
+	{
+		return TRUE;
+	}
+// [/RLVa:KB]
+
 	// update hover object and hover parcel
 	LLSelectMgr::getInstance()->setHoverObject(hover_object, mHoverPick.mObjectFace);
 	
@@ -1932,6 +1940,13 @@ BOOL LLToolPie::handleRightClickPick()
 					{
 						gMenuAvatarOther->show(x, y);
 					}
+// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
+			}
+			else
+			{
+				make_ui_sound("UISndInvalidOp");
+			}
+// [/RLVa:KB]
 				}
 // [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
 			}

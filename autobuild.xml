@@ -458,16 +458,16 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>e66122237534c860d14e7656e49ae120</string>
+              <string>b60d5d92be45b9d032fac377d3054821</string>
               <key>url</key>
-              <string>https://bitbucket.org/NiranV/black-dragon-viewer/downloads/fmodex-4.44.54-windows-20150605.tar.bz2</string>
+              <string>http://viewer.catznip.com/downloads/packages/fmodex-4.44.61-windows-201602062026.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
           </map>
         </map>
         <key>version</key>
-        <string>4.44.54.20150605</string>
+        <string>4.44.61.602062026</string>
       </map>
       <key>fontconfig</key>
       <map>
@@ -1082,9 +1082,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>98d3dc8d107d04b572fe47bd43a56e74</string>
+              <string>150ed9ecd913045551a287bd67ae1f8d</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/jpeglib_3p-update-jpeglib/rev/296854/arch/CYGWIN/installer/jpeglib-8c.296854-windows-296854.tar.bz2</string>
+              <string>http://viewer.catznip.com/downloads/packages/jpeglib-8c.201512201541-windows.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -1848,9 +1848,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>b35adcf74d22c128045aa87aade74736</string>
+              <string>fa394ec294b1ec7fefdd7e87a9f09bd0</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/openjpeg_3p-update-openjpeg/rev/297018/arch/CYGWIN/installer/openjpeg-1.4.297018-windows-297018.tar.bz2</string>
+              <string>http://viewer.catznip.com/downloads/packages/openjpeg-1.5.2.201602060245-windows.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>

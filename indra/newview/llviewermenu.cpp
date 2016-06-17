@@ -133,6 +133,11 @@
 #include "llpathfindingmanager.h"
 #include "llstartup.h"
 #include "boost/unordered_map.hpp"
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
+#include "rlvactions.h"
+#include "rlvhandler.h"
+#include "rlvlocks.h"
+// [/RLVa:KB]
 
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
 #include "rlvactions.h"
@@ -1272,6 +1277,12 @@ class LLAdvancedToggleWireframe : public view_listener_t
 // [RLVa:KB] - Checked: 2013-05-11 (RLVa-1.4.9)
 		bool fRlvBlockWireframe = gRlvAttachmentLocks.hasLockedHUD();
 		if ( (!gUseWireframe) && (fRlvBlockWireframe) )
+		{
+			RlvUtil::notifyBlocked(RLV_STRING_BLOCKED_WIREFRAME);
+		}
+		gUseWireframe = (!gUseWireframe) && (!fRlvBlockWireframe);
+// [/RLVa:KB]
+//		gUseWireframe = !(gUseWireframe);
 		{
 			RlvUtil::notifyBlocked(RLV_STRING_BLOCKED_WIREFRAME);
 		}
@@ -2748,7 +2759,7 @@ bool enable_object_touch(LLUICtrl* ctrl)
 	}
 
 // [RLVa:KB] - Checked: 2010-11-12 (RLVa-1.2.1g) | Added: RLVa-1.2.1g
-	if ((rlv_handler_t::isEnabled()) && (new_value))
+	if ( (rlv_handler_t::isEnabled()) && (new_value) )
 	{
 		// RELEASE-RLVa: [RLVa-1.2.1] Make sure this stays in sync with handle_object_touch()
 		new_value = gRlvHandler.canTouch(obj, LLToolPie::getInstance()->getPick().mObjectOffset);
@@ -3241,8 +3252,6 @@ class LLObjectMute : public view_listener_t
 		LLVOAvatar* avatar = find_avatar_from_object(object); 
 		if (avatar)
 		{
-			avatar->mNeedsImpostorUpdate = TRUE;
-
 // [RLVa:KB] - Checked: 2010-08-25 (RLVa-1.2.1b) | Added: RLVa-1.0.0e
 			if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))
 				return true;
@@ -8458,7 +8467,10 @@ void handle_rebake_textures(void*)
 	gAgentAvatarp->forceBakeAllTextures(slam_for_debug);
 	if (gAgent.getRegion() && gAgent.getRegion()->getCentralBakeVersion())
 	{
-		LLAppearanceMgr::instance().requestServerAppearanceUpdate();
+// [SL:KB] - Patch: Appearance-Misc | Checked: 2015-06-27 (Catznip-3.7)
+		LLAppearanceMgr::instance().syncCofVersionAndRefresh();
+// [/SL:KB]
+//		LLAppearanceMgr::instance().requestServerAppearanceUpdate();
 	}
 }
 
@@ -9708,6 +9720,14 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
 
+// [RLVa:KB] - Checked: 2010-04-23 (RLVa-1.2.0g) | Added: RLVa-1.2.0
+	enable.add("RLV.MainToggleVisible", boost::bind(&rlvMenuMainToggleVisible, _1));
+	if (rlv_handler_t::isEnabled())
+	{
+		enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
+	}
+// [/RLVa:KB]
+
 //	//BD - Derender
 	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));
 	view_listener_t::addMenu(new LLObjectDerender(), "Object.Derender");
@@ -9725,12 +9745,4 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
 	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");
 
-
-// [RLVa:KB] - Checked: 2010-04-23 (RLVa-1.2.0g) | Added: RLVa-1.2.0
-	enable.add("RLV.MainToggleVisible", boost::bind(&rlvMenuMainToggleVisible, _1));
-	if (rlv_handler_t::isEnabled())
-	{
-		enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
-	}
-// [/RLVa:KB]
 }

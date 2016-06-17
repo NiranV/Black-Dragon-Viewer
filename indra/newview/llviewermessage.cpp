@@ -114,6 +114,12 @@
 #include "llpanelplaceprofile.h"
 #include "llviewerregion.h"
 #include "llfloaterregionrestarting.h"
+// [RLVa:KB] - Checked: 2010-03-09 (RLVa-1.2.0a)
+#include "rlvactions.h"
+#include "rlvhandler.h"
+#include "rlvinventory.h"
+#include "rlvui.h"
+// [/RLVa:KB]
 
 // [RLVa:KB] - Checked: 2010-03-09 (RLVa-1.2.0a)
 #include "rlvactions.h"
@@ -1934,6 +1940,7 @@ bool LLOfferInfo::inventory_task_offer_callback(const LLSD& notification, const 
 				log_message_args["NAME"] = mFromName;
 				log_message = LLTrans::getString("InvOfferDecline", log_message_args);
 
+
 				LLSD args;
 				args["MESSAGE"] = log_message;
 				LLNotificationsUtil::add("SystemMessageTip", args);
@@ -3229,7 +3236,7 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 	case IM_LURE_USER:
 	case IM_TELEPORT_REQUEST:
 		{
-// [RLVa:KB] - Checked: 2013-11-08 (RLVa-1.4.9)
+// [RLVa:KB] - Checked: RLVa-1.4.9
 			// If we auto-accept the offer/request then this will override DnD status (but we'll still let the other party know later)
 			bool fRlvAutoAccept = (rlv_handler_t::isEnabled()) &&
 				( ((IM_LURE_USER == dialog) && (RlvActions::autoAcceptTeleportOffer(from_id))) ||
@@ -3241,7 +3248,7 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 				return;
 			}
 //			else if (is_do_not_disturb) 
-// [RLVa:KB] - Checked: 2013-11-08 (RLVa-1.4.9)
+// [RLVa:KB] - Checked: RLVa-1.4.9
 			else if ( (is_do_not_disturb) && (!fRlvAutoAccept) )
 // [/RLVa:KB]
 			{
@@ -3306,7 +3313,7 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 					}
 				}
 
-// [RLVa:KB] - Checked: 2013-11-08 (RLVa-1.4.9)
+// [RLVa:KB] - Checked: RLVa-1.4.9
 				if (rlv_handler_t::isEnabled())
 				{
 					if ( ((IM_LURE_USER == dialog) && (!RlvActions::canAcceptTpOffer(from_id))) ||
@@ -3318,8 +3325,9 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 						return;
 					}
 
-					// Censor lure message if: 1) restricted from receiving IMs from the sender, or 2) teleport offer and @showloc=n restricted
-					if ( (!RlvActions::canReceiveIM(from_id)) || ((IM_LURE_USER == dialog) && (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC))) )
+					// Censor message if: 1) restricted from receiving IMs from the sender, or 2) teleport offer/request and @showloc=n restricted
+					if ( (!RlvActions::canReceiveIM(from_id)) || 
+						 ((gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)) && (IM_LURE_USER == dialog || IM_TELEPORT_REQUEST == dialog)) )
 					{
 						message = RlvStrings::getString(RLV_STRING_HIDDEN);
 					}
@@ -3375,8 +3383,8 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 					params.substitutions = args;
 					params.payload = payload;
 
-// [RLVa:KB] - Checked: 20103-11-08 (RLVa-1.4.9)
-					if ( (rlv_handler_t::isEnabled()) && (fRlvAutoAccept) )
+// [RLVa:KB] - Checked: RLVa-1.4.9
+					if (fRlvAutoAccept)
 					{
 						if (IM_LURE_USER == dialog)
 							gRlvHandler.setCanCancelTp(false);
@@ -6767,7 +6775,7 @@ void notify_cautioned_script_question(const LLSD& notification, const LLSD& resp
 			if (viewregion)
 			{
 				// got the region, so include the region and 3d coordinates of the object
-				notice.setArg("[REGIONNAME]", viewregion->getName());				
+				notice.setArg("[REGIONNAME]", viewregion->getName());
 				std::string formatpos = llformat("%.1f, %.1f,%.1f", objpos[VX], objpos[VY], objpos[VZ]);
 				notice.setArg("[REGIONPOS]", formatpos);
 
@@ -6797,11 +6805,10 @@ void notify_cautioned_script_question(const LLSD& notification, const LLSD& resp
 		std::string perms;
 		BOOST_FOREACH(script_perm_t script_perm, SCRIPT_PERMISSIONS)
 		{
-//			if ((orig_questions & script_perm.permbit)
-//				&& script_perm.caution)
+//			if ((orig_questions & LSCRIPTRunTimePermissionBits[i]) && SCRIPT_QUESTION_IS_CAUTION[i])
 // [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-			if ( (orig_questions & script_perm.permbit) && 
-				 ((script_perm.caution) || (notification["payload"]["rlv_notify"].asBoolean())) )
+			if ( (orig_questions & LSCRIPTRunTimePermissionBits[i]) && 
+				 ((SCRIPT_QUESTION_IS_CAUTION[i]) || (notification["payload"]["rlv_notify"].asBoolean())) )
 // [/RLVa:KB]
 			{
 				count++;
@@ -6834,6 +6841,13 @@ void notify_cautioned_script_question(const LLSD& notification, const LLSD& resp
 				chat_msg.mSourceType = CHAT_SOURCE_SYSTEM;
 				nearby_chat->addMessage(chat_msg);
 			}
+			}
+// [/RLVa:KB]
+//		if (caution)
+//		{
+//			LLChat chat(notice.getString());
+//	//		LLFloaterChat::addChat(chat, FALSE, FALSE);
+//		}
 		}
 // [/RLVa:KB]
 //		if (caution)
@@ -7115,35 +7129,35 @@ void process_script_question(LLMessageSystem *msg, void **user_data)
 			payload["owner_name"] = owner_name;
 
 // [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-			//if (rlv_handler_t::isEnabled())
-			//{
-			//	RlvUtil::filterScriptQuestions(questions, payload);
+			if (rlv_handler_t::isEnabled())
+			{
+				RlvUtil::filterScriptQuestions(questions, payload);
 
-			//	if ( (questions) && (gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTPERMISSION)) )
-			//	{
-			//		const LLViewerObject* pObj = gObjectList.findObject(taskid);
-			//		if (pObj)
-			//		{
-			//			if ( (pObj->permYouOwner()) && (!pObj->isAttachment()) )
-			//			{
-			//				questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS] | 
-			//					LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH]);
-			//			}
-			//			else
-			//			{
-			//				questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS]);
-			//			}
-			//			payload["rlv_notify"] = !pObj->permYouOwner();
-			//		}
-			//	}
-			//}
+				if ( (questions) && (gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTPERMISSION)) )
+				{
+					const LLViewerObject* pObj = gObjectList.findObject(taskid);
+					if (pObj)
+					{
+						if ( (pObj->permYouOwner()) && (!pObj->isAttachment()) )
+						{
+							questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS] | 
+								LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH]);
+						}
+						else
+						{
+							questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS]);
+						}
+						payload["rlv_notify"] = !pObj->permYouOwner();
+					}
+				}
+			}
 
-			//if ( (!caution) && (!questions) )
-			//{
-			//	LLNotifications::instance().forceResponse(
-			//	LLNotification::Params("ScriptQuestion").substitutions(args).payload(payload), 0/*YES*/);
-			//	return;
-			//}
+			if ( (!caution) && (!questions) )
+			{
+				LLNotifications::instance().forceResponse(
+					LLNotification::Params("ScriptQuestion").substitutions(args).payload(payload), 0/*YES*/);
+				return;
+			}
 // [/RLVa:KB]
 
 			// check whether cautions are even enabled or not
@@ -7510,20 +7524,14 @@ void send_lures(const LLSD& notification, const LLSD& response)
 	LLAgentUI::buildSLURL(slurl);
 	text.append("\r\n").append(slurl.getSLURLString());
 
-// [RLVa:KB] - Checked: 2010-11-30 (RLVa-1.3.0)
-		if ( (RlvActions::hasBehaviour(RLV_BHVR_SENDIM)) || (RlvActions::hasBehaviour(RLV_BHVR_SENDIMTO)) )
-		{
-			// Filter the lure message if one of the recipients of the lure can't be sent an IM to
-			for (LLSD::array_const_iterator it = notification["payload"]["ids"].beginArray(); 
-					it != notification["payload"]["ids"].endArray(); ++it)
-			{
-				if (!RlvActions::canSendIM(it->asUUID()))
-				{
-					text = RlvStrings::getString(RLV_STRING_HIDDEN);
-					break;
-				}
-			}
-		}
+// [RLVa:KB] - Checked: RLVa-2.0.0
+	// Filter the lure message if any of the recipients are IM-blocked
+	const LLSD& sdRecipients = notification["payload"]["ids"];
+	if ( (gRlvHandler.isEnabled()) && 
+	     (std::any_of(sdRecipients.beginArray(), sdRecipients.endArray(), [](const LLSD& id) { return !RlvActions::canStartIM(id.asUUID()) || !RlvActions::canSendIM(id.asUUID()); })) )
+	{
+		text = RlvStrings::getString(RLV_STRING_HIDDEN);
+	}
 // [/RLVa:KB]
 
 	LLMessageSystem* msg = gMessageSystem;

@@ -703,9 +703,6 @@ set(viewer_SOURCE_FILES
     exopostprocess.cpp
     noise.cpp
     pipeline.cpp
-	piemenu.cpp
-    pieseparator.cpp
-    pieslice.cpp
     rlvactions.cpp
     rlvhandler.cpp
     rlvhelper.cpp

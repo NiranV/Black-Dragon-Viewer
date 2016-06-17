@@ -21,6 +21,7 @@
 #include "llinstantmessage.h"
 #include "llnotificationsutil.h"
 #include "llsdserialize.h"
+#include "lltrans.h"
 #include "llviewerparcelmgr.h"
 #include "llviewermenu.h"
 #include "llviewerregion.h"
@@ -32,6 +33,7 @@
 #include "rlvhandler.h"
 #include "rlvlocks.h"
 
+#include "lscript_byteformat.h"
 #include <boost/algorithm/string.hpp>
 
 // ============================================================================
@@ -77,8 +79,6 @@ void RlvSettings::initClass()
 	static bool fInitialized = false;
 	if (!fInitialized)
 	{
-		gSavedSettings.getControl(RLV_SETTING_MAIN)->getSignal()->connect(boost::bind(&onChangedSettingMain, _2));
-
 		#ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
 		fCompositeFolders = rlvGetSetting<bool>(RLV_SETTING_ENABLECOMPOSITES, false);
 		if (gSavedSettings.controlExists(RLV_SETTING_ENABLECOMPOSITES))
@@ -96,11 +96,9 @@ void RlvSettings::initClass()
 		if (gSavedSettings.controlExists(RLV_SETTING_SHOWNAMETAGS))
 			gSavedSettings.getControl(RLV_SETTING_SHOWNAMETAGS)->getSignal()->connect(boost::bind(&onChangedSettingBOOL, _2, &fShowNameTags));
 
-#ifdef RLV_EXTENSION_STARTLOCATION
 		// Don't allow toggling RLVaLoginLastLocation from the debug settings floater
 		if (gSavedPerAccountSettings.controlExists(RLV_SETTING_LOGINLASTLOCATION))
 			gSavedPerAccountSettings.getControl(RLV_SETTING_LOGINLASTLOCATION)->setHiddenFromSettingsEditor(true);
-#endif // RLV_EXTENSION_STARTLOCATION
 
 		if (gSavedSettings.controlExists(RLV_SETTING_TOPLEVELMENU))
 			gSavedSettings.getControl(RLV_SETTING_TOPLEVELMENU)->getSignal()->connect(boost::bind(&onChangedMenuLevel));
@@ -109,21 +107,19 @@ void RlvSettings::initClass()
 	}
 }
 
-#ifdef RLV_EXTENSION_STARTLOCATION
-	// Checked: 2010-04-01 (RLVa-1.2.0c) | Modified: RLVa-0.2.1d
-	void RlvSettings::updateLoginLastLocation()
+// Checked: 2010-04-01 (RLVa-1.2.0c) | Modified: RLVa-0.2.1d
+void RlvSettings::updateLoginLastLocation()
+{
+	if ( (!LLApp::isQuitting()) && (gSavedPerAccountSettings.controlExists(RLV_SETTING_LOGINLASTLOCATION)) )
 	{
-		if ( (!LLApp::isQuitting()) && (gSavedPerAccountSettings.controlExists(RLV_SETTING_LOGINLASTLOCATION)) )
+		BOOL fValue = (gRlvHandler.hasBehaviour(RLV_BHVR_TPLOC)) || (!RlvActions::canStand());
+		if (gSavedPerAccountSettings.getBOOL(RLV_SETTING_LOGINLASTLOCATION) != fValue)
 		{
-			BOOL fValue = (gRlvHandler.hasBehaviour(RLV_BHVR_TPLOC)) || (!RlvActions::canStand());
-			if (gSavedPerAccountSettings.getBOOL(RLV_SETTING_LOGINLASTLOCATION) != fValue)
-			{
-				gSavedPerAccountSettings.setBOOL(RLV_SETTING_LOGINLASTLOCATION, fValue);
-				gSavedPerAccountSettings.saveToFile(gSavedSettings.getString("PerAccountSettingsFile"), TRUE);
-			}
+			gSavedPerAccountSettings.setBOOL(RLV_SETTING_LOGINLASTLOCATION, fValue);
+			gSavedPerAccountSettings.saveToFile(gSavedSettings.getString("PerAccountSettingsFile"), TRUE);
 		}
 	}
-#endif // RLV_EXTENSION_STARTLOCATION
+}
 
 // Checked: 2011-08-16 (RLVa-1.4.0b) | Added: RLVa-1.4.0b
 bool RlvSettings::onChangedMenuLevel()
@@ -147,9 +143,9 @@ void RlvSettings::onChangedSettingMain(const LLSD& sdValue)
 	{
 		LLNotificationsUtil::add(
 			"GenericAlert",
-			LLSD().with("MESSAGE", llformat(RlvStrings::getString("message_toggle_restart").c_str(), 
-				(sdValue.asBoolean()) ? RlvStrings::getString("message_toggle_restart_enabled").c_str()
-				                      : RlvStrings::getString("message_toggle_restart_disabled").c_str())));
+			LLSD().with("MESSAGE", llformat(LLTrans::getString("RLVaToggleMessage").c_str(), 
+				(sdValue.asBoolean()) ? LLTrans::getString("RLVaToggleEnabled").c_str()
+				                      : LLTrans::getString("RLVaToggleDisabled").c_str())));
 	}
 }
 
@@ -192,7 +188,7 @@ void RlvStrings::initClass()
 // Checked: 2011-11-08 (RLVa-1.5.0)
 void RlvStrings::loadFromFile(const std::string& strFilePath, bool fUserOverride)
 {
-	llifstream fileStream(strFilePath, std::ios::binary); LLSD sdFileData;
+	llifstream fileStream(strFilePath.c_str(), std::ios::binary); LLSD sdFileData;
 	if ( (!fileStream.is_open()) || (!LLSDSerialize::fromXMLDocument(sdFileData, fileStream)) )
 		return;
 	fileStream.close();
@@ -416,7 +412,7 @@ void RlvUtil::filterNames(std::string& strUTF8Text, bool fFilterLegacy)
 void RlvUtil::filterScriptQuestions(S32& nQuestions, LLSD& sdPayload)
 {
 	// Check SCRIPT_PERMISSION_ATTACH
-	/*if ( (!gRlvAttachmentLocks.canAttach()) && (LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH] & nQuestions) )
+	if ( (!gRlvAttachmentLocks.canAttach()) && (LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH] & nQuestions) )
 	{
 		// Notify the user that we blocked it since they're not allowed to wear any new attachments
 		sdPayload["rlv_blocked"] = RLV_STRING_BLOCKED_PERMATTACH;
@@ -431,7 +427,7 @@ void RlvUtil::filterScriptQuestions(S32& nQuestions, LLSD& sdPayload)
 		nQuestions &= ~LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TELEPORT];		
 	}
 
-	sdPayload["questions"] = nQuestions;*/
+	sdPayload["questions"] = nQuestions;
 }
 
 // Checked: 2010-08-29 (RLVa-1.2.1c) | Added: RLVa-1.2.1c
@@ -547,7 +543,7 @@ bool rlvMenuMainToggleVisible(LLUICtrl* pMenuCtrl)
 		if (gSavedSettings.getBOOL(RLV_SETTING_MAIN) == rlv_handler_t::isEnabled())
 			pMenuItem->setLabel(strLabel);
 		else
-			pMenuItem->setLabel(strLabel + RlvStrings::getString("message_toggle_restart_pending"));
+			pMenuItem->setLabel(strLabel + " " + LLTrans::getString("RLVaPendingRestart"));
 	}
 	return true;
 }
@@ -555,7 +551,7 @@ bool rlvMenuMainToggleVisible(LLUICtrl* pMenuCtrl)
 // Checked: 2011-08-16 (RLVa-1.4.0b) | Added: RLVa-1.4.0b
 void rlvMenuToggleVisible()
 {
-	/*bool fTopLevel = rlvGetSetting(RLV_SETTING_TOPLEVELMENU, true);
+	bool fTopLevel = rlvGetSetting(RLV_SETTING_TOPLEVELMENU, true);
 	bool fRlvEnabled = rlv_handler_t::isEnabled();
 
 	LLMenuGL* pRLVaMenuMain = gMenuBarView->findChildMenuByName("RLVa Main", FALSE);
@@ -576,7 +572,7 @@ void rlvMenuToggleVisible()
 			pMenuTo->addChild(pItem);
 			pItem->updateBranchParent(pMenuTo);
 		}
-	}*/
+	}
 }
 
 // Checked: 2010-04-23 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g
@@ -585,7 +581,7 @@ bool rlvMenuEnableIfNot(const LLSD& sdParam)
 	bool fEnable = true;
 	if (rlv_handler_t::isEnabled())
 	{
-		ERlvBehaviour eBhvr = RlvCommand::getBehaviourFromString(sdParam.asString());
+		ERlvBehaviour eBhvr = RlvBehaviourDictionary::instance().getBehaviourFromString(sdParam.asString(), RLV_TYPE_ADDREM);
 		fEnable = (eBhvr != RLV_BHVR_UNKNOWN) ? !gRlvHandler.hasBehaviour(eBhvr) : true;
 	}
 	return fEnable;

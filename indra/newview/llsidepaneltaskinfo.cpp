@@ -379,25 +379,22 @@ void LLSidepanelTaskInfo::refresh()
 // [/RLVa:KB]
 	std::string creator_name;
 	LLUUID creator_id;
-	LLSelectMgr::getInstance()->selectGetCreator(creator_id, creator_name);
 // [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
-	creators_identical = LLSelectMgr::getInstance()->selectGetCreator(mCreatorID, creator_name);
+	creators_identical = LLSelectMgr::getInstance()->selectGetCreator(creator_id, creator_name);
 // [/RLVa:KB]
-//	LLSelectMgr::getInstance()->selectGetCreator(mCreatorID, creator_name);
+//	LLSelectMgr::getInstance()->selectGetCreator(creator_id, creator_name);
 
-//	getChild<LLUICtrl>("Creator Name")->setValue(creator_name);
-//	getChildView("Creator Name")->setEnabled(TRUE);
+//	if(creator_id != mCreatorID )
+//	{
+//		mDACreatorName->setValue(creator_name);
+//		mCreatorID = creator_id;
+//	}
+//	if(mDACreatorName->getValue().asString() == LLStringUtil::null)
+//	{
+//	    mDACreatorName->setValue(creator_name);
+//	}
+//	mDACreatorName->setEnabled(TRUE);
 // [RLVa:KB] - Moved further down to avoid an annoying flicker when the text is set twice in a row
-	if(creator_id != mCreatorID )
-	{
-		mDACreatorName->setValue(creator_name);
-		mCreatorID = creator_id;
-	}
-	if(mDACreatorName->getValue().asString() == LLStringUtil::null)
-	{
-	    mDACreatorName->setValue(creator_name);
-	}
-	mDACreatorName->setEnabled(TRUE);
 
 	// Update owner text field
 	getChildView("Owner:")->setEnabled(TRUE);
@@ -427,19 +424,16 @@ void LLSidepanelTaskInfo::refresh()
 		}
 	}
 
-	if(owner_id.isNull() || (owner_id != mOwnerID))
-	{
-		mDAOwnerName->setValue(owner_name);
-		mOwnerID = owner_id;
-	}
-	if(mDAOwnerName->getValue().asString() == LLStringUtil::null)
-	{
-	    mDAOwnerName->setValue(owner_name);
-	}
-	
-//	getChild<LLUICtrl>("Owner Name")->setValue(owner_name);
+//	if(owner_id.isNull() || (owner_id != mOwnerID))
+//	{
+//		mDAOwnerName->setValue(owner_name);
+//		mOwnerID = owner_id;
+//	}
+//	if(mDAOwnerName->getValue().asString() == LLStringUtil::null)
+//	{
+//	    mDAOwnerName->setValue(owner_name);
+//	}
 //	getChildView("Owner Name")->setEnabled(TRUE);
-// [RLVa:KB] - Moved further down to avoid an annoying flicker when the text is set twice in a row
 
 // [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
 	if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))
@@ -453,10 +447,17 @@ void LLSidepanelTaskInfo::refresh()
 			owner_name = LLSLURL("agent", mOwnerID, "rlvanonym").getSLURLString();
 	}
 
-	getChild<LLUICtrl>("Creator Name")->setValue(creator_name);
-	getChildView("Creator Name")->setEnabled(TRUE);
+	if(mDACreatorName->getValue().asString() == LLStringUtil::null)
+	{
+		mDACreatorName->setValue(creator_name);
+	}
+	mDACreatorName->setEnabled(TRUE);
 
-	getChildView("Owner Name")->setEnabled(TRUE);
+	if(mDAOwnerName->getValue().asString() == LLStringUtil::null)
+	{
+		mDAOwnerName->setValue(owner_name);
+	}
+	
 // [/RLVa:KB]
 
 	// update group text field

@@ -89,7 +89,6 @@
 #include "llsidepanelinventory.h"
 #include "lltoolbarview.h"
 #include "bdpaneldrawdistance.h"
-
 //
 // Globals
 //
