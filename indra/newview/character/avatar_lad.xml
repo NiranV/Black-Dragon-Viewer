@@ -710,9 +710,11 @@
          name="mHindLimb2Right"
          scale=".05 .05 .1" />
 
-        <bone name="mWingsRoot" scale="1 0 0" offset="0 0 0" />
-		<bone name="mWing1Right" scale="0 0 0" offset="0.02 0 0" />
-		<bone name="mWing1Left"  scale="0 0 0" offset="0.02 0 0" />
+        <bone name="mWingsRoot" scale="0 0 0" offset="0 0 0" />
+
+		<bone name="mWing1Right" scale="0 0 0" offset="-0.05 0 0" />
+
+		<bone name="mWing1Left"  scale="0 0 0" offset="-0.05 0 0" />
 
       </param_skeleton>
     </param>
@@ -6335,6 +6337,46 @@
       <param_morph />
     </param>
 
+    <param
+     shared="1"
+     id="20021"
+     group="1"
+     name="Upper_Eyelid_Fold"
+     value_min="-0.2"
+     value_max="1.3">
+      <param_morph />
+    </param>
+
+    <param
+     shared="1"
+     id="20024"
+     group="1"
+     name="Wide_Eyes"
+     value_min="-1.5"
+     value_max="2">
+      <param_morph />
+    </param>
+
+    <param
+     shared="1"
+     id="20650"
+     group="1"
+     name="Eyelid_Corner_Up"
+     value_min="-1.3"
+     value_max="1.2">
+      <param_morph />
+    </param>
+
+    <param
+     shared="1"
+     id="20880"
+     group="1"
+     name="Eyelid_Inner_Corner_Up"
+     value_min="-1.3"
+     value_max="1.2">
+      <param_morph />
+    </param>
+
     <!--
             ##############
             # Facial Expression morphs
@@ -6635,7 +6677,7 @@
         <volume_morph
           name="RIGHT_PEC"
           scale="-0.05 0.0 0.0"
-          pos="-0.01 -0.01 -0.02"/>
+          pos="-0.01 0.01 -0.02"/>
 	  </param_morph>
     </param>
 
@@ -6661,7 +6703,7 @@
         <volume_morph
           name="RIGHT_PEC"
           scale="-0.051 0.0 0.0"
-          pos="-0.02 -0.01 -0.03"/>
+          pos="-0.02 0.01 -0.03"/>
 	  </param_morph>
     </param>
 
