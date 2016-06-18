@@ -119,8 +119,9 @@ void RlvUIEnabler::onToggleShowLoc()
 
 	if (LLNavigationBar::instanceExists())
 		LLNavigationBar::instance().refreshLocationCtrl();
-	if (LLPanelTopInfoBar::instanceExists())
-		LLPanelTopInfoBar::instance().update();
+	//BD
+//	if (LLPanelTopInfoBar::instanceExists())
+//		LLPanelTopInfoBar::instance().update();
 
 	if (!fEnable)
 	{

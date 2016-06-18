@@ -57,13 +57,6 @@ bool AISAPI::isAvailable()
     }
     return false;
 }
-//bool AISCommand::getResponseUUID(const LLSD& content, LLUUID& id)
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2015-06-24 (Catznip-3.7)
-bool AISCommand::getResponseUUIDs(const LLSD& content, uuid_list_t& ids)
-// [/SL:KB]
-{
-	return false;
-}
 
 /*static*/
 void AISAPI::getCapNames(LLSD& capNames)

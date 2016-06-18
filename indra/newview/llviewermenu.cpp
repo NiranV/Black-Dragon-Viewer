@@ -1283,12 +1283,6 @@ class LLAdvancedToggleWireframe : public view_listener_t
 		gUseWireframe = (!gUseWireframe) && (!fRlvBlockWireframe);
 // [/RLVa:KB]
 //		gUseWireframe = !(gUseWireframe);
-		{
-			RlvUtil::notifyBlocked(RLV_STRING_BLOCKED_WIREFRAME);
-		}
-		gUseWireframe = (!gUseWireframe) && (!fRlvBlockWireframe);
-// [/RLVa:KB]
-//		gUseWireframe = !(gUseWireframe);
 		gWindowResized = TRUE;
 		LLPipeline::updateRenderDeferred();
 		gPipeline.resetVertexBuffers();
@@ -8467,10 +8461,7 @@ void handle_rebake_textures(void*)
 	gAgentAvatarp->forceBakeAllTextures(slam_for_debug);
 	if (gAgent.getRegion() && gAgent.getRegion()->getCentralBakeVersion())
 	{
-// [SL:KB] - Patch: Appearance-Misc | Checked: 2015-06-27 (Catznip-3.7)
-		LLAppearanceMgr::instance().syncCofVersionAndRefresh();
-// [/SL:KB]
-//		LLAppearanceMgr::instance().requestServerAppearanceUpdate();
+		LLAppearanceMgr::instance().requestServerAppearanceUpdate();
 	}
 }
 

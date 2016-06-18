@@ -33,7 +33,7 @@
 #include "rlvhandler.h"
 #include "rlvlocks.h"
 
-#include "lscript_byteformat.h"
+//#include "lscript_byteformat.h"
 #include <boost/algorithm/string.hpp>
 
 // ============================================================================
@@ -411,7 +411,7 @@ void RlvUtil::filterNames(std::string& strUTF8Text, bool fFilterLegacy)
 // Checked: 2012-08-19 (RLVa-1.4.7)
 void RlvUtil::filterScriptQuestions(S32& nQuestions, LLSD& sdPayload)
 {
-	// Check SCRIPT_PERMISSION_ATTACH
+	/*// Check SCRIPT_PERMISSION_ATTACH
 	if ( (!gRlvAttachmentLocks.canAttach()) && (LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH] & nQuestions) )
 	{
 		// Notify the user that we blocked it since they're not allowed to wear any new attachments
@@ -427,7 +427,7 @@ void RlvUtil::filterScriptQuestions(S32& nQuestions, LLSD& sdPayload)
 		nQuestions &= ~LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TELEPORT];		
 	}
 
-	sdPayload["questions"] = nQuestions;
+	sdPayload["questions"] = nQuestions;*/
 }
 
 // Checked: 2010-08-29 (RLVa-1.2.1c) | Added: RLVa-1.2.1c
@@ -551,7 +551,8 @@ bool rlvMenuMainToggleVisible(LLUICtrl* pMenuCtrl)
 // Checked: 2011-08-16 (RLVa-1.4.0b) | Added: RLVa-1.4.0b
 void rlvMenuToggleVisible()
 {
-	bool fTopLevel = rlvGetSetting(RLV_SETTING_TOPLEVELMENU, true);
+	//BD
+	/*bool fTopLevel = rlvGetSetting(RLV_SETTING_TOPLEVELMENU, true);
 	bool fRlvEnabled = rlv_handler_t::isEnabled();
 
 	LLMenuGL* pRLVaMenuMain = gMenuBarView->findChildMenuByName("RLVa Main", FALSE);
@@ -572,7 +573,7 @@ void rlvMenuToggleVisible()
 			pMenuTo->addChild(pItem);
 			pItem->updateBranchParent(pMenuTo);
 		}
-	}
+	}*/
 }
 
 // Checked: 2010-04-23 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g

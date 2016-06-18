@@ -2106,7 +2106,7 @@ bool idle_startup()
 			//     forced uppon us. Just proceed loading, our Avatar might pop up while
 			//     we still read the dialog which also even indicates it but never lets
 			//     it happen because of this.
-			//LLStartUp::setStartupState( STATE_CLEANUP );
+			LLStartUp::setStartupState( STATE_CLEANUP );
 		}
 		display_startup();
 

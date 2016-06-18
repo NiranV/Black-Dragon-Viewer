@@ -138,6 +138,8 @@ private:
 	bool mShowExtraInformation;
 	bool mShowSpeakingIndicator;
 	bool mShowPermissions;
+	F32 mExtraDataUpdatePeriod;
+
 // [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
 	bool mRlvCheckShowNames;
 // [/RLVa:KB]

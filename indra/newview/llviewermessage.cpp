@@ -114,12 +114,6 @@
 #include "llpanelplaceprofile.h"
 #include "llviewerregion.h"
 #include "llfloaterregionrestarting.h"
-// [RLVa:KB] - Checked: 2010-03-09 (RLVa-1.2.0a)
-#include "rlvactions.h"
-#include "rlvhandler.h"
-#include "rlvinventory.h"
-#include "rlvui.h"
-// [/RLVa:KB]
 
 // [RLVa:KB] - Checked: 2010-03-09 (RLVa-1.2.0a)
 #include "rlvactions.h"
@@ -6805,10 +6799,11 @@ void notify_cautioned_script_question(const LLSD& notification, const LLSD& resp
 		std::string perms;
 		BOOST_FOREACH(script_perm_t script_perm, SCRIPT_PERMISSIONS)
 		{
-//			if ((orig_questions & LSCRIPTRunTimePermissionBits[i]) && SCRIPT_QUESTION_IS_CAUTION[i])
+//			if ((orig_questions & script_perm.permbit)
+//				&& script_perm.caution)
 // [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-			if ( (orig_questions & LSCRIPTRunTimePermissionBits[i]) && 
-				 ((SCRIPT_QUESTION_IS_CAUTION[i]) || (notification["payload"]["rlv_notify"].asBoolean())) )
+			if ((orig_questions & script_perm.permbit) &&
+				((script_perm.caution) || (notification["payload"]["rlv_notify"].asBoolean())))
 // [/RLVa:KB]
 			{
 				count++;
@@ -6841,13 +6836,6 @@ void notify_cautioned_script_question(const LLSD& notification, const LLSD& resp
 				chat_msg.mSourceType = CHAT_SOURCE_SYSTEM;
 				nearby_chat->addMessage(chat_msg);
 			}
-			}
-// [/RLVa:KB]
-//		if (caution)
-//		{
-//			LLChat chat(notice.getString());
-//	//		LLFloaterChat::addChat(chat, FALSE, FALSE);
-//		}
 		}
 // [/RLVa:KB]
 //		if (caution)
@@ -7129,35 +7117,35 @@ void process_script_question(LLMessageSystem *msg, void **user_data)
 			payload["owner_name"] = owner_name;
 
 // [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-			if (rlv_handler_t::isEnabled())
-			{
-				RlvUtil::filterScriptQuestions(questions, payload);
+			//if (rlv_handler_t::isEnabled())
+			//{
+			//	RlvUtil::filterScriptQuestions(questions, payload);
 
-				if ( (questions) && (gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTPERMISSION)) )
-				{
-					const LLViewerObject* pObj = gObjectList.findObject(taskid);
-					if (pObj)
-					{
-						if ( (pObj->permYouOwner()) && (!pObj->isAttachment()) )
-						{
-							questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS] | 
-								LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH]);
-						}
-						else
-						{
-							questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS]);
-						}
-						payload["rlv_notify"] = !pObj->permYouOwner();
-					}
-				}
-			}
+			//	if ( (questions) && (gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTPERMISSION)) )
+			//	{
+			//		const LLViewerObject* pObj = gObjectList.findObject(taskid);
+			//		if (pObj)
+			//		{
+			//			if ( (pObj->permYouOwner()) && (!pObj->isAttachment()) )
+			//			{
+			//				questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS] | 
+			//					LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_ATTACH]);
+			//			}
+			//			else
+			//			{
+			//				questions &= ~(LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TAKE_CONTROLS]);
+			//			}
+			//			payload["rlv_notify"] = !pObj->permYouOwner();
+			//		}
+			//	}
+			//}
 
-			if ( (!caution) && (!questions) )
-			{
-				LLNotifications::instance().forceResponse(
-					LLNotification::Params("ScriptQuestion").substitutions(args).payload(payload), 0/*YES*/);
-				return;
-			}
+			//if ( (!caution) && (!questions) )
+			//{
+			//	LLNotifications::instance().forceResponse(
+			//		LLNotification::Params("ScriptQuestion").substitutions(args).payload(payload), 0/*YES*/);
+			//	return;
+			//}
 // [/RLVa:KB]
 
 			// check whether cautions are even enabled or not
