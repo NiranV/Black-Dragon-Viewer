@@ -31,7 +31,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="2902"
+   height="3202"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -137,7 +137,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsViewerVisible"
 	  layout="topleft"
-	  height="188"
+	  height="209"
 	  auto_resize="false"
       visible="false"
 	  name="viewer_layout_panel"
@@ -344,6 +344,20 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+ 
+ <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Memory
+ </text>
  <icon
   follows="top|right"
   height="1"
@@ -354,7 +368,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="4"/>
+  top_pad="0"/>
  <check_box
    control_name="CustomSystemMemory"
    height="16"
@@ -612,7 +626,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsLoDVisible"
 	  layout="topleft"
-	  height="503"
+	  height="541"
       visible="false"
 	  auto_resize="false"
 	  name="lod_layout_panel"
@@ -1414,6 +1428,19 @@ width="510">
                         </radio_item>
                      
                   </radio_group>
+ <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Physics
+ </text>
  <icon
   follows="top|right"
   height="1"
@@ -1424,7 +1451,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="0"/>
  <check_box
    control_name="AvatarPhysics"
    height="16"
@@ -1600,6 +1627,19 @@ width="510">
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
+ <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Windlight
+ </text>
  <icon
   follows="top|right"
   height="1"
@@ -1610,7 +1650,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="0"/>
  <check_box
    control_name="RenderWaterMipNormal"
    enabled_control="VertexShaderEnable"
@@ -2322,7 +2362,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsPerformanceVisible"
 	  layout="topleft"
-	  height="316"
+	  height="383"
 	  auto_resize="false"
       visible="false"
 	  name="performance_layout_panel"
@@ -2417,6 +2457,19 @@ width="510">
    name="attached_particles"
    top_pad="5"
    width="115" />
+ <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Toggles
+ </text>
  <icon
   follows="top|right"
   height="1"
@@ -2427,7 +2480,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="3"/>
+  top_pad="0"/>
  <check_box
       control_name="RenderAnisotropic"
       height="16"
@@ -2450,7 +2503,20 @@ width="510">
    name="EnableFullbright"
    top_pad="0"
    width="115" />
-   <icon
+   <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Debugs
+ </text>
+ <icon
   follows="top|right"
   height="1"
   image_name="Prefs_Separator"
@@ -2460,7 +2526,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="3"/>
+  top_pad="0"/>
    <check_box
    control_name="UseOcclusion"
    height="16"
@@ -2541,7 +2607,20 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-   <icon
+   <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Avatars
+ </text>
+ <icon
   follows="top|right"
   height="1"
   image_name="Prefs_Separator"
@@ -2551,7 +2630,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="4"/>
+  top_pad="0"/>
    <!--<check_box
    control_name="RenderUseImpostors"
    height="16"
@@ -2671,6 +2750,19 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+ <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Jelly Dolls
+ </text>
  <icon
   follows="top|right"
   height="1"
@@ -2681,7 +2773,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="4"/>
+  top_pad="0"/>
    <!--<radio_group
                   control_name="RenderAutoMuteFunctions"
                   enabled_control="RenderUseImpostors"
@@ -2915,7 +3007,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsVertexVisible"
 	  layout="topleft"
-	  height="236"
+	  height="271"
 	  auto_resize="false"
       visible="false"
 	  name="vertex_layout_panel"
@@ -3171,7 +3263,20 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-	  <icon
+	  <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Luminance
+ </text>
+ <icon
   follows="top|right"
   height="1"
   image_name="Prefs_Separator"
@@ -3181,7 +3286,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="4"/>
+  top_pad="0"/>
       
       <slider  
       enabled_control="RenderGlow"
@@ -3266,7 +3371,20 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-	  <icon
+	  <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Warmth
+ </text>
+ <icon
   follows="top|right"
   height="1"
   image_name="Prefs_Separator"
@@ -3276,7 +3394,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="4"/>
+  top_pad="0"/>
       
       <slider  
       enabled_control="RenderGlow"
@@ -3458,7 +3576,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="473"
+	  height="540"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -3557,30 +3675,7 @@ width="510">
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
- 
- <!--<check_box
-   control_name="RenderObjectBump"
-   height="16"
-   initial_value="true"
-   label="Render Advanced Materials"
-   tool_tip="Toggles Bumpmapping and shiny surfaces which reflect lights of the environment"
-   layout="topleft"
-   left="10"
-   name="BumpShiny"
-   top_pad="3"
-   width="115" />-->
- <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="2"/>
-   <text
+ <text
  type="string"
  length="1"
  follows="left|top"
@@ -3722,6 +3817,42 @@ width="510">
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
+ 
+ <!--<check_box
+   control_name="RenderObjectBump"
+   height="16"
+   initial_value="true"
+   label="Render Advanced Materials"
+   tool_tip="Toggles Bumpmapping and shiny surfaces which reflect lights of the environment"
+   layout="topleft"
+   left="10"
+   name="BumpShiny"
+   top_pad="3"
+   width="115" />-->
+ <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Shadows
+ </text>
+ <icon
+  follows="top|right"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="450"
+  left="25"
+  top_pad="0"/>
 
  <text
  type="string"
@@ -4031,6 +4162,19 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+ <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Projectors
+ </text>
  <icon
   follows="top|right"
   height="1"
@@ -4041,7 +4185,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="4"/>
+  top_pad="0"/>
  <slider
       enabled_control="RenderDeferred"
       decimal_digits="0"
@@ -4124,6 +4268,19 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+ <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Lighting
+ </text>
  <icon
   follows="top|right"
   height="1"
@@ -4134,7 +4291,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="4"/>
+  top_pad="0"/>
  <check_box
      control_name="RenderDeferredBlurLight"
      height="16"
@@ -4296,7 +4453,20 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-<icon
+<text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Screen Space Reflections
+ </text>
+ <icon
   follows="top|right"
   height="1"
   image_name="Prefs_Separator"
@@ -4306,7 +4476,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="4"/>
+  top_pad="0"/>
  <check_box
      control_name="RenderScreenSpaceReflections"
      height="16"
@@ -4397,7 +4567,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsAOVisible"
 	  layout="topleft"
-	  height="104"
+	  height="109"
 	  auto_resize="false"
       visible="false"
 	  name="ao_layout_panel"
@@ -4617,7 +4787,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDoFVisible"
 	  layout="topleft"
-	  height="145"
+	  height="150"
 	  auto_resize="false"
       visible="false"
 	  name="dof_layout_panel"
@@ -4902,7 +5072,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsMotionBlurVisible"
 	  layout="topleft"
-	  height="40"
+	  height="45"
 	  auto_resize="false"
       visible="false"
 	  name="motionblur_layout_panel"
@@ -4998,7 +5168,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsGodraysVisible"
 	  layout="topleft"
-	  height="96"
+	  height="102"
 	  auto_resize="false"
       visible="false"
 	  name="godrays_layout_panel"
@@ -5159,7 +5329,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsPostVisible"
 	  layout="topleft"
-	  height="112"
+	  height="118"
 	  auto_resize="false"
       visible="false"
 	  name="post_layout_panel"
@@ -5355,7 +5525,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsToneMappingVisible"
 	  layout="topleft"
-	  height="454"
+	  height="483"
 	  auto_resize="false"
       visible="false"
 	  name="tonemapping_layout_panel"
@@ -5478,7 +5648,20 @@ width="510">
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
-      <icon
+      <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Advanced
+ </text>
+ <icon
   follows="top|right"
   height="1"
   image_name="Prefs_Separator"
@@ -5488,7 +5671,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="0"/>
       <slider
       can_edit_text="true"
       control_name="ExodusRenderToneExposure"
@@ -5523,17 +5706,6 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-	  <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
       <slider
       can_edit_text="true"
       enabled_control="ExodusRenderToneMapping"
@@ -5613,17 +5785,6 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-	  <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
       <slider
       can_edit_text="true"
       enabled_control="ExodusRenderToneMapping"
@@ -5703,17 +5864,6 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-	  <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
       <slider
       can_edit_text="true"
       enabled_control="ExodusRenderToneMapping"
@@ -5772,7 +5922,20 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-	  <icon
+	  <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Color Correction
+ </text>
+ <icon
   follows="top|right"
   height="1"
   image_name="Prefs_Separator"
@@ -5782,7 +5945,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="4"/>
+  top_pad="0"/>
 
       <text
    type="string"
@@ -5857,7 +6020,20 @@ width="510">
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
-   <icon
+   <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Advanced
+ </text>
+ <icon
   follows="top|right"
   height="1"
   image_name="Prefs_Separator"
@@ -5867,7 +6043,7 @@ width="510">
   mouse_opaque="false"
   width="450"
   left="25"
-  top_pad="2"/>
+  top_pad="0"/>
 
       <slider
       can_edit_text="true"
@@ -5945,17 +6121,6 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-	  <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
 	  
       <slider
       can_edit_text="true"
@@ -6033,17 +6198,6 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-	  <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
       
       
       <slider
