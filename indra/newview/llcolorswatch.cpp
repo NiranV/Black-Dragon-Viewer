@@ -53,7 +53,9 @@ LLColorSwatchCtrl::Params::Params()
     label_width("label_width", -1),
 	label_height("label_height", -1),
 	caption_text("caption_text"),
-	border("border")
+	border("border"),
+	//BD
+	allow_alpha("allow_alpha")
 {
 }
 
@@ -67,7 +69,9 @@ LLColorSwatchCtrl::LLColorSwatchCtrl(const Params& p)
 	mOnSelectCallback(p.select_callback()),
 	mBorderColor(p.border_color()),
 	mLabelWidth(p.label_width),
-	mLabelHeight(p.label_height)
+	mLabelHeight(p.label_height),
+	//BD
+	mAllowAlpha(p.allow_alpha)
 {	
 	LLTextBox::Params tp = p.caption_text;
 	// use custom label height if it is provided
@@ -214,26 +218,36 @@ void LLColorSwatchCtrl::draw()
 	// Check state
 	if ( mValid )
 	{
-		if (!mColor.isOpaque())
+		//BD
+		if (mAllowAlpha && !mColor.isOpaque())
 		{
 			// Draw checker board.
 			gl_rect_2d_checkerboard(interior, alpha);
 		}
 
-		// Draw the color swatch
-		gl_rect_2d(interior, mColor % alpha, TRUE);
-
-		if (!mColor.isOpaque())
+		//BD - Draw the color swatch, disallow alpha if we wish to.
+		if (mAllowAlpha)
 		{
-			// Draw semi-transparent center area in filled with mColor.
+			gl_rect_2d(interior, mColor % alpha, TRUE);
+		}
+		else
+		{
+			gl_rect_2d(interior, mColor, TRUE);
+		}
+
+		//BD
+		if (mAllowAlpha && !mColor.isOpaque())
+		{
+			//BD - Draw opaque center area in filled with mColor.
 			LLColor4 opaque_color = mColor;
-			opaque_color.mV[VALPHA] = alpha;
+			opaque_color.mV[VALPHA] = 1.0f;
 			gGL.color4fv(opaque_color.mV);
 			if (mAlphaGradientImage.notNull())
 			{
 				gGL.pushMatrix();
 				{
-					mAlphaGradientImage->draw(interior, mColor % alpha);
+					//BD
+					mAlphaGradientImage->draw(interior, opaque_color);
 				}
 				gGL.popMatrix();
 			}

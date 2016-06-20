@@ -60,6 +60,8 @@ public:
 		Optional<LLUIColor>				border_color;
 		Optional<S32>					label_width;
 		Optional<S32>					label_height;
+		//BD
+		Optional<bool>					allow_alpha;
 		
 		Optional<LLTextBox::Params>		caption_text;
 		Optional<LLViewBorder::Params>	border;
@@ -109,6 +111,9 @@ protected:
 	LLHandle<LLFloater>		mPickerHandle;
 	class LLViewBorder*		mBorder;
 	bool					mCanApplyImmediately;
+	//BD
+	bool					mAllowAlpha;
+
 	commit_callback_t		mOnCancelCallback,
 							mOnSelectCallback;
 	commit_callback_t mPreviewCallback;
