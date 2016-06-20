@@ -700,7 +700,7 @@ void RlvAttachmentLockWatchdog::onSavedAssetIntoInventory(const LLUUID& idItem)
 	{
 		if ((!itAttach->second.fAssetSaved) && (idItem == itAttach->second.idItem))
 		{
-			LLAttachmentsMgr::instance().addAttachmentRequest(itAttach->second.idItem, itAttach->first, true, true);
+			//LLAttachmentsMgr::instance().addAttachmentRequest(itAttach->second.idItem, itAttach->first, true, true);
 			itAttach->second.tsAttach = LLFrameTimer::getElapsedSeconds();
 		}
 	}
@@ -748,7 +748,7 @@ BOOL RlvAttachmentLockWatchdog::onTimer()
 
 		if (fAttach)
 		{
-			LLAttachmentsMgr::instance().addAttachmentRequest(itAttach->second.idItem, itAttach->first, true, true);
+			//LLAttachmentsMgr::instance().addAttachmentRequest(itAttach->second.idItem, itAttach->first, true, true);
 			itAttach->second.tsAttach = tsCurrent;
 		}
 

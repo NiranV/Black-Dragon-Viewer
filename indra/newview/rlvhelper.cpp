@@ -1436,7 +1436,7 @@ void RlvForceWear::done()
 
 	if (!remItems.empty())
 	{
-		LLAppearanceMgr::instance().removeItemsFromAvatar(remItems, cb, true);
+		//LLAppearanceMgr::instance().removeItemsFromAvatar(remItems, cb, true);
 	}
 
 	if ( (addBodyParts.empty()) && (!addClothing.empty()) && (m_addGestures.empty()) )
@@ -1451,7 +1451,7 @@ void RlvForceWear::done()
 	{
 		// Mixture of body parts, clothing and/or gestures
 		LLInventoryModel::item_array_t addAttachments;
-		LLAppearanceMgr::instance().updateCOF(addBodyParts, addClothing, addAttachments, m_addGestures, true, LLUUID::null, cb);
+		//LLAppearanceMgr::instance().updateCOF(addBodyParts, addClothing, addAttachments, m_addGestures, true, LLUUID::null, cb);
 
 		m_addGestures.clear();
 	}

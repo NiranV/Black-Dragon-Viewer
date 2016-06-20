@@ -1687,18 +1687,18 @@ void RlvBehaviourToggleHandler<RLV_BHVR_SHOWINV>::onCommandToggle(ERlvBehaviour 
 	RLV_ASSERT(pAppearancePanel);
 	if (pAppearancePanel)
 	{
-		LLTabContainer* pAppearanceTabs = pAppearancePanel->getAppearanceTabs();
-		LLOutfitsList* pMyOutfitsPanel = pAppearancePanel->getMyOutfitsPanel();
-		if ( (pAppearanceTabs) && (pMyOutfitsPanel) )
-		{
-			S32 idxTab = pAppearanceTabs->getIndexForPanel(pMyOutfitsPanel);
-			RLV_ASSERT(-1 != idxTab);
-			pAppearanceTabs->enableTabButton(idxTab, !fHasBhvr);
+		//LLTabContainer* pAppearanceTabs = pAppearancePanel->getAppearanceTabs();
+		//LLOutfitsList* pMyOutfitsPanel = pAppearancePanel->getMyOutfitsPanel();
+		//if ( (pAppearanceTabs) && (pMyOutfitsPanel) )
+		//{
+			//S32 idxTab = pAppearanceTabs->getIndexForPanel(pMyOutfitsPanel);
+			//RLV_ASSERT(-1 != idxTab);
+			//pAppearanceTabs->enableTabButton(idxTab, !fHasBhvr);
 
 			// When disabling, switch to the COF tab if "My Outfits" is currently active
-			if ( (fHasBhvr) && (pAppearanceTabs->getCurrentPanelIndex() == idxTab) )
-				pAppearanceTabs->selectTabPanel(pAppearancePanel->getCurrentOutfitPanel());
-		}
+			//if ( (fHasBhvr) && (pAppearanceTabs->getCurrentPanelIndex() == idxTab) )
+			//	pAppearanceTabs->selectTabPanel(pAppearancePanel->getCurrentOutfitPanel());
+		//}
 
 		LLSidepanelAppearance* pCOFPanel = pAppearancePanel->getAppearanceSP();
 		RLV_ASSERT(pCOFPanel);
