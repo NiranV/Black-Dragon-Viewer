@@ -36,17 +36,17 @@ width="517">
  height="12"
  layout="topleft"
  left="10"
- name="InterfaceSize"
+ name="InternalBrowserBehavior"
  top_pad="15"
  width="220">
  Internal Browser Usage:
  </text>
                   <radio_group
-                  control_name="UIScaleFactor"
+                  control_name="PreferredBrowserBehavior"
                   height="19"
                   layout="topleft"
                   left="10"
-                  name="UIScaleFactor"
+                  name="PreferredBrowserBehavior"
                   top_pad="5"
                   width="600">
                         <radio_item
