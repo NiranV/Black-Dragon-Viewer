@@ -479,7 +479,6 @@ width="510">
                                  function="Pref.Default"/>
       </button>
   <check_box
-		     top_delta="4"
 		     follows="left|top"
 		     height="16"
 		     initial_value="true"
@@ -488,7 +487,6 @@ width="510">
 		     left="10"
 		     mouse_opaque="true"
 		     name="ObjectCacheEnabled"
-		     radio_style="false"
 		     width="400"
 		     top_pad="3"/>
   <check_box
