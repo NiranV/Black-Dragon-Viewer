@@ -3949,7 +3949,7 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
-      <string>1</string>
+      <string>0</string>
     </map>
 	<key>FeatureManagerHTTPTable</key>
       <map>
