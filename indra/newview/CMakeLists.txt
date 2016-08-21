@@ -98,6 +98,15 @@ include_directories(SYSTEM
     )
 
 set(viewer_SOURCE_FILES
+#	Black Dragon
+	bdpaneldrawdistance.cpp
+	bdtopbarholder.cpp
+	exopostprocess.cpp
+    piemenu.cpp
+    pieseparator.cpp
+    pieslice.cpp
+	qtoolalign.cpp
+
     groupchatlistener.cpp
     llaccountingcostmanager.cpp
     llaisapi.cpp
@@ -697,30 +706,23 @@ set(viewer_SOURCE_FILES
     llworldmapview.cpp
     llxmlrpclistener.cpp
     llxmlrpctransaction.cpp
-    bdpaneldrawdistance.cpp
-	bdtopbarholder.cpp
-	qtoolalign.cpp
-    exopostprocess.cpp
     noise.cpp
     pipeline.cpp
-    piemenu.cpp
-    pieseparator.cpp
-    pieslice.cpp
-    rlvactions.cpp
-    rlvhandler.cpp
-    rlvhelper.cpp
-    rlvcommon.cpp
-    rlvlocks.cpp
-    rlvinventory.cpp
-    rlvextensions.cpp
-    rlvfloaters.cpp
-    rlvui.cpp
     )
 
 set(VIEWER_BINARY_NAME "blackdragon-bin" CACHE STRING
     "The name of the viewer executable to create.")
 
 set(viewer_HEADER_FILES
+#	Black Dragon
+	bdpaneldrawdistance.h
+	bdtopbarholder.h
+    exopostprocess.h
+	piemenu.h
+    pieseparator.h
+    pieslice.h
+	qtoolalign.h
+
     CMakeLists.txt
     ViewerInstall.cmake
     groupchatlistener.h
@@ -1316,27 +1318,10 @@ set(viewer_HEADER_FILES
     llworldmapview.h
     llxmlrpclistener.h
     llxmlrpctransaction.h
-    bdpaneldrawdistance.h
-	bdtopbarholder.h
-	qtoolalign.h
-    exopostprocess.h
     macmain.h
     noise.h
     pipeline.h
     roles_constants.h
-	piemenu.h
-    pieseparator.h
-    pieslice.h
-    rlvactions.h
-    rlvdefines.h
-    rlvhandler.h
-    rlvhelper.h
-    rlvcommon.h
-    rlvlocks.h
-    rlvinventory.h
-    rlvextensions.h
-    rlvfloaters.h
-    rlvui.h
     VertexCache.h
     VorbisFramework.h
     )

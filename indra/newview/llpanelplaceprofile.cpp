@@ -52,9 +52,6 @@
 #include "llviewercontrol.h"
 #include "llviewerparcelmgr.h"
 #include "llviewerregion.h"
-// [RLVa:KB] - Checked: 2010-09-02 (RLVa-1.2.1b)
-#include "rlvhandler.h"
-// [/RLVa:KB]
 
 //BD
 #include "llfloatersidepanelcontainer.h"

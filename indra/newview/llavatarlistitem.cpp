@@ -41,9 +41,6 @@
 #include "llavatariconctrl.h"
 #include "lloutputmonitorctrl.h"
 #include "lltooldraganddrop.h"
-// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a)
-#include "rlvhandler.h"
-// [/RLVa:KB]
 
 static LLWidgetNameRegistry::StaticRegistrar sRegisterAvatarListItemParams(&typeid(LLAvatarListItem::Params), "avatar_list_item");
 
@@ -72,9 +69,6 @@ LLAvatarListItem::LLAvatarListItem(bool not_from_ui_factory/* = true*/)
 	mSpeakingIndicator(NULL),
 	mInfoBtn(NULL),
 	mOnlineStatus(E_UNKNOWN),
-// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
-	mRlvCheckShowNames(false),
-// [/RLVa:KB]
 	mShowPermissions(false),
 	mShowCompleteName(false),
 	mHovered(false),
@@ -154,11 +148,6 @@ S32 LLAvatarListItem::notifyParent(const LLSD& info)
 void LLAvatarListItem::onMouseEnter(S32 x, S32 y, MASK mask)
 {
 	getChildView("hovered_icon")->setVisible( true);
-//	mInfoBtn->setVisible(mShowInfoBtn);
-//	mProfileBtn->setVisible(mShowProfileBtn);
-// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
-	mInfoBtn->setVisible( (mShowInfoBtn) && ((!mRlvCheckShowNames) || (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))) );
-// [/RLVa:KB]
 
 	mHovered = true;
 	LLPanel::onMouseEnter(x, y, mask);

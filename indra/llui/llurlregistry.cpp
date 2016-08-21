@@ -39,10 +39,7 @@ void LLUrlRegistryNullCallback(const std::string &url, const std::string &label,
 LLUrlRegistry::LLUrlRegistry()
 {
 //	// BD - Additional Chat Tags
-//	mUrlEntry.reserve(26);
-// [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
-	mUrlEntry.reserve(27);
-// [/RLVa:KB]
+	mUrlEntry.reserve(26);
 
 	// Urls are matched in the order that they were registered
 	mUrlEntryNoLink = new LLUrlEntryNoLink();

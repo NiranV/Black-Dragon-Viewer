@@ -50,10 +50,6 @@
 #include "llvoavatarself.h"
 #include "llwindow.h"
 #include "llworld.h"
-// [RLVa:KB] - Checked: 2010-05-10 (RLVa-1.2.0g)
-#include "rlvactions.h"
-#include "rlvhandler.h"
-// [/RLVa:KB]
 //BD - Always-on Mouse-steering
 #include "lltoolfocus.h"
 

@@ -4005,18 +4005,6 @@ void LLAgent::teleportRequest(
 // Landmark ID = LLUUID::null means teleport home
 void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 {
-// [RLVa:KB] - Checked: 2010-08-22 (RLVa-1.2.1a) | Modified: RLVa-1.2.1a
-	// NOTE: we'll allow teleporting home unless both @tplm=n *and* @tploc=n restricted
-	if ( (rlv_handler_t::isEnabled()) &&
-		 ( ( (landmark_asset_id.notNull()) ? gRlvHandler.hasBehaviour(RLV_BHVR_TPLM)
-		                                   : gRlvHandler.hasBehaviour(RLV_BHVR_TPLM) && gRlvHandler.hasBehaviour(RLV_BHVR_TPLOC) ) ||
-		   ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) && (isAgentAvatarValid()) && (gAgentAvatarp->isSitting())) ))
-	{
-		RlvUtil::notifyBlocked(RLV_STRING_BLOCKED_TELEPORT);
-		return;
-	}
-// [/RLVa:KB]
-
 	//BD - Check if our TP is a Home TP
 	if(landmark_asset_id == LLUUID::null)
 	{

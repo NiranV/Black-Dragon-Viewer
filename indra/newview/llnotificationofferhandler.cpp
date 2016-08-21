@@ -36,9 +36,6 @@
 #include "llscriptfloater.h"
 #include "llimview.h"
 #include "llnotificationsutil.h"
-// [RLVa:KB] - Checked: 2013-05-09 (RLVa-1.4.9)
-#include "rlvactions.h"
-// [/RLVa:KB]
 
 using namespace LLNotificationsUI;
 
@@ -106,26 +103,10 @@ bool LLOfferHandler::processNotification(const LLNotificationPtr& notification)
 			                  || (notification->getName() == "TeleportOffered"
 			                  && gSavedSettings.getBOOL("PlaySoundTeleportOffer"))));
 
-			            if(playSound)
-			            {
-			                notification->playSound();
-			            }
-
-// [RLVa:KB] - Checked: 2013-05-09 (RLVa-1.4.9)
-			// Don't spawn an IM session for non-chat related events
-			if (RlvActions::canStartIM(from_id))
+			if(playSound)
 			{
-// [/RLVa:KB]
-				LLHandlerUtil::spawnIMSession(name, from_id);
-				LLHandlerUtil::addNotifPanelToIM(notification);
-// [RLVa:KB] - Checked: 2013-05-09 (RLVa-1.4.9)
+			    notification->playSound();
 			}
-			else
-			{
-				// Since we didn't add this notification to an IM session we want it to get routed to the notification syswell
-				add_notif_to_im = false;
-			}
-// [/RLVa:KB]
 		}
 
 		if (!notification->canShowToast())

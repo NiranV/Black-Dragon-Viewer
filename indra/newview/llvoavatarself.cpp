@@ -67,10 +67,6 @@
 #include "llsdserialize.h"
 #include "llcallstack.h"
 #include "llcorehttputil.h"
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
-#include "rlvhandler.h"
-#include "rlvlocks.h"
-// [/RLVa:KB]
 
 //BD - Pie Menu
 #include "piemenu.h"

@@ -133,17 +133,6 @@
 #include "llpathfindingmanager.h"
 #include "llstartup.h"
 #include "boost/unordered_map.hpp"
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
-#include "rlvactions.h"
-#include "rlvhandler.h"
-#include "rlvlocks.h"
-// [/RLVa:KB]
-
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
-#include "rlvactions.h"
-#include "rlvhandler.h"
-#include "rlvlocks.h"
-// [/RLVa:KB]
 
 //BD
 #include "llfloatersidepanelcontainer.h"
@@ -1274,15 +1263,7 @@ class LLAdvancedToggleWireframe : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-// [RLVa:KB] - Checked: 2013-05-11 (RLVa-1.4.9)
-		bool fRlvBlockWireframe = gRlvAttachmentLocks.hasLockedHUD();
-		if ( (!gUseWireframe) && (fRlvBlockWireframe) )
-		{
-			RlvUtil::notifyBlocked(RLV_STRING_BLOCKED_WIREFRAME);
-		}
-		gUseWireframe = (!gUseWireframe) && (!fRlvBlockWireframe);
-// [/RLVa:KB]
-//		gUseWireframe = !(gUseWireframe);
+		gUseWireframe = !(gUseWireframe);
 		gWindowResized = TRUE;
 		LLPipeline::updateRenderDeferred();
 		gPipeline.resetVertexBuffers();
@@ -8738,10 +8719,7 @@ class LLAvatarCopyUUID : public view_listener_t
 	bool handleEvent(const LLSD& userdata)
 	{
 		LLVOAvatar* avatar = find_avatar_from_object( LLSelectMgr::getInstance()->getSelection()->getPrimaryObject() );
-//		if(avatar)
-// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.0d) | Added: RLVa-1.2.0d
-		if ( (avatar) && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) )
-// [/RLVa:KB]
+		if(avatar)
 		{
 			LLAvatarActions::copyUUIDToClipboard(avatar->getID());
 		}
@@ -8754,10 +8732,7 @@ class LLAvatarCopySLURL : public view_listener_t
 	bool handleEvent(const LLSD& userdata)
 	{
 		LLVOAvatar* avatar = find_avatar_from_object( LLSelectMgr::getInstance()->getSelection()->getPrimaryObject() );
-//		if(avatar)
-// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.0d) | Added: RLVa-1.2.0d
-		if ( (avatar) && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) )
-// [/RLVa:KB]
+		if(avatar)
 		{
 			LLAvatarActions::copySLURLToClipboard(avatar->getID());
 		}
@@ -9299,14 +9274,6 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelected(), "EditableSelected");
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
-
-// [RLVa:KB] - Checked: 2010-04-23 (RLVa-1.2.0g) | Added: RLVa-1.2.0
-	enable.add("RLV.MainToggleVisible", boost::bind(&rlvMenuMainToggleVisible, _1));
-	if (rlv_handler_t::isEnabled())
-	{
-		enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
-	}
-// [/RLVa:KB]
 
 //	//BD - Derender
 	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));

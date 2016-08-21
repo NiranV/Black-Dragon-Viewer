@@ -65,10 +65,6 @@
 #include "llviewerregion.h"
 #include "llviewerobjectlist.h"
 #include "llviewermessage.h"
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
-#include "rlvhandler.h"
-#include "rlvlocks.h"
-// [/RLVa:KB]
 
 //BD
 #include "llfloatersidepanelcontainer.h"

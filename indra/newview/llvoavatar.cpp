@@ -97,9 +97,6 @@
 #include "llanimstatelabels.h"
 #include "lltrans.h"
 #include "llappearancemgr.h"
-// [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.2.0c)
-#include "rlvhandler.h"
-// [/RLVa:KB]
 
 //BD
 #include "llfloaterreg.h"
