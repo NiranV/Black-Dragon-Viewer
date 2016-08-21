@@ -212,11 +212,11 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 		}
 		else
 		{
-    	user_preferences = gSavedSettings.getString("NotificationNearbyChatOptions");
+    		user_preferences = gSavedSettings.getString("NotificationNearbyChatOptions");
 			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundNearbyChatIM") == TRUE))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
-    }
+			}
 		}
 	}
     else if(session->isP2PSessionType())
@@ -235,8 +235,8 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundNonFriendIM") == TRUE))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
-        }
-    }
+			}
+		}
 	}
     else if(session->isAdHocSessionType())
     {
@@ -244,7 +244,7 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 		if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundConferenceIM") == TRUE))
 		{
 			make_ui_sound("UISndNewIncomingIMSession");
-    }
+		}
 	}
     else if(session->isGroupSessionType())
     {
@@ -296,17 +296,16 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
         else
         {
 			store_dnd_message = true;
-	        }
-
+		}
     }
 
     // 2. Flash line item
     if ("openconversations" == user_preferences
     		|| ON_TOP == conversations_floater_status
     		|| ("toast" == user_preferences && ON_TOP != conversations_floater_status)
-		|| ("flash" == user_preferences && (CLOSED == conversations_floater_status
-				 	 	 	 	 	 	|| NOT_ON_TOP == conversations_floater_status))
-		|| is_dnd_msg)
+			|| ("flash" == user_preferences && (CLOSED == conversations_floater_status
+			|| NOT_ON_TOP == conversations_floater_status))
+			|| is_dnd_msg)
     {
     	if(!LLMuteList::getInstance()->isMuted(participant_id))
     	{
@@ -324,9 +323,9 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 				}
 				else
 				{
-    		im_box->flashConversationItemWidget(session_id, true);
-    	}
-    }
+					im_box->flashConversationItemWidget(session_id, true);
+				}
+			}
 		}
 	}
 
@@ -337,19 +336,20 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 		&& !is_session_focused
 		&& !is_dnd_msg //prevent flashing FUI button because the conversation floater will have already opened
 		//BD - Prevent local chat from making the chat button flash.
-		&& session_id.notNull())
+		&& (session_id.notNull() 
+		|| msg["source_type"].asInteger() == CHAT_SOURCE_OBJECT))
 	{
 		if(!LLMuteList::getInstance()->isMuted(participant_id))
-    {
+		{
 			if(!gAgent.isDoNotDisturb())
-    	{
+    		{
 				gToolBarView->flashCommand(LLCommandId("chat"), true, im_box->isMinimized());
-    	}
+    		}
 			else
 			{
 				store_dnd_message = true;
 			}
-    }
+		}
 	}
 
     // 4. Toast
@@ -371,10 +371,10 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 				}
 				else
 				{
-            LLAvatarNameCache::get(participant_id, boost::bind(&on_avatar_name_cache_toast, _1, _2, msg));
-        }
-    }
-}
+					LLAvatarNameCache::get(participant_id, boost::bind(&on_avatar_name_cache_toast, _1, _2, msg));
+				}
+			}
+		}
 	}
 	if (store_dnd_message)
 	{
