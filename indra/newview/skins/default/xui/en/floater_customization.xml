@@ -1,0 +1,1066 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<floater
+ legacy_header_height="18"
+ positioning="centered"
+ default_tab_group="1"
+ height="460"
+ layout="topleft"
+ background_visible="false"
+ name="Customization"
+ title="Customize"
+ width="768">
+<panel
+  height="460"
+  layout="topleft"
+  left="0"
+  name="test"
+  top="0"
+  width="668">
+	<icon
+      top="0" 
+      scale_image="true"
+      follows="all"
+      layout="topleft"
+      height="460"
+      color="1 1 1 1"
+      image_name="Window_Foreground"
+      left="423"
+      width="345" />
+	<panel
+  height="26"
+  layout="topleft"
+	background_visible="true"
+	bg_alpha_color="0.1 0.20 0.29 1"
+	follows="left"
+  left_delta="-31"
+  name="test"
+  top="15"
+  width="375">
+	<button
+	commit_callback.function="People.Gear"
+	follows="left"
+	is_toggle="true"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="OptionsMenu_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="gear_btn"
+	tool_tip="Actions on selected person"
+	top="1"
+	width="31" />
+	
+	<check_box
+	control_name="AllowMultipleViewers"
+	height="16"
+	initial_value="true"
+	label="Allow Multiple Viewers"
+	layout="topleft"
+	left="41"
+	name="MultiViewers"
+	top="0"
+	width="256" />
+	</panel>
+	<panel
+  height="26"
+  layout="topleft"
+	background_visible="true"
+	bg_alpha_color="0.1 0.20 0.29 1"
+	follows="left"
+  left_delta="0"
+  name="test"
+  top_pad="1"
+  width="375">
+	<button
+	commit_callback.function="People.Gear"
+	follows="left"
+	is_toggle="true"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="OptionsMenu_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="gear_btn"
+	tool_tip="Actions on selected person"
+	top="1"
+	width="31" />
+	</panel>
+	<panel
+  height="26"
+  layout="topleft"
+	background_visible="true"
+	bg_alpha_color="0.1 0.20 0.29 1"
+	follows="left"
+  left_delta="0"
+  name="test"
+  top_pad="1"
+  width="375">
+	<button
+	commit_callback.function="People.Gear"
+	follows="left"
+	is_toggle="true"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="OptionsMenu_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="gear_btn"
+	tool_tip="Actions on selected person"
+	top="1"
+	width="31" />
+	</panel>
+	<panel
+  height="26"
+  layout="topleft"
+	background_visible="true"
+	bg_alpha_color="0.1 0.20 0.29 1"
+	follows="left"
+  left_delta="0"
+  name="test"
+  top_pad="1"
+  width="375">
+	<button
+	commit_callback.function="People.Gear"
+	follows="left"
+	is_toggle="true"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="OptionsMenu_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="gear_btn"
+	tool_tip="Actions on selected person"
+	top="1"
+	width="31" />
+	</panel>
+	
+	
+	
+	<icon
+      top="0" 
+      scale_image="true"
+      follows="all"
+      layout="topleft"
+      height="460"
+      color="1 1 1 1"
+      image_name="Window_Foreground"
+      left="0"
+      width="345" />
+	<check_box
+		     control_name="AllowMultipleViewers"
+		     height="16"
+		     initial_value="true"
+		     label="Allow Multiple Viewers"
+		     layout="topleft"
+		     left="10"
+		     name="MultiViewers"
+		     top="15"
+		     width="256" />
+	<check_box
+		     control_name="AllowMultipleViewers"
+		     height="16"
+		     initial_value="true"
+		     label="Allow Multiple Viewers"
+		     layout="topleft"
+		     left="10"
+		     name="MultiViewers"
+		     top_pad="0"
+		     width="256" />
+	<line_editor
+		     control_name="ExternalEditor"
+		     follows="left|top"
+		     font="SansSerif"
+		     height="23"
+		     layout="topleft"
+		     left="10"
+		     name="ExternalEditor"
+		     tool_tip="Set an external Script Editor Program to use for LSL Scripts"
+		     label="(e.g.: /usr/bin/gedit -_new_window '%s')"
+		     top_pad="4"
+		     width="320" />
+	<line_editor
+		     control_name="ExternalEditor"
+		     follows="left|top"
+		     font="SansSerif"
+		     height="23"
+		     layout="topleft"
+		     left="10"
+		     name="ExternalEditor"
+		     tool_tip="Set an external Script Editor Program to use for LSL Scripts"
+		     label="(e.g.: /usr/bin/gedit -_new_window '%s')"
+		     top_pad="4"
+		     width="320" />
+	<slider
+      can_edit_text="true"
+      control_name="ExodusRenderToneExposure"
+      enabled_control="ExodusRenderToneMapping"
+      decimal_digits="2"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="0.0"
+      label="Tone Exposure:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="4"
+      min_val="0.01"
+      name="ExodusRenderToneExposure"
+      top_pad="7"
+      width="322"/>
+      <!--<button
+ follows="left|top"
+ control_name="ExodusRenderToneExposure"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>-->
+			<slider
+      can_edit_text="true"
+      control_name="ExodusRenderToneExposure"
+      enabled_control="ExodusRenderToneMapping"
+      decimal_digits="2"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="0.0"
+      label="Tone Exposure:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="4"
+      min_val="0.01"
+      name="ExodusRenderToneExposure"
+      top_pad="0"
+      width="322"/>
+      <!--<button
+ follows="left|top"
+ control_name="ExodusRenderToneExposure"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>-->
+			<slider
+                  control_name="RenderWindlightInterpolateTime"
+                  enabled_control="VertexShaderEnable"
+                  decimal_digits="0"
+                  follows="left|top"
+                  can_edit_text="true"
+                  height="14"
+                  increment="1"
+                  initial_value="5"
+                  label="Transition Time:"
+                  tool_tip="Set how much seconds Windlight transitions between preset selections should take"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="20"
+                  min_val="0"
+                  name="BlurDistance"
+                  top_pad="0"
+                  width="282" />
+			<slider
+                  control_name="RenderWindlightInterpolateTime"
+                  enabled_control="VertexShaderEnable"
+                  decimal_digits="0"
+                  follows="left|top"
+                  can_edit_text="true"
+                  height="14"
+                  increment="1"
+                  initial_value="5"
+                  label="Transition Time:"
+                  tool_tip="Set how much seconds Windlight transitions between preset selections should take"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="20"
+                  min_val="0"
+                  name="BlurDistance"
+                  top_pad="1"
+                  width="282" />
+			<text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="InterfaceSize"
+ top_pad="5"
+ width="220">
+ Interface Size:
+ </text>
+                  <radio_group
+                  control_name="UIScaleFactor"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="UIScaleFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Small"
+                        value="0.8"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Medium"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Big"
+                        halign="right"
+                        value="1.2"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+									<text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="InterfaceSize"
+ top_pad="5"
+ width="220">
+ Interface Size:
+ </text>
+                  <radio_group
+                  control_name="UIScaleFactor"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="UIScaleFactor"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Small"
+                        value="0.8"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Medium"
+                        value="1"
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Big"
+                        halign="right"
+                        value="1.2"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Caution_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+									<text
+     type="string"
+     length="1"
+     follows="left|top"
+     height="15"
+     layout="topleft"
+     left="10"
+     name="language_textbox"
+     top_pad="15"
+     width="120">
+        My language:
+    </text>
+    <combo_box
+     control_name="Language"
+     follows="left|top"
+     height="23"
+     layout="topleft"
+     left_pad="0"
+     top_delta="-3"
+     max_chars="135"
+     name="language_combobox"
+     width="170">
+        <combo_box.item
+         enabled="true"
+         label="System Default Language"
+         name="System Default Language"
+         value="default" />
+        <combo_box.item
+         enabled="true"
+         label="English"
+         name="English"
+         value="en" />
+        <combo_box.item
+         enabled="true"
+         label="Deutsch (German)"
+         name="Deutsch(German)"
+         value="de" />
+    </combo_box>
+    <!--<text
+     font="SansSerifSmall"
+     type="string"
+     length="1"
+     follows="left|top"
+     height="18"
+     layout="topleft"
+     left_pad="10"
+     name="language_textbox2"
+     width="115">
+        (Requires restart)
+    </text>-->
+		<text
+     type="string"
+     length="1"
+     follows="left|top"
+     height="15"
+     layout="topleft"
+     left="10"
+     name="language_textbox"
+     top_pad="5"
+     width="120">
+        My language:
+    </text>
+    <combo_box
+     control_name="Language"
+     follows="left|top"
+     height="23"
+     layout="topleft"
+     left_pad="0"
+     top_delta="-3"
+     max_chars="135"
+     name="language_combobox"
+     width="170">
+        <combo_box.item
+         enabled="true"
+         label="System Default Language"
+         name="System Default Language"
+         value="default" />
+        <combo_box.item
+         enabled="true"
+         label="English"
+         name="English"
+         value="en" />
+        <combo_box.item
+         enabled="true"
+         label="Deutsch (German)"
+         name="Deutsch(German)"
+         value="de" />
+    </combo_box>
+    <!--<text
+     font="SansSerifSmall"
+     type="string"
+     length="1"
+     follows="left|top"
+     height="18"
+     layout="topleft"
+     left_pad="10"
+     name="language_textbox2"
+     width="115">
+        (Requires restart)
+    </text>-->
+	<button
+   follows="left|top"
+   height="23"
+   label="Clear"
+   label_selected="Clear Cache"
+   layout="topleft"
+   left="10"
+   name="clear_cache"
+   top_pad="7"
+   width="120">
+  <button.commit_callback
+   function="Pref.ClearCache" />
+  </button>
+	<button
+   follows="left|top"
+   height="23"
+   label="Clear"
+   label_selected="Clear Cache"
+   layout="topleft"
+   left="10"
+   name="clear_cache"
+   top_pad="2"
+   width="120">
+  <button.commit_callback
+   function="Pref.ClearCache" />
+  </button>
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="342"/>
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="342"/>
+	
+	<panel
+  height="26"
+  layout="bottomleft"
+	background_visible="true"
+	bg_alpha_color="0.12 0.29 0.20 1"
+	follows="left"
+  left="392"
+  name="WidgetTypePanel"
+  bottom="0"
+  width="375">
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="AddItem_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="Checkbox_On"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left_pad="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="transparent.j2c"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	label="Txt"
+	layout="topleft"
+	left_pad="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="SliderThumb_Press"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left_pad="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="RadioButton_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left_pad="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="ComboButton_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left_pad="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="PushButton_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left_pad="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="SegmentedBtn_Left_Selected"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left_pad="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	</panel>
+	
+	<panel
+  height="26"
+  layout="bottomleft"
+	background_visible="true"
+	bg_alpha_color="0.12 0.29 0.20 1"
+	follows="left"
+  left="392"
+  name="CheckboxTypePanel"
+  bottom_delta="27"
+  width="375">
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="Checkbox_On"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="DebugTitle"
+	tool_tip=""
+	label="Debug Name"
+	top_delta="1"
+	width="120" />
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="CheckboxLabel"
+	tool_tip=""
+	label="Checkbox Label"
+	top_delta="0"
+	width="200" />
+	</panel>
+	
+	<panel
+  height="26"
+  layout="bottomleft"
+	background_visible="true"
+	bg_alpha_color="0.12 0.29 0.20 1"
+	follows="left"
+  left="392"
+  name="TextboxTypePanel"
+  bottom_delta="27"
+  width="375">
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="transparent.j2c"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	label="Txt"
+	layout="topleft"
+	left="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="DebugTitle"
+	tool_tip=""
+	label="Debug Name"
+	top_delta="1"
+	width="120" />
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="TextboxLabel"
+	tool_tip=""
+	label="Textbox Label"
+	top_delta="0"
+	width="200" />
+	</panel>
+	
+	<panel
+  height="26"
+  layout="bottomleft"
+	background_visible="true"
+	bg_alpha_color="0.12 0.29 0.20 1"
+	follows="left"
+  left="392"
+  name="SliderTypePanel"
+  bottom_delta="27"
+  width="375">
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="SliderThumb_Press"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="DebugTitle"
+	tool_tip=""
+	label="Debug Name"
+	top_delta="1"
+	width="120" />
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="SliderMin"
+	tool_tip=""
+	label="Min"
+	top_delta="0"
+	width="75" />
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="SliderMax"
+	tool_tip=""
+	label="Max"
+	top_delta="0"
+	width="94" />
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="SliderDecimal"
+	tool_tip=""
+	label=",.."
+	top_delta="0"
+	width="25" />
+	</panel>
+	
+	<panel
+  height="26"
+  layout="bottomleft"
+	background_visible="true"
+	bg_alpha_color="0.12 0.29 0.20 1"
+	follows="left"
+  left="392"
+  name="RadioTypePanel"
+  bottom_delta="27"
+  width="375">
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="RadioButton_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="DebugTitle"
+	tool_tip=""
+	label="Debug Name"
+	top_delta="1"
+	width="120" />
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="RadioOptions"
+	tool_tip=""
+	label="Label;Value;Label... (max 6)"
+	top_delta="0"
+	width="200" />
+	</panel>
+	
+	<panel
+  height="26"
+  layout="bottomleft"
+	background_visible="true"
+	bg_alpha_color="0.12 0.29 0.20 1"
+	follows="left"
+  left="392"
+  name="DropdownTypePanel"
+  bottom_delta="27"
+  width="375">
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="ComboButton_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="DebugTitle"
+	tool_tip=""
+	label="Debug Name"
+	top_delta="1"
+	width="120" />
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="DropdownOptions"
+	tool_tip=""
+	label="Label;Value;Label... (max 6)"
+	top_delta="0"
+	width="200" />
+	</panel>
+	
+	<panel
+  height="26"
+  layout="bottomleft"
+	background_visible="true"
+	bg_alpha_color="0.12 0.29 0.20 1"
+	follows="left"
+  left="392"
+  name="ButtonTypePanel"
+  bottom_delta="27"
+  width="375">
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="PushButton_Off"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="DebugTitle"
+	tool_tip=""
+	label="Debug Name"
+	top_delta="1"
+	width="120" />
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="ButtonLabel"
+	tool_tip=""
+	label="Button Label"
+	top_delta="0"
+	width="200" />
+	</panel>
+	
+	<panel
+  height="26"
+  layout="bottomleft"
+	background_visible="true"
+	bg_alpha_color="0.12 0.29 0.20 1"
+	follows="left"
+  left="392"
+  name="TitleTypePanel"
+  bottom_delta="27"
+  width="375">
+	<button
+	follows="right"
+	height="25"
+	image_hover_unselected="Toolbar_Middle_Over"
+	image_overlay="SegmentedBtn_Left_Selected"
+	image_selected="Toolbar_Middle_Selected"
+	image_unselected="Toolbar_Middle_Off"
+	layout="topleft"
+	left="1"
+	name="add_friend_btn"
+	tool_tip="Offer friendship to a resident"
+	top="1"
+	width="31"/>
+	<line_editor
+	follows="left|top"
+	font="SansSerif"
+	height="23"
+	layout="topleft"
+	left_pad="3"
+	name="TitleLabel"
+	tool_tip=""
+	label="Title Label"
+	top_delta="0"
+	width="323" />
+	</panel>
+</panel>
+</floater>
