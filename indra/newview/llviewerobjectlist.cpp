@@ -1408,7 +1408,7 @@ void LLViewerObjectList::killAllFullbrights()
 			{
 				if (objectp != gAgentAvatarp)
 				{
-					LL_INFOS() << itoc(te->getFullbright()) << LL_ENDL;
+					LL_DEBUGS() << itoc(te->getFullbright()) << LL_ENDL;
 					objectp->setTEFullbright(i, 0);
 				}
 			}
