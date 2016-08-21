@@ -106,9 +106,6 @@ public:
 	//BD
 	void showExtraInformation(bool show);
 	void setShowCompleteName(bool show) { mShowCompleteName = show;};
-// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
-	void setRlvCheckShowNames(bool fRlvCheckShowNames) { mRlvCheckShowNames = fRlvCheckShowNames; }
-// [/RLVa:KB]
 	
 	const LLUUID& getAvatarId() const;
 	std::string getAvatarName() const;

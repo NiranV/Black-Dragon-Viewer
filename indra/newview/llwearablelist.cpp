@@ -99,23 +99,7 @@ void LLWearableList::processGetAssetReply( const char* filename, const LLAssetID
 {
 	BOOL isNewWearable = FALSE;
 	LLWearableArrivedData* data = (LLWearableArrivedData*) userdata;
-//	LLViewerWearable* wearable = NULL; // NULL indicates failure
-// [SL:KB] - Patch: Appearance-Misc | Checked: 2010-08-13 (Catznip-2.1)
-	LLViewerWearable* wearable = get_if_there(LLWearableList::instance().mList, uuid, (LLViewerWearable*)NULL);
-	if (wearable)
-	{
-		LL_DEBUGS("Wearable") << "processGetAssetReply()" << LL_ENDL;
-		LL_DEBUGS("Wearable") << wearable << LL_ENDL;
-
-		if(data->mCallback)
-		{
-			data->mCallback(wearable, data->mUserdata);
-		}
-		delete data;
-
-		return;
-	}
-// [/SL:KB]
+	LLViewerWearable* wearable = NULL; // NULL indicates failure
 	LLAvatarAppearance *avatarp = data->mAvatarp;
 	
 	if( !filename )

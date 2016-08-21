@@ -108,11 +108,7 @@ public:
 	 */
 	void					goToItem(S32 idx);
 
-//private:
-// [RLVa:KB] - Checked: 2010-09-03 (RLVa-1.2.1b) | Added: RLVa-1.2.1b
-protected:
-	friend class RlvUIEnabler;
-// [/RLVa:KB]
+private:
 
 	void load();
 	void dump() const;

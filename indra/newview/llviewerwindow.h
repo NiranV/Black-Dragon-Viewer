@@ -366,11 +366,11 @@ public:
 	void			performPick();
 	void			returnEmptyPicks();
 
-	void			pickAsync(S32 x,
-					S32 y_from_bot,
-					MASK mask,
-					void(*callback)(const LLPickInfo& pick_info),
-					BOOL pick_transparent = FALSE,
+	void			pickAsync(	S32 x,
+								S32 y_from_bot,
+								MASK mask,
+								void (*callback)(const LLPickInfo& pick_info),
+								BOOL pick_transparent = FALSE,
 								BOOL pick_rigged = FALSE,
 								BOOL pick_unselectable = FALSE);
 	LLPickInfo		pickImmediate(S32 x, S32 y, BOOL pick_transparent, BOOL pick_rigged = FALSE, BOOL pick_particle = FALSE);

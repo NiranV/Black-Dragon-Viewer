@@ -204,6 +204,7 @@ LLSD LLControlVariable::getComparableValue(const LLSD& value)
 	{
 		storable_value = value;
 	}
+
 	return storable_value;
 }
 

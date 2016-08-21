@@ -52,19 +52,13 @@ public:
 
 	S32 notifyParent(const LLSD& info);
 
-// [RLVa:KB] - Checked: 2010-04-20 (RLVa-1.2.0f) | Added: RVLa-1.2.0f
-	const LLUUID& getAvatarId() const { return mAvatarId; }
-// [/RLVa:KB]
-
 protected:
 
 	LLPanelProfile();
 
 	virtual void onTabSelected(const LLSD& param);
 
-// [RLVa:KB]
-//	const LLUUID& getAvatarId() { return mAvatarId; }
-// [/RLVa:KB]
+	const LLUUID& getAvatarId() { return mAvatarId; }
 
 	void setAvatarId(const LLUUID& avatar_id) { mAvatarId = avatar_id; }
 

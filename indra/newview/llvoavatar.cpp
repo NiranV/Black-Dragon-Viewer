@@ -2812,18 +2812,12 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 	const F32 time_visible = mTimeVisible.getElapsedTimeF32();
 	const F32 NAME_SHOW_TIME = gSavedSettings.getF32("RenderNameShowTime");	// seconds
 	const F32 FADE_DURATION = gSavedSettings.getF32("RenderNameFadeDuration"); // seconds
-// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.2a) | Added: RLVa-0.2.0b
-	bool fRlvShowNames = gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES);
-// [/RLVa:KB]
 	BOOL visible_avatar = isVisible() || mNeedsAnimUpdate;
 	BOOL visible_chat = gSavedSettings.getBOOL("UseChatBubbles") && (mChats.size() || mTyping);
 	BOOL render_name =	visible_chat ||
-		                (visible_avatar &&
-// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.2a) | Added: RLVa-1.0.0h
-						( (!fRlvShowNames) || (RlvSettings::getShowNameTags()) ) &&
-// [/RLVa:KB]
-		                ((sRenderName == RENDER_NAME_ALWAYS) ||
-		                 (sRenderName == RENDER_NAME_FADE && time_visible < NAME_SHOW_TIME)));
+		(visible_avatar &&
+		 ((sRenderName == RENDER_NAME_ALWAYS) ||
+		  (sRenderName == RENDER_NAME_FADE && time_visible < NAME_SHOW_TIME)));
 	// If it's your own avatar, don't draw in mouselook, and don't
 	// draw if we're specifically hiding our own name.
 	if (isSelf())
@@ -2853,18 +2847,7 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 		new_name = TRUE;
 	}
 
-// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.2a) | Added: RLVa-0.2.0b
-	if (fRlvShowNames)
-	{
-		if (mRenderGroupTitles)
-		{
-			mRenderGroupTitles = FALSE;
-			new_name = TRUE;
-		}
-	}
-	else if (sRenderGroupTitles != mRenderGroupTitles)
-// [/RLVa]
-//	if (sRenderGroupTitles != mRenderGroupTitles)
+	if (sRenderGroupTitles != mRenderGroupTitles)
 	{
 		mRenderGroupTitles = sRenderGroupTitles;
 		new_name = TRUE;
@@ -2931,9 +2914,6 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 	// Avatars must have a first and last name
 	if (!firstname || !lastname) return;
 
-// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
-	bool fRlvShowNames = gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES);
-// [/RLVa:KB]
 	bool is_away = mSignaledAnimations.find(ANIM_AGENT_AWAY)  != mSignaledAnimations.end();
 	bool is_do_not_disturb = mSignaledAnimations.find(ANIM_AGENT_DO_NOT_DISTURB) != mSignaledAnimations.end();
 	bool is_appearance = mSignaledAnimations.find(ANIM_AGENT_CUSTOMIZE) != mSignaledAnimations.end();
@@ -2946,10 +2926,7 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 	{
 		is_muted = isInMuteList();
 	}
-//	bool is_friend = LLAvatarTracker::instance().isBuddy(getID());
-// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
-	bool is_friend = (!fRlvShowNames) && (LLAvatarTracker::instance().isBuddy(getID()));
-// [/RLVa:KB]
+	bool is_friend = LLAvatarTracker::instance().isBuddy(getID());
 	bool is_cloud = getIsCloud();
 
 	if (is_appearance != mNameAppearance)
@@ -3014,10 +2991,7 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 				LLFontGL::getFontSansSerifSmall());
 		}
 
-//		if (sRenderGroupTitles
-// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
-		if (sRenderGroupTitles && !fRlvShowNames
-// [/RLVa:KB]
+		if (sRenderGroupTitles
 			&& title && title->getString() && title->getString()[0] != '\0')
 		{
 			std::string title_str = title->getString();
@@ -3039,42 +3013,25 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 				clearNameTag();
 			}
 
-// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
-			if ( (!fRlvShowNames) || (isSelf()) )
+			// Might be blank if name not available yet, that's OK
+			if (show_display_names)
 			{
-// [/RLVa:KB]
-				// Might be blank if name not available yet, that's OK
-				if (show_display_names)
-				{
-					addNameTagLine(av_name.getDisplayName(), name_tag_color, LLFontGL::NORMAL,
-						LLFontGL::getFontSansSerif());
-				}
-				// Suppress SLID display if display name matches exactly (ugh)
-				if (show_usernames && !av_name.isDisplayNameDefault())
-				{
-					// *HACK: Desaturate the color
-					LLColor4 username_color = name_tag_color * 0.83f;
-					addNameTagLine(av_name.getUserName(), username_color, LLFontGL::NORMAL,
+				addNameTagLine(av_name.getDisplayName(), name_tag_color, LLFontGL::NORMAL,
+					LLFontGL::getFontSansSerif());
+			}
+			// Suppress SLID display if display name matches exactly (ugh)
+			if (show_usernames && !av_name.isDisplayNameDefault())
+			{
+				// *HACK: Desaturate the color
+				LLColor4 username_color = name_tag_color * 0.83f;
+				addNameTagLine(av_name.getUserName(), username_color, LLFontGL::NORMAL,
 					LLFontGL::getFontSansSerifSmall());
-				}
-// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
 			}
-			else
-			{
-				addNameTagLine(RlvStrings::getAnonym(av_name), name_tag_color, LLFontGL::NORMAL, LLFontGL::getFontSansSerif());
-			}
-// [/RLVa:KB]
 		}
 		else
 		{
 			const LLFontGL* font = LLFontGL::getFontSansSerif();
 			std::string full_name = LLCacheName::buildFullName( firstname->getString(), lastname->getString() );
-// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
-			if ( (fRlvShowNames) && (!isSelf()) )
-			{
-				full_name = RlvStrings::getAnonym(full_name);
-			}
-// [/RLVa:KB]
 			addNameTagLine(full_name, name_tag_color, LLFontGL::NORMAL, font);
 		}
 
@@ -6529,13 +6486,6 @@ void LLVOAvatar::sitDown(BOOL bSitting)
 	{
 		// Update Movement Controls according to own Sitting mode
 		LLFloaterMove::setSittingMode(bSitting);
-
-// [RLVa:KB] - Checked: 2010-08-29 (RLVa-1.2.1c) | Modified: RLVa-1.2.1c
-		if (rlv_handler_t::isEnabled())
-		{
-			gRlvHandler.onSitOrStand(bSitting);
-		}
-// [/RLVa:KB]
 	}
 }
 
@@ -7071,11 +7021,7 @@ BOOL LLVOAvatar::processFullyLoadedChange(bool loading)
 
 BOOL LLVOAvatar::isFullyLoaded() const
 {
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-22 (Catznip-2.2)
-	// Changes to LLAppearanceMgr::updateAppearanceFromCOF() expect this function to actually return mFullyLoaded for gAgentAvatarp
-	return (mRenderUnloadedAvatar && !isSelf()) ||(mFullyLoaded);
-// [/SL:KB]
-//	return (mRenderUnloadedAvatar || mFullyLoaded);
+	return (mRenderUnloadedAvatar || mFullyLoaded);
 }
 
 bool LLVOAvatar::isTooComplex() const
@@ -7883,6 +7829,7 @@ bool resolve_appearance_version(const LLAppearanceMessageContents& contents, S32
 //-----------------------------------------------------------------------------
 void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
 {
+	LL_DEBUGS("Avatar") << "starts" << LL_ENDL;
 	
 	bool enable_verbose_dumps = gSavedSettings.getBOOL("DebugAvatarAppearanceMessage");
 	std::string dump_prefix = getFullname() + "_" + (isSelf()?"s":"o") + "_";
@@ -8782,6 +8729,7 @@ BOOL LLVOAvatar::shouldImpostor(const U32 rank_factor) const
 {
 	return (!isSelf() && sUseImpostors && mVisibilityRank > (sMaxNonImpostors * rank_factor));
 }
+
 BOOL LLVOAvatar::needsImpostorUpdate() const
 {
 	return mNeedsImpostorUpdate;
@@ -8813,7 +8761,7 @@ void LLVOAvatar::getImpostorValues(LLVector4a* extents, LLVector3& angle, F32& d
 	extents[0] = ext[0];
 	extents[1] = ext[1];
 
-	LLVector3 at = LLViewerCamera::getInstance()->getOrigin() - (getRenderPosition() + mImpostorOffset);
+	LLVector3 at = LLViewerCamera::getInstance()->getOrigin()-(getRenderPosition()+mImpostorOffset);
 	distance = at.normalize();
 	F32 da = 1.f - (at*LLViewerCamera::getInstance()->getAtAxis());
 	angle.mV[0] = LLViewerCamera::getInstance()->getYaw()*da;
@@ -9012,7 +8960,7 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 								  ++child_iter)
 							{
 								LLViewerObject* child_obj = *child_iter;
-								LLVOVolume *child = dynamic_cast<LLVOVolume*>(child_obj);
+								LLVOVolume *child = dynamic_cast<LLVOVolume*>( child_obj );
 								if (child)
 								{
 									attachment_children_cost += child->getRenderCost(textures);
@@ -9051,8 +8999,8 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 			for (LLVOVolume::texture_cost_t::iterator it = textures.begin(); it != textures.end(); ++it)
 			{
 				LLUUID image_id = it->first;
-				if (!(image_id.isNull() || image_id == IMG_DEFAULT || image_id == IMG_DEFAULT_AVATAR)
-					&& (all_textures.find(image_id) == all_textures.end()))
+				if( ! (image_id.isNull() || image_id == IMG_DEFAULT || image_id == IMG_DEFAULT_AVATAR)
+				   && (all_textures.find(image_id) == all_textures.end()))
 				{
 					// attachment texture not previously seen.
 					LL_DEBUGS("ARCdetail") << "attachment_texture: " << image_id.asString() << LL_ENDL;
@@ -9061,17 +9009,17 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 			}
 
 			// print any avatar textures we didn't already know about
-			for (LLAvatarAppearanceDictionary::Textures::const_iterator iter = LLAvatarAppearanceDictionary::getInstance()->getTextures().begin();
-				iter != LLAvatarAppearanceDictionary::getInstance()->getTextures().end();
-				++iter)
+		    for (LLAvatarAppearanceDictionary::Textures::const_iterator iter = LLAvatarAppearanceDictionary::getInstance()->getTextures().begin();
+			 iter != LLAvatarAppearanceDictionary::getInstance()->getTextures().end();
+				 ++iter)
 			{
-				const LLAvatarAppearanceDictionary::TextureEntry *texture_dict = iter->second;
+			    const LLAvatarAppearanceDictionary::TextureEntry *texture_dict = iter->second;
 				// TODO: MULTI-WEARABLE: handle multiple textures for self
-				const LLViewerTexture* te_image = getImage(iter->first, 0);
+				const LLViewerTexture* te_image = getImage(iter->first,0);
 				if (!te_image)
 					continue;
 				LLUUID image_id = te_image->getID();
-				if (image_id.isNull() || image_id == IMG_DEFAULT || image_id == IMG_DEFAULT_AVATAR)
+				if( image_id.isNull() || image_id == IMG_DEFAULT || image_id == IMG_DEFAULT_AVATAR)
 					continue;
 				if (all_textures.find(image_id) == all_textures.end())
 				{
@@ -9142,12 +9090,12 @@ void LLVOAvatar::calcMutedAVColor()
         // and it loops back to red so there is an even distribution.  It is not a heat map
         const S32 NUM_SPECTRUM_COLORS = 7;              
         static LLColor4 * spectrum_color[NUM_SPECTRUM_COLORS] = { &LLColor4::red, &LLColor4::magenta, &LLColor4::blue, &LLColor4::cyan, &LLColor4::green, &LLColor4::yellow, &LLColor4::red };
-
+ 
         spectrum = spectrum * (NUM_SPECTRUM_COLORS - 1);		// Scale to range of number of colors
         S32 spectrum_index_1  = floor(spectrum);				// Desired color will be after this index
         S32 spectrum_index_2  = spectrum_index_1 + 1;			//    and before this index (inclusive)
         F32 fractBetween = spectrum - (F32)(spectrum_index_1);  // distance between the two indexes (0-1)
-
+ 
         new_color = lerp(*spectrum_color[spectrum_index_1], *spectrum_color[spectrum_index_2], fractBetween);
         new_color.normalize();
         new_color *= 0.28f;		// Tone it down
@@ -9183,8 +9131,8 @@ const std::string LLVOAvatar::getBakedStatusForPrintout() const
 	std::string line;
 
 	for (LLAvatarAppearanceDictionary::Textures::const_iterator iter = LLAvatarAppearanceDictionary::getInstance()->getTextures().begin();
-		iter != LLAvatarAppearanceDictionary::getInstance()->getTextures().end();
-		++iter)
+		 iter != LLAvatarAppearanceDictionary::getInstance()->getTextures().end();
+		 ++iter)
 	{
 		const ETextureIndex index = iter->first;
 		const LLAvatarAppearanceDictionary::TextureEntry *texture_dict = iter->second;
@@ -9219,21 +9167,21 @@ F32 calc_bouncy_animation(F32 x)
 }
 
 //virtual
-BOOL LLVOAvatar::isTextureDefined(LLAvatarAppearanceDefines::ETextureIndex te, U32 index) const
+BOOL LLVOAvatar::isTextureDefined(LLAvatarAppearanceDefines::ETextureIndex te, U32 index ) const
 {
-	if (isIndexLocalTexture(te))
+	if (isIndexLocalTexture(te)) 
 	{
 		return FALSE;
 	}
-
-	if (!getImage(te, index))
+	
+	if( !getImage( te, index ) )
 	{
 		LL_WARNS() << "getImage( " << te << ", " << index << " ) returned 0" << LL_ENDL;
 		return FALSE;
 	}
 
-	return (getImage(te, index)->getID() != IMG_DEFAULT_AVATAR &&
-		getImage(te, index)->getID() != IMG_DEFAULT);
+	return (getImage(te, index)->getID() != IMG_DEFAULT_AVATAR && 
+			getImage(te, index)->getID() != IMG_DEFAULT);
 }
 
 //virtual
@@ -9247,8 +9195,8 @@ BOOL LLVOAvatar::isTextureVisible(LLAvatarAppearanceDefines::ETextureIndex type,
 	{
 		// baked textures can use TE images directly
 		return ((isTextureDefined(type) || isSelf())
-			&& (getTEImage(type)->getID() != IMG_INVISIBLE
-			|| LLDrawPoolAlpha::sShowDebugAlpha));
+				&& (getTEImage(type)->getID() != IMG_INVISIBLE 
+				|| LLDrawPoolAlpha::sShowDebugAlpha));
 	}
 }
 
@@ -9258,3 +9206,6 @@ BOOL LLVOAvatar::isTextureVisible(LLAvatarAppearanceDefines::ETextureIndex type,
 	// non-self avatars don't have wearables
 	return FALSE;
 }
+
+
+

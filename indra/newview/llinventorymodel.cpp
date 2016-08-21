@@ -58,10 +58,6 @@
 #include "bufferarray.h"
 #include "bufferstream.h"
 #include "llcorehttputil.h"
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
-#include "rlvhandler.h"
-#include "rlvlocks.h"
-// [/RLVa:KB]
 
 //#define DIFF_INVENTORY_FILES
 #ifdef DIFF_INVENTORY_FILES
@@ -719,19 +715,11 @@ void LLInventoryModel::collectDescendents(const LLUUID& id,
 	collectDescendentsIf(id, cats, items, include_trash, always);
 }
 
-//void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
-//											cat_array_t& cats,
-//											item_array_t& items,
-//											BOOL include_trash,
-//											LLInventoryCollectFunctor& add)
-// [RLVa:KB] - Checked: 2013-04-15 (RLVa-1.4.8)
 void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 											cat_array_t& cats,
 											item_array_t& items,
 											BOOL include_trash,
-											LLInventoryCollectFunctor& add,
-											bool follow_folder_links)
-// [/RLVa:KB]
+											LLInventoryCollectFunctor& add)
 {
 	// Start with categories
 	if(!include_trash)
@@ -751,10 +739,7 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 			{
 				cats.push_back(cat);
 			}
-// [RLVa:KB] - Checked: 2013-04-15 (RLVa-1.4.8)
-			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add, follow_folder_links);
-// [/RLVa:KB]
-//			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add);
+			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add);
 		}
 	}
 
@@ -774,44 +759,6 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 			}
 		}
 	}
-
-// [RLVa:KB] - Checked: 2010-09-30 (RLVa-1.2.1d) | Added: RLVa-1.2.1d
-	// The problem is that we want some way for the functor to know that it's being asked to decide on a folder link
-	// but it won't know that until after it has encountered the folder link item (which doesn't happen until *after* 
-	// it has already collected all items from it the way the code was originally laid out)
-	// This breaks the "finish collecting all folders before collecting items (top to bottom and then bottom to top)" 
-	// assumption but no functor is (currently) relying on it (and likely never should since it's an implementation detail?)
-	// [Only LLAppearanceMgr actually ever passes in 'follow_folder_links == TRUE']
-	// Follow folder links recursively.  Currently never goes more
-	// than one level deep (for current outfit support)
-	// Note: if making it fully recursive, need more checking against infinite loops.
-	if (follow_folder_links && item_array)
-	{
-		S32 count = item_array->size();
-		for(S32 i = 0; i < count; ++i)
-		{
-			item = item_array->at(i);
-			if (item && item->getActualType() == LLAssetType::AT_LINK_FOLDER)
-			{
-				LLViewerInventoryCategory *linked_cat = item->getLinkedCategory();
-				if (linked_cat && linked_cat->getPreferredType() != LLFolderType::FT_OUTFIT)
-					// BAP - was 
-					// LLAssetType::lookupIsEnsembleCategoryType(linked_cat->getPreferredType()))
-					// Change back once ensemble typing is in place.
-				{
-					if(add(linked_cat,NULL))
-					{
-						// BAP should this be added here?  May not
-						// matter if it's only being used in current
-						// outfit traversal.
-						cats.push_back(LLPointer<LLViewerInventoryCategory>(linked_cat));
-					}
-					collectDescendentsIf(linked_cat->getUUID(), cats, items, include_trash, add, false);
-				}
-			}
-		}
-	}
-// [/RLVa:KB]
 }
 
 U32 LLInventoryModel::getDescendentsCountRecursive(const LLUUID& id, U32 max_item_limit)
@@ -2779,24 +2726,13 @@ void LLInventoryModel::registerCallbacks(LLMessageSystem* msg)
 	msg->setHandlerFuncFast(_PREHASH_RemoveInventoryObjects,
 							processRemoveInventoryObjects,
 							NULL);	
-	//msg->setHandlerFuncFast(_PREHASH_ExchangeCallingCard,
-	//						processExchangeCallingcard,
-	//						NULL);
-	//msg->setHandlerFuncFast(_PREHASH_AddCallingCard,
-	//					processAddCallingcard,
-	//					NULL);
-	//msg->setHandlerFuncFast(_PREHASH_DeclineCallingCard,
-	//					processDeclineCallingcard,
-	//					NULL);
 	msg->setHandlerFuncFast(_PREHASH_SaveAssetIntoInventory,
 						processSaveAssetIntoInventory,
 						NULL);
 	msg->setHandlerFuncFast(_PREHASH_BulkUpdateInventory,
 							processBulkUpdateInventory,
 							NULL);
-	msg->setHandlerFunc("InventoryDescendents", processInventoryDescendents);
 	msg->setHandlerFunc("MoveInventoryItem", processMoveInventoryItem);
-	msg->setHandlerFunc("FetchInventoryReply", processFetchInventoryReply);
 }
 
 
@@ -2815,14 +2751,6 @@ void LLInventoryModel::processUpdateCreateInventoryItem(LLMessageSystem* msg, vo
 	}
 
 }
-
-// static
-void LLInventoryModel::processFetchInventoryReply(LLMessageSystem* msg, void**)
-{
-	// no accounting
-	gInventory.messageUpdateCore(msg, false);
-}
-
 
 bool LLInventoryModel::messageUpdateCore(LLMessageSystem* msg, bool account, U32 mask)
 {
@@ -3096,14 +3024,6 @@ void LLInventoryModel::processSaveAssetIntoInventory(LLMessageSystem* msg,
 		LL_INFOS() << "LLInventoryModel::processSaveAssetIntoInventory item"
 			" not found: " << item_id << LL_ENDL;
 	}
-
-// [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0a) | Added: RLVa-0.2.0e
-	if (rlv_handler_t::isEnabled())
-	{
-		RlvAttachmentLockWatchdog::instance().onSavedAssetIntoInventory(item_id);
-	}
-// [/RLVa:KB]
-
 	if(gViewerWindow)
 	{
 		gViewerWindow->getWindow()->decBusyCount();
@@ -3165,20 +3085,6 @@ void LLInventoryModel::processBulkUpdateInventory(LLMessageSystem* msg, void**)
 			{
 				if(tfolder->getParentUUID() == folderp->getParentUUID())
 				{
-// [RLVa:KB] - Checked: 2010-04-18 (RLVa-1.2.0e) | Added: RLVa-1.2.0e
-					// NOTE-RLVa: not sure if this is a hack or a bug-fix :o
-					//		-> if we rename the folder on the first BulkUpdateInventory message subsequent messages will still contain
-					//         the old folder name and gInventory.updateCategory() below will "undo" the folder name change but on the
-					//         viewer-side *only* so the folder name actually becomes out of sync with what's on the inventory server
-					//      -> so instead we keep the name of the existing folder and only do it for #RLV/~ in case this causes issues
-					//		-> a better solution would be to only do the rename *after* the transaction completes but there doesn't seem
-					//		   to be any way to accomplish that either *sighs*
-					if ( (rlv_handler_t::isEnabled()) && (!folderp->getName().empty()) && (tfolder->getName() != folderp->getName()) &&
-						 ((tfolder->getName().find(RLV_PUTINV_PREFIX) == 0)) )
-					{
-						tfolder->rename(folderp->getName());
-					}
-// [/RLVa:KB]
 					update[tfolder->getParentUUID()];
 				}
 				else
@@ -3288,85 +3194,6 @@ void LLInventoryModel::processBulkUpdateInventory(LLMessageSystem* msg, void**)
 		InventoryCallbackInfo cbinfo = (*inv_it);
 		gInventoryCallbacks.fire(cbinfo.mCallback, cbinfo.mInvID);
 	}
-
-	//gInventory.validate();
-
-	// Don't show the inventory.  We used to call showAgentInventory here.
-	//LLFloaterInventory* view = LLFloaterInventory::getActiveInventory();
-	//if(view)
-	//{
-	//	const BOOL take_keyboard_focus = FALSE;
-	//	view->setSelection(category.getUUID(), take_keyboard_focus );
-	//	LLView* focus_view = gFocusMgr.getKeyboardFocus();
-	//	LLFocusMgr::FocusLostCallback callback = gFocusMgr.getFocusCallback();
-	//	// HACK to open inventory offers that are accepted.  This information
-	//	// really needs to flow through the instant messages and inventory
-	//	// transfer/update messages.
-	//	if (LLFloaterInventory::sOpenNextNewItem)
-	//	{
-	//		view->openSelected();
-	//		LLFloaterInventory::sOpenNextNewItem = FALSE;
-	//	}
-	//
-	//	// restore keyboard focus
-	//	gFocusMgr.setKeyboardFocus(focus_view);
-	//}
-}
-
-// static
-void LLInventoryModel::processInventoryDescendents(LLMessageSystem* msg,void**)
-{
-	LLUUID agent_id;
-	msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_AgentID, agent_id);
-	if(agent_id != gAgent.getID())
-	{
-		LL_WARNS() << "Got a UpdateInventoryItem for the wrong agent." << LL_ENDL;
-		return;
-	}
-	LLUUID parent_id;
-	msg->getUUID("AgentData", "FolderID", parent_id);
-	LLUUID owner_id;
-	msg->getUUID("AgentData", "OwnerID", owner_id);
-	S32 version;
-	msg->getS32("AgentData", "Version", version);
-	S32 descendents;
-	msg->getS32("AgentData", "Descendents", descendents);
-
-	S32 i;
-	S32 count = msg->getNumberOfBlocksFast(_PREHASH_FolderData);
-	LLPointer<LLViewerInventoryCategory> tcategory = new LLViewerInventoryCategory(owner_id);
-	for(i = 0; i < count; ++i)
-	{
-		tcategory->unpackMessage(msg, _PREHASH_FolderData, i);
-		gInventory.updateCategory(tcategory);
-	}
-
-	count = msg->getNumberOfBlocksFast(_PREHASH_ItemData);
-	LLPointer<LLViewerInventoryItem> titem = new LLViewerInventoryItem;
-	for(i = 0; i < count; ++i)
-	{
-		titem->unpackMessage(msg, _PREHASH_ItemData, i);
-		// If the item has already been added (e.g. from link prefetch), then it doesn't need to be re-added.
-		if (gInventory.getItem(titem->getUUID()))
-		{
-			LL_DEBUGS("Inventory") << "Skipping prefetched item [ Name: " << titem->getName()
-								   << " | Type: " << titem->getActualType() << " | ItemUUID: " << titem->getUUID() << " ] " << LL_ENDL;
-			continue;
-		}
-		gInventory.updateItem(titem);
-	}
-
-	// set version and descendentcount according to message.
-	LLViewerInventoryCategory* cat = gInventory.getCategory(parent_id);
-	if(cat)
-	{
-		cat->setVersion(version);
-		cat->setDescendentCount(descendents);
-		// Get this UUID on the changed list so that whatever's listening for it
-		// will get triggered.
-		gInventory.addChangedMask(LLInventoryObserver::INTERNAL, cat->getUUID());
-	}
-	gInventory.notifyObservers();
 }
 
 // static
@@ -3653,30 +3480,6 @@ void LLInventoryModel::updateItemsOrder(LLInventoryModel::item_array_t& items, c
 	}
 }
 
-//* @param[in] items vector of items in order to be saved.
-/*
-void LLInventoryModel::saveItemsOrder(const LLInventoryModel::item_array_t& items)
-{
-	int sortField = 0;
-
-	// current order is saved by setting incremental values (1, 2, 3, ...) for the sort field
-	for (item_array_t::const_iterator i = items.begin(); i != items.end(); ++i)
-	{
-		LLViewerInventoryItem* item = *i;
-
-		item->setSortField(++sortField);
-		item->setComplete(TRUE);
-		item->updateServer(FALSE);
-
-		updateItem(item);
-
-		// Tell the parent folder to refresh its sort order.
-		addChangedMask(LLInventoryObserver::SORT, item->getParentUUID());
-	}
-
-	notifyObservers();
-}
-*/
 // See also LLInventorySort where landmarks in the Favorites folder are sorted.
 class LLViewerInventoryItemSort
 {
@@ -3687,37 +3490,6 @@ public:
 	}
 };
 
-/**
- * Sorts passed items by LLViewerInventoryItem sort field.
- *
- * @param[in, out] items - array of items, not sorted.
- */
-//static void rearrange_item_order_by_sort_field(LLInventoryModel::item_array_t& items)
-//{
-//	static LLViewerInventoryItemSort sort_functor;
-//	std::sort(items.begin(), items.end(), sort_functor);
-//}
-
-// * @param source_item_id - LLUUID of the source item to be moved into new position
-// * @param target_item_id - LLUUID of the target item before which source item should be placed.
-/*
-void LLInventoryModel::rearrangeFavoriteLandmarks(const LLUUID& source_item_id, const LLUUID& target_item_id)
-{
-	LLInventoryModel::cat_array_t cats;
-	LLInventoryModel::item_array_t items;
-	LLIsType is_type(LLAssetType::AT_LANDMARK);
-	LLUUID favorites_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_FAVORITE);
-	gInventory.collectDescendentsIf(favorites_id, cats, items, LLInventoryModel::EXCLUDE_TRASH, is_type);
-
-	// ensure items are sorted properly before changing order. EXT-3498
-	rearrange_item_order_by_sort_field(items);
-
-	// update order
-	updateItemsOrder(items, source_item_id, target_item_id);
-
-	saveItemsOrder(items);
-}
-*/
 //----------------------------------------------------------------------------
 
 // *NOTE: DEBUG functionality

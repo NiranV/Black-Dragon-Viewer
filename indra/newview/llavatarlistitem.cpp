@@ -303,10 +303,7 @@ void LLAvatarListItem::onInfoBtnClick()
 
 BOOL LLAvatarListItem::handleDoubleClick(S32 x, S32 y, MASK mask)
 {
-//	if(mInfoBtn->getRect().pointInRect(x, y))
-// [SL:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
-	if ( (mInfoBtn->getVisible()) && (mInfoBtn->getEnabled()) && (mInfoBtn->getRect().pointInRect(x, y)) )
-// [/SL:KB]
+	if(mInfoBtn->getRect().pointInRect(x, y))
 	{
 		onInfoBtnClick();
 		return TRUE;

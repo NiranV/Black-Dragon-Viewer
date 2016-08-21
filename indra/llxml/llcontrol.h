@@ -245,6 +245,7 @@ public:
 	LLRect		getRect(const std::string& name);
 	LLSD        getLLSD(const std::string& name);
 
+
 	LLColor4	getColor(const std::string& name);
 	LLColor4	getColor4(const std::string& name);
 	LLColor3	getColor3(const std::string& name);

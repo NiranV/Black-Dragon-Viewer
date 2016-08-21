@@ -92,12 +92,6 @@ public:
 	// Return true if filter has at least one match.
 	bool filterHasMatches();
 
-// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
-	void setRlvCheckShowNames(bool fRlvCheckShowNames) { mRlvCheckShowNames = fRlvCheckShowNames; }
-	// We need this to be public since we call it from RlvUIEnabler::onToggleShowNames()
-	void updateAvatarNames();
-// [/RLVa:KB]
-
 	boost::signals2::connection setRefreshCompleteCallback(const commit_signal_t::slot_type& cb);
 
 	boost::signals2::connection setItemDoubleClickCallback(const mouse_signal_t::slot_type& cb);
@@ -143,12 +137,7 @@ private:
 	bool mShowPermissions;
 	bool mShowCompleteName;
 
-// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
-	bool mRlvCheckShowNames;
-// [/RLVa:KB]
-
-	//BD
-	LLTimer*                mExtraDataUpdateTimer;
+	LLTimer*				mLITUpdateTimer; // last interaction time update timer
 	std::string				mIconParamName;
 	std::string				mNameFilter;
 	uuid_vec_t				mIDs;

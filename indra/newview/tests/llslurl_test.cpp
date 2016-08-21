@@ -32,54 +32,27 @@
 #include "../../llxml/llcontrol.h"
 #include "llsdserialize.h"
 
-// [RLVa:KB] - Checked: 2010-11-12 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
-// Stub implementation to get the test to compile properly
-#include "../rlvhandler.h"
-
-const std::string& RlvStrings::getString(const std::string& strStringName)
+namespace
 {
-	static const std::string strMissing = "(Missing RLVa string)";
-	return strMissing;
+
+// Should not collide with other test programs creating temp files.
+static const char * const TEST_FILENAME("llslurl_test.xml");
+
 }
 
-bool RlvUtil::isNearbyRegion(const std::string& strRegion)
+//
+// Stub implementation for LLTrans
+//
+class LLTrans
 {
-	return false;
-}
+public:
+	static std::string getString(const std::string &xml_desc, const LLStringUtil::format_map_t& args);
+};
 
-RlvHandler::RlvHandler() : m_pGCTimer(NULL), m_pWLSnapshot(NULL)
+std::string LLTrans::getString(const std::string &xml_desc, const LLStringUtil::format_map_t& args)
 {
-	// Array auto-initialization to 0 is non-standard? (Compiler warning in VC-8.0)
-	memset(m_Behaviours, 0, sizeof(S16) * RLV_BHVR_COUNT);
+	return std::string();
 }
-
-// [RLVa:KB] - Checked: 2010-11-12 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
-// Stub implementation to get the test to compile properly
-#include "../rlvhandler.h"
-
-const std::string& RlvStrings::getString(const std::string& strStringName)
-{
-	static const std::string strMissing = "(Missing RLVa string)";
-	return strMissing;
-}
-
-bool RlvUtil::isNearbyRegion(const std::string& strRegion)
-{
-	return false;
-}
-
-RlvHandler::RlvHandler() : m_pGCTimer(NULL), m_pWLSnapshot(NULL)
-{
-	// Array auto-initialization to 0 is non-standard? (Compiler warning in VC-8.0)
-	memset(m_Behaviours, 0, sizeof(S16) * RLV_BHVR_COUNT);
-}
-
-RlvHandler::~RlvHandler()
-{
-}
-
-RlvHandler gRlvHandler;
-// [/RLVa:KB]
 
 //----------------------------------------------------------------------------
 // Mock objects for the dependencies of the code we're testing

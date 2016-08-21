@@ -333,11 +333,8 @@ void LLViewerJoystick::handleRun(F32 inc)
 		if (1 == mJoystickRun)
 		{
 			++mJoystickRun;
-//			gAgent.setRunning();
-//			gAgent.sendWalkRun(gAgent.getRunning());
-// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
-			gAgent.setTempRun();
-// [/RLVa:KB]
+			gAgent.setRunning();
+			gAgent.sendWalkRun(gAgent.getRunning());
 		}
 		else if (0 == mJoystickRun)
 		{
@@ -352,11 +349,8 @@ void LLViewerJoystick::handleRun(F32 inc)
 			--mJoystickRun;
 			if (0 == mJoystickRun)
 			{
-//				gAgent.clearRunning();
-//				gAgent.sendWalkRun(gAgent.getRunning());
-// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
-				gAgent.clearTempRun();
-// [/RLVa:KB]
+				gAgent.clearRunning();
+				gAgent.sendWalkRun(gAgent.getRunning());
 			}
 		}
 	}

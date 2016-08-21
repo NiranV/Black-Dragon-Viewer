@@ -188,10 +188,6 @@
 #include "llvoicechannel.h"
 #include "llpathfindingmanager.h"
 
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0a)
-#include "rlvhandler.h"
-// [/RLVa:KB]
-
 #include "lllogin.h"
 #include "llevents.h"
 #include "llstartuplistener.h"
@@ -203,14 +199,6 @@
 #if LL_WINDOWS
 #include "lldxhardware.h"
 #endif
-
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0a)
-#include "rlvhandler.h"
-// [/RLVa:KB]
-
-//BD
-#include "llsidepanelinventory.h"
-
 
 //
 // exported globals
@@ -384,13 +372,6 @@ bool idle_startup()
 		std::string lastGPU = gSavedSettings.getString("LastGPUString");
 		std::string thisGPU = LLFeatureManager::getInstance()->getGPUString();
 		
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0a) | Modified: RLVa-0.2.1d
-		if ( (gSavedSettings.controlExists(RLV_SETTING_MAIN)) && (gSavedSettings.getBOOL(RLV_SETTING_MAIN)) )
-		{
-			rlv_handler_t::setEnabled(TRUE);
-		}
-// [/RLVa:KB]
-
 		if (LLFeatureManager::getInstance()->isSafe())
 		{
 			LLNotificationsUtil::add("DisplaySetToSafe");
@@ -973,14 +954,6 @@ bool idle_startup()
 		// their last location, or some URL "-url //sim/x/y[/z]"
 		// All accounts have both a home and a last location, and we don't support
 		// more locations than that.  Choose the appropriate one.  JC
-// [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.2.0c) | Modified: RLVa-0.2.1d
-		if ( (rlv_handler_t::isEnabled()) && (RlvSettings::getLoginLastLocation()) )
-		{
-			// Force login at the last location
-			LLStartUp::setStartSLURL(LLSLURL(LLSLURL::SIM_LOCATION_LAST));
-		}
-// [/RLVa:KB]
-
 		switch (LLStartUp::getStartSLURL().getType())
 		  {
 		  case LLSLURL::LOCATION:
@@ -1202,13 +1175,6 @@ bool idle_startup()
 	{
 		set_startup_status(0.30f, LLTrans::getString("LoginInitializingWorld"), gAgent.mMOTD);
 		display_startup();
-// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Added: Catznip-2.1.1a
-		if ((gSavedSettings.getBOOL("FullScreenWindow")) && (gViewerWindow->canFullscreenWindow()))
-		{
-			gViewerWindow->setFullscreenWindow(TRUE);
-		}
-// [/SL:KB]
-
 		// We should have an agent id by this point.
 		llassert(!(gAgentID == LLUUID::null));
 
@@ -1812,14 +1778,6 @@ bool idle_startup()
 		LL_INFOS() << "Creating Inventory Views" << LL_ENDL;
 		LLFloaterReg::getInstance("inventory");
 		display_startup();
-
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0a) | Added: RLVa-1.1.0f
-		if (rlv_handler_t::isEnabled())
-		{
-			// Regularly process a select subset of retained commands during logon
-			gIdleCallbacks.addFunction(RlvHandler::onIdleStartup, new LLTimer());
-		}
-// [/RLVa:KB]
 		LLStartUp::setStartupState( STATE_MISC );
 		display_startup();
 		return FALSE;

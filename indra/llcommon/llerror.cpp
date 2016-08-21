@@ -1059,7 +1059,7 @@ namespace LLError
 		{
 			return false;
 		}
-
+		
 		SettingsConfigPtr s = Settings::getInstance()->getSettingsConfig();
 		
 		s->mShouldLogCallCounter++;

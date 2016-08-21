@@ -56,9 +56,6 @@
 #include "lltoggleablemenu.h"
 #include "llviewermenu.h"
 #include "llviewerregion.h"
-// [RLVa:KB]
-#include "rlvhandler.h"
-// [/RLVa:KB]
 
 // Not yet implemented; need to remove buildPanel() from constructor when we switch
 //static LLRegisterPanelClassWrapper<LLLandmarksPanel> t_landmarks("panel_landmarks");
@@ -774,22 +771,15 @@ void LLLandmarksPanel::onAddAction(const LLSD& userdata) const
 	std::string command_name = userdata.asString();
 	if("add_landmark" == command_name)
 	{
-// [RLVa:KB] - Checked: 2012-02-08 (RLVa-1.4.5) | Added: RLVa-1.4.5
-		if (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC))
+		LLViewerInventoryItem* landmark = LLLandmarkActions::findLandmarkForAgentPos();
+		if(landmark)
 		{
-// [/RLVa:KB]
-			LLViewerInventoryItem* landmark = LLLandmarkActions::findLandmarkForAgentPos();
-			if(landmark)
-			{
-				LLNotificationsUtil::add("LandmarkAlreadyExists");
-			}
-			else
-			{
-				LLFloaterSidePanelContainer::showPanel("places", LLSD().with("type", "create_landmark"));
-			}
-// [RLVa:KB] - Checked: 2012-02-08 (RLVa-1.4.5) | Added: RLVa-1.4.5
+			LLNotificationsUtil::add("LandmarkAlreadyExists");
 		}
-// [/RLVa:KB]
+		else
+		{
+			LLFloaterSidePanelContainer::showPanel("places", LLSD().with("type", "create_landmark"));
+		}
 	} 
 	else if ("category" == command_name)
 	{
@@ -1055,12 +1045,6 @@ bool LLLandmarksPanel::isActionEnabled(const LLSD& userdata) const
 		}
 		return false;
 	}
-// [RLVa:KB] - Checked: 2012-02-08 (RLVa-1.4.5) | Added: RLVa-1.4.5
-	else if("add_landmark" == command_name)
-	{
-		return !gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC);
-	}
-// [/RLVa:KB]
 	else
 	{
 		LL_WARNS() << "Unprocessed command has come: " << command_name << LL_ENDL;

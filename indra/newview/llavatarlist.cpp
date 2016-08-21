@@ -47,9 +47,6 @@
 #include "llvoiceclient.h"
 #include "llviewercontrol.h"	// for gSavedSettings
 #include "lltooldraganddrop.h"
-// [RLVa:KB] - Checked: 2010-06-04 (RLVa-1.2.2a)
-#include "rlvhandler.h"
-// [/RLVa:KB]
 
 static LLDefaultChildRegistry::Register<LLAvatarList> r("avatar_list");
 
@@ -122,9 +119,6 @@ LLAvatarList::LLAvatarList(const Params& p)
 , mShowSpeakingIndicator(p.show_speaking_indicator)
 , mShowPermissions(p.show_permissions_granted)
 , mShowCompleteName(false)
-// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
-, mRlvCheckShowNames(false)
-// [/RLVa:KB]
 {
 	setCommitOnSelectionChange(true);
 
@@ -450,9 +444,6 @@ void LLAvatarList::addNewItem(const LLUUID& id, const std::string& name, BOOL is
 {
 	LLAvatarListItem* item = new LLAvatarListItem();
 	item->setShowCompleteName(mShowCompleteName);
-// [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
-	item->setRlvCheckShowNames(mRlvCheckShowNames);
-// [/RLVa:KB]
 	// This sets the name as a side effect
 	item->setAvatarId(id, mSessionID, mIgnoreOnlineStatus);
 	item->setOnline(mIgnoreOnlineStatus ? true : is_online);

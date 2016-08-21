@@ -3764,15 +3764,6 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 						{
 							moveable_object_selected = TRUE;
 							this_object_movable = TRUE;
-
-// [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c) | Modified: RLVa-0.2.0g
-							if ( (rlv_handler_t::isEnabled()) && 
-								 ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP))) )
-							{
-								if ((isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (gAgentAvatarp->getRoot() == object->getRootEdit()))
-									moveable_object_selected = this_object_movable = FALSE;
-							}
-// [/RLVa:KB]
 						}
 						all_selected_objects_move = all_selected_objects_move && this_object_movable;
 						all_selected_objects_modify = all_selected_objects_modify && object->permModify();
@@ -3854,11 +3845,11 @@ BOOL LLViewerWindow::clickPointOnSurfaceGlobal(const S32 x, const S32 y, LLViewe
 	return intersect;
 }
 
-void LLViewerWindow::pickAsync(S32 x,
-	S32 y_from_bot,
-	MASK mask,
-	void(*callback)(const LLPickInfo& info),
-	BOOL pick_transparent,
+void LLViewerWindow::pickAsync( S32 x,
+								S32 y_from_bot,
+								MASK mask,
+								void (*callback)(const LLPickInfo& info),
+								BOOL pick_transparent,
 								BOOL pick_rigged,
 								BOOL pick_unselectable)
 {
@@ -4065,39 +4056,15 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 		found = gPipeline.lineSegmentIntersectInHUD(mh_start, mh_end, pick_transparent,
 													face_hit, intersection, uv, normal, tangent);
 
-// [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c) | Modified: RLVa-1.2.0c
-		if ( (rlv_handler_t::isEnabled()) && (found) &&
-			 (LLToolCamera::getInstance()->hasMouseCapture()) && (gKeyboard->currentMask(TRUE) & MASK_ALT) )
-		{
-			found = NULL;
-		}
-// [/RLVa:KB]
 		if (!found) // if not found in HUD, look in world:
 		{
 			found = gPipeline.lineSegmentIntersectInWorld(mw_start, mw_end, pick_transparent, pick_rigged,
- 														  face_hit, intersection, uv, normal, tangent);
+														  face_hit, intersection, uv, normal, tangent);
 			if (found && !pick_transparent)
 			{
 				gDebugRaycastIntersection = *intersection;
 			}
 		}
-
-// [RLVa:KB] - Checked: RLVa-1.2.0
-		if ( (rlv_handler_t::isEnabled()) && (found) && (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT)) )
-		{
-			// Allow picking if:
-			//   - the drag-and-drop tool is active (allows inventory offers)
-			//   - the camera tool is active
-			//   - the pie tool is active *and* we picked our own avie (allows "mouse steering" and the self pie menu)
-			LLTool* pCurTool = LLToolMgr::getInstance()->getCurrentTool();
-			if ( (LLToolDragAndDrop::getInstance() != pCurTool) && 
-			     (!LLToolCamera::getInstance()->hasMouseCapture()) &&
-			     ((LLToolPie::getInstance() != pCurTool) || (gAgent.getID() != found->getID())) )
-			{
-				found = NULL;
-			}
-		}
-// [/RLVa:KB]
 	}
 
 	return found;
@@ -5468,14 +5435,9 @@ void LLPickInfo::fetchResults()
 		icon_dist = delta.getLength3().getF32();
 	}
 
-//	LLViewerObject* hit_object = gViewerWindow->cursorIntersect(mMousePt.mX, mMousePt.mY, 512.f,
-//									NULL, -1, mPickTransparent, &face_hit,
-//									&intersection, &uv, &normal, &binormal);
-// [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
 	LLViewerObject* hit_object = gViewerWindow->cursorIntersect(mMousePt.mX, mMousePt.mY, 512.f,
 									NULL, -1, mPickTransparent, mPickRigged, &face_hit,
 									&intersection, &uv, &normal, &tangent, &start, &end);
-// [/SL:KB]
 	
 	mPickPt = mMousePt;
 
@@ -5618,15 +5580,6 @@ void LLPickInfo::getSurfaceInfo()
 
 	if (objectp)
 	{
-//		if (gViewerWindow->cursorIntersect(ll_round((F32)mMousePt.mX), ll_round((F32)mMousePt.mY), 1024.f,
-//										   objectp, -1, mPickTransparent,
-//										   &mObjectFace,
-//										   &intersection,
-//										   &mSTCoords,
-//										   &normal,
-//										   &tangent))
-
-// [SL:KB] - Patch: UI-PickRiggedAttachment | Checked: 2012-07-12 (Catznip-3.3)
 		if (gViewerWindow->cursorIntersect(ll_round((F32)mMousePt.mX), ll_round((F32)mMousePt.mY), 1024.f,
 										   objectp, -1, mPickTransparent, mPickRigged,
 										   &mObjectFace,
@@ -5634,7 +5587,6 @@ void LLPickInfo::getSurfaceInfo()
 										   &mSTCoords,
 										   &normal,
 										   &tangent))
-// [/SL:KB]
 		{
 			// if we succeeded with the intersect above, compute the texture coordinates:
 
@@ -5644,7 +5596,7 @@ void LLPickInfo::getSurfaceInfo()
 				if (facep)
 				{
 					mUVCoords = facep->surfaceToTexture(mSTCoords, intersection, normal);
-				}
+			}
 			}
 
 			mIntersection.set(intersection.getF32ptr());

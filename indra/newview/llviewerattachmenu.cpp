@@ -121,10 +121,7 @@ void LLViewerAttachMenu::attachObjects(const uuid_vec_t& items, const std::strin
 		else if(item && item->isFinished())
 		{
 			// must be in library. copy it to our inventory and put it on.
-//			LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, attachmentp));
-// [SL:KB] - Patch: Appearance-DnDWear | Checked: 2013-02-04 (Catznip-3.4)
-			LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, attachmentp, false));
-// [/SL;KB]
+			LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, attachmentp));
 			copy_inventory_item(gAgent.getID(),
 								item->getPermissions().getOwner(),
 								item->getUUID(),
