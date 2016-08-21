@@ -143,6 +143,7 @@ BOOL LLPanelMainInventory::postBuild()
 	LLInventoryPanel* recent_items_panel = getChild<LLInventoryPanel>("Recent Items");
 	if (recent_items_panel)
 	{
+		// assign default values until we will be sure that we have setting to restore
 		recent_items_panel->setSinceLogoff(TRUE);
 		recent_items_panel->setSortOrder(LLInventoryFilter::SO_DATE);
 		recent_items_panel->setShowFolderState(LLInventoryFilter::SHOW_NON_EMPTY_FOLDERS);
@@ -174,6 +175,7 @@ BOOL LLPanelMainInventory::postBuild()
 				LLParamSDParser parser;
 				parser.readSD(recent_items, p);
 				recent_items_panel->getFilter().fromParams(p);
+				recent_items_panel->setSortOrder(gSavedSettings.getU32(LLInventoryPanel::RECENTITEMS_SORT_ORDER));
 			}
 		}
 
@@ -367,7 +369,14 @@ void LLPanelMainInventory::setSortObjects()
 		sort_order_mask |= LLInventoryFilter::SO_DATE;
 	}
 	getActivePanel()->setSortOrder(sort_order_mask);
-	gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
+    if ("Recent Items" == getActivePanel()->getName())
+    {
+        gSavedSettings.setU32("RecentItemsSortOrder", sort_order_mask);
+    }
+    else
+    {
+        gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
+    }
 }
 
 // static
@@ -1046,6 +1055,15 @@ void LLPanelMainInventory::onCustomAction(const LLSD& userdata)
 
 		mFilterEditor->setText(item_name);
 		mFilterEditor->setFocus(TRUE);
+	}
+}
+
+void LLPanelMainInventory::onVisibilityChange( BOOL new_visibility )
+{
+	if(!new_visibility)
+	{
+		mMenuAdd->setVisible(FALSE);
+		getActivePanel()->getRootFolder()->finishRenamingItem();
 	}
 }
 

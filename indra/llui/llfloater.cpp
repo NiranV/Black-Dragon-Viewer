@@ -1326,7 +1326,7 @@ void LLFloater::setMinimized(BOOL minimize)
 		}
 		
 		mMinimized = FALSE;
-
+		setFrontmost();
 		// Reshape *after* setting mMinimized
 		reshape( mExpandedRect.getWidth(), mExpandedRect.getHeight(), TRUE );
 	}
@@ -1575,6 +1575,7 @@ BOOL LLFloater::handleMouseDown(S32 x, S32 y, MASK mask)
 		if(offerClickToButton(x, y, mask, BUTTON_TEAR_OFF)) return TRUE;
 		if(offerClickToButton(x, y, mask, BUTTON_DOCK)) return TRUE;
 
+		setFrontmost(TRUE, FALSE);
 		// Otherwise pass to drag handle for movement
 		return mDragHandle->handleMouseDown(x, y, mask);
 	}
@@ -1649,7 +1650,7 @@ void LLFloater::setVisibleAndFrontmost(BOOL take_focus,const LLSD& key)
 	}
 }
 
-void LLFloater::setFrontmost(BOOL take_focus)
+void LLFloater::setFrontmost(BOOL take_focus, BOOL restore)
 {
 	LLMultiFloater* hostp = getHost();
 	if (hostp)
@@ -1665,7 +1666,7 @@ void LLFloater::setFrontmost(BOOL take_focus)
 		LLFloaterView * parent = dynamic_cast<LLFloaterView*>( getParent() );
 		if (parent)
 		{
-			parent->bringToFront(this, take_focus);
+			parent->bringToFront(this, take_focus, restore);
 		}
 
 		// Make sure to set the appropriate transparency type (STORM-732).
@@ -2282,7 +2283,7 @@ void LLFloaterView::reshape(S32 width, S32 height, BOOL called_from_parent)
 	for ( child_list_const_iter_t child_it = getChildList()->begin(); child_it != getChildList()->end(); ++child_it)
 	{
 		LLView* viewp = *child_it;
-		LLFloater* floaterp = (LLFloater*)viewp;
+		LLFloater* floaterp = dynamic_cast<LLFloater*>(viewp);
 		if (floaterp->isDependent())
 		{
 			// dependents are moved with their "dependee"
@@ -2339,8 +2340,11 @@ void LLFloaterView::restoreAll()
 	// make sure all subwindows aren't minimized
 	for ( child_list_const_iter_t child_it = getChildList()->begin(); child_it != getChildList()->end(); ++child_it)
 	{
-		LLFloater* floaterp = (LLFloater*)*child_it;
-		floaterp->setMinimized(FALSE);
+		LLFloater* floaterp = dynamic_cast<LLFloater*>(*child_it);
+		if (floaterp)
+		{
+			floaterp->setMinimized(FALSE);
+		}
 	}
 
 	// *FIX: make sure dependents are restored
@@ -2414,7 +2418,7 @@ LLRect LLFloaterView::findNeighboringPosition( LLFloater* reference_floater, LLF
 }
 
 
-void LLFloaterView::bringToFront(LLFloater* child, BOOL give_focus)
+void LLFloaterView::bringToFront(LLFloater* child, BOOL give_focus, BOOL restore)
 {
 	if (!child)
 		return;
@@ -2498,7 +2502,12 @@ void LLFloaterView::bringToFront(LLFloater* child, BOOL give_focus)
 	{
 		sendChildToFront(child);
 	}
-	child->setMinimized(FALSE);
+
+	if(restore)
+	{
+		child->setMinimized(FALSE);
+	}
+
 	if (give_focus && !gFocusMgr.childHasKeyboardFocus(child))
 	{
 		child->setFocus(TRUE);
@@ -2611,7 +2620,7 @@ void LLFloaterView::getMinimizePosition(S32 *left, S32 *bottom)
 				++child_it) //loop floaters
 			{
 				// Examine minimized children.
-				LLFloater* floater = (LLFloater*)((LLView*)*child_it);
+				LLFloater* floater = dynamic_cast<LLFloater*>(*child_it);
 				if(floater->isMinimized()) 
 				{
 					LLRect r = floater->getRect();
@@ -2664,7 +2673,7 @@ void LLFloaterView::closeAllChildren(bool app_quitting)
 			continue;
 		}
 
-		LLFloater* floaterp = (LLFloater*)viewp;
+		LLFloater* floaterp = dynamic_cast<LLFloater*>(viewp);
 
 		// Attempt to close floater.  This will cause the "do you want to save"
 		// dialogs to appear.
@@ -2730,8 +2739,7 @@ BOOL LLFloaterView::allChildrenClosed()
 	// by setting themselves invisible)
 	for (child_list_const_iter_t it = getChildList()->begin(); it != getChildList()->end(); ++it)
 	{
-		LLView* viewp = *it;
-		LLFloater* floaterp = (LLFloater*)viewp;
+		LLFloater* floaterp = dynamic_cast<LLFloater*>(*it);
 
 		if (floaterp->getVisible() && !floaterp->isDead() && floaterp->isCloseable())
 		{
@@ -2975,7 +2983,7 @@ void LLFloaterView::syncFloaterTabOrder()
 		// otherwise, make sure the focused floater is in the front of the child list
 		for ( child_list_const_reverse_iter_t child_it = getChildList()->rbegin(); child_it != getChildList()->rend(); ++child_it)
 		{
-			LLFloater* floaterp = (LLFloater*)*child_it;
+			LLFloater* floaterp = dynamic_cast<LLFloater*>(*child_it);
 			if (gFocusMgr.childHasKeyboardFocus(floaterp))
 			{
 				bringToFront(floaterp, FALSE);
@@ -2997,7 +3005,7 @@ LLFloater*	LLFloaterView::getParentFloater(LLView* viewp) const
 
 	if (parentp == this)
 	{
-		return (LLFloater*)viewp;
+		return dynamic_cast<LLFloater*>(viewp);
 	}
 
 	return NULL;

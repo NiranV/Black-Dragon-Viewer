@@ -63,6 +63,7 @@ public:
 	static BOOL saveTexture(bool local = true);
 	static void postSave();
 	static void postPanelSwitch();
+	static void inventorySaveFailed();
 	static LLPointer<LLImageFormatted> getImageData();
 	static const LLVector3d& getPosTakenGlobal();
 	static void setAgentEmail(const std::string& email);

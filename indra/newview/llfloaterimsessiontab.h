@@ -102,6 +102,8 @@ public:
 	void restoreFloater();
 	void saveCollapsedState();
 
+	LLView* getChatHistory();
+
 protected:
 
 	// callback for click on any items of the visual states menu

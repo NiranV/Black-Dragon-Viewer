@@ -76,8 +76,10 @@ LLAvatarListItem::LLAvatarListItem(bool not_from_ui_factory/* = true*/)
 	mRlvCheckShowNames(false),
 // [/RLVa:KB]
 	mShowPermissions(false),
+	mShowCompleteName(false),
 	mHovered(false),
-	mAvatarNameCacheConnection()
+	mAvatarNameCacheConnection(),
+	mGreyOutUsername("")
 {
 	if (not_from_ui_factory)
 	{
@@ -343,22 +345,28 @@ void LLAvatarListItem::updateAvatarName()
 
 void LLAvatarListItem::setNameInternal(const std::string& name, const std::string& highlight)
 {
-	LLTextUtil::textboxSetHighlightedVal(mAvatarName, mAvatarNameStyle, name, highlight);
+    if(mShowCompleteName && highlight.empty())
+    {
+        LLTextUtil::textboxSetGreyedVal(mAvatarName, mAvatarNameStyle, name, mGreyOutUsername);
+    }
+    else
+    {
+        LLTextUtil::textboxSetHighlightedVal(mAvatarName, mAvatarNameStyle, name, highlight);
+    }
 }
 
 void LLAvatarListItem::onAvatarNameCache(const LLAvatarName& av_name)
 {
 	mAvatarNameCacheConnection.disconnect();
 
-//	setAvatarName(av_name.getDisplayName());
-//	setAvatarToolTip(av_name.getUserName());
-// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
-	bool fRlvFilter = (mRlvCheckShowNames) && (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES));
-	setAvatarName( (!fRlvFilter) ? av_name.getDisplayName() : RlvStrings::getAnonym(av_name) );
-	setAvatarToolTip( (!fRlvFilter) ? av_name.getUserName() : RlvStrings::getAnonym(av_name) );
-	// TODO-RLVa: bit of a hack putting this here. Maybe find a better way?
-	mAvatarIcon->setDrawTooltip(!fRlvFilter);
-// [/RLVa:KB]
+	mGreyOutUsername = "";
+	std::string name_string = mShowCompleteName? av_name.getCompleteName(false) : av_name.getDisplayName();
+	if(av_name.getCompleteName() != av_name.getUserName())
+	{
+	    mGreyOutUsername = "[ " + av_name.getUserName(true) + " ]";
+	    LLStringUtil::toLower(mGreyOutUsername);
+	}
+	setAvatarName(name_string);
 
 	//requesting the list to resort
 	notifyParent(LLSD().with("sort", LLSD()));

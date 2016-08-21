@@ -83,6 +83,7 @@ public:
 	static void addFriend(std::string url);
 	static void removeFriend(std::string url);
 	static void blockObject(std::string url);
+	static void unblockObject(std::string url);
 //	//BD - Common Avatar Functions
 	static void sendTeleport(std::string url);
 	static void pay(std::string url);

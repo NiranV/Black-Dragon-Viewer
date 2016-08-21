@@ -186,7 +186,8 @@ LLAvatarAppearance::LLAvatarAppearance(LLWearableData* wearable_data) :
 	mPelvisToFoot(0.f),
 	mHeadOffset(),
 	mRoot(NULL),
-	mWearableData(wearable_data)
+	mWearableData(wearable_data),
+    mNextJointNum(0)
 {
 	llassert_always(mWearableData);
 	mBakedTextureDatas.resize(LLAvatarAppearanceDefines::BAKED_NUM_INDICES);
@@ -593,7 +594,7 @@ BOOL LLAvatarAppearance::setupBone(const LLAvatarBoneInfo* info, LLJoint* parent
 	{
 		if (volume_num >= (S32)mNumCollisionVolumes)
 		{
-			LL_WARNS() << "Too many bones" << LL_ENDL;
+			LL_WARNS() << "Too many collision volumes" << LL_ENDL;
 			return FALSE;
 		}
 		joint = (&mCollisionVolumes[volume_num]);
@@ -624,6 +625,8 @@ BOOL LLAvatarAppearance::setupBone(const LLAvatarBoneInfo* info, LLJoint* parent
 	{
 		volume_num++;
 	}
+
+    joint->setJointNum(mNextJointNum++);
 
 	// setup children
 	LLAvatarBoneInfo::child_list_t::const_iterator iter;
@@ -866,21 +869,21 @@ BOOL LLAvatarAppearance::loadAvatar()
 	// avatar_skeleton.xml
 	if( !buildSkeleton(sAvatarSkeletonInfo) )
 	{
-		LL_WARNS() << "avatar file: buildSkeleton() failed" << LL_ENDL;
+		LL_ERRS() << "avatar file: buildSkeleton() failed" << LL_ENDL;
 		return FALSE;
 	}
 
 	// avatar_lad.xml : <skeleton>
 	if( !loadSkeletonNode() )
 	{
-		LL_WARNS() << "avatar file: loadNodeSkeleton() failed" << LL_ENDL;
+		LL_ERRS() << "avatar file: loadNodeSkeleton() failed" << LL_ENDL;
 		return FALSE;
 	}
 	
 	// avatar_lad.xml : <mesh>
 	if( !loadMeshNodes() )
 	{
-		LL_WARNS() << "avatar file: loadNodeMesh() failed" << LL_ENDL;
+		LL_ERRS() << "avatar file: loadNodeMesh() failed" << LL_ENDL;
 		return FALSE;
 	}
 	
@@ -890,13 +893,13 @@ BOOL LLAvatarAppearance::loadAvatar()
 		mTexSkinColor = new LLTexGlobalColor( this );
 		if( !mTexSkinColor->setInfo( sAvatarXmlInfo->mTexSkinColorInfo ) )
 		{
-			LL_WARNS() << "avatar file: mTexSkinColor->setInfo() failed" << LL_ENDL;
+			LL_ERRS() << "avatar file: mTexSkinColor->setInfo() failed" << LL_ENDL;
 			return FALSE;
 		}
 	}
 	else
 	{
-		LL_WARNS() << "<global_color> name=\"skin_color\" not found" << LL_ENDL;
+		LL_ERRS() << "<global_color> name=\"skin_color\" not found" << LL_ENDL;
 		return FALSE;
 	}
 	if( sAvatarXmlInfo->mTexHairColorInfo )
@@ -904,13 +907,13 @@ BOOL LLAvatarAppearance::loadAvatar()
 		mTexHairColor = new LLTexGlobalColor( this );
 		if( !mTexHairColor->setInfo( sAvatarXmlInfo->mTexHairColorInfo ) )
 		{
-			LL_WARNS() << "avatar file: mTexHairColor->setInfo() failed" << LL_ENDL;
+			LL_ERRS() << "avatar file: mTexHairColor->setInfo() failed" << LL_ENDL;
 			return FALSE;
 		}
 	}
 	else
 	{
-		LL_WARNS() << "<global_color> name=\"hair_color\" not found" << LL_ENDL;
+		LL_ERRS() << "<global_color> name=\"hair_color\" not found" << LL_ENDL;
 		return FALSE;
 	}
 	if( sAvatarXmlInfo->mTexEyeColorInfo )
@@ -918,26 +921,26 @@ BOOL LLAvatarAppearance::loadAvatar()
 		mTexEyeColor = new LLTexGlobalColor( this );
 		if( !mTexEyeColor->setInfo( sAvatarXmlInfo->mTexEyeColorInfo ) )
 		{
-			LL_WARNS() << "avatar file: mTexEyeColor->setInfo() failed" << LL_ENDL;
+			LL_ERRS() << "avatar file: mTexEyeColor->setInfo() failed" << LL_ENDL;
 			return FALSE;
 		}
 	}
 	else
 	{
-		LL_WARNS() << "<global_color> name=\"eye_color\" not found" << LL_ENDL;
+		LL_ERRS() << "<global_color> name=\"eye_color\" not found" << LL_ENDL;
 		return FALSE;
 	}
 	
 	// avatar_lad.xml : <layer_set>
 	if (sAvatarXmlInfo->mLayerInfoList.empty())
 	{
-		LL_WARNS() << "avatar file: missing <layer_set> node" << LL_ENDL;
+		LL_ERRS() << "avatar file: missing <layer_set> node" << LL_ENDL;
 		return FALSE;
 	}
 
 	if (sAvatarXmlInfo->mMorphMaskInfoList.empty())
 	{
-		LL_WARNS() << "avatar file: missing <morph_masks> node" << LL_ENDL;
+		LL_ERRS() << "avatar file: missing <morph_masks> node" << LL_ENDL;
 		return FALSE;
 	}
 
@@ -1136,6 +1139,7 @@ BOOL LLAvatarAppearance::loadMeshNodes()
 			{
 				// This should never happen
 				LL_WARNS("Avatar") << "Could not find avatar mesh: " << info->mReferenceMeshName << LL_ENDL;
+                return FALSE;
 			}
 		}
 		else
@@ -1275,7 +1279,6 @@ LLJoint *LLAvatarAppearance::getCharacterJoint( U32 num )
     if (!mSkeleton[num])
     {
         mSkeleton[num] = createAvatarJoint();
-		mSkeleton[num]->setJointNum(num);
     }
 	return mSkeleton[num];
 }
@@ -1700,6 +1703,54 @@ const LLAvatarAppearance::joint_alias_map_t& LLAvatarAppearance::getJointAliases
     return mJointAliasMap;
 } 
 
+//Make aliases for joint and push to map.
+void LLAvatarAppearance::makeJointAliases(LLAvatarBoneInfo *bone_info)
+{
+    if (! bone_info->mIsJoint )
+    {
+        return;
+    }
+    
+    std::string bone_name = bone_info->mName;
+    mJointAliasMap[bone_name] = bone_name; //Actual name is a valid alias.
+    
+    std::string aliases = bone_info->mAliases;
+    
+    boost::char_separator<char> sep(" ");
+    boost::tokenizer<boost::char_separator<char> > tok(aliases, sep);
+    for(boost::tokenizer<boost::char_separator<char> >::iterator i = tok.begin(); i != tok.end(); ++i)
+    {
+        if ( mJointAliasMap.find(*i) != mJointAliasMap.end() )
+        {
+            LL_WARNS() << "avatar skeleton:  Joint alias \"" << *i << "\" remapped from " << mJointAliasMap[*i] << " to " << bone_name << LL_ENDL;
+        }
+        mJointAliasMap[*i] = bone_name;
+    }
+    
+    LLAvatarBoneInfo::child_list_t::const_iterator iter;
+    for (iter = bone_info->mChildList.begin(); iter != bone_info->mChildList.end(); ++iter)
+    {
+        makeJointAliases( *iter );
+    }
+}
+
+const LLAvatarAppearance::joint_alias_map_t& LLAvatarAppearance::getJointAliases ()
+{
+    LLAvatarAppearance::joint_alias_map_t alias_map;
+    if (mJointAliasMap.empty())
+    {
+        
+        LLAvatarSkeletonInfo::bone_info_list_t::const_iterator iter;
+        for (iter = sAvatarSkeletonInfo->mBoneInfoList.begin(); iter != sAvatarSkeletonInfo->mBoneInfoList.end(); ++iter)
+        {
+            //LLAvatarBoneInfo *bone_info = *iter;
+            makeJointAliases( *iter );
+        }
+    }
+    
+    return mJointAliasMap;
+} 
+
 
 //-----------------------------------------------------------------------------
 // parseXmlSkeletonNode(): parses <skeleton> nodes from XML tree
@@ -1730,7 +1781,7 @@ BOOL LLAvatarAppearance::LLAvatarXmlInfo::parseXmlSkeletonNode(LLXmlTreeNode* ro
 			{
 				LL_WARNS() << "Unknown param type." << LL_ENDL;
 			}
-			continue;
+            return FALSE;
 		}
 		
 		LLPolySkeletalDistortionInfo *info = new LLPolySkeletalDistortionInfo;
@@ -1755,7 +1806,7 @@ BOOL LLAvatarAppearance::LLAvatarXmlInfo::parseXmlSkeletonNode(LLXmlTreeNode* ro
 		{
 			LL_WARNS() << "No name supplied for attachment point." << LL_ENDL;
 			delete info;
-			continue;
+            return FALSE;
 		}
 
 		static LLStdStringHandle joint_string = LLXmlTree::addAttributeString("joint");
@@ -1763,7 +1814,7 @@ BOOL LLAvatarAppearance::LLAvatarXmlInfo::parseXmlSkeletonNode(LLXmlTreeNode* ro
 		{
 			LL_WARNS() << "No bone declared in attachment point " << info->mName << LL_ENDL;
 			delete info;
-			continue;
+            return FALSE;
 		}
 
 		static LLStdStringHandle position_string = LLXmlTree::addAttributeString("position");
@@ -1789,7 +1840,7 @@ BOOL LLAvatarAppearance::LLAvatarXmlInfo::parseXmlSkeletonNode(LLXmlTreeNode* ro
 		{
 			LL_WARNS() << "No id supplied for attachment point " << info->mName << LL_ENDL;
 			delete info;
-			continue;
+            return FALSE;
 		}
 
 		static LLStdStringHandle slot_string = LLXmlTree::addAttributeString("pie_slice");
@@ -1875,7 +1926,7 @@ BOOL LLAvatarAppearance::LLAvatarXmlInfo::parseXmlMeshNodes(LLXmlTreeNode* root)
 				{
 					LL_WARNS() << "Unknown param type." << LL_ENDL;
 				}
-				continue;
+                return FALSE;
 			}
 
 			LLPolyMorphTargetInfo *morphinfo = new LLPolyMorphTargetInfo();
@@ -2036,7 +2087,7 @@ BOOL LLAvatarAppearance::LLAvatarXmlInfo::parseXmlMorphNodes(LLXmlTreeNode* root
 		{
 			LL_WARNS() << "No name supplied for morph mask." << LL_ENDL;
 			delete info;
-			continue;
+            return FALSE;
 		}
 
 		static LLStdStringHandle region_string = LLXmlTree::addAttributeString("body_region");
@@ -2044,7 +2095,7 @@ BOOL LLAvatarAppearance::LLAvatarXmlInfo::parseXmlMorphNodes(LLXmlTreeNode* root
 		{
 			LL_WARNS() << "No region supplied for morph mask." << LL_ENDL;
 			delete info;
-			continue;
+            return FALSE;
 		}
 
 		static LLStdStringHandle layer_string = LLXmlTree::addAttributeString("layer");
@@ -2052,7 +2103,7 @@ BOOL LLAvatarAppearance::LLAvatarXmlInfo::parseXmlMorphNodes(LLXmlTreeNode* root
 		{
 			LL_WARNS() << "No layer supplied for morph mask." << LL_ENDL;
 			delete info;
-			continue;
+            return FALSE;
 		}
 
 		// optional parameter. don't throw a warning if not present.

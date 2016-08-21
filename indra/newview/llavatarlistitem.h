@@ -105,6 +105,7 @@ public:
 	void setLastInteractionTime(U32 secs_since);
 	//BD
 	void showExtraInformation(bool show);
+	void setShowCompleteName(bool show) { mShowCompleteName = show;};
 // [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.2a) | Added: RLVa-1.2.0d
 	void setRlvCheckShowNames(bool fRlvCheckShowNames) { mRlvCheckShowNames = fRlvCheckShowNames; }
 // [/RLVa:KB]
@@ -174,6 +175,9 @@ private:
 
 	/// true when the mouse pointer is hovering over this item
 	bool mHovered;
+
+	bool mShowCompleteName;
+	std::string mGreyOutUsername;
 
 	void fetchAvatarName();
 	boost::signals2::connection mAvatarNameCacheConnection;

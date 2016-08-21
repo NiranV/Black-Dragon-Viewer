@@ -194,6 +194,9 @@ Ansariel Hiller
 	STORM-2083
 	STORM-2094
 	MAINT-4677
+	MAINT-6432
+	STORM-2133
+	MAINT-6511
 Aralara Rajal
 Arare Chantilly
 	CHUIBUG-191
