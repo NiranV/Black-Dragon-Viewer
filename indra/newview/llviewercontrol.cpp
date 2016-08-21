@@ -727,6 +727,15 @@ static bool handleFullbrightChanged(const LLSD& newvalue)
 	}
 	return true;
 }
+
+static bool handleAlphaChanged(const LLSD& newvalue)
+{
+	if (!gSavedSettings.getBOOL("RenderEnableAlpha"))
+	{
+		gObjectList.killAllAlphas();
+	}
+	return true;
+}
 //BD
 
 ////////////////////////////////////////////////////////////////////////////
@@ -900,6 +909,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
 	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
 	gSavedSettings.getControl("RenderEnableFullbright")->getSignal()->connect(boost::bind(&handleFullbrightChanged, _2));
+	gSavedSettings.getControl("RenderEnableAlpha")->getSignal()->connect(boost::bind(&handleAlphaChanged, _2));
 	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
 

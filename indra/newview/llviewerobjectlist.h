@@ -83,6 +83,9 @@ public:
 //	//BD - Fullbright Toggle
 	void killAllFullbrights();
 
+//	//BD - Alpha Toggle
+	void killAllAlphas();
+
 	void removeDrawable(LLDrawable* drawablep);
 
 	void cleanDeadObjects(const BOOL use_timer = TRUE);	// Clean up the dead object list.

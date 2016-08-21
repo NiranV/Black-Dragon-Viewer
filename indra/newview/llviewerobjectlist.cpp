@@ -1416,6 +1416,27 @@ void LLViewerObjectList::killAllFullbrights()
 	}
 }
 
+//BD - Alpha Toggle
+void LLViewerObjectList::killAllAlphas()
+{
+	LLViewerObject *objectp;
+	for (vobj_list_t::iterator iter = mObjects.begin(); iter != mObjects.end(); ++iter)
+	{
+		objectp = *iter;
+		for (S32 i = 0; i < objectp->getNumTEs(); i++)
+		{
+			if (objectp != gAgentAvatarp)
+			{
+				const LLTextureEntry* te = objectp->getTE(i);
+				LLColor4 te_color = te->getColor();
+				te_color.mV[VW] = 1.0;
+				objectp->setTEColor(i, te_color);
+				objectp->setTEAlpha(i, 1.0);
+			}
+		}
+	}
+}
+
 void LLViewerObjectList::killAllObjects()
 {
 	// Used only on global destruction.
