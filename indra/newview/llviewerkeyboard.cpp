@@ -878,6 +878,7 @@ BOOL LLViewerKeyboard::exportBindingsXML(const std::string& filename)
 			//			<< i << LL_ENDL;
 		}
 	}
+	file.close();
 	return true;
 }
 
@@ -910,6 +911,7 @@ S32 LLViewerKeyboard::loadBindingsSettings(const std::string& filename)
 		//			<< function << " in mode " 
 		//			<< mode << LL_ENDL;
 	}
+	infile.close();
 	return TRUE;
 }
 
