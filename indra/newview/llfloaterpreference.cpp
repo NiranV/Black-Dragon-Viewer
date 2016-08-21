@@ -1721,10 +1721,12 @@ void LLFloaterPreference::onClose(bool app_quitting)
 	gSavedSettings.setS32("LastPrefTab", getChild<LLTabContainer>("pref core")->getCurrentPanelIndex());
 	//BD
 	//LLPanelLogin::setAlwaysRefresh(false);
-	if (!app_quitting)
+
+	//BD
+	/*if (!app_quitting)
 	{
 		cancel();
-	}
+	}*/
 
 	//BD - when closing this window, turn of visiblity control so that 
 	//     next time preferences is opened we don't suspend voice
@@ -1753,8 +1755,6 @@ void LLFloaterPreference::onBtnOK()
 	{
 		saveSettings();
 		apply();
-		//BD
-		closeFloater(false);
 
 		//Conversation transcript and log path changed so reload conversations based on new location
 		if (mPriorInstantMessageLogPath.length())
@@ -1781,6 +1781,9 @@ void LLFloaterPreference::onBtnOK()
 		{
 			gSavedPerAccountSettings.saveToFile(gSavedSettings.getString("PerAccountSettingsFile"), TRUE);
 		}
+
+		//BD
+		closeFloater(false);
 	}
 	else
 	{
