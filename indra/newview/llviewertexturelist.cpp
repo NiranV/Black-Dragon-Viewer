@@ -536,7 +536,7 @@ LLViewerFetchedTexture* LLViewerTextureList::createImage(const LLUUID &image_id,
 												   LLGLenum primary_format,
 												   LLHost request_from_host)
 {
-	static LLCachedControl<bool> fast_cache_fetching_enabled(gSavedSettings, "FastCacheFetchEnabled", true);
+	static LLCachedControl<bool> fast_cache_fetching_enabled(gSavedSettings, "FastCacheFetchEnabled", false);
 
 	LLPointer<LLViewerFetchedTexture> imagep ;
 	switch(texture_type)
