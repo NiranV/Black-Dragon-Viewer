@@ -1062,7 +1062,6 @@ void LLPanelMainInventory::onVisibilityChange( BOOL new_visibility )
 {
 	if(!new_visibility)
 	{
-		mMenuAdd->setVisible(FALSE);
 		getActivePanel()->getRootFolder()->finishRenamingItem();
 	}
 }

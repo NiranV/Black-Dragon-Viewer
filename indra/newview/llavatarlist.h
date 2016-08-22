@@ -116,12 +116,11 @@ protected:
 		uuid_vec_t& vadded,
 		uuid_vec_t& vremoved);
 	void updateLastInteractionTimes();
-	//BD
-	void updateExtraData();
 	void rebuildNames();
 	void onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
-	//BD - TODO: Check this.
-	//void updateAvatarNames();
+	void updateAvatarNames();
+	//BD
+	void updateExtraData();
 
 private:
 
@@ -131,13 +130,16 @@ private:
 	bool mShowLastInteractionTime;
 	bool mDirty;
 	bool mNeedUpdateNames;
-	//BD
-	bool mShowExtraInformation;
 	bool mShowSpeakingIndicator;
 	bool mShowPermissions;
 	bool mShowCompleteName;
+	//BD
+	bool mShowExtraInformation;
 
-	LLTimer*				mLITUpdateTimer; // last interaction time update timer
+	//BD
+	F32 mExtraDataUpdatePeriod;
+	LLTimer*                mExtraDataUpdateTimer;
+
 	std::string				mIconParamName;
 	std::string				mNameFilter;
 	uuid_vec_t				mIDs;

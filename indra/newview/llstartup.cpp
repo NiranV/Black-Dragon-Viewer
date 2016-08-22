@@ -200,6 +200,9 @@
 #include "lldxhardware.h"
 #endif
 
+//BD
+#include "llsidepanelinventory.h"
+
 //
 // exported globals
 //

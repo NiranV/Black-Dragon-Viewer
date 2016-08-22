@@ -93,6 +93,9 @@
 #include "boost/foreach.hpp"
 #include "llcorehttputil.h"
 
+//BD
+#include "lltoolfocus.h"
+
 using namespace LLAvatarAppearanceDefines;
 
 extern LLMenuBarGL* gMenuBarView;
@@ -3997,7 +4000,7 @@ void LLAgent::teleportRequest(
 //		{
 //			look_at = LLViewerCamera::getInstance()->getAtAxis();
 //		}
-		msg->addVector3("LookAt", look_at);
+//		msg->addVector3("LookAt", look_at);
 		sendReliableMessage();
 	}
 }

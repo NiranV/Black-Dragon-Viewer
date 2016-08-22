@@ -210,10 +210,6 @@
 //BD
 #include "bdtopbarholder.h"
 
-// [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c)
-#include "rlvhandler.h"
-// [/RLVa:KB]
-
 #if LL_WINDOWS
 #include <tchar.h> // For Unicode conversion methods
 #endif

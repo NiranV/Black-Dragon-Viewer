@@ -617,7 +617,8 @@ BOOL LLPanelPeople::postBuild()
 	//mOnlineFriendList->showPermissions("FriendsListShowPermissions");
 
 	mAllFriendList = friends_tab->getChild<LLAvatarList>("avatars_all");
-	mOnlineFriendList->setShowCompleteName(!gSavedSettings.getBOOL("FriendsListHideUsernames"));
+	//BD
+	//mOnlineFriendList->setShowCompleteName(!gSavedSettings.getBOOL("FriendsListHideUsernames"));
 	mAllFriendList->setNoItemsCommentText(getString("no_friends"));
 	mAllFriendList->showPermissions("FriendsListShowPermissions");
 	mAllFriendList->setShowCompleteName(!gSavedSettings.getBOOL("FriendsListHideUsernames"));
@@ -1385,8 +1386,9 @@ void LLPanelPeople::onFriendsViewSortMenuItemClicked(const LLSD& userdata)
 
 		mAllFriendList->setShowCompleteName(!hide_usernames);
 		mAllFriendList->handleDisplayNamesOptionChanged();
-		mOnlineFriendList->setShowCompleteName(!hide_usernames);
-		mOnlineFriendList->handleDisplayNamesOptionChanged();
+		//BD
+		//mOnlineFriendList->setShowCompleteName(!hide_usernames);
+		//mOnlineFriendList->handleDisplayNamesOptionChanged();
 	}
 }
 

@@ -661,7 +661,7 @@ BOOL LLNetMap::handleToolTip( S32 x, S32 y, MASK mask )
 	}
 
 	//BD
-//	LLStringUtil::format_map_t args;
+	LLStringUtil::format_map_t args;
 	args["[REGION]"] = region_name;
 	std::string msg = mToolTipMsg;
 	LLStringUtil::format(msg, args);
