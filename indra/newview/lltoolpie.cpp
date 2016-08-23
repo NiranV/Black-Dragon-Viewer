@@ -1829,12 +1829,28 @@ BOOL LLToolPie::handleRightClickPick()
 			if (is_other_attachment)
 			{
 				gMenuAttachmentOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
-				gMenuAttachmentOther->show(x, y);
+//				//BD - Pie Menu
+				if (gSavedPerAccountSettings.getBOOL("UsePieMenu"))
+				{
+					gPieMenuAttachmentOther->show(x, y);
+				}
+				else
+				{
+					gMenuAttachmentOther->show(x, y);
+				}
 			}
 			else
 			{
 				gMenuAvatarOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
-				gMenuAvatarOther->show(x, y);
+//				//BD - Pie Menu
+				if (gSavedPerAccountSettings.getBOOL("UsePieMenu"))
+				{
+					gPieMenuAvatarOther->show(x, y);
+				}
+				else
+				{
+					gMenuAvatarOther->show(x, y);
+				}
 			}
 		}
 		else if (object->isAttachment())
@@ -1869,7 +1885,15 @@ BOOL LLToolPie::handleRightClickPick()
 				mute_msg = LLTrans::getString("MuteObject2");
 			}
 
-			gMenuObject->show(x, y);
+//			//BD - Pie Menu
+			if (gSavedPerAccountSettings.getBOOL("UsePieMenu"))
+			{
+				gPieMenuObject->show(x, y);
+			}
+			else
+			{
+				gMenuObject->show(x, y);
+			}
 
 			showVisualContextMenuEffect();
 		}
