@@ -51,8 +51,9 @@ public:
 	S32 mIndexedTextureChannels;
 	bool disableTextureIndex;
 	bool hasAlphaMask;
-	bool hasMotionBlur;
 	bool attachNothing;
+//	//BD - Motion Blur
+	bool hasMotionBlur;
 
 	// char numLights;
 	

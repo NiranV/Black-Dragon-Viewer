@@ -34,6 +34,7 @@
 #include "llhandmotion.h"
 #include "llcriticaldamp.h"
 
+//BD
 #include "../newview/llviewercontrol.h"
 
 //-----------------------------------------------------------------------------
@@ -85,6 +86,7 @@ LLMotion::LLMotionInitStatus LLEditingMotion::onInitialize(LLCharacter *characte
 	mCharacter = character;
 
 	// make sure character skeleton is copacetic
+	//BD
 	if (!mCharacter->getJoint("mShoulderRight") ||
 		!mCharacter->getJoint("mElbowRight") ||
 		!mCharacter->getJoint("mWristRight") ||
@@ -97,6 +99,7 @@ LLMotion::LLMotionInitStatus LLEditingMotion::onInitialize(LLCharacter *characte
 	}
 
 	// get the shoulder, elbow, wrist joints from the character
+	//BD
 	const bool right_hand = gSavedSettings.getBOOL("AvatarRightHander");
 	if(right_hand)
 	{
@@ -149,6 +152,7 @@ LLMotion::LLMotionInitStatus LLEditingMotion::onInitialize(LLCharacter *characte
 	// connect the ikSolver to the chain
 	// specifying the elbow's axis will prevent bad IK for the more
 	// singular configurations, but the axis is limb-specific -- Leviathan
+	//BD
 	if(right_hand)
 	{
 		mIKSolver.setPoleVector( LLVector3( 0.0f, -0.9f, -1.0f ) );
@@ -229,6 +233,7 @@ BOOL LLEditingMotion::onUpdate(F32 time, U8* joint_mask)
 
 	edit_plane_normal.rotVec(mTorsoState->getJoint()->getWorldRotation());
 	
+	//BD
 	//F32 dot = edit_plane_normal * target;
 
 	/*if (dot < 0.f)

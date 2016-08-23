@@ -87,8 +87,9 @@ LLShaderFeatures::LLShaderFeatures()
     , mIndexedTextureChannels(0)
     , disableTextureIndex(false)
     , hasAlphaMask(false)
-	, hasMotionBlur(false)
     , attachNothing(false)
+//	//BD - Motion Blur
+	, hasMotionBlur(false)
 {
 }
 

@@ -938,6 +938,7 @@ BOOL LLImageGL::preAddToAtlas(S32 discard_level, const LLImageRaw* raw_image)
 			mFormatType = GL_UNSIGNED_BYTE;
 			break;
 			default:
+			//BD
 			LL_WARNS() << "Bad number of components for texture: " << (U32)getComponents() << LL_ENDL;
 			return FALSE;
 			break;

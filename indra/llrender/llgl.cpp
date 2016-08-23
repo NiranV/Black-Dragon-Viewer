@@ -864,6 +864,7 @@ void LLGLManager::printGLInfoString()
 		LL_INFOS("RenderInit") << "GL_VENDOR:     " << HEADLESS_VENDOR_STRING << LL_ENDL;
 		LL_INFOS("RenderInit") << "GL_RENDERER:   " << HEADLESS_RENDERER_STRING << LL_ENDL;
 		LL_INFOS("RenderInit") << "GL_VERSION:    " << HEADLESS_VERSION_STRING << LL_ENDL;
+		//BD
 		LL_INFOS("RenderInit") << "GL_MEMORY:     " << mVRAM << " MB" << LL_ENDL;
 	}
 	else
@@ -871,6 +872,7 @@ void LLGLManager::printGLInfoString()
 		LL_INFOS("RenderInit") << "GL_VENDOR:     " << ((const char *)glGetString(GL_VENDOR)) << LL_ENDL;
 		LL_INFOS("RenderInit") << "GL_RENDERER:   " << ((const char *)glGetString(GL_RENDERER)) << LL_ENDL;
 		LL_INFOS("RenderInit") << "GL_VERSION:    " << ((const char *)glGetString(GL_VERSION)) << LL_ENDL;
+		//BD
 		LL_INFOS("RenderInit") << "GL_MEMORY:     " << mVRAM << " MB" << LL_ENDL;
 	}
 

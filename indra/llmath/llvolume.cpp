@@ -424,6 +424,7 @@ public:
 		}
 		else
 		{
+			//BD
 			LL_WARNS() << "Empty leaf" << LL_ENDL;
 			return;
 		}

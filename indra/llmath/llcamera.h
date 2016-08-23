@@ -33,6 +33,7 @@
 #include "llplane.h"
 #include "llvector4a.h"
 
+//BD
 const F32 DEFAULT_FIELD_OF_VIEW 	= 63.33f * DEG_TO_RAD;
 const F32 DEFAULT_ASPECT_RATIO 		= 640.f / 480.f;
 const F32 DEFAULT_NEAR_PLANE 		= 0.25f;
