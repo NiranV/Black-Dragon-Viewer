@@ -3995,12 +3995,12 @@ void LLAgent::teleportRequest(
 		msg->nextBlockFast(_PREHASH_Info);
 		msg->addU64("RegionHandle", region_handle);
 		msg->addVector3("Position", pos_local);
-//		LLVector3 look_at(0,1,0);
-//		if (look_at_from_camera)
-//		{
-//			look_at = LLViewerCamera::getInstance()->getAtAxis();
-//		}
-//		msg->addVector3("LookAt", look_at);
+		LLVector3 look_at(0,1,0);
+		if (look_at_from_camera)
+		{
+			look_at = LLViewerCamera::getInstance()->getAtAxis();
+		}
+		msg->addVector3("LookAt", look_at);
 		sendReliableMessage();
 	}
 }
