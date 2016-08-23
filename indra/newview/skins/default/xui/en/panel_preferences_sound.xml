@@ -629,7 +629,7 @@ width="510">
          <radio_item
          height="16"
          label="Camera"
-         value="1"
+         value="0"
          layout="topleft"
          name="0"
          top="0"
@@ -645,7 +645,7 @@ width="510">
          <radio_item
          height="16"
          label="Avatar"
-         value="0"
+         value="1"
          layout="topleft"
          name="0"
          left_pad="10"
