@@ -2646,6 +2646,62 @@ class LLObjectDerender : public view_listener_t
     }
 };
 
+//BD - DeAlpha
+class BDObjectDeAlpha : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLViewerObject* slct = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
+		if (!slct)return true;
+		LLUUID id = slct->getID();
+		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
+		LLUUID root_key;
+		LLSelectNode* node = selection->getFirstRootNode();
+		if (node)root_key = node->getObject()->getID();
+		if (root_key.notNull())
+		{
+			id = root_key;
+		}
+
+		if (!(id == gAgentID))
+		{
+			LLViewerObject *objectp = gObjectList.findObject(id);
+			{
+				gObjectList.killAlpha(objectp);
+			}
+		}
+		return true;
+	}
+};
+
+//BD - ReAlpha
+class BDObjectReAlpha : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLViewerObject* slct = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
+		if (!slct)return true;
+		LLUUID id = slct->getID();
+		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
+		LLUUID root_key;
+		LLSelectNode* node = selection->getFirstRootNode();
+		if (node)root_key = node->getObject()->getID();
+		if (root_key.notNull())
+		{
+			id = root_key;
+		}
+
+		if (!(id == gAgentID))
+		{
+			LLViewerObject *objectp = gObjectList.findObject(id);
+			{
+				gObjectList.restoreAlpha(objectp);
+			}
+		}
+		return true;
+	}
+};
+
 class LLObjectReportAbuse : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
@@ -9274,6 +9330,10 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelected(), "EditableSelected");
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
+
+//	//BD - De/ReAlpha
+	view_listener_t::addMenu(new BDObjectDeAlpha(), "Object.DeAlpha");
+	view_listener_t::addMenu(new BDObjectReAlpha(), "Object.ReAlpha");
 
 //	//BD - Derender
 	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));

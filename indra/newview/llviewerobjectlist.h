@@ -86,6 +86,10 @@ public:
 //	//BD - Alpha Toggle
 	void killAllAlphas();
 
+//	//BD - De/ReAlpha
+	void killAlpha(LLViewerObject *objectp);
+	void restoreAlpha(LLViewerObject *objectp);
+
 	void removeDrawable(LLDrawable* drawablep);
 
 	void cleanDeadObjects(const BOOL use_timer = TRUE);	// Clean up the dead object list.

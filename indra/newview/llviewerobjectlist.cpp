@@ -1437,6 +1437,44 @@ void LLViewerObjectList::killAllAlphas()
 	}
 }
 
+//BD - DeAlpha
+void LLViewerObjectList::killAlpha(LLViewerObject *objectp)
+{
+	if (objectp)
+	{
+		for (S32 i = 0; i < objectp->getNumTEs(); i++)
+		{
+			if (objectp != gAgentAvatarp)
+			{
+				const LLTextureEntry* te = objectp->getTE(i);
+				LLColor4 te_color = te->getColor();
+				te_color.mV[VW] = 1.0;
+				objectp->setTEColor(i, te_color);
+				objectp->setTEAlpha(i, 1.0);
+			}
+		}
+	}
+}
+
+//BD - ReAlpha
+void LLViewerObjectList::restoreAlpha(LLViewerObject *objectp)
+{
+	if (objectp)
+	{
+		for (S32 i = 0; i < objectp->getNumTEs(); i++)
+		{
+			if (objectp != gAgentAvatarp)
+			{
+				const LLTextureEntry* te = objectp->getTE(i);
+				LLColor4 te_color = te->getColor();
+				te_color.mV[VW] = 0.0;
+				objectp->setTEColor(i, te_color);
+				objectp->setTEAlpha(i, 0.0);
+			}
+		}
+	}
+}
+
 void LLViewerObjectList::killAllObjects()
 {
 	// Used only on global destruction.
