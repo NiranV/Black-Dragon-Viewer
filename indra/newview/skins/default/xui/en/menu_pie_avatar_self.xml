@@ -7,12 +7,13 @@ name="Self Pie">
     layout="topleft"
     name="Pie Object Manage">
         <pie_slice
-        label="My Groups"
+        label="Appearance; ;My"
         layout="topleft"
-        name="Groups...">
+        name="Change Outfit">
             <pie_slice.on_click
-            function="SideTray.PanelPeopleTab"
-            parameter="groups_panel" />
+            function="CustomizeAvatar" />
+            <pie_slice.on_enable
+            function="Edit.EnableCustomizeAvatar" />
         </pie_slice>
         <pie_slice
         label="My Friends"
@@ -22,12 +23,21 @@ name="Self Pie">
             function="SideTray.PanelPeopleTab"
             parameter="friends_panel" />
         </pie_slice>
-        <pie_separator name="seperator"/>
         <pie_slice
-        label="Skeleton;;Reset"
-        name="Reset Skeleton">
+        label="Dump XML"
+        name="Dump XML">
             <pie_slice.on_click
-            function="Avatar.ResetSkeleton" />
+            function="Advanced.AppearanceToXML" />
+            <pie_slice.on_visible
+            function="Advanced.EnableAppearanceToXML"/>
+        </pie_slice>
+        <pie_slice
+        label="Textures;;Debug"
+        name="Debug...">
+            <pie_slice.on_click
+            function="Avatar.Debug" />
+            <pie_slice.on_visible
+            function="IsGodCustomerService"/>
         </pie_slice>
         <pie_slice
         enabled="false"
@@ -38,23 +48,27 @@ name="Self Pie">
             <pie_slice.on_enable
             function="EnableMuteParticle" />
         </pie_slice>
-        <pie_separator name="seperator"/>
         <pie_slice
-        label="Appearance; ;My"
-        layout="topleft"
-        name="Change Outfit">
+        label="Avatar;UUID;Copy"
+        enabled="true"
+        name="Copy Avatar UUID">
             <pie_slice.on_click
-            function="CustomizeAvatar" />
-            <pie_slice.on_enable
-            function="Edit.EnableCustomizeAvatar" />
+            function="Avatar.GetUUID" />
         </pie_slice>
         <pie_slice
-        label="My Profile"
-        layout="topleft"
-        name="Profile...">
+        label="Avatar;SLURL;Copy"
+        name="CopySLURL"
+        enabled="true">
             <pie_slice.on_click
-            function="ShowAgentProfile"
-            parameter="agent" />
+            function="Avatar.GetSLURL" />
+        </pie_slice>
+        <pie_slice
+        label="My Groups"
+        layout="topleft"
+        name="Groups...">
+            <pie_slice.on_click
+            function="SideTray.PanelPeopleTab"
+            parameter="groups_panel" />
         </pie_slice>
     </pie_menu>
     <pie_slice
@@ -437,18 +451,18 @@ name="Self Pie">
         function="Edit.EnableCustomizeAvatar" />
     </pie_slice>
     <pie_slice
-    label="Avatar;SLURL;Copy"
-    name="CopySLURL"
-    enabled="true">
+    label="My Profile"
+    layout="topleft"
+    name="Profile...">
         <pie_slice.on_click
-        function="Avatar.GetSLURL" />
+        function="ShowAgentProfile"
+        parameter="agent" />
     </pie_slice>
     <pie_slice
-    label="Avatar;UUID;Copy"
-    enabled="true"
-    name="Copy Avatar UUID">
+    label="Skeleton;;Reset"
+    name="Reset Skeleton">
         <pie_slice.on_click
-        function="Avatar.GetUUID" />
+        function="Avatar.ResetSkeleton" />
     </pie_slice>
     <pie_slice
     label="Height; ;Hover"

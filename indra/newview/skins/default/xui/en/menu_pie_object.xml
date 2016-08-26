@@ -6,28 +6,23 @@ name="Object Pie">
    name="Object Pie Manage">
       <pie_slice
       enabled="false"
-      label="Ignore"
-      name="Object Mute">
+      label="Return"
+      name="Return">
          <pie_slice.on_click
-         function="Object.Mute" />
+         function="Object.Return" />
          <pie_slice.on_enable
-         function="Object.EnableMute" />
+         function="Object.EnableReturn" />
       </pie_slice>
+      <pie_separator name="seperator"/> 
       <pie_slice
-      enabled="true"
-      label="Derender"
-      name="Derender">
+      enabled="false"
+      label="Open"
+      name="Open">
          <pie_slice.on_click
-         function="Object.Derender" />
-      </pie_slice>
-      <pie_slice
-      label="Take"
-      name="Pie Object Take">
-         <pie_slice.on_click
-         function="Object.Take"/>
+         function="Object.Open" />
          <pie_slice.on_enable
-         function="Object.VisibleTake"/>
-      </pie_slice>
+         function="Object.EnableOpen" />
+      </pie_slice>   
       <pie_slice
       enabled="false"
       label="Take Copy"
@@ -48,12 +43,12 @@ name="Object Pie">
       </pie_slice>
       <pie_slice
       enabled="false"
-      label="Delete"
-      name="Delete">
+      label="Ignore"
+      name="Object Mute">
          <pie_slice.on_click
-         function="Object.Delete" />
+         function="Object.Mute" />
          <pie_slice.on_enable
-         function="Object.EnableDelete" />
+         function="Object.EnableMute" />
       </pie_slice>
       <pie_slice
       enabled="false"
@@ -65,24 +60,22 @@ name="Object Pie">
          function="Object.EnableReportAbuse" />
       </pie_slice>
       <pie_slice
-      enabled="false"
-      label="Return"
-      name="Return">
+      enabled="true"
+      label="Derender"
+      name="Derender">
          <pie_slice.on_click
-         function="Object.Return" />
-         <pie_slice.on_enable
-         function="Object.EnableReturn" />
+         function="Object.Derender" />
       </pie_slice>
    </pie_menu>
    <pie_slice
    enabled="false"
-   label="Open"
-   name="Open">
+   label="Delete"
+   name="Delete">
       <pie_slice.on_click
-      function="Object.Open" />
+      function="Object.Delete" />
       <pie_slice.on_enable
-      function="Object.EnableOpen" />
-   </pie_slice>   
+      function="Object.EnableDelete" />
+   </pie_slice>
    <pie_menu
    label="Wear"
    name="Wear">
@@ -287,15 +280,12 @@ name="Object Pie">
       name="Pie Object Attach HUD" />
    </pie_menu>
    <pie_slice
-   enabled="false"
-   label="Touch"
-   name="Object Touch">
+   label="Take"
+   name="Pie Object Take">
       <pie_slice.on_click
-      function="Object.Touch" />
+      function="Object.Take"/>
       <pie_slice.on_enable
-      function="Object.EnableTouch"
-      name="EnableTouch"
-      parameter="Touch" />
+      function="Object.VisibleTake"/>
    </pie_slice>
    <pie_slice
    enabled="true"
@@ -307,12 +297,15 @@ name="Object Pie">
       function="EnableEdit"/>
    </pie_slice>
    <pie_slice
-   label="Create"
-   name="Build">
+   enabled="false"
+   label="Touch"
+   name="Object Touch">
       <pie_slice.on_click
-      function="Object.Build" />
+      function="Object.Touch" />
       <pie_slice.on_enable
-      function="EnableEdit"/>
+      function="Object.EnableTouch"
+      name="EnableTouch"
+      parameter="Touch" />
    </pie_slice>
    <pie_menu
    label="More"
@@ -361,7 +354,14 @@ name="Object Pie">
          <pie_slice.on_enable
          function="EnablePayObject" />
       </pie_slice>
-      <pie_separator name="seperator"/>
+      <pie_slice
+      label="Create"
+      name="Build">
+         <pie_slice.on_click
+         function="Object.Build" />
+         <pie_slice.on_enable
+         function="EnableEdit"/>
+      </pie_slice>
       <pie_slice
       enabled="false"
       label="In;Linksets;Show"

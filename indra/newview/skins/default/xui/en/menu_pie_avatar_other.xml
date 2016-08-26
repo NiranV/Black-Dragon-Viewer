@@ -8,27 +8,36 @@ name="Avatar Pie">
     layout="topleft"
     name="Pie Object Manage">
         <pie_slice
-        enabled="false"
-        label="Block"
-        name="Avatar Mute">
+         label="Eject"
+         name="Eject...">
             <pie_slice.on_click
-            function="Avatar.Mute" />
-            <pie_slice.on_enable
-            function="Avatar.EnableMute" />
+             function="Avatar.Eject" />
+            <pie_slice.on_visible
+             function="Avatar.EnableFreezeEject"/>
         </pie_slice>
         <pie_slice
-        enabled="true"
-        label="Derender"
-        name="Derender">
+         label="Freeze"
+         name="Freeze...">
             <pie_slice.on_click
-            function="Object.Derender" />
+             function="Avatar.Freeze" />
+            <pie_slice.on_visible
+             function="Avatar.EnableFreezeEject"/>
         </pie_slice>
-        <pie_separator name="seperator"/>
         <pie_slice
-        label="Skeleton;;Reset"
-        name="Reset Skeleton">
+        label="Dump XML"
+        name="Dump XML">
             <pie_slice.on_click
-            function="Avatar.ResetSkeleton" />
+            function="Advanced.AppearanceToXML" />
+            <pie_slice.on_visible
+            function="Advanced.EnableAppearanceToXML"/>
+        </pie_slice>
+        <pie_slice
+        label="Textures;;Debug"
+        name="Debug...">
+            <pie_slice.on_click
+            function="Avatar.Debug" />
+            <pie_slice.on_visible
+            function="IsGodCustomerService"/>
         </pie_slice>
         <pie_slice
         enabled="false"
@@ -39,12 +48,27 @@ name="Avatar Pie">
             <pie_slice.on_enable
             function="EnableMuteParticle" />
         </pie_slice>
-        <pie_separator name="seperator"/>
+        <pie_slice
+        enabled="false"
+        label="Block"
+        name="Avatar Mute">
+            <pie_slice.on_click
+            function="Avatar.Mute" />
+            <pie_slice.on_enable
+            function="Avatar.EnableMute" />
+        </pie_slice>
         <pie_slice
         label="Report"
         name="abuse">
             <pie_slice.on_click
             function="Avatar.ReportAbuse" />
+        </pie_slice>
+        <pie_slice
+        enabled="true"
+        label="Derender"
+        name="Derender">
+            <pie_slice.on_click
+            function="Object.Derender" />
         </pie_slice>
     </pie_menu>
     <pie_slice
@@ -62,20 +86,6 @@ name="Avatar Pie">
         function="Avatar.SendIM" />
     </pie_slice>
     <pie_slice
-    label="Profile; ;Show"
-    name="Profile">
-        <pie_slice.on_click
-        function="ShowAgentProfile"
-        parameter="hit object" />
-    </pie_slice>
-    <pie_slice
-    label="Zoom In"
-    name="Zoom In">
-        <pie_slice.on_click
-        function="Tools.LookAtSelection"
-        parameter="zoom" />
-    </pie_slice>
-    <pie_slice
     enabled="false"
     label="Pay"
     name="Pay">
@@ -83,6 +93,19 @@ name="Avatar Pie">
         function="PayObject" />
         <pie_slice.on_enable
         function="EnablePayAvatar" />
+    </pie_slice>
+    <pie_slice
+    label="Profile; ;Show"
+    name="Profile">
+        <pie_slice.on_click
+        function="ShowAgentProfile"
+        parameter="hit object" />
+    </pie_slice>
+    <pie_slice
+    label="Skeleton;;Reset"
+    name="Reset Skeleton">
+        <pie_slice.on_click
+        function="Avatar.ResetSkeleton" />
     </pie_slice>
     <pie_menu
     name="Avatar Pie More"
@@ -108,7 +131,13 @@ name="Avatar Pie">
             parameter="0" />
         </pie_slice>
         <pie_separator name="seperator"/>
-        <pie_separator name="seperator"/>
+        <pie_slice
+        label="Zoom In"
+        name="Zoom In">
+            <pie_slice.on_click
+            function="Tools.LookAtSelection"
+            parameter="zoom" />
+        </pie_slice>
         <pie_slice
         label="Avatar;SLURL;Copy"
         name="CopySLURL"
