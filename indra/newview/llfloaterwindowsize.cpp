@@ -76,8 +76,8 @@ void LLFloaterWindowSize::initWindowSizeControls()
 	//BD
     // Look to see if current window size matches existing window sizes, if so then
     // just set the selection value...
-    U32 height = gViewerWindow->getWindowHeightRaw();
-    U32 width = gViewerWindow->getWindowWidthRaw();
+    S32 height = gViewerWindow->getWindowHeightRaw();
+    S32 width = gViewerWindow->getWindowWidthRaw();
 	//BD - Ugh... make the spinners show the correct value on first creation
 	height = height - 38;
 	width = width - 16;
@@ -86,8 +86,8 @@ void LLFloaterWindowSize::initWindowSizeControls()
 void LLFloaterWindowSize::onClickSet()
 {
 	//BD
-	S32 width = mWindowWidth->getValue();
-	S32 height = mWindowHeight->getValue();
+	S32 width = mWindowWidth->getValue().asInteger();
+	S32 height = mWindowHeight->getValue().asInteger();
 
 	LLViewerWindow::movieSize(width , height);
 }
