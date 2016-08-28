@@ -3910,14 +3910,15 @@ BOOL LLVOVolume::lineSegmentIntersect(const LLVector4a& start, const LLVector4a&
 
 	if (mDrawable->isState(LLDrawable::RIGGED))
 	{
-		if ((pick_rigged) || (getAvatar() && (getAvatar()->isSelf()) && (LLFloater::isVisible(gFloaterTools))))
+		//BD - Allow picking rigged attachments of others.
+		if ((pick_rigged) || (getAvatar() && LLFloater::isVisible(gFloaterTools)))
 		{
 			updateRiggedVolume(true);
 			volume = mRiggedVolume;
 			transform = false;
 		}
 		else
-		{ //cannot pick rigged attachments on other avatars or when not in build mode
+		{
 			return FALSE;
 		}
 	}
