@@ -179,7 +179,8 @@ LLObjectSelectionHandle LLToolSelect::handleObjectSelection(const LLPickInfo& pi
 			LLSelectMgr::getInstance()->setAgentHUDZoom(target_zoom, current_zoom);
 		}
 
-		if (!gAgentCamera.getFocusOnAvatar() &&										// if camera not glued to avatar
+		//BD - Do not turn. Do-do: Add an option.
+		/*if (!gAgentCamera.getFocusOnAvatar() &&										// if camera not glued to avatar
 			LLVOAvatar::findAvatarFromAttachment(object) != gAgentAvatarp &&	// and it's not one of your attachments
 			object != gAgentAvatarp)									// and it's not you
 		{
@@ -196,7 +197,7 @@ LLObjectSelectionHandle LLToolSelect::handleObjectSelection(const LLPickInfo& pi
 				target_rot.shortestArc(LLVector3::x_axis, selection_dir);
 				gAgent.startAutoPilotGlobal(gAgent.getPositionGlobal(), "", &target_rot, NULL, NULL, 1.f, SELECTION_ROTATION_TRESHOLD);
 			}
-		}
+		}*/
 
 		if (temp_select)
 		{
