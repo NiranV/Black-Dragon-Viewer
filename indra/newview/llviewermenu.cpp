@@ -9331,6 +9331,11 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
 
+// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Modified: Catznip-2.1.1a
+	view_listener_t::addMenu(new LLViewFullscreen(), "View.Fullscreen");
+	enable.add("View.EnableFullscreen", boost::bind(&view_enable_fullscreen));
+// [/SL:KB]
+
 //	//BD - De/ReAlpha
 	view_listener_t::addMenu(new BDObjectDeAlpha(), "Object.DeAlpha");
 	view_listener_t::addMenu(new BDObjectReAlpha(), "Object.ReAlpha");
