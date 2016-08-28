@@ -2656,23 +2656,17 @@ class BDObjectDeAlpha : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-		LLViewerObject* slct = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
-		if (!slct)return true;
-		LLUUID id = slct->getID();
 		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
-		LLUUID root_key;
-		LLSelectNode* node = selection->getFirstRootNode();
-		if (node)root_key = node->getObject()->getID();
-		if (root_key.notNull())
+		if (!selection.isNull())
 		{
-			id = root_key;
-		}
-
-		if (!(id == gAgentID))
-		{
-			LLViewerObject *objectp = gObjectList.findObject(id);
+			for (LLObjectSelection::iterator iter = selection->begin(); iter != selection->end(); ++iter)
 			{
-				gObjectList.killAlpha(objectp);
+				LLSelectNode* node = *iter;
+				LLViewerObject *objectp = node->getObject();
+				if (objectp->getID() != gAgentID)
+				{
+					gObjectList.killAlpha(objectp);
+				}
 			}
 		}
 		return true;
@@ -2684,23 +2678,17 @@ class BDObjectReAlpha : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-		LLViewerObject* slct = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
-		if (!slct)return true;
-		LLUUID id = slct->getID();
 		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
-		LLUUID root_key;
-		LLSelectNode* node = selection->getFirstRootNode();
-		if (node)root_key = node->getObject()->getID();
-		if (root_key.notNull())
+		if (!selection.isNull())
 		{
-			id = root_key;
-		}
-
-		if (!(id == gAgentID))
-		{
-			LLViewerObject *objectp = gObjectList.findObject(id);
+			for (LLObjectSelection::iterator iter = selection->begin(); iter != selection->end(); ++iter)
 			{
-				gObjectList.restoreAlpha(objectp);
+				LLSelectNode* node = *iter;
+				LLViewerObject *objectp = node->getObject();
+				if (objectp->getID() != gAgentID)
+				{
+					gObjectList.restoreAlpha(objectp);
+				}
 			}
 		}
 		return true;
