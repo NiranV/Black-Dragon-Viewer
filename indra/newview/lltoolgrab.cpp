@@ -140,7 +140,7 @@ BOOL LLToolGrab::handleMouseDown(S32 x, S32 y, MASK mask)
 		LL_INFOS() << "LLToolGrab handleMouseDown" << LL_ENDL;
 	}
 
-//	//BD - Allow Mousellok Grab
+//	//BD - Allow Mouselook Grab
 	if ((gAgentCamera.cameraMouselook()
 		&& gSavedSettings.getBOOL("AllowMouselookGrab")))
 	{
