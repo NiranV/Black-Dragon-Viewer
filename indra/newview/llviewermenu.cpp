@@ -139,6 +139,7 @@
 #include "llsidepanelinventory.h"
 #include "llteleporthistory.h"
 #include "llurlaction.h"
+#include "llviewerobject.h"
 //BD - Pie Menu
 #include "piemenu.h"
 
@@ -2622,26 +2623,30 @@ class LLObjectDerender : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
     {
-        LLViewerObject* slct = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
-        if(!slct)return true;
-        LLUUID id = slct->getID();
-        LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
-        LLUUID root_key;
-        LLSelectNode* node = selection->getFirstRootNode();
-        if(node)root_key = node->getObject()->getID();
-        if(root_key.notNull())
-        {
-            id = root_key;
-        }
-        LLSelectMgr::getInstance()->removeObjectFromSelections(id);
+		//BD - Allow derendering everything in selection instead of just one link or the root prim.
+		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
+		while (selection.notNull())
+		{
+			LLViewerObject* slct = selection->getFirstObject();
+			if (!slct)return true;
+			LLUUID id = slct->getID();
+			LLUUID root_key;
+			LLSelectNode* node = selection->getFirstRootNode();
+			if (node)root_key = node->getObject()->getID();
+			if (root_key.notNull())
+			{
+				id = root_key;
+			}
+			LLSelectMgr::getInstance()->remove(slct);
 
-        if (!(id == gAgentID))
-        {
-            LLViewerObject *objectp = gObjectList.findObject(id);
-            {
-                gObjectList.killObject(objectp, true);
-            }
-        }
+			if (!(id == gAgentID))
+			{
+				LLViewerObject *objectp = gObjectList.findObject(id);
+				{
+					gObjectList.killObject(objectp, true);
+				}
+			}
+		}
         return true;
     }
 };
