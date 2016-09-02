@@ -120,8 +120,9 @@ void PieMenu::show(S32 x, S32 y, LLView* spawning_view)
 	if(getVisible())
 		return;
 
+	//BD - Disable Pie Menu sounds for now, they got corrupted causing a 1 sec freeze.
 	// play a sound
-	make_ui_sound("UISndPieMenuAppear");
+	//make_ui_sound("UISndPieMenuAppear");
 
 	LL_DEBUGS() << "PieMenu::show(): " << x << " " << y << LL_ENDL;
 
@@ -184,8 +185,9 @@ void PieMenu::hide()
 	if(!getVisible())
 		return;
 
+	//BD - Disable Pie Menu sounds for now, they got corrupted causing a 1 sec freeze.
 	// make a sound when hiding
-	make_ui_sound("UISndPieMenuHide");
+	//("UISndPieMenuHide");
 
 	LL_DEBUGS() << "Clearing selections" << LL_ENDL;
 
@@ -406,7 +408,8 @@ void PieMenu::draw( void )
 					std::string soundName = "UISndPieMenuSliceHighlight";
 					soundName += soundNum;
 
-					make_ui_sound(soundName.c_str());
+					//BD - Disable Pie Menu sounds for now, they got corrupted causing a 1 sec freeze.
+					//make_ui_sound(soundName.c_str());
 					// remember which slice we highlighted last, so we only play the sound once
 					mOldSlice = mSlice;
 				}
@@ -539,8 +542,9 @@ BOOL PieMenu::handleMouseButtonUp(S32 x,S32 y,MASK mask)
 				mPopupTimer.reset();
 				mPopupTimer.start();
 #endif
+				//BD - Disable Pie Menu sounds for now, they got corrupted causing a 1 sec freeze.
 				// make a sound
-				make_ui_sound("UISndPieMenuAppear");
+				//make_ui_sound("UISndPieMenuAppear");
 			}
 		}
 		// show or hide the menu, as needed

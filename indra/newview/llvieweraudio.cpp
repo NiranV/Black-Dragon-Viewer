@@ -386,7 +386,7 @@ void init_audio()
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndWindowOpen")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndRestart")));
 //		//BD - Pie Menu
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuAppear")));
+		/*gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuAppear")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuHide")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight0")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight1")));
@@ -395,7 +395,7 @@ void init_audio()
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight4")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight5")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight6")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight7")));
+		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight7")));*/
 	}
 
 	audio_update_volume(true);
