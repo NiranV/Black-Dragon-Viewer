@@ -139,7 +139,6 @@
 #include "llsidepanelinventory.h"
 #include "llteleporthistory.h"
 #include "llurlaction.h"
-#include "llviewerobject.h"
 //BD - Pie Menu
 #include "piemenu.h"
 
@@ -2621,8 +2620,8 @@ void cleanup_menus()
 //BD - Derender
 class LLObjectDerender : public view_listener_t
 {
-    bool handleEvent(const LLSD& userdata)
-    {
+	bool handleEvent(const LLSD& userdata)
+	{
 		//BD - Allow derendering everything in selection instead of just one link or the root prim.
 		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
 		while (selection.notNull())
@@ -2647,8 +2646,8 @@ class LLObjectDerender : public view_listener_t
 				}
 			}
 		}
-        return true;
-    }
+		return true;
+	}
 };
 
 //BD - DeAlpha
