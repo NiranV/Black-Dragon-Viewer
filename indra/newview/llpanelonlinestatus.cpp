@@ -38,8 +38,8 @@ LLPanelOnlineStatus::LLPanelOnlineStatus(
 	buildFromFile(
 			"panel_online_status_toast.xml");
 
-
-	getChild<LLUICtrl>("avatar_icon")->setValue(notification->getPayload()["FROM_ID"]);
+	//BD
+	//getChild<LLUICtrl>("avatar_icon")->setValue(notification->getPayload()["FROM_ID"]);
 	getChild<LLUICtrl>("message")->setValue(notification->getMessage());
 
 	if (notification->getPayload().has("respond_on_mousedown")
