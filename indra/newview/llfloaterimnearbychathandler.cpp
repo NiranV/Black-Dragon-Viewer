@@ -556,8 +556,10 @@ void LLFloaterIMNearbyChatHandler::processChat(const LLChat& chat_msg,
 
     LLFloaterIMContainer* im_box = LLFloaterReg::getTypedInstance<LLFloaterIMContainer>("im_container");
 
+	//BD
 	if((  ( chat_msg.mSourceType == CHAT_SOURCE_AGENT )
-			//&& gSavedSettings.getBOOL("UseChatBubbles") )
+		//&& (gSavedSettings.getBOOL("UseChatBubbles")
+		//&& gSavedSettings.getBOOL("ChatBubblesShowLocal"))
 		|| mChannel.isDead()
 		|| !mChannel.get()->getShowToasts() )
 		&& nearby_chat->isMessagePaneExpanded())
