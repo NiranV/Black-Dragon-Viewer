@@ -140,13 +140,13 @@ BOOL LLToolGrab::handleMouseDown(S32 x, S32 y, MASK mask)
 		LL_INFOS() << "LLToolGrab handleMouseDown" << LL_ENDL;
 	}
 
+	// call the base class to propogate info to sim
+	LLTool::handleMouseDown(x, y, mask);
+
 //	//BD - Allow Mouselook Grab
 	if ((gAgentCamera.cameraMouselook()
 		&& gSavedSettings.getBOOL("AllowMouselookGrab")))
 	{
-		// call the base class to propogate info to sim
-		LLTool::handleMouseDown(x, y, mask);
-
 		if (!gAgent.leftButtonBlocked())
 		{
 			// can grab transparent objects (how touch event propagates, scripters rely on this)
