@@ -707,6 +707,45 @@ static bool handleShadowMapsChanged(const LLSD& newvalue)
 	return true;
 }
 
+static bool handleDepthOfFieldChanged(const LLSD& newvalue)
+{
+	LLViewerShaderMgr::instance()->loadShadersDOF();
+	return true;
+}
+
+static bool handleSSAOChanged(const LLSD& newvalue)
+{
+	LLViewerShaderMgr::instance()->loadShadersSSAO();
+	return true;
+}
+
+static bool handleBlurLightChanged(const LLSD& newvalue)
+{
+	LLViewerShaderMgr::instance()->loadShadersBlurLight();
+	return true;
+}
+
+static bool handleSSRChanged(const LLSD& newvalue)
+{
+	LLViewerShaderMgr::instance()->loadShadersSSR();
+	return true;
+}
+
+static bool handleGodraysChanged(const LLSD& newvalue)
+{
+	LLViewerShaderMgr::instance()->loadShadersGodrays();
+	return true;
+}
+
+static bool handleShadowsChanged(const LLSD& newvalue)
+{
+	LLViewerShaderMgr::instance()->resetDeferredShaders();
+	LLViewerShaderMgr::instance()->loadShadersSSAO();
+	LLViewerShaderMgr::instance()->loadShadersShadows();
+	gPipeline.allocateShadowMaps(true);
+	return true;
+}
+
 static bool handleTimeFactorChanged(const LLSD& newvalue)
 {
 	if (gSavedSettings.getBOOL("SlowMotionAnimation"))
@@ -778,8 +817,6 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderDebugPipeline")->getSignal()->connect(boost::bind(&handleRenderDebugPipelineChanged, _2));
 	gSavedSettings.getControl("RenderResolutionDivisor")->getSignal()->connect(boost::bind(&handleRenderResolutionDivisorChanged, _2));
 	gSavedSettings.getControl("RenderDeferred")->getSignal()->connect(boost::bind(&handleRenderDeferredChanged, _2));
-	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
-	gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderPerformanceTest")->getSignal()->connect(boost::bind(&handleRenderPerfTestChanged, _2));
 	gSavedSettings.getControl("TextureMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
 	gSavedSettings.getControl("ChatFontSize")->getSignal()->connect(boost::bind(&handleChatFontSizeChanged, _2));
@@ -892,19 +929,22 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderWaterRefResolution")->getSignal()->connect(boost::bind(&handleWaterResolutionChanged, _2));
 	gSavedSettings.getControl("RenderAttachedLights")->getSignal()->connect(boost::bind(&handleRenderAttachedLightsChanged, _2));
 	gSavedSettings.getControl("RenderAttachedParticles")->getSignal()->connect(boost::bind(&handleRenderAttachedParticlesChanged, _2));
-	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
-	gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
-	gSavedSettings.getControl("RenderGodraysDirectional")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
+	gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
+	gSavedSettings.getControl("RenderGodraysDirectional")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
 	gSavedSettings.getControl("RenderNormalMapScale")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
 	gSavedSettings.getControl("RenderProjectorShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	gSavedSettings.getControl("RenderShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
-	gSavedSettings.getControl("RenderBlurPerformanceMode")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderBlurPerformanceMode")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
 	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
 	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
 	gSavedSettings.getControl("RenderEnableFullbright")->getSignal()->connect(boost::bind(&handleFullbrightChanged, _2));
 	gSavedSettings.getControl("RenderEnableAlpha")->getSignal()->connect(boost::bind(&handleAlphaChanged, _2));
-	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
+	gSavedSettings.getControl("RenderDepthOfFieldHighQuality")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
 	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
+	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
+	gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
 
 //	//BD - Motion Blur
 	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));

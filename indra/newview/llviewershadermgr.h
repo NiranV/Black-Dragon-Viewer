@@ -59,6 +59,16 @@ public:
 	BOOL loadShadersInterface();
 	BOOL loadShadersWindLight();
 	BOOL loadTransformShaders();
+
+//	//BD - Fast Shader Toggles
+	void resetDeferredShaders();
+	BOOL loadShadersDOF();
+	BOOL loadShadersSSAO();
+	BOOL loadShadersShadows();
+	BOOL loadShadersGodrays();
+	BOOL loadShadersBlurLight();
+	BOOL loadShadersSSR();
+
 //	//BD - Exodus Post Process
 	void unloadExodusPostShaders();
     BOOL loadExodusPostShaders();

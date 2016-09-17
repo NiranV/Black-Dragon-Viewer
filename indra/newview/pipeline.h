@@ -105,7 +105,7 @@ public:
 	void handleReflectionChanges();
 
 //	//BD - Shadow Map Allocation
-	void allocateShadowMaps();
+	void allocateShadowMaps(bool force_allocate = false);
 
 	void destroyGL();
 	void restoreGL();
