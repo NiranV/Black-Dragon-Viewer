@@ -43,6 +43,22 @@
      value="Pick Info"
      use_ellipses="true"
      width="204" />
+    <text_editor
+      allow_scroll="false"
+      bg_visible="false"
+      follows="left|top|right"
+      h_pad="0"
+      height="14"
+      width="204"
+      layout="topleft"
+      left_delta="0"
+      top_pad="-4"
+      name="pick_name"
+      read_only="true"
+      text_readonly_color="LtGray"
+      v_pad="0"
+      value="[name]"
+      use_ellipses="true" />
       <button
       follows="top|right"
       height="25"
@@ -53,7 +69,7 @@
       image_unselected="Toolbar_Middle_Off"
       name="show_on_map_btn"
       left_pad="1"
-      top_delta="-1"
+      top_delta="-11"
       width="32" />
       <button
       follows="top|right"
@@ -82,7 +98,6 @@
      follows="top|left|right"
      layout="topleft"
      top="0"
-     background_visible="false"
      height="502"
      left="0"
      width="284">
@@ -106,43 +121,28 @@
        name="dummy_icon"
        width="289"/>
         <text_editor
-      allow_scroll="false"
-      bg_visible="false"
-      follows="left|top|right"
-      h_pad="0"
-      height="14"
-      width="284"
-      layout="topleft"
-      left_delta="3"
-      top_delta="1"
-      name="pick_name"
-      read_only="true"
-      text_color="white"
-      v_pad="0"
-      value="[name]"
-      use_ellipses="true" />
-        <text_editor
          allow_scroll="false"
          bg_visible="false"
          follows="left|top|right"
          h_pad="0"
-         height="14"
-         top_pad="-4"
+         height="22"
+         top_delta="1"
          layout="topleft"
-         left_delta="0"
+         left_delta="3"
          name="pick_location"
          read_only="true"
+         text_readonly_color="white"
          width="284"
          word_wrap="true"
          v_pad="0"
+         line_spacing.pixels="-3" 
          value="[loading...]" />
         <text_editor
-         bg_readonly_color="White_02"
+         bg_readonly_color="Transparent"
          follows="all"
          height="290"
          width="289"
          parse_urls="true"	
-         hide_scrollbar="false"
          layout="topleft"
          left="0"
          top_pad="0"
@@ -156,8 +156,7 @@
     </scroll_container>
     <panel
      follows="left|right|bottom"
-     background_visible="true"
-     bg_alpha_color="White_02"
+     background_visible="false"
      height="25"
      layout="topleft"
      top_pad="1"

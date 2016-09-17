@@ -20,7 +20,7 @@
   <tab_container
   follows="all"
   halign="center"
-  height="536"
+  height="563"
   layout="topleft"
   left="0"
   name="Picks Tabs"
@@ -33,7 +33,9 @@
   width="315">
     <panel
     follows="all"
-    height="513"
+    bg_alpha_image="Panel_Background"
+		background_visible="true"
+    height="539"
     layout="topleft"
     left="0"
     title="Picks"
@@ -41,7 +43,7 @@
     top="0"
     width="315">
       <flat_list_view
-      color="White_02"
+      color="Transparent"
       follows="all"
       layout="topleft"
       left="0"
@@ -49,11 +51,13 @@
       visible="true"
       top="1"
       height="513"
-      width="313" />
+      width="315" />
     </panel>
     <panel
     follows="all"
-    height="513"
+    bg_alpha_image="Panel_Background"
+		background_visible="true"
+    height="539"
     layout="topleft"
     left="0"
     title="Classifieds"
@@ -61,13 +65,13 @@
     top="0"
     width="315">
       <flat_list_view
-      color="White_02"
+      color="Transparent"
       follows="all"
       layout="topleft"
       left="0"
       name="classifieds_list"
       visible="true"
-      top="0"
+      top="1"
       height="513"
       width="313" />
     </panel>
@@ -85,17 +89,16 @@
     <panel
     bg_opaque_color="White_02"
     background_visible="true"
-    background_opaque="true"
     bevel_style="none"
     enabled="false"
     follows="bottom|left|right"
-    left="2"
-    height="27"
+    left="3"
+    height="25"
     label="bottom_panel"
     layout="topleft"
     name="edit_panel"
-    top_pad="0"
-    width="312">
+    top_pad="-26"
+    width="310">
       <layout_stack
       animate="false"
       border_size="0"
@@ -103,10 +106,10 @@
       height="25"
       layout="topleft"
       orientation="horizontal"
-      top_pad="1"
+      top_pad="0"
       left="0"
       name="bottom_panel"
-      width="312">
+      width="310">
 	<layout_panel
 	follows="bottom|left"
 	height="25"
@@ -156,7 +159,7 @@
 			  layout="bottomleft" 
 			  name="teleport_btn_lp"
 		      auto_resize="true"
-			  width="117">
+			  width="115">
 		        <button
 		         enabled="false"
 		         follows="top|left|right"
@@ -170,7 +173,7 @@
                  top="0"
 		         tab_stop="false"
 		         tool_tip="Teleport to the corresponding area"
-		         width="116" />
+		         width="114" />
 		  </layout_panel>
 		  
 		  <layout_panel
