@@ -6,7 +6,6 @@
  height="572"
  min_width="333"
  min_height="440"
- background_color="FloaterColorPicks"
  name="floater_picks"
  save_rect="true"
  save_visibility="true"
