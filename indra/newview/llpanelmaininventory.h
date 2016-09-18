@@ -153,6 +153,7 @@ protected:
 	void setUploadCostIfNeeded();
 private:
 	LLDragAndDropButton*		mTrashButton;
+	LLHandle<LLView>			mMenuAddHandle;
 
 	bool						mNeedUploadCost;
 	// List Commands                                                              //
