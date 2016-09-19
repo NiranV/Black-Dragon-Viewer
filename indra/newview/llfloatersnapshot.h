@@ -48,6 +48,7 @@ public:
 
 	/*virtual*/ void draw();
 	/*virtual*/ void onClose(bool app_quitting);
+	void onClickBigPreview();
 	virtual S32 notify(const LLSD& info);
 
 	// TODO: create a snapshot model instead
@@ -90,7 +91,8 @@ public:
 		mAspectRatioCheckOff(false),
 		mNeedRefresh(false),
 		mStatus(STATUS_READY),
-		mFloater(floater)
+		mFloater(floater),
+		mBigPreviewFloater(NULL)
 	{}
 	virtual ~ImplBase()
 	{
@@ -120,6 +122,9 @@ public:
 	virtual void setNeedRefresh(bool need);
 
 	static BOOL updatePreviewList(bool initialized);
+	void getBigPreview();
+	void attachPreview();
+	bool isPreviewVisible();
 
 	void setAdvanced(bool advanced) { mAdvanced = advanced; }
 
@@ -129,6 +134,7 @@ public:
 
 public:
 	LLFloaterSnapshotBase* mFloater;
+	LLFloaterBigPreview* mBigPreviewFloater;
 	std::vector<LLAnimPauseRequest> mAvatarPauseHandles;
 
 	LLToolset*	mLastToolset;
@@ -137,6 +143,8 @@ public:
 	bool mNeedRefresh;
 	bool mAdvanced;
 	EStatus mStatus;
+
+	bool mSnapshotFreezeWorld;
 };
 
 class LLFloaterSnapshot : public LLFloaterSnapshotBase
@@ -166,20 +174,13 @@ public:
 	friend class Impl;
 
 private:
-	bool mSnapshotFreezeWorld;
-	bool isPreviewVisible();
-	void attachPreview();
+	LLHandle<LLView> mPreviewHandle;
+
 };
 
 ///----------------------------------------------------------------------------
 /// Class LLFloaterSnapshot::Impl
 ///----------------------------------------------------------------------------
-	LLHandle<LLView> mPreviewHandle;
-	LLFloaterBigPreview * mBigPreviewFloater;
-
-	bool mSnapshotFreezeWorld;
-	bool isPreviewVisible();
-	void attachPreview();
 
 class LLFloaterSnapshot::Impl : public LLFloaterSnapshotBase::ImplBase
 {

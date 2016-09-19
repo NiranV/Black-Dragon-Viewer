@@ -461,7 +461,7 @@ void LLFloaterSnapshot::Impl::applyKeepAspectCheck(LLFloaterSnapshotBase* view, 
 void LLFloaterSnapshotBase::ImplBase::onCommitFreezeWorld(LLUICtrl* ctrl, void* data)
 {
 	LLFloaterSnapshotBase *view = (LLFloaterSnapshotBase *)data;
-	mSnapshotFreezeWorld = ctrl->getValue().asBoolean();
+	view->impl->mSnapshotFreezeWorld = ctrl->getValue().asBoolean();
 	view->impl->updateLayout(view);
 }
 
@@ -827,9 +827,8 @@ LLFloaterSnapshotBase::LLFloaterSnapshotBase(const LLSD& key)
 	  mRefreshLabel(NULL),
 	  mSucceessLblPanel(NULL),
 	  mFailureLblPanel(NULL)
-	  //mBigPreviewFloater(NULL)
 {
-	//mCommitCallbackRegistrar.add("SocialSharing.BigPreview", boost::bind(&LLFloaterSnapshot::onClickBigPreview, this));
+	mCommitCallbackRegistrar.add("SocialSharing.BigPreview", boost::bind(&LLFloaterSnapshot::onClickBigPreview, this));
 }
 
 LLFloaterSnapshotBase::~LLFloaterSnapshotBase()
@@ -865,13 +864,11 @@ LLFloaterSnapshot::~LLFloaterSnapshot()
 // virtual
 BOOL LLFloaterSnapshot::postBuild()
 {
-	mSnapshotFreezeWorld = false;
 	mRefreshBtn = getChild<LLUICtrl>("new_snapshot_btn");
 	childSetAction("new_snapshot_btn", ImplBase::onClickNewSnapshot, this);
 	mRefreshLabel = getChild<LLUICtrl>("refresh_lbl");
 	mSucceessLblPanel = getChild<LLUICtrl>("succeeded_panel");
 	mFailureLblPanel = getChild<LLUICtrl>("failed_panel");
-	mBigPreviewFloater = dynamic_cast<LLFloaterBigPreview*>(LLFloaterReg::getInstance("big_preview"));
 
 	childSetCommitCallback("ui_check", ImplBase::onClickUICheck, this);
 	getChild<LLUICtrl>("ui_check")->setValue(gSavedSettings.getBOOL("RenderUIInSnapshot"));
@@ -926,6 +923,8 @@ BOOL LLFloaterSnapshot::postBuild()
 	getChild<LLComboBox>("local_size_combo")->selectNthItem(8);
 	getChild<LLComboBox>("local_format_combo")->selectNthItem(0);
 
+	impl->getBigPreview();
+	impl->mSnapshotFreezeWorld = false;
 	impl->mPreviewHandle = previewp->getHandle();
     previewp->setContainer(this);
 	impl->updateControls(this);
@@ -1003,7 +1002,7 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 	gSnapshotFloaterView->setVisible(TRUE);
 	gSnapshotFloaterView->adjustToFitScreen(this, FALSE);
 
-	if (mSnapshotFreezeWorld)
+	if (impl->mSnapshotFreezeWorld)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", true);
 	}
@@ -1035,7 +1034,7 @@ void LLFloaterSnapshotBase::onClose(bool app_quitting)
 		previewp->setEnabled(FALSE);
 	}
 
-	if (mSnapshotFreezeWorld)
+	if (impl->mSnapshotFreezeWorld)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", false);
 	}
@@ -1046,33 +1045,38 @@ void LLFloaterSnapshotBase::onClose(bool app_quitting)
 	}
 }
 
-/*void LLFloaterSnapshot::onClickBigPreview()
+void LLFloaterSnapshotBase::onClickBigPreview()
 {
     // Toggle the preview
-    if (isPreviewVisible())
+    if (impl->isPreviewVisible())
     {
         LLFloaterReg::hideInstance("big_preview");
     }
     else
     {
-        attachPreview();
+        impl->attachPreview();
         LLFloaterReg::showInstance("big_preview");
     }
-}*/
-
-bool LLFloaterSnapshot::isPreviewVisible()
-{
-    return (mBigPreviewFloater && mBigPreviewFloater->getVisible());
 }
 
-void LLFloaterSnapshot::attachPreview()
+bool LLFloaterSnapshotBase::ImplBase::isPreviewVisible()
+{
+	return (mBigPreviewFloater && mBigPreviewFloater->getVisible());
+}
+
+void LLFloaterSnapshot::ImplBase::attachPreview()
 {
     if (mBigPreviewFloater)
     {
         LLSnapshotLivePreview* previewp = getPreviewView();
         mBigPreviewFloater->setPreview(previewp);
-        mBigPreviewFloater->setFloaterOwner(getParentByType<LLFloater>());
+        mBigPreviewFloater->setFloaterOwner(LLFloaterSnapshot::getInstance());
     }
+}
+
+void LLFloaterSnapshot::ImplBase::getBigPreview()
+{
+	mBigPreviewFloater = dynamic_cast<LLFloaterBigPreview*>(LLFloaterReg::getInstance("big_preview"));
 }
 
 // virtual
@@ -1215,7 +1219,13 @@ LLFloaterSnapshot* LLFloaterSnapshot::findInstance()
 }
 
 // static
-BOOL LLFloaterSnapshotBase::saveTexture(bool local)
+LLFloaterSnapshot* LLFloaterSnapshot::getInstance()
+{
+	return LLFloaterReg::getTypedInstance<LLFloaterSnapshot>("snapshot");
+}
+
+// static
+BOOL LLFloaterSnapshot::saveTexture(bool local)
 {
 	LLSnapshotLivePreview* previewp = getPreviewView();
 	if (!previewp)
