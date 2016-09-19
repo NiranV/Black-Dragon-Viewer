@@ -155,8 +155,6 @@ void LLFloaterSnapshot::Impl::setResolution(LLFloaterSnapshotBase* floater, cons
 //virtual 
 void LLFloaterSnapshotBase::ImplBase::updateLayout(LLFloaterSnapshotBase* floaterp)
 {
-	BOOL advanced = gSavedSettings.getBOOL("AdvanceSnapshot");
-
 	//BD - Automatically calculate the size of our snapshot window to enlarge
 	//     the snapshot preview to its maximum size, this is especially helpfull
 	//     for pretty much every aspect ratio other than 1:1.
@@ -297,7 +295,7 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
 		break;
 	  case LLSnapshotModel::SNAPSHOT_POSTCARD:
 		layer_type = LLSnapshotModel::SNAPSHOT_TYPE_COLOR;
-		shot_format = LLFloaterSnapshot::e_snapshot_format::SNAPSHOT_FORMAT_JPEG;
+		shot_format = LLSnapshotModel::e_snapshot_format::SNAPSHOT_FORMAT_JPEG;
 		floater->getChild<LLUICtrl>("layer_types")->setValue("colors");
 		setResolution(floater, "postcard_size_combo");
 		break;
@@ -463,15 +461,15 @@ void LLFloaterSnapshot::Impl::applyKeepAspectCheck(LLFloaterSnapshotBase* view, 
 void LLFloaterSnapshotBase::ImplBase::onCommitFreezeWorld(LLUICtrl* ctrl, void* data)
 {
 	LLFloaterSnapshotBase *view = (LLFloaterSnapshotBase *)data;
-	view->mSnapshotFreezeWorld = ctrl->getValue().asBoolean();
+	mSnapshotFreezeWorld = ctrl->getValue().asBoolean();
 	view->impl->updateLayout(view);
 }
 
 
 // static
-void LLFloaterSnapshot::Impl::checkAspectRatio(LLFloaterSnapshot *view, S32 index)
+void LLFloaterSnapshot::Impl::checkAspectRatio(LLFloaterSnapshotBase *view, S32 index)
 {
-	LLSnapshotLivePreview *previewp = getPreviewView() ;
+	LLSnapshotLivePreview *previewp = getPreviewView();
 
 	// Don't round texture sizes; textures are commonly stretched in world, profiles, etc and need to be "squashed" during upload, not cropped here
 	if (LLSnapshotModel::SNAPSHOT_TEXTURE == getActiveSnapshotType(view))
@@ -551,7 +549,7 @@ void LLFloaterSnapshot::Impl::setFinished(bool finished, bool ok, const std::str
 
 		if (!gSavedSettings.getBOOL("RememberSnapshotMode"))
 		{
-			LLSideTrayPanelContainer* panel_container = floater->getChild<LLSideTrayPanelContainer>("panel_container");
+			LLSideTrayPanelContainer* panel_container = mFloater->getChild<LLSideTrayPanelContainer>("panel_container");
 			panel_container->openPreviousPanel();
 			panel_container->getCurrentPanel()->onOpen(LLSD());
 		}
@@ -829,9 +827,9 @@ LLFloaterSnapshotBase::LLFloaterSnapshotBase(const LLSD& key)
 	  mRefreshLabel(NULL),
 	  mSucceessLblPanel(NULL),
 	  mFailureLblPanel(NULL)
-	  mBigPreviewFloater(NULL),
+	  //mBigPreviewFloater(NULL)
 {
-	mCommitCallbackRegistrar.add("SocialSharing.BigPreview", boost::bind(&LLFloaterSnapshot::onClickBigPreview, this));
+	//mCommitCallbackRegistrar.add("SocialSharing.BigPreview", boost::bind(&LLFloaterSnapshot::onClickBigPreview, this));
 }
 
 LLFloaterSnapshotBase::~LLFloaterSnapshotBase()
@@ -1048,7 +1046,7 @@ void LLFloaterSnapshotBase::onClose(bool app_quitting)
 	}
 }
 
-void LLFloaterSnapshot::onClickBigPreview()
+/*void LLFloaterSnapshot::onClickBigPreview()
 {
     // Toggle the preview
     if (isPreviewVisible())
@@ -1060,7 +1058,7 @@ void LLFloaterSnapshot::onClickBigPreview()
         attachPreview();
         LLFloaterReg::showInstance("big_preview");
     }
-}
+}*/
 
 bool LLFloaterSnapshot::isPreviewVisible()
 {
@@ -1071,7 +1069,7 @@ void LLFloaterSnapshot::attachPreview()
 {
     if (mBigPreviewFloater)
     {
-        LLSnapshotLivePreview* previewp = impl.getPreviewView(this);
+        LLSnapshotLivePreview* previewp = getPreviewView();
         mBigPreviewFloater->setPreview(previewp);
         mBigPreviewFloater->setFloaterOwner(getParentByType<LLFloater>());
     }
@@ -1217,15 +1215,9 @@ LLFloaterSnapshot* LLFloaterSnapshot::findInstance()
 }
 
 // static
-BOOL LLFloaterSnapshot::saveTexture(bool local)
+BOOL LLFloaterSnapshotBase::saveTexture(bool local)
 {
-	LLFloaterSnapshot* instance = findInstance();
-	if (!instance)
-	{
-		llassert(instance != NULL);
-		return FALSE;
-	}
-	LLSnapshotLivePreview* previewp = Impl::getPreviewView(instance);
+	LLSnapshotLivePreview* previewp = getPreviewView();
 	if (!previewp)
 	{
 		llassert(previewp != NULL);

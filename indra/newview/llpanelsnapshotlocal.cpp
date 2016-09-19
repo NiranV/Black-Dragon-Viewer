@@ -134,7 +134,7 @@ void LLPanelSnapshotLocal::onFormatComboCommit(LLUICtrl* ctrl)
 	// will call updateControls()
 	//BD
 	gSavedSettings.setS32("SnapshotFormat", getImageFormat());
-	LLFloaterSnapshot::getInstance()->notify(LLSD().with("image-format-change", true));
+	getParentByType<LLFloater>()->notify(LLSD().with("image-format-change", true));
 }
 
 void LLPanelSnapshotLocal::onQualitySliderCommit(LLUICtrl* ctrl)
@@ -145,7 +145,7 @@ void LLPanelSnapshotLocal::onQualitySliderCommit(LLUICtrl* ctrl)
 	S32 quality_val = llfloor((F32)slider->getValue().asReal());
 	LLSD info;
 	info["image-quality-change"] = quality_val;
-	LLFloaterSnapshot::getInstance()->notify(info);
+	getParentByType<LLFloater>()->notify(info);
 }
 
 void LLPanelSnapshotLocal::onSaveFlyoutCommit(LLUICtrl* ctrl)

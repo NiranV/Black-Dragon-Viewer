@@ -226,7 +226,7 @@ void LLPanelSnapshotPostcard::onMsgFormFocusRecieved()
 void LLPanelSnapshotPostcard::onFormatComboCommit(LLUICtrl* ctrl)
 {
 	// will call updateControls()
-	LLFloaterSnapshot::getInstance()->notify(LLSD().with("image-format-change", true));
+	getParentByType<LLFloater>()->notify(LLSD().with("image-format-change", true));
 }
 
 void LLPanelSnapshotPostcard::onQualitySliderCommit(LLUICtrl* ctrl)
@@ -237,7 +237,7 @@ void LLPanelSnapshotPostcard::onQualitySliderCommit(LLUICtrl* ctrl)
 	S32 quality_val = llfloor((F32)slider->getValue().asReal());
 	LLSD info;
 	info["image-quality-change"] = quality_val;
-	LLFloaterSnapshot::getInstance()->notify(info); // updates the "SnapshotQuality" setting
+	getParentByType<LLFloater>()->notify(info); // updates the "SnapshotQuality" setting
 }
 
 void LLPanelSnapshotPostcard::onSend()

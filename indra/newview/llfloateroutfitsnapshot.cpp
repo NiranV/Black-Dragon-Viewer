@@ -202,7 +202,6 @@ void LLFloaterOutfitSnapshot::Impl::updateResolution(void* data)
         if (original_width != width || original_height != height)
         {
             // hide old preview as the aspect ratio could be wrong
-            checkAutoSnapshot(previewp, FALSE);
             LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
             previewp->updateSnapshot(TRUE);
         }
@@ -240,11 +239,7 @@ BOOL LLFloaterOutfitSnapshot::postBuild()
     childSetCommitCallback("hud_check", ImplBase::onClickHUDCheck, this);
     getChild<LLUICtrl>("hud_check")->setValue(gSavedSettings.getBOOL("RenderHUDInSnapshot"));
 
-    getChild<LLUICtrl>("freeze_frame_check")->setValue(gSavedSettings.getBOOL("UseFreezeFrame"));
-    childSetCommitCallback("freeze_frame_check", ImplBase::onCommitFreezeFrame, this);
-
-    getChild<LLUICtrl>("auto_snapshot_check")->setValue(gSavedSettings.getBOOL("AutoSnapshot"));
-    childSetCommitCallback("auto_snapshot_check", ImplBase::onClickAutoSnap, this);
+	childSetCommitCallback("freeze_world_check", Impl::onCommitFreezeWorld, this);
 
     getChild<LLButton>("retract_btn")->setCommitCallback(boost::bind(&LLFloaterOutfitSnapshot::onExtendFloater, this));
     getChild<LLButton>("extend_btn")->setCommitCallback(boost::bind(&LLFloaterOutfitSnapshot::onExtendFloater, this));
@@ -341,7 +336,7 @@ LLFloaterOutfitSnapshot* LLFloaterOutfitSnapshot::getInstance()
 }
 
 // virtual
-void LLFloaterOutfitSnapshot::saveTexture()
+BOOL LLFloaterOutfitSnapshot::saveTexture(bool local)
 {
     LL_DEBUGS() << "saveTexture" << LL_ENDL;
 
@@ -349,7 +344,7 @@ void LLFloaterOutfitSnapshot::saveTexture()
     if (!previewp)
     {
         llassert(previewp != NULL);
-        return;
+        return FALSE;
     }
 
     if (mOutfitGallery)
@@ -362,6 +357,7 @@ void LLFloaterOutfitSnapshot::saveTexture()
         mOutfitGallery->onAfterOutfitSnapshotSave();
     }
     closeFloater();
+	return TRUE;
 }
 
 ///----------------------------------------------------------------------------

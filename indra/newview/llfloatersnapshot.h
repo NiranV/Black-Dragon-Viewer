@@ -51,7 +51,7 @@ public:
 	virtual S32 notify(const LLSD& info);
 
 	// TODO: create a snapshot model instead
-	virtual void saveTexture() = 0;
+	virtual BOOL saveTexture(bool local = true) = 0;
 	void postSave();
 	virtual void postPanelSwitch();
 	LLPointer<LLImageFormatted> getImageData();
@@ -103,7 +103,8 @@ public:
 	static void onClickFilter(LLUICtrl *ctrl, void* data);
 	static void onClickUICheck(LLUICtrl *ctrl, void* data);
 	static void onClickHUDCheck(LLUICtrl *ctrl, void* data);
-	static void onCommitFreezeFrame(LLUICtrl* ctrl, void* data);
+	static void onCommitFreezeWorld(LLUICtrl* ctrl, void* data);
+	static void handleFreezeWorld(void* data, bool closing = false);
 
 	virtual LLPanelSnapshot* getActivePanel(LLFloaterSnapshotBase* floater, bool ok_if_not_found = true) = 0;
 	virtual LLSnapshotModel::ESnapshotType getActiveSnapshotType(LLFloaterSnapshotBase* floater);
@@ -123,7 +124,6 @@ public:
 	void setAdvanced(bool advanced) { mAdvanced = advanced; }
 
 	virtual LLSnapshotModel::ESnapshotLayerType getLayerType(LLFloaterSnapshotBase* floater) = 0;
-	virtual void checkAutoSnapshot(LLSnapshotLivePreview* floater, BOOL update_thumbnail = FALSE);
 	void setWorking(bool working);
 	virtual void setFinished(bool finished, bool ok = true, const std::string& msg = LLStringUtil::null) = 0;
 
@@ -157,11 +157,18 @@ public:
 
 	static LLFloaterSnapshot* getInstance();
 	static LLFloaterSnapshot* findInstance();
-	static BOOL saveTexture(bool local = true);
+	/*virtual*/ BOOL saveTexture(bool local = true);
+	BOOL saveLocal();
+
 	static void setAgentEmail(const std::string& email);
 
 	class Impl;
 	friend class Impl;
+
+private:
+	bool mSnapshotFreezeWorld;
+	bool isPreviewVisible();
+	void attachPreview();
 };
 
 ///----------------------------------------------------------------------------
@@ -230,9 +237,6 @@ public:
 	virtual ~LLSnapshotFloaterView();
 
 	/*virtual*/	BOOL handleKey(KEY key, MASK mask, BOOL called_from_parent);
-	/*virtual*/	BOOL handleMouseDown(S32 x, S32 y, MASK mask);
-	/*virtual*/	BOOL handleMouseUp(S32 x, S32 y, MASK mask);
-	/*virtual*/	BOOL handleHover(S32 x, S32 y, MASK mask);
 };
 
 extern LLSnapshotFloaterView* gSnapshotFloaterView;
