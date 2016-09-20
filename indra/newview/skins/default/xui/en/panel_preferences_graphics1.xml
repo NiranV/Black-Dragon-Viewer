@@ -31,7 +31,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="3234"
+   height="3251"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -4787,7 +4787,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDoFVisible"
 	  layout="topleft"
-	  height="150"
+	  height="167"
 	  auto_resize="false"
       visible="false"
 	  name="dof_layout_panel"
@@ -4803,6 +4803,18 @@ width="510">
    tool_tip="Toggle if the Viewer should include alphas and particles into the depth map (can cause some erratic behavior with Depth of Field blurring on Alphas and Volumetric Lighting on Alphas). If disabled this will cause Depth of Field and Volumetric Lighting to ignore Alphas entirely and they will change their lighting back to as if Depth of Field is disabled."
    name="RenderDepthOfFieldAlphas"
    top_pad="15"
+   width="115"/>
+ <check_box
+   control_name="RenderDepthOfFieldHighQuality"
+   enabled_control="RenderDepthOfField"
+   height="16"
+   initial_value="false"
+   label="Enable High Quality Depth of Field"
+   layout="topleft"
+   left="10"
+   tool_tip="Toggles between the old, slow, high quality Depth of Field and the new, faster, lower quality Depth of Field."
+   name="RenderDepthOfFieldHighQuality"
+   top_pad="0"
    width="115"/>
      <slider
       control_name="CameraFieldOfView"
