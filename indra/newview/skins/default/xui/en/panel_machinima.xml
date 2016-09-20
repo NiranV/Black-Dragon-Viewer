@@ -48,7 +48,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1315"
+            height="1334"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -505,7 +505,7 @@ width="345">
                   name="shaders"
                   top_delta="0"
                   width="10">
-                  ┗
+                  ┣
                   </text>
                   <check_box
                   control_name="RenderDepthOfFieldAlphas"
@@ -516,6 +516,45 @@ width="345">
                   layout="topleft"
                   left_pad="0"
                   name="RenderDepthOfFieldAlphas"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_delta="-27"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
+                  ┣
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_pad="7"
+                  name="shaders"
+                  top_delta="0"
+                  width="10">
+                  ┗
+                  </text>
+                  <check_box
+                  control_name="RenderDepthOfFieldHighQuality"
+                  height="16"
+                  initial_value="false"
+                  label="High Quality Depth of Field"
+                  tool_tip="Toggles between the old, slow, high quality Depth of Field and the new, faster, lower quality Depth of Field."
+                  layout="topleft"
+                  left_pad="0"
+                  name="RenderDepthOfFieldHighQuality"
                   top_delta="0"
                   width="115" />
                   <text
