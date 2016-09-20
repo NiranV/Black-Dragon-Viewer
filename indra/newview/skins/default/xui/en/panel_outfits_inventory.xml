@@ -22,11 +22,11 @@
    </panel.string>
    <tab_container
      follows="all"
-     height="564"
+     height="563"
      layout="topleft"
      left="5"
      name="appearance_tabs"
-     tab_min_width="155"
+     tab_min_width="103"
      tab_height="20"
      tab_position="top"
      halign="center"
@@ -37,10 +37,11 @@
            filename="panel_outfit_gallery.xml"
            height="520"
            name="outfit_gallery_tab"
-           background_visible="true"
+           bg_alpha_image="Panel_Background"
+					 background_visible="true"
            help_topic="outfit_gallery_tab"
            follows="all"
-           label="OUTFIT GALLERY"
+           label="Outfit Gallery"
            layout="topleft"
            width="315" />
          <panel
@@ -48,15 +49,15 @@
            filename="panel_outfits_list.xml"
            height="520"
            name="outfitslist_tab"
-           background_visible="true"
-		   bg_alpha_color="White_02"
+           bg_alpha_image="Panel_Background"
+					 background_visible="true"
            follows="all"
            label="My Outfits"
            layout="topleft"
            width="315" />
          <panel
-           background_visible="true"
-           bg_alpha_color="White_02"
+           bg_alpha_image="Panel_Background"
+					 background_visible="true"
            class="panel_wearing"
            filename="panel_outfits_wearing.xml"
            follows="all"
@@ -72,8 +73,8 @@
        follows="bottom|left|right"
        height="27"
        layout="topleft"
-       left="42"
-       bottom="-5"
+       left="40"
+       bottom="-4"
        visible="true"
        name="bottom_panel"
        width="242">
@@ -89,7 +90,7 @@
                          image_hover_unselected="Toolbar_Middle_Over"
 						  image_selected="Toolbar_Middle_Selected"
 						  image_unselected="Toolbar_Middle_Off"
-                         width="122" />
+                         width="121" />
                     <button
                          follows="bottom|right"
                          height="25"

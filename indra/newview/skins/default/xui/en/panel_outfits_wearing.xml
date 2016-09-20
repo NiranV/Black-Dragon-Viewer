@@ -10,7 +10,7 @@
  width="312">
     <wearable_items_list
      follows="all"
-     height="400"
+     height="402"
      layout="topleft"
      left="3"
      multi_select="true"
@@ -18,16 +18,14 @@
      name="cof_items_list"
      standalone="false"
      top="1"
-     width="310"
+     width="307"
      worn_indication_enabled="false" />
     <panel
-     background_visible="true"
-     bg_alpha_color="White_02"
-     bg_opaque_color="White_02"
+     background_visible="false"
      follows="bottom|left|right"
      height="26"
      layout="topleft"
-     left="3"
+     left="1"
      name="bottom_panel"
      top_pad="0"
      width="313">
@@ -49,7 +47,7 @@
          height="25"
          image_name="Toolbar_Middle_Off"
          layout="topleft"
-         left_pad="150"
+         left_pad="149"
          name="dummy_icon"
          width="127" />
     </panel>

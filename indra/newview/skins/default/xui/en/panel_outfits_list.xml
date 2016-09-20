@@ -12,12 +12,12 @@
     <accordion
      background_visible="false"
      follows="all"
-     height="400"
+     height="402"
      layout="topleft"
      left="3"
      name="outfits_accordion"
      top="1"
-     width="310">
+     width="309">
        <no_matched_tabs_text
          name="no_matched_outfits_msg"
          value="Didn't find what you're looking for? Try [secondlife:///app/search/all/[SEARCH_TERM] Search]."
@@ -27,13 +27,11 @@
          value="You don't have any outfits yet. Try [secondlife:///app/search/all/ Search]"/>
     </accordion>
     <panel
-     background_visible="true"
-     bg_alpha_color="White_02"
-     bg_opaque_color="White_02"
+     background_visible="false"
 	 follows="bottom|left|right"
-	 height="26"
+	 height="25"
 	 layout="topleft"
-	 left="5"
+	 left="3"
 	 top_pad="0"
 	 visible="true"
 	 name="bottom_panel"
@@ -58,7 +56,7 @@
        layout="topleft"
        left_pad="1"
        name="dummy_icon"
-       width="244"/>
+       width="243"/>
       <button
        follows="bottom|right"
        height="25"

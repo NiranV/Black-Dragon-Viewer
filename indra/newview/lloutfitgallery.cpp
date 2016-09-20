@@ -84,15 +84,15 @@ LLOutfitGallery::LLOutfitGallery(const LLOutfitGallery::Params& p)
 }
 
 LLOutfitGallery::Params::Params()
-    : row_panel_height("row_panel_height", 180),
-      vertical_gap("vertical_gap", 10),
-      horizontal_gap("horizontal_gap", 10),
-      item_width("item_width", 150),
-      item_height("item_height", 175),
-      item_horizontal_gap("item_horizontal_gap", 16),
-      items_in_row("items_in_row", 3),
-      row_panel_width_factor("row_panel_width_factor", 166),
-      gallery_width_factor("gallery_width_factor", 163)
+    : row_panel_height("row_panel_height", 165),
+      vertical_gap("vertical_gap", 6),
+      horizontal_gap("horizontal_gap", 6),
+      item_width("item_width", 140),
+      item_height("item_height", 165),
+      item_horizontal_gap("item_horizontal_gap", 6),
+      items_in_row("items_in_row", 2),
+      row_panel_width_factor("row_panel_width_factor", 146),
+      gallery_width_factor("gallery_width_factor", 146)
 {
     addSynonym(row_panel_height, "row_height");
 }
@@ -147,7 +147,7 @@ void LLOutfitGallery::updateRowsIfNeeded()
     {
         reArrangeRows(1);
     }
-    else if((mRowPanelWidth > (getRect().getWidth() + mItemHorizontalGap)) && mItemsInRow > 3)
+    else if((mRowPanelWidth > (getRect().getWidth() + mItemHorizontalGap)) && mItemsInRow > 2)
     {
         reArrangeRows(-1);
     }
