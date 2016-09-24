@@ -46,7 +46,7 @@
  layout="topleft"
  left="10"
  height="12"
- name="font_size"
+ name="personal_options"
  width="120"
  top_delta="4">
  Personal Options:
