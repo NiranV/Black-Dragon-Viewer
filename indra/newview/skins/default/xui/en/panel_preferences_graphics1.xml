@@ -1316,7 +1316,7 @@ width="510">
                   height="19"
                   layout="topleft"
                   left="10"
-                  name="RenderVolumeLODFactor"
+                  name="WLSkyDetail"
                   top_pad="5"
                   width="600">
                         <radio_item
@@ -1853,7 +1853,7 @@ width="510">
                   height="19"
                   layout="topleft"
                   left="10"
-                  name="RenderVolumeLODFactor"
+                  name="RenderWaterRefResolution"
                   top_pad="5"
                   width="600">
                         <radio_item
@@ -2171,7 +2171,7 @@ width="510">
                   height="19"
                   layout="topleft"
                   left="10"
-                  name="RenderVolumeLODFactor"
+                  name="RenderGlowResolutionPow"
                   top_pad="5"
                   width="600">
                         <radio_item
@@ -2884,7 +2884,7 @@ width="510">
       left="10"
       max_val="400000"
       min_val="0"
-      name="RenderAutoMuteRenderWeightLimit"
+      name="RenderAvatarMaxComplexity"
       top_pad="1"
       width="337" />
       <button
@@ -5327,7 +5327,7 @@ width="510">
       parameter="post_layout_panel"/>
    </button>
    <text
-   name="general_label"
+   name="post_label"
    follows="left|top"
    layout="topleft"
    top_delta="4" 
