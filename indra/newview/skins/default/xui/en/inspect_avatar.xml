@@ -6,7 +6,7 @@
 <floater
  legacy_header_height="25"
  bevel_style="in"
- bg_opaque_image="Inspector_Background"
+ bg_opaque_image="Toast_Background"
  can_close="false"
  can_minimize="false"
  height="160"
@@ -38,15 +38,16 @@
      height="20"
      left="8"
      name="user_name_small"
+					line_spacing.pixels="-4" 
      parse_urls="false"
-     top="7"
+     top="6"
      text_color="White"
      translate="false"
      use_ellipses="true"
      word_wrap="true"
-    visible="false" 
-     value="TestString PleaseIgnore"
-     width="185" />
+    visible="true" 
+     value="TestString PleaseIgnore TestString PleaseIgnore"
+     width="189" />
    <text
     follows="top|left"
     font="SansSerifBigLarge"
@@ -54,23 +55,25 @@
     left="8"
     name="user_name"
     parse_urls="false"
-    top="10"
+				visible="false"
+    top="4"
     text_color="White"
     translate="false"
     use_ellipses="true"
     value="TestString PleaseIgnore"
-    width="190" />
+    width="189" />
    <text
      follows="top|left"
-     height="16"
+     height="12"
      left="8"
+					top_pad="3"
      name="user_slid"
      font="SansSerifSmallBold"
      parse_urls="false"
      text_color="White"
      translate="false"
      value="teststring.pleaseignore"
-     width="185"
+     width="189"
      use_ellipses="true" />
     <text
      follows="top|left"
@@ -85,28 +88,29 @@
      use_ellipses="true" />
      <text
      follows="left|top|right"
-     height="35"
+					line_spacing.pixels="-3" 
+     height="70"
      left="8"
      name="user_details"
-     right="-10"
+     right="-8"
      word_wrap="true"
      top_pad="4"
      use_ellipses="true"
-     width="220">This is my second life description and I really think it is great. But for some reason my description is super extra long because I like to talk a whole lot
+     width="222">This is my second life description and I really think it is great. But for some reason my description is super extra long because I like to talk a whole lot iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
     </text>
     <slider
      follows="top|left"
      height="23"
      increment="0.01"
-     left="10"
+     left="4"
      max_val="0.95"
      min_val="0.05"
      name="volume_slider"
      show_text="false"
      tool_tip="Voice volume"
-     top_pad="5"
+     top_pad="3"
      value="0.5"
-     width="200" />
+     width="216" />
     <button
      follows="top|left"
      height="16"
@@ -116,29 +120,30 @@
      image_selected="AudioMute_Off"
      image_unselected="Audio_Off"
      is_toggle="true"
-     left_pad="5"
+     left_pad="1"
      top_delta="4"
      name="mute_btn"
      width="16" />
-    <text
-     follows="top|left"
-     height="16"
-     left="8"
-     name="avatar_profile_link"
-     font="SansSerifSmall"
-     text_color="White"
-     top_pad="5"
-     translate="false"
-     value="[[LINK] View full profile]"
-     width="175" />
     <avatar_icon
      follows="top|left"
-     height="38"
-     right="-10"
+     height="32"
+     right="-8"
      bevel_style="in"
      border_style="line"
      mouse_opaque="true"
      name="avatar_icon"
-     top="10"
-     width="38" />
+     top="8"
+     width="32" />
+				<text
+     follows="top|left"
+     height="16"
+     right="-8"
+					halign="right"
+     name="avatar_profile_link"
+     font="SansSerifSmall"
+     text_color="White"
+     top_pad="0"
+     translate="false"
+     value="[[LINK] Profile]"
+     width="57" />
 </floater>
