@@ -142,7 +142,6 @@ S32 LLPanelSnapshotPostcard::notify(const LLSD& info)
 void LLPanelSnapshotPostcard::updateControls(const LLSD& info)
 {
 	getChild<LLUICtrl>("image_quality_slider")->setValue(gSavedSettings.getS32("SnapshotQuality"));
-	updateImageQualityLevel();
 
 	const bool have_snapshot = info.has("have-snapshot") ? info["have-snapshot"].asBoolean() : true;
 	getChild<LLUICtrl>("send_btn")->setEnabled(have_snapshot);
@@ -231,8 +230,6 @@ void LLPanelSnapshotPostcard::onFormatComboCommit(LLUICtrl* ctrl)
 
 void LLPanelSnapshotPostcard::onQualitySliderCommit(LLUICtrl* ctrl)
 {
-	updateImageQualityLevel();
-
 	LLSliderCtrl* slider = (LLSliderCtrl*)ctrl;
 	S32 quality_val = llfloor((F32)slider->getValue().asReal());
 	LLSD info;

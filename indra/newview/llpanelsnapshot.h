@@ -64,7 +64,6 @@ public:
 
 protected:
 	LLSideTrayPanelContainer* getParentContainer();
-	void updateImageQualityLevel();
 	virtual void cancel();
 
 	// common UI callbacks
