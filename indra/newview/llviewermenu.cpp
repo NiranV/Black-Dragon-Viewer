@@ -8172,6 +8172,20 @@ class LLViewHighlightTransparent : public view_listener_t
 	bool handleEvent(const LLSD& userdata)
 	{
 		LLDrawPoolAlpha::sShowDebugAlpha = !LLDrawPoolAlpha::sShowDebugAlpha;
+
+		// Hack : If we activate the highlighting, force updating all the objects so we're sure to see 
+		// the transparent ones as well. The technique we use is make all spatial groups "dirty" so the 
+		// update does not occur synchrously and freeze the viewer.
+		for (S32 i = 0; i < gObjectList.getNumObjects(); ++i)
+		{
+			LLViewerObject* object = gObjectList.getObject(i);
+			if (object)
+			{
+				object->dirtySpatialGroup();
+			}
+		}
+
+		gPipeline.rebuildGroups();
 		return true;
 	}
 };
