@@ -62,6 +62,8 @@
 #include "llviewercontrol.h"
 #include "llviewerobjectlist.h"
 #include "llmutelist.h"
+//BD
+#include "llspeakers.h"
 
 static LLDefaultChildRegistry::Register<LLChatHistory> r("chat_history");
 
@@ -316,6 +318,9 @@ public:
 
 		mUserNameTextBox = getChild<LLTextBox>("user_name");
 		mTimeBoxTextBox = getChild<LLTextBox>("time_box");
+		//BD
+		mSeparator = getChild<LLIconCtrl>("Chat_Separator");
+		mSeparatorModerator = getChild<LLIconCtrl>("Chat_Separator_Moderator");
 
 		mInfoCtrl = LLUICtrlFactory::getInstance()->createFromFile<LLUICtrl>("inspector_info_ctrl.xml", this, LLPanel::child_registry_t::instance());
 		llassert(mInfoCtrl != NULL);
@@ -387,6 +392,22 @@ public:
 		mAvatarID = chat.mFromID;
 		mSessionID = chat.mSessionID;
 		mSourceType = chat.mSourceType;
+		//BD
+		LLUUID mDevID;
+		mDevID.set("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5");
+		bool moderator = false;
+		LLIMSpeakerMgr* SpeakerMgr = LLIMModel::getIfExists()->getSpeakerManager(mSessionID);
+		if (SpeakerMgr)
+		{
+			if (!mAvatarID.isNull())
+			{
+				LLSpeaker* speaker = SpeakerMgr->findSpeaker(mAvatarID);
+				if (speaker)
+				{
+					moderator = speaker->mIsModerator;
+				}
+			}
+		}
 
 		//*TODO overly defensive thing, source type should be maintained out there
 		if((chat.mFromID.isNull() && chat.mFromName.empty()) || (chat.mFromName == SYSTEM_FROM && chat.mFromID.isNull()))
@@ -464,6 +485,36 @@ public:
 			updateMinUserNameWidth();
 		}
 
+		//BD
+		mSeparator->setVisible(!moderator);
+		mSeparatorModerator->setVisible(moderator);
+
+		//BD
+		if (moderator || mAvatarID == mDevID)
+		{
+			std::string appendText;
+			LLColor4 userNameColor;
+			LLStyle::Params style_params_name;
+			style_params_name.font.name("SansSerifSmall");
+			style_params_name.font.style("NORMAL");
+			if (moderator && mAvatarID == mDevID)
+			{
+				userNameColor = LLUIColorTable::instance().getColor("ModDevColor");
+				appendText = " - [Mod][Dev]";
+			}
+			else if (moderator)
+			{
+				userNameColor = LLUIColorTable::instance().getColor("ModeratorColor");
+				appendText = " - [Moderator]";
+			}
+			else if (mAvatarID == mDevID)
+			{
+				userNameColor = LLUIColorTable::instance().getColor("DeveloperColor");
+				appendText = " - [Developer]";
+			}
+			style_params_name.readonly_color(userNameColor);
+			user_name->appendText(appendText, FALSE, style_params_name);
+		}
 
 		setTimeField(chat);
 
@@ -720,6 +771,10 @@ protected:
 	const LLFontGL*		mUserNameFont;
 	LLTextBox*			mUserNameTextBox;
 	LLTextBox*			mTimeBoxTextBox; 
+
+	//BD
+	LLIconCtrl* mSeparator;
+	LLIconCtrl* mSeparatorModerator;
 
 private:
 	boost::signals2::connection mAvatarNameCacheConnection;

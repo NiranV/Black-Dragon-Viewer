@@ -11,10 +11,20 @@
     <icon
     follows="top|left|right"
     height="22"
-    name="bg"
+    name="Chat_Separator"
     mouse_opaque="false"
     color="1 1 1 0.4"
     image_name="Chat_Separator"
+    left="1"
+    top="1"
+    width="310" />
+    <icon
+    follows="top|left|right"
+    height="22"
+    name="Chat_Separator_Moderator"
+    mouse_opaque="false"
+    color="1 1 1 0.4"
+    image_name="Chat_Separator_Moderator"
     left="1"
     top="1"
     width="310" />

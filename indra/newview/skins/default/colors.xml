@@ -919,6 +919,16 @@
   
  <!-- Black Dragon colors -->
  
+ <color
+ name="ModeratorColor"
+ reference="Blue_Chat"/>
+ <color
+ name="DeveloperColor"
+ reference="Green_Chat"/>
+ <color
+ name="ModDevColor"
+ value="0.35 1 1 1"/>
+ 
  <!-- Chat color names -->
  <color
  name="Red_Chat"

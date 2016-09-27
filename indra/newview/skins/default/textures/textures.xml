@@ -748,6 +748,7 @@ with the same filename but different name
   <texture name="Balance" file_name="icons/Balance.png" preload="true"/>
   <texture name="Draw_Distance" file_name="icons/Draw_Distance.png" preload="true" />
   <texture name="Chat_Separator" file_name="widgets/Chat_Separator.png" preload="true" scale.left="2" scale.top="20" scale.right="128" scale.bottom="2" />
+  <texture name="Chat_Separator_Moderator" file_name="widgets/Chat_Separator_Moderator.png" preload="true" scale.left="2" scale.top="20" scale.right="128" scale.bottom="2" />
 
   <texture name="transparentj2c" file_name="transparent.j2c" preload="true" />
   
