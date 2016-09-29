@@ -702,6 +702,7 @@ void LLViewerShaderMgr::setShaders()
 	reentrance = false;
 }
 
+//BD
 void LLViewerShaderMgr::resetDeferredShaders()
 {
 	//using shaders, disable fixed function
