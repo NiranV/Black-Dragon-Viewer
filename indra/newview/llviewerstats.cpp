@@ -474,15 +474,17 @@ void send_stats()
 	std::string language = LLUI::getLanguage();
 	agent["language"] = language;
 	
-	agent["sim_fps"] = ((F32) gFrameCount - gSimFrames) /
-		(F32) (gRenderStartTime.getElapsedTimeF32() - gSimLastTime);
+	//BD
+	//agent["sim_fps"] = ((F32) gFrameCount - gSimFrames) /
+	//	(F32) (gRenderStartTime.getElapsedTimeF32() - gSimLastTime);
 
-	gSimLastTime = gRenderStartTime.getElapsedTimeF32();
-	gSimFrames   = (F32) gFrameCount;
+	//gSimLastTime = gRenderStartTime.getElapsedTimeF32();
+	//gSimFrames   = (F32) gFrameCount;
 
 	agent["agents_in_view"] = LLVOAvatar::sNumVisibleAvatars;
 	agent["ping"] = gAvgSimPing.value();
-	agent["meters_traveled"] = gAgent.getDistanceTraveled();
+	//BD
+	//agent["meters_traveled"] = gAgent.getDistanceTraveled();
 	agent["regions_visited"] = gAgent.getRegionsVisited();
 	agent["mem_use"] = LLMemory::getCurrentRSS() / 1024.0;
 
@@ -579,10 +581,11 @@ void send_stats()
 	// Screen size so the UI team can figure out how big the widgets
 	// appear and use a "typical" size for end user tests.
 
-	S32 window_width = gViewerWindow->getWindowWidthRaw();
-	S32 window_height = gViewerWindow->getWindowHeightRaw();
-	S32 window_size = (window_width * window_height) / 1024;
-	misc["string_1"] = llformat("%d", window_size);
+	//BD
+	//S32 window_width = gViewerWindow->getWindowWidthRaw();
+	//S32 window_height = gViewerWindow->getWindowHeightRaw();
+	//S32 window_size = (window_width * window_height) / 1024;
+	//misc["string_1"] = llformat("%d", window_size);
 	misc["string_2"] = llformat("Texture Time: %.2f, Total Time: %.2f", gTextureTimer.getElapsedTimeF32(), gFrameTimeSeconds.value());
 
 // 	misc["int_1"] = LLSD::Integer(gSavedSettings.getU32("RenderQualityPerformance")); // Steve: 1.21
@@ -599,7 +602,8 @@ void send_stats()
 	body["DisplayNamesEnabled"] = gSavedSettings.getBOOL("UseDisplayNames");
 	body["DisplayNamesShowUsername"] = gSavedSettings.getBOOL("NameTagShowUsernames");
 	
-	body["MinimalSkin"] = false;
+	//BD
+	//body["MinimalSkin"] = false;
 
 	LLViewerStats::getInstance()->addToMessage(body);
 
