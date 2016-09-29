@@ -89,14 +89,15 @@
      <text
      follows="left|top|right"
 					line_spacing.pixels="-3" 
-     height="70"
+     height="50"
      left="8"
      name="user_details"
      right="-8"
      word_wrap="true"
      top_pad="4"
+					bottom="-20"
      use_ellipses="true"
-     width="222">This is my second life description and I really think it is great. But for some reason my description is super extra long because I like to talk a whole lot iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+     width="222">This is my second life description and I really think it is great. But for some reason my description is super extra long because I like to talk a whole lot iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
     </text>
     <slider
      follows="top|left"
@@ -108,7 +109,7 @@
      name="volume_slider"
      show_text="false"
      tool_tip="Voice volume"
-     top_pad="3"
+     top_pad="23"
      value="0.5"
      width="216" />
     <button
