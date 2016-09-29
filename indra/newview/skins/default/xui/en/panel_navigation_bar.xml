@@ -217,7 +217,7 @@ width="800">
 		name="nvpb_stack"
 		orientation="horizontal"
 		top="0"
-		right="-290"
+		right="-300"
 		width="272">
 		<layout_panel
 		follows="top|left|right"
