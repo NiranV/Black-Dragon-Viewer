@@ -148,7 +148,7 @@
 	   top_delta="0"
        width="31" />
 	<panel
-     height="154"
+     height="168"
      layout="topleft"
 	 follows="top|left"
      left="0"
@@ -207,7 +207,7 @@
          layout="topleft"
 		 height="16"
          left="10"
-         top_pad="1"
+         top_pad="0"
          width="180"
          name="hud_check" />
 		<view_border 
@@ -235,9 +235,18 @@
          layout="topleft"
 		 height="16"
          left="10"
-         top_pad="1"
+         top_pad="0"
          width="180"
          name="remember_mode_check" />
+		<check_box
+         label="Autoscale rendering"
+         layout="topleft"
+			tool_tip="Tries to automatically scale Depth of Field, Screen Space Ambient Occlusion and Shadow Blur strength up or down depending on the desired snapshot resolution to match the desired strength of the actual render scene. Useful if you notice mentioned effects become weaker with higher snapshot respolution but don't want (or know how) to manually adjust them."
+		 height="16"
+         left="10"
+         top_pad="0"
+         width="180"
+         name="autoscale_check" />
         <text
          type="string"
          length="1"

@@ -392,6 +392,20 @@ void LLFloaterSnapshotBase::ImplBase::onClickFilter(LLUICtrl *ctrl, void* data)
 	}
 }
 
+//BD
+// static
+void LLFloaterSnapshotBase::ImplBase::onClickMultiplierCheck(LLUICtrl *ctrl, void* data)
+{
+	LLCheckBoxCtrl *check = (LLCheckBoxCtrl *)ctrl;
+	gSavedSettings.setBOOL("RenderSnapshotAutoAdjustMultiplier", check->get());
+
+	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
+	if (view)
+	{
+		view->impl->updateControls(view);
+	}
+}
+
 // static
 void LLFloaterSnapshotBase::ImplBase::onClickUICheck(LLUICtrl *ctrl, void* data)
 {
@@ -457,6 +471,7 @@ void LLFloaterSnapshot::Impl::applyKeepAspectCheck(LLFloaterSnapshotBase* view, 
 	}
 }
 
+//BD
 // static
 void LLFloaterSnapshotBase::ImplBase::onCommitFreezeWorld(LLUICtrl* ctrl, void* data)
 {
@@ -633,6 +648,13 @@ void LLFloaterSnapshot::Impl::updateResolution(LLUICtrl* ctrl, void* data, BOOL 
 		checkAspectRatio(view, width) ;
 
 		previewp->getSize(width, height);
+
+		//BD
+		if (gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier"))
+		{
+			F32 multiplier = (F32)height / (F32)gViewerWindow->getWindowHeightRaw();
+			gSavedSettings.setF32("RenderSnapshotMultiplier", multiplier);
+		}
 
 		// We use the height spinner here because we come here via the aspect ratio
 		// checkbox as well and we want height always changing to width by default.
@@ -882,7 +904,10 @@ BOOL LLFloaterSnapshot::postBuild()
 	getChild<LLUICtrl>("layer_types")->setValue("colors");
 	getChildView("layer_types")->setEnabled(FALSE);
 
+	//BD
 	childSetCommitCallback("freeze_world_check", Impl::onCommitFreezeWorld, this);
+	childSetCommitCallback("autoscale_check", ImplBase::onClickMultiplierCheck, this);
+	getChild<LLUICtrl>("autoscale_check")->setValue(gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier"));
 
     getChild<LLButton>("retract_btn")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onExtendFloater, this));
     getChild<LLButton>("extend_btn")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onExtendFloater, this));
@@ -923,8 +948,10 @@ BOOL LLFloaterSnapshot::postBuild()
 	getChild<LLComboBox>("local_size_combo")->selectNthItem(8);
 	getChild<LLComboBox>("local_format_combo")->selectNthItem(0);
 
-	impl->getBigPreview();
+	//BD
 	impl->mSnapshotFreezeWorld = false;
+
+	impl->getBigPreview();
 	impl->mPreviewHandle = previewp->getHandle();
     previewp->setContainer(this);
 	impl->updateControls(this);
@@ -1002,6 +1029,7 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 	gSnapshotFloaterView->setVisible(TRUE);
 	gSnapshotFloaterView->adjustToFitScreen(this, FALSE);
 
+	//BD
 	if (impl->mSnapshotFreezeWorld)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", true);
@@ -1034,6 +1062,7 @@ void LLFloaterSnapshotBase::onClose(bool app_quitting)
 		previewp->setEnabled(FALSE);
 	}
 
+	//BD
 	if (impl->mSnapshotFreezeWorld)
 	{
 		gSavedSettings.setBOOL("UseFreezeWorld", false);

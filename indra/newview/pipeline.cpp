@@ -165,7 +165,6 @@ S32 LLPipeline::RenderGlowIterations;
 F32 LLPipeline::RenderGlowWidth;
 F32 LLPipeline::RenderGlowStrength;
 BOOL LLPipeline::RenderDepthOfField;
-BOOL LLPipeline::RenderDepthOfFieldInEditMode;
 F32 LLPipeline::CameraFocusTransitionTime;
 F32 LLPipeline::CameraFNumber;
 F32 LLPipeline::CameraFocalLength;
@@ -199,21 +198,30 @@ F32 LLPipeline::CameraDoFResScale;
 F32 LLPipeline::RenderAutoHideSurfaceAreaLimit;
 
 //BD - Special Options
+BOOL LLPipeline::CameraFreeDoFFocus;
+BOOL LLPipeline::RenderDepthOfFieldInEditMode;
+BOOL LLPipeline::RenderDeferredBlurLight;
+BOOL LLPipeline::RenderSnapshotAutoAdjustMultiplier;
+U32 LLPipeline::RenderShadowBlurSamples;
+U32 LLPipeline::RenderSSRResolution;
 F32 LLPipeline::RenderSSAOEffect;
 F32 LLPipeline::RenderSSAOBlurSize;
+F32 LLPipeline::RenderChromaStrength;
+F32 LLPipeline::RenderSnapshotMultiplier;
+
+//	//BD - Shadow Map Allocation
 LLVector4 LLPipeline::RenderShadowResolution;
 LLVector3 LLPipeline::RenderProjectorShadowResolution;
-U32 LLPipeline::RenderShadowBlurSamples;
-BOOL LLPipeline::RenderDeferredBlurLight;
+
+//	//BD - Volumetric Lighting
 BOOL LLPipeline::RenderGodrays;
 U32 LLPipeline::RenderGodraysResolution;
 F32 LLPipeline::RenderGodraysMultiplier;
 F32 LLPipeline::RenderGodraysFalloffMultiplier;
+
+//	//BD - Motion Blur
 BOOL LLPipeline::RenderMotionBlur;
 U32 LLPipeline::RenderMotionBlurStrength;
-U32 LLPipeline::RenderSSRResolution;
-F32 LLPipeline::RenderChromaStrength;
-BOOL LLPipeline::CameraFreeDoFFocus;
 
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
@@ -614,16 +622,11 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderGlowWidth");
 	connectRefreshCachedSettingsSafe("RenderGlowStrength");
 	connectRefreshCachedSettingsSafe("RenderDepthOfField");
-	connectRefreshCachedSettingsSafe("RenderDepthOfFieldInEditMode");
 	connectRefreshCachedSettingsSafe("CameraFocusTransitionTime");
 	connectRefreshCachedSettingsSafe("CameraFNumber");
 	connectRefreshCachedSettingsSafe("CameraFocalLength");
 	connectRefreshCachedSettingsSafe("CameraFieldOfView");
-	connectRefreshCachedSettingsSafe("RenderLensFlare");
-	connectRefreshCachedSettingsSafe("RenderPostGreyscaleStrength");
-	connectRefreshCachedSettingsSafe("RenderPostSepiaStrength");
-	connectRefreshCachedSettingsSafe("RenderPostPosterizationSamples");
-	connectRefreshCachedSettingsSafe("RenderChromaStrength");
+	
 	connectRefreshCachedSettingsSafe("RenderShadowNoise");
 	connectRefreshCachedSettingsSafe("RenderShadowBlurSize");
 	connectRefreshCachedSettingsSafe("RenderSSAOScale");
@@ -651,15 +654,25 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("CameraOffset");
 	connectRefreshCachedSettingsSafe("CameraMaxCoF");
 	connectRefreshCachedSettingsSafe("CameraDoFResScale");
+	connectRefreshCachedSettingsSafe("RenderAutoHideSurfaceAreaLimit");
 
 //	//BD - Special Options
+	connectRefreshCachedSettingsSafe("CameraFreeDoFFocus");
+	connectRefreshCachedSettingsSafe("RenderDepthOfFieldInEditMode");
+	connectRefreshCachedSettingsSafe("RenderDeferredBlurLight");
+	connectRefreshCachedSettingsSafe("RenderSnapshotAutoAdjustMultiplier");
+	connectRefreshCachedSettingsSafe("RenderShadowBlurSamples");
+	connectRefreshCachedSettingsSafe("RenderSSRResolution");
 	connectRefreshCachedSettingsSafe("RenderSSAOEffect");
 	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
-	connectRefreshCachedSettingsSafe("RenderShadowBlurSamples");
-	connectRefreshCachedSettingsSafe("RenderDeferredBlurLight");
-	connectRefreshCachedSettingsSafe("CameraFreeDoFFocus");
-	connectRefreshCachedSettingsSafe("RenderAutoHideSurfaceAreaLimit");
-	connectRefreshCachedSettingsSafe("RenderSSRResolution");
+	connectRefreshCachedSettingsSafe("RenderChromaStrength");
+	connectRefreshCachedSettingsSafe("RenderSnapshotMultiplier");
+
+//	//BD - Post Processing
+	connectRefreshCachedSettingsSafe("RenderLensFlare");
+	connectRefreshCachedSettingsSafe("RenderPostGreyscaleStrength");
+	connectRefreshCachedSettingsSafe("RenderPostSepiaStrength");
+	connectRefreshCachedSettingsSafe("RenderPostPosterizationSamples");
 
 //	//BD - Shadow Map Allocation
 	connectRefreshCachedSettingsSafe("RenderShadowResolution");
@@ -1185,7 +1198,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderGlowWidth = gSavedSettings.getF32("RenderGlowWidth");
 	RenderGlowStrength = gSavedSettings.getF32("RenderGlowStrength");
 	RenderDepthOfField = gSavedSettings.getBOOL("RenderDepthOfField");
-	RenderDepthOfFieldInEditMode = gSavedSettings.getBOOL("RenderDepthOfFieldInEditMode");
 	CameraFocusTransitionTime = gSavedSettings.getF32("CameraFocusTransitionTime");
 	CameraFNumber = gSavedSettings.getF32("CameraFNumber");
 	CameraFocalLength = gSavedSettings.getF32("CameraFocalLength");
@@ -1218,15 +1230,17 @@ void LLPipeline::refreshCachedSettings()
 	CameraDoFResScale = gSavedSettings.getF32("CameraDoFResScale");
 	RenderAutoHideSurfaceAreaLimit = gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit");
 
-
 //	//BD - Special Options
+	CameraFreeDoFFocus = gSavedSettings.getBOOL("CameraFreeDoFFocus");
+	RenderDepthOfFieldInEditMode = gSavedSettings.getBOOL("RenderDepthOfFieldInEditMode");
+	RenderDeferredBlurLight = gSavedSettings.getBOOL("RenderDeferredBlurLight");
+	RenderSnapshotAutoAdjustMultiplier = gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier");
+	RenderShadowBlurSamples = gSavedSettings.getU32("RenderShadowBlurSamples");
+	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
 	RenderSSAOEffect = gSavedSettings.getF32("RenderSSAOEffect");
 	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
-	RenderShadowBlurSamples = gSavedSettings.getU32("RenderShadowBlurSamples");
-	RenderDeferredBlurLight = gSavedSettings.getBOOL("RenderDeferredBlurLight");
-	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
-	CameraFreeDoFFocus = gSavedSettings.getBOOL("CameraFreeDoFFocus");
+	RenderSnapshotMultiplier = gSavedSettings.getF32("RenderSnapshotMultiplier");
 
 //	//BD - Volumetric Lighting
 	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");
@@ -1235,8 +1249,8 @@ void LLPipeline::refreshCachedSettings()
 	RenderGodraysFalloffMultiplier = gSavedSettings.getF32("RenderGodraysFalloffMultiplier");
 
 //	//BD - Shadow Map Allocation
-	RenderShadowResolution = gSavedSettings.getVector4("RenderShadowResolution");
 	RenderProjectorShadowResolution = gSavedSettings.getVector3("RenderProjectorShadowResolution");
+	RenderShadowResolution = gSavedSettings.getVector4("RenderShadowResolution");
 
 //	//BD - Motion Blur
 	RenderMotionBlur = gSavedSettings.getBOOL("RenderMotionBlur");
@@ -7902,8 +7916,13 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 			F32 default_focal_length = CameraFocalLength;
 
 			F32 fov = LLViewerCamera::getInstance()->getView();
-		
-			const F32 default_fov = CameraFieldOfView * F_PI/180.f;
+			
+			F32 camera_fov = CameraFieldOfView;
+			if (RenderSnapshotAutoAdjustMultiplier)
+			{
+				camera_fov *= RenderSnapshotMultiplier;
+			}
+			const F32 default_fov = camera_fov * F_PI/180.f;
 			//const F32 default_aspect_ratio = gSavedSettings.getF32("CameraAspectRatio");
 		
 			//F32 aspect_ratio = (F32) mScreen.getWidth()/(F32)mScreen.getHeight();
@@ -8535,13 +8554,21 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 		}
 	}
 
+	F32 ssao_scale = RenderSSAOScale;
+	U32 ssao_max_scale = RenderSSAOMaxScale;
+	if (RenderSnapshotAutoAdjustMultiplier)
+	{
+		ssao_scale *= RenderSnapshotMultiplier;
+		ssao_max_scale *= RenderSnapshotMultiplier;
+	}
+
 	shader.uniform4fv(LLShaderMgr::DEFERRED_SHADOW_CLIP, 1, mSunClipPlanes.mV);
 	shader.uniform1f(LLShaderMgr::DEFERRED_SUN_WASH, RenderDeferredSunWash);
 	shader.uniform1f(LLShaderMgr::DEFERRED_SHADOW_NOISE, RenderShadowNoise);
 	shader.uniform1f(LLShaderMgr::DEFERRED_BLUR_SIZE, RenderShadowBlurSize);
 
-	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_RADIUS, RenderSSAOScale);
-	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_MAX_RADIUS, RenderSSAOMaxScale);
+	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_RADIUS, ssao_scale);
+	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_MAX_RADIUS, ssao_max_scale);
 
 	F32 ssao_factor = RenderSSAOFactor;
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_FACTOR, ssao_factor);
@@ -8563,7 +8590,7 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);
 
-	//BD - Special Options
+//	//BD - Special Options
 	F32 ssao_effect = RenderSSAOEffect;
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_EFFECT, ssao_effect);
 	shader.uniform1i(LLShaderMgr::DEFERRED_SSAO_SAMPLES, RenderShadowBlurSamples);
@@ -8738,7 +8765,14 @@ void LLPipeline::renderDeferredLighting()
 			gDeferredBlurLightProgram.uniform2f(sDelta, 1.f, 0.f);
 			gDeferredBlurLightProgram.uniform1f(sDistFactor, dist_factor);
 			//BD
-			gDeferredBlurLightProgram.uniform2f(sGaussian, RenderShadowBlurSize, RenderSSAOBlurSize);
+			F32 shadow_blur = RenderShadowBlurSize;
+			F32 ssao_blur = RenderSSAOBlurSize;
+			if (RenderSnapshotAutoAdjustMultiplier)
+			{
+				shadow_blur *= RenderSnapshotMultiplier;
+				ssao_blur *= RenderSnapshotMultiplier;
+			}
+			gDeferredBlurLightProgram.uniform2f(sGaussian, shadow_blur, ssao_blur);
 		
 			{
 				LLGLDisable blend(GL_BLEND);

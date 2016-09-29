@@ -954,18 +954,20 @@ public:
 	static F32 RenderAutoHideSurfaceAreaLimit;
 
 //	//BD - Special Options
-	static F32 RenderSSAOEffect;
-	static F32 RenderSSAOBlurSize;
-	static U32 RenderShadowBlurSamples;
-	static BOOL RenderDeferredBlurLight;
-	static U32 RenderSSRResolution;
-	static F32 RenderChromaStrength;
 	static BOOL CameraFreeDoFFocus;
 	static BOOL RenderDepthOfFieldInEditMode;
+	static BOOL RenderDeferredBlurLight;
+	static BOOL RenderSnapshotAutoAdjustMultiplier;
+	static U32 RenderShadowBlurSamples;
+	static U32 RenderSSRResolution;
+	static F32 RenderSSAOEffect;
+	static F32 RenderSSAOBlurSize;
+	static F32 RenderChromaStrength;
+	static F32 RenderSnapshotMultiplier;
 
 //	//BD - Shadow Map Allocation
-	static LLVector4 RenderShadowResolution;
 	static LLVector3 RenderProjectorShadowResolution;
+	static LLVector4 RenderShadowResolution;
 
 //	//BD - Volumetric Lighting
 	static BOOL RenderGodrays;
