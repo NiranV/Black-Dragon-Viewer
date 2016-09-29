@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="Kommunikation" name="im">
+<panel label="Privatsphäre" name="privacy">
 	<panel.string name="log_in_to_change">
 		Anmelden, um Änderungen vorzunehmen
 	</panel.string>
@@ -15,7 +15,7 @@
 	<check_box label="Inventarangebote im System Chat protokollieren" name="log_inventory_chat"/>
 	<check_box label="Verlauf von letzten Konversationen in IM- und Gruppenfenster anzeigen" name="log_history"/>
 	<text name="Logs:">
-		Protokolle:
+		Chat Protokolle:
 	</text>
 	<check_box label="Protokolle von Gesprächen in der Nähe auf meinem Computer speichern" name="log_nearby_chat"/>
 	<check_box label="IM Protokolle auf meinem Computer speichern" name="log_instant_messages"/>
@@ -28,5 +28,5 @@
 		(Leute und/oder Objekte die du ignoriert/geblockt hast)
 	</text>
 	<button label="Durchsuchen" label_selected="Durchsuchen" name="log_path_button"/>
-	<button label="Ignorierte Einwohner/Objekte" name="block_list" width="180"/>
+	<button label="Blockliste" name="block_list"/>
 </panel>
