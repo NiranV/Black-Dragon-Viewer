@@ -287,7 +287,7 @@
     </panel>
 	<panel_container
      follows="left|top"
-     height="240"
+     height="226"
      layout="topleft"
      left="0"
      name="panel_container"
