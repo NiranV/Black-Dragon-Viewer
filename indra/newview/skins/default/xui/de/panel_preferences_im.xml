@@ -5,10 +5,10 @@
 	<check_box label="IMs per Email zuschicken, wenn ich offline bin" name="send_im_to_email"/>
 	<check_box label="IM/Meldungen nicht verschieben wenn die Seitenleiste aktiv ist" name="SidebarCameraMovement"/>
 	<text name="show_ims_in_label">
-		IMs anzeigen in:
+		Sofortnachrichten Optionen:
 	</text>
-	<text name="tab_direction_label">
-		Tab Ausrichtung:
+	<text name="misc_label">
+		Sofortnachrichten Aussehen Optionen:
 	</text>
 	<text name="requires_restart_label">
 		(Neustart erforderlich)
