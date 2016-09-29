@@ -1951,8 +1951,6 @@ BOOL LLViewerShaderMgr::loadShadersSSAO()
 	BOOL success = TRUE;
 	//BD - Screen Space Ambient Occlusion
 	gDeferredSunProgram.unload();
-	gDeferredSoftenProgram.unload();
-	gDeferredSoftenWaterProgram.unload();
 	if (success)
 	{
 		std::string fragment;
@@ -1986,47 +1984,7 @@ BOOL LLViewerShaderMgr::loadShadersSSAO()
 		success = gDeferredSunProgram.createShader(NULL, NULL);
 	}
 
-	if (success)
-	{
-		gDeferredSoftenProgram.mName = "Deferred Soften Shader";
-		gDeferredSoftenProgram.mShaderFiles.clear();
-		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightV.glsl", GL_VERTEX_SHADER_ARB));
-		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
-		//BD
-		gDeferredSoftenProgram.addPermutation("USE_SSR", (bool)gSavedSettings.getBOOL("RenderScreenSpaceReflections") ? "1" : "0");
-
-		gDeferredSoftenProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
-
-		//BD
-		if (gSavedSettings.getBOOL("RenderDeferredSSAO")
-			|| gSavedSettings.getBOOL("RenderDeferredBlurLight"))
-		{ //if using SSAO, take screen space light map into account as if shadows are enabled
-			gDeferredSoftenProgram.mShaderLevel = llmax(gDeferredSoftenProgram.mShaderLevel, 2);
-		}
-
-		success = gDeferredSoftenProgram.createShader(NULL, NULL);
-	}
-
-	if (success)
-	{
-		gDeferredSoftenWaterProgram.mName = "Deferred Soften Underwater Shader";
-		gDeferredSoftenWaterProgram.mShaderFiles.clear();
-		gDeferredSoftenWaterProgram.mShaderFiles.push_back(make_pair("deferred/softenLightV.glsl", GL_VERTEX_SHADER_ARB));
-		gDeferredSoftenWaterProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
-
-		gDeferredSoftenWaterProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
-		gDeferredSoftenWaterProgram.addPermutation("WATER_FOG", "1");
-		gDeferredSoftenWaterProgram.mShaderGroup = LLGLSLShader::SG_WATER;
-
-		//BD
-		if (gSavedSettings.getBOOL("RenderDeferredSSAO")
-			|| gSavedSettings.getBOOL("RenderDeferredBlurLight"))
-		{ //if using SSAO, take screen space light map into account as if shadows are enabled
-			gDeferredSoftenWaterProgram.mShaderLevel = llmax(gDeferredSoftenWaterProgram.mShaderLevel, 2);
-		}
-
-		success = gDeferredSoftenWaterProgram.createShader(NULL, NULL);
-	}
+	loadShadersSSR();
 	return success;
 }
 
@@ -2246,7 +2204,8 @@ BOOL LLViewerShaderMgr::loadShadersSSR()
 {
 	BOOL success = TRUE;
 	//BD - Screen Space Reflections
-	//     This is literally the same as reloading SSAO.
+	gDeferredSoftenProgram.unload();
+	gDeferredSoftenWaterProgram.unload();
 	if (success)
 	{
 		gDeferredSoftenProgram.mName = "Deferred Soften Shader";
