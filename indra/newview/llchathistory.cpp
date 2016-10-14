@@ -320,7 +320,7 @@ public:
 		mTimeBoxTextBox = getChild<LLTextBox>("time_box");
 		//BD
 		mSeparator = getChild<LLIconCtrl>("Chat_Separator");
-		mSeparatorModerator = getChild<LLIconCtrl>("Chat_Separator_Moderator");
+		//mSeparatorModerator = getChild<LLIconCtrl>("Chat_Separator_Moderator");
 
 		mInfoCtrl = LLUICtrlFactory::getInstance()->createFromFile<LLUICtrl>("inspector_info_ctrl.xml", this, LLPanel::child_registry_t::instance());
 		llassert(mInfoCtrl != NULL);
@@ -392,9 +392,10 @@ public:
 		mAvatarID = chat.mFromID;
 		mSessionID = chat.mSessionID;
 		mSourceType = chat.mSourceType;
-		//BD
 		LLUUID mDevID;
 		mDevID.set("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5");
+		//BD - I can't believe how unreliable this is... half of the time it doesn't show me as mod.
+		//     Neither does the speaker list, LL really has to fix this stuff.
 		bool moderator = false;
 		LLIMSpeakerMgr* SpeakerMgr = LLIMModel::getIfExists()->getSpeakerManager(mSessionID);
 		if (SpeakerMgr)
@@ -486,10 +487,6 @@ public:
 		}
 
 		//BD
-		mSeparator->setVisible(!moderator);
-		mSeparatorModerator->setVisible(moderator);
-
-		//BD
 		if (moderator || mAvatarID == mDevID)
 		{
 			std::string appendText;
@@ -499,16 +496,19 @@ public:
 			style_params_name.font.style("NORMAL");
 			if (moderator && mAvatarID == mDevID)
 			{
+				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_ModDev", 0));
 				userNameColor = LLUIColorTable::instance().getColor("ModDevColor");
 				appendText = " - [Mod][Dev]";
 			}
 			else if (moderator)
 			{
+				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_Moderator", 0));
 				userNameColor = LLUIColorTable::instance().getColor("ModeratorColor");
 				appendText = " - [Moderator]";
 			}
 			else if (mAvatarID == mDevID)
 			{
+				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_Dev", 0));
 				userNameColor = LLUIColorTable::instance().getColor("DeveloperColor");
 				appendText = " - [Developer]";
 			}
@@ -774,7 +774,7 @@ protected:
 
 	//BD
 	LLIconCtrl* mSeparator;
-	LLIconCtrl* mSeparatorModerator;
+	//LLIconCtrl* mSeparatorModerator;
 
 private:
 	boost::signals2::connection mAvatarNameCacheConnection;

@@ -18,7 +18,7 @@
     left="1"
     top="1"
     width="310" />
-    <icon
+    <!--<icon
     follows="top|left|right"
     height="22"
     name="Chat_Separator_Moderator"
@@ -27,7 +27,7 @@
     image_name="Chat_Separator_Moderator"
     left="1"
     top="1"
-    width="310" />
+    width="310" />-->
 	<avatar_icon
          follows="left"
          height="18"
