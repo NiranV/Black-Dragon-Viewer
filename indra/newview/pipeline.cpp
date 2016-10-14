@@ -11060,7 +11060,7 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 			mSunClipPlanes.mV[i] = near_clip + range*x;
 		}
 
-		//
+		//BD
 		//mSunClipPlanes.mV[0] *= 1.25f; //bump back first split for transition padding
 	}
 
