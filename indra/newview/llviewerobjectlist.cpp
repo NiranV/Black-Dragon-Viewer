@@ -1444,7 +1444,8 @@ void LLViewerObjectList::killAlpha(LLViewerObject *objectp)
 	{
 		for (S32 i = 0; i < objectp->getNumTEs(); i++)
 		{
-			if (objectp != gAgentAvatarp)
+			if (objectp != gAgentAvatarp
+				&& LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
 			{
 				const LLTextureEntry* te = objectp->getTE(i);
 				LLColor4 te_color = te->getColor();
@@ -1463,7 +1464,8 @@ void LLViewerObjectList::restoreAlpha(LLViewerObject *objectp)
 	{
 		for (S32 i = 0; i < objectp->getNumTEs(); i++)
 		{
-			if (objectp != gAgentAvatarp)
+			if (objectp != gAgentAvatarp
+				&& LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
 			{
 				const LLTextureEntry* te = objectp->getTE(i);
 				LLColor4 te_color = te->getColor();
