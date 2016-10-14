@@ -15801,6 +15801,28 @@
   </map>
   
   <!-- Pie Menus -->
+	<key>PieMenuPopup</key>
+  <map>
+    <key>Comment</key>
+    <string>Toggle the pie menu popup animation</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+	<key>PieMenuPopupTime</key>
+  <map>
+    <key>Comment</key>
+    <string>Time in seconds the pie menu takes before its popup animation is complete</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.25</real>
+  </map>
   <key>PieMenuOpacity</key>
   <map>
     <key>Comment</key>

@@ -37,8 +37,8 @@
 
 // copied from LLMenuGL - Remove these lines over there when finished
 const S32 PIE_INNER_SIZE=70;		// radius of the inner pie circle
-const F32 PIE_POPUP_FACTOR=(F32)1.5;		// pie menu size factor on popup
-const F32 PIE_POPUP_TIME=(F32)0.25;		// time to shrink from popup size to regular size
+//const F32 PIE_POPUP_FACTOR=(F32)0.0;		// pie menu size factor on popup
+const F32 PIE_POPUP_TIME=(F32)0.325;		// time to shrink from popup size to regular size
 const S32 PIE_OUTER_SIZE=136;		// radius of the outer pie circle
 
 // register the pie menu globally as child widget
@@ -192,10 +192,11 @@ void PieMenu::hide()
 	LL_DEBUGS() << "Clearing selections" << LL_ENDL;
 
 	mSlices=&mMySlices;
-#if PIE_POPUP_EFFECT
-	// safety in case the timer was still running
-	mPopupTimer.stop();
-#endif
+	if (gSavedSettings.getBOOL("PieMenuPopup"))
+	{
+		// safety in case the timer was still running
+		mPopupTimer.stop();
+	}
 	LLView::setVisible(FALSE);
 }
 
@@ -221,30 +222,32 @@ void PieMenu::draw( void )
 	// initialize pie scale factor for popup effect
 	F32 factor=1.0;
 
-#if PIE_POPUP_EFFECT
-	// set the popup size if this was the first click on the menu
-	if(mFirstClick)
+	if (gSavedSettings.getBOOL("PieMenuPopup"))
 	{
-		factor=PIE_POPUP_FACTOR;
-	}
-	// otherwise check if the popup timer is still running
-	else if(mPopupTimer.getStarted())
-	{
-		// if the timer ran past the popup time, stop the timer and set the size to 1.0
-		F32 elapsedTime=mPopupTimer.getElapsedTimeF32();
-		if(elapsedTime>PIE_POPUP_TIME)
+		// set the popup size if this was the first click on the menu
+		if (mFirstClick)
 		{
-			factor=1.0;
-			mPopupTimer.stop();
+			factor = 0.0;
 		}
-		// otherwise calculate the size factor to make the menu shrink over time
-		else
+		// otherwise check if the popup timer is still running
+		else if (mPopupTimer.getStarted())
 		{
-			factor=PIE_POPUP_FACTOR-(PIE_POPUP_FACTOR-1.0)*elapsedTime/PIE_POPUP_TIME;
+			// if the timer ran past the popup time, stop the timer and set the size to 1.0
+			F32 elapsedTime = mPopupTimer.getElapsedTimeF32();
+			F32 popuptime = gSavedSettings.getF32("PieMenuPopupTime");
+			if (elapsedTime > popuptime)
+			{
+				factor = 1.0;
+				mPopupTimer.stop();
+			}
+			// otherwise calculate the size factor to make the menu shrink over time
+			else
+			{
+				factor = 0.0 - (0.0 - 1.0)*elapsedTime / popuptime;
+			}
+//			setRect(r);  // obsolete?
 		}
-//		setRect(r);  // obsolete?
 	}
-#endif
 
 #if PIE_DRAW_BOUNDING_BOX
 	// draw a bounding box around the menu for debugging purposes
@@ -293,22 +296,31 @@ void PieMenu::draw( void )
 	// move origin point to the center of our rectangle
 	gGL.translatef(r.getWidth()/2,r.getHeight()/2,0.0);
 
-	// draw the general pie background
-	gl_washer_2d(PIE_OUTER_SIZE*factor,PIE_INNER_SIZE,64,bgColor,borderColor);
+	//BD - draw the general pie background
+	//gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, 0, (F_PI * 2.0) * factor, 48, bgColor, borderColor);
 
 	// set up an item list iterator to point at the beginning of the item list
 	slice_list_t::iterator cur_item_iter;
 	cur_item_iter=mSlices->begin();
 
+	//BD - I might want to implement a better solution with a simple re-entry bool.
+	S32 num = 0;
+	while (num < 8)
+	{
+		F32 segmentStart = F_PI / 4.0*(F32)num - F_PI / 8.0;
+		gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, segmentStart, segmentStart + ((F_PI / 4.0) * factor), 6, bgColor, borderColor);
+		num++;
+	}
+
 	// clear current slice pointer
-	mSlice=0;
-	// current slice number is 0
-	S32 num=0;
+	mSlice = 0;
+	// reset our current slice number to 0
+	num = 0;
 	BOOL wasAutohide=FALSE;
 	do
 	{
 		// standard item text color
-		LLColor4 itemColor = textColor;
+		LLColor4 itemColor = textColor * factor;
 
 		// clear the label and set up the starting angle to draw in
 		std::string label[3];
@@ -382,7 +394,7 @@ void PieMenu::draw( void )
 				if (!currentSlice->getEnabled())
 				{
 					LL_DEBUGS() << label[0] << " is disabled" << LL_ENDL;
-					// fade the item color alpha to mark the item as disabled
+					//fade the item color alpha to mark the item as disabled
 					itemColor %= (F32)0.3;
 				}
 			}
@@ -391,8 +403,8 @@ void PieMenu::draw( void )
 			{
 				label[0] = currentSubmenu->getLabel();
 
-				// draw the divider line for this slice
-				gl_washer_segment_2d(PIE_OUTER_SIZE * factor* 1.09, PIE_OUTER_SIZE * factor, segmentStart + 0.02, segmentStart + F_PI / 4.0 - 0.02, 8, selectedColor, selectedColor);
+				//BD - draw the submenu marker
+				gl_washer_segment_2d(PIE_OUTER_SIZE * 1.09, PIE_OUTER_SIZE, segmentStart + 0.02, segmentStart + ((F_PI / 4.0 - 0.02) * factor), 8, selectedColor, selectedColor);
 			}
 
 			// if it's a slice or submenu, the mouse pointer is over the same segment as our counter and the item is enabled
@@ -414,8 +426,8 @@ void PieMenu::draw( void )
 					mOldSlice = mSlice;
 				}
 
-				// draw the currently highlighted pie slice
-				gl_washer_segment_2d(PIE_OUTER_SIZE*factor, PIE_INNER_SIZE, segmentStart + 0.02, segmentStart + F_PI / 4.0 - 0.02, 8, selectedColor, borderColor);
+				//BD - draw the currently highlighted pie slice
+				gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, segmentStart + 0.02, segmentStart + F_PI / 4.0 - 0.02, 8, selectedColor, borderColor);
 			}
 		}
 
@@ -450,13 +462,15 @@ void PieMenu::draw( void )
 	}
 	while(num<8);	// do this until the menu is full
 
-	// draw inner and outer circle, outer only if it was not the first click
+	//BD - draw inner and outer circle, outer only if it was not the first click
+	F32 circleStart = F_PI / 4.0;
+	F32 circleOffset = F_PI / 8.0;
 	if (!mFirstClick)
 	{
-		gl_washer_2d(PIE_OUTER_SIZE * factor, PIE_OUTER_SIZE*factor - 2, 64, borderColor, borderColor);
-		gl_washer_2d(PIE_OUTER_SIZE * factor * 1.09, PIE_OUTER_SIZE*factor - 2, 64, borderColor, lineColor);
+		gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_OUTER_SIZE - 2, circleStart - circleOffset, circleStart - circleOffset + ((F_PI * 2.0) * factor * factor), 64, borderColor, borderColor);
+		gl_washer_segment_2d(PIE_OUTER_SIZE * 1.09, PIE_OUTER_SIZE - 2, circleStart * 3 - circleOffset, circleStart * 3 - circleOffset + ((F_PI * 2.0) * factor * factor), 64, borderColor, lineColor);
 	}
-	gl_washer_2d(PIE_INNER_SIZE + 1, PIE_INNER_SIZE - 1, 32, borderColor, lineColor);
+	gl_washer_segment_2d(PIE_INNER_SIZE + 1, PIE_INNER_SIZE - 1, circleStart * 6 - circleOffset, circleStart * 6 - circleOffset + ((F_PI * 2.0) * factor * factor), 32, borderColor, lineColor);
 
 	// restore OpenGL drawing matrix
 	gGL.popMatrix();

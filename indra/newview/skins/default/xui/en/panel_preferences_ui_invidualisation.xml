@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="730"
+     height="746"
      name="ui_panel"
      top="0"
      left="0"
@@ -289,6 +289,40 @@ width="510">
 		<button
  follows="left|top"
  control_name="PieMenuFade"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+		
+		<slider
+	    control_name="PieMenuPopupTime"
+	    follows="left|top"
+		can_edit_text="true"
+	    height="15"
+	    increment="0.01"
+	    initial_value="0.0"
+	    label="Popup time (s):"
+	    layout="topleft"
+	    label_width="150"
+		left="10"
+	    max_val="0.5"
+	    min_val="0.0"
+	    name="pie_menu_popup_time"
+	    tool_tip="Choose how long the popup animation takes"
+	    top_pad="1"
+	    width="319" />
+		<button
+ follows="left|top"
+ control_name="PieMenuPopupTime"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
