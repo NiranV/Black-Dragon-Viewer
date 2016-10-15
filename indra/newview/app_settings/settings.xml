@@ -8715,7 +8715,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>100</integer>
+    <integer>500</integer>
   </map>
   <key>RenderSSAOFactor</key>
   <map>
@@ -8726,7 +8726,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.1</real>
+    <real>0.08</real>
   </map>
   <key>RenderSSAOEffect</key>
   <map>
