@@ -391,13 +391,13 @@ width="510">
  follows="left|top"
  height="14"
  increment="8"
- initial_value="0"
- label="Texture Memory (MB):"
+ initial_value="386"
+ label="System Memory (MB):"
  label_width="150"
  layout="topleft"
  left="10"
  max_val="1024"
- min_val="0"
+ min_val="32"
  name="SystemMemory"
  top_pad="6"
  width="325" />
@@ -462,7 +462,7 @@ width="510">
  name="MemoryUsage"
  top_pad="5"
  width="120">
- Memory Usage:
+ GPU Memory Usage:
  </text>
  <progress_bar
     top_pad="5"
