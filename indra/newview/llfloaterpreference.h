@@ -205,6 +205,9 @@ public:
 	static void refreshSkin(void* data);
 	void selectPanel(const LLSD& name);
 
+//	//BD - Memory Allocation
+	void refreshMemoryControls();
+
 //	//BD - Warning System
 	void refreshWarnings();
 

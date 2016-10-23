@@ -110,7 +110,7 @@
 
 //BD
 #include "llviewerkeyboard.h"
-
+#include "llprogressbar.h"
 #include "lllogininstance.h"        // to check if logged in yet
 #include "llsdserialize.h"
 #include "llpresetsmanager.h"
@@ -810,6 +810,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ClearLog",				boost::bind(&LLConversationLog::onClearLog, &LLConversationLog::instance()));
 	mCommitCallbackRegistrar.add("Pref.DeleteTranscripts",      boost::bind(&LLFloaterPreference::onDeleteTranscripts, this));
 
+//	//BD - Memory Allocation
+	mCommitCallbackRegistrar.add("Pref.RefreshMemoryControls",	boost::bind(&LLFloaterPreference::refreshMemoryControls, this));
+
 //	//BD - Custom Keyboard Layout
 	mCommitCallbackRegistrar.add("Pref.BindKey", boost::bind(&LLFloaterPreference::onClickSetAnyKey, this, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.UnbindKey", boost::bind(&LLFloaterPreference::onUnbindKey, this, _1, _2));
@@ -1347,10 +1350,8 @@ void LLFloaterPreference::refreshWarnings()
 	//BD - Viewer Options
 	getChild<LLUICtrl>("warning_ui_size")->setVisible(gSavedSettings.getF32("UIScaleFactor") != 1.0);
 	getChild<LLUICtrl>("warning_font_dpi")->setVisible(gSavedSettings.getF32("FontScreenDPI") != 96.0);
-	getChild<LLUICtrl>("warning_texture_memory")->setVisible(gSavedSettings.getS32("TextureMemory") > 768
-														|| ((gSavedSettings.getS32("TextureMemory") 
-														+ gSavedSettings.getS32("SystemMemory")) > 1024
-														&& gSavedSettings.getBOOL("CustomSystemMemory")));
+	getChild<LLUICtrl>("warning_texture_memory")->setVisible((gSavedSettings.getS32("TextureMemory") 
+														+ gSavedSettings.getS32("SystemMemory")) > 1024);
 	getChild<LLUICtrl>("warning_texture_compression")->setVisible(gSavedSettings.getBOOL("RenderCompressTextures"));
 
 	//BD - Quality Options
@@ -1386,6 +1387,27 @@ void LLFloaterPreference::refreshWarnings()
 	getChild<LLUICtrl>("warning_light_resolution")->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 32);
 }
 
+//BD - Memory Allocation
+void LLFloaterPreference::refreshMemoryControls()
+{
+	LLProgressBar* mProgressBar = getChild<LLProgressBar>("progress_bar");
+	S32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
+	S32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
+	S32 max_vram = gGLManager.mVRAM;
+	S32 max_mem;
+	S32 used_vram;
+	S32 avail_vram;
+	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
+	used_vram = max_vram - (avail_vram / 1024.f);
+	avail_vram /= 1024;
+	F32 percent = ((F32)used_vram / (F32)max_vram) * 100.f;
+	max_mem = (avail_vram + (S32)bound_mem.value() + (S32)total_mem.value());
+
+	getChild<LLSliderCtrl>("SystemMemory")->setMaxValue(max_mem);
+	getChild<LLSliderCtrl>("SceneMemory")->setMaxValue(max_mem);
+	mProgressBar->setValue(percent);
+}
+
 void LLFloaterPreference::draw()
 {
 	BOOL has_first_selected = (getChildRef<LLScrollListCtrl>("disabled_popups").getFirstSelected()!=NULL);
@@ -1394,6 +1416,8 @@ void LLFloaterPreference::draw()
 	has_first_selected = (getChildRef<LLScrollListCtrl>("enabled_popups").getFirstSelected()!=NULL);
 	gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
 
+//	//BD - Memory Allocation
+	refreshMemoryControls();
 //	//BD - Warning System
 	refreshWarnings();
 //	//BD - Expandable Tabs
