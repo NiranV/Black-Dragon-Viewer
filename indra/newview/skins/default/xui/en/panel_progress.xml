@@ -5,7 +5,7 @@
  layout="topleft"
  left="0"
  name="login_progress_panel"
- background_visible="true"
+ background_visible="false"
  background_opaque="true"
  bg_opaque_color="0.05 0.05 0.05 1"
  top="768"
@@ -77,29 +77,24 @@ width="1024">
    min_height="20"
    name="panel4"
    width="720">
-    <loading_indicator
-      follows="left|bottom"
-      height="24"
-      width="24"
-      name="loading_indicator"
-      top="76"
-      left="670"
-      visible="true"/>
     <icon
-    top="78"
-    layout="topleft"
-    follows="left|bottom|right"
-    height="20"
-    image_name="ProgressTrack"
-    color="1 1 1 1"
-    left="10"
-    width="660" />
+  follows="top|right"
+  height="73"
+  image_name="Window_Background"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="720"
+  left="0"
+  top="28"/>
     <progress_bar
     top="78"
-    color_bar=".17 .48 .71 1"
+    color_bar="1 1 1 1"
+    color_bg="1 1 1 1"
     follows="left|bottom|right"
-    height="20"
-    width="660"
+    height="12"
+    width="700"
     layout="topleft"
     left="10"
     name="login_progress_bar" />
@@ -110,10 +105,10 @@ width="1024">
     height="20"
     layout="topleft"
     left="0"
-    width="670"
+    width="720"
     line_spacing.pixels="2"
     name="percent_text"
-    top="80"
+    top="70"
     word_wrap="false">
     100
     </text>
@@ -123,11 +118,11 @@ width="1024">
     halign="center"
     height="20"
     layout="topleft"
-    left="25"
+    left="50"
     width="660"
     line_spacing.pixels="2"
     name="percent_symbol_text"
-    top="80"
+    top="70"
     word_wrap="true">
     %
     </text>
@@ -135,10 +130,18 @@ width="1024">
     follows="left|top"
     height="22"
     layout="topleft"
-    left="293"
+    left="315"
     name="cancel_btn"
-    top="50"
+    top="40"
     width="90" />
+    <loading_indicator
+      follows="left|bottom"
+      height="24"
+      width="24"
+      name="loading_indicator"
+      top_pad="-55"
+      left_pad="-56"
+      visible="true"/>
    </layout_panel>
    <layout_panel
    height="100"
