@@ -50,8 +50,12 @@ std::string model_names[] =
 const int MODEL_NAMES_LENGTH = sizeof(model_names) / sizeof(std::string);
 
 LLModel::LLModel(LLVolumeParams& params, F32 detail)
-	: LLVolume(params, detail), mNormalizedScale(1,1,1), mNormalizedTranslation(0,0,0)
-	, mPelvisOffset( 0.0f ), mStatus(NO_ERRORS), mSubmodelID(0)
+	: LLVolume(params, detail), 
+      mNormalizedScale(1,1,1), 
+      mNormalizedTranslation(0,0,0), 
+      mPelvisOffset( 0.0f ), 
+      mStatus(NO_ERRORS), 
+      mSubmodelID(0)
 {
 	mDecompID = -1;
 	mLocalID = -1;
@@ -667,6 +671,7 @@ LLSD LLModel::writeModel(
 	const LLModel::Decomposition& decomp,
 	BOOL upload_skin,
 	BOOL upload_joints,
+    BOOL lock_scale_if_joint_position,
 	BOOL nowrite,
 	BOOL as_slm,
 	int submodel_id)
@@ -686,7 +691,7 @@ LLSD LLModel::writeModel(
 
 	if (skinning)
 	{ //write skinning block
-		mdl["skin"] = high->mSkinInfo.asLLSD(upload_joints);
+		mdl["skin"] = high->mSkinInfo.asLLSD(upload_joints, lock_scale_if_joint_position);
 	}
 
 	if (!decomp.mBaseHull.empty() ||
@@ -1338,7 +1343,6 @@ bool LLModel::matchMaterialOrder(LLModel* ref, int& refFaceCnt, int& modelFaceCn
 	return true;
 }
 
-
 bool LLModel::loadSkinInfo(LLSD& header, std::istream &is)
 {
 	S32 offset = header["skin"]["offset"].asInteger();
@@ -1381,8 +1385,15 @@ bool LLModel::loadDecomposition(LLSD& header, std::istream& is)
 	return true;
 }
 
+LLMeshSkinInfo::LLMeshSkinInfo():
+    mPelvisOffset(0.0),
+    mLockScaleIfJointPosition(false)
+{
+}
 
-LLMeshSkinInfo::LLMeshSkinInfo(LLSD& skin)
+LLMeshSkinInfo::LLMeshSkinInfo(LLSD& skin):
+    mPelvisOffset(0.0),
+    mLockScaleIfJointPosition(false)
 {
 	fromLLSD(skin);
 }
@@ -1394,6 +1405,7 @@ void LLMeshSkinInfo::fromLLSD(LLSD& skin)
 		for (U32 i = 0; i < skin["joint_names"].size(); ++i)
 		{
 			mJointNames.push_back(skin["joint_names"][i]);
+            mJointNums.push_back(-1);
 		}
 	}
 
@@ -1446,9 +1458,18 @@ void LLMeshSkinInfo::fromLLSD(LLSD& skin)
 	{
 		mPelvisOffset = skin["pelvis_offset"].asReal();
 	}
+
+    if (skin.has("lock_scale_if_joint_position"))
+    {
+        mLockScaleIfJointPosition = skin["lock_scale_if_joint_position"].asBoolean();
+    }
+	else
+	{
+		mLockScaleIfJointPosition = false;
+	}
 }
 
-LLSD LLMeshSkinInfo::asLLSD(bool include_joints) const
+LLSD LLMeshSkinInfo::asLLSD(bool include_joints, bool lock_scale_if_joint_position) const
 {
 	LLSD ret;
 
@@ -1485,6 +1506,11 @@ LLSD LLMeshSkinInfo::asLLSD(bool include_joints) const
 				}
 			}
 		}
+
+        if (lock_scale_if_joint_position)
+        {
+            ret["lock_scale_if_joint_position"] = lock_scale_if_joint_position;
+        }
 
 		ret["pelvis_offset"] = mPelvisOffset;
 	}
