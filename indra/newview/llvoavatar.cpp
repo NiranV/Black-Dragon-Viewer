@@ -5526,26 +5526,6 @@ void LLVOAvatar::rebuildAttachmentOverrides()
         }
     }
 }
-void LLVOAvatar::rebuildAttachmentPosOverrides()
-{
-    LLScopedContextString str("rebuildAttachmentPosOverrides " + getFullname());
-
-    // Attachment points
-	for (attachment_map_t::iterator iter = mAttachmentPoints.begin();
-		 iter != mAttachmentPoints.end();
-		 ++iter)
-	{
-		LLViewerJointAttachment *attachment_pt = (*iter).second;
-        if (attachment_pt)
-        {
-            for (LLViewerJointAttachment::attachedobjs_vec_t::iterator at_it = attachment_pt->mAttachedObjects.begin();
-				 at_it != attachment_pt->mAttachedObjects.end(); ++at_it)
-            {
-                addAttachmentPosOverridesForObject(*at_it);
-            }
-        }
-    }
-}
 //-----------------------------------------------------------------------------
 // addAttachmentPosOverridesForObject
 //-----------------------------------------------------------------------------
@@ -5655,9 +5635,10 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo)
 //-----------------------------------------------------------------------------
 // getAttachmentOverrideNames
 //-----------------------------------------------------------------------------
-void LLVOAvatar::getAttachmentOverrideNames(std::set<std::string>& names) const
+void LLVOAvatar::getAttachmentOverrideNames(std::set<std::string>& pos_names, std::set<std::string>& scale_names) const
 {
     LLVector3 pos;
+	LLVector3 scale;
     LLUUID mesh_id;
 
     // Bones
@@ -5667,7 +5648,11 @@ void LLVOAvatar::getAttachmentOverrideNames(std::set<std::string>& names) const
 		const LLJoint* pJoint = (*iter);
 		if (pJoint && pJoint->hasAttachmentPosOverride(pos,mesh_id))
 		{
-            names.insert(pJoint->getName());
+			pos_names.insert(pJoint->getName());
+		}
+		if (pJoint && pJoint->hasAttachmentScaleOverride(scale, mesh_id))
+		{
+			scale_names.insert(pJoint->getName());
 		}
 	}
 
@@ -5679,8 +5664,9 @@ void LLVOAvatar::getAttachmentOverrideNames(std::set<std::string>& names) const
 		const LLViewerJointAttachment *attachment_pt = (*iter).second;
         if (attachment_pt && attachment_pt->hasAttachmentPosOverride(pos,mesh_id))
         {
-            names.insert(attachment_pt->getName());
-        }
+			pos_names.insert(attachment_pt->getName());
+		}
+		// Attachment points don't have scales.
     }
 
 }
@@ -5688,134 +5674,37 @@ void LLVOAvatar::getAttachmentOverrideNames(std::set<std::string>& names) const
 //-----------------------------------------------------------------------------
 // showAttachmentPosOverrides
 //-----------------------------------------------------------------------------
-void LLVOAvatar::showAttachmentPosOverrides(bool verbose) const
-{
-    std::set<std::string> joint_names;
-    getAttachmentOverrideNames(joint_names);
-    if (joint_names.size())
-    {
-        std::stringstream ss;
-        std::copy(joint_names.begin(), joint_names.end(), std::ostream_iterator<std::string>(ss, ","));
-        LL_DEBUGS("Avatar") << getFullname() << " attachment positions defined for joints: " << ss.str() << "\n" << LL_ENDL;
-    }
-    else
-    {
-        LL_DEBUGS("Avatar") << getFullname() << " no attachment positions defined for any joints" << "\n" << LL_ENDL;
-    }
-
-    if (!verbose)
-    {
-        return;
-    }
-
-    LLVector3 pos;
-    LLUUID mesh_id;
-    S32 count = 0;
-
-    // Bones
-	for (avatar_joint_list_t::const_iterator iter = mSkeleton.begin();
-         iter != mSkeleton.end(); ++iter)
-	{
-		const LLJoint* pJoint = (*iter);
-		if (pJoint && pJoint->hasAttachmentPosOverride(pos,mesh_id))
-		{
-			pJoint->showAttachmentPosOverrides(getFullname());
-            count++;
-		}
-	}
-
-    // Attachment points
-	for (attachment_map_t::const_iterator iter = mAttachmentPoints.begin();
-		 iter != mAttachmentPoints.end();
-		 ++iter)
-	{
-		const LLViewerJointAttachment *attachment_pt = (*iter).second;
-        if (attachment_pt && attachment_pt->hasAttachmentPosOverride(pos,mesh_id))
-        {
-            attachment_pt->showAttachmentPosOverrides(getFullname());
-            count++;
-        }
-    }
-
-    if (count)
-    {
-        LL_DEBUGS("Avatar") << avString() << " end of pos overrides" << LL_ENDL;
-        LL_DEBUGS("Avatar") << "=================================" << LL_ENDL;
-    }
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void LLVOAvatar::getAttachmentOverrideNames(std::set<std::string>& pos_names, std::set<std::string>& scale_names) const
-{
-    LLVector3 pos;
-    LLVector3 scale;
-    LLUUID mesh_id;
-
-    // Bones
-	for (avatar_joint_list_t::const_iterator iter = mSkeleton.begin();
-         iter != mSkeleton.end(); ++iter)
-	{
-		const LLJoint* pJoint = (*iter);
-		if (pJoint && pJoint->hasAttachmentPosOverride(pos,mesh_id))
-		{
-            pos_names.insert(pJoint->getName());
-		}
-		if (pJoint && pJoint->hasAttachmentScaleOverride(scale,mesh_id))
-		{
-            scale_names.insert(pJoint->getName());
-		}
-	}
-
-    // Attachment points
-	for (attachment_map_t::const_iterator iter = mAttachmentPoints.begin();
-		 iter != mAttachmentPoints.end();
-		 ++iter)
-	{
-		const LLViewerJointAttachment *attachment_pt = (*iter).second;
-        if (attachment_pt && attachment_pt->hasAttachmentPosOverride(pos,mesh_id))
-        {
-            pos_names.insert(attachment_pt->getName());
-        }
-        // Attachment points don't have scales.
-    }
-
-}
-
-//-----------------------------------------------------------------------------
-// showAttachmentOverrides
-//-----------------------------------------------------------------------------
 void LLVOAvatar::showAttachmentOverrides(bool verbose) const
 {
-    std::set<std::string> pos_names, scale_names;
-    getAttachmentOverrideNames(pos_names, scale_names);
-    if (pos_names.size())
-    {
-        std::stringstream ss;
-        std::copy(pos_names.begin(), pos_names.end(), std::ostream_iterator<std::string>(ss, ","));
-        LL_INFOS() << getFullname() << " attachment positions defined for joints: " << ss.str() << "\n" << LL_ENDL;
-    }
+	std::set<std::string> pos_names, scale_names;
+	getAttachmentOverrideNames(pos_names, scale_names);
+	if (pos_names.size())
+	{
+		std::stringstream ss;
+		std::copy(pos_names.begin(), pos_names.end(), std::ostream_iterator<std::string>(ss, ","));
+		LL_INFOS() << getFullname() << " attachment positions defined for joints: " << ss.str() << "\n" << LL_ENDL;
+	}
     else
     {
         LL_DEBUGS("Avatar") << getFullname() << " no attachment positions defined for any joints" << "\n" << LL_ENDL;
     }
-    if (scale_names.size())
-    {
-        std::stringstream ss;
-        std::copy(scale_names.begin(), scale_names.end(), std::ostream_iterator<std::string>(ss, ","));
-        LL_INFOS() << getFullname() << " attachment scales defined for joints: " << ss.str() << "\n" << LL_ENDL;
-    }
-    else
-    {
-        LL_INFOS() << getFullname() << " no attachment scales defined for any joints" << "\n" << LL_ENDL;
-    }
+	if (scale_names.size())
+	{
+		std::stringstream ss;
+		std::copy(scale_names.begin(), scale_names.end(), std::ostream_iterator<std::string>(ss, ","));
+		LL_INFOS() << getFullname() << " attachment scales defined for joints: " << ss.str() << "\n" << LL_ENDL;
+	}
+	else
+	{
+		LL_INFOS() << getFullname() << " no attachment scales defined for any joints" << "\n" << LL_ENDL;
+	}
 
     if (!verbose)
     {
         return;
     }
 
-    LLVector3 pos, scale;
+	LLVector3 pos, scale;
     LLUUID mesh_id;
     S32 count = 0;
 
@@ -5829,11 +5718,11 @@ void LLVOAvatar::showAttachmentOverrides(bool verbose) const
 			pJoint->showAttachmentPosOverrides(getFullname());
             count++;
 		}
-		if (pJoint && pJoint->hasAttachmentScaleOverride(scale,mesh_id))
+		if (pJoint && pJoint->hasAttachmentScaleOverride(scale, mesh_id))
 		{
 			pJoint->showAttachmentScaleOverrides(getFullname());
-            count++;
-        }
+			count++;
+		}
 	}
 
     // Attachment points
@@ -5851,7 +5740,7 @@ void LLVOAvatar::showAttachmentOverrides(bool verbose) const
 
     if (count)
     {
-        LL_DEBUGS("Avatar") << avString() << " end of pos, scale overrides" << LL_ENDL;
+		LL_DEBUGS("Avatar") << avString() << " end of pos, scale overrides" << LL_ENDL;
         LL_DEBUGS("Avatar") << "=================================" << LL_ENDL;
     }
 }

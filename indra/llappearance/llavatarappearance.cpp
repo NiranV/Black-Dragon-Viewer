@@ -744,7 +744,6 @@ BOOL LLAvatarAppearance::buildSkeleton(const LLAvatarSkeletonInfo *info)
 		}
 	}
 
-	mNextJointNum = 0;
 	return TRUE;
 }
 
