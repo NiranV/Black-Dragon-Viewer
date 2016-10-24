@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.5.2 - Ending Dragon]"
+       label="[CHANNEL] [VERSION] - [2.5.3 - Ending Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="25"
+              height="220"
               top="10"
               left="7"
               name="changelog_text"
@@ -160,8 +160,23 @@ top="600"
               bg_writeable_color="Black_50" 
               width="990"
               word_wrap="false">
-Changed: Version to 2.5.2.
-Merge with Linden VLC Release
+Added: VRAM usage display to preferences.
+Added: Changelog text block for 2.5.3. Template changes, need to fill in later.
+Changed: Camera smoothness to it's intended default value.
+Changed: Custom System Memory to be the default, force 128mb by default in code.
+Changed: Texture console VRAM display, show colored segments to indicate what's taken by SL and what isn't.
+Changed: Texture console memory display, renamed bars to Scene and System to match preferences.
+Changed: Replaced the progress bar textures with more fitting ones.
+Changed: Made Progress Screen transparent, changed it's layout for the new progressbar texture.
+Changed: Moved OpenGL 3.0 Texture Compression option to top.
+Changed: Made System and Scene Memory slider change max value depending on the available memory.
+Changed: Default value of Scene Memory Debug to 256mb.
+Changed: Made labeling for System Memory and GPU Memory Usage more clear.
+Changed: Version to 2.5.3.
+Fixed: Compile
+Removed: Custom System Memory option.
+Removed: Custom System Memory option from preferences.
+Merge with Bento
               </text>
               <view_border
     bevel_style="in"
