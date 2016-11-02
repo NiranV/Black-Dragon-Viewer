@@ -14,7 +14,7 @@ width="345">
       scale_image="true"
       follows="all"
       layout="topleft"
-      height="765"
+      height="766"
       color="1 1 1 1"
       image_name="Window_Foreground"
       left="0"
@@ -48,7 +48,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1334"
+            height="1459"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -416,6 +416,85 @@ width="345">
                   name="shaders"
                   top_pad="1"
                   width="10">
+                  ┃
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_pad="24"
+                  name="shaders"
+                  top_delta="-1"
+                  width="10">
+                  ┗
+                  </text>
+                  <check_box
+                  control_name="RenderGodrays"
+                  enabled_control="RenderDeferred"
+                  height="16"
+                  initial_value="false"
+                  label="Volumetric Lighting"
+                  tool_tip="Toggles if experimental volumetric light should be rendered, causing godrays in certain circumstances"
+                  layout="topleft"
+                  left_pad="0"
+                  name="Godrays"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_delta="-44"
+                  name="shaders"
+                  top_pad="1"
+                  width="10">
+                  ┃
+                  </text>
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_pad="41"
+                  name="shaders"
+                  top_delta="0"
+                  width="10">
+                  ┗
+                  </text>
+                  <check_box
+                  control_name="RenderGodraysDirectional"
+                  height="16"
+                  initial_value="false"
+                  label="Directional Volumetric Lighting"
+                  tool_tip="Toggle if Volumtric Lighting should fade out the further you look away from the Sun. Mimics original Godrays behavior a bit."
+                  layout="topleft"
+                  left_pad="0"
+                  name="RenderGodraysDirectional"
+                  top_delta="0"
+                  width="115" />
+                  <text
+                  font="SansSerif"
+                  font.style="BOLD"
+                  font_shadow="soft"
+                  follows="left|top"
+                  height="20"
+                  text_color="BeaconColor"
+                  layout="topleft"
+                  left_delta="-61"
+                  name="shaders"
+                  top_pad="0"
+                  width="10">
                   ┣
                   </text>
                   <check_box
@@ -691,71 +770,6 @@ width="345">
                   name="shaders"
                   top_pad="0"
                   width="10">
-                  ┣
-                  </text>
-                  <check_box
-                  control_name="RenderGodrays"
-                  enabled_control="RenderDeferred"
-                  height="16"
-                  initial_value="false"
-                  label="Volumetric Lighting"
-                  tool_tip="Toggles if experimental volumetric light should be rendered, causing godrays in certain circumstances"
-                  layout="topleft"
-                  left_pad="0"
-                  name="Godrays"
-                  top_delta="0"
-                  width="115" />
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_delta="-10"
-                  name="shaders"
-                  top_pad="0"
-                  width="10">
-                  ┃
-                  </text>
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_pad="7"
-                  name="shaders"
-                  top_delta="0"
-                  width="10">
-                  ┗
-                  </text>
-                  <check_box
-                  control_name="RenderGodraysDirectional"
-                  height="16"
-                  initial_value="false"
-                  label="Directional Volumetric Lighting"
-                  tool_tip="Toggle if Volumtric Lighting should fade out the further you look away from the Sun. Mimics original Godrays behavior a bit."
-                  layout="topleft"
-                  left_pad="0"
-                  name="RenderGodraysDirectional"
-                  top_delta="0"
-                  width="115" />
-                  <text
-                  font="SansSerif"
-                  font.style="BOLD"
-                  font_shadow="soft"
-                  follows="left|top"
-                  height="20"
-                  text_color="BeaconColor"
-                  layout="topleft"
-                  left_delta="-27"
-                  name="shaders"
-                  top_pad="0"
-                  width="10">
                   ┗
                   </text>
                   <check_box
@@ -966,6 +980,92 @@ width="345">
                   name="RenderShadowFarClip"
                   top_pad="1"
                   width="293" />
+                  
+                  <slider
+                  enabled_control="RenderDeferred"
+                  decimal_digits="0"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="15"
+                  increment="256"
+                  initial_value="2048"
+                  label="Resolution Closeup:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="6144"
+                  min_val="256"
+                  name="RenderShadowResolution_X"
+                  top_pad="1"
+                  width="293">
+                  <slider.commit_callback
+                  function="Pref.ArrayVec4X"
+                  parameter="RenderShadowResolution"/>
+                  </slider>
+                  <slider
+                  enabled_control="RenderDeferred"
+                  decimal_digits="0"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="15"
+                  increment="256"
+                  initial_value="2048"
+                  label="Resolution Close:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="6144"
+                  min_val="256"
+                  name="RenderShadowResolution_Y"
+                  top_pad="1"
+                  width="293">
+                  <slider.commit_callback
+                  function="Pref.ArrayVec4Y"
+                  parameter="RenderShadowResolution"/>
+                  </slider>
+                  <slider
+                  enabled_control="RenderDeferred"
+                  decimal_digits="0"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="15"
+                  increment="256"
+                  initial_value="1024"
+                  label="Resolution Far:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="6144"
+                  min_val="256"
+                  name="RenderShadowResolution_Z"
+                  top_pad="1"
+                  width="293">
+                  <slider.commit_callback
+                  function="Pref.ArrayVec4Z"
+                  parameter="RenderShadowResolution"/>
+                  </slider>
+                  <slider
+                  enabled_control="RenderDeferred"
+                  decimal_digits="0"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="15"
+                  increment="256"
+                  initial_value="512"
+                  label="Resolution Very Far:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="6144"
+                  min_val="256"
+                  name="RenderShadowResolution_W"
+                  top_pad="1"
+                  width="293">
+                  <slider.commit_callback
+                  function="Pref.ArrayVec4W"
+                  parameter="RenderShadowResolution"/>
+                  </slider>
+                  
                   <panel
                   follows="left|top|right"
                   height="20"
@@ -1257,6 +1357,23 @@ width="345">
                   name="RenderSSRResolution"
                   top_pad="15"
                   width="281" />
+                  <slider
+                  decimal_digits="1"
+                  enabled="false"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="15"
+                  increment="1"
+                  initial_value="1"
+                  label="Brightness:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="10"
+                  min_val="0.0"
+                  name="RenderSSRBrightness"
+                  top_pad="1"
+                  width="287" />
                   <panel
                   follows="left|top|right"
                   height="20"
@@ -1432,6 +1549,73 @@ width="345">
                   name="GodrayFalloffMultiplier"
                   top_pad="1"
                   width="290" />
+                  
+                  <slider
+                  enabled_control="RenderDeferred"
+                  decimal_digits="1"
+                  follows="left|top"
+                  height="15"
+                  increment="0.1"
+                  initial_value="0"
+                  can_edit_text="true"
+                  label="Vignette Amount:"
+                  label_width="110"
+                  tool_tip="Set the strength of the brightness falloff over distance"
+                  layout="topleft"
+                  left="10"
+                  max_val="10"
+                  min_val="0"
+                  name="ExodusRenderVignette_X"
+                  top_pad="1"
+                  width="290" >
+                  <slider.commit_callback
+                  function="Pref.ArrayX"
+                  parameter="ExodusRenderVignette"/>
+                  </slider>
+                  <slider
+                  enabled_control="RenderDeferred"
+                  decimal_digits="1"
+                  follows="left|top"
+                  height="15"
+                  increment="0.1"
+                  initial_value="1.0"
+                  can_edit_text="true"
+                  label="Vignette Strength:"
+                  label_width="110"
+                  tool_tip="Set the strength of the brightness falloff over distance"
+                  layout="topleft"
+                  left="10"
+                  max_val="10"
+                  min_val="0"
+                  name="ExodusRenderVignette_Y"
+                  top_pad="1"
+                  width="290" >
+                  <slider.commit_callback
+                  function="Pref.ArrayY"
+                  parameter="ExodusRenderVignette"/>
+                  </slider>
+                  <slider
+                  enabled_control="RenderDeferred"
+                  decimal_digits="1"
+                  follows="left|top"
+                  height="15"
+                  increment="0.1"
+                  initial_value="2.1"
+                  can_edit_text="true"
+                  label="Vignette Multiplier:"
+                  label_width="110"
+                  tool_tip="Set the strength of the brightness falloff over distance"
+                  layout="topleft"
+                  left="10"
+                  max_val="10"
+                  min_val="0"
+                  name="ExodusRenderVignette_Z"
+                  top_pad="1"
+                  width="290" >
+                  <slider.commit_callback
+                  function="Pref.ArrayZ"
+                  parameter="ExodusRenderVignette"/>
+                  </slider>
                   <panel
                   follows="left|top|right"
                   height="20"

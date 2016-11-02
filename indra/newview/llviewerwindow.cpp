@@ -2038,6 +2038,13 @@ void LLViewerWindow::initWorldUI()
 	chiclet_container->addChild(chiclet_bar);
 	chiclet_container->setVisible(TRUE);
 
+	//NV - Topbar mousecapture rectangle for autohiding topbar
+	LLPanel* machinima_sidebar = gToolBarView->getChild<LLPanel>("machinima");
+	gTopBar = new LLTopBar(machinima_sidebar->getLocalRect());
+	gTopBar->setShape(machinima_sidebar->getLocalRect());
+	machinima_sidebar->addChild(gTopBar);
+	machinima_sidebar->setVisible(TRUE);
+
 	// Navigation bar
 	LLPanel* nav_bar_container = getRootView()->getChild<LLPanel>("nav_bar_container");
 

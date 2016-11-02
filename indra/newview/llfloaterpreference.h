@@ -218,18 +218,18 @@ public:
 	void toggleTabs();
 
 //	//BD - Vector4
-	void onCommitVec4X(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitVec4Y(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitVec4Z(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitVec4W(LLUICtrl* ctrl, const LLSD& param);
+	static void onCommitVec4X(LLUICtrl* ctrl, const LLSD& param);
+	static void onCommitVec4Y(LLUICtrl* ctrl, const LLSD& param);
+	static void onCommitVec4Z(LLUICtrl* ctrl, const LLSD& param);
+	static void onCommitVec4W(LLUICtrl* ctrl, const LLSD& param);
 
 //	//BD - Debug Arrays
-	void onCommitX(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitY(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitZ(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitXd(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitYd(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitZd(LLUICtrl* ctrl, const LLSD& param);
+	static void onCommitX(LLUICtrl* ctrl, const LLSD& param);
+	static void onCommitY(LLUICtrl* ctrl, const LLSD& param);
+	static void onCommitZ(LLUICtrl* ctrl, const LLSD& param);
+	static void onCommitXd(LLUICtrl* ctrl, const LLSD& param);
+	static void onCommitYd(LLUICtrl* ctrl, const LLSD& param);
+	static void onCommitZd(LLUICtrl* ctrl, const LLSD& param);
 
 //	//BD - Revert to Default
 	void resetToDefault(LLUICtrl* ctrl);

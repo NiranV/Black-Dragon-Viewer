@@ -824,18 +824,18 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::toggleTabs, this));
 
 //	//BD - Vector4
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4X", boost::bind(&LLFloaterPreference::onCommitVec4X, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4Y", boost::bind(&LLFloaterPreference::onCommitVec4Y, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4Z", boost::bind(&LLFloaterPreference::onCommitVec4Z, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4W", boost::bind(&LLFloaterPreference::onCommitVec4W, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4X", boost::bind(&LLFloaterPreference::onCommitVec4X, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4Y", boost::bind(&LLFloaterPreference::onCommitVec4Y, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4Z", boost::bind(&LLFloaterPreference::onCommitVec4Z, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayVec4W", boost::bind(&LLFloaterPreference::onCommitVec4W, _1, _2));
 
 //	//BD - Array Debugs
-	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayXD", boost::bind(&LLFloaterPreference::onCommitXd, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayYD", boost::bind(&LLFloaterPreference::onCommitYd, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayZD", boost::bind(&LLFloaterPreference::onCommitZd, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayXD", boost::bind(&LLFloaterPreference::onCommitXd, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayYD", boost::bind(&LLFloaterPreference::onCommitYd, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayZD", boost::bind(&LLFloaterPreference::onCommitZd, _1, _2));
 
 //	//BD - Revert to Default
 	mCommitCallbackRegistrar.add("Pref.Default", boost::bind(&LLFloaterPreference::resetToDefault, this, _1));

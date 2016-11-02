@@ -246,7 +246,7 @@ visible="true">
 				mouse_opaque="false"
 				visible="false"
 				tab_stop="false" 
-				name="machinima2_layout_panel"
+				name="machinima_layout_panel"
 				width="345"
 				visibility_control="MachinimaSidebar">
 					<panel
@@ -256,7 +256,6 @@ visible="true">
 					left="-345"
 					mouse_opaque="false"
 					name="machinima"
-					filename="panel_machinima.xml"
 					width="345"/>
 				</layout_panel>
 			</layout_stack>

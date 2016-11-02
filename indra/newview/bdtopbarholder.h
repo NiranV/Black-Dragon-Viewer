@@ -30,7 +30,6 @@
 #include "llpanel.h"
 
 class LLUICtrl;
-class LLFrameTimer;
 
 class LLTopBar
 :	public LLPanel
@@ -43,19 +42,26 @@ public:
 
 	/*virtual*/ BOOL postBuild();
 
-	void		unhideTopbar();
-	void		hideTopbar();
+	void refreshGraphicControls();
 
-	bool		mStop;
-	bool		mShown;
+	/*
+//	//BD - Vector4
+	void onCommitVec4X(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitVec4Y(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitVec4Z(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitVec4W(LLUICtrl* ctrl, const LLSD& param);
 
-	void		onAutohideChange();
+//	//BD - Debug Arrays
+	void onCommitX(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitY(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitZ(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitXd(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitYd(LLUICtrl* ctrl, const LLSD& param);
+	void onCommitZd(LLUICtrl* ctrl, const LLSD& param);*/
 
 	void onMouseLeave(S32 x, S32 y, MASK mask);
 	void onMouseEnter(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL 	handleMouseDown(S32 x, S32 y, MASK mask);
-
-	LLFrameTimer mHoverTimer;
 };
 
 extern LLTopBar *gTopBar;
