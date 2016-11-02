@@ -244,10 +244,6 @@ void LLProgressView::draw()
 	if (mFadeToWorldTimer.getStarted())
 	{
 		//BD
-		gTopBar->hideTopbar();
-
-		// draw fading panel
-		//BD
 		alpha = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
 		greyscale = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
 		gSavedSettings.setF32("RenderPostGreyscaleStrength", greyscale);
