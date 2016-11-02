@@ -54,6 +54,7 @@
 
 //BD
 #include "bdtopbarholder.h"
+#include "lliconctrl.h"
 
 #include <time.h>
 
@@ -210,6 +211,13 @@ void LLProgressView::draw()
 	//BD
 	F32 alpha;
 	F32 greyscale;
+
+	if (LLStartUp::getStartupState() >= STATE_STARTED)
+	{
+		//BD - Make progress screen transparent.
+		LLPanel::setBackgroundVisible(false);
+		getChild<LLIconCtrl>("loading_bg")->setVisible(true);
+	}
 
 	if (mFadeFromLoginTimer.getStarted())
 	{
