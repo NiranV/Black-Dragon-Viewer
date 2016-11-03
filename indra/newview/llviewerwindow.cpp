@@ -208,7 +208,7 @@
 #include "llviewerwindowlistener.h"
 
 //BD
-#include "bdtopbarholder.h"
+#include "bdsidebar.h"
 
 #if LL_WINDOWS
 #include <tchar.h> // For Unicode conversion methods
@@ -2038,11 +2038,11 @@ void LLViewerWindow::initWorldUI()
 	chiclet_container->addChild(chiclet_bar);
 	chiclet_container->setVisible(TRUE);
 
-	//NV - Topbar mousecapture rectangle for autohiding topbar
+	//BD - Machinima Sidebar
 	LLPanel* machinima_sidebar = gToolBarView->getChild<LLPanel>("machinima");
-	gTopBar = new LLTopBar(machinima_sidebar->getLocalRect());
-	gTopBar->setShape(machinima_sidebar->getLocalRect());
-	machinima_sidebar->addChild(gTopBar);
+	gSideBar = new LLSideBar(machinima_sidebar->getLocalRect());
+	gSideBar->setShape(machinima_sidebar->getLocalRect());
+	machinima_sidebar->addChild(gSideBar);
 	machinima_sidebar->setVisible(TRUE);
 
 	// Navigation bar
@@ -2157,7 +2157,7 @@ void LLViewerWindow::shutdownViews()
 	gIMMgr = NULL;
 	gToolTipView = NULL;
 	//BD
-	gTopBar = NULL;
+	gSideBar = NULL;
 
 	gToolBarView = NULL;
 	gFloaterView = NULL;

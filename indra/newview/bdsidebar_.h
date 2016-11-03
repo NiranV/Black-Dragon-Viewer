@@ -24,46 +24,45 @@
  * $/LicenseInfo$
  */
 
-#ifndef LL_NVTOPBARHOLDER_H
-#define LL_NVTOPBARHOLDER_H
+#ifndef LL_LLSIDEBAR_H
+#define LL_LLSIDEBAR_H
 
 #include "llpanel.h"
 
 class LLUICtrl;
 
-class LLTopBar
-:	public LLPanel
+class LLSidebar : public LLPanel
 {
 public:
-	LLTopBar(const LLRect& rect);
-	/*virtual*/ ~LLTopBar();
+	LLSidebar();
+	~LLSidebar();
 	
 	/*virtual*/ void draw();
 
 	/*virtual*/ BOOL postBuild();
 
-	void refreshGraphicControls();
+	void onCreateWidget();
+	void onModifyWidget();
+	void onDeleteWidget();
 
-	/*
-//	//BD - Vector4
-	void onCommitVec4X(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitVec4Y(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitVec4Z(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitVec4W(LLUICtrl* ctrl, const LLSD& param);
-
-//	//BD - Debug Arrays
-	void onCommitX(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitY(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitZ(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitXd(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitYd(LLUICtrl* ctrl, const LLSD& param);
-	void onCommitZd(LLUICtrl* ctrl, const LLSD& param);*/
+	//BD - Creation Types
+	void onClickCheckbox();
+	void onClickRadio();
+	void onClickDropdown();
+	void onClickTextbox();
+	void onClickSlider();
+	void onClickTitle();
+	void onClickButton();
 
 	void onMouseLeave(S32 x, S32 y, MASK mask);
 	void onMouseEnter(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL 	handleMouseDown(S32 x, S32 y, MASK mask);
+
+	LLPanel*			mCreatePanel;
+	LLPanel*			mModifyPanel;
+	LLUICtrl*			mScrollPanel;
 };
 
-extern LLTopBar *gTopBar;
+extern LLSidebar *gSidebar;
 
 #endif

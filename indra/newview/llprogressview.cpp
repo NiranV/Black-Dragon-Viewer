@@ -53,7 +53,6 @@
 #include "llpanellogin.h"
 
 //BD
-#include "bdtopbarholder.h"
 #include "lliconctrl.h"
 
 #include <time.h>

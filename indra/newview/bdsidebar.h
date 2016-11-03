@@ -1,6 +1,6 @@
 /** 
- * @file bdtopbarholder.h
- * @brief LLTopBar class definition
+ * @file bdsidebar.h
+ * @brief LLSideBar class definition
  *
  * $LicenseInfo:firstyear=2002&license=viewerlgpl$
  * Second Life Viewer Source Code
@@ -24,45 +24,31 @@
  * $/LicenseInfo$
  */
 
-#ifndef LL_LLSIDEBAR_H
-#define LL_LLSIDEBAR_H
+#ifndef LL_BDSIDEBAR_H
+#define LL_BDSIDEBAR_H
 
 #include "llpanel.h"
 
 class LLUICtrl;
 
-class LLSidebar : public LLPanel
+class LLSideBar
+:	public LLPanel
 {
 public:
-	LLSidebar();
-	~LLSidebar();
+	LLSideBar(const LLRect& rect);
+	/*virtual*/ ~LLSideBar();
 	
 	/*virtual*/ void draw();
 
 	/*virtual*/ BOOL postBuild();
 
-	void onCreateWidget();
-	void onModifyWidget();
-	void onDeleteWidget();
-
-	//BD - Creation Types
-	void onClickCheckbox();
-	void onClickRadio();
-	void onClickDropdown();
-	void onClickTextbox();
-	void onClickSlider();
-	void onClickTitle();
-	void onClickButton();
+	void refreshGraphicControls();
 
 	void onMouseLeave(S32 x, S32 y, MASK mask);
 	void onMouseEnter(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL 	handleMouseDown(S32 x, S32 y, MASK mask);
-
-	LLPanel*			mCreatePanel;
-	LLPanel*			mModifyPanel;
-	LLUICtrl*			mScrollPanel;
 };
 
-extern LLSidebar *gSidebar;
+extern LLSideBar *gSideBar;
 
 #endif
