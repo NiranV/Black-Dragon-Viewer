@@ -442,7 +442,10 @@ void LLWLParamManager::update(LLViewerCamera * cam)
 	LL_RECORD_BLOCK_TIME(FTM_UPDATE_WLPARAM);
 	
 	// update clouds, sun, and general
-	mCurParams.updateCloudScrolling();
+	if (!gSavedSettings.getBOOL("FreezeTime"))
+	{
+		mCurParams.updateCloudScrolling();
+	}
 	
 	// update only if running
 	if(mAnimator.getIsRunning()) 

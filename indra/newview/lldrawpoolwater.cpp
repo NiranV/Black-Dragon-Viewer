@@ -551,8 +551,14 @@ void LLDrawPoolWater::shade()
 		shader->bind();
 	}
 
-	sTime = (F32)LLFrameTimer::getElapsedSeconds()*0.5f;
-	
+	if (!gSavedSettings.getBOOL("FreezeTime"))
+	{
+		//BD - We could stop the timer... it would freeze everything depending on it.
+		//     It would also properly resume without the water jumping to its new position,
+		//     since no time actually passes while the world is frozen. Overkill though.
+		sTime = (F32)LLFrameTimer::getElapsedSeconds()*0.5f;
+	}
+
 	S32 reftex = shader->enableTexture(LLShaderMgr::WATER_REFTEX);
 
 	if (reftex > -1)
