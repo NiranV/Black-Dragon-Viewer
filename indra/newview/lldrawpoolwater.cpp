@@ -476,40 +476,40 @@ void LLDrawPoolWater::shade()
 
 	LLVOSky *voskyp = gSky.mVOSkyp;
 
-	if(voskyp == NULL) 
+	if (voskyp == NULL)
 	{
 		return;
 	}
 
 	LLGLDisable blend(GL_BLEND);
 
-	LLColor3 light_diffuse(0,0,0);
+	LLColor3 light_diffuse(0, 0, 0);
 	F32 light_exp = 0.0f;
 	LLVector3 light_dir;
 	LLColor3 light_color;
 
-	if (gSky.getSunDirection().mV[2] > LLSky::NIGHTTIME_ELEVATION_COS) 	 
-    { 	 
-        light_dir  = gSky.getSunDirection(); 	 
-        light_dir.normVec(); 	
+	if (gSky.getSunDirection().mV[2] > LLSky::NIGHTTIME_ELEVATION_COS)
+	{
+		light_dir = gSky.getSunDirection();
+		light_dir.normVec();
 		light_color = gSky.getSunDiffuseColor();
-		if(gSky.mVOSkyp) {
-	        light_diffuse = gSky.mVOSkyp->getSun().getColorCached(); 	 
-			light_diffuse.normVec(); 	 
+		if (gSky.mVOSkyp) {
+			light_diffuse = gSky.mVOSkyp->getSun().getColorCached();
+			light_diffuse.normVec();
 		}
-        light_exp = light_dir * LLVector3(light_dir.mV[0], light_dir.mV[1], 0); 	 
-        light_diffuse *= light_exp + 0.25f; 	 
-    } 	 
-    else  	 
-    { 	 
-        light_dir       = gSky.getMoonDirection(); 	 
-        light_dir.normVec(); 	 
+		light_exp = light_dir * LLVector3(light_dir.mV[0], light_dir.mV[1], 0);
+		light_diffuse *= light_exp + 0.25f;
+	}
+	else
+	{
+		light_dir = gSky.getMoonDirection();
+		light_dir.normVec();
 		light_color = gSky.getMoonDiffuseColor();
-        light_diffuse   = gSky.mVOSkyp->getMoon().getColorCached(); 	 
-        light_diffuse.normVec(); 	 
-        light_diffuse *= 0.5f; 	 
-        light_exp = light_dir * LLVector3(light_dir.mV[0], light_dir.mV[1], 0); 	 
-    }
+		light_diffuse = gSky.mVOSkyp->getMoon().getColorCached();
+		light_diffuse.normVec();
+		light_diffuse *= 0.5f;
+		light_exp = light_dir * LLVector3(light_dir.mV[0], light_dir.mV[1], 0);
+	}
 
 	light_exp *= light_exp;
 	light_exp *= light_exp;
@@ -521,17 +521,17 @@ void LLDrawPoolWater::shade()
 	LLGLSLShader* shader;
 
 	F32 eyedepth = LLViewerCamera::getInstance()->getOrigin().mV[2] - gAgent.getRegion()->getWaterHeight();
-	
+
 	if (eyedepth < 0.f && LLPipeline::sWaterReflections)
 	{
-	if (deferred_render)
-	{
+		if (deferred_render)
+		{
 			shader = &gDeferredUnderWaterProgram;
-	}
+		}
 		else
-	{
-		shader = &gUnderWaterProgram;
-	}
+		{
+			shader = &gUnderWaterProgram;
+		}
 	}
 	else if (deferred_render)
 	{
@@ -554,13 +554,13 @@ void LLDrawPoolWater::shade()
 	sTime = (F32)LLFrameTimer::getElapsedSeconds()*0.5f;
 	
 	S32 reftex = shader->enableTexture(LLShaderMgr::WATER_REFTEX);
-		
+
 	if (reftex > -1)
 	{
 		gGL.getTexUnit(reftex)->activate();
 		gGL.getTexUnit(reftex)->bind(&gPipeline.mWaterRef);
 		gGL.getTexUnit(0)->activate();
-	}	
+	}
 
 	//bind normal map
 	S32 bumpTex = shader->enableTexture(LLViewerShaderMgr::BUMP_MAP);
@@ -574,29 +574,29 @@ void LLDrawPoolWater::shade()
 	}
 
 	mWaterNormp->addTextureStats(1024.f*1024.f);
-	gGL.getTexUnit(bumpTex)->bind(mWaterNormp) ;
+	gGL.getTexUnit(bumpTex)->bind(mWaterNormp);
 	if (gSavedSettings.getBOOL("RenderWaterMipNormal"))
 	{
 		mWaterNormp->setFilteringOption(LLTexUnit::TFO_ANISOTROPIC);
 	}
-	else 
+	else
 	{
 		mWaterNormp->setFilteringOption(LLTexUnit::TFO_POINT);
 	}
-	
-	S32 screentex = shader->enableTexture(LLShaderMgr::WATER_SCREENTEX);	
-		
+
+	S32 screentex = shader->enableTexture(LLShaderMgr::WATER_SCREENTEX);
+
 	if (screentex > -1)
 	{
 		shader->uniform4fv(LLShaderMgr::WATER_FOGCOLOR, 1, sWaterFogColor.mV);
-		shader->uniform1f(LLShaderMgr::WATER_FOGDENSITY, 
+		shader->uniform1f(LLShaderMgr::WATER_FOGDENSITY,
 			param_mgr->getFogDensity());
 		gPipeline.mWaterDis.bindTexture(0, screentex);
 	}
-	
+
 	stop_glerror();
-	
-	gGL.getTexUnit(screentex)->bind(&gPipeline.mWaterDis);	
+
+	gGL.getTexUnit(screentex)->bind(&gPipeline.mWaterDis);
 
 	if (mVertexShaderLevel == 1)
 	{
@@ -604,20 +604,20 @@ void LLDrawPoolWater::shade()
 		shader->uniform4fv(LLShaderMgr::WATER_FOGCOLOR, 1, sWaterFogColor.mV);
 	}
 
-	F32 screenRes[] = 
+	F32 screenRes[] =
 	{
-		1.f/gGLViewport[2],
-		1.f/gGLViewport[3]
+		1.f / gGLViewport[2],
+		1.f / gGLViewport[3]
 	};
 	shader->uniform2fv(LLShaderMgr::DEFERRED_SCREEN_RES, 1, screenRes);
 	stop_glerror();
-	
+
 	S32 diffTex = shader->enableTexture(LLShaderMgr::DIFFUSE_MAP);
 	stop_glerror();
-	
+
 	light_dir.normVec();
 	sLightDir = light_dir;
-	
+
 	light_diffuse *= 6.f;
 
 	//shader->uniformMatrix4fv("inverse_ref", 1, GL_FALSE, (GLfloat*) gGLObliqueProjectionInverse.mMatrix);
