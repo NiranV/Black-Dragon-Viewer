@@ -66,8 +66,8 @@ void LLSideBar::draw()
 	if (gSavedSettings.getBOOL("MachinimaSidebar"))
 	{
 		refreshGraphicControls();
-		LLPanel::draw();
 	}
+	LLPanel::draw();
 }
 
 BOOL LLSideBar::postBuild()
