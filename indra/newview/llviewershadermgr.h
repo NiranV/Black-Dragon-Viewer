@@ -61,7 +61,7 @@ public:
 	BOOL loadTransformShaders();
 
 //	//BD - Fast Shader Toggles
-	void resetDeferredShaders();
+	BOOL resetDeferredShaders();
 	BOOL loadShadersDOF();
 	BOOL loadShadersSSAO();
 	BOOL loadShadersShadows();

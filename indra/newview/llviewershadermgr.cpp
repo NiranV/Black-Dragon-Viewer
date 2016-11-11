@@ -703,7 +703,7 @@ void LLViewerShaderMgr::setShaders()
 }
 
 //BD
-void LLViewerShaderMgr::resetDeferredShaders()
+BOOL LLViewerShaderMgr::resetDeferredShaders()
 {
 	//using shaders, disable fixed function
 	LLGLSLShader::sNoFixedFunction = true;
@@ -726,6 +726,7 @@ void LLViewerShaderMgr::resetDeferredShaders()
 	}
 
 	mVertexShaderLevel[SHADER_DEFERRED] = deferred_class;
+	return deferred_class;
 }
 
 void LLViewerShaderMgr::unloadShaders()
@@ -1912,7 +1913,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 
 BOOL LLViewerShaderMgr::loadShadersDOF()
 {
-	BOOL success = TRUE;
+	BOOL success = gPipeline.RenderDeferred;
 	//BD - Depth Of Field
 	gDeferredPostProgram.unload();
 	gVolumetricLightProgram.unload();
@@ -1948,7 +1949,9 @@ BOOL LLViewerShaderMgr::loadShadersDOF()
 
 BOOL LLViewerShaderMgr::loadShadersSSAO()
 {
-	BOOL success = TRUE;
+	//BD - Don't reload shaders if Deferred is not enabled.
+	BOOL success = gPipeline.RenderDeferred;
+
 	//BD - Screen Space Ambient Occlusion
 	gDeferredSunProgram.unload();
 	if (success)
@@ -1990,7 +1993,7 @@ BOOL LLViewerShaderMgr::loadShadersSSAO()
 
 BOOL LLViewerShaderMgr::loadShadersShadows()
 {
-	BOOL success = TRUE;
+	BOOL success = gPipeline.RenderDeferred;
 	//BD - Shadows
 	gDeferredSkinnedAlphaProgram.unload();
 	gDeferredAlphaProgram.unload();
@@ -2157,7 +2160,7 @@ BOOL LLViewerShaderMgr::loadShadersShadows()
 
 BOOL LLViewerShaderMgr::loadShadersGodrays()
 {
-	BOOL success = TRUE;
+	BOOL success = gPipeline.RenderDeferred;
 	//BD - Volumetric Lighting
 	gVolumetricLightProgram.unload();
 	if (success)
@@ -2177,7 +2180,7 @@ BOOL LLViewerShaderMgr::loadShadersGodrays()
 
 BOOL LLViewerShaderMgr::loadShadersBlurLight()
 {
-	BOOL success = TRUE;
+	BOOL success = gPipeline.RenderDeferred;
 	//BD - Soften Light
 	gDeferredBlurLightProgram.unload();
 	if (success)
@@ -2202,7 +2205,7 @@ BOOL LLViewerShaderMgr::loadShadersBlurLight()
 
 BOOL LLViewerShaderMgr::loadShadersSSR()
 {
-	BOOL success = TRUE;
+	BOOL success = gPipeline.RenderDeferred;
 	//BD - Screen Space Reflections
 	gDeferredSoftenProgram.unload();
 	gDeferredSoftenWaterProgram.unload();

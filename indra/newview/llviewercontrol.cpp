@@ -82,6 +82,7 @@
 #include "llfloatersnapshot.h"
 #include "lltoolfocus.h"
 #include "llviewerobjectlist.h"
+#include "llwlparammanager.h"
 
 // Third party library includes
 #include <boost/algorithm/string.hpp>
@@ -740,11 +741,16 @@ static bool handleGodraysChanged(const LLSD& newvalue)
 
 static bool handleShadowsChanged(const LLSD& newvalue)
 {
-	LLViewerShaderMgr::instance()->resetDeferredShaders();
-	LLViewerShaderMgr::instance()->loadShadersSSAO();
-	LLViewerShaderMgr::instance()->loadShadersShadows();
-	gPipeline.allocateShadowMaps(true);
-	return true;
+	bool ret = false;
+	if (gPipeline.RenderDeferred
+		&& LLViewerShaderMgr::instance()->resetDeferredShaders()
+		&& LLViewerShaderMgr::instance()->loadShadersSSAO()
+		&& LLViewerShaderMgr::instance()->loadShadersShadows())
+	{
+		gPipeline.allocateShadowMaps(true);
+		ret = true;
+	}
+	return ret;
 }
 
 static bool handleTimeFactorChanged(const LLSD& newvalue)
