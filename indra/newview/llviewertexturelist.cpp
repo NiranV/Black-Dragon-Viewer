@@ -1413,14 +1413,18 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 	//   - Make sure we always have at least a bit memory.
 	//     We'll not allow going below it in the UI anyway and it should be available
 	//     on every card... really.
-	if (cur_mem == (S32Bytes)0)
+	//   - Make sure we do not allow more than 1992mb, it's the highest currently
+	//     tested and working memory we can use. Might raise this in future.
+	if (cur_mem == (S32Bytes)0
+		|| cur_mem > (S32Megabytes)1992)
 	{
-		cur_mem = (S32Megabytes)128;
+		cur_mem = llmin(llmax(cur_mem, (S32Megabytes)128), (S32Megabytes)1992);
 	}
 
-	if (sys_mem == (S32Bytes)0)
+	if (sys_mem == (S32Bytes)0
+		|| sys_mem > (S32Megabytes)1992)
 	{
-		sys_mem = (S32Megabytes)128;
+		sys_mem = llmin(llmax(sys_mem, (S32Megabytes)128), (S32Megabytes)1992);
 	}
 
 	mMaxResidentTexMemInMegaBytes = cur_mem;
