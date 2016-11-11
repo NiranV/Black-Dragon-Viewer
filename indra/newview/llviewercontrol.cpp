@@ -710,33 +710,28 @@ static bool handleShadowMapsChanged(const LLSD& newvalue)
 
 static bool handleDepthOfFieldChanged(const LLSD& newvalue)
 {
-	LLViewerShaderMgr::instance()->loadShadersDOF();
-	return true;
+	return LLViewerShaderMgr::instance()->loadShadersDOF();
 }
 
 static bool handleSSAOChanged(const LLSD& newvalue)
 {
-	LLViewerShaderMgr::instance()->loadShadersSSAO();
-	return true;
+	return LLViewerShaderMgr::instance()->loadShadersSSAO();
 }
 
 static bool handleBlurLightChanged(const LLSD& newvalue)
 {
-	LLViewerShaderMgr::instance()->loadShadersBlurLight();
-	LLViewerShaderMgr::instance()->loadShadersSSAO();
-	return true;
+	return LLViewerShaderMgr::instance()->loadShadersBlurLight()
+		&& LLViewerShaderMgr::instance()->loadShadersSSAO();
 }
 
 static bool handleSSRChanged(const LLSD& newvalue)
 {
-	LLViewerShaderMgr::instance()->loadShadersSSR();
-	return true;
+	return LLViewerShaderMgr::instance()->loadShadersSSR();
 }
 
 static bool handleGodraysChanged(const LLSD& newvalue)
 {
-	LLViewerShaderMgr::instance()->loadShadersGodrays();
-	return true;
+	return LLViewerShaderMgr::instance()->loadShadersGodrays();
 }
 
 static bool handleShadowsChanged(const LLSD& newvalue)
