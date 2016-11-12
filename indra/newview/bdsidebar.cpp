@@ -63,11 +63,11 @@ LLSideBar::~LLSideBar()
 // virtual
 void LLSideBar::draw()
 {
-	if (gSavedSettings.getBOOL("MachinimaSidebar"))
+	if (gSideBar->getParentByType<LLLayoutPanel>()->getVisibleAmount() > 0.05f)
 	{
 		refreshGraphicControls();
+		LLPanel::draw();
 	}
-	LLPanel::draw();
 }
 
 BOOL LLSideBar::postBuild()
