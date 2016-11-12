@@ -82,7 +82,6 @@
 #include "llfloatersnapshot.h"
 #include "lltoolfocus.h"
 #include "llviewerobjectlist.h"
-#include "llwlparammanager.h"
 
 // Third party library includes
 #include <boost/algorithm/string.hpp>
@@ -618,6 +617,8 @@ bool toggle_freeze_world(const LLSD& newvalue)
 			mAvatarPauseHandles.push_back(avatarp->requestPause());
 		}
 
+
+
 		// freeze everything else
 		gSavedSettings.setBOOL("FreezeTime", TRUE);
 	}
@@ -683,9 +684,13 @@ static bool handleUseRegioLight(const LLSD& newvalue)
 	gSavedSettings.setBOOL("UseEnvironmentFromRegion" , newvalue.asBoolean());
 	bool fixed = gSavedSettings.getBOOL("UseEnvironmentFromRegion");
 	if (fixed)
+	{
 		envmgr.setUseRegionSettings(true);
+	}
 	else
+	{
 		envmgr.setUseRegionSettings(false);
+	}
 	return true;
 }
 
