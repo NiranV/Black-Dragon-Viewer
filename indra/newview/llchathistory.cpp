@@ -392,23 +392,6 @@ public:
 		mAvatarID = chat.mFromID;
 		mSessionID = chat.mSessionID;
 		mSourceType = chat.mSourceType;
-		LLUUID mDevID;
-		mDevID.set("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5");
-		//BD - I can't believe how unreliable this is... half of the time it doesn't show me as mod.
-		//     Neither does the speaker list, LL really has to fix this stuff.
-		bool moderator = false;
-		LLIMSpeakerMgr* SpeakerMgr = LLIMModel::getIfExists()->getSpeakerManager(mSessionID);
-		if (SpeakerMgr)
-		{
-			if (!mAvatarID.isNull())
-			{
-				LLSpeaker* speaker = SpeakerMgr->findSpeaker(mAvatarID);
-				if (speaker)
-				{
-					moderator = speaker->mIsModerator;
-				}
-			}
-		}
 
 		//*TODO overly defensive thing, source type should be maintained out there
 		if((chat.mFromID.isNull() && chat.mFromName.empty()) || (chat.mFromName == SYSTEM_FROM && chat.mFromID.isNull()))
@@ -484,36 +467,6 @@ public:
 			mFrom = chat.mFromName;
 			user_name->setValue(mFrom);
 			updateMinUserNameWidth();
-		}
-
-		//BD
-		if (moderator || mAvatarID == mDevID)
-		{
-			std::string appendText;
-			LLColor4 userNameColor;
-			LLStyle::Params style_params_name;
-			style_params_name.font.name("SansSerifSmall");
-			style_params_name.font.style("NORMAL");
-			if (moderator && mAvatarID == mDevID)
-			{
-				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_ModDev", 0));
-				userNameColor = LLUIColorTable::instance().getColor("ModDevColor");
-				appendText = " - [Mod][Dev]";
-			}
-			else if (moderator)
-			{
-				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_Moderator", 0));
-				userNameColor = LLUIColorTable::instance().getColor("ModeratorColor");
-				appendText = " - [Moderator]";
-			}
-			else if (mAvatarID == mDevID)
-			{
-				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_Dev", 0));
-				userNameColor = LLUIColorTable::instance().getColor("DeveloperColor");
-				appendText = " - [Developer]";
-			}
-			style_params_name.readonly_color(userNameColor);
-			user_name->appendText(appendText, FALSE, style_params_name);
 		}
 
 		setTimeField(chat);
@@ -592,6 +545,58 @@ public:
 			LLTextBox* user_name = getChild<LLTextBox>("user_name");
 			const LLWString& text = user_name->getWText();
 			mMinUserNameWidth = mUserNameFont->getWidth(text.c_str()) + PADDING;
+		}
+	}
+
+	void checkAvatarTags()
+	{
+		LLTextBox* user_name = getChild<LLTextBox>("user_name");
+		LLUUID mDevID;
+		mDevID.set("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5");
+		//BD - I can't believe how unreliable this is... half of the time it doesn't show me as mod.
+		//     Neither does the speaker list, LL really has to fix this stuff.
+		bool moderator = false;
+		LLIMSpeakerMgr* SpeakerMgr = LLIMModel::getIfExists()->getSpeakerManager(mSessionID);
+		if (SpeakerMgr)
+		{
+			if (!mAvatarID.isNull())
+			{
+				LLSpeaker* speaker = SpeakerMgr->findSpeaker(mAvatarID);
+				if (speaker)
+				{
+					moderator = speaker->mIsModerator;
+				}
+			}
+		}
+
+		//BD
+		if (moderator || mAvatarID == mDevID)
+		{
+			std::string appendText;
+			LLColor4 userNameColor;
+			LLStyle::Params style_params_name;
+			style_params_name.font.name("SansSerifSmall");
+			style_params_name.font.style("NORMAL");
+			if (moderator && mAvatarID == mDevID)
+			{
+				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_ModDev", 0));
+				userNameColor = LLUIColorTable::instance().getColor("ModDevColor");
+				appendText = " - [Mod][Dev]";
+			}
+			else if (moderator)
+			{
+				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_Moderator", 0));
+				userNameColor = LLUIColorTable::instance().getColor("ModeratorColor");
+				appendText = " - [Moderator]";
+			}
+			else if (mAvatarID == mDevID)
+			{
+				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_Dev", 0));
+				userNameColor = LLUIColorTable::instance().getColor("DeveloperColor");
+				appendText = " - [Developer]";
+			}
+			style_params_name.readonly_color(userNameColor);
+			user_name->appendText(appendText, FALSE, style_params_name);
 		}
 	}
 
@@ -752,6 +757,7 @@ private:
 		}
 		setToolTip( av_name.getUserName() );
 		// name might have changed, update width
+		checkAvatarTags();
 		updateMinUserNameWidth();
 	}
 
