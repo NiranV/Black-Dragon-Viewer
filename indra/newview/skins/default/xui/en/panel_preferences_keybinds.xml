@@ -135,18 +135,6 @@ width="510">
    parameter="46"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="0_backwards"
  follows="left|top"
@@ -230,18 +218,6 @@ width="510">
    parameter="47"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="0_left"
  follows="left|top"
@@ -325,18 +301,6 @@ width="510">
    parameter="48"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="0_right"
  follows="left|top"
@@ -420,18 +384,6 @@ width="510">
    parameter="49"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="0_rleft"
  follows="left|top"
@@ -515,18 +467,6 @@ width="510">
    parameter="50"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="0_rright"
  follows="left|top"
@@ -610,18 +550,6 @@ width="510">
    parameter="51"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="0_jump"
  follows="left|top"
@@ -705,18 +633,6 @@ width="510">
    parameter="52"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="0_crouch"
  follows="left|top"
@@ -800,18 +716,6 @@ width="510">
    parameter="53"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="0_stop"
  follows="left|top"
@@ -895,18 +799,6 @@ width="510">
    parameter="55"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="0_chat"
  follows="left|top"
@@ -953,37 +845,6 @@ width="510">
    parameter="34"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for opening chat."
- name="start_chat2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="48"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_gesture"
  follows="left|top"
@@ -1029,37 +890,6 @@ width="510">
    parameter="35"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for starting chat with '/'."
- name="start_gesture2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="49"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="0_fly"
  follows="left|top"
@@ -1154,18 +984,6 @@ width="510">
   width="450"
   left="25"
   top_pad="4"/>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_spin_cw"
  follows="left|top"
@@ -1248,18 +1066,6 @@ width="510">
    parameter="58"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_spin_ccw"
  follows="left|top"
@@ -1342,18 +1148,6 @@ width="510">
    parameter="59"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_zoom_in"
  follows="left|top"
@@ -1436,18 +1230,6 @@ width="510">
    parameter="60"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_zoom_out"
  follows="left|top"
@@ -1530,18 +1312,6 @@ width="510">
    parameter="61"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_spin_over"
  follows="left|top"
@@ -1624,18 +1394,6 @@ width="510">
    parameter="62"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_spin_under"
  follows="left|top"
@@ -1718,18 +1476,6 @@ width="510">
    parameter="63"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_pan_left"
  follows="left|top"
@@ -1812,18 +1558,6 @@ width="510">
    parameter="64"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_pan_right"
  follows="left|top"
@@ -1907,18 +1641,6 @@ width="510">
    parameter="65"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_pan_up"
  follows="left|top"
@@ -2001,18 +1723,6 @@ width="510">
    parameter="66"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="0_pan_down"
  follows="left|top"
@@ -2095,18 +1805,6 @@ width="510">
    parameter="67"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  
  
  
@@ -2216,18 +1914,6 @@ width="510">
    parameter="12"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="1_backwards"
  follows="left|top"
@@ -2311,18 +1997,6 @@ width="510">
    parameter="13"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="1_left"
  follows="left|top"
@@ -2406,18 +2080,6 @@ width="510">
    parameter="14"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="1_right"
  follows="left|top"
@@ -2501,18 +2163,6 @@ width="510">
    parameter="15"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="1_rleft"
  follows="left|top"
@@ -2596,18 +2246,6 @@ width="510">
    parameter="16"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="1_rright"
  follows="left|top"
@@ -2691,18 +2329,6 @@ width="510">
    parameter="17"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="1_jump"
  follows="left|top"
@@ -2786,18 +2412,6 @@ width="510">
    parameter="18"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="1_crouch"
  follows="left|top"
@@ -2881,18 +2495,6 @@ width="510">
    parameter="19"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="1_stop"
  follows="left|top"
@@ -2976,18 +2578,6 @@ width="510">
    parameter="23"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="1_chat"
  follows="left|top"
@@ -3034,37 +2624,6 @@ width="510">
    parameter="9"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for opening chat."
- name="start_chat2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="21"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="1_gesture"
  follows="left|top"
@@ -3110,37 +2669,6 @@ width="510">
    parameter="10"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for starting chat with '/'."
- name="start_gesture2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="22"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <text
  name="1_fly"
  follows="left|top"
@@ -3224,18 +2752,6 @@ width="510">
    parameter="20"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    
    
    
@@ -3307,37 +2823,6 @@ width="510">
    parameter="86"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for opening chat."
- name="start_chat2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="88"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="2_gesture"
  follows="left|top"
@@ -3383,37 +2868,6 @@ width="510">
    parameter="87"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for starting chat with '/'."
- name="start_gesture"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="89"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    
    
    
@@ -3485,37 +2939,6 @@ width="510">
    parameter="96"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for opening chat."
- name="start_chat2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="96"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="3_gesture"
  follows="left|top"
@@ -3561,37 +2984,6 @@ width="510">
    parameter="97"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for starting chat with '/'."
- name="start_gesture2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="97"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <icon
   follows="top|right"
   height="1"
@@ -3648,37 +3040,6 @@ width="510">
    parameter="92"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for spinning the camera clockwise."
- name="spin_around_cw_sitting2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="92"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="3_spin_ccw"
  follows="left|top"
@@ -3724,37 +3085,6 @@ width="510">
    parameter="93"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for spinning the camera counter-clockwise."
- name="spin_around_ccw_sitting2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="93"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="3_forward"
  follows="left|top"
@@ -3800,37 +3130,6 @@ width="510">
    parameter="90"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for zooming the camera in."
- name="move_forward_sitting2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="90"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="3_backwards"
  follows="left|top"
@@ -3876,37 +3175,6 @@ width="510">
    parameter="91"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for zooming the camera out."
- name="move_backward_sitting2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="91"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="3_spin_over"
  follows="left|top"
@@ -3952,37 +3220,6 @@ width="510">
    parameter="94"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key to spin the camera over."
- name="spin_over_sitting2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="94"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="3_spin_under"
  follows="left|top"
@@ -4028,37 +3265,6 @@ width="510">
    parameter="95"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key to spin the camera under."
- name="spin_over_sitting2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="95"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
 
    
    
@@ -4129,37 +3335,6 @@ width="510">
    parameter="104"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for opening chat."
- name="start_chat2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="112"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="4_gesture"
  follows="left|top"
@@ -4205,37 +3380,6 @@ width="510">
    parameter="105"
    function="Pref.UnbindKey"/>
  </button>
-<!-- <button
- follows="top|left"
- tool_tip="Bind a key for opening chat."
- name="start_chat2"
- enabled="true"
- height="15"
- width="125"
- halign="left"
- is_toggle="false"
- label="⌊[MASK][KEY]⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="365"
- top_delta="1">
-   <button.commit_callback
-   parameter="113"
-   function="Pref.BindKey"/>
- </button>-->
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  <icon
   follows="top|right"
   height="1"
@@ -4329,18 +3473,6 @@ width="510">
    parameter="108"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="4_spin_ccw"
  follows="left|top"
@@ -4423,18 +3555,6 @@ width="510">
    parameter="109"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="4_forward"
  follows="left|top"
@@ -4517,18 +3637,6 @@ width="510">
    parameter="106"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="4_backwards"
  follows="left|top"
@@ -4611,18 +3719,6 @@ width="510">
    parameter="107"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="4_spin_over"
  follows="left|top"
@@ -4705,18 +3801,6 @@ width="510">
    parameter="110"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
    <text
  name="4_spin_under"
  follows="left|top"
@@ -4799,18 +3883,6 @@ width="510">
    parameter="111"
    function="Pref.UnbindKey"/>
  </button>
- <!--<line_editor
-   control_name="jump"
-   border_style="line"
-   border_thickness="1"
-   follows="left|top"
-   font="SansSerif"
-   height="22"
-   layout="topleft"
-   left_pad="2"
-   name="keybind"
-   top_delta="0"
-   width="30" />-->
  
  <button
  height="22"

@@ -62,33 +62,6 @@ width="510">
  name="AutomaticFly"
  top_pad="0"
  width="256" />
- <!--<radio_group
- control_name="LetterKeysFocusChatBar" 
- height="27"
- layout="topleft"
- left="270"
- top="32"
- width="200"
- name="inworld_typing_preference">
-  <radio_item
-  label="Letter keys start Chat"
-  name="radio_start_chat"
-  top_delta="25" 
-  layout="topleft"
-  height="16" 
-  left="0" 
-  value="1"
-  width="150" />
-  <radio_item
-  label="Letter keys move (i.e. W A S D)"
-  left="0"
-  layout="topleft"
-  top_pad="1" 
-  height="16" 
-  name="radio_move"
-  value="0"
-  width="75" />
- </radio_group>-->
  <text
  type="string"
  length="1"
@@ -256,22 +229,6 @@ width="510">
  tool_tip="Make the Avatar turn around when pressing back instead of the Avatar walking backwards"
  width="200"
  top_pad="0"/>
- <!--<spinner
- decimal_digits="2"
- follows="left|top"
- height="16"
- control_name="MovementRotationSpeed"
- increment="0.01"
- label="Rotation Speed:"
- label_width="150"
- layout="topleft"
- left="270"
- max_val="1"
- initial_value="0.15"
- min_val="0"
- name="RotationSpeed"
- top_delta="-16"
- width="200" />-->
  <slider
    can_edit_text="true"
    control_name="MovementRotationSpeed"

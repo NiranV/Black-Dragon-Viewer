@@ -29,64 +29,6 @@ width="510">
   mouse_opaque="false"
   left="0"
   width="495">
- <!--<panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top="0"
- width="492"/>-->
- <!--<radio_group
- height="16"
- layout="topleft"
- left="10"
- control_name="ChatFontSize"
- name="chat_font_size"
- top_pad="15"
- width="440">
- <radio_item
- height="16"
- label="Small"
- layout="topleft"
- left="0"
- name="radio"
- value="0"
- top="0"
- width="100" >
-  <radio_item.label_text
-  v_pad="-1"/>
- </radio_item>
- <radio_item
- height="16"
- label="Medium"
- font="SanfSerifMedium"
- layout="topleft"
- left_pad="10"
- name="radio2"
- value="1"
- top_delta="0"
- width="100" >
-  <radio_item.label_text
-  v_pad="-1"/>
- </radio_item>
- <radio_item
- height="16"
- label="Large"
- font="SansSerifLarge"
- layout="topleft"
- left_pad="10"
- name="radio3"
- value="2"
- top_delta="0"
- width="100">
-  <radio_item.label_text
-  v_pad="-2"/>
- </radio_item>
- </radio_group>-->
  <panel
  follows="left|top|right"
  height="20"
@@ -279,33 +221,6 @@ width="510">
  name="plain_text_chat_history"
  top_pad="15"
  width="250" />
- <!--<radio_group 
- control_name="ShowScriptErrorsLocation"
- enabled_control="ShowScriptErrors" 
- follows="top|left"
- height="36" 
- layout="topleft" 
- left_delta="10"
- name="show_location" 
- top_pad="2"
- width="200">
- <radio_item
- height="16" 
- label="Nearby Chat"
- layout="topleft" 
- left="3"
- name="0" 
- top="0" 
- width="315" />
- <radio_item 
- height="16" 
- label="Script Error Window" 
- layout="topleft"
- left_delta="0"
- name="1" 
- top_pad="0" 
- width="315" />
- </radio_group>-->
  <check_box
  control_name="ShowScriptErrors" 
  follows="left|top"
@@ -551,20 +466,6 @@ width="510">
  top_pad="4"
  name="bubble_text_chat"
  width="120" />
- <!--<slider
- control_name="ChatBubbleOpacity"
- follows="left|top"
- height="15"
- increment="0.05"
- initial_value="1"
- label="Bubble Chat Opacity:"
- layout="topleft"
- left="10"
- top_pad="2"
- decimal_digits="2"
- label_width="150"
- name="bubble_chat_opacity"
- width="319"/>-->
  <slider
       control_name="ChatBubbleOpacity"
       enabled_control="UseChatBubbles"
@@ -599,55 +500,6 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
- <!--<spinner
- control_name="ChatStartFromBottomPixels"
- decimal_digits="0"
- follows="left|top"
- height="20"
- increment="1"
- initial_value="50"
- label="Space from bottom to chat:"
- label_width="145"
- layout="topleft"
- left="270"
- max_val="120"
- min_val="0"
- name="ChatStartFromBottomPixels"
- top="295"
- width="200" />
- <spinner
- control_name="NearbyToastLifeTime"
- decimal_digits="0"
- follows="left|top"
- height="20"
- increment="1"
- initial_value="320"
- label="Chattext Life Time:"
- label_width="145"
- layout="topleft"
- left="270"
- max_val="40"
- min_val="2"
- name="NearbyToastLifeTime"
- top_pad="2"
- width="200" />
- <spinner
- control_name="NearbyToastFadingTime"
- decimal_digits="0"
- follows="left|top"
- height="20"
- increment="1"
- initial_value="320"
- label="Chattext Fade Time:"
- label_width="145"
- layout="topleft"
- left="270"
- max_val="39"
- min_val="1"
- name="NearbyToastFadingTime"
- top_pad="2"
- width="200" />-->
-
  <panel
  follows="left|top|right"
  height="20"

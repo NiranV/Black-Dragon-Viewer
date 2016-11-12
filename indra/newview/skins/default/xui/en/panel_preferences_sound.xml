@@ -441,17 +441,6 @@ width="510">
    label="Play sounds from gestures"
    top_pad="0"
    left_delta="0"/>
-   <!--<check_box
-   name="media_meta_data_show"
-   enabled="false"
-   control_name="ShowStreamMetadata"
-   value="true"
-   follows="left|top|right"
-   height="16"
-   tool_tip="Enables Title/Atrist Information to be Shown on Screen when Music Stream is active"
-   label="Show Title/Artist Information when Songs change"
-   top_pad="1"
-   left="10"/>-->
    <check_box
    name="media_auto_play_btn"
    control_name="ParcelMediaAutoPlayEnable"
@@ -568,55 +557,6 @@ width="510">
    width="150">
    Listen Voice from:
    </text>
-   <!--<icon
-   follows="left|top"
-   height="18"
-   image_name="Cam_FreeCam_Off"
-   layout="topleft"
-   name="camera_icon"
-   mouse_opaque="true"
-   visible="true"
-   width="18"
-   top_pad="-12"
-   left_pad="0"/>
-   <icon
-   follows="left|top"
-   height="18"
-   image_name="Move_Walk_Off"
-   layout="topleft"
-   name="avatar_icon"
-   mouse_opaque="true"
-   visible="true"
-   width="18"
-   left_pad="140" />-->
-   <!--<radio_group
-   enabled_control="EnableVoiceChat"
-   control_name="VoiceEarLocation"
-   follows="left|top"
-   layout="topleft"
-   left="62"
-   width="310"
-   height="18"
-   top_delta="3"
-   name="ear_location">
-   <radio_item
-   height="16"
-   label="Camera position"
-   follows="left|top"
-   layout="topleft"
-   left_pad="-190"
-   name="0"
-   top_pad="0"
-   width="100"/>
-   <radio_item
-   height="16"
-   follows="left|top"
-   label="Avatar position"
-   layout="topleft"
-   left_pad="55"
-   name="1"
-   width="100" />
-   </radio_group>-->
    <radio_group
    enabled_control="EnableVoiceChat"
    control_name="VoiceEarLocation"
@@ -750,21 +690,6 @@ width="510">
     max_chars="256"
     name="voice_input_device"
     width="170" />
-    <!--<slider
-    control_name="AudioLevelMic"
-    follows="left|top"
-    height="14"
-    increment="0.025"
-    initial_value="1.0"
-    show_text="false"
-    layout="topleft"
-    label="Volume"
-    left="270"
-    max_val="2"
-    name="mic_volume_slider"
-    tool_tip="Change the volume using this slider"
-    top_delta="5"
-    width="150" />-->
     <slider
     control_name="AudioLevelMic"
     decimal_digits="0"
@@ -852,34 +777,6 @@ width="510">
     label="Push-to-Speak trigger"
     top_pad="5"
     width="270" />
-    <!--<button
-    follows="top|left"
-    enabled_control="EnableVoiceChat"
-    height="23"
-    label="Set Key"
-    left_pad="3"
-    top_delta="0"
-    name="set_voice_hotkey_button"
-    width="100">
-    <button.commit_callback
-         function="Pref.VoiceSetKey"/>
-    </button>-->
-    <!--<button
-    enabled_control="EnableVoiceChat"
-    follows="top|left"
-    halign="center"
-    height="15"
-    image_selected="Sync_Enabled"
-    image_unselected="Sync_Enabled"
-    tool_tip="Reset to Middle Mouse Button"
-    mouse_opaque="true"
-    name="set_voice_middlemouse_button"
-    left_pad="5"
-    top_delta="3"
-    width="16">
-    <button.commit_callback
-         function="Pref.VoiceSetMiddleMouse"/>
-    </button>-->
     <button
     follows="left|top"
     enabled_control="EnableVoiceChat"

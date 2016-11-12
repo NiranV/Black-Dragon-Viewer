@@ -258,42 +258,6 @@
     width="300">
        Avatar Name Options:
    </text>
-   <!--<radio_group
-     control_name="AvatarNameTagMode"
-     height="16"
-     width="300"
-     layout="topleft"
-     left="10"
-     top_pad="15"
-     name="Name_Tag_Preference">
-    <radio_item
-         label="On"
-         layout="topleft"
-         left="0"
-         top="0"
-         name="radio2"
-         value="1"
-         height="16"
-         width="100" />
-        <radio_item
-         label="Off"
-         layout="topleft"
-         left_pad="0"
-         name="radio"
-         top_delta="0"
-         value="0"
-         height="16"
-         width="100" />
-        <radio_item
-         label="Show briefly"
-         layout="topleft"
-         left_pad="0"
-         top_delta="0"
-         name="radio3"
-         value="2"
-         height="16"
-         width="100" />
-   </radio_group>-->
    <radio_group
    control_name="AvatarNameTagMode"
    height="19"

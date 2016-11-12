@@ -157,59 +157,6 @@ width="510">
    <check_box.commit_callback
       function="Pref.FullscreenWindow"/>
    </check_box>
-   <!--<check_box
-   control_name="FullScreen"
-   disabled_control="FullScreenWindow"
-   height="16"
-   initial_value="false"
-   label="Fullscreen Mode"
-   tool_tip="Controls if the Viewer should be started in Fullscreen mode next time."
-   layout="topleft"
-   left="10"
-   name="Fullscreen"
-   top_pad="0"
-   width="115" >
-         <check_box.check_button
-         image_overlay="Caution_Widget"
-         image_overlay_alignment="left"/>
-      </check_box>
-   <check_box
-   control_name="FullScreenAutoDetectAspectRatio"
-   enabled_control="FullScreen"
-   height="16"
-   initial_value="false"
-   label="Fullscreen auto Aspect Ratio"
-   tool_tip="Controls if the aspect of your Fullscreen resolution should be automatically detected or not"
-   layout="topleft"
-   left_delta="0"
-   name="FullAspect"
-   top_pad="0"
-   width="115"/>
-   <check_box
-   control_name="RenderAvatarCloth"
-   visiblity_control="RenderAvatarVP"
-   height="16"
-   initial_value="true"
-   label="Enable Avatar Cloth Simulation"
-   tool_tip="Toggles wavy cloth simulation on or off and can boost average FPS on some Systems. Doesnt work in Deferred Rendering!"
-   layout="topleft"
-   left_delta="0"
-   name="AvatarCloth"
-   top_pad="0"
-   width="115" />-->
-   <!--<check_box
-   control_name="RenderTransparentWater"
-   disabled_control="VertexShaderEnable"
-   height="16"
-   initial_value="true"
-   label="Render Transparent Water"
-   tool_tip="Toggles transparent water, false renders water as opaque with a simple texture applied. Must be enabled for Vertex Shader water reflections in some cases"
-   layout="topleft"
-   left="10"
-   name="RenderTransparentWater"
-   top_pad="0"
-   width="115" />-->
-   
    <text
  type="string"
  length="1"
@@ -222,30 +169,6 @@ width="510">
  width="220">
  Interface Size:
  </text>
- <!--<combo_box
- control_name="UIScaleFactor"
- height="20"
- follows="left|top"
- layout="topleft"
- initial_value="1"
- left="140"
- tool_tip="Control the overall size of the User Interface (Small = 0.8 , Normal = 1.0 , Big 1.2)"
- top_pad="-15"
- name="UIScaleFactor"
- width="100">
- <combo_box.item
- label="Small"
- name="0"
- value="0.8"/>
- <combo_box.item
- label="Normal"
- name="1"
- value="1"/>
- <combo_box.item
- label="Big"
- name="2"
- value="1.2"/>
- </combo_box>-->
                   <radio_group
                   control_name="UIScaleFactor"
                   height="19"
@@ -476,56 +399,6 @@ width="510">
     name="progress_bar" />
  
  </layout_panel>
-     <!-- <layout_panel
-	  follows="top|left|right"
-	  layout="topleft"
-	  height="26"
-	  auto_resize="false"
-	  name="title_layout_panel"
-	  width="515">
-   <button
-		 follows="left|top"
-         control_name="PrefsBasicVisible"
-		 height="20"
-		 image_bottom_pad="0"
-		 image_overlay="AddItem_Off"
-         image_overlay_alignment="right"
-         is_toggle="true"
-		 image_selected="SegmentedBtn_Right_Selected_Disabled"
-		 image_unselected="SegmentedBtn_Right_Selected"
-		 layout="topleft"
-		 left="1"
-		 name="basic_expand"
-		 top="0"
-		 width="495" >
-      <button.commit_callback
-      function="Pref.Tab"
-      parameter="basic_layout_panel"/>
-   </button>
-   <text
-   name="basic_label"
-   follows="left|top"
-   layout="topleft"
-   top_delta="4" 
-   left="10" 
-   height="12"
-   width="220">
-   Basic Options:
-   </text>
-
-   
-   </layout_panel>
-      <layout_panel
-	  follows="top|left|right"
-      visibility_control="PrefsBasicVisible"
-	  layout="topleft"
-	  height="260"
-	  auto_resize="false"
-      visible="false"
-	  name="basic_layout_panel"
-	  width="515">
-
- </layout_panel>-->
       <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
@@ -627,41 +500,6 @@ width="510">
  width="120">
  Object Quality:
  </text>
- <!--<combo_box
- control_name="RenderVolumeLODFactor"
- height="20"
- layout="topleft"
- tool_tip="Controls overall detail level of Prims on distance. Level-of-Detail might need to be disabled in order for this to take a great visible effect!"
- follows="left|top"
- left="140"
- top_pad="-15"
- name="ObjectLODDrop"
- width="100">
- <combo_box.item
- label="Very Low"
- name="0"
- value="0.5"/>
- <combo_box.item
- label="Low"
- name="1"
- value="1"/>
- <combo_box.item
- label="Medium*"
- name="2"
- value="2"/>
- <combo_box.item
- label="High"
- name="3"
- value="5"/>
- <combo_box.item
- label="Very High"
- name="4"
- value="10"/>
- <combo_box.item
- label="Ultra"
- name="5"
- value="15"/>
- </combo_box>-->
  <radio_group
                   control_name="RenderVolumeLODFactor"
                   height="19"
@@ -796,37 +634,6 @@ width="510">
  width="120">
  Avatar Quality:
  </text>
- <!--<combo_box
- control_name="RenderAvatarLODFactor"
- height="20"
- layout="topleft"
- follows="left|top"
- left="140"
- tool_tip="Controls detail level of rendered Avatar meshes and is an important factor for Avatar Imposters"
- top_pad="-15"
- name="AvatarLODDrop"
- width="100">
- <combo_box.item
- label="Very Low"
- name="0"
- value="0.5"/>
- <combo_box.item
- label="Low"
- name="1"
- value="1"/>
- <combo_box.item
- label="Medium*"
- name="2"
- value="2"/>
- <combo_box.item
- label="High"
- name="3"
- value="5"/>
- <combo_box.item
- label="Very High"
- name="4"
- value="10"/>
- </combo_box>-->
  <radio_group
                   control_name="RenderAvatarLODFactor"
                   height="19"
@@ -941,41 +748,6 @@ width="510">
  width="120">
  Terrain Quality:
  </text>
- <!--<combo_box
- control_name="RenderTerrainLODFactor"
- height="20"
- layout="topleft"
- follows="left|top"
- left="390"
- tool_tip="Controls detail levek of Terrain on distance"
- top_pad="-15"
- name="TerrainLODDrop"
- width="100">
- <combo_box.item
- label="Very Low"
- name="0"
- value="0.5"/>
- <combo_box.item
- label="Low"
- name="1"
- value="1"/>
- <combo_box.item
- label="Medium*"
- name="2"
- value="2"/>
- <combo_box.item
- label="High"
- name="3"
- value="5"/>
- <combo_box.item
- label="Very High"
- name="4"
- value="10"/>
- <combo_box.item
- label="Ultra"
- name="5"
- value="15"/>
- </combo_box>-->
  <radio_group
                   control_name="RenderTerrainLODFactor"
                   height="19"
@@ -1244,42 +1016,6 @@ width="510">
  width="120">
  Sky Quality:
  </text>
- <!--<combo_box
- control_name="WLSkyDetail"
- enabled_control="WindLightUseAtmosShaders"
- height="20"
- layout="topleft"
- follows="left|top"
- left="390"
- tool_tip="Controls sky resolution in Windlight and Deferred Rendering. All settings beyond High might cause a little performance drop and usually dont show a visible effect!"
- top_pad="-15"
- name="SkyLODDrop"
- width="100">
- <combo_box.item
- label="Very Low"
- name="0"
- value="16"/>
- <combo_box.item
- label="Low"
- name="1"
- value="32"/>
- <combo_box.item
- label="Medium"
- name="2"
- value="64"/>
- <combo_box.item
- label="High*"
- name="3"
- value="128"/>
- <combo_box.item
- label="Very High"
- name="4"
- value="192"/>
- <combo_box.item
- label="Ultra"
- name="5"
- value="256"/>
- </combo_box>-->
  <radio_group
                   control_name="WLSkyDetail"
                   height="19"
@@ -1444,42 +1180,6 @@ width="510">
  width="120">
  Avatar Physics:
  </text>
- <!--<combo_box
- control_name="RenderAvatarPhysicsLODFactor"
- height="20"
- layout="topleft"
- follows="left|top"
- left="390"
- initial_value="1"
- tool_tip="Controls the amount of ressources used to simulate Avatar physics"
- top_pad="-15"
- name="AVPhysics"
- width="100">
- <combo_box.item
- label="Very Low"
- name="0"
- value="0.1"/>
- <combo_box.item
- label="Low"
- name="1"
- value="0.2"/>
- <combo_box.item
- label="Medium"
- name="2"
- value="0.4"/>
- <combo_box.item
- label="High"
- name="3"
- value="0.6"/>
- <combo_box.item
- label="Very High"
- name="4"
- value="0.8"/>
- <combo_box.item
- label="Ultra*"
- name="5"
- value="1"/>
- </combo_box>-->
  <radio_group
                   control_name="RenderAvatarPhysicsLODFactor"
                   height="19"
@@ -1644,38 +1344,6 @@ width="510">
  width="120">
  Reflection Amount:
  </text>
- <!--<combo_box
- control_name="RenderReflectionDetail"
- enabled_control="VertexShaderEnable"
- height="20"
- follows="left|top"
- layout="topleft"
- left="140"
- top_pad="-15"
- name="Reflections"
- width="100">
- <combo_box.item
- label="None"
- name="0"
- value="0"/>
- <combo_box.item
- label="Terrain"
- name="1"
- value="1"/>
- <combo_box.item
- label="Objects"
- name="2"
- value="2"/>
- <combo_box.item
- label="Avatars"
- name="3"
- value="3"/>
- <combo_box.item
- label="Everything*"
- name="4"
- value="4"/>
- </combo_box>-->
- 
  <radio_group
                   control_name="RenderReflectionDetail"
                   height="19"
@@ -1781,42 +1449,6 @@ width="510">
  width="120">
  Reflection Quality:
  </text>
- <!--<combo_box
- control_name="RenderWaterRefResolution"
- enabled_control="VertexShaderEnable"
- height="20"
- layout="topleft"
- follows="left|top"
- left="140"
- top_pad="-15"
- tool_tip="Changes the resolution of water reflections. This option might have a significant impact on performance on any setting higher than High"
- name="ReflectionRes"
- width="100">
- <combo_box.item
- label="Low"
- name="0"
- value="256"/>
- <combo_box.item
- label="Normal"
- name="1"
- value="512"/>
- <combo_box.item
- label="High*"
- name="2"
- value="768"/>
- <combo_box.item
- label="Very High"
- name="3"
- value="1024"/>
- <combo_box.item
- label="Ultra"
- name="4"
- value="1536"/>
- <combo_box.item
- label="Supreme"
- name="5"
- value="2048"/>
- </combo_box>-->
  <radio_group
                   control_name="RenderWaterRefResolution"
                   height="19"
@@ -1948,42 +1580,6 @@ width="510">
  width="150">
  Terrain Texture Quality:
  </text>
- <!--<combo_box
- control_name="RenderTerrainScale"
- enabled_control="VertexShaderEnable"
- height="20"
- layout="topleft"
- follows="left|top"
- left="140"
- tool_tip="Controls the overall sharpness of default ground textures by increasing the repeats. Too high settings may cause the ground to repeat every meter making it look bad!"
- top_pad="-15"
- name="TerrainTexDrop"
- width="100">
- <combo_box.item
- label="Very Low"
- name="0"
- value="20"/>
- <combo_box.item
- label="Low"
- name="1"
- value="16"/>
- <combo_box.item
- label="Medium*"
- name="2"
- value="12"/>
- <combo_box.item
- label="High"
- name="3"
- value="9"/>
- <combo_box.item
- label="Very High"
- name="4"
- value="6"/>
- <combo_box.item
- label="Ultra"
- name="5"
- value="5"/>
- </combo_box>-->
  <radio_group
                   control_name="RenderTerrainScale"
                   height="19"
@@ -2110,31 +1706,6 @@ width="510">
  width="120">
  Glow Quality:
  </text>
- <!--<combo_box
- control_name="RenderGlowResolutionPow"
- enabled_control="RenderGlow"
- height="20"
- layout="topleft"
- follows="left|top"
- left="140"
- initial_value="10"
- tool_tip="Controls the resolution of Post Process Glow"
- top_pad="-15"
- name="PostProcessDrop"
- width="100">
- <combo_box.item
- label="Low"
- name="1"
- value="7"/>
- <combo_box.item
- label="Medium*"
- name="2"
- value="9"/>
- <combo_box.item
- label="High"
- name="3"
- value="10"/>
- </combo_box>-->
  <radio_group
                   control_name="RenderGlowResolutionPow"
                   height="19"
@@ -2336,17 +1907,6 @@ width="510">
       visible="false"
 	  name="performance_layout_panel"
 	  width="515">
-   <!--<check_box
-      control_name="RenderVBOEnable"
-      height="16"
-      initial_value="true"
-      label="Enable OpenGL Vertex Buffer Objects"
-      layout="topleft"
-      left="10"
-      top_pad="15"
-      name="vbo"
-      tool_tip="Enabling this on modern hardware gives a performance gain.  However, older hardware often has poor implementations of VBOs and you may get crashes when this is enabled."
-      width="315" />-->
    <slider
  control_name="RenderFarClip"
  decimal_digits="0"
@@ -2600,80 +2160,6 @@ width="510">
   width="450"
   left="25"
   top_pad="0"/>
-   <!--<check_box
-   control_name="RenderUseImpostors"
-   height="16"
-   initial_value="false"
-   label="Use Simple Avatar Impostors"
-   tool_tip="Toggles Avatar Impostors on or off which replace all Avatars exceeding your set amount with 2D sprites which can boost your performance significantly. Depends on your Max Avatar Visible and Avatar Quality settings"
-   layout="topleft"
-   left="10"
-   name="AvatarImpostors"
-   top_pad="5"
-   width="115" />-->
-   
- <!--<text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="10"
- name="MaxAvatars"
- top_pad="4"
- width="120">
- Max. Avatars Visible:
- </text>
- <combo_box
- control_name="RenderAvatarMaxVisible"
- enabled_control="RenderUseImpostors"
- height="20"
- layout="topleft"
- follows="left|top"
- left="140"
- tool_tip="Controls the maximum amount of Avatars rendered on Screen"
- top_pad="-15"
- name="AvatarCountDrop"
- width="100">
- <combo_box.item
- label="3 Avatars"
- name="0"
- value="3"/>
- <combo_box.item
- label="5 Avatars"
- name="1"
- value="5"/>
- <combo_box.item
- label="10 Avatars*"
- name="2"
- value="10"/>
- <combo_box.item
- label="15 Avatars"
- name="3"
- value="15"/>
- <combo_box.item
- label="20 Avatars"
- name="4"
- value="20"/>
- <combo_box.item
- label="25 Avatars"
- name="5"
- value="25"/>
- </combo_box>-->
- 
- <!--<check_box
-      control_name="RenderGammaFull"
-      height="16"
-      initial_value="true"
-      label="Use Full Control Gamma"
-      layout="topleft"
-      left="270"
-      name="RenderGammaFull"
-      tool_tip="Use fully controllable gamma correction, instead of faster, hard-coded gamma correction."
-      top_delta="-65"
-      width="256" />-->
-
-   
    <check_box
       control_name="RenderUnloadedAvatar"
       height="16"
@@ -2743,69 +2229,6 @@ width="510">
   width="450"
   left="25"
   top_pad="0"/>
-   <!--<radio_group
-                  control_name="RenderAutoMuteFunctions"
-                  enabled_control="RenderUseImpostors"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderAutoMuteFunctions"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Disabled"
-                        value="0"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Enabled"
-                        value="7"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>-->
-      <!--<combo_box
- control_name="RenderAutoMuteFunctions"
- enabled_control="RenderUseImpostors"
- height="20"
- layout="topleft"
- follows="left|top"
- left="140"
- tool_tip="Enable advanced options to determite which avatars should be rendered and which shouldn't"
- top_pad="-15"
- name="AutoDerenderDropdown"
- width="100">
- <combo_box.item
- label="Disabled"
- name="0"
- value="0"/>
- <combo_box.item
- label="Enabled"
- name="1"
- value="7"/>
- </combo_box>-->
       <slider
       control_name="RenderAutoMuteSurfaceAreaLimit"
       decimal_digits="0"
@@ -2981,44 +2404,6 @@ width="510">
       visible="false"
 	  name="vertex_layout_panel"
 	  width="515">
-   <!--<check_box
-   control_name="RenderAvatarVP"
-   height="16"
-   initial_value="true"
-   label="Enable Hardware Skinning"
-   layout="topleft"
-   left_delta="5"
-   tool_tip="Toggles skinning by your Hardware and enables some advanced rendering features like Avatar cloth simulation. Needed for Deferred Rendering!"
-   name="AvatarVertexProgram"
-   top_pad="12"
-   width="115"/>
-   <check_box
-   control_name="WindLightUseAtmosShaders"
-   enabled_control="VertexShaderEnable"
-   height="16"
-   initial_value="true"
-   label="Use Atmospheric Shader"
-   tool_tip="Toggles the Atmospheric Shader rendering the scene more realistic by adding additional light calculations. Needs Vertex Shader!"
-   layout="topleft"
-   left_delta="0"
-   name="WindLightUseAtmosShaders"
-   top_pad="0"
-   width="115"/>-->
- 
- <!--<check_box
-   control_name="RenderGlow"
-   disabled_control="RenderDeferred"
-   height="16"
-   initial_value="true"
-   label="Render Post Process Glow"
-   tool_tip="Toggles the glowing of Prims and environment in some circumstances. Glow appearance and strength can be manipulated in the 'Lighting Tab' - needs Vertex Shader to run and is needed for Deferred Rendering"
-   layout="topleft"
-   left="10"
-   name="Glow"
-   top_pad="28"
-   width="115" />-->
-
- 
       <slider  
       control_name="RenderGlowIterations"
       enabled_control="RenderGlow"
@@ -3582,26 +2967,6 @@ width="510">
  width="120">
  Antialiasing:
  </text>
- <!--<combo_box
- control_name="RenderFSAASamples"
- height="20"
- label=""
- layout="topleft"
- follows="left|top"
- tool_tip="Toggles FXAA (Fast Aprox. Anti-aliasing) on or off. This setting can greatly enhance image quality without having any impact on performance."
- left="140"
- name="fsaa"
- top_delta="-2"
- width="100">
- <combo_box.item
- label="Disabled"
- name="FSAADisabled"
- value="0" />
- <combo_box.item
- label="Enabled"
- name="2x"
- value="2" />
- </combo_box>-->
  <radio_group
                   control_name="RenderFSAASamples"
                   height="19"
@@ -3656,41 +3021,6 @@ width="510">
  width="120">
  Normalmap Scale:
  </text>
- <!--<combo_box
- control_name="RenderNormalMapScale"
- height="20"
- follows="left|top"
- layout="topleft"
- left="140"
- tool_tip="Controls the strength and resolution ration when generating Normal Maps on Bumpmaps (needs turning on/off any higher graphic relevant option)"
- top_delta="-2"
- name="BumpStrengthSelection"
- width="100">
- <combo_box.item
- label="Very Fine"
- name="0"
- value="512"/>
- <combo_box.item
- label="Finer"
- name="1"
- value="256"/>
- <combo_box.item
- label="Fine"
- name="2"
- value="128"/>
- <combo_box.item
- label="Normal*"
- name="3"
- value="64"/>
- <combo_box.item
- label="Rough"
- name="4"
- value="32"/>
- <combo_box.item
- label="Rougher"
- name="5"
- value="16"/>
- </combo_box>-->
  <radio_group
                   control_name="RenderNormalMapScale"
                   height="19"
@@ -3786,18 +3116,6 @@ width="510">
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
- 
- <!--<check_box
-   control_name="RenderObjectBump"
-   height="16"
-   initial_value="true"
-   label="Render Advanced Materials"
-   tool_tip="Toggles Bumpmapping and shiny surfaces which reflect lights of the environment"
-   layout="topleft"
-   left="10"
-   name="BumpShiny"
-   top_pad="3"
-   width="115" />-->
  <text
  type="string"
  length="1"
@@ -3835,30 +3153,6 @@ width="510">
  width="120">
  Shadows:
  </text>
- <!--<combo_box
- control_name="RenderShadowDetail"
- enabled_control="RenderDeferred"
- height="20"
- follows="left|top"
- layout="topleft"
- left="140"
- top_pad="-15" 
- name="ShadowDetail"
- tool_tip="No Shadows - Disables shadows completly seperate from the new lighting system , Less Shadows - Renders only normal shadows thrown by sun , All Shadows - Renders all shadows , projected lights inclusive"
- width="100">
- <combo_box.item
- label="No Shadows"
- name="0"
- value="0"/>
- <combo_box.item
- label="Sun &amp; Moon"
- name="1"
- value="1"/>
- <combo_box.item
- label="Projectors"
- name="2"
- value="2"/>
- </combo_box>-->
  <radio_group
                   control_name="RenderShadowDetail"
                   height="19"
@@ -3918,82 +3212,6 @@ width="510">
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
- 
- <!--<text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="10"
- name="ShadowAmount"
- top_pad="4"
- width="120">
- Softening Kernel:
- </text>-->
- <!--<combo_box
- control_name="RenderShadowType"
- enabled_control="RenderDeferred"
- height="20"
- follows="left|top"
- layout="topleft"
- left="390"
- top_pad="-15" 
- name="ShadowStyle"
- tool_tip="Toggle between Tofu's new Shadow softening algorythm or the old original one"
- width="100">
- <combo_box.item
- label="Tofu's New"
- name="1"
- value="1"/>
- <combo_box.item
- label="Original"
- name="0"
- value="0"/>
- </combo_box>-->
- 
- <!--<radio_group
-                  control_name="RenderShadowType"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderShadowType"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Default"
-                        value="0"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Tofu's"
-                        value="1"
-                        layout="topleft"
-                        name="1"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>-->
  <slider
       control_name="RenderShadowFarClip"
       decimal_digits="0"
@@ -5524,35 +4742,6 @@ width="510">
       width="140">
       Tone Mapping Style:
       </text>
-      <!--<combo_box
-      control_name="ExodusRenderToneMappingTech"
-      height="20"
-      initial_value="false"
-      label=""
-      layout="topleft"
-      follows="top|left"
-      enabled_control="ExodusRenderToneMapping"
-      left="140"
-      name="ExodusRenderToneMappingTech"
-      top_delta="-2"
-      width="100">
-      <combo_box.item
-      label="Filmic"
-      name="Filmic"
-      value="0" />
-      <combo_box.item
-      label="Linear"
-      name="Linear"
-      value="1" />
-      <combo_box.item
-      label="Reinhard"
-      name="Reinhard"
-      value="2" />
-      <combo_box.item
-      label="Custom"
-      name="Custom"
-      value="3" />
-      </combo_box>-->
       <radio_group
                   control_name="ExodusRenderToneMappingTech"
                   height="19"
@@ -5941,24 +5130,6 @@ width="510">
    name="color_corr_label">
    Color Correction:
    </text>
-   <!--<combo_box
-   control_name="ExodusRenderColorGradeTech"
-   height="20"
-   layout="topleft"
-   follows="top|left"
-   left="140"
-   top_delta="-2"
-   name="ExodusRenderColorGradeTech"
-   width="100">
-   <combo_box.item
-   label="None"
-   name="1"
-   value="1"/>
-   <combo_box.item
-   label="Linear"
-   name="0"
-   value="0"/>
-   </combo_box>-->
    <radio_group
                   control_name="ExodusRenderColorGradeTech"
                   height="19"

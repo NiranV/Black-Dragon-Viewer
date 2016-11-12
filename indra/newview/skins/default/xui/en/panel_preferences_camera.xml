@@ -449,18 +449,6 @@
  name="title"
  top_pad="10"
  width="492"/>
-   <!--<text
-   type="string"
-   length="1"
-   follows="left|top"
-   height="12"
-   layout="topleft"
-   left="10"
-   name="Mouselook:"
-   top_delta="4"
-   width="300">
-       Mouselook Options:
-   </text>-->
    <check_box
    control_name="EnableMouselook"
    follows="left|top"

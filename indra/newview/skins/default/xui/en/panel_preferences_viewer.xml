@@ -392,36 +392,6 @@ width="510">
        <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-		     <!--<text
-		     type="string"
-		     length="1"
-		     follows="left|top"
-		     height="15"
-		     layout="topleft"
-		     left_pad="6"
-		     mouse_opaque="false"
-		     name="text_box2"
-		     top_delta="2"
-		     width="200">
-		     kbps
-			 </text>-->
-		     <!--<spinner
-		     control_name="ConnectionPort"
-		     enabled_control="ConnectionPortEnabled"
-		     decimal_digits="0"
-		     follows="left|top"
-		     height="23"
-		     increment="1"
-		     initial_value="13000"
-		     layout="topleft"
-		     left="170"
-		     max_val="13050"
-		     min_val="13000"
-		     name="connection_port"
-		     top_delta="-2"
-		     width="63" />-->
-
-		     
 		     <panel
  follows="left|top|right"
  height="20"
@@ -667,40 +637,6 @@ width="510">
        <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-			 
-			 <!--<text
-		     name="head_label1"
-		     follows="left|top"
-		     layout="topleft"
-		     top_delta="-17" 
-		     left="225" 
-		     height="20"
-		     width="300"
-		     text_color="EmphasisColor">
-		     Set default Object Texture here:
-		     </text>
-		     <line_editor
-		     control_name="DefaultObjectTexture"
-		     follows="left|top"
-		     font="SansSerif"
-		     height="23"
-		     layout="topleft"
-		     left="225"
-		     name="DefaultObjectTexture"
-		     tool_tip="Sets the Default Object Texture - Needs Restart of Nirans Viewer!"
-		     top_pad="-3"
-		     width="270" />
-		     <text
-		     name="default_label"
-		     follows="left|top"
-		     layout="topleft"
-		     top_delta="26" 
-		     left_delta="0" 
-		     height="20"
-		     width="300"
-		     text_color="EmphasisColor">
-		     (89556747-24cb-43ed-920b-47caed15465f - Default)
-			 </text>-->
 	      </panel>
        </scroll_container>
 </panel>
