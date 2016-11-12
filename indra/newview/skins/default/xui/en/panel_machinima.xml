@@ -19,20 +19,6 @@ width="345">
       image_name="Window_Foreground"
       left="0"
       width="345" />
-      <!--<text
-      font="SansSerifBig"
-      font.style="BOLD"
-      font_shadow="soft"
-      text_color="BeaconColor"
-      follows="left|top"
-      height="20"
-      layout="topleft"
-      left="10"
-      name="machinima"
-      top="4"
-      width="320">
-      Machinima Sidebar
-      </text>-->
       <scroll_container
       color="Transparent"
       follows="all"
