@@ -33,6 +33,17 @@
      top="8"
      width="320">
          <panel
+           class="outfits_list"
+           filename="panel_outfits_list.xml"
+           height="520"
+           name="outfitslist_tab"
+           bg_alpha_image="Panel_Background"
+					 background_visible="true"
+           follows="all"
+           label="My Outfits"
+           layout="topleft"
+           width="315" />
+				 <panel
            class="outfit_gallery"
            filename="panel_outfit_gallery.xml"
            height="520"
@@ -42,17 +53,6 @@
            help_topic="outfit_gallery_tab"
            follows="all"
            label="Outfit Gallery"
-           layout="topleft"
-           width="315" />
-         <panel
-           class="outfits_list"
-           filename="panel_outfits_list.xml"
-           height="520"
-           name="outfitslist_tab"
-           bg_alpha_image="Panel_Background"
-					 background_visible="true"
-           follows="all"
-           label="My Outfits"
            layout="topleft"
            width="315" />
          <panel
