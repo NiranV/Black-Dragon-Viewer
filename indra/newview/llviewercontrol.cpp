@@ -737,13 +737,12 @@ static bool handleGodraysChanged(const LLSD& newvalue)
 static bool handleShadowsChanged(const LLSD& newvalue)
 {
 	bool ret = false;
-	if (gPipeline.RenderDeferred
-		&& LLViewerShaderMgr::instance()->resetDeferredShaders()
-		&& LLViewerShaderMgr::instance()->loadShadersSSAO()
-		&& LLViewerShaderMgr::instance()->loadShadersShadows())
+	if (gPipeline.sRenderDeferred)
 	{
+		ret = LLViewerShaderMgr::instance()->resetDeferredShaders()
+			&& LLViewerShaderMgr::instance()->loadShadersSSAO()
+			&& LLViewerShaderMgr::instance()->loadShadersShadows();
 		gPipeline.allocateShadowMaps(true);
-		ret = true;
 	}
 	return ret;
 }

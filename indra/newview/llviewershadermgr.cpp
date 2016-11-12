@@ -1913,7 +1913,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 
 BOOL LLViewerShaderMgr::loadShadersDOF()
 {
-	BOOL success = gPipeline.RenderDeferred;
+	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Depth Of Field
 	gDeferredPostProgram.unload();
 	gVolumetricLightProgram.unload();
@@ -1950,7 +1950,7 @@ BOOL LLViewerShaderMgr::loadShadersDOF()
 BOOL LLViewerShaderMgr::loadShadersSSAO()
 {
 	//BD - Don't reload shaders if Deferred is not enabled.
-	BOOL success = gPipeline.RenderDeferred;
+	BOOL success = gPipeline.sRenderDeferred;
 
 	//BD - Screen Space Ambient Occlusion
 	gDeferredSunProgram.unload();
@@ -1993,7 +1993,7 @@ BOOL LLViewerShaderMgr::loadShadersSSAO()
 
 BOOL LLViewerShaderMgr::loadShadersShadows()
 {
-	BOOL success = gPipeline.RenderDeferred;
+	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Shadows
 	gDeferredSkinnedAlphaProgram.unload();
 	gDeferredAlphaProgram.unload();
@@ -2160,7 +2160,7 @@ BOOL LLViewerShaderMgr::loadShadersShadows()
 
 BOOL LLViewerShaderMgr::loadShadersGodrays()
 {
-	BOOL success = gPipeline.RenderDeferred;
+	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Volumetric Lighting
 	gVolumetricLightProgram.unload();
 	if (success)
@@ -2180,7 +2180,7 @@ BOOL LLViewerShaderMgr::loadShadersGodrays()
 
 BOOL LLViewerShaderMgr::loadShadersBlurLight()
 {
-	BOOL success = gPipeline.RenderDeferred;
+	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Soften Light
 	gDeferredBlurLightProgram.unload();
 	if (success)
@@ -2205,7 +2205,7 @@ BOOL LLViewerShaderMgr::loadShadersBlurLight()
 
 BOOL LLViewerShaderMgr::loadShadersSSR()
 {
-	BOOL success = gPipeline.RenderDeferred;
+	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Screen Space Reflections
 	gDeferredSoftenProgram.unload();
 	gDeferredSoftenWaterProgram.unload();
