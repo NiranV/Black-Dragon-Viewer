@@ -1111,17 +1111,12 @@ void LLFloaterPreference::onBindKey(KEY key, MASK mask, LLUICtrl* ctrl, const LL
 	//BD - We need to unbind all keys, to ensure that everything is empty and properly rebound,
 	//     this prevents a whole bunch of issues but makes it a tedious work to fix if something breaks.
 	gViewerKeyboard.unbindAllKeys(true);
-	//LL_INFOS("Settings") << "Writing bound controls to " << filename << LL_ENDL;
 	while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(settings, infile))
 	{
 		mode = settings["mode"].asInteger();
 		if (!bound && settings["slot"].asInteger() == param.asInteger())
 		{
 			gViewerKeyboard.bindKey(mode, key, mask, settings["function"].asString());
-			//LL_INFOS() << "Rebound: " << key << +"(" + gKeyboard->stringFromKey(key) << ") + " 
-			//	<< mask << +"(" << gKeyboard->stringFromMask(mask) << ") to "
-			//	<< settings["function"].asString() << " in mode "
-			//	<< settings["mode"].asInteger() << LL_ENDL;
 			bound = true;
 		}
 		else
@@ -1130,10 +1125,6 @@ void LLFloaterPreference::onBindKey(KEY key, MASK mask, LLUICtrl* ctrl, const LL
 			KEY old_key = NULL;
 			LLKeyboard::keyFromString(settings["key"], &old_key);
 			LLKeyboard::maskFromString(settings["mask"], &old_mask);
-			//LL_INFOS() << "Kept: " << old_key << +"(" + settings["key"].asString() << ") + "
-			//	<< mask << +"(" << settings["mask"].asString() << ") to " 
-			//	<< settings["function"].asString() << " in mode "
-			//	<< settings["mode"].asInteger() << LL_ENDL;
 			gViewerKeyboard.bindKey(mode, old_key, old_mask, settings["function"].asString());
 		}
 	}
@@ -1150,7 +1141,6 @@ void LLFloaterPreference::onUnbindKey(LLUICtrl* ctrl, const LLSD& param)
 void LLFloaterPreference::onExportControls()
 {
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
-	//LL_INFOS("Settings") << "Exporting controls to " << filename << LL_ENDL;
 	gViewerKeyboard.exportBindingsXML(filename);
 	refreshKeys();
 }
