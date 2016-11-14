@@ -4794,7 +4794,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
             if (rigged && pAvatarVO)
             {
                 pAvatarVO->addAttachmentOverridesForObject(vobj);
-                if (debugLoggingEnabled("Avatar") && pAvatarVO->isSelf())
+				if (!LLApp::isExiting() && pAvatarVO->isSelf() && debugLoggingEnabled("AvatarAttachments"))
                 {
                     bool verbose = true;
 					pAvatarVO->showAttachmentOverrides(verbose);

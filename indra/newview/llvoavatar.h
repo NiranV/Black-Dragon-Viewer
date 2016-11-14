@@ -376,7 +376,7 @@ public:
     void                initAttachmentPoints(bool ignore_hud_joints = false);
 	/*virtual*/ void	buildCharacter();
     void                resetVisualParams();
-    void				resetSkeleton();
+    void				resetSkeleton(bool reset_animations);
 
 	LLVector3			mCurRootToHeadOffset;
 	LLVector3			mTargetRootToHeadOffset;
@@ -977,6 +977,7 @@ private:
 	// General
 	//--------------------------------------------------------------------
 public:
+    void                getSortedJointNames(S32 joint_type, std::vector<std::string>& result) const;
 	void				dumpArchetypeXML(const std::string& prefix, bool group_by_wearables = false);
 	void 				dumpAppearanceMsgParams( const std::string& dump_prefix,
 												 const LLAppearanceMessageContents& contents);
