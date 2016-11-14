@@ -513,7 +513,7 @@ private:
 void LLGLTexMemBar::draw()
 {
 	S32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
- 	S32Megabytes max_bound_mem = LLViewerTexture::sMaxBoundTextureMemory;
+	S32Megabytes max_bound_mem = LLViewerTexture::sMaxBoundTextureMemory;
 	S32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
 	S32Megabytes max_total_mem = LLViewerTexture::sMaxTotalTextureMem;
 	F32 discard_bias = LLViewerTexture::sDesiredDiscardBias;
@@ -528,18 +528,22 @@ void LLGLTexMemBar::draw()
 	U32 total_objects = gObjectList.getNumObjects();
 	U32 fbo = LLRenderTarget::sBytesAllocated / (1024 * 1024);
 	//BD
-	//F32 x_right = 0.0;
-	//S32 bar_left = 120;
-	//S32 bottom = top + 6;
 	F32 data_progress;
 	S32 bar_width = 300;
 	S32 left = 140;
 	S32 right;
 	S32 top = v_offset + line_height * 9;
 	S32 max_vram = gGLManager.mVRAM;
-	S32 used_vram;
-	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &used_vram);
-	used_vram = max_vram - (used_vram / 1024.f);
+	S32 used_vram = 0;
+	//BD - Since we cannot work out how to get AMD Cards to properly and accurately
+	//     report back its maximum and free memory we'll just force its used memory
+	//     to 0 and only show the actual used memory from SL. Only NVIDIA Cards seem
+	//     to properly and accurately report back their max and free memory.
+	if (gGLManager.mIsNVIDIA)
+	{
+		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &used_vram);
+		used_vram = max_vram - (used_vram / 1024);
+	}
 
 	//----------------------------------------------------------------------------
 	LLGLSUIDefault gls_ui;
@@ -559,7 +563,7 @@ void LLGLTexMemBar::draw()
 	//BD - GPU Memory
 
 	text = llformat("Total VRAM:    %d MB",
-					used_vram);
+		used_vram);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
@@ -573,7 +577,17 @@ void LLGLTexMemBar::draw()
 	//BD - Render a multi-segmented multi-colored bar showing where our memory goes.
 	gGL.color4f(0.f, 0.f, 0.f, 0.75f);
 	gl_rect_2d(left, top - 9, left + bar_width, top - 3);
-	data_progress = ((F32)used_vram - (F32)total_mem.value() - (F32)bound_mem.value() - (F32)fbo) / (F32)max_vram;
+
+	//BD
+	if (gGLManager.mIsNVIDIA)
+	{
+		data_progress = ((F32)used_vram - (F32)total_mem.value() - (F32)bound_mem.value() - (F32)fbo) / (F32)max_vram;
+	}
+	else
+	{
+		data_progress = ((F32)total_mem.value() + (F32)bound_mem.value() + (F32)fbo) / (F32)max_vram;
+	}
+
 	if (data_progress > 0.0f)
 	{
 		right = left + (data_progress * (F32)bar_width);

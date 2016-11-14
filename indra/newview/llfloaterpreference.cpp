@@ -109,6 +109,7 @@
 #include "llweb.h"
 
 //BD
+#include "lldefs.h"
 #include "llviewerkeyboard.h"
 #include "llprogressbar.h"
 #include "lllogininstance.h"        // to check if logged in yet
@@ -1395,16 +1396,34 @@ void LLFloaterPreference::refreshMemoryControls()
 	S32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
 	S32 max_vram = gGLManager.mVRAM;
 	S32 max_mem;
-	S32 used_vram;
-	S32 avail_vram;
-	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
-	used_vram = max_vram - (avail_vram / 1024.f);
-	avail_vram /= 1024;
-	F32 percent = ((F32)used_vram / (F32)max_vram) * 100.f;
-	max_mem = (avail_vram + (S32)bound_mem.value() + (S32)total_mem.value());
+	S32 used_vram = 0;
+	S32 avail_vram = max_vram;
+	F32 percent;
 
-	getChild<LLSliderCtrl>("SystemMemory")->setMaxValue(max_mem);
-	getChild<LLSliderCtrl>("SceneMemory")->setMaxValue(max_mem);
+	//BD - Since we cannot work out how to get AMD Cards to properly and accurately
+	//     report back its maximum and free memory we'll just use the max, whatever
+	//     that is and only show the actual used memory from SL. Only NVIDIA Cards seem
+	//     to properly and accurately report back their max and free memory.
+	if (gGLManager.mIsNVIDIA)
+	{
+		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
+		used_vram = max_vram - (avail_vram / 1024);
+	}
+	max_mem = (avail_vram + (S32)bound_mem.value() + (S32)total_mem.value());
+	percent = ((F32)used_vram / (F32)max_vram) * 100.f;
+
+	//BD - Cap out at the highest possible stable value we tested.
+	max_mem = llmin(llmax(max_mem, 128), 1992);
+
+	//BD - Disable automatic scaling if we have less than 128mb available.
+	//     This may sound weird but it's actually used as a more general fail 
+	//     safe against negative values that might be encountered if the 
+	//     available memory is reported in a different format than expected.
+	if (max_mem > 128)
+	{
+		getChild<LLSliderCtrl>("SystemMemory")->setMaxValue(max_mem);
+		getChild<LLSliderCtrl>("SceneMemory")->setMaxValue(max_mem);
+	}
 	mProgressBar->setValue(percent);
 }
 
