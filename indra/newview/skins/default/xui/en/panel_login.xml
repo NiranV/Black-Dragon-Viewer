@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.5.4 - Ending Dragon]"
+       label="[CHANNEL] [VERSION] - [2.5.5 - Ending Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,8 +152,76 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="90"
+              height="389"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Changed: Stop cloud and water ripple movement while freezing the world.
+Changed: Made sure Deferred shaders can only be toggled with Deferred enabled.
+Changed: Made sure shadow maps can only be quick-allocated with Deferred enabled.
+Changed: Make fast-toggling shaders return a proper value in case we ever want to use it for something.
+Changed: Disallow setting any memory higher than 1992 or lower than 128 to prevent memory issues.
+Changed: Limit the memory slider min value to 128mb and the max to 1992 in case the code doesn't do it.
+Changed: Open the Appearance floater with the "My Outfits" tab instead of the "Outfit Gallery".
+Changed: Moved chat tags into the avatar name cache call, should fix a rare case if tags being reverted/missing.
+Changed: Use the GLManager's VRAM as max and include SL's usage into the memory calculations when not using a NVidia Card.
+Changed: Disable Object Object Occlusion by default. (We might want to enable this in case of AMD Card)
+Changed: Disable Spellcheck by default.
+Changed: Version to 2.5.5
+Fixed: Self-inflicted issue that broke toasting when local chat is in Convo floater and Convo floater is closed.
+Fixed: (QUICKFIX) Sidebar vanishing when toggled off instead of sliding out.
+Fixed: Toggling Godrays with Deferred disabled causes the Viewer to crash.
+Fixed: Toggling SSR with Deferred disabled causes the Viewer to crash.
+Fixed: Toggling Blur Light with Deferred disabled causes the Viewer to crash.
+Fixed: Toggling SSAO with Deferred disabled causes the Viewer to crash.
+Fixed: Toggling Shadows with Deferred disabled causes the Viewer to crash.
+Fixed: Changing shadow resolution caused the shadow detail option to revert to its previous value.
+Fixed: Only refresh and draw the Machinima Sidebar when its really visible but respect the slide animation.
+Misc: Machinima Sidebar code cleanup.
+Misc: Code Cleanup. Line Endings.
+Misc: Make resetDeferredShaders() return a value so we can use it as boolean.
+Misc: Made toggling shadows return a proper value in case we ever want to use it for something.
+Misc: Massive preferences XML file cleanups.
+Misc: Cleanup in sidebar XML files.
+Misc: Slight code cleanup in llimview and llviewercontrol.
+Misc: Cleanup some debugging code in llfloaterpreferences.
+Merge with Bento
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="all"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.5.4
+              </text>
+              <text
+              follows="all"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="90"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
