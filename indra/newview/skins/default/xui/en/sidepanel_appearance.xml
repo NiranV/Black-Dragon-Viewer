@@ -216,8 +216,11 @@ width="333">
    filename="panel_edit_wearable.xml"
    follows="all"
    layout="topleft"
-   left="0"
+   left="1"
    name="panel_edit_wearable"
    top="0"
+   height="565"
+   min_height="410"
+   width="320"
    visible="false" />
 </panel>

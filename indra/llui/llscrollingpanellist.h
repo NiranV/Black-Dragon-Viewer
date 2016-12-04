@@ -56,7 +56,8 @@ public:
 	:	LLUICtrl(p) 
 	{}
 	
-	static const S32 GAP_BETWEEN_PANELS = 6;
+	//BD - Make this configurable via XML?
+	static const S32 GAP_BETWEEN_PANELS = 1;
 
 	typedef std::deque<LLScrollingPanel*>	panel_list_t;
 
