@@ -449,6 +449,13 @@ S32 LLDrawPoolAvatar::getNumMotionBlurPasses()
 
 void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
 {
+	S32 motion_blur_quality = gSavedSettings.getS32("RenderRiggedMotionBlurQuality");
+	//BD - Don't render any avatars or rigged meshes if we don't want to.
+	if (motion_blur_quality < 1)
+	{
+		return;
+	}
+
 	if (pass == 0)
 	{
 		render(2);
@@ -460,12 +467,40 @@ void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
 		{
 			return;
 		}
+
 		LLVOAvatar* avatarp = (LLVOAvatar *)facep->getDrawable()->getVObj().get();
+
+		//BD - Don't render other avatars or rigged meshes if we don't want to.
+		if ((!avatarp->isSelf() && motion_blur_quality < 2))
+		{
+			return;
+		}
+
+		//BD - Don't include impostored or visually muted avatars in Motion Blur.
+		//     This alone massively increases the performance with many avatars
+		//     in the scene.
+		if (LLVOAvatar::AV_DO_NOT_RENDER == avatarp->getVisualMuteSettings()
+			|| avatarp->isVisuallyMuted()
+			|| avatarp->isImpostor())
+		{
+			return;
+		}
+
+		//BD - Motion Blur quality options to set what we want to be included in Motion Blur.
+		S32 motion_blur_quality = gSavedSettings.getS32("RenderRiggedMotionBlurQuality");
+		if ((!avatarp->isSelf() && motion_blur_quality < 2)
+			|| motion_blur_quality < 1)
+		{
+			return;
+		}
 
 		if (pass == 1)
 		{
 			renderDeferredRiggedSimple(avatarp);
 			renderDeferredRiggedBump(avatarp);
+			//BD - We really need some sort of avatar flag system to do a quick check which
+			//     rigged render types the avatar and all its attachments have, it would save
+			//     a lot of unnecessary renders.
 			for (S32 CurCount = 0; CurCount < 16; CurCount++)
 			{
 				renderDeferredRiggedMaterial(avatarp, CurCount);

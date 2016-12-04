@@ -17264,6 +17264,17 @@
       <integer>0</integer>
     </map>
     
+		<key>RenderRiggedMotionBlurQuality</key>
+    <map>
+      <key>Comment</key>
+      <string>Controls what should be included into Motion Blur rendering. 0 = Objects only, 1 = Objects and self, 2 = Everything.</string>
+      <key>Persist</key>
+      <integer>0</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>2</integer>
+    </map>
     <key>ControlSettingsFile</key>
     <map>
       <key>Comment</key>
