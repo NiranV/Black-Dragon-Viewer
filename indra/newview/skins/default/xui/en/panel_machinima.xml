@@ -1344,12 +1344,14 @@ width="345">
                   top_pad="15"
                   width="281" />
                   <slider
+                  control_name="RenderSSRBrightness"
+                  enabled_control="RenderScreenSpaceReflections"
                   decimal_digits="1"
                   enabled="false"
                   can_edit_text="true"
                   follows="left|top"
                   height="15"
-                  increment="1"
+                  increment="0.1"
                   initial_value="1"
                   label="Brightness:"
                   label_width="110"
