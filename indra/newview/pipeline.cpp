@@ -204,6 +204,7 @@ BOOL LLPipeline::RenderDeferredBlurLight;
 BOOL LLPipeline::RenderSnapshotAutoAdjustMultiplier;
 U32 LLPipeline::RenderShadowBlurSamples;
 U32 LLPipeline::RenderSSRResolution;
+F32 LLPipeline::RenderSSRBrightness;
 F32 LLPipeline::RenderSSAOEffect;
 F32 LLPipeline::RenderSSAOBlurSize;
 F32 LLPipeline::RenderChromaStrength;
@@ -663,6 +664,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderSnapshotAutoAdjustMultiplier");
 	connectRefreshCachedSettingsSafe("RenderShadowBlurSamples");
 	connectRefreshCachedSettingsSafe("RenderSSRResolution");
+	connectRefreshCachedSettingsSafe("RenderSSRBrightness");
 	connectRefreshCachedSettingsSafe("RenderSSAOEffect");
 	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
 	connectRefreshCachedSettingsSafe("RenderChromaStrength");
@@ -1240,6 +1242,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderSnapshotAutoAdjustMultiplier = gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier");
 	RenderShadowBlurSamples = gSavedSettings.getU32("RenderShadowBlurSamples");
 	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
+	RenderSSRBrightness = gSavedSettings.getF32("RenderSSRBrightness");
 	RenderSSAOEffect = gSavedSettings.getF32("RenderSSAOEffect");
 	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
@@ -8599,6 +8602,7 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform1i(LLShaderMgr::DEFERRED_SSAO_SAMPLES, RenderShadowBlurSamples);
 	shader.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
 	shader.uniform1i(LLShaderMgr::SSR_RES, RenderSSRResolution);
+	shader.uniform1f(LLShaderMgr::SSR_BRIGHTNESS, RenderSSRBrightness);
 	shader.uniform1f(LLShaderMgr::SECONDS60, (F32)fmod(LLTimer::getElapsedSeconds(), 60.0));
 
 //	//BD - Volumetric Lighting

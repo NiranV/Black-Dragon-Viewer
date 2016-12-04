@@ -60,6 +60,7 @@ float refdist;
 float refdepth;
 
 uniform int ssr_res;
+uniform float ssr_brightness;
 uniform float res_scale;
 uniform float chroma_str;
 
@@ -570,9 +571,6 @@ void main()
 					{
 						// Avoid forward-pointing reflections picking up sky
 						refapprop = min(refapprop, max(-refnorm.z, 0.0));
-						
-						// We just plain like the appropriateness of non-sky reflections better where available
-						//refapprop *= 0.5;
 	
 						total_refapprop += refapprop;
 						
@@ -586,7 +584,7 @@ void main()
 				}
 				if (total_refapprop > 0.0) {
 					// We must have the power of >= 25% voters, else damp progressively
-					float use_refapprop = max(float(ssr_res)*0.25, (total_refapprop));
+					float use_refapprop = max(float(ssr_res), (total_refapprop));
 	
 					best_refn = normalize(best_refn);
 					best_refshad /= use_refapprop;
@@ -607,13 +605,12 @@ void main()
 				ssshiny *= spec.rgb;
 				
 				float fullbrightification = diffuse.a;
-	
-                
     
 				// Add the two types of shiny together
 				vec3 spec_contrib = (ssshiny * (1.0 - fullbrightification) * 0.5 );
 				bloom = dot(spec_contrib, spec_contrib) / 6;
-                
+    
+    ssshiny *= ssr_brightness;
 				col.rgb = mix(col.rgb + ssshiny, diffuse.rgb, fullbrightification);
 			}
 		#else
@@ -635,15 +632,15 @@ void main()
 		col = mix(col, diffuse.rgb, diffuse.a);
 		
 		// Add environmentmap
-        /*if (envIntensity > 0.0)
-        {
-            vec3 env_vec = env_mat * refnormpersp;
-            
-            vec3 refcol = textureCube(environmentMap, env_vec).rgb;
+  /*if (envIntensity > 0.0)
+  {
+      vec3 env_vec = env_mat * refnormpersp;
+      
+      vec3 refcol = textureCube(environmentMap, env_vec).rgb;
 
-            col = mix(col.rgb, refcol, 
-                envIntensity);  
-        }*/
+      col = mix(col.rgb, refcol, 
+          envIntensity);  
+  }*/
             
 						
 		if (norm.w < 0.5)

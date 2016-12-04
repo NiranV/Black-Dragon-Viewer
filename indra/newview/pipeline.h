@@ -960,6 +960,7 @@ public:
 	static BOOL RenderSnapshotAutoAdjustMultiplier;
 	static U32 RenderShadowBlurSamples;
 	static U32 RenderSSRResolution;
+	static F32 RenderSSRBrightness;
 	static F32 RenderSSAOEffect;
 	static F32 RenderSSAOBlurSize;
 	static F32 RenderChromaStrength;

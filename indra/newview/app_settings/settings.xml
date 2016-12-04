@@ -16317,6 +16317,17 @@
     <key>Value</key>
     <integer>10</integer>
   </map>
+	<key>RenderSSRBrightness</key>
+  <map>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>1.0</real>
+  </map>
   <key>RenderBlurPerformanceMode</key>
   <map>
     <key>Comment</key>

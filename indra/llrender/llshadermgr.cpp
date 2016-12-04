@@ -1196,6 +1196,7 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("time_step");
 	mReservedUniforms.push_back("mblur_strength");
 	mReservedUniforms.push_back("ssr_res");
+	mReservedUniforms.push_back("ssr_brightness");
 	mReservedUniforms.push_back("godray_res");
 	mReservedUniforms.push_back("godray_multiplier");
 	mReservedUniforms.push_back("falloff_multiplier");
