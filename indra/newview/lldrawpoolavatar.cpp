@@ -1660,8 +1660,8 @@ void LLDrawPoolAvatar::updateRiggedFaceVertexBuffer(
     LLVolume* volume,
     const LLVolumeFace& vol_face)
 {
-	LLVector4a* weight = vol_face.mWeights;
-	if (!weight)
+	LLVector4a* weights = vol_face.mWeights;
+	if (!weights)
 	{
 		return;
 	}
@@ -1672,6 +1672,12 @@ void LLDrawPoolAvatar::updateRiggedFaceVertexBuffer(
 	LLDrawable* drawable = face->getDrawable();
 
 	U32 data_mask = face->getRiggedVertexBufferDataMask();
+
+    if (!vol_face.mWeightsScrubbed)
+    {
+        LLSkinningUtil::scrubSkinWeights(weights, vol_face.mNumVertices, skin);
+        vol_face.mWeightsScrubbed = TRUE;
+    }
 	
 	if (buffer.isNull() || 
 		buffer->getTypeMask() != data_mask ||
@@ -1726,7 +1732,7 @@ void LLDrawPoolAvatar::updateRiggedFaceVertexBuffer(
 		LLMatrix4a mat[LL_MAX_JOINTS_PER_MESH_OBJECT];
         U32 count = LLSkinningUtil::getMeshJointCount(skin);
         LLSkinningUtil::initSkinningMatrixPalette((LLMatrix4*)mat, count, skin, avatar);
-        LLSkinningUtil::checkSkinWeights(weight, buffer->getNumVerts(), skin);
+        LLSkinningUtil::checkSkinWeights(weights, buffer->getNumVerts(), skin);
 
 		LLMatrix4a bind_shape_matrix;
 		bind_shape_matrix.loadu(skin->mBindShapeMatrix);
@@ -1735,7 +1741,7 @@ void LLDrawPoolAvatar::updateRiggedFaceVertexBuffer(
 		for (U32 j = 0; j < buffer->getNumVerts(); ++j)
 		{
 			LLMatrix4a final_mat;
-            LLSkinningUtil::getPerVertexSkinMatrix(weight[j].getF32ptr(), mat, false, final_mat, max_joints);
+            LLSkinningUtil::getPerVertexSkinMatrix(weights[j].getF32ptr(), mat, false, final_mat, max_joints);
 			
 			LLVector4a& v = vol_face.mPositions[j];
 

@@ -1063,9 +1063,6 @@ void LLPanelOutfitEdit::filterWearablesBySelectedItem(void)
 		case LLAssetType::AT_BODYPART:
 			applyListViewFilter(LVIT_BODYPART);
 			break;
-		case LLAssetType::AT_GESTURE:
-			applyListViewFilter(LVIT_GESTURES);
-			break;
 		case LLAssetType::AT_CLOTHING:
 		default:
 			applyListViewFilter(LVIT_CLOTHING);

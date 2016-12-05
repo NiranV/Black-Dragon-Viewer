@@ -2057,6 +2057,9 @@ void LLFloaterPreference::buildPopupLists()
 
 void LLFloaterPreference::refreshEnabledState()
 {
+
+	// Cannot have floater active until caps have been received
+	getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
 	LLComboBox* ctrl_reflections = getChild<LLComboBox>("Reflections");
 
 	// Reflections
@@ -2133,9 +2136,6 @@ void LLFloaterPreference::refreshEnabledState()
 
 	getChildView("block_list")->setEnabled(LLLoginInstance::getInstance()->authSuccess());
 
-	//BD - We might want to add this later.
-	// Cannot have floater active until caps have been received
-	//getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
 }
 
 //BD - TODO: Remove it, we don't use it.

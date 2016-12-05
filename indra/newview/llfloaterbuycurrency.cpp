@@ -287,7 +287,7 @@ void LLFloaterBuyCurrencyUI::onClickCancel()
 
 void LLFloaterBuyCurrencyUI::onClickErrorWeb()
 {
-	LLWeb::loadURLExternal(mManager.errorURI());
+	LLWeb::loadURL(mManager.errorURI());
 	closeFloater();
 	// Update L$ balance
 	//BD
