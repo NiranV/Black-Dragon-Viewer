@@ -78,7 +78,7 @@ read_only="false">
  image_overlay_alignment="left"
  use_ellipses="true"
  auto_resize="true"
- button_flash_count="99999"
+ button_flash_count="4"
  button_flash_rate="1.0"
  flash_color="EmphasisColor"/>
  <button_icon_mini
@@ -102,7 +102,7 @@ read_only="false">
  image_overlay_alignment="center"
  use_ellipses="true"
  auto_resize="false"
- button_flash_count="99999"
+ button_flash_count="4"
  button_flash_rate="1.0"
  flash_color="EmphasisColor"/>
  <button_text
@@ -122,7 +122,7 @@ read_only="false">
  chrome="true"
  use_ellipses="true"
  auto_resize="true"
- button_flash_count="99999"
+ button_flash_count="4"
  button_flash_rate="1.0"
  flash_color="EmphasisColor"/>
 </toolbar>
