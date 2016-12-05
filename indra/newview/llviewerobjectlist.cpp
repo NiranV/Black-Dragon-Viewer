@@ -1477,6 +1477,30 @@ void LLViewerObjectList::restoreAlpha(LLViewerObject *objectp)
 	}
 }
 
+//BD - DeBright
+void LLViewerObjectList::killFullbright(LLViewerObject *objectp)
+{
+	if (objectp)
+	{
+		for (S32 i = 0; i < objectp->getNumTEs(); i++)
+		{
+			if (objectp != gAgentAvatarp
+				&& LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
+			{
+				const LLTextureEntry* te = objectp->getTE(i);
+				if (te->getFullbrightFlag())
+				{
+					if (objectp != gAgentAvatarp)
+					{
+						LL_DEBUGS() << itoc(te->getFullbright()) << LL_ENDL;
+						objectp->setTEFullbright(i, 0);
+					}
+				}
+			}
+		}
+	}
+}
+
 void LLViewerObjectList::killAllObjects()
 {
 	// Used only on global destruction.

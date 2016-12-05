@@ -90,6 +90,9 @@ public:
 	void killAlpha(LLViewerObject *objectp);
 	void restoreAlpha(LLViewerObject *objectp);
 
+//	//BD - DeBright
+	void killFullbright(LLViewerObject *objectp);
+
 	void removeDrawable(LLDrawable* drawablep);
 
 	void cleanDeadObjects(const BOOL use_timer = TRUE);	// Clean up the dead object list.

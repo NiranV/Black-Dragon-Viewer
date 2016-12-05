@@ -2694,6 +2694,28 @@ class BDObjectReAlpha : public view_listener_t
 	}
 };
 
+//BD - DeBright
+class BDObjectDeBright : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
+		if (!selection.isNull())
+		{
+			for (LLObjectSelection::iterator iter = selection->begin(); iter != selection->end(); ++iter)
+			{
+				LLSelectNode* node = *iter;
+				LLViewerObject *objectp = node->getObject();
+				if (objectp->getID() != gAgentID)
+				{
+					gObjectList.killFullbright(objectp);
+				}
+			}
+		}
+		return true;
+	}
+};
+
 class LLObjectReportAbuse : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
@@ -9359,6 +9381,9 @@ void initialize_menus()
 //	//BD - De/ReAlpha
 	view_listener_t::addMenu(new BDObjectDeAlpha(), "Object.DeAlpha");
 	view_listener_t::addMenu(new BDObjectReAlpha(), "Object.ReAlpha");
+
+//	//BD - DeBright
+	view_listener_t::addMenu(new BDObjectDeBright(), "Object.DeBright");
 
 //	//BD - Derender
 	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));
