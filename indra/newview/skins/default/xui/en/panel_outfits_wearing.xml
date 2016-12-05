@@ -13,17 +13,16 @@
     No attachments worn.
    </panel.string>
      <accordion
-     fit_parent="true"
+     fit_parent="false"
      follows="all"
-     height="400"
+     height="402"
      layout="topleft"
-     left="0"
+     left="3"
      single_expansion="true"
-     top="0"
+     top="1"
      name="wearables_accordion"
-     background_visible="true"
-     bg_alpha_color="DkGray2"
-     width="309">
+     background_visible="false"
+     width="307">
      <accordion_tab
      layout="topleft"
      name="tab_wearables"
@@ -47,6 +46,7 @@
      title="Temporary attachments">
     <scroll_list
      draw_heading="false"
+     background_visible="false"
      left="3"
      width="309"
      height="400"
