@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
    background_visible="false"
-   border="false"
    follows="all"
    height="430"
    name="Outfit Gallery"
@@ -33,8 +32,6 @@
     Searching...
   </text> 
   <scroll_container
-   border="true"
-   bevel_style="none"
    follows="all"
    height="402"
    width="314"
