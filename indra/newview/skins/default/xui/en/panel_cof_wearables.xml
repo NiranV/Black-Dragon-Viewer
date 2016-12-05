@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
  background_visible="false"
- bg_alpha_color="DkGray"
  border="false"
  follows="all"
  height="200"
@@ -18,7 +17,6 @@
      top="0"
      name="cof_wearables_accordion"
      background_visible="false"
-     bg_alpha_color="Black_50"
      width="311">
         <accordion_tab
          layout="topleft"
@@ -26,6 +24,7 @@
          title="Clothing">
             <flat_list_view
              allow_select="true"
+				 color="Transparent"
              follows="all"
              height="10"
              keep_selection_visible_on_reshape="true"
@@ -43,6 +42,7 @@
          title="Attachments">
             <flat_list_view
              allow_select="true"
+				 color="Transparent"
              follows="all"
              height="10"
              layout="topleft"
@@ -59,6 +59,7 @@
          title="Body Parts">
             <flat_list_view
              allow_select="true"
+				 color="Transparent"
              follows="all"
              height="10"
              keep_selection_visible_on_reshape="true"
