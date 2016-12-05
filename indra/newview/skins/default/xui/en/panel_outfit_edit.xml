@@ -162,19 +162,31 @@ width="320">
 Required height for dragbar (icon in spec) is 10, so resizebar height should be 10 px.
 It is calculated as border_size + 2*UIResizeBarOverlap
 -->
+	<icon
+	follows="all"
+	height="485"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="317"
+	top_pad="10"
+	left="2"/>
    <layout_stack
    animate="true"
    border_size="8"
    clip="false"
    default_tab_group="2"
    follows="all"
-   height="465"
-   width="319"
+   height="456"
+   width="315"
    layout="topleft"
    orientation="vertical"
    name="im_panels"
    tab_group="1"
-   top_pad="0"
+   top_delta="1"
    left="4">
       <layout_panel
       layout="topleft"
@@ -217,15 +229,14 @@ It is calculated as border_size + 2*UIResizeBarOverlap
 	       width="311" />
            <panel
             name="bg_panel"
-            background_visible="true"
-            bg_alpha_color="White_02"
+            background_visible="false"
             layout="topleft"
             follows="left|right|bottom"
             border="false"
             height="25"
-            left="2"
+            left="1"
             mouse_opaque="false"
-            width="307"
+            width="310"
             top_pad="2">
 	       <button
 	       follows="left|bottom" 
@@ -251,7 +262,7 @@ It is calculated as border_size + 2*UIResizeBarOverlap
             image_name="Toolbar_Middle_Off"
             left_pad="1"
             top_delta="0"
-            width="174" />
+            width="176" />
            <filter_editor
 	       background_image="TextField_Off"
          background_image_disabled="TextField_Disabled"
@@ -262,8 +273,8 @@ It is calculated as border_size + 2*UIResizeBarOverlap
 	       layout="topleft"
 	       left_delta="2"
            top_delta="1"
-	       width="170"
-	       height="23"
+	       width="172"
+	       height="22"
 	       name="look_item_filter"
 	       text_color="black"
 	       visible="true"/>
@@ -346,8 +357,7 @@ It is calculated as border_size + 2*UIResizeBarOverlap
 	 visible="false"/>
 	 <panel
 	 name="filtered_wearables_panel"
-	 background_visible="true"
-     bg_alpha_color="White_02"
+	 background_visible="false"
 	 layout="topleft"
 	 follows="left|top|right|bottom"
 	 border="false"
@@ -399,13 +409,12 @@ It is calculated as border_size + 2*UIResizeBarOverlap
    </layout_stack>
    <!-- BUTTON BAR -->
    <panel
-   background_visible="true"
-   bg_alpha_color="White_02"
+   background_visible="false"
    bevel_style="none"
    follows="bottom|left|right"
    height="27"
    layout="topleft"
-   left="6"
+   left="4"
    name="no_add_wearables_button_bar"
    top_pad="1"
    width="313">
@@ -424,13 +433,12 @@ It is calculated as border_size + 2*UIResizeBarOverlap
    </panel>
    <!-- BUTTON BAR - WEARABLES ADDING MODE -->
    <panel
-   background_visible="true"
-   bg_alpha_color="White_02"
+   background_visible="false"
    bevel_style="none"
    follows="left|right|bottom"
    height="27"
    layout="topleft"
-   left="6"
+   left="4"
    name="add_wearables_button_bar"
    top_delta="0"
    visible="false"
@@ -456,7 +464,7 @@ It is calculated as border_size + 2*UIResizeBarOverlap
       image_unselected="Toolbar_Middle_Off"
       is_toggle="true"
       layout="topleft"
-      left_pad="219"
+      left_pad="221"
       name="folder_view_btn"
       top="1"
       width="31" />
@@ -479,7 +487,7 @@ It is calculated as border_size + 2*UIResizeBarOverlap
 	    follows="bottom|left"
 	    height="25"
 	    label="Save"
-	    left="38"
+	    left="36"
 	    layout="topleft"
         image_hover_unselected="Toolbar_Middle_Over"
 						  image_selected="Toolbar_Middle_Selected"

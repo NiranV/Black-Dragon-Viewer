@@ -27,25 +27,24 @@
      <panel
          border="false"
          background_visible="false"
-         background_opaque="true"
          follows="all"
          height="388"
          label=""
          layout="topleft"
-		 left="8"
+		 left="7"
          name="accordion_panel"
 		 top_pad="4"
-         width="314">
+         width="315">
 	 <accordion
         layout="topleft"
 		follows="all"
 		height ="384"
-		left="0"
+		left="1"
 		name="wearable_accordion"
 		top="0"
         single_expansion="true"
         fit_parent="false"
-		width="315">
+		width="313">
 		<accordion_tab
 			layout="topleft"
 			min_height="150"
