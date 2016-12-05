@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.5.5 - Ending Dragon]"
+       label="[CHANNEL] [VERSION] - [2.5.6 - Ending Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,8 +152,66 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="389"
+              height="257"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Option to toggle Motion Blur between "Everything" , "My Avatar &amp; Objects" , "Objects Only".
+Added: Option to control Screen Space Reflection's brightness.
+Added: Selective De-Fullbright menu option, per feedback.
+Changed: Unlocked already prepared SSR Brightness option in Machinima Sidebar.
+Changed: Massive overhaul of the "Edit Shape" panel. Breaking all other edit wearables, they need fixing too.
+Changed: Removed 3D previews of shape edit.
+Changed: Made shape edit sliders much smaller and use less extra gap pixels between them.
+Changed: Snapshot floater "Refresh" button label to "NEW SNAP" for when we translate it.
+Changed: More Edit Wearables layout changes and layout consistency fixes.
+Changed: Made some consistency changes to COF wearables panel to fit in with the other recent changes.
+Changed: Version to 2.5.6
+Fixed: Impostors being included in Motion Blur rendering.
+Fixed (Workaround): Region Water flickering when its near the far clip plane with enabled Object Object Occlusion.
+Fixed: Stand button clipping outside the Movement floater.
+Fixed: Warns in floater_moveview.xml.
+Fixed: Warns in panel_outfit_gallery.xml.
+Fixed: Conversations button flashing forever.
+Fixed: Alt keybinds having their mask and key strings on the wrong size creating weird labels.
+Fixed: Newly introduced temp attachments tab broke the layout in Appearance - Outfits.
+Merge with Bento RC
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="all"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.5.5
+              </text>
+              <text
+              follows="all"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="389"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
