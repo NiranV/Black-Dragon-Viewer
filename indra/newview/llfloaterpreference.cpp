@@ -1402,7 +1402,7 @@ void LLFloaterPreference::refreshMemoryControls()
 	percent = ((F32)used_vram / (F32)max_vram) * 100.f;
 
 	//BD - Cap out at the highest possible stable value we tested.
-	max_mem = llmin(llmax(max_mem, 128), 1992);
+	max_mem = llclamp(max_mem, 128, 1992);
 
 	//BD - Disable automatic scaling if we have less than 128mb available.
 	//     This may sound weird but it's actually used as a more general fail 

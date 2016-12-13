@@ -1418,13 +1418,13 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 	if (cur_mem == (S32Bytes)0
 		|| cur_mem > (S32Megabytes)1992)
 	{
-		cur_mem = llmin(llmax(cur_mem, (S32Megabytes)128), (S32Megabytes)1992);
+		cur_mem = llclamp(cur_mem, (S32Megabytes)128, (S32Megabytes)1992);
 	}
 
 	if (sys_mem == (S32Bytes)0
 		|| sys_mem > (S32Megabytes)1992)
 	{
-		sys_mem = llmin(llmax(sys_mem, (S32Megabytes)128), (S32Megabytes)1992);
+		sys_mem = llclamp(sys_mem, (S32Megabytes)128, (S32Megabytes)1992);
 	}
 
 	mMaxResidentTexMemInMegaBytes = cur_mem;
