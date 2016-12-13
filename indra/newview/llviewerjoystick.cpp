@@ -40,6 +40,9 @@
 #include "llagentcamera.h"
 #include "llfocusmgr.h"
 
+//BD
+#include "lldefs.h"
+
 
 // ----------------------------------------------------------------------------
 // Constants
@@ -257,7 +260,6 @@ void LLViewerJoystick::init(bool autoenable)
 //				//BD - Let's put our Xbox360 defaults here because it is most likely a controller
 				//     atleast similar to that of the Xbox360.
 				setXboxDefaults();
-				gSavedSettings.setString("JoystickInitialized", "UnknownDevice");
 			}
 		}
 	}
@@ -524,11 +526,8 @@ void LLViewerJoystick::moveObjects(bool reset)
 	F32 cur_delta[6];
 	F32 time = gFrameIntervalSeconds.value();
 
-	// avoid making ridicously big movements if there's a big drop in fps 
-	if (time > .2f)
-	{
-		time = .2f;
-	}
+	//BD - Avoid making ridicously big movements if there's a big drop in fps 
+	time = llclamp(time, 0.125f, 0.2f);
 
 	// max feather is 32
 	F32 feather = gSavedSettings.getF32("BuildFeathering"); 
@@ -734,11 +733,8 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	// time interval in seconds between this frame and the previous
 	F32 time = gFrameIntervalSeconds.value();
 
-	// avoid making ridicously big movements if there's a big drop in fps 
-	if (time > .2f)
-	{
-		time = .2f;
-	}
+	//BD - Avoid making ridicously big movements if there's a big drop in fps 
+	time = llclamp(time, 0.125f, 0.2f);
 
 	// note: max feather is 32.0
 	F32 feather = gSavedSettings.getF32("AvatarFeathering"); 
@@ -851,6 +847,8 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	static LLQuaternion 		sFlycamRotation;
 	static LLVector3    		sFlycamPosition;
 	static F32          		sFlycamZoom;
+
+	static LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
 	
 	if (!gFocusMgr.getAppHasFocus() || mDriverState != JDS_INITIALIZED
 		|| !gSavedSettings.getBOOL("JoystickEnabled") || !gSavedSettings.getBOOL("JoystickFlycamEnabled"))
@@ -917,11 +915,8 @@ void LLViewerJoystick::moveFlycam(bool reset)
 
 	F32 time = gFrameIntervalSeconds.value();
 
-	// avoid making ridiculously big movements if there's a big drop in fps 
-	if (time > .2f)
-	{
-		time = .2f;
-	}
+	//BD - Avoid making ridiculously big movements if there's a big drop in fps 
+	time = llclamp(time, 0.125f, 0.2f);
 
 	F32 cur_delta[7];
 	F32 feather = gSavedSettings.getF32("FlycamFeathering");
@@ -983,10 +978,18 @@ void LLViewerJoystick::moveFlycam(bool reset)
 			cur_delta[i] *= time;
 		}
 
-		sDelta[i] = sDelta[i] + (cur_delta[i]-sDelta[i])*time*feather;
+		//BD - Only smooth flycam zoom if we are not capping at the min/max otherwise the feathering
+		//     ends up working against previous input, delaying zoom in movement when we just zoomed
+		//     out beyond capped max for a bit and vise versa.
+		if (i == 6
+			&& (sFlycamZoom == viewer_cam->getMinView()
+			|| sFlycamZoom == viewer_cam->getMaxView()))
+		{
+			feather = 3.0f;
+		}
 
+		sDelta[i] = sDelta[i] + (cur_delta[i] - sDelta[i]) * time * feather;
 		is_zero = is_zero && (cur_delta[i] == 0.f);
-
 	}
 	
 	// Clear AFK state if moved beyond the deadzone
@@ -1024,16 +1027,20 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	}
 	else
 	{
+		//BD - We need to cap zoom otherwise it internally counts higher causing it
+		//     causing the zoom level to not react until that extra has been removed
+		//     first.
 		sFlycamZoom += sDelta[6];
+		sFlycamZoom = llclamp(sFlycamZoom, viewer_cam->getMinView(), viewer_cam->getMaxView());
 	}
 
 	LLMatrix3 mat(sFlycamRotation);
 
-	LLViewerCamera::getInstance()->setView(sFlycamZoom);
-	LLViewerCamera::getInstance()->setOrigin(sFlycamPosition);
-	LLViewerCamera::getInstance()->mXAxis = LLVector3(mat.mMatrix[0]);
-	LLViewerCamera::getInstance()->mYAxis = LLVector3(mat.mMatrix[1]);
-	LLViewerCamera::getInstance()->mZAxis = LLVector3(mat.mMatrix[2]);
+	viewer_cam->setView(sFlycamZoom);
+	viewer_cam->setOrigin(sFlycamPosition);
+	viewer_cam->mXAxis = LLVector3(mat.mMatrix[0]);
+	viewer_cam->mYAxis = LLVector3(mat.mMatrix[1]);
+	viewer_cam->mZAxis = LLVector3(mat.mMatrix[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -1230,13 +1237,13 @@ void LLViewerJoystick::setXboxDefaults()
 {
 	LL_INFOS() << "restoring Xbox360 Controller defaults..." << LL_ENDL;
 	
-	gSavedSettings.setS32("JoystickAxis0", 1); // z (at)
-	gSavedSettings.setS32("JoystickAxis1", 0); // x (slide)
-	gSavedSettings.setS32("JoystickAxis2", -1); // y (up)
-	gSavedSettings.setS32("JoystickAxis3", 2); // pitch
-	gSavedSettings.setS32("JoystickAxis4", 4); // roll 
-	gSavedSettings.setS32("JoystickAxis5", 3); // yaw
-	gSavedSettings.setS32("JoystickAxis6", -1);
+	gSavedSettings.setS32("JoystickAxis0", 1);	// Z
+	gSavedSettings.setS32("JoystickAxis1", 0);	// X
+	gSavedSettings.setS32("JoystickAxis2", -1);	// Y
+	gSavedSettings.setS32("JoystickAxis3", 2);	// Roll
+	gSavedSettings.setS32("JoystickAxis4", 4);	// Pitch
+	gSavedSettings.setS32("JoystickAxis5", 3);	// Yaw
+	gSavedSettings.setS32("JoystickAxis6", -1);	// Zoom
 
 	gSavedSettings.setS32("JoystickButtonJump", 0);
 	gSavedSettings.setS32("JoystickButtonCrouch", 1);
@@ -1255,46 +1262,46 @@ void LLViewerJoystick::setXboxDefaults()
 	gSavedSettings.setBOOL("ZoomDirect", false);
 	
 	gSavedSettings.setF32("AvatarAxisScale0", .2f);
-	gSavedSettings.setF32("AvatarAxisScale1", .2f);
 	gSavedSettings.setF32("AvatarAxisScale2", .1f);
-	gSavedSettings.setF32("AvatarAxisScale4", 1.0f);
-	gSavedSettings.setF32("AvatarAxisScale5", 2.4f);
-	gSavedSettings.setF32("AvatarAxisScale3", 2.0f);
-	gSavedSettings.setF32("BuildAxisScale1", 2.f);
-	gSavedSettings.setF32("BuildAxisScale2", 2.f);
-	gSavedSettings.setF32("BuildAxisScale0", 2.f);
+	gSavedSettings.setF32("AvatarAxisScale1", .2f);
+	gSavedSettings.setF32("AvatarAxisScale4", 0.75f);
+	gSavedSettings.setF32("AvatarAxisScale5", 1.0f);
+	gSavedSettings.setF32("AvatarAxisScale3", 1.0f);
+	gSavedSettings.setF32("BuildAxisScale0", 1.25f);
+	gSavedSettings.setF32("BuildAxisScale2", 1.25f);
+	gSavedSettings.setF32("BuildAxisScale1", 1.25f);
 	gSavedSettings.setF32("BuildAxisScale4", 1.f);
 	gSavedSettings.setF32("BuildAxisScale5", 1.f);
 	gSavedSettings.setF32("BuildAxisScale3", 1.f);
-	gSavedSettings.setF32("FlycamAxisScale1", 2.f);
-	gSavedSettings.setF32("FlycamAxisScale2", 2.f);
-	gSavedSettings.setF32("FlycamAxisScale0", 2.f);
-	gSavedSettings.setF32("FlycamAxisScale4", 1.f);
-	gSavedSettings.setF32("FlycamAxisScale5", 1.5f);
-	gSavedSettings.setF32("FlycamAxisScale3", 1.f);
-	gSavedSettings.setF32("FlycamAxisScale6", 1.f);
+	gSavedSettings.setF32("FlycamAxisScale0", 1.5f);
+	gSavedSettings.setF32("FlycamAxisScale2", 1.5f);
+	gSavedSettings.setF32("FlycamAxisScale1", 1.5f);
+	gSavedSettings.setF32("FlycamAxisScale4", 1.0f);
+	gSavedSettings.setF32("FlycamAxisScale5", 1.0f);
+	gSavedSettings.setF32("FlycamAxisScale3", 0.75f);
+	gSavedSettings.setF32("FlycamAxisScale6", 0.5f);
 	
 	gSavedSettings.setF32("AvatarAxisDeadZone0", .4f);
-	gSavedSettings.setF32("AvatarAxisDeadZone1", .4f);
 	gSavedSettings.setF32("AvatarAxisDeadZone2", .2f);
+	gSavedSettings.setF32("AvatarAxisDeadZone1", .4f);
 	gSavedSettings.setF32("AvatarAxisDeadZone3", .25f);
 	gSavedSettings.setF32("AvatarAxisDeadZone4", .25f);
 	gSavedSettings.setF32("AvatarAxisDeadZone5", .25f);
 	gSavedSettings.setF32("BuildAxisDeadZone0", .2f);
-	gSavedSettings.setF32("BuildAxisDeadZone1", .2f);
 	gSavedSettings.setF32("BuildAxisDeadZone2", .2f);
+	gSavedSettings.setF32("BuildAxisDeadZone1", .2f);
 	gSavedSettings.setF32("BuildAxisDeadZone3", .1f);
 	gSavedSettings.setF32("BuildAxisDeadZone4", .1f);
 	gSavedSettings.setF32("BuildAxisDeadZone5", .1f);
 	gSavedSettings.setF32("FlycamAxisDeadZone0", .2f);
-	gSavedSettings.setF32("FlycamAxisDeadZone1", .2f);
 	gSavedSettings.setF32("FlycamAxisDeadZone2", .2f);
+	gSavedSettings.setF32("FlycamAxisDeadZone1", .2f);
 	gSavedSettings.setF32("FlycamAxisDeadZone3", .1f);
 	gSavedSettings.setF32("FlycamAxisDeadZone4", .1f);
 	gSavedSettings.setF32("FlycamAxisDeadZone5", .1f);
 	gSavedSettings.setF32("FlycamAxisDeadZone6", .1f);
 	
-	gSavedSettings.setF32("AvatarFeathering", 7.150f);
+	gSavedSettings.setF32("AvatarFeathering", 3.0f);
 	gSavedSettings.setF32("BuildFeathering", 3.f);
-	gSavedSettings.setF32("FlycamFeathering", 1.f);
+	gSavedSettings.setF32("FlycamFeathering", 0.1f);
 }
