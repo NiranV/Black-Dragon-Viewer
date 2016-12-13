@@ -107,6 +107,10 @@
 #include "llteleporthistorystorage.h"
 #include "llproxy.h"
 #include "llweb.h"
+// [RLVa:KB] - Checked: 2010-03-18 (RLVa-1.2.0a)
+#include "rlvactions.h"
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 //BD
 #include "lldefs.h"
@@ -2063,8 +2067,15 @@ void LLFloaterPreference::refreshEnabledState()
 	getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
 	LLComboBox* ctrl_reflections = getChild<LLComboBox>("Reflections");
 
+// [RLVa:KB] - Checked: 2013-05-11 (RLVa-1.4.9)
+	if (rlv_handler_t::isEnabled())
+	{
+		getChild<LLUICtrl>("do_not_disturb_response")->setEnabled(!RlvActions::hasBehaviour(RLV_BHVR_SENDIM));
+	}
+// [/RLVa:KB]
+
 	// Reflections
-	BOOL reflections = gSavedSettings.getBOOL("RenderDeferred")
+	BOOL reflections = gSavedSettings.getBOOL("VertexShaderEnable") 
 		&& gGLManager.mHasCubeMap
 		&& LLCubeMap::sUseCubeMaps;
 	ctrl_reflections->setEnabled(reflections);

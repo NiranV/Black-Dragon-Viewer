@@ -28,6 +28,9 @@
 
 #include "llviewerjointattachment.h"
 
+// [SL:KB] - Patch: Appearance-PhantomAttach | Checked: Catznip-5.0
+#include "llagent.h"
+// [/SL:KB]
 #include "llviewercontrol.h"
 #include "lldrawable.h"
 #include "llgl.h"
@@ -172,14 +175,26 @@ BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 	if (isObjectAttached(object))
 	{
 		LL_INFOS() << "(same object re-attached)" << LL_ENDL;
+//// [SL:KB] - Patch: Appearance-TeleportAttachKill | Checked: Catznip-4.0
+//		if ( (object->permYouOwner()) && (gAgentAvatarp) )
+//		{
+//			gAgentAvatarp->removePendingDetach(object->getID());
+//		}
+//// [/SL:KB]
 		removeObject(object);
 		// Pass through anyway to let setupDrawable()
 		// re-connect object to the joint correctly
 	}
 	
+// [SL:KB] - Patch: Appearance-Misc | Checked: 2011-01-13 (Catznip-2.4)
+	// LLViewerJointAttachment::removeObject() sets the object's item to the NULL UUID so we need to extract it *after* the block above
+	object->extractAttachmentItemID();
+// [/SL:KB]
+
 	// Two instances of the same inventory item attached --
 	// Request detach, and kill the object in the meantime.
-	if (getAttachedObject(object->getAttachmentItemID()))
+// [SL:KB] - Patch: Appearance-PhantomAttach | Checked: Catznip-5.0
+	if (LLViewerObject* pAttachObj = getAttachedObject(object->getAttachmentItemID()))
 	{
 		LL_INFOS() << "(same object re-attached)" << LL_ENDL;
 		object->markDead();
@@ -442,7 +457,10 @@ const LLViewerObject *LLViewerJointAttachment::getAttachedObject(const LLUUID &o
 		 ++iter)
 	{
 		const LLViewerObject* attached_object = (*iter);
-		if (attached_object->getAttachmentItemID() == object_id)
+//		if (attached_object->getAttachmentItemID() == object_id)
+// [SL:KB] - Patch: Appearance-PhantomAttach | Checked: Catznip-5.0
+		if ( (attached_object->getAttachmentItemID() == object_id) && (!attached_object->isDead()) )
+// [/SL:KB]
 		{
 			return attached_object;
 		}

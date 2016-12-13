@@ -255,7 +255,7 @@ public:
 	void 			slamLookAt(const LLVector3 &look_at); // Set the physics data
 	BOOL			setPointAt(EPointAtType target_type, LLViewerObject *object = NULL, LLVector3 position = LLVector3::zero);
 	EPointAtType	getPointAtType();
-
+public:
 	LLPointer<LLHUDEffectLookAt> mLookAt;
 	LLPointer<LLHUDEffectPointAt> mPointAt;
 
@@ -321,6 +321,18 @@ public:
 	F32				mHUDTargetZoom;	// Target zoom level for HUD objects (used when editing)
 	F32				mHUDCurZoom; 	// Current animated zoom level for HUD objects
 
+// [RLVa:KB] - Checked: RLVa-2.0.0
+	//--------------------------------------------------------------------
+	// RLVa
+	//--------------------------------------------------------------------
+protected:
+	bool allowFocusOffsetChange(const LLVector3d& offsetFocus);
+	bool clampCameraPosition(LLVector3d& posCamGlobal, const LLVector3d posCamRefGlobal, float nDistMin, float nDistMax);
+
+	bool m_fRlvMaxDist;				// True if the camera is at max distance
+	bool m_fRlvMinDist;				// True if the camera is at min distance
+	LLVector3d m_posRlvRefGlobal;		// Current reference point for distance calculations
+// [/RLVa:KB]
 
 /********************************************************************************
  **                                                                            **

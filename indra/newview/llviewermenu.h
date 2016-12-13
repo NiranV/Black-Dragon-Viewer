@@ -40,6 +40,10 @@ class LLSelectNode;
 //BD - Pie Menu
 class PieMenu;
 
+// [RLVa:KB] - Checked: RLVa-2.0.0
+void set_use_wireframe(BOOL useWireframe);
+// [/RLVa:KB]
+
 void initialize_edit_menu();
 void initialize_spellcheck_menu();
 void init_menus();

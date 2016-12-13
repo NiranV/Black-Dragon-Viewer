@@ -25,6 +25,12 @@
 #include "rlvlocks.h"
 
 // ============================================================================
+// Forward declarations
+//
+
+class LLOfferInfo;
+
+// ============================================================================
 // RlvInventory class declaration
 //
 
@@ -60,6 +66,8 @@ public:
 	std::string					getSharedPath(const LLUUID& idFolder) const;
 	// Returns TRUE if the supplied folder is a descendent of the #RLV folder
 	bool						isSharedFolder(const LLUUID& idFolder);
+	// Returns TRUE if the inventory offer is a "give to #RLV" offer
+	bool						isGiveToRLVOffer(const LLOfferInfo& offerInfo);
 
 	/*
 	 * Inventory fetching
@@ -195,8 +203,9 @@ public:
 		LLStringUtil::toLower(strFolderName);
 
 		// NOTE: hidden or "give to #RLV" folders can never be a match
-		if ( (strFolderName.empty()) ||	
-			 (RLV_FOLDER_PREFIX_HIDDEN == strFolderName[0]) || (RLV_FOLDER_PREFIX_PUTINV == strFolderName[0]) )
+		if ( (strFolderName.empty()) ||
+			 (RLV_FOLDER_PREFIX_HIDDEN == strFolderName[0]) || (RLV_FOLDER_PREFIX_PUTINV == strFolderName[0]) ||
+			 (std::string::npos != strFolderName.find_first_of(RLV_FOLDER_INVALID_CHARS)) )
 		{
 			return false;
 		}
@@ -305,7 +314,7 @@ inline bool RlvInventory::isFoldedFolder(const LLInventoryCategory* pFolder, boo
 		// .(<attachpt>) type folder
 		(0 != RlvAttachPtLookup::getAttachPointIndex(pFolder))
 		// .(nostrip) folder
-		|| ( (pFolder) && (".("RLV_FOLDER_FLAG_NOSTRIP")" == pFolder->getName()) )
+		|| ( (pFolder) && (".(" RLV_FOLDER_FLAG_NOSTRIP ")" == pFolder->getName()) )
 		// Composite folder (if composite folders are enabled and we're asked to look for them)
 		#ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
 		|| ( (fCheckComposite) && (RlvSettings::getEnableComposites()) &&

@@ -1,17 +1,17 @@
-/** 
+/**
  *
  * Copyright (c) 2009-2016, Kitty Barnett
- * 
- * The source code in this file is provided to you under the terms of the 
+ *
+ * The source code in this file is provided to you under the terms of the
  * GNU Lesser General Public License, version 2.1, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
- * PARTICULAR PURPOSE. Terms of the LGPL can be found in doc/LGPL-licence.txt 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. Terms of the LGPL can be found in doc/LGPL-licence.txt
  * in this distribution, or online at http://www.gnu.org/licenses/lgpl-2.1.txt
- * 
+ *
  * By copying, modifying or distributing this software, you acknowledge that
- * you have read and understood your obligations described above, and agree to 
+ * you have read and understood your obligations described above, and agree to
  * abide by those obligations.
- * 
+ *
  */
 
 // Generic includes
@@ -22,23 +22,38 @@
 #include "llgroupactions.h"
 #include "llhudtext.h"
 #include "llmoveview.h"
+#include "llslurl.h"
 #include "llstartup.h"
 #include "llviewermessage.h"
+#include "llviewermenu.h"
 #include "llviewerobjectlist.h"
 #include "llviewerparcelmgr.h"
 #include "llviewerregion.h"
 
 // Command specific includes
+#include "llagentcamera.h"				// @setcam and related
+#include "llavataractions.h"            // @stopim IM query
+#include "llavatarnamecache.h"			// @shownames
+#include "llavatarlist.h"				// @shownames
 #include "llenvmanager.h"				// @setenv
+#include "llfloatersidepanelcontainer.h"// @shownames
+#include "llnotifications.h"			// @list IM query
+#include "llnotificationsutil.h"
 #include "lloutfitslist.h"				// @showinv - "Appearance / My Outfits" panel
 #include "llpaneloutfitsinventory.h"	// @showinv - "Appearance" floater
+#include "llpanelpeople.h"				// @shownames
 #include "llpanelwearing.h"				// @showinv - "Appearance / Current Outfit" panel
 #include "llsidepanelappearance.h"		// @showinv - "Appearance / Edit appearance" panel
 #include "lltabcontainer.h"				// @showinv - Tab container control for inventory tabs
 #include "lltoolmgr.h"					// @edit
+#include "llviewercamera.h"				// @setcam and related
+#include "llworldmapmessage.h"			// @tpto
+#include "llviewertexturelist.h"		// @setcam_texture
 
 // RLVa includes
+#include "rlvactions.h"
 #include "rlvfloaters.h"
+#include "rlvactions.h"
 #include "rlvhandler.h"
 #include "rlvhelper.h"
 #include "rlvinventory.h"
@@ -53,7 +68,7 @@
 // Static variable initialization
 //
 
-BOOL RlvHandler::m_fEnabled = FALSE;
+bool RlvHandler::m_fEnabled = false;
 
 rlv_handler_t gRlvHandler;
 
@@ -134,6 +149,23 @@ RlvHandler::~RlvHandler()
 // ============================================================================
 // Behaviour related functions
 //
+
+bool RlvHandler::findBehaviour(ERlvBehaviour eBhvr, std::list<const RlvObject*>& lObjects) const
+{
+	lObjects.clear();
+	for (const auto& objEntry : m_Objects)
+		if (objEntry.second.hasBehaviour(eBhvr, false))
+			lObjects.push_back(&objEntry.second);
+	return !lObjects.empty();
+}
+
+bool RlvHandler::hasBehaviour(const LLUUID& idRlvObj, ERlvBehaviour eBhvr, const std::string& strOption) const
+{
+	rlv_object_map_t::const_iterator itObj = m_Objects.find(idRlvObj);
+	if (m_Objects.end() != itObj)
+		return itObj->second.hasBehaviour(eBhvr, strOption, false);
+	return false;
+}
 
 bool RlvHandler::hasBehaviourExcept(ERlvBehaviour eBhvr, const std::string& strOption, const LLUUID& idObj) const
 {
@@ -293,7 +325,7 @@ ERlvCmdRet RlvHandler::processCommand(const RlvCommand& rlvCmd, bool fFromObj)
 		case RLV_TYPE_ADD:		// Checked: 2009-11-26 (RLVa-1.1.0f) | Modified: RLVa-1.1.0f
 			{
 				if ( (m_Behaviours[rlvCmd.getBehaviourType()]) && 
-					 ( (RLV_BHVR_SETDEBUG == rlvCmd.getBehaviourType()) || (RLV_BHVR_SETENV == rlvCmd.getBehaviourType()) ) )
+					 ( (RLV_BHVR_SETCAM == rlvCmd.getBehaviourType()) || (RLV_BHVR_SETDEBUG == rlvCmd.getBehaviourType()) || (RLV_BHVR_SETENV == rlvCmd.getBehaviourType()) ) )
 				{
 					// Some restrictions can only be held by one single object to avoid deadlocks
 					RLV_DEBUGS << "\t- " << rlvCmd.getBehaviour() << " is already set by another object => discarding" << RLV_ENDL;
@@ -311,7 +343,7 @@ ERlvCmdRet RlvHandler::processCommand(const RlvCommand& rlvCmd, bool fFromObj)
 				{
 					RlvObject rlvObj(idCurObj);
 					fAdded = rlvObj.addCommand(rlvCmd);
-					m_Objects.insert(std::pair<LLUUID, RlvObject>(idCurObj, rlvObj));
+					itObj = m_Objects.insert(std::pair<LLUUID, RlvObject>(idCurObj, rlvObj)).first;
 				}
 
 				RLV_DEBUGS << "\t- " << ( (fAdded) ? "adding behaviour" : "skipping duplicate" ) << RLV_ENDL;
@@ -320,7 +352,11 @@ ERlvCmdRet RlvHandler::processCommand(const RlvCommand& rlvCmd, bool fFromObj)
 					if (!m_pGCTimer)
 						m_pGCTimer = new RlvGCTimer();
 					eRet = processAddRemCommand(rlvCmd);
-					m_Objects.find(idCurObj)->second.setCommandRet(rlvCmd, eRet);	// HACK-RLVa: find a better way of doing this
+					if (!RLV_RET_SUCCEEDED(eRet))
+					{
+						RlvCommand rlvCmdRem(rlvCmd, RLV_TYPE_REMOVE);
+						itObj->second.removeCommand(rlvCmdRem);
+					}
 //					notifyBehaviourObservers(rlvCmd, !fFromObj);
 				}
 				else
@@ -436,25 +472,111 @@ ERlvCmdRet RlvHandler::processClearCommand(const RlvCommand& rlvCmd)
 	return RLV_RET_SUCCESS; // Don't fail clear commands even if the object didn't exist since it confuses people
 }
 
+bool RlvHandler::processIMQuery(const LLUUID& idSender, const std::string& strMessage)
+{
+	if ("@stopim" == strMessage)
+	{
+		// If the user can't start an IM session and one is open terminate it - always notify the sender in this case
+		if ( (!RlvActions::canStartIM(idSender)) && (RlvActions::hasOpenP2PSession(idSender)) )
+		{
+			RlvUtil::sendBusyMessage(idSender, RlvStrings::getString(RLV_STRING_STOPIM_ENDSESSION_REMOTE));
+			LLAvatarActions::endIM(idSender);
+			RlvUtil::notifyBlocked(RLV_STRING_STOPIM_ENDSESSION_LOCAL, LLSD().with("NAME", LLSLURL("agent", idSender, "about").getSLURLString()));
+			return true;
+		}
+
+		// User can start an IM session (or one isn't open) so we do nothing - notify and hide it from the user only if IM queries are enabled
+		if (!RlvSettings::getEnableIMQuery())
+			return false;
+		RlvUtil::sendBusyMessage(idSender, RlvStrings::getString(RLV_STRING_STOPIM_NOSESSION));
+		return true;
+	}
+	else if (RlvSettings::getEnableIMQuery())
+	{
+		if ("@version" == strMessage)
+		{
+			RlvUtil::sendBusyMessage(idSender, RlvStrings::getVersion(LLUUID::null));
+			return true;
+		}
+		else if ("@list" == strMessage)
+		{
+			LLNotification::Params params;
+			params.name = "RLVaListRequested";
+			params.functor.function(boost::bind(&RlvHandler::onIMQueryListResponse, this, _1, _2));
+			params.substitutions = LLSD().with("NAME_LABEL", LLSLURL("agent", idSender, "completename").getSLURLString()).with("NAME_SLURL", LLSLURL("agent", idSender, "about").getSLURLString());
+			params.payload = LLSD().with("from_id", idSender);
+
+			class RlvPostponedOfferNotification : public LLPostponedNotification
+			{
+			protected:
+				void modifyNotificationParams() override
+				{
+					LLSD substitutions = mParams.substitutions;
+					substitutions["NAME"] = mName;
+					mParams.substitutions = substitutions;
+				}
+			};
+			LLPostponedNotification::add<RlvPostponedOfferNotification>(params, idSender, false);
+			return true;
+		}
+	}
+	return false;
+}
+
+void RlvHandler::onIMQueryListResponse(const LLSD& sdNotification, const LLSD sdResponse)
+{
+	const LLUUID idRequester = sdNotification["payload"]["from_id"].asUUID();
+	if (LLNotificationsUtil::getSelectedOption(sdNotification, sdResponse) == 0)
+	{
+		RlvUtil::sendIMMessage(idRequester, RlvFloaterBehaviours::getFormattedBehaviourString(), '\n');
+	}
+	else
+	{
+		RlvUtil::sendBusyMessage(idRequester, RlvStrings::getString("imquery_list_deny"));
+	}
+}
+
 // ============================================================================
 // Externally invoked event handlers
 //
 
-// Checked: 2011-05-22 (RLVa-1.4.1a) | Added: RLVa-1.3.1b
 bool RlvHandler::handleEvent(LLPointer<LLOldEvents::LLEvent> event, const LLSD& sdUserdata)
 {
-	// If the user managed to change their active group (= newly joined or created group) we need to reactivate the previous one
-	if ( (hasBehaviour(RLV_BHVR_SETGROUP)) && ("new group" == event->desc()) && (m_idAgentGroup != gAgent.getGroupID()) )
+	// NOTE: we'll fire once for every group the user belongs to so we need to manually keep track of pending changes
+	static LLUUID s_idLastAgentGroup = LLUUID::null;
+	static bool s_fGroupChanging = false;
+
+	if (s_idLastAgentGroup != gAgent.getGroupID())
 	{
-		// [Copy/paste from LLGroupActions::activate()]
-		LLMessageSystem* msg = gMessageSystem;
-		msg->newMessageFast(_PREHASH_ActivateGroup);
-		msg->nextBlockFast(_PREHASH_AgentData);
-		msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-		msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-		msg->addUUIDFast(_PREHASH_GroupID, m_idAgentGroup);
-		gAgent.sendReliableMessage();
-		return true;
+		s_idLastAgentGroup = gAgent.getGroupID();
+		s_fGroupChanging = false;
+	}
+
+	// If the user managed to change their active group (= newly joined or created group) we need to reactivate the previous one
+	if ( (!RlvActions::canChangeActiveGroup()) && ("new group" == event->desc()) && (m_idAgentGroup != gAgent.getGroupID()) )
+	{
+		// Make sure they still belong to the group
+		if ( (m_idAgentGroup.notNull()) && (!gAgent.isInGroup(m_idAgentGroup)) )
+		{
+			m_idAgentGroup.setNull();
+			s_fGroupChanging = false;
+		}
+
+		if (!s_fGroupChanging)
+		{
+			RlvUtil::notifyBlocked(RLV_STRING_BLOCKED_GROUPCHANGE, LLSD().with("GROUP_SLURL", (m_idAgentGroup.notNull()) ? llformat("secondlife:///app/group/%s/about", m_idAgentGroup.asString()) : "(none)"));
+
+			// [Copy/paste from LLGroupActions::activate()]
+			LLMessageSystem* msg = gMessageSystem;
+			msg->newMessageFast(_PREHASH_ActivateGroup);
+			msg->nextBlockFast(_PREHASH_AgentData);
+			msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+			msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+			msg->addUUIDFast(_PREHASH_GroupID, m_idAgentGroup);
+			gAgent.sendReliableMessage();
+			s_fGroupChanging = true;
+			return true;
+		}
 	}
 	else
 	{
@@ -639,9 +761,9 @@ void RlvHandler::onIdleStartup(void* pParam)
 		// We don't want to run this *too* often
 		if ( (LLStartUp::getStartupState() >= STATE_MISC) && (pTimer->getElapsedTimeF32() >= 2.0) )
 		{
-			gRlvHandler.processRetainedCommands(RLV_BHVR_VERSION, RLV_TYPE_REPLY);
-			gRlvHandler.processRetainedCommands(RLV_BHVR_VERSIONNEW, RLV_TYPE_REPLY);
-			gRlvHandler.processRetainedCommands(RLV_BHVR_VERSIONNUM, RLV_TYPE_REPLY);
+			RlvHandler::instance().processRetainedCommands(RLV_BHVR_VERSION, RLV_TYPE_REPLY);
+			RlvHandler::instance().processRetainedCommands(RLV_BHVR_VERSIONNEW, RLV_TYPE_REPLY);
+			RlvHandler::instance().processRetainedCommands(RLV_BHVR_VERSIONNUM, RLV_TYPE_REPLY);
 			pTimer->reset();
 		}
 	}
@@ -681,61 +803,6 @@ void RlvHandler::onTeleportFinished(const LLVector3d& posArrival)
 // ============================================================================
 // String/chat censoring functions
 //
-
-// Checked: 2010-03-06 (RLVa-1.2.0c) | Added: RLVa-1.1.0j
-bool RlvHandler::canSit(LLViewerObject* pObj, const LLVector3& posOffset /*= LLVector3::zero*/) const
-{
-	// The user can sit on the specified object if:
-	//   - not prevented from sitting
-	//   - not prevented from standing up or not currently sitting
-	//   - not standtp restricted or not currently sitting (if the user is sitting and tried to sit elsewhere the tp would just kick in)
-	//   - not a regular sit (i.e. due to @sit:<uuid>=force)
-	//   - not @sittp=n or @fartouch=n restricted or if they clicked on a point within 1.5m of the avie's current position
-	return
-		( (pObj) && (LL_PCODE_VOLUME == pObj->getPCode()) ) &&
-		(!hasBehaviour(RLV_BHVR_SIT)) && 
-		( ((!hasBehaviour(RLV_BHVR_UNSIT)) && (!hasBehaviour(RLV_BHVR_STANDTP))) || 
-		  ((isAgentAvatarValid()) && (!gAgentAvatarp->isSitting())) ) &&
-		( ( (NULL != getCurrentCommand()) && (RLV_BHVR_SIT == getCurrentCommand()->getBehaviourType()) ) ||
-		  ( (!hasBehaviour(RLV_BHVR_SITTP)) && (!hasBehaviour(RLV_BHVR_FARTOUCH)) ) ||
-		  (dist_vec_squared(gAgent.getPositionGlobal(), pObj->getPositionGlobal() + LLVector3d(posOffset)) < 1.5f * 1.5f) );
-}
-
-// Checked: 2010-04-11 (RLVa-1.3.0h) | Modified: RLVa-1.3.0h
-bool RlvHandler::canTouch(const LLViewerObject* pObj, const LLVector3& posOffset /*=LLVector3::zero*/) const
-{
-	const LLUUID& idRoot = (pObj) ? pObj->getRootEdit()->getID() : LLUUID::null;
-	bool fCanTouch = (idRoot.notNull()) && ((pObj->isHUDAttachment()) || (!hasBehaviour(RLV_BHVR_TOUCHALL))) &&
-		((!hasBehaviour(RLV_BHVR_TOUCHTHIS)) || (!isException(RLV_BHVR_TOUCHTHIS, idRoot, RLV_CHECK_PERMISSIVE)));
-
-	if (fCanTouch)
-	{
-		if ( (!pObj->isAttachment()) || (!pObj->permYouOwner()) )
-		{
-			// Rezzed prim or attachment worn by another avie
-			fCanTouch = 
-				( (!hasBehaviour(RLV_BHVR_TOUCHWORLD)) || (isException(RLV_BHVR_TOUCHWORLD, idRoot, RLV_CHECK_PERMISSIVE)) ) &&
-				( (!pObj->isAttachment()) || (!hasBehaviour(RLV_BHVR_TOUCHATTACHOTHER)) ) &&
-				( (!hasBehaviour(RLV_BHVR_FARTOUCH)) || 
-				  (dist_vec_squared(gAgent.getPositionGlobal(), pObj->getPositionGlobal() + LLVector3d(posOffset)) <= 1.5f * 1.5f) );
-		}
-		else if (!pObj->isHUDAttachment())
-		{
-			// Regular attachment worn by this avie
-			fCanTouch =
-				((!hasBehaviour(RLV_BHVR_TOUCHATTACH)) || (isException(RLV_BHVR_TOUCHATTACH, idRoot, RLV_CHECK_PERMISSIVE))) &&
-				((!hasBehaviour(RLV_BHVR_TOUCHATTACHSELF)) || (isException(RLV_BHVR_TOUCHATTACH, idRoot, RLV_CHECK_PERMISSIVE)));
-		}
-		else
-		{
-			// HUD attachment
-			fCanTouch = (!hasBehaviour(RLV_BHVR_TOUCHHUD)) || (isException(RLV_BHVR_TOUCHHUD, idRoot, RLV_CHECK_PERMISSIVE));
-		}
-	}
-	if ( (!fCanTouch) && (hasBehaviour(RLV_BHVR_TOUCHME)) )
-		fCanTouch = hasBehaviourRoot(idRoot, RLV_BHVR_TOUCHME);
-	return fCanTouch;
-}
 
 size_t utf8str_strlen(const std::string& utf8)
 {
@@ -832,7 +899,7 @@ bool RlvHandler::redirectChatOrEmote(const std::string& strUTF8Text) const
 			endRedir = m_Exceptions.upper_bound(eBhvr); itRedir != endRedir; ++itRedir)
 	{
 		S32 nChannel = boost::get<S32>(itRedir->second.varOption);
-		if ( (!hasBehaviour(RLV_BHVR_SENDCHANNEL)) || (isException(RLV_BHVR_SENDCHANNEL, nChannel)) )
+		if (RlvActions::canSendChannel(nChannel))
 			RlvUtil::sendChatReply(nChannel, strUTF8Text);
 	}
 
@@ -1045,29 +1112,32 @@ bool RlvHandler::redirectChatOrEmote(const std::string& strUTF8Text) const
 // Initialization helper functions
 //
 
-// Checked: 2010-02-27 (RLVa-1.2.0a) | Modified: RLVa-1.2.0a
-BOOL RlvHandler::setEnabled(BOOL fEnable)
+bool RlvHandler::canEnable()
 {
-	// TODO-RLVa: [RLVa-1.2.1] Allow toggling at runtime if we haven't seen any llOwnerSay("@....");
+	return LLStartUp::getStartupState() <= STATE_LOGIN_CLEANUP;
+}
+
+bool RlvHandler::setEnabled(bool fEnable)
+{
 	if (m_fEnabled == fEnable)
 		return fEnable;
 
-	if (fEnable)
+	if ( (fEnable) && (canEnable()) )
 	{
-		RLV_INFOS << "Enabling Restrained Love API support - " << RlvStrings::getVersion() << RLV_ENDL;
-		m_fEnabled = TRUE;
+		RLV_INFOS << "Enabling Restrained Love API support - " << RlvStrings::getVersionAbout() << RLV_ENDL;
+		m_fEnabled = true;
 
 		// Initialize static classes
 		RlvSettings::initClass();
 		RlvStrings::initClass();
 
-		gRlvHandler.addCommandHandler(new RlvExtGetSet());
+		RlvHandler::instance().addCommandHandler(new RlvExtGetSet());
 
 		// Make sure we get notified when login is successful
 		if (LLStartUp::getStartupState() < STATE_STARTED)
-			LLAppViewer::instance()->setOnLoginCompletedCallback(boost::bind(&RlvHandler::onLoginComplete, &gRlvHandler));
+			LLAppViewer::instance()->setOnLoginCompletedCallback(boost::bind(&RlvHandler::onLoginComplete, RlvHandler::getInstance()));
 		else
-			gRlvHandler.onLoginComplete();
+			RlvHandler::instance().onLoginComplete();
 
 		// Set up RlvUIEnabler
 		RlvUIEnabler::getInstance();
@@ -1078,51 +1148,6 @@ BOOL RlvHandler::setEnabled(BOOL fEnable)
 	}
 
 	return m_fEnabled;
-}
-
-BOOL RlvHandler::canDisable()
-{
-	return FALSE;
-}
-
-void RlvHandler::clearState()
-{
-/*
-	// TODO-RLVa: should restore all RLV controlled debug variables to their defaults
-
-	// Issue @clear on behalf of every object that has a currently active RLV restriction (even if it's just an exception)
-	LLUUID idObj; LLViewerObject* pObj; bool fDetachable;
-	while (m_Objects.size())
-	{
-		idObj = m_Objects.begin()->first; // Need a copy since after @clear the data it points to will no longer exist
-		fDetachable = ((pObj = gObjectList.findObject(idObj)) != NULL) ? isLockedAttachment(pObj, RLV_LOCK_REMOVE) : true;
-
-		processCommand(idObj, "clear", false);
-		if (!fDetachable)
-			processCommand(idObj, "detachme=force", false);
-	}
-
-	// Sanity check - these should all be empty after we issue @clear on the last object
-	if ( (!m_Objects.empty()) || !(m_Exceptions.empty()) || (!m_AttachAdd.empty()) || (!m_AttachRem.empty()) )
-	{
-		RLV_ERRS << "Object, exception or attachment map not empty after clearing state!" << LL_ENDL;
-		m_Objects.clear();
-		m_Exceptions.clear();
-		m_AttachAdd.clear();
-		m_AttachRem.clear();
-	}
-
-	// These all need manual clearing
-	memset(m_LayersAdd, 0, sizeof(S16) * WT_COUNT);
-	memset(m_LayersRem, 0, sizeof(S16) * WT_COUNT);
-	memset(m_Behaviours, 0, sizeof(S16) * RLV_BHVR_COUNT);
-	m_Retained.clear();
-	clearCommandHandlers(); // <- calls delete on all registered command handlers
-
-	// Clear dynamically allocated memory
-	delete m_pGCTimer;
-	m_pGCTimer = NULL;
-*/
 }
 
 // ============================================================================
@@ -1165,7 +1190,8 @@ ERlvCmdRet RlvHandler::processAddRemCommand(const RlvCommand& rlvCmd)
 		case RLV_BHVR_REMOUTFIT:			// @remoutfit[:<layer>]=n|y			- Checked: 2010-08-29 (RLVa-1.2.1c) | Modified: RLVa-1.2.1c
 			{
 				// If there's an option it should specify a wearable type name (reference count on no option *and* a valid option)
-				RlvCommandOptionGeneric rlvCmdOption = RlvCommandOptionHelper::parseOption<RlvCommandOptionGeneric>(rlvCmd.getOption());
+				RlvCommandOptionGeneric rlvCmdOption;
+				RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), rlvCmdOption);
 				VERIFY_OPTION_REF( (rlvCmdOption.isEmpty()) || (rlvCmdOption.isWearableType()) );
 
 				// We need to flush any queued force-wear commands before changing the restrictions
@@ -1268,6 +1294,7 @@ ERlvCmdRet RlvHandler::processAddRemCommand(const RlvCommand& rlvCmd)
 			if (rlvCmd.isStrict())
 				addException(rlvCmd.getObjectID(), RLV_BHVR_PERMISSIVE, eBhvr);
 			m_Behaviours[eBhvr]++;
+			rlvCmd.markRefCounted();
 		}
 		else
 		{
@@ -1300,6 +1327,7 @@ ERlvCmdRet RlvCommandHandlerBaseImpl<RLV_TYPE_ADDREM>::processCommand(const RlvC
 			if (rlvCmd.isStrict())
 				gRlvHandler.addException(rlvCmd.getObjectID(), RLV_BHVR_PERMISSIVE, eBhvr);
 			gRlvHandler.m_Behaviours[eBhvr]++;
+			rlvCmd.markRefCounted();
 		}
 		else
 		{
@@ -1308,6 +1336,7 @@ ERlvCmdRet RlvCommandHandlerBaseImpl<RLV_TYPE_ADDREM>::processCommand(const RlvC
 			gRlvHandler.m_Behaviours[eBhvr]--;
 		}
 
+		gRlvHandler.m_OnBehaviour(eBhvr, rlvCmd.getParamType());
 		if (fHasBhvr != gRlvHandler.hasBehaviour(eBhvr))
 		{
 			if (pToggleHandlerFunc)
@@ -1320,6 +1349,7 @@ ERlvCmdRet RlvCommandHandlerBaseImpl<RLV_TYPE_ADDREM>::processCommand(const RlvC
 }
 
 // Handles: @bhvr=n|y
+template<>
 ERlvCmdRet RlvBehaviourGenericHandler<RLV_OPTION_NONE>::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
 {
 	// There should be no option
@@ -1331,6 +1361,7 @@ ERlvCmdRet RlvBehaviourGenericHandler<RLV_OPTION_NONE>::onCommand(const RlvComma
 }
 
 // Handles: @bhvr:<uuid>=n|y
+template<>
 ERlvCmdRet RlvBehaviourGenericHandler<RLV_OPTION_EXCEPTION>::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
 {
 	// There should be an option and it should specify a valid UUID
@@ -1348,6 +1379,7 @@ ERlvCmdRet RlvBehaviourGenericHandler<RLV_OPTION_EXCEPTION>::onCommand(const Rlv
 }
 
 // Handles: @bhvr[:<uuid>]=n|y
+template<>
 ERlvCmdRet RlvBehaviourGenericHandler<RLV_OPTION_NONE_OR_EXCEPTION>::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
 {
 	// If there is an option then it should specify a valid UUID (but don't reference count)
@@ -1361,6 +1393,7 @@ ERlvCmdRet RlvBehaviourGenericHandler<RLV_OPTION_NONE_OR_EXCEPTION>::onCommand(c
 }
 
 // Handles: @bhvr:<modifier>=n|y
+template<>
 ERlvCmdRet RlvBehaviourGenericHandler<RLV_OPTION_MODIFIER>::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
 {
 	// There should be an option and it should specify a valid modifier (RlvBehaviourModifier performs the appropriate type checks)
@@ -1369,16 +1402,26 @@ ERlvCmdRet RlvBehaviourGenericHandler<RLV_OPTION_MODIFIER>::onCommand(const RlvC
 	if ( (!rlvCmd.hasOption()) || (!pBhvrModifier) || (!pBhvrModifier->convertOptionValue(rlvCmd.getOption(), modValue)) )
 		return RLV_RET_FAILED_OPTION;
 
+	// HACK-RLVa: reference counting doesn't happen until control returns to our caller but the modifier callbacks will happen now so we need to adjust the reference counts here
 	if (RLV_TYPE_ADD == rlvCmd.getParamType())
+	{
+		gRlvHandler.m_Behaviours[rlvCmd.getBehaviourType()]++;
 		pBhvrModifier->addValue(modValue, rlvCmd.getObjectID());
+		gRlvHandler.m_Behaviours[rlvCmd.getBehaviourType()]--;
+	}
 	else
+	{
+		gRlvHandler.m_Behaviours[rlvCmd.getBehaviourType()]--;
 		pBhvrModifier->removeValue(modValue, rlvCmd.getObjectID());
+		gRlvHandler.m_Behaviours[rlvCmd.getBehaviourType()]++;
+	}
 
 	fRefCount = true;
 	return RLV_RET_SUCCESS;
 }
 
 // Handles: @bhvr[:<modifier>]=n|y
+template<>
 ERlvCmdRet RlvBehaviourGenericHandler<RLV_OPTION_NONE_OR_MODIFIER>::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
 {
 	// If there is an option then it should specify a valid modifier (and reference count)
@@ -1389,10 +1432,19 @@ ERlvCmdRet RlvBehaviourGenericHandler<RLV_OPTION_NONE_OR_MODIFIER>::onCommand(co
 	RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifierFromBehaviour(rlvCmd.getBehaviourType());
 	if ( (pBhvrModifier) && (pBhvrModifier->getAddDefault()) )
 	{
+		// HACK-RLVa: reference counting doesn't happen until control returns to our caller but the modifier callbacks will happen now so we need to adjust the reference counts here
 		if (RLV_TYPE_ADD == rlvCmd.getParamType())
+		{
+			gRlvHandler.m_Behaviours[rlvCmd.getBehaviourType()]++;
 			pBhvrModifier->addValue(pBhvrModifier->getDefaultValue(), rlvCmd.getObjectID());
+			gRlvHandler.m_Behaviours[rlvCmd.getBehaviourType()]--;
+		}
 		else
+		{
+			gRlvHandler.m_Behaviours[rlvCmd.getBehaviourType()]--;
 			pBhvrModifier->removeValue(pBhvrModifier->getDefaultValue(), rlvCmd.getObjectID());
+			gRlvHandler.m_Behaviours[rlvCmd.getBehaviourType()]++;
+		}
 	}
 
 	fRefCount = true;
@@ -1476,7 +1528,8 @@ ERlvCmdRet RlvBehaviourHandler<RLV_BHVR_DETACH>::onCommand(const RlvCommand& rlv
 // Checked: 2010-11-30 (RLVa-1.3.0b) | Added: RLVa-1.3.0b
 ERlvCmdRet RlvHandler::onAddRemFolderLock(const RlvCommand& rlvCmd, bool& fRefCount)
 {
-	RlvCommandOptionGeneric rlvCmdOption = RlvCommandOptionHelper::parseOption<RlvCommandOptionGeneric>(rlvCmd.getOption());
+	RlvCommandOptionGeneric rlvCmdOption;
+	RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), rlvCmdOption);
 
 	RlvFolderLocks::folderlock_source_t lockSource;
 	if (rlvCmdOption.isEmpty())
@@ -1521,7 +1574,8 @@ ERlvCmdRet RlvHandler::onAddRemFolderLock(const RlvCommand& rlvCmd, bool& fRefCo
 ERlvCmdRet RlvHandler::onAddRemFolderLockException(const RlvCommand& rlvCmd, bool& fRefCount)
 {
 	// Sanity check - the option should specify a shared folder path
-	RlvCommandOptionGeneric rlvCmdOption = RlvCommandOptionHelper::parseOption<RlvCommandOptionGeneric>(rlvCmd.getOption());
+	RlvCommandOptionGeneric rlvCmdOption;
+	RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), rlvCmdOption);
 	if (!rlvCmdOption.isSharedFolder())
 		return RLV_RET_FAILED_OPTION;
 
@@ -1557,9 +1611,8 @@ void RlvBehaviourToggleHandler<RLV_BHVR_EDIT>::onCommandToggle(ERlvBehaviour eBh
 		if (LLFloaterReg::instanceVisible("beacons"))
 			LLFloaterReg::hideInstance("beacons");
 
-		// Hide the build floater if it's currently visible
-		if (LLFloaterReg::instanceVisible("build"))
-			LLToolMgr::instance().toggleBuildMode();
+		// Hide the build floater
+		LLToolMgr::instance().leaveBuildMode();
 	}
 
 	// Start or stop filtering opening the beacons floater
@@ -1569,9 +1622,9 @@ void RlvBehaviourToggleHandler<RLV_BHVR_EDIT>::onCommandToggle(ERlvBehaviour eBh
 		RlvUIEnabler::instance().removeGenericFloaterFilter("beacons");
 }
 
-// Handles: @sendchannel[:<channel>]=n|y
+// Handles: @sendchannel[:<channel>]=n|y and @sendchannel_except[:<channel>]=n|y
 template<> template<>
-ERlvCmdRet RlvBehaviourHandler<RLV_BHVR_SENDCHANNEL>::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
+ERlvCmdRet RlvBehaviourSendChannelHandler::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
 {
 	// If there's an option then it should be a valid (= positive and non-zero) chat channel
 	if (rlvCmd.hasOption())
@@ -1592,6 +1645,59 @@ ERlvCmdRet RlvBehaviourHandler<RLV_BHVR_SENDCHANNEL>::onCommand(const RlvCommand
 	return RLV_RET_SUCCESS;
 }
 
+// Handles: @recvim[:<uuid|range>]=n|y, @sendim[:<uuid|range>]=n|y and @startim[:<uuid|range>]=n|y
+template<> template<>
+ERlvCmdRet RlvBehaviourRecvSendStartIMHandler::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
+{
+	ERlvCmdRet eRet = RlvBehaviourGenericHandler<RLV_OPTION_NONE_OR_EXCEPTION>::onCommand(rlvCmd, fRefCount);
+	if ( (RLV_RET_SUCCESS != eRet) && (rlvCmd.hasOption()) )
+	{
+		// Check for <dist_min>[;<dist_max>] option
+		std::vector<std::string> optionList; float nDistMin = F32_MAX, nDistMax = F32_MAX;
+		if ( (!RlvCommandOptionHelper::parseStringList(rlvCmd.getOption(), optionList)) || (optionList.size() > 2) ||
+			 (!RlvCommandOptionHelper::parseOption(optionList[0], nDistMin)) || (nDistMin < 0) ||
+			 ( (optionList.size() >= 2) && (!RlvCommandOptionHelper::parseOption(optionList[1], nDistMax)) ) || (nDistMax < 0) )
+		{
+			return RLV_RET_FAILED_OPTION;
+		}
+
+		// Valid option(s) - figure out which modifier(s) to change
+		ERlvBehaviourModifier eModDistMin, eModDistMax;
+		switch (rlvCmd.getBehaviourType())
+		{
+			case RLV_BHVR_RECVIM:
+				eModDistMin = RLV_MODIFIER_RECVIMDISTMIN; eModDistMax = RLV_MODIFIER_RECVIMDISTMAX;
+				break;
+			case RLV_BHVR_SENDIM:
+				eModDistMin = RLV_MODIFIER_SENDIMDISTMIN; eModDistMax = RLV_MODIFIER_SENDIMDISTMAX;
+				break;
+			case RLV_BHVR_STARTIM:
+				eModDistMin = RLV_MODIFIER_STARTIMDISTMIN; eModDistMax = RLV_MODIFIER_STARTIMDISTMAX;
+				break;
+			default:
+				return RLV_RET_FAILED_OPTION;
+		}
+
+		RlvBehaviourModifier *pBhvrModDistMin = RlvBehaviourDictionary::instance().getModifier(eModDistMin), *pBhvrModDistMax = RlvBehaviourDictionary::instance().getModifier(eModDistMax);
+		if (RLV_TYPE_ADD == rlvCmd.getParamType())
+		{
+			pBhvrModDistMin->addValue(nDistMin * nDistMin, rlvCmd.getObjectID());
+			if (optionList.size() >= 2)
+				pBhvrModDistMax->addValue(nDistMax * nDistMax, rlvCmd.getObjectID());
+		}
+		else
+		{
+			pBhvrModDistMin->removeValue(nDistMin * nDistMin, rlvCmd.getObjectID());
+			if (optionList.size() >= 2)
+				pBhvrModDistMax->removeValue(nDistMax * nDistMax, rlvCmd.getObjectID());
+		}
+
+		fRefCount = true;
+		return RLV_RET_SUCCESS;
+	}
+	return eRet;
+}
+
 // Handles: @sendim=n|y toggles
 template<> template<>
 void RlvBehaviourToggleHandler<RLV_BHVR_SENDIM>::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
@@ -1599,7 +1705,185 @@ void RlvBehaviourToggleHandler<RLV_BHVR_SENDIM>::onCommandToggle(ERlvBehaviour e
 	gSavedPerAccountSettings.getControl("DoNotDisturbModeResponse")->setHiddenFromSettingsEditor(fHasBhvr);
 }
 
-// Handles: @edit=n|y toggles
+// Handles: @setcam_avdistmin:<distance>=n|y changes
+template<>
+void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_AVDISTMIN>::onValueChange() const
+{
+	if ( (gAgentCamera.cameraMouselook()) && (!RlvActions::canChangeToMouselook()) )
+		gAgentCamera.changeCameraToThirdPerson();
+}
+
+// Handles: @setcam_eyeoffset:<vector3>=n|y and @setcam_focusoffset:<vector3>=n|y toggles
+template<> template<>
+void RlvBehaviourCamEyeFocusOffsetHandler::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
+{
+	if (fHasBhvr)
+	{
+		gAgentCamera.switchCameraPreset(CAMERA_RLV_SETCAM_VIEW);
+	}
+	else
+	{
+		const RlvBehaviourModifier* pBhvrEyeModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_EYEOFFSET);
+		const RlvBehaviourModifier* pBhvrOffsetModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_FOCUSOFFSET);
+		if ( (!pBhvrEyeModifier->hasValue()) && (!pBhvrOffsetModifier->hasValue()) )
+			gAgentCamera.switchCameraPreset(CAMERA_PRESET_REAR_VIEW);
+	}
+}
+
+// Handles: @setcam_eyeoffset:<vector3>=n|y changes
+template<>
+void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_EYEOFFSET>::onValueChange() const
+{
+	if (RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_EYEOFFSET))
+	{
+		LLControlVariable* pControl = gSavedSettings.getControl("CameraOffsetRLVaView");
+		if (pBhvrModifier->hasValue())
+			pControl->setValue(pBhvrModifier->getValue<LLVector3>().getValue());
+		else
+			pControl->resetToDefault();
+	}
+}
+
+// Handles: @setcam_focusoffset:<vector3>=n|y changes
+template<>
+void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_FOCUSOFFSET>::onValueChange() const
+{
+	if (RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_FOCUSOFFSET))
+	{
+		LLControlVariable* pControl = gSavedSettings.getControl("FocusOffsetRLVaView");
+		if (pBhvrModifier->hasValue())
+			pControl->setValue(pBhvrModifier->getValue<LLVector3>().getValue());
+		else
+			pControl->resetToDefault();
+	}
+}
+
+// Handles: @setcam_fovmin:<angle>=n|y and @setcam_fovmax:<angle>=n|y
+template<> template<>
+ERlvCmdRet RlvBehaviourSetCamFovHandler::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
+{
+	static float s_nLastCameraAngle = DEFAULT_FIELD_OF_VIEW;
+
+	S32 nRefMinBhvr = gRlvHandler.m_Behaviours[RLV_BHVR_SETCAM_FOVMIN], nRefMaxBhvr = gRlvHandler.m_Behaviours[RLV_BHVR_SETCAM_FOVMAX];
+	LLControlVariable* pSetting = gSavedSettings.getControl("CameraAngle");
+
+	// Save the user's current FOV angle if nothing's been restricted (yet)
+	if ( (!nRefMinBhvr) && (!nRefMaxBhvr) && (pSetting) )
+		s_nLastCameraAngle = (pSetting->isPersisted()) ? LLViewerCamera::instance().getDefaultFOV() : DEFAULT_FIELD_OF_VIEW;
+
+	// Perform default handling of the command
+	ERlvCmdRet eRet = RlvBehaviourGenericHandler<RLV_OPTION_MODIFIER>::onCommand(rlvCmd, fRefCount);
+	if ( (RLV_RET_SUCCESS == eRet) && (fRefCount) && (pSetting) )
+	{
+		if (RLV_TYPE_ADD == rlvCmd.getParamType())
+		{
+			// Don't persist changes from this point
+			pSetting->setPersist(LLControlVariable::PERSIST_NO);
+		}
+		else if ( (RLV_TYPE_REMOVE == rlvCmd.getParamType()) && (1 == nRefMinBhvr + nRefMaxBhvr) )
+		{
+			// Restore the user's last FOV angle (and resume persistance)
+			LLViewerCamera::instance().setDefaultFOV(s_nLastCameraAngle);
+			pSetting->setPersist(LLControlVariable::PERSIST_NONDFT);
+		}
+	}
+	return eRet;
+}
+
+// Handles: @setcam_fovmin:<angle>=n|y changes
+template<>
+void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_FOVMIN>::onValueChange() const
+{
+	LLViewerCamera::instance().setDefaultFOV(LLViewerCamera::instance().getDefaultFOV());
+}
+
+// Handles: @setcam_fovmax:<angle>=n|y changes
+template<>
+void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_FOVMAX>::onValueChange() const
+{
+	LLViewerCamera::instance().setDefaultFOV(LLViewerCamera::instance().getDefaultFOV());
+}
+
+// Handles: @setcam_mouselook=n|y toggles
+template<> template<>
+void RlvBehaviourToggleHandler<RLV_BHVR_SETCAM_MOUSELOOK>::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
+{
+	if ((fHasBhvr) && (gAgentCamera.cameraMouselook()))
+		gAgentCamera.changeCameraToThirdPerson();
+}
+
+// Handles: @setcam_textures[:<uuid>=n|y changes
+template<>
+void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_TEXTURE>::onValueChange() const
+{
+	if (RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_TEXTURE))
+	{
+		if (pBhvrModifier->hasValue())
+		{
+			RLV_INFOS << "Toggling diffuse textures for @setcam_textures" << RLV_ENDL;
+			LLViewerFetchedTexture::sDefaultDiffuseImagep = LLViewerTextureManager::getFetchedTexture(pBhvrModifier->getValue<LLUUID>(), FTT_DEFAULT, MIPMAP_YES, LLGLTexture::BOOST_NONE, LLViewerTexture::LOD_TEXTURE);
+			gObjectList.setAllObjectDefaultTextures(LLRender::DIFFUSE_MAP, true);
+		}
+		else
+		{
+			RLV_INFOS << "Restoring diffuse textures for @setcam_textures" << RLV_ENDL;
+			gObjectList.setAllObjectDefaultTextures(LLRender::DIFFUSE_MAP, false);
+			LLViewerFetchedTexture::sDefaultDiffuseImagep = nullptr;
+		}
+	}
+}
+
+// Handles: @setcam_unlock=n|y toggles
+template<> template<>
+void RlvBehaviourToggleHandler<RLV_BHVR_SETCAM_UNLOCK>::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
+{
+	if (fHasBhvr)
+		handle_reset_view();
+}
+
+// Handles: @setcam=n|y toggles
+template<> template<>
+void RlvBehaviourToggleHandler<RLV_BHVR_SETCAM>::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
+{
+	// Once an object has exclusive control over the camera only its behaviours should be active. This affects:
+	//   - behaviour modifiers         => it's all handled for us once we set the primary object
+	//   - RLV_BHVR_SETCAM_UNLOCK      => manually (re)set the reference count (and possibly invoke the toggle handler)
+
+	LLUUID idRlvObject; bool fHasCamUnlock = gRlvHandler.hasBehaviour(RLV_BHVR_SETCAM_UNLOCK);
+	if (fHasBhvr)
+	{
+		// Get the UUID of the primary object
+		std::list<const RlvObject*> lObjects;
+		gRlvHandler.findBehaviour(RLV_BHVR_SETCAM, lObjects);
+		idRlvObject = lObjects.front()->getObjectID();
+		// Reset the @setcam_unlock reference count
+		gRlvHandler.m_Behaviours[RLV_BHVR_SETCAM_UNLOCK] = (lObjects.front()->hasBehaviour(RLV_BHVR_SETCAM_UNLOCK, false)) ? 1 : 0;
+	}
+	else
+	{
+		std::list<const RlvObject*> lObjects;
+		// Restore the @setcam_unlock reference count
+		gRlvHandler.findBehaviour(RLV_BHVR_SETCAM_UNLOCK, lObjects);
+		gRlvHandler.m_Behaviours[RLV_BHVR_SETCAM_UNLOCK] = lObjects.size();
+	}
+
+	// Manually invoke the @setcam_unlock toggle handler if we toggled it on/off
+	if (fHasCamUnlock != gRlvHandler.hasBehaviour(RLV_BHVR_SETCAM_UNLOCK))
+		RlvBehaviourToggleHandler<RLV_BHVR_SETCAM_UNLOCK>::onCommandToggle(RLV_BHVR_SETCAM_UNLOCK, !fHasCamUnlock);
+
+	gAgentCamera.switchCameraPreset( (fHasBhvr) ? CAMERA_RLV_SETCAM_VIEW : CAMERA_PRESET_REAR_VIEW );
+	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_AVDISTMIN)->setPrimaryObject(idRlvObject);
+	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_AVDISTMAX)->setPrimaryObject(idRlvObject);
+	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_ORIGINDISTMIN)->setPrimaryObject(idRlvObject);
+	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_ORIGINDISTMAX)->setPrimaryObject(idRlvObject);
+	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_EYEOFFSET)->setPrimaryObject(idRlvObject);
+	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_FOCUSOFFSET)->setPrimaryObject(idRlvObject);
+	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_FOVMIN)->setPrimaryObject(idRlvObject);
+	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_FOVMAX)->setPrimaryObject(idRlvObject);
+	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_TEXTURE)->setPrimaryObject(idRlvObject);
+}
+
+// Handles: @setdebug=n|y toggles
 template<> template<>
 void RlvBehaviourToggleHandler<RLV_BHVR_SETDEBUG>::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
 {
@@ -1610,7 +1894,7 @@ void RlvBehaviourToggleHandler<RLV_BHVR_SETDEBUG>::onCommandToggle(ERlvBehaviour
 	}
 }
 
-// Handles: @edit=n|y toggles
+// Handles: @setenv=n|y toggles
 template<> template<>
 void RlvBehaviourToggleHandler<RLV_BHVR_SETENV>::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
 {
@@ -1663,7 +1947,7 @@ ERlvCmdRet RlvBehaviourHandler<RLV_BHVR_SHOWHOVERTEXT>::onCommand(const RlvComma
 	return RLV_RET_SUCCESS;
 }
 
-// Handles: @edit=n|y toggles
+// Handles: @showinv=n|y toggles
 template<> template<>
 void RlvBehaviourToggleHandler<RLV_BHVR_SHOWINV>::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
 {
@@ -1687,18 +1971,18 @@ void RlvBehaviourToggleHandler<RLV_BHVR_SHOWINV>::onCommandToggle(ERlvBehaviour 
 	RLV_ASSERT(pAppearancePanel);
 	if (pAppearancePanel)
 	{
-		//LLTabContainer* pAppearanceTabs = pAppearancePanel->getAppearanceTabs();
-		//LLOutfitsList* pMyOutfitsPanel = pAppearancePanel->getMyOutfitsPanel();
-		//if ( (pAppearanceTabs) && (pMyOutfitsPanel) )
-		//{
-			//S32 idxTab = pAppearanceTabs->getIndexForPanel(pMyOutfitsPanel);
-			//RLV_ASSERT(-1 != idxTab);
-			//pAppearanceTabs->enableTabButton(idxTab, !fHasBhvr);
+		LLTabContainer* pAppearanceTabs = pAppearancePanel->getAppearanceTabs();
+		LLOutfitsList* pMyOutfitsPanel = pAppearancePanel->getMyOutfitsPanel();
+		if ( (pAppearanceTabs) && (pMyOutfitsPanel) )
+		{
+			S32 idxTab = pAppearanceTabs->getIndexForPanel(pMyOutfitsPanel);
+			RLV_ASSERT(-1 != idxTab);
+			pAppearanceTabs->enableTabButton(idxTab, !fHasBhvr);
 
 			// When disabling, switch to the COF tab if "My Outfits" is currently active
-			//if ( (fHasBhvr) && (pAppearanceTabs->getCurrentPanelIndex() == idxTab) )
-			//	pAppearanceTabs->selectTabPanel(pAppearancePanel->getCurrentOutfitPanel());
-		//}
+			if ( (fHasBhvr) && (pAppearanceTabs->getCurrentPanelIndex() == idxTab) )
+				pAppearanceTabs->selectTabPanel(pAppearancePanel->getCurrentOutfitPanel());
+		}
 
 		LLSidepanelAppearance* pCOFPanel = pAppearancePanel->getAppearanceSP();
 		RLV_ASSERT(pCOFPanel);
@@ -1716,6 +2000,127 @@ void RlvBehaviourToggleHandler<RLV_BHVR_SHOWINV>::onCommandToggle(ERlvBehaviour 
 		RlvUIEnabler::instance().addGenericFloaterFilter("inventory");
 	else
 		RlvUIEnabler::instance().removeGenericFloaterFilter("inventory");
+}
+
+// Handles: @shownames[:<uuid>]=n|y toggles
+template<> template<>
+void RlvBehaviourToggleHandler<RLV_BHVR_SHOWNAMES>::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
+{
+	if (LLApp::isQuitting())
+		return;	// Nothing to do if the viewer is shutting down
+
+	// Update the shownames context
+	RlvActions::setShowName(RlvActions::SNC_DEFAULT, !fHasBhvr);
+
+	// Refresh the nearby people list
+	LLPanelPeople* pPeoplePanel = LLFloaterSidePanelContainer::getPanel<LLPanelPeople>("people", "panel_people");
+	RLV_ASSERT( (pPeoplePanel) && (pPeoplePanel->getNearbyList()) );
+	if ( (pPeoplePanel) && (pPeoplePanel->getNearbyList()) )
+	{
+		if (pPeoplePanel->getNearbyList()->isInVisibleChain())
+			pPeoplePanel->onCommit();
+		pPeoplePanel->getNearbyList()->updateAvatarNames();
+	}
+
+	// Force the use of the "display name" cache so we can filter both display and legacy names (or return back to the user's preference)
+	if (fHasBhvr)
+	{
+		LLAvatarNameCache::setForceDisplayNames(true);
+	}
+	else
+	{
+		LLAvatarNameCache::setForceDisplayNames(false);
+		LLAvatarNameCache::setUseDisplayNames(gSavedSettings.getBOOL("UseDisplayNames"));
+	}
+
+	// Refresh all name tags and HUD text
+	LLVOAvatar::invalidateNameTags();
+	LLHUDText::refreshAllObjectText();
+}
+
+// Handles: @shownames[:<uuid>]=n|y
+template<> template<>
+ERlvCmdRet RlvBehaviourHandler<RLV_BHVR_SHOWNAMES>::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
+{
+	ERlvCmdRet eRet = RlvBehaviourGenericHandler<RLV_OPTION_NONE_OR_EXCEPTION>::onCommand(rlvCmd, fRefCount);
+	if ( (RLV_RET_SUCCESS == eRet) && (rlvCmd.hasOption()) && (!LLApp::isQuitting()) )
+	{
+		const LLUUID idAgent = RlvCommandOptionHelper::parseOption<LLUUID>(rlvCmd.getOption());
+
+		// Refresh the nearby people list (if necessary)
+		LLPanelPeople* pPeoplePanel = LLFloaterSidePanelContainer::getPanel<LLPanelPeople>("people", "panel_people");
+		RLV_ASSERT( (pPeoplePanel) && (pPeoplePanel->getNearbyList()) );
+		if ( (pPeoplePanel) && (pPeoplePanel->getNearbyList()) && (pPeoplePanel->getNearbyList()->contains(idAgent)) )
+		{
+			if (pPeoplePanel->getNearbyList()->isInVisibleChain())
+				pPeoplePanel->onCommit();
+			pPeoplePanel->getNearbyList()->updateAvatarNames();
+		}
+
+		// Refresh that avatar's name tag and all HUD text
+		LLVOAvatar::invalidateNameTag(idAgent);
+		LLHUDText::refreshAllObjectText();
+	}
+	return eRet;
+}
+
+// Handles: @shownametags[:<uuid>]=n|y toggles
+template<> template<>
+void RlvBehaviourToggleHandler<RLV_BHVR_SHOWNAMETAGS>::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
+{
+	if (LLApp::isQuitting())
+		return;	// Nothing to do if the viewer is shutting down
+
+	// Update the shownames context
+	RlvActions::setShowName(RlvActions::SNC_NAMETAG, !fHasBhvr);
+
+	// Refresh all name tags
+	LLVOAvatar::invalidateNameTags();
+}
+
+// Handles: @shownametags[:<uuid>]=n|y
+template<> template<>
+ERlvCmdRet RlvBehaviourHandler<RLV_BHVR_SHOWNAMETAGS>::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
+{
+	ERlvCmdRet eRet = RlvBehaviourGenericHandler<RLV_OPTION_NONE_OR_EXCEPTION>::onCommand(rlvCmd, fRefCount);
+	if ( (RLV_RET_SUCCESS == eRet) && (rlvCmd.hasOption()) )
+		LLVOAvatar::invalidateNameTag(RlvCommandOptionHelper::parseOption<LLUUID>(rlvCmd.getOption()));
+	return eRet;
+}
+
+// Handles: @shownearby=n|y toggles
+template<> template<>
+void RlvBehaviourToggleHandler<RLV_BHVR_SHOWNEARBY>::onCommandToggle(ERlvBehaviour eBhvr, bool fHasBhvr)
+{
+	if (LLApp::isQuitting())
+		return;	// Nothing to do if the viewer is shutting down
+
+	// Refresh the nearby people list
+	LLPanelPeople* pPeoplePanel = LLFloaterSidePanelContainer::getPanel<LLPanelPeople>("people", "panel_people");
+	LLAvatarList* pNearbyList = (pPeoplePanel) ? pPeoplePanel->getNearbyList() : NULL;
+	RLV_ASSERT( (pPeoplePanel) && (pNearbyList) );
+	if (pNearbyList)
+	{
+		static std::string s_strNoItemsMsg = pNearbyList->getNoItemsMsg();
+		pNearbyList->setNoItemsMsg( (fHasBhvr) ? RlvStrings::getString("blocked_nearby") : s_strNoItemsMsg );
+		pNearbyList->clear();
+
+		if (pNearbyList->isInVisibleChain())
+			pPeoplePanel->onCommit();
+		if (!fHasBhvr)
+			pPeoplePanel->updateNearbyList();
+	}
+
+	// Refresh that avatar's name tag and all HUD text
+	LLHUDText::refreshAllObjectText();
+}
+
+// Handles: @showself=n|y and @showselfhead=n|y toggles
+template<> template<>
+void RlvBehaviourShowSelfToggleHandler::onCommandToggle(ERlvBehaviour eBvhr, bool fHasBhvr)
+{
+	if (isAgentAvatarValid())
+		gAgentAvatarp->updateAttachmentVisibility(gAgentCamera.getCameraMode());
 }
 
 // ============================================================================
@@ -1763,7 +2168,7 @@ ERlvCmdRet RlvHandler::processForceCommand(const RlvCommand& rlvCmd) const
 					nValue += rlvCmdOption.m_nPelvisToFootOffset;
 					if (gAgentAvatarp->getRegion()->avatarHoverHeightEnabled())
 					{
-						LLVector3 avOffset(0.0, 0.0, llclamp<F32>(nValue, MIN_HOVER_Z, MAX_HOVER_Z));
+						LLVector3 avOffset(0.0f, 0.0f, llclamp<F32>(nValue, MIN_HOVER_Z, MAX_HOVER_Z));
 						gSavedPerAccountSettings.setF32("AvatarHoverOffsetZ", avOffset.mV[VZ]);
 						gAgentAvatarp->setHoverOffset(avOffset, true);
 					}
@@ -1778,7 +2183,8 @@ ERlvCmdRet RlvHandler::processForceCommand(const RlvCommand& rlvCmd) const
 			{
 				if (RlvBehaviourInfo::FORCEWEAR_CONTEXT_NONE & rlvCmd.getBehaviourFlags())
 				{
-					RlvCommandOptionGeneric rlvCmdOption = RlvCommandOptionHelper::parseOption<RlvCommandOptionGeneric>(rlvCmd.getOption());
+					RlvCommandOptionGeneric rlvCmdOption;
+					RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), rlvCmdOption);
 					VERIFY_OPTION(rlvCmdOption.isSharedFolder());
 					eRet = onForceWear(rlvCmdOption.getSharedFolder(), rlvCmd.getBehaviourFlags());
 				}
@@ -1823,7 +2229,8 @@ ERlvCmdRet RlvForceRemAttachHandler::onCommand(const RlvCommand& rlvCmd)
 	if (!isAgentAvatarValid())
 		return RLV_RET_FAILED;
 
-	RlvCommandOptionGeneric rlvCmdOption = RlvCommandOptionHelper::parseOption<RlvCommandOptionGeneric>(rlvCmd.getOption());
+	RlvCommandOptionGeneric rlvCmdOption;
+	RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), rlvCmdOption);
 	if (rlvCmdOption.isSharedFolder())
 		return gRlvHandler.onForceWear(rlvCmdOption.getSharedFolder(), rlvCmd.getBehaviourFlags());
 
@@ -1862,7 +2269,8 @@ ERlvCmdRet RlvForceRemAttachHandler::onCommand(const RlvCommand& rlvCmd)
 template<> template<>
 ERlvCmdRet RlvForceHandler<RLV_BHVR_REMOUTFIT>::onCommand(const RlvCommand& rlvCmd)
 {
-	RlvCommandOptionGeneric rlvCmdOption = RlvCommandOptionHelper::parseOption<RlvCommandOptionGeneric>(rlvCmd.getOption());
+	RlvCommandOptionGeneric rlvCmdOption;
+	RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), rlvCmdOption);
 	if (rlvCmdOption.isSharedFolder())
 		return gRlvHandler.onForceWear(rlvCmdOption.getSharedFolder(), rlvCmd.getBehaviourFlags());
 
@@ -1874,6 +2282,148 @@ ERlvCmdRet RlvForceHandler<RLV_BHVR_REMOUTFIT>::onCommand(const RlvCommand& rlvC
 		if ( (rlvCmdOption.isEmpty()) || ((LLWearableType::EType)idxType == rlvCmdOption.getWearableType()))
 			RlvForceWear::instance().forceRemove((LLWearableType::EType)idxType);
 	}
+	return RLV_RET_SUCCESS;
+}
+
+// Handles: @setcam_eyeoffset[:<vector3>]=force and @setcam_focusoffset[:<vector3>]=force
+template<> template<>
+ERlvCmdRet RlvForceCamEyeFocusOffsetHandler::onCommand(const RlvCommand& rlvCmd)
+{
+	// Enforce exclusive camera locks
+	if (!RlvActions::canChangeCameraPreset(rlvCmd.getObjectID()))
+		return RLV_RET_FAILED_LOCK;
+
+	LLControlVariable* pOffsetControl = gSavedSettings.getControl("CameraOffsetRLVaView");
+	LLControlVariable* pFocusControl = gSavedSettings.getControl("FocusOffsetRLVaView");
+	LLControlVariable* pControl = (rlvCmd.getBehaviourType() == RLV_BHVR_SETCAM_EYEOFFSET) ? pOffsetControl : pFocusControl;
+	if (rlvCmd.hasOption())
+	{
+		LLVector3 vecOffset;
+		if (!RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), vecOffset))
+			return RLV_RET_FAILED_OPTION;
+		pControl->setValue(vecOffset.getValue());
+	}
+	else
+	{
+		pControl->resetToDefault();
+	}
+
+	gAgentCamera.switchCameraPreset( ((pOffsetControl->isDefault()) && (pFocusControl->isDefault())) ? CAMERA_PRESET_REAR_VIEW : CAMERA_RLV_SETCAM_VIEW);
+	return RLV_RET_SUCCESS;
+}
+
+// Handles: @setcam_focus:<uuid>[;<dist>[;<direction>]]=force
+template<> template<>
+ERlvCmdRet RlvForceHandler<RLV_BHVR_SETCAM_FOCUS>::onCommand(const RlvCommand& rlvCmd)
+{
+	std::vector<std::string> optionList;
+	if (!RlvCommandOptionHelper::parseStringList(rlvCmd.getOption(), optionList))
+		return RLV_RET_FAILED_OPTION;
+
+	LLVector3 posAgent;
+	LLVector3d posGlobal;
+	F32 camDistance;
+
+	// Get the focus position/object (and verify it is known)
+	LLUUID idObject; LLVector3 posRegion;
+	if (RlvCommandOptionHelper::parseOption(optionList[0], idObject))
+	{
+		const LLViewerObject* pObj = gObjectList.findObject(idObject);
+		if (!pObj)
+			return RLV_RET_FAILED_OPTION;
+		if (!pObj->isAvatar())
+		{
+			posAgent = pObj->getPositionAgent();
+			posGlobal = pObj->getPositionGlobal();
+		}
+		else
+		{
+			/*const*/ LLVOAvatar* pAvatar = (/*const*/ LLVOAvatar*)pObj;
+			if (pAvatar->mHeadp)
+			{
+				posAgent = pAvatar->mHeadp->getWorldPosition();
+				posGlobal = pAvatar->getPosGlobalFromAgent(posAgent);
+			}
+		}
+		camDistance = pObj->getScale().magVec();
+	}
+	else if (RlvCommandOptionHelper::parseOption(optionList[0], posRegion))
+	{
+		const LLViewerRegion* pRegion = gAgent.getRegion();
+		if (!pRegion)
+			return RLV_RET_FAILED_UNKNOWN;
+		posAgent = pRegion->getPosAgentFromRegion(posRegion);
+		posGlobal = pRegion->getPosGlobalFromRegion(posRegion);
+		camDistance = 0.0f;
+	}
+	else
+	{
+		return RLV_RET_FAILED_OPTION;
+	}
+
+	// Get the camera distance
+	if ( (optionList.size() > 1) && (!optionList[1].empty()) )
+	{
+		if (!RlvCommandOptionHelper::parseOption(optionList[1], camDistance))
+			return RLV_RET_FAILED_OPTION;
+	}
+
+	// Get the directional vector (or calculate it from the current camera position)
+	LLVector3 camDirection;
+	if ( (optionList.size() > 2) && (!optionList[2].empty()) )
+	{
+		if (!RlvCommandOptionHelper::parseOption(optionList[2], camDirection))
+			return RLV_RET_FAILED_OPTION;
+	}
+	else
+	{
+		camDirection = LLViewerCamera::getInstance()->getOrigin() - posAgent;
+	}
+	camDirection.normVec();
+
+	// Move the camera in place
+	gAgentCamera.setFocusOnAvatar(FALSE, ANIMATE);
+	gAgentCamera.setCameraPosAndFocusGlobal(posGlobal + LLVector3d(camDirection * llmax(F_APPROXIMATELY_ZERO, camDistance)), posGlobal, idObject);
+
+	return RLV_RET_SUCCESS;
+}
+
+// Handles: @setcam_fov[:<angle>]=force
+template<> template<>
+ERlvCmdRet RlvForceHandler<RLV_BHVR_SETCAM_FOV>::onCommand(const RlvCommand& rlvCmd)
+{
+	if (!RlvActions::canChangeCameraFOV(rlvCmd.getObjectID()))
+		return RLV_RET_FAILED_LOCK;
+
+	F32 nFOV = DEFAULT_FIELD_OF_VIEW;
+	if ( (rlvCmd.hasOption()) && (!RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), nFOV)) )
+		return RLV_RET_FAILED_OPTION;
+
+	LLViewerCamera::getInstance()->setDefaultFOV(nFOV);
+
+	// Don't persist non-default changes that are due to RLV; but do resume persistance once reset back to the default
+	if ( (!gRlvHandler.hasBehaviour(RLV_BHVR_SETCAM_FOVMIN)) && (!gRlvHandler.hasBehaviour(RLV_BHVR_SETCAM_FOVMAX)) )
+	{
+		if (LLControlVariable* pSetting = gSavedSettings.getControl("CameraAngle"))
+			pSetting->setPersist( (pSetting->isDefault()) ? LLControlVariable::PERSIST_NONDFT : LLControlVariable::PERSIST_NO );
+	}
+
+	return RLV_RET_SUCCESS;
+}
+
+// Handles: @setcam_mode[:<option>]=force
+template<> template<>
+ERlvCmdRet RlvForceHandler<RLV_BHVR_SETCAM_MODE>::onCommand(const RlvCommand& rlvCmd)
+{
+	const std::string& strOption = rlvCmd.getOption();
+	if ("mouselook" == strOption)
+		gAgentCamera.changeCameraToMouselook();
+	else if ("thirdperson" == strOption)
+		gAgentCamera.changeCameraToThirdPerson();
+	else if ( ("reset" == strOption) || (strOption.empty()) )
+		handle_reset_view();
+	else
+		return RLV_RET_FAILED_OPTION;
 	return RLV_RET_SUCCESS;
 }
 
@@ -1910,22 +2460,34 @@ void RlvHandler::onForceWearCallback(const uuid_vec_t& idItems, U32 nFlags) cons
 template<> template<>
 ERlvCmdRet RlvForceHandler<RLV_BHVR_SETGROUP>::onCommand(const RlvCommand& rlvCmd)
 {
-	if (gRlvHandler.hasBehaviourExcept(RLV_BHVR_SETGROUP, rlvCmd.getObjectID()))
-	{
+	if (!RlvActions::canChangeActiveGroup(rlvCmd.getObjectID()))
 		return RLV_RET_FAILED_LOCK;
-	}
 
 	LLUUID idGroup; bool fValid = false;
-	if (idGroup.set(rlvCmd.getOption()))
+	if ("none" == rlvCmd.getOption())
+	{
+		idGroup.setNull();
+		fValid = true;
+	}
+	else if (idGroup.set(rlvCmd.getOption()))
 	{
 		fValid = (idGroup.isNull()) || (gAgent.isInGroup(idGroup, true));
 	}
 	else
 	{
-		for (S32 idxGroup = 0, cntGroup = gAgent.mGroups.size(); (idxGroup < cntGroup) && (idGroup.isNull()); idxGroup++)
-			if (boost::iequals(gAgent.mGroups.at(idxGroup).mName, rlvCmd.getOption()))
-				idGroup = gAgent.mGroups.at(idxGroup).mID;
-		fValid = (idGroup.notNull()) || ("none" == rlvCmd.getOption());
+		bool fExactMatch = false;
+		for (const auto& groupData : gAgent.mGroups)
+		{
+			// NOTE: exact matches take precedence over partial matches; in case of partial matches the last match wins
+			if (boost::istarts_with(groupData.mName, rlvCmd.getOption()))
+			{
+				idGroup = groupData.mID;
+				fExactMatch = groupData.mName.length() == rlvCmd.getOption().length();
+				if (fExactMatch)
+					break;
+			}
+		}
+		fValid = idGroup.notNull();
 	}
 
 	if (fValid)
@@ -1941,62 +2503,89 @@ ERlvCmdRet RlvForceHandler<RLV_BHVR_SETGROUP>::onCommand(const RlvCommand& rlvCm
 template<> template<>
 ERlvCmdRet RlvForceHandler<RLV_BHVR_SIT>::onCommand(const RlvCommand& rlvCmd)
 {
-	LLViewerObject* pObj = NULL; LLUUID idTarget(rlvCmd.getOption());
-	// Sanity checking - we need to know about the object and it should identify a prim/linkset
-	if ( (idTarget.isNull()) || ((pObj = gObjectList.findObject(idTarget)) == NULL) || (LL_PCODE_VOLUME != pObj->getPCode()) )
+	LLUUID idTarget;
+	if (!RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), idTarget))
 		return RLV_RET_FAILED_OPTION;
 
-	if (!gRlvHandler.canSit(pObj))
-		return RLV_RET_FAILED_LOCK;
-	else if ( (gRlvHandler.hasBehaviour(RLV_BHVR_STANDTP)) && (isAgentAvatarValid()) )
+	LLViewerObject* pObj = NULL;
+	if (idTarget.isNull())
 	{
-		if (gAgentAvatarp->isSitting())
+		if (!RlvActions::canGroundSit())
 			return RLV_RET_FAILED_LOCK;
-		gRlvHandler.m_posSitSource = gAgent.getPositionGlobal();
+		gAgent.sitDown();
 	}
+	else if ( ((pObj = gObjectList.findObject(idTarget)) != NULL) && (LL_PCODE_VOLUME == pObj->getPCode()))
+	{
+		if (!RlvActions::canSit(pObj))
+			return RLV_RET_FAILED_LOCK;
 
-	// Copy/paste from handle_sit_or_stand()
-	gMessageSystem->newMessageFast(_PREHASH_AgentRequestSit);
-	gMessageSystem->nextBlockFast(_PREHASH_AgentData);
-	gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-	gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-	gMessageSystem->nextBlockFast(_PREHASH_TargetObject);
-	gMessageSystem->addUUIDFast(_PREHASH_TargetID, pObj->mID);
-	gMessageSystem->addVector3Fast(_PREHASH_Offset, LLVector3::zero);
-	pObj->getRegion()->sendReliableMessage();
+		if ((gRlvHandler.hasBehaviour(RLV_BHVR_STANDTP)) && (isAgentAvatarValid()))
+		{
+			if (gAgentAvatarp->isSitting())
+				return RLV_RET_FAILED_LOCK;
+			gRlvHandler.m_posSitSource = gAgent.getPositionGlobal();
+		}
 
+		// Copy/paste from handle_sit_or_stand()
+		gMessageSystem->newMessageFast(_PREHASH_AgentRequestSit);
+		gMessageSystem->nextBlockFast(_PREHASH_AgentData);
+		gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+		gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+		gMessageSystem->nextBlockFast(_PREHASH_TargetObject);
+		gMessageSystem->addUUIDFast(_PREHASH_TargetID, pObj->mID);
+		gMessageSystem->addVector3Fast(_PREHASH_Offset, LLVector3::zero);
+		pObj->getRegion()->sendReliableMessage();
+	}
+	else
+	{
+		return RLV_RET_FAILED_OPTION;
+	}
 	return RLV_RET_SUCCESS;
 }
 
-// Handles: @tpto:<vector>[;<angle>]=force
+// Handles: @tpto:<vector>[;<angle>]=force and @tpto:<region>/<vector>[;<angle>]=force
 template<> template<>
 ERlvCmdRet RlvForceHandler<RLV_BHVR_TPTO>::onCommand(const RlvCommand& rlvCmd)
 {
 	std::vector<std::string> optionList;
 	if (!RlvCommandOptionHelper::parseStringList(rlvCmd.getOption(), optionList))
-		return RLV_RET_FAILED;
-
-	// First option specifies the destination
-	LLVector3d posGlobal;
-	if (!RlvCommandOptionHelper::parseOption(optionList[0], posGlobal))
 		return RLV_RET_FAILED_OPTION;
 
-	if (optionList.size() == 1)
+	// We need the look-at first
+	LLVector3 vecLookAt = LLVector3::zero;
+	if (optionList.size() > 1)
 	{
-		gAgent.teleportViaLocation(posGlobal);
-	}
-	else
-	{
-		// Second option specifies the angle
 		float nAngle = 0.0f;
 		if (!RlvCommandOptionHelper::parseOption(optionList[1], nAngle))
 			return RLV_RET_FAILED_OPTION;
 
-		LLVector3 vecLookAt(LLVector3::x_axis);
+		vecLookAt = LLVector3::x_axis;
 		vecLookAt.rotVec(nAngle, LLVector3::z_axis);
 		vecLookAt.normalize();
+	}
+
+	// Next figure out the destination
+	LLVector3d posGlobal;
+	if (RlvCommandOptionHelper::parseOption(optionList[0], posGlobal))
+	{
+		if (optionList.size() == 1)
+			gAgent.teleportViaLocation(posGlobal);
+		else
 		gAgent.teleportViaLocationLookAt(posGlobal, vecLookAt);
 	}
+	else
+	{
+		std::vector<std::string> posList; LLVector3 posRegion;
+		if ( (!RlvCommandOptionHelper::parseStringList(optionList[0], posList, std::string("/"))) || (4 != posList.size()) ||
+		     (!RlvCommandOptionHelper::parseOption(optionList[0].substr(posList[0].size() + 1), posRegion)) )
+		{
+			return RLV_RET_FAILED_OPTION;
+		}
+
+		LLWorldMapMessage::url_callback_t cb = boost::bind(&RlvUtil::teleportCallback, _1, posRegion, vecLookAt);
+		LLWorldMapMessage::getInstance()->sendNamedRegionRequest(posList[0], cb, std::string(""), true);
+	}
+
 	return RLV_RET_SUCCESS;
 }
 
@@ -2052,11 +2641,11 @@ ERlvCmdRet RlvHandler::processReplyCommand(const RlvCommand& rlvCmd) const
 		case RLV_BHVR_VERSION:			// @version=<channel>					- Checked: 2010-03-27 (RLVa-1.4.0a)
 		case RLV_BHVR_VERSIONNEW:		// @versionnew=<channel>				- Checked: 2010-03-27 (RLVa-1.4.0a) | Added: RLVa-1.2.0b
 			// NOTE: RLV will respond even if there's an option
-			strReply = RlvStrings::getVersion(RLV_BHVR_VERSION == rlvCmd.getBehaviourType());
+			strReply = RlvStrings::getVersion(rlvCmd.getObjectID(), RLV_BHVR_VERSION == rlvCmd.getBehaviourType());
 			break;
 		case RLV_BHVR_VERSIONNUM:		// @versionnum=<channel>				- Checked: 2010-03-27 (RLVa-1.4.0a) | Added: RLVa-1.0.4b
 			// NOTE: RLV will respond even if there's an option
-			strReply = RlvStrings::getVersionNum();
+			strReply = RlvStrings::getVersionNum(rlvCmd.getObjectID());
 			break;
 		case RLV_BHVR_GETATTACH:		// @getattach[:<layer>]=<channel>
 			eRet = onGetAttach(rlvCmd, strReply);
@@ -2268,6 +2857,77 @@ ERlvCmdRet RlvHandler::onGetAttachNames(const RlvCommand& rlvCmd, std::string& s
 	return RLV_RET_SUCCESS;
 }
 
+// Handles: @getcam_avdist=<channel>
+template<> template<>
+ERlvCmdRet RlvReplyHandler<RLV_BHVR_GETCAM_AVDIST>::onCommand(const RlvCommand& rlvCmd, std::string& strReply)
+{
+	if (rlvCmd.hasOption())
+		return RLV_RET_FAILED_OPTION;
+	strReply = llformat("%.3lf", (gAgentCamera.getCameraPositionGlobal() - gAgent.getPositionGlobal()).magVec());
+	return RLV_RET_SUCCESS;
+}
+
+// Handles: @getcam_avdistmin=<channel>, @getcam_avdistmax=<channel>, @getcam_fovmin=<channel> and @getcam_fovmax=<channel>
+template<> template<>
+ERlvCmdRet RlvReplyCamMinMaxModifierHandler::onCommand(const RlvCommand& rlvCmd, std::string& strReply)
+{
+	if ( (rlvCmd.hasOption()) || (!boost::starts_with(rlvCmd.getBehaviour(), "getcam_")) )
+		return RLV_RET_FAILED_OPTION;
+	ERlvBehaviour eBhvr = RlvBehaviourDictionary::instance().getBehaviourFromString("setcam_" + rlvCmd.getBehaviour().substr(7), RLV_TYPE_ADDREM);
+	if (RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifierFromBehaviour(eBhvr))
+		strReply = (pBhvrModifier->hasValue()) ? llformat("%.3f", pBhvrModifier->getValue<float>()) : LLStringUtil::null;
+	return RLV_RET_SUCCESS;
+}
+
+// Handles: @camzoommin/max[:<multiplier>]=n|y - DEPRECATED
+template<> template<>
+ERlvCmdRet RlvBehaviourCamZoomMinMaxHandler::onCommand(const RlvCommand& rlvCmd, bool& fRefCount)
+{
+	// NOTE: @camzoommin/max are implemented as semi-synonyms of @setcam_fovmin/max
+	F32 nMult = 1.0f;
+	if ( (rlvCmd.hasOption()) && (!RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), nMult)) )
+		return RLV_RET_FAILED_OPTION;
+
+	RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifier( (RLV_BHVR_CAMZOOMMIN == rlvCmd.getBehaviourType()) ? RLV_MODIFIER_SETCAM_FOVMIN : RLV_MODIFIER_SETCAM_FOVMAX);
+	if (pBhvrModifier)
+	{
+		if (RLV_TYPE_ADD == rlvCmd.getParamType())
+		{
+			gRlvHandler.m_Behaviours[(RLV_BHVR_CAMZOOMMIN == rlvCmd.getBehaviourType()) ? RLV_BHVR_SETCAM_FOVMIN : RLV_BHVR_SETCAM_FOVMAX]++;
+			pBhvrModifier->addValue(DEFAULT_FIELD_OF_VIEW / nMult, rlvCmd.getObjectID());
+		}
+		else
+		{
+			gRlvHandler.m_Behaviours[(RLV_BHVR_CAMZOOMMIN == rlvCmd.getBehaviourType()) ? RLV_BHVR_SETCAM_FOVMIN : RLV_BHVR_SETCAM_FOVMAX]--;
+			pBhvrModifier->removeValue(DEFAULT_FIELD_OF_VIEW / nMult, rlvCmd.getObjectID());
+		}
+	}
+
+	fRefCount = true;
+	return RLV_RET_SUCCESS;
+}
+
+// Handles: @getcam_fov=<channel>
+template<> template<>
+ERlvCmdRet RlvReplyHandler<RLV_BHVR_GETCAM_FOV>::onCommand(const RlvCommand& rlvCmd, std::string& strReply)
+{
+	if (rlvCmd.hasOption())
+		return RLV_RET_FAILED_OPTION;
+	strReply = llformat("%.3f", LLViewerCamera::getInstance()->getDefaultFOV());
+	return RLV_RET_SUCCESS;
+}
+
+// Handles: @getcam_textures=<channel>
+template<> template<>
+ERlvCmdRet RlvReplyHandler<RLV_BHVR_GETCAM_TEXTURES>::onCommand(const RlvCommand& rlvCmd, std::string& strReply)
+{
+	if (rlvCmd.hasOption())
+		return RLV_RET_FAILED_OPTION;
+	if (RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_TEXTURE))
+		strReply = (pBhvrModifier->hasValue()) ? pBhvrModifier->getValue<LLUUID>().asString() : LLStringUtil::null;
+	return RLV_RET_SUCCESS;
+}
+
 // Handles: @getcommand[:<behaviour>[;<type>[;<separator>]]]=<channel>
 template<> template<>
 ERlvCmdRet RlvReplyHandler<RLV_BHVR_GETCOMMAND>::onCommand(const RlvCommand& rlvCmd, std::string& strReply)
@@ -2318,9 +2978,11 @@ ERlvCmdRet RlvHandler::onGetInv(const RlvCommand& rlvCmd, std::string& strReply)
 		//   - aren't hidden
 		//   - aren't a folded folder (only really matters when "Enable Legacy Naming" is enabled - see related blog post)
 		//     (we can skip checking for .<composite> folders since the ones we'll want to hide start with '.' anyway)
+		//   - don't have any invalid characters
 		const std::string& strFolder = pFolders->at(idxFolder)->getName();
-		if ( (!strFolder.empty()) && (RLV_FOLDER_PREFIX_HIDDEN != strFolder[0]) && 
-			 (!RlvInventory::isFoldedFolder(pFolders->at(idxFolder).get(), false)) )
+		if ( (!strFolder.empty()) && (RLV_FOLDER_PREFIX_HIDDEN != strFolder[0]) &&
+			 (!RlvInventory::isFoldedFolder(pFolders->at(idxFolder).get(), false)) && 
+			 (std::string::npos == strFolder.find_first_of(RLV_FOLDER_INVALID_CHARS)) )
 		{
 			if (!strReply.empty())
 				strReply.push_back(',');

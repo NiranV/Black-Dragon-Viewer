@@ -92,6 +92,12 @@
 #include "stringize.h"
 #include "boost/foreach.hpp"
 #include "llcorehttputil.h"
+// [RLVa:KB] - Checked: 2011-11-04 (RLVa-1.4.4a)
+#include "rlvactions.h"
+#include "rlvhandler.h"
+#include "rlvhelper.h"
+#include "rlvui.h"
+// [/RLVa:KB]
 
 //BD
 #include "lltoolfocus.h"
@@ -204,7 +210,10 @@ private:
 class LLTeleportRequestViaLocationLookAt : public LLTeleportRequestViaLocation
 {
 public:
-	LLTeleportRequestViaLocationLookAt(const LLVector3d &pPosGlobal);
+// [RLVa:KB] - Checked: RLVa-2.0.0
+	LLTeleportRequestViaLocationLookAt(const LLVector3d &pPosGlobal, const LLVector3& look_at);
+// [/RLVa:KB]
+//	LLTeleportRequestViaLocationLookAt(const LLVector3d &pPosGlobal);
 	virtual ~LLTeleportRequestViaLocationLookAt();
 
 	virtual bool canRestartTeleport();
@@ -213,8 +222,14 @@ public:
 	virtual void restartTeleport();
 
 protected:
+// [RLVa:KB] - Checked: RLVa-2.0.0
+	const LLVector3& getLookAt() const { return mLookAt; }
+// [/RLVa:KB]
 
 private:
+// [RLVa:KB] - Checked: RLVa-2.0.0
+	LLVector3 mLookAt;
+// [/RLVa:KB]
 
 };
 
@@ -359,7 +374,10 @@ LLAgent::LLAgent() :
 	mDoubleTapRunMode(DOUBLETAP_NONE),
 
 	mbAlwaysRun(false),
-	mbRunning(false),
+//	mbRunning(false),
+// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
+	mbTempRun(false),
+// [/RLVa:KB]
 	mbTeleportKeepsLookAt(false),
 
 	mAgentAccess(new LLAgentAccess(gSavedSettings)),
@@ -737,6 +755,9 @@ void LLAgent::movePitch(F32 mag)
 // Does this parcel allow you to fly?
 BOOL LLAgent::canFly()
 {
+// [RLVa:KB] - Checked: 2010-03-02 (RLVa-1.2.0d) | Modified: RLVa-1.0.0c
+	if (gRlvHandler.hasBehaviour(RLV_BHVR_FLY)) return FALSE;
+// [/RLVa:KB]
 	if (isGodlike()) return TRUE;
 
 	LLViewerRegion* regionp = getRegion();
@@ -785,6 +806,13 @@ void LLAgent::setFlying(BOOL fly)
 
 	if (fly)
 	{
+// [RLVa:KB] - Checked: 2010-03-02 (RLVa-1.2.0d) | Modified: RLVa-1.0.0c
+		if (gRlvHandler.hasBehaviour(RLV_BHVR_FLY))
+		{
+			return;
+		}
+// [/RLVa:KB]
+
 		BOOL was_flying = getFlying();
 		if (!canFly() && !was_flying)
 		{
@@ -847,7 +875,14 @@ bool LLAgent::enableFlying()
 
 void LLAgent::standUp()
 {
-	setControlFlags(AGENT_CONTROL_STAND_UP);
+//	setControlFlags(AGENT_CONTROL_STAND_UP);
+// [RLVa:KB] - Checked: 2010-03-07 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
+	// RELEASE-RLVa: [SL-2.0.0] Check this function's callers since usually they require explicit blocking
+	if ( (!rlv_handler_t::isEnabled()) || (RlvActions::canStand()) )
+	{
+		setControlFlags(AGENT_CONTROL_STAND_UP);
+	}
+// [/RLVa:KB]
 }
 
 void LLAgent::changeParcels()
@@ -943,7 +978,10 @@ void LLAgent::setRegion(LLViewerRegion *regionp)
 
 	LLSelectMgr::getInstance()->updateSelectionCenter();
 
-	LLFloaterMove::sUpdateFlyingStatus();
+//	LLFloaterMove::sUpdateFlyingStatus();
+// [RLVa:KB] - Checked: 2011-05-27 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
+	LLFloaterMove::sUpdateMovementStatus();
+// [/RLVa:KB]
 
 	LL_DEBUGS("AgentLocation") << "Calling RegionChanged callbacks" << LL_ENDL;
 	mRegionChangedSignal();
@@ -1171,6 +1209,11 @@ LLVector3d LLAgent::getPosGlobalFromAgent(const LLVector3 &pos_agent) const
 
 void LLAgent::sitDown()
 {
+// [RLVa:KB] - Checked: RLVa-1.2.1
+	if (!RlvActions::canGroundSit())
+		return;
+// [/RLVa:KB]
+
 	setControlFlags(AGENT_CONTROL_SIT_ON_GROUND);
 }
 
@@ -1938,7 +1981,10 @@ std::ostream& operator<<(std::ostream &s, const LLAgent &agent)
 //-----------------------------------------------------------------------------
 BOOL LLAgent::needsRenderAvatar()
 {
-	if (gAgentCamera.cameraMouselook() && !LLVOAvatar::sVisibleInFirstPerson)
+//	if (gAgentCamera.cameraMouselook() && !LLVOAvatar::sVisibleInFirstPerson)
+// [RLVa:KB] - Checked: RLVa-2.0.2
+	if ( (gAgentCamera.cameraMouselook() && !LLVOAvatar::sVisibleInFirstPerson) || (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWSELF)) )
+// [/RLVa:KB]
 	{
 		return FALSE;
 	}
@@ -1949,7 +1995,10 @@ BOOL LLAgent::needsRenderAvatar()
 // TRUE if we need to render your own avatar's head.
 BOOL LLAgent::needsRenderHead()
 {
-	return (LLVOAvatar::sVisibleInFirstPerson && LLPipeline::sReflectionRender) || (mShowAvatar && !gAgentCamera.cameraMouselook());
+// [RLVa:KB] - Checked: RLVa-2.0.2
+	return ((LLVOAvatar::sVisibleInFirstPerson && LLPipeline::sReflectionRender) || (mShowAvatar && !gAgentCamera.cameraMouselook())) && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWSELFHEAD));
+// [/RLVa:KB]
+//	return (LLVOAvatar::sVisibleInFirstPerson && LLPipeline::sReflectionRender) || (mShowAvatar && !gAgentCamera.cameraMouselook());
 }
 
 //-----------------------------------------------------------------------------
@@ -2474,7 +2523,11 @@ void LLAgent::onAnimStop(const LLUUID& id)
 	}
 	else if (id == ANIM_AGENT_AWAY)
 	{
-		clearAFK();
+// [RLVa:KB] - Checked: 2010-05-03 (RLVa-1.2.0g) | Added: RLVa-1.1.0g
+		if (!gRlvHandler.hasBehaviour(RLV_BHVR_ALLOWIDLE))
+			clearAFK();
+// [/RLVa:KB]
+//		clearAFK();
 	}
 	else if (id == ANIM_AGENT_STANDUP)
 	{
@@ -3139,7 +3192,36 @@ void LLAgent::sendRevokePermissions(const LLUUID & target, U32 permissions)
 	}
 }
 
-void LLAgent::sendWalkRun(bool running)
+// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
+void LLAgent::setAlwaysRun()
+{
+	mbAlwaysRun = (!rlv_handler_t::isEnabled()) || (!gRlvHandler.hasBehaviour(RLV_BHVR_ALWAYSRUN));
+	sendWalkRun();
+}
+
+void LLAgent::setTempRun()
+{
+	mbTempRun = (!rlv_handler_t::isEnabled()) || (!gRlvHandler.hasBehaviour(RLV_BHVR_TEMPRUN));
+	sendWalkRun();
+}
+
+void LLAgent::clearAlwaysRun()
+{
+	mbAlwaysRun = false;
+	sendWalkRun();
+}
+
+void LLAgent::clearTempRun()
+{
+	mbTempRun = false;
+	sendWalkRun();
+}
+// [/RLVa:KB]
+
+//void LLAgent::sendWalkRun(bool running)
+// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
+void LLAgent::sendWalkRun()
+// [/RLVa:KB]
 {
 	LLMessageSystem* msgsys = gMessageSystem;
 	if (msgsys)
@@ -3148,7 +3230,10 @@ void LLAgent::sendWalkRun(bool running)
 		msgsys->nextBlockFast(_PREHASH_AgentData);
 		msgsys->addUUIDFast(_PREHASH_AgentID, getID());
 		msgsys->addUUIDFast(_PREHASH_SessionID, getSessionID());
-		msgsys->addBOOLFast(_PREHASH_AlwaysRun, BOOL(running) );
+//		msgsys->addBOOLFast(_PREHASH_AlwaysRun, BOOL(running) );
+// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
+		msgsys->addBOOLFast(_PREHASH_AlwaysRun, BOOL(getRunning()) );
+// [/RLVa:KB]
 		sendReliableMessage();
 	}
 }
@@ -3990,10 +4075,13 @@ void LLAgent::onCapabilitiesReceivedAfterTeleport()
 }
 
 
-void LLAgent::teleportRequest(
-	const U64& region_handle,
-	const LLVector3& pos_local,
-	bool look_at_from_camera)
+//void LLAgent::teleportRequest(
+//	const U64& region_handle,
+//	const LLVector3& pos_local,
+//	bool look_at_from_camera)
+// [RLVa:KB] - Checked: RLVa-2.0.0
+void LLAgent::teleportRequest(const U64& region_handle, const LLVector3& pos_local, const LLVector3& look_at)
+// [/RLVa:KB]
 {
 	LLViewerRegion* regionp = getRegion();
 	bool is_local = (region_handle == regionp->getHandle());
@@ -4009,11 +4097,11 @@ void LLAgent::teleportRequest(
 		msg->nextBlockFast(_PREHASH_Info);
 		msg->addU64("RegionHandle", region_handle);
 		msg->addVector3("Position", pos_local);
-		LLVector3 look_at(0,1,0);
-		if (look_at_from_camera)
-		{
-			look_at = LLViewerCamera::getInstance()->getAtAxis();
-		}
+//		LLVector3 look_at(0,1,0);
+//		if (look_at_from_camera)
+//		{
+//			look_at = LLViewerCamera::getInstance()->getAtAxis();
+//		}
 		msg->addVector3("LookAt", look_at);
 		sendReliableMessage();
 	}
@@ -4022,8 +4110,20 @@ void LLAgent::teleportRequest(
 // Landmark ID = LLUUID::null means teleport home
 void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 {
+// [RLVa:KB] - Checked: 2010-08-22 (RLVa-1.2.1a) | Modified: RLVa-1.2.1a
+	// NOTE: we'll allow teleporting home unless both @tplm=n *and* @tploc=n restricted
+	if ( (rlv_handler_t::isEnabled()) &&
+		 ( ( (landmark_asset_id.notNull()) ? gRlvHandler.hasBehaviour(RLV_BHVR_TPLM)
+		                                   : gRlvHandler.hasBehaviour(RLV_BHVR_TPLM) && gRlvHandler.hasBehaviour(RLV_BHVR_TPLOC) ) ||
+		   ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) && (isAgentAvatarValid()) && (gAgentAvatarp->isSitting())) ))
+	{
+		RlvUtil::notifyBlocked(RLV_STRING_BLOCKED_TELEPORT);
+		return;
+	}
+// [/RLVa:KB]
+
 	//BD - Check if our TP is a Home TP
-	if(landmark_asset_id == LLUUID::null)
+	if (landmark_asset_id == LLUUID::null)
 	{
 		mIsHomeTP = true;
 	}
@@ -4125,6 +4225,22 @@ void LLAgent::restoreCanceledTeleportRequest()
 
 void LLAgent::teleportViaLocation(const LLVector3d& pos_global)
 {
+// [RLVa:KB] - Checked: RLVa-2.0.0
+	if ( (RlvActions::isRlvEnabled()) && (!RlvUtil::isForceTp()) )
+	{
+		if ( (RlvActions::isLocalTp(pos_global)) ? !RlvActions::canTeleportToLocal(pos_global) : !RlvActions::canTeleportToLocation() )
+		{
+			RlvUtil::notifyBlocked(RLV_STRING_BLOCKED_TELEPORT);
+			return;
+		}
+
+		if ( (gRlvHandler.getCurrentCommand()) && (RLV_BHVR_TPTO == gRlvHandler.getCurrentCommand()->getBehaviourType()) )
+		{
+			gRlvHandler.setCanCancelTp(false);
+		}
+	}
+// [/RLVa:KB]
+
 	mTeleportRequest = LLTeleportRequestPtr(new LLTeleportRequestViaLocation(pos_global));
 	startTeleportRequest();
 }
@@ -4177,15 +4293,37 @@ void LLAgent::doTeleportViaLocation(const LLVector3d& pos_global)
 }
 
 // Teleport to global position, but keep facing in the same direction 
-void LLAgent::teleportViaLocationLookAt(const LLVector3d& pos_global)
+// [RLVa:KB] - Checked: RLVa-2.0.0
+void LLAgent::teleportViaLocationLookAt(const LLVector3d& pos_global, const LLVector3& look_at)
 {
-	mTeleportRequest = LLTeleportRequestPtr(new LLTeleportRequestViaLocationLookAt(pos_global));
+	if ( (RlvActions::isRlvEnabled()) && (!RlvUtil::isForceTp()) )
+	{
+		if ( (RlvActions::isLocalTp(pos_global)) ? !RlvActions::canTeleportToLocal(pos_global) : !RlvActions::canTeleportToLocation() )
+		{
+			RlvUtil::notifyBlocked(RLV_STRING_BLOCKED_TELEPORT);
+			return;
+		}
+
+		if ( (gRlvHandler.getCurrentCommand()) && (RLV_BHVR_TPTO == gRlvHandler.getCurrentCommand()->getBehaviourType()) )
+		{
+			gRlvHandler.setCanCancelTp(false);
+		}
+	}
+
+	mTeleportRequest = LLTeleportRequestPtr(new LLTeleportRequestViaLocationLookAt(pos_global, (look_at.isExactlyZero()) ? LLViewerCamera::getInstance()->getAtAxis() : look_at));
 	startTeleportRequest();
 }
+// [/RLVa:KB]
+//void LLAgent::teleportViaLocationLookAt(const LLVector3d& pos_global)
+//{
+//	mTeleportRequest = LLTeleportRequestPtr(new LLTeleportRequestViaLocationLookAt(pos_global));
+//	startTeleportRequest();
+//}
 
-void LLAgent::doTeleportViaLocationLookAt(const LLVector3d& pos_global)
+// [RLVa:KB] - Checked: RLVa-2.0.0
+void LLAgent::doTeleportViaLocationLookAt(const LLVector3d& pos_global, const LLVector3& look_at)
 {
-	mbTeleportKeepsLookAt = true;
+	mbTeleportKeepsLookAt = look_at.isExactlyZero();
 
 	if(!gAgentCamera.isfollowCamLocked())
 	{
@@ -4194,8 +4332,23 @@ void LLAgent::doTeleportViaLocationLookAt(const LLVector3d& pos_global)
 
 	U64 region_handle = to_region_handle(pos_global);
 	LLVector3 pos_local = (LLVector3)(pos_global - from_region_handle(region_handle));
-	teleportRequest(region_handle, pos_local, getTeleportKeepsLookAt());
+	teleportRequest(region_handle, pos_local, look_at);
 }
+// [/RLVa:KB]
+//void LLAgent::doTeleportViaLocationLookAt(const LLVector3d& pos_global, const LLVector3& look_at)
+//{
+//	mbTeleportKeepsLookAt = true;
+//
+//	if(!gAgentCamera.isfollowCamLocked())
+//	{
+//		gAgentCamera.setFocusOnAvatar(FALSE, ANIMATE);	// detach camera form avatar, so it keeps direction
+//	}
+//
+//	U64 region_handle = to_region_handle(pos_global);
+//	LLVector3 pos_local = (LLVector3)(pos_global - from_region_handle(region_handle));
+//	teleportRequest(region_handle, pos_local, look_at);
+//	teleportRequest(region_handle, pos_local, getTeleportKeepsLookAt());
+//}
 
 LLAgent::ETeleportState	LLAgent::getTeleportState() const
 {
@@ -4666,11 +4819,18 @@ void LLTeleportRequestViaLocation::restartTeleport()
 // LLTeleportRequestViaLocationLookAt
 //-----------------------------------------------------------------------------
 
-LLTeleportRequestViaLocationLookAt::LLTeleportRequestViaLocationLookAt(const LLVector3d &pPosGlobal)
-	: LLTeleportRequestViaLocation(pPosGlobal)
+// [RLVa:KB] - Checked: RLVa-2.0.0
+LLTeleportRequestViaLocationLookAt::LLTeleportRequestViaLocationLookAt(const LLVector3d &pPosGlobal, const LLVector3& look_at)
+	: LLTeleportRequestViaLocation(pPosGlobal), mLookAt(look_at)
 {
     LL_INFOS("Teleport") << "LLTeleportRequestViaLocationLookAt created" << LL_ENDL;
 }
+// [/RLVa:KB]
+
+//LLTeleportRequestViaLocationLookAt::LLTeleportRequestViaLocationLookAt(const LLVector3d &pPosGlobal)
+//	: LLTeleportRequestViaLocation(pPosGlobal)
+//{
+//}
 
 LLTeleportRequestViaLocationLookAt::~LLTeleportRequestViaLocationLookAt()
 {
@@ -4686,13 +4846,19 @@ bool LLTeleportRequestViaLocationLookAt::canRestartTeleport()
 void LLTeleportRequestViaLocationLookAt::startTeleport()
 {
     LL_INFOS("Teleport") << "LLTeleportRequestViaLocationLookAt::startTeleport" << LL_ENDL;
-    gAgent.doTeleportViaLocationLookAt(getPosGlobal());
+// [RLVa:KB] - Checked: RLVa-2.0.0
+	gAgent.doTeleportViaLocationLookAt(getPosGlobal(), getLookAt());
+// [/RLVa:KB]
+//    gAgent.doTeleportViaLocationLookAt(getPosGlobal());
 }
 
 void LLTeleportRequestViaLocationLookAt::restartTeleport()
 {
     LL_INFOS("Teleport") << "LLTeleportRequestViaLocationLookAt::restartTeleport" << LL_ENDL;
-    gAgent.doTeleportViaLocationLookAt(getPosGlobal());
+// [RLVa:KB] - Checked: RLVa-2.0.0
+	gAgent.doTeleportViaLocationLookAt(getPosGlobal(), getLookAt());
+// [/RLVa:KB]
+//    gAgent.doTeleportViaLocationLookAt(getPosGlobal());
 }
 
 // EOF

@@ -75,6 +75,9 @@
 #include "llslurl.h"
 #include "llstartup.h"
 #include "llupdaterservice.h"
+// [RLVa:KB] - Checked: 2015-12-27 (RLVa-1.5.0)
+#include "rlvcommon.h"
+// [/RLVa:KB]
 
 //BD - Includes we need for special features
 #include "llappviewer.h"
@@ -915,7 +918,10 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("SpellCheck")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));
 	gSavedSettings.getControl("SpellCheckDictionary")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));
 	gSavedSettings.getControl("LoginLocation")->getSignal()->connect(boost::bind(&handleLoginLocationChanged));
-    gSavedSettings.getControl("DebugAvatarJoints")->getCommitSignal()->connect(boost::bind(&handleDebugAvatarJointsChanged, _2));
+	gSavedSettings.getControl("DebugAvatarJoints")->getCommitSignal()->connect(boost::bind(&handleDebugAvatarJointsChanged, _2));
+// [RLVa:KB] - Checked: 2015-12-27 (RLVa-1.5.0)
+	gSavedSettings.getControl("RestrainedLove")->getSignal()->connect(boost::bind(&RlvSettings::onChangedSettingMain, _2));
+// [/RLVa:KB]
 
 //	//BD - Catznip's Borderless Window Mode
 	gSavedSettings.getControl("FullScreenWindow")->getSignal()->connect(boost::bind(&handleFullscreenWindow, _2));

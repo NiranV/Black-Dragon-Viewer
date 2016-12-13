@@ -1,17 +1,17 @@
-/** 
+/**
  *
  * Copyright (c) 2009-2016, Kitty Barnett
- * 
- * The source code in this file is provided to you under the terms of the 
+ *
+ * The source code in this file is provided to you under the terms of the
  * GNU Lesser General Public License, version 2.1, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
- * PARTICULAR PURPOSE. Terms of the LGPL can be found in doc/LGPL-licence.txt 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. Terms of the LGPL can be found in doc/LGPL-licence.txt
  * in this distribution, or online at http://www.gnu.org/licenses/lgpl-2.1.txt
- * 
+ *
  * By copying, modifying or distributing this software, you acknowledge that
- * you have read and understood your obligations described above, and agree to 
+ * you have read and understood your obligations described above, and agree to
  * abide by those obligations.
- * 
+ *
  */
 
 #ifndef RLV_HANDLER_H
@@ -20,14 +20,17 @@
 #include <stack>
 
 #include "rlvcommon.h"
-#if LL_GNUC
-#include "rlvhelper.h"		// Needed to make GCC happy
-#endif // LL_GNUC
+#include "rlvhelper.h"
 
 // ============================================================================
 
 class RlvHandler : public LLOldEvents::LLSimpleListener
 {
+	// Temporary LLSingleton look-alike
+public:
+	static RlvHandler& instance();
+	static RlvHandler* getInstance();
+
 public:
 	RlvHandler();
 	~RlvHandler();
@@ -44,9 +47,13 @@ public:
 	//       - to check @remoutfit=n -> (see RlvWearableLocks)
 	//       - to check exceptions   -> isException()
 public:
+	// Returns a list of all objects containing the specified behaviour
+	bool findBehaviour(ERlvBehaviour eBhvr, std::list<const RlvObject*>& lObjects) const;
 	// Returns TRUE is at least one object contains the specified behaviour (and optional option)
 	bool hasBehaviour(ERlvBehaviour eBhvr) const { return (eBhvr < RLV_BHVR_COUNT) ? (0 != m_Behaviours[eBhvr]) : false; }
 	bool hasBehaviour(ERlvBehaviour eBhvr, const std::string& strOption) const;
+	// Returns TRUE if the specified object contains the specified behaviour (and optional option)
+	bool hasBehaviour(const LLUUID& idObj, ERlvBehaviour eBhvr, const std::string& strOption = LLStringUtil::null) const;
 	// Returns TRUE if at least one object (except the specified one) contains the specified behaviour (and optional option)
 	bool hasBehaviourExcept(ERlvBehaviour eBhvr, const LLUUID& idObj) const;
 	bool hasBehaviourExcept(ERlvBehaviour eBhvr, const std::string& strOption, const LLUUID& idObj) const;
@@ -56,7 +63,7 @@ public:
 	// Adds or removes an exception for the specified behaviour
 	void addException(const LLUUID& idObj, ERlvBehaviour eBhvr, const RlvExceptionOption& varOption);
 	void removeException(const LLUUID& idObj, ERlvBehaviour eBhvr, const RlvExceptionOption& varOption);
-	// Returns TRUE if the specified behaviour has an added exception 
+	// Returns TRUE if the specified behaviour has an added exception
 	bool hasException(ERlvBehaviour eBhvr) const;
 	// Returns TRUE if the specified option was added as an exception for the specified behaviour
 	bool isException(ERlvBehaviour eBhvr, const RlvExceptionOption& varOption, ERlvExceptionCheck typeCheck = RLV_CHECK_DEFAULT) const;
@@ -83,7 +90,7 @@ public:
 	// --------------------------------
 
 	/*
-	 * Helper functions 
+	 * Helper functions
 	 */
 public:
 	// Accessors
@@ -94,16 +101,13 @@ public:
 	void              setSitSource(const LLVector3d& posSource)	{ m_posSitSource = posSource; }	// @standtp
 
 	// Command specific helper functions
-	bool canEdit(const LLViewerObject* pObj) const;												// @edit and @editobj
-	bool canShowHoverText(const LLViewerObject* pObj) const;									// @showhovertext* command family
-	bool canSit(LLViewerObject* pObj, const LLVector3& posOffset = LLVector3::zero) const;
-	bool canTouch(const LLViewerObject* pObj, const LLVector3& posOffset = LLVector3::zero) const;	// @touch
 	bool filterChat(std::string& strUTF8Text, bool fFilterEmote) const;							// @sendchat, @recvchat and @redirchat
 	bool redirectChatOrEmote(const std::string& strUTF8Test) const;								// @redirchat and @rediremote
 
 	// Command processing helper functions
 	ERlvCmdRet processCommand(const LLUUID& idObj, const std::string& strCommand, bool fFromObj);
 	void       processRetainedCommands(ERlvBehaviour eBhvrFilter = RLV_BHVR_UNKNOWN, ERlvParamType eTypeFilter = RLV_TYPE_UNKNOWN);
+	bool       processIMQuery(const LLUUID& idSender, const std::string& strCommand);
 
 	// Returns a pointer to the currently executing command (do *not* save this pointer)
 	const RlvCommand* getCurrentCommand() const { return (!m_CurCommandStack.empty()) ? m_CurCommandStack.top() : NULL; }
@@ -111,11 +115,11 @@ public:
 	const LLUUID&     getCurrentObject() const	{ return (!m_CurObjectStack.empty()) ? m_CurObjectStack.top() : LLUUID::null; }
 
 	// Initialization
-	static BOOL canDisable();
-	static BOOL isEnabled()	{ return m_fEnabled; }
-	static BOOL setEnabled(BOOL fEnable);
+	static bool canEnable();
+	static bool isEnabled()	{ return m_fEnabled; }
+	static bool setEnabled(bool fEnable);
 protected:
-	void clearState();
+	void onIMQueryListResponse(const LLSD& sdNotification, const LLSD sdResponse);
 
 	// --------------------------------
 
@@ -199,7 +203,7 @@ protected:
 	rlv_command_signal_t   m_OnCommand;
 	mutable std::list<RlvExtCommandHandler*> m_CommandHandlers;
 
-	static BOOL			  m_fEnabled;				// Use setEnabled() to toggle this
+	static bool         m_fEnabled;					// Use setEnabled() to toggle this
 
 	bool				m_fCanCancelTp;				// @accepttp=n and @tpto=force
 	mutable LLVector3d	m_posSitSource;				// @standtp=n (mutable because onForceXXX handles are all declared as const)
@@ -207,17 +211,17 @@ protected:
 
 	friend class RlvSharedRootFetcher;				// Fetcher needs access to m_fFetchComplete
 	friend class RlvGCTimer;						// Timer clear its own point at destruction
+	template<ERlvBehaviourOptionType optionType> friend struct RlvBehaviourGenericHandler;
 	template<ERlvParamType> friend struct RlvCommandHandlerBaseImpl;
 	template<ERlvParamType, ERlvBehaviour> friend struct RlvCommandHandler;
 
 	// --------------------------------
 
 	/*
-	 * Internal access functions used by unit tests
+	 * Internal access functions
 	 */
 public:
-	const rlv_object_map_t*    getObjectMap() const		{ return &m_Objects; }
-	//const rlv_exception_map_t* getExceptionMap() const	{ return &m_Exceptions; }
+	const rlv_object_map_t& getObjectMap() const { return m_Objects; }
 };
 
 typedef RlvHandler rlv_handler_t;
@@ -227,26 +231,14 @@ extern rlv_handler_t gRlvHandler;
 // Inlined member functions
 //
 
-// Checked: 2010-11-29 (RLVa-1.3.0c) | Added: RLVa-1.3.0c
-inline bool RlvHandler::canEdit(const LLViewerObject* pObj) const
+inline RlvHandler& RlvHandler::instance()
 {
-	// The specified object can be edited if:
-	//   - not generally restricted from editing (or the object's root is an exception)
-	//   - not specifically restricted from editing this object's root
-	return 
-		(pObj) &&
-		((!hasBehaviour(RLV_BHVR_EDIT)) || (isException(RLV_BHVR_EDIT, pObj->getRootEdit()->getID()))) &&
-		((!hasBehaviour(RLV_BHVR_EDITOBJ)) || (!isException(RLV_BHVR_EDITOBJ, pObj->getRootEdit()->getID())));
+	return gRlvHandler;
 }
 
-// Checked: 2010-03-27 (RLVa-1.4.0a) | Modified: RLVa-1.0.0f
-inline bool RlvHandler::canShowHoverText(const LLViewerObject *pObj) const
+inline RlvHandler* RlvHandler::getInstance()
 {
-	return ( (!pObj) || (LL_PCODE_VOLUME != pObj->getPCode()) ||
-		    !( (hasBehaviour(RLV_BHVR_SHOWHOVERTEXTALL)) ||
-			   ( (hasBehaviour(RLV_BHVR_SHOWHOVERTEXTWORLD)) && (!pObj->isHUDAttachment()) ) ||
-			   ( (hasBehaviour(RLV_BHVR_SHOWHOVERTEXTHUD)) && (pObj->isHUDAttachment()) ) ||
-			   (isException(RLV_BHVR_SHOWHOVERTEXT, pObj->getID(), RLV_CHECK_PERMISSIVE)) ) );
+	return &gRlvHandler;
 }
 
 inline bool RlvHandler::hasBehaviour(ERlvBehaviour eBhvr, const std::string& strOption) const

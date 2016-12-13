@@ -109,6 +109,10 @@ public:
 	LLLineEditor*			getTextEntry() const { return mTextEntry; }
 	void					handleLoginComplete();
 
+// [RLVa:KB] - Checked: 2014-03-23 (RLVa-1.4.10)
+	void					refresh();
+// [/RLVa:KB]
+
 private:
 
 	enum EParcelIcon

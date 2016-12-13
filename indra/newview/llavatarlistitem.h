@@ -106,6 +106,9 @@ public:
 	//BD
 	void showExtraInformation(bool show);
 	void setShowCompleteName(bool show) { mShowCompleteName = show;};
+// [RLVa:KB] - Checked: RLVa-1.2.0
+	void setRlvCheckShowNames(bool fRlvCheckShowNames) { mRlvCheckShowNames = fRlvCheckShowNames; }
+// [/RLVa:KB]
 	
 	const LLUUID& getAvatarId() const;
 	std::string getAvatarName() const;
@@ -163,6 +166,9 @@ private:
 	//Flag indicating that info/profile button shouldn't be shown at all.
 	//Speaker indicator and avatar name coords are translated accordingly
 	bool mShowInfoBtn;
+// [RLVa:KB] - Checked: RLVa-1.2.0
+	bool mRlvCheckShowNames;
+// [/RLVa:KB]
 
 	/// indicates whether to show icons representing permissions granted
 	bool mShowPermissions;

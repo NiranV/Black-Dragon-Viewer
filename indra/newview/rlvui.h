@@ -47,7 +47,6 @@ protected:
 	void onToggleMovement();											// fly, alwaysrun and temprun
 	void onToggleShowLoc();												// showloc
 	void onToggleShowMinimap();											// showminimap
-	void onToggleShowNames(bool fQuitting);								// shownames
 	void onToggleShowWorldMap();										// showworldmap
 	void onToggleTp();													// tploc and tplm
 	void onToggleUnsit();												// unsit
@@ -80,7 +79,6 @@ public:
 	static bool canViewRegionProperties();								// showloc
 	static bool hasOpenIM(const LLUUID& idAgent);						// shownames
 	static bool hasOpenProfile(const LLUUID& idAgent);					// shownames
-	static bool isBuildEnabled();										// edit and rez
 
 	/*
 	 * Member variables

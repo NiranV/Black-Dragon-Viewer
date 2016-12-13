@@ -20,11 +20,13 @@
 #include "llattachmentsmgr.h"
 #include "lloutfitobserver.h"
 #include "llviewerobjectlist.h"
+#include "llviewermenu.h"
 #include "pipeline.h"
 
 #include "rlvlocks.h"
 #include "rlvhelper.h"
 #include "rlvinventory.h"
+
 
 // ============================================================================
 // RlvAttachPtLookup member functions
@@ -401,8 +403,7 @@ void RlvAttachmentLocks::updateLockedHUD()
 	// Reset HUD visibility and wireframe options if at least one HUD attachment is locked
 	if (m_fHasLockedHUD)
 	{
-		LLPipeline::sShowHUDAttachments = TRUE;
-		gUseWireframe = FALSE;
+		set_use_wireframe(false);
 	}
 }
 
@@ -698,9 +699,9 @@ void RlvAttachmentLockWatchdog::onSavedAssetIntoInventory(const LLUUID& idItem)
 {
 	for (rlv_attach_map_t::iterator itAttach = m_PendingAttach.begin(); itAttach != m_PendingAttach.end(); ++itAttach)
 	{
-		if ((!itAttach->second.fAssetSaved) && (idItem == itAttach->second.idItem))
+		if ( (!itAttach->second.fAssetSaved) && (idItem == itAttach->second.idItem) )
 		{
-			//LLAttachmentsMgr::instance().addAttachmentRequest(itAttach->second.idItem, itAttach->first, true, true);
+			LLAttachmentsMgr::instance().addAttachmentRequest(itAttach->second.idItem, itAttach->first, true, true);
 			itAttach->second.tsAttach = LLFrameTimer::getElapsedSeconds();
 		}
 	}
@@ -748,7 +749,7 @@ BOOL RlvAttachmentLockWatchdog::onTimer()
 
 		if (fAttach)
 		{
-			//LLAttachmentsMgr::instance().addAttachmentRequest(itAttach->second.idItem, itAttach->first, true, true);
+			LLAttachmentsMgr::instance().addAttachmentRequest(itAttach->second.idItem, itAttach->first, true, true);
 			itAttach->second.tsAttach = tsCurrent;
 		}
 
@@ -940,7 +941,7 @@ protected:
 
 // Checked: 2011-03-28 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
 RlvFolderLocks::RlvFolderLocks()
-	: m_fLookupDirty(false), m_fLockedRoot(false), m_cntLockAdd(0), m_cntLockRem(0)
+	: m_fLookupDirty(false), m_RootLockType(RLV_LOCK_NONE), m_cntLockAdd(0), m_cntLockRem(0)
 {
 	LLOutfitObserver::instance().addCOFChangedCallback(boost::bind(&RlvFolderLocks::onNeedsLookupRefresh, this));
 	RlvInventory::instance().addSharedRootIDChangedCallback(boost::bind(&RlvFolderLocks::onNeedsLookupRefresh, this));
@@ -963,6 +964,9 @@ void RlvFolderLocks::addFolderLock(const folderlock_source_t& lockSource, ELockP
 		else if (RLV_LOCK_ADD == eLockType)
 			m_cntLockAdd++;
 	}
+
+	if (!m_AttachmentChangeConnection.connected())
+		m_AttachmentChangeConnection = gAgentAvatarp->setAttachmentCallback(boost::bind(&RlvFolderLocks::onNeedsLookupRefresh, this));
 	m_fLookupDirty = true;
 }
 
@@ -1134,7 +1138,7 @@ bool RlvFolderLocks::isLockedFolderEntry(const LLUUID& idFolder, int eSourceType
 }
 
 // Checked: 2011-03-27 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
-bool RlvFolderLocks::isLockedFolder(LLUUID idFolder, ERlvLockMask eLockTypeMask, int eSourceTypeMask, folderlock_source_t* plockSource) const
+bool RlvFolderLocks::isLockedFolder(LLUUID idFolder, ERlvLockMask eLockTypeMask, int eSourceTypeMask, std::list<folderlock_source_t>* pLockSourceList) const
 {
 	// Sanity check - if there are no folder locks then we don't have to actually do anything
 	if (!hasLockedFolder(eLockTypeMask))
@@ -1174,9 +1178,10 @@ bool RlvFolderLocks::isLockedFolder(LLUUID idFolder, ERlvLockMask eLockTypeMask,
 
 			if (PERM_DENY == pLockDescr->eLockPermission)
 			{
-				if (plockSource)
-					*plockSource = pLockDescr->lockSource;
-				return true;									// Folder is explicitly denied, indicate locked folder to our caller
+				if (pLockSourceList)
+					pLockSourceList->push_back(pLockDescr->lockSource);
+				else
+					return true;								// Folder is explicitly denied, indicate locked folder to our caller (unless it wants a list of all lock sources)
 			}
 			else if (PERM_ALLOW == pLockDescr->eLockPermission)
 			{
@@ -1188,8 +1193,16 @@ bool RlvFolderLocks::isLockedFolder(LLUUID idFolder, ERlvLockMask eLockTypeMask,
 		const LLViewerInventoryCategory* pParent = gInventory.getCategory(idFolderCur);
 		idFolderCur = (pParent) ? pParent->getParentUUID() : idFolderRoot;
 	}
+
+	if ( (pLockSourceList) && (!pLockSourceList->empty()) )
+	{
+		// If we're asked to return a list, make sure it's sorted so we can compare them
+		pLockSourceList->sort([](const folderlock_source_t& lhs, const folderlock_source_t& rhs) { return lhs.first < rhs.first && lhs.second < rhs.second; });
+		return true;
+	}
+
 	// If we didn't encounter an explicit deny lock with no exception then the folder is locked if the entire inventory is locked down
-	return (m_fLockedRoot) && (idsRlvObjRem.empty()) && (idsRlvObjAdd.empty());
+	return (m_RootLockType & eLockTypeMask) && (eSourceTypeMask & ST_ROOTFOLDER) && (idsRlvObjRem.empty()) && (idsRlvObjAdd.empty());
 }
 
 // Checked: 2010-11-30 (RLVa-1.3.0b) | Added: RLVa-1.3.0b
@@ -1205,7 +1218,7 @@ void RlvFolderLocks::refreshLockedLookups() const
 	//
 	// Refresh locked folders
 	//
-	m_fLockedRoot = false;
+	m_RootLockType = RLV_LOCK_NONE;
 	m_LockedFolderMap.clear();
 	for (folderlock_list_t::const_iterator itFolderLock = m_FolderLocks.begin(); itFolderLock != m_FolderLocks.end(); ++itFolderLock)
 	{
@@ -1219,8 +1232,8 @@ void RlvFolderLocks::refreshLockedLookups() const
 				const LLViewerInventoryCategory* pFolder = lockedFolders.at(idxFolder);
 				if (idFolderRoot != pFolder->getUUID())
 					m_LockedFolderMap.insert(std::pair<LLUUID, const folderlock_descr_t*>(pFolder->getUUID(), pLockDescr));
-				else
-					m_fLockedRoot |= (SCOPE_SUBTREE == pLockDescr->eLockScope);
+				else if (SCOPE_SUBTREE == pLockDescr->eLockScope)
+					m_RootLockType |= (U32)pLockDescr->eLockType;
 			}
 		}
 	}

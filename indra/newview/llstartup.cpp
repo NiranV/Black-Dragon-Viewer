@@ -187,6 +187,9 @@
 #include "llavatariconctrl.h"
 #include "llvoicechannel.h"
 #include "llpathfindingmanager.h"
+// [RLVa:KB] - Checked: RLVa-1.2.0
+#include "rlvhandler.h"
+// [/RLVa:KB]
 
 #include "lllogin.h"
 #include "llevents.h"
@@ -838,6 +841,13 @@ bool idle_startup()
 			return FALSE;
 		}
 
+// [RLVa:KB] - Checked: RLVa-0.2.1
+		if (gSavedSettings.getBOOL(RLV_SETTING_MAIN))
+		{
+			RlvHandler::setEnabled(true);
+		}
+// [/RLVa:KB]
+
 		// reset the values that could have come in from a slurl
 		// DEV-42215: Make sure they're not empty -- gUserCredential
 		// might already have been set from gSavedSettings, and it's too bad
@@ -961,6 +971,14 @@ bool idle_startup()
 		// their last location, or some URL "-url //sim/x/y[/z]"
 		// All accounts have both a home and a last location, and we don't support
 		// more locations than that.  Choose the appropriate one.  JC
+// [RLVa:KB] - Checked: RLVa-0.2.1
+		if ( (RlvHandler::isEnabled()) && (RlvSettings::getLoginLastLocation()) )
+		{
+			// Force login at the last location
+			LLStartUp::setStartSLURL(LLSLURL(LLSLURL::SIM_LOCATION_LAST));
+		}
+// [/RLVa:KB]
+
 		switch (LLStartUp::getStartSLURL().getType())
 		  {
 		  case LLSLURL::LOCATION:
@@ -1792,6 +1810,14 @@ bool idle_startup()
 		LL_INFOS() << "Creating Inventory Views" << LL_ENDL;
 		LLFloaterReg::getInstance("inventory");
 		display_startup();
+
+// [RLVa:KB] - Checked: RLVa-1.1.0
+		if (RlvHandler::isEnabled())
+		{
+			// Regularly process a select subset of retained commands during logon
+			gIdleCallbacks.addFunction(RlvHandler::onIdleStartup, new LLTimer());
+		}
+// [/RLVa:KB]
 		LLStartUp::setStartupState( STATE_MISC );
 		display_startup();
 		return FALSE;
