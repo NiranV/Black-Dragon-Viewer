@@ -1089,6 +1089,7 @@ void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
 {
 	ctrl->getControlVariable()->resetToDefault(true);
 	refreshGraphicControls();
+	refreshCameraControls();
 }
 
 //BD - Custom Keyboard Layout
