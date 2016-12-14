@@ -124,7 +124,6 @@ protected:
 	void updateLastInteractionTimes();
 	void rebuildNames();
 	void onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
-	void updateAvatarNames();
 	//BD
 	void updateExtraData();
 

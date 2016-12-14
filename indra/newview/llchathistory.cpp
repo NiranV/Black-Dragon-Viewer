@@ -66,6 +66,9 @@
 #include "rlvcommon.h"
 // [/RLVa:KB]
 
+//BD
+#include "llspeakers.h"
+
 static LLDefaultChildRegistry::Register<LLChatHistory> r("chat_history");
 
 const static std::string NEW_LINE(rawstr_to_utf8("\n"));

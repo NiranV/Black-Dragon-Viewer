@@ -139,7 +139,6 @@ private:
 	 * depending on whether current parcel has been landmarked.
 	 */
 	void					enableAddLandmarkButton(bool val);
-	void					refresh();
 	void					refreshLocation();
 	void					refreshParcelIcons();
 	// Refresh the value in the health percentage text field

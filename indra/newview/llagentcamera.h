@@ -58,6 +58,11 @@ enum ECameraPreset
 	/** "Above and to the right, over the shoulder, pulled back a little on the zoom" */
 	CAMERA_PRESET_GROUP_VIEW,
 
+// [RLVa:KB] - Checked: RLVa-2.0.0
+	/* Used by RLVa */
+	CAMERA_RLV_SETCAM_VIEW,
+// [/RLVa:KB]
+
 //	//BD - Left/Right shoulder camera preset
 	/** "Shooter like , close up over the left-shoulder cam" */
 	CAMERA_PRESET_LEFT_VIEW,

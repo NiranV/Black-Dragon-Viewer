@@ -82,7 +82,10 @@ private:
 };
 
 
-extern void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel);
+//extern void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel);
+// [RLVa:KB] - Checked: 2010-02-27 (RLVa-0.2.2)
+extern void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channel);
+// [/RLVa:KB]
 
 //
 // Functions
@@ -476,7 +479,11 @@ void LLChatBar::onInputEditorKeystroke( LLLineEditor* caller, void* userdata )
 
 	S32 length = raw_text.length();
 
-	if( (length > 0) && (raw_text[0] != '/') )  // forward slash is used for escape (eg. emote) sequences
+//	if( (length > 0) && (raw_text[0] != '/') )  // forward slash is used for escape (eg. emote) sequences
+// [RLVa:KB] - Checked: 2010-03-26 (RLVa-1.2.0b) | Modified: RLVa-1.0.0d
+	// RELEASE-RLVa: [SL-2.0.0] This entire class appears to be dead/non-functional?
+	if ( (length > 0) && (raw_text[0] != '/') && (!RlvActions::hasBehaviour(RLV_BHVR_REDIRCHAT)) )
+// [/RLVa:KB]
 	{
 		gAgent.startTyping();
 	}
