@@ -742,6 +742,7 @@ static bool handleShadowsChanged(const LLSD& newvalue)
 	if (gPipeline.sRenderDeferred)
 	{
 		ret = LLViewerShaderMgr::instance()->resetDeferredShaders()
+			&& LLViewerShaderMgr::instance()->loadShadersMaterials()
 			&& LLViewerShaderMgr::instance()->loadShadersSSAO()
 			&& LLViewerShaderMgr::instance()->loadShadersShadows();
 		gPipeline.allocateShadowMaps(true);

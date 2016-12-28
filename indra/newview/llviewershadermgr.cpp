@@ -1324,98 +1324,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		success = gDeferredBumpProgram.createShader(NULL, NULL);
 	}
 
-	gDeferredMaterialProgram[1].mFeatures.hasLighting = false;
-	gDeferredMaterialProgram[5].mFeatures.hasLighting = false;
-	gDeferredMaterialProgram[9].mFeatures.hasLighting = false;
-	gDeferredMaterialProgram[13].mFeatures.hasLighting = false;
-	gDeferredMaterialProgram[1+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
-	gDeferredMaterialProgram[5+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
-	gDeferredMaterialProgram[9+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
-	gDeferredMaterialProgram[13+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
-
-	gDeferredMaterialWaterProgram[1].mFeatures.hasLighting = false;
-	gDeferredMaterialWaterProgram[5].mFeatures.hasLighting = false;
-	gDeferredMaterialWaterProgram[9].mFeatures.hasLighting = false;
-	gDeferredMaterialWaterProgram[13].mFeatures.hasLighting = false;
-	gDeferredMaterialWaterProgram[1+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
-	gDeferredMaterialWaterProgram[5+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
-	gDeferredMaterialWaterProgram[9+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
-	gDeferredMaterialWaterProgram[13+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
-
-	for (U32 i = 0; i < LLMaterial::SHADER_COUNT*2; ++i)
-	{
-		if (success)
-		{
-			gDeferredMaterialProgram[i].mName = llformat("Deferred Material Shader %d", i);
-			
-			U32 alpha_mode = i & 0x3;
-
-			gDeferredMaterialProgram[i].mShaderFiles.clear();
-			gDeferredMaterialProgram[i].mShaderFiles.push_back(make_pair("deferred/materialV.glsl", GL_VERTEX_SHADER_ARB));
-			gDeferredMaterialProgram[i].mShaderFiles.push_back(make_pair("deferred/materialF.glsl", GL_FRAGMENT_SHADER_ARB));
-			gDeferredMaterialProgram[i].mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
-			gDeferredMaterialProgram[i].addPermutation("HAS_NORMAL_MAP", i & 0x8? "1" : "0");
-			gDeferredMaterialProgram[i].addPermutation("HAS_SPECULAR_MAP", i & 0x4 ? "1" : "0");
-			gDeferredMaterialProgram[i].addPermutation("DIFFUSE_ALPHA_MODE", llformat("%d", alpha_mode));
-			gDeferredMaterialProgram[i].addPermutation("HAS_SUN_SHADOW", mVertexShaderLevel[SHADER_DEFERRED] > 1 ? "1" : "0");
-			bool has_skin = i & 0x10;
-			gDeferredMaterialProgram[i].addPermutation("HAS_SKIN",has_skin ? "1" : "0");
-
-			if (has_skin)
-			{
-				gDeferredMaterialProgram[i].mFeatures.hasObjectSkinning = true;
-			}
-
-			success = gDeferredMaterialProgram[i].createShader(NULL, NULL);
-		}
-
-		if (success)
-		{
-			gDeferredMaterialWaterProgram[i].mName = llformat("Deferred Underwater Material Shader %d", i);
-
-			U32 alpha_mode = i & 0x3;
-
-			gDeferredMaterialWaterProgram[i].mShaderFiles.clear();
-			gDeferredMaterialWaterProgram[i].mShaderFiles.push_back(make_pair("deferred/materialV.glsl", GL_VERTEX_SHADER_ARB));
-			gDeferredMaterialWaterProgram[i].mShaderFiles.push_back(make_pair("deferred/materialF.glsl", GL_FRAGMENT_SHADER_ARB));
-			gDeferredMaterialWaterProgram[i].mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
-			gDeferredMaterialWaterProgram[i].mShaderGroup = LLGLSLShader::SG_WATER;
-
-			gDeferredMaterialWaterProgram[i].addPermutation("HAS_NORMAL_MAP", i & 0x8? "1" : "0");
-			gDeferredMaterialWaterProgram[i].addPermutation("HAS_SPECULAR_MAP", i & 0x4 ? "1" : "0");
-			gDeferredMaterialWaterProgram[i].addPermutation("DIFFUSE_ALPHA_MODE", llformat("%d", alpha_mode));
-			gDeferredMaterialWaterProgram[i].addPermutation("HAS_SUN_SHADOW", mVertexShaderLevel[SHADER_DEFERRED] > 1 ? "1" : "0");
-			bool has_skin = i & 0x10;
-			gDeferredMaterialWaterProgram[i].addPermutation("HAS_SKIN",has_skin ? "1" : "0");
-			gDeferredMaterialWaterProgram[i].addPermutation("WATER_FOG","1");
-
-			if (has_skin)
-			{
-				gDeferredMaterialWaterProgram[i].mFeatures.hasObjectSkinning = true;
-			}
-
-			success = gDeferredMaterialWaterProgram[i].createShader(NULL, NULL);//&mWLUniforms);
-		}
-	}
-
-	gDeferredMaterialProgram[1].mFeatures.hasLighting = true;
-	gDeferredMaterialProgram[5].mFeatures.hasLighting = true;
-	gDeferredMaterialProgram[9].mFeatures.hasLighting = true;
-	gDeferredMaterialProgram[13].mFeatures.hasLighting = true;
-	gDeferredMaterialProgram[1+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
-	gDeferredMaterialProgram[5+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
-	gDeferredMaterialProgram[9+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
-	gDeferredMaterialProgram[13+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
-
-	gDeferredMaterialWaterProgram[1].mFeatures.hasLighting = true;
-	gDeferredMaterialWaterProgram[5].mFeatures.hasLighting = true;
-	gDeferredMaterialWaterProgram[9].mFeatures.hasLighting = true;
-	gDeferredMaterialWaterProgram[13].mFeatures.hasLighting = true;
-	gDeferredMaterialWaterProgram[1+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
-	gDeferredMaterialWaterProgram[5+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
-	gDeferredMaterialWaterProgram[9+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
-	gDeferredMaterialWaterProgram[13+LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
-
+	loadShadersMaterials();
 	
 	if (success)
 	{
@@ -1907,6 +1816,111 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gNormalMapGenProgram.mShaderGroup = LLGLSLShader::SG_SKY;
 		success = gNormalMapGenProgram.createShader(NULL, NULL);
 	}
+
+	return success;
+}
+
+BOOL LLViewerShaderMgr::loadShadersMaterials()
+{
+	BOOL success = gPipeline.sRenderDeferred;
+	//BD - Materials
+	for (U32 i = 0; i < LLMaterial::SHADER_COUNT * 2; ++i)
+	{
+		gDeferredMaterialProgram[i].unload();
+		gDeferredMaterialWaterProgram[i].unload();
+	}
+
+	gDeferredMaterialProgram[1].mFeatures.hasLighting = false;
+	gDeferredMaterialProgram[5].mFeatures.hasLighting = false;
+	gDeferredMaterialProgram[9].mFeatures.hasLighting = false;
+	gDeferredMaterialProgram[13].mFeatures.hasLighting = false;
+	gDeferredMaterialProgram[1 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
+	gDeferredMaterialProgram[5 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
+	gDeferredMaterialProgram[9 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
+	gDeferredMaterialProgram[13 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
+
+	gDeferredMaterialWaterProgram[1].mFeatures.hasLighting = false;
+	gDeferredMaterialWaterProgram[5].mFeatures.hasLighting = false;
+	gDeferredMaterialWaterProgram[9].mFeatures.hasLighting = false;
+	gDeferredMaterialWaterProgram[13].mFeatures.hasLighting = false;
+	gDeferredMaterialWaterProgram[1 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
+	gDeferredMaterialWaterProgram[5 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
+	gDeferredMaterialWaterProgram[9 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
+	gDeferredMaterialWaterProgram[13 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = false;
+
+	for (U32 i = 0; i < LLMaterial::SHADER_COUNT * 2; ++i)
+	{
+		if (success)
+		{
+			gDeferredMaterialProgram[i].mName = llformat("Deferred Material Shader %d", i);
+
+			U32 alpha_mode = i & 0x3;
+
+			gDeferredMaterialProgram[i].mShaderFiles.clear();
+			gDeferredMaterialProgram[i].mShaderFiles.push_back(make_pair("deferred/materialV.glsl", GL_VERTEX_SHADER_ARB));
+			gDeferredMaterialProgram[i].mShaderFiles.push_back(make_pair("deferred/materialF.glsl", GL_FRAGMENT_SHADER_ARB));
+			gDeferredMaterialProgram[i].mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+			gDeferredMaterialProgram[i].addPermutation("HAS_NORMAL_MAP", i & 0x8 ? "1" : "0");
+			gDeferredMaterialProgram[i].addPermutation("HAS_SPECULAR_MAP", i & 0x4 ? "1" : "0");
+			gDeferredMaterialProgram[i].addPermutation("DIFFUSE_ALPHA_MODE", llformat("%d", alpha_mode));
+			gDeferredMaterialProgram[i].addPermutation("HAS_SUN_SHADOW", mVertexShaderLevel[SHADER_DEFERRED] > 1 ? "1" : "0");
+			bool has_skin = i & 0x10;
+			gDeferredMaterialProgram[i].addPermutation("HAS_SKIN", has_skin ? "1" : "0");
+
+			if (has_skin)
+			{
+				gDeferredMaterialProgram[i].mFeatures.hasObjectSkinning = true;
+			}
+
+			success = gDeferredMaterialProgram[i].createShader(NULL, NULL);
+		}
+
+		if (success)
+		{
+			gDeferredMaterialWaterProgram[i].mName = llformat("Deferred Underwater Material Shader %d", i);
+
+			U32 alpha_mode = i & 0x3;
+
+			gDeferredMaterialWaterProgram[i].mShaderFiles.clear();
+			gDeferredMaterialWaterProgram[i].mShaderFiles.push_back(make_pair("deferred/materialV.glsl", GL_VERTEX_SHADER_ARB));
+			gDeferredMaterialWaterProgram[i].mShaderFiles.push_back(make_pair("deferred/materialF.glsl", GL_FRAGMENT_SHADER_ARB));
+			gDeferredMaterialWaterProgram[i].mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+			gDeferredMaterialWaterProgram[i].mShaderGroup = LLGLSLShader::SG_WATER;
+
+			gDeferredMaterialWaterProgram[i].addPermutation("HAS_NORMAL_MAP", i & 0x8 ? "1" : "0");
+			gDeferredMaterialWaterProgram[i].addPermutation("HAS_SPECULAR_MAP", i & 0x4 ? "1" : "0");
+			gDeferredMaterialWaterProgram[i].addPermutation("DIFFUSE_ALPHA_MODE", llformat("%d", alpha_mode));
+			gDeferredMaterialWaterProgram[i].addPermutation("HAS_SUN_SHADOW", mVertexShaderLevel[SHADER_DEFERRED] > 1 ? "1" : "0");
+			bool has_skin = i & 0x10;
+			gDeferredMaterialWaterProgram[i].addPermutation("HAS_SKIN", has_skin ? "1" : "0");
+			gDeferredMaterialWaterProgram[i].addPermutation("WATER_FOG", "1");
+
+			if (has_skin)
+			{
+				gDeferredMaterialWaterProgram[i].mFeatures.hasObjectSkinning = true;
+			}
+
+			success = gDeferredMaterialWaterProgram[i].createShader(NULL, NULL);//&mWLUniforms);
+		}
+	}
+
+	gDeferredMaterialProgram[1].mFeatures.hasLighting = true;
+	gDeferredMaterialProgram[5].mFeatures.hasLighting = true;
+	gDeferredMaterialProgram[9].mFeatures.hasLighting = true;
+	gDeferredMaterialProgram[13].mFeatures.hasLighting = true;
+	gDeferredMaterialProgram[1 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
+	gDeferredMaterialProgram[5 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
+	gDeferredMaterialProgram[9 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
+	gDeferredMaterialProgram[13 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
+
+	gDeferredMaterialWaterProgram[1].mFeatures.hasLighting = true;
+	gDeferredMaterialWaterProgram[5].mFeatures.hasLighting = true;
+	gDeferredMaterialWaterProgram[9].mFeatures.hasLighting = true;
+	gDeferredMaterialWaterProgram[13].mFeatures.hasLighting = true;
+	gDeferredMaterialWaterProgram[1 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
+	gDeferredMaterialWaterProgram[5 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
+	gDeferredMaterialWaterProgram[9 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
+	gDeferredMaterialWaterProgram[13 + LLMaterial::SHADER_COUNT].mFeatures.hasLighting = true;
 
 	return success;
 }

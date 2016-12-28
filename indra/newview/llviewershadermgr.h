@@ -62,6 +62,7 @@ public:
 
 //	//BD - Fast Shader Toggles
 	BOOL resetDeferredShaders();
+	BOOL loadShadersMaterials();
 	BOOL loadShadersDOF();
 	BOOL loadShadersSSAO();
 	BOOL loadShadersShadows();
