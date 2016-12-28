@@ -7,7 +7,6 @@
   height="252"
   layout="topleft"
   legacy_header_height="18"
-  background_color="FloaterDefaultBackgroundColor"
   name="Toybox"
   positioning="centered"
   save_rect="true"

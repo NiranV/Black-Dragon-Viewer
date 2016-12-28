@@ -8,7 +8,6 @@
   min_height="400"
   min_width="200"
   name="floater_web_content"
-  background_color="FloaterDefaultBackgroundColor"
   save_rect="true"
   title=""
   width="560">

@@ -2,6 +2,5 @@
 <floater
 name="floater_web_profile"
 width="560"
-background_color="FloaterDefaultBackgroundColor"
 height="400"
 filename="floater_web_content.xml"/>

@@ -129,8 +129,6 @@
      follows="top|left"
      height="32"
      right="-8"
-     bevel_style="in"
-     border_style="line"
      mouse_opaque="true"
      name="avatar_icon"
      top="8"
