@@ -69,6 +69,9 @@ public:
 
 	static void cleanupGL();
 	static void restoreGL();
+
+//	//BD - Changable Cloud Noise Texture
+	static void loadCloudNoise();
 private:
 	void renderDome(F32 camHeightLocal, LLGLSLShader * shader) const;
 	void renderSkyHaze(F32 camHeightLocal) const;

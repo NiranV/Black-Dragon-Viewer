@@ -42,6 +42,9 @@
 #include "llface.h"
 #include "llrender.h"
 
+//BD - Changable Cloud Noise Texture
+#include "llviewercontrol.h"
+
 LLPointer<LLViewerTexture> LLDrawPoolWLSky::sCloudNoiseTexture = NULL;
 
 LLPointer<LLImageRaw> LLDrawPoolWLSky::sCloudNoiseRawImage = NULL;
@@ -53,35 +56,7 @@ static LLGLSLShader* sky_shader = NULL;
 LLDrawPoolWLSky::LLDrawPoolWLSky(void) :
 	LLDrawPool(POOL_WL_SKY)
 {
-	const std::string cloudNoiseFilename(gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight", "clouds2.tga"));
-	LL_INFOS() << "loading WindLight cloud noise from " << cloudNoiseFilename << LL_ENDL;
-
-	LLPointer<LLImageFormatted> cloudNoiseFile(LLImageFormatted::createFromExtension(cloudNoiseFilename));
-
-	if(cloudNoiseFile.isNull()) {
-		LL_ERRS() << "Error: Failed to load cloud noise image " << cloudNoiseFilename << LL_ENDL;
-	}
-
-	if(cloudNoiseFile->load(cloudNoiseFilename))
-	{
-		sCloudNoiseRawImage = new LLImageRaw();
-
-		if(cloudNoiseFile->decode(sCloudNoiseRawImage, 0.0f))
-		{
-			//debug use			
-			LL_DEBUGS() << "cloud noise raw image width: " << sCloudNoiseRawImage->getWidth() << " : height: " << sCloudNoiseRawImage->getHeight() << " : components: " << 
-				(S32)sCloudNoiseRawImage->getComponents() << " : data size: " << sCloudNoiseRawImage->getDataSize() << LL_ENDL ;
-			llassert_always(sCloudNoiseRawImage->getData()) ;
-
-			sCloudNoiseTexture = LLViewerTextureManager::getLocalTexture(sCloudNoiseRawImage.get(), TRUE);
-		}
-		else
-		{
-			sCloudNoiseRawImage = NULL ;
-		}
-	}
-
-	LLWLParamManager::getInstance()->propagateParameters();
+	loadCloudNoise();
 }
 
 LLDrawPoolWLSky::~LLDrawPoolWLSky()
@@ -421,5 +396,41 @@ void LLDrawPoolWLSky::restoreGL()
 	{
 		sCloudNoiseTexture = LLViewerTextureManager::getLocalTexture(sCloudNoiseRawImage.get(), TRUE);
 	}
+}
+
+//BD - Changable Cloud Noise Texture
+//static
+void LLDrawPoolWLSky::loadCloudNoise()
+{
+	const std::string cloudNoiseFilename(gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight", gSavedSettings.getString("CloudNoiseImageName")));
+	LL_INFOS() << "loading WindLight cloud noise from " << cloudNoiseFilename << LL_ENDL;
+
+	LLPointer<LLImageFormatted> cloudNoiseFile(LLImageFormatted::createFromExtension(cloudNoiseFilename));
+
+	if (cloudNoiseFile.isNull()) 
+	{
+		LL_WARNS() << "Failed to load cloud noise image " << cloudNoiseFilename << LL_ENDL;
+	}
+
+	if (cloudNoiseFile->load(cloudNoiseFilename))
+	{
+		sCloudNoiseRawImage = new LLImageRaw();
+
+		if (cloudNoiseFile->decode(sCloudNoiseRawImage, 0.0f))
+		{
+			//debug use			
+			LL_DEBUGS() << "cloud noise raw image width: " << sCloudNoiseRawImage->getWidth() << " : height: " << sCloudNoiseRawImage->getHeight() << " : components: " <<
+				(S32)sCloudNoiseRawImage->getComponents() << " : data size: " << sCloudNoiseRawImage->getDataSize() << LL_ENDL;
+			llassert_always(sCloudNoiseRawImage->getData());
+
+			sCloudNoiseTexture = LLViewerTextureManager::getLocalTexture(sCloudNoiseRawImage.get(), TRUE);
+		}
+		else
+		{
+			sCloudNoiseRawImage = NULL;
+		}
+	}
+
+	LLWLParamManager::getInstance()->propagateParameters();
 }
 

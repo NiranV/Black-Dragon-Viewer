@@ -864,7 +864,7 @@ width="700">
              name="WLCloudScrollY"
              top_pad="6"
              width="200" />
-												<text
+	<text
              type="string"
              length="1"
              follows="left|top"
@@ -877,48 +877,37 @@ width="700">
              width="150">
                 Cloud Noise Image
             </text>
-												<combo_box
-												control_name="CloudNoiseImageName"
-												height="23"
-												allow_text_entry="true"
-												layout="topleft"
-												left_delta="20"
-												follows="left|top"
-												top_pad="6"
-												name="CloudNoiseImage"
-												width="150">
-												<combo_box.item
-												label="Default"
-												name="0"
-												value="clouds.tga"/>
-												<combo_box.item
-												label="High Definition"
-												name="1"
-												value="clouds2.tga"/>
-												<combo_box.item
-												label="Cumolo Nimbus"
-												name="2"
-												value="clouds3.tga"/>
-												<combo_box.item
-												label="Altucumulus"
-												name="3"
-												value="clouds4.tga"/>
-												<combo_box.item
-												label="Layered"
-												name="4"
-												value="clouds5.tga"/>
-												</combo_box>
-												<text
-												name="requires_restart_label"
-												follows="left|top"
-												layout="topleft"
-												top_pad="0" 
-												left_delta="50" 
-												height="20"
-												width="130"
-												text_color="EmphasisColor">
-												(requires restart)
-												</text>
+	<combo_box
+	control_name="CloudNoiseImageName"
+	height="23"
+	allow_text_entry="true"
+	layout="topleft"
+	left_delta="20"
+	follows="left|top"
+	top_pad="6"
+	name="CloudNoiseImage"
+	width="150">
+	<combo_box.item
+	label="Default"
+	name="0"
+	value="clouds2.tga"/>
+	<combo_box.item
+	label="High Definition"
+	name="1"
+	value="clouds.tga"/>
+	<combo_box.item
+	label="Cumolo Nimbus"
+	name="2"
+	value="clouds3.tga"/>
+	<combo_box.item
+	label="Altucumulus"
+	name="3"
+	value="clouds4.tga"/>
+	<combo_box.item
+	label="Layered"
+	name="4"
+	value="clouds5.tga"/>
+	</combo_box>
         </panel>
     </tab_container>
  </floater>

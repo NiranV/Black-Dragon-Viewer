@@ -81,6 +81,7 @@
 
 //BD - Includes we need for special features
 #include "llappviewer.h"
+#include "lldrawpoolwlsky.h"
 #include "llenvmanager.h"
 #include "llfloatersnapshot.h"
 #include "lltoolfocus.h"
@@ -776,6 +777,12 @@ static bool handleAlphaChanged(const LLSD& newvalue)
 	}
 	return true;
 }
+
+static bool handleCloudNoiseChanged(const LLSD& newvalue)
+{
+	LLDrawPoolWLSky::loadCloudNoise();
+	return true;
+}
 //BD
 
 ////////////////////////////////////////////////////////////////////////////
@@ -952,6 +959,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
 	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
 	gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
+	gSavedSettings.getControl("CloudNoiseImageName")->getSignal()->connect(boost::bind(&handleCloudNoiseChanged, _2));
 
 //	//BD - Motion Blur
 	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));

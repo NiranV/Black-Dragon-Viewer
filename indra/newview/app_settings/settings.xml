@@ -17277,6 +17277,18 @@
     <real>0.0</real>
   </map>
   
+  <key>CloudNoiseImageName</key>
+  <map>
+    <key>Comment</key>
+    <string>Cloud Noise image name that should be used for windlight cloud generation</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>String</string>
+    <key>Value</key>
+    <string>clouds2.tga</string>
+  </map>
+  
   <!-- Catznip -->
   <key>FullScreenWindow</key>
   <map>
