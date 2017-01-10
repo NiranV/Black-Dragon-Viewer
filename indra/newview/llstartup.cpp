@@ -2073,7 +2073,8 @@ bool idle_startup()
 		{
 			LLStartUp::setStartupState( STATE_WEARABLES_WAIT );
 		}
-		else if (timeout_frac > 10.f) 
+		//BD
+		else if (timeout_frac > 20.f) 
 		{
 			// If we exceed the wait above while isAgentAvatarValid is
 			// not true yet, we will change startup state and
