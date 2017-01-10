@@ -64,7 +64,9 @@ S32 gStartImageHeight = 1;
 const F32 FADE_TO_WORLD_TIME = 1.0f;
 // ## Zi: Fade teleport screens
 const F32 FADE_FROM_LOGIN_TIME = 0.7f;
-//const F32 CYCLE_TIMER = 7.0f;
+
+//BD
+const F32 CYCLE_TIMER = 7.0f;
 
 static LLPanelInjector<LLProgressView> r("progress_view");
 
@@ -75,10 +77,10 @@ LLProgressView::LLProgressView()
 	mMouseDownInActiveArea( false ),
 	mUpdateEvents("LLProgressView"),
 	mFadeToWorldTimer(),
-	//BD
-	//mTipCycleTimer(),
 	mFadeFromLoginTimer(),
-	mStartupComplete(false)
+	mStartupComplete(false),
+	//BD
+	mTipCycleTimer()
 {
 	mUpdateEvents.listen("self", boost::bind(&LLProgressView::handleUpdate, this, _1));
 }
@@ -92,11 +94,10 @@ BOOL LLProgressView::postBuild()
 	// ## Zi: Fade teleport screens
 	mFadeToWorldTimer.stop();
 	mFadeFromLoginTimer.stop();
-	//BD
-	//mTipCycleTimer.getStarted();
 
 	//BD
-	//mMessageText = getChild<LLUICtrl>("message_text");
+	mTipCycleTimer.getStarted();
+	mMessageText = getChild<LLUICtrl>("message_text");
 	mPercentText = getChild<LLTextBox>("percent_text");
 
 	// hidden initially, until we need it
@@ -181,19 +182,20 @@ void LLProgressView::fade(BOOL in)
 		// set visibility will be done in the draw() method after fade
 	}
 }
-
 // ## Zi: Fade teleport screens
-/*void LLProgressView::setTip()
+
+void LLProgressView::setTip()
 {
 	if(mTipCycleTimer.getElapsedTimeAndResetF32() > CYCLE_TIMER)
 	{
 		srand( (unsigned)time( NULL ) );
-		int mRandom = rand()%21;
+		int mRandom = rand() % 22;
 		std::string output = llformat("LoadingTip %i" , mRandom);
 		mMessageText->setValue(getString(output));
 	}
 }
 
+/*
 void LLProgressView::drawStartTexture(F32 alpha)
 {
 	gGL.pushMatrix();	
@@ -210,13 +212,6 @@ void LLProgressView::draw()
 	//BD
 	F32 alpha;
 	F32 greyscale;
-
-	if (LLStartUp::getStartupState() >= STATE_STARTED)
-	{
-		//BD - Make progress screen transparent.
-		LLPanel::setBackgroundVisible(false);
-		getChild<LLIconCtrl>("loading_bg")->setVisible(true);
-	}
 
 	if (mFadeFromLoginTimer.getStarted())
 	{
@@ -262,13 +257,21 @@ void LLProgressView::draw()
 			// turn off panel that hosts intro so we see the world
 			setVisible(FALSE);
 
+			if (LLStartUp::getStartupState() >= STATE_STARTED)
+			{
+				//BD - Make progress screen transparent.
+				LLPanel::setBackgroundVisible(false);
+				getChild<LLIconCtrl>("loading_bg")->setVisible(true);
+			}
+
 			gStartTexture = NULL;
 		}
 		return;
 	}
 
 	//BD
-	//setTip();
+	setTip();
+
 	// draw children
 	LLPanel::draw();
 }

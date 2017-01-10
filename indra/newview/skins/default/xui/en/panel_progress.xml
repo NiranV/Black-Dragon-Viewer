@@ -10,8 +10,29 @@
  bg_opaque_color="0.05 0.05 0.05 1"
  top="768"
  width="1024">
-  <string name="LoadingTip 0">Random and usefull tips will be displayed here over time</string>
-  <string name="LoadingTip 1">You can realign all your onscreen buttons like your Inventory to each of the four tool bars at the top , left , right or bottom. You can also add additional buttons or delete buttons if you wish , just right click on an active button and click 'Select Buttons' , this will open a window in which you can drag and drop all buttons where you want them.</string>
+  <string name="LoadingTip 0">The [http://niranv-sl.blogspot.de/ Blog] contains cool pictures and information about updates and features.</string>
+  <string name="LoadingTip 1">You can move with &lt;green&gt;A W S&lt;/green&gt; and &lt;green&gt;D&lt;/green&gt;.</string>
+  <string name="LoadingTip 2">You can hold &lt;green&gt;RightMouseButton&lt;/green&gt; to turn your avatar around.</string>
+  <string name="LoadingTip 3">Your current FPS is displayed at the top right.</string>
+  <string name="LoadingTip 4">&lt;green&gt;[CTRL] + [P]&lt;/green&gt; = Preferences.</string>
+  <string name="LoadingTip 5">&lt;green&gt;[CTRL] + [I]&lt;/green&gt;  = Inventory.</string>
+  <string name="LoadingTip 6">&lt;green&gt;[CTRL] + [M]&lt;/green&gt;  = Map.</string>
+  <string name="LoadingTip 7">&lt;green&gt;[CTRL] + [Shift] + [M]&lt;/green&gt;  = Minimap.</string>
+  <string name="LoadingTip 8">You can search in the Navigationbar too.</string>
+  <string name="LoadingTip 9">&lt;green&gt;RightMouseButton&lt;/green&gt; on Navigationbar - Show Coordinates.</string>
+  <string name="LoadingTip 10">You can alter height by changing the last coordinate in the Navigationbar.</string>
+  <string name="LoadingTip 11">&lt;green&gt;[CTRL] + [F]&lt;/green&gt; = Search.</string>
+  <string name="LoadingTip 12">&lt;green&gt;MiddleMouseButton&lt;/green&gt; toggles Voice by default.</string>
+  <string name="LoadingTip 13">You can move all toolbar buttons to either top, bottom, left or right.</string>
+  <string name="LoadingTip 14">You should undock the local chat with the diagonal arrow.</string>
+  <string name="LoadingTip 15">You can click online notifications to start a conversation.</string>
+  <string name="LoadingTip 16">Look for secondlife:///app/agent/a7fe20fa-1e95-4f87-aa8f-86496c78c1e5/about if you need more help.</string>
+  <string name="LoadingTip 17">In Preferences - Keybindings you can change all movement and camera controls.</string>
+  <string name="LoadingTip 18">You can reset slider options in Preferences - Display with the [default] button.</string>
+  <string name="LoadingTip 19">Colorful people are not bugged. It's a feature. Preferences - Display.</string>
+  <string name="LoadingTip 20">Yellow badges on checkboxes warn you about possible problems.</string>
+  <string name="LoadingTip 21">Blue badges on checkboxes signal Linden's 'Ultra'.</string>
+  <!--<string name="LoadingTip 1">You can realign all your onscreen buttons like your Inventory to each of the four tool bars at the top , left , right or bottom. You can also add additional buttons or delete buttons if you wish , just right click on an active button and click 'Select Buttons' , this will open a window in which you can drag and drop all buttons where you want them.</string>
   <string name="LoadingTip 2">'Lighting and Shadows' is also known as 'Deferred Rendering'. 'Deferred Rendering' is an advanced graphic rendering used in a lot of games today, Crysis 2, StarCraft 2 and Grand Theft Auto 4 for example.</string>
   <string name="LoadingTip 3">Chat can be started by pressing the Enter key at any time while not having any other window focused , you can also SHOUT by holding 'Ctrl' and WHISPER by holding 'Shift' while sending a chat message.</string>
   <string name="LoadingTip 4">Draw Distance is a real performance killer, setting it too high will drastically increase memory usage and may make you vulnerable to spamming, griefing and crashing from far away. Keep it at 64-128m. It will greatly increase the Viewer's lifetime</string>
@@ -30,7 +51,7 @@
   <string name="LoadingTip 17">This Viewer offers a lot options to customize your Viewer appearance, you can find a lot of these options in Preferences -> Interface.</string>
   <string name="LoadingTip 18">Take your time, look into all tabs, slowly work from panel to panel, read descriptions and you will find a lot of options to customize a lot of things.</string>
   <string name="LoadingTip 19">Do you think group-chat popups are annoying and fill your screen? You can disable them in Preferences -> Chat.</string>
-  <string name="LoadingTip 20">A great way to get help with the Viewer is to join my official group secondlife:///app/group/d2ba3314-b9f7-ded7-40ad-b0c276acd1bd/about for example, i will try helping whenever i am online.</string>
+  <string name="LoadingTip 20">A great way to get help with the Viewer is to join my official group secondlife:///app/group/d2ba3314-b9f7-ded7-40ad-b0c276acd1bd/about for example, i will try helping whenever i am online.</string>-->
 <layout_stack
 follows="left|right|top|bottom"
 height="768"
@@ -49,14 +70,14 @@ width="1024">
  width="1024" />
  <layout_panel
  auto_resize="false"
- height="130"
+ height="110"
  layout="topleft"
- min_height="100"
+ min_height="130"
  name="panel4"
  width="1024">
   <layout_stack
   follows="left|right|top|bottom"
-  height="100"
+  height="110"
   layout="topleft"
   left="0"
   orientation="horizontal" 
@@ -79,7 +100,7 @@ width="1024">
    width="720">
     <icon
   follows="top|right"
-  height="73"
+  height="43"
   image_name="Window_Background"
   color="1 1 1 1"
   layout="topleft"
@@ -88,9 +109,9 @@ width="1024">
   visible="false"
   width="720"
   left="0"
-  top="28"/>
+  top="65"/>
     <progress_bar
-    top="78"
+    top="49"
     color_bar="1 1 1 1"
     color_bg="1 1 1 1"
     follows="left|bottom|right"
@@ -109,7 +130,7 @@ width="1024">
     width="720"
     line_spacing.pixels="2"
     name="percent_text"
-    top="70"
+    top="60"
     word_wrap="false">
     100
     </text>
@@ -123,26 +144,35 @@ width="1024">
     width="660"
     line_spacing.pixels="2"
     name="percent_symbol_text"
-    top="70"
+    top="60"
     word_wrap="true">
     %
     </text>
+    <text
+    follows="left|right|bottom"
+    font="SansSerif"
+    halign="left"
+    height="20"
+    layout="topleft"
+    left="20"
+    width="680"
+    line_spacing.pixels="2"
+    name="message_text"
+    top="40"
+    word_wrap="false">
+    Useful tips will be displayed here.
+    </text>
     <button
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
     follows="left|top"
     height="22"
     layout="topleft"
-    left="315"
+    left="1"
     name="cancel_btn"
-    top="40"
-    width="90" />
-    <loading_indicator
-      follows="left|bottom"
-      height="24"
-      width="24"
-      name="loading_indicator"
-      top_pad="-55"
-      left_pad="-56"
-      visible="true"/>
+    top="108"
+    width="718" />
    </layout_panel>
    <layout_panel
    height="100"

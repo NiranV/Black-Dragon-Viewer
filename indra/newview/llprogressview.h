@@ -63,7 +63,7 @@ public:
 
 	//BD
 	// Set a random Tip every X seconds
-	//void setTip();
+	void setTip();
 	
 	// turns on (under certain circumstances) the into video after login
 	void revealIntroPanel();
@@ -78,7 +78,7 @@ public:
 	bool onAlertModal(const LLSD& sd);
 
 	//BD
-	//LLUICtrl* mMessageText;
+	LLUICtrl* mMessageText;
 	LLTextBox* mPercentText;
 
 	// note - this is not just hiding the intro panel - it also hides the parent panel
