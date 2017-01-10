@@ -109,7 +109,7 @@ void LLChatEntry::expandText()
 			lines_height = mLineInfoList.begin()->mRect.mTop - mLineInfoList.back().mRect.mBottom;
 		}
 
-		int height = mVPad * 2 +  lines_height;
+		int height = mVPad + 1 + lines_height;
 
 		LLRect doc_rect = getRect();
 		doc_rect.setOriginAndSize(doc_rect.mLeft, doc_rect.mBottom, doc_rect.getWidth(), height);
