@@ -1002,7 +1002,7 @@ bool idle_startup()
 
 		// Poke the VFS, which could potentially block for a while if
 		// Windows XP is acting up
-		set_startup_status(0.07f, LLTrans::getString("LoginVerifyingCache"), LLStringUtil::null);
+		set_startup_status(0.02f, LLTrans::getString("LoginVerifyingCache"), LLStringUtil::null);
 		display_startup();
 
 		gVFS->pokeFiles();
@@ -1018,8 +1018,10 @@ bool idle_startup()
 
 		// Update progress status and the display loop.
 		auth_desc = LLTrans::getString("LoginInProgress");
+
+		//BD
+		progress = 0.05f;
 		set_startup_status(progress, auth_desc, auth_message);
-		progress += 0.02f;
 		display_startup();
 
 		// Setting initial values...
@@ -1031,6 +1033,11 @@ bool idle_startup()
 		login->setLastExecDuration(gLastExecDuration);
 		login->setUpdaterLauncher(boost::bind(&LLAppViewer::launchUpdater, LLAppViewer::instance()));
 
+		//BD
+		progress = 0.1f;
+		set_startup_status(progress, auth_desc, auth_message);
+		display_startup();
+
 		// This call to LLLoginInstance::connect() starts the 
 		// authentication process.
 		login->connect(gUserCredential);
@@ -1041,6 +1048,11 @@ bool idle_startup()
 
 	if(STATE_LOGIN_CURL_UNSTUCK == LLStartUp::getStartupState())
 	{
+		//BD
+		progress = 0.25f;
+		set_startup_status(progress, auth_desc, auth_message);
+		display_startup();
+
 		// If we get here we have gotten past the potential stall
 		// in curl, so take "may appear frozen" out of progress bar. JC
 		auth_desc = LLTrans::getString("LoginInProgressNoFrozen");
@@ -1052,6 +1064,10 @@ bool idle_startup()
 
 	if(STATE_LOGIN_PROCESS_RESPONSE == LLStartUp::getStartupState()) 
 	{
+		//BD
+		set_startup_status(0.3f, auth_desc, auth_message);
+		display_startup();
+
 		// Generic failure message
 		std::ostringstream emsg;
 		emsg << LLTrans::getString("LoginFailed") << "\n";
@@ -1198,7 +1214,8 @@ bool idle_startup()
 	//---------------------------------------------------------------------
 	if (STATE_WORLD_INIT == LLStartUp::getStartupState())
 	{
-		set_startup_status(0.30f, LLTrans::getString("LoginInitializingWorld"), gAgent.mMOTD);
+		//BD
+		set_startup_status(0.35f, LLTrans::getString("LoginInitializingWorld"), gAgent.mMOTD);
 		display_startup();
 // [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Added: Catznip-2.1.1a
 		if ((gSavedSettings.getBOOL("FullScreenWindow")) && (gViewerWindow->canFullscreenWindow()))
@@ -1389,7 +1406,7 @@ bool idle_startup()
 		display_startup();
 
 		// Debugging info parameters
-		gMessageSystem->setMaxMessageTime( 0.5f );			// Spam if decoding all msgs takes more than 500 ms
+		gMessageSystem->setMaxMessageTime( 0.45f );			// Spam if decoding all msgs takes more than 500 ms
 		display_startup();
 
 		#ifndef	LL_RELEASE_FOR_DOWNLOAD
@@ -1481,7 +1498,7 @@ bool idle_startup()
 		for (int i = 0; i < DECODE_TIME_SEC; i++)
 		{
 			F32 frac = (F32)i / (F32)DECODE_TIME_SEC;
-			set_startup_status(0.45f + frac*0.1f, LLTrans::getString("LoginDecodingImages"), gAgent.mMOTD);
+			set_startup_status(0.45f + (frac*0.1f), LLTrans::getString("LoginDecodingImages"), gAgent.mMOTD);
 			display_startup();
 			gTextureList.decodeAllImages(1.f);
 		}
@@ -2072,7 +2089,7 @@ bool idle_startup()
 		{
 			update_texture_fetch();
 			//BD
-			set_startup_status(0.60f + 0.10f * timeout_frac,
+			set_startup_status(0.60f + (0.30f * timeout_frac),
 				LLTrans::getString("LoginPrecaching"),
 					gAgent.mMOTD.c_str());
 			display_startup();
@@ -2145,7 +2162,8 @@ bool idle_startup()
 
 	if (STATE_CLEANUP == LLStartUp::getStartupState())
 	{
-		set_startup_status(1.0, "", "");
+		//BD
+		set_startup_status(0.95f, "", "");
 		display_startup();
 
 		// Let the map know about the inventory.
@@ -2214,13 +2232,14 @@ bool idle_startup()
 
 		LLAgentPicksInfo::getInstance()->requestNumberOfPicks();
 
+		//BD
+		set_startup_status(1.0f, "", "");
 		display_startup();
 
 		llassert(LLPathfindingManager::getInstance() != NULL);
 		LLPathfindingManager::getInstance()->initSystem();
 
 		gAgentAvatarp->sendHoverHeight();
-
 		return TRUE;
 	}
 
