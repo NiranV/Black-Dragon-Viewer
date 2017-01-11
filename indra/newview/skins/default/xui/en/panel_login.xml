@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.6 - Ending Dragon]"
+       label="[CHANNEL] [VERSION] - [2.6.1 - Ending Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,8 +152,66 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="204"
+              height="259"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Ability to change the cloud noise texture in edit sky floater, without restart this time around.
+Added: Cloud Noise Maps from Nirans Viewer, tweaked the High Resolution one to be smaller.
+Added: Loadingscreen tip system.
+Added: 22 completely new tips, shorter and more helpful than before.
+Added: Another cloud noise map.
+Added: Downloading Update loadingscreen text. (Untested)
+Changed: Most if not all notifications links about downloads and viewer versions to my own links.
+Changed: Tweaks to SSAO smoothing.
+Changed: Tweaked IM floater chat bar positioning and size, long overdue.
+Changed: Loadingscreen layout.
+Changed: Initial startup loading percentages.
+Changed: Increased wearables wait timeout to lessen cases in which you are falsely presented with the choose sex dialog.
+Changed: Allow parsing icons in chat, history and picks again.
+Changed: Version to 2.6.1
+Fixed: Shadows on certain material surfaces getting stuck when quick-toggling shadows.
+Fixed: Several XUI warnings in a bunch of floaters.
+Fixed: Warning about top toolbar tooltip missing.
+Fixed: Bad middle segment toolbar button scaling.
+Fixed: SSR Resolution slider duplicate in preferences - display.
+Removed: HTTP Inventory option from Preferences.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="all"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.6
+              </text>
+              <text
+              follows="all"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="206"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
