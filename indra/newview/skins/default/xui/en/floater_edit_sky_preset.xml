@@ -907,6 +907,10 @@ width="700">
 	label="Layered"
 	name="4"
 	value="clouds5.tga"/>
+	<combo_box.item
+	label="Plasma"
+	name="5"
+	value="clouds6.tga"/>
 	</combo_box>
         </panel>
     </tab_container>
