@@ -212,7 +212,7 @@ void LLFloaterIMNearbyChatToastPanel::init(LLSD& notification)
 	}
 	
 	mMsgText = getChild<LLChatMsgBox>("msg_text", false);
-	mMsgText->setContentTrusted(false);
+	mMsgText->setContentTrusted(true);
 
 	mMsgText->setText(std::string(""));
 

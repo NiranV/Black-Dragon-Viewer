@@ -101,7 +101,7 @@ LLToastGroupNotifyPanel::LLToastGroupNotifyPanel(const LLNotificationPtr& notifi
 	LLStringUtil::format(timeStr, substitution);
 
 	LLViewerTextEditor* pMessageText = getChild<LLViewerTextEditor>("message");
-	pMessageText->setContentTrusted(false);
+	pMessageText->setContentTrusted(true);
 	pMessageText->clear();
 
 	LLStyle::Params style;

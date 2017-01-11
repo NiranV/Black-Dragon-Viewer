@@ -139,7 +139,7 @@ BOOL LLPanelPickInfo::postBuild()
 	childSetAction("back_btn", boost::bind(&LLPanelPickInfo::onClickBack, this));
 
 	LLTextEditor* text_desc = getChild<LLTextEditor>(XML_DESC);
-	text_desc->setContentTrusted(false);
+	text_desc->setContentTrusted(true);
 
 	return TRUE;
 }
