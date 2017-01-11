@@ -51,6 +51,7 @@
 #include "llweb.h"
 #include "lluictrlfactory.h"
 #include "llpanellogin.h"
+#include "llupdaterservice.h"
 
 //BD
 #include "lliconctrl.h"
@@ -186,7 +187,11 @@ void LLProgressView::fade(BOOL in)
 
 void LLProgressView::setTip()
 {
-	if(mTipCycleTimer.getElapsedTimeAndResetF32() > CYCLE_TIMER)
+	if (LLUpdaterService::DOWNLOADING == LLUpdaterService().getState())
+	{
+		mMessageText->setValue(getString("DownloadingUpdate"));
+	}
+	else if(mTipCycleTimer.getElapsedTimeAndResetF32() > CYCLE_TIMER)
 	{
 		srand( (unsigned)time( NULL ) );
 		int mRandom = rand() % 22;

@@ -10,6 +10,7 @@
  bg_opaque_color="0.05 0.05 0.05 1"
  top="768"
  width="1024">
+  <string name="DownloadingUpdate">Downloading Update...</string>
   <string name="LoadingTip 0">The [http://niranv-sl.blogspot.de/ Blog] contains cool pictures and information about updates and features.</string>
   <string name="LoadingTip 1">You can move with &lt;green&gt;A W S&lt;/green&gt; and &lt;green&gt;D&lt;/green&gt;.</string>
   <string name="LoadingTip 2">You can hold &lt;green&gt;RightMouseButton&lt;/green&gt; to turn your avatar around.</string>
