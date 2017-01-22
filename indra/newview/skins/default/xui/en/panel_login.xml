@@ -152,7 +152,7 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="259"
+              height="285"
               top="10"
               left="7"
               name="changelog_text"
@@ -174,11 +174,13 @@ Changed: Initial startup loading percentages.
 Changed: Increased wearables wait timeout to lessen cases in which you are falsely presented with the choose sex dialog.
 Changed: Allow parsing icons in chat, history and picks again.
 Changed: Version to 2.6.1
+Changed: Disabled showing Release Notes on first start on a new version.
 Fixed: Shadows on certain material surfaces getting stuck when quick-toggling shadows.
 Fixed: Several XUI warnings in a bunch of floaters.
 Fixed: Warning about top toolbar tooltip missing.
 Fixed: Bad middle segment toolbar button scaling.
 Fixed: SSR Resolution slider duplicate in preferences - display.
+Fixed: Release Notes popup link after update.
 Removed: HTTP Inventory option from Preferences.
               </text>
               <view_border
