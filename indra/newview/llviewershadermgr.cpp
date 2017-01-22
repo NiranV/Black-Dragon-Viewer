@@ -1324,7 +1324,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		success = gDeferredBumpProgram.createShader(NULL, NULL);
 	}
 
-	loadShadersMaterials();
+	success = loadShadersMaterials(success);
 	
 	if (success)
 	{
@@ -1369,8 +1369,8 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 
 	for (U32 i = 0; i < LL_DEFERRED_MULTI_LIGHT_COUNT; i++)
 	{
-	if (success)
-	{
+		if (success)
+		{
 			gDeferredMultiLightProgram[i].mName = llformat("Deferred MultiLight Shader %d", i);
 			gDeferredMultiLightProgram[i].mShaderFiles.clear();
 			gDeferredMultiLightProgram[i].mShaderFiles.push_back(make_pair("deferred/multiPointLightV.glsl", GL_VERTEX_SHADER_ARB));
@@ -1403,11 +1403,11 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		success = gDeferredMultiSpotLightProgram.createShader(NULL, NULL);
 	}
 
-	loadShadersSSAO();
+	success = loadShadersSSAO(success);
 
-	loadShadersBlurLight();
+	success = loadShadersBlurLight(success);
 
-	loadShadersShadows();
+	success = loadShadersShadows(success);
 
 	if (success)
 	{
@@ -1660,7 +1660,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		success = gDeferredPostGammaCorrectProgram.createShader(NULL, NULL);
 	}
 
-	loadShadersDOF();
+	success = loadShadersDOF(success);
 
 	if (success)
 	{
@@ -1820,9 +1820,8 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 	return success;
 }
 
-BOOL LLViewerShaderMgr::loadShadersMaterials()
+BOOL LLViewerShaderMgr::loadShadersMaterials(bool success)
 {
-	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Materials
 	for (U32 i = 0; i < LLMaterial::SHADER_COUNT * 2; ++i)
 	{
@@ -1925,9 +1924,8 @@ BOOL LLViewerShaderMgr::loadShadersMaterials()
 	return success;
 }
 
-BOOL LLViewerShaderMgr::loadShadersDOF()
+BOOL LLViewerShaderMgr::loadShadersDOF(bool success)
 {
-	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Depth Of Field
 	gDeferredPostProgram.unload();
 	gVolumetricLightProgram.unload();
@@ -1961,11 +1959,8 @@ BOOL LLViewerShaderMgr::loadShadersDOF()
 	return success;
 }
 
-BOOL LLViewerShaderMgr::loadShadersSSAO()
+BOOL LLViewerShaderMgr::loadShadersSSAO(bool success)
 {
-	//BD - Don't reload shaders if Deferred is not enabled.
-	BOOL success = gPipeline.sRenderDeferred;
-
 	//BD - Screen Space Ambient Occlusion
 	gDeferredSunProgram.unload();
 	if (success)
@@ -2001,13 +1996,12 @@ BOOL LLViewerShaderMgr::loadShadersSSAO()
 		success = gDeferredSunProgram.createShader(NULL, NULL);
 	}
 
-	loadShadersSSR();
+	success = loadShadersSSR(success);
 	return success;
 }
 
-BOOL LLViewerShaderMgr::loadShadersShadows()
+BOOL LLViewerShaderMgr::loadShadersShadows(bool success)
 {
-	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Shadows
 	gDeferredSkinnedAlphaProgram.unload();
 	gDeferredAlphaProgram.unload();
@@ -2172,9 +2166,8 @@ BOOL LLViewerShaderMgr::loadShadersShadows()
 	return success;
 }
 
-BOOL LLViewerShaderMgr::loadShadersGodrays()
+BOOL LLViewerShaderMgr::loadShadersGodrays(bool success)
 {
-	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Volumetric Lighting
 	gVolumetricLightProgram.unload();
 	if (success)
@@ -2192,9 +2185,8 @@ BOOL LLViewerShaderMgr::loadShadersGodrays()
 	return success;
 }
 
-BOOL LLViewerShaderMgr::loadShadersBlurLight()
+BOOL LLViewerShaderMgr::loadShadersBlurLight(bool success)
 {
-	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Soften Light
 	gDeferredBlurLightProgram.unload();
 	if (success)
@@ -2217,9 +2209,8 @@ BOOL LLViewerShaderMgr::loadShadersBlurLight()
 	return success;
 }
 
-BOOL LLViewerShaderMgr::loadShadersSSR()
+BOOL LLViewerShaderMgr::loadShadersSSR(bool success)
 {
-	BOOL success = gPipeline.sRenderDeferred;
 	//BD - Screen Space Reflections
 	gDeferredSoftenProgram.unload();
 	gDeferredSoftenWaterProgram.unload();

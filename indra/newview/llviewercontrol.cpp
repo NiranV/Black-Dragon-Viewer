@@ -713,42 +713,50 @@ static bool handleShadowMapsChanged(const LLSD& newvalue)
 
 static bool handleDepthOfFieldChanged(const LLSD& newvalue)
 {
-	return LLViewerShaderMgr::instance()->loadShadersDOF();
+	BOOL success = gPipeline.sRenderDeferred;
+	return LLViewerShaderMgr::instance()->loadShadersDOF(success);
 }
 
 static bool handleSSAOChanged(const LLSD& newvalue)
 {
-	return LLViewerShaderMgr::instance()->loadShadersSSAO();
+	BOOL success = gPipeline.sRenderDeferred;
+	return LLViewerShaderMgr::instance()->loadShadersSSAO(success);
 }
 
 static bool handleBlurLightChanged(const LLSD& newvalue)
 {
-	return LLViewerShaderMgr::instance()->loadShadersBlurLight()
-		&& LLViewerShaderMgr::instance()->loadShadersSSAO();
+	BOOL success = gPipeline.sRenderDeferred;
+	success = LLViewerShaderMgr::instance()->loadShadersBlurLight(success);
+	return LLViewerShaderMgr::instance()->loadShadersSSAO(success);
 }
 
 static bool handleSSRChanged(const LLSD& newvalue)
 {
-	return LLViewerShaderMgr::instance()->loadShadersSSR();
+	BOOL success = gPipeline.sRenderDeferred;
+	return LLViewerShaderMgr::instance()->loadShadersSSR(success);
 }
 
 static bool handleGodraysChanged(const LLSD& newvalue)
 {
-	return LLViewerShaderMgr::instance()->loadShadersGodrays();
+	BOOL success = gPipeline.sRenderDeferred;
+	return LLViewerShaderMgr::instance()->loadShadersGodrays(success);
 }
 
 static bool handleShadowsChanged(const LLSD& newvalue)
 {
-	bool ret = false;
-	if (gPipeline.sRenderDeferred)
+	BOOL success = gPipeline.sRenderDeferred;
+	if (success)
 	{
-		ret = LLViewerShaderMgr::instance()->resetDeferredShaders()
-			&& LLViewerShaderMgr::instance()->loadShadersMaterials()
-			&& LLViewerShaderMgr::instance()->loadShadersSSAO()
-			&& LLViewerShaderMgr::instance()->loadShadersShadows();
+		success = LLViewerShaderMgr::instance()->resetDeferredShaders();
+	}
+	success = LLViewerShaderMgr::instance()->loadShadersMaterials(success);
+	success = LLViewerShaderMgr::instance()->loadShadersSSAO(success);
+	success = LLViewerShaderMgr::instance()->loadShadersShadows(success);
+	if (success)
+	{
 		gPipeline.allocateShadowMaps(true);
 	}
-	return ret;
+	return success;
 }
 
 static bool handleTimeFactorChanged(const LLSD& newvalue)

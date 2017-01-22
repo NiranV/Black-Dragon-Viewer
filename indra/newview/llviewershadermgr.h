@@ -62,13 +62,13 @@ public:
 
 //	//BD - Fast Shader Toggles
 	BOOL resetDeferredShaders();
-	BOOL loadShadersMaterials();
-	BOOL loadShadersDOF();
-	BOOL loadShadersSSAO();
-	BOOL loadShadersShadows();
-	BOOL loadShadersGodrays();
-	BOOL loadShadersBlurLight();
-	BOOL loadShadersSSR();
+	BOOL loadShadersMaterials(bool success);
+	BOOL loadShadersDOF(bool success);
+	BOOL loadShadersSSAO(bool success);
+	BOOL loadShadersShadows(bool success);
+	BOOL loadShadersGodrays(bool success);
+	BOOL loadShadersBlurLight(bool success);
+	BOOL loadShadersSSR(bool success);
 
 //	//BD - Exodus Post Process
 	void unloadExodusPostShaders();
