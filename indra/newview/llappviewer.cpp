@@ -3323,13 +3323,9 @@ LLSD LLAppViewer::getViewerInfo() const
         info["BUILD_CONFIG"] = build_config;
     }
 
-	// return a URL to the release notes for this viewer, such as:
-	// http://wiki.secondlife.com/wiki/Release_Notes/Second Life Beta Viewer/2.1.0.123456
+	//BD - return a URL to the release notes for this viewer, such as:
+	//     http://wiki.secondlife.com/wiki/Release_Notes/Second Life Beta Viewer/2.1.0.123456
 	std::string url = LLTrans::getString("RELEASE_NOTES_BASE_URL");
-	if (! LLStringUtil::endsWith(url, "/"))
-		url += "/";
-	url += LLURI::escape(LLVersionInfo::getChannel()) + "/";
-	url += LLURI::escape(LLVersionInfo::getVersion());
 
 	info["VIEWER_RELEASE_NOTES_URL"] = url;
 
