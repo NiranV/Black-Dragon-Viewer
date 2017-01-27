@@ -2527,6 +2527,15 @@
              tool_tip="Causes object to emit light"
              top_pad="12"
              width="60" />
+												<check_box
+             height="16"
+             label="Shadow"
+             layout="topleft"
+             left="155"
+             name="Shadow Checkbox Ctrl"
+             tool_tip="Causes object to emit light"
+             top_delta="0"
+             width="60" />
           <spinner
              follows="left|top"
              height="20"

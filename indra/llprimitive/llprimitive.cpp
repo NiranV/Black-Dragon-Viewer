@@ -1992,12 +1992,17 @@ LLLightImageParams::LLLightImageParams()
 {
 	mType = PARAMS_LIGHT_IMAGE;
 	mParams.setVec(F_PI*0.5f, 0.f, 0.f);
+	//BD
+	mHasSpotLightShadow = TRUE;
 }
 
 BOOL LLLightImageParams::pack(LLDataPacker &dp) const
 {
 	dp.packUUID(mLightTexture, "texture");
 	dp.packVector3(mParams, "params");
+	//BD - We don't have a way to pack booleans, use S/U32?
+	//     Need to talk to Oz about this.
+	//dp.packS32(mHasSpotLightShadow, "shadow");
 
 	return TRUE;
 }
@@ -2006,6 +2011,9 @@ BOOL LLLightImageParams::unpack(LLDataPacker &dp)
 {
 	dp.unpackUUID(mLightTexture, "texture");
 	dp.unpackVector3(mParams, "params");
+	//BD - We don't have a way to unpack booleans, use S/U32?
+	//     Need to talk to Oz about this.
+	//dp.unpackS32(mHasSpotLightShadow, "shadow");
 	
 	return TRUE;
 }
@@ -2027,6 +2035,12 @@ bool LLLightImageParams::operator==(const LLNetworkData& data) const
 	{
 		return false;
 	}
+
+	//BD - Need to talk to Oz about this.
+	//if ((param->mHasSpotLightShadow != mHasSpotLightShadow))
+	//{
+	//	return false;
+	//}
 	
 	return true;
 }
@@ -2036,6 +2050,8 @@ void LLLightImageParams::copy(const LLNetworkData& data)
 	const LLLightImageParams *param = (LLLightImageParams*)&data;
 	mLightTexture = param->mLightTexture;
 	mParams = param->mParams;
+	//BD
+	//mHasSpotLightShadow = param->mHasSpotLightShadow;
 }
 
 
@@ -2046,6 +2062,8 @@ LLSD LLLightImageParams::asLLSD() const
 	
 	sd["texture"] = mLightTexture;
 	sd["params"] = mParams.getValue();
+	//BD
+	//sd["shadow"] = mHasSpotLightShadow;
 		
 	return sd;
 }
@@ -2056,6 +2074,8 @@ bool LLLightImageParams::fromLLSD(LLSD& sd)
 	{
 		setLightTexture( sd["texture"] );
 		setParams( LLVector3( sd["params"] ) );
+		//BD
+		//setSpotLightShadow(sd["shadow"].asBoolean());
 		return true;
 	} 
 	

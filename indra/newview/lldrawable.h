@@ -87,6 +87,9 @@ public:
 
 	BOOL isLight() const;
 
+	//BD
+	BOOL hasShadow() const;
+
 	virtual void setVisible(LLCamera& camera_in, std::vector<LLDrawable*>* results = NULL, BOOL for_select = FALSE);
 
 	LLSpatialGroup* getSpatialGroup()const          {return (LLSpatialGroup*)getGroup();}

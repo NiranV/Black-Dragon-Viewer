@@ -2902,6 +2902,17 @@ void LLVOVolume::setIsLight(BOOL is_light)
 	}
 }
 
+//BD
+void LLVOVolume::setHasShadow(BOOL has_shadow)
+{
+	LLLightImageParams* param_block = (LLLightImageParams*)getParameterEntry(LLNetworkData::PARAMS_LIGHT_IMAGE);
+	if (param_block)
+	{
+		param_block->setSpotLightShadow(has_shadow);
+		parameterChanged(LLNetworkData::PARAMS_LIGHT_IMAGE, true);
+	}
+}
+
 void LLVOVolume::setLightColor(const LLColor3& color)
 {
 	LLLightParams *param_block = (LLLightParams *)getParameterEntry(LLNetworkData::PARAMS_LIGHT);
@@ -2974,6 +2985,21 @@ void LLVOVolume::setLightCutoff(F32 cutoff)
 BOOL LLVOVolume::getIsLight() const
 {
 	return getParameterEntryInUse(LLNetworkData::PARAMS_LIGHT);
+}
+
+//BD
+BOOL LLVOVolume::getHasShadow() const
+{
+	if (getParameterEntryInUse(LLNetworkData::PARAMS_LIGHT_IMAGE))
+	{
+		const LLLightImageParams *param_block = (const LLLightImageParams *)getParameterEntry(LLNetworkData::PARAMS_LIGHT_IMAGE);
+		if (param_block)
+		{
+			return param_block->hasSpotLightShadow();
+		}
+	}
+
+	return FALSE;
 }
 
 LLColor3 LLVOVolume::getLightBaseColor() const
@@ -3050,7 +3076,15 @@ void LLVOVolume::updateSpotLightPriority()
 
 	pos -= at * r;
 	
-	mSpotLightPriority = gPipeline.calcPixelArea(pos, LLVector3(r,r,r), *LLViewerCamera::getInstance());
+	//BD
+	if (mDrawable->hasShadow())
+	{
+		mSpotLightPriority = gPipeline.calcPixelArea(pos, LLVector3(r, r, r), *LLViewerCamera::getInstance());
+	}
+	else
+	{
+		mSpotLightPriority = 0.f;
+	}
 
 	if (mLightTexture.notNull())
 	{
@@ -3066,6 +3100,17 @@ bool LLVOVolume::isLightSpotlight() const
 	if (params && getParameterEntryInUse(LLNetworkData::PARAMS_LIGHT_IMAGE))
 	{
 		return params->isLightSpotlight();
+	}
+	return false;
+}
+
+//BD
+bool LLVOVolume::hasSpotLightShadow() const
+{
+	LLLightImageParams* params = (LLLightImageParams*)getParameterEntry(LLNetworkData::PARAMS_LIGHT_IMAGE);
+	if (params && getParameterEntryInUse(LLNetworkData::PARAMS_LIGHT_IMAGE))
+	{
+		return params->hasSpotLightShadow();
 	}
 	return false;
 }

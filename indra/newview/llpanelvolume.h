@@ -56,6 +56,8 @@ public:
 
 	void			sendIsLight();
 	void			sendIsFlexible();
+	//BD
+	void			sendHasShadow();
 
 	static bool		precommitValidate(const LLSD& data);
 	
@@ -65,6 +67,8 @@ public:
 	static void 	onCommitFlexible(		LLUICtrl* ctrl, void* userdata);
 	static void     onCommitPhysicsParam(       LLUICtrl* ctrl, void* userdata);
 	static void 	onCommitMaterial(		LLUICtrl* ctrl, void* userdata);
+	//BD
+	static void 	onCommitShadow(LLUICtrl* ctrl, void* userdata);
 
 	void		onLightCancelColor(const LLSD& data);
 	void		onLightSelectColor(const LLSD& data);

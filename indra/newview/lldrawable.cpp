@@ -262,6 +262,20 @@ BOOL LLDrawable::isLight() const
 	}
 }
 
+//BD
+BOOL LLDrawable::hasShadow() const
+{
+	LLViewerObject* objectp = mVObjp;
+	if (objectp && (objectp->getPCode() == LL_PCODE_VOLUME) && !isDead())
+	{
+		return ((LLVOVolume*)objectp)->getHasShadow();
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
 static LLTrace::BlockTimerStatHandle FTM_CLEANUP_DRAWABLE("Cleanup Drawable");
 static LLTrace::BlockTimerStatHandle FTM_DEREF_DRAWABLE("Deref");
 static LLTrace::BlockTimerStatHandle FTM_DELETE_FACES("Faces");

@@ -238,6 +238,8 @@ public:
 	void setLightCutoff(F32 cutoff);
 	void setLightTextureID(LLUUID id);
 	void setSpotLightParams(LLVector3 params);
+	//BD
+	void setHasShadow(BOOL has_shadow);
 
 	BOOL getIsLight() const;
 	LLColor3 getLightBaseColor() const; // not scaled by intensity
@@ -247,6 +249,10 @@ public:
 	LLVector3 getSpotLightParams() const;
 	void	updateSpotLightPriority();
 	F32		getSpotLightPriority() const;
+
+	//BD
+	BOOL getHasShadow() const;
+	bool hasSpotLightShadow() const;
 
 	LLViewerTexture* getLightTexture();
 	F32 getLightIntensity() const;

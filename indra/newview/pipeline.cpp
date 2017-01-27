@@ -11503,10 +11503,24 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 		for (U32 i = 0; i < 2; i++)
 		{ //for each current shadow
 			LLViewerCamera::sCurCameraID = (LLViewerCamera::eCameraID)(LLViewerCamera::CAMERA_SHADOW4+i);
+			//BD
+			BOOL cast_shadow = FALSE;
+			LLDrawable* drawable = mShadowSpotLight[i];
 
-			if (mShadowSpotLight[i].notNull() && 
+			if (drawable)
+			{
+				cast_shadow = drawable->hasShadow();
+			}
+
+			//BD - Fade out all shadows of projectors we don't want to see.
+			//     This is to prevent a projector shadow which we toggled off
+			//     from still showing up since we don't actually toggle them off
+			//     but rather just set their priority so low that they will never
+			//     get a spot reserved unless they are the last ones available.
+			if ((mShadowSpotLight[i].notNull() && 
 				(mShadowSpotLight[i] == mTargetShadowSpotLight[0] ||
-				mShadowSpotLight[i] == mTargetShadowSpotLight[1]))
+				mShadowSpotLight[i] == mTargetShadowSpotLight[1])) &&
+				cast_shadow)
 			{ //keep this spotlight
 				mSpotLightFade[i] = llmin(mSpotLightFade[i]+fade_amt, 1.f);
 			}
