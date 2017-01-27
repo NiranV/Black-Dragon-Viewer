@@ -109,7 +109,8 @@ BOOL	LLPanelVolume::postBuild()
 	{
 		childSetCommitCallback("Light Checkbox Ctrl",onCommitIsLight,this);
 		LLColorSwatchCtrl*	LightColorSwatch = getChild<LLColorSwatchCtrl>("colorswatch");
-		if(LightColorSwatch){
+		if(LightColorSwatch)
+		{
 			LightColorSwatch->setOnCancelCallback(boost::bind(&LLPanelVolume::onLightCancelColor, this, _2));
 			LightColorSwatch->setOnSelectCallback(boost::bind(&LLPanelVolume::onLightSelectColor, this, _2));
 			childSetCommitCallback("colorswatch",onCommitLight,this);
