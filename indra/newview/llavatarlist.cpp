@@ -48,6 +48,7 @@
 #include "llviewercontrol.h"	// for gSavedSettings
 #include "lltooldraganddrop.h"
 
+
 static LLDefaultChildRegistry::Register<LLAvatarList> r("avatar_list");
 
 // Maximum number of avatars that can be added to a list in one pass.
@@ -128,13 +129,10 @@ LLAvatarList::LLAvatarList(const Params& p)
 	// Set default sort order.
 	setComparator(&NAME_COMPARATOR);
 
-	if (mShowLastInteractionTime)
-	{
-		//BD
-		mExtraDataUpdatePeriod = 5;
-		mExtraDataUpdateTimer->setTimerExpirySec(0); // zero to force initial update
-		mExtraDataUpdateTimer->start();
-	}
+	//BD
+	mExtraDataUpdatePeriod = 5;
+	mExtraDataUpdateTimer->setTimerExpirySec(0); // zero to force initial update
+	mExtraDataUpdateTimer->start();
 	
 	LLAvatarNameCache::addUseDisplayNamesCallback(boost::bind(&LLAvatarList::handleDisplayNamesOptionChanged, this));
 }
@@ -608,7 +606,7 @@ void LLAvatarList::updateExtraData()
 	 	for( std::vector<LLPanel*>::const_iterator it = items.begin(); it != items.end(); it++)
 	 	{
 	 	    LLAvatarListItem* item = static_cast<LLAvatarListItem*>(*it);
-	 	    item->setExtraInformation(*mExtraDataSignal(item->getAvatarId()));
+			item->setExtraInformation(*mExtraDataSignal(item->getAvatarId()));
 	 	}
 	}
 }

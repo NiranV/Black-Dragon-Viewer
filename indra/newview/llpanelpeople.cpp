@@ -150,6 +150,7 @@ class LLAvatarItemDistanceComparator : public LLAvatarItemComparator
 public:
 	typedef std::map < LLUUID, LLVector3d > id_to_pos_map_t;
 	LLAvatarItemDistanceComparator() {};
+	id_to_pos_map_t mAvatarsPositions;
 
 	void updateAvatarsPositions(std::vector<LLVector3d>& positions, uuid_vec_t& uuids)
 	{
@@ -180,8 +181,6 @@ protected:
 		
 		return dist_vec_squared(item1_pos, me_pos) < dist_vec_squared(item2_pos, me_pos);
 	}
-private:
-	id_to_pos_map_t mAvatarsPositions;
 };
 
 /** Comparator for comparing nearby avatar items by last spoken time */
@@ -634,6 +633,7 @@ BOOL LLPanelPeople::postBuild()
 	mNearbyList->setNoItemsMsg(getString("no_one_near"));
 	mNearbyList->setNoFilteredItemsMsg(getString("no_one_filtered_near"));
 	mNearbyList->setShowCompleteName(!gSavedSettings.getBOOL("NearbyListHideUsernames"));
+	mNearbyList->setShowExtraInformation(true);
 // [RLVa:KB] - Checked: RLVa-1.2.0
 	mNearbyList->setRlvCheckShowNames(true);
 // [/RLVa:KB]
@@ -717,6 +717,7 @@ BOOL LLPanelPeople::postBuild()
 	//BD
 	//mOnlineFriendList->setRefreshCompleteCallback(boost::bind(&LLPanelPeople::onFriendListRefreshComplete, this, _1, _2));
 	//mAllFriendList->setRefreshCompleteCallback(boost::bind(&LLPanelPeople::onFriendListRefreshComplete, this, _1, _2));
+	mNearbyList->setExtraDataCallback(boost::bind(&LLPanelPeople::getAvatarInformation, this, _1));
 
 	return TRUE;
 }
@@ -1662,6 +1663,13 @@ bool LLPanelPeople::isAccordionCollapsedByUser(LLUICtrl* acc_tab)
 bool LLPanelPeople::isAccordionCollapsedByUser(const std::string& name)
 {
 	return isAccordionCollapsedByUser(getChild<LLUICtrl>(name));
+}
+
+std::string LLPanelPeople::getAvatarInformation(const LLUUID& avatar)
+{
+	F32 distance = dist_vec(gAgent.getPositionGlobal(), DISTANCE_COMPARATOR.mAvatarsPositions[avatar]);
+	std::string output = llformat("%i m", llround(distance));
+	return output;
 }
 
 

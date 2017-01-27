@@ -131,6 +131,9 @@ private:
 	void					showAccordion(const std::string name, bool show);
 
 	//BD
+	std::string             getAvatarInformation(const LLUUID& avatar);
+
+	//BD
 	//void					showFriendsAccordionsIfNeeded();
 	//void					onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param);
 	//bool					onConnectedToFacebook(const LLSD& data);
