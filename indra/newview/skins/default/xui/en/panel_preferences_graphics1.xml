@@ -31,7 +31,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="3347"
+   height="3306"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -2930,7 +2930,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="564"
+	  height="523"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -2995,113 +2995,6 @@ width="510">
                         height="16"
                         label="FXAA"
                         value="2"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>
- <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="10"
- name="BumpStrength"
- top_pad="4"
- width="120">
- Normalmap Scale:
- </text>
- <radio_group
-                  control_name="RenderNormalMapScale"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderNormalMapScale"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Very Fine"
-                        value="256"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Fine"
-                        value="128"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Normal"
-                        value="64"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-										image_overlay="Default_Widget"
-										image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Rough"
-                        value="32"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Very Rough"
-                        value="16"
                         layout="topleft"
                         name="0"
                         left_pad="10"
