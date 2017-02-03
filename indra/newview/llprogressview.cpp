@@ -194,7 +194,7 @@ void LLProgressView::setTip()
 	else if(mTipCycleTimer.getElapsedTimeAndResetF32() > CYCLE_TIMER)
 	{
 		srand( (unsigned)time( NULL ) );
-		int mRandom = rand() % 22;
+		int mRandom = rand() % 23;
 		std::string output = llformat("LoadingTip %i" , mRandom);
 		mMessageText->setValue(getString(output));
 	}

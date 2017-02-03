@@ -10,7 +10,7 @@
  bg_opaque_color="0.05 0.05 0.05 1"
  top="768"
  width="1024">
-  <string name="DownloadingUpdate">Downloading Update...</string>
+  <string name="DownloadingUpdate">An Update is available and being downloaded in the background...</string>
   <string name="LoadingTip 0">The [http://niranv-sl.blogspot.de/ Blog] contains cool pictures and information about updates and features.</string>
   <string name="LoadingTip 1">You can move with &lt;green&gt;A W S&lt;/green&gt; and &lt;green&gt;D&lt;/green&gt;.</string>
   <string name="LoadingTip 2">You can hold &lt;green&gt;RightMouseButton&lt;/green&gt; to turn your avatar around.</string>
@@ -31,8 +31,9 @@
   <string name="LoadingTip 17">In Preferences - Keybindings you can change all movement and camera controls.</string>
   <string name="LoadingTip 18">You can reset slider options in Preferences - Display with the [default] button.</string>
   <string name="LoadingTip 19">Colorful people are not bugged. It's a feature. Preferences - Display.</string>
-  <string name="LoadingTip 20">Yellow badges on checkboxes warn you about possible problems.</string>
-  <string name="LoadingTip 21">Blue badges on checkboxes signal Linden's 'Ultra'.</string>
+  <string name="LoadingTip 20">&lt;icon&gt;Caution_Widget&lt;/icon&gt;Yellow badges on checkboxes warn you about possible problems they might cause.</string>
+  <string name="LoadingTip 21">&lt;icon&gt;Default_Widget&lt;/icon&gt;Blue badges on checkboxes signal Linden's 'Ultra'.</string>
+  <string name="LoadingTip 22">You should verify your E-mail on SL's website in order to receive offline mails in the future.</string>
   <!--<string name="LoadingTip 1">You can realign all your onscreen buttons like your Inventory to each of the four tool bars at the top , left , right or bottom. You can also add additional buttons or delete buttons if you wish , just right click on an active button and click 'Select Buttons' , this will open a window in which you can drag and drop all buttons where you want them.</string>
   <string name="LoadingTip 2">'Lighting and Shadows' is also known as 'Deferred Rendering'. 'Deferred Rendering' is an advanced graphic rendering used in a lot of games today, Crysis 2, StarCraft 2 and Grand Theft Auto 4 for example.</string>
   <string name="LoadingTip 3">Chat can be started by pressing the Enter key at any time while not having any other window focused , you can also SHOUT by holding 'Ctrl' and WHISPER by holding 'Shift' while sending a chat message.</string>
