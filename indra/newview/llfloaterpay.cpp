@@ -288,7 +288,6 @@ void LLFloaterPay::processPayPriceReply(LLMessageSystem* msg, void **userdata)
 				self->mQuickPayButton[i]->setLabelUnselected(button_str);
 				self->mQuickPayButton[i]->setVisible(TRUE);
 				self->mQuickPayInfo[i]->mAmount = pay_button;
-				self->getChildView("fastpay text")->setVisible(TRUE);
 
 				if ( pay_button > max_pay_amount )
 				{
@@ -416,7 +415,6 @@ void LLFloaterPay::payDirectly(money_callback callback,
 	floater->getChildView("pay btn")->setVisible(TRUE);
 	floater->getChildView("amount text")->setVisible(TRUE);
 
-	floater->getChildView("fastpay text")->setVisible(TRUE);
 	for(S32 i=0;i<MAX_PAY_BUTTONS;++i)
 	{
 		floater->mQuickPayButton[i]->setVisible(TRUE);
@@ -601,7 +599,8 @@ void LLFloaterPay::give(S32 amount)
 		else
 		{
 			// just transfer the L$
-			mCallback(mTargetUUID, gAgent.getRegion(), amount, mTargetIsGroup, TRANS_GIFT, LLStringUtil::null);
+			std::string paymentMessage(getChild<LLLineEditor>("payment_message")->getValue().asString());
+			mCallback(mTargetUUID, gAgent.getRegion(), amount, mTargetIsGroup, TRANS_GIFT, (paymentMessage.empty() ? LLStringUtil::null : paymentMessage));
 
 			// check if the payee needs to be unmuted
 			LLMuteList::getInstance()->autoRemove(mTargetUUID, LLMuteList::AR_MONEY);

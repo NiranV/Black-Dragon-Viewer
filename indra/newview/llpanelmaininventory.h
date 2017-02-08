@@ -85,6 +85,8 @@ public:
 
 	void setFocusFilterEditor();
 
+	static void newWindow();
+
 protected:
 	//
 	// Misc functions
@@ -109,7 +111,6 @@ protected:
 	// menu callbacks
 	void doToSelected(const LLSD& userdata);
 	void closeAllFolders();
-	void newWindow();
 	void doCreate(const LLSD& userdata);
 	void resetFilters();
 	//BD

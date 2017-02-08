@@ -37,6 +37,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class LLNameBox;
+class LLViewerInventoryItem;
 //BD - SSFUI
 class LLTextBox;
 
@@ -78,6 +79,8 @@ protected:
 
 	static void	onCommitClickAction(LLUICtrl* ctrl, void*);
 	static void onCommitIncludeInSearch(LLUICtrl* ctrl, void*);
+
+	static LLViewerInventoryItem* findItem(LLUUID &object_id);
 
 protected:
 	void disableAll();

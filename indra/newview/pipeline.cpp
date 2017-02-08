@@ -114,6 +114,7 @@
 #include "llpathfindingpathtool.h"
 #include "llscenemonitor.h"
 #include "llprogressview.h"
+#include "llcleanup.h"
 // [RLVa:KB] - Checked: RLVa-2.0.0
 #include "rlvactions.h"
 #include "rlvlocks.h"
@@ -7424,7 +7425,7 @@ void LLPipeline::doResetVertexBuffers(bool forced)
 	}
 	LLVOPartGroup::destroyGL();
 
-	LLVertexBuffer::cleanupClass();
+	SUBSYSTEM_CLEANUP(LLVertexBuffer);
 	
 	//delete all name pool caches
 	LLGLNamePool::cleanupPools();

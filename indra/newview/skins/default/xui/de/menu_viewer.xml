@@ -118,11 +118,11 @@
 			<menu_item_call label="Verknüpfung" name="Link"/>
 			<menu_item_call label="Verknüpfung auflösen" name="Unlink"/>
 			<menu_item_check label="Verknüpfte Teile bearbeiten" name="Edit Linked Parts"/>
-			<menu label="Verknüpfte Teile auswählen" name="Select Linked Parts">
-				<menu_item_call label="Nächstes Teil auswählen" name="Select Next Part"/>
-				<menu_item_call label="Vorheriges Teil auswählen" name="Select Previous Part"/>
-				<menu_item_call label="Nächsten Teil mit einsschließen" name="Include Next Part"/>
-				<menu_item_call label="Vorherige Teile mit einschließen" name="Include Previous Part"/>
+		<menu label="Elemente auswÃ¤hlen" name="Select Elements">
+			<menu_item_call label="NÃ¤chsten Teil oder nÃ¤chste FlÃ¤che auswÃ¤hlen" name="Select Next Part or Face"/>
+			<menu_item_call label="Vorherigen Teil oder vorherige FlÃ¤che auswÃ¤hlen" name="Select Previous Part or Face"/>
+			<menu_item_call label="NÃ¤chsten Teil oder nÃ¤chste FlÃ¤che einschlieÃŸen" name="Include Next Part or Face"/>
+			<menu_item_call label="Vorherigen Teil oder vorherige FlÃ¤che einschlieÃŸen" name="Include Previous Part or Face"/>
 			</menu>
 			<menu_item_call label="Fokus auf Auswahl" name="Focus on Selection"/>
 			<menu_item_call label="Auf Auswahl zoomen" name="Zoom to Selection"/>
