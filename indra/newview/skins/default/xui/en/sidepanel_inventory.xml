@@ -75,7 +75,7 @@ width="320">
    follows="left|right|top"
    name="inbox_layout_panel"
    visible="true"
-   min_dim="23"
+   min_dim="25"
    expanded_min_dim="90"
    height="220">
     <panel
@@ -137,7 +137,7 @@ width="320">
 	   h_pad="5"
 	   v_pad="4"
        width="313"
-       height="196"
+       height="193"
        wrap="true"
        halign="center">
        Purchases from the marketplace will be delivered here.
