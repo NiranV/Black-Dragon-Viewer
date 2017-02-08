@@ -124,7 +124,7 @@ width="320">
       left="8"
       bottom="216"
       width="313"
-      top="17"
+      top="19"
       background_visible="false"
       tool_tip="Drag and drop items to your inventory to use them">
        <text
@@ -163,7 +163,7 @@ width="320">
      is_toggle="true"
      tab_stop="false"
      pad_left="7"
-     top="0"
+     top="2"
      left="11" />
      </panel>
     </layout_panel>
