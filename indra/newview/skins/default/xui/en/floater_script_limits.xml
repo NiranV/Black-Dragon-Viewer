@@ -5,11 +5,9 @@
  height="570"
  layout="topleft"
  name="scriptlimits"
- background_color="FloaterDefaultBackgroundColor"
  save_rect="true"
  title="SCRIPT INFORMATION"
- min_width="620"
- width="620">
+ width="480">
     <tab_container
      bottom="555"
      follows="left|right|top|bottom"
