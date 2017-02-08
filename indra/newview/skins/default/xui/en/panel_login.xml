@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.6.1 - Ending Dragon]"
+       label="[CHANNEL] [VERSION] - [2.6.2 - Ending Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -139,21 +139,94 @@ top="600"
       name="info_panel"
       top_pad="0"
       width="998">
+       <scroll_container
+       color="Transparent"
+       follows="all"
+       layout="topleft"
+       mouse_opaque="false"
+       left="0"
+       name="camera_scroll"
+       opaque="true"
+       height="487"
+       width="994"
+       top="3">
        <panel
        follows="all"
-       height="490"
+       height="2073"
        layout="topleft"
        left="0"
        name="panel_login2"
        top="0"
-       width="998">
+       width="980">
               <text
-              follows="all"
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="313"
+              top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Checkbox to control weither a projector should cast a shadow or not. (LOCAL)
+Added: Distance display to "Nearby" people panel.
+Added: Loadingscreen tip for the Email verification.
+Added: Cinematic Camera option to camera preferences tab.
+Added: Scene Memory info to about floater.
+Changed: Properly carry over the shader success signal when toggling shaders.
+Changed: Improved SSAO defaults even further.
+Changed: Improved some loadingscreen tips.
+Changed: Improved scaling of text field widgets, fixes slider text fields having a slightly darker color at the bottom.
+Changed: Improved SSR looks a bit.
+Changed: Object Quality "Very High" to 7.5 and "Ultra" to 10.
+Changed: Inventory filter being to big.
+Changed: Version to 2.6.2.
+Fixed: Warnings in panel_places.xml.
+Fixed: Compile.
+Fixed: Floater Script Limits floater warnings and new size.
+Fixed: German translation for the cycle link/face menu entries.
+Fixed: Inventory inbox background not big enough.
+Fixed: German translation in about floater containing weird symbols.
+Fixed: Inventory inbox layout clipping.
+Removed: Non-functional Normalmap Scale option from preferences.
+Removed: Unused Blocked List menu entry.
+Misc: Cleanup.
+Merge with Release. (215 changes)
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.6.1
+              </text>
+              <text
+              follows="top|left"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
               height="285"
-              top="10"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
@@ -193,7 +266,7 @@ Removed: HTTP Inventory option from Preferences.
     top_pad="10"
     width="250"/>
               <text
-              follows="all"
+              follows="top|left|right"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -208,7 +281,7 @@ Removed: HTTP Inventory option from Preferences.
 2.6
               </text>
               <text
-              follows="all"
+              follows="top|left"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -247,7 +320,7 @@ Merge with RLVa.
     top_pad="10"
     width="250"/>
               <text
-              follows="all"
+              follows="top|left|right"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -262,7 +335,7 @@ Merge with RLVa.
 2.5.6
               </text>
               <text
-              follows="all"
+              follows="top|left"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -305,7 +378,7 @@ Merge with Bento RC
     top_pad="10"
     width="250"/>
               <text
-              follows="all"
+              follows="top|left|right"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -320,7 +393,7 @@ Merge with Bento RC
 2.5.5
               </text>
               <text
-              follows="all"
+              follows="top|left"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -373,7 +446,7 @@ Merge with Bento
     top_pad="10"
     width="250"/>
               <text
-              follows="all"
+              follows="top|left|right"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -388,7 +461,7 @@ Merge with Bento
 2.5.4
               </text>
               <text
-              follows="all"
+              follows="top|left"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -418,7 +491,7 @@ Misc: Line Endings and Code Cleanup.
     top_pad="10"
     width="250"/>
               <text
-              follows="all"
+              follows="top|left|right"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -433,7 +506,7 @@ Misc: Line Endings and Code Cleanup.
 2.5.3
               </text>
               <text
-              follows="all"
+              follows="top|left"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -473,7 +546,7 @@ Merge with Bento
     top_pad="10"
     width="250"/>
               <text
-              follows="all"
+              follows="top|left|right"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -488,7 +561,7 @@ Merge with Bento
 2.5.2
               </text>
               <text
-              follows="all"
+              follows="top|left"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -513,7 +586,7 @@ Merge with Linden VLC Release
     top_pad="10"
     width="250"/>
               <text
-              follows="all"
+              follows="top|left|right"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -528,7 +601,7 @@ Merge with Linden VLC Release
 2.5.1
               </text>
               <text
-              follows="all"
+              follows="top|left"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
@@ -550,6 +623,7 @@ Changed: Login panel layout, added toggleable changelog.
 Misc: Code tagging.
               </text>
        </panel>
+       </scroll_container>
       </layout_panel>
   </layout_stack>
   
