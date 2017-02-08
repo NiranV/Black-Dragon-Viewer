@@ -523,9 +523,9 @@ void main()
 				for (int guessnum = 1; guessnum <= ssr_res; ++guessnum)
 				{
 					rnd2 = rand(vec2(guessnum-rnd, tc.x));
-					gnfrac = float(guessnum) / float(ssr_res);
+					gnfrac = float(guessnum);
 					rd = (float(guessnum) - rnd) / float(ssr_res);
-					refdist = (-2.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * rd);
+					refdist = (-1.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * rd);
 					ref2d = (orig_ref2d + (1.0 - spec.a)*0.5*vec2(rnd2*2.0-1.0)) * refdist;
 					
 					ref2d += tc.xy; // use as offset from destination
