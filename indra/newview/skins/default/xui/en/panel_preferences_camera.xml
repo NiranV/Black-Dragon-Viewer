@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1218"
+  height="1238"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -263,6 +263,18 @@
    left_delta="0"
    name="DisableCameraConstraints"
    tool_tip="Disables the Camera Constrains which prevent your Camera from moving infinite in all directions dependless of the View Distance"
+   width="250"
+   top_pad="0"/>
+   <check_box
+   control_name="UseCinematicCamera"
+   follows="left|top"
+   height="16"
+   initial_value="false"
+   label="Use Cinematic Headtracking"
+   layout="topleft"
+   left_delta="0"
+   name="UseCinematicCamera"
+   tool_tip="Use the avatar head movement as camera movement offset, animating the camera when the avatar head moves"
    width="250"
    top_pad="0"/>
    <button
