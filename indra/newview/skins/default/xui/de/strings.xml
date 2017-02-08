@@ -71,14 +71,15 @@ UI-Skalierung: [UI_SCALE]
 Sichtweite: [DRAW_DISTANCE] m
 Bandbreite: [NET_BANDWITH] kbit/s
 LOD-Faktor: [LOD_FACTOR]
-Darstellungsqualität: [RENDER_QUALITY] / 7
+Darstellungsqualität: [RENDER_QUALITY] / 10
 Erweitertes Beleuchtungsmodell: [GPU_SHADERS]
 Texturspeicher: [TEXTURE_MEMORY] MB
+Szenenspeicher: [SCENE_MEMORY] MB
 Erstellungszeit VFS (Cache): [VFS_TIME]
 	</string>
 	<string name="AboutLibs">
 	RestrainedLove API: [RLV_VERSION]
-		J2C-Decoderversion: [J2C_VERSION]
+J2C-Decoderversion: [J2C_VERSION]
 Audiotreiberversion: [AUDIO_DRIVER_VERSION]
 LLCEFLib/CEF-Version: [LLCEFLIB_VERSION]
 LibVLC-Version: [LIBVLC_VERSION]
