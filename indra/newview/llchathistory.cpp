@@ -597,15 +597,18 @@ public:
 		//BD - I can't believe how unreliable this is... half of the time it doesn't show me as mod.
 		//     Neither does the speaker list, LL really has to fix this stuff.
 		bool moderator = false;
-		LLIMSpeakerMgr* SpeakerMgr = LLIMModel::getIfExists()->getSpeakerManager(mSessionID);
-		if (SpeakerMgr)
+		if (LLIMModel::instanceExists())
 		{
-			if (!mAvatarID.isNull())
+			LLIMSpeakerMgr* SpeakerMgr = LLIMModel::getInstance()->getSpeakerManager(mSessionID);
+			if (SpeakerMgr)
 			{
-				LLSpeaker* speaker = SpeakerMgr->findSpeaker(mAvatarID);
-				if (speaker)
+				if (!mAvatarID.isNull())
 				{
-					moderator = speaker->mIsModerator;
+					LLSpeaker* speaker = SpeakerMgr->findSpeaker(mAvatarID);
+					if (speaker)
+					{
+						moderator = speaker->mIsModerator;
+					}
 				}
 			}
 		}

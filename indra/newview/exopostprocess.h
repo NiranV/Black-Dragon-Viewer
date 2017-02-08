@@ -36,12 +36,11 @@ public:
 
 class exoPostProcess : public LLSingleton<exoPostProcess>
 {
-	friend class LLSingleton<exoPostProcess>;
+	LLSINGLETON(exoPostProcess);
+	~exoPostProcess();
 private:
 	static exoPostProcess *postProcess;
-	exoPostProcess();
 public:
-	~exoPostProcess();
     enum ExodusRenderPostType
     {
         EXODUS_RENDER_COLOR_GRADE           = 1,

@@ -279,7 +279,7 @@ void LLSnapshotLivePreview::reshape(S32 width, S32 height, BOOL called_from_pare
 			updateSnapshot(
 				TRUE, // new snapshot is needed
 				FALSE, // thumbnail will be updated either way.
-				AUTO_SNAPSHOT_TIME_DELAY); // shutter delay.
+				0.0f); // shutter delay.
 		}
 	}
 }
