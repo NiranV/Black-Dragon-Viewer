@@ -613,7 +613,7 @@ void main()
     ssshiny *= ssr_brightness;
 				col.rgb = mix(col.rgb + ssshiny, diffuse.rgb, fullbrightification);
 			}
-		#else
+		#endif
 			if (spec.a > 0.0) // specular reflection
 			{
 				// the old infinite-sky shiny reflection
@@ -627,7 +627,6 @@ void main()
 				bloom = dot(spec_contrib, spec_contrib) / 6;
 				col += spec_contrib;
 			}
-		#endif
 		
 		col = mix(col, diffuse.rgb, diffuse.a);
 		
