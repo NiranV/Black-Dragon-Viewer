@@ -383,9 +383,9 @@
                   width="376" />
                         <chat_editor
                          layout="topleft"
-                         follows="top|left|right"
+                         follows="bottom|left|right"
                          font="SansSerifBig"
-                         height="21"
+                         height="23"
 								 expand_lines_count="5"
                          is_expandable="true"
                          text_tentative_color="0.4 0.4 0.4 1"
@@ -397,7 +397,7 @@
                          tab_group="3"
                          v_pad="2"
                          line_spacing.pixels="-1" 
-                         top_delta="2"
+                         top_delta="-16"
                          left_delta="2"
                          width="372"
                          wrap="true" />
