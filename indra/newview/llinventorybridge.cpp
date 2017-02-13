@@ -129,8 +129,7 @@ bool isAddAction(const std::string& action)
 
 bool isRemoveAction(const std::string& action)
 {
-	//BD
-	return ("take_off" == action || "detach" == action || "deactivate" == action);
+	return ("take_off" == action || "detach" == action);
 }
 
 bool isMarketplaceSendAction(const std::string& action)
@@ -5804,8 +5803,7 @@ void LLGestureBridge::performAction(LLInventoryModel* model, std::string action)
 		gInventory.updateItem(item);
 		gInventory.notifyObservers();
 	}
-	//BD
-	else if (isRemoveAction(action))
+	else if ("deactivate" == action || isRemoveAction(action))
 	{
 		LLGestureMgr::instance().deactivateGesture(mUUID);
 
