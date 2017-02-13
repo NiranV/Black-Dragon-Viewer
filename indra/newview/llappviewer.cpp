@@ -3417,7 +3417,7 @@ LLSD LLAppViewer::getViewerInfo() const
     info["RENDER_QUALITY"] = (F32)gSavedSettings.getU32("RenderQualityPerformance");
     info["GPU_SHADERS"] = gSavedSettings.getBOOL("RenderDeferred") ? "Enabled" : "Disabled";
 	//BD
-    info["TEXTURE_MEMORY"] = gSavedSettings.getS32("SystemMemory");
+	info["TEXTURE_MEMORY"] = gSavedSettings.getS32("SystemMemory");
 	info["SCENE_MEMORY"] = gSavedSettings.getS32("TextureMemory");
 
     LLSD substitution;
