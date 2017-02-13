@@ -2222,6 +2222,7 @@ BOOL LLViewerShaderMgr::loadShadersSSR(bool success)
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
 		//BD
 		gDeferredSoftenProgram.addPermutation("USE_SSR", (bool)gSavedSettings.getBOOL("RenderScreenSpaceReflections") ? "1" : "0");
+		gDeferredSoftenProgram.addPermutation("USE_ENV_MAP", (bool)gSavedSettings.getBOOL("RenderDeferredEnvironmentMap") ? "1" : "0");
 
 		gDeferredSoftenProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
@@ -2244,6 +2245,9 @@ BOOL LLViewerShaderMgr::loadShadersSSR(bool success)
 
 		gDeferredSoftenWaterProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 		gDeferredSoftenWaterProgram.addPermutation("WATER_FOG", "1");
+		//BD
+		gDeferredSoftenWaterProgram.addPermutation("USE_ENV_MAP", (bool)gSavedSettings.getBOOL("RenderDeferredEnvironmentMap") ? "1" : "0");
+
 		gDeferredSoftenWaterProgram.mShaderGroup = LLGLSLShader::SG_WATER;
 
 		//BD

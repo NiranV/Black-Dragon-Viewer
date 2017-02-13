@@ -31,7 +31,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="3306"
+   height="3323"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -2948,7 +2948,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="523"
+	  height="540"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -2971,6 +2971,16 @@ width="510">
    layout="topleft"
    left="10"
    name="RenderAttachedLights"
+   top_pad="0"
+   width="115" />
+	  <check_box
+   control_name="RenderDeferredEnvironmentMap"
+   height="16"
+   label="Render Environment Map"
+   tool_tip="Toggles rendering the environment map on shiny surfaces in Deferred Rendering"
+   layout="topleft"
+   left="10"
+   name="RenderDeferredEnvironmentMap"
    top_pad="0"
    width="115" />
    <text

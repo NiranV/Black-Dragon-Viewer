@@ -450,7 +450,7 @@ void main()
 		
 		col = mix(col.rgb, diffuse.rgb, diffuse.a);
 				
-		#ifdef ENV_SHINY_ALLOWED
+#if USE_ENV_MAP
 		 if (envIntensity > 0.0)
 		 { //add environmentmap
 			 vec3 env_vec = env_mat * refnormpersp;
@@ -461,7 +461,7 @@ void main()
 			 col = mix(col.rgb, refcol, 
 				 envIntensity);  
 		 }
-		#endif
+#endif
 				
 		if (norm.w < 0.5)
 		{
