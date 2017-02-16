@@ -73,10 +73,10 @@
 		<text name="Other:">
 				Anderes:
 		</text>
-		<button label="Leeren" label_selected="Cache Leeren" name="clear_cache"/>
-		<button label="..." label_selected="Durchsuchen" name="set_cache"/>
-		<button label="Zurücksetzen" label_selected="Zurücksetzen" name="reset_cache"/>
-		<button label="Proxy anpassen" label_selected="Durchsuchen" name="set_proxy"/>
+		<button label="Leeren" name="clear_cache"/>
+		<button label="..." name="set_cache"/>
+		<button label="Zurücksetzen" name="reset_cache"/>
+		<button label="Proxy anpassen" name="set_proxy"/>
 		<check_box label="Objekt Cache erlauben" name="ObjectCacheEnabled"/>
 		<check_box label="LL Standart Inventarbibliothek deaktivieren" name="no_library"/>
 		<check_box label="Inventar mit HTTP statt UDP beziehen" name="UseHTTPInventory"/>
