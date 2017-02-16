@@ -32,6 +32,8 @@
           </text>
           <text_editor
            follows="left|top"
+		   cursor_color="TextCursorColor"
+		   text_color="Black"
 		   layout="topleft"
            height="87"
            width="250"

@@ -151,6 +151,8 @@
             </text>
             <text_editor
              follows="left|top"
+		 cursor_color="TextCursorColor"
+		 text_color="Black"
 			 layout="topleft"
              height="50"
              width="249"
@@ -198,7 +200,9 @@ Use "" for multi-word tags
             </text>
             <text_editor
              follows="left|top"
-			 layout="topleft"
+		 cursor_color="TextCursorColor"
+		 text_color="Black"
+		 layout="topleft"
              height="50"
              width="249"
              left="10"
