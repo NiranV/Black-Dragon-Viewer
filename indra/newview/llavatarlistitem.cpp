@@ -140,7 +140,11 @@ void LLAvatarListItem::fetchAvatarName()
 
 void LLAvatarListItem::draw()
 {
-	showPermissions(mShowPermissions);
+	//BD - Simple check to prevent it from firing it infinitely.
+	if ((bool)mIconPermissionOnline->getVisible() != mShowPermissions)
+	{
+		showPermissions(mShowPermissions);
+	}
 	LLPanel::draw();
 }
 
@@ -479,8 +483,7 @@ LLAvatarListItem::icon_color_map_t& LLAvatarListItem::getItemIconColorMap()
 bool LLAvatarListItem::showPermissions(bool visible)
 {
 	const LLRelationship* relation = LLAvatarTracker::instance().getBuddyInfo(getAvatarId());
-	LLColor4 permission = LLUIColorTable::instance().getColor("White");
-	if(relation && visible)
+	if(relation)
 	{
 		mIconPermissionOnline->setColor(LLUIColorTable::instance().getColor
 			(relation->isRightGrantedTo(LLRelationship::GRANT_ONLINE_STATUS) ? "White" : "White_25"));
@@ -490,10 +493,10 @@ bool LLAvatarListItem::showPermissions(bool visible)
 			(relation->isRightGrantedTo(LLRelationship::GRANT_MODIFY_OBJECTS) ? "White" : "White_25"));
 		mIconPermissionEditTheirs->setColor(LLUIColorTable::instance().getColor
 			(relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "White" : "White_25"));
-		mIconPermissionOnline->setVisible(true);
-		mIconPermissionMap->setVisible(true);
-		mIconPermissionEditMine->setVisible(true);
-		mIconPermissionEditTheirs->setVisible(true);
+		mIconPermissionOnline->setVisible(visible);
+		mIconPermissionMap->setVisible(visible);
+		mIconPermissionEditMine->setVisible(visible);
+		mIconPermissionEditTheirs->setVisible(visible);
 	}
 
 	return NULL != relation;
