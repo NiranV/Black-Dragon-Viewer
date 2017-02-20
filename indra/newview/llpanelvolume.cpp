@@ -287,7 +287,10 @@ void LLPanelVolume::getState( )
 	//BD
 	BOOL has_shadow = volobjp && volobjp->getHasShadow();
 	getChild<LLUICtrl>("Shadow Checkbox Ctrl")->setValue(has_shadow);
-	getChildView("Shadow Checkbox Ctrl")->setEnabled(editable && single_volume && volobjp);
+	getChildView("Shadow Checkbox Ctrl")->setEnabled(editable 
+													&& single_volume 
+													&& volobjp 
+													&& volobjp->getLightTextureID().notNull());
 	
 	if (is_light && editable && single_volume)
 	{
