@@ -120,6 +120,9 @@ public:
 	// get full info
 	const LLRelationship* getBuddyInfo(const LLUUID& id) const;
 
+	//BD - Developer tracker
+	bool isDeveloper(const LLUUID& id) const;
+
 	// Is this person a friend/buddy/calling card holder?
 	bool isBuddy(const LLUUID& id) const;
 

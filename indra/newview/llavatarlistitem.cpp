@@ -49,12 +49,14 @@
 static LLWidgetNameRegistry::StaticRegistrar sRegisterAvatarListItemParams(&typeid(LLAvatarListItem::Params), "avatar_list_item");
 
 LLAvatarListItem::Params::Params()
-:	default_style("default_style"),
+	: default_style("default_style"),
 	voice_call_invited_style("voice_call_invited_style"),
 	voice_call_joined_style("voice_call_joined_style"),
 	voice_call_left_style("voice_call_left_style"),
 	online_style("online_style"),
 	offline_style("offline_style"),
+	//BD - Developer tracker
+	developer_style("developer_style"),
 	name_right_pad("name_right_pad", 0)
 {};
 
@@ -136,7 +138,6 @@ void LLAvatarListItem::fetchAvatarName()
 }
 
 
-//BD
 void LLAvatarListItem::draw()
 {
 	showPermissions(mShowPermissions);
@@ -171,16 +172,12 @@ void LLAvatarListItem::onMouseLeave(S32 x, S32 y, MASK mask)
 // virtual, called by LLAvatarTracker
 void LLAvatarListItem::changed(U32 mask)
 {
-	// no need to check mAvatarId for null in this case
-	setOnline(LLAvatarTracker::instance().isBuddyOnline(mAvatarId));
-
-	if (mask & LLFriendObserver::POWERS)
-	{
-		showPermissions(mShowPermissions && mHovered);
-	}
+	//BD - Developer tracker
+	//     No need to check mAvatarId for null in this case
+	setOnline(LLAvatarTracker::instance().isBuddyOnline(mAvatarId), LLAvatarTracker::instance().isDeveloper(mAvatarId));
 }
 
-void LLAvatarListItem::setOnline(bool online)
+void LLAvatarListItem::setOnline(bool online, bool is_dev)
 {
 	// *FIX: setName() overrides font style set by setOnline(). Not an issue ATM.
 
@@ -189,8 +186,9 @@ void LLAvatarListItem::setOnline(bool online)
 
 	mOnlineStatus = (EOnlineStatus) online;
 
-	// Change avatar name font style depending on the new online status.
-	setState(online ? IS_ONLINE : IS_OFFLINE);
+	//BD - Developer tracker
+	//     Change avatar name font style depending on the new online status.
+	setState(is_dev ? IS_DEVELOPER : online ? IS_ONLINE : IS_OFFLINE);
 }
 
 void LLAvatarListItem::setAvatarName(const std::string& name)
@@ -233,6 +231,10 @@ void LLAvatarListItem::setState(EItemState item_style)
 	case IS_OFFLINE:
 		mAvatarNameStyle = params.offline_style();
 		break;
+	//BD - Developer tracker
+	case IS_DEVELOPER:
+		mAvatarNameStyle = params.developer_style();
+		break;
 	}
 
 	// *NOTE: You cannot set the style on a text box anymore, you must
@@ -250,11 +252,21 @@ void LLAvatarListItem::setAvatarId(const LLUUID& id, const LLUUID& session_id, b
 		LLAvatarTracker::instance().removeParticularFriendObserver(mAvatarId, this);
 
 	mAvatarId = id;
-	mSpeakingIndicator->setSpeakerId(id, session_id);
 
 	// We'll be notified on avatar online status changes
 	if (!ignore_status_changes && mAvatarId.notNull())
 		LLAvatarTracker::instance().addParticularFriendObserver(mAvatarId, this);
+
+	//BD - Enable the developer tag if it's me.
+	if (LLAvatarTracker::instance().isDeveloper(id))
+	{
+		getChild<LLIconCtrl>("developer_tag")->setVisible(TRUE);
+		getChild<LLIconCtrl>("developer_badge")->setVisible(TRUE);
+	}
+	else
+	{
+		mSpeakingIndicator->setSpeakerId(id, session_id);
+	}
 
 	if (is_resident)
 	{
@@ -454,6 +466,11 @@ LLAvatarListItem::icon_color_map_t& LLAvatarListItem::getItemIconColorMap()
 	item_icon_color_map.insert(
 		std::make_pair(IS_OFFLINE,
 		LLUIColorTable::instance().getColor("AvatarListItemIconOfflineColor", LLColor4::white)));
+
+	//BD - Developer tracker
+	item_icon_color_map.insert(
+		std::make_pair(IS_DEVELOPER,
+		LLUIColorTable::instance().getColor("AvatarListItemIconOnlineColor", LLColor4::white)));
 
 	return item_icon_color_map;
 }

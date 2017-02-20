@@ -743,6 +743,8 @@ with the same filename but different name
   
   <texture name="R" file_name="icons/secondlife_16.png"/>
   
+  <texture name="BlackDragon_16" file_name="icons/blackdragon_16.png"/>
+  
   <texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
   <texture name="Command_Script_Limits_Icon" file_name="toolbar_icons/script.png"      preload="true" />
   <texture name="Command_PF_Linksets_Icon"  file_name="toolbar_icons/linksets.png"     preload="true" />

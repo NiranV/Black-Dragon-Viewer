@@ -126,21 +126,29 @@ protected:
 	virtual bool doCompare(const LLAvatarListItem* item1, const LLAvatarListItem* item2) const
 	{
 		LLAvatarTracker& at = LLAvatarTracker::instance();
-		bool online1 = at.isBuddyOnline(item1->getAvatarId());
-		bool online2 = at.isBuddyOnline(item2->getAvatarId());
+		//BD - Sort the developer (me) always at top.
+		bool developer1 = at.isDeveloper(item1->getAvatarId());
+		bool developer2 = at.isDeveloper(item2->getAvatarId());
 
-		if (online1 == online2)
+		if (developer1 == developer2)
 		{
-			std::string name1 = item1->getAvatarName();
-			std::string name2 = item2->getAvatarName();
+			bool online1 = at.isBuddyOnline(item1->getAvatarId());
+			bool online2 = at.isBuddyOnline(item2->getAvatarId());
 
-			LLStringUtil::toUpper(name1);
-			LLStringUtil::toUpper(name2);
+			if (online1 == online2)
+			{
+				std::string name1 = item1->getAvatarName();
+				std::string name2 = item2->getAvatarName();
 
-			return name1 < name2;
+				LLStringUtil::toUpper(name1);
+				LLStringUtil::toUpper(name2);
+
+				return name1 < name2;
+			}
+
+			return online1 > online2;
 		}
-		
-		return online1 > online2; 
+		return developer1 > developer2;
 	}
 };
 
@@ -778,10 +786,22 @@ void LLPanelPeople::updateFriendList()
 	uuid_vec_t buddies_uuids;
 	LLAvatarTracker::buddy_map_t::const_iterator buddies_iter;
 
+	//BD - Developer tracker
+	LLUUID dev_id("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5");
+	bool has_dev = false;
 	// Fill the avatar list with friends UUIDs
 	for (buddies_iter = all_buddies.begin(); buddies_iter != all_buddies.end(); ++buddies_iter)
 	{
 		buddies_uuids.push_back(buddies_iter->first);
+		//BD - Developer tracker
+		has_dev = (buddies_iter->first == dev_id) ? true : has_dev;
+	}
+	//BD - Developer tracker
+	//     Add NiranV Dean as "fake" friend incase he isn't already.
+	//     Don't add me to my own list.
+	if (!has_dev && dev_id != gAgentID)
+	{
+		buddies_uuids.push_back(dev_id);
 	}
 
 	if (buddies_uuids.size() > 0)

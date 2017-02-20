@@ -23,27 +23,38 @@
     height="21"
     image_name="ListItem_Over"
     layout="topleft"
-    left="0"
+    left="1"
     name="hovered_icon"
     top="0"
     visible="false"
-    width="320" />
+    width="319" />
     <icon
     height="21"
     follows="top|right|left"
     image_name="ListItem_Select"
     layout="topleft"
-    left="0"
+    left="1"
     name="selected_icon"
     top="0"
     visible="false"
-    width="320" />
+    width="319" />
+    <icon
+    follows="top|left|right"
+    height="21"
+    name="developer_tag"
+    mouse_opaque="false"
+    color="1 1 1 0.4"
+    image_name="Chat_Separator_Dev"
+    visible="false"
+    left="1"
+    top="0"
+    width="310" />
     <avatar_icon
     follows="top|left"
     height="18"
     default_icon_name="Generic_Person"
     layout="topleft"
-    left="1"
+    left="3"
     mouse_opaque="true"
     top="2"
     width="18" />
@@ -53,7 +64,7 @@
     image_pressed="transparent.j2c"
     image_unselected="transparent.j2c"
     layout="topleft"
-    left="1"
+    left="3"
     name="info_btn"
     tab_stop="false"
     top="1"
@@ -94,10 +105,22 @@
     layout="topleft"
     right="-62"
     top="0"
-    visible="true"
+    visible="false"
     mouse_opaque="true"
     name="speaking_indicator"
     width="20" />
+    <icon
+    follows="top|right"
+    height="16"
+    name="developer_badge"
+    mouse_opaque="false"
+    color="1 1 1 0.7"
+    image_name="BlackDragon_16"
+    tool_tip="This is the developer of Black Dragon."
+    visible="false"
+    right="-66"
+    top="3"
+    width="16" />
     <icon
     height="16"
     follows="right|top"

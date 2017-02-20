@@ -12,27 +12,27 @@
      follows="top|right|left"
      image_name="ListItem_Select"
      layout="topleft"
-     left="0"
+     left="1"
      name="selected_icon"
      top="0"
      visible="false"
-     width="380" />
+     width="379" />
     <icon
      follows="top|right|left"
      height="21"
      image_name="ListItem_Over"
      layout="topleft"
-     left="0"
+     left="1"
      name="hovered_icon"
      top="0"
      visible="false"
-     width="380" />
+     width="379" />
     <avatar_icon
      default_icon_name="Generic_Person"
      follows="top|left"
      height="18"
      layout="topleft"
-     left="1"
+     left="3"
      mouse_opaque="true"
      top="2"
      visible="false"
@@ -42,27 +42,27 @@
      follows="top|left"
      height="18"
      layout="topleft"
-     left="1"
+     left="3"
      mouse_opaque="true"
      top="2"
      visible="false"
      width="18" />
     <icon
      follows="top|left"
-     height="18"
+     height="16"
      image_name="Inv_Object"
      layout="topleft"
-     left="1"
+     left="5"
      name="object_icon"
-     top="2"
+     top="3"
      visible="false"
-     width="18" />
+     width="16" />
     <text
      follows="left|right"
      font="SansSerifSmall"
      height="15"
      layout="topleft"
-     left_pad="5"
+     left_pad="3"
      name="item_name"
      parse_urls="false"
      top="4"

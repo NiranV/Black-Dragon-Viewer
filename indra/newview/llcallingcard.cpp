@@ -348,6 +348,13 @@ bool LLAvatarTracker::isBuddyOnline(const LLUUID& id) const
 	return false;
 }
 
+//BD - Developer tracker
+bool LLAvatarTracker::isDeveloper(const LLUUID& id) const
+{
+	return id == (LLUUID)"a7fe20fa-1e95-4f87-aa8f-86496c78c1e5" ? true : false;
+}
+
+
 // empowered status
 void LLAvatarTracker::setBuddyEmpowered(const LLUUID& id, bool is_empowered)
 {

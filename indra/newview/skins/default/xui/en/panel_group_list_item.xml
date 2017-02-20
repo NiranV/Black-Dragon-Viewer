@@ -12,28 +12,28 @@
      height="21"
      image_name="ListItem_Over"
      layout="topleft"
-     left="0"
+     left="1"
      name="hovered_icon"
      top="0"
      visible="false"
-     width="320" />
+     width="319" />
     <icon
      height="21"
      follows="top|right|left"
      image_name="ListItem_Select"
      layout="topleft"
-     left="0"
+     left="1"
      name="selected_icon"
      top="0"
      visible="false"
-     width="320" />
+     width="319" />
     <group_icon
      height="18"
      image_name="Generic_Group"
      name="group_icon"
      mouse_opaque="true"
-     left="1"
-     top="1"
+     left="3"
+     top="2"
      use_draw_context_alpha="false"
      width="18" />
    <text

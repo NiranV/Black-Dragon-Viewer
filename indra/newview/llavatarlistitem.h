@@ -51,7 +51,9 @@ public:
 									voice_call_joined_style,
 									voice_call_left_style,
 									online_style,
-									offline_style;
+									offline_style,
+									//BD - Developer tracker
+									developer_style;
 
 		Optional<S32>				name_right_pad;
 
@@ -65,6 +67,8 @@ public:
 		IS_VOICE_LEFT,
 		IS_ONLINE,
 		IS_OFFLINE,
+		//BD - Developer tracker
+		IS_DEVELOPER,
 	} EItemState;
 
 	/**
@@ -91,7 +95,8 @@ public:
 	virtual void setValue(const LLSD& value);
 	virtual void changed(U32 mask); // from LLFriendObserver
 
-	void setOnline(bool online);
+	//BD - Developer tracker
+	void setOnline(bool online, bool is_dev = false);
 	void updateAvatarName(); // re-query the name cache
 	void setAvatarName(const std::string& name);
 	void setAvatarToolTip(const std::string& tooltip);
@@ -140,6 +145,8 @@ private:
 		E_OFFLINE,
 		E_ONLINE,
 		E_UNKNOWN,
+		//BD - Developer tracker
+		E_DEVELOPER,
 	} EOnlineStatus;
 
 	void setNameInternal(const std::string& name, const std::string& highlight);
