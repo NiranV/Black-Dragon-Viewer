@@ -1780,7 +1780,7 @@
       <array>
         <real>-1.5</real>
         <real>0.7</real>
-        <real>-0.35</real>
+        <real>-0.20</real>
       </array>
     </map>
     <key>CameraOffsetRightShoulderView</key>
@@ -1795,7 +1795,7 @@
       <array>
         <real>-1.5</real>
         <real>-0.7</real>
-        <real>-0.35</real>
+        <real>-0.20</real>
       </array>
     </map>
     <key>CameraOffsetScale</key>
