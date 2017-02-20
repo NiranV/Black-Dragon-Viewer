@@ -5281,13 +5281,14 @@ void LLAppViewer::idleShutdown()
 		return;
 	}
 
-	static bool saved_snapshot = false;
+	//BD
+	/*static bool saved_snapshot = false;
 	if (!saved_snapshot)
 	{
 		saved_snapshot = true;
 		saveFinalSnapshot();
 		return;
-	}
+	}*/
 
 	const F32 SHUTDOWN_UPLOAD_SAVE_TIME = 5.f;
 
