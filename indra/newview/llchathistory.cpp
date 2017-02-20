@@ -592,8 +592,7 @@ public:
 	void checkAvatarTags()
 	{
 		LLTextBox* user_name = getChild<LLTextBox>("user_name");
-		LLUUID mDevID;
-		mDevID.set("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5");
+		LLUUID dev_id = (LLUUID)"a7fe20fa-1e95-4f87-aa8f-86496c78c1e5";
 		//BD - I can't believe how unreliable this is... half of the time it doesn't show me as mod.
 		//     Neither does the speaker list, LL really has to fix this stuff.
 		bool moderator = false;
@@ -614,14 +613,14 @@ public:
 		}
 
 		//BD
-		if (moderator || mAvatarID == mDevID)
+		if (moderator || mAvatarID == dev_id)
 		{
 			std::string appendText;
 			LLColor4 userNameColor;
 			LLStyle::Params style_params_name;
 			style_params_name.font.name("SansSerifSmall");
 			style_params_name.font.style("NORMAL");
-			if (moderator && mAvatarID == mDevID)
+			if (moderator && mAvatarID == dev_id)
 			{
 				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_ModDev", 0));
 				userNameColor = LLUIColorTable::instance().getColor("ModDevColor");
@@ -633,7 +632,7 @@ public:
 				userNameColor = LLUIColorTable::instance().getColor("ModeratorColor");
 				appendText = " - [Moderator]";
 			}
-			else if (mAvatarID == mDevID)
+			else if (mAvatarID == dev_id)
 			{
 				mSeparator->setImage(LLUI::getUIImage("Chat_Separator_Dev", 0));
 				userNameColor = LLUIColorTable::instance().getColor("DeveloperColor");
