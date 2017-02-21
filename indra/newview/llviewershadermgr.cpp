@@ -440,10 +440,9 @@ void LLViewerShaderMgr::setShaders()
 
 	if (LLRender::sGLCoreProfile)
 	{  
-		//BD
-		if (!gSavedSettings.getBOOL("RenderDeferred"))
-		{
-			gSavedSettings.setBOOL("RenderDeferred", TRUE);
+		if (!gSavedSettings.getBOOL("VertexShaderEnable"))
+		{ //vertex shaders MUST be enabled to use core profile
+			gSavedSettings.setBOOL("VertexShaderEnable", TRUE);
 		}
 	}
 	
@@ -456,14 +455,15 @@ void LLViewerShaderMgr::setShaders()
 	initAttribsAndUniforms();
 	gPipeline.releaseGLBuffers();
 
-	//BD
-	if (gSavedSettings.getBOOL("RenderDeferred"))
+	if (gSavedSettings.getBOOL("VertexShaderEnable"))
 	{
 		LLPipeline::sWaterReflections = gGLManager.mHasCubeMap;
+		LLPipeline::sRenderGlow = gSavedSettings.getBOOL("RenderGlow"); 
 		LLPipeline::updateRenderDeferred();
 	}
 	else
 	{
+		LLPipeline::sRenderGlow = FALSE;
 		LLPipeline::sWaterReflections = FALSE;
 	}
 	
@@ -490,10 +490,9 @@ void LLViewerShaderMgr::setShaders()
 
 	LLGLSLShader::sNoFixedFunction = false;
 	LLVertexBuffer::unbind();
-	//BD
-	if (LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") 
+	if (LLFeatureManager::getInstance()->isFeatureAvailable("VertexShaderEnable") 
 		&& (gGLManager.mGLSLVersionMajor > 1 || gGLManager.mGLSLVersionMinor >= 10)
-		&& gSavedSettings.getBOOL("RenderDeferred"))
+		&& gSavedSettings.getBOOL("VertexShaderEnable"))
 	{
 		//using shaders, disable fixed function
 		LLGLSLShader::sNoFixedFunction = true;
@@ -515,7 +514,9 @@ void LLViewerShaderMgr::setShaders()
 		
 		//BD
 		if (LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
-		    gSavedSettings.getBOOL("RenderDeferred"))
+		    gSavedSettings.getBOOL("RenderDeferred") &&
+			gSavedSettings.getBOOL("RenderAvatarVP") &&
+			gSavedSettings.getBOOL("WindLightUseAtmosShaders"))
 		{
 			if (gSavedSettings.getS32("RenderShadowDetail") > 0
 				|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
@@ -535,10 +536,10 @@ void LLViewerShaderMgr::setShaders()
 		}
 
 		//BD
-		if (!(LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred")
-			  && gSavedSettings.getBOOL("RenderDeferred")))
+		if (!(LLFeatureManager::getInstance()->isFeatureAvailable("WindLightUseAtmosShaders")
+			  && gSavedSettings.getBOOL("WindLightUseAtmosShaders")))
 		{
-			// user has disabled Deferred in their settings, downgrade
+			// user has disabled WindLight in their settings, downgrade
 			// windlight shaders to stub versions.
 			wl_class = 1;
 		}
@@ -604,8 +605,7 @@ void LLViewerShaderMgr::setShaders()
 				mVertexShaderLevel[SHADER_AVATAR] = 3;
 				mMaxAvatarShaderLevel = 3;
 				
-				//BD
-				if (gSavedSettings.getBOOL("RenderDeferred") && loadShadersObject())
+				if (gSavedSettings.getBOOL("RenderAvatarVP") && loadShadersObject())
 				{ //hardware skinning is enabled and rigged attachment shaders loaded correctly
 					BOOL avatar_cloth = gSavedSettings.getBOOL("RenderAvatarCloth");
 					S32 avatar_class = 1;
@@ -623,8 +623,7 @@ void LLViewerShaderMgr::setShaders()
 					{
 						if (mVertexShaderLevel[SHADER_AVATAR] == 0)
 						{
-							//BD
-							gSavedSettings.setBOOL("RenderDeferered", FALSE);
+							gSavedSettings.setBOOL("RenderAvatarVP", FALSE);
 						}
 						if(llmax(mVertexShaderLevel[SHADER_AVATAR]-1,0) >= 3)
 						{
@@ -642,20 +641,39 @@ void LLViewerShaderMgr::setShaders()
 					mVertexShaderLevel[SHADER_AVATAR] = 0;
 					mVertexShaderLevel[SHADER_DEFERRED] = 0;
 
-					//BD
-					if (gSavedSettings.getBOOL("RenderDeferred"))
+					if (gSavedSettings.getBOOL("RenderAvatarVP"))
 					{
 						gSavedSettings.setBOOL("RenderDeferred", FALSE);
+						gSavedSettings.setBOOL("RenderAvatarCloth", FALSE);
+						gSavedSettings.setBOOL("RenderAvatarVP", FALSE);
 					}
 
 					loadShadersAvatar(); // unloads
 
 					loaded = loadShadersObject();
 				}
+			}
+
+			if (!loaded)
+			{ //some shader absolutely could not load, try to fall back to a simpler setting
+				if (gSavedSettings.getBOOL("WindLightUseAtmosShaders"))
+				{ //disable windlight and try again
+					gSavedSettings.setBOOL("WindLightUseAtmosShaders", FALSE);
+					reentrance = false;
+					setShaders();
+					return;
+				}
+
+				if (gSavedSettings.getBOOL("VertexShaderEnable"))
+				{ //disable shaders outright and try again
+					gSavedSettings.setBOOL("VertexShaderEnable", FALSE);
+					reentrance = false;
+					setShaders();
+					return;
+				}
 			}		
 
-			//BD
-			if (!loaded || !loadShadersDeferred())
+			if (loaded && !loadShadersDeferred())
 			{ //everything else succeeded but deferred failed, disable deferred and try again
 				gSavedSettings.setBOOL("RenderDeferred", FALSE);
 				reentrance = false;
@@ -1129,8 +1147,7 @@ BOOL LLViewerShaderMgr::loadShadersEffects()
 		success = gGlowProgram.createShader(NULL, NULL);
 		if (!success)
 		{
-			//BD
-			LLPipeline::RenderDeferred = FALSE;
+			LLPipeline::sRenderGlow = FALSE;
 		}
 	}
 	
@@ -1144,8 +1161,7 @@ BOOL LLViewerShaderMgr::loadShadersEffects()
 		success = gGlowExtractProgram.createShader(NULL, NULL);
 		if (!success)
 		{
-			//BD
-			LLPipeline::RenderDeferred = FALSE;
+			LLPipeline::sRenderGlow = FALSE;
 		}
 	}
 	

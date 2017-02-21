@@ -199,25 +199,31 @@ void LLDrawPoolBump::prerender()
 // static
 S32 LLDrawPoolBump::numBumpPasses()
 {
-	//BD
-	if (gSavedSettings.getBOOL("RenderDeferred"))
+	if (gSavedSettings.getBOOL("RenderObjectBump"))
 	{
-		if (LLPipeline::sImpostorRender)
+		if (mVertexShaderLevel > 1)
 		{
-			return 2;
+			if (LLPipeline::sImpostorRender)
+			{
+				return 2;
+			}
+			else
+			{
+				return 3;
+			}
+		}
+		else if (LLPipeline::sImpostorRender)
+		{
+			return 1;
 		}
 		else
 		{
-			return 3;
+			return 2;
 		}
 	}
-	else if (LLPipeline::sImpostorRender)
+    else
 	{
-		return 1;
-	}
-	else
-	{
-		return 2;
+		return 0;
 	}
 }
 
@@ -801,8 +807,7 @@ void LLDrawPoolBump::endBump(U32 pass)
 
 S32 LLDrawPoolBump::getNumDeferredPasses()
 { 
-	//BD
-	if (gSavedSettings.getBOOL("RenderDeferred"))
+	if (gSavedSettings.getBOOL("RenderObjectBump"))
 	{
 		return 1;
 	}
