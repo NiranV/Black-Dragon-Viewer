@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.6.4 - Ending Dragon]"
+       label="[CHANNEL] [VERSION] - [2.6.5 - Ending Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="all"
-       height="2073"
+       height="2361"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,66 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="221"
+              height="259"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Extra Vector2 support, not as complete as Vector4 but everything needed for upcoming changes.
+Added: Ability to control each projector's shadow resolution.
+Added: Ability to ignore the System UI Scale change notification.
+Changed: Use a Vector2 for projector shadow resolution.
+Changed: Shadow allocation code to be faster and fix an issue with shadows staying when disabling them.
+Changed: Inverted the System UI Scale notification answers to prevent it from opening preferences by default when ignoring it.
+Changed: Use the developer always-on styled avatarlistitem only if i'm not in the friendlist, respect online status.
+Changed: Replaced the Viewer icon on my developer entry with a "DEVELOPER" label.
+Changed: Inverted the Moderator and Developer tag colors. Blue seems better for the Developer tag.
+Changed: Don't allow Glow Width below 0.1, 0 would disable it.
+Changed: Current Outfit scroll panel layout to match the other tabs.
+Changed: Ignore NearMeRange debug for any radar like list and use a fixed 4800m range instead.
+Changed: Version to 2.6.5.
+Fixed: (POTENTIAL) Blue badge loadingscreen tip cutting off for unknown reasons.
+Fixed: Login to anything other than "Last Location" doesn't work.
+Fixed: German title for the quick presets floater cutting off.
+Fixed: More artifacts in german main menu.
+Misc: Updated most of the login panels internal code.
+Misc: pipeline.cpp code fixup that got broken on revert.
+Backed out changeset: 3abfd5d5c5c4 ~ having another stab at this.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.6.4
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="221"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
