@@ -10327,9 +10327,9 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 						}
 						else
 						{
-						renderGeom(camera);
-					}
-				}	
+							renderGeom(camera);
+						}
+					}	
 				}	
 
 				if (LLPipeline::sRenderDeferred && materials_in_water)
@@ -10410,7 +10410,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 				}
 				else
 				{
-				renderGeom(camera);
+					renderGeom(camera);
 				}
 
 				if (LLPipeline::sRenderDeferred && materials_in_water)
