@@ -114,19 +114,19 @@ float pcfShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_screen,
     return shadow*0.2;
 }
 
-float pcfSpotShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_screen)
+float pcfSpotShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_screen, float shad_res)
 {
 	stc.xyz /= stc.w;
 	stc.z += spot_shadow_bias*scl;
-	stc.x = floor(proj_shadow_res.x * stc.x + fract(pos_screen.y*0.0)) / proj_shadow_res.x; // snap
+	stc.x = floor(shad_res * stc.x + fract(pos_screen.y*0.0)) / shad_res; // snap
 		
 	float cs = shadow2D(shadowMap, stc.xyz).x;
 	float shadow = cs;
 	
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.45/proj_shadow_res.x, 0.45/proj_shadow_res.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.65/proj_shadow_res.x, -0.65/proj_shadow_res.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.45/proj_shadow_res.x, 0.45/proj_shadow_res.y, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.65/proj_shadow_res.x, -0.65/proj_shadow_res.y, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.45/shad_res, 0.45/shad_res, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.65/shad_res, -0.65/shad_res, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.45/shad_res, 0.45/shad_res, 0.0)).x;
+	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.65/shad_res, -0.65/shad_res, 0.0)).x;
 
 	return shadow*0.2;
 }
@@ -237,11 +237,11 @@ void main()
 	
 	//spotlight shadow 1
 	vec4 lpos = shadow_matrix[4]*spos;
-	frag_color[2] = pcfSpotShadow(shadowMap4, lpos, 0.8, pos_screen); 
+	frag_color[2] = pcfSpotShadow(shadowMap4, lpos, 0.8, pos_screen, proj_shadow_res.x); 
 	
 	//spotlight shadow 2
 	lpos = shadow_matrix[5]*spos;
-	frag_color[3] = pcfSpotShadow(shadowMap5, lpos, 0.8, pos_screen); 
+	frag_color[3] = pcfSpotShadow(shadowMap5, lpos, 0.8, pos_screen, proj_shadow_res.y); 
 
 	//frag_color.rgb = pos.xyz;
 	//frag_color.b = shadow;

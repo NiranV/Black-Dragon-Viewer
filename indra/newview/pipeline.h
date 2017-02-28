@@ -105,7 +105,7 @@ public:
 	void handleReflectionChanges();
 
 //	//BD - Shadow Map Allocation
-	void allocateShadowMaps(bool force_allocate = false);
+	void allocateShadowMaps(bool allocate = false);
 
 	void destroyGL();
 	void restoreGL();
@@ -975,7 +975,7 @@ public:
 	static F32 RenderSnapshotMultiplier;
 
 //	//BD - Shadow Map Allocation
-	static LLVector3 RenderProjectorShadowResolution;
+	static LLVector2 RenderProjectorShadowResolution;
 	static LLVector4 RenderShadowResolution;
 
 //	//BD - Volumetric Lighting

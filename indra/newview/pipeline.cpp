@@ -220,7 +220,7 @@ F32 LLPipeline::RenderSnapshotMultiplier;
 
 //	//BD - Shadow Map Allocation
 LLVector4 LLPipeline::RenderShadowResolution;
-LLVector3 LLPipeline::RenderProjectorShadowResolution;
+LLVector2 LLPipeline::RenderProjectorShadowResolution;
 
 //	//BD - Volumetric Lighting
 BOOL LLPipeline::RenderGodrays;
@@ -1116,44 +1116,59 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 }
 
 //BD - Shadow Map Allocation
-void LLPipeline::allocateShadowMaps(bool force_allocate)
+void LLPipeline::allocateShadowMaps(bool allocate)
 {
-	LLVector4 scale = RenderShadowResolution;
-	LLVector3 proj_scale = RenderProjectorShadowResolution;
+	LLVector4 scale = gSavedSettings.getVector4("RenderShadowResolution");
+	LLVector2 proj_scale = gSavedSettings.getVector2("RenderProjectorShadowResolution");
 	U32 shadow_detail = gSavedSettings.getS32("RenderShadowDetail");
 
-	//BD - Quickly go through all 6 shadow maps and check if they need releasing or allocating.
-	//     Only reallocate them if we have shadows enabled otherwise just clear them.
+	//BD - Go through all shadow maps and either clear them or decide weither we want to
+	//     allocate them (when enabling shadows) or just resize them (when changing shadow
+	//     resolution) and which.
 	for (U32 i = 0; i < 6; i++)
 	{
-		if (i < 4)
+		if (shadow_detail > 0)
 		{
-			//BD - Sun Shadows mismatched.
-			if (shadow_detail > 0
-				&& (force_allocate
-				|| U32(scale.mV[i]) != mShadow[i].getWidth()))
+			if (i < 4)
 			{
-				//BD - Always clear the shadowmap.
-				mShadow[i].release();
-
-				//BD - Now reallocate the released map with the new resolution.
-				mShadow[i].allocate(U32(scale.mV[i]), U32(scale.mV[i]), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE);
+				//BD - Shadowmap mismatch.
+				if (U32(scale.mV[i]) != mShadow[i].getWidth())
+				{
+					if (allocate)
+					{
+						//BD - Now reallocate the released map with the new resolution.
+						mShadow[i].allocate(U32(scale.mV[i]), U32(scale.mV[i]), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE);
+					}
+					else
+					{
+						//BD - Resizing it should be sufficient.
+						mShadow[i].resize(U32(scale.mV[i]), U32(scale.mV[i]));
+					}
+				}
+			}
+			else
+			{
+				//BD - Projector Shadows mismatched.
+				if (shadow_detail > 1
+					&& U32(proj_scale.mV[i-4]) != mShadow[i].getWidth())
+				{
+					if (allocate)
+					{
+						//BD - Now reallocate the released map with the new resolution.
+						mShadow[i].allocate(U32(proj_scale.mV[i-4]), U32(proj_scale.mV[i-4]), 0, TRUE, FALSE);
+					}
+					else
+					{
+						//BD - Resizing it should be sufficient.
+						mShadow[i].resize(U32(proj_scale.mV[i-4]), U32(proj_scale.mV[i-4]));
+					}
+				}
 			}
 		}
 		else
 		{
-			//BD - Always clear the shadowmap.
+			//BD - Flush all shadowmaps.
 			mShadow[i].release();
-
-			//BD - Projector Shadows mismatched.
-			if (shadow_detail > 1
-				&& (force_allocate
-				|| (U32(proj_scale.mV[0]) != mShadow[4].getWidth()
-				|| U32(proj_scale.mV[1]) != mShadow[4].getHeight())))
-			{
-				//BD - Now reallocate the released map with the new resolution.
-				mShadow[i].allocate(U32(proj_scale.mV[VX]), U32(proj_scale.mV[VY]), 0, TRUE, FALSE);
-			}
 		}
 	}
 }
@@ -1294,7 +1309,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderGodraysFalloffMultiplier = gSavedSettings.getF32("RenderGodraysFalloffMultiplier");
 
 //	//BD - Shadow Map Allocation
-	RenderProjectorShadowResolution = gSavedSettings.getVector3("RenderProjectorShadowResolution");
+	RenderProjectorShadowResolution = gSavedSettings.getVector2("RenderProjectorShadowResolution");
 	RenderShadowResolution = gSavedSettings.getVector4("RenderShadowResolution");
 
 //	//BD - Motion Blur
@@ -8641,7 +8656,7 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 
 	shader.uniform3fv(LLShaderMgr::DEFERRED_SUN_DIR, 1, mTransformedSunDir.mV);
 	shader.uniform4fv(LLShaderMgr::DEFERRED_SHADOW_RES, 1, RenderShadowResolution.mV);
-	shader.uniform2f(LLShaderMgr::DEFERRED_PROJ_SHADOW_RES, mShadow[4].getWidth(), mShadow[4].getHeight());
+	shader.uniform2f(LLShaderMgr::DEFERRED_PROJ_SHADOW_RES, mShadow[4].getWidth(), mShadow[5].getWidth());
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);
 

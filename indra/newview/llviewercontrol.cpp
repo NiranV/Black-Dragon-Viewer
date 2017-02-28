@@ -707,7 +707,7 @@ static bool handleWaterResolutionChanged(const LLSD& newvalue)
 
 static bool handleShadowMapsChanged(const LLSD& newvalue)
 {
-	gPipeline.allocateShadowMaps();
+	gPipeline.allocateShadowMaps(false);
 	return true;
 }
 
@@ -754,7 +754,7 @@ static bool handleShadowsChanged(const LLSD& newvalue)
 	success = LLViewerShaderMgr::instance()->loadShadersShadows(success);
 	if (success)
 	{
-		gPipeline.allocateShadowMaps(true);
+		gPipeline.allocateShadowMaps(newvalue);
 	}
 	return success;
 }

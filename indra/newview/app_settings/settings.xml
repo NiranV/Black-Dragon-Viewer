@@ -16952,16 +16952,15 @@
   <key>RenderProjectorShadowResolution</key>
   <map>
     <key>Comment</key>
-    <string>Raw projector shadow width (X) and height (Y) by multiplicator (Z)</string>
+    <string>Raw projector shadow width of the two available shadow maps</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Vector3</string>
+    <string>Vector2</string>
     <key>Value</key>
     <array>
       <real>2048</real>
       <real>2048</real>
-      <real>1.0</real>
     </array>
   </map>
   <key>RenderForceHighShaderLevel</key>
