@@ -118,9 +118,9 @@
 			<menu_item_call label="Verknüpfung" name="Link"/>
 			<menu_item_call label="Verknüpfung auflösen" name="Unlink"/>
 			<menu_item_check label="Verknüpfte Teile bearbeiten" name="Edit Linked Parts"/>
-		<menu label="Elemente auswÃ¤hlen" name="Select Elements">
+		<menu label="Elemente auswählen" name="Select Elements">
 			<menu_item_call label="Nächsten Teil oder nächste Fläche auswählen" name="Select Next Part or Face"/>
-			<menu_item_call label="Vorherigen Teil oder vorherige FlÃ¤che auswählen" name="Select Previous Part or Face"/>
+			<menu_item_call label="Vorherigen Teil oder vorherige Fläche auswählen" name="Select Previous Part or Face"/>
 			<menu_item_call label="Nächsten Teil oder nächste Fläche einschließen" name="Include Next Part or Face"/>
 			<menu_item_call label="Vorherigen Teil oder vorherige Fläche einschließen" name="Include Previous Part or Face"/>
 			</menu>
