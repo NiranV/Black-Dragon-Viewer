@@ -177,8 +177,10 @@ void LLAvatarListItem::onMouseLeave(S32 x, S32 y, MASK mask)
 void LLAvatarListItem::changed(U32 mask)
 {
 	//BD - Developer tracker
+	//     Only force my listitem as developer style if we are not friends,
+	//     so we respect online status.
 	//     No need to check mAvatarId for null in this case
-	setOnline(LLAvatarTracker::instance().isBuddyOnline(mAvatarId), LLAvatarTracker::instance().isDeveloper(mAvatarId));
+	setOnline(LLAvatarTracker::instance().isBuddyOnline(mAvatarId), LLAvatarTracker::instance().isBuddy(mAvatarId) ? false : LLAvatarTracker::instance().isDeveloper(mAvatarId));
 }
 
 void LLAvatarListItem::setOnline(bool online, bool is_dev)
