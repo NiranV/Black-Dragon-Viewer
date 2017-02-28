@@ -22,7 +22,7 @@
      top="1"
      name="wearables_accordion"
      background_visible="false"
-     width="307">
+     width="309">
      <accordion_tab
      layout="topleft"
      name="tab_wearables"
