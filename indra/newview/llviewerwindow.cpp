@@ -1911,7 +1911,7 @@ void LLViewerWindow::showSystemUIScaleFactorChanged()
 bool LLViewerWindow::onSystemUIScaleFactorChanged(const LLSD& notification, const LLSD& response)
 {
 	S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
-	if(option == 0)
+	if(option == 1)
 	{
 		LLFloaterReg::toggleInstanceOrBringToFront("preferences");
 		LLFloater* pref_floater = LLFloaterReg::getInstance("preferences");
