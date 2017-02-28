@@ -267,7 +267,7 @@ void LLAvatarListItem::setAvatarId(const LLUUID& id, const LLUUID& session_id, b
 	if (LLAvatarTracker::instance().isDeveloper(id))
 	{
 		getChild<LLIconCtrl>("developer_tag")->setVisible(TRUE);
-		getChild<LLIconCtrl>("developer_badge")->setVisible(TRUE);
+		getChild<LLTextBox>("developer_text")->setVisible(TRUE);
 	}
 	else
 	{

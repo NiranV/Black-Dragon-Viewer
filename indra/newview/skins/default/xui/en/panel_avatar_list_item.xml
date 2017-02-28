@@ -109,18 +109,24 @@
     mouse_opaque="true"
     name="speaking_indicator"
     width="20" />
-    <icon
+    <text
     follows="top|right"
-    height="16"
-    name="developer_badge"
-    mouse_opaque="false"
-    color="1 1 1 0.7"
-    image_name="BlackDragon_16"
-    tool_tip="This is the developer of Black Dragon."
-    visible="false"
+    font="SansSerifSmall"
+    font.style="BOLD"
+    font_shadow="soft"
+    text_color="0.3 0.76 1 0.95"
+    height="13"
+    layout="topleft"
     right="-66"
-    top="3"
-    width="16" />
+    halign="right"
+    visible="false"
+    word_wrap="false"
+    name="developer_text"
+    tool_tip="This is the developer of Black Dragon. You can IM him if you got any questions or need help."
+    parse_urls="false"
+    top="5"
+    value="DEVELOPER"
+    width="76"/>
     <icon
     height="16"
     follows="right|top"
