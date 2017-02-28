@@ -891,7 +891,7 @@ void LLPanelPeople::updateNearbyList()
 	if (RlvActions::canShowNearbyAgents())
 	{
 // [/RLVa:KB]
-		LLWorld::getInstance()->getAvatars(&mNearbyList->getIDs(), &positions, gAgent.getPositionGlobal(), gSavedSettings.getF32("NearMeRange"));
+		LLWorld::getInstance()->getAvatars(&mNearbyList->getIDs(), &positions, gAgent.getPositionGlobal(), 4800.f);
 // [RLVa:KB] - Checked: RLVa-2.0.3
 	}
 	else
