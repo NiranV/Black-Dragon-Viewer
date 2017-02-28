@@ -69,6 +69,8 @@ class LLVector3;
 class LLVector3d;
 class LLColor4;
 class LLColor3;
+//BD - Vector2
+class LLVector2;
 //BD - Vector4
 class LLVector4;
 
@@ -86,6 +88,8 @@ typedef enum e_control_type
 	TYPE_COL4,
 	TYPE_COL3,
 	TYPE_LLSD,
+//	//BD - Vector2
+	TYPE_VEC2,
 //	//BD - Vector4
 	TYPE_VEC4,
 	TYPE_COUNT
@@ -232,6 +236,9 @@ public:
 	LLControlVariable* declareColor3(const std::string& name, const LLColor3 &initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
 	LLControlVariable* declareLLSD(const std::string& name, const LLSD &initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
 
+//	//BD - Vector2
+	LLControlVariable* declareVec2(const std::string& name, const LLVector2 &initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
+
 //	//BD - Vector4
 	LLControlVariable* declareVec4(const std::string& name, const LLVector4 &initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
 
@@ -253,6 +260,8 @@ public:
 	LLColor4	getColor4(const std::string& name);
 	LLColor3	getColor3(const std::string& name);
 
+//	//BD - Vector2
+	LLVector2	getVector2(const std::string& name);
 //	//BD - Vector4
 	LLVector4	getVector4(const std::string& name);
 
@@ -287,6 +296,8 @@ public:
 	void	setColor4(const std::string& name, const LLColor4 &val);
 	void    setLLSD(const std::string& name, const LLSD& val);
 
+//	//BD - Vector2
+	void	setVector2(const std::string& name, const LLVector2 &val);
 //	//BD - Vector4
 	void	setVector4(const std::string& name, const LLVector4 &val);
 
@@ -454,6 +465,8 @@ template <> eControlType get_control_type<LLColor4>();
 template <> eControlType get_control_type<LLColor3>();
 template <> eControlType get_control_type<LLSD>();
 
+//BD - Vector2
+template <> eControlType get_control_type<LLVector2>();
 //BD - Vector4
 template <> eControlType get_control_type<LLVector4>();
 
@@ -464,6 +477,8 @@ template <> LLSD convert_to_llsd<LLRect>(const LLRect& in);
 template <> LLSD convert_to_llsd<LLColor4>(const LLColor4& in);
 template <> LLSD convert_to_llsd<LLColor3>(const LLColor3& in);
 
+//BD - Vector2
+template <> LLSD convert_to_llsd<LLVector2>(const LLVector2& in);
 //BD - Vector4
 template <> LLSD convert_to_llsd<LLVector4>(const LLVector4& in);
 
@@ -480,6 +495,8 @@ template<> LLColor3 convert_from_llsd<LLColor3>(const LLSD& sd, eControlType typ
 template<> LLColor4 convert_from_llsd<LLColor4>(const LLSD& sd, eControlType type, const std::string& control_name);
 template<> LLSD convert_from_llsd<LLSD>(const LLSD& sd, eControlType type, const std::string& control_name);
 
+//BD - Vector2
+template<> LLVector2 convert_from_llsd<LLVector2>(const LLSD& sd, eControlType type, const std::string& control_name);
 //BD - Vector4
 template<> LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, const std::string& control_name);
 

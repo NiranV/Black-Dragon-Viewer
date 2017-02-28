@@ -36,6 +36,9 @@
 #include "llquaternion.h"
 #include "lluuid.h"
 
+//BD - Vector2
+#include "v2math.h"
+
 //////////////////////////////////////////////////////////////
 // LLXmlTree
 
@@ -305,6 +308,13 @@ BOOL LLXmlTreeNode::getFastAttributeString(LLStdStringHandle canonical_name, std
 	return TRUE;
 }
 
+//BD - Vector2
+BOOL LLXmlTreeNode::getFastAttributeVector2(LLStdStringHandle canonical_name, LLVector2& value)
+{
+	const std::string *s = getAttribute(canonical_name);
+	return s ? LLVector2::parseVector2(*s, &value) : FALSE;
+}
+
 //BD - Vector4
 BOOL LLXmlTreeNode::getFastAttributeVector4(LLStdStringHandle canonical_name, LLVector4& value)
 {
@@ -414,6 +424,13 @@ BOOL LLXmlTreeNode::getAttributeString(const std::string& name, std::string& val
 {
 	LLStdStringHandle canonical_name = LLXmlTree::sAttributeKeys.addString( name );
 	return getFastAttributeString(canonical_name, value);
+}
+
+//BD - Vector2
+BOOL LLXmlTreeNode::getAttributeVector2(const std::string& name, LLVector2& value)
+{
+	LLStdStringHandle canonical_name = LLXmlTree::sAttributeKeys.addString(name);
+	return getFastAttributeVector2(canonical_name, value);
 }
 
 //BD - Vector4

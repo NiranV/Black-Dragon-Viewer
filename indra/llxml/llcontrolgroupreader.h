@@ -35,6 +35,8 @@
 #include "v3color.h"
 #include "v4color.h"
 #include "llrect.h"
+//BD - Vector2
+#include "v2math.h"
 //BD - Vector4
 #include "v4math.h"
 
@@ -56,6 +58,8 @@ public:
 	virtual U32			getU32(const std::string& name) {return 0; }
 	virtual LLSD        getLLSD(const std::string& name) { return LLSD(); }
 
+//	//BD - Vector2
+	virtual LLVector2	getVector2(const std::string& name) { return LLVector2(); }
 //	//BD - Vector4
 	virtual LLVector4	getVector4(const std::string& name) { return LLVector4(); }
 
@@ -74,6 +78,8 @@ public:
 	virtual void		setColor4(const std::string& name, const LLColor4 &val) {}
 	virtual void    	setLLSD(const std::string& name, const LLSD& val) {}
 
+//	//BD - Vector2
+	virtual LLVector4	setVector2(const std::string& name, const LLVector2 &val) {}
 //	//BD - Vector4
 	virtual LLVector4	setVector4(const std::string& name, const LLVector4 &val) {}
 };

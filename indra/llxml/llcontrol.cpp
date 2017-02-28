@@ -43,6 +43,8 @@
 #include "llrect.h"
 #include "llxmltree.h"
 #include "llsdserialize.h"
+//BD - Vector2
+#include "v2math.h"
 //BD - Vector4
 #include "v4math.h"
 
@@ -69,6 +71,8 @@ template <> eControlType get_control_type<LLColor3>();
 template <> eControlType get_control_type<LLColor4U>();
 template <> eControlType get_control_type<LLSD>();
 
+//BD
+template <> eControlType get_control_type<LLVector2>();
 //BD - Vector4
 template <> eControlType get_control_type<LLVector4>();
 
@@ -80,6 +84,8 @@ template <> LLSD convert_to_llsd<LLColor4>(const LLColor4& in);
 template <> LLSD convert_to_llsd<LLColor3>(const LLColor3& in);
 template <> LLSD convert_to_llsd<LLColor4U>(const LLColor4U& in);
 
+//BD - Vector2
+template <> LLSD convert_to_llsd<LLVector2>(const LLVector2& in);
 //BD - Vector4
 template <> LLSD convert_to_llsd<LLVector4>(const LLVector4& in);
 
@@ -134,6 +140,10 @@ bool LLControlVariable::llsd_compare(const LLSD& a, const LLSD & b)
 		break;
 	case TYPE_STRING:
 		result = a.asString() == b.asString();
+		break;
+//	//BD - Vector2
+case TYPE_VEC2:
+		result = LLVector2(a) == LLVector2(b);
 		break;
 //	//BD - Vector4
 	case TYPE_VEC4:
@@ -362,6 +372,7 @@ const std::string LLControlGroup::mTypeString[TYPE_COUNT] = { "U32"
                                                              ,"Color4"
                                                              ,"Color3"
                                                              ,"LLSD"
+															 ,"Vector2" //BD - Vector 2
 															 ,"Vector4" //BD - Vector 4
                                                              };
 
@@ -477,6 +488,12 @@ LLControlVariable* LLControlGroup::declareLLSD(const std::string& name, const LL
 	return declareControl(name, TYPE_LLSD, initial_val, comment, persist);
 }
 
+//BD - Vector2
+LLControlVariable* LLControlGroup::declareVec2(const std::string& name, const LLVector2 &initial_val, const std::string& comment, LLControlVariable::ePersist persist)
+{
+	return declareControl(name, TYPE_VEC2, initial_val.getValue(), comment, persist);
+}
+
 //BD - Vector4
 LLControlVariable* LLControlGroup::declareVec4(const std::string& name, const LLVector4 &initial_val, const std::string& comment, LLControlVariable::ePersist persist)
 {
@@ -557,6 +574,12 @@ LLSD LLControlGroup::getLLSD(const std::string& name)
 	return get<LLSD>(name);
 }
 
+//BD - Vector2
+LLVector2 LLControlGroup::getVector2(const std::string& name)
+{
+	return get<LLVector2>(name);
+}
+
 //BD - Vector4
 LLVector4 LLControlGroup::getVector4(const std::string& name)
 {
@@ -625,6 +648,12 @@ void LLControlGroup::setColor4(const std::string& name, const LLColor4 &val)
 }
 
 void LLControlGroup::setLLSD(const std::string& name, const LLSD& val)
+{
+	set(name, val);
+}
+
+//BD - Vector2
+void LLControlGroup::setVector2(const std::string& name, const LLVector2 &val)
 {
 	set(name, val);
 }
@@ -838,6 +867,16 @@ U32 LLControlGroup::loadFromFileLegacy(const std::string& filename, BOOL require
 				validitems++;
 			}
 			break;
+//		//BD - Vector2
+		case TYPE_VEC2:
+			{
+				LLVector2 vector;
+
+				child_nodep->getAttributeVector2("value", vector);
+				control->set(vector.getValue());
+				validitems++;
+			}
+		break;
 //		//BD - Vector4
 		case TYPE_VEC4:
 			{
@@ -1174,6 +1213,12 @@ template <> eControlType get_control_type<LLSD>()
 	return TYPE_LLSD; 
 }
 
+//BD - Vector2
+template <> eControlType get_control_type<LLVector2>()
+{
+	return TYPE_VEC2;
+}
+
 //BD - Vector4
 template <> eControlType get_control_type<LLVector4>()
 {
@@ -1213,6 +1258,12 @@ template <> LLSD convert_to_llsd<LLColor3>(const LLColor3& in)
 
 template <> LLSD convert_to_llsd<LLColor4U>(const LLColor4U& in) 
 { 
+	return in.getValue();
+}
+
+//BD - Vector2
+template <> LLSD convert_to_llsd<LLVector2>(const LLVector2& in)
+{
 	return in.getValue();
 }
 
@@ -1376,6 +1427,19 @@ LLSD convert_from_llsd<LLSD>(const LLSD& sd, eControlType type, const std::strin
 	return sd;
 }
 
+//BD - Vector2
+template<>
+LLVector2 convert_from_llsd<LLVector2>(const LLSD& sd, eControlType type, const std::string& control_name)
+{
+	if (type == TYPE_VEC2)
+		return LLVector2(sd);
+	else
+	{
+		CONTROL_ERRS << "Invalid LLVector2 value for " << control_name << ": " << LLControlGroup::typeEnumToString(type) << " " << sd << LL_ENDL;
+		return LLVector2::zero;
+	}
+}
+
 //BD - Vector4
 template<>
 LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, const std::string& control_name)
@@ -1405,6 +1469,8 @@ DECL_LLCC(LLRect, LLRect(0, 0, 100, 500));
 DECL_LLCC(LLColor4, LLColor4(0.0f, 0.5f, 1.0f));
 DECL_LLCC(LLColor3, LLColor3(1.0f, 0.f, 0.5f));
 DECL_LLCC(LLColor4U, LLColor4U(255, 200, 100, 255));
+//BD - Vector2
+DECL_LLCC(LLVector2, LLVector2(1.0, 2.0f));
 //BD - Vector4
 DECL_LLCC(LLVector4, LLVector4(1.0, 2.0f, 3.0, 4.0f));
 

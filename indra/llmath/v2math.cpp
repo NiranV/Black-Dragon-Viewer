@@ -118,9 +118,38 @@ LLSD LLVector2::getValue() const
 	return ret;
 }
 
-void LLVector2::setValue(LLSD& sd)
+void LLVector2::setValue(const LLSD& sd)
 {
 	mV[0] = (F32) sd[0].asReal();
 	mV[1] = (F32) sd[1].asReal();
 }
 
+//BD - Vector2
+LLVector2::LLVector2(const LLSD& sd)
+{
+	setValue(sd);
+}
+
+// static 
+BOOL LLVector2::parseVector2(const std::string& buf, LLVector2* value)
+{
+	if (buf.empty() || value == NULL)
+	{
+		return FALSE;
+	}
+
+	LLVector2 v;
+	S32 count = sscanf(buf.c_str(), "%f, %f", v.mV + 0, v.mV + 1);
+	if (1 == count)
+	{
+		// try this format
+		count = sscanf(buf.c_str(), "%f %f", v.mV + 0, v.mV + 1);
+	}
+	if (2 == count)
+	{
+		value->setVec(v);
+		return TRUE;
+	}
+
+	return FALSE;
+}

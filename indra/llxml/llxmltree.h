@@ -42,6 +42,8 @@ class LLVector3;
 class LLVector3d;
 class LLXmlTreeNode;
 class LLXmlTreeParser;
+//BD - Vector2
+class LLVector2;
 //BD - Vector4
 class LLVector4;
 
@@ -125,6 +127,8 @@ public:
 	BOOL			getFastAttributeUUID(		LLStdStringHandle cannonical_name, LLUUID& value );
 	BOOL			getFastAttributeString(		LLStdStringHandle cannonical_name, std::string& value );
 
+//	//BD - Vector2
+	BOOL			getFastAttributeVector2(	LLStdStringHandle cannonical_name, LLVector2& value);
 //	//BD - Vector4
 	BOOL			getFastAttributeVector4(	LLStdStringHandle cannonical_name, LLVector4& value);
 
@@ -147,6 +151,8 @@ public:
 	virtual BOOL		getAttributeUUID(		const std::string& name, LLUUID& value );
 	virtual BOOL		getAttributeString(		const std::string& name, std::string& value );
 
+//	//BD - Vector2
+	virtual BOOL		getAttributeVector2(	const std::string& name, LLVector2& value);
 //	//BD - Vector4
 	virtual BOOL		getAttributeVector4(	const std::string& name, LLVector4& value);
 
