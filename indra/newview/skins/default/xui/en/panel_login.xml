@@ -956,7 +956,7 @@ Misc: Code tagging.
         width="200"/>
         <combo_box
         allow_text_entry="true"
-        control_name="LoginLocation"
+        control_name="NextLoginLocation"
         follows="left|top"
         height="23"
         max_chars="128"
@@ -976,10 +976,6 @@ Misc: Code tagging.
           label="My home"
           name="MyHome"
           value="home" />
-          <combo_box.item
-          label="&lt;Type region name&gt;"
-          name="Typeregionname"
-          value="" />
           <combo_box.combo_button
           scale_image="true"
           image_unselected="Toolbar_Middle_Off"
@@ -1031,7 +1027,6 @@ Misc: Code tagging.
        <button
         follows="right|top"
         height="18"
-        control_name="FirstStart"
         image_unselected="Toolbar_Middle_Off"
         image_selected="Toolbar_Middle_Selected"
         label="Quit"

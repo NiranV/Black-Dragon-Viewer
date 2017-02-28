@@ -70,6 +70,7 @@ public:
 
 	static BOOL areCredentialFieldsDirty();
 	static void setLocation(const LLSLURL& slurl);
+	static void autologinToLocation(const LLSLURL& slurl);
 
 	static void closePanel();
 
@@ -99,10 +100,9 @@ private:
 	static void onClickQuit(void*);
 
 private:
-	//BD
-	LLPointer<LLUIImage> mLogoImage;
-
 	boost::scoped_ptr<LLPanelLoginListener> mListener;
+
+	void updateLoginButtons();
 
 	void			(*mCallback)(S32 option, void *userdata);
 	void*			mCallbackData;
@@ -112,6 +112,9 @@ private:
 	static LLPanelLogin* sInstance;
 	static BOOL		sCapslockDidNotification;
 
+	unsigned int mUsernameLength;
+	unsigned int mPasswordLength;
+	unsigned int mLocationLength;
 };
 
 #endif

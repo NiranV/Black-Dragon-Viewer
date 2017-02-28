@@ -76,22 +76,86 @@
 LLPanelLogin *LLPanelLogin::sInstance = NULL;
 BOOL LLPanelLogin::sCapslockDidNotification = FALSE;
 
-//BD
-class LLLoginRefreshHandler : public LLCommandHandler
+class LLLoginLocationAutoHandler : public LLCommandHandler
 {
 public:
 	// don't allow from external browsers
-	//BD
-	LLLoginRefreshHandler() : LLCommandHandler("login_refresh", UNTRUSTED_BLOCK) { }
+	LLLoginLocationAutoHandler() : LLCommandHandler("location_login", UNTRUSTED_BLOCK) { }
 	bool handle(const LLSD& tokens, const LLSD& query_map, LLMediaCtrl* web)
-	{	
+	{
 		if (LLStartUp::getStartupState() < STATE_LOGIN_CLEANUP)
 		{
-			LLPanelLogin::loadLoginPage();
-		}	
+			if (tokens.size() == 0 || tokens.size() > 4)
+				return false;
+
+			// unescape is important - uris with spaces are escaped in this code path
+			// (e.g. space -> %20) and the code to log into a region doesn't support that.
+			const std::string region = LLURI::unescape(tokens[0].asString());
+
+			// just region name as payload 
+			if (tokens.size() == 1)
+			{
+				// region name only - slurl will end up as center of region
+				LLSLURL slurl(region);
+				LLPanelLogin::autologinToLocation(slurl);
+			}
+			else
+				// region name and x coord as payload 
+				if (tokens.size() == 2)
+				{
+					// invalid to only specify region and x coordinate
+					// slurl code will revert to same as region only, so do this anyway
+					LLSLURL slurl(region);
+					LLPanelLogin::autologinToLocation(slurl);
+				}
+				else
+					// region name and x/y coord as payload 
+					if (tokens.size() == 3)
+					{
+						// region and x/y specified - default z to 0
+						F32 xpos;
+						std::istringstream codec(tokens[1].asString());
+						codec >> xpos;
+
+						F32 ypos;
+						codec.clear();
+						codec.str(tokens[2].asString());
+						codec >> ypos;
+
+						const LLVector3 location(xpos, ypos, 0.0f);
+						LLSLURL slurl(region, location);
+
+						LLPanelLogin::autologinToLocation(slurl);
+					}
+					else
+						// region name and x/y/z coord as payload 
+						if (tokens.size() == 4)
+						{
+							// region and x/y/z specified - ok
+							F32 xpos;
+							std::istringstream codec(tokens[1].asString());
+							codec >> xpos;
+
+							F32 ypos;
+							codec.clear();
+							codec.str(tokens[2].asString());
+							codec >> ypos;
+
+							F32 zpos;
+							codec.clear();
+							codec.str(tokens[3].asString());
+							codec >> zpos;
+
+							const LLVector3 location(xpos, ypos, zpos);
+							LLSLURL slurl(region, location);
+
+							LLPanelLogin::autologinToLocation(slurl);
+						};
+		}
 		return true;
 	}
 };
+LLLoginLocationAutoHandler gLoginLocationAutoHandler;
 
 //---------------------------------------------------------------------------
 // Public methods
@@ -102,7 +166,10 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 :	LLPanel(),
 	mCallback(callback),
 	mCallbackData(cb_data),
-	mListener(new LLPanelLoginListener(this))
+	mListener(new LLPanelLoginListener(this)),
+	mUsernameLength(0),
+	mPasswordLength(0),
+	mLocationLength(0)
 {
 	setBackgroundVisible(FALSE);
 	setBackgroundOpaque(TRUE);
@@ -116,7 +183,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 		login_holder->addChild(this);
 	}
 
-		buildFromFile( "panel_login.xml");
+	buildFromFile( "panel_login.xml");
 	
 	reshape(rect.getWidth(), rect.getHeight());
 
@@ -126,8 +193,9 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	password_edit->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 
 	//BD
-	getChild<LLComboBox>("start_location_combo")->setFocusLostCallback(boost::bind(&LLPanelLogin::onLocationSLURL, this));
+	LLComboBox* favorites_combo = getChild<LLComboBox>("start_location_combo");
 	//favorites_combo->setReturnCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
+	favorites_combo->setFocusLostCallback(boost::bind(&LLPanelLogin::onLocationSLURL, this));
 	
 	LLComboBox* server_choice_combo = getChild<LLComboBox>("server_combo");
 	server_choice_combo->setCommitCallback(boost::bind(&LLPanelLogin::onSelectServer, this));
@@ -155,19 +223,19 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	server_choice_combo->selectFirstItem();		
 
 	LLSLURL start_slurl(LLStartUp::getStartSLURL());
-	if ( !start_slurl.isSpatial() ) // has a start been established by the command line or NextLoginLocation ? 
+	if (!start_slurl.isSpatial()) // has a start been established by the command line or NextLoginLocation ? 
 	{
 		// no, so get the preference setting
 		std::string defaultStartLocation = gSavedSettings.getString("LoginLocation");
-		LL_INFOS("AppInit")<<"default LoginLocation '"<<defaultStartLocation<<"'"<<LL_ENDL;
+		LL_INFOS("AppInit") << "default LoginLocation '" << defaultStartLocation << "'" << LL_ENDL;
 		LLSLURL defaultStart(defaultStartLocation);
-		if ( defaultStart.isSpatial() )
+		if (defaultStart.isSpatial())
 		{
 			LLStartUp::setStartSLURL(defaultStart);
 		}
 		else
 		{
-			LL_INFOS("AppInit")<<"no valid LoginLocation, using home"<<LL_ENDL;
+			LL_INFOS("AppInit") << "no valid LoginLocation, using home" << LL_ENDL;
 			LLSLURL homeStart(LLSLURL::SIM_LOCATION_HOME);
 			LLStartUp::setStartSLURL(homeStart);
 		}
@@ -225,6 +293,9 @@ void LLPanelLogin::addFavoritesToStartLocation()
 	std::replace(user_defined_name.begin(), user_defined_name.end(), '.', ' ');
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "stored_favorites_" + LLGridManager::getInstance()->getGrid() + ".xml");
 	std::string old_filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "stored_favorites.xml");
+	mUsernameLength = user_defined_name.length();
+	updateLoginButtons();
+
 	LLSD fav_llsd;
 	llifstream file;
 	file.open(filename.c_str());
@@ -432,8 +503,9 @@ void LLPanelLogin::setFields(LLPointer<LLCredential> credential,
 		// fill it with MAX_PASSWORD characters so we get a 
 		// nice row of asterisks.
 		const std::string filler("123456789!123456");
-		//BD
-		sInstance->getChild<LLUICtrl>("password_edit")->setValue(std::string("123456789!123456"));
+		sInstance->getChild<LLUICtrl>("password_edit")->setValue(filler);
+		sInstance->mPasswordLength = filler.length();
+		sInstance->updateLoginButtons();
 	}
 	else
 	{
@@ -566,27 +638,27 @@ void LLPanelLogin::onUpdateStartSLURL(const LLSLURL& new_start_slurl)
 {
 	if (!sInstance) return;
 
-	LL_DEBUGS("AppInit")<<new_start_slurl.asString()<<LL_ENDL;
+	LL_DEBUGS("AppInit") << new_start_slurl.asString() << LL_ENDL;
 
 	LLComboBox* location_combo = sInstance->getChild<LLComboBox>("start_location_combo");
 	/*
-	 * Determine whether or not the new_start_slurl modifies the grid.
-	 *
-	 * Note that some forms that could be in the slurl are grid-agnostic.,
-	 * such as "home".  Other forms, such as
-	 * https://grid.example.com/region/Party%20Town/20/30/5 
-	 * specify a particular grid; in those cases we want to change the grid
-	 * and the grid selector to match the new value.
-	 */
+	* Determine whether or not the new_start_slurl modifies the grid.
+	*
+	* Note that some forms that could be in the slurl are grid-agnostic.,
+	* such as "home".  Other forms, such as
+	* https://grid.example.com/region/Party%20Town/20/30/5
+	* specify a particular grid; in those cases we want to change the grid
+	* and the grid selector to match the new value.
+	*/
 	enum LLSLURL::SLURL_TYPE new_slurl_type = new_start_slurl.getType();
-	switch ( new_slurl_type )
+	switch (new_slurl_type)
 	{
 	case LLSLURL::LOCATION:
-	  {
+	{
 		std::string slurl_grid = LLGridManager::getInstance()->getGrid(new_start_slurl.getGrid());
-		if ( ! slurl_grid.empty() ) // is that a valid grid?
+		if (!slurl_grid.empty()) // is that a valid grid?
 		{
-			if ( slurl_grid != LLGridManager::getInstance()->getGrid() ) // new grid?
+			if (slurl_grid != LLGridManager::getInstance()->getGrid()) // new grid?
 			{
 				// the slurl changes the grid, so update everything to match
 				LLGridManager::getInstance()->setGridChoice(slurl_grid);
@@ -598,44 +670,54 @@ void LLPanelLogin::onUpdateStartSLURL(const LLSLURL& new_start_slurl)
 
 				updateServer(); // to change the links and splash screen
 			}
-			if ( new_start_slurl.getLocationString().length() )
+			if (new_start_slurl.getLocationString().length())
 			{
 				if (location_combo->getCurrentIndex() == -1)
 				{
 					location_combo->setLabel(new_start_slurl.getLocationString());
 				}
-				//BD
-				//sInstance->mLocationLength = new_start_slurl.getLocationString().length();
-				//sInstance->updateLoginButtons();
+				sInstance->mLocationLength = new_start_slurl.getLocationString().length();
+				sInstance->updateLoginButtons();
 			}
-
 		}
 		else
 		{
 			// the grid specified by the slurl is not known
 			LLNotificationsUtil::add("InvalidLocationSLURL");
-			LL_WARNS("AppInit")<<"invalid LoginLocation:"<<new_start_slurl.asString()<<LL_ENDL;
+			LL_WARNS("AppInit") << "invalid LoginLocation:" << new_start_slurl.asString() << LL_ENDL;
 			location_combo->setTextEntry(LLStringUtil::null);
 		}
-	  }
- 	break;
-		
-	//BD
-	case LLSLURL::LAST_LOCATION:
-		location_combo->setCurrentByIndex(0); // last location
-		break;
+	}
+	break;
+
 	case LLSLURL::HOME_LOCATION:
+		//location_combo->setCurrentByIndex(0); // home location
+		LL_INFOS("AppInit") << "Location setStartSLURL: " << new_start_slurl.asString() << LL_ENDL;
+		break;
+
 	default:
-		//LL_WARNS("AppInit")<<"invalid login slurl, using home"<<LL_ENDL;
-		location_combo->setCurrentByIndex(1); // home location
+		LL_WARNS("AppInit") << "invalid login slurl, using home" << LL_ENDL;
+		//location_combo->setCurrentByIndex(0); // home location
 		break;
 	}
 }
 
 void LLPanelLogin::setLocation(const LLSLURL& slurl)
 {
-	LL_DEBUGS("AppInit")<<"setting Location "<<slurl.asString()<<LL_ENDL;
+	LL_DEBUGS("AppInit") << "setting Location " << slurl.asString() << LL_ENDL;
 	LLStartUp::setStartSLURL(slurl); // calls onUpdateStartSLURL, above
+}
+
+void LLPanelLogin::autologinToLocation(const LLSLURL& slurl)
+{
+	LL_DEBUGS("AppInit") << "automatically logging into Location " << slurl.asString() << LL_ENDL;
+	LLStartUp::setStartSLURL(slurl); // calls onUpdateStartSLURL, above
+
+	if (LLPanelLogin::sInstance != NULL)
+	{
+		void* unused_parameter = 0;
+		LLPanelLogin::sInstance->onClickConnect(unused_parameter);
+	}
 }
 
 // static
@@ -711,12 +793,6 @@ void LLPanelLogin::onClickConnect(void *)
 	{
 		// JC - Make sure the fields all get committed.
 		sInstance->setFocus(FALSE);
-
-		//BD - Set final login location where we will start now here when pressing connect,
-		//     we dont need to set it every time we change it. It gets saved into a debug and
-		//     set when we press connect, so it will always save and work as intended.
-		LLSLURL slurl(gSavedSettings.getString("LoginLocation"));
-		LLStartUp::setStartSLURL(slurl);
 
 		LLComboBox* combo = sInstance->getChild<LLComboBox>("server_combo");
 		LLSD combo_val = combo->getSelectedValue();
@@ -818,6 +894,10 @@ void LLPanelLogin::onPassKey(LLLineEditor* caller, void* user_data)
 		// *TODO: use another way to notify user about enabled caps lock, see EXT-6858
 		sCapslockDidNotification = TRUE;
 	}
+
+	LLLineEditor* password_edit(self->getChild<LLLineEditor>("password_edit"));
+	self->mPasswordLength = password_edit->getText().length();
+	self->updateLoginButtons();
 }
 
 
@@ -857,6 +937,12 @@ void LLPanelLogin::updateServer()
 	}
 }
 
+void LLPanelLogin::updateLoginButtons()
+{
+	LLButton* login_btn = getChild<LLButton>("connect_btn");
+
+	login_btn->setEnabled(mUsernameLength != 0 && mPasswordLength != 0);
+}
 
 void LLPanelLogin::onSelectServer()
 {
@@ -912,7 +998,7 @@ void LLPanelLogin::onLocationSLURL()
 {
 	LLComboBox* location_combo = getChild<LLComboBox>("start_location_combo");
 	std::string location = location_combo->getValue().asString();
-	LL_DEBUGS("AppInit")<<location<<LL_ENDL;
+	LL_DEBUGS("AppInit") << location << LL_ENDL;
 
 	LLStartUp::setStartSLURL(location); // calls onUpdateStartSLURL, above 
 }
