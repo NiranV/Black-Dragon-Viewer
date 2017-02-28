@@ -921,10 +921,10 @@
  
  <color
  name="ModeratorColor"
- reference="Blue_Chat"/>
+ reference="Green_Chat"/>
  <color
  name="DeveloperColor"
- reference="Green_Chat"/>
+ reference="Blue_Chat"/>
  <color
  name="ModDevColor"
  value="0.35 1 1 1"/>
