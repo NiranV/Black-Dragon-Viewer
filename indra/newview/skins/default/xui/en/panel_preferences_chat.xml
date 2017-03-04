@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="760"
+  height="778"
   name="chat_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -187,6 +187,17 @@ width="510">
  layout="topleft"
  left_delta="0"
  name="ForceChatSingleLineMode"
+ top_pad="0"
+ width="256" />
+ <check_box
+ control_name="SLURLTeleportDirectly"
+ height="16"
+ initial_value="true"
+ label="Allow one-click TP on SLURL's in Chat"
+ tool_tip="Clicking on a slurl will teleport you directly instead of opening places panel"
+ layout="topleft"
+ left_delta="0"
+ name="SLURLTeleportDirectly"
  top_pad="0"
  width="256" />
  <panel

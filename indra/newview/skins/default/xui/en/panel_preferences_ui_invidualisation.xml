@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="804"
+     height="788"
      name="ui_panel"
      top="0"
      left="0"
@@ -690,17 +690,6 @@ width="510">
 	    width="120">Other Options:</text>
     
 	    <check_box
-	    control_name="SLURLTeleportDirectly"
-	    height="16"
-	    initial_value="true"
-	    label="Allow one-click TP on SLURL's in Chat"
-	    layout="topleft"
-	    tool_tip="Clicking on a slurl will teleport you directly instead of opening places panel"
-	    left="10"
-	    name="SLURLTeleportDirectly"
-	    top_pad="15"
-	    width="256" />
-	    <check_box
 	    control_name="ScriptsCanShowUI"
 	    height="16"
 	    initial_value="true"
@@ -708,7 +697,7 @@ width="510">
 	    layout="topleft"
 	    left="10"
 	    name="ScriptsCanShowUI"
-	    top_pad="0"
+	    top_pad="15"
 	    width="256" />
 		
 		<check_box
