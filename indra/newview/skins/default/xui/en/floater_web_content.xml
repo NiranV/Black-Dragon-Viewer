@@ -11,52 +11,78 @@
   save_rect="true"
   title=""
   width="560">
+    <icon
+       follows="all"
+       height="230"
+       image_name="Panel_Background"
+       layout="topleft"
+       left="5"
+       top="18"
+       name="dummy_icon"
+       width="551"/>
   <layout_stack
     top="20"
     follows="left|right|top|bottom"
     layout="topleft"
-    left="5"
-    width="555"
+    left="6"
+    width="553"
     height="382"
     name="stack1"
     orientation="vertical">
     <layout_panel
       auto_resize="false"
-      height="28"
+      height="22"
       layout="topleft"
       left="0"
-      min_height="28"
+      min_height="22"
       name="nav_controls"
       width="395">
       <button
         image_overlay="Arrow_Left_Off"
-        image_disabled="PushButton_Disabled"
-        image_disabled_selected="PushButton_Disabled"
-        image_selected="PushButton_Selected"
-        image_unselected="PushButton_Off"
+        image_hover_unselected="Toolbar_Middle_Over"
+        image_selected="Toolbar_Middle_Selected"
+        image_unselected="Toolbar_Middle_Off"
         hover_glow_amount="0.15"
         tool_tip="Navigate back"
         follows="left|top"
-        height="22"
+        height="23"
         layout="topleft"
         left="1"
         name="back"
         top="0"
-        width="23">
+        width="25">
         <button.commit_callback
           function="WebContent.Back" />
       </button>
       <button
+        image_overlay="Home_Off"
+        image_hover_unselected="Toolbar_Middle_Over"
+        image_selected="Toolbar_Middle_Selected"
+        image_unselected="Toolbar_Middle_Off"
+        chrome="true"
+        tool_tip="Open start page"
+        enabled="true"
+        follows="left|top"
+        height="23"
+        layout="topleft"
+        left_pad="1"
+        name="web_test_home_page"
+        top="0"
+        width="25">
+        <button.commit_callback
+          function="WebContent.TestURL"
+          parameter="https://callum-linden.s3.amazonaws.com/ceftests.html"/>
+      </button>
+      <button
         image_overlay="Arrow_Right_Off"
-        image_disabled="PushButton_Disabled"
-        image_disabled_selected="PushButton_Disabled"
-        image_selected="PushButton_Selected"
-        image_unselected="PushButton_Off"
+        image_hover_unselected="Toolbar_Middle_Over"
+        image_selected="Toolbar_Middle_Selected"
+        image_unselected="Toolbar_Middle_Off"
         tool_tip="Navigate forward"
         follows="left|top"
-        height="22"
+        height="23"
         layout="topleft"
-        left="25"
+        left_pad="1"
         name="forward"
         top_delta="0"
         width="25">
@@ -65,16 +91,15 @@
       </button>
       <button
         image_overlay="Stop_Off"
-        image_disabled="PushButton_Disabled"
-        image_disabled_selected="PushButton_Disabled"
-        image_selected="PushButton_Selected"
-        image_unselected="PushButton_Off"
+        image_hover_unselected="Toolbar_Middle_Over"
+        image_selected="Toolbar_Middle_Selected"
+        image_unselected="Toolbar_Middle_Off"
         tool_tip="Stop navigation"
         enabled="true"
         follows="left|top"
-        height="22"
+        height="23"
         layout="topleft"
-        left="57"
+        left_pad="1"
         name="stop"
         top_delta="0"
         width="25">
@@ -83,15 +108,14 @@
       </button>
       <button
         image_overlay="Refresh_Off"
-        image_disabled="PushButton_Disabled"
-        image_disabled_selected="PushButton_Disabled"
-        image_selected="PushButton_Selected"
-        image_unselected="PushButton_Off"
+        image_hover_unselected="Toolbar_Middle_Over"
+        image_selected="Toolbar_Middle_Selected"
+        image_unselected="Toolbar_Middle_Off"
         tool_tip="Reload page"
         follows="left|top"
-        height="22"
+        height="23"
         layout="topleft"
-        left="57"
+        left_delta="0"
         name="reload"
         top_delta="0"
         width="25">
@@ -102,15 +126,38 @@
         allow_text_entry="true"
         follows="left|top|right"
         tab_group="1"
-        height="22"
+        height="23"
         layout="topleft"
-        left_pad="4"
+        left_pad="1"
         max_chars="1024"
         name="address"
         combo_editor.select_on_focus="true"
         tool_tip="Enter URL here"
         top_delta="0"
-        width="280">
+        width="267">
+          <combo_box.combo_editor
+          font="SansSerif"
+          font_shadow="soft"
+          text_tentative_color="0.7 0.7 0.7 0.7"
+          cursor_color="White"
+          text_color="0.75 0.75 0.75 0.7"
+          background_image="Toolbar_Middle_Off"
+          background_image_disabled="Toolbar_Middle_Selected"
+          background_image_focused="Toolbar_Middle_Off"/>
+          <combo_box.combo_button
+          image_unselected="ComboToolbarButton_Off"
+          image_selected="ComboToolbarButton_Selected"
+          image_pressed="ComboToolbarButton_Selected" 
+          image_pressed_selected="ComboToolbarButton_Selected"/>
+          <combo_box.drop_down_button
+          image_unselected="ComboToolbarButton_Off"
+          image_selected="ComboToolbarButton_Selected"
+          image_pressed="ComboToolbarButton_Selected" 
+          image_pressed_selected="ComboToolbarButton_Selected"
+          image_disabled="ComboToolbarButton_Disabled"/>
+            <combo_box.combo_list
+              bg_writeable_color="0 0 0 0.9"
+              background_visible="true"/>
         <combo_box.commit_callback
           function="WebContent.EnterAddress" />
       </combo_box>
@@ -125,25 +172,15 @@
         visible="true" 
         tool_tip="Secured Browsing"
         width="16" />
-      <progress_bar
-        color_bar="1 1 1 1"
-        follows="left|top|right"
-        height="9"
-        top_delta="18"
-        left="0"
-        right="-5"
-        layout="topleft"
-        name="statusbarprogress"/>
       <button
         image_overlay="ExternalBrowser_Off"
-        image_disabled="PushButton_Disabled"
-        image_disabled_selected="PushButton_Disabled"
-        image_selected="PushButton_Selected"
-        image_unselected="PushButton_Off"
+        image_hover_unselected="Toolbar_Middle_Over"
+        image_selected="Toolbar_Middle_Selected"
+        image_unselected="Toolbar_Middle_Off"
         tool_tip="Open current URL in your desktop browser"
         follows="right|top"
         enabled="true" 
-        height="22"
+        height="23"
         layout="topleft"
         name="popexternal"
         right="390"
@@ -152,35 +189,26 @@
         <button.commit_callback
           function="WebContent.PopExternal" />
       </button>
+      <progress_bar
+        color_bar="1 1 1 0"
+        color_bg="1 1 1 0"
+        follows="left|top|right"
+        height="0"
+        top_delta="21"
+        left="1"
+        right="-5"
+        layout="topleft"
+        name="statusbarprogress"/>
     </layout_panel>
-    <layout_panel
+    <!--<layout_panel
      height="22"
      layout="topleft"
      left_delta="0"
      name="debug_controls"
      top_delta="0"
      auto_resize="false"
-     width="585">
-      <button
-        image_overlay="Home_Off"
-            image_disabled="PushButton_Disabled"
-            image_disabled_selected="PushButton_Disabled"
-            image_selected="PushButton_Selected"
-            image_unselected="PushButton_Off"
-        chrome="true"
-        tool_tip="Web tests home page"
-        enabled="true"
-        follows="left|top"
-        height="22"
-        layout="topleft"
-        left="1"
-        name="web_test_home_page"
-        top="0"
-        width="22">
-        <button.commit_callback
-          function="WebContent.TestURL"
-          parameter="https://callum-linden.s3.amazonaws.com/ceftests.html"/>
-      </button>
+     width="585"
+     visible="false">
 
       <button
         image_overlay="Video_URL_Off"
@@ -282,7 +310,7 @@
           function="WebContent.TestURL"
           parameter="https://callum-linden.s3.amazonaws.com/sample_media/vandal.flv"/>
       </button>
-    </layout_panel>
+    </layout_panel>-->
     <layout_panel
       height="40"
       layout="topleft"
@@ -294,8 +322,8 @@
         bottom="-22"
         follows="all"
         layout="topleft"
-        left="0"
-        width="385"
+        left="1"
+        width="384"
         name="webbrowser"
         top="0"/>
       <text
@@ -307,7 +335,6 @@
         left_delta="0"
         name="statusbartext"
         parse_urls="false"
-        text_color="EmphasisColor"
         top_pad="3"
         width="385"/>
     </layout_panel>
