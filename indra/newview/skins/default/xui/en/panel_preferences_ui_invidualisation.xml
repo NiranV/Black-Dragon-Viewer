@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="746"
+     height="804"
      name="ui_panel"
      top="0"
      left="0"
@@ -701,27 +701,6 @@ width="510">
 	    top_pad="15"
 	    width="256" />
 	    <check_box
-	    control_name="InventoryLinking"
-	    height="16"
-	    initial_value="true"
-	    label="Enable 'Copy as Link' Feature in Inventory"
-	    layout="topleft"
-	    left="10"
-	    name="InventoryLinking"
-	    top_pad="0"
-	    width="256" />
-	    <check_box
-	    control_name="ShowOfferedInventory"
-	    height="16"
-	    initial_value="true"
-	    label="Show offered Inventory"
-	    layout="topleft"
-	    left="10"
-	    tool_tip="Show inventory window with last inventory offer selected when receiving inventory from other users"
-	    name="ShowOfferedInventory"
-	    top_pad="0"
-	    width="256" />
-	    <check_box
 	    control_name="ScriptsCanShowUI"
 	    height="16"
 	    initial_value="true"
@@ -752,7 +731,7 @@ width="510">
 	    name="ShowLandHoverTip"
 	    top_pad="0"
 	    width="256" />
-	    <check_box
+		<check_box
 	    control_name="ShowAllObjectHoverTip"
 	    height="16"
 	    initial_value="true"
@@ -760,6 +739,71 @@ width="510">
 	    layout="topleft"
 	    left_delta="0"
 	    name="ShowAllHoverTips"
+	    top_pad="0"
+	    width="256" />
+		<text
+		type="string"
+		length="1"
+		follows="right|top"
+		height="12"
+		layout="topleft"
+		left="25"
+		halign="center"
+		name="separator_label"
+		top_pad="7"
+		width="450">
+		Inventory
+		</text>
+		<icon
+		follows="top|right"
+		height="1"
+		image_name="Prefs_Separator"
+		color="1 1 1 1"
+		layout="topleft"
+		name="separator"
+		mouse_opaque="false"
+		width="450"
+		left="10"
+		top_pad="0"/>
+		<check_box
+	    control_name="InventoryLinking"
+	    height="16"
+	    initial_value="true"
+	    label="Enable 'Copy as Link' Feature in Inventory"
+	    layout="topleft"
+	    left="10"
+	    name="InventoryLinking"
+	    top_pad="7"
+	    width="256" />
+	    <check_box
+	    control_name="ShowOfferedInventory"
+	    height="16"
+	    initial_value="true"
+	    label="Show offered Inventory"
+	    layout="topleft"
+	    left="10"
+	    tool_tip="Show inventory window with last inventory offer selected when receiving inventory from other users"
+	    name="ShowOfferedInventory"
+	    top_pad="0"
+	    width="256" />
+		<check_box
+	    control_name="NoInventoryLibrary"
+	    height="16"
+	    initial_value="false"
+	    label="Disable Library in Inventory"
+	    layout="topleft"
+	    left_delta="0"
+	    name="NoInventoryLibrary"
+	    top_pad="0"
+	    width="256" />
+		<check_box
+	    control_name="InventoryOutboxMakeVisible"
+	    height="16"
+	    initial_value="true"
+	    label="Show Merchant Outbox and Inbox in Inventory"
+	    layout="topleft"
+	    left_delta="0"
+	    name="InventoryOutboxMakeVisible"
 	    top_pad="0"
 	    width="256" />
      </panel>

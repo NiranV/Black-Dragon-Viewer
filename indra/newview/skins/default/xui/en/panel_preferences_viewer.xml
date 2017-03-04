@@ -23,7 +23,7 @@ width="510">
 	      <panel
 	      layout="topleft"
 	      follows="left|top|right"
-	      height="770"
+	      height="730"
 	      name="viewer_scroll_panel"
 	      top="0"
 	      left="0"
@@ -568,30 +568,6 @@ width="510">
 		     width="300">
 		     Misc Options:
 		     </text>
-		     <check_box
-		     top_delta="4"
-		     enabled="true"
-		     follows="left|top"
-		     height="16"
-		     initial_value="true"
-		     control_name="NoInventoryLibrary"
-		     label="Disable Library in Inventory"
-		     left="10"
-		     mouse_opaque="true"
-		     name="no_library"
-		     radio_style="false"
-		     width="400"
-		     top_pad="15"/>
-			 <check_box
-		     control_name="InventoryOutboxMakeVisible"
-		     height="16"
-		     initial_value="false"
-		     label="Show Merchant Outbox and Inbox in Inventory"
-		     layout="topleft"
-		     left="10"
-		     name="InventoryOutboxMakeVisible"
-		     top_pad="0"
-		     width="256" />
 			 <slider
 		     control_name="PrecachingDelay"
 		     decimal_digits="0"
@@ -608,7 +584,7 @@ width="510">
 		     max_val="10"
 		     min_val="1"
 		     name="PrecachingDelay"
-		     top_pad="4"
+		     top_pad="15"
 		     width="304" />
 			 <button
  follows="left|top"
