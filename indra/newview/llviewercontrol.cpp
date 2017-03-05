@@ -86,6 +86,7 @@
 #include "llfloatersnapshot.h"
 #include "lltoolfocus.h"
 #include "llviewerobjectlist.h"
+#include "bdsidebar.h"
 
 // Third party library includes
 #include <boost/algorithm/string.hpp>
@@ -791,6 +792,13 @@ static bool handleCloudNoiseChanged(const LLSD& newvalue)
 	LLDrawPoolWLSky::loadCloudNoise();
 	return true;
 }
+
+//BD - Machinima Sidebar
+static bool handleMachinimaSidebar(const LLSD& newvalue)
+{
+	gSideBar->refreshGraphicControls();
+	return true;
+}
 //BD
 
 ////////////////////////////////////////////////////////////////////////////
@@ -974,6 +982,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
 	gSavedSettings.getControl("CloudNoiseImageName")->getSignal()->connect(boost::bind(&handleCloudNoiseChanged, _2));
 	gSavedSettings.getControl("RenderDeferredEnvironmentMap")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
+	gSavedSettings.getControl("MachinimaSidebar")->getSignal()->connect(boost::bind(&handleMachinimaSidebar, _2));
 
 //	//BD - Motion Blur
 	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
