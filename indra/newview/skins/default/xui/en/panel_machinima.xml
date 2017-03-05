@@ -34,7 +34,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1459"
+            height="1400"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -982,7 +982,7 @@ width="345">
                   max_val="6144"
                   min_val="256"
                   name="RenderShadowResolution_X"
-                  top_pad="1"
+                  top_pad="7"
                   width="293">
                   <slider.commit_callback
                   function="Pref.ArrayX"
@@ -1404,7 +1404,7 @@ width="345">
                   min_val="0.0"
                   name="RenderSSRBrightness"
                   top_pad="1"
-                  width="287" />
+                  width="290" />
                   <panel
                   follows="left|top|right"
                   height="20"
@@ -1429,6 +1429,25 @@ width="345">
                   Post Processing:
                   </text>
                   <slider
+                  control_name="RenderMotionBlurStrength"
+                  enabled_control="RenderDeferred"
+                  decimal_digits="0"
+                  follows="left|top"
+                  height="15"
+                  increment="1"
+                  initial_value="1"
+                  can_edit_text="true"
+                  label="Motionblur Quality:"
+                  label_width="110"
+                  tool_tip="Set the quality of Motionblur, lower values equal to stronger blur"
+                  layout="topleft"
+                  left="10"
+                  max_val="120"
+                  min_val="10"
+                  name="MotionBlurQuality"
+                  top_pad="15"
+                  width="287" />
+                  <slider
                   control_name="RenderPostGreyscaleStrength"
                   enabled_control="RenderDeferred"
                   decimal_digits="2"
@@ -1445,7 +1464,7 @@ width="345">
                   max_val="1"
                   min_val="0"
                   name="GreyscaleStrength"
-                  top_pad="15"
+                  top_pad="7"
                   width="290" />
                   <slider
                   control_name="RenderPostSepiaStrength"
@@ -1505,25 +1524,6 @@ width="345">
                   top_pad="1"
                   width="290" />
                   <slider
-                  control_name="RenderMotionBlurStrength"
-                  enabled_control="RenderDeferred"
-                  decimal_digits="0"
-                  follows="left|top"
-                  height="15"
-                  increment="1"
-                  initial_value="1"
-                  can_edit_text="true"
-                  label="Motionblur Quality:"
-                  label_width="110"
-                  tool_tip="Set the quality of Motionblur, lower values equal to stronger blur"
-                  layout="topleft"
-                  left="10"
-                  max_val="120"
-                  min_val="10"
-                  name="MotionBlurQuality"
-                  top_pad="1"
-                  width="287" />
-                  <slider
                   control_name="RenderGodraysResolution"
                   enabled_control="RenderDeferred"
                   decimal_digits="0"
@@ -1540,7 +1540,7 @@ width="345">
                   max_val="128"
                   min_val="16"
                   name="GodrayResolution"
-                  top_pad="1"
+                  top_pad="7"
                   width="287" />
                   <slider
                   control_name="RenderGodraysMultiplier"
@@ -1597,7 +1597,7 @@ width="345">
                   max_val="10"
                   min_val="0"
                   name="ExodusRenderVignette_X"
-                  top_pad="1"
+                  top_pad="7"
                   width="290" >
                   <slider.commit_callback
                   function="Pref.ArrayX"
