@@ -1052,6 +1052,49 @@ width="345">
                   parameter="RenderShadowResolution"/>
                   </slider>
                   
+                  <slider
+                  enabled_control="RenderDeferred"
+                  decimal_digits="0"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="15"
+                  increment="256"
+                  initial_value="2048"
+                  label="Projector 1 Res:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="6144"
+                  min_val="256"
+                  name="RenderProjectorShadowResolution_X"
+                  top_pad="7"
+                  width="293">
+                  <slider.commit_callback
+                  function="Pref.ArrayX"
+                  parameter="RenderProjectorShadowResolution"/>
+                  </slider>
+                  <slider
+                  enabled_control="RenderDeferred"
+                  decimal_digits="0"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="15"
+                  increment="256"
+                  initial_value="2048"
+                  label="Projector 2 Res:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="6144"
+                  min_val="256"
+                  name="RenderProjectorShadowResolution_Y"
+                  top_pad="1"
+                  width="293">
+                  <slider.commit_callback
+                  function="Pref.ArrayY"
+                  parameter="RenderProjectorShadowResolution"/>
+                  </slider>
+                  
                   <panel
                   follows="left|top|right"
                   height="20"
