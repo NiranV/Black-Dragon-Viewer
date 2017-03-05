@@ -3338,28 +3338,6 @@ width="510">
       function="Pref.ArrayY"
       parameter="RenderProjectorShadowResolution"/>
       </slider>
- <slider
-      enabled_control="RenderDeferred"
-      decimal_digits="1"
-      follows="left|top"
-      height="14"
-      increment="0.1"
-      initial_value="1"
-      can_edit_text="true"
-      label="Resolution Multiplicator:"
-      label_width="150"
-      tool_tip="Set the multiplicator value for width and height of the projector shadowmap"
-      layout="topleft"
-      left="10"
-      max_val="4"
-      min_val="0"
-      name="RenderProjectorShadowResolution_Z"
-      top_pad="2"
-      width="315" >
-   <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="RenderProjectorShadowResolution"/>
-      </slider>
  <button
  follows="left|top"
  control_name="RenderProjectorShadowResolution"
