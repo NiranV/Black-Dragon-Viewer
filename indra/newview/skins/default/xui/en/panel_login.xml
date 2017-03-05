@@ -1021,7 +1021,7 @@ Misc: Code tagging.
         top_pad="5"
         left="113"
         name="start_location_combo"
-        width="152">
+        width="160">
           <combo_box.combo_editor
           background_image="TextField_Off"
           background_image_disabled="TextField_Disabled"
