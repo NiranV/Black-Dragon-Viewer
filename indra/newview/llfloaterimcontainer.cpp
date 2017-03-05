@@ -1273,7 +1273,7 @@ void LLFloaterIMContainer::doToSelectedConversation(const std::string& command, 
     	    {
     	      	LLFloaterReg::showInstance("preview_conversation", LLSD(LLUUID::null), true);
     	    }
-}
+		}
     }
 }
 
