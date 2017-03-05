@@ -332,9 +332,8 @@ BOOL LLFloaterTexturePicker::postBuild()
 	childSetAction("None", LLFloaterTexturePicker::onBtnNone,this);
 	childSetAction("Blank", LLFloaterTexturePicker::onBtnBlank,this);
 
-
-	childSetCommitCallback("show_folders_check", onShowFolders, this);
-	getChildView("show_folders_check")->setVisible( FALSE);
+	//BD
+	//childSetCommitCallback("show_folders_check", onShowFolders, this);
 
 	mFilterEdit = getChild<LLFilterEditor>("inventory search editor");
 	mFilterEdit->setCommitCallback(boost::bind(&LLFloaterTexturePicker::onFilterEdit, this, _2));
@@ -372,10 +371,6 @@ BOOL LLFloaterTexturePicker::postBuild()
 		}
 	}
 
-	mModeSelector = getChild<LLRadioGroup>("mode_selection");
-	mModeSelector->setCommitCallback(onModeSelect, this);
-	mModeSelector->setSelectedIndex(0, 0);
-
 	childSetAction("l_add_btn", LLFloaterTexturePicker::onBtnAdd, this);
 	childSetAction("l_rem_btn", LLFloaterTexturePicker::onBtnRemove, this);
 	childSetAction("l_upl_btn", LLFloaterTexturePicker::onBtnUpload, this);
@@ -389,10 +384,11 @@ BOOL LLFloaterTexturePicker::postBuild()
 	getChild<LLUICtrl>("apply_immediate_check")->setValue(gSavedSettings.getBOOL("TextureLivePreview"));
 	childSetCommitCallback("apply_immediate_check", onApplyImmediateCheck, this);
 
-	if (!mCanApplyImmediately)
+	//BD
+	/*if (!mCanApplyImmediately)
 	{
 		getChildView("show_folders_check")->setEnabled(FALSE);
-	}
+	}*/
 
 	getChild<LLUICtrl>("Pipette")->setCommitCallback( boost::bind(&LLFloaterTexturePicker::onBtnPipette, this));
 	childSetAction("Cancel", LLFloaterTexturePicker::onBtnCancel,this);
@@ -466,8 +462,9 @@ void LLFloaterTexturePicker::draw()
 
 	updateImageStats();
 
+	//BD
 	// if we're inactive, gray out "apply immediate" checkbox
-	getChildView("show_folders_check")->setEnabled(mActive && mCanApplyImmediately && !mNoCopyTextureSelected);
+	//getChildView("show_folders_check")->setEnabled(mActive && mCanApplyImmediately && !mNoCopyTextureSelected);
 	getChildView("Select")->setEnabled(mActive && mCanApply);
 	getChildView("Pipette")->setEnabled(mActive);
 	getChild<LLUICtrl>("Pipette")->setValue(LLToolMgr::getInstance()->getCurrentTool() == LLToolPipette::getInstance());
@@ -534,10 +531,16 @@ void LLFloaterTexturePicker::draw()
 		}
 
 		// Draw Tentative Label over the image
-		if( mTentative && !mViewModel->isDirty() )
+		if (mTentative && !mViewModel->isDirty())
 		{
-			mTentativeLabel->setVisible( TRUE );
+			mTentativeLabel->setVisible(TRUE);
 			drawChild(mTentativeLabel);
+		}
+
+		//BD - Draw the resolution text ontop of the image.
+		if (mResolutionLabel)
+		{
+			drawChild(mResolutionLabel);
 		}
 
 		if (mSelectedItemPinned) return;
@@ -757,28 +760,6 @@ void LLFloaterTexturePicker::onSelectionChange(const std::deque<LLFolderViewItem
 }
 
 // static
-void LLFloaterTexturePicker::onModeSelect(LLUICtrl* ctrl, void *userdata)
-{
-	LLFloaterTexturePicker* self = (LLFloaterTexturePicker*) userdata;
-	bool mode = (self->mModeSelector->getSelectedIndex() == 0);
-
-	self->getChild<LLButton>("Default")->setVisible(mode);
-	self->getChild<LLButton>("Blank")->setVisible(mode);
-	self->getChild<LLButton>("None")->setVisible(mode);
-	self->getChild<LLButton>("Pipette")->setVisible(mode);
-	self->getChild<LLFilterEditor>("inventory search editor")->setVisible(mode);
-	self->getChild<LLInventoryPanel>("inventory panel")->setVisible(mode);
-
-	/*self->getChild<LLCheckBox>("show_folders_check")->setVisible(mode);
-	  no idea under which conditions the above is even shown, needs testing. */
-
-	self->getChild<LLButton>("l_add_btn")->setVisible(!mode);
-	self->getChild<LLButton>("l_rem_btn")->setVisible(!mode);
-	self->getChild<LLButton>("l_upl_btn")->setVisible(!mode);
-	self->getChild<LLScrollListCtrl>("l_name_list")->setVisible(!mode);
-}
-
-// static
 void LLFloaterTexturePicker::onBtnAdd(void* userdata)
 {
 	if (LLLocalBitmapMgr::addUnit() == true)
@@ -868,13 +849,14 @@ void LLFloaterTexturePicker::onLocalScrollCommit(LLUICtrl* ctrl, void* userdata)
 	}
 }
 
+//BD
 // static
-void LLFloaterTexturePicker::onShowFolders(LLUICtrl* ctrl, void *user_data)
+/*void LLFloaterTexturePicker::onShowFolders(LLUICtrl* ctrl, void *user_data)
 {
-	LLCheckBoxCtrl* check_box = (LLCheckBoxCtrl*)ctrl;
+	LLUICtrl* ui_ctrl = ctrl;
 	LLFloaterTexturePicker* picker = (LLFloaterTexturePicker*)user_data;
 
-	if (check_box->get())
+	if (ui_ctrl->getValue().asBoolean())
 	{
 		picker->mInventoryPanel->setShowFolderState(LLInventoryFilter::SHOW_NON_EMPTY_FOLDERS);
 	}
@@ -882,7 +864,7 @@ void LLFloaterTexturePicker::onShowFolders(LLUICtrl* ctrl, void *user_data)
 	{
 		picker->mInventoryPanel->setShowFolderState(LLInventoryFilter::SHOW_NO_FOLDERS);
 	}
-}
+}*/
 
 // static
 void LLFloaterTexturePicker::onApplyImmediateCheck(LLUICtrl* ctrl, void *user_data)
@@ -948,7 +930,7 @@ void LLFloaterTexturePicker::onFilterEdit(const std::string& search_string )
 
 void LLFloaterTexturePicker::setLocalTextureEnabled(BOOL enabled)
 {
-	mModeSelector->setIndexEnabled(1,enabled);
+	getChild<LLPanel>("local_mode")->setVisible(enabled);
 }
 
 void LLFloaterTexturePicker::onTextureSelect( const LLTextureEntry& te )

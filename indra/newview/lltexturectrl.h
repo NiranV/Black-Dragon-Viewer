@@ -312,11 +312,11 @@ public:
 	static void		onBtnNone(void* userdata);
 	static void		onBtnClear(void* userdata);
 	void			onSelectionChange(const std::deque<LLFolderViewItem*> &items, BOOL user_action);
-	static void		onShowFolders(LLUICtrl* ctrl, void* userdata);
+	//BD
+	//static void		onShowFolders(LLUICtrl* ctrl, void* userdata);
 	static void		onApplyImmediateCheck(LLUICtrl* ctrl, void* userdata);
 	void			onTextureSelect(const LLTextureEntry& te);
 
-	static void		onModeSelect(LLUICtrl* ctrl, void *userdata);
 	static void		onBtnAdd(void* userdata);
 	static void		onBtnRemove(void* userdata);
 	static void		onBtnUpload(void* userdata);
@@ -356,7 +356,6 @@ protected:
 	LLSaveFolderState	mSavedFolderState;
 	BOOL				mSelectedItemPinned;
 
-	LLRadioGroup*		mModeSelector;
 	LLScrollListCtrl*	mLocalScrollCtrl;
 
 private:
