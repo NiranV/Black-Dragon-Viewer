@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.6.5 - Ending Dragon]"
+       label="[CHANNEL] [VERSION] - [2.6.6 - Ending Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -151,8 +151,8 @@ top="600"
        width="994"
        top="3">
        <panel
-       follows="all"
-       height="2361"
+       follows="top|left"
+       height="3210"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,79 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="259"
+              height="429"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Toolbar button styled combobox buttons for login and elsewhere.
+Added: Projector Shadow Resolution sliders to Sidebar.
+Added: Chat History button to IM tab toolbar.
+Added: Missing chat history icon texture.
+Changed: Moved Inventory Library option from Viewer tab to UI tab.
+Changed: Moved Show Inbox/Outbox option from Viewer tab to UI tab.
+Changed: UI tab "Misc" section layout, segmented it with a separator.
+Changed: Moved SLURL Teleport in Chat to Chat tab.
+Changed: Overhauled the internal webbrowser layout.
+Changed: Replaced the normal combobox button images with the new toolbar ones in login.
+Changed: Default value for tooltip alive time while mouse is away to 0.1, making it a lot snappier.
+Changed: Make Sidebar only refresh the controls on toggle, should improve performance drastically while its opened.
+Changed: Revamped the vector control code, unified into one function for each of the 4 maximum values (X Y Z W).
+Changed: Glow Max Alpha slider decimal digits down to 3 since we controlled it in 0.001 steps anyway.
+Changed: Moved Motion Blur further to the top.
+Changed: Organized multiple option types into smaller slider groups just like in preferences.
+Changed: Overhauled texture picker layout. Vertical approach.
+Changed: Pipette icon. Need to do a new one.
+Changed: Statusbar media, draw distance and preset icon layout.
+Changed: Loginscreen location combo width to match the other widgets.
+Changed: Moved IM tab voice indicator a bit for better spacing.
+Changed: Overhauled open object floater.
+Changed: Version to 2.6.6.
+Fixed: Pressing Cancel on the System UI notification opens preferences.
+Fixed: Made the URL in the internal webbrowser readable.
+Fixed: Shadow Projector sliders not properly syncing.
+Fixed: Texture resolution not showing ontop of texture.
+Fixed: Warnings in floater_texture_ctrl.xml caused by remnants from Nirans Viewer.
+Removed: Unused shadow projector Resolution Multiplicator option.
+Removed: Camera options from Machinima Sidebar.
+Misc: Cleanup.
+Misc: Pulled MAINT-7156 on Oz's suggestion.
+MAINT-7156: do not use the server-supplied agent email when sending a postcard because it is obfuscated and not needed
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.6.5
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="259"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
