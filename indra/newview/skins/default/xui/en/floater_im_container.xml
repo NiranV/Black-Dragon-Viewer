@@ -107,7 +107,7 @@
              follows="left|top|right"
              height="30"
              layout="topleft"
-             left="1"
+             left="0"
              border_size="0"
              name="conversations_pane_buttons_stack"
              orientation="horizontal"
