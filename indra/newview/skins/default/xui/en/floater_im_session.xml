@@ -175,6 +175,50 @@
                  tool_tip="Add someone to this conversation"
                  width="31"/>
                 </layout_panel>
+						  <layout_panel
+                     name="chat_history_btn_panel"
+                     width="32"
+                     height="27"
+							visible="false"
+                     auto_resize="false">
+                <button
+                 follows="top|left"
+                 height="25"
+                 image_hover_unselected="Toolbar_Middle_Over"
+                 image_overlay="Conv_toolbar_history"
+                 image_selected="Toolbar_Middle_Selected"
+                 image_unselected="Toolbar_Middle_Off"
+                 layout="topleft"
+                 top="1"
+                 left="0"
+                 name="chat_history_btn"
+                 tool_tip="Open chat history"
+                 width="31">
+						<button.commit_callback
+						function="Avatar.GearDoToSelected"
+						parameter="chat_history"/>
+					 </button>
+                </layout_panel>
+						  <layout_panel
+                     name="local_history_btn_panel"
+                     width="32"
+                     height="27"
+							visible="false"
+                     auto_resize="false">
+                <button
+                 follows="top|left"
+                 height="25"
+                 image_hover_unselected="Toolbar_Middle_Over"
+                 image_overlay="Conv_toolbar_history"
+                 image_selected="Toolbar_Middle_Selected"
+                 image_unselected="Toolbar_Middle_Off"
+                 layout="topleft"
+                 top="1"
+                 left="0"
+                 name="local_history_btn"
+                 tool_tip="Open local chat history"
+                 width="31"/>
+                </layout_panel>
                     <layout_panel
                      name="voice_call_btn_panel"
                      width="32"

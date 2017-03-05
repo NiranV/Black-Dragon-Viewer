@@ -716,6 +716,8 @@ with the same filename but different name
   
   <!-- Back Dragon textures-->
   
+  <texture name="Conv_toolbar_history" file_name="icons/Conv_toolbar_history.png" preload="false" />
+  
   <texture name="ComboToolbarButton_Disabled" file_name="widgets/ComboToolbarButton_Disabled.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
   <texture name="ComboToolbarButton_Selected" file_name="widgets/ComboToolbarButton_Selected.png" preload="true" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
   <texture name="ComboToolbarButton_UpSelected" file_name="widgets/ComboToolbarButton_UpSelected.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />

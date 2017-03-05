@@ -240,6 +240,8 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	mTearOffBtn = getChild<LLButton>("tear_off_btn");
 	mTearOffBtn->setCommitCallback(boost::bind(&LLFloaterIMSessionTab::onTearOffClicked, this));
 
+	getChild<LLButton>("local_history_btn")->setCommitCallback(boost::bind(&LLFloaterIMSessionTab::onLocalHistory, this));
+
 	mGearBtn = getChild<LLButton>("gear_btn");
     mAddBtn = getChild<LLButton>("add_btn");
 	mVoiceButton = getChild<LLButton>("voice_call_btn");
@@ -758,6 +760,10 @@ void LLFloaterIMSessionTab::updateHeaderAndToolbar()
 	//BD
 	getChild<LLPanel>("close_btn_panel")->setVisible(is_not_torn_off && !mIsNearbyChat);
 
+	//BD - Disable the chat history button in nearby.
+	getChild<LLLayoutPanel>("chat_history_btn_panel")->setVisible(!mIsNearbyChat);
+	getChild<LLLayoutPanel>("nearby_history_btn_panel")->setVisible(mIsNearbyChat);
+
 	enableDisableCallBtn();
 
 	showTranslationCheckbox();
@@ -1098,4 +1104,10 @@ BOOL LLFloaterIMSessionTab::handleKeyHere(KEY key, MASK mask )
 		}
 	}
 	return handled;
+}
+
+//BD
+void LLFloaterIMSessionTab::onLocalHistory()
+{
+	LLFloaterReg::showInstance("preview_conversation", LLSD(LLUUID::null), true);
 }

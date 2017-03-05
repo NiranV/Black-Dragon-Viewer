@@ -102,6 +102,9 @@ public:
 	void restoreFloater();
 	void saveCollapsedState();
 
+	//BD
+	void onLocalHistory();
+
 	LLView* getChatHistory();
 
 protected:
