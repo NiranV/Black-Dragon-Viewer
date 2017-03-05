@@ -985,7 +985,7 @@ width="345">
                   top_pad="1"
                   width="293">
                   <slider.commit_callback
-                  function="Pref.ArrayVec4X"
+                  function="Pref.ArrayX"
                   parameter="RenderShadowResolution"/>
                   </slider>
                   <slider
@@ -1006,7 +1006,7 @@ width="345">
                   top_pad="1"
                   width="293">
                   <slider.commit_callback
-                  function="Pref.ArrayVec4Y"
+                  function="Pref.ArrayY"
                   parameter="RenderShadowResolution"/>
                   </slider>
                   <slider
@@ -1027,7 +1027,7 @@ width="345">
                   top_pad="1"
                   width="293">
                   <slider.commit_callback
-                  function="Pref.ArrayVec4Z"
+                  function="Pref.ArrayZ"
                   parameter="RenderShadowResolution"/>
                   </slider>
                   <slider
@@ -1048,7 +1048,7 @@ width="345">
                   top_pad="1"
                   width="293">
                   <slider.commit_callback
-                  function="Pref.ArrayVec4W"
+                  function="Pref.ArrayW"
                   parameter="RenderShadowResolution"/>
                   </slider>
                   

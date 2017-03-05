@@ -742,7 +742,7 @@ can_edit_text="true"
    top_pad="5"
    width="332">
     <slider.commit_callback
-      function="Pref.ArrayXD"
+      function="Pref.ArrayX"
       parameter="FocusOffsetFrontView"/>
       </slider>
    <slider
@@ -762,7 +762,7 @@ can_edit_text="true"
    top_pad="2"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayYD"
+      function="Pref.ArrayY"
       parameter="FocusOffsetFrontView"/>
       </slider>
    <slider
@@ -782,7 +782,7 @@ can_edit_text="true"
    top_pad="2"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayZD"
+      function="Pref.ArrayZ"
       parameter="FocusOffsetFrontView"/>
       </slider>
    <button
@@ -928,7 +928,7 @@ can_edit_text="true"
    top_pad="5"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayXD"
+      function="Pref.ArrayX"
       parameter="FocusOffsetGroupView"/>
       </slider>
    <slider
@@ -948,7 +948,7 @@ can_edit_text="true"
    top_pad="2"
    width="332">
     <slider.commit_callback
-      function="Pref.ArrayYD"
+      function="Pref.ArrayY"
       parameter="FocusOffsetGroupView"/>
       </slider>
    <slider
@@ -968,7 +968,7 @@ can_edit_text="true"
    top_pad="2"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayZD"
+      function="Pref.ArrayZ"
       parameter="FocusOffsetGroupView"/>
       </slider>
    <button
@@ -1115,7 +1115,7 @@ can_edit_text="true"
    top_pad="5"
    width="332">
     <slider.commit_callback
-      function="Pref.ArrayXD"
+      function="Pref.ArrayX"
       parameter="FocusOffsetRearView"/>
       </slider>
    <slider
@@ -1135,7 +1135,7 @@ can_edit_text="true"
    top_pad="2"
    width="332">
     <slider.commit_callback
-      function="Pref.ArrayYD"
+      function="Pref.ArrayY"
       parameter="FocusOffsetRearView"/>
       </slider>
    <slider
@@ -1155,7 +1155,7 @@ can_edit_text="true"
    top_pad="2"
    width="332">
     <slider.commit_callback
-      function="Pref.ArrayZD"
+      function="Pref.ArrayZ"
       parameter="FocusOffsetRearView"/>
       </slider>
    <button
@@ -1301,7 +1301,7 @@ can_edit_text="true"
    top_pad="5"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayXD"
+      function="Pref.ArrayX"
       parameter="FocusOffsetRightShoulderView"/>
       </slider>
    <slider
@@ -1321,7 +1321,7 @@ can_edit_text="true"
    top_pad="2"
    width="332">
     <slider.commit_callback
-      function="Pref.ArrayYD"
+      function="Pref.ArrayY"
       parameter="FocusOffsetRightShoulderView"/>
       </slider>
    <slider
@@ -1341,7 +1341,7 @@ can_edit_text="true"
    top_pad="2"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayZD"
+      function="Pref.ArrayZ"
       parameter="FocusOffsetRightShoulderView"/>
       </slider>
    <button
@@ -1487,7 +1487,7 @@ can_edit_text="true"
    top_pad="5"
    width="332">
     <slider.commit_callback
-      function="Pref.ArrayXD"
+      function="Pref.ArrayX"
       parameter="FocusOffsetLeftShoulderView"/>
       </slider>
    <slider
@@ -1507,7 +1507,7 @@ can_edit_text="true"
    top_pad="2"
    width="332">
     <slider.commit_callback
-      function="Pref.ArrayYD"
+      function="Pref.ArrayY"
       parameter="FocusOffsetLeftShoulderView"/>
       </slider>
    <slider
@@ -1527,7 +1527,7 @@ can_edit_text="true"
    top_pad="2"
    width="332">
     <slider.commit_callback
-      function="Pref.ArrayZD"
+      function="Pref.ArrayZ"
       parameter="FocusOffsetLeftShoulderView"/>
       </slider>
    <button

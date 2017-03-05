@@ -39,19 +39,12 @@ LLSideBar *gSideBar = NULL;
 LLSideBar::LLSideBar(const LLRect& rect)
 :	LLPanel()
 {
-//	//BD - Vector4
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4X", boost::bind(&LLFloaterPreference::onCommitVec4X, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4Y", boost::bind(&LLFloaterPreference::onCommitVec4Y, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4Z", boost::bind(&LLFloaterPreference::onCommitVec4Z, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4W", boost::bind(&LLFloaterPreference::onCommitVec4W, _1, _2));
-
 //	//BD - Array Debugs
 	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayXD", boost::bind(&LLFloaterPreference::onCommitXd, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayYD", boost::bind(&LLFloaterPreference::onCommitYd, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayZD", boost::bind(&LLFloaterPreference::onCommitZd, _1, _2));
+//	//BD - Vector4
+	mCommitCallbackRegistrar.add("Pref.ArrayW", boost::bind(&LLFloaterPreference::onCommitW, _1, _2));
 
 	buildFromFile("panel_machinima.xml");
 }
@@ -82,6 +75,9 @@ void LLSideBar::refreshGraphicControls()
 	getChild<LLUICtrl>("RenderShadowResolution_Y")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VY]);
 	getChild<LLUICtrl>("RenderShadowResolution_Z")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VZ]);
 	getChild<LLUICtrl>("RenderShadowResolution_W")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VW]);
+
+	getChild<LLUICtrl>("RenderProjectorShadowResolution_X")->setValue(gSavedSettings.getVector2("RenderProjectorShadowResolution").mV[VX]);
+	getChild<LLUICtrl>("RenderProjectorShadowResolution_Y")->setValue(gSavedSettings.getVector2("RenderProjectorShadowResolution").mV[VY]);
 
 	getChild<LLUICtrl>("ExodusRenderVignette_X")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VX]);
 	getChild<LLUICtrl>("ExodusRenderVignette_Y")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VY]);

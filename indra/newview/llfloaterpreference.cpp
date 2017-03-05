@@ -827,19 +827,12 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 //	//BD - Expandable Tabs
 	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::toggleTabs, this));
 
-//	//BD - Vector4
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4X", boost::bind(&LLFloaterPreference::onCommitVec4X, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4Y", boost::bind(&LLFloaterPreference::onCommitVec4Y, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4Z", boost::bind(&LLFloaterPreference::onCommitVec4Z, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayVec4W", boost::bind(&LLFloaterPreference::onCommitVec4W, _1, _2));
-
 //	//BD - Array Debugs
 	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayXD", boost::bind(&LLFloaterPreference::onCommitXd, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayYD", boost::bind(&LLFloaterPreference::onCommitYd, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayZD", boost::bind(&LLFloaterPreference::onCommitZd, _1, _2));
+//	//BD - Vector4
+	mCommitCallbackRegistrar.add("Pref.ArrayW", boost::bind(&LLFloaterPreference::onCommitW, _1, _2));
 
 //	//BD - Revert to Default
 	mCommitCallbackRegistrar.add("Pref.Default", boost::bind(&LLFloaterPreference::resetToDefault, this, _1));
@@ -1016,76 +1009,84 @@ LLFloaterPreference::~LLFloaterPreference()
 	LLConversationLog::instance().removeObserver(this);
 }
 
-//BD - Vector4
-void LLFloaterPreference::onCommitVec4W(LLUICtrl* ctrl, const LLSD& param)
-{
-	LLVector4 value = gSavedSettings.getVector4(param.asString());
-	value.mV[VW] = ctrl->getValue().asReal();
-	gSavedSettings.setVector4(param.asString(), value);
-}
-
-void LLFloaterPreference::onCommitVec4X(LLUICtrl* ctrl, const LLSD& param)
-{
-	LLVector4 value = gSavedSettings.getVector4(param.asString());
-	value.mV[VX] = ctrl->getValue().asReal();
-	gSavedSettings.setVector4(param.asString(), value);
-}
-
-void LLFloaterPreference::onCommitVec4Y(LLUICtrl* ctrl, const LLSD& param)
-{
-	LLVector4 value = gSavedSettings.getVector4(param.asString());
-	value.mV[VY] = ctrl->getValue().asReal();
-	gSavedSettings.setVector4(param.asString(), value);
-}
-
-void LLFloaterPreference::onCommitVec4Z(LLUICtrl* ctrl, const LLSD& param)
-{
-	LLVector4 value = gSavedSettings.getVector4(param.asString());
-	value.mV[VZ] = ctrl->getValue().asReal();
-	gSavedSettings.setVector4( param.asString() , value);
-}
-
 //BD - Array Debugs
 void LLFloaterPreference::onCommitX(LLUICtrl* ctrl, const LLSD& param)
 {
-	LLVector3 value = gSavedSettings.getVector3(param.asString());
+	eControlType type = gSavedSettings.getControl(param.asString())->type();
+	LLVector4 value;
+	if (type == TYPE_VEC4)
+	{
+		value = gSavedSettings.getVector4(param.asString());
+	}
+	else if (type == TYPE_VEC3)
+	{
+		value.setValue(gSavedSettings.getVector3(param.asString()).getValue());
+	}
+	else if (type == TYPE_VEC3D)
+	{
+		value.setValue(gSavedSettings.getVector3d(param.asString()).getValue());
+	}
+	else
+	{
+		value.setValue(gSavedSettings.getVector2(param.asString()).getValue());
+	}
+	value.setValue(gSavedSettings.getControl(param.asString())->getValue());
 	value.mV[VX] = ctrl->getValue().asReal();
-	gSavedSettings.setVector3(param.asString(), value);
+	gSavedSettings.setUntypedValue(param.asString(), value.getValue());
 }
 
 void LLFloaterPreference::onCommitY(LLUICtrl* ctrl, const LLSD& param)
 {
-	LLVector3 value = gSavedSettings.getVector3(param.asString());
+	eControlType type = gSavedSettings.getControl(param.asString())->type();
+	LLVector4 value;
+	if (type == TYPE_VEC4)
+	{
+		value = gSavedSettings.getVector4(param.asString());
+	}
+	else if (type == TYPE_VEC3)
+	{
+		value.setValue(gSavedSettings.getVector3(param.asString()).getValue());
+	}
+	else if (type == TYPE_VEC3D)
+	{
+		value.setValue(gSavedSettings.getVector3d(param.asString()).getValue());
+	}
+	else
+	{
+		value.setValue(gSavedSettings.getVector2(param.asString()).getValue());
+	}
+	value.setValue(gSavedSettings.getControl(param.asString())->getValue());
 	value.mV[VY] = ctrl->getValue().asReal();
-	gSavedSettings.setVector3(param.asString(), value);
+	gSavedSettings.setUntypedValue(param.asString(), value.getValue());
 }
 
 void LLFloaterPreference::onCommitZ(LLUICtrl* ctrl, const LLSD& param)
 {
-	LLVector3 value = gSavedSettings.getVector3(param.asString());
+	eControlType type = gSavedSettings.getControl(param.asString())->type();
+	LLVector4 value;
+	if (type == TYPE_VEC4)
+	{
+		value = gSavedSettings.getVector4(param.asString());
+	}
+	else if (type == TYPE_VEC3)
+	{
+		value.setValue(gSavedSettings.getVector3(param.asString()).getValue());
+	}
+	else
+	{
+		value.setValue(gSavedSettings.getVector3d(param.asString()).getValue());
+	}
+	value.setValue(gSavedSettings.getControl(param.asString())->getValue());
 	value.mV[VZ] = ctrl->getValue().asReal();
-	gSavedSettings.setVector3(param.asString(), value);
+	gSavedSettings.setUntypedValue(param.asString(), value.getValue());
 }
 
-void LLFloaterPreference::onCommitXd(LLUICtrl* ctrl, const LLSD& param)
+//BD - Vector4
+void LLFloaterPreference::onCommitW(LLUICtrl* ctrl, const LLSD& param)
 {
-	LLVector3d value = gSavedSettings.getVector3d(param.asString());
-	value.mdV[VX] = ctrl->getValue().asReal();
-	gSavedSettings.setVector3d( param.asString() , value);
-}
-
-void LLFloaterPreference::onCommitYd(LLUICtrl* ctrl, const LLSD& param)
-{
-	LLVector3d value = gSavedSettings.getVector3d(param.asString());
-	value.mdV[VY] = ctrl->getValue().asReal();
-	gSavedSettings.setVector3d( param.asString() , value);
-}
-
-void LLFloaterPreference::onCommitZd(LLUICtrl* ctrl, const LLSD& param)
-{
-	LLVector3d value = gSavedSettings.getVector3d(param.asString());
-	value.mdV[VZ] = ctrl->getValue().asReal();
-	gSavedSettings.setVector3d( param.asString() , value);
+	LLVector4 value = gSavedSettings.getVector4(param.asString());
+	value.mV[VW] = ctrl->getValue().asReal();
+	gSavedSettings.setVector4(param.asString(), value);
 }
 
 //BD - Revert to Default
