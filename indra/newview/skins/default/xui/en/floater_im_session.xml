@@ -250,7 +250,7 @@
                  height="16"
                  layout="topleft"
                  top="6"
-                 left="10"
+                 left="7"
                  mouse_opaque="true"
                  name="speaking_indicator"
                  visible="false"
