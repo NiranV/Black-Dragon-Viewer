@@ -455,7 +455,8 @@ void LLViewerShaderMgr::setShaders()
 	initAttribsAndUniforms();
 	gPipeline.releaseGLBuffers();
 
-	if (gSavedSettings.getBOOL("VertexShaderEnable"))
+	if (gSavedSettings.getBOOL("VertexShaderEnable")
+		|| gSavedSettings.getBOOL("RenderDeferred"))
 	{
 		LLPipeline::sWaterReflections = gGLManager.mHasCubeMap;
 		LLPipeline::sRenderGlow = gSavedSettings.getBOOL("RenderGlow"); 
@@ -492,7 +493,8 @@ void LLViewerShaderMgr::setShaders()
 	LLVertexBuffer::unbind();
 	if (LLFeatureManager::getInstance()->isFeatureAvailable("VertexShaderEnable") 
 		&& (gGLManager.mGLSLVersionMajor > 1 || gGLManager.mGLSLVersionMinor >= 10)
-		&& gSavedSettings.getBOOL("VertexShaderEnable"))
+		&& gSavedSettings.getBOOL("VertexShaderEnable")
+		|| gSavedSettings.getBOOL("RenderDeferred"))
 	{
 		//using shaders, disable fixed function
 		LLGLSLShader::sNoFixedFunction = true;
@@ -514,9 +516,7 @@ void LLViewerShaderMgr::setShaders()
 		
 		//BD
 		if (LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
-		    gSavedSettings.getBOOL("RenderDeferred") &&
-			gSavedSettings.getBOOL("RenderAvatarVP") &&
-			gSavedSettings.getBOOL("WindLightUseAtmosShaders"))
+										 gSavedSettings.getBOOL("RenderDeferred"))
 		{
 			if (gSavedSettings.getS32("RenderShadowDetail") > 0
 				|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
@@ -529,10 +529,10 @@ void LLViewerShaderMgr::setShaders()
 			}
 
 			//make sure hardware skinning is enabled
-			//gSavedSettings.setBOOL("RenderAvatarVP", TRUE);
+			gSavedSettings.setBOOL("RenderAvatarVP", TRUE);
 			
 			//make sure atmospheric shaders are enabled
-			//gSavedSettings.setBOOL("WindLightUseAtmosShaders", TRUE);
+			gSavedSettings.setBOOL("WindLightUseAtmosShaders", TRUE);
 		}
 
 		//BD

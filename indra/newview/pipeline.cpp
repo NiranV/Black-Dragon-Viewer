@@ -510,7 +510,7 @@ void LLPipeline::init()
 	gOctreeMaxCapacity = gSavedSettings.getU32("OctreeMaxNodeCapacity");
 	gOctreeMinSize = gSavedSettings.getF32("OctreeMinimumNodeSize");
 	sDynamicLOD = gSavedSettings.getBOOL("RenderDynamicLOD");
-	sRenderBump = gSavedSettings.getBOOL("RenderObjectBump");
+	sRenderBump = gSavedSettings.getBOOL("RenderObjectBump") || gSavedSettings.getBOOL("RenderDeferred");
 	sUseTriStrips = gSavedSettings.getBOOL("RenderUseTriStrips");
 	LLVertexBuffer::sUseStreamDraw = gSavedSettings.getBOOL("RenderUseStreamVBO");
 	LLVertexBuffer::sUseVAO = gSavedSettings.getBOOL("RenderUseVAO");
@@ -1176,7 +1176,7 @@ void LLPipeline::allocateShadowMaps(bool allocate)
 //static
 void LLPipeline::updateRenderBump()
 {
-	sRenderBump = gSavedSettings.getBOOL("RenderObjectBump");
+	sRenderBump = gSavedSettings.getBOOL("RenderObjectBump") || gSavedSettings.getBOOL("RenderDeferred");
 }
 
 //static
@@ -1185,11 +1185,12 @@ void LLPipeline::updateRenderDeferred()
 	//BD
 	BOOL deferred = ((RenderDeferred && 
 					 LLRenderTarget::sUseFBO &&
-					 LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&	 
-					 LLPipeline::sRenderBump &&
-					 VertexShaderEnable && 
-					 RenderAvatarVP &&
-					 WindLightUseAtmosShaders) ? TRUE : FALSE) &&
+					 LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
+					 LLPipeline::sRenderBump) ? TRUE : FALSE) &&
+					 //BD
+					 //VertexShaderEnable && 
+					 //RenderAvatarVP &&
+					 //WindLightUseAtmosShaders) ? TRUE : FALSE) &&
 					!gUseWireframe;
 
 	sRenderDeferred = deferred;
@@ -1199,6 +1200,11 @@ void LLPipeline::updateRenderDeferred()
 	if (deferred)
 	{ //must render glow when rendering deferred since post effect pass is needed to present any lighting at all
 		sRenderGlow = TRUE;
+		//BD - We need all of these for Deferred to function, toggle them all to make it easy to enable deferred.
+		VertexShaderEnable = TRUE;
+		RenderAvatarVP = TRUE;
+		WindLightUseAtmosShaders = TRUE;
+		gSavedSettings.setBOOL("RenderObjectBump", true);
 	}
 }
 
@@ -1221,10 +1227,10 @@ void LLPipeline::refreshCachedSettings()
 			&& gGLManager.mHasOcclusionQuery) ? 2 : 0
 			&& !gSavedSettings.getBOOL("UseFreezeWorld");
 	
-	VertexShaderEnable = gSavedSettings.getBOOL("VertexShaderEnable");
-	RenderAvatarVP = gSavedSettings.getBOOL("RenderAvatarVP");
-	WindLightUseAtmosShaders = gSavedSettings.getBOOL("WindLightUseAtmosShaders");
 	RenderDeferred = gSavedSettings.getBOOL("RenderDeferred");
+	VertexShaderEnable = gSavedSettings.getBOOL("VertexShaderEnable") || RenderDeferred;
+	RenderAvatarVP = gSavedSettings.getBOOL("RenderAvatarVP") || RenderDeferred;
+	WindLightUseAtmosShaders = gSavedSettings.getBOOL("WindLightUseAtmosShaders") || RenderDeferred;
 	RenderDeferredSunWash = gSavedSettings.getF32("RenderDeferredSunWash");
 	RenderFSAASamples = gSavedSettings.getU32("RenderFSAASamples");
 	RenderResolutionDivisor = gSavedSettings.getU32("RenderResolutionDivisor");
@@ -2579,8 +2585,9 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 	BOOL to_texture =	LLPipeline::sUseOcclusion > 1 &&
 						!hasRenderType(LLPipeline::RENDER_TYPE_HUD) && 
 						LLViewerCamera::sCurCameraID == LLViewerCamera::CAMERA_WORLD &&
-						gPipeline.canUseVertexShaders() &&
-						sRenderGlow;
+						(gPipeline.canUseVertexShaders() &&
+						sRenderGlow || 
+						gPipeline.RenderDeferred);
 
 	if (to_texture)
 	{
