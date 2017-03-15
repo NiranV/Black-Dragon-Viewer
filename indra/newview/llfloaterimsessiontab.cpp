@@ -764,6 +764,10 @@ void LLFloaterIMSessionTab::updateHeaderAndToolbar()
 	getChild<LLLayoutPanel>("chat_history_btn_panel")->setVisible(!mIsNearbyChat);
 	getChild<LLLayoutPanel>("nearby_history_btn_panel")->setVisible(mIsNearbyChat);
 
+	//BD - Disable the "Add Participant" button if it's a group chat or local chat.
+	bool is_ad_hoc = (mSession ? mSession->isAdHocSessionType() : false);
+	getChild<LLLayoutPanel>("add_btn_panel")->setVisible(mIsP2PChat || is_ad_hoc);
+
 	enableDisableCallBtn();
 
 	showTranslationCheckbox();
