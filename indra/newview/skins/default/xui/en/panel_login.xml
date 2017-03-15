@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.6.6 - Ending Dragon]"
+       label="[CHANNEL] [VERSION] - [2.6.7 - Ending Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="3210"
+       height="3490"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,65 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="429"
+              height="247"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Camera Field of View option to machinima sidebar.
+Added: Ability to add infinite additional and/or alternative bindings for everything.
+Added: Ability to select one or more keybinds and delete them with a single click.
+Added: Some additional bindings to most modes that were missing.
+Changed: Preferences "Display" tab bottombar layout.
+Changed: Preferences floater layout slightly to look cleaner.
+Changed: Internal Browser space between content and the edge of the floater.
+Changed: Make enabling Deferred force all necessary code and features to on.
+Changed: Completely overhauled the preferences 'Keybindings' tab.
+Changed: Fixed keybinding buttons and displays into lists.
+Changed: Wording on the loadingscreen tip when an update is downloading.
+Changed: Some display tab options to enable with Deferred instead of pre-deferred shader options.
+Changed: Show the invite to session button in IM tabs only if the session is P2P or a ad-hoc conference.
+Changed: Output the modifier keys in 'Keybindings' tab as easily understandable strings.
+Changed: 'Display' tab bottom padding for preset buttons to match those in the 'Keybinding' tab.
+Changed: Version to 2.6.7.
+Fixed: Color for self on minimap.
+Removed: Export button because we export (save) everything immediately anyway.
+Misc: Cleaned up some preferences code, improved performance when preferences is open slightly.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.6.6
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="429"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
