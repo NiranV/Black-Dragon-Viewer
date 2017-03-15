@@ -1340,7 +1340,7 @@ width="510">
   top_pad="0"/>
  <check_box
    control_name="RenderWaterMipNormal"
-   enabled_control="VertexShaderEnable"
+   enabled_control="RenderDeferred"
    height="16"
    initial_value="true"
    label="Use Water Mip-maps"
@@ -2424,7 +2424,7 @@ width="510">
 	  width="515">
       <slider  
       control_name="RenderGlowIterations"
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
       layout="topleft"
@@ -2460,7 +2460,7 @@ width="510">
       </button>
       <slider  
       control_name="RenderGlowStrength"
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       height="14"
@@ -2495,7 +2495,7 @@ width="510">
       </button>
       <slider  
       control_name="RenderGlowMinLuminance"
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="1"
       enabled="true"
       follows="left|top"
@@ -2532,7 +2532,7 @@ width="510">
       </button>
       <slider  
       control_name="RenderGlowWarmthAmount"
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="1"
       follows="left|top"
       height="14"
@@ -2567,7 +2567,7 @@ width="510">
       </button>
       <slider  
       control_name="RenderGlowWidth"
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="1"
       follows="left|top"
       height="14"
@@ -2602,7 +2602,7 @@ width="510">
       </button>
       <slider  
       control_name="RenderGlowMaxExtractAlpha"
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
@@ -2661,7 +2661,7 @@ width="510">
   top_pad="0"/>
       
       <slider  
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       layout="topleft"
@@ -2684,7 +2684,7 @@ width="510">
       parameter="RenderGlowLumWeights"/>
       </slider>
       <slider  
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
@@ -2706,7 +2706,7 @@ width="510">
       parameter="RenderGlowLumWeights"/>
       </slider>
       <slider  
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
@@ -2769,7 +2769,7 @@ width="510">
   top_pad="0"/>
       
       <slider  
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       layout="topleft"
@@ -2792,7 +2792,7 @@ width="510">
       parameter="RenderGlowWarmthWeights"/>
       </slider>
       <slider  
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
@@ -2814,7 +2814,7 @@ width="510">
       parameter="RenderGlowWarmthWeights"/>
       </slider>
       <slider  
-      enabled_control="RenderGlow"
+      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
