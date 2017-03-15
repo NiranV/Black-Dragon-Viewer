@@ -1434,15 +1434,9 @@ void LLFloaterPreference::refreshMemoryControls()
 	//BD - Cap out at the highest possible stable value we tested.
 	max_mem = llclamp(max_mem, 128, 1992);
 
-	//BD - Disable automatic scaling if we have less than 128mb available.
-	//     This may sound weird but it's actually used as a more general fail 
-	//     safe against negative values that might be encountered if the 
-	//     available memory is reported in a different format than expected.
-	if (max_mem > 128)
-	{
-		getChild<LLSliderCtrl>("SystemMemory")->setMaxValue(max_mem);
-		getChild<LLSliderCtrl>("SceneMemory")->setMaxValue(max_mem);
-	}
+	getChild<LLSliderCtrl>("SystemMemory")->setMaxValue(max_mem);
+	getChild<LLSliderCtrl>("SceneMemory")->setMaxValue(max_mem);
+
 	mProgressBar->setValue(percent);
 }
 
@@ -1455,11 +1449,13 @@ void LLFloaterPreference::draw()
 	gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
 
 //	//BD - Memory Allocation
+	//     We might want to refresh this every second or so since its only changing every so often.
 	refreshMemoryControls();
 //	//BD - Warning System
+	//     Possibly simplify the warning system, all boolean related warnings can be toggled via XUI and
+	//     then only when necessary, everything else should be priodically refreshed, every second or two
+	//     should be more than enough.
 	refreshWarnings();
-//	//BD - Expandable Tabs
-	toggleTabs();
 	
 	LLFloater::draw();
 }
@@ -1658,6 +1654,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	//BD
 	refreshGraphicControls();
 	refreshCameraControls();
+	toggleTabs();
 
 	// Make sure the current state of prefs are saved away when
 	// when the floater is opened.  That will make cancel do its
@@ -2729,6 +2726,7 @@ void LLFloaterPreference::loadPreset(const LLSD& user_data)
 	std::string name = combo->getSimple();
 
 	LLPresetsManager::getInstance()->loadPreset(subdirectory, name);
+	toggleTabs();
 }
 
 void LLFloaterPreference::onPresetsListChange()
