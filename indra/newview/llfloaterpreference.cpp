@@ -1184,7 +1184,7 @@ void LLFloaterPreference::onAddBind(KEY key, MASK mask)
 		row["columns"][1]["column"] = "button";
 		row["columns"][1]["value"] = LLKeyboard::stringFromKey(key);
 		row["columns"][2]["column"] = "modifiers";
-		row["columns"][2]["value"] = LLKeyboard::stringFromMask(mask);
+		row["columns"][2]["value"] = LLKeyboard::stringFromMask(mask, true);
 		scroll->addElement(row);
 	}
 	onExportControls();
@@ -1222,7 +1222,10 @@ void LLFloaterPreference::refreshKeys()
 			row["columns"][1]["column"] = "button";
 			row["columns"][1]["value"] = settings["key"].asString();
 			row["columns"][2]["column"] = "modifiers";
-			row["columns"][2]["value"] = settings["mask"].asString();
+			//BD - Translate to human readable text.
+			MASK mask = MASK_NONE;
+			LLKeyboard::maskFromString(settings["mask"].asString(), &mask);
+			row["columns"][2]["value"] = LLKeyboard::stringFromMask(mask, true);
 			scroll->addElement(row);
 		}
 	}

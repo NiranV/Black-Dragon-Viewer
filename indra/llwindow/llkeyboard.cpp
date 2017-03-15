@@ -424,13 +424,13 @@ std::string LLKeyboard::stringFromMask(MASK mask, bool for_ui)
 		else if (mask == (MASK_SHIFT))
 			res = "Shift";
 		else if (mask == (MASK_ALT | MASK_CONTROL))
-			res = "Ctl Alt";
+			res = "Ctrl Alt";
 		else if (mask == (MASK_SHIFT | MASK_ALT))
 			res = "Alt Shift";
 		else if (mask == (MASK_SHIFT | MASK_CONTROL))
-			res = "Ctl Shift";
+			res = "Ctrl Shift";
 		else if (mask == (MASK_SHIFT | MASK_CONTROL | MASK_ALT))
-			res = "Ctl Alt Shift";
+			res = "Ctrl Alt Shift";
 	}
 	else
 	{
@@ -459,42 +459,50 @@ std::string LLKeyboard::stringFromMask(MASK mask, bool for_ui)
 BOOL LLKeyboard::maskFromString(const std::string& str, MASK *mask)
 {
 	std::string instring(str);
-	if (instring == "NONE")
+	if (instring == "NONE"
+		|| instring == "")
 	{
 		*mask = MASK_NONE;
 		return TRUE;
 	}
-	else if (instring == "SHIFT")
+	else if (instring == "SHIFT"
+		|| instring == "Shift")
 	{
 		*mask = MASK_SHIFT;
 		return TRUE;
 	}
-	else if (instring == "CTL")
+	else if (instring == "CTL"
+		|| instring == "Ctrl")
 	{
 		*mask = MASK_CONTROL;
 		return TRUE;
 	}
-	else if (instring == "ALT")
+	else if (instring == "ALT"
+		|| instring == "Alt")
 	{
 		*mask = MASK_ALT;
 		return TRUE;
 	}
-	else if (instring == "CTL_SHIFT")
+	else if (instring == "CTL_SHIFT"
+		|| instring == "Ctrl Shift")
 	{
 		*mask = MASK_CONTROL | MASK_SHIFT;
 		return TRUE;
 	}
-	else if (instring == "ALT_SHIFT")
+	else if (instring == "ALT_SHIFT"
+		|| instring == "Alt Shift")
 	{
 		*mask = MASK_ALT | MASK_SHIFT;
 		return TRUE;
 	}
-	else if (instring == "CTL_ALT")
+	else if (instring == "CTL_ALT"
+		|| instring == "Ctrl Alt")
 	{
 		*mask = MASK_CONTROL | MASK_ALT;
 		return TRUE;
 	}
-	else if (instring == "CTL_ALT_SHIFT")
+	else if (instring == "CTL_ALT_SHIFT"
+		|| instring == "Ctrl Alt Shift")
 	{
 		*mask = MASK_CONTROL | MASK_ALT | MASK_SHIFT;
 		return TRUE;
