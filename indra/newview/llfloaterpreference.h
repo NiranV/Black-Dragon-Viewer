@@ -226,12 +226,13 @@ public:
 	void resetToDefault(LLUICtrl* ctrl);
 
 //	//BD - Custom Keyboard Layout
-	void onBindKey(KEY key, MASK mask, LLUICtrl* ctrl, const LLSD& param);
-	void onUnbindKey(LLUICtrl* ctrl, const LLSD& param);
 	void onExportControls();
 	void onUnbindControls();
 	void onDefaultControls();
 	void refreshKeys();
+	void onBindMode();
+	void onAddBind(KEY key, MASK mask);
+	void onRemoveBind();
 
 //	//BD - Revert to Default
 	void inputOutput();
