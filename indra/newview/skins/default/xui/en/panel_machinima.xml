@@ -34,7 +34,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1400"
+            height="1455"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -1788,6 +1788,47 @@ width="345">
                   min_val="0"
                   mouse_opaque="true"
                   name="MaxAlpha"
+                  show_text="true"
+                  width="297" />
+                  <panel
+                  follows="left|top|right"
+                  height="20"
+                  bg_visible="true"
+                  bg_alpha_color="0.10 0.43 0.77 0.28"
+                  layout="topleft"
+                  mouse_opaque="false"
+                  left="2"
+                  name="title"
+                  top_pad="10"
+                  width="323"/>
+                  <text
+                  layout="topleft"
+                  follows="top|left"
+                  type="string"
+                  length="1"
+                  height="12"
+                  left="10"
+                  top_delta="4"
+                  name="title_label"
+                  width="250">
+                  Camera:
+                  </text>
+                  <slider
+                  can_edit_text="true"
+                  control_name="CameraAngle"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="15"
+                  increment="0.01"
+                  initial_value="1.10"
+                  layout="topleft"
+                  label_width="110"
+                  label="View Angle:"
+                  left="10"
+                  max_val="3.97"
+                  min_val="0.17"
+                  top_pad="15"
+                  name="camera_fov"
                   show_text="true"
                   width="297" />
             </panel>
