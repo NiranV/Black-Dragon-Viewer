@@ -13,7 +13,7 @@
  width="668">
    <icon
         follows="top|left"
-        height="408"
+        height="411"
         color="1 1 1 1"
         image_name="Panel_Background"
         layout="topleft"
@@ -21,30 +21,30 @@
         mouse_opaque="false"
         visible="true"
         width="142"
-		top="21"
-        left="7"/>
+		top="18"
+        left="9"/>
    <button
      follows="right|bottom"
-     height="23"
+     height="21"
      label="OK"
      label_selected="OK"
      layout="topleft"
-     right="-105"
+     right="-99"
      name="OK"
-     top="431"
+     top="433"
      width="90">
         <button.commit_callback
          function="Pref.OK" />
     </button>
     <button
      follows="right|bottom"
-     height="23"
+     height="21"
      label="Cancel"
      label_selected="Cancel"
      layout="topleft"
      left_pad="5"
      name="Cancel"
-     right="-10"
+     right="-8"
      width="90" >
         <button.commit_callback
          function="Pref.Cancel" />
@@ -54,13 +54,13 @@
      halign="left"
      height="410"
      layout="topleft"
-     left="5"
+     left="7"
      name="pref core"
      tab_group="1"
      tab_position="left"
      tab_width="140"
      tab_padding_right="0"
-     top="21"
+     top="18"
      width="656">
         <panel
 	     class="panel_preference"
