@@ -162,7 +162,9 @@ void LLNetMap::draw()
 	//static LLUIColor map_track_disabled_color = LLUIColorTable::instance().getColor("MapTrackDisabledColor", LLColor4::white);
 	static LLUIColor map_frustum_color = LLUIColorTable::instance().getColor("MapFrustumColor", LLColor4::white);
 	static LLUIColor map_frustum_rotating_color = LLUIColorTable::instance().getColor("MapFrustumRotatingColor", LLColor4::white);
-//	//BD - Chat Range Rings6
+	//BD
+	static LLUIColor map_avatar_self_color = LLUIColorTable::instance().getColor("MapAvatarSelfColor", LLColor4::white);
+//	//BD - Chat Range Rings
 	static LLUIColor map_chat_ring_color = LLUIColorTable::instance().getColor("MapChatRingColor", LLColor4::white);
 
 	if (mObjectImagep.isNull())
@@ -452,7 +454,9 @@ void LLNetMap::draw()
 			you->draw(ll_round(pos_map.mV[VX] - mDotRadius),
 					  ll_round(pos_map.mV[VY] - mDotRadius),
 					  dot_width,
-					  dot_width);
+					  dot_width,
+					  //BD
+					  map_avatar_self_color);
 
 			F32	dist_to_cursor_squared = dist_vec_squared(LLVector2(pos_map.mV[VX], pos_map.mV[VY]),
 										  LLVector2(local_mouse_x,local_mouse_y));
