@@ -624,7 +624,7 @@ void LLPanelFace::getState()
 	updateUI();
 }
 
-void LLPanelFace::updateUI()
+void LLPanelFace::updateUI(bool force_set_values)
 { //set state of UI to match state of texture entry(ies)  (calls setEnabled, setValue, etc, but NOT setVisible)
 	LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
 
