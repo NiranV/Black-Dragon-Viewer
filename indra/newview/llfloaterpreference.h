@@ -190,6 +190,10 @@ public:
 	void onCommitMediaEnabled();
 	void onCommitMusicEnabled();
 	void applyResolution();
+	void onChangeModelFolder();
+	void onChangeTextureFolder();
+	void onChangeSoundFolder();
+	void onChangeAnimationFolder();
 	void onClickBlockList();
 	void onClickProxySettings();
 	void onClickTranslationSettings();

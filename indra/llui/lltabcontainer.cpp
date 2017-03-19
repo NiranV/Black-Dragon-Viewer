@@ -210,6 +210,7 @@ LLTabContainer::Params::Params()
 	label_pad_left("label_pad_left"),
 	tab_position("tab_position"),
 	hide_tabs("hide_tabs", false),
+	hide_scroll_arrows("hide_scroll_arrows", false),
 	tab_padding_right("tab_padding_right"),
 	first_tab("first_tab"),
 	middle_tab("middle_tab"),
@@ -242,6 +243,7 @@ LLTabContainer::LLTabContainer(const LLTabContainer::Params& p)
 	mPrevArrowBtn(NULL),
 	mNextArrowBtn(NULL),
 	mIsVertical( p.tab_position == LEFT ),
+	mHideScrollArrows(p.hide_scroll_arrows),
 	mRightTabBtnOffset(p.tab_padding_right),
 	mTotalTabWidth(0),
 	mTabPosition(p.tab_position),
@@ -410,7 +412,7 @@ void LLTabContainer::draw()
 
 	setScrollPosPixels((S32)lerp((F32)getScrollPosPixels(), (F32)target_pixel_scroll, LLSmoothInterpolation::getInterpolant(0.08f)));
 
-	BOOL has_scroll_arrows = !getTabsHidden() && ((mMaxScrollPos > 0) || (mScrollPosPixels > 0));
+	BOOL has_scroll_arrows = !mHideScrollArrows && !getTabsHidden() && ((mMaxScrollPos > 0) || (mScrollPosPixels > 0));
 	mPrevArrowBtn->setVisible( has_scroll_arrows );
 	mNextArrowBtn->setVisible( has_scroll_arrows );
 
@@ -514,7 +516,7 @@ BOOL LLTabContainer::handleMouseDown( S32 x, S32 y, MASK mask )
 {
 	static LLUICachedControl<S32> tabcntrv_pad ("UITabCntrvPad", 0);
 	BOOL handled = FALSE;
-	BOOL has_scroll_arrows = (getMaxScrollPos() > 0) && !getTabsHidden();
+	BOOL has_scroll_arrows = !mHideScrollArrows && (getMaxScrollPos() > 0) && !getTabsHidden();
 
 	if (has_scroll_arrows)
 	{
@@ -578,7 +580,7 @@ BOOL LLTabContainer::handleMouseDown( S32 x, S32 y, MASK mask )
 BOOL LLTabContainer::handleHover( S32 x, S32 y, MASK mask )
 {
 	BOOL handled = FALSE;
-	BOOL has_scroll_arrows = (getMaxScrollPos() > 0) && !getTabsHidden();
+	BOOL has_scroll_arrows = !mHideScrollArrows && (getMaxScrollPos() > 0) && !getTabsHidden();
 
 	if (has_scroll_arrows)
 	{
@@ -609,7 +611,7 @@ BOOL LLTabContainer::handleHover( S32 x, S32 y, MASK mask )
 BOOL LLTabContainer::handleMouseUp( S32 x, S32 y, MASK mask )
 {
 	BOOL handled = FALSE;
-	BOOL has_scroll_arrows = (getMaxScrollPos() > 0)  && !getTabsHidden();
+	BOOL has_scroll_arrows = !mHideScrollArrows && (getMaxScrollPos() > 0)  && !getTabsHidden();
 
 	S32 local_x = x - getRect().mLeft;
 	S32 local_y = y - getRect().mBottom;
@@ -666,7 +668,7 @@ BOOL LLTabContainer::handleToolTip( S32 x, S32 y, MASK mask)
 	{
 		LLTabTuple* firsttuple = getTab(0);
 
-		BOOL has_scroll_arrows = (getMaxScrollPos() > 0);
+		BOOL has_scroll_arrows = !mHideScrollArrows && (getMaxScrollPos() > 0);
 		LLRect clip;
 		if (mIsVertical)
 		{
@@ -792,7 +794,7 @@ BOOL LLTabContainer::handleKeyHere(KEY key, MASK mask)
 // virtual
 BOOL LLTabContainer::handleDragAndDrop(S32 x, S32 y, MASK mask,	BOOL drop,	EDragAndDropType type, void* cargo_data, EAcceptance *accept, std::string	&tooltip)
 {
-	BOOL has_scroll_arrows = (getMaxScrollPos() > 0);
+	BOOL has_scroll_arrows = !mHideScrollArrows && (getMaxScrollPos() > 0);
 
 	if(mOpenTabsOnDragAndDrop && !getTabsHidden())
 	{
@@ -1495,7 +1497,7 @@ BOOL LLTabContainer::setTab(S32 which)
 						is_visible = FALSE;
 					}
 				}
-				else if (getMaxScrollPos() > 0)
+				else if (!mHideScrollArrows && getMaxScrollPos() > 0)
 				{
 					if( i < getScrollPos() )
 					{

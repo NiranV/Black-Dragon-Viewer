@@ -392,6 +392,7 @@ void LLSidepanelAppearance::toggleWearableEditPanel(BOOL visible, LLViewerWearab
 	{
 		// Save changes if closing.
 		mEditWearable->saveChanges();
+		mEditWearable->setWearable(NULL);
 		LLAppearanceMgr::getInstance()->updateIsDirty();
 		if (change_state)
 		{
