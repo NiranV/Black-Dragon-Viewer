@@ -142,7 +142,6 @@ width="510">
 	  width="515">
    <check_box
    control_name="FullScreenWindow"
-   disabled_control="FullScreen"
    height="16"
    initial_value="false"
    label="Borderless Window Mode"
