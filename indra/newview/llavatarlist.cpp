@@ -235,8 +235,6 @@ void LLAvatarList::addAvalineItem(const LLUUID& item_id, const LLUUID& session_i
 	item->setName(item_name);
 	//BD
 	item->showExtraInformation(mShowExtraInformation);
-	//BD - Developer tracker
-	LLUUID dev_id("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5");
 	item->showSpeakingIndicator(mShowSpeakingIndicator);
 	item->setOnline(false);
 

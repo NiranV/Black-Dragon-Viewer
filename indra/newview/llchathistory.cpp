@@ -332,7 +332,6 @@ public:
 		mTimeBoxTextBox = getChild<LLTextBox>("time_box");
 		//BD
 		mSeparator = getChild<LLIconCtrl>("Chat_Separator");
-		//mSeparatorModerator = getChild<LLIconCtrl>("Chat_Separator_Moderator");
 
 		mInfoCtrl = LLUICtrlFactory::getInstance()->createFromFile<LLUICtrl>("inspector_info_ctrl.xml", this, LLPanel::child_registry_t::instance());
 		llassert(mInfoCtrl != NULL);
