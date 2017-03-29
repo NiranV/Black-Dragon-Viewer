@@ -200,7 +200,7 @@
 					 </button>
                 </layout_panel>
 						  <layout_panel
-                     name="local_history_btn_panel"
+                     name="nearby_history_btn_panel"
                      width="32"
                      height="27"
 							visible="false"
