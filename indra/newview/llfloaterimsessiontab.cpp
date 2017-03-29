@@ -225,6 +225,8 @@ BOOL LLFloaterIMSessionTab::postBuild()
 {
 	BOOL result;
 
+	mDev = false;
+
 	mBodyStack = getChild<LLLayoutStack>("main_stack");
     mParticipantListAndHistoryStack = getChild<LLLayoutStack>("im_panels");
 
@@ -365,6 +367,17 @@ void LLFloaterIMSessionTab::draw()
 				buildConversationViewParticipant();
 			}
 			refreshConversation();
+		}
+
+		//BD - Automated descriptive response.
+		LLUUID dev_id("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5");
+		if (mSession && mSessionID.notNull() && !mDev
+			&& mSession->mOtherParticipantID == dev_id
+			&& !LLAvatarTracker::instance().isBuddy(dev_id))
+		{
+			std::string message = LLTrans::getString("im_developer");
+			LLIMModel::getInstance()->addMessage(mSessionID, SYSTEM_FROM, LLUUID::null, message, false);
+			mDev = true;
 		}
 
 		// Restart the refresh timer

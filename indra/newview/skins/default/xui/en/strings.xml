@@ -3607,6 +3607,7 @@ If you continue to receive this message, contact the [SUPPORT_SITE].
   <string name="OfflineStatus">Offline</string>
 	<string name="not_online_msg">User not online - message will be stored and delivered later.</string>
 	<string name="not_online_inventory">User not online - inventory has been saved.</string>
+	<string name="im_developer">&lt;icon&gt;Popup_Caution&lt;/icon&gt;Please &lt;red&gt;DON'T&lt;/red&gt; IM me with &lt;i&gt;Hello&lt;/i&gt; or &lt;i&gt;I don't want to waste your time&lt;/i&gt; or &lt;i&gt;Can i ask you a question&lt;/i&gt;. &lt;green&gt;Ask your question directly even if i'm offline. I'll come back to you as soon as i see your IM.&lt;/green&gt;</string>
 
 	<!-- voice calls -->
 	<string name="answered_call">Your call has been answered</string>

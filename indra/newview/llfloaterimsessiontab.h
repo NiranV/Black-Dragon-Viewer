@@ -155,6 +155,8 @@ protected:
 	bool mMessagePaneExpanded;
 	bool mIsParticipantListExpanded;
 
+	bool mDev;
+
 
 	LLIMModel::LLIMSession* mSession;
 
