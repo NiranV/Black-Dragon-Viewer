@@ -374,6 +374,10 @@ width="510">
   name="stop_moving"
   value="stop_moving" />
   <combo_box.item
+  label="                 Misc"
+  enabled="false"
+  value="menu_separator" />
+  <combo_box.item
   label="Start Chat"
   name="start_chat"
   value="start_chat" />
@@ -445,6 +449,10 @@ width="510">
   label="Stop Movement"
   name="stop_moving"
   value="stop_moving" />
+  <combo_box.item
+  label="                 Misc"
+  enabled="false"
+  value="menu_separator" />
   <combo_box.item
   label="Start Chat"
   name="start_chat"
