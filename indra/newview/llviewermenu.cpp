@@ -1795,7 +1795,8 @@ class LLAdvancedAnimTenSlower : public view_listener_t
 	{
 		//LL_INFOS() << "LLAdvancedAnimTenSlower" << LL_ENDL;
 		F32 time_factor = LLMotionController::getCurrentTimeFactor();
-		time_factor = llmax(time_factor - 0.1f, 0.1f);	// Lower limit is at 10% of normal speed
+		//BD
+		time_factor = llmax(time_factor - 0.1f, 0.0f);	// Lower limit is at 10% of normal speed
 		set_all_animation_time_factors(time_factor);
 		return true;
 	}
