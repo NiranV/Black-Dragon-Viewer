@@ -1397,27 +1397,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		}
 	}
 
-	if (success)
-	{
-		gDeferredSpotLightProgram.mName = "Deferred SpotLight Shader";
-		gDeferredSpotLightProgram.mShaderFiles.clear();
-		gDeferredSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/pointLightV.glsl", GL_VERTEX_SHADER_ARB));
-		gDeferredSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/spotLightF.glsl", GL_FRAGMENT_SHADER_ARB));
-		gDeferredSpotLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
-
-		success = gDeferredSpotLightProgram.createShader(NULL, NULL);
-	}
-
-	if (success)
-	{
-		gDeferredMultiSpotLightProgram.mName = "Deferred MultiSpotLight Shader";
-		gDeferredMultiSpotLightProgram.mShaderFiles.clear();
-		gDeferredMultiSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/multiPointLightV.glsl", GL_VERTEX_SHADER_ARB));
-		gDeferredMultiSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/multiSpotLightF.glsl", GL_FRAGMENT_SHADER_ARB));
-		gDeferredMultiSpotLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
-
-		success = gDeferredMultiSpotLightProgram.createShader(NULL, NULL);
-	}
+	success = loadShadersSpotlights(success);
 
 	success = loadShadersSSAO(success);
 
@@ -1971,6 +1951,37 @@ BOOL LLViewerShaderMgr::loadShadersDOF(bool success)
 		gVolumetricLightProgram.addPermutation("HAS_NO_DOF", (bool)gSavedSettings.getBOOL("RenderDepthOfField") ? "0" : "1");
 		gVolumetricLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 		success = gVolumetricLightProgram.createShader(NULL, NULL);
+	}
+	return success;
+}
+
+BOOL LLViewerShaderMgr::loadShadersSpotlights(bool success)
+{
+	//BD - Deferred Spotlights
+	gDeferredSpotLightProgram.unload();
+	gDeferredMultiSpotLightProgram.unload();
+	if (success)
+	{
+		gDeferredSpotLightProgram.mName = "Deferred SpotLight Shader";
+		gDeferredSpotLightProgram.mShaderFiles.clear();
+		gDeferredSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/pointLightV.glsl", GL_VERTEX_SHADER_ARB));
+		gDeferredSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/spotLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredSpotLightProgram.addPermutation("REFLECTIONS", (bool)gSavedSettings.getBOOL("RenderSpotLightReflections") ? "1" : "0");
+		gDeferredSpotLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+
+		success = gDeferredSpotLightProgram.createShader(NULL, NULL);
+	}
+
+	if (success)
+	{
+		gDeferredMultiSpotLightProgram.mName = "Deferred MultiSpotLight Shader";
+		gDeferredMultiSpotLightProgram.mShaderFiles.clear();
+		gDeferredMultiSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/multiPointLightV.glsl", GL_VERTEX_SHADER_ARB));
+		gDeferredMultiSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/multiSpotLightF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredMultiSpotLightProgram.addPermutation("REFLECTIONS", (bool)gSavedSettings.getBOOL("RenderSpotLightReflections") ? "1" : "0");
+		gDeferredMultiSpotLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
+
+		success = gDeferredMultiSpotLightProgram.createShader(NULL, NULL);
 	}
 	return success;
 }

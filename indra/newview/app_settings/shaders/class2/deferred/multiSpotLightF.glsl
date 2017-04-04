@@ -321,10 +321,7 @@ void main()
 		}
 	}	
 	
-	
-	
-	
-
+#if REFLECTIONS
 	if (envIntensity > 0.0)
 	{
 		vec3 ref = reflect(normalize(pos), norm);
@@ -353,7 +350,7 @@ void main()
 			}
 		}
 	}
-	
+#endif
 
 	//not sure why, but this line prevents MATBUG-194
 	col = max(col, vec3(0.0));

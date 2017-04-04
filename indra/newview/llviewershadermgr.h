@@ -64,6 +64,7 @@ public:
 	BOOL resetDeferredShaders();
 	BOOL loadShadersMaterials(bool success);
 	BOOL loadShadersDOF(bool success);
+	BOOL loadShadersSpotlights(bool success);
 	BOOL loadShadersSSAO(bool success);
 	BOOL loadShadersShadows(bool success);
 	BOOL loadShadersGodrays(bool success);

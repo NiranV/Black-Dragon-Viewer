@@ -309,7 +309,7 @@ void main()
 		}
 	}	
 
-
+#if REFLECTIONS
 	if (envIntensity > 0.0)
 	{
 		vec3 ref = reflect(normalize(pos), norm);
@@ -338,6 +338,7 @@ void main()
 			}
 		}
 	}
+#endif
 	
 	frag_color.rgb = col;	
 	frag_color.a = 0.0;

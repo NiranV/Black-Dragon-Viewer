@@ -724,6 +724,12 @@ static bool handleDepthOfFieldChanged(const LLSD& newvalue)
 	return LLViewerShaderMgr::instance()->loadShadersDOF(success);
 }
 
+static bool handleSpotlightsChanged(const LLSD& newvalue)
+{
+	BOOL success = gPipeline.sRenderDeferred;
+	return LLViewerShaderMgr::instance()->loadShadersSpotlights(success);
+}
+
 static bool handleSSAOChanged(const LLSD& newvalue)
 {
 	BOOL success = gPipeline.sRenderDeferred;
@@ -990,6 +996,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("CloudNoiseImageName")->getSignal()->connect(boost::bind(&handleCloudNoiseChanged, _2));
 	gSavedSettings.getControl("RenderDeferredEnvironmentMap")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
 	gSavedSettings.getControl("MachinimaSidebar")->getSignal()->connect(boost::bind(&handleMachinimaSidebar, _2));
+	gSavedSettings.getControl("RenderSpotLightReflections")->getSignal()->connect(boost::bind(&handleSpotlightsChanged, _2));
 
 //	//BD - Motion Blur
 	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
