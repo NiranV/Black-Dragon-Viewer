@@ -31,7 +31,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="3323"
+   height="3339"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -2947,7 +2947,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="540"
+	  height="556"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -2990,6 +2990,16 @@ width="510">
    layout="topleft"
    left="10"
    name="RenderDeferredEnvironmentMap"
+   top_pad="0"
+   width="115" />
+	  <check_box
+   control_name="RenderSpotLightReflections"
+   height="16"
+   label="Render Projector Image Reflections"
+   tool_tip="Toggles rendering the projecte image reflections seen on shiny surfaces with environment reflections enabled"
+   layout="topleft"
+   left="10"
+   name="RenderSpotLightReflections"
    top_pad="0"
    width="115" />
    <text
