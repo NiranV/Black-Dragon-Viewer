@@ -5,7 +5,6 @@ legacy_header_height="18"
 height="440"
 layout="topleft"
 name="floater_about"
-background_color="FloaterDefaultBackgroundColor"
 save_rect="true"
 title="About [APP_NAME]"
 width="470">
