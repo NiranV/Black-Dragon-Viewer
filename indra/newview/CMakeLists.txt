@@ -100,6 +100,7 @@ include_directories(SYSTEM
 set(viewer_SOURCE_FILES
 #	Black Dragon
 	bdpaneldrawdistance.cpp
+    bdfloateranimations.cpp
 	bdsidebar.cpp
 	exopostprocess.cpp
     piemenu.cpp
@@ -727,6 +728,7 @@ set(VIEWER_BINARY_NAME "blackdragon-bin" CACHE STRING
 set(viewer_HEADER_FILES
 #	Black Dragon
 	bdpaneldrawdistance.h
+    bdfloateranimations.h
 	bdsidebar.h
     exopostprocess.h
 	piemenu.h
