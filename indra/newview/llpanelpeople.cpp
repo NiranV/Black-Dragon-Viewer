@@ -787,7 +787,7 @@ void LLPanelPeople::updateFriendList()
 	LLAvatarTracker::buddy_map_t::const_iterator buddies_iter;
 
 	//BD - Developer tracker
-	LLUUID dev_id("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5");
+	LLUUID dev_id = gAgent.getDevID();
 	bool has_dev = false;
 	// Fill the avatar list with friends UUIDs
 	for (buddies_iter = all_buddies.begin(); buddies_iter != all_buddies.end(); ++buddies_iter)

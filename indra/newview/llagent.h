@@ -173,6 +173,9 @@ public:
 	// don't render the avatar until the choice is made.
 	BOOL 			isOutfitChosen() const 	{ return mOutfitChosen; }
 	void			setOutfitChosen(BOOL b)	{ mOutfitChosen = b; }
+
+	//BD - Global Developer ID
+	LLUUID			getDevID() const { return LLUUID("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5"); }
 private:
 	BOOL			mOutfitChosen;
 

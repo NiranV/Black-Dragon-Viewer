@@ -48,6 +48,9 @@
 #include "llviewercontrol.h"	// for gSavedSettings
 #include "lltooldraganddrop.h"
 
+//BD
+#include "llagent.h"
+
 
 static LLDefaultChildRegistry::Register<LLAvatarList> r("avatar_list");
 
@@ -455,8 +458,7 @@ void LLAvatarList::addNewItem(const LLUUID& id, const std::string& name, BOOL is
 	// This sets the name as a side effect
 	item->setAvatarId(id, mSessionID, mIgnoreOnlineStatus);
 	//BD - Developer tracker
-	LLUUID dev_id("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5");
-	item->setOnline(mIgnoreOnlineStatus ? true : is_online, id == dev_id ? true : false);
+	item->setOnline(mIgnoreOnlineStatus ? true : is_online, id == gAgent.getDevID() ? true : false);
 	//BD
 	item->showExtraInformation(mShowExtraInformation);
 
@@ -635,7 +637,7 @@ bool LLAvatarItemComparator::compare(const LLPanel* item1, const LLPanel* item2)
 bool LLAvatarItemNameComparator::doCompare(const LLAvatarListItem* avatar_item1, const LLAvatarListItem* avatar_item2) const
 {
 	//BD - Sort the developer (me) always at top.
-	LLUUID dev_id = (LLUUID)"a7fe20fa-1e95-4f87-aa8f-86496c78c1e5";
+	LLUUID dev_id = gAgent.getDevID();
 	bool developer1 = (avatar_item1->getAvatarId() == dev_id) ? true : false;
 	bool developer2 = (avatar_item2->getAvatarId() == dev_id) ? true : false;
 	if (developer1 == developer2)
