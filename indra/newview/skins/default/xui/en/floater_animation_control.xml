@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<floater
+positioning="centered"
+legacy_header_height="18"
+height="445"
+layout="topleft"
+name="floater_animation_control"
+save_rect="true"
+title="Animation Manipulation"
+width="494">
+	<panel
+ follows="all"
+ height="420"
+ background_visible="false"
+ layout="topleft"
+ mouse_opaque="false"
+ left="7"
+ name="title"
+ top="20"
+ width="480">
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Visible Avatars:
+ </text>
+	<icon
+	follows="top|left"
+	height="188"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top_pad="3"
+	left="0"/>
+ <scroll_list
+ column_padding="2"
+ draw_heading="true"
+ height="165"
+ follows="left|top|right"
+ layout="topleft"
+ left="0"
+ width="480"
+ multi_select="true"
+ text_entry="true"
+ read_only="false"
+ name="other_avatars_scroll"
+ top_delta="0">
+    <scroll_list.columns
+     label="Avatar Name"
+     name="name"
+   relative_width="0.40"  />
+    <scroll_list.columns
+     label="Avatar UUID"
+     name="uuid"
+   relative_width="0.50"  />
+    <scroll_list.columns
+     label="Factor"
+     name="value"
+   relative_width="0.10"  />
+</scroll_list>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Stop All"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="82"
+ top_pad="1"
+ left_delta="2">
+   <button.commit_callback
+   function="Anim.Stop"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Freeze"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="82"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Freeze"/>
+ </button>
+ <line_editor
+  commit_on_focus_lost="false"
+  follows="left|top"
+  height="20"
+  label=""
+  left_pad="1"
+  top_delta="0"
+  name="anim_factor"
+  width="61"/>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Set Factor"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="82"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Set"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Restart"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="82"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Restart"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Refresh"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="82"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Refresh"/>
+ </button>
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+	<text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Saved Motions:
+ </text>
+	<icon
+	follows="top|left"
+	height="188"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top_pad="3"
+	left="0"/>
+ <scroll_list
+ column_padding="2"
+ draw_heading="true"
+ height="165"
+ follows="left|top|right"
+ layout="topleft"
+ left="0"
+ width="480"
+ multi_select="true"
+ text_entry="true"
+ read_only="false"
+ name="motions_scroll"
+ top_delta="0">
+    <scroll_list.columns
+     label="Motion Owner"
+     name="name"
+   relative_width="0.40"  />
+    <scroll_list.columns
+     label="UUID"
+     name="uuid"
+   relative_width="0.10"  />
+    <scroll_list.columns
+     label="Priority"
+     name="priority"
+   relative_width="0.10"  />
+				<scroll_list.columns
+     label="Duration"
+     name="duration"
+   relative_width="0.15"  />
+				<scroll_list.columns
+     label="Blend Type"
+     name="blend type"
+   relative_width="0.15"  />
+				<scroll_list.columns
+     label="Loop"
+     name="loop"
+   relative_width="0.10"  />
+</scroll_list>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Save"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="83"
+ top_pad="1"
+ left_delta="2">
+   <button.commit_callback
+   function="Anim.Save"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Apply To"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="83"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Load"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Remove"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="83"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Remove"/>
+ </button>
+	<line_editor
+  commit_on_focus_lost="false"
+  follows="left|top"
+  height="20"
+  label=""
+  left_pad="1"
+  top_delta="0"
+  name="motion_uuid"
+  width="140"/>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Create"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="83"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Create"/>
+ </button>
+	</panel>
+</floater>

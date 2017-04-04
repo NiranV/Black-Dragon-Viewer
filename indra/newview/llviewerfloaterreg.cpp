@@ -153,6 +153,9 @@
 #include "llscriptfloater.h"
 #include "llsyswellwindow.h"
 
+//BD
+#include "bdfloateranimations.h"
+
 // *NOTE: Please add files in alphabetical order to keep merges easy.
 // [RLVa:KB] - Checked: 2010-03-11
 #include "rlvfloaters.h"
@@ -194,6 +197,9 @@ void LLViewerFloaterReg::registerFloaters()
 	LLFloaterReg::add("avatar", "floater_avatar.xml",  (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterAvatar>);
 	LLFloaterReg::add("avatar_picker", "floater_avatar_picker.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterAvatarPicker>);
 	LLFloaterReg::add("avatar_textures", "floater_avatar_textures.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterAvatarTextures>);
+
+	//BD
+	LLFloaterReg::add("animation_control", "floater_animation_control.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterAnimations>);
 
 	LLFloaterReg::add("beacons", "floater_beacons.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterBeacons>);
 	LLFloaterReg::add("bulk_perms", "floater_bulk_perms.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterBulkPermission>);
