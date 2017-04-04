@@ -977,6 +977,30 @@ void LLScrollListCtrl::deleteSelectedItems()
 	dirtyColumns();
 }
 
+//BD
+void LLScrollListCtrl::deleteFlaggedItems()
+{
+	item_list::iterator iter;
+	for (iter = mItemList.begin(); iter < mItemList.end();)
+	{
+		LLScrollListItem* itemp = *iter;
+		if (itemp->getFlagged())
+		{
+			if (itemp == mLastSelected)
+			{
+				mLastSelected = NULL;
+			}
+			delete itemp;
+			iter = mItemList.erase(iter);
+		}
+		else
+		{
+			iter++;
+		}
+	}
+	dirtyColumns();
+}
+
 void LLScrollListCtrl::clearHighlightedItems()
 {	
 	for (item_list::iterator iter = mItemList.begin(); iter != mItemList.end(); ++iter)

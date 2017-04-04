@@ -86,6 +86,10 @@ public:
 	void	setHighlighted( BOOL b )		{ mHighlighted = b; }
 	BOOL	getHighlighted() const			{ return mHighlighted; }
 
+	//BD
+	void	setFlagged(BOOL b)				{ mFlagged = b; }
+	BOOL	getFlagged() const				{ return mFlagged; }
+
 	void	setUserdata( void* userdata )	{ mUserdata = userdata; }
 	void*	getUserdata() const 			{ return mUserdata; }
 
@@ -116,6 +120,9 @@ private:
 	BOOL	mSelected;
 	BOOL	mHighlighted;
 	BOOL	mEnabled;
+	//BD
+	BOOL	mFlagged;
+
 	void*	mUserdata;
 	LLSD	mItemValue;
 	std::vector<LLScrollListCell *> mColumns;
