@@ -1,135 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <panel
- border="true"
  follows="all"
  height="408"
  label="Uploads"
  layout="topleft"
- left="102"
+ left="45"
  name="uploads"
- top="1"
- width="517">
-  <text
+ top="0"
+ width="510">
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="506"/>
+ 
+ <text
+ name="show_ims_in_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Default Upload Destination Folders:
+ </text>
+ <text
    type="string"
    length="1"
    follows="left|top"
    height="12"
-   layout="topleft"
-   left="33"
-   name="title"
-   top_pad="10"
-   width="250">
-    Current destination folders for uploads
-  </text>
-
-  <text
-   type="string"
-   length="1"
-   follows="left|top"
-   height="12"
-   layout="topleft"
-   left="37"
-   name="title_models"
-   top_pad="17"
-   width="100">
-    Images
-  </text>
-  <text
-   type="string"
-   use_ellipses="true"
-   follows="left|top"
-   height="23"
-   layout="topleft"
-   font.style="BOLD"
-   left="37"
-   name="upload_textures"
-   top_pad="5"
-   width="350" />
-  
-  <text
-   type="string"
-   length="1"
-   follows="left|top"
-   height="12"
-   layout="topleft"
-   left="37"
-   name="title_sounds"
-   top_pad="7"
-   width="100">
-    Sounds
-  </text>
-  <text
-   type="string"
-   use_ellipses="true"
-   follows="left|top"
-   height="23"
-   layout="topleft"
-   font.style="BOLD"
-   left="37"
-   name="upload_sounds"
-   top_pad="5"
-   width="350" />
-  
-  <text
-   type="string"
-   length="1"
-   follows="left|top"
-   height="12"
-   layout="topleft"
-   left="37"
-   name="title_animation"
-   top_pad="7"
-   width="100">
-    Animations
-  </text>
-  <text
-   type="string"
-   use_ellipses="true"
-   follows="left|top"
-   height="23"
-   layout="topleft"
-   font.style="BOLD"
-   left="37"
-   name="upload_animation"
-   top_pad="5"
-   width="350" />
-
-  <text
-   type="string"
-   length="1"
-   follows="left|top"
-   height="12"
-   layout="topleft"
-   left="37"
-   name="title_animation"
-   top_pad="7"
-   width="100">
-    Models
-  </text>
-  <text
-   type="string"
-   use_ellipses="true"
-   follows="left|top"
-   height="23"
-   layout="topleft"
-   font.style="BOLD"
-   left="37"
-   name="upload_models"
-   top_pad="5"
-   width="350" />
-
-  <text
-   type="string"
-   length="1"
-   follows="left|top"
-   height="30"
    layout="topleft"
    font.style="ITALIC"
-   left="33"
+   left="10"
    name="upload_help"
-   top_pad="6"
-   width="387">
-    To change a destination folder, right click on it in inventory and choose
- "Use as default for"
+   top_pad="10"
+   width="500">
+    To change a destination folder, right click on it in inventory and choose "Use as default for"
   </text>
+
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="title_models"
+   top_pad="5"
+   width="100">
+    Images:
+  </text>
+  <line_editor
+   follows="left|top"
+   font="SansSerif"
+   height="23"
+   layout="topleft"
+   left="10"
+   name="upload_textures"
+   label=""
+   top_pad="4"
+   width="488" />
+  
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="title_sounds"
+   top_pad="5"
+   width="100">
+    Sounds:
+  </text>
+  <line_editor
+   follows="left|top"
+   font="SansSerif"
+   height="23"
+   layout="topleft"
+   left="10"
+   name="upload_sounds"
+   label=""
+   top_pad="4"
+   width="488" />
+  
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="title_animation"
+   top_pad="5"
+   width="100">
+    Animations:
+  </text>
+  <line_editor
+   follows="left|top"
+   font="SansSerif"
+   height="23"
+   layout="topleft"
+   left="10"
+   name="upload_animation"
+   label=""
+   top_pad="4"
+   width="488" />
+
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="title_models"
+   top_pad="5"
+   width="100">
+    Models:
+  </text>
+  <line_editor
+   follows="left|top"
+   font="SansSerif"
+   height="23"
+   layout="topleft"
+   left="10"
+   name="upload_models"
+   label=""
+   top_pad="4"
+   width="488" />
 </panel>

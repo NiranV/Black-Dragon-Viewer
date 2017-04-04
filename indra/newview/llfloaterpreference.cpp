@@ -916,6 +916,11 @@ BOOL LLFloaterPreference::postBuild()
 
 	gSavedSettings.getControl("ChatBubbleOpacity")->getSignal()->connect(boost::bind(&LLFloaterPreference::onNameTagOpacityChange, this, _2));
 
+	gSavedPerAccountSettings.getControl("ModelUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeModelFolder, this));
+	gSavedPerAccountSettings.getControl("TextureUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeTextureFolder, this));
+	gSavedPerAccountSettings.getControl("SoundUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeSoundFolder, this));
+	gSavedPerAccountSettings.getControl("AnimationUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeAnimationFolder, this));
+
 	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
 	if (!tabcontainer->selectTab(gSavedSettings.getS32("LastPrefTab")))
 		tabcontainer->selectFirstTab();
@@ -1634,6 +1639,11 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 
 	// Forget previous language changes.
 	mLanguageChanged = false;
+
+	onChangeModelFolder();
+	onChangeTextureFolder();
+	onChangeSoundFolder();
+	onChangeAnimationFolder();
 	
 	// Enabled/disabled popups, might have been changed by user actions
 	// while preferences floater was closed.
@@ -2580,6 +2590,57 @@ void LLFloaterPreference::setPersonalInfo(const std::string& visibility, bool im
 void LLFloaterPreference::refreshUI()
 {
 	refresh();
+}
+
+std::string get_category_path(LLUUID cat_id)
+{
+	LLViewerInventoryCategory* cat = gInventory.getCategory(cat_id);
+	if (cat->getParentUUID().notNull())
+	{
+		return get_category_path(cat->getParentUUID()) + " > " + cat->getName();
+	}
+	else
+	{
+		return cat->getName();
+	}
+}
+
+std::string get_category_path(LLFolderType::EType cat_type)
+{
+	LLUUID cat_id = gInventory.findUserDefinedCategoryUUIDForType(cat_type);
+	return get_category_path(cat_id);
+}
+
+void LLFloaterPreference::onChangeModelFolder()
+{
+	if (gInventory.isInventoryUsable())
+	{
+		getChild<LLLineEditor>("upload_models")->setText(get_category_path(LLFolderType::FT_OBJECT));
+	}
+}
+
+void LLFloaterPreference::onChangeTextureFolder()
+{
+	if (gInventory.isInventoryUsable())
+	{
+		getChild<LLLineEditor>("upload_textures")->setText(get_category_path(LLFolderType::FT_TEXTURE));
+	}
+}
+
+void LLFloaterPreference::onChangeSoundFolder()
+{
+	if (gInventory.isInventoryUsable())
+	{
+		getChild<LLLineEditor>("upload_sounds")->setText(get_category_path(LLFolderType::FT_SOUND));
+	}
+}
+
+void LLFloaterPreference::onChangeAnimationFolder()
+{
+	if (gInventory.isInventoryUsable())
+	{
+		getChild<LLLineEditor>("upload_animation")->setText(get_category_path(LLFolderType::FT_ANIMATION));
+	}
 }
 
 // FIXME: this will stop you from spawning the sidetray from preferences dialog on login screen
