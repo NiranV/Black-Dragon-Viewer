@@ -17106,6 +17106,17 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <key>RenderOtherAttachedLights</key>
+	<map>
+	<key>Comment</key>
+	<string>Render lighted prims that are attached to other avatars</string>
+	<key>Persist</key>
+	<integer>1</integer>
+	<key>Type</key>
+	<string>Boolean</string>
+	<key>Value</key>
+	<integer>1</integer>
+  </map>
     
   <!-- Remappable Keys -->
   <key>JoystickButtonFlycam</key>

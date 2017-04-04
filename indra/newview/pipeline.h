@@ -606,6 +606,8 @@ public:
 	static S32				sVisibleLightCount;
 	static F32				sMinRenderSize;
 	static BOOL				sRenderingHUDs;
+	//BD
+	static BOOL				sRenderOtherAttachedLights;
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
 	static bool				sRenderTextures;
 // [/SL:KB]

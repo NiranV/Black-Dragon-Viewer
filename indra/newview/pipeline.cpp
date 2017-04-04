@@ -427,6 +427,8 @@ BOOL    LLPipeline::sMemAllocationThrottled = FALSE;
 S32		LLPipeline::sVisibleLightCount = 0;
 F32		LLPipeline::sMinRenderSize = 0.f;
 BOOL	LLPipeline::sRenderingHUDs;
+//BD
+BOOL	LLPipeline::sRenderOtherAttachedLights = TRUE;
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
 bool	LLPipeline::sRenderTextures = true;
 // [/SL:KB]
@@ -6218,7 +6220,9 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 				drawable->clearState(LLDrawable::NEARBY_LIGHT);
 				continue;
 			}
-			if (!sRenderAttachedLights && volight && volight->isAttachment())
+			if ((!sRenderAttachedLights || 
+				!sRenderOtherAttachedLights && (volight->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
+				&& volight && volight->isAttachment())
 			{
 				drawable->clearState(LLDrawable::NEARBY_LIGHT);
 				continue;
@@ -6249,7 +6253,9 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 			{
 				continue;
 			}
-			if (!sRenderAttachedLights && light && light->isAttachment())
+			if ((!sRenderAttachedLights ||
+				!sRenderOtherAttachedLights && (light->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
+				&& light && light->isAttachment())
 			{
 				continue;
 			}
@@ -8981,6 +8987,12 @@ void LLPipeline::renderDeferredLighting()
 						{
 							continue;
 						}
+
+						if (!sRenderOtherAttachedLights
+							&& (volume->getAvatarAncestor() != gAgentAvatarp))
+						{
+							continue;
+						}
 					}
 
 					const LLViewerObject *vobj = drawablep->getVObj();
@@ -9541,6 +9553,12 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 					if (volume->isAttachment())
 					{
 						if (!sRenderAttachedLights)
+						{
+							continue;
+						}
+
+						if (!sRenderOtherAttachedLights 
+							&& (volume->getAvatarAncestor() != gAgentAvatarp))
 						{
 							continue;
 						}
