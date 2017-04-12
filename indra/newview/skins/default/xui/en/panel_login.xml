@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.6.9 - Ending Dragon]"
+       label="[CHANNEL] [VERSION] - [2.7.0 - Decaying Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,8 +163,59 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="363"
+              height="169"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added (WIP): Pose manipulation to 'Animation Manipulation' floater. Not functional yet.
+Added: Human readable action names to keybinding lists.
+Added (WIP): Ability to simple change/replace single keybinds. Not functional yet.
+Changed: Renamed 'Move Forward/Backwards' (camera) to Zoom In/Out.
+Changed: Keybinding column widths to fit everything in.
+Changed: Relabeled 'Region' to 'Land Options' in german UI to match the english one.
+Changed: Overhauled 'Script Information' floater layout.
+Changed: Version to 2.7.0 - Decaying Dragon.
+Fixed: Line Endings in llpanellogin.cpp.
+Fixed: Login button being greyed out for firt timers since LL code merge.
+Fixed: Line Endings in llfloaterpreferences.cpp.
+Fixed: Special keys like Enter not immediately registering after ticking any mask checkbox.
+Removed: UUID line editor and 'Create' button from the 'Animation Manipulation' floater.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.6.9
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="363"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
