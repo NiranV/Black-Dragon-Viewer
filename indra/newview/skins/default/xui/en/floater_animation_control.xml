@@ -263,6 +263,14 @@ width="494">
    <button.commit_callback
    function="Anim.Load"/>
  </button>
+	<icon
+	follows="left|top|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="224"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
 	<button
  height="21"
  follows="top|left"
@@ -278,7 +286,7 @@ width="494">
    <button.commit_callback
    function="Anim.Remove"/>
  </button>
-	<line_editor
+	<!--<line_editor
   commit_on_focus_lost="false"
   follows="left|top"
   height="20"
@@ -301,6 +309,6 @@ width="494">
  left_pad="1">
    <button.commit_callback
    function="Anim.Create"/>
- </button>
+ </button>-->
 	</panel>
 </floater>
