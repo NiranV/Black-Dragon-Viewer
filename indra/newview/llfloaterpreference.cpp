@@ -536,6 +536,9 @@ void LLSetKeyDialog::onOpen(const LLSD& key)
 
 	ctrl->setTextArg("[KEY]", gKeyboard->stringFromKey(mKey));
 	ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
+
+	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
+	gFocusMgr.setKeystrokesOnly(TRUE);
 }
 
 BOOL LLSetKeyDialog::handleKeyHere(KEY key, MASK mask)
@@ -583,8 +586,6 @@ void LLSetKeyDialog::onMasks()
 	//BD - We block off keypresses like space and enter with this so it doesn't
 	//     accidentally press cancel or bind but is still handled by the floater.
 	getChild<LLUICtrl>("key_display")->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
-	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(TRUE);
 }
 
 void LLSetKeyDialog::onCancel()
