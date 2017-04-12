@@ -68,13 +68,17 @@ width="510">
      name="action"
    relative_width="0.30"  />
     <scroll_list.columns
+     label="Function Name"
+     name="function"
+   relative_width="0.35"  />
+    <scroll_list.columns
      label="Button"
      name="button"
-   relative_width="0.20"  />
+   relative_width="0.15"  />
     <scroll_list.columns
      label="Modifiers"
      name="modifiers"
-   relative_width="0.15"  />
+   relative_width="0.20"  />
 </scroll_list>
 
  <panel
@@ -115,13 +119,17 @@ width="510">
      name="action"
    relative_width="0.30"  />
     <scroll_list.columns
+     label="Function Name"
+     name="function"
+   relative_width="0.35"  />
+    <scroll_list.columns
      label="Button"
      name="button"
-   relative_width="0.20"  />
+   relative_width="0.15"  />
     <scroll_list.columns
      label="Modifiers"
      name="modifiers"
-   relative_width="0.15"  />
+   relative_width="0.20"  />
 </scroll_list>
    
    <panel
@@ -163,13 +171,17 @@ width="510">
      name="action"
    relative_width="0.30"  />
     <scroll_list.columns
+     label="Function Name"
+     name="function"
+   relative_width="0.35"  />
+    <scroll_list.columns
      label="Button"
      name="button"
-   relative_width="0.20"  />
+   relative_width="0.15"  />
     <scroll_list.columns
      label="Modifiers"
      name="modifiers"
-   relative_width="0.15"  />
+   relative_width="0.20"  />
 </scroll_list>
  
    <panel
@@ -211,13 +223,17 @@ width="510">
      name="action"
    relative_width="0.30"  />
     <scroll_list.columns
+     label="Function Name"
+     name="function"
+   relative_width="0.35"  />
+    <scroll_list.columns
      label="Button"
      name="button"
-   relative_width="0.20"  />
+   relative_width="0.15"  />
     <scroll_list.columns
      label="Modifiers"
      name="modifiers"
-   relative_width="0.15"  />
+   relative_width="0.20"  />
 </scroll_list>
  
    <panel
@@ -259,13 +275,17 @@ width="510">
      name="action"
    relative_width="0.30"  />
     <scroll_list.columns
+     label="Function Name"
+     name="function"
+   relative_width="0.35"  />
+    <scroll_list.columns
      label="Button"
      name="button"
-   relative_width="0.20"  />
+   relative_width="0.15"  />
     <scroll_list.columns
      label="Modifiers"
      name="modifiers"
-   relative_width="0.15"  />
+   relative_width="0.20"  />
 </scroll_list>
   </panel>
  </scroll_container>
@@ -466,11 +486,11 @@ width="510">
   enabled="false"
   value="menu_separator" />
   <combo_box.item
-  label="Move Forward"
+  label="Zoom In"
   name="move_forward"
   value="move_forward" />
   <combo_box.item
-  label="Move Backwards"
+  label="Zoom Out"
   name="move_backward"
   value="move_backward" />
   <combo_box.item
@@ -586,11 +606,11 @@ width="510">
   enabled="false"
   value="menu_separator" />
   <combo_box.item
-  label="Move Forward"
+  label="Zoom In"
   name="move_forward"
   value="move_forward" />
   <combo_box.item
-  label="Move Backwards"
+  label="Zoom Out"
   name="move_backward"
   value="move_backward" />
   <combo_box.item

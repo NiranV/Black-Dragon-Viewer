@@ -1120,9 +1120,9 @@ void LLFloaterPreference::onExportControls()
 				LLScrollListItem* row = scroll->getFirstSelected();
 				MASK old_mask = MASK_NONE;
 				KEY old_key = NULL;
-				LLKeyboard::keyFromString(row->getColumn(1)->getValue().asString(), &old_key);
-				LLKeyboard::maskFromString(row->getColumn(2)->getValue().asString(), &old_mask);
-				gViewerKeyboard.bindKey(i, old_key, old_mask, row->getColumn(0)->getValue().asString());
+				LLKeyboard::keyFromString(row->getColumn(2)->getValue().asString(), &old_key);
+				LLKeyboard::maskFromString(row->getColumn(3)->getValue().asString(), &old_mask);
+				gViewerKeyboard.bindKey(i, old_key, old_mask, row->getColumn(1)->getValue().asString());
 				it++;
 			}
 		}
@@ -1184,12 +1184,15 @@ void LLFloaterPreference::onAddBind(KEY key, MASK mask)
 	if (scroll)
 	{
 		LLSD row;
+		std::string function = getChild<LLComboBox>("bind_action_" + mode.asString())->getSelectedValue().asString();
 		row["columns"][0]["column"] = "action";
-		row["columns"][0]["value"] = getChild<LLComboBox>("bind_action_" + mode.asString())->getSelectedValue().asString();
-		row["columns"][1]["column"] = "button";
-		row["columns"][1]["value"] = LLKeyboard::stringFromKey(key);
-		row["columns"][2]["column"] = "modifiers";
-		row["columns"][2]["value"] = LLKeyboard::stringFromMask(mask, true);
+		row["columns"][0]["value"] = getString(function);
+		row["columns"][1]["column"] = "function";
+		row["columns"][1]["value"] = function;
+		row["columns"][2]["column"] = "button";
+		row["columns"][2]["value"] = LLKeyboard::stringFromKey(key);
+		row["columns"][3]["column"] = "modifiers";
+		row["columns"][3]["value"] = LLKeyboard::stringFromMask(mask, true);
 		scroll->addElement(row);
 	}
 	onExportControls();
@@ -1222,18 +1225,24 @@ void LLFloaterPreference::refreshKeys()
 		if (scroll)
 		{
 			LLSD row;
-			row["columns"][0]["column"] = "action";
-			row["columns"][0]["value"] = settings["function"].asString();
-			row["columns"][1]["column"] = "button";
-			row["columns"][1]["value"] = settings["key"].asString();
-			row["columns"][2]["column"] = "modifiers";
-			//BD - Translate to human readable text.
 			MASK mask = MASK_NONE;
+
+			//BD - Translate to human readable text.
 			LLKeyboard::maskFromString(settings["mask"].asString(), &mask);
-			row["columns"][2]["value"] = LLKeyboard::stringFromMask(mask, true);
+			std::string action_str = getString(settings["function"].asString());
+
+			row["columns"][0]["column"] = "action";
+			row["columns"][0]["value"] = action_str;
+			row["columns"][1]["column"] = "function";
+			row["columns"][1]["value"] = settings["function"].asString();
+			row["columns"][2]["column"] = "button";
+			row["columns"][2]["value"] = settings["key"].asString();
+			row["columns"][3]["column"] = "modifiers";
+			row["columns"][3]["value"] = LLKeyboard::stringFromMask(mask, true);
 			scroll->addElement(row);
 		}
 	}
+	
 	infile.close();
 }
 

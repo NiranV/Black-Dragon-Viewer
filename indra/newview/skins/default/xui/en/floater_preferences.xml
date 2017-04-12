@@ -11,6 +11,147 @@
  single_instance="true"
  title="Preferences"
  width="668">
+	
+	<string
+    name="slide_left">
+  Move Left
+ </string>
+ <string
+    name="slide_right">
+  Move Right
+ </string>
+ <string
+    name="push_forward">
+  Move Forward
+ </string>
+ <string
+    name="push_backward">
+  Move Backwards
+ </string>
+ <string
+    name="turn_left">
+  Turn Left
+ </string>
+ <string
+    name="turn_right">
+  Turn Right
+ </string>
+ <string
+    name="jump">
+  Jump
+ </string>
+ <string
+    name="push_down">
+  Crouch
+ </string>
+ <string
+    name="toggle_fly">
+  Fly
+ </string>
+ <string
+    name="stop_moving">
+  Stop Movement
+ </string>
+ <string
+    name="start_chat">
+  Start Chat
+ </string>
+ <string
+    name="start_gesture">
+  Start Gesture
+ </string>
+ 
+ <string
+    name="move_forward">
+  (Camera) Zoom In
+ </string>
+ <string
+    name="move_backward">
+  (Camera) Zoom Out
+ </string>
+ <string
+    name="pan_left">
+  (Camera) Move Left
+ </string>
+ <string
+    name="pan_right">
+  (Camera) Move Right
+ </string>
+ <string
+    name="pan_up">
+  (Camera) Move Up
+ </string>
+ <string
+    name="pan_down">
+  (Camera) Move Down
+ </string>
+ <string
+    name="spin_around_ccw">
+  (Camera) Spin Right
+ </string>
+ <string
+    name="spin_around_cw">
+  (Camera) Spin Left
+ </string>
+ <string
+    name="spin_over">
+  (Camera) Spin Over
+ </string>
+ <string
+    name="spin_under">
+  (Camera) Spin Under
+ </string>
+ 
+ <string
+    name="edit_avatar_move_forward">
+  (Camera) Zoom In
+ </string>
+ <string
+    name="edit_avatar_move_backward">
+  (Camera) Zoom Out
+ </string>
+ <string
+    name="edit_avatar_spin_ccw">
+  (Camera) Spin Right
+ </string>
+ <string
+    name="edit_avatar_spin_cw">
+  (Camera) Spin Left
+ </string>
+ <string
+    name="edit_avatar_spin_over">
+  (Camera) Spin Over
+ </string>
+ <string
+    name="edit_avatar_spin_under">
+  (Camera) Spin Under
+ </string>
+ 
+ <string
+    name="move_forward_sitting">
+  (Camera) Zoom In
+ </string>
+ <string
+    name="move_backward_sitting">
+  (Camera) Zoom Out
+ </string>
+ <string
+    name="spin_around_ccw_sitting">
+  (Camera) Spin Right
+ </string>
+ <string
+    name="spin_around_cw_sitting">
+  (Camera) Spin Left
+ </string>
+ <string
+    name="spin_over_sitting">
+  (Camera) Spin Over
+ </string>
+ <string
+    name="spin_under_sitting">
+  (Camera) Spin Under
+ </string>
+ 
    <icon
         follows="top|left"
         height="411"
