@@ -81,6 +81,8 @@ public:
 	// returns the pose associated with the current state of this motion
 	virtual LLPose* getPose() { return &mPose;}
 
+	void setPose(LLPose pose) { mPose = pose; }
+
 	void fadeOut();
 
 	void fadeIn();
@@ -156,13 +158,17 @@ public:
 	// optional callback routine called when animation deactivated.
 	void	setDeactivateCallback( void (*cb)(void *), void* userdata );
 
+	//BD
+	void addJointState(const LLPointer<LLJointState>& jointState);
+
 protected:
 	// called when a motion is activated
 	// must return TRUE to indicate success, or else
 	// it will be deactivated
 	virtual BOOL onActivate() = 0;
 
-	void addJointState(const LLPointer<LLJointState>& jointState);
+	//BD
+	//void addJointState(const LLPointer<LLJointState>& jointState);
 
 protected:
 	LLPose		mPose;

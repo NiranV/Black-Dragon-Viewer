@@ -47,6 +47,11 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	mCommitCallbackRegistrar.add("Anim.Remove", boost::bind(&BDFloaterAnimations::onRemove, this));
 	//BD - Create a new motion via a given UUID.
 	mCommitCallbackRegistrar.add("Anim.Create", boost::bind(&BDFloaterAnimations::onCreate, this));
+
+	//BD - Save the current pose to our list.
+	mCommitCallbackRegistrar.add("Pose.Save", boost::bind(&BDFloaterAnimations::onPoseSave, this));
+	//BD - Load the current pose onto the currently selected avatars.
+	mCommitCallbackRegistrar.add("Pose.Load", boost::bind(&BDFloaterAnimations::onPoseLoad, this));
 }
 
 BDFloaterAnimations::~BDFloaterAnimations()
@@ -57,6 +62,8 @@ BOOL BDFloaterAnimations::postBuild()
 {
 	mAvatarScroll = getChild<LLScrollListCtrl>("other_avatars_scroll");
 	mMotionScroll = getChild<LLScrollListCtrl>("motions_scroll");
+	mPoseScroll = getChild<LLScrollListCtrl>("poses_scroll");
+	mJointsScroll = getChild<LLScrollListCtrl>("joints_scroll");
 	return TRUE;
 }
 
@@ -91,7 +98,7 @@ void BDFloaterAnimations::onClose(bool app_quitting)
 
 void BDFloaterAnimations::onRefresh()
 {
-	//BD -First lets go through all things that need updating, if any.
+	//BD - First lets go through all things that need updating, if any.
 	std::vector<LLScrollListItem*> items = mAvatarScroll->getAllData();
 	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
 		it != items.end(); ++it)
@@ -316,6 +323,117 @@ void BDFloaterAnimations::onLoad()
 					character->stopMotion(motion_id, 1);
 					character->startMotion(motion_id, 0.0f);
 				}
+			}
+		}
+	}
+}
+
+void BDFloaterAnimations::onPoseSave()
+{
+	getSelected();
+	for (std::vector<LLCharacter*>::iterator iter = mSelectedCharacters.begin();
+		iter != mSelectedCharacters.end(); ++iter)
+	{
+		LLCharacter* character = *iter;
+		if (character)
+		{
+			LLMotionController::motion_list_t motions = character->getMotionController().getActiveMotions();
+			for (LLMotionController::motion_list_t::iterator it = motions.begin();
+				it != motions.end(); ++it)
+			{
+				LLMotion* motion = *it;
+				if (motion)
+				{
+					LLPose* pose = motion->getPose();
+					while (pose->getNextJointState() != NULL)
+					{
+						LLJointState* joint_state = pose->getFirstJointState();
+						LLJoint* joint = joint_state->getJoint();
+						LLSD row;
+						row["columns"][0]["column"] = "joint";
+						row["columns"][0]["value"] = joint->getName();
+						row["columns"][1]["column"] = "pos";
+						row["columns"][1]["value"] = joint->getPosition().getValue();
+						row["columns"][2]["column"] = "rot";
+						row["columns"][2]["value"] = joint->getRotation().packToVector3().getValue();
+						row["columns"][3]["column"] = "scale";
+						row["columns"][3]["value"] = joint->getScale().getValue();
+						row["columns"][4]["column"] = "parent";
+						row["columns"][4]["value"] = joint->getParent()->getName();
+						row["columns"][5]["column"] = "skin";
+						row["columns"][5]["value"] = joint->getSkinOffset().getValue();
+						row["columns"][6]["column"] = "support";
+						row["columns"][6]["value"] = joint->getSupport();
+						//row["columns"][5]["column"] = "x";
+						//row["columns"][5]["value"] = joint->getSkinOffset().mV[VX];
+						//row["columns"][6]["column"] = "y";
+						//row["columns"][6]["value"] = joint->getSkinOffset().mV[VY];
+						//row["columns"][7]["column"] = "z";
+						//row["columns"][7]["value"] = joint->getSkinOffset().mV[VZ];
+						mJointsScroll->addElement(row);
+					}
+				}
+			}
+		}
+	}
+}
+
+void BDFloaterAnimations::onPoseLoad()
+{
+	getSelected();
+	for (std::vector<LLCharacter*>::iterator iter = mSelectedCharacters.begin();
+		iter != mSelectedCharacters.end(); ++iter)
+	{
+		LLCharacter* character = *iter;
+		if (character)
+		{
+			LLScrollListItem* joint_item = mJointsScroll->getFirstSelected();
+			if (joint_item)
+			{
+				
+				LLMotion* motion = character->getMotionController().findMotion(joint_item->getColumn(1)->getValue().asUUID());
+				//LLMotionController* motion_cstr;
+				LLPose* pose = motion->getPose();
+				LLJointState* joint_state = pose->findJointState(joint_item->getColumn(0)->getValue());
+				LLJoint* joint = joint_state->getJoint();
+				//LLJoint* parent;
+				LLVector3 vec3;
+				LLQuaternion quaternion;
+
+				//BD - Name & Parent
+				//joint->setup(joint_item->getColumn(0)->getValue().asString());
+				//joint->setName(item->getColumn(0)->getValue().asString());
+				//BD - Position
+				vec3.setValue(joint_item->getColumn(1)->getValue());
+				joint->setPosition(vec3);
+				//BD - Rotation
+				vec3.setValue(joint_item->getColumn(2)->getValue());
+				quaternion.unpackFromVector3(vec3);
+				joint->setRotation(quaternion);
+				//BD - Scale
+				vec3.setValue(joint_item->getColumn(3)->getValue());
+				joint->setScale(vec3);
+				//BD - Skin Offset
+				vec3.setValue(joint_item->getColumn(5)->getValue());
+				joint->setSkinOffset(vec3);
+				//BD - Support
+				joint->setSupport(joint_item->getColumn(6)->getValue());
+
+				//joint_state->setJoint(joint);
+				//pose->addJointState(joint_state);
+				//motion->setPose(*pose);
+				//character->getJoint();
+				//motion->addJointState(joint_state);
+				//character->
+				//motion_cstr->
+
+				/*LLUUID motion_id = motion->getID();;
+				if (!motion_id.isNull())
+				{
+					character->createMotion(motion_id);
+					character->stopMotion(motion_id, 1);
+					character->startMotion(motion_id, 0.0f);
+				}*/
 			}
 		}
 	}

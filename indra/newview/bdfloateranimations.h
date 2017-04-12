@@ -46,11 +46,16 @@ private:
 	void onRemove();
 	void onCreate();
 
+	void onPoseSave();
+	void onPoseLoad();
+
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);
 
 	LLScrollListCtrl*				mAvatarScroll;
 	LLScrollListCtrl*				mMotionScroll;
+	LLScrollListCtrl*				mPoseScroll;
+	LLScrollListCtrl*				mJointsScroll;
 
 	S32								mSelectedAmount;
 
