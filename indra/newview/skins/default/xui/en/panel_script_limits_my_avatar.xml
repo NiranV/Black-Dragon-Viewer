@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- border="true"
- follows="top|left"
- height="570"
- label="MY AVATAR"
+ follows="all"
+ height="490"
+ label="My Avatar"
  layout="topleft"
  left="0"
  name="script_limits_my_avatar_panel"
@@ -15,22 +14,9 @@
 	 follows="left|top"
 	 height="16"
 	 layout="topleft"
-	 left="10"
-	 name="script_memory"
-	 top_pad="24"
-	 text_color="White"
-	 width="620">
-		Avatar Script Usage
-	</text>
-	<text
-	 type="string"
-	 length="1"
-	 follows="left|top"
-	 height="16"
-	 layout="topleft"
-	 left="30"
+	 left="7"
 	 name="memory_used"
-	 top_delta="18"
+	 top="10"
 	 width="620">
 
 	</text>
@@ -40,25 +26,12 @@
 	 follows="left|top"
 	 height="16"
 	 layout="topleft"
-	 left="30"
+	 left="7"
 	 name="urls_used"
-	 top_delta="18"
+	 top_pad="1"
 	 width="620">
 
 	</text>
-	<text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="20"
-     layout="topleft"
-     left="10"
-     name="loading_text"
-     top="80"
-     text_color="EmphasisColor"
-     width="620">
-        Loading...
-    </text>
     <scroll_list
      draw_heading="true"
      follows="all"
@@ -67,8 +40,8 @@
      left_delta="0"
      multi_select="true"
      name="scripts_list"
-     top="100"
-     width="600">
+     top_pad="1"
+     width="610">
         <scroll_list.columns
          label="Size (kb)"
          name="size"
@@ -80,7 +53,7 @@
         <scroll_list.columns
          label="Object Name"
          name="name"
-         width="140" />
+         width="200" />
         <scroll_list.columns
          label="Location"
          name="location"
@@ -88,12 +61,23 @@
     </scroll_list>
     <button
      follows="bottom|left"
-     height="19"
+     height="21"
      label="Refresh List"
      layout="bottomleft"
-     left_pad="5"
+     left="7"
      name="refresh_list_btn"
-     top="34"
-     left="10"
+     top_pad="0"
      width="100" />
+	 <text
+     type="string"
+     length="1"
+     follows="left|top"
+     height="14"
+     layout="topleft"
+     left_pad="10"
+     name="loading_text"
+     top_delta="5"
+     width="300">
+        Loading...
+    </text>
 </panel>

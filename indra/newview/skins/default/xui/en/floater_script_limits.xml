@@ -2,11 +2,11 @@
 <floater
  legacy_header_height="18"
  can_resize="true"
- height="570"
+ height="555"
  layout="topleft"
  name="scriptlimits"
  save_rect="true"
- title="SCRIPT INFORMATION"
+ title="Script Information"
  width="480">
     <tab_container
      bottom="555"

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- border="true"
- follows="top|left"
- height="570"
- label="REGION MEMORY"
+ follows="all"
+ height="502"
+ label="Region Memory"
  layout="topleft"
  name="script_limits_region_memory_panel"
  top="0"
@@ -15,22 +14,9 @@
 	 follows="left|top"
 	 height="16"
 	 layout="topleft"
-	 left="10"
-	 name="script_memory"
-	 top_pad="24"
-	 text_color="White"
-	 width="620">
-	   Parcel Script Memory
-	</text>
-	<text
-	 type="string"
-	 length="1"
-	 follows="left|top"
-	 height="16"
-	 layout="topleft"
-	 left="30"
+	 left="7"
 	 name="parcels_listed"
-	 top_delta="18"
+	 top="10"
 	 visible="true"
 	 width="620">
 	 
@@ -41,9 +27,9 @@
 	 follows="left|top"
 	 height="16"
 	 layout="topleft"
-	 left="30"
+	 left="7"
 	 name="memory_used"
-	 top_delta="18"
+	 top_pad="1"
 	 width="620">
 	</text>
 	
@@ -53,37 +39,24 @@
 	 follows="left|top"
 	 height="16"
 	 layout="topleft"
-	 left="30"
+	 left="7"
 	 name="urls_used"
-	 top_delta="18"
+	 top_pad="1"
 	 width="620">
 	 
 	</text>
-	<text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="20"
-     layout="topleft"
-     left="10"
-     name="loading_text"
-     top_delta="12"
-     text_color="EmphasisColor"
-     width="620">
-        Loading...
-    </text>
     <scroll_list
      draw_heading="true"
      follows="all"
-     height="409"
+     height="410"
      layout="topleft"
      left_delta="0"
      multi_select="true"
      sort_column="0"
      sort_ascending="true"
      name="scripts_list"
-     top_delta="16"
-     width="600">
+     top_pad="1"
+     width="610">
         <scroll_list.columns
          label="Size (kb)"
          name="size"
@@ -111,32 +84,43 @@
     </scroll_list>
     <button
      follows="bottom|left"
-     height="19"
+     height="21"
      label="Refresh List"
      layout="bottomleft"
-     left_pad="5"
+     left="7"
      name="refresh_list_btn"
-     top="34"
-     left="10"
+     top_pad="1"
      width="100" />
     <button
-     follows="bottom|left"
-     height="19"
+     follows="bottom|right"
+     height="21"
      label="Return"
-	 visible="false"
-     layout="bottomleft"
+	 visible="true"
+     layout="topleft"
      name="return_btn"
-     top="34"
-     left_delta="390"
+     top_delta="0"
+     left_delta="409"
      width="100" />
     <button
-     follows="bottom|left"
-     height="19"
+     follows="bottom|right"
+     height="21"
      label="Highlight"
-	 visible="false"
-     layout="bottomleft"
-     left_delta="105"
+	 visible="true"
+     layout="topleft"
+     left_delta="101"
      name="highlight_btn"
-     top="34"
+     top_delta="0"
      width="100" />
+	 <text
+     type="string"
+     length="1"
+     follows="left|bottom"
+     height="14"
+     layout="topleft"
+     left="117"
+     name="loading_text"
+     top_delta="5"
+     width="300">
+        Loading...
+    </text>
 </panel>
