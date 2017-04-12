@@ -939,9 +939,10 @@ void LLPanelLogin::updateServer()
 
 void LLPanelLogin::updateLoginButtons()
 {
-	LLButton* login_btn = getChild<LLButton>("connect_btn");
+	//LLButton* login_btn = getChild<LLButton>("connect_btn");
 
-	login_btn->setEnabled(mUsernameLength != 0 && mPasswordLength != 0);
+	//BD - Disable for now.
+	//login_btn->setEnabled(mUsernameLength != 0 && mPasswordLength != 0);
 }
 
 void LLPanelLogin::onSelectServer()
