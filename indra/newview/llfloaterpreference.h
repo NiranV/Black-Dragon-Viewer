@@ -237,6 +237,7 @@ public:
 	void onBindMode();
 	void onAddBind(KEY key, MASK mask);
 	void onRemoveBind();
+	void onReplaceBind(KEY key, MASK mask);
 
 //	//BD - Revert to Default
 	void inputOutput();

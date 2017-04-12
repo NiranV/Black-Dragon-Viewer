@@ -1199,6 +1199,30 @@ void LLFloaterPreference::onAddBind(KEY key, MASK mask)
 	onExportControls();
 }
 
+void LLFloaterPreference::onReplaceBind(KEY key, MASK mask)
+{
+	LLSD mode = getChild<LLComboBox>("bind_mode")->getValue();
+	LLScrollListCtrl* scroll = getChild<LLScrollListCtrl>("scroll_mode_" + mode.asString());
+	if (scroll)
+	{
+		//LLScrollListCell* column_1 = scroll->getFirstSelected()->getColumn(0);
+		//LLScrollListCell* column_2 = scroll->getFirstSelected()->getColumn(1);
+		LLScrollListCell* column_3 = scroll->getFirstSelected()->getColumn(2);
+		LLScrollListCell* column_4 = scroll->getFirstSelected()->getColumn(3);
+
+		//column_1->setValue(getString(scroll->getFirstSelected()->getColumn(0)->getValue().asString()));
+		//column_2->setValue(scroll->getFirstSelected()->getColumn(0)->getValue().asString());
+		column_3->setValue(LLKeyboard::stringFromKey(key));
+		column_4->setValue(LLKeyboard::stringFromMask(mask, true));
+
+		//scroll->getFirstSelected()->setColumn(0, column_1);
+		//scroll->getFirstSelected()->setColumn(1, column_2);
+		scroll->getFirstSelected()->setColumn(2, column_3);
+		scroll->getFirstSelected()->setColumn(3, column_4);
+	}
+	onExportControls();
+}
+
 void LLFloaterPreference::refreshKeys()
 {
 	LLSD settings;
