@@ -23,6 +23,10 @@
 #include "llcharacter.h"
 #include "llavatarname.h"
 #include "llavatarnamecache.h"
+#include "llviewerobjectlist.h"
+#include "llviewerobject.h"
+#include "llvoavatar.h"
+#include "llcallingcard.h"
 
 
 BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
@@ -98,6 +102,7 @@ void BDFloaterAnimations::onClose(bool app_quitting)
 
 void BDFloaterAnimations::onRefresh()
 {
+	LLAvatarTracker& at = LLAvatarTracker::instance();
 	//BD - First lets go through all things that need updating, if any.
 	std::vector<LLScrollListItem*> items = mAvatarScroll->getAllData();
 	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
@@ -113,6 +118,20 @@ void BDFloaterAnimations::onRefresh()
 				LLCharacter* character = (*iter);
 				if (character)
 				{
+					//BD - Show if we got the permission to animate them and save their motions.
+					//     Todo: Don't do anything if permissions didn't change.
+					std::string str = "-";
+					const LLRelationship* relation = at.getBuddyInfo(character->getID());
+					if (relation)
+					{
+						str = relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "Yes" : "No";
+					}
+					else
+					{
+						str = character->getID() == gAgentID ? "Yes" : "-";
+					}
+					item->getColumn(3)->setValue(str);
+
 					if (item->getColumn(1)->getValue().asUUID() == character->getID())
 					{
 						item->setFlagged(FALSE);
@@ -134,35 +153,54 @@ void BDFloaterAnimations::onRefresh()
 	for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
 		iter != LLCharacter::sInstances.end(); ++iter)
 	{
-		bool skip = false;
-		for (std::vector<LLScrollListItem*>::iterator it = items.begin();
-			it != items.end(); ++it)
+		LLCharacter* character = (*iter);
+		if (character)
 		{
-			if ((*it)->getColumn(1)->getValue().asString() == (*iter)->getID().asString())
+			LLUUID uuid = character->getID();
+			bool skip = false;
+
+			for (std::vector<LLScrollListItem*>::iterator it = items.begin();
+				it != items.end(); ++it)
 			{
-				skip = true;
-				break;
+				if ((*it)->getColumn(1)->getValue().asString() == uuid.asString())
+				{
+					skip = true;
+					break;
+				}
 			}
+
+			if (skip)
+			{
+				continue;
+			}
+
+			F32 value = character->getMotionController().getTimeFactor();
+			LLAvatarName av_name;
+			LLAvatarNameCache::get(uuid, &av_name);
+			const LLRelationship* relation = at.getBuddyInfo(uuid);
+
+			std::string str = "-";
+			if (relation)
+			{
+				str = relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "Yes" : "No";
+			}
+			else
+			{
+				str = uuid == gAgentID ? "Yes" : "-";
+			}
+
+			LLSD row;
+			row["columns"][0]["column"] = "name";
+			row["columns"][0]["value"] = av_name.getDisplayName();
+			row["columns"][1]["column"] = "uuid";
+			row["columns"][1]["value"] = uuid.asString();
+			row["columns"][2]["column"] = "value";
+			row["columns"][2]["value"] = value;
+			//BD - Show if we got the permission to animate them and save their motions.
+			row["columns"][3]["column"] = "permission";
+			row["columns"][3]["value"] = str;
+			mAvatarScroll->addElement(row);
 		}
-
-		if (skip)
-		{
-			continue;
-		}
-
-		LLUUID uuid = (*iter)->getID();
-		LLAvatarName av_name;
-		F32 value = (*iter)->getMotionController().getTimeFactor();
-		LLAvatarNameCache::get(uuid, &av_name);
-
-		LLSD row;
-		row["columns"][0]["column"] = "name";
-		row["columns"][0]["value"] = av_name.getDisplayName();
-		row["columns"][1]["column"] = "uuid";
-		row["columns"][1]["value"] = uuid.asString();
-		row["columns"][2]["column"] = "value";
-		row["columns"][2]["value"] = value;
-		mAvatarScroll->addElement(row);
 	}
 }
 
@@ -263,40 +301,47 @@ void BDFloaterAnimations::onAnimRestart()
 
 void BDFloaterAnimations::onSave()
 {
+	LLAvatarTracker& at = LLAvatarTracker::instance();
 	getSelected();
 	for (std::vector<LLCharacter*>::iterator iter = mSelectedCharacters.begin();
 		iter != mSelectedCharacters.end(); ++iter)
 	{
-		LLCharacter* character = *iter;
+		LLCharacter* character = (*iter);
 		if (character)
 		{
-			LLMotionController::motion_list_t motions = character->getMotionController().getActiveMotions();
-			for (LLMotionController::motion_list_t::iterator it = motions.begin();
-				it != motions.end(); ++it)
+			//BD - Only allow saving motions whose object mod rights we have.
+			const LLRelationship* relation = at.getBuddyInfo(character->getID());
+			if (relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS)
+				|| character->getID() == gAgentID)
 			{
-				LLMotion* motion = *it;
-				if (motion)
+				LLMotionController::motion_list_t motions = character->getMotionController().getActiveMotions();
+				for (LLMotionController::motion_list_t::iterator it = motions.begin();
+					it != motions.end(); ++it)
 				{
-					LLUUID motion_id = motion->getID();
-					LLSD row;
-					LLAvatarName av_name;
-					LLAvatarNameCache::get(character->getID(), &av_name);
-					row["columns"][0]["column"] = "name";
-					row["columns"][0]["value"] = av_name.getDisplayName();
-					row["columns"][1]["column"] = "uuid";
-					row["columns"][1]["value"] = motion_id.asString();
-					row["columns"][2]["column"] = "priority";
-					row["columns"][2]["value"] = motion->getPriority();
-					row["columns"][3]["column"] = "duration";
-					row["columns"][3]["value"] = motion->getDuration();
-					row["columns"][4]["column"] = "blend type";
-					row["columns"][4]["value"] = motion->getBlendType();
-					row["columns"][5]["column"] = "loop";
-					row["columns"][5]["value"] = motion->getLoop();
-					if (motion->getName().empty() &&
-						motion->getDuration() > 0.0f)
+					LLMotion* motion = *it;
+					if (motion)
 					{
-						mMotionScroll->addElement(row);
+						LLUUID motion_id = motion->getID();
+						LLSD row;
+						LLAvatarName av_name;
+						LLAvatarNameCache::get(character->getID(), &av_name);
+						row["columns"][0]["column"] = "name";
+						row["columns"][0]["value"] = av_name.getDisplayName();
+						row["columns"][1]["column"] = "uuid";
+						row["columns"][1]["value"] = motion_id.asString();
+						row["columns"][2]["column"] = "priority";
+						row["columns"][2]["value"] = motion->getPriority();
+						row["columns"][3]["column"] = "duration";
+						row["columns"][3]["value"] = motion->getDuration();
+						row["columns"][4]["column"] = "blend type";
+						row["columns"][4]["value"] = motion->getBlendType();
+						row["columns"][5]["column"] = "loop";
+						row["columns"][5]["value"] = motion->getLoop();
+						if (motion->getName().empty() &&
+							motion->getDuration() > 0.0f)
+						{
+							mMotionScroll->addElement(row);
+						}
 					}
 				}
 			}
@@ -306,22 +351,29 @@ void BDFloaterAnimations::onSave()
 
 void BDFloaterAnimations::onLoad()
 {
+	LLAvatarTracker& at = LLAvatarTracker::instance();
 	getSelected();
 	for (std::vector<LLCharacter*>::iterator iter = mSelectedCharacters.begin();
 		iter != mSelectedCharacters.end(); ++iter)
 	{
-		LLCharacter* character = *iter;
+		LLCharacter* character = (*iter);
 		if (character)
 		{
-			LLScrollListItem* item = mMotionScroll->getFirstSelected();
-			if (item)
+			//BD - Only allow animating people whose object mod rights we have.
+			const LLRelationship* relation = at.getBuddyInfo(character->getID());
+			if (relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS)
+				|| character->getID() == gAgentID)
 			{
-				LLUUID motion_id = item->getColumn(1)->getValue().asUUID();
-				if (!motion_id.isNull())
+				LLScrollListItem* item = mMotionScroll->getFirstSelected();
+				if (item)
 				{
-					character->createMotion(motion_id);
-					character->stopMotion(motion_id, 1);
-					character->startMotion(motion_id, 0.0f);
+					LLUUID motion_id = item->getColumn(1)->getValue().asUUID();
+					if (!motion_id.isNull())
+					{
+						character->createMotion(motion_id);
+						character->stopMotion(motion_id, 1);
+						character->startMotion(motion_id, 0.0f);
+					}
 				}
 			}
 		}

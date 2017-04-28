@@ -68,14 +68,18 @@ width="494">
     <scroll_list.columns
      label="Avatar Name"
      name="name"
-   relative_width="0.40"  />
+   relative_width="0.32"  />
     <scroll_list.columns
      label="Avatar UUID"
      name="uuid"
-   relative_width="0.50"  />
+   relative_width="0.48"  />
     <scroll_list.columns
-     label="Factor"
+     label="Speed"
      name="value"
+   relative_width="0.10"  />
+	<scroll_list.columns
+     label="Perms"
+     name="permission"
    relative_width="0.10"  />
 </scroll_list>
  <button
