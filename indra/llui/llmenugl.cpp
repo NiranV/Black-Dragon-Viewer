@@ -3348,6 +3348,12 @@ BOOL LLMenuBarGL::handleAcceleratorKey(KEY key, MASK mask)
 		return TRUE;
 	}
 
+	if (result && !getHighlightedItem() && LLMenuGL::sMenuContainer->hasVisibleMenu())
+	{
+		// close menus originating from other menu bars
+		LLMenuGL::sMenuContainer->hideMenus();
+	}
+
 	return result;
 }
 

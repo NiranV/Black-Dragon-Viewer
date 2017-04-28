@@ -3348,6 +3348,12 @@ LLSD LLAppViewer::getViewerInfo() const
 	//BD - return a URL to the release notes for this viewer, such as:
 	//     http://wiki.secondlife.com/wiki/Release_Notes/Second Life Beta Viewer/2.1.0.123456
 	std::string url = LLTrans::getString("RELEASE_NOTES_BASE_URL");
+	std::string channel = LLVersionInfo::getChannel();
+	if (LLStringUtil::endsWith(boost::to_lower_copy(channel), " edu")) // Release Notes url shouldn't include the EDU parameter
+	{
+		boost::erase_tail(channel, 4);
+	}
+	url += LLURI::escape(channel) + "/";
 
 	info["VIEWER_RELEASE_NOTES_URL"] = url;
 
@@ -5640,6 +5646,8 @@ void LLAppViewer::forceErrorBreakpoint()
    	LL_WARNS() << "Forcing a deliberate breakpoint" << LL_ENDL;
 #ifdef LL_WINDOWS
     DebugBreak();
+#else
+    asm ("int $3");
 #endif
     return;
 }
