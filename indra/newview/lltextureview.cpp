@@ -76,7 +76,7 @@ static std::string title_string4("  W x H (Dis) Mem");
 
 static S32 title_x1 = 0;
 //BD
-static S32 title_x2 = 450;
+static S32 title_x2 = 475;
 static S32 title_x3 = title_x2 + 40;
 static S32 title_x4 = title_x3 + 46;
 static S32 texture_bar_height = 8;
@@ -192,7 +192,7 @@ void LLTextureBar::draw()
 	// The progress bar for the texture, highlighted if it's being download
 	// Various numerical stats.
 	std::string tex_str;
-	S32 left, right;
+	S32 right = 0;
 	S32 top = 0;
 	S32 bottom = top + 6;
 	LLColor4 clr;
@@ -273,28 +273,22 @@ void LLTextureBar::draw()
 	//BD
 	S32 bar_left = 295;
 
-	left = bar_left;
-	right = left + bar_width;
+	right = bar_left + bar_width;
 
 	gGL.color4f(0.f, 0.f, 0.f, 0.75f);
-	gl_rect_2d(left, top, right, bottom);
+	gl_rect_2d(bar_left, top, right, bottom);
 
 	F32 data_progress = mImagep->mDownloadProgress;
 	
 	if (data_progress > 0.0f)
 	{
-		//BD - Clamp.
-		if (data_progress < 1.0f)
-		{
-			data_progress = 1.0f;
-		}
-
 		// Downloaded bytes
-		right = left + llfloor(data_progress * (F32)bar_width);
-		if (right > left)
+		//BD - Clamp.
+		right = bar_left + (llclamp(data_progress, 0.0f, 1.0f) * bar_width);
+		if (right > bar_left)
 		{
 			gGL.color4f(0.f, 0.5f, 0.f, 0.75f);
-			gl_rect_2d(left, top, right, bottom);
+			gl_rect_2d(bar_left, top, right, bottom);
 		}
 	}
 
@@ -574,10 +568,6 @@ void LLGLTexMemBar::draw()
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 480, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	//BD - Render a multi-segmented multi-colored bar showing where our memory goes.
-	gGL.color4f(0.f, 0.f, 0.f, 0.75f);
-	gl_rect_2d(left, top - 9, left + bar_width, top - 3);
-
 	//BD
 	if (gGLManager.mIsNVIDIA)
 	{
@@ -588,36 +578,41 @@ void LLGLTexMemBar::draw()
 		data_progress = ((F32)total_mem.value() + (F32)bound_mem.value() + (F32)fbo) / (F32)max_vram;
 	}
 
+	//BD - Render a multi-segmented multi-colored bar showing where our memory goes.
+	//     First render the available memory chunk with a black background.
+	gGL.color4f(0.f, 0.f, 0.f, 0.75f);
+	right = left + bar_width - (bar_width * data_progress);
+	gl_rect_2d(left, top - 9, right, top - 3);
+
+	//BD - Render the unavailable memory as almost transparent black background.
+	gGL.color4f(0.f, 0.f, 0.f, 0.25f);
+	gl_rect_2d(right, top - 9, left + bar_width, top - 3);
+
 	if (data_progress > 0.0f)
 	{
-		right = left + (data_progress * (F32)bar_width);
-		if (right > left)
-		{
-			gGL.color4f(0.5f, 0.5f , 0.5f, 0.75f);
-			gl_rect_2d(left, top - 9, right, top - 3);
-		}
-
+		//BD - Render the FBO bar.
 		data_progress = ((F32)fbo) / (F32)max_vram;
-		left = right;
-		right = left + (data_progress * (F32)bar_width);
+		right = left + llfloor(data_progress * (F32)bar_width);
 		if (right > left)
 		{
-			gGL.color4f(0.75f, 0.f, 0.f, 0.75f);
+			gGL.color4f(0.75f, 0.45f, 0.45f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
 
+		//BD - Render the system memory bar.
 		data_progress = ((F32)total_mem.value()) / (F32)max_vram;
 		left = right;
-		right = left + (data_progress * (F32)bar_width);
+		right = left + llfloor(data_progress * (F32)bar_width);
 		if (right > left)
 		{
 			gGL.color4f(0.75f, 0.75f, 0.f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
 
+		//BD - Render the scene memory bar.
 		data_progress = ((F32)bound_mem.value()) / (F32)max_vram;
 		left = right;
-		right = left + (data_progress * (F32)bar_width);
+		right = left + llfloor(data_progress * (F32)bar_width);
 		if (right > left)
 		{
 			gGL.color4f(0.f, 0.75f, 0.75f, 0.75f);
@@ -648,15 +643,10 @@ void LLGLTexMemBar::draw()
 	if (data_progress > 0.0f)
 	{
 		//BD - Clamp
-		if (data_progress > 1.0f)
-		{
-			data_progress = 1.0f;
-		}
-
-		right = left + (data_progress * (F32)bar_width);
+		right = left + llfloor(llclamp(data_progress, 0.0f, 1.0f) * (F32)bar_width);
 		if (right > left)
 		{
-			gGL.color4f(0.f + data_progress, 1.f - data_progress, 0.f, 0.75f);
+			gGL.color4f(0.75f, 0.75f, 0.f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
 	}
@@ -683,15 +673,10 @@ void LLGLTexMemBar::draw()
 	if (data_progress > 0.0f)
 	{
 		//BD - Clamp
-		if (data_progress > 1.0f)
-		{
-			data_progress = 1.0f;
-		}
-
-		right = left + (data_progress * (F32)bar_width);
+		right = left + llfloor(llclamp(data_progress, 0.0f, 1.0f) * (F32)bar_width);
 		if (right > left)
 		{
-			gGL.color4f(0.f + data_progress, 1.f - data_progress, 0.f, 0.75f);
+			gGL.color4f(0.f, 0.75f, 0.75f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
 	}
@@ -743,16 +728,6 @@ void LLGLTexMemBar::draw()
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 555, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	/*text = llformat("Net Tot Tex: %.1f MB Tot Obj: %.1f MB #Objs/#Cached: %d/%d Tot Htp: %d Cread: %u Cwrite: %u Rwait: %u",
-		total_texture_downloaded.valueInUnits<LLUnits::Megabytes>(),
-		total_object_downloaded.valueInUnits<LLUnits::Megabytes>(),
-		total_objects,
-		total_active_cached_objects,
-		total_http_requests,
-		cache_read,
-		cache_write,
-		res_wait);*/
-
 	//----------------------------------------------------------------------------
 	//BD - Cache
 
@@ -783,23 +758,6 @@ void LLGLTexMemBar::draw()
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 555, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	/*text = llformat("Textures: %d Fetch: %d(%d) Pkts:%d(%d) Cache R/W: %d/%d LFS:%d RAW:%d HTP:%d DEC:%d CRE:%d ",
-					gTextureList.getNumImages(),
-					LLAppViewer::getTextureFetch()->getNumRequests(), LLAppViewer::getTextureFetch()->getNumDeletes(),
-					LLAppViewer::getTextureFetch()->mPacketCount, LLAppViewer::getTextureFetch()->mBadPacketCount, 
-					LLAppViewer::getTextureCache()->getNumReads(), LLAppViewer::getTextureCache()->getNumWrites(),
-					LLLFSThread::sLocal->getPending(),
-					LLImageRaw::sRawImageCount,
-					LLAppViewer::getTextureFetch()->getNumHTTPRequests(),
-					LLAppViewer::getImageDecodeThread()->getPending(), 
-					gTextureList.mCreateTextureList.size());*/
-
-	//x_right = 550.0;
-	/*LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, v_offset + line_height*3,
-											 text_color, LLFontGL::LEFT, LLFontGL::TOP,
-											 LLFontGL::NORMAL, LLFontGL::NO_SHADOW, S32_MAX, S32_MAX,
-											 &x_right, FALSE);*/
-
 	//----------------------------------------------------------------------------
 	//BD - Objects
 
@@ -829,8 +787,6 @@ void LLGLTexMemBar::draw()
 
 	F32Kilobits bandwidth(LLAppViewer::getTextureFetch()->getTextureBandwidth());
 	F32Kilobits max_bandwidth(gSavedSettings.getF32("ThrottleBandwidthKBPS"));
-	//color = bandwidth > max_bandwidth ? LLColor4::red : bandwidth > max_bandwidth*.75f ? LLColor4::yellow : text_color;
-	//color[VALPHA] = text_color[VALPHA];
 	text = llformat("Bandwidth: %.0f / %.0f",
 					bandwidth.value(),
 					max_bandwidth.value());
@@ -856,16 +812,6 @@ void LLGLTexMemBar::draw()
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 555, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
-	
-	// Mesh status line
-	/*text = llformat("Mesh: Reqs(Tot/Htp/Big): %u/%u/%u Rtr/Err: %u/%u Cread/Cwrite: %u/%u Low/At/High: %d/%d/%d",
-					LLMeshRepository::sMeshRequestCount, LLMeshRepository::sHTTPRequestCount, LLMeshRepository::sHTTPLargeRequestCount,
-					LLMeshRepository::sHTTPRetryCount, LLMeshRepository::sHTTPErrorCount,
-					LLMeshRepository::sCacheReads, LLMeshRepository::sCacheWrites,
-					LLMeshRepoThread::sRequestLowWater, LLMeshRepoThread::sRequestWaterLevel, LLMeshRepoThread::sRequestHighWater);
-
-	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, v_offset + line_height*2,
-											 text_color, LLFontGL::LEFT, LLFontGL::TOP);*/
 
 	//----------------------------------------------------------------------------
 
