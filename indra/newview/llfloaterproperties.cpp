@@ -290,10 +290,13 @@ void LLFloaterProperties::refreshFromItem(LLInventoryItem* item)
 		     ( ((perm.isOwned()) && (!perm.isGroupOwned()) && (perm.getOwner() == item->getCreatorUUID()) ) || (RlvUtil::isNearbyAgent(item->getCreatorUUID())) ) )
 		{
 			childSetEnabled("BtnCreator", FALSE);
-			name = RlvStrings::getAnonym(av_name);
+			getChild<LLUICtrl>("LabelCreatorName")->setValue(RlvStrings::getAnonym(av_name.getUserName()));
+		}
+		else
+		{
+			getChild<LLUICtrl>("LabelCreatorName")->setValue(av_name.getUserName());
 		}
 // [/RLVa:KB]
-		getChild<LLUICtrl>("LabelCreatorName")->setValue(av_name);
 	}
 	else
 	{

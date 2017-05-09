@@ -2744,11 +2744,12 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 			return TRUE;
 		}
 
-		if (gLoginMenuBarView && gLoginMenuBarView->handleAcceleratorKey(key, mask))
+		//BD
+		/*if (gLoginMenuBarView && gLoginMenuBarView->handleAcceleratorKey(key, mask))
 		{
 			LLViewerEventRecorder::instance().logKeyEvent(key, mask);
 			return TRUE;
-		}
+		}*/
 	}
 
 	// give floaters first chance to handle TAB key
@@ -2884,10 +2885,11 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 		return TRUE;
 	}
 
-	if (gLoginMenuBarView && gLoginMenuBarView->handleAcceleratorKey(key, mask))
+	//BD
+	/*if (gLoginMenuBarView && gLoginMenuBarView->handleAcceleratorKey(key, mask))
 	{
 		return TRUE;
-	}
+	}*/
 
 	// don't pass keys on to world when something in ui has focus
 	return gFocusMgr.childHasKeyboardFocus(mRootView)
