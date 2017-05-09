@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel
+ follows="all"
+ height="408"
+ label="Uploads"
+ layout="topleft"
+ left="45"
+ name="uploads"
+ top="0"
+ width="510">
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="506"/>
+ 
+ <text
+ name="show_ims_in_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Avatar Render Settings (Jellydolls):
+ </text>
+    <name_list
+     column_padding="2"
+     draw_heading="true"
+     height="366"
+     follows="left|top|right"
+     layout="topleft"
+     left="0"
+     width="507"
+     multi_select="true"
+     name="render_settings_list"
+     top_pad="5">
+        <name_list.columns
+         label="Name"
+         name="name"
+         relative_width="0.65" />
+        <name_list.columns
+         label="Render setting"
+         name="setting"
+         relative_width="0.35" />
+     </name_list>
+    
+    <panel
+      layout="topleft"
+      follows="left|bottom|right"
+      height="22"
+      name="buttons_panel"
+      top="-21"
+      mouse_opaque="false"
+      background_visible="true"
+      left="1"
+      width="507">
+      <filter_editor
+     background_image="TextField_Off"
+     background_image_disabled="TextField_Disabled"
+     background_image_focused="TextField_Active"
+     follows="left|bottom|right"
+     height="20"
+     layout="topleft"
+     left="0"
+     right="-62"
+     label="Filter People"
+     max_length_chars="300"
+     name="people_filter_input"
+     text_color="Black"
+     text_pad_left="10"
+     top="-21" />
+    <menu_button
+     follows="bottom|right"
+     height="21"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_overlay="AddItem_Off"
+     image_overlay_alignment="left"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     left_pad="1"
+     label="Add"
+     menu_filename="menu_avatar_rendering_settings_add.xml"
+     menu_position="bottomleft"
+     name="plus_btn"
+     tool_tip="Actions on selected person"
+     top="-21"
+     width="60" />
+    </panel>
+</panel>

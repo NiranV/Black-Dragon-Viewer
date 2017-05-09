@@ -36,6 +36,8 @@
 #include "llfloater.h"
 #include "llavatarpropertiesprocessor.h"
 #include "llconversationlog.h"
+#include "lllistcontextmenu.h"
+#include "llmutelist.h"
 
 class LLConversationLogObserver;
 class LLPanelPreference;
@@ -46,6 +48,7 @@ class LLScrollListCtrl;
 class LLSliderCtrl;
 class LLSD;
 class LLTextBox;
+class LLNameListCtrl;
 
 typedef std::map<std::string, std::string> notifications_map;
 
@@ -200,7 +203,7 @@ public:
 	void onClickPermsDefault();
 	void onClickAutoReplace();
 	void onClickSpellChecker();
-	void onClickRenderExceptions();
+	//void onClickRenderExceptions();
 	void applyUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void getUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void onLogChatHistorySaved();	
@@ -252,6 +255,17 @@ public:
 	void savePreset(const LLSD& user_data);
 	void loadPreset(const LLSD& user_data);
 
+//	//BD - Avatar Rendering Settings
+	void onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y);
+
+	void updateList();
+	void onFilterEdit(const std::string& search_string);
+	void onCustomAction(const LLSD& userdata, const LLUUID& av_id);
+	bool isActionChecked(const LLSD& userdata, const LLUUID& av_id);
+	void onClickAdd(const LLSD& userdata);
+
+	static void setNeedsUpdate();
+
 private:
 
 //	//BD - Quick Graphics Presets
@@ -278,6 +292,18 @@ private:
 	
 	LLAvatarData mAvatarProperties;
 	LOG_CLASS(LLFloaterPreference);
+
+//	//BD - Avatar Render Settings
+	bool isHiddenRow(const std::string& av_name);
+	void callbackAvatarPicked(const uuid_vec_t& ids, S32 visual_setting);
+	void removePicker();
+
+	bool mNeedsUpdate;
+	LLListContextMenu* mContextMenu;
+	LLNameListCtrl* mAvatarSettingsList;
+	LLHandle<LLFloater> mPicker;
+
+	std::string mNameFilter;
 };
 
 class LLPanelPreference : public LLPanel

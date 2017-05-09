@@ -151,6 +151,12 @@
     name="spin_under_sitting">
   (Camera) Spin Under
  </string>
+	<string
+	name="av_never_render"
+	value="Never"/>
+	<string
+	name="av_always_render"
+	value="Always"/>
  
    <icon
         follows="top|left"
@@ -215,6 +221,12 @@
          label="Display"
          layout="topleft"
          name="display" />
+		  <panel
+	     class="panel_preference"
+         filename="panel_preferences_render_settings.xml"
+         label="Avatar Mute Settings"
+         layout="topleft"
+         name="render_settings" />
         <panel
 		 class="panel_preference"
          filename="panel_preferences_sound.xml"

@@ -124,6 +124,12 @@
 #include "llfeaturemanager.h"
 #include "llviewertexturelist.h"
 
+//BD - Avatar Rendering Settings
+#include "llfloateravatarpicker.h"
+#include "llfiltereditor.h"
+#include "llnamelistctrl.h"
+#include "llmenugl.h"
+
 const F32 BANDWIDTH_UPDATER_TIMEOUT = 0.5f;
 char const* const VISIBILITY_DEFAULT = "default";
 char const* const VISIBILITY_HIDDEN = "hidden";
@@ -743,13 +749,44 @@ std::string LLFloaterPreference::sSkin = "";
 //////////////////////////////////////////////
 // LLFloaterPreference
 
+class LLSettingsContextMenu : public LLListContextMenu
+{
+public:
+	LLSettingsContextMenu(LLFloaterPreference* floater_settings)
+		: mFloaterSettings(floater_settings)
+	{}
+protected:
+	LLContextMenu* createMenu()
+	{
+		LLUICtrl::CommitCallbackRegistry::ScopedRegistrar registrar;
+		LLUICtrl::EnableCallbackRegistry::ScopedRegistrar enable_registrar;
+		registrar.add("Settings.SetRendering", boost::bind(&LLFloaterPreference::onCustomAction, mFloaterSettings, _2, mUUIDs.front()));
+		enable_registrar.add("Settings.IsSelected", boost::bind(&LLFloaterPreference::isActionChecked, mFloaterSettings, _2, mUUIDs.front()));
+		LLContextMenu* menu = createFromFile("menu_avatar_rendering_settings.xml");
+
+		return menu;
+	}
+
+	LLFloaterPreference* mFloaterSettings;
+};
+
+class LLAvatarRenderMuteListObserver : public LLMuteListObserver
+{
+	/* virtual */ void onChange()  { LLFloaterPreference::setNeedsUpdate(); }
+};
+
+static LLAvatarRenderMuteListObserver sAvatarRenderMuteListObserver;
+
 LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	: LLFloater(key),
 	mGotPersonalInfo(false),
 	mOriginalIMViaEmail(false),
 	mLanguageChanged(false),
 	mAvatarDataInitialized(false),
-	mClickActionDirty(false)
+	mClickActionDirty(false),
+//	//BD - Avatar Rendering Settings
+	mAvatarSettingsList(NULL),
+	mNeedsUpdate(false)
 {
 	LLConversationLog::instance().addObserver(this);
 
@@ -787,7 +824,7 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ClickEnablePopup",		boost::bind(&LLFloaterPreference::onClickEnablePopup, this));
 	mCommitCallbackRegistrar.add("Pref.ClickDisablePopup",		boost::bind(&LLFloaterPreference::onClickDisablePopup, this));	
 	mCommitCallbackRegistrar.add("Pref.LogPath",				boost::bind(&LLFloaterPreference::onClickLogPath, this));
-	mCommitCallbackRegistrar.add("Pref.RenderExceptions",       boost::bind(&LLFloaterPreference::onClickRenderExceptions, this));
+	//mCommitCallbackRegistrar.add("Pref.RenderExceptions",       boost::bind(&LLFloaterPreference::onClickRenderExceptions, this));
 	mCommitCallbackRegistrar.add("Pref.HardwareDefaults",		boost::bind(&LLFloaterPreference::setHardwareDefaults, this));
 	mCommitCallbackRegistrar.add("Pref.AvatarImpostorsEnable",	boost::bind(&LLFloaterPreference::onAvatarImpostorsEnable, this));
 	mCommitCallbackRegistrar.add("Pref.UpdateSliderText",		boost::bind(&LLFloaterPreference::refreshUI,this));
@@ -845,6 +882,11 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.PrefSave", boost::bind(&LLFloaterPreference::savePreset, this, _2));
 	mCommitCallbackRegistrar.add("Pref.PrefLoad", boost::bind(&LLFloaterPreference::loadPreset, this, _2));
 	LLPresetsManager::instance().setPresetListChangeCallback(boost::bind(&LLFloaterPreference::onPresetsListChange, this));
+
+//	//BD - Avatar Rendering Settings
+	mContextMenu = new LLSettingsContextMenu(this);
+	LLRenderMuteList::getInstance()->addObserver(&sAvatarRenderMuteListObserver);
+	mCommitCallbackRegistrar.add("Settings.AddNewEntry", boost::bind(&LLFloaterPreference::onClickAdd, this, _2));
 }
 
 void LLFloaterPreference::processProperties( void* pData, EAvatarProcessorType type )
@@ -984,6 +1026,12 @@ BOOL LLFloaterPreference::postBuild()
 		gSavedSettings.setBOOL("PrefsVignetteVisible", false);
 	}
 
+//	//BD - Avatar Rendering Settings
+	mAvatarSettingsList = getChild<LLNameListCtrl>("render_settings_list");
+	mAvatarSettingsList->setRightMouseDownCallback(boost::bind(&LLFloaterPreference::onAvatarListRightClick, this, _1, _2, _3));
+	this->setVisibleCallback(boost::bind(&LLFloaterPreference::removePicker, this));
+	getChild<LLFilterEditor>("people_filter_input")->setCommitCallback(boost::bind(&LLFloaterPreference::onFilterEdit, this, _2));
+
 	return TRUE;
 }
 
@@ -1014,6 +1062,10 @@ LLFloaterPreference::~LLFloaterPreference()
 	}
 
 	LLConversationLog::instance().removeObserver(this);
+
+//	//BD - Avatar Rendering Settings
+	delete mContextMenu;
+	LLRenderMuteList::getInstance()->removeObserver(&sAvatarRenderMuteListObserver);
 }
 
 //BD - Array Debugs
@@ -1496,6 +1548,13 @@ void LLFloaterPreference::draw()
 	//     then only when necessary, everything else should be priodically refreshed, every second or two
 	//     should be more than enough.
 	refreshWarnings();
+
+//	//BD - Avatar Rendering Settings
+	if (mNeedsUpdate)
+	{
+		updateList();
+		mNeedsUpdate = false;
+	}
 	
 	LLFloater::draw();
 }
@@ -1701,6 +1760,9 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	refreshCameraControls();
 	toggleTabs();
 
+//	//BD - Avatar Rendering Settings
+	updateList();
+
 	// Make sure the current state of prefs are saved away when
 	// when the floater is opened.  That will make cancel do its
 	// job
@@ -1714,12 +1776,12 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	LLButton* load_btn = findChild<LLButton>("PrefLoadButton");
 	LLButton* save_btn = findChild<LLButton>("PrefSaveButton");
 	LLButton* delete_btn = findChild<LLButton>("PrefDeleteButton");
-	LLButton* exceptions_btn = findChild<LLButton>("RenderExceptionsButton");
+	//LLButton* exceptions_btn = findChild<LLButton>("RenderExceptionsButton");
 
 	load_btn->setEnabled(started);
 	save_btn->setEnabled(started);
 	delete_btn->setEnabled(started);
-	exceptions_btn->setEnabled(started);
+	//exceptions_btn->setEnabled(started);
 }
 
 void LLFloaterPreference::onAvatarImpostorsEnable()
@@ -2708,10 +2770,10 @@ void LLFloaterPreference::onClickSpellChecker()
     LLFloaterReg::showInstance("prefs_spellchecker");
 }
 
-void LLFloaterPreference::onClickRenderExceptions()
+/*void LLFloaterPreference::onClickRenderExceptions()
 {
     LLFloaterReg::showInstance("avatar_render_settings");
-}
+}*/
 
 void LLFloaterPreference::onClickPermsDefault()
 {
@@ -3294,6 +3356,185 @@ void LLPanelPreferenceGraphics::setHardwareDefaults()
 	//BD
 	LLPanelPreference::setHardwareDefaults();
 }
+
+//BD - Avatar Render Settings
+void LLFloaterPreference::removePicker()
+{
+	if (mPicker.get())
+	{
+		mPicker.get()->closeFloater();
+	}
+}
+
+void LLFloaterPreference::onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y)
+{
+	LLNameListCtrl* list = dynamic_cast<LLNameListCtrl*>(ctrl);
+	if (!list) return;
+	list->selectItemAt(x, y, MASK_NONE);
+	uuid_vec_t selected_uuids;
+
+	if (list->getCurrentID().notNull())
+	{
+		selected_uuids.push_back(list->getCurrentID());
+		mContextMenu->show(ctrl, selected_uuids, x, y);
+	}
+}
+
+void LLFloaterPreference::updateList()
+{
+	mAvatarSettingsList->deleteAllItems();
+	LLAvatarName av_name;
+	LLNameListCtrl::NameItem item_params;
+	for (std::map<LLUUID, S32>::iterator iter = LLRenderMuteList::getInstance()->sVisuallyMuteSettingsMap.begin(); iter != LLRenderMuteList::getInstance()->sVisuallyMuteSettingsMap.end(); iter++)
+	{
+		item_params.value = iter->first;
+		LLAvatarNameCache::get(iter->first, &av_name);
+		if (!isHiddenRow(av_name.getCompleteName()))
+		{
+			item_params.columns.add().value(av_name.getCompleteName()).column("name");
+			std::string setting = getString(iter->second == 1 ? "av_never_render" : "av_always_render");
+			item_params.columns.add().value(setting).column("setting");
+			mAvatarSettingsList->addNameItemRow(item_params);
+		}
+	}
+}
+
+void LLFloaterPreference::onFilterEdit(const std::string& search_string)
+{
+	std::string filter_upper = search_string;
+	LLStringUtil::toUpper(filter_upper);
+	if (mNameFilter != filter_upper)
+	{
+		mNameFilter = filter_upper;
+		mNeedsUpdate = true;
+	}
+}
+
+bool LLFloaterPreference::isHiddenRow(const std::string& av_name)
+{
+	if (mNameFilter.empty()) return false;
+	std::string upper_name = av_name;
+	LLStringUtil::toUpper(upper_name);
+	return std::string::npos == upper_name.find(mNameFilter);
+}
+
+static LLVOAvatar* find_avatar(const LLUUID& id)
+{
+	LLViewerObject *obj = gObjectList.findObject(id);
+	while (obj && obj->isAttachment())
+	{
+		obj = (LLViewerObject *)obj->getParent();
+	}
+
+	if (obj && obj->isAvatar())
+	{
+		return (LLVOAvatar*)obj;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+
+void LLFloaterPreference::onCustomAction(const LLSD& userdata, const LLUUID& av_id)
+{
+	const std::string command_name = userdata.asString();
+
+	S32 new_setting = 0;
+	if ("default" == command_name)
+	{
+		new_setting = S32(LLVOAvatar::AV_RENDER_NORMALLY);
+	}
+	else if ("never" == command_name)
+	{
+		new_setting = S32(LLVOAvatar::AV_DO_NOT_RENDER);
+	}
+	else if ("always" == command_name)
+	{
+		new_setting = S32(LLVOAvatar::AV_ALWAYS_RENDER);
+	}
+
+	LLVOAvatar *avatarp = find_avatar(av_id);
+	if (avatarp)
+	{
+		avatarp->setVisualMuteSettings(LLVOAvatar::VisualMuteSettings(new_setting));
+	}
+	else
+	{
+		LLRenderMuteList::getInstance()->saveVisualMuteSetting(av_id, new_setting);
+	}
+}
+
+
+bool LLFloaterPreference::isActionChecked(const LLSD& userdata, const LLUUID& av_id)
+{
+	const std::string command_name = userdata.asString();
+
+	S32 visual_setting = LLRenderMuteList::getInstance()->getSavedVisualMuteSetting(av_id);
+	if ("default" == command_name)
+	{
+		return (visual_setting == S32(LLVOAvatar::AV_RENDER_NORMALLY));
+	}
+	else if ("never" == command_name)
+	{
+		return (visual_setting == S32(LLVOAvatar::AV_DO_NOT_RENDER));
+	}
+	else if ("always" == command_name)
+	{
+		return (visual_setting == S32(LLVOAvatar::AV_ALWAYS_RENDER));
+	}
+	return false;
+}
+
+void LLFloaterPreference::setNeedsUpdate()
+{
+	LLFloaterPreference* instance = LLFloaterReg::getTypedInstance<LLFloaterPreference>("preferences");
+	if (!instance) return;
+	instance->mNeedsUpdate = true;
+}
+
+void LLFloaterPreference::onClickAdd(const LLSD& userdata)
+{
+	const std::string command_name = userdata.asString();
+	S32 visual_setting = 0;
+	if ("never" == command_name)
+	{
+		visual_setting = S32(LLVOAvatar::AV_DO_NOT_RENDER);
+	}
+	else if ("always" == command_name)
+	{
+		visual_setting = S32(LLVOAvatar::AV_ALWAYS_RENDER);
+	}
+
+	LLView * button = findChild<LLButton>("plus_btn", TRUE);
+	LLFloater* root_floater = gFloaterView->getParentFloater(this);
+	LLFloaterAvatarPicker * picker = LLFloaterAvatarPicker::show(boost::bind(&LLFloaterPreference::callbackAvatarPicked, this, _1, visual_setting),
+		FALSE, TRUE, FALSE, root_floater->getName(), button);
+
+	if (root_floater)
+	{
+		root_floater->addDependentFloater(picker);
+	}
+
+	mPicker = picker->getHandle();
+}
+
+void LLFloaterPreference::callbackAvatarPicked(const uuid_vec_t& ids, S32 visual_setting)
+{
+	if (ids.empty()) return;
+
+	LLVOAvatar *avatarp = find_avatar(ids[0]);
+	if (avatarp)
+	{
+		avatarp->setVisualMuteSettings(LLVOAvatar::VisualMuteSettings(visual_setting));
+	}
+	else
+	{
+		LLRenderMuteList::getInstance()->saveVisualMuteSetting(ids[0], visual_setting);
+	}
+}
+
 
 LLFloaterPreferenceProxy::LLFloaterPreferenceProxy(const LLSD& key)
 	: LLFloater(key),
