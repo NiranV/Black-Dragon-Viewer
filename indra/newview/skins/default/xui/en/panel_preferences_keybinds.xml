@@ -303,13 +303,13 @@ width="510">
  <combo_box
 	follows="bottom|left"
 	layout="topleft"
-	left="1"
+	left="0"
 	height="20"
  label="Select Mode"
 	name="bind_mode"
  allow_text_entry="true"
 	top="-21"
-	width="115">
+	width="116">
   <combo_box.item
   label="Third Person"
   name="first"
