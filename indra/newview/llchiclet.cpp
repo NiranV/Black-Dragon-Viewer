@@ -69,7 +69,7 @@ LLSysWellChiclet::LLSysWellChiclet(const Params& p)
 	, mMaxDisplayedCount(p.max_displayed_count)
 	, mIsNewMessagesState(false)
 	, mFlashToLitTimer(NULL)
-	, mContextMenu(NULL)
+	, mContextMenuHandle()
 {
 	LLButton::Params button_params = p.button;
 	mButton = LLUICtrlFactory::create<LLButton>(button_params);
@@ -81,6 +81,12 @@ LLSysWellChiclet::LLSysWellChiclet(const Params& p)
 LLSysWellChiclet::~LLSysWellChiclet()
 {
 	mFlashToLitTimer->unset();
+	LLContextMenu* menu_avatar = static_cast<LLContextMenu*>(mContextMenuHandle.get());
+	if (menu_avatar)
+	{
+		menu_avatar->die();
+		mContextMenuHandle.markDead();
+	}
 }
 
 void LLSysWellChiclet::setCounter(S32 counter)
@@ -147,14 +153,16 @@ void LLSysWellChiclet::updateWidget(bool is_window_empty)
 // virtual
 BOOL LLSysWellChiclet::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
-	if(!mContextMenu)
+	LLContextMenu* menu_avatar = static_cast<LLContextMenu*>(mContextMenuHandle.get());
+	if(!menu_avatar)
 	{
 		createMenu();
+		menu_avatar = static_cast<LLContextMenu*>(mContextMenuHandle.get());
 	}
-	if (mContextMenu)
+	if (menu_avatar)
 	{
-		mContextMenu->show(x, y);
-		LLMenuGL::showPopup(this, mContextMenu, x, y);
+		menu_avatar->show(x, y);
+		LLMenuGL::showPopup(this, menu_avatar, x, y);
 	}
 	return TRUE;
 }
@@ -194,7 +202,7 @@ bool LLNotificationChiclet::enableMenuItem(const LLSD& user_data)
 
 void LLNotificationChiclet::createMenu()
 {
-	if(mContextMenu)
+	if(mContextMenuHandle.get())
 	{
 		LL_WARNS() << "Menu already exists" << LL_ENDL;
 		return;
@@ -209,10 +217,11 @@ void LLNotificationChiclet::createMenu()
 		boost::bind(&LLNotificationChiclet::enableMenuItem, this, _2));
 
 	llassert(LLMenuGL::sMenuContainer != NULL);
-	mContextMenu = LLUICtrlFactory::getInstance()->createFromFile<LLContextMenu>
+	LLContextMenu* menu = LLUICtrlFactory::getInstance()->createFromFile<LLContextMenu>
 		("menu_notification_well_button.xml",
 		 LLMenuGL::sMenuContainer,
 		 LLViewerMenuHolderGL::child_registry_t::instance());
+	mContextMenuHandle = menu->getHandle();
 }
 
 /*virtual*/

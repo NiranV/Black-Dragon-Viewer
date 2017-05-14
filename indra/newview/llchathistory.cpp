@@ -151,6 +151,18 @@ public:
 		{
 			mAvatarNameCacheConnection.disconnect();
 		}
+		LLMenuGL* menu_avatar = (LLMenuGL*) mPopupMenuHandleAvatar.get();
+		if (menu_avatar)
+		{
+			menu_avatar->die();
+			mPopupMenuHandleAvatar.markDead();
+		}
+		LLMenuGL* menu_object = (LLMenuGL*) mPopupMenuHandleObject.get();
+		if (menu_object)
+		{
+			menu_object->die();
+			mPopupMenuHandleObject.markDead();
+		}
 	}
 
 	BOOL handleMouseUp(S32 x, S32 y, MASK mask)

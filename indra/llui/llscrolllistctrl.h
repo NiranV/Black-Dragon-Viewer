@@ -504,7 +504,7 @@ private:
 
 	S32				mHighlightedItem;
 	class LLViewBorder*	mBorder;
-	LLContextMenu	*mPopupMenu;
+	LLHandle<LLContextMenu>	mPopupMenuHandle;
 	
 	LLView			*mCommentTextView;
 

@@ -519,7 +519,7 @@ protected:
 	bool mIsNewMessagesState;
 
 	LLFlashTimer* mFlashToLitTimer;
-	LLContextMenu* mContextMenu;
+	LLHandle<LLContextMenu> mContextMenuHandle;
 };
 
 class LLNotificationChiclet : public LLSysWellChiclet

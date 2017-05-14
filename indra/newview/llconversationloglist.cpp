@@ -72,6 +72,7 @@ LLConversationLogList::~LLConversationLogList()
 	if (mContextMenu.get())
 	{
 		mContextMenu.get()->die();
+		mContextMenu.markDead();
 	}
 
 	LLConversationLog::instance().removeObserver(this);

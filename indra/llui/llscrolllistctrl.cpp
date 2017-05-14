@@ -176,7 +176,7 @@ LLScrollListCtrl::LLScrollListCtrl(const LLScrollListCtrl::Params& p)
 	mHighlightedItem(-1),
 	mBorder(NULL),
 	mSortCallback(NULL),
-	mPopupMenu(NULL),
+	mPopupMenuHandle(),
 	mCommentTextView(NULL),
 	mNumDynamicWidthColumns(0),
 	mTotalStaticColumnWidth(0),
@@ -204,6 +204,13 @@ LLScrollListCtrl::LLScrollListCtrl(const LLScrollListCtrl::Params& p)
 	mContextMenuType(MENU_NONE),
 	mIsFriendSignal(NULL)
 {
+	auto menu = mPopupMenuHandle.get();
+	if (menu)
+	{
+		menu->die();
+		mPopupMenuHandle.markDead();
+	}
+
 	//BD
 	mAllowSorting = p.enable_sort;
 
@@ -1870,17 +1877,22 @@ BOOL LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 
 			// create the context menu from the XUI file and display it
 			std::string menu_name = is_group ? "menu_url_group.xml" : "menu_url_agent.xml";
-			delete mPopupMenu;
+			auto menu = mPopupMenuHandle.get();
+			if (menu)
+			{
+				menu->die();
+				mPopupMenuHandle.markDead();
+			}
 			llassert(LLMenuGL::sMenuContainer != NULL);
-			mPopupMenu = LLUICtrlFactory::getInstance()->createFromFile<LLContextMenu>(
+			menu = LLUICtrlFactory::getInstance()->createFromFile<LLContextMenu>(
 				menu_name, LLMenuGL::sMenuContainer, LLMenuHolderGL::child_registry_t::instance());
-			if (mPopupMenu)
+			if (menu)
 			{
 				if (mIsFriendSignal)
 				{
 					bool isFriend = *(*mIsFriendSignal)(uuid);
-					LLView* addFriendButton = mPopupMenu->getChild<LLView>("add_friend");
-					LLView* removeFriendButton = mPopupMenu->getChild<LLView>("remove_friend");
+					LLView* addFriendButton = menu->getChild<LLView>("add_friend");
+					LLView* removeFriendButton = menu->getChild<LLView>("remove_friend");
 
 					if (addFriendButton && removeFriendButton)
 					{
@@ -1889,8 +1901,9 @@ BOOL LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 					}
 				}
 
-				mPopupMenu->show(x, y);
-				LLMenuGL::showPopup(this, mPopupMenu, x, y);
+				mPopupMenuHandle = menu->getHandle();
+				menu->show(x, y);
+				LLMenuGL::showPopup(this, menu, x, y);
 				return TRUE;
 			}
 		}

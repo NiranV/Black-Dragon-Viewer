@@ -137,7 +137,7 @@ private:
 	void handleZoom(const LLSD& userdata);
 	void handleStopTracking (const LLSD& userdata);
 
-	LLMenuGL*		mPopupMenu;
+	LLHandle<LLView>		mPopupMenuHandle;
 	uuid_vec_t		gmSelected;
 };
 
