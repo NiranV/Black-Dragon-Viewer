@@ -2540,11 +2540,11 @@ void LLAgentCamera::switchCameraPreset(ECameraPreset preset)
 	//zoom is supposed to be reset for the front and group views
 	mCameraZoomFraction = 1.f;
 
-	//BD
-	setFocusOnAvatar(TRUE, FALSE);
+	//BD - Clear the lookat on preset change.
+	setLookAt(LOOKAT_TARGET_CLEAR);
 
 	//focusing on avatar in that case means following him on movements
-	//mFocusOnAvatar = TRUE;
+	mFocusOnAvatar = TRUE;
 
 	mCameraPreset = preset;
 
