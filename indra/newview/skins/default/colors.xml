@@ -398,7 +398,7 @@
  reference="White"/>
  <color
  name="GroupNotifyDimmedTextColor"
- reference="LtGray" />
+ reference="LtGray_50" />
  <color
  name="GroupOverTierColor"
  value="0.43 0.06 0.06 1" />
