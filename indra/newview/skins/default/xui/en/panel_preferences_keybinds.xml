@@ -24,7 +24,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1168"
+  height="1278"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -80,6 +80,171 @@ width="510">
      name="modifiers"
    relative_width="0.20"  />
 </scroll_list>
+ 
+ <combo_box
+	follows="top|left"
+	layout="topleft"
+	left="1"
+	height="20"
+ visible="true"
+ label="Select Action"
+	name="bind_action_1"
+	allow_text_entry="true"
+	top_pad="1"
+	width="141">
+  <combo_box.item
+  label="Move Left"
+  name="slide_left"
+  value="slide_left" />
+  <combo_box.item
+  label="Move Right"
+  name="slide_right"
+  value="slide_right" />
+  <combo_box.item
+  label="Move Forward"
+  name="push_forward"
+  value="push_forward" />
+  <combo_box.item
+  label="Move Backwards"
+  name="push_backward"
+  value="push_backward" />
+  <combo_box.item
+  label="Turn Left"
+  name="turn_left"
+  value="turn_left" />
+  <combo_box.item
+  label="Turn Right"
+  name="turn_right"
+  value="turn_right" />
+  <combo_box.item
+  label="Jump"
+  name="jump"
+  value="jump" />
+  <combo_box.item
+  label="Crouch"
+  name="push_down"
+  value="push_down" />
+  <combo_box.item
+  label="Fly"
+  name="toggle_fly"
+  value="toggle_fly" />
+  <combo_box.item
+  label="Stop Movement"
+  name="stop_moving"
+  value="stop_moving" />
+  <combo_box.item
+  label="                 Misc"
+  enabled="false"
+  value="menu_separator" />
+  <combo_box.item
+  label="Start Chat"
+  name="start_chat"
+  value="start_chat" />
+  <combo_box.item
+  label="Start Gesture"
+  name="start_gesture"
+  value="start_gesture" />
+  <combo_box.item
+  label="             Camera"
+  enabled="false"
+  value="menu_separator" />
+  <combo_box.item
+  label="Zoom In"
+  name="move_forward"
+  value="move_forward" />
+  <combo_box.item
+  label="Zoom Out"
+  name="move_backward"
+  value="move_backward" />
+  <combo_box.item
+  label="Move Left"
+  name="pan_left"
+  value="pan_left" />
+  <combo_box.item
+  label="Move Right"
+  name="pan_right"
+  value="pan_right" />
+  <combo_box.item
+  label="Move Up"
+  name="pan_up"
+  value="pan_up" />
+  <combo_box.item
+  label="Move Down"
+  name="pan_down"
+  value="pan_down" />
+  <combo_box.item
+  label="Spin Right"
+  name="spin_around_ccw"
+  value="spin_around_ccw" />
+  <combo_box.item
+  label="Spin Left"
+  name="spin_around_cw"
+  value="spin_around_cw" />
+  <combo_box.item
+  label="Spin Over"
+  name="spin_over"
+  value="spin_over" />
+  <combo_box.item
+  label="Spin Under"
+  name="spin_under"
+  value="spin_under" />
+		<combo_box.combo_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"/>
+		<combo_box.drop_down_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"
+		image_disabled="ComboToolbarButton_Disabled"/>
+	</combo_box>
+ 
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Add New"
+ image_overlay_alignment="left"
+    image_overlay="AddItem_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="add"
+ width="87"
+ top_delta="0"
+ left_pad="-7">
+   <button.commit_callback
+   function="Pref.AddBind"
+   parameter="1"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Delete Selected"
+ image_overlay_alignment="left"
+    image_overlay="TrashItem_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="remove"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pref.RemoveBind"
+   parameter="1"/>
+ </button>
+ <icon
+	follows="left|top|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="139"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
 
  <panel
  follows="left|top|right"
@@ -131,6 +296,126 @@ width="510">
      name="modifiers"
    relative_width="0.20"  />
 </scroll_list>
+ 
+ <combo_box
+	follows="top|left"
+	layout="topleft"
+	left="1"
+	height="20"
+ label="Select Action"
+	name="bind_action_0"
+	allow_text_entry="true"
+	top_pad="1"
+	width="141">
+  <combo_box.item
+  label="Move Left"
+  name="slide_left"
+  value="slide_left" />
+  <combo_box.item
+  label="Move Right"
+  name="slide_right"
+  value="slide_right" />
+  <combo_box.item
+  label="Move Forward"
+  name="push_forward"
+  value="push_forward" />
+  <combo_box.item
+  label="Move Backwards"
+  name="push_backward"
+  value="push_backward" />
+  <combo_box.item
+  label="Turn Left"
+  name="turn_left"
+  value="turn_left" />
+  <combo_box.item
+  label="Turn Right"
+  name="turn_right"
+  value="turn_right" />
+  <combo_box.item
+  label="Jump"
+  name="jump"
+  value="jump" />
+  <combo_box.item
+  label="Crouch"
+  name="push_down"
+  value="push_down" />
+  <combo_box.item
+  label="Fly"
+  name="toggle_fly"
+  value="toggle_fly" />
+  <combo_box.item
+  label="Stop Movement"
+  name="stop_moving"
+  value="stop_moving" />
+  <combo_box.item
+  label="                 Misc"
+  enabled="false"
+  value="menu_separator" />
+  <combo_box.item
+  label="Start Chat"
+  name="start_chat"
+  value="start_chat" />
+  <combo_box.item
+  label="Start Gesture"
+  name="start_gesture"
+  value="start_gesture" />
+		<combo_box.combo_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"/>
+		<combo_box.drop_down_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"
+		image_disabled="ComboToolbarButton_Disabled"/>
+	</combo_box>
+ 
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Add New"
+ image_overlay_alignment="left"
+    image_overlay="AddItem_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="add"
+ width="87"
+ top_delta="0"
+ left_pad="-7">
+   <button.commit_callback
+   function="Pref.AddBind"
+   parameter="0"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Delete Selected"
+ image_overlay_alignment="left"
+    image_overlay="TrashItem_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="remove"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pref.RemoveBind"
+   parameter="0"/>
+ </button>
+ <icon
+	follows="left|top|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="139"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
    
    <panel
  follows="left|top|right"
@@ -184,6 +469,170 @@ width="510">
    relative_width="0.20"  />
 </scroll_list>
  
+ <combo_box
+	follows="top|left"
+	layout="topleft"
+	left="1"
+	height="20"
+ label="Select Action"
+	name="bind_action_2"
+	allow_text_entry="true"
+	top_pad="1"
+	width="141">
+  <combo_box.item
+  label="Move Left"
+  name="slide_left"
+  value="slide_left" />
+  <combo_box.item
+  label="Move Right"
+  name="slide_right"
+  value="slide_right" />
+  <combo_box.item
+  label="Move Forward"
+  name="push_forward"
+  value="push_forward" />
+  <combo_box.item
+  label="Move Backwards"
+  name="push_backward"
+  value="push_backward" />
+  <combo_box.item
+  label="Turn Left"
+  name="turn_left"
+  value="turn_left" />
+  <combo_box.item
+  label="Turn Right"
+  name="turn_right"
+  value="turn_right" />
+  <combo_box.item
+  label="Jump"
+  name="jump"
+  value="jump" />
+  <combo_box.item
+  label="Crouch"
+  name="push_down"
+  value="push_down" />
+  <combo_box.item
+  label="Fly"
+  name="toggle_fly"
+  value="toggle_fly" />
+  <combo_box.item
+  label="Stop Movement"
+  name="stop_moving"
+  value="stop_moving" />
+  <combo_box.item
+  label="                 Misc"
+  enabled="false"
+  value="menu_separator" />
+  <combo_box.item
+  label="Start Chat"
+  name="start_chat"
+  value="start_chat" />
+  <combo_box.item
+  label="Start Gesture"
+  name="start_gesture"
+  value="start_gesture" />
+  <combo_box.item
+  label="             Camera"
+  enabled="false"
+  value="menu_separator" />
+  <combo_box.item
+  label="Zoom In"
+  name="move_forward"
+  value="move_forward" />
+  <combo_box.item
+  label="Zoom Out"
+  name="move_backward"
+  value="move_backward" />
+  <combo_box.item
+  label="Move Left"
+  name="pan_left"
+  value="pan_left" />
+  <combo_box.item
+  label="Move Right"
+  name="pan_right"
+  value="pan_right" />
+  <combo_box.item
+  label="Move Up"
+  name="pan_up"
+  value="pan_up" />
+  <combo_box.item
+  label="Move Down"
+  name="pan_down"
+  value="pan_down" />
+  <combo_box.item
+  label="Spin Right"
+  name="spin_around_ccw"
+  value="spin_around_ccw" />
+  <combo_box.item
+  label="Spin Left"
+  name="spin_around_cw"
+  value="spin_around_cw" />
+  <combo_box.item
+  label="Spin Over"
+  name="spin_over"
+  value="spin_over" />
+  <combo_box.item
+  label="Spin Under"
+  name="spin_under"
+  value="spin_under" />
+		<combo_box.combo_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"/>
+		<combo_box.drop_down_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"
+		image_disabled="ComboToolbarButton_Disabled"/>
+	</combo_box>
+ 
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Add New"
+ image_overlay_alignment="left"
+    image_overlay="AddItem_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="add"
+ width="87"
+ top_delta="0"
+ left_pad="-7">
+   <button.commit_callback
+   function="Pref.AddBind"
+   parameter="2"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Delete Selected"
+ image_overlay_alignment="left"
+    image_overlay="TrashItem_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="remove"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pref.RemoveBind"
+   parameter="2"/>
+ </button>
+ <icon
+	follows="left|top|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="139"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
+ 
    <panel
  follows="left|top|right"
  height="20"
@@ -236,6 +685,110 @@ width="510">
    relative_width="0.20"  />
 </scroll_list>
  
+ <combo_box
+	follows="top|left"
+	layout="topleft"
+	left="1"
+	height="20"
+ label="Select Action"
+	name="bind_action_3"
+	allow_text_entry="true"
+	top_pad="1"
+	width="141">
+  <combo_box.item
+  label="Move Forward"
+  name="edit_avatar_move_forward"
+  value="edit_avatar_move_forward" />
+  <combo_box.item
+  label="Move Backwards"
+  name="edit_avatar_move_backward"
+  value="edit_avatar_move_backward" />
+  <combo_box.item
+  label="Spin Right"
+  name="edit_avatar_spin_ccw"
+  value="edit_avatar_spin_ccw" />
+  <combo_box.item
+  label="Spin Left"
+  name="edit_avatar_spin_cw"
+  value="edit_avatar_spin_cw" />
+  <combo_box.item
+  label="Spin Over"
+  name="edit_avatar_spin_over"
+  value="edit_avatar_spin_over" />
+  <combo_box.item
+  label="Spin Under"
+  name="edit_avatar_spin_under"
+  value="edit_avatar_spin_under" />
+  <combo_box.item
+  label="                 Misc"
+  enabled="false"
+  value="menu_separator" />
+  <combo_box.item
+  label="Start Chat"
+  name="start_chat"
+  value="start_chat" />
+  <combo_box.item
+  label="Start Gesture"
+  name="start_gesture"
+  value="start_gesture" />
+		<combo_box.combo_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"/>
+		<combo_box.drop_down_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"
+		image_disabled="ComboToolbarButton_Disabled"/>
+	</combo_box>
+ 
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Add New"
+ image_overlay_alignment="left"
+    image_overlay="AddItem_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="add"
+ width="87"
+ top_delta="0"
+ left_pad="-7">
+   <button.commit_callback
+   function="Pref.AddBind"
+   parameter="3"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Delete Selected"
+ image_overlay_alignment="left"
+    image_overlay="TrashItem_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="remove"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pref.RemoveBind"
+   parameter="3"/>
+ </button>
+ <icon
+	follows="left|top|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="139"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
+ 
    <panel
  follows="left|top|right"
  height="20"
@@ -287,448 +840,17 @@ width="510">
      name="modifiers"
    relative_width="0.20"  />
 </scroll_list>
-  </panel>
- </scroll_container>
- 
- <panel
-  layout="topleft"
-  follows="left|bottom|right"
-  height="22"
-  name="buttons_panel"
-  top="-21"
-  mouse_opaque="false"
-  background_visible="true"
-  left="1"
-  width="509">
- <combo_box
-	follows="bottom|left"
-	layout="topleft"
-	left="0"
-	height="20"
- label="Select Mode"
-	name="bind_mode"
- allow_text_entry="true"
-	top="-21"
-	width="116">
-  <combo_box.item
-  label="Third Person"
-  name="first"
-  value="1" />
-  <combo_box.item
-  label="First Person"
-  name="third"
-  value="0" />
-  <combo_box.item
-  label="Edit Mode"
-  name="edit"
-  value="2" />
-  <combo_box.item
-  label="Appearance"
-  name="appearance"
-  value="3" />
-  <combo_box.item
-  label="Sitting"
-  name="sitting"
-  value="4" />
-		<combo_box.combo_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"/>
-		<combo_box.drop_down_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"
-		image_disabled="ComboToolbarButton_Disabled"/>
-	</combo_box>
- 
-	<combo_box
-	follows="bottom|left"
-	layout="topleft"
-	left_pad="-7"
-	height="20"
- label="Select Action"
-	name="bind_action_0"
-	allow_text_entry="true"
-	top="-21"
-	width="128">
-  <combo_box.item
-  label="Move Left"
-  name="slide_left"
-  value="slide_left" />
-  <combo_box.item
-  label="Move Right"
-  name="slide_right"
-  value="slide_right" />
-  <combo_box.item
-  label="Move Forward"
-  name="push_forward"
-  value="push_forward" />
-  <combo_box.item
-  label="Move Backwards"
-  name="push_backward"
-  value="push_backward" />
-  <combo_box.item
-  label="Rotate Left"
-  name="turn_left"
-  value="turn_left" />
-  <combo_box.item
-  label="Rotate Right"
-  name="turn_right"
-  value="turn_right" />
-  <combo_box.item
-  label="Jump"
-  name="jump"
-  value="jump" />
-  <combo_box.item
-  label="Crouch"
-  name="push_down"
-  value="push_down" />
-  <combo_box.item
-  label="Fly"
-  name="toggle_fly"
-  value="toggle_fly" />
-  <combo_box.item
-  label="Stop Movement"
-  name="stop_moving"
-  value="stop_moving" />
-  <combo_box.item
-  label="                 Misc"
-  enabled="false"
-  value="menu_separator" />
-  <combo_box.item
-  label="Start Chat"
-  name="start_chat"
-  value="start_chat" />
-  <combo_box.item
-  label="Start Gesture"
-  name="start_gesture"
-  value="start_gesture" />
-		<combo_box.combo_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"/>
-		<combo_box.drop_down_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"
-		image_disabled="ComboToolbarButton_Disabled"/>
-	</combo_box>
  
  <combo_box
-	follows="bottom|left"
+	follows="top|left"
 	layout="topleft"
-	left_delta="0"
+	left="1"
 	height="20"
- visible="false"
- label="Select Action"
-	name="bind_action_1"
-	allow_text_entry="true"
-	top="-21"
-	width="128">
-  <combo_box.item
-  label="Move Left"
-  name="slide_left"
-  value="slide_left" />
-  <combo_box.item
-  label="Move Right"
-  name="slide_right"
-  value="slide_right" />
-  <combo_box.item
-  label="Move Forward"
-  name="push_forward"
-  value="push_forward" />
-  <combo_box.item
-  label="Move Backwards"
-  name="push_backward"
-  value="push_backward" />
-  <combo_box.item
-  label="Rotate Left"
-  name="turn_left"
-  value="turn_left" />
-  <combo_box.item
-  label="Rotate Right"
-  name="turn_right"
-  value="turn_right" />
-  <combo_box.item
-  label="Jump"
-  name="jump"
-  value="jump" />
-  <combo_box.item
-  label="Crouch"
-  name="push_down"
-  value="push_down" />
-  <combo_box.item
-  label="Fly"
-  name="toggle_fly"
-  value="toggle_fly" />
-  <combo_box.item
-  label="Stop Movement"
-  name="stop_moving"
-  value="stop_moving" />
-  <combo_box.item
-  label="                 Misc"
-  enabled="false"
-  value="menu_separator" />
-  <combo_box.item
-  label="Start Chat"
-  name="start_chat"
-  value="start_chat" />
-  <combo_box.item
-  label="Start Gesture"
-  name="start_gesture"
-  value="start_gesture" />
-  <combo_box.item
-  label="             Camera"
-  enabled="false"
-  value="menu_separator" />
-  <combo_box.item
-  label="Zoom In"
-  name="move_forward"
-  value="move_forward" />
-  <combo_box.item
-  label="Zoom Out"
-  name="move_backward"
-  value="move_backward" />
-  <combo_box.item
-  label="Move Left"
-  name="pan_left"
-  value="pan_left" />
-  <combo_box.item
-  label="Move Right"
-  name="pan_right"
-  value="pan_right" />
-  <combo_box.item
-  label="Move Up"
-  name="pan_up"
-  value="pan_up" />
-  <combo_box.item
-  label="Move Down"
-  name="pan_down"
-  value="pan_down" />
-  <combo_box.item
-  label="Spin Right"
-  name="spin_around_ccw"
-  value="spin_around_ccw" />
-  <combo_box.item
-  label="Spin Left"
-  name="spin_around_cw"
-  value="spin_around_cw" />
-  <combo_box.item
-  label="Spin Over"
-  name="spin_over"
-  value="spin_over" />
-  <combo_box.item
-  label="Spin Under"
-  name="spin_under"
-  value="spin_under" />
-		<combo_box.combo_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"/>
-		<combo_box.drop_down_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"
-		image_disabled="ComboToolbarButton_Disabled"/>
-	</combo_box>
- 
- <combo_box
-	follows="bottom|left"
-	layout="topleft"
-	left_delta="0"
-	height="20"
- visible="false"
- label="Select Action"
-	name="bind_action_2"
-	allow_text_entry="true"
-	top="-21"
-	width="128">
-  <combo_box.item
-  label="Move Left"
-  name="slide_left"
-  value="slide_left" />
-  <combo_box.item
-  label="Move Right"
-  name="slide_right"
-  value="slide_right" />
-  <combo_box.item
-  label="Move Forward"
-  name="push_forward"
-  value="push_forward" />
-  <combo_box.item
-  label="Move Backwards"
-  name="push_backward"
-  value="push_backward" />
-  <combo_box.item
-  label="Rotate Left"
-  name="turn_left"
-  value="turn_left" />
-  <combo_box.item
-  label="Rotate Right"
-  name="turn_right"
-  value="turn_right" />
-  <combo_box.item
-  label="Jump"
-  name="jump"
-  value="jump" />
-  <combo_box.item
-  label="Crouch"
-  name="push_down"
-  value="push_down" />
-  <combo_box.item
-  label="Fly"
-  name="toggle_fly"
-  value="toggle_fly" />
-  <combo_box.item
-  label="Stop Movement"
-  name="stop_moving"
-  value="stop_moving" />
-  <combo_box.item
-  label="                 Misc"
-  enabled="false"
-  value="menu_separator" />
-  <combo_box.item
-  label="Start Chat"
-  name="start_chat"
-  value="start_chat" />
-  <combo_box.item
-  label="Start Gesture"
-  name="start_gesture"
-  value="start_gesture" />
-  <combo_box.item
-  label="             Camera"
-  enabled="false"
-  value="menu_separator" />
-  <combo_box.item
-  label="Zoom In"
-  name="move_forward"
-  value="move_forward" />
-  <combo_box.item
-  label="Zoom Out"
-  name="move_backward"
-  value="move_backward" />
-  <combo_box.item
-  label="Move Left"
-  name="pan_left"
-  value="pan_left" />
-  <combo_box.item
-  label="Move Right"
-  name="pan_right"
-  value="pan_right" />
-  <combo_box.item
-  label="Move Up"
-  name="pan_up"
-  value="pan_up" />
-  <combo_box.item
-  label="Move Down"
-  name="pan_down"
-  value="pan_down" />
-  <combo_box.item
-  label="Spin Right"
-  name="spin_around_ccw"
-  value="spin_around_ccw" />
-  <combo_box.item
-  label="Spin Left"
-  name="spin_around_cw"
-  value="spin_around_cw" />
-  <combo_box.item
-  label="Spin Over"
-  name="spin_over"
-  value="spin_over" />
-  <combo_box.item
-  label="Spin Under"
-  name="spin_under"
-  value="spin_under" />
-		<combo_box.combo_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"/>
-		<combo_box.drop_down_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"
-		image_disabled="ComboToolbarButton_Disabled"/>
-	</combo_box>
- 
- <combo_box
-	follows="bottom|left"
-	layout="topleft"
-	left_delta="0"
-	height="20"
- visible="false"
- label="Select Action"
-	name="bind_action_3"
-	allow_text_entry="true"
-	top="-21"
-	width="128">
-  <combo_box.item
-  label="Move Forward"
-  name="edit_avatar_move_forward"
-  value="edit_avatar_move_forward" />
-  <combo_box.item
-  label="Move Backwards"
-  name="edit_avatar_move_backward"
-  value="edit_avatar_move_backward" />
-  <combo_box.item
-  label="Spin Right"
-  name="edit_avatar_spin_ccw"
-  value="edit_avatar_spin_ccw" />
-  <combo_box.item
-  label="Spin Left"
-  name="edit_avatar_spin_cw"
-  value="edit_avatar_spin_cw" />
-  <combo_box.item
-  label="Spin Over"
-  name="edit_avatar_spin_over"
-  value="edit_avatar_spin_over" />
-  <combo_box.item
-  label="Spin Under"
-  name="edit_avatar_spin_under"
-  value="edit_avatar_spin_under" />
-  <combo_box.item
-  label="                 Misc"
-  enabled="false"
-  value="menu_separator" />
-  <combo_box.item
-  label="Start Chat"
-  name="start_chat"
-  value="start_chat" />
-  <combo_box.item
-  label="Start Gesture"
-  name="start_gesture"
-  value="start_gesture" />
-		<combo_box.combo_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"/>
-		<combo_box.drop_down_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"
-		image_disabled="ComboToolbarButton_Disabled"/>
-	</combo_box>
- 
- <combo_box
-	follows="bottom|left"
-	layout="topleft"
-	left_delta="0"
-	height="20"
- visible="false"
  label="Select Action"
 	name="bind_action_4"
 	allow_text_entry="true"
-	top="-21"
-	width="128">
+	top_pad="1"
+	width="141">
   <combo_box.item
   label="Move Forward"
   name="move_forward_sitting"
@@ -782,65 +904,140 @@ width="510">
  height="21"
  follows="top|left"
  layout="topleft"
- label="Add"
+ label="Add New"
  image_overlay_alignment="left"
     image_overlay="AddItem_Off"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="add"
- width="57"
- top="-21"
+ width="87"
+ top_delta="0"
  left_pad="-7">
    <button.commit_callback
-   function="Pref.AddBind"/>
+   function="Pref.AddBind"
+   parameter="4"/>
  </button>
  <button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Selected"
+ label="Delete Selected"
  image_overlay_alignment="left"
     image_overlay="TrashItem_Off"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="remove"
- width="85"
+ width="130"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Pref.RemoveBind"/>
+   function="Pref.RemoveBind"
+   parameter="4"/>
  </button>
+ <icon
+	follows="left|top|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="139"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
+  </panel>
+ </scroll_container>
+ 
+ <panel
+  layout="topleft"
+  follows="left|bottom|right"
+  height="22"
+  name="buttons_panel"
+  top="-21"
+  mouse_opaque="false"
+  background_visible="true"
+  left="1"
+  width="509">
+ <!--<combo_box
+	follows="bottom|left"
+	layout="topleft"
+	left="0"
+	height="20"
+ label="Select Mode"
+	name="bind_mode"
+ allow_text_entry="true"
+	top="-21"
+	width="141">
+  <combo_box.item
+  label="Third Person"
+  name="first"
+  value="1" />
+  <combo_box.item
+  label="First Person"
+  name="third"
+  value="0" />
+  <combo_box.item
+  label="Edit Mode"
+  name="edit"
+  value="2" />
+  <combo_box.item
+  label="Appearance"
+  name="appearance"
+  value="3" />
+  <combo_box.item
+  label="Sitting"
+  name="sitting"
+  value="4" />
+		<combo_box.combo_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"/>
+		<combo_box.drop_down_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"
+		image_disabled="ComboToolbarButton_Disabled"/>
+	</combo_box>-->
+
+ 
  <button
  height="21"
- follows="top|left"
+ follows="bottom|left"
  layout="topleft"
- label="All"
+ label="Delete All"
  image_overlay_alignment="left"
     image_overlay="TrashItem_Off"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="unbind"
- width="50"
- top_delta="0"
- left_pad="1">
+ width="94"
+ top="-21"
+ left="0">
    <button.commit_callback
    function="Pref.UnbindAll"/>
  </button>
+ <icon
+	follows="left|top|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="263"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
  <button
  height="21"
- follows="top|left"
+ follows="top|right"
  layout="topleft"
- label="Reset All"
+ label="Reset All To Default"
  image_overlay_alignment="left"
     image_overlay="Refresh_Off"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="85"
+ width="148"
  top_delta="0"
  left_pad="1">
    <button.commit_callback

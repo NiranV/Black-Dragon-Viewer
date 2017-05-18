@@ -238,10 +238,16 @@ public:
 	void onUnbindControls();
 	void onDefaultControls();
 	void refreshKeys();
-	void onBindMode();
-	void onAddBind(KEY key, MASK mask);
-	void onRemoveBind();
-	void onReplaceBind(KEY key, MASK mask);
+	void onAddBind(KEY key, MASK mask, S32 mode);
+	void onRemoveBind(const LLSD& param);
+	void onReplaceBind(KEY key, MASK mask, S32 mode);
+
+	void onList0Click();
+	void onList1Click();
+	void onList2Click();
+	void onList3Click();
+	void onList4Click();
+	void onListClickAction(S32 mode);
 
 //	//BD - Revert to Default
 	void inputOutput();
@@ -304,6 +310,13 @@ private:
 	LLHandle<LLFloater> mPicker;
 
 	std::string mNameFilter;
+
+//	//BD - Custom Keyboard Layout
+	LLScrollListCtrl* mBindModeList0;
+	LLScrollListCtrl* mBindModeList1;
+	LLScrollListCtrl* mBindModeList2;
+	LLScrollListCtrl* mBindModeList3;
+	LLScrollListCtrl* mBindModeList4;
 };
 
 class LLPanelPreference : public LLPanel
