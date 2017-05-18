@@ -351,7 +351,7 @@ void BDFloaterAnimations::onSave()
 
 void BDFloaterAnimations::onLoad()
 {
-	LLAvatarTracker& at = LLAvatarTracker::instance();
+	//LLAvatarTracker& at = LLAvatarTracker::instance();
 	getSelected();
 	for (std::vector<LLCharacter*>::iterator iter = mSelectedCharacters.begin();
 		iter != mSelectedCharacters.end(); ++iter)
@@ -360,9 +360,12 @@ void BDFloaterAnimations::onLoad()
 		if (character)
 		{
 			//BD - Only allow animating people whose object mod rights we have.
-			const LLRelationship* relation = at.getBuddyInfo(character->getID());
-			if (relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS)
-				|| character->getID() == gAgentID)
+			//const LLRelationship* relation = at.getBuddyInfo(character->getID());
+			//if (relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS)
+			//	|| character->getID() == gAgentID)
+
+			//BD - Only allow animating ourselves, as per Oz Linden.
+			if (character->getID() == gAgentID)
 			{
 				LLScrollListItem* item = mMotionScroll->getFirstSelected();
 				if (item)
