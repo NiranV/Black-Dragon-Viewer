@@ -56,7 +56,7 @@ LLSideBar::~LLSideBar()
 // virtual
 void LLSideBar::draw()
 {
-	if (gSideBar->getParentByType<LLLayoutPanel>()->getVisibleAmount() > 0.05f)
+	if (gSideBar->getParentByType<LLLayoutPanel>()->getVisibleAmount() > 0.01f)
 	{
 		//refreshGraphicControls();
 		LLPanel::draw();
