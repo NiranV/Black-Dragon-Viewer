@@ -102,6 +102,7 @@ set(viewer_SOURCE_FILES
 	bdpaneldrawdistance.cpp
     bdfloateranimations.cpp
 	bdsidebar.cpp
+    bdposingmotion.cpp
 	exopostprocess.cpp
     piemenu.cpp
     pieseparator.cpp
@@ -732,6 +733,7 @@ set(viewer_HEADER_FILES
 	bdpaneldrawdistance.h
     bdfloateranimations.h
 	bdsidebar.h
+    bdposingmotion.h
     exopostprocess.h
 	piemenu.h
     pieseparator.h
