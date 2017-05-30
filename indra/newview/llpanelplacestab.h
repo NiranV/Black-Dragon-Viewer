@@ -59,7 +59,8 @@ public:
 protected:
 	LLButton*				mTeleportBtn;
 	LLButton*				mShowOnMapBtn;
-	LLButton*				mShowProfile;
+	//BD
+	//LLButton*				mShowProfile;
 
 	// Search string for filtering landmarks and teleport history locations
 	static std::string		sFilterSubString;

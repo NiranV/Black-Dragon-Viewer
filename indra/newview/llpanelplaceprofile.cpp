@@ -88,8 +88,9 @@ LLPanelPlaceProfile::LLPanelPlaceProfile()
 	mNextCovenantUpdateTime(0),
 	mForSalePanel(NULL),
 	mYouAreHerePanel(NULL),
-	mSelectedParcelID(-1),
-	mAccordionCtrl(NULL)
+	mSelectedParcelID(-1)
+	//BD
+	//mAccordionCtrl(NULL)
 {}
 
 // virtual
@@ -152,7 +153,8 @@ BOOL LLPanelPlaceProfile::postBuild()
 	mSubdivideText = getChild<LLTextEditor>("subdivide");
 	mResaleText = getChild<LLTextEditor>("resale");
 	mSaleToText = getChild<LLTextBox>("sale_to");
-	mAccordionCtrl = getChild<LLAccordionCtrl>("advanced_info_accordion");
+	//BD
+	//mAccordionCtrl = getChild<LLAccordionCtrl>("advanced_info_accordion");
 
 	icon_pg = getString("icon_PG");
 	icon_m = getString("icon_M");
@@ -290,10 +292,11 @@ void LLPanelPlaceProfile::setInfoType(EInfoType type)
 		break;
 	}
 
-	if (mAccordionCtrl != NULL)
+	//BD
+	/*if (mAccordionCtrl != NULL)
 	{
 		mAccordionCtrl->expandDefaultTab();
-	}
+	}*/
 
 	LLPanelPlaceInfo::setInfoType(type);
 }
@@ -630,7 +633,8 @@ void LLPanelPlaceProfile::displaySelectedParcelInfo(LLParcel* parcel,
 	mYouAreHerePanel->setVisible(is_current_parcel && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)));
 // [/RLVa:KB]
 	getChild<LLAccordionCtrlTab>("sales_tab")->setVisible(for_sale);
-	mAccordionCtrl->arrange();
+	//BD
+	//mAccordionCtrl->arrange();
 }
 
 void LLPanelPlaceProfile::updateEstateName(const std::string& name)

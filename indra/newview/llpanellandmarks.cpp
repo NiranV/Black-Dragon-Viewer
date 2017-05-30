@@ -65,7 +65,8 @@
 
 static const std::string OPTIONS_BUTTON_NAME = "options_gear_btn";
 static const std::string ADD_BUTTON_NAME = "add_btn";
-static const std::string ADD_FOLDER_BUTTON_NAME = "add_folder_btn";
+//BD
+//static const std::string ADD_FOLDER_BUTTON_NAME = "add_folder_btn";
 static const std::string TRASH_BUTTON_NAME = "trash_btn";
 
 
@@ -326,7 +327,8 @@ void LLLandmarksPanel::updateVerbs()
 
 	bool landmark_selected = isLandmarkSelected();
 	mTeleportBtn->setEnabled(landmark_selected && isActionEnabled("teleport"));
-	mShowProfile->setEnabled(landmark_selected && isActionEnabled("more_info"));
+	//BD
+	//mShowProfile->setEnabled(landmark_selected && isActionEnabled("more_info"));
 	mShowOnMapBtn->setEnabled(landmark_selected && isActionEnabled("show_on_map"));
 
 	// TODO: mantipov: Uncomment when mShareBtn is supported
@@ -711,11 +713,12 @@ void LLLandmarksPanel::initListCommandsHandlers()
 
 void LLLandmarksPanel::updateListCommands()
 {
-	bool add_folder_enabled = isActionEnabled("category");
+	//bool add_folder_enabled = isActionEnabled("category");
 	bool trash_enabled = isActionEnabled("delete") && (isFolderSelected() || isLandmarkSelected());
 
+	//BD
 	// keep Options & Add Landmark buttons always enabled
-	mListCommands->getChildView(ADD_FOLDER_BUTTON_NAME)->setEnabled(add_folder_enabled);
+	//mListCommands->getChildView(ADD_FOLDER_BUTTON_NAME)->setEnabled(add_folder_enabled);
 	mListCommands->getChildView(TRASH_BUTTON_NAME)->setEnabled(trash_enabled);
 }
 
