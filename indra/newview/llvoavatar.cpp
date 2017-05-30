@@ -104,6 +104,7 @@
 
 //BD
 #include "llfloaterreg.h"
+#include "bdposingmotion.h"
 
 #include "llgesturemgr.h" //needed to trigger the voice gesticulations
 #include "llvoiceclient.h"
@@ -144,7 +145,8 @@ const LLUUID ANIM_AGENT_PELVIS_FIX = LLUUID("0c5dd2a2-514d-8893-d44d-05beffad208
 const LLUUID ANIM_AGENT_TARGET = LLUUID("0e4896cb-fba4-926c-f355-8720189d5b55");  //"target"
 const LLUUID ANIM_AGENT_WALK_ADJUST	= LLUUID("829bc85b-02fc-ec41-be2e-74cc6dd7215d");  //"walk_adjust"
 const LLUUID ANIM_AGENT_PHYSICS_MOTION = LLUUID("7360e029-3cb8-ebc4-863e-212df440d987");  //"physics_motion"
-
+//BD - We use one of my very old stand still animations for now until i uploaded a custom empty one
+const LLUUID ANIM_BD_POSING_MOTION = LLUUID("1d0262f9-30f3-da91-b74e-cc822cc2d0a8");  //"custom_motion"
 
 //-----------------------------------------------------------------------------
 // Constants
@@ -1096,6 +1098,9 @@ void LLVOAvatar::initClass()
 	gAnimLibrary.animStateSetString(ANIM_AGENT_TARGET,"target");
 	gAnimLibrary.animStateSetString(ANIM_AGENT_WALK_ADJUST,"walk_adjust");
 
+	//BD
+	gAnimLibrary.animStateSetString(ANIM_BD_POSING_MOTION, "custom_pose");
+
     // Where should this be set initially?
     LLJoint::setDebugJointNames(gSavedSettings.getString("DebugAvatarJoints"));
 }
@@ -1166,6 +1171,9 @@ void LLVOAvatar::initInstance(void)
 		registerMotion( ANIM_AGENT_SIT_FEMALE,				LLKeyframeMotion::create );
 		registerMotion( ANIM_AGENT_TARGET,					LLTargetingMotion::create );
 		registerMotion( ANIM_AGENT_WALK_ADJUST,				LLWalkAdjustMotion::create );
+
+		//BD - Jackpot.
+		registerMotion(	ANIM_BD_POSING_MOTION,				BDPosingMotion::create);
 	}
 	
 	LLAvatarAppearance::initInstance();

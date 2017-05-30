@@ -21,6 +21,7 @@
 #include "llfloater.h"
 #include "llscrolllistctrl.h"
 #include "llcharacter.h"
+#include "llsliderctrl.h"
 
 class BDFloaterAnimations :
 	public LLFloater
@@ -41,6 +42,8 @@ private:
 
 	void onRefresh();
 
+	void onRefreshPoseControls();
+
 	void onSave();
 	void onLoad();
 	void onRemove();
@@ -48,6 +51,9 @@ private:
 
 	void onPoseSave();
 	void onPoseLoad();
+	void onPoseCopy();
+
+	void resetToDefault(LLUICtrl* ctrl);
 
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);

@@ -871,6 +871,11 @@ void LLAvatarAppearance::buildCharacter()
 	mWristRightp	= mRoot->findJoint("mWristRight");
 	mEyeLeftp		= mRoot->findJoint("mEyeLeft");
 	mEyeRightp		= mRoot->findJoint("mEyeRight");
+	//BD
+	mShoulderRightp = mRoot->findJoint("mShoulderRight");
+	mShoulderLeftp	= mRoot->findJoint("mShoulderLeft");
+	mElbowRightp	= mRoot->findJoint("mElbowRight");
+	mElbowLeftp		= mRoot->findJoint("mElbowLeft");
 
 	//-------------------------------------------------------------------------
 	// Make sure "well known" pointers exist
@@ -892,7 +897,12 @@ void LLAvatarAppearance::buildCharacter()
 		  mWristLeftp &&
 		  mWristRightp &&
 		  mEyeLeftp &&
-		  mEyeRightp))
+		  mEyeRightp &&
+		  //BD
+		  mShoulderRightp &&
+		  mShoulderLeftp &&
+		  mElbowRightp &&
+		  mElbowLeftp))
 	{
 		LL_ERRS() << "Failed to create avatar." << LL_ENDL;
 		return;

@@ -2,12 +2,36 @@
 <floater
 positioning="centered"
 legacy_header_height="18"
-height="445"
+height="465"
 layout="topleft"
 name="floater_animation_control"
 save_rect="true"
 title="Animation Manipulation"
 width="494">
+	<tab_container
+  follows="all"
+  halign="center"
+  height="445"
+  layout="topleft"
+  left="0"
+  name="Picks Tabs"
+  tab_min_width="150"
+  tab_max_width="157"
+  tab_height="20"
+  tab_group="1"
+  tab_position="top"
+  top="20"
+  width="494">
+    <panel
+    follows="all"
+	background_visible="false"
+    height="425"
+    layout="topleft"
+    left="0"
+    title="Animations"
+    name="animations_panel"
+    top="0"
+    width="492">
 	<panel
  follows="all"
  height="420"
@@ -16,7 +40,7 @@ width="494">
  mouse_opaque="false"
  left="7"
  name="title"
- top="20"
+ top="0"
  width="480">
  <panel
  follows="left|top|right"
@@ -61,8 +85,6 @@ width="494">
  left="0"
  width="480"
  multi_select="true"
- text_entry="true"
- read_only="false"
  name="other_avatars_scroll"
  top_delta="0">
     <scroll_list.columns
@@ -208,8 +230,6 @@ width="494">
  left="0"
  width="480"
  multi_select="true"
- text_entry="true"
- read_only="false"
  name="motions_scroll"
  top_delta="0">
     <scroll_list.columns
@@ -315,4 +335,1880 @@ width="494">
    function="Anim.Create"/>
  </button>-->
 	</panel>
+	</panel>
+	<panel
+    follows="all"
+	background_visible="false"
+    height="425"
+    layout="topleft"
+    left="0"
+    title="Pose"
+    name="pose_panel"
+    top="0"
+    width="492">
+		<panel
+ follows="all"
+ height="420"
+ background_visible="false"
+ layout="topleft"
+ mouse_opaque="false"
+ left="7"
+ name="title"
+ top="0"
+ width="480">
+ <!--<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Bones:
+ </text>-->
+	<!--<icon
+	follows="top|left"
+	height="298"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top_pad="3"
+	left="0"/>
+ <scroll_list
+ column_padding="2"
+ draw_heading="true"
+ height="275"
+ follows="left|top|right"
+ layout="topleft"
+ left="0"
+ width="480"
+ multi_select="true"
+ name="poses_scroll"
+ top_delta="0">
+    <scroll_list.columns
+     label="Bone Name"
+     name="joint"
+   relative_width="0.32"  />
+    <scroll_list.columns
+     label="Rotation"
+     name="rot"
+   relative_width="0.33"  />
+    <scroll_list.columns
+     label="Position"
+     name="pos"
+   relative_width="0.33"  />
+</scroll_list>-->
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Save Pose"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="save_bone"
+ width="82"
+ top_pad="1"
+ left_delta="2">
+   <button.commit_callback
+   function="Pose.Save"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Start Posing"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="activate"
+ width="82"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pose.Load"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label=""
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="load_bones"
+ width="61"
+ top_delta="0"
+ left_pad="1"/>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label=""
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="load_bones"
+ width="82"
+ top_delta="0"
+ left_pad="1"/>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label=""
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="82"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Restart"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label=""
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="82"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Refresh"/>
+ </button>
+	
+	<scroll_container
+ color="Transparent"
+ follows="all"
+ layout="topleft"
+ mouse_opaque="false"
+ left="2"
+ name="gfx_scroll"
+ opaque="true"
+ height="398"
+ width="476"
+ top_pad="0">
+  <panel
+  layout="topleft"
+  follows="left|top|right"
+  height="1290"
+  name="gfx_scroll_panel"
+  top="0"
+  mouse_opaque="false"
+  left="0"
+  width="450">
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Head:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingHeadJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingHeadJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingHeadJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingHeadJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingHeadJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingHeadJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingHeadJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Neck:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingNeckJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingNeckJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingNeckJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingNeckJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingNeckJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingNeckJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingNeckJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Chest:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingChestJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingChestJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingChestJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingChestJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingChestJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingChestJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingChestJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Upper Body:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingTorsoJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingTorsoJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingTorsoJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingTorsoJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingTorsoJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingTorsoJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingTorsoJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Pelvis:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingPelvisJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingPelvisJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingPelvisJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingPelvisJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingPelvisJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingPelvisJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingPelvisJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Right Upper Arm:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingShoulderRightJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingShoulderRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingShoulderRightJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingShoulderRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingShoulderRightJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingShoulderRightJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingShoulderRightJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Right Lower Arm:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingElbowRightJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingElbowRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingElbowRightJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingElbowRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingElbowRightJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingElbowRightJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingElbowRightJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Right Hand:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingWristRightJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingWristRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingWristRightJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingWristRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingWristRightJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingWristRightJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingWristRightJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Left Upper Arm:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingShoulderLeftJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingShoulderLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingShoulderLeftJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingShoulderLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingShoulderLeftJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingShoulderLeftJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingShoulderLeftJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Left Lower Arm:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingElbowLeftJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingElbowLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingElbowLeftJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingElbowLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingElbowLeftJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingElbowLeftJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingElbowLeftJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Left Hand:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingWristLeftJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingWristLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingWristLeftJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingWristLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingWristLeftJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingWristLeftJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingWristLeftJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Right Upper Leg:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingHipRightJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingHipRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingHipRightJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingHipRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingHipRightJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingHipRightJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingHipRightJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Right Lower Leg:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingKneeRightJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingKneeRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingKneeRightJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingKneeRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingKneeRightJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingKneeRightJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingKneeRightJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Right Foot:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingAnkleRightJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingAnkleRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingAnkleRightJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingAnkleRightJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingAnkleRightJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingAnkleRightJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingAnkleRightJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Left Upper Leg:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingHipLeftJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingHipLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingHipLeftJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingHipLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingHipLeftJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingHipLeftJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingHipLeftJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Left Lower Leg:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingKneeLeftJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingKneeLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingKneeLeftJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingKneeLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingKneeLeftJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingKneeLeftJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingKneeLeftJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	
+	<panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="5"
+ width="478"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Left Foot:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingAnkleLeftJoint_X"
+ top_pad="10"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayX"
+      parameter="PosingAnkleLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingAnkleLeftJoint_Y"
+ top_pad="1"
+ width="319" >
+	<slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="PosingAnkleLeftJoint"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="150"
+ layout="topleft"
+ left="10"
+ max_val="1"
+ min_val="-1"
+ name="PosingAnkleLeftJoint_Z"
+ top_pad="1"
+ width="319" >
+		<slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="PosingAnkleLeftJoint"/>
+      </slider>
+	<button
+ follows="left|top"
+ control_name="PosingAnkleLeftJoint"
+ height="45"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="transparent.j2c"
+ image_unselected="transparent.j2c"
+ layout="topleft"
+ left="370"
+ top_delta="-30"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+
+</panel>
+		</scroll_container>
+	</panel>
+	</panel>
+	</tab_container>
 </floater>

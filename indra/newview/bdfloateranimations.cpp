@@ -26,7 +26,12 @@
 #include "llviewerobjectlist.h"
 #include "llviewerobject.h"
 #include "llvoavatar.h"
-#include "llcallingcard.h"
+#include "llvoavatarself.h"
+//#include "llcallingcard.h"
+//#include "llavatarappearance.h"
+
+// viewer includes
+#include "llfloaterpreference.h"
 
 
 BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
@@ -52,10 +57,20 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	//BD - Create a new motion via a given UUID.
 	mCommitCallbackRegistrar.add("Anim.Create", boost::bind(&BDFloaterAnimations::onCreate, this));
 
-	//BD - Save the current pose to our list.
+	//BD - WIP
 	mCommitCallbackRegistrar.add("Pose.Save", boost::bind(&BDFloaterAnimations::onPoseSave, this));
-	//BD - Load the current pose onto the currently selected avatars.
+	//BD - Load the current pose and export all its values into the UI so we can alter them.
+	mCommitCallbackRegistrar.add("Pose.Copy", boost::bind(&BDFloaterAnimations::onPoseSave, this));
+	//BD - Start our custom pose.
 	mCommitCallbackRegistrar.add("Pose.Load", boost::bind(&BDFloaterAnimations::onPoseLoad, this));
+
+//	//BD - Array Debugs
+	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, _1, _2));
+
+//	//BD - Revert to Default
+	mCommitCallbackRegistrar.add("Pref.Default", boost::bind(&BDFloaterAnimations::resetToDefault, this, _1));
 }
 
 BDFloaterAnimations::~BDFloaterAnimations()
@@ -84,9 +99,17 @@ void BDFloaterAnimations::draw()
 	LLFloater::draw();
 }
 
+//BD - Revert to Default
+void BDFloaterAnimations::resetToDefault(LLUICtrl* ctrl)
+{
+	ctrl->getControlVariable()->resetToDefault(true);
+	onRefreshPoseControls();
+}
+
 void BDFloaterAnimations::onOpen(const LLSD& key)
 {
 	onRefresh();
+	onRefreshPoseControls();
 }
 
 void BDFloaterAnimations::onClose(bool app_quitting)
@@ -202,6 +225,77 @@ void BDFloaterAnimations::onRefresh()
 			mAvatarScroll->addElement(row);
 		}
 	}
+}
+
+void BDFloaterAnimations::onRefreshPoseControls()
+{
+	getChild<LLUICtrl>("PosingHeadJoint_X")->setValue(gSavedSettings.getVector3("PosingHeadJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingHeadJoint_Y")->setValue(gSavedSettings.getVector3("PosingHeadJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingHeadJoint_Z")->setValue(gSavedSettings.getVector3("PosingHeadJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingNeckJoint_X")->setValue(gSavedSettings.getVector3("PosingNeckJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingNeckJoint_Y")->setValue(gSavedSettings.getVector3("PosingNeckJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingNeckJoint_Z")->setValue(gSavedSettings.getVector3("PosingNeckJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingChestJoint_X")->setValue(gSavedSettings.getVector3("PosingChestJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingChestJoint_Y")->setValue(gSavedSettings.getVector3("PosingChestJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingChestJoint_Z")->setValue(gSavedSettings.getVector3("PosingChestJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingTorsoJoint_X")->setValue(gSavedSettings.getVector3("PosingTorsoJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingTorsoJoint_Y")->setValue(gSavedSettings.getVector3("PosingTorsoJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingTorsoJoint_Z")->setValue(gSavedSettings.getVector3("PosingTorsoJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingShoulderLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingShoulderLeftJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingShoulderLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingShoulderLeftJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingShoulderLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingShoulderLeftJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingElbowLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingElbowLeftJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingElbowLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingElbowLeftJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingElbowLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingElbowLeftJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingWristLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingWristLeftJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingWristLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingWristLeftJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingWristLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingWristLeftJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingShoulderRightJoint_X")->setValue(gSavedSettings.getVector3("PosingShoulderRightJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingShoulderRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingShoulderRightJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingShoulderRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingShoulderRightJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingElbowRightJoint_X")->setValue(gSavedSettings.getVector3("PosingElbowRightJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingElbowRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingElbowRightJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingElbowRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingElbowRightJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingWristRightJoint_X")->setValue(gSavedSettings.getVector3("PosingWristRightJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingWristRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingWristRightJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingWristRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingWristRightJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingPelvisJoint_X")->setValue(gSavedSettings.getVector3("PosingPelvisJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingPelvisJoint_Y")->setValue(gSavedSettings.getVector3("PosingPelvisJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingPelvisJoint_Z")->setValue(gSavedSettings.getVector3("PosingPelvisJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingHipLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingHipLeftJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingHipLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingHipLeftJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingHipLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingHipLeftJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingKneeLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingKneeLeftJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingKneeLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingKneeLeftJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingKneeLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingKneeLeftJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingAnkleLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingAnkleLeftJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingAnkleLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingAnkleLeftJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingAnkleLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingAnkleLeftJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingHipRightJoint_X")->setValue(gSavedSettings.getVector3("PosingHipRightJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingHipRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingHipRightJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingHipRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingHipRightJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingKneeRightJoint_X")->setValue(gSavedSettings.getVector3("PosingKneeRightJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingKneeRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingKneeRightJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingKneeRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingKneeRightJoint").mV[VZ]);
+
+	getChild<LLUICtrl>("PosingAnkleRightJoint_X")->setValue(gSavedSettings.getVector3("PosingAnkleRightJoint").mV[VX]);
+	getChild<LLUICtrl>("PosingAnkleRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingAnkleRightJoint").mV[VY]);
+	getChild<LLUICtrl>("PosingAnkleRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingAnkleRightJoint").mV[VZ]);
 }
 
 void BDFloaterAnimations::getSelected()
@@ -352,7 +446,7 @@ void BDFloaterAnimations::onSave()
 void BDFloaterAnimations::onLoad()
 {
 	//LLAvatarTracker& at = LLAvatarTracker::instance();
-	getSelected();
+	/*getSelected();
 	for (std::vector<LLCharacter*>::iterator iter = mSelectedCharacters.begin();
 		iter != mSelectedCharacters.end(); ++iter)
 	{
@@ -364,70 +458,69 @@ void BDFloaterAnimations::onLoad()
 			//if (relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS)
 			//	|| character->getID() == gAgentID)
 
-			//BD - Only allow animating ourselves, as per Oz Linden.
 			if (character->getID() == gAgentID)
-			{
+			{*/
+				//BD - Only allow animating ourselves, as per Oz Linden.
 				LLScrollListItem* item = mMotionScroll->getFirstSelected();
 				if (item)
 				{
 					LLUUID motion_id = item->getColumn(1)->getValue().asUUID();
 					if (!motion_id.isNull())
 					{
-						character->createMotion(motion_id);
-						character->stopMotion(motion_id, 1);
-						character->startMotion(motion_id, 0.0f);
+						gAgentAvatarp->createMotion(motion_id);
+						gAgentAvatarp->stopMotion(motion_id, 1);
+						gAgentAvatarp->startMotion(motion_id, 0.0f);
 					}
+				}
+	//		}
+	//	}
+	//}
+}
+
+void BDFloaterAnimations::onPoseSave()
+{
+	LLMotionController::motion_list_t motions = gAgentAvatarp->getMotionController().getActiveMotions();
+	for (LLMotionController::motion_list_t::iterator it = motions.begin();
+		it != motions.end(); ++it)
+	{
+		LLMotion* motion = *it;
+		if (motion)
+		{
+			LLPose* pose = motion->getPose();
+			while (pose->getNextJointState() != NULL)
+			{
+				LLJointState* joint_state = pose->getFirstJointState();
+				LLJoint* joint = joint_state->getJoint();
+				LLSD row;
+				row["columns"][0]["column"] = "joint";
+				row["columns"][0]["value"] = joint->getName();
+				row["columns"][1]["column"] = "rot";
+				row["columns"][1]["value"] = joint->getRotation().packToVector3().getValue();
+				if (!motion->getName().empty() &&
+					motion->getDuration() > 0.0f)
+				{
+					mJointsScroll->addElement(row);
 				}
 			}
 		}
 	}
 }
 
-void BDFloaterAnimations::onPoseSave()
+void BDFloaterAnimations::onPoseCopy()
 {
-	getSelected();
-	for (std::vector<LLCharacter*>::iterator iter = mSelectedCharacters.begin();
-		iter != mSelectedCharacters.end(); ++iter)
+	LLMotionController::motion_list_t motions = gAgentAvatarp->getMotionController().getActiveMotions();
+	for (LLMotionController::motion_list_t::iterator it = motions.begin();
+		it != motions.end(); ++it)
 	{
-		LLCharacter* character = *iter;
-		if (character)
+		LLMotion* motion = *it;
+		if (motion)
 		{
-			LLMotionController::motion_list_t motions = character->getMotionController().getActiveMotions();
-			for (LLMotionController::motion_list_t::iterator it = motions.begin();
-				it != motions.end(); ++it)
+			LLPose* pose = motion->getPose();
+			while (pose->getNextJointState() != NULL)
 			{
-				LLMotion* motion = *it;
-				if (motion)
-				{
-					LLPose* pose = motion->getPose();
-					while (pose->getNextJointState() != NULL)
-					{
-						LLJointState* joint_state = pose->getFirstJointState();
-						LLJoint* joint = joint_state->getJoint();
-						LLSD row;
-						row["columns"][0]["column"] = "joint";
-						row["columns"][0]["value"] = joint->getName();
-						row["columns"][1]["column"] = "pos";
-						row["columns"][1]["value"] = joint->getPosition().getValue();
-						row["columns"][2]["column"] = "rot";
-						row["columns"][2]["value"] = joint->getRotation().packToVector3().getValue();
-						row["columns"][3]["column"] = "scale";
-						row["columns"][3]["value"] = joint->getScale().getValue();
-						row["columns"][4]["column"] = "parent";
-						row["columns"][4]["value"] = joint->getParent()->getName();
-						row["columns"][5]["column"] = "skin";
-						row["columns"][5]["value"] = joint->getSkinOffset().getValue();
-						row["columns"][6]["column"] = "support";
-						row["columns"][6]["value"] = joint->getSupport();
-						//row["columns"][5]["column"] = "x";
-						//row["columns"][5]["value"] = joint->getSkinOffset().mV[VX];
-						//row["columns"][6]["column"] = "y";
-						//row["columns"][6]["value"] = joint->getSkinOffset().mV[VY];
-						//row["columns"][7]["column"] = "z";
-						//row["columns"][7]["value"] = joint->getSkinOffset().mV[VZ];
-						mJointsScroll->addElement(row);
-					}
-				}
+				//LLJointState* joint_state = pose->getFirstJointState();
+				//LLJoint* joint = joint_state->getJoint();
+				//BD - WIP.
 			}
 		}
 	}
@@ -435,62 +528,31 @@ void BDFloaterAnimations::onPoseSave()
 
 void BDFloaterAnimations::onPoseLoad()
 {
-	getSelected();
-	for (std::vector<LLCharacter*>::iterator iter = mSelectedCharacters.begin();
-		iter != mSelectedCharacters.end(); ++iter)
+	LLMotion* pose_motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	if (!pose_motion)
 	{
-		LLCharacter* character = *iter;
-		if (character)
-		{
-			LLScrollListItem* joint_item = mJointsScroll->getFirstSelected();
-			if (joint_item)
-			{
-				
-				LLMotion* motion = character->getMotionController().findMotion(joint_item->getColumn(1)->getValue().asUUID());
-				//LLMotionController* motion_cstr;
-				LLPose* pose = motion->getPose();
-				LLJointState* joint_state = pose->findJointState(joint_item->getColumn(0)->getValue());
-				LLJoint* joint = joint_state->getJoint();
-				//LLJoint* parent;
-				LLVector3 vec3;
-				LLQuaternion quaternion;
-
-				//BD - Name & Parent
-				//joint->setup(joint_item->getColumn(0)->getValue().asString());
-				//joint->setName(item->getColumn(0)->getValue().asString());
-				//BD - Position
-				vec3.setValue(joint_item->getColumn(1)->getValue());
-				joint->setPosition(vec3);
-				//BD - Rotation
-				vec3.setValue(joint_item->getColumn(2)->getValue());
-				quaternion.unpackFromVector3(vec3);
-				joint->setRotation(quaternion);
-				//BD - Scale
-				vec3.setValue(joint_item->getColumn(3)->getValue());
-				joint->setScale(vec3);
-				//BD - Skin Offset
-				vec3.setValue(joint_item->getColumn(5)->getValue());
-				joint->setSkinOffset(vec3);
-				//BD - Support
-				joint->setSupport(joint_item->getColumn(6)->getValue());
-
-				//joint_state->setJoint(joint);
-				//pose->addJointState(joint_state);
-				//motion->setPose(*pose);
-				//character->getJoint();
-				//motion->addJointState(joint_state);
-				//character->
-				//motion_cstr->
-
-				/*LLUUID motion_id = motion->getID();;
-				if (!motion_id.isNull())
-				{
-					character->createMotion(motion_id);
-					character->stopMotion(motion_id, 1);
-					character->startMotion(motion_id, 0.0f);
-				}*/
-			}
-		}
+		gAgent.setPosing();
+		gAgent.stopFidget();
+		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_1);
+		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_2);
+		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_3);
+		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_4);
+		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
+	}
+	else if (pose_motion->isStopped())
+	{
+		gAgent.setPosing();
+		gAgent.stopFidget();
+		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_1);
+		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_2);
+		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_3);
+		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_4);
+		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
+	}
+	else
+	{
+		gAgent.clearPosing();
+		gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
 	}
 }
 

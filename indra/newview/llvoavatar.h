@@ -62,6 +62,8 @@ extern const LLUUID ANIM_AGENT_HEAD_ROT;
 extern const LLUUID ANIM_AGENT_PELVIS_FIX;
 extern const LLUUID ANIM_AGENT_TARGET;
 extern const LLUUID ANIM_AGENT_WALK_ADJUST;
+//BD
+extern const LLUUID ANIM_BD_POSING_MOTION;
 
 class LLViewerWearable;
 class LLVoiceVisualizer;

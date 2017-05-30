@@ -4444,7 +4444,7 @@ void LLAgent::stopCurrentAnimations()
 
 void LLAgent::fidget()
 {
-	if (!getAFK())
+	if (!getAFK() && !mIsPosing)
 	{
 		F32 curTime = mFidgetTimer.getElapsedTimeF32();
 		if (curTime > mNextFidgetTime)
