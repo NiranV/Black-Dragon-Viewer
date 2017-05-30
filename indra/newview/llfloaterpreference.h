@@ -249,7 +249,7 @@ public:
 	void onList4Click();
 	void onListClickAction(S32 mode);
 
-//	//BD - Revert to Default
+	//BD - Toggle Input/Output Panel.
 	void inputOutput();
 
 //	//BD - Refresh all controls
