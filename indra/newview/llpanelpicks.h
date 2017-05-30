@@ -99,7 +99,8 @@ private:
 	bool isClassifiedPublished(LLClassifiedItem* c_item);
 
 	void onListCommit(const LLFlatListView* f_list);
-	void onAccordionStateChanged(const LLAccordionCtrlTab* acc_tab);
+	//BD
+	void onAccordionStateChanged();
 
 	//------------------------------------------------
 	// Callbacks which require panel toggling
@@ -124,7 +125,8 @@ private:
 	void openClassifiedEdit(const LLSD& params);
 	friend class LLPanelProfile;
 
-	void showAccordion(const std::string& name, bool show);
+	//BD
+	//void showAccordion(const std::string& name, bool show);
 
 	void buildPickPanel();
 
@@ -162,8 +164,9 @@ private:
 	// sit in this map and listen to LLPanelClassifiedEdit::processProperties callback.
 	panel_classified_edit_map_t mEditClassifiedPanels;
 
-	LLAccordionCtrlTab* mPicksAccTab;
-	LLAccordionCtrlTab* mClassifiedsAccTab;
+	//BD
+	LLPanel* mPicksAccTab;
+	LLPanel* mClassifiedsAccTab;
 
 	//true if picks list is empty after processing picks
 	bool mNoPicks;

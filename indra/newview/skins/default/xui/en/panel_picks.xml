@@ -76,16 +76,6 @@
       width="313" />
     </panel>
     </tab_container>
-  <!--<text
-  type="string"
-  follows="all"
-  height="490"
-  layout="topleft"
-  left="6"
-  name="picks_panel_text"
-  wrap="true"
-  top="20"
-  width="313"/> -->
     <panel
     bg_opaque_color="White_02"
     background_visible="true"
@@ -219,4 +209,14 @@
       </layout_panel>
       </layout_stack>
       </panel>
+	<text
+  type="string"
+  follows="all"
+  height="490"
+  layout="topleft"
+  left="6"
+  name="picks_panel_text"
+  wrap="true"
+  top="20"
+  width="313"/>
 </panel>

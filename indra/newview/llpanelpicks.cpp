@@ -424,7 +424,8 @@ void LLPanelPicks::processProperties(void* data, EAvatarProcessorType type)
 				picture->setMouseUpCallback(boost::bind(&LLPanelPicks::updateButtons, this));
 			}
 
-			showAccordion("tab_picks", mPicksList->size());
+			//BD
+			//showAccordion("tab_picks", mPicksList->size());
 
 			resetDirty();
 			updateButtons();
@@ -463,7 +464,8 @@ void LLPanelPicks::processProperties(void* data, EAvatarProcessorType type)
 				c_item->setMouseUpCallback(boost::bind(&LLPanelPicks::updateButtons, this));
 			}
 
-			showAccordion("tab_classifieds", mClassifiedsList->size());
+			//BD
+			//showAccordion("tab_classifieds", mClassifiedsList->size());
 
 			resetDirty();
 			updateButtons();
@@ -527,13 +529,17 @@ BOOL LLPanelPicks::postBuild()
 	childSetAction(XML_BTN_SHOW_ON_MAP, boost::bind(&LLPanelPicks::onClickMap, this));
 	childSetAction(XML_BTN_INFO, boost::bind(&LLPanelPicks::onClickInfo, this));
 
-	mPicksAccTab = getChild<LLAccordionCtrlTab>("tab_picks");
-	mPicksAccTab->setDropDownStateChangedCallback(boost::bind(&LLPanelPicks::onAccordionStateChanged, this, mPicksAccTab));
-	mPicksAccTab->setDisplayChildren(true);
+	//BD
+	mPicksAccTab = getChild<LLPanel>("tab_picks");
+	//mPicksAccTab->setDropDownStateChangedCallback(boost::bind(&LLPanelPicks::onAccordionStateChanged, this, mPicksAccTab));
+	//mPicksAccTab->setDisplayChildren(true);
+	mPicksAccTab->setVisibleCallback(boost::bind(&LLPanelPicks::onAccordionStateChanged, this));
 
-	mClassifiedsAccTab = getChild<LLAccordionCtrlTab>("tab_classifieds");
-	mClassifiedsAccTab->setDropDownStateChangedCallback(boost::bind(&LLPanelPicks::onAccordionStateChanged, this, mClassifiedsAccTab));
-	mClassifiedsAccTab->setDisplayChildren(false);
+	//BD
+	mClassifiedsAccTab = getChild<LLPanel>("tab_classifieds");
+	//mClassifiedsAccTab->setDropDownStateChangedCallback(boost::bind(&LLPanelPicks::onAccordionStateChanged, this, mClassifiedsAccTab));
+	//mClassifiedsAccTab->setDisplayChildren(false);
+	mClassifiedsAccTab->setVisibleCallback(boost::bind(&LLPanelPicks::onAccordionStateChanged, this));
 	
 	LLUICtrl::CommitCallbackRegistry::ScopedRegistrar registar;
 	registar.add("Pick.Info", boost::bind(&LLPanelPicks::onClickInfo, this));
@@ -596,16 +602,18 @@ bool LLPanelPicks::isClassifiedPublished(LLClassifiedItem* c_item)
 	return false;
 }
 
-void LLPanelPicks::onAccordionStateChanged(const LLAccordionCtrlTab* acc_tab)
+//BD
+void LLPanelPicks::onAccordionStateChanged()
 {
-	if(!mPicksAccTab->getDisplayChildren())
+	//BD
+	/*if(!mPicksAccTab->getDisplayChildren())
 	{
 		mPicksList->resetSelection(true);
 	}
 	if(!mClassifiedsAccTab->getDisplayChildren())
 	{
 		mClassifiedsList->resetSelection(true);
-	}
+	}*/
 
 	updateButtons();
 }
@@ -630,8 +638,9 @@ void LLPanelPicks::onOpen(const LLSD& key)
 	// and see a special title - set as invisible by default in xml file
 	if (self)
 	{
-		getChildView("pick_title")->setVisible( !self);
-		getChildView("pick_title_agent")->setVisible( self);
+		//BD
+		//getChildView("pick_title")->setVisible( !self);
+		//getChildView("pick_title_agent")->setVisible( self);
 
 		mPopupMenu->setItemVisible("pick_delete", TRUE);
 		mPopupMenu->setItemVisible("pick_edit", TRUE);
@@ -640,8 +649,9 @@ void LLPanelPicks::onOpen(const LLSD& key)
 
 	if(getAvatarId() != id)
 	{
-		showAccordion("tab_picks", false);
-		showAccordion("tab_classifieds", false);
+		//BD
+		//showAccordion("tab_picks", false);
+		//showAccordion("tab_classifieds", false);
 
 		mPicksList->goToTop();
 		// Set dummy value to make panel dirty and make it reload picks
@@ -940,13 +950,14 @@ void LLPanelPicks::openClassifiedEdit(const LLSD& params)
 	editClassified(classified_id);
 }
 
-void LLPanelPicks::showAccordion(const std::string& name, bool show)
+//BD
+/*void LLPanelPicks::showAccordion(const std::string& name, bool show)
 {
 	LLAccordionCtrlTab* tab = getChild<LLAccordionCtrlTab>(name);
 	tab->setVisible(show);
 	LLAccordionCtrl* acc = getChild<LLAccordionCtrl>("accordion");
 	acc->arrange();
-}
+}*/
 
 void LLPanelPicks::onPanelPickClose(LLPanel* panel)
 {
@@ -983,9 +994,10 @@ void LLPanelPicks::onPanelClassifiedSave(LLPanelClassifiedEdit* panel)
 		c_item->setMouseUpCallback(boost::bind(&LLPanelPicks::updateButtons, this));
 		c_item->childSetAction("info_chevron", boost::bind(&LLPanelPicks::onClickInfo, this));
 
+		//BD
 		// order does matter, showAccordion will invoke arrange for accordions.
-		mClassifiedsAccTab->changeOpenClose(false);
-		showAccordion("tab_classifieds", true);
+		//mClassifiedsAccTab->changeOpenClose(false);
+		//showAccordion("tab_classifieds", true);
 	}
 	else if(panel->isNewWithErrors())
 	{
