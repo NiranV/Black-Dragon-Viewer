@@ -238,6 +238,9 @@ void LLViewerJoystick::init(bool autoenable)
 	}
 	updateEnabled(autoenable);
 	
+	//BD - Tell us the name of the product beforehand so in future we can add more.
+	LL_INFOS() << "Product Name=" << mNdofDev->product << LL_ENDL;
+
 	if (mDriverState == JDS_INITIALIZED)
 	{
 		// A Joystick device is plugged in
@@ -255,11 +258,12 @@ void LLViewerJoystick::init(bool autoenable)
 		{
 //			//BD - Xbox360 Controller Support
 			// It's not a Space Navigator, no problem, use Xbox360 defaults.
-			if (gSavedSettings.getString("JoystickInitialized") != "UnknownDevice")
+			if (gSavedSettings.getString("JoystickInitialized") != "Xbox360Controller")
 			{
 //				//BD - Let's put our Xbox360 defaults here because it is most likely a controller
 				//     atleast similar to that of the Xbox360.
 				setXboxDefaults();
+				gSavedSettings.setString("JoystickInitialized", "Xbox360Controller");
 			}
 		}
 	}
@@ -268,8 +272,8 @@ void LLViewerJoystick::init(bool autoenable)
 		// No device connected, don't change any settings
 	}
 	
-	LL_INFOS() << "ndof: mDriverState=" << mDriverState << "; mNdofDev=" 
-			<< mNdofDev << "; libinit=" << libinit << LL_ENDL;
+	LL_INFOS() << "ndof: mDriverState=" << mDriverState << "; mNdofDev="
+		<< mNdofDev << "; libinit=" << libinit << LL_ENDL;
 #endif
 }
 
