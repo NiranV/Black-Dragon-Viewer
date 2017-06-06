@@ -389,46 +389,19 @@ width="494">
 	visible="true"
 	width="480"
 	top_pad="3"
-	left="0"/>
- <scroll_list
- column_padding="2"
- draw_heading="true"
- height="275"
- follows="left|top|right"
- layout="topleft"
- left="0"
- width="480"
- multi_select="true"
- name="poses_scroll"
- top_delta="0">
-    <scroll_list.columns
-     label="Bone Name"
-     name="joint"
-   relative_width="0.32"  />
-    <scroll_list.columns
-     label="Rotation"
-     name="rot"
-   relative_width="0.33"  />
-    <scroll_list.columns
-     label="Position"
-     name="pos"
-   relative_width="0.33"  />
-</scroll_list>-->
+	left="0"/>-->
  <button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Save Pose"
+ label=""
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="save_bone"
  width="82"
  top_pad="1"
- left_delta="2">
-   <button.commit_callback
-   function="Pose.Save"/>
- </button>
+ left_delta="2"/>
  <button
  height="21"
  follows="top|left"
@@ -498,6 +471,38 @@ width="494">
    <button.commit_callback
    function="Anim.Refresh"/>
  </button>
+	<scroll_list
+ column_padding="2"
+ draw_heading="true"
+ height="325"
+ follows="left|top|right"
+ layout="topleft"
+ left="0"
+ width="480"
+ multi_select="true"
+ name="joints_scroll"
+ top_pad="1">
+    <scroll_list.columns
+     label="Bone Name"
+     name="joint"
+   relative_width="0.32"  />
+    <scroll_list.columns
+     label="X"
+     name="x"
+   relative_width="0.23"  />
+	<scroll_list.columns
+     label="Y"
+     name="y"
+   relative_width="0.23"  />
+	<scroll_list.columns
+     label="Z"
+     name="z"
+   relative_width="0.23"  />
+    <!--<scroll_list.columns
+     label="Position"
+     name="pos"
+   relative_width="0.33"  />-->
+</scroll_list>
 	
 	<scroll_container
  color="Transparent"
@@ -513,7 +518,7 @@ width="494">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1290"
+  height="190"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -539,13 +544,14 @@ width="494">
  height="12"
  width="350"
  top_delta="4">
- Head:
+ Rotation:
  </text>
 	<slider
  decimal_digits="3"
  can_edit_text="true"
  follows="left|top"
  height="14"
+ enabled="false"
  increment="0.001"
  initial_value="0"
  label="Rotation X:"
@@ -554,18 +560,19 @@ width="494">
  left="10"
  max_val="1"
  min_val="-1"
- name="PosingHeadJoint_X"
+ name="Rotation_X"
  top_pad="10"
  width="319" >
 		<slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="PosingHeadJoint"/>
+      function="Pose.Set"
+      parameter="x"/>
       </slider>
 	<slider
  decimal_digits="3"
  can_edit_text="true"
  follows="left|top"
  height="14"
+ enabled="false"
  increment="0.001"
  initial_value="0"
  label="Rotation Y:"
@@ -574,18 +581,19 @@ width="494">
  left="10"
  max_val="1"
  min_val="-1"
- name="PosingHeadJoint_Y"
+ name="Rotation_Y"
  top_pad="1"
  width="319" >
 	<slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="PosingHeadJoint"/>
+      function="Pose.Set"
+      parameter="y"/>
       </slider>
 	<slider
  decimal_digits="3"
  can_edit_text="true"
  follows="left|top"
  height="14"
+ enabled="false"
  increment="0.001"
  initial_value="0"
  label="Rotation Z:"
@@ -594,14 +602,14 @@ width="494">
  left="10"
  max_val="1"
  min_val="-1"
- name="PosingHeadJoint_Z"
+ name="Rotation_Z"
  top_pad="1"
  width="319" >
 		<slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="PosingHeadJoint"/>
+      function="Pose.Set"
+      parameter="z"/>
       </slider>
-	<button
+<!--	<button
  follows="left|top"
  control_name="PosingHeadJoint"
  height="45"
@@ -2205,7 +2213,7 @@ width="494">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-
+-->
 </panel>
 		</scroll_container>
 	</panel>

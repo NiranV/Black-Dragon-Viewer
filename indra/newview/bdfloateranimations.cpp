@@ -27,8 +27,6 @@
 #include "llviewerobject.h"
 #include "llvoavatar.h"
 #include "llvoavatarself.h"
-//#include "llcallingcard.h"
-//#include "llavatarappearance.h"
 
 // viewer includes
 #include "llfloaterpreference.h"
@@ -69,6 +67,8 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, _1, _2));
 
+	mCommitCallbackRegistrar.add("Pose.Set", boost::bind(&BDFloaterAnimations::onPoseSet, this, _1, _2));
+
 //	//BD - Revert to Default
 	mCommitCallbackRegistrar.add("Pref.Default", boost::bind(&BDFloaterAnimations::resetToDefault, this, _1));
 }
@@ -81,8 +81,11 @@ BOOL BDFloaterAnimations::postBuild()
 {
 	mAvatarScroll = getChild<LLScrollListCtrl>("other_avatars_scroll");
 	mMotionScroll = getChild<LLScrollListCtrl>("motions_scroll");
-	mPoseScroll = getChild<LLScrollListCtrl>("poses_scroll");
-	mJointsScroll = getChild<LLScrollListCtrl>("joints_scroll");
+
+	//BD - Posing
+	//mPoseScroll = getChild<LLScrollListCtrl>("poses_scroll");
+	mJointsScroll = this->getChild<LLScrollListCtrl>("joints_scroll", true);
+	mJointsScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onBonesClick, this));
 	return TRUE;
 }
 
@@ -110,6 +113,7 @@ void BDFloaterAnimations::onOpen(const LLSD& key)
 {
 	onRefresh();
 	onRefreshPoseControls();
+	onBoneRefresh();
 }
 
 void BDFloaterAnimations::onClose(bool app_quitting)
@@ -229,73 +233,13 @@ void BDFloaterAnimations::onRefresh()
 
 void BDFloaterAnimations::onRefreshPoseControls()
 {
-	getChild<LLUICtrl>("PosingHeadJoint_X")->setValue(gSavedSettings.getVector3("PosingHeadJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingHeadJoint_Y")->setValue(gSavedSettings.getVector3("PosingHeadJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingHeadJoint_Z")->setValue(gSavedSettings.getVector3("PosingHeadJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingNeckJoint_X")->setValue(gSavedSettings.getVector3("PosingNeckJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingNeckJoint_Y")->setValue(gSavedSettings.getVector3("PosingNeckJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingNeckJoint_Z")->setValue(gSavedSettings.getVector3("PosingNeckJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingChestJoint_X")->setValue(gSavedSettings.getVector3("PosingChestJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingChestJoint_Y")->setValue(gSavedSettings.getVector3("PosingChestJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingChestJoint_Z")->setValue(gSavedSettings.getVector3("PosingChestJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingTorsoJoint_X")->setValue(gSavedSettings.getVector3("PosingTorsoJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingTorsoJoint_Y")->setValue(gSavedSettings.getVector3("PosingTorsoJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingTorsoJoint_Z")->setValue(gSavedSettings.getVector3("PosingTorsoJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingShoulderLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingShoulderLeftJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingShoulderLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingShoulderLeftJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingShoulderLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingShoulderLeftJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingElbowLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingElbowLeftJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingElbowLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingElbowLeftJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingElbowLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingElbowLeftJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingWristLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingWristLeftJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingWristLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingWristLeftJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingWristLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingWristLeftJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingShoulderRightJoint_X")->setValue(gSavedSettings.getVector3("PosingShoulderRightJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingShoulderRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingShoulderRightJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingShoulderRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingShoulderRightJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingElbowRightJoint_X")->setValue(gSavedSettings.getVector3("PosingElbowRightJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingElbowRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingElbowRightJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingElbowRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingElbowRightJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingWristRightJoint_X")->setValue(gSavedSettings.getVector3("PosingWristRightJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingWristRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingWristRightJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingWristRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingWristRightJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingPelvisJoint_X")->setValue(gSavedSettings.getVector3("PosingPelvisJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingPelvisJoint_Y")->setValue(gSavedSettings.getVector3("PosingPelvisJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingPelvisJoint_Z")->setValue(gSavedSettings.getVector3("PosingPelvisJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingHipLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingHipLeftJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingHipLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingHipLeftJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingHipLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingHipLeftJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingKneeLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingKneeLeftJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingKneeLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingKneeLeftJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingKneeLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingKneeLeftJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingAnkleLeftJoint_X")->setValue(gSavedSettings.getVector3("PosingAnkleLeftJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingAnkleLeftJoint_Y")->setValue(gSavedSettings.getVector3("PosingAnkleLeftJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingAnkleLeftJoint_Z")->setValue(gSavedSettings.getVector3("PosingAnkleLeftJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingHipRightJoint_X")->setValue(gSavedSettings.getVector3("PosingHipRightJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingHipRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingHipRightJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingHipRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingHipRightJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingKneeRightJoint_X")->setValue(gSavedSettings.getVector3("PosingKneeRightJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingKneeRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingKneeRightJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingKneeRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingKneeRightJoint").mV[VZ]);
-
-	getChild<LLUICtrl>("PosingAnkleRightJoint_X")->setValue(gSavedSettings.getVector3("PosingAnkleRightJoint").mV[VX]);
-	getChild<LLUICtrl>("PosingAnkleRightJoint_Y")->setValue(gSavedSettings.getVector3("PosingAnkleRightJoint").mV[VY]);
-	getChild<LLUICtrl>("PosingAnkleRightJoint_Z")->setValue(gSavedSettings.getVector3("PosingAnkleRightJoint").mV[VZ]);
+	LLJoint* joint = gAgentAvatarp->getJoint(mTargetName);
+	if (!mTargetName.empty())
+	{
+		getChild<LLSliderCtrl>("Rotation_X")->setValue(joint->getRotation().packToVector3().mV[VX]);
+		getChild<LLSliderCtrl>("Rotation_Y")->setValue(joint->getRotation().packToVector3().mV[VY]);
+		getChild<LLSliderCtrl>("Rotation_Z")->setValue(joint->getRotation().packToVector3().mV[VZ]);
+	}
 }
 
 void BDFloaterAnimations::getSelected()
@@ -477,33 +421,74 @@ void BDFloaterAnimations::onLoad()
 	//}
 }
 
+void BDFloaterAnimations::onBoneRefresh()
+{
+	mJointsScroll->clearRows();
+	S32 i = 0;
+	for (;;i++)
+	{
+		LLJoint* joint = gAgentAvatarp->getCharacterJoint(i);
+		if (joint)
+		{
+			LLVector3 vec3;
+			if (!joint->getRotation().isFinite())
+			{
+				vec3.zeroVec();
+				LL_INFOS() << "Not finite, defaulting to: " << vec3 << LL_ENDL;
+			}
+			else
+			{
+				vec3 = joint->getRotation().packToVector3();
+				LL_INFOS() << "Finite, take: " << vec3 << LL_ENDL;
+			}
+			LLSD row;
+			row["columns"][0]["column"] = "joint";
+			row["columns"][0]["value"] = joint->getName();
+			row["columns"][1]["column"] = "x";
+			row["columns"][1]["value"] = vec3.mV[VX];
+			row["columns"][2]["column"] = "y";
+			row["columns"][2]["value"] = vec3.mV[VY];
+			row["columns"][3]["column"] = "z";
+			row["columns"][3]["value"] = vec3.mV[VZ];
+			mJointsScroll->addElement(row);
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
 void BDFloaterAnimations::onPoseSave()
 {
-	LLMotionController::motion_list_t motions = gAgentAvatarp->getMotionController().getActiveMotions();
-	for (LLMotionController::motion_list_t::iterator it = motions.begin();
-		it != motions.end(); ++it)
+	mJointsScroll->selectAll();
+	LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	if (motion)
 	{
-		LLMotion* motion = *it;
-		if (motion)
+		LLPose* pose = motion->getPose();
+		while (true)
 		{
-			LLPose* pose = motion->getPose();
-			while (pose->getNextJointState() != NULL)
+			LLJointState* joint_state = pose->getNextJointState();
+			if (joint_state == NULL)
 			{
-				LLJointState* joint_state = pose->getFirstJointState();
-				LLJoint* joint = joint_state->getJoint();
-				LLSD row;
-				row["columns"][0]["column"] = "joint";
-				row["columns"][0]["value"] = joint->getName();
-				row["columns"][1]["column"] = "rot";
-				row["columns"][1]["value"] = joint->getRotation().packToVector3().getValue();
-				if (!motion->getName().empty() &&
-					motion->getDuration() > 0.0f)
+				break;
+			}
+
+			LLJoint* joint = joint_state->getJoint();
+			std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
+			for (std::vector<LLScrollListItem*>::iterator item = items.begin();
+				item != items.end(); ++item)
+			{
+				if ((*item)->getColumn(0)->getValue().asString() == joint->getName())
 				{
-					mJointsScroll->addElement(row);
+					LLScrollListCell* cell = (*item)->getColumn(1);
+					cell->setValue(joint->getRotation().packToVector3().getValue());
 				}
 			}
 		}
 	}
+	mJointsScroll->deselectAllItems();
+	onBoneRefresh();
 }
 
 void BDFloaterAnimations::onPoseCopy()
@@ -518,8 +503,6 @@ void BDFloaterAnimations::onPoseCopy()
 			LLPose* pose = motion->getPose();
 			while (pose->getNextJointState() != NULL)
 			{
-				//LLJointState* joint_state = pose->getFirstJointState();
-				//LLJoint* joint = joint_state->getJoint();
 				//BD - WIP.
 			}
 		}
@@ -533,20 +516,12 @@ void BDFloaterAnimations::onPoseLoad()
 	{
 		gAgent.setPosing();
 		gAgent.stopFidget();
-		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_1);
-		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_2);
-		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_3);
-		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_4);
 		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
 	}
 	else if (pose_motion->isStopped())
 	{
 		gAgent.setPosing();
 		gAgent.stopFidget();
-		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_1);
-		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_2);
-		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_3);
-		//gAgentAvatarp->stopMotion(ANIM_AGENT_STAND_4);
 		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
 	}
 	else
@@ -575,4 +550,50 @@ void BDFloaterAnimations::onCreate()
 void BDFloaterAnimations::onRemove()
 {
 	mMotionScroll->deleteSelectedItems();
+}
+
+void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLJoint* joint = gAgentAvatarp->getJoint(mTargetName);
+	if (joint)
+	{
+		F32 val = ctrl->getValue().asReal();
+		LLVector3 vec3 = joint->getRotation().packToVector3();
+		LLQuaternion quat;
+
+		if (param.asString() == "x")
+		{
+			vec3.mV[VX] = val;
+		}
+		else if (param.asString() == "y")
+		{
+			vec3.mV[VY] = val;
+		}
+		else
+		{
+			vec3.mV[VZ] = val;
+		}
+
+		quat.unpackFromVector3(vec3);
+		joint->setRotation(quat);
+
+		mJointsScroll->getFirstSelected()->getColumn(0)->getValue();
+		LLScrollListCell* column_1 = mJointsScroll->getFirstSelected()->getColumn(1);
+		LLScrollListCell* column_2 = mJointsScroll->getFirstSelected()->getColumn(2);
+		LLScrollListCell* column_3 = mJointsScroll->getFirstSelected()->getColumn(3);
+		column_1->setValue(vec3.mV[VX]);
+		column_2->setValue(vec3.mV[VZ]);
+		column_3->setValue(vec3.mV[VY]);
+	}
+}
+
+void BDFloaterAnimations::onBonesClick()
+{
+	mTargetName = mJointsScroll->getFirstSelected()->getColumn(0)->getValue();
+	getChild<LLSliderCtrl>("Rotation_X")->setEnabled(true);
+	getChild<LLSliderCtrl>("Rotation_X")->setValue(mJointsScroll->getFirstSelected()->getColumn(1)->getValue());
+	getChild<LLSliderCtrl>("Rotation_Y")->setEnabled(true);
+	getChild<LLSliderCtrl>("Rotation_Y")->setValue(mJointsScroll->getFirstSelected()->getColumn(2)->getValue());
+	getChild<LLSliderCtrl>("Rotation_Z")->setEnabled(true);
+	getChild<LLSliderCtrl>("Rotation_Z")->setValue(mJointsScroll->getFirstSelected()->getColumn(3)->getValue());
 }

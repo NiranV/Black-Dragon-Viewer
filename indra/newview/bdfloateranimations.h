@@ -42,12 +42,16 @@ private:
 
 	void onRefresh();
 
-	void onRefreshPoseControls();
-
 	void onSave();
 	void onLoad();
 	void onRemove();
 	void onCreate();
+
+	//BD - Posing
+	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
+	void onRefreshPoseControls();
+	void onBoneRefresh();
+	void onBonesClick();
 
 	void onPoseSave();
 	void onPoseLoad();
@@ -60,14 +64,17 @@ private:
 
 	LLScrollListCtrl*				mAvatarScroll;
 	LLScrollListCtrl*				mMotionScroll;
-	LLScrollListCtrl*				mPoseScroll;
-	LLScrollListCtrl*				mJointsScroll;
 
 	S32								mSelectedAmount;
 
 	uuid_vec_t						mIDs;
 	std::vector<LLAnimPauseRequest>	mAvatarPauseHandles;
 	std::vector<LLCharacter*>		mSelectedCharacters;
+
+	//BD - Posing
+	//LLScrollListCtrl*				mPoseScroll;
+	LLScrollListCtrl*				mJointsScroll;
+	std::string						mTargetName;
 };
 
 #endif
