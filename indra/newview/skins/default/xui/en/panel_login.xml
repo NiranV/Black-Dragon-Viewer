@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.7.2 - Decaying Dragon]"
+       label="[CHANNEL] [VERSION] - [2.7.3 - Decaying Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="4530"
+       height="4790"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,65 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="326"
+              height="246"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Inworld Poser feature to Animation Control floater.
+- Stops all default standing animations.
+- Plays a custom animation that tells the Viewer to apply your specified bone rotations.
+- Allows rotating every available, important non-bento (coming in next version) bone freely via the UI.
+- Comes with default buttons to quickly reset a bone back to the default position.
+- Debugs are permanent, so is the pose, the Pose will save over sessions and needs to be manually resetted for now.
+- This feature is completely local.
+- Future updates include, exporting, multi-pose and blending between them (animations) and possibly more.
+Added: A whole lot of debugs for the Poser.
+Added: Ability for Animation Control floater to access Vector3 controls properly.
+Added: Logging to find out about future 3D mice we might want to add.
+Changed: Removed iteration through avatars when the only one the feature is going to affect is ourselves.
+Changed: Decreased the visible surface amount needed for the Machinima Sidebar to start rendering. e.g doesn't vanish in the last bit.
+Changed: Version to 2.7.3.
+Fixed: Mislabeled code comment.
+Fixed: A whole lot of warnings in "Picks" floater.
+Fixed: Joystick always resetting to Xbox360 Controls.
+Fixed: A whole bunch of warnings in "Places" floater.
+Fixed: Compile. Missing bdposingmotion.h/cpp in CMakeLists.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.7.2
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="326"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
