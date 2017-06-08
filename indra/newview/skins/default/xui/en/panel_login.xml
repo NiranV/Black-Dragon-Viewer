@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.7.4 - Decaying Dragon]"
+       label="[CHANNEL] [VERSION] - [2.7.5 - Decaying Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,8 +163,57 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="64"
+              height="142"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Changed: Disabled torso rotation on head tracking.
+Changed: Inworld Poser to Version 3.0
+- Inworld Poser can now save/load and delete poses. (XML)
+- Inworld Poser will now blend from one pose to another.
+- Inworld Poser will now blend between rotation changes.
+- Changed rotations to euler angles instead of converted vector3
+- Fixed body inflating with certain rotation thresholds.
+- Fixed rotations strength scaling weird near -1/1.
+- Changed slider min/max values to 3.142 (PI).
+- Cleaned up and reorganized a bit of code.
+Changed: Version to 2.7.5.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.7.4
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="64"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
