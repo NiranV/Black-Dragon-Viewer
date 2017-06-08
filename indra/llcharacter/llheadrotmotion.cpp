@@ -180,7 +180,7 @@ BOOL LLHeadRotMotion::onUpdate(F32 time, U8* joint_mask)
 	LLQuaternion	currentInvRootRotWorld = ~currentRootRotWorld;
 
 	F32 head_slerp_amt = LLSmoothInterpolation::getInterpolant(HEAD_LOOKAT_LAG_HALF_LIFE);
-	F32 torso_slerp_amt = LLSmoothInterpolation::getInterpolant(TORSO_LOOKAT_LAG_HALF_LIFE);
+	//F32 torso_slerp_amt = LLSmoothInterpolation::getInterpolant(TORSO_LOOKAT_LAG_HALF_LIFE);
 
 	LLVector3* targetPos = (LLVector3*)mCharacter->getAnimationData("LookAtPoint");
 
@@ -235,8 +235,8 @@ BOOL LLHeadRotMotion::onUpdate(F32 time, U8* joint_mask)
 	// set final torso rotation
 	// Set torso target rotation such that it lags behind the head rotation
 	// by a fixed amount.
-	LLQuaternion torso_rot_local = nlerp(TORSO_LAG, LLQuaternion::DEFAULT, head_rot_local );
-	mTorsoState->setRotation( nlerp(torso_slerp_amt, mTorsoState->getRotation(), torso_rot_local) );
+	//LLQuaternion torso_rot_local = nlerp(TORSO_LAG, LLQuaternion::DEFAULT, head_rot_local );
+	//mTorsoState->setRotation( nlerp(torso_slerp_amt, mTorsoState->getRotation(), torso_rot_local) );
 
 	head_rot_local = nlerp(head_slerp_amt, mLastHeadRot, head_rot_local);
 	mLastHeadRot = head_rot_local;
