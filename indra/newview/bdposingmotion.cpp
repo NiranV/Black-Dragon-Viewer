@@ -88,6 +88,7 @@ LLMotion::LLMotionInitStatus BDPosingMotion::onInitialize(LLCharacter *character
 		{
 			mJointState[i]->setJoint(mTargetJoint);
 			mJointState[i]->setUsage(LLJointState::ROT);
+			//mJointState[i]->getJoint()->setTargetRotation(mTargetJoint->getRotation());
 			//mJointState->setRotation(LLQuaternion::DEFAULT);
 			addJointState(mJointState[i]);
 		}
@@ -105,6 +106,18 @@ LLMotion::LLMotionInitStatus BDPosingMotion::onInitialize(LLCharacter *character
 //-----------------------------------------------------------------------------
 BOOL BDPosingMotion::onActivate()
 {
+	S32 i = 0;
+	for (;; i++)
+	{
+		if (mJointState[i].notNull())
+		{
+			mJointState[i]->getJoint()->setTargetRotation(mJointState[i]->getJoint()->getRotation());
+		}
+		else
+		{
+			break;
+		}
+	}
 	return TRUE;
 }
 
@@ -113,18 +126,23 @@ BOOL BDPosingMotion::onActivate()
 //-----------------------------------------------------------------------------
 BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 {
-	LLQuaternion vec2quat;
+	LLQuaternion target_quat;
+	LLQuaternion joint_quat;
 	S32 i = 0;
 	for (;;i++)
 	{
 		if (mJointState[i].notNull())
 		{
-			vec2quat = mJointState[i]->getJoint()->getRotation();
-			if (mJointState[i]->getRotation() != vec2quat)
-			{
-				mJointState[i]->setRotation(vec2quat);
-			}
+			target_quat = mJointState[i]->getJoint()->getTargetRotation();
+			joint_quat = mJointState[i]->getJoint()->getRotation();
 
+			if (target_quat != joint_quat)
+			{
+				//BD - Interpolate on pose load.
+				joint_quat = slerp(0.1f, joint_quat, target_quat);
+				llassert(joint_quat.isFinite());
+				mJointState[i]->setRotation(joint_quat);
+			}
 		}
 		else
 		{

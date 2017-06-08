@@ -51,11 +51,13 @@ private:
 	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
 	void onRefreshPoseControls();
 	void onBoneRefresh();
-	void onBonesClick();
+	void onPosesRefresh();
 
-	void onPoseSave();
-	void onPoseLoad();
+	BOOL onPoseSave();
+	BOOL onPoseLoad();
 	void onPoseCopy();
+	void onPoseStart();
+	void onPoseDelete();
 
 	void resetToDefault(LLUICtrl* ctrl);
 
@@ -72,7 +74,7 @@ private:
 	std::vector<LLCharacter*>		mSelectedCharacters;
 
 	//BD - Posing
-	//LLScrollListCtrl*				mPoseScroll;
+	LLScrollListCtrl*				mPoseScroll;
 	LLScrollListCtrl*				mJointsScroll;
 	std::string						mTargetName;
 };

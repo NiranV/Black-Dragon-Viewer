@@ -128,6 +128,9 @@ public:
 
 	S32				mJointNum;
 
+	//BD
+	LLQuaternion	mTargetRotation;
+
 	// child joints
 	typedef std::list<LLJoint*> child_list_t;
 	child_list_t mChildren;
@@ -233,6 +236,10 @@ public:
 	// get/set local rotation
 	const LLQuaternion& getRotation();
 	void setRotation( const LLQuaternion& rot );
+
+	//BD
+	void setTargetRotation(const LLQuaternion& rot) { mTargetRotation = rot; }
+	LLQuaternion getTargetRotation() const { return mTargetRotation; }
 
 	// get/set world rotation
 	LLQuaternion getWorldRotation();

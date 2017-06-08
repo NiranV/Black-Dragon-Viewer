@@ -27,6 +27,8 @@
 #include "llviewerobject.h"
 #include "llvoavatar.h"
 #include "llvoavatarself.h"
+#include "llsdserialize.h"
+#include "lldiriterator.h"
 
 // viewer includes
 #include "llfloaterpreference.h"
@@ -55,12 +57,14 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	//BD - Create a new motion via a given UUID.
 	mCommitCallbackRegistrar.add("Anim.Create", boost::bind(&BDFloaterAnimations::onCreate, this));
 
-	//BD - WIP
+	//BD - Save our current pose into a XML file to import it later or use it for creating an animation.
 	mCommitCallbackRegistrar.add("Pose.Save", boost::bind(&BDFloaterAnimations::onPoseSave, this));
-	//BD - Load the current pose and export all its values into the UI so we can alter them.
-	mCommitCallbackRegistrar.add("Pose.Copy", boost::bind(&BDFloaterAnimations::onPoseSave, this));
 	//BD - Start our custom pose.
+	mCommitCallbackRegistrar.add("Pose.Start", boost::bind(&BDFloaterAnimations::onPoseStart, this));
+	//BD - Load the current pose and export all its values into the UI so we can alter them.
 	mCommitCallbackRegistrar.add("Pose.Load", boost::bind(&BDFloaterAnimations::onPoseLoad, this));
+	//BD - Delete the currently selected Pose.
+	mCommitCallbackRegistrar.add("Pose.Delete", boost::bind(&BDFloaterAnimations::onPoseDelete, this));
 
 //	//BD - Array Debugs
 	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
@@ -83,9 +87,10 @@ BOOL BDFloaterAnimations::postBuild()
 	mMotionScroll = getChild<LLScrollListCtrl>("motions_scroll");
 
 	//BD - Posing
-	//mPoseScroll = getChild<LLScrollListCtrl>("poses_scroll");
+	mPoseScroll = getChild<LLScrollListCtrl>("poses_scroll");
 	mJointsScroll = this->getChild<LLScrollListCtrl>("joints_scroll", true);
-	mJointsScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onBonesClick, this));
+	mJointsScroll->setCommitOnSelectionChange(TRUE);
+	mJointsScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onRefreshPoseControls, this));
 	return TRUE;
 }
 
@@ -106,14 +111,14 @@ void BDFloaterAnimations::draw()
 void BDFloaterAnimations::resetToDefault(LLUICtrl* ctrl)
 {
 	ctrl->getControlVariable()->resetToDefault(true);
-	onRefreshPoseControls();
+	onBoneRefresh();
 }
 
 void BDFloaterAnimations::onOpen(const LLSD& key)
 {
 	onRefresh();
-	onRefreshPoseControls();
 	onBoneRefresh();
+	onPosesRefresh();
 }
 
 void BDFloaterAnimations::onClose(bool app_quitting)
@@ -228,17 +233,6 @@ void BDFloaterAnimations::onRefresh()
 			row["columns"][3]["value"] = str;
 			mAvatarScroll->addElement(row);
 		}
-	}
-}
-
-void BDFloaterAnimations::onRefreshPoseControls()
-{
-	LLJoint* joint = gAgentAvatarp->getJoint(mTargetName);
-	if (!mTargetName.empty())
-	{
-		getChild<LLSliderCtrl>("Rotation_X")->setValue(joint->getRotation().packToVector3().mV[VX]);
-		getChild<LLSliderCtrl>("Rotation_Y")->setValue(joint->getRotation().packToVector3().mV[VY]);
-		getChild<LLSliderCtrl>("Rotation_Z")->setValue(joint->getRotation().packToVector3().mV[VZ]);
 	}
 }
 
@@ -421,116 +415,6 @@ void BDFloaterAnimations::onLoad()
 	//}
 }
 
-void BDFloaterAnimations::onBoneRefresh()
-{
-	mJointsScroll->clearRows();
-	S32 i = 0;
-	for (;;i++)
-	{
-		LLJoint* joint = gAgentAvatarp->getCharacterJoint(i);
-		if (joint)
-		{
-			LLVector3 vec3;
-			if (!joint->getRotation().isFinite())
-			{
-				vec3.zeroVec();
-				LL_INFOS() << "Not finite, defaulting to: " << vec3 << LL_ENDL;
-			}
-			else
-			{
-				vec3 = joint->getRotation().packToVector3();
-				LL_INFOS() << "Finite, take: " << vec3 << LL_ENDL;
-			}
-			LLSD row;
-			row["columns"][0]["column"] = "joint";
-			row["columns"][0]["value"] = joint->getName();
-			row["columns"][1]["column"] = "x";
-			row["columns"][1]["value"] = vec3.mV[VX];
-			row["columns"][2]["column"] = "y";
-			row["columns"][2]["value"] = vec3.mV[VY];
-			row["columns"][3]["column"] = "z";
-			row["columns"][3]["value"] = vec3.mV[VZ];
-			mJointsScroll->addElement(row);
-		}
-		else
-		{
-			break;
-		}
-	}
-}
-
-void BDFloaterAnimations::onPoseSave()
-{
-	mJointsScroll->selectAll();
-	LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-	if (motion)
-	{
-		LLPose* pose = motion->getPose();
-		while (true)
-		{
-			LLJointState* joint_state = pose->getNextJointState();
-			if (joint_state == NULL)
-			{
-				break;
-			}
-
-			LLJoint* joint = joint_state->getJoint();
-			std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
-			for (std::vector<LLScrollListItem*>::iterator item = items.begin();
-				item != items.end(); ++item)
-			{
-				if ((*item)->getColumn(0)->getValue().asString() == joint->getName())
-				{
-					LLScrollListCell* cell = (*item)->getColumn(1);
-					cell->setValue(joint->getRotation().packToVector3().getValue());
-				}
-			}
-		}
-	}
-	mJointsScroll->deselectAllItems();
-	onBoneRefresh();
-}
-
-void BDFloaterAnimations::onPoseCopy()
-{
-	LLMotionController::motion_list_t motions = gAgentAvatarp->getMotionController().getActiveMotions();
-	for (LLMotionController::motion_list_t::iterator it = motions.begin();
-		it != motions.end(); ++it)
-	{
-		LLMotion* motion = *it;
-		if (motion)
-		{
-			LLPose* pose = motion->getPose();
-			while (pose->getNextJointState() != NULL)
-			{
-				//BD - WIP.
-			}
-		}
-	}
-}
-
-void BDFloaterAnimations::onPoseLoad()
-{
-	LLMotion* pose_motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-	if (!pose_motion)
-	{
-		gAgent.setPosing();
-		gAgent.stopFidget();
-		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
-	}
-	else if (pose_motion->isStopped())
-	{
-		gAgent.setPosing();
-		gAgent.stopFidget();
-		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
-	}
-	else
-	{
-		gAgent.clearPosing();
-		gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
-	}
-}
-
 void BDFloaterAnimations::onCreate()
 {
 	LLUUID motion_id = getChild<LLUICtrl>("motion_uuid")->getValue().asUUID();
@@ -552,48 +436,239 @@ void BDFloaterAnimations::onRemove()
 	mMotionScroll->deleteSelectedItems();
 }
 
+void BDFloaterAnimations::onBoneRefresh()
+{
+	mJointsScroll->clearRows();
+	S32 i = 0;
+	for (;;i++)
+	{
+		LLJoint* joint = gAgentAvatarp->getCharacterJoint(i);
+		if (joint)
+		{
+			LLVector3 vec3;
+			joint->getRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
+			LLSD row;
+			row["columns"][0]["column"] = "joint";
+			row["columns"][0]["value"] = joint->getName();
+			row["columns"][1]["column"] = "x";
+			row["columns"][1]["value"] = vec3.mV[VX];
+			row["columns"][2]["column"] = "y";
+			row["columns"][2]["value"] = vec3.mV[VY];
+			row["columns"][3]["column"] = "z";
+			row["columns"][3]["value"] = vec3.mV[VZ];
+			mJointsScroll->addElement(row);
+		}
+		else
+		{
+			break;
+		}
+	}
+	onRefreshPoseControls();
+}
+
+void BDFloaterAnimations::onPosesRefresh()
+{
+	mPoseScroll->clearRows();
+	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses", "");
+
+	LLDirIterator dir_iter(dir, "*.xml");
+	bool found = true;
+	while (found)
+	{
+		std::string file;
+		found = dir_iter.next(file);
+
+		if (found)
+		{
+			std::string path = gDirUtilp->add(dir, file);
+			std::string name = LLURI::unescape(gDirUtilp->getBaseFileName(path, true));
+			LL_INFOS() << "  Found preset '" << name << "'" << LL_ENDL;
+
+			LLSD row;
+			row["columns"][0]["column"] = "name";
+			row["columns"][0]["value"] = name;
+			mPoseScroll->addElement(row);
+		}
+	}
+}
+
+void BDFloaterAnimations::onRefreshPoseControls()
+{
+	LLScrollListItem* item = mJointsScroll->getFirstSelected();
+	if (item)
+	{
+		mTargetName = item->getColumn(0)->getValue();
+		getChild<LLSliderCtrl>("Rotation_X")->setValue(item->getColumn(1)->getValue());
+		getChild<LLSliderCtrl>("Rotation_Y")->setValue(item->getColumn(2)->getValue());
+		getChild<LLSliderCtrl>("Rotation_Z")->setValue(item->getColumn(3)->getValue());
+	}
+	else
+	{
+		mTargetName.clear();
+	}
+
+	getChild<LLSliderCtrl>("Rotation_X")->setEnabled(!mTargetName.empty());
+	getChild<LLSliderCtrl>("Rotation_Y")->setEnabled(!mTargetName.empty());
+	getChild<LLSliderCtrl>("Rotation_Z")->setEnabled(!mTargetName.empty());
+}
+
+BOOL BDFloaterAnimations::onPoseSave()
+{
+	std::string filename = getChild<LLUICtrl>("pose_name")->getValue().asString();
+	if (filename.empty())
+	{
+		return false;
+	}
+
+	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses", filename + ".xml");
+
+	llofstream file;
+	file.open(pathname.c_str());
+
+	mJointsScroll->selectAll();
+	std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
+	for (std::vector<LLScrollListItem*>::iterator item = items.begin();
+		item != items.end(); ++item)
+	{
+		LLSD record;
+		record["bone"] = (*item)->getColumn(0)->getValue().asString();
+		LLVector3 vec3;
+		vec3.mV[VX] = (*item)->getColumn(1)->getValue().asReal();
+		vec3.mV[VY] = (*item)->getColumn(2)->getValue().asReal();
+		vec3.mV[VZ] = (*item)->getColumn(3)->getValue().asReal();
+		record["rotation"] = vec3.getValue();
+
+		LLSDSerialize::toXML(record, file);
+	}
+
+	file.close();
+	mJointsScroll->deselectAllItems();
+	onPosesRefresh();
+	return true;
+}
+
+void BDFloaterAnimations::onPoseCopy()
+{
+	LLMotionController::motion_list_t motions = gAgentAvatarp->getMotionController().getActiveMotions();
+	for (LLMotionController::motion_list_t::iterator it = motions.begin();
+		it != motions.end(); ++it)
+	{
+		LLMotion* motion = *it;
+		if (motion)
+		{
+			LLPose* pose = motion->getPose();
+			while (pose->getNextJointState() != NULL)
+			{
+				//BD - WIP.
+			}
+		}
+	}
+}
+
+BOOL BDFloaterAnimations::onPoseLoad()
+{
+	LLScrollListItem* item = mPoseScroll->getFirstSelected();
+	if (item)
+	{
+		std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses", item->getColumn(0)->getValue().asString() + ".xml");
+		LLSD pose;
+		llifstream infile;
+
+		infile.open(filename);
+		if (!infile.is_open())
+		{
+			LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
+			return FALSE;
+		}
+
+		while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(pose, infile))
+		{
+			LLJoint* joint = gAgentAvatarp->getJoint(pose["bone"].asString());
+			if (joint)
+			{
+				LLVector3 vec3;
+				LLQuaternion quat;
+
+				vec3.setValue(pose["rotation"]);
+				quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
+				joint->setTargetRotation(quat);
+			}
+		}
+		infile.close();
+		onBoneRefresh();
+	}
+	return TRUE;
+}
+
+void BDFloaterAnimations::onPoseStart()
+{
+	LLMotion* pose_motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	if (!pose_motion)
+	{
+		gAgent.setPosing();
+		gAgent.stopFidget();
+		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
+	}
+	else if (pose_motion->isStopped())
+	{
+		gAgent.setPosing();
+		gAgent.stopFidget();
+		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
+	}
+	else
+	{
+		gAgent.clearPosing();
+		gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
+	}
+}
+
+void BDFloaterAnimations::onPoseDelete()
+{
+	LLScrollListItem* item = mPoseScroll->getFirstSelected();
+	if (item)
+	{
+		std::string filename = item->getColumn(0)->getValue().asString();
+		std::string dirname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses");
+		
+		if (gDirUtilp->deleteFilesInDir(dirname, LLURI::escape(filename) + ".xml") < 1)
+		{
+			LL_WARNS("Posing") << "Cannot remove file: " << filename << LL_ENDL;
+		}
+	}
+	onPosesRefresh();
+}
+
 void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 {
 	LLJoint* joint = gAgentAvatarp->getJoint(mTargetName);
 	if (joint)
 	{
 		F32 val = ctrl->getValue().asReal();
-		LLVector3 vec3 = joint->getRotation().packToVector3();
+		LLVector3 vec3;
 		LLQuaternion quat;
+		LLScrollListCell* column_1 = mJointsScroll->getFirstSelected()->getColumn(1);
+		LLScrollListCell* column_2 = mJointsScroll->getFirstSelected()->getColumn(2);
+		LLScrollListCell* column_3 = mJointsScroll->getFirstSelected()->getColumn(3);
 
+		vec3.mV[VX] = column_1->getValue().asReal();
+		vec3.mV[VY] = column_2->getValue().asReal();
+		vec3.mV[VZ] = column_3->getValue().asReal();
 		if (param.asString() == "x")
 		{
 			vec3.mV[VX] = val;
+			column_1->setValue(vec3.mV[VX]);
 		}
 		else if (param.asString() == "y")
 		{
 			vec3.mV[VY] = val;
+			column_2->setValue(vec3.mV[VY]);
 		}
 		else
 		{
 			vec3.mV[VZ] = val;
+			column_3->setValue(vec3.mV[VZ]);
 		}
-
-		quat.unpackFromVector3(vec3);
-		joint->setRotation(quat);
-
-		mJointsScroll->getFirstSelected()->getColumn(0)->getValue();
-		LLScrollListCell* column_1 = mJointsScroll->getFirstSelected()->getColumn(1);
-		LLScrollListCell* column_2 = mJointsScroll->getFirstSelected()->getColumn(2);
-		LLScrollListCell* column_3 = mJointsScroll->getFirstSelected()->getColumn(3);
-		column_1->setValue(vec3.mV[VX]);
-		column_2->setValue(vec3.mV[VZ]);
-		column_3->setValue(vec3.mV[VY]);
+		quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
+		joint->setTargetRotation(quat);
 	}
-}
-
-void BDFloaterAnimations::onBonesClick()
-{
-	mTargetName = mJointsScroll->getFirstSelected()->getColumn(0)->getValue();
-	getChild<LLSliderCtrl>("Rotation_X")->setEnabled(true);
-	getChild<LLSliderCtrl>("Rotation_X")->setValue(mJointsScroll->getFirstSelected()->getColumn(1)->getValue());
-	getChild<LLSliderCtrl>("Rotation_Y")->setEnabled(true);
-	getChild<LLSliderCtrl>("Rotation_Y")->setValue(mJointsScroll->getFirstSelected()->getColumn(2)->getValue());
-	getChild<LLSliderCtrl>("Rotation_Z")->setEnabled(true);
-	getChild<LLSliderCtrl>("Rotation_Z")->setValue(mJointsScroll->getFirstSelected()->getColumn(3)->getValue());
 }
