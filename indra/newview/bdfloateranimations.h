@@ -48,14 +48,19 @@ private:
 	void onCreate();
 
 	//BD - Posing
-	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
+	void onRefreshJointControls();
 	void onRefreshPoseControls();
 	void onBoneRefresh();
 	void onPosesRefresh();
 
-	BOOL onPoseSave();
+	void onJointSet(LLUICtrl* ctrl, const LLSD& param);
+	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
+
+	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
+
+	void onClickPoseSave();
+	BOOL onPoseSave(S32 type, F32 time, bool editing);
 	BOOL onPoseLoad();
-	void onPoseCopy();
 	void onPoseStart();
 	void onPoseDelete();
 

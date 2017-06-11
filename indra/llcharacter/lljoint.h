@@ -130,6 +130,7 @@ public:
 
 	//BD
 	LLQuaternion	mTargetRotation;
+	LLVector3		mTargetPosition;
 
 	// child joints
 	typedef std::list<LLJoint*> child_list_t;
@@ -233,13 +234,16 @@ public:
 	LLVector3 getLastWorldPosition();
 	void setWorldPosition( const LLVector3& pos );
 
+	//BD
+	void setTargetPosition(const LLVector3& pos) { mTargetPosition = pos; }
+	LLVector3 getTargetPosition() const { return mTargetPosition; }
+
+	void setTargetRotation(const LLQuaternion& rot) { mTargetRotation = rot; }
+	LLQuaternion getTargetRotation() const { return mTargetRotation; }
+
 	// get/set local rotation
 	const LLQuaternion& getRotation();
 	void setRotation( const LLQuaternion& rot );
-
-	//BD
-	void setTargetRotation(const LLQuaternion& rot) { mTargetRotation = rot; }
-	LLQuaternion getTargetRotation() const { return mTargetRotation; }
 
 	// get/set world rotation
 	LLQuaternion getWorldRotation();

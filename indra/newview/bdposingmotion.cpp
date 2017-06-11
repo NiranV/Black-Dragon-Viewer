@@ -40,13 +40,6 @@
 #include "llviewercontrol.h"
 
 //-----------------------------------------------------------------------------
-// Constants
-//-----------------------------------------------------------------------------
-
-S32 BDPosingMotion::sHandPose = LLHandMotion::HAND_POSE_RELAXED_R;
-S32 BDPosingMotion::sHandPosePriority = 3;
-
-//-----------------------------------------------------------------------------
 // BDPosingMotion()
 // Class Constructor
 //-----------------------------------------------------------------------------
@@ -56,6 +49,9 @@ LLMotion(id),
 	mTargetJoint(NULL)
 {
 	mName = "custom_pose";
+	//BD - Use slight linear interpolation by default.
+	mInterpolationTime = 0.15f;
+	mInterpolationType = 1;
 
 	for (S32 i = 0; i <= 132; i++)
 	{
@@ -87,9 +83,15 @@ LLMotion::LLMotionInitStatus BDPosingMotion::onInitialize(LLCharacter *character
 		if (mTargetJoint)
 		{
 			mJointState[i]->setJoint(mTargetJoint);
-			mJointState[i]->setUsage(LLJointState::ROT);
-			//mJointState[i]->getJoint()->setTargetRotation(mTargetJoint->getRotation());
-			//mJointState->setRotation(LLQuaternion::DEFAULT);
+			//BD - Special case for pelvi as we're going to rotate and reposition it.
+			if (mTargetJoint->getName() == "mPelvis")
+			{
+				mJointState[i]->setUsage(LLJointState::POS | LLJointState::ROT);
+			}
+			else
+			{
+				mJointState[i]->setUsage(LLJointState::ROT);
+			}
 			addJointState(mJointState[i]);
 		}
 		else
@@ -112,6 +114,10 @@ BOOL BDPosingMotion::onActivate()
 		if (mJointState[i].notNull())
 		{
 			mJointState[i]->getJoint()->setTargetRotation(mJointState[i]->getJoint()->getRotation());
+			if (mJointState[i]->getJoint()->getName() == "mPelvis")
+			{
+				mJointState[i]->getJoint()->setTargetPosition(mJointState[i]->getJoint()->getPosition());
+			}
 		}
 		else
 		{
@@ -128,6 +134,8 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 {
 	LLQuaternion target_quat;
 	LLQuaternion joint_quat;
+	LLVector3 joint_pos;
+	LLVector3 target_pos;
 	S32 i = 0;
 	for (;;i++)
 	{
@@ -138,10 +146,44 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 
 			if (target_quat != joint_quat)
 			{
-				//BD - Interpolate on pose load.
-				joint_quat = slerp(0.1f, joint_quat, target_quat);
+				if (mInterpolationType == 2)
+				{
+					//BD - Do spherical linear interpolation.
+					joint_quat = slerp(mInterpolationTime, joint_quat, target_quat);
+				}
+				else if (mInterpolationType == 1)
+				{
+					//BD - Do linear interpolation.
+					joint_quat = lerp(mInterpolationTime, joint_quat, target_quat);
+				}
+				else
+				{
+					//BD - Don't do any interpolation.
+					joint_quat = target_quat;
+				}
 				llassert(joint_quat.isFinite());
 				mJointState[i]->setRotation(joint_quat);
+			}
+
+			if (mJointState[i]->getJoint()->getName() == "mPelvis")
+			{
+				target_pos = mJointState[i]->getJoint()->getTargetPosition();
+				joint_pos = mJointState[i]->getJoint()->getPosition();
+				if (target_pos != joint_pos)
+				{
+					if (mInterpolationType == 0)
+					{
+						//BD - Don't do any interpolation.
+						joint_pos = target_pos;
+					}
+					else
+					{
+						//BD - Do linear interpolation.
+						joint_pos = lerp(joint_pos, target_pos, mInterpolationTime);
+					}
+					llassert(joint_pos.isFinite());
+					mJointState[i]->setPosition(joint_pos);
+				}
 			}
 		}
 		else

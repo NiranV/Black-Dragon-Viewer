@@ -29,6 +29,7 @@
 #include "llvoavatarself.h"
 #include "llsdserialize.h"
 #include "lldiriterator.h"
+#include "bdposingmotion.h"
 
 // viewer includes
 #include "llfloaterpreference.h"
@@ -58,7 +59,7 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	mCommitCallbackRegistrar.add("Anim.Create", boost::bind(&BDFloaterAnimations::onCreate, this));
 
 	//BD - Save our current pose into a XML file to import it later or use it for creating an animation.
-	mCommitCallbackRegistrar.add("Pose.Save", boost::bind(&BDFloaterAnimations::onPoseSave, this));
+	mCommitCallbackRegistrar.add("Pose.Save", boost::bind(&BDFloaterAnimations::onClickPoseSave, this));
 	//BD - Start our custom pose.
 	mCommitCallbackRegistrar.add("Pose.Start", boost::bind(&BDFloaterAnimations::onPoseStart, this));
 	//BD - Load the current pose and export all its values into the UI so we can alter them.
@@ -70,6 +71,9 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, _1, _2));
+
+	mCommitCallbackRegistrar.add("Joint.Set", boost::bind(&BDFloaterAnimations::onJointSet, this, _1, _2));
+	mCommitCallbackRegistrar.add("Joint.PosSet", boost::bind(&BDFloaterAnimations::onJointPosSet, this, _1, _2));
 
 	mCommitCallbackRegistrar.add("Pose.Set", boost::bind(&BDFloaterAnimations::onPoseSet, this, _1, _2));
 
@@ -87,10 +91,13 @@ BOOL BDFloaterAnimations::postBuild()
 	mMotionScroll = getChild<LLScrollListCtrl>("motions_scroll");
 
 	//BD - Posing
-	mPoseScroll = getChild<LLScrollListCtrl>("poses_scroll");
+	mPoseScroll = this->getChild<LLScrollListCtrl>("poses_scroll", true);
+	mPoseScroll->setCommitOnSelectionChange(TRUE);
+	mPoseScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onRefreshPoseControls, this));
+	mPoseScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onPoseLoad, this));
 	mJointsScroll = this->getChild<LLScrollListCtrl>("joints_scroll", true);
 	mJointsScroll->setCommitOnSelectionChange(TRUE);
-	mJointsScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onRefreshPoseControls, this));
+	mJointsScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onRefreshJointControls, this));
 	return TRUE;
 }
 
@@ -448,14 +455,27 @@ void BDFloaterAnimations::onBoneRefresh()
 			LLVector3 vec3;
 			joint->getRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
 			LLSD row;
+			std::string format = llformat("%%.%df", 3);
 			row["columns"][0]["column"] = "joint";
 			row["columns"][0]["value"] = joint->getName();
 			row["columns"][1]["column"] = "x";
-			row["columns"][1]["value"] = vec3.mV[VX];
+			row["columns"][1]["value"] = llformat(format.c_str(), vec3.mV[VX]);
 			row["columns"][2]["column"] = "y";
-			row["columns"][2]["value"] = vec3.mV[VY];
+			row["columns"][2]["value"] = llformat(format.c_str(), vec3.mV[VY]);
 			row["columns"][3]["column"] = "z";
-			row["columns"][3]["value"] = vec3.mV[VZ];
+			row["columns"][3]["value"] = llformat(format.c_str(), vec3.mV[VZ]);
+
+			//BD - Special case for mPelvis as it has position information too.
+			if (joint->getName() == "mPelvis")
+			{
+				vec3 = joint->getPosition();
+				row["columns"][4]["column"] = "pos_x";
+				row["columns"][4]["value"] = llformat(format.c_str(), vec3.mV[VX]);
+				row["columns"][5]["column"] = "pos_y";
+				row["columns"][5]["value"] = llformat(format.c_str(), vec3.mV[VY]);
+				row["columns"][6]["column"] = "pos_z";
+				row["columns"][6]["value"] = llformat(format.c_str(), vec3.mV[VZ]);
+			}
 			mJointsScroll->addElement(row);
 		}
 		else
@@ -463,7 +483,7 @@ void BDFloaterAnimations::onBoneRefresh()
 			break;
 		}
 	}
-	onRefreshPoseControls();
+	onRefreshJointControls();
 }
 
 void BDFloaterAnimations::onPosesRefresh()
@@ -482,87 +502,167 @@ void BDFloaterAnimations::onPosesRefresh()
 		{
 			std::string path = gDirUtilp->add(dir, file);
 			std::string name = LLURI::unescape(gDirUtilp->getBaseFileName(path, true));
-			LL_INFOS() << "  Found preset '" << name << "'" << LL_ENDL;
+			//LL_INFOS() << "  Found preset '" << name << "'" << LL_ENDL;
 
 			LLSD row;
 			row["columns"][0]["column"] = "name";
 			row["columns"][0]["value"] = name;
+
+			llifstream infile;
+			infile.open(path);
+			if (!infile.is_open())
+			{
+				LL_WARNS("Posing") << "Skipping: Cannot read file in: " << path << LL_ENDL;
+				continue;
+			}
+
+			LLSD data;
+			if (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(data, infile))
+			{
+				row["columns"][1]["column"] = "time";
+				row["columns"][1]["value"] = data["time"];
+				row["columns"][2]["column"] = "type";
+				row["columns"][2]["value"] = data["type"];
+			}
+			infile.close();
 			mPoseScroll->addElement(row);
 		}
 	}
+	onRefreshJointControls();
 }
 
 void BDFloaterAnimations::onRefreshPoseControls()
 {
-	LLScrollListItem* item = mJointsScroll->getFirstSelected();
+	LLScrollListItem* item = mPoseScroll->getFirstSelected();
 	if (item)
 	{
-		mTargetName = item->getColumn(0)->getValue();
-		getChild<LLSliderCtrl>("Rotation_X")->setValue(item->getColumn(1)->getValue());
-		getChild<LLSliderCtrl>("Rotation_Y")->setValue(item->getColumn(2)->getValue());
-		getChild<LLSliderCtrl>("Rotation_Z")->setValue(item->getColumn(3)->getValue());
+		getChild<LLUICtrl>("interp_time")->setValue(item->getColumn(1)->getValue());
+		getChild<LLUICtrl>("interp_type")->setValue(item->getColumn(2)->getValue());
+		getChild<LLUICtrl>("interp_time")->setEnabled(true);
+		getChild<LLUICtrl>("interp_type")->setEnabled(true);
 	}
 	else
 	{
-		mTargetName.clear();
+		getChild<LLUICtrl>("interp_time")->setEnabled(false);
+		getChild<LLUICtrl>("interp_type")->setEnabled(false);
 	}
-
-	getChild<LLSliderCtrl>("Rotation_X")->setEnabled(!mTargetName.empty());
-	getChild<LLSliderCtrl>("Rotation_Y")->setEnabled(!mTargetName.empty());
-	getChild<LLSliderCtrl>("Rotation_Z")->setEnabled(!mTargetName.empty());
 }
 
-BOOL BDFloaterAnimations::onPoseSave()
+void BDFloaterAnimations::onClickPoseSave()
 {
-	std::string filename = getChild<LLUICtrl>("pose_name")->getValue().asString();
-	if (filename.empty())
-	{
-		return false;
-	}
-
-	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses", filename + ".xml");
-
-	llofstream file;
-	file.open(pathname.c_str());
-
-	mJointsScroll->selectAll();
-	std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
-	for (std::vector<LLScrollListItem*>::iterator item = items.begin();
-		item != items.end(); ++item)
-	{
-		LLSD record;
-		record["bone"] = (*item)->getColumn(0)->getValue().asString();
-		LLVector3 vec3;
-		vec3.mV[VX] = (*item)->getColumn(1)->getValue().asReal();
-		vec3.mV[VY] = (*item)->getColumn(2)->getValue().asReal();
-		vec3.mV[VZ] = (*item)->getColumn(3)->getValue().asReal();
-		record["rotation"] = vec3.getValue();
-
-		LLSDSerialize::toXML(record, file);
-	}
-
-	file.close();
-	mJointsScroll->deselectAllItems();
-	onPosesRefresh();
-	return true;
+	//BD - Values don't matter when not editing.
+	onPoseSave(2, 0.1f, false);
 }
 
-void BDFloaterAnimations::onPoseCopy()
+BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 {
-	LLMotionController::motion_list_t motions = gAgentAvatarp->getMotionController().getActiveMotions();
-	for (LLMotionController::motion_list_t::iterator it = motions.begin();
-		it != motions.end(); ++it)
+	std::string filename;
+	if (editing)
 	{
-		LLMotion* motion = *it;
-		if (motion)
+		LLScrollListItem* item = mPoseScroll->getFirstSelected();
+		if (item)
 		{
-			LLPose* pose = motion->getPose();
-			while (pose->getNextJointState() != NULL)
-			{
-				//BD - WIP.
-			}
+			filename = item->getColumn(0)->getValue();
 		}
 	}
+	else
+	{
+		filename = getChild<LLUICtrl>("pose_name")->getValue().asString();
+	}
+
+	if (filename.empty())
+	{
+		return FALSE;
+	}
+
+	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses");
+	if (!gDirUtilp->fileExists(pathname))
+	{
+		LL_WARNS("Posing") << "Couldn't find folder: " << pathname << " - creating one." << LL_ENDL;
+		LLFile::mkdir(pathname);
+	}
+
+	std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses", filename + ".xml");
+
+	llofstream file;
+	LLSD record;
+	LLSD copy_record;
+	if (editing)
+	{
+		llifstream infile;
+
+		infile.open(full_path);
+		if (!infile.is_open())
+		{
+			LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
+			return FALSE;
+		}
+
+		S32 line = 0;
+		while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(copy_record, infile))
+		{
+			if (0 == line)
+			{
+				record[line]["time"] = time;
+				record[line]["type"] = type;
+			}
+			else
+			{
+				record[line]["bone"] = copy_record["bone"];
+				record[line]["rotation"] = copy_record["rotation"];
+				if (copy_record["bone"] == "mPelvis")
+				{
+					record[line]["position"] = copy_record["position"];
+				}
+			}
+			LLSDSerialize::toXML(record[line], file);
+			line++;
+		}
+
+		infile.close();
+	}
+	else
+	{
+		file.open(full_path.c_str());
+
+		S32 line = 0;
+		//BD - Write the header first.
+		record[line]["time"] = llclamp(getChild<LLUICtrl>("interpolation_time")->getValue().asReal(), 0.001, 1.0);
+		record[line]["type"] = getChild<LLUICtrl>("interpolation_type")->getValue();
+		LLSDSerialize::toXML(record[line], file);
+		line++;
+
+		//BD - Now write the rest.
+		mJointsScroll->selectAll();
+		std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
+		for (std::vector<LLScrollListItem*>::iterator item = items.begin();
+			item != items.end(); ++item)
+		{
+			LLVector3 vec3;
+
+			record[line]["bone"] = (*item)->getColumn(0)->getValue().asString();
+			vec3.mV[VX] = (*item)->getColumn(1)->getValue().asReal();
+			vec3.mV[VY] = (*item)->getColumn(2)->getValue().asReal();
+			vec3.mV[VZ] = (*item)->getColumn(3)->getValue().asReal();
+			record[line]["rotation"] = vec3.getValue();
+
+			//BD - Pelvis is a special case, add position values too.
+			if ((*item)->getColumn(0)->getValue().asString() == "mPelvis")
+			{
+				vec3.mV[VX] = (*item)->getColumn(4)->getValue().asReal();
+				vec3.mV[VY] = (*item)->getColumn(5)->getValue().asReal();
+				vec3.mV[VZ] = (*item)->getColumn(6)->getValue().asReal();
+				record[line]["position"] = vec3.getValue();
+			}
+			LLSDSerialize::toXML(record[line], file);
+			line++;
+		}
+
+		mJointsScroll->deselectAllItems();
+	}
+	file.close();
+	onPosesRefresh();
+	return TRUE;
 }
 
 BOOL BDFloaterAnimations::onPoseLoad()
@@ -581,8 +681,28 @@ BOOL BDFloaterAnimations::onPoseLoad()
 			return FALSE;
 		}
 
-		while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(pose, infile))
+		while (!infile.eof())
 		{
+			S32 count = LLSDSerialize::fromXML(pose, infile);
+			if (count == LLSDParser::PARSE_FAILURE)
+			{
+				break;
+			}
+
+			LL_INFOS("Posing") << "Reading line: " << count << LL_ENDL;
+			if (count == 3)
+			{
+				LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+				if (motion)
+				{
+					F32 time = pose["time"].asReal();
+					S32 type = pose["type"].asInteger();
+					//LL_INFOS("Posing") << "Reading header line to determine interpolation time (" << time << ") and type (" << type << ")" << LL_ENDL;
+					motion->setInterpolationType(type);
+					motion->setInterpolationTime(time);
+				}
+			}
+
 			LLJoint* joint = gAgentAvatarp->getJoint(pose["bone"].asString());
 			if (joint)
 			{
@@ -592,6 +712,12 @@ BOOL BDFloaterAnimations::onPoseLoad()
 				vec3.setValue(pose["rotation"]);
 				quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
 				joint->setTargetRotation(quat);
+
+				if (joint->getName() == "mPelvis")
+				{
+					vec3.setValue(pose["position"]);
+					joint->setTargetPosition(vec3);
+				}
 			}
 		}
 		infile.close();
@@ -602,6 +728,8 @@ BOOL BDFloaterAnimations::onPoseLoad()
 
 void BDFloaterAnimations::onPoseStart()
 {
+	//BD - Should we wipe the joint list? Would be most logical to do
+	//     everything else just confuses the user.
 	LLMotion* pose_motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
 	if (!pose_motion)
 	{
@@ -640,6 +768,63 @@ void BDFloaterAnimations::onPoseDelete()
 
 void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 {
+	//BD - Next? Figure out why this is not working.
+	LLScrollListItem* item = mPoseScroll->getFirstSelected();
+	if (item)
+	{
+		S32 type;
+		F32 time;
+		if (param.asString() == "time")
+		{
+			LLScrollListCell* column = item->getColumn(1);
+			time = getChild<LLUICtrl>("interp_time")->getValue().asReal();
+			type = column->getValue().asInteger();
+			column->setValue(time);
+		}
+		else // if (param.asString() == "type")
+		{
+			LLScrollListCell* column = item->getColumn(2);
+			time = column->getValue().asReal();
+			type = getChild<LLUICtrl>("interp_type")->getValue().asInteger();
+			column->setValue(type);
+		}
+		onPoseSave(true, type, time);
+	}
+}
+
+void BDFloaterAnimations::onRefreshJointControls()
+{
+	bool is_pelvis = false;
+	LLScrollListItem* item = mJointsScroll->getFirstSelected();
+	if (item)
+	{
+		mTargetName = item->getColumn(0)->getValue();
+		getChild<LLSliderCtrl>("Rotation_X")->setValue(item->getColumn(1)->getValue());
+		getChild<LLSliderCtrl>("Rotation_Y")->setValue(item->getColumn(2)->getValue());
+		getChild<LLSliderCtrl>("Rotation_Z")->setValue(item->getColumn(3)->getValue());
+		if (mTargetName == "mPelvis")
+		{
+			is_pelvis = true;
+			getChild<LLSliderCtrl>("Position_X")->setValue(item->getColumn(4)->getValue());
+			getChild<LLSliderCtrl>("Position_Y")->setValue(item->getColumn(5)->getValue());
+			getChild<LLSliderCtrl>("Position_Z")->setValue(item->getColumn(6)->getValue());
+		}
+	}
+	else
+	{
+		mTargetName.clear();
+	}
+
+	getChild<LLSliderCtrl>("Rotation_X")->setEnabled(!mTargetName.empty());
+	getChild<LLSliderCtrl>("Rotation_Y")->setEnabled(!mTargetName.empty());
+	getChild<LLSliderCtrl>("Rotation_Z")->setEnabled(!mTargetName.empty());
+	getChild<LLSliderCtrl>("Position_X")->setEnabled(is_pelvis);
+	getChild<LLSliderCtrl>("Position_Y")->setEnabled(is_pelvis);
+	getChild<LLSliderCtrl>("Position_Z")->setEnabled(is_pelvis);
+}
+
+void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
+{
 	LLJoint* joint = gAgentAvatarp->getJoint(mTargetName);
 	if (joint)
 	{
@@ -653,22 +838,76 @@ void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 		vec3.mV[VX] = column_1->getValue().asReal();
 		vec3.mV[VY] = column_2->getValue().asReal();
 		vec3.mV[VZ] = column_3->getValue().asReal();
+
+		//BD - Really?
+		std::string format = llformat("%%.%df", 3);
 		if (param.asString() == "x")
 		{
 			vec3.mV[VX] = val;
-			column_1->setValue(vec3.mV[VX]);
+			column_1->setValue(llformat(format.c_str(), vec3.mV[VX]));
 		}
 		else if (param.asString() == "y")
 		{
 			vec3.mV[VY] = val;
-			column_2->setValue(vec3.mV[VY]);
+			column_2->setValue(llformat(format.c_str(), vec3.mV[VZ]));
 		}
 		else
 		{
 			vec3.mV[VZ] = val;
-			column_3->setValue(vec3.mV[VZ]);
+			column_3->setValue(llformat(format.c_str(), vec3.mV[VZ]));
 		}
+
+		//BD - While editing rotations, make sure we use a bit of linear interpolation to make movements smoother.
+		LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+		if (motion)
+		{
+			//BD - If we don't use our default, set it once.
+			if (motion->getInterpolationTime() != 0.15
+				|| motion->getInterpolationType() != 1)
+			{
+				motion->setInterpolationTime(0.15f);
+				motion->setInterpolationType(1);
+			}
+		}
+		llassert(!vec3.isFinite());
 		quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
 		joint->setTargetRotation(quat);
+	}
+}
+
+void BDFloaterAnimations::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLJoint* joint = gAgentAvatarp->getJoint(mTargetName);
+	if (joint && joint->getName() == "mPelvis")
+	{
+		F32 val = ctrl->getValue().asReal();
+		LLVector3 vec3;
+		LLScrollListCell* column_4 = mJointsScroll->getFirstSelected()->getColumn(4);
+		LLScrollListCell* column_5 = mJointsScroll->getFirstSelected()->getColumn(5);
+		LLScrollListCell* column_6 = mJointsScroll->getFirstSelected()->getColumn(6);
+
+		vec3.mV[VX] = column_4->getValue().asReal();
+		vec3.mV[VY] = column_5->getValue().asReal();
+		vec3.mV[VZ] = column_6->getValue().asReal();
+
+		//BD - Really?
+		std::string format = llformat("%%.%df", 3);
+		if (param.asString() == "x")
+		{
+			vec3.mV[VX] = val;
+			column_4->setValue(llformat(format.c_str(), vec3.mV[VX]));
+		}
+		else if (param.asString() == "y")
+		{
+			vec3.mV[VY] = val;
+			column_5->setValue(llformat(format.c_str(), vec3.mV[VY]));
+		}
+		else
+		{
+			vec3.mV[VZ] = val;
+			column_6->setValue(llformat(format.c_str(), vec3.mV[VZ]));
+		}
+		llassert(!vec3.isFinite());
+		joint->setTargetPosition(vec3);
 	}
 }

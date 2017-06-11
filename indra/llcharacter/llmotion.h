@@ -159,7 +159,11 @@ public:
 	void	setDeactivateCallback( void (*cb)(void *), void* userdata );
 
 	//BD
-	void addJointState(const LLPointer<LLJointState>& jointState);
+	F32 getInterpolationTime() const					{ return mInterpolationTime; }
+	virtual void setInterpolationTime(F32 time)			{ mInterpolationTime = time; }
+
+	F32 getInterpolationType() const					{ return mInterpolationType; }
+	virtual void setInterpolationType(S32 type)			{ mInterpolationType = type; }
 
 protected:
 	// called when a motion is activated
@@ -168,7 +172,7 @@ protected:
 	virtual BOOL onActivate() = 0;
 
 	//BD
-	//void addJointState(const LLPointer<LLJointState>& jointState);
+	void addJointState(const LLPointer<LLJointState>& jointState);
 
 protected:
 	LLPose		mPose;
@@ -181,6 +185,10 @@ protected:
 	//-------------------------------------------------------------------------
 	std::string		mName;			// instance name assigned by motion controller
 	LLUUID			mID;
+
+	//BD
+	F32					mInterpolationTime;
+	S32					mInterpolationType;
 	
 	F32 mActivationTimestamp;	// time when motion was activated
 	F32 mStopTimestamp;			// time when motion was told to stop

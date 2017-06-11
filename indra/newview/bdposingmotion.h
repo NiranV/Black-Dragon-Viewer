@@ -116,13 +116,6 @@ public:
 	// Joints
 	//-------------------------------------------------------------------------
 	LLJoint*			mTargetJoint;
-
-	//-------------------------------------------------------------------------
-	// Hands
-	//-------------------------------------------------------------------------
-	static S32			sHandPose;
-	static S32			sHandPosePriority;
-	LLVector3			mLastSelectPt;
 };
 
 #endif // LL_LLKEYFRAMEMOTION_H

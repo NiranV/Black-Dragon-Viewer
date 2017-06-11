@@ -390,81 +390,18 @@ width="494">
 	width="480"
 	top_pad="3"
 	left="0"/>-->
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label=""
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="save_bone"
- width="82"
- top_pad="1"
- left_delta="2"/>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Start Posing"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="activate"
- width="82"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="Pose.Start"/>
- </button>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label=""
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="load_bones"
- width="61"
- top_delta="0"
- left_pad="1"/>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label=""
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="load_bones"
- width="82"
- top_delta="0"
- left_pad="1"/>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label=""
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="default"
- width="82"
- top_delta="0"
- left_pad="1"/>
-	<button
- height="21"
- follows="top|left"
- layout="topleft"
- label=""
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="default"
- width="82"
- top_delta="0"
- left_pad="1"/>
+	<icon
+	follows="top|left"
+	height="348"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top="0"
+	left="0"/>
 	<scroll_list
  column_padding="2"
  draw_heading="true"
@@ -475,49 +412,109 @@ width="494">
  width="480"
  multi_select="true"
  name="joints_scroll"
- top_pad="1">
+ top_delta="0">
     <scroll_list.columns
      label="Bone Name"
      name="joint"
    relative_width="0.32"  />
     <scroll_list.columns
-     label="X"
+     label="Rot X"
      name="x"
-   relative_width="0.23"  />
+   relative_width="0.11"  />
 	<scroll_list.columns
-     label="Y"
+     label="Rot Y"
      name="y"
-   relative_width="0.23"  />
+   relative_width="0.11"  />
 	<scroll_list.columns
-     label="Z"
+     label="Rot Z"
      name="z"
-   relative_width="0.23"  />
-    <!--<scroll_list.columns
-     label="Position"
-     name="pos"
-   relative_width="0.33"  />-->
+   relative_width="0.11"  />
+	<scroll_list.columns
+     label="Pos X"
+     name="pos_x"
+   relative_width="0.11"  />
+	<scroll_list.columns
+     label="Pos Y"
+     name="pos_y"
+   relative_width="0.11"  />
+	<scroll_list.columns
+     label="Pos Z"
+     name="pos_z"
+   relative_width="0.11"  />
 </scroll_list>
-	
-	<scroll_container
- color="Transparent"
- follows="all"
+	<button
+ height="21"
+ follows="top|left"
  layout="topleft"
- mouse_opaque="false"
- left="2"
- name="gfx_scroll"
- opaque="true"
- height="398"
- width="476"
- top_pad="0">
-  <panel
-  layout="topleft"
-  follows="left|top|right"
-  height="190"
-  name="gfx_scroll_panel"
-  top="0"
-  mouse_opaque="false"
-  left="0"
-  width="450">
+ label="Start Posing"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="activate"
+ width="82"
+ top_pad="1"
+ left="2">
+   <button.commit_callback
+   function="Pose.Start"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Save"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="save_poses"
+ width="82"
+ top_delta="0"
+ left_pad="1">
+		<button.commit_callback
+   function="Pose.Save"/>
+ </button>
+ <line_editor
+  commit_on_focus_lost="false"
+  follows="left|top"
+  height="20"
+  label="Enter Pose Name"
+  left_pad="1"
+  top_delta="0"
+  name="pose_name"
+  width="144"/>
+ <line_editor
+  commit_on_focus_lost="false"
+  follows="left|top"
+  height="20"
+  label="0.001 - 1.0"
+  left_pad="1"
+  top_delta="0"
+  name="interpolation_time"
+  width="82"/>
+ <combo_box
+     follows="left|top"
+     height="20"
+     layout="topleft"
+     left_pad="1"
+     top_delta="0"
+     max_chars="135"
+     name="interpolation_type"
+     width="82">
+        <combo_box.item
+         enabled="true"
+         label="None"
+         name="0"
+         value="0" />
+        <combo_box.item
+         enabled="true"
+         label="Linear"
+         name="1"
+         value="1" />
+        <combo_box.item
+         enabled="true"
+         label="Spherical Linear"
+         name="2"
+         value="2" />
+    </combo_box>
 	<panel
  follows="left|top|right"
  height="20"
@@ -527,7 +524,7 @@ width="494">
  mouse_opaque="false"
  left="1"
  name="title"
- top="0"
+ top_pad="2"
  width="478"/>
  
  <text
@@ -538,7 +535,7 @@ width="494">
  height="12"
  width="350"
  top_delta="4">
- Rotation:
+ Modifications:
  </text>
 	<slider
  decimal_digits="3"
@@ -549,16 +546,16 @@ width="494">
  increment="0.001"
  initial_value="0"
  label="Rotation X:"
- label_width="150"
+ label_width="70"
  layout="topleft"
  left="10"
  max_val="3.142"
  min_val="-3.142"
  name="Rotation_X"
  top_pad="10"
- width="319" >
+ width="219" >
 		<slider.commit_callback
-      function="Pose.Set"
+      function="Joint.Set"
       parameter="x"/>
       </slider>
 	<slider
@@ -570,16 +567,16 @@ width="494">
  increment="0.001"
  initial_value="0"
  label="Rotation Y:"
- label_width="150"
+ label_width="70"
  layout="topleft"
  left="10"
  max_val="3.142"
  min_val="-3.142"
  name="Rotation_Y"
  top_pad="1"
- width="319" >
+ width="219" >
 	<slider.commit_callback
-      function="Pose.Set"
+      function="Joint.Set"
       parameter="y"/>
       </slider>
 	<slider
@@ -591,21 +588,83 @@ width="494">
  increment="0.001"
  initial_value="0"
  label="Rotation Z:"
- label_width="150"
+ label_width="70"
  layout="topleft"
  left="10"
  max_val="3.142"
  min_val="-3.142"
  name="Rotation_Z"
  top_pad="1"
- width="319" >
+ width="219" >
 		<slider.commit_callback
-      function="Pose.Set"
+      function="Joint.Set"
+      parameter="z"/>
+      </slider>
+	
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ enabled="true"
+ increment="0.001"
+ initial_value="0"
+ label="Position X:"
+ label_width="70"
+ layout="topleft"
+ left_pad="20"
+ max_val="5"
+ min_val="-5"
+ name="Position_X"
+ top_delta="-30"
+ width="219" >
+		<slider.commit_callback
+      function="Joint.PosSet"
+      parameter="x"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ enabled="true"
+ increment="0.001"
+ initial_value="0"
+ label="Position Y:"
+ label_width="70"
+ layout="topleft"
+ left_delta="0"
+ max_val="5"
+ min_val="-5"
+ name="Position_Y"
+ top_pad="1"
+ width="219" >
+	<slider.commit_callback
+      function="Joint.PosSet"
+      parameter="y"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ enabled="true"
+ increment="0.001"
+ initial_value="0"
+ label="Position Z:"
+ label_width="70"
+ layout="topleft"
+ left_delta="0"
+ max_val="5"
+ min_val="-5"
+ name="Position_Z"
+ top_pad="1"
+ width="219" >
+		<slider.commit_callback
+      function="Joint.PosSet"
       parameter="z"/>
       </slider>
 
-</panel>
-		</scroll_container>
 	</panel>
 	</panel>
 	
@@ -676,27 +735,17 @@ width="494">
  top_delta="0">
     <scroll_list.columns
      label="Pose Name"
-     name="name"/>
-    <!--<scroll_list.columns
-     label="Position"
-     name="pos"
-   relative_width="0.33"  />-->
+     name="name"
+	 relative_width="0.5"/>
+    <scroll_list.columns
+     label="Blend Time"
+     name="time"
+   relative_width="0.25"  />
+	<scroll_list.columns
+     label="Blend Type"
+     name="type"
+   relative_width="0.25"  />
 </scroll_list>
-	<button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Save"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="save_poses"
- width="82"
- top_pad="1"
- left_delta="2">
-		<button.commit_callback
-   function="Pose.Save"/>
- </button>
  <button
  height="21"
  follows="top|left"
@@ -707,8 +756,8 @@ width="494">
 	 image_unselected="Toolbar_Middle_Off"
  name="load_poses"
  width="82"
- top_delta="0"
- left_pad="1">
+ top_pad="1"
+ left_delta="2">
    <button.commit_callback
    function="Pose.Load"/>
  </button>
@@ -728,38 +777,48 @@ width="494">
    function="Pose.Delete"/>
  </button>
  <line_editor
-  commit_on_focus_lost="false"
+  commit_on_focus_lost="true"
   follows="left|top"
   height="20"
-  label=""
+  enabled="false"
+  label="0.001 - 1.0"
   left_pad="1"
   top_delta="0"
-  name="pose_name"
-  width="61"/>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label=""
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="default"
- width="82"
- top_delta="0"
- left_pad="1"/>
-	<button
- height="21"
- follows="top|left"
- layout="topleft"
- label=""
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="default"
- width="82"
- top_delta="0"
- left_pad="1"/>
+  name="interp_time"
+  width="82">
+	<line_editor.commit_callback
+   function="Pose.Set"
+   parameter="time"/>
+ </line_editor>
+ <combo_box
+     follows="left|top"
+     height="20"
+	 enabled="false"
+     layout="topleft"
+     left_pad="1"
+     top_delta="0"
+     max_chars="135"
+     name="interp_type"
+     width="82">
+        <combo_box.item
+         enabled="true"
+         label="None"
+         name="0"
+         value="0" />
+        <combo_box.item
+         enabled="true"
+         label="Linear"
+         name="1"
+         value="1" />
+        <combo_box.item
+         enabled="true"
+         label="Spherical Linear"
+         name="2"
+         value="2" />
+		<combo_box.commit_callback
+		function="Pose.Set"
+		parameter="type"/>
+    </combo_box>
 	</panel>
 	</panel>
 	</tab_container>
