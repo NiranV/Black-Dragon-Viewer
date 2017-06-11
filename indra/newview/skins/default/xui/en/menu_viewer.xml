@@ -3983,7 +3983,7 @@
 			<menu_item_check
              label="Lock Depth of Field Focus"
              layout="topleft"
-	     shortcut="shift|X"
+	     shortcut="shift|alt|X"
              name="CameraDoFLocked">
         	<menu_item_check.on_check
                  function="CheckControl"
