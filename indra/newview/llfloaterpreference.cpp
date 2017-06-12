@@ -123,6 +123,7 @@
 #include "llpresetsmanager.h"
 #include "llfeaturemanager.h"
 #include "llviewertexturelist.h"
+#include "bdsidebar.h"
 
 //BD - Avatar Rendering Settings
 #include "llfloateravatarpicker.h"
@@ -1138,6 +1139,27 @@ BOOL LLFloaterPreference::postBuild()
 	mBindModeList3->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onList3Click, this));
 	mBindModeList4->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onList4Click, this));
 
+//	//BD - Warning System
+	mWarning0 = getChild<LLUICtrl>("warning_ui_size");
+	mWarning1 = getChild<LLUICtrl>("warning_font_dpi");
+	mWarning2 = getChild<LLUICtrl>("warning_texture_memory");
+	mWarning3 = getChild<LLUICtrl>("warning_object_lod");
+	mWarning4 = getChild<LLUICtrl>("warning_draw_distance");
+	mWarning5 = getChild<LLUICtrl>("warning_avatars_visible");
+	mWarning6 = getChild<LLUICtrl>("warning_derender_m2");
+	mWarning7 = getChild<LLUICtrl>("warning_derender_ar");
+	mWarning8 = getChild<LLUICtrl>("warning_derender_surface");
+	mWarning9 = getChild<LLUICtrl>("warning_reflection_quality");
+	mWarning10 = getChild<LLUICtrl>("warning_sky_quality");
+	mWarning11 = getChild<LLUICtrl>("warning_shadow_resolution");
+	mWarning12 = getChild<LLUICtrl>("warning_projector_resolution");
+	mWarning13 = getChild<LLUICtrl>("warning_blur_quality");
+	mWarning14 = getChild<LLUICtrl>("warning_light_resolution");
+
+	mSystemMemory = getChild<LLSliderCtrl>("SystemMemory");
+	mSceneMemory = getChild<LLSliderCtrl>("SceneMemory");
+	mProgressBar = getChild<LLProgressBar>("progress_bar");
+
 	// if floater is opened before login set default localized do not disturb message
 	if (LLStartUp::getStartupState() < STATE_STARTED)
 	{
@@ -1555,126 +1577,151 @@ void LLFloaterPreference::inputOutput()
 //BD - Refresh all controls
 void LLFloaterPreference::refreshGraphicControls()
 {
-	getChild<LLUICtrl>("RenderGlowLumWeights_X")->setValue(gSavedSettings.getVector3("RenderGlowLumWeights").mV[VX]);
-	getChild<LLUICtrl>("RenderGlowLumWeights_Y")->setValue(gSavedSettings.getVector3("RenderGlowLumWeights").mV[VY]);
-	getChild<LLUICtrl>("RenderGlowLumWeights_Z")->setValue(gSavedSettings.getVector3("RenderGlowLumWeights").mV[VZ]);
-	getChild<LLUICtrl>("RenderGlowWarmthWeights_X")->setValue(gSavedSettings.getVector3("RenderGlowWarmthWeights").mV[VX]);
-	getChild<LLUICtrl>("RenderGlowWarmthWeights_Y")->setValue(gSavedSettings.getVector3("RenderGlowWarmthWeights").mV[VY]);
-	getChild<LLUICtrl>("RenderGlowWarmthWeights_Z")->setValue(gSavedSettings.getVector3("RenderGlowWarmthWeights").mV[VZ]);
+	LLVector3 vec3 = gSavedSettings.getVector3("RenderGlowLumWeights");
+	getChild<LLUICtrl>("RenderGlowLumWeights_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("RenderGlowLumWeights_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("RenderGlowLumWeights_Z")->setValue(vec3.mV[VZ]);
+	vec3 = gSavedSettings.getVector3("RenderGlowLumWeights");
+	getChild<LLUICtrl>("RenderGlowWarmthWeights_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("RenderGlowWarmthWeights_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("RenderGlowWarmthWeights_Z")->setValue(vec3.mV[VZ]);
 
-	getChild<LLUICtrl>("RenderShadowResolution_X")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VX]);
-	getChild<LLUICtrl>("RenderShadowResolution_Y")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VY]);
-	getChild<LLUICtrl>("RenderShadowResolution_Z")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VZ]);
-	getChild<LLUICtrl>("RenderShadowResolution_W")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VW]);
+	LLVector4 vec4 = gSavedSettings.getVector4("RenderShadowResolution");
+	getChild<LLUICtrl>("RenderShadowResolution_X")->setValue(vec4.mV[VX]);
+	getChild<LLUICtrl>("RenderShadowResolution_Y")->setValue(vec4.mV[VY]);
+	getChild<LLUICtrl>("RenderShadowResolution_Z")->setValue(vec4.mV[VZ]);
+	getChild<LLUICtrl>("RenderShadowResolution_W")->setValue(vec4.mV[VW]);
 
-	getChild<LLUICtrl>("RenderProjectorShadowResolution_X")->setValue(gSavedSettings.getVector2("RenderProjectorShadowResolution").mV[VX]);
-	getChild<LLUICtrl>("RenderProjectorShadowResolution_Y")->setValue(gSavedSettings.getVector2("RenderProjectorShadowResolution").mV[VY]);
+	LLVector2 vec2 = gSavedSettings.getVector2("RenderProjectorShadowResolution");
+	getChild<LLUICtrl>("RenderProjectorShadowResolution_X")->setValue(vec2.mV[VX]);
+	getChild<LLUICtrl>("RenderProjectorShadowResolution_Y")->setValue(vec2.mV[VY]);
 
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_X")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptA").mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Y")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptA").mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Z")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptA").mV[VZ]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_X")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptB").mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Y")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptB").mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Z")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptB").mV[VZ]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptC_X")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptC").mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptC_Y")->setValue(gSavedSettings.getVector3("ExodusRenderToneAdvOptC").mV[VY]);
+	vec3 = gSavedSettings.getVector3("ExodusRenderToneAdvOptA");
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Z")->setValue(vec3.mV[VZ]);
+	vec3 = gSavedSettings.getVector3("ExodusRenderToneAdvOptB");
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Z")->setValue(vec3.mV[VZ]);
+	vec3 = gSavedSettings.getVector3("ExodusRenderToneAdvOptC");
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptC_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderToneAdvOptC_Y")->setValue(vec3.mV[VY]);
 
-	getChild<LLUICtrl>("ExodusRenderGamma_X")->setValue(gSavedSettings.getVector3("ExodusRenderGamma").mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderGamma_Y")->setValue(gSavedSettings.getVector3("ExodusRenderGamma").mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderGamma_Z")->setValue(gSavedSettings.getVector3("ExodusRenderGamma").mV[VZ]);
-	getChild<LLUICtrl>("ExodusRenderExposure_X")->setValue(gSavedSettings.getVector3("ExodusRenderExposure").mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderExposure_Y")->setValue(gSavedSettings.getVector3("ExodusRenderExposure").mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderExposure_Z")->setValue(gSavedSettings.getVector3("ExodusRenderExposure").mV[VZ]);
-	getChild<LLUICtrl>("ExodusRenderOffset_X")->setValue(gSavedSettings.getVector3("ExodusRenderOffset").mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderOffset_Y")->setValue(gSavedSettings.getVector3("ExodusRenderOffset").mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderOffset_Z")->setValue(gSavedSettings.getVector3("ExodusRenderOffset").mV[VZ]);
-	getChild<LLUICtrl>("ExodusRenderVignette_X")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderVignette_Y")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderVignette_Z")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VZ]);
+	vec3 = gSavedSettings.getVector3("ExodusRenderGamma");
+	getChild<LLUICtrl>("ExodusRenderGamma_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderGamma_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderGamma_Z")->setValue(vec3.mV[VZ]);
+	vec3 = gSavedSettings.getVector3("ExodusRenderExposure");
+	getChild<LLUICtrl>("ExodusRenderExposure_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderExposure_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderExposure_Z")->setValue(vec3.mV[VZ]);
+	vec3 = gSavedSettings.getVector3("ExodusRenderOffset");
+	getChild<LLUICtrl>("ExodusRenderOffset_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderOffset_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderOffset_Z")->setValue(vec3.mV[VZ]);
+	vec3 = gSavedSettings.getVector3("ExodusRenderVignette");
+	getChild<LLUICtrl>("ExodusRenderVignette_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("ExodusRenderVignette_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("ExodusRenderVignette_Z")->setValue(vec3.mV[VZ]);
+
+	//BD - Anything that triggers this should also refresh the sidebar.
+	if (LLStartUp::getStartupState() == STATE_STARTED)
+	{
+		gSideBar->refreshGraphicControls();
+	}
 }
 
 void LLFloaterPreference::refreshCameraControls()
 {
-	getChild<LLUICtrl>("FocusOffsetFrontView_X")->setValue(gSavedSettings.getVector3d("FocusOffsetFrontView").mdV[VX]);
-	getChild<LLUICtrl>("FocusOffsetFrontView_Y")->setValue(gSavedSettings.getVector3d("FocusOffsetFrontView").mdV[VY]);
-	getChild<LLUICtrl>("FocusOffsetFrontView_Z")->setValue(gSavedSettings.getVector3d("FocusOffsetFrontView").mdV[VZ]);
-	getChild<LLUICtrl>("FocusOffsetGroupView_X")->setValue(gSavedSettings.getVector3d("FocusOffsetGroupView").mdV[VX]);
-	getChild<LLUICtrl>("FocusOffsetGroupView_Y")->setValue(gSavedSettings.getVector3d("FocusOffsetGroupView").mdV[VY]);
-	getChild<LLUICtrl>("FocusOffsetGroupView_Z")->setValue(gSavedSettings.getVector3d("FocusOffsetGroupView").mdV[VZ]);
-	getChild<LLUICtrl>("FocusOffsetRearView_X")->setValue(gSavedSettings.getVector3d("FocusOffsetRearView").mdV[VX]);
-	getChild<LLUICtrl>("FocusOffsetRearView_Y")->setValue(gSavedSettings.getVector3d("FocusOffsetRearView").mdV[VY]);
-	getChild<LLUICtrl>("FocusOffsetRearView_Z")->setValue(gSavedSettings.getVector3d("FocusOffsetRearView").mdV[VZ]);
-	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_X")->setValue(gSavedSettings.getVector3d("FocusOffsetLeftShoulderView").mdV[VX]);
-	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_Y")->setValue(gSavedSettings.getVector3d("FocusOffsetLeftShoulderView").mdV[VY]);
-	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_Z")->setValue(gSavedSettings.getVector3d("FocusOffsetLeftShoulderView").mdV[VZ]);
-	getChild<LLUICtrl>("FocusOffsetRightShoulderView_X")->setValue(gSavedSettings.getVector3d("FocusOffsetRightShoulderView").mdV[VX]);
-	getChild<LLUICtrl>("FocusOffsetRightShoulderView_Y")->setValue(gSavedSettings.getVector3d("FocusOffsetRightShoulderView").mdV[VY]);
-	getChild<LLUICtrl>("FocusOffsetRightShoulderView_Z")->setValue(gSavedSettings.getVector3d("FocusOffsetRightShoulderView").mdV[VZ]);
+	LLVector3d vec3d = gSavedSettings.getVector3d("FocusOffsetFrontView");
+	getChild<LLUICtrl>("FocusOffsetFrontView_X")->setValue(vec3d.mdV[VX]);
+	getChild<LLUICtrl>("FocusOffsetFrontView_Y")->setValue(vec3d.mdV[VY]);
+	getChild<LLUICtrl>("FocusOffsetFrontView_Z")->setValue(vec3d.mdV[VZ]);
+	vec3d = gSavedSettings.getVector3d("FocusOffsetGroupView");
+	getChild<LLUICtrl>("FocusOffsetGroupView_X")->setValue(vec3d.mdV[VX]);
+	getChild<LLUICtrl>("FocusOffsetGroupView_Y")->setValue(vec3d.mdV[VY]);
+	getChild<LLUICtrl>("FocusOffsetGroupView_Z")->setValue(vec3d.mdV[VZ]);
+	vec3d = gSavedSettings.getVector3d("FocusOffsetRearView");
+	getChild<LLUICtrl>("FocusOffsetRearView_X")->setValue(vec3d.mdV[VX]);
+	getChild<LLUICtrl>("FocusOffsetRearView_Y")->setValue(vec3d.mdV[VY]);
+	getChild<LLUICtrl>("FocusOffsetRearView_Z")->setValue(vec3d.mdV[VZ]);
+	vec3d = gSavedSettings.getVector3d("FocusOffsetLeftShoulderView");
+	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_X")->setValue(vec3d.mdV[VX]);
+	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_Y")->setValue(vec3d.mdV[VY]);
+	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_Z")->setValue(vec3d.mdV[VZ]);
+	vec3d = gSavedSettings.getVector3d("FocusOffsetRightShoulderView");
+	getChild<LLUICtrl>("FocusOffsetRightShoulderView_X")->setValue(vec3d.mdV[VX]);
+	getChild<LLUICtrl>("FocusOffsetRightShoulderView_Y")->setValue(vec3d.mdV[VY]);
+	getChild<LLUICtrl>("FocusOffsetRightShoulderView_Z")->setValue(vec3d.mdV[VZ]);
 
-	getChild<LLUICtrl>("CameraOffsetFrontView_X")->setValue(gSavedSettings.getVector3("CameraOffsetFrontView").mV[VX]);
-	getChild<LLUICtrl>("CameraOffsetFrontView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetFrontView").mV[VY]);
-	getChild<LLUICtrl>("CameraOffsetFrontView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetFrontView").mV[VZ]);
-	getChild<LLUICtrl>("CameraOffsetGroupView_X")->setValue(gSavedSettings.getVector3("CameraOffsetGroupView").mV[VX]);
-	getChild<LLUICtrl>("CameraOffsetGroupView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetGroupView").mV[VY]);
-	getChild<LLUICtrl>("CameraOffsetGroupView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetGroupView").mV[VZ]);
-	getChild<LLUICtrl>("CameraOffsetRearView_X")->setValue(gSavedSettings.getVector3("CameraOffsetRearView").mV[VX]);
-	getChild<LLUICtrl>("CameraOffsetRearView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetRearView").mV[VY]);
-	getChild<LLUICtrl>("CameraOffsetRearView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetRearView").mV[VZ]);
-	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_X")->setValue(gSavedSettings.getVector3("CameraOffsetLeftShoulderView").mV[VX]);
-	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetLeftShoulderView").mV[VY]);
-	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetLeftShoulderView").mV[VZ]);
-	getChild<LLUICtrl>("CameraOffsetRightShoulderView_X")->setValue(gSavedSettings.getVector3("CameraOffsetRightShoulderView").mV[VX]);
-	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Y")->setValue(gSavedSettings.getVector3("CameraOffsetRightShoulderView").mV[VY]);
-	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Z")->setValue(gSavedSettings.getVector3("CameraOffsetRightShoulderView").mV[VZ]);
+	LLVector3 vec3 = gSavedSettings.getVector3("CameraOffsetFrontView");
+	getChild<LLUICtrl>("CameraOffsetFrontView_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("CameraOffsetFrontView_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("CameraOffsetFrontView_Z")->setValue(vec3.mV[VZ]);
+	vec3 = gSavedSettings.getVector3("CameraOffsetGroupView");
+	getChild<LLUICtrl>("CameraOffsetGroupView_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("CameraOffsetGroupView_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("CameraOffsetGroupView_Z")->setValue(vec3.mV[VZ]);
+	vec3 = gSavedSettings.getVector3("CameraOffsetRearView");
+	getChild<LLUICtrl>("CameraOffsetRearView_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("CameraOffsetRearView_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("CameraOffsetRearView_Z")->setValue(vec3.mV[VZ]);
+	vec3 = gSavedSettings.getVector3("CameraOffsetLeftShoulderView");
+	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_Z")->setValue(vec3.mV[VZ]);
+	vec3 = gSavedSettings.getVector3("CameraOffsetRightShoulderView");
+	getChild<LLUICtrl>("CameraOffsetRightShoulderView_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Z")->setValue(vec3.mV[VZ]);
 }
 
 //BD - Warning System
 void LLFloaterPreference::refreshWarnings()
 {
 	//BD - Viewer Options
-	getChild<LLUICtrl>("warning_ui_size")->setVisible(gSavedSettings.getF32("UIScaleFactor") != 1.0);
-	getChild<LLUICtrl>("warning_font_dpi")->setVisible(gSavedSettings.getF32("FontScreenDPI") != 96.0);
-	getChild<LLUICtrl>("warning_texture_memory")->setVisible((gSavedSettings.getS32("TextureMemory") 
-														+ gSavedSettings.getS32("SystemMemory")) > 1024);
-	getChild<LLUICtrl>("warning_texture_compression")->setVisible(gSavedSettings.getBOOL("RenderCompressTextures"));
+	mWarning0->setVisible(gSavedSettings.getF32("UIScaleFactor") != 1.0);
+	mWarning1->setVisible(gSavedSettings.getF32("FontScreenDPI") != 96.0);
+	S32 max_vram = gGLManager.mVRAM;
+	S32 tex_mem = gSavedSettings.getS32("TextureMemory");
+	S32 sys_mem = gSavedSettings.getS32("SystemMemory");
+	mWarning2->setVisible((tex_mem < 368) || (sys_mem < 512)
+						|| (tex_mem > 1024) || (sys_mem > 1024)
+						|| (tex_mem + sys_mem) > (max_vram * 0.8));
 
 	//BD - Quality Options
-	getChild<LLUICtrl>("warning_dynamic_lod")->setVisible(!gPipeline.sDynamicLOD);
-	getChild<LLUICtrl>("warning_object_lod")->setVisible(LLVOVolume::sLODFactor > 2.0);
+	mWarning3->setVisible(LLVOVolume::sLODFactor > 2.0);
 
 	//BD - Rendering Options
-	getChild<LLUICtrl>("warning_draw_distance")->setVisible(gPipeline.RenderFarClip > 128);
-	getChild<LLUICtrl>("warning_object_occlusion")->setVisible(gPipeline.RenderDeferred && gPipeline.sUseOcclusion);
-	getChild<LLUICtrl>("warning_avatars_visible")->setVisible(gSavedSettings.getU32("RenderAvatarMaxNonImpostors") > 15);
-	getChild<LLUICtrl>("warning_derender_m2")->setVisible(gSavedSettings.getF32("RenderAutoMuteSurfaceAreaLimit") > 200.f);
-	getChild<LLUICtrl>("warning_derender_ar")->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 120000);
-	getChild<LLUICtrl>("warning_derender_surface")->setVisible(gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit") > 200.f);
+	mWarning4->setVisible(gPipeline.RenderFarClip > 128);
+	mWarning5->setVisible(gSavedSettings.getU32("RenderAvatarMaxNonImpostors") > 15);
+	mWarning6->setVisible(gSavedSettings.getF32("RenderAutoMuteSurfaceAreaLimit") > 200.f);
+	mWarning7->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 120000);
+	mWarning8->setVisible(gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit") > 200.f);
 
 	//BD - Windlight Options
-	getChild<LLUICtrl>("warning_reflection_quality")->setVisible(gSavedSettings.getS32("RenderReflectionRes") > 768);
-	getChild<LLUICtrl>("warning_sky_quality")->setVisible(gSavedSettings.getU32("WLSkyDetail") > 128);
+	mWarning9->setVisible(gSavedSettings.getS32("RenderReflectionRes") > 768);
+	mWarning10->setVisible(gSavedSettings.getU32("WLSkyDetail") > 128);
 
 	//BD - Deferred Rendering Options
-	getChild<LLUICtrl>("warning_fxaa")->setVisible(gPipeline.RenderFSAASamples == 0);
-	getChild<LLUICtrl>("warning_shadow_resolution")->setVisible(gPipeline.RenderShadowResolution.mV[VX] > 2048 
+	mWarning11->setVisible(gPipeline.RenderShadowResolution.mV[VX] > 2048
 															|| gPipeline.RenderShadowResolution.mV[VY] > 2048
-															|| gPipeline.RenderShadowResolution.mV[VZ] > 2048
-															|| gPipeline.RenderShadowResolution.mV[VW] > 2048);
-	getChild<LLUICtrl>("warning_projector_resolution")->setVisible(gPipeline.RenderProjectorShadowResolution.mV[VX] > 2048
+															|| gPipeline.RenderShadowResolution.mV[VZ] > 1024
+															|| gPipeline.RenderShadowResolution.mV[VW] > 512);
+	mWarning12->setVisible(gPipeline.RenderProjectorShadowResolution.mV[VX] > 2048
 																|| gPipeline.RenderProjectorShadowResolution.mV[VY] > 2048);
-	getChild<LLUICtrl>("warning_ssr")->setVisible(gSavedSettings.getBOOL("RenderScreenSpaceReflections"));
 
 	//BD - Motion Blur Options
-	getChild<LLUICtrl>("warning_blur_quality")->setVisible(gSavedSettings.getU32("RenderMotionBlurStrength") < 100);
+	mWarning13->setVisible(gSavedSettings.getU32("RenderMotionBlurStrength") < 100);
 
 	//BD - Volumetric Lighting Options
-	getChild<LLUICtrl>("warning_light_resolution")->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 32);
+	mWarning14->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 32);
 }
 
 //BD - Memory Allocation
 void LLFloaterPreference::refreshMemoryControls()
 {
-	LLProgressBar* mProgressBar = getChild<LLProgressBar>("progress_bar");
 	S32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
 	S32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
 	S32 max_vram = gGLManager.mVRAM;
@@ -1698,8 +1745,8 @@ void LLFloaterPreference::refreshMemoryControls()
 	//BD - Cap out at the highest possible stable value we tested.
 	max_mem = llclamp(max_mem, 128, 1992);
 
-	getChild<LLSliderCtrl>("SystemMemory")->setMaxValue(max_mem);
-	getChild<LLSliderCtrl>("SceneMemory")->setMaxValue(max_mem);
+	mSystemMemory->setMaxValue(max_mem);
+	mSceneMemory->setMaxValue(max_mem);
 
 	mProgressBar->setValue(percent);
 }
@@ -1712,14 +1759,14 @@ void LLFloaterPreference::draw()
 	has_first_selected = (getChildRef<LLScrollListCtrl>("enabled_popups").getFirstSelected()!=NULL);
 	gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
 
-//	//BD - Memory Allocation
-	//     We might want to refresh this every second or so since its only changing every so often.
-	refreshMemoryControls();
-//	//BD - Warning System
-	//     Possibly simplify the warning system, all boolean related warnings can be toggled via XUI and
-	//     then only when necessary, everything else should be priodically refreshed, every second or two
-	//     should be more than enough.
-	refreshWarnings();
+	if (mUpdateTimer.getElapsedTimeF32() > 1.f)
+	{
+		mUpdateTimer.reset();
+//		//BD - Memory Allocation
+		refreshMemoryControls();
+//		//BD - Warning System
+		refreshWarnings();
+	}
 
 //	//BD - Avatar Rendering Settings
 	if (mNeedsUpdate)

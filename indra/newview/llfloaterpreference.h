@@ -49,6 +49,7 @@ class LLSliderCtrl;
 class LLSD;
 class LLTextBox;
 class LLNameListCtrl;
+class LLProgressBar;
 
 typedef std::map<std::string, std::string> notifications_map;
 
@@ -317,6 +318,30 @@ private:
 	LLScrollListCtrl* mBindModeList2;
 	LLScrollListCtrl* mBindModeList3;
 	LLScrollListCtrl* mBindModeList4;
+
+//	//BD - Warning System
+	LLUICtrl* mWarning0;
+	LLUICtrl* mWarning1;
+	LLUICtrl* mWarning2;
+	LLUICtrl* mWarning3;
+	LLUICtrl* mWarning4;
+	LLUICtrl* mWarning5;
+	LLUICtrl* mWarning6;
+	LLUICtrl* mWarning7;
+	LLUICtrl* mWarning8;
+	LLUICtrl* mWarning9;
+	LLUICtrl* mWarning10;
+	LLUICtrl* mWarning11;
+	LLUICtrl* mWarning12;
+	LLUICtrl* mWarning13;
+	LLUICtrl* mWarning14;
+
+	LLSliderCtrl* mSystemMemory;
+	LLSliderCtrl* mSceneMemory;
+
+	LLProgressBar* mProgressBar;
+
+	LLFrameTimer	mUpdateTimer;
 };
 
 class LLPanelPreference : public LLPanel
