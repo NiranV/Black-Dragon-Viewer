@@ -2229,8 +2229,11 @@ void LLAgent::endAnimationUpdateUI()
 		{
 			// clean up UI
 			// first show anything hidden by UI toggle
-			gViewerWindow->setUIVisibility(TRUE);
-
+			//BD
+			if (!gViewerWindow->getUIVisibility())
+			{
+				gViewerWindow->setUIVisibility(TRUE);
+			}
 			// then hide stuff we want hidden for mouselook 
 			gToolBarView->setToolBarsVisible(false);
 			gMenuBarView->setVisible(FALSE);

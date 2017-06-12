@@ -320,7 +320,6 @@ void LLStatusBar::setVisibleForMouselook(bool visible)
 {
 //	//BD - Hide UI In Mouselook
 	if(gSavedSettings.getBOOL("AllowUIHidingInML"))
-	mIconPresets->setVisible(visible);
 	{
 		setVisible(visible);
 	}
