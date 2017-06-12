@@ -755,6 +755,7 @@ void BDFloaterAnimations::onPoseStart()
 		gAgent.clearPosing();
 		gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
 	}
+	onBoneRefresh();
 }
 
 void BDFloaterAnimations::onPoseDelete()
