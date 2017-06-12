@@ -140,7 +140,7 @@
         layout="topleft"
         follows="top|left"
         left_pad="0"
-        name="chat_font_size"
+        name="conversation_log_combo"
         top_delta="-3"
         width="170">
         <item
