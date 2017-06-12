@@ -109,6 +109,8 @@ const F32 TELEPORT_EXPIRY_PER_ATTACHMENT = 3.f;
 U32 gRecentFrameCount = 0; // number of 'recent' frames
 LLFrameTimer gRecentFPSTime;
 LLFrameTimer gRecentMemoryTime;
+F32 gFPSLogFrequency = 10.0f;
+F32 gMemoryLogFrequency = 600.0f;
 
 // Rendering stuff
 void pre_show_depth_buffer();
@@ -211,16 +213,15 @@ void display_update_camera()
 // Write some stats to LL_INFOS()
 void display_stats()
 {
-	F32 fps_log_freq = gSavedSettings.getF32("FPSLogFrequency");
-	if (fps_log_freq > 0.f && gRecentFPSTime.getElapsedTimeF32() >= fps_log_freq)
+	if (gFPSLogFrequency > 0.f && gRecentFPSTime.getElapsedTimeF32() >= gFPSLogFrequency)
 	{
-		F32 fps = gRecentFrameCount / fps_log_freq;
+		F32 fps = gRecentFrameCount / gFPSLogFrequency;
 		LL_INFOS() << llformat("FPS: %.02f", fps) << LL_ENDL;
 		gRecentFrameCount = 0;
 		gRecentFPSTime.reset();
 	}
-	F32 mem_log_freq = gSavedSettings.getF32("MemoryLogFrequency");
-	if (mem_log_freq > 0.f && gRecentMemoryTime.getElapsedTimeF32() >= mem_log_freq)
+
+	if (gMemoryLogFrequency > 0.f && gRecentMemoryTime.getElapsedTimeF32() >= gMemoryLogFrequency)
 	{
 		gMemoryAllocated = (U64Bytes)LLMemory::getCurrentRSS();
 		U32Megabytes memory = gMemoryAllocated;
