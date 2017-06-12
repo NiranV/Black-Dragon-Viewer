@@ -460,9 +460,17 @@ void BDFloaterAnimations::onBoneRefresh()
 		if (joint)
 		{
 			LLVector3 vec3;
-			joint->getRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
 			LLSD row;
 			std::string format = llformat("%%.%df", 3);
+			//BD - When posing get the target values otherwise we end up getting the in-interpolation values.
+			if (gAgent.getPosing())
+			{
+				joint->getTargetRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
+			}
+			else
+			{
+				joint->getRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
+			}
 			row["columns"][0]["column"] = "joint";
 			row["columns"][0]["value"] = joint->getName();
 			row["columns"][1]["column"] = "x";
@@ -475,7 +483,14 @@ void BDFloaterAnimations::onBoneRefresh()
 			//BD - Special case for mPelvis as it has position information too.
 			if (joint->getName() == "mPelvis")
 			{
-				vec3 = joint->getPosition();
+				if (gAgent.getPosing())
+				{
+					vec3 = joint->getTargetPosition();
+				}
+				else
+				{
+					vec3 = joint->getPosition();
+				}
 				row["columns"][4]["column"] = "pos_x";
 				row["columns"][4]["value"] = llformat(format.c_str(), vec3.mV[VX]);
 				row["columns"][5]["column"] = "pos_y";
