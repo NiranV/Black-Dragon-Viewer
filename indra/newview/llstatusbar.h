@@ -28,6 +28,7 @@
 #define LL_LLSTATUSBAR_H
 
 #include "llpanel.h"
+#include "lltracerecording.h"
 
 // "Constants" loaded from settings.xml at start time
 extern S32 STATUS_BAR_HEIGHT;
@@ -48,6 +49,7 @@ class LLPanelNearByMedia;
 class LLIconCtrl;
 //BD - Quick Draw Distance Slider
 class BDPanelDrawDistance;
+
 
 class LLStatusBar
 :	public LLPanel
@@ -89,6 +91,7 @@ private:
 	LLTextBox	*mTextTime;
 //	//BD - Statusbar Framerate Count
 	LLTextBox	*mFPSText;
+	LLFrameTimer	mFPSUpdateTimer;
 
 	LLStatGraph *mSGBandwidth;
 	LLStatGraph *mSGPacketLoss;

@@ -107,7 +107,7 @@ const F32 ICON_TIMER_EXPIRY		= 3.f; // How long the balance and health icons sho
 static void onClickVolume(void*);
 
 LLStatusBar::LLStatusBar(const LLRect& rect)
-:	LLPanel(),
+	: LLPanel(),
 	mTextTime(NULL),
 	mSGBandwidth(NULL),
 	mSGPacketLoss(NULL),
@@ -262,9 +262,13 @@ void LLStatusBar::refresh()
 	}
 
 //	//BD - Statusbar Framerate Count
-	//     TODO: Maybe make a tiny bit slower. 1/10 of a second.
-	LLTrace::PeriodicRecording& frame_recording = LLTrace::get_frame_recording();
-	mFPSText->setValue(frame_recording.getPrevRecording(1).getPerSec(LLStatViewer::FPS));
+	//     Oh no, we finally did it, we clamped it. No performance gain whatsoever.
+	if (mFPSUpdateTimer.getElapsedTimeF32() > 0.1f)
+	{
+		mFPSUpdateTimer.reset();
+		LLTrace::PeriodicRecording& frame_recording = LLTrace::get_frame_recording();
+		mFPSText->setValue(frame_recording.getPrevRecording(0).getPerSec(LLStatViewer::FPS));
+	}
 	
 	// update clock every 10 seconds
 	if(mClockUpdateTimer.getElapsedTimeF32() > 10.f)
