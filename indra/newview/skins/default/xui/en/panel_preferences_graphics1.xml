@@ -1944,7 +1944,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsPerformanceVisible"
 	  layout="topleft"
-	  height="391"
+	  height="412"
 	  auto_resize="false"
       visible="false"
 	  name="performance_layout_panel"
@@ -2271,6 +2271,16 @@ width="510">
   width="450"
   left="25"
   top_pad="0"/>
+ <check_box
+      control_name="AlwaysRenderFriends"
+      height="16"
+      initial_value="true"
+      label="Always Render Friends"
+      layout="topleft"
+      left="10"
+      name="AlwaysRenderFriends"
+      top_pad="7"
+      width="315" />
       <slider
       control_name="RenderAutoMuteSurfaceAreaLimit"
       decimal_digits="0"
@@ -2286,7 +2296,7 @@ width="510">
       max_val="256"
       min_val="0"
       name="RenderAutoMuteSurfaceAreaLimit"
-      top_pad="7"
+      top_pad="5"
       width="319" />
       <button
  follows="left|top"
