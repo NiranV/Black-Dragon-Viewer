@@ -692,6 +692,9 @@ BOOL LLPanelPeople::postBuild()
 	mGroupList->setCommitCallback(boost::bind(&LLPanelPeople::updateButtons, this));
 	mGroupList->setReturnCallback(boost::bind(&LLPanelPeople::onChatButtonClicked, this));
 
+	mGroupCount = getChild<LLUICtrl>("groupcount");
+	mGroupMinusBtn = getChild<LLUICtrl>("minus_btn");
+
 	LLMenuButton* groups_gear_btn = getChild<LLMenuButton>("groups_gear_btn");
 
 	// Use the context menu of the Groups list for the Groups tab gear menu.
@@ -982,14 +985,12 @@ void LLPanelPeople::updateButtons()
 		{
 			selected_id = mGroupList->getSelectedUUID();
 		}
-
-		LLPanel* groups_panel = mTabContainer->getCurrentPanel();
-		groups_panel->getChildView("minus_btn")->setEnabled(item_selected && selected_id.notNull()); // a real group selected
+		mGroupMinusBtn->setEnabled(item_selected && selected_id.notNull()); // a real group selected
 
 		U32 groups_count = gAgent.mGroups.size();
 		U32 groups_ramaining = gMaxAgentGroups > groups_count ? gMaxAgentGroups - groups_count : 0;
-		groups_panel->getChild<LLUICtrl>("groupcount")->setTextArg("[COUNT]", llformat("%d", groups_count));
-		groups_panel->getChild<LLUICtrl>("groupcount")->setTextArg("[REMAINING]", llformat("%d", groups_ramaining));
+		mGroupCount->setTextArg("[COUNT]", llformat("%d", groups_count));
+		mGroupCount->setTextArg("[REMAINING]", llformat("%d", groups_ramaining));
 	}
 	else
 	{

@@ -153,6 +153,9 @@ private:
 	//LLAvatarList*			mOnlineFriendList;
 	//LLAvatarList*			mSuggestedFriends;
 
+	LLUICtrl*				mGroupCount;
+	LLUICtrl*				mGroupMinusBtn;
+
 	LLNetMap*				mMiniMap;
 
 	std::vector<std::string> mSavedOriginalFilters;
