@@ -4363,6 +4363,9 @@ void handle_reset_view()
 	else
 		c_preset = CAMERA_PRESET_RIGHT_VIEW;
 	gAgentCamera.switchCameraPreset(c_preset);
+	//BD - Allow disabling steering mode here as most people will probably
+	//     hit ESC as reaction to steering mode being accidentally enabled.
+	gSavedSettings.setBOOL("EnableThirdPersonSteering", false);
 	reset_view_final( TRUE );
 	LLFloaterCamera::resetCameraMode();
 }
