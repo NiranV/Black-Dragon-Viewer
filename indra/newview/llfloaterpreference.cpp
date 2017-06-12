@@ -1132,12 +1132,6 @@ BOOL LLFloaterPreference::postBuild()
 	mBindModeList3 = this->getChild<LLScrollListCtrl>("scroll_mode_3", true);
 	mBindModeList4 = this->getChild<LLScrollListCtrl>("scroll_mode_4", true);
 
-	//mBindModeList0->setCommitOnSelectionChange(TRUE);
-	//mBindModeList1->setCommitOnSelectionChange(TRUE);
-	//mBindModeList2->setCommitOnSelectionChange(TRUE);
-	//mBindModeList3->setCommitOnSelectionChange(TRUE);
-	//mBindModeList4->setCommitOnSelectionChange(TRUE);
-
 	mBindModeList0->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onList0Click, this));
 	mBindModeList1->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onList1Click, this));
 	mBindModeList2->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onList2Click, this));
