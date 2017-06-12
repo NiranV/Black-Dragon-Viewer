@@ -120,7 +120,7 @@ void LLFloaterIMSession::refresh()
 		// Time out if user hasn't typed for a while.
 		if (mTypingTimeoutTimer.getElapsedTimeF32() > LLAgent::TYPING_TIMEOUT_SECS)
 		{
-	setTyping(false);
+			setTyping(false);
 			LL_DEBUGS("TypingMsgs") << "Send stop typing due to timeout" << LL_ENDL;
 		}
 	}
