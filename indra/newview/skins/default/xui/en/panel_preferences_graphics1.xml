@@ -479,6 +479,32 @@ width="510">
   width="16"
   left_delta="-18"
   top="2"/>
+	<icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_reflection_quality"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Higher than 'normal' Reflection Quality may noticably impact performance negatively."
+  width="16"
+  left_delta="-18"
+  top="2"/>
+   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_sky_quality"
+  mouse_opaque="false"
+  visible="false"
+  tool_tip="WARNING: Higher than 'high' Sky Quality may have a slight negative impact on performance without any noticable visual improvements."
+  width="16"
+  left_delta="-18"
+  top="2"/>
    
    </layout_panel>
       <layout_panel
@@ -2379,33 +2405,6 @@ width="510">
    width="220">
    Windlight Options:
    </text>
-   
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_reflection_quality"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Higher than 'normal' Reflection Quality may noticably impact performance negatively."
-  width="16"
-  left="445"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_sky_quality"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Higher than 'high' Sky Quality may have a slight negative impact on performance without any noticable visual improvements."
-  width="16"
-  left_delta="-18"
-  top="2"/>
    
       </layout_panel>
       <layout_panel
