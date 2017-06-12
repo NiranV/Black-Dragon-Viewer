@@ -857,7 +857,7 @@ void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 		else if (param.asString() == "y")
 		{
 			vec3.mV[VY] = val;
-			column_2->setValue(llformat(format.c_str(), vec3.mV[VZ]));
+			column_2->setValue(llformat(format.c_str(), vec3.mV[VY]));
 		}
 		else
 		{
