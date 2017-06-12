@@ -29,7 +29,6 @@
 #include "llvoavatarself.h"
 #include "llsdserialize.h"
 #include "lldiriterator.h"
-#include "bdposingmotion.h"
 
 // viewer includes
 #include "llfloaterpreference.h"
@@ -744,8 +743,9 @@ BOOL BDFloaterAnimations::onPoseLoad()
 		}
 		infile.close();
 		onBoneRefresh();
+		return TRUE;
 	}
-	return TRUE;
+	return FALSE;
 }
 
 void BDFloaterAnimations::onPoseStart()
