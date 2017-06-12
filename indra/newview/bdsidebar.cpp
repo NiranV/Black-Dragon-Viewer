@@ -98,3 +98,12 @@ BOOL LLSideBar::handleMouseDown(S32 x, S32 y, MASK mask)
 {
 	return LLPanel::handleMouseDown(x, y, mask);
 }
+
+void LLSideBar::setVisibleForMouselook(bool visible)
+{
+	//	//BD - Hide UI In Mouselook
+	if (gSavedSettings.getBOOL("AllowUIHidingInML"))
+	{
+		this->setVisible(visible);
+	}
+}

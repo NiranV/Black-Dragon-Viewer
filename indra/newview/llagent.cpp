@@ -101,6 +101,7 @@
 
 //BD
 #include "lltoolfocus.h"
+#include "bdsidebar.h"
 
 using namespace LLAvatarAppearanceDefines;
 
@@ -2113,6 +2114,7 @@ void LLAgent::endAnimationUpdateUI()
 		//BD
 		LLNavigationBar::getInstance()->setVisible(TRUE);
 		gStatusBar->setVisibleForMouselook(true);
+		gSideBar->setVisibleForMouselook(true);
 
 
 		LLChicletBar::getInstance()->setVisible(TRUE);
@@ -2239,6 +2241,7 @@ void LLAgent::endAnimationUpdateUI()
 			gMenuBarView->setVisible(FALSE);
 			LLNavigationBar::getInstance()->setVisible(FALSE);
 			gStatusBar->setVisibleForMouselook(false);
+			gSideBar->setVisibleForMouselook(false);
 
 			LLChicletBar::getInstance()->setVisible(FALSE);
 
