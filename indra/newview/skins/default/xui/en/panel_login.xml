@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.7.6 - Decaying Dragon]"
+       label="[CHANNEL] [VERSION] - [2.7.7 - Decaying Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="5090"
+       height="5740"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,80 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="208"
+              height="443"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Always Render Friends option to Preferences - Display tab.
+Changed: Finetuned Tone Mapping brightness a bit more, slightly darker, still brighter than before.
+Changed: Dropped Motion Blur types down to only objects and your own avatar by default.
+Changed: Improved description of all warnings in Preferences - Display tab.
+Changed: Allowed Auto Hide Surface Limit to go up to 512m².
+Changed: Made hitting ESC (reset view) disable Third Person Steering.
+Changed: Hide Sidebar while in Mouselook.
+Changed: Made animation window refresh bones after clicking Start Posing.
+Changed: Clamp view angle slider in Machinima Sidebar to min and max current camera values.
+Changed: Some conditions for warnings appearing.
+Changed: Made all boolean warnings appear via UI calls, saves a lot calls.
+Changed: Made FPS counter refresh only 10 times a second instead of as fast as possible. (Subject to change).
+Changed: Made "Start Posing" reflect it's current status and show "Stop Posing" when enabled.
+Changed: Enable Highlight Friend Names by default.
+Changed: Disable bone rotation controls as long as posing is not enabled.
+Changed: Version to 2.7.7.
+Fixed: Sky Quality and Reflection Quality warnings being in the wrong section.
+Fixed: Short massive framedrop/freeze when going into Mouselook with hide UI in ML enabled.
+Fixed: Stopping all animations with the animation window breaks posing.
+Fixed: Y Bone Rotation sliders writing Z rotations into the list resulting in them being saved/loaded wrong in poses.
+Fixed: Bone refresh showing the current in-transition values instead of the final values.
+Fixed: Conversation log combobox not being detected and throwing an warning.
+Misc: Cleaned up llfloaterpreferences.cpp slightly.
+Misc: Cleaned up bdfloateranimations.cpp a bit.
+Misc: Fixed up a whitespace in llfloaterimsession.cpp.
+Misc: Massive performance optimizations to sidebar refreshing.
+Misc: Massive Performance optimizations to preferences window.
+- Eliminated a massive amount of getChild calls every update.
+- Eliminated a massive amount of gSavedSettings setting getter calls every refresh.
+- Reduced graphic options and memory refreshs to once every second.
+- Performance with preferences open (even with display tab selected) shows almost similar performance as with preferences closed now.
+Misc: Slight performance improvements for People floater refreshes.
+Misc: Slight performance improvements on updating the display stats such as avg FPS and used memory being logged.
+Misc: Cleanup and comment llagentcamera.cpp, llstatusbar.h and lltoolpie.cpp a bit.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.7.6
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="208"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
