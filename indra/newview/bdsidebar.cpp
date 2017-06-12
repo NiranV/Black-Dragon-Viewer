@@ -30,6 +30,9 @@
 
 // viewer includes
 #include "llfloaterpreference.h"
+#include "llviewercamera.h"
+
+#include "llsliderctrl.h"
 
 // system includes
 #include <iomanip>
@@ -65,23 +68,43 @@ void LLSideBar::draw()
 
 BOOL LLSideBar::postBuild()
 {
+	mShadowResX = getChild<LLUICtrl>("RenderShadowResolution_X");
+	mShadowResY = getChild<LLUICtrl>("RenderShadowResolution_Y");
+	mShadowResZ = getChild<LLUICtrl>("RenderShadowResolution_Z");
+	mShadowResW = getChild<LLUICtrl>("RenderShadowResolution_W");
+
+	mProjectorResX = getChild<LLUICtrl>("RenderProjectorShadowResolution_X");
+	mProjectorResY = getChild<LLUICtrl>("RenderProjectorShadowResolution_Y");
+
+	mVignetteX = getChild<LLUICtrl>("ExodusRenderVignette_X");
+	mVignetteY = getChild<LLUICtrl>("ExodusRenderVignette_Y");
+	mVignetteZ = getChild<LLUICtrl>("ExodusRenderVignette_Z");
+
+	mCameraAngle = getChild<LLSliderCtrl>("CameraAngle");
 	return TRUE;
 }
 
 //BD - Refresh all controls
 void LLSideBar::refreshGraphicControls()
 {
-	getChild<LLUICtrl>("RenderShadowResolution_X")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VX]);
-	getChild<LLUICtrl>("RenderShadowResolution_Y")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VY]);
-	getChild<LLUICtrl>("RenderShadowResolution_Z")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VZ]);
-	getChild<LLUICtrl>("RenderShadowResolution_W")->setValue(gSavedSettings.getVector4("RenderShadowResolution").mV[VW]);
+	LLVector4 vec4 = gSavedSettings.getVector4("RenderShadowResolution");
+	mShadowResX->setValue(vec4.mV[VX]);
+	mShadowResY->setValue(vec4.mV[VY]);
+	mShadowResZ->setValue(vec4.mV[VZ]);
+	mShadowResW->setValue(vec4.mV[VW]);
 
-	getChild<LLUICtrl>("RenderProjectorShadowResolution_X")->setValue(gSavedSettings.getVector2("RenderProjectorShadowResolution").mV[VX]);
-	getChild<LLUICtrl>("RenderProjectorShadowResolution_Y")->setValue(gSavedSettings.getVector2("RenderProjectorShadowResolution").mV[VY]);
+	LLVector2 vec2 = gSavedSettings.getVector2("RenderProjectorShadowResolution");
+	mProjectorResX->setValue(vec2.mV[VX]);
+	mProjectorResY->setValue(vec2.mV[VY]);
 
-	getChild<LLUICtrl>("ExodusRenderVignette_X")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderVignette_Y")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderVignette_Z")->setValue(gSavedSettings.getVector3("ExodusRenderVignette").mV[VZ]);
+	LLVector3 vec3 = gSavedSettings.getVector3("ExodusRenderVignette");
+	mVignetteX->setValue(vec3.mV[VX]);
+	mVignetteY->setValue(vec3.mV[VY]);
+	mVignetteZ->setValue(vec3.mV[VZ]);
+
+	LLViewerCamera* viewer_camera = LLViewerCamera::getInstance();
+	mCameraAngle->setMaxValue(viewer_camera->getMaxView());
+	mCameraAngle->setMinValue(viewer_camera->getMinView());
 }
 
 void LLSideBar::onMouseEnter(S32 x, S32 y, MASK mask)

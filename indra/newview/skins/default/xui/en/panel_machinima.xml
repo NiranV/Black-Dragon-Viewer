@@ -1838,7 +1838,7 @@ width="345">
                   max_val="3.97"
                   min_val="0.17"
                   top_pad="15"
-                  name="camera_fov"
+                  name="CameraAngle"
                   show_text="true"
                   width="297" />
             </panel>

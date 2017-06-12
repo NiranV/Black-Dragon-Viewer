@@ -28,8 +28,11 @@
 #define LL_BDSIDEBAR_H
 
 #include "llpanel.h"
+#include "lluictrl.h"
+#include "llsliderctrl.h"
 
 class LLUICtrl;
+class LLSliderCtrl;
 
 class LLSideBar
 :	public LLPanel
@@ -49,6 +52,20 @@ private:
 	void onMouseLeave(S32 x, S32 y, MASK mask);
 	void onMouseEnter(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL 	handleMouseDown(S32 x, S32 y, MASK mask);
+
+	LLUICtrl*			mShadowResX;
+	LLUICtrl*			mShadowResY;
+	LLUICtrl*			mShadowResZ;
+	LLUICtrl*			mShadowResW;
+
+	LLUICtrl*			mProjectorResX;
+	LLUICtrl*			mProjectorResY;
+
+	LLUICtrl*			mVignetteX;
+	LLUICtrl*			mVignetteY;
+	LLUICtrl*			mVignetteZ;
+
+	LLSliderCtrl*		mCameraAngle;
 };
 
 extern LLSideBar *gSideBar;
