@@ -1215,6 +1215,7 @@ void LLAgentCamera::updateCamera()
 	//NOTE - this needs to be integrated into a general upVector system here within llAgent. 
 
 //	//BD - Third Person Steering
+	//BD   TODO: Replace this gSavedSettings call with something internal.
 	if(gSavedSettings.getBOOL("EnableThirdPersonSteering")
 		&& !gAgentCamera.cameraMouselook())
 	{
