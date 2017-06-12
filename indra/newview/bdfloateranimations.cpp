@@ -818,6 +818,7 @@ void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 void BDFloaterAnimations::onRefreshJointControls()
 {
 	bool is_pelvis = false;
+	bool is_posing = gAgent.getPosing();
 	LLScrollListItem* item = mJointsScroll->getFirstSelected();
 	if (item)
 	{
@@ -839,12 +840,12 @@ void BDFloaterAnimations::onRefreshJointControls()
 	}
 
 	getChild<LLButton>("activate")->setValue(gAgent.getPosing());
-	getChild<LLSliderCtrl>("Rotation_X")->setEnabled(!mTargetName.empty());
-	getChild<LLSliderCtrl>("Rotation_Y")->setEnabled(!mTargetName.empty());
-	getChild<LLSliderCtrl>("Rotation_Z")->setEnabled(!mTargetName.empty());
-	getChild<LLSliderCtrl>("Position_X")->setEnabled(is_pelvis);
-	getChild<LLSliderCtrl>("Position_Y")->setEnabled(is_pelvis);
-	getChild<LLSliderCtrl>("Position_Z")->setEnabled(is_pelvis);
+	getChild<LLSliderCtrl>("Rotation_X")->setEnabled(!mTargetName.empty() && is_posing);
+	getChild<LLSliderCtrl>("Rotation_Y")->setEnabled(!mTargetName.empty() && is_posing);
+	getChild<LLSliderCtrl>("Rotation_Z")->setEnabled(!mTargetName.empty() && is_posing);
+	getChild<LLSliderCtrl>("Position_X")->setEnabled(is_pelvis && is_posing);
+	getChild<LLSliderCtrl>("Position_Y")->setEnabled(is_pelvis && is_posing);
+	getChild<LLSliderCtrl>("Position_Z")->setEnabled(is_pelvis && is_posing);
 }
 
 void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
