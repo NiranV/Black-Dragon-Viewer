@@ -272,6 +272,13 @@ void BDFloaterAnimations::onAnimStop()
 		LLCharacter* character = *iter;
 		if (character)
 		{
+			//BD - Special case to prevent the posing animation from becoming stuck.
+			if (character->getID() == gAgentID)
+			{
+				gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
+				gAgent.clearPosing();
+			}
+
 			character->deactivateAllMotions();
 		}
 	}
