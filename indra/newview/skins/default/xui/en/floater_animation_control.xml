@@ -445,8 +445,10 @@ width="494">
 	<button
  height="21"
  follows="top|left"
+ is_toggle="true"
  layout="topleft"
  label="Start Posing"
+ label_selected="Stop Posing"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"

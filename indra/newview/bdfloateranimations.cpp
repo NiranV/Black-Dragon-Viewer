@@ -838,6 +838,7 @@ void BDFloaterAnimations::onRefreshJointControls()
 		mTargetName.clear();
 	}
 
+	getChild<LLButton>("activate")->setValue(gAgent.getPosing());
 	getChild<LLSliderCtrl>("Rotation_X")->setEnabled(!mTargetName.empty());
 	getChild<LLSliderCtrl>("Rotation_Y")->setEnabled(!mTargetName.empty());
 	getChild<LLSliderCtrl>("Rotation_Z")->setEnabled(!mTargetName.empty());
