@@ -20,7 +20,7 @@
      layout="topleft"
      left="10"
      name="selected_text"
-     text_color="EmphasisColor"
+     text_color="HTMLLinkColor"
      top="10"
      value="SELECTED"
      width="180" />
@@ -79,7 +79,7 @@
      layout="topleft"
      left="10"
      name="weights_of_selected_text"
-     text_color="EmphasisColor"
+     text_color="HTMLLinkColor"
      top_pad="10"
      value="WEIGHTS OF SELECTED"
      width="180" />
@@ -208,7 +208,7 @@
      layout="topleft"
      left="10"
      name="land_impacts_text"
-     text_color="EmphasisColor"
+     text_color="HTMLLinkColor"
      top_pad="10"
      value="LAND IMPACTS"
      width="180" />
