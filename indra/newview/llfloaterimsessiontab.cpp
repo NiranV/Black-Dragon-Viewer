@@ -373,7 +373,8 @@ void LLFloaterIMSessionTab::draw()
 		LLUUID dev_id = gAgent.getDevID();
 		if (mSession && mSessionID.notNull() && !mDev
 			&& mSession->mOtherParticipantID == dev_id
-			&& !LLAvatarTracker::instance().isBuddy(dev_id))
+			&& !LLAvatarTracker::instance().isBuddy(dev_id)
+			&& mSession->isP2P())
 		{
 			std::string message = LLTrans::getString("im_developer");
 			LLIMModel::getInstance()->addMessage(mSessionID, SYSTEM_FROM, LLUUID::null, message, false);
