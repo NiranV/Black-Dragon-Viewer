@@ -479,15 +479,15 @@ void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
 		//BD - Don't include impostored or visually muted avatars in Motion Blur.
 		//     This alone massively increases the performance with many avatars
 		//     in the scene.
-		if (LLVOAvatar::AV_DO_NOT_RENDER == avatarp->getVisualMuteSettings()
-			|| avatarp->isVisuallyMuted()
-			|| avatarp->isImpostor())
+		BOOL impostor = avatarp->isImpostor();
+		if (impostor
+			&& LLVOAvatar::AV_DO_NOT_RENDER != avatarp->getVisualMuteSettings()
+			&& LLVOAvatar::AV_ALWAYS_RENDER != avatarp->getVisualMuteSettings())
 		{
 			return;
 		}
 
 		//BD - Motion Blur quality options to set what we want to be included in Motion Blur.
-		S32 motion_blur_quality = gSavedSettings.getS32("RenderRiggedMotionBlurQuality");
 		if ((!avatarp->isSelf() && motion_blur_quality < 2)
 			|| motion_blur_quality < 1)
 		{
