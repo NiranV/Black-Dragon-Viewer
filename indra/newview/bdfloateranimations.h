@@ -22,6 +22,9 @@
 #include "llscrolllistctrl.h"
 #include "llcharacter.h"
 #include "llsliderctrl.h"
+#include "llcombobox.h"
+#include "llframetimer.h"
+#include "llkeyframemotion.h"
 
 class BDFloaterAnimations :
 	public LLFloater
@@ -33,38 +36,35 @@ private:
 	/*virtual*/	BOOL postBuild();
 	/*virtual*/ void draw();
 
-	void getSelected();
+	void resetToDefault(LLUICtrl* ctrl);
 
-	void onAnimStop();
-	void onAnimFreeze();
-	void onAnimSet();
-	void onAnimRestart();
-
-	void onRefresh();
-
-	void onSave();
-	void onLoad();
-	void onRemove();
-	void onCreate();
+	//BD - Motions
+	void onMotionRefresh();
+	void onMotionCommand(LLUICtrl* ctrl, const LLSD& param);
 
 	//BD - Posing
-	void onRefreshJointControls();
-	void onRefreshPoseControls();
-	void onBoneRefresh();
-	void onPosesRefresh();
-
-	void onJointSet(LLUICtrl* ctrl, const LLSD& param);
-	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
-
-	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
-
 	void onClickPoseSave();
 	BOOL onPoseSave(S32 type, F32 time, bool editing);
 	BOOL onPoseLoad();
 	void onPoseStart();
 	void onPoseDelete();
+	void onPoseRefresh();
+	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
+	void onPoseControlsRefresh();
 
-	void resetToDefault(LLUICtrl* ctrl);
+	//BD - Joints
+	void onJointRefresh();
+	void onJointSet(LLUICtrl* ctrl, const LLSD& param);
+	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
+	void onJointControlsRefresh();
+
+	//BD - Animating
+	void onAnimAdd();
+	void onAnimDelete();
+	void onAnimSave();
+	void onAnimSet();
+	void onAnimPlay();
+	void onAnimStop();
 
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);
@@ -72,16 +72,16 @@ private:
 	LLScrollListCtrl*				mAvatarScroll;
 	LLScrollListCtrl*				mMotionScroll;
 
-	S32								mSelectedAmount;
-
 	uuid_vec_t						mIDs;
 	std::vector<LLAnimPauseRequest>	mAvatarPauseHandles;
-	std::vector<LLCharacter*>		mSelectedCharacters;
 
 	//BD - Posing
 	LLScrollListCtrl*				mPoseScroll;
 	LLScrollListCtrl*				mJointsScroll;
-	std::string						mTargetName;
+
+	//BD - Animations
+	LLScrollListCtrl*				mAnimEditorScroll;
+	LLFrameTimer					mAnimPlayTimer;
 };
 
 #endif

@@ -117,7 +117,8 @@ width="494">
  top_pad="1"
  left_delta="2">
    <button.commit_callback
-   function="Anim.Stop"/>
+   function="Motion.Command"
+   parameter="Stop"/>
  </button>
  <button
  height="21"
@@ -132,7 +133,8 @@ width="494">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Anim.Freeze"/>
+   function="Motion.Command"
+   parameter="Freeze"/>
  </button>
  <line_editor
   commit_on_focus_lost="false"
@@ -156,7 +158,8 @@ width="494">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Anim.Set"/>
+   function="Motion.Command"
+   parameter="Set"/>
  </button>
  <button
  height="21"
@@ -171,7 +174,8 @@ width="494">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Anim.Restart"/>
+   function="Motion.Command"
+   parameter="Restart"/>
  </button>
 	<button
  height="21"
@@ -186,7 +190,7 @@ width="494">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Anim.Refresh"/>
+   function="Motion.Refresh"/>
  </button>
 	<panel
  follows="left|top|right"
@@ -270,7 +274,8 @@ width="494">
  top_pad="1"
  left_delta="2">
    <button.commit_callback
-   function="Anim.Save"/>
+   function="Motion.Command"
+   parameter="Save"/>
  </button>
 	<button
  height="21"
@@ -285,7 +290,8 @@ width="494">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Anim.Load"/>
+   function="Motion.Command"
+   parameter="Load"/>
  </button>
 	<icon
 	follows="left|top|right"
@@ -308,7 +314,8 @@ width="494">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Anim.Remove"/>
+   function="Motion.Command"
+   parameter="Remove"/>
  </button>
 	<!--<line_editor
   commit_on_focus_lost="false"
@@ -727,7 +734,7 @@ width="494">
 	<scroll_list
  column_padding="2"
  draw_heading="true"
- height="200"
+ height="180"
  follows="left|top|right"
  layout="topleft"
  left="0"
@@ -820,6 +827,126 @@ width="494">
 		<combo_box.commit_callback
 		function="Pose.Set"
 		parameter="type"/>
+    </combo_box>
+ 
+ <scroll_list
+ column_padding="2"
+ draw_heading="true"
+ height="180"
+ follows="left|top|right"
+ layout="topleft"
+ left="0"
+ width="480"
+ multi_select="true"
+ name="anim_editor_scroll"
+ top_pad="1">
+    <scroll_list.columns
+     label="Action"
+     name="name"
+	 relative_width="0.5"/>
+    <scroll_list.columns
+     label="Time"
+     name="time"
+   relative_width="0.25"  />
+</scroll_list>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Play"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="load_poses"
+ width="62"
+ top_pad="1"
+ left_delta="2">
+   <button.commit_callback
+   function="Anim.Play"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Stop"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="delete_poses"
+ width="62"
+ top_delta="0"
+ left_pad="1">
+	<button.commit_callback
+   function="Anim.Stop"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Add"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="load_poses"
+ width="62"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Add"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Remove"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="delete_poses"
+ width="62"
+ top_delta="0"
+ left_pad="1">
+	<button.commit_callback
+   function="Anim.Delete"/>
+ </button>
+ <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="20"
+  enabled="false"
+  label="0.001 - 1.0"
+  left_pad="1"
+  top_delta="0"
+  name="anim_time"
+  width="62">
+	<line_editor.commit_callback
+   function="Anim.Set"
+   parameter="time"/>
+ </line_editor>
+ <combo_box
+     follows="left|top"
+     height="20"
+     layout="topleft"
+     left_pad="1"
+     top_delta="0"
+     max_chars="135"
+     name="anim_choice_combo"
+     width="82">
+        <combo_box.item
+         enabled="true"
+         label="Wait"
+         name="0"
+         value="Wait" />
+        <combo_box.item
+         enabled="true"
+         label="Repeat"
+         name="1"
+         value="Repeat" />
+        <combo_box.item
+         enabled="true"
+         label=""
+         name="2"
+         value="" />
     </combo_box>
 	</panel>
 	</panel>

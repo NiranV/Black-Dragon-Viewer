@@ -130,7 +130,10 @@ public:
 
 	//BD
 	LLQuaternion	mTargetRotation;
+	LLQuaternion	mLastRotation;
 	LLVector3		mTargetPosition;
+	LLVector3		mLastPosition;
+	bool			mIsBlending;
 
 	// child joints
 	typedef std::list<LLJoint*> child_list_t;
@@ -240,6 +243,15 @@ public:
 
 	void setTargetRotation(const LLQuaternion& rot) { mTargetRotation = rot; }
 	LLQuaternion getTargetRotation() const { return mTargetRotation; }
+
+	void setLastPosition(const LLVector3& pos) { mLastPosition = pos; }
+	LLVector3 getLastPosition() const { return mLastPosition; }
+
+	void setLastRotation(const LLQuaternion& rot) { mLastRotation = rot; }
+	LLQuaternion getLastRotation() const { return mLastRotation; }
+
+	void setIsBlending(const bool& blending) { mIsBlending = blending; }
+	bool getIsBlending() const { return mIsBlending; }
 
 	// get/set local rotation
 	const LLQuaternion& getRotation();
