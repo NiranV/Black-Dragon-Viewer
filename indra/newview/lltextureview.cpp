@@ -53,6 +53,9 @@
 #include "llviewerstats.h"
 #include "llworld.h"
 
+//BD
+#include "lldxhardware.h"
+
 // For avatar texture view
 #include "llvoavatarself.h"
 #include "lltexlayer.h"
@@ -529,14 +532,18 @@ void LLGLTexMemBar::draw()
 	S32 top = v_offset + line_height * 9;
 	S32 max_vram = gGLManager.mVRAM;
 	S32 used_vram = 0;
-	//BD - Since we cannot work out how to get AMD Cards to properly and accurately
-	//     report back its maximum and free memory we'll just force its used memory
-	//     to 0 and only show the actual used memory from SL. Only NVIDIA Cards seem
-	//     to properly and accurately report back their max and free memory.
-	if (gGLManager.mIsNVIDIA)
+	if (gGLManager.mHasNVXMemInfo)
 	{
 		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &used_vram);
 		used_vram = max_vram - (used_vram / 1024);
+	}
+	//BD - AMD needs special treatment.
+	else if (gGLManager.mHasATIMemInfo)
+	{
+		max_vram = gDXHardware.getVRAM();
+		S32 meminfo[4];
+		glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, meminfo);
+		used_vram = max_vram - used_vram;
 	}
 
 	//----------------------------------------------------------------------------
