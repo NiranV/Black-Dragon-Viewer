@@ -603,11 +603,21 @@ BOOL LLPanelPeople::postBuild()
 	//BD
 	//getChild<LLFilterEditor>("fbc_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
 
+	mGroupCount = getChild<LLTextBox>("groupcount");
 	if(gMaxAgentGroups <= BASE_MAX_AGENT_GROUPS)
 	{
-	    getChild<LLTextBox>("groupcount")->setText(getString("GroupCountWithInfo"));
-	    getChild<LLTextBox>("groupcount")->setURLClickedCallback(boost::bind(&LLPanelPeople::onGroupLimitInfo, this));
+		mGroupCount->setText(getString("GroupCountWithInfo"));
+		mGroupCount->setURLClickedCallback(boost::bind(&LLPanelPeople::onGroupLimitInfo, this));
 	}
+	mFriendAddBtn = getChild<LLUICtrl>("add_friend_btn");
+	mFriendDeleteBtn = getChild<LLUICtrl>("friends_del_btn");
+	mFriendGearBtn = getChild<LLUICtrl>("friends_gear_btn");
+	mNearbyAddBtn = getChild<LLUICtrl>("nearby_add_friend_btn");
+	mNearbyGearBtn = getChild<LLUICtrl>("nearby_gear_btn");
+	mRecentAddBtn = getChild<LLUICtrl>("recent_add_friend_btn");
+	mRecentGearBtn = getChild<LLUICtrl>("recent_gear_btn");
+	mBlockedGearBtn = getChild<LLUICtrl>("blocked_gear_btn");
+	mGroupMinusBtn = getChild<LLUICtrl>("minus_btn");
 
 	mTabContainer = getChild<LLTabContainer>("tabs");
 	mTabContainer->setCommitCallback(boost::bind(&LLPanelPeople::onTabSelected, this, _2));
@@ -691,9 +701,6 @@ BOOL LLPanelPeople::postBuild()
 	mGroupList->setDoubleClickCallback(boost::bind(&LLPanelPeople::onChatButtonClicked, this));
 	mGroupList->setCommitCallback(boost::bind(&LLPanelPeople::updateButtons, this));
 	mGroupList->setReturnCallback(boost::bind(&LLPanelPeople::onChatButtonClicked, this));
-
-	mGroupCount = getChild<LLUICtrl>("groupcount");
-	mGroupMinusBtn = getChild<LLUICtrl>("minus_btn");
 
 	LLMenuButton* groups_gear_btn = getChild<LLMenuButton>("groups_gear_btn");
 
@@ -971,7 +978,8 @@ void LLPanelPeople::updateButtons()
 // [/RLVa:KB]
 	bool friends_tab_active = (cur_tab == FRIENDS_TAB_NAME);
 	bool group_tab_active	= (cur_tab == GROUP_TAB_NAME);
-	//bool recent_tab_active	= (cur_tab == RECENT_TAB_NAME);
+	bool recent_tab_active	= (cur_tab == RECENT_TAB_NAME);
+	bool blocked_tab_active = (cur_tab == BLOCKED_TAB_NAME);
 	LLUUID selected_id;
 
 	uuid_vec_t selected_uuids;
@@ -995,37 +1003,49 @@ void LLPanelPeople::updateButtons()
 	else
 	{
 		bool is_friend = true;
-		bool is_self = false;
+		//bool is_self = false;
 		// Check whether selected avatar is our friend.
 		if (item_selected)
 		{
 			selected_id = selected_uuids.front();
 			is_friend = LLAvatarTracker::instance().getBuddyInfo(selected_id) != NULL;
-			is_self = gAgent.getID() == selected_id;
+			//is_self = gAgent.getID() == selected_id;
 		}
 
 		LLPanel* cur_panel = mTabContainer->getCurrentPanel();
 		if (cur_panel)
 		{
+			if (friends_tab_active)
+			{
 // [RLVa:KB] - Checked: RLVa-1.2.0
-			if (cur_panel->hasChild("add_friend_btn", TRUE))
-				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self && ((!nearby_tab_active) || (RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
+				mFriendAddBtn->setEnabled(item_selected && !is_friend && ((RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
 // [/RLBa:KB]
 //			if (cur_panel->hasChild("add_friend_btn", TRUE))
 //				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self);
-
-			if (friends_tab_active)
-			{
-				cur_panel->getChildView("friends_del_btn")->setEnabled(multiple_selected);
+				mFriendDeleteBtn->setEnabled(multiple_selected);
+				mFriendGearBtn->setEnabled(multiple_selected);
 			}
 
-			if (!group_tab_active)
+			if (nearby_tab_active)
 			{
-				cur_panel->getChildView("gear_btn")->setEnabled(multiple_selected);
+				mNearbyAddBtn->setEnabled(item_selected && !is_friend);
+				mNearbyGearBtn->setEnabled(multiple_selected);
+			}
+
+			if (recent_tab_active)
+			{
+				mRecentAddBtn->setEnabled(item_selected && !is_friend && ((RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
+				mRecentGearBtn->setEnabled(multiple_selected);
+			}
+
+			if (blocked_tab_active)
+			{
+				mBlockedGearBtn->setEnabled(multiple_selected);
 			}
 		}
 	}
 
+	//BD - Eh what? Shouldn't this be further up? Need to check.
 // [RLVa:KB] - Checked: RLVa-1.2.0
 	if ( (nearby_tab_active) && (RlvActions::isRlvEnabled()) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT)) )
 	{
