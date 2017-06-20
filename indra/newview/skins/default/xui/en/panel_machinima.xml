@@ -942,6 +942,7 @@ width="345">
                   </text>
                   <slider
                   control_name="RenderShadowBlurSize"
+                  enabled_control="RenderDeferred"
                   decimal_digits="1"
                   follows="left|top"
                   height="15"
@@ -960,7 +961,7 @@ width="345">
                   width="284"/>
                   <slider
                   control_name="RenderShadowFarClip"
-                  enabled_control="RenderDeferredSSAO"
+                  enabled_control="RenderShadowDetail"
                   decimal_digits="0"
                   can_edit_text="true"
                   follows="left|top"
@@ -978,7 +979,7 @@ width="345">
                   width="293" />
                   
                   <slider
-                  enabled_control="RenderDeferred"
+                  enabled_control="RenderShadowDetail"
                   decimal_digits="0"
                   can_edit_text="true"
                   follows="left|top"
@@ -999,7 +1000,7 @@ width="345">
                   parameter="RenderShadowResolution"/>
                   </slider>
                   <slider
-                  enabled_control="RenderDeferred"
+                  enabled_control="RenderShadowDetail"
                   decimal_digits="0"
                   can_edit_text="true"
                   follows="left|top"
@@ -1020,7 +1021,7 @@ width="345">
                   parameter="RenderShadowResolution"/>
                   </slider>
                   <slider
-                  enabled_control="RenderDeferred"
+                  enabled_control="RenderShadowDetail"
                   decimal_digits="0"
                   can_edit_text="true"
                   follows="left|top"
@@ -1041,7 +1042,7 @@ width="345">
                   parameter="RenderShadowResolution"/>
                   </slider>
                   <slider
-                  enabled_control="RenderDeferred"
+                  enabled_control="RenderShadowDetail"
                   decimal_digits="0"
                   can_edit_text="true"
                   follows="left|top"
@@ -1063,7 +1064,7 @@ width="345">
                   </slider>
                   
                   <slider
-                  enabled_control="RenderDeferred"
+                  enabled_control="RenderShadowDetail"
                   decimal_digits="0"
                   can_edit_text="true"
                   follows="left|top"
@@ -1084,7 +1085,7 @@ width="345">
                   parameter="RenderProjectorShadowResolution"/>
                   </slider>
                   <slider
-                  enabled_control="RenderDeferred"
+                  enabled_control="RenderShadowDetail"
                   decimal_digits="0"
                   can_edit_text="true"
                   follows="left|top"
@@ -1130,6 +1131,7 @@ width="345">
                   </text>
                   <slider
                   control_name="RenderSSAOBlurSize"
+                  enabled_control="RenderDeferredSSAO"
                   decimal_digits="3"
                   follows="left|top"
                   height="15"
