@@ -1581,7 +1581,7 @@ void LLFloaterPreference::refreshGraphicControls()
 	getChild<LLUICtrl>("RenderGlowLumWeights_X")->setValue(vec3.mV[VX]);
 	getChild<LLUICtrl>("RenderGlowLumWeights_Y")->setValue(vec3.mV[VY]);
 	getChild<LLUICtrl>("RenderGlowLumWeights_Z")->setValue(vec3.mV[VZ]);
-	vec3 = gSavedSettings.getVector3("RenderGlowLumWeights");
+	vec3 = gSavedSettings.getVector3("RenderGlowWarmthWeights");
 	getChild<LLUICtrl>("RenderGlowWarmthWeights_X")->setValue(vec3.mV[VX]);
 	getChild<LLUICtrl>("RenderGlowWarmthWeights_Y")->setValue(vec3.mV[VY]);
 	getChild<LLUICtrl>("RenderGlowWarmthWeights_Z")->setValue(vec3.mV[VZ]);
