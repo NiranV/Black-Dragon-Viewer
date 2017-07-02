@@ -22,7 +22,7 @@
      name="selected_text"
      text_color="HTMLLinkColor"
      top="10"
-     value="SELECTED"
+     value="Selected"
      width="180" />
     <text
      follows="left|top"
@@ -81,7 +81,7 @@
      name="weights_of_selected_text"
      text_color="HTMLLinkColor"
      top_pad="10"
-     value="WEIGHTS OF SELECTED"
+     value="Weights of Selected"
      width="180" />
     <text
      follows="left|top"
@@ -210,7 +210,7 @@
      name="land_impacts_text"
      text_color="HTMLLinkColor"
      top_pad="10"
-     value="LAND IMPACTS"
+     value="Land Impacts"
      width="180" />
     <text
      follows="left|top"
