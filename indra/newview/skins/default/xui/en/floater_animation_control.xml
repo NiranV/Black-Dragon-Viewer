@@ -721,7 +721,7 @@ width="494">
  </text>
 	<icon
 	follows="top|left"
-	height="200"
+	height="188"
 	color="1 1 1 1"
 	image_name="Panel_Background"
 	layout="topleft"
@@ -734,7 +734,7 @@ width="494">
 	<scroll_list
  column_padding="2"
  draw_heading="true"
- height="180"
+ height="165"
  follows="left|top|right"
  layout="topleft"
  left="0"
@@ -833,13 +833,14 @@ width="494">
  column_padding="2"
  draw_heading="true"
  height="180"
+ enabled="false"
  follows="left|top|right"
  layout="topleft"
  left="0"
  width="480"
  multi_select="true"
  name="anim_editor_scroll"
- top_pad="1">
+ top_pad="5">
     <scroll_list.columns
      label="Action"
      name="name"
@@ -851,6 +852,7 @@ width="494">
 </scroll_list>
  <button
  height="21"
+ enabled="false"
  follows="top|left"
  layout="topleft"
  label="Play"
@@ -868,6 +870,7 @@ width="494">
  height="21"
  follows="top|left"
  layout="topleft"
+ enabled="false"
  label="Stop"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
@@ -881,6 +884,7 @@ width="494">
  </button>
  <button
  height="21"
+ enabled="false"
  follows="top|left"
  layout="topleft"
  label="Add"
@@ -897,6 +901,7 @@ width="494">
  <button
  height="21"
  follows="top|left"
+ enabled="false"
  layout="topleft"
  label="Remove"
  image_hover_unselected="Toolbar_Middle_Over"
@@ -926,6 +931,7 @@ width="494">
  <combo_box
      follows="left|top"
      height="20"
+	 enabled="false"
      layout="topleft"
      left_pad="1"
      top_delta="0"

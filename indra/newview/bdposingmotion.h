@@ -116,8 +116,6 @@ public:
 	// Joints
 	//-------------------------------------------------------------------------
 	LLJoint*			mTargetJoint;
-
-	LLFrameTimer		mBlendTimer;
 };
 
 #endif // LL_LLKEYFRAMEMOTION_H

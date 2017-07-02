@@ -35,6 +35,7 @@
 #include "llerror.h"
 #include "llpose.h"
 #include "lluuid.h"
+#include "llframetimer.h"
 
 class LLCharacter;
 
@@ -165,6 +166,10 @@ public:
 	F32 getInterpolationType() const					{ return mInterpolationType; }
 	virtual void setInterpolationType(S32 type)			{ mInterpolationType = type; }
 
+	void pauseInterpolationTimer();
+	void startInterpolationTimer();
+	void stopInterpolationTimer();
+
 protected:
 	// called when a motion is activated
 	// must return TRUE to indicate success, or else
@@ -189,6 +194,7 @@ protected:
 	//BD
 	F32					mInterpolationTime;
 	S32					mInterpolationType;
+	LLFrameTimer		mInterpolationTimer;
 	
 	F32 mActivationTimestamp;	// time when motion was activated
 	F32 mStopTimestamp;			// time when motion was told to stop

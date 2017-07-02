@@ -214,6 +214,18 @@ void BDFloaterAnimations::onMotionRefresh()
 					//BD - Remove the removal flag, we're updating it.
 					item->setFlagged(FALSE);
 
+					//BD - When we refresh it might happen that we don't have a name for someone
+					//     yet, when this happens the list entry won't be purged and rebuild as
+					//     it will be updated with this part, so we have to update the name in
+					//     case it was still being resolved last time we refreshed and created the
+					//     initial list entry. This prevents the name from missing forever.
+					if (item->getColumn(0)->getValue().asString().empty())
+					{
+						LLAvatarName av_name;
+						LLAvatarNameCache::get(character->getID(), &av_name);
+						item->getColumn(0)->setValue(av_name.asLLSD());
+					}
+
 					//BD - Show if we got the permission to animate them and save their motions.
 					//     Todo: Don't do anything if permissions didn't change.
 					std::string str = "-";
@@ -553,22 +565,43 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 			return FALSE;
 		}
 
+		LLSD old_record;
 		//BD - Read the pose and save it into an LLSD so we can rewrite it later.
-		while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(record, infile))
+		while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(old_record, infile))
 		{
+			if (line != 0)
+			{
+				record[line]["bone"] = old_record["bone"];
+				record[line]["rotation"] = old_record["rotation"];
+				if (old_record["bone"].asString() == "mPelvis")
+				{
+					record[line]["position"] = old_record["position"];
+				}
+			}
 			line++;
 		}
-		infile.close();
 
 		//BD - Change the header here.
-		record[0]["time"] = time;
 		record[0]["type"] = type;
+		if (type == 2)
+		{
+			time = llclamp(time, 0.0f, 1.0f);
+		}
+		record[0]["time"] = time;
+
+		infile.close();
 	}
 	else
 	{
 		//BD - Create the header first.
-		record[line]["time"] = getChild<LLUICtrl>("interpolation_time")->getValue().asReal();
-		record[line]["type"] = getChild<LLUICtrl>("interpolation_type")->getValue();
+		S32 type = getChild<LLUICtrl>("interpolation_type")->getValue();
+		F32 time = getChild<LLUICtrl>("interpolation_time")->getValue().asReal();
+		if (type == 2)
+		{
+			time = llclamp(time, 0.0f, 1.0f);
+		}
+		record[line]["time"] = time;
+		record[line]["type"] = type;
 		line++;
 
 		//BD - Now create the rest.
@@ -578,37 +611,50 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 			item != items.end(); ++item)
 		{
 			LLVector3 vec3;
-
-			record[line]["bone"] = (*item)->getColumn(0)->getValue().asString();
-			vec3.mV[VX] = (*item)->getColumn(1)->getValue().asReal();
-			vec3.mV[VY] = (*item)->getColumn(2)->getValue().asReal();
-			vec3.mV[VZ] = (*item)->getColumn(3)->getValue().asReal();
-			record[line]["rotation"] = vec3.getValue();
-
-			//BD - Pelvis is a special case, add position values too.
-			if ((*item)->getColumn(0)->getValue().asString() == "mPelvis")
+			LLScrollListItem* element = *item;
+			LLJoint* joint = (LLJoint*)element->getUserdata();
+			//BD - Ohoh, don't write bogus bones into the file, when we load them
+			//     we'll somehow end up "injecting" them into the chain which will
+			//     break said bone until relog. "mHindLimb4Right" Does this a lot.
+			//     No idea if it's a bug with something i did or simply a broken bone.
+			//     I have to assume that it's a bone breaking upon loading somehow
+			//     as the floater only writes into the file what is given by the Viewer
+			//     so the Viewer has to have a broken bone and give its broken name to us
+			//     before we can even write a broken name. Now how does "mHindLimb4Right"
+			//     end up being broken in the first place?
+			if (joint && gAgentAvatarp->getJoint(joint->getName()))
 			{
-				vec3.mV[VX] = (*item)->getColumn(4)->getValue().asReal();
-				vec3.mV[VY] = (*item)->getColumn(5)->getValue().asReal();
-				vec3.mV[VZ] = (*item)->getColumn(6)->getValue().asReal();
-				record[line]["position"] = vec3.getValue();
+				//record[line]["bone"] = (*item)->getColumn(0)->getValue().asString();
+				record[line]["bone"] = joint->getName();
+				vec3.mV[VX] = (*item)->getColumn(1)->getValue().asReal();
+				vec3.mV[VY] = (*item)->getColumn(2)->getValue().asReal();
+				vec3.mV[VZ] = (*item)->getColumn(3)->getValue().asReal();
+				record[line]["rotation"] = vec3.getValue();
+
+				//BD - Pelvis is a special case, add position values too.
+				if (joint->getName() == "mPelvis")
+				{
+					vec3.mV[VX] = (*item)->getColumn(4)->getValue().asReal();
+					vec3.mV[VY] = (*item)->getColumn(5)->getValue().asReal();
+					vec3.mV[VZ] = (*item)->getColumn(6)->getValue().asReal();
+					record[line]["position"] = vec3.getValue();
+				}
+				line++;
 			}
-			line++;
 		}
 
 		mJointsScroll->deselectAllItems();
 	}
 	
 	llofstream file;
+	file.open(full_path.c_str());
 	//BD - Now lets actually write the file, whether it is writing a new one
-	//     or just rewrtiting the previous one with a new header.
-	for (S32 cur_line = 0; cur_line <= line; cur_line++)
+	//     or just rewriting the previous one with a new header.
+	for (S32 cur_line = 0; cur_line < line; cur_line++)
 	{
-		file.open(full_path.c_str());
 		LLSDSerialize::toXML(record[cur_line], file);
-		file.close();
 	}
-
+	file.close();
 	onPoseRefresh();
 	return TRUE;
 }
@@ -649,12 +695,14 @@ BOOL BDFloaterAnimations::onPoseLoad()
 					S32 type = pose["type"].asInteger();
 					motion->setInterpolationType(type);
 					motion->setInterpolationTime(time);
+					motion->startInterpolationTimer();
 				}
 			}
 
 			LLJoint* joint = gAgentAvatarp->getJoint(pose["bone"].asString());
 			if (joint)
 			{
+				LL_INFOS("Posing") << "Getting bone: " << pose["bone"].asString() << " (" << joint->getName() << ")" << LL_ENDL;
 				LLVector3 vec3;
 				LLQuaternion quat;
 
@@ -680,8 +728,6 @@ BOOL BDFloaterAnimations::onPoseLoad()
 
 void BDFloaterAnimations::onPoseStart()
 {
-	//BD - Should we wipe the joint list? Would be most logical to do
-	//     everything else just confuses the user.
 	LLMotion* pose_motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
 	if (!pose_motion)
 	{
@@ -700,20 +746,26 @@ void BDFloaterAnimations::onPoseStart()
 		gAgent.clearPosing();
 		gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
 	}
+	//BD - Wipe the joint list.
 	onJointRefresh();
 }
 
 void BDFloaterAnimations::onPoseDelete()
 {
-	LLScrollListItem* item = mPoseScroll->getFirstSelected();
-	if (item)
+	std::vector<LLScrollListItem*> items = mPoseScroll->getAllSelected();
+	for (std::vector<LLScrollListItem*>::iterator iter = items.begin();
+		iter != items.end(); ++iter)
 	{
-		std::string filename = item->getColumn(0)->getValue().asString();
-		std::string dirname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses");
-		
-		if (gDirUtilp->deleteFilesInDir(dirname, LLURI::escape(filename) + ".xml") < 1)
+		LLScrollListItem* item = (*iter);
+		if (item)
 		{
-			LL_WARNS("Posing") << "Cannot remove file: " << filename << LL_ENDL;
+			std::string filename = item->getColumn(0)->getValue().asString();
+			std::string dirname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses");
+
+			if (gDirUtilp->deleteFilesInDir(dirname, LLURI::escape(filename) + ".xml") < 1)
+			{
+				LL_WARNS("Posing") << "Cannot remove file: " << filename << LL_ENDL;
+			}
 		}
 	}
 	onPoseRefresh();
@@ -721,7 +773,6 @@ void BDFloaterAnimations::onPoseDelete()
 
 void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 {
-	//BD - Next? Figure out why this is not working.
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
 	if (item)
 	{
@@ -729,14 +780,14 @@ void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 		F32 time;
 		if (param.asString() == "time")
 		{
-			LLScrollListCell* column = item->getColumn(1);
+			LLScrollListCell* column = item->getColumn(2);
 			time = getChild<LLUICtrl>("interp_time")->getValue().asReal();
 			type = column->getValue().asInteger();
 			column->setValue(time);
 		}
 		else // if (param.asString() == "type")
 		{
-			LLScrollListCell* column = item->getColumn(2);
+			LLScrollListCell* column = item->getColumn(1);
 			time = column->getValue().asReal();
 			type = getChild<LLUICtrl>("interp_type")->getValue().asInteger();
 			column->setValue(type);
@@ -879,8 +930,8 @@ void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 			if (motion->getInterpolationTime() != 0.15
 				|| motion->getInterpolationType() != 1)
 			{
-				motion->setInterpolationTime(0.15f);
-				motion->setInterpolationType(1);
+				motion->setInterpolationTime(0.2f);
+				motion->setInterpolationType(2);
 			}
 		}
 		llassert(!vec3.isFinite());

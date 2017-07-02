@@ -150,15 +150,16 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 			last_quat = mJointState[i]->getJoint()->getLastRotation();
 			bool is_pelvis = (mJointState[i]->getJoint()->getName() == "mPelvis");
 
-			if (!mBlendTimer.getStarted()
+			/*if (!mInterpolationTimer.getStarted()
 				&& ((is_pelvis && target_pos != joint_pos)
 				|| target_quat != joint_quat))
 			{
-				LL_INFOS("Posing") << "Started timer" << LL_ENDL;
-				mBlendTimer.start();
-			}
+				//LL_INFOS("Posing") << "Started timer" << LL_ENDL;
+				mInterpolationTimer.start();
+			}*/
 
-			perc = llclamp(mBlendTimer.getElapsedTimeF32() / mInterpolationTime, 0.0f, 1.0f);
+			//BD - Merge these two together?
+			perc = llclamp(mInterpolationTimer.getElapsedTimeF32() / mInterpolationTime, 0.0f, 1.0f);
 			if (is_pelvis)
 			{
 				joint_pos = mJointState[i]->getJoint()->getPosition();
@@ -166,17 +167,27 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 				last_pos = mJointState[i]->getJoint()->getLastPosition();
 				if (target_pos != joint_pos)
 				{
-					if (perc >= 1.0f || mInterpolationType == 0)
+					if (mInterpolationType == 2)
 					{
-						//BD - Can be used to do no interpolation too.
-						joint_pos = target_pos;
-						last_pos = joint_pos;
+						//BD - Do spherical linear interpolation.
+						joint_pos = lerp(joint_pos, target_pos, mInterpolationTime);
 					}
 					else
 					{
-						//BD - Do linear interpolation.
-						joint_pos = lerp(last_pos, target_pos, perc);
+						if (perc >= 1.0f)
+						{
+							//BD - Can be used to do no interpolation too.
+							joint_pos = target_pos;
+							last_pos = joint_pos;
+							//LL_INFOS("Posing") << "Done with positions: (" << perc << ") " << last_pos << LL_ENDL;
+						}
+						else
+						{
+							//BD - Do linear interpolation.
+							joint_pos = lerp(last_pos, target_pos, perc);
+						}
 					}
+
 					llassert(joint_pos.isFinite());
 					mJointState[i]->setPosition(joint_pos);
 				}
@@ -196,36 +207,17 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 						//BD - Can be used to do no interpolation too.
 						joint_quat = target_quat;
 						last_quat = joint_quat;
-						LL_INFOS("Posing") << "Done with rotations: (" << perc << ") " << last_quat << LL_ENDL;
 					}
 					else
 					{
 						//BD - Do linear interpolation.
 						joint_quat = lerp(perc, last_quat, target_quat);
-						LL_INFOS("Posing") << "Time: (" << perc << ") " << last_quat << LL_ENDL;
-						//LL_INFOS("Posing") << "Time: (" << perc << ") " << mJointRotation[i] << LL_ENDL;
 					}
 				}
 
 				llassert(joint_quat.isFinite());
 				mJointState[i]->setRotation(joint_quat);
 			}
-
-			/*if (!mBlendTimer.getStarted())
-			{
-				if (mJointRotation[i] != joint_quat)
-				{
-					//LL_INFOS("Posing") << joint_quat << " " << mJointRotation[i] << LL_ENDL;
-					mJointRotation[i] = joint_quat;
-				}
-
-				if (mJointPosition != joint_pos
-					|| mJointState[i]->getJoint()->getName() == "mPelvis")
-				{
-					//LL_INFOS("Posing") << joint_pos << " " << mJointPosition << LL_ENDL;
-					mJointPosition = joint_pos;
-				}
-			}*/
 		}
 		else
 		{
@@ -233,12 +225,12 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 		}
 	}
 
-	if (perc >= 1.0f && mBlendTimer.getStarted()
+	if (perc >= 1.0f && mInterpolationTimer.getStarted()
 		&& (last_quat == joint_quat
-		&& (target_pos == joint_pos)))
+		&& (last_pos == joint_pos)))
 	{
-		LL_INFOS("Posing") << "Stopped timer at " << mBlendTimer.getElapsedTimeF32() << LL_ENDL;
-		mBlendTimer.stop();
+		//LL_INFOS("Posing") << "Stopped timer at " << mBlendTimer.getElapsedTimeF32() << LL_ENDL;
+		mInterpolationTimer.stop();
 	}
 
 	return TRUE;

@@ -176,3 +176,18 @@ BOOL LLMotion::canDeprecate()
 
 // End
 
+void LLMotion::startInterpolationTimer()
+{
+	mInterpolationTimer.start();
+}
+
+void LLMotion::stopInterpolationTimer()
+{
+	mInterpolationTimer.stop();
+}
+
+void LLMotion::pauseInterpolationTimer()
+{
+	mInterpolationTimer.pause();
+}
+
