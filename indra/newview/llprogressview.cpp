@@ -216,14 +216,11 @@ void LLProgressView::draw()
 	static LLTimer timer;
 	//BD
 	F32 alpha;
-	F32 greyscale;
 
 	if (mFadeFromLoginTimer.getStarted())
 	{
 		//BD
 		alpha = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.f, 1.f);
-		greyscale = clamp_rescale(mFadeFromLoginTimer.getElapsedTimeF32(), 0.f, FADE_FROM_LOGIN_TIME, 0.f, 1.f);
-		gSavedSettings.setF32("RenderPostGreyscaleStrength" , greyscale);
 
 		LLViewDrawContext context(alpha);
 
@@ -244,8 +241,6 @@ void LLProgressView::draw()
 	{
 		//BD
 		alpha = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
-		greyscale = clamp_rescale(mFadeToWorldTimer.getElapsedTimeF32(), 0.f, FADE_TO_WORLD_TIME, 1.f, 0.f);
-		gSavedSettings.setF32("RenderPostGreyscaleStrength", greyscale);
 
 		LLViewDrawContext context(alpha);
 
