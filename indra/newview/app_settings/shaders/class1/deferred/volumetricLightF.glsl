@@ -83,7 +83,7 @@ float nonpcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen, float s
   stc.xyz /= stc.w;
   stc.z += shadow_bias;
   
-  stc.x = floor(stc.x*shad_res + fract(pos_screen.y*0.666666666)) * recip_shadow_res;
+  stc.x = floor(stc.x*shad_res + fract(pos_screen.y*1.0)) * recip_shadow_res;
   return shadow2D(shadowMap, stc.xyz).x;
 }
 
