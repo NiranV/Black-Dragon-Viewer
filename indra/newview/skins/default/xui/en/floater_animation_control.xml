@@ -833,7 +833,6 @@ width="494">
  column_padding="2"
  draw_heading="true"
  height="180"
- enabled="false"
  follows="left|top|right"
  layout="topleft"
  left="0"
@@ -852,7 +851,6 @@ width="494">
 </scroll_list>
  <button
  height="21"
- enabled="false"
  follows="top|left"
  layout="topleft"
  label="Play"
@@ -870,7 +868,6 @@ width="494">
  height="21"
  follows="top|left"
  layout="topleft"
- enabled="false"
  label="Stop"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
@@ -884,7 +881,6 @@ width="494">
  </button>
  <button
  height="21"
- enabled="false"
  follows="top|left"
  layout="topleft"
  label="Add"
@@ -901,7 +897,6 @@ width="494">
  <button
  height="21"
  follows="top|left"
- enabled="false"
  layout="topleft"
  label="Remove"
  image_hover_unselected="Toolbar_Middle_Over"
@@ -918,7 +913,6 @@ width="494">
   commit_on_focus_lost="true"
   follows="left|top"
   height="20"
-  enabled="false"
   label="0.001 - 1.0"
   left_pad="1"
   top_delta="0"
@@ -931,7 +925,6 @@ width="494">
  <combo_box
      follows="left|top"
      height="20"
-	 enabled="false"
      layout="topleft"
      left_pad="1"
      top_delta="0"

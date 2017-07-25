@@ -45,7 +45,7 @@ private:
 	//BD - Posing
 	void onClickPoseSave();
 	BOOL onPoseSave(S32 type, F32 time, bool editing);
-	BOOL onPoseLoad();
+	BOOL onPoseLoad(const LLSD& name);
 	void onPoseStart();
 	void onPoseDelete();
 	void onPoseRefresh();
@@ -82,6 +82,8 @@ private:
 	//BD - Animations
 	LLScrollListCtrl*				mAnimEditorScroll;
 	LLFrameTimer					mAnimPlayTimer;
+	F32								mExpiryTime;
+	S32								mAnimScrollIndex;
 };
 
 #endif

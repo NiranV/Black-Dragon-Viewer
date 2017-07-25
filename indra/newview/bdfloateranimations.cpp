@@ -56,7 +56,7 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	//BD - Start our custom pose.
 	mCommitCallbackRegistrar.add("Pose.Start", boost::bind(&BDFloaterAnimations::onPoseStart, this));
 	//BD - Load the current pose and export all its values into the UI so we can alter them.
-	mCommitCallbackRegistrar.add("Pose.Load", boost::bind(&BDFloaterAnimations::onPoseLoad, this));
+	mCommitCallbackRegistrar.add("Pose.Load", boost::bind(&BDFloaterAnimations::onPoseLoad, this, ""));
 	//BD - Delete the currently selected Pose.
 	mCommitCallbackRegistrar.add("Pose.Delete", boost::bind(&BDFloaterAnimations::onPoseDelete, this));
 	//BD - Change a pose's blend type and time.
@@ -101,21 +101,61 @@ BOOL BDFloaterAnimations::postBuild()
 	mPoseScroll = this->getChild<LLScrollListCtrl>("poses_scroll", true);
 	mPoseScroll->setCommitOnSelectionChange(TRUE);
 	mPoseScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onPoseControlsRefresh, this));
-	mPoseScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onPoseLoad, this));
+	mPoseScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onPoseLoad, this, ""));
 	mJointsScroll = this->getChild<LLScrollListCtrl>("joints_scroll", true);
 	mJointsScroll->setCommitOnSelectionChange(TRUE);
 	mJointsScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onJointControlsRefresh, this));
 
 	//BD - Animations
 	mAnimEditorScroll = this->getChild<LLScrollListCtrl>("anim_editor_scroll", true);
+	mAnimScrollIndex = 0;
 	return TRUE;
 }
 
 void BDFloaterAnimations::draw()
 {
-	/*if (mAnimPlayTimer.hasExpired())
+	if (mAnimPlayTimer.getStarted() &&
+		mAnimPlayTimer.getElapsedTimeF32() > mExpiryTime)
 	{
-		S32 count = mAnimEditorScroll->getItemCount();
+		mAnimPlayTimer.stop();
+		LL_INFOS("Posing") << "Stopping the timer temporarily. We are at: " << mAnimScrollIndex << LL_ENDL;
+		if (mAnimEditorScroll->getItemCount() != 0)
+		{
+			mAnimEditorScroll->selectNthItem(mAnimScrollIndex);
+			LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
+			if (item)
+			{
+				//BD - We can't use Wait or Restart as label, need to fix this.
+				std::string label = item->getColumn(0)->getValue().asString();
+				if (label == "Wait")
+				{
+					//BD - Do nothing?
+					mExpiryTime = item->getColumn(1)->getValue().asReal();
+					mAnimScrollIndex++;
+					LL_INFOS("Posing") << "We're waiting for " << mExpiryTime << " seconds" << LL_ENDL;
+				}
+				else if (label == "Repeat")
+				{
+					mAnimScrollIndex = 0;
+					mExpiryTime = 0.0f;
+					LL_INFOS("Posing") << "Restart from the beginning." << LL_ENDL;
+				}
+				else
+				{
+					mExpiryTime = 0.0f;
+					onPoseLoad(label);
+					mAnimScrollIndex++;
+					LL_INFOS("Posing") << "Loading pose:" << label << LL_ENDL;
+				}
+			}
+		}
+
+		if (mAnimEditorScroll->getItemCount() != mAnimScrollIndex)
+		{
+			mAnimPlayTimer.start();
+			LL_INFOS("Posing") << "Continueing the timer." << LL_ENDL;
+		}
+		/*S32 count = mAnimEditorScroll->getItemCount();
 		if (count != 0)
 		{
 			S32 index = 0;
@@ -157,8 +197,8 @@ void BDFloaterAnimations::draw()
 			{
 				mAnimPlayTimer.stop();
 			}
-		}
-	}*/
+		}*/
+	}
 	LLFloater::draw();
 }
 
@@ -659,71 +699,77 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 	return TRUE;
 }
 
-BOOL BDFloaterAnimations::onPoseLoad()
+BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 {
+	//BOOL ret = TRUE;
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
-	if (item)
+	std::string filename;
+	if (!name.asString().empty())
 	{
-		std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses", item->getColumn(0)->getValue().asString() + ".xml");
-		LLSD pose;
-		llifstream infile;
-
-		infile.open(filename);
-		if (!infile.is_open())
-		{
-			LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
-			return FALSE;
-		}
-
-		while (!infile.eof())
-		{
-			S32 count = LLSDSerialize::fromXML(pose, infile);
-			if (count == LLSDParser::PARSE_FAILURE)
-			{
-				break;
-			}
-
-			//BD - Not sure how to read the exact line out of a XML file, so we're just going
-			//     by the amount of tags here, since the header has only 3 it's a good indicator
-			//     if it's the correct line we're in.
-			if (count == 3)
-			{
-				LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-				if (motion)
-				{
-					F32 time = pose["time"].asReal();
-					S32 type = pose["type"].asInteger();
-					motion->setInterpolationType(type);
-					motion->setInterpolationTime(time);
-					motion->startInterpolationTimer();
-				}
-			}
-
-			LLJoint* joint = gAgentAvatarp->getJoint(pose["bone"].asString());
-			if (joint)
-			{
-				LL_INFOS("Posing") << "Getting bone: " << pose["bone"].asString() << " (" << joint->getName() << ")" << LL_ENDL;
-				LLVector3 vec3;
-				LLQuaternion quat;
-
-				vec3.setValue(pose["rotation"]);
-				quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
-				joint->setLastRotation(joint->getRotation());
-				joint->setTargetRotation(quat);
-
-				if (joint->getName() == "mPelvis")
-				{
-					vec3.setValue(pose["position"]);
-					joint->setLastPosition(joint->getPosition());
-					joint->setTargetPosition(vec3);
-				}
-			}
-		}
-		infile.close();
-		onJointRefresh();
-		return TRUE;
+		filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses", name.asString() + ".xml");
 	}
-	return FALSE;
+	else if (item)
+	{
+		filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses", item->getColumn(0)->getValue().asString() + ".xml");
+	}
+
+	LLSD pose;
+	llifstream infile;
+	infile.open(filename);
+	if (!infile.is_open())
+	{
+		LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
+		return FALSE;
+	}
+
+	while (!infile.eof())
+	{
+		S32 count = LLSDSerialize::fromXML(pose, infile);
+		if (count == LLSDParser::PARSE_FAILURE)
+		{
+			return FALSE;
+			//break;
+		}
+
+		//BD - Not sure how to read the exact line out of a XML file, so we're just going
+		//     by the amount of tags here, since the header has only 3 it's a good indicator
+		//     if it's the correct line we're in.
+		if (count == 3)
+		{
+			LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+			if (motion)
+			{
+				F32 time = pose["time"].asReal();
+				S32 type = pose["type"].asInteger();
+				motion->setInterpolationType(type);
+				motion->setInterpolationTime(time);
+				motion->startInterpolationTimer();
+			}
+		}
+
+		LLJoint* joint = gAgentAvatarp->getJoint(pose["bone"].asString());
+		if (joint)
+		{
+			LL_INFOS("Posing") << "Getting bone: " << pose["bone"].asString() << " (" << joint->getName() << ")" << LL_ENDL;
+			LLVector3 vec3;
+			LLQuaternion quat;
+
+			vec3.setValue(pose["rotation"]);
+			quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
+			joint->setLastRotation(joint->getRotation());
+			joint->setTargetRotation(quat);
+
+			if (joint->getName() == "mPelvis")
+			{
+				vec3.setValue(pose["position"]);
+				joint->setLastPosition(joint->getPosition());
+				joint->setTargetPosition(vec3);
+			}
+		}
+	}
+	infile.close();
+	onJointRefresh();
+	return TRUE;
 }
 
 void BDFloaterAnimations::onPoseStart()
@@ -984,6 +1030,7 @@ void BDFloaterAnimations::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 void BDFloaterAnimations::onAnimAdd()
 {
 	LLSD choice = getChild<LLComboBox>("anim_choice_combo")->getValue();
+	F32 time = getChild<LLLineEditor>("anim_time")->getValue().asReal();
 	if (choice.asString() == "Repeat")
 	{
 		LLSD row;
@@ -996,15 +1043,22 @@ void BDFloaterAnimations::onAnimAdd()
 		LLSD row;
 		row["columns"][0]["column"] = "name";
 		row["columns"][0]["value"] = "Wait";
+		row["columns"][1]["column"] = "time";
+		row["columns"][1]["value"] = time;
 		mAnimEditorScroll->addElement(row);
 	}
 	else
 	{
-		LLSD row;
-		row["columns"][0]["column"] = "name";
-		row["columns"][0]["value"] = choice.asString();
-		//LLScrollListItem* element = mAnimEditorScroll->addElement(row);
-		mAnimEditorScroll->addElement(row);
+		LLScrollListItem* item = mPoseScroll->getFirstSelected();
+		if (item)
+		{
+			//BD - Replace with list fill.
+			LLSD row;
+			row["columns"][0]["column"] = "name";
+			row["columns"][0]["value"] = item->getColumn(0)->getValue().asString();
+			//LLScrollListItem* element = mAnimEditorScroll->addElement(row);
+			mAnimEditorScroll->addElement(row);
+		}
 	}
 }
 
@@ -1028,11 +1082,13 @@ void BDFloaterAnimations::onAnimSet()
 
 void BDFloaterAnimations::onAnimPlay()
 {
-	mAnimPlayTimer.setTimerExpirySec(0.0f);
+	LL_INFOS("Posing") << "Starting the timer for the first time." << LL_ENDL;
+	mExpiryTime = 0.0f;
 	mAnimPlayTimer.start();
 }
 
 void BDFloaterAnimations::onAnimStop()
 {
+	LL_INFOS("Posing") << "Stopping the timer permanently." << LL_ENDL;
 	mAnimPlayTimer.stop();
 }
