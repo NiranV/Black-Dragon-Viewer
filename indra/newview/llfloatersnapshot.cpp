@@ -946,8 +946,11 @@ BOOL LLFloaterSnapshot::postBuild()
 	getChild<LLComboBox>("profile_size_combo")->selectNthItem(0);
 	getChild<LLComboBox>("postcard_size_combo")->selectNthItem(0);
 	getChild<LLComboBox>("texture_size_combo")->selectNthItem(0);
-	getChild<LLComboBox>("local_size_combo")->selectNthItem(8);
 	getChild<LLComboBox>("local_format_combo")->selectNthItem(0);
+
+	//BD - Exception for local, select custom by default, current window is the same anyway.
+	LLComboBox* combo = getChild<LLComboBox>("local_size_combo");
+	combo->selectNthItem(combo->getItemCount() - 1);
 
 	//BD
 	impl->mSnapshotFreezeWorld = false;

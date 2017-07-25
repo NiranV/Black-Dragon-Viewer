@@ -75,6 +75,18 @@
          name="1600x1200"
          value="[i1600,i1200]" />
         <combo_box.item
+         label="1920x1080"
+         name="1920x1080"
+         value="[i1920,i1080]" />
+        <combo_box.item
+         label="4096x2160 (UHD)"
+         name="4096x2160"
+         value="[i4096,i2160]" />
+        <combo_box.item
+         label="6016x3316 (6K)"
+         name="6016x3316"
+         value="[i6016,i3316]" />
+        <combo_box.item
          label="Custom"
          name="Custom"
          value="[i-1,i-1]" />
