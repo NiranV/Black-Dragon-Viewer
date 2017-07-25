@@ -4117,8 +4117,8 @@ System UI size factor has changed since last run. Do you want to open UI size ad
     <usetemplate
 	 ignoretext="Notify me of System UI scale changes"
      name="okcancelignore"
-     notext="Cancel"
-     yestext="OK"/>
+     notext="OK"
+     yestext="Cancel"/>
   </notification>
 
   <notification

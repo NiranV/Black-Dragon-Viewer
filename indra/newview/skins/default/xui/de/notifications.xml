@@ -1695,7 +1695,7 @@ weitere Infos zu diesem Update finden Sie [[INFO_URL] hier].
 	</notification>
 	<notification name="SystemUIScaleFactorChanged">
 		Der UI-Größenfaktor des Systems hat sich seit der letzten Ausführung geändert. Möchten Sie die Seite mit den UI-Größeneinstellungen öffnen?
-		<usetemplate ignoretext="Benachrichtige mich über System UI-Größenfaktor Änderungen." name="okcancelignore" notext="Abbrechen" yestext="OK"/>
+		<usetemplate ignoretext="Benachrichtige mich über System UI-Größenfaktor Änderungen." name="okcancelignore" notext="OK" yestext="Abbrechen"/>
 	</notification>
 	<notification name="WebLaunchJoinNow">
 		Möchten Sie Ihre [http://secondlife.com/account/ Startseite] aufrufen, um Ihr Konto zu verwalten?
