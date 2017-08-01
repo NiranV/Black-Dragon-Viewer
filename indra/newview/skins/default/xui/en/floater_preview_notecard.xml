@@ -7,7 +7,6 @@
  layout="topleft"
  min_height="243"
  min_width="234"
- background_color="FloaterDefaultBackgroundColor"
  name="preview notecard"
  title="NOTECARD:"
  width="400">
