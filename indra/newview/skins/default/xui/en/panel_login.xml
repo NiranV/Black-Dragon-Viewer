@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.7.8 - Decaying Dragon]"
+       label="[CHANNEL] [VERSION] - [2.7.9 - Decaying Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="5740"
+       height="6840"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,123 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="378"
+              height="664"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: 1080p, 4K and 6K preset resolutions to local snapshot resolution dropdown.
+Added: First working implementation of the Animator, capable of waiting, repeating and playing all saved poses.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Added: Options to render your own attached lights and inworld lights.
+Added: Option to toggle light coming from projectors.
+Changed: Switched answer button labels for System UI Scale notification.
+Changed: Behavior of light options to be independent from each other. All 3 need to be enabled to see all lights.
+Changed: Inworld Poser to 5.0.
+Changed: Version to 2.7.9.
+- Added: Ability to toggle bone overrides on and off.
+- Added: Ability to save bone overrides into pose presets.
+- Changed: Layout of Animation Control floater to its (semi) final design.
+- Changed: Font style to bold when a bone is enabled. Normal if its disabled.
+- Fixed: Crash when using Reset Skeleton and Animations while posing.
+- Fixed: Last HindLimb becoming corrupt sometimes.
+- Removed: Some debugging log texts.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fixed: "Com(p)lexity" label in Dragon menu. Again.
+Fixed: Warning in floater_preview_notecard.xml.
+              </text>
+              <web_browser
+              visibility_control="ExperimentalLogin"
+              tab_stop="false" 
+              trusted_content="true" 
+              bg_opaque_color="Black"
+              border_visible="false"
+              top="45"
+              follows="all"
+              start_url="https://thumbs.gfycat.com/FarWarlikeHeavenly-mobile.mp4"
+              left="9"
+              name="html"
+              height="205"
+              width="400" />
+              <web_browser
+              visibility_control="ExperimentalLogin"
+              tab_stop="false" 
+              trusted_content="true" 
+              bg_opaque_color="Black"
+              border_visible="false"
+              top="434"
+              follows="all"
+              start_url="https://thumbs.gfycat.com/HotScholarlyCassowary-mobile.mp4"
+              left="9"
+              name="html"
+              height="205"
+              width="400" />
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="45"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.7.8
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="390"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
@@ -186,6 +301,7 @@ Changed: Layout of build options floater (grid options).
 Changed: Clamp spherical linear interpolation between 0.0 and 1.0. Isn't conveyed in the UI yet.
 Changed: Disabled all animator controls for now.
 Changed: Sharpened godray shadow corners, less dittering but might look worse on lower shadow resolutions.
+Changed: Version to 2.7.8.
 Fixed: FXAA Warning appearing on wrong conditions.
 Fixed: Titles in additional object info being almost unreadable.
 Fixed: Developer auto-response message appearing for others when opening my group.
