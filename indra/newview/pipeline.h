@@ -608,6 +608,8 @@ public:
 	static BOOL				sRenderingHUDs;
 	//BD
 	static BOOL				sRenderOtherAttachedLights;
+	static BOOL				sRenderOwnAttachedLights;
+	static BOOL				sRenderDeferredLights;
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
 	static bool				sRenderTextures;
 // [/SL:KB]

@@ -429,6 +429,8 @@ F32		LLPipeline::sMinRenderSize = 0.f;
 BOOL	LLPipeline::sRenderingHUDs;
 //BD
 BOOL	LLPipeline::sRenderOtherAttachedLights = TRUE;
+BOOL	LLPipeline::sRenderOwnAttachedLights = TRUE;
+BOOL	LLPipeline::sRenderDeferredLights = TRUE;
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
 bool	LLPipeline::sRenderTextures = true;
 // [/SL:KB]
@@ -6220,9 +6222,20 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 				drawable->clearState(LLDrawable::NEARBY_LIGHT);
 				continue;
 			}
-			if ((!sRenderAttachedLights || 
-				!sRenderOtherAttachedLights && (volight->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
-				&& volight && volight->isAttachment())
+			//BD
+			if (//!sRenderAttachedLights || 
+				volight && volight->isAttachment())
+			{
+				if ((!sRenderOtherAttachedLights && (volight->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
+					|| (!sRenderOwnAttachedLights && (volight->getAvatarAncestor() == gAgentAvatarp->getAvatar())))
+				{
+					drawable->clearState(LLDrawable::NEARBY_LIGHT);
+					continue;
+				}
+			}
+			//BD - Attached lights only option.
+			if (volight && !volight->isAttachment()
+				&& !sRenderDeferredLights)
 			{
 				drawable->clearState(LLDrawable::NEARBY_LIGHT);
 				continue;
@@ -6253,9 +6266,19 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 			{
 				continue;
 			}
-			if ((!sRenderAttachedLights ||
-				!sRenderOtherAttachedLights && (light->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
-				&& light && light->isAttachment())
+			//BD
+			if (//!sRenderAttachedLights || 
+				light && light->isAttachment())
+			{
+				if ((!sRenderOtherAttachedLights && (light->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
+					|| (!sRenderOwnAttachedLights && (light->getAvatarAncestor() == gAgentAvatarp->getAvatar())))
+				{
+					continue;
+				}
+			}
+			//BD - Attached lights only option.
+			if (light && !light->isAttachment()
+				&& !sRenderDeferredLights)
 			{
 				continue;
 			}
@@ -8983,13 +9006,25 @@ void LLPipeline::renderDeferredLighting()
 
 					if (volume->isAttachment())
 					{
-						if (!sRenderAttachedLights)
+						//BD
+						/*if (!sRenderAttachedLights)
+						{
+							continue;
+						}*/
+
+						//BD
+						if ((!sRenderOtherAttachedLights
+							&& (volume->getAvatarAncestor() != gAgentAvatarp))
+							|| (!sRenderOwnAttachedLights
+							&& (volume->getAvatarAncestor() == gAgentAvatarp)))
 						{
 							continue;
 						}
-
-						if (!sRenderOtherAttachedLights
-							&& (volume->getAvatarAncestor() != gAgentAvatarp))
+					}
+					else
+					{
+						//BD - Attached lights only option.
+						if (!sRenderDeferredLights)
 						{
 							continue;
 						}
@@ -9552,13 +9587,25 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 
 					if (volume->isAttachment())
 					{
-						if (!sRenderAttachedLights)
+						//BD
+						/*if (!sRenderAttachedLights)
+						{
+						continue;
+						}*/
+
+						//BD
+						if ((!sRenderOtherAttachedLights
+							&& (volume->getAvatarAncestor() != gAgentAvatarp))
+							|| (!sRenderOwnAttachedLights
+							&& (volume->getAvatarAncestor() == gAgentAvatarp)))
 						{
 							continue;
 						}
-
-						if (!sRenderOtherAttachedLights 
-							&& (volume->getAvatarAncestor() != gAgentAvatarp))
+					}
+					else
+					{
+						//BD - Attached lights only option.
+						if (!sRenderDeferredLights)
 						{
 							continue;
 						}

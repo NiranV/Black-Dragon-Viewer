@@ -659,6 +659,18 @@ static bool handleRenderOtherAttachedLightsChanged(const LLSD& newvalue)
 	return true;
 }
 
+static bool handleRenderOwnAttachedLightsChanged(const LLSD& newvalue)
+{
+	LLPipeline::sRenderOwnAttachedLights = gSavedSettings.getBOOL("RenderOwnAttachedLights");
+	return true;
+}
+
+static bool handleRenderDeferredLightsChanged(const LLSD& newvalue)
+{
+	LLPipeline::sRenderDeferredLights = gSavedSettings.getBOOL("RenderDeferredLights");
+	return true;
+}
+
 //BD - Always-on Mouse-steering.
 static bool handleMouseSteeringChanged(const LLSD&)
 {
@@ -975,6 +987,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderWaterRefResolution")->getSignal()->connect(boost::bind(&handleWaterResolutionChanged, _2));
 	gSavedSettings.getControl("RenderAttachedLights")->getSignal()->connect(boost::bind(&handleRenderAttachedLightsChanged, _2));
 	gSavedSettings.getControl("RenderOtherAttachedLights")->getSignal()->connect(boost::bind(&handleRenderOtherAttachedLightsChanged, _2));
+	gSavedSettings.getControl("RenderOwnAttachedLights")->getSignal()->connect(boost::bind(&handleRenderOwnAttachedLightsChanged, _2));
+	gSavedSettings.getControl("RenderDeferredLights")->getSignal()->connect(boost::bind(&handleRenderDeferredLightsChanged, _2));
 	gSavedSettings.getControl("RenderAttachedParticles")->getSignal()->connect(boost::bind(&handleRenderAttachedParticlesChanged, _2));
 	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
 	gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));

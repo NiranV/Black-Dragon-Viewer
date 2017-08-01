@@ -794,31 +794,31 @@ width="345">
                   Misc Options:
                   </text>
                   <check_box
-                  control_name="RenderLocalLights"
+                  control_name="RenderDeferredLights"
                   enabled_control="RenderDeferred"
                   height="16"
-                  label="Render Deferred Lights"
-                  tool_tip="Toggles normal lights and projected lights in Deferred Rendering on or off altogether. Warning this might also disable lights in Windlight!"
+                  label="Render World Lights"
+                  tool_tip="Toggles unattached normal and projected lights in Deferred Rendering on or off."
                   layout="topleft"
                   left_delta="0"
-                  name="UseLightShaders"
+                  name="RenderDeferredLights"
                   top_pad="15"
                   width="115" />
                   <check_box
                   control_name="RenderAttachedLights"
                   height="16"
-                  label="Render Attached Lights"
-                  tool_tip="Toggles rendering of lights which are attached to your or other Avatars on or off. Usefull for annoying facelights"
+                  label="Render Self Attached Lights"
+                  tool_tip="Toggles rendering of lights which are attached to your own Avatar on or off."
                   layout="topleft"
                   left="10"
-                  name="attached_lights"
+                  name="attached_own_lights"
                   top_pad="0"
                   width="115" />
                   <check_box
                   control_name="RenderOtherAttachedLights"
                   height="16"
                   label="Render Other Attached Lights"
-                  tool_tip="Toggles rendering of lights which are attached toother Avatars on or off. Useful for annoying facelights. Will keep your own lights intact."
+                  tool_tip="Toggles rendering of lights which are attached to other Avatars on or off. Useful for annoying facelights."
                   layout="topleft"
                   left="10"
                   name="attached_other_lights"
