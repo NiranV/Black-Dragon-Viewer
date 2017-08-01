@@ -1877,6 +1877,14 @@ void LLVOAvatar::resetSkeleton(bool reset_animations)
         return;
     }
 
+	//BD - We need to clear posing here otherwise we'll crash.
+	LLMotion* pose_motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	if (pose_motion)
+	{
+		gAgent.clearPosing();
+		gAgentAvatarp->removeMotion(ANIM_BD_POSING_MOTION);
+	}
+
     // Save mPelvis state
     //LLVector3 pelvis_pos = getJoint("mPelvis")->getPosition();
     //LLQuaternion pelvis_rot = getJoint("mPelvis")->getRotation();

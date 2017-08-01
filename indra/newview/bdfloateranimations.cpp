@@ -33,6 +33,8 @@
 // viewer includes
 #include "llfloaterpreference.h"
 
+#include "bdposingmotion.h"
+
 
 BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	:	LLFloater(key)
@@ -66,6 +68,8 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	mCommitCallbackRegistrar.add("Joint.Set", boost::bind(&BDFloaterAnimations::onJointSet, this, _1, _2));
 	//BD - Change a bone's position (specifically the mPelvis bone).
 	mCommitCallbackRegistrar.add("Joint.PosSet", boost::bind(&BDFloaterAnimations::onJointPosSet, this, _1, _2));
+	//BD - Add or remove a joint state to or from the pose (enable/disable our overrides).
+	mCommitCallbackRegistrar.add("Joint.ChangeState", boost::bind(&BDFloaterAnimations::onJointChangeState, this));
 
 	//BD - Add a new entry to the animation creator.
 	mCommitCallbackRegistrar.add("Anim.Add", boost::bind(&BDFloaterAnimations::onAnimAdd, this));
@@ -105,6 +109,7 @@ BOOL BDFloaterAnimations::postBuild()
 	mJointsScroll = this->getChild<LLScrollListCtrl>("joints_scroll", true);
 	mJointsScroll->setCommitOnSelectionChange(TRUE);
 	mJointsScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onJointControlsRefresh, this));
+	mJointsScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onJointChangeState, this));
 
 	//BD - Animations
 	mAnimEditorScroll = this->getChild<LLScrollListCtrl>("anim_editor_scroll", true);
@@ -155,49 +160,6 @@ void BDFloaterAnimations::draw()
 			mAnimPlayTimer.start();
 			LL_INFOS("Posing") << "Continueing the timer." << LL_ENDL;
 		}
-		/*S32 count = mAnimEditorScroll->getItemCount();
-		if (count != 0)
-		{
-			S32 index = 0;
-			if (mAnimEditorScroll->getNumSelected() != 0)
-			{
-				//mAnimEditorScroll->getFirstData()
-				index = mAnimEditorScroll->getFirstSelectedIndex();
-			}
-
-			if (index < count)
-			{
-				LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
-				if (item)
-				{
-					std::string name = item->getColumn(0)->getValue();
-					F32 time = 0.0f;
-					if (name == "Wait")
-					{
-						time = item->getColumn(1)->getValue().asReal();
-						mAnimPlayTimer.resetWithExpiry(time);
-						index++;
-						mAnimEditorScroll->selectNthItem(index);
-					}
-					else if (name == "Restart")
-					{
-						mAnimEditorScroll->selectNthItem(0);
-					}
-					else
-					{
-						mPoseScroll->selectItemByLabel(name, false, 0);
-						if (mPoseScroll->getNumSelected() != 0)
-						{
-							onPoseLoad();
-						}
-					}
-				}
-			}
-			else
-			{
-				mAnimPlayTimer.stop();
-			}
-		}*/
 	}
 	LLFloater::draw();
 }
@@ -211,8 +173,6 @@ void BDFloaterAnimations::resetToDefault(LLUICtrl* ctrl)
 
 void BDFloaterAnimations::onOpen(const LLSD& key)
 {
-	//mAnimPlayTimer.stop();
-	//mAnimPlayTimer.setTimerExpirySec(99.9f);
 	onMotionRefresh();
 	onJointRefresh();
 	onPoseRefresh();
@@ -679,6 +639,26 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 					vec3.mV[VZ] = (*item)->getColumn(6)->getValue().asReal();
 					record[line]["position"] = vec3.getValue();
 				}
+
+				//BD - Save the enabled state per preset so we can switch bones on and off
+				//     on demand inbetween poses additionally to globally.
+				LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+				if (motion)
+				{
+					LLPose* pose = motion->getPose();
+					if (pose)
+					{
+						if (pose->findJointState(joint))
+						{
+							record[line]["enabled"] = TRUE;
+						}
+						else
+						{
+							record[line]["enabled"] = FALSE;
+						}
+					}
+				}
+
 				line++;
 			}
 		}
@@ -728,15 +708,14 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 		if (count == LLSDParser::PARSE_FAILURE)
 		{
 			return FALSE;
-			//break;
 		}
 
 		//BD - Not sure how to read the exact line out of a XML file, so we're just going
 		//     by the amount of tags here, since the header has only 3 it's a good indicator
 		//     if it's the correct line we're in.
+		BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
 		if (count == 3)
 		{
-			LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
 			if (motion)
 			{
 				F32 time = pose["time"].asReal();
@@ -750,7 +729,6 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 		LLJoint* joint = gAgentAvatarp->getJoint(pose["bone"].asString());
 		if (joint)
 		{
-			LL_INFOS("Posing") << "Getting bone: " << pose["bone"].asString() << " (" << joint->getName() << ")" << LL_ENDL;
 			LLVector3 vec3;
 			LLQuaternion quat;
 
@@ -764,6 +742,38 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 				vec3.setValue(pose["position"]);
 				joint->setLastPosition(joint->getPosition());
 				joint->setTargetPosition(vec3);
+			}
+
+			if (motion)
+			{
+				LLPose* mpose = motion->getPose();
+				if (mpose)
+				{
+					LLPointer<LLJointState> joint_state = mpose->findJointState(joint);
+					std::string state_string = pose["enabled"];
+					if (!state_string.empty())
+					{
+						bool state_enabled = pose["enabled"].asBoolean();
+						if (!joint_state && state_enabled)
+						{
+							motion->addJointToState(joint);
+						}
+						else if (joint_state && !state_enabled)
+						{
+							motion->removeJointState(joint_state);
+						}
+					}
+					else
+					{
+						//BD - Fail safe, assume that a bone is always enabled in case we
+						//     load a pose that was created prior to including the enabled
+						//     state.
+						if (!joint_state)
+						{
+							motion->addJointToState(joint);
+						}
+					}
+				}
 			}
 		}
 	}
@@ -858,6 +868,7 @@ void BDFloaterAnimations::onJointRefresh()
 			LLVector3 vec3;
 			LLSD row;
 			std::string format = llformat("%%.%df", 3);
+
 			//BD - When posing get the target values otherwise we end up getting the in-interpolation values.
 			if (gAgent.getPosing())
 			{
@@ -894,8 +905,23 @@ void BDFloaterAnimations::onJointRefresh()
 				row["columns"][6]["column"] = "pos_z";
 				row["columns"][6]["value"] = llformat(format.c_str(), vec3.mV[VZ]);
 			}
+
 			LLScrollListItem* item = mJointsScroll->addElement(row);
 			item->setUserdata(joint);
+
+			LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+			if (motion)
+			{
+				LLPose* pose = motion->getPose();
+				if (pose)
+				{
+					LLPointer<LLJointState> joint_state = pose->findJointState(joint);
+					if (joint_state)
+					{
+						((LLScrollListText*)item->getColumn(0))->setFontStyle(LLFontGL::BOLD);
+					}
+				}
+			}
 		}
 		else
 		{
@@ -922,6 +948,17 @@ void BDFloaterAnimations::onJointControlsRefresh()
 			getChild<LLSliderCtrl>("Position_X")->setValue(item->getColumn(4)->getValue());
 			getChild<LLSliderCtrl>("Position_Y")->setValue(item->getColumn(5)->getValue());
 			getChild<LLSliderCtrl>("Position_Z")->setValue(item->getColumn(6)->getValue());
+		}
+
+		BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+		if (motion)
+		{
+			LLPose* pose = motion->getPose();
+			if (pose)
+			{
+				LLPointer<LLJointState> joint_state = pose->findJointState(joint);
+				getChild<LLButton>("toggle_bone")->setValue(joint_state.notNull());
+			}
 		}
 	}
 
@@ -1023,6 +1060,34 @@ void BDFloaterAnimations::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 	}
 }
 
+void BDFloaterAnimations::onJointChangeState()
+{
+	LLJoint* joint = (LLJoint*)mJointsScroll->getFirstSelected()->getUserdata();
+	if (joint)
+	{
+		BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+		if (motion)
+		{
+			LLPose* pose = motion->getPose();
+			if (pose)
+			{
+				LLPointer<LLJointState> joint_state = pose->findJointState(joint);
+				if (joint_state)
+				{
+					motion->removeJointState(joint_state);
+					((LLScrollListText*)mJointsScroll->getFirstSelected()->getColumn(0))->setFontStyle(LLFontGL::NORMAL);
+				}
+				else
+				{
+					motion->addJointToState(joint);
+					((LLScrollListText*)mJointsScroll->getFirstSelected()->getColumn(0))->setFontStyle(LLFontGL::BOLD);
+				}
+			}
+		}
+	}
+	onJointControlsRefresh();
+}
+
 
 ////////////////////////////////
 //BD - Animations
@@ -1082,13 +1147,11 @@ void BDFloaterAnimations::onAnimSet()
 
 void BDFloaterAnimations::onAnimPlay()
 {
-	LL_INFOS("Posing") << "Starting the timer for the first time." << LL_ENDL;
 	mExpiryTime = 0.0f;
 	mAnimPlayTimer.start();
 }
 
 void BDFloaterAnimations::onAnimStop()
 {
-	LL_INFOS("Posing") << "Stopping the timer permanently." << LL_ENDL;
 	mAnimPlayTimer.stop();
 }

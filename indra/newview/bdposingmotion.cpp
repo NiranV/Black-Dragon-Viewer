@@ -53,7 +53,7 @@ LLMotion(id),
 	mInterpolationTime = 0.15f;
 	mInterpolationType = 1;
 
-	for (S32 i = 0; i <= 132; i++)
+	for (S32 i = 0; i <= 133; i++)
 	{
 		mJointState[i] = new LLJointState;
 	}
@@ -76,14 +76,13 @@ LLMotion::LLMotionInitStatus BDPosingMotion::onInitialize(LLCharacter *character
 	// save character for future use
 	mCharacter = character;
 
-	S32 i = 0;
-	for (;;i++)
+	for (S32 i = 0;;i++)
 	{
 		mTargetJoint = mCharacter->getCharacterJoint(i);
 		if (mTargetJoint)
 		{
 			mJointState[i]->setJoint(mTargetJoint);
-			//BD - Special case for pelvi as we're going to rotate and reposition it.
+			//BD - Special case for pelvis as we're going to rotate and reposition it.
 			if (mTargetJoint->getName() == "mPelvis")
 			{
 				mJointState[i]->setUsage(LLJointState::POS | LLJointState::ROT);
@@ -149,14 +148,6 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 			joint_quat = mJointState[i]->getJoint()->getRotation();
 			last_quat = mJointState[i]->getJoint()->getLastRotation();
 			bool is_pelvis = (mJointState[i]->getJoint()->getName() == "mPelvis");
-
-			/*if (!mInterpolationTimer.getStarted()
-				&& ((is_pelvis && target_pos != joint_pos)
-				|| target_quat != joint_quat))
-			{
-				//LL_INFOS("Posing") << "Started timer" << LL_ENDL;
-				mInterpolationTimer.start();
-			}*/
 
 			//BD - Merge these two together?
 			perc = llclamp(mInterpolationTimer.getElapsedTimeF32() / mInterpolationTime, 0.0f, 1.0f);
@@ -243,6 +234,37 @@ void BDPosingMotion::onDeactivate()
 {
 }
 
+//-----------------------------------------------------------------------------
+// addJointState()
+//-----------------------------------------------------------------------------
+void BDPosingMotion::addJointToState(LLJoint *joint)
+{
+	for (S32 i = 0;; i++)
+	{
+		mTargetJoint = mCharacter->getCharacterJoint(i);
+		if (mTargetJoint)
+		{
+			if (mTargetJoint->getName() == joint->getName())
+			{
+				mJointState[i]->setJoint(mTargetJoint);
+				//BD - Special case for pelvis as we're going to rotate and reposition it.
+				if (mTargetJoint->getName() == "mPelvis")
+				{
+					mJointState[i]->setUsage(LLJointState::POS | LLJointState::ROT);
+				}
+				else
+				{
+					mJointState[i]->setUsage(LLJointState::ROT);
+				}
+				addJointState(mJointState[i]);
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+}
 
 // End
 

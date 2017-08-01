@@ -104,13 +104,15 @@ public:
 	// called when a motion is deactivated
 	virtual void onDeactivate();
 
+	void addJointToState(LLJoint *joint);
+
 public:
 	//-------------------------------------------------------------------------
 	// Joint States
 	//-------------------------------------------------------------------------
 	LLCharacter			*mCharacter;
 
-	LLPointer<LLJointState> mJointState[132];
+	LLPointer<LLJointState> mJointState[133];
 
 	//-------------------------------------------------------------------------
 	// Joints

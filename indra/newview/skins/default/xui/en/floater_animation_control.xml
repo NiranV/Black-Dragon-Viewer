@@ -13,9 +13,9 @@ width="494">
   halign="center"
   height="445"
   layout="topleft"
-  left="0"
+  left="6"
   name="Picks Tabs"
-  tab_min_width="150"
+  tab_min_width="158"
   tab_max_width="157"
   tab_height="20"
   tab_group="1"
@@ -38,10 +38,22 @@ width="494">
  background_visible="false"
  layout="topleft"
  mouse_opaque="false"
- left="7"
+ left="1"
  name="title"
  top="0"
  width="480">
+		<icon
+	follows="top|left"
+	height="210"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top_pad="0"
+	left="0"/>
  <panel
  follows="left|top|right"
  height="20"
@@ -49,10 +61,10 @@ width="494">
  bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
- left="1"
+ left="2"
  name="title"
- top="0"
- width="478"/>
+ top_delta="2"
+ width="476"/>
  
  <text
  name="first_person_label"
@@ -64,29 +76,17 @@ width="494">
  top_delta="4">
  Visible Avatars:
  </text>
-	<icon
-	follows="top|left"
-	height="188"
-	color="1 1 1 1"
-	image_name="Panel_Background"
-	layout="topleft"
-	name="vicon"
-	mouse_opaque="false"
-	visible="true"
-	width="480"
-	top_pad="3"
-	left="0"/>
  <scroll_list
  column_padding="2"
  draw_heading="true"
- height="165"
+ height="166"
  follows="left|top|right"
  layout="topleft"
  left="0"
  width="480"
  multi_select="true"
  name="other_avatars_scroll"
- top_delta="0">
+ top_pad="3">
     <scroll_list.columns
      label="Avatar Name"
      name="name"
@@ -192,6 +192,18 @@ width="494">
    <button.commit_callback
    function="Motion.Refresh"/>
  </button>
+	<icon
+	follows="top|left"
+	height="208"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top_pad="2"
+	left="0"/>
 	<panel
  follows="left|top|right"
  height="20"
@@ -199,10 +211,10 @@ width="494">
  bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
- left="1"
+ left="2"
  name="title"
- top_pad="5"
- width="478"/>
+ top_delta="2"
+ width="476"/>
 	<text
  name="first_person_label"
  follows="left|top"
@@ -213,29 +225,17 @@ width="494">
  top_delta="4">
  Saved Motions:
  </text>
-	<icon
-	follows="top|left"
-	height="188"
-	color="1 1 1 1"
-	image_name="Panel_Background"
-	layout="topleft"
-	name="vicon"
-	mouse_opaque="false"
-	visible="true"
-	width="480"
-	top_pad="3"
-	left="0"/>
  <scroll_list
  column_padding="2"
  draw_heading="true"
- height="165"
+ height="164"
  follows="left|top|right"
  layout="topleft"
  left="0"
  width="480"
  multi_select="true"
  name="motions_scroll"
- top_delta="0">
+ top_pad="3">
     <scroll_list.columns
      label="Motion Owner"
      name="name"
@@ -359,47 +359,13 @@ width="494">
  background_visible="false"
  layout="topleft"
  mouse_opaque="false"
- left="7"
- name="title"
- top="0"
- width="480">
- <!--<panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
  left="1"
  name="title"
  top="0"
- width="478"/>
- 
- <text
- name="first_person_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Bones:
- </text>-->
-	<!--<icon
-	follows="top|left"
-	height="298"
-	color="1 1 1 1"
-	image_name="Panel_Background"
-	layout="topleft"
-	name="vicon"
-	mouse_opaque="false"
-	visible="true"
-	width="480"
-	top_pad="3"
-	left="0"/>-->
+ width="480">
 	<icon
 	follows="top|left"
-	height="348"
+	height="318"
 	color="1 1 1 1"
 	image_name="Panel_Background"
 	layout="topleft"
@@ -412,7 +378,7 @@ width="494">
 	<scroll_list
  column_padding="2"
  draw_heading="true"
- height="325"
+ height="295"
  follows="left|top|right"
  layout="topleft"
  left="0"
@@ -423,31 +389,31 @@ width="494">
     <scroll_list.columns
      label="Bone Name"
      name="joint"
-   relative_width="0.32"  />
+   relative_width="0.38"  />
     <scroll_list.columns
      label="Rot X"
      name="x"
-   relative_width="0.11"  />
+   relative_width="0.10"  />
 	<scroll_list.columns
      label="Rot Y"
      name="y"
-   relative_width="0.11"  />
+   relative_width="0.10"  />
 	<scroll_list.columns
      label="Rot Z"
      name="z"
-   relative_width="0.11"  />
+   relative_width="0.10"  />
 	<scroll_list.columns
      label="Pos X"
      name="pos_x"
-   relative_width="0.11"  />
+   relative_width="0.10"  />
 	<scroll_list.columns
      label="Pos Y"
      name="pos_y"
-   relative_width="0.11"  />
+   relative_width="0.10"  />
 	<scroll_list.columns
      label="Pos Z"
      name="pos_z"
-   relative_width="0.11"  />
+   relative_width="0.10"  />
 </scroll_list>
 	<button
  height="21"
@@ -460,26 +426,11 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="activate"
- width="82"
+ width="112"
  top_pad="1"
  left="2">
    <button.commit_callback
    function="Pose.Start"/>
- </button>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Save"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="save_poses"
- width="82"
- top_delta="0"
- left_pad="1">
-		<button.commit_callback
-   function="Pose.Save"/>
  </button>
  <line_editor
   commit_on_focus_lost="false"
@@ -489,7 +440,7 @@ width="494">
   left_pad="1"
   top_delta="0"
   name="pose_name"
-  width="144"/>
+  width="124"/>
  <line_editor
   commit_on_focus_lost="false"
   follows="left|top"
@@ -524,6 +475,34 @@ width="494">
          name="2"
          value="2" />
     </combo_box>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Save"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="save_poses"
+ width="72"
+ top_delta="0"
+ left_pad="1">
+		<button.commit_callback
+   function="Pose.Save"/>
+ </button>
+ 
+ <icon
+	follows="top|left"
+	height="100"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top_pad="2"
+	left="0"/>
 	<panel
  follows="left|top|right"
  height="20"
@@ -531,10 +510,10 @@ width="494">
  bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
- left="1"
+ left="2"
  name="title"
- top_pad="2"
- width="478"/>
+ top_delta="2"
+ width="476"/>
  
  <text
  name="first_person_label"
@@ -673,6 +652,35 @@ width="494">
       function="Joint.PosSet"
       parameter="z"/>
       </slider>
+	
+	<panel
+ follows="top|left|right"
+ height="21"
+ background_visible="false"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="6"
+ width="480">
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ is_toggle="true"
+ label="Activate Selected Bone(s)"
+ label_selected="Disable Selected Bone(s)"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="toggle_bone"
+ width="476"
+ top="0"
+ left_delta="2">
+		<button.commit_callback
+   function="Joint.ChangeState"/>
+ </button>
+	</panel>
 
 	</panel>
 	</panel>
@@ -693,10 +701,22 @@ width="494">
  background_visible="false"
  layout="topleft"
  mouse_opaque="false"
- left="7"
+ left="1"
  name="title"
  top="0"
  width="480">
+			<icon
+	follows="top|left"
+	height="210"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top_pad="0"
+	left="0"/>
  <panel
  follows="left|top|right"
  height="20"
@@ -704,10 +724,10 @@ width="494">
  bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
- left="1"
+ left="2"
  name="title"
- top="0"
- width="478"/>
+ top_delta="2"
+ width="476"/>
  
  <text
  name="first_person_label"
@@ -717,31 +737,19 @@ width="494">
  height="12"
  width="350"
  top_delta="4">
- Bones:
+ Poses:
  </text>
-	<icon
-	follows="top|left"
-	height="188"
-	color="1 1 1 1"
-	image_name="Panel_Background"
-	layout="topleft"
-	name="vicon"
-	mouse_opaque="false"
-	visible="true"
-	width="480"
-	top_pad="3"
-	left="0"/>
 	<scroll_list
  column_padding="2"
  draw_heading="true"
- height="165"
+ height="166"
  follows="left|top|right"
  layout="topleft"
  left="0"
  width="480"
  multi_select="true"
  name="poses_scroll"
- top_delta="0">
+ top_pad="3">
     <scroll_list.columns
      label="Pose Name"
      name="name"
@@ -770,21 +778,14 @@ width="494">
    <button.commit_callback
    function="Pose.Load"/>
  </button>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Delete"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="delete_poses"
- width="82"
- top_delta="0"
- left_pad="1">
-	<button.commit_callback
-   function="Pose.Delete"/>
- </button>
+ <icon
+	follows="left|top|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="71"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
  <line_editor
   commit_on_focus_lost="true"
   follows="left|top"
@@ -828,18 +829,53 @@ width="494">
 		function="Pose.Set"
 		parameter="type"/>
     </combo_box>
+ <icon
+	follows="left|top|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="72"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Delete"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="delete_poses"
+ width="82"
+ top_delta="0"
+ left_pad="1">
+	<button.commit_callback
+   function="Pose.Delete"/>
+ </button>
  
+ <icon
+	follows="top|left"
+	height="208"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top_pad="2"
+	left="0"/>
  <scroll_list
  column_padding="2"
  draw_heading="true"
- height="180"
+ height="185"
  follows="left|top|right"
  layout="topleft"
  left="0"
  width="480"
  multi_select="true"
  name="anim_editor_scroll"
- top_pad="5">
+ top_delta="0">
     <scroll_list.columns
      label="Action"
      name="name"
@@ -879,36 +915,14 @@ width="494">
 	<button.commit_callback
    function="Anim.Stop"/>
  </button>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Add"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="load_poses"
- width="62"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="Anim.Add"/>
- </button>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Remove"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="delete_poses"
- width="62"
- top_delta="0"
- left_pad="1">
-	<button.commit_callback
-   function="Anim.Delete"/>
- </button>
+ <icon
+	follows="left|top|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="56"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
  <line_editor
   commit_on_focus_lost="true"
   follows="left|top"
@@ -943,10 +957,40 @@ width="494">
          value="Repeat" />
         <combo_box.item
          enabled="true"
-         label=""
+         label="Pose"
          name="2"
          value="" />
     </combo_box>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Add"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="load_poses"
+ width="62"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Anim.Add"/>
+ </button>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Remove"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="delete_poses"
+ width="84"
+ top_delta="0"
+ left_pad="1">
+	<button.commit_callback
+   function="Anim.Delete"/>
+ </button>
 	</panel>
 	</panel>
 	</tab_container>

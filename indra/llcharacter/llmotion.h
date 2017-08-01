@@ -170,14 +170,17 @@ public:
 	void startInterpolationTimer();
 	void stopInterpolationTimer();
 
+	//BD
+	void addJointState(const LLPointer<LLJointState>& jointState);
+	void removeJointState(const LLPointer<LLJointState>& jointState);
+	const LLPointer<LLJointState>& findJointState(const std::string jointName);
+	const LLPointer<LLJointState>& findJointState(LLJoint *joint);
+
 protected:
 	// called when a motion is activated
 	// must return TRUE to indicate success, or else
 	// it will be deactivated
 	virtual BOOL onActivate() = 0;
-
-	//BD
-	void addJointState(const LLPointer<LLJointState>& jointState);
 
 protected:
 	LLPose		mPose;
