@@ -276,7 +276,11 @@ void main()
 			float diff = clamp((l_dist-proj_focus)/proj_range, 0.0, 1.0);
 			float lod = diff * proj_lod;
 			
+#if LIGHT_IMAGES
 			vec4 plcol = texture2DLodDiffuse(projectionMap, proj_tc.xy, lod);
+#else
+			vec4 plcol = vec4(0.0);
+#endif
 		
 			dlit = color.rgb * plcol.rgb * plcol.a;
 			

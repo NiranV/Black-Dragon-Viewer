@@ -17209,6 +17209,17 @@
 	<key>Value</key>
 	<integer>1</integer>
   </map>
+	<key>RenderSpotLightImages</key>
+	<map>
+	<key>Comment</key>
+	<string>Render the reflection of spotlight projections on shiny surfaces with environment enabled</string>
+	<key>Persist</key>
+	<integer>1</integer>
+	<key>Type</key>
+	<string>Boolean</string>
+	<key>Value</key>
+	<integer>1</integer>
+  </map>
     
   <!-- Remappable Keys -->
   <key>JoystickButtonFlycam</key>

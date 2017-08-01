@@ -31,7 +31,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="3339"
+   height="3354"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -2957,7 +2957,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="556"
+	  height="571"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -3006,12 +3006,23 @@ width="510">
    control_name="RenderSpotLightReflections"
    height="16"
    label="Render Projector Image Reflections"
-   tool_tip="Toggles rendering the projecte image reflections seen on shiny surfaces with environment reflections enabled"
+   tool_tip="Toggles rendering the projector image reflections seen on shiny surfaces with environment reflections enabled"
    layout="topleft"
    left="10"
    name="RenderSpotLightReflections"
    top_pad="0"
    width="115" />
+	  <check_box
+   control_name="RenderSpotLightImages"
+   height="16"
+   label="Render Spotlight Light Refraction"
+   tool_tip="Toggles rendering the light a projector projects into its set direction."
+   layout="topleft"
+   left="10"
+   name="RenderSpotLightImages"
+   top_pad="0"
+   width="115" />
+	  
    <text
  type="string"
  length="1"
