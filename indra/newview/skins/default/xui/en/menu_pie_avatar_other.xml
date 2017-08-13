@@ -12,7 +12,7 @@ name="Avatar Pie">
          name="Eject...">
             <pie_slice.on_click
              function="Avatar.Eject" />
-            <pie_slice.on_visible
+            <pie_slice.on_enable
              function="Avatar.EnableFreezeEject"/>
         </pie_slice>
         <pie_slice
@@ -20,7 +20,7 @@ name="Avatar Pie">
          name="Freeze...">
             <pie_slice.on_click
              function="Avatar.Freeze" />
-            <pie_slice.on_visible
+            <pie_slice.on_enable
              function="Avatar.EnableFreezeEject"/>
         </pie_slice>
         <pie_slice
@@ -28,7 +28,7 @@ name="Avatar Pie">
         name="Dump XML">
             <pie_slice.on_click
             function="Advanced.AppearanceToXML" />
-            <pie_slice.on_visible
+            <pie_slice.on_enable
             function="Advanced.EnableAppearanceToXML"/>
         </pie_slice>
         <pie_slice
@@ -36,7 +36,7 @@ name="Avatar Pie">
         name="Debug...">
             <pie_slice.on_click
             function="Avatar.Debug" />
-            <pie_slice.on_visible
+            <pie_slice.on_enable
             function="IsGodCustomerService"/>
         </pie_slice>
         <pie_slice
