@@ -1645,8 +1645,15 @@ void LLPanelFace::onCommitAlphaMode(LLUICtrl* ctrl, void* userdata)
 // static
 void LLPanelFace::onCommitFullbright(LLUICtrl* ctrl, void* userdata)
 {
-	LLPanelFace* self = (LLPanelFace*)userdata;
-	self->sendFullbright();
+	//BD - Don't commit fullbright changes ever as long as fullbrights
+	//     are disabled, we'll end up updating the object with fullbright
+	//     off. Keep all changes local to us until we enable fullbrights
+	//     again.
+	if (gSavedSettings.getBOOL("RenderEnableFullbright"))
+	{
+		LLPanelFace* self = (LLPanelFace*)userdata;
+		self->sendFullbright();
+	}
 }
 
 // static
