@@ -490,7 +490,7 @@
      layout="topleft"
      left_delta="0"
      top_pad="0"
-     tool_tip="Automatically activates flying on Login when you were flying at Logout"
+     tool_tip="Remembers the flying state when logging out, logging you in in a flying state when you logged out while flying."
      name="Flying_At_Exit"
      width="200" />
    <panel
