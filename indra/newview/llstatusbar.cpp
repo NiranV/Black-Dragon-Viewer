@@ -266,8 +266,8 @@ void LLStatusBar::refresh()
 	if (mFPSUpdateTimer.getElapsedTimeF32() > 0.1f)
 	{
 		mFPSUpdateTimer.reset();
-		LLTrace::PeriodicRecording& frame_recording = LLTrace::get_frame_recording();
-		mFPSText->setValue(frame_recording.getPrevRecording(0).getPerSec(LLStatViewer::FPS));
+		LLTrace::Recording& recording = LLTrace::get_frame_recording().getLastRecording();
+		mFPSText->setValue(recording.getPerSec(LLStatViewer::FPS));
 	}
 	
 	// update clock every 10 seconds
