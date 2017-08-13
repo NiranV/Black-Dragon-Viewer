@@ -2795,7 +2795,9 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 				if (!(key == KEY_UP && mask == MASK_CONTROL)
 					&& !(key == KEY_DOWN && mask == MASK_CONTROL)
 					&& !(key == KEY_UP && mask == MASK_ALT)
-					&& !(key == KEY_DOWN && mask == MASK_ALT))
+					&& !(key == KEY_DOWN && mask == MASK_ALT)
+					//BD - Fix for Shift + Home not working whn Arrow Keys Move is enabled.
+					&& !(key == KEY_HOME && mask == MASK_SHIFT))
 				{
 					switch(key)
 					{
