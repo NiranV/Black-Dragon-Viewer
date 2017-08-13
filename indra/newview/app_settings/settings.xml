@@ -10554,7 +10554,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>10.0E6</real>
+    <real>256</real>
   </map>
 
     <key>RenderVBOEnable</key>
