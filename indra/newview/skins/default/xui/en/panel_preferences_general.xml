@@ -480,7 +480,7 @@
      layout="topleft"
      left="10"
      top_pad="15"
-     tool_tip="Automatically logs you in every start of Nirans Viewer"
+     tool_tip="Automatically logs you in everytime you start the Viewer."
      name="Auto_login"
      width="200" />
    <check_box
