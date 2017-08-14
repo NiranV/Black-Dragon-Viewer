@@ -522,47 +522,52 @@ BOOL PieMenu::handleMouseButtonUp(S32 x,S32 y,MASK mask)
 		// default to invisible
 		BOOL visible=FALSE;
 
-		// get the current selected slice and check if this is a regular click slice
-		PieSlice* currentSlice=dynamic_cast<PieSlice*>(mSlice);
-		if(currentSlice)
+		//BD
+		if (mSlice)
 		{
-			// if so, click it and make a sound
-			make_ui_sound("UISndClickRelease");
-			currentSlice->onCommit();
-		}
-		else
-		{
-			// check if this was a submenu
-			PieMenu* currentSubmenu=dynamic_cast<PieMenu*>(mSlice);
-			if(currentSubmenu)
+			// get the current selected slice and check if this is a regular click slice
+			PieSlice* currentSlice = dynamic_cast<PieSlice*>(mSlice);
+			if (currentSlice)
 			{
-				// if so, remember we clicked the menu already at least once
-				mFirstClick=FALSE;
-				// swap out the list of items for the ones in the submenu
-				mSlices=&currentSubmenu->mMySlices;
-				// reset enable update checks for slices
-				for (slice_list_t::iterator it = mSlices->begin(); it != mSlices->end(); it++)
-				{
-					PieSlice* resetSlice = dynamic_cast<PieSlice*>(*it);
-					if (resetSlice)
-					{
-						resetSlice->resetUpdateEnabledCheck();
-					}
-				}
-				// the menu stays visible
-				visible=TRUE;
-#if PIE_POPUP_EFFECT
-				// restart the popup timer
-				mPopupTimer.reset();
-				mPopupTimer.start();
-#endif
-				//BD - Disable Pie Menu sounds for now, they got corrupted causing a 1 sec freeze.
-				// make a sound
-				//make_ui_sound("UISndPieMenuAppear");
+				// if so, click it and make a sound
+				make_ui_sound("UISndClickRelease");
+				currentSlice->onCommit();
 			}
+			else
+			{
+				// check if this was a submenu
+				PieMenu* currentSubmenu = dynamic_cast<PieMenu*>(mSlice);
+				if (currentSubmenu)
+				{
+					// if so, remember we clicked the menu already at least once
+					mFirstClick = FALSE;
+					// swap out the list of items for the ones in the submenu
+					mSlices = &currentSubmenu->mMySlices;
+					// reset enable update checks for slices
+					for (slice_list_t::iterator it = mSlices->begin(); it != mSlices->end(); it++)
+					{
+						PieSlice* resetSlice = dynamic_cast<PieSlice*>(*it);
+						if (resetSlice)
+						{
+							resetSlice->resetUpdateEnabledCheck();
+						}
+					}
+					// the menu stays visible
+					visible = TRUE;
+#if PIE_POPUP_EFFECT
+					// restart the popup timer
+					mPopupTimer.reset();
+					mPopupTimer.start();
+#endif
+					//BD - Disable Pie Menu sounds for now, they got corrupted causing a 1 sec freeze.
+					// make a sound
+					//make_ui_sound("UISndPieMenuAppear");
+				}
+			}
+
+			// show or hide the menu, as needed
+			setVisible(visible);
 		}
-		// show or hide the menu, as needed
-		setVisible(visible);
 	}
 	// release mouse capture after the first click if we still have it grabbed
 	if(hasMouseCapture())
