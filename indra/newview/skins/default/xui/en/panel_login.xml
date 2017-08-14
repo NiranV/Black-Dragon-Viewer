@@ -195,7 +195,6 @@ Added: Option to toggle light coming from projectors.
 Changed: Switched answer button labels for System UI Scale notification.
 Changed: Behavior of light options to be independent from each other. All 3 need to be enabled to see all lights.
 Changed: Inworld Poser to 5.0.
-Changed: Version to 2.7.9.
 - Added: Ability to toggle bone overrides on and off.
 - Added: Ability to save bone overrides into pose presets.
 - Changed: Layout of Animation Control floater to its (semi) final design.
@@ -203,6 +202,7 @@ Changed: Version to 2.7.9.
 - Fixed: Crash when using Reset Skeleton and Animations while posing.
 - Fixed: Last HindLimb becoming corrupt sometimes.
 - Removed: Some debugging log texts.
+Changed: Version to 2.7.9.
 
 
 
