@@ -222,7 +222,8 @@ void PieMenu::draw( void )
 	// initialize pie scale factor for popup effect
 	F32 factor=1.0;
 
-	if (gSavedSettings.getBOOL("PieMenuPopup"))
+	//BD
+	//if (gSavedSettings.getBOOL("PieMenuPopup"))
 	{
 		// set the popup size if this was the first click on the menu
 		if (mFirstClick)
@@ -262,8 +263,9 @@ void PieMenu::draw( void )
 	LLColor4 borderColor=bgColor % (1.f-gSavedSettings.getF32("PieMenuFade"));
 
 	// on first click, make the menu fade out to indicate "borderless" operation
-	if(mFirstClick)
-		borderColor%=0.0;
+	//BD
+	//if(mFirstClick)
+	//	borderColor%=0.0;
 
 	// initially, the current segment is marked as invalid
 	S32 currentSegment=-1;
