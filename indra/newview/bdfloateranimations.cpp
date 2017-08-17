@@ -1128,67 +1128,62 @@ void BDFloaterAnimations::onAnimAdd()
 		}
 	}
 
-	if (mAnimEditorScroll->getItemCount() != 0)
+	new_item = mAnimEditorScroll->addElement(row);
+
+	//BD - Let's go through all entries in the list and copy them into a new
+	//     list in our new desired order, flag the old ones for removal while
+	//     we do this.
+	for (std::vector<LLScrollListItem*>::iterator it = old_items.begin();
+		it != old_items.end(); ++it)
 	{
-		//BD - Let's go through all entries in the list and copy them into a new
-		//     list in our new desired order, flag the old ones for removal while
-		//     we do this.
-		for (std::vector<LLScrollListItem*>::iterator it = old_items.begin();
-			it != old_items.end(); ++it)
+		LLScrollListItem* item = (*it);
+		if (item)
 		{
-			LLScrollListItem* item = (*it);
-			if (item)
-			{
-				item->setFlagged(true);
-				new_items.push_back(item);
-			}
-
-			if (index == selected_index)
-			{
-				new_item = mAnimEditorScroll->addElement(row);
-				new_item->setFlagged(true);
-				new_items.push_back(new_item);
-			}
-
-			index++;
+			item->setFlagged(true);
+			new_items.push_back(item);
 		}
 
-		//BD - Now go through the new list we created, read them out and add them
-		//     to our list in the new desired order.
-		for (std::vector<LLScrollListItem*>::iterator it = new_items.begin();
-			it != new_items.end(); ++it)
+		if (index == selected_index)
 		{
-			LLScrollListItem* item = (*it);
-			if (item)
+			new_item->setFlagged(true);
+			new_items.push_back(new_item);
+		}
+		index++;
+	}
+
+	//BD - Now go through the new list we created, read them out and add them
+	//     to our list in the new desired order.
+	for (std::vector<LLScrollListItem*>::iterator it = new_items.begin();
+		it != new_items.end(); ++it)
+	{
+		LLScrollListItem* item = (*it);
+		if (item)
+		{
+			LLSD row;
+			LLScrollListCell* column = item->getColumn(0);
+			if (column)
 			{
-				LLSD row;
-				LLScrollListCell* column = item->getColumn(0);
-				if (column)
+				std::string value_str = column->getValue().asString();
+				row["columns"][0]["column"] = "name";
+				row["columns"][0]["value"] = value_str;
+				if (value_str == "Wait")
 				{
-					std::string value_str = column->getValue().asString();
-					row["columns"][0]["column"] = "name";
-					row["columns"][0]["value"] = value_str;
-					if (value_str == "Wait")
-					{
-						row["columns"][1]["column"] = "time";
-						row["columns"][1]["value"] = item->getColumn(1)->getValue().asString();
-					}
-					mAnimEditorScroll->addElement(row);
+					row["columns"][1]["column"] = "time";
+					row["columns"][1]["value"] = item->getColumn(1)->getValue().asString();
 				}
+				mAnimEditorScroll->addElement(row);
 			}
 		}
+	}
 
-		//BD - Delete all flagged items now and we'll end up with a new list order.
-		mAnimEditorScroll->deleteFlaggedItems();
-	}
-	else
-	{
-		//BD - If this is the first entry, just add it.
-		mAnimEditorScroll->addElement(row);
-	}
+	//BD - Delete all flagged items now and we'll end up with a new list order.
+	mAnimEditorScroll->deleteFlaggedItems();
 
 	//BD - Select the last selected entry and make it appear as nothing happened.
-	mAnimEditorScroll->selectNthItem(selected_index);
+	if (selected_index >= 0)
+	{
+		mAnimEditorScroll->selectNthItem(selected_index);
+	}
 }
 
 void BDFloaterAnimations::onAnimDelete()
