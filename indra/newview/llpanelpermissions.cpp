@@ -488,6 +488,7 @@ void LLPanelPermissions::refresh()
 	getChild<LLUICtrl>("Creator Name")->setValue(creator_app_link);
 	getChildView("Creator Name")->setEnabled(TRUE);
 
+	getChild<LLUICtrl>("Owner Name")->setValue(owner_app_link);
 	getChildView("Owner Name")->setEnabled(TRUE);
 // [/RLVa:KB]
 
