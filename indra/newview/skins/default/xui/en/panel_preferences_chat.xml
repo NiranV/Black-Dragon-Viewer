@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="778"
+  height="796"
   name="chat_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -136,6 +136,28 @@ width="510">
  top_pad="0"
  width="256" />
  <check_box
+ control_name="ForceChatSingleLineMode"
+ height="16"
+ initial_value="true"
+ label="Disable multi-line chat editor"
+ tool_tip="Force chat editors in IM and Local chat into single line mode."
+ layout="topleft"
+ left_delta="0"
+ name="ForceChatSingleLineMode"
+ top_pad="0"
+ width="256" />
+ <check_box
+ control_name="SLURLTeleportDirectly"
+ height="16"
+ initial_value="true"
+ label="Allow one-click TP on SLURL's in Chat"
+ tool_tip="Clicking on a slurl will teleport you directly instead of opening places panel"
+ layout="topleft"
+ left_delta="0"
+ name="SLURLTeleportDirectly"
+ top_pad="0"
+ width="256" />
+ <check_box
  control_name="PlayTypingAnim"
  height="16"
  initial_value="true"
@@ -188,28 +210,6 @@ width="510">
  top_pad="0"
  name="inventory_offer"
  width="150" />
- <check_box
- control_name="ForceChatSingleLineMode"
- height="16"
- initial_value="true"
- label="Disable multi-line chat editor"
- tool_tip="Force chat editors in IM and Local chat into single line mode."
- layout="topleft"
- left_delta="0"
- name="ForceChatSingleLineMode"
- top_pad="0"
- width="256" />
- <check_box
- control_name="SLURLTeleportDirectly"
- height="16"
- initial_value="true"
- label="Allow one-click TP on SLURL's in Chat"
- tool_tip="Clicking on a slurl will teleport you directly instead of opening places panel"
- layout="topleft"
- left_delta="0"
- name="SLURLTeleportDirectly"
- top_pad="0"
- width="256" />
  <panel
  follows="left|top|right"
  height="20"
