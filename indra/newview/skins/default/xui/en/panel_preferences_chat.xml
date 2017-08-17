@@ -116,6 +116,16 @@ width="510">
  top_pad="0"
  width="256" />
  <check_box
+ control_name="ChatAutocompleteGestures"
+ height="16"
+ initial_value="true"
+ label="Auto-complete gestures in nearby chat"
+ layout="topleft"
+ left_delta="0"
+ name="ChatAutocompleteGestures"
+ top_pad="0"
+ width="256" />
+ <check_box
  control_name="EnableAutohidingChat"
  follows="left|top"
  height="16"
