@@ -239,9 +239,14 @@ public:
 	/// apply specified day cycle, setting time to noon by default
 	bool applyDayCycleParams(const LLSD& params, LLEnvKey::EScope scope, F32 time = 0.5);
 
+	/// Apply Default.xml map
+	void setDefaultDay();
+
 //	//BD - Animated Windlight Transition
 	/// apply specified fixed sky params
 	bool applySkyParams(const LLSD& params, bool interpolate = false);
+
+	void setDefaultSky();
 
 	// get where the light is pointing
 	inline LLVector4 getLightDir(void) const;

@@ -3260,7 +3260,7 @@ void LLAppearanceMgr::removeAllAttachmentsFromAvatar()
 class LLUpdateOnCOFLinkRemove : public LLInventoryCallback
 {
 public:
-	LLUpdateOnCOFLinkRemove(const LLUUID& remove_item_id, LLPointer<LLInventoryCallback> cb = NULL):
+	LLUpdateOnCOFLinkRemove(const LLUUID& remove_item_id, LLPointer<LLInventoryCallback> cb = NULL) :
 		mItemID(remove_item_id),
 		mCB(cb)
 	{
@@ -3281,18 +3281,34 @@ private:
 	LLPointer<LLInventoryCallback> mCB;
 };
 
-void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInventoryCallback> cb)
-{	LLInventoryModel::cat_array_t cat_array;
+//void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInventoryCallback> cb)
+// [SL:KB] - Patch: Appearance-AISFilter | Checked: 2015-05-02 (Catznip-3.7)
+void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInventoryCallback> cb, bool immediate_delete)
+// [/SL:KB]
+{
+	LLInventoryModel::cat_array_t cat_array;
 	LLInventoryModel::item_array_t item_array;
 	gInventory.collectDescendents(LLAppearanceMgr::getCOF(),
-								  cat_array,
-								  item_array,
-								  LLInventoryModel::EXCLUDE_TRASH);
-	for (S32 i=0; i<item_array.size(); i++)
+		cat_array,
+		item_array,
+		LLInventoryModel::EXCLUDE_TRASH);
+	for (S32 i = 0; i<item_array.size(); i++)
 	{
-		const LLInventoryItem* item = item_array.at(i).get();
+		const LLViewerInventoryItem* item = item_array.at(i).get();
 		if (item->getIsLinkType() && item->getLinkedUUID() == item_id)
 		{
+// [RLVa:KB] - Checked: 2013-02-12 (RLVa-1.4.8)
+			if (rlv_handler_t::isEnabled())
+			{
+				RLV_ASSERT(rlvPredCanRemoveItem(item));
+			}
+// [/RLVa:KB]
+//			bool immediate_delete = false;
+//			if (item->getType() == LLAssetType::AT_OBJECT)
+//			{
+//				immediate_delete = true;
+//			}
+
 			if (item->getType() == LLAssetType::AT_OBJECT)
 			{
 				// Immediate delete

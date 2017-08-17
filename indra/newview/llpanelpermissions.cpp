@@ -478,14 +478,14 @@ void LLPanelPermissions::refresh()
 	{
 		// Only anonymize the creator if all of the selection was created by the same avie who's also the owner or they're a nearby avie
 		if ( (creators_identical) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, mCreatorID)) && ((mCreatorID == mOwnerID) || (RlvUtil::isNearbyAgent(mCreatorID))) )
-			creator_name = LLSLURL("agent", mCreatorID, "rlvanonym").getSLURLString();
+			creator_app_link = LLSLURL("agent", mCreatorID, "rlvanonym").getSLURLString();
 
 		// Only anonymize the owner name if all of the selection is owned by the same avie and isn't group owned
 		if ( (owners_identical) && (!LLSelectMgr::getInstance()->selectIsGroupOwned()) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, mOwnerID)) )
-			owner_name = LLSLURL("agent", mOwnerID, "rlvanonym").getSLURLString();
+			owner_app_link = LLSLURL("agent", mOwnerID, "rlvanonym").getSLURLString();
 	}
 
-	getChild<LLUICtrl>("Creator Name")->setValue(creator_name);
+	getChild<LLUICtrl>("Creator Name")->setValue(creator_app_link);
 	getChildView("Creator Name")->setEnabled(TRUE);
 
 	getChildView("Owner Name")->setEnabled(TRUE);

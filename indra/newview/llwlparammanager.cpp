@@ -492,6 +492,11 @@ bool LLWLParamManager::applyDayCycleParams(const LLSD& params, LLEnvKey::EScope 
 	return true;
 }
 
+void LLWLParamManager::setDefaultDay()
+{
+	mDay.loadDayCycleFromFile("Default.xml");
+}
+
 //BD - Animated Windlight Transition
 bool LLWLParamManager::applySkyParams(const LLSD& params, bool interpolate /*= false*/)
 {
@@ -517,6 +522,12 @@ bool LLWLParamManager::applySkyParams(const LLSD& params, bool interpolate /*= f
 
 	return true;
 }
+
+void LLWLParamManager::setDefaultSky()
+{
+	getParamSet(LLWLParamKey("Default", LLWLParamKey::SCOPE_LOCAL), mCurParams);
+}
+
 
 void LLWLParamManager::resetAnimator(F32 curTime, bool run)
 {
