@@ -111,7 +111,7 @@ width="1024">
          name="Floater View"
          tab_group="-1"
          tab_stop="false"
-         top="0"
+         top="23"
          width="1024"/>
          <panel
          name="toolbar_view_holder"
