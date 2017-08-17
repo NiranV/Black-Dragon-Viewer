@@ -3617,6 +3617,8 @@ void LLFloaterPreference::updateList()
 			item_params.columns.add().value(av_name.getCompleteName()).column("name");
 			std::string setting = getString(iter->second == 1 ? "av_never_render" : "av_always_render");
 			item_params.columns.add().value(setting).column("setting");
+			std::string timestamp = createTimestamp(LLRenderMuteList::getInstance()->getVisualMuteDate(iter->first));
+			item_params.columns.add().value(timestamp).column("timestamp");
 			mAvatarSettingsList->addNameItemRow(item_params);
 		}
 	}
@@ -3678,15 +3680,7 @@ void LLFloaterPreference::onCustomAction(const LLSD& userdata, const LLUUID& av_
 		new_setting = S32(LLVOAvatar::AV_ALWAYS_RENDER);
 	}
 
-	LLVOAvatar *avatarp = find_avatar(av_id);
-	if (avatarp)
-	{
-		avatarp->setVisualMuteSettings(LLVOAvatar::VisualMuteSettings(new_setting));
-	}
-	else
-	{
-		LLRenderMuteList::getInstance()->saveVisualMuteSetting(av_id, new_setting);
-	}
+	setAvatarRenderSetting(av_id, new_setting);
 }
 
 
@@ -3746,16 +3740,46 @@ void LLFloaterPreference::onClickAdd(const LLSD& userdata)
 void LLFloaterPreference::callbackAvatarPicked(const uuid_vec_t& ids, S32 visual_setting)
 {
 	if (ids.empty()) return;
+	setAvatarRenderSetting(ids[0], visual_setting);
+}
 
-	LLVOAvatar *avatarp = find_avatar(ids[0]);
+void LLFloaterPreference::setAvatarRenderSetting(const LLUUID& av_id, S32 new_setting)
+{
+	LLVOAvatar *avatarp = find_avatar(av_id);
 	if (avatarp)
 	{
-		avatarp->setVisualMuteSettings(LLVOAvatar::VisualMuteSettings(visual_setting));
+		avatarp->setVisualMuteSettings(LLVOAvatar::VisualMuteSettings(new_setting));
 	}
 	else
 	{
-		LLRenderMuteList::getInstance()->saveVisualMuteSetting(ids[0], visual_setting);
+		LLRenderMuteList::getInstance()->saveVisualMuteSetting(av_id, new_setting);
 	}
+}
+
+BOOL LLFloaterPreference::handleKeyHere(KEY key, MASK mask)
+{
+	BOOL handled = FALSE;
+
+	if (KEY_DELETE == key)
+	{
+		setAvatarRenderSetting(mAvatarSettingsList->getCurrentID(), (S32)LLVOAvatar::AV_RENDER_NORMALLY);
+		handled = TRUE;
+	}
+	return handled;
+}
+
+std::string LLFloaterPreference::createTimestamp(S32 datetime)
+{
+	std::string timeStr;
+	LLSD substitution;
+	substitution["datetime"] = datetime;
+
+	timeStr = "[" + LLTrans::getString("TimeMonth") + "]/["
+		+ LLTrans::getString("TimeDay") + "]/["
+		+ LLTrans::getString("TimeYear") + "]";
+
+	LLStringUtil::format(timeStr, substitution);
+	return timeStr;
 }
 
 
