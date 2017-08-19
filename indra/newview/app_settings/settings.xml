@@ -17104,8 +17104,8 @@
     <string>Vector2</string>
     <key>Value</key>
     <array>
-      <real>2048</real>
-      <real>2048</real>
+      <real>1024</real>
+      <real>1024</real>
     </array>
   </map>
   <key>RenderForceHighShaderLevel</key>
