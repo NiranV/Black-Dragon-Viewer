@@ -10721,7 +10721,7 @@
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>512</integer>
+      <integer>768</integer>
     </map>
     <key>RenderParcelSelection</key>
     <map>
