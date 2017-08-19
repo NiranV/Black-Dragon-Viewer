@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.8.0 - Bone Dragon]"
+       label="[CHANNEL] [VERSION] - [2.8.1 - Bone Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="6720"
+       height="6971"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,63 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="311"
+              height="221"
               top="10"
+              left="7"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="490"
+              word_wrap="false">
+Changed: Reduced default draw distance from 256m to 96m.
+Changed: Disabled automasking in non deferred by default.
+Changed: Disabled automasking in deferred by default.
+Changed: Increased default Tree Quality to 'Normal'.
+Changed: Increased default Object Quality to 'Normal'.
+Changed: Increased default Reflection Quality to 'Normal'.
+Changed: Reduced default projector shadow resolutions to 1024x1024.
+Changed: Disable showing the edit particle beam and hand motion by default.
+Changed: Default cloud noise texture to 'Cumolo Nimbus'.
+Changed: Moved toast top corner region a bit up after floater container changes.
+Changed: Increased precision of several glow and tone mapping sliders and reweighted some min/max values.
+Changed: Version to 2.8.1.
+Fixed: Corrected missing tone mapping tweak.
+Fixed: Line Endings in several files.
+Fixed: Floaters not snapping to the edges of the screen but to wrong ghost edges.
+Fixed: Vignette slider option text input field being cut off slightly.
+Fixed: Added missing changelog entries.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.8.0
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="311"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
