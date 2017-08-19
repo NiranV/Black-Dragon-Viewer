@@ -182,11 +182,11 @@ BOOL LLStatusBar::postBuild()
 	S32 y = 0;
 	LLRect r;
 	//BD
-	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+27, x, y+27);
+	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+34, x, y+32);
 	LLStatGraph::Params sgp;
 	sgp.name("BandwidthGraph");
 	sgp.rect(r);
-	sgp.follows.flags(FOLLOWS_BOTTOM | FOLLOWS_RIGHT);
+	sgp.follows.flags(FOLLOWS_TOP | FOLLOWS_RIGHT);
 	sgp.mouse_opaque(false);
 	sgp.stat.count_stat_float(&LLStatViewer::ACTIVE_MESSAGE_DATA_RECEIVED);
 	sgp.units("Kbps");
@@ -197,12 +197,12 @@ BOOL LLStatusBar::postBuild()
 	x -= SIM_STAT_WIDTH + 2;
 
 	//BD
-	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+27, x, y+27);
+	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+34, x, y+32);
 	//these don't seem to like being reused
 	LLStatGraph::Params pgp;
 	pgp.name("PacketLossPercent");
 	pgp.rect(r);
-	pgp.follows.flags(FOLLOWS_BOTTOM | FOLLOWS_RIGHT);
+	pgp.follows.flags(FOLLOWS_TOP | FOLLOWS_RIGHT);
 	pgp.mouse_opaque(false);
 	pgp.stat.sample_stat_float(&LLStatViewer::PACKETS_LOST_PERCENT);
 	pgp.units("%");

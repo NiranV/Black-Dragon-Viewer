@@ -71,7 +71,7 @@ LLRect LLScreenChannelBase::getChannelRect()
 	mFloaterSnapRegion->localRectToScreen(mFloaterSnapRegion->getLocalRect(), &channel_rect);
 	mChicletRegion->localRectToScreen(mChicletRegion->getLocalRect(), &chiclet_rect);
 
-	channel_rect.mTop = chiclet_rect.mBottom;
+	channel_rect.mTop = chiclet_rect.mBottom - 22;
 	return channel_rect;
 }
 
