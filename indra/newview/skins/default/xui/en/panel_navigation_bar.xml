@@ -26,7 +26,7 @@ width="800">
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="45"
-	  min_width="30"
+	  min_width="24"
 	  auto_resize="true"
 	  name="favorites_layout_panel"
 	  width="800">
@@ -43,8 +43,8 @@ width="800">
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="17"
-	  min_width="17"
+	  height="23"
+	  min_width="23"
 	  auto_resize="false"
 	  invisibility_control="ShowNavbarFavoritesPanel"
 	  name="favorites_layout_panel"
@@ -52,9 +52,9 @@ width="800">
    </layout_stack>
    <layout_stack
    follows="top|left|right"
-   height="51"
+   height="46"
    layout="topleft"
-   border_size="-5"
+   border_size="0"
    left="0"
    mouse_opaque="false"
    open_time_constant="0.11"
@@ -201,13 +201,13 @@ width="800">
 	  follows="top|left|right"
 	  auto_resize="false"
 	  layout="topleft"
-	  height="32"
-	  min_height="32"
+	  height="26"
+	  min_height="26"
 	  name="navigation_layout_panel"
 	  width="272">
 		<layout_stack
 		follows="all"
-		height="32"
+		height="26"
 		layout="topleft"
 		border_size="-5"
 		left="0"
@@ -223,7 +223,7 @@ width="800">
 		follows="top|left|right"
 		auto_resize="true"
 		layout="topleft"
-		height="30"
+		height="24"
 		name="navigationbar_layout_panel"
 		width="272">
 		 <pull_button
@@ -238,7 +238,7 @@ width="800">
 		 left="86"
 		 name="back_btn"
 		 tool_tip="Go back to previous location"
-		 top="10"
+		 top="4"
 		 width="18" />
 		 <button
 		 follows="left|top"
@@ -277,7 +277,7 @@ width="800">
 		 max_chars="254"
 		 mouse_opaque="false"
 		 name="location_combo"
-		 top="7"
+		 top="1"
 		 width="126">
 		 <combo_list
 		 mouse_wheel_opaque="true"/>
@@ -289,7 +289,7 @@ width="800">
 		auto_resize="false"
 		layout="topleft"
 		visible="false"
-		height="30"
+		height="24"
 		name="navigation_layout_panel"
 		width="120">
 		  <search_combo_box
@@ -301,7 +301,7 @@ width="800">
 		  mouse_opaque="false"
 		  name="search_combo_box"
 		  tool_tip="Search for something in Second Life"
-		  top="7"
+		  top="1"
 		  width="118" >
 		  <combo_editor
 		  background_image="TextField_Off"

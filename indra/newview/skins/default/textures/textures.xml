@@ -648,7 +648,7 @@ with the same filename but different name
   <texture name="Web_Profile_Off" file_name="icons/Web_Profile_Off.png" preload="false" />
 
   <texture name="Window_Background" file_name="windows/Window_Background.png" preload="true"
-           scale.left="3" scale.top="25" scale.right="27" scale.bottom="3" />
+           scale.left="2" scale.top="58" scale.right="28" scale.bottom="2" />
   <texture name="Window_Foreground" file_name="windows/Window_Foreground.png" preload="true"
            scale.left="3" scale.top="25" scale.right="27" scale.bottom="3" />
   <texture name="Window_NoTitle_Background" file_name="windows/Window_NoTitle_Background.png" preload="true"

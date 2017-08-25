@@ -22,8 +22,8 @@ visible="true">
 		<layout_panel
 		name="topbar_panel"
 		visibility_control="ShowNavbarFavoritesPanel"
-		height="11"
-		min_height="11"
+		height="17"
+		min_height="17"
 		auto_resize="false"
 		width="1024"
 		mouse_opaque="false"/>
@@ -37,14 +37,14 @@ visible="true">
 			name="main"
 			orientation="horizontal"
 			left="1"
-			top="32"
+			top="26"
 			width="1024"
-			height="468"
+			height="474"
 			follows="all"
 			mouse_opaque="false">
 				<layout_panel
 				name="main_panel"
-				height="468"
+				height="474"
 				width="1024"
 				mouse_opaque="false">
 					<layout_stack
@@ -53,7 +53,7 @@ visible="true">
 					left="0"
 					top="0"
 					width="1024"
-					height="468"
+					height="474"
 					follows="all"
 					mouse_opaque="false">
 						<!--<layout_panel
@@ -97,7 +97,7 @@ visible="true">
 						name="vertical_toolbar_panel"
 						auto_resize="true"
 						width="1024"
-						height="468"
+						height="474"
 						mouse_opaque="false">
 							<layout_stack
 							name="vertical_toolbar_stack"
@@ -105,13 +105,13 @@ visible="true">
 							left="0"
 							top="0"
 							width="1024"
-							height="468"
+							height="474"
 							follows="all"
 							mouse_opaque="false">
 								<layout_panel
 								name="left_toolbar_panel"
 								auto_resize="false"
-								height="468"
+								height="474"
 								width="30"
 								mouse_opaque="false">
 									<toolbar
@@ -173,7 +173,7 @@ visible="true">
 								<layout_panel
 								name="right_toolbar_panel"
 								auto_resize="false"
-								height="468"
+								height="474"
 								width="30"
 								mouse_opaque="false">
 									<toolbar
@@ -237,7 +237,7 @@ visible="true">
 				<layout_panel
 				auto_resize="false"
 				follows="right|top|bottom"
-				height="468"
+				height="474"
 				layout="topleft"
 				mouse_opaque="false"
 				visible="false"
@@ -248,7 +248,7 @@ visible="true">
 					<panel
 					top="0"
 					follows="top|right|bottom"
-					height="468"
+					height="474"
 					left="-345"
 					mouse_opaque="false"
 					name="machinima"
