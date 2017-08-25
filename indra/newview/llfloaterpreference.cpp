@@ -1696,9 +1696,9 @@ void LLFloaterPreference::refreshWarnings()
 	//BD - Rendering Options
 	mWarning4->setVisible(gPipeline.RenderFarClip > 128);
 	mWarning5->setVisible(gSavedSettings.getU32("RenderAvatarMaxNonImpostors") > 15);
-	mWarning6->setVisible(gSavedSettings.getF32("RenderAutoMuteSurfaceAreaLimit") > 200.f);
-	mWarning7->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 120000);
-	mWarning8->setVisible(gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit") > 200.f);
+	mWarning6->setVisible(gSavedSettings.getF32("RenderAutoMuteSurfaceAreaLimit") > 256.f);
+	mWarning7->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 150000);
+	mWarning8->setVisible(gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit") > 256.f);
 
 	//BD - Windlight Options
 	mWarning9->setVisible(gSavedSettings.getS32("RenderReflectionRes") > 768);
@@ -1713,7 +1713,7 @@ void LLFloaterPreference::refreshWarnings()
 																|| gPipeline.RenderProjectorShadowResolution.mV[VY] > 2048);
 
 	//BD - Motion Blur Options
-	mWarning13->setVisible(gSavedSettings.getU32("RenderMotionBlurStrength") < 100);
+	mWarning13->setVisible(gSavedSettings.getU32("RenderMotionBlurStrength") < 80);
 
 	//BD - Volumetric Lighting Options
 	mWarning14->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 32);
