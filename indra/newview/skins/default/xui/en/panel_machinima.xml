@@ -805,7 +805,7 @@ width="345">
                   top_pad="15"
                   width="115" />
                   <check_box
-                  control_name="RenderAttachedLights"
+                  control_name="RenderOwnAttachedLights"
                   height="16"
                   label="Render Self Attached Lights"
                   tool_tip="Toggles rendering of lights which are attached to your own Avatar on or off."
