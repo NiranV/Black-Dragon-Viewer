@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="796"
+  height="778"
   name="chat_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -378,39 +378,6 @@ width="510">
              image_pressed_selected="Checkbox_On_Press" />
        </radio_item>
  </radio_group>
- <slider
-      control_name="ChatStartFromBottomPixels"
-      decimal_digits="0"
-      can_edit_text="true"
-      follows="left|top"
-      height="15"
-      increment="1"
-      initial_value="10"
-      label="Space from bottom to chat:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="120"
-      min_val="2"
-      name="ChatStartFromBottomPixels"
-      top_pad="4"
-      width="318" />
-      <button
- follows="left|top"
- control_name="ChatStartFromBottomPixels"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
       <slider
       control_name="NearbyToastLifeTime"
       decimal_digits="0"
@@ -426,7 +393,7 @@ width="510">
       max_val="40"
       min_val="1"
       name="NearbyToastLifeTime"
-      top_pad="1"
+      top_pad="4"
       width="312" />
       <button
  follows="left|top"
