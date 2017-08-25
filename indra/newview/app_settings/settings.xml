@@ -12448,7 +12448,7 @@
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>256</integer>
+      <integer>512</integer>
     </map>
     <key>TextureNewByteRange</key>
     <map>
@@ -16267,7 +16267,7 @@
     <key>Type</key>
     <string>S32</string>
     <key>Value</key>
-    <integer>386</integer>
+    <integer>512</integer>
   </map>
   <key>AllowUIHidingInML</key>
   <map>
