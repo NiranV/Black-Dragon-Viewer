@@ -1808,6 +1808,13 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 			continue;
 		}
 
+		//BD - Don't render invisible faces even when they are in a linkset.
+		LLColor4 color = face->getTextureEntry()->getColor();
+		if (color.mV[VW] == 0.0f)
+		{
+			continue;
+		}
+
 		//stop_glerror();
 
 		//const LLVolumeFace& vol_face = volume->getVolumeFace(te);
