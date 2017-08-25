@@ -566,10 +566,10 @@ BOOL PieMenu::handleMouseButtonUp(S32 x,S32 y,MASK mask)
 					//make_ui_sound("UISndPieMenuAppear");
 				}
 			}
-
-			// show or hide the menu, as needed
-			setVisible(visible);
 		}
+
+		// show or hide the menu, as needed
+		setVisible(visible);
 	}
 	// release mouse capture after the first click if we still have it grabbed
 	if(hasMouseCapture())
