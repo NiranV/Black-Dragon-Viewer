@@ -159,24 +159,6 @@
        <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-   <slider
-   can_edit_text="true"
-   control_name="ChannelBottomPanelMargin"
-   decimal_digits="0"
-   follows="left|top"
-   height="15"
-   increment="1"
-   initial_value="10"
-   layout="topleft"
-   label_width="150"
-   label="Bottom Space:"
-   left="10"
-   top_pad="1"
-   max_val="80"
-   min_val="0"
-   name="ChannelBottomPanelMargin"
-   show_text="true"
-   width="315" />
    <button
  follows="left|top"
  control_name="ChannelBottomPanelMargin"
