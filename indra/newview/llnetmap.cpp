@@ -793,7 +793,7 @@ void LLNetMap::renderPoint(const LLVector3 &pos_local, const LLColor4U &color,
 				continue;
 			}
 			S32 offset = px + py * image_width;
-			((U32*)datap)[offset] = color.mAll;
+			((U32*)datap)[offset] = color.asRGBA();
 		}
 
 		// top line
@@ -806,7 +806,7 @@ void LLNetMap::renderPoint(const LLVector3 &pos_local, const LLColor4U &color,
 				continue;
 			}
 			S32 offset = px + py * image_width;
-			((U32*)datap)[offset] = color.mAll;
+			((U32*)datap)[offset] = color.asRGBA();
 		}
 	}
 	else
@@ -828,7 +828,7 @@ void LLNetMap::renderPoint(const LLVector3 &pos_local, const LLColor4U &color,
 					continue;
 				}
 				S32 offset = p_x + p_y * image_width;
-				((U32*)datap)[offset] = color.mAll;
+				((U32*)datap)[offset] = color.asRGBA();
 			}
 		}
 	}
@@ -1046,6 +1046,6 @@ void LLNetMap::handleStopTracking (const LLSD& userdata)
 	if (mPopupMenu)
 	{
 		mPopupMenu->setItemEnabled ("Stop Tracking", false);
-		LLTracker::stopTracking ((void*)LLTracker::isTracking(NULL));
+		LLTracker::stopTracking (LLTracker::isTracking(NULL));
 	}
 }

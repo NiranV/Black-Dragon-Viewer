@@ -2137,6 +2137,3 @@ LLAvatarAppearance::LLMaskedMorph::LLMaskedMorph(LLVisualParam *morph_target, BO
 		target->addPendingMorphMask();
 	}
 }
-
-
-

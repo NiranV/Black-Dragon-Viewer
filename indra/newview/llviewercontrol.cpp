@@ -74,7 +74,6 @@
 #include "llspellcheck.h"
 #include "llslurl.h"
 #include "llstartup.h"
-#include "llupdaterservice.h"
 // [RLVa:KB] - Checked: 2015-12-27 (RLVa-1.5.0)
 #include "rlvcommon.h"
 // [/RLVa:KB]
@@ -586,19 +585,6 @@ bool toggle_show_object_render_cost(const LLSD& newvalue)
 	return true;
 }
 
-void toggle_updater_service_active(const LLSD& new_value)
-{
-    if(new_value.asInteger())
-    {
-		LLUpdaterService update_service;
-		if(!update_service.isChecking()) update_service.startChecking();
-    }
-    else
-    {
-        LLUpdaterService().stopChecking();
-    }
-}
-
 //BD
 /////////////////////////////////////////////////////////////////////////////
 
@@ -965,7 +951,6 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("UseDebugMenus")->getSignal()->connect(boost::bind(&show_debug_menus));
 	gSavedSettings.getControl("AgentPause")->getSignal()->connect(boost::bind(&toggle_agent_pause, _2));
 	gSavedSettings.getControl("ShowObjectRenderingCost")->getSignal()->connect(boost::bind(&toggle_show_object_render_cost, _2));
-	gSavedSettings.getControl("UpdaterServiceSetting")->getSignal()->connect(boost::bind(&toggle_updater_service_active, _2));
 	gSavedSettings.getControl("ForceShowGrid")->getSignal()->connect(boost::bind(&handleForceShowGrid, _2));
 	gSavedSettings.getControl("RenderTransparentWater")->getSignal()->connect(boost::bind(&handleRenderTransparentWaterChanged, _2));
 	gSavedSettings.getControl("SpellCheck")->getSignal()->connect(boost::bind(&handleSpellCheckChanged));

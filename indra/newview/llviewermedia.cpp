@@ -604,7 +604,9 @@ void LLViewerMedia::updateMedia(void *dummy_arg)
 	LLPluginProcessParent::setUseReadThread(gSavedSettings.getBOOL("PluginUseReadThread"));
 
 	// HACK: we always try to keep a spare running webkit plugin around to improve launch times.
-	createSpareBrowserMediaSource();
+	// 2017-04-19 Removed CP - this doesn't appear to buy us much and consumes a lot of resources so
+	// removing it for now.
+	//createSpareBrowserMediaSource();
 
 	sAnyMediaShowing = false;
 	sAnyMediaPlaying = false;
@@ -3052,20 +3054,23 @@ void LLViewerMediaImpl::update()
 					data = mMediaSource->getBitsData();
 				}
 
-				// Offset the pixels pointer to match x_pos and y_pos
-				data += ( x_pos * mMediaSource->getTextureDepth() * mMediaSource->getBitsWidth() );
-				data += ( y_pos * mMediaSource->getTextureDepth() );
-
+				if(data != NULL)
 				{
-					LL_RECORD_BLOCK_TIME(FTM_MEDIA_SET_SUBIMAGE);
-					placeholder_image->setSubImage(
-							data,
-							mMediaSource->getBitsWidth(),
-							mMediaSource->getBitsHeight(),
-							x_pos,
-							y_pos,
-							width,
-							height);
+					// Offset the pixels pointer to match x_pos and y_pos
+					data += ( x_pos * mMediaSource->getTextureDepth() * mMediaSource->getBitsWidth() );
+					data += ( y_pos * mMediaSource->getTextureDepth() );
+
+					{
+						LL_RECORD_BLOCK_TIME(FTM_MEDIA_SET_SUBIMAGE);
+									placeholder_image->setSubImage(
+									data,
+									mMediaSource->getBitsWidth(),
+									mMediaSource->getBitsHeight(),
+									x_pos,
+									y_pos,
+									width,
+									height);
+					}
 				}
 
 			}
