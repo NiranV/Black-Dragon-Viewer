@@ -675,7 +675,6 @@ BOOL LLAvatarAppearance::setupBone(const LLAvatarBoneInfo* info, LLJoint* parent
 	}
 
 
-
 	// setup children
 	LLAvatarBoneInfo::child_list_t::const_iterator iter;
 	for (iter = info->mChildList.begin(); iter != info->mChildList.end(); ++iter)
@@ -712,7 +711,6 @@ BOOL LLAvatarAppearance::allocateCharacterJoints( U32 num )
 BOOL LLAvatarAppearance::buildSkeleton(const LLAvatarSkeletonInfo *info)
 {
     LL_DEBUGS("BVH") << "numBones " << info->mNumBones << " numCollisionVolumes " << info->mNumCollisionVolumes << LL_ENDL;
-
 
 	// allocate joints
 	if (!allocateCharacterJoints(info->mNumBones))

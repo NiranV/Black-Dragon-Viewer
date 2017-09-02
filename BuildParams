@@ -67,17 +67,6 @@ EDU_viewer_channel_suffix = "edu"
 EDU_sourceid = ""
 EDU_viewer_channel_suffix = "edu"
 
-# viewer-chui
-#
-# ========================================
-
-viewer-chui.viewer_channel = "Project Viewer - CHUI"
-viewer-chui.login_channel = "Project Viewer - CHUI"
-viewer-chui.viewer_grid = agni
-viewer-chui.build_debug_release_separately = true
-viewer-chui.build_CYGWIN_Debug = false
-viewer-chui.build_viewer_update_version_manager = false
-
 # Notifications - to configure email notices use the TeamCity parameter
 # setting screen for your project or build configuration to set the
 # environment variable 'email' to a space-separated list of email addresses
