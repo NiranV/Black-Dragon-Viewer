@@ -173,7 +173,6 @@ S32 LLPipeline::RenderGlowIterations;
 F32 LLPipeline::RenderGlowWidth;
 F32 LLPipeline::RenderGlowStrength;
 bool LLPipeline::RenderDepthOfField;
-bool LLPipeline::RenderDepthOfFieldInEditMode;
 F32 LLPipeline::CameraFocusTransitionTime;
 F32 LLPipeline::CameraFNumber;
 F32 LLPipeline::CameraFocalLength;
@@ -208,7 +207,7 @@ F32 LLPipeline::RenderAutoHideSurfaceAreaLimit;
 
 //BD - Special Options
 BOOL LLPipeline::CameraFreeDoFFocus;
-BOOL LLPipeline::RenderDepthOfFieldInEditMode;
+bool LLPipeline::RenderDepthOfFieldInEditMode;
 BOOL LLPipeline::RenderDeferredBlurLight;
 BOOL LLPipeline::RenderSnapshotAutoAdjustMultiplier;
 U32 LLPipeline::RenderShadowBlurSamples;

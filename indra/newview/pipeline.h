@@ -933,7 +933,6 @@ public:
 	static F32 RenderGlowWidth;
 	static F32 RenderGlowStrength;
 	static bool RenderDepthOfField;
-	static bool RenderDepthOfFieldInEditMode;
 	static F32 CameraFocusTransitionTime;
 	static F32 CameraFNumber;
 	static F32 CameraFocalLength;
@@ -968,7 +967,7 @@ public:
 
 //	//BD - Special Options
 	static BOOL CameraFreeDoFFocus;
-	static BOOL RenderDepthOfFieldInEditMode;
+	static bool RenderDepthOfFieldInEditMode;
 	static BOOL RenderDeferredBlurLight;
 	static BOOL RenderSnapshotAutoAdjustMultiplier;
 	static U32 RenderShadowBlurSamples;
