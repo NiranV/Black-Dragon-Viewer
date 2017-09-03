@@ -58,13 +58,13 @@ function homedir_install()
 	exit 0
     fi
 
-    install_to_prefix "$HOME/.secondlife-install"
-    $HOME/.secondlife-install/etc/refresh_desktop_app_entry.sh
+    install_to_prefix "$HOME/.blackdragon-install"
+    $HOME/.blackdragon-install/etc/refresh_desktop_app_entry.sh
 }
 
 function root_install()
 {
-    local default_prefix="/opt/secondlife-install"
+    local default_prefix="/opt/blackdragon-install"
 
     echo -n "Enter the desired installation directory [${default_prefix}]: ";
     read

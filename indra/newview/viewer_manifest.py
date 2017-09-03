@@ -362,7 +362,7 @@ class WindowsManifest(ViewerManifest):
 
         if self.is_packaging_viewer():
             # Find secondlife-bin.exe in the 'configuration' dir, then rename it to the result of final_exe.
-            self.path(src='%s/secondlife-bin.exe' % self.args['configuration'], dst=self.final_exe())
+            self.path(src='%s/blackdragon-bin.exe' % self.args['configuration'], dst=self.final_exe())
 
             # include the compiled launcher scripts so that it gets included in the file_list
             self.path(src='%s/apply_update.exe' % vmpdir, dst="apply_update.exe")

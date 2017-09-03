@@ -421,13 +421,13 @@ then
               # These names must match the set of VIEWER_SYMBOL_FILE in indra/newview/CMakeLists.txt
               case "$arch" in
                   CYGWIN)
-                      symbolfile="$build_dir/newview/Release/secondlife-symbols-windows-${AUTOBUILD_ADDRSIZE}.tar.bz2"
+                      symbolfile="$build_dir/newview/Release/blackdragon-symbols-windows-${AUTOBUILD_ADDRSIZE}.tar.bz2"
                       ;;
                   Darwin)
-                      symbolfile="$build_dir/newview/Release/secondlife-symbols-darwin-${AUTOBUILD_ADDRSIZE}.tar.bz2"
+                      symbolfile="$build_dir/newview/Release/blackdragon-symbols-darwin-${AUTOBUILD_ADDRSIZE}.tar.bz2"
                       ;;
                   Linux)
-                      symbolfile="$build_dir/newview/Release/secondlife-symbols-linux-${AUTOBUILD_ADDRSIZE}.tar.bz2"
+                      symbolfile="$build_dir/newview/Release/blackdragon-symbols-linux-${AUTOBUILD_ADDRSIZE}.tar.bz2"
                       ;;
               esac
               python_cmd "$helpers/codeticket.py" addoutput "Symbolfile" "$symbolfile" \

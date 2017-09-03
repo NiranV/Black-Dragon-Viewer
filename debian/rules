@@ -11,11 +11,11 @@
 
 BASEDIR=opt/linden
 
-VIEWER_PKG=secondlife-viewer
+VIEWER_PKG=blackdragon-viewer
 VIEWER_PACKAGEDIR=build-linux-i686/newview/packaged
 VIEWER_DESTDIR=$(CURDIR)/debian/$(VIEWER_PKG)
 VIEWER_VERSION:=$(shell dpkg-parsechangelog | grep ^Version | sed 's/^Version: //')
-VIEWER_INSTALLDIR:=$(BASEDIR)/viewer/SecondLife-i686-$(VIEWER_VERSION)
+VIEWER_INSTALLDIR:=$(BASEDIR)/viewer/BlackDragon-i686-$(VIEWER_VERSION)
 
 configure: configure-stamp
 configure-stamp:
@@ -31,7 +31,7 @@ build-stamp: configure-stamp
 
 	# Add here commands to compile the package.
 	#$(MAKE)
-	#docbook-to-man debian/secondlife-viewer.sgml > secondlife-viewer.1
+	#docbook-to-man debian/blackdragon-viewer.sgml > blackdragon-viewer.1
 
 	touch $@
 
@@ -51,7 +51,7 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/secondlife-viewer.
+	# Add here commands to install the package into debian/blackdragon-viewer.
 	for file in $$(find $(VIEWER_PACKAGEDIR) -type f -o -type l | sed 's~$(VIEWER_PACKAGEDIR)/~~'); do \
 		# create containing directory \
 		install -v -m 755 -o root -g root -d "$$(dirname "$(VIEWER_DESTDIR)/$(VIEWER_INSTALLDIR)/$$file")"; \
@@ -68,8 +68,8 @@ install: build
 			install -v -m $$PERM -o root -g root "$(VIEWER_PACKAGEDIR)/$$file" "$(VIEWER_DESTDIR)/$(VIEWER_INSTALLDIR)/$$file"; \
 		fi; \
 	done
-	dh_link -p $(VIEWER_PKG) /$(VIEWER_INSTALLDIR)/secondlife /usr/bin/secondlife
-	dh_link -p $(VIEWER_PKG) $(BASEDIR)/viewer/SecondLife-i686-$(VIEWER_VERSION) $(BASEDIR)/viewer/SecondLife
+	dh_link -p $(VIEWER_PKG) /$(VIEWER_INSTALLDIR)/blackdragon /usr/bin/blackdragon
+	dh_link -p $(VIEWER_PKG) $(BASEDIR)/viewer/BlackDragon-i686-$(VIEWER_VERSION) $(BASEDIR)/viewer/BlackDragon
 
 
 # Build architecture-independent files here.
@@ -93,7 +93,7 @@ binary-arch: build install
 #	dh_python
 
 # To add an init script, uncomment this line and edit debian/init.d and 
-# customize debian/secondlife-viewer.default to suit your needs.
+# customize debian/blackdragon-viewer.default to suit your needs.
 #	dh_installinit
 
 # To add cron jobs, uncomment this line and make a crontab file named 

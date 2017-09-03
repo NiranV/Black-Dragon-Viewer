@@ -770,9 +770,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>e66122237534c860d14e7656e49ae120</string>
+              <string>3d259b519cb34b3410599102ba60af06</string>
               <key>url</key>
-              <string>https://bitbucket.org/NiranV/black-dragon-viewer/downloads/fmodex-4.44.54-windows-20150605.tar.bz2</string>
+              <string>https://bitbucket.org/NiranV/fmodex/downloads/fmodex-20170901-windows-201709020133.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -782,9 +782,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>e5cde35ae26ebfa256cfe670986e152e</string>
+              <string>3d259b519cb34b3410599102ba60af06</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/ct2/1547/3487/fmodex-4.44.64.501533-windows64-501533.tar.bz2</string>
+              <string>https://bitbucket.org/NiranV/fmodex/downloads/fmodex-20170901-windows-201709020133.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -3932,7 +3932,6 @@
                   <string>-DINSTALL_PROPRIETARY=FALSE</string>
                   <string>-DUSE_KDU=FALSE</string>
                   <string>-DFMODEX=TRUE</string>
-                  <string>-DLL_TESTS:BOOL=FALSE</string>
                   <string>-DPACKAGE:BOOL=FALSE</string>
                 </array>
               </map>

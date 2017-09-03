@@ -131,7 +131,7 @@ if (LINUX)
   # force this platform to accept TOS via external browser
   add_definitions(-DEXTERNAL_TOS)
 
-  add_definitions(-DAPPID=secondlife)
+  add_definitions(-DAPPID=blackdragon)
   add_compile_options(-fvisibility=hidden)
   # don't catch SIGCHLD in our base application class for the viewer - some of
   # our 3rd party libs may need their *own* SIGCHLD handler to work. Sigh! The

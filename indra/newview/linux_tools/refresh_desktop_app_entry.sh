@@ -14,7 +14,7 @@ function install_desktop_entry()
 [Desktop Entry]\n\
 Name=Second Life\n\
 Comment=Client for the On-line Virtual World, Second Life\n\
-Exec=${installation_prefix}/secondlife\n\
+Exec=${installation_prefix}/blackdragon\n\
 Icon=${installation_prefix}/secondlife_icon.png\n\
 Terminal=false\n\
 Type=Application\n\
@@ -24,7 +24,7 @@ X-Desktop-File-Install-Version=3.0"
 
     echo " - Installing menu entries in ${desktop_entries_dir}"
     mkdir -vp "${desktop_entries_dir}"
-    echo -e $desktop_entry > "${desktop_entries_dir}/secondlife-viewer.desktop" || "Failed to install application menu!"
+    echo -e $desktop_entry > "${desktop_entries_dir}/blackdragon-viewer.desktop" || "Failed to install application menu!"
 }
 
 if [ "$UID" == "0" ]; then

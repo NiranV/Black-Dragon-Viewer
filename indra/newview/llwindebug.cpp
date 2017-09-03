@@ -185,7 +185,7 @@ void LLWinDebug::writeDumpToFile(MINIDUMP_TYPE type, MINIDUMP_EXCEPTION_INFORMAT
 void LLWinDebug::generateMinidump(struct _EXCEPTION_POINTERS *exception_infop)
 {
 	std::string dump_path = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-												"SecondLifeException");
+												"BlackDragonException");
 	if (exception_infop)
 	{
 		// Since there is exception info... Release the hounds.

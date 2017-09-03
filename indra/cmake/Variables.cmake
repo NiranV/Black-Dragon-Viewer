@@ -12,7 +12,7 @@
 # Switches set here and in 00-Common.cmake must agree with
 # https://bitbucket.org/lindenlab/viewer-build-variables/src/tip/variables
 # Reading $LL_BUILD is an attempt to directly use those switches.
-if ("$ENV{LL_BUILD}" STREQUAL "")
+if ("$ENV{LL_BUILD}" STREQUAL "F:/BlackDragon64/variables")
   message(FATAL_ERROR "Environment variable LL_BUILD must be set")
 endif ()
 

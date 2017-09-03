@@ -233,7 +233,7 @@ void LLCrashLogger::gatherFiles()
         mergeLogs(dynamic_sd);
 		mCrashInPreviousExec = mDebugLog["CrashNotHandled"].asBoolean();
 
-		mFileMap["SecondLifeLog"] = mDebugLog["SLLog"].asString();
+		mFileMap["BlackDragonLog"] = mDebugLog["BDLog"].asString();
 		mFileMap["SettingsXml"] = mDebugLog["SettingsFilename"].asString();
         mFileMap["CrashHostUrl"] = loadCrashURLSetting();
 		if(mDebugLog.has("CAFilename"))
@@ -247,7 +247,7 @@ void LLCrashLogger::gatherFiles()
                 LLCore::HttpRequest::GLOBAL_POLICY_ID, gDirUtilp->getCAFile(), NULL);
 		}
 
-		LL_INFOS("CRASHREPORT") << "Using log file from debug log " << mFileMap["SecondLifeLog"] << LL_ENDL;
+		LL_INFOS("CRASHREPORT") << "Using log file from debug log " << mFileMap["BlackDragonLog"] << LL_ENDL;
 		LL_INFOS("CRASHREPORT") << "Using settings file from debug log " << mFileMap["SettingsXml"] << LL_ENDL;
 	}
 	else
@@ -256,13 +256,13 @@ void LLCrashLogger::gatherFiles()
         LLCore::HttpRequest::setStaticPolicyOption(LLCore::HttpRequest::PO_CA_FILE,
             LLCore::HttpRequest::GLOBAL_POLICY_ID, gDirUtilp->getCAFile(), NULL);
         
-		mFileMap["SecondLifeLog"] = gDirUtilp->getExpandedFilename(LL_PATH_DUMP,"SecondLife.log");
+		mFileMap["BlackDragonLog"] = gDirUtilp->getExpandedFilename(LL_PATH_DUMP,"BlackDragon.log");
         mFileMap["SettingsXml"] = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,"settings.xml");
 	}
 
-    if (!gDirUtilp->fileExists(mFileMap["SecondLifeLog"]) ) //We would prefer to get this from the per-run but here's our fallback.
+    if (!gDirUtilp->fileExists(mFileMap["BlackDragonLog"]) ) //We would prefer to get this from the per-run but here's our fallback.
     {
-        mFileMap["SecondLifeLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"SecondLife.old");
+        mFileMap["BlackDragonLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"BlackDragon.old");
     }
 
 	gatherPlatformSpecificFiles();
@@ -294,7 +294,7 @@ void LLCrashLogger::gatherFiles()
                 s << f.rdbuf();
 
                 std::string crash_info = s.str();
-                if(itr->first == "SecondLifeLog")
+                if(itr->first == "BlackDragonLog")
                 {
                     if(!mCrashInfo["DebugLog"].has("StartupState"))
                     {
@@ -450,7 +450,7 @@ bool LLCrashLogger::sendCrashLog(std::string dump_dir)
     gDirUtilp->setDumpDir( dump_dir );
     
     std::string dump_path = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-                                                           "SecondLifeCrashReport");
+                                                           "BlackDragonCrashReport");
     std::string report_file = dump_path + ".log";
 
     LL_DEBUGS("CRASHREPORT") << "sending " << report_file << LL_ENDL;

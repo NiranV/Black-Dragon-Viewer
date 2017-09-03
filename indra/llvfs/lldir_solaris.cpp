@@ -135,7 +135,7 @@ LLDir_Solaris::LLDir_Solaris()
 	//NOTE: Why force people to cd into the package directory?
 	//      Look for SECONDLIFE env variable and use it, if set.
 
-	char *dcf = getenv("SECONDLIFE");
+	char *dcf = getenv("BLACKDRAGON");
 	if(dcf != NULL){
 		(void)strcpy(path, dcf);
 		(void)strcat(path, "/bin");	//NOTE:  make sure we point at the bin
