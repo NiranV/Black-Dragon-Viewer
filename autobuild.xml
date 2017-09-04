@@ -782,16 +782,16 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>3d259b519cb34b3410599102ba60af06</string>
+              <string>f0bce3a24cd0d4c154435b9da0051f0c</string>
               <key>url</key>
-              <string>https://bitbucket.org/NiranV/fmodex/downloads/fmodex-20170901-windows-201709020133.tar.bz2</string>
+              <string>https://bitbucket.org/NiranV/fmodex/downloads/fmodex-4.44.64-windows-201709041433.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
           </map>
         </map>
         <key>version</key>
-        <string>4.44.54.20150605</string>
+        <string>4.44.64.201709041433</string>
       </map>
       <key>fontconfig</key>
       <map>
@@ -2642,9 +2642,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>8a7f0be5647e07235d205ac00805fb78</string>
+              <string>b35adcf74d22c128045aa87aade74736</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/ct2/1116/2586/openjpeg-1.5.1.501102-windows-501102.tar.bz2</string>
+              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/openjpeg_3p-update-openjpeg/rev/297018/arch/CYGWIN/installer/openjpeg-1.4.297018-windows-297018.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -2654,16 +2654,16 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>398544058036bc27097fcff208934d11</string>
+              <string>47c09d96ae84fa4518b639cd93ba45b3</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/ct2/1115/2581/openjpeg-1.5.1.501102-windows64-501102.tar.bz2</string>
+              <string>https://bitbucket.org/NiranV/fmodex/downloads/openjpeg-1.4.201412051021-windows-x64-201412051021.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>
           </map>
         </map>
         <key>version</key>
-        <string>1.5.1.501102</string>
+        <string>1.4.2.201412051021</string>
       </map>
       <key>openssl</key>
       <map>
@@ -3931,6 +3931,7 @@
                   <string>-DUNATTENDED:BOOL=ON</string>
                   <string>-DINSTALL_PROPRIETARY=FALSE</string>
                   <string>-DUSE_KDU=FALSE</string>
+                  <string>-DLL_TESTS=FALSE</string>
                   <string>-DFMODEX=TRUE</string>
                   <string>-DPACKAGE:BOOL=FALSE</string>
                 </array>
