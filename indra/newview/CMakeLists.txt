@@ -1401,7 +1401,7 @@ if (DARWIN)
 
   # Add resource files to the project.
   set(viewer_RESOURCE_FILES
-    secondlife.icns
+    blackdragon.icns
     macview.r
     Info-BlackDragon.plist
     SecondLife.xib/
@@ -1477,18 +1477,18 @@ if (WINDOWS)
     message(STATUS "Copying icons for ${ICON_PATH}")
     execute_process(
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/icons/${ICON_PATH}/secondlife.ico"
-        "${CMAKE_CURRENT_SOURCE_DIR}/res/ll_icon.ico"
+        "${CMAKE_CURRENT_SOURCE_DIR}/icons/${ICON_PATH}/blackdragon.ico"
+        "${CMAKE_CURRENT_SOURCE_DIR}/res/bd_icon.ico"
       )
     execute_process(
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/icons/${ICON_PATH}/secondlife_256.BMP"
-        "${CMAKE_CURRENT_SOURCE_DIR}/res/ll_icon.BMP"
+        "${CMAKE_CURRENT_SOURCE_DIR}/icons/${ICON_PATH}/blackdragon_256.BMP"
+        "${CMAKE_CURRENT_SOURCE_DIR}/res/bd_icon.BMP"
       )
     execute_process(
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/icons/${ICON_PATH}/secondlife_256.BMP"
-        "${CMAKE_CURRENT_SOURCE_DIR}/res-sdl/ll_icon.BMP"
+        "${CMAKE_CURRENT_SOURCE_DIR}/icons/${ICON_PATH}/blackdragon_256.BMP"
+        "${CMAKE_CURRENT_SOURCE_DIR}/res-sdl/bd_icon.BMP"
       )
 
     # Add resource files to the project.
@@ -1500,8 +1500,6 @@ if (WINDOWS)
         res/arrowcopmulti.cur
         res/arrowdrag.cur
         res/circleandline.cur
-        res/iconBD.ico
-        res/ico00001.ico
         res/llarrow.cur
         res/llarrowdrag.cur
         res/llarrowdragmulti.cur
@@ -1526,9 +1524,9 @@ if (WINDOWS)
         res/lltooltranslate.cur
         res/lltoolzoomin.cur
         res/lltoolzoomout.cur
-        res-sdl/ll_icon.BMP
-        res/ll_icon.BMP
-        res/ll_icon.ico
+        res-sdl/bd_icon.BMP
+        res/bd_icon.BMP
+        res/bd_icon.ico
         res/resource.h
         res/toolpickobject.cur
         res/toolpickobject2.cur

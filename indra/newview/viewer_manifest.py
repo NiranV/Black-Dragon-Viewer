@@ -367,7 +367,7 @@ class WindowsManifest(ViewerManifest):
             # include the compiled launcher scripts so that it gets included in the file_list
             self.path(src='%s/apply_update.exe' % vmpdir, dst="apply_update.exe")
             self.path(src='%s/download_update.exe' % vmpdir, dst="download_update.exe")
-            self.path(src='%s/SL_Launcher.exe' % vmpdir, dst="SL_Launcher.exe")
+            self.path(src='%s/BD_Launcher.exe' % vmpdir, dst="BD_Launcher.exe")
             self.path(src='%s/update_manager.exe' % vmpdir, dst="update_manager.exe")
 
             #IUM is not normally executed directly, just imported.  No exe needed.
@@ -662,7 +662,7 @@ class WindowsManifest(ViewerManifest):
         substitution_strings['installer_file'] = installer_file
         
         version_vars = """
-        !define INSTEXE "SL_Launcher.exe"
+        !define INSTEXE "BD_Launcher.exe"
         !define VERSION "%(version_short)s"
         !define VERSION_LONG "%(version)s"
         !define VERSION_DASHES "%(version_dashes)s"
@@ -708,7 +708,7 @@ class WindowsManifest(ViewerManifest):
         for exe in (
             "apply_update.exe",
             "download_update.exe",
-            "SL_Launcher.exe",
+            "BD_Launcher.exe",
             "update_manager.exe",
             ):
             self.sign(exe)
@@ -802,7 +802,7 @@ class DarwinManifest(ViewerManifest):
 
             if self.prefix(dst="MacOS"):              
                 #this copies over the python wrapper script, associated utilities and required libraries, see SL-321, SL-322, SL-323
-                self.path2basename(vmpdir,"SL_Launcher")
+                self.path2basename(vmpdir,"BD_Launcher")
                 self.path2basename(vmpdir,"*.py")
                 # certifi will be imported by requests; this is our custom version to get our ca-bundle.crt 
                 certifi_path = os.path.join(self.get_dst_prefix(),'certifi')
@@ -862,7 +862,7 @@ class DarwinManifest(ViewerManifest):
 
                 icon_path = self.icon_path()
                 if self.prefix(src=icon_path, dst="") :
-                    self.path("secondlife.icns")
+                    self.path("blackdragon.icns")
                     self.end_prefix(icon_path)
 
                 #VMP Tkinter icons
@@ -1287,7 +1287,7 @@ class LinuxManifest(ViewerManifest):
             self.path("../linux_crash_logger/linux-crash-logger","linux-crash-logger.bin")
             self.path2basename("../llplugin/slplugin", "SLPlugin") 
             #this copies over the python wrapper script, associated utilities and required libraries, see SL-321, SL-322 and SL-323
-            self.path2basename("../viewer_components/manager","SL_Launcher")
+            self.path2basename("../viewer_components/manager","BD_Launcher")
             self.path2basename("../viewer_components/manager","*.py")
             llbase_path = os.path.join(self.get_dst_prefix(),'llbase')
             if not os.path.exists(llbase_path):
@@ -1306,9 +1306,9 @@ class LinuxManifest(ViewerManifest):
         icon_path = self.icon_path()
         print "DEBUG: icon_path '%s'" % icon_path
         if self.prefix(src=icon_path, dst="") :
-            self.path("secondlife_256.png","secondlife_icon.png")
+            self.path("blackdragon_256.png","blackdragon_icon.png")
             if self.prefix(src="",dst="res-sdl") :
-                self.path("secondlife_256.BMP","ll_icon.BMP")
+                self.path("blackdragon_256.BMP","bd_icon.BMP")
                 self.end_prefix("res-sdl")
             self.end_prefix(icon_path)
 
@@ -1376,7 +1376,7 @@ class LinuxManifest(ViewerManifest):
         if self.args['buildtype'].lower() == 'release' and self.is_packaging_viewer():
             print "* Going strip-crazy on the packaged binaries, since this is a RELEASE build"
             # makes some small assumptions about our packaged dir structure
-            self.run_command(r"find %(d)r/bin %(d)r/lib -type f \! -name \*.py \! -name SL_Launcher \! -name update_install | xargs --no-run-if-empty strip -S" % {'d': self.get_dst_prefix()} ) 
+            self.run_command(r"find %(d)r/bin %(d)r/lib -type f \! -name \*.py \! -name BD_Launcher \! -name update_install | xargs --no-run-if-empty strip -S" % {'d': self.get_dst_prefix()} ) 
 
 class Linux_i686_Manifest(LinuxManifest):
     address_size = 32

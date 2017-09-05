@@ -12,10 +12,10 @@ function install_desktop_entry()
 
     local desktop_entry="\
 [Desktop Entry]\n\
-Name=Second Life\n\
+Name=Black Dragon\n\
 Comment=Client for the On-line Virtual World, Second Life\n\
 Exec=${installation_prefix}/blackdragon\n\
-Icon=${installation_prefix}/secondlife_icon.png\n\
+Icon=${installation_prefix}/blackdragon_icon.png\n\
 Terminal=false\n\
 Type=Application\n\
 Categories=Application;Network;\n\
