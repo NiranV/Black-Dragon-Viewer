@@ -60,7 +60,7 @@ uniform vec3 sun_dir;
 
 uniform vec4 shadow_res;
 
-uniform float shadow_bias;
+uniform vec4 shadow_bias;
 uniform float shadow_offset;
 
 uniform float spot_shadow_bias;
@@ -157,11 +157,11 @@ float calcAmbientOcclusion(vec4 pos, vec3 norm)
 	return min(ret, 1.0);
 }
 
-float pcfShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_screen, float shad_res)
+float pcfShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_screen, float shad_res, float bias)
 {
 	float recip_shadow_res = 1.0 / shad_res;
 	stc.xyz /= stc.w;
-	stc.z += shadow_bias;
+	stc.z += bias;
 	
 	stc.x = floor(stc.x*shad_res + fract(pos_screen.y*0.5)) * recip_shadow_res;
 	float cs = shadow2D(shadowMap, stc.xyz).x;
@@ -231,7 +231,7 @@ void main()
 				
 				float w = 1.0;
 				w -= max(spos.z-far_split.z, 0.0)/transition_domain.z;
-				shadow += pcfShadow(shadowMap3, lpos, 0.25, pos_screen, shadow_res.w)*w;
+				shadow += pcfShadow(shadowMap3, lpos, 0.25, pos_screen, shadow_res.w, shadow_bias.w)*w;
 				weight += w;
 				shadow += max((pos.z+shadow_clip.z)/(shadow_clip.z-shadow_clip.w)*2.0-1.0, 0.0);
 			}
@@ -243,7 +243,7 @@ void main()
 				float w = 1.0;
 				w -= max(spos.z-far_split.y, 0.0)/transition_domain.y;
 				w -= max(near_split.z-spos.z, 0.0)/transition_domain.z;
-				shadow += pcfShadow(shadowMap2, lpos, 0.5, pos_screen, shadow_res.z)*w;
+				shadow += pcfShadow(shadowMap2, lpos, 0.5, pos_screen, shadow_res.z, shadow_bias.z)*w;
 				weight += w;
 			}
 
@@ -254,7 +254,7 @@ void main()
 				float w = 1.0;
 				w -= max(spos.z-far_split.x, 0.0)/transition_domain.x;
 				w -= max(near_split.y-spos.z, 0.0)/transition_domain.y;
-				shadow += pcfShadow(shadowMap1, lpos, 0.75, pos_screen, shadow_res.y)*w;
+				shadow += pcfShadow(shadowMap1, lpos, 0.75, pos_screen, shadow_res.y, shadow_bias.y)*w;
 				weight += w;
 			}
 
@@ -265,7 +265,7 @@ void main()
 				float w = 1.0;
 				w -= max(near_split.x-spos.z, 0.0)/transition_domain.x;
 				
-				shadow += pcfShadow(shadowMap0, lpos, 1.0, pos_screen, shadow_res.x)*w;
+				shadow += pcfShadow(shadowMap0, lpos, 1.0, pos_screen, shadow_res.x, shadow_bias.x)*w;
 				weight += w;
 			}
 		

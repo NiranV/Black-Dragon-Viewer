@@ -37,14 +37,7 @@ vec3 atmosTransport(vec3 inColor);
 uniform sampler2D bumpMap;   
 uniform sampler2D screenTex;
 uniform sampler2D refTex;
-uniform sampler2DRectShadow shadowMap0;
-uniform sampler2DRectShadow shadowMap1;
-uniform sampler2DRectShadow shadowMap2;
-uniform sampler2DRectShadow shadowMap3;
 uniform sampler2D noiseMap;
-
-uniform mat4 shadow_matrix[6];
-uniform vec4 shadow_clip;
 
 uniform float sunAngle;
 uniform float sunAngle2;

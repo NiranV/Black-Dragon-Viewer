@@ -70,18 +70,18 @@ uniform sampler2DShadow shadowMap5;
 
 uniform vec4 shadow_res;
 
-uniform float shadow_bias;
+uniform vec4 shadow_bias;
 
 float rand(vec2 co)
 {
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
-float nonpcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen, float shad_res)
+float nonpcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen, float shad_res, float bias)
 {
   float recip_shadow_res = 1.0 / shad_res;
   stc.xyz /= stc.w;
-  stc.z += shadow_bias;
+  stc.z += bias;
   
   stc.x = floor(stc.x*shad_res + fract(pos_screen.y*1.0)) * recip_shadow_res;
   return shadow2D(shadowMap, stc.xyz).x;
@@ -97,19 +97,19 @@ float nonpcfShadowAtPos(vec4 pos_world)
     
     if (pos.z < near_split.z) {
       pos = shadow_matrix[3]*pos;
-      return nonpcfShadow(shadowMap3, pos, pos_screen, shadow_res.w);
+      return nonpcfShadow(shadowMap3, pos, pos_screen, shadow_res.w, shadow_bias.w);
     }
     else if (pos.z < near_split.y) {
       pos = shadow_matrix[2]*pos;
-      return nonpcfShadow(shadowMap2, pos, pos_screen, shadow_res.z);
+      return nonpcfShadow(shadowMap2, pos, pos_screen, shadow_res.z, shadow_bias.z);
     }
     else if (pos.z < near_split.x) {
       pos = shadow_matrix[1]*pos;
-      return nonpcfShadow(shadowMap1, pos, pos_screen, shadow_res.y);
+      return nonpcfShadow(shadowMap1, pos, pos_screen, shadow_res.y, shadow_bias.y);
     }
     else if (pos.z > far_split.x) {
       pos = shadow_matrix[0]*pos;
-      return nonpcfShadow(shadowMap0, pos, pos_screen, shadow_res.x);
+      return nonpcfShadow(shadowMap0, pos, pos_screen, shadow_res.x, shadow_bias.x);
     }
   }
   return 1.0;
