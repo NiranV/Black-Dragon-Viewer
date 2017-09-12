@@ -136,20 +136,17 @@ void BDFloaterAnimations::draw()
 					//BD - Do nothing?
 					mExpiryTime = item->getColumn(1)->getValue().asReal();
 					mAnimScrollIndex++;
-					LL_INFOS("Posing") << "We're waiting for " << mExpiryTime << " seconds" << LL_ENDL;
 				}
 				else if (label == "Repeat")
 				{
 					mAnimScrollIndex = 0;
 					mExpiryTime = 0.0f;
-					LL_INFOS("Posing") << "Restart from the beginning." << LL_ENDL;
 				}
 				else
 				{
 					mExpiryTime = 0.0f;
 					onPoseLoad(label);
 					mAnimScrollIndex++;
-					LL_INFOS("Posing") << "Loading pose:" << label << LL_ENDL;
 				}
 			}
 		}
@@ -624,7 +621,6 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 			//     end up being broken in the first place?
 			if (joint && gAgentAvatarp->getJoint(joint->getName()))
 			{
-				//record[line]["bone"] = (*item)->getColumn(0)->getValue().asString();
 				record[line]["bone"] = joint->getName();
 				vec3.mV[VX] = (*item)->getColumn(1)->getValue().asReal();
 				vec3.mV[VY] = (*item)->getColumn(2)->getValue().asReal();
@@ -1010,8 +1006,8 @@ void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 		if (motion)
 		{
 			//BD - If we don't use our default, set it once.
-			if (motion->getInterpolationTime() != 0.15
-				|| motion->getInterpolationType() != 1)
+			if (motion->getInterpolationTime() != 0.2
+				|| motion->getInterpolationType() != 2)
 			{
 				motion->setInterpolationTime(0.2f);
 				motion->setInterpolationType(2);
