@@ -1812,7 +1812,8 @@ void LLFloaterPreference::apply()
 			panel->apply();
 	}
 	
-	gViewerWindow->requestResolutionUpdate(); // for UIScaleFactor
+	//BD - Doesn't work anyway.
+	//gViewerWindow->requestResolutionUpdate(); // for UIScaleFactor
 
 	LLSliderCtrl* fov_slider = getChild<LLSliderCtrl>("camera_fov");
 	fov_slider->setMinValue(LLViewerCamera::getInstance()->getMinView());
