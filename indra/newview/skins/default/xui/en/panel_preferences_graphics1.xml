@@ -146,7 +146,7 @@ width="510">
    height="16"
    initial_value="false"
    label="Borderless Window Mode"
-   tool_tip="Toggle between borderless window mode and normal window mode"
+   tool_tip="Toggle between maximized borderless window mode and normal window mode."
    layout="topleft"
    left="10"
    name="FullscreenWindow"
@@ -179,6 +179,10 @@ width="510">
                         height="16"
                         label="Small"
                         value="0.8"
+								tool_tip="This option changes the UI size to small.
+                                                    (0.8)
+								                                                  &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+								                                           Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset. It will break layouts, spacing, text labels and any sort of consistency in the UI."
                         layout="topleft"
                         name="0"
                         top="0"
@@ -197,6 +201,10 @@ width="510">
                         height="16"
                         label="Medium"
                         value="1"
+								tool_tip="This option changes the UI size to medium.
+                                                (1.0)
+								                                                  &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+								                                           Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset. It will break layouts, spacing, text labels and any sort of consistency in the UI."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -215,6 +223,10 @@ width="510">
                         label="Big"
                         halign="right"
                         value="1.2"
+								tool_tip="This option changes the UI size to big.
+                                                    (1.2)
+								                                                  &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+								                                           Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset. It will break layouts, spacing, text labels and any sort of consistency in the UI."
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -235,6 +247,10 @@ width="510">
                         label="Huge (4k)"
                         halign="right"
                         value="2"
+								tool_tip="This option changes the UI size to huge.
+                                                    (2.0)
+								                                                  &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+								                                           Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset. It will break layouts, spacing, text labels and any sort of consistency in the UI."
                         layout="topleft"
                         name="3"
                         left_pad="10"
@@ -260,6 +276,7 @@ width="510">
  increment="1"
  initial_value="96"
  label="Font DPI:"
+ tool_tip="Font DPI controls the size of all text in the Viewer. Changing this will break layouts, spacing and cause many parts of the UI to clip, overlap and sometimes be completely unreadable."
  label_width="150"
  layout="topleft"
  left="10"
@@ -317,7 +334,9 @@ width="510">
       label="Enable OpenGL 3.0 Texture Compression"
       layout="topleft"
       left="10"
-      tool_tip="Enable texture compression on OpenGL 2.1 and later implementations which should reduce video memory bloat (Experimental, requires restart)"
+      tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Graphics       
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option enables texture compression, this will save some texture memory but will cause artifacts on textures and will impact the performance negatively."
       name="CompressTextures"
       top_pad="7"
       width="256">
@@ -331,6 +350,7 @@ width="510">
  can_edit_text="true"
  follows="left|top"
  height="14"
+ tool_tip="This option controls the amount of video memory in MB (megabytes) to be used for permanent and semi-permanent texture storage such as UI textures and textures loaded from the SIM."
  increment="8"
  initial_value="386"
  label="System Memory (MB):"
@@ -365,6 +385,7 @@ width="510">
  can_edit_text="true"
  follows="left|top"
  height="14"
+ tool_tip="This option controls the amount of video memory in MB (megabytes) to be used for rendering all the textures in the currently visible scene. It should be roughly 70%-80% the size of Texture Memory."
  increment="8"
  initial_value="256"
  label="Scene Memory (MB):"
@@ -412,6 +433,7 @@ width="510">
     follows="left|bottom|right"
     height="12"
     width="475"
+	 tool_tip="This display shows roughly how much video memory is being used."
     layout="topleft"
     left="10"
     name="progress_bar" />
@@ -523,7 +545,9 @@ width="510">
    height="16"
    initial_value="true"
    label="Use Dynamic Level of Detail"
-   tool_tip="Toggles dynamic Level-of-Detail which automatically adjusts the detail of meshes, prims and sculpts on further distance. Can boost your performance but should be kept off if you want to have all objects on an equal level of detail at all times"
+   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles dynamic Level-of-Detail which automatically adjusts the detail of meshes, prims and sculpts depending on distance."
    layout="topleft"
    left="10"
    name="DynamicLOD"
@@ -553,6 +577,10 @@ width="510">
                         height="16"
                         label="Very Low"
                         value="0.5"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
+								(0.5)"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -568,6 +596,10 @@ width="510">
                         <radio_item
                         height="16"
                         label="Low"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
+								(1.0)"
                         value="1"
                         layout="topleft"
                         name="0"
@@ -587,6 +619,10 @@ width="510">
                         label="Medium"
                         halign="right"
                         value="2"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
+								(2.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -607,6 +643,10 @@ width="510">
                         label="High"
                         halign="right"
                         value="5"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
+								(5.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -627,6 +667,10 @@ width="510">
                         label="Very High"
                         halign="right"
                         value="7.5"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
+								(7.5)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -647,6 +691,10 @@ width="510">
                         label="Ultra"
                         halign="right"
                         value="10"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
+								(10.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -687,6 +735,10 @@ width="510">
                         height="16"
                         label="Very Low"
                         value="0.5"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details default linden bodies should have and which Level-of-Detail they use.
+								                                            (0.5)"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -703,6 +755,10 @@ width="510">
                         height="16"
                         label="Low"
                         value="1"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details default linden bodies should have and which Level-of-Detail they use.
+								                                            (1.0)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -721,6 +777,10 @@ width="510">
                         label="Medium"
                         halign="right"
                         value="2"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details default linden bodies should have and which Level-of-Detail they use.
+								                                            (2.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -741,6 +801,10 @@ width="510">
                         label="High"
                         halign="right"
                         value="5"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details default linden bodies should have and which Level-of-Detail they use.
+								                                            (5.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -761,6 +825,10 @@ width="510">
                         label="Very High"
                         halign="right"
                         value="10"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details default linden bodies should have and which Level-of-Detail they use.
+								                                            (10.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -801,6 +869,10 @@ width="510">
                         height="16"
                         label="Very Low"
                         value="0.5"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
+								    (0.5)"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -817,6 +889,10 @@ width="510">
                         height="16"
                         label="Low"
                         value="1"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
+								    (1.0)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -835,6 +911,10 @@ width="510">
                         label="Medium"
                         halign="right"
                         value="2"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
+								    (2.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -855,6 +935,10 @@ width="510">
                         label="High"
                         halign="right"
                         value="5"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
+								    (5.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -875,6 +959,10 @@ width="510">
                         label="Very High"
                         halign="right"
                         value="10"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
+								    (10.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -895,6 +983,10 @@ width="510">
                         label="Ultra"
                         halign="right"
                         value="15"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
+								    (15.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -935,6 +1027,10 @@ width="510">
                         height="16"
                         label="Off"
                         value="0"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
+								    (Disabled)"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -951,6 +1047,10 @@ width="510">
                         height="16"
                         label="Low"
                         value="0.5"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
+								        (0.5)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -969,6 +1069,10 @@ width="510">
                         label="Medium"
                         halign="right"
                         value="1"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
+								        (1.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -989,6 +1093,10 @@ width="510">
                         label="High"
                         halign="right"
                         value="2.5"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
+								        (2.5)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1009,6 +1117,10 @@ width="510">
                         label="Very High"
                         halign="right"
                         value="5"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
+								        (5.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1029,6 +1141,10 @@ width="510">
                         label="Ultra"
                         halign="right"
                         value="10"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
+								        (10.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1069,6 +1185,10 @@ width="510">
                         height="16"
                         label="Very Low"
                         value="16"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
+								                                      (16)"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1085,6 +1205,10 @@ width="510">
                         height="16"
                         label="Low"
                         value="32"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
+								                                      (32)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1102,6 +1226,10 @@ width="510">
                         height="16"
                         label="Normal"
                         value="64"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
+								                                      (64)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1119,6 +1247,10 @@ width="510">
                         height="16"
                         label="High"
                         value="128"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
+								                                      (128)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1138,6 +1270,10 @@ width="510">
                         height="16"
                         label="Very High"
                         value="192"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
+								                                      (192)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1157,6 +1293,10 @@ width="510">
                         height="16"
                         label="Ultra"
                         value="256"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
+								                                      (256)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1204,7 +1344,9 @@ width="510">
    initial_value="true"
    label="Enable Avatar Physics Simulation"
    layout="topleft"
-   tool_tip="Toggles Avatar Physics on or off, causing breasts aswell as butts and stomachs to simulate physical movement and interaction with gravity."
+   tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles Avatar Physics on or off. It simulates gravity and physical interaction for breasts, the butt and belly."
    left="10"
    name="AvatarPhysics"
    top_pad="7"
@@ -1233,6 +1375,10 @@ width="510">
                         height="16"
                         label="Very Low"
                         value="0.1"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
+								                        (0.1)"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1249,6 +1395,10 @@ width="510">
                         height="16"
                         label="Low"
                         value="0.2"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
+								                        (0.2)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1267,6 +1417,10 @@ width="510">
                         label="Medium"
                         halign="right"
                         value="0.4"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
+								                        (0.4)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1285,6 +1439,10 @@ width="510">
                         label="High"
                         halign="right"
                         value="0.6"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
+								                        (0.6)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1303,6 +1461,10 @@ width="510">
                         label="Very High"
                         halign="right"
                         value="0.8"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
+								                        (0.8)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1321,6 +1483,10 @@ width="510">
                         label="Ultra"
                         halign="right"
                         value="1"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
+								                        (1.0)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1367,7 +1533,9 @@ width="510">
    height="16"
    initial_value="true"
    label="Use Water Mip-maps"
-   tool_tip="Use Mip-maps on distance for water (blurrier/low resolution textures to prevent usage of high resolution textures on distance which results in extreme water pixelation)"
+   tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles the usage of Mip-Maps on water. Mip-Mapping will use textures with lower resolutions to prevent artifacts and pixelation with high detail density."
    layout="topleft"
    left="10"
    name="MipMaps"
@@ -1397,6 +1565,9 @@ width="510">
                         height="16"
                         label="None"
                         value="0"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option prevents everything from being reflected in water reflections."
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1413,6 +1584,9 @@ width="510">
                         height="16"
                         label="Terrain"
                         value="1"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows the terrain to be reflected in water reflections."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1430,6 +1604,9 @@ width="510">
                         height="16"
                         label="Objects"
                         value="2"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows the terrain and objects to be reflected in water reflections."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1447,6 +1624,9 @@ width="510">
                         height="16"
                         label="Avatars"
                         value="3"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows the terrain, objects and avatars to be reflected in water reflections."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1464,6 +1644,9 @@ width="510">
                         height="16"
                         label="Everything"
                         value="4"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows everything to be reflected in water reflections."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1502,6 +1685,10 @@ width="510">
                         height="16"
                         label="Very Low"
                         value="256"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
+								      (256x256)"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1518,6 +1705,10 @@ width="510">
                         height="16"
                         label="Low"
                         value="512"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
+								      (512x512)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1535,6 +1726,10 @@ width="510">
                         height="16"
                         label="Normal"
                         value="768"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
+								      (768x768)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1554,6 +1749,10 @@ width="510">
                         height="16"
                         label="High"
                         value="1024"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
+								      (1024x1024)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1573,6 +1772,10 @@ width="510">
                         height="16"
                         label="Very High"
                         value="1536"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
+								      (1536x1536)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1592,6 +1795,10 @@ width="510">
                         height="16"
                         label="Ultra"
                         value="2048"
+								tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
+								      (2048x2048)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1633,6 +1840,10 @@ width="510">
                         height="16"
                         label="Very Low"
                         value="20"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
+								                (20)"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1649,6 +1860,10 @@ width="510">
                         height="16"
                         label="Low"
                         value="16"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
+								                (16)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1667,6 +1882,10 @@ width="510">
                         label="Medium"
                         halign="right"
                         value="12"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
+								                (12)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1685,6 +1904,10 @@ width="510">
                         label="High"
                         halign="right"
                         value="9"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
+								                  (9)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1703,6 +1926,10 @@ width="510">
                         label="Very High"
                         halign="right"
                         value="6"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
+								                  (6)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1721,6 +1948,10 @@ width="510">
                         label="Ultra"
                         halign="right"
                         value="5"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
+								                  (5)"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1759,6 +1990,10 @@ width="510">
                         height="16"
                         label="Low"
                         value="7"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of post processing glow.
+								              (7)"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1775,6 +2010,10 @@ width="510">
                         height="16"
                         label="Normal"
                         value="9"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of post processing glow.
+								              (9)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1794,6 +2033,10 @@ width="510">
                         height="16"
                         label="High"
                         value="10"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of post processing glow.
+								              (10)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1964,7 +2207,9 @@ width="510">
  max_val="1024"
  min_val="8"
  name="FarClip"
- tool_tip="Controls the view distance of Objects starting from your avatar in meters"
+ tool_tip="&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls your view distance in meters, starting from your camera."
  top_pad="12"
  width="325" />
  <button
@@ -1998,7 +2243,9 @@ width="510">
  max_val="8192"
  min_val="0"
  name="MaxParticles"
- tool_tip="Controls the maximum amount of Particles rendered on screen."
+ tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum amount of particles rendered on screen."
  top_pad="1"
  width="325" />
  <button
@@ -2022,7 +2269,7 @@ width="510">
    height="16"
    initial_value="true"
    label="Render Attached Particles"
-   tool_tip="Toggles rendering of particles which are attached to your or other Avatars on or off. Usefull for particle spammers"
+   tool_tip="This option toggles particles attached to avatars on or off. Useful for particle spammers"
    layout="topleft"
    left="10"
    name="attached_particles"
@@ -2057,7 +2304,9 @@ width="510">
       height="16"
       initial_value="true"
       label="Enable Anisotropic Filtering"
-      tool_tip="Allows Anisotropic Filtering to unblur textures in certain camera angles"
+      tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles Anisotropic Filtering which filters textures to prevent them from becoming blurry at certain camera angles."
       layout="topleft"
       left="10"
       name="ani"
@@ -2068,7 +2317,8 @@ width="510">
    height="16"
    initial_value="true"
    label="Enable Fullbright"
-   tool_tip="Tell the Viewer to ignore the Fullbright flags on Object creation resulting in no Fullbrights until restart/revisit - WARNING! , does not work with Objects that use an old set prim attribute LIGHT script command!"
+   tool_tip="This option controls whether the Viewer should ignore the legacy fullbright flag on object surfaces.
+WARNING! - Does not work with prim param LIGHT script command and emmisive masks!"
    layout="topleft"
    left="10"
    name="EnableFullbright"
@@ -2103,7 +2353,9 @@ width="510">
    height="16"
    initial_value="true"
    label="Use Object-Object Occlusion"
-   tool_tip="Toggles Occlusion which prevents objects behind other objects beeing rendered which can boost your performance depending on how much it is used in the scene e.g in empty places it will just hurt your performance rather than increasing it."
+   tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Graphics       
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles rendering of objects that are occluded by other objects. Can boost your performance depending on how much it is used. It will hurt your performance in open areas."
    layout="topleft"
    left="10"
    name="UseOcclusion"
@@ -2118,7 +2370,7 @@ width="510">
       left_delta="0"
       name="vbostream"
       top_pad="0" 
-      tool_tip="Dynamic draw updates per frame, Stream draw per render. Driver/GPU tweak may alter Graphics Bandwidth"
+      tool_tip="This option controls whether the Viewer should draw updates per frame (Dynamic) or per render (Stream). Driver/GPU tweak may alter rendering bandwidth."
       width="315" />
       <check_box
       control_name="PluginUseReadThread"
@@ -2127,7 +2379,7 @@ width="510">
       label="Use Plugin Read Thread"
       layout="topleft"
       left_delta="0"
-      tool_tip="Use a seperate Thread to read incoming messages from Plugins like Webprims etc."
+      tool_tip="Use a seperate thread to read incoming messages from plugins like Webprims etc."
       name="PluginUseReadThread"
       top_pad="0"
       width="256" />
@@ -2138,7 +2390,7 @@ width="510">
       label="Use Far Clip"
       layout="topleft"
       left_delta="0"
-      tool_tip="Switches between the normal Camera Mode where Objects get derendered when moving your Camera away from them and a more -from Avatar- like rendering method where everything until your Render Range gets rendered no matter if you are zooming away"
+      tool_tip="This option toggles whether the Viewer should render the fourth (last) segment of the camera view distance or not."
       name="RenderUseFarClip"
       top_pad="0"
       width="256" />
@@ -2154,7 +2406,7 @@ width="510">
       label="Background Yield Time:"
       label_width="150"
       layout="topleft"
-      tool_tip="Set the amount of time in ms which the Viewer should be held back when not beeing focused , 40 equals ~18 FPS"
+      tool_tip="This option controls the time in ms (miliseconds) Viewer updates should be held back when the Viewer is not focused. 40ms = ~18 FPS."
       left="10"
       max_val="300"
       min_val="0"
@@ -2207,6 +2459,7 @@ width="510">
       height="16"
       initial_value="true"
       label="Render Unloaded Avatars"
+		tool_tip="This option toggles whether the Viewer should render avatars that are not yet fully loaded (clouds) as clouds or their still-in-progress loading avatars."
       layout="topleft"
       left="10"
       name="UnloadedAvatars"
@@ -2223,7 +2476,9 @@ width="510">
       label="Max. Avatars Visible:"
       label_width="150"
       layout="topleft"
-      tool_tip="Controls the maximum amount of Avatars rendered on screen"
+      tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum amount of avatars rendered on screen at any given time. Any more avatars will be automatically displayed as impostors (2D sprites)."
       left="10"
       max_val="50"
       min_val="0"
@@ -2276,6 +2531,7 @@ width="510">
       height="16"
       initial_value="true"
       label="Always Render Friends"
+		tool_tip="This option toggles whether the Viewer should always fully render friends regardless of your Jelly Doll settings."
       layout="topleft"
       left="10"
       name="AlwaysRenderFriends"
@@ -2289,6 +2545,9 @@ width="510">
       height="14"
       increment="1"
       initial_value="0"
+		tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum total surface area in m² any avatar may have before it is automatically jelly dolled (colored 2D sprite)."
       label="Derender Surfaces > m²:"
       label_width="150"
       layout="topleft"
@@ -2322,6 +2581,9 @@ width="510">
       height="14"
       increment="1"
       initial_value="0"
+		tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite)."
       label="Derender Avatars > AR:"
       label_width="150"
       layout="topleft"
@@ -2355,6 +2617,9 @@ width="510">
       height="14"
       increment="1"
       initial_value="0"
+		tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum surface area in m² any single object may have before it is automatically derendered."
       label="Hide Surfaces > m²:"
       label_width="150"
       layout="topleft"
@@ -2440,6 +2705,7 @@ width="510">
       increment="1" 
       initial_value="1"
       top_pad="12"
+		tool_tip="This option controls how often glow should be applied."
       label="Glow Iterations:"
       label_width="150"
       left="10"
@@ -2474,7 +2740,8 @@ width="510">
       top_pad="1"
       can_edit_text="true"
       increment="0.001"
-      initial_value="0.200" 
+      initial_value="0.200"
+		tool_tip="This option controls the strength of glow."
       label="Glow Strength:"
       label_width="150"
       left="10"
@@ -2510,7 +2777,8 @@ width="510">
       top_pad="1"
       can_edit_text="true"
       increment="0.1" 
-      initial_value="0" 
+      initial_value="0"
+		tool_tip="This option controls the minimum luminance required to consider something glowing."
       label="Glow Min. Luminance:"
       label_width="150"
       left="10"
@@ -2546,7 +2814,8 @@ width="510">
       top_pad="1"
       can_edit_text="true"
       increment="0.1" 
-      initial_value="7" 
+      initial_value="7"
+		tool_tip="This option controls the amount of soft ambient glow applied when something is not directly glowing via the object glow parameter."
       label="Glow Warmth:"
       label_width="150"
       left="10"
@@ -2581,7 +2850,8 @@ width="510">
       top_pad="1"
       increment="0.1"
       can_edit_text="true"
-      initial_value="3" 
+      initial_value="3"
+		tool_tip="This option controls the width of all glow effects."
       label="Glow Width:"
       label_width="150"
       left="10"
@@ -2616,7 +2886,8 @@ width="510">
       height="14"
       top_pad="1"
       increment="0.001" 
-      initial_value="0.010" 
+      initial_value="0.010"
+		tool_tip="This option controls how much glow should be extracted out of the alpha channel for glow, higher values makes ambient glow stronger."
       label="Glow Max. Alpha:"
       label_width="150"
       left="10"
@@ -2676,7 +2947,8 @@ width="510">
       height="14"
       top_pad="7"
       increment="0.001" 
-      initial_value="0.6" 
+      initial_value="0.6"
+		tool_tip="This option controls how much glow luminance should be weighted towards the red color channel."
       label="Luminance Weight Red:"
       label_width="150"
       left="10"
@@ -2698,7 +2970,8 @@ width="510">
       height="14"
       top_pad="2"
       increment="0.001" 
-      initial_value="0.2" 
+      initial_value="0.2"
+		tool_tip="This option controls how much glow luminance should be weighted towards the green color channel."
       label="Luminance Weight Green:"
       label_width="150"
       left="10"
@@ -2720,7 +2993,8 @@ width="510">
       height="14"
       top_pad="2"
       increment="0.001" 
-      initial_value="0.2" 
+      initial_value="0.2"
+		tool_tip="This option controls how much glow luminance should be weighted towards the blue color channel."
       label="Luminance Weight Blue:"
       label_width="150"
       left="10"
@@ -2784,7 +3058,8 @@ width="510">
       height="14"
       top_pad="7"
       increment="0.001" 
-      initial_value="1.0" 
+      initial_value="1.0"
+		tool_tip="This option controls how much the ambient glow should be weighted towards the red color channel."
       label="Warmth Red:"
       label_width="150"
       left="10"
@@ -2806,7 +3081,8 @@ width="510">
       height="14"
       top_pad="2"
       increment="0.001" 
-      initial_value="0.6" 
+      initial_value="0.6"
+		tool_tip="This option controls how much the ambient glow should be weighted towards the green color channel."
       label="Warmth Green:"
       label_width="150"
       left="10"
@@ -2828,7 +3104,8 @@ width="510">
       height="14"
       top_pad="2"
       increment="0.001" 
-      initial_value="0.75" 
+      initial_value="0.75"
+		tool_tip="This option controls how much the ambient glow should be weighted towards the blue color channel."
       label="Warmth Blue:"
       label_width="150"
       left="10"
@@ -2891,7 +3168,9 @@ width="510">
    height="16"
    initial_value="true"
    label="Deferred Rendering"
-   tool_tip="Toggles Deferred Rendering adding shadows cast by and on Prims, Avatars and the World aswell as uses a new lighting which allows Projected Lights/Textures which can also drop shadows. Vertex Shader, Atmospheric Shader, Post Process Glow and Hardware Skinning are needed to use this!"
+   tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles Deferred Rendering, improves and softens lighting, allows infinite light sources, directional projector lights, realtime shadows, Screen Space Ambient Occlusion (SSAO) and more. This option is absolutely required for any of the advanced effects and tweaks to be visible."
    layout="topleft"
    left="5"
    name="Deferred"
@@ -2966,7 +3245,9 @@ width="510">
    control_name="RenderDeferredLights"
    height="16"
    label="Render World Lights"
-   tool_tip="Toggles unattached normal and projected lights in Deferred Rendering on or off."
+   tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles unattached normal and projected lights in Deferred Rendering on or off."
    layout="topleft"
    left="10"
    name="RenderDeferredLights"
@@ -2976,7 +3257,9 @@ width="510">
    control_name="RenderOtherAttachedLights"
    height="16"
    label="Render Other Attached Lights"
-   tool_tip="Toggles rendering of lights which are attached to other Avatars on or off. Useful for annoying facelights."
+   tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles rendering attached lights on or off. Useful for annoying facelights."
    layout="topleft"
    left="10"
    name="RenderOtherAttachedLights"
@@ -2986,7 +3269,9 @@ width="510">
    control_name="RenderOwnAttachedLights"
    height="16"
    label="Render Own Attached Lights"
-   tool_tip="Toggles rendering of lights which are attached to your own Avatar on or off."
+   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles rendering your own attached lights on or off."
    layout="topleft"
    left="10"
    name="RenderOwnAttachedLights"
@@ -2996,7 +3281,9 @@ width="510">
    control_name="RenderDeferredEnvironmentMap"
    height="16"
    label="Render Environment Map"
-   tool_tip="Toggles rendering the environment map on shiny surfaces in Deferred Rendering"
+   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles rendering the cheap and outdated environment map on shiny surfaces in Deferred Rendering on or off."
    layout="topleft"
    left="10"
    name="RenderDeferredEnvironmentMap"
@@ -3006,7 +3293,9 @@ width="510">
    control_name="RenderSpotLightReflections"
    height="16"
    label="Render Projector Image Reflections"
-   tool_tip="Toggles rendering the projector image reflections seen on shiny surfaces with environment reflections enabled"
+   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles rendering the projector image reflections on shiny surfaces with environment reflections enabled on or off."
    layout="topleft"
    left="10"
    name="RenderSpotLightReflections"
@@ -3016,7 +3305,9 @@ width="510">
    control_name="RenderSpotLightImages"
    height="16"
    label="Render Spotlight Light Refraction"
-   tool_tip="Toggles rendering the light a projector projects into its set direction."
+   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles rendering the light a projector projects into its set direction on or off."
    layout="topleft"
    left="10"
    name="RenderSpotLightImages"
@@ -3047,6 +3338,9 @@ width="510">
                         height="16"
                         label="Disabled"
                         value="0"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option disables antialiasing. It will cause jagged edges."
                         layout="topleft"
                         name="0"
                         top="0"
@@ -3063,6 +3357,9 @@ width="510">
                         height="16"
                         label="FXAA"
                         value="2"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option enables fast approximate antialiasing. A cheap antialiasing reliably getting rid of jagged edges with no performance cost."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3126,6 +3423,9 @@ width="510">
                         height="16"
                         label="Disabled"
                         value="0"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option disables all realtime shadows."
                         layout="topleft"
                         name="0"
                         top="0"
@@ -3142,6 +3442,9 @@ width="510">
                         height="16"
                         label="Sun/Moon"
                         value="1"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows only the sun and moon to cast a global shadow."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3159,6 +3462,9 @@ width="510">
                         height="16"
                         label="Projectors"
                         value="2"
+								tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows projectors to cast shadows. Includes sun and moon shadows."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3182,7 +3488,7 @@ width="510">
       can_edit_text="true"
       label="Extended Shadow Distance:"
       label_width="150"
-      tool_tip="Additionally increase the distance you can see shadows, decreases overall shadow precision"
+      tool_tip="This option controls the distance you can see shadows similarly to how view distance works, higher numbers mean more distance covered translating into less precision in a given space depending on the resolution of each shadow map."
       layout="topleft"
       left="10"
       max_val="1024"
@@ -3216,7 +3522,9 @@ width="510">
       can_edit_text="true"
       label="Closeup Shadowmap Size:"
       label_width="150"
-      tool_tip="Set the width and height of the closeup shadowmap"
+      tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance."
       layout="topleft"
       left="10"
       max_val="6144"
@@ -3238,7 +3546,9 @@ width="510">
       can_edit_text="true"
       label="Close Shadowmap Size:"
       label_width="150"
-      tool_tip="Set the width and height of the close shadowmap"
+      tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance."
       layout="topleft"
       left="10"
       max_val="6144"
@@ -3260,7 +3570,9 @@ width="510">
       can_edit_text="true"
       label="Far Shadowmap Size:"
       label_width="150"
-      tool_tip="Set the width and height of the far shadowmap"
+      tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance."
       layout="topleft"
       left="10"
       max_val="6144"
@@ -3282,7 +3594,9 @@ width="510">
       can_edit_text="true"
       label="Distant Shadowmap Size:"
       label_width="150"
-      tool_tip="Set the width and height of the furthest shadowmap"
+      tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance."
       layout="topleft"
       left="10"
       max_val="6144"
@@ -3344,7 +3658,9 @@ width="510">
       can_edit_text="true"
       label="First Projector:"
       label_width="150"
-      tool_tip="Set the resolution of the first projector shadow"
+      tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low."
       layout="topleft"
       left="10"
       max_val="4096"
@@ -3366,7 +3682,9 @@ width="510">
       can_edit_text="true"
       label="Second Projector:"
       label_width="150"
-      tool_tip="Set the resolution of the second projector shadow"
+      tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low."
       layout="topleft"
       left="10"
       max_val="4096"
@@ -3423,7 +3741,9 @@ width="510">
      height="16"
      initial_value="true"
      label="Light Softening"
-     tool_tip="Toggles Shadow, SSAO and Light Softening, blurs shadows and ssao to make them look smooth, might have a slight impact on overall look of the lighting in deferred without Shadows or SSAO enabled."
+     tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles blurring for the light image used in Deferred Rendering. Affects whether shadows and SSAO are softened."
      layout="topleft"
      left="10"
      name="RenderDeferredBlurLight"
@@ -3434,7 +3754,7 @@ width="510">
      height="16"
      initial_value="true"
      label="Use Fast Light Softening"
-     tool_tip="Use a static, but much faster blur light shader, disables the ability to customize the blur light quality"
+     tool_tip="This option toggles between using a static, but much faster blur light shader or a customizable but slower blur light shader. The fast shader will always use the highest quality."
      layout="topleft"
      left="10"
      name="RenderDeferredBlurLight"
@@ -3465,6 +3785,8 @@ width="510">
                         height="16"
                         label="Low"
                         value="2"
+								tool_tip="This option controls the amount of passes the blur light shader uses to soften light. Requires 'Use Fast Light Softening' being disabled.
+								        (2 passes)"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -3481,6 +3803,8 @@ width="510">
                         height="16"
                         label="Normal"
                         value="4"
+								tool_tip="This option controls the amount of passes the blur light shader uses to soften light. Requires 'Use Fast Light Softening' being disabled.
+								        (4 passes)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3498,6 +3822,8 @@ width="510">
                         height="16"
                         label="High"
                         value="5"
+								tool_tip="This option controls the amount of passes the blur light shader uses to soften light. Requires 'Use Fast Light Softening' being disabled.
+								        (5 Passes)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3515,6 +3841,8 @@ width="510">
                         height="16"
                         label="Very High"
                         value="6"
+								tool_tip="This option controls the amount of passes the blur light shader uses to soften light. Requires 'Use Fast Light Softening' being disabled.
+								        (6 Passes)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3532,6 +3860,8 @@ width="510">
                         height="16"
                         label="Ultra"
                         value="8"
+								tool_tip="This option controls the amount of passes the blur light shader uses to soften light. Requires 'Use Fast Light Softening' being disabled.
+								        (8 Passes)"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3555,7 +3885,7 @@ width="510">
       can_edit_text="true"
       label="Soften Blur Size:"
       label_width="150"
-      tool_tip="Set the strength of each blur pass"
+      tool_tip="This option control the strength of each blur light pass. Higher values mean softer but also wider blur."
       layout="topleft"
       left="10"
       max_val="3"
@@ -3608,7 +3938,9 @@ width="510">
      height="16"
      initial_value="true"
      label="Render Screen Space Reflections"
-     tool_tip="Toggles Screen Space Reflections on shiny surfaces creating very realistic reflective surfaces but will need a monstrous PC"
+     tool_tip="&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles cheap looking but performance costly reflections based on a copy what you see on screen."
      layout="topleft"
      left="10"
      name="RenderScreenSpaceReflections"
@@ -3623,6 +3955,9 @@ width="510">
       height="15"
       increment="1"
       initial_value="10"
+		tool_tip="&lt;icon&gt;Stat_Dot5&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the amount of iterations the screen space reflection shader should go through. More iterations mean finer grained reflections but also much higher performance impact."
       label="SSR Resolution:"
       label_width="150"
       layout="topleft"
@@ -3641,6 +3976,7 @@ width="510">
       height="15"
       increment="0.1"
       initial_value="1"
+		tool_tip="This option controls the brightness of reflections on shiny surfaces from Screen Space Reflections."
       label="SSR Brightness:"
       label_width="150"
       layout="topleft"
@@ -3698,7 +4034,9 @@ width="510">
    height="16"
    initial_value="true"
    label="Screen Space Ambient Occlusion (SSAO)"
-   tool_tip="Toggles SSAO which adds small dark edges and transitions to close objects making them look more realistic."
+   tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles Screen Space Ambient Occlusion (SSAO) emulating indirect lighting and the lack thereof giving objects a more realistic, less flat look."
    layout="topleft"
    left="5"
    name="UseSSAO"
@@ -3726,7 +4064,7 @@ width="510">
       can_edit_text="true"
       label="SSAO Blur Size:"
       label_width="150"
-      tool_tip="Set the strength of each blur pass of SSAO"
+      tool_tip="This option controls the strength of each blur pass of SSAO."
       layout="topleft"
       left="10"
       max_val="1.0"
@@ -3759,6 +4097,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="0.46"
+		tool_tip="This option controls the strength and thus darkness of each pixel of SSAO."
       label="SSAO Effect:"
       label_width="150"
       layout="topleft"
@@ -3793,6 +4132,7 @@ width="510">
       height="14"
       increment="1"
       initial_value="2000"
+		tool_tip="This option controls the size of the area SSAO is applied in, higher is a wider but weaker SSAO."
       label="SSAO Scale:"
       label_width="150"
       layout="topleft"
@@ -3827,6 +4167,7 @@ width="510">
       height="14"
       increment="1"
       initial_value="2000"
+		tool_tip="This option controls the maximum size of the area SSAO is applied in, if max scale is smaller than scale it will be cut off creating a harsher SSAO outline."
       label="SSAO Max Scale:"
       label_width="150"
       layout="topleft"
@@ -3861,6 +4202,7 @@ width="510">
       height="14"
       increment="0.001"
       initial_value="0.1"
+		tool_tip="This option controls the distance one object needs to be away from another to be eligible for SSAO, higher means more SSAO on objects further away from each other, possibly resulting in black ghost outlines around objects and avatars."
       label="SSAO Factor:"
       label_width="150"
       layout="topleft"
@@ -3920,7 +4262,9 @@ width="510">
      height="16"
      initial_value="true"
      label="Depth of Field"
-     tool_tip="Toggles a camera like Depth of Field effect on or off, often used to blur out distance or things that shouldnt be in focus"
+     tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles Depth of Field on or off, it is often used to blur out the background or unfocused parts of the scene."
      layout="topleft"
      left="5"
      name="UseDoF"
@@ -3944,7 +4288,7 @@ width="510">
    label="Enable Alphas in Depth of Field calculations"
    layout="topleft"
    left="10"
-   tool_tip="Toggle if the Viewer should include alphas and particles into the depth map (can cause some erratic behavior with Depth of Field blurring on Alphas and Volumetric Lighting on Alphas). If disabled this will cause Depth of Field and Volumetric Lighting to ignore Alphas entirely and they will change their lighting back to as if Depth of Field is disabled."
+   tool_tip="This option toggle if the Viewer should include alphas and particles into the depth map. This will affect whether alpha transparent surfaces block godrays and if said surface is considered a solid surface when blurring."
    name="RenderDepthOfFieldAlphas"
    top_pad="15"
    width="115"/>
@@ -3956,7 +4300,9 @@ width="510">
    label="Enable High Quality Depth of Field"
    layout="topleft"
    left="10"
-   tool_tip="Toggles between the old, slow, high quality Depth of Field and the new, faster, lower quality Depth of Field."
+   tool_tip="&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles between the old, slow, high quality Depth of Field and the new, faster, lower quality Depth of Field."
    name="RenderDepthOfFieldHighQuality"
    top_pad="0"
    width="115"/>
@@ -3976,7 +4322,7 @@ width="510">
       max_val="179"
       min_val="0"
       name="CameraFOV"
-      tool_tip="Vertical camera field of view for Depth of Field effect (in degrees)"
+      tool_tip="This option controls the vertical camera field of view in ° (Degrees) for Depth of Field."
       top_pad="4"
       width="318" />
      <button
@@ -4011,7 +4357,7 @@ width="510">
       max_val="128"
       min_val="0.50"
       name="CameraFNum"
-      tool_tip="Camera f-number value for Depth of Field effect"
+      tool_tip="This option controls the camera f-number value for Depth of Field."
       top_pad="1"
       width="327" />
       <button
@@ -4046,7 +4392,7 @@ width="510">
       max_val="300"
       min_val="0"
       name="CameraFocal"
-      tool_tip="Camera focal length for Depth of Field effect (in millimeters)"
+      tool_tip="This option controls the camera focal length in mm (Millimeters) for Depth of Field."
       top_pad="1"
       width="318"/>
       <button
@@ -4081,7 +4427,7 @@ width="510">
       max_val="100"
       min_val="0"
       name="CameraCoF"
-      tool_tip="Set the Camera circle of confusion"
+      tool_tip="This option controls the camera circle of confusion for Depth of Field."
       top_pad="1"
       width="327" />
       <button
@@ -4116,7 +4462,7 @@ width="510">
       max_val="20"
       min_val="0.01"
       name="CameraFocusTrans"
-      tool_tip="Time taken to alter focus from one place to the next"
+      tool_tip="This option controls the time in s (Seconds) it takes to switch focus from one point to another."
       top_pad="1"
       width="327" />
       <button
@@ -4151,7 +4497,9 @@ width="510">
       max_val="1"
       min_val="0.25"
       name="CameraDoFRes"
-      tool_tip="Set the Resolution (Quality) of each DoF pixel"
+      tool_tip="&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the sampling resolution for Depth of Field. It multiplies the current screen resolution with this number, lower means less accurate."
       top_pad="1"
       width="321" />
       <button
@@ -4202,7 +4550,9 @@ width="510">
    height="16"
    initial_value="false"
    label="Motion Blur"
-   tool_tip="Toggles if fast movement should be blurred"
+   tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles whether the Viewer should blur fast movement."
    layout="topleft"
    left="5"
    name="MotionBlur"
@@ -4256,7 +4606,10 @@ width="510">
                         <radio_item
                         height="16"
                         label="Objects"
-                        value="0.5"
+                        value="0"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows only objects with fast movement to be blurred."
                         layout="topleft"
                         name="0"
                         top="0"
@@ -4273,6 +4626,9 @@ width="510">
                         height="16"
                         label="Self"
                         value="1"
+								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows objects and your own avatar to be blurred."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -4291,6 +4647,9 @@ width="510">
                         label="Everything"
                         halign="right"
                         value="2"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows everything moving fast to be blurred."
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -4316,6 +4675,7 @@ width="510">
       height="14"
       increment="1"
       initial_value="100"
+		tool_tip="This option controls the strength divisor used for Motion Blur, higher means weaker and smoother blur."
       label="Blur Quality:"
       label_width="150"
       layout="topleft"
@@ -4373,7 +4733,9 @@ width="510">
    height="16"
    initial_value="false"
    label="Volumetric Lighting"
-   tool_tip="Toggles if experimental volumetric light should be rendered, causing godrays in certain circumstances"
+   tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles experimental volumetric lighting. This effect will create godrays if certain atmospheric criteria are met."
    layout="topleft"
    left="5"
    name="RenderGodrays"
@@ -4410,7 +4772,7 @@ width="510">
    label="Directional Volumetric Lighting"
    layout="topleft"
    left_delta="5"
-   tool_tip="Toggle if Volumtric Lighting should fade out the further you look away from the Sun. Mimics original Godrays behavior a bit."
+   tool_tip="This option controls whether Volumtric Lighting should fade out when looking away from the sun."
    name="RenderGodraysDirectional"
    top_pad="15"
    width="115"/>
@@ -4424,6 +4786,9 @@ width="510">
       height="14"
       increment="1"
       initial_value="32"
+		tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the amount of iterations Volumetric Lighting goes through, higher looks better but is slower. Performance impact also depends on shadow resolution."
       label="Light Resolution:"
       label_width="150"
       layout="topleft"
@@ -4458,6 +4823,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="1"
+		tool_tip="This option controls the brightness of each Volumetric Lighting iteration."
       label="Light Brightness:"
       label_width="150"
       layout="topleft"
@@ -4492,6 +4858,7 @@ width="510">
       height="14"
       increment="0.1"
       initial_value="0"
+		tool_tip="This option controls the strength and distance at which Volumetric Lighting should be faded out around your camera."
       label="Light Falloff:"
       label_width="150"
       layout="topleft"
@@ -4569,7 +4936,9 @@ width="510">
    height="16"
    initial_value="true"
    label="Lens Flare Effect"
-   tool_tip="Toggles the sun light reflection on your camera on or off."
+   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles a lens reflection of the sun in your camera on or off."
    layout="topleft"
    left="5"
    name="LensFlare"
@@ -4584,6 +4953,7 @@ width="510">
       height="15"
       increment="0.01"
       initial_value="0"
+		tool_tip="This option controls the percentage the screen should be decolored."
       label="Greyscale Strength:"
       label_width="150"
       layout="topleft"
@@ -4618,6 +4988,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="0"
+		tool_tip="This option controls the percentage the screen colors should be transformed to a Sepia color palette."
       label="Sepia Strength:"
       label_width="150"
       layout="topleft"
@@ -4652,6 +5023,7 @@ width="510">
       height="14"
       increment="1"
       initial_value="1"
+		tool_tip="This option controls the amount of times all colors onscreen should be posterized."
       label="Posterize Samples:"
       label_width="150"
       layout="topleft"
@@ -4686,6 +5058,7 @@ width="510">
       height="14"
       increment="0.1"
       initial_value="0"
+		tool_tip="This option controls the offset of the edge color fringing."
       label="Chromatic Aberration:"
       label_width="150"
       layout="topleft"
@@ -4743,7 +5116,9 @@ width="510">
    height="16"
    initial_value="false"
    label="Tone Mapping"
-   tool_tip="Toggles if Tone Mapping should be used while Deferred Rendering is active, it might cause the whole scene to look more/less colorfull and increase/decrease the overall scene brightness difference making the scene look dull"
+   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles Tone Mapping on or off. It is used to transform colors that are outside the visible range into a color range that most monitors can display while trying to keep the details of the scene such as the contrast intact, in short it compresses the whole color range which is partly not visible into one that can be displayed."
    layout="topleft"
    left="5"
    name="ToneMapping"
@@ -4785,6 +5160,7 @@ width="510">
                         height="16"
                         label="Filmic"
                         value="0"
+								tool_tip="This option switches the Tone Mapping algorythm to 'Filmic'."
                         layout="topleft"
                         name="0"
                         top="0"
@@ -4801,6 +5177,7 @@ width="510">
                         height="16"
                         label="Linear"
                         value="1"
+								tool_tip="This option switches the Tone Mapping algorythm to 'Linear', similar to 'Custom' but without customizations."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -4818,6 +5195,7 @@ width="510">
                         height="16"
                         label="Rheinard"
                         value="2"
+								tool_tip="This option switches the Tone Mapping algorythm to 'Rheinard'."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -4835,6 +5213,7 @@ width="510">
                         height="16"
                         label="Custom"
                         value="3"
+								tool_tip="This option switches allows full control over the weights of the Tone Mapping algorythm."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -4882,6 +5261,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="0.0"
+		tool_tip="This option controls the exposure or overall brightness for Tone Mapping."
       label="Tone Exposure:"
       label_width="150"
       layout="topleft"
@@ -4915,6 +5295,7 @@ width="510">
       height="14"
       increment="0.001"
       initial_value="1.0"
+		tool_tip="This option controls the shoulder strength for Tone Mapping."
       label="Shoulder Strength:"
       label_width="150"
       layout="topleft"
@@ -4936,6 +5317,7 @@ width="510">
       height="14"
       increment="0.001"
       initial_value="1.0"
+		tool_tip="This option controls the linear strength for Tone Mapping."
       label="Linear Strength:"
       label_width="150"
       layout="topleft"
@@ -4957,6 +5339,7 @@ width="510">
       height="14"
       increment="0.001"
       initial_value="1.0"
+		tool_tip="This option controls the linear angle for Tone Mapping."
       label="Linear Angle:"
       label_width="150"
       layout="topleft"
@@ -4994,6 +5377,7 @@ width="510">
       height="14"
       increment="0.001"
       initial_value="0.24"
+		tool_tip="This option controls the toe strength for Tone Mapping."
       label="Toe Strength:"
       label_width="150"
       layout="topleft"
@@ -5015,6 +5399,7 @@ width="510">
       height="14"
       increment="0.001"
       initial_value="0.02"
+		tool_tip="This option controls the the numerator for Tone Mapping."
       label="Toe Numerator:"
       label_width="150"
       layout="topleft"
@@ -5036,6 +5421,7 @@ width="510">
       height="14"
       increment="0.001"
       initial_value="0.18"
+		tool_tip="This option controls the toe denominator for Tone Mapping."
       label="Toe Denominator:"
       label_width="150"
       layout="topleft"
@@ -5073,6 +5459,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="25.0"
+		tool_tip="This option controls the linear white for Tone Mapping."
       label="Linear White:"
       label_width="150"
       layout="topleft"
@@ -5094,6 +5481,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="1.0"
+		tool_tip="This option controls the exposure bias for Tone Mapping."
       label="Exposure Bias:"
       label_width="150"
       layout="topleft"
@@ -5173,6 +5561,9 @@ width="510">
                         height="16"
                         label="None"
                         value="1"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option disables Color Correction."
                         layout="topleft"
                         name="0"
                         top="0"
@@ -5188,6 +5579,9 @@ width="510">
                         <radio_item
                         height="16"
                         label="Linear"
+								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option enables linear Color Correction and allows altering the algorythm."
                         value="0"
                         layout="topleft"
                         name="0"
@@ -5235,6 +5629,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="0.0"
+		tool_tip="This option controls how much the red color channel should be exposed."
       label="Exposure Red:"
       label_width="150"
       layout="topleft"
@@ -5255,6 +5650,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="0.0"
+		tool_tip="This option controls how much the green color channel should be exposed."
       label="Exposure Green:"
       label_width="150"
       layout="topleft"
@@ -5275,6 +5671,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="0.0"
+		tool_tip="This option controls how much the blue color channel should be exposed."
       label="Exposure Blue:"
       label_width="150"
       layout="topleft"
@@ -5312,6 +5709,7 @@ width="510">
       height="14"
       increment="0.001"
       initial_value="0.0"
+		tool_tip="This option controls how much the red color channel should be offsetted."
       label="Offset Red:"
       label_width="150"
       layout="topleft"
@@ -5332,6 +5730,7 @@ width="510">
       height="14"
       increment="0.001"
       initial_value="0.0"
+		tool_tip="This option controls how much the green color channel should be offsetted."
       label="Offset Green:"
       label_width="150"
       layout="topleft"
@@ -5352,6 +5751,7 @@ width="510">
       height="14"
       increment="0.001"
       initial_value="0.0"
+		tool_tip="This option controls how much the blue color channel should be offsetted."
       label="Offset Blue:"
       label_width="150"
       layout="topleft"
@@ -5390,6 +5790,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="1.0"
+		tool_tip="This option controls how much gamma the red color channel should use."
       label="Gamma Red:"
       label_width="150"
       layout="topleft"
@@ -5410,6 +5811,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="1.0"
+		tool_tip="This option controls how much gamma the green color channel should use."
       label="Gamma Green:"
       label_width="150"
       layout="topleft"
@@ -5430,6 +5832,7 @@ width="510">
       height="14"
       increment="0.01"
       initial_value="1.0"
+		tool_tip="This option controls how much gamma the blue color channel should use."
       label="Gamma Blue:"
       label_width="150"
       layout="topleft"
@@ -5514,6 +5917,7 @@ width="510">
       height="14"
       increment="0.1"
       initial_value="0.0"
+		tool_tip="This option controls the overall size of the vignette effect."
       label="Amount:"
       label_width="150"
       layout="topleft"
@@ -5534,6 +5938,7 @@ width="510">
       height="14"
       increment="0.1"
       initial_value="1.0"
+		tool_tip="This option controls the overall strength of the vignette effect."
       label="Power:"
       label_width="150"
       layout="topleft"
@@ -5554,6 +5959,7 @@ width="510">
       height="14"
       increment="0.1"
       initial_value="3.0"
+		tool_tip="This option multiplies both size and strength of the vignette effect."
       label="Multiplier:"
       label_width="150"
       layout="topleft"

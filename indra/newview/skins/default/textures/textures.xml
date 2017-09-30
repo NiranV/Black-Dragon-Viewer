@@ -777,6 +777,14 @@ with the same filename but different name
   
   <texture name="Panel_Background"	file_name="windows/Panel_Background.png" scale.left="2" scale.top="58" scale.bottom="2" scale.right="28" preload="true"/>
   
+  <texture name="Stat_Dot0" file_name="stat_dot0.png" preload="false" />
+  <texture name="Stat_Dot1" file_name="stat_dot1.png" preload="false" />
+  <texture name="Stat_Dot2" file_name="stat_dot2.png" preload="false" />
+  <texture name="Stat_Dot3" file_name="stat_dot3.png" preload="false" />
+  <texture name="Stat_Dot4" file_name="stat_dot4.png" preload="false" />
+  <texture name="Stat_Dot5" file_name="stat_dot5.png" preload="false" />
+  <texture name="ToolTip_Spacer" file_name="tooltip_spacer.png" preload="false" />
+  
   <texture name="Inv_TexturesClosed" file_name="icons/Inv_TexturesClosed.png" preload="false" />
   <texture name="Inv_SoundsClosed" file_name="icons/Inv_SoundsClosed.png" preload="false" />
   <texture name="Inv_CallingCardsClosed" file_name="icons/Inv_CallingCardsClosed.png" preload="false" />
