@@ -317,7 +317,21 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 		{
 			LLScrollListItem* element = (*item);
 			LLCharacter* character = (LLCharacter*)element->getUserdata();
-			if (character)
+			
+			//BD - Check if our selected characters are still on the SIM.
+			bool is_valid = false;
+			for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+				iter != LLCharacter::sInstances.end(); ++iter)
+			{
+				LLCharacter* character2 = (*iter);
+				if (character == character2)
+				{
+					is_valid = true;
+					break;
+				}
+			}
+
+			if (character && is_valid)
 			{
 				if (param.asString() == "Freeze")
 				{
