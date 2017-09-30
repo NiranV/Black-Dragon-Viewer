@@ -168,6 +168,12 @@ LLToolTip::LLToolTip(const LLToolTip::Params& p)
 	mPlayMediaButton(NULL),
 	mHomePageButton(NULL)
 {
+	if (p.image.isProvided())
+	{
+		//BD - Use 4 pixel padding for inspectors.
+		mPadding = 4;
+	}
+
 	LLTextBox::Params params;
 	params.name = params.initial_value().asString();
 	// bake textbox padding into initial rect
