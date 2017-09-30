@@ -60,8 +60,8 @@ LLAgentPilot::~LLAgentPilot()
 
 void LLAgentPilot::load()
 {
-	std::string txt_filename = gSavedSettings.getString("StatsPilotFile");
-	std::string xml_filename = gSavedSettings.getString("StatsPilotXMLFile");
+	std::string txt_filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, gSavedSettings.getString("StatsPilotFile"));
+	std::string xml_filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, gSavedSettings.getString("StatsPilotXMLFile"));
 	if (LLFile::isfile(xml_filename))
 	{
 		loadXML(xml_filename);
@@ -159,8 +159,8 @@ void LLAgentPilot::loadXML(const std::string& filename)
 
 void LLAgentPilot::save()
 {
-	std::string txt_filename = gSavedSettings.getString("StatsPilotFile");
-	std::string xml_filename = gSavedSettings.getString("StatsPilotXMLFile");
+	std::string txt_filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, gSavedSettings.getString("StatsPilotFile"));
+	std::string xml_filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, gSavedSettings.getString("StatsPilotXMLFile"));
 	saveTxt(txt_filename);
 	saveXML(xml_filename);
 }
