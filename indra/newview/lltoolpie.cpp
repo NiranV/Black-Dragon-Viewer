@@ -382,7 +382,8 @@ BOOL LLToolPie::handleLeftClickPick()
 		}
 		object = (LLViewerObject*)object->getParent();
 	}
-	if (object && object == gAgentAvatarp && !gSavedSettings.getBOOL("ClickToWalk"))
+	//BD
+	if (object && object == gAgentAvatarp) //&& !gSavedSettings.getBOOL("ClickToWalk"))
 	{
 		// we left clicked on avatar, switch to focus mode
 		mMouseButtonDown = false;
@@ -597,8 +598,9 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		// cursor set by media object
 		LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 	}
-	else if (!mMouseOutsideSlop 
-		&& mMouseButtonDown 
+	//BD
+	/*else if (!mMouseOutsideSlop 
+		&& mMouseButtonDown) 
 		&& gSavedSettings.getBOOL("ClickToWalk"))
 	{
 		S32 delta_x = x - mMouseDownX;
@@ -614,7 +616,7 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		{
 			gViewerWindow->setCursor(UI_CURSOR_ARROW);
 		}
-	}
+	}*/
 	else if (inCameraSteerMode())
 	{
 		steerCameraWithMouse(x, y);
@@ -1528,7 +1530,8 @@ void LLToolPie::stopCameraSteering()
 
 bool LLToolPie::inCameraSteerMode()
 {
-	return mMouseButtonDown && mMouseOutsideSlop && gSavedSettings.getBOOL("ClickToWalk");
+	//BD - Don't enable steering in Click to Walk mode, its disgusting.
+	return false; // mMouseButtonDown && mMouseOutsideSlop && gSavedSettings.getBOOL("ClickToWalk");
 }
 
 // true if x,y outside small box around start_x,start_y
