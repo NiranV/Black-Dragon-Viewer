@@ -167,6 +167,8 @@ void LLConversationItem::buildParticipantMenuOptions(menuentry_vec_t& items, U32
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("block_unblock"));
 		items.push_back(std::string("MuteText"));
+		//BD - Abuse Report
+		items.push_back(std::string("report"));
 //		//BD - SSFUI
 		items.push_back(std::string("copy_avatar_separator"));
 		items.push_back(std::string("CopyUUID"));

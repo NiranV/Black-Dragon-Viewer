@@ -248,6 +248,12 @@ public:
 	 */
 	static void viewChatHistory(const LLUUID& id);
 
+	//BD
+	/**
+	* Reports the selected avatar
+	*/
+	static void report(const LLUUID& id);
+
 	static std::set<LLUUID> getInventorySelectedUUIDs();
 
 private:

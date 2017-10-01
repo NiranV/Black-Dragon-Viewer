@@ -418,6 +418,10 @@ public:
 		{
 			LLAvatarActions::toggleMute(getAvatarId(), LLMute::flagVoiceChat);
 		}
+		else if (level == "report")
+		{
+			LLAvatarActions::report(getAvatarId());
+		}
 		else if(level == "mute_unmute")
 		{
 			LLAvatarActions::toggleMute(getAvatarId(), LLMute::flagTextChat);

@@ -148,6 +148,13 @@
      <on_check function="Avatar.CheckItem" parameter="is_muted" />
      <on_enable  function="Avatar.EnableItem" parameter="can_block" />
     </menu_item_check>
+	<menu_item_call
+     label="Report"
+     layout="topleft"
+     name="report">
+        <on_click function="Avatar.DoToSelected" parameter="report" />
+        <on_enable function="Avatar.EnableItem" parameter="can_report" />
+    </menu_item_call>
     <menu_item_call
      label="Group Profile"
      layout="topleft"

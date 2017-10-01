@@ -82,6 +82,8 @@ LLContextMenu* PeopleContextMenu::createMenu()
 		registrar.add("Avatar.Share",			boost::bind(&LLAvatarActions::share,					id));
 		registrar.add("Avatar.Pay",				boost::bind(&LLAvatarActions::pay,						id));
 		registrar.add("Avatar.BlockUnblock",	boost::bind(&LLAvatarActions::toggleBlock,				id));
+		//BD - Report Abuse
+		registrar.add("Avatar.AbuseReport",		boost::bind(&LLAvatarActions::report,					id));
 		registrar.add("Avatar.InviteToGroup",	boost::bind(&LLAvatarActions::inviteToGroup,			id));
 		registrar.add("Avatar.TeleportRequest",	boost::bind(&PeopleContextMenu::requestTeleport,		this));
 		registrar.add("Avatar.Calllog",			boost::bind(&LLAvatarActions::viewChatHistory,			id));
@@ -155,6 +157,8 @@ void PeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("share"));
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("block_unblock"));
+		//BD - Report Abuse
+		items.push_back(std::string("report"));
 //		//BD - SSFUI
 		items.push_back(std::string("copy_avatar_separator"));
 		items.push_back(std::string("CopyUUID"));
@@ -263,8 +267,10 @@ bool PeopleContextMenu::enableContextMenuItem(const LLSD& userdata)
 	{
 		return LLLogChat::isTranscriptExist(mUUIDs.front());
 	}
+	//BD - Report Abuse
 	else if (item == std::string("can_im") || item == std::string("can_invite") ||
-	         item == std::string("can_share") || item == std::string("can_pay"))
+	         item == std::string("can_share") || item == std::string("can_pay") ||
+			 item == std::string("can_report"))
 	{
 		return true;
 	}
@@ -428,6 +434,7 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 			items.push_back(std::string("separator_invite_to_group"));
 			items.push_back(std::string("zoom_in"));
 			items.push_back(std::string("block_unblock"));
+			items.push_back(std::string("report"));
 		}
 	}
 	else if (flags & ITEM_IN_MULTI_SELECTION)
@@ -460,6 +467,7 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("share"));
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("block_unblock"));
+		items.push_back(std::string("report"));
 		items.push_back(std::string("freeze"));
 		items.push_back(std::string("eject"));
 //		//BD - SSFUI

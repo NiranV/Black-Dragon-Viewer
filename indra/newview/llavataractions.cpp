@@ -79,6 +79,8 @@
 #include "rlvactions.h"
 #include "rlvcommon.h"
 // [/RLVa:KB]
+//BD - Abuse Report
+#include "llfloaterreporter.h"
 
 // Flags for kick message
 const U32 KICK_FLAGS_DEFAULT	= 0x0;
@@ -1180,6 +1182,13 @@ void LLAvatarActions::viewChatHistory(const LLUUID& id)
 		extended_id[LL_FCP_ACCOUNT_NAME] = avatar_name.getAccountName();
 		LLFloaterReg::showInstance("preview_conversation", extended_id, true);
 	}
+}
+
+//BD - Report Abuse
+//static
+void LLAvatarActions::report(const LLUUID& id)
+{
+	LLFloaterReporter::showFromAvatar(id, "av_name");
 }
 
 //== private methods ========================================================================================

@@ -57,6 +57,9 @@
 #include "llviewerobjectlist.h"
 #include "boost/foreach.hpp"
 
+//BD
+#include "llfloaterreporter.h"
+
 //
 // LLFloaterIMContainer
 //
@@ -1165,6 +1168,11 @@ void LLFloaterIMContainer::doToParticipants(const std::string& command, uuid_vec
 		{
 			LLAvatarActions::toggleMute(userID, LLMute::flagTextChat);
 		}
+		//BD - Report Abuse
+		else if ("report" == command)
+		{
+			LLAvatarActions::report(userID);
+		}
 		else if ("selected" == command || "mute_all" == command || "unmute_all" == command)
 		{
 			moderateVoice(command, userID);
@@ -1176,6 +1184,11 @@ void LLFloaterIMContainer::doToParticipants(const std::string& command, uuid_vec
 		else if ("ban_member" == command)
 		{
 			banSelectedMember(userID);
+		}
+//		//BD
+		else if ("report" == command)
+		{
+			LLFloaterReporter::showFromAvatar(userID, "av_name");
 		}
 //		//BD - SSFUI
 		else if ("get_uuid" == command)
@@ -1427,8 +1440,12 @@ bool LLFloaterIMContainer::enableContextMenuItem(const std::string& item, uuid_v
 		}
 	}
 
-	// Handle all other options
-	if (("can_invite" == item) || ("can_chat_history" == item) || ("can_share" == item) || ("can_pay" == item))
+	//BD - Handle all other options
+	if (("can_invite" == item) 
+		|| ("can_chat_history" == item) 
+		|| ("can_share" == item) 
+		|| ("can_pay" == item) 
+		|| ("can_report" == item))
 	{
 		// Those menu items are enable only if a single avatar is selected
 		return is_single_select;
