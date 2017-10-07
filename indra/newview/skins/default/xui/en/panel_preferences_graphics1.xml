@@ -3967,6 +3967,22 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       name="RenderSSRResolution"
       top_pad="4"
       width="312" />
+		<button
+ follows="left|top"
+ control_name="RenderSSRResolution"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
 		<slider
       control_name="RenderSSRBrightness"
       enabled_control="RenderScreenSpaceReflections"
