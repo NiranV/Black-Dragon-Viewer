@@ -785,6 +785,8 @@ with the same filename but different name
   <texture name="Stat_Dot5" file_name="stat_dot5.png" preload="false" />
   <texture name="ToolTip_Spacer" file_name="tooltip_spacer.png" preload="false" />
   
+  <texture name="PushButton_Default_Off" file_name="widgets/PushButton_Default_Off.png" preload="true" scale.left="4" scale.top="20" scale.right="28" scale.bottom="3" />
+  
   <texture name="Inv_TexturesClosed" file_name="icons/Inv_TexturesClosed.png" preload="false" />
   <texture name="Inv_SoundsClosed" file_name="icons/Inv_SoundsClosed.png" preload="false" />
   <texture name="Inv_CallingCardsClosed" file_name="icons/Inv_CallingCardsClosed.png" preload="false" />
