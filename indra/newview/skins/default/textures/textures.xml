@@ -664,7 +664,7 @@ with the same filename but different name
   <texture name="pixiesmall.j2c" use_mips="true" />
   <texture name="script_error.j2c" use_mips="true" />
   <texture name="silhouette.j2c" use_mips="true" />
-  <texture name="foot_shadow.j2c" use_mips="true" />
+  <!--<texture name="foot_shadow.j2c" use_mips="true" />-->
   <texture name="transparent.j2c" use_mips="true" />
 
   <texture name="scrollbutton_left_out_blue.tga" file_name="widgets/ScrollArrow_Left_Opaque.png" />
