@@ -3699,14 +3699,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  <button
  follows="left|top"
  control_name="RenderProjectorShadowResolution"
- height="45"
+ height="30"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-30"
+ top_delta="-15"
  name="default"
  width="60">
          <button.commit_callback
