@@ -3988,7 +3988,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       width="321" />
       <button
  follows="left|top"
- control_name="RenderSSRResolution"
+ control_name="RenderSSRBrightness"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
