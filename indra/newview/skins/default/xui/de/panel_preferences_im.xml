@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="IM Chat" name="instant">
-	<check_box label="IM Popups anzeigen" name="EnableIMChatPopups" tool_tip="Einschalten um IM Nachrichten am unteren Bildschirmrand in einem kleinen Popup anzuzeigen"/>
+	<!--<check_box label="IM Popups anzeigen" name="EnableIMChatPopups" tool_tip="Einschalten um IM Nachrichten am unteren Bildschirmrand in einem kleinen Popup anzuzeigen"/>
 	<check_box label="Gruppen-Chat Popups anzeigen" name="EnableGroupChatPopups" tool_tip="Einschalten um Gruppen Nachrichten am unteren Bildschirmrand in einem kleinen Popup anzuzeigen"/>
 	<check_box label="IMs per Email zuschicken, wenn ich offline bin" name="send_im_to_email"/>
 	<check_box label="IM/Meldungen nicht verschieben wenn die Seitenleiste aktiv ist" name="SidebarCameraMovement"/>
@@ -34,5 +34,5 @@
 	<spinner label="IM Blinkzeit:" name="WellIconFlashPeriod"/>
 	<spinner name="ToastFadingTime" label="Toast Blendzeit:"/>
 	<spinner name="ToastGap" label="Toast Lückengröße:"/>
-	<spinner name="ChannelBottomPanelMargin" label="Toast Bodenabsatz:"/>
+	<spinner name="ChannelBottomPanelMargin" label="Toast Bodenabsatz:"/>-->
 </panel>
