@@ -144,7 +144,7 @@ void main()
     float shadamount = 0.0;
     float shaftify = 0.0;
     float last_shadsample = 0.0;
-    float roffset = rand(tc + vec2(seconds60));
+    float roffset = rand(tc);
     vec3 farpos = pos;
     farpos *= min(-pos.z, 512.0) / -pos.z;
     
@@ -154,6 +154,8 @@ void main()
       float this_shadsample = 0.275 * nonpcfShadowAtPos(spos);
       float this_shaftify = 0.15 * (abs(this_shadsample + last_shadsample));
       last_shadsample = this_shadsample;
+      this_shadsample *= i;
+      this_shaftify /= i;
       shadamount += this_shadsample;
       shaftify += this_shaftify;
     }
