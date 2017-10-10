@@ -361,6 +361,9 @@ BOOL enable_detach(const LLSD& = LLSD());
 void menu_toggle_attached_lights(void* user_data);
 void menu_toggle_attached_particles(void* user_data);
 
+//BD - Right Click Menu
+void remove_friendship(const LLUUID& agent_id);
+
 class LLMenuParcelObserver : public LLParcelObserver
 {
 public:
@@ -9294,6 +9297,97 @@ void show_topinfobar_context_menu(LLView* ctrl, S32 x, S32 y)
 	LLMenuGL::showPopup(ctrl, show_topbarinfo_context_menu, x, y);
 }
 
+//BD - Right Click Menu
+class LLAvatarRemoveFriend : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		//		if(avatar && !LLAvatarActions::isFriend(avatar->getID()))
+		// [RLVa:KB] - Checked: RLVa-1.2.0
+		if ((avatar && LLAvatarActions::isFriend(avatar->getID())) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, avatar->getID())))
+			// [/RLVa:KB]
+		{
+			remove_friendship(avatar->getID());
+		}
+		return true;
+	}
+};
+
+void remove_friendship(const LLUUID& dest_id)
+{
+	LLViewerObject* dest = gObjectList.findObject(dest_id);
+	if (dest && dest->isAvatar())
+	{
+		LLAvatarActions::removeFriendDialog(dest_id);
+	}
+}
+
+class LLAvatarEnableRemoveFriend : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		//		bool new_value = avatar && !LLAvatarActions::isFriend(avatar->getID());
+		// [RLVa:KB] - Checked: RLVa-1.2.0
+		bool new_value = avatar && LLAvatarActions::isFriend(avatar->getID()) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, avatar->getID()));
+		// [/RLVa:KB]
+		return new_value;
+	}
+};
+
+class LLAvatarChatHistory : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		if (avatar)
+		{
+			LLAvatarActions::viewChatHistory(avatar->getID());
+		}
+		return true;
+	}
+};
+
+class LLAvatarMuteText : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		if (avatar)
+		{
+			LLAvatarActions::toggleMute(avatar->getID(), LLMute::flagTextChat);
+		}
+		return true;
+	}
+};
+
+class LLAvatarMuteVoice : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		if (avatar)
+		{
+			LLAvatarActions::toggleMuteVoice(avatar->getID());
+		}
+		return true;
+	}
+};
+
+class LLAvatarShare : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		if (avatar)
+		{
+			LLAvatarActions::share(avatar->getID());
+		}
+		return true;
+	}
+};
+
 //BD - Derender
 void handle_derender_clear()
 {
@@ -9925,5 +10019,13 @@ void initialize_menus()
 	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));
 	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
 	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");
+
+//	//BD - Right Click Menu
+	view_listener_t::addMenu(new LLAvatarChatHistory(), "Avatar.Calllog");
+	view_listener_t::addMenu(new LLAvatarMuteText(), "Avatar.MuteText");
+	view_listener_t::addMenu(new LLAvatarMuteVoice(), "Avatar.MuteVoice");
+	view_listener_t::addMenu(new LLAvatarShare(), "Avatar.Share");
+	view_listener_t::addMenu(new LLAvatarRemoveFriend(), "Avatar.RemoveFriend");
+	view_listener_t::addMenu(new LLAvatarEnableRemoveFriend(), "Avatar.EnableRemoveFriend");
 
 }

@@ -2820,9 +2820,9 @@ If you continue to receive this message, please contact Second Life support for 
 Expected .wav, .tga, .bmp, .jpg, .jpeg, or .bvh
 	</string>
   <string name="MuteObject2">Block</string>
-  <string name="MuteAvatar">Block</string>
+  <string name="MuteAvatar">Block All</string>
   <string name="UnmuteObject">Unblock</string>
-  <string name="UnmuteAvatar">Unblock</string>
+  <string name="UnmuteAvatar">Unblock All</string>
 	<string name="AddLandmarkNavBarMenu">Add to My Landmarks...</string>
 	<string name="EditLandmarkNavBarMenu">Edit my Landmark...</string>
 
@@ -4273,5 +4273,9 @@ Try enclosing path to the editor with double quotes.
   <string name="none_paren_cap">(None)</string>
   <string name="no_limit">No Limit</string>
   
-
+  <!-- Black Dragon specific -->
+  <string name="UnmuteText">Show Text</string>
+  <string name="MuteText">Block Text</string>
+  <string name="UnmuteVoice">Unmute Voice</string>
+  <string name="MuteVoice">Mute Voice</string>
 </strings>

@@ -50,6 +50,9 @@
 #include "rlvactions.h"
 // [/RLVa:KB]
 
+//BD - Right Click Menu
+#include "llmutelist.h"
+
 namespace LLPanelPeopleMenus
 {
 
@@ -66,38 +69,52 @@ LLContextMenu* PeopleContextMenu::createMenu()
 	LLUICtrl::EnableCallbackRegistry::ScopedRegistrar enable_registrar;
 	LLContextMenu* menu;
 
+	//BD - Right Click Menu
+	//     Doesn't matter. It can be used for both single and multi-selections.
+	registrar.add("Avatar.ResetSkeleton", boost::bind(&PeopleContextMenu::resetSkeleton, this));
+	registrar.add("Avatar.ResetSkeletonAndAnimations", boost::bind(&PeopleContextMenu::resetSkeletonAndAnimations, this));
+
 	if ( mUUIDs.size() == 1 )
 	{
 		// Set up for one person selected menu
 
 		const LLUUID& id = mUUIDs.front();
-		registrar.add("Avatar.Profile",			boost::bind(&LLAvatarActions::showProfile,				id));
-		registrar.add("Avatar.AddFriend",		boost::bind(&LLAvatarActions::requestFriendshipDialog,	id));
-		registrar.add("Avatar.RemoveFriend",	boost::bind(&LLAvatarActions::removeFriendDialog, 		id));
-		registrar.add("Avatar.IM",				boost::bind(&LLAvatarActions::startIM,					id));
-		registrar.add("Avatar.Call",			boost::bind(&LLAvatarActions::startCall,				id));
-		registrar.add("Avatar.OfferTeleport",	boost::bind(&PeopleContextMenu::offerTeleport,			this));
-		registrar.add("Avatar.ZoomIn",			boost::bind(&handle_zoom_to_object,						id));
-		registrar.add("Avatar.ShowOnMap",		boost::bind(&LLAvatarActions::showOnMap,				id));
-		registrar.add("Avatar.Share",			boost::bind(&LLAvatarActions::share,					id));
-		registrar.add("Avatar.Pay",				boost::bind(&LLAvatarActions::pay,						id));
-		registrar.add("Avatar.BlockUnblock",	boost::bind(&LLAvatarActions::toggleBlock,				id));
-		//BD - Report Abuse
-		registrar.add("Avatar.AbuseReport",		boost::bind(&LLAvatarActions::report,					id));
-		registrar.add("Avatar.InviteToGroup",	boost::bind(&LLAvatarActions::inviteToGroup,			id));
-		registrar.add("Avatar.TeleportRequest",	boost::bind(&PeopleContextMenu::requestTeleport,		this));
-		registrar.add("Avatar.Calllog",			boost::bind(&LLAvatarActions::viewChatHistory,			id));
+		registrar.add("Avatar.Profile",			boost::bind(&LLAvatarActions::showProfile,					id));
+		registrar.add("Avatar.AddFriend",		boost::bind(&LLAvatarActions::requestFriendshipDialog,		id));
+		registrar.add("Avatar.RemoveFriend",	boost::bind(&LLAvatarActions::removeFriendDialog, 			id));
+		registrar.add("Avatar.IM",				boost::bind(&LLAvatarActions::startIM,						id));
+		registrar.add("Avatar.Call",			boost::bind(&LLAvatarActions::startCall,					id));
+		registrar.add("Avatar.OfferTeleport",	boost::bind(&PeopleContextMenu::offerTeleport,				this));
+		registrar.add("Avatar.ZoomIn",			boost::bind(&handle_zoom_to_object,							id));
+		registrar.add("Avatar.ShowOnMap",		boost::bind(&LLAvatarActions::showOnMap,					id));
+		registrar.add("Avatar.Share",			boost::bind(&LLAvatarActions::share,						id));
+		registrar.add("Avatar.Pay",				boost::bind(&LLAvatarActions::pay,							id));
+		registrar.add("Avatar.BlockUnblock",	boost::bind(&LLAvatarActions::toggleBlock,					id));
+		registrar.add("Avatar.InviteToGroup",	boost::bind(&LLAvatarActions::inviteToGroup,				id));
+		registrar.add("Avatar.TeleportRequest",	boost::bind(&PeopleContextMenu::requestTeleport,			this));
+		registrar.add("Avatar.Calllog",			boost::bind(&LLAvatarActions::viewChatHistory,				id));
 		registrar.add("Avatar.Freeze",			boost::bind(&LLAvatarActions::freezeAvatar,					id));
-		registrar.add("Avatar.Eject",			boost::bind(&PeopleContextMenu::eject,					this));
+		registrar.add("Avatar.Eject",			boost::bind(&PeopleContextMenu::eject,						this));
 
+		//BD - Report Abuse
+		registrar.add("Avatar.AbuseReport", boost::bind(&LLAvatarActions::report,							id));
 
 //		//BD - SSFUI
-		registrar.add("Avatar.GetUUID",			boost::bind(&LLAvatarActions::copyUUIDToClipboard,		id));
-		registrar.add("Avatar.GetSLURL",		boost::bind(&LLAvatarActions::copySLURLToClipboard,		id));
+		registrar.add("Avatar.GetUUID",			boost::bind(&LLAvatarActions::copyUUIDToClipboard,			id));
+		registrar.add("Avatar.GetSLURL",		boost::bind(&LLAvatarActions::copySLURLToClipboard,			id));
 
-		enable_registrar.add("Avatar.EnableItem", boost::bind(&PeopleContextMenu::enableContextMenuItem, this, _2));
-		enable_registrar.add("Avatar.CheckItem",  boost::bind(&PeopleContextMenu::checkContextMenuItem,	this, _2));
+		//BD - Right Click Menu
+		registrar.add("Avatar.Derender", boost::bind(&PeopleContextMenu::derenderAvatar,					this));
+		registrar.add("Avatar.BlockUnblockText", boost::bind(&PeopleContextMenu::toggleMuteText,			this));
+		registrar.add("Avatar.MuteUnmute", boost::bind(&LLAvatarActions::toggleMuteVoice,					id));
+		registrar.add("Avatar.SetImpostorMode", boost::bind(&PeopleContextMenu::setImpostorMode,			this, _2));
+
+		enable_registrar.add("Avatar.EnableItem", boost::bind(&PeopleContextMenu::enableContextMenuItem,	this, _2));
+		enable_registrar.add("Avatar.CheckItem",  boost::bind(&PeopleContextMenu::checkContextMenuItem,		this, _2));
 		enable_registrar.add("Avatar.EnableFreezeEject", boost::bind(&PeopleContextMenu::enableFreezeEject, this, _2));
+
+		//BD - Right Click Menu
+		enable_registrar.add("Avatar.CheckImpostorMode", boost::bind(&PeopleContextMenu::checkImpostorMode, this, _2));
 
 		// create the context menu from the XUI
 		menu = createFromFile("menu_people_nearby.xml");
@@ -114,7 +131,7 @@ LLContextMenu* PeopleContextMenu::createMenu()
 		registrar.add("Avatar.RemoveFriend",	boost::bind(&LLAvatarActions::removeFriendsDialog,		mUUIDs));
 		// registrar.add("Avatar.Share",		boost::bind(&LLAvatarActions::startIM,					mUUIDs)); // *TODO: unimplemented
 		// registrar.add("Avatar.Pay",			boost::bind(&LLAvatarActions::pay,						mUUIDs)); // *TODO: unimplemented
-		
+
 		enable_registrar.add("Avatar.EnableItem",	boost::bind(&PeopleContextMenu::enableContextMenuItem, this, _2));
 
 		// create the context menu from the XUI
@@ -139,6 +156,10 @@ void PeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("share"));
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("offer_teleport"));
+		//BD - Right Click Menu
+		items.push_back(std::string("reset_skeleton_separator"));
+		items.push_back(std::string("reset_skeleton"));
+		items.push_back(std::string("reset_skeleton_animations"));
 	}
 	else 
 	{
@@ -163,6 +184,19 @@ void PeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("copy_avatar_separator"));
 		items.push_back(std::string("CopyUUID"));
 		items.push_back(std::string("CopySLURL"));
+		//BD - Right Click Menu
+		items.push_back(std::string("reset_skeleton_separator"));
+		items.push_back(std::string("reset_skeleton"));
+		items.push_back(std::string("reset_skeleton_animations"));
+		items.push_back(std::string("mute_voice"));
+		items.push_back(std::string("block_text"));
+		items.push_back(std::string("derender"));
+		items.push_back(std::string("render_separator"));
+		items.push_back(std::string("render_exceptions"));
+		items.push_back(std::string("render_normal"));
+		items.push_back(std::string("always_render"));
+		items.push_back(std::string("dont_render"));
+		items.push_back(std::string("render_avatar"));
 	}
 
     hide_context_entries(menu, items, disabled_items);
@@ -287,6 +321,17 @@ bool PeopleContextMenu::checkContextMenuItem(const LLSD& userdata)
 		return LLAvatarActions::isBlocked(id);
 	}
 
+	//BD - Right Click Menu
+	if (item == std::string("is_muted"))
+	{
+		return LLAvatarActions::isMuted(id, LLMute::flagVoiceChat);
+	}
+
+	if (item == std::string("is_text_blocked"))
+	{
+		return LLAvatarActions::isMuted(id, LLMute::flagTextChat);
+	}
+
 	return false;
 }
 
@@ -409,6 +454,129 @@ void PeopleContextMenu::startConference()
 	LLAvatarActions::startConference(uuids);
 }
 
+//BD - Right Click Menu
+void PeopleContextMenu::toggleMuteText()
+{
+	LLAvatarActions::toggleMute(mUUIDs.front(), LLMute::flagTextChat);
+}
+
+void PeopleContextMenu::resetSkeleton()
+{
+	doResetSkeleton(false);
+}
+
+void PeopleContextMenu::resetSkeletonAndAnimations()
+{
+	doResetSkeleton(true);
+}
+
+void PeopleContextMenu::doResetSkeleton(bool reset_animations)
+{
+	uuid_vec_t uuids;
+	for (uuid_vec_t::const_iterator it = mUUIDs.begin(); it != mUUIDs.end(); ++it)
+	{
+		const LLUUID& id = *it;
+		LLVOAvatar* avatar = NULL;
+		if (id.notNull())
+		{
+			LLViewerObject* object = gObjectList.findObject(id);
+			if (object)
+			{
+				if (!object->isAvatar())
+				{
+					object = NULL;
+				}
+				avatar = (LLVOAvatar*)object;
+			}
+		}
+		if (!avatar)
+			continue;
+
+		avatar->resetSkeleton(reset_animations);
+	}
+}
+
+bool PeopleContextMenu::checkImpostorMode(const LLSD& userdata)
+{
+	LLVOAvatar* avatar = NULL;
+	if (mUUIDs.front().notNull())
+	{
+		LLViewerObject* object = gObjectList.findObject(mUUIDs.front());
+		if (object)
+		{
+			if (!object->isAvatar())
+			{
+				object = NULL;
+			}
+			avatar = (LLVOAvatar*)object;
+		}
+	}
+	if (!avatar) return false;
+
+	U32 mode = userdata.asInteger();
+	switch (mode)
+	{
+	case 0:
+		return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_RENDER_NORMALLY);
+	case 1:
+		return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_DO_NOT_RENDER);
+	case 2:
+		return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_ALWAYS_RENDER);
+	default:
+		return false;
+	}
+};
+
+bool PeopleContextMenu::setImpostorMode(const LLSD& userdata)
+{
+	LLVOAvatar* avatar = NULL;
+	if (mUUIDs.front().notNull())
+	{
+		LLViewerObject* object = gObjectList.findObject(mUUIDs.front());
+		if (object)
+		{
+			if (!object->isAvatar())
+			{
+				object = NULL;
+			}
+			avatar = (LLVOAvatar*)object;
+		}
+	}
+	if (!avatar) return false;
+
+	U32 mode = userdata.asInteger();
+	switch (mode)
+	{
+	case 0:
+		avatar->setVisualMuteSettings(LLVOAvatar::AV_RENDER_NORMALLY);
+		break;
+	case 1:
+		avatar->setVisualMuteSettings(LLVOAvatar::AV_DO_NOT_RENDER);
+		break;
+	case 2:
+		avatar->setVisualMuteSettings(LLVOAvatar::AV_ALWAYS_RENDER);
+		break;
+	default:
+		return false;
+	}
+
+	LLVOAvatar::cullAvatarsByPixelArea();
+	return true;
+};
+
+//BD - Derender
+void PeopleContextMenu::derenderAvatar()
+{
+	//BD - Allow derendering everything in selection instead of just one link or the root prim.
+	if (!(mUUIDs.front() == gAgentID))
+	{
+		LLViewerObject *objectp = gObjectList.findObject(mUUIDs.front());
+		{
+			gObjectList.killObject(objectp, true);
+		}
+	}
+};
+
 //== NearbyPeopleContextMenu ===============================================================
 
 void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
@@ -435,6 +603,10 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 			items.push_back(std::string("zoom_in"));
 			items.push_back(std::string("block_unblock"));
 			items.push_back(std::string("report"));
+			//BD - Right Click Menu
+			items.push_back(std::string("reset_skeleton_separator"));
+			items.push_back(std::string("reset_skeleton"));
+			items.push_back(std::string("reset_skeleton_animations"));
 		}
 	}
 	else if (flags & ITEM_IN_MULTI_SELECTION)
@@ -448,6 +620,10 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("share"));
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("offer_teleport"));
+		//BD - Right Click Menu
+		items.push_back(std::string("reset_skeleton_separator"));
+		items.push_back(std::string("reset_skeleton"));
+		items.push_back(std::string("reset_skeleton_animations"));
 	}
 	else 
 	{
@@ -474,6 +650,19 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("copy_avatar_separator"));
 		items.push_back(std::string("CopyUUID"));
 		items.push_back(std::string("CopySLURL"));
+		//BD - Right Click Menu
+		items.push_back(std::string("reset_skeleton_separator"));
+		items.push_back(std::string("reset_skeleton"));
+		items.push_back(std::string("reset_skeleton_animations"));
+		items.push_back(std::string("mute_voice"));
+		items.push_back(std::string("block_text"));
+		items.push_back(std::string("derender"));
+		items.push_back(std::string("render_separator"));
+		items.push_back(std::string("render_exceptions"));
+		items.push_back(std::string("render_normal"));
+		items.push_back(std::string("always_render"));
+		items.push_back(std::string("dont_render"));
+		items.push_back(std::string("render_avatar"));
 	}
 
     hide_context_entries(menu, items, disabled_items);

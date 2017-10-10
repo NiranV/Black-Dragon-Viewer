@@ -1092,7 +1092,8 @@ void LLAvatarActions::toggleMute(const LLUUID& id, U32 flags)
 	LLAvatarNameCache::get(id, &av_name);
 
 	LLMuteList* mute_list = LLMuteList::getInstance();
-	bool is_muted = mute_list->isMuted(id, LLMute::flagVoiceChat);
+	//BD - Right Click Menu
+	bool is_muted = mute_list->isMuted(id, flags);
 
 	LLMute mute(id, av_name.getUserName(), LLMute::AGENT);
 	if (!is_muted)
@@ -1426,10 +1427,11 @@ bool LLAvatarActions::isBlocked(const LLUUID& id)
 	return LLMuteList::getInstance()->isMuted(id, av_name.getUserName());
 }
 
+//BD - Right Click Menu
 // static
-bool LLAvatarActions::isVoiceMuted(const LLUUID& id)
+bool LLAvatarActions::isMuted(const LLUUID& id, U32 flags)
 {
-	return LLMuteList::getInstance()->isMuted(id, LLMute::flagVoiceChat);
+	return LLMuteList::getInstance()->isMuted(id, flags);
 }
 
 // static

@@ -41,6 +41,9 @@
 #include "lltransientfloatermgr.h"
 #include "llvoiceclient.h"
 
+//BD - Right Click Menu
+#include "llmutelist.h"
+
 class LLAvatarName;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -158,8 +161,9 @@ void LLFloaterVoiceVolume::updateVolumeControls()
 		mute_btn->setVisible(true);
 		volume_slider->setVisible(true);
 
-		// By convention, we only display and toggle voice mutes, not all mutes
-		bool is_muted = LLAvatarActions::isVoiceMuted(mAvatarID);
+		//BD - Right Click Menu
+		//     By convention, we only display and toggle voice mutes, not all mutes
+		bool is_muted = LLAvatarActions::isMuted(mAvatarID, LLMute::flagVoiceChat);
 		bool is_linden = LLStringUtil::endsWith(mAvatarName.getUserName(), " Linden");
 
 		mute_btn->setEnabled(!is_linden);
