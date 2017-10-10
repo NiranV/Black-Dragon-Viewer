@@ -3011,14 +3011,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="RenderGlowLumWeights"
- height="45"
+ height="47"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-30"
+ top_delta="-32"
  name="default"
  width="60">
          <button.commit_callback
@@ -3122,14 +3122,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="RenderGlowWarmthWeights"
- height="45"
+ height="47"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-30"
+ top_delta="-32"
  name="default"
  width="60">
          <button.commit_callback
@@ -3611,14 +3611,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  <button
  follows="left|top"
  control_name="RenderShadowResolution"
- height="60"
+ height="63"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-45"
+ top_delta="-48"
  name="default"
  width="60">
          <button.commit_callback
@@ -3699,14 +3699,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  <button
  follows="left|top"
  control_name="RenderProjectorShadowResolution"
- height="30"
+ height="31"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-15"
+ top_delta="-16"
  name="default"
  width="60">
          <button.commit_callback
@@ -5372,14 +5372,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="ExodusRenderToneAdvOptA"
- height="45"
+ height="47"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-30"
+ top_delta="-32"
  name="default"
  width="60">
          <button.commit_callback
@@ -5454,14 +5454,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="ExodusRenderToneAdvOptB"
- height="45"
+ height="47"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-30"
+ top_delta="-32"
  name="default"
  width="60">
          <button.commit_callback
@@ -5514,14 +5514,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="ExodusRenderToneAdvOptC"
- height="30"
+ height="31"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-15"
+ top_delta="-16"
  name="default"
  width="60">
          <button.commit_callback
@@ -5704,14 +5704,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="ExodusRenderExposure"
- height="45"
+ height="47"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-30"
+ top_delta="-32"
  name="default"
  width="60">
          <button.commit_callback
@@ -5784,14 +5784,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="ExodusRenderOffset"
- height="45"
+ height="47"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-30"
+ top_delta="-32"
  name="default"
  width="60">
          <button.commit_callback
@@ -5865,14 +5865,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="ExodusRenderGamma"
- height="45"
+ height="47"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-30"
+ top_delta="-32"
  name="default"
  width="60">
          <button.commit_callback
@@ -5992,14 +5992,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="ExodusRenderVignette"
- height="45"
+ height="47"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="-30"
+ top_delta="-32"
  name="default"
  width="60">
          <button.commit_callback
