@@ -43,7 +43,7 @@
 
 static LLDefaultChildRegistry::Register<LLNameListCtrl> r("name_list");
 
-static const S32 info_icon_size = 16;
+static const S32 info_icon_size = 12;
 
 void LLNameListCtrl::NameTypeNames::declareValues()
 {
@@ -232,7 +232,7 @@ BOOL LLNameListCtrl::handleToolTip(S32 x, S32 y, MASK mask)
 
 				// Spawn at right side of cell
 				LLPointer<LLUIImage> icon = LLUI::getUIImage("Info_Small");
-				LLCoordGL pos( sticky_rect.mRight - info_icon_size, sticky_rect.mTop - (sticky_rect.getHeight() - icon->getHeight())/2 );
+				LLCoordGL pos( sticky_rect.mRight - info_icon_size - 6, sticky_rect.mTop + 4);
 
 				// Should we show a group or an avatar inspector?
 				bool is_group = hit_item->isGroup();
