@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="7541"
+       height="7921"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,21 +163,30 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="362"
+              height="740"
               top="10"
               left="7"
               name="changelog_text"
               bg_visible="true"
               bg_writeable_color="Black_50" 
-              width="490"
+              width="990"
               word_wrap="false">
 Added: Tooltips for every single option in display tab.
 Added: Report (someone) option to people and conversation menus.
+Added: Missing default button for SSR Resolution.
+Added: Tooltips and improved existing tooltips in the 'Interface' preferences tab.
+Added: Change keybinding button to 'Keybindings' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'IM &amp; Groupchat' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Camera' preferences tab.
+Added: (mass) Reset Skeleton, (mass) Reset Skeleton and Animations, Derender, Mute Voice and Block Text options to 'People' window right-click menu.
+Added: View Chat History, Remove Friend, Share, Mute Voice and Block Text options to inworld avatar right-click menu.
+Added: View Chat History, Remove Friend, Share, Mute Voice and Block Text options to inworld avatar attachment right-click menu.
+Added: Request Teleport, View Chat History and Report options to group member list right-click menu.
 Changed: More Icon changes and fixes.
 Changed: Improved shadow precision on distance, on high altitudes and eliminate almost all cases of shadows flickering on high altitudes.
 Changed: Version to 2.9.0 - Bit Dragon.
 Changed: Allow hyperlinks in tooltips.
-Changed: Disabled max Texture/Scene Memory clamping.
+Changed: Disabled max Texture\Scene Memory clamping.
 Changed: Posing animation to an empty all-bone using animation.
 Changed: Tooltip layout and look.
 Changed: Disabled german display tab for now.
@@ -186,6 +195,18 @@ Changed: Agent recorder file path to user_settings rather than the often read-on
 Changed: Improved tooltips in display tab with additional information and a consistent design.
 Changed: Don't alter our camera behavior when ClickToWalk is enabled.
 Changed: Allow zooming out 9999m.
+Changed: Updated login screen changelog.
+Changed: Default button appearance to make it clearer which options they affect (if they affect multiple for instance).
+Changed: Improved all tooltips for the onscreen movement control window.
+Changed: Disabled german translation for the 'Interface' preferences tab.
+Changed: Disabled foot shadow texture.
+Changed: Layout and style of the 'Sound &amp; Media' preferences tab to fit all other tabs.
+Changed: Show text and allow text entry for volume sliders.
+Changed: Disabled german translation for the 'Sound &amp; Media' preferences tab.
+Changed: Disabled german translation for the 'IM &amp; Groupchat' preferences tab.
+Changed: Disabled german translation for the 'Camera' preferences tab.
+Changed: Improved Volumetric Lighting slightly, removed random noise completely.
+Changed: Completely overhauled and reorganized all most used avatar related right-click menus into a consistent layout.
 Fixed: Compile and all Fmodex linking errors.
 Fixed: Viewer using Second Life icons instead of Black Dragon's.
 Fixed: Projector lights vanishing on distance.
@@ -194,10 +215,18 @@ Fixed: Line Endings in llwindow.h.
 Fixed: Line Endings in llwindowheadless.h.
 Fixed: Line Endings in llwindowwin32.h.
 Fixed: Crash when trying to manipulate an Avatar via the Animation Controls window that is no longer available.
+Fixed: SSR Brightness default button reverting SSR Resolution instead.
+Fixed: Default button for projector shadow resolution being off.
+Fixed: Missing header of the german interface tab.
+Fixed: Info (i) buttons in namelists clipping outside the name entry.
+Fixed: Double\Triple\Quad default button height offset in 'Camera' preferences tab.
+Fixed: Double\Triple\Quad default button height offset in 'Graphics' preferences tab.
+Removed: Check for Updates button in About Black Dragon floater.
 Misc: Merge and fixes.
 Misc: More compile fixes.
 Misc: Branding and naming changes for 64bit.
 Misc: Cleanup in bdfloateranimations.cpp.
+Misc: Massive cleanup in preferences floater code.
 Merge with Alex Ivy
               </text>
               <view_border
