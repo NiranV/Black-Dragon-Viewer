@@ -997,22 +997,20 @@ void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 		vec3.mV[VY] = column_2->getValue().asReal();
 		vec3.mV[VZ] = column_3->getValue().asReal();
 
-		//BD - Really?
-		std::string format = llformat("%%.%df", 3);
 		if (param.asString() == "x")
 		{
 			vec3.mV[VX] = val;
-			column_1->setValue(llformat(format.c_str(), vec3.mV[VX]));
+			column_1->setValue(ll_round(vec3.mV[VX], 0.001f));
 		}
 		else if (param.asString() == "y")
 		{
 			vec3.mV[VY] = val;
-			column_2->setValue(llformat(format.c_str(), vec3.mV[VY]));
+			column_2->setValue(ll_round(vec3.mV[VY], 0.001f));
 		}
 		else
 		{
 			vec3.mV[VZ] = val;
-			column_3->setValue(llformat(format.c_str(), vec3.mV[VZ]));
+			column_3->setValue(ll_round(vec3.mV[VZ], 0.001f));
 		}
 
 		//BD - While editing rotations, make sure we use a bit of linear interpolation to make movements smoother.
