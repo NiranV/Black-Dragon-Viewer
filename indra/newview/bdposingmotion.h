@@ -36,7 +36,7 @@
 
 #define EDITING_EASEIN_DURATION	0.0f
 #define EDITING_EASEOUT_DURATION 0.5f
-#define POSING_PRIORITY LLJoint::HIGHEST_PRIORITY
+#define POSING_PRIORITY LLJoint::ADDITIVE_PRIORITY
 #define MIN_REQUIRED_PIXEL_AREA_EDITING 500.f
 
 //-----------------------------------------------------------------------------
