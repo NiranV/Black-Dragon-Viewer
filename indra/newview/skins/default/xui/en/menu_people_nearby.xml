@@ -133,9 +133,9 @@ name="Nearby People Context Menu">
 	</menu_item_call>
 	
 	<!--<context_menu
-   label="Block / Mute"
-   layout="topleft"
-   name="BlockMute">-->
+	label="Block / Mute"
+	layout="topleft"
+	name="BlockMute">-->
 		<menu_item_check
 		label="Block All"
 		layout="topleft"
@@ -149,32 +149,32 @@ name="Nearby People Context Menu">
 		function="Avatar.EnableItem"
 		parameter="can_block" />
 		</menu_item_check>
-      <menu_item_check
-      label="Block Text"
-      layout="topleft"
-      name="block_text">
-      <menu_item_check.on_click
-      function="Avatar.BlockUnblockText"/>
+		<menu_item_check
+		label="Block Text"
+		layout="topleft"
+		name="block_text">
+		<menu_item_check.on_click
+		function="Avatar.BlockUnblockText"/>
 		<menu_item_check.on_check
 		function="Avatar.CheckItem"
 		parameter="is_text_blocked" />
 		<menu_item_check.on_enable
 		function="Avatar.EnableItem"
 		parameter="can_block" />
-      </menu_item_check>
+		</menu_item_check>
 		<menu_item_check
-      label="Mute Voice"
-      layout="topleft"
-      name="mute_voice">
-      <menu_item_check.on_click
-      function="Avatar.MuteUnmute"/>
+		label="Mute Voice"
+		layout="topleft"
+		name="mute_voice">
+		<menu_item_check.on_click
+		function="Avatar.MuteUnmute"/>
 		<menu_item_check.on_check
 		function="Avatar.CheckItem"
 		parameter="is_muted" />
 		<menu_item_check.on_enable
 		function="Avatar.EnableItem"
 		parameter="can_block" />
-      </menu_item_check>
+		</menu_item_check>
 	<!--</context_menu>-->
 	
 	<menu_item_call
@@ -185,6 +185,13 @@ name="Nearby People Context Menu">
 	<menu_item_call.on_enable
 	function="Avatar.EnableItem"
 	parameter="can_report"/> 
+	</menu_item_call>
+	<menu_item_call
+	enabled="true"
+	label="Derender"
+	name="derender">
+	<menu_item_call.on_click
+	function="Avatar.Derender" />
 	</menu_item_call>
 	
 	<menu_item_separator name="copy_avatar_separator"/>
@@ -205,81 +212,71 @@ name="Nearby People Context Menu">
 	</menu_item_call>
 	
 	<menu_item_separator name="reset_skeleton_separator"/>
-   
-   <menu_item_call
+	
+	<menu_item_call
 	label="Reset Skeleton"
-   layout="topleft"
-   name="reset_skeleton">
-   <menu_item_call.on_click
-   function="Avatar.ResetSkeleton" />
-   </menu_item_call>
-   <menu_item_call
+	layout="topleft"
+	name="reset_skeleton">
+	<menu_item_call.on_click
+	function="Avatar.ResetSkeleton" />
+	</menu_item_call>
+	<menu_item_call
 	label="Reset Skeleton And Animations"
-   layout="topleft"
-   name="reset_skeleton_animations">
-   <menu_item_call.on_click
-   function="Avatar.ResetSkeletonAndAnimations" />
-   </menu_item_call>
-   
-   <menu_item_separator name="render_separator"/>
-   
-   <context_menu
-   label="Render Avatar"
-   layout="topleft"
-   name="render_avatar">
-      <menu_item_check
-      name="render_normal"
-      label="Default">
-      <menu_item_check.on_check
-      function="Avatar.CheckImpostorMode"
-      parameter="0" />
-      <menu_item_check.on_click
-      function="Avatar.SetImpostorMode"
-      parameter="0" />
-      </menu_item_check>
-      <menu_item_check
-      name="always_render"
-      label="Always">
-      <menu_item_check.on_check
-      function="Avatar.CheckImpostorMode"
-      parameter="2" />
-      <menu_item_check.on_click
-      function="Avatar.SetImpostorMode"
-      parameter="2" />
-      </menu_item_check>
-      <menu_item_check
-      name="dont_render"
-      label="Never">
-      <menu_item_check.on_check
-      function="Avatar.CheckImpostorMode"
-      parameter="1" />
-      <menu_item_check.on_click
-      function="Avatar.SetImpostorMode"
-      parameter="1" />
-      </menu_item_check>
-      
-      <menu_item_separator />
-      
-      <menu_item_call
-      label="Exceptions..."
-      name="render_exceptions">
-      <menu_item_call.on_click
-      function="Floater.ToggleOrBringToFront"
-      parameter="avatar_render_settings" />
-      </menu_item_call>
-      
-      <menu_item_separator />
-      <!-- Not working -->
-      <menu_item_call
-      enabled="true"
-      label="Derender"
-      name="derender">
-      <menu_item_call.on_click
-      function="Avatar.Derender" />
-      </menu_item_call>
-   </context_menu>
-   
-   <!-- Context Menu -->
+	layout="topleft"
+	name="reset_skeleton_animations">
+	<menu_item_call.on_click
+	function="Avatar.ResetSkeletonAndAnimations" />
+	</menu_item_call>
+	
+	<menu_item_separator name="render_separator"/>
+	
+	<context_menu
+	label="Render Avatar"
+	layout="topleft"
+	name="render_avatar">
+		<menu_item_check
+		name="render_normal"
+		label="Default">
+		<menu_item_check.on_check
+		function="Avatar.CheckImpostorMode"
+		parameter="0" />
+		<menu_item_check.on_click
+		function="Avatar.SetImpostorMode"
+		parameter="0" />
+		</menu_item_check>
+		<menu_item_check
+		name="always_render"
+		label="Always">
+		<menu_item_check.on_check
+		function="Avatar.CheckImpostorMode"
+		parameter="2" />
+		<menu_item_check.on_click
+		function="Avatar.SetImpostorMode"
+		parameter="2" />
+		</menu_item_check>
+		<menu_item_check
+		name="dont_render"
+		label="Never">
+		<menu_item_check.on_check
+		function="Avatar.CheckImpostorMode"
+		parameter="1" />
+		<menu_item_check.on_click
+		function="Avatar.SetImpostorMode"
+		parameter="1" />
+		</menu_item_check>
+		
+		<menu_item_separator />
+		
+		<menu_item_call
+		label="Exceptions..."
+		name="render_exceptions">
+		<menu_item_call.on_click
+		function="Floater.ToggleOrBringToFront"
+		parameter="avatar_render_settings" />
+		</menu_item_call>
+	</context_menu>
+	
+	<!-- Context Menu -->
 	<menu_item_call
 	label="Freeze"
 	name="freeze">
