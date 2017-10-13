@@ -89,7 +89,7 @@ name="Url Popup">
    function="Url.Pay" />        
    </menu_item_call>
    <menu_item_call
-   label="Ignore"
+   label="Block All"
    layout="topleft"
    name="ignore">
    <menu_item_call.on_click
