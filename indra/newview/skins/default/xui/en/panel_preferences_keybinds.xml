@@ -919,6 +919,18 @@ width="510">
   label="Spin Under"
   name="spin_under_sitting"
   value="spin_under_sitting" />
+		<combo_box.item
+  label="         Vehicle Specific"
+  enabled="false"
+  value="menu_separator" />
+		<combo_box.item
+  label="Move Left"
+  name="slide_left"
+  value="slide_left" />
+  <combo_box.item
+  label="Move Right"
+  name="slide_right"
+  value="slide_right" />
   <combo_box.item
   label="                 Misc"
   enabled="false"
