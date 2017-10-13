@@ -707,14 +707,14 @@ width="494">
  width="480">
 			<icon
 	follows="top|left"
-	height="210"
+	height="419"
 	color="1 1 1 1"
 	image_name="Panel_Background"
 	layout="topleft"
 	name="vicon"
 	mouse_opaque="false"
 	visible="true"
-	width="480"
+	width="225"
 	top_pad="0"
 	left="0"/>
  <panel
@@ -726,8 +726,8 @@ width="494">
  mouse_opaque="false"
  left="2"
  name="title"
- top_delta="2"
- width="476"/>
+ top="2"
+ width="221"/>
  
  <text
  name="first_person_label"
@@ -740,28 +740,28 @@ width="494">
  Poses:
  </text>
 	<scroll_list
- column_padding="2"
+ column_padding="0"
  draw_heading="true"
- height="166"
+ height="375"
  follows="left|top|right"
  layout="topleft"
  left="0"
- width="480"
+ width="225"
  multi_select="true"
  name="poses_scroll"
  top_pad="3">
     <scroll_list.columns
      label="Pose Name"
      name="name"
-	 relative_width="0.5"/>
+	 relative_width="0.66"/>
     <scroll_list.columns
-     label="Blend Time"
+     label="Time"
      name="time"
-   relative_width="0.25"  />
+   relative_width="0.17"  />
 	<scroll_list.columns
-     label="Blend Type"
+     label="Type"
      name="type"
-   relative_width="0.25"  />
+   relative_width="0.15"  />
 </scroll_list>
  <button
  height="21"
@@ -772,20 +772,20 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="load_poses"
- width="82"
+ width="42"
  top_pad="1"
  left_delta="2">
    <button.commit_callback
    function="Pose.Load"/>
  </button>
- <icon
+ <!--<icon
 	follows="left|top|right"
 	image_name="Toolbar_Middle_Off"
 	height="21"
 	width="71"
 	layout="topleft"
 	left_pad="1"
-	top_delta="0"/>
+	top_delta="0"/>-->
  <line_editor
   commit_on_focus_lost="true"
   follows="left|top"
@@ -795,7 +795,7 @@ width="494">
   left_pad="1"
   top_delta="0"
   name="interp_time"
-  width="82">
+  width="62">
 	<line_editor.commit_callback
    function="Pose.Set"
    parameter="time"/>
@@ -829,53 +829,109 @@ width="494">
 		function="Pose.Set"
 		parameter="type"/>
     </combo_box>
- <icon
+ <!--<icon
 	follows="left|top|right"
 	image_name="Toolbar_Middle_Off"
 	height="21"
 	width="72"
 	layout="topleft"
 	left_pad="1"
-	top_delta="0"/>
+	top_delta="0"/>-->
  <button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Delete"
+ label=""
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
+	 image_overlay="TrashItem_Off"
  name="delete_poses"
- width="82"
+ width="32"
  top_delta="0"
  left_pad="1">
 	<button.commit_callback
    function="Pose.Delete"/>
  </button>
  
+ <button
+ height="31"
+ follows="top|left"
+ layout="topleft"
+ label=""
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+	 image_overlay="Arrow_Right"
+ name="add_poses"
+ width="26"
+ top="175"
+ left_pad="4">
+   <button.commit_callback
+   function="Anim.Add"/>
+ </button>
+ <button
+ height="31"
+ follows="top|left"
+ layout="topleft"
+ label=""
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+	 image_overlay="Arrow_Left"
+ name="delete_poses"
+ width="26"
+ top_pad="1"
+ left_delta="0">
+	<button.commit_callback
+   function="Anim.Delete"/>
+ </button>
+ 
  <icon
 	follows="top|left"
-	height="208"
+	height="419"
 	color="1 1 1 1"
 	image_name="Panel_Background"
 	layout="topleft"
 	name="vicon"
 	mouse_opaque="false"
 	visible="true"
-	width="480"
-	top_pad="2"
-	left="0"/>
+	width="225"
+	top="0"
+	left="255"/>
+ <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="257"
+ name="title"
+ top="2"
+ width="221"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="265"
+ height="12"
+ width="350"
+ top_delta="4">
+ Animation Queue:
+ </text>
  <scroll_list
  column_padding="2"
  draw_heading="true"
- height="185"
+ height="375"
  follows="left|top|right"
  layout="topleft"
- left="0"
- width="480"
+ left="255"
+ width="225"
  multi_select="true"
  name="anim_editor_scroll"
- top_delta="0">
+ top_pad="3">
     <scroll_list.columns
      label="Action"
      name="name"
@@ -894,7 +950,7 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="load_poses"
- width="62"
+ width="42"
  top_pad="1"
  left_delta="2">
    <button.commit_callback
@@ -909,20 +965,20 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="delete_poses"
- width="62"
+ width="42"
  top_delta="0"
  left_pad="1">
 	<button.commit_callback
    function="Anim.Stop"/>
  </button>
- <icon
+ <!--<icon
 	follows="left|top|right"
 	image_name="Toolbar_Middle_Off"
 	height="21"
 	width="56"
 	layout="topleft"
 	left_pad="1"
-	top_delta="0"/>
+	top_delta="0"/>-->
  <line_editor
   commit_on_focus_lost="true"
   follows="left|top"
@@ -944,7 +1000,7 @@ width="494">
      top_delta="0"
      max_chars="135"
      name="anim_choice_combo"
-     width="82">
+     width="72">
         <combo_box.item
          enabled="true"
          label="Wait"
@@ -961,36 +1017,6 @@ width="494">
          name="2"
          value="" />
     </combo_box>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Add"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="load_poses"
- width="62"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="Anim.Add"/>
- </button>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Remove"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="delete_poses"
- width="84"
- top_delta="0"
- left_pad="1">
-	<button.commit_callback
-   function="Anim.Delete"/>
- </button>
 	</panel>
 	</panel>
 	</tab_container>
