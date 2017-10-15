@@ -134,3 +134,7 @@
 <llsd><map><key>function</key><string>spin_under_sitting</string><key>key</key><string>C</string><key>mask</key><string>NONE</string><key>mode</key><integer>4</integer><key>slot</key><integer>133</integer></map></llsd>
 <llsd><map><key>function</key><string>spin_under_sitting</string><key>key</key><string>PgDn</string><key>mask</key><string>NONE</string><key>mode</key><integer>4</integer><key>slot</key><integer>134</integer></map></llsd>
 <llsd><map><key>function</key><string>start_chat</string><key>key</key><string>Enter</string><key>mask</key><string>NONE</string><key>mode</key><integer>4</integer><key>slot</key><integer>135</integer></map></llsd>
+<llsd><map><key>function</key><string>slide_left</string><key>key</key><string>A</string><key>mask</key><string>SHIFT</string><key>mode</key><integer>4</integer><key>slot</key><integer>136</integer></map></llsd>
+<llsd><map><key>function</key><string>slide_right</string><key>key</key><string>D</string><key>mask</key><string>SHIFT</string><key>mode</key><integer>4</integer><key>slot</key><integer>137</integer></map></llsd>
+<llsd><map><key>function</key><string>slide_left</string><key>key</key><string>Left</string><key>mask</key><string>SHIFT</string><key>mode</key><integer>4</integer><key>slot</key><integer>138</integer></map></llsd>
+<llsd><map><key>function</key><string>slide_right</string><key>key</key><string>Right</string><key>mask</key><string>SHIFT</string><key>mode</key><integer>4</integer><key>slot</key><integer>139</integer></map></llsd>
