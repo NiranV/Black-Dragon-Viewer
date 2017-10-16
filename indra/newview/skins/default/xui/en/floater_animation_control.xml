@@ -746,6 +746,7 @@ width="494">
  follows="left|top|right"
  layout="topleft"
  left="0"
+ tool_tip="Change the interpolation type for the currently selected pose."
  width="225"
  multi_select="true"
  name="poses_scroll"
@@ -768,6 +769,7 @@ width="494">
  follows="top|left"
  layout="topleft"
  label="Load"
+ tool_tip="Load the currently selected pose and apply all bone rotations saved in it."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
@@ -792,6 +794,7 @@ width="494">
   height="20"
   enabled="false"
   label="0.001 - 1.0"
+  tool_tip="Change the interpolation time of the currently selected pose."
   left_pad="1"
   top_delta="0"
   name="interp_time"
@@ -809,7 +812,7 @@ width="494">
      top_delta="0"
      max_chars="135"
      name="interp_type"
-     width="82">
+     width="87">
         <combo_box.item
          enabled="true"
          label="None"
@@ -842,12 +845,13 @@ width="494">
  follows="top|left"
  layout="topleft"
  label=""
+ tool_tip="Delete the currently selected pose."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
 	 image_overlay="TrashItem_Off"
  name="delete_poses"
- width="32"
+ width="27"
  top_delta="0"
  left_pad="1">
 	<button.commit_callback
@@ -859,27 +863,67 @@ width="494">
  follows="top|left"
  layout="topleft"
  label=""
+ tool_tip="Add the currently selected pose below the currently selected entry in the animation queue."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
 	 image_overlay="Arrow_Right"
  name="add_poses"
+ enabled="false"
  width="26"
- top="175"
+ top="160"
  left_pad="4">
    <button.commit_callback
    function="Anim.Add"/>
+ </button>
+ <button
+ height="26"
+ follows="top|left"
+ layout="topleft"
+ label=""
+ tool_tip="Add a configurable wait event below the currently selected entry in the animation queue."
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+	 image_overlay="Conv_toolbar_call_log"
+ name="add_wait"
+ width="26"
+ top_pad="1"
+ left_delta="0">
+	<button.commit_callback
+   function="Anim.Add"
+   parameter="Wait"/>
+ </button>
+ <button
+ height="26"
+ follows="top|left"
+ layout="topleft"
+ label=""
+ tool_tip="Add a repeat event below the currently selected entry in the animation queue."
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+	 image_overlay="Refresh_Off"
+ name="add_repeat"
+ width="26"
+ top_pad="1"
+ left_delta="0">
+	<button.commit_callback
+   function="Anim.Add"
+   parameter="Repeat"/>
  </button>
  <button
  height="31"
  follows="top|left"
  layout="topleft"
  label=""
+ tool_tip="Delete the currently selected entry in the animation queue."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
 	 image_overlay="Arrow_Left"
  name="delete_poses"
+ enabled="false"
  width="26"
  top_pad="1"
  left_delta="0">
@@ -935,7 +979,7 @@ width="494">
     <scroll_list.columns
      label="Action"
      name="name"
-	 relative_width="0.5"/>
+	 relative_width="0.75"/>
     <scroll_list.columns
      label="Time"
      name="time"
@@ -946,10 +990,11 @@ width="494">
  follows="top|left"
  layout="topleft"
  label="Play"
+ tool_tip="Start playing the animation queue."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
- name="load_poses"
+ name="play_anim"
  width="42"
  top_pad="1"
  left_delta="2">
@@ -961,38 +1006,40 @@ width="494">
  follows="top|left"
  layout="topleft"
  label="Stop"
+ tool_tip="Stop playing the animation queue."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
- name="delete_poses"
+ name="stop_anim"
  width="42"
  top_delta="0"
  left_pad="1">
 	<button.commit_callback
    function="Anim.Stop"/>
  </button>
- <!--<icon
+ <icon
 	follows="left|top|right"
 	image_name="Toolbar_Middle_Off"
 	height="21"
-	width="56"
+	width="72"
 	layout="topleft"
 	left_pad="1"
-	top_delta="0"/>-->
+	top_delta="0"/>
  <line_editor
   commit_on_focus_lost="true"
   follows="left|top"
   height="20"
-  label="0.001 - 1.0"
+  label="Wait time"
+  tool_tip="Change the time for the wait event."
+  enabled="false"
   left_pad="1"
   top_delta="0"
   name="anim_time"
   width="62">
 	<line_editor.commit_callback
-   function="Anim.Set"
-   parameter="time"/>
+   function="Anim.Set"/>
  </line_editor>
- <combo_box
+ <!--<combo_box
      follows="left|top"
      height="20"
      layout="topleft"
@@ -1016,7 +1063,7 @@ width="494">
          label="Pose"
          name="2"
          value="" />
-    </combo_box>
+    </combo_box>-->
 	</panel>
 	</panel>
 	</tab_container>

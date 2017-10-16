@@ -71,7 +71,7 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	mCommitCallbackRegistrar.add("Joint.ChangeState", boost::bind(&BDFloaterAnimations::onJointChangeState, this));
 
 	//BD - Add a new entry to the animation creator.
-	mCommitCallbackRegistrar.add("Anim.Add", boost::bind(&BDFloaterAnimations::onAnimAdd, this));
+	mCommitCallbackRegistrar.add("Anim.Add", boost::bind(&BDFloaterAnimations::onAnimAdd, this, _2));
 	//BD - Remove an entry in the animation creator.
 	mCommitCallbackRegistrar.add("Anim.Delete", boost::bind(&BDFloaterAnimations::onAnimDelete, this));
 	//BD - Save the currently build list as animation.
@@ -80,6 +80,8 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	mCommitCallbackRegistrar.add("Anim.Play", boost::bind(&BDFloaterAnimations::onAnimPlay, this));
 	//BD - Stop the current animator queue.
 	mCommitCallbackRegistrar.add("Anim.Stop", boost::bind(&BDFloaterAnimations::onAnimStop, this));
+	//BD - Change the value for a wait entry.
+	mCommitCallbackRegistrar.add("Anim.Set", boost::bind(&BDFloaterAnimations::onAnimSet, this));
 
 //	//BD - Array Debugs
 	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
@@ -112,6 +114,7 @@ BOOL BDFloaterAnimations::postBuild()
 
 	//BD - Animations
 	mAnimEditorScroll = this->getChild<LLScrollListCtrl>("anim_editor_scroll", true);
+	mAnimEditorScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onAnimControlsRefresh, this));
 	mAnimScrollIndex = 0;
 	return TRUE;
 }
@@ -518,11 +521,13 @@ void BDFloaterAnimations::onPoseControlsRefresh()
 		getChild<LLUICtrl>("interp_type")->setValue(item->getColumn(2)->getValue());
 		getChild<LLUICtrl>("interp_time")->setEnabled(true);
 		getChild<LLUICtrl>("interp_type")->setEnabled(true);
+		getChild<LLUICtrl>("add_poses")->setEnabled(true);
 	}
 	else
 	{
 		getChild<LLUICtrl>("interp_time")->setEnabled(false);
 		getChild<LLUICtrl>("interp_type")->setEnabled(false);
+		getChild<LLUICtrl>("add_poses")->setEnabled(false);
 	}
 }
 
@@ -844,6 +849,7 @@ void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 	{
 		S32 type;
 		F32 time;
+		//BD - Is this actually required since we save the pose anyway?
 		if (param.asString() == "time")
 		{
 			LLScrollListCell* column = item->getColumn(2);
@@ -1100,7 +1106,7 @@ void BDFloaterAnimations::onJointChangeState()
 ////////////////////////////////
 //BD - Animations
 ////////////////////////////////
-void BDFloaterAnimations::onAnimAdd()
+void BDFloaterAnimations::onAnimAdd(const LLSD& param)
 {
 	//BD - This is going to be a really dirty way of inserting elements inbetween others
 	//     until i can figure out a better way.
@@ -1111,19 +1117,18 @@ void BDFloaterAnimations::onAnimAdd()
 	LLScrollListItem* new_item;
 	LLSD row;
 
-	LLSD choice = getChild<LLComboBox>("anim_choice_combo")->getValue();
-	F32 time = getChild<LLLineEditor>("anim_time")->getValue().asReal();
-	if (choice.asString() == "Repeat")
+	//F32 time = getChild<LLLineEditor>("anim_time")->getValue().asReal();
+	if (param.asString() == "Repeat")
 	{
 		row["columns"][0]["column"] = "name";
 		row["columns"][0]["value"] = "Repeat";
 	}
-	else if (choice.asString() == "Wait")
+	else if (param.asString() == "Wait")
 	{
 		row["columns"][0]["column"] = "name";
 		row["columns"][0]["value"] = "Wait";
 		row["columns"][1]["column"] = "time";
-		row["columns"][1]["value"] = time;
+		row["columns"][1]["value"] = 1.f;
 	}
 	else
 	{
@@ -1187,10 +1192,10 @@ void BDFloaterAnimations::onAnimAdd()
 	//BD - Delete all flagged items now and we'll end up with a new list order.
 	mAnimEditorScroll->deleteFlaggedItems();
 
-	//BD - Select the last selected entry and make it appear as nothing happened.
+	//BD - Select added entry and make it appear as nothing happened.
 	if (selected_index >= 0)
 	{
-		mAnimEditorScroll->selectNthItem(selected_index);
+		mAnimEditorScroll->selectNthItem(selected_index+1);
 	}
 }
 
@@ -1208,8 +1213,14 @@ void BDFloaterAnimations::onAnimSet()
 {
 	F32 value = getChild<LLUICtrl>("anim_time")->getValue().asReal();
 	LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
-	LLScrollListCell* column = item->getColumn(1);
-	column->setValue(value);
+	if (item)
+	{
+		LLScrollListCell* column = item->getColumn(1);
+		if (item->getColumn(0)->getValue().asString() == "Wait")
+		{
+			column->setValue(value);
+		}
+	}
 }
 
 void BDFloaterAnimations::onAnimPlay()
@@ -1221,4 +1232,26 @@ void BDFloaterAnimations::onAnimPlay()
 void BDFloaterAnimations::onAnimStop()
 {
 	mAnimPlayTimer.stop();
+}
+
+void BDFloaterAnimations::onAnimControlsRefresh()
+{
+	LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
+	if (item)
+	{
+		getChild<LLUICtrl>("delete_poses")->setEnabled(true);
+		if (item->getColumn(0)->getValue().asString() == "Wait")
+		{
+			getChild<LLUICtrl>("anim_time")->setEnabled(true);
+		}
+		else
+		{
+			getChild<LLUICtrl>("anim_time")->setEnabled(false);
+		}
+	}
+	else
+	{
+		getChild<LLUICtrl>("delete_poses")->setEnabled(false);
+		getChild<LLUICtrl>("anim_time")->setEnabled(false);
+	}
 }
