@@ -202,7 +202,7 @@ visible="false">
 	<on_click function="Group.DoToSelected" parameter="get_slurl" />
 	</menu_item_call>
 	
-	<menu_item_separator layout="topleft" name="separator_disconnect_from_voice"/>	
+	<menu_item_separator layout="topleft" name="separator_close_conversation"/>	
 	
 	<menu_item_call
 	label="Close Conversation"
