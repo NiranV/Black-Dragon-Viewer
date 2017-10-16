@@ -401,7 +401,7 @@ width="510">
        <radio_item
        height="16"
        label="Default"
-							tool_tip="This option changes the embedding behavior for notification panels to always embed into the IM window. It is currently unknown what this option exactly does or if it has any impact."
+							tool_tip="This option changes the embedding behavior for notification panels to always embed into the IM window. &lt;red&gt;It is currently unknown what this option exactly does or if it has any impact.&lt;/red&gt;"
        value="0"
        layout="topleft"
        name="radio_default"
@@ -418,7 +418,7 @@ width="510">
        <radio_item
        height="16"
        label="Focused"
-							tool_tip="This option changes the embedding behavior for notification panels to embed into the IM window only when the window is focused. It is currently unknown what this option exactly does or if it has any impact."
+							tool_tip="This option changes the embedding behavior for notification panels to embed into the IM window only when the window is focused. &lt;red&gt;It is currently unknown what this option exactly does or if it has any impact.&lt;/red&gt;"
        value="1"
        layout="topleft"
        name="radio_focused"
@@ -436,7 +436,7 @@ width="510">
 	   <radio_item
        height="16"
        label="Never"
-							tool_tip="This option changes the embedding behavior for notification panels to never embed into the IM window. It is currently unknown what this option exactly does or if it has any impact."
+							tool_tip="This option changes the embedding behavior for notification panels to never embed into the IM window. &lt;red&gt;It is currently unknown what this option exactly does or if it has any impact.&lt;/red&gt;"
        value="2"
        layout="topleft"
        name="radio_never"

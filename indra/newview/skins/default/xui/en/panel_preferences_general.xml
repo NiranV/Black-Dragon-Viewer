@@ -483,7 +483,7 @@
      layout="topleft"
      left="10"
      top_pad="15"
-     tool_tip="This option controls whether the Viewer should attempt to log you in automatically whenever you start it. It is unknown if this option currently works."
+     tool_tip="This option controls whether the Viewer should attempt to log you in automatically whenever you start it. &lt;red&gt;It is currently unknown if this option is still functional.&lt;/red&gt;"
      name="Auto_login"
      width="200" />
    <check_box
