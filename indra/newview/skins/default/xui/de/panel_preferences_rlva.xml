@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="RLVa" name="RLVa panel">
-	<text name="header1">
+	<!--<text name="header1">
 		RLVa Generell:
 	</text>
 	<text name="header2">
@@ -39,5 +39,5 @@
 		<radio_item label="Standart" name="radio_default"/>
 		<radio_item label="Fokussiert" name="radio_focused"/>
 		<radio_item label="Nie" name="radio_never"/>
-	</radio_group>
+	</radio_group>-->
 </panel>

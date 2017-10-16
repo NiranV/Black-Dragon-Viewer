@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Hardware/Internet" name="Input panel">
-	<text name="Network:">
+	<!--<text name="Network:">
 		Netzwerk:
 	</text>
 	<text name="Maximum bandwidth">
@@ -32,5 +32,5 @@
 	<text name="Proxy Settings:">
 		Proxy-Einstellungen:
 	</text>
-	<button label="Proxy-Einstellungen ändern" label_selected="Durchsuchen" name="set_proxy"/>
+	<button label="Proxy-Einstellungen ändern" label_selected="Durchsuchen" name="set_proxy"/>-->
 </panel>

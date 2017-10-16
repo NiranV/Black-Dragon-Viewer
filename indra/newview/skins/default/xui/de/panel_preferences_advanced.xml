@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <panel label="Erweitert" name="advanced">
-	<button label="Kamera" name="camera_panel_btn"/>
+	<!--<button label="Kamera" name="camera_panel_btn"/>
 	<button label="Bewegung" name="avatar_panel_btn"/>
 	<button label="Ego Ansicht" name="mouselook_panel_btn"/>
 	<panel name="camera_panel">
@@ -144,5 +144,5 @@
 	</text>
 	<check_box label="Umkehren" name="invert_mouse"/>
 	<slider name="mouse_sensitivity" label="Maussensibilität"/>
-	</panel>
+	</panel>-->
 </panel>

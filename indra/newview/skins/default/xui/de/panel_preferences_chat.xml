@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Text Chat" name="chat">
-	<scroll_container name="chat_scroll">
+	<!--<scroll_container name="chat_scroll">
 		<panel name="chat_scroll_panel">
 			<text name="font_size">
 				Schriftgröße:
@@ -108,5 +108,5 @@
 			<spinner label="Chat Blendzeit:" name="NearbyToastFadingTime"/>
 			<button label="Chat Übersetzungsoptionen" name="chat_translation_btn"/>
 		</panel>
-	</scroll_container>
+	</scroll_container>-->
 </panel>

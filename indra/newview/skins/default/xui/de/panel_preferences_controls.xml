@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <panel label="Steuerung" name="Controls panel">
-		<text name="inworld_typing_rg_label">
+	<!--	<text name="inworld_typing_rg_label">
 		Buchstabentasten (z.B W,A,S,D) diehnt dem:
 	</text>
    	<radio_group name="inworld_typing_preference">
@@ -75,5 +75,5 @@
 	<text name="ClassicStop">
 		Leertaste
 	</text>
-	<button label="Andere Geräte" name="joystick_setup_button"/>
+	<button label="Andere Geräte" name="joystick_setup_button"/>-->
 </panel>

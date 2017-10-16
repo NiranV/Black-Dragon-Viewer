@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Popups" name="popups" title="Popups">
-	<text name="tell_me_label">
+	<!--<text name="tell_me_label">
 		Zeige mir:
 	</text>
 	<check_box label="Wenn ich L$ ausgebe oder erhalte" name="notify_money_change_checkbox"/>
@@ -17,5 +17,5 @@
 	</text>
 	<spinner label="Meldungstipp Anzeigezeit:" name="NotificationTipToastLifeTime"/>
 	<spinner label="Meldungen Anzeigezeit:" name="NotificationToastLifeTime"/>
-	<spinner label="Bodenfreiraum in pixel:" name="ChannelBottomPanelMargin"/>
+	<spinner label="Bodenfreiraum in pixel:" name="ChannelBottomPanelMargin"/>-->
 </panel>
