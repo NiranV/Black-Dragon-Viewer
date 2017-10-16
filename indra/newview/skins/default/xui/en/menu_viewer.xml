@@ -562,16 +562,6 @@
              function="Floater.Toggle"
              parameter="search" />
         </menu_item_check>
-		  <menu_item_check
-        label="Animation Controls"
-        name="Animation Controls">
-            <menu_item_check.on_check
-             function="Floater.Visible"
-             parameter="animation_control" />
-            <menu_item_check.on_click
-             function="Floater.Toggle"
-             parameter="animation_control" />
-        </menu_item_check>
 		<menu_item_separator/>
       <menu_item_call
              label="Landmark This Place"
@@ -3855,6 +3845,16 @@
 		  function="ToggleControl"
 		  parameter="MachinimaSidebar"/>
 	    </menu_item_check>
+		 <menu_item_check
+        label="Pose/Animation Manipulator"
+        name="Animation Controls">
+            <menu_item_check.on_check
+             function="Floater.Visible"
+             parameter="animation_control" />
+            <menu_item_check.on_click
+             function="Floater.Toggle"
+             parameter="animation_control" />
+        </menu_item_check>
             <menu_item_call
              label="Stop Animating Me"
              name="Stop Animating My Avatar">
