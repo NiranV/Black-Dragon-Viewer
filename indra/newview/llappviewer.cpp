@@ -1100,7 +1100,7 @@ bool LLAppViewer::init()
 		}
 	}
 
-	char* PARENT = getenv("PARENT");
+	/*char* PARENT = getenv("PARENT");
 	if (! (PARENT && std::string(PARENT) == "BD_Launcher"))
 	{
 		// Don't directly run this executable. Please run the launcher, which
@@ -1111,7 +1111,7 @@ bool LLAppViewer::init()
 		// bypasses this mechanism needs no reminder that s/he's shooting
 		// him/herself in the foot.
 		LLNotificationsUtil::add("RunLauncher");
-	}
+	}*/
 
 #if LL_WINDOWS
 	if (gGLManager.mGLVersion < LLFeatureManager::getInstance()->getExpectedGLVersion())
