@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="7921"
+       height="8381"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,9 +163,10 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="740"
+              height="1209"
               top="10"
               left="7"
+              max_length="9999"
               name="changelog_text"
               bg_visible="true"
               bg_writeable_color="Black_50" 
@@ -182,6 +183,22 @@ Added: (mass) Reset Skeleton, (mass) Reset Skeleton and Animations, Derender, Mu
 Added: View Chat History, Remove Friend, Share, Mute Voice and Block Text options to inworld avatar right-click menu.
 Added: View Chat History, Remove Friend, Share, Mute Voice and Block Text options to inworld avatar attachment right-click menu.
 Added: Request Teleport, View Chat History and Report options to group member list right-click menu.
+Added: Ability to bind 'Move Left' and 'Move Right' to sitting binds for vehicle controls.
+Added: Shift + A, Shift + D, Shift + Left Arrow and Shift + Right Arrow to sitting controls to fix gear shifting on some vehicles.
+Added: Tooltips and improved existing tooltips in the 'Notifications' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Controls' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'General' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Privacy' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Sound &amp; Media' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Keybindings' preferences tab.
+Added: Separator between the 'close conversation' menu entry and all others in the conversation tab menu.
+Added: Tooltips and improved existing tooltips in the 'Viewer' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Chat' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Browser' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'RLVa' preferences tab.
+Added: Buttons for adding wait and repeat events directly to the Animator.
+Added: Tooltips to most buttons of the Animator.
+Added: Ability to change wait event times.
 Changed: More Icon changes and fixes.
 Changed: Improved shadow precision on distance, on high altitudes and eliminate almost all cases of shadows flickering on high altitudes.
 Changed: Version to 2.9.0 - Bit Dragon.
@@ -207,6 +224,20 @@ Changed: Disabled german translation for the 'IM &amp; Groupchat' preferences ta
 Changed: Disabled german translation for the 'Camera' preferences tab.
 Changed: Improved Volumetric Lighting slightly, removed random noise completely.
 Changed: Completely overhauled and reorganized all most used avatar related right-click menus into a consistent layout.
+Changed: Simplified the bone value display formatting code.
+Changed: Moved 'Derender' option in avatar right click menus to main menu rather than the 'Render Avatar' submenu.
+Changed: Renamed 'Ignore' in SLURL-based right click menus to 'Block All' for consistency.
+Changed: Overhauled 'Animation' tab in Animation Controls window for better space usage and workflow.
+Changed: Added latest changes to the loginscreen changelog.
+Changed: Disabled the Launcher notification each Viewer start for now.
+Changed: A few chat option labels since we now have proper tooltips for them.
+Changed: Further improvements on the 'Display' tab tooltips, specifically highlighting values and giving extended info whether they are the SL ultra setting or not.
+Changed: Layout of animator tab in 'Animation Controls' window for a better workflow.
+Changed: The way the Animator behaves when adding new events, now selects the added entry rather than the previous.
+Changed: Disabled all german preferences panel translations for now.
+Changed: Moved the 'Animation Control' menu entry into 'My Useful Features' and renamed it to 'Pose/Animation Manipulator'.
+Changed: Consistency pass over some preferences tooltips.
+Changed: Moved estate management menu entries in right click menus to the avatar actions.
 Fixed: Compile and all Fmodex linking errors.
 Fixed: Viewer using Second Life icons instead of Black Dragon's.
 Fixed: Projector lights vanishing on distance.
@@ -221,7 +252,13 @@ Fixed: Missing header of the german interface tab.
 Fixed: Info (i) buttons in namelists clipping outside the name entry.
 Fixed: Double\Triple\Quad default button height offset in 'Camera' preferences tab.
 Fixed: Double\Triple\Quad default button height offset in 'Graphics' preferences tab.
+Fixed: Posing motion being overriden by priority 4 animations, make the posing animation have priority 7.
+Fixed: Some 'Change Selected' buttons not working properly in 'Keybindings' tab.
+Fixed: 'Keybindings' panel layout and alignment.
+Fixed: Notification embed option in RLVa tab not working.
 Removed: Check for Updates button in About Black Dragon floater.
+Removed: Double default button in 'Notifications' preferences tab.
+Removed: Deprecated Enable 'FirstRLVGiveToRLV' Warning option.
 Misc: Merge and fixes.
 Misc: More compile fixes.
 Misc: Branding and naming changes for 64bit.
