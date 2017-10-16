@@ -180,8 +180,9 @@ width="510">
                         label="Small"
                         value="0.8"
 								tool_tip="This option changes the UI size to small.
-                                                    (0.8)
-								                                                  &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+                                                    &lt;blue&gt;(0.8)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;
+&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 								                                           Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset. It will break layouts, spacing, text labels and any sort of consistency in the UI."
                         layout="topleft"
                         name="0"
@@ -202,8 +203,9 @@ width="510">
                         label="Medium"
                         value="1"
 								tool_tip="This option changes the UI size to medium.
-                                                (1.0)
-								                                                  &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+                                                &lt;blue&gt;(1.0)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;
+&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 								                                           Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset. It will break layouts, spacing, text labels and any sort of consistency in the UI."
                         layout="topleft"
                         name="0"
@@ -224,8 +226,9 @@ width="510">
                         halign="right"
                         value="1.2"
 								tool_tip="This option changes the UI size to big.
-                                                    (1.2)
-								                                                  &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+                                                    &lt;blue&gt;(1.2)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;
+&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 								                                           Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset. It will break layouts, spacing, text labels and any sort of consistency in the UI."
                         layout="topleft"
                         name="2"
@@ -248,8 +251,9 @@ width="510">
                         halign="right"
                         value="2"
 								tool_tip="This option changes the UI size to huge.
-                                                    (2.0)
-								                                                  &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+                                                    &lt;blue&gt;(2.0)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;
+&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 								                                           Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset. It will break layouts, spacing, text labels and any sort of consistency in the UI."
                         layout="topleft"
                         name="3"
@@ -580,7 +584,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								(0.5)"
+								&lt;blue&gt;(0.5)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -599,7 +603,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								(1.0)"
+								&lt;blue&gt;(1.0)&lt;/blue&gt;"
                         value="1"
                         layout="topleft"
                         name="0"
@@ -622,7 +626,9 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								(2.0)"
+								&lt;blue&gt;(2.0)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;icon&gt;Default_Widget&lt;/icon&gt;                                                       
+This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -646,7 +652,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								(5.0)"
+								&lt;blue&gt;(5.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -670,7 +676,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								(7.5)"
+								&lt;blue&gt;(7.5)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -694,7 +700,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								(10.0)"
+								&lt;blue&gt;(10.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -738,7 +744,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details default linden bodies should have and which Level-of-Detail they use.
-								                                            (0.5)"
+								                                            &lt;blue&gt;(0.5)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -758,7 +764,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details default linden bodies should have and which Level-of-Detail they use.
-								                                            (1.0)"
+								                                            &lt;blue&gt;(1.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -780,7 +786,9 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details default linden bodies should have and which Level-of-Detail they use.
-								                                            (2.0)"
+								                                            &lt;blue&gt;(2.0)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;icon&gt;Default_Widget&lt;/icon&gt;                                                       
+This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -804,7 +812,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details default linden bodies should have and which Level-of-Detail they use.
-								                                            (5.0)"
+								                                            &lt;blue&gt;(5.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -828,7 +836,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details default linden bodies should have and which Level-of-Detail they use.
-								                                            (10.0)"
+								                                            &lt;blue&gt;(10.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -872,7 +880,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
-								    (0.5)"
+								    &lt;blue&gt;(0.5)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -892,7 +900,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
-								    (1.0)"
+								    &lt;blue&gt;(1.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -914,7 +922,9 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
-								    (2.0)"
+								    &lt;blue&gt;(2.0)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;icon&gt;Default_Widget&lt;/icon&gt;                                                       
+This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -938,7 +948,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
-								    (5.0)"
+								    &lt;blue&gt;(5.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -962,7 +972,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
-								    (10.0)"
+								    &lt;blue&gt;(10.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -986,7 +996,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the terrain should have and which Level-of-Detail it uses.
-								    (15.0)"
+								    &lt;blue&gt;(15.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1030,7 +1040,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
-								    (Disabled)"
+								    &lt;blue&gt;(Disabled)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1050,7 +1060,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
-								        (0.5)"
+								        &lt;blue&gt;(0.5)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1072,7 +1082,9 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
-								        (1.0)"
+								        &lt;blue&gt;(1.0)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;icon&gt;Default_Widget&lt;/icon&gt;                                                       
+This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1096,7 +1108,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
-								        (2.5)"
+								        &lt;blue&gt;(2.5)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1120,7 +1132,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
-								        (5.0)"
+								        &lt;blue&gt;(5.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1144,7 +1156,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details trees should have and which Level-of-Detail they use.
-								        (10.0)"
+								        &lt;blue&gt;(10.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1188,7 +1200,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot0&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
-								                                      (16)"
+								                                      &lt;blue&gt;(16)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1208,7 +1220,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
-								                                      (32)"
+								                                      &lt;blue&gt;(32)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1229,7 +1241,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
-								                                      (64)"
+								                                      &lt;blue&gt;(64)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1250,7 +1262,9 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
-								                                      (128)"
+								                                      &lt;blue&gt;(128)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;icon&gt;Default_Widget&lt;/icon&gt;                                                       
+This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1273,7 +1287,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
-								                                      (192)"
+								                                      &lt;blue&gt;(192)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1296,7 +1310,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
-								                                      (256)"
+								                                      &lt;blue&gt;(256)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1378,7 +1392,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
-								                        (0.1)"
+								                        &lt;blue&gt;(0.1)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1398,7 +1412,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
-								                        (0.2)"
+								                        &lt;blue&gt;(0.2)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1420,7 +1434,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
-								                        (0.4)"
+								                        &lt;blue&gt;(0.4)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1442,7 +1456,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
-								                        (0.6)"
+								                        &lt;blue&gt;(0.6)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1464,7 +1478,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
-								                        (0.8)"
+								                        &lt;blue&gt;(0.8)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1486,7 +1500,9 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much time should be spend on calculating avatar physics.
-								                        (1.0)"
+								                        &lt;blue&gt;(1.0)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;icon&gt;Default_Widget&lt;/icon&gt;                                                       
+This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1688,7 +1704,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
-								      (256x256)"
+								      &lt;blue&gt;(256x256)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1708,7 +1724,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
-								      (512x512)"
+								      &lt;blue&gt;(512x512)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1729,7 +1745,9 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
-								      (768x768)"
+								      &lt;blue&gt;(768x768)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;icon&gt;Default_Widget&lt;/icon&gt;                                                       
+This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1752,7 +1770,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
-								      (1024x1024)"
+								      &lt;blue&gt;(1024x1024)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1775,7 +1793,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
-								      (1536x1536)"
+								      &lt;blue&gt;(1536x1536)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1798,7 +1816,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of water reflections.
-								      (2048x2048)"
+								      &lt;blue&gt;(2048x2048)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1843,7 +1861,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
-								                (20)"
+								                &lt;blue&gt;(20)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1863,7 +1881,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
-								                (16)"
+								                &lt;blue&gt;(16)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1885,7 +1903,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
-								                (12)"
+								                &lt;blue&gt;(12)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1907,7 +1925,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
-								                  (9)"
+								                  &lt;blue&gt;(9)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1929,7 +1947,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
-								                  (6)"
+								                  &lt;blue&gt;(6)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1951,7 +1969,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the repeats of the default terrain textures. Higher means less repeats.
-								                  (5)"
+								                  &lt;blue&gt;(5)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1993,7 +2011,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of post processing glow.
-								              (7)"
+								              &lt;blue&gt;(7)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -2013,7 +2031,9 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of post processing glow.
-								              (9)"
+								              &lt;blue&gt;(9)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;icon&gt;Default_Widget&lt;/icon&gt;                                                       
+This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -2036,7 +2056,7 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of post processing glow.
-								              (10)"
+								              &lt;blue&gt;(10)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3786,7 +3806,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         label="Low"
                         value="2"
 								tool_tip="This option controls the amount of passes the blur light shader uses to soften light. Requires 'Use Fast Light Softening' being disabled.
-								        (2 passes)"
+								        &lt;blue&gt;(2 passes)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -3804,7 +3824,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         label="Normal"
                         value="4"
 								tool_tip="This option controls the amount of passes the blur light shader uses to soften light. Requires 'Use Fast Light Softening' being disabled.
-								        (4 passes)"
+								        &lt;blue&gt;(4 passes)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3823,7 +3843,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         label="High"
                         value="5"
 								tool_tip="This option controls the amount of passes the blur light shader uses to soften light. Requires 'Use Fast Light Softening' being disabled.
-								        (5 Passes)"
+								        &lt;blue&gt;(5 Passes)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3842,7 +3862,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         label="Very High"
                         value="6"
 								tool_tip="This option controls the amount of passes the blur light shader uses to soften light. Requires 'Use Fast Light Softening' being disabled.
-								        (6 Passes)"
+								        &lt;blue&gt;(6 Passes)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -3861,7 +3881,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         label="Ultra"
                         value="8"
 								tool_tip="This option controls the amount of passes the blur light shader uses to soften light. Requires 'Use Fast Light Softening' being disabled.
-								        (8 Passes)"
+								        &lt;blue&gt;(8 Passes)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -4672,7 +4692,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         top_delta="0"
                         width="70">
                               <radio_item.check_button
-                              image_overlay="Default_Widget"
                               image_overlay_alignment="left"
                               image_unselected="Checkbox_Off"
                               image_selected="Checkbox_On"
