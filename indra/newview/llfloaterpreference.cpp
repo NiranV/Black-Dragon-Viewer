@@ -1714,15 +1714,8 @@ void LLFloaterPreference::refreshMemoryControls()
 	S32 avail_vram = max_vram;
 	F32 percent;
 
-	//BD - Since we cannot work out how to get AMD Cards to properly and accurately
-	//     report back its maximum and free memory we'll just use the max, whatever
-	//     that is and only show the actual used memory from SL. Only NVIDIA Cards seem
-	//     to properly and accurately report back their max and free memory.
-	if (gGLManager.mIsNVIDIA)
-	{
-		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
-		used_vram = max_vram - (avail_vram / 1024);
-	}
+	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
+	used_vram = max_vram - (avail_vram / 1024);
 	max_mem = (avail_vram + (S32)bound_mem.value() + (S32)total_mem.value());
 	percent = ((F32)used_vram / (F32)max_vram) * 100.f;
 
@@ -1743,7 +1736,14 @@ void LLFloaterPreference::draw()
 		if (mTabContainer->getCurrentPanelIndex() == 1)
 		{
 //			//BD - Memory Allocation
-			refreshMemoryControls();
+			//     Since we cannot work out how to get AMD Cards to properly and accurately
+			//     report back its maximum and free memory we'll just use the max, whatever
+			//     that is and only show the actual used memory from SL. Only NVIDIA Cards seem
+			//     to properly and accurately report back their max and free memory.
+			if (gGLManager.mIsNVIDIA)
+			{
+				refreshMemoryControls();
+			}
 //			//BD - Warning System
 			refreshWarnings();
 		}
