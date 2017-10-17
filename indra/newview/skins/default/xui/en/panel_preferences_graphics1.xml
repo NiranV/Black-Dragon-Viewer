@@ -151,10 +151,7 @@ width="510">
    left="10"
    name="FullscreenWindow"
    top_pad="15"
-   width="115" >
-   <check_box.commit_callback
-      function="Pref.FullscreenWindow"/>
-   </check_box>
+   width="115" />
    <text
  type="string"
  length="1"

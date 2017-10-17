@@ -617,7 +617,8 @@ BOOL LLPanelPeople::postBuild()
 	mRecentAddBtn = getChild<LLUICtrl>("recent_add_friend_btn");
 	mRecentGearBtn = getChild<LLUICtrl>("recent_gear_btn");
 	mBlockedGearBtn = getChild<LLUICtrl>("blocked_gear_btn");
-	mGroupMinusBtn = getChild<LLUICtrl>("minus_btn");
+	//BD
+	//mGroupMinusBtn = getChild<LLUICtrl>("minus_btn");
 
 	mTabContainer = getChild<LLTabContainer>("tabs");
 	mTabContainer->setCommitCallback(boost::bind(&LLPanelPeople::onTabSelected, this, _2));
@@ -1337,7 +1338,7 @@ bool LLPanelPeople::isItemsFreeOfFriends(const uuid_vec_t& uuids)
 void LLPanelPeople::onAddFriendWizButtonClicked()
 {
     LLPanel* cur_panel = mTabContainer->getCurrentPanel();
-    LLView * button = cur_panel->findChild<LLButton>("friends_add_btn", TRUE);
+    LLView * button = cur_panel->findChild<LLButton>("add_friend_btn", TRUE);
 
 	// Show add friend wizard.
     LLFloater* root_floater = gFloaterView->getParentFloater(this);

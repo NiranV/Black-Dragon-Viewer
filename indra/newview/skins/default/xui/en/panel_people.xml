@@ -380,7 +380,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
                  left_pad="1"
-                 name="friends_add_btn"
+                 name="add_friend_btn"
                  tool_tip="Offer friendship to a resident"
                  top_delta="0"
                  width="31">

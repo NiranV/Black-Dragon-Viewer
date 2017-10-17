@@ -101,7 +101,8 @@ void LLToolGrabBase::handleSelect()
 	if(gFloaterTools)
 	{
 		// viewer can crash during startup if we don't check.
-		gFloaterTools->setStatusText("grab");
+		//BD
+		//gFloaterTools->setStatusText("grab");
 		// in case we start from tools floater, we count any selection as valid
 		mValidSelection = gFloaterTools->getVisible();
 	}
