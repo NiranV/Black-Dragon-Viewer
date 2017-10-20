@@ -994,7 +994,7 @@ void LLPanelPeople::updateButtons()
 		{
 			selected_id = mGroupList->getSelectedUUID();
 		}
-		mGroupMinusBtn->setEnabled(item_selected && selected_id.notNull()); // a real group selected
+		//mGroupMinusBtn->setEnabled(item_selected && selected_id.notNull()); // a real group selected
 
 		U32 groups_count = gAgent.mGroups.size();
 		U32 groups_ramaining = gMaxAgentGroups > groups_count ? gMaxAgentGroups - groups_count : 0;
