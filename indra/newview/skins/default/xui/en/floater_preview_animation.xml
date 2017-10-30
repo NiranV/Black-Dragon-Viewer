@@ -3,7 +3,6 @@
  legacy_header_height="18"
  height="94"
  layout="topleft"
- background_color="FloaterDefaultBackgroundColor"
  name="preview_anim"
  width="283">
     <floater.string
