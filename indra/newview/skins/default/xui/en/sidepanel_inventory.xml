@@ -35,18 +35,19 @@ width="320">
  name="sidepanel_inventory_panel"
  top="0"
  label=""
- height="570"
+ height="590"
  visible="true"
- width="317">
+ width="320">
   <layout_stack
   follows="left|right|top|bottom"
   layout="topleft"
+		border_size="0"
   left="0"
   top="0"
   orientation="vertical"
   name="inventory_layout_stack"
-  height="546"
-  width="317">
+  height="563"
+  width="320">
    <layout_panel
    name="main_inventory_layout_panel"
    layout="topleft"
@@ -65,7 +66,7 @@ width="320">
     top="0"
     label=""
     height="300"
-    width="330" />
+    width="330"/>
    </layout_panel>
    <layout_panel
    width="330"
@@ -74,23 +75,25 @@ width="320">
    user_resize="true"
    follows="left|right|top"
    name="inbox_layout_panel"
-   visible="true"
-   min_dim="25"
+   visible="false"
+			min_dim="0"
    expanded_min_dim="90"
    height="220">
     <panel
     follows="all"
     layout="topleft"
-    left="0"
+    left="9"
+				background_visible="true"
+				bg_alpha_image="Panel_Background"
     name="marketplace_inbox"
     class="panel_marketplace_inbox"
     top="0"
     label=""
     height="220"
-    width="330">
-     <string name="InboxLabelWithArg">[NUM] Received items</string>
-     <string name="InboxLabelNoArg">No Received items</string>
-	 <icon
+    width="313">
+     <string name="InboxLabelWithArg">[NUM]</string>
+     <string name="InboxLabelNoArg">---</string>
+	 <!--<icon
 	  follows="all"
 	  height="220"
 	  image_name="Panel_Background"
@@ -100,31 +103,13 @@ width="320">
 	  visible="true"
 	  width="313"
 	  top="0"
-	  bottom="-1"
-	  left="9"/>
-     <text
-     type="string"
-     length="1"
-     font.style="BOLD"
-     text_color="BeaconColor"
-     follows="right|top"
-     layout="topleft"
-     height="13"
-     top="4"
-     right="-20"
-     name="inbox_fresh_new_count"
-     font="SansSerifMedium"
-     halign="right"
-     top_pad="0"
-     width="300">
-     [NUM] new
-     </text>
+	  left="9"/>-->
       <panel
       follows="all"
-      left="8"
+      left="0"
       bottom="216"
       width="313"
-      top="19"
+      top="0"
       background_visible="false"
       tool_tip="Drag and drop items to your inventory to use them">
        <text
@@ -132,18 +117,18 @@ width="320">
        type="string"
        follows="all"
        layout="topleft"
-       top="5"
-       left_delta="0"
-	   h_pad="5"
-	   v_pad="4"
+       top="1"
+       left_delta="-1"
+	   h_pad="10"
+				v_pad="6"
        width="313"
-       height="193"
+       height="217"
        wrap="true"
-       halign="center">
+       halign="left">
        Purchases from the marketplace will be delivered here.
        </text>
       </panel>
-	  <button
+	  <!--<button
      control_name="InventoryInboxToggleState"
      label="Received items"
      font="SansSerifMedium"
@@ -154,70 +139,70 @@ width="320">
      image_overlay="Command_Marketplace_Icon"
      image_selected="Toolbar_Middle_Selected"
      image_unselected="Toolbar_Middle_Off"
-     image_overlay_alignment="left"
+     image_overlay_alignment="right"
         imgoverlay_label_space="10"
      handle_right_mouse="false"
+					image_overay_color="1 1 1 0.5"
      halign="left"
-     image_bottom_pad="3"
+     image_bottom_pad="2"
      follows="top|left|right"
      is_toggle="true"
      tab_stop="false"
      pad_left="7"
      top="2"
-     left="11" />
+     left="11" />-->
      </panel>
     </layout_panel>
   </layout_stack>
   <text
-   follows="right|bottom"
+   follows="right|top"
    height="17"
-   layout="bottomleft"
+   layout="topleft"
    halign="right"
-   right="-34"
+   right="-30"
    word_wrap="false"
    name="ItemcountText"
-   font="SansSerifSmall"
-   font.style="BOLD"
-   text_color="White_50"
-   bottom="0"
+			font.shadow="Soft" 
+   top="3"
    width="100">
        ---
    </text>
    <icon 
    scale_image="true"
-   follows="right|bottom"
+   follows="right|top"
    layout="topleft"
    color="1 1 1 0.7"
-   height="18"
+   height="14"
    image_name="Command_PF_Characters_Icon"
    right="-12"
-   top_delta="-3"
-   width="18" />
-   <icon 
+   top_delta="-1"
+   width="14" />
+   <text
+			follows="right|top"
+   height="17"
+			visible="false"
+   layout="topleft"
+   halign="right"
+   right="-113"
+   word_wrap="false"
+			font.shadow="Soft" 
+   top="3"
+   width="100"
+   tool_tip="Click to refresh your L$ balance"
+   value="--- L$" 
+   name="balance"/>
+			<icon 
    scale_image="true"
-   follows="left|bottom"
+			visible="false"
+   follows="right|top"
    layout="topleft"
    color="1 1 1 1"
-   height="18"
+   height="14"
    image_name="Balance"
-   left="13"
-   top_delta="0"
-   width="18" />
-   <text
-   follows="left|bottom"
-   height="17"
-   layout="topleft"
-   halign="left"
-   left_pad="5"
-   word_wrap="false"
-   tool_tip="Click to refresh your L$ balance"
-   value="? L$" 
-   name="balance"
-   font="SansSerifSmall"
-   font.style="BOLD"
-   text_color="White_50"
-   top_delta="3"
-   width="100"/>
+			name="balance_icon"
+   right="-96"
+   top_delta="-1"
+   width="14" />
  </panel>
  <panel
  follows="all"

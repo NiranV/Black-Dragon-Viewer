@@ -56,6 +56,9 @@
 #include "llfolderview.h"
 #include "llradiogroup.h"
 
+//BD
+#include "llpanelmarketplaceinboxinventory.h"
+
 const std::string FILTERS_FILENAME("filters.xml");
 
 static LLPanelInjector<LLPanelMainInventory> t_inventory("panel_main_inventory");
@@ -101,10 +104,14 @@ private:
 
 LLPanelMainInventory::LLPanelMainInventory(const LLPanel::Params& p)
 	: LLPanel(p),
-	  mActivePanel(NULL),
-	  mSavedFolderState(NULL),
-	  mFilterText(""),
-	  mNeedUploadCost(true)
+	mActivePanel(NULL),
+	mSavedFolderState(NULL),
+	mFilterText(""),
+	mNeedUploadCost(true),
+	//BD
+	mFreshCountCtrl(NULL),
+	mInboxButton(NULL),
+	mInventoryInboxPanel(NULL)
 {
 	// Menu Callbacks (non contex menus)
 	mCommitCallbackRegistrar.add("Inventory.DoToSelected", boost::bind(&LLPanelMainInventory::doToSelected, this, _2));
@@ -115,6 +122,14 @@ LLPanelMainInventory::LLPanelMainInventory(const LLPanel::Params& p)
 	mCommitCallbackRegistrar.add("Inventory.ShowFilters", boost::bind(&LLPanelMainInventory::toggleFindOptions, this));
 	mCommitCallbackRegistrar.add("Inventory.ResetFilters", boost::bind(&LLPanelMainInventory::resetFilters, this));
 	mCommitCallbackRegistrar.add("Inventory.Share",  boost::bind(&LLAvatarActions::shareWithAvatars, this));
+	mCommitCallbackRegistrar.add("Inventory.SortObjects", boost::bind(&LLPanelMainInventory::setSortObjects, this));
+	mCommitCallbackRegistrar.add("Inventory.SortFolders", boost::bind(&LLPanelMainInventory::setSortFoldersByName, this));
+	mCommitCallbackRegistrar.add("Inventory.SystemToTop", boost::bind(&LLPanelMainInventory::setSortSystemOnTop, this));
+
+	//BD
+	mCommitCallbackRegistrar.add("Inventory.Custom.Action", boost::bind(&LLPanelMainInventory::onCustomAction, this, _2));
+	mEnableCallbackRegistrar.add("Inventory.Check", boost::bind(&LLPanelMainInventory::isActionChecked, this, _2));
+	mEnableCallbackRegistrar.add("Inventory.Enable", boost::bind(&LLPanelMainInventory::isActionEnabled, this, _2));
 
 	mSavedFolderState = new LLSaveFolderState();
 	mSavedFolderState->setApply(FALSE);
@@ -180,9 +195,9 @@ BOOL LLPanelMainInventory::postBuild()
 	}
 
 	//BD
-	getChild<LLButton>("sort_by_date")->setCommitCallback(boost::bind(&LLPanelMainInventory::setSortObjects, this));
-	getChild<LLButton>("sort_folders_by_name")->setCommitCallback(boost::bind(&LLPanelMainInventory::setSortFoldersByName, this));
-	getChild<LLButton>("sys_folders_on_top")->setCommitCallback(boost::bind(&LLPanelMainInventory::setSortSystemOnTop, this));
+	mFreshCountCtrl = getChild<LLTextBox>("inbox_fresh_new_count");
+	mInboxButton = getChild<LLButton>("inbox_btn");
+	mInboxBtnLayout = getChild<LLUICtrl>("inbox_btn_panel");
 
 	mFilterEditor = getChild<LLFilterEditor>("inventory search editor");
 	if (mFilterEditor)
@@ -337,7 +352,14 @@ void LLPanelMainInventory::setSortSystemOnTop()
 		sort_order_mask |= LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP;
 	}
 	getActivePanel()->setSortOrder(sort_order_mask);
-	gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
+	if ("Recent Items" == getActivePanel()->getName())
+	{
+		gSavedSettings.setU32("RecentItemsSortOrder", sort_order_mask);
+	}
+	else
+	{
+		gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
+	}
 }
 
 void LLPanelMainInventory::setSortFoldersByName()
@@ -352,13 +374,20 @@ void LLPanelMainInventory::setSortFoldersByName()
 		sort_order_mask |= LLInventoryFilter::SO_FOLDERS_BY_NAME;
 	}
 	getActivePanel()->setSortOrder(sort_order_mask);
-	gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
+	if ("Recent Items" == getActivePanel()->getName())
+	{
+		gSavedSettings.setU32("RecentItemsSortOrder", sort_order_mask);
+	}
+	else
+	{
+		gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
+	}
 }
 
 void LLPanelMainInventory::setSortObjects()
 {
 	U32 sort_order_mask = getActivePanel()->getSortOrder();
-	if (sort_order_mask & gSavedSettings.getBOOL("InventorySortObjectsByDate"))
+	if (sort_order_mask & LLInventoryFilter::SO_DATE)
 	{
 		sort_order_mask &= ~LLInventoryFilter::SO_DATE;
 	}
@@ -555,6 +584,37 @@ void LLPanelMainInventory::setFocusFilterEditor()
 // virtual
 void LLPanelMainInventory::draw()
 {
+	//BD
+	U32 item_count = getTotalItemCount();
+	llassert(mFreshCountCtrl != NULL);
+	if (item_count > 0)
+	{
+		mInboxBtnLayout->setVisible(TRUE);
+		std::string item_count_str = llformat("%d", item_count);
+
+		LLStringUtil::format_map_t args;
+		args["[NUM]"] = item_count_str;
+		mInboxButton->setLabel(getString("InboxLabelWithArg", args));
+
+		// set green text to fresh item count
+		U32 fresh_item_count = getFreshItemCount();
+
+		if (fresh_item_count > 0)
+		{
+			mFreshCountCtrl->setText(getString("InboxFreshArg"));
+			mFreshCountCtrl->setTextArg("[NUM_NEW]", llformat("%d", fresh_item_count));
+		}
+		else
+		{
+			mFreshCountCtrl->setText(getString("InboxLabelNoArg"));
+		}
+	}
+	else
+	{
+		mInboxButton->setLabel(getString("InboxLabelNoArg"));
+		mInboxBtnLayout->setVisible(FALSE);
+	}
+
 	if (mActivePanel && mFilterEditor)
 	{
 		mFilterEditor->setText(mFilterSubString);
@@ -621,6 +681,105 @@ void LLPanelMainInventory::onSelectionChange(LLInventoryPanel *panel, const std:
 {
 	updateListCommands();
 	panel->onSelectionChange(items, user_action);
+}
+
+LLInventoryPanel* LLPanelMainInventory::setupInventoryPanel()
+{
+	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+	LLView* inbox_inventory_placeholder = sidepanel_inventory->getChild<LLView>("inbox_inventory_placeholder");
+	LLView* inbox_inventory_parent = inbox_inventory_placeholder->getParent();
+
+	mInventoryInboxPanel =
+		LLUICtrlFactory::createFromFile<LLInventoryPanel>("panel_inbox_inventory.xml",
+		inbox_inventory_parent,
+		LLInventoryPanel::child_registry_t::instance());
+
+	llassert(mInventoryInboxPanel);
+
+	// Reshape the inventory to the proper size
+	LLRect inventory_placeholder_rect = inbox_inventory_placeholder->getRect();
+	mInventoryInboxPanel->setShape(inventory_placeholder_rect);
+
+	// Set the sort order newest to oldest
+	mInventoryInboxPanel->getFolderViewModel()->setSorter(LLInventoryFilter::SO_DATE);
+	mInventoryInboxPanel->getFilter().markDefault();
+
+	// Set selection callback for proper update of inventory status buttons
+	//mInventoryInboxPanel->setSelectCallback(boost::bind(&LLPanelMarketplaceInbox::onSelectionChange, this));
+
+	// Set up the note to display when the inbox is empty
+	mInventoryInboxPanel->getFilter().setEmptyLookupMessage("InventoryInboxNoItems");
+
+	// Hide the placeholder text
+	inbox_inventory_placeholder->setVisible(FALSE);
+
+	return mInventoryInboxPanel;
+}
+
+const U32 LLPanelMainInventory::getFreshItemCount()
+{
+	//
+	// NOTE: When turning this on, be sure to test the no inbox/outbox case because this code probably
+	//       will return "2" for the Inventory and LIBRARY top-levels when that happens.
+	//
+
+	U32 fresh_item_count = 0;
+
+	if (mInventoryInboxPanel)
+	{
+		LLFolderViewFolder * inbox_folder = mInventoryInboxPanel->getRootFolder();
+
+		if (inbox_folder)
+		{
+			LLFolderViewFolder::folders_t::const_iterator folders_it = inbox_folder->getFoldersBegin();
+			LLFolderViewFolder::folders_t::const_iterator folders_end = inbox_folder->getFoldersEnd();
+
+			for (; folders_it != folders_end; ++folders_it)
+			{
+				const LLFolderViewFolder * folder_view = *folders_it;
+				const LLInboxFolderViewFolder * inbox_folder_view = dynamic_cast<const LLInboxFolderViewFolder*>(folder_view);
+
+				if (inbox_folder_view && inbox_folder_view->isFresh())
+				{
+					fresh_item_count++;
+				}
+			}
+
+			LLFolderViewFolder::items_t::const_iterator items_it = inbox_folder->getItemsBegin();
+			LLFolderViewFolder::items_t::const_iterator items_end = inbox_folder->getItemsEnd();
+
+			for (; items_it != items_end; ++items_it)
+			{
+				const LLFolderViewItem * item_view = *items_it;
+				const LLInboxFolderViewItem * inbox_item_view = dynamic_cast<const LLInboxFolderViewItem*>(item_view);
+
+				if (inbox_item_view && inbox_item_view->isFresh())
+				{
+					fresh_item_count++;
+				}
+			}
+		}
+	}
+
+	return fresh_item_count;
+}
+
+const U32 LLPanelMainInventory::getTotalItemCount()
+{
+	U32 item_count = 0;
+
+	if (mInventoryInboxPanel)
+	{
+		const LLFolderViewFolder * inbox_folder = mInventoryInboxPanel->getRootFolder();
+
+		if (inbox_folder)
+		{
+			item_count += inbox_folder->getFoldersCount();
+			item_count += inbox_folder->getItemsCount();
+		}
+	}
+
+	return item_count;
 }
 
 ///----------------------------------------------------------------------------
@@ -931,10 +1090,6 @@ void LLPanelMainInventory::initListCommandsHandlers()
 			,	_5 // EDragAndDropType cargo_type
 			,	_7 // EAcceptance* accept
 			));
-
-	mCommitCallbackRegistrar.add("Inventory.GearDefault.Custom.Action", boost::bind(&LLPanelMainInventory::onCustomAction, this, _2));
-	mEnableCallbackRegistrar.add("Inventory.GearDefault.Check", boost::bind(&LLPanelMainInventory::isActionChecked, this, _2));
-	mEnableCallbackRegistrar.add("Inventory.GearDefault.Enable", boost::bind(&LLPanelMainInventory::isActionEnabled, this, _2));
 
 	// Update the trash button when selected item(s) get worn or taken off.
 	LLOutfitObserver::instance().addCOFChangedCallback(boost::bind(&LLPanelMainInventory::updateListCommands, this));

@@ -188,12 +188,8 @@ BOOL LLSidepanelInventory::postBuild()
 		//BD
 		mCounterCtrl = getChild<LLUICtrl>("ItemcountText");
 
-		getChild<LLUICtrl>("buyL")->setCommitCallback(
-		boost::bind(&LLSidepanelInventory::onClickBuyCurrency, this));
-
 		mBoxBalance = getChild<LLTextBox>("balance");
 		mBoxBalance->setClickedCallback( &LLSidepanelInventory::onClickBalance, this );
-
 
 		mInfoBtn = mInventoryPanel->getChild<LLButton>("info_btn");
 		mInfoBtn->setClickedCallback(boost::bind(&LLSidepanelInventory::onInfoButtonClicked, this));
@@ -374,8 +370,8 @@ void LLSidepanelInventory::observeInboxModifications(const LLUUID& inboxID)
 	// Set up the inbox inventory view
 	//
 
-	LLPanelMarketplaceInbox * inbox = getChild<LLPanelMarketplaceInbox>(MARKETPLACE_INBOX_PANEL);
-    LLInventoryPanel* inventory_panel = inbox->setupInventoryPanel();
+	LLPanelMainInventory* main_inventory = getChild<LLPanelMainInventory>("panel_main_inventory");
+	LLInventoryPanel* inventory_panel = main_inventory->setupInventoryPanel();
 	mInventoryPanelInbox = inventory_panel->getInventoryPanelHandle();
 }
 
@@ -842,6 +838,8 @@ void LLSidepanelInventory::setBalance(S32 balance)
 	string_args["[AMT]"] = llformat("%s", money_str.c_str());
 	std::string label_str = getString("buycurrencylabel", string_args);
 	mBoxBalance->setValue(label_str);
+	mBoxBalance->setVisible(TRUE);
+	getChild<LLUICtrl>("balance_icon")->setVisible(TRUE);
 
 	if (mBalance && (fabs((F32)(mBalance - balance)) > gSavedSettings.getF32("UISndMoneyChangeThreshold")))
 	{

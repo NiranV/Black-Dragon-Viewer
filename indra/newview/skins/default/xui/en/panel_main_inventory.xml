@@ -9,6 +9,18 @@
  min_width="250"
  name="main inventory panel"
  width="297">
+	<panel.string
+				name="InboxFreshArg">
+				[NUM_NEW]
+				</panel.string>
+	<panel.string
+				name="InboxLabelWithArg">
+				[NUM]
+				</panel.string>
+			<panel.string
+				name="InboxLabelNoArg">
+				---
+				</panel.string>
   <icon
   follows="all"
   height="300"
@@ -20,7 +32,7 @@
   visible="true"
   width="280"
   top="37"
-  bottom="-6"
+  bottom="-4"
   left="9"/>
     <menu_bar
    height="18"
@@ -294,6 +306,43 @@
     </menu_item_call>
     <menu_item_separator
      layout="topleft" />
+				<menu_item_call
+     label="Copy"
+     layout="topleft"
+     name="Copy"
+     visible="true">
+     <on_click
+         function="Inventory.DoToSelected"
+         	parameter="copy" />
+     <!--<on_enable
+         function="Inventory.Enable"
+         parameter="copy" />-->
+    </menu_item_call>
+				<menu_item_call
+     label="Paste"
+     layout="topleft"
+     name="Paste"
+     visible="true">
+     <on_click
+         function="Inventory.DoToSelected"
+         	parameter="paste" />
+     <!--<on_enable
+         function="Inventory.Enable"
+         parameter="paste" />-->
+    </menu_item_call>
+				<menu_item_call
+     label="Share"
+     layout="topleft"
+     name="Share"
+     visible="true">
+     <on_click
+         function="Inventory.Share" />
+     <on_enable
+         function="Inventory.Enable"
+         parameter="share" />
+    </menu_item_call>
+				<menu_item_separator
+     layout="topleft" />
     <menu_item_call 
          label="Save Texture As"
          layout="topleft"
@@ -305,17 +354,6 @@
 		function="Inventory.DoToSelected"
 		parameter="save_as" />
         </menu_item_call>
-    <menu_item_call
-     label="Share"
-     layout="topleft"
-     name="Share"
-     visible="true">
-     <on_click
-         function="Inventory.Share" />
-     <on_enable
-         function="Inventory.GearDefault.Enable"
-         parameter="share" />
-    </menu_item_call>
     <menu_item_call 
          label="Find Original"
          layout="topleft"
@@ -334,6 +372,38 @@
      layout="topleft"
      name="Filters"
      tear_off="false">
+										<menu_item_check
+										label="Sort Objects by Date"
+										layout="topleft"
+										name="InventorySortObjectsByDate">
+										<menu_item_check.on_click
+										function="Inventory.SortObjects"/>
+										<menu_item_check.on_check
+										function="Inventory.Check"
+										parameter="sort_by_recent" />
+										</menu_item_check>
+										<menu_item_check
+										label="Sort System Folders to Top"
+										layout="topleft"
+										name="InventorySystemFoldersToTop">
+										<menu_item_check.on_click
+										function="Inventory.SystemToTop"/>
+										<menu_item_check.on_check
+										function="Inventory.Check"
+										parameter="sort_system_folders_to_top" />
+										</menu_item_check>
+										<menu_item_check
+										label="Sort Folders by Name"
+										layout="topleft"
+										name="InventorySortFoldersByName">
+										<menu_item_check.on_click
+										function="Inventory.SortFolders"/>
+										<menu_item_check.on_check
+										function="Inventory.Check"
+										parameter="sort_folders_by_name" />
+            </menu_item_check>
+					<menu_item_separator
+     layout="topleft" />
     <menu_item_call
      label="Show Filters"
      layout="topleft"
@@ -386,91 +456,19 @@
          parameter="empty_trash" />
     </menu_item_call>
     </menu>
-    </menu_bar>
-  <icon 
-   scale_image="true"
-   follows="right|top"
-   layout="topleft"
-   color="1 1 1 1"
-   height="16"
-   image_name="Objects_By_Date_Off"
-   right="-110"
-   top_delta="0"
-   width="16" />
-   <button
-   height="16"
-   follows="top|right"
-   is_toggle="true"
-			control_name="InventorySortObjectsByDate"
-   image_selected="Checkbox_On"
-   image_unselected="Checkbox_Off"
-   tool_tip="Sort your Inventory Objects by Date"
-   label=""
-   layout="topleft"
-   right="-94"
-   name="sort_by_date"
-   top_delta="0"
-   width="16"/>
-   <icon 
-   scale_image="true"
-   layout="topleft"
-   follows="right|top"
-   color="1 1 1 1"
-   height="16"
-   image_name="Folders_By_Name_Off"
-   right="-70"
-   top_delta="-1"
-   width="16" />
-   <button
-   height="16"
-   follows="top|right"
-   control_name="InventorySortFoldersByName"
-   image_selected="Checkbox_On"
-   image_unselected="Checkbox_Off"
-   is_toggle="true"
-   tool_tip="Sort your Inventory folders by Name"
-   label=""
-   layout="topleft"
-   right="-54"
-   name="sort_folders_by_name"
-   top_delta="1"
-   width="16"/>
-   <icon 
-   scale_image="true"
-   layout="topleft"
-   follows="right|top"
-   color="1 1 1 1"
-   height="16"
-   image_name="Sys_Folders_To_Top_Off"
-   right="-30"
-   top_delta="-1"
-   width="16"/>
-   <button
-   height="16"
-   follows="top|right"
-   control_name="InventorySystemFoldersToTop"
-   image_selected="Checkbox_On"
-   image_unselected="Checkbox_Off"
-   tool_tip="Put your System folders always at the top"
-   label=""
-   is_toggle="true"
-   layout="topleft"
-   right="-14"
-   name="sys_folders_on_top"
-   top_delta="1"
-   width="16"/>
+				</menu_bar>
   <tab_container
      background_visible="false"
      follows="all"
      halign="center"
-     height="343"
+     height="345"
      layout="topleft"
      left="7"
      name="inventory filter tabs"
      tab_height="20"
      tab_position="top"
-     tab_min_width="146"
-     top_pad="2"
+     tab_min_width="147"
+     top_pad="0"
      width="282">
     <inventory_panel
      bg_opaque_image="Panel_Background"
@@ -529,36 +527,7 @@
    name="bottom_panel"
    width="277">
       <layout_panel
-       background_visible="true"
-       bg_opaque_color="White_02"
-       bg_alpha_color="White_02"
-       auto_resize="false"
-       height="25"
-       layout="topleft"
-       name="close_folders_btn_panel"
-       width="32">
-          <button
-           follows="bottom|left"
-           height="25"
-           image_hover_unselected="Toolbar_Middle_Over"
-           image_overlay="CloseFolders_Off"
-           image_selected="Toolbar_Middle_Selected"
-           image_unselected="Toolbar_Middle_Off"
-           layout="topleft"
-           left="1"
-           name="close_folders_btn"
-           tool_tip="Closes all folders"
-           top="0"
-           width="31">
-        	<button.commit_callback
-         	function="Inventory.CloseAllFolders"
-         	parameter="close_folders" />
-	   </button>
-      </layout_panel>
-      <layout_panel
-       background_visible="true"
-       bg_opaque_color="White_02"
-       bg_alpha_color="White_02"
+       background_visible="false"
        auto_resize="true"
        height="25"
        layout="topleft"
@@ -587,64 +556,50 @@
 			background_image_disabled="TextField_Disabled"
 			background_image_focused="TextField_Active"/>
       </layout_panel>
-      <layout_panel
-       background_visible="true"
-       bg_opaque_color="White_02"
-       bg_alpha_color="White_02"
+						<layout_panel
+       background_visible="false"
        auto_resize="false"
        height="25"
        layout="topleft"
-       name="copy_btn_panel"
-       width="32">
-          <button
-           follows="bottom|left"
-           height="25"
-           image_hover_unselected="Toolbar_Middle_Over"
-           image_overlay="CopyItem_Off"
-           image_selected="Toolbar_Middle_Selected"
-           image_unselected="Toolbar_Middle_Off"
-           layout="topleft"
-           left="1"
-           name="copy_btn"
-           tool_tip="Copy selected Objects or Folders"
-           top="0"
-           width="31">
-        	<button.commit_callback
-         	function="Inventory.DoToSelected"
-         	parameter="copy" />
-	   </button>
-      </layout_panel>
+       name="inbox_btn_panel"
+       width="51">
+						<button
+     label="---"
+     name="inbox_btn"
+     height="25"
+     width="50"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_overlay="Command_Marketplace_Icon"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
+     image_overlay_alignment="right"
+     imgoverlay_label_space="5"
+					pad_bottom="6"
+     handle_right_mouse="false"
+     halign="right"
+     image_bottom_pad="2"
+     follows="bottom|left"
+     is_toggle="true"
+     tab_stop="false"
+     left="1"
+     top="0" />
+				<text
+     type="string"
+     length="1"
+     text_color="BeaconColor"
+     follows="left|bottom"
+     layout="topleft"
+     height="13"
+     top="11"
+     left="0"
+     name="inbox_fresh_new_count"
+     halign="right"
+     width="24">
+     [NUM_NEW]
+     </text>
+						</layout_panel>
       <layout_panel
-       background_visible="true"
-       bg_opaque_color="White_02"
-       bg_alpha_color="White_02"
-       auto_resize="false"
-       height="25"
-       layout="topleft"
-       name="paste_btn_panel"
-       width="32">
-          <button
-           follows="bottom|left"
-           height="25"
-           image_hover_unselected="Toolbar_Middle_Over"
-           image_overlay="PasteItem_Off"
-           image_selected="Toolbar_Middle_Selected"
-           image_unselected="Toolbar_Middle_Off"
-           layout="topleft"
-           left="1"
-           name="paste_btn"
-           tool_tip="Paste copied Objects or Folders to selected Destination"
-           top="0"
-           width="31">
-        	<button.commit_callback
-         	function="Inventory.DoToSelected"
-         	parameter="paste" />
-	   </button>
-      </layout_panel>
-      <layout_panel
-       background_visible="true"
-       bg_opaque_color="White_02"
-       bg_alpha_color="White_02"
+       background_visible="false"
        auto_resize="false"
        height="25"
        layout="topleft"

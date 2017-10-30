@@ -77,6 +77,9 @@ public:
 	LLInventoryPanel* getActivePanel() { return mActivePanel; }
 	const LLInventoryPanel* getActivePanel() const { return mActivePanel; }
 
+	//BD
+	LLInventoryPanel* setupInventoryPanel();
+
 	const std::string& getFilterText() const { return mFilterText; }
 	
 	void setSelectCallback(const LLFolderView::signal_t::slot_type& cb);
@@ -107,6 +110,10 @@ protected:
 
 	const std::string getFilterSubString();
 	void setFilterSubString(const std::string& string);
+
+	//BD
+	const U32 getFreshItemCount();
+	const U32 getTotalItemCount();
 	
 	// menu callbacks
 	void doToSelected(const LLSD& userdata);
@@ -135,6 +142,12 @@ private:
 	LLSaveFolderState*			mSavedFolderState;
 	std::string					mFilterText;
 	std::string					mFilterSubString;
+
+	//BD
+	LLTextBox*					mFreshCountCtrl;
+	LLButton*					mInboxButton;
+	LLInventoryPanel*			mInventoryInboxPanel;
+	LLUICtrl*					mInboxBtnLayout;
 
 
 	//////////////////////////////////////////////////////////////////////////////////
