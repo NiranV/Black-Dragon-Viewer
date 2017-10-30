@@ -413,6 +413,10 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 								row["columns"][4]["value"] = motion->getBlendType();
 								row["columns"][5]["column"] = "loop";
 								row["columns"][5]["value"] = motion->getLoop();
+								row["columns"][6]["column"] = "easein";
+								row["columns"][6]["value"] = motion->getEaseInDuration();
+								row["columns"][7]["column"] = "easeout";
+								row["columns"][7]["value"] = motion->getEaseOutDuration();
 								if (motion->getName().empty() &&
 									motion->getDuration() > 0.0f)
 								{

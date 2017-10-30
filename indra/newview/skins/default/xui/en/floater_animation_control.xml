@@ -239,26 +239,34 @@ width="494">
     <scroll_list.columns
      label="Motion Owner"
      name="name"
-   relative_width="0.40"  />
+   relative_width="0.28"  />
     <scroll_list.columns
      label="UUID"
      name="uuid"
-   relative_width="0.10"  />
+   relative_width="0.08"  />
     <scroll_list.columns
      label="Priority"
      name="priority"
    relative_width="0.10"  />
-				<scroll_list.columns
+	<scroll_list.columns
      label="Duration"
      name="duration"
-   relative_width="0.15"  />
-				<scroll_list.columns
-     label="Blend Type"
+   relative_width="0.12"  />
+	<scroll_list.columns
+     label="Blend"
      name="blend type"
-   relative_width="0.15"  />
-				<scroll_list.columns
+   relative_width="0.09"  />
+	<scroll_list.columns
      label="Loop"
      name="loop"
+   relative_width="0.08"  />
+	<scroll_list.columns
+     label="EaseIn"
+     name="easein"
+   relative_width="0.10"  />
+	<scroll_list.columns
+     label="EaseOut"
+     name="easeout"
    relative_width="0.10"  />
 </scroll_list>
 	<button
