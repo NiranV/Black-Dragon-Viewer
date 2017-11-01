@@ -969,7 +969,6 @@ void BDFloaterAnimations::onJointRefresh()
 		{
 			LLVector3 vec3;
 			LLSD row;
-			std::string format = llformat("%%.%df", 3);
 
 			//BD - When posing get the target values otherwise we end up getting the in-interpolation values.
 			if (gAgent.getPosing())
@@ -983,11 +982,11 @@ void BDFloaterAnimations::onJointRefresh()
 			row["columns"][0]["column"] = "joint";
 			row["columns"][0]["value"] = joint->getName();
 			row["columns"][1]["column"] = "x";
-			row["columns"][1]["value"] = llformat(format.c_str(), vec3.mV[VX]);
+			row["columns"][1]["value"] = ll_round(vec3.mV[VX], 0.001f);
 			row["columns"][2]["column"] = "y";
-			row["columns"][2]["value"] = llformat(format.c_str(), vec3.mV[VY]);
+			row["columns"][2]["value"] = ll_round(vec3.mV[VY], 0.001f);
 			row["columns"][3]["column"] = "z";
-			row["columns"][3]["value"] = llformat(format.c_str(), vec3.mV[VZ]);
+			row["columns"][3]["value"] = ll_round(vec3.mV[VZ], 0.001f);
 
 			//BD - Special case for mPelvis as it has position information too.
 			if (joint->getName() == "mPelvis")
@@ -1001,11 +1000,11 @@ void BDFloaterAnimations::onJointRefresh()
 					vec3 = joint->getPosition();
 				}
 				row["columns"][4]["column"] = "pos_x";
-				row["columns"][4]["value"] = llformat(format.c_str(), vec3.mV[VX]);
+				row["columns"][4]["value"] = ll_round(vec3.mV[VX], 0.001f);
 				row["columns"][5]["column"] = "pos_y";
-				row["columns"][5]["value"] = llformat(format.c_str(), vec3.mV[VY]);
+				row["columns"][5]["value"] = ll_round(vec3.mV[VY], 0.001f);
 				row["columns"][6]["column"] = "pos_z";
-				row["columns"][6]["value"] = llformat(format.c_str(), vec3.mV[VZ]);
+				row["columns"][6]["value"] = ll_round(vec3.mV[VZ], 0.001f);
 			}
 
 			LLScrollListItem* item = mJointsScroll->addElement(row);
@@ -1138,22 +1137,20 @@ void BDFloaterAnimations::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 		vec3.mV[VY] = column_5->getValue().asReal();
 		vec3.mV[VZ] = column_6->getValue().asReal();
 
-		//BD - Really?
-		std::string format = llformat("%%.%df", 3);
 		if (param.asString() == "x")
 		{
 			vec3.mV[VX] = val;
-			column_4->setValue(llformat(format.c_str(), vec3.mV[VX]));
+			column_4->setValue(ll_round(vec3.mV[VX], 0.001f));
 		}
 		else if (param.asString() == "y")
 		{
 			vec3.mV[VY] = val;
-			column_5->setValue(llformat(format.c_str(), vec3.mV[VY]));
+			column_5->setValue(ll_round(vec3.mV[VY], 0.001f));
 		}
 		else
 		{
 			vec3.mV[VZ] = val;
-			column_6->setValue(llformat(format.c_str(), vec3.mV[VZ]));
+			column_6->setValue(ll_round(vec3.mV[VZ], 0.001f));
 		}
 		llassert(!vec3.isFinite());
 		joint->setTargetPosition(vec3);
