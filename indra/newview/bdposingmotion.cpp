@@ -170,7 +170,6 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 							//BD - Can be used to do no interpolation too.
 							joint_pos = target_pos;
 							last_pos = joint_pos;
-							//LL_INFOS("Posing") << "Done with positions: (" << perc << ") " << last_pos << LL_ENDL;
 						}
 						else
 						{
@@ -220,7 +219,6 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 		&& (last_quat == joint_quat
 		&& (last_pos == joint_pos)))
 	{
-		//LL_INFOS("Posing") << "Stopped timer at " << mBlendTimer.getElapsedTimeF32() << LL_ENDL;
 		mInterpolationTimer.stop();
 	}
 
