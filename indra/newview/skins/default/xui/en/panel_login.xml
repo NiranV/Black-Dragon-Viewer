@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="8381"
+       height="8461"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,7 +163,7 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="1209"
+              height="1287"
               top="10"
               left="7"
               max_length="9999"
@@ -199,6 +199,8 @@ Added: Tooltips and improved existing tooltips in the 'RLVa' preferences tab.
 Added: Buttons for adding wait and repeat events directly to the Animator.
 Added: Tooltips to most buttons of the Animator.
 Added: Ability to change wait event times.
+Added: Missing group ban button in group 'Roles' panel.
+Added: Additional info display for EaseIn/Out duration of animations in the 'Motions' tab.
 Changed: More Icon changes and fixes.
 Changed: Improved shadow precision on distance, on high altitudes and eliminate almost all cases of shadows flickering on high altitudes.
 Changed: Version to 2.9.0 - Bit Dragon.
@@ -238,6 +240,8 @@ Changed: Disabled all german preferences panel translations for now.
 Changed: Moved the 'Animation Control' menu entry into 'My Useful Features' and renamed it to 'Pose/Animation Manipulator'.
 Changed: Consistency pass over some preferences tooltips.
 Changed: Moved estate management menu entries in right click menus to the avatar actions.
+Changed: Disabled memory limitations on AMD cards.
+Changed: Updated the login panel changelog with the latest bugfixes.
 Fixed: Compile and all Fmodex linking errors.
 Fixed: Viewer using Second Life icons instead of Black Dragon's.
 Fixed: Projector lights vanishing on distance.
@@ -256,6 +260,8 @@ Fixed: Posing motion being overriden by priority 4 animations, make the posing a
 Fixed: Some 'Change Selected' buttons not working properly in 'Keybindings' tab.
 Fixed: 'Keybindings' panel layout and alignment.
 Fixed: Notification embed option in RLVa tab not working.
+Fixed: A bunch of dummy warnings all over the place.
+Fixed: Longstanding issue with HUDs not being clickable through the top toolbar.
 Removed: Check for Updates button in About Black Dragon floater.
 Removed: Double default button in 'Notifications' preferences tab.
 Removed: Deprecated Enable 'FirstRLVGiveToRLV' Warning option.
