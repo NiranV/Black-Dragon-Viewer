@@ -42,12 +42,26 @@
      font="SansSerifSmall"
      height="14"
      layout="topleft"
-     left_pad="25"
+     left="25"
      name="group_name"
      top="5"
      use_ellipses="true"
      value="Unknown"
-     width="275" />
+     width="255" />
+   <button
+     follows="top|left"
+     height="16"
+     image_overlay="Web_Profile_Off"
+     image_pressed="transparent.j2c"
+    image_unselected="transparent.j2c"
+     layout="topleft"
+     left_pad="2"
+     name="profile_btn"
+     tab_stop="false"
+     visible="false"
+     tool_tip="View profile"
+     top="4"
+     width="16" />
     <button
      follows="top|left"
      height="18"
@@ -57,21 +71,6 @@
      name="info_btn"
      tool_tip="More info"
      tab_stop="false"
-     top="2"
-     width="18" />
-   <!--*TODO: Should only appear on rollover-->
-    <button
-     follows="top|left"
-     height="18"
-     image_overlay="Web_Profile_Off"
-     image_pressed="transparent.j2c"
-    image_unselected="transparent.j2c"
-     layout="topleft"
-     left="22"
-     name="profile_btn"
-     tab_stop="false"
-     visible="false"
-     tool_tip="View profile"
      top="2"
      width="18" />
 </panel>

@@ -31,7 +31,7 @@
        follows="left|top|right"
        image_name="Toolbar_Middle_Off"
        height="25"
-       width="167"
+       width="287"
        layout="topleft"
        left="2"
        top="0"/>
@@ -48,7 +48,7 @@
          name="blocked_filter_input"
          text_pad_left="10"
          top="1"
-         width="163" />
+         width="283" />
         <menu_button
          follows="right"
          height="25"
@@ -64,7 +64,7 @@
          tool_tip="Actions on selected person or object"
          top="0"
          width="31" />
-        <menu_button
+        <!--<menu_button
          follows="right"
          height="25"
          image_hover_unselected="Toolbar_Middle_Over"
@@ -106,6 +106,6 @@
          name="unblock_btn"
          tool_tip="Remove Resident or object from blocked list"
          top_delta="0"
-         width="31"/>
+         width="31"/>-->
     </panel>
 </panel>
