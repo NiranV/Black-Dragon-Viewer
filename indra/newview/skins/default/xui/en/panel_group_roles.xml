@@ -484,8 +484,8 @@ clicking on their names.
        image_hover_unselected="Toolbar_Middle_Over"
          image_selected="Toolbar_Middle_Selected"
          image_unselected="Toolbar_Middle_Off"
-       follows="top|left"
-       left_pad="3"
+       follows="top|right"
+       left_pad="1"
        name="member_ban"
        width="31" />
             <name_list
