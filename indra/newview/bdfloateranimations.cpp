@@ -29,6 +29,13 @@
 #include "llvoavatarself.h"
 #include "llsdserialize.h"
 #include "lldiriterator.h"
+#include "llfilepicker.h"
+#include "llnotificationsutil.h"
+#include "llbvhloader.h"
+#include "lldatapacker.h"
+#include "llvfile.h"
+#include "llassettype.h"
+#include "llkeyframemotion.h"
 
 // viewer includes
 #include "llfloaterpreference.h"
@@ -449,18 +456,93 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 						}
 					//}
 				}
-				else if (param.asString() == "Create")
+			}
+		}
+
+		//BD - Create a new motion from an anim file from disk.
+		//     This is essentially like having animation preview inworld on your avatar without
+		//     having to upload it. LocalBitmap, more like LocalMotion.
+		if (param.asString() == "Create")
+		{
+			//BD - Let us pick the file we want to preview with the filepicker.
+			LLFilePicker& picker = LLFilePicker::instance();
+			if (picker.getOpenFile(LLFilePicker::FFLOAD_ANIM))
+			{
+				std::string outfilename = picker.getFirstFile().c_str();
+				S32 file_size;
+				BOOL success = FALSE;
+				LLAPRFile infile;
+				LLKeyframeMotion* temp_motion = NULL;
+				LLAssetID mMotionID;
+				LLTransactionID	mTransactionID;
+
+				//BD - To make this work we'll first need a unique UUID for this animation.
+				mTransactionID.generate();
+				mMotionID = mTransactionID.makeAssetID(gAgent.getSecureSessionID());
+				temp_motion = (LLKeyframeMotion*)gAgentAvatarp->createMotion(mMotionID);
+
+				//BD - Find and open the file, we'll need to write it temporarily into the VFS pool.
+				infile.open(outfilename, LL_APR_RB, NULL, &file_size);
+				if (infile.getFileHandle())
 				{
-					LLUUID motion_id = getChild<LLUICtrl>("motion_uuid")->getValue().asUUID();
-					if (!motion_id.isNull())
+					U8 *anim_data;
+					S32 anim_file_size;
+
+					LLVFile file(gVFS, mMotionID, LLAssetType::AT_ANIMATION, LLVFile::WRITE);
+					file.setMaxSize(file_size);
+					const S32 buf_size = 65536;
+					U8 copy_buf[buf_size];
+					while ((file_size = infile.read(copy_buf, buf_size)))
 					{
-						LLSD row;
-						LLAvatarName av_name;
-						LLAvatarNameCache::get(gAgentID, &av_name);
-						row["columns"][0]["column"] = "name";
-						row["columns"][0]["value"] = av_name.getDisplayName();
-						row["columns"][1]["column"] = "uuid";
-						row["columns"][1]["value"] = motion_id.asString();
+						file.write(copy_buf, file_size);
+					}
+
+					//BD - Now that we wrote the temporary file, find it and use it to set the size
+					//     and buffer into which we will unpack the .anim file into.
+					LLVFile* anim_file = new LLVFile(gVFS, mMotionID, LLAssetType::AT_ANIMATION);
+					anim_file_size = anim_file->getSize();
+					anim_data = new U8[anim_file_size];
+					anim_file->read(anim_data, anim_file_size);
+
+					//BD - Cleanup everything we don't need anymore.
+					delete anim_file;
+					anim_file = NULL;
+
+					//BD - Use the datapacker now to actually deserialize and unpack the animation
+					//     into our temporary motion so we can use it after we added it into the list.
+					LLDataPackerBinaryBuffer dp(anim_data, anim_file_size);
+					success = temp_motion && temp_motion->deserialize(dp, true);
+
+					//BD - Cleanup the rest.
+					delete[]anim_data;
+				}
+
+				//BD - Now write an entry with all given information into our list so we can use it.
+				if (success)
+				{
+					LLUUID motion_id = temp_motion->getID();
+					LLSD row;
+					LLAvatarName av_name;
+					LLAvatarNameCache::get(gAgentID, &av_name);
+					row["columns"][0]["column"] = "name";
+					row["columns"][0]["value"] = av_name.getDisplayName();
+					row["columns"][1]["column"] = "uuid";
+					row["columns"][1]["value"] = motion_id.asString();
+					row["columns"][2]["column"] = "priority";
+					row["columns"][2]["value"] = temp_motion->getPriority();
+					row["columns"][3]["column"] = "duration";
+					row["columns"][3]["value"] = temp_motion->getDuration();
+					row["columns"][4]["column"] = "blend type";
+					row["columns"][4]["value"] = temp_motion->getBlendType();
+					row["columns"][5]["column"] = "loop";
+					row["columns"][5]["value"] = temp_motion->getLoop();
+					row["columns"][6]["column"] = "easein";
+					row["columns"][6]["value"] = temp_motion->getEaseInDuration();
+					row["columns"][7]["column"] = "easeout";
+					row["columns"][7]["value"] = temp_motion->getEaseOutDuration();
+					if (temp_motion->getName().empty() &&
+						temp_motion->getDuration() > 0.0f)
+					{
 						mMotionScroll->addElement(row);
 					}
 				}

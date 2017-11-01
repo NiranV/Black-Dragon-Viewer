@@ -300,12 +300,28 @@ width="494">
    <button.commit_callback
    function="Motion.Command"
    parameter="Load"/>
+	</button>
+   <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Create"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="create"
+ width="83"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Motion.Command"
+   parameter="Create"/>
  </button>
 	<icon
 	follows="left|top|right"
 	image_name="Toolbar_Middle_Off"
 	height="21"
-	width="224"
+	width="140"
 	layout="topleft"
 	left_pad="1"
 	top_delta="0"/>
