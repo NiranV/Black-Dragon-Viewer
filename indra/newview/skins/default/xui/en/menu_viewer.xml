@@ -4290,17 +4290,7 @@
 	       function="Advanced.WebContentTest"
 	       parameter="http://niranv-sl.blogspot.de/"/>
 	    </menu_item_call>
-	    <menu_item_separator/>
-	    <menu_item_call
-	     label="Mechatoys"
-	     name="Mechatoys">
-	      <menu_item_call.on_click
-	       function="Advanced.WebContentTest"
-	       parameter="www.mechtoys.com"/>
-	    </menu_item_call>
-	</menu>
-
-        <menu_item_call
+		 <menu_item_call
             label="Grid status"
             name="Grid Status">
             <menu_item_call.on_click
@@ -4316,6 +4306,7 @@
             name="Xstreet_url"
             parameter="WebLaunchExternalTarget,https://marketplace.secondlife.com/" />
       </menu_item_call>
+	</menu>
         <menu_item_call
          label="Buy L$"
          name="Buy and Sell L$">
