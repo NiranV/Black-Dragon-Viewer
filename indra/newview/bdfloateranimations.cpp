@@ -36,6 +36,8 @@
 #include "llvfile.h"
 #include "llassettype.h"
 #include "llkeyframemotion.h"
+#include "llviewermenufile.h"
+#include "llthread.h"
 
 // viewer includes
 #include "llfloaterpreference.h"
@@ -402,6 +404,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 							it != motions.end(); ++it)
 						{
 							LLMotion* motion = *it;
+							LLKeyframeMotion* kf_motion = (LLKeyframeMotion*)*it;
 							if (motion)
 							{
 								LLUUID motion_id = motion->getID();
@@ -430,6 +433,19 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 									mMotionScroll->addElement(row);
 								}
 							}
+
+							//BD - Will be using this later to export our finished animations.
+							/*if (kf_motion && kf_motion->getName().empty() &&
+								kf_motion->getDuration() > 0.0f)
+							{
+								kf_motion->dumpToFile("");
+
+								//S32 anim_file_size = kf_motion->getFileSize();
+								//U8* anim_data = new U8[anim_file_size];
+
+								//LLDataPackerBinaryBuffer dp(anim_data, anim_file_size);
+								//kf_motion->deserialize(dp, true);
+							}*/
 						}
 					}
 				}
@@ -1010,6 +1026,7 @@ void BDFloaterAnimations::onJointRefresh()
 			LLScrollListItem* item = mJointsScroll->addElement(row);
 			item->setUserdata(joint);
 
+			//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
 			LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
 			if (motion)
 			{
@@ -1106,6 +1123,7 @@ void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 
 		//BD - While editing rotations, make sure we use a bit of linear interpolation to make movements smoother.
 		LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+		//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
 		if (motion)
 		{
 			//BD - If we don't use our default, set it once.
@@ -1289,7 +1307,16 @@ void BDFloaterAnimations::onAnimDelete()
 
 void BDFloaterAnimations::onAnimSave()
 {
-
+	//BD - Work in Progress exporter.
+	//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	//LLKeyframeMotion::JointMotionList* jointmotion_list;
+	//jointmotion_list = LLKeyframeDataCache::getKeyframeData(ANIM_BD_POSING_MOTION);
+	//typedef std::map<LLUUID, class LLKeyframeMotion::JointMotionList*> keyframe_data_map_t;
+	//LLKeyframeMotion::JointMotion* joint_motion = jointmotion_list->getJointMotion(0);
+	//LLKeyframeMotion::RotationCurve rot_courve = joint_motion->mRotationCurve;
+	//LLKeyframeMotion::RotationKey rot_key = rot_courve.mLoopInKey;
+	//LLQuaternion rotation = rot_key.mRotation;
+	//F32 time = rot_key.mTime;
 }
 
 void BDFloaterAnimations::onAnimSet()
@@ -1338,3 +1365,8 @@ void BDFloaterAnimations::onAnimControlsRefresh()
 		getChild<LLUICtrl>("anim_time")->setEnabled(false);
 	}
 }
+
+
+////////////////////////////////
+//BD - Misc Functions
+////////////////////////////////
