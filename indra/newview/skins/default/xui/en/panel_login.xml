@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.9.0 - Bit Dragon]"
+       label="[CHANNEL] [VERSION] - [2.9.1 - Bit Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="8461"
+       height="8821"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,73 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="1287"
+              height="338"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: EaseIn and EaseOut times info display to Animation Manipulator window.
+Added: Patreon support section to "About Black Dragon" window for all supporters.
+Added: Ability to preview .anim files from disk inworld on your avatar by creating local animations to play with the Animation Manipulator.
+Added: Maddy to the list of patrons.
+Added: First babysteps and preparations for pose exporter.
+Added: More Patreon patrons to the About Black Dragon window.
+Changed: Added a bunch of missing login panel changes to the changelog.
+Changed: Overhauled Inventory window layout.
+Changed: Marketplace Inbox button into a bottom button.
+Changed: Improved SSR look and quality.
+Changed: Overhauled People window layout.
+Changed: Simplified more formatting code in the Animation Manipulator window.
+Changed: Disabled the Admin main menu.
+Changed: Moved marketplace and grid status menu entries to the browser menu.
+Changed: Made the favoritebar able to contain technically any object (landmarks and callingcards for now).
+Changed: Layout of About Black Dragon window a bit, broadened tabs and moved Patreon tab to second position.
+Changed: Version to 2.9.1.
+Fixed: XML warnings in log when opening an animation.
+Fixed: Inconsistencies in group list items.
+Fixed: Member ban button in group panel clipping into other buttons.
+Removed: Sort buttons in Inventory.
+Removed: All buttons except the remove button.
+Misc: Cleaned up People window code.
+Misc: Cleaned up the bdposingmotion.cpp a bit.
+Misc: Cleaned up bdfloateranimations.cpp some more.
+Misc: Increment version to 5.1.1 for auto-updater purposes.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.9.0
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="1287"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
