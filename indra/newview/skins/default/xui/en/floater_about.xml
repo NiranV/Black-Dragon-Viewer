@@ -25,6 +25,7 @@ width="470">
  follows="all" 
  top="25"
  left="5"
+ tab_min_width="83"
  height="410" 
  width="460" 
  name="about_tab"
@@ -54,6 +55,36 @@ width="470">
    top_pad="2"
    height="25"
    width="448" />
+  </panel>
+  <panel
+  border="false"
+  label="Patreon Support"
+  name="licenses_panel">
+   <text_editor
+   enabled="false"
+   follows="left|top"
+   parse_urls="true"
+   height="382"
+   bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
+   left="5"
+   max_length="65536"
+   name="credits_editor"
+   top="1"
+   width="448"
+   word_wrap="true">
+Much thanks to all Patrons who pledged money via Patreon to support this Viewer's development.
+The following list contains all Patrons who pledged at any point at least the minimum amount possible.
+
+Kei Kurono (1$)
+Maddy Gynoid (5$)
+Richard Call (15$)
+Shiruviana (1$)
+Ulrike Woltering (5$)
+Viki Tran (1$)
+William Betteridge (1$)
+YoungBlood (3$)
+   </text_editor>
   </panel>
   <panel
   border="false" 
@@ -302,36 +333,6 @@ Zi Ree:
  Texture Refresh
 
 feel free to IM me if you can tell me missing names and/or find more stuff others did!
-   </text_editor>
-  </panel>
-  <panel
-  border="false"
-  label="Patreon Support"
-  name="licenses_panel">
-   <text_editor
-   enabled="false"
-   follows="left|top"
-   parse_urls="true"
-   height="382"
-   bg_readonly_color="Transparent"
-   text_readonly_color="LabelTextColor"
-   left="5"
-   max_length="65536"
-   name="credits_editor"
-   top="1"
-   width="448"
-   word_wrap="true">
-Much thanks to all Patreon Patrons who pledge money to support this Viewer.
-The following list contains all Patrons who pledged at some point at least the minimum amount possible.
-
-Kei Kurono (1$)
-Maddy Gynoid (5$)
-Richard Call (15$)
-Shiruviana (1$)
-Ulrike Woltering (5$)
-Viki Tran (1$)
-William Betteridge (1$)
-YoungBlood (3$)
    </text_editor>
   </panel>
  </tab_container>
