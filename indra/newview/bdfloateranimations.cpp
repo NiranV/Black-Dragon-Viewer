@@ -404,7 +404,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 							it != motions.end(); ++it)
 						{
 							LLMotion* motion = *it;
-							LLKeyframeMotion* kf_motion = (LLKeyframeMotion*)*it;
+							//LLKeyframeMotion* kf_motion = (LLKeyframeMotion*)*it;
 							if (motion)
 							{
 								LLUUID motion_id = motion->getID();
