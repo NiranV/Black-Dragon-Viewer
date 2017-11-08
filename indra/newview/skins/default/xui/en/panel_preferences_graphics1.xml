@@ -2204,7 +2204,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
 	  follows="top|left|right"
       visibility_control="PrefsPerformanceVisible"
 	  layout="topleft"
-	  height="412"
+	  height="429"
 	  auto_resize="false"
       visible="false"
 	  name="performance_layout_panel"
@@ -2430,9 +2430,44 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       name="BackgroundYieldTime"
       top_pad="5"
       width="319" />
-   <button
+	<button
  follows="left|top"
  control_name="BackgroundYieldTime"
+ height="15"
+ is_toggle="false"
+ label_color="White"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+	<slider
+      control_name="FramePerSecondLimit"
+      decimal_digits="0"
+      follows="left|top"
+      height="14"
+      can_edit_text="true"
+      increment="1"
+      initial_value="120"
+      label="Max Frames Per Second:"
+      label_width="150"
+      layout="topleft"
+      tool_tip="This option controls the frames in seconds the Viewer updates the rendering. Lower values increase the delay for actions to be processed. It is not recommended to set this below 20."
+      left="10"
+      max_val="144"
+      min_val="0"
+      name="FramePerSecondLimit"
+      top_pad="2"
+      width="319" />
+   <button
+ follows="left|top"
+ control_name="FramePerSecondLimit"
  height="15"
  is_toggle="false"
  label_color="White"
