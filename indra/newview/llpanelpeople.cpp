@@ -597,12 +597,8 @@ BOOL LLPanelPeople::postBuild()
 	mFriendCount = getChild<LLTextBox>("friendcount");
 	mBlockCount = getChild<LLTextBox>("blockcount");
 
-	mFriendAddBtn = getChild<LLUICtrl>("add_friend_btn");
-	mFriendDeleteBtn = getChild<LLUICtrl>("friends_del_btn");
 	mFriendGearBtn = getChild<LLUICtrl>("friends_gear_btn");
-	mNearbyAddBtn = getChild<LLUICtrl>("nearby_add_friend_btn");
 	mNearbyGearBtn = getChild<LLUICtrl>("nearby_gear_btn");
-	mRecentAddBtn = getChild<LLUICtrl>("recent_add_friend_btn");
 	mRecentGearBtn = getChild<LLUICtrl>("recent_gear_btn");
 	mBlockedGearBtn = getChild<LLUICtrl>("blocked_gear_btn");
 
@@ -683,6 +679,7 @@ BOOL LLPanelPeople::postBuild()
 		LL_WARNS() << "People->Groups list menu not found" << LL_ENDL;
 	}
 
+	//BD
 	mBlockedList = getChild<LLBlockList>("blocked");
 
 	// Must go after setting commit callback and initializing all pointers to children.
@@ -890,23 +887,20 @@ void LLPanelPeople::updateButtons()
 			if (friends_tab_active)
 			{
 // [RLVa:KB] - Checked: RLVa-1.2.0
-				mFriendAddBtn->setEnabled(item_selected && !is_friend && ((RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
+				//mFriendAddBtn->setEnabled(item_selected && !is_friend && ((RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
 // [/RLBa:KB]
 //			if (cur_panel->hasChild("add_friend_btn", TRUE))
 //				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self);
-				mFriendDeleteBtn->setEnabled(multiple_selected);
 				mFriendGearBtn->setEnabled(multiple_selected);
 			}
 
 			if (nearby_tab_active)
 			{
-				mNearbyAddBtn->setEnabled(item_selected && !is_friend);
 				mNearbyGearBtn->setEnabled(multiple_selected);
 			}
 
 			if (recent_tab_active)
 			{
-				mRecentAddBtn->setEnabled(item_selected && !is_friend && ((RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
 				mRecentGearBtn->setEnabled(multiple_selected);
 			}
 

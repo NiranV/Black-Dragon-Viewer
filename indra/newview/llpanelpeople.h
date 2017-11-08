@@ -154,12 +154,8 @@ private:
 
 	LLTextBox*				mGroupCount;
 	LLUICtrl*				mGroupMinusBtn;
-	LLUICtrl*				mFriendAddBtn;
-	LLUICtrl*				mFriendDeleteBtn;
 	LLUICtrl*				mFriendGearBtn;
-	LLUICtrl*				mNearbyAddBtn;
 	LLUICtrl*				mNearbyGearBtn;
-	LLUICtrl*				mRecentAddBtn;
 	LLUICtrl*				mRecentGearBtn;
 	LLUICtrl*				mBlockedGearBtn;
 
