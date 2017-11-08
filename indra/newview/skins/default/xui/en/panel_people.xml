@@ -69,7 +69,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
      label="Edit"
      layout="topleft"
      tear_off="false"
-     name="File"
+     name="Edit"
      width="128">
 		<!-- Nearby -->
 		<menu_item_call
@@ -82,7 +82,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 		function="People.Nearby.Visible"
 		parameter="nearby"/>
 		</menu_item_call>
-		<menu_item_call
+		<!--<menu_item_call
 		label="View People Icons"
 		layout="topleft"
 		name="">
@@ -91,94 +91,135 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 		<on_visible
 		function="People.Nearby.Visible"
 		parameter="nearby"/>
-		</menu_item_call>
-		<menu_item_call
+		</menu_item_call>-->
+		<menu_item_check
 		label="View Map"
 		layout="topleft"
 		name="">
 		<on_click
-		function=""/>
+	   function="ToggleControl"
+      parameter="NearbyListShowMap" />
+		<on_check
+	   function="CheckControl"
+      parameter="NearbyListShowMap" />
 		<on_visible
 		function="People.Nearby.Visible"
 		parameter="nearby"/>
-		</menu_item_call>
-		<menu_item_call
+		</menu_item_check>
+		<menu_item_check
 		label="Hide Usernames"
 		layout="topleft"
 		name="">
 		<on_click
-		function=""/>
+		function="People.Nearby.ViewSort.Action"
+		parameter="view_usernames"/>
+		<on_check
+		function="CheckControl"
+		parameter="NearbyListHideUsernames"/>
 		<on_visible
 		function="People.Nearby.Visible"
 		parameter="nearby"/>
-		</menu_item_call>
-		<menu_item_call
+		</menu_item_check>
+		<menu_item_check
 		label="Show Chat Range Rings"
 		layout="topleft"
 		name="">
 		<on_click
-		function=""/>
+	   function="ToggleControl"
+      parameter="MiniMapChatRing" />
+		<on_check
+	   function="CheckControl"
+      parameter="MiniMapChatRing" />
 		<on_visible
 		function="People.Nearby.Visible"
 		parameter="nearby"/>
-		</menu_item_call>
+		</menu_item_check>
 		
 		<!-- Friends -->
-		<menu_item_call
+		<!--<menu_item_call
 		label="View People Icons"
 		layout="topleft"
 		name="">
 		<on_click
-		function=""/>
+		function=""
+		parameter=""/>
 		<on_visible
 		function="People.Friends.Visible"
 		parameter="friends"/>
-		</menu_item_call>
-		<menu_item_call
+		</menu_item_call>-->
+		<menu_item_check
 		label="Hide Usernames"
 		layout="topleft"
 		name="">
 		<on_click
-		function=""/>
+		function="People.Friends.ViewSort.Action"
+		parameter="view_usernames"/>
+		<on_check
+		function="CheckControl"
+		parameter="FriendsListHideUsernames"/>
 		<on_visible
 		function="People.Friends.Visible"
 		parameter="friends"/>
-		</menu_item_call>
-		<menu_item_call
+		</menu_item_check>
+		<menu_item_check
 		label="View Permission Granted"
 		layout="topleft"
 		name="">
 		<on_click
-		function=""/>
+		function="People.Friends.ViewSort.Action"
+		parameter="view_permissions"/>
+		<on_check
+		function="CheckControl"
+		parameter="FriendsListShowPermissions"/>
 		<on_visible
 		function="People.Friends.Visible"
 		parameter="friends"/>
-		</menu_item_call>
-		<menu_item_call
-		label="View Conversation Log"
-		layout="topleft"
-		name="">
-		<on_click
-		function=""/>
-		<on_visible
-		function="People.Friends.Visible"
-		parameter="friends"/>
-		</menu_item_call>
+		</menu_item_check>
 		
 		<!-- Groups -->
 		<menu_item_call
-		label="Join / Create Group"
+		label="Find More Groups"
 		layout="topleft"
 		name="">
 		<on_click
+		function="People.Group.Plus.Action"
+		parameter="join_group"/>
+		<on_enable
 		function="People.Group.Plus.Validate"/>
 		<on_visible
 		function="People.Groups.Visible"
 		parameter="groups"/>
 		</menu_item_call>
+		<menu_item_call
+		label="Create Group"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Group.Plus.Action"
+		parameter="new_group"/>
+		<on_enable
+		function="People.Group.Plus.Validate"/>
+		<on_visible
+		function="People.Groups.Visible"
+		parameter="groups"/>
+		</menu_item_call>
+		<menu_item_check
+		label="Show Group Icons"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Groups.ViewSort.Action"
+		parameter="show_icons"/>
+		<on_check
+		function="CheckControl"
+		parameter="GroupListShowIcons"/>
+		<on_visible
+		function="People.Groups.Visible"
+		parameter="groups"/>
+		</menu_item_check>
 		
 		<!-- Recent -->
-		<menu_item_call
+		<!--<menu_item_call
 		label="View People Icons"
 		layout="topleft"
 		name="">
@@ -187,8 +228,9 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 		<on_visible
 		function="People.Recent.Visible"
 		parameter="recent"/>
-		</menu_item_call>
+		</menu_item_call>-->
 		
+		<!-- Blocked -->
 		<menu_item_call
 		label="Block Resident By Name"
 		layout="topleft"

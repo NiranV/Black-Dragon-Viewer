@@ -861,6 +861,7 @@ void LLPanelPeople::updateButtons()
 		mFriendCount->setTextArg("[FRIEND_COUNT]", llformat("%d", friends));
 	}
 	getChild<LLMenuItemBranchGL>("Filters")->setVisible(!group_tab_active);
+	getChild<LLMenuItemBranchGL>("Edit")->setVisible(!recent_tab_active);
 
 	if (group_tab_active)
 	{
