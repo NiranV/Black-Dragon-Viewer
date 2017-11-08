@@ -467,7 +467,7 @@
      name="inventory filter tabs"
      tab_height="20"
      tab_position="top"
-     tab_min_width="147"
+     tab_min_width="98"
      top_pad="0"
      width="282">
     <inventory_panel
@@ -500,20 +500,21 @@
 	 top_pad="1"
      name="Recent Items"
      width="220" />
-      <!--<inventory_panel
-	bg_opaque_color="Black_50"
-	bg_alpha_color="Black_50"
-	background_visible="true"
-	show_item_link_overlays="true"
-	border="false"
-	follows="all"
-	height="324"
-	label="Worn"
-	layout="topleft"
-	left="0"
-	name="cof_tab"
-	start_folder="Current Outfit"
-	width="282" /> -->
+      <inventory_panel
+		scroll.reserve_scroll_corner="false"
+		background_visible="false"
+		folder_view.use_ellipses="false"
+      label="Worn"
+      show_empty_message="false"
+      follows="all"
+      layout="topleft"
+		height="323"
+      width="220"
+		left_delta="18"
+		top_pad="1"
+      border="false"
+      bevel_style="none"
+		name="Worn Items"/>
   </tab_container>
   <layout_stack
    animate="false"
@@ -532,7 +533,7 @@
        height="25"
        layout="topleft"
        name="dummy_panel"
-       width="211">
+       width="282">
           <icon
            follows="bottom|left|right"
            height="25"
@@ -555,6 +556,43 @@
 			background_image="TextField_Off"
 			background_image_disabled="TextField_Disabled"
 			background_image_focused="TextField_Active"/>
+	<combo_box
+   height="25"
+   layout="topleft"
+   left_pad="3"
+	top="0"
+   name="search_type"
+   follows="bottom|right"
+   width="70">
+    <item
+     label="Name"
+     name="Name"
+     value="search_by_name"/>
+    <item
+     label="Creator"
+     name="Creator"
+     value="search_by_creator"/>
+    <item
+     label="Description"
+     name="Description"
+     value="search_by_description"/>
+    <item
+     label="UUID"
+     name="UUID"
+     value="search_by_UUID"/>
+	 <combo_box.combo_button
+		image_unselected="Toolbar_Middle_Off"
+		image_selected="Toolbar_Middle_Selected"
+		image_disabled="Toolbar_Middle_Off" />
+		<combo_box.drop_down_button
+		pad_right="0"
+		image_unselected="Toolbar_Middle_Off"
+		image_selected="Toolbar_Middle_Selected"
+		image_pressed="Toolbar_Middle_Selected" 
+		image_pressed_selected="Toolbar_Middle_Selected"
+		image_disabled="Toolbar_Middle_Off" />
+    </combo_box>
+
       </layout_panel>
 						<layout_panel
        background_visible="false"
