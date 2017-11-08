@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.9.1 - Bit Dragon]"
+       label="[CHANNEL] [VERSION] - [2.9.2 - Bit Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="8821"
+       height="9151"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,71 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="338"
+              height="312"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: DracO HirudO and Ken Durham to patron list.
+Added: Triangle (polygon) count to "Avatar Rendering Complexity" display.
+Added: Triangle (polygon) count to Object Weights window.
+Added: Worn tab to Inventory window.
+Added: Filter type dropdown to Inventory window.
+Added: Akritos Rain to the Patreon list.
+Added: Ability to set objects or faces to fullbright locally.
+Added: Ability to change object or face alpha modes locally.
+Added: Dhalgren Correia to the Patreon list.
+Added: Max FPS option to Preferences - Display tab.
+Changed: Overhauled Object Weights window layout.
+Changed: Overhauled Inventory Filter window layout.
+Changed: Hide the "Edit" menu while the recent tab is active.
+Changed: Moved alpha and fullbright manipulation options into a detachable sub menu.
+Changed: Merged de/realpha and alpha mode codes into one big function to be used and simplified it.
+Changed: Version to 2.9.2.
+Fixed: Compile.
+Fixed: Several entries from the People menus that were not functional.
+Fixed: Several entries from the People menus that did not check properly when an option was enabled.
+Removed: Several entries from the People menus that did not exist.
+Removed: Unneeded code in llviewerobjectlist.cpp.
+Misc: Cleaned up llpanelmaininventory.cpp a bit.
+Misc: Cleaned up llpanelpeople.cpp/h a bit.
+Merge with Viewer Bear
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.9.1
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="338"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
@@ -2211,9 +2274,9 @@ Misc: Code tagging.
        height="23"
        image_unselected="Toolbar_Middle_Off"
        image_selected="Toolbar_Middle_Selected"
-       label="RAWR!"
+       label="*BREATHE FIRE*"
        font="SansSerif"
-       font.style="BOLD"
+       font.style="BOLDITALIC"
        label_color="1 1 1 0.8"
        layout="topleft"
        left="113"
