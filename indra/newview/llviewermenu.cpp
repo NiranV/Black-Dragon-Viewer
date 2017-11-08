@@ -2679,8 +2679,8 @@ class LLObjectDerender : public view_listener_t
 	}
 };
 
-//BD - DeAlpha
-class BDObjectDeAlpha : public view_listener_t
+//BD - Re/DeAlpha + Set Alpha Mode
+class BDObjectSetAlpha : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
@@ -2693,7 +2693,30 @@ class BDObjectDeAlpha : public view_listener_t
 				LLViewerObject *objectp = node->getObject();
 				if (objectp->getID() != gAgentID)
 				{
-					gObjectList.killAlpha(objectp);
+					if (userdata.asString() == "dealpha")
+					{
+						gObjectList.setAlpha(objectp, false);
+					}
+					else if (userdata.asString() == "alpha")
+					{
+						gObjectList.setAlpha(objectp, true);
+					}
+					else if (userdata.asString() == "set_none")
+					{
+						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_NONE);
+					}
+					else if (userdata.asString() == "set_sorting")
+					{
+						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_BLEND);
+					}
+					else if (userdata.asString() == "set_masking")
+					{
+						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_MASK);
+					}
+					else if (userdata.asString() == "set_emissive")
+					{
+						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_EMISSIVE);
+					}
 				}
 			}
 		}
@@ -2701,8 +2724,8 @@ class BDObjectDeAlpha : public view_listener_t
 	}
 };
 
-//BD - ReAlpha
-class BDObjectReAlpha : public view_listener_t
+//BD - Re/DeBright
+class BDObjectSetFullbright : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
@@ -2715,29 +2738,14 @@ class BDObjectReAlpha : public view_listener_t
 				LLViewerObject *objectp = node->getObject();
 				if (objectp->getID() != gAgentID)
 				{
-					gObjectList.restoreAlpha(objectp);
-				}
-			}
-		}
-		return true;
-	}
-};
-
-//BD - DeBright
-class BDObjectDeBright : public view_listener_t
-{
-	bool handleEvent(const LLSD& userdata)
-	{
-		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
-		if (!selection.isNull())
-		{
-			for (LLObjectSelection::iterator iter = selection->begin(); iter != selection->end(); ++iter)
-			{
-				LLSelectNode* node = *iter;
-				LLViewerObject *objectp = node->getObject();
-				if (objectp->getID() != gAgentID)
-				{
-					gObjectList.killFullbright(objectp);
+					if (userdata.asString() == "debright")
+					{
+						gObjectList.setFullbright(objectp, false);
+					}
+					else if (userdata.asString() == "rebright")
+					{
+						gObjectList.setFullbright(objectp, true);
+					}
 				}
 			}
 		}
@@ -9997,12 +10005,11 @@ void initialize_menus()
 	enable.add("View.EnableFullscreen", boost::bind(&view_enable_fullscreen));
 // [/SL:KB]
 
-//	//BD - De/ReAlpha
-	view_listener_t::addMenu(new BDObjectDeAlpha(), "Object.DeAlpha");
-	view_listener_t::addMenu(new BDObjectReAlpha(), "Object.ReAlpha");
+//	//BD - Re/DeAlpha
+	view_listener_t::addMenu(new BDObjectSetAlpha(), "Object.SetAlphaMode");
 
-//	//BD - DeBright
-	view_listener_t::addMenu(new BDObjectDeBright(), "Object.DeBright");
+//	//BD - Re/DeBright
+	view_listener_t::addMenu(new BDObjectSetFullbright(), "Object.SetFullbright");
 
 //	//BD - Derender
 	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));
