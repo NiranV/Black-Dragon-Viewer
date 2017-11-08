@@ -1503,7 +1503,6 @@ void LLViewerObjectList::setAlphaMode(LLViewerObject *objectp, LLMaterial::eDiff
 					{
 						mat->setDiffuseAlphaMode(mode);
 						te->setMaterialParams(mat);
-						LLMaterialMgr::getInstance()->put(objectp->getID(), i, *mat);
 					}
 				}
 			}
