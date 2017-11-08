@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="9151"
+       height="9175"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,7 +163,7 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="312"
+              height="324"
               top="10"
               left="7"
               max_length="9999"
@@ -191,6 +191,8 @@ Changed: Version to 2.9.2.
 Fixed: Compile.
 Fixed: Several entries from the People menus that were not functional.
 Fixed: Several entries from the People menus that did not check properly when an option was enabled.
+Fixed: Vignette options being cut off.
+Fixed: L$ Balance blocking the inventory menu.
 Removed: Several entries from the People menus that did not exist.
 Removed: Unneeded code in llviewerobjectlist.cpp.
 Misc: Cleaned up llpanelmaininventory.cpp a bit.

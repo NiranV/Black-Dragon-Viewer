@@ -164,7 +164,7 @@ width="320">
    name="ItemcountText"
 			font.shadow="Soft" 
    top="3"
-   width="100">
+   width="70">
        ---
    </text>
    <icon 
@@ -187,7 +187,7 @@ width="320">
    word_wrap="false"
 			font.shadow="Soft" 
    top="3"
-   width="100"
+   width="70"
    tool_tip="Click to refresh your L$ balance"
    value="--- L$" 
    name="balance"/>
