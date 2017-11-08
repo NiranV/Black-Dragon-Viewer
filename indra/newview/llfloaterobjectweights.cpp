@@ -75,7 +75,9 @@ LLFloaterObjectWeights::LLFloaterObjectWeights(const LLSD& key)
 	mSelectedOnLand(NULL),
 	mRezzedOnLand(NULL),
 	mRemainingCapacity(NULL),
-	mTotalCapacity(NULL)
+	mTotalCapacity(NULL),
+	//BD
+	mSelectedTriangleCount(NULL)
 {
 }
 
@@ -93,6 +95,8 @@ BOOL LLFloaterObjectWeights::postBuild()
 	mSelectedPhysicsWeight = getChild<LLTextBox>("physics");
 	mSelectedServerWeight = getChild<LLTextBox>("server");
 	mSelectedDisplayWeight = getChild<LLTextBox>("display");
+	//BD - Triangle Count
+	mSelectedTriangleCount = getChild<LLTextBox>("triangles");
 
 	mSelectedOnLand = getChild<LLTextBox>("selected");
 	mRezzedOnLand = getChild<LLTextBox>("rezzed_on_land");
@@ -118,6 +122,10 @@ void LLFloaterObjectWeights::onWeightsUpdate(const SelectionCost& selection_cost
 
 	S32 render_cost = LLSelectMgr::getInstance()->getSelection()->getSelectedObjectRenderCost();
 	mSelectedDisplayWeight->setText(llformat("%d", render_cost));
+	//BD - Triangle Count
+	S32 vcount = 0;
+	S32 triangle_count = LLSelectMgr::getInstance()->getSelection()->getSelectedObjectTriangleCount(&vcount);
+	mSelectedTriangleCount->setText(llformat("%d", triangle_count));
 
 	toggleWeightsLoadingIndicators(false);
 }
@@ -131,6 +139,8 @@ void LLFloaterObjectWeights::setErrorStatus(S32 status, const std::string& reaso
 	mSelectedPhysicsWeight->setText(text);
 	mSelectedServerWeight->setText(text);
 	mSelectedDisplayWeight->setText(text);
+	//BD - Triangle Count
+	mSelectedTriangleCount->setText(text);
 
 	toggleWeightsLoadingIndicators(false);
 }
@@ -237,6 +247,8 @@ void LLFloaterObjectWeights::toggleWeightsLoadingIndicators(bool visible)
 	mSelectedPhysicsWeight->setVisible(!visible);
 	mSelectedServerWeight->setVisible(!visible);
 	mSelectedDisplayWeight->setVisible(!visible);
+	//BD - Triangle Count
+	mSelectedTriangleCount->setVisible(!visible);
 }
 
 void LLFloaterObjectWeights::toggleLandImpactsLoadingIndicators(bool visible)
@@ -263,6 +275,8 @@ void LLFloaterObjectWeights::updateIfNothingSelected()
 	mSelectedPhysicsWeight->setText(text);
 	mSelectedServerWeight->setText(text);
 	mSelectedDisplayWeight->setText(text);
+	//BD - Triangle Count
+	mSelectedTriangleCount->setText(text);
 
 	mSelectedOnLand->setText(text);
 	mRezzedOnLand->setText(text);

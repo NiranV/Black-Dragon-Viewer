@@ -83,6 +83,8 @@ private:
 	LLTextBox		*mSelectedPhysicsWeight;
 	LLTextBox		*mSelectedServerWeight;
 	LLTextBox		*mSelectedDisplayWeight;
+	//BD - Triangle Count
+	LLTextBox		*mSelectedTriangleCount;
 
 	LLTextBox		*mSelectedOnLand;
 	LLTextBox		*mRezzedOnLand;
