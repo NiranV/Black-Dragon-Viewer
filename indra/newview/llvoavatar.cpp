@@ -9127,6 +9127,14 @@ void LLVOAvatar::idleUpdateRenderComplexity()
 		}
 		mText->addLine(info_line, info_color, info_style);
 
+		//BD - Triangles and Vertices count
+		info_line = llformat("%d triangles", mTotalTriangleCount);
+		//info_line = llformat("%d triangles (%d vertices)", mTotalTriangleCount, mTotalVerticeCount);
+		// Use grey for imposters, white for normal rendering or no impostors
+		info_color.set(LLColor4::white);
+		info_style = LLFontGL::NORMAL;
+		mText->addLine(info_line, info_color, info_style);
+
 		updateText(); // corrects position
 	}
 }
@@ -9168,6 +9176,9 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 	if (mVisualComplexityStale)
 	{
 		U32 cost = VISUAL_COMPLEXITY_UNKNOWN;
+		//BD - Triangle Count
+		//U32 vertices = VISUAL_COMPLEXITY_UNKNOWN;
+		U32 triangles = VISUAL_COMPLEXITY_UNKNOWN;
 		LLVOVolume::texture_cost_t textures;
 		hud_complexity_list_t hud_complexity_list;
 
@@ -9211,6 +9222,10 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
                             F32 attachment_texture_cost = 0;
                             F32 attachment_children_cost = 0;
 
+							//BD - Triangle Count
+							F32 attachment_total_triangles = 0;
+							//F32 attachment_total_vertices = 0;
+
 							attachment_volume_cost += volume->getRenderCost(textures);
 
 							const_child_list_t children = volume->getChildren();
@@ -9223,6 +9238,9 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 								if (child)
 								{
 									attachment_children_cost += child->getRenderCost(textures);
+									//BD - Triangle Count
+									attachment_total_triangles += child->getHighLODTriangleCount();
+									//attachment_total_vertices += child->getNumVertices();
 								}
 							}
 
@@ -9243,6 +9261,9 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
                                                    << LL_ENDL;
                             // Limit attachment complexity to avoid signed integer flipping of the wearer's ACI
                             cost += (U32)llclamp(attachment_total_cost, MIN_ATTACHMENT_COMPLEXITY, max_attachment_complexity);
+							//BD - Triangle Count
+							//vertices += (U32)llclamp(attachment_total_vertices, MIN_ATTACHMENT_COMPLEXITY, 9999999.f);
+							triangles += (U32)llclamp(attachment_total_triangles, MIN_ATTACHMENT_COMPLEXITY, 9999999.f);
 						}
 					}
 				}
@@ -9361,6 +9382,9 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
         }
 		mVisualComplexity = cost;
 		mVisualComplexityStale = false;
+		//BD - Triangle Count
+		mTotalTriangleCount = triangles;
+		//mTotalVerticeCount = vertices;
 
         static LLCachedControl<U32> show_my_complexity_changes(gSavedSettings, "ShowMyComplexityChanges", 20);
 

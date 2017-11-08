@@ -437,6 +437,10 @@ public:
 	mutable bool mVisualComplexityStale;
 	U32          mReportedVisualComplexity; // from other viewers through the simulator
 
+	//BD
+	mutable U32  mTotalTriangleCount;
+	mutable U32  mTotalVerticeCount;
+
 	bool		mCachedInMuteList;
 	F64			mCachedMuteListUpdateTime;
 
