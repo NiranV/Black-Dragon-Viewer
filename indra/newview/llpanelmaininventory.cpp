@@ -904,8 +904,6 @@ BOOL LLFloaterInventoryFinder::postBuild()
 	mCreatorSelf->setCommitCallback(boost::bind(&LLFloaterInventoryFinder::onCreatorSelfFilterCommit, this));
 	mCreatorOthers->setCommitCallback(boost::bind(&LLFloaterInventoryFinder::onCreatorOtherFilterCommit, this));
 
-	childSetAction("Close", onCloseBtn, this);
-
 	updateElementsFromFilter();
 	return TRUE;
 }
@@ -1167,12 +1165,6 @@ BOOL LLFloaterInventoryFinder::getCheckSinceLogoff()
 U32 LLFloaterInventoryFinder::getDateSearchDirection()
 {
 	return 	getChild<LLRadioGroup>("date_search_direction")->getSelectedIndex();
-}
-
-void LLFloaterInventoryFinder::onCloseBtn(void* user_data)
-{
-	LLFloaterInventoryFinder* finderp = (LLFloaterInventoryFinder*)user_data;
-	finderp->closeFloater();
 }
 
 // static
