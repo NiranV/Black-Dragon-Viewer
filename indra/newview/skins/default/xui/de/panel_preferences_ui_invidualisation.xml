@@ -1,5 +1,6 @@
-﻿<panel name="Custom UI">
-  <scroll_container name="ui_scroll">
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<panel name="Custom UI">
+  <!--<scroll_container name="ui_scroll">
    <panel name="ui_panel">
     <text name="main_label">Status/Nav/Favoritenleiste Optionen:</text>
     <check_box label="Parzellenregeln in der Navleiste zeigen" name="NavBarShowParcelProperties"/>
@@ -57,5 +58,5 @@
         <check_box label="Chatreichweiten Ringe auf der Minikarte zeigen" name="MiniMapChatRing"/>
         <spinner label="Max Prim Größe auf der Minikarte" name="MaxPrimSize" tool_tip="Setzt eine Grenze für die Primgröße auf der Minikarte, alle Prims über diesem Wert werden nur bis zu diesem Wert an Umfang gezeigt (Meter)"/>
    </panel>
-  </scroll_container>
+  </scroll_container>-->
 </panel>

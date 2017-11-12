@@ -159,8 +159,9 @@ BOOL LLPanelGroup::postBuild()
 	button = getChild<LLButton>("btn_chat");
 	button->setClickedCallback(onBtnGroupChatClicked, this);
 
-	button = getChild<LLButton>("btn_cancel");
-	button->setVisible(false);	button->setEnabled(true);
+	//BD
+	//button = getChild<LLButton>("btn_cancel");
+	//button->setVisible(false);	button->setEnabled(true);
 
 	button = getChild<LLButton>("btn_refresh");
 	button->setClickedCallback(onBtnRefresh, this);
@@ -216,21 +217,26 @@ void LLPanelGroup::reposButton(const std::string& name)
 void LLPanelGroup::reposButtons()
 {
 	LLButton* button_refresh = findChild<LLButton>("btn_refresh");
-	LLButton* button_cancel = findChild<LLButton>("btn_cancel");
+	//BD
+	//LLButton* button_cancel = findChild<LLButton>("btn_cancel");
 
-	if(button_refresh && button_cancel && button_refresh->getVisible() && button_cancel->getVisible())
+	//BD
+	//if(button_refresh && button_cancel && button_refresh->getVisible() && button_cancel->getVisible())
+	if (button_refresh && button_refresh->getVisible())
 	{
 		LLRect btn_refresh_rect = button_refresh->getRect();
-		LLRect btn_cancel_rect = button_cancel->getRect();
-		btn_refresh_rect.setLeftTopAndSize( btn_cancel_rect.mLeft + btn_cancel_rect.getWidth() + 2, 
-			btn_refresh_rect.getHeight() + 2, btn_refresh_rect.getWidth(), btn_refresh_rect.getHeight());
+		//BD
+		//LLRect btn_cancel_rect = button_cancel->getRect();
+		//btn_refresh_rect.setLeftTopAndSize( btn_cancel_rect.mLeft + btn_cancel_rect.getWidth() + 2, 
+		//	btn_refresh_rect.getHeight() + 2, btn_refresh_rect.getWidth(), btn_refresh_rect.getHeight());
 		button_refresh->setRect(btn_refresh_rect);
 	}
 
 	reposButton("btn_apply");
 	reposButton("btn_create");
 	reposButton("btn_refresh");
-	reposButton("btn_cancel");
+	//BD
+	//reposButton("btn_cancel");
 	reposButton("btn_chat");
 	reposButton("btn_call");
 }
@@ -393,7 +399,8 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 	LLButton* button_refresh = findChild<LLButton>("btn_refresh");
 	LLButton* button_create = findChild<LLButton>("btn_create");
 	
-	LLButton* button_cancel = findChild<LLButton>("btn_cancel");
+	//BD
+	//LLButton* button_cancel = findChild<LLButton>("btn_cancel");
 	LLButton* button_call = findChild<LLButton>("btn_call");
 	LLButton* button_chat = findChild<LLButton>("btn_chat");
 	//BD
@@ -411,8 +418,9 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 
 	if(button_create)
 		button_create->setVisible(is_null_group_id);
-	if(button_cancel)
-		button_cancel->setVisible(!is_null_group_id);
+	//BD
+	//if(button_cancel)
+	//	button_cancel->setVisible(!is_null_group_id);
 
 	if(button_call)
 		button_call->setVisible(!is_null_group_id);

@@ -1967,7 +1967,7 @@ BOOL LLViewerShaderMgr::loadShadersSpotlights(bool success)
 		gDeferredSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/pointLightV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredSpotLightProgram.mShaderFiles.push_back(make_pair("deferred/spotLightF.glsl", GL_FRAGMENT_SHADER_ARB));
 		gDeferredSpotLightProgram.addPermutation("REFLECTIONS", (bool)gSavedSettings.getBOOL("RenderSpotLightReflections") ? "1" : "0");
-		gDeferredMultiSpotLightProgram.addPermutation("LIGHT_IMAGES", (bool)gSavedSettings.getBOOL("RenderSpotLightImages") ? "1" : "0");
+		gDeferredSpotLightProgram.addPermutation("LIGHT_IMAGES", (bool)gSavedSettings.getBOOL("RenderSpotLightImages") ? "1" : "0");
 		gDeferredSpotLightProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];
 
 		success = gDeferredSpotLightProgram.createShader(NULL, NULL);

@@ -55,6 +55,16 @@ private:
 	void startConference();
 	void requestTeleport();
 
+	//BD - Right Click Menu
+	void resetSkeleton();
+	void resetSkeletonAndAnimations();
+	void doResetSkeleton(bool reset_animations);
+	void toggleMuteText();
+	void derenderAvatar();
+
+	bool checkImpostorMode(const LLSD& userdata);
+	bool setImpostorMode(const LLSD& userdata);
+
 // [RLVa:KB] - Checked: RLVa-1.5.0
 protected:
 	bool m_fRlvCheck;

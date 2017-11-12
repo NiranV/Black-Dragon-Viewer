@@ -79,6 +79,8 @@
 #include "rlvactions.h"
 #include "rlvcommon.h"
 // [/RLVa:KB]
+//BD - Abuse Report
+#include "llfloaterreporter.h"
 
 // Flags for kick message
 const U32 KICK_FLAGS_DEFAULT	= 0x0;
@@ -1084,23 +1086,30 @@ void LLAvatarActions::toggleBlock(const LLUUID& id)
 }
 
 // static
-void LLAvatarActions::toggleMuteVoice(const LLUUID& id)
+void LLAvatarActions::toggleMute(const LLUUID& id, U32 flags)
 {
 	LLAvatarName av_name;
 	LLAvatarNameCache::get(id, &av_name);
 
 	LLMuteList* mute_list = LLMuteList::getInstance();
-	bool is_muted = mute_list->isMuted(id, LLMute::flagVoiceChat);
+	//BD - Right Click Menu
+	bool is_muted = mute_list->isMuted(id, flags);
 
 	LLMute mute(id, av_name.getUserName(), LLMute::AGENT);
 	if (!is_muted)
 	{
-		mute_list->add(mute, LLMute::flagVoiceChat);
+		mute_list->add(mute, flags);
 	}
 	else
 	{
-		mute_list->remove(mute, LLMute::flagVoiceChat);
+		mute_list->remove(mute, flags);
 	}
+}
+
+// static
+void LLAvatarActions::toggleMuteVoice(const LLUUID& id)
+{
+	toggleMute(id, LLMute::flagVoiceChat);
 }
 
 // static
@@ -1174,6 +1183,13 @@ void LLAvatarActions::viewChatHistory(const LLUUID& id)
 		extended_id[LL_FCP_ACCOUNT_NAME] = avatar_name.getAccountName();
 		LLFloaterReg::showInstance("preview_conversation", extended_id, true);
 	}
+}
+
+//BD - Report Abuse
+//static
+void LLAvatarActions::report(const LLUUID& id)
+{
+	LLFloaterReporter::showFromAvatar(id, "av_name");
 }
 
 //== private methods ========================================================================================
@@ -1411,10 +1427,11 @@ bool LLAvatarActions::isBlocked(const LLUUID& id)
 	return LLMuteList::getInstance()->isMuted(id, av_name.getUserName());
 }
 
+//BD - Right Click Menu
 // static
-bool LLAvatarActions::isVoiceMuted(const LLUUID& id)
+bool LLAvatarActions::isMuted(const LLUUID& id, U32 flags)
 {
-	return LLMuteList::getInstance()->isMuted(id, LLMute::flagVoiceChat);
+	return LLMuteList::getInstance()->isMuted(id, flags);
 }
 
 // static

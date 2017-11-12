@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <panel label="Kamera" name="camera">
-	<scroll_container name="camera_scroll">
+	<!--<scroll_container name="camera_scroll">
 		<panel name="camera_scroll_panel">
 			<slider label="Sichtwinkel" name="camera_fov"/>
 			<slider label="Abstand" name="camera_offset_scale"/>
@@ -63,5 +63,5 @@
 			<check_box label="Ego Perspektive Y Achse umkehren." name="invert_mouse"/>
 			<slider name="mouse_sensitivity" label="Maussensibilität"/>
 		</panel>
-	</scroll_container>
+	</scroll_container>-->
 </panel>

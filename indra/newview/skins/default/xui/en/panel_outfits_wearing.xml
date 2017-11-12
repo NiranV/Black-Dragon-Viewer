@@ -13,7 +13,7 @@
     No attachments worn.
    </panel.string>
      <accordion
-     fit_parent="false"
+     fit_parent="true"
      follows="all"
      height="402"
      layout="topleft"

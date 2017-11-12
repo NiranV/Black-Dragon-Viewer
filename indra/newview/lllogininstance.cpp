@@ -31,6 +31,7 @@
 // llcommon
 #include "llevents.h"
 #include "stringize.h"
+#include "llsdserialize.h"
 
 // llmessage (!)
 #include "llfiltersd2xmlrpc.h" // for xml_escape_string()
@@ -47,428 +48,36 @@
 #include "llstartup.h"
 #include "llfloaterreg.h"
 #include "llnotifications.h"
+#include "llnotificationsutil.h"
 #include "llwindow.h"
 #include "llviewerwindow.h"
 #include "llprogressview.h"
-#if LL_LINUX || LL_SOLARIS
-#include "lltrans.h"
-#endif
 #include "llsecapi.h"
 #include "llstartup.h"
 #include "llmachineid.h"
-#include "llupdaterservice.h"
 #include "llevents.h"
 #include "llappviewer.h"
+#include "llsdserialize.h"
 
 #include <boost/scoped_ptr.hpp>
 #include <sstream>
+
+const S32 LOGIN_MAX_RETRIES = 3;
+
+// this can be removed once it is defined by the build for all forks
+#ifndef ADDRESS_SIZE
+#  define ADDRESS_SIZE 32
+#endif
 
 class LLLoginInstance::Disposable {
 public:
 	virtual ~Disposable() {}
 };
 
-namespace {
-	class MandatoryUpdateMachine:
-		public LLLoginInstance::Disposable
-	{
-	public:
-		MandatoryUpdateMachine(LLLoginInstance & loginInstance, LLUpdaterService & updaterService);
-
-		void start(void);
-
-		LLNotificationsInterface& getNotificationsInterface() const
-		{
-			return mLoginInstance.getNotificationsInterface();
-		}
-
-	private:
-		class State;
-		class CheckingForUpdate;
-		class Error;
-		class ReadyToInstall; 
-		class StartingUpdaterService;
-		class WaitingForDownload;
-
-		boost::scoped_ptr<State> mState;
-		LLLoginInstance &  mLoginInstance;
-		LLUpdaterService & mUpdaterService;
-		
-		void setCurrentState(State * newState);
-	};
-
-	
-	class MandatoryUpdateMachine::State {
-	public:
-		virtual ~State() {}
-		virtual void enter(void) {}
-		virtual void exit(void) {}
-	};
-	
-	
-	class MandatoryUpdateMachine::CheckingForUpdate:
-	public MandatoryUpdateMachine::State
-	{
-	public:
-		CheckingForUpdate(MandatoryUpdateMachine & machine);
-		
-		virtual void enter(void);
-		virtual void exit(void);
-		
-	private:
-		LLTempBoundListener mConnection;
-		MandatoryUpdateMachine & mMachine;
-		LLProgressView * mProgressView;
-		
-		bool onEvent(LLSD const & event);
-	};
-	
-	
-	class MandatoryUpdateMachine::Error:
-	public MandatoryUpdateMachine::State
-	{
-	public:
-		Error(MandatoryUpdateMachine & machine);
-		
-		virtual void enter(void);
-		virtual void exit(void);
-		void onButtonClicked(const LLSD &, const LLSD &);
-		
-	private:
-		MandatoryUpdateMachine & mMachine;
-	};
-	
-	
-	class MandatoryUpdateMachine::ReadyToInstall:
-	public MandatoryUpdateMachine::State
-	{
-	public:
-		ReadyToInstall(MandatoryUpdateMachine & machine);
-		
-		virtual void enter(void);
-		virtual void exit(void);
-		
-	private:
-		//MandatoryUpdateMachine & mMachine;
-	};
-	
-	
-	class MandatoryUpdateMachine::StartingUpdaterService:
-	public MandatoryUpdateMachine::State
-	{
-	public:
-		StartingUpdaterService(MandatoryUpdateMachine & machine);
-		
-		virtual void enter(void);
-		virtual void exit(void);
-		void onButtonClicked(const LLSD & uiform, const LLSD & result);
-	private:
-		MandatoryUpdateMachine & mMachine;
-	};
-	
-	
-	class MandatoryUpdateMachine::WaitingForDownload:
-		public MandatoryUpdateMachine::State
-	{
-	public:
-		WaitingForDownload(MandatoryUpdateMachine & machine);
-		
-		virtual void enter(void);
-		virtual void exit(void);
-		
-	private:
-		LLTempBoundListener mConnection;
-		MandatoryUpdateMachine & mMachine;
-		LLProgressView * mProgressView;
-		
-		bool onEvent(LLSD const & event);
-	};
-}
-
 static const char * const TOS_REPLY_PUMP = "lllogininstance_tos_callback";
 static const char * const TOS_LISTENER_NAME = "lllogininstance_tos";
 
 std::string construct_start_string();
-
-
-
-// MandatoryUpdateMachine
-//-----------------------------------------------------------------------------
-
-
-MandatoryUpdateMachine::MandatoryUpdateMachine(LLLoginInstance & loginInstance, LLUpdaterService & updaterService):
-	mLoginInstance(loginInstance),
-	mUpdaterService(updaterService)
-{
-	; // No op.
-}
-
-
-void MandatoryUpdateMachine::start(void)
-{
-	LL_INFOS() << "starting mandatory update machine" << LL_ENDL;
-	
-	if(mUpdaterService.isChecking()) {
-		switch(mUpdaterService.getState()) {
-			case LLUpdaterService::UP_TO_DATE:
-				mUpdaterService.stopChecking();
-				mUpdaterService.startChecking();
-				// Fall through.
-			case LLUpdaterService::INITIAL:
-			case LLUpdaterService::CHECKING_FOR_UPDATE:
-				setCurrentState(new CheckingForUpdate(*this));
-				break;
-			case LLUpdaterService::TEMPORARY_ERROR:
-				setCurrentState(new Error(*this));
-				break;
-			case LLUpdaterService::DOWNLOADING:
-				setCurrentState(new WaitingForDownload(*this));
-				break;
-			case LLUpdaterService::TERMINAL:
-				if(LLUpdaterService::updateReadyToInstall()) {
-					setCurrentState(new ReadyToInstall(*this));
-				} else {
-					setCurrentState(new Error(*this));
-				}
-				break;
-			case LLUpdaterService::FAILURE:
-				setCurrentState(new Error(*this));
-				break;
-			default:
-				llassert(!"unpossible case");
-				break;
-		}
-	} else {
-		setCurrentState(new StartingUpdaterService(*this));
-	}
-}
-
-
-void MandatoryUpdateMachine::setCurrentState(State * newStatePointer)
-{
-	{
-		boost::scoped_ptr<State> newState(newStatePointer);
-		if(mState != 0) mState->exit();
-		mState.swap(newState);
-		
-		// Old state will be deleted on exit from this block before the new state
-		// is entered.
-	}
-	if(mState != 0) mState->enter();
-}
-
-
-
-// MandatoryUpdateMachine::CheckingForUpdate
-//-----------------------------------------------------------------------------
-
-
-MandatoryUpdateMachine::CheckingForUpdate::CheckingForUpdate(MandatoryUpdateMachine & machine):
-	mMachine(machine)
-{
-	; // No op.
-}
-
-
-void MandatoryUpdateMachine::CheckingForUpdate::enter(void)
-{
-	LL_INFOS() << "entering checking for update" << LL_ENDL;
-	
-	mProgressView = gViewerWindow->getProgressView();
-	//BD
-	//mProgressView->setMessage("Looking for update...");
-	//mProgressView->setText("There is a required update for your Black Dragon installation.");
-	mProgressView->setPercent(0);
-	mProgressView->setVisible(true);
-	mConnection = LLEventPumps::instance().obtain(LLUpdaterService::pumpName()).
-		listen("MandatoryUpdateMachine::CheckingForUpdate", boost::bind(&MandatoryUpdateMachine::CheckingForUpdate::onEvent, this, _1));
-}
-
-
-void MandatoryUpdateMachine::CheckingForUpdate::exit(void)
-{
-}
-
-
-bool MandatoryUpdateMachine::CheckingForUpdate::onEvent(LLSD const & event)
-{
-	if(event["type"].asInteger() == LLUpdaterService::STATE_CHANGE) {
-		switch(event["state"].asInteger()) {
-			case LLUpdaterService::DOWNLOADING:
-				mMachine.setCurrentState(new WaitingForDownload(mMachine));
-				break;
-			case LLUpdaterService::TEMPORARY_ERROR:
-			case LLUpdaterService::UP_TO_DATE:
-			case LLUpdaterService::TERMINAL:
-			case LLUpdaterService::FAILURE:
-				mProgressView->setVisible(false);
-				mMachine.setCurrentState(new Error(mMachine));
-				break;
-			case LLUpdaterService::INSTALLING:
-				llassert(!"can't possibly be installing");
-				break;
-			default:
-				break;
-		}
-	} else {
-		; // Ignore.
-	}
-	
-	return false;
-}
-
-
-
-// MandatoryUpdateMachine::Error
-//-----------------------------------------------------------------------------
-
-
-MandatoryUpdateMachine::Error::Error(MandatoryUpdateMachine & machine):
-	mMachine(machine)
-{
-	; // No op.
-}
-
-
-void MandatoryUpdateMachine::Error::enter(void)
-{
-	LL_INFOS() << "entering error" << LL_ENDL;
-	mMachine.getNotificationsInterface().add("FailedRequiredUpdateInstall", LLSD(), LLSD(), boost::bind(&MandatoryUpdateMachine::Error::onButtonClicked, this, _1, _2));
-}
-
-
-void MandatoryUpdateMachine::Error::exit(void)
-{
-	LLAppViewer::instance()->forceQuit();
-}
-
-
-void MandatoryUpdateMachine::Error::onButtonClicked(const LLSD &, const LLSD &)
-{
-	mMachine.setCurrentState(0);
-}
-
-
-
-// MandatoryUpdateMachine::ReadyToInstall
-//-----------------------------------------------------------------------------
-
-
-MandatoryUpdateMachine::ReadyToInstall::ReadyToInstall(MandatoryUpdateMachine & machine) //:
-	//mMachine(machine)
-{
-	; // No op.
-}
-
-
-void MandatoryUpdateMachine::ReadyToInstall::enter(void)
-{
-	LL_INFOS() << "entering ready to install" << LL_ENDL;
-	// Open update ready dialog.
-}
-
-
-void MandatoryUpdateMachine::ReadyToInstall::exit(void)
-{
-	// Restart viewer.
-}
-
-
-
-// MandatoryUpdateMachine::StartingUpdaterService
-//-----------------------------------------------------------------------------
-
-
-MandatoryUpdateMachine::StartingUpdaterService::StartingUpdaterService(MandatoryUpdateMachine & machine):
-	mMachine(machine)
-{
-	; // No op.
-}
-
-
-void MandatoryUpdateMachine::StartingUpdaterService::enter(void)
-{
-	LL_INFOS() << "entering start update service" << LL_ENDL;
-	mMachine.getNotificationsInterface().add("UpdaterServiceNotRunning", LLSD(), LLSD(), boost::bind(&MandatoryUpdateMachine::StartingUpdaterService::onButtonClicked, this, _1, _2));
-}
-
-
-void MandatoryUpdateMachine::StartingUpdaterService::exit(void)
-{
-	; // No op.
-}
-
-
-void MandatoryUpdateMachine::StartingUpdaterService::onButtonClicked(const LLSD & uiform, const LLSD & result)
-{
-	if(result["OK_okcancelbuttons"].asBoolean()) {
-		mMachine.mUpdaterService.startChecking(false);
-		mMachine.setCurrentState(new CheckingForUpdate(mMachine));
-	} else {
-		LLAppViewer::instance()->forceQuit();
-	}
-}
-
-
-
-// MandatoryUpdateMachine::WaitingForDownload
-//-----------------------------------------------------------------------------
-
-
-MandatoryUpdateMachine::WaitingForDownload::WaitingForDownload(MandatoryUpdateMachine & machine):
-	mMachine(machine),
-	mProgressView(0)
-{
-	; // No op.
-}
-
-
-void MandatoryUpdateMachine::WaitingForDownload::enter(void)
-{
-	LL_INFOS() << "entering waiting for download" << LL_ENDL;
-	mProgressView = gViewerWindow->getProgressView();
-	//mProgressView->setMessage("Downloading update...");
-	std::ostringstream stream;
-	stream << "There is a required update for your Black Dragon installation." << std::endl <<
-		"Version " << mMachine.mUpdaterService.updatedVersion();
-	//BD
-	//mProgressView->setText(stream.str());
-	mProgressView->setPercent(0);
-	mProgressView->setVisible(true);
-	mConnection = LLEventPumps::instance().obtain(LLUpdaterService::pumpName()).
-		listen("MandatoryUpdateMachine::CheckingForUpdate", boost::bind(&MandatoryUpdateMachine::WaitingForDownload::onEvent, this, _1));
-}
-
-
-void MandatoryUpdateMachine::WaitingForDownload::exit(void)
-{
-	mProgressView->setVisible(false);
-}
-
-
-bool MandatoryUpdateMachine::WaitingForDownload::onEvent(LLSD const & event)
-{
-	switch(event["type"].asInteger()) {
-		case LLUpdaterService::DOWNLOAD_COMPLETE:
-			mMachine.setCurrentState(new ReadyToInstall(mMachine));
-			break;
-		case LLUpdaterService::DOWNLOAD_ERROR:
-			mMachine.setCurrentState(new Error(mMachine));
-			break;
-		case LLUpdaterService::PROGRESS: {
-			double downloadSize = event["download_size"].asReal();
-			double bytesDownloaded = event["bytes_downloaded"].asReal();
-			mProgressView->setPercent(100. * bytesDownloaded / downloadSize);
-			break;
-		}
-		default:
-			break;
-	}
-
-	return false;
-}
-
-
 
 // LLLoginInstance
 //-----------------------------------------------------------------------------
@@ -478,11 +87,9 @@ LLLoginInstance::LLLoginInstance() :
 	mLoginModule(new LLLogin()),
 	mNotifications(NULL),
 	mLoginState("offline"),
-	mSkipOptionalUpdate(false),
 	mAttemptComplete(false),
 	mTransferRate(0.0f),
-	mDispatcher("LLLoginInstance", "change"),
-	mUpdaterService(0)
+	mDispatcher("LLLoginInstance", "change")
 {
 	mLoginModule->getEventPump().listen("lllogininstance", 
 		boost::bind(&LLLoginInstance::handleLoginEvent, this, _1));
@@ -495,10 +102,12 @@ LLLoginInstance::LLLoginInstance() :
 }
 
 void LLLoginInstance::setPlatformInfo(const std::string platform,
-									  const std::string platform_version)
+									  const std::string platform_version,
+                                      const std::string platform_name)
 {
 	mPlatform = platform;
 	mPlatformVersion = platform_version;
+    mPlatformVersionName = platform_name;
 }
 
 LLLoginInstance::~LLLoginInstance()
@@ -567,7 +176,6 @@ void LLLoginInstance::constructAuthParams(LLPointer<LLCredential> user_credentia
 	requested_options.append("event_notifications");
 	requested_options.append("classified_categories");
 	requested_options.append("adult_compliant"); 
-	//requested_options.append("inventory-targets");
 	requested_options.append("buddy-list");
 	requested_options.append("newuser-config");
 	requested_options.append("ui-config");
@@ -589,16 +197,16 @@ void LLLoginInstance::constructAuthParams(LLPointer<LLCredential> user_credentia
 		requested_options.append("god-connect");
 	}
 	
-	// (re)initialize the request params with creds.
-	LLSD request_params = user_credential->getLoginParams();
+	LLSD request_params;
 
-	unsigned char hashed_unique_id_string[MD5HEX_STR_SIZE];
-	if ( ! llHashedUniqueID(hashed_unique_id_string) )
-	{
+    unsigned char hashed_unique_id_string[MD5HEX_STR_SIZE];
+    if ( ! llHashedUniqueID(hashed_unique_id_string) )
+    {
+
 		LL_WARNS() << "Not providing a unique id in request params" << LL_ENDL;
+
 	}
 	request_params["start"] = construct_start_string();
-	request_params["skipoptional"] = mSkipOptionalUpdate;
 	request_params["agree_to_tos"] = false; // Always false here. Set true in 
 	request_params["read_critical"] = false; // handleTOSResponse
 	request_params["last_exec_event"] = mLastExecEvent;
@@ -607,18 +215,37 @@ void LLLoginInstance::constructAuthParams(LLPointer<LLCredential> user_credentia
 	request_params["version"] = LLVersionInfo::getVersion();
 	request_params["channel"] = LLVersionInfo::getChannel();
 	request_params["platform"] = mPlatform;
+	request_params["address_size"] = ADDRESS_SIZE;
 	request_params["platform_version"] = mPlatformVersion;
+	request_params["address_size"] = ADDRESS_SIZE;
+	request_params["platform_string"] = mPlatformVersionName;
 	request_params["id0"] = mSerialNumber;
 	request_params["host_id"] = gSavedSettings.getString("HostID");
 	request_params["extended_errors"] = true; // request message_id and message_args
+
+    // log request_params _before_ adding the credentials   
+    LL_DEBUGS("LLLogin") << "Login parameters: " << LLSDOStreamer<LLSDNotationFormatter>(request_params) << LL_ENDL;
+
+    // Copy the credentials into the request after logging the rest
+    LLSD credentials(user_credential->getLoginParams());
+    for (LLSD::map_const_iterator it = credentials.beginMap();
+         it != credentials.endMap();
+         it++
+         )
+    {
+        request_params[it->first] = it->second;
+    }
+
+	// Specify desired timeout/retry options
+	LLSD http_params;
+	http_params["timeout"] = gSavedSettings.getF32("LoginSRVTimeout");
+	http_params["retries"] = LOGIN_MAX_RETRIES;
 
 	mRequestData.clear();
 	mRequestData["method"] = "login_to_simulator";
 	mRequestData["params"] = request_params;
 	mRequestData["options"] = requested_options;
-
-	mRequestData["cfg_srv_timeout"] = gSavedSettings.getF32("LoginSRVTimeout");
-	mRequestData["cfg_srv_pump"] = gSavedSettings.getString("LoginSRVPump");
+	mRequestData["http_params"] = http_params;
 }
 
 bool LLLoginInstance::handleLoginEvent(const LLSD& event)
@@ -648,98 +275,97 @@ bool LLLoginInstance::handleLoginEvent(const LLSD& event)
 
 void LLLoginInstance::handleLoginFailure(const LLSD& event)
 {
-	
+    // Login has failed. 
+    // Figure out why and respond...
+    LLSD response = event["data"];
+    std::string reason_response = response["reason"].asString();
+    std::string message_response = response["message"].asString();
+    // For the cases of critical message or TOS agreement,
+    // start the TOS dialog. The dialog response will be handled
+    // by the LLLoginInstance::handleTOSResponse() callback.
+    // The callback intiates the login attempt next step, either 
+    // to reconnect or to end the attempt in failure.
+    if(reason_response == "tos")
+    {
+        LL_INFOS() << "LLLoginInstance::handleLoginFailure ToS" << LL_ENDL;
 
-	// Login has failed. 
-	// Figure out why and respond...
-	LLSD response = event["data"];
-	std::string reason_response = response["reason"].asString();
-	std::string message_response = response["message"].asString();
-	// For the cases of critical message or TOS agreement,
-	// start the TOS dialog. The dialog response will be handled
-	// by the LLLoginInstance::handleTOSResponse() callback.
-	// The callback intiates the login attempt next step, either 
-	// to reconnect or to end the attempt in failure.
-	if(reason_response == "tos")
-	{
-		LL_INFOS() << "LLLoginInstance::handleLoginFailure ToS" << LL_ENDL;
+        LLSD data(LLSD::emptyMap());
+        data["message"] = message_response;
+        data["reply_pump"] = TOS_REPLY_PUMP;
+        if (gViewerWindow)
+            gViewerWindow->setShowProgress(FALSE);
+        LLFloaterReg::showInstance("message_tos", data);
+        LLEventPumps::instance().obtain(TOS_REPLY_PUMP)
+            .listen(TOS_LISTENER_NAME,
+                    boost::bind(&LLLoginInstance::handleTOSResponse, 
+                                this, _1, "agree_to_tos"));
+    }
+    else if(reason_response == "critical")
+    {
+        LL_INFOS() << "LLLoginInstance::handleLoginFailure Crit" << LL_ENDL;
 
-		LLSD data(LLSD::emptyMap());
-		data["message"] = message_response;
-		data["reply_pump"] = TOS_REPLY_PUMP;
-		if (gViewerWindow)
-			gViewerWindow->setShowProgress(FALSE);
-		LLFloaterReg::showInstance("message_tos", data);
-		LLEventPumps::instance().obtain(TOS_REPLY_PUMP)
-			.listen(TOS_LISTENER_NAME,
-					boost::bind(&LLLoginInstance::handleTOSResponse, 
-								this, _1, "agree_to_tos"));
-	}
-	else if(reason_response == "critical")
-	{
-		LL_INFOS() << "LLLoginInstance::handleLoginFailure Crit" << LL_ENDL;
+        LLSD data(LLSD::emptyMap());
+        data["message"] = message_response;
+        data["reply_pump"] = TOS_REPLY_PUMP;
+        if(response.has("error_code"))
+        {
+            data["error_code"] = response["error_code"];
+        }
+        if(response.has("certificate"))
+        {
+            data["certificate"] = response["certificate"];
+        }
+        
+        if (gViewerWindow)
+            gViewerWindow->setShowProgress(FALSE);
 
-		LLSD data(LLSD::emptyMap());
-		data["message"] = message_response;
-		data["reply_pump"] = TOS_REPLY_PUMP;
-		if(response.has("error_code"))
-		{
-			data["error_code"] = response["error_code"];
-		}
-		if(response.has("certificate"))
-		{
-			data["certificate"] = response["certificate"];
-		}
-		
-		if (gViewerWindow)
-			gViewerWindow->setShowProgress(FALSE);
+        LLFloaterReg::showInstance("message_critical", data);
+        LLEventPumps::instance().obtain(TOS_REPLY_PUMP)
+            .listen(TOS_LISTENER_NAME,
+                    boost::bind(&LLLoginInstance::handleTOSResponse, 
+                                this, _1, "read_critical"));
+    }
+    else if(reason_response == "update")
+    {
+        // This shouldn't happen - the viewer manager should have forced an update; 
+        // possibly the user ran the viewer directly and bypassed the update check
+        std::string required_version = response["message_args"]["VERSION"];
+        LL_WARNS() << "Login failed because an update to version " << required_version << " is required." << LL_ENDL;
 
-		LLFloaterReg::showInstance("message_critical", data);
-		LLEventPumps::instance().obtain(TOS_REPLY_PUMP)
-			.listen(TOS_LISTENER_NAME,
-					boost::bind(&LLLoginInstance::handleTOSResponse, 
-								this, _1, "read_critical"));
-	}
-	else if(reason_response == "update" || gSavedSettings.getBOOL("ForceMandatoryUpdate"))
-	{
-		LL_INFOS() << "LLLoginInstance::handleLoginFailure update" << LL_ENDL;
+        if (gViewerWindow)
+            gViewerWindow->setShowProgress(FALSE);
 
-		gSavedSettings.setBOOL("ForceMandatoryUpdate", FALSE);
-		updateApp(true, message_response);
-	}
-	else if(reason_response == "optional")
-	{
-		LL_INFOS() << "LLLoginInstance::handleLoginFailure optional" << LL_ENDL;
+        LLSD data(LLSD::emptyMap());
+        data["VERSION"] = required_version;
+        LLNotificationsUtil::add("RequiredUpdate", data, LLSD::emptyMap(), boost::bind(&LLLoginInstance::handleLoginDisallowed, this, _1, _2));
+    }
+    else if(reason_response == "key")
+    {
+        // this is a password problem or other restriction
+        // an appropriate message has already been displayed
+        attemptComplete();
+    }
+    else
+    {   
+        LL_WARNS() << "Login failed for an unknown reason: " << LLSDOStreamer<LLSDNotationFormatter>(response) << LL_ENDL;
 
-		updateApp(false, message_response);
-	}
-	else
-	{	
-		LL_INFOS() << "LLLoginInstance::handleLoginFailure attemptComplete" << LL_ENDL;
-		attemptComplete();
-	}	
+        if (gViewerWindow)
+            gViewerWindow->setShowProgress(FALSE);
+
+        LLNotificationsUtil::add("LoginFailedUnknown", LLSD::emptyMap(), LLSD::emptyMap(), boost::bind(&LLLoginInstance::handleLoginDisallowed, this, _1, _2));
+    }   
+}
+
+void LLLoginInstance::handleLoginDisallowed(const LLSD& notification, const LLSD& response)
+{
+    attemptComplete();
 }
 
 void LLLoginInstance::handleLoginSuccess(const LLSD& event)
 {
 	LL_INFOS() << "LLLoginInstance::handleLoginSuccess" << LL_ENDL;
 
-	if(gSavedSettings.getBOOL("ForceMandatoryUpdate"))
-	{
-		LLSD response = event["data"];
-		std::string message_response = response["message"].asString();
-
-		// Testing update...
-		gSavedSettings.setBOOL("ForceMandatoryUpdate", FALSE);
-
-		// Don't confuse startup by leaving login "online".
-		mLoginModule->disconnect(); 
-		updateApp(true, message_response);
-	}
-	else
-	{
-		attemptComplete();
-	}
+	attemptComplete();
 }
 
 void LLLoginInstance::handleDisconnect(const LLSD& event)
@@ -789,134 +415,6 @@ bool LLLoginInstance::handleTOSResponse(bool accepted, const std::string& key)
 	return true;
 }
 
-
-void LLLoginInstance::updateApp(bool mandatory, const std::string& auth_msg)
-{
-	if(mandatory)
-	{
-		gViewerWindow->setShowProgress(false);
-		MandatoryUpdateMachine * machine = new MandatoryUpdateMachine(*this, *mUpdaterService);
-		mUpdateStateMachine.reset(machine);
-		machine->start();
-		return;
-	}
-	
-	// store off config state, as we might quit soon
-	gSavedSettings.saveToFile(gSavedSettings.getString("ClientSettingsFile"), TRUE);	
-	LLUIColorTable::instance().saveUserSettings();
-
-	std::ostringstream message;
-	std::string msg;
-	if (!auth_msg.empty())
-	{
-		msg = "(" + auth_msg + ") \n";
-	}
-
-	LLSD args;
-	args["MESSAGE"] = msg;
-	
-	LLSD payload;
-	payload["mandatory"] = mandatory;
-
-	/*
-	 * We're constructing one of the following 9 strings here:
-	 *   "DownloadWindowsMandatory"
-	 *	 "DownloadWindowsReleaseForDownload"
-	 *	 "DownloadWindows"
-	 *	 "DownloadMacMandatory"
-	 *	 "DownloadMacReleaseForDownload"
-	 *	 "DownloadMac"
-	 *	 "DownloadLinuxMandatory"
-	 *	 "DownloadLinuxReleaseForDownload"
-	 *	 "DownloadLinux"
- 	 *
-	 * I've called them out explicitly in this comment so that they can be grepped for.
-	 */
-	std::string notification_name = "Download";
-	
-#if LL_WINDOWS
-	notification_name += "Windows";
-#elif LL_DARWIN
-	notification_name += "Mac";
-#else
-	notification_name += "Linux";
-#endif
-	
-	if (mandatory)
-	{
-		notification_name += "Mandatory";
-	}
-	else
-	{
-#if LL_RELEASE_FOR_DOWNLOAD
-		notification_name += "ReleaseForDownload";
-#endif
-	}
-
-	if(mNotifications)
-	{
-		mNotifications->add(notification_name, args, payload, 
-			boost::bind(&LLLoginInstance::updateDialogCallback, this, _1, _2));
-
-		gViewerWindow->setShowProgress(false);
-	}
-}
-
-bool LLLoginInstance::updateDialogCallback(const LLSD& notification, const LLSD& response)
-{
-	S32 option = LLNotification::getSelectedOption(notification, response);
-	std::string update_exe_path;
-	bool mandatory = notification["payload"]["mandatory"].asBoolean();
-
-#if !LL_RELEASE_FOR_DOWNLOAD
-	if (option == 2)
-	{
-		// This condition attempts to skip the 
-		// update if using a dev build.
-		// The relog probably won't work if the 
-		// update is mandatory. :)
-
-	    // *REMOVE:Mani - Saving for reference...
-		//LLStartUp::setStartupState( STATE_LOGIN_AUTH_INIT ); 
-		mSkipOptionalUpdate = true;
-		reconnect();
-		return false;
-	}
-#endif
-
-	if (option == 1)
-	{
-		// ...user doesn't want to do it
-		if (mandatory)
-		{
-			// Mandatory update, user chose to not to update...
-			// The login attemp is complete, startup should 
-			// quit when detecting this.
-			attemptComplete();
-
-			// *REMOVE:Mani - Saving for reference...
-			//LLAppViewer::instance()->forceQuit();
-			// // Bump them back to the login screen.
-			// //reset_login();
-		}
-		else
-		{
-			// Optional update, user chose to skip
-			mSkipOptionalUpdate = true;
-			reconnect();
-		}
-		return false;
-	}
-	
- 	if(mUpdaterLauncher)
-  	{
- 		mUpdaterLauncher();
-  	}
-  
- 	attemptComplete();
-
-	return false;
-}
 
 std::string construct_start_string()
 {

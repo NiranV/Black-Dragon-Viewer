@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Viewer" name="viewer_panel">
- <scroll_container name="viewer_scroll">
+ <!--<scroll_container name="viewer_scroll">
   <panel name="viewer_scroll_panel">
  <check_box label="MU Pose Stil in Chat und IM" name="AllowMUpose"/>
  <check_box label="Automatisch Inventarangebote annehmen" name="AutoAcceptNewInventory"/>
@@ -81,5 +81,5 @@
 		<check_box label="LL Standart Inventarbibliothek deaktivieren" name="no_library"/>
 		<check_box label="Inventar mit HTTP statt UDP beziehen" name="UseHTTPInventory"/>
   </panel>
- </scroll_container>
+ </scroll_container>-->
 </panel>

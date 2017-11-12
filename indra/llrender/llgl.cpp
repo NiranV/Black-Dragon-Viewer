@@ -55,7 +55,6 @@
 
 
 BOOL gDebugSession = FALSE;
-BOOL gDebugGL = FALSE;
 BOOL gClothRipple = FALSE;
 BOOL gHeadlessClient = FALSE;
 BOOL gGLActive = FALSE;
@@ -65,7 +64,7 @@ static const std::string HEADLESS_VENDOR_STRING("Linden Lab");
 static const std::string HEADLESS_RENDERER_STRING("Headless");
 static const std::string HEADLESS_VERSION_STRING("1.0");
 
-std::ofstream gFailLog;
+llofstream gFailLog;
 
 #if GL_ARB_debug_output
 

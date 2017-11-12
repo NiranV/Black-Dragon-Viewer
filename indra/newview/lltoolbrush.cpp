@@ -447,7 +447,8 @@ void LLToolBrushLand::handleSelect()
 {
 	gEditMenuHandler = this;
 
-	gFloaterTools->setStatusText("modifyland");
+	//BD
+	//gFloaterTools->setStatusText("modifyland");
 //	if (!mBrushSelected)
 	{
 		mBrushSelected = TRUE;

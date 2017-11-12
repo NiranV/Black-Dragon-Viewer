@@ -313,6 +313,7 @@ public:
 	virtual bool needsApply(std::string& mesg);
 	virtual bool apply(std::string& mesg);
 	virtual void update(LLGroupChange gc);
+	virtual void onFilterChanged();
 
 	void handleActionSelect();
 

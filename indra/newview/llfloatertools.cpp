@@ -238,7 +238,8 @@ BOOL	LLFloaterTools::postBuild()
 	mBtnEdit			= getChild<LLButton>("button edit");
 	mBtnCreate			= getChild<LLButton>("button create");
 	mBtnLand			= getChild<LLButton>("button land" );
-	mTextStatus			= getChild<LLTextBox>("text status");
+	//BD
+	//mTextStatus			= getChild<LLTextBox>("text status");
 	mRadioGroupFocus	= getChild<LLRadioGroup>("focus_radio_group");
 	mRadioGroupMove		= getChild<LLRadioGroup>("move_radio_group");
 	mRadioGroupEdit		= getChild<LLRadioGroup>("edit_radio_group");
@@ -327,7 +328,8 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mBtnEdit(NULL),
 	mBtnCreate(NULL),
 	mBtnLand(NULL),
-	mTextStatus(NULL),
+	//BD
+	//mTextStatus(NULL),
 
 	mRadioGroupFocus(NULL),
 	mRadioGroupMove(NULL),
@@ -424,7 +426,8 @@ LLFloaterTools::~LLFloaterTools()
 	delete mLandImpactsObserver;
 }
 
-void LLFloaterTools::setStatusText(const std::string& text)
+//BD
+/*void LLFloaterTools::setStatusText(const std::string& text)
 {
 	std::map<std::string, std::string>::iterator iter = mStatusText.find(text);
 	if (iter != mStatusText.end())
@@ -435,7 +438,7 @@ void LLFloaterTools::setStatusText(const std::string& text)
 	{
 		mTextStatus->setText(text);
 	}
-}
+}*/
 
 void LLFloaterTools::refresh()
 {
@@ -647,20 +650,20 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 
 	// HACK - highlight buttons for next click
 	mRadioGroupMove->setVisible(move_visible);
-	if (!gGrabBtnSpin && 
-		!gGrabBtnVertical &&
-		!(mask == MASK_VERTICAL) && 
-		!(mask == MASK_SPIN) )
+	if (!(gGrabBtnSpin || 
+		gGrabBtnVertical || 
+		(mask == MASK_VERTICAL) || 
+		(mask == MASK_SPIN)))
 	{
 		mRadioGroupMove->setValue("radio move");
 	}
-	else if (gGrabBtnVertical || 
-			 (mask == MASK_VERTICAL) )
+	else if ((mask == MASK_VERTICAL) ||
+			 (gGrabBtnVertical && (mask != MASK_SPIN)))
 	{
 		mRadioGroupMove->setValue("radio lift");
 	}
-	else if (gGrabBtnSpin || 
-			 (mask == MASK_SPIN) )
+	else if ((mask == MASK_SPIN) || 
+			 (gGrabBtnSpin && (mask != MASK_VERTICAL)))
 	{
 		mRadioGroupMove->setValue("radio spin");
 	}

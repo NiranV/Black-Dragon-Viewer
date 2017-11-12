@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.8.2 - Bone Dragon]"
+       label="[CHANNEL] [VERSION] - [2.9.2 - Bit Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="7171"
+       height="9175"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,276 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="169"
+              height="324"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: DracO HirudO and Ken Durham to patron list.
+Added: Triangle (polygon) count to "Avatar Rendering Complexity" display.
+Added: Triangle (polygon) count to Object Weights window.
+Added: Worn tab to Inventory window.
+Added: Filter type dropdown to Inventory window.
+Added: Akritos Rain to the Patreon list.
+Added: Ability to set objects or faces to fullbright locally.
+Added: Ability to change object or face alpha modes locally.
+Added: Dhalgren Correia to the Patreon list.
+Added: Max FPS option to Preferences - Display tab.
+Changed: Overhauled Object Weights window layout.
+Changed: Overhauled Inventory Filter window layout.
+Changed: Hide the "Edit" menu while the recent tab is active.
+Changed: Moved alpha and fullbright manipulation options into a detachable sub menu.
+Changed: Merged de/realpha and alpha mode codes into one big function to be used and simplified it.
+Changed: Version to 2.9.2.
+Fixed: Compile.
+Fixed: Several entries from the People menus that were not functional.
+Fixed: Several entries from the People menus that did not check properly when an option was enabled.
+Fixed: Vignette options being cut off.
+Fixed: L$ Balance blocking the inventory menu.
+Removed: Several entries from the People menus that did not exist.
+Removed: Unneeded code in llviewerobjectlist.cpp.
+Misc: Cleaned up llpanelmaininventory.cpp a bit.
+Misc: Cleaned up llpanelpeople.cpp/h a bit.
+Merge with Viewer Bear
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.9.1
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="338"
+              top_pad="3"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: EaseIn and EaseOut times info display to Animation Manipulator window.
+Added: Patreon support section to "About Black Dragon" window for all supporters.
+Added: Ability to preview .anim files from disk inworld on your avatar by creating local animations to play with the Animation Manipulator.
+Added: Maddy to the list of patrons.
+Added: First babysteps and preparations for pose exporter.
+Added: More Patreon patrons to the About Black Dragon window.
+Changed: Added a bunch of missing login panel changes to the changelog.
+Changed: Overhauled Inventory window layout.
+Changed: Marketplace Inbox button into a bottom button.
+Changed: Improved SSR look and quality.
+Changed: Overhauled People window layout.
+Changed: Simplified more formatting code in the Animation Manipulator window.
+Changed: Disabled the Admin main menu.
+Changed: Moved marketplace and grid status menu entries to the browser menu.
+Changed: Made the favoritebar able to contain technically any object (landmarks and callingcards for now).
+Changed: Layout of About Black Dragon window a bit, broadened tabs and moved Patreon tab to second position.
+Changed: Version to 2.9.1.
+Fixed: XML warnings in log when opening an animation.
+Fixed: Inconsistencies in group list items.
+Fixed: Member ban button in group panel clipping into other buttons.
+Removed: Sort buttons in Inventory.
+Removed: All buttons except the remove button.
+Misc: Cleaned up People window code.
+Misc: Cleaned up the bdposingmotion.cpp a bit.
+Misc: Cleaned up bdfloateranimations.cpp some more.
+Misc: Increment version to 5.1.1 for auto-updater purposes.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.9.0
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="1287"
+              top_pad="3"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Tooltips for every single option in display tab.
+Added: Report (someone) option to people and conversation menus.
+Added: Missing default button for SSR Resolution.
+Added: Tooltips and improved existing tooltips in the 'Interface' preferences tab.
+Added: Change keybinding button to 'Keybindings' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'IM &amp; Groupchat' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Camera' preferences tab.
+Added: (mass) Reset Skeleton, (mass) Reset Skeleton and Animations, Derender, Mute Voice and Block Text options to 'People' window right-click menu.
+Added: View Chat History, Remove Friend, Share, Mute Voice and Block Text options to inworld avatar right-click menu.
+Added: View Chat History, Remove Friend, Share, Mute Voice and Block Text options to inworld avatar attachment right-click menu.
+Added: Request Teleport, View Chat History and Report options to group member list right-click menu.
+Added: Ability to bind 'Move Left' and 'Move Right' to sitting binds for vehicle controls.
+Added: Shift + A, Shift + D, Shift + Left Arrow and Shift + Right Arrow to sitting controls to fix gear shifting on some vehicles.
+Added: Tooltips and improved existing tooltips in the 'Notifications' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Controls' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'General' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Privacy' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Sound &amp; Media' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Keybindings' preferences tab.
+Added: Separator between the 'close conversation' menu entry and all others in the conversation tab menu.
+Added: Tooltips and improved existing tooltips in the 'Viewer' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Chat' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'Browser' preferences tab.
+Added: Tooltips and improved existing tooltips in the 'RLVa' preferences tab.
+Added: Buttons for adding wait and repeat events directly to the Animator.
+Added: Tooltips to most buttons of the Animator.
+Added: Ability to change wait event times.
+Added: Missing group ban button in group 'Roles' panel.
+Added: Additional info display for EaseIn/Out duration of animations in the 'Motions' tab.
+Changed: More Icon changes and fixes.
+Changed: Improved shadow precision on distance, on high altitudes and eliminate almost all cases of shadows flickering on high altitudes.
+Changed: Version to 2.9.0 - Bit Dragon.
+Changed: Allow hyperlinks in tooltips.
+Changed: Disabled max Texture\Scene Memory clamping.
+Changed: Posing animation to an empty all-bone using animation.
+Changed: Tooltip layout and look.
+Changed: Disabled german display tab for now.
+Changed: Don't refresh our window when changing the UI size, it doesn't fix the offset.
+Changed: Agent recorder file path to user_settings rather than the often read-only Viewer folder. Should fix agent recorder sometimes not working.
+Changed: Improved tooltips in display tab with additional information and a consistent design.
+Changed: Don't alter our camera behavior when ClickToWalk is enabled.
+Changed: Allow zooming out 9999m.
+Changed: Updated login screen changelog.
+Changed: Default button appearance to make it clearer which options they affect (if they affect multiple for instance).
+Changed: Improved all tooltips for the onscreen movement control window.
+Changed: Disabled german translation for the 'Interface' preferences tab.
+Changed: Disabled foot shadow texture.
+Changed: Layout and style of the 'Sound &amp; Media' preferences tab to fit all other tabs.
+Changed: Show text and allow text entry for volume sliders.
+Changed: Disabled german translation for the 'Sound &amp; Media' preferences tab.
+Changed: Disabled german translation for the 'IM &amp; Groupchat' preferences tab.
+Changed: Disabled german translation for the 'Camera' preferences tab.
+Changed: Improved Volumetric Lighting slightly, removed random noise completely.
+Changed: Completely overhauled and reorganized all most used avatar related right-click menus into a consistent layout.
+Changed: Simplified the bone value display formatting code.
+Changed: Moved 'Derender' option in avatar right click menus to main menu rather than the 'Render Avatar' submenu.
+Changed: Renamed 'Ignore' in SLURL-based right click menus to 'Block All' for consistency.
+Changed: Overhauled 'Animation' tab in Animation Controls window for better space usage and workflow.
+Changed: Added latest changes to the loginscreen changelog.
+Changed: Disabled the Launcher notification each Viewer start for now.
+Changed: A few chat option labels since we now have proper tooltips for them.
+Changed: Further improvements on the 'Display' tab tooltips, specifically highlighting values and giving extended info whether they are the SL ultra setting or not.
+Changed: Layout of animator tab in 'Animation Controls' window for a better workflow.
+Changed: The way the Animator behaves when adding new events, now selects the added entry rather than the previous.
+Changed: Disabled all german preferences panel translations for now.
+Changed: Moved the 'Animation Control' menu entry into 'My Useful Features' and renamed it to 'Pose/Animation Manipulator'.
+Changed: Consistency pass over some preferences tooltips.
+Changed: Moved estate management menu entries in right click menus to the avatar actions.
+Changed: Disabled memory limitations on AMD cards.
+Changed: Updated the login panel changelog with the latest bugfixes.
+Fixed: Compile and all Fmodex linking errors.
+Fixed: Viewer using Second Life icons instead of Black Dragon's.
+Fixed: Projector lights vanishing on distance.
+Fixed: Current Outfit tab not displaying attachments.
+Fixed: Line Endings in llwindow.h.
+Fixed: Line Endings in llwindowheadless.h.
+Fixed: Line Endings in llwindowwin32.h.
+Fixed: Crash when trying to manipulate an Avatar via the Animation Controls window that is no longer available.
+Fixed: SSR Brightness default button reverting SSR Resolution instead.
+Fixed: Default button for projector shadow resolution being off.
+Fixed: Missing header of the german interface tab.
+Fixed: Info (i) buttons in namelists clipping outside the name entry.
+Fixed: Double\Triple\Quad default button height offset in 'Camera' preferences tab.
+Fixed: Double\Triple\Quad default button height offset in 'Graphics' preferences tab.
+Fixed: Posing motion being overriden by priority 4 animations, make the posing animation have priority 7.
+Fixed: Some 'Change Selected' buttons not working properly in 'Keybindings' tab.
+Fixed: 'Keybindings' panel layout and alignment.
+Fixed: Notification embed option in RLVa tab not working.
+Fixed: A bunch of dummy warnings all over the place.
+Fixed: Longstanding issue with HUDs not being clickable through the top toolbar.
+Removed: Check for Updates button in About Black Dragon floater.
+Removed: Double default button in 'Notifications' preferences tab.
+Removed: Deprecated Enable 'FirstRLVGiveToRLV' Warning option.
+Misc: Merge and fixes.
+Misc: More compile fixes.
+Misc: Branding and naming changes for 64bit.
+Misc: Cleanup in bdfloateranimations.cpp.
+Misc: Massive cleanup in preferences floater code.
+Merge with Alex Ivy
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.8.2
+              </text>
+              <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="169"
+              top_pad="3"
               left="7"
               name="changelog_text"
               bg_visible="true"
@@ -2008,9 +2276,9 @@ Misc: Code tagging.
        height="23"
        image_unselected="Toolbar_Middle_Off"
        image_selected="Toolbar_Middle_Selected"
-       label="RAWR!"
+       label="*BREATHE FIRE*"
        font="SansSerif"
-       font.style="BOLD"
+       font.style="BOLDITALIC"
        label_color="1 1 1 0.8"
        layout="topleft"
        left="113"

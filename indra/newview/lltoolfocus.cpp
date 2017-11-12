@@ -102,7 +102,8 @@ void LLToolCamera::handleSelect()
 {
 	if (gFloaterTools)
 	{
-		gFloaterTools->setStatusText("camera");
+		//BD
+		//gFloaterTools->setStatusText("camera");
 		// in case we start from tools floater, we count any selection as valid
 		mValidSelection = gFloaterTools->getVisible();
 	}

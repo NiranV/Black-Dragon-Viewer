@@ -55,7 +55,386 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 	 value="[REGION](Double-click to teleport, shift-drag to pan)"/>
 	<string
 	 name="GroupCountWithInfo"
-	 value="[COUNT] + [REMAINING] | 42"/>
+	 value="[COUNT] / 42 Groups"/>
+	<menu_bar
+   height="18"
+   layout="topleft"
+   follows="top|left|right"
+   bg_color="Black_25"
+   bg_visible="false"
+   left="5"
+   name="people_menu"
+   top="0">
+	  <menu
+     label="Edit"
+     layout="topleft"
+     tear_off="false"
+     name="Edit"
+     width="128">
+		<!-- Nearby -->
+		<menu_item_call
+		label="Add Friend"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.AddFriendWizard"/>
+		<on_visible
+		function="People.Nearby.Visible"
+		parameter="nearby"/>
+		</menu_item_call>
+		<!--<menu_item_call
+		label="View People Icons"
+		layout="topleft"
+		name="">
+		<on_click
+		function=""/>
+		<on_visible
+		function="People.Nearby.Visible"
+		parameter="nearby"/>
+		</menu_item_call>-->
+		<menu_item_check
+		label="View Map"
+		layout="topleft"
+		name="">
+		<on_click
+	   function="ToggleControl"
+      parameter="NearbyListShowMap" />
+		<on_check
+	   function="CheckControl"
+      parameter="NearbyListShowMap" />
+		<on_visible
+		function="People.Nearby.Visible"
+		parameter="nearby"/>
+		</menu_item_check>
+		<menu_item_check
+		label="Hide Usernames"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Nearby.ViewSort.Action"
+		parameter="view_usernames"/>
+		<on_check
+		function="CheckControl"
+		parameter="NearbyListHideUsernames"/>
+		<on_visible
+		function="People.Nearby.Visible"
+		parameter="nearby"/>
+		</menu_item_check>
+		<menu_item_check
+		label="Show Chat Range Rings"
+		layout="topleft"
+		name="">
+		<on_click
+	   function="ToggleControl"
+      parameter="MiniMapChatRing" />
+		<on_check
+	   function="CheckControl"
+      parameter="MiniMapChatRing" />
+		<on_visible
+		function="People.Nearby.Visible"
+		parameter="nearby"/>
+		</menu_item_check>
+		
+		<!-- Friends -->
+		<!--<menu_item_call
+		label="View People Icons"
+		layout="topleft"
+		name="">
+		<on_click
+		function=""
+		parameter=""/>
+		<on_visible
+		function="People.Friends.Visible"
+		parameter="friends"/>
+		</menu_item_call>-->
+		<menu_item_check
+		label="Hide Usernames"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Friends.ViewSort.Action"
+		parameter="view_usernames"/>
+		<on_check
+		function="CheckControl"
+		parameter="FriendsListHideUsernames"/>
+		<on_visible
+		function="People.Friends.Visible"
+		parameter="friends"/>
+		</menu_item_check>
+		<menu_item_check
+		label="View Permission Granted"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Friends.ViewSort.Action"
+		parameter="view_permissions"/>
+		<on_check
+		function="CheckControl"
+		parameter="FriendsListShowPermissions"/>
+		<on_visible
+		function="People.Friends.Visible"
+		parameter="friends"/>
+		</menu_item_check>
+		
+		<!-- Groups -->
+		<menu_item_call
+		label="Find More Groups"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Group.Plus.Action"
+		parameter="join_group"/>
+		<on_enable
+		function="People.Group.Plus.Validate"/>
+		<on_visible
+		function="People.Groups.Visible"
+		parameter="groups"/>
+		</menu_item_call>
+		<menu_item_call
+		label="Create Group"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Group.Plus.Action"
+		parameter="new_group"/>
+		<on_enable
+		function="People.Group.Plus.Validate"/>
+		<on_visible
+		function="People.Groups.Visible"
+		parameter="groups"/>
+		</menu_item_call>
+		<menu_item_check
+		label="Show Group Icons"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Groups.ViewSort.Action"
+		parameter="show_icons"/>
+		<on_check
+		function="CheckControl"
+		parameter="GroupListShowIcons"/>
+		<on_visible
+		function="People.Groups.Visible"
+		parameter="groups"/>
+		</menu_item_check>
+		
+		<!-- Recent -->
+		<!--<menu_item_call
+		label="View People Icons"
+		layout="topleft"
+		name="">
+		<on_click
+		function=""/>
+		<on_visible
+		function="People.Recent.Visible"
+		parameter="recent"/>
+		</menu_item_call>-->
+		
+		<!-- Blocked -->
+		<menu_item_call
+		label="Block Resident By Name"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Blocked.Plus.Action"
+		parameter="block_res_by_name"/>
+		<on_visible
+		function="People.Blocked.Visible"
+		parameter="block"/>
+		</menu_item_call>
+		<menu_item_call
+		label="Block Object By Name"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Blocked.Plus.Action"
+		parameter="block_obj_by_name"/>
+		<on_visible
+		function="People.Blocked.Visible"
+		parameter="block"/>
+		</menu_item_call>
+	 </menu>
+	 <menu
+     label="Filters"
+     layout="topleft"
+     tear_off="false"
+     name="Filters"
+     width="128">
+		<!-- Nearby -->
+		<menu_item_check
+		label="Sort By Recent Speakers"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Nearby.ViewSort.Action"
+		parameter="sort_by_recent_speakers"/>
+		<on_check
+		function="People.Nearby.ViewSort.CheckItem"
+		parameter="sort_by_recent_speakers"/>
+		<on_visible
+		function="People.Nearby.Visible"
+		parameter="nearby"/>
+		</menu_item_check>
+		<menu_item_check
+		label="Sort By Name"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Nearby.ViewSort.Action"
+		parameter="sort_name"/>
+		<on_check
+		function="People.Nearby.ViewSort.CheckItem"
+		parameter="sort_name"/>
+		<on_visible
+		function="People.Nearby.Visible"
+		parameter="nearby"/>
+		</menu_item_check>
+		<menu_item_call
+		label="Sort By Distance"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Nearby.ViewSort.Action"
+		parameter="sort_distance"/>
+		<on_check
+		function="People.Nearby.ViewSort.CheckItem"
+		parameter="sort_distance"/>
+		<on_visible
+		function="People.Nearby.Visible"
+		parameter="nearby"/>
+		</menu_item_call>
+		
+		<!-- Friends -->
+		<menu_item_check
+		label="Sort By Name"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Friends.ViewSort.Action"
+		parameter="sort_name"/>
+		<on_check
+		function="People.Friends.ViewSort.CheckItem"
+		parameter="sort_name"/>
+		<on_visible
+		function="People.Friends.Visible"
+		parameter="friends"/>
+		</menu_item_check>
+		<menu_item_check
+		label="Sort By Status"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Friends.ViewSort.Action"
+		parameter="sort_status"/>
+		<on_check
+		function="People.Friends.ViewSort.CheckItem"
+		parameter="sort_status"/>
+		<on_visible
+		function="People.Friends.Visible"
+		parameter="friends"/>
+		</menu_item_check>
+		
+		<!-- Recent -->
+		<menu_item_check
+		label="Sort By Name"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Recent.ViewSort.Action"
+		parameter="sort_name"/>
+		<on_check
+		function="People.Recent.ViewSort.CheckItem"
+		parameter="sort_name"/>
+		<on_visible
+		function="People.Recent.Visible"
+		parameter="recent"/>
+		</menu_item_check>
+		<menu_item_check
+		label="Sort By Most Recent"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Recent.ViewSort.Action"
+		parameter="sort_recent"/>
+		<on_check
+		function="People.Recent.ViewSort.CheckItem"
+		parameter="sort_recent"/>
+		<on_visible
+		function="People.Recent.Visible"
+		parameter="recent"/>
+		</menu_item_check>
+		
+		<!-- Blocked -->
+		<menu_item_check
+		label="Sort By Name"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Blocked.ViewSort.Action"
+		parameter="sort_name"/>
+		<on_check
+		function="People.Blocked.ViewSort.CheckItem"
+		parameter="sort_name"/>
+		<on_visible
+		function="People.Blocked.Visible"
+		parameter="block"/>
+		</menu_item_check>
+		<menu_item_check
+		label="Sort By Type"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Blocked.ViewSort.Action"
+		parameter="sort_type"/>
+		<on_check
+		function="People.Blocked.ViewSort.CheckItem"
+		parameter="sort_type"/>
+		<on_visible
+		function="People.Blocked.Visible"
+		parameter="block"/>
+		</menu_item_check>
+	 </menu>
+    </menu_bar>
+	<text
+	type="string"
+	length="1"
+	follows="top|right"
+	halign="right"
+	height="14"
+	layout="topleft"
+	visible="false"
+	left="141"
+	top="3"
+	width="83"
+	name="blockcount">
+	[BLOCKED_COUNT] / [LIMIT] Blocked
+	</text>
+	<text
+	type="string"
+	length="1"
+	follows="top|right"
+	halign="right"
+	height="14"
+	layout="topleft"
+	left="141"
+	top="3"
+	width="83"
+	name="friendcount">
+	[FRIEND_COUNT] Friends
+	</text>
+	<text
+	type="string"
+	length="1"
+	follows="top|right"
+	halign="right"
+	height="14"
+	layout="topleft"
+	left="241"
+	top="3"
+	width="83"
+	name="groupcount">
+	[COUNT] / 42 Groups
+	</text>
     <tab_container
      bottom="-10"
      follows="all"
@@ -65,7 +444,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
      tab_min_width="62"
      tab_height="20"
      tab_position="top"
-     top="0"
+     top="18"
      halign="center"
      right="-5">
 
@@ -86,9 +465,10 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          <layout_stack
            clip="false"
            follows="all"
-           height="412"
+           height="395"
            layout="topleft"
            left="0"
+			  border_size="0"
            mouse_opaque="false"
            orientation="vertical"
            right="-1"
@@ -149,7 +529,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
 															height="25"
-															width="191"
+															width="287"
 															layout="topleft"
 															left="2"
 															top="0"/>
@@ -166,7 +546,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  name="nearby_filter_input"
                  text_pad_left="10"
                  top="1"
-                 width="187" />
+                 width="283" />
                 <button
                  commit_callback.function="People.Gear"
                  follows="right"
@@ -181,7 +561,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  tool_tip="Actions on selected person"
                  top="0"
                  width="31" />
-                <menu_button
+                <!--<menu_button
                  follows="right"
                  height="25"
                  image_hover_unselected="Toolbar_Middle_Over"
@@ -228,7 +608,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  width="31">
                     <commit_callback
                      function="People.DelFriend" />
-                 </dnd_button>
+                 </dnd_button>-->
             </panel>
         </panel>
 
@@ -282,7 +662,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                          allow_select="true"
 						 color="Transparent"
                          follows="all"
-                         height="410"
+                         height="392"
                          layout="topleft"
                          left="2"
                          multi_select="true"
@@ -324,7 +704,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
 															height="25"
-															width="191"
+															width="287"
 															layout="topleft"
 															left="2"
 															top="0"/>
@@ -341,7 +721,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  name="friends_filter_input"
                  text_pad_left="10"
                  top="1"
-                 width="187" />
+                 width="283" />
                 <button
                  commit_callback.function="People.Gear"
                  follows="right"
@@ -371,7 +751,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  tool_tip="View/sort options"
                  top_delta="0"
                  width="31" />
-                <button
+                <!--<button
                  follows="right"
                  height="25"
                  image_hover_unselected="Toolbar_Middle_Over"
@@ -380,7 +760,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  image_unselected="Toolbar_Middle_Off"
                  layout="topleft"
                  left_pad="1"
-                 name="friends_add_btn"
+                 name="add_friend_btn"
                  tool_tip="Offer friendship to a resident"
                  top_delta="0"
                  width="31">
@@ -402,7 +782,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  width="31">
                     <commit_callback
                      function="People.DelFriend" />
-                </dnd_button>
+                </dnd_button>-->
             </panel>
             <text
              follows="all"
@@ -435,7 +815,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
             <group_list
              allow_select="true" 
              follows="all"
-             height="410"
+             height="392"
              layout="topleft"
              left="2"
              name="group_list"
@@ -455,7 +835,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
 															height="25"
-															width="191"
+															width="287"
 															layout="topleft"
 															left="2"
 															top="0"/>
@@ -472,7 +852,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  name="groups_filter_input"
                  text_pad_left="10"
                  top="1"
-                 width="187" />
+                 width="283" />
                 <menu_button
                  follows="right"
                  height="25"
@@ -486,7 +866,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  tool_tip="Actions on selected group"
                  top="0"
                  width="31" />
-                <icon
+                <!--<icon
 				follows="right"
 				image_name="Toolbar_Middle_Off"
 				height="25"
@@ -494,19 +874,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 				layout="topleft"
 				left_pad="1"
 				top="0"/>
-				<text
-                type="string"
-                length="1"
-                follows="right"
-				halign="center"
-                height="14"
-                layout="topleft"
-                left_delta="0"
-                top_delta="6"
-				width="63"
-                name="groupcount">
-              [COUNT] + [REMAINING] | 42
-            </text>
+				
                 <menu_button
                  follows="right"
                  height="25"
@@ -524,9 +892,8 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  width="31">
                     <validate_callback
                      function="People.Group.Plus.Validate" />
-                </menu_button>
+                </menu_button>-->
             </panel>
-                use_ellipses="true"
         </panel>
 
 <!-- ================================= RECENT tab =========================== -->
@@ -545,7 +912,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
             <avatar_list
              allow_select="true"
              follows="all"
-             height="410"
+             height="392"
              layout="topleft"
              left="2"
              multi_select="true"
@@ -567,7 +934,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 															follows="left|top|right"
 															image_name="Toolbar_Middle_Off"
 															height="25"
-															width="191"
+															width="287"
 															layout="topleft"
 															left="2"
 															top="0"/>
@@ -584,7 +951,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  name="recent_filter_input"
                  text_pad_left="10"
                  top="1"
-                 width="187" />
+                 width="283" />
                 <button
                  commit_callback.function="People.Gear"
                  follows="right"
@@ -599,7 +966,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  tool_tip="Actions on selected person"
                  top="0"
                  width="31" />
-                <menu_button
+                <!--<menu_button
                  follows="right"
                  height="25"
                  image_hover_unselected="Toolbar_Middle_Over"
@@ -646,7 +1013,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                  width="31">
                     <commit_callback
                      function="People.DelFriend" />
-                 </dnd_button>
+                 </dnd_button>-->
             </panel>
         </panel>
 
@@ -662,8 +1029,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
          left="0"
          right="-1"
          top="0"
-		 name="block_list_panel"
-		 help_topic="blocked_list">
+		 name="blocked_panel">
 			<panel
            class="panel_block_list_sidetray"
            name="panel_block_list_sidetray"
@@ -673,7 +1039,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
            layout="topleft"
            left="0"
 		   width="324"
-		   height="438"
+		   height="420"
            font="SansSerifBold"
            top="0"/>
 		</panel>

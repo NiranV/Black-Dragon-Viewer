@@ -87,11 +87,11 @@ public:
 	void killAllAlphas();
 
 //	//BD - De/ReAlpha
-	void killAlpha(LLViewerObject *objectp);
-	void restoreAlpha(LLViewerObject *objectp);
+	void setAlpha(LLViewerObject *objectp, bool alpha);
+	void setAlphaMode(LLViewerObject *objectp, LLMaterial::eDiffuseAlphaMode mode);
 
 //	//BD - DeBright
-	void killFullbright(LLViewerObject *objectp);
+	void setFullbright(LLViewerObject *objectp, bool fullbright);
 
 	void removeDrawable(LLDrawable* drawablep);
 

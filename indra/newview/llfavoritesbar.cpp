@@ -60,31 +60,36 @@ const S32 DROP_DOWN_MENU_WIDTH = 250;
 const S32 DROP_DOWN_MENU_TOP_PAD = 13;
 
 /**
- * Helper for LLFavoriteLandmarkButton and LLFavoriteLandmarkMenuItem.
+ * Helper for LLFavoriteButton and LLFavoriteLandmarkMenuItem.
  * Performing requests for SLURL for given Landmark ID
  */
 class LLLandmarkInfoGetter
 {
 public:
+	//BD
 	LLLandmarkInfoGetter()
-	:	mLandmarkID(LLUUID::null),
+	:	mID(LLUUID::null),
 		mName("(Loading...)"),
 		mPosX(0),
 		mPosY(0),
 		mPosZ(0),
-		mLoaded(false) 
+		mLoaded(false),
+		//BD
+		mType(LLAssetType::AT_NONE)
 	{
 		mHandle.bind(this);
 	}
 
-	void setLandmarkID(const LLUUID& id) { mLandmarkID = id; }
-	const LLUUID& getLandmarkId() const { return mLandmarkID; }
+	//BD
+	void setID(const LLUUID& id) { mID = id; }
+	const LLUUID& getId() const { return mID; }
+	void setType(const LLAssetType::EType type) { mType = type; }
+	const LLAssetType::EType getType() const { return mType; }
 
 	const std::string& getName()
 	{
 		if(!mLoaded)
 			requestNameAndPos();
-
 		return mName;
 	}
 
@@ -109,20 +114,71 @@ public:
 		return mPosZ;
 	}
 
+	//BD
+	LLAssetType::EType getType()
+	{
+		if (!mLoaded)
+			requestNameAndPos();
+		return mType;
+	}
+
 private:
 	/**
 	 * Requests landmark data from server.
 	 */
 	void requestNameAndPos()
 	{
-		if (mLandmarkID.isNull())
+		//BD
+		if (mID.isNull())
 			return;
 
-		LLVector3d g_pos;
-		if(LLLandmarkActions::getLandmarkGlobalPos(mLandmarkID, g_pos))
+		//BD
+		if (mType == LLAssetType::AT_LANDMARK)
 		{
-			LLLandmarkActions::getRegionNameAndCoordsFromPosGlobal(g_pos,
-				boost::bind(&LLLandmarkInfoGetter::landmarkNameCallback, static_cast<LLHandle<LLLandmarkInfoGetter> >(mHandle), _1, _2, _3, _4));
+
+			if (mID.isNull())
+				return;
+
+			LLVector3d g_pos;
+			if (LLLandmarkActions::getLandmarkGlobalPos(mID, g_pos))
+			{
+				LLLandmarkActions::getRegionNameAndCoordsFromPosGlobal(g_pos,
+					boost::bind(&LLLandmarkInfoGetter::landmarkNameCallback, static_cast<LLHandle<LLLandmarkInfoGetter>>(mHandle), _1, _2, _3, _4));
+			}
+		}
+		else if (mType == LLAssetType::AT_CALLINGCARD)
+		{
+			if (mID.isNull())
+				return;
+
+			callingcardCallback(static_cast<LLHandle<LLLandmarkInfoGetter>>(mHandle));
+
+			/*LLVector3d g_pos;
+			std::string name;
+			LLAvatarTracker& av_tracker = LLAvatarTracker::instance();
+			LLTracker::ETrackingStatus tracking_status = LLTracker::getTrackingStatus();
+
+			if (//LLAvatarActions::isFriend(mCallingcardID)
+				av_tracker.getBuddyInfo(mCallingcardID)->isRightGrantedFrom(LLRelationship::GRANT_MAP_LOCATION))
+			{
+				LLAvatarActions::showOnMap(mCallingcardID);
+
+				if (LLTracker::TRACKING_AVATAR == tracking_status
+					&& av_tracker.haveTrackingInfo())
+				{
+					g_pos = av_tracker.getGlobalPos();
+					name = av_tracker.getName();
+
+					callingcardCallback(static_cast<LLHandle<LLLandmarkInfoGetter>>(mHandle), name, g_pos.mdV[VX], g_pos.mdV[VY], g_pos.mdV[VZ]);
+				}
+			}
+			else
+			{
+				if (LLAvatarActions::canOfferTeleport(mCallingcardID))
+				{
+					LLAvatarActions::offerTeleport(mCallingcardID);
+				}
+			}*/
 		}
 	}
 
@@ -139,13 +195,26 @@ private:
 		}
 	}
 
-	LLUUID mLandmarkID;
+	//BD
+	static void callingcardCallback(LLHandle<LLLandmarkInfoGetter> handle)
+	{
+		LLLandmarkInfoGetter* getter = handle.get();
+		if (getter)
+		{
+			getter->mLoaded = true;
+		}
+	}
+
+	//BD
+	LLUUID mID;
 	std::string mName;
 	S32 mPosX;
 	S32 mPosY;
 	S32 mPosZ;
 	bool mLoaded;
 	LLRootHandle<LLLandmarkInfoGetter> mHandle;
+	//BD
+	LLAssetType::EType mType;
 };
 
 /**
@@ -155,25 +224,30 @@ private:
  * in createButtons function but landmark data is not available when Favorites Bar is
  * created. Thats why we are requesting landmark data after 
  */
-class LLFavoriteLandmarkButton : public LLButton
+//BD
+class LLFavoriteButton : public LLButton
 {
 public:
 
 	BOOL handleToolTip(S32 x, S32 y, MASK mask)
 	{
-		std::string region_name = mLandmarkInfoGetter.getName();
-		
-		if (!region_name.empty())
+		//BD
+		if (mLandmarkInfoGetter.getType() == LLAssetType::AT_LANDMARK)
 		{
-			std::string extra_message = llformat("%s (%d, %d, %d)", region_name.c_str(), 
-				mLandmarkInfoGetter.getPosX(), mLandmarkInfoGetter.getPosY(), mLandmarkInfoGetter.getPosZ());
+			std::string region_name = mLandmarkInfoGetter.getName();
 
-			LLToolTip::Params params;
-			params.message = llformat("%s\n%s", getLabelSelected().c_str(), extra_message.c_str());
-			params.max_width = 1000;			
-			params.sticky_rect = calcScreenRect(); 
+			if (!region_name.empty())
+			{
+				std::string extra_message = llformat("%s (%d, %d, %d)", region_name.c_str(),
+					mLandmarkInfoGetter.getPosX(), mLandmarkInfoGetter.getPosY(), mLandmarkInfoGetter.getPosZ());
 
-			LLToolTipMgr::instance().show(params);
+				LLToolTip::Params params;
+				params.message = llformat("%s\n%s", getLabelSelected().c_str(), extra_message.c_str());
+				params.max_width = 1000;
+				params.sticky_rect = calcScreenRect();
+
+				LLToolTipMgr::instance().show(params);
+			}
 		}
 		return TRUE;
 	}
@@ -190,8 +264,11 @@ public:
 		return LLButton::handleHover(x, y, mask);
 	}
 	
-	void setLandmarkID(const LLUUID& id){ mLandmarkInfoGetter.setLandmarkID(id); }
-	const LLUUID& getLandmarkId() const { return mLandmarkInfoGetter.getLandmarkId(); }
+	//BD
+	void setID(const LLUUID& id){ mLandmarkInfoGetter.setID(id); }
+	const LLUUID& getId() const { return mLandmarkInfoGetter.getId(); }
+	void setType(const LLAssetType::EType type){ mLandmarkInfoGetter.setType(type); }
+	const LLAssetType::EType getType() const { return mLandmarkInfoGetter.getType(); }
 
 	void onMouseEnter(S32 x, S32 y, MASK mask)
 	{
@@ -206,7 +283,8 @@ public:
 	}
 
 protected:
-	LLFavoriteLandmarkButton(const LLButton::Params& p) : LLButton(p) {}
+	//BD
+	LLFavoriteButton(const LLButton::Params& p) : LLButton(p) {}
 	friend class LLUICtrlFactory;
 
 private:
@@ -236,7 +314,8 @@ public:
 		return TRUE;
 	}
 	
-	void setLandmarkID(const LLUUID& id){ mLandmarkInfoGetter.setLandmarkID(id); }
+	//BD
+	void setLandmarkID(const LLUUID& id){ mLandmarkInfoGetter.setID(id); }
 
 	virtual BOOL handleMouseDown(S32 x, S32 y, MASK mask)
 	{
@@ -447,7 +526,8 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 			// Copy the item into the favorites folder (if it's not already there).
 			LLInventoryItem *item = (LLInventoryItem *)cargo_data;
 
-			if (LLFavoriteLandmarkButton* dest = dynamic_cast<LLFavoriteLandmarkButton*>(findChildByLocalCoords(x, y)))
+			//BD
+			if (LLFavoriteButton* dest = dynamic_cast<LLFavoriteButton*>(findChildByLocalCoords(x, y)))
 			{
 				setLandingTab(dest);
 			}
@@ -501,6 +581,78 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 			}
 		}
 		break;
+	//BD
+	case DAD_CALLINGCARD:
+		{
+			/*
+			* add a callback to the end drag event.
+			* the callback will disconnet itself immediately after execution
+			* this is done because LLToolDragAndDrop is a common tool so it shouldn't
+			* be overloaded with redundant callbacks.
+			*/
+			if (!mEndDragConnection.connected())
+			{
+				mEndDragConnection = LLToolDragAndDrop::getInstance()->setEndDragCallback(boost::bind(&LLFavoritesBarCtrl::onEndDrag, this));
+			}
+
+			// Copy the item into the favorites folder (if it's not already there).
+			LLInventoryItem *item = (LLInventoryItem *)cargo_data;
+
+			//BD
+			if (LLFavoriteButton* dest = dynamic_cast<LLFavoriteButton*>(findChildByLocalCoords(x, y)))
+			{
+				setLandingTab(dest);
+			}
+			else if (mLastTab && (x >= mLastTab->getRect().mRight))
+			{
+				/*
+				* the condition dest == NULL can be satisfied not only in the case
+				* of dragging to the right from the last tab of the favbar. there is a
+				* small gap between each tab. if the user drags something exactly there
+				* then mLandingTab will be set to NULL and the dragged item will be pushed
+				* to the end of the favorites bar. this is incorrect behavior. that's why
+				* we need an additional check which excludes the case described previously
+				* making sure that the mouse pointer is beyond the last tab.
+				*/
+				setLandingTab(NULL);
+			}
+
+			// check if we are dragging an existing item from the favorites bar
+			if (item && mDragItemId == item->getUUID())
+			{
+				*accept = ACCEPT_YES_SINGLE;
+
+				showDragMarker(TRUE);
+
+				if (drop)
+				{
+					handleExistingFavoriteDragAndDrop(x, y);
+				}
+			}
+			else
+			{
+				const LLUUID favorites_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_FAVORITE);
+				if (item->getParentUUID() == favorites_id)
+				{
+					LL_WARNS("FavoritesBar") << "Attemt to copy a favorite item into the same folder." << LL_ENDL;
+					break;
+				}
+
+				*accept = ACCEPT_YES_COPY_MULTI;
+
+				showDragMarker(TRUE);
+
+				if (drop)
+				{
+					if (mItems.empty())
+					{
+						setLandingTab(NULL);
+					}
+					handleNewFavoriteDragAndDrop(item, favorites_id, x, y);
+				}
+			}
+		}
+		break;
 	default:
 		break;
 	}
@@ -510,17 +662,19 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 
 void LLFavoritesBarCtrl::handleExistingFavoriteDragAndDrop(S32 x, S32 y)
 {
+	//BD
 	// Identify the button hovered and the side to drop
-	LLFavoriteLandmarkButton* dest = dynamic_cast<LLFavoriteLandmarkButton*>(mLandingTab);
+	LLFavoriteButton* dest = dynamic_cast<LLFavoriteButton*>(mLandingTab);
 	bool insert_before = true;	
 	if (!dest)
 	{
 		insert_before = false;
-		dest = dynamic_cast<LLFavoriteLandmarkButton*>(mLastTab);
+		dest = dynamic_cast<LLFavoriteButton*>(mLastTab);
 	}
 
+	//BD
 	// There is no need to handle if an item was dragged onto itself
-	if (dest && dest->getLandmarkId() == mDragItemId)
+	if (dest && dest->getId() == mDragItemId)
 	{
 		return;
 	}
@@ -528,7 +682,8 @@ void LLFavoritesBarCtrl::handleExistingFavoriteDragAndDrop(S32 x, S32 y)
 	// Insert the dragged item in the right place
 	if (dest)
 	{
-		LLInventoryModel::updateItemsOrder(mItems, mDragItemId, dest->getLandmarkId(), insert_before);
+		//BD
+		LLInventoryModel::updateItemsOrder(mItems, mDragItemId, dest->getId(), insert_before);
 	}
 	else
 	{
@@ -549,8 +704,9 @@ void LLFavoritesBarCtrl::handleExistingFavoriteDragAndDrop(S32 x, S32 y)
 
 void LLFavoritesBarCtrl::handleNewFavoriteDragAndDrop(LLInventoryItem *item, const LLUUID& favorites_id, S32 x, S32 y)
 {
+	//BD
 	// Identify the button hovered and the side to drop
-	LLFavoriteLandmarkButton* dest = NULL;
+	LLFavoriteButton* dest = NULL;
 	bool insert_before = true;
 	if (!mItems.empty())
 	{
@@ -558,26 +714,28 @@ void LLFavoritesBarCtrl::handleNewFavoriteDragAndDrop(LLInventoryItem *item, con
 		//		the viewer would crash when casting mLastTab below, as mLastTab is still null when the
 		//		second landmark is being added.
 		//		To ensure mLastTab is valid, we need to call updateButtons() at the end of this function
-		dest = dynamic_cast<LLFavoriteLandmarkButton*>(mLandingTab);
+		dest = dynamic_cast<LLFavoriteButton*>(mLandingTab);
 		if (!dest)
 		{
 			insert_before = false;
-			dest = dynamic_cast<LLFavoriteLandmarkButton*>(mLastTab);
+			dest = dynamic_cast<LLFavoriteButton*>(mLastTab);
 		}
 	}
 	
+	//BD
 	// There is no need to handle if an item was dragged onto itself
-	if (dest && dest->getLandmarkId() == mDragItemId)
+	if (dest && dest->getId() == mDragItemId)
 	{
 		return;
 	}
 	
 	LLPointer<LLViewerInventoryItem> viewer_item = new LLViewerInventoryItem(item);
 
+	//BD
 	// Insert the dragged item in the right place
 	if (dest)
 	{
-		insertItem(mItems, dest->getLandmarkId(), viewer_item, insert_before);
+		insertItem(mItems, dest->getId(), viewer_item, insert_before);
 	}
 	else
 	{
@@ -653,8 +811,22 @@ void LLFavoritesBarCtrl::changed(U32 mask)
 	{
 		LLInventoryModel::item_array_t items;
 		LLInventoryModel::cat_array_t cats;
-		LLIsType is_type(LLAssetType::AT_LANDMARK);
+		LLIsType is_type(LLAssetType::AT_LANDMARK);// | LLAssetType::AT_CALLINGCARD);
 		gInventory.collectDescendentsIf(mFavoriteFolderId, cats, items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+
+		//BD
+		LLInventoryModel::item_array_t c_items;
+		LLInventoryModel::cat_array_t c_cats;
+		is_type = LLAssetType::AT_CALLINGCARD;
+		gInventory.collectDescendentsIf(mFavoriteFolderId, c_cats, c_items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+		for (LLInventoryModel::item_array_t::iterator i = c_items.begin(); i != c_items.end(); ++i)
+		{
+			items.push_back((*i));
+		}
+		for (LLInventoryModel::cat_array_t::iterator i = c_cats.begin(); i != c_cats.end(); ++i)
+		{
+			cats.push_back((*i));
+		}
 
 		for (LLInventoryModel::item_array_t::iterator i = items.begin(); i != items.end(); ++i)
 		{
@@ -774,22 +946,20 @@ void LLFavoritesBarCtrl::updateButtons()
 	child_list_const_iter_t child_it = childs->begin();
 	int first_changed_item_index = 0;
 	int rightest_point = getRect().mRight - mMoreTextBox->getRect().getWidth();
+	//BD
 	//lets find first changed button
 	while (child_it != childs->end() && first_changed_item_index < mItems.size())
 	{
-		LLFavoriteLandmarkButton* button = dynamic_cast<LLFavoriteLandmarkButton*> (*child_it);
+		const LLViewerInventoryItem *item = mItems[first_changed_item_index].get();
+		LLFavoriteButton* button = dynamic_cast<LLFavoriteButton*> (*child_it);
 		if (button)
 		{
-			const LLViewerInventoryItem *item = mItems[first_changed_item_index].get();
-			if (item)
+			// an child's order  and mItems  should be same
+			if (button->getId() != item->getUUID() // sort order has been changed
+				|| button->getLabelSelected() != item->getName() // favorite's name has been changed
+				|| button->getRect().mRight < rightest_point) // favbar's width has been changed
 			{
-			    // an child's order  and mItems  should be same
-				if (button->getLandmarkId() != item->getUUID() // sort order has been changed
-					|| button->getLabelSelected() != item->getName() // favorite's name has been changed
-					|| button->getRect().mRight < rightest_point) // favbar's width has been changed
-				{
-					break;
-				}
+				break;
 			}
 			first_changed_item_index++;
 		}
@@ -802,12 +972,12 @@ void LLFavoritesBarCtrl::updateButtons()
 		// Rebuild the buttons only
 		// child_list_t is a linked list, so safe to erase from the middle if we pre-increment the iterator
 
+		//BD
 		while (child_it != childs->end())
 		{
-			//lets remove other landmarks button and rebuild it
 			child_list_const_iter_t cur_it = child_it++;
-			LLFavoriteLandmarkButton* button =
-					dynamic_cast<LLFavoriteLandmarkButton*> (*cur_it);
+			LLFavoriteButton* button =
+				dynamic_cast<LLFavoriteButton*> (*cur_it);
 			if (button)
 			{
 				removeChild(button);
@@ -898,34 +1068,37 @@ LLButton* LLFavoritesBarCtrl::createButton(const LLPointer<LLViewerInventoryItem
 	 */
 	int required_width = mFont->getWidth(item->getName()) + 20;
 	int width = required_width > def_button_width? def_button_width : required_width;
-	LLFavoriteLandmarkButton* fav_btn = NULL;
+	//BD
+	LLFavoriteButton* fav_btn = NULL;
 
 	// do we have a place for next button + double buttonHGap + mMoreTextBox ?
-	if(curr_x + width + 2*button_x_delta +  mMoreTextBox->getRect().getWidth() > getRect().mRight )
+	if (curr_x + width + 2 * button_x_delta + mMoreTextBox->getRect().getWidth() > getRect().mRight)
 	{
 		return NULL;
 	}
 	LLButton::Params fav_btn_params(button_params);
-	fav_btn = LLUICtrlFactory::create<LLFavoriteLandmarkButton>(fav_btn_params);
+	//BD
+	fav_btn = LLUICtrlFactory::create<LLFavoriteButton>(fav_btn_params);
 	if (NULL == fav_btn)
 	{
-		LL_WARNS("FavoritesBar") << "Unable to create LLFavoriteLandmarkButton widget: " << item->getName() << LL_ENDL;
+		LL_WARNS("FavoritesBar") << "Unable to create LLFavoriteButton widget: " << item->getName() << LL_ENDL;
 		return NULL;
 	}
-	
+
 	addChild(fav_btn);
 
-	LLRect butt_rect (fav_btn->getRect());
-	fav_btn->setLandmarkID(item->getUUID());
+	LLRect butt_rect(fav_btn->getRect());
+	fav_btn->setID(item->getUUID());
+	fav_btn->setType(item->getActualType());
 	butt_rect.setOriginAndSize(curr_x + button_x_delta, fav_btn->getRect().mBottom, width, fav_btn->getRect().getHeight());
-	
+
 	fav_btn->setRect(butt_rect);
 	// change only left and save bottom
 	fav_btn->setFont(mFont);
 	fav_btn->setLabel(item->getName());
 	fav_btn->setToolTip(item->getName());
 	fav_btn->setCommitCallback(boost::bind(&LLFavoritesBarCtrl::onButtonClick, this, item->getUUID()));
-	fav_btn->setRightMouseDownCallback(boost::bind(&LLFavoritesBarCtrl::onButtonRightClick, this, item->getUUID(), _1, _2, _3,_4 ));
+	fav_btn->setRightMouseDownCallback(boost::bind(&LLFavoritesBarCtrl::onButtonRightClick, this, item->getUUID(), _1, _2, _3, _4));
 
 	fav_btn->LLUICtrl::setMouseDownCallback(boost::bind(&LLFavoritesBarCtrl::onButtonMouseDown, this, item->getUUID(), _1, _2, _3, _4));
 	fav_btn->LLUICtrl::setMouseUpCallback(boost::bind(&LLFavoritesBarCtrl::onButtonMouseUp, this, item->getUUID(), _1, _2, _3, _4));
@@ -958,6 +1131,20 @@ BOOL LLFavoritesBarCtrl::collectFavoriteItems(LLInventoryModel::item_array_t &it
 
 	LLIsType is_type(LLAssetType::AT_LANDMARK);
 	gInventory.collectDescendentsIf(mFavoriteFolderId, cats, items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+	
+	//BD
+	LLInventoryModel::item_array_t c_items;
+	LLInventoryModel::cat_array_t c_cats;
+	is_type = LLAssetType::AT_CALLINGCARD;
+	gInventory.collectDescendentsIf(mFavoriteFolderId, c_cats, c_items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+	for (LLInventoryModel::item_array_t::iterator i = c_items.begin(); i != c_items.end(); ++i)
+	{
+		items.push_back((*i));
+	}
+	for (LLInventoryModel::cat_array_t::iterator i = c_cats.begin(); i != c_cats.end(); ++i)
+	{
+		cats.push_back((*i));
+	}
 
 	std::sort(items.begin(), items.end(), LLFavoritesSort());
 
@@ -1727,6 +1914,21 @@ void LLFavoritesOrderStorage::saveOrder()
 	LLIsType is_type(LLAssetType::AT_LANDMARK);
 	LLUUID favorites_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_FAVORITE);
 	gInventory.collectDescendentsIf(favorites_id, cats, items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+
+	//BD
+	LLInventoryModel::item_array_t c_items;
+	LLInventoryModel::cat_array_t c_cats;
+	is_type = LLAssetType::AT_CALLINGCARD;
+	gInventory.collectDescendentsIf(favorites_id, c_cats, c_items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+	for (LLInventoryModel::item_array_t::iterator i = c_items.begin(); i != c_items.end(); ++i)
+	{
+		items.push_back((*i));
+	}
+	for (LLInventoryModel::cat_array_t::iterator i = c_cats.begin(); i != c_cats.end(); ++i)
+	{
+		cats.push_back((*i));
+	}
+
 	std::sort(items.begin(), items.end(), LLViewerInventoryItemSort());
 	saveItemsOrder(items);
 }
@@ -1765,6 +1967,20 @@ void LLFavoritesOrderStorage::rearrangeFavoriteLandmarks(const LLUUID& source_it
 	LLUUID favorites_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_FAVORITE);
 	gInventory.collectDescendentsIf(favorites_id, cats, items, LLInventoryModel::EXCLUDE_TRASH, is_type);
 
+	//BD
+	LLInventoryModel::item_array_t c_items;
+	LLInventoryModel::cat_array_t c_cats;
+	is_type = LLAssetType::AT_CALLINGCARD;
+	gInventory.collectDescendentsIf(favorites_id, c_cats, c_items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+	for (LLInventoryModel::item_array_t::iterator i = c_items.begin(); i != c_items.end(); ++i)
+	{
+		items.push_back((*i));
+	}
+	for (LLInventoryModel::cat_array_t::iterator i = c_cats.begin(); i != c_cats.end(); ++i)
+	{
+		cats.push_back((*i));
+	}
+
 	// ensure items are sorted properly before changing order. EXT-3498
 	std::sort(items.begin(), items.end(), LLViewerInventoryItemSort());
 
@@ -1786,6 +2002,20 @@ BOOL LLFavoritesOrderStorage::saveFavoritesRecord(bool pref_changed)
 
 	LLIsType is_type(LLAssetType::AT_LANDMARK);
 	gInventory.collectDescendentsIf(favorite_folder, cats, items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+
+	//BD
+	LLInventoryModel::item_array_t c_items;
+	LLInventoryModel::cat_array_t c_cats;
+	is_type = LLAssetType::AT_CALLINGCARD;
+	gInventory.collectDescendentsIf(favorite_folder, c_cats, c_items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+	for (LLInventoryModel::item_array_t::iterator i = c_items.begin(); i != c_items.end(); ++i)
+	{
+		items.push_back((*i));
+	}
+	for (LLInventoryModel::cat_array_t::iterator i = c_cats.begin(); i != c_cats.end(); ++i)
+	{
+		cats.push_back((*i));
+	}
 
 	std::sort(items.begin(), items.end(), LLFavoritesSort());
 	bool name_changed = false;

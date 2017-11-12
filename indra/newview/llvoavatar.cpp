@@ -146,7 +146,7 @@ const LLUUID ANIM_AGENT_TARGET = LLUUID("0e4896cb-fba4-926c-f355-8720189d5b55");
 const LLUUID ANIM_AGENT_WALK_ADJUST	= LLUUID("829bc85b-02fc-ec41-be2e-74cc6dd7215d");  //"walk_adjust"
 const LLUUID ANIM_AGENT_PHYSICS_MOTION = LLUUID("7360e029-3cb8-ebc4-863e-212df440d987");  //"physics_motion"
 //BD - We use one of my very old stand still animations for now until i uploaded a custom empty one
-const LLUUID ANIM_BD_POSING_MOTION = LLUUID("1d0262f9-30f3-da91-b74e-cc822cc2d0a8");  //"custom_motion"
+const LLUUID ANIM_BD_POSING_MOTION = LLUUID("fd29b117-9429-09c4-10cb-933d0b2ab653");  //"custom_motion"
 
 //-----------------------------------------------------------------------------
 // Constants
@@ -3488,10 +3488,62 @@ void LLVOAvatar::updateDebugText()
 				std::string output;
 				if (motionp->getName().empty())
 				{
+					std::string name;
+					if (gAgent.isGodlikeWithoutAdminMenuFakery() || isSelf())
+					{
+						name = motionp->getID().asString();
+						LLVOAvatar::AnimSourceIterator anim_it = mAnimationSources.begin();
+						for (; anim_it != mAnimationSources.end(); ++anim_it)
+						{
+							if (anim_it->second == motionp->getID())
+							{
+								LLViewerObject* object = gObjectList.findObject(anim_it->first);
+								if (!object)
+								{
+									break;
+								}
+								if (object->isAvatar())
+								{
+									if (mMotionController.mIsSelf)
+									{
+										// Searching inventory by asset id is really long
+										// so just mark as inventory
+										// Also item is likely to be named by LLPreviewAnim
+										name += "(inventory)";
+									}
+								}
+								else
+								{
+									LLViewerInventoryItem* item = NULL;
+									if (!object->isInventoryDirty())
+									{
+										item = object->getInventoryItemByAsset(motionp->getID());
+									}
+									if (item)
+									{
+										name = item->getName();
+									}
+									else if (object->isAttachment())
+									{
+										name += "(" + getAttachmentItemName() + ")";
+									}
+									else
+									{
+										// in-world object, name or content unknown
+										name += "(in-world)";
+									}
+								}
+								break;
+							}
+						}
+					}
+					else
+					{
+						name = LLUUID::null.asString();
+					}
+
 					output = llformat("%s - %d",
-							  gAgent.isGodlikeWithoutAdminMenuFakery() ?
-							  motionp->getID().asString().c_str() :
-							  LLUUID::null.asString().c_str(),
+							  name.c_str(),
 							  (U32)motionp->getPriority());
 				}
 				else
@@ -5310,10 +5362,6 @@ LLUUID LLVOAvatar::remapMotionID(const LLUUID& id)
 			// in one case.
 			if (use_new_walk_run)
 				result = ANIM_AGENT_FEMALE_RUN_NEW;
-		}
-		else if (id == ANIM_AGENT_SIT)
-		{
-			result = ANIM_AGENT_SIT_FEMALE;
 		}
 	}
 	else
@@ -8470,7 +8518,7 @@ void dump_sequential_xml(const std::string outprefix, const LLSD& content)
 {
 	std::string outfilename = get_sequential_numbered_file_name(outprefix,".xml");
 	std::string fullpath = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,outfilename);
-	std::ofstream ofs(fullpath.c_str(), std::ios_base::out);
+	llofstream ofs(fullpath.c_str(), std::ios_base::out);
 	ofs << LLSDOStreamer<LLSDXMLFormatter>(content, LLSDFormatter::OPTIONS_PRETTY);
 	LL_DEBUGS("Avatar") << "results saved to: " << fullpath << LL_ENDL;
 }
@@ -9079,6 +9127,14 @@ void LLVOAvatar::idleUpdateRenderComplexity()
 		}
 		mText->addLine(info_line, info_color, info_style);
 
+		//BD - Triangles and Vertices count
+		info_line = llformat("%d triangles", mTotalTriangleCount);
+		//info_line = llformat("%d triangles (%d vertices)", mTotalTriangleCount, mTotalVerticeCount);
+		// Use grey for imposters, white for normal rendering or no impostors
+		info_color.set(LLColor4::white);
+		info_style = LLFontGL::NORMAL;
+		mText->addLine(info_line, info_color, info_style);
+
 		updateText(); // corrects position
 	}
 }
@@ -9120,6 +9176,9 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 	if (mVisualComplexityStale)
 	{
 		U32 cost = VISUAL_COMPLEXITY_UNKNOWN;
+		//BD - Triangle Count
+		//U32 vertices = VISUAL_COMPLEXITY_UNKNOWN;
+		U32 triangles = VISUAL_COMPLEXITY_UNKNOWN;
 		LLVOVolume::texture_cost_t textures;
 		hud_complexity_list_t hud_complexity_list;
 
@@ -9163,6 +9222,10 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
                             F32 attachment_texture_cost = 0;
                             F32 attachment_children_cost = 0;
 
+							//BD - Triangle Count
+							F32 attachment_total_triangles = 0;
+							//F32 attachment_total_vertices = 0;
+
 							attachment_volume_cost += volume->getRenderCost(textures);
 
 							const_child_list_t children = volume->getChildren();
@@ -9175,6 +9238,9 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 								if (child)
 								{
 									attachment_children_cost += child->getRenderCost(textures);
+									//BD - Triangle Count
+									attachment_total_triangles += child->getHighLODTriangleCount();
+									//attachment_total_vertices += child->getNumVertices();
 								}
 							}
 
@@ -9195,6 +9261,9 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
                                                    << LL_ENDL;
                             // Limit attachment complexity to avoid signed integer flipping of the wearer's ACI
                             cost += (U32)llclamp(attachment_total_cost, MIN_ATTACHMENT_COMPLEXITY, max_attachment_complexity);
+							//BD - Triangle Count
+							//vertices += (U32)llclamp(attachment_total_vertices, MIN_ATTACHMENT_COMPLEXITY, 9999999.f);
+							triangles += (U32)llclamp(attachment_total_triangles, MIN_ATTACHMENT_COMPLEXITY, 9999999.f);
 						}
 					}
 				}
@@ -9313,6 +9382,9 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
         }
 		mVisualComplexity = cost;
 		mVisualComplexityStale = false;
+		//BD - Triangle Count
+		mTotalTriangleCount = triangles;
+		//mTotalVerticeCount = vertices;
 
         static LLCachedControl<U32> show_my_complexity_changes(gSavedSettings, "ShowMyComplexityChanges", 20);
 

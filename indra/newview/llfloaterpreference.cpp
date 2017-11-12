@@ -924,10 +924,6 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mAvatarSettingsList(NULL),
 	mNeedsUpdate(false)
 {
-	LLConversationLog::instance().addObserver(this);
-
-	//Build Floater is now Called from 	LLFloaterReg::add("preferences", "floater_preferences.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterPreference>);
-	
 	//BD
 	static bool registered_voice_dialog = false;
 	if (!registered_voice_dialog)
@@ -967,7 +963,6 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ClickEnablePopup",		boost::bind(&LLFloaterPreference::onClickEnablePopup, this));
 	mCommitCallbackRegistrar.add("Pref.ClickDisablePopup",		boost::bind(&LLFloaterPreference::onClickDisablePopup, this));	
 	mCommitCallbackRegistrar.add("Pref.LogPath",				boost::bind(&LLFloaterPreference::onClickLogPath, this));
-	//mCommitCallbackRegistrar.add("Pref.RenderExceptions",       boost::bind(&LLFloaterPreference::onClickRenderExceptions, this));
 	mCommitCallbackRegistrar.add("Pref.HardwareDefaults",		boost::bind(&LLFloaterPreference::setHardwareDefaults, this));
 	mCommitCallbackRegistrar.add("Pref.AvatarImpostorsEnable",	boost::bind(&LLFloaterPreference::onAvatarImpostorsEnable, this));
 	mCommitCallbackRegistrar.add("Pref.UpdateSliderText",		boost::bind(&LLFloaterPreference::refreshUI,this));
@@ -979,17 +974,6 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.AutoReplace",            boost::bind(&LLFloaterPreference::onClickAutoReplace, this));
 	mCommitCallbackRegistrar.add("Pref.PermsDefault",           boost::bind(&LLFloaterPreference::onClickPermsDefault, this));
 	mCommitCallbackRegistrar.add("Pref.SpellChecker",           boost::bind(&LLFloaterPreference::onClickSpellChecker, this));
-
-	sSkin = gSavedSettings.getString("SkinCurrent");
-
-	gSavedSettings.getControl("NameTagShowUsernames")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged,  _2));	
-	gSavedSettings.getControl("NameTagShowFriends")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged,  _2));	
-	gSavedSettings.getControl("UseDisplayNames")->getCommitSignal()->connect(boost::bind(&handleDisplayNamesOptionChanged,  _2));
-
-	gSavedSettings.getControl("AppearanceCameraMovement")->getCommitSignal()->connect(boost::bind(&handleAppearanceCameraMovementChanged,  _2));
-
-	LLAvatarPropertiesProcessor::getInstance()->addObserver( gAgent.getID(), this );
-
 	mCommitCallbackRegistrar.add("Pref.ClearLog",				boost::bind(&LLConversationLog::onClearLog, &LLConversationLog::instance()));
 	mCommitCallbackRegistrar.add("Pref.DeleteTranscripts",      boost::bind(&LLFloaterPreference::onDeleteTranscripts, this));
 
@@ -1002,6 +986,7 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.DefaultControls", boost::bind(&LLFloaterPreference::onDefaultControls, this));
 	mCommitCallbackRegistrar.add("Pref.AddBind", boost::bind(&LLFloaterPreference::onClickSetAnyKey, this, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.RemoveBind", boost::bind(&LLFloaterPreference::onRemoveBind, this, _2));
+	mCommitCallbackRegistrar.add("Pref.ChangeBind", boost::bind(&LLFloaterPreference::onListClick, this, _2));
 
 //	//BD - Expandable Tabs
 	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::toggleTabs, this));
@@ -1027,8 +1012,20 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 
 //	//BD - Avatar Rendering Settings
 	mContextMenu = new LLSettingsContextMenu(this);
-	LLRenderMuteList::getInstance()->addObserver(&sAvatarRenderMuteListObserver);
 	mCommitCallbackRegistrar.add("Settings.AddNewEntry", boost::bind(&LLFloaterPreference::onClickAdd, this, _2));
+	LLRenderMuteList::getInstance()->addObserver(&sAvatarRenderMuteListObserver);
+
+	//BD
+	LLConversationLog::instance().addObserver(this);
+	LLAvatarPropertiesProcessor::getInstance()->addObserver(gAgent.getID(), this);
+
+	sSkin = gSavedSettings.getString("SkinCurrent");
+
+	gSavedSettings.getControl("NameTagShowUsernames")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged, _2));
+	gSavedSettings.getControl("NameTagShowFriends")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged, _2));
+	gSavedSettings.getControl("UseDisplayNames")->getCommitSignal()->connect(boost::bind(&handleDisplayNamesOptionChanged, _2));
+
+	gSavedSettings.getControl("AppearanceCameraMovement")->getCommitSignal()->connect(boost::bind(&handleAppearanceCameraMovementChanged, _2));
 }
 
 void LLFloaterPreference::processProperties( void* pData, EAvatarProcessorType type )
@@ -1107,10 +1104,6 @@ BOOL LLFloaterPreference::postBuild()
 	gSavedPerAccountSettings.getControl("SoundUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeSoundFolder, this));
 	gSavedPerAccountSettings.getControl("AnimationUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeAnimationFolder, this));
 
-	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
-	if (!tabcontainer->selectTab(gSavedSettings.getS32("LastPrefTab")))
-		tabcontainer->selectFirstTab();
-
 	getChild<LLUICtrl>("cache_location")->setEnabled(FALSE); // make it read-only but selectable (STORM-227)
 	std::string cache_location = gDirUtilp->getExpandedFilename(LL_PATH_CACHE, "");
 	setCacheLocation(cache_location);
@@ -1126,6 +1119,13 @@ BOOL LLFloaterPreference::postBuild()
 	getChild<LLComboBox>("NearbyChatOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this,"NearbyChatOptions"));
 	getChild<LLComboBox>("ObjectIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this,"ObjectIMOptions"));
 
+	//BD
+	mTabContainer = getChild<LLTabContainer>("pref core");
+	if (!mTabContainer->selectTab(gSavedSettings.getS32("LastPrefTab")))
+	{
+		mTabContainer->selectFirstTab();
+	}
+
 //	//BD - Custom Keyboard Layout
 	mBindModeList0 = this->getChild<LLScrollListCtrl>("scroll_mode_0", true);
 	mBindModeList1 = this->getChild<LLScrollListCtrl>("scroll_mode_1", true);
@@ -1133,11 +1133,11 @@ BOOL LLFloaterPreference::postBuild()
 	mBindModeList3 = this->getChild<LLScrollListCtrl>("scroll_mode_3", true);
 	mBindModeList4 = this->getChild<LLScrollListCtrl>("scroll_mode_4", true);
 
-	mBindModeList0->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onList0Click, this));
-	mBindModeList1->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onList1Click, this));
-	mBindModeList2->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onList2Click, this));
-	mBindModeList3->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onList3Click, this));
-	mBindModeList4->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onList4Click, this));
+	mBindModeList0->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClick, this, "0"));
+	mBindModeList1->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClick, this, "1"));
+	mBindModeList2->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClick, this, "2"));
+	mBindModeList3->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClick, this, "3"));
+	mBindModeList4->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClick, this, "4"));
 
 //	//BD - Warning System
 	mWarning0 = getChild<LLUICtrl>("warning_ui_size");
@@ -1156,6 +1156,7 @@ BOOL LLFloaterPreference::postBuild()
 	mWarning13 = getChild<LLUICtrl>("warning_blur_quality");
 	mWarning14 = getChild<LLUICtrl>("warning_light_resolution");
 
+//	//BD - Memory Allocation
 	mSystemMemory = getChild<LLSliderCtrl>("SystemMemory");
 	mSceneMemory = getChild<LLSliderCtrl>("SceneMemory");
 	mProgressBar = getChild<LLProgressBar>("progress_bar");
@@ -1184,6 +1185,7 @@ BOOL LLFloaterPreference::postBuild()
 //	//BD - Expandable Tabs
 	mModifier = 0;
 
+	//BD - TODO: Remove?
 	if (!gSavedSettings.getBOOL("RememberPreferencesTabs"))
 	{
 		gSavedSettings.setBOOL("PrefsViewerVisible", false);
@@ -1240,6 +1242,7 @@ LLFloaterPreference::~LLFloaterPreference()
 //	//BD - Avatar Rendering Settings
 	delete mContextMenu;
 	LLRenderMuteList::getInstance()->removeObserver(&sAvatarRenderMuteListObserver);
+	LLAvatarPropertiesProcessor::getInstance()->removeObserver(gAgent.getID(), this);
 }
 
 //BD - Array Debugs
@@ -1425,29 +1428,10 @@ void LLFloaterPreference::onReplaceBind(KEY key, MASK mask, S32 mode)
 	onExportControls();
 }
 
-void LLFloaterPreference::onList0Click()
+void LLFloaterPreference::onListClick(const LLSD &param)
 {
-	onListClickAction(0);
-}
-
-void LLFloaterPreference::onList1Click()
-{
-	onListClickAction(1);
-}
-
-void LLFloaterPreference::onList2Click()
-{
-	onListClickAction(2);
-}
-
-void LLFloaterPreference::onList3Click()
-{
-	onListClickAction(3);
-}
-
-void LLFloaterPreference::onList4Click()
-{
-	onListClickAction(4);
+	S32 i = param.asInteger();
+	onListClickAction(i);
 }
 
 void LLFloaterPreference::onListClickAction(S32 mode)
@@ -1730,15 +1714,8 @@ void LLFloaterPreference::refreshMemoryControls()
 	S32 avail_vram = max_vram;
 	F32 percent;
 
-	//BD - Since we cannot work out how to get AMD Cards to properly and accurately
-	//     report back its maximum and free memory we'll just use the max, whatever
-	//     that is and only show the actual used memory from SL. Only NVIDIA Cards seem
-	//     to properly and accurately report back their max and free memory.
-	if (gGLManager.mIsNVIDIA)
-	{
-		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
-		used_vram = max_vram - (avail_vram / 1024);
-	}
+	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
+	used_vram = max_vram - (avail_vram / 1024);
 	max_mem = (avail_vram + (S32)bound_mem.value() + (S32)total_mem.value());
 	percent = ((F32)used_vram / (F32)max_vram) * 100.f;
 
@@ -1753,19 +1730,32 @@ void LLFloaterPreference::refreshMemoryControls()
 
 void LLFloaterPreference::draw()
 {
-	BOOL has_first_selected = (getChildRef<LLScrollListCtrl>("disabled_popups").getFirstSelected()!=NULL);
-	gSavedSettings.setBOOL("FirstSelectedDisabledPopups", has_first_selected);
-	
-	has_first_selected = (getChildRef<LLScrollListCtrl>("enabled_popups").getFirstSelected()!=NULL);
-	gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
-
 	if (mUpdateTimer.getElapsedTimeF32() > 1.f)
 	{
 		mUpdateTimer.reset();
-//		//BD - Memory Allocation
-		refreshMemoryControls();
-//		//BD - Warning System
-		refreshWarnings();
+		if (mTabContainer->getCurrentPanelIndex() == 1)
+		{
+//			//BD - Memory Allocation
+			//     Since we cannot work out how to get AMD Cards to properly and accurately
+			//     report back its maximum and free memory we'll just use the max, whatever
+			//     that is and only show the actual used memory from SL. Only NVIDIA Cards seem
+			//     to properly and accurately report back their max and free memory.
+			if (gGLManager.mIsNVIDIA)
+			{
+				refreshMemoryControls();
+			}
+//			//BD - Warning System
+			refreshWarnings();
+		}
+
+		if (mTabContainer->getCurrentPanelIndex() == 9)
+		{
+			BOOL has_first_selected = (getChildRef<LLScrollListCtrl>("disabled_popups").getFirstSelected() != NULL);
+			gSavedSettings.setBOOL("FirstSelectedDisabledPopups", has_first_selected);
+
+			has_first_selected = (getChildRef<LLScrollListCtrl>("enabled_popups").getFirstSelected() != NULL);
+			gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
+		}
 	}
 
 //	//BD - Avatar Rendering Settings
@@ -1780,9 +1770,8 @@ void LLFloaterPreference::draw()
 
 void LLFloaterPreference::saveSettings()
 {
-	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
-	child_list_t::const_iterator iter = tabcontainer->getChildList()->begin();
-	child_list_t::const_iterator end = tabcontainer->getChildList()->end();
+	child_list_t::const_iterator iter = mTabContainer->getChildList()->begin();
+	child_list_t::const_iterator end = mTabContainer->getChildList()->end();
 	for ( ; iter != end; ++iter)
 	{
 		LLView* view = *iter;
@@ -1796,15 +1785,14 @@ void LLFloaterPreference::apply()
 {
 	LLAvatarPropertiesProcessor::getInstance()->addObserver( gAgent.getID(), this );
 	
-	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
 	if (sSkin != gSavedSettings.getString("SkinCurrent"))
 	{
 		LLNotificationsUtil::add("ChangeSkin");
 		refreshSkin(this);
 	}
 	// Call apply() on all panels that derive from LLPanelPreference
-	for (child_list_t::const_iterator iter = tabcontainer->getChildList()->begin();
-		 iter != tabcontainer->getChildList()->end(); ++iter)
+	for (child_list_t::const_iterator iter = mTabContainer->getChildList()->begin();
+		iter != mTabContainer->getChildList()->end(); ++iter)
 	{
 		LLView* view = *iter;
 		LLPanelPreference* panel = dynamic_cast<LLPanelPreference*>(view);
@@ -1812,7 +1800,8 @@ void LLFloaterPreference::apply()
 			panel->apply();
 	}
 	
-	gViewerWindow->requestResolutionUpdate(); // for UIScaleFactor
+	//BD - Doesn't work anyway.
+	//gViewerWindow->requestResolutionUpdate(); // for UIScaleFactor
 
 	LLSliderCtrl* fov_slider = getChild<LLSliderCtrl>("camera_fov");
 	fov_slider->setMinValue(LLViewerCamera::getInstance()->getMinView());
@@ -1860,10 +1849,9 @@ void LLFloaterPreference::apply()
 
 void LLFloaterPreference::cancel()
 {
-	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
 	// Call cancel() on all panels that derive from LLPanelPreference
-	for (child_list_t::const_iterator iter = tabcontainer->getChildList()->begin();
-		iter != tabcontainer->getChildList()->end(); ++iter)
+	for (child_list_t::const_iterator iter = mTabContainer->getChildList()->begin();
+		iter != mTabContainer->getChildList()->end(); ++iter)
 	{
 		LLView* view = *iter;
 		LLPanelPreference* panel = dynamic_cast<LLPanelPreference*>(view);
@@ -1995,12 +1983,10 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	LLButton* load_btn = findChild<LLButton>("PrefLoadButton");
 	LLButton* save_btn = findChild<LLButton>("PrefSaveButton");
 	LLButton* delete_btn = findChild<LLButton>("PrefDeleteButton");
-	//LLButton* exceptions_btn = findChild<LLButton>("RenderExceptionsButton");
 
 	load_btn->setEnabled(started);
 	save_btn->setEnabled(started);
 	delete_btn->setEnabled(started);
-	//exceptions_btn->setEnabled(started);
 }
 
 void LLFloaterPreference::onAvatarImpostorsEnable()
@@ -2037,9 +2023,8 @@ void LLFloaterPreference::setHardwareDefaults()
 	gSavedSettings.setString("PresetGraphicActive", "");
 	LLPresetsManager::getInstance()->triggerChangeSignal();
 
-	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
-	child_list_t::const_iterator iter = tabcontainer->getChildList()->begin();
-	child_list_t::const_iterator end = tabcontainer->getChildList()->end();
+	child_list_t::const_iterator iter = mTabContainer->getChildList()->begin();
+	child_list_t::const_iterator end = mTabContainer->getChildList()->end();
 	for ( ; iter != end; ++iter)
 	{
 		LLView* view = *iter;
@@ -2091,22 +2076,18 @@ void LLFloaterPreference::getControlNames(std::vector<std::string>& names)
 //virtual
 void LLFloaterPreference::onClose(bool app_quitting)
 {
-	gSavedSettings.setS32("LastPrefTab", getChild<LLTabContainer>("pref core")->getCurrentPanelIndex());
 	//BD
-	//LLPanelLogin::setAlwaysRefresh(false);
-
-	//BD
-	/*if (!app_quitting)
+	if (!app_quitting)
 	{
-		cancel();
-	}*/
+		gSavedSettings.setS32("LastPrefTab", mTabContainer->getCurrentPanelIndex());
 
-	//BD - when closing this window, turn of visiblity control so that 
-	//     next time preferences is opened we don't suspend voice
-	if (gSavedSettings.getBOOL("ShowDeviceSettings"))
-	{
-		gSavedSettings.setBOOL("ShowDeviceSettings", FALSE);
-		inputOutput();
+		//BD - when closing this window, turn of visiblity control so that 
+		//     next time preferences is opened we don't suspend voice
+		if (gSavedSettings.getBOOL("ShowDeviceSettings"))
+		{
+			gSavedSettings.setBOOL("ShowDeviceSettings", FALSE);
+			inputOutput();
+		}
 	}
 }
 
@@ -2164,8 +2145,6 @@ void LLFloaterPreference::onBtnOK()
 		LL_INFOS() << "Can't close preferences!" << LL_ENDL;
 	}
 
-	//BD
-	//LLPanelLogin::updateLocationSelectorsVisibility();	
 	//Need to reload the navmesh if the pathing console is up
 	LLHandle<LLFloaterPathfindingConsole> pathfindingConsoleHandle = LLFloaterPathfindingConsole::getInstanceHandle();
 	if (!pathfindingConsoleHandle.isDead())
@@ -2415,7 +2394,6 @@ void LLFloaterPreference::refreshEnabledState()
 
 	// Cannot have floater active until caps have been received
 	getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
-	LLComboBox* ctrl_reflections = getChild<LLComboBox>("Reflections");
 
 // [RLVa:KB] - Checked: 2013-05-11 (RLVa-1.4.9)
 	if (rlv_handler_t::isEnabled())
@@ -2424,243 +2402,13 @@ void LLFloaterPreference::refreshEnabledState()
 	}
 // [/RLVa:KB]
 
-	// Reflections
-	BOOL reflections = gSavedSettings.getBOOL("VertexShaderEnable") 
-		&& gGLManager.mHasCubeMap
-		&& LLCubeMap::sUseCubeMaps;
-	ctrl_reflections->setEnabled(reflections);
-
-	//BD
-	// Bump & Shiny	
-	//LLCheckBoxCtrl* bumpshiny_ctrl = getChild<LLCheckBoxCtrl>("BumpShiny");
-	//bool bumpshiny = gGLManager.mHasCubeMap && LLCubeMap::sUseCubeMaps && LLFeatureManager::getInstance()->isFeatureAvailable("RenderObjectBump");
-	//bumpshiny_ctrl->setEnabled(bumpshiny ? TRUE : FALSE);
-    
-	//BD
-	// Avatar Mode
-	// Enable Avatar Shaders
-	//LLCheckBoxCtrl* ctrl_avatar_vp = getChild<LLCheckBoxCtrl>("AvatarVertexProgram");
-	// Avatar Render Mode
-	//LLCheckBoxCtrl* ctrl_avatar_cloth = getChild<LLCheckBoxCtrl>("AvatarCloth");
-
-	//bool avatar_vp_enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred");
-	//if (LLViewerShaderMgr::sInitialized)
-	//{
-	//	S32 max_avatar_shader = LLViewerShaderMgr::instance()->mMaxAvatarShaderLevel;
-	//	avatar_vp_enabled = (max_avatar_shader > 0) ? TRUE : FALSE;
-	//}
-
-	//ctrl_avatar_vp->setEnabled(avatar_vp_enabled);
-
-	// Vertex Shaders
-	// Global Shader Enable
-	//LLCheckBoxCtrl* ctrl_shader_enable   = getChild<LLCheckBoxCtrl>("BasicShaders");
-
-	//BOOL shaders = ctrl_shader_enable->get();
-
-	// WindLight
-	//LLCheckBoxCtrl* ctrl_wind_light = getChild<LLCheckBoxCtrl>("WindLightUseAtmosShaders");
-
-	// *HACK just checks to see if we can use shaders... 
-	// maybe some cards that use shaders, but don't support windlight
-
-	//Deferred/SSAO/Shadows
-	LLCheckBoxCtrl* ctrl_deferred = getChild<LLCheckBoxCtrl>("Deferred");
-
-
-	BOOL enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
-		//BD
-		//((bumpshiny_ctrl && bumpshiny_ctrl->get()) ? TRUE : FALSE) &&
-		//shaders && 
-		gGLManager.mHasFramebufferObject;
-
-	ctrl_deferred->setEnabled(enabled);
-
-	LLCheckBoxCtrl* ctrl_ssao = getChild<LLCheckBoxCtrl>("UseSSAO");
-	LLCheckBoxCtrl* ctrl_dof = getChild<LLCheckBoxCtrl>("UseDoF");
-	LLComboBox* ctrl_shadow = getChild<LLComboBox>("ShadowDetail");
-
-	// note, okay here to get from ctrl_deferred as it's twin, ctrl_deferred2 will alway match it
-	enabled = enabled && LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferredSSAO") && (ctrl_deferred->get() ? TRUE : FALSE);
-
-	ctrl_deferred->set(gSavedSettings.getBOOL("RenderDeferred"));
-
-	ctrl_ssao->setEnabled(enabled);
-	ctrl_dof->setEnabled(enabled);
-
-	enabled = enabled && LLFeatureManager::getInstance()->isFeatureAvailable("RenderShadowDetail");
-
-	ctrl_shadow->setEnabled(enabled);
-
-
-	// now turn off any features that are unavailable
-	disableUnavailableSettings();
-
 	getChildView("block_list")->setEnabled(LLLoginInstance::getInstance()->authSuccess());
-
-}
-
-//BD - TODO: Remove it, we don't use it.
-void LLFloaterPreference::disableUnavailableSettings()
-{
-	//BD
-	/*LLComboBox* ctrl_reflections   = getChild<LLComboBox>("Reflections");
-	LLCheckBoxCtrl* ctrl_avatar_vp     = getChild<LLCheckBoxCtrl>("AvatarVertexProgram");
-	LLCheckBoxCtrl* ctrl_avatar_cloth  = getChild<LLCheckBoxCtrl>("AvatarCloth");
-	LLCheckBoxCtrl* ctrl_shader_enable = getChild<LLCheckBoxCtrl>("BasicShaders");
-	LLCheckBoxCtrl* ctrl_wind_light    = getChild<LLCheckBoxCtrl>("WindLightUseAtmosShaders");
-	LLCheckBoxCtrl* ctrl_avatar_impostors = getChild<LLCheckBoxCtrl>("AvatarImpostors");
-	LLCheckBoxCtrl* ctrl_deferred = getChild<LLCheckBoxCtrl>("UseLightShaders");
-	LLComboBox* ctrl_shadows = getChild<LLComboBox>("ShadowDetail");
-	LLCheckBoxCtrl* ctrl_ssao = getChild<LLCheckBoxCtrl>("UseSSAO");
-	LLCheckBoxCtrl* ctrl_dof = getChild<LLCheckBoxCtrl>("UseDoF");*/
-
-	//BD - We really shouldn't disable everything twice. We might use this later tho for
-	//     features that should be disabled if one or another option is missing or for
-	//     options that need not just one but 2 or more previous features.
-	// if vertex shaders off, disable all shader related products
-	/*if (!LLFeatureManager::getInstance()->isFeatureAvailable("VertexShaderEnable"))
-	{
-	ctrl_shader_enable->setEnabled(FALSE);
-	ctrl_shader_enable->setValue(FALSE);
-
-	ctrl_wind_light->setEnabled(FALSE);
-	ctrl_wind_light->setValue(FALSE);
-
-	ctrl_reflections->setEnabled(FALSE);
-	ctrl_reflections->setValue(0);
-
-	ctrl_avatar_vp->setEnabled(FALSE);
-	ctrl_avatar_vp->setValue(FALSE);
-
-	ctrl_avatar_cloth->setEnabled(FALSE);
-	ctrl_avatar_cloth->setValue(FALSE);
-
-	ctrl_shadows->setEnabled(FALSE);
-	ctrl_shadows->setValue(0);
-
-	ctrl_ssao->setEnabled(FALSE);
-	ctrl_ssao->setValue(FALSE);
-
-	ctrl_dof->setEnabled(FALSE);
-	ctrl_dof->setValue(FALSE);
-
-	ctrl_deferred->setEnabled(FALSE);
-	ctrl_deferred->setValue(FALSE);
-	}
-
-	// disabled windlight
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("WindLightUseAtmosShaders"))
-	{
-	ctrl_wind_light->setEnabled(FALSE);
-	ctrl_wind_light->setValue(FALSE);
-
-	//deferred needs windlight, disable deferred
-	ctrl_shadows->setEnabled(FALSE);
-	ctrl_shadows->setValue(0);
-
-	ctrl_ssao->setEnabled(FALSE);
-	ctrl_ssao->setValue(FALSE);
-
-	ctrl_dof->setEnabled(FALSE);
-	ctrl_dof->setValue(FALSE);
-
-	ctrl_deferred->setEnabled(FALSE);
-	ctrl_deferred->setValue(FALSE);
-	}
-
-	// disabled deferred
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") ||
-	!gGLManager.mHasFramebufferObject)
-	{
-	ctrl_shadows->setEnabled(FALSE);
-	ctrl_shadows->setValue(0);
-
-	ctrl_ssao->setEnabled(FALSE);
-	ctrl_ssao->setValue(FALSE);
-
-	ctrl_dof->setEnabled(FALSE);
-	ctrl_dof->setValue(FALSE);
-
-	ctrl_deferred->setEnabled(FALSE);
-	ctrl_deferred->setValue(FALSE);
-	}
-
-	// disabled deferred SSAO
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferredSSAO"))
-	{
-	ctrl_ssao->setEnabled(FALSE);
-	ctrl_ssao->setValue(FALSE);
-	}
-
-	// disabled deferred shadows
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderShadowDetail"))
-	{
-	ctrl_shadows->setEnabled(FALSE);
-	ctrl_shadows->setValue(0);
-	}
-
-	// disabled reflections
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderReflectionDetail"))
-	{
-	ctrl_reflections->setEnabled(FALSE);
-	ctrl_reflections->setValue(FALSE);
-	}
-
-	// disabled av
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderAvatarVP"))
-	{
-	ctrl_avatar_vp->setEnabled(FALSE);
-	ctrl_avatar_vp->setValue(FALSE);
-
-	ctrl_avatar_cloth->setEnabled(FALSE);
-	ctrl_avatar_cloth->setValue(FALSE);
-
-	//deferred needs AvatarVP, disable deferred
-	ctrl_shadows->setEnabled(FALSE);
-	ctrl_shadows->setValue(0);
-
-	ctrl_ssao->setEnabled(FALSE);
-	ctrl_ssao->setValue(FALSE);
-
-	ctrl_dof->setEnabled(FALSE);
-	ctrl_dof->setValue(FALSE);
-
-	ctrl_deferred->setEnabled(FALSE);
-	ctrl_deferred->setValue(FALSE);
-	}
-
-	// disabled cloth
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderAvatarCloth"))
-	{
-	ctrl_avatar_cloth->setEnabled(FALSE);
-	ctrl_avatar_cloth->setValue(FALSE);
-	}
-
-	// disabled impostors
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderUseImpostors"))
-	{
-	ctrl_avatar_impostors->setEnabled(FALSE);
-	ctrl_avatar_impostors->setValue(FALSE);
-	}*/
 }
 
 void LLFloaterPreference::refresh()
 {
 	LLPanel::refresh();
-
-	//BD - We might want to use this for later warnings of too high graphic options.
-	//updateSliderText(getChild<LLSliderCtrl>("ObjectMeshDetail",		true), getChild<LLTextBox>("ObjectMeshDetailText",		true));
-
-	//BD - TODO: Remove it, we don't use it.
-	//refreshEnabledState();
 }
-
-//BD - We might want to use this for later warnings in preferences
-/*void LLFloaterPreference::onCommitWindowedMode()
-{
-refresh();
-}*/
 
 //BD - Custom Keybinding Layout
 void LLFloaterPreference::onClickSetAnyKey(LLUICtrl* ctrl, const LLSD& param)
@@ -2993,11 +2741,6 @@ void LLFloaterPreference::onClickSpellChecker()
     LLFloaterReg::showInstance("prefs_spellchecker");
 }
 
-/*void LLFloaterPreference::onClickRenderExceptions()
-{
-    LLFloaterReg::showInstance("avatar_render_settings");
-}*/
-
 void LLFloaterPreference::onClickPermsDefault()
 {
 	LLFloaterReg::showInstance("perms_default");
@@ -3050,11 +2793,10 @@ void LLFloaterPreference::setCacheLocation(const LLStringExplicit& location)
 
 void LLFloaterPreference::selectPanel(const LLSD& name)
 {
-	LLTabContainer * tab_containerp = getChild<LLTabContainer>("pref core");
-	LLPanel * panel = tab_containerp->getPanelByName(name);
+	LLPanel * panel = mTabContainer->getPanelByName(name);
 	if (NULL != panel)
 	{
-		tab_containerp->selectTabPanel(panel);
+		mTabContainer->selectTabPanel(panel);
 	}
 }
 

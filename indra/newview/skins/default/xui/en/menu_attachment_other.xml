@@ -1,221 +1,277 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <!-- *NOTE: See also menu_avatar_other.xml -->
 <context_menu
- layout="topleft"
- name="Avatar Pie">
-    <menu_item_call
-     label="View Profile"
-     name="Profile...">
-        <menu_item_call.on_click
-         function="ShowAgentProfile"
-         parameter="hit object" />
-        <menu_item_call.on_enable
-         function="RLV.EnableIfNot"
-         parameter="shownames" />
-    </menu_item_call>
+layout="topleft"
+name="Avatar Pie">
    <menu_item_call
-     enabled="false"
-     label="Add Friend"
-     name="Add Friend">
-        <menu_item_call.on_click
-         function="Avatar.AddFriend" />
-        <menu_item_call.on_enable
-         function="Avatar.EnableAddFriend" />
-    </menu_item_call>
-    <menu_item_call
-     label="IM"
-     name="Send IM...">
-        <menu_item_call.on_click
-         function="Avatar.SendIM" />
-        <menu_item_call.on_enable
-         function="RLV.EnableIfNot"
-         parameter="shownames" />
-    </menu_item_call>
-    <menu_item_call
-     label="Call"
-     name="Call">
-        <menu_item_call.on_click
-         function="Avatar.Call" />
-        <menu_item_call.on_enable
-         function="Avatar.EnableCall" />
-    </menu_item_call>
-      <menu_item_call
-         label="Invite to Group"
-         name="Invite...">
-        <menu_item_call.on_click
-         function="Avatar.InviteToGroup" />
-        <menu_item_call.on_enable
-         function="RLV.EnableIfNot"
-         parameter="shownames" />
-      </menu_item_call>
-   <menu_item_separator />
-
-     <menu_item_call label="Reset Skeleton"
-       layout="topleft"
-       name="Reset Skeleton">
-       <menu_item_call.on_click
-        function="Avatar.ResetSkeleton" />
-     </menu_item_call>
-
-     <menu_item_call label="Reset Skeleton And Animations"
-       layout="topleft"
-       name="Reset Skeleton And Animations">
-       <menu_item_call.on_click
-        function="Avatar.ResetSkeletonAndAnimations" />
-     </menu_item_call>
-
-   <menu_item_separator />
-   <menu_item_call
-      enabled="true"
-      label="Derender"
-      name="Derender">
-    <menu_item_call.on_click
-      function="Object.Derender" />
-    </menu_item_call>
-    <menu_item_call
-     enabled="false"
-     label="Block"
-     name="Avatar Mute">
-        <menu_item_call.on_click
-         function="Avatar.Mute" />
-        <menu_item_call.on_enable
-         function="Avatar.EnableMute" />
-    </menu_item_call>
-    <menu_item_call
-     label="Report"
-     name="abuse">
-        <menu_item_call.on_click
-         function="Avatar.ReportAbuse" />
-    </menu_item_call>
-        <menu_item_call
-         label="Freeze"
-         name="Freeze...">
-            <menu_item_call.on_click
-             function="Avatar.Freeze" />
-            <menu_item_call.on_visible
-             function="Avatar.EnableFreezeEject"/>
-        </menu_item_call>
-        <menu_item_call
-         label="Eject"
-         name="Eject...">
-            <menu_item_call.on_click
-             function="Avatar.Eject" />
-            <menu_item_call.on_visible
-             function="Avatar.EnableFreezeEject"/>
-        </menu_item_call>
-        <menu_item_call
-         label="Debug Textures"
-         name="Debug...">
-            <menu_item_call.on_click
-             function="Avatar.Debug" />
-            <menu_item_call.on_visible
-             function="IsGodCustomerService"/>
-        </menu_item_call>
-    <menu_item_call
-		 label="Dump XML"
-         name="Dump XML">
-            <menu_item_call.on_click
-             function="Advanced.AppearanceToXML" />
-            <menu_item_call.on_visible
-             function="Advanced.EnableAppearanceToXML"/>
-    </menu_item_call>
-	    <menu_item_call
-         label="Zoom In"
-          name="Zoom In">
-        <menu_item_call.on_click
-           function="Tools.LookAtSelection"
-           parameter="zoom" />
-    </menu_item_call>
-   <menu_item_call
-     enabled="false"
-     label="Pay"
-     name="Pay...">
-        <menu_item_call.on_click
-         function="PayObject" />
-        <menu_item_call.on_enable
-         function="EnablePayAvatar" />
-    </menu_item_call>
-   <menu_item_separator />
-   <menu_item_call
-       label="Object Profile"
-       name="Object Inspect">
-         <menu_item_call.on_click
-          function="Object.Inspect" />
-         <menu_item_call.on_enable
-          function="Object.EnableInspect" />
+   label="View Profile"
+   name="Profile...">
+   <menu_item_call.on_click
+   function="ShowAgentProfile"
+   parameter="hit object" />
+   <menu_item_call.on_enable
+   function="RLV.EnableIfNot"
+   parameter="shownames" />
    </menu_item_call>
-
+   <menu_item_call
+   label="IM"
+   name="Send IM...">
+   <menu_item_call.on_click
+   function="Avatar.SendIM" />
+   <menu_item_call.on_enable
+   function="RLV.EnableIfNot"
+   parameter="shownames" />
+   </menu_item_call>
+   <menu_item_call
+   label="Call"
+   name="Call">
+   <menu_item_call.on_click
+   function="Avatar.Call" />
+   <menu_item_call.on_enable
+   function="Avatar.EnableCall" />
+   </menu_item_call>
+   <menu_item_call
+   label="View Chat History"
+   layout="topleft"
+   name="chat_history">
+   <menu_item_call.on_click
+   function="Avatar.Calllog" />
+   </menu_item_call>
+   
+   <menu_item_call
+   label="Debug Textures"
+   name="Debug...">
+   <menu_item_call.on_click
+   function="Avatar.Debug" />
+   <menu_item_call.on_visible
+   function="IsGodCustomerService"/>
+   </menu_item_call>
+   <menu_item_call
+   label="Dump XML"
+   name="Dump XML">
+   <menu_item_call.on_click
+   function="Advanced.AppearanceToXML" />
+   <menu_item_call.on_visible
+   function="Advanced.EnableAppearanceToXML"/>
+   </menu_item_call>
+   
    <menu_item_separator />
-      <context_menu
-       label="Render Avatar"
-       layout="topleft"
-        name="Render Avatar">
-      <menu_item_check
-        name="RenderNormally"
-        label="Default">
-        <menu_item_check.on_check
-          function="Avatar.CheckImpostorMode"
-          parameter="0" />
-	    <menu_item_check.on_click
-	      function="Avatar.SetImpostorMode"
-	      parameter="0" />
-      </menu_item_check>
-      <menu_item_check
-        name="AlwaysRenderFully"
-        label="Always">
-        <menu_item_check.on_check
-          function="Avatar.CheckImpostorMode"
-          parameter="2" />
-	    <menu_item_check.on_click
-	      function="Avatar.SetImpostorMode"
-	      parameter="2" />
-      </menu_item_check>
-      <menu_item_check
-        name="DoNotRender"
-        label="Never">
-        <menu_item_check.on_check
-          function="Avatar.CheckImpostorMode"
-          parameter="1" />
-	    <menu_item_check.on_click
-	      function="Avatar.SetImpostorMode"
-	      parameter="1" />
-      </menu_item_check>
-      <menu_item_separator />
+   
+   <menu_item_call
+   enabled="false"
+   label="Add Friend"
+   name="Add Friend">
+   <menu_item_call.on_click
+   function="Avatar.AddFriend" />
+   <menu_item_call.on_enable
+   function="Avatar.EnableAddFriend" />
+   </menu_item_call>
+   <menu_item_call
+   label="Remove Friend"
+   layout="topleft"
+   name="remove_friend">
+   <menu_item_call.on_click
+   function="Avatar.RemoveFriend" />
+   <menu_item_call.on_enable
+   function="Avatar.EnableRemoveFriend" />
+   </menu_item_call>
+   <menu_item_call
+   label="Invite to Group"
+   name="Invite...">
+   <menu_item_call.on_click
+   function="Avatar.InviteToGroup" />
+   <menu_item_call.on_enable
+   function="RLV.EnableIfNot"
+   parameter="shownames" />
+   </menu_item_call>
+   
+   <menu_item_separator />
+   
+   <menu_item_call
+   label="Zoom In"
+   name="Zoom In">
+   <menu_item_call.on_click
+   function="Tools.LookAtSelection"
+   parameter="zoom" />
+   </menu_item_call>
+   <!-- Map -->
+   <menu_item_call
+   label="Share"
+   layout="topleft"
+   name="Share">
+   <menu_item_call.on_click
+   function="Avatar.Share" />
+   <menu_item_call.on_enable
+   function="EnablePayAvatar"/>
+   </menu_item_call>
+   <menu_item_call
+   enabled="false"
+   label="Pay"
+   name="Pay...">
+   <menu_item_call.on_click
+   function="PayObject" />
+   <menu_item_call.on_enable
+   function="EnablePayAvatar" />
+   </menu_item_call>
+   
+   <!--<context_menu
+   label="Block / Mute"
+   layout="topleft"
+   name="BlockMute">-->
       <menu_item_call
-        label="Exceptions..."
-        name="RenderExceptions">
-        <menu_item_call.on_click
-          function="Floater.ToggleOrBringToFront"
-          parameter="avatar_render_settings" />
+      enabled="false"
+      label="Block All"
+      name="Avatar Mute">
+      <menu_item_call.on_click
+      function="Avatar.Mute" />
+      <menu_item_call.on_enable
+      function="Avatar.EnableMute" />
       </menu_item_call>
-      </context_menu>
-  <menu_item_separator
-       layout="topleft" name="Impostor seperator"/>
-
-  <menu_item_call
-     enabled="false"
-     label="Block Particle Owner"
-     name="Mute Particle">
-    <menu_item_call.on_click
-     function="Particle.Mute" />
-    <menu_item_call.on_enable
-     function="EnableMuteParticle" />
-  </menu_item_call>
-  
-  <menu_item_separator
-       layout="topleft" />
-  <menu_item_call
+      <menu_item_call
+      label="Block Text"
+      layout="topleft"
+      name="MuteText">
+      <menu_item_call.on_click
+      function="Avatar.MuteText"/>
+      </menu_item_call>
+      <menu_item_call
+      label="Mute Voice"
+      layout="topleft"
+      name="MuteVoice">
+      <menu_item_call.on_click
+      function="Avatar.MuteVoice"/>
+      </menu_item_call>
+      <menu_item_call
+      enabled="false"
+      label="Block Particle Owner"
+      name="Mute Particle">
+      <menu_item_call.on_click
+      function="Particle.Mute" />
+      <menu_item_call.on_enable
+      function="EnableMuteParticle" />
+      </menu_item_call>
+   <!--</context_menu>-->
+   
+   <menu_item_call
+   label="Report"
+   name="abuse">
+   <menu_item_call.on_click
+   function="Avatar.ReportAbuse" />
+   </menu_item_call>
+   <menu_item_call
+   enabled="true"
+   label="Derender"
+   name="Derender">
+   <menu_item_call.on_click
+   function="Object.Derender" />
+   </menu_item_call>
+   
+   <menu_item_call
+   label="Freeze"
+   name="Freeze...">
+   <menu_item_call.on_click
+   function="Avatar.Freeze" />
+   <menu_item_call.on_visible
+   function="Avatar.EnableFreezeEject"/>
+   </menu_item_call>
+   <menu_item_call
+   label="Eject"
+   name="Eject...">
+   <menu_item_call.on_click
+   function="Avatar.Eject" />
+   <menu_item_call.on_visible
+   function="Avatar.EnableFreezeEject"/>
+   </menu_item_call>
+   
+   <menu_item_separator />
+   
+   <menu_item_call
    label="Copy Avatar UUID"
    name="CopyUUID"
    enabled="true">
    <menu_item_call.on_click
-      function="Avatar.GetUUID" />
+   function="Avatar.GetUUID" />
    </menu_item_call>
-  <menu_item_call
+   <menu_item_call
    label="Copy Avatar SLURL"
    name="CopySLURL"
    enabled="true">
    <menu_item_call.on_click
-      function="Avatar.GetSLURL" />
+   function="Avatar.GetSLURL" />
    </menu_item_call>
+   
+   <menu_item_separator />
+   
+   <menu_item_call label="Reset Skeleton"
+   layout="topleft"
+   name="Reset Skeleton">
+   <menu_item_call.on_click
+   function="Avatar.ResetSkeleton" />
+   </menu_item_call>
+   <menu_item_call label="Reset Skeleton And Animations"
+   layout="topleft"
+   name="Reset Skeleton And Animations">
+   <menu_item_call.on_click
+   function="Avatar.ResetSkeletonAndAnimations" />
+   </menu_item_call>
+   
+   <menu_item_separator />
+   
+   <context_menu
+   label="Render Avatar"
+   layout="topleft"
+   name="Render Avatar">
+      <menu_item_check
+      name="RenderNormally"
+      label="Default">
+      <menu_item_check.on_check
+      function="Avatar.CheckImpostorMode"
+      parameter="0" />
+      <menu_item_check.on_click
+      function="Avatar.SetImpostorMode"
+      parameter="0" />
+      </menu_item_check>
+      <menu_item_check
+      name="AlwaysRenderFully"
+      label="Always">
+      <menu_item_check.on_check
+      function="Avatar.CheckImpostorMode"
+      parameter="2" />
+      <menu_item_check.on_click
+      function="Avatar.SetImpostorMode"
+      parameter="2" />
+      </menu_item_check>
+      <menu_item_check
+      name="DoNotRender"
+      label="Never">
+      <menu_item_check.on_check
+      function="Avatar.CheckImpostorMode"
+      parameter="1" />
+      <menu_item_check.on_click
+      function="Avatar.SetImpostorMode"
+      parameter="1" />
+      </menu_item_check>
+      
+      <menu_item_separator />
+      
+      <menu_item_call
+      label="Exceptions..."
+      name="RenderExceptions">
+      <menu_item_call.on_click
+      function="Floater.ToggleOrBringToFront"
+      parameter="avatar_render_settings" />
+      </menu_item_call>
+   </context_menu>
+   
+   <menu_item_separator />
+   
+   <menu_item_call
+   label="Object Profile"
+   name="Object Inspect">
+   <menu_item_call.on_click
+   function="Object.Inspect" />
+   <menu_item_call.on_enable
+   function="Object.EnableInspect" />
+   </menu_item_call>
+   
 </context_menu>

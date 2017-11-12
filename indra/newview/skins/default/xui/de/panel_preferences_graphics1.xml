@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="Grafik" name="Display panel">
-	<scroll_container name="gfx_scroll">
+<panel label="Grafik" name="Display panel"/>
+<!--	<scroll_container name="gfx_scroll">
 		<panel name="gfx_scroll_panel">
 			<layout_stack name="gfx_stack">
 				<layout_panel name="title_layout_panel">
@@ -304,7 +304,7 @@
 					<slider label="Menge:" name="ExodusRenderVignette_X"/>
 					<slider label="Stärke:" name="ExodusRenderVignette_Y"/>
 					<slider label="Multiplikator:" name="ExodusRenderVignette_Z"/>
-				</layout_panel>
+				</layout_panel>-->
 			<!--	
 			<text name="gfx_preset_label">
 				Grafik Voreinstellung:
@@ -473,7 +473,7 @@ important but prevents you from seeing those crashers. 0 = Unlimited.
 		<radio_item label="Hoch" name="2"/>
 	</radio_group>
 	<slider label="Auflösungsteiler" name="resdivisor"/>-->
-			</layout_stack>
+			<!--</layout_stack>
 		</panel>
 	</scroll_container>
-</panel>
+</panel>-->

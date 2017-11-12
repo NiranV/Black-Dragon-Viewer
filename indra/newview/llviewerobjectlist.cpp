@@ -1276,9 +1276,11 @@ void LLViewerObjectList::clearDebugText()
 
 void LLViewerObjectList::cleanupReferences(LLViewerObject *objectp)
 {
+	bool new_dead_object = true;
 	if (mDeadObjects.find(objectp->mID) != mDeadObjects.end())
 	{
 		LL_INFOS() << "Object " << objectp->mID << " already on dead list!" << LL_ENDL;	
+		new_dead_object = false;
 	}
 	else
 	{
@@ -1315,7 +1317,10 @@ void LLViewerObjectList::cleanupReferences(LLViewerObject *objectp)
 	// Also, not cleaned up
 	removeDrawable(objectp->mDrawable);
 
-	mNumDeadObjects++;
+	if(new_dead_object)
+	{
+		mNumDeadObjects++;
+	}
 }
 
 static LLTrace::BlockTimerStatHandle FTM_REMOVE_DRAWABLE("Remove Drawable");
@@ -1460,8 +1465,8 @@ void LLViewerObjectList::killAllAlphas()
 	}
 }
 
-//BD - DeAlpha
-void LLViewerObjectList::killAlpha(LLViewerObject *objectp)
+//BD - Re/DeAlpha
+void LLViewerObjectList::setAlpha(LLViewerObject *objectp, bool alpha)
 {
 	if (objectp)
 	{
@@ -1472,16 +1477,16 @@ void LLViewerObjectList::killAlpha(LLViewerObject *objectp)
 			{
 				const LLTextureEntry* te = objectp->getTE(i);
 				LLColor4 te_color = te->getColor();
-				te_color.mV[VW] = 1.0;
+				te_color.mV[VW] = alpha ? 1.0 : 0.0;
 				objectp->setTEColor(i, te_color);
-				objectp->setTEAlpha(i, 1.0);
+				objectp->setTEAlpha(i, te_color.mV[VW]);
 			}
 		}
 	}
 }
 
-//BD - ReAlpha
-void LLViewerObjectList::restoreAlpha(LLViewerObject *objectp)
+//BD - Set Alpha Mode (Requires deselecting the face/object)
+void LLViewerObjectList::setAlphaMode(LLViewerObject *objectp, LLMaterial::eDiffuseAlphaMode mode)
 {
 	if (objectp)
 	{
@@ -1490,34 +1495,34 @@ void LLViewerObjectList::restoreAlpha(LLViewerObject *objectp)
 			if (objectp != gAgentAvatarp
 				&& LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
 			{
-				const LLTextureEntry* te = objectp->getTE(i);
-				LLColor4 te_color = te->getColor();
-				te_color.mV[VW] = 0.0;
-				objectp->setTEColor(i, te_color);
-				objectp->setTEAlpha(i, 0.0);
-			}
-		}
-	}
-}
-
-//BD - DeBright
-void LLViewerObjectList::killFullbright(LLViewerObject *objectp)
-{
-	if (objectp)
-	{
-		for (S32 i = 0; i < objectp->getNumTEs(); i++)
-		{
-			if (objectp != gAgentAvatarp
-				&& LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
-			{
-				const LLTextureEntry* te = objectp->getTE(i);
-				if (te->getFullbrightFlag())
+				LLTextureEntry* te = objectp->getTE(i);
+				if (te)
 				{
-					if (objectp != gAgentAvatarp)
+					LLMaterialPtr mat = te->getMaterialParams();
+					if (mat)
 					{
-						LL_DEBUGS() << itoc(te->getFullbright()) << LL_ENDL;
-						objectp->setTEFullbright(i, 0);
+						mat->setDiffuseAlphaMode(mode);
+						te->setMaterialParams(mat);
 					}
+				}
+			}
+		}
+	}
+}
+
+//BD - Re/DeBright
+void LLViewerObjectList::setFullbright(LLViewerObject *objectp, bool fullbright)
+{
+	if (objectp)
+	{
+		for (S32 i = 0; i < objectp->getNumTEs(); i++)
+		{
+			if (objectp != gAgentAvatarp
+				&& LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
+			{
+				if (objectp != gAgentAvatarp)
+				{
+					objectp->setTEFullbright(i, fullbright ? TEM_FULLBRIGHT_MASK : 0);
 				}
 			}
 		}

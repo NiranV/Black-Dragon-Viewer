@@ -1,95 +1,124 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <context_menu
- layout="topleft"
- name="Url Popup">  
-    <menu_item_call
-     label="View Profile"
-     layout="topleft"
-     name="show_agent">
-        <menu_item_call.on_click
-         function="Url.ShowProfile" />         
-    </menu_item_call>
-    <menu_item_call
-     label="Send IM..."
-     layout="topleft"
-     name="send_im">
-        <menu_item_call.on_click
-         function="Url.SendIM" />        
-    </menu_item_call>
-    <menu_item_call
-     label="Offer Teleport"
-     layout="topleft"
-     name="offer_teleport">
-        <menu_item_call.on_click
-         function="Url.SendTeleport" />        
-    </menu_item_call>
-    <menu_item_call
-     label="Voice Call"
-     layout="topleft"
-     name="call">
-        <menu_item_call.on_click
-         function="Url.VoiceCall" />        
-    </menu_item_call>
-    <menu_item_separator
-     layout="topleft" />
-    <menu_item_call
-     label="Add Friend..."
-     layout="topleft"
-     name="add_friend">
-        <menu_item_call.on_click
-         function="Url.AddFriend" />
-    </menu_item_call>
-    <menu_item_call
-     label="Remove Friend..."
-     layout="topleft"
-     name="remove_friend">
-        <menu_item_call.on_click
-         function="Url.RemoveFriend" />
-        </menu_item_call>
-    <menu_item_separator
-     layout="topleft" />
-    <menu_item_call
-     label="Map"
-     layout="topleft"
-     name="map">
-        <menu_item_call.on_click
-         function="Url.Map" />        
-    </menu_item_call>
-    <menu_item_call
-     label="Share..."
-     layout="topleft"
-     name="share">
-        <menu_item_call.on_click
-         function="Url.Share" />        
-    </menu_item_call>
-    <menu_item_call
-     label="Pay"
-     layout="topleft"
-     name="pay">
-        <menu_item_call.on_click
-         function="Url.Pay" />        
-    </menu_item_call>
-    <menu_item_call
-     label="Ignore"
-     layout="topleft"
-     name="ignore">
-        <menu_item_call.on_click
-         function="Url.Mute" />        
-    </menu_item_call>
-    <menu_item_separator
-     layout="topleft" />
-    <menu_item_call
-     label="Copy Name to clipboard"
-     layout="topleft"
-     name="url_copy_label">
-        <menu_item_call.on_click
-         function="Url.CopyLabel" />
-    </menu_item_call>
-    <menu_item_call
-     label="Copy SLurl to clipboard"
-     layout="topleft"
-     name="url_copy">
-        <menu_item_call.on_click
-         function="Url.CopyUrl" />
-    </menu_item_call>
+layout="topleft"
+name="Url Popup">  
+   <menu_item_call
+   label="View Profile"
+   layout="topleft"
+   name="show_agent">
+   <menu_item_call.on_click
+   function="Url.ShowProfile" />         
+   </menu_item_call>
+   <menu_item_call
+   label="IM"
+   layout="topleft"
+   name="send_im">
+   <menu_item_call.on_click
+   function="Url.SendIM" />        
+   </menu_item_call>
+   <menu_item_call
+   label="Offer Teleport"
+   layout="topleft"
+   name="offer_teleport">
+   <menu_item_call.on_click
+   function="Url.SendTeleport" />        
+   </menu_item_call>
+   <!-- Not working-->
+   <!--<menu_item_call
+   label="Request Teleport"
+   layout="topleft"
+   name="request_teleport">
+   <menu_item_call.on_click
+   function="Url.RequestTeleport" />  
+   </menu_item_call>-->
+   <menu_item_call
+   label="Voice Call"
+   layout="topleft"
+   name="call">
+   <menu_item_call.on_click
+   function="Url.VoiceCall" />        
+   </menu_item_call>
+   
+   <menu_item_separator
+   layout="topleft" />
+   
+   <menu_item_call
+   label="Add Friend"
+   layout="topleft"
+   name="add_friend">
+   <menu_item_call.on_click
+   function="Url.AddFriend" />
+   </menu_item_call>
+   <menu_item_call
+   label="Remove Friend"
+   layout="topleft"
+   name="remove_friend">
+   <menu_item_call.on_click
+   function="Url.RemoveFriend" />
+   </menu_item_call>
+   <menu_item_call
+   label="Invite To Group"
+   layout="topleft"
+   name="invite_to_group">
+   <menu_item_call.on_click
+   function="Url.InviteToGroup" />
+   </menu_item_call>
+   
+   <menu_item_separator
+   layout="topleft" />
+   
+   <menu_item_call
+   label="Map"
+   layout="topleft"
+   name="map">
+   <menu_item_call.on_click
+   function="Url.Map" />        
+   </menu_item_call>
+   <menu_item_call
+   label="Share"
+   layout="topleft"
+   name="share">
+   <menu_item_call.on_click
+   function="Url.Share" />        
+   </menu_item_call>
+   <menu_item_call
+   label="Pay"
+   layout="topleft"
+   name="pay">
+   <menu_item_call.on_click
+   function="Url.Pay" />        
+   </menu_item_call>
+   <menu_item_call
+   label="Block All"
+   layout="topleft"
+   name="ignore">
+   <menu_item_call.on_click
+   function="Url.Mute" />        
+   </menu_item_call>
+   <!-- Not working / Impossible-->
+   <!--<menu_item_call
+   label="Report"
+   layout="topleft"
+   name="report">
+   <menu_item_call.on_click
+   function="Url.Report" />        
+   </menu_item_call>-->
+   
+   <menu_item_separator
+   layout="topleft" />
+   
+   <menu_item_call
+   label="Copy Avatar Name"
+   layout="topleft"
+   name="url_copy_label">
+   <menu_item_call.on_click
+   function="Url.CopyLabel" />
+   </menu_item_call>
+   <menu_item_call
+   label="Copy Avatar SLURL"
+   layout="topleft"
+   name="url_copy">
+   <menu_item_call.on_click
+   function="Url.CopyUrl" />
+   </menu_item_call>
 </context_menu>

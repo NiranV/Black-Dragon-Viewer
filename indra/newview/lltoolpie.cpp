@@ -382,7 +382,8 @@ BOOL LLToolPie::handleLeftClickPick()
 		}
 		object = (LLViewerObject*)object->getParent();
 	}
-	if (object && object == gAgentAvatarp && !gSavedSettings.getBOOL("ClickToWalk"))
+	//BD
+	if (object && object == gAgentAvatarp) //&& !gSavedSettings.getBOOL("ClickToWalk"))
 	{
 		// we left clicked on avatar, switch to focus mode
 		mMouseButtonDown = false;
@@ -517,7 +518,8 @@ void LLToolPie::walkToClickedLocation()
 	mAutoPilotDestination->setColor(LLColor4U(170, 210, 190));
 	mAutoPilotDestination->setDuration(3.f);
 
-	handle_go_to();
+	LLVector3d pos = LLToolPie::getInstance()->getPick().mPosGlobal;
+	gAgent.startAutoPilotGlobal(pos, std::string(), NULL, NULL, NULL, 0.f, 0.03f, FALSE);
 }
 
 // When we get object properties after left-clicking on an object
@@ -597,8 +599,9 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		// cursor set by media object
 		LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 	}
-	else if (!mMouseOutsideSlop 
-		&& mMouseButtonDown 
+	//BD
+	/*else if (!mMouseOutsideSlop 
+		&& mMouseButtonDown) 
 		&& gSavedSettings.getBOOL("ClickToWalk"))
 	{
 		S32 delta_x = x - mMouseDownX;
@@ -614,7 +617,7 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		{
 			gViewerWindow->setCursor(UI_CURSOR_ARROW);
 		}
-	}
+	}*/
 	else if (inCameraSteerMode())
 	{
 		steerCameraWithMouse(x, y);
@@ -1528,7 +1531,8 @@ void LLToolPie::stopCameraSteering()
 
 bool LLToolPie::inCameraSteerMode()
 {
-	return mMouseButtonDown && mMouseOutsideSlop && gSavedSettings.getBOOL("ClickToWalk");
+	//BD - Don't enable steering in Click to Walk mode, its disgusting.
+	return false; // mMouseButtonDown && mMouseOutsideSlop && gSavedSettings.getBOOL("ClickToWalk");
 }
 
 // true if x,y outside small box around start_x,start_y
@@ -1902,15 +1906,36 @@ BOOL LLToolPie::handleRightClickPick()
 
 			// Object is an avatar, so check for mute by id.
 			LLVOAvatar* avatar = (LLVOAvatar*)object;
+			//BD - Right Click Menu
 			std::string name = avatar->getFullname();
 			std::string mute_msg;
-			if (LLMuteList::getInstance()->isMuted(avatar->getID(), avatar->getFullname()))
+			std::string muted_msg;
+			std::string blocked_msg;
+			if (LLMuteList::getInstance()->isMuted(avatar->getID(), name))
 			{
 				mute_msg = LLTrans::getString("UnmuteAvatar");
 			}
 			else
 			{
 				mute_msg = LLTrans::getString("MuteAvatar");
+			}
+
+			if (LLMuteList::getInstance()->isMuted(avatar->getID(), name, LLMute::flagTextChat))
+			{
+				blocked_msg = LLTrans::getString("UnmuteText");
+			}
+			else
+			{
+				blocked_msg = LLTrans::getString("MuteText");
+			}
+
+			if (LLMuteList::getInstance()->isMuted(avatar->getID(), name, LLMute::flagVoiceChat))
+			{
+				muted_msg = LLTrans::getString("UnmuteVoice");
+			}
+			else
+			{
+				muted_msg = LLTrans::getString("MuteVoice");
 			}
 
 // [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
@@ -1928,7 +1953,12 @@ BOOL LLToolPie::handleRightClickPick()
 					}
 					else
 					{
+						//BD - Right Click Menu
+						//     Doesn't work in submenus for some reason.
 						gMenuAttachmentOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
+						gMenuAttachmentOther->getChild<LLUICtrl>("MuteVoice")->setValue(muted_msg);
+						gMenuAttachmentOther->getChild<LLUICtrl>("MuteText")->setValue(blocked_msg);
+
 						gMenuAttachmentOther->show(x, y);
 					}
 				}
@@ -1941,7 +1971,12 @@ BOOL LLToolPie::handleRightClickPick()
 					}
 					else
 					{
+						//BD - Right Click Menu
+						//     Doesn't work in submenus for some reason.
 						gMenuAvatarOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
+						gMenuAvatarOther->getChild<LLUICtrl>("MuteVoice")->setValue(muted_msg);
+						gMenuAvatarOther->getChild<LLUICtrl>("MuteText")->setValue(blocked_msg);
+
 						gMenuAvatarOther->show(x, y);
 					}
 

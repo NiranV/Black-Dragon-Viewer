@@ -135,6 +135,11 @@ public:
 	static void toggleBlock(const LLUUID& id);
 
 	/**
+	 * Mute/unmute avatar.
+	 */
+	static void toggleMute(const LLUUID& id, U32 flags);
+
+	/**
 	 * Block/unblock the avatar voice.
 	 */
 	static void toggleMuteVoice(const LLUUID& id);
@@ -149,10 +154,11 @@ public:
 	 */
 	static bool isBlocked(const LLUUID& id);
 
+	//BD - Right Click Menu
 	/**
-	 * @return true if the avatar voice is blocked
+	 * @return true if the avatar voice or text is blocked
 	 */
-	static bool isVoiceMuted(const LLUUID& id);
+	static bool isMuted(const LLUUID& id, U32 flags);
 
 	/**
 	 * @return true if you can block the avatar
@@ -242,6 +248,12 @@ public:
 	 * Opens the chat history for avatar
 	 */
 	static void viewChatHistory(const LLUUID& id);
+
+	//BD
+	/**
+	* Reports the selected avatar
+	*/
+	static void report(const LLUUID& id);
 
 	static std::set<LLUUID> getInventorySelectedUUIDs();
 

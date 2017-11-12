@@ -90,7 +90,7 @@ LONG NTAPI vectoredHandler(PEXCEPTION_POINTERS exception_infop)
 }
 
 // static
-void  LLWinDebug::init()
+void  LLWinDebug::initSingleton()
 {
 	static bool s_first_run = true;
 	// Load the dbghelp dll now, instead of waiting for the crash.
@@ -135,7 +135,7 @@ void  LLWinDebug::init()
 	}
 }
 
-void LLWinDebug::cleanup ()
+void LLWinDebug::cleanupSingleton()
 {
 	gEmergencyMemoryReserve.release();
 }
@@ -185,7 +185,7 @@ void LLWinDebug::writeDumpToFile(MINIDUMP_TYPE type, MINIDUMP_EXCEPTION_INFORMAT
 void LLWinDebug::generateMinidump(struct _EXCEPTION_POINTERS *exception_infop)
 {
 	std::string dump_path = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-												"SecondLifeException");
+												"BlackDragonException");
 	if (exception_infop)
 	{
 		// Since there is exception info... Release the hounds.

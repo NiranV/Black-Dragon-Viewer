@@ -587,7 +587,7 @@ class LLFileTakeSnapshotToDisk : public view_listener_t
 			formatted->enableOverSize() ;
 			formatted->encode(raw, 0);
 			formatted->disableOverSize() ;
-			gViewerWindow->saveImageNumbered(formatted);
+			LLSnapshotLivePreview::saveLocal(formatted);
 		}
 		return true;
 	}
@@ -805,7 +805,7 @@ void upload_new_resource(
 //     uploadInfo->setTransactionId(tid);
 
 
-	std::string url = gAgent.getRegion()->getCapability("NewFileAgentInventory");
+	std::string url = gAgent.getRegionCapability("NewFileAgentInventory");
 
 	if ( !url.empty() )
 	{

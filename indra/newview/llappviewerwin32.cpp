@@ -361,17 +361,6 @@ int APIENTRY WINMAIN(HINSTANCE hInstance,
 	delete viewer_app_ptr;
 	viewer_app_ptr = NULL;
 
-	//start updater
-	if(LLAppViewer::sUpdaterInfo)
-	{
-		_spawnl(_P_NOWAIT, LLAppViewer::sUpdaterInfo->mUpdateExePath.c_str(), LLAppViewer::sUpdaterInfo->mUpdateExePath.c_str(), LLAppViewer::sUpdaterInfo->mParams.str().c_str(), NULL);
-
-		delete LLAppViewer::sUpdaterInfo ;
-		LLAppViewer::sUpdaterInfo = NULL ;
-	}
-
-
-
 	// (NVAPI) (6) We clean up. This is analogous to doing a free()
 	if (hSession)
 	{
@@ -502,7 +491,8 @@ bool LLAppViewerWin32::init()
 	disableWinErrorReporting();
 
 #ifndef LL_RELEASE_FOR_DOWNLOAD
-	LLWinDebug::instance().init();
+	// Merely requesting the LLSingleton instance initializes it.
+	LLWinDebug::instance();
 #endif
 
 #if LL_WINDOWS
@@ -525,10 +515,6 @@ bool LLAppViewerWin32::cleanup()
 	bool result = LLAppViewer::cleanup();
 
 	gDXHardware.cleanup();
-
-#ifndef LL_RELEASE_FOR_DOWNLOAD
-	LLWinDebug::instance().cleanup();
-#endif
 
 	if (mIsConsoleAllocated)
 	{
@@ -695,10 +681,10 @@ void LLAppViewerWin32::initCrashReporting(bool reportFreeze)
 	PROCESS_INFORMATION processInfo;
 
 	std::wstring exe_wstr;
-	exe_wstr=wstringize(exe_path);
+	exe_wstr = utf8str_to_utf16str(exe_path);
 
 	std::wstring arg_wstr;
-	arg_wstr=wstringize(arg_str);
+	arg_wstr = utf8str_to_utf16str(arg_str);
 
 	LL_INFOS("CrashReport") << "Creating crash reporter process " << exe_path << " with params: " << arg_str << LL_ENDL;
     if(CreateProcess(exe_wstr.c_str(),     

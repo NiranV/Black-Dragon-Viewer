@@ -42,6 +42,7 @@
 #include "llvfile.h"
 #include "m3math.h"
 #include "message.h"
+#include "llsdserialize.h"
 
 //-----------------------------------------------------------------------------
 // Static Definitions
@@ -1221,7 +1222,7 @@ void LLKeyframeMotion::applyConstraint(JointConstraint* constraint, F32 time, U8
 //-----------------------------------------------------------------------------
 // deserialize()
 //-----------------------------------------------------------------------------
-BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
+BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, bool log)
 {
 	BOOL old_version = FALSE;
 	mJointMotionList = new LLKeyframeMotion::JointMotionList;
@@ -1233,17 +1234,35 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 	U16 version;
 	U16 sub_version;
 
+	/*std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, getID().asString() + ".xml");
+	llofstream file;
+	LLSD llsd;
+	if (log)
+	{
+		file.open(full_path);
+	}*/
+
 	if (!dp.unpackU16(version, "version"))
 	{
 		LL_WARNS() << "can't read version number" << LL_ENDL;
 		return FALSE;
 	}
+	/*if (log)
+	{
+		llsd["version"] = version;
+		//LLSDSerialize::toXML(llsd["version"], file);
+	}*/
 
 	if (!dp.unpackU16(sub_version, "sub_version"))
 	{
 		LL_WARNS() << "can't read sub version number" << LL_ENDL;
 		return FALSE;
 	}
+	/*if (log)
+	{
+		llsd["sub_version"] = sub_version;
+		//LLSDSerialize::toXML(llsd["sub_version"], file);
+	}*/
 
 	if (version == 0 && sub_version == 1)
 	{
@@ -1265,6 +1284,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		return FALSE;
 	}
 	mJointMotionList->mBasePriority = (LLJoint::JointPriority) temp_priority;
+	/*if (log)
+	{
+		llsd["base_priority"] = temp_priority;
+		//LLSDSerialize::toXML(llsd["base_priority"], file);
+	}*/
 
 	if (mJointMotionList->mBasePriority >= LLJoint::ADDITIVE_PRIORITY)
 	{
@@ -1285,6 +1309,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		LL_WARNS() << "can't read duration" << LL_ENDL;
 		return FALSE;
 	}
+	/*if (log)
+	{
+		llsd["duration"] = mJointMotionList->mDuration;
+		//LLSDSerialize::toXML(llsd["duration"], file);
+	}*/
 	
 	if (mJointMotionList->mDuration > MAX_ANIM_DURATION ||
 	    !llfinite(mJointMotionList->mDuration))
@@ -1301,6 +1330,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		LL_WARNS() << "can't read optional_emote_animation" << LL_ENDL;
 		return FALSE;
 	}
+	/*if (log)
+	{
+		llsd["emote_name"] = mJointMotionList->mEmoteName;
+		//LLSDSerialize::toXML(llsd["emote_name"], file);
+	}*/
 
 	if(mJointMotionList->mEmoteName==mID.asString())
 	{
@@ -1317,6 +1351,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		LL_WARNS() << "can't read loop point" << LL_ENDL;
 		return FALSE;
 	}
+	/*if (log)
+	{
+		llsd["loop_in_point"] = mJointMotionList->mLoopInPoint;
+		//LLSDSerialize::toXML(llsd["loop_in_point"], file);
+	}*/
 
 	if (!dp.unpackF32(mJointMotionList->mLoopOutPoint, "loop_out_point") ||
 	    !llfinite(mJointMotionList->mLoopOutPoint))
@@ -1324,12 +1363,22 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		LL_WARNS() << "can't read loop point" << LL_ENDL;
 		return FALSE;
 	}
+	/*if (log)
+	{
+		llsd["loop_out_point"] = mJointMotionList->mLoopOutPoint;
+		//LLSDSerialize::toXML(llsd["loop_out_point"], file);
+	}*/
 
 	if (!dp.unpackS32(mJointMotionList->mLoop, "loop"))
 	{
 		LL_WARNS() << "can't read loop" << LL_ENDL;
 		return FALSE;
 	}
+	/*if (log)
+	{
+	llsd["loop"] = mJointMotionList->mLoop;
+	//LLSDSerialize::toXML(llsd["loop"], file);
+	}*/
 
 	//-------------------------------------------------------------------------
 	// get easeIn and easeOut
@@ -1340,6 +1389,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		LL_WARNS() << "can't read easeIn" << LL_ENDL;
 		return FALSE;
 	}
+	/*if (log)
+	{
+	llsd["ease_in_duration"] = mJointMotionList->mEaseInDuration;
+	//LLSDSerialize::toXML(llsd["ease_in_duration"], file);
+	}*/
 
 	if (!dp.unpackF32(mJointMotionList->mEaseOutDuration, "ease_out_duration") ||
 	    !llfinite(mJointMotionList->mEaseOutDuration))
@@ -1347,7 +1401,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		LL_WARNS() << "can't read easeOut" << LL_ENDL;
 		return FALSE;
 	}
-
+	/*if (log)
+	{
+	llsd["ease_out_duration"] = mJointMotionList->mEaseOutDuration;
+	//LLSDSerialize::toXML(llsd["ease_out_duration"], file);
+	}*/
 	//-------------------------------------------------------------------------
 	// get hand pose
 	//-------------------------------------------------------------------------
@@ -1357,7 +1415,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		LL_WARNS() << "can't read hand pose" << LL_ENDL;
 		return FALSE;
 	}
-	
+	/*if (log)
+	{
+	llsd["hand_pose"] = (S32)word;
+	//LLSDSerialize::toXML(llsd["hand_pose"], file);
+	}*/
 	if(word > LLHandMotion::NUM_HAND_POSES)
 	{
 		LL_WARNS() << "invalid LLHandMotion::eHandPose index: " << word << LL_ENDL;
@@ -1375,7 +1437,12 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		LL_WARNS() << "can't read number of joints" << LL_ENDL;
 		return FALSE;
 	}
-
+	/*if (log)
+	{
+	llsd["num_joints"] = (S32)num_motions;
+	//LLSDSerialize::toXML(llsd["num_joints"], file);
+	LLSDSerialize::toXML(llsd, file);
+	}*/
 	if (num_motions == 0)
 	{
 		LL_WARNS() << "no joints in animation" << LL_ENDL;
@@ -1407,6 +1474,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 			LL_WARNS() << "can't read joint name" << LL_ENDL;
 			return FALSE;
 		}
+		/*if (log)
+		{
+		llsd["num_joints_" + i]["joint_name"] = joint_name;
+		//LLSDSerialize::toXML(llsd[i]["joint_name"], file);
+		}*/
 
 		if (joint_name == "mScreen" || joint_name == "mRoot")
 		{
@@ -1451,6 +1523,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 			LL_WARNS() << "can't read joint priority." << LL_ENDL;
 			return FALSE;
 		}
+		/*if (log)
+		{
+			llsd["num_joints_" + i]["joint_priority"] = joint_priority;
+		//LLSDSerialize::toXML(llsd[i]["joint_priority"], file);
+		}*/
 
 		if (joint_priority < LLJoint::USE_MOTION_PRIORITY)
 		{
@@ -1475,6 +1552,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 			LL_WARNS() << "can't read number of rotation keys" << LL_ENDL;
 			return FALSE;
 		}
+		/*if (log)
+		{
+			llsd["num_joints_" + i]["num_rot_keys"] = joint_motion->mRotationCurve.mNumKeys;
+		//LLSDSerialize::toXML(llsd[i]["num_rot_keys"], file);
+		}*/
 
 		joint_motion->mRotationCurve.mInterpolationType = IT_LINEAR;
 		if (joint_motion->mRotationCurve.mNumKeys != 0)
@@ -1500,7 +1582,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 					LL_WARNS() << "can't read rotation key (" << k << ")" << LL_ENDL;
 					return FALSE;
 				}
-
+				/*if (log)
+				{
+					llsd["num_joints_" + i]["rotation_courve"][k]["time"] = time;
+				//LLSDSerialize::toXML(llsd["rotation_courve"], file);
+				}*/
 			}
 			else
 			{
@@ -1509,6 +1595,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 					LL_WARNS() << "can't read rotation key (" << k << ")" << LL_ENDL;
 					return FALSE;
 				}
+				/*if (log)
+				{
+					llsd["num_joints_" + i]["rotation_courve"][k]["time"] = time_short;
+				//LLSDSerialize::toXML(llsd["rotation_courve"], file);
+				}*/
 
 				time = U16_to_F32(time_short, 0.f, mJointMotionList->mDuration);
 				
@@ -1529,6 +1620,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 			if (old_version)
 			{
 				success = dp.unpackVector3(rot_angles, "rot_angles") && rot_angles.isFinite();
+				/*if (log)
+				{
+					llsd["num_joints_" + i]["rotation_courve"][k]["rot_angles"] = rot_angles.getValue();
+				//LLSDSerialize::toXML(llsd["rotation_courve"], file);
+				}*/
 
 				LLQuaternion::Order ro = StringToOrder("ZYX");
 				rot_key.mRotation = mayaQ(rot_angles.mV[VX], rot_angles.mV[VY], rot_angles.mV[VZ], ro);
@@ -1538,6 +1634,13 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				success &= dp.unpackU16(x, "rot_angle_x");
 				success &= dp.unpackU16(y, "rot_angle_y");
 				success &= dp.unpackU16(z, "rot_angle_z");
+				/*if (log)
+				{
+					llsd["num_joints_" + i]["rotation_courve"][k]["rot_angle_x"] = x;
+					llsd["num_joints_" + i]["rotation_courve"][k]["rot_angle_y"] = y;
+					llsd["num_joints_" + i]["rotation_courve"][k]["rot_angle_z"] = z;
+				//LLSDSerialize::toXML(llsd["rotation_courve"], file);
+				}*/
 
 				LLVector3 rot_vec;
 				rot_vec.mV[VX] = U16_to_F32(x, -1.f, 1.f);
@@ -1569,6 +1672,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 			LL_WARNS() << "can't read number of position keys" << LL_ENDL;
 			return FALSE;
 		}
+		/*if (log)
+		{
+			llsd["num_joints_" + i]["num_pos_keys"] = joint_motion->mPositionCurve.mNumKeys;
+		//LLSDSerialize::toXML(llsd["num_pos_keys"], file);
+		}*/
 
 		joint_motion->mPositionCurve.mInterpolationType = IT_LINEAR;
 		if (joint_motion->mPositionCurve.mNumKeys != 0)
@@ -1594,6 +1702,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 					LL_WARNS() << "can't read position key (" << k << ")" << LL_ENDL;
 					return FALSE;
 				}
+				/*if (log)
+				{
+					llsd["num_joints_" + i]["position_courve"][k]["time"] = pos_key.mTime;
+				//LLSDSerialize::toXML(llsd["position_courve"], file);
+				}*/
 			}
 			else
 			{
@@ -1602,7 +1715,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 					LL_WARNS() << "can't read position key (" << k << ")" << LL_ENDL;
 					return FALSE;
 				}
-
+				/*if (log)
+				{
+					llsd["num_joints_" + i]["position_courve"][k]["time"] = time_short;
+				//LLSDSerialize::toXML(llsd["position_courve"], file);
+				}*/
 				pos_key.mTime = U16_to_F32(time_short, 0.f, mJointMotionList->mDuration);
 			}
 
@@ -1611,7 +1728,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 			if (old_version)
 			{
 				success = dp.unpackVector3(pos_key.mPosition, "pos");
-                
+				/*if (log)
+				{
+					llsd["num_joints_" + i]["position_courve"][k]["pos"] = pos_key.mPosition.getValue();
+				//LLSDSerialize::toXML(llsd["position_courve"], file);
+				}*/
                 //MAINT-6162
                 pos_key.mPosition.mV[VX] = llclamp( pos_key.mPosition.mV[VX], -LL_MAX_PELVIS_OFFSET, LL_MAX_PELVIS_OFFSET);
                 pos_key.mPosition.mV[VY] = llclamp( pos_key.mPosition.mV[VY], -LL_MAX_PELVIS_OFFSET, LL_MAX_PELVIS_OFFSET);
@@ -1625,6 +1746,13 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				success &= dp.unpackU16(x, "pos_x");
 				success &= dp.unpackU16(y, "pos_y");
 				success &= dp.unpackU16(z, "pos_z");
+				/*if (log)
+				{
+					llsd["num_joints_" + i]["position_courve"][k]["pos_x"] = x;
+					llsd["num_joints_" + i]["position_courve"][k]["pos_y"] = y;
+					llsd["num_joints_" + i]["position_courve"][k]["pos_z"] = z;
+				//LLSDSerialize::toXML(llsd["position_courve"], file);
+				}*/
 
 				pos_key.mPosition.mV[VX] = U16_to_F32(x, -LL_MAX_PELVIS_OFFSET, LL_MAX_PELVIS_OFFSET);
 				pos_key.mPosition.mV[VY] = U16_to_F32(y, -LL_MAX_PELVIS_OFFSET, LL_MAX_PELVIS_OFFSET);
@@ -1663,6 +1791,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		LL_WARNS() << "can't read number of constraints" << LL_ENDL;
 		return FALSE;
 	}
+	/*if (log)
+	{
+	llsd["num_constraints"] = num_constraints;
+	//LLSDSerialize::toXML(llsd["num_constraints"], file);
+	}*/
 
 	if (num_constraints > MAX_CONSTRAINTS || num_constraints < 0)
 	{
@@ -1687,6 +1820,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				return FALSE;
 			}
 			constraintp->mChainLength = (S32) byte;
+			/*if (log)
+			{
+			llsd["constrain_" + i]["chain_length"] = byte;
+			//LLSDSerialize::toXML(llsd["chain_length"], file);
+			}*/
 
 			if((U32)constraintp->mChainLength > mJointMotionList->getNumJointMotions())
 			{
@@ -1701,6 +1839,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				delete constraintp;
 				return FALSE;
 			}
+			/*if (log)
+			{
+			llsd["constrain_" + i]["constraint_type"] = byte;
+			//LLSDSerialize::toXML(llsd["constraint_type"], file);
+			}*/
 			
 			if( byte >= NUM_CONSTRAINT_TYPES )
 			{
@@ -1718,6 +1861,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				delete constraintp;
 				return FALSE;
 			}
+			/*if (log)
+			{
+			llsd["constrain_" + i]["source_volume"] = U8(bin_data);
+			//LLSDSerialize::toXML(llsd["source_volume"], file);
+			}*/
 
 			bin_data[BIN_DATA_LENGTH] = 0; // Ensure null termination
 			str = (char*)bin_data;
@@ -1729,6 +1877,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				delete constraintp;
 				return FALSE;
 			}
+			/*if (log)
+			{
+			llsd["constrain_" + i]["source_offset"] = constraintp->mSourceConstraintOffset.getValue();
+			//LLSDSerialize::toXML(llsd["source_offset"], file);
+			}*/
 			
 			if( !(constraintp->mSourceConstraintOffset.isFinite()) )
 			{
@@ -1743,6 +1896,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				delete constraintp;
 				return FALSE;
 			}
+			/*if (log)
+			{
+			llsd["constrain_" + i]["target_volume"] = U8(bin_data);
+			//LLSDSerialize::toXML(llsd["target_volume"], file);
+			}*/
 
 			bin_data[BIN_DATA_LENGTH] = 0; // Ensure null termination
 			str = (char*)bin_data;
@@ -1763,6 +1921,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				delete constraintp;
 				return FALSE;
 			}
+			/*if (log)
+			{
+			llsd["constrain_" + i]["target_offset"] = constraintp->mTargetConstraintOffset.getValue();
+			//LLSDSerialize::toXML(llsd["target_offset"], file);
+			}*/
 
 			if( !(constraintp->mTargetConstraintOffset.isFinite()) )
 			{
@@ -1777,6 +1940,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				delete constraintp;
 				return FALSE;
 			}
+			/*if (log)
+			{
+			llsd["constrain_" + i]["target_dir"] = constraintp->mTargetConstraintDir.getValue();
+			//LLSDSerialize::toXML(llsd["target_dir"], file);
+			}*/
 
 			if( !(constraintp->mTargetConstraintDir.isFinite()) )
 			{
@@ -1797,6 +1965,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				delete constraintp;
 				return FALSE;
 			}
+			/*if (log)
+			{
+			llsd["constrain_" + i]["ease_in_start"] = constraintp->mEaseInStartTime;
+			//LLSDSerialize::toXML(llsd["ease_in_start"], file);
+			}*/
 
 			if (!dp.unpackF32(constraintp->mEaseInStopTime, "ease_in_stop") || !llfinite(constraintp->mEaseInStopTime))
 			{
@@ -1804,21 +1977,33 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 				delete constraintp;
 				return FALSE;
 			}
-
-			if (!dp.unpackF32(constraintp->mEaseOutStartTime, "ease_out_start") || !llfinite(constraintp->mEaseOutStartTime))
+			/*if (log)
+			{
+			llsd["constrain_" + i]["ease_in_stop"] = constraintp->mEaseInStopTime;
+			//LLSDSerialize::toXML(llsd["loop_out_point"], file);
+			}*/
+			if (!dp.unpackF32(constraintp->mEaseOutStartTime, "ease_in_stop") || !llfinite(constraintp->mEaseOutStartTime))
 			{
 				LL_WARNS() << "can't read constraint ease out start time" << LL_ENDL;
 				delete constraintp;
 				return FALSE;
 			}
-
+			/*if (log)
+			{
+			llsd["constrain_" + i]["ease_out_start"] = constraintp->mEaseOutStartTime;
+			//LLSDSerialize::toXML(llsd["ease_out_start"], file);
+			}*/
 			if (!dp.unpackF32(constraintp->mEaseOutStopTime, "ease_out_stop") || !llfinite(constraintp->mEaseOutStopTime))
 			{
 				LL_WARNS() << "can't read constraint ease out stop time" << LL_ENDL;
 				delete constraintp;
 				return FALSE;
 			}
-
+			/*if (log)
+			{
+			llsd["constrain_" + i]["ease_out_stop"] = constraintp->mEaseOutStopTime;
+			//LLSDSerialize::toXML(llsd["ease_out_stop"], file);
+			}*/
 			mJointMotionList->mConstraints.push_front(constraintp);
 
 			constraintp->mJointStateIndices = new S32[constraintp->mChainLength + 1]; // note: mChainLength is size-limited - comes from a byte
@@ -1871,6 +2056,11 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 	mAssetStatus = ASSET_LOADED;
 
 	setupPose();
+	/*if (log)
+	{
+		LLSDSerialize::toXML(llsd, file);
+		file.close();
+	}*/
 
 	return TRUE;
 }

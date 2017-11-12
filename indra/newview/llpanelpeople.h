@@ -40,6 +40,7 @@ class LLGroupList;
 class LLMenuButton;
 class LLTabContainer;
 class LLNetMap;
+class LLBlockList;
 
 class LLPanelPeople 
 	: public LLPanel
@@ -75,6 +76,7 @@ private:
 		E_SORT_BY_MOST_RECENT = 2,
 		E_SORT_BY_DISTANCE = 3,
 		E_SORT_BY_RECENT_SPEAKERS = 4,
+		E_SORT_BY_TYPE = 5,
 	} ESortOrder;
 
     void				    removePicker();
@@ -83,9 +85,6 @@ private:
 	void					updateFriendListHelpText();
 	void					updateFriendList();
 	void					updateRecentList();
-	//BD
-	//bool					updateSuggestedFriendList();
-	//void					updateFacebookList(bool visible);
 
 	bool					isItemsFreeOfFriends(const uuid_vec_t& uuids);
 
@@ -122,26 +121,29 @@ private:
 	bool					onRecentViewSortMenuItemCheck(const LLSD& userdata);
 	bool					onNearbyViewSortMenuItemCheck(const LLSD& userdata);
 
+	bool					onMenuVisibilityCheck(const LLSD& userdata);
+
 	// misc callbacks
 	static void				onAvatarPicked(const uuid_vec_t& ids, const std::vector<LLAvatarName> names);
 
-	//BD
-	//void					onFriendsAccordionExpandedCollapsed(LLUICtrl* ctrl, const LLSD& param, LLAvatarList* avatar_list);
-
 	void					showAccordion(const std::string name, bool show);
-
-	//BD
-	std::string             getAvatarInformation(const LLUUID& avatar);
-
-	//BD
-	//void					showFriendsAccordionsIfNeeded();
-	//void					onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param);
-	//bool					onConnectedToFacebook(const LLSD& data);
 
 	void					setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed);
 	void					setAccordionCollapsedByUser(const std::string& name, bool collapsed);
 	bool					isAccordionCollapsedByUser(LLUICtrl* acc_tab);
 	bool					isAccordionCollapsedByUser(const std::string& name);
+
+	//BD
+	void					onBlockedPlusMenuItemClicked(const LLSD& userdata);
+	void					onBlockedViewSortMenuItemClicked(const LLSD& userdata);
+	bool					onBlockedViewSortMenuItemCheck(const LLSD& userdata);
+	void					blockResidentByName();
+	void					blockObjectByName();
+	void					callbackBlockPicked(const uuid_vec_t& ids, const std::vector<LLAvatarName> names);
+	static void				callbackBlockByName(const std::string& text);
+
+	std::string             getAvatarInformation(const LLUUID& avatar);
+
 
 	LLTabContainer*			mTabContainer;
 
@@ -149,18 +151,11 @@ private:
 	LLAvatarList*			mNearbyList;
 	LLAvatarList*			mRecentList;
 	LLGroupList*			mGroupList;
-	//BD
-	//LLAvatarList*			mOnlineFriendList;
-	//LLAvatarList*			mSuggestedFriends;
 
 	LLTextBox*				mGroupCount;
 	LLUICtrl*				mGroupMinusBtn;
-	LLUICtrl*				mFriendAddBtn;
-	LLUICtrl*				mFriendDeleteBtn;
 	LLUICtrl*				mFriendGearBtn;
-	LLUICtrl*				mNearbyAddBtn;
 	LLUICtrl*				mNearbyGearBtn;
-	LLUICtrl*				mRecentAddBtn;
 	LLUICtrl*				mRecentGearBtn;
 	LLUICtrl*				mBlockedGearBtn;
 
@@ -174,6 +169,11 @@ private:
 	Updater*				mRecentListUpdater;
 	Updater*				mButtonsUpdater;
     LLHandle< LLFloater >	mPicker;
+
+	//BD
+	LLBlockList*			mBlockedList;
+	LLTextBox*				mFriendCount;
+	LLTextBox*				mBlockCount;
 };
 
 #endif //LL_LLPANELPEOPLE_H

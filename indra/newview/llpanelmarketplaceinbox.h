@@ -53,24 +53,12 @@ public:
 	/*virtual*/ BOOL handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop, EDragAndDropType cargo_type, void *cargo_data, EAcceptance *accept, std::string& tooltip_msg);
 
 	/*virtual*/ void draw();
-	
-	LLInventoryPanel * setupInventoryPanel();
-
-	U32 getFreshItemCount() const;
-	U32 getTotalItemCount() const;
-
-	std::string getBadgeString() const;
 
 private:
 
 	void onSelectionChange();
 
 	void onFocusReceived();
-
-private:
-	LLUICtrl *			mFreshCountCtrl;
-	LLButton *			mInboxButton;
-	LLInventoryPanel *	mInventoryPanel;
 };
 
 

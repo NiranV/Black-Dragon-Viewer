@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Allgemein" name="general_panel">
-	<scroll_container name="general_scroll">
+	<!--<scroll_container name="general_scroll">
 		<panel name="general_scroll_panel">
 			<text name="personal_options">
 				Persönliche Optionen:
@@ -110,5 +110,5 @@ Accountnamen
 				log_in_to_change
 			</text_editor>
 		</panel>
-	</scroll_container>
+	</scroll_container>-->
 </panel>

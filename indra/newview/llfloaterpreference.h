@@ -50,6 +50,7 @@ class LLSD;
 class LLTextBox;
 class LLNameListCtrl;
 class LLProgressBar;
+class LLTabContainer;
 
 typedef std::map<std::string, std::string> notifications_map;
 
@@ -153,9 +154,7 @@ protected:
 	void updateMeterText(LLUICtrl* ctrl);
 	// callback for defaults
 	void setHardwareDefaults();
-	// callback for when client turns on shaders
-	//BD
-	//void onVertexShaderEnable();
+
 	// callback for when client turns on impostors
 	void onAvatarImpostorsEnable();
 	
@@ -183,9 +182,6 @@ public:
 	void enableHistory();
 	void setPersonalInfo(const std::string& visibility, bool im_via_email);
 	void refreshEnabledState();
-	//BD
-	void disableUnavailableSettings();
-	//void onCommitWindowedMode();
 	void refresh();	// Refresh enable/disable
 	
 	void refreshUI();
@@ -204,7 +200,6 @@ public:
 	void onClickPermsDefault();
 	void onClickAutoReplace();
 	void onClickSpellChecker();
-	//void onClickRenderExceptions();
 	void applyUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void getUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void onLogChatHistorySaved();	
@@ -243,11 +238,7 @@ public:
 	void onRemoveBind(const LLSD& param);
 	void onReplaceBind(KEY key, MASK mask, S32 mode);
 
-	void onList0Click();
-	void onList1Click();
-	void onList2Click();
-	void onList3Click();
-	void onList4Click();
+	void onListClick(const LLSD &param);
 	void onListClickAction(S32 mode);
 
 	//BD - Toggle Input/Output Panel.
@@ -341,12 +332,14 @@ private:
 	LLUICtrl* mWarning13;
 	LLUICtrl* mWarning14;
 
+//	//BD - Memory Allocation
 	LLSliderCtrl* mSystemMemory;
 	LLSliderCtrl* mSceneMemory;
-
 	LLProgressBar* mProgressBar;
 
+	//BD
 	LLFrameTimer	mUpdateTimer;
+	LLTabContainer* mTabContainer;
 };
 
 class LLPanelPreference : public LLPanel

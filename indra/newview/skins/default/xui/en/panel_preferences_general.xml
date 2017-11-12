@@ -68,6 +68,9 @@
      follows="left|top"
      height="23"
      layout="topleft"
+     tool_tip="This option sets the language all UI texts should use in the Viewer.  
+     &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+								                                           Changing this option needs a restart."
      left_pad="0"
      top_delta="-3"
      max_chars="135"
@@ -90,18 +93,6 @@
          value="de" />
     </combo_box>
     <text
-     font="SansSerifSmall"
-     type="string"
-     length="1"
-     follows="left|top"
-     height="18"
-     layout="topleft"
-     left_pad="10"
-     name="language_textbox2"
-     width="115">
-        (Requires restart)
-    </text>
-    <text
      type="string"
      length="1"
      follows="left|top"
@@ -120,6 +111,7 @@
       label="Moderate"
       layout="topleft"
       name="maturity_desired_combobox"
+      tool_tip="This option sets the maximum maturity rating a SIM can have that you are capable of visiting."
       top_delta="-3"
       left_pad="0"
       width="170">
@@ -177,6 +169,7 @@
      height="23"
      layout="topleft"
      name="start_location_combo"
+     tool_tip="This option sets the starting position for future log-in attempts."
      left_pad="0"
      top_delta="-3"
      width="170">
@@ -206,6 +199,7 @@
     layout="topleft"
     follows="top|left"
     control_name="AFKTimeout"
+    tool_tip="Sets the amount of time in minutes which has to pass without user input in the Viewer window before your avatar enters 'AFK' mode and is flagged as such."
     left_pad="0"
     top_delta="-3"
     name="afk"
@@ -270,8 +264,9 @@
          height="16"
          label="On"
          value="1"
+         tool_tip="This option shows name tags at all times."
          layout="topleft"
-         name="0"
+         name="2"
          top="0"
          width="70">
                <radio_item.check_button
@@ -288,8 +283,9 @@
          height="16"
          label="Off"
          value="0"
+         tool_tip="This option hides name tags at all times."
          layout="topleft"
-         name="0"
+         name="1"
          left_pad="10"
          top_delta="0"
          width="70">
@@ -305,6 +301,7 @@
          height="16"
          label="Show briefly"
          value="2"
+         tool_tip="This option shows name tags for a short customizable amount of time when the avatar appears for the first time before fading away. This option depends on both 'Name Fade Duration' and 'Start Fading After' below."
          layout="topleft"
          name="0"
          left_pad="10"
@@ -327,6 +324,7 @@
       height="15"
       increment="0.1"
       label="Name fade duration (s):"
+      tool_tip="This option controls the amount of time in s (seconds) it takes for name tags to fade out when they started doing so. This option only works with 'Show Briefly' as name tag visibility option selected."
       initial_value="10"
       layout="topleft"
       left="10"
@@ -342,8 +340,8 @@
  height="15"
  is_toggle="false"
  label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
  top_delta="0"
@@ -360,6 +358,7 @@
       height="15"
       increment="1"
       label="Start fading after (s):"
+      tool_tip="This option controls the amount of time in s (seconds) which have to pass before name tags start fading out after appearing for the first time. This option only works with 'Show Briefly' as name tag visibility option selected."
       initial_value="10"
       layout="topleft"
       left="10"
@@ -375,8 +374,8 @@
  height="15"
  is_toggle="false"
  label="⌊default⌉"
- image_selected="transparent.j2c"
- image_unselected="transparent.j2c"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
  top_delta="0"
@@ -392,7 +391,7 @@
      control_name="UseDisplayNames"
      label="Allow Display Names"
      left="10"
-     tool_tip="Allow display names in chat, IM, Name tags, etc."
+     tool_tip="This option allows the usage of display names in most of the UI. Display names are user chosen, weekly changable names which can differ from the username used to log in."
      name="display_names_check"
      width="300"
      top_pad="7"/>
@@ -404,7 +403,7 @@
      label="Show Display Names"
      layout="topleft"
      left_delta="0"
-     tool_tip="Show Display Names in Name Tags"
+     tool_tip="This option allows the usage of display names in name tags. Display names are user chosen, weekly changable names which can differ from the username used to log in."
      top_pad="0"
      name="show_display_names_checkbox1"
      width="300" />
@@ -414,6 +413,7 @@
      follows="left|top"
      height="16"
      label="Show Usernames"
+     tool_tip="This option shows the original user name used to log in to Second Life alongside the chosen display name should they be enabled."
      layout="topleft"
      top_pad="0"
      left_delta="0"
@@ -424,6 +424,7 @@
      follows="left|top"
      height="16"
      label="Show Group Titles"
+     tool_tip="This option shows group titles in name tags if a user has an active group currently, otherwise it wont show."
      layout="topleft"
      left_delta="0"
      top_pad="0"
@@ -435,6 +436,7 @@
      follows="left|top"
      height="16"
      label="Highlight Friend Names"
+     tool_tip="This option allows name tags of friends to visually differ in color to highlight that the user in question is currently on your friendlist."
      layout="topleft"
      left_delta="0"
      top_pad="0"
@@ -446,6 +448,7 @@
      height="16"
      top_pad="0"
      label="Show my own Name"
+     tool_tip="This option shows your own name tag. It works independently from other name tags but is subject to 'Name Fade Duration' and 'Start Fading After' still."
      layout="topleft"
      left_delta="0"
      name="show_my_name_checkbox1"
@@ -480,7 +483,7 @@
      layout="topleft"
      left="10"
      top_pad="15"
-     tool_tip="Automatically logs you in everytime you start the Viewer."
+     tool_tip="This option controls whether the Viewer should attempt to log you in automatically whenever you start it. &lt;red&gt;It is currently unknown if this option is still functional.&lt;/red&gt;"
      name="Auto_login"
      width="200" />
    <check_box
@@ -490,7 +493,7 @@
      layout="topleft"
      left_delta="0"
      top_pad="0"
-     tool_tip="Remembers the flying state when logging out, logging you in in a flying state when you logged out while flying."
+     tool_tip="This option controls whether the Viewer should remember your flying state when you log out. You will be flying when you log in the next time rather than falling to the ground."
      name="Flying_At_Exit"
      width="200" />
    <panel
@@ -524,6 +527,7 @@
      follows="left|top|right"
      height="22"
      layout="topleft"
+     tool_tip="This option sets the automatic text answer that should be send to anyone sending you a message while you are in 'Busy' mode."
      left="10"
      top_pad="13"
      name="do_not_disturb_response"

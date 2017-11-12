@@ -452,7 +452,7 @@ clicking on their names.
          image_name="Toolbar_Middle_Off"
          left_pad="1"
          top="5"
-         width="231" />
+         width="199" />
          <filter_editor
          background_image="TextField_Off"
          background_image_disabled="TextField_Disabled"
@@ -460,7 +460,7 @@ clicking on their names.
          layout="topleft"
          top_delta="1"
          left_delta="2"
-         right="-34"
+         right="-66"
          height="23"
          search_button_visible="false"
          follows="left|top|right"
@@ -477,6 +477,17 @@ clicking on their names.
              left_pad="3"
              name="member_eject"
              width="31" />
+         <button
+       height="25"
+       label="Ban"
+       top_delta="0"
+       image_hover_unselected="Toolbar_Middle_Over"
+         image_selected="Toolbar_Middle_Selected"
+         image_unselected="Toolbar_Middle_Off"
+       follows="top|right"
+       left_pad="1"
+       name="member_ban"
+       width="31" />
             <name_list
              column_padding="2"
              draw_heading="true"

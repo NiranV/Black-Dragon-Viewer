@@ -53,10 +53,10 @@ def main():
     
     if config.lower() == 'debug':
         src_manifest_name = dst_dir + '/Microsoft.VC80.DebugCRT.manifest'
-        src_config_name = src_dir + '/SecondLifeDebug.exe.config'
+        src_config_name = src_dir + '/BlackDragonDebug.exe.config'
     else:
         src_manifest_name = dst_dir + '/Microsoft.VC80.CRT.manifest'
-        src_config_name = src_dir + '/SecondLife.exe.config'
+        src_config_name = src_dir + '/BlackDragon.exe.config'
 
     dst_config_name = dst_dir + '/' + dst_name
         

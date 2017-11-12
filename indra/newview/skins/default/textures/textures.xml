@@ -664,7 +664,7 @@ with the same filename but different name
   <texture name="pixiesmall.j2c" use_mips="true" />
   <texture name="script_error.j2c" use_mips="true" />
   <texture name="silhouette.j2c" use_mips="true" />
-  <texture name="foot_shadow.j2c" use_mips="true" />
+  <!--<texture name="foot_shadow.j2c" use_mips="true" />-->
   <texture name="transparent.j2c" use_mips="true" />
 
   <texture name="scrollbutton_left_out_blue.tga" file_name="widgets/ScrollArrow_Left_Opaque.png" />
@@ -721,12 +721,12 @@ with the same filename but different name
   
   <texture name="ComboToolbarButton_Disabled" file_name="widgets/ComboToolbarButton_Disabled.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
   <texture name="ComboToolbarButton_Selected" file_name="widgets/ComboToolbarButton_Selected.png" preload="true" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
-  <texture name="ComboToolbarButton_UpSelected" file_name="widgets/ComboToolbarButton_UpSelected.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
+  <!--<texture name="ComboToolbarButton_UpSelected" file_name="widgets/ComboToolbarButton_UpSelected.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />-->
   <texture name="ComboToolbarButton_On" file_name="widgets/ComboToolbarButton_On.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
   <texture name="ComboToolbarButton_Off" file_name="widgets/ComboToolbarButton_Off.png" preload="true" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
   <texture name="ComboToolbarButton_UpOff" file_name="widgets/ComboToolbarButton_UpOff.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
   
-  <texture name="Rounded_Rect"	file_name="Name_Rect.png" preload="true" scale.left="6" scale.top="26" scale.right="58" scale.bottom="6" />
+  <texture name="Name_Rect"	file_name="Name_Rect.png" preload="true" scale.left="6" scale.top="26" scale.right="58" scale.bottom="6" />
   <!--<texture name="Rounded_Rect_Top"	file_name="Rounded_Rect.png" preload="true" scale.left="6" scale.top="8" scale.right="58" scale.bottom="0" clip.left="0" clip.right="64" clip.bottom="16" clip.top="32" />-->
   
   <texture name="Prefs_Separator" file_name="widgets/prefs_separator.png"/>
@@ -776,6 +776,16 @@ with the same filename but different name
   <texture name="Warning_Tag_Background" file_name="widgets/Warning_Tag_Background.png" preload="true" scale.left="8" scale.top="1" scale.right="10" scale.bottom="1" />
   
   <texture name="Panel_Background"	file_name="windows/Panel_Background.png" scale.left="2" scale.top="58" scale.bottom="2" scale.right="28" preload="true"/>
+  
+  <texture name="Stat_Dot0" file_name="stat_dot0.png" preload="false" />
+  <texture name="Stat_Dot1" file_name="stat_dot1.png" preload="false" />
+  <texture name="Stat_Dot2" file_name="stat_dot2.png" preload="false" />
+  <texture name="Stat_Dot3" file_name="stat_dot3.png" preload="false" />
+  <texture name="Stat_Dot4" file_name="stat_dot4.png" preload="false" />
+  <texture name="Stat_Dot5" file_name="stat_dot5.png" preload="false" />
+  <texture name="ToolTip_Spacer" file_name="tooltip_spacer.png" preload="false" />
+  
+  <texture name="PushButton_Default_Off" file_name="widgets/PushButton_Default_Off.png" preload="true" scale.left="4" scale.top="20" scale.right="28" scale.bottom="3" />
   
   <texture name="Inv_TexturesClosed" file_name="icons/Inv_TexturesClosed.png" preload="false" />
   <texture name="Inv_SoundsClosed" file_name="icons/Inv_SoundsClosed.png" preload="false" />

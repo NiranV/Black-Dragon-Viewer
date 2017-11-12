@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Bewegen" name="move_panel">
-	<slider label="Sichtwinkel" name="camera_fov"/>
+	<!--<slider label="Sichtwinkel" name="camera_fov"/>
 	<slider label="Abstand" name="camera_offset_scale"/>
 	<text name="heading2">
 		Automatische Position für:
@@ -35,5 +35,5 @@
 		<combo_box.item label="Zu angeklicktem Ort bewegen" name="1"/>
 		<combo_box.item label="Zu angeklicktem Ort teleportieren" name="2"/>
 	</combo_box>
-	<button label="Andere Geräte" name="joystick_setup_button"/>
+	<button label="Andere Geräte" name="joystick_setup_button"/>-->
 </panel>

@@ -1092,6 +1092,17 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>FramePerSecondLimit</key>
+    <map>
+      <key>Comment</key>
+      <string>Controls upper limit of frames per second</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>U32</string>
+      <key>Value</key>
+      <integer>120</integer>
+    </map>
     <key>BackgroundYieldTime</key>
     <map>
       <key>Comment</key>
@@ -1662,7 +1673,7 @@
       <key>Type</key>
       <string>U32</string>
       <key>Value</key>
-      <integer>512</integer>
+      <integer>1024</integer>
     </map>
     <key>CacheValidateCounter</key>
     <map>
@@ -2354,11 +2365,11 @@
       <key>Comment</key>
       <string>Size (in bytes) for each coroutine stack</string>
       <key>Persist</key>
-      <integer>0</integer>
+      <integer>1</integer>
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>262144</integer>
+      <integer>524288</integer>
     </map>
     <key>CrashOnStartup</key>
     <map>
@@ -4874,7 +4885,7 @@
       <key>Type</key>
       <string>String</string>
       <key>Value</key>
-      <string>http://search.secondlife.com/viewer/[CATEGORY]/?q=[QUERY]&amp;p=[AUTH_TOKEN]&amp;r=[MATURITY]&amp;lang=[LANGUAGE]&amp;g=[GODLIKE]&amp;sid=[SESSION_ID]&amp;rid=[REGION_ID]&amp;pid=[PARCEL_ID]&amp;channel=[CHANNEL]&amp;version=[VERSION]&amp;major=[VERSION_MAJOR]&amp;minor=[VERSION_MINOR]&amp;patch=[VERSION_PATCH]&amp;build=[VERSION_BUILD]</string>
+      <string>https://search.[GRID]/viewer/[CATEGORY]/?q=[QUERY]&amp;p=[AUTH_TOKEN]&amp;r=[MATURITY]&amp;lang=[LANGUAGE]&amp;g=[GODLIKE]&amp;sid=[SESSION_ID]&amp;rid=[REGION_ID]&amp;pid=[PARCEL_ID]&amp;channel=[CHANNEL]&amp;version=[VERSION]&amp;major=[VERSION_MAJOR]&amp;minor=[VERSION_MINOR]&amp;patch=[VERSION_PATCH]&amp;build=[VERSION_BUILD]</string>
     </map>
     <key>HighResSnapshot</key>
     <map>
@@ -4929,7 +4940,7 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
-      <integer>1</integer>
+      <integer>0</integer>
     </map>
     <key>HttpRangeRequestsDisable</key>
     <map>
@@ -5921,12 +5932,12 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>10.0</real>
+    <real>40.0</real>
   </map>
   <key>LoginSRVPump</key>
   <map>
     <key>Comment</key>
-    <string>Name of the message pump that handles SRV request</string>
+    <string>Name of the message pump that handles SRV request (deprecated)</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -6758,17 +6769,6 @@
       <string>U32</string>
       <key>Value</key>
       <integer>512</integer>
-    </map>
-    <key>MemProfiling</key>
-    <map>
-      <key>Comment</key>
-      <string>You want to use tcmalloc's memory profiling options.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
     </map>
     <key>MenuAccessKeyTime</key>
     <map>
@@ -10429,28 +10429,28 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-  <key>RenderUseFarClip</key>
-  <map>
-    <key>Comment</key>
-    <string>If false, frustum culling will ignore far clip plane.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderUseImpostors</key>
-  <map>
-    <key>Comment</key>
+    <key>RenderUseFarClip</key>
+    <map>
+      <key>Comment</key>
+      <string>If false, frustum culling will ignore far clip plane.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>RenderUseImpostors</key>
+    <map>
+      <key>Comment</key>
     <string>OBSOLETE and UNUSED. See RenderAvatarMaxNonImpostors and RenderAvatarMaxComplexity.</string>
-    <key>Persist</key>
+      <key>Persist</key>
     <integer>0</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
     <integer>0</integer>
-  </map>
+    </map>
   <key>RenderAutoMuteByteLimit</key>
   <map>
     <key>Comment</key>
@@ -17858,6 +17858,18 @@
       <integer>0</integer>
       <key>Type</key>
       <string>U32</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>SkipBenchmark</key>
+    <map>
+      <key>Comment</key>
+      <string>if true, disables running the GPU benchmark at startup
+      (default to class 1)</string>
+      <key>Persist</key>
+      <integer>0</integer>
+      <key>Type</key>
+      <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
     </map>

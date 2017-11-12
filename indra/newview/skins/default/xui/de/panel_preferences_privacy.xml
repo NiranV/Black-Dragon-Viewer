@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Privatsphäre" name="privacy">
-	<panel.string name="log_in_to_change">
+	<!--<panel.string name="log_in_to_change">
 		Anmelden, um Änderungen vorzunehmen
 	</panel.string>
 	<button label="Cache leeren" name="clear_web_cache" tool_tip="Bild bei Anmeldung, letzter Standort, Teleport-Liste, Internet- und Texturen-Cache löschen"/>
@@ -28,5 +28,5 @@
 		(Leute und/oder Objekte die du ignoriert/geblockt hast)
 	</text>
 	<button label="Durchsuchen" label_selected="Durchsuchen" name="log_path_button"/>
-	<button label="Blockliste" name="block_list"/>
+	<button label="Blockliste" name="block_list"/>-->
 </panel>

@@ -6,7 +6,7 @@
 ## prior to 2.8, the add_custom_target commands used in setting the version did not work correctly
 cmake_minimum_required(VERSION 2.8.8 FATAL_ERROR)
 
-set(ROOT_PROJECT_NAME "SecondLife" CACHE STRING
+set(ROOT_PROJECT_NAME "BlackDragon" CACHE STRING
     "The root project/makefile/solution name. Defaults to SecondLife.")
 project(${ROOT_PROJECT_NAME})
 

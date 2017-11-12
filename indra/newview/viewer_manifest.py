@@ -27,6 +27,7 @@ Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
 $/LicenseInfo$
 """
 import sys
+import os
 import os.path
 import shutil
 import errno
@@ -41,10 +42,7 @@ viewer_dir = os.path.dirname(__file__)
 # indra.util.llmanifest under their system Python!
 sys.path.insert(0, os.path.join(viewer_dir, os.pardir, "lib", "python"))
 from indra.util.llmanifest import LLManifest, main, path_ancestors, CHANNEL_VENDOR_BASE, RELEASE_CHANNEL, ManifestError
-try:
-    from llbase import llsd
-except ImportError:
-    from indra.base import llsd
+from llbase import llsd
 
 class ViewerManifest(LLManifest):
     def is_packaging_viewer(self):
@@ -185,15 +183,25 @@ class ViewerManifest(LLManifest):
             # File in the newview/ directory
             self.path("gpu_table.txt")
 
-            #summary.json.  Standard with exception handling is fine.  If we can't open a new file for writing, we have worse problems
-            summary_dict = {"Type":"viewer","Version":'.'.join(self.args['version']),"Channel":self.channel_with_pkg_suffix()}
-            with open(os.path.join(os.pardir,'summary.json'), 'w') as summary_handle:
-                json.dump(summary_dict,summary_handle)
+            #build_data.json.  Standard with exception handling is fine.  If we can't open a new file for writing, we have worse problems
+            #platform is computed above with other arg parsing
+            build_data_dict = {"Type":"viewer","Version":'.'.join(self.args['version']),
+                            "Channel Base": CHANNEL_VENDOR_BASE,
+                            "Channel":self.channel_with_pkg_suffix(),
+                            "Platform":self.build_data_json_platform,
+                            "Update Service":"https://update.secondlife.com/update",
+                            }
+            build_data_dict = self.finish_build_data_dict(build_data_dict)
+            with open(os.path.join(os.pardir,'build_data.json'), 'w') as build_data_handle:
+                json.dump(build_data_dict,build_data_handle)
 
             #we likely no longer need the test, since we will throw an exception above, but belt and suspenders and we get the
             #return code for free.
-            if not self.path2basename(os.pardir, "summary.json"):
-                print "No summary.json file"
+            if not self.path2basename(os.pardir, "build_data.json"):
+                print "No build_data.json file"
+
+    def finish_build_data_dict(self, build_data_dict):
+        return build_data_dict
 
     def grid(self):
         return self.args['grid']
@@ -225,7 +233,7 @@ class ViewerManifest(LLManifest):
         return channel_type
 
     def channel_variant_app_suffix(self):
-        # get any part of the compiled channel name after the CHANNEL_VENDOR_BASE
+        # get any part of the channel name after the CHANNEL_VENDOR_BASE
         suffix=self.channel_variant()
         # by ancient convention, we don't use Release in the app name
         if self.channel_type() == 'release':
@@ -287,9 +295,15 @@ class ViewerManifest(LLManifest):
         random.shuffle(names)
         return ', '.join(names)
 
-class Windows_i686_Manifest(ViewerManifest):
+
+class WindowsManifest(ViewerManifest):
     def final_exe(self):
         return self.app_name_oneword()+".exe"
+
+    def finish_build_data_dict(self, build_data_dict):
+        #MAINT-7294: Windows exe names depend on channel name, so write that in also
+        build_data_dict.update({'Executable':self.final_exe()})
+        return build_data_dict
 
     def test_msvcrt_and_copy_action(self, src, dst):
         # This is used to test a dll manifest.
@@ -338,22 +352,47 @@ class Windows_i686_Manifest(ViewerManifest):
             print "Doesn't exist:", src
         
     def construct(self):
-        super(Windows_i686_Manifest, self).construct()
+        super(WindowsManifest, self).construct()
 
         pkgdir = os.path.join(self.args['build'], os.pardir, 'packages')
         relpkgdir = os.path.join(pkgdir, "lib", "release")
         debpkgdir = os.path.join(pkgdir, "lib", "debug")
+        vmpdir = os.path.join(pkgdir, "VMP")
+        llbasedir = os.path.join(pkgdir, "lib", "python", "llbase")
 
         if self.is_packaging_viewer():
             # Find secondlife-bin.exe in the 'configuration' dir, then rename it to the result of final_exe.
-            self.path(src='%s/secondlife-bin.exe' % self.args['configuration'], dst=self.final_exe())
+            self.path(src='%s/blackdragon-bin.exe' % self.args['configuration'], dst=self.final_exe())
+
+            # include the compiled launcher scripts so that it gets included in the file_list
+            self.path(src='%s/apply_update.exe' % vmpdir, dst="apply_update.exe")
+            self.path(src='%s/download_update.exe' % vmpdir, dst="download_update.exe")
+            self.path(src='%s/BD_Launcher.exe' % vmpdir, dst="BD_Launcher.exe")
+            self.path(src='%s/update_manager.exe' % vmpdir, dst="update_manager.exe")
+
+            #IUM is not normally executed directly, just imported.  No exe needed.
+            self.path2basename(vmpdir,"InstallerUserMessage.py")
+
+            #VMP  Tkinter icons
+            if self.prefix("vmp_icons"):
+                self.path("*.png")
+                self.path("*.gif")
+                self.end_prefix("vmp_icons")
+
+            #before, we only needed llbase at build time.  With VMP, we need it at run time.
+            llbase_path = os.path.join(self.get_dst_prefix(),'llbase')
+            if not os.path.exists(llbase_path):
+                os.makedirs(llbase_path)
+            if self.prefix(dst="llbase"):
+                self.path2basename(llbasedir,"*.py")
+                self.path2basename(llbasedir,"_cllsd.so")
+                self.end_prefix()
 
         # Plugin host application
         self.path2basename(os.path.join(os.pardir,
                                         'llplugin', 'slplugin', self.args['configuration']),
                            "slplugin.exe")
         
-        self.path2basename("../viewer_components/updater/scripts/windows", "update_install.bat")
         # Get shared libs from the shared libs staging directory
         if self.prefix(src=os.path.join(os.pardir, 'sharedlibs', self.args['configuration']),
                        dst=""):
@@ -378,31 +417,28 @@ class Windows_i686_Manifest(ViewerManifest):
 
             # Get fmodex dll, continue if missing
             try:
-                if self.args['configuration'].lower() == 'debug':
-                    self.path("fmodexL.dll")
+                if(self.address_size == 64):
+                    self.path("fmodex64.dll")
                 else:
                     self.path("fmodex.dll")
             except:
                 print "Skipping fmodex audio library(assuming other audio engine)"
 
             # For textures
-            if self.args['configuration'].lower() == 'debug':
-                self.path("openjpegd.dll")
-            else:
-                self.path("openjpeg.dll")
+            self.path("openjpeg.dll")
 
             # These need to be installed as a SxS assembly, currently a 'private' assembly.
             # See http://msdn.microsoft.com/en-us/library/ms235291(VS.80).aspx
             if self.args['configuration'].lower() == 'debug':
-                 self.path("msvcr120d.dll")
-                 self.path("msvcp120d.dll")
-                 self.path("msvcr100d.dll")
-                 self.path("msvcp100d.dll")
+                self.path("msvcr120d.dll")
+                self.path("msvcp120d.dll")
+                self.path("msvcr100d.dll")
+                self.path("msvcp100d.dll")
             else:
-                 self.path("msvcr120.dll")
-                 self.path("msvcp120.dll")
-                 self.path("msvcr100.dll")
-                 self.path("msvcp100.dll")
+                self.path("msvcr120.dll")
+                self.path("msvcp120.dll")
+                self.path("msvcr100.dll")
+                self.path("msvcp100.dll")
 
             # Vivox runtimes
             self.path("SLVoice.exe")
@@ -410,7 +446,6 @@ class Windows_i686_Manifest(ViewerManifest):
             self.path("ortp.dll")
             self.path("libsndfile-1.dll")
             self.path("vivoxoal.dll")
-            self.path("ca-bundle.crt")
             
             # Security
             self.path("ssleay32.dll")
@@ -432,12 +467,7 @@ class Windows_i686_Manifest(ViewerManifest):
 
         self.path(src="licenses-win32.txt", dst="licenses.txt")
         self.path("featuretable.txt")
-        self.path("featuretable_xp.txt")
-
-        # Media plugins - QuickTime
-        if self.prefix(src='../media_plugins/quicktime/%s' % self.args['configuration'], dst="llplugin"):
-            self.path("media_plugin_quicktime.dll")
-            self.end_prefix()
+        self.path("ca-bundle.crt")
 
         # Media plugins - CEF
         if self.prefix(src='../media_plugins/cef/%s' % self.args['configuration'], dst="llplugin"):
@@ -449,38 +479,39 @@ class Windows_i686_Manifest(ViewerManifest):
             self.path("media_plugin_libvlc.dll")
             self.end_prefix()
 
-        # winmm.dll shim
-        if self.prefix(src='../media_plugins/winmmshim/%s' % self.args['configuration'], dst=""):
-            self.path("winmm.dll")
-            self.end_prefix()
+        # Media plugins - Example (useful for debugging - not shipped with release viewer)
+        if self.channel_type() != 'release':
+            if self.prefix(src='../media_plugins/example/%s' % self.args['configuration'], dst="llplugin"):
+                self.path("media_plugin_example.dll")
+                self.end_prefix()
 
         # CEF runtime files - debug
         if self.args['configuration'].lower() == 'debug':
             if self.prefix(src=os.path.join(os.pardir, 'packages', 'bin', 'debug'), dst="llplugin"):
+                self.path("chrome_elf.dll")
                 self.path("d3dcompiler_43.dll")
                 self.path("d3dcompiler_47.dll")
                 self.path("libcef.dll")
                 self.path("libEGL.dll")
                 self.path("libGLESv2.dll")
-                self.path("llceflib_host.exe")
+                self.path("dullahan_host.exe")
                 self.path("natives_blob.bin")
                 self.path("snapshot_blob.bin")
                 self.path("widevinecdmadapter.dll")
-                self.path("wow_helper.exe")
                 self.end_prefix()
         else:
         # CEF runtime files - not debug (release, relwithdebinfo etc.)
             if self.prefix(src=os.path.join(os.pardir, 'packages', 'bin', 'release'), dst="llplugin"):
+                self.path("chrome_elf.dll")
                 self.path("d3dcompiler_43.dll")
                 self.path("d3dcompiler_47.dll")
                 self.path("libcef.dll")
                 self.path("libEGL.dll")
                 self.path("libGLESv2.dll")
-                self.path("llceflib_host.exe")
+                self.path("dullahan_host.exe")
                 self.path("natives_blob.bin")
                 self.path("snapshot_blob.bin")
                 self.path("widevinecdmadapter.dll")
-                self.path("wow_helper.exe")
                 self.end_prefix()
 
         # MSVC DLLs needed for CEF and have to be in same directory as plugin
@@ -619,6 +650,8 @@ class Windows_i686_Manifest(ViewerManifest):
             'version' : '.'.join(self.args['version']),
             'version_short' : '.'.join(self.args['version'][:-1]),
             'version_dashes' : '-'.join(self.args['version']),
+            'version_registry' : '%s(%s)' %
+            ('.'.join(self.args['version']), self.address_size),
             'final_exe' : self.final_exe(),
             'flags':'',
             'app_name':self.app_name(),
@@ -629,10 +662,12 @@ class Windows_i686_Manifest(ViewerManifest):
         substitution_strings['installer_file'] = installer_file
         
         version_vars = """
-        !define INSTEXE  "%(final_exe)s"
+        !define INSTEXE "BD_Launcher.exe"
         !define VERSION "%(version_short)s"
         !define VERSION_LONG "%(version)s"
         !define VERSION_DASHES "%(version_dashes)s"
+        !define VERSION_REGISTRY "%(version_registry)s"
+        !define VIEWER_EXE "%(final_exe)s"
         """ % substitution_strings
         
         if self.channel_type() == 'release':
@@ -648,6 +683,13 @@ class Windows_i686_Manifest(ViewerManifest):
             Caption "%(caption)s"
             """
 
+        if(self.address_size == 64):
+            engage_registry="SetRegView 64"
+            program_files="$PROGRAMFILES64"
+        else:
+            engage_registry="SetRegView 32"
+            program_files="$PROGRAMFILES32"
+
         tempfile = "secondlife_setup_tmp.nsi"
         # the following replaces strings in the nsi template
         # it also does python-style % substitution
@@ -656,50 +698,83 @@ class Windows_i686_Manifest(ViewerManifest):
                 "%%SOURCE%%":self.get_src_prefix(),
                 "%%INST_VARS%%":inst_vars_template % substitution_strings,
                 "%%INSTALL_FILES%%":self.nsi_file_commands(True),
+                "%%PROGRAMFILES%%":program_files,
+                "%%ENGAGEREGISTRY%%":engage_registry,
                 "%%DELETE_FILES%%":self.nsi_file_commands(False)})
 
+        # If we're on a build machine, sign the code using our Authenticode certificate. JC
+        # note that the enclosing setup exe is signed later, after the makensis makes it.
+        # Unlike the viewer binary, the VMP filenames are invariant with respect to version, os, etc.
+        for exe in (
+            "apply_update.exe",
+            "download_update.exe",
+            "BD_Launcher.exe",
+            "update_manager.exe",
+            ):
+            self.sign(exe)
+            
         # We use the Unicode version of NSIS, available from
         # http://www.scratchpaper.com/
         # Check two paths, one for Program Files, and one for Program Files (x86).
         # Yay 64bit windows.
-        NSIS_path = os.path.expandvars('${ProgramFiles}\\NSIS\\Unicode\\makensis.exe')
-        if not os.path.exists(NSIS_path):
-            NSIS_path = os.path.expandvars('${ProgramFiles(x86)}\\NSIS\\Unicode\\makensis.exe')
+        for ProgramFiles in 'ProgramFiles', 'ProgramFiles(x86)':
+            NSIS_path = os.path.expandvars(r'${%s}\NSIS\Unicode\makensis.exe' % ProgramFiles)
+            if os.path.exists(NSIS_path):
+                break
         installer_created=False
         nsis_attempts=3
         nsis_retry_wait=15
-        while (not installer_created) and (nsis_attempts > 0):
+        for attempt in xrange(nsis_attempts):
             try:
-                nsis_attempts-=1;
-                self.run_command('"' + NSIS_path + '" ' + self.dst_path_of(tempfile))
-                installer_created=True # if no exception was raised, the codesign worked
+                self.run_command('"' + NSIS_path + '" /V2 ' + self.dst_path_of(tempfile))
             except ManifestError, err:
-                if nsis_attempts:
+                if attempt+1 < nsis_attempts:
                     print >> sys.stderr, "nsis failed, waiting %d seconds before retrying" % nsis_retry_wait
                     time.sleep(nsis_retry_wait)
                     nsis_retry_wait*=2
-                else:
-                    print >> sys.stderr, "Maximum nsis attempts exceeded; giving up"
-                    raise
-        # self.remove(self.dst_path_of(tempfile))
-        # If we're on a build machine, sign the code using our Authenticode certificate. JC
-        sign_py = os.path.expandvars("${SIGN}")
-        if not sign_py or sign_py == "${SIGN}":
-            sign_py = 'C:\\buildscripts\\code-signing\\sign.py'
+            else:
+                # NSIS worked! Done!
+                break
         else:
-            sign_py = sign_py.replace('\\', '\\\\\\\\')
-        python = os.path.expandvars("${PYTHON}")
-        if not python or python == "${PYTHON}":
-            python = 'python'
-        if os.path.exists(sign_py):
-            self.run_command("%s %s %s" % (python, sign_py, self.dst_path_of(installer_file).replace('\\', '\\\\\\\\')))
-        else:
-            print "Skipping code signing,", sign_py, "does not exist"
+            print >> sys.stderr, "Maximum nsis attempts exceeded; giving up"
+            raise
+
+        self.sign(installer_file)
         self.created_path(self.dst_path_of(installer_file))
         self.package_file = installer_file
 
+    def sign(self, exe):
+        sign_py = os.environ.get('SIGN', r'C:\buildscripts\code-signing\sign.py')
+        python  = os.environ.get('PYTHON', 'python')
+        if os.path.exists(sign_py):
+            dst_path = self.dst_path_of(exe)
+            print "about to run signing of: ", dst_path
+            self.run_command(' '.join((python, self.escape_slashes(sign_py),
+                                       self.escape_slashes(dst_path))))
+        else:
+            print "Skipping code signing of %s: %s not found" % (exe, sign_py)
 
-class Darwin_i386_Manifest(ViewerManifest):
+    def escape_slashes(self, path):
+        return path.replace('\\', '\\\\\\\\')
+
+class Windows_i686_Manifest(WindowsManifest):
+    # Although we aren't literally passed ADDRESS_SIZE, we can infer it from
+    # the passed 'arch', which is used to select the specific subclass.
+    address_size = 32
+    build_data_json_platform = 'win32'
+
+class Windows_x86_64_Manifest(WindowsManifest):
+    address_size = 64
+    build_data_json_platform = 'win'
+
+
+class DarwinManifest(ViewerManifest):
+    build_data_json_platform = 'mac'
+
+    def finish_build_data_dict(self, build_data_dict):
+        build_data_dict.update({'Bundle Id':self.args['bundleid']})
+        return build_data_dict
+
     def is_packaging_viewer(self):
         # darwin requires full app bundle packaging even for debugging.
         return True
@@ -711,21 +786,70 @@ class Darwin_i386_Manifest(ViewerManifest):
         pkgdir = os.path.join(self.args['build'], os.pardir, 'packages')
         relpkgdir = os.path.join(pkgdir, "lib", "release")
         debpkgdir = os.path.join(pkgdir, "lib", "debug")
+        vmpdir = os.path.join(pkgdir, "VMP")
+        llbasedir = os.path.join(pkgdir, "lib", "python", "llbase")
+        requestsdir = os.path.join(pkgdir, "lib", "python", "requests")
+        urllib3dir = os.path.join(pkgdir, "lib", "python", "urllib3")
+        chardetdir = os.path.join(pkgdir, "lib", "python", "chardet")
+        idnadir = os.path.join(pkgdir, "lib", "python", "idna")
 
         if self.prefix(src="", dst="Contents"):  # everything goes in Contents
             self.path("Info.plist", dst="Info.plist")
 
             # copy additional libs in <bundle>/Contents/MacOS/
             self.path(os.path.join(relpkgdir, "libndofdev.dylib"), dst="Resources/libndofdev.dylib")
-            self.path(os.path.join(relpkgdir, "libhunspell-1.3.0.dylib"), dst="Resources/libhunspell-1.3.0.dylib")
+            self.path(os.path.join(relpkgdir, "libhunspell-1.3.0.dylib"), dst="Resources/libhunspell-1.3.0.dylib")   
 
-            if self.prefix(dst="MacOS"):
-                self.path2basename("../viewer_components/updater/scripts/darwin", "*.py")
-                self.end_prefix()
+            if self.prefix(dst="MacOS"):              
+                #this copies over the python wrapper script, associated utilities and required libraries, see SL-321, SL-322, SL-323
+                self.path2basename(vmpdir,"BD_Launcher")
+                self.path2basename(vmpdir,"*.py")
+                # certifi will be imported by requests; this is our custom version to get our ca-bundle.crt 
+                certifi_path = os.path.join(self.get_dst_prefix(),'certifi')
+                if not os.path.exists(certifi_path):
+                    os.makedirs(certifi_path)
+                if self.prefix(dst="certifi"):
+                    self.path2basename(os.path.join(vmpdir,"certifi"),"*")
+                    self.end_prefix()                   
+                # llbase provides our llrest service layer and llsd decoding
+                llbase_path = os.path.join(self.get_dst_prefix(),'llbase')
+                if not os.path.exists(llbase_path):
+                    os.makedirs(llbase_path)
+                if self.prefix(dst="llbase"):
+                    self.path2basename(llbasedir,"*.py")
+                    self.path2basename(llbasedir,"_cllsd.so")
+                    self.end_prefix()
+                #requests module needed by llbase/llrest.py
+                #this is only needed on POSIX, because in Windows we compile it into the EXE
+                requests_path = os.path.join(self.get_dst_prefix(),'requests')
+                if not os.path.exists(requests_path):
+                    os.makedirs(requests_path)
+                if self.prefix(dst="requests"):
+                    self.path2basename(requestsdir,"*")
+                    self.end_prefix()                   
+                urllib3_path = os.path.join(self.get_dst_prefix(),'urllib3')
+                if not os.path.exists(urllib3_path):
+                    os.makedirs(urllib3_path)
+                if self.prefix(dst="urllib3"):
+                    self.path2basename(urllib3dir,"*")
+                    self.end_prefix()                   
+                chardet_path = os.path.join(self.get_dst_prefix(),'chardet')
+                if not os.path.exists(chardet_path):
+                    os.makedirs(chardet_path)
+                if self.prefix(dst="chardet"):
+                    self.path2basename(chardetdir,"*")
+                    self.end_prefix()                   
+                idna_path = os.path.join(self.get_dst_prefix(),'idna')
+                if not os.path.exists(idna_path):
+                    os.makedirs(idna_path)
+                if self.prefix(dst="idna"):
+                    self.path2basename(idnadir,"*")
+                    self.end_prefix()                   
+                self.end_prefix()         
 
             # most everything goes in the Resources directory
             if self.prefix(src="", dst="Resources"):
-                super(Darwin_i386_Manifest, self).construct()
+                super(DarwinManifest, self).construct()
 
                 if self.prefix("cursors_mac"):
                     self.path("*.tif")
@@ -734,11 +858,18 @@ class Darwin_i386_Manifest(ViewerManifest):
                 self.path("licenses-mac.txt", dst="licenses.txt")
                 self.path("featuretable_mac.txt")
                 self.path("SecondLife.nib")
+                self.path("ca-bundle.crt")
 
                 icon_path = self.icon_path()
                 if self.prefix(src=icon_path, dst="") :
-                    self.path("secondlife.icns")
+                    self.path("blackdragon.icns")
                     self.end_prefix(icon_path)
+
+                #VMP Tkinter icons
+                if self.prefix("vmp_icons"):
+                    self.path("*.png")
+                    self.path("*.gif")
+                    self.end_prefix("vmp_icons")
 
                 self.path("SecondLife.nib")
                 
@@ -793,7 +924,7 @@ class Darwin_i386_Manifest(ViewerManifest):
                                 "libapr-1.0.dylib",
                                 "libaprutil-1.0.dylib",
                                 "libcollada14dom.dylib",
-                                "libexpat.1.5.2.dylib",
+                                "libexpat.1.dylib",
                                 "libexception_handler.dylib",
                                 "libGLOD.dylib",
                                 ):
@@ -806,10 +937,9 @@ class Darwin_i386_Manifest(ViewerManifest):
                                 'libvivoxoal.dylib',
                                 'libvivoxsdk.dylib',
                                 'libvivoxplatform.dylib',
-                                'ca-bundle.crt',
                                 'SLVoice',
                                 ):
-                     self.path2basename(relpkgdir, libfile)
+                    self.path2basename(relpkgdir, libfile)
 
                 # dylibs that vary based on configuration
                 if self.args['configuration'].lower() == 'debug':
@@ -844,23 +974,57 @@ class Darwin_i386_Manifest(ViewerManifest):
                         except OSError as err:
                             print "Can't symlink %s -> %s: %s" % (src, dst, err)
 
-                # LLCefLib helper apps go inside SLPlugin.app
+                # Dullahan helper apps go inside SLPlugin.app
                 if self.prefix(src="", dst="SLPlugin.app/Contents/Frameworks"):
-                    for helperappfile in ('LLCefLib Helper.app',
-                                          'LLCefLib Helper EH.app'):
-                        self.path2basename(relpkgdir, helperappfile)
+                    helperappfile = 'DullahanHelper.app'
+                    self.path2basename(relpkgdir, helperappfile)
 
                     pluginframeworkpath = self.dst_path_of('Chromium Embedded Framework.framework');
+                    # Putting a Frameworks directory under Contents/MacOS
+                    # isn't canonical, but the path baked into Dullahan
+                    # Helper.app/Contents/MacOS/DullahanHelper is:
+                    # @executable_path/Frameworks/Chromium Embedded Framework.framework/Chromium Embedded Framework
+                    # (notice, not @executable_path/../Frameworks/etc.)
+                    # So we'll create a symlink (below) from there back to the
+                    # Frameworks directory nested under SLPlugin.app.
+                    helperframeworkpath = \
+                        self.dst_path_of('DullahanHelper.app/Contents/MacOS/'
+                                         'Frameworks/Chromium Embedded Framework.framework')
 
                     self.end_prefix()
 
+                    helperexecutablepath = self.dst_path_of('SLPlugin.app/Contents/Frameworks/DullahanHelper.app/Contents/MacOS/DullahanHelper')
+                    self.run_command('install_name_tool -change '
+                                     '"@rpath/Frameworks/Chromium Embedded Framework.framework/Chromium Embedded Framework" '
+                                     '"@executable_path/Frameworks/Chromium Embedded Framework.framework/Chromium Embedded Framework" "%s"' % helperexecutablepath)
+
                 # SLPlugin plugins
                 if self.prefix(src="", dst="llplugin"):
-                    self.path2basename("../media_plugins/quicktime/" + self.args['configuration'],
-                                       "media_plugin_quicktime.dylib")
                     self.path2basename("../media_plugins/cef/" + self.args['configuration'],
                                        "media_plugin_cef.dylib")
+
+                    # copy LibVLC plugin itself
+                    self.path2basename("../media_plugins/libvlc/" + self.args['configuration'],
+                                       "media_plugin_libvlc.dylib")
+
+                    # copy LibVLC dynamic libraries
+                    if self.prefix(src=os.path.join(os.pardir, 'packages', 'lib', 'release' ), dst="lib"):
+                        self.path( "libvlc*.dylib*" )
+                        self.end_prefix()
+
+                    # copy LibVLC plugins folder
+                    if self.prefix(src=os.path.join(os.pardir, 'packages', 'lib', 'release', 'plugins' ), dst="lib"):
+                        self.path( "*.dylib" )
+                        self.path( "plugins.dat" )
+                        self.end_prefix()
+
                     self.end_prefix("llplugin")
+
+                    # do this install_name_tool *after* media plugin is copied over
+                    dylibexecutablepath = self.dst_path_of('llplugin/media_plugin_cef.dylib')
+                    self.run_command('install_name_tool -change '
+                                     '"@rpath/Frameworks/Chromium Embedded Framework.framework/Chromium Embedded Framework" '
+                                     '"@executable_path/../Frameworks/Chromium Embedded Framework.framework/Chromium Embedded Framework" "%s"' % dylibexecutablepath)
 
                 self.end_prefix("Resources")
 
@@ -879,16 +1043,36 @@ class Darwin_i386_Manifest(ViewerManifest):
                 # this symlink, Second Life web media can't possibly work.
                 # Real Framework folder:
                 #   Second Life.app/Contents/Frameworks/Chromium Embedded Framework.framework/
-                # Location of symlink and why it'ds relative 
+                # Location of symlink and why it's relative 
                 #   Second Life.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/Chromium Embedded Framework.framework/
                 # Real Frameworks folder, with the symlink inside the bundled SLPlugin.app (and why it's relative)
                 #   <top level>.app/Contents/Frameworks/Chromium Embedded Framework.framework/
                 #   <top level>.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/Chromium Embedded Framework.framework ->
-                frameworkpath = os.path.join(os.pardir, os.pardir, os.pardir, os.pardir, "Frameworks", "Chromium Embedded Framework.framework")
+                # It might seem simpler just to create a symlink Frameworks to
+                # the parent of Chromimum Embedded Framework.framework. But
+                # that would create a symlink cycle, which breaks our
+                # packaging step. So make a symlink from Chromium Embedded
+                # Framework.framework to the directory of the same name, which
+                # is NOT an ancestor of the symlink.
+                frameworkpath = os.path.join(os.pardir, os.pardir, os.pardir,
+                                             os.pardir, "Frameworks",
+                                             "Chromium Embedded Framework.framework")
                 try:
-                    symlinkf(frameworkpath, pluginframeworkpath)
+                    # from SLPlugin.app/Contents/Frameworks/Chromium Embedded
+                    # Framework.framework back to Second
+                    # Life.app/Contents/Frameworks/Chromium Embedded Framework.framework
+                    origin, target = pluginframeworkpath, frameworkpath
+                    symlinkf(target, origin)
+                    # from SLPlugin.app/Contents/Frameworks/Dullahan
+                    # Helper.app/Contents/MacOS/Frameworks/Chromium Embedded
+                    # Framework.framework back to
+                    # SLPlugin.app/Contents/Frameworks/Chromium Embedded Framework.framework
+                    self.cmakedirs(os.path.dirname(helperframeworkpath))
+                    origin = helperframeworkpath
+                    target = os.path.join(os.pardir, frameworkpath)
+                    symlinkf(target, origin)
                 except OSError as err:
-                    print "Can't symlink %s -> %s: %s" % (frameworkpath, pluginframeworkpath, err)
+                    print "Can't symlink %s -> %s: %s" % (origin, target, err)
                     raise
 
             self.end_prefix("Contents")
@@ -901,12 +1085,6 @@ class Darwin_i386_Manifest(ViewerManifest):
             "unpacked" in self.args['actions']):
             self.run_command('strip -S %(viewer_binary)r' %
                              { 'viewer_binary' : self.dst_path_of('Contents/MacOS/Second Life')})
-
-    def copy_finish(self):
-        # Force executable permissions to be set for scripts
-        # see CHOP-223 and http://mercurial.selenic.com/bts/issue1802
-        for script in 'Contents/MacOS/update_install.py',:
-            self.run_command("chmod +x %r" % os.path.join(self.get_dst_prefix(), script))
 
     def package_finish(self):
         global CHANNEL_VENDOR_BASE
@@ -922,7 +1100,7 @@ class Darwin_i386_Manifest(ViewerManifest):
         # make sure we don't have stale files laying about
         self.remove(sparsename, finalname)
 
-        self.run_command('hdiutil create %(sparse)r -volname %(vol)r -fs HFS+ -type SPARSE -megabytes 1000 -layout SPUD' % {
+        self.run_command('hdiutil create %(sparse)r -volname %(vol)r -fs HFS+ -type SPARSE -megabytes 1300 -layout SPUD' % {
                 'sparse':sparsename,
                 'vol':volname})
 
@@ -1014,6 +1192,18 @@ class Darwin_i386_Manifest(ViewerManifest):
                     keychain_pwd_path = os.path.join(build_secrets_checkout,'code-signing-osx','password.txt')
                     keychain_pwd = open(keychain_pwd_path).read().rstrip()
 
+                    # Note: As of macOS Sierra, keychains are created with names postfixed with '-db' so for example, the
+                    #       SL Viewer keychain would by default be found in ~/Library/Keychains/viewer.keychain-db instead of
+                    #       just ~/Library/Keychains/viewer.keychain in earlier versions.
+                    #
+                    #       Because we have old OS files from previous versions of macOS on the build hosts, the configurations
+                    #       are different on each host. Some have viewer.keychain, some have viewer.keychain-db and some have both.
+                    #       As you can see in the line below, this script expects the Linden Developer cert/keys to be in viewer.keychain.
+                    #
+                    #       To correctly sign builds you need to make sure ~/Library/Keychains/viewer.keychain exists on the host
+                    #       and that it contains the correct cert/key. If a build host is set up with a clean version of macOS Sierra (or later)
+                    #       then you will need to change this line (and the one for 'codesign' command below) to point to right place or else
+                    #       pull in the cert/key into the default viewer keychain 'viewer.keychain-db' and export it to 'viewer.keychain'
                     self.run_command('security unlock-keychain -p "%s" "%s/Library/Keychains/viewer.keychain"' % ( keychain_pwd, home_path ) )
                     signed=False
                     sign_attempts=3
@@ -1022,6 +1212,7 @@ class Darwin_i386_Manifest(ViewerManifest):
                         try:
                             sign_attempts-=1;
                             self.run_command(
+                                # Note: See blurb above about names of keychains
                                'codesign --verbose --deep --force --keychain "%(home_path)s/Library/Keychains/viewer.keychain" --sign %(identity)r %(bundle)r' % {
                                    'home_path' : home_path,
                                    'identity': identity,
@@ -1052,7 +1243,23 @@ class Darwin_i386_Manifest(ViewerManifest):
         self.package_file = finalname
         self.remove(sparsename)
 
+
+class Darwin_i386_Manifest(DarwinManifest):
+    address_size = 32
+
+
+class Darwin_i686_Manifest(DarwinManifest):
+    """alias in case arch is passed as i686 instead of i386"""
+    pass
+
+
+class Darwin_x86_64_Manifest(DarwinManifest):
+    address_size = 64
+
+
 class LinuxManifest(ViewerManifest):
+    build_data_json_platform = 'lnx'
+
     def construct(self):
         super(LinuxManifest, self).construct()
 
@@ -1078,8 +1285,16 @@ class LinuxManifest(ViewerManifest):
         if self.prefix(src="", dst="bin"):
             self.path("secondlife-bin","do-not-directly-run-secondlife-bin")
             self.path("../linux_crash_logger/linux-crash-logger","linux-crash-logger.bin")
-            self.path2basename("../llplugin/slplugin", "SLPlugin")
-            self.path2basename("../viewer_components/updater/scripts/linux", "update_install")
+            self.path2basename("../llplugin/slplugin", "SLPlugin") 
+            #this copies over the python wrapper script, associated utilities and required libraries, see SL-321, SL-322 and SL-323
+            self.path2basename("../viewer_components/manager","BD_Launcher")
+            self.path2basename("../viewer_components/manager","*.py")
+            llbase_path = os.path.join(self.get_dst_prefix(),'llbase')
+            if not os.path.exists(llbase_path):
+                os.makedirs(llbase_path)
+            if self.prefix(dst="llbase"):
+                self.path2basename("../packages/lib/python/llbase","*.py")
+                self.path2basename("../packages/lib/python/llbase","_cllsd.so")         
             self.end_prefix("bin")
 
         if self.prefix("res-sdl"):
@@ -1091,9 +1306,9 @@ class LinuxManifest(ViewerManifest):
         icon_path = self.icon_path()
         print "DEBUG: icon_path '%s'" % icon_path
         if self.prefix(src=icon_path, dst="") :
-            self.path("secondlife_256.png","secondlife_icon.png")
+            self.path("blackdragon_256.png","blackdragon_icon.png")
             if self.prefix(src="",dst="res-sdl") :
-                self.path("secondlife_256.BMP","ll_icon.BMP")
+                self.path("blackdragon_256.BMP","bd_icon.BMP")
                 self.end_prefix("res-sdl")
             self.end_prefix(icon_path)
 
@@ -1117,12 +1332,7 @@ class LinuxManifest(ViewerManifest):
             print "Skipping llcommon.so (assuming llcommon was linked statically)"
 
         self.path("featuretable_linux.txt")
-
-    def copy_finish(self):
-        # Force executable permissions to be set for scripts
-        # see CHOP-223 and http://mercurial.selenic.com/bts/issue1802
-        for script in 'secondlife', 'bin/update_install':
-            self.run_command("chmod +x %r" % os.path.join(self.get_dst_prefix(), script))
+        self.path("ca-bundle.crt")
 
     def package_finish(self):
         installer_name = self.installer_base_name()
@@ -1165,9 +1375,12 @@ class LinuxManifest(ViewerManifest):
     def strip_binaries(self):
         if self.args['buildtype'].lower() == 'release' and self.is_packaging_viewer():
             print "* Going strip-crazy on the packaged binaries, since this is a RELEASE build"
-            self.run_command(r"find %(d)r/bin %(d)r/lib -type f \! -name update_install \! -name *.dat | xargs --no-run-if-empty strip -S" % {'d': self.get_dst_prefix()} ) # makes some small assumptions about our packaged dir structure
+            # makes some small assumptions about our packaged dir structure
+            self.run_command(r"find %(d)r/bin %(d)r/lib -type f \! -name \*.py \! -name BD_Launcher \! -name update_install | xargs --no-run-if-empty strip -S" % {'d': self.get_dst_prefix()} ) 
 
 class Linux_i686_Manifest(LinuxManifest):
+    address_size = 32
+
     def construct(self):
         super(Linux_i686_Manifest, self).construct()
 
@@ -1253,6 +1466,8 @@ class Linux_i686_Manifest(LinuxManifest):
 
 
 class Linux_x86_64_Manifest(LinuxManifest):
+    address_size = 64
+
     def construct(self):
         super(Linux_x86_64_Manifest, self).construct()
 

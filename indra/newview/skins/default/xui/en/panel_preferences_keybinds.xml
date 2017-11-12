@@ -88,10 +88,11 @@ width="510">
 	height="20"
  visible="true"
  label="Select Action"
+	tool_tip="This dropdown allows you to select the action you want to add to the above list with the 'Add New' button."
 	name="bind_action_1"
 	allow_text_entry="true"
 	top_pad="1"
-	width="141">
+	width="153">
   <combo_box.item
   label="Move Left"
   name="slide_left"
@@ -211,12 +212,32 @@ width="510">
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
+		tool_tip="This button opens the bind popup to add a new entry into the above list and assign a key to the currently selected action."
  name="add"
  width="87"
  top_delta="0"
  left_pad="-7">
    <button.commit_callback
    function="Pref.AddBind"
+   parameter="1"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Change Selected"
+ image_overlay_alignment="left"
+    image_overlay="OptionsMenu_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+		tool_tip="This button opens the bind popup for the currently selected entry and allows you to assign a new key to the selected action in the above list. (Alternatively: Double-Click &lt;green&gt;LeftMouseButton&lt;/green&gt;)"
+ name="add"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pref.ChangeBind"
    parameter="1"/>
  </button>
  <button
@@ -229,6 +250,7 @@ width="510">
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
+		tool_tip="This button removes the currently selected entries which unbinds all keys and actions bound to them."
  name="remove"
  width="130"
  top_delta="0"
@@ -237,14 +259,6 @@ width="510">
    function="Pref.RemoveBind"
    parameter="1"/>
  </button>
- <icon
-	follows="left|top|right"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="139"
-	layout="topleft"
-	left_pad="1"
-	top_delta="0"/>
 
  <panel
  follows="left|top|right"
@@ -304,9 +318,10 @@ width="510">
 	height="20"
  label="Select Action"
 	name="bind_action_0"
+	tool_tip="This dropdown allows you to select the action you want to add to the above list with the 'Add New' button."
 	allow_text_entry="true"
 	top_pad="1"
-	width="141">
+	width="153">
   <combo_box.item
   label="Move Left"
   name="slide_left"
@@ -383,11 +398,31 @@ width="510">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="add"
+	tool_tip="This button opens the bind popup to add a new entry into the above list and assign a key to the currently selected action."
  width="87"
  top_delta="0"
  left_pad="-7">
    <button.commit_callback
    function="Pref.AddBind"
+   parameter="0"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Change Selected"
+ image_overlay_alignment="left"
+    image_overlay="OptionsMenu_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+		tool_tip="This button opens the bind popup for the currently selected entry and allows you to assign a new key to the selected action in the above list. (Alternatively: Double-Click &lt;green&gt;LeftMouseButton&lt;/green&gt;)"
+ name="add"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pref.ChangeBind"
    parameter="0"/>
  </button>
  <button
@@ -401,6 +436,7 @@ width="510">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="remove"
+	tool_tip="This button removes the currently selected entries which unbinds all keys and actions bound to them."
  width="130"
  top_delta="0"
  left_pad="1">
@@ -408,14 +444,6 @@ width="510">
    function="Pref.RemoveBind"
    parameter="0"/>
  </button>
- <icon
-	follows="left|top|right"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="139"
-	layout="topleft"
-	left_pad="1"
-	top_delta="0"/>
    
    <panel
  follows="left|top|right"
@@ -476,9 +504,10 @@ width="510">
 	height="20"
  label="Select Action"
 	name="bind_action_2"
+	tool_tip="This dropdown allows you to select the action you want to add to the above list with the 'Add New' button."
 	allow_text_entry="true"
 	top_pad="1"
-	width="141">
+	width="153">
   <combo_box.item
   label="Move Left"
   name="slide_left"
@@ -599,11 +628,31 @@ width="510">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="add"
+	tool_tip="This button opens the bind popup to add a new entry into the above list and assign a key to the currently selected action."
  width="87"
  top_delta="0"
  left_pad="-7">
    <button.commit_callback
    function="Pref.AddBind"
+   parameter="2"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Change Selected"
+ image_overlay_alignment="left"
+    image_overlay="OptionsMenu_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+		tool_tip="This button opens the bind popup for the currently selected entry and allows you to assign a new key to the selected action in the above list. (Alternatively: Double-Click &lt;green&gt;LeftMouseButton&lt;/green&gt;)"
+ name="add"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pref.ChangeBind"
    parameter="2"/>
  </button>
  <button
@@ -617,6 +666,7 @@ width="510">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="remove"
+	tool_tip="This button removes the currently selected entries which unbinds all keys and actions bound to them."
  width="130"
  top_delta="0"
  left_pad="1">
@@ -624,14 +674,6 @@ width="510">
    function="Pref.RemoveBind"
    parameter="2"/>
  </button>
- <icon
-	follows="left|top|right"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="139"
-	layout="topleft"
-	left_pad="1"
-	top_delta="0"/>
  
    <panel
  follows="left|top|right"
@@ -692,9 +734,10 @@ width="510">
 	height="20"
  label="Select Action"
 	name="bind_action_3"
+	tool_tip="This dropdown allows you to select the action you want to add to the above list with the 'Add New' button."
 	allow_text_entry="true"
 	top_pad="1"
-	width="141">
+	width="153">
   <combo_box.item
   label="Move Forward"
   name="edit_avatar_move_forward"
@@ -755,11 +798,31 @@ width="510">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="add"
+	tool_tip="This button opens the bind popup to add a new entry into the above list and assign a key to the currently selected action."
  width="87"
  top_delta="0"
  left_pad="-7">
    <button.commit_callback
    function="Pref.AddBind"
+   parameter="3"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Change Selected"
+ image_overlay_alignment="left"
+    image_overlay="OptionsMenu_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+		tool_tip="This button opens the bind popup for the currently selected entry and allows you to assign a new key to the selected action in the above list. (Alternatively: Double-Click &lt;green&gt;LeftMouseButton&lt;/green&gt;)"
+ name="add"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pref.ChangeBind"
    parameter="3"/>
  </button>
  <button
@@ -773,6 +836,7 @@ width="510">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="remove"
+	tool_tip="This button removes the currently selected entries which unbinds all keys and actions bound to them."
  width="130"
  top_delta="0"
  left_pad="1">
@@ -780,14 +844,6 @@ width="510">
    function="Pref.RemoveBind"
    parameter="3"/>
  </button>
- <icon
-	follows="left|top|right"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="139"
-	layout="topleft"
-	left_pad="1"
-	top_delta="0"/>
  
    <panel
  follows="left|top|right"
@@ -848,9 +904,10 @@ width="510">
 	height="20"
  label="Select Action"
 	name="bind_action_4"
+	tool_tip="This dropdown allows you to select the action you want to add to the above list with the 'Add New' button."
 	allow_text_entry="true"
 	top_pad="1"
-	width="141">
+	width="153">
   <combo_box.item
   label="Move Forward"
   name="move_forward_sitting"
@@ -875,6 +932,18 @@ width="510">
   label="Spin Under"
   name="spin_under_sitting"
   value="spin_under_sitting" />
+		<combo_box.item
+  label="         Vehicle Specific"
+  enabled="false"
+  value="menu_separator" />
+		<combo_box.item
+  label="Move Left"
+  name="slide_left"
+  value="slide_left" />
+  <combo_box.item
+  label="Move Right"
+  name="slide_right"
+  value="slide_right" />
   <combo_box.item
   label="                 Misc"
   enabled="false"
@@ -911,11 +980,31 @@ width="510">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="add"
+	tool_tip="This button opens the bind popup to add a new entry into the above list and assign a key to the currently selected action."
  width="87"
  top_delta="0"
  left_pad="-7">
    <button.commit_callback
    function="Pref.AddBind"
+   parameter="4"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Change Selected"
+ image_overlay_alignment="left"
+    image_overlay="OptionsMenu_Off"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+		tool_tip="This button opens the bind popup for the currently selected entry and allows you to assign a new key to the selected action in the above list. (Alternatively: Double-Click &lt;green&gt;LeftMouseButton&lt;/green&gt;)"
+ name="add"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Pref.ChangeBind"
    parameter="4"/>
  </button>
  <button
@@ -929,6 +1018,7 @@ width="510">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="remove"
+	tool_tip="This button removes the currently selected entries which unbinds all keys and actions bound to them."
  width="130"
  top_delta="0"
  left_pad="1">
@@ -936,14 +1026,6 @@ width="510">
    function="Pref.RemoveBind"
    parameter="4"/>
  </button>
- <icon
-	follows="left|top|right"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="139"
-	layout="topleft"
-	left_pad="1"
-	top_delta="0"/>
   </panel>
  </scroll_container>
  

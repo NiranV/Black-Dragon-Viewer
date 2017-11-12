@@ -37,13 +37,14 @@
 //
 
 #include "llsd.h"
+#include "llsingleton.h"
 #include <iosfwd>
 #include <string>
 
-class LL_COMMON_API LLOSInfo
+class LL_COMMON_API LLOSInfo : public LLSingleton<LLOSInfo>
 {
+	LLSINGLETON(LLOSInfo);
 public:
-	LLOSInfo();
 	void stream(std::ostream& s) const;
 
 	const std::string& getOSString() const;
@@ -113,11 +114,6 @@ public:
 	void stream(std::ostream& s) const;	///< output text info to s
 
 	U32Kilobytes getPhysicalMemoryKB() const; 
-	
-	/*! Memory size in bytes, if total memory is >= 4GB then U32_MAX will
-	**  be returned.
-	*/
-	U32Bytes getPhysicalMemoryClamped() const; ///< Memory size in clamped bytes
 
 	//get the available memory infomation in KiloBytes.
 	static void getAvailableMemoryKB(U32Kilobytes& avail_physical_mem_kb, U32Kilobytes& avail_virtual_mem_kb);

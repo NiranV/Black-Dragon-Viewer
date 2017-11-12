@@ -281,7 +281,8 @@ const std::string LLEventPump::ANONYMOUS = std::string();
 
 LLEventPump::LLEventPump(const std::string& name, bool tweak):
     // Register every new instance with LLEventPumps
-    mName(LLEventPumps::instance().registerNew(*this, name, tweak)),
+    mRegistry(LLEventPumps::instance().getHandle()),
+    mName(mRegistry.get()->registerNew(*this, name, tweak)),
     mSignal(new LLStandardSignal()),
     mEnabled(true)
 {}
@@ -292,8 +293,13 @@ LLEventPump::LLEventPump(const std::string& name, bool tweak):
 
 LLEventPump::~LLEventPump()
 {
-    // Unregister this doomed instance from LLEventPumps
-    LLEventPumps::instance().unregister(*this);
+    // Unregister this doomed instance from LLEventPumps -- but only if
+    // LLEventPumps is still around!
+    LLEventPumps* registry = mRegistry.get();
+    if (registry)
+    {
+        registry->unregister(*this);
+    }
 }
 
 // static data member
@@ -316,6 +322,13 @@ LLBoundListener LLEventPump::listen_impl(const std::string& name, const LLEventL
                                          const NameList& after,
                                          const NameList& before)
 {
+    if (!mSignal)
+    {
+        LL_WARNS() << "Can't connect listener" << LL_ENDL;
+        // connect will fail, return dummy
+        return LLBoundListener();
+    }
+
     float nodePosition = 1.0;
 
     // if the supplied name is empty we are not interested in the ordering mechanism 

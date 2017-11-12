@@ -361,6 +361,9 @@ BOOL enable_detach(const LLSD& = LLSD());
 void menu_toggle_attached_lights(void* user_data);
 void menu_toggle_attached_particles(void* user_data);
 
+//BD - Right Click Menu
+void remove_friendship(const LLUUID& agent_id);
+
 class LLMenuParcelObserver : public LLParcelObserver
 {
 public:
@@ -672,6 +675,7 @@ class LLAdvancedDumpInfoToConsole : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
+		gDebugView->mDebugConsolep->setVisible(TRUE);
 		std::string info_type = userdata.asString();
 		if ("region" == info_type)
 		{
@@ -861,7 +865,7 @@ class LLAdvancedToggleRenderType : public view_listener_t
 		U32 render_type = render_type_from_string( userdata.asString() );
 		if ( render_type != 0 )
 		{
-			LLPipeline::toggleRenderTypeControl( (void*)render_type );
+			LLPipeline::toggleRenderTypeControl( render_type );
 		}
 		return true;
 	}
@@ -877,7 +881,7 @@ class LLAdvancedCheckRenderType : public view_listener_t
 
 		if ( render_type != 0 )
 		{
-			new_value = LLPipeline::hasRenderTypeControl( (void*)render_type );
+			new_value = LLPipeline::hasRenderTypeControl( render_type );
 		}
 
 		return new_value;
@@ -932,7 +936,7 @@ class LLAdvancedToggleFeature : public view_listener_t
 		U32 feature = feature_from_string( userdata.asString() );
 		if ( feature != 0 )
 		{
-			LLPipeline::toggleRenderDebugFeature( (void*)feature );
+			LLPipeline::toggleRenderDebugFeature( feature );
 		}
 		return true;
 	}
@@ -947,7 +951,7 @@ class LLAdvancedCheckFeature : public view_listener_t
 
 	if ( feature != 0 )
 	{
-		new_value = LLPipeline::toggleRenderDebugFeatureControl( (void*)feature );
+		new_value = LLPipeline::toggleRenderDebugFeatureControl( feature );
 	}
 
 	return new_value;
@@ -988,7 +992,7 @@ class LLAdvancedSetDisplayTextureDensity : public view_listener_t
 		{
 			if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_TEXEL_DENSITY) == TRUE) 
 			{
-				gPipeline.toggleRenderDebug((void*)LLPipeline::RENDER_DEBUG_TEXEL_DENSITY);
+				gPipeline.toggleRenderDebug(LLPipeline::RENDER_DEBUG_TEXEL_DENSITY);
 			}
 			LLViewerTexture::sDebugTexelsMode = LLViewerTexture::DEBUG_TEXELS_OFF;
 		}
@@ -996,7 +1000,7 @@ class LLAdvancedSetDisplayTextureDensity : public view_listener_t
 		{
 			if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_TEXEL_DENSITY) == FALSE) 
 			{
-				gPipeline.toggleRenderDebug((void*)LLPipeline::RENDER_DEBUG_TEXEL_DENSITY);
+				gPipeline.toggleRenderDebug(LLPipeline::RENDER_DEBUG_TEXEL_DENSITY);
 			}
 			LLViewerTexture::sDebugTexelsMode = LLViewerTexture::DEBUG_TEXELS_CURRENT;
 		}
@@ -1004,7 +1008,7 @@ class LLAdvancedSetDisplayTextureDensity : public view_listener_t
 		{
 			if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_TEXEL_DENSITY) == FALSE) 
 			{
-				gPipeline.toggleRenderDebug((void*)LLPipeline::RENDER_DEBUG_TEXEL_DENSITY);
+				gPipeline.toggleRenderDebug(LLPipeline::RENDER_DEBUG_TEXEL_DENSITY);
 			}
 			gPipeline.setRenderDebugFeatureControl(LLPipeline::RENDER_DEBUG_TEXEL_DENSITY, true);
 			LLViewerTexture::sDebugTexelsMode = LLViewerTexture::DEBUG_TEXELS_DESIRED;
@@ -1013,7 +1017,7 @@ class LLAdvancedSetDisplayTextureDensity : public view_listener_t
 		{
 			if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_TEXEL_DENSITY) == FALSE) 
 			{
-				gPipeline.toggleRenderDebug((void*)LLPipeline::RENDER_DEBUG_TEXEL_DENSITY);
+				gPipeline.toggleRenderDebug(LLPipeline::RENDER_DEBUG_TEXEL_DENSITY);
 			}
 			LLViewerTexture::sDebugTexelsMode = LLViewerTexture::DEBUG_TEXELS_FULL;
 		}
@@ -1156,7 +1160,7 @@ class LLAdvancedToggleInfoDisplay : public view_listener_t
 		
 		if ( info_display != 0 )
 		{
-			LLPipeline::toggleRenderDebug( (void*)info_display );
+			LLPipeline::toggleRenderDebug( info_display );
 		}
 
 		return true;
@@ -1173,7 +1177,7 @@ class LLAdvancedCheckInfoDisplay : public view_listener_t
 
 		if ( info_display != 0 )
 		{
-			new_value = LLPipeline::toggleRenderDebugControl( (void*)info_display );
+			new_value = LLPipeline::toggleRenderDebugControl( info_display );
 		}
 
 		return new_value;
@@ -1285,7 +1289,7 @@ class LLAdvancedToggleWireframe : public view_listener_t
 };
 
 // Called from rlvhandler.cpp
-void set_use_wireframe(BOOL useWireframe)
+void set_use_wireframe(bool useWireframe)
 	{
 		if (gUseWireframe == useWireframe)
 			return;
@@ -1301,7 +1305,7 @@ void set_use_wireframe(BOOL useWireframe)
 
 		gPipeline.resetVertexBuffers();
 
-		if (!gUseWireframe && !gInitialDeferredModeForWireframe && LLPipeline::sRenderDeferred != gInitialDeferredModeForWireframe && gPipeline.isInit())
+		if (!gUseWireframe && !gInitialDeferredModeForWireframe && LLPipeline::sRenderDeferred != bool(gInitialDeferredModeForWireframe) && gPipeline.isInit())
 		{
 			LLPipeline::refreshCachedSettings();
 			gPipeline.releaseGLBuffers();
@@ -2209,22 +2213,6 @@ class LLAdvancedCheckShowObjectUpdates : public view_listener_t
 
 
 
-///////////////////////
-// CHECK FOR UPDATES //
-///////////////////////
-
-
-
-class LLAdvancedCheckViewerUpdates : public view_listener_t
-{
-	bool handleEvent(const LLSD& userdata)
-	{
-		LLFloaterAboutUtil::checkUpdatesAndNotify();
-		return true;
-	}
-};
-
-
 ////////////////////
 // COMPRESS IMAGE //
 ////////////////////
@@ -2691,8 +2679,8 @@ class LLObjectDerender : public view_listener_t
 	}
 };
 
-//BD - DeAlpha
-class BDObjectDeAlpha : public view_listener_t
+//BD - Re/DeAlpha + Set Alpha Mode
+class BDObjectSetAlpha : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
@@ -2705,7 +2693,30 @@ class BDObjectDeAlpha : public view_listener_t
 				LLViewerObject *objectp = node->getObject();
 				if (objectp->getID() != gAgentID)
 				{
-					gObjectList.killAlpha(objectp);
+					if (userdata.asString() == "dealpha")
+					{
+						gObjectList.setAlpha(objectp, false);
+					}
+					else if (userdata.asString() == "alpha")
+					{
+						gObjectList.setAlpha(objectp, true);
+					}
+					else if (userdata.asString() == "set_none")
+					{
+						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_NONE);
+					}
+					else if (userdata.asString() == "set_sorting")
+					{
+						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_BLEND);
+					}
+					else if (userdata.asString() == "set_masking")
+					{
+						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_MASK);
+					}
+					else if (userdata.asString() == "set_emissive")
+					{
+						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_EMISSIVE);
+					}
 				}
 			}
 		}
@@ -2713,8 +2724,8 @@ class BDObjectDeAlpha : public view_listener_t
 	}
 };
 
-//BD - ReAlpha
-class BDObjectReAlpha : public view_listener_t
+//BD - Re/DeBright
+class BDObjectSetFullbright : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
@@ -2727,29 +2738,14 @@ class BDObjectReAlpha : public view_listener_t
 				LLViewerObject *objectp = node->getObject();
 				if (objectp->getID() != gAgentID)
 				{
-					gObjectList.restoreAlpha(objectp);
-				}
-			}
-		}
-		return true;
-	}
-};
-
-//BD - DeBright
-class BDObjectDeBright : public view_listener_t
-{
-	bool handleEvent(const LLSD& userdata)
-	{
-		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
-		if (!selection.isNull())
-		{
-			for (LLObjectSelection::iterator iter = selection->begin(); iter != selection->end(); ++iter)
-			{
-				LLSelectNode* node = *iter;
-				LLViewerObject *objectp = node->getObject();
-				if (objectp->getID() != gAgentID)
-				{
-					gObjectList.killFullbright(objectp);
+					if (userdata.asString() == "debright")
+					{
+						gObjectList.setFullbright(objectp, false);
+					}
+					else if (userdata.asString() == "rebright")
+					{
+						gObjectList.setFullbright(objectp, true);
+					}
 				}
 			}
 		}
@@ -8591,7 +8587,7 @@ void handle_report_bug(const LLSD& param)
 	LLUIString url(param.asString());
 	
 	LLStringUtil::format_map_t replace;
-	replace["[ENVIRONMENT]"] = LLURI::escape(LLAppViewer::instance()->getViewerInfoString());
+	replace["[ENVIRONMENT]"] = LLURI::escape(LLAppViewer::instance()->getShortViewerInfoString());
 	LLSLURL location_url;
 	LLAgentUI::buildSLURL(location_url);
 	replace["[LOCATION]"] = LLURI::escape(location_url.getSLURLString());
@@ -8736,66 +8732,66 @@ class LLViewToggleBeacon : public view_listener_t
 		std::string beacon = userdata.asString();
 		if (beacon == "scriptsbeacon")
 		{
-			LLPipeline::toggleRenderScriptedBeacons(NULL);
-			gSavedSettings.setBOOL( "scriptsbeacon", LLPipeline::getRenderScriptedBeacons(NULL) );
+			LLPipeline::toggleRenderScriptedBeacons();
+			gSavedSettings.setBOOL( "scriptsbeacon", LLPipeline::getRenderScriptedBeacons() );
 			// toggle the other one off if it's on
-			if (LLPipeline::getRenderScriptedBeacons(NULL) && LLPipeline::getRenderScriptedTouchBeacons(NULL))
+			if (LLPipeline::getRenderScriptedBeacons() && LLPipeline::getRenderScriptedTouchBeacons())
 			{
-				LLPipeline::toggleRenderScriptedTouchBeacons(NULL);
-				gSavedSettings.setBOOL( "scripttouchbeacon", LLPipeline::getRenderScriptedTouchBeacons(NULL) );
+				LLPipeline::toggleRenderScriptedTouchBeacons();
+				gSavedSettings.setBOOL( "scripttouchbeacon", LLPipeline::getRenderScriptedTouchBeacons() );
 			}
 		}
 		else if (beacon == "physicalbeacon")
 		{
-			LLPipeline::toggleRenderPhysicalBeacons(NULL);
-			gSavedSettings.setBOOL( "physicalbeacon", LLPipeline::getRenderPhysicalBeacons(NULL) );
+			LLPipeline::toggleRenderPhysicalBeacons();
+			gSavedSettings.setBOOL( "physicalbeacon", LLPipeline::getRenderPhysicalBeacons() );
 		}
 		else if (beacon == "moapbeacon")
 		{
-			LLPipeline::toggleRenderMOAPBeacons(NULL);
-			gSavedSettings.setBOOL( "moapbeacon", LLPipeline::getRenderMOAPBeacons(NULL) );
+			LLPipeline::toggleRenderMOAPBeacons();
+			gSavedSettings.setBOOL( "moapbeacon", LLPipeline::getRenderMOAPBeacons() );
 		}
 		else if (beacon == "soundsbeacon")
 		{
-			LLPipeline::toggleRenderSoundBeacons(NULL);
-			gSavedSettings.setBOOL( "soundsbeacon", LLPipeline::getRenderSoundBeacons(NULL) );
+			LLPipeline::toggleRenderSoundBeacons();
+			gSavedSettings.setBOOL( "soundsbeacon", LLPipeline::getRenderSoundBeacons() );
 		}
 		else if (beacon == "particlesbeacon")
 		{
-			LLPipeline::toggleRenderParticleBeacons(NULL);
-			gSavedSettings.setBOOL( "particlesbeacon", LLPipeline::getRenderParticleBeacons(NULL) );
+			LLPipeline::toggleRenderParticleBeacons();
+			gSavedSettings.setBOOL( "particlesbeacon", LLPipeline::getRenderParticleBeacons() );
 		}
 		else if (beacon == "scripttouchbeacon")
 		{
-			LLPipeline::toggleRenderScriptedTouchBeacons(NULL);
-			gSavedSettings.setBOOL( "scripttouchbeacon", LLPipeline::getRenderScriptedTouchBeacons(NULL) );
+			LLPipeline::toggleRenderScriptedTouchBeacons();
+			gSavedSettings.setBOOL( "scripttouchbeacon", LLPipeline::getRenderScriptedTouchBeacons() );
 			// toggle the other one off if it's on
-			if (LLPipeline::getRenderScriptedBeacons(NULL) && LLPipeline::getRenderScriptedTouchBeacons(NULL))
+			if (LLPipeline::getRenderScriptedBeacons() && LLPipeline::getRenderScriptedTouchBeacons())
 			{
-				LLPipeline::toggleRenderScriptedBeacons(NULL);
-				gSavedSettings.setBOOL( "scriptsbeacon", LLPipeline::getRenderScriptedBeacons(NULL) );
+				LLPipeline::toggleRenderScriptedBeacons();
+				gSavedSettings.setBOOL( "scriptsbeacon", LLPipeline::getRenderScriptedBeacons() );
 			}
 		}
 		else if (beacon == "renderbeacons")
 		{
-			LLPipeline::toggleRenderBeacons(NULL);
-			gSavedSettings.setBOOL( "renderbeacons", LLPipeline::getRenderBeacons(NULL) );
+			LLPipeline::toggleRenderBeacons();
+			gSavedSettings.setBOOL( "renderbeacons", LLPipeline::getRenderBeacons() );
 			// toggle the other one on if it's not
-			if (!LLPipeline::getRenderBeacons(NULL) && !LLPipeline::getRenderHighlights(NULL))
+			if (!LLPipeline::getRenderBeacons() && !LLPipeline::getRenderHighlights())
 			{
-				LLPipeline::toggleRenderHighlights(NULL);
-				gSavedSettings.setBOOL( "renderhighlights", LLPipeline::getRenderHighlights(NULL) );
+				LLPipeline::toggleRenderHighlights();
+				gSavedSettings.setBOOL( "renderhighlights", LLPipeline::getRenderHighlights() );
 			}
 		}
 		else if (beacon == "renderhighlights")
 		{
-			LLPipeline::toggleRenderHighlights(NULL);
-			gSavedSettings.setBOOL( "renderhighlights", LLPipeline::getRenderHighlights(NULL) );
+			LLPipeline::toggleRenderHighlights();
+			gSavedSettings.setBOOL( "renderhighlights", LLPipeline::getRenderHighlights() );
 			// toggle the other one on if it's not
-			if (!LLPipeline::getRenderBeacons(NULL) && !LLPipeline::getRenderHighlights(NULL))
+			if (!LLPipeline::getRenderBeacons() && !LLPipeline::getRenderHighlights())
 			{
-				LLPipeline::toggleRenderBeacons(NULL);
-				gSavedSettings.setBOOL( "renderbeacons", LLPipeline::getRenderBeacons(NULL) );
+				LLPipeline::toggleRenderBeacons();
+				gSavedSettings.setBOOL( "renderbeacons", LLPipeline::getRenderBeacons() );
 			}
 		}
 
@@ -8874,7 +8870,7 @@ class LLViewCheckRenderType : public view_listener_t
 		bool new_value = false;
 		if (type == "hideparticles")
 		{
-			new_value = LLPipeline::toggleRenderTypeControlNegated((void *)LLPipeline::RENDER_TYPE_PARTICLES);
+			new_value = LLPipeline::toggleRenderTypeControlNegated(LLPipeline::RENDER_TYPE_PARTICLES);
 		}
 		return new_value;
 	}
@@ -9310,6 +9306,97 @@ void show_topinfobar_context_menu(LLView* ctrl, S32 x, S32 y)
 	LLMenuGL::showPopup(ctrl, show_topbarinfo_context_menu, x, y);
 }
 
+//BD - Right Click Menu
+class LLAvatarRemoveFriend : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		//		if(avatar && !LLAvatarActions::isFriend(avatar->getID()))
+		// [RLVa:KB] - Checked: RLVa-1.2.0
+		if ((avatar && LLAvatarActions::isFriend(avatar->getID())) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, avatar->getID())))
+			// [/RLVa:KB]
+		{
+			remove_friendship(avatar->getID());
+		}
+		return true;
+	}
+};
+
+void remove_friendship(const LLUUID& dest_id)
+{
+	LLViewerObject* dest = gObjectList.findObject(dest_id);
+	if (dest && dest->isAvatar())
+	{
+		LLAvatarActions::removeFriendDialog(dest_id);
+	}
+}
+
+class LLAvatarEnableRemoveFriend : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		//		bool new_value = avatar && !LLAvatarActions::isFriend(avatar->getID());
+		// [RLVa:KB] - Checked: RLVa-1.2.0
+		bool new_value = avatar && LLAvatarActions::isFriend(avatar->getID()) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, avatar->getID()));
+		// [/RLVa:KB]
+		return new_value;
+	}
+};
+
+class LLAvatarChatHistory : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		if (avatar)
+		{
+			LLAvatarActions::viewChatHistory(avatar->getID());
+		}
+		return true;
+	}
+};
+
+class LLAvatarMuteText : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		if (avatar)
+		{
+			LLAvatarActions::toggleMute(avatar->getID(), LLMute::flagTextChat);
+		}
+		return true;
+	}
+};
+
+class LLAvatarMuteVoice : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		if (avatar)
+		{
+			LLAvatarActions::toggleMuteVoice(avatar->getID());
+		}
+		return true;
+	}
+};
+
+class LLAvatarShare : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		if (avatar)
+		{
+			LLAvatarActions::share(avatar->getID());
+		}
+		return true;
+	}
+};
+
 //BD - Derender
 void handle_derender_clear()
 {
@@ -9728,7 +9815,6 @@ void initialize_menus()
 	// Advanced (toplevel)
 	view_listener_t::addMenu(new LLAdvancedToggleShowObjectUpdates(), "Advanced.ToggleShowObjectUpdates");
 	view_listener_t::addMenu(new LLAdvancedCheckShowObjectUpdates(), "Advanced.CheckShowObjectUpdates");
-	view_listener_t::addMenu(new LLAdvancedCheckViewerUpdates(), "Advanced.CheckViewerUpdates");
 	view_listener_t::addMenu(new LLAdvancedCompressImage(), "Advanced.CompressImage");
 	view_listener_t::addMenu(new LLAdvancedShowDebugSettings(), "Advanced.ShowDebugSettings");
 	view_listener_t::addMenu(new LLAdvancedEnableViewAdminOptions(), "Advanced.EnableViewAdminOptions");
@@ -9919,12 +10005,11 @@ void initialize_menus()
 	enable.add("View.EnableFullscreen", boost::bind(&view_enable_fullscreen));
 // [/SL:KB]
 
-//	//BD - De/ReAlpha
-	view_listener_t::addMenu(new BDObjectDeAlpha(), "Object.DeAlpha");
-	view_listener_t::addMenu(new BDObjectReAlpha(), "Object.ReAlpha");
+//	//BD - Re/DeAlpha
+	view_listener_t::addMenu(new BDObjectSetAlpha(), "Object.SetAlphaMode");
 
-//	//BD - DeBright
-	view_listener_t::addMenu(new BDObjectDeBright(), "Object.DeBright");
+//	//BD - Re/DeBright
+	view_listener_t::addMenu(new BDObjectSetFullbright(), "Object.SetFullbright");
 
 //	//BD - Derender
 	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));
@@ -9942,5 +10027,13 @@ void initialize_menus()
 	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));
 	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
 	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");
+
+//	//BD - Right Click Menu
+	view_listener_t::addMenu(new LLAvatarChatHistory(), "Avatar.Calllog");
+	view_listener_t::addMenu(new LLAvatarMuteText(), "Avatar.MuteText");
+	view_listener_t::addMenu(new LLAvatarMuteVoice(), "Avatar.MuteVoice");
+	view_listener_t::addMenu(new LLAvatarShare(), "Avatar.Share");
+	view_listener_t::addMenu(new LLAvatarRemoveFriend(), "Avatar.RemoveFriend");
+	view_listener_t::addMenu(new LLAvatarEnableRemoveFriend(), "Avatar.EnableRemoveFriend");
 
 }

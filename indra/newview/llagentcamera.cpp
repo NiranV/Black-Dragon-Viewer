@@ -766,10 +766,8 @@ F32 LLAgentCamera::getCameraZoomFraction()
 	else
 	{
 		F32 min_zoom;
-		const F32 DIST_FUDGE = 16.f; // meters
-		F32 max_zoom = llmin(mDrawDistance - DIST_FUDGE, 
-								LLWorld::getInstance()->getRegionWidthInMeters() - DIST_FUDGE,
-								MAX_CAMERA_DISTANCE_FROM_AGENT);
+		//BD - Allow infinite zoom.
+		F32 max_zoom = 9999.f;
 
 		F32 distance = (F32)mCameraFocusOffsetTarget.magVec();
 		if (mFocusObject.notNull())
@@ -815,10 +813,8 @@ void LLAgentCamera::setCameraZoomFraction(F32 fraction)
 	else
 	{
 		F32 min_zoom = LAND_MIN_ZOOM;
-		const F32 DIST_FUDGE = 16.f; // meters
-		F32 max_zoom = llmin(mDrawDistance - DIST_FUDGE, 
-								LLWorld::getInstance()->getRegionWidthInMeters() - DIST_FUDGE,
-								MAX_CAMERA_DISTANCE_FROM_AGENT);
+		//BD - Allow infinite zoom.
+		F32 max_zoom = 9999.f;
 
 		if (mFocusObject.notNull())
 		{
@@ -944,9 +940,8 @@ void LLAgentCamera::cameraZoomIn(const F32 fraction)
 	new_distance = llmax(new_distance, min_zoom); 
 
 	// Don't zoom too far back
-	const F32 DIST_FUDGE = 16.f; // meters
-	F32 max_distance = llmin(mDrawDistance - DIST_FUDGE, 
-							 LLWorld::getInstance()->getRegionWidthInMeters() - DIST_FUDGE );
+	//BD - Allow infinite zoom.
+	F32 max_distance = 9999.f;
 
     max_distance = llmin(max_distance, current_distance * 4.f); //Scaled max relative to current distance.  MAINT-3154
 
@@ -954,13 +949,12 @@ void LLAgentCamera::cameraZoomIn(const F32 fraction)
 	{
 		new_distance = max_distance;
 
-		/*
+		//BD - Disable camera zoom limits.
 		// Unless camera is unlocked
-		if (!LLViewerCamera::sDisableCameraConstraints)
+		if (!gSavedSettings.getBOOL("DisableCameraConstraints"))
 		{
 			return;
 		}
-		*/
 	}
 
 	if(cameraCustomizeAvatar())
@@ -1018,9 +1012,8 @@ void LLAgentCamera::cameraOrbitIn(const F32 meters)
 		new_distance = llmax(new_distance, min_zoom);
 
 		// Don't zoom too far back
-		const F32 DIST_FUDGE = 16.f; // meters
-		F32 max_distance = llmin(mDrawDistance - DIST_FUDGE, 
-								 LLWorld::getInstance()->getRegionWidthInMeters() - DIST_FUDGE );
+		//BD - Allow infinite zoom.
+		F32 max_distance = 9999.f;
 
 		if (new_distance > max_distance)
 		{

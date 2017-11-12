@@ -305,8 +305,8 @@ int LLCrashLoggerWindows::processingLoop() {
     LL_INFOS() << "session ending.." << LL_ENDL;
     
     std::string per_run_dir = options["dumpdir"].asString();
-	std::string per_run_file = per_run_dir + "\\SecondLife.log";
-    std::string log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"SecondLife.log");
+	std::string per_run_file = per_run_dir + "\\BlackDragon.log";
+    std::string log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"BlackDragon.log");
 
 	if (gDirUtilp->fileExists(per_run_dir))  
 	{
@@ -377,7 +377,7 @@ bool LLCrashLoggerWindows::initCrashServer()
 	std::wstring wpipe_name;
 	wpipe_name = mCrashReportPipeStr + std::wstring(wstringize(mPID));
 
-	std::wstring wdump_path( wstringize(dump_path) );
+	std::wstring wdump_path(utf8str_to_utf16str(dump_path));
 		
 	//Pipe naming conventions:  http://msdn.microsoft.com/en-us/library/aa365783%28v=vs.85%29.aspx
 	mCrashHandler = new CrashGenerationServer( wpipe_name,

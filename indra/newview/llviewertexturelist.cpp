@@ -1341,9 +1341,9 @@ LLPointer<LLImageJ2C> LLViewerTextureList::convertToUploadFile(LLPointer<LLImage
 // Returns min setting for TextureMemory (in MB)
 S32Megabytes LLViewerTextureList::getMinVideoRamSetting()
 {
-	S32Megabytes system_ram = gSysMemory.getPhysicalMemoryClamped();
+	U32Megabytes system_ram = gSysMemory.getPhysicalMemoryKB();
 	//min texture mem sets to 64M if total physical mem is more than 1.5GB
-	return (system_ram > S32Megabytes(1500)) ? S32Megabytes(64) : gMinVideoRam ;
+	return (system_ram > U32Megabytes(1500)) ? S32Megabytes(64) : gMinVideoRam ;
 }
 
 //static
@@ -1386,7 +1386,7 @@ S32Megabytes LLViewerTextureList::getMaxVideoRamSetting(bool get_recommended, fl
 		LL_WARNS() << "VRAM amount not detected, defaulting to " << max_texmem << " MB" << LL_ENDL;
 	}
 
-	S32Megabytes system_ram = gSysMemory.getPhysicalMemoryClamped(); // In MB
+	S32Megabytes system_ram = gSysMemory.getPhysicalMemoryKB(); // In MB
 	//LL_INFOS() << "*** DETECTED " << system_ram << " MB of system memory." << LL_ENDL;
 	if (get_recommended)
 		max_texmem = llmin(max_texmem, system_ram/2);
@@ -1415,14 +1415,14 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 	//     on every card... really.
 	//   - Make sure we do not allow more than 1992mb, it's the highest currently
 	//     tested and working memory we can use. Might raise this in future.
-	if (cur_mem == (S32Bytes)0
-		|| cur_mem > (S32Megabytes)1992)
+	if (cur_mem == (S32Bytes)0)
+		//|| cur_mem > (S32Megabytes)1992)
 	{
 		cur_mem = llclamp(cur_mem, (S32Megabytes)128, (S32Megabytes)1992);
 	}
 
-	if (sys_mem == (S32Bytes)0
-		|| sys_mem > (S32Megabytes)1992)
+	if (sys_mem == (S32Bytes)0)
+		//|| sys_mem > (S32Megabytes)1992)
 	{
 		sys_mem = llclamp(sys_mem, (S32Megabytes)128, (S32Megabytes)1992);
 	}

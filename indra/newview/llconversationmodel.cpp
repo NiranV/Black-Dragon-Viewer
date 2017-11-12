@@ -167,6 +167,8 @@ void LLConversationItem::buildParticipantMenuOptions(menuentry_vec_t& items, U32
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("block_unblock"));
 		items.push_back(std::string("MuteText"));
+		//BD - Abuse Report
+		items.push_back(std::string("report"));
 //		//BD - SSFUI
 		items.push_back(std::string("copy_avatar_separator"));
 		items.push_back(std::string("CopyUUID"));
@@ -400,12 +402,13 @@ void LLConversationItemSession::buildContextMenu(LLMenuGL& menu, U32 flags)
     }
     if(this->getType() == CONV_SESSION_1_ON_1)
     {
+		items.push_back(std::string("separator_close_conversation"));
         items.push_back(std::string("close_conversation"));
-        items.push_back(std::string("separator_disconnect_from_voice"));
         buildParticipantMenuOptions(items, flags);
     }
     else if(this->getType() == CONV_SESSION_GROUP)
     {
+		items.push_back(std::string("separator_close_conversation"));
         items.push_back(std::string("close_conversation"));
         addVoiceOptions(items);
         items.push_back(std::string("chat_history"));
@@ -419,6 +422,7 @@ void LLConversationItemSession::buildContextMenu(LLMenuGL& menu, U32 flags)
     }
     else if(this->getType() == CONV_SESSION_AD_HOC)
     {
+		items.push_back(std::string("separator_close_conversation"));
         items.push_back(std::string("close_conversation"));
         addVoiceOptions(items);
         items.push_back(std::string("chat_history"));

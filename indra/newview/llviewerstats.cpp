@@ -307,7 +307,8 @@ U32Bytes				gTotalWorldData,
 U32								gSimPingCount = 0;
 U32Bits				gObjectData;
 F32Milliseconds		gAvgSimPing(0.f);
-U32Bytes			gTotalTextureBytesPerBoostLevel[LLViewerTexture::MAX_GL_IMAGE_CATEGORY] = {U32Bytes(0)};
+// rely on default initialization
+U32Bytes			gTotalTextureBytesPerBoostLevel[LLViewerTexture::MAX_GL_IMAGE_CATEGORY];
 
 extern U32  gVisCompared;
 extern U32  gVisTested;
@@ -491,8 +492,9 @@ void send_stats()
 	LLSD &system = body["system"];
 	
 	system["ram"] = (S32) gSysMemory.getPhysicalMemoryKB().value();
-	system["os"] = LLAppViewer::instance()->getOSInfo().getOSStringSimple();
+	system["os"] = LLOSInfo::instance().getOSStringSimple();
 	system["cpu"] = gSysCPU.getCPUString();
+	system["address_size"] = ADDRESS_SIZE;
 	unsigned char MACAddress[MAC_ADDRESS_BYTES];
 	LLUUID::getNodeID(MACAddress);
 	std::string macAddressString = llformat("%02x-%02x-%02x-%02x-%02x-%02x",
@@ -587,9 +589,6 @@ void send_stats()
 	//S32 window_size = (window_width * window_height) / 1024;
 	//misc["string_1"] = llformat("%d", window_size);
 	misc["string_2"] = llformat("Texture Time: %.2f, Total Time: %.2f", gTextureTimer.getElapsedTimeF32(), gFrameTimeSeconds.value());
-
-// 	misc["int_1"] = LLSD::Integer(gSavedSettings.getU32("RenderQualityPerformance")); // Steve: 1.21
-// 	misc["int_2"] = LLSD::Integer(gFrameStalls); // Steve: 1.21
 
 	F32 unbaked_time = LLVOAvatar::sUnbakedTime * 1000.f / gFrameTimeSeconds;
 	misc["int_1"] = LLSD::Integer(unbaked_time); // Steve: 1.22

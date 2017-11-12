@@ -2,17 +2,17 @@
 <floater
  legacy_header_height="18"
  can_minimize="false"
- height="440"
+ height="464"
  layout="topleft"
  name="Inventory Finder"
  help_topic="inventory_finder"
- title="INVENTORY_RECENT_ITEMS"
- width="280">
+ title="Filter Options"
+ width="200">
     <icon
      height="16"
      image_name="Inv_Animation"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_animation"
      top="22"
@@ -23,16 +23,16 @@
      layout="topleft"
      left_pad="2"
      name="check_animation"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_CallingCard"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_calling_card"
-     top="42"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -40,16 +40,16 @@
      layout="topleft"
      left_pad="2"
      name="check_calling_card"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_Shirt"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_clothing"
-     top="62"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -57,16 +57,16 @@
      layout="topleft"
      left_pad="2"
      name="check_clothing"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_Gesture"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_gesture"
-     top="82"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -74,16 +74,16 @@
      layout="topleft"
      left_pad="2"
      name="check_gesture"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_Landmark"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_landmark"
-     top="102"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -91,16 +91,16 @@
      layout="topleft"
      left_pad="2"
      name="check_landmark"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_Notecard"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_notecard"
-     top="122"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -108,16 +108,16 @@
      layout="topleft"
      left_pad="2"
      name="check_notecard"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_Mesh"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_mesh"
-     top="142"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -125,16 +125,16 @@
      layout="topleft"
      left_pad="2"
      name="check_mesh"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_Object"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_object"
-     top="162"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -142,16 +142,16 @@
      layout="topleft"
      left_pad="2"
      name="check_object"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_Script"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_script"
-     top="182"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -159,16 +159,16 @@
      layout="topleft"
      left_pad="2"
      name="check_script"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_Sound"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_sound"
-     top="202"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -176,16 +176,16 @@
      layout="topleft"
      left_pad="2"
      name="check_sound"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_Texture"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_texture"
-     top="222"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -193,16 +193,16 @@
      layout="topleft"
      left_pad="2"
      name="check_texture"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <icon
      height="16"
      image_name="Inv_Snapshot"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_snapshot"
-     top="242"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -210,33 +210,39 @@
      layout="topleft"
      left_pad="2"
      name="check_snapshot"
-     top_delta="0"
+     top_delta="1"
      width="126" />
     <button
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      follows="left|top"
-     height="20"
+     height="23"
      label="All"
      label_selected="All"
      layout="topleft"
-     left="8"
+     left="10"
      name="All"
-     top="262"
-     width="100" />
+     top_pad="8"
+     width="90" />
     <button
-     height="20"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
+     height="23"
      label="None"
      label_selected="None"
      left_delta="0"
      name="None"
-     left_pad="10"
-     width="100" />
+     left_pad="1"
+     width="90" />
     <check_box
      height="16"
      label="Always show folders"
      layout="topleft"
-     left="8"
+     left="10"
      name="check_show_empty"
-     top_pad="6"
+     top_pad="8"
      width="144" />
     <view_border
      bevel_style="none"
@@ -245,16 +251,40 @@
      layout="topleft"
      left="10"
      name="horiz_separator"
-     top_pad="8"
-     width="260"/>
+     top_pad="5"
+     width="180"/>
     <check_box
      height="16"
-     top="324"
+     label="Created by me"
+     layout="topleft"
+     left="10"
+     name="check_created_by_me"
+     top_pad="7"
+     width="130" />
+    <check_box
+     height="16"
+     label="Created by others"
+     layout="topleft"
+     left_delta="0"
+     name="check_created_by_others"
+     top_pad="1"
+     width="70" />
+    <view_border
+     bevel_style="none"
+     follows="top|left"
+     height="0"
+     layout="topleft"
+     left="10"
+     name="horiz_separator2"
+     top_pad="5"
+     width="180"/>
+    <check_box
+     height="16"
      label="Since Logoff"
      layout="topleft"
      left_delta="0"
      name="check_since_logoff"
-     top_pad="4"
+     top_pad="7"
      width="144" />
     <text
      type="string"
@@ -265,7 +295,7 @@
      layout="topleft"
      left_delta="0"
      name="- OR -"
-     top="342"
+     top="370"
      width="144">
         - OR -
     </text>
@@ -273,21 +303,37 @@
      height="16"
      layout="topleft"
      name="date_search_direction"
-     top="360"
-     left="8"
+     top="388"
+     left="10"
      width="270">
      <radio_item
       label="Newer than"
       layout="topleft"
       name="newer"
       top_pad="6"
-      left="0" />
+      left="0">
+      <radio_item.check_button
+      image_unselected="Checkbox_Off"
+      image_selected="Checkbox_On"
+      image_disabled="Checkbox_Off_Disabled"
+      image_disabled_selected="Checkbox_On_Disabled"
+      image_pressed="Checkbox_Press"
+      image_pressed_selected="Checkbox_On_Press" />
+     </radio_item>
      <radio_item
       label="Older than"
       layout="topleft"
       name="older"
       top_delta="0"
-      left="120" />
+      left="100">
+      <radio_item.check_button
+      image_unselected="Checkbox_Off"
+      image_selected="Checkbox_On"
+      image_disabled="Checkbox_Off_Disabled"
+      image_disabled_selected="Checkbox_On_Disabled"
+      image_pressed="Checkbox_Press"
+      image_pressed_selected="Checkbox_On_Press" />
+     </radio_item>
     </radio_group>
     <spinner
      follows="left|top"
@@ -321,7 +367,7 @@
      max_val="10000"
      name="spin_days_ago"
      top_pad="4"
-     left="8"
+     left="10"
      width="64" />
     <text
      name="label_days"
@@ -335,14 +381,4 @@
      width="80">
         Days
     </text>
-    <button
-     follows="top|right"
-     height="20"
-     label="Close"
-     label_selected="Close"
-     layout="topleft"
-     name="Close"
-     right="-6"
-     top="406"
-     width="76" />
 </floater>

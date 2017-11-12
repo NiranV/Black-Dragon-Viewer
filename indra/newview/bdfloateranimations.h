@@ -60,12 +60,13 @@ private:
 	void onJointControlsRefresh();
 
 	//BD - Animating
-	void onAnimAdd();
+	void onAnimAdd(const LLSD& param);
 	void onAnimDelete();
 	void onAnimSave();
 	void onAnimSet();
 	void onAnimPlay();
 	void onAnimStop();
+	void onAnimControlsRefresh();
 
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);
