@@ -1477,7 +1477,7 @@ void LLViewerObjectList::setAlpha(LLViewerObject *objectp, bool alpha)
 			{
 				const LLTextureEntry* te = objectp->getTE(i);
 				LLColor4 te_color = te->getColor();
-				te_color.mV[VW] = alpha ? 1.0 : 0.0;
+				te_color.mV[VW] = alpha ? 0.0 : 1.0;
 				objectp->setTEColor(i, te_color);
 				objectp->setTEAlpha(i, te_color.mV[VW]);
 			}
