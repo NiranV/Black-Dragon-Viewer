@@ -3424,7 +3424,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	U32 num_triangles = 0;
 
 	// per-prim costs
-	static const U32 ARC_PARTICLE_COST = 1; // determined experimentally
+	/*static const U32 ARC_PARTICLE_COST = 1; // determined experimentally
 	static const U32 ARC_PARTICLE_MAX = 2048; // default values
 	static const U32 ARC_TEXTURE_COST = 16; // multiplier for texture resolution - performance tested
 	static const U32 ARC_LIGHT_COST = 500; // static cost for light-producing prims 
@@ -3441,7 +3441,28 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 
 	static const F32 ARC_PLANAR_COST = 1.0f; // tested based on performance to have negligible impact
 	static const F32 ARC_ANIM_TEX_COST = 4.f; // tested based on performance
-	static const F32 ARC_ALPHA_COST = 4.f; // 4x max - based on performance
+	static const F32 ARC_ALPHA_COST = 4.f; // 4x max - based on performance*/
+
+	//BD - Experimental new ARC
+	// per-prim costs
+	static const U32 ARC_PARTICLE_COST = 1; // determined experimentally
+	static const U32 ARC_PARTICLE_MAX = 2048; // default values
+	static const U32 ARC_TEXTURE_COST = 16; // multiplier for texture resolution - performance tested
+	static const U32 ARC_LIGHT_COST = 512; // static cost for light-producing prims 
+	static const U32 ARC_MEDIA_FACE_COST = 1500; // static cost per media-enabled face 
+
+
+	// per-prim multipliers
+	static const F32 ARC_GLOW_MULT = 1.05f; // tested based on performance
+	static const F32 ARC_BUMP_MULT = 1.05f; // tested based on performance
+	static const F32 ARC_FLEXI_MULT = 1.1f; // tested based on performance
+	static const F32 ARC_SHINY_MULT = 1.05f; // tested based on performance
+	static const F32 ARC_INVISI_COST = 2.0f; // tested based on performance
+	static const F32 ARC_WEIGHTED_MESH = 1.5f; // tested based on performance
+
+	//static const F32 ARC_PLANAR_COST = 1.0f; // tested based on performance to have negligible impact
+	static const F32 ARC_ANIM_TEX_COST = 2.f; // tested based on performance
+	static const F32 ARC_ALPHA_COST = 1.5f; // tested based on performance
 
 	F32 shame = 0;
 
@@ -3467,13 +3488,17 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 		path_params = volume_params.getPathParams();
 		profile_params = volume_params.getProfileParams();
 
-		F32 weighted_triangles = -1.0;
+		//BD - Punish high triangle counts.
+		num_triangles = drawablep->getVOVolume()->getHighLODTriangleCount();
+
+		//BD
+		/*F32 weighted_triangles = -1.0;
 		getStreamingCost(NULL, NULL, &weighted_triangles);
 
 		if (weighted_triangles > 0.0)
 		{
 			num_triangles = (U32)(weighted_triangles); 
-		}
+		}*/
 	}
 
 	if (num_triangles == 0)
@@ -3512,7 +3537,9 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 				LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(sculpt_id);
 				if (texture)
 				{
-					S32 texture_cost = 256 + (S32)(ARC_TEXTURE_COST * (texture->getFullHeight() / 128.f + texture->getFullWidth() / 128.f));
+					//S32 texture_cost = 256 + (S32)(ARC_TEXTURE_COST * (texture->getFullHeight() / 128.f + texture->getFullWidth() / 128.f));
+					//BD - Punish sculpt usage compared to normal prims or the much faster mesh.
+					S32 texture_cost = 1.5f * (S32)(ARC_TEXTURE_COST * ((texture->getFullHeight() / 4.f) + (texture->getFullWidth() / 4.f)));
 					textures.insert(texture_cost_t::value_type(sculpt_id, texture_cost));
 				}
 			}
@@ -3557,6 +3584,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 		{
 			invisi = 1;
 		}
+
 		if (face->hasMedia())
 		{
 			media_faces++;
@@ -3591,14 +3619,19 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	}
 
 	// shame currently has the "base" cost of 1 point per 15 triangles, min 2.
-	shame = num_triangles  * 5.f;
+	/*shame = num_triangles  * 5.f;
+	shame = shame < 2.f ? 2.f : shame;*/
+
+	//BD - shame currently has the "base" cost of 1 point per 1 triangles, min 2.
+	shame = num_triangles;
 	shame = shame < 2.f ? 2.f : shame;
 
+	//BD - Save us this check, it's wasted.
 	// multiply by per-face modifiers
-	if (planar)
+	/*if (planar)
 	{
 		shame *= planar * ARC_PLANAR_COST;
-	}
+	}*/
 
 	if (animtex)
 	{
