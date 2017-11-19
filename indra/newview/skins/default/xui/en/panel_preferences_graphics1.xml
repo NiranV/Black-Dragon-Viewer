@@ -31,7 +31,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="3365"
+   height="3372"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -2600,7 +2600,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum total surface area in m² any avatar may have before it is automatically jelly dolled (colored 2D sprite)."
-      label="Derender Surfaces > m²:"
+      label="Avatars > Surface m²:"
       label_width="150"
       layout="topleft"
       left="10"
@@ -2631,16 +2631,16 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       follows="left|top"
       can_edit_text="true"
       height="14"
-      increment="1"
-      initial_value="0"
+      increment="1000"
+      initial_value="500000"
 		tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite)."
-      label="Derender Avatars > AR:"
+      label="Avatars > Complexity:"
       label_width="150"
       layout="topleft"
       left="10"
-      max_val="400000"
+      max_val="800000"
       min_val="0"
       name="RenderAvatarMaxComplexity"
       top_pad="1"
@@ -2672,7 +2672,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum surface area in m² any single object may have before it is automatically derendered."
-      label="Hide Surfaces > m²:"
+      label="Objects > Surface m²:"
       label_width="150"
       layout="topleft"
       left="10"
