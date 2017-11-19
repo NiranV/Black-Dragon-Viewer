@@ -152,7 +152,27 @@ protected:
 
 			return online1 > online2;
 		}
-		return developer1 > developer2;
+		else
+		{
+			if (at.isBuddy(item1->getAvatarId()))
+			{
+				bool online1 = at.isBuddyOnline(item1->getAvatarId());
+				bool online2 = at.isBuddyOnline(item2->getAvatarId());
+
+				if (online1 == online2)
+				{
+					std::string name1 = item1->getAvatarName();
+					std::string name2 = item2->getAvatarName();
+
+					LLStringUtil::toUpper(name1);
+					LLStringUtil::toUpper(name2);
+
+					return name1 < name2;
+				}
+			}
+
+			return developer1 > developer2;
+		}
 	}
 };
 
