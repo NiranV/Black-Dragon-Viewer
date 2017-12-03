@@ -18,29 +18,34 @@
 
 #include "bdfloateranimations.h"
 #include "lluictrlfactory.h"
-#include "llworld.h"
 #include "llagent.h"
-#include "llcharacter.h"
+#include "llappearance.h"
+#include "llappearancemgr.h"
+#include "llassettype.h"
+#include "llavatarappearancedefines.h"
 #include "llavatarname.h"
 #include "llavatarnamecache.h"
-#include "llviewerobjectlist.h"
-#include "llviewerobject.h"
-#include "llvoavatar.h"
-#include "llvoavatarself.h"
-#include "llsdserialize.h"
+#include "llbvhloader.h"
+#include "llcharacter.h"
+#include "lldatapacker.h"
 #include "lldiriterator.h"
 #include "llfilepicker.h"
-#include "llnotificationsutil.h"
-#include "llbvhloader.h"
-#include "lldatapacker.h"
-#include "llvfile.h"
-#include "llassettype.h"
-#include "llkeyframemotion.h"
-#include "llviewermenufile.h"
-#include "llthread.h"
-
-// viewer includes
 #include "llfloaterpreference.h"
+#include "llkeyframemotion.h"
+#include "llnotificationsutil.h"
+#include "llsdserialize.h"
+#include "llthread.h"
+#include "llviewerjointattachment.h"
+#include "llviewerjoint.h"
+#include "llviewerobjectlist.h"
+#include "llviewerobject.h"
+#include "llviewermenufile.h"
+#include "llvfile.h"
+#include "llvoavatar.h"
+#include "llvoavatarself.h"
+#include "llvolume.h"
+#include "llvovolume.h"
+#include "llworld.h"
 
 #include "bdposingmotion.h"
 
@@ -125,6 +130,7 @@ BOOL BDFloaterAnimations::postBuild()
 	mAnimEditorScroll = this->getChild<LLScrollListCtrl>("anim_editor_scroll", true);
 	mAnimEditorScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onAnimControlsRefresh, this));
 	mAnimScrollIndex = 0;
+
 	return TRUE;
 }
 
