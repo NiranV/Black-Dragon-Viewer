@@ -1177,25 +1177,31 @@ void BDFloaterAnimations::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 
 void BDFloaterAnimations::onJointChangeState()
 {
-	LLJoint* joint = (LLJoint*)mJointsScroll->getFirstSelected()->getUserdata();
-	if (joint)
+	std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
+	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
+		it != items.end(); ++it)
 	{
-		BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-		if (motion)
+		LLScrollListItem* item = (*it);
+		LLJoint* joint = (LLJoint*)item->getUserdata();
+		if (joint)
 		{
-			LLPose* pose = motion->getPose();
-			if (pose)
+			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+			if (motion)
 			{
-				LLPointer<LLJointState> joint_state = pose->findJointState(joint);
-				if (joint_state)
+				LLPose* pose = motion->getPose();
+				if (pose)
 				{
-					motion->removeJointState(joint_state);
-					((LLScrollListText*)mJointsScroll->getFirstSelected()->getColumn(0))->setFontStyle(LLFontGL::NORMAL);
-				}
-				else
-				{
-					motion->addJointToState(joint);
-					((LLScrollListText*)mJointsScroll->getFirstSelected()->getColumn(0))->setFontStyle(LLFontGL::BOLD);
+					LLPointer<LLJointState> joint_state = pose->findJointState(joint);
+					if (joint_state)
+					{
+						motion->removeJointState(joint_state);
+						((LLScrollListText*)item->getColumn(0))->setFontStyle(LLFontGL::NORMAL);
+					}
+					else
+					{
+						motion->addJointToState(joint);
+						((LLScrollListText*)item->getColumn(0))->setFontStyle(LLFontGL::BOLD);
+					}
 				}
 			}
 		}
