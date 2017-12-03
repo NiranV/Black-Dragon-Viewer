@@ -114,7 +114,7 @@ public:
 	/*virtual*/ void changed(const LLUUID& session_id, U32 mask) {};
 
 	// static data update, called from message handler
-	static void updateUserInfo(const std::string& visibility, bool im_via_email);
+	static void updateUserInfo(const std::string& visibility, bool im_via_email, bool is_verified_email);
 
 	// refresh all the graphics preferences menus
 	static void refreshEnabledGraphics();
@@ -180,7 +180,7 @@ public:
 	void onClickLogPath();
 	bool moveTranscriptsAndLog();
 	void enableHistory();
-	void setPersonalInfo(const std::string& visibility, bool im_via_email);
+	void setPersonalInfo(const std::string& visibility, bool im_via_email, bool is_verified_email);
 	void refreshEnabledState();
 	void refresh();	// Refresh enable/disable
 	

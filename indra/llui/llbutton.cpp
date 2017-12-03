@@ -810,11 +810,12 @@ void LLButton::draw()
 		}
 		else
 		{
-			imagep->draw(0, 0, (enabled ? mImageColor.get() : disabled_color) % alpha );
+			S32 y = getLocalRect().getHeight() - imagep->getHeight();
+			imagep->draw(0, y, (enabled ? mImageColor.get() : disabled_color) % alpha);
 			if (mCurGlowStrength > 0.01f)
 			{
 				gGL.setSceneBlendType(glow_type);
-				imagep->drawSolid(0, 0, glow_color % (mCurGlowStrength * alpha));
+				imagep->drawSolid(0, y, glow_color % (mCurGlowStrength * alpha));
 				gGL.setSceneBlendType(LLRender::BT_ALPHA);
 			}
 		}
@@ -956,7 +957,8 @@ void LLButton::drawBorder(LLUIImage* imagep, const LLColor4& color, S32 size)
 	}
 	else
 	{
-		imagep->drawBorder(0, 0, color, size);
+		S32 y = getLocalRect().getHeight() - imagep->getHeight();
+		imagep->drawBorder(0, y, color, size);
 	}
 }
 
