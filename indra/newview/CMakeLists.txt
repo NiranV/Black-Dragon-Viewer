@@ -102,6 +102,7 @@ set(viewer_SOURCE_FILES
 #	Black Dragon
 	bdpaneldrawdistance.cpp
     bdfloateranimations.cpp
+    bdfloatercomplexity.cpp
 	bdsidebar.cpp
     bdposingmotion.cpp
 	exopostprocess.cpp
@@ -735,6 +736,7 @@ set(viewer_HEADER_FILES
 #	Black Dragon
 	bdpaneldrawdistance.h
     bdfloateranimations.h
+    bdfloatercomplexity.h
 	bdsidebar.h
     bdposingmotion.h
     exopostprocess.h

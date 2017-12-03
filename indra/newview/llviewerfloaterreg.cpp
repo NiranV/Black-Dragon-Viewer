@@ -159,6 +159,7 @@
 
 //BD
 #include "bdfloateranimations.h"
+#include "bdfloatercomplexity.h"
 
 // *NOTE: Please add files in alphabetical order to keep merges easy.
 // [RLVa:KB] - Checked: 2010-03-11
@@ -202,9 +203,6 @@ void LLViewerFloaterReg::registerFloaters()
 	LLFloaterReg::add("avatar_picker", "floater_avatar_picker.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterAvatarPicker>);
 	LLFloaterReg::add("avatar_render_settings", "floater_avatar_render_settings.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterAvatarRenderSettings>);
 	LLFloaterReg::add("avatar_textures", "floater_avatar_textures.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterAvatarTextures>);
-
-	//BD
-	LLFloaterReg::add("animation_control", "floater_animation_control.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterAnimations>);
 
 	LLFloaterReg::add("beacons", "floater_beacons.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterBeacons>);
 	LLFloaterReg::add("bulk_perms", "floater_bulk_perms.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterBulkPermission>);
@@ -381,6 +379,10 @@ void LLViewerFloaterReg::registerFloaters()
 	LLFloaterReg::add("whitelist_entry", "floater_whitelist_entry.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterWhiteListEntry>);	
 	LLFloaterReg::add("window_size", "floater_window_size.xml", &LLFloaterReg::build<LLFloaterWindowSize>);
 	LLFloaterReg::add("world_map", "floater_world_map.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterWorldMap>);	
+
+	//BD
+	LLFloaterReg::add("animation_control", "floater_animation_control.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterAnimations>);
+	LLFloaterReg::add("complexity", "floater_complexity.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterComplexity>);
 
 	// *NOTE: Please keep these alphabetized for easier merges
 	

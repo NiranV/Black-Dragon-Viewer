@@ -3894,6 +3894,16 @@
             function="Advanced.ToggleInfoDisplay"
             parameter="avatardrawinfo" />
        </menu_item_check>
+		<menu_item_check
+        label="Advanced Complexity Information"
+        name="Animation Controls">
+            <menu_item_check.on_check
+             function="Floater.Visible"
+             parameter="complexity" />
+            <menu_item_check.on_click
+             function="Floater.Toggle"
+             parameter="complexity" />
+        </menu_item_check>
 			</menu>
       <menu_item_separator/>
       <menu

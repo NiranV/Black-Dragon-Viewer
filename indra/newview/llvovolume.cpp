@@ -223,6 +223,9 @@ LLVOVolume::LLVOVolume(const LLUUID &id, const LLPCode pcode, LLViewerRegion *re
 	mLODChanged = FALSE;
 	mSculptChanged = FALSE;
 	mSpotLightPriority = 0.f;
+	mHasGlow = FALSE;
+	mIsAnimated = FALSE;
+	mHasShiny = FALSE;
 
 	mMediaImplList.resize(getNumTEs());
 	mLastFetchedMediaVersion = -1;
@@ -2913,6 +2916,26 @@ void LLVOVolume::setHasShadow(BOOL has_shadow)
 	}
 }
 
+void LLVOVolume::setHasGlow(BOOL has_glow)
+{
+	mHasGlow = has_glow;
+}
+
+void LLVOVolume::setHasShiny(BOOL has_shiny)
+{
+	mHasShiny = has_shiny;
+}
+
+void LLVOVolume::setIsAnimated(BOOL is_animated)
+{
+	mIsAnimated = is_animated;
+}
+
+void LLVOVolume::setRenderComplexityBase(S32 complexity)
+{
+	mRenderComplexityBase = complexity;
+}
+
 void LLVOVolume::setLightColor(const LLColor3& color)
 {
 	LLLightParams *param_block = (LLLightParams *)getParameterEntry(LLNetworkData::PARAMS_LIGHT);
@@ -3445,28 +3468,49 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 
 	//BD - Experimental new ARC
 	// per-prim costs
-	static const U32 ARC_PARTICLE_COST = 1; // determined experimentally
-	static const U32 ARC_PARTICLE_MAX = 2048; // default values
-	static const U32 ARC_TEXTURE_COST = 16; // multiplier for texture resolution - performance tested
-	static const U32 ARC_LIGHT_COST = 512; // static cost for light-producing prims 
-	static const U32 ARC_MEDIA_FACE_COST = 1500; // static cost per media-enabled face 
-
+	//BD - Particles need to be punished extremely harsh, they are besides all other features, the single biggest
+	//     performance hog in Second Life. Just having them enabled and a tiny bunch around drops the framerate
+	//     noticeably.
+	static const U32 ARC_PARTICLE_COST = 16;
+	//BD - No punish limit here. Particles need to be punished hard.
+	//static const U32 ARC_PARTICLE_MAX = 2048;
+	static const U32 ARC_TEXTURE_COST = 16;
+	//BD - Lights are an itchy thing. They don't have any impact if used carefully. They do however have an
+	//     increasingly bigger impact above a certain threshold at which they will significantly drop your average
+	//     FPS. We should punish them slightly but not too hard otherwise Avatars with a few lights get overpunished.
+	static const U32 ARC_LIGHT_COST = 512;
+	//BD - Projectors have a huge impact, whether or not they cast a shadow or not, multiple of these will make quick
+	//     work of any good framerate.
+	static const U32 ARC_PROJECTOR_COST = 4096;
+	//BD - Media faces have a huge impact on performance, they should never ever be attached and should be used
+	//     carefully. Punish them with extreme measure, besides, by default we can only have 6-8 active at any time
+	//     those alone will significantly draw resources both RAM and FPS.
+	static const U32 ARC_MEDIA_FACE_COST = 10000; // static cost per media-enabled face 
 
 	// per-prim multipliers
-	static const F32 ARC_GLOW_MULT = 1.05f; // tested based on performance
-	static const F32 ARC_BUMP_MULT = 1.05f; // tested based on performance
-	static const F32 ARC_FLEXI_MULT = 1.1f; // tested based on performance
-	static const F32 ARC_SHINY_MULT = 1.05f; // tested based on performance
-	static const F32 ARC_INVISI_COST = 2.0f; // tested based on performance
-	static const F32 ARC_WEIGHTED_MESH = 1.5f; // tested based on performance
+	//BD - Glow has nearly no impact, the impact is already there due to the omnipresent ambient glow Black Dragon
+	//     uses, putting up hundreds of glowing prims does nothing, it's a global post processing effect.
+	static const F32 ARC_GLOW_MULT = 1.05f;
+	//BD - Bump has nearly no impact, it's biggest impact is texture memory which we really shouldn't be including.
+	static const F32 ARC_BUMP_MULT = 1.05f;
+	//BD - I'm unsure about flexi, on one side its very efficient but if huge amounts of flexi are active at the same
+	//     time they can quickly become extremely slow which is hardly ever the case.
+	static const F32 ARC_FLEXI_MULT = 1.25f;
+	//BD - Shiny has nearly no impact, it's basically a global post process effect.
+	static const F32 ARC_SHINY_MULT = 1.05f;
+	//BD - Invisible prims are not rendered anymore in Black Dragon.
+	//static const F32 ARC_INVISI_COST = 2.0f;
+	//BD - Weighted mesh does have quite some impact and it only gets worse with more triangles to transform.
+	static const F32 ARC_WEIGHTED_MESH = 1.5f;
 
-	//static const F32 ARC_PLANAR_COST = 1.0f; // tested based on performance to have negligible impact
-	static const F32 ARC_ANIM_TEX_COST = 2.f; // tested based on performance
-	static const F32 ARC_ALPHA_COST = 1.5f; // tested based on performance
+	//BD - Animated textures hit quite hard, not as hard as quick alpha state changes.
+	static const F32 ARC_ANIM_TEX_COST = 2.f;
+	//BD - Alpha's are bad.
+	static const F32 ARC_ALPHA_COST = 2.0f;
 
 	F32 shame = 0;
 
-	U32 invisi = 0;
+	//U32 invisi = 0;
 	U32 shiny = 0;
 	U32 glow = 0;
 	U32 alpha = 0;
@@ -3474,13 +3518,18 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	U32 animtex = 0;
 	U32 particles = 0;
 	U32 bump = 0;
-	U32 planar = 0;
+	//U32 planar = 0;
 	U32 weighted_mesh = 0;
 	U32 produces_light = 0;
+	U32 produces_shadows = 0;
 	U32 media_faces = 0;
 
 	const LLDrawable* drawablep = mDrawable;
 	U32 num_faces = drawablep->getNumFaces();
+	//BD
+	LLVOVolume* vovolume = drawablep->getVOVolume();
+
+	vovolume->mRenderComplexityTextures = 0;
 
 	if (has_volume)
 	{
@@ -3541,6 +3590,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 					//BD - Punish sculpt usage compared to normal prims or the much faster mesh.
 					S32 texture_cost = 1.5f * (S32)(ARC_TEXTURE_COST * ((texture->getFullHeight() / 4.f) + (texture->getFullWidth() / 4.f)));
 					textures.insert(texture_cost_t::value_type(sculpt_id, texture_cost));
+					vovolume->mRenderComplexityTextures += texture_cost;
 				}
 			}
 		}
@@ -3559,6 +3609,10 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	{
 		produces_light = 1;
 	}
+	else if (getHasShadow())
+	{
+		produces_shadows = 1;
+	}
 
 	for (S32 i = 0; i < num_faces; ++i)
 	{
@@ -3573,6 +3627,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 			{
 				S32 texture_cost = 256 + (S32)(ARC_TEXTURE_COST * (img->getFullHeight() / 128.f + img->getFullWidth() / 128.f));
 				textures.insert(texture_cost_t::value_type(img->getID(), texture_cost));
+				vovolume->mRenderComplexityTextures += texture_cost;
 			}
 		}
 
@@ -3580,10 +3635,10 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 		{
 			alpha = 1;
 		}
-		else if (img && img->getPrimaryFormat() == GL_ALPHA)
+		/*else if (img && img->getPrimaryFormat() == GL_ALPHA)
 		{
 			invisi = 1;
-		}
+		}*/
 
 		if (face->hasMedia())
 		{
@@ -3601,20 +3656,26 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 			{
 				// shiny is a multiplier, don't add per-face
 				shiny = 1;
+				//BD
+				vovolume->setHasShiny(true);
 			}
 			if (te->getGlow() > 0.f)
 			{
 				// glow is a multiplier, don't add per-face
 				glow = 1;
+				//BD
+				vovolume->setHasGlow(true);
 			}
 			if (face->mTextureMatrix != NULL)
 			{
 				animtex = 1;
+				//BD
+				vovolume->setIsAnimated(true);
 			}
-			if (te->getTexGen())
+			/*if (te->getTexGen())
 			{
 				planar = 1;
-			}
+			}*/
 		}
 	}
 
@@ -3632,6 +3693,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	{
 		shame *= planar * ARC_PLANAR_COST;
 	}*/
+	vovolume->setRenderComplexityBase((S32)shame);
 
 	if (animtex)
 	{
@@ -3643,10 +3705,11 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 		shame *= alpha * ARC_ALPHA_COST;
 	}
 
-	if(invisi)
+	//BD
+	/*if(invisi)
 	{
 		shame *= invisi * ARC_INVISI_COST;
-	}
+	}*/
 
 	if (glow)
 	{
@@ -3682,7 +3745,8 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 		const LLPartSysData *part_sys_data = &(mPartSourcep->mPartSysData);
 		const LLPartData *part_data = &(part_sys_data->mPartData);
 		U32 num_particles = (U32)(part_sys_data->mBurstPartCount * llceil( part_data->mMaxAge / part_sys_data->mBurstRate));
-		num_particles = num_particles > ARC_PARTICLE_MAX ? ARC_PARTICLE_MAX : num_particles;
+		//BD
+		//num_particles = num_particles > ARC_PARTICLE_MAX ? ARC_PARTICLE_MAX : num_particles;
 		F32 part_size = (llmax(part_data->mStartScale[0], part_data->mEndScale[0]) + llmax(part_data->mStartScale[1], part_data->mEndScale[1])) / 2.f;
 		shame += num_particles * part_size * ARC_PARTICLE_COST;
 	}
@@ -3692,10 +3756,21 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 		shame += ARC_LIGHT_COST;
 	}
 
+	if (produces_shadows)
+	{
+		shame += ARC_PROJECTOR_COST;
+	}
+
 	if (media_faces)
 	{
 		shame += media_faces * ARC_MEDIA_FACE_COST;
 	}
+
+	vovolume->mRenderComplexityTotal = (S32)shame;
+
+	//BD - We calculated everything with big numbers for precision, now we divide it by 10 to produce a number that
+	//     is easily human readable. No one can read a big red number with 3529380 ARC quickly without looking closer.
+	shame /= 10;
 
 	if (shame > mRenderComplexity_current)
 	{

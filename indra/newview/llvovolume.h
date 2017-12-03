@@ -241,6 +241,11 @@ public:
 	//BD
 	void setHasShadow(BOOL has_shadow);
 
+	void setHasGlow(BOOL has_glow);
+	void setHasShiny(BOOL has_shiny);
+	void setIsAnimated(BOOL is_animated);
+	void setRenderComplexityBase(S32 complexity);
+
 	BOOL getIsLight() const;
 	LLColor3 getLightBaseColor() const; // not scaled by intensity
 	LLColor3 getLightColor() const; // scaled by intensity
@@ -253,6 +258,14 @@ public:
 	//BD
 	BOOL getHasShadow() const;
 	bool hasSpotLightShadow() const;
+
+	BOOL mHasGlow;
+	BOOL mHasShiny;
+	BOOL mIsAnimated;
+
+	S32 mRenderComplexityBase;
+	S32 mRenderComplexityTotal;
+	S32 mRenderComplexityTextures;
 
 	LLViewerTexture* getLightTexture();
 	F32 getLightIntensity() const;
