@@ -5150,7 +5150,8 @@ public:
 				for (std::vector<LLVCacheTriangleData*>::iterator iter = data->mTriangles.begin(), end_iter = data->mTriangles.end(); iter != end_iter; ++iter)
 				{
 					LLVCacheTriangleData* tri = *iter;
-					if (tri->mActive)
+					//BD
+					if (tri && tri->mActive)
 					{
 						tri->mScore = tri->mVertex[0]->mScore;
 						tri->mScore += tri->mVertex[1]->mScore;
