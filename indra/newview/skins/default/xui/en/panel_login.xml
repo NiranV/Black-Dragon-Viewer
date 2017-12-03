@@ -183,7 +183,6 @@ Fixed: L$ Balance blocking the inventory menu.
 Fixed: (WORKAROUND) Web-Media-On-A-Prim breaking when using the default 0 : 0 autoscale value as well as anything beyond 1000.
 Fixed: Alpha/DeAlpha being inverted.
 Fixed: Vignette option still being cut off a bit.
-
               </text>
               <view_border
     bevel_style="in"
