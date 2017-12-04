@@ -607,6 +607,11 @@ void send_stats()
 	// The session ID token must never appear in logs
 	body["session_id"] = gAgentSessionID;
 
+	LL_INFOS("LogViewerStatsPacket") << "Sending viewer statistics: " << body << LL_ENDL;
+
+	// The session ID token must never appear in logs
+	body["session_id"] = gAgentSessionID;
+
 	LLViewerStats::getInstance()->addToMessage(body);
 
     LLCoreHttpUtil::HttpCoroutineAdapter::messageHttpPost(url, body,

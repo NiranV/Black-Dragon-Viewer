@@ -203,7 +203,7 @@ void LLLoginInstance::constructAuthParams(LLPointer<LLCredential> user_credentia
     if ( ! llHashedUniqueID(hashed_unique_id_string) )
     {
 
-		LL_WARNS() << "Not providing a unique id in request params" << LL_ENDL;
+		LL_WARNS("LLLogin") << "Not providing a unique id in request params" << LL_ENDL;
 
 	}
 	request_params["start"] = construct_start_string();
@@ -216,8 +216,8 @@ void LLLoginInstance::constructAuthParams(LLPointer<LLCredential> user_credentia
 	request_params["channel"] = LLVersionInfo::getChannel();
 	request_params["platform"] = mPlatform;
 	request_params["address_size"] = ADDRESS_SIZE;
-	request_params["platform_version"] = mPlatformVersion;
 	request_params["address_size"] = ADDRESS_SIZE;
+	request_params["platform_version"] = mPlatformVersion;
 	request_params["platform_string"] = mPlatformVersionName;
 	request_params["id0"] = mSerialNumber;
 	request_params["host_id"] = gSavedSettings.getString("HostID");
@@ -254,7 +254,7 @@ bool LLLoginInstance::handleLoginEvent(const LLSD& event)
 
 	if(!(event.has("state") && event.has("change") && event.has("progress")))
 	{
-		LL_ERRS() << "Unknown message from LLLogin: " << event << LL_ENDL;
+		LL_ERRS("LLLogin") << "Unknown message from LLLogin: " << event << LL_ENDL;
 	}
 
 	mLoginState = event["state"].asString();
@@ -280,6 +280,9 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
     LLSD response = event["data"];
     std::string reason_response = response["reason"].asString();
     std::string message_response = response["message"].asString();
+    LL_DEBUGS("LLLogin") << "reason " << reason_response
+                         << " message " << message_response
+                         << LL_ENDL;
     // For the cases of critical message or TOS agreement,
     // start the TOS dialog. The dialog response will be handled
     // by the LLLoginInstance::handleTOSResponse() callback.
@@ -287,7 +290,7 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
     // to reconnect or to end the attempt in failure.
     if(reason_response == "tos")
     {
-        LL_INFOS() << "LLLoginInstance::handleLoginFailure ToS" << LL_ENDL;
+        LL_INFOS("LLLogin") << " ToS" << LL_ENDL;
 
         LLSD data(LLSD::emptyMap());
         data["message"] = message_response;
@@ -302,7 +305,7 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
     }
     else if(reason_response == "critical")
     {
-        LL_INFOS() << "LLLoginInstance::handleLoginFailure Crit" << LL_ENDL;
+        LL_INFOS("LLLogin") << "LLLoginInstance::handleLoginFailure Crit" << LL_ENDL;
 
         LLSD data(LLSD::emptyMap());
         data["message"] = message_response;
@@ -330,7 +333,7 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
         // This shouldn't happen - the viewer manager should have forced an update; 
         // possibly the user ran the viewer directly and bypassed the update check
         std::string required_version = response["message_args"]["VERSION"];
-        LL_WARNS() << "Login failed because an update to version " << required_version << " is required." << LL_ENDL;
+        LL_WARNS("LLLogin") << "Login failed because an update to version " << required_version << " is required." << LL_ENDL;
 
         if (gViewerWindow)
             gViewerWindow->setShowProgress(FALSE);
@@ -339,15 +342,17 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
         data["VERSION"] = required_version;
         LLNotificationsUtil::add("RequiredUpdate", data, LLSD::emptyMap(), boost::bind(&LLLoginInstance::handleLoginDisallowed, this, _1, _2));
     }
-    else if(reason_response == "key")
+    else if(   reason_response == "key"
+            || reason_response == "presence"
+            || reason_response == "connect"
+            )
     {
-        // this is a password problem or other restriction
-        // an appropriate message has already been displayed
+        // these are events that have already been communicated elsewhere
         attemptComplete();
     }
     else
     {   
-        LL_WARNS() << "Login failed for an unknown reason: " << LLSDOStreamer<LLSDNotationFormatter>(response) << LL_ENDL;
+        LL_WARNS("LLLogin") << "Login failed for an unknown reason: " << LLSDOStreamer<LLSDNotationFormatter>(response) << LL_ENDL;
 
         if (gViewerWindow)
             gViewerWindow->setShowProgress(FALSE);
@@ -363,7 +368,7 @@ void LLLoginInstance::handleLoginDisallowed(const LLSD& notification, const LLSD
 
 void LLLoginInstance::handleLoginSuccess(const LLSD& event)
 {
-	LL_INFOS() << "LLLoginInstance::handleLoginSuccess" << LL_ENDL;
+	LL_INFOS("LLLogin") << "LLLoginInstance::handleLoginSuccess" << LL_ENDL;
 
 	attemptComplete();
 }
@@ -372,7 +377,7 @@ void LLLoginInstance::handleDisconnect(const LLSD& event)
 {
     // placeholder
 
-	LL_INFOS() << "LLLoginInstance::handleDisconnect placeholder " << LL_ENDL;
+	LL_INFOS("LLLogin") << "LLLoginInstance::handleDisconnect placeholder " << LL_ENDL;
 }
 
 void LLLoginInstance::handleIndeterminate(const LLSD& event)
@@ -386,7 +391,7 @@ void LLLoginInstance::handleIndeterminate(const LLSD& event)
 	LLSD message = event.get("data").get("message");
 	if(message.isDefined())
 	{
-		LL_INFOS() << "LLLoginInstance::handleIndeterminate " << message.asString() << LL_ENDL;
+		LL_INFOS("LLLogin") << "LLLoginInstance::handleIndeterminate " << message.asString() << LL_ENDL;
 
 		LLSD progress_update;
 		progress_update["desc"] = message;
@@ -398,7 +403,7 @@ bool LLLoginInstance::handleTOSResponse(bool accepted, const std::string& key)
 {
 	if(accepted)
 	{	
-		LL_INFOS() << "LLLoginInstance::handleTOSResponse: accepted" << LL_ENDL;
+		LL_INFOS("LLLogin") << "LLLoginInstance::handleTOSResponse: accepted" << LL_ENDL;
 
 		// Set the request data to true and retry login.
 		mRequestData["params"][key] = true; 
@@ -406,7 +411,7 @@ bool LLLoginInstance::handleTOSResponse(bool accepted, const std::string& key)
 	}
 	else
 	{
-		LL_INFOS() << "LLLoginInstance::handleTOSResponse: attemptComplete" << LL_ENDL;
+		LL_INFOS("LLLogin") << "LLLoginInstance::handleTOSResponse: attemptComplete" << LL_ENDL;
 
 		attemptComplete();
 	}
