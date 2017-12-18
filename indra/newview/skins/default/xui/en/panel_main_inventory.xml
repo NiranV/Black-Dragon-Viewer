@@ -596,6 +596,7 @@
       </layout_panel>
 						<layout_panel
        background_visible="false"
+       visible="false"
        auto_resize="false"
        height="25"
        layout="topleft"

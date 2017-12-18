@@ -697,7 +697,6 @@ void LLPanelMainInventory::draw()
 	else
 	{
 		mInboxButton->setLabel(getString("InboxLabelNoArg"));
-		mInboxBtnLayout->setVisible(FALSE);
 	}
 
 	if (mActivePanel && mFilterEditor)
@@ -852,7 +851,6 @@ const U32 LLPanelMainInventory::getFreshItemCount()
 const U32 LLPanelMainInventory::getTotalItemCount()
 {
 	U32 item_count = 0;
-
 	if (mInventoryInboxPanel)
 	{
 		const LLFolderViewFolder * inbox_folder = mInventoryInboxPanel->getRootFolder();
