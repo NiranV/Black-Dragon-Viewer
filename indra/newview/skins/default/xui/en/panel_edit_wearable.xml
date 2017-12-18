@@ -206,7 +206,8 @@
      background_visible="false"
      border="false"
      follows="top|left|right"
-     height="27"
+     mouse_opaque="false"
+     height="42"
      label="Shirt"
      layout="topleft"
      left="8"
@@ -230,12 +231,12 @@
       name="bg"
       mouse_opaque="false"
       image_name="Toolbar_Middle_Off"
-      left="1"
-      width="247"
-      top_pad="3" />
+      left="0"
+      width="313"
+      top_pad="2" />
         <line_editor
          follows="all"
-         height="23"
+         height="22"
          layout="topleft"
          left="2"
          max_length_bytes="63"
@@ -244,76 +245,65 @@
          select_on_focus="true"
          text_color="LtGray"
          top_delta="1"
-         width="245" />
+         width="309" />
         <radio_group
          control_name="AvatarSex"
-         follows="top|right"
-         height="30"
+         follows="top|left"
+         height="14"
          layout="topleft"
-         left_pad="0"
+         left="0"
          name="sex_radio"
-         top_delta="-5"
+         top_pad="6"
          width="70">
             <radio_item
-             follows="all"
-             height="30"
+             follows="top|left"
+             height="14"
              layout="topleft"
              left="0"
              top="0"
+             label="Male"
              name="sex_male"
              tool_tip="Male"
              value="1"
-             width="30">
+             width="50">
                <radio_item.check_button
-                              image_hover_unselected="Toolbar_Middle_Over"
-                              image_selected="Toolbar_Middle_Selected"
-                              image_unselected="Toolbar_Middle_Off"/>
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
             <radio_item
-             follows="all"
-             height="30"
+             follows="top|left"
+             height="14"
              layout="topleft"
              left_pad="2"
-             top="0"
+             top_delta="0"
+             label="Female"
              name="sex_female"
              tool_tip="Female"
              value="0"
-             width="30">
+             width="50">
                <radio_item.check_button
-                              image_hover_unselected="Toolbar_Middle_Over"
-                              image_selected="Toolbar_Middle_Selected"
-                              image_unselected="Toolbar_Middle_Off"/>
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
         </radio_group>
         <!--  graphical labels for the radio buttons above -->
-        <icon
-         follows="top|right"
-         height="16"
-         image_name="icons/Male.png"
-         layout="topleft"
-         left_delta="10"
-         name="male_icon"
-         tool_tip="Male"
-         top="7"
-         width="16" />
-        <icon
-         follows="top|right"
-         height="16"
-         image_name="icons/Female.png"
-         layout="topleft"
-         left_pad="16"
-         name="female_icon"
-         tool_tip="Female"
-         top="7"
-         width="16" />
     </panel>
     <panel
      follows="all"
      height="475"
+     mouse_opaque="false"
      layout="topleft"
      left="0"
      name="edit_subpanel_container"
-     top_pad="2"
+     top_pad="-13"
      width="333">
     <!-- the shape editing panel is taller than the others
 		      because it also displays avatar height -->
