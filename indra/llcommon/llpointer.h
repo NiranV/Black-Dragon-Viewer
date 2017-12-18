@@ -153,7 +153,13 @@ protected:
 		{
 			Type *temp = mPointer;
 			mPointer = NULL;
-			temp->unref();
+
+			//BD
+			if (temp)
+			{
+				temp->unref();
+			}
+
 			if (mPointer != NULL)
 			{
 				LL_WARNS() << "Unreference did assignment to non-NULL because of destructor" << LL_ENDL;
