@@ -8,7 +8,7 @@ name="floater_complexity"
 save_rect="true"
 can_resize="true"
 title="Advanced Complexity Information"
-width="584">
+width="684">
 	<tab_container
   follows="all"
   halign="center"
@@ -22,7 +22,7 @@ width="584">
   tab_group="1"
   tab_position="top"
   top="20"
-  width="584">
+  width="684">
 	<panel
     follows="all"
 	background_visible="false"
@@ -32,7 +32,7 @@ width="584">
     title="Complexity"
     name="arc_panel"
     top="0"
-    width="582">
+    width="682">
 		<icon
 	follows="top|left|right"
 	height="419"
@@ -42,7 +42,7 @@ width="584">
 	name="vicon"
 	mouse_opaque="false"
 	visible="true"
-	width="571"
+	width="671"
 	top="0"
 	left="0"/>
 		<scroll_list
@@ -74,7 +74,7 @@ width="584">
 		name="arc_scroll_container"
 		opaque="true"
 		height="394"
-		width="243"
+		width="343"
 		top="2">
 			<panel
 			follows="top|left"
@@ -128,7 +128,7 @@ width="584">
 				   <scroll_list.columns
 					label="Projector"
 					name="projector"
-				  relative_width="0.07"  />
+				  relative_width="0.00"  />
 				   <scroll_list.columns
 					label="Alpha"
 					name="alpha"
@@ -136,7 +136,7 @@ width="584">
 				   <scroll_list.columns
 					label="Bump"
 					name="bumpmap"
-				  relative_width="0.00"  />
+				  relative_width="0.07"  />
 				   <scroll_list.columns
 					label="Shiny"
 					name="shiny"
@@ -176,16 +176,16 @@ width="584">
  height="21"
  follows="top|left"
  layout="topleft"
- label="Refresh Complexity"
+ label="Refresh Avatars"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="118"
+ width="131"
  top_pad="1"
  left="3">
    <button.commit_callback
-   function="ARC.Refresh"/>
+   function="ARC.AvatarRefresh"/>
  </button>
 	<icon
 	follows="left|top"
@@ -311,17 +311,32 @@ width="584">
 	follows="left|top|right"
 	image_name="Toolbar_Middle_Off"
 	height="21"
-	width="95"
+	width="51"
 	layout="topleft"
 	left_pad="5"
 	top_delta="-4"/>
+	<button
+ height="21"
+ follows="top|right"
+ layout="topleft"
+ label="Refresh Complexity"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="ARC.Refresh"/>
+ </button>
  
  
  <text
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left="457"
+ left="557"
  halign="right"
  height="12"
  width="20"
@@ -344,7 +359,7 @@ width="584">
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left="457"
+ left="557"
  halign="right"
  height="12"
  width="20"
@@ -367,7 +382,7 @@ width="584">
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left="457"
+ left="557"
  halign="right"
  height="12"
  width="20"
@@ -390,7 +405,7 @@ width="584">
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left="457"
+ left="557"
  halign="right"
  height="12"
  width="20"
@@ -418,7 +433,7 @@ width="584">
   name="separator"
   mouse_opaque="false"
   width="160"
-  left="387"
+  left="487"
   top_pad="2"/>
  
  
@@ -428,7 +443,7 @@ width="584">
    height="333"
    layout="topleft"
    border_size="2"
-   left="380"
+   left="480"
    mouse_opaque="false"
    name="gfx_stack"
    orientation="vertical"

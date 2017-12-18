@@ -23,23 +23,22 @@
 #include "llavatarnamecache.h"
 #include "llcharacter.h"
 #include "lldrawable.h"
+#include "llmeshrepository.h"
+#include "llselectmgr.h"
 #include "llviewerobjectlist.h"
 #include "llviewerobject.h"
 #include "llvoavatar.h"
-#include "llvoavatarself.h"
 #include "llviewerjointattachment.h"
 #include "llviewerobjectlist.h"
 #include "llviewerobject.h"
 #include "llvovolume.h"
-#include "llvolume.h"
-
-#include "llselectmgr.h"
-#include "llmeshrepository.h"
 
 BDFloaterComplexity::BDFloaterComplexity(const LLSD& key)
 	:	LLFloater(key)
 {
 	//BD - Refresh the avatar list.
+	mCommitCallbackRegistrar.add("ARC.AvatarRefresh", boost::bind(&BDFloaterComplexity::onAvatarsRefresh, this));
+	//BD - Trigger ARC calculation.
 	mCommitCallbackRegistrar.add("ARC.Refresh", boost::bind(&BDFloaterComplexity::calcARC, this));
 }
 
@@ -49,7 +48,7 @@ BDFloaterComplexity::~BDFloaterComplexity()
 
 BOOL BDFloaterComplexity::postBuild()
 {
-	//BD - ARC
+	//BD - Complexity
 	mAvatarScroll = this->getChild<LLScrollListCtrl>("arc_avs_scroll", true);
 	//mAvatarScroll->setCommitCallback(boost::bind(&BDFloaterComplexity::onSelectAvatar, this));
 	mAvatarScroll->setDoubleClickCallback(boost::bind(&BDFloaterComplexity::calcARC, this));
@@ -62,7 +61,6 @@ BOOL BDFloaterComplexity::postBuild()
 	mTotalVerticeCount = getChild<LLTextBox>("vert_count");
 	mTextureCost = getChild<LLTextBox>("memory_count");
 
-
 	return TRUE;
 }
 
@@ -73,6 +71,7 @@ void BDFloaterComplexity::draw()
 
 void BDFloaterComplexity::onOpen(const LLSD& key)
 {
+	//BD - Shameless copy from bdfloateranimations.cpp
 	onAvatarsRefresh();
 }
 
@@ -85,6 +84,7 @@ void BDFloaterComplexity::onClose(bool app_quitting)
 ////////////////////////////////
 //BD - Complexity
 ////////////////////////////////
+//BD - Shameless copy from bdfloateranimations.cpp
 void BDFloaterComplexity::onAvatarsRefresh()
 {
 	//BD - First lets go through all things that need updating, if any.
@@ -171,17 +171,20 @@ void BDFloaterComplexity::onAvatarsRefresh()
 
 void BDFloaterComplexity::calcARC()
 {
+	//BD - First, clear the scroll.
 	mARCScroll->clearRows();
-	F32 cost = 0;
-	//BD - Triangle Count
-	F32 vertices = 0;
-	F32 triangles = 0;
+
 	LLVOVolume::texture_cost_t textures;
 	S32Bytes texture_memory;
 
+	F32 cost = 0;
+	//BD - We need F64 here, i saw F32 exploding with the insane triangle counts some people got.
+	F64 vertices = 0;
+	F64 triangles = 0;
+
 	//BD - Null Check hell.
 	//     This thing is extremely fragile, crashes instantly the moment something is off even
-	//     a tiny bit.
+	//     a tiny bit, we need to be absolutely sure what we are doing here.
 	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
 	if (item)
 	{
@@ -219,12 +222,12 @@ void BDFloaterComplexity::calcARC()
 											F32 attachment_total_cost = 0;
 											F32 attachment_volume_cost = 0;
 											F32 attachment_texture_cost = 0;
-											F32 attachment_children_cost = 0;
 											F32 attachment_base_cost = 0;
+											F32 attachment_total_triangles = 0.f;
+											F32 attachment_total_vertices = 0.f;
 											S32Bytes attachment_memory_usage;
 
 											S32 flexibles = 0;
-											//S32 particles = 0;
 											S32 lights = 0;
 											S32 projectors = 0;
 											S32 alphas = 0;
@@ -243,91 +246,11 @@ void BDFloaterComplexity::calcARC()
 											bool is_rigged = false;
 											bool has_media = false;
 
-											attachment_volume_cost += volume->getRenderCost(textures);
-											attachment_total_cost += volume->mRenderComplexityTotal;
-											attachment_base_cost += volume->mRenderComplexityBase;
-											//BD - Triangle Count
-											F32 attachment_total_triangles = volume->getHighLODTriangleCount();
-											F32 attachment_total_vertices = volume->getNumVertices();
-											if (volume->getIsLight())
-											{
-												lights++;
-												is_light = true;
-												//is_light = volume->getIsLight();
-											}
-											if (volume->isLightSpotlight())
-											{
-												projectors++;
-												is_projector = true;
-												//is_projector = volume->isLightSpotlight();
-											}
-											if (volume->isFlexible())
-											{
-												flexibles++;
-												is_flexible = true;
-												//is_flexible = volume->isFlexible();
-											}
-											//if (!has_particles)
-												has_particles = volume->isParticleSource();
-											//is_sculpt = child->isSculpted();
-											//if (!is_animated)
-												is_animated = volume->mIsAnimated;
-											if (!is_rigged)
-											{
-												LLVolumeParams volume_params;
-												volume_params = volume->getVolume()->getParams();
-												if (gMeshRepo.getSkinInfo(volume_params.getSculptID(), volume))
-												{
-													is_rigged = true;
-													rigged++;
-												}
-											}
-
-											for (S32 i = 0; i < volume->getNumFaces(); i++)
-											{
-												LLTextureEntry* te = volume->getTE(i);
-												if (te)
-												{
-													if (!has_glow
-														&& te->getGlow())
-													{
-														has_glow = true;
-													}
-
-													LLMaterialPtr mat = te->getMaterialParams();
-													if (mat)
-													{
-														if (!has_bump
-															&& (te->getBumpmap()
-															|| mat->getNormalID().notNull()))
-														{
-															has_bump = true;
-														}
-
-														if (!has_shiny
-															&& (te->getShiny()
-															|| mat->getSpecularID().notNull()))
-														{
-															has_shiny = true;
-														}
-
-														if (/*!is_alpha
-															&&*/ (te->getColor().mV[VW] < 1.f
-															|| mat->getDiffuseAlphaMode() == LLMaterial::eDiffuseAlphaMode::DIFFUSE_ALPHA_MODE_BLEND))
-														{
-															is_alpha = true;
-															alphas++;
-														}
-													}
-
-													if (/*!has_media
-														&&*/ te->hasMedia())
-													{
-														has_media = true;
-														medias++;
-													}
-												}
-											}
+											checkObject(volume, textures, is_flexible, has_particles, is_light, is_projector,
+														is_alpha, has_bump, has_shiny, has_glow, is_animated, is_rigged, has_media,
+														flexibles, lights, projectors, alphas, rigged, medias,
+														attachment_volume_cost, attachment_total_cost, attachment_base_cost,
+														attachment_total_triangles, attachment_total_vertices);
 
 											LLVOVolume::const_child_list_t& children = volume->getChildren();
 											for (LLVOVolume::const_child_list_t::const_iterator child_iter = children.begin();
@@ -338,125 +261,39 @@ void BDFloaterComplexity::calcARC()
 												LLVOVolume *child = dynamic_cast<LLVOVolume*>(child_obj);
 												if (child)
 												{
-													attachment_children_cost += child->getRenderCost(textures);
-													attachment_total_cost += child->mRenderComplexityTotal;
-													//BD - Triangle Count
-													attachment_total_triangles += child->getHighLODTriangleCount();
-													attachment_total_vertices += child->getNumVertices();
-													attachment_base_cost += child->mRenderComplexityBase;
-													if (child->getIsLight())
-													{
-														lights++;
-														is_light = true;
-														//is_light = child->getIsLight();
-													}
-													if (child->isLightSpotlight())
-													{
-														projectors++;
-														is_projector = true;
-														//is_projector = child->isLightSpotlight();
-													}
-													if (child->isFlexible())
-													{
-														flexibles++;
-														is_flexible = true;
-														//is_flexible = child->isFlexible();
-													}
-													if (!has_particles)
-														has_particles = child->isParticleSource();
-													//is_sculpt = child->isSculpted();
-													if (!is_animated)
-														is_animated = child->mIsAnimated;
-													if (!is_rigged)
-													{
-														LLVolumeParams volume_params;
-														volume_params = child->getVolume()->getParams();
-														if (gMeshRepo.getSkinInfo(volume_params.getSculptID(), child))
-														{
-															is_rigged = true;
-															rigged++;
-														}
-													}
-
-													for (S32 i = 0; i < child->getNumFaces(); i++)
-													{
-														LLTextureEntry* te = child->getTE(i);
-														if (te)
-														{
-															if (!has_glow
-																&& te->getGlow())
-															{
-																has_glow = true;
-															}
-
-															LLMaterialPtr mat = te->getMaterialParams();
-															if (mat)
-															{
-																
-																if (!has_bump
-																	&& (te->getBumpmap()
-																	|| mat->getNormalID().notNull()))
-																{
-																	has_bump = true;
-																}
-
-																if (!has_shiny
-																	&& (te->getShiny()
-																	|| mat->getSpecularID().notNull()))
-																{
-																	has_shiny = true;
-																}
-
-																if (/*!is_alpha
-																	&&*/ te->getColor().mV[VW] < 1.f)
-																{
-																	is_alpha = true;
-																	alphas++;
-																}
-															}
-
-															if (/*!has_media
-																&&*/ te->hasMedia())
-															{
-																has_media = true;
-																medias++;
-															}
-														}
-													}
+													checkObject(child, textures, is_flexible, has_particles, is_light, is_projector,
+																is_alpha, has_bump, has_shiny, has_glow, is_animated, is_rigged, has_media,
+																flexibles, lights, projectors, alphas, rigged, medias,
+																attachment_volume_cost, attachment_total_cost, attachment_base_cost,
+																attachment_total_triangles, attachment_total_vertices);
 												}
 											}
 
+											//BD - Count the texture impact and memory usage here now that we got all textures colelcted.
 											for (LLVOVolume::texture_cost_t::iterator volume_texture = textures.begin();
 												volume_texture != textures.end();
 												++volume_texture)
 											{
 												LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(volume_texture->first);
 												if (texture)
-												{
 													attachment_memory_usage += (texture->getTextureMemory() / 1024);
-												}
-												// add the cost of each individual texture in the linkset
 												attachment_texture_cost += volume_texture->second;
 											}
+
+											//BD - Final results.
 											texture_memory += attachment_memory_usage;
+											attachment_final_cost = attachment_volume_cost + attachment_texture_cost;
+											cost += attachment_final_cost;
+											vertices += attachment_total_vertices;
+											triangles += attachment_total_triangles;
 
-											attachment_final_cost = attachment_volume_cost + attachment_texture_cost + attachment_children_cost;
-											// Limit attachment complexity to avoid signed integer flipping of the wearer's ACI
-											cost += (U32)llclamp(attachment_final_cost, 0.f, 9999999.f);
-											//BD - Triangle Count
-											vertices += (U32)llclamp(attachment_total_vertices, 0.f, 9999999.f);
-											triangles += (U32)llclamp(attachment_total_triangles, 0.f, 9999999.f);
-
+											//BD - Write our results into the list.
+											//     Note that most of these values are actually not shown in the list, they are
+											//     added regardless so we have a storage for each and every attachment that we
+											//     can read all values from. This also makes cleaning up everything a lot easier.
 											LLSD row;
 											row["columns"][0]["column"] = "name";
-											if (volume->getAttachmentItemName().empty())
-											{
-												row["columns"][0]["value"] = volume->getAttachmentItemID();
-											}
-											else
-											{
-												row["columns"][0]["value"] = volume->getAttachmentItemName();
-											}
+											row["columns"][0]["value"] = volume->getAttachmentItemName().empty() ? volume->getAttachmentItemID().asString() : volume->getAttachmentItemName();
 											row["columns"][1]["column"] = "arc";
 											row["columns"][1]["value"] = attachment_final_cost;
 											row["columns"][2]["column"] = "triangles";
@@ -520,10 +357,113 @@ void BDFloaterComplexity::calcARC()
 		}
 	}
 
+	//BD - Show our final total counts at the bottom.
 	mTotalVerticeCount->setValue(vertices);
 	mTotalTriangleCount->setValue(triangles);
 	mTotalCost->setValue(cost);
 	mTextureCost->setValue(texture_memory.value());
+}
+
+//BD - This function calculates any input object and spits out everything we need to know about it.
+//     We do this here so we don't have to have it twice above.
+bool BDFloaterComplexity::checkObject(LLVOVolume* vovolume, LLVOVolume::texture_cost_t &textures,
+									  bool &is_flexible, bool &has_particles, bool &is_light, bool &is_projector, bool &is_alpha,
+									  bool &has_bump, bool &has_shiny, bool &has_glow, bool &is_animated, bool &is_rigged, bool &has_media,
+									  S32 &flexibles, /*S32 particles,*/ S32 &lights, S32 &projectors, S32 &alphas, S32 &rigged, S32 &medias,
+									  F32 &volume_cost, F32 &total_cost, F32 &base_cost, F32 &total_triangles, F32 &total_vertices)
+{
+	//BD - Check all the easy costs and counts first.
+	volume_cost += vovolume->getRenderCost(textures);
+	total_cost += vovolume->mRenderComplexityTotal;
+	base_cost += vovolume->mRenderComplexityBase;
+	total_triangles += vovolume->getHighLODTriangleCount();
+	total_vertices += vovolume->getNumVertices();
+
+	//BD - Check each object and count each feature being used.
+	//     TODO: Remove all booleans, we can just check the count if we need to,
+	//     though booleans end up nicely as "true" or "false" strings, which would
+	//     need additional effort if we don't do it with booleans. Ugh.
+	if (vovolume->getIsLight())
+	{
+		lights++;
+		is_light = true;
+	}
+	if (vovolume->isLightSpotlight())
+	{
+		projectors++;
+		is_projector = true;
+	}
+	if (vovolume->isFlexible())
+	{
+		flexibles++;
+		is_flexible = true;
+	}
+	if (!is_rigged)
+	{
+		LLVolumeParams volume_params;
+		volume_params = vovolume->getVolume()->getParams();
+		if (gMeshRepo.getSkinInfo(volume_params.getSculptID(), vovolume))
+		{
+			is_rigged = true;
+			rigged++;
+		}
+	}
+	if (vovolume->isParticleSource())
+	{
+		has_particles = true;
+	}
+	if (vovolume->mIsAnimated)
+	{
+		is_animated = true;
+	}
+
+	//BD - We iterate through faces here because below checks need to be checked
+	//     on each surface and are no global object specific features, they are face
+	//     specific.
+	for (S32 i = 0; i < vovolume->getNumFaces(); i++)
+	{
+		LLTextureEntry* te = vovolume->getTE(i);
+		if (te)
+		{
+			if (!has_glow
+				&& te->getGlow())
+			{
+				has_glow = true;
+			}
+
+			LLMaterialPtr mat = te->getMaterialParams();
+			if (mat)
+			{
+				if (!has_bump
+					&& (te->getBumpmap()
+					|| mat->getNormalID().notNull()))
+				{
+					has_bump = true;
+				}
+
+				if (!has_shiny
+					&& (te->getShiny()
+					|| mat->getSpecularID().notNull()))
+				{
+					has_shiny = true;
+				}
+
+				if (te->getColor().mV[VW] < 1.f
+					|| mat->getDiffuseAlphaMode() == LLMaterial::eDiffuseAlphaMode::DIFFUSE_ALPHA_MODE_BLEND)
+				{
+					is_alpha = true;
+					alphas++;
+				}
+			}
+
+			if (te->hasMedia())
+			{
+				has_media = true;
+				medias++;
+			}
+		}
+	}
+	return true;
 }
 
 void BDFloaterComplexity::onSelectEntry()
@@ -553,30 +493,26 @@ void BDFloaterComplexity::onSelectEntry()
 		getChild<LLUICtrl>("label_animated")->setValue(item->getColumn(12)->getValue());
 		
 		//BD - Now show the amount of objects that use a certain feature.
-		//if (item->getColumn(4)->getValue().asBoolean())
-			getChild<LLUICtrl>("panel_flexi")->setVisible(item->getColumn(4)->getValue().asBoolean());
-			getChild<LLUICtrl>("label_flexi")->setValue(item->getColumn(22)->getValue());
-		//if (item->getColumn(4)->getValue().asBoolean())
-			getChild<LLUICtrl>("panel_particles")->setVisible(item->getColumn(5)->getValue().asBoolean());
-			getChild<LLUICtrl>("label_particles")->setValue(item->getColumn(5)->getValue());
-		//if (item->getColumn(6)->getValue().asBoolean())
-			getChild<LLUICtrl>("panel_light")->setVisible(item->getColumn(6)->getValue().asBoolean());
-			getChild<LLUICtrl>("label_light")->setValue(item->getColumn(18)->getValue());
-		//if (item->getColumn(7)->getValue().asBoolean())
-			getChild<LLUICtrl>("panel_projector")->setVisible(item->getColumn(7)->getValue().asBoolean());
-			getChild<LLUICtrl>("label_projector")->setValue(item->getColumn(19)->getValue());
-		//if (item->getColumn(8)->getValue().asBoolean())
-			getChild<LLUICtrl>("panel_alpha")->setVisible(item->getColumn(8)->getValue().asBoolean());
-			getChild<LLUICtrl>("label_alpha")->setValue(item->getColumn(20)->getValue());
-		//if (item->getColumn(14)->getValue().asBoolean())
-			getChild<LLUICtrl>("panel_media")->setVisible(item->getColumn(14)->getValue().asBoolean());
-			getChild<LLUICtrl>("label_media")->setValue(item->getColumn(23)->getValue());
-		//if (item->getColumn(13)->getValue().asBoolean())
-			getChild<LLUICtrl>("panel_rigged")->setVisible(item->getColumn(13)->getValue().asBoolean());
-			getChild<LLUICtrl>("label_rigged")->setValue(item->getColumn(21)->getValue());
+		getChild<LLUICtrl>("panel_flexi")->setVisible(item->getColumn(4)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_flexi")->setValue(item->getColumn(22)->getValue());
+		getChild<LLUICtrl>("panel_particles")->setVisible(item->getColumn(5)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_particles")->setValue(item->getColumn(5)->getValue());
+		getChild<LLUICtrl>("panel_light")->setVisible(item->getColumn(6)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_light")->setValue(item->getColumn(18)->getValue());
+		getChild<LLUICtrl>("panel_projector")->setVisible(item->getColumn(7)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_projector")->setValue(item->getColumn(19)->getValue());
+		getChild<LLUICtrl>("panel_alpha")->setVisible(item->getColumn(8)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_alpha")->setValue(item->getColumn(20)->getValue());
+		getChild<LLUICtrl>("panel_media")->setVisible(item->getColumn(14)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_media")->setValue(item->getColumn(23)->getValue());
+		getChild<LLUICtrl>("panel_rigged")->setVisible(item->getColumn(13)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_rigged")->setValue(item->getColumn(21)->getValue());
 	}
 }
 
+//BD - This is currently 100% unfunctional, i haven't figured out how to select any given object yet
+//     without doing predefined server stuff or actually clicking on them. Maybe i should just make
+//     it show a beacon instead, that would probably be easier.
 void BDFloaterComplexity::onSelectAttachment()
 {
 	std::vector<LLScrollListItem*> items = mARCScroll->getAllSelected();
@@ -593,8 +529,6 @@ void BDFloaterComplexity::onSelectAttachment()
 			if (select_object && !select_object->isSelected())
 			{
 				LL_WARNS("Posing") << "In list, trying to select" << LL_ENDL;
-				//LLSelectMgr::getInstance()->selectObjectAndFamily(select_object);
-				//LLSelectMgr::getInstance()->selectObjectOnly(select_object);
 				vobject->setSelected(TRUE);
 				LLSelectNode* nodep = LLSelectMgr::getInstance()->getSelection()->findNode(vobject);
 				if (nodep)

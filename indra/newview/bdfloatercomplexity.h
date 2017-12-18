@@ -22,6 +22,7 @@
 #include "llscrolllistctrl.h"
 #include "lltextbox.h"
 #include "llcharacter.h"
+#include "llvovolume.h"
 
 class BDFloaterComplexity :
 	public LLFloater
@@ -33,11 +34,16 @@ private:
 	/*virtual*/	BOOL postBuild();
 	/*virtual*/ void draw();
 
-	//BD - Motions
+	//BD - Shameless copy from bdfloateranimations.cpp
 	void onAvatarsRefresh();
 
 	//BD - Complexity
 	void calcARC();
+	bool checkObject(LLVOVolume* vovolume, LLVOVolume::texture_cost_t &textures,
+					bool &is_flexible, bool &has_particles, bool &is_light, bool &is_projector,	bool &is_alpha,
+					bool &has_bump, bool &has_shiny, bool &has_glow, bool &is_animated, bool &is_rigged, bool &has_media,
+					S32 &flexibles, /*S32 particles,*/ S32 &lights, S32 &projectors, S32 &alphas, S32 &rigged, S32 &medias,
+					F32 &volume_cost, F32 &total_cost, F32 &base_cost, F32 &total_triangles, F32 &total_vertices);
 	void onSelectEntry();
 	void onSelectAttachment();
 
