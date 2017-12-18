@@ -5144,15 +5144,19 @@ public:
 				{
 					LLVCacheTriangleData* tri = *iter;
 					//BD
-					if (tri && tri->mActive)
+					if (tri)
+					//if (tri != NULL)
 					{
-						tri->mScore = tri->mVertex[0]->mScore;
-						tri->mScore += tri->mVertex[1]->mScore;
-						tri->mScore += tri->mVertex[2]->mScore;
-
-						if (!mBestTriangle || mBestTriangle->mScore < tri->mScore)
+						if (tri->mActive)
 						{
-							mBestTriangle = tri;
+							tri->mScore = tri->mVertex[0]->mScore;
+							tri->mScore += tri->mVertex[1]->mScore;
+							tri->mScore += tri->mVertex[2]->mScore;
+
+							if (!mBestTriangle || mBestTriangle->mScore < tri->mScore)
+							{
+								mBestTriangle = tri;
+							}
 						}
 					}
 				}
