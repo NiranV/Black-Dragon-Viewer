@@ -1127,6 +1127,56 @@ void LLInventoryPanel::onSelectionChange(const std::deque<LLFolderViewItem*>& it
 			fv->startRenamingSelectedItem();
 		}
 	}
+
+	std::set<LLFolderViewItem*> selected_items = mFolderRoot.get()->getSelectionList();
+	LLFolderViewItem* prev_folder_item = getItemByID(mPreviousSelectedFolder);
+
+	if (selected_items.size() == 1)
+	{
+		std::set<LLFolderViewItem*>::const_iterator iter = selected_items.begin();
+		LLFolderViewItem* folder_item = (*iter);
+		if(folder_item && (folder_item != prev_folder_item))
+		{
+			LLFolderViewModelItemInventory* fve_listener = static_cast<LLFolderViewModelItemInventory*>(folder_item->getViewModelItem());
+			if (fve_listener && (fve_listener->getInventoryType() == LLInventoryType::IT_CATEGORY))
+			{
+				if(prev_folder_item)
+				{
+					LLFolderBridge* prev_bridge = (LLFolderBridge*)prev_folder_item->getViewModelItem();
+					if(prev_bridge)
+					{
+						prev_bridge->clearDisplayName();
+						prev_bridge->setShowDescendantsCount(false);
+						prev_folder_item->refresh();
+					}
+				}
+
+				LLFolderBridge* bridge = (LLFolderBridge*)folder_item->getViewModelItem();
+				if(bridge)
+				{
+					bridge->clearDisplayName();
+					bridge->setShowDescendantsCount(true);
+					folder_item->refresh();
+					mPreviousSelectedFolder = bridge->getUUID();
+				}
+			}
+		}
+	}
+	else
+	{
+		if(prev_folder_item)
+		{
+			LLFolderBridge* prev_bridge = (LLFolderBridge*)prev_folder_item->getViewModelItem();
+			if(prev_bridge)
+			{
+				prev_bridge->clearDisplayName();
+				prev_bridge->setShowDescendantsCount(false);
+				prev_folder_item->refresh();
+			}
+		}
+		mPreviousSelectedFolder = LLUUID();
+	}
+
 }
 
 void LLInventoryPanel::doCreate(const LLSD& userdata)
@@ -1420,10 +1470,12 @@ LLInventoryPanel* LLInventoryPanel::getActiveInventoryPanel(BOOL auto_open)
 }
 
 //static
-void LLInventoryPanel::openInventoryPanelAndSetSelection(BOOL auto_open, const LLUUID& obj_id, BOOL main_panel)
+void LLInventoryPanel::openInventoryPanelAndSetSelection(BOOL auto_open, const LLUUID& obj_id, BOOL main_panel, BOOL take_keyboard_focus, BOOL reset_filter)
 {
 	LLInventoryPanel *active_panel;
-	if (main_panel)
+	bool in_inbox = (gInventory.isObjectDescendentOf(obj_id, gInventory.findCategoryUUIDForType(LLFolderType::FT_INBOX)));
+
+	if (main_panel && !in_inbox)
 	{
 		LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory")->selectAllItemsPanel();
 	}
@@ -1432,42 +1484,22 @@ void LLInventoryPanel::openInventoryPanelAndSetSelection(BOOL auto_open, const L
 	if (active_panel)
 	{
 		LL_DEBUGS("Messaging") << "Highlighting" << obj_id  << LL_ENDL;
-		
-		LLViewerInventoryItem * item = gInventory.getItem(obj_id);
-		LLViewerInventoryCategory * cat = gInventory.getCategory(obj_id);
-		
-		bool in_inbox = false;
-		
-		LLViewerInventoryCategory * parent_cat = NULL;
-		
-		if (item)
+
+		if (reset_filter)
 		{
-			parent_cat = gInventory.getCategory(item->getParentUUID());
+			reset_inventory_filter();
 		}
-		else if (cat)
-		{
-			parent_cat = gInventory.getCategory(cat->getParentUUID());
-		}
-		
-		if (parent_cat)
-		{
-			in_inbox = (LLFolderType::FT_INBOX == parent_cat->getPreferredType());
-		}
-		
+
 		if (in_inbox)
 		{
 			LLSidepanelInventory * sidepanel_inventory =	LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 			LLInventoryPanel * inventory_panel = NULL;
-			
-			if (in_inbox)
-			{
-				sidepanel_inventory->openInbox();
-				inventory_panel = sidepanel_inventory->getInboxPanel();
-			}
+			sidepanel_inventory->openInbox();
+			inventory_panel = sidepanel_inventory->getInboxPanel();
 
 			if (inventory_panel)
 			{
-				inventory_panel->setSelection(obj_id, TAKE_FOCUS_YES);
+				inventory_panel->setSelection(obj_id, take_keyboard_focus);
 			}
 		}
 		else
@@ -1477,7 +1509,7 @@ void LLInventoryPanel::openInventoryPanelAndSetSelection(BOOL auto_open, const L
 			{
 				floater_inventory->setFocus(TRUE);
 			}
-			active_panel->setSelection(obj_id, TAKE_FOCUS_YES);
+			active_panel->setSelection(obj_id, take_keyboard_focus);
 		}
 	}
 }

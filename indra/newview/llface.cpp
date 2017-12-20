@@ -1109,7 +1109,7 @@ bool LLFace::canRenderAsMask()
 	}
 	
 	LLMaterial* mat = te->getMaterialParams();
-	if (mat && mat->getDiffuseAlphaMode() == LLMaterial::DIFFUSE_ALPHA_MODE_BLEND)
+	if (mat && !mat->isDiffuseAlphaInvalid() && mat->getDiffuseAlphaMode() == LLMaterial::DIFFUSE_ALPHA_MODE_BLEND)
 	{
 		return false;
 	}
@@ -1343,14 +1343,14 @@ BOOL LLFace::getGeometryVolume(const LLVolume& volume,
 			
 			if (LLPipeline::sRenderDeferred)
 			{ //store shiny in alpha if we don't have a specular map
-				if  (!mat || mat->getSpecularID().isNull())
+				if  (!mat || mat->getSpecularID().isNull() || mat->isSpecularInvalid())
 				{
 					shiny_in_alpha = true;
 				}
 			}
 			else
 			{
-				if (!mat || mat->getDiffuseAlphaMode() != LLMaterial::DIFFUSE_ALPHA_MODE_MASK)
+				if (!mat || mat->getDiffuseAlphaMode() != LLMaterial::DIFFUSE_ALPHA_MODE_MASK || mat->isDiffuseAlphaInvalid())
 				{
 					shiny_in_alpha = true;
 				}
@@ -1836,7 +1836,7 @@ BOOL LLFace::getGeometryVolume(const LLVolume& volume,
 
 				std::vector<LLVector2> bump_tc;
 		
-				if (mat && !mat->getNormalID().isNull())
+				if (mat && !(mat->getNormalID().isNull() || mat->isNormalInvalid()))
 				{ //writing out normal and specular texture coordinates, not bump offsets
 					do_bump = false;
 				}

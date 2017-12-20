@@ -142,6 +142,7 @@ private:
 
 	LLFilterEditor*				mFilterEditor;
 	LLTabContainer*				mFilterTabs;
+	LLUICtrl*					mCounterCtrl;
 	LLHandle<LLFloater>			mFinderHandle;
 	LLInventoryPanel*			mActivePanel;
 	LLInventoryPanel*			mWornItemsPanel;
@@ -150,6 +151,9 @@ private:
 	std::string					mFilterText;
 	std::string					mFilterSubString;
 	
+	std::string					mItemCountString;
+	S32							mCategoryCount;
+	std::string					mCategoryCountString;
 	LLComboBox*					mSearchTypeCombo;
 
 

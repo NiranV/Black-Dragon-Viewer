@@ -28,7 +28,7 @@
 #define LL_LLPANELMARKETPLACEINBOX_H
 
 #include "llpanel.h"
-
+#include "llfolderview.h"
 class LLButton;
 class LLInventoryPanel;
 class LLUICtrl;
@@ -54,11 +54,15 @@ public:
 
 	/*virtual*/ void draw();
 
+	void onClearSearch();
+	void onFilterEdit(const std::string& search_string);
+
 private:
 
 	void onSelectionChange();
 
 	void onFocusReceived();
+	LLSaveFolderState*			mSavedFolderState;
 };
 
 
