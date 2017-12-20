@@ -3867,7 +3867,7 @@ This should have been updated for you but apparently was not.
 Please download from https://secondlife.com/support/downloads/
     <tag>confirm</tag>
     <usetemplate
-   force_urls_external="true">
+   force_urls_external="true"
      name="okbutton"
      yestext="OK"/>
   </notification>
