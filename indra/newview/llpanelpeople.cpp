@@ -865,6 +865,8 @@ void LLPanelPeople::updateButtons()
 	LLAvatarTracker::buddy_map_t all_buddies;
 	U32 groups_count = gAgent.mGroups.size();
 	av_tracker.copyBuddyList(all_buddies);
+	//BD - This is not entirely correct... we're subtracting me even if the person is friend with me.
+	//     TODO: Fixit.
 	U32 friends = gAgent.getID() == gAgent.getDevID() ? all_buddies.size() : all_buddies.size() - 1;
 	mGroupCount->setTextArg("[COUNT]", llformat("%d", groups_count));
 	mGroupCount->setTextArg("[MAX_GROUPS]", llformat("%d", gMaxAgentGroups));
