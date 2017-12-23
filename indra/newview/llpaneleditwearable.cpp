@@ -1550,6 +1550,11 @@ void LLPanelEditWearable::updateVerbs()
                 rect.mLeft += delta_width;
                 mPanelTitle->setShape(rect);
 
+				//BD
+				rect = getChild<LLUICtrl>("title_bg")->getRect();
+				rect.mLeft += delta_width;
+				getChild<LLUICtrl>("title_bg")->setShape(rect);
+
                 was_dirty = is_dirty;
         }
 }
