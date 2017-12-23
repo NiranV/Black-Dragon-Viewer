@@ -74,7 +74,6 @@ void LLPanelMarketplaceInbox::onSelectionChange()
 	sidepanel_inventory->updateVerbs();
 }
 
-	mInventoryPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
 void LLPanelMarketplaceInbox::onFocusReceived()
 {
 	LLSidepanelInventory *sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
@@ -92,38 +91,6 @@ BOOL LLPanelMarketplaceInbox::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL dr
 	return TRUE;
 }
 
-}
-
-void LLPanelMarketplaceInbox::onClearSearch()
-{
-	if (mInventoryPanel)
-	{
-		mInventoryPanel->setFilterSubString(LLStringUtil::null);
-		mSavedFolderState->setApply(TRUE);
-		mInventoryPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
-		LLOpenFoldersWithSelection opener;
-		mInventoryPanel->getRootFolder()->applyFunctorRecursively(opener);
-		mInventoryPanel->getRootFolder()->scrollToShowSelection();
-	}
-}
-
-void LLPanelMarketplaceInbox::onFilterEdit(const std::string& search_string)
-{
-	if (mInventoryPanel)
-	{
-
-		if (search_string == "")
-		{
-			onClearSearch();
-		}
-
-		if (!mInventoryPanel->getFilter().isNotDefault())
-		{
-			mSavedFolderState->setApply(FALSE);
-			mInventoryPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
-		}
-		mInventoryPanel->setFilterSubString(search_string);
-	}
 void LLPanelMarketplaceInbox::draw()
 {	
 	LLPanel::draw();

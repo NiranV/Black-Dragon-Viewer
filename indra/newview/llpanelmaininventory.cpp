@@ -529,10 +529,9 @@ void LLPanelMainInventory::onClearSearch()
 	LLSidepanelInventory * sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 	if (sidepanel_inventory)
 	{
-		LLPanelMarketplaceInbox* inbox_panel = sidepanel_inventory->getChild<LLPanelMarketplaceInbox>("marketplace_inbox");
-		if (inbox_panel)
+		if (mInventoryInboxPanel)
 		{
-			inbox_panel->onClearSearch();
+			onOutboxClearSearch();
 		}
 	}
 }
@@ -570,10 +569,9 @@ void LLPanelMainInventory::onFilterEdit(const std::string& search_string )
 	LLSidepanelInventory * sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 	if (sidepanel_inventory)
 	{
-		LLPanelMarketplaceInbox* inbox_panel = sidepanel_inventory->getChild<LLPanelMarketplaceInbox>("marketplace_inbox");
-		if (inbox_panel)
+		if (mInventoryInboxPanel)
 		{
-			inbox_panel->onFilterEdit(search_string);
+			onOutboxFilterEdit(search_string);
 		}
 	}
 }
@@ -746,8 +744,8 @@ void LLPanelMainInventory::draw()
 		LLResMgr::getInstance()->getIntegerString(mCategoryCountString, mCategoryCount);
 	}
 
-	string_args["[CATEGORY_COUNT]"] = mCategoryCountString;
-    mCounterCtrl->setToolTip(text);
+	//string_args["[CATEGORY_COUNT]"] = mCategoryCountString;
+    //mCounterCtrl->setToolTip(text);
 }
 
 void LLPanelMainInventory::onFocusReceived()
@@ -800,6 +798,7 @@ void LLPanelMainInventory::onSelectionChange(LLInventoryPanel *panel, const std:
 	panel->onSelectionChange(items, user_action);
 }
 
+//BD
 LLInventoryPanel* LLPanelMainInventory::setupInventoryPanel()
 {
 	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
@@ -820,6 +819,7 @@ LLInventoryPanel* LLPanelMainInventory::setupInventoryPanel()
 	// Set the sort order newest to oldest
 	mInventoryInboxPanel->getFolderViewModel()->setSorter(LLInventoryFilter::SO_DATE);
 	mInventoryInboxPanel->getFilter().markDefault();
+	mInventoryInboxPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
 
 	// Set selection callback for proper update of inventory status buttons
 	//mInventoryInboxPanel->setSelectCallback(boost::bind(&LLPanelMarketplaceInbox::onSelectionChange, this));
@@ -896,6 +896,38 @@ const U32 LLPanelMainInventory::getTotalItemCount()
 	}
 
 	return item_count;
+}
+
+void LLPanelMainInventory::onOutboxClearSearch()
+{
+	if (mInventoryInboxPanel)
+	{
+		mInventoryInboxPanel->setFilterSubString(LLStringUtil::null);
+		mSavedFolderState->setApply(TRUE);
+		mInventoryInboxPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
+		LLOpenFoldersWithSelection opener;
+		mInventoryInboxPanel->getRootFolder()->applyFunctorRecursively(opener);
+		mInventoryInboxPanel->getRootFolder()->scrollToShowSelection();
+	}
+}
+
+void LLPanelMainInventory::onOutboxFilterEdit(const std::string& search_string)
+{
+	if (mInventoryInboxPanel)
+	{
+
+		if (search_string == "")
+		{
+			onClearSearch();
+		}
+
+		if (!mInventoryInboxPanel->getFilter().isNotDefault())
+		{
+			mSavedFolderState->setApply(FALSE);
+			mInventoryInboxPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
+		}
+		mInventoryInboxPanel->setFilterSubString(search_string);
+	}
 }
 
 ///----------------------------------------------------------------------------

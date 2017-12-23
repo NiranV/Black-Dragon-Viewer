@@ -54,9 +54,6 @@ public:
 
 	/*virtual*/ void draw();
 
-	void onClearSearch();
-	void onFilterEdit(const std::string& search_string);
-
 private:
 
 	void onSelectionChange();

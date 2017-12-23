@@ -82,6 +82,8 @@ public:
 
 	//BD
 	LLInventoryPanel* setupInventoryPanel();
+	void onOutboxClearSearch();
+	void onOutboxFilterEdit(const std::string& search_string);
 
 	const std::string& getFilterText() const { return mFilterText; }
 	
