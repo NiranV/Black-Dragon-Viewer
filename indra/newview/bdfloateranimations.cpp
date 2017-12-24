@@ -83,6 +83,8 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	mCommitCallbackRegistrar.add("Joint.PosSet", boost::bind(&BDFloaterAnimations::onJointPosSet, this, _1, _2));
 	//BD - Add or remove a joint state to or from the pose (enable/disable our overrides).
 	mCommitCallbackRegistrar.add("Joint.ChangeState", boost::bind(&BDFloaterAnimations::onJointChangeState, this));
+	//BD - Reset all selected bones back to 0,0,0.
+	mCommitCallbackRegistrar.add("Joint.ResetJoint", boost::bind(&BDFloaterAnimations::onJointReset, this));
 
 	//BD - Add a new entry to the animation creator.
 	mCommitCallbackRegistrar.add("Anim.Add", boost::bind(&BDFloaterAnimations::onAnimAdd, this, _2));
@@ -136,6 +138,7 @@ BOOL BDFloaterAnimations::postBuild()
 
 void BDFloaterAnimations::draw()
 {
+	//BD - This only works while the window is visible, hiding the UI will stop it.
 	if (mAnimPlayTimer.getStarted() &&
 		mAnimPlayTimer.getElapsedTimeF32() > mExpiryTime)
 	{
@@ -1213,6 +1216,56 @@ void BDFloaterAnimations::onJointChangeState()
 		}
 	}
 	onJointControlsRefresh();
+}
+
+void BDFloaterAnimations::onJointReset()
+{
+	std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
+	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
+		it != items.end(); ++it)
+	{
+		LLScrollListItem* item = (*it);
+		LLJoint* joint = (LLJoint*)item->getUserdata();
+		if (joint)
+		{
+			LLQuaternion quat;
+			LLScrollListCell* column_1 = item->getColumn(1);
+			LLScrollListCell* column_2 = item->getColumn(2);
+			LLScrollListCell* column_3 = item->getColumn(3);
+
+			column_1->setValue(ll_round(0, 0.001f));
+			column_2->setValue(ll_round(0, 0.001f));
+			column_3->setValue(ll_round(0, 0.001f));
+
+			//BD - While editing rotations, make sure we use a bit of linear interpolation to make movements smoother.
+			LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+			if (motion)
+			{
+				//BD - If we don't use our default, set it once.
+				if (motion->getInterpolationTime() != 0.2
+					|| motion->getInterpolationType() != 2)
+				{
+					motion->setInterpolationTime(0.2f);
+					motion->setInterpolationType(2);
+				}
+			}
+			quat.setEulerAngles(0,0,0);
+			joint->setTargetRotation(quat);
+
+			if (joint->getName() == "mPelvis")
+			{
+				LLScrollListCell* column_4 = item->getColumn(4);
+				LLScrollListCell* column_5 = item->getColumn(5);
+				LLScrollListCell* column_6 = item->getColumn(6);
+
+				column_4->setValue(ll_round(0, 0.001f));
+				column_5->setValue(ll_round(0, 0.001f));
+				column_6->setValue(ll_round(0, 0.001f));
+
+				joint->setTargetPosition(LLVector3::zero);
+			}
+		}
+	}
 }
 
 

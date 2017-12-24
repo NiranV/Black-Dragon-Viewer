@@ -687,6 +687,22 @@ width="494">
  name="title"
  top_pad="6"
  width="480">
+		<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Reset Selected Bone(s)"
+ label_selected="Disable Selected Bone(s)"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="toggle_bone"
+ width="170"
+ top="0"
+ left_delta="2">
+		<button.commit_callback
+   function="Joint.ResetJoint"/>
+ </button>
 	<button
  height="21"
  follows="top|left"
@@ -698,9 +714,9 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="toggle_bone"
- width="476"
+ width="305"
  top="0"
- left_delta="2">
+ left_pad="1">
 		<button.commit_callback
    function="Joint.ChangeState"/>
  </button>

@@ -58,6 +58,7 @@ private:
 	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointChangeState();
 	void onJointControlsRefresh();
+	void onJointReset();
 
 	//BD - Animating
 	void onAnimAdd(const LLSD& param);
