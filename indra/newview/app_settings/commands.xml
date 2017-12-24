@@ -354,7 +354,7 @@
   available_in_toybox="true"
   icon="Command_Poser_Icon"
   label_ref="Command_Poser_Label"
-  tooltip_ref="Command_Poer_Tooltip"
+  tooltip_ref="Command_Poser_Tooltip"
   execute_function="Floater.Toggle"
   execute_parameters="animation_control"
   is_running_function="Floater.IsOpen"
