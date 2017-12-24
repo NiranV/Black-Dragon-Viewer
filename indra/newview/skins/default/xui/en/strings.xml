@@ -4126,14 +4126,6 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_Twitter_Label">Twitter</string>
   <string name="Command_View_Label">Camera controls</string>
   <string name="Command_Voice_Label">Voice settings</string>
-  <string name="Command_Windlight_Label">Environment Editor</string>
-  <string name="Command_Sky_Label">Sky Editor</string>
-  <string name="Command_Water_Label">Water Editor</string>
-  <string name="Command_Spacer_Label"></string>
-  <string name="Command_Home_Label"></string>
-  <string name="Command_Back_Label"></string>
-  <string name="Command_Forward_Label"></string>
-  <string name="Command_Navbar_Label">Navigationbar</string>
 
   <string name="Command_AboutLand_Tooltip">Information about the land you're visiting</string>
   <string name="Command_Appearance_Tooltip">Change your avatar</string>
@@ -4171,19 +4163,10 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_Twitter_Tooltip">Twitter</string>
   <string name="Command_View_Tooltip">Changing camera angle</string>
   <string name="Command_Voice_Tooltip">Volume controls for calls and people near you in world</string>
-  <string name="Command_Windlight_Tooltip">Set your preferred sky and water preset</string>
-  <string name="Command_Sky_Tooltip">Edit a sky preset or create a new one</string>
-  <string name="Command_Water_Tooltip">Edit a water preset or create a new one</string>
-  <string name="Command_Spacer_Tooltip">This is a spacer, use it to put a space between buttons and organize them into categories</string>
-  <string name="Command_Home_Tooltip">Teleport to your place set as home</string>
-  <string name="Command_Back_Tooltip">Teleport back to your previous location</string>
-  <string name="Command_Forward_Tooltip">Teleport to your next location in teleport history</string>
-  <string name="Command_Navbar_Tooltip">Show the Navigationbar and your Favorites</string>
 
   <string name="Toolbar_Bottom_Tooltip">currently in your bottom toolbar</string>
   <string name="Toolbar_Left_Tooltip"  >currently in your left toolbar</string>
   <string name="Toolbar_Right_Tooltip" >currently in your right toolbar</string>
-  <string name="Toolbar_Top_Tooltip" >currently in your top toolbar</string>
 
  <!-- Mesh UI terms -->
   <string name="Retain%">Retain%</string>
@@ -4279,4 +4262,17 @@ Try enclosing path to the editor with double quotes.
   <string name="MuteText">Block Text</string>
   <string name="UnmuteVoice">Unmute Voice</string>
   <string name="MuteVoice">Mute Voice</string>
+	
+	<string name="Toolbar_Top_Tooltip" >currently in your top toolbar</string>
+	
+	<string name="Command_Windlight_Label">Environment Editor</string>
+  <string name="Command_Sky_Label">Sky Editor</string>
+  <string name="Command_Water_Label">Water Editor</string>
+  <string name="Command_Navbar_Label">Navigationbar</string>
+	<string name="Command_Poser_Label">Poser</string>
+	<string name="Command_Windlight_Tooltip">Set your preferred sky and water preset</string>
+  <string name="Command_Sky_Tooltip">Edit a sky preset or create a new one</string>
+  <string name="Command_Water_Tooltip">Edit a water preset or create a new one</string>
+  <string name="Command_Navbar_Tooltip">Show the Navigationbar and your Favorites</string>
+	<string name="Command_Poser_Tooltip">Open the poser and strike a pose</string>
 </strings>
