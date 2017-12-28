@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.9.4 - Bit Dragon]"
+       label="[CHANNEL] [VERSION] - [2.9.5 - Christmas Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="9470"
+       height="9899"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,77 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="129"
+              height="389"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Tijakool Yiyuan to Patreon patron list.
+Added: Comments all over the place.
+Added: Poser toolbar button. (No icon or text yet)
+Added: Missing poser icon and toolbar label and tooltip.
+Added: Machinima Sidebar and Poser buttons to the top toolbar by default.
+Added: Button to reset all selected bones to 0,0,0 quickly.
+Added: Paul Felts to Patreon patron list.
+Changed: Re-enabled HTTP Pipelining now that its supposedly not crashing anymore.
+Changed: Naga Lionhead to Naga Lionheart in patreon list. Sorry.
+Changed: Massive cleanup in bdfloatercomplexity.cpp/h.
+Changed: Layout of complexity floater.
+Changed: Layout of Edit My Shape panel to match newer UI style a bit better.
+Changed: Don't display the reload page button in the internal webbrowser making it stack with the cancel button.
+Changed: Version to 2.9.5 - Christmas Dragon.
+Fixed: (POTENTIAL) Don't accidentally unreference pointers we already unreferenced. Check if there is something to unreference first.
+Fixed: Snapshot saving locking up the entire Viewer forever.
+Fixed: (POTENTIAL) Second attempt at fixing the vertex cache triangle counter crashing rarely.
+Fixed: Inventory inbox panel button vanishing when emptying out the inbox, making you unable to close it.
+Fixed: Edit My Shape panel being visually broken.
+Fixed: Viewer crashing on startup due to merge error.
+Fixed: Compile.
+Fixed: Reapplied snapshot "Save As" fix now that its not locking the Viewer up anymore.
+Fixed: Edit wearable "Save" back button overlapping the titlebar with unsaved changes.
+Fixed: Broken tooltip reference for poser button.
+Removed: Home toolbar button.
+Misc: Cleaned up toolbar commands.xml a bit.
+Misc: Additional code commenting in llpanelpeople.cpp.
+Merge with Alex Ivy (85 changes)
+Merge with Linden Bear (52 changes)
+Merge with Alex Ivy (23 changes)
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.9.4
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="129"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
