@@ -234,9 +234,6 @@ public:
 
 	static U32 getRiggedDataMask(U32 type);
 
-	void	notifyAboutCreatingTexture(LLViewerTexture *texture);
-	void	notifyAboutMissingAsset(LLViewerTexture *texture);
-
 public: //aligned members
 	LLVector4a		mExtents[2];
 

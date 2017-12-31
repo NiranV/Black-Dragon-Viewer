@@ -176,9 +176,6 @@ protected:
 	void reorganizeFaceList() ;
 	void reorganizeVolumeList() ;
 
-	void notifyAboutMissingAsset();
-	void notifyAboutCreatingTexture();
-
 private:
 	friend class LLBumpImageList;
 	friend class LLUIImageList;
