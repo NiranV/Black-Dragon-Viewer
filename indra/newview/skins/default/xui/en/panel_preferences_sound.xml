@@ -9,10 +9,6 @@ left="0"
 name="Preference Media panel"
 top="45"
 width="510">
- <panel.string
-    name="middle_mouse">
-    Middle Mouse
- </panel.string>
  <scroll_container
  color="Transparent"
  follows="all"
@@ -672,7 +668,7 @@ width="510">
    tool_tip="This option opens the input and output configuration and will disconnect you from voice if you are currently using it for as long as this panel remains open."
    layout="topleft"
    left="0"
-   name="device_settings_panel"
+   name="device_settings_panel2"
    class="panel_voice_device_settings"
    width="495"
    top_pad="1">
@@ -688,6 +684,14 @@ width="510">
     name="name_default_system_device">
     Default System Device
     </string>
+    <panel.string
+    name="middle_mouse">
+    Middle Mouse
+    </panel.string>
+    <panel.string
+    name="none">
+    No button assigned
+    </panel.string>
     <text
     name="show_ims_in_label"
     follows="left|top"
@@ -812,10 +816,28 @@ width="510">
     height="23"
     left="10"
     name="modifier_combo"
-    label="Push-to-Speak trigger"
+    label="Push-to-talk trigger"
     tool_tip="This option sets the button you have to press or hold to activate/deactivate your microphone."
     top_pad="5"
     width="270" />
+    <button
+    follows="left|top"
+    enabled_control="EnableVoiceChat"
+    height="15"
+    is_toggle="false"
+    label_color="White"
+    label="⌊none⌉"
+    image_selected="transparent.j2c"
+    image_unselected="transparent.j2c"
+    layout="topleft"
+    halign="right"
+    left="325"
+    top_delta="2"
+    name="set_voice_none_button"
+    width="45">
+    <button.commit_callback
+            function="Pref.VoiceSetNone"/>
+    </button>
     <button
     follows="left|top"
     enabled_control="EnableVoiceChat"
@@ -826,10 +848,10 @@ width="510">
     image_selected="transparent.j2c"
     image_unselected="transparent.j2c"
     layout="topleft"
-    left="370"
-    top_delta="2"
+    left_pad="0"
+    top_delta="0"
     name="set_voice_middlemouse_button"
-    width="60">
+    width="55">
     <button.commit_callback
             function="Pref.VoiceSetMiddleMouse"/>
     </button>
@@ -843,11 +865,11 @@ width="510">
     image_selected="transparent.j2c"
     image_unselected="transparent.j2c"
     layout="topleft"
-    left_pad="5"
+    left_pad="0"
     top_delta="0"
     tool_tip="This option allows you to set the key for toggling your microphone when using voice."
     name="set_voice_hotkey_button"
-    width="60">
+    width="55">
     <button.commit_callback
             function="Pref.VoiceSetKey"/>
     </button>

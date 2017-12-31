@@ -1016,6 +1016,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	LLRenderMuteList::getInstance()->addObserver(&sAvatarRenderMuteListObserver);
 
 	//BD
+	mCommitCallbackRegistrar.add("Pref.VoiceSetNone", boost::bind(&LLFloaterPreference::onClickSetNone, this));
+
+	//BD
 	LLConversationLog::instance().addObserver(this);
 	LLAvatarPropertiesProcessor::getInstance()->addObserver(gAgent.getID(), this);
 
@@ -2453,6 +2456,22 @@ void LLFloaterPreference::onClickSetMiddleMouse()
 	if (advanced_preferences)
 	{
 		p2t_line_editor->setValue(advanced_preferences->getString("middle_mouse"));
+	}
+}
+
+//BD
+void LLFloaterPreference::onClickSetNone()
+{
+	LLUICtrl* p2t_line_editor = getChild<LLUICtrl>("modifier_combo");
+
+	// update the control right away since we no longer wait for apply
+	p2t_line_editor->setControlValue("");
+
+	//push2talk control value is in English, need to localize it for presentation
+	LLPanel* advanced_preferences = dynamic_cast<LLPanel*>(p2t_line_editor->getParent());
+	if (advanced_preferences)
+	{
+		p2t_line_editor->setValue(advanced_preferences->getString("none"));
 	}
 }
 

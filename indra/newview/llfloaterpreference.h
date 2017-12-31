@@ -256,6 +256,9 @@ public:
 //	//BD - Avatar Rendering Settings
 	/*virtual*/ BOOL handleKeyHere(KEY key, MASK mask);
 
+	//BD
+	void onClickSetNone();
+
 	void onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y);
 
 	void updateList();
