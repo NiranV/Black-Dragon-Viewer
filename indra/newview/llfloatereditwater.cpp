@@ -101,6 +101,8 @@ void LLFloaterEditWater::onOpen(const LLSD& key)
 	// Switch between the water presets combobox and preset name input field.
 	mWaterPresetCombo->setVisible(!new_preset);
 	mWaterPresetNameEditor->setVisible(new_preset);
+	//BD
+	getChild<LLUICtrl>("water_preset_icon")->setVisible(new_preset);
 
 	reset();
 }
@@ -122,6 +124,8 @@ void LLFloaterEditWater::initCallbacks(void)
 	getChild<LLButton>("cancel")->setCommitCallback(boost::bind(&LLFloaterEditWater::onBtnCancel, this));
 	//BD
 	mDeleteButton->setCommitCallback(boost::bind(&LLFloaterEditWater::onDeletePreset, this));
+	//BD - Refresh
+	getChild<LLUICtrl>("refresh")->setCommitCallback(boost::bind(&LLFloaterEditWater::refreshWaterPresetsList, this));
 
 	LLEnvManagerNew::instance().setRegionSettingsChangeCallback(boost::bind(&LLFloaterEditWater::onRegionSettingsChange, this));
 	LLWaterParamManager::instance().setPresetListChangeCallback(boost::bind(&LLFloaterEditWater::onWaterPresetListChange, this));
