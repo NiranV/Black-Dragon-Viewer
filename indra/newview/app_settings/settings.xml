@@ -10529,7 +10529,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>500000</integer>
+    <integer>125000</integer>
   </map>
   <key>RenderHUDObjectsWarning</key>
   <map>
