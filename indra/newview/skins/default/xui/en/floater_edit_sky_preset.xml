@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
-legacy_header_height="18"
-height="242"
+height="222"
 layout="topleft"
 name="Edit Sky Preset"
-background_color="FloaterDefaultBackgroundColor"
 save_rect="true"
 title="Edit Sky Preset"
 width="700">
@@ -20,80 +18,29 @@ width="700">
 <string name="combo_label">
 			-Select a preset-
 </string>
-      <line_editor
-     height="20"
-     left="12"
-     name="sky_preset_name"
-     top="31"
-     width="150" />
-    <combo_box
-     follows="top|left"
-     layout="topleft"
-     allow_text_entry="true"
-     left="12"
-     max_chars="100"
-     name="sky_preset_combo"
-     top="30"
-     width="155"/>
-   <button
-     follows="bottom|right"
-     height="23"
-     label="Save Preset"
-     layout="topleft"
-     left_pad="-2"
-     name="save"
-     top_delta="0"
-     width="80"/>
-   <button
-     follows="bottom|right"
-     height="23"
-     label="Delete"
-     layout="topleft"
-     left_pad="3"
-     name="delete"
-     width="70"/>
-    <button
-     follows="bottom|right"
-     height="23"
-     label="Cancel"
-     layout="topleft"
-     left_pad="3"
-     name="cancel"
-     width="70"/>
-    
-     <button
-     follows="top|left"
-     height="23"
-     label="Make this my new sky preset"
-     layout="topleft"
-     is_toggle="true"
-     left_pad="3"
-     name="make_default_cb"
-     top_delta="0"
-     width="172"/>
-      <button
-     follows="top|left"
-     height="23"
-     label="Day Cycle Editor"
-     layout="topleft"
-     is_toggle="false"
-     left="569"
-     name="day_cycle_editor"
-     top_delta="0"
-     width="120">
-      <button.commit_callback
-	      function="World.EnvPreset"
-	      parameter="edit_day_cycle" />
-      </button>
+<icon
+	follows="top|left"
+	height="193"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="686"
+	top="22"
+	left="7"/>
     <tab_container
      follows="left|top"
-     height="196"
+     height="186"
      halign="center"
      layout="topleft"
-     left="0"
+	  tab_min_width="228"
+	  tab_height="20"
+     left="3"
      name="WindLight"
      tab_position="top"
-     top="60"
+     top="2"
      width="700">
     <panel
      border="false"
@@ -116,7 +63,7 @@ width="700">
          layout="topleft"
          left="10"
          name="BHText"
-         top="5"
+         top="7"
          width="200">
            Blue Horizon
         </text>
@@ -124,10 +71,10 @@ width="700">
          can_apply_immediately="true"
          allow_alpha="false"
          follows="left|top"
-         height="37"
+         height="50"
          label_height="0"
          layout="topleft"
-         left_delta="0"
+         left_delta="7"
          name="WLBlueHorizon"
          top_pad="6"
          width="60" />
@@ -138,8 +85,8 @@ width="700">
          font="SansSerif"
          height="16"
          layout="topleft"
-         left_delta="0"
-         top_pad="15"
+         left_delta="-7"
+         top="90"
          name="BDensText"
          width="200">
             Haze Horizon
@@ -154,7 +101,7 @@ width="700">
          layout="topleft"
 	 show_text="false"
          left_delta="0"
-         top_pad="6"
+         top_pad="3"
          name="WLHazeHorizon"
          width="150" />
 	<spinner
@@ -168,7 +115,7 @@ width="700">
          left_pad="0"
          top_delta="-6"
          name="WLHazeHorizon2"
-         width="50" />
+         width="60" />
 
         <text
          type="string"
@@ -177,9 +124,9 @@ width="700">
          font="SansSerif"
          height="16"
          layout="topleft"
-         left="240"
+         left="235"
          name="BDensText2"
-         top="5"
+         top="7"
          width="200">
             Blue Density
         </text>
@@ -187,10 +134,10 @@ width="700">
          can_apply_immediately="true"
          allow_alpha="false"
          follows="left|top"
-         height="37"
+         height="50"
          label_height="0"
          layout="topleft"
-         left_delta="0"
+         left_delta="7"
          name="WLBlueDensity"
          top_pad="6"
          width="60" />
@@ -201,9 +148,9 @@ width="700">
          font="SansSerif"
          height="16"
          layout="topleft"
-         left_delta="0"
+         left_delta="-7"
          name="HDText"
-         top_pad="15"
+         top="90"
          width="200">
             Haze Density
         </text>
@@ -220,7 +167,7 @@ width="700">
          left_delta="0"
          max_val="4"
          name="WLHazeDensity"
-         top_pad="6"
+         top_pad="3"
          width="150" />
 	<spinner
          control_name="WLHazeDensity"
@@ -234,7 +181,7 @@ width="700">
          max_val="4"
          name="WLHazeDensity2"
          top_delta="-6"
-         width="50" />
+         width="60" />
 
         <text
          type="string"
@@ -243,9 +190,9 @@ width="700">
          font="SansSerif"
          height="16"
          layout="topleft"
-         left_pad="30"
+         left="470"
          name="DensMultText"
-         top="5"
+         top="7"
          width="200">
            Density Multiplier
         </text>
@@ -261,7 +208,7 @@ width="700">
 	  left_delta="0"
 	  max_val="0.999"
 	  name="WLDensityMult"
-	  top_pad="5"
+	  top_pad="3"
 	  width="150" />
 	 <spinner
 	  control_name="WLDensityMult"
@@ -275,7 +222,7 @@ width="700">
 	  max_val="0.999"
 	  name="WLDensityMult2"
 	  top_delta="-6"
-	  width="50" />
+	  width="60" />
 	 
 	 <text
 	  type="string"
@@ -286,7 +233,7 @@ width="700">
 	  layout="topleft"
 	  left="470"
 	  name="WLDistanceMultText"
-	  top_pad="16"
+	  top="49"
 	  width="200">
 	     Distance Multiplier
 	 </text>
@@ -302,7 +249,7 @@ width="700">
 	  incement="0.01"
 	  show_text="false"
 	  name="WLDistanceMult"
-	  top_pad="5"
+	  top_pad="3"
 	  width="150" />
 	 <spinner
 	  control_name="WLDistancMult"
@@ -316,7 +263,7 @@ width="700">
 	  max_val="100"
 	  name="WLDistanceMult2"
 	  top_delta="-6"
-	  width="57" />
+	  width="60" />
 	 <text
 	  type="string"
 	  length="1"
@@ -326,7 +273,7 @@ width="700">
 	  layout="topleft"
 	  left="470"
 	  name="MaxAltText"
-	  top_pad="16"
+	  top="90"
 	  width="200">
 	     Max Altitude
 	 </text>
@@ -342,7 +289,7 @@ width="700">
 	  show_text="false"
 	  max_val="4000"
 	  name="WLMaxAltitude"
-	  top_pad="5"
+	  top_pad="3"
 	  width="150" />
 	 <spinner
 	  control_name="WLMaxAltitude"
@@ -356,7 +303,7 @@ width="700">
 	  max_val="4000"
 	  name="WLMaxAltitude2"
 	  top_delta="-6"
-	  width="50" />
+	  width="60" />
         </panel>
         <panel
          border="false"
@@ -378,7 +325,7 @@ width="700">
              layout="topleft"
              left="10"
              name="SLCText"
-             top="5"
+             top="7"
              width="150">
                 Sun/Moon Color
             </text>
@@ -386,10 +333,10 @@ width="700">
              can_apply_immediately="true"
 	 allow_alpha="false"
              follows="left|top"
-             height="37"
+             height="50"
              label_height="0"
              layout="topleft"
-             left_delta="0"
+             left_delta="7"
              name="WLSunlight"
              top_pad="6"
              width="60" />
@@ -400,9 +347,9 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left_delta="0"
+             left_delta="-7"
              name="TODText"
-             top_pad="15"
+             top="90"
              width="200">
                 Sun/Moon Position
             </text>
@@ -410,10 +357,10 @@ width="700">
              height="20"
              image_name="icon_diurnal.tga"
              layout="topleft"
-             left_delta="0"
-             top_pad="8"
+             left_delta="5"
+             top_pad="7"
              name="SkyDayCycle"
-             width="148" />
+             width="133" />
             <multi_slider
              can_edit_text="true"
              decimal_digits="0"
@@ -427,8 +374,8 @@ width="700">
              max_val="24"
              name="WLSunPos"
              show_text="false"
-             top_pad="18"
-             width="148" />
+             top_pad="26"
+             width="133" />
             <time
              follows="left|top"
              height="16"
@@ -436,7 +383,7 @@ width="700">
              layout="topleft"
              left_pad="0"
              name="WLDayTime"
-             top_delta="-37"
+             top_delta="-47"
              value="6:00 AM"
              width="75"/> 
             <text
@@ -446,9 +393,9 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left="255"
+             left="235"
              name="WLAmbientText"
-             top="5"
+             top="7"
              width="150">
                 Ambient
             </text>
@@ -456,10 +403,10 @@ width="700">
              can_apply_immediately="true"
 	 allow_alpha="false"
              follows="left|top"
-             height="37"
+             height="50"
              label_height="0"
              layout="topleft"
-             left_delta="0"
+             left_delta="7"
              name="WLAmbient"
              top_pad="6"
              width="60" />
@@ -470,9 +417,9 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left_delta="0"
+             left_delta="-7"
              name="WLEastAngleText"
-             top_pad="15"
+             top="90"
              width="200">
                 East Angle
             </text>
@@ -483,10 +430,24 @@ width="700">
              increment="0.01"
              initial_value="0.0"
              layout="topleft"
+				 show_text="false"
              left_delta="0"
              name="WLEastAngle"
-             top_pad="6"
-             width="200" />
+             top_pad="3"
+             width="150" />
+				<spinner
+             control_name="WLEastAngle"
+             decimal_digits="2"
+             follows="top|left"
+             height="10"
+             increment="0.01"
+             initial_value="1.0"
+             layout="topleft"
+             left_pad="0"
+             max_val="1"
+             name="WLEastAngle2"
+             top_delta="-6"
+             width="60" />
 
             <text
              type="string"
@@ -495,51 +456,9 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left="478"
-             name="SunGlowText"
-             top="5"
-             width="200">
-                Sun Glow
-            </text>
-            <slider
-             decimal_digits="2"
-             follows="left|top"
-             height="10"
-             increment="0.01"
-             initial_value="0.1"
-             label="Focus"
-             layout="topleft"
-             left_delta="0"
-	     label_width="35"
-             max_val="0.5"
-             name="WLGlowB"
-             top_pad="6"
-             width="210" />
-            <slider
-             decimal_digits="2"
-             follows="top|left"
-             height="10"
-             increment="0.01"
-             initial_value="0.25"
-             label="Size"
-             layout="topleft"
-             left_delta="0"
-             max_val="1.99"
-	     label_width="35"
-             min_val="0.01"
-             name="WLGlowR"
-             top_pad="6"
-             width="210" />
-            <text
-             type="string"
-             length="1"
-             follows="left|top"
-             font="SansSerif"
-             height="16"
-             layout="topleft"
-             left_delta="0"
+             left="470"
              name="WLStarText"
-             top_pad="10"
+             top="7"
              width="200">
                 Star Brightness
             </text>
@@ -550,11 +469,25 @@ width="700">
              increment="0.01"
              initial_value="0"
              layout="topleft"
+				 show_text="false"
              left_delta="0"
              max_val="50"
              name="WLStarAlpha"
-             top_pad="6"
-             width="210" />
+             top_pad="3"
+             width="150" />
+				<spinner
+             control_name="WLStarAlpha"
+             decimal_digits="2"
+             follows="top|left"
+             height="10"
+             increment="0.01"
+             initial_value="1.0"
+             layout="topleft"
+             left_pad="0"
+             max_val="50"
+             name="WLStarAlpha2"
+             top_delta="-6"
+             width="60" />
             <text
              type="string"
              length="1"
@@ -562,9 +495,9 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left_delta="0"
+             left="470"
              name="SceneGammaText"
-             top_pad="10"
+             top="49"
              width="200">
                 Scene Gamma
             </text>
@@ -580,8 +513,8 @@ width="700">
              left_delta="0"
              max_val="10"
              name="WLGamma"
-             top_pad="6"
-             width="171" />
+             top_pad="3"
+             width="150" />
 	    <spinner
              control_name="WLGamma"
              decimal_digits="2"
@@ -594,7 +527,49 @@ width="700">
              max_val="10"
              name="WLGamma2"
              top_delta="-6"
-             width="45" />
+             width="60" />
+		 <text
+             type="string"
+             length="1"
+             follows="left|top"
+             font="SansSerif"
+             height="16"
+             layout="topleft"
+             left="470"
+             name="SunGlowText"
+             top="90"
+             width="200">
+                Sun Glow
+            </text>
+            <slider
+             decimal_digits="2"
+             follows="left|top"
+             height="10"
+             increment="0.01"
+             initial_value="0.1"
+             label="Focus"
+             layout="topleft"
+             left_delta="0"
+	     label_width="35"
+             max_val="0.5"
+             name="WLGlowB"
+             top_pad="3"
+             width="183" />
+            <slider
+             decimal_digits="2"
+             follows="top|left"
+             height="10"
+             increment="0.01"
+             initial_value="0.25"
+             label="Size"
+             layout="topleft"
+             left_delta="0"
+             max_val="1.99"
+	     label_width="35"
+             min_val="0.01"
+             name="WLGlowR"
+             top_pad="6"
+             width="183" />
         </panel>
         <panel
          border="false"
@@ -618,7 +593,7 @@ width="700">
              layout="topleft"
              left="10"
              name="WLCloudColorText"
-             top="5"
+             top="7"
              width="200">
                 Cloud Color
             </text>
@@ -626,10 +601,10 @@ width="700">
              can_apply_immediately="true"
 	 allow_alpha="false"
              follows="left|top"
-             height="37"
+             height="50"
              label_height="0"
              layout="topleft"
-             left_delta="0"
+             left_delta="7"
              name="WLCloudColor"
              top_pad="6"
              width="60" />
@@ -640,9 +615,9 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left_delta="0"
+             left_delta="-7"
              name="WLCloudColorText2"
-             top_pad="10"
+             top="90"
              width="200">
                 Cloud XY/Density
             </text>
@@ -653,12 +628,13 @@ width="700">
              height="10"
              increment="0.01"
              initial_value="0.5"
+				 label_width="7"
              label="X"
              layout="topleft"
              left_delta="0"
-             top_pad="6"
+             top_pad="3"
              name="WLCloudX"
-             width="200" />
+             width="183" />
             <slider
              control_name="WLCloudY"
              decimal_digits="2"
@@ -666,12 +642,13 @@ width="700">
              height="10"
              increment="0.01"
              initial_value="0.5"
+				 label_width="7"
              label="Y"
              layout="topleft"
              left_delta="0"
              top_pad="6"
              name="WLCloudY"
-             width="200" />
+             width="183" />
             <slider
              control_name="WLCloudDensity"
              decimal_digits="2"
@@ -679,12 +656,13 @@ width="700">
              height="10"
              increment="0.01"
              initial_value="1.0"
+				 label_width="7"
              label="D"
              layout="topleft"
              left_delta="0"
              name="WLCloudDensity"
              top_pad="6"
-             width="200" />
+             width="183" />
             
             <text
              type="string"
@@ -693,9 +671,9 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left_pad="35"
+             left="235"
              name="WLCloudCoverageText"
-             top="5"
+             top="7"
              width="200">
                 Cloud Coverage
             </text>
@@ -707,10 +685,10 @@ width="700">
              increment="0.01"
              initial_value="0.5"
              layout="topleft"
-             left_delta="15"
+             left_delta="0"
              name="WLCloudCoverage"
-             top_pad="6"
-             width="200" />
+             top_pad="3"
+             width="183" />
             <text
              type="string"
              length="1"
@@ -718,9 +696,9 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left_delta="-15"
+             left="235"
              name="WLCloudScaleText"
-             top_pad="10"
+             top="49"
              width="200">
                 Cloud Scale
             </text>
@@ -732,11 +710,11 @@ width="700">
              increment="0.01"
              initial_value="1.0"
              layout="topleft"
-             left_delta="15"
+             left_delta="0"
              min_val="0.01"
              name="WLCloudScale"
-             top_pad="6"
-             width="200" />
+             top_pad="3"
+             width="183" />
             
             <text
              type="string"
@@ -745,9 +723,9 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left_delta="-13"
+             left="235"
              name="WLCloudDetailText"
-             top_pad="10"
+             top="90"
              width="200">
                 Cloud Detail (XY/Density)
             </text>
@@ -758,12 +736,13 @@ width="700">
              height="10"
              increment="0.01"
              initial_value="0.5"
+				 label_width="7"
              label="X"
              layout="topleft"
              left_delta="0"
-             top_pad="6"
+             top_pad="3"
              name="WLCloudDetailX"
-             width="200" />
+             width="183" />
             <slider
              control_name="WLCloudDetailY"
              decimal_digits="2"
@@ -771,12 +750,13 @@ width="700">
              height="10"
              increment="0.01"
              initial_value="0.5"
+				 label_width="7"
              label="Y"
              layout="topleft"
              left_delta="0"
              name="WLCloudDetailY"
              top_pad="6"
-             width="200" />
+             width="183" />
             <slider
              control_name="WLCloudDetailDensity"
              decimal_digits="2"
@@ -784,12 +764,13 @@ width="700">
              height="10"
              increment="0.01"
              initial_value="1.0"
+				 label_width="7"
              label="D"
              layout="topleft"
              left_delta="0"
              name="WLCloudDetailDensity"
              top_pad="6"
-             width="200" />
+             width="183" />
             
             <text
              type="string"
@@ -798,22 +779,12 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left_pad="30"
+             left="470"
              name="WLCloudScrollXText"
-             top="5"
+             top="7"
              width="150">
                 Cloud Scroll X
             </text>
-            <check_box
-             control_name="WLCloudLockX"
-             follows="left|top"
-             height="16"
-             label="Lock"
-             layout="topleft"
-             left_delta="150"
-             name="WLCloudLockX"
-             top_delta="0"
-             width="200" />
             <slider
              control_name="WLCloudScrollX"
              decimal_digits="2"
@@ -822,11 +793,21 @@ width="700">
              increment="0.01"
              initial_value="0.5"
              layout="topleft"
-             left_delta="-135"
+             left_delta="0"
              max_val="10"
              min_val="-10"
              name="WLCloudScrollX"
-             top_pad="6"
+             top_pad="3"
+             width="183" />
+				<check_box
+             control_name="WLCloudLockX"
+             follows="left|top"
+             height="16"
+             label="   Lock"
+             layout="topleft"
+             left_pad="-67"
+             name="WLCloudLockX"
+             top_delta="-18"
              width="200" />
             <text
              type="string"
@@ -835,21 +816,12 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left_delta="-15"
+             left="470"
              name="WLCloudScrollYText"
-             top_pad="10"
+             top="49"
              width="150">
                 Cloud Scroll Y
             </text>
-            <check_box
-             control_name="WLCloudLockY"
-             follows="left|top"
-             height="16"
-             label="Lock"
-             layout="topleft"
-             left_delta="150"
-             name="WLCloudLockY"
-             width="200" />
             <slider
              control_name="WLCloudScrollY"
              decimal_digits="2"
@@ -858,11 +830,21 @@ width="700">
              increment="0.01"
              initial_value="0.5"
              layout="topleft"
-             left_delta="-135"
+             left_delta="0"
              max_val="10"
              min_val="-10"
              name="WLCloudScrollY"
-             top_pad="6"
+             top_pad="3"
+             width="183" />
+				<check_box
+             control_name="WLCloudLockY"
+             follows="left|top"
+             height="16"
+             label="   Lock"
+             layout="topleft"
+				 top_delta="-18"
+             left_pad="-67"
+             name="WLCloudLockY"
              width="200" />
 	<text
              type="string"
@@ -871,9 +853,9 @@ width="700">
              font="SansSerif"
              height="16"
              layout="topleft"
-             left_delta="-15"
+             left="470"
              name="CloudNoiseImageText"
-             top_pad="10"
+             top="90"
              width="150">
                 Cloud Noise Image
             </text>
@@ -882,11 +864,11 @@ width="700">
 	height="23"
 	allow_text_entry="true"
 	layout="topleft"
-	left_delta="20"
+	left_delta="6"
 	follows="left|top"
-	top_pad="6"
+	top_pad="3"
 	name="CloudNoiseImage"
-	width="150">
+	width="170">
 	<combo_box.item
 	label="Default"
 	name="0"
@@ -914,4 +896,123 @@ width="700">
 	</combo_box>
         </panel>
     </tab_container>
+	 
+	 <icon
+		follows="left|top|right"
+		image_name="Toolbar_Middle_Off"
+		height="23"
+		width="169"
+		layout="topleft"
+		visible="false"
+		name="sky_preset_icon"
+		left="9"
+		top_pad="3"/>
+	 <line_editor
+     height="20"
+     left="11"
+     name="sky_preset_name"
+     top_delta="1"
+     width="165" />
+    <combo_box
+     follows="top|left"
+     layout="topleft"
+     allow_text_entry="true"
+     left="9"
+     max_chars="100"
+	  height="23"
+     name="sky_preset_combo"
+     top_delta="-1"
+     width="177">
+		<combo_box.combo_editor
+          background_image="TextField_Off"
+          background_image_disabled="TextField_Disabled"
+          background_image_focused="TextField_Active"/>
+          <combo_box.combo_button
+          image_unselected="ComboToolbarButton_Off"
+          image_selected="ComboToolbarButton_Selected"
+          image_pressed="ComboToolbarButton_Selected" 
+          image_pressed_selected="ComboToolbarButton_Selected"/>
+          <combo_box.drop_down_button
+          image_unselected="ComboToolbarButton_Off"
+          image_selected="ComboToolbarButton_Selected"
+          image_pressed="ComboToolbarButton_Selected" 
+          image_pressed_selected="ComboToolbarButton_Selected"
+          image_disabled="ComboToolbarButton_Disabled"/>
+        </combo_box>
+   <button
+     follows="bottom|right"
+     height="23"
+     label="Save Preset"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     left_pad="-7"
+     name="save"
+     top_delta="0"
+     width="80"/>
+   <button
+     follows="bottom|right"
+     height="23"
+     label="Delete"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     left_pad="1"
+     name="delete"
+     width="55"/>
+	 <button
+     follows="bottom|right"
+     height="23"
+     label="Refresh"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     left_pad="1"
+     name="refresh"
+     width="60"/>
+    
+     <button
+     follows="top|left"
+     height="23"
+     label="Make this my new preset"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     is_toggle="true"
+     left_pad="1"
+     name="make_default_cb"
+     top_delta="0"
+     width="152"/>
+      <button
+     follows="top|left"
+     height="23"
+     label="Day Cycle Editor"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     is_toggle="false"
+     left_pad="1"
+     name="day_cycle_editor"
+     top_delta="0"
+     width="105">
+      <button.commit_callback
+	      function="World.EnvPreset"
+	      parameter="edit_day_cycle" />
+      </button>
+		<button
+     follows="bottom|right"
+     height="23"
+     label="Cancel"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     left_pad="1"
+     name="cancel"
+     width="55"/>
  </floater>

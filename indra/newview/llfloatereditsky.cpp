@@ -117,6 +117,8 @@ void LLFloaterEditSky::onOpen(const LLSD& key)
 	// Switch between the sky presets combobox and preset name input field.
 	mSkyPresetCombo->setVisible(!new_preset);
 	mSkyPresetNameEditor->setVisible(new_preset);
+	//BD
+	getChild<LLUICtrl>("sky_preset_icon")->setVisible(new_preset);
 
 	reset();
 }
@@ -140,6 +142,8 @@ void LLFloaterEditSky::initCallbacks(void)
 	getChild<LLButton>("cancel")->setCommitCallback(boost::bind(&LLFloaterEditSky::onBtnCancel, this));
 	//BD
 	mDeleteButton->setCommitCallback(boost::bind(&LLFloaterEditSky::onDeletePreset, this));
+	//BD - Refresh
+	getChild<LLUICtrl>("refresh")->setCommitCallback(boost::bind(&LLFloaterEditSky::refreshSkyPresetsList, this));
 
 	LLEnvManagerNew::instance().setRegionSettingsChangeCallback(boost::bind(&LLFloaterEditSky::onRegionSettingsChange, this));
 	LLWLParamManager::instance().setPresetListChangeCallback(boost::bind(&LLFloaterEditSky::onSkyPresetListChange, this));
@@ -217,8 +221,11 @@ void LLFloaterEditSky::initCallbacks(void)
 	getChild<LLUICtrl>("WLMaxAltitude2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onFloatControlMoved, this, _1, &param_mgr.mMaxAlt));
 	getChild<LLUICtrl>("WLDistanceMult2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onFloatControlMoved, this, _1, &param_mgr.mDistanceMult));
 
+	getChild<LLUICtrl>("WLEastAngle2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onSunMoved, this, _1, &param_mgr.mLightnorm));
+
 	// Dome
 	getChild<LLUICtrl>("WLGamma2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onFloatControlMoved, this, _1, &param_mgr.mWLGamma));
+	getChild<LLUICtrl>("WLStarAlpha2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onStarAlphaMoved, this, _1));
 }
 
 //=================================================================================================
@@ -337,7 +344,9 @@ void LLFloaterEditSky::syncControls()
 	childSetValue("WLDensityMult2", ((F32)param_mgr->mDensityMult) * param_mgr->mDensityMult.mult);
 	childSetValue("WLMaxAltitude2", (F32)param_mgr->mMaxAlt);
 	childSetValue("WLDistanceMult2", (F32)param_mgr->mDistanceMult);
+	childSetValue("WLEastAngle2", param_mgr->mCurParams.getFloat("east_angle", err) / F_TWO_PI);
 	childSetValue("WLGamma2", (F32)param_mgr->mWLGamma);
+	childSetValue("WLStarAlpha2", param_mgr->mCurParams.getStarBrightness());
 }
 
 void LLFloaterEditSky::setColorSwatch(const std::string& name, const WLColorControl& from_ctrl, F32 k)
