@@ -4434,8 +4434,6 @@ BOOL LLViewerWindow::saveImageNumbered(LLImageFormatted *image, BOOL force_picke
 	else
 		pick_type = LLFilePicker::FFSAVE_ALL; // ???
 
-	BOOL is_snapshot_name_loc_set = isSnapshotLocSet();
-
 	// Get a base file location if needed.
 	if (force_picker || !isSnapshotLocSet())
 	{
@@ -4484,20 +4482,14 @@ BOOL LLViewerWindow::saveImageNumbered(LLImageFormatted *image, BOOL force_picke
 		filepath = sSnapshotDir;
 		filepath += gDirUtilp->getDirDelimiter();
 		filepath += sSnapshotBaseName;
-
-		if (is_snapshot_name_loc_set)
-		{
-			filepath += llformat("_%.3d", i);
-		}
+		filepath += llformat("_%.3d", i);
 
 		filepath += extension;
 
 		llstat stat_info;
 		err = LLFile::stat( filepath, &stat_info );
 		i++;
-	}
-	while( -1 != err  // Search until the file is not found (i.e., stat() gives an error).
-			&& is_snapshot_name_loc_set); // Or stop if we are rewriting.
+	} while (-1 != err);// Search until the file is not found (i.e., stat() gives an error).
 
 	LL_INFOS() << "Saving snapshot to " << filepath << LL_ENDL;
 	return image->save(filepath);
