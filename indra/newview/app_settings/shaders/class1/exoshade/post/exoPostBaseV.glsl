@@ -4,6 +4,9 @@
  * This is basically a more minimal reimplementation of postDeferredV.glsl.
  * Copyright Geenz Spad, 2012
  ***********************************/
+ 
+ /*[EXTRA_CODE_HERE]*/
+ 
 uniform mat4 modelview_projection_matrix;
 
 ATTRIBUTE vec3 position;
