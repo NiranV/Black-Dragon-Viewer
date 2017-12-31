@@ -135,7 +135,7 @@ private:
 	LLMultiSliderCtrl*	mKeysSlider;
 	LLComboBox*			mSkyPresetsCombo;
 	LLTimeCtrl*			mTimeCtrl;
-	LLCheckBoxCtrl*		mMakeDefaultCheckBox;
+	LLButton*			mMakeDefaultCheckBox;
 	LLButton*			mSaveButton;
 	//BD
 	LLButton*			mDeleteButton;

@@ -75,7 +75,7 @@ BOOL LLFloaterEditDayCycle::postBuild()
 	mSkyPresetsCombo = getChild<LLComboBox>("WLSkyPresets");
 	mTimeCtrl = getChild<LLTimeCtrl>("time");
 	mSaveButton = getChild<LLButton>("save");
-	mMakeDefaultCheckBox = getChild<LLCheckBoxCtrl>("make_default_cb");
+	mMakeDefaultCheckBox = getChild<LLButton>("make_default_cb");
 	//BD
 	mDeleteButton = getChild<LLButton>("delete");
 
@@ -107,6 +107,8 @@ void LLFloaterEditDayCycle::onOpen(const LLSD& key)
 	// Switch between the day cycle presets combobox and day cycle name input field.
 	mDayCyclesCombo->setVisible(!new_day);
 	mDayCycleNameEditor->setVisible(new_day);
+	//BD
+	getChild<LLUICtrl>("daycycle_preset_icon")->setVisible(new_day);
 
 	// TODO: Make sure only one instance of the floater exists?
 
@@ -142,6 +144,8 @@ void LLFloaterEditDayCycle::initCallbacks(void)
 	getChild<LLButton>("cancel")->setCommitCallback(boost::bind(&LLFloaterEditDayCycle::onBtnCancel, this));
 	//BD
 	mDeleteButton->setCommitCallback(boost::bind(&LLFloaterEditDayCycle::onDeletePreset, this));
+	//BD - Refresh
+	getChild<LLUICtrl>("refresh")->setCommitCallback(boost::bind(&LLFloaterEditDayCycle::refreshDayCyclesList, this));
 
 	// Connect to env manager events.
 	LLEnvManagerNew& env_mgr = LLEnvManagerNew::instance();

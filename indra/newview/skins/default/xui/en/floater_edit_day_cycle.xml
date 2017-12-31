@@ -1,47 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
- legacy_header_height="18"
- height="235"
+ height="129"
  layout="topleft"
  name="Edit Day cycle"
- background_color="FloaterDefaultBackgroundColor"
  save_rect="true"
  title="Edit Day Cycle"
- width="625">
-    <string name="title_new">Create a New Day Cycle</string>
+ width="700">
+    <string name="title_new">Create a new Day Cycle</string>
     <string name="title_edit">Edit Day Cycle</string>
     <string name="hint_new">Name your day cycle, adjust the controls to create it, and click "Save".</string>
     <string name="hint_edit">To edit your day cycle, adjust the controls below and click "Save".</string>
     <string name="combo_label">-Select a preset-</string>
-    <text
-     follows="top|left|right"
-     font="SansSerif"
-     height="10"
-     layout="topleft"
-     left="15"
-     name="label"
-     top_pad="26"
-     width="120">
-     Preset Name:
-    </text>
-    <combo_box
-     allow_text_entry="true"
-     follows="top|left"
-     layout="topleft"
-     left_pad="10"
-     max_chars="100"
-     name="day_cycle_combo"
-     top_delta="-5"
-     width="150" />
-    <line_editor
-     height="20"
-     left_delta="0"
-     name="day_cycle_name"
-     top_delta="0"
-     visible="true"
-     width="140" />
  <!--======== Controls panel ========-->
-     <check_box
+     <!--<check_box
      follows="top|left"
      height="10"
      label="Make this my new day cycle"
@@ -49,14 +20,14 @@
      left="10"
      name="make_default_cb"
      top="60"
-     width="230"/>
-    <text
+     width="230"/>-->
+    <!--<text
      follows="left|top|right"
      height="10"
      layout="topleft"
      left="310"    
      name="hint_item1"
-     top="25"
+     top="0"
      width="300">
      - Click on a tab to edit the specific sky settings and time.
     </text>
@@ -65,7 +36,7 @@
      height="10"
      layout="topleft"    
      name="hint_item2"
-     top_pad="10"
+     top_pad="3"
      width="300">
      - Click and drag the tabs to set the transition times.
     </text>
@@ -74,17 +45,29 @@
      height="10"
      layout="topleft"
      name="hint_item3"
-     top_pad="10"
+     top_pad="3"
      width="300">
      - Use the scrubber to preview your day cycle.
-    </text>
+    </text>-->
+    <icon
+	follows="top|left"
+	height="121"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="686"
+	top="0"
+	left="7"/>
     <panel
      follows="top|left"
-     height="100"
+     height="75"
      name="day_cycle_slider_panel"
      layout="topleft"
      left="10"
-     top_pad="5"
+     top="0"
      width="600">
         <multi_slider
          can_edit_text="true"
@@ -101,9 +84,9 @@
          max_val="24"
          name="WLTimeSlider"
          show_text="false"
-         top_pad="8"
+         top_pad="5"
          use_triangle="true"
-         width="525" />
+         width="605" />
         <multi_slider
          can_edit_text="true"
          control_name="WLDayCycleKeys"
@@ -118,24 +101,30 @@
          max_val="24"
          name="WLDayCycleKeys"
          show_text="false"
-         top_pad="7"
-         width="525" />
+         top_pad="0"
+         width="605" />
         <button
          height="23"
          label=" + "
          label_selected="Add Key"
+         image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
          layout="topleft"
          left_pad="20"
          name="WLAddKey"
-         top="20"
+         top="10"
          width="26" />
         <button
          height="23"
          label=" -- "
          label_selected="Delete Key"
+         image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
          layout="topleft"
          name="WLDeleteKey"
-         top_pad="5"
+         top_pad="0"
          width="26" />
         <text
          type="string"
@@ -146,8 +135,8 @@
          layout="topleft"
          left="8"
          name="WL12am"
-         top="59"
-         width="55">
+         top="44"
+         width="65">
          12am
         </text>
         <text
@@ -160,7 +149,7 @@
          left_pad="10"
          name="WL3am"
          top_delta="0"
-         width="55">
+         width="65">
             3am
         </text>
         <text
@@ -173,7 +162,7 @@
          left_pad="10"
          name="WL6am"
          top_delta="0"
-         width="55">
+         width="65">
             6am
         </text>
         <text
@@ -186,7 +175,7 @@
          left_pad="10"
          name="WL9amHash"
          top_delta="0"
-         width="55">
+         width="65">
             9am
         </text>
         <text
@@ -199,7 +188,7 @@
          left_pad="10"
          name="WL12pmHash"
          top_delta="0"
-         width="55">
+         width="65">
             12pm
         </text>
         <text
@@ -212,7 +201,7 @@
          left_pad="10"
          name="WL3pm"
          top_delta="0"
-         width="55">
+         width="65">
             3pm
         </text>
         <text
@@ -225,7 +214,7 @@
          left_pad="10"
          name="WL6pm"
          top_delta="0"
-         width="55">
+         width="65">
             6pm
         </text>
         <text
@@ -238,7 +227,7 @@
          left_pad="10"
          name="WL9pm"
          top_delta="0"
-         width="55">
+         width="65">
             9pm
         </text>
         <text
@@ -251,7 +240,7 @@
          left_pad="10"
          name="WL12am2"
          top_delta="0"
-         width="55">
+         width="65">
             12am
         </text>
         <text
@@ -264,7 +253,7 @@
          layout="topleft"
          left="20"
          name="WL12amHash"
-         top="39"
+         top="24"
          width="6">
             |
         </text>
@@ -276,7 +265,7 @@
          font="SansSerif"
          height="11"
          layout="topleft"
-         left_pad="59"
+         left_pad="69"
          name="WL3amHash"
          top_delta="3"
          width="6">
@@ -290,7 +279,7 @@
          font="SansSerif"
          height="14"
          layout="topleft"
-         left_pad="59"
+         left_pad="69"
          name="WL6amHash"
          top_delta="-3"
          width="6">
@@ -304,7 +293,7 @@
          font="SansSerif"
          height="11"
          layout="topleft"
-         left_pad="59"
+         left_pad="69"
          name="WL9amHash2"
          top_delta="3"
          width="6">
@@ -318,7 +307,7 @@
          font="SansSerif"
          height="14"
          layout="topleft"
-         left_pad="59"
+         left_pad="69"
          name="WL12pmHash2"
          top_delta="-3"
          width="6">
@@ -332,7 +321,7 @@
          font="SansSerif"
          height="11"
          layout="topleft"
-         left_pad="59"
+         left_pad="69"
          name="WL3pmHash"
          top_delta="3"
          width="6">
@@ -346,7 +335,7 @@
          font="SansSerif"
          height="14"
          layout="topleft"
-         left_pad="59"
+         left_pad="69"
          name="WL6pmHash"
          top_delta="-3"
          width="6">
@@ -360,7 +349,7 @@
          font="SansSerif"
          height="11"
          layout="topleft"
-         left_pad="59"
+         left_pad="69"
          name="WL9pmHash"
          top_delta="3"
          width="6">
@@ -374,7 +363,7 @@
          font="SansSerif"
          height="14"
          layout="topleft"
-         left_pad="59"
+         left_pad="69"
          name="WL12amHash2"
          top_delta="-3"
          width="6">
@@ -390,30 +379,8 @@
      height="16"
      layout="topleft"
      left="20"
-     name="WLCurKeyPresetText"
-     top_pad="-5"
-     width="135">
-        Sky Setting:
-    </text>
-    <combo_box
-     height="23"
-     label="Preset"
-     layout="topleft"
-     left_pad="5"
-     name="WLSkyPresets"
-     top_delta="-1"
-     width="153" />
-    <text
-     type="string"
-     length="1"
-     border_visible="true"
-     follows="left|top|right"
-     font="SansSerif"
-     height="16"
-     layout="topleft"
-     left_pad="158"
      name="WLCurKeyTimeText"
-     top_delta="0"
+     top_pad="-5"
      width="55">
         Time:
     </text>
@@ -424,67 +391,188 @@
      layout="topleft"
      left_pad="3"
      name="time"
-     top_delta="-1"
+     top_delta="-4"
      value="6:00 AM"
      width="75"/> 
-    <view_border
-     bevel_style="none"
-     follows="top|left"
-     height="120"
+    <text
+     type="string"
+     length="1"
+     border_visible="true"
+     follows="left|top|right"
+     font="SansSerif"
+     height="16"
      layout="topleft"
-     left="10"
-     name="horiz_separator"
-     top="85"
-     width="605"/>
+     left="423"
+     name="WLCurKeyPresetText"
+     top_delta="4"
+     width="100">
+        Sky Setting:
+    </text>
+    <combo_box
+     height="23"
+     label="Preset"
+     layout="topleft"
+     left_pad="5"
+     name="WLSkyPresets"
+     top_delta="-4"
+     width="153">
+     <combo_box.combo_button
+            image_unselected="Toolbar_Middle_Off"
+            image_selected="Toolbar_Middle_Selected"
+            image_disabled="Toolbar_Middle_Off" />
+            <combo_box.drop_down_button
+            image_unselected="Toolbar_Middle_Off"
+            image_selected="Toolbar_Middle_Selected"
+            image_pressed="Toolbar_Middle_Selected" 
+            image_pressed_selected="Toolbar_Middle_Selected"
+            image_disabled="Toolbar_Middle_Off" />
+        </combo_box>
     <loading_indicator
      height="23"
      layout="topleft"
-     left="120"
+     left="10"
      name="progress_indicator"
-     top="20"
+     top="8"
      visible="false"
      width="23" />
+    
+    <icon
+		follows="left|top|right"
+		image_name="Toolbar_Middle_Off"
+		height="23"
+		width="169"
+		layout="topleft"
+  visible="false"
+		name="daycycle_preset_icon"
+		left="9"
+		top="97"/>
+    <!--<text
+     follows="top|left|right"
+     font="SansSerif"
+     height="10"
+     layout="topleft"
+     left="15"
+     name="label"
+     top_delta="4"
+     width="120">
+     Preset Name:
+    </text>-->
+    <combo_box
+     allow_text_entry="true"
+     follows="top|left"
+     layout="topleft"
+     left_delta="0"
+     max_chars="100"
+     height="23"
+     visible="true"
+     name="day_cycle_combo"
+     top_delta="0"
+     width="177" >
+     <combo_box.combo_editor
+          background_image="TextField_Off"
+          background_image_disabled="TextField_Disabled"
+          background_image_focused="TextField_Active"/>
+          <combo_box.combo_button
+          image_unselected="ComboToolbarButton_Off"
+          image_selected="ComboToolbarButton_Selected"
+          image_pressed="ComboToolbarButton_Selected" 
+          image_pressed_selected="ComboToolbarButton_Selected"/>
+          <combo_box.drop_down_button
+          image_unselected="ComboToolbarButton_Off"
+          image_selected="ComboToolbarButton_Selected"
+          image_pressed="ComboToolbarButton_Selected" 
+          image_pressed_selected="ComboToolbarButton_Selected"
+          image_disabled="ComboToolbarButton_Disabled"/>
+        </combo_box>
+    <line_editor
+     height="20"
+     left_delta="3"
+     name="day_cycle_name"
+     top_delta="1"
+     visible="true"
+     width="163" />
+    <button
+     follows="bottom|right"
+     image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     height="23"
+     label="Save Preset"
+     layout="topleft"
+     left_pad="4"
+     name="save"
+     top_delta="-1"
+     width="80"/>
+   <button
+     follows="bottom|right"
+     image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     height="23"
+     label="Delete"
+     layout="topleft"
+     left_pad="1"
+     name="delete"
+     top_delta="0"
+     width="55"/>
+   <button
+     follows="bottom|right"
+     height="23"
+     label="Refresh"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     left_pad="1"
+     name="refresh"
+     width="60"/>
+    <button
+     follows="top|left"
+     height="23"
+     label="Make this my new preset"
+	  image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     is_toggle="true"
+     left_pad="1"
+     name="make_default_cb"
+     top_delta="0"
+     width="152"/>
+    
     <button
          height="23"
          label="Start"
          layout="topleft"
-         left="10"
+         left_pad="1"
          name="WLStartAnimSky"
-         top="208"
-         width="70" />
+         image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+         top_delta="0"
+         width="52" />
         <button
          height="23"
          label="Stop"
          layout="topleft"
          name="WLStopAnimSky"
-         left_pad="3"
-         top="208"
-         width="70" />
-    <button
+         image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+         left_pad="1"
+         top_delta="0"
+         width="52" />
+        <button
      follows="bottom|right"
-     height="23"
-     label="Save"
-     layout="topleft"
-     left="400"
-     name="save"
-     top="208"
-     width="70"/>
-   <button
-     follows="bottom|right"
-     height="23"
-     label="Delete"
-     layout="topleft"
-     left_pad="3"
-     name="delete"
-     top="208"
-     width="70"/>
-    <button
-     follows="bottom|right"
+     image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
      height="23"
      label="Cancel"
      layout="topleft"
-     left_pad="3"
+     left_pad="1"
      name="cancel"
      top_delta="0"
-     width="70"/>
+     width="55"/>
+    
  </floater>
