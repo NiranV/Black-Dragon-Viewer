@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
- legacy_header_height="18"
  auto_tile="true"
  can_resize="true"
  follows="left|top"
- height="500"
+ height="540"
  layout="topleft"
  min_height="280"
  min_width="375"
- background_color="FloaterDefaultBackgroundColor"
  name="preview_texture"
  width="500">
    <floater.string
@@ -19,19 +17,47 @@
      name="Copy">
         Copy To Inventory
     </floater.string>
+    <icon
+	follows="all"
+	height="530"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="486"
+	top="0"
+	left="8"/>
+    <icon
+		follows="left|top"
+		image_name="Toolbar_Middle_Off"
+		height="23"
+		width="90"
+		layout="topleft"
+		left="10"
+		top="2"/>
     <text
      type="string"
      length="1"
-     follows="left|top"
+     follows="left|top|right"
      font="SansSerif"
      height="19"
      layout="topleft"
-     left="10"
+     left_delta="4"
      name="desc txt"
-     top="22"
-     width="90">
+     top="6"
+     width="86">
         Description:
     </text>
+    <icon
+		follows="left|top|right"
+		image_name="Toolbar_Middle_Off"
+		height="23"
+		width="391"
+		layout="topleft"
+		left_pad="1"
+		top="2"/>
     <line_editor
      border_style="line"
      border_thickness="1"
@@ -40,75 +66,104 @@
      height="19"
 	 text_pad_right="100"
      layout="topleft"
-     left_pad="0"
-	 top_delta="-2"
+     left_delta="2"
+	 top_delta="1"
      max_length_bytes="127"
      name="desc"
-     width="390" />
-	<icon
-       follows="top|right"
-       image_name="white.tga"
-	   color="0 0 0 0.8"
-       mouse_opaque="false"
-       name="bg"
-       scale_image="true"
-       visible="true"
-       left="400"
-       top_delta="0"
-       height="18"
-       width="90"/>
+     width="387" />
+    <icon
+		follows="top|left"
+		image_name="Toolbar_Middle_Off"
+		height="23"
+		width="81"
+		layout="topleft"
+		left="10"
+		top="506"/>
 	<text
      type="string"
      halign="center"
      length="1"
-     follows="right|top"
+     follows="left|top"
 	 text_color="1 1 1 0.75"
      height="18"
      layout="topleft"
      left_delta="0"
      name="dimensions"
-     top_delta="3"
-     width="90">
+     top_delta="5"
+     width="81">
         [WIDTH] x [HEIGHT]
     </text>
     <combo_box
      allow_text_entry="true" 
-     top="470" 
+     top_delta="-5" 
      follows="right|bottom" 
      height="23"
-     left="134"
+     left_pad="1"
      max_chars="20"
      mouse_opaque="true"
      enabled="true"
      width="75"
      name="combo_aspect_ratio"
      tool_tip="Preview at a fixed aspect ratio">
-	</combo_box>
+     <combo_box.combo_editor
+          background_image="TextField_Off"
+          background_image_disabled="TextField_Disabled"
+          background_image_focused="TextField_Active"/>
+          <combo_box.combo_button
+          image_unselected="ComboToolbarButton_Off"
+          image_selected="ComboToolbarButton_Selected"
+          image_pressed="ComboToolbarButton_Selected" 
+          image_pressed_selected="ComboToolbarButton_Selected"/>
+          <combo_box.drop_down_button
+          image_unselected="ComboToolbarButton_Off"
+          image_selected="ComboToolbarButton_Selected"
+          image_pressed="ComboToolbarButton_Selected" 
+          image_pressed_selected="ComboToolbarButton_Selected"
+          image_disabled="ComboToolbarButton_Disabled"/>
+        </combo_box>
     <button
      follows="right|bottom"
-     height="22"
-     label="OK"
+     height="23"
+     label="Keep"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      layout="topleft"
-     left="210"
+     left_pad="-7"
      name="Keep"
-     top="470"
-     width="50" />
-    <button
-     follows="right|bottom"
-     height="22"
-     label="Discard"
-     layout="topleft"
-     left_pad="5"
-     name="Discard"
      top_delta="0"
-     width="110" />
+     width="110"/>
     <button
      follows="right|bottom"
-     height="22"
+     height="23"
      label="Save As"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      layout="topleft"
-     left_pad="5"
+     left_pad="1"
      name="save_tex_btn"
      top_delta="0"
      width="110" />
+    <button
+     follows="right|bottom"
+     height="23"
+     label="Discard"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     left_pad="1"
+     name="Discard"
+     top_delta="0"
+     width="110" />
+    <icon
+		follows="top|left"
+		image_name="Toolbar_Middle_Off"
+		height="23"
+		width="110"
+		layout="topleft"
+  name="Discard_Icon"
+		left_delta="0"
+		top_delta="0"/>
 </floater>

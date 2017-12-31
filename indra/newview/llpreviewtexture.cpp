@@ -130,12 +130,14 @@ BOOL LLPreviewTexture::postBuild()
 	{
 		getChild<LLButton>("Keep")->setLabel(getString("Copy"));
 		childSetAction("Keep",LLPreview::onBtnCopyToInv,this);
-		getChildView("Discard")->setVisible( false);
+		getChildView("Discard")->setVisible(false);
 	}
 	else if (mShowKeepDiscard)
 	{
 		childSetAction("Keep",onKeepBtn,this);
 		childSetAction("Discard",onDiscardBtn,this);
+		//BD
+		getChildView("Discard_Icon")->setVisible(false);
 	}
 	else
 	{
