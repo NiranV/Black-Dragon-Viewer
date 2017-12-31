@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.9.5 - Christmas Dragon]"
+       label="[CHANNEL] [VERSION] - [2.9.6 - New Years Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="9899"
+       height="10099"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,61 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="389"
+              height="181"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Button to set voice button to none (delete the binding).
+Changed: Default max avatar complexity limit to 125000.
+Changed: Allow editing position and rotation of worn attachments via the build window.
+Changed: Overhauled Day Cycle Editor window and added refresh list button.
+Changed: Overhauled Sky Preset Editor window and added refresh list button.
+Changed: Overhauled Water Preset Editor window and added refresh list button.
+Changed: Overhauled Environment Settings window.
+Changed: Overhauled Texture Preview window.
+Changed: Version to 2.9.6 - New Years Dragon.
+Fixed: Preferences default and caution badge being offsetted.
+Fixed: Tab texture scaling causes increasingly bigger spaces between tabs with higher tab width.
+Removed: Both snapshot fixes from LL because they caused the first picture saved to be always saved without numbering.
+Removed: White alpha fix as it was backed up from the LL code and caused some issues with certain mesh heads.
+Misc: Applied extra code for mac on most other new shaders.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.9.5
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="389"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
