@@ -11501,9 +11501,9 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 					F32 ynear = -(max.mV[1]-origin.mV[1]);
 					F32 yfar = -(min.mV[1]-origin.mV[1]);
 				
-					if (ynear < 0.1f) //keep a sensible near clip plane
+					if (ynear < 0.01f) //keep a sensible near clip plane
 					{
-						F32 diff = 0.1f-ynear;
+						F32 diff = 0.01f-ynear;
 						origin.mV[1] += diff;
 						ynear += diff;
 						yfar += diff;
