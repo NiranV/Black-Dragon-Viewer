@@ -16781,9 +16781,14 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>F32</string>
+    <string>Vector4</string>
     <key>Value</key>
-    <real>64.0</real>
+    <array>
+      <real>64</real>
+      <real>48</real>
+      <real>64</real>
+      <real>64</real>
+    </array>
   </map>
   <key>RenderDepthOfFieldAlphas</key>
   <map>

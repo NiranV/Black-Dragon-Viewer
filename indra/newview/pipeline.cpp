@@ -217,6 +217,7 @@ F32 LLPipeline::RenderSSAOEffect;
 F32 LLPipeline::RenderSSAOBlurSize;
 F32 LLPipeline::RenderChromaStrength;
 F32 LLPipeline::RenderSnapshotMultiplier;
+LLVector4 LLPipeline::RenderShadowFarClip;
 
 //	//BD - Shadow Map Allocation
 LLVector4 LLPipeline::RenderShadowResolution;
@@ -690,6 +691,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
 	connectRefreshCachedSettingsSafe("RenderChromaStrength");
 	connectRefreshCachedSettingsSafe("RenderSnapshotMultiplier");
+	connectRefreshCachedSettingsSafe("RenderShadowFarClip");
 
 //	//BD - Post Processing
 	connectRefreshCachedSettingsSafe("RenderLensFlare");
@@ -1311,6 +1313,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
 	RenderSnapshotMultiplier = gSavedSettings.getF32("RenderSnapshotMultiplier");
+	RenderShadowFarClip = gSavedSettings.getVector4("RenderShadowFarClip");
 
 //	//BD - Volumetric Lighting
 	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");
@@ -11186,7 +11189,8 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 		far_clip = llmin(far_clip, camera.getFar());
 
 		//BD
-		F32 range = gSavedSettings.getF32("RenderShadowFarClip");
+		//F32 range = gSavedSettings.getF32("RenderShadowFarClip");
+		LLVector4 range = RenderShadowFarClip;
 
 		LLVector3 split_exp = RenderShadowSplitExponent;
 
@@ -11200,7 +11204,7 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 		{
 			F32 x = (F32)(i + 1) / 4.f;
 			x = powf(x, sxp);
-			mSunClipPlanes.mV[i] = near_clip + range*x;
+			mSunClipPlanes.mV[i] = near_clip + range[i]*x;
 		}
 
 		//BD

@@ -977,6 +977,7 @@ public:
 	static F32 RenderSSAOBlurSize;
 	static F32 RenderChromaStrength;
 	static F32 RenderSnapshotMultiplier;
+	static LLVector4 RenderShadowFarClip;
 
 //	//BD - Shadow Map Allocation
 	static LLVector2 RenderProjectorShadowResolution;
