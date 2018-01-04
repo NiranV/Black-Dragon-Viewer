@@ -120,7 +120,6 @@ public:
 	void		setAlphaMaskCutoff(U8 cutoff) { mAlphaMaskCutoff = cutoff; }
 
 	bool		isNull() const;
-
 	static const LLMaterial null;
 
 	bool		operator == (const LLMaterial& rhs) const;
