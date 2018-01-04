@@ -115,6 +115,7 @@ public:
 	void releaseGLBuffers();
 	//BD
 	void createGLBuffers(U32 width, U32 height);
+	bool addDeferredAttachments(LLRenderTarget& target);
 
 	void releaseLUTBuffers();
 	void releaseScreenBuffers();
@@ -970,7 +971,8 @@ public:
 	static bool RenderDepthOfFieldInEditMode;
 	static BOOL RenderDeferredBlurLight;
 	static BOOL RenderSnapshotAutoAdjustMultiplier;
-	static U32 RenderShadowBlurSamples;
+	static BOOL RenderHighPrecisionNormals;
+	static BOOL RenderFullPrecisionNormals;
 	static U32 RenderSSRResolution;
 	static F32 RenderSSRBrightness;
 	static F32 RenderSSAOEffect;

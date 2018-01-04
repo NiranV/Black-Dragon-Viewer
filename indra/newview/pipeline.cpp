@@ -210,7 +210,8 @@ BOOL LLPipeline::CameraFreeDoFFocus;
 bool LLPipeline::RenderDepthOfFieldInEditMode;
 BOOL LLPipeline::RenderDeferredBlurLight;
 BOOL LLPipeline::RenderSnapshotAutoAdjustMultiplier;
-U32 LLPipeline::RenderShadowBlurSamples;
+BOOL LLPipeline::RenderHighPrecisionNormals;
+BOOL LLPipeline::RenderFullPrecisionNormals;
 U32 LLPipeline::RenderSSRResolution;
 F32 LLPipeline::RenderSSRBrightness;
 F32 LLPipeline::RenderSSAOEffect;
@@ -444,10 +445,10 @@ static LLCullResult* sCull = NULL;
 void validate_framebuffer_object();
 
 
-bool addDeferredAttachments(LLRenderTarget& target)
+bool LLPipeline::addDeferredAttachments(LLRenderTarget& target)
 {
 	return target.addColorAttachment(GL_SRGB8_ALPHA8) && //specular
-			target.addColorAttachment(GL_RGB10_A2); //normal+z
+		target.addColorAttachment(RenderFullPrecisionNormals ? GL_RGBA16 : RenderHighPrecisionNormals ? GL_RGBA12 : GL_RGB10_A2); //normal+z
 }
 
 LLPipeline::LLPipeline() :
@@ -684,7 +685,8 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderDepthOfFieldInEditMode");
 	connectRefreshCachedSettingsSafe("RenderDeferredBlurLight");
 	connectRefreshCachedSettingsSafe("RenderSnapshotAutoAdjustMultiplier");
-	connectRefreshCachedSettingsSafe("RenderShadowBlurSamples");
+	connectRefreshCachedSettingsSafe("RenderHighPrecisionNormals");
+	connectRefreshCachedSettingsSafe("RenderFullPrecisionNormals");
 	connectRefreshCachedSettingsSafe("RenderSSRResolution");
 	connectRefreshCachedSettingsSafe("RenderSSRBrightness");
 	connectRefreshCachedSettingsSafe("RenderSSAOEffect");
@@ -1306,7 +1308,8 @@ void LLPipeline::refreshCachedSettings()
 	RenderDepthOfFieldInEditMode = gSavedSettings.getBOOL("RenderDepthOfFieldInEditMode");
 	RenderDeferredBlurLight = gSavedSettings.getBOOL("RenderDeferredBlurLight");
 	RenderSnapshotAutoAdjustMultiplier = gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier");
-	RenderShadowBlurSamples = gSavedSettings.getU32("RenderShadowBlurSamples");
+	RenderHighPrecisionNormals = gSavedSettings.getBOOL("RenderHighPrecisionNormals");
+	RenderFullPrecisionNormals = gSavedSettings.getBOOL("RenderFullPrecisionNormals");
 	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
 	RenderSSRBrightness = gSavedSettings.getF32("RenderSSRBrightness");
 	RenderSSAOEffect = gSavedSettings.getF32("RenderSSAOEffect");
@@ -8702,7 +8705,6 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 //	//BD - Special Options
 	F32 ssao_effect = RenderSSAOEffect;
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_EFFECT, ssao_effect);
-	shader.uniform1i(LLShaderMgr::DEFERRED_SSAO_SAMPLES, RenderShadowBlurSamples);
 	shader.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
 	shader.uniform1i(LLShaderMgr::SSR_RES, RenderSSRResolution);
 	shader.uniform1f(LLShaderMgr::SSR_BRIGHTNESS, RenderSSRBrightness);
@@ -11183,10 +11185,10 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 		}
 
 		near_clip = -max.mV[2];
-		F32 far_clip = -min.mV[2]*2.f;
+		//F32 far_clip = -min.mV[2]*2.f;
 
 		//far_clip = llmin(far_clip, 128.f);
-		far_clip = llmin(far_clip, camera.getFar());
+		//far_clip = llmin(far_clip, camera.getFar());
 
 		//BD
 		//F32 range = gSavedSettings.getF32("RenderShadowFarClip");
