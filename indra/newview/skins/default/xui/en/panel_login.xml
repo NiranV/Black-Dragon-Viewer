@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.9.6 - New Years Dragon]"
+       label="[CHANNEL] [VERSION] - [2.9.7 - Spring Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="10099"
+       height="10319"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,63 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="181"
+              height="208"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Option to switch to high precision normals eliminating artifacts on transformed reflections at the cost of higher memory usage.
+Added: Candy Heart to the Patreon Patron list.
+Added: High Precision Normals option to preferences.
+Added: 4 Sliders for the new Vector4 Shadow Distance option.
+Changed: Made RenderShadowFarClip a vector4 so we can edit all 4 shadow map distances seperately.
+Changed: Improved shadow near clip plane clipping in certain camera angles.
+Changed: Added Paulie Flomar as alternate name for Paul Felts.
+Changed: Max value of Shadow Blur Size to 4 to match the max value of the same option in the Machinima Sidebar.
+Changed: Shadow Distance defaults.
+Changed: Version to 2.9.7 - Spring Dragon.
+Fixed: Alpha breaking on many human mesh heads.
+Fixed: Media Autoplay constantly re-activating after teleport.
+Removed: RenderFullPrecisionNormals option, high precision is enough to eliminate all artifacts.
+Removed: Blur Performance mode and Blur Quality options.
+Misc: Some commenting out of unused code in the render pipeline.
+Merge with Linden Bear (8 changes)
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.9.6
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="181"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
