@@ -31,7 +31,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="3372"
+   height="3389"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -3288,7 +3288,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="571"
+	  height="578"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -3544,33 +3544,108 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         </radio_item>
                   </radio_group>
  <slider
-      control_name="RenderShadowFarClip"
+      enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
       height="14"
       increment="8"
       can_edit_text="true"
-      label="Extended Shadow Distance:"
+      label="Closest Shadow Distance:"
       label_width="150"
-      tool_tip="This option controls the distance you can see shadows similarly to how view distance works, higher numbers mean more distance covered translating into less precision in a given space depending on the resolution of each shadow map."
+      tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the space in meters the first and closest shadowmap covers. Affects precision of shadows in the first of four areas all shadows cover."
       layout="topleft"
       left="10"
-      max_val="1024"
+      max_val="512"
       min_val="16"
-      name="RenderShadowFarClip"
+      name="RenderShadowFarClip_X"
       top_pad="5"
-      width="324"/>
+      width="318">
+  <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="RenderShadowFarClip"/>
+      </slider>
+ <slider
+      enabled_control="RenderDeferred"
+      decimal_digits="0"
+      follows="left|top"
+      height="14"
+      increment="8"
+      can_edit_text="true"
+      label="Close Shadow Distance:"
+      label_width="150"
+      tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the space in meters the second shadowmap covers. Affects precision of shadows in the second of four areas all shadows cover."
+      layout="topleft"
+      left="10"
+      max_val="512"
+      min_val="16"
+      name="RenderShadowFarClip_Y"
+      top_pad="1"
+      width="318">
+  <slider.commit_callback
+      function="Pref.ArrayY"
+      parameter="RenderShadowFarClip"/>
+      </slider>
+ <slider
+      enabled_control="RenderDeferred"
+      decimal_digits="0"
+      follows="left|top"
+      height="14"
+      increment="8"
+      can_edit_text="true"
+      label="Far Shadow Distance:"
+      label_width="150"
+      tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the space in meters the third shadowmap covers. Affects precision of shadows in the third of four areas all shadows cover."
+      layout="topleft"
+      left="10"
+      max_val="512"
+      min_val="16"
+      name="RenderShadowFarClip_Z"
+      top_pad="1"
+      width="318">
+  <slider.commit_callback
+      function="Pref.ArrayZ"
+      parameter="RenderShadowFarClip"/>
+      </slider>
+ <slider
+      enabled_control="RenderDeferred"
+      decimal_digits="0"
+      follows="left|top"
+      height="14"
+      increment="8"
+      can_edit_text="true"
+      label="Distant Shadow Distance:"
+      label_width="150"
+      tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the space in meters the fourth and last shadowmap covers. Affects precision of shadows in the last of four areas all shadows cover."
+      layout="topleft"
+      left="10"
+      max_val="512"
+      min_val="16"
+      name="RenderShadowFarClip_W"
+      top_pad="1"
+      width="318">
+  <slider.commit_callback
+      function="Pref.ArrayW"
+      parameter="RenderShadowFarClip"/>
+      </slider>
  <button
  follows="left|top"
  control_name="RenderShadowFarClip"
- height="15"
+ height="63"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
  image_unselected="PushButton_Default_Off"
  layout="topleft"
  left="370"
- top_delta="0"
+ top_delta="-48"
  name="default"
  width="60">
          <button.commit_callback

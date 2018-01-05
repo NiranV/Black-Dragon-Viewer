@@ -1573,7 +1573,12 @@ void LLFloaterPreference::refreshGraphicControls()
 	getChild<LLUICtrl>("RenderGlowWarmthWeights_Y")->setValue(vec3.mV[VY]);
 	getChild<LLUICtrl>("RenderGlowWarmthWeights_Z")->setValue(vec3.mV[VZ]);
 
-	LLVector4 vec4 = gSavedSettings.getVector4("RenderShadowResolution");
+	LLVector4 vec4 = gSavedSettings.getVector4("RenderShadowFarClip");
+	getChild<LLUICtrl>("RenderShadowFarClip_X")->setValue(vec4.mV[VX]);
+	getChild<LLUICtrl>("RenderShadowFarClip_Y")->setValue(vec4.mV[VY]);
+	getChild<LLUICtrl>("RenderShadowFarClip_Z")->setValue(vec4.mV[VZ]);
+	getChild<LLUICtrl>("RenderShadowFarClip_W")->setValue(vec4.mV[VW]);
+	vec4 = gSavedSettings.getVector4("RenderShadowResolution");
 	getChild<LLUICtrl>("RenderShadowResolution_X")->setValue(vec4.mV[VX]);
 	getChild<LLUICtrl>("RenderShadowResolution_Y")->setValue(vec4.mV[VY]);
 	getChild<LLUICtrl>("RenderShadowResolution_Z")->setValue(vec4.mV[VZ]);
