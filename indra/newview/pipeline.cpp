@@ -211,7 +211,6 @@ bool LLPipeline::RenderDepthOfFieldInEditMode;
 BOOL LLPipeline::RenderDeferredBlurLight;
 BOOL LLPipeline::RenderSnapshotAutoAdjustMultiplier;
 BOOL LLPipeline::RenderHighPrecisionNormals;
-BOOL LLPipeline::RenderFullPrecisionNormals;
 U32 LLPipeline::RenderSSRResolution;
 F32 LLPipeline::RenderSSRBrightness;
 F32 LLPipeline::RenderSSAOEffect;
@@ -448,7 +447,7 @@ void validate_framebuffer_object();
 bool LLPipeline::addDeferredAttachments(LLRenderTarget& target)
 {
 	return target.addColorAttachment(GL_SRGB8_ALPHA8) && //specular
-		target.addColorAttachment(RenderFullPrecisionNormals ? GL_RGBA16 : RenderHighPrecisionNormals ? GL_RGBA12 : GL_RGB10_A2); //normal+z
+		target.addColorAttachment(RenderHighPrecisionNormals ? GL_RGBA12 : GL_RGB10_A2); //normal+z
 }
 
 LLPipeline::LLPipeline() :
@@ -686,7 +685,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderDeferredBlurLight");
 	connectRefreshCachedSettingsSafe("RenderSnapshotAutoAdjustMultiplier");
 	connectRefreshCachedSettingsSafe("RenderHighPrecisionNormals");
-	connectRefreshCachedSettingsSafe("RenderFullPrecisionNormals");
 	connectRefreshCachedSettingsSafe("RenderSSRResolution");
 	connectRefreshCachedSettingsSafe("RenderSSRBrightness");
 	connectRefreshCachedSettingsSafe("RenderSSAOEffect");
@@ -1309,7 +1307,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderDeferredBlurLight = gSavedSettings.getBOOL("RenderDeferredBlurLight");
 	RenderSnapshotAutoAdjustMultiplier = gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier");
 	RenderHighPrecisionNormals = gSavedSettings.getBOOL("RenderHighPrecisionNormals");
-	RenderFullPrecisionNormals = gSavedSettings.getBOOL("RenderFullPrecisionNormals");
 	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
 	RenderSSRBrightness = gSavedSettings.getF32("RenderSSRBrightness");
 	RenderSSAOEffect = gSavedSettings.getF32("RenderSSAOEffect");

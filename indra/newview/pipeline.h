@@ -972,7 +972,6 @@ public:
 	static BOOL RenderDeferredBlurLight;
 	static BOOL RenderSnapshotAutoAdjustMultiplier;
 	static BOOL RenderHighPrecisionNormals;
-	static BOOL RenderFullPrecisionNormals;
 	static U32 RenderSSRResolution;
 	static F32 RenderSSRBrightness;
 	static F32 RenderSSAOEffect;
