@@ -3341,6 +3341,18 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="RenderDeferredEnvironmentMap"
    top_pad="0"
    width="115" />
+   <check_box
+   control_name="RenderHighPrecisionNormals"
+   height="16"
+   label="Render High Precision Normals"
+   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles whether the Viewer should use high precision normal buffers or not. This directly affects the accuracy of light reflections on objects most noticably those of projector images. This increase memory usage by a varying amount depending on your screen resolution. To see the effects of this option you have to toggle Deferred Rendering off and on again."
+   layout="topleft"
+   left="10"
+   name="RenderHighPrecisionNormals"
+   top_pad="0"
+   width="115" />
 	  <check_box
    control_name="RenderSpotLightReflections"
    height="16"
