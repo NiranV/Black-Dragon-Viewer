@@ -9715,17 +9715,6 @@
     <key>Value</key>
     <real>1.0</real>
   </map>
-  <key>RenderShadowBlurSamples</key>
-  <map>
-    <key>Comment</key>
-    <string>Number of samples to take for each pass of shadow blur (value range 1-16).  Actual number of samples is value * 2 - 1.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>U32</string>
-    <key>Value</key>
-    <integer>8</integer>
-  </map>
   <key>RenderShadowBlurDistFactor</key>
   <map>
     <key>Comment</key>
@@ -16866,17 +16855,6 @@
     <string>F32</string>
     <key>Value</key>
     <real>1.0</real>
-  </map>
-  <key>RenderBlurPerformanceMode</key>
-  <map>
-    <key>Comment</key>
-    <string>Use a static amount of blur passes to gain a performance boost for the cost of customizability.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
   </map>
   <key>RenderHighPrecisionNormals</key>
   <map>

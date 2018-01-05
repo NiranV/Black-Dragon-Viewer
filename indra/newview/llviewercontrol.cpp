@@ -982,7 +982,6 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderProjectorShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	gSavedSettings.getControl("RenderShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
-	gSavedSettings.getControl("RenderBlurPerformanceMode")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
 	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
 	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
 	gSavedSettings.getControl("RenderEnableFullbright")->getSignal()->connect(boost::bind(&handleFullbrightChanged, _2));
