@@ -691,7 +691,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
 	connectRefreshCachedSettingsSafe("RenderChromaStrength");
 	connectRefreshCachedSettingsSafe("RenderSnapshotMultiplier");
-	connectRefreshCachedSettingsSafe("RenderShadowFarClip");
+	connectRefreshCachedSettingsSafe("RenderShadowDistance");
 
 //	//BD - Post Processing
 	connectRefreshCachedSettingsSafe("RenderLensFlare");
@@ -1313,7 +1313,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
 	RenderSnapshotMultiplier = gSavedSettings.getF32("RenderSnapshotMultiplier");
-	RenderShadowFarClip = gSavedSettings.getVector4("RenderShadowFarClip");
+	RenderShadowFarClip = gSavedSettings.getVector4("RenderShadowDistance");
 
 //	//BD - Volumetric Lighting
 	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");

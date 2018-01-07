@@ -16763,7 +16763,7 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-  <key>RenderShadowFarClip</key>
+  <key>RenderShadowDistance</key>
   <map>
     <key>Comment</key>
     <string>Shadow Far Clip range addition.</string>
