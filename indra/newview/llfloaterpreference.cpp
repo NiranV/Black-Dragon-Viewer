@@ -1208,7 +1208,6 @@ BOOL LLFloaterPreference::postBuild()
 //	//BD - Avatar Rendering Settings
 	mAvatarSettingsList = getChild<LLNameListCtrl>("render_settings_list");
 	mAvatarSettingsList->setRightMouseDownCallback(boost::bind(&LLFloaterPreference::onAvatarListRightClick, this, _1, _2, _3));
-	this->setVisibleCallback(boost::bind(&LLFloaterPreference::removePicker, this));
 	getChild<LLFilterEditor>("people_filter_input")->setCommitCallback(boost::bind(&LLFloaterPreference::onFilterEdit, this, _2));
 
 	return TRUE;
@@ -2084,11 +2083,11 @@ void LLFloaterPreference::getControlNames(std::vector<std::string>& names)
 //virtual
 void LLFloaterPreference::onClose(bool app_quitting)
 {
+	gSavedSettings.setS32("LastPrefTab", mTabContainer->getCurrentPanelIndex());
+
 	//BD
 	if (!app_quitting)
 	{
-		gSavedSettings.setS32("LastPrefTab", mTabContainer->getCurrentPanelIndex());
-
 		//BD - when closing this window, turn of visiblity control so that 
 		//     next time preferences is opened we don't suspend voice
 		if (gSavedSettings.getBOOL("ShowDeviceSettings"))
@@ -3355,14 +3354,6 @@ void LLPanelPreferenceGraphics::setHardwareDefaults()
 }
 
 //BD - Avatar Render Settings
-void LLFloaterPreference::removePicker()
-{
-	if (mPicker.get())
-	{
-		mPicker.get()->closeFloater();
-	}
-}
-
 void LLFloaterPreference::onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y)
 {
 	LLNameListCtrl* list = dynamic_cast<LLNameListCtrl*>(ctrl);
@@ -3507,8 +3498,6 @@ void LLFloaterPreference::onClickAdd(const LLSD& userdata)
 	{
 		root_floater->addDependentFloater(picker);
 	}
-
-	mPicker = picker->getHandle();
 }
 
 void LLFloaterPreference::callbackAvatarPicked(const uuid_vec_t& ids, S32 visual_setting)
