@@ -1435,9 +1435,9 @@ void LLPipeline::createGLBuffers()
 		}
 		else
 		{
-			mWaterRef.allocate(res,res,GL_RGBA,TRUE,FALSE);
+			mWaterRef.allocate(res, res, GL_RGBA, TRUE, FALSE);
 			//always use FBO for mWaterDis so it can be used for avatar texture bakes
-			mWaterDis.allocate(res,res,GL_RGBA,TRUE,FALSE,LLTexUnit::TT_TEXTURE, true);
+			mWaterDis.allocate(res, res, GL_RGBA, TRUE, FALSE, LLTexUnit::TT_TEXTURE, true);
 		}
 	}
 
@@ -1455,7 +1455,7 @@ void LLPipeline::createGLBuffers()
 
 		for (U32 i = 0; i < 3; i++)
 		{
-			mGlow[i].allocate(512,glow_res,GL_RGBA,FALSE,FALSE);
+			mGlow[i].allocate(glow_res,glow_res,GL_RGBA,FALSE,FALSE);
 		}
 
 		allocateScreenBuffer(resX,resY);
