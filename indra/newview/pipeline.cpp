@@ -11188,22 +11188,17 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 		//far_clip = llmin(far_clip, camera.getFar());
 
 		//BD
-		//F32 range = gSavedSettings.getF32("RenderShadowFarClip");
 		LLVector4 range = RenderShadowFarClip;
-
-		LLVector3 split_exp = RenderShadowSplitExponent;
-
-		F32 da = 1.f-llmax( fabsf(lightDir*up), fabsf(lightDir*camera.getLeftAxis()) );
-		
-		da = powf(da, split_exp.mV[2]);
-
-		F32 sxp = split_exp.mV[1] + (split_exp.mV[0]-split_exp.mV[1])*da;
+		//LLVector3 split_exp = RenderShadowSplitExponent;
+		//F32 da = 1.f-llmax( fabsf(lightDir*up), fabsf(lightDir*camera.getLeftAxis()) );
+		//da = powf(da, split_exp.mV[2]);
 		
 		for (U32 i = 0; i < 4; ++i)
 		{
-			F32 x = (F32)(i + 1) / 4.f;
-			x = powf(x, sxp);
-			mSunClipPlanes.mV[i] = near_clip + range[i]*x;
+			//BD
+			//F32 x = (F32)(i + 1) / 4.f;
+			//x = powf(x, sxp);
+			mSunClipPlanes.mV[i] = near_clip + range[i];
 		}
 
 		//BD
