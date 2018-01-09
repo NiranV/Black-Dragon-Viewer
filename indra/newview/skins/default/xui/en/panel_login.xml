@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.9.8 - Spring Dragon]"
+       label="[CHANNEL] [VERSION] - [2.9.9 - Spring Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -165,6 +165,64 @@ top="600"
               halign="left"
               height="143"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Missing Shadow Distance sliders to Machinima Sidebar.
+Added: Missing Windlight Transition option to Environment Settings floater.
+Added: Missing Windlight Transition Time option to Environment Settings floater.
+Changed: Tweak how Shadow Distance works, include previous distance into next distance to get the absolute distance.
+Changed: Shadow Distance defaults, focus on decent shadows across all distances.
+Changed: Reduced shadow acne on very close shadows.
+Changed: Reverted Screen Space Reflections back to the original calculation + my latest tweak.
+Changed: Raised default SSR resolution to 13.
+Changed: Lowered Object Quality options to 0.25, 0.5, 1.0, 2.0, 3.0 and 4.0.
+Changed: Raised Sky Quality options to 32, 64, 96, 128, 192, 256.
+Changed: Raised max value for Glow Iterations to 64.
+Changed: Raised max value for Glow Width to 32.
+Changed: Raised min/max value for SSAO Effect to -10 to 10 respectively.
+Changed: Simplified and (hopefully) fixed sort order getting whacky for non-Nirans.
+Changed: Version to 2.9.9.
+Fixed: Shadow Distance slider for closest shadows not working properly.
+Fixed: Toe Numerator not being exactly the same length as all other sliders.
+Misc: Internal naming changes in preferences.
+Merge with Linden Bear. (8 changes)
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.9.8
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="143"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
