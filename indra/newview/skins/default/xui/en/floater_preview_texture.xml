@@ -72,7 +72,7 @@
      name="desc"
      width="387" />
     <icon
-		follows="top|left"
+		follows="bottom|left|right"
 		image_name="Toolbar_Middle_Off"
 		height="23"
 		width="81"
@@ -83,7 +83,7 @@
      type="string"
      halign="center"
      length="1"
-     follows="left|top"
+     follows="left|bottom|right"
 	 text_color="1 1 1 0.75"
      height="18"
      layout="topleft"
