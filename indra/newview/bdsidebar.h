@@ -58,6 +58,11 @@ private:
 	LLUICtrl*			mShadowResZ;
 	LLUICtrl*			mShadowResW;
 
+	LLUICtrl*			mShadowDistX;
+	LLUICtrl*			mShadowDistY;
+	LLUICtrl*			mShadowDistZ;
+	LLUICtrl*			mShadowDistW;
+
 	LLUICtrl*			mProjectorResX;
 	LLUICtrl*			mProjectorResY;
 

@@ -73,6 +73,11 @@ BOOL LLSideBar::postBuild()
 	mShadowResZ = getChild<LLUICtrl>("RenderShadowResolution_Z");
 	mShadowResW = getChild<LLUICtrl>("RenderShadowResolution_W");
 
+	mShadowDistX = getChild<LLUICtrl>("RenderShadowDistance_X");
+	mShadowDistY = getChild<LLUICtrl>("RenderShadowDistance_Y");
+	mShadowDistZ = getChild<LLUICtrl>("RenderShadowDistance_Z");
+	mShadowDistW = getChild<LLUICtrl>("RenderShadowDistance_W");
+
 	mProjectorResX = getChild<LLUICtrl>("RenderProjectorShadowResolution_X");
 	mProjectorResY = getChild<LLUICtrl>("RenderProjectorShadowResolution_Y");
 
@@ -92,6 +97,12 @@ void LLSideBar::refreshGraphicControls()
 	mShadowResY->setValue(vec4.mV[VY]);
 	mShadowResZ->setValue(vec4.mV[VZ]);
 	mShadowResW->setValue(vec4.mV[VW]);
+
+	vec4 = gSavedSettings.getVector4("RenderShadowDistance");
+	mShadowDistX->setValue(vec4.mV[VX]);
+	mShadowDistY->setValue(vec4.mV[VY]);
+	mShadowDistZ->setValue(vec4.mV[VZ]);
+	mShadowDistW->setValue(vec4.mV[VW]);
 
 	LLVector2 vec2 = gSavedSettings.getVector2("RenderProjectorShadowResolution");
 	mProjectorResX->setValue(vec2.mV[VX]);
