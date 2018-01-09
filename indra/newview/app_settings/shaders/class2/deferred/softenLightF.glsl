@@ -484,151 +484,146 @@ void main()
 	
 		vec3 refnormpersp = normalize(reflect(pos.xyz, norm.xyz));
         
-		
-		#if USE_SSR
-			if (spec.a > 0.0) // specular reflection
-			{
-				// The old infinite-sky shiny reflection
-				//
-				vec3 refnormpersp = normalize(reflect(pos.xyz, norm.xyz));
-				float sa = dot(refnormpersp, sun_dir.xyz);
-				sa = pow(sa, light_gamma);
-	
-				vec3 dumbshiny = vary_SunlitColor*scol_ambocc.r*(texture2D(lightFunc, vec2(sa, spec.a)).r);
-				//dumbshiny = min(dumbshiny, vec3(1));
-	
-				// Screen-space cheapish fakey reflection map
-				//
-				vec3 refnorm = normalize(reflect(vec3(0,0,-1), norm.xyz));
-				
-				// First figure out where we'll make our 2D guess from
-				vec2 orig_ref2d = (norm.xy);
-	
-				// Offset the guess source a little according to a trivial
-				// checkerboard dither function and spec.a.
-				// This is meant to be similar to sampling a blurred version
-				// of the diffuse map.  LOD would be better in that regard.
-				// The goal of the blur is to soften reflections in surfaces
-				// with low shinyness, and also to disguise our lameness.
-				
-				float checkerboard = floor(mod(tc.x+tc.y, 0.5));
-	
-				best_refn = vec3(0);
-				best_refshad = 0;
-				best_refapprop = -1.0;
-				best_refcol = vec3(0);
-				total_refapprop = 0;
-				rnd = rand(tc.xy);
-				reflight = sun_dir.xyz;
-				bloomdamp = 0.0;
-				
-				for (int guessnum = 1; guessnum <= ssr_res; ++guessnum)
-				{
-					//rnd2 = rand(vec2(guessnum-rnd, tc.x));
-					//gnfrac = float(guessnum);
-					rd = (float(guessnum) - rnd) / float(ssr_res);
-					refdist = (-1.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * rd);
-					ref2d = (orig_ref2d + (1.0 - spec.a)*0.5*vec2(0.0)) * refdist;
-					
-					ref2d += tc.xy; // use as offset from destination
-					
-					//if (ref2d.y < 0.0 || ref2d.y > screen_res.y ||
-					//ref2d.x < 0.0 || ref2d.x > screen_res.x) continue;
-					
-					// Get attributes from the 2D guess point.
-					refdepth = texture2DRect(depthMap, ref2d).r;
-					refcol = texture2DRect(diffuseRect, ref2d).rgb;
-					
-					//convert to gamma space
-					refcol.rgb = linear_to_srgb(refcol.rgb);
-					
-					vec3 refpos = getPosition_d(ref2d, refdepth).xyz;
-					
-					// Figure out how appropriate our guess actually was, directionwise
-					float refposdistpow2 = dot(refpos - pos, refpos - pos);
-					float refapprop = 1.0;
-					
-					// Non-sky
-					if (refdepth < 1.0)
-					{
-						float angleapprop = sqrt(max(0.0, dot(refnorm, (refpos - pos)) / (1.0 + refposdistpow2 )));
-						refapprop = min(refapprop, angleapprop);
-						float refshad = texture2DRect(lightMap, ref2d).r;
-						refshad = pow(refshad, light_gamma);
-						vec3 refn = /*normalize*/(decode_normal(texture2DRect(normalMap, ref2d).xy));
-						
-	
-						total_refapprop += refapprop;
-						best_refn += refn.xyz * refapprop;
-						best_refshad += refshad * refapprop;
-						float sunc = max(0.0, dot(reflight, refn));
-	
-						//pow
-						best_refcol += (((vary_AmblitColor + vary_SunlitColor
-										* min(sunc, refshad))
-										* (refcol.rgb) + vary_AdditiveColor))
-										* refapprop;
-					}
-					else  // Sky
-					{
-						// Avoid forward-pointing reflections picking up sky
-						refapprop = min(refapprop, max(-refnorm.z, 0.0));
-	
-						total_refapprop += refapprop;
-						
-						// Treat sky samples as if they always face the sun
-						best_refn += reflight.xyz * refapprop;
-						
-						// Sky is not shadowed
-						best_refshad += 1.0 * refapprop;
-						best_refcol += refcol.rgb * refapprop;
-					}
-				}
-				if (total_refapprop > 0.0) {
-					// We must have the power of >= 25% voters, else damp progressively
-					float use_refapprop = max(float(ssr_res), (total_refapprop));
-	
-					best_refn = normalize(best_refn);
-					best_refshad /= use_refapprop;
-					best_refcol /= use_refapprop * 2.0;
-					bloomdamp /= use_refapprop;
-					best_refapprop = 1.0;
-				}
-				else
-				{
-					best_refcol.rgb = vec3(0,0,0);
-					best_refapprop = 0.0;
-				}
-				
-				// Get env map
-				vec3 refprod = best_refcol.rgb * best_refapprop;
-				vec3 ssshiny = (refprod);
-	
-				ssshiny *= spec.rgb;
-				
-				float fullbrightification = diffuse.a;
+  float bloom = 0.0;
+  float fullbrightification = diffuse.a;
+  
+#if USE_SSR
+  if (spec.a > 0.0) // specular reflection
+  {
+   // the old infinite-sky shiny reflection
+   vec3 refnormpersp = normalize(reflect(pos.xyz, norm.xyz));
+   float sa = dot(refnormpersp, sun_dir.xyz);
+   sa = pow(sa, light_gamma);
+   
+   vec3 dumbshiny = (vary_SunlitColor)*(scol * 0.25)*(0.5 * texture2D(lightFunc, vec2(sa, spec.a)).r);
+   dumbshiny = min(dumbshiny, vec3(1));
+   
+   // screen-space cheapish fakey reflection map
+   vec3 refnorm = normalize(reflect(vec3(0,0,-1), norm.xyz));
+   depth -= 0.5; // unbias depth
+   vec2 orig_ref2d = (norm.xy);// * (1.0- depth);
+   
+   // Offset the guess source a little according to a trivial
+   // checkerboard dither function and spec.a.
+   // This is meant to be similar to sampling a blurred version
+   // of the diffuse map.  LOD would be better in that regard.
+   // The goal of the blur is to soften reflections in surfaces
+   // with low shinyness, and also to disguise our lameness.
+   float checkerboard = floor(mod(tc.x+tc.y, 2.0)); // 0.0, 1.0
+   
+   // hack because I can't decide whether refnormpersp or refnorm are better :3
+   vec2 orig_ref2dpersp = (refnormpersp.xy);
+   
+   best_refn = vec3(0);
+   best_refshad = 0;
+   best_refapprop = -1.0;
+   best_refcol = vec3(0);
+   total_refapprop = 0;
+   rnd = rand(tc.xy);
+   reflight = sun_dir.xyz;//reflect(sun_dir.xyz, norm.xyz);
+   bloomdamp = 0.0;
+   for (int guessnum = 1; guessnum <= ssr_res; ++guessnum)
+   {
+    float guessnumfp = float(guessnum);
+    guessnumfp -= (checkerboard*0.5 + rnd);
+    rd = guessnumfp / ssr_res;
+    rdpow2 = rd * rd;
+    refdist = (-2.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * (rdpow2));// / (-depth) ;
+    ref2d = (orig_ref2d + (1.0 - spec.a)*0.25*vec2(0.0)) * refdist;
+    ref2d += tc.xy; // use as offset from destination
     
-				// Add the two types of shiny together
-				vec3 spec_contrib = (ssshiny * (1.0 - fullbrightification) * 0.5 );
-				bloom = dot(spec_contrib, spec_contrib) / 6;
+    if (ref2d.y < 0.0 || ref2d.y > screen_res.y ||
+    ref2d.x < 0.0 || ref2d.x > screen_res.x) continue;
     
-    ssshiny *= ssr_brightness;
-				col.rgb = mix(col.rgb + ssshiny, diffuse.rgb, fullbrightification);
-			}
-		#endif
-			if (spec.a > 0.0) // specular reflection
-			{
-				// the old infinite-sky shiny reflection
-				//
-				
-				float sa = dot(refnormpersp, sun_dir.xyz);
-				vec3 dumbshiny = vary_SunlitColor*scol_ambocc.r*(texture2D(lightFunc, vec2(sa, spec.a)).r);
-				
-				// add the two types of shiny together
-				vec3 spec_contrib = dumbshiny * spec.rgb;
-				bloom = dot(spec_contrib, spec_contrib) / 6;
-				col += spec_contrib;
-			}
+    // Get attributes from the 2D guess point.
+    float refdepth = texture2DRect(depthMap, ref2d).r;
+    vec3 refcol = texture2DRect(diffuseRect, ref2d).rgb;
+    
+    //convert to gamma space
+    refcol.rgb = linear_to_srgb(refcol.rgb);
+    
+    vec3 refpos = getPosition_d(ref2d, refdepth).xyz;
+    
+    // figure out how appropriate our guess actually was, directionwise
+    float refposdistpow2 = dot(refpos - pos, refpos - pos);
+    float refapprop = 1.0;
+    
+    if (refdepth < 1.0)
+    { // non-sky
+     float angleapprop = sqrt(max(0.0, dot(refnorm, (refpos - pos)) / (1.0 + refposdistpow2 )));
+     refapprop = min(refapprop, angleapprop);
+     float refshad = texture2DRect(lightMap, ref2d).r;
+     refshad = pow(refshad, light_gamma);
+     vec3 refn = decode_normal(texture2DRect(normalMap, ref2d).xy);
+     
+     // darken reflections from points which face away from the reflected ray - our guess was a back-face
+     refapprop = min(refapprop, step(dot(refnorm, refn), 0.001));
+     
+     // kill guesses which are 'behind' the reflector
+     float ppdist = dot(norm.xyz, refpos.xyz - pos.xyz);
+     
+     refapprop = min(refapprop, step(0.01, ppdist));
+     total_refapprop += refapprop;
+     best_refn += refn.xyz * refapprop;
+     best_refshad += refshad * refapprop;
+     float sunc = max(0.0, dot(reflight, refn));
+     
+     // pow
+     best_refcol += (((vary_AmblitColor + vary_SunlitColor * min(sunc, refshad)) * (refcol.rgb) + vary_AdditiveColor)) * refapprop;
+    }
+    else  // sky
+    {
+     // avoid forward-pointing reflections picking up sky
+     refapprop = min(refapprop, max(-refnorm.z, 0.0));//dot(refnorm, vec3(0.0, 0.0, -1.0));
+     refapprop *= 0.5; // we just plain like the appropriateness of non-sky reflections better where available
+     
+     total_refapprop += refapprop;
+     best_refn += reflight.xyz * refapprop; // treat sky samples as if they always face the sun
+     best_refshad += 1.0 * refapprop; // sky is not shadowed
+     best_refcol += refcol.rgb * refapprop;
+    }
+   }
+   if (total_refapprop > 0.0)
+   {
+    // we must have the power of >= 25% voters, else damp progressively
+    float use_refapprop = max(ssr_res*0.25, (total_refapprop));
+    
+    best_refn = normalize(best_refn);
+    best_refshad /= use_refapprop;
+    best_refcol /= use_refapprop * 2.0; // div2 cos we'll be doubled again
+    bloomdamp /= use_refapprop;
+    best_refapprop = 1.0;//use_refapprop;//1.0;//min(1.0, total_refapprop);
+   }
+   else
+   {
+    best_refcol.rgb = vec3(0,0,0);
+    best_refapprop = 0.0;
+   }
+   vec3 refprod = best_refcol.rgb * best_refapprop;
+   vec3 ssshiny = (refprod);
+   ssshiny *= spec.rgb;
+   ssshiny *= ssr_brightness;
+   
+   // add the two types of shiny together
+   vec3 spec_contrib = (ssshiny * (1.0 - fullbrightification) * 0.5 + dumbshiny);
+   bloom = spec.a * dot(spec_contrib, spec_contrib) * 0.25 * (1.0 - bloomdamp);
+   col.rgb = mix(col.rgb + ssshiny, diffuse.rgb, fullbrightification) + dumbshiny;
+  }
+#else
+  if (spec.a > 0.0) // specular reflection
+  {
+   // the old infinite-sky shiny reflection
+   //
+   
+   float sa = dot(refnormpersp, sun_dir.xyz);
+   vec3 dumbshiny = vary_SunlitColor*scol_ambocc.r*(texture2D(lightFunc, vec2(sa, spec.a)).r);
+   
+   // add the two types of shiny together
+   vec3 spec_contrib = dumbshiny * spec.rgb;
+   bloom = dot(spec_contrib, spec_contrib) / 6;
+   col += spec_contrib;
+  }
+#endif
 		
 		col = mix(col, diffuse.rgb, diffuse.a);
 		
