@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.9.7 - Spring Dragon]"
+       label="[CHANNEL] [VERSION] - [2.9.8 - Spring Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="10319"
+       height="10479"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,58 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="208"
+              height="143"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Dramatic Fog sky preset.
+Changed: Enabled Navigationbar Coordinates by default.
+Changed: Simplify Shadow Render Distance to be exactly 1 = 1m (relatively).
+Changed: Defaults for Shadow Render Distance. Closeup precision is focus here.
+Changed: Forced shadow distance to reset by renaming the debug settings.
+Changed: Allow better finetuning with shadow distance sliders.
+Changed: Version to 2.9.8.
+Fixed: Crash when closing the Viewer while preferences is still open.
+Fixed: Input/Output tab not expanding when clicked.
+Fixed: Line Endings in llvovolume.h after my changes.
+Misc: Some cleanup and glow resolution allocation changes.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.9.7
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="208"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
