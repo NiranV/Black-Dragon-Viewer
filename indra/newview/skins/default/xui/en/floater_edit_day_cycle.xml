@@ -463,7 +463,7 @@
      layout="topleft"
      left_delta="0"
      max_chars="100"
-     height="23"
+     height="22"
      visible="true"
      name="day_cycle_combo"
      top_delta="0"

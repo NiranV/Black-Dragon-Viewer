@@ -434,7 +434,7 @@
      allow_text_entry="true"
      left="9"
      max_chars="100"
-	  height="23"
+	  height="22"
    name="water_preset_combo"
    top_delta="-1"
      width="177">

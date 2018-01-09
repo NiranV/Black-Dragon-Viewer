@@ -719,12 +719,12 @@ with the same filename but different name
   
   <texture name="Conv_toolbar_history" file_name="icons/Conv_toolbar_history.png" preload="false" />
   
-  <texture name="ComboToolbarButton_Disabled" file_name="widgets/ComboToolbarButton_Disabled.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
-  <texture name="ComboToolbarButton_Selected" file_name="widgets/ComboToolbarButton_Selected.png" preload="true" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
+  <texture name="ComboToolbarButton_Disabled" file_name="widgets/ComboToolbarButton_Disabled.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="1" />
+  <texture name="ComboToolbarButton_Selected" file_name="widgets/ComboToolbarButton_Selected.png" preload="true" scale.left="19" scale.top="19" scale.right="22" scale.bottom="1" />
   <!--<texture name="ComboToolbarButton_UpSelected" file_name="widgets/ComboToolbarButton_UpSelected.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />-->
-  <texture name="ComboToolbarButton_On" file_name="widgets/ComboToolbarButton_On.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
-  <texture name="ComboToolbarButton_Off" file_name="widgets/ComboToolbarButton_Off.png" preload="true" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
-  <texture name="ComboToolbarButton_UpOff" file_name="widgets/ComboToolbarButton_UpOff.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="2" />
+  <texture name="ComboToolbarButton_On" file_name="widgets/ComboToolbarButton_On.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="1" />
+  <texture name="ComboToolbarButton_Off" file_name="widgets/ComboToolbarButton_Off.png" preload="true" scale.left="19" scale.top="19" scale.right="22" scale.bottom="1" />
+  <texture name="ComboToolbarButton_UpOff" file_name="widgets/ComboToolbarButton_UpOff.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="1" />
   
   <texture name="Name_Rect"	file_name="Name_Rect.png" preload="true" scale.left="6" scale.top="26" scale.right="58" scale.bottom="6" />
   <!--<texture name="Rounded_Rect_Top"	file_name="Rounded_Rect.png" preload="true" scale.left="6" scale.top="8" scale.right="58" scale.bottom="0" clip.left="0" clip.right="64" clip.bottom="16" clip.top="32" />-->
