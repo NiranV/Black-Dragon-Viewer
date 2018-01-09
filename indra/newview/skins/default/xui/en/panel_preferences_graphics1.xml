@@ -5434,7 +5434,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="-0.5"
       name="ExodusRenderToneAdvOptB_Y"
       top_pad="2"
-      width="328">
+      width="326">
          <slider.commit_callback
       function="Pref.ArrayY"
       parameter="ExodusRenderToneAdvOptB"/>
