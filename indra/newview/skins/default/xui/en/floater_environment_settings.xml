@@ -17,6 +17,30 @@
    top="2"
    height="16"
    width="100"/>
+ <check_box
+   layout="topleft"
+   control_name="RenderInterpolateWindlight"
+   left="270"
+   follows="top|left"
+   label="Use Windlight Transitions"
+   name="RenderInterpolateWindlight"
+   top="2"
+   height="16"
+   width="100"/>
+ <slider
+         control_name="RenderWindlightInterpolateTime"
+         decimal_digits="0"
+         follows="left|top"
+         height="10"
+         increment="1"
+         initial_value="5"
+         max_val="30"
+         label="Time(s)"
+         layout="topleft"
+         left="470"
+         top_delta="1"
+         name="RenderWindlightInterpolateTime"
+         width="180" />
  <panel
   height="70"
   layout="topleft"
