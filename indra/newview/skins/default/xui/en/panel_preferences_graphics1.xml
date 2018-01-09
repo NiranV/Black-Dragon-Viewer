@@ -3563,7 +3563,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="5"
       width="318">
   <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Pref.ArrayX"
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
