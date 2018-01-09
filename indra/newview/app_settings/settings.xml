@@ -16773,10 +16773,10 @@
     <string>Vector4</string>
     <key>Value</key>
     <array>
-      <real>2</real>
       <real>8</real>
-      <real>48</real>
+      <real>32</real>
       <real>64</real>
+      <real>128</real>
     </array>
   </map>
   <key>RenderDepthOfFieldAlphas</key>
