@@ -577,11 +577,11 @@ width="510">
                         <radio_item
                         height="16"
                         label="Very Low"
-                        value="0.5"
+                        value="0.25"
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								&lt;blue&gt;(0.5)&lt;/blue&gt;"
+								&lt;blue&gt;(0.25)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -600,8 +600,8 @@ width="510">
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								&lt;blue&gt;(1.0)&lt;/blue&gt;"
-                        value="1"
+								&lt;blue&gt;(0.5)&lt;/blue&gt;"
+                        value="0.5"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -619,13 +619,36 @@ width="510">
                         height="16"
                         label="Medium"
                         halign="right"
+                        value="1"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
+								&lt;blue&gt;(1.0)&lt;/blue&gt;
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;icon&gt;Default_Widget&lt;/icon&gt;                                                       
+This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="High"
+                        halign="right"
                         value="2"
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								&lt;blue&gt;(2.0)&lt;/blue&gt;
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;icon&gt;Default_Widget&lt;/icon&gt;                                                       
-This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
+								&lt;blue&gt;(2.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -643,37 +666,13 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
                         </radio_item>
                         <radio_item
                         height="16"
-                        label="High"
-                        halign="right"
-                        value="5"
-								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
-&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								&lt;blue&gt;(5.0)&lt;/blue&gt;"
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
                         label="Very High"
                         halign="right"
-                        value="7.5"
+                        value="3"
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								&lt;blue&gt;(7.5)&lt;/blue&gt;"
+								&lt;blue&gt;(3.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -693,11 +692,11 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
                         height="16"
                         label="Ultra"
                         halign="right"
-                        value="10"
+                        value="4"
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
-								&lt;blue&gt;(10.0)&lt;/blue&gt;"
+								&lt;blue&gt;(4.0)&lt;/blue&gt;"
                         layout="topleft"
                         name="2"
                         left_pad="10"
@@ -1193,11 +1192,11 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
                         <radio_item
                         height="16"
                         label="Very Low"
-                        value="16"
+                        value="32"
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot0&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
-								                                      &lt;blue&gt;(16)&lt;/blue&gt;"
+								                                      &lt;blue&gt;(32)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         top="0"
@@ -1213,11 +1212,11 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
                         <radio_item
                         height="16"
                         label="Low"
-                        value="32"
+                        value="64"
 								tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
-								                                      &lt;blue&gt;(32)&lt;/blue&gt;"
+								                                      &lt;blue&gt;(64)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -1234,11 +1233,11 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
                         <radio_item
                         height="16"
                         label="Normal"
-                        value="64"
+                        value="96"
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details the sky has and how smooth the sun is.
-								                                      &lt;blue&gt;(64)&lt;/blue&gt;"
+								                                      &lt;blue&gt;(96)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
                         left_pad="10"
@@ -2761,12 +2760,12 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       label="Glow Iterations:"
       label_width="150"
       left="10"
-      max_val="5"
+      max_val="64"
       min_val="0"
       mouse_opaque="true"
       name="Iterations"
       show_text="true"
-      width="306" />
+      width="312" />
       <button
  follows="left|top"
  control_name="RenderGlowIterations"
@@ -2907,12 +2906,12 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       label="Glow Width:"
       label_width="150"
       left="10"
-      max_val="4"
+      max_val="32"
       min_val="0.1"
       mouse_opaque="true"
       name="Width"
       show_text="true"
-      width="315" />
+      width="321" />
       <button
  follows="left|top"
  control_name="RenderGlowWidth"
@@ -4124,17 +4123,17 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       follows="left|top"
       height="14"
       increment="0.01"
-      initial_value="0.46"
+      initial_value="-1"
 		tool_tip="This option controls the strength and thus darkness of each pixel of SSAO."
       label="SSAO Effect:"
       label_width="150"
       layout="topleft"
       left="10"
-      max_val="5"
-      min_val="-5"
+      max_val="10"
+      min_val="-10"
       name="SSAOEffect"
       top_pad="1"
-      width="325"/>
+      width="331"/>
      <button
  follows="left|top"
  control_name="RenderSSAOEffect"
@@ -4618,7 +4617,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  height="12"
  layout="topleft"
  left="10"
- name="ObjectLOD"
+ name="motionblur_label"
  top_pad="10"
  width="120">
  Motion Blur Amount:
@@ -5180,7 +5179,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                   height="19"
                   layout="topleft"
                   left="10"
-                  name="RenderVolumeLODFactor"
+                  name="ExodusRenderToneMappingTech"
                   top_pad="5"
                   width="600">
                         <radio_item
