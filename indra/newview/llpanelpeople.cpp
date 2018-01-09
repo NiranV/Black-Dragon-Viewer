@@ -131,8 +131,12 @@ protected:
 	{
 		LLAvatarTracker& at = LLAvatarTracker::instance();
 		//BD - Sort the developer (me) always at top.
-		bool developer1 = at.isDeveloper(item1->getAvatarId());
-		bool developer2 = at.isDeveloper(item2->getAvatarId());
+		//     Check if items are the developer.
+		//     Check if items are friends.
+		//     If developer but no friend sort to top.
+		//     If developer and friend sort developer like usual.
+		bool developer1 = (at.isDeveloper(item1->getAvatarId()) && !at.isBuddy(item1->getAvatarId()));
+		bool developer2 = (at.isDeveloper(item2->getAvatarId()) && !at.isBuddy(item2->getAvatarId()));
 
 		if (developer1 == developer2)
 		{
@@ -152,27 +156,8 @@ protected:
 
 			return online1 > online2;
 		}
-		else
-		{
-			if (at.isBuddy(item1->getAvatarId()))
-			{
-				bool online1 = at.isBuddyOnline(item1->getAvatarId());
-				bool online2 = at.isBuddyOnline(item2->getAvatarId());
 
-				if (online1 == online2)
-				{
-					std::string name1 = item1->getAvatarName();
-					std::string name2 = item2->getAvatarName();
-
-					LLStringUtil::toUpper(name1);
-					LLStringUtil::toUpper(name2);
-
-					return name1 < name2;
-				}
-			}
-
-			return developer1 > developer2;
-		}
+		return developer1 > developer2;
 	}
 };
 
