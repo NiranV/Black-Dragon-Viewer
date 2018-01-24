@@ -2888,6 +2888,13 @@ void LLFloaterPreference::loadPreset(const LLSD& user_data)
 
 	LLPresetsManager::getInstance()->loadPreset(subdirectory, name);
 	toggleTabs();
+	refreshGraphicControls();
+	//BD - Machinima Sidebar.
+	//     Refresh it's controls too if its open.
+	if (gSideBar && gSideBar->isInVisibleChain())
+	{
+		gSideBar->refreshGraphicControls();
+	}
 }
 
 void LLFloaterPreference::onPresetsListChange()
