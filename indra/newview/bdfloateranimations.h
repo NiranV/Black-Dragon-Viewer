@@ -62,6 +62,8 @@ private:
 
 	//BD - Animating
 	void onAnimAdd(const LLSD& param);
+	void onAnimListWrite(std::vector<LLScrollListItem*> item_list);
+	void onAnimMove(const LLSD& param);
 	void onAnimDelete();
 	void onAnimSave();
 	void onAnimSet();

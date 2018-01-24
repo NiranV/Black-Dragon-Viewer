@@ -970,6 +970,44 @@ width="494">
 	<button.commit_callback
    function="Anim.Delete"/>
  </button>
+	<button
+ height="26"
+ follows="top|left"
+ layout="topleft"
+ label=""
+	enabled="false"
+ tool_tip="Move the currently selected entry one row up in the queue."
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+	 image_overlay="Arrow_Up"
+ name="move_up"
+ width="26"
+ top_pad="6"
+ left_delta="0">
+	<button.commit_callback
+   function="Anim.Move"
+			parameter="Up"/>
+ </button>
+	<button
+ height="26"
+ follows="top|left"
+ layout="topleft"
+ label=""
+	enabled="false"
+ tool_tip="Move the currently selected entry one row down in the queue."
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+	 image_overlay="Arrow_Down"
+ name="move_down"
+ width="26"
+ top_pad="1"
+ left_delta="0">
+	<button.commit_callback
+   function="Anim.Move"
+			parameter="Down"/>
+ </button>
  
  <icon
 	follows="top|left"

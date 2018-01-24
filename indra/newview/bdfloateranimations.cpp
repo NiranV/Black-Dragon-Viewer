@@ -88,6 +88,8 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 
 	//BD - Add a new entry to the animation creator.
 	mCommitCallbackRegistrar.add("Anim.Add", boost::bind(&BDFloaterAnimations::onAnimAdd, this, _2));
+	//BD - Move the selected entry one row up.
+	mCommitCallbackRegistrar.add("Anim.Move", boost::bind(&BDFloaterAnimations::onAnimMove, this, _2));
 	//BD - Remove an entry in the animation creator.
 	mCommitCallbackRegistrar.add("Anim.Delete", boost::bind(&BDFloaterAnimations::onAnimDelete, this));
 	//BD - Save the currently build list as animation.
@@ -1330,10 +1332,19 @@ void BDFloaterAnimations::onAnimAdd(const LLSD& param)
 		index++;
 	}
 
+	onAnimListWrite(new_items);
+
+	//BD - Select added entry and make it appear as nothing happened.
+	//     In case of nothing being selected yet, select the first entry.
+	mAnimEditorScroll->selectNthItem(selected_index + 1);
+}
+
+void BDFloaterAnimations::onAnimListWrite(std::vector<LLScrollListItem*> item_list)
+{
 	//BD - Now go through the new list we created, read them out and add them
 	//     to our list in the new desired order.
-	for (std::vector<LLScrollListItem*>::iterator it = new_items.begin();
-		it != new_items.end(); ++it)
+	for (std::vector<LLScrollListItem*>::iterator it = item_list.begin();
+		it != item_list.end(); ++it)
 	{
 		LLScrollListItem* item = (*it);
 		if (item)
@@ -1357,11 +1368,86 @@ void BDFloaterAnimations::onAnimAdd(const LLSD& param)
 
 	//BD - Delete all flagged items now and we'll end up with a new list order.
 	mAnimEditorScroll->deleteFlaggedItems();
+}
 
-	//BD - Select added entry and make it appear as nothing happened.
-	if (selected_index >= 0)
+void BDFloaterAnimations::onAnimMove(const LLSD& param)
+{
+	std::vector<LLScrollListItem*> old_items = mAnimEditorScroll->getAllData();
+	std::vector<LLScrollListItem*> new_items;
+	S32 new_index = mAnimEditorScroll->getFirstSelectedIndex();
+	S32 index = 0;
+	bool skip = false;
+
+	//BD - Don't allow moving down when we are already at the bottom, this would
+	//     create another entry.
+	//     Don't allow going up when we are on the first entry already either, this
+	//     would select everything in the list.
+	//     Don't allow moving if there's nothing to move. (Crashfix)
+	if (((new_index + 1) >= old_items.size() && param.asString() == "Down")
+		|| (new_index == 0 && param.asString() == "Up")
+		|| old_items.empty())
 	{
-		mAnimEditorScroll->selectNthItem(selected_index+1);
+		return;
+	}
+
+	//BD - Move up, otherwise move the entry down. No other option.
+	if (param.asString() == "Up")
+	{
+		new_index--;
+	}
+	else
+	{
+		mAnimEditorScroll->selectNthItem(new_index + 1);
+	}
+
+	LLScrollListItem* cur_item = mAnimEditorScroll->getFirstSelected();
+
+	//BD - Don't allow moving if we don't have anything selected either. (Crashfix)
+	if (!cur_item)
+	{
+		return;
+	}
+
+	cur_item->setFlagged(true);
+
+	//BD - Let's go through all entries in the list and copy them into a new
+	//     list in our new desired order, flag the old ones for removal while
+	//     we do this.
+	//     For both up and down this works exactly the same, we made sure of that.
+	for (std::vector<LLScrollListItem*>::iterator it = old_items.begin();
+		it != old_items.end(); ++it)
+	{
+		LLScrollListItem* item = (*it);
+		if (item)
+		{
+			item->setFlagged(true);
+			if (!skip)
+			{
+				if (index == new_index)
+				{
+					new_items.push_back(cur_item);
+					skip = true;
+				}
+
+				new_items.push_back(item);
+			}
+			else
+			{
+				skip = false;
+			}
+		}
+		index++;
+	}
+
+	onAnimListWrite(new_items);
+
+	if (param.asString() == "Up")
+	{
+		mAnimEditorScroll->selectNthItem(new_index);
+	}
+	else
+	{
+		mAnimEditorScroll->selectNthItem(new_index + 1);
 	}
 }
 
@@ -1415,6 +1501,8 @@ void BDFloaterAnimations::onAnimControlsRefresh()
 	if (item)
 	{
 		getChild<LLUICtrl>("delete_poses")->setEnabled(true);
+		getChild<LLUICtrl>("move_up")->setEnabled(true);
+		getChild<LLUICtrl>("move_down")->setEnabled(true);
 		if (item->getColumn(0)->getValue().asString() == "Wait")
 		{
 			getChild<LLUICtrl>("anim_time")->setEnabled(true);
@@ -1428,6 +1516,8 @@ void BDFloaterAnimations::onAnimControlsRefresh()
 	{
 		getChild<LLUICtrl>("delete_poses")->setEnabled(false);
 		getChild<LLUICtrl>("anim_time")->setEnabled(false);
+		getChild<LLUICtrl>("move_up")->setEnabled(false);
+		getChild<LLUICtrl>("move_down")->setEnabled(true);
 	}
 }
 
