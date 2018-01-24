@@ -36,8 +36,6 @@ private:
 	/*virtual*/	BOOL postBuild();
 	/*virtual*/ void draw();
 
-	void resetToDefault(LLUICtrl* ctrl);
-
 	//BD - Motions
 	void onMotionRefresh();
 	void onMotionCommand(LLUICtrl* ctrl, const LLSD& param);

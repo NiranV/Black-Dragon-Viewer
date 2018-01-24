@@ -105,9 +105,6 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, _1, _2));
 	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, _1, _2));
-
-//	//BD - Revert to Default
-	mCommitCallbackRegistrar.add("Pref.Default", boost::bind(&BDFloaterAnimations::resetToDefault, this, _1));
 }
 
 BDFloaterAnimations::~BDFloaterAnimations()
@@ -182,13 +179,6 @@ void BDFloaterAnimations::draw()
 	}
 
 	LLFloater::draw();
-}
-
-//BD - Revert to Default
-void BDFloaterAnimations::resetToDefault(LLUICtrl* ctrl)
-{
-	ctrl->getControlVariable()->resetToDefault(true);
-	onJointRefresh();
 }
 
 void BDFloaterAnimations::onOpen(const LLSD& key)
