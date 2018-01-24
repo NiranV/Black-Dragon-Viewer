@@ -1672,12 +1672,8 @@ void LLViewerMedia::cleanupClass()
 // static
 void LLViewerMedia::onTeleportFinished()
 {
-	//BD - Don't re-enable autoplay on every teleport unless we actually want autoplay.
-	if (gSavedSettings.getBOOL("ParcelMediaAutoPlayEnable"))
-	{
-		// On teleport, clear this setting (i.e. set it to true)
-		gSavedSettings.setBOOL("MediaTentativeAutoPlay", true);
-	}
+	// On teleport, clear this setting (i.e. set it to true)
+	gSavedSettings.setBOOL("MediaTentativeAutoPlay", true);
 
 	LLViewerMediaImpl::sMimeTypesFailed.clear();
 }
