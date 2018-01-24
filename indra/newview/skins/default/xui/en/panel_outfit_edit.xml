@@ -276,7 +276,6 @@ It is calculated as border_size + 2*UIResizeBarOverlap
 	       width="172"
 	       height="22"
 	       name="look_item_filter"
-	       text_color="black"
 	       visible="true"/>
            <icon
       follows="bottom|right"
