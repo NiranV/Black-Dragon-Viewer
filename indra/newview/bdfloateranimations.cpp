@@ -905,18 +905,29 @@ void BDFloaterAnimations::onPoseStart()
 	LLMotion* pose_motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
 	if (!pose_motion)
 	{
+		//BD - Pause all other motions and prevent them from interrupting us even
+		//     if they technically shouldn't be able to anyway.
+		gAgentAvatarp->getMotionController().pauseAllMotions();
+
 		gAgent.setPosing();
 		gAgent.stopFidget();
 		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
 	}
 	else if (pose_motion->isStopped())
 	{
+		//BD - Pause all other motions and prevent them from interrupting us even
+		//     if they technically shouldn't be able to anyway.
+		gAgentAvatarp->getMotionController().pauseAllMotions();
+
 		gAgent.setPosing();
 		gAgent.stopFidget();
 		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
 	}
 	else
 	{
+		//BD - Pause all other motions and prevent them from interrupting us even
+		//     if they technically shouldn't be able to anyway.
+		gAgentAvatarp->getMotionController().unpauseAllMotions();
 		gAgent.clearPosing();
 		gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
 	}
