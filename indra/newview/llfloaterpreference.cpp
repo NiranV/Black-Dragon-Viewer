@@ -2878,6 +2878,8 @@ void LLFloaterPreference::savePreset(const LLSD& user_data)
 		args["NAME"] = name;
 		LLNotificationsUtil::add("PresetNotSaved", args);
 	}
+	//BD - We should probably show some sort of notification regardless to inform
+	//     the user that he successfully saved a preset.
 }
 
 void LLFloaterPreference::loadPreset(const LLSD& user_data)
