@@ -1521,7 +1521,7 @@
              height="14"
              layout="topleft"
              name="label position"
-			 left="5"
+             left="2"
              top_pad="5"
              width="121">
                 Position (meters)
@@ -1535,10 +1535,9 @@
              label_width="10"
              layout="topleft"
              left_delta="0"
-             max_val="512"
+             max_val="256"
              min_val="-3.5"
              name="Pos X"
-             text_enabled_color="1 0 0.3 .7"
              top_pad="3"
              width="87" />
             <spinner
@@ -1550,10 +1549,9 @@
              label_width="10"
              layout="topleft"
              left_delta="0"
-             max_val="512"
+             max_val="256"
              min_val="-3.5"
              name="Pos Y"
-             text_enabled_color="EmphasisColor"
              top_pad="3"
              width="87" />
             <spinner
@@ -1564,11 +1562,10 @@
              label="Z"
              label_width="10"
              layout="topleft"
-             left_delta="-3.5"
+             left_delta="0"
              max_val="4096"
              min_val="-3.5"
              name="Pos Z"
-             text_enabled_color="0 0.8 1 .65"
              top_pad="3"
              width="87" />
             <text

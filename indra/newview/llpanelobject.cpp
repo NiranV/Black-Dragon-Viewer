@@ -397,6 +397,21 @@ void LLPanelObject::getState( )
 	mCtrlPosY->setEnabled(enable_move);
 	mCtrlPosZ->setEnabled(enable_move);
 
+	//BD
+	if (objectp->isAttachment())
+	{
+		mCtrlPosX->setMaxValue(3.5f);
+		mCtrlPosY->setMaxValue(3.5f);
+		mCtrlPosZ->setMaxValue(3.5f);
+	}
+	else
+	{
+		F32 region_width = LLWorld::getInstance()->getRegionWidthInMeters();
+		mCtrlPosX->setMaxValue(region_width);
+		mCtrlPosY->setMaxValue(region_width);
+		mCtrlPosZ->setMaxValue(LLWorld::getInstance()->getRegionMaxHeight());
+	}
+
 	if (enable_scale)
 	{
 		vec = objectp->getScale();
@@ -1675,7 +1690,6 @@ void LLPanelObject::sendPosition(BOOL btn_down)
 	const F32 height = newpos.mV[VZ];
 	const F32 min_height = LLWorld::getInstance()->getMinAllowedZ(mObject, mObject->getPositionGlobal());
 	const F32 max_height = LLWorld::getInstance()->getRegionMaxHeight();
-
 	if (!mObject->isAttachment())
 	{
 		if ( height < min_height)
