@@ -4414,8 +4414,9 @@ class LLViewMouselook : public view_listener_t
 	}
 };
 
+//BD - Unused.
 // [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Modified: Catznip-2.1.1a
-class LLViewFullscreen : public view_listener_t
+/*class LLViewFullscreen : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
@@ -4428,7 +4429,7 @@ class LLViewFullscreen : public view_listener_t
 bool view_enable_fullscreen()
 {
 	return (gViewerWindow) && (gViewerWindow->canFullscreenWindow());
-}
+}*/
 // [/SL:KB]
 
 class LLViewDefaultUISize : public view_listener_t
@@ -10001,8 +10002,8 @@ void initialize_menus()
 // [/RLVa:KB]
 
 // [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Modified: Catznip-2.1.1a
-	view_listener_t::addMenu(new LLViewFullscreen(), "View.Fullscreen");
-	enable.add("View.EnableFullscreen", boost::bind(&view_enable_fullscreen));
+	//view_listener_t::addMenu(new LLViewFullscreen(), "View.Fullscreen");
+	//enable.add("View.EnableFullscreen", boost::bind(&view_enable_fullscreen));
 // [/SL:KB]
 
 //	//BD - Re/DeAlpha
