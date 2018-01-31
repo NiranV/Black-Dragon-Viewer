@@ -850,23 +850,12 @@ void LLPanelPeople::updateButtons()
 	LLAvatarTracker::buddy_map_t all_buddies;
 	U32 groups_count = gAgent.mGroups.size();
 	av_tracker.copyBuddyList(all_buddies);
-	//BD - This is not entirely correct... we're subtracting me even if the person is friend with me.
-	//     TODO: Fixit.
-	U32 friends = gAgent.getID() == gAgent.getDevID() ? all_buddies.size() : all_buddies.size() - 1;
 	mGroupCount->setTextArg("[COUNT]", llformat("%d", groups_count));
 	mGroupCount->setTextArg("[MAX_GROUPS]", llformat("%d", gMaxAgentGroups));
 	mBlockCount->setVisible(blocked_tab_active);
-	mFriendCount->setVisible(!blocked_tab_active && friends > 0);
-	if (blocked_tab_active)
-	{
-		U32 block_count = mBlockedList->size();
-		mBlockCount->setTextArg("[BLOCKED_COUNT]", llformat("%d", block_count));
-		mBlockCount->setTextArg("[LIMIT]", llformat("%d", gSavedSettings.getS32("MuteListLimit")));
-	}
-	else
-	{
-		mFriendCount->setTextArg("[FRIEND_COUNT]", llformat("%d", friends));
-	}
+	U32 block_count = mBlockedList->size();
+	mBlockCount->setTextArg("[BLOCKED_COUNT]", llformat("%d", block_count));
+	mBlockCount->setTextArg("[LIMIT]", llformat("%d", gSavedSettings.getS32("MuteListLimit")));
 	getChild<LLMenuItemBranchGL>("Filters")->setVisible(!group_tab_active);
 	getChild<LLMenuItemBranchGL>("Edit")->setVisible(!recent_tab_active);
 
@@ -879,8 +868,16 @@ void LLPanelPeople::updateButtons()
 	}
 	else
 	{
-		bool is_friend = true;
+		//BD
+		bool is_friend = LLAvatarTracker::instance().getBuddyInfo(gAgent.getDevID()) != NULL;
 		//bool is_self = false;
+		U32 friends = ((gAgent.getID() != gAgent.getDevID()) && is_friend) 
+			|| gAgent.getID() == gAgent.getDevID() ? all_buddies.size() : all_buddies.size() - 1;
+		is_friend = true;
+
+		mFriendCount->setVisible(!blocked_tab_active && friends > 0);
+		mFriendCount->setTextArg("[FRIEND_COUNT]", llformat("%d", friends));
+
 		// Check whether selected avatar is our friend.
 		if (item_selected)
 		{
