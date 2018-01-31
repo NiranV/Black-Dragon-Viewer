@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [2.9.9B - Spring Dragon]"
+       label="[CHANNEL] [VERSION] - [3.0 - Spring Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="10827"
+       height="11000"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,59 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="26"
+              height="157"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Ability to move entries in the animator list up and down.
+Fixed: Search filter text in Outfit Edit is black and unreadable.
+Fixed: Graphic settings not refreshing on preset load.
+Fixed: Sidebar not refreshing on preset load.
+Changed: Clamp max values for position spinners in tools floater depending on if the selected object is an attachment or not.
+Changed: Pause all motions when entering pose mode to attempt to prevent certain human heads from overriding the Poser.
+Changed: Readme.
+Changed: Version to 3.0.
+Removed: Fix for stream automatically starting every teleport now that it is not needed anymore.
+Removed: Unneeded reset code in bdfloateranimations.h/cpp.
+Misc: Commenting in llfloaterpreference.cpp.
+Merge with Linden Release. (18 changes)
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+2.9.9B
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="26"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
