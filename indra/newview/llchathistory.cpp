@@ -712,7 +712,7 @@ public:
 					std::string username = chat.mFromName.substr(username_start + 2);
 					username = username.substr(0, username.length() - 1);
 					LLStyle::Params style_params_name;
-					LLColor4 userNameColor = LLUIColorTable::instance().getColor("EmphasisColor");
+					LLColor4 userNameColor = LLUIColorTable::instance().getColor("EmphasisColorUserNames");
 					style_params_name.color(userNameColor);
 					style_params_name.font.name("SansSerifSmall");
 					style_params_name.font.style("NORMAL");
@@ -1037,7 +1037,7 @@ private:
 			!av_name.isDisplayNameDefault())
 		{
 			LLStyle::Params style_params_name;
-			LLColor4 userNameColor = LLUIColorTable::instance().getColor("EmphasisColor");
+			LLColor4 userNameColor = LLUIColorTable::instance().getColor("EmphasisColorUserNames");
 			style_params_name.color(userNameColor);
 			style_params_name.font.name("SansSerifSmall");
 			style_params_name.font.style("NORMAL");

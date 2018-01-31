@@ -929,6 +929,10 @@
  name="ModDevColor"
  value="0.35 1 1 1"/>
  
+ <color
+ name="EmphasisColorUserNames"
+ value="1 1 1 0.75" />
+ 
  <!-- Chat color names -->
  <color
  name="Red_Chat"
