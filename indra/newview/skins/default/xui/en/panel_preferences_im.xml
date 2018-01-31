@@ -147,86 +147,18 @@ width="510">
       top_pad="1"
       width="318" />
       <button
- follows="left|top"
- control_name="ChannelBottomPanelMargin"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-       <slider
-      control_name="WellIconFlashCount"
-      decimal_digits="0"
-      can_edit_text="true"
       follows="left|top"
+      control_name="ChannelBottomPanelMargin"
       height="15"
-      increment="1"
-      initial_value="4"
-      label="IM Flash Count:"
-      label_width="150"
-      tool_tip="This option sets the amount of times an instant message tab should flash when receiving a new message."
+      is_toggle="false"
+      label="⌊default⌉"
+      image_selected="PushButton_Default_Off"
+      image_unselected="PushButton_Default_Off"
       layout="topleft"
-      left="10"
-      max_val="100"
-      min_val="1"
-      name="WellIconFlashCount"
-      top_pad="1"
-      width="318" />
-      <button
- follows="left|top"
- control_name="WellIconFlashCount"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-       <slider
-      control_name="WellIconFlashPeriod"
-      decimal_digits="1"
-      can_edit_text="true"
-      follows="left|top"
-      height="15"
-      increment="0.1"
-      initial_value="0.2"
-      label="IM Flash Period:"
-      label_width="150"
-      tool_tip="This option sets the amount of time in s (seconds) each tab flash lasts." 
-      layout="topleft"
-      left="10"
-      max_val="5"
-      min_val="01"
-      name="WellIconFlashPeriod"
-      top_pad="1"
-      width="315" />
-      <button
- follows="left|top"
- control_name="WellIconFlashPeriod"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
+      left="370"
+      top_delta="0"
+      name="default"
+      width="60">
        <button.commit_callback
                                  function="Pref.Default"/>
       </button>
