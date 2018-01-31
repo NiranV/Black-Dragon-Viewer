@@ -977,7 +977,7 @@ width="345">
       top_pad="1"
       width="287">
   <slider.commit_callback
-      function="Pref.Arrayx"
+      function="Pref.ArrayX"
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
