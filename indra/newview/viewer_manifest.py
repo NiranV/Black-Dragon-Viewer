@@ -492,7 +492,7 @@ class WindowsManifest(ViewerManifest):
 
             with self.prefix(src=os.path.join(pkgdir, "VMP"), dst=""):
                 # include the compiled launcher scripts so that it gets included in the file_list
-            self.path('BD_Launcher.exe')
+                self.path('BD_Launcher.exe')
                 #IUM is not normally executed directly, just imported.  No exe needed.
                 self.path("InstallerUserMessage.py")
 
