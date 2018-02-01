@@ -309,6 +309,10 @@ private:
 
 	std::string mNameFilter;
 
+	LLSliderCtrl* mShadowDistSliderY;
+	LLSliderCtrl* mShadowDistSliderZ;
+	LLSliderCtrl* mShadowDistSliderW;
+
 //	//BD - Custom Keyboard Layout
 	LLScrollListCtrl* mBindModeList0;
 	LLScrollListCtrl* mBindModeList1;

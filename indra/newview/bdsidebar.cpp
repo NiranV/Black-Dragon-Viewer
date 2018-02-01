@@ -31,6 +31,7 @@
 // viewer includes
 #include "llfloaterpreference.h"
 #include "llviewercamera.h"
+#include "pipeline.h"
 
 #include "llsliderctrl.h"
 
@@ -61,6 +62,10 @@ void LLSideBar::draw()
 {
 	if (gSideBar->getParentByType<LLLayoutPanel>()->getVisibleAmount() > 0.01f)
 	{
+		mShadowDistY->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
+		mShadowDistZ->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
+		mShadowDistW->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
+
 		//refreshGraphicControls();
 		LLPanel::draw();
 	}

@@ -3287,7 +3287,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="578"
+	  height="592"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -3542,7 +3542,20 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
+ <check_box
+   control_name="RenderShadowAutomaticDistance"
+   height="16"
+   label="Automatic Shadow Distance"
+   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles whether the four shadow distance planes should be automatically calculated or set manually."
+   layout="topleft"
+   left="10"
+   name="RenderShadowAutomaticDistance"
+   top_pad="0"
+   width="115" />
  <slider
+      invisibility_control="RenderShadowAutomaticDistance"
       enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
@@ -3566,6 +3579,44 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
+      visibility_control="RenderShadowAutomaticDistance"
+      enabled_control="RenderDeferred"
+      control_name="RenderShadowFarClip"
+      decimal_digits="0"
+      follows="left|top"
+      height="14"
+      increment="8"
+      can_edit_text="true"
+      label="Shadow Distance:"
+      label_width="150"
+      tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option roughly controls the space in meters all shadowmaps cover. Affects precision of shadows in all four areas all shadows cover."
+      layout="topleft"
+      left="10"
+      max_val="600"
+      min_val="8"
+      name="RenderShadowFarClip"
+      top_delta="0"
+      width="318"/>
+ <button
+ follows="left|top"
+ control_name="RenderShadowFarClip"
+ visibility_control="RenderShadowAutomaticDistance"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+ <slider
       enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
@@ -3582,7 +3633,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="256"
       min_val="1"
       name="RenderShadowDistance_Y"
-      top_pad="1"
+      top_pad="0"
       width="318">
   <slider.commit_callback
       function="Pref.ArrayY"
@@ -3637,6 +3688,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  <button
  follows="left|top"
  control_name="RenderShadowDistance"
+ invisibility_control="RenderShadowAutomaticDistance"
  height="63"
  is_toggle="false"
  label="⌊default⌉"

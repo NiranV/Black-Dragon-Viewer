@@ -972,13 +972,15 @@ public:
 	static BOOL RenderDeferredBlurLight;
 	static BOOL RenderSnapshotAutoAdjustMultiplier;
 	static BOOL RenderHighPrecisionNormals;
+	static BOOL RenderShadowAutomaticDistance;
 	static U32 RenderSSRResolution;
 	static F32 RenderSSRBrightness;
 	static F32 RenderSSAOEffect;
 	static F32 RenderSSAOBlurSize;
 	static F32 RenderChromaStrength;
 	static F32 RenderSnapshotMultiplier;
-	static LLVector4 RenderShadowFarClip;
+	static F32 RenderShadowFarClip;
+	static LLVector4 RenderShadowFarClipVec;
 
 //	//BD - Shadow Map Allocation
 	static LLVector2 RenderProjectorShadowResolution;

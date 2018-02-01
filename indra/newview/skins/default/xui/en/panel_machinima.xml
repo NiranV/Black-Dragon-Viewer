@@ -960,7 +960,8 @@ width="345">
                   top_pad="15"
                   width="284"/>
                   <slider
-      enabled_control="RenderShadowDetail"
+      invisibility_control="RenderShadowAutomaticDistance"
+      enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
       height="14"
@@ -980,8 +981,29 @@ width="345">
       function="Pref.ArrayX"
       parameter="RenderShadowDistance"/>
       </slider>
+      <slider
+      visibility_control="RenderShadowAutomaticDistance"
+      enabled_control="RenderDeferred"
+      control_name="RenderShadowFarClip"
+      decimal_digits="0"
+      follows="left|top"
+      height="14"
+      increment="8"
+      can_edit_text="true"
+      label="Shadow Distance:"
+      label_width="110"
+      tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option roughly controls the space in meters all shadowmaps cover. Affects precision of shadows in all four areas all shadows cover."
+      layout="topleft"
+      left="10"
+      max_val="600"
+      min_val="8"
+      name="RenderShadowFarClip"
+      top_delta="0"
+      width="287"/>
  <slider
-      enabled_control="RenderShadowDetail"
+      enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
       height="14"
@@ -1002,7 +1024,7 @@ width="345">
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
-      enabled_control="RenderShadowDetail"
+      enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
       height="14"
@@ -1023,7 +1045,7 @@ width="345">
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
-      enabled_control="RenderShadowDetail"
+      enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
       height="14"

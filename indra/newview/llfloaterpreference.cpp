@@ -1129,6 +1129,10 @@ BOOL LLFloaterPreference::postBuild()
 		mTabContainer->selectFirstTab();
 	}
 
+	mShadowDistSliderY = getChild<LLSliderCtrl>("RenderShadowDistance_Y");
+	mShadowDistSliderZ = getChild<LLSliderCtrl>("RenderShadowDistance_Z");
+	mShadowDistSliderW = getChild<LLSliderCtrl>("RenderShadowDistance_W");
+
 //	//BD - Custom Keyboard Layout
 	mBindModeList0 = this->getChild<LLScrollListCtrl>("scroll_mode_0", true);
 	mBindModeList1 = this->getChild<LLScrollListCtrl>("scroll_mode_1", true);
@@ -1754,6 +1758,10 @@ void LLFloaterPreference::draw()
 //			//BD - Warning System
 			refreshWarnings();
 		}
+
+		mShadowDistSliderY->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
+		mShadowDistSliderZ->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
+		mShadowDistSliderW->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
 
 		if (mTabContainer->getCurrentPanelIndex() == 9)
 		{

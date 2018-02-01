@@ -16763,6 +16763,28 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <key>RenderShadowAutomaticDistance</key>
+  <map>
+    <key>Comment</key>
+    <string>Toggles between old automatic shadow clip plane scaling or fully customizable one.</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>RenderShadowFarClip</key>
+  <map>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>200</real>
+  </map>
   <key>RenderShadowDistance</key>
   <map>
     <key>Comment</key>

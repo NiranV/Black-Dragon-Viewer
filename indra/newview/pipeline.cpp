@@ -211,13 +211,15 @@ bool LLPipeline::RenderDepthOfFieldInEditMode;
 BOOL LLPipeline::RenderDeferredBlurLight;
 BOOL LLPipeline::RenderSnapshotAutoAdjustMultiplier;
 BOOL LLPipeline::RenderHighPrecisionNormals;
+BOOL LLPipeline::RenderShadowAutomaticDistance;
 U32 LLPipeline::RenderSSRResolution;
 F32 LLPipeline::RenderSSRBrightness;
 F32 LLPipeline::RenderSSAOEffect;
 F32 LLPipeline::RenderSSAOBlurSize;
 F32 LLPipeline::RenderChromaStrength;
 F32 LLPipeline::RenderSnapshotMultiplier;
-LLVector4 LLPipeline::RenderShadowFarClip;
+F32 LLPipeline::RenderShadowFarClip;
+LLVector4 LLPipeline::RenderShadowFarClipVec;
 
 //	//BD - Shadow Map Allocation
 LLVector4 LLPipeline::RenderShadowResolution;
@@ -685,6 +687,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderDeferredBlurLight");
 	connectRefreshCachedSettingsSafe("RenderSnapshotAutoAdjustMultiplier");
 	connectRefreshCachedSettingsSafe("RenderHighPrecisionNormals");
+	connectRefreshCachedSettingsSafe("RenderShadowAutomaticDistance");
 	connectRefreshCachedSettingsSafe("RenderSSRResolution");
 	connectRefreshCachedSettingsSafe("RenderSSRBrightness");
 	connectRefreshCachedSettingsSafe("RenderSSAOEffect");
@@ -692,6 +695,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderChromaStrength");
 	connectRefreshCachedSettingsSafe("RenderSnapshotMultiplier");
 	connectRefreshCachedSettingsSafe("RenderShadowDistance");
+	connectRefreshCachedSettingsSafe("RenderShadowFarClip");
 
 //	//BD - Post Processing
 	connectRefreshCachedSettingsSafe("RenderLensFlare");
@@ -1307,13 +1311,15 @@ void LLPipeline::refreshCachedSettings()
 	RenderDeferredBlurLight = gSavedSettings.getBOOL("RenderDeferredBlurLight");
 	RenderSnapshotAutoAdjustMultiplier = gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier");
 	RenderHighPrecisionNormals = gSavedSettings.getBOOL("RenderHighPrecisionNormals");
+	RenderShadowAutomaticDistance = gSavedSettings.getBOOL("RenderShadowAutomaticDistance");
 	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
 	RenderSSRBrightness = gSavedSettings.getF32("RenderSSRBrightness");
 	RenderSSAOEffect = gSavedSettings.getF32("RenderSSAOEffect");
 	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
 	RenderSnapshotMultiplier = gSavedSettings.getF32("RenderSnapshotMultiplier");
-	RenderShadowFarClip = gSavedSettings.getVector4("RenderShadowDistance");
+	RenderShadowFarClip = gSavedSettings.getF32("RenderShadowFarClip");
+	RenderShadowFarClipVec = gSavedSettings.getVector4("RenderShadowDistance");
 
 //	//BD - Volumetric Lighting
 	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");
@@ -11188,18 +11194,31 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 		//far_clip = llmin(far_clip, camera.getFar());
 
 		//BD
-		LLVector4 range = RenderShadowFarClip;
-		//LLVector3 split_exp = RenderShadowSplitExponent;
-		//F32 da = 1.f-llmax( fabsf(lightDir*up), fabsf(lightDir*camera.getLeftAxis()) );
-		//da = powf(da, split_exp.mV[2]);
-		F32 tot = 0;
-		for (U32 i = 0; i < 4; ++i)
+		if (RenderShadowAutomaticDistance)
 		{
-			//BD
-			//F32 x = (F32)(i + 1) / 4.f;
-			//x = powf(x, sxp);
-			mSunClipPlanes.mV[i] = near_clip + tot + range[i];
-			tot += range[i];
+			F32 range = RenderShadowFarClip;
+			LLVector3 split_exp = RenderShadowSplitExponent;
+			F32 da = 1.f-llmax( fabsf(lightDir*up), fabsf(lightDir*camera.getLeftAxis()) );
+			da = powf(da, split_exp.mV[2]);
+			F32 sxp = split_exp.mV[1] + (split_exp.mV[0] - split_exp.mV[1])*da;
+
+			for (U32 i = 0; i < 4; ++i)
+			{
+				F32 x = (F32)(i + 1) / 4.f;
+				x = powf(x, sxp);
+				mSunClipPlanes.mV[i] = near_clip + range*x;
+			}
+		}
+		else
+		{
+			LLVector4 range = RenderShadowFarClipVec;
+			F32 tot = 0;
+
+			for (U32 i = 0; i < 4; ++i)
+			{
+				mSunClipPlanes.mV[i] = near_clip + tot + range[i];
+				tot += range[i];
+			}
 		}
 
 		//BD
