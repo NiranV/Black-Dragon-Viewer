@@ -518,15 +518,8 @@ void LLViewerShaderMgr::setShaders()
 		if (LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
 										 gSavedSettings.getBOOL("RenderDeferred"))
 		{
-			if (gSavedSettings.getS32("RenderShadowDetail") > 0
-				|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
-			{ //shadows
-				deferred_class = 2;
-			}
-			else
-			{ //no shadows
-				deferred_class = 1;
-			}
+			//BD - Force shader level 2 at all times.
+			deferred_class = 2;
 
 			//make sure hardware skinning is enabled
 			gSavedSettings.setBOOL("RenderAvatarVP", TRUE);
@@ -732,15 +725,8 @@ BOOL LLViewerShaderMgr::resetDeferredShaders()
 	if (LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
 		gSavedSettings.getBOOL("RenderDeferred"))
 	{
-		if (gSavedSettings.getS32("RenderShadowDetail") > 0
-			|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
-		{ //shadows
-			deferred_class = 2;
-		}
-		else
-		{ //no shadows
-			deferred_class = 1;
-		}
+		//BD - Force shader level 2 at all times.
+		deferred_class = 2;
 	}
 
 	mVertexShaderLevel[SHADER_DEFERRED] = deferred_class;
@@ -1994,30 +1980,12 @@ BOOL LLViewerShaderMgr::loadShadersSSAO(bool success)
 	gDeferredSunProgram.unload();
 	if (success)
 	{
-		std::string fragment;
-		std::string vertex = "deferred/sunLightV.glsl";
-
-		//BD
-		if (gSavedSettings.getBOOL("RenderDeferredBlurLight")
-			|| gSavedSettings.getBOOL("RenderDeferredSSAO")
-			|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
-		{
-			fragment = "deferred/sunLightSSAOF.glsl";
-		}
-		else
-		{
-			fragment = "deferred/sunLightF.glsl";
-			if (mVertexShaderLevel[SHADER_DEFERRED] == 1)
-			{ //no shadows, no SSAO, no frag coord
-				vertex = "deferred/sunLightNoFragCoordV.glsl";
-			}
-		}
-
 		gDeferredSunProgram.mName = "Deferred Sun Shader";
 		gDeferredSunProgram.mShaderFiles.clear();
-		gDeferredSunProgram.mShaderFiles.push_back(make_pair(vertex, GL_VERTEX_SHADER_ARB));
-		gDeferredSunProgram.mShaderFiles.push_back(make_pair(fragment, GL_FRAGMENT_SHADER_ARB));
-		//BD
+		//BD - Use shader level 2 at all times.
+		//     Since we force shader level 2 we'll need another check to disable SSAO separately.
+		gDeferredSunProgram.mShaderFiles.push_back(make_pair("deferred/sunLightV.glsl", GL_VERTEX_SHADER_ARB));
+		gDeferredSunProgram.mShaderFiles.push_back(make_pair("deferred/sunLightSSAOF.glsl", GL_FRAGMENT_SHADER_ARB));
 		gDeferredSunProgram.addPermutation("USE_SSAO", (bool)gSavedSettings.getBOOL("RenderDeferredSSAO") ? "1" : "0");
 
 		gDeferredSunProgram.mShaderLevel = mVertexShaderLevel[SHADER_DEFERRED];

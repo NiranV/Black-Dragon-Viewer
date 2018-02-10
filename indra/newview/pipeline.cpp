@@ -1024,9 +1024,6 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 
 	if (LLPipeline::sRenderDeferred)
 	{
-		S32 shadow_detail = RenderShadowDetail;
-		bool ssao = RenderDeferredSSAO;
-		
 		const U32 occlusion_divisor = 3;
 
 		//allocate deferred rendering color buffers
@@ -1056,18 +1053,17 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			mFXAABuffer.release();
 		}
 
-		//BD
-		if (shadow_detail > 0 || ssao 
-			|| RenderDepthOfField || samples > 0 
-			|| RenderDeferredBlurLight
-			|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
-		{ //only need mDeferredLight for shadows OR ssao OR dof OR fxaa
-			if (!mDeferredLight.allocate(resX, resY, GL_RGBA, FALSE, FALSE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
-		}
-		else
+		//BD - Force shader level 2 at all times.
+		//if (shadow_detail > 0 || ssao 
+		//	|| RenderDepthOfField || samples > 0 
+		//	|| RenderDeferredBlurLight)
+		//{ //only need mDeferredLight for shadows OR ssao OR dof OR fxaa
+		if (!mDeferredLight.allocate(resX, resY, GL_RGBA, FALSE, FALSE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
+		//}
+		/*else
 		{
 			mDeferredLight.release();
-		}
+		}*/
 
 //		//BD - Shadow Map Allocation
 		allocateShadowMaps(true);
@@ -8813,11 +8809,10 @@ void LLPipeline::renderDeferredLighting()
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 
-		//BD
-		if (RenderDeferredSSAO 
-			|| RenderShadowDetail > 0 
-			|| RenderDeferredBlurLight
-			|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
+		//BD - Force shader level 2 at all times.
+		//if (RenderDeferredSSAO 
+		//	|| RenderShadowDetail > 0 
+		//	|| RenderDeferredBlurLight)
 		{
 			mDeferredLight.bindTarget();
 			{ //paint shadow/SSAO light map (direct lighting lightmap)
@@ -9447,11 +9442,10 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 
-		//BD
-		if (RenderDeferredSSAO 
-			|| RenderShadowDetail > 0 
-			|| RenderDeferredBlurLight
-			|| gSavedSettings.getBOOL("RenderForceHighShaderLevel"))
+		//BD - Force shader level 2 at all times.
+		//if (RenderDeferredSSAO 
+		//	|| RenderShadowDetail > 0 
+		//	|| RenderDeferredBlurLight)
 		{
 			mDeferredLight.bindTarget();
 			{ //paint shadow/SSAO light map (direct lighting lightmap)
