@@ -1005,7 +1005,8 @@ void LLFloaterIMSession::reloadMessages(bool clean_messages/* = false*/)
 	mChatHistory->clear();
 	mLastMessageIndex = -1;
 	updateMessages();
-	mInputEditor->setFont(LLViewerChat::getChatFont());
+	//BD
+	//mInputEditor->setFont(LLViewerChat::getChatFont());
 }
 
 // static
