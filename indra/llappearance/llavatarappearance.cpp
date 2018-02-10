@@ -98,6 +98,7 @@ private:
 	LLVector3 mPivot;
 	typedef std::vector<LLAvatarBoneInfo*> child_list_t;
 	child_list_t mChildList;
+	std::string mRotOrder;
 };
 
 //------------------------------------------------------------------------
@@ -651,6 +652,22 @@ BOOL LLAvatarAppearance::setupBone(const LLAvatarBoneInfo* info, LLJoint* parent
 	{
 		parent->addChild( joint );
 	}
+
+	//BD
+	joint->setDefaultRotation(mayaQ(info->mRot.mV[VX], info->mRot.mV[VY],
+		info->mRot.mV[VZ], LLQuaternion::XYZ));
+	LLQuaternion::Order order = LLQuaternion::XYZ;
+	if (info->mRotOrder == "YZX")
+		order = LLQuaternion::YZX;
+	else if (info->mRotOrder == "ZXY")
+		order = LLQuaternion::ZXY;
+	else if (info->mRotOrder == "XZY")
+		order = LLQuaternion::XZY;
+	else if (info->mRotOrder == "YXZ")
+		order = LLQuaternion::YXZ;
+	else if (info->mRotOrder == "ZYX")
+		order = LLQuaternion::ZYX;
+	joint->setDefaultRotOrder(order);
 
 	// SL-315
 	joint->setPosition(info->mPos);
@@ -1663,6 +1680,14 @@ BOOL LLAvatarBoneInfo::parseXml(LLXmlTreeNode* node)
 			LL_WARNS() << "Bone without pivot" << LL_ENDL;
 			return FALSE;
 		}
+	}
+
+	//BD
+	static LLStdStringHandle order_string = LLXmlTree::addAttributeString("order");
+	if (!node->getFastAttributeString(order_string, mRotOrder))
+	{
+		LL_WARNS() << "Bone without rotation order" << mName << LL_ENDL;
+		mRotOrder = "XYZ";
 	}
 
 	// parse children

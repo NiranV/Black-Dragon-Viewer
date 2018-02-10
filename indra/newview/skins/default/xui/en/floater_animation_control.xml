@@ -561,8 +561,8 @@ width="494">
  label_width="70"
  layout="topleft"
  left="10"
- max_val="3.142"
- min_val="-3.142"
+ max_val="180"
+ min_val="-180"
  name="Rotation_X"
  top_pad="10"
  width="219" >
@@ -582,8 +582,8 @@ width="494">
  label_width="70"
  layout="topleft"
  left="10"
- max_val="3.142"
- min_val="-3.142"
+ max_val="180"
+ min_val="-180"
  name="Rotation_Y"
  top_pad="1"
  width="219" >
@@ -603,8 +603,8 @@ width="494">
  label_width="70"
  layout="topleft"
  left="10"
- max_val="3.142"
- min_val="-3.142"
+ max_val="180"
+ min_val="-180"
  name="Rotation_Z"
  top_pad="1"
  width="219" >
@@ -714,12 +714,70 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="toggle_bone"
- width="305"
+ width="217"
  top="0"
  left_pad="1">
 		<button.commit_callback
    function="Joint.ChangeState"/>
  </button>
+	<combo_box
+     follows="left|top"
+     height="21"
+     layout="topleft"
+     left_pad="1"
+     top_delta="0"
+     max_chars="135"
+     name="OrderDropdown"
+     width="87">
+								<combo_box.item
+         enabled="true"
+         label="NO ORDER"
+         name="0"
+         value="NONE" />
+        <combo_box.item
+         enabled="true"
+         label="XYZ"
+         name="0"
+         value="XYZ" />
+								<combo_box.item
+         enabled="true"
+         label="YZX"
+         name="0"
+         value="YZX" />
+								<combo_box.item
+         enabled="true"
+         label="ZXY"
+         name="0"
+         value="ZXY" />
+								<combo_box.item
+         enabled="true"
+         label="XZY"
+         name="0"
+         value="XZY" />
+								<combo_box.item
+         enabled="true"
+         label="YXZ"
+         name="0"
+         value="YXZ" />
+								<combo_box.item
+         enabled="true"
+         label="ZYX"
+         name="0"
+         value="ZYX" />
+		<combo_box.commit_callback
+		function="Pose.Set"
+		parameter="type"/>
+		<combo_box.combo_button
+		image_unselected="Toolbar_Middle_Off"
+		image_selected="Toolbar_Middle_Selected"
+		image_disabled="Toolbar_Middle_Off" />
+		<combo_box.drop_down_button
+		image_unselected="Toolbar_Middle_Off"
+		image_selected="Toolbar_Middle_Selected"
+		image_pressed="Toolbar_Middle_Selected" 
+		image_pressed_selected="Toolbar_Middle_Selected"
+		image_disabled="Toolbar_Middle_Off" />
+    </combo_box>
 	</panel>
 
 	</panel>

@@ -114,6 +114,10 @@ protected:
 
     LLVector3       mDefaultPosition;
     LLVector3       mDefaultScale;
+
+	//BD
+	LLQuaternion    mDefaultRotation;
+	LLQuaternion::Order    mDefaultRotOrder;
     
 public:
 	U32				mDirtyFlags;
@@ -236,6 +240,14 @@ public:
 	LLVector3 getWorldPosition();
 	LLVector3 getLastWorldPosition();
 	void setWorldPosition( const LLVector3& pos );
+
+	//BD - Tracks the default rotation order defined by the skeleton
+	void setDefaultRotOrder(const LLQuaternion::Order& order);
+	const LLQuaternion::Order& getDefaultRotOrder() const;
+
+	//BD - Tracks the default rotation defined by the skeleton
+	void setDefaultRotation(const LLQuaternion& rot);
+	const LLQuaternion& getDefaultRotation() const;
 
 	//BD
 	void setTargetPosition(const LLVector3& pos) { mTargetPosition = pos; }
