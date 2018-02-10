@@ -42,6 +42,20 @@ public:
 		TURN
 	};
 
+	class Action
+	{
+	public:
+
+		EActionType		mType;
+		LLVector3d		mTarget;
+		F64				mTime;
+		F32				mCameraView;
+		LLVector3		mCameraOrigin;
+		LLVector3		mCameraXAxis;
+		LLVector3		mCameraYAxis;
+		LLVector3		mCameraZAxis;
+	};
+
 	LLAgentPilot();
 	virtual ~LLAgentPilot();
 
@@ -76,10 +90,11 @@ public:
 
 	void setQuitAfterRuns(BOOL quit_val) { mQuitAfterRuns = quit_val; }
 	void setNumRuns(S32 num_runs) { mNumRuns = num_runs; }
+
+	std::vector<Action> getActions() { return mActions; }
+
 	
 private:
-
-
 
 	BOOL	mLoop;
 	BOOL 	mReplaySession;
@@ -98,21 +113,7 @@ private:
 
 	BOOL	mOverrideCamera;
 
-	class Action
-	{
-	public:
-
-		EActionType		mType;
-		LLVector3d		mTarget;
-		F64				mTime;
-		F32				mCameraView;
-		LLVector3		mCameraOrigin;
-		LLVector3		mCameraXAxis;
-		LLVector3		mCameraYAxis;
-		LLVector3		mCameraZAxis;
-	};
-
-	std::vector<Action>	mActions;
+	std::vector<Action>		mActions;
 	LLTimer					mTimer;
 
 };

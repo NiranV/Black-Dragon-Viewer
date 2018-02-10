@@ -3857,6 +3857,16 @@
              function="Floater.Toggle"
              parameter="animation_control" />
         </menu_item_check>
+   <menu_item_check
+        label="Recorder"
+        name="Recorder">
+            <menu_item_check.on_check
+             function="Floater.Visible"
+             parameter="recorder" />
+            <menu_item_check.on_click
+             function="Floater.Toggle"
+             parameter="recorder" />
+        </menu_item_check>
             <menu_item_call
              label="Stop Animating Me"
              name="Stop Animating My Avatar">
