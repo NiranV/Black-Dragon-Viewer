@@ -50,7 +50,6 @@ BOOL BDFloaterComplexity::postBuild()
 {
 	//BD - Complexity
 	mAvatarScroll = this->getChild<LLScrollListCtrl>("arc_avs_scroll", true);
-	//mAvatarScroll->setCommitCallback(boost::bind(&BDFloaterComplexity::onSelectAvatar, this));
 	mAvatarScroll->setDoubleClickCallback(boost::bind(&BDFloaterComplexity::calcARC, this));
 	mARCScroll = this->getChild<LLScrollListCtrl>("arc_scroll", true);
 	mARCScroll->setCommitOnSelectionChange(TRUE);
