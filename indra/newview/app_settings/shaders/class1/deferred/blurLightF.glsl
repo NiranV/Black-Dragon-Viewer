@@ -42,7 +42,6 @@ uniform sampler2DRect lightMap;
 uniform vec2 delta;
 uniform float kern_scale;
 uniform vec2 gaussian;
-uniform int blur_passes;
 
 VARYING vec2 vary_fragcoord;
 
@@ -129,7 +128,7 @@ void main()
 	  * 0.0001;
 
 	const float mindp = 0.70;
-	for (int i = blur_passes-1; i > 0; i--)
+	for (int i = 8-1; i > 0; i--)
 	{
 	  vec2 w = kern[i].xy;
 	  w.y = gaussian.y;
@@ -151,7 +150,7 @@ void main()
 	}
 	
 	
-	for (int i = blur_passes-1; i > 0; i--)
+	for (int i = 8-1; i > 0; i--)
 	{
 	  vec2 w = kern[i].xy;
 	  w.y = gaussian.y;
