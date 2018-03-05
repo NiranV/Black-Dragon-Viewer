@@ -835,6 +835,9 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 		return FALSE;
 	}
 
+	//BD - Support old poses before we changed the rotation order.
+	F32 version = 0.f;
+
 	while (!infile.eof())
 	{
 		S32 count = LLSDSerialize::fromXML(pose, infile);
@@ -843,9 +846,6 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 			LL_WARNS("Posing") << "Failed to parse file" << filename << LL_ENDL;
 			return FALSE;
 		}
-
-		//BD - Support old poses before we changed the rotation order.
-		F32 version = 0.f;
 
 		//BD - Not sure how to read the exact line out of a XML file, so we're just going
 		//     by the amount of tags here, since the header has only 3 it's a good indicator
@@ -867,6 +867,8 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 		if (count == 4)
 		{
 			version = pose["version"].asReal();
+
+			LL_WARNS("Posing") << "Got version:" << version << LL_ENDL;
 		}
 
 		LLJoint* joint = gAgentAvatarp->getJoint(pose["bone"].asString());
@@ -882,10 +884,12 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 			{
 				quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
 				joint->setTargetRotation(quat);
+				LL_WARNS("Posing") << "Old version:" << version << LL_ENDL;
 			}
 			else
 			{
-				joint->setTargetRotation(mayaQ(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ], joint->getDefaultRotOrder()));
+				joint->setTargetRotation(mayaQ(vec3.mV[VX] / DEG_TO_RAD, vec3.mV[VZ] / DEG_TO_RAD, vec3.mV[VY] / DEG_TO_RAD, joint->getDefaultRotOrder()));
+				LL_WARNS("Posing") << "New version:" << version << LL_ENDL;
 			}
 
 			if (joint->getName() == "mPelvis")
