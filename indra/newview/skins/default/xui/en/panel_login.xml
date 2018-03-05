@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.0.2 - Spring Dragon]"
+       label="[CHANNEL] [VERSION] - [3.0.3 - Dark Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -152,7 +152,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="11143"
+       height="11478"
        layout="topleft"
        left="0"
        name="panel_login2"
@@ -163,8 +163,71 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="51"
+              height="312"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Poser rotation application order dropdown to select a different order in which rotations should be applied.
+Added: Some logging to the poser in case it fails to load a file.
+Added: Rotation order parameters to all important and tested main bones.
+Added: First steps for a full fledged camera recorder window.
+Added: Mr Coffee to Patreon Patron list.
+Added: First WIP version of recorder window.
+Added: First working version of a customizable Sidebar.
+Changed: Replaced blurLightF shader with blurLightFastF now that blur quality has been removed.
+Changed: Don't change the font of our IM/Conversation chat bar label, keep it at big.
+Changed: Inworld Poser to 6.0.
+Changed: Poser X Y Z slider to be used in degrees rather than radians.
+Changed: Improved the the way some bones rotate around their axes by changing the rotation application order.
+Changed: All old poses are considered legacy now and are loaded with default XYZ rotation order to prevent them from breaking.
+Changed: Force shader level 2 everywhere. Fixes blackscreen with blur, shadows and SSAO off.
+Changed: Mute Viewer when minimized option label.
+Changed: Minor improvements to shadow accuracy on different altitudes.
+Changed: Increased increment for rotation sliders to 0.25.
+Changed: Loginscreen video.
+Changed: Version to 3.0.3 - Dark Dragon.
+Fixed: Version 2 poses not being loaded properly.
+Fixed: Poser sliders not refreshing when resetting a bone.
+Misc: Cleanup in bdfloatercomplexity.cpp.
+Misc: Cleanup in floater_im_session.xml.
+Misc: Commenting on a potential crash location.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.0.2
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="51"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
