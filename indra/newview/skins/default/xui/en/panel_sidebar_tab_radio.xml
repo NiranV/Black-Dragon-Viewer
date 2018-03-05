@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+	<panel
+	 background_visible="false"
+     bevel_style="in"
+     follows="top|left|right"
+     height="16"
+     label="im_header"
+	 layout="topleft"
+     name="im_header"
+		 left="0"
+		 top="0"
+     width="310">
+		<radio_group
+                  height="38"
+                  layout="topleft"
+                  left="10"
+                  name="radio"
+                  top="0"
+                  width="287">
+                        <radio_item
+                        height="16"
+                        label="Radio 1"
+                        value="0"
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="57">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Radio 2"
+                        value="1"
+                        layout="topleft"
+                        left_pad="10"
+                        name="0"
+                        top_delta="0"
+                        width="57">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Radio 3"
+                        value="2"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="62">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Radio 4"
+                        value="3"
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="40">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off_Disabled"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
+		<button
+   follows="left|top"
+   height="16"
+   label=""
+   image_overlay="OptionsMenu_Off"
+   image_hover_unselected="transparent.j2c"
+	  image_selected="transparent.j2c"
+	  image_unselected="transparent.j2c"
+   layout="topleft"
+	scale_image="false"
+   left_pad="0"
+   name="remove_widget"
+   top_delta="0"
+   width="23" />
+	</panel>

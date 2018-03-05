@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+	<panel
+	 background_visible="false"
+     bevel_style="in"
+     follows="top|left|right"
+     height="23"
+	 layout="topleft"
+     name="widget_panel"
+		 left="0"
+		 top="0"
+     width="310">
+		<button
+   follows="left|top"
+   height="23"
+   label="Add Checkbox"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left="7"
+   name="add_checkbox"
+   top="0"
+   width="100" />
+		<button
+   follows="left|top"
+   height="23"
+   label="Add Radio"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="0"
+   name="add_radio"
+   top_delta="0"
+   width="100" />
+		<button
+   follows="left|top"
+   height="23"
+   label="Add Slider"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="0"
+   name="add_slider"
+   top_delta="0"
+   width="100" />
+	</panel>

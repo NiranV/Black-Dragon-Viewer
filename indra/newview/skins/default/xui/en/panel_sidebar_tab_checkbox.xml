@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+	<panel
+	 background_visible="false"
+     bevel_style="in"
+     follows="top|left|right"
+     height="16"
+     label="im_header"
+	 layout="topleft"
+     name="im_header"
+		 left="0"
+		 top="0"
+     width="310">
+		<check_box
+		height="16"
+		label="Checkbox"
+		layout="topleft"
+		left="10"
+		name="checkbox"
+		top="0"
+		width="287" />
+		<button
+   follows="left|top"
+   height="16"
+   label=""
+   image_overlay="OptionsMenu_Off"
+   image_hover_unselected="transparent.j2c"
+	  image_selected="transparent.j2c"
+	  image_unselected="transparent.j2c"
+   layout="topleft"
+   left_pad="0"
+   name="remove_widget"
+   top_delta="0"
+   width="23" />
+	</panel>

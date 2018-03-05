@@ -9,7 +9,7 @@ left="0"
 name="Machinima Sidebar"
 top="0"
 width="345">
-      <icon
+  <icon
       top="0" 
       scale_image="true"
       follows="all"
@@ -19,6 +19,33 @@ width="345">
       image_name="Window_Foreground"
       left="0"
       width="345" />
+  <tab_container
+  follows="all"
+  halign="center"
+  height="766"
+  layout="topleft"
+  left="0"
+  name="Picks Tabs"
+  tab_min_width="167"
+  tab_max_width="157"
+  tab_height="20"
+  tab_group="1"
+  tab_position="top"
+  top="4"
+  width="345">
+    <panel
+    follows="all"
+	background_visible="false"
+    height="766"
+    layout="topleft"
+    left="0"
+    title="Default"
+    name="default_panel"
+    top="0"
+    width="345">
+    
+      
+      
       <scroll_container
       color="Transparent"
       follows="all"
@@ -27,9 +54,9 @@ width="345">
       left="0"
       name="camera_scroll"
       opaque="true"
-      height="759"
+      height="754"
       width="341"
-      top="4">
+      top_pad="4">
             <panel
             border="false"
             background_visible="false"
@@ -1932,6 +1959,441 @@ width="345">
                   show_text="true"
                   width="297" />
             </panel>
+            
       </scroll_container>
+    </panel>
+    <panel
+    follows="all"
+	background_visible="false"
+    height="766"
+    layout="topleft"
+    left="0"
+    title="Custom"
+    name="custom_panel"
+    top="0"
+    width="345">
+   <!--   <button
+   follows="left|top"
+   height="23"
+   label="Add Widgets"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left="5"
+   name="add_widget"
+   top="5"
+   width="320" >
+  <button.commit_callback
+	  function="Sidebar.Load" />
+  </button>-->
+   
+   <button
+   follows="left|top"
+   height="23"
+   is_toggle="true"
+   label="Slider"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left="5"
+   name="is_slider"
+   top="5"
+   width="112" />
+      <button
+   follows="left|top"
+   height="23"
+   is_toggle="true"
+   label="Checkbox"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="1"
+   name="is_checkbox"
+   top_delta="0"
+   width="112" />
+      <button
+   follows="left|top"
+   height="23"
+   is_toggle="true"
+   enabled="false"
+   label="Radio"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="1"
+   name="is_radio"
+   top_delta="0"
+   width="111" />
+      
+      <button
+   follows="left|top"
+   height="24"
+   label=""
+   enabled="false"
+   image_overlay="Arrow_Left"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left="5"
+   name="previous"
+   top_pad="5"
+   width="32" >
+  <button.commit_callback
+	  function="Sidebar.Previous" />
+  </button>
+      <button
+   follows="left|top"
+   height="24"
+   label=""
+   image_overlay="Arrow_Right"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left="310"
+   name="next"
+   top_delta="0"
+   width="32" >
+  <button.commit_callback
+	  function="Sidebar.Next" />
+  </button>
+      
+      <panel
+            visible="true"
+border="false"
+background_visible="false"
+follows="top|left"
+height="23"
+layout="topleft"
+left="38"
+name="page1"
+top_delta="0"
+width="271">
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="Debug Setting"
+  tool_tip=""
+  left="0"
+  top="0"
+  name="debug_setting"
+  width="180"/>
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="Label"
+  tool_tip=""
+  left_pad="1"
+  top="0"
+  name="label"
+  width="90"/>
+      </panel>
+      
+      <panel
+            visible="false"
+border="false"
+background_visible="false"
+follows="top|left"
+height="23"
+layout="topleft"
+left="38"
+name="slider1"
+top_delta="0"
+width="271">
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="Maximum"
+  tool_tip=""
+  left="0"
+  top="0"
+  name="max_value"
+  width="70"/>
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="Minimum"
+  tool_tip=""
+  left_pad="1"
+  top="0"
+  name="min_value"
+  width="70"/>
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="Increment"
+  tool_tip=""
+  left_pad="1"
+  top="0"
+  name="increment"
+  width="69"/>
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="Decimals"
+  tool_tip=""
+  left_pad="1"
+  top="0"
+  name="decimals"
+  width="59"/>
+      </panel>
+      
+      <panel
+            visible="false"
+border="false"
+background_visible="false"
+follows="top|left"
+height="23"
+layout="topleft"
+left="38"
+name="slider2"
+top_delta="0"
+width="271">
+        <button
+   follows="left|top"
+   height="24"
+   label="X Axis"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left="0"
+   name="is_x"
+   top="0"
+   width="67" />
+        <button
+   follows="left|top"
+   height="24"
+   label="Y Axis"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="1"
+   name="is_y"
+   top="0"
+   width="67" />
+        <button
+   follows="left|top"
+   height="24"
+   label="Z Axis"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="1"
+   name="is_z"
+   top="0"
+   width="67" />
+        <button
+   follows="left|top"
+   height="24"
+   label="W Axis"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="1"
+   name="is_w"
+   top="0"
+   width="67" />
+   
+      </panel>
+      
+      <panel
+            visible="false"
+border="false"
+background_visible="false"
+follows="top|left"
+height="23"
+layout="topleft"
+left="38"
+name="radio1"
+top_delta="0"
+width="271">
+        <button
+   follows="left|top"
+   height="23"
+   label="1 Radio"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left="0"
+   name="1_radio"
+   top="0"
+   width="67" />
+        <button
+   follows="left|top"
+   height="23"
+   label="2 Radios"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="1"
+   name="2_radio"
+   top="0"
+   width="67" />
+        <button
+   follows="left|top"
+   height="23"
+   label="3 Radios"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="1"
+   name="3_radio"
+   top="0"
+   width="67" />
+        <button
+   follows="left|top"
+   height="23"
+   label="4 Radios"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="1"
+   name="4_radio"
+   top="0"
+   width="67" />
+      </panel>
+      
+      <panel
+            visible="false"
+border="false"
+background_visible="false"
+follows="top|left"
+height="23"
+layout="topleft"
+left="38"
+name="radio2"
+top_delta="0"
+width="271">
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="1. Label"
+  tool_tip=""
+  left="0"
+  top="0"
+  name="radio_label1"
+  width="67"/>
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="2. Label"
+  tool_tip=""
+  left_pad="1"
+  top="0"
+  name="radio_label2"
+  width="67"/>
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="3. Label"
+  tool_tip=""
+  left_pad="1"
+  top="0"
+  name="radio_label3"
+  width="67"/>
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="4. Label"
+  tool_tip=""
+  left_pad="1"
+  top="0"
+  name="radio_label4"
+  width="67"/>
+      </panel>
+      
+      <panel
+            visible="false"
+border="false"
+background_visible="false"
+follows="top|left"
+height="23"
+layout="topleft"
+left="38"
+name="radio3"
+top_delta="0"
+width="271">
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="1. Value"
+  tool_tip=""
+  left="0"
+  top="0"
+  name="radio_val1"
+  width="67"/>
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="2. Value"
+  tool_tip=""
+  left_pad="1"
+  top="0"
+  name="radio_val2"
+  width="67"/>
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="3. Value"
+  tool_tip=""
+  left_pad="1"
+  top="0"
+  name="radio_val3"
+  width="67"/>
+        <line_editor
+  commit_on_focus_lost="true"
+  follows="left|top"
+  height="23"
+  label="4. Value"
+  tool_tip=""
+  left_pad="1"
+  top="0"
+  name="radio_val4"
+  width="67"/>
+      </panel>
+      
+      <layout_stack
+   follows="top|left|right"
+   height="678"
+   layout="topleft"
+   border_size="2"
+   left="0"
+   mouse_opaque="false"
+   name="widgets_stack"
+   orientation="vertical"
+   top_pad="10"
+   width="320">
+     </layout_stack>
+      
+      
+    </panel>
+    
+  </tab_container>
 </panel>
 
