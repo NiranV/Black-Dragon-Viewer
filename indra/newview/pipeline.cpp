@@ -8685,7 +8685,7 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 
 	//F32 shadow_offset_error = 1.f + RenderShadowOffsetError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]);
 	//F32 shadow_bias_error = RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2])/4000.f;
-	LLVector4 shadow_bias_error = RenderShadowBiasError	* fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]) / 4000.f;
+	LLVector4 shadow_bias_error = RenderShadowBiasError	/ fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2] / 1000.f);
 	shadow_bias_error += RenderShadowBias;
 
 	shader.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, mDeferredScreen.getWidth(), mDeferredScreen.getHeight());
