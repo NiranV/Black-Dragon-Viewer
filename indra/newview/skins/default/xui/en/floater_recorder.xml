@@ -45,66 +45,129 @@ width="449">
 	width="435"
 	top="0"
 	left="0"/>
+		<scroll_container
+		color="Transparent"
+		follows="all"
+		layout="topleft"
+		mouse_opaque="false"
+		left="3"
+		name="recorder_scroll_container"
+		opaque="true"
+		height="394"
+		width="426"
+		top="2">
+			<panel
+			follows="top|left"
+			height="375"
+			background_visible="false"
+			layout="topleft"
+			mouse_opaque="false"
+			left="1"
+			name="recorder_panel"
+			top="0"
+			width="640">
 		<scroll_list
  column_padding="2"
  draw_heading="true"
- height="394"
+ height="374"
  follows="left|top|right"
  layout="topleft"
  left="3"
- width="430"
+ width="640"
  multi_select="true"
  name="recorder_scroll"
  top="2">
     <scroll_list.columns
      label="#"
      name="number"
-   relative_width="0.10"  />
+   relative_width="0.06"  />
 	<scroll_list.columns
-     label="position"
-     name="pos"
-   relative_width="0.10"  />
+     label="pos x"
+     name="pos_x"
+   relative_width="0.06"  />
+	<scroll_list.columns
+     label="pos y"
+     name="pos_y"
+   relative_width="0.06"  />
+	<scroll_list.columns
+     label="pos z"
+     name="pos_z"
+   relative_width="0.06"  />
 	<scroll_list.columns
      label="rot x"
-     name="rot_x"
-   relative_width="0.10"  />
+     name="rot_x_x"
+   relative_width="0.0"  />
 	<scroll_list.columns
      label="rot y"
-     name="rot_y"
-   relative_width="0.10"  />
+     name="rot_x_y"
+   relative_width="0.0"  />
 	<scroll_list.columns
      label="rot z"
-     name="rot_z"
-   relative_width="0.10"  />
-<scroll_list.columns
-     label="target"
-     name="target"
-   relative_width="0.10"  />
+     name="rot_x_z"
+   relative_width="0.0"  />
+	<scroll_list.columns
+     label="rot x"
+     name="rot_y_x"
+   relative_width="0.0"  />
+	<scroll_list.columns
+     label="rot y"
+     name="rot_y_y"
+   relative_width="0.0"  />
+	<scroll_list.columns
+     label="rot z"
+     name="rot_y_z"
+   relative_width="0.0"  />
+	<scroll_list.columns
+     label="rot x"
+     name="rot_z_x"
+   relative_width="0.0"  />
+	<scroll_list.columns
+     label="rot y"
+     name="rot_z_y"
+   relative_width="0.0"  />
+	<scroll_list.columns
+     label="rot z"
+     name="rot_z_z"
+   relative_width="0.0"  />
+	<scroll_list.columns
+     label="target x"
+     name="target_x"
+   relative_width="0.0"  />
+	<scroll_list.columns
+     label="target y"
+     name="target_y"
+   relative_width="0.0"  />
+	<scroll_list.columns
+     label="target z"
+     name="target_z"
+   relative_width="0.0"  />
 <scroll_list.columns
      label="view"
      name="view"
-   relative_width="0.10"  />
+   relative_width="0.05"  />
 <scroll_list.columns
      label="type"
      name="type"
-   relative_width="0.10"  />
+   relative_width="0.0"  />
 <scroll_list.columns
      label="time"
      name="time"
-   relative_width="0.10"  />
+   relative_width="0.05"  />
 </scroll_list>
+			</panel>
+		</scroll_container>
 		<button
  height="21"
  follows="top|left"
  layout="topleft"
-	
- label="Start Recording"
-	label_selected="Stop Recording"
+	is_toggle="true"
+ label="Record"
+	label_selected="Stop"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
- name="record"
- width="102"
+ name="record_btn"
+ width="50"
  top_pad="1"
  left_delta="0">
    <button.commit_callback
@@ -115,13 +178,14 @@ width="449">
  height="21"
  follows="top|left"
  layout="topleft"
- label="Start Playing"
-	label_selected="Stop Playing"
+	is_toggle="true"
+ label="Play"
+	label_selected="Stop"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
- name="playback"
- width="102"
+ name="playback_btn"
+ width="35"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
@@ -132,13 +196,14 @@ width="449">
  height="21"
  follows="top|left"
  layout="topleft"
- label="Enable Loop"
-	label_selected="Disable Loop"
+	is_toggle="true"
+ label="Loop"
+	label_selected="Loop"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
- name="toggle_loop"
- width="102"
+ name="loop_btn"
+ width="40"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
@@ -153,8 +218,8 @@ width="449">
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
- name="refresh"
- width="102"
+ name="refresh_btn"
+ width="52"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
@@ -165,17 +230,97 @@ width="449">
  height="21"
  follows="top|left"
  layout="topleft"
- label="Save Cam"
+ label="Waypoint"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
- name="save_cam"
- width="102"
+ name="add_waypoint_btn"
+ width="62"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
    function="Recorder.Command"
    parameter="Save Camera"/>
+ </button>
+		<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Pos"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="save_position_btn"
+ width="32"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Recorder.Command"
+   parameter="Save Position"/>
+ </button>
+		<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Rot"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="save_rotation_btn"
+ width="32"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Recorder.Command"
+   parameter="Save Rotation"/>
+ </button>
+		<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Delete"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="remove_btn"
+ width="45"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Recorder.Command"
+   parameter="Remove"/>
+ </button>
+		<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Save"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="export_btn"
+ width="35"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Recorder.Command"
+   parameter="Export"/>
+ </button>
+		<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Load"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="import_btn"
+ width="36"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Recorder.Command"
+   parameter="Import"/>
  </button>
 		
 	</panel>

@@ -92,6 +92,7 @@ public:
 	void setNumRuns(S32 num_runs) { mNumRuns = num_runs; }
 
 	std::vector<Action> getActions() { return mActions; }
+	void setActions(std::vector<Action> actions) { mActions = actions; }
 
 	
 private:
