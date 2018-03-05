@@ -7803,6 +7803,8 @@ bool LLVOAvatar::visualParamWeightsAreDefault()
 	bool rtn = true;
 
 	bool is_wearing_skirt = isWearingWearableType(LLWearableType::WT_SKIRT);
+	//BD - This sometimes seems to crash on Viewer close?
+	//     Maybe add some null checks or safeguard against app shutdown?
 	for (LLVisualParam *param = getFirstVisualParam(); 
 	     param;
 	     param = getNextVisualParam())
