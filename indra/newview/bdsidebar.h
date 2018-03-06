@@ -127,7 +127,7 @@ public:
 private:
 
 	//void onClickAddWidget();
-	void loadWidgetList();
+	bool loadWidgetList();
 	void saveWidgetList();
 	void createWidget();
 	void deleteWidget(LLUICtrl* ctrl);

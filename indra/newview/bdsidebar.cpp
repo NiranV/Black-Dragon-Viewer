@@ -312,7 +312,7 @@ void LLSideBar::toggleEditMode()
 	mEditMode = !mEditMode;
 }
 
-void LLSideBar::loadWidgetList()
+bool LLSideBar::loadWidgetList()
 {
 	mWidgetCount = 0;
 	LLSD widget;
@@ -321,7 +321,8 @@ void LLSideBar::loadWidgetList()
 	infile.open(filename);
 	if (!infile.is_open())
 	{
-		LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
+		LL_WARNS("Sidebar") << "Cannot find file in: " << filename << LL_ENDL;
+		return FALSE;
 	}
 
 	//BD - Kill any previous layout panels we may have still there.
@@ -332,7 +333,7 @@ void LLSideBar::loadWidgetList()
 	{
 		LLView* view = *it;
 		view->setVisible(false);
-		LL_WARNS("Sidebar") << "Available are: " << view->getName() << LL_ENDL;
+		LL_INFOS("Sidebar") << "Available are: " << view->getName() << LL_ENDL;
 	}
 
 	//BD - Delete all items so we can write it a new to prevent doubles.
@@ -344,8 +345,8 @@ void LLSideBar::loadWidgetList()
 	{
 		if (LLSDSerialize::fromXML(widget, infile) == LLSDParser::PARSE_FAILURE)
 		{
-			LL_WARNS("Posing") << "Failed to parse file" << filename << LL_ENDL;
-			//return FALSE;
+			LL_WARNS("Sidebar") << "Failed to parse file" << filename << LL_ENDL;
+			return FALSE;
 		}
 
 		BDSidebarItem::SidebarType type;
@@ -481,6 +482,7 @@ void LLSideBar::loadWidgetList()
 		count++;
 	}
 	infile.close();
+	return TRUE;
 }
 
 void LLSideBar::saveWidgetList()
