@@ -162,7 +162,6 @@ width="320">
    right="-30"
    word_wrap="false"
    name="ItemcountText"
-			font.shadow="Soft" 
    top="3"
    width="70">
        ---
@@ -185,7 +184,6 @@ width="320">
    halign="right"
    right="-113"
    word_wrap="false"
-			font.shadow="Soft" 
    top="3"
    width="70"
    tool_tip="Click to refresh your L$ balance"
