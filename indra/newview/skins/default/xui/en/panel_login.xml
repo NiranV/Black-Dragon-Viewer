@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.0.4 - Dark Dragon]"
+       label="[CHANNEL] [VERSION] - [3.0.5 - Dark Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -125,7 +125,7 @@ top="600"
     layout="topleft"
     left="0"
     mouse_opaque="false"
-    name="root_stack"
+    name="login_stack"
     orientation="vertical"
     top="20"
     width="998">
@@ -145,7 +145,7 @@ top="600"
        layout="topleft"
        mouse_opaque="false"
        left="0"
-       name="camera_scroll"
+       name="login_scroll"
        opaque="true"
        height="487"
        width="994"
@@ -155,7 +155,7 @@ top="600"
        height="11478"
        layout="topleft"
        left="0"
-       name="panel_login2"
+       name="login_scroll_panel"
        top="0"
        width="980">
         <text
@@ -163,8 +163,67 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="65"
+              height="260"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Woodruff to Patreon Patron list. 
+Added: Title and empty space tab widgets to the custom Sidebar.
+Added: Toggle between Edit and Usage mode to the custom Sidebar.
+Added: Allow adding a default custom Sidebar layout. (None yet).
+Changed: Improved shadows on high altitudes. Still much to do.
+Changed: Minimum value for Camera Smoothing down to 0.0.
+Changed: Muted UI sounds by default.
+Changed: Muted ambient/wind sounds by default.
+Changed: Further improvements on shadows on different altitudes.
+Changed: Custom Sidebar to version 2.0.
+Changed: Layout for creating widgets in the custom Sidebar.
+Changed: Debug Setting text field in the custom Sidebar to combobox and fill it with all debugs.
+Changed: Only load and save attributes relevant for the widget we are adding.
+Changed: Version to 3.0.5.
+Fixed: Checkbox labels having an height offset.
+Fixed: 2 warnings in sidepanel_inventory.xml.
+Fixed (POTENTIAL): Custom sidebar becoming invisible on some logins.
+Misc: Cleaned up llvoavatar.cpp.
+Misc: Cleaned up bdfloateranimations.cpp.
+Misc: Commenting in bdfloateranimations.cpp.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.0.4
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="65"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
