@@ -106,7 +106,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.0.3 - Dark Dragon]"
+       label="[CHANNEL] [VERSION] - [3.0.4 - Dark Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,8 +163,52 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="312"
+              height="65"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: David Smith to Patreon Patron list.
+Added: Nils Woerner to Patreon Patron list.
+Changed: Jakeb Patreon pledge amount.
+Changed: Version to 3.0.4.
+Fixed: Sidebar causing a crash when no sidebar file has been found.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.0.3
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="312"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
