@@ -181,6 +181,7 @@ void BDFloaterAnimations::draw()
 
 void BDFloaterAnimations::onOpen(const LLSD& key)
 {
+	//BD - Make these trigger only when opening the actual tab.
 	onMotionRefresh();
 	onJointRefresh();
 	onPoseRefresh();
