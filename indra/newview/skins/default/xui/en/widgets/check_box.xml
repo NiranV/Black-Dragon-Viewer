@@ -3,7 +3,7 @@
            follows="left|top">
   <check_box.label_text name="checkbox label"
                         left="20"
-                        bottom="3" 
+                        bottom="0" 
                         width="0"
                         height="0"
                         text_color="LabelTextColor"
