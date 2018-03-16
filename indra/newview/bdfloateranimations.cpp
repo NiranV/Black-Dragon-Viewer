@@ -142,7 +142,6 @@ void BDFloaterAnimations::draw()
 		mAnimPlayTimer.getElapsedTimeF32() > mExpiryTime)
 	{
 		mAnimPlayTimer.stop();
-		LL_INFOS("Posing") << "Stopping the timer temporarily. We are at: " << mAnimScrollIndex << LL_ENDL;
 		if (mAnimEditorScroll->getItemCount() != 0)
 		{
 			mAnimEditorScroll->selectNthItem(mAnimScrollIndex);
@@ -174,7 +173,6 @@ void BDFloaterAnimations::draw()
 		if (mAnimEditorScroll->getItemCount() != mAnimScrollIndex)
 		{
 			mAnimPlayTimer.start();
-			LL_INFOS("Posing") << "Continueing the timer." << LL_ENDL;
 		}
 	}
 
