@@ -126,6 +126,8 @@ public:
 	S32							mOffset;
 	S32							mWidgetCount;
 
+	bool						mFirstTime;
+
 	std::vector<BDSidebarItem*> mSidebarItems;
 private:
 

@@ -109,6 +109,7 @@ BOOL LLSideBar::postBuild()
 
 	mCameraAngle = getChild<LLSliderCtrl>("CameraAngle");
 	mWidgetCount = 0;
+	mFirstTime = true;
 	mCurrentPage = "page1";
 
 	loadWidgetList();
@@ -398,7 +399,8 @@ bool LLSideBar::loadWidgetList()
 			view->setVisible(false);
 	}
 
-	getChild<LLLayoutStack>("widgets_stack")->translate(0, -mOffset - 5);
+	if (!mFirstTime)
+		getChild<LLLayoutStack>("widgets_stack")->translate(0, -mOffset - 5);
 
 	//BD - Delete all items so we can write it a new to prevent doubles.
 	//     Plain simple method.
@@ -614,6 +616,7 @@ bool LLSideBar::loadWidgetList()
 	getChild<LLPanel>("scroll_panel")->setRect(rect);
 	getChild<LLLayoutStack>("widgets_stack")->translate(0, 5 + mOffset);
 
+	mFirstTime = false;
 	return TRUE;
 }
 
