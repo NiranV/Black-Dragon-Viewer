@@ -9343,7 +9343,7 @@
     <string>Vector4</string>
     <key>Value</key>
 	<array>
-		<real>-0.0005</real>
+		<real>0.0</real>
 		<real>-0.0005</real>
 		<real>-0.001</real>
 		<real>-0.002</real>
@@ -9370,7 +9370,7 @@
     <string>Vector4</string>
     <key>Value</key>
 	<array>
-		<real>-0.005</real>
+		<real>-0.00001</real>
 		<real>-0.0005</real>
 		<real>-0.0015</real>
 		<real>-0.0025</real>
