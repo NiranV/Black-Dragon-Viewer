@@ -3,28 +3,13 @@
 	 background_visible="false"
      bevel_style="in"
      follows="top|left|right"
-     height="15"
-     label="panel_slider"
+     height="10"
+     label="panel_tab"
 	 layout="topleft"
-     name="panel_slider"
+     name="panel_tab"
 		 left="0"
 		 top="0"
      width="310">
-		<slider
-      decimal_digits="0"
-      follows="left|top"
-      height="14"
-      increment="1"
-      can_edit_text="true"
-      label="Slider:"
-      label_width="110"
-      layout="topleft"
-      left="10"
-      max_val="1024"
-      min_val="1"
-      name="slider"
-      top="1"
-      width="290"/>
 		<button
    follows="left|top"
    height="18"
@@ -38,6 +23,6 @@
 	 scale_image="true"
    left="300"
    name="remove_widget"
-   top_delta="-2"
+   top_pad="-3"
    width="23" />
 	</panel>

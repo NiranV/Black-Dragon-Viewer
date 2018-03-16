@@ -4,14 +4,14 @@
      bevel_style="in"
      follows="top|left|right"
      height="16"
-     label="im_header"
+     label="panel_checkbox"
 	 layout="topleft"
-     name="im_header"
+     name="panel_checkbox"
 		 left="0"
 		 top="0"
      width="310">
 		<check_box
-		height="16"
+		height="15"
 		label="Checkbox"
 		layout="topleft"
 		left="10"
@@ -20,15 +20,16 @@
 		width="287" />
 		<button
    follows="left|top"
-   height="16"
+   height="18"
    label=""
-   image_overlay="OptionsMenu_Off"
+	visible="false"
+   image_overlay="TrashItem_Off"
    image_hover_unselected="transparent.j2c"
 	  image_selected="transparent.j2c"
 	  image_unselected="transparent.j2c"
    layout="topleft"
-   left_pad="0"
+   left="300"
    name="remove_widget"
-   top_delta="0"
+   top_delta="-1"
    width="23" />
 	</panel>

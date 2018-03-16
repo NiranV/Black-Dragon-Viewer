@@ -52,7 +52,7 @@ width="345">
       layout="topleft"
       mouse_opaque="false"
       left="0"
-      name="camera_scroll"
+      name="machinima_scroll"
       opaque="true"
       height="754"
       width="341"
@@ -64,7 +64,7 @@ width="345">
             height="1516"
             layout="topleft"
             left="0"
-            name="scroll_panel"
+            name="scroll_panel_2"
             top="0"
             width="326">
                   <panel
@@ -1987,8 +1987,28 @@ width="345">
   <button.commit_callback
 	  function="Sidebar.Load" />
   </button>-->
-   
-   <button
+      <layout_stack
+   follows="all"
+   height="766"
+   layout="topleft"
+   border_size="0"
+   left="0"
+   mouse_opaque="false"
+   name="main_stack"
+   orientation="vertical"
+   top="0"
+   width="345">
+        <layout_panel
+      auto_resize="false"
+      visible="false"
+      follows="top|left"
+      height="100"
+      layout="topleft"
+      mouse_opaque="false"
+      name="create_layout"
+      top="0"
+      width="345">
+      <button
    follows="left|top"
    height="23"
    is_toggle="true"
@@ -2000,7 +2020,10 @@ width="345">
    left="5"
    name="is_slider"
    top="5"
-   width="112" />
+   width="60" >
+        <button.commit_callback
+	  function="Sidebar.Type" />
+  </button>
       <button
    follows="left|top"
    height="23"
@@ -2013,7 +2036,10 @@ width="345">
    left_pad="1"
    name="is_checkbox"
    top_delta="0"
-   width="112" />
+   width="65" >
+        <button.commit_callback
+	  function="Sidebar.Type" />
+  </button>
       <button
    follows="left|top"
    height="23"
@@ -2027,40 +2053,57 @@ width="345">
    left_pad="1"
    name="is_radio"
    top_delta="0"
-   width="111" />
-      
+   width="60" >
+        <button.commit_callback
+	  function="Sidebar.Type" />
+  </button>
       <button
    follows="left|top"
-   height="24"
-   label=""
-   enabled="false"
-   image_overlay="Arrow_Left"
+   height="23"
+   is_toggle="true"
+   label="Title"
    image_hover_unselected="Toolbar_Middle_Over"
 	  image_selected="Toolbar_Middle_Selected"
 	  image_unselected="Toolbar_Middle_Off"
    layout="topleft"
-   left="5"
-   name="previous"
-   top_pad="5"
-   width="32" >
-  <button.commit_callback
-	  function="Sidebar.Previous" />
+   left_pad="1"
+   name="is_title"
+   top_delta="0"
+   width="60" >
+        <button.commit_callback
+	  function="Sidebar.Type" />
   </button>
       <button
    follows="left|top"
-   height="24"
+   height="23"
+   is_toggle="true"
+   label="Tab"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   left_pad="1"
+   name="is_tab"
+   top_delta="0"
+   width="60" >
+        <button.commit_callback
+	  function="Sidebar.Type" />
+  </button>
+      <button
+   follows="left|top"
+   height="23"
    label=""
    image_overlay="Arrow_Right"
    image_hover_unselected="Toolbar_Middle_Over"
 	  image_selected="Toolbar_Middle_Selected"
 	  image_unselected="Toolbar_Middle_Off"
    layout="topleft"
-   left="310"
+   left_pad="1"
    name="next"
    top_delta="0"
-   width="32" >
+   width="28" >
   <button.commit_callback
-	  function="Sidebar.Next" />
+	  function="Sidebar.Create" />
   </button>
       
       <panel
@@ -2070,11 +2113,31 @@ background_visible="false"
 follows="top|left"
 height="23"
 layout="topleft"
-left="38"
+left="5"
 name="page1"
-top_delta="0"
-width="271">
-        <line_editor
+top_pad="0"
+width="336">
+        <combo_box
+   follows="top|left"
+   enabled="false"
+   left="0"
+   height="24"
+   name="debug_setting"
+   label="Debug Setting"
+   top="0"
+   width="200">
+      <combo_box.combo_button
+            image_unselected="Toolbar_Middle_Off"
+            image_selected="Toolbar_Middle_Selected"
+            image_disabled="Toolbar_Middle_Off" />
+            <combo_box.drop_down_button
+            image_unselected="Toolbar_Middle_Off"
+            image_selected="Toolbar_Middle_Selected"
+            image_pressed="Toolbar_Middle_Selected" 
+            image_pressed_selected="Toolbar_Middle_Selected"
+            image_disabled="Toolbar_Middle_Off" />
+        </combo_box>
+        <!--<line_editor
   commit_on_focus_lost="true"
   follows="left|top"
   height="23"
@@ -2083,9 +2146,10 @@ width="271">
   left="0"
   top="0"
   name="debug_setting"
-  width="180"/>
+  width="180"/>-->
         <line_editor
   commit_on_focus_lost="true"
+  enabled="false"
   follows="left|top"
   height="23"
   label="Label"
@@ -2093,22 +2157,22 @@ width="271">
   left_pad="1"
   top="0"
   name="label"
-  width="90"/>
+  width="136"/>
       </panel>
       
       <panel
-            visible="false"
 border="false"
 background_visible="false"
 follows="top|left"
 height="23"
 layout="topleft"
-left="38"
+left="5"
 name="slider1"
-top_delta="0"
-width="271">
+top_pad="1"
+width="336">
         <line_editor
   commit_on_focus_lost="true"
+  enabled="false"
   follows="left|top"
   height="23"
   label="Maximum"
@@ -2116,9 +2180,10 @@ width="271">
   left="0"
   top="0"
   name="max_value"
-  width="70"/>
+  width="83"/>
         <line_editor
   commit_on_focus_lost="true"
+  enabled="false"
   follows="left|top"
   height="23"
   label="Minimum"
@@ -2126,9 +2191,10 @@ width="271">
   left_pad="1"
   top="0"
   name="min_value"
-  width="70"/>
+  width="83"/>
         <line_editor
   commit_on_focus_lost="true"
+  enabled="false"
   follows="left|top"
   height="23"
   label="Increment"
@@ -2136,9 +2202,10 @@ width="271">
   left_pad="1"
   top="0"
   name="increment"
-  width="69"/>
+  width="84"/>
         <line_editor
   commit_on_focus_lost="true"
+  enabled="false"
   follows="left|top"
   height="23"
   label="Decimals"
@@ -2146,23 +2213,24 @@ width="271">
   left_pad="1"
   top="0"
   name="decimals"
-  width="59"/>
+  width="84"/>
       </panel>
       
       <panel
-            visible="false"
 border="false"
 background_visible="false"
+enabled="false"
 follows="top|left"
 height="23"
 layout="topleft"
-left="38"
+left="5"
 name="slider2"
-top_delta="0"
-width="271">
+top_pad="1"
+width="336">
         <button
    follows="left|top"
    height="24"
+   is_toggle="true"
    label="X Axis"
    image_hover_unselected="Toolbar_Middle_Over"
 	  image_selected="Toolbar_Middle_Selected"
@@ -2171,10 +2239,11 @@ width="271">
    left="0"
    name="is_x"
    top="0"
-   width="67" />
+   width="83" />
         <button
    follows="left|top"
    height="24"
+   is_toggle="true"
    label="Y Axis"
    image_hover_unselected="Toolbar_Middle_Over"
 	  image_selected="Toolbar_Middle_Selected"
@@ -2183,10 +2252,11 @@ width="271">
    left_pad="1"
    name="is_y"
    top="0"
-   width="67" />
+   width="83" />
         <button
    follows="left|top"
    height="24"
+   is_toggle="true"
    label="Z Axis"
    image_hover_unselected="Toolbar_Middle_Over"
 	  image_selected="Toolbar_Middle_Selected"
@@ -2195,10 +2265,11 @@ width="271">
    left_pad="1"
    name="is_z"
    top="0"
-   width="67" />
+   width="84" />
         <button
    follows="left|top"
    height="24"
+   is_toggle="true"
    label="W Axis"
    image_hover_unselected="Toolbar_Middle_Over"
 	  image_selected="Toolbar_Middle_Selected"
@@ -2207,7 +2278,7 @@ width="271">
    left_pad="1"
    name="is_w"
    top="0"
-   width="67" />
+   width="84" />
    
       </panel>
       
@@ -2221,7 +2292,7 @@ layout="topleft"
 left="38"
 name="radio1"
 top_delta="0"
-width="271">
+width="336">
         <button
    follows="left|top"
    height="23"
@@ -2282,7 +2353,7 @@ layout="topleft"
 left="38"
 name="radio2"
 top_delta="0"
-width="271">
+width="336">
         <line_editor
   commit_on_focus_lost="true"
   follows="left|top"
@@ -2335,7 +2406,7 @@ layout="topleft"
 left="38"
 name="radio3"
 top_delta="0"
-width="271">
+width="336">
         <line_editor
   commit_on_focus_lost="true"
   follows="left|top"
@@ -2377,21 +2448,70 @@ width="271">
   name="radio_val4"
   width="67"/>
       </panel>
-      
-      <layout_stack
-   follows="top|left|right"
-   height="678"
+        </layout_panel>
+      <layout_panel
+      auto_resize="true"
+      follows="all"
+      height="666"
+      layout="topleft"
+      mouse_opaque="false"
+      name="widget_layout"
+      top="0"
+      width="345">
+        <scroll_container
+      color="Transparent"
+      follows="all"
+      layout="topleft"
+      mouse_opaque="false"
+      left="0"
+      name="widgets_scroll"
+      opaque="true"
+      height="662"
+      width="345"
+      top="0">
+            <panel
+            border="false"
+            background_visible="false"
+            follows="left|top|right"
+            height="0"
+            layout="topleft"
+            left="0"
+            name="scroll_panel"
+            top="0"
+            width="330">
+              <layout_stack
+              follows="top|left|right"
+              animate="false"
+              height="2500"
+              layout="topleft"
+              border_size="0"
+              left="0"
+              mouse_opaque="false"
+              name="widgets_stack"
+              orientation="vertical"
+              top="0"
+              width="330">
+              </layout_stack>
+            </panel>
+        </scroll_container>
+      </layout_panel>
+      </layout_stack>
+      <button
+   follows="left|bottom"
+   height="23"
+   label=""
+   image_overlay="Edit_Wrench"
+   image_hover_unselected="Toolbar_Middle_Over"
+	  image_selected="Toolbar_Middle_Selected"
+	  image_unselected="Toolbar_Middle_Off"
    layout="topleft"
-   border_size="2"
-   left="0"
-   mouse_opaque="false"
-   name="widgets_stack"
-   orientation="vertical"
-   top_pad="10"
-   width="320">
-     </layout_stack>
-      
-      
+   left="5"
+   name="edit"
+   bottom="-7"
+   width="28" >
+  <button.commit_callback
+	  function="Sidebar.ToggleEdit" />
+  </button>
     </panel>
     
   </tab_container>

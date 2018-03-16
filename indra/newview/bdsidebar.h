@@ -82,7 +82,9 @@ public:
 		{
 			CHECKBOX = 0,
 			RADIO = 1,
-			SLIDER = 2
+			SLIDER = 2,
+			TITLE = 3,
+			TAB = 4
 		};
 
 		std::string		mPanelName;
@@ -121,22 +123,19 @@ public:
 		SidebarType		mType;
 	};
 
+	S32							mOffset;
 	S32							mWidgetCount;
 
 	std::vector<BDSidebarItem*> mSidebarItems;
 private:
 
-	//void onClickAddWidget();
 	bool loadWidgetList();
 	void saveWidgetList();
 	void createWidget();
 	void deleteWidget(LLUICtrl* ctrl);
 	void toggleEditMode();
 
-	void onClickNext();
-	void onClickPrevious();
-
-	void onTypeSelection(LLUICtrl* ctrl, const LLSD& param);
+	void onTypeSelection();
 
 	void onMouseLeave(S32 x, S32 y, MASK mask);
 	void onMouseEnter(S32 x, S32 y, MASK mask);
