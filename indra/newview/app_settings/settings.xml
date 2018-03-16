@@ -690,7 +690,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.5</real>
+      <real>0.0</real>
     </map>
     <key>AudioLevelVoice</key>
     <map>
@@ -712,7 +712,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.5</real>
+      <real>0.0</real>
     </map>
 	<key>AudioStreamingMedia</key>
     <map>
