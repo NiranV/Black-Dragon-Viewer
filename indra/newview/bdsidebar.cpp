@@ -83,13 +83,19 @@ void LLSideBar::draw()
 		mShadowDistZ->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
 		mShadowDistW->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
 
-		//refreshGraphicControls();
+		if (mUpdateTimer.getElapsedTimeF32() > 3.f)
+		{
+			refreshCreationControls();
+			mUpdateTimer.reset();
+		}
+
 		LLPanel::draw();
 	}
 }
 
 BOOL LLSideBar::postBuild()
 {
+	//BD - Legacy stuff.
 	mShadowResX = getChild<LLUICtrl>("RenderShadowResolution_X");
 	mShadowResY = getChild<LLUICtrl>("RenderShadowResolution_Y");
 	mShadowResZ = getChild<LLUICtrl>("RenderShadowResolution_Z");
@@ -108,9 +114,52 @@ BOOL LLSideBar::postBuild()
 	mVignetteZ = getChild<LLUICtrl>("ExodusRenderVignette_Z");
 
 	mCameraAngle = getChild<LLSliderCtrl>("CameraAngle");
+
+
+	//BD - General stuff.
+	mIsCheckbox = getChild<LLButton>("is_checkbox");
+	mIsSlider = getChild<LLButton>("is_slider");
+	mIsRadio = getChild<LLButton>("is_radio");
+	mIsTitle = getChild<LLButton>("is_title");
+	mIsTab = getChild<LLButton>("is_tab");
+
+	mDebugCombo = getChild<LLComboBox>("debug_setting");
+	mLabelEditor = getChild<LLLineEditor>("label");
+	mNextBtn = getChild<LLButton>("next");
+
+	mScrollPanel = getChild<LLPanel>("scroll_panel");
+	mWidgetsStack = getChild<LLLayoutStack>("widgets_stack");
+	mMainLayout = getChild<LLLayoutPanel>("create_layout");
+
+	//BD - Slider stuff.
+	mDecimalsEditor = getChild<LLLineEditor>("decimals");
+	mIncrementEditor = getChild<LLLineEditor>("increment");
+	mMinEditor = getChild<LLLineEditor>("min_value");
+	mMaxEditor = getChild<LLLineEditor>("max_value");
+	mIsX = getChild<LLButton>("is_x");
+	mIsY = getChild<LLButton>("is_y");
+	mIsZ = getChild<LLButton>("is_z");
+	mIsW = getChild<LLButton>("is_w");
+
+	//BD - Radio stuff.
+	//mRadio2 = getChild<LLButton>("2_radio");
+	//mRadio3 = getChild<LLButton>("3_radio");
+	//mRadio4 = getChild<LLButton>("4_radio");
+	//mRadioCount = getChild<LLLineEditor>("radio_count");
+	//mRadioVal1 = getChild<LLLineEditor>("radio_val1");
+	//mRadioVal2 = getChild<LLLineEditor>("radio_val2");
+	//mRadioVal3 = getChild<LLLineEditor>("radio_val3");
+	//mRadioVal4 = getChild<LLLineEditor>("radio_val4");
+	//mRadioLabel1 = getChild<LLLineEditor>("radio_label1");
+	//mRadioLabel2 = getChild<LLLineEditor>("radio_label2");
+	//mRadioLabel3 = getChild<LLLineEditor>("radio_label3");
+	//mRadioLabel4 = getChild<LLLineEditor>("radio_label4");
+
 	mWidgetCount = 0;
+	//BD - Fix for rare invisible sidebar. 
 	mFirstTime = true;
-	mCurrentPage = "page1";
+	//BD - Fix for rare wrongly visible trash buttons.
+	mEditMode = false;
 
 	loadWidgetList();
 
@@ -134,6 +183,30 @@ BOOL LLSideBar::postBuild()
 
 	settings_combo->sortByName();
 	return TRUE;
+}
+
+//BD - Refresh the create-a-widget controls periodically.
+void LLSideBar::refreshCreationControls()
+{
+	bool is_checkbox = mIsCheckbox->getValue();
+	bool is_slider = mIsSlider->getValue();
+	bool is_radio = mIsRadio->getValue();
+	bool is_title = mIsTitle->getValue();
+	bool is_tab = mIsTab->getValue();
+
+	std::string debug = mDebugCombo->getValue();
+	std::string label = mLabelEditor->getValue();
+	
+	if (((is_checkbox || is_slider || is_radio) && (debug.empty() || label.empty()))
+		|| (is_title && label.empty()) )
+	{
+		//BD - Disable the create button if not all necessary values have been set.
+		mNextBtn->setEnabled(false);
+	}
+	else
+	{
+		mNextBtn->setEnabled(is_slider || is_checkbox || is_radio || is_title || is_tab);
+	}
 }
 
 //BD - Refresh all controls
@@ -201,7 +274,7 @@ void LLSideBar::createWidget()
 {
 	BDSidebarItem* item = new BDSidebarItem;
 	//BD - General stuff
-	item->mDebugSetting = getChild<LLUICtrl>("debug_setting")->getValue();
+	item->mDebugSetting = mDebugCombo->getValue();
 
 	BDSidebarItem::SidebarType type;
 	if (getChild<LLUICtrl>("is_checkbox")->getValue())
@@ -216,7 +289,7 @@ void LLSideBar::createWidget()
 		type = BDSidebarItem::SidebarType::TAB;
 	item->mType = type;
 
-	item->mLabel = getChild<LLUICtrl>("label")->getValue();
+	item->mLabel = mLabelEditor->getValue();
 	item->mPanelName = llformat("widget_%i", mWidgetCount);
 
 	//BD - Checkbox stuff
@@ -225,17 +298,17 @@ void LLSideBar::createWidget()
 	//BD - Slider stuff
 	if (type == 2)
 	{
-		item->mDecimals = getChild<LLUICtrl>("decimals")->getValue();
-		item->mIncrement = getChild<LLUICtrl>("increment")->getValue().asReal();
-		item->mMaxValue = getChild<LLUICtrl>("max_value")->getValue().asReal();
-		item->mMinValue = getChild<LLUICtrl>("min_value")->getValue().asReal();
-		if (getChild<LLUICtrl>("is_x")->getValue())
+		item->mDecimals = mDecimalsEditor->getValue();
+		item->mIncrement = mIncrementEditor->getValue().asReal();
+		item->mMaxValue = mMaxEditor->getValue().asReal();
+		item->mMinValue = mMinEditor->getValue().asReal();
+		if (mIsX->getValue())
 			item->mArray = 0;
-		else if (getChild<LLUICtrl>("is_y")->getValue())
+		else if (mIsY->getValue())
 			item->mArray = 1;
-		else if (getChild<LLUICtrl>("is_z")->getValue())
+		else if (mIsZ->getValue())
 			item->mArray = 2;
-		else if (getChild<LLUICtrl>("is_w")->getValue())
+		else if (mIsW->getValue())
 			item->mArray = 3;
 		else
 			item->mArray = -1;
@@ -243,15 +316,14 @@ void LLSideBar::createWidget()
 	//BD - Radio stuff
 	else if (type == 1)
 	{
-
-		if (getChild<LLUICtrl>("2_radio")->getValue())
-			item->mRadioCount = 2;
-		else if (getChild<LLUICtrl>("3_radio")->getValue())
-			item->mRadioCount = 3;
-		else if (getChild<LLUICtrl>("4_radio")->getValue())
-			item->mRadioCount = 4;
-		else
-			item->mRadioCount = 1;
+		//if (mRadio2->getValue())
+		//	item->mRadioCount = 2;
+		//else if (mRadio3->getValue())
+		//	item->mRadioCount = 3;
+		//else if (mRadio4->getValue())
+		//	item->mRadioCount = 4;
+		//else
+		//	item->mRadioCount = 1;
 		//item->mRadioCount = getChild<LLUICtrl>("radio_count")->getValue();
 		//item->mRadioValues.mV[VX] = getChild<LLUICtrl>("radio_val1")->getValue().asReal();
 		//item->mRadioValues.mV[VY] = getChild<LLUICtrl>("radio_val2")->getValue().asReal();
@@ -262,9 +334,6 @@ void LLSideBar::createWidget()
 		//item->mRadioLabel3 = getChild<LLUICtrl>("radio_label3")->getValue();
 		//item->mRadioLabel4 = getChild<LLUICtrl>("radio_label4")->getValue();
 	}
-
-	//BD - Button stuff
-	//item->mIsToggle = getChild<LLUICtrl>("is_toggle")->getValue();
 
 	mSidebarItems.push_back(item);
 	mWidgetCount++;
@@ -280,40 +349,39 @@ void LLSideBar::createWidget()
 	empty.clear();
 
 	//BD - General Stuff
-	//getChild<LLUICtrl>("debug_setting")->setValue(empty);
-	getChild<LLUICtrl>("is_checkbox")->setValue(empty);
-	getChild<LLUICtrl>("is_slider")->setValue(empty);
-	getChild<LLUICtrl>("is_title")->setValue(empty);
-	getChild<LLUICtrl>("is_tab")->setValue(empty);
-	//getChild<LLUICtrl>("is_radio")->setValue(empty);
-	getChild<LLUICtrl>("label")->setValue(empty);
+	mIsCheckbox->setValue(empty);
+	mIsSlider->setValue(empty);
+	mIsTitle->setValue(empty);
+	mIsTab->setValue(empty);
+	//mIsRadio->setValue(empty);
+	mLabelEditor->setValue(empty);
 
 	//BD - Checkbox stuff
 	//     Nothing.
 
 	//BD - Slider stuff
-	getChild<LLUICtrl>("decimals")->setValue(empty);
-	getChild<LLUICtrl>("increment")->setValue(empty);
-	getChild<LLUICtrl>("max_value")->setValue(empty);
-	getChild<LLUICtrl>("min_value")->setValue(empty);
-	getChild<LLUICtrl>("is_x")->setValue(empty);
-	getChild<LLUICtrl>("is_y")->setValue(empty);
-	getChild<LLUICtrl>("is_z")->setValue(empty);
-	getChild<LLUICtrl>("is_w")->setValue(empty);
+	mDecimalsEditor->setValue(empty);
+	mIncrementEditor->setValue(empty);
+	mMaxEditor->setValue(empty);
+	mMinEditor->setValue(empty);
+	mIsX->setValue(empty);
+	mIsY->setValue(empty);
+	mIsZ->setValue(empty);
+	mIsW->setValue(empty);
 
 	//BD - Radio stuff
-	//getChild<LLUICtrl>("2_radio")->setValue(empty);
-	//getChild<LLUICtrl>("3_radio")->setValue(empty);
-	//getChild<LLUICtrl>("4_radio")->setValue(empty);
-	//getChild<LLUICtrl>("radio_count")->setValue(empty);
-	//getChild<LLUICtrl>("radio_val1")->setValue(empty);
-	//getChild<LLUICtrl>("radio_val2")->setValue(empty);
-	//getChild<LLUICtrl>("radio_val3")->setValue(empty);
-	//getChild<LLUICtrl>("radio_val4")->setValue(empty);
-	//getChild<LLUICtrl>("radio_label1")->setValue(empty);
-	//getChild<LLUICtrl>("radio_label2")->setValue(empty);
-	//getChild<LLUICtrl>("radio_label3")->setValue(empty);
-	//getChild<LLUICtrl>("radio_label4")->setValue(empty);
+	//mRadio2->setValue(empty);
+	//mRadio3->setValue(empty);
+	//mRadio4->setValue(empty);
+	//mRadioCount->setValue(empty);
+	//mRadioVal1->setValue(empty);
+	//mRadioVal2->setValue(empty);
+	//mRadioVal3->setValue(empty);
+	//mRadioVal4->setValue(empty);
+	//mRadioLabel1->setValue(empty);
+	//mRadioLabel2->setValue(empty);
+	//mRadioLabel3->setValue(empty);
+	//mRadioLabel4->setValue(empty);
 
 	//BD - Refresh our controls.
 	onTypeSelection();
@@ -354,15 +422,14 @@ void LLSideBar::toggleEditMode()
 	}
 
 	mEditMode = !mEditMode;
-	getChild<LLLayoutPanel>("create_layout")->setVisible(mEditMode);
-	LLLayoutStack* layout_stack = getChild<LLLayoutStack>("widgets_stack");
-	const LLView::child_list_t* list = layout_stack->getChildList();
-	for (LLView::child_list_t::const_iterator it = list->begin();
-		it != list->end(); ++it)
+	mMainLayout->setVisible(mEditMode);
+
+	for (std::vector<BDSidebarItem*>::iterator iter = mSidebarItems.begin();
+		iter != mSidebarItems.end(); ++iter)
 	{
-		LLView* view = *it;
-		if (view->getVisible())
-			view->getChild<LLUICtrl>("remove_widget")->setVisible(mEditMode);
+		BDSidebarItem* item = (*iter);
+		if (item)
+			item->mRemoveBtn->setVisible(mEditMode);
 	}
 }
 
@@ -389,8 +456,7 @@ bool LLSideBar::loadWidgetList()
 	}
 
 	//BD - Kill any previous layout panels we may have still there.
-	LLLayoutStack* layout_stack = getChild<LLLayoutStack>("widgets_stack");
-	const LLView::child_list_t* list = layout_stack->getChildList();
+	const LLView::child_list_t* list = mWidgetsStack->getChildList();
 	for (LLView::child_list_t::const_iterator it = list->begin();
 		it != list->end(); ++it)
 	{
@@ -400,7 +466,7 @@ bool LLSideBar::loadWidgetList()
 	}
 
 	if (!mFirstTime)
-		getChild<LLLayoutStack>("widgets_stack")->translate(0, -mOffset - 5);
+		mWidgetsStack->translate(0, -mOffset - 5);
 
 	//BD - Delete all items so we can write it a new to prevent doubles.
 	//     Plain simple method.
@@ -434,6 +500,14 @@ bool LLSideBar::loadWidgetList()
 		case 4:
 			type = BDSidebarItem::SidebarType::TAB;
 			break;
+		}
+
+		std::string debug_str = widget["debug_setting"].asString();
+		LLControlVariable* controlp = gSavedSettings.getControl(debug_str);
+		if (!controlp && (type == 0 || type == 1 || type == 2))
+		{
+			LL_WARNS("Sidebar") << "Corrupt or missing essential debug, skipping widget creation" << LL_ENDL;
+			continue;
 		}
 
 		std::string panel_name;
@@ -473,13 +547,8 @@ bool LLSideBar::loadWidgetList()
 	
 		if (panel && layout_panel)
 		{
-			std::string debug_str = widget["debug_setting"].asString();
-
 			layout_panel->addChild(panel);
-			layout_stack->addPanel(layout_panel);
-
-			panel->getChild<LLUICtrl>("remove_widget")->setMouseDownCallback(boost::bind(&LLSideBar::deleteWidget, this, _1));
-			panel->getChild<LLUICtrl>("remove_widget")->setVisible(mEditMode);
+			mWidgetsStack->addPanel(layout_panel);
 
 			BDSidebarItem* item = new BDSidebarItem;
 			//BD - General stuff
@@ -488,10 +557,13 @@ bool LLSideBar::loadWidgetList()
 			item->mLabel = widget["label"].asString();
 			item->mOrder = widget["order"].asInteger();
 			item->mPanelName = layout_panel->getName();
+			item->mRemoveBtn = panel->getChild<LLButton>("remove_widget");
+
+			item->mRemoveBtn->setMouseDownCallback(boost::bind(&LLSideBar::deleteWidget, this, _1));
+			item->mRemoveBtn->setVisible(mEditMode);
 
 			if (type == BDSidebarItem::SidebarType::SLIDER)
 			{
-				LLControlVariable* controlp = gSavedSettings.getControl(debug_str);
 				LLSD value = controlp->getValue();
 				LLSliderCtrl* ctrl = panel->getChild<LLSliderCtrl>("slider");
 				LLVector4 vec4;
@@ -538,10 +610,10 @@ bool LLSideBar::loadWidgetList()
 				ctrl->setValue(value);
 			}
 			//BD - Currently not functional due to the inability to change sub-radios.
-			else if (type == BDSidebarItem::SidebarType::RADIO)
+			/*else if (type == BDSidebarItem::SidebarType::RADIO)
 			{
 				LLRadioGroup* ctrl = panel->getChild<LLRadioGroup>("radio");
-				ctrl->setControlVariable(gSavedSettings.getControl(debug_str));
+				ctrl->setControlVariable(controlp);
 
 				//BD - Radio stuff
 				item->mRadioCount = widget["radio_count"].asInteger();
@@ -555,7 +627,7 @@ bool LLSideBar::loadWidgetList()
 				item->mRadioLabel4 = widget["label4"].asString();
 
 				//BD - Can't do any of this atm. Need to implement for the radiobutton first.
-				/*LLRadioCtrl* radio1 = ctrl->getChild<LLRadioCtrl>("radio_1");
+				LLRadioCtrl* radio1 = ctrl->getChild<LLRadioCtrl>("radio_1");
 				radio1->setValue(widget["value1"].asReal());
 				LLRadioCtrl* radio2 = ctrl->getChild<LLRadioCtrl>("radio_2");
 				radio2->setValue(widget["value2"].asReal());
@@ -569,12 +641,11 @@ bool LLSideBar::loadWidgetList()
 					removeChild(radio3);
 				if (widget["radio_count"].asInteger() < 4)
 					removeChild(radio4);
-				*/
-			}
+			}*/
 			else if (type == BDSidebarItem::SidebarType::CHECKBOX)
 			{
 				LLCheckBoxCtrl* ctrl = panel->getChild<LLCheckBoxCtrl>("checkbox");
-				ctrl->setControlVariable(gSavedSettings.getControl(debug_str));
+				ctrl->setControlVariable(controlp);
 				ctrl->setLabel(item->mLabel);
 
 				//BD - Checkbox stuff
@@ -592,9 +663,6 @@ bool LLSideBar::loadWidgetList()
 			{
 				//BD - Tab stuff
 				//     Nothing.
-
-				//BD - Button stuff
-				//item->mIsToggle = widget["toggle"].asBoolean();
 			}
 
 			mSidebarItems.push_back(item);
@@ -608,13 +676,10 @@ bool LLSideBar::loadWidgetList()
 	infile.close();
 
 	//BD - Now resize our scroll panel.
-	//     FIXME: The sidebar scroll container panel turns invisible randomly sometimes.
-	//     No idea why, haven't paying attention too much to what i did when it happened.
-	//     I'm sure i'll find it soon.
-	LLRect rect = getChild<LLPanel>("scroll_panel")->getRect();
+	LLRect rect = mScrollPanel->getRect();
 	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.mRight, 5 + mOffset);
-	getChild<LLPanel>("scroll_panel")->setRect(rect);
-	getChild<LLLayoutStack>("widgets_stack")->translate(0, 5 + mOffset);
+	mScrollPanel->setRect(rect);
+	mWidgetsStack->translate(0, 5 + mOffset);
 
 	mFirstTime = false;
 	return TRUE;
@@ -665,9 +730,6 @@ void LLSideBar::saveWidgetList()
 				record["label4"] = item->mRadioLabel4;
 			}
 
-			//BD - Button stuff
-			//record["toggle"] = item->mIsToggle;
-
 			LLSDSerialize::toXML(record, file);
 		}
 	}
@@ -676,31 +738,29 @@ void LLSideBar::saveWidgetList()
 
 void LLSideBar::onTypeSelection()
 {
-	bool is_checkbox = getChild<LLButton>("is_checkbox")->getValue();
-	bool is_slider = getChild<LLButton>("is_slider")->getValue();
-	bool is_radio = getChild<LLButton>("is_radio")->getValue();
-	bool is_title = getChild<LLButton>("is_title")->getValue();
-	bool is_tab = getChild<LLButton>("is_tab")->getValue();
+	bool is_checkbox = mIsCheckbox->getValue();
+	bool is_slider = mIsSlider->getValue();
+	bool is_radio = mIsRadio->getValue();
+	bool is_title = mIsTitle->getValue();
+	bool is_tab = mIsTab->getValue();
 
 	getChild<LLPanel>("slider2")->setEnabled(is_slider);
-	getChild<LLLineEditor>("decimals")->setEnabled(is_slider);
-	getChild<LLLineEditor>("increment")->setEnabled(is_slider);
-	getChild<LLLineEditor>("min_value")->setEnabled(is_slider);
-	getChild<LLLineEditor>("max_value")->setEnabled(is_slider);
-	getChild<LLLineEditor>("label")->setEnabled(is_slider || is_checkbox || is_radio || is_title);
-	getChild<LLComboBox>("debug_setting")->setEnabled(is_slider || is_checkbox);
-
-	getChild<LLButton>("next")->setEnabled(is_slider || is_checkbox || is_radio || is_title || is_tab);
+	mDecimalsEditor->setEnabled(is_slider);
+	mIncrementEditor->setEnabled(is_slider);
+	mMinEditor->setEnabled(is_slider);
+	mMaxEditor->setEnabled(is_slider);
+	mLabelEditor->setEnabled(is_slider || is_checkbox || is_radio || is_title);
+	mDebugCombo->setEnabled(is_slider || is_checkbox);
 
 	getChild<LLPanel>("slider2")->setVisible(is_slider);
-	getChild<LLLineEditor>("decimals")->setVisible(is_slider);
-	getChild<LLLineEditor>("increment")->setVisible(is_slider);
-	getChild<LLLineEditor>("min_value")->setVisible(is_slider);
-	getChild<LLLineEditor>("max_value")->setVisible(is_slider);
+	mDecimalsEditor->setVisible(is_slider);
+	mIncrementEditor->setVisible(is_slider);
+	mMinEditor->setVisible(is_slider);
+	mMaxEditor->setVisible(is_slider);
 
-	getChild<LLButton>("is_slider")->setEnabled(!is_checkbox && !is_radio && !is_title && !is_tab);
-	//getChild<LLButton>("is_radio")->setEnabled(!is_checkbox && !is_slider);
-	getChild<LLButton>("is_checkbox")->setEnabled(!is_slider && !is_radio && !is_title && !is_tab);
-	getChild<LLButton>("is_title")->setEnabled(!is_checkbox && !is_slider && !is_radio && !is_tab);
-	getChild<LLButton>("is_tab")->setEnabled(!is_checkbox && !is_slider && !is_radio && !is_title);
+	mIsSlider->setEnabled(!is_checkbox && !is_radio && !is_title && !is_tab);
+	//mIsRadio->setEnabled(!is_checkbox && !is_slider);
+	mIsCheckbox->setEnabled(!is_slider && !is_radio && !is_title && !is_tab);
+	mIsTitle->setEnabled(!is_checkbox && !is_slider && !is_radio && !is_tab);
+	mIsTab->setEnabled(!is_checkbox && !is_slider && !is_radio && !is_title);
 }

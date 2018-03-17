@@ -31,10 +31,19 @@
 #include "lluictrl.h"
 #include "llsliderctrl.h"
 #include "lllayoutstack.h"
+#include "llpanel.h"
+#include "llbutton.h"
+#include "lllineeditor.h"
+#include "llcombobox.h"
 
 class LLUICtrl;
 class LLSliderCtrl;
 class LLLayoutPanel;
+class LLButton;
+class LLComboBox;
+class LLLineEditor;
+class LLPanel;
+class LLLayoutStack;
 
 class LLSideBar
 :	public LLPanel
@@ -115,22 +124,39 @@ public:
 		bool			mIsToggle;
 
 		std::string		mDebugSetting;
-		//const LLSD&		mParameter;
-		//const LLSD&		mFunction;
 
-		//LLPanel*		mPanel;
+		LLButton*		mRemoveBtn;
 
 		SidebarType		mType;
 	};
 
-	S32							mOffset;
-	S32							mWidgetCount;
-
-	bool						mFirstTime;
-
-	std::vector<BDSidebarItem*> mSidebarItems;
 private:
+	//BD - Legacy stuff.
+	void onMouseLeave(S32 x, S32 y, MASK mask);
+	void onMouseEnter(S32 x, S32 y, MASK mask);
+	/*virtual*/ BOOL 	handleMouseDown(S32 x, S32 y, MASK mask);
 
+	LLUICtrl*					mShadowResX;
+	LLUICtrl*					mShadowResY;
+	LLUICtrl*					mShadowResZ;
+	LLUICtrl*					mShadowResW;
+
+	LLUICtrl*					mShadowDistX;
+	LLUICtrl*					mShadowDistY;
+	LLUICtrl*					mShadowDistZ;
+	LLUICtrl*					mShadowDistW;
+
+	LLUICtrl*					mProjectorResX;
+	LLUICtrl*					mProjectorResY;
+
+	LLUICtrl*					mVignetteX;
+	LLUICtrl*					mVignetteY;
+	LLUICtrl*					mVignetteZ;
+
+	LLSliderCtrl*				mCameraAngle;
+
+
+	//BD - New stuff.
 	bool loadWidgetList();
 	void saveWidgetList();
 	void createWidget();
@@ -139,34 +165,56 @@ private:
 
 	void onTypeSelection();
 
-	void onMouseLeave(S32 x, S32 y, MASK mask);
-	void onMouseEnter(S32 x, S32 y, MASK mask);
-	/*virtual*/ BOOL 	handleMouseDown(S32 x, S32 y, MASK mask);
+	void refreshCreationControls();
 
-	LLUICtrl*			mShadowResX;
-	LLUICtrl*			mShadowResY;
-	LLUICtrl*			mShadowResZ;
-	LLUICtrl*			mShadowResW;
+	S32							mOffset;
+	S32							mWidgetCount;
 
-	LLUICtrl*			mShadowDistX;
-	LLUICtrl*			mShadowDistY;
-	LLUICtrl*			mShadowDistZ;
-	LLUICtrl*			mShadowDistW;
+	LLFrameTimer				mUpdateTimer;
 
-	LLUICtrl*			mProjectorResX;
-	LLUICtrl*			mProjectorResY;
+	std::vector<BDSidebarItem*> mSidebarItems;
 
-	LLUICtrl*			mVignetteX;
-	LLUICtrl*			mVignetteY;
-	LLUICtrl*			mVignetteZ;
+	//BD - General stuff.
+	LLButton*					mIsCheckbox;
+	LLButton*					mIsSlider;
+	LLButton*					mIsRadio;
+	LLButton*					mIsTitle;
+	LLButton*					mIsTab;
 
-	LLSliderCtrl*		mCameraAngle;
+	LLPanel*					mScrollPanel;
+	LLLayoutStack*				mWidgetsStack;
+	LLLayoutPanel*				mMainLayout;
 
-	bool				mEditMode;
+	LLComboBox*					mDebugCombo;
+	LLLineEditor*				mLabelEditor;
+	LLButton*					mNextBtn;
 
-	//LLLayoutPanel*		mLayoutPanel;
+	//BD - Slider stuff.
+	LLLineEditor*				mDecimalsEditor;
+	LLLineEditor*				mIncrementEditor;
+	LLLineEditor*				mMinEditor;
+	LLLineEditor*				mMaxEditor;
+	LLButton*					mIsX;
+	LLButton*					mIsY;
+	LLButton*					mIsZ;
+	LLButton*					mIsW;
 
-	std::string			mCurrentPage;
+	//BD - Radio stuff.
+	//LLButton* mRadio2;
+	//LLButton* mRadio3;
+	//LLButton* mRadio4;
+	//LLUICtrl* mRadioCount;
+	//LLLineEditor* mRadioVal1;
+	//LLLineEditor* mRadioVal2;
+	//LLLineEditor* mRadioVal3;
+	//LLLineEditor* mRadioVal4;
+	//LLLineEditor* mRadioLabel1;
+	//LLLineEditor* mRadioLabel2;
+	//LLLineEditor* mRadioLabel3;
+	//LLLineEditor* mRadioLabel4;
+
+	bool						mEditMode;
+	bool						mFirstTime;
 };
 
 extern LLSideBar *gSideBar;
