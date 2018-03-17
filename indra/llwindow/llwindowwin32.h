@@ -230,6 +230,8 @@ protected:
 
 	BOOL			mMouseVanish;
 
+	BOOL			mMouseVanish;
+
 	friend class LLWindowManager;
 };
 
