@@ -2011,7 +2011,7 @@ bool LLAppearanceMgr::getCanReplaceCOF(const LLUUID& outfit_cat_id)
 // [/RLVa:KB]
 
 	// Check whether it's the base outfit.
-//	if (outfit_cat_id.isNull() || outfit_cat_id == getBaseOutfitUUID())
+//	if (outfit_cat_id.isNull())
 // [SL:KB] - Patch: Appearance-Misc | Checked: 2010-09-21 (Catznip-2.1)
 	if ( (outfit_cat_id.isNull()) || ((outfit_cat_id == getBaseOutfitUUID()) && (!isOutfitDirty())) )
 // [/SL:KB]

@@ -775,6 +775,10 @@ void LLTaskInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	}
 	items.push_back(std::string("Task Properties"));
 // [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Added: RLVa-1.2.1f
+	if ((flags & FIRST_SELECTED_ITEM) == 0)
+	{
+		disabled_items.push_back(std::string("Task Properties"));
+	}
 	items.push_back(std::string("Task Rename"));
 	if ( (!isItemRenameable()) || ((flags & FIRST_SELECTED_ITEM) == 0) )
 	{
@@ -1107,6 +1111,10 @@ void LLTaskSoundBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 		}
 	}
 	items.push_back(std::string("Task Properties"));
+	if ((flags & FIRST_SELECTED_ITEM) == 0)
+	{
+		disabled_items.push_back(std::string("Task Properties"));
+	}
 	if(isItemRenameable())
 	{
 		items.push_back(std::string("Task Rename"));
@@ -1493,6 +1501,10 @@ void LLTaskMeshBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 		}
 	}
 	items.push_back(std::string("Task Properties"));
+	if ((flags & FIRST_SELECTED_ITEM) == 0)
+	{
+		disabled_items.push_back(std::string("Task Properties"));
+	}
 	if(isItemRenameable())
 	{
 		items.push_back(std::string("Task Rename"));
