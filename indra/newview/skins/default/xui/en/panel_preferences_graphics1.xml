@@ -3225,7 +3225,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="5"
    name="Deferred"
-   top_delta="4"
+   top_delta="1"
    width="115" />
    
    <icon
@@ -4119,7 +4119,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="5"
    name="UseSSAO"
-   top_delta="4"
+   top_delta="1"
    width="115" />
      
      
@@ -4347,7 +4347,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
      layout="topleft"
      left="5"
      name="UseDoF"
-     top_delta="4"
+     top_delta="1"
      width="115" />
  </layout_panel>
       <layout_panel
@@ -4635,7 +4635,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="5"
    name="MotionBlur"
-   top_delta="4"
+   top_delta="1"
    width="115" />
    
    <icon
@@ -4817,7 +4817,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="5"
    name="RenderGodrays"
-   top_delta="4"
+   top_delta="1"
    width="115" />
    
    <icon
@@ -5200,7 +5200,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="5"
    name="ToneMapping"
-   top_delta="4"
+   top_delta="1"
    width="115" />
 
    </layout_panel>
@@ -5983,7 +5983,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  follows="top|left|right"
       visibility_control="PrefsVignetteVisible"
 	  layout="topleft"
-	  height="67"
+	  height="69"
 	  auto_resize="false"
       visible="false"
 	  name="vignette_layout_panel"
