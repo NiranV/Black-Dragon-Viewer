@@ -9954,7 +9954,11 @@ void LLPipeline::renderGeomMotionBlur()
 	renderMotionBlur(LLRenderPass::PASS_SIMPLE);
 	renderMotionBlur(LLRenderPass::PASS_FULLBRIGHT);
 	renderMotionBlur(LLRenderPass::PASS_BUMP);
+	renderMotionBlur(LLRenderPass::PASS_SHINY);
 	renderMotionBlur(LLRenderPass::PASS_MATERIAL);
+	renderMotionBlur(LLRenderPass::PASS_NORMSPEC);
+	renderMotionBlur(LLRenderPass::PASS_SPECMAP);
+	renderMotionBlur(LLRenderPass::PASS_NORMMAP);
 	renderMotionBlur(LLRenderPass::PASS_MATERIAL_ALPHA_MASK);
 
 	gVelocityProgram.unbind();
