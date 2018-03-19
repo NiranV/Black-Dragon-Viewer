@@ -8685,10 +8685,8 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 
 	//F32 shadow_offset_error = 1.f + RenderShadowOffsetError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]);
 	//F32 shadow_bias_error = RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2])/4000.f;
-	F32 cam_z = LLViewerCamera::getInstance()->getOrigin().mV[2];
-	LLVector4 shadow_bias_error = RenderShadowBiasError	/ fabsf(cam_z / 1000.f);
-	shadow_bias_error += RenderShadowBias;
-	shadow_bias_error.mV[VX] -= (0.008 * fabsf(cam_z / 4000.f));
+	LLVector4 shadow_bias_error = LLVector4(-0.00025, -0.0005, -0.001, -0.002);
+	shadow_bias_error += (RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]) / 1000.f);
 
 	shader.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, mDeferredScreen.getWidth(), mDeferredScreen.getHeight());
 	shader.uniform1f(LLShaderMgr::DEFERRED_NEAR_CLIP, LLViewerCamera::getInstance()->getNear()*2.f);
@@ -11218,7 +11216,7 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 		}
 
 		//BD
-		//mSunClipPlanes.mV[0] *= 1.25f; //bump back first split for transition padding
+		mSunClipPlanes.mV[0] *= 1.25f; //bump back first split for transition padding
 	}
 
 	// convenience array of 4 near clip plane distances
