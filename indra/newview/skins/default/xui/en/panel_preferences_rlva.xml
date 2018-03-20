@@ -47,7 +47,7 @@ width="510">
 	follows="left|top"
 	left="5"
 	name="RLVa"
-	top_delta="4"
+	top_delta="1"
 	width="256" />
 	<check_box
 	control_name="RestrainedLoveCanOOC"
@@ -252,7 +252,7 @@ width="510">
 	left="5"
 	tool_tip="This option enables showing all RLV commands which would be normally hidden. This option should only be enabled for debugging."
 	name="RLVaDebug"
-	top_delta="4"
+	top_delta="1"
 	width="256" />
 	<check_box
 	control_name="RLVaShowAssertionFailures"

@@ -128,7 +128,7 @@ width="510">
 		tool_tip="This option toggles whether you want to use the right click action wheel (aka Pie Menu) or not."
 	    left="10"
 	    name="UsePieMenu"
-	    top_delta="4"
+	    top_delta="1"
 	    width="256" />
 	    <slider
 	    control_name="PieMenuOpacity"

@@ -479,7 +479,7 @@
    tool_tip="This option toggles whether you can switch to the first person view of your avatar (aka Mouselook) or not when zooming in or hitting &lt;green&gt;M&lt;/green&gt;."
    layout="topleft"
    left="5"
-   top_delta="4"
+   top_delta="1"
    name="AllowMouselook"
    width="256" />
    <check_box
