@@ -44,6 +44,9 @@
 #include "llviewerregion.h"
 #include "llwaterparammanager.h"
 
+//BD - Refresh all presets.
+#include "llwlparammanager.h"
+
 #undef max // Fixes a Windows compiler error
 
 LLFloaterEditWater::LLFloaterEditWater(const LLSD &key)
@@ -104,6 +107,9 @@ void LLFloaterEditWater::onOpen(const LLSD& key)
 	//BD
 	getChild<LLUICtrl>("water_preset_icon")->setVisible(new_preset);
 
+	//BD - Refresh all presets.
+	refreshPresets();
+
 	reset();
 }
 
@@ -124,8 +130,8 @@ void LLFloaterEditWater::initCallbacks(void)
 	getChild<LLButton>("cancel")->setCommitCallback(boost::bind(&LLFloaterEditWater::onBtnCancel, this));
 	//BD
 	mDeleteButton->setCommitCallback(boost::bind(&LLFloaterEditWater::onDeletePreset, this));
-	//BD - Refresh
-	getChild<LLUICtrl>("refresh")->setCommitCallback(boost::bind(&LLFloaterEditWater::refreshWaterPresetsList, this));
+	//BD - Refresh all presets.
+	getChild<LLUICtrl>("refresh")->setCommitCallback(boost::bind(&LLFloaterEditWater::refreshPresets, this));
 
 	LLEnvManagerNew::instance().setRegionSettingsChangeCallback(boost::bind(&LLFloaterEditWater::onRegionSettingsChange, this));
 	LLWaterParamManager::instance().setPresetListChangeCallback(boost::bind(&LLFloaterEditWater::onWaterPresetListChange, this));
@@ -172,6 +178,12 @@ void LLFloaterEditWater::initCallbacks(void)
 }
 
 //=============================================================================
+
+//BD - Refresh all presets.
+void LLFloaterEditWater::refreshPresets()
+{
+	LLWLParamManager::instance().loadAllPresets();
+}
 
 void LLFloaterEditWater::syncControls()
 {

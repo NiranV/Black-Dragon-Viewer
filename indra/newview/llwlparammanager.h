@@ -280,12 +280,13 @@ public:
 	F32 mDomeOffset;
 	F32 mDomeRadius;
 	
+	//BD - Refresh all presets.
+	void loadAllPresets();
 
 private:
 
 	friend class LLWLAnimator;
 
-	void loadAllPresets();
 	void loadPresetsFromDir(const std::string& dir);
 	bool loadPreset(const std::string& path);
 

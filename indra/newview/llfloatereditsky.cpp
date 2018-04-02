@@ -120,6 +120,9 @@ void LLFloaterEditSky::onOpen(const LLSD& key)
 	//BD
 	getChild<LLUICtrl>("sky_preset_icon")->setVisible(new_preset);
 
+	//BD - Refresh all presets.
+	refreshPresets();
+
 	reset();
 }
 
@@ -142,8 +145,8 @@ void LLFloaterEditSky::initCallbacks(void)
 	getChild<LLButton>("cancel")->setCommitCallback(boost::bind(&LLFloaterEditSky::onBtnCancel, this));
 	//BD
 	mDeleteButton->setCommitCallback(boost::bind(&LLFloaterEditSky::onDeletePreset, this));
-	//BD - Refresh
-	getChild<LLUICtrl>("refresh")->setCommitCallback(boost::bind(&LLFloaterEditSky::refreshSkyPresetsList, this));
+	//BD - Refresh all presets.
+	getChild<LLButton>("refresh")->setCommitCallback(boost::bind(&LLFloaterEditSky::refreshPresets, this));
 
 	LLEnvManagerNew::instance().setRegionSettingsChangeCallback(boost::bind(&LLFloaterEditSky::onRegionSettingsChange, this));
 	LLWLParamManager::instance().setPresetListChangeCallback(boost::bind(&LLFloaterEditSky::onSkyPresetListChange, this));
@@ -229,6 +232,12 @@ void LLFloaterEditSky::initCallbacks(void)
 }
 
 //=================================================================================================
+
+void LLFloaterEditSky::refreshPresets()
+{
+	//BD - Refresh all presets.
+	LLWLParamManager::instance().loadAllPresets();
+}
 
 void LLFloaterEditSky::syncControls()
 {

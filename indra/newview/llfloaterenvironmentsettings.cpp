@@ -87,6 +87,10 @@ BOOL LLFloaterEnvironmentSettings::postBuild()
 void LLFloaterEnvironmentSettings::onOpen(const LLSD& key)
 {
 	refresh();
+
+	//BD - Refresh all presets.
+	LLWLParamManager& sky_mgr = LLWLParamManager::instance();
+	sky_mgr.loadAllPresets();
 }
 
 void LLFloaterEnvironmentSettings::onSwitchRegionSettings()

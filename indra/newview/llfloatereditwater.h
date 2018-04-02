@@ -61,6 +61,9 @@ private:
 
 	//-- WL stuff begins ------------------------------------------------------
 
+	//BD - Refresh all controls.
+	void refreshPresets();
+
 	void syncControls(); /// sync up sliders with parameters
 
 	// general purpose callbacks for dealing with color controllers

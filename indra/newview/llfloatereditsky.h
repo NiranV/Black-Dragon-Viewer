@@ -58,6 +58,9 @@ private:
 
 	//-- WL stuff begins ------------------------------------------------------
 
+	//BD - Refresh all controls.
+	void refreshPresets();
+
 	void syncControls(); /// sync up sliders with parameters
 
 	void setColorSwatch(const std::string& name, const WLColorControl& from_ctrl, F32 k);
