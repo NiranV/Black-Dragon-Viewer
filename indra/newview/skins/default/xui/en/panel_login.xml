@@ -18,7 +18,6 @@ top="600"
        http://secondlife.com/account/request.php
 </panel.string>
   <web_browser
-  visibility_control="ExperimentalLogin"
   tab_stop="false" 
   trusted_content="true" 
   bg_opaque_color="Black"
@@ -30,19 +29,6 @@ top="600"
   name="html"
   height="650"
   width="996" />
-  
-  <!--<icon
-  follows="all"
-  height="600"
-  image_name="Login_BG"
-  color="1 1 1 1"
-  layout="topleft"
-  name="login_bg"
-  mouse_opaque="false"
-  visible="true"
-  width="1016"
-  left="0"
-  top="-600"/>-->
   <icon
   follows="bottom|left|right"
   height="125"

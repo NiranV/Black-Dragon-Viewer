@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="788"
+     height="730"
      name="ui_panel"
      top="0"
      left="0"
@@ -456,39 +456,6 @@ width="510">
        <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-    
-	<panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
-	    <text
-	    type="string"
-	    length="1"
-	    follows="left|top"
-	    height="12"
-	    layout="topleft"
-	    left="10"
-	    name="exp_label"
-	    top_delta="4"
-	    width="120">Experimental Options:</text>
-	    <check_box
-	    control_name="ExperimentalLogin"
-	    height="16"
-	    initial_value="true"
-	    label="Enable animated Login background"
-	    layout="topleft"
-	    left="10"
-	    tool_tip="This option toggles the visibility of videos on the login screen."
-	    name="ExperimentalLogin"
-	    top_pad="15"
-	    width="256" />
 		<panel
  follows="left|top|right"
  height="20"
