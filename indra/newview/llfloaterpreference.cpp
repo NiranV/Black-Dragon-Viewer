@@ -1425,11 +1425,15 @@ void LLFloaterPreference::onReplaceBind(KEY key, MASK mask, S32 mode)
 	LLScrollListCtrl* scroll = getChild<LLScrollListCtrl>(llformat("scroll_mode_%i", mode));
 	if (scroll)
 	{
-		LLScrollListCell* column_3 = scroll->getFirstSelected()->getColumn(2);
-		LLScrollListCell* column_4 = scroll->getFirstSelected()->getColumn(3);
+		LLScrollListItem* item = scroll->getFirstSelected();
+		if (item)
+		{
+			LLScrollListCell* column_3 = item->getColumn(2);
+			LLScrollListCell* column_4 = item->getColumn(3);
 
-		column_3->setValue(LLKeyboard::stringFromKey(key));
-		column_4->setValue(LLKeyboard::stringFromMask(mask, true));
+			column_3->setValue(LLKeyboard::stringFromKey(key));
+			column_4->setValue(LLKeyboard::stringFromMask(mask, true));
+		}
 	}
 	onExportControls();
 }
@@ -1443,21 +1447,24 @@ void LLFloaterPreference::onListClick(const LLSD &param)
 void LLFloaterPreference::onListClickAction(S32 mode)
 {
 	std::string name = llformat("scroll_mode_%i", mode);
-	LLChangeKeyDialog* dialog = LLFloaterReg::getTypedInstance<LLChangeKeyDialog>("change_key", LLSD());
-	if (dialog)
+	LLScrollListItem* row = getChild<LLScrollListCtrl>(name)->getFirstSelected();
+	if (row)
 	{
-		LLScrollListItem* row = getChild<LLScrollListCtrl>(name)->getFirstSelected();
-		MASK mask = MASK_NONE;
-		KEY key = NULL;
-		LLKeyboard::keyFromString(row->getColumn(2)->getValue().asString(), &key);
-		LLKeyboard::maskFromString(row->getColumn(3)->getValue().asString(), &mask);
+		LLChangeKeyDialog* dialog = LLFloaterReg::getTypedInstance<LLChangeKeyDialog>("change_key", LLSD());
+		if (dialog)
+		{
+			MASK mask = MASK_NONE;
+			KEY key = NULL;
+			LLKeyboard::keyFromString(row->getColumn(2)->getValue().asString(), &key);
+			LLKeyboard::maskFromString(row->getColumn(3)->getValue().asString(), &mask);
 
-		dialog->setParent(this);
-		dialog->setMode(mode);
-		dialog->setKey(key);
-		dialog->setMask(mask);
+			dialog->setParent(this);
+			dialog->setMode(mode);
+			dialog->setKey(key);
+			dialog->setMask(mask);
 
-		LLFloaterReg::showTypedInstance<LLChangeKeyDialog>("change_key", LLSD(), TRUE);
+			LLFloaterReg::showTypedInstance<LLChangeKeyDialog>("change_key", LLSD(), TRUE);
+		}
 	}
 }
 
