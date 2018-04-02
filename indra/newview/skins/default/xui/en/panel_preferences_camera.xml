@@ -559,7 +559,7 @@
    follows="left|top"
    enabled_control="EnableMouselook"
    height="16"
-   label="Invert Y Axis in Mouselook"
+   label="Invert Pitch in Mouselook"
    tool_tip="This option controls whether the Y axis (up and down) should be inverted while in first person view (Mouselook). This option stacks with the joystick invert Y axis."
    layout="topleft"
    left_delta="0"
