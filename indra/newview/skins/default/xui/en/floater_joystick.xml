@@ -16,11 +16,11 @@
  follows="all"
  layout="topleft"
  mouse_opaque="false"
- left="0"
+ left="2"
  name="gfx_scroll"
  opaque="true"
  height="460"
- width="567"
+ width="562"
  top="20">
   <panel
   layout="topleft"
@@ -30,7 +30,7 @@
   top="0"
   mouse_opaque="false"
   left="0"
-  width="550">
+  width="547">
    <panel
  follows="left|top|right"
  height="20"
@@ -41,100 +41,90 @@
  left="1"
  name="title"
  top="0"
- width="550"/>
+ width="545"/>
     <check_box
      control_name="JoystickEnabled"
      halign="left"
      label="Enable Joystick:"
      layout="topleft"
-     height="16"
+     height="14"
      left="5"
-     top_delta="5"
+     top_delta="3"
      name="enable_joystick"
      width="120" />
      <text
-     top_delta="0"
+     top_delta="1"
      follows="left|top"
      layout="topleft"
      left_pad="10"
      name="joystick_type"
      height="12"
-     width="380" />    
-    <text
-     type="string"
-     length="1"
-     follows="left|top"
-     halign="left"
-     height="12"
-     layout="topleft"
-     left="10"
-     mouse_opaque="false"
-     name="Control Modes:"
-     top_pad="12"
-     width="102">
-        Control Modes:
-    </text>
+     width="380" />  
     <check_box
      control_name="JoystickAvatarEnabled"
      halign="top|left"
      label="Avatar"
      layout="topleft"
-     left="150"
-     top_delta="0"
+     left="10"
+     top_pad="15"
      name="JoystickAvatarEnabled"
      height="16"
+     width="60" />
+    <check_box
+     top_pad="1"
+     control_name="ZoomDirect"
+     label="Direct Zoom"
+     layout="topleft"
+     left_delta="0"
+     name="ZoomDirect"
+     height="14"
+     width="60" />
+    <check_box
+     top_pad="1"
+     control_name="JoystickInvertPitch"
+     label="Invert Pitch"
+     layout="topleft"
+     left_delta="0"
+     name="InvertPitch"
+     height="14"
      width="60" />
     <check_box
      control_name="JoystickBuildEnabled"
      halign="top|left"
      label="Build"
      layout="topleft"
-     left="270"
-     top_delta="0"
-     height="16"
+     left="185"
+     top="33"
+     height="14"
      name="JoystickBuildEnabled"
+     width="60" />
+    <check_box
+     control_name="Cursor3D"
+     top_pad="1"
+     label="3D Cursor"
+     layout="topleft"
+     left_delta="0"
+     name="Cursor3D"
+     height="14"
      width="60" />
     <check_box
      control_name="JoystickFlycamEnabled"
      halign="top|left"
      label="Flycam"
      layout="topleft"
-     left="390"
-     top_delta="0"
-     height="16"
+     left="360"
+     top="33"
+     height="14"
      name="JoystickFlycamEnabled"
      width="60" />
     <check_box
-     top_pad="8"
-     control_name="ZoomDirect"
-     label="Direct Zoom"
-     layout="topleft"
-     left="150"
-     name="ZoomDirect"
-     width="60" />
-    <check_box
-     bottom_delta="0"
-     control_name="Cursor3D"
-     label="3D Cursor"
-     layout="topleft"
-     left="270"
-     name="Cursor3D"
-     width="60" />
-    <check_box
-     bottom_delta="0"
+     top_pad="1"
      control_name="AutoLeveling"
      label="Auto Level"
      layout="topleft"
-     left="390"
+     left_delta="0"
+     height="14"
      name="AutoLeveling"
-     width="60" />
-    <check_box
-     top_pad="8"
-     control_name="JoystickInvertPitch"
-     label="Invert Pitch"
-     layout="topleft"
-     left="150"
-     name="InvertPitch"
      width="60" />
     <panel
  follows="left|top|right"
@@ -145,8 +135,8 @@
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="10"
- width="550"/>
+ top_pad="30"
+ width="545"/>
     <text
    name="general_label"
    follows="left|top"
@@ -445,7 +435,7 @@
  left="1"
  name="title"
  top_pad="17"
- width="550"/>
+ width="545"/>
     <text
    name="general_label"
    follows="left|top"
@@ -457,7 +447,7 @@
    Axis Mapping:
    </text>
     <spinner
-     top_pad="13"
+     top_pad="15"
      control_name="JoystickAxis1"
      decimal_digits="0"
      increment="1"
@@ -557,7 +547,7 @@
  left="1"
  name="title"
  top_pad="17"
- width="550"/>
+ width="545"/>
     <text
    name="general_label"
    follows="left|top"
