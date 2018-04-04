@@ -183,6 +183,10 @@ LLAgentCamera::LLAgentCamera() :
 	mPanInKey(0.f),
 	mPanOutKey(0.f),
 
+	//BD
+	mThirdPersonSteeringMode(false),
+	mMouseInvert(false),
+
 //	//BD - Save/Load Camera Position
 	mSavedCameraPos(),
 	mSavedCameraFocus(),
@@ -246,6 +250,13 @@ void LLAgentCamera::init()
 	mTargetCameraDistance = mCurrentCameraDistance;
 	mCameraZoomFraction = 1.f;
 	mTrackFocusObject = gSavedSettings.getBOOL("TrackFocusObject");
+
+	//BD - Possibly try this?
+	//mMouseInvert = gSavedSettings.getControl("InvertMouseThirdPerson");
+	//mCinematicCamera = gSavedSettings.getControl("UseCinematicCamera");
+	mMouseInvert = gSavedSettings.getBOOL("InvertMouseThirdPerson");
+	mCinematicCamera = gSavedSettings.getBOOL("UseCinematicCamera");
+	mCameraPositionSmoothing = gSavedSettings.getF32("CameraPositionSmoothing");
 
 	mInitialized = true;
 }
@@ -899,6 +910,24 @@ void LLAgentCamera::cameraOrbitOver(const F32 angle)
 }
 
 //-----------------------------------------------------------------------------
+// cameraRollOver()
+//-----------------------------------------------------------------------------
+void LLAgentCamera::cameraRollOver(const F32 angle)
+{
+	LLQuaternion rot_quat = LLViewerCamera::getInstance()->getQuaternion();
+	LLMatrix3 rot_mat(0.f, 0.f, angle);
+	rot_quat = LLQuaternion(rot_mat)*rot_quat;
+
+	LLMatrix3 mat(rot_quat);
+
+	LLViewerCamera::getInstance()->mXAxis = LLVector3(mat.mMatrix[0]);
+	LLViewerCamera::getInstance()->mYAxis = LLVector3(mat.mMatrix[1]);
+	LLViewerCamera::getInstance()->mZAxis = LLVector3(mat.mMatrix[2]);
+	mCameraRotation = rot_quat;
+	LL_WARNS("Camera") << rot_mat << " " << rot_quat << " " << mat.mMatrix[0] << " " << mat.mMatrix[1] << " " << mat.mMatrix[2] << LL_ENDL;
+}
+
+//-----------------------------------------------------------------------------
 // cameraZoomIn()
 //-----------------------------------------------------------------------------
 void LLAgentCamera::cameraZoomIn(const F32 fraction)
@@ -1208,9 +1237,8 @@ void LLAgentCamera::updateCamera()
 	//NOTE - this needs to be integrated into a general upVector system here within llAgent. 
 
 //	//BD - Third Person Steering
-	//BD   TODO: Replace this gSavedSettings call with something internal.
-	if(gSavedSettings.getBOOL("EnableThirdPersonSteering")
-		&& !gAgentCamera.cameraMouselook())
+	if(mThirdPersonSteeringMode
+		&& !cameraMouselook())
 	{
 		if(gViewerWindow->getRightMouseDown())
 		{
@@ -1244,37 +1272,46 @@ void LLAgentCamera::updateCamera()
 	LLFloaterCamera* camera_floater = LLFloaterReg::findTypedInstance<LLFloaterCamera>("camera");
 	if (camera_floater)
 	{
-		camera_floater->mRotate->setToggleState(gAgentCamera.getOrbitRightKey() > 0.f,	// left
-												gAgentCamera.getOrbitUpKey() > 0.f,		// top
-												gAgentCamera.getOrbitLeftKey() > 0.f,	// right
-												gAgentCamera.getOrbitDownKey() > 0.f);	// bottom
+		camera_floater->mRotate->setToggleState(getOrbitRightKey() > 0.f,	// left
+												getOrbitUpKey() > 0.f,		// top
+												getOrbitLeftKey() > 0.f,	// right
+												getOrbitDownKey() > 0.f);	// bottom
 		
-		camera_floater->mTrack->setToggleState(gAgentCamera.getPanLeftKey() > 0.f,		// left
-											   gAgentCamera.getPanUpKey() > 0.f,			// top
-											   gAgentCamera.getPanRightKey() > 0.f,		// right
-											   gAgentCamera.getPanDownKey() > 0.f);		// bottom
+		camera_floater->mTrack->setToggleState(getPanLeftKey() > 0.f,		// left
+											   getPanUpKey() > 0.f,			// top
+											   getPanRightKey() > 0.f,		// right
+											   getPanDownKey() > 0.f);		// bottom
 	}
 
 	// Handle camera movement based on keyboard.
 	const F32 ORBIT_OVER_RATE = 90.f * DEG_TO_RAD;			// radians per second
 	const F32 ORBIT_AROUND_RATE = 90.f * DEG_TO_RAD;		// radians per second
 	const F32 PAN_RATE = 5.f;								// meters per second
+	//BD - Camera Roll
+	const F32 ROLL_RATE = 90.f * DEG_TO_RAD;				// radians per second
 
-	if (gAgentCamera.getOrbitUpKey() || gAgentCamera.getOrbitDownKey())
+	if (getOrbitUpKey() || getOrbitDownKey())
 	{
-		F32 input_rate = gAgentCamera.getOrbitUpKey() - gAgentCamera.getOrbitDownKey();
+		F32 input_rate = getOrbitUpKey() - getOrbitDownKey();
 		cameraOrbitOver( input_rate * ORBIT_OVER_RATE / gFPSClamped );
 	}
 
-	if (gAgentCamera.getOrbitLeftKey() || gAgentCamera.getOrbitRightKey())
+	//BD - Camera Roll
+	if (getRollLeftKey() || getRollRightKey())
 	{
-		F32 input_rate = gAgentCamera.getOrbitLeftKey() - gAgentCamera.getOrbitRightKey();
+		F32 input_rate = getRollLeftKey() - getRollRightKey();
+		cameraRollOver(input_rate * ROLL_RATE / gFPSClamped);
+	}
+
+	if (getOrbitLeftKey() || getOrbitRightKey())
+	{
+		F32 input_rate = getOrbitLeftKey() - getOrbitRightKey();
 		cameraOrbitAround(input_rate * ORBIT_AROUND_RATE / gFPSClamped);
 	}
 
-	if (gAgentCamera.getOrbitInKey() || gAgentCamera.getOrbitOutKey())
+	if (getOrbitInKey() || getOrbitOutKey())
 	{
-		F32 input_rate = gAgentCamera.getOrbitInKey() - gAgentCamera.getOrbitOutKey();
+		F32 input_rate = getOrbitInKey() - getOrbitOutKey();
 		
 		LLVector3d to_focus = gAgent.getPosGlobalFromAgent(LLViewerCamera::getInstance()->getOrigin()) - calcFocusPositionTargetGlobal();
 		F32 distance_to_focus = (F32)to_focus.magVec();
@@ -1282,27 +1319,27 @@ void LLAgentCamera::updateCamera()
 		cameraOrbitIn( input_rate * distance_to_focus / gFPSClamped );
 	}
 
-	if (gAgentCamera.getPanInKey() || gAgentCamera.getPanOutKey())
+	if (getPanInKey() || getPanOutKey())
 	{
-		F32 input_rate = gAgentCamera.getPanInKey() - gAgentCamera.getPanOutKey();
+		F32 input_rate = getPanInKey() - getPanOutKey();
 		cameraPanIn(input_rate * PAN_RATE / gFPSClamped);
 	}
 
-	if (gAgentCamera.getPanRightKey() || gAgentCamera.getPanLeftKey())
+	if (getPanRightKey() || getPanLeftKey())
 	{
-		F32 input_rate = gAgentCamera.getPanRightKey() - gAgentCamera.getPanLeftKey();
+		F32 input_rate = getPanRightKey() - getPanLeftKey();
 		cameraPanLeft(input_rate * -PAN_RATE / gFPSClamped );
 	}
 
-	if (gAgentCamera.getPanUpKey() || gAgentCamera.getPanDownKey())
+	if (getPanUpKey() || getPanDownKey())
 	{
-		F32 input_rate = gAgentCamera.getPanUpKey() - gAgentCamera.getPanDownKey();
+		F32 input_rate = getPanUpKey() - getPanDownKey();
 		cameraPanUp(input_rate * PAN_RATE / gFPSClamped );
 	}
 
 	// Clear camera keyboard keys.
-	gAgentCamera.clearOrbitKeys();
-	gAgentCamera.clearPanKeys();
+	clearOrbitKeys();
+	clearPanKeys();
 
 	// lerp camera focus offset
 	mCameraFocusOffset = lerp(mCameraFocusOffset, mCameraFocusOffsetTarget, LLSmoothInterpolation::getInterpolant(CAMERA_FOCUS_HALF_LIFE));
@@ -1317,7 +1354,7 @@ void LLAgentCamera::updateCamera()
 			// (2) focus, and (3) upvector. They can then be queried elsewhere in llAgent.
 			//--------------------------------------------------------------------------------
 			// *TODO: use combined rotation of frameagent and sit object
-			LLQuaternion avatarRotationForFollowCam = gAgentAvatarp->isSitting() ? gAgentAvatarp->getRenderRotation() : gAgent.getFrameAgent().getQuaternion();
+			LLQuaternion avatarRotationForFollowCam = gAgentAvatarp->isSitting() ? gAgentAvatarp->getRenderRotation() : mCameraRotation;
 
 			LLFollowCamParams* current_cam = LLFollowCamMgr::getActiveFollowCamParams();
 			if (current_cam)
@@ -1423,7 +1460,7 @@ void LLAgentCamera::updateCamera()
 		{
 			const F32 SMOOTHING_HALF_LIFE = 0.02f;
 			
-			F32 smoothing = LLSmoothInterpolation::getInterpolant(gSavedSettings.getF32("CameraPositionSmoothing") * SMOOTHING_HALF_LIFE, FALSE);
+			F32 smoothing = LLSmoothInterpolation::getInterpolant(mCameraPositionSmoothing * SMOOTHING_HALF_LIFE, FALSE);
 					
 			if (!mFocusObject)  // we differentiate on avatar mode 
 			{
@@ -1455,7 +1492,7 @@ void LLAgentCamera::updateCamera()
 
 	LLVector3 focus_agent = gAgent.getPosAgentFromGlobal(mFocusGlobal);
 //	//BD - Cinematic Head Tracking
-	if (isAgentAvatarValid() && gSavedSettings.getBOOL("UseCinematicCamera")
+	if (isAgentAvatarValid() && mCinematicCamera
 		&& mFocusOnAvatar && mCameraMode == CAMERA_MODE_THIRD_PERSON)
 	{
 		LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() + 
@@ -1505,7 +1542,7 @@ void LLAgentCamera::updateCamera()
 	
 //	//BD - Realistic Mouselook
 	if (LLVOAvatar::sVisibleInFirstPerson && isAgentAvatarValid() && cameraMouselook()
-		&& (!gAgentAvatarp->isSitting() || gSavedSettings.getBOOL("UseRealisticMouselook")))
+		&& (!gAgentAvatarp->isSitting() || mCinematicCamera))
 	{
 		LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() + 
  			LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() + 
@@ -1516,7 +1553,7 @@ void LLAgentCamera::updateCamera()
 		LLVector3 torso_scale = torso_joint->getScale();
 		LLVector3 chest_scale = chest_joint->getScale();
 
-		if(gSavedSettings.getBOOL("UseRealisticMouselook"))
+		if (mCinematicCamera)
 		{
 			//BD - Use a realistic camera movement in Mouselook, this will make the camera bob on movement
 			//	   and allow the body to freely move around instead of beeing locked into place below you.

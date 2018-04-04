@@ -321,6 +321,22 @@ F32 get_orbit_rate()
 	}
 }
 
+//BD - Camera Roll
+/*F32 get_roll_rate()
+{
+	F32 time = gKeyboard->getCurKeyElapsedTime();
+	if (time < NUDGE_TIME)
+	{
+		F32 rate = ORBIT_NUDGE_RATE + time * (1 - ORBIT_NUDGE_RATE) / NUDGE_TIME;
+		//LL_INFOS() << rate << LL_ENDL;
+		return rate;
+	}
+	else
+	{
+		return 1;
+	}
+}*/
+
 void camera_spin_around_ccw( EKeystate s )
 {
 	if( KEYSTATE_UP == s  ) return;
@@ -381,6 +397,21 @@ void camera_spin_under( EKeystate s )
 	if( KEYSTATE_UP == s  ) return;
 	gAgentCamera.unlockView();
 	gAgentCamera.setOrbitDownKey( get_orbit_rate() );
+}
+
+//BD - Camera Roll
+void camera_roll_left(EKeystate s)
+{
+	if (KEYSTATE_UP == s) return;
+	gAgentCamera.unlockView();
+	gAgentCamera.setRollLeftKey( get_orbit_rate());
+}
+
+void camera_roll_right(EKeystate s)
+{
+	if (KEYSTATE_UP == s) return;
+	gAgentCamera.unlockView();
+	gAgentCamera.setRollRightKey( get_orbit_rate());
 }
 
 void camera_spin_over_sitting( EKeystate s )
@@ -623,6 +654,8 @@ REGISTER_KEYBOARD_ACTION("spin_around_ccw_sitting", camera_spin_around_ccw_sitti
 REGISTER_KEYBOARD_ACTION("spin_around_cw_sitting", camera_spin_around_cw_sitting);
 REGISTER_KEYBOARD_ACTION("spin_over", camera_spin_over);
 REGISTER_KEYBOARD_ACTION("spin_under", camera_spin_under);
+REGISTER_KEYBOARD_ACTION("roll_left", camera_roll_left);
+REGISTER_KEYBOARD_ACTION("roll_right", camera_roll_right);
 REGISTER_KEYBOARD_ACTION("spin_over_sitting", camera_spin_over_sitting);
 REGISTER_KEYBOARD_ACTION("spin_under_sitting", camera_spin_under_sitting);
 REGISTER_KEYBOARD_ACTION("move_forward", camera_move_forward);

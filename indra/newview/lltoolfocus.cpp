@@ -72,7 +72,7 @@ const S32 SLOP_RANGE_RIGHT = 24;
 //
 
 LLToolCamera::LLToolCamera()
-:	LLTool(std::string("Camera")),
+	: LLTool(std::string("Camera")),
 	mAccumX(0),
 	mAccumY(0),
 	mMouseDownX(0),
@@ -399,7 +399,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 	
 //	//BD - Third Person Steering
 	if (hasMouseCapture() && mValidClickPoint || 
-		(gSavedSettings.getBOOL("EnableThirdPersonSteering") &&
+		(gAgentCamera.mThirdPersonSteeringMode &&
 		!gAgentCamera.cameraMouselook()) ||
 		mRightMouse)
 	{
@@ -436,7 +436,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 	if (mOutsideSlopX || mOutsideSlopY)
 	{
 //		//BD - Third Person Steering
-		if (!mValidClickPoint && !gSavedSettings.getBOOL("EnableThirdPersonSteering"))
+		if (!mValidClickPoint && !gAgentCamera.mThirdPersonSteeringMode)
 		{
 			LL_DEBUGS("UserInput") << "hover handled by LLToolFocus [invalid point]" << LL_ENDL;
 			gViewerWindow->setCursor(UI_CURSOR_NO);
@@ -448,7 +448,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 			mask == MASK_ORBIT || 
 			mask == (MASK_ALT | MASK_ORBIT) ||
 //			//BD - Third Person Steering
-			(gSavedSettings.getBOOL("EnableThirdPersonSteering") &&
+			(gAgentCamera.mThirdPersonSteeringMode &&
 			!gAgentCamera.cameraMouselook()))
 		{
 			// Orbit tool
@@ -463,7 +463,15 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 
 				if (dy != 0)
 				{
-					gAgentCamera.cameraOrbitOver( -dy * RADIANS_PER_PIXEL );
+					//BD - Invert Pitch in third person.
+					if (gAgentCamera.mMouseInvert)
+					{
+						gAgentCamera.cameraOrbitOver(-dy * RADIANS_PER_PIXEL);
+					}
+					else
+					{
+						gAgentCamera.cameraOrbitOver(dy * RADIANS_PER_PIXEL);
+					}
 				}
 
 				gViewerWindow->moveCursorToCenter();
@@ -491,7 +499,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 
 				if (dy != 0)
 				{
-					gAgentCamera.cameraPanUp( -dy * meters_per_pixel );
+					gAgentCamera.cameraPanUp(-dy * meters_per_pixel);
 				}
 
 				gViewerWindow->moveCursorToCenter();
@@ -517,7 +525,15 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 				{
 					if (mMouseSteering)
 					{
-						gAgentCamera.cameraOrbitOver( -dy * RADIANS_PER_PIXEL );
+						//BD - Invert Pitch in third person.
+						if (gAgentCamera.mMouseInvert)
+						{
+							gAgentCamera.cameraOrbitOver(-dy * RADIANS_PER_PIXEL);
+						}
+						else
+						{
+							gAgentCamera.cameraOrbitOver(dy * RADIANS_PER_PIXEL);
+						}
 					}
 					else
 					{
@@ -547,7 +563,15 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 
 			if (dy != 0)
 			{
-				gAgentCamera.cameraOrbitOver( -dy * RADIANS_PER_PIXEL );
+				//BD - Invert Pitch in third person.
+				if (gAgentCamera.mMouseInvert)
+				{
+					gAgentCamera.cameraOrbitOver(-dy * RADIANS_PER_PIXEL);
+				}
+				else
+				{
+					gAgentCamera.cameraOrbitOver(dy * RADIANS_PER_PIXEL);
+				}
 			}
 			gViewerWindow->hideCursor();
 			LLUI::setMousePositionScreen(mMouseRightUpX, mMouseRightUpY);
@@ -555,7 +579,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 	}
 
 //	//BD - Third Person Steering
-	if((gSavedSettings.getBOOL("EnableThirdPersonSteering") &&
+	if((gAgentCamera.mThirdPersonSteeringMode &&
 		!gAgentCamera.cameraMouselook()) ||
 		mRightMouse)
 	{

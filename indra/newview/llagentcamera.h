@@ -223,6 +223,7 @@ public:
 	const LLVector3d &getFocusGlobal() const		{ return mFocusGlobal; }
 	const LLVector3d &getFocusTargetGlobal() const	{ return mFocusTargetGlobal; }
 private:
+	LLQuaternion	mCameraRotation;
 	LLVector3d		mCameraFocusOffset;				// Offset from focus point in build mode
 	LLVector3d		mCameraFocusOffsetTarget;		// Target towards which we are lerping the camera's focus offset
 	BOOL			mFocusOnAvatar;
@@ -280,6 +281,9 @@ public:
 	void			cameraOrbitAround(const F32 radians);	// Rotate camera CCW radians about build focus point
 	void			cameraOrbitOver(const F32 radians);		// Rotate camera forward radians over build focus point
 	void			cameraOrbitIn(const F32 meters);		// Move camera in toward build focus point
+
+
+	void			cameraRollOver(const F32 radians);		// Roll the camera
 
 	//--------------------------------------------------------------------
 	// Zoom
@@ -381,12 +385,20 @@ public:
 	F32				getOrbitInKey() const		{ return mOrbitInKey; }
 	F32				getOrbitOutKey() const		{ return mOrbitOutKey; }
 
+	//BD - Camera Roll
+	F32				getRollLeftKey() const		{ return mRollLeftKey; }
+	F32				getRollRightKey() const		{ return mRollRightKey; }
+
 	void			setOrbitLeftKey(F32 mag)	{ mOrbitLeftKey = mag; }
 	void			setOrbitRightKey(F32 mag)	{ mOrbitRightKey = mag; }
 	void			setOrbitUpKey(F32 mag)		{ mOrbitUpKey = mag; }
 	void			setOrbitDownKey(F32 mag)	{ mOrbitDownKey = mag; }
 	void			setOrbitInKey(F32 mag)		{ mOrbitInKey = mag; }
 	void			setOrbitOutKey(F32 mag)		{ mOrbitOutKey = mag; }
+
+	//BD - Camera Roll
+	void			setRollLeftKey(F32 mag)		{ mRollLeftKey = mag; }
+	void			setRollRightKey(F32 mag)	{ mRollRightKey = mag; }
 
 	void			clearOrbitKeys();
 private:
@@ -396,6 +408,10 @@ private:
 	F32				mOrbitDownKey;
 	F32				mOrbitInKey;
 	F32				mOrbitOutKey;
+
+	//BD - Camera Roll
+	F32				mRollLeftKey;
+	F32				mRollRightKey;
 
 	//--------------------------------------------------------------------
 	// Pan
@@ -428,6 +444,13 @@ private:
  **                                                                            **
  *******************************************************************************/
 
+public:
+//	//BD
+	bool	mMouseInvert;
+	bool	mThirdPersonSteeringMode;
+	bool	mCinematicCamera;
+
+	F32		mCameraPositionSmoothing;
 };
 
 extern LLAgentCamera gAgentCamera;

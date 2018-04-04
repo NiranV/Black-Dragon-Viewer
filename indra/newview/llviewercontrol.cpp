@@ -668,17 +668,39 @@ static bool handleRenderDeferredLightsChanged(const LLSD& newvalue)
 }
 
 //BD - Always-on Mouse-steering.
-static bool handleMouseSteeringChanged(const LLSD&)
+static bool handleMouseSteeringChanged(const LLSD& newvalue)
 {
 	//BD - Whenever steering is off and we trigger this we will
 	//     show the cursor here because it would be too hacky in camera
 	//     cpp itself
-	if(!gSavedSettings.getBOOL("EnableThirdPersonSteering"))
+	if(!gAgentCamera.mThirdPersonSteeringMode)
 	{
 		LLToolCamera::getInstance()->setMouseCapture(FALSE);
 		gViewerWindow->showCursor();
 	}
 
+	gAgentCamera.mThirdPersonSteeringMode = newvalue.asBoolean();
+	return true;
+}
+
+//BD - Invert mouse pitch in third person.
+static bool handleInvertMouse(const LLSD& newvalue)
+{
+	gAgentCamera.mMouseInvert = newvalue.asBoolean();
+	return true;
+}
+
+//BD - Camera position smoothing.
+static bool handleCameraSmoothing(const LLSD& newvalue)
+{
+	gAgentCamera.mCameraPositionSmoothing = newvalue.asReal();
+	return true;
+}
+
+//BD - Cinematic Camera
+static bool handleCinematicCamera(const LLSD& newvalue)
+{
+	gAgentCamera.mCinematicCamera = newvalue.asBoolean();
 	return true;
 }
 
@@ -1006,6 +1028,9 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("MachinimaSidebar")->getSignal()->connect(boost::bind(&handleMachinimaSidebar, _2));
 	gSavedSettings.getControl("RenderSpotLightReflections")->getSignal()->connect(boost::bind(&handleSpotlightsChanged, _2));
 	gSavedSettings.getControl("RenderSpotLightImages")->getSignal()->connect(boost::bind(&handleSpotlightsChanged, _2));
+	gSavedSettings.getControl("InvertMouseThirdPerson")->getSignal()->connect(boost::bind(&handleInvertMouse, _2));
+	gSavedSettings.getControl("UseCinematicCamera")->getSignal()->connect(boost::bind(&handleCinematicCamera, _2));
+	gSavedSettings.getControl("CameraPositionSmoothing")->getSignal()->connect(boost::bind(&handleCameraSmoothing, _2));
 
 //	//BD - Motion Blur
 	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));

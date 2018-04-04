@@ -189,6 +189,14 @@ width="510">
   label="Spin Under"
   name="spin_under"
   value="spin_under" />
+  <combo_box.item
+  label="Roll Left"
+  name="roll_left"
+  value="roll_left" />
+  <combo_box.item
+  label="Roll Right"
+  name="roll_right"
+  value="roll_right" />
 		<combo_box.combo_button
 		image_unselected="ComboToolbarButton_Off"
 		image_selected="ComboToolbarButton_Selected"

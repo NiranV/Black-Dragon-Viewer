@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1238"
+  height="1250"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -280,6 +280,18 @@
    left_delta="0"
    name="UseCinematicCamera"
    tool_tip="This option toggles whether the camera should follow avatar head movement in third person or not."
+   width="250"
+   top_pad="0"/>
+   <check_box
+   control_name="InvertMouseThirdPerson"
+   follows="left|top"
+   height="16"
+   initial_value="false"
+   label="Invert Pitch in Third Person"
+   layout="topleft"
+   left_delta="0"
+   name="InvertMouseThirdPerson"
+   tool_tip="This option toggles whether looking up or down should be inverted or not."
    width="250"
    top_pad="0"/>
    <button
