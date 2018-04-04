@@ -977,7 +977,6 @@ void settings_setup_listeners()
 	
 	//BD - Special Debugs and handles
 	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
-	gSavedSettings.getControl("ShooterKeyLayout")->getSignal()->connect(boost::bind(&handleKeyboardLayoutChanged, _2));
 	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
 	gSavedSettings.getControl("RenderTerrainScale")->getSignal()->connect(boost::bind(&handleTerrainScaleChanged, _2));
 	gSavedSettings.getControl("RenderWaterRefResolution")->getSignal()->connect(boost::bind(&handleWaterResolutionChanged, _2));
