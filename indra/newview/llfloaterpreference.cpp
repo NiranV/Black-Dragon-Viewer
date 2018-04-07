@@ -3541,6 +3541,8 @@ void LLFloaterPreference::setAvatarRenderSetting(const LLUUID& av_id, S32 new_se
 	{
 		LLRenderMuteList::getInstance()->saveVisualMuteSetting(av_id, new_setting);
 	}
+	//BD
+	updateList();
 }
 
 BOOL LLFloaterPreference::handleKeyHere(KEY key, MASK mask)
