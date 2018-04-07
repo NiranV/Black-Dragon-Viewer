@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.0.7 - Dark Dragon]"
+       label="[CHANNEL] [VERSION] - [3.0.8 - Dark Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -149,8 +149,72 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="117"
+              height="325"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Invert Pitch option for Third Person mode.
+Added: Camera Roll functions and calls as well as bindable actions. (Nonfunctional currently)
+Fixed: Windlight floater "Refresh" button didn't reload the preset list.
+Fixed: Crash when trying to change a keybinding without selecting one.
+Fixed: Crash on startup.
+Fixed: Avatar Mute Settings not refreshing immediately in preferences.
+Changed: Disable Precache Delay to on by default.
+Changed: Allow MU Pose style chat to off by default.
+Changed: Improved Invert Mouselook label.
+Changed: Windlight floaters now automatically rebuild the preset list whenever opened.
+Changed: Allow Projector Shadow toggle to be toggled regardless of mod permissions.
+Changed: Layout for Flycam/Joystick floater a bit for a slightly more consistent look. (Needs complete overhaul)
+Changed: Version to 3.0.8.
+Removed: HideTopbar debug setting.
+Removed: ShowTopSearchBar debug setting.
+Removed: ShowBalance debug setting.
+Removed: ExperimentalLogin debug setting.
+Removed: ShooterKeyLayout debug setting.
+Removed: Option to toggle the experimental login video off.
+Removed: Unnecessary class calls in agentcamera.cpp and replaced them with direct calls.
+Removed: llfloateravatarrendersettings.cpp/h from CMakeLists.txt.
+Misc: Moved some debug options to better visualize that they are not part of Black Dragon's Debug set.
+Misc: Optimized Cinematic Camera setting calls.
+Misc: Optimized Third Person Steering Mode setting calls.
+Misc: Optimized Camera Smoothing setting calls.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.0.7
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="117"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
