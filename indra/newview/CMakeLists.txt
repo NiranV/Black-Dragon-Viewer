@@ -103,6 +103,7 @@ set(viewer_SOURCE_FILES
 #	Black Dragon
 	bdpaneldrawdistance.cpp
     bdfloateranimations.cpp
+    bdfloatercamera.cpp
     bdfloatercomplexity.cpp
 	bdsidebar.cpp
     bdposingmotion.cpp
@@ -735,6 +736,7 @@ set(VIEWER_BINARY_NAME "blackdragon-bin" CACHE STRING
 set(viewer_HEADER_FILES
 #	Black Dragon
 	bdpaneldrawdistance.h
+  bdfloatercamera.h
     bdfloateranimations.h
     bdfloatercomplexity.h
 	bdsidebar.h
