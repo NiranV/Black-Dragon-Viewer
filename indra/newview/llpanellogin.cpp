@@ -246,19 +246,23 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	{
 		LLPanelLogin::onUpdateStartSLURL(start_slurl); // updates grid if needed
 	}
+
+	//BD - Show last logged in user favorites in "Start at" combo.
+	LLLineEditor* username_combo(getChild<LLLineEditor>("username_combo"));
+	// STEAM-14: When user presses Enter with this field in focus, initiate login
+	username_combo->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
+	addFavoritesToStartLocation();
 	
 	childSetAction("connect_btn", onClickConnect, this);
 	//BD
+	getChild<LLButton>("connect_btn")->setFocus(true);
 	childSetAction("quit_btn", onClickQuit, this);
 	childSetAction("forgot_password_text", onClickForgotPassword, this);
 	childSetAction("create_new_account_text", onClickNewAccount, this);
 
 	std::string channel = LLVersionInfo::getChannel();
-	std::string version = llformat("%s (%d)",
-								   LLVersionInfo::getShortVersion().c_str(),
-								   LLVersionInfo::getBuild());
+	std::string version = llformat("%s (%d)", LLVersionInfo::getShortVersion().c_str(), LLVersionInfo::getBuild());
 
-	//BD
 	LLButton* channel_text = getChild<LLButton>("channel_text");
 	channel_text->setLabelArg("[CHANNEL]", channel);
 	channel_text->setLabelArg("[VERSION]", version);
@@ -271,12 +275,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	getChild<LLUICtrl>("intel_warning_icon1")->setVisible(!is_good_gpu);
 	getChild<LLUICtrl>("intel_warning_icon2")->setVisible(!is_good_gpu);
 
-	// STEAM-14: When user presses Enter with this field in focus, initiate login
-	username_combo->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
-
-	//BD
-	getChild<LLButton>("connect_btn")->setFocus(true);
-
+	loadLoginPage();
 }
 
 void LLPanelLogin::addFavoritesToStartLocation()
