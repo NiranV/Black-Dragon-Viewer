@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.0.8 - Dark Dragon]"
+       label="[CHANNEL] [VERSION] - [3.0.9 - Rolling Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="5578"
+       height="6012"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,8 +174,79 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="325"
+              height="415"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Shift + Movement binds to prevent dash/sprint scripts which need this from breaking.
+Added: Intel GPU Detected warnings to preferences and login panel.
+Added: Working Camera rolling function to camera.
+Added: Camera roll to Cinematic Camera mode.
+Added: Max Camera roll option to Preferences - Camera.
+Added: Camera Roll Left/Right keybinds. Default to Shift + Q/E.
+Changed: Removed the backgrounds from the Edit Alpha (Outfits) panel.
+Changed: Login Panel background video to HTML5 version.
+Changed: Implemented previous performance tweaks for Realistic Mouselook as well.
+Changed: Moved Cinematic Camera toggle into main Camera option section.
+Changed: Lowered maximum animation duration for "Zoom In" down to 1 second. (Suggested by Skyler Mews)
+Changed: Version to 3.0.9 - Rolling Dragon.
+Fixed: Missing file names in CMakes file.
+Fixed: Minor shader compile warning in Glow Combine Shader.
+Fixed: Realistic Mouselook not working anymore.
+Fixed: Missing keybinding strings for camera rolling.
+Fixed: Camera roll slider not working.
+Removed: llfloateravatarrendersettings.h includes from llviewerfloaterreg.cpp.
+Removed: Obsolete background image removal code from login panel.
+Removed: Unused loadingscreen tips.
+Removed: Unused code in llviewerkeyboard.cpp.
+Misc: Better labeling in llviewerjoystick.cpp.
+Misc: Cleanup and reorganization in llpanellogin.cpp.
+Misc: Cleanup and reorganization in llfloaterpreferences.h.
+Misc: Cleaned up and reorganized own code in llviewercontrol.cpp.
+Misc: Cleaned up and reorganized own code in llagentcamera.h/cpp.
+Misc: Ported over better shader compile error logging from EEP.
+Misc: Change vertex shader to be used for Volumetric Lighting to postDeferredV.glsl.
+Misc: Cleanup in pipeline.cpp.
+Misc: More commenting in llfloaterpreference.cpp.
+Misc: Reorganized all controls for better viewing in Preferences - Keybindings.
+Misc: Fixed Line Endings in llagentcamera.cpp.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.0.8
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="325"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
