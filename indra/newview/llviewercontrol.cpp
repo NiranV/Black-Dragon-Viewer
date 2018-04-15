@@ -704,6 +704,20 @@ static bool handleCinematicCamera(const LLSD& newvalue)
 	return true;
 }
 
+//BD - Camera Rolling
+static bool handleCameraMaxRoll(const LLSD& newvalue)
+{
+	gAgentCamera.mCameraMaxRoll = newvalue.asReal();
+	return true;
+}
+
+//BD - Realistic Mouselook
+static bool handleRealisticMouselook(const LLSD& newvalue)
+{
+	gAgentCamera.mRealisticMouselook = newvalue.asBoolean();
+	return true;
+}
+
 //BD - Change control scheme on the fly.
 bool handleKeyboardLayoutChanged(const LLSD& newvalue)
 {
@@ -993,47 +1007,66 @@ void settings_setup_listeners()
 // [RLVa:KB] - Checked: 2015-12-27 (RLVa-1.5.0)
 	gSavedSettings.getControl("RestrainedLove")->getSignal()->connect(boost::bind(&RlvSettings::onChangedSettingMain, _2));
 // [/RLVa:KB]
+	
+	//BD - Special Debugs and handles
+	//BD - Windlight
+	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
+	gSavedSettings.getControl("CloudNoiseImageName")->getSignal()->connect(boost::bind(&handleCloudNoiseChanged, _2));
 
+	//BD - System
+	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
+	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
 //	//BD - Catznip's Borderless Window Mode
 	gSavedSettings.getControl("FullScreenWindow")->getSignal()->connect(boost::bind(&handleFullscreenWindow, _2));
 	
-	//BD - Special Debugs and handles
-	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
-	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
-	gSavedSettings.getControl("RenderTerrainScale")->getSignal()->connect(boost::bind(&handleTerrainScaleChanged, _2));
-	gSavedSettings.getControl("RenderWaterRefResolution")->getSignal()->connect(boost::bind(&handleWaterResolutionChanged, _2));
+	//BD - Machinima
+	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
+	gSavedSettings.getControl("MachinimaSidebar")->getSignal()->connect(boost::bind(&handleMachinimaSidebar, _2));
+
+	//BD - Rendering (Lights)
+	gSavedSettings.getControl("RenderSpotLightReflections")->getSignal()->connect(boost::bind(&handleSpotlightsChanged, _2));
+	gSavedSettings.getControl("RenderSpotLightImages")->getSignal()->connect(boost::bind(&handleSpotlightsChanged, _2));
 	gSavedSettings.getControl("RenderAttachedLights")->getSignal()->connect(boost::bind(&handleRenderAttachedLightsChanged, _2));
 	gSavedSettings.getControl("RenderOtherAttachedLights")->getSignal()->connect(boost::bind(&handleRenderOtherAttachedLightsChanged, _2));
 	gSavedSettings.getControl("RenderOwnAttachedLights")->getSignal()->connect(boost::bind(&handleRenderOwnAttachedLightsChanged, _2));
 	gSavedSettings.getControl("RenderDeferredLights")->getSignal()->connect(boost::bind(&handleRenderDeferredLightsChanged, _2));
-	gSavedSettings.getControl("RenderAttachedParticles")->getSignal()->connect(boost::bind(&handleRenderAttachedParticlesChanged, _2));
-	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
-	gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
-	gSavedSettings.getControl("RenderGodraysDirectional")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
+
+	//BD - Rendering (Quality)
+	gSavedSettings.getControl("RenderTerrainScale")->getSignal()->connect(boost::bind(&handleTerrainScaleChanged, _2));
+	gSavedSettings.getControl("RenderWaterRefResolution")->getSignal()->connect(boost::bind(&handleWaterResolutionChanged, _2));
 	gSavedSettings.getControl("RenderNormalMapScale")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
 	gSavedSettings.getControl("RenderProjectorShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	gSavedSettings.getControl("RenderShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
-	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
-	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
-	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
-	gSavedSettings.getControl("RenderEnableFullbright")->getSignal()->connect(boost::bind(&handleFullbrightChanged, _2));
-	gSavedSettings.getControl("RenderEnableAlpha")->getSignal()->connect(boost::bind(&handleAlphaChanged, _2));
-	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
 	gSavedSettings.getControl("RenderDepthOfFieldHighQuality")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
-	gSavedSettings.getControl("UseFreezeWorld")->getSignal()->connect(boost::bind(&toggle_freeze_world, _2));
-	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
-	gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
-	gSavedSettings.getControl("CloudNoiseImageName")->getSignal()->connect(boost::bind(&handleCloudNoiseChanged, _2));
 	gSavedSettings.getControl("RenderDeferredEnvironmentMap")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
-	gSavedSettings.getControl("MachinimaSidebar")->getSignal()->connect(boost::bind(&handleMachinimaSidebar, _2));
-	gSavedSettings.getControl("RenderSpotLightReflections")->getSignal()->connect(boost::bind(&handleSpotlightsChanged, _2));
-	gSavedSettings.getControl("RenderSpotLightImages")->getSignal()->connect(boost::bind(&handleSpotlightsChanged, _2));
-	gSavedSettings.getControl("InvertMouseThirdPerson")->getSignal()->connect(boost::bind(&handleInvertMouse, _2));
-	gSavedSettings.getControl("UseCinematicCamera")->getSignal()->connect(boost::bind(&handleCinematicCamera, _2));
-	gSavedSettings.getControl("CameraPositionSmoothing")->getSignal()->connect(boost::bind(&handleCameraSmoothing, _2));
 
+	//BD - Rendering (Main Toggles)
+	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
+	gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
+	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
+	gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
+	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
+	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
 //	//BD - Motion Blur
 	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
+
+	//BD - Rendering (General)
+	gSavedSettings.getControl("RenderAttachedParticles")->getSignal()->connect(boost::bind(&handleRenderAttachedParticlesChanged, _2));
+	gSavedSettings.getControl("RenderEnableFullbright")->getSignal()->connect(boost::bind(&handleFullbrightChanged, _2));
+	gSavedSettings.getControl("RenderEnableAlpha")->getSignal()->connect(boost::bind(&handleAlphaChanged, _2));
+	gSavedSettings.getControl("RenderGodraysDirectional")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
+
+	//BD - Camera
+	gSavedSettings.getControl("InvertMouseThirdPerson")->getSignal()->connect(boost::bind(&handleInvertMouse, _2));
+	gSavedSettings.getControl("CameraPositionSmoothing")->getSignal()->connect(boost::bind(&handleCameraSmoothing, _2));
+//	//BD - Third Person Steering Mode
+	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
+//	//BD - Camera Rolling
+	gSavedSettings.getControl("CameraMaxRoll")->getSignal()->connect(boost::bind(&handleCameraMaxRoll, _2));
+//	//BD - Cinematic Head Tracking
+	gSavedSettings.getControl("UseCinematicCamera")->getSignal()->connect(boost::bind(&handleCinematicCamera, _2));
+//	//BD - Realistic Mouselook
+	gSavedSettings.getControl("UseRealisticMouselook")->getSignal()->connect(boost::bind(&handleRealisticMouselook, _2));
 //	//BD
 }
 

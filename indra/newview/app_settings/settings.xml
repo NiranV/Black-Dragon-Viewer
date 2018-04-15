@@ -17236,6 +17236,17 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <key>CameraMaxRoll</key>
+  <map>
+    <key>Comment</key>
+    <string>Percentage which to clamp camera roll back towards straight up.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.85</real>
+  </map>
   <key>RenderDeferredEnvironmentMap</key>
   <map>
 	<key>Comment</key>

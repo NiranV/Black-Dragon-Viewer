@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1250"
+  height="1270"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -226,6 +226,53 @@
        <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+   <check_box
+   control_name="UseCinematicCamera"
+   follows="left|top"
+   height="16"
+   initial_value="false"
+   label="Use Cinematic Headtracking"
+   layout="topleft"
+   left="10"
+   name="UseCinematicCamera"
+   tool_tip="This option toggles whether the camera should follow avatar head movement in third person or not. Enabling this will also allow the camera to roll whenever the Avatar head is tilted."
+   width="250"
+   top_pad="7"/>
+   <slider
+   can_edit_text="true"
+   control_name="MaxCameraRoll"
+   decimal_digits="2"
+   follows="left|top"
+   height="14"
+   increment="0.01"
+   initial_value="0.85"
+   layout="topleft"
+   label="Max Camera Roll:"
+   tool_tip="This option sets the rough amount of roll in percent that should be dampened when the Cinematic Camera is used. 1.0 disables this effect completely."
+   left="10"
+   label_width="150"
+   max_val="1"
+   min_val="0"
+   name="MaxCameraRoll"
+   show_text="true"
+   width="330"
+   top_pad="6"/>
+   <button
+ follows="left|top"
+ control_name="MaxCameraRoll"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+       <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
    <icon
   follows="top|right"
   height="1"
@@ -271,18 +318,6 @@
    width="250"
    top_pad="0"/>
    <check_box
-   control_name="UseCinematicCamera"
-   follows="left|top"
-   height="16"
-   initial_value="false"
-   label="Use Cinematic Headtracking"
-   layout="topleft"
-   left_delta="0"
-   name="UseCinematicCamera"
-   tool_tip="This option toggles whether the camera should follow avatar head movement in third person or not."
-   width="250"
-   top_pad="0"/>
-   <check_box
    control_name="InvertMouseThirdPerson"
    follows="left|top"
    height="16"
@@ -294,6 +329,7 @@
    tool_tip="This option toggles whether looking up or down should be inverted or not."
    width="250"
    top_pad="0"/>
+   
    <button
  height="22"
  follows="top|left"

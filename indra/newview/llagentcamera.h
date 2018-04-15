@@ -146,6 +146,7 @@ public:
 	BOOL			calcCameraMinDistance(F32 &obj_min_distance);
 	F32				getCurrentCameraBuildOffset() 	{ return (F32)mCameraFocusOffset.length(); }
 	void			clearCameraLag() { mCameraLag.clearVec(); }
+
 private:
 	F32				mCurrentCameraDistance;	 		// Current camera offset from avatar
 	F32				mTargetCameraDistance;			// Target camera offset from avatar
@@ -447,8 +448,15 @@ private:
 public:
 //	//BD
 	bool	mMouseInvert;
+//	//BD - Third Person Steering Mode
 	bool	mThirdPersonSteeringMode;
+//	//BD - Cinematic Head Tracking
 	bool	mCinematicCamera;
+//	//BD - Realistic Mouselook
+	bool	mRealisticMouselook;
+//	//BD - Camera Rolling
+	F32		mCameraRollAngle;
+	F32		mCameraMaxRoll;
 
 	F32		mCameraPositionSmoothing;
 };
