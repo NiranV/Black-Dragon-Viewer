@@ -738,11 +738,6 @@ void LLPanelLogin::closePanel()
 {
 	if (sInstance)
 	{
-		//BD - TODO: Look at this and replace with proper load and unload code from login snapshot.
-		LLViewerFetchedTexture* image = LLViewerTextureManager::getFetchedTextureFromFile("login_bg.png", FTT_LOCAL_FILE, MIPMAP_NO, LLViewerFetchedTexture::BOOST_UI);
-		image->setBoostLevel(0);
-		image->destroyTexture();
-
 		LLPanelLogin::sInstance->getParent()->removeChild( LLPanelLogin::sInstance );
 
 		delete sInstance;
