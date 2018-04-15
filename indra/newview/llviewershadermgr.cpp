@@ -565,31 +565,72 @@ void LLViewerShaderMgr::setShaders()
 
 			// Load all shaders to set max levels
 			loaded = loadShadersEnvironment();
+			llassert(loaded);
 
 			if (loaded)
 			{
 				loaded = loadShadersWater();
+				if (loaded)
+				{
+					LL_INFOS() << "Loaded water shaders." << LL_ENDL;
+				}
+				else
+				{
+					LL_WARNS() << "Failed to load water shaders." << LL_ENDL;
+				}
 			}
 
 			if (loaded)
 			{
 				loaded = loadShadersWindLight();
+				if (loaded)
+				{
+					LL_INFOS() << "Loaded windlight shaders." << LL_ENDL;
+				}
+				else
+				{
+					LL_WARNS() << "Failed to load windlight shaders." << LL_ENDL;
+				}
 			}
 
 			if (loaded)
 			{
 				loaded = loadShadersEffects();
+				if (loaded)
+				{
+					LL_INFOS() << "Loaded effects shaders." << LL_ENDL;
+				}
+				else
+				{
+					LL_WARNS() << "Failed to load effects shaders." << LL_ENDL;
+				}
 			}
 
 			if (loaded)
 			{
 				loaded = loadShadersInterface();
+				if (loaded)
+				{
+					LL_INFOS() << "Loaded interface shaders." << LL_ENDL;
+				}
+				else
+				{
+					LL_WARNS() << "Failed to load interface shaders." << LL_ENDL;
+				}
 			}
 
 			if (loaded)
 
 		    {
 				loaded = loadTransformShaders();
+				if (loaded)
+				{
+					LL_INFOS() << "Loaded transform shaders." << LL_ENDL;
+				}
+				else
+				{
+					LL_WARNS() << "Failed to load transform shaders." << LL_ENDL;
+				}
 			}
 
 			if (loaded)
@@ -652,6 +693,7 @@ void LLViewerShaderMgr::setShaders()
 				if (gSavedSettings.getBOOL("WindLightUseAtmosShaders"))
 				{ //disable windlight and try again
 					gSavedSettings.setBOOL("WindLightUseAtmosShaders", FALSE);
+					LL_WARNS() << "Falling back to no windlight shaders." << LL_ENDL;
 					reentrance = false;
 					setShaders();
 					return;
@@ -660,6 +702,7 @@ void LLViewerShaderMgr::setShaders()
 				if (gSavedSettings.getBOOL("VertexShaderEnable"))
 				{ //disable shaders outright and try again
 					gSavedSettings.setBOOL("VertexShaderEnable", FALSE);
+					LL_WARNS() << "Falling back to no vertex shaders." << LL_ENDL;
 					reentrance = false;
 					setShaders();
 					return;
@@ -669,6 +712,7 @@ void LLViewerShaderMgr::setShaders()
 			if (loaded && !loadShadersDeferred())
 			{ //everything else succeeded but deferred failed, disable deferred and try again
 				gSavedSettings.setBOOL("RenderDeferred", FALSE);
+				LL_WARNS() << "Falling back to no deferred shaders." << LL_ENDL;
 				reentrance = false;
 				setShaders();
 				return;
