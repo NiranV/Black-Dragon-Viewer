@@ -1037,9 +1037,8 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	}
 	else
 	{
-		//BD - We need to cap zoom otherwise it internally counts higher causing it
-		//     causing the zoom level to not react until that extra has been removed
-		//     first.
+		//BD - We need to cap zoom otherwise it internally counts higher causing
+		//     the zoom level to not react until that extra has been removed first.
 		sFlycamZoom += sDelta[6];
 		sFlycamZoom = llclamp(sFlycamZoom, viewer_cam->getMinView(), viewer_cam->getMaxView());
 	}
