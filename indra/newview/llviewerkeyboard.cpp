@@ -321,22 +321,6 @@ F32 get_orbit_rate()
 	}
 }
 
-//BD - Camera Roll
-/*F32 get_roll_rate()
-{
-	F32 time = gKeyboard->getCurKeyElapsedTime();
-	if (time < NUDGE_TIME)
-	{
-		F32 rate = ORBIT_NUDGE_RATE + time * (1 - ORBIT_NUDGE_RATE) / NUDGE_TIME;
-		//LL_INFOS() << rate << LL_ENDL;
-		return rate;
-	}
-	else
-	{
-		return 1;
-	}
-}*/
-
 void camera_spin_around_ccw( EKeystate s )
 {
 	if( KEYSTATE_UP == s  ) return;
