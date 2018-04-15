@@ -34,26 +34,6 @@
   <string name="LoadingTip 20">&lt;icon&gt;Caution_Widget&lt;/icon&gt; Yellow badges on checkboxes warn you about possible problems they might cause.</string>
   <string name="LoadingTip 21">&lt;icon&gt;Default_Widget&lt;/icon&gt; Blue badges on checkboxes represent the Linden Viewer's "Ultra" settings.</string>
   <string name="LoadingTip 22">You should verify your E-mail on SL's website in order to receive offline mails in the future.</string>
-  <!--<string name="LoadingTip 1">You can realign all your onscreen buttons like your Inventory to each of the four tool bars at the top , left , right or bottom. You can also add additional buttons or delete buttons if you wish , just right click on an active button and click 'Select Buttons' , this will open a window in which you can drag and drop all buttons where you want them.</string>
-  <string name="LoadingTip 2">'Lighting and Shadows' is also known as 'Deferred Rendering'. 'Deferred Rendering' is an advanced graphic rendering used in a lot of games today, Crysis 2, StarCraft 2 and Grand Theft Auto 4 for example.</string>
-  <string name="LoadingTip 3">Chat can be started by pressing the Enter key at any time while not having any other window focused , you can also SHOUT by holding 'Ctrl' and WHISPER by holding 'Shift' while sending a chat message.</string>
-  <string name="LoadingTip 4">Draw Distance is a real performance killer, setting it too high will drastically increase memory usage and may make you vulnerable to spamming, griefing and crashing from far away. Keep it at 64-128m. It will greatly increase the Viewer's lifetime</string>
-  <string name="LoadingTip 5">Chuck Norris finished Second Life 3 times already.</string>
-  <string name="LoadingTip 6">Never go full potato!</string>
-  <string name="LoadingTip 7">This Viewer is based on Linden Lab's 3.7 code-base. It fully supports Server Side Appearance (SSB / SSB), the Materials Project, the HTTP Project and is fully compatible to Advanced Inventory System V3 (AISv3).</string>
-  <string name="LoadingTip 8">You can open a second Inventory window by clicking 'File' at the top of the Inventory window and selecting 'New Inventory Window' in the dropdown menu.</string>
-  <string name="LoadingTip 9">This Viewer supports RLVa. RLVa is an optional feature that allows direct Viewer control with inworld scripts up to a certain degree. Its often used for BDSM, locks, collars and other restraining actions, which was the reason why it was called Restrained Life, but just because its mainly used for BDSM its not bad. Its API can also be used to create powerful and really cool Role-play games or HUD's , it can even be used to create automatic outfit wear and un-wear scripts! so don't hesitate to try it out! You can disable it if you don't like it, it's found in Preferences -> RLVa , it will need a re-log.</string>
-  <string name="LoadingTip 10">Your 'People' window acts as recent chatter list, radar, friend and group list. You can start an IM Session by double clicking your friend or someone in the radar, double-clicking on a group will open and start a group chat conversation.</string>
-  <string name="LoadingTip 11">Tone Mapping and Color Correction are supposed to be used together.</string>
-  <string name="LoadingTip 12">It's loading and preparing the lag right now...</string>
-  <string name="LoadingTip 13">This Viewer is designed for people who seek out for more graphical options and a finetuned graphical experience, it comes with a fairly good finetuned preset, all you have to do is enable all the high-end graphical options.</string>
-  <string name="LoadingTip 14">Black Dragon supports Color Grading, Tone Mapping and Vignette known from Exodus Viewer and has Gamma Correction by default now due to the Materials Project. You should really try those out if you got good hardware that is able to handle Deferred Rendering well. You can find those options in Preferences -> Display.</string>
-  <string name="LoadingTip 15">A lot problems can be fixed by reverting your settings to default every huge major update, most problems can also be avoided alltogether.</string>
-  <string name="LoadingTip 16">Mesh is a cool new, faster and higher detailed way to customize your Avatar. Be sure to check them out on the Marketplace! Dragon -> Marketplace. Be warned, not everything can be considered good quality, try a demo before you buy something.</string>
-  <string name="LoadingTip 17">This Viewer offers a lot options to customize your Viewer appearance, you can find a lot of these options in Preferences -> Interface.</string>
-  <string name="LoadingTip 18">Take your time, look into all tabs, slowly work from panel to panel, read descriptions and you will find a lot of options to customize a lot of things.</string>
-  <string name="LoadingTip 19">Do you think group-chat popups are annoying and fill your screen? You can disable them in Preferences -> Chat.</string>
-  <string name="LoadingTip 20">A great way to get help with the Viewer is to join my official group secondlife:///app/group/d2ba3314-b9f7-ded7-40ad-b0c276acd1bd/about for example, i will try helping whenever i am online.</string>-->
 <layout_stack
 follows="left|right|top|bottom"
 height="768"
