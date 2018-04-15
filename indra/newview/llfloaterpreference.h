@@ -115,9 +115,6 @@ public:
 
 	// static data update, called from message handler
 	static void updateUserInfo(const std::string& visibility, bool im_via_email, bool is_verified_email);
-
-	// refresh all the graphics preferences menus
-	static void refreshEnabledGraphics();
 	
 	// translate user's do not disturb response message according to current locale if message is default, otherwise do nothing
 	static void initDoNotDisturbResponse();
@@ -258,8 +255,9 @@ public:
 
 	//BD
 	void onClickSetNone();
-
 	void onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y);
+	void refreshEnabledGraphics();
+
 
 	void updateList();
 	void onFilterEdit(const std::string& search_string);
