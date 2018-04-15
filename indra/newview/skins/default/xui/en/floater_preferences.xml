@@ -101,6 +101,14 @@
     name="spin_under">
   (Camera) Spin Under
  </string>
+ <string
+    name="roll_left">
+  (Camera) Roll Left
+ </string>
+ <string
+    name="roll_right">
+  (Camera) Roll Right
+ </string>
  
  <string
     name="edit_avatar_move_forward">
