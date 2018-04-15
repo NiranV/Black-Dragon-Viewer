@@ -2231,6 +2231,8 @@ void LLFloaterPreference::refreshEnabledGraphics()
 	//BD - Only NVIDIA and AMD get to use ANY of the gragphics features beyond vertex shaders.
 	//     Keep everything disabled if we detect an Intel GPU. Intel can't run our Deferred
 	//     no matter which GPU.
+	//     This is a temporary solution until we can find out what the issue with Deferred and
+	//     Intel GPU's is.
 	bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsATI);
 
 	//BD - Viewer Options
