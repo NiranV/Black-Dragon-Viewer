@@ -263,12 +263,13 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	channel_text->setLabelArg("[CHANNEL]", channel);
 	channel_text->setLabelArg("[VERSION]", version);
 
-	loadLoginPage();
-	
-	// Show last logged in user favorites in "Start at" combo.
-	//BD
-	LLLineEditor* username_combo(getChild<LLLineEditor>("username_combo"));
-	addFavoritesToStartLocation();
+	//BD - Only NVIDIA and AMD get to use ANY of the gragphics features beyond vertex shaders.
+	//     Keep everything disabled if we detect an Intel GPU. Intel can't run our Deferred
+	//     no matter which GPU.
+	bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsATI);
+	getChild<LLPanel>("intel_warning_panel")->setVisible(!is_good_gpu);
+	getChild<LLUICtrl>("intel_warning_icon1")->setVisible(!is_good_gpu);
+	getChild<LLUICtrl>("intel_warning_icon2")->setVisible(!is_good_gpu);
 
 	// STEAM-14: When user presses Enter with this field in focus, initiate login
 	username_combo->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));

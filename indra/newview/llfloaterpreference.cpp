@@ -1987,6 +1987,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	//BD
 	refreshGraphicControls();
 	refreshCameraControls();
+	refreshEnabledGraphics();
 	toggleTabs();
 
 //	//BD - Avatar Rendering Settings
@@ -2013,7 +2014,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 
 void LLFloaterPreference::onAvatarImpostorsEnable()
 {
-	refreshEnabledGraphics();
+	//refreshEnabledGraphics();
 }
 
 //static
@@ -2040,7 +2041,7 @@ void LLFloaterPreference::setHardwareDefaults()
 {
 	LLFeatureManager::getInstance()->applyRecommendedSettings();
 
-	refreshEnabledGraphics();
+	//refreshEnabledGraphics();
 
 	gSavedSettings.setString("PresetGraphicActive", "");
 	LLPresetsManager::getInstance()->triggerChangeSignal();
@@ -2225,11 +2226,45 @@ void LLFloaterPreference::updateUserInfo(const std::string& visibility, bool im_
 
 void LLFloaterPreference::refreshEnabledGraphics()
 {
-	LLFloaterPreference* instance = LLFloaterReg::findTypedInstance<LLFloaterPreference>("preferences");
-	if (instance)
-	{
-		instance->refresh();
-	}
+	//BD - Check which GPU we have and according to the GPU allow us to toggle options.
+	
+	//BD - Only NVIDIA and AMD get to use ANY of the gragphics features beyond vertex shaders.
+	//     Keep everything disabled if we detect an Intel GPU. Intel can't run our Deferred
+	//     no matter which GPU.
+	bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsATI);
+
+	//BD - Viewer Options
+	//BD - Quality Options
+	//BD - Rendering Options
+	//BD - Windlight Options
+	//     These are enabled regardless.
+
+	getChild<LLUICtrl>("warning_multi_panel")->setVisible(!is_good_gpu);
+
+	//BD - Deferred Rendering
+	getChild<LLUICtrl>("deferred_layout")->setEnabled(is_good_gpu);
+	getChild<LLUICtrl>("deferred_layout_panel")->setEnabled(is_good_gpu);
+	//BD - Screen Space Ambient Occlusion (SSAO)
+	getChild<LLUICtrl>("ao_layout")->setEnabled(is_good_gpu);
+	getChild<LLUICtrl>("ao_layout_panel")->setEnabled(is_good_gpu);
+	//BD - Depth of Field
+	getChild<LLUICtrl>("dof_layout")->setEnabled(is_good_gpu);
+	getChild<LLUICtrl>("dof_layout_panel")->setEnabled(is_good_gpu);
+	//BD - Motion Blur
+	getChild<LLUICtrl>("motionblur_layout")->setEnabled(is_good_gpu);
+	getChild<LLUICtrl>("motionblur_layout_panel")->setEnabled(is_good_gpu);
+	//BD - Volumetric Lighting
+	getChild<LLUICtrl>("godrays_layout")->setEnabled(is_good_gpu);
+	getChild<LLUICtrl>("godrays_lighting_layout_panel")->setEnabled(is_good_gpu);
+	//BD - Post Processing Effects
+	getChild<LLUICtrl>("post_layout")->setEnabled(is_good_gpu);
+	getChild<LLUICtrl>("post_layout_panel")->setEnabled(is_good_gpu);
+	//BD - Tone Mapping
+	getChild<LLUICtrl>("tonemapping_layout")->setEnabled(is_good_gpu);
+	getChild<LLUICtrl>("tonemapping_layout_panel")->setEnabled(is_good_gpu);
+	//BD - Vignette
+	getChild<LLUICtrl>("vignette_layout")->setEnabled(is_good_gpu);
+	getChild<LLUICtrl>("vignette_layout_panel")->setEnabled(is_good_gpu);
 }
 
 void LLFloaterPreference::onClickClearCache()

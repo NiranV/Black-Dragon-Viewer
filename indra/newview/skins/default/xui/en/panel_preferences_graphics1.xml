@@ -9,6 +9,24 @@ left="45"
 name="Display panel"
 top="0"
 width="510">
+ <layout_stack
+   follows="top|left|right"
+   height="407"
+   layout="topleft"
+   left="0"
+   border_size="-1"
+   mouse_opaque="false"
+   name="display_multi_stack"
+   orientation="vertical"
+   top="0"
+   width="510">
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="387"
+	  auto_resize="true"
+	  name="display_multi_layout"
+	  width="510">
    <scroll_container
  color="Transparent"
  follows="all"
@@ -3193,7 +3211,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-	  name="title_layout_panel"
+   enabled="false"
+	  name="deferred_layout"
 	  width="515">
    <button
 		 follows="left|top"
@@ -3289,6 +3308,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="592"
 	  auto_resize="false"
+   enabled="false"
       visible="false"
 	  name="deferred_layout_panel"
 	  width="515">
@@ -4087,7 +4107,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-	  name="title_layout_panel"
+   enabled="false"
+	  name="ao_layout"
 	  width="515">
      <button
 		 follows="left|top"
@@ -4130,6 +4151,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="109"
 	  auto_resize="false"
+   enabled="false"
       visible="false"
 	  name="ao_layout_panel"
 	  width="515">
@@ -4314,7 +4336,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-	  name="title_layout_panel"
+   enabled="false"
+	  name="dof_layout"
 	  width="515">
  
  <button
@@ -4356,6 +4379,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="167"
 	  auto_resize="false"
+   enabled="false"
       visible="false"
 	  name="dof_layout_panel"
 	  width="515">
@@ -4603,7 +4627,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-	  name="title_layout_panel"
+   enabled="false"
+	  name="motionblur_layout"
 	  width="515">
       <button
 		 follows="left|top"
@@ -4659,6 +4684,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="87"
 	  auto_resize="false"
+   enabled="false"
       visible="false"
 	  name="motionblur_layout_panel"
 	  width="515">
@@ -4785,7 +4811,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-	  name="title_layout_panel"
+   enabled="false"
+	  name="godrays_layout"
 	  width="515">
    <button
 		 follows="left|top"
@@ -4840,6 +4867,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="102"
 	  auto_resize="false"
+   enabled="false"
       visible="false"
 	  name="godrays_layout_panel"
 	  width="515">
@@ -4968,7 +4996,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-	  name="title_layout_panel"
+   enabled="false"
+	  name="post_layout"
 	  width="515">
    <button
 		 follows="left|top"
@@ -5006,6 +5035,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="118"
 	  auto_resize="false"
+   enabled="false"
       visible="false"
 	  name="post_layout_panel"
 	  width="515">
@@ -5168,7 +5198,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-	  name="title_layout_panel"
+   enabled="false"
+	  name="tonemapping_layout"
 	  width="515">
      <button
 		 follows="left|top"
@@ -5210,6 +5241,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="489"
 	  auto_resize="false"
+   enabled="false"
       visible="false"
 	  name="tonemapping_layout_panel"
 	  width="515">
@@ -5947,7 +5979,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-	  name="title_layout_panel"
+   enabled="false"
+	  name="vignette_layout"
 	  width="515">
       <button
 		 follows="left|top"
@@ -5985,6 +6018,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="69"
 	  auto_resize="false"
+   enabled="false"
       visible="false"
 	  name="vignette_layout_panel"
 	  width="515">
@@ -6071,6 +6105,62 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </layout_stack>
   </panel>
    </scroll_container>
+      </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+   visible="true"
+	  layout="topleft"
+	  height="21"
+   min_dim="21"
+	  auto_resize="false"
+	  name="warning_multi_panel"
+	  width="510">
+       <panel
+       follows="top|left|right"
+       height="20"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="1"
+       name="warning_bg_panel"
+       top="1"
+       width="507">
+        <icon
+  follows="top|left"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_intel_gpu"
+  mouse_opaque="false"
+  tool_tip="WARNING: You are using an Intel Graphics Card, Deferred Rendering is not available, this makes up 80% of the Viewer's graphical capabilities. Please consult the internet on how to enable your dedicated graphics card if your computer has one, you may ask
+   secondlife:///app/agent/a7fe20fa-1e95-4f87-aa8f-86496c78c1e5/about."
+  width="16"
+  left="5"
+  top="3"/>
+   <text
+        follows="left|top|right"
+        font="SansSerif"
+        font_shadow="soft"
+        halign="left"
+        height="20"
+        top="4"
+        left="25"
+        name="app_name_text"
+        width="994"
+        word_wrap="false">
+&lt;red&gt;Intel Graphics Card Detected&lt;/red&gt; - Full graphic fidelity availability compromised.
+        </text>
+       </panel>
+      </layout_panel>
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="22"
+   min_dim="22"
+	  auto_resize="false"
+	  name="bottom_multi_panel"
+	  width="510">
 	<panel
   layout="topleft"
   follows="left|bottom|right"
@@ -6098,7 +6188,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left_delta="5"
    name="remember_tabs"
-   top="-18"
+   top="-19"
    width="115"/>
    
    <button
@@ -6112,6 +6202,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
     halign="left"
+    pad_bottom="0"
     left="198"
     name="PrefSaveButton"
     top="-21"
@@ -6132,6 +6223,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
     halign="left"
+    pad_bottom="0"
     left_pad="1"
     name="PrefLoadButton"
     top_delta="0"
@@ -6152,6 +6244,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
     halign="left"
+    pad_bottom="0"
     left_pad="1"
     name="PrefDeleteButton"
     top_delta="0"
@@ -6183,5 +6276,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		image_disabled="ComboToolbarButton_Disabled"/>
 	</combo_box>
 	</panel>
+      </layout_panel>
+ </layout_stack>
 </panel>
 
