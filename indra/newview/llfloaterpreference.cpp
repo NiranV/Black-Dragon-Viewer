@@ -1337,9 +1337,13 @@ void LLFloaterPreference::onCommitW(LLUICtrl* ctrl, const LLSD& param)
 //BD - Revert to Default
 void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
 {
-	ctrl->getControlVariable()->resetToDefault(true);
-	refreshGraphicControls();
-	refreshCameraControls();
+	LLControlVariable* control = ctrl->getControlVariable();
+	if (control)
+	{
+		control->resetToDefault(true);
+		refreshGraphicControls();
+		refreshCameraControls();
+	}
 }
 
 //BD - Custom Keyboard Layout
