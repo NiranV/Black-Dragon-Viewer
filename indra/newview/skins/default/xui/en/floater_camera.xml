@@ -54,7 +54,7 @@
          name="preset_views_list"
          top="0"
          width="162"
-         visible="true">
+         visible="false">
         <panel_camera_item
           name="front_view">
           <panel_camera_item.mousedown_callback
@@ -177,7 +177,7 @@
             height="97"
             layout="topleft"
             left="0"
-												visible="false"
+												visible="true"
             mouse_opaque="false"
             name="zoom"
             top="0"
@@ -197,7 +197,7 @@
               visible="true"
               tool_tip="Orbit camera around focus"
               top="10"
-              width="78" />                      
+              width="78" />
            <button
               follows="top|left"
               height="18"
@@ -222,7 +222,8 @@
               tool_tip="Zoom camera toward focus"
               top_pad="0"
               min_val="0"
-              max_val="1" 
+              increment="0.001"
+              max_val="0.125" 
               width="18">
              <commit_callback function="Slider.value_changed"/>
            </slider_bar>
@@ -240,6 +241,42 @@
                 function="Zoom.minus" />
              <mouse_held_callback
                 function="Zoom.minus" />
+           </button>
+           <button
+         follows="left|bottom"
+         height="24"
+         image_selected="Movement_TurnRight_On"
+         image_pressed_selected="Movement_TurnRight_On"
+         image_unselected="Movement_TurnRight_Off"
+         layout="topleft"
+         left="57"
+         name="roll_right"
+         scale_image="false"
+         tool_tip="Roll right &lt;green&gt;(Default: Shift + E)&lt;/green&gt;"
+         top="5"
+         width="24">
+            <commit_callback
+                function="Camera.roll_right" />
+             <mouse_held_callback
+                function="Camera.roll_right" />
+           </button>
+           <button
+         follows="left|bottom"
+         height="24"
+         image_selected="Movement_TurnLeft_On"
+         image_pressed_selected="Movement_TurnLeft_On"
+         image_unselected="Movement_TurnLeft_Off"
+         layout="topleft"
+         left="0"
+         name="roll_left"
+         scale_image="false"
+         tool_tip="Roll left &lt;green&gt;(Default: Shift + Q)&lt;/green&gt;"
+         top="5"
+         width="24">
+            <commit_callback
+                function="Camera.roll_left" />
+             <mouse_held_callback
+                function="Camera.roll_left" />
            </button>
          <joystick_track
          follows="top|left"
@@ -266,7 +303,7 @@
      top_pad="-92"
      name="buttons">
         <button
-         height="23"
+         height="24"
          label=""
          layout="topleft"
          is_toggle="true"
@@ -275,11 +312,11 @@
          name="presets_btn"
          tab_stop="false"
          tool_tip="Preset Views"
-         top="5" 
+         top="3" 
          width="25">
         </button>
         <button
-         height="23"
+         height="24"
          label=""
          layout="topleft"
          left_delta="0"
@@ -287,17 +324,17 @@
          image_overlay="PanOrbit_Off"
          image_selected="PushButton_Selected_Press"
          name="pan_btn"
-	 top_pad="0"
+	 top_pad="2"
          tab_stop="false"
          tool_tip="Orbit Zoom Pan"
          width="25">
         </button>
         <button
-         height="23"
+         height="24"
          label=""
          layout="topleft"
          left_delta="0"
-	 top_pad="0"
+	 top_pad="2"
          image_overlay="Cam_FreeCam_Off"
          image_selected="PushButton_Selected_Press"
          name="avatarview_btn"
