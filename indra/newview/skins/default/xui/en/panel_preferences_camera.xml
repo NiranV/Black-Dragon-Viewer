@@ -259,7 +259,7 @@
    top_pad="6"/>
    <button
  follows="left|top"
- control_name="MaxCameraRoll"
+ control_name="CameraMaxRoll"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
