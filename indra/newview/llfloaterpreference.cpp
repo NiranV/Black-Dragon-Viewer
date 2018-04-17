@@ -2257,7 +2257,7 @@ void LLFloaterPreference::refreshEnabledGraphics()
 	getChild<LLUICtrl>("motionblur_layout_panel")->setEnabled(is_good_gpu);
 	//BD - Volumetric Lighting
 	getChild<LLUICtrl>("godrays_layout")->setEnabled(is_good_gpu);
-	getChild<LLUICtrl>("godrays_lighting_layout_panel")->setEnabled(is_good_gpu);
+	getChild<LLUICtrl>("godrays_layout_panel")->setEnabled(is_good_gpu);
 	//BD - Post Processing Effects
 	getChild<LLUICtrl>("post_layout")->setEnabled(is_good_gpu);
 	getChild<LLUICtrl>("post_layout_panel")->setEnabled(is_good_gpu);
