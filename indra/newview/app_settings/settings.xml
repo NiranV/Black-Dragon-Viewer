@@ -17915,6 +17915,17 @@
       <key>Value</key>
       <string>controls.xml</string>
     </map>
+    <key>CefVerboseLog</key>
+    <map>
+      <key>Comment</key>
+      <string>Enable/disable CEF verbose loggingk</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
 </map>
 </llsd>
 
