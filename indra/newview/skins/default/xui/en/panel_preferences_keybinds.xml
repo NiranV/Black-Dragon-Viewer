@@ -1075,50 +1075,6 @@ width="510">
   background_visible="true"
   left="1"
   width="509">
- <!--<combo_box
-	follows="bottom|left"
-	layout="topleft"
-	left="0"
-	height="20"
- label="Select Mode"
-	name="bind_mode"
- allow_text_entry="true"
-	top="-21"
-	width="141">
-  <combo_box.item
-  label="Third Person"
-  name="first"
-  value="1" />
-  <combo_box.item
-  label="First Person"
-  name="third"
-  value="0" />
-  <combo_box.item
-  label="Edit Mode"
-  name="edit"
-  value="2" />
-  <combo_box.item
-  label="Appearance"
-  name="appearance"
-  value="3" />
-  <combo_box.item
-  label="Sitting"
-  name="sitting"
-  value="4" />
-		<combo_box.combo_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"/>
-		<combo_box.drop_down_button
-		image_unselected="ComboToolbarButton_Off"
-		image_selected="ComboToolbarButton_Selected"
-		image_pressed="ComboToolbarButton_Selected" 
-		image_pressed_selected="ComboToolbarButton_Selected"
-		image_disabled="ComboToolbarButton_Disabled"/>
-	</combo_box>-->
-
- 
  <button
  height="21"
  follows="bottom|left"
