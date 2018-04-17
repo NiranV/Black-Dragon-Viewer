@@ -249,6 +249,9 @@ private:
 	LLVector3d					mSavedCameraPos;
 	LLVector3d					mSavedCameraFocus;
 	LLPointer<LLViewerObject>	mSavedCameraFocusObject;
+//	//BD - Camera Rolling
+	F32							mSavedCameraRollAngle;
+
 	bool						mSavedCamera;
 	
 	//--------------------------------------------------------------------

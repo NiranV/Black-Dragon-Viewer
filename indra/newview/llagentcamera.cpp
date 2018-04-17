@@ -279,6 +279,8 @@ void LLAgentCamera::init()
 //-----------------------------------------------------------------------------
 void LLAgentCamera::cleanup()
 {
+	mSavedCameraFocusObject = NULL;
+
 	setSitCamera(LLUUID::null);
 
 	if(mLookAt)
@@ -1334,7 +1336,7 @@ void LLAgentCamera::updateCamera()
 //	//BD - Camera Rolling
 	if (getRollLeftKey() || getRollRightKey())
 	{
-		F32 input_rate = getRollLeftKey() - getRollRightKey();
+		F32 input_rate = getRollRightKey() - getRollLeftKey();
 		cameraRollOver(input_rate * ROLL_RATE / gFPSClamped);
 	}
 
@@ -3082,6 +3084,8 @@ void LLAgentCamera::saveCamera()
 	mSavedCameraPos = getCameraPositionGlobal();
 	mSavedCameraFocus = getFocusTargetGlobal();
 	mSavedCameraFocusObject = getFocusObject();
+//	//BD - Camera Rolling
+	mSavedCameraRollAngle = mCameraRollAngle;
 
 	mSavedCamera = true;
 }
@@ -3099,6 +3103,16 @@ void LLAgentCamera::loadSavedCamera()
 		}
 
 		setCameraPosAndFocusGlobal(mSavedCameraPos, mSavedCameraFocus, focus_id);
+
+//		//BD - Camera Rolling
+		//     Don't apply rotation the first time around, only apply rotation if we load
+		//     again after we are already in the same restored position and focus.
+		//     This saves us making an extra save/load position and rotation feature and
+		//     still allows us to selectively restore position and rotation.
+		if (getCameraPositionGlobal() == mSavedCameraPos)
+		{
+			mCameraRollAngle = mSavedCameraRollAngle;
+		}
 	}
 }
 
