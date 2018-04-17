@@ -382,6 +382,18 @@ width="510">
   label="Start Gesture"
   name="start_gesture"
   value="start_gesture" />
+  <combo_box.item
+  label="             Camera"
+  enabled="false"
+  value="menu_separator" />
+  <combo_box.item
+  label="Roll Left"
+  name="roll_left"
+  value="roll_left" />
+  <combo_box.item
+  label="Roll Right"
+  name="roll_right"
+  value="roll_right" />
 		<combo_box.combo_button
 		image_unselected="ComboToolbarButton_Off"
 		image_selected="ComboToolbarButton_Selected"
@@ -612,6 +624,14 @@ width="510">
   label="Spin Under"
   name="spin_under"
   value="spin_under" />
+  <combo_box.item
+  label="Roll Left"
+  name="roll_left"
+  value="roll_left" />
+  <combo_box.item
+  label="Roll Right"
+  name="roll_right"
+  value="roll_right" />
 		<combo_box.combo_button
 		image_unselected="ComboToolbarButton_Off"
 		image_selected="ComboToolbarButton_Selected"
@@ -940,6 +960,14 @@ width="510">
   label="Spin Under"
   name="spin_under_sitting"
   value="spin_under_sitting" />
+  <combo_box.item
+  label="Roll Left"
+  name="roll_left"
+  value="roll_left" />
+  <combo_box.item
+  label="Roll Right"
+  name="roll_right"
+  value="roll_right" />
 		<combo_box.item
   label="         Vehicle Specific"
   enabled="false"
