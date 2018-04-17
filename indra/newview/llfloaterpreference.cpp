@@ -593,6 +593,11 @@ void LLSetKeyDialog::onMasks()
 	//BD - We block off keypresses like space and enter with this so it doesn't
 	//     accidentally press cancel or bind but is still handled by the floater.
 	getChild<LLUICtrl>("key_display")->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
+
+	//BD - After clicking any mask return the focus back to the focus catcher so
+	//     we still get keypresses.
+	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
+	gFocusMgr.setKeystrokesOnly(TRUE);
 }
 
 void LLSetKeyDialog::onCancel()
@@ -727,6 +732,11 @@ void LLChangeKeyDialog::onMasks()
 	//BD - We block off keypresses like space and enter with this so it doesn't
 	//     accidentally press cancel or bind but is still handled by the floater.
 	getChild<LLUICtrl>("key_display")->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
+
+	//BD - After clicking any mask return the focus back to the focus catcher so
+	//     we still get keypresses.
+	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
+	gFocusMgr.setKeystrokesOnly(TRUE);
 }
 
 void LLChangeKeyDialog::onCancel()
