@@ -7947,11 +7947,6 @@ class LLAdvancedClickRenderBenchmark: public view_listener_t
 	}
 };
 
-void menu_toggle_attached_lights(void* user_data)
-{
-	LLPipeline::sRenderAttachedLights = gSavedSettings.getBOOL("RenderAttachedLights");
-}
-
 void menu_toggle_attached_particles(void* user_data)
 {
 	LLPipeline::sRenderAttachedParticles = gSavedSettings.getBOOL("RenderAttachedParticles");
@@ -7968,11 +7963,7 @@ class LLAdvancedHandleAttachedLightParticles: public view_listener_t
 				       !gSavedSettings.getBOOL(control_name));
 
 		// update internal flags
-		if (control_name == "RenderAttachedLights")
-		{
-			menu_toggle_attached_lights(NULL);
-		}
-		else if (control_name == "RenderAttachedParticles")
+		if (control_name == "RenderAttachedParticles")
 		{
 			menu_toggle_attached_particles(NULL);
 		}

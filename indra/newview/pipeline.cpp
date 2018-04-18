@@ -423,7 +423,6 @@ bool	LLPipeline::sImpostorRenderAlphaDepthPass = false;
 bool	LLPipeline::sUnderWaterRender = false;
 bool	LLPipeline::sTextureBindTest = false;
 bool	LLPipeline::sRenderFrameTest = false;
-bool	LLPipeline::sRenderAttachedLights = true;
 bool	LLPipeline::sRenderAttachedParticles = true;
 bool	LLPipeline::sRenderDeferred = false;
 bool    LLPipeline::sMemAllocationThrottled = false;
@@ -522,7 +521,6 @@ void LLPipeline::init()
 	LLVertexBuffer::sUseStreamDraw = gSavedSettings.getBOOL("RenderUseStreamVBO");
 	LLVertexBuffer::sUseVAO = gSavedSettings.getBOOL("RenderUseVAO");
 	LLVertexBuffer::sPreferStreamDraw = gSavedSettings.getBOOL("RenderPreferStreamDraw");
-	sRenderAttachedLights = gSavedSettings.getBOOL("RenderAttachedLights");
 	sRenderAttachedParticles = gSavedSettings.getBOOL("RenderAttachedParticles");
 
 	//BD
@@ -6240,8 +6238,7 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 				continue;
 			}
 			//BD
-			if (//!sRenderAttachedLights || 
-				volight && volight->isAttachment())
+			if (volight && volight->isAttachment())
 			{
 				if ((!sRenderOtherAttachedLights && (volight->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
 					|| (!sRenderOwnAttachedLights && (volight->getAvatarAncestor() == gAgentAvatarp->getAvatar())))
@@ -6284,8 +6281,7 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 				continue;
 			}
 			//BD
-			if (//!sRenderAttachedLights || 
-				light && light->isAttachment())
+			if (light && light->isAttachment())
 			{
 				if ((!sRenderOtherAttachedLights && (light->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
 					|| (!sRenderOwnAttachedLights && (light->getAvatarAncestor() == gAgentAvatarp->getAvatar())))
@@ -9016,12 +9012,6 @@ void LLPipeline::renderDeferredLighting()
 					if (volume->isAttachment())
 					{
 						//BD
-						/*if (!sRenderAttachedLights)
-						{
-							continue;
-						}*/
-
-						//BD
 						if ((!sRenderOtherAttachedLights
 							&& (volume->getAvatarAncestor() != gAgentAvatarp))
 							|| (!sRenderOwnAttachedLights
@@ -9595,12 +9585,6 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 
 					if (volume->isAttachment())
 					{
-						//BD
-						/*if (!sRenderAttachedLights)
-						{
-						continue;
-						}*/
-
 						//BD
 						if ((!sRenderOtherAttachedLights
 							&& (volume->getAvatarAncestor() != gAgentAvatarp))

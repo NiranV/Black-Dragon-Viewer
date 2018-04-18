@@ -637,12 +637,6 @@ static bool handleFullscreenWindow(const LLSD& newvalue)
 }
 
 //BD - Make attached lights and particles available everywhere without extra coding.
-static bool handleRenderAttachedLightsChanged(const LLSD& newvalue)
-{
-	LLPipeline::sRenderAttachedLights = gSavedSettings.getBOOL("RenderAttachedLights");
-	return true;
-}
-
 static bool handleRenderAttachedParticlesChanged(const LLSD& newvalue)
 {
 	LLPipeline::sRenderAttachedParticles = gSavedSettings.getBOOL("RenderAttachedParticles");
@@ -1026,7 +1020,6 @@ void settings_setup_listeners()
 	//BD - Rendering (Lights)
 	gSavedSettings.getControl("RenderSpotLightReflections")->getSignal()->connect(boost::bind(&handleSpotlightsChanged, _2));
 	gSavedSettings.getControl("RenderSpotLightImages")->getSignal()->connect(boost::bind(&handleSpotlightsChanged, _2));
-	gSavedSettings.getControl("RenderAttachedLights")->getSignal()->connect(boost::bind(&handleRenderAttachedLightsChanged, _2));
 	gSavedSettings.getControl("RenderOtherAttachedLights")->getSignal()->connect(boost::bind(&handleRenderOtherAttachedLightsChanged, _2));
 	gSavedSettings.getControl("RenderOwnAttachedLights")->getSignal()->connect(boost::bind(&handleRenderOwnAttachedLightsChanged, _2));
 	gSavedSettings.getControl("RenderDeferredLights")->getSignal()->connect(boost::bind(&handleRenderDeferredLightsChanged, _2));

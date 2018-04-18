@@ -600,7 +600,6 @@ public:
 	static bool				sRenderGlow;
 	static bool				sTextureBindTest;
 	static bool				sRenderFrameTest;
-	static bool				sRenderAttachedLights;
 	static bool				sRenderAttachedParticles;
 	static bool				sRenderDeferred;
 	static bool             sMemAllocationThrottled;
