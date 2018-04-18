@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.0.9 - Rolling Dragon]"
+       label="[CHANNEL] [VERSION] - [3.1.0 - Rolling Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="6012"
+       height="6325"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,8 +174,70 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="415"
+              height="298"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Camera Roll keybind options to Edit, First Person and Sit Mode.
+Added: Camera Roll buttons to camera floater.
+Added: Make "Save Camera" save roll as well, load will load roll when hitting load again after the camera is in the loaded position.
+Added: Default controls for rolling when in Edit, First Person or Sit mode.
+Changed: Improved shadows on different altitudes.
+Changed: Raised default shadow resolution a bit for the last shadow map.
+Changed: Slightly reduced range for the first shadow map making it much less pixelated with the same resolution.
+Changed: Size of Movement floater a bit to match that of the camera floater.
+Changed: Better wording for Object Quality tooltip.
+Changed: Lowered default music and media volume from 30% to 20%.
+Changed: Improved shadows on ground altitude while retaining most of the accuracy on higher altitudes.
+Changed: Version to 3.1.0.
+Fixed: Volumetric Lighting tab being disabled despite having no Intel GPU.
+Fixed: Clicking a Mask in the keybinding dialog will break key press detection.
+Fixed: Crash when clicking the Max Camera Roll default button.
+Fixed: Crash when clicking default buttons when their debug control doesn't exist.
+Fixed: Render Other/Own Attached Lights and Render World Lights options not peristing across sessions.
+Fixed: Alpha Masking showing up as white in water reflections (transplanted from LL).
+Removed: Leftover code from old Render Attached Lights option.
+Removed: Unused Enable Cookies option from preferences.
+Misc: Cleanup in panel_preferences_keybinds.xml.
+Misc: Removed obsolete code in llfloaterpreferences.cpp.
+Merge with Linden Release.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.0.9
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="415"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
