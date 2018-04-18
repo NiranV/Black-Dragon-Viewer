@@ -431,9 +431,9 @@ S32		LLPipeline::sVisibleLightCount = 0;
 F32		LLPipeline::sMinRenderSize = 0.f;
 bool	LLPipeline::sRenderingHUDs;
 //BD
-BOOL	LLPipeline::sRenderOtherAttachedLights = TRUE;
-BOOL	LLPipeline::sRenderOwnAttachedLights = TRUE;
-BOOL	LLPipeline::sRenderDeferredLights = TRUE;
+bool	LLPipeline::sRenderOtherAttachedLights = true;
+bool	LLPipeline::sRenderOwnAttachedLights = true;
+bool	LLPipeline::sRenderDeferredLights = true;
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
 bool	LLPipeline::sRenderTextures = true;
 // [/SL:KB]
@@ -524,6 +524,11 @@ void LLPipeline::init()
 	LLVertexBuffer::sPreferStreamDraw = gSavedSettings.getBOOL("RenderPreferStreamDraw");
 	sRenderAttachedLights = gSavedSettings.getBOOL("RenderAttachedLights");
 	sRenderAttachedParticles = gSavedSettings.getBOOL("RenderAttachedParticles");
+
+	//BD
+	sRenderOtherAttachedLights = gSavedSettings.getBOOL("RenderOtherAttachedLights");
+	sRenderOwnAttachedLights = gSavedSettings.getBOOL("RenderOwnAttachedLights");
+	sRenderDeferredLights = gSavedSettings.getBOOL("RenderDeferredLights");
 
 	mInitialized = true;
 	
