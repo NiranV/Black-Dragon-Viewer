@@ -624,7 +624,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.3</real>
+      <real>0.2</real>
     </map>
     <key>AudioLevelMic</key>
     <map>
@@ -646,7 +646,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.3</real>
+      <real>0.2</real>
     </map>
     <key>AudioLevelRolloff</key>
     <map>
