@@ -598,7 +598,7 @@ width="510">
                         value="0.25"
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much details objects should have and which Level-of-Detail they use.
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls how much detail objects should have and which Level-of-Detail they use.
 								&lt;blue&gt;(0.25)&lt;/blue&gt;"
                         layout="topleft"
                         name="0"
