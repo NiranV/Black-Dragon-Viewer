@@ -127,6 +127,18 @@ BOOL BDFloaterAnimations::postBuild()
 	mJointsScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onJointControlsRefresh, this));
 	mJointsScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onJointChangeState, this));
 
+	mRotX = getChild<LLUICtrl>("Rotation_X");
+	mRotY = getChild<LLUICtrl>("Rotation_Y");
+	mRotZ = getChild<LLUICtrl>("Rotation_Z");
+
+	mRotXBig = getChild<LLUICtrl>("Rotation_X_Big");
+	mRotYBig = getChild<LLUICtrl>("Rotation_Y_Big");
+	mRotZBig = getChild<LLUICtrl>("Rotation_Z_Big");
+
+	mPosX = getChild<LLUICtrl>("Position_X");
+	mPosY = getChild<LLUICtrl>("Position_Y");
+	mPosZ = getChild<LLUICtrl>("Position_Z");
+
 	//BD - Animations
 	mAnimEditorScroll = this->getChild<LLScrollListCtrl>("anim_editor_scroll", true);
 	mAnimEditorScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onAnimControlsRefresh, this));
@@ -315,6 +327,9 @@ void BDFloaterAnimations::onMotionRefresh()
 			element->setUserdata(character);
 		}
 	}
+
+	//BD - Make sure we don't have a scrollbar unless we need it.
+	mAvatarScroll->updateLayout();
 }
 
 void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
@@ -390,6 +405,9 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 				else if (param.asString() == "Remove")
 				{
 					mMotionScroll->deleteSelectedItems();
+
+					//BD - Make sure we don't have a scrollbar unless we need it.
+					mMotionScroll->updateLayout();
 				}
 				else if (param.asString() == "Save")
 				{
@@ -683,18 +701,10 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 			return FALSE;
 		}
 
-		//BD - Support old poses before we changed the rotation order.
-		F32 version = 0.f;
 		LLSD old_record;
 		//BD - Read the pose and save it into an LLSD so we can rewrite it later.
 		while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(old_record, infile))
 		{
-			//BD - Support old poses before we changed the rotation order.
-			if (line == 0)
-			{
-				version = old_record["version"].asReal();
-			}
-
 			if (line != 0)
 			{
 				record[line]["bone"] = old_record["bone"];
@@ -714,11 +724,6 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 			time = llclamp(time, 0.0f, 1.0f);
 		}
 		record[0]["time"] = time;
-		//BD - Support old poses before we changed the rotation order.
-		if (version >= 2.f)
-		{
-			record[0]["version"] = version;
-		}
 
 		infile.close();
 	}
@@ -733,8 +738,6 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 		}
 		record[line]["time"] = time;
 		record[line]["type"] = type;
-		//BD - Support old poses before we changed the rotation order.
-		record[line]["version"] = 2.0f;
 		line++;
 
 		//BD - Now create the rest.
@@ -758,9 +761,10 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 			if (joint && gAgentAvatarp->getJoint(joint->getName()))
 			{
 				record[line]["bone"] = joint->getName();
-				vec3.mV[VX] = (*item)->getColumn(1)->getValue().asReal() * DEG_TO_RAD;
-				vec3.mV[VY] = (*item)->getColumn(2)->getValue().asReal() * DEG_TO_RAD;
-				vec3.mV[VZ] = (*item)->getColumn(3)->getValue().asReal() * DEG_TO_RAD;
+				joint->getTargetRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
+				//vec3.mV[VX] = (*item)->getColumn(1)->getValue().asReal();
+				//vec3.mV[VY] = (*item)->getColumn(2)->getValue().asReal();
+				//vec3.mV[VZ] = (*item)->getColumn(3)->getValue().asReal();
 				record[line]["rotation"] = vec3.getValue();
 
 				//BD - Pelvis is a special case, add position values too.
@@ -813,7 +817,6 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 
 BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 {
-	//BOOL ret = TRUE;
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
 	std::string filename;
 	if (!name.asString().empty())
@@ -833,9 +836,6 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 		LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
 		return FALSE;
 	}
-
-	//BD - Support old poses before we changed the rotation order.
-	F32 version = 0.f;
 
 	while (!infile.eof())
 	{
@@ -862,14 +862,6 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 			}
 		}
 
-		//BD - Support old poses before we changed the rotation order.
-		if (count == 4)
-		{
-			version = pose["version"].asReal();
-
-			LL_WARNS("Posing") << "Got version:" << version << LL_ENDL;
-		}
-
 		LLJoint* joint = gAgentAvatarp->getJoint(pose["bone"].asString());
 		if (joint)
 		{
@@ -878,18 +870,8 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 
 			vec3.setValue(pose["rotation"]);
 			joint->setLastRotation(joint->getRotation());
-			//BD - Support old poses before we changed the rotation order.
-			if (version < 2.f)
-			{
-				quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
-				joint->setTargetRotation(quat);
-				LL_WARNS("Posing") << "Old version:" << version << LL_ENDL;
-			}
-			else
-			{
-				joint->setTargetRotation(mayaQ(vec3.mV[VX] / DEG_TO_RAD, vec3.mV[VZ] / DEG_TO_RAD, vec3.mV[VY] / DEG_TO_RAD, joint->getDefaultRotOrder()));
-				LL_WARNS("Posing") << "New version:" << version << LL_ENDL;
-			}
+			quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
+			joint->setTargetRotation(quat);
 
 			if (joint->getName() == "mPelvis")
 			{
@@ -961,6 +943,12 @@ void BDFloaterAnimations::onPoseStart()
 	}
 	else
 	{
+		//BD - Reset all bones to make sure that those that are not going to be animated
+		//     after posing are back in their correct default state.
+		mJointsScroll->selectAll();
+		onJointReset();
+		mJointsScroll->deselectAllItems();
+
 		//BD - Unpause all other motions that we paused to prevent them overriding
 		//     our Poser.
 		gAgentAvatarp->getMotionController().unpauseAllMotions();
@@ -1046,11 +1034,11 @@ void BDFloaterAnimations::onJointRefresh()
 			row["columns"][0]["column"] = "joint";
 			row["columns"][0]["value"] = joint->getName();
 			row["columns"][1]["column"] = "x";
-			row["columns"][1]["value"] = ll_round(vec3.mV[VX] * RAD_TO_DEG, 0.001f);
+			row["columns"][1]["value"] = ll_round(vec3.mV[VX], 0.001f);
 			row["columns"][2]["column"] = "y";
-			row["columns"][2]["value"] = ll_round(vec3.mV[VY] * RAD_TO_DEG, 0.001f);
+			row["columns"][2]["value"] = ll_round(vec3.mV[VY], 0.001f);
 			row["columns"][3]["column"] = "z";
-			row["columns"][3]["value"] = ll_round(vec3.mV[VZ] * RAD_TO_DEG, 0.001f);
+			row["columns"][3]["value"] = ll_round(vec3.mV[VZ], 0.001f);
 
 			//BD - Special case for mPelvis as it has position information too.
 			if (joint->getName() == "mPelvis")
@@ -1109,20 +1097,31 @@ void BDFloaterAnimations::onJointControlsRefresh()
 	if (item)
 	{
 		LLJoint* joint = (LLJoint*)item->getUserdata();
-		getChild<LLSliderCtrl>("Rotation_X")->setValue(item->getColumn(1)->getValue());
-		getChild<LLSliderCtrl>("Rotation_Y")->setValue(item->getColumn(2)->getValue());
-		getChild<LLSliderCtrl>("Rotation_Z")->setValue(item->getColumn(3)->getValue());
+		mRotX->setValue(item->getColumn(1)->getValue());
+		mRotY->setValue(item->getColumn(2)->getValue());
+		mRotZ->setValue(item->getColumn(3)->getValue());
+		mRotXBig->setValue(item->getColumn(1)->getValue());
+		mRotYBig->setValue(item->getColumn(2)->getValue());
+		mRotZBig->setValue(item->getColumn(3)->getValue());
 		if (joint && joint->getName() == "mPelvis")
 		{
 			is_pelvis = true;
-			getChild<LLSliderCtrl>("Position_X")->setValue(item->getColumn(4)->getValue());
-			getChild<LLSliderCtrl>("Position_Y")->setValue(item->getColumn(5)->getValue());
-			getChild<LLSliderCtrl>("Position_Z")->setValue(item->getColumn(6)->getValue());
+			mPosX->setValue(item->getColumn(4)->getValue());
+			mPosY->setValue(item->getColumn(5)->getValue());
+			mPosZ->setValue(item->getColumn(6)->getValue());
 		}
 
 		BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
 		if (motion)
 		{
+			//BD - If we don't use our default, set it once.
+			if (motion->getInterpolationTime() != 0.1
+				|| motion->getInterpolationType() != 2)
+			{
+				motion->setInterpolationTime(0.25f);
+				motion->setInterpolationType(2);
+			}
+
 			LLPose* pose = motion->getPose();
 			if (pose)
 			{
@@ -1133,12 +1132,23 @@ void BDFloaterAnimations::onJointControlsRefresh()
 	}
 
 	getChild<LLButton>("activate")->setValue(gAgent.getPosing());
-	getChild<LLSliderCtrl>("Rotation_X")->setEnabled(item && is_posing);
-	getChild<LLSliderCtrl>("Rotation_Y")->setEnabled(item && is_posing);
-	getChild<LLSliderCtrl>("Rotation_Z")->setEnabled(item && is_posing);
-	getChild<LLSliderCtrl>("Position_X")->setEnabled(is_pelvis && is_posing);
-	getChild<LLSliderCtrl>("Position_Y")->setEnabled(is_pelvis && is_posing);
-	getChild<LLSliderCtrl>("Position_Z")->setEnabled(is_pelvis && is_posing);
+	mRotX->setEnabled(item && is_posing);
+	mRotY->setEnabled(item && is_posing);
+	mRotZ->setEnabled(item && is_posing);
+	mRotXBig->setEnabled(item && is_posing);
+	mRotYBig->setEnabled(item && is_posing);
+	mRotZBig->setEnabled(item && is_posing);
+
+	mRotXBig->setVisible(!is_pelvis);
+	mRotYBig->setVisible(!is_pelvis);
+	mRotZBig->setVisible(!is_pelvis);
+	mRotX->setVisible(is_pelvis);
+	mRotY->setVisible(is_pelvis);
+	mRotZ->setVisible(is_pelvis);
+
+	mPosX->setVisible(is_pelvis);
+	mPosY->setVisible(is_pelvis);
+	mPosZ->setVisible(is_pelvis);
 }
 
 void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
@@ -1146,66 +1156,39 @@ void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 	LLJoint* joint = (LLJoint*)mJointsScroll->getFirstSelected()->getUserdata();
 	if (joint)
 	{
+		//BD - Neat yet quick and direct way of rotating our bones.
+		//     No more need to include bone rotation orders.
 		F32 val = ctrl->getValue().asReal();
-		LLVector3 vec3;
 		LLScrollListCell* column_1 = mJointsScroll->getFirstSelected()->getColumn(1);
 		LLScrollListCell* column_2 = mJointsScroll->getFirstSelected()->getColumn(2);
 		LLScrollListCell* column_3 = mJointsScroll->getFirstSelected()->getColumn(3);
-
-		vec3.mV[VX] = column_1->getValue().asReal();
-		vec3.mV[VY] = column_2->getValue().asReal();
-		vec3.mV[VZ] = column_3->getValue().asReal();
+		LLQuaternion rot_quat = joint->getTargetRotation();
+		LLMatrix3 rot_mat;
+		F32 old_value;
 
 		if (param.asString() == "x")
 		{
-			vec3.mV[VX] = val;
-			column_1->setValue(ll_round(vec3.mV[VX], 0.001f));
+			old_value = column_1->getValue().asReal();
+			column_1->setValue(ll_round(val, 0.001f));
+			val -= old_value;
+			rot_mat = LLMatrix3(val, 0.f, 0.f);
 		}
 		else if (param.asString() == "y")
 		{
-			vec3.mV[VY] = val;
-			column_2->setValue(ll_round(vec3.mV[VY], 0.001f));
+			old_value = column_2->getValue().asReal();
+			column_2->setValue(ll_round(val, 0.001f));
+			val -= old_value;
+			rot_mat = LLMatrix3(0.f, val, 0.f);
 		}
 		else
 		{
-			vec3.mV[VZ] = val;
-			column_3->setValue(ll_round(vec3.mV[VZ], 0.001f));
+			old_value = column_3->getValue().asReal();
+			column_3->setValue(ll_round(val, 0.001f));
+			val -= old_value;
+			rot_mat = LLMatrix3(0.f, 0.f, val);
 		}
-
-		//BD - While editing rotations, make sure we use a bit of linear interpolation to make movements smoother.
-		LLMotion* motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-		//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-		if (motion)
-		{
-			//BD - If we don't use our default, set it once.
-			if (motion->getInterpolationTime() != 0.2
-				|| motion->getInterpolationType() != 2)
-			{
-				motion->setInterpolationTime(0.2f);
-				motion->setInterpolationType(2);
-			}
-		}
-		llassert(!vec3.isFinite());
-
-		LLQuaternion::Order order = joint->getDefaultRotOrder();
-		std::string order_str = getChild<LLUICtrl>("OrderDropdown")->getValue();
-		if (order_str != "NONE")
-		{
-			if (order_str == "XYZ")
-				order = LLQuaternion::XYZ;
-			else if (order_str == "YZX")
-				order = LLQuaternion::YZX;
-			else if (order_str == "ZXY")
-				order = LLQuaternion::ZXY;
-			else if (order_str == "XZY")
-				order = LLQuaternion::XZY;
-			else if (order_str == "YXZ")
-				order = LLQuaternion::YXZ;
-			else if (order_str == "ZYX")
-				order = LLQuaternion::ZYX;
-		}
-
-		joint->setTargetRotation(mayaQ(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY], order));
+		rot_quat = LLQuaternion(rot_mat)*rot_quat;
+		joint->setTargetRotation(rot_quat);
 	}
 }
 
@@ -1302,13 +1285,14 @@ void BDFloaterAnimations::onJointReset()
 			if (motion)
 			{
 				//BD - If we don't use our default, set it once.
-				if (motion->getInterpolationTime() != 0.2
+				if (motion->getInterpolationTime() != 0.1
 					|| motion->getInterpolationType() != 2)
 				{
-					motion->setInterpolationTime(0.2f);
+					motion->setInterpolationTime(0.25f);
 					motion->setInterpolationType(2);
 				}
 			}
+
 			quat.setEulerAngles(0,0,0);
 			joint->setTargetRotation(quat);
 
@@ -1431,6 +1415,9 @@ void BDFloaterAnimations::onAnimListWrite(std::vector<LLScrollListItem*> item_li
 
 	//BD - Delete all flagged items now and we'll end up with a new list order.
 	mAnimEditorScroll->deleteFlaggedItems();
+
+	//BD - Make sure we don't have a scrollbar unless we need it.
+	mAnimEditorScroll->updateLayout();
 }
 
 void BDFloaterAnimations::onAnimMove(const LLSD& param)
@@ -1517,6 +1504,9 @@ void BDFloaterAnimations::onAnimMove(const LLSD& param)
 void BDFloaterAnimations::onAnimDelete()
 {
 	mAnimEditorScroll->deleteSelectedItems();
+
+	//BD - Make sure we don't have a scrollbar unless we need it.
+	mAnimEditorScroll->updateLayout();
 }
 
 void BDFloaterAnimations::onAnimSave()

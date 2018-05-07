@@ -53,6 +53,7 @@ private:
 	//BD - Joints
 	void onJointRefresh();
 	void onJointSet(LLUICtrl* ctrl, const LLSD& param);
+	void onJointSetFinal(LLUICtrl* ctrl, const LLSD& param);
 	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointChangeState();
 	void onJointControlsRefresh();
@@ -81,6 +82,16 @@ private:
 	//BD - Posing
 	LLScrollListCtrl*				mPoseScroll;
 	LLScrollListCtrl*				mJointsScroll;
+
+	LLUICtrl*					mRotX;
+	LLUICtrl*					mRotY;
+	LLUICtrl*					mRotZ;
+	LLUICtrl*					mRotXBig;
+	LLUICtrl*					mRotYBig;
+	LLUICtrl*					mRotZBig;
+	LLUICtrl*					mPosX;
+	LLUICtrl*					mPosY;
+	LLUICtrl*					mPosZ;
 
 	//BD - Animations
 	LLScrollListCtrl*				mAnimEditorScroll;

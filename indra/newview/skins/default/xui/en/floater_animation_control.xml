@@ -555,14 +555,14 @@ width="494">
  follows="left|top"
  height="14"
  enabled="false"
- increment="0.25"
+ increment="0.001"
  initial_value="0"
  label="Rotation X:"
  label_width="70"
  layout="topleft"
  left="10"
- max_val="180"
- min_val="-180"
+ max_val="3.142"
+ min_val="-3.142"
  name="Rotation_X"
  top_pad="10"
  width="219" >
@@ -575,15 +575,35 @@ width="494">
  can_edit_text="true"
  follows="left|top"
  height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="70"
+ layout="topleft"
+ left="10"
+ max_val="3.142"
+ min_val="-3.142"
+ name="Rotation_X_Big"
+ top_delta="0"
+ width="459" >
+		<slider.commit_callback
+      function="Joint.Set"
+      parameter="x"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
  enabled="false"
- increment="0.25"
+ increment="0.001"
  initial_value="0"
  label="Rotation Y:"
  label_width="70"
  layout="topleft"
  left="10"
- max_val="180"
- min_val="-180"
+ max_val="3.142"
+ min_val="-3.142"
  name="Rotation_Y"
  top_pad="1"
  width="219" >
@@ -593,21 +613,64 @@ width="494">
       </slider>
 	<slider
  decimal_digits="3"
+	visible="false"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="70"
+ layout="topleft"
+ left="10"
+ max_val="3.142"
+ min_val="-3.142"
+ name="Rotation_Y_Big"
+ top_delta="0"
+ width="459" >
+	<slider.commit_callback
+      function="Joint.Set"
+      parameter="y"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+	visible="false"
  can_edit_text="true"
  follows="left|top"
  height="14"
  enabled="false"
- increment="0.25"
+ increment="0.001"
  initial_value="0"
  label="Rotation Z:"
  label_width="70"
  layout="topleft"
  left="10"
- max_val="180"
- min_val="-180"
+ max_val="3.142"
+ min_val="-3.142"
  name="Rotation_Z"
  top_pad="1"
  width="219" >
+		<slider.commit_callback
+      function="Joint.Set"
+      parameter="z"/>
+      </slider>
+	<slider
+ decimal_digits="3"
+	visible="false"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="70"
+ layout="topleft"
+ left="10"
+ max_val="3.142"
+ min_val="-3.142"
+ name="Rotation_Z_Big"
+ top_delta="0"
+ width="459" >
 		<slider.commit_callback
       function="Joint.Set"
       parameter="z"/>
@@ -624,7 +687,7 @@ width="494">
  label="Position X:"
  label_width="70"
  layout="topleft"
- left_pad="20"
+ left="239"
  max_val="5"
  min_val="-5"
  name="Position_X"
@@ -697,7 +760,7 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="toggle_bone"
- width="170"
+ width="258"
  top="0"
  left_delta="2">
 		<button.commit_callback
@@ -720,64 +783,6 @@ width="494">
 		<button.commit_callback
    function="Joint.ChangeState"/>
  </button>
-	<combo_box
-     follows="left|top"
-     height="21"
-     layout="topleft"
-     left_pad="1"
-     top_delta="0"
-     max_chars="135"
-     name="OrderDropdown"
-     width="87">
-								<combo_box.item
-         enabled="true"
-         label="NO ORDER"
-         name="0"
-         value="NONE" />
-        <combo_box.item
-         enabled="true"
-         label="XYZ"
-         name="0"
-         value="XYZ" />
-								<combo_box.item
-         enabled="true"
-         label="YZX"
-         name="0"
-         value="YZX" />
-								<combo_box.item
-         enabled="true"
-         label="ZXY"
-         name="0"
-         value="ZXY" />
-								<combo_box.item
-         enabled="true"
-         label="XZY"
-         name="0"
-         value="XZY" />
-								<combo_box.item
-         enabled="true"
-         label="YXZ"
-         name="0"
-         value="YXZ" />
-								<combo_box.item
-         enabled="true"
-         label="ZYX"
-         name="0"
-         value="ZYX" />
-		<combo_box.commit_callback
-		function="Pose.Set"
-		parameter="type"/>
-		<combo_box.combo_button
-		image_unselected="Toolbar_Middle_Off"
-		image_selected="Toolbar_Middle_Selected"
-		image_disabled="Toolbar_Middle_Off" />
-		<combo_box.drop_down_button
-		image_unselected="Toolbar_Middle_Off"
-		image_selected="Toolbar_Middle_Selected"
-		image_pressed="Toolbar_Middle_Selected" 
-		image_pressed_selected="Toolbar_Middle_Selected"
-		image_disabled="Toolbar_Middle_Off" />
-    </combo_box>
 	</panel>
 
 	</panel>
