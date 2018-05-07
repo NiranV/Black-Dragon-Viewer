@@ -22,7 +22,9 @@
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
- 
+
+/*[EXTRA_CODE_HERE]*/
+
 #define DIFFUSE_ALPHA_MODE_IGNORE	0
 #define DIFFUSE_ALPHA_MODE_BLEND	1
 #define DIFFUSE_ALPHA_MODE_MASK		2
