@@ -16657,11 +16657,11 @@
     <key>Comment</key>
     <string>Debug option to show/hide the changelogs on the login screen.</string>
     <key>Persist</key>
-    <integer>0</integer>
+    <integer>1</integer>
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
-    <integer>1</integer>
+    <integer>0</integer>
   </map>
 	
   <!-- Machinima Sidebar Debugs-->
