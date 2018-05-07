@@ -32,20 +32,18 @@
 #include "llfloaterpreference.h"
 #include "llviewercamera.h"
 #include "pipeline.h"
-#include "llsdserialize.h"
+//#include "llsdserialize.h"
 
 #include "llsliderctrl.h"
-#include "llradiogroup.h"
-#include "llcombobox.h"
-#include "llcheckboxctrl.h"
-#include "lllayoutstack.h"
-#include "lluictrl.h"
-#include "lluictrlfactory.h"
-#include "llview.h"
-#include "llcombobox.h"
+//#include "llradiogroup.h"
+//#include "llcombobox.h"
+//#include "llcheckboxctrl.h"
+//#include "lllayoutstack.h"
+//#include "lluictrl.h"
+//#include "lluictrlfactory.h"
 
 // system includes
-#include <iomanip>
+//#include <iomanip>
 
 LLSideBar *gSideBar = NULL;
 
@@ -60,12 +58,15 @@ LLSideBar::LLSideBar(const LLRect& rect)
 	mCommitCallbackRegistrar.add("Pref.ArrayW", boost::bind(&LLFloaterPreference::onCommitW, _1, _2));
 
 	//BD
-	mCommitCallbackRegistrar.add("Sidebar.ToggleEdit", boost::bind(&LLSideBar::toggleEditMode, this));
+	/*mCommitCallbackRegistrar.add("Sidebar.ToggleEdit", boost::bind(&LLSideBar::toggleEditMode, this));
 	mCommitCallbackRegistrar.add("Sidebar.Load", boost::bind(&LLSideBar::loadWidgetList, this));
 
 	mCommitCallbackRegistrar.add("Sidebar.Create", boost::bind(&LLSideBar::createWidget, this));
 
 	mCommitCallbackRegistrar.add("Sidebar.Type", boost::bind(&LLSideBar::onTypeSelection, this));
+
+	mCommitCallbackRegistrar.add("Sidebar.Add", boost::bind(&LLSideBar::onAddTest, this));
+	mCommitCallbackRegistrar.add("Sidebar.Delete", boost::bind(&LLSideBar::onDeleteTest, this));*/
 
 	buildFromFile("panel_machinima.xml");
 }
@@ -85,7 +86,7 @@ void LLSideBar::draw()
 
 		if (mUpdateTimer.getElapsedTimeF32() > 3.f)
 		{
-			refreshCreationControls();
+			//refreshCreationControls();
 			mUpdateTimer.reset();
 		}
 
@@ -115,6 +116,7 @@ BOOL LLSideBar::postBuild()
 
 	mCameraAngle = getChild<LLSliderCtrl>("CameraAngle");
 
+	/*mTestStack = getChild<LLLayoutStack>("test_stack");
 
 	//BD - General stuff.
 	mIsCheckbox = getChild<LLButton>("is_checkbox");
@@ -161,7 +163,7 @@ BOOL LLSideBar::postBuild()
 	//BD - Fix for rare wrongly visible trash buttons.
 	mEditMode = false;
 
-	loadWidgetList();
+	//loadWidgetList();
 
 	LLComboBox* settings_combo = getChild<LLComboBox>("debug_setting");
 	struct f : public LLControlGroup::ApplyFunctor
@@ -181,12 +183,12 @@ BOOL LLSideBar::postBuild()
 	gSavedSettings.applyToAll(&func);
 	gSavedPerAccountSettings.applyToAll(&func);
 
-	settings_combo->sortByName();
+	settings_combo->sortByName();*/
 	return TRUE;
 }
 
 //BD - Refresh the create-a-widget controls periodically.
-void LLSideBar::refreshCreationControls()
+/*void LLSideBar::refreshCreationControls()
 {
 	bool is_checkbox = mIsCheckbox->getValue();
 	bool is_slider = mIsSlider->getValue();
@@ -207,7 +209,7 @@ void LLSideBar::refreshCreationControls()
 	{
 		mNextBtn->setEnabled(is_slider || is_checkbox || is_radio || is_title || is_tab);
 	}
-}
+}*/
 
 //BD - Refresh all controls
 void LLSideBar::refreshGraphicControls()
@@ -270,7 +272,7 @@ void LLSideBar::setVisibleForMouselook(bool visible)
 //     increasingly longer with each addition. If i can't get this under control there
 //     is only the way of packaging everything into normal panels and doing it super
 //     fixed which i wanted to prevent in the first place.
-void LLSideBar::createWidget()
+/*void LLSideBar::createWidget()
 {
 	BDSidebarItem* item = new BDSidebarItem;
 	//BD - General stuff
@@ -339,7 +341,7 @@ void LLSideBar::createWidget()
 	mWidgetCount++;
 
 	saveWidgetList();
-	loadWidgetList();
+	//loadWidgetList();
 
 	//BD - Empty all widgets when we're done.
 	//     Don't empty debugs in case we are doing multi-slider options also making
@@ -393,8 +395,6 @@ void LLSideBar::deleteWidget(LLUICtrl* ctrl)
 
 	if (layout_panel)
 	{
-		layout_panel->setVisible(false);
-
 		for (std::vector<BDSidebarItem*>::iterator iter = mSidebarItems.begin();
 			iter != mSidebarItems.end(); ++iter)
 		{
@@ -411,7 +411,7 @@ void LLSideBar::deleteWidget(LLUICtrl* ctrl)
 	}
 
 	saveWidgetList();
-	loadWidgetList();
+	//loadWidgetList();
 }
 
 void LLSideBar::toggleEditMode()
@@ -453,16 +453,6 @@ bool LLSideBar::loadWidgetList()
 	{
 		LL_WARNS("Sidebar") << "Cannot find file in: " << filename << LL_ENDL;
 		return FALSE;
-	}
-
-	//BD - Kill any previous layout panels we may have still there.
-	const LLView::child_list_t* list = mWidgetsStack->getChildList();
-	for (LLView::child_list_t::const_iterator it = list->begin();
-		it != list->end(); ++it)
-	{
-		LLView* view = *it;
-		if (view->getVisible())
-			view->setVisible(false);
 	}
 
 	if (!mFirstTime)
@@ -542,13 +532,13 @@ bool LLSideBar::loadWidgetList()
 			break;
 		}
 
-		LLLayoutPanel* layout_panel = layout_panel = LLUICtrlFactory::create<LLLayoutPanel>(panel_p);
-		LLPanel* panel = LLUICtrlFactory::getInstance()->createFromFile<LLPanel>("panel_sidebar_tab_" + panel_name + ".xml", NULL, LLPanel::child_registry_t::instance());
+		LLLayoutPanel* layout_panel = layout_panel = LLUICtrlFactory::create<LLLayoutPanel>(panel_p, mWidgetsStack);
+		LLPanel* panel = LLUICtrlFactory::getInstance()->createFromFile<LLPanel>("panel_sidebar_tab_" + panel_name + ".xml", layout_panel, LLPanel::child_registry_t::instance());
 	
 		if (panel && layout_panel)
 		{
 			layout_panel->addChild(panel);
-			mWidgetsStack->addPanel(layout_panel);
+			//mWidgetsStack->addPanel(layout_panel);
 
 			BDSidebarItem* item = new BDSidebarItem;
 			//BD - General stuff
@@ -557,8 +547,8 @@ bool LLSideBar::loadWidgetList()
 			item->mLabel = widget["label"].asString();
 			item->mOrder = widget["order"].asInteger();
 			item->mPanelName = layout_panel->getName();
+			item->mPanel = layout_panel;
 			item->mRemoveBtn = panel->getChild<LLButton>("remove_widget");
-
 			item->mRemoveBtn->setMouseDownCallback(boost::bind(&LLSideBar::deleteWidget, this, _1));
 			item->mRemoveBtn->setVisible(mEditMode);
 
@@ -610,7 +600,7 @@ bool LLSideBar::loadWidgetList()
 				ctrl->setValue(value);
 			}
 			//BD - Currently not functional due to the inability to change sub-radios.
-			/*else if (type == BDSidebarItem::SidebarType::RADIO)
+			else if (type == BDSidebarItem::SidebarType::RADIO)
 			{
 				LLRadioGroup* ctrl = panel->getChild<LLRadioGroup>("radio");
 				ctrl->setControlVariable(controlp);
@@ -641,7 +631,7 @@ bool LLSideBar::loadWidgetList()
 					removeChild(radio3);
 				if (widget["radio_count"].asInteger() < 4)
 					removeChild(radio4);
-			}*/
+			}
 			else if (type == BDSidebarItem::SidebarType::CHECKBOX)
 			{
 				LLCheckBoxCtrl* ctrl = panel->getChild<LLCheckBoxCtrl>("checkbox");
@@ -764,3 +754,73 @@ void LLSideBar::onTypeSelection()
 	mIsTitle->setEnabled(!is_checkbox && !is_slider && !is_radio && !is_tab);
 	mIsTab->setEnabled(!is_checkbox && !is_slider && !is_radio && !is_title);
 }
+
+
+
+
+
+void LLSideBar::onDeleteTest()
+{
+	for (std::vector<LLLayoutPanel*>::iterator iter = mSidebarPanels.begin();
+		iter != mSidebarPanels.end(); ++iter)
+	{
+		LLLayoutPanel* item = *iter;
+		if (item)
+		{
+			mTestStack->LLLayoutStack::removeChild(static_cast<LLView*>(*iter));
+			//mTestStack->removeChild(static_cast<LLView*>(item));
+		}
+	}
+}
+
+//BD
+void LLSideBar::onAddTest()
+{
+	{
+		//BDSidebarItem::SidebarType type = BDSidebarItem::SidebarType::CHECKBOX;
+
+		std::string debug_str = widget["debug_setting"].asString();
+		LLControlVariable* controlp = gSavedSettings.getControl(debug_str);
+		if (!controlp && (type == 0 || type == 1 || type == 2))
+		{
+			LL_WARNS("Sidebar") << "Corrupt or missing essential debug, skipping widget creation" << LL_ENDL;
+			continue;
+		}
+
+		std::string panel_name;
+		LLLayoutPanel::Params panel_p;
+		panel_p.name = "widget_test";
+		panel_p.background_visible = true;
+		panel_p.has_border = true;
+		panel_p.mouse_opaque = false;
+		panel_p.auto_resize = false;
+		panel_p.user_resize = false;
+		panel_p.min_dim = 16;
+		//panel_name = "checkbox";
+
+		LLLayoutPanel* layout_panel = layout_panel = LLUICtrlFactory::create<LLLayoutPanel>(panel_p, NULL);
+		layout_panel->setName("widget_test");
+		mTestStack->addPanel(layout_panel, LLLayoutStack::NO_ANIMATE);
+		//LLPanel* panel = LLUICtrlFactory::getInstance()->createFromFile<LLPanel>("panel_sidebar_tab_" + panel_name + ".xml", layout_panel, LLPanel::child_registry_t::instance());
+
+		//if (panel && layout_panel)
+		{
+			//panel->setName()
+			//layout_panel->addChild(panel);
+			//mTestStack->addPanel(layout_panel);
+
+			//LLButton* button = panel->getChild<LLButton>("remove_widget");
+			//button->setMouseDownCallback(boost::bind(&LLSideBar::deleteWidget, this, _1));
+			//button->setVisible(mEditMode);
+
+			//LLCheckBoxCtrl* ctrl = panel->getChild<LLCheckBoxCtrl>("checkbox");
+			//ctrl->setControlVariable(controlp);
+			//ctrl->setLabel(item->mLabel);
+
+			//BD - Add our size to the scroll panel.
+			//mOffset += panel_p.min_dim;
+
+			mSidebarPanels.push_back(layout_panel);
+		}
+	}
+}*/

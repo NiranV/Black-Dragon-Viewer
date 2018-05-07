@@ -29,21 +29,20 @@
 
 #include "llpanel.h"
 #include "lluictrl.h"
-#include "llsliderctrl.h"
-#include "lllayoutstack.h"
-#include "llpanel.h"
-#include "llbutton.h"
-#include "lllineeditor.h"
-#include "llcombobox.h"
+//#include "llsliderctrl.h"
+//#include "lllayoutstack.h"
+//#include "llbutton.h"
+//#include "lllineeditor.h"
+//#include "llcombobox.h"
 
 class LLUICtrl;
 class LLSliderCtrl;
-class LLLayoutPanel;
-class LLButton;
-class LLComboBox;
-class LLLineEditor;
-class LLPanel;
-class LLLayoutStack;
+//class LLLayoutPanel;
+//class LLButton;
+//class LLComboBox;
+//class LLLineEditor;
+//class LLPanel;
+//class LLLayoutStack;
 
 class LLSideBar
 :	public LLPanel
@@ -59,7 +58,7 @@ public:
 	void refreshGraphicControls();
 	void setVisibleForMouselook(bool visible);
 
-	class BDSidebarItem
+	/*class BDSidebarItem
 	{
 	public:
 		BDSidebarItem()
@@ -73,7 +72,7 @@ public:
 			, mDebugSetting("")
 			//, mParameter()
 			//, mFunction()
-			//, mPanel(NULL)
+			, mPanel(NULL)
 			, mType(SLIDER)
 
 			, mRadioCount(4)
@@ -97,6 +96,8 @@ public:
 		};
 
 		std::string		mPanelName;
+
+		LLLayoutPanel*	mPanel;
 
 		S32				mOrder;
 
@@ -128,7 +129,7 @@ public:
 		LLButton*		mRemoveBtn;
 
 		SidebarType		mType;
-	};
+	};*/
 
 private:
 	//BD - Legacy stuff.
@@ -157,7 +158,7 @@ private:
 
 
 	//BD - New stuff.
-	bool loadWidgetList();
+	/*bool loadWidgetList();
 	void saveWidgetList();
 	void createWidget();
 	void deleteWidget(LLUICtrl* ctrl);
@@ -167,12 +168,17 @@ private:
 
 	void refreshCreationControls();
 
+	void onAddTest();
+	void onDeleteTest();
+
 	S32							mOffset;
-	S32							mWidgetCount;
+	S32							mWidgetCount;*/
 
 	LLFrameTimer				mUpdateTimer;
 
-	std::vector<BDSidebarItem*> mSidebarItems;
+	/*std::vector<BDSidebarItem*> mSidebarItems;
+	std::vector<LLLayoutPanel*>	mSidebarPanels;
+	LLLayoutStack*				mTestStack;
 
 	//BD - General stuff.
 	LLButton*					mIsCheckbox;
@@ -200,21 +206,21 @@ private:
 	LLButton*					mIsW;
 
 	//BD - Radio stuff.
-	//LLButton* mRadio2;
-	//LLButton* mRadio3;
-	//LLButton* mRadio4;
-	//LLUICtrl* mRadioCount;
-	//LLLineEditor* mRadioVal1;
-	//LLLineEditor* mRadioVal2;
-	//LLLineEditor* mRadioVal3;
-	//LLLineEditor* mRadioVal4;
-	//LLLineEditor* mRadioLabel1;
-	//LLLineEditor* mRadioLabel2;
-	//LLLineEditor* mRadioLabel3;
-	//LLLineEditor* mRadioLabel4;
+	LLButton* mRadio2;
+	LLButton* mRadio3;
+	LLButton* mRadio4;
+	LLUICtrl* mRadioCount;
+	LLLineEditor* mRadioVal1;
+	LLLineEditor* mRadioVal2;
+	LLLineEditor* mRadioVal3;
+	LLLineEditor* mRadioVal4;
+	LLLineEditor* mRadioLabel1;
+	LLLineEditor* mRadioLabel2;
+	LLLineEditor* mRadioLabel3;
+	LLLineEditor* mRadioLabel4;
 
 	bool						mEditMode;
-	bool						mFirstTime;
+	bool						mFirstTime;*/
 };
 
 extern LLSideBar *gSideBar;
