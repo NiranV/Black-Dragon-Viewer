@@ -348,7 +348,7 @@ Please try logging in again in a minute.</string>
   <string name="AvatarNameMultiple">(multiple)</string>
 
 	<!-- Group name: text shown for LLUUID::null -->
-	<string name="GroupNameNone">(none)</string>
+	<string name="GroupNameNone">(None)</string>
 
 	<string name="AvalineCaller">Avaline Caller [ORDER]</string>
 
@@ -2217,8 +2217,8 @@ For AI Character: Get the closest navigable point to the point provided.
 	<string name="alpha">Alpha</string>
 	<string name="tattoo">Tattoo</string>
   <string name="physics">Physics</string>
-  <string name="invalid">invalid</string>
-  <string name="none">none</string>
+  <string name="invalid">Invalid</string>
+  <string name="none">None</string>
 
   <!-- Not Worn Wearable Types -->
 	<string name="shirt_not_worn">Shirt not worn</string>
@@ -2625,7 +2625,7 @@ If you continue to receive this message, please contact Second Life support for 
 	<string name="GodToolsObjectOwnedBy">Object [OBJECT] owned by [OWNER]</string>
 
 	<!-- groups -->
-	<string name="GroupsNone">none</string>
+	<string name="GroupsNone">None</string>
 	<string name="Group" value=" (group)" />
 	<string name="Unknown">(Unknown)</string>
 	<string name="SummaryForTheWeek"    value="Summary for this week, beginning on " />
