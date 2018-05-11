@@ -15,7 +15,7 @@
              scroll_bar_bg_color="black"
              mouse_wheel_opaque="false"
              mouse_opaque="true"
-             background_visible="true"
+             background_visible="false"
              heading_height="23"
              draw_border="false"
              draw_heading="false"
