@@ -906,7 +906,7 @@ protected:
 	{
 		LLUICtrl::CommitCallbackRegistry::ScopedRegistrar registrar;
 		LLUICtrl::EnableCallbackRegistry::ScopedRegistrar enable_registrar;
-		registrar.add("Settings.SetRendering", boost::bind(&LLFloaterPreference::onCustomAction, mFloaterSettings, _2, mUUIDs.front()));
+		registrar.add("Settings.SetRendering", boost::bind(&LLFloaterPreference::onCustomAction, mFloaterSettings, _2));
 		enable_registrar.add("Settings.IsSelected", boost::bind(&LLFloaterPreference::isActionChecked, mFloaterSettings, _2, mUUIDs.front()));
 		LLContextMenu* menu = createFromFile("menu_avatar_rendering_settings.xml");
 
@@ -1023,6 +1023,7 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 //	//BD - Avatar Rendering Settings
 	mContextMenu = new LLSettingsContextMenu(this);
 	mCommitCallbackRegistrar.add("Settings.AddNewEntry", boost::bind(&LLFloaterPreference::onClickAdd, this, _2));
+	mCommitCallbackRegistrar.add("Settings.SetRendering", boost::bind(&LLFloaterPreference::onCustomAction, this, _2));
 	LLRenderMuteList::getInstance()->addObserver(&sAvatarRenderMuteListObserver);
 
 	//BD
@@ -3495,7 +3496,7 @@ static LLVOAvatar* find_avatar(const LLUUID& id)
 }
 
 
-void LLFloaterPreference::onCustomAction(const LLSD& userdata, const LLUUID& av_id)
+void LLFloaterPreference::onCustomAction(const LLSD& userdata)
 {
 	const std::string command_name = userdata.asString();
 
@@ -3513,7 +3514,7 @@ void LLFloaterPreference::onCustomAction(const LLSD& userdata, const LLUUID& av_
 		new_setting = S32(LLVOAvatar::AV_ALWAYS_RENDER);
 	}
 
-	setAvatarRenderSetting(av_id, new_setting);
+	setAvatarRenderSetting(getRenderSettingUUIDs(), new_setting);
 }
 
 
@@ -3568,25 +3569,52 @@ void LLFloaterPreference::onClickAdd(const LLSD& userdata)
 	}
 }
 
+uuid_vec_t LLFloaterPreference::getRenderSettingUUIDs()
+{
+	//BD - Allow mass changing.
+	uuid_vec_t av_ids;
+	std::vector<LLScrollListItem*> selected_items = mAvatarSettingsList->getAllSelected();
+	for (std::vector<LLScrollListItem*>::iterator iter = selected_items.begin();
+		iter != selected_items.end(); ++iter)
+	{
+		LLScrollListItem* item = (*iter);
+		if (item)
+		{
+			av_ids.push_back(item->getUUID());
+		}
+	}
+
+	return av_ids;
+}
+
 void LLFloaterPreference::callbackAvatarPicked(const uuid_vec_t& ids, S32 visual_setting)
 {
 	if (ids.empty()) return;
-	setAvatarRenderSetting(ids[0], visual_setting);
+	setAvatarRenderSetting(ids, visual_setting);
 }
 
-void LLFloaterPreference::setAvatarRenderSetting(const LLUUID& av_id, S32 new_setting)
+void LLFloaterPreference::setAvatarRenderSetting(const uuid_vec_t& av_ids, S32 new_setting)
 {
-	LLVOAvatar *avatarp = find_avatar(av_id);
-	if (avatarp)
+	//BD - Allow mass changing.
+	if (!av_ids.empty())
 	{
-		avatarp->setVisualMuteSettings(LLVOAvatar::VisualMuteSettings(new_setting));
+		for (uuid_vec_t::const_iterator iter = av_ids.begin();
+			iter != av_ids.end(); ++iter)
+		{
+			const LLUUID av_id = (*iter);
+			LLVOAvatar *avatarp = find_avatar(av_id);
+			if (avatarp)
+			{
+				avatarp->setVisualMuteSettings(LLVOAvatar::VisualMuteSettings(new_setting));
+			}
+			else
+			{
+				LLRenderMuteList::getInstance()->saveVisualMuteSetting(av_id, new_setting);
+			}
+		}
+		//BD
+		updateList();
 	}
-	else
-	{
-		LLRenderMuteList::getInstance()->saveVisualMuteSetting(av_id, new_setting);
-	}
-	//BD
-	updateList();
 }
 
 BOOL LLFloaterPreference::handleKeyHere(KEY key, MASK mask)
@@ -3595,7 +3623,8 @@ BOOL LLFloaterPreference::handleKeyHere(KEY key, MASK mask)
 
 	if (KEY_DELETE == key)
 	{
-		setAvatarRenderSetting(mAvatarSettingsList->getCurrentID(), (S32)LLVOAvatar::AV_RENDER_NORMALLY);
+		//BD - Allow mass changing.
+		setAvatarRenderSetting(getRenderSettingUUIDs(), (S32)LLVOAvatar::AV_RENDER_NORMALLY);
 		handled = TRUE;
 	}
 	return handled;

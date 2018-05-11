@@ -261,10 +261,12 @@ public:
 
 	void updateList();
 	void onFilterEdit(const std::string& search_string);
-	void onCustomAction(const LLSD& userdata, const LLUUID& av_id);
 	bool isActionChecked(const LLSD& userdata, const LLUUID& av_id);
 	void onClickAdd(const LLSD& userdata);
-	void setAvatarRenderSetting(const LLUUID& av_id, S32 new_setting);
+	//BD - Allow mass changing.
+	void setAvatarRenderSetting(const uuid_vec_t& av_ids, S32 new_setting);
+	void onCustomAction(const LLSD& userdata);
+	uuid_vec_t getRenderSettingUUIDs();
 
 	std::string createTimestamp(S32 datetime);
 

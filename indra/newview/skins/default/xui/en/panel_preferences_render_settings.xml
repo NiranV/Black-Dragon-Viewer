@@ -33,11 +33,11 @@
     <name_list
      column_padding="2"
      draw_heading="true"
-     height="366"
+     height="368"
      follows="left|top|right"
      layout="topleft"
      left="0"
-     width="507"
+     width="509"
      multi_select="true"
      name="render_settings_list"
      top_pad="5">
@@ -73,13 +73,30 @@
      height="20"
      layout="topleft"
      left="0"
-     right="-62"
+     right="-55"
      label="Filter People"
      max_length_chars="300"
      name="people_filter_input"
      text_color="Black"
      text_pad_left="10"
      top="-21" />
+      <menu_button
+     follows="bottom|right"
+     height="21"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_overlay="OptionsMenu_Off"
+     image_overlay_alignment="left"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     left_pad="1"
+     label=""
+     menu_filename="menu_avatar_rendering_settings.xml"
+     menu_position="bottomleft"
+     name="options_btn"
+     tool_tip="Actions on selected person"
+     top="-21"
+     width="26" />
     <menu_button
      follows="bottom|right"
      height="21"
@@ -90,12 +107,12 @@
      image_unselected="Toolbar_Middle_Off"
      layout="topleft"
      left_pad="1"
-     label="Add"
+     label=""
      menu_filename="menu_avatar_rendering_settings_add.xml"
      menu_position="bottomleft"
      name="plus_btn"
      tool_tip="Actions on selected person"
      top="-21"
-     width="60" />
+     width="26" />
     </panel>
 </panel>
