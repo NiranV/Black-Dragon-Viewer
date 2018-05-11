@@ -2275,7 +2275,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
  layout="topleft"
  left="10"
  max_val="8192"
- min_val="0"
+ min_val="8"
  name="MaxParticles"
  tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
