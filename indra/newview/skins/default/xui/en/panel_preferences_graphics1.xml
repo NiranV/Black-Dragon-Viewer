@@ -11,7 +11,7 @@ top="0"
 width="510">
  <layout_stack
    follows="top|left|right"
-   height="407"
+   height="408"
    layout="topleft"
    left="0"
    border_size="-1"
@@ -6166,7 +6166,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   follows="left|bottom|right"
   height="22"
   name="buttons_panel"
-  top="-21"
+  top="-22"
   mouse_opaque="false"
   background_visible="true"
   left="1"
