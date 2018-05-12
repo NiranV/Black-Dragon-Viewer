@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.1.0 - Rolling Dragon]"
+       label="[CHANNEL] [VERSION] - [3.1.1 - Rolling Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="6325"
+       height="6605"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,8 +174,67 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="298"
+              height="259"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Big posing sliders to use whenever position is not used for greater accuracy.
+Added: Menu button to Avatar Render Settings to change all selected avatars.
+Changed: Hide changelogs by default.
+Changed: Poser to Version 7.0.
+Changed: How the poser rotates bones and how sliders interact with the rotations, rotations should be consistent now.
+Changed: Default bone rotation interpolation time to be a tad shorter to make rotating snappier.
+Changed: Disabled the entire custom sidebar feature for now.
+Changed: Loginscreen video to the new improved, longer and less creepier version.
+Changed: Allow Avatar Render Settings to be mass changed.
+Changed: Set minimum particle amount to 8 to prevent sky/water glitches for now.
+Changed: Several none/invalid strings to start capitalized for consistency.
+Changed: Make background of scrolllists invisible by default.
+Changed: Version to 3.1.1.
+Fixed: Animator scrolllist using invisible entries and not updating the layout resulting in a scrollbar when it isn't needed.
+Fixed: Motion scrolllist using invisible entries and not updating the layout resulting in a scrollbar when it isn't needed.
+Fixed: Initial bone rotation interpolation not working until we reset the pose or load one.
+Fixed: Missing extra code parts in class 1 deferred shaders.
+Fixed: Minimal layout inconsistencies in display preferences.
+Removed: Old and new posing style differentiations.
+Removed: Rotation order dropdown and all code.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.1.0
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="298"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
