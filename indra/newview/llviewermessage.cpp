@@ -1988,30 +1988,6 @@ void LLOfferInfo::initRespondFunctionMap()
 	}
 }
 
-// [SL:KB] - Patch: UI-Notifications | Checked: 2011-04-11 (Catznip-2.5.0a) | Added: Catznip-2.5.0a
-		args["NAME_LABEL"] = LLSLURL("agent", info->mFromID, "completename").getSLURLString();
-// [/SL:KB]
-// [RLVa:KB] - Checked: RLVa-1.2.2
-		// Only filter if the object owner is a nearby agent
-		if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, info->mFromID)) && (RlvUtil::isNearbyAgent(info->mFromID)) )
-		{
-			payload["rlv_shownames"] = TRUE;
-			args["NAME_SLURL"] = LLSLURL("agent", info->mFromID, "rlvanonym").getSLURLString();
-		}
-// [/RLVa:KB]
-
-// [RLVa:KB] - Checked: RLVa-2.0.1
-		// Only filter if the offer is from a nearby agent and if there's no open IM session (doesn't necessarily have to be focused)
-		bool fRlvCanShowName = (!RlvActions::isRlvEnabled()) ||
-			(RlvActions::canShowName(RlvActions::SNC_DEFAULT, info->mFromID)) || (!RlvUtil::isNearbyAgent(info->mFromID)) || (RlvUIEnabler::hasOpenIM(info->mFromID)) || (RlvUIEnabler::hasOpenProfile(info->mFromID));
-		if (!fRlvCanShowName)
-		{
-			payload["rlv_shownames"] = TRUE;
-			args["NAME"] = RlvStrings::getAnonym(info->mFromName);
-			args["NAME_SLURL"] = LLSLURL("agent", info->mFromID, "rlvanonym").getSLURLString();
-		}
-// [/RLVa:KB]
-
 bool lure_callback(const LLSD& notification, const LLSD& response)
 {
 	S32 option = 0;
@@ -2186,7 +2162,17 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
         from_group,
         to_id,
         offline,
-
+		dialog,
+		session_id,
+		timestamp,
+		agentName,
+		message,
+		parent_estate_id,
+		region_id,
+		position,
+		binary_bucket,
+		binary_bucket_size,
+		sender);
 }
 
 void send_do_not_disturb_message (LLMessageSystem* msg, const LLUUID& from_id, const LLUUID& session_id)
