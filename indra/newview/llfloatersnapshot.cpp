@@ -53,7 +53,7 @@
 ///----------------------------------------------------------------------------
 LLSnapshotFloaterView* gSnapshotFloaterView = NULL;
 
-const S32 MAX_POSTCARD_DATASIZE = 1024 * 1024; // one megabyte
+const S32 MAX_POSTCARD_DATASIZE = 1572864; // 1.5 megabyte, similar to simulator limit
 const S32 MAX_TEXTURE_SIZE = 512 ; //max upload texture size 512 * 512
 
 static LLDefaultChildRegistry::Register<LLSnapshotFloaterView> r("snapshot_floater_view");
@@ -1200,6 +1200,11 @@ S32 LLFloaterSnapshot::notify(const LLSD& info)
 	}
     
 	return 0;
+}
+
+BOOL LLFloaterSnapshot::isWaitingState()
+{
+	return (impl->getStatus() == ImplBase::STATUS_WORKING);
 }
 
 BOOL LLFloaterSnapshotBase::ImplBase::updatePreviewList(bool initialized)

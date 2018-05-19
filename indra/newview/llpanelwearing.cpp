@@ -362,7 +362,11 @@ bool LLPanelWearing::isActionEnabled(const LLSD& userdata)
 		}
 		else
 		{
-			return mTempItemsList->hasSelectedItem();
+			LLScrollListItem* item = mTempItemsList->getFirstSelected();
+			if (item && item->getUUID().notNull())
+			{
+				return true;
+			}
 		}
 	}
 
@@ -544,7 +548,7 @@ void LLPanelWearing::onEditAttachment()
 void LLPanelWearing::onRemoveAttachment()
 {
 	LLScrollListItem* item = mTempItemsList->getFirstSelected();
-	if (item)
+	if (item && item->getUUID().notNull())
 	{
 		LLSelectMgr::getInstance()->deselectAll();
 		LLSelectMgr::getInstance()->selectObjectAndFamily(mAttachmentsMap[item->getUUID()]);
