@@ -501,7 +501,7 @@ void main()
    // screen-space cheapish fakey reflection map
    vec3 refnorm = normalize(reflect(vec3(0,0,-1), norm.xyz));
    depth -= 0.5; // unbias depth
-   vec2 orig_ref2d = (norm.xy);// * (1.0- depth);
+   vec2 orig_ref2d = (norm.xy) * (1.0- depth);
    
    // Offset the guess source a little according to a trivial
    // checkerboard dither function and spec.a.
@@ -592,7 +592,7 @@ void main()
     best_refshad /= use_refapprop;
     best_refcol /= use_refapprop * 2.0; // div2 cos we'll be doubled again
     bloomdamp /= use_refapprop;
-    best_refapprop = 1.0;//use_refapprop;//1.0;//min(1.0, total_refapprop);
+    best_refapprop = min(1.0, use_refapprop);
    }
    else
    {
