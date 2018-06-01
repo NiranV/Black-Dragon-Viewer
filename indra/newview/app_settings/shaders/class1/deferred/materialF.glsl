@@ -506,7 +506,7 @@ float pcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen, float shad
 
 void main() 
 {
-	vec2 pos_screen = vary_fragcoord.xy;
+	vec2 pos_screen = vary_texcoord0.xy;
 	vec4 diffcol = texture2D(diffuseMap, vary_texcoord0.xy);
 	diffcol.rgb *= vertex_color.rgb;
 
