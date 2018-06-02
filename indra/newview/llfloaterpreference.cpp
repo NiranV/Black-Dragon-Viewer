@@ -2236,11 +2236,8 @@ void LLFloaterPreference::refreshEnabledGraphics()
 {
 	//BD - Check which GPU we have and according to the GPU allow us to toggle options.
 	
-	//BD - Only NVIDIA and AMD get to use ANY of the gragphics features beyond vertex shaders.
-	//     Keep everything disabled if we detect an Intel GPU. Intel can't run our Deferred
-	//     no matter which GPU.
-	//     This is a temporary solution until we can find out what the issue with Deferred and
-	//     Intel GPU's is.
+	//BD - If we detect an Intel GPU, display a warning that this will negatively impact
+	//     performance and not all features might be usable depending on the GPU.
 	bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsATI);
 
 	//BD - Viewer Options
@@ -2251,6 +2248,7 @@ void LLFloaterPreference::refreshEnabledGraphics()
 
 	getChild<LLUICtrl>("warning_multi_panel")->setVisible(!is_good_gpu);
 
+	/*
 	//BD - Deferred Rendering
 	getChild<LLUICtrl>("deferred_layout")->setEnabled(is_good_gpu);
 	getChild<LLUICtrl>("deferred_layout_panel")->setEnabled(is_good_gpu);
@@ -2275,6 +2273,7 @@ void LLFloaterPreference::refreshEnabledGraphics()
 	//BD - Vignette
 	getChild<LLUICtrl>("vignette_layout")->setEnabled(is_good_gpu);
 	getChild<LLUICtrl>("vignette_layout_panel")->setEnabled(is_good_gpu);
+	*/
 }
 
 void LLFloaterPreference::onClickClearCache()
