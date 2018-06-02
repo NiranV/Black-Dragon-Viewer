@@ -16,7 +16,7 @@
 
 #include "llviewerprecompiledheaders.h"
 
-#include "bdfloateranimations.h"
+#include "bdfloaterposer.h"
 #include "lluictrlfactory.h"
 #include "llagent.h"
 #include "llappearance.h"
@@ -49,7 +49,7 @@
 
 #include "bdposingmotion.h"
 
-BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
+BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 	:	LLFloater(key)
 {
 	//BD - This is the global command from which on we decide what to do. We had them all separately before.
@@ -61,45 +61,45 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	//     "Load" - Copy a motion to a selected avatar and make it play it.
 	//     "Remove" - Remove all selected motions from our list.
 	//     "Create" - Create a new motion via a given UUID.
-	mCommitCallbackRegistrar.add("Motion.Command", boost::bind(&BDFloaterAnimations::onMotionCommand, this, _1, _2));
+	mCommitCallbackRegistrar.add("Motion.Command", boost::bind(&BDFloaterPoser::onMotionCommand, this, _1, _2));
 
 	//BD - Refresh the avatar list.
-	mCommitCallbackRegistrar.add("Motion.Refresh", boost::bind(&BDFloaterAnimations::onMotionRefresh, this));
+	mCommitCallbackRegistrar.add("Motion.Refresh", boost::bind(&BDFloaterPoser::onMotionRefresh, this));
 
 	//BD - Save our current pose into a XML file to import it later or use it for creating an animation.
-	mCommitCallbackRegistrar.add("Pose.Save", boost::bind(&BDFloaterAnimations::onClickPoseSave, this));
+	//mCommitCallbackRegistrar.add("Pose.Save", boost::bind(&BDFloaterPoser::onClickPoseSave, this));
 	//BD - Start our custom pose.
-	mCommitCallbackRegistrar.add("Pose.Start", boost::bind(&BDFloaterAnimations::onPoseStart, this));
+	//mCommitCallbackRegistrar.add("Pose.Start", boost::bind(&BDFloaterPoser::onPoseStart, this));
 	//BD - Load the current pose and export all its values into the UI so we can alter them.
-	mCommitCallbackRegistrar.add("Pose.Load", boost::bind(&BDFloaterAnimations::onPoseLoad, this, ""));
+	mCommitCallbackRegistrar.add("Pose.Load", boost::bind(&BDFloaterPoser::onPoseLoad, this, ""));
 	//BD - Delete the currently selected Pose.
-	mCommitCallbackRegistrar.add("Pose.Delete", boost::bind(&BDFloaterAnimations::onPoseDelete, this));
+	mCommitCallbackRegistrar.add("Pose.Delete", boost::bind(&BDFloaterPoser::onPoseDelete, this));
 	//BD - Change a pose's blend type and time.
-	mCommitCallbackRegistrar.add("Pose.Set", boost::bind(&BDFloaterAnimations::onPoseSet, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pose.Set", boost::bind(&BDFloaterPoser::onPoseSet, this, _1, _2));
 
 	//BD - Change a bone's rotation.
-	mCommitCallbackRegistrar.add("Joint.Set", boost::bind(&BDFloaterAnimations::onJointSet, this, _1, _2));
+	//mCommitCallbackRegistrar.add("Joint.Set", boost::bind(&BDFloaterPoser::onJointSet, this, _1, _2));
 	//BD - Change a bone's position (specifically the mPelvis bone).
-	mCommitCallbackRegistrar.add("Joint.PosSet", boost::bind(&BDFloaterAnimations::onJointPosSet, this, _1, _2));
+	//mCommitCallbackRegistrar.add("Joint.PosSet", boost::bind(&BDFloaterPoser::onJointPosSet, this, _1, _2));
 	//BD - Add or remove a joint state to or from the pose (enable/disable our overrides).
-	mCommitCallbackRegistrar.add("Joint.ChangeState", boost::bind(&BDFloaterAnimations::onJointChangeState, this));
+	//mCommitCallbackRegistrar.add("Joint.ChangeState", boost::bind(&BDFloaterPoser::onJointChangeState, this));
 	//BD - Reset all selected bones back to 0,0,0.
-	mCommitCallbackRegistrar.add("Joint.ResetJoint", boost::bind(&BDFloaterAnimations::onJointReset, this));
+	//mCommitCallbackRegistrar.add("Joint.ResetJoint", boost::bind(&BDFloaterPoser::onJointReset, this));
 
 	//BD - Add a new entry to the animation creator.
-	mCommitCallbackRegistrar.add("Anim.Add", boost::bind(&BDFloaterAnimations::onAnimAdd, this, _2));
+	mCommitCallbackRegistrar.add("Anim.Add", boost::bind(&BDFloaterPoser::onAnimAdd, this, _2));
 	//BD - Move the selected entry one row up.
-	mCommitCallbackRegistrar.add("Anim.Move", boost::bind(&BDFloaterAnimations::onAnimMove, this, _2));
+	mCommitCallbackRegistrar.add("Anim.Move", boost::bind(&BDFloaterPoser::onAnimMove, this, _2));
 	//BD - Remove an entry in the animation creator.
-	mCommitCallbackRegistrar.add("Anim.Delete", boost::bind(&BDFloaterAnimations::onAnimDelete, this));
+	mCommitCallbackRegistrar.add("Anim.Delete", boost::bind(&BDFloaterPoser::onAnimDelete, this));
 	//BD - Save the currently build list as animation.
-	mCommitCallbackRegistrar.add("Anim.Save", boost::bind(&BDFloaterAnimations::onAnimSave, this));
+	mCommitCallbackRegistrar.add("Anim.Save", boost::bind(&BDFloaterPoser::onAnimSave, this));
 	//BD - Play the current animator queue.
-	mCommitCallbackRegistrar.add("Anim.Play", boost::bind(&BDFloaterAnimations::onAnimPlay, this));
+	mCommitCallbackRegistrar.add("Anim.Play", boost::bind(&BDFloaterPoser::onAnimPlay, this));
 	//BD - Stop the current animator queue.
-	mCommitCallbackRegistrar.add("Anim.Stop", boost::bind(&BDFloaterAnimations::onAnimStop, this));
+	mCommitCallbackRegistrar.add("Anim.Stop", boost::bind(&BDFloaterPoser::onAnimStop, this));
 	//BD - Change the value for a wait entry.
-	mCommitCallbackRegistrar.add("Anim.Set", boost::bind(&BDFloaterAnimations::onAnimSet, this));
+	mCommitCallbackRegistrar.add("Anim.Set", boost::bind(&BDFloaterPoser::onAnimSet, this));
 
 //	//BD - Array Debugs
 	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
@@ -107,11 +107,11 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, _1, _2));
 }
 
-BDFloaterAnimations::~BDFloaterAnimations()
+BDFloaterPoser::~BDFloaterPoser()
 {
 }
 
-BOOL BDFloaterAnimations::postBuild()
+BOOL BDFloaterPoser::postBuild()
 {
 	//BD - Motions
 	mAvatarScroll = getChild<LLScrollListCtrl>("other_avatars_scroll");
@@ -120,34 +120,37 @@ BOOL BDFloaterAnimations::postBuild()
 	//BD - Posing
 	mPoseScroll = this->getChild<LLScrollListCtrl>("poses_scroll", true);
 	mPoseScroll->setCommitOnSelectionChange(TRUE);
-	mPoseScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onPoseControlsRefresh, this));
-	mPoseScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onPoseLoad, this, ""));
-	mJointsScroll = this->getChild<LLScrollListCtrl>("joints_scroll", true);
-	mJointsScroll->setCommitOnSelectionChange(TRUE);
-	mJointsScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onJointControlsRefresh, this));
-	mJointsScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onJointChangeState, this));
+	mPoseScroll->setCommitCallback(boost::bind(&BDFloaterPoser::onPoseControlsRefresh, this));
+	mPoseScroll->setDoubleClickCallback(boost::bind(&BDFloaterPoser::onPoseLoad, this, ""));
+	//mJointsScroll = this->getChild<LLScrollListCtrl>("joints_scroll", true);
+	//mJointsScroll->setCommitOnSelectionChange(TRUE);
+	//mJointsScroll->setCommitCallback(boost::bind(&BDFloaterPoser::onJointControlsRefresh, this));
+	//mJointsScroll->setDoubleClickCallback(boost::bind(&BDFloaterPoser::onJointChangeState, this));
 
-	mRotX = getChild<LLUICtrl>("Rotation_X");
-	mRotY = getChild<LLUICtrl>("Rotation_Y");
-	mRotZ = getChild<LLUICtrl>("Rotation_Z");
+	mAvatarTabs = this->getChild<LLTabContainer>("avatar_tabs", true);
+	//mAvatarTabs->setCommitCallback(boost::bind(&BDFloaterPoser::onAvatarControlsRefresh, this));
 
-	mRotXBig = getChild<LLUICtrl>("Rotation_X_Big");
-	mRotYBig = getChild<LLUICtrl>("Rotation_Y_Big");
-	mRotZBig = getChild<LLUICtrl>("Rotation_Z_Big");
+	//mRotX = getChild<LLUICtrl>("Rotation_X");
+	//mRotY = getChild<LLUICtrl>("Rotation_Y");
+	//mRotZ = getChild<LLUICtrl>("Rotation_Z");
 
-	mPosX = getChild<LLUICtrl>("Position_X");
-	mPosY = getChild<LLUICtrl>("Position_Y");
-	mPosZ = getChild<LLUICtrl>("Position_Z");
+	//mRotXBig = getChild<LLUICtrl>("Rotation_X_Big");
+	//mRotYBig = getChild<LLUICtrl>("Rotation_Y_Big");
+	//mRotZBig = getChild<LLUICtrl>("Rotation_Z_Big");
+
+	//mPosX = getChild<LLUICtrl>("Position_X");
+	//mPosY = getChild<LLUICtrl>("Position_Y");
+	//mPosZ = getChild<LLUICtrl>("Position_Z");
 
 	//BD - Animations
 	mAnimEditorScroll = this->getChild<LLScrollListCtrl>("anim_editor_scroll", true);
-	mAnimEditorScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onAnimControlsRefresh, this));
+	mAnimEditorScroll->setCommitCallback(boost::bind(&BDFloaterPoser::onAnimControlsRefresh, this));
 	mAnimScrollIndex = 0;
 
 	return TRUE;
 }
 
-void BDFloaterAnimations::draw()
+void BDFloaterPoser::draw()
 {
 	//BD - This only works while the window is visible, hiding the UI will stop it.
 	if (mAnimPlayTimer.getStarted() &&
@@ -191,28 +194,30 @@ void BDFloaterAnimations::draw()
 	LLFloater::draw();
 }
 
-void BDFloaterAnimations::onOpen(const LLSD& key)
+void BDFloaterPoser::onOpen(const LLSD& key)
 {
 	//BD - Make these trigger only when opening the actual tab.
 	onMotionRefresh();
-	onJointRefresh();
+	//onJointRefresh();
+	onAvatarTabsRefresh();
 	onPoseRefresh();
 }
 
-void BDFloaterAnimations::onClose(bool app_quitting)
+void BDFloaterPoser::onClose(bool app_quitting)
 {
 	//BD - Doesn't matter because we destroy the window and rebuild it every time we open it anyway.
 	mAvatarScroll->clearRows();
 	mMotionScroll->clearRows();
-	mJointsScroll->clearRows();
+	//mJointsScroll->clearRows();
 }
 
 ////////////////////////////////
 //BD - Motions
 ////////////////////////////////
-void BDFloaterAnimations::onMotionRefresh()
+void BDFloaterPoser::onMotionRefresh()
 {
-	//BD - Flag all items first, we're going to unflag them when they are valid.
+	LLAvatarTracker& at = LLAvatarTracker::instance();
+	//BD - First lets go through all things that need updating, if any.
 	std::vector<LLScrollListItem*> items = mAvatarScroll->getAllData();
 	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
 		it != items.end(); ++it)
@@ -220,27 +225,18 @@ void BDFloaterAnimations::onMotionRefresh()
 		LLScrollListItem* item = (*it);
 		if (item)
 		{
+			//BD - Flag all items for removal by default.
 			item->setFlagged(TRUE);
-		}
-	}
 
-	bool create_new;
-	LLAvatarTracker& at = LLAvatarTracker::instance();
-	for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
-		iter != LLCharacter::sInstances.end(); ++iter)
-	{
-		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*iter);
-		if (avatar)
-		{
-			LLUUID uuid = avatar->getID();
-			create_new = true;
-			std::vector<LLScrollListItem*> items = mAvatarScroll->getAllData();
-			for (std::vector<LLScrollListItem*>::iterator it = items.begin();
-				it != items.end(); ++it)
+			//BD - Now lets check our list against all current avatars.
+			for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+				iter != LLCharacter::sInstances.end(); ++iter)
 			{
-				LLScrollListItem* item = (*it);
-				if (avatar == item->getUserdata())
+				LLCharacter* character = (*iter);
+				//BD - Check if the character is valid and if its the same.
+				if (character && character == item->getUserdata())
 				{
+					//BD - Remove the removal flag, we're updating it.
 					item->setFlagged(FALSE);
 
 					//BD - When we refresh it might happen that we don't have a name for someone
@@ -251,59 +247,28 @@ void BDFloaterAnimations::onMotionRefresh()
 					if (item->getColumn(0)->getValue().asString().empty())
 					{
 						LLAvatarName av_name;
-						LLAvatarNameCache::get(uuid, &av_name);
-						item->getColumn(0)->setValue(av_name.getDisplayName());
+						LLAvatarNameCache::get(character->getID(), &av_name);
+						item->getColumn(0)->setValue(av_name.asLLSD());
 					}
 
 					//BD - Show if we got the permission to animate them and save their motions.
+					//     Todo: Don't do anything if permissions didn't change.
 					std::string str = "-";
-					const LLRelationship* relation = at.getBuddyInfo(uuid);
+					const LLRelationship* relation = at.getBuddyInfo(character->getID());
 					if (relation)
 					{
 						str = relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "Yes" : "No";
 					}
 					else
 					{
-						str = uuid == gAgentID ? "Yes" : "-";
+						str = character->getID() == gAgentID ? "Yes" : "-";
 					}
 					item->getColumn(3)->setValue(str);
 
-					F32 value = avatar->getMotionController().getTimeFactor();
+					F32 value = character->getMotionController().getTimeFactor();
 					item->getColumn(2)->setValue(value);
-					create_new = false;
 					break;
 				}
-			}
-
-			if (create_new)
-			{
-				F32 value = avatar->getMotionController().getTimeFactor();
-				LLAvatarName av_name;
-				LLAvatarNameCache::get(uuid, &av_name);
-				const LLRelationship* relation = at.getBuddyInfo(uuid);
-
-				std::string str = "-";
-				if (relation)
-				{
-					str = relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "Yes" : "No";
-				}
-				else
-				{
-					str = uuid == gAgentID ? "Yes" : "-";
-				}
-
-				LLSD row;
-				row["columns"][0]["column"] = "name";
-				row["columns"][0]["value"] = av_name.getDisplayName();
-				row["columns"][1]["column"] = "uuid";
-				row["columns"][1]["value"] = uuid.asString();
-				row["columns"][2]["column"] = "value";
-				row["columns"][2]["value"] = value;
-				//BD - Show if we got the permission to animate them and save their motions.
-				row["columns"][3]["column"] = "permission";
-				row["columns"][3]["value"] = str;
-				LLScrollListItem* element = mAvatarScroll->addElement(row);
-				element->setUserdata(avatar);
 			}
 		}
 	}
@@ -311,11 +276,67 @@ void BDFloaterAnimations::onMotionRefresh()
 	//BD - Now safely delete all items so we can start adding the missing ones.
 	mAvatarScroll->deleteFlaggedItems();
 
+	//BD - Now lets do it the other way around and look for new things to add.
+	items = mAvatarScroll->getAllData();
+	for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+		iter != LLCharacter::sInstances.end(); ++iter)
+	{
+		LLCharacter* character = (*iter);
+		if (character)
+		{
+			LLUUID uuid = character->getID();
+			bool skip = false;
+
+			for (std::vector<LLScrollListItem*>::iterator it = items.begin();
+				it != items.end(); ++it)
+			{
+				if ((*it)->getColumn(1)->getValue().asString() == uuid.asString())
+				{
+					skip = true;
+					break;
+				}
+			}
+
+			if (skip)
+			{
+				continue;
+			}
+
+			F32 value = character->getMotionController().getTimeFactor();
+			LLAvatarName av_name;
+			LLAvatarNameCache::get(uuid, &av_name);
+			const LLRelationship* relation = at.getBuddyInfo(uuid);
+
+			std::string str = "-";
+			if (relation)
+			{
+				str = relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "Yes" : "No";
+			}
+			else
+			{
+				str = uuid == gAgentID ? "Yes" : "-";
+			}
+
+			LLSD row;
+			row["columns"][0]["column"] = "name";
+			row["columns"][0]["value"] = av_name.getDisplayName();
+			row["columns"][1]["column"] = "uuid";
+			row["columns"][1]["value"] = uuid.asString();
+			row["columns"][2]["column"] = "value";
+			row["columns"][2]["value"] = value;
+			//BD - Show if we got the permission to animate them and save their motions.
+			row["columns"][3]["column"] = "permission";
+			row["columns"][3]["value"] = str;
+			LLScrollListItem* element = mAvatarScroll->addElement(row);
+			element->setUserdata(character);
+		}
+	}
+
 	//BD - Make sure we don't have a scrollbar unless we need it.
 	mAvatarScroll->updateLayout();
 }
 
-void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
+void BDFloaterPoser::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 {
 	if (!param.asString().empty())
 	{
@@ -326,51 +347,64 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 			item != items.end(); ++item)
 		{
 			LLScrollListItem* element = (*item);
-			LLVOAvatar* avatar = (LLVOAvatar*)element->getUserdata();
+			LLCharacter* character = (LLCharacter*)element->getUserdata();
+			
+			//BD - Check if our selected characters are still on the SIM.
+			bool is_valid = false;
+			for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+				iter != LLCharacter::sInstances.end(); ++iter)
+			{
+				LLCharacter* character2 = (*iter);
+				if (character == character2)
+				{
+					is_valid = true;
+					break;
+				}
+			}
 
-			if (!avatar->isDead())
+			if (character && is_valid)
 			{
 				if (param.asString() == "Freeze")
 				{
-					if (avatar->getMotionController().isPaused())
+					if (character->getMotionController().isPaused())
 					{
-						avatar->getMotionController().unpauseAllMotions();
+						character->getMotionController().unpauseAllMotions();
 					}
 					else
 					{
-						mAvatarPauseHandles.push_back(avatar->requestPause());
+						mAvatarPauseHandles.push_back(character->requestPause());
 					}
 				}
 				else if (param.asString() == "Set")
 				{
-					avatar->getMotionController().setTimeFactor(getChild<LLUICtrl>("anim_factor")->getValue().asReal());
+					character->getMotionController().setTimeFactor(getChild<LLUICtrl>("anim_factor")->getValue().asReal());
 					onMotionRefresh();
 				}
 				else if (param.asString() == "Restart")
 				{
-					LLMotionController::motion_list_t motions = avatar->getMotionController().getActiveMotions();
+					LLMotionController::motion_list_t motions = character->getMotionController().getActiveMotions();
 					for (LLMotionController::motion_list_t::iterator it = motions.begin();
 						it != motions.end(); ++it)
 					{
-						LLKeyframeMotion* motion = (LLKeyframeMotion*)*it;
+						LLMotion* motion = *it;
 						if (motion)
 						{
 							LLUUID motion_id = motion->getID();
-							avatar->stopMotion(motion_id, 1);
-							avatar->startMotion(motion_id, 0.0f);
+							character->stopMotion(motion_id, 1);
+							character->startMotion(motion_id, 0.0f);
 						}
 					}
 				}
 				else if (param.asString() == "Stop")
 				{
 					//BD - Special case to prevent the posing animation from becoming stuck.
-					if (avatar->getID() == gAgentID)
+					if (character->getID() == gAgentID)
 					{
 						gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
 						gAgent.clearPosing();
 					}
 
-					avatar->deactivateAllMotions();
+					character->deactivateAllMotions();
 				}
 				else if (param.asString() == "Remove")
 				{
@@ -383,21 +417,22 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 				{
 					LLAvatarTracker& at = LLAvatarTracker::instance();
 					//BD - Only allow saving motions whose object mod rights we have.
-					const LLRelationship* relation = at.getBuddyInfo(avatar->getID());
+					const LLRelationship* relation = at.getBuddyInfo(character->getID());
 					if (relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS)
-						|| avatar->getID() == gAgentID)
+						|| character->getID() == gAgentID)
 					{
-						LLMotionController::motion_list_t motions = avatar->getMotionController().getActiveMotions();
+						LLMotionController::motion_list_t motions = character->getMotionController().getActiveMotions();
 						for (LLMotionController::motion_list_t::iterator it = motions.begin();
 							it != motions.end(); ++it)
 						{
-							LLKeyframeMotion* motion = (LLKeyframeMotion*)*it;
+							LLMotion* motion = *it;
+							//LLKeyframeMotion* kf_motion = (LLKeyframeMotion*)*it;
 							if (motion)
 							{
 								LLUUID motion_id = motion->getID();
 								LLSD row;
 								LLAvatarName av_name;
-								LLAvatarNameCache::get(avatar->getID(), &av_name);
+								LLAvatarNameCache::get(character->getID(), &av_name);
 								row["columns"][0]["column"] = "name";
 								row["columns"][0]["value"] = av_name.getDisplayName();
 								row["columns"][1]["column"] = "uuid";
@@ -444,6 +479,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 					//	|| character->getID() == gAgentID)
 					//if (character->getID() == gAgentID)
 					//{
+						
 						//BD - Only allow animating ourselves, as per Oz Linden.
 						LLScrollListItem* item = mMotionScroll->getFirstSelected();
 						if (item)
@@ -556,7 +592,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 ////////////////////////////////
 //BD - Poses
 ////////////////////////////////
-void BDFloaterAnimations::onPoseRefresh()
+void BDFloaterPoser::onPoseRefresh()
 {
 	mPoseScroll->clearRows();
 	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses", "");
@@ -597,10 +633,10 @@ void BDFloaterAnimations::onPoseRefresh()
 			mPoseScroll->addElement(row);
 		}
 	}
-	onJointControlsRefresh();
+	//onJointControlsRefresh();
 }
 
-void BDFloaterAnimations::onPoseControlsRefresh()
+void BDFloaterPoser::onPoseControlsRefresh()
 {
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
 	if (item)
@@ -619,13 +655,13 @@ void BDFloaterAnimations::onPoseControlsRefresh()
 	}
 }
 
-void BDFloaterAnimations::onClickPoseSave()
+void BDFloaterPoser::onClickPoseSave()
 {
 	//BD - Values don't matter when not editing.
 	onPoseSave(2, 0.1f, false);
 }
 
-BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
+BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 {
 	//BD - First and foremost before we do anything, check if the folder exists.
 	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses");
@@ -717,18 +753,30 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 			LLVector3 vec3;
 			LLScrollListItem* element = *item;
 			LLJoint* joint = (LLJoint*)element->getUserdata();
-			if (joint)
+			//BD - Ohoh, don't write bogus bones into the file, when we load them
+			//     we'll somehow end up "injecting" them into the chain which will
+			//     break said bone until relog. "mHindLimb4Right" Does this a lot.
+			//     No idea if it's a bug with something i did or simply a broken bone.
+			//     I have to assume that it's a bone breaking upon loading somehow
+			//     as the floater only writes into the file what is given by the Viewer
+			//     so the Viewer has to have a broken bone and give its broken name to us
+			//     before we can even write a broken name. Now how does "mHindLimb4Right"
+			//     end up being broken in the first place?
+			if (joint && gAgentAvatarp->getJoint(joint->getName()))
 			{
 				record[line]["bone"] = joint->getName();
 				joint->getTargetRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
+				//vec3.mV[VX] = (*item)->getColumn(1)->getValue().asReal();
+				//vec3.mV[VY] = (*item)->getColumn(2)->getValue().asReal();
+				//vec3.mV[VZ] = (*item)->getColumn(3)->getValue().asReal();
 				record[line]["rotation"] = vec3.getValue();
 
 				//BD - Pelvis is a special case, add position values too.
 				if (joint->getName() == "mPelvis")
 				{
-					vec3.mV[VX] = (*item)->getColumn(5)->getValue().asReal();
-					vec3.mV[VY] = (*item)->getColumn(6)->getValue().asReal();
-					vec3.mV[VZ] = (*item)->getColumn(7)->getValue().asReal();
+					vec3.mV[VX] = (*item)->getColumn(4)->getValue().asReal();
+					vec3.mV[VY] = (*item)->getColumn(5)->getValue().asReal();
+					vec3.mV[VZ] = (*item)->getColumn(6)->getValue().asReal();
 					record[line]["position"] = vec3.getValue();
 				}
 
@@ -771,7 +819,7 @@ BOOL BDFloaterAnimations::onPoseSave(S32 type, F32 time, bool editing)
 	return TRUE;
 }
 
-BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
+BOOL BDFloaterPoser::onPoseLoad(const LLSD& name)
 {
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
 	std::string filename;
@@ -870,42 +918,60 @@ BOOL BDFloaterAnimations::onPoseLoad(const LLSD& name)
 		}
 	}
 	infile.close();
-	onJointRefresh();
+	//onJointRefresh();
 	return TRUE;
 }
 
-void BDFloaterAnimations::onPoseStart()
+void BDFloaterPoser::onPoseStart(LLVOAvatar* character)
 {
-	BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-	if (!motion || motion->isStopped())
+	if (!character->isDead())
 	{
-		//BD - Pause all other motions and prevent them from interrupting us even
-		//     if they technically shouldn't be able to anyway.
-		gAgentAvatarp->getMotionController().pauseAllMotions();
+		BDPosingMotion* pose_motion = (BDPosingMotion*)character->findMotion(ANIM_BD_POSING_MOTION);
+		if (!pose_motion)
+		{
+			//BD - Pause all other motions and prevent them from interrupting us even
+			//     if they technically shouldn't be able to anyway.
+			character->getMotionController().pauseAllMotions();
 
-		gAgent.setPosing();
-		gAgent.stopFidget();
-		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
-	}
-	else
-	{
-		//BD - Reset all bones to make sure that those that are not going to be animated
-		//     after posing are back in their correct default state.
-		mJointsScroll->selectAll();
-		onJointReset();
-		mJointsScroll->deselectAllItems();
+			character->setPosing();
+			//if (avatar->isSelf())
+			//	avatar->stopFidget();
+			character->startMotion(ANIM_BD_POSING_MOTION);
+			//LL_WARNS("Posing") << "Starting motion: " << pose_motion->getID() << LL_ENDL;
+		}
+		else if (pose_motion->isStopped())
+		{
+			//BD - Pause all other motions and prevent them from interrupting us even
+			//     if they technically shouldn't be able to anyway.
+			character->getMotionController().pauseAllMotions();
 
-		//BD - Unpause all other motions that we paused to prevent them overriding
-		//     our Poser.
-		gAgentAvatarp->getMotionController().unpauseAllMotions();
-		gAgent.clearPosing();
-		gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
+			character->setPosing();
+			//if (avatar->isSelf())
+			//	avatar->stopFidget();
+			character->startMotion(ANIM_BD_POSING_MOTION);
+			LL_WARNS("Posing") << "Starting motion: " << pose_motion->getID() << LL_ENDL;
+		}
+		else
+		{
+			//BD - Reset all bones to make sure that those that are not going to be animated
+			//     after posing are back in their correct default state.
+			mJointsScroll->selectAll();
+			onJointReset(character);
+			mJointsScroll->deselectAllItems();
+
+			//BD - Unpause all other motions that we paused to prevent them overriding
+			//     our Poser.
+			character->getMotionController().unpauseAllMotions();
+			character->clearPosing();
+			character->stopMotion(ANIM_BD_POSING_MOTION);
+			LL_WARNS("Posing") << "Stopping motion: " << pose_motion->getID() << LL_ENDL;
+		}
+		//BD - Wipe the joint list.
+		onJointRefresh(character);
 	}
-	//BD - Wipe the joint list.
-	onJointRefresh();
 }
 
-void BDFloaterAnimations::onPoseDelete()
+void BDFloaterPoser::onPoseDelete()
 {
 	std::vector<LLScrollListItem*> items = mPoseScroll->getAllSelected();
 	for (std::vector<LLScrollListItem*>::iterator iter = items.begin();
@@ -926,7 +992,7 @@ void BDFloaterAnimations::onPoseDelete()
 	onPoseRefresh();
 }
 
-void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
+void BDFloaterPoser::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 {
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
 	if (item)
@@ -941,7 +1007,7 @@ void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 			type = column->getValue().asInteger();
 			column->setValue(time);
 		}
-		else
+		else // if (param.asString() == "type")
 		{
 			LLScrollListCell* column = item->getColumn(1);
 			time = column->getValue().asReal();
@@ -956,136 +1022,114 @@ void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 ////////////////////////////////
 //BD - Joints
 ////////////////////////////////
-void BDFloaterAnimations::onJointRefresh()
+void BDFloaterPoser::onJointRefresh(LLVOAvatar* character)
 {
-	mJointsScroll->clearRows();
-	S32 i = 0;
-	for (;; i++)
+	if (!character->isDead())
 	{
-		LLJoint* joint = gAgentAvatarp->getCharacterJoint(i);
-		if (joint)
+		mJointsScroll->clearRows();
+		S32 i = 0;
+		for (;; i++)
 		{
-			LLSD row;
-			//BD - Show some categories to make it a bit easier finding out which
-			//     bone belongs where and what they might be for those who can't use
-			//     bone names.
-			std::string name = joint->getName();
-			if (name == "mPelvis" ||
-				name == "mHead" ||
-				name == "mCollarLeft" ||
-				name == "mCollarRight" ||
-				name == "mWingsRoot" ||
-				name == "mHipLeft" ||
-				name == "mHipRight" ||
-				name == "mTail1" ||
-				name == "mGroin")
+			LLJoint* joint = character->getCharacterJoint(i);
+			if (joint)
 			{
-				row["columns"][0]["column"] = "icon";
-				row["columns"][0]["type"] = "icon";
-				row["columns"][0]["value"] = getString("icon_category");
-				row["columns"][1]["column"] = "joint";
-				row["columns"][1]["value"] = getString("title_" + name);
-				LLScrollListItem* item = mJointsScroll->addElement(row);
-				((LLScrollListText*)item->getColumn(1))->setFontStyle(LLFontGL::BOLD);
-			}
+				LLVector3 vec3;
+				LLSD row;
 
-			LLVector3 vec3;
-
-			//BD - When posing get the target values otherwise we end up getting the in-interpolation values.
-			if (gAgent.getPosing())
-			{
-				joint->getTargetRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
-			}
-			else
-			{
-				joint->getRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
-			}
-
-			row["columns"][0]["column"] = "icon";
-			row["columns"][0]["type"] = "icon";
-			row["columns"][0]["value"] = getString("icon_bone");
-			row["columns"][1]["column"] = "joint";
-			row["columns"][1]["value"] = joint->getName();
-			row["columns"][2]["column"] = "x";
-			row["columns"][2]["value"] = ll_round(vec3.mV[VX], 0.001f);
-			row["columns"][3]["column"] = "y";
-			row["columns"][3]["value"] = ll_round(vec3.mV[VY], 0.001f);
-			row["columns"][4]["column"] = "z";
-			row["columns"][4]["value"] = ll_round(vec3.mV[VZ], 0.001f);
-
-			//BD - Special case for mPelvis as it has position information too.
-			if (name == "mPelvis")
-			{
-				if (gAgent.getPosing())
+				//BD - When posing get the target values otherwise we end up getting the in-interpolation values.
+				if (character->getPosing())
 				{
-					vec3 = joint->getTargetPosition();
+					joint->getTargetRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
 				}
 				else
 				{
-					vec3 = joint->getPosition();
+					joint->getRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
 				}
-				row["columns"][5]["column"] = "pos_x";
-				row["columns"][5]["value"] = ll_round(vec3.mV[VX], 0.001f);
-				row["columns"][6]["column"] = "pos_y";
-				row["columns"][6]["value"] = ll_round(vec3.mV[VY], 0.001f);
-				row["columns"][7]["column"] = "pos_z";
-				row["columns"][7]["value"] = ll_round(vec3.mV[VZ], 0.001f);
-			}
+				row["columns"][0]["column"] = "joint";
+				row["columns"][0]["value"] = joint->getName();
+				row["columns"][1]["column"] = "x";
+				row["columns"][1]["value"] = ll_round(vec3.mV[VX], 0.001f);
+				row["columns"][2]["column"] = "y";
+				row["columns"][2]["value"] = ll_round(vec3.mV[VY], 0.001f);
+				row["columns"][3]["column"] = "z";
+				row["columns"][3]["value"] = ll_round(vec3.mV[VZ], 0.001f);
 
-			LLScrollListItem* item = mJointsScroll->addElement(row);
-			item->setUserdata(joint);
-
-			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-			if (motion)
-			{
-				LLPose* pose = motion->getPose();
-				if (pose)
+				//BD - Special case for mPelvis as it has position information too.
+				if (joint->getName() == "mPelvis")
 				{
-					LLPointer<LLJointState> joint_state = pose->findJointState(joint);
-					if (joint_state)
+					if (character->getPosing())
 					{
-						((LLScrollListText*)item->getColumn(1))->setFontStyle(LLFontGL::BOLD);
+						vec3 = joint->getTargetPosition();
 					}
-					else if (!gAgent.mIsPosing)
+					else
 					{
-						((LLScrollListText*)item->getColumn(1))->setFontStyle(LLFontGL::NORMAL);
+						vec3 = joint->getPosition();
+					}
+					row["columns"][4]["column"] = "pos_x";
+					row["columns"][4]["value"] = ll_round(vec3.mV[VX], 0.001f);
+					row["columns"][5]["column"] = "pos_y";
+					row["columns"][5]["value"] = ll_round(vec3.mV[VY], 0.001f);
+					row["columns"][6]["column"] = "pos_z";
+					row["columns"][6]["value"] = ll_round(vec3.mV[VZ], 0.001f);
+				}
+
+				LLScrollListItem* item = mJointsScroll->addElement(row);
+				item->setUserdata(joint);
+
+				//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+				BDPosingMotion* motion = (BDPosingMotion*)character->findMotion(ANIM_BD_POSING_MOTION);
+				if (motion)
+				{
+					LLPose* pose = motion->getPose();
+					if (pose)
+					{
+						LLPointer<LLJointState> joint_state = pose->findJointState(joint);
+						if (joint_state)
+						{
+							((LLScrollListText*)item->getColumn(0))->setFontStyle(LLFontGL::BOLD);
+						}
+						else if (!character->mIsPosing)
+						{
+							((LLScrollListText*)item->getColumn(0))->setFontStyle(LLFontGL::NORMAL);
+						}
 					}
 				}
 			}
+			else
+			{
+				break;
+			}
 		}
-		else
-		{
-			break;
-		}
+		onJointControlsRefresh(character);
 	}
-	onJointControlsRefresh();
 }
 
-void BDFloaterAnimations::onJointControlsRefresh()
+void BDFloaterPoser::onJointControlsRefresh(LLVOAvatar* character)
 {
-	bool is_pelvis = false;
-	bool is_posing = gAgent.getPosing();
-	LLScrollListItem* item = mJointsScroll->getFirstSelected();
-	if (item)
+	if (!character->isDead())
 	{
-		LLJoint* joint = (LLJoint*)item->getUserdata();
-		if (joint)
+		bool is_pelvis = false;
+		bool is_posing = false;
+		LLScrollListItem* item = mJointsScroll->getFirstSelected();
+		if (item)
 		{
-			mRotX->setValue(item->getColumn(2)->getValue());
-			mRotY->setValue(item->getColumn(3)->getValue());
-			mRotZ->setValue(item->getColumn(4)->getValue());
-			mRotXBig->setValue(item->getColumn(2)->getValue());
-			mRotYBig->setValue(item->getColumn(3)->getValue());
-			mRotZBig->setValue(item->getColumn(4)->getValue());
+			LLJoint* joint = (LLJoint*)item->getUserdata();
+			mRotX->setValue(item->getColumn(1)->getValue());
+			mRotY->setValue(item->getColumn(2)->getValue());
+			mRotZ->setValue(item->getColumn(3)->getValue());
+			mRotXBig->setValue(item->getColumn(1)->getValue());
+			mRotYBig->setValue(item->getColumn(2)->getValue());
+			mRotZBig->setValue(item->getColumn(3)->getValue());
 			if (joint && joint->getName() == "mPelvis")
 			{
 				is_pelvis = true;
-				mPosX->setValue(item->getColumn(5)->getValue());
-				mPosY->setValue(item->getColumn(6)->getValue());
-				mPosZ->setValue(item->getColumn(7)->getValue());
+				mPosX->setValue(item->getColumn(4)->getValue());
+				mPosY->setValue(item->getColumn(5)->getValue());
+				mPosZ->setValue(item->getColumn(6)->getValue());
 			}
 
-			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+			is_posing = character->getPosing();
+			BDPosingMotion* motion = (BDPosingMotion*)character->findMotion(ANIM_BD_POSING_MOTION);
 			if (motion)
 			{
 				//BD - If we don't use our default, set it once.
@@ -1104,29 +1148,29 @@ void BDFloaterAnimations::onJointControlsRefresh()
 				}
 			}
 		}
+
+		getChild<LLButton>("activate")->setValue(is_posing);
+		mRotX->setEnabled(item && is_posing);
+		mRotY->setEnabled(item && is_posing);
+		mRotZ->setEnabled(item && is_posing);
+		mRotXBig->setEnabled(item && is_posing);
+		mRotYBig->setEnabled(item && is_posing);
+		mRotZBig->setEnabled(item && is_posing);
+
+		mRotXBig->setVisible(!is_pelvis);
+		mRotYBig->setVisible(!is_pelvis);
+		mRotZBig->setVisible(!is_pelvis);
+		mRotX->setVisible(is_pelvis);
+		mRotY->setVisible(is_pelvis);
+		mRotZ->setVisible(is_pelvis);
+
+		mPosX->setVisible(is_pelvis);
+		mPosY->setVisible(is_pelvis);
+		mPosZ->setVisible(is_pelvis);
 	}
-
-	getChild<LLButton>("activate")->setValue(is_posing);
-	mRotX->setEnabled(item && is_posing);
-	mRotY->setEnabled(item && is_posing);
-	mRotZ->setEnabled(item && is_posing);
-	mRotXBig->setEnabled(item && is_posing);
-	mRotYBig->setEnabled(item && is_posing);
-	mRotZBig->setEnabled(item && is_posing);
-
-	mRotXBig->setVisible(!is_pelvis);
-	mRotYBig->setVisible(!is_pelvis);
-	mRotZBig->setVisible(!is_pelvis);
-	mRotX->setVisible(is_pelvis);
-	mRotY->setVisible(is_pelvis);
-	mRotZ->setVisible(is_pelvis);
-
-	mPosX->setVisible(is_pelvis);
-	mPosY->setVisible(is_pelvis);
-	mPosZ->setVisible(is_pelvis);
 }
 
-void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
+void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 {
 	LLJoint* joint = (LLJoint*)mJointsScroll->getFirstSelected()->getUserdata();
 	if (joint)
@@ -1134,9 +1178,9 @@ void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 		//BD - Neat yet quick and direct way of rotating our bones.
 		//     No more need to include bone rotation orders.
 		F32 val = ctrl->getValue().asReal();
-		LLScrollListCell* column_1 = mJointsScroll->getFirstSelected()->getColumn(2);
-		LLScrollListCell* column_2 = mJointsScroll->getFirstSelected()->getColumn(3);
-		LLScrollListCell* column_3 = mJointsScroll->getFirstSelected()->getColumn(4);
+		LLScrollListCell* column_1 = mJointsScroll->getFirstSelected()->getColumn(1);
+		LLScrollListCell* column_2 = mJointsScroll->getFirstSelected()->getColumn(2);
+		LLScrollListCell* column_3 = mJointsScroll->getFirstSelected()->getColumn(3);
 		LLQuaternion rot_quat = joint->getTargetRotation();
 		LLMatrix3 rot_mat;
 		F32 old_value;
@@ -1167,16 +1211,16 @@ void BDFloaterAnimations::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 	}
 }
 
-void BDFloaterAnimations::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
+void BDFloaterPoser::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 {
 	LLJoint* joint = (LLJoint*)mJointsScroll->getFirstSelected()->getUserdata();
 	if (joint && joint->getName() == "mPelvis")
 	{
 		F32 val = ctrl->getValue().asReal();
 		LLVector3 vec3;
-		LLScrollListCell* column_4 = mJointsScroll->getFirstSelected()->getColumn(5);
-		LLScrollListCell* column_5 = mJointsScroll->getFirstSelected()->getColumn(6);
-		LLScrollListCell* column_6 = mJointsScroll->getFirstSelected()->getColumn(7);
+		LLScrollListCell* column_4 = mJointsScroll->getFirstSelected()->getColumn(4);
+		LLScrollListCell* column_5 = mJointsScroll->getFirstSelected()->getColumn(5);
+		LLScrollListCell* column_6 = mJointsScroll->getFirstSelected()->getColumn(6);
 
 		vec3.mV[VX] = column_4->getValue().asReal();
 		vec3.mV[VY] = column_5->getValue().asReal();
@@ -1202,101 +1246,108 @@ void BDFloaterAnimations::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 	}
 }
 
-void BDFloaterAnimations::onJointChangeState()
+void BDFloaterPoser::onJointChangeState(LLVOAvatar* character)
 {
-	std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
-	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
-		it != items.end(); ++it)
+	//LLVOAvatar::findAttachmentByID
+	if (!character->isDead())
 	{
-		LLScrollListItem* item = (*it);
-		LLJoint* joint = (LLJoint*)item->getUserdata();
-		if (joint)
+		std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
+		for (std::vector<LLScrollListItem*>::iterator it = items.begin();
+			it != items.end(); ++it)
 		{
-			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-			if (motion)
+			LLScrollListItem* item = (*it);
+			LLJoint* joint = (LLJoint*)item->getUserdata();
+			if (joint)
 			{
-				LLPose* pose = motion->getPose();
-				if (pose)
+				BDPosingMotion* motion = (BDPosingMotion*)character->findMotion(ANIM_BD_POSING_MOTION);
+				if (motion)
 				{
-					LLPointer<LLJointState> joint_state = pose->findJointState(joint);
-					if (joint_state)
+					LLPose* pose = motion->getPose();
+					if (pose)
 					{
-						motion->removeJointState(joint_state);
-						((LLScrollListText*)item->getColumn(1))->setFontStyle(LLFontGL::NORMAL);
-					}
-					else
-					{
-						motion->addJointToState(joint);
-						((LLScrollListText*)item->getColumn(1))->setFontStyle(LLFontGL::BOLD);
+						LLPointer<LLJointState> joint_state = pose->findJointState(joint);
+						if (joint_state)
+						{
+							motion->removeJointState(joint_state);
+							((LLScrollListText*)item->getColumn(0))->setFontStyle(LLFontGL::NORMAL);
+						}
+						else
+						{
+							motion->addJointToState(joint);
+							((LLScrollListText*)item->getColumn(0))->setFontStyle(LLFontGL::BOLD);
+						}
 					}
 				}
 			}
 		}
+		onJointControlsRefresh(character);
 	}
-	onJointControlsRefresh();
 }
 
-void BDFloaterAnimations::onJointReset()
+void BDFloaterPoser::onJointReset(LLVOAvatar* character)
 {
-	std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
-	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
-		it != items.end(); ++it)
+	if (!character->isDead())
 	{
-		LLScrollListItem* item = (*it);
-		LLJoint* joint = (LLJoint*)item->getUserdata();
-		if (joint)
+		std::vector<LLScrollListItem*> items = mJointsScroll->getAllSelected();
+		for (std::vector<LLScrollListItem*>::iterator it = items.begin();
+			it != items.end(); ++it)
 		{
-			LLQuaternion quat;
-			LLScrollListCell* column_1 = item->getColumn(2);
-			LLScrollListCell* column_2 = item->getColumn(3);
-			LLScrollListCell* column_3 = item->getColumn(4);
-
-			column_1->setValue(ll_round(0, 0.001f));
-			column_2->setValue(ll_round(0, 0.001f));
-			column_3->setValue(ll_round(0, 0.001f));
-			
-			//BD - While editing rotations, make sure we use a bit of linear interpolation to make movements smoother.
-			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-			if (motion)
+			LLScrollListItem* item = (*it);
+			LLJoint* joint = (LLJoint*)item->getUserdata();
+			if (joint)
 			{
-				//BD - If we don't use our default, set it once.
-				if (motion->getInterpolationTime() != 0.1
-					|| motion->getInterpolationType() != 2)
+				LLQuaternion quat;
+				LLScrollListCell* column_1 = item->getColumn(1);
+				LLScrollListCell* column_2 = item->getColumn(2);
+				LLScrollListCell* column_3 = item->getColumn(3);
+
+				column_1->setValue(ll_round(0, 0.001f));
+				column_2->setValue(ll_round(0, 0.001f));
+				column_3->setValue(ll_round(0, 0.001f));
+
+				//BD - While editing rotations, make sure we use a bit of linear interpolation to make movements smoother.
+				BDPosingMotion* motion = (BDPosingMotion*)character->findMotion(ANIM_BD_POSING_MOTION);
+				if (motion)
 				{
-					motion->setInterpolationTime(0.25f);
-					motion->setInterpolationType(2);
+					//BD - If we don't use our default, set it once.
+					if (motion->getInterpolationTime() != 0.1
+						|| motion->getInterpolationType() != 2)
+					{
+						motion->setInterpolationTime(0.25f);
+						motion->setInterpolationType(2);
+					}
+				}
+
+				quat.setEulerAngles(0, 0, 0);
+				joint->setTargetRotation(quat);
+
+				//BD - The reason we don't use the default position here is because it will
+				//     make the pelvis float under certain circumstances with certain meshes
+				//     attached, simply revert to 0,0,0. Better safe than sorry.
+				if (joint->getName() == "mPelvis")
+				{
+					LLScrollListCell* column_4 = item->getColumn(4);
+					LLScrollListCell* column_5 = item->getColumn(5);
+					LLScrollListCell* column_6 = item->getColumn(6);
+
+					column_4->setValue(ll_round(0, 0.001f));
+					column_5->setValue(ll_round(0, 0.001f));
+					column_6->setValue(ll_round(0, 0.001f));
+
+					joint->setTargetPosition(LLVector3::zero);
 				}
 			}
-
-			quat.setEulerAngles(0,0,0);
-			joint->setTargetRotation(quat);
-
-			//BD - The reason we don't use the default position here is because it will
-			//     make the pelvis float under certain circumstances with certain meshes
-			//     attached, simply revert to 0,0,0. Better safe than sorry.
-			if (joint->getName() == "mPelvis")
-			{
-				LLScrollListCell* column_4 = item->getColumn(5);
-				LLScrollListCell* column_5 = item->getColumn(6);
-				LLScrollListCell* column_6 = item->getColumn(7);
-
-				column_4->setValue(ll_round(0, 0.001f));
-				column_5->setValue(ll_round(0, 0.001f));
-				column_6->setValue(ll_round(0, 0.001f));
-
-				joint->setTargetPosition(LLVector3::zero);
-			}
 		}
-	}
 
-	onJointControlsRefresh();
+		onJointControlsRefresh(character);
+	}
 }
 
 
 ////////////////////////////////
 //BD - Animations
 ////////////////////////////////
-void BDFloaterAnimations::onAnimAdd(const LLSD& param)
+void BDFloaterPoser::onAnimAdd(const LLSD& param)
 {
 	//BD - This is going to be a really dirty way of inserting elements inbetween others
 	//     until i can figure out a better way.
@@ -1307,6 +1358,7 @@ void BDFloaterAnimations::onAnimAdd(const LLSD& param)
 	LLScrollListItem* new_item;
 	LLSD row;
 
+	//F32 time = getChild<LLLineEditor>("anim_time")->getValue().asReal();
 	if (param.asString() == "Repeat")
 	{
 		row["columns"][0]["column"] = "name";
@@ -1360,7 +1412,7 @@ void BDFloaterAnimations::onAnimAdd(const LLSD& param)
 	mAnimEditorScroll->selectNthItem(selected_index + 1);
 }
 
-void BDFloaterAnimations::onAnimListWrite(std::vector<LLScrollListItem*> item_list)
+void BDFloaterPoser::onAnimListWrite(std::vector<LLScrollListItem*> item_list)
 {
 	//BD - Now go through the new list we created, read them out and add them
 	//     to our list in the new desired order.
@@ -1394,7 +1446,7 @@ void BDFloaterAnimations::onAnimListWrite(std::vector<LLScrollListItem*> item_li
 	mAnimEditorScroll->updateLayout();
 }
 
-void BDFloaterAnimations::onAnimMove(const LLSD& param)
+void BDFloaterPoser::onAnimMove(const LLSD& param)
 {
 	std::vector<LLScrollListItem*> old_items = mAnimEditorScroll->getAllData();
 	std::vector<LLScrollListItem*> new_items;
@@ -1475,7 +1527,7 @@ void BDFloaterAnimations::onAnimMove(const LLSD& param)
 	}
 }
 
-void BDFloaterAnimations::onAnimDelete()
+void BDFloaterPoser::onAnimDelete()
 {
 	mAnimEditorScroll->deleteSelectedItems();
 
@@ -1483,7 +1535,7 @@ void BDFloaterAnimations::onAnimDelete()
 	mAnimEditorScroll->updateLayout();
 }
 
-void BDFloaterAnimations::onAnimSave()
+void BDFloaterPoser::onAnimSave()
 {
 	//BD - Work in Progress exporter.
 	//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
@@ -1497,7 +1549,7 @@ void BDFloaterAnimations::onAnimSave()
 	//F32 time = rot_key.mTime;
 }
 
-void BDFloaterAnimations::onAnimSet()
+void BDFloaterPoser::onAnimSet()
 {
 	F32 value = getChild<LLUICtrl>("anim_time")->getValue().asReal();
 	LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
@@ -1511,18 +1563,18 @@ void BDFloaterAnimations::onAnimSet()
 	}
 }
 
-void BDFloaterAnimations::onAnimPlay()
+void BDFloaterPoser::onAnimPlay()
 {
 	mExpiryTime = 0.0f;
 	mAnimPlayTimer.start();
 }
 
-void BDFloaterAnimations::onAnimStop()
+void BDFloaterPoser::onAnimStop()
 {
 	mAnimPlayTimer.stop();
 }
 
-void BDFloaterAnimations::onAnimControlsRefresh()
+void BDFloaterPoser::onAnimControlsRefresh()
 {
 	LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
 	if (item)
@@ -1552,3 +1604,227 @@ void BDFloaterAnimations::onAnimControlsRefresh()
 ////////////////////////////////
 //BD - Misc Functions
 ////////////////////////////////
+
+void BDFloaterPoser::onAvatarTabsRefresh()
+{
+	//BD - First lets go through all things that need updating, if any.
+	/*S32 child_count = mAvatarTabs->getTabCount();
+	for (S32 i = 0; i < child_count; i++)
+	{
+		LLPanel* panel = mAvatarTabs->getPanelByIndex(i);
+		if (panel)
+		{
+			//BD - Now lets check our list against all current avatars.
+			for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+				iter != LLCharacter::sInstances.end(); ++iter)
+			{
+				LLCharacter* character = (*iter);
+				//BD - Check if the character is valid and if its the same.
+				if (character && character->getID().asString() == panel->getToolTip())
+				{
+					//BD - When we refresh it might happen that we don't have a name for someone
+					//     yet, when this happens the list entry won't be purged and rebuild as
+					//     it will be updated with this part, so we have to update the name in
+					//     case it was still being resolved last time we refreshed and created the
+					//     initial list entry. This prevents the name from missing forever.
+					if (panel->getLabel().empty())
+					{
+						LLAvatarName av_name;
+						LLAvatarNameCache::get(character->getID(), &av_name);
+						panel->setLabel(av_name.asLLSD().asString());
+					}
+
+					break;
+				}
+			}
+
+			//BD - If the search goes through without any matches it means that we didn't
+			//     find this tab's avatar anymore, we should remove it.
+			S32 current_index = mAvatarTabs->getCurrentPanelIndex();
+			if (current_index == i)
+			{
+				//BD - Select our own tab as we are going to delete this one and selecting
+				//     invalid things might not be a good idea.
+				mAvatarTabs->selectFirstTab();
+			}
+
+			//BD - We might want to deselect everything and reselect according to name when
+			//     we are done so the user doesn't get his tabs changed out of nowhere.
+			mAvatarTabs->removeTabPanel(mAvatarTabs->getPanelByIndex(i));
+		}
+	}*/
+
+	//BD - Temporarily disable commit callbacks. While we update.
+	mAvatarTabs->setCommitCallback(boost::bind(&BDFloaterPoser::onDoNothing, this));
+	mAvatarTabs->deleteAllTabs();
+
+	//BD - Add our own avatar first at all times.
+	/*LLAvatarName av_name;
+	LLAvatarNameCache::get(gAgent.getID(), &av_name);
+	LLPanel* panel = LLUICtrlFactory::getInstance()->createFromFile<LLPanel>("panel_animation_control_poser.xml", NULL, BDFloaterPoser::child_registry_t::instance());
+	panel->setValue(av_name.asLLSD());
+	panel->setLabel(av_name.getDisplayName());
+	panel->setName(gAgent.getID().asString());
+	mAvatarTabs->addTabPanel(panel);*/
+
+	//BD - Now lets do it the other way around and look for new things to add.
+	//child_count = mAvatarTabs->getChildCount();
+	for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+		iter != LLCharacter::sInstances.end(); ++iter)
+	{
+		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*iter);
+		if (avatar) //&& avatar->isFullyLoaded())
+		{
+			LLAvatarName av_name;
+			LLAvatarNameCache::get(avatar->getID(), &av_name);
+			//LLTabContainer::TabPanelParams panel_params;
+			//LLTabContainer::TabPanelParams* panel_params = LLUICtrlFactory::getInstance()->createFromFile<LLTabContainer::TabPanelParams>("panel_animation_control_poser.xml", NULL, BDFloaterPoser::child_registry_t::instance());;
+			//LLPanel* panel = panel_params.panel();
+			LLPanel* panel = LLUICtrlFactory::getInstance()->createFromFile<LLPanel>("panel_animation_control_poser.xml", NULL, BDFloaterPoser::child_registry_t::instance());
+			//panel = LLUICtrlFactory::getInstance()->createFromFile<LLPanel>("panel_animation_control_poser.xml", NULL, BDFloaterPoser::child_registry_t::instance());
+			//LLPanel* panel = panel_params->panel();
+			panel->setValue(av_name.asLLSD());
+			panel->setLabel(av_name.getDisplayName());
+			panel->setName(avatar->getID().asString());
+
+			panel->getChild<LLScrollListCtrl>("joints_scroll")->setCommitOnSelectionChange(TRUE);
+			panel->getChild<LLScrollListCtrl>("joints_scroll")->setCommitCallback(boost::bind(&BDFloaterPoser::onJointControlsRefresh, this, avatar));
+			panel->getChild<LLScrollListCtrl>("joints_scroll")->setDoubleClickCallback(boost::bind(&BDFloaterPoser::onJointChangeState, this, avatar));
+
+			panel->getChild<LLUICtrl>("Rotation_X")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotX, "x")));
+			panel->getChild<LLUICtrl>("Rotation_Y")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotY, "y")));
+			panel->getChild<LLUICtrl>("Rotation_Z")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotZ, "z")));
+
+			panel->getChild<LLUICtrl>("Rotation_X_Big")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotXBig, "x")));
+			panel->getChild<LLUICtrl>("Rotation_X_Big")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotYBig, "y")));
+			panel->getChild<LLUICtrl>("Rotation_X_Big")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotZBig, "z")));
+
+			panel->getChild<LLUICtrl>("Position_X")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointPosSet, this, mPosX, "x")));
+			panel->getChild<LLUICtrl>("Position_Y")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointPosSet, this, mPosY, "y")));
+			panel->getChild<LLUICtrl>("Position_Z")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointPosSet, this, mPosZ, "z")));
+
+			panel->getChild<LLButton>("save_poses")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onClickPoseSave, this)));
+			panel->getChild<LLButton>("toggle_bone")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointChangeState, this, avatar)));
+			panel->getChild<LLButton>("reset_bone")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointReset, this, avatar)));
+			panel->getChild<LLButton>("activate")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onPoseStart, this, avatar)));
+			//panel->getChild<LLButton>("activate")->setClickedCallback(boost::bind(boost::bind(&BDFloaterPoser::onPoseStart, this, avatar)));
+
+			//LLSD row;
+			//row["columns"][0]["column"] = "name";
+			//row["columns"][0]["value"] = uuid;
+			//LLScrollListItem* item = panel->getChild<LLScrollListCtrl>("user_data_scroll")->addElement(row);
+			//item->setUserdata(avatar);
+			//panel_params->panel() = panel;
+
+			//if (avatar->isSelf())
+			//	panel_params.insert_at(LLTabContainer::START);
+
+			//mAvatarTabs->addTabPanel(panel_params);
+			mAvatarTabs->addTabPanel(panel);
+
+			/*if (avatar->isSelf())
+			{
+				mAvatarTabs->selectTabPanel(panel);
+				mAvatarTabs->setCurrentPanelIndex(0);
+			}*/
+		}
+	}
+
+	//BD - Restore the commit callback.
+	mAvatarTabs->setCommitCallback(boost::bind(&BDFloaterPoser::onAvatarControlsRefresh, this));
+}
+
+void BDFloaterPoser::onAvatarControlsRefresh()
+{
+	LLPanel* panel = mAvatarTabs->getCurrentPanel();
+	if (panel)
+	{
+		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+			iter != LLCharacter::sInstances.end(); ++iter)
+		{
+			LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*iter);
+			if (avatar && (avatar->getID().asString() == panel->getName()))
+			{
+				//BD - Posing
+				//mUserDataScroll = panel->getChild<LLScrollListCtrl>("user_data_scroll", true);
+				//LLScrollListItem* item = mUserDataScroll->getFirstData();
+				//LLVOAvatar* avatar = NULL;
+
+				//BD - Is the avatar we're looking for not initiated properly?
+				//     If so try to find it.
+				//if (!avatar)
+				//{
+				//LL_WARNS("Posing") << "Failed to initialize avatar properly, retrying" << panel->getLabel() << LL_ENDL;
+				/*	for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+						iter != LLCharacter::sInstances.end(); ++iter)
+						{
+						LLVOAvatar* temp_avatar = dynamic_cast<LLVOAvatar*>(*iter);
+						if (temp_avatar && (temp_avatar->getID().asString() == panel->getName()))
+						{
+						//BD - We found what was supposed to be here in the first place.
+						//item->setUserdata(avatar);
+						LL_WARNS("Posing") << "Found " << temp_avatar->avString() << LL_ENDL;
+						avatar = temp_avatar;
+						break;
+						}
+						}*/
+				//}
+
+				//BD - We don't kill on missing initalization in case the Viewer is still
+				//     loading and thus not properly able to initialize an avatar yet.
+				//     Give the Viewer another chance to get the avatar.
+				if (!avatar || avatar->isDead())
+				{
+					if (avatar)
+						LL_WARNS("Posing") << "Avatar has gone missing, kill it. " << avatar->avString() << LL_ENDL;
+					else
+						LL_WARNS("Posing") << "Avatar has gone missing, kill it. " << panel->getLabel() << LL_ENDL;
+					//BD - Avatar we're looking for is dead (has gone out of range)
+					//     Bail and kill the tab in this case.
+					//mAvatarTabs->removeTabPanel(panel);
+					//onAvatarTabsRefresh();
+					return;
+				}
+
+				mJointsScroll = panel->getChild<LLScrollListCtrl>("joints_scroll", true);
+
+				mRotX = panel->getChild<LLUICtrl>("Rotation_X");
+				mRotY = panel->getChild<LLUICtrl>("Rotation_Y");
+				mRotZ = panel->getChild<LLUICtrl>("Rotation_Z");
+
+				mRotXBig = panel->getChild<LLUICtrl>("Rotation_X_Big");
+				mRotYBig = panel->getChild<LLUICtrl>("Rotation_Y_Big");
+				mRotZBig = panel->getChild<LLUICtrl>("Rotation_Z_Big");
+
+				mPosX = panel->getChild<LLUICtrl>("Position_X");
+				mPosY = panel->getChild<LLUICtrl>("Position_Y");
+				mPosZ = panel->getChild<LLUICtrl>("Position_Z");
+
+				/*mRotX->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotX, "x")));
+				mRotY->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotY, "y")));
+				mRotZ->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotZ, "z")));
+
+				mRotXBig->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotXBig, "x")));
+				mRotYBig->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotYBig, "y")));
+				mRotZBig->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointSet, this, mRotZBig, "z")));
+
+				mPosX->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointPosSet, this, mPosX, "x")));
+				mPosY->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointPosSet, this, mPosY, "y")));
+				mPosZ->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointPosSet, this, mPosZ, "z")));
+
+				panel->getChild<LLButton>("save_poses")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onClickPoseSave, this)));
+				panel->getChild<LLButton>("toggle_bone")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointChangeState, this, avatar)));
+				panel->getChild<LLButton>("reset_bone")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onJointReset, this, avatar)));
+				//panel->getChild<LLButton>("activate")->setCommitCallback(boost::bind(boost::bind(&BDFloaterPoser::onPoseStart, this, avatar)));
+				panel->getChild<LLButton>("activate")->setClickedCallback(boost::bind(boost::bind(&BDFloaterPoser::onPoseStart, this, avatar)));*/
+				
+				onJointRefresh(avatar);
+			}
+		}
+	}
+}
+
+void BDFloaterPoser::onDoNothing()
+{
+	//BD - Do Nothing;
+}

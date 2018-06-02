@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+	<panel
+    follows="all"
+				background_visible="false"
+    height="425"
+    layout="topleft"
+    left="0"
+    title="Pose"
+    name="pose_panel"
+    top="0"
+    width="492">
+		<panel
+ follows="all"
+ height="420"
+ background_visible="false"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="492">
+	<icon
+	follows="top|left"
+	height="318"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top="0"
+	left="0"/>
+	<scroll_list
+ column_padding="2"
+ draw_heading="true"
+ height="295"
+ follows="left|top"
+ layout="topleft"
+ left="0"
+ width="480"
+ multi_select="true"
+ name="joints_scroll"
+ top_delta="0">
+    <scroll_list.columns
+     label="Bone Name"
+     name="joint"
+   relative_width="0.38"  />
+    <scroll_list.columns
+     label="Rot X"
+     name="x"
+   relative_width="0.10"  />
+	<scroll_list.columns
+     label="Rot Y"
+     name="y"
+   relative_width="0.10"  />
+	<scroll_list.columns
+     label="Rot Z"
+     name="z"
+   relative_width="0.10"  />
+	<scroll_list.columns
+     label="Pos X"
+     name="pos_x"
+   relative_width="0.10"  />
+	<scroll_list.columns
+     label="Pos Y"
+     name="pos_y"
+   relative_width="0.10"  />
+	<scroll_list.columns
+     label="Pos Z"
+     name="pos_z"
+   relative_width="0.10"  />
+</scroll_list>
+	<button
+ height="21"
+ follows="top|left"
+ is_toggle="true"
+ layout="topleft"
+ label="Start Posing"
+ label_selected="Stop Posing"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="activate"
+ width="112"
+ top_pad="1"
+ left="2"/>
+ <line_editor
+  commit_on_focus_lost="false"
+  follows="left|top"
+  height="20"
+  label="Enter Pose Name"
+  left_pad="1"
+  top_delta="0"
+  name="pose_name"
+  width="124"/>
+ <line_editor
+  commit_on_focus_lost="false"
+  follows="left|top"
+  height="20"
+  label="0.001 - 1.0"
+  left_pad="1"
+  top_delta="0"
+  name="interpolation_time"
+  width="82"/>
+ <combo_box
+     follows="left|top"
+     height="20"
+     layout="topleft"
+     left_pad="1"
+     top_delta="0"
+     max_chars="135"
+     name="interpolation_type"
+     width="82">
+        <combo_box.item
+         enabled="true"
+         label="None"
+         name="0"
+         value="0" />
+        <combo_box.item
+         enabled="true"
+         label="Linear"
+         name="1"
+         value="1" />
+        <combo_box.item
+         enabled="true"
+         label="Spherical Linear"
+         name="2"
+         value="2" />
+    </combo_box>
+ <button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Save"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="save_poses"
+ width="72"
+ top_delta="0"
+ left_pad="1">
+ </button>
+ 
+ <icon
+	follows="top|left"
+	height="100"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="480"
+	top_pad="2"
+	left="0"/>
+	<panel
+ follows="left|top"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="2"
+ name="title"
+ top_delta="2"
+ width="476"/>
+ 
+ <text
+ name="first_person_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="350"
+ top_delta="4">
+ Modifications:
+ </text>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ enabled="false"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="70"
+ layout="topleft"
+ left="10"
+ max_val="3.142"
+ min_val="-3.142"
+ name="Rotation_X"
+ top_pad="10"
+ width="224" >
+      </slider>
+	<slider
+ decimal_digits="3"
+	visible="false"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation X:"
+ label_width="70"
+ layout="topleft"
+ left="10"
+ max_val="3.142"
+ min_val="-3.142"
+ name="Rotation_X_Big"
+ top_delta="0"
+ width="459" >
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ enabled="false"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="70"
+ layout="topleft"
+ left="10"
+ max_val="3.142"
+ min_val="-3.142"
+ name="Rotation_Y"
+ top_pad="1"
+ width="224" >
+      </slider>
+	<slider
+ decimal_digits="3"
+	visible="false"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Y:"
+ label_width="70"
+ layout="topleft"
+ left="10"
+ max_val="3.142"
+ min_val="-3.142"
+ name="Rotation_Y_Big"
+ top_delta="0"
+ width="459" >
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ enabled="false"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="70"
+ layout="topleft"
+ left="10"
+ max_val="3.142"
+ min_val="-3.142"
+ name="Rotation_Z"
+ top_pad="1"
+ width="224" >
+      </slider>
+	<slider
+ decimal_digits="3"
+	visible="false"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ increment="0.001"
+ initial_value="0"
+ label="Rotation Z:"
+ label_width="70"
+ layout="topleft"
+ left="10"
+ max_val="3.142"
+ min_val="-3.142"
+ name="Rotation_Z_Big"
+ top_delta="0"
+ width="459" >
+      </slider>
+	
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ enabled="true"
+ increment="0.001"
+ initial_value="0"
+ label="Position X:"
+ label_width="70"
+ layout="topleft"
+ left="245"
+ max_val="5"
+ min_val="-5"
+ name="Position_X"
+ top_delta="-30"
+ width="224" >
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ enabled="true"
+ increment="0.001"
+ initial_value="0"
+ label="Position Y:"
+ label_width="70"
+ layout="topleft"
+ left_delta="0"
+ max_val="5"
+ min_val="-5"
+ name="Position_Y"
+ top_pad="1"
+ width="224" >
+      </slider>
+	<slider
+ decimal_digits="3"
+ can_edit_text="true"
+ follows="left|top"
+ height="14"
+ enabled="true"
+ increment="0.001"
+ initial_value="0"
+ label="Position Z:"
+ label_width="70"
+ layout="topleft"
+ left_delta="0"
+ max_val="5"
+ min_val="-5"
+ name="Position_Z"
+ top_pad="1"
+ width="224" >
+      </slider>
+	
+	<panel
+ follows="top|left|right"
+ height="21"
+ background_visible="false"
+ layout="topleft"
+ mouse_opaque="false"
+ left="0"
+ name="title"
+ top_pad="6"
+ width="480">
+		<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Reset Selected Bone(s)"
+ label_selected="Disable Selected Bone(s)"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="reset_bone"
+ width="258"
+ top="0"
+ left_delta="2">
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ is_toggle="true"
+ label="Activate Selected Bone(s)"
+ label_selected="Disable Selected Bone(s)"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="toggle_bone"
+ width="217"
+ top="0"
+ left_pad="1">
+ </button>
+	</panel>
+		</panel>
+		<scroll_list
+ column_padding="2"
+ draw_heading="false"
+ height="20"
+ follows="left|top"
+ layout="topleft"
+ left="0"
+ width="480"
+	visible="false"
+ multi_select="true"
+ name="user_data_scroll"
+ top="5">
+    <scroll_list.columns
+     label="Name"
+     name="name"
+   relative_width="1"  />
+</scroll_list>
+	</panel>
+	

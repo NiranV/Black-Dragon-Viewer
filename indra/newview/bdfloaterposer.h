@@ -15,25 +15,26 @@
 */
 
 
-#ifndef BD_FLOATER_ANIMATIONS_H
-#define BD_FLOATER_ANIMATIONS_H
+#ifndef BD_FLOATER_POSER_H
+#define BD_FLOATER_POSER_H
 
 #include "llfloater.h"
 #include "llscrolllistctrl.h"
 #include "llcharacter.h"
+#include "llvoavatar.h"
 #include "llsliderctrl.h"
 #include "llcombobox.h"
+#include "lltabcontainer.h"
 #include "llframetimer.h"
 #include "llkeyframemotion.h"
-#include "llvoavatar.h"
 
-class BDFloaterAnimations :
+class BDFloaterPoser :
 	public LLFloater
 {
 	friend class LLFloaterReg;
 private:
-	BDFloaterAnimations(const LLSD& key);
-	/*virtual*/	~BDFloaterAnimations();
+	BDFloaterPoser(const LLSD& key);
+	/*virtual*/	~BDFloaterPoser();
 	/*virtual*/	BOOL postBuild();
 	/*virtual*/ void draw();
 
@@ -45,20 +46,25 @@ private:
 	void onClickPoseSave();
 	BOOL onPoseSave(S32 type, F32 time, bool editing);
 	BOOL onPoseLoad(const LLSD& name);
-	void onPoseStart();
+	void onPoseStart(LLVOAvatar* character);
 	void onPoseDelete();
 	void onPoseRefresh();
 	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
 	void onPoseControlsRefresh();
 
+	void onAvatarTabsRefresh();
+	void onAvatarControlsRefresh();
+
+	void onDoNothing();
+
 	//BD - Joints
-	void onJointRefresh();
+	void onJointRefresh(LLVOAvatar* character);
 	void onJointSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointSetFinal(LLUICtrl* ctrl, const LLSD& param);
 	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
-	void onJointChangeState();
-	void onJointControlsRefresh();
-	void onJointReset();
+	void onJointChangeState(LLVOAvatar* character);
+	void onJointControlsRefresh(LLVOAvatar* character);
+	void onJointReset(LLVOAvatar* character);
 
 	//BD - Animating
 	void onAnimAdd(const LLSD& param);
@@ -83,6 +89,10 @@ private:
 	//BD - Posing
 	LLScrollListCtrl*				mPoseScroll;
 	LLScrollListCtrl*				mJointsScroll;
+
+	LLTabContainer*					mAvatarTabs;
+
+	LLScrollListCtrl*				mUserDataScroll;
 
 	LLUICtrl*					mRotX;
 	LLUICtrl*					mRotY;
