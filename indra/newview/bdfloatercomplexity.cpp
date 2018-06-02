@@ -34,7 +34,8 @@
 #include "llvovolume.h"
 
 BDFloaterComplexity::BDFloaterComplexity(const LLSD& key)
-	:	LLFloater(key)
+	:	LLFloater(key),
+	mObjectSelection(NULL)
 {
 	//BD - Refresh the avatar list.
 	mCommitCallbackRegistrar.add("ARC.AvatarRefresh", boost::bind(&BDFloaterComplexity::onAvatarsRefresh, this));
@@ -86,7 +87,7 @@ void BDFloaterComplexity::onClose(bool app_quitting)
 //BD - Shameless copy from bdfloateranimations.cpp
 void BDFloaterComplexity::onAvatarsRefresh()
 {
-	//BD - First lets go through all things that need updating, if any.
+	//BD - Flag all items first, we're going to unflag them when they are valid.
 	std::vector<LLScrollListItem*> items = mAvatarScroll->getAllData();
 	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
 		it != items.end(); ++it)
@@ -94,20 +95,27 @@ void BDFloaterComplexity::onAvatarsRefresh()
 		LLScrollListItem* item = (*it);
 		if (item)
 		{
-			//BD - Flag all items for removal by default.
 			item->setFlagged(TRUE);
+		}
+	}
 
-			//BD - Now lets check our list against all current avatars.
-			for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
-				iter != LLCharacter::sInstances.end(); ++iter)
+	bool create_new;
+	for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
+		iter != LLCharacter::sInstances.end(); ++iter)
+	{
+		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*iter);
+		if (avatar)
+		{
+			LLUUID uuid = avatar->getID();
+			create_new = true;
+			std::vector<LLScrollListItem*> items = mAvatarScroll->getAllData();
+			for (std::vector<LLScrollListItem*>::iterator it = items.begin();
+				it != items.end(); ++it)
 			{
-				LLCharacter* character = (*iter);
-				//BD - Check if the character is valid and if its the same.
-				if (character && character == item->getUserdata())
+				LLScrollListItem* item = (*it);
+				if (avatar == item->getUserdata())
 				{
-					//BD - Remove the removal flag, we're updating it.
 					item->setFlagged(FALSE);
-
 					//BD - When we refresh it might happen that we don't have a name for someone
 					//     yet, when this happens the list entry won't be purged and rebuild as
 					//     it will be updated with this part, so we have to update the name in
@@ -116,11 +124,27 @@ void BDFloaterComplexity::onAvatarsRefresh()
 					if (item->getColumn(0)->getValue().asString().empty())
 					{
 						LLAvatarName av_name;
-						LLAvatarNameCache::get(character->getID(), &av_name);
-						item->getColumn(0)->setValue(av_name.asLLSD());
+						LLAvatarNameCache::get(uuid, &av_name);
+						item->getColumn(0)->setValue(av_name.getDisplayName());
 					}
+
+					create_new = false;
 					break;
 				}
+			}
+
+			if (create_new)
+			{
+				LLAvatarName av_name;
+				LLAvatarNameCache::get(uuid, &av_name);
+
+				LLSD row;
+				row["columns"][0]["column"] = "name";
+				row["columns"][0]["value"] = av_name.getDisplayName();
+				row["columns"][1]["column"] = "uuid";
+				row["columns"][1]["value"] = uuid.asString();
+				LLScrollListItem* element = mAvatarScroll->addElement(row);
+				element->setUserdata(avatar);
 			}
 		}
 	}
@@ -128,44 +152,8 @@ void BDFloaterComplexity::onAvatarsRefresh()
 	//BD - Now safely delete all items so we can start adding the missing ones.
 	mAvatarScroll->deleteFlaggedItems();
 
-	//BD - Now lets do it the other way around and look for new things to add.
-	items = mAvatarScroll->getAllData();
-	for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
-		iter != LLCharacter::sInstances.end(); ++iter)
-	{
-		LLCharacter* character = (*iter);
-		if (character)
-		{
-			LLUUID uuid = character->getID();
-			bool skip = false;
-
-			for (std::vector<LLScrollListItem*>::iterator it = items.begin();
-				it != items.end(); ++it)
-			{
-				if ((*it)->getColumn(1)->getValue().asString() == uuid.asString())
-				{
-					skip = true;
-					break;
-				}
-			}
-
-			if (skip)
-			{
-				continue;
-			}
-
-			LLAvatarName av_name;
-			LLAvatarNameCache::get(uuid, &av_name);
-
-			LLSD row;
-			row["columns"][0]["column"] = "name";
-			row["columns"][0]["value"] = av_name.getDisplayName();
-			row["columns"][1]["column"] = "uuid";
-			row["columns"][1]["value"] = uuid.asString();
-			LLScrollListItem* element = mAvatarScroll->addElement(row);
-			element->setUserdata(character);
-		}
-	}
+	//BD - Make sure we don't have a scrollbar unless we need it.
+	mAvatarScroll->updateLayout();
 }
 
 void BDFloaterComplexity::calcARC()
@@ -176,10 +164,12 @@ void BDFloaterComplexity::calcARC()
 	LLVOVolume::texture_cost_t textures;
 	S32Bytes texture_memory;
 
-	F32 cost = 0;
-	//BD - We need F64 here, i saw F32 exploding with the insane triangle counts some people got.
-	F64 vertices = 0;
-	F64 triangles = 0;
+	U32 cost = 0;
+	//BD - We need U64 here, i saw F32 exploding with the insane triangle counts some people got.
+	//     Since this the absolute total count of vertices/triangles they might also go beyond
+	//     4.294.967.295 and explode too hence why we use 64bits here.
+	U64 vertices = 0;
+	U64 triangles = 0;
 
 	//BD - Null Check hell.
 	//     This thing is extremely fragile, crashes instantly the moment something is off even
@@ -187,167 +177,157 @@ void BDFloaterComplexity::calcARC()
 	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
 	if (item)
 	{
-		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
-			iter != LLCharacter::sInstances.end(); ++iter)
+		LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+		if (avatar && !avatar->isDead())
 		{
-			LLVOAvatar* character = dynamic_cast<LLVOAvatar*>(*iter);
-			LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>((LLVOAvatar*)item->getUserdata());
-			if (character && avatar == character)
+			for (LLVOAvatar::attachment_map_t::iterator iter = avatar->mAttachmentPoints.begin();
+				iter != avatar->mAttachmentPoints.end();)
 			{
-				for (LLVOAvatar::attachment_map_t::const_iterator attachment_point = character->mAttachmentPoints.begin();
-					attachment_point != character->mAttachmentPoints.end();
-					++attachment_point)
+				LLVOAvatar::attachment_map_t::iterator curiter = iter++;
+				LLViewerJointAttachment* attachment = curiter->second;
+				if (!attachment) continue;
+				for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
+					attachment_iter != attachment->mAttachedObjects.end();
+					++attachment_iter)
 				{
-					LLViewerJointAttachment* attachment = attachment_point->second;
-					if (attachment)
+					LLViewerObject* attached_object = (*attachment_iter);
+					if (attached_object && !attached_object->isHUDAttachment() && attached_object->mDrawable.notNull())
 					{
-						if (!attachment->mAttachedObjects.empty())
+						textures.clear();
+						const LLDrawable* drawable = attached_object->mDrawable;
+						if (drawable)
 						{
-							for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
-								attachment_iter != attachment->mAttachedObjects.end();
-								++attachment_iter)
+							LLVOVolume* volume = drawable->getVOVolume();
+							if (volume)
 							{
-								LLViewerObject* attached_object = (*attachment_iter);
-								if (attached_object && !attached_object->isHUDAttachment())
+								U32 attachment_final_cost = 0;
+								U32 attachment_total_cost = 0;
+								U32 attachment_volume_cost = 0;
+								U32 attachment_texture_cost = 0;
+								U32 attachment_base_cost = 0;
+								U64 attachment_total_triangles = 0.f;
+								U64 attachment_total_vertices = 0.f;
+								S32Bytes attachment_memory_usage;
+
+								S32 flexibles = 0;
+								S32 lights = 0;
+								S32 projectors = 0;
+								S32 alphas = 0;
+								S32 rigged = 0;
+								S32 medias = 0;
+
+								bool is_flexible = false;
+								bool has_particles = false;
+								bool is_light = false;
+								bool is_projector = false;
+								bool is_alpha = false;
+								bool has_bump = false;
+								bool has_shiny = false;
+								bool has_glow = false;
+								bool is_animated = false;
+								bool is_rigged = false;
+								bool has_media = false;
+
+								checkObject(volume, textures, is_flexible, has_particles, is_light, is_projector,
+									is_alpha, has_bump, has_shiny, has_glow, is_animated, is_rigged, has_media,
+									flexibles, lights, projectors, alphas, rigged, medias,
+									attachment_volume_cost, attachment_total_cost, attachment_base_cost,
+									attachment_total_triangles, attachment_total_vertices);
+
+								LLVOVolume::const_child_list_t& children = volume->getChildren();
+								for (LLVOVolume::const_child_list_t::const_iterator child_iter = children.begin();
+									child_iter != children.end();
+									++child_iter)
 								{
-									textures.clear();
-									const LLDrawable* drawable = attached_object->mDrawable;
-									if (drawable)
+									LLViewerObject* child_obj = *child_iter;
+									LLVOVolume *child = dynamic_cast<LLVOVolume*>(child_obj);
+									if (child)
 									{
-										LLVOVolume* volume = drawable->getVOVolume();
-										if (volume)
-										{
-											F32 attachment_final_cost = 0;
-											F32 attachment_total_cost = 0;
-											F32 attachment_volume_cost = 0;
-											F32 attachment_texture_cost = 0;
-											F32 attachment_base_cost = 0;
-											F32 attachment_total_triangles = 0.f;
-											F32 attachment_total_vertices = 0.f;
-											S32Bytes attachment_memory_usage;
-
-											S32 flexibles = 0;
-											S32 lights = 0;
-											S32 projectors = 0;
-											S32 alphas = 0;
-											S32 rigged = 0;
-											S32 medias = 0;
-
-											bool is_flexible = false;
-											bool has_particles = false;
-											bool is_light = false;
-											bool is_projector = false;
-											bool is_alpha = false;
-											bool has_bump = false;
-											bool has_shiny = false;
-											bool has_glow = false;
-											bool is_animated = false;
-											bool is_rigged = false;
-											bool has_media = false;
-
-											checkObject(volume, textures, is_flexible, has_particles, is_light, is_projector,
-														is_alpha, has_bump, has_shiny, has_glow, is_animated, is_rigged, has_media,
-														flexibles, lights, projectors, alphas, rigged, medias,
-														attachment_volume_cost, attachment_total_cost, attachment_base_cost,
-														attachment_total_triangles, attachment_total_vertices);
-
-											LLVOVolume::const_child_list_t& children = volume->getChildren();
-											for (LLVOVolume::const_child_list_t::const_iterator child_iter = children.begin();
-												child_iter != children.end();
-												++child_iter)
-											{
-												LLViewerObject* child_obj = *child_iter;
-												LLVOVolume *child = dynamic_cast<LLVOVolume*>(child_obj);
-												if (child)
-												{
-													checkObject(child, textures, is_flexible, has_particles, is_light, is_projector,
-																is_alpha, has_bump, has_shiny, has_glow, is_animated, is_rigged, has_media,
-																flexibles, lights, projectors, alphas, rigged, medias,
-																attachment_volume_cost, attachment_total_cost, attachment_base_cost,
-																attachment_total_triangles, attachment_total_vertices);
-												}
-											}
-
-											//BD - Count the texture impact and memory usage here now that we got all textures colelcted.
-											for (LLVOVolume::texture_cost_t::iterator volume_texture = textures.begin();
-												volume_texture != textures.end();
-												++volume_texture)
-											{
-												LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(volume_texture->first);
-												if (texture)
-													attachment_memory_usage += (texture->getTextureMemory() / 1024);
-												attachment_texture_cost += volume_texture->second;
-											}
-
-											//BD - Final results.
-											texture_memory += attachment_memory_usage;
-											attachment_final_cost = attachment_volume_cost + attachment_texture_cost;
-											cost += attachment_final_cost;
-											vertices += attachment_total_vertices;
-											triangles += attachment_total_triangles;
-
-											//BD - Write our results into the list.
-											//     Note that most of these values are actually not shown in the list, they are
-											//     added regardless so we have a storage for each and every attachment that we
-											//     can read all values from. This also makes cleaning up everything a lot easier.
-											LLSD row;
-											row["columns"][0]["column"] = "name";
-											row["columns"][0]["value"] = volume->getAttachmentItemName().empty() ? volume->getAttachmentItemID().asString() : volume->getAttachmentItemName();
-											row["columns"][1]["column"] = "arc";
-											row["columns"][1]["value"] = attachment_final_cost;
-											row["columns"][2]["column"] = "triangles";
-											row["columns"][2]["value"] = attachment_total_triangles;
-											row["columns"][3]["column"] = "vertices";
-											row["columns"][3]["value"] = attachment_total_vertices;
-											row["columns"][4]["column"] = "flexible";
-											row["columns"][4]["value"] = is_flexible;
-											row["columns"][5]["column"] = "particle";
-											row["columns"][5]["value"] = has_particles;
-											row["columns"][6]["column"] = "light";
-											row["columns"][6]["value"] = is_light;
-											row["columns"][7]["column"] = "projector";
-											row["columns"][7]["value"] = is_projector;
-											row["columns"][8]["column"] = "alpha";
-											row["columns"][8]["value"] = is_alpha;
-											row["columns"][9]["column"] = "bumpmap";
-											row["columns"][9]["value"] = has_bump;
-											row["columns"][10]["column"] = "shiny";
-											row["columns"][10]["value"] = has_shiny;
-											row["columns"][11]["column"] = "glow";
-											row["columns"][11]["value"] = has_glow;
-											row["columns"][12]["column"] = "animated";
-											row["columns"][12]["value"] = is_animated;
-											row["columns"][13]["column"] = "rigged";
-											row["columns"][13]["value"] = is_rigged;
-											row["columns"][14]["column"] = "media";
-											row["columns"][14]["value"] = has_media;
-											row["columns"][15]["column"] = "base_arc";
-											row["columns"][15]["value"] = attachment_base_cost;
-											row["columns"][16]["column"] = "memory";
-											row["columns"][16]["value"] = attachment_memory_usage.value();
-											row["columns"][17]["column"] = "uuid";
-											row["columns"][17]["value"] = volume->getAttachmentItemID();
-											row["columns"][18]["column"] = "lights";
-											row["columns"][18]["value"] = lights;
-											row["columns"][19]["column"] = "projectors";
-											row["columns"][19]["value"] = projectors;
-											row["columns"][20]["column"] = "alphas";
-											row["columns"][20]["value"] = alphas;
-											row["columns"][21]["column"] = "rigs";
-											row["columns"][21]["value"] = rigged;
-											row["columns"][22]["column"] = "flexis";
-											row["columns"][22]["value"] = flexibles;
-											row["columns"][23]["column"] = "medias";
-											row["columns"][23]["value"] = medias;
-											row["columns"][24]["column"] = "memory_arc";
-											row["columns"][24]["value"] = attachment_texture_cost;
-											row["columns"][25]["column"] = "total_arc";
-											row["columns"][25]["value"] = attachment_total_cost;
-											LLScrollListItem* element = mARCScroll->addElement(row);
-											element->setUserdata(attached_object);
-										}
+										checkObject(child, textures, is_flexible, has_particles, is_light, is_projector,
+											is_alpha, has_bump, has_shiny, has_glow, is_animated, is_rigged, has_media,
+											flexibles, lights, projectors, alphas, rigged, medias,
+											attachment_volume_cost, attachment_total_cost, attachment_base_cost,
+											attachment_total_triangles, attachment_total_vertices);
 									}
 								}
+
+								//BD - Count the texture impact and memory usage here now that we got all textures colelcted.
+								for (LLVOVolume::texture_cost_t::iterator volume_texture = textures.begin();
+									volume_texture != textures.end();
+									++volume_texture)
+								{
+									LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(volume_texture->first);
+									if (texture)
+										attachment_memory_usage += (texture->getTextureMemory() / 1024);
+									attachment_texture_cost += volume_texture->second;
+								}
+
+								//BD - Final results.
+								texture_memory += attachment_memory_usage;
+								attachment_final_cost = attachment_volume_cost + attachment_texture_cost;
+								cost += attachment_final_cost;
+								vertices += attachment_total_vertices;
+								triangles += attachment_total_triangles;
+
+								//BD - Write our results into the list.
+								//     Note that most of these values are actually not shown in the list, they are
+								//     added regardless so we have a storage for each and every attachment that we
+								//     can read all values from. This also makes cleaning up everything a lot easier.
+								LLSD row;
+								row["columns"][0]["column"] = "name";
+								row["columns"][0]["value"] = volume->getAttachmentItemName().empty() ? volume->getAttachmentItemID().asString() : volume->getAttachmentItemName();
+								row["columns"][1]["column"] = "arc";
+								row["columns"][1]["value"] = LLSD::Integer(attachment_final_cost);
+								row["columns"][2]["column"] = "triangles";
+								row["columns"][2]["value"] = LLSD::Integer(attachment_total_triangles);
+								row["columns"][3]["column"] = "vertices";
+								row["columns"][3]["value"] = LLSD::Integer(attachment_total_vertices);
+								row["columns"][4]["column"] = "flexible";
+								row["columns"][4]["value"] = is_flexible;
+								row["columns"][5]["column"] = "particle";
+								row["columns"][5]["value"] = has_particles;
+								row["columns"][6]["column"] = "light";
+								row["columns"][6]["value"] = is_light;
+								row["columns"][7]["column"] = "projector";
+								row["columns"][7]["value"] = is_projector;
+								row["columns"][8]["column"] = "alpha";
+								row["columns"][8]["value"] = is_alpha;
+								row["columns"][9]["column"] = "bumpmap";
+								row["columns"][9]["value"] = has_bump;
+								row["columns"][10]["column"] = "shiny";
+								row["columns"][10]["value"] = has_shiny;
+								row["columns"][11]["column"] = "glow";
+								row["columns"][11]["value"] = has_glow;
+								row["columns"][12]["column"] = "animated";
+								row["columns"][12]["value"] = is_animated;
+								row["columns"][13]["column"] = "rigged";
+								row["columns"][13]["value"] = is_rigged;
+								row["columns"][14]["column"] = "media";
+								row["columns"][14]["value"] = has_media;
+								row["columns"][15]["column"] = "base_arc";
+								row["columns"][15]["value"] = LLSD::Integer(attachment_base_cost);
+								row["columns"][16]["column"] = "memory";
+								row["columns"][16]["value"] = attachment_memory_usage.value();
+								row["columns"][17]["column"] = "uuid";
+								row["columns"][17]["value"] = volume->getAttachmentItemID();
+								row["columns"][18]["column"] = "lights";
+								row["columns"][18]["value"] = lights;
+								row["columns"][19]["column"] = "projectors";
+								row["columns"][19]["value"] = projectors;
+								row["columns"][20]["column"] = "alphas";
+								row["columns"][20]["value"] = alphas;
+								row["columns"][21]["column"] = "rigs";
+								row["columns"][21]["value"] = rigged;
+								row["columns"][22]["column"] = "flexis";
+								row["columns"][22]["value"] = flexibles;
+								row["columns"][23]["column"] = "medias";
+								row["columns"][23]["value"] = medias;
+								row["columns"][24]["column"] = "memory_arc";
+								row["columns"][24]["value"] = LLSD::Integer(attachment_texture_cost);
+								row["columns"][25]["column"] = "total_arc";
+								row["columns"][25]["value"] = LLSD::Integer(attachment_total_cost);
+								LLScrollListItem* element = mARCScroll->addElement(row);
+								element->setUserdata(attached_object);
 							}
 						}
 					}
@@ -357,9 +337,9 @@ void BDFloaterComplexity::calcARC()
 	}
 
 	//BD - Show our final total counts at the bottom.
-	mTotalVerticeCount->setValue(vertices);
-	mTotalTriangleCount->setValue(triangles);
-	mTotalCost->setValue(cost);
+	mTotalVerticeCount->setValue(LLSD::Integer(vertices));
+	mTotalTriangleCount->setValue(LLSD::Integer(triangles));
+	mTotalCost->setValue(LLSD::Integer(cost));
 	mTextureCost->setValue(texture_memory.value());
 }
 
@@ -369,13 +349,13 @@ bool BDFloaterComplexity::checkObject(LLVOVolume* vovolume, LLVOVolume::texture_
 									  bool &is_flexible, bool &has_particles, bool &is_light, bool &is_projector, bool &is_alpha,
 									  bool &has_bump, bool &has_shiny, bool &has_glow, bool &is_animated, bool &is_rigged, bool &has_media,
 									  S32 &flexibles, /*S32 particles,*/ S32 &lights, S32 &projectors, S32 &alphas, S32 &rigged, S32 &medias,
-									  F32 &volume_cost, F32 &total_cost, F32 &base_cost, F32 &total_triangles, F32 &total_vertices)
+									  U32 &volume_cost, U32 &total_cost, U32 &base_cost, U64 &total_triangles, U64 &total_vertices)
 {
 	//BD - Check all the easy costs and counts first.
 	volume_cost += vovolume->getRenderCost(textures);
 	total_cost += vovolume->mRenderComplexityTotal;
 	base_cost += vovolume->mRenderComplexityBase;
-	total_triangles += vovolume->getHighLODTriangleCount();
+	total_triangles += vovolume->getHighLODTriangleCount64();
 	total_vertices += vovolume->getNumVertices();
 
 	//BD - Check each object and count each feature being used.
@@ -509,9 +489,6 @@ void BDFloaterComplexity::onSelectEntry()
 	}
 }
 
-//BD - This is currently 100% unfunctional, i haven't figured out how to select any given object yet
-//     without doing predefined server stuff or actually clicking on them. Maybe i should just make
-//     it show a beacon instead, that would probably be easier.
 void BDFloaterComplexity::onSelectAttachment()
 {
 	std::vector<LLScrollListItem*> items = mARCScroll->getAllSelected();
@@ -521,22 +498,21 @@ void BDFloaterComplexity::onSelectAttachment()
 		LL_WARNS("Posing") << "Trying to select" << LL_ENDL;
 		LLScrollListItem* item = (*it);
 		LLViewerObject* vobject = (LLViewerObject*)item->getUserdata();
-		if (vobject)
+		if (vobject && !vobject->isDead())
 		{
-			LL_WARNS("Posing") << "Found object" << LL_ENDL;
-			LLViewerObject* select_object = gObjectList.findObject(vobject->getID());
-			if (select_object && !select_object->isSelected())
+			LLSelectMgr::instance().deselectAll();
+			mObjectSelection = LLSelectMgr::instance().selectObjectAndFamily(vobject, FALSE, TRUE);
+
+			// Mark this as a transient selection
+			struct SetTransient : public LLSelectedNodeFunctor
 			{
-				LL_WARNS("Posing") << "In list, trying to select" << LL_ENDL;
-				vobject->setSelected(TRUE);
-				LLSelectNode* nodep = LLSelectMgr::getInstance()->getSelection()->findNode(vobject);
-				if (nodep)
+				bool apply(LLSelectNode* node)
 				{
-					// rebuild selection with orphans
-					LLSelectMgr::getInstance()->deselectObjectAndFamily(vobject);
-					LLSelectMgr::getInstance()->selectObjectAndFamily(vobject);
+					node->setTransient(TRUE);
+					return true;
 				}
-			}
+			} functor;
+			mObjectSelection->applyToNodes(&functor);
 		}
 	}
 }

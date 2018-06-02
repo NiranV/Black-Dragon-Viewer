@@ -3696,6 +3696,28 @@ S32 LLVolume::getNumTriangles(S32* vcount) const
 	return triangle_count;
 }
 
+S64 LLVolume::getNumTriangles64(S64* vcount) const
+{
+	U64 triangle_count = 0;
+	U32 vertex_count = 0;
+
+	for (S32 i = 0; i < getNumVolumeFaces(); ++i)
+	{
+		const LLVolumeFace& face = getVolumeFace(i);
+		triangle_count += face.mNumIndices / 3;
+
+		vertex_count += face.mNumVertices;
+	}
+
+
+	if (vcount)
+	{
+		*vcount = vertex_count;
+	}
+
+	return triangle_count;
+}
+
 
 //-----------------------------------------------------------------------------
 // generateSilhouetteVertices()

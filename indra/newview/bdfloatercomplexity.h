@@ -23,6 +23,8 @@
 #include "lltextbox.h"
 #include "llcharacter.h"
 #include "llvovolume.h"
+#include "llsafehandle.h"
+#include "llselectmgr.h"
 
 class BDFloaterComplexity :
 	public LLFloater
@@ -43,7 +45,7 @@ private:
 					bool &is_flexible, bool &has_particles, bool &is_light, bool &is_projector,	bool &is_alpha,
 					bool &has_bump, bool &has_shiny, bool &has_glow, bool &is_animated, bool &is_rigged, bool &has_media,
 					S32 &flexibles, /*S32 particles,*/ S32 &lights, S32 &projectors, S32 &alphas, S32 &rigged, S32 &medias,
-					F32 &volume_cost, F32 &total_cost, F32 &base_cost, F32 &total_triangles, F32 &total_vertices);
+					U32 &volume_cost, U32 &total_cost, U32 &base_cost, U64 &total_triangles, U64 &total_vertices);
 	void onSelectEntry();
 	void onSelectAttachment();
 
@@ -57,6 +59,8 @@ private:
 	LLTextBox*						mTotalTriangleCount;
 	LLTextBox*						mTotalCost;
 	LLTextBox*						mTextureCost;
+
+	LLSafeHandle<LLObjectSelection> mObjectSelection;
 };
 
 #endif
