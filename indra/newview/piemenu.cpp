@@ -149,9 +149,9 @@ void PieMenu::show(S32 x, S32 y, LLView* spawning_view)
 
 	// move the mouse pointer into the center of the menu
 	LLUI::setMousePositionLocal(getParent(),x,y);
-	// set our drawing origin to the center of the menu, taking UI scale into account
-	LLVector2 scale=gViewerWindow->getDisplayScale();
-	setOrigin(x-PIE_OUTER_SIZE/scale.mV[VX],y-PIE_OUTER_SIZE/scale.mV[VY]);
+	//BD - Set our drawing origin to the center of the menu
+	//     Don't take UI Size into account, it breaks the selection area.
+	setOrigin(x - PIE_OUTER_SIZE, y - PIE_OUTER_SIZE);
 	// grab mouse control
 	gFocusMgr.setMouseCapture(this);
 
@@ -273,10 +273,9 @@ void PieMenu::draw( void )
 	// get the current mouse pointer position local to the pie
 	S32 x,y;
 	LLUI::getMousePositionLocal(this,&x,&y);
-	// remember to take the UI scaling into account
-	LLVector2 scale=gViewerWindow->getDisplayScale();
-	// move mouse coordinates to be relative to the pie center
-	LLVector2 mouseVector(x-PIE_OUTER_SIZE/scale.mV[VX],y-PIE_OUTER_SIZE/scale.mV[VY]);
+	//BD - move mouse coordinates to be relative to the pie center
+	//     Don't take UI size into account, it breaks the selection area.
+	LLVector2 mouseVector(x-PIE_OUTER_SIZE,y-PIE_OUTER_SIZE);
 
 	// get the distance from the center point
 	F32 distance=mouseVector.length();
@@ -295,8 +294,14 @@ void PieMenu::draw( void )
 		currentSegment=(S32) (8.0*angle/(F_PI*2.0)) % 8;
 	}
 
+	//BD - Take UI size into account for the pie menu visuals.
+	//     I don't understand why it was divide by rather than multiply by
+	//     in the first place but since the visuals are the only thing being
+	//     offsetted we only need to have those take UI size into account to
+	//     make the selection area and the visuals match.
+	LLVector2 scale = gViewerWindow->getDisplayScale();
 	// move origin point to the center of our rectangle
-	gGL.translatef(r.getWidth()/2,r.getHeight()/2,0.0);
+	gGL.translatef(r.getWidth() / 2 * scale.mV[VX], r.getHeight() / 2 * scale.mV[VY], 0.0);
 
 	//BD - draw the general pie background
 	//gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, 0, (F_PI * 2.0) * factor, 48, bgColor, borderColor);
