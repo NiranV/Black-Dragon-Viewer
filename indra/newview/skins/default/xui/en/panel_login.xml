@@ -126,7 +126,7 @@ top="600"
         name="intel_warning_text"
         width="994"
         word_wrap="false">
-　　　　　　　　　&lt;red&gt;Intel Graphics Card Detected&lt;/red&gt;                                              Full graphic fidelity availability compromised.
+&lt;red&gt;Intel Graphics Card detected&lt;/red&gt;                                            Performance will be impacted.
         </text>
   </panel>
   <layout_stack

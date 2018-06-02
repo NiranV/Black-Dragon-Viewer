@@ -6149,7 +6149,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
         name="app_name_text"
         width="994"
         word_wrap="false">
-&lt;red&gt;Intel Graphics Card Detected&lt;/red&gt; - Full graphic fidelity availability compromised.
+&lt;red&gt;Intel Graphics Card detected&lt;/red&gt; - Performance will be impacted.
         </text>
        </panel>
       </layout_panel>
