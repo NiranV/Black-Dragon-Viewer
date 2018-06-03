@@ -3942,6 +3942,7 @@ LLDrawable* LLSpatialPartition::lineSegmentIntersect(const LLVector4a& start, co
 
 LLDrawInfo::LLDrawInfo(U16 start, U16 end, U32 count, U32 offset, 
 					   LLViewerTexture* texture, LLVertexBuffer* buffer,
+					   bool selected,
 					   BOOL fullbright, U8 bump, BOOL particle, F32 part_size)
 :	LLTrace::MemTrackableNonVirtual<LLDrawInfo, 16>("LLDrawInfo"),
 	mVertexBuffer(buffer),
@@ -3970,6 +3971,7 @@ LLDrawInfo::LLDrawInfo(U16 start, U16 end, U32 count, U32 offset,
 	mEnvIntensity(0.0f),
 	mAlphaMaskCutoff(0.5f),
 	mDiffuseAlphaMode(0),
+	mSelected(selected),
 //	//BD - Motion Blur
 	mModelMatrix(NULL),
 	mLastModelMatrix(NULL)
