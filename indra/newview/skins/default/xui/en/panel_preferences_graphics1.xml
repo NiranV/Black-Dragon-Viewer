@@ -3211,7 +3211,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-   enabled="false"
 	  name="deferred_layout"
 	  width="515">
    <button
@@ -3308,7 +3307,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="592"
 	  auto_resize="false"
-   enabled="false"
       visible="false"
 	  name="deferred_layout_panel"
 	  width="515">
@@ -4107,7 +4105,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-   enabled="false"
 	  name="ao_layout"
 	  width="515">
      <button
@@ -4151,7 +4148,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="109"
 	  auto_resize="false"
-   enabled="false"
       visible="false"
 	  name="ao_layout_panel"
 	  width="515">
@@ -4336,7 +4332,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-   enabled="false"
 	  name="dof_layout"
 	  width="515">
  
@@ -4379,8 +4374,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="167"
 	  auto_resize="false"
-   enabled="false"
-      visible="false"
 	  name="dof_layout_panel"
 	  width="515">
  <check_box
@@ -4627,7 +4620,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-   enabled="false"
 	  name="motionblur_layout"
 	  width="515">
       <button
@@ -4684,7 +4676,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="87"
 	  auto_resize="false"
-   enabled="false"
       visible="false"
 	  name="motionblur_layout_panel"
 	  width="515">
@@ -4811,7 +4802,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-   enabled="false"
 	  name="godrays_layout"
 	  width="515">
    <button
@@ -4867,7 +4857,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="102"
 	  auto_resize="false"
-   enabled="false"
       visible="false"
 	  name="godrays_layout_panel"
 	  width="515">
@@ -4996,7 +4985,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-   enabled="false"
 	  name="post_layout"
 	  width="515">
    <button
@@ -5035,8 +5023,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="118"
 	  auto_resize="false"
-   enabled="false"
-      visible="false"
 	  name="post_layout_panel"
 	  width="515">
    <check_box
@@ -5198,7 +5184,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-   enabled="false"
 	  name="tonemapping_layout"
 	  width="515">
      <button
@@ -5241,7 +5226,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="489"
 	  auto_resize="false"
-   enabled="false"
       visible="false"
 	  name="tonemapping_layout_panel"
 	  width="515">
@@ -5979,7 +5963,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="26"
 	  auto_resize="false"
-   enabled="false"
 	  name="vignette_layout"
 	  width="515">
       <button
@@ -6018,7 +6001,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  layout="topleft"
 	  height="69"
 	  auto_resize="false"
-   enabled="false"
       visible="false"
 	  name="vignette_layout_panel"
 	  width="515">
