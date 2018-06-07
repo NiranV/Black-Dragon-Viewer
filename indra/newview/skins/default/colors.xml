@@ -882,23 +882,6 @@
     <color
       name="PanelNotificationListItem"
       value="0.3 0.3 0.3 .3" />
-
- <!-- Black Dragon Colors -->
- <color
- name="Friend"
- value="0.447 0.884 0.544 1" />
- <color
- name="Black_60"
- value="0 0 0 0.6" />
- <color
- name="Black_75"
- value="0 0 0 0.75" />
- <color
- name="Black_78"
- value="0 0 0 0.78" />
- <color
- name="Black_95"
- value="0 0 0 0.95" />
  
  <!-- Generic color names (legacy) -->
  <color
@@ -918,6 +901,22 @@
  value="0 0 1 1"/>
   
  <!-- Black Dragon colors -->
+ 
+ <color
+ name="Friend"
+ value="0.447 0.884 0.544 1" />
+ <color
+ name="Black_60"
+ value="0 0 0 0.6" />
+ <color
+ name="Black_75"
+ value="0 0 0 0.75" />
+ <color
+ name="Black_78"
+ value="0 0 0 0.78" />
+ <color
+ name="Black_95"
+ value="0 0 0 0.95" />
  
  <color
  name="ModeratorColor"
