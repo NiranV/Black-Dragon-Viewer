@@ -137,6 +137,9 @@ LLColor4 LLSelectMgr::sHighlightInspectColor;
 LLColor4 LLSelectMgr::sHighlightParentColor;
 LLColor4 LLSelectMgr::sHighlightChildColor;
 LLColor4 LLSelectMgr::sContextSilhouetteColor;
+//BD
+S32 LLSelectMgr::sRenderHighlightType = 0;
+BOOL LLSelectMgr::sSelectionUpdate = FALSE;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // struct LLDeRezInfo
@@ -6304,8 +6307,8 @@ BOOL LLSelectNode::allowOperationOnNode(PermissionBit op, U64 group_proxy_power)
 }
 
 
-//helper function for pushing relevant vertices from drawable to GL
-void pushWireframe(LLDrawable* drawable)
+//BD - helper function for pushing relevant vertices from drawable to GL
+void pushWireframe(LLDrawable* drawable, bool rebuild_rigged)
 {
 	LLVOVolume* vobj = drawable->getVOVolume();
 	if (vobj)
@@ -6318,8 +6321,13 @@ void pushWireframe(LLDrawable* drawable)
 
 		if (drawable->isState(LLDrawable::RIGGED))
 		{
+			//BD - Update the rigged volume periodically to reduce performance impact.
+			if (LLSelectMgr::sSelectionUpdate &&
+				rebuild_rigged)
+			{
 				vobj->updateRiggedVolume();
-				volume = vobj->getRiggedVolume();
+			}
+			volume = vobj->getRiggedVolume();
 		}
 		else
 		{
@@ -6337,112 +6345,173 @@ void pushWireframe(LLDrawable* drawable)
 
 		gGL.popMatrix();
 	}
-	
 }
 
 void LLSelectNode::renderOneWireframe(const LLColor4& color)
 {
-    //Need to because crash on ATI 3800 (and similar cards) MAINT-5018 
-    LLGLDisable multisample(LLPipeline::RenderFSAASamples > 0 ? GL_MULTISAMPLE_ARB : 0);
+	//BD - We want to update the selection outlines every 5 seconds only.
+	bool update_rigged = false;
+	if (mUpdateTimer.getElapsedTimeF32() > 5.f)
+	{
+		update_rigged = true;
+		mUpdateTimer.reset();
+	}
 
-    LLViewerObject* objectp = getObject();
-    if (!objectp)
-    {
-        return;
-    }
+	//BD - Need to because crash on ATI 3800 (and similar cards) MAINT-5018 
+	if (gGLManager.mIsATI)
+	{
+		LLGLDisable multisample(LLPipeline::RenderFSAASamples > 0 ? GL_MULTISAMPLE_ARB : 0);
+	}
 
-    LLDrawable* drawable = objectp->mDrawable;
-    if (!drawable)
-    {
-        return;
-    }
+	LLViewerObject* objectp = getObject();
+	if (!objectp)
+	{
+		return;
+	}
 
-    LLGLSLShader* shader = LLGLSLShader::sCurBoundShaderPtr;
+	LLDrawable* drawable = objectp->mDrawable;
+	if (!drawable)
+	{
+		return;
+	}
 
-    if (shader)
-    {
-        gDebugProgram.bind();
-    }
+	LLGLSLShader* shader = LLGLSLShader::sCurBoundShaderPtr;
 
-    gGL.matrixMode(LLRender::MM_MODELVIEW);
-    gGL.pushMatrix();
+	if (shader)
+	{
+		gDebugProgram.bind();
+	}
 
-    BOOL is_hud_object = objectp->isHUDAttachment();
+	gGL.matrixMode(LLRender::MM_MODELVIEW);
+	gGL.pushMatrix();
 
-    if (drawable->isActive())
-    {
-        gGL.loadMatrix(gGLModelView);
-        gGL.multMatrix((F32*)objectp->getRenderMatrix().mMatrix);
-    }
-    else if (!is_hud_object)
-    {
-        gGL.loadIdentity();
-        gGL.multMatrix(gGLModelView);
-        LLVector3 trans = objectp->getRegion()->getOriginAgent();
-        gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
-    }
+	BOOL is_hud_object = objectp->isHUDAttachment();
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if (drawable->isActive())
+	{
+		gGL.loadMatrix(gGLModelView);
+		gGL.multMatrix((F32*)objectp->getRenderMatrix().mMatrix);
+	}
+	else if (!is_hud_object)
+	{
+		gGL.loadIdentity();
+		gGL.multMatrix(gGLModelView);
+		LLVector3 trans = objectp->getRegion()->getOriginAgent();
+		gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
+	}
 
-    if (LLSelectMgr::sRenderHiddenSelections) // && gFloaterTools && gFloaterTools->getVisible())
-    {
-        gGL.blendFunc(LLRender::BF_SOURCE_COLOR, LLRender::BF_ONE);
-        LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE, GL_GEQUAL);
-        if (shader)
-        {
-            gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
-            pushWireframe(drawable);
-        }
-        else
-        {
-            LLGLEnable fog(GL_FOG);
-            glFogi(GL_FOG_MODE, GL_LINEAR);
-            float d = (LLViewerCamera::getInstance()->getPointOfInterest() - LLViewerCamera::getInstance()->getOrigin()).magVec();
-            LLColor4 fogCol = color * (F32)llclamp((LLSelectMgr::getInstance()->getSelectionCenterGlobal() - gAgentCamera.getCameraPositionGlobal()).magVec() / (LLSelectMgr::getInstance()->getBBoxOfSelection().getExtentLocal().magVec() * 4), 0.0, 1.0);
-            glFogf(GL_FOG_START, d);
-            glFogf(GL_FOG_END, d*(1 + (LLViewerCamera::getInstance()->getView() / LLViewerCamera::getInstance()->getDefaultFOV())));
-            glFogfv(GL_FOG_COLOR, fogCol.mV);
+	//BD - Different Selection Methods for different people.
+	if (LLSelectMgr::sRenderHighlightType == 0
+		|| LLSelectMgr::sRenderHighlightType == 3)
+	{
+		//BD - Default and Wireframe
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else if (LLSelectMgr::sRenderHighlightType == 1
+		|| LLSelectMgr::sRenderHighlightType == 2)
+	{
+		//BD - Black Dragon and Dots
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	}
+	else
+	{
+		//BD - Beacon of Light
+		glPolygonMode(GL_FRONT, GL_POINT);
+	}
 
-            gGL.setAlphaRejectSettings(LLRender::CF_DEFAULT);
-            {
-                gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
-                pushWireframe(drawable);
-            }
-        }
-    }
+	if (LLSelectMgr::sRenderHiddenSelections) // && gFloaterTools && gFloaterTools->getVisible())
+	{
+		gGL.blendFunc(LLRender::BF_SOURCE_COLOR, LLRender::BF_ONE);
+		LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE, GL_GEQUAL);
+		if (shader)
+		{
+			gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
+			//BD
+			pushWireframe(drawable, update_rigged);
+		}
+		else
+		{
+			LLGLEnable fog(GL_FOG);
+			glFogi(GL_FOG_MODE, GL_LINEAR);
+			float d = (LLViewerCamera::getInstance()->getPointOfInterest() - LLViewerCamera::getInstance()->getOrigin()).magVec();
+			LLColor4 fogCol = color * (F32)llclamp((LLSelectMgr::getInstance()->getSelectionCenterGlobal() - gAgentCamera.getCameraPositionGlobal()).magVec() / (LLSelectMgr::getInstance()->getBBoxOfSelection().getExtentLocal().magVec() * 4), 0.0, 1.0);
+			glFogf(GL_FOG_START, d);
+			glFogf(GL_FOG_END, d*(1 + (LLViewerCamera::getInstance()->getView() / LLViewerCamera::getInstance()->getDefaultFOV())));
+			glFogfv(GL_FOG_COLOR, fogCol.mV);
 
-    gGL.flush();
-    gGL.setSceneBlendType(LLRender::BT_ALPHA);
+			gGL.setAlphaRejectSettings(LLRender::CF_DEFAULT);
+			{
+				gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
+				//BD
+				pushWireframe(drawable, update_rigged);
+			}
+		}
+	}
 
-    gGL.diffuseColor4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, LLSelectMgr::sHighlightAlpha * 2);
+	gGL.flush();
+	//BD
+	gGL.setSceneBlendType(LLRender::BT_REPLACE);
 
-    {
-        bool wireframe_selection = gFloaterTools && gFloaterTools->getVisible();
+	gGL.diffuseColor4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, LLSelectMgr::sHighlightAlpha * 2);
 
-        LLGLDisable depth(wireframe_selection ? 0 : GL_BLEND);
-        LLGLEnable stencil(wireframe_selection ? 0 : GL_STENCIL_TEST);
+	//BD - Always use outline shader where possible.
+	//     Looks cooler and runs smoother. (Doesn't work on rigged though)
+	{
+		LLGLDisable depth(0);
+		LLGLEnable stencil(0);
 
-        if (!wireframe_selection)
-        { //modify wireframe into outline selection mode
-            glStencilFunc(GL_NOTEQUAL, 2, 0xffff);
-            glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-        }
+		//modify wireframe into outline selection mode
+		if (LLSelectMgr::sRenderHighlightType == 0
+			|| LLSelectMgr::sRenderHighlightType == 3)
+		{
+			//BD - Default and Wireframe
+			glStencilFunc(GL_ALWAYS, 2, 0xffff);
+		}
+		else
+		{
+			//BD - Black Dragon, Dots and Beacon of Light
+			glStencilFunc(GL_GEQUAL, 2, 0xffff);
+		}
+		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
-        LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
-        glPolygonOffset(3.f, 3.f);
-        glLineWidth(5.f);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        pushWireframe(drawable);
-    }
+		LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
+		glPolygonOffset(LLSelectMgr::sRenderHighlightType == 0 ? 0.f : 3.f, LLSelectMgr::sRenderHighlightType == 0 ? 0.f : 3.f);
+		glLineWidth(4.f);
 
-    glLineWidth(1.f);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    gGL.popMatrix();
+		if (LLSelectMgr::sRenderHighlightType == 0
+			|| LLSelectMgr::sRenderHighlightType == 3)
+		{
+			//BD - Default and Wireframe
+			glLineWidth(2.f);
+			glPointSize(1.f);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+		else if (LLSelectMgr::sRenderHighlightType == 1
+			|| LLSelectMgr::sRenderHighlightType == 4)
+		{
+			//BD - Black Dragon and Beacon of Light
+			glLineWidth(4.f);
+			glPointSize(1.f);
+			glPolygonMode(GL_BACK, GL_LINE);
+		}
+		else
+		{
+			//BD - Dots
+			glPointSize(2.f);
+			glPolygonMode(GL_FRONT, GL_POINT);
+		}
+		pushWireframe(drawable, update_rigged);
+	}
 
-    if (shader)
-    {
-        shader->bind();
-    }
+	//BD
+	glLineWidth(1.f);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	gGL.popMatrix();
+
+	if (shader)
+	{
+		shader->bind();
+	}
 }
 
 //-----------------------------------------------------------------------------

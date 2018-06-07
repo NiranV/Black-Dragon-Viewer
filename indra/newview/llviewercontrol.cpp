@@ -600,6 +600,20 @@ void handleRenderAutoMuteByteLimitChanged(const LLSD& new_value);
 //BD
 /////////////////////////////////////////////////////////////////////////////
 
+//BD
+static bool handleHighlightChanged(const LLSD& newvalue)
+{
+	LLSelectMgr::sRenderHighlightType = newvalue.asInteger();
+	return true;
+}
+
+//BD
+static bool handleSelectionUpdateChanged(const LLSD& newvalue)
+{
+	LLSelectMgr::sSelectionUpdate = newvalue.asInteger();
+	return true;
+}
+
 //BD - Freeze World
 bool toggle_freeze_world(const LLSD& newvalue)
 {
@@ -1006,6 +1020,10 @@ void settings_setup_listeners()
 // [/RLVa:KB]
 	
 	//BD - Special Debugs and handles
+	//BD - Misc
+	gSavedSettings.getControl("RenderHighlightType")->getSignal()->connect(boost::bind(&handleHighlightChanged, _2));
+	gSavedSettings.getControl("FastSelectionUpdates")->getSignal()->connect(boost::bind(&handleSelectionUpdateChanged, _2));
+
 	//BD - Windlight
 	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
 	gSavedSettings.getControl("CloudNoiseImageName")->getSignal()->connect(boost::bind(&handleCloudNoiseChanged, _2));

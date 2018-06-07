@@ -224,6 +224,9 @@ public:
 	std::vector<LLVector3>	mSilhouetteNormals;	// array of normals to render silhouette of object
 	BOOL					mSilhouetteExists;	// need to generate silhouette?
 
+	//BD
+	LLFrameTimer				mUpdateTimer;
+
 protected:
 	LLPointer<LLViewerObject>	mObject;
 	S32				mTESelectMask;
@@ -411,6 +414,10 @@ public:
 	static LLColor4				sHighlightChildColor;
 	static LLColor4				sHighlightInspectColor;
 	static LLColor4				sContextSilhouetteColor;
+
+	//BD
+	static S32					sRenderHighlightType;
+	static BOOL					sSelectionUpdate;
 
 	LLCachedControl<bool>					mHideSelectedObjects;
 	LLCachedControl<bool>					mRenderHighlightSelections;

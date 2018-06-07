@@ -48,6 +48,9 @@
 #include "llspatialpartition.h"
 #include "llviewershadermgr.h"
 
+//BD
+#include "llglcommonfunc.h"
+
 //#include "llimagebmp.h"
 //#include "../tools/imdebug/imdebug.h"
 
@@ -629,6 +632,10 @@ void LLDrawPoolBump::renderGroup(LLSpatialGroup* group, U32 type, U32 mask, BOOL
 		{
 			params.mGroup->rebuildMesh();
 		}
+
+		//BD
+		LLGLEnableFunc stencil_test(GL_STENCIL_TEST, params.mSelected, &LLGLCommonFunc::selected_stencil_test);
+
 		params.mVertexBuffer->setBuffer(mask);
 		params.mVertexBuffer->drawRange(params.mDrawMode, params.mStart, params.mEnd, params.mCount, params.mOffset);
 		gPipeline.addTrianglesDrawn(params.mCount, params.mDrawMode);
@@ -1542,6 +1549,10 @@ void LLDrawPoolBump::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL 
 	{
 		params.mGroup->rebuildMesh();
 	}
+
+	//BD
+	LLGLEnableFunc stencil_test(GL_STENCIL_TEST, params.mSelected, &LLGLCommonFunc::selected_stencil_test);
+
 	params.mVertexBuffer->setBuffer(mask);
 	params.mVertexBuffer->drawRange(params.mDrawMode, params.mStart, params.mEnd, params.mCount, params.mOffset);
 	gPipeline.addTrianglesDrawn(params.mCount, params.mDrawMode);

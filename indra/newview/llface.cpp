@@ -571,9 +571,9 @@ void LLFace::renderSelected(LLViewerTexture *imagep, const LLColor4& color)
 				LLRiggedVolume* rigged = volume->getRiggedVolume();
 				if (rigged)
 				{
-                    // called when selecting a face during edit of a mesh object
-					LLGLEnable offset(GL_POLYGON_OFFSET_FILL);
-					glPolygonOffset(-1.f, -1.f);
+                    //BD - called when selecting a face during edit of a mesh object
+					//LLGLEnable offset(GL_POLYGON_OFFSET_FILL);
+					//glPolygonOffset(-1.f, -1.f);
 					gGL.multMatrix((F32*) volume->getRelativeXform().mMatrix);
 					const LLVolumeFace& vol_face = rigged->getVolumeFace(getTEOffset());
 					LLVertexBuffer::unbind();

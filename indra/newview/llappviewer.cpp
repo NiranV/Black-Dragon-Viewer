@@ -593,6 +593,10 @@ static void settings_to_globals()
 	LLSelectMgr::sRenderHiddenSelections = gSavedSettings.getBOOL("RenderHiddenSelections");
 	LLSelectMgr::sRenderLightRadius = gSavedSettings.getBOOL("RenderLightRadius");
 
+	//BD
+	LLSelectMgr::sRenderHighlightType = gSavedSettings.getS32("RenderHighlightType");
+	LLSelectMgr::sSelectionUpdate = gSavedSettings.getBOOL("FastSelectionUpdates");
+
 	gAgentPilot.setNumRuns(gSavedSettings.getS32("StatsNumRuns"));
 	gAgentPilot.setQuitAfterRuns(gSavedSettings.getBOOL("StatsQuitAfterRuns"));
 	gAgent.setHideGroupTitle(gSavedSettings.getBOOL("RenderHideGroupTitle"));

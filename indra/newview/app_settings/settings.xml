@@ -17948,6 +17948,29 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-</map>
+    <key>FastSelectionUpdates</key>
+    <map>
+      <key>Comment</key>
+      <string>Enable/disable updating the selection outlines every few seconds.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>RenderHighlightType</key>
+    <map>
+      <key>Comment</key>
+      <string>Select the selection outline type. </string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    
+    </map>
 </llsd>
 

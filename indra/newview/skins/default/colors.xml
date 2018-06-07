@@ -760,10 +760,10 @@
  reference="BeaconColor" />
  <color
  name="SilhouetteChildColor"
- value="0.13 0.42 0.77 1" />
+ value="0.13 0.42 0.77 0.2" />
  <color
  name="SilhouetteParentColor"
- reference="Yellow" />
+ value="0.4 0.4 0 0.2" />
  <color
  name="SliderDisabledThumbColor"
  reference="White_25" />

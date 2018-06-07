@@ -23,7 +23,7 @@ width="510">
 	      <panel
 	      layout="topleft"
 	      follows="left|top|right"
-	      height="730"
+	      height="790"
 	      name="viewer_scroll_panel"
 	      top="0"
 	      left="0"
@@ -194,6 +194,136 @@ width="510">
 		     name="ShowBeam"
 		     top_pad="0"
 		     width="256" />
+       <check_box
+		     control_name="FastSelectionUpdates"
+		     height="16"
+		     initial_value="true"
+		     label="Refresh Selection Outlines"
+		     tool_tip="This option toggles whether the selection outlines should be refreshed every 5 seconds. Enabling this option will cause heavy performance impact every time the outlines of a high poly object are rebuilt. By default this happens as fast as possible but in this Viewer it has been delayed to every 5 seconds and can optionally be toggled off completely. Using Freeze World to make selection outlines line up better is advised."
+		     layout="topleft"
+		     left="10"
+		     name="FastSelectionUpdates"
+		     top_pad="0"
+		     width="256">
+       <check_box.check_button
+         image_overlay="Caution_Widget"
+         image_overlay_alignment="left"/>
+       </check_box>
+       <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="InterfaceSize"
+ top_pad="5"
+ width="220">
+ Selection Outline Style:
+ </text>
+                  <radio_group
+                  control_name="RenderHighlightType"
+                  height="19"
+                  layout="topleft"
+                  left="10"
+                  name="RenderHighlightType"
+                  top_pad="5"
+                  width="600">
+                        <radio_item
+                        height="16"
+                        label="Default"
+                        value="0"
+                        tool_tip="This option changes the selection outline to look similar to the new default of Linden Labs."
+                        layout="topleft"
+                        name="0"
+                        top="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay="Default_Widget"
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Dots"
+                        halign="right"
+                        value="2"
+                        tool_tip="This option changes the selection outline to only show dots on vertices."
+                        layout="topleft"
+                        name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Wireframe"
+                        halign="right"
+                        value="3"
+                        tool_tip="This option changes the selection outline to look like wireframe only with a minimal outline."
+                        layout="topleft"
+                        name="3"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Beacon"
+                        halign="right"
+                        value="4"
+                        tool_tip="This option changes the selection outline to highlight the selection surface as if it was lit up."
+                        layout="topleft"
+                        name="3"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Black Dragon"
+                        value="1"
+                        tool_tip="This option changes the selection outline to have an outline and small dots on vertices, highlighting transparent with wireframe."
+                        layout="topleft"
+                        name="0"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                  </radio_group>
 		     
 			 <panel
  follows="left|top|right"
