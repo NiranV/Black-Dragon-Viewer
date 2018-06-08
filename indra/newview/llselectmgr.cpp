@@ -6449,8 +6449,7 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 	}
 
 	gGL.flush();
-	//BD
-	gGL.setSceneBlendType(LLRender::BT_REPLACE);
+	gGL.setSceneBlendType(LLRender::BT_ALPHA);
 
 	gGL.diffuseColor4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, LLSelectMgr::sHighlightAlpha * 2);
 
