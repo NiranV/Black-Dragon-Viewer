@@ -118,10 +118,6 @@ BOOL BDFloaterAnimations::postBuild()
 	mMotionScroll = getChild<LLScrollListCtrl>("motions_scroll");
 
 	//BD - Posing
-	mPoseScroll = this->getChild<LLScrollListCtrl>("poses_scroll", true);
-	mPoseScroll->setCommitOnSelectionChange(TRUE);
-	mPoseScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onPoseControlsRefresh, this));
-	mPoseScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onPoseLoad, this, ""));
 	mJointsScroll = this->getChild<LLScrollListCtrl>("joints_scroll", true);
 	mJointsScroll->setCommitOnSelectionChange(TRUE);
 	mJointsScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onJointControlsRefresh, this));
@@ -140,6 +136,10 @@ BOOL BDFloaterAnimations::postBuild()
 	mPosZ = getChild<LLUICtrl>("Position_Z");
 
 	//BD - Animations
+	mPoseScroll = this->getChild<LLScrollListCtrl>("poses_scroll", true);
+	mPoseScroll->setCommitOnSelectionChange(TRUE);
+	mPoseScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onPoseControlsRefresh, this));
+	mPoseScroll->setDoubleClickCallback(boost::bind(&BDFloaterAnimations::onPoseLoad, this, ""));
 	mAnimEditorScroll = this->getChild<LLScrollListCtrl>("anim_editor_scroll", true);
 	mAnimEditorScroll->setCommitCallback(boost::bind(&BDFloaterAnimations::onAnimControlsRefresh, this));
 	mAnimScrollIndex = 0;
@@ -598,25 +598,6 @@ void BDFloaterAnimations::onPoseRefresh()
 		}
 	}
 	onJointControlsRefresh();
-}
-
-void BDFloaterAnimations::onPoseControlsRefresh()
-{
-	LLScrollListItem* item = mPoseScroll->getFirstSelected();
-	if (item)
-	{
-		getChild<LLUICtrl>("interp_time")->setValue(item->getColumn(1)->getValue());
-		getChild<LLUICtrl>("interp_type")->setValue(item->getColumn(2)->getValue());
-		getChild<LLUICtrl>("interp_time")->setEnabled(true);
-		getChild<LLUICtrl>("interp_type")->setEnabled(true);
-		getChild<LLUICtrl>("add_poses")->setEnabled(true);
-	}
-	else
-	{
-		getChild<LLUICtrl>("interp_time")->setEnabled(false);
-		getChild<LLUICtrl>("interp_type")->setEnabled(false);
-		getChild<LLUICtrl>("add_poses")->setEnabled(false);
-	}
 }
 
 void BDFloaterAnimations::onClickPoseSave()
@@ -1328,36 +1309,57 @@ void BDFloaterAnimations::onAnimAdd(const LLSD& param)
 			row["columns"][0]["column"] = "name";
 			row["columns"][0]["value"] = pose->getColumn(0)->getValue().asString();
 		}
+		else
+		{
+			//BD - We should return here since when we dont add anything we don't need to do the rest.
+			//     This MIGHT actually cause the issues users are seeing that i cannot reproduce.
+			LL_WARNS("Animator") << "No scroll list item was selected or found, return." << LL_ENDL;
+			return;
+		}
 	}
 
 	new_item = mAnimEditorScroll->addElement(row);
 
-	//BD - Let's go through all entries in the list and copy them into a new
-	//     list in our new desired order, flag the old ones for removal while
-	//     we do this.
-	for (std::vector<LLScrollListItem*>::iterator it = old_items.begin();
-		it != old_items.end(); ++it)
+	if (!new_item)
 	{
-		LLScrollListItem* item = (*it);
-		if (item)
-		{
-			item->setFlagged(true);
-			new_items.push_back(item);
-		}
-
-		if (index == selected_index)
-		{
-			new_item->setFlagged(true);
-			new_items.push_back(new_item);
-		}
-		index++;
+		LL_WARNS("Animator") << "Item we wrote is invalid, abort." << LL_ENDL;
+		new_item->setFlagged(true);
+		mAnimEditorScroll->deleteFlaggedItems();
+		return;
 	}
 
-	onAnimListWrite(new_items);
+	//BD - We can skip this on first add.
+	if (selected_index != -1)
+	{
+		//BD - Let's go through all entries in the list and copy them into a new
+		//     list in our new desired order, flag the old ones for removal while
+		//     we do this.
+		for (std::vector<LLScrollListItem*>::iterator it = old_items.begin();
+			it != old_items.end(); ++it)
+		{
+			LLScrollListItem* item = (*it);
+			if (item)
+			{
+				new_items.push_back(item);
+			}
+
+			if (index == selected_index)
+			{
+				new_items.push_back(new_item);
+			}
+			index++;
+		}
+
+		onAnimListWrite(new_items);
+	}
 
 	//BD - Select added entry and make it appear as nothing happened.
 	//     In case of nothing being selected yet, select the first entry.
 	mAnimEditorScroll->selectNthItem(selected_index + 1);
+
+	//BD - Update our controls when we add items, the move and delete buttons
+	//     should enable now that we selected something.
+	onAnimControlsRefresh();
 }
 
 void BDFloaterAnimations::onAnimListWrite(std::vector<LLScrollListItem*> item_list)
@@ -1370,6 +1372,8 @@ void BDFloaterAnimations::onAnimListWrite(std::vector<LLScrollListItem*> item_li
 		LLScrollListItem* item = (*it);
 		if (item)
 		{
+			item->setFlagged(true);
+
 			LLSD row;
 			LLScrollListCell* column = item->getColumn(0);
 			if (column)
@@ -1382,8 +1386,13 @@ void BDFloaterAnimations::onAnimListWrite(std::vector<LLScrollListItem*> item_li
 					row["columns"][1]["column"] = "time";
 					row["columns"][1]["value"] = item->getColumn(1)->getValue().asString();
 				}
-				mAnimEditorScroll->addElement(row);
+				LLScrollListItem* new_item = mAnimEditorScroll->addElement(row);
+				new_item->setFlagged(false);
 			}
+		}
+		else
+		{
+			LL_WARNS("Animator") << "Invalid element or nothing in list." << LL_ENDL;
 		}
 	}
 
@@ -1411,6 +1420,16 @@ void BDFloaterAnimations::onAnimMove(const LLSD& param)
 		|| (new_index == 0 && param.asString() == "Up")
 		|| old_items.empty())
 	{
+		LL_WARNS("Animator") << "We are already at the top/bottom!" << LL_ENDL;
+		return;
+	}
+
+	LLScrollListItem* cur_item = mAnimEditorScroll->getFirstSelected();
+
+	//BD - Don't allow moving if we don't have anything selected either. (Crashfix)
+	if (!cur_item)
+	{
+		LL_WARNS("Animator") << "Nothing selected to move, abort." << LL_ENDL;
 		return;
 	}
 
@@ -1424,14 +1443,7 @@ void BDFloaterAnimations::onAnimMove(const LLSD& param)
 		mAnimEditorScroll->selectNthItem(new_index + 1);
 	}
 
-	LLScrollListItem* cur_item = mAnimEditorScroll->getFirstSelected();
-
-	//BD - Don't allow moving if we don't have anything selected either. (Crashfix)
-	if (!cur_item)
-	{
-		return;
-	}
-
+	cur_item = mAnimEditorScroll->getFirstSelected();
 	cur_item->setFlagged(true);
 
 	//BD - Let's go through all entries in the list and copy them into a new
@@ -1481,6 +1493,10 @@ void BDFloaterAnimations::onAnimDelete()
 
 	//BD - Make sure we don't have a scrollbar unless we need it.
 	mAnimEditorScroll->updateLayout();
+
+	//BD - Update our controls when we delete items. Most of them should
+	//     disable now that nothing is selected anymore.
+	onAnimControlsRefresh();
 }
 
 void BDFloaterAnimations::onAnimSave()
@@ -1524,12 +1540,15 @@ void BDFloaterAnimations::onAnimStop()
 
 void BDFloaterAnimations::onAnimControlsRefresh()
 {
+	S32 item_count = mAnimEditorScroll->getItemCount();
+	S32 index = mAnimEditorScroll->getFirstSelectedIndex();
 	LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
 	if (item)
 	{
 		getChild<LLUICtrl>("delete_poses")->setEnabled(true);
-		getChild<LLUICtrl>("move_up")->setEnabled(true);
-		getChild<LLUICtrl>("move_down")->setEnabled(true);
+		getChild<LLUICtrl>("move_up")->setEnabled(index != 0);
+		getChild<LLUICtrl>("move_down")->setEnabled(!((index + 1) >= item_count));
+
 		if (item->getColumn(0)->getValue().asString() == "Wait")
 		{
 			getChild<LLUICtrl>("anim_time")->setEnabled(true);
@@ -1544,10 +1563,28 @@ void BDFloaterAnimations::onAnimControlsRefresh()
 		getChild<LLUICtrl>("delete_poses")->setEnabled(false);
 		getChild<LLUICtrl>("anim_time")->setEnabled(false);
 		getChild<LLUICtrl>("move_up")->setEnabled(false);
-		getChild<LLUICtrl>("move_down")->setEnabled(true);
+		getChild<LLUICtrl>("move_down")->setEnabled(false);
 	}
 }
 
+void BDFloaterAnimations::onPoseControlsRefresh()
+{
+	LLScrollListItem* item = mPoseScroll->getFirstSelected();
+	if (item)
+	{
+		getChild<LLUICtrl>("interp_time")->setValue(item->getColumn(1)->getValue());
+		getChild<LLUICtrl>("interp_type")->setValue(item->getColumn(2)->getValue());
+		getChild<LLUICtrl>("interp_time")->setEnabled(true);
+		getChild<LLUICtrl>("interp_type")->setEnabled(true);
+		getChild<LLUICtrl>("add_poses")->setEnabled(true);
+	}
+	else
+	{
+		getChild<LLUICtrl>("interp_time")->setEnabled(false);
+		getChild<LLUICtrl>("interp_type")->setEnabled(false);
+		getChild<LLUICtrl>("add_poses")->setEnabled(false);
+	}
+}
 
 ////////////////////////////////
 //BD - Misc Functions
