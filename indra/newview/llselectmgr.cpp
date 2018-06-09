@@ -6419,7 +6419,10 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		glPolygonMode(GL_FRONT, GL_POINT);
 	}
 
-	if (LLSelectMgr::sRenderHiddenSelections) // && gFloaterTools && gFloaterTools->getVisible())
+	//BD - Force selection outlines coming through for every mode except Black Dragon
+	//     otherwise they dont look like they should.
+	if (LLSelectMgr::sRenderHiddenSelections
+		|| LLSelectMgr::sRenderHighlightType != 1) // && gFloaterTools && gFloaterTools->getVisible())
 	{
 		gGL.blendFunc(LLRender::BF_SOURCE_COLOR, LLRender::BF_ONE);
 		LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE, GL_GEQUAL);
