@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.1.4 - Selective Dragon]"
+       label="[CHANNEL] [VERSION] - [3.1.5 - Selective Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="7091"
+       height="7281"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,8 +174,57 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="26"
+              height="130"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Changed: Additional logging when something goes wrong in the animator.
+Changed: Additional safeguards to prevent the animator from getting out of order or causing problems.
+Changed: Version to 3.1.5 - Selective Dragon.
+Fixed: Selection Outline of all modes except Black Dragon not looking as they should.
+Fixed: Animator seemingly not working for random people. (Thanks Spiritus &amp; Richard)
+Fixed: Move Down button in Animator being enabled when first opening the window.
+Fixed: Both move buttons being enabled/disabled together, they will now enable/disable seperately when they should.
+Fixed: Tail category name empty.
+Misc: Cleaned up and moved some code in bdfloateranimations.cpp.
+Misc: Settings.xml cleanup.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.1.4
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="26"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
