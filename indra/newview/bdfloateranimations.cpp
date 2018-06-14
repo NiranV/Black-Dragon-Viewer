@@ -862,7 +862,8 @@ void BDFloaterAnimations::onPoseStart()
 	{
 		//BD - Pause all other motions and prevent them from interrupting us even
 		//     if they technically shouldn't be able to anyway.
-		gAgentAvatarp->getMotionController().pauseAllMotions();
+		//     This might not be necessary anymore.
+		//gAgentAvatarp->getMotionController().pauseAllMotions();
 
 		gAgent.setPosing();
 		gAgent.stopFidget();
@@ -878,7 +879,8 @@ void BDFloaterAnimations::onPoseStart()
 
 		//BD - Unpause all other motions that we paused to prevent them overriding
 		//     our Poser.
-		gAgentAvatarp->getMotionController().unpauseAllMotions();
+		//     This might not be necessary anymore.
+		//gAgentAvatarp->getMotionController().unpauseAllMotions();
 		gAgent.clearPosing();
 		gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
 	}
@@ -939,6 +941,7 @@ void BDFloaterAnimations::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 ////////////////////////////////
 void BDFloaterAnimations::onJointRefresh()
 {
+	bool is_posing = gAgent.getPosing();
 	mJointsScroll->clearRows();
 	S32 i = 0;
 	for (;; i++)
@@ -973,7 +976,7 @@ void BDFloaterAnimations::onJointRefresh()
 			LLVector3 vec3;
 
 			//BD - When posing get the target values otherwise we end up getting the in-interpolation values.
-			if (gAgent.getPosing())
+			if (is_posing)
 			{
 				joint->getTargetRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
 			}
@@ -997,7 +1000,7 @@ void BDFloaterAnimations::onJointRefresh()
 			//BD - Special case for mPelvis as it has position information too.
 			if (name == "mPelvis")
 			{
-				if (gAgent.getPosing())
+				if (is_posing)
 				{
 					vec3 = joint->getTargetPosition();
 				}
@@ -1016,22 +1019,28 @@ void BDFloaterAnimations::onJointRefresh()
 			LLScrollListItem* item = mJointsScroll->addElement(row);
 			item->setUserdata(joint);
 
-			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-			if (motion)
+			//BD - We need to check if we are posing or not, simply set all bones to deactivated
+			//     when we are not posed otherwise they will remain on "enabled" state. This behavior
+			//     could be confusing to the user, this is due to how animations work.
+			if (is_posing)
 			{
-				LLPose* pose = motion->getPose();
-				if (pose)
+				BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+				if (motion)
 				{
-					LLPointer<LLJointState> joint_state = pose->findJointState(joint);
-					if (joint_state)
+					LLPose* pose = motion->getPose();
+					if (pose)
 					{
-						((LLScrollListText*)item->getColumn(1))->setFontStyle(LLFontGL::BOLD);
-					}
-					else if (!gAgent.mIsPosing)
-					{
-						((LLScrollListText*)item->getColumn(1))->setFontStyle(LLFontGL::NORMAL);
+						LLPointer<LLJointState> joint_state = pose->findJointState(joint);
+						if (joint_state)
+						{
+							((LLScrollListText*)item->getColumn(1))->setFontStyle(LLFontGL::BOLD);
+						}
 					}
 				}
+			}
+			else
+			{
+				((LLScrollListText*)item->getColumn(1))->setFontStyle(LLFontGL::NORMAL);
 			}
 		}
 		else
@@ -1232,9 +1241,10 @@ void BDFloaterAnimations::onJointReset()
 			LLScrollListCell* column_2 = item->getColumn(3);
 			LLScrollListCell* column_3 = item->getColumn(4);
 
-			column_1->setValue(ll_round(0, 0.001f));
-			column_2->setValue(ll_round(0, 0.001f));
-			column_3->setValue(ll_round(0, 0.001f));
+			F32 round_val = ll_round(0, 0.001f);
+			column_1->setValue(round_val);
+			column_2->setValue(round_val);
+			column_3->setValue(round_val);
 			
 			//BD - While editing rotations, make sure we use a bit of linear interpolation to make movements smoother.
 			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
@@ -1261,9 +1271,9 @@ void BDFloaterAnimations::onJointReset()
 				LLScrollListCell* column_5 = item->getColumn(6);
 				LLScrollListCell* column_6 = item->getColumn(7);
 
-				column_4->setValue(ll_round(0, 0.001f));
-				column_5->setValue(ll_round(0, 0.001f));
-				column_6->setValue(ll_round(0, 0.001f));
+				column_4->setValue(round_val);
+				column_5->setValue(round_val);
+				column_6->setValue(round_val);
 
 				joint->setTargetPosition(LLVector3::zero);
 			}
@@ -1273,6 +1283,47 @@ void BDFloaterAnimations::onJointReset()
 	onJointControlsRefresh();
 }
 
+/*void BDFloaterAnimations::onJointStateCheck()
+{
+	bool all_enabled = true;
+	//BD - We check if all bones are enabled or not and pause or unpause depending on it.
+	S32 i = 0;
+	for (;; i++)
+	{
+		LLJoint* joint = gAgentAvatarp->getCharacterJoint(i);
+		if (joint)
+		{
+			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+			if (motion)
+			{
+				LLPose* pose = motion->getPose();
+				if (pose)
+				{
+					LLPointer<LLJointState> joint_state = pose->findJointState(joint);
+					if (!joint_state)
+					{
+						//BD - One joint state was not enabled, break out and unpause all motions.
+						all_enabled = false;
+						gAgentAvatarp->getMotionController().unpauseAllMotions();
+						break;
+					}
+				}
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	if (all_enabled)
+	{
+		//BD - We ran through with no bone disabled. Pause all motions.
+		gAgentAvatarp->getMotionController().pauseAllMotions();
+
+		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
+	}
+}*/
 
 ////////////////////////////////
 //BD - Animations

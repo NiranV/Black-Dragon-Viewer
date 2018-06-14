@@ -59,6 +59,7 @@ private:
 	void onJointChangeState();
 	void onJointControlsRefresh();
 	void onJointReset();
+	//void onJointStateCheck();
 
 	//BD - Animating
 	void onAnimAdd(const LLSD& param);
