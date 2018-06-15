@@ -21,11 +21,7 @@
 #include "llfloater.h"
 #include "llscrolllistctrl.h"
 #include "llcharacter.h"
-#include "llsliderctrl.h"
-#include "llcombobox.h"
-#include "llframetimer.h"
-#include "llkeyframemotion.h"
-#include "llvoavatar.h"
+//#include "llframetimer.h"
 
 class BDFloaterAnimations :
 	public LLFloater
@@ -36,44 +32,12 @@ private:
 	/*virtual*/	~BDFloaterAnimations();
 	/*virtual*/	BOOL postBuild();
 	/*virtual*/ void draw();
+	/*virtual*/ void onOpen(const LLSD& key);
+	/*virtual*/	void onClose(bool app_quitting);
 
 	//BD - Motions
 	void onMotionRefresh();
 	void onMotionCommand(LLUICtrl* ctrl, const LLSD& param);
-
-	//BD - Posing
-	void onClickPoseSave();
-	BOOL onPoseSave(S32 type, F32 time, bool editing);
-	BOOL onPoseLoad(const LLSD& name);
-	void onPoseStart();
-	void onPoseDelete();
-	void onPoseRefresh();
-	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
-	void onPoseControlsRefresh();
-
-	//BD - Joints
-	void onJointRefresh();
-	void onJointSet(LLUICtrl* ctrl, const LLSD& param);
-	void onJointSetFinal(LLUICtrl* ctrl, const LLSD& param);
-	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
-	void onJointChangeState();
-	void onJointControlsRefresh();
-	void onJointReset();
-	//void onJointStateCheck();
-
-	//BD - Animating
-	void onAnimAdd(const LLSD& param);
-	void onAnimListWrite(std::vector<LLScrollListItem*> item_list);
-	void onAnimMove(const LLSD& param);
-	void onAnimDelete();
-	void onAnimSave();
-	void onAnimSet();
-	void onAnimPlay();
-	void onAnimStop();
-	void onAnimControlsRefresh();
-
-	/*virtual*/ void onOpen(const LLSD& key);
-	/*virtual*/	void onClose(bool app_quitting);
 
 	LLScrollListCtrl*				mAvatarScroll;
 	LLScrollListCtrl*				mMotionScroll;
@@ -81,25 +45,13 @@ private:
 	uuid_vec_t						mIDs;
 	std::vector<LLAnimPauseRequest>	mAvatarPauseHandles;
 
-	//BD - Posing
-	LLScrollListCtrl*				mPoseScroll;
-	LLScrollListCtrl*				mJointsScroll;
-
-	LLUICtrl*					mRotX;
-	LLUICtrl*					mRotY;
-	LLUICtrl*					mRotZ;
-	LLUICtrl*					mRotXBig;
-	LLUICtrl*					mRotYBig;
-	LLUICtrl*					mRotZBig;
-	LLUICtrl*					mPosX;
-	LLUICtrl*					mPosY;
-	LLUICtrl*					mPosZ;
-
+	/*
 	//BD - Animations
 	LLScrollListCtrl*				mAnimEditorScroll;
 	LLFrameTimer					mAnimPlayTimer;
 	F32								mExpiryTime;
 	S32								mAnimScrollIndex;
+	*/
 };
 
 #endif

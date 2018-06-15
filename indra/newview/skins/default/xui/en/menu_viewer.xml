@@ -3838,7 +3838,7 @@
 		  parameter="MachinimaSidebar"/>
 	    </menu_item_check>
 		 <menu_item_check
-        label="Pose/Animation Manipulator"
+        label="Animation Controls"
         name="Animation Controls">
             <menu_item_check.on_check
              function="Floater.Visible"
@@ -3846,6 +3846,16 @@
             <menu_item_check.on_click
              function="Floater.Toggle"
              parameter="animation_control" />
+        </menu_item_check>
+   <menu_item_check
+        label="Poser"
+        name="Poser">
+            <menu_item_check.on_check
+             function="Floater.Visible"
+             parameter="poser" />
+            <menu_item_check.on_click
+             function="Floater.Toggle"
+             parameter="poser" />
         </menu_item_check>
    <menu_item_check
         label="Recorder"

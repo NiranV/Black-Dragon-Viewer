@@ -105,6 +105,7 @@ set(viewer_SOURCE_FILES
     bdfloateranimations.cpp
     bdfloatercamera.cpp
     bdfloatercomplexity.cpp
+	bdfloaterposer.cpp
 	bdsidebar.cpp
     bdposingmotion.cpp
 	exopostprocess.cpp
@@ -741,6 +742,7 @@ set(viewer_HEADER_FILES
   bdfloatercamera.h
     bdfloateranimations.h
     bdfloatercomplexity.h
+	bdfloaterposer.h
 	bdsidebar.h
     bdposingmotion.h
     exopostprocess.h
