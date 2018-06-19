@@ -126,15 +126,15 @@
                  name="None"
                  value="None" />
                 <combo_box.item
-                 label="Alpha blending"
+                 label="Blending"
                  name="Alpha blending"
                  value="Alpha blending" />
                 <combo_box.item
-                 label="Alpha masking"
+                 label="Masking"
                  name="Alpha masking"
                  value="Alpha masking" />
                 <combo_box.item
-                 label="Emissive mask"
+                 label="Emissive"
                  name="Emissive mask"
                  value="Emissive mask" />
             </combo_box>
