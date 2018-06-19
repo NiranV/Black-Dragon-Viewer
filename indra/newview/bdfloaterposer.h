@@ -21,6 +21,7 @@
 #include "llfloater.h"
 #include "llscrolllistctrl.h"
 #include "llkeyframemotion.h"
+#include "llframetimer.h"
 
 class BDFloaterPoser :
 	public LLFloater
@@ -54,6 +55,17 @@ private:
 	void onJointReset();
 	//void onJointStateCheck();
 
+	//BD - Animating
+	void onAnimAdd(const LLSD& param);
+	void onAnimListWrite(std::vector<LLScrollListItem*> item_list);
+	void onAnimMove(const LLSD& param);
+	void onAnimDelete();
+	void onAnimSave();
+	void onAnimSet();
+	void onAnimPlay();
+	void onAnimStop();
+	void onAnimControlsRefresh();
+
 	//BD - Misc
 	void onUpdateLayout();
 
@@ -70,6 +82,12 @@ private:
 	LLUICtrl*					mPosX;
 	LLUICtrl*					mPosY;
 	LLUICtrl*					mPosZ;
+
+	//BD - Animations
+	LLScrollListCtrl*				mAnimEditorScroll;
+	LLFrameTimer					mAnimPlayTimer;
+	F32								mExpiryTime;
+	S32								mAnimScrollIndex;
 };
 
 #endif

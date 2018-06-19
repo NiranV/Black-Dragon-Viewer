@@ -21,7 +21,6 @@
 #include "llfloater.h"
 #include "llscrolllistctrl.h"
 #include "llcharacter.h"
-//#include "llframetimer.h"
 
 class BDFloaterAnimations :
 	public LLFloater
@@ -44,14 +43,6 @@ private:
 
 	uuid_vec_t						mIDs;
 	std::vector<LLAnimPauseRequest>	mAvatarPauseHandles;
-
-	/*
-	//BD - Animations
-	LLScrollListCtrl*				mAnimEditorScroll;
-	LLFrameTimer					mAnimPlayTimer;
-	F32								mExpiryTime;
-	S32								mAnimScrollIndex;
-	*/
 };
 
 #endif

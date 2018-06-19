@@ -5,8 +5,9 @@ height="431"
 layout="topleft"
 name="floater_animation_control"
 title="Poser"
-width="494">
+width="517">
 	<!-- Collapsed Size 494 -->
+	<!-- Expanded Size 745 -->
 	<string
 		name="icon_category" translate="false">
 					Inv_Shape
@@ -52,16 +53,37 @@ width="494">
 					Misc
 	</string>
 
+		<layout_stack
+   follows="top|left|right"
+   height="425"
+   layout="topleft"
+   left="7"
+   border_size="-4"
+			close_time_constant="0.02"
+			open_time_constant="0.02"
+   mouse_opaque="false"
+   name="poser_stack"
+   orientation="horizontal"
+   top="0"
+   width="506">
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="420"
+	  auto_resize="false"
+			visible="true"
+	  name="poser_layout"
+	  width="486">
 		<panel
  follows="left|top|bottom"
  height="420"
  background_visible="false"
  layout="topleft"
  mouse_opaque="false"
- left="7"
+ left="0"
  name="title"
  top="0"
- width="480">
+ width="483">
 	<icon
 	follows="top|left"
 	height="320"
@@ -143,7 +165,7 @@ width="494">
   left_pad="1"
   top_delta="0"
   name="pose_name"
-  width="124"/>
+  width="157"/>
  <line_editor
   commit_on_focus_lost="false"
   follows="left|top"
@@ -152,7 +174,7 @@ width="494">
   left_pad="1"
   top_delta="0"
   name="interpolation_time"
-  width="82"/>
+  width="78"/>
  <combo_box
      follows="left|top"
      height="20"
@@ -161,7 +183,7 @@ width="494">
      top_delta="0"
      max_chars="135"
      name="interpolation_type"
-     width="82">
+     width="86">
         <combo_box.item
          enabled="true"
          label="None"
@@ -182,12 +204,15 @@ width="494">
  height="21"
  follows="top|left"
  layout="topleft"
- label="Save"
+ label=""
+	image_overlay="Icon_Dock_Foreground"
+	image_overlay_alignment="right"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
+		tool_tip="Save the current pose."
  name="save_poses"
- width="58"
+ width="25"
  top_delta="0"
  left_pad="1">
 		<button.commit_callback
@@ -198,7 +223,7 @@ width="494">
        height="21"
 	   is_toggle="true"
        layout="topleft"
-	   image_overlay="Conv_toolbar_expand"
+	   image_overlay="Hierarchy_View_On"
 	   image_hover_unselected="Toolbar_Middle_Over"
 	   image_selected="Toolbar_Middle_Selected"
 	   image_unselected="Toolbar_Middle_Off"
@@ -377,7 +402,6 @@ width="494">
  can_edit_text="true"
  follows="left|top"
  height="14"
- enabled="false"
  increment="0.001"
  initial_value="0"
  label="Position X:"
@@ -398,7 +422,6 @@ width="494">
  can_edit_text="true"
  follows="left|top"
  height="14"
- enabled="false"
  increment="0.001"
  initial_value="0"
  label="Position Y:"
@@ -419,7 +442,6 @@ width="494">
  can_edit_text="true"
  follows="left|top"
  height="14"
- enabled="false"
  increment="0.001"
  initial_value="0"
  label="Position Z:"
@@ -450,12 +472,13 @@ width="494">
  height="21"
  follows="top|left"
  layout="topleft"
+	enabled="false"
  label="Reset Selected Bone(s)"
  label_selected="Disable Selected Bone(s)"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
- name="toggle_bone"
+ name="reset_bone"
  width="258"
  top="0"
  left_delta="2">
@@ -467,6 +490,7 @@ width="494">
  follows="top|left"
  layout="topleft"
  is_toggle="true"
+	enabled="false"
  label="Activate Selected Bone(s)"
  label_selected="Disable Selected Bone(s)"
  image_hover_unselected="Toolbar_Middle_Over"
@@ -480,16 +504,25 @@ width="494">
    function="Joint.ChangeState"/>
  </button>
 	</panel>
-
+	
 	</panel>
+		
+						</layout_panel>
+						<layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="420"
+			visible="false"
+	  auto_resize="false"
+	  name="poses_layout"
+	  width="232">
 		<panel
  follows="top|left|bottom"
  height="420"
  background_visible="false"
  layout="topleft"
  mouse_opaque="false"
-	visible="false"
- left_pad="3"
+ left="1"
  name="poses_panel"
  top="0"
  width="225">
@@ -534,13 +567,15 @@ width="494">
  height="21"
  follows="top|left"
  layout="topleft"
- label="Load"
+ label=""
+	enabled="false"
  tool_tip="Load the currently selected pose and apply all bone rotations saved in it."
+	image_overlay="Icon_Undock_Foreground"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="load_poses"
- width="42"
+ width="25"
  top_pad="-1"
  left_delta="2">
    <button.commit_callback
@@ -564,7 +599,7 @@ width="494">
   left_pad="1"
   top_delta="0"
   name="interp_time"
-  width="62">
+  width="79">
 	<line_editor.commit_callback
    function="Pose.Set"
    parameter="time"/>
@@ -611,6 +646,7 @@ width="494">
  follows="top|left"
  layout="topleft"
  label=""
+	enabled="false"
  tool_tip="Delete the currently selected pose."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
@@ -623,8 +659,28 @@ width="494">
 	<button.commit_callback
    function="Pose.Delete"/>
  </button>
- 
- <!--<button
+		</panel>
+						</layout_panel>
+	<layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="420"
+			visible="false"
+	  auto_resize="false"
+	  name="animator_layout"
+	  width="258">
+		<panel
+ follows="top|left|bottom"
+ height="420"
+ background_visible="false"
+ layout="topleft"
+ mouse_opaque="false"
+	visible="true"
+ left="0"
+ name="animator_panel"
+ top="0"
+ width="221">
+ <button
  height="31"
  follows="top|left"
  layout="topleft"
@@ -637,8 +693,8 @@ width="494">
  name="add_poses"
  enabled="false"
  width="26"
- top="160"
- left_pad="4">
+ top="130"
+ left="0">
    <button.commit_callback
    function="Anim.Add"/>
  </button>
@@ -737,16 +793,16 @@ width="494">
  
  <icon
 	follows="top|left"
-	height="419"
+	height="423"
 	color="1 1 1 1"
 	image_name="Panel_Background"
 	layout="topleft"
 	name="vicon"
 	mouse_opaque="false"
 	visible="true"
-	width="225"
+	width="221"
 	top="0"
-	left="255"/>
+	left_pad="2"/>
  <panel
  follows="left|top|right"
  height="20"
@@ -754,16 +810,16 @@ width="494">
  bg_alpha_color="0.10 0.43 0.77 0.28"
  layout="topleft"
  mouse_opaque="false"
- left="257"
+ left_delta="2"
  name="title"
  top="2"
- width="221"/>
+ width="217"/>
  
  <text
  name="first_person_label"
  follows="left|top"
  layout="topleft"
- left="265"
+ left_delta="8"
  height="12"
  width="350"
  top_delta="4">
@@ -772,11 +828,11 @@ width="494">
  <scroll_list
  column_padding="2"
  draw_heading="true"
- height="375"
+ height="379"
  follows="left|top|right"
  layout="topleft"
- left="255"
- width="225"
+ left_delta="-10"
+ width="221"
  multi_select="true"
  name="anim_editor_scroll"
  top_pad="3">
@@ -825,7 +881,7 @@ width="494">
 	follows="left|top|right"
 	image_name="Toolbar_Middle_Off"
 	height="21"
-	width="72"
+	width="68"
 	layout="topleft"
 	left_pad="1"
 	top_delta="0"/>
@@ -842,7 +898,7 @@ width="494">
   width="62">
 	<line_editor.commit_callback
    function="Anim.Set"/>
- </line_editor>-->
+ </line_editor>
  <!--<combo_box
      follows="left|top"
      height="20"
@@ -869,4 +925,44 @@ width="494">
          value="" />
     </combo_box>-->
 	</panel>
+						</layout_panel>
+	<layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="420"
+	  auto_resize="false"
+			visible="true"
+	  name="animator_btn_layout"
+	  width="30">
+		<panel
+ follows="left|top|bottom"
+ height="420"
+ background_visible="false"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="0"
+ width="20">
+			<button
+       follows="left|top"
+       height="421"
+	   is_toggle="true"
+       layout="topleft"
+	   image_overlay="Command_Poser_Icon"
+				image_overlay_color="1 1 1 0.6"
+				image_bottom_pad="1"
+	   image_hover_unselected="Toolbar_Middle_Over"
+	   image_selected="Toolbar_Middle_Selected"
+	   image_unselected="Toolbar_Middle_Off"
+       name="animator"
+       left="1"
+	   top="2"
+       width="18" >
+		<button.commit_callback
+   function="Pose.Layout"/>
+ </button>
+		</panel>
+	</layout_panel>
+		</layout_stack>
 </floater>
