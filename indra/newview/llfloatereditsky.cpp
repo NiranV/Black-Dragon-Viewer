@@ -224,7 +224,7 @@ void LLFloaterEditSky::initCallbacks(void)
 	getChild<LLUICtrl>("WLMaxAltitude2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onFloatControlMoved, this, _1, &param_mgr.mMaxAlt));
 	getChild<LLUICtrl>("WLDistanceMult2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onFloatControlMoved, this, _1, &param_mgr.mDistanceMult));
 
-	getChild<LLUICtrl>("WLEastAngle2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onSunMoved, this, _1, &param_mgr.mLightnorm));
+	getChild<LLUICtrl>("WLEastAngle2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onEastAngleChanged, this));
 
 	// Dome
 	getChild<LLUICtrl>("WLGamma2")->setCommitCallback(boost::bind(&LLFloaterEditSky::onFloatControlMoved, this, _1, &param_mgr.mWLGamma));
@@ -606,6 +606,14 @@ void LLFloaterEditSky::onTimeChanged()
 	F32 time24 = getChild<LLTimeCtrl>("WLDayTime")->getTime24();
 	getChild<LLMultiSliderCtrl>("WLSunPos")->setCurSliderValue(time24, TRUE);
 	onSunMoved(getChild<LLUICtrl>("WLSunPos"), &LLWLParamManager::instance().mLightnorm);
+}
+
+//BD
+void LLFloaterEditSky::onEastAngleChanged()
+{
+	F32 angle = getChild<LLUICtrl>("WLEastAngle2")->getValue().asReal();
+	getChild<LLUICtrl>("WLEastAngle")->setValue(angle);
+	onSunMoved(getChild<LLUICtrl>("WLEastAngle"), &LLWLParamManager::instance().mLightnorm);
 }
 
 void LLFloaterEditSky::onStarAlphaMoved(LLUICtrl* ctrl)

@@ -17639,6 +17639,17 @@
     <key>Value</key>
     <real>0.0</real>
   </map>
+  <key>WLEastAngle</key>
+  <map>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.0</real>
+  </map>
   <key>WLDistancMult</key>
   <map>
     <key>Comment</key>
