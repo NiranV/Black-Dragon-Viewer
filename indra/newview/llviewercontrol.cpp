@@ -1053,6 +1053,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	gSavedSettings.getControl("RenderDepthOfFieldHighQuality")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
 	gSavedSettings.getControl("RenderDeferredEnvironmentMap")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
+	gSavedSettings.getControl("RenderHighPrecisionNormals")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 
 	//BD - Rendering (Main Toggles)
 	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
