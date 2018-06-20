@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.1.6 - Selective Dragon]"
+       label="[CHANNEL] [VERSION] - [3.1.7 - Selective Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="7612"
+       height="7682"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,8 +174,50 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="312"
+              height="39"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Changed: Version to 3.1.7.
+Fixed: Poser toolbar button opening the wrong window.
+Fixed: Memory slider text boxes not usable due to their constant updating.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.1.6
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="312"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
