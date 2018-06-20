@@ -1748,8 +1748,12 @@ void LLFloaterPreference::refreshMemoryControls()
 	//BD - Cap out at the highest possible stable value we tested.
 	max_mem = llclamp(max_mem, 128, 1992);
 
-	mSystemMemory->setMaxValue(max_mem);
-	mSceneMemory->setMaxValue(max_mem);
+	//BD - Don't update max values when the widget is selected, we make entering values impossible otherwise.
+	if (!mSystemMemory->hasFocus() && !mSceneMemory->hasFocus())
+	{
+		mSystemMemory->setMaxValue(max_mem);
+		mSceneMemory->setMaxValue(max_mem);
+	}
 
 	mProgressBar->setValue(percent);
 }
