@@ -1844,8 +1844,6 @@ void LLFloaterPreference::apply()
 	std::string cache_location = gDirUtilp->getExpandedFilename(LL_PATH_CACHE, "");
 	setCacheLocation(cache_location);
 	
-	LLViewerMedia::setCookiesEnabled(getChild<LLUICtrl>("cookies_enabled")->getValue());
-	
 	if (hasChild("web_proxy_enabled", TRUE) &&hasChild("web_proxy_editor", TRUE) && hasChild("web_proxy_port", TRUE))
 	{
 		bool proxy_enable = getChild<LLUICtrl>("web_proxy_enabled")->getValue();
