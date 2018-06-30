@@ -88,11 +88,8 @@ void BDFloaterComplexity::onClose(bool app_quitting)
 void BDFloaterComplexity::onAvatarsRefresh()
 {
 	//BD - Flag all items first, we're going to unflag them when they are valid.
-	std::vector<LLScrollListItem*> items = mAvatarScroll->getAllData();
-	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
-		it != items.end(); ++it)
+	for (LLScrollListItem* item : mAvatarScroll->getAllData())
 	{
-		LLScrollListItem* item = (*it);
 		if (item)
 		{
 			item->setFlagged(TRUE);
@@ -100,19 +97,15 @@ void BDFloaterComplexity::onAvatarsRefresh()
 	}
 
 	bool create_new;
-	for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
-		iter != LLCharacter::sInstances.end(); ++iter)
+	for (LLCharacter* character : LLCharacter::sInstances)
 	{
-		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*iter);
+		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
 		if (avatar)
 		{
 			LLUUID uuid = avatar->getID();
 			create_new = true;
-			std::vector<LLScrollListItem*> items = mAvatarScroll->getAllData();
-			for (std::vector<LLScrollListItem*>::iterator it = items.begin();
-				it != items.end(); ++it)
+			for (LLScrollListItem* item : mAvatarScroll->getAllData())
 			{
-				LLScrollListItem* item = (*it);
 				if (avatar == item->getUserdata())
 				{
 					item->setFlagged(FALSE);
@@ -180,17 +173,16 @@ void BDFloaterComplexity::calcARC()
 		LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
 		if (avatar && !avatar->isDead())
 		{
-			for (LLVOAvatar::attachment_map_t::iterator iter = avatar->mAttachmentPoints.begin();
-				iter != avatar->mAttachmentPoints.end();)
+			for (auto iter : avatar->mAttachmentPoints)
 			{
-				LLVOAvatar::attachment_map_t::iterator curiter = iter++;
-				LLViewerJointAttachment* attachment = curiter->second;
-				if (!attachment) continue;
-				for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
-					attachment_iter != attachment->mAttachedObjects.end();
-					++attachment_iter)
+				LLViewerJointAttachment* attachment = iter.second;
+				if (!attachment)
 				{
-					LLViewerObject* attached_object = (*attachment_iter);
+					continue;
+				}
+
+				for (LLViewerObject* attached_object : attachment->mAttachedObjects)
+				{
 					if (attached_object && !attached_object->isHUDAttachment() && attached_object->mDrawable.notNull())
 					{
 						textures.clear();
@@ -234,12 +226,8 @@ void BDFloaterComplexity::calcARC()
 									attachment_volume_cost, attachment_total_cost, attachment_base_cost,
 									attachment_total_triangles, attachment_total_vertices);
 
-								LLVOVolume::const_child_list_t& children = volume->getChildren();
-								for (LLVOVolume::const_child_list_t::const_iterator child_iter = children.begin();
-									child_iter != children.end();
-									++child_iter)
+								for (LLViewerObject* child_obj : volume->getChildren())
 								{
-									LLViewerObject* child_obj = *child_iter;
 									LLVOVolume *child = dynamic_cast<LLVOVolume*>(child_obj);
 									if (child)
 									{
@@ -252,14 +240,14 @@ void BDFloaterComplexity::calcARC()
 								}
 
 								//BD - Count the texture impact and memory usage here now that we got all textures colelcted.
-								for (LLVOVolume::texture_cost_t::iterator volume_texture = textures.begin();
-									volume_texture != textures.end();
-									++volume_texture)
+								for (auto volume_texture : textures)
 								{
-									LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(volume_texture->first);
+									LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(volume_texture.first);
 									if (texture)
+									{
 										attachment_memory_usage += (texture->getTextureMemory() / 1024);
-									attachment_texture_cost += volume_texture->second;
+									}
+									attachment_texture_cost += volume_texture.second;
 								}
 
 								//BD - Final results.
@@ -399,7 +387,7 @@ bool BDFloaterComplexity::checkObject(LLVOVolume* vovolume, LLVOVolume::texture_
 	//BD - We iterate through faces here because below checks need to be checked
 	//     on each surface and are no global object specific features, they are face
 	//     specific.
-	for (S32 i = 0; i < vovolume->getNumFaces(); i++)
+	for (S32 i = 0; (i < vovolume->getNumFaces()); i++)
 	{
 		LLTextureEntry* te = vovolume->getTE(i);
 		if (te)
@@ -491,28 +479,27 @@ void BDFloaterComplexity::onSelectEntry()
 
 void BDFloaterComplexity::onSelectAttachment()
 {
-	std::vector<LLScrollListItem*> items = mARCScroll->getAllSelected();
-	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
-		it != items.end(); ++it)
+	for (LLScrollListItem* item : mARCScroll->getAllSelected())
 	{
-		LL_WARNS("Posing") << "Trying to select" << LL_ENDL;
-		LLScrollListItem* item = (*it);
-		LLViewerObject* vobject = (LLViewerObject*)item->getUserdata();
-		if (vobject && !vobject->isDead())
+		if (item)
 		{
-			LLSelectMgr::instance().deselectAll();
-			mObjectSelection = LLSelectMgr::instance().selectObjectAndFamily(vobject, FALSE, TRUE);
-
-			// Mark this as a transient selection
-			struct SetTransient : public LLSelectedNodeFunctor
+			LLViewerObject* vobject = (LLViewerObject*)item->getUserdata();
+			if (vobject && !vobject->isDead())
 			{
-				bool apply(LLSelectNode* node)
+				LLSelectMgr::instance().deselectAll();
+				mObjectSelection = LLSelectMgr::instance().selectObjectAndFamily(vobject, FALSE, TRUE);
+
+				// Mark this as a transient selection
+				struct SetTransient : public LLSelectedNodeFunctor
 				{
-					node->setTransient(TRUE);
-					return true;
-				}
-			} functor;
-			mObjectSelection->applyToNodes(&functor);
+					bool apply(LLSelectNode* node)
+					{
+						node->setTransient(TRUE);
+						return true;
+					}
+				} functor;
+				mObjectSelection->applyToNodes(&functor);
+			}
 		}
 	}
 }
