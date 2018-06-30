@@ -4183,9 +4183,15 @@ void LLVOAvatar::debugBodySize() const
 // postPelvisSetRecalc
 //------------------------------------------------------------------------
 void LLVOAvatar::postPelvisSetRecalc()
-{		
-	mRoot->updateWorldMatrixChildren();			
-	computeBodySize();
+{
+	mRoot->updateWorldMatrixChildren();
+	//BD - Poser
+	//     Don't refresh our root position while we pose otherwise moving any joint that moves
+	//     mFootLeft will trigger mRoot repositioning.
+	if (!(isSelf() && gAgent.getPosing()))
+	{
+		computeBodySize();
+	}
 	dirtyMesh(2);
 }
 //------------------------------------------------------------------------
@@ -5276,7 +5282,13 @@ BOOL LLVOAvatar::processSingleAnimationStateChange( const LLUUID& anim_id, BOOL 
     // keep appearances in sync, but not so often that animations
     // cause constant jiggling of the body or camera. Possible
     // compromise is to do it on animation changes:
-    computeBodySize();
+	//BD - Poser
+	//     Don't refresh our root position while we pose otherwise moving any joint that moves
+	//     mFootLeft will trigger mRoot repositioning.
+	if (!(isSelf() && gAgent.getPosing()))
+	{
+		computeBodySize();
+	}
     
 	BOOL result = FALSE;
 
@@ -6181,7 +6193,13 @@ void LLVOAvatar::updateVisualParams()
 
 	if (mLastSkeletonSerialNum != mSkeletonSerialNum)
 	{
-		computeBodySize();
+		//BD - Poser
+		//     Don't refresh our root position while we pose otherwise moving any joint that moves
+		//     mFootLeft will trigger mRoot repositioning.
+		if (!(isSelf() && gAgent.getPosing()))
+		{
+			computeBodySize();
+		}
 		mLastSkeletonSerialNum = mSkeletonSerialNum;
 		mRoot->updateWorldMatrixChildren();
 	}
