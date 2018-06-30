@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="7881"
+       height="7894"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,7 +174,7 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="185"
+              height="198"
               top="10"
               left="7"
               max_length="9999"
@@ -194,6 +194,7 @@ Fixed: Many potential crashes in the poser code we never got to experience.
 Fixed: Warning for a missing UI checkbox.
 Fixed: Delete pose button not enabling.
 Fixed: Moving the left leg's position causes the body size recalculation to push your avatar up or down.
+Fixed: Viewer locks up on some animation actions.
 Misc: Reworked large parts of the poser code with the help of Nat Linden, Cinder, Ansariel and Lirusaito for efficiency with coding standards in mind.
 Misc: Cleaned up, commented and removed and/or simplified many parts of the poser code.
 Misc: Reworked some parts of the Complexity floater code akin to the Poser overhaul.

@@ -212,7 +212,8 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 				}
 				else if (param.asString() == "Restart")
 				{
-					for (LLMotion* motion : avatar->getMotionController().getActiveMotions())
+					LLMotionController::motion_list_t motions = avatar->getMotionController().getActiveMotions();
+					for (LLMotion* motion : motions)
 					{
 						if (motion)
 						{
@@ -248,7 +249,8 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 					if (relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS)
 						|| avatar->getID() == gAgentID)
 					{
-						for (LLMotion* motion : avatar->getMotionController().getActiveMotions())
+						LLMotionController::motion_list_t motions = avatar->getMotionController().getActiveMotions();
+						for (LLMotion* motion : motions)
 						{
 							if (motion)
 							{
