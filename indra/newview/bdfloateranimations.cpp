@@ -85,11 +85,8 @@ void BDFloaterAnimations::onClose(bool app_quitting)
 void BDFloaterAnimations::onMotionRefresh()
 {
 	//BD - Flag all items first, we're going to unflag them when they are valid.
-	std::vector<LLScrollListItem*> items = mAvatarScroll->getAllData();
-	for (std::vector<LLScrollListItem*>::iterator it = items.begin();
-		it != items.end(); ++it)
+	for (LLScrollListItem* item : mAvatarScroll->getAllData())
 	{
-		LLScrollListItem* item = (*it);
 		if (item)
 		{
 			item->setFlagged(TRUE);
@@ -98,52 +95,51 @@ void BDFloaterAnimations::onMotionRefresh()
 
 	bool create_new;
 	LLAvatarTracker& at = LLAvatarTracker::instance();
-	for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
-		iter != LLCharacter::sInstances.end(); ++iter)
+	for (LLCharacter* character : LLCharacter::sInstances)
 	{
-		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*iter);
+		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
 		if (avatar)
 		{
 			LLUUID uuid = avatar->getID();
 			create_new = true;
-			std::vector<LLScrollListItem*> items = mAvatarScroll->getAllData();
-			for (std::vector<LLScrollListItem*>::iterator it = items.begin();
-				it != items.end(); ++it)
+			for (LLScrollListItem* item : mAvatarScroll->getAllData())
 			{
-				LLScrollListItem* item = (*it);
-				if (avatar == item->getUserdata())
+				if (item)
 				{
-					item->setFlagged(FALSE);
-
-					//BD - When we refresh it might happen that we don't have a name for someone
-					//     yet, when this happens the list entry won't be purged and rebuild as
-					//     it will be updated with this part, so we have to update the name in
-					//     case it was still being resolved last time we refreshed and created the
-					//     initial list entry. This prevents the name from missing forever.
-					if (item->getColumn(0)->getValue().asString().empty())
+					if (avatar == item->getUserdata())
 					{
-						LLAvatarName av_name;
-						LLAvatarNameCache::get(uuid, &av_name);
-						item->getColumn(0)->setValue(av_name.getDisplayName());
-					}
+						item->setFlagged(FALSE);
 
-					//BD - Show if we got the permission to animate them and save their motions.
-					std::string str = "-";
-					const LLRelationship* relation = at.getBuddyInfo(uuid);
-					if (relation)
-					{
-						str = relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "Yes" : "No";
-					}
-					else
-					{
-						str = uuid == gAgentID ? "Yes" : "-";
-					}
-					item->getColumn(3)->setValue(str);
+						//BD - When we refresh it might happen that we don't have a name for someone
+						//     yet, when this happens the list entry won't be purged and rebuild as
+						//     it will be updated with this part, so we have to update the name in
+						//     case it was still being resolved last time we refreshed and created the
+						//     initial list entry. This prevents the name from missing forever.
+						if (item->getColumn(0)->getValue().asString().empty())
+						{
+							LLAvatarName av_name;
+							LLAvatarNameCache::get(uuid, &av_name);
+							item->getColumn(0)->setValue(av_name.getDisplayName());
+						}
 
-					F32 value = avatar->getMotionController().getTimeFactor();
-					item->getColumn(2)->setValue(value);
-					create_new = false;
-					break;
+						//BD - Show if we got the permission to animate them and save their motions.
+						std::string str = "-";
+						const LLRelationship* relation = at.getBuddyInfo(uuid);
+						if (relation)
+						{
+							str = relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "Yes" : "No";
+						}
+						else
+						{
+							str = uuid == gAgentID ? "Yes" : "-";
+						}
+						item->getColumn(3)->setValue(str);
+
+						F32 value = avatar->getMotionController().getTimeFactor();
+						item->getColumn(2)->setValue(value);
+						create_new = false;
+						break;
+					}
 				}
 			}
 
@@ -193,13 +189,9 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 	{
 		//BD - First lets get all selected characters, we'll need them for all
 		//     the things we're going to do.
-		std::vector<LLScrollListItem*> items = mAvatarScroll->getAllSelected();
-		for (std::vector<LLScrollListItem*>::iterator item = items.begin();
-			item != items.end(); ++item)
+		for (LLScrollListItem* element : mAvatarScroll->getAllSelected())
 		{
-			LLScrollListItem* element = (*item);
 			LLVOAvatar* avatar = (LLVOAvatar*)element->getUserdata();
-
 			if (!avatar->isDead())
 			{
 				if (param.asString() == "Freeze")
@@ -220,11 +212,8 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 				}
 				else if (param.asString() == "Restart")
 				{
-					LLMotionController::motion_list_t motions = avatar->getMotionController().getActiveMotions();
-					for (LLMotionController::motion_list_t::iterator it = motions.begin();
-						it != motions.end(); ++it)
+					for (LLMotion* motion : avatar->getMotionController().getActiveMotions())
 					{
-						LLKeyframeMotion* motion = (LLKeyframeMotion*)*it;
 						if (motion)
 						{
 							LLUUID motion_id = motion->getID();
@@ -259,11 +248,8 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 					if (relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS)
 						|| avatar->getID() == gAgentID)
 					{
-						LLMotionController::motion_list_t motions = avatar->getMotionController().getActiveMotions();
-						for (LLMotionController::motion_list_t::iterator it = motions.begin();
-							it != motions.end(); ++it)
+						for (LLMotion* motion : avatar->getMotionController().getActiveMotions())
 						{
-							LLKeyframeMotion* motion = (LLKeyframeMotion*)*it;
 							if (motion)
 							{
 								LLUUID motion_id = motion->getID();
