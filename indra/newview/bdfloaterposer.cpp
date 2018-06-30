@@ -600,13 +600,10 @@ void BDFloaterPoser::onJointRefresh()
 
 		LLVector3 vec3;
 		//BD - When posing get the target values otherwise we end up getting the in-interpolation values.
+		//     We don't need values while we are not posing.
 		if (is_posing)
 		{
 			joint->getTargetRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
-		}
-		else
-		{
-			joint->getRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
 		}
 
 		row["columns"][COL_ICON]["column"] = "icon";
@@ -628,13 +625,10 @@ void BDFloaterPoser::onJointRefresh()
 		//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
 		if (joint->mHasPosition)
 		{
+			//BD - We don't need values while we are not posing.
 			if (is_posing)
 			{
 				vec3 = joint->getTargetPosition();
-			}
-			else
-			{
-				vec3 = joint->getPosition();
 			}
 			row["columns"][COL_POS_X]["column"] = "pos_x";
 			row["columns"][COL_POS_X]["value"] = ll_round(vec3.mV[VX], 0.001f);
