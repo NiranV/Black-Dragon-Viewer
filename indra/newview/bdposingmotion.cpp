@@ -1,28 +1,18 @@
-/** 
- * @file BDPosingMotion.cpp
- * @brief Implementation of BDPosingMotion class.
- *
- * $LicenseInfo:firstyear=2001&license=viewerlgpl$
- * Second Life Viewer Source Code
- * Copyright (C) 2010, Linden Research, Inc.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation;
- * version 2.1 of the License only.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
- * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
- * $/LicenseInfo$
- */
+/**
+*
+* Copyright (C) 2018, NiranV Dean
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU Lesser General Public
+* License as published by the Free Software Foundation;
+* version 2.1 of the License only.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* Lesser General Public License for more details.
+*
+*/
 
 //-----------------------------------------------------------------------------
 // Header Files
@@ -32,11 +22,7 @@
 #include "llviewerprecompiledheaders.h"
 
 #include "bdposingmotion.h"
-
 #include "llcharacter.h"
-#include "llhandmotion.h"
-
-//BD
 #include "llviewercontrol.h"
 
 //-----------------------------------------------------------------------------
@@ -49,13 +35,13 @@ LLMotion(id),
 	mTargetJoint(NULL)
 {
 	mName = "custom_pose";
-	//BD - Use slight linear interpolation by default.
-	mInterpolationTime = 0.15f;
-	mInterpolationType = 1;
+	//BD - Use slight spherical linear interpolation by default.
+	mInterpolationTime = 0.25f;
+	mInterpolationType = 2;
 
-	for (S32 i = 0; i <= 133; i++)
+	for (auto& entry : mJointState)
 	{
-		mJointState[i] = new LLJointState;
+		entry = new LLJointState;
 	}
 }
 
@@ -76,27 +62,20 @@ LLMotion::LLMotionInitStatus BDPosingMotion::onInitialize(LLCharacter *character
 	// save character for future use
 	mCharacter = character;
 
-	for (S32 i = 0;;i++)
+	for (S32 i = 0; (mTargetJoint = mCharacter->getCharacterJoint(i)); ++i)
 	{
-		mTargetJoint = mCharacter->getCharacterJoint(i);
-		if (mTargetJoint)
+		mJointState[i]->setJoint(mTargetJoint);
+		//BD - Bones that can support position
+		//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
+		if (mTargetJoint->mHasPosition)
 		{
-			mJointState[i]->setJoint(mTargetJoint);
-			//BD - Special case for pelvis as we're going to rotate and reposition it.
-			if (mTargetJoint->getName() == "mPelvis")
-			{
-				mJointState[i]->setUsage(LLJointState::POS | LLJointState::ROT);
-			}
-			else
-			{
-				mJointState[i]->setUsage(LLJointState::ROT);
-			}
-			addJointState(mJointState[i]);
+			mJointState[i]->setUsage(LLJointState::POS | LLJointState::ROT);
 		}
 		else
 		{
-			break;
+			mJointState[i]->setUsage(LLJointState::ROT);
 		}
+		addJointState(mJointState[i]);
 	}
 
 	return STATUS_SUCCESS;
@@ -107,20 +86,18 @@ LLMotion::LLMotionInitStatus BDPosingMotion::onInitialize(LLCharacter *character
 //-----------------------------------------------------------------------------
 BOOL BDPosingMotion::onActivate()
 {
-	S32 i = 0;
-	for (;; i++)
+	for (auto joint_state : mJointState)
 	{
-		if (mJointState[i].notNull())
+		LLJoint* joint = joint_state->getJoint();
+		if (joint)
 		{
-			mJointState[i]->getJoint()->setTargetRotation(mJointState[i]->getJoint()->getRotation());
-			if (mJointState[i]->getJoint()->getName() == "mPelvis")
+			joint->setTargetRotation(joint->getRotation());
+			//BD - Bones that can support position
+			//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
+			if (joint->mHasPosition)
 			{
-				mJointState[i]->getJoint()->setTargetPosition(mJointState[i]->getJoint()->getPosition());
+				joint->setTargetPosition(joint->getPosition());
 			}
-		}
-		else
-		{
-			break;
 		}
 	}
 	return TRUE;
@@ -139,28 +116,36 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 	LLVector3 target_pos;
 	F32 perc = 0.0f;
 
-	S32 i = 0;
-	for (;;i++)
+	for (auto joint_state : mJointState)
 	{
-		if (mJointState[i].notNull())
+		LLJoint* joint = joint_state->getJoint();
+		if (joint)
 		{
-			target_quat = mJointState[i]->getJoint()->getTargetRotation();
-			joint_quat = mJointState[i]->getJoint()->getRotation();
-			last_quat = mJointState[i]->getJoint()->getLastRotation();
-			bool is_pelvis = (mJointState[i]->getJoint()->getName() == "mPelvis");
+			target_quat = joint->getTargetRotation();
+			joint_quat = joint->getRotation();
+			last_quat = joint->getLastRotation();
 
 			//BD - Merge these two together?
 			perc = llclamp(mInterpolationTimer.getElapsedTimeF32() / mInterpolationTime, 0.0f, 1.0f);
-			if (is_pelvis)
+			//BD - Bones that can support position
+			//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
+			if (joint->mHasPosition)
 			{
-				joint_pos = mJointState[i]->getJoint()->getPosition();
-				target_pos = mJointState[i]->getJoint()->getTargetPosition();
-				last_pos = mJointState[i]->getJoint()->getLastPosition();
+				joint_pos = joint->getPosition();
+				target_pos = joint->getTargetPosition();
+				last_pos = joint->getLastPosition();
 				if (target_pos != joint_pos)
 				{
 					if (mInterpolationType == 2)
 					{
 						//BD - Do spherical linear interpolation.
+						//     We emulate the spherical linear interpolation here because
+						//     slerp() does not support LLVector3. mInterpolationTime is always
+						//     in a range between 0.00 and 1.00 which makes it perfect to use
+						//     as percentage directly.
+						//     We use the current joint position rather than the original like
+						//     in linear interpolation to take a fraction of the fraction, this
+						//     re-creates spherical linear interpolation's behavior.
 						joint_pos = lerp(joint_pos, target_pos, mInterpolationTime);
 					}
 					else
@@ -177,9 +162,7 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 							joint_pos = lerp(last_pos, target_pos, perc);
 						}
 					}
-
-					llassert(joint_pos.isFinite());
-					mJointState[i]->setPosition(joint_pos);
+					joint_state->setPosition(joint_pos);
 				}
 			}
 
@@ -204,14 +187,8 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 						joint_quat = lerp(perc, last_quat, target_quat);
 					}
 				}
-
-				llassert(joint_quat.isFinite());
-				mJointState[i]->setRotation(joint_quat);
+				joint_state->setRotation(joint_quat);
 			}
-		}
-		else
-		{
-			break;
 		}
 	}
 
@@ -237,32 +214,22 @@ void BDPosingMotion::onDeactivate()
 //-----------------------------------------------------------------------------
 void BDPosingMotion::addJointToState(LLJoint *joint)
 {
-	for (S32 i = 0;; i++)
-	{
-		mTargetJoint = mCharacter->getCharacterJoint(i);
-		if (mTargetJoint)
-		{
-			if (mTargetJoint->getName() == joint->getName())
-			{
-				mJointState[i]->setJoint(mTargetJoint);
-				//BD - Special case for pelvis as we're going to rotate and reposition it.
-				if (mTargetJoint->getName() == "mPelvis")
-				{
-					mJointState[i]->setUsage(LLJointState::POS | LLJointState::ROT);
-				}
-				else
-				{
-					mJointState[i]->setUsage(LLJointState::ROT);
-				}
-				addJointState(mJointState[i]);
-			}
-		}
-		else
-		{
-			break;
-		}
-	}
-}
+	//BD - It is safe to assume that whatever is passed here must be at least some kind of valid
+	//     joint, all code calling this function has null checks in place.
+	S32 i = joint->getJointNum();
 
+	mJointState[i]->setJoint(joint);
+	//BD - Bones that can support position
+	//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
+	if (joint->mHasPosition)
+	{
+		mJointState[i]->setUsage(LLJointState::POS | LLJointState::ROT);
+	}
+	else
+	{
+		mJointState[i]->setUsage(LLJointState::ROT);
+	}
+	addJointState(mJointState[i]);
+}
 // End
 

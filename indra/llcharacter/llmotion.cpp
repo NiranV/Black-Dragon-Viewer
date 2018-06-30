@@ -135,15 +135,15 @@ void LLMotion::removeJointState(const LLPointer<LLJointState>& jointState)
 //-----------------------------------------------------------------------------
 // findJointState()
 //-----------------------------------------------------------------------------
-const LLPointer<LLJointState>& LLMotion::findJointState(const std::string jointName)
+const LLPointer<LLJointState> LLMotion::findJointState(const std::string jointName)
 {
-	const LLPointer<LLJointState>& joint_state = mPose.findJointState(jointName);
+	const LLPointer<LLJointState> joint_state = mPose.findJointState(jointName);
 	return joint_state;
 }
 
-const LLPointer<LLJointState>& LLMotion::findJointState(LLJoint *joint)
+const LLPointer<LLJointState> LLMotion::findJointState(LLJoint *joint)
 {
-	const LLPointer<LLJointState>& joint_state = mPose.findJointState(joint);
+	const LLPointer<LLJointState> joint_state = mPose.findJointState(joint);
 	return joint_state;
 }
 

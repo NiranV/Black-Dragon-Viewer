@@ -954,7 +954,7 @@ void LLScrollListCtrl::deleteItems(const LLSD& sd)
 	for (iter = mItemList.begin(); iter < mItemList.end(); )
 	{
 		LLScrollListItem* itemp = *iter;
-		if (itemp->getValue().asString() == sd.asString())
+		if (itemp && itemp->getValue().asString() == sd.asString())
 		{
 			if (itemp == mLastSelected)
 			{
@@ -978,7 +978,7 @@ void LLScrollListCtrl::deleteSelectedItems()
 	for (iter = mItemList.begin(); iter < mItemList.end(); )
 	{
 		LLScrollListItem* itemp = *iter;
-		if (itemp->getSelected())
+		if (itemp && itemp->getSelected())
 		{
 			delete itemp;
 			iter = mItemList.erase(iter);
@@ -999,7 +999,7 @@ void LLScrollListCtrl::deleteFlaggedItems()
 	for (iter = mItemList.begin(); iter < mItemList.end();)
 	{
 		LLScrollListItem* itemp = *iter;
-		if (itemp->getFlagged())
+		if (itemp && itemp->getFlagged())
 		{
 			if (itemp == mLastSelected)
 			{

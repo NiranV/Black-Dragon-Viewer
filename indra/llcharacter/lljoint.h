@@ -114,10 +114,6 @@ protected:
 
     LLVector3       mDefaultPosition;
     LLVector3       mDefaultScale;
-
-	//BD
-	LLQuaternion    mDefaultRotation;
-	LLQuaternion::Order    mDefaultRotOrder;
     
 public:
 	U32				mDirtyFlags;
@@ -132,12 +128,12 @@ public:
 
 	S32				mJointNum;
 
-	//BD
+	//BD - Poser
 	LLQuaternion	mTargetRotation;
 	LLQuaternion	mLastRotation;
 	LLVector3		mTargetPosition;
 	LLVector3		mLastPosition;
-	bool			mIsBlending;
+	bool			mHasPosition;
 
 	// child joints
 	typedef std::list<LLJoint*> child_list_t;
@@ -241,15 +237,7 @@ public:
 	LLVector3 getLastWorldPosition();
 	void setWorldPosition( const LLVector3& pos );
 
-	//BD - Tracks the default rotation order defined by the skeleton
-	void setDefaultRotOrder(const LLQuaternion::Order& order);
-	const LLQuaternion::Order& getDefaultRotOrder() const;
-
-	//BD - Tracks the default rotation defined by the skeleton
-	void setDefaultRotation(const LLQuaternion& rot);
-	const LLQuaternion& getDefaultRotation() const;
-
-	//BD
+	//BD - Poser
 	void setTargetPosition(const LLVector3& pos) { mTargetPosition = pos; }
 	LLVector3 getTargetPosition() const { return mTargetPosition; }
 
@@ -262,8 +250,8 @@ public:
 	void setLastRotation(const LLQuaternion& rot) { mLastRotation = rot; }
 	LLQuaternion getLastRotation() const { return mLastRotation; }
 
-	void setIsBlending(const bool& blending) { mIsBlending = blending; }
-	bool getIsBlending() const { return mIsBlending; }
+	void setCanReposition(const bool can_reposition) { mHasPosition = can_reposition; }
+	bool canReposition() const { return mHasPosition; }
 
 	// get/set local rotation
 	const LLQuaternion& getRotation();

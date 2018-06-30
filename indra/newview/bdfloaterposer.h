@@ -20,8 +20,21 @@
 
 #include "llfloater.h"
 #include "llscrolllistctrl.h"
+#include "llsliderctrl.h"
 #include "llkeyframemotion.h"
 #include "llframetimer.h"
+
+typedef enum E_Columns
+{
+	COL_ICON = 0,
+	COL_NAME = 1,
+	COL_ROT_X = 2,
+	COL_ROT_Y = 3,
+	COL_ROT_Z = 4,
+	COL_POS_X = 5,
+	COL_POS_Y = 6,
+	COL_POS_Z = 7
+} E_Columns;
 
 class BDFloaterPoser :
 	public LLFloater
@@ -48,11 +61,14 @@ private:
 	//BD - Joints
 	void onJointRefresh();
 	void onJointSet(LLUICtrl* ctrl, const LLSD& param);
-	void onJointSetFinal(LLUICtrl* ctrl, const LLSD& param);
 	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
+	void onJointScaleSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointChangeState();
 	void onJointControlsRefresh();
-	void onJointReset();
+	void onJointRotPosReset();
+	void onJointRotationReset();
+	void onJointPositionReset();
+	void afterJointPositionReset();
 	//void onJointStateCheck();
 
 	//BD - Animating
@@ -73,15 +89,8 @@ private:
 	LLScrollListCtrl*				mPoseScroll;
 	LLScrollListCtrl*				mJointsScroll;
 
-	LLUICtrl*					mRotX;
-	LLUICtrl*					mRotY;
-	LLUICtrl*					mRotZ;
-	LLUICtrl*					mRotXBig;
-	LLUICtrl*					mRotYBig;
-	LLUICtrl*					mRotZBig;
-	LLUICtrl*					mPosX;
-	LLUICtrl*					mPosY;
-	LLUICtrl*					mPosZ;
+	std::array<LLUICtrl*, 3>		mRotationSliders;
+	std::array<LLSliderCtrl*, 3>	mPositionSliders;
 
 	//BD - Animations
 	LLScrollListCtrl*				mAnimEditorScroll;

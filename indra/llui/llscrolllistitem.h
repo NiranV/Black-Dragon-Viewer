@@ -87,8 +87,8 @@ public:
 	BOOL	getHighlighted() const			{ return mHighlighted; }
 
 	//BD
-	void	setFlagged(BOOL b)				{ mFlagged = b; }
-	BOOL	getFlagged() const				{ return mFlagged; }
+	void	setFlagged(bool b)				{ mFlagged = b; }
+	bool	getFlagged() const				{ return mFlagged; }
 
 	void	setUserdata( void* userdata )	{ mUserdata = userdata; }
 	void*	getUserdata() const 			{ return mUserdata; }
@@ -121,7 +121,7 @@ private:
 	BOOL	mHighlighted;
 	BOOL	mEnabled;
 	//BD
-	BOOL	mFlagged;
+	bool	mFlagged;
 
 	void*	mUserdata;
 	LLSD	mItemValue;

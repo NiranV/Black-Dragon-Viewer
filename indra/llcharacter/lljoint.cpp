@@ -368,28 +368,6 @@ void LLJoint::setPosition( const LLVector3& requested_pos, bool apply_attachment
     }
 }
 
-//BD
-void LLJoint::setDefaultRotOrder(const LLQuaternion::Order& order)
-{
-	mDefaultRotOrder = order;
-}
-
-const LLQuaternion::Order& LLJoint::getDefaultRotOrder() const
-{
-	return mDefaultRotOrder;
-}
-
-void LLJoint::setDefaultRotation(const LLQuaternion& rot)
-{
-	mDefaultRotation = rot;
-}
-
-const LLQuaternion& LLJoint::getDefaultRotation() const
-{
-	return mDefaultRotation;
-}
-
-
 void LLJoint::setDefaultPosition( const LLVector3& pos )
 {
     mDefaultPosition = pos;

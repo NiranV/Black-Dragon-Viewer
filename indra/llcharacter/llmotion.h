@@ -159,11 +159,12 @@ public:
 	// optional callback routine called when animation deactivated.
 	void	setDeactivateCallback( void (*cb)(void *), void* userdata );
 
-	//BD
 	F32 getInterpolationTime() const					{ return mInterpolationTime; }
 	virtual void setInterpolationTime(F32 time)			{ mInterpolationTime = time; }
 
-	F32 getInterpolationType() const					{ return mInterpolationType; }
+	//BD - functions to set/get our interpolation type
+	//     0 = None , 1 = Linear Interpolatioon , 2 = Spherical Linear Interpolation
+	S32 getInterpolationType() const					{ return mInterpolationType; }
 	virtual void setInterpolationType(S32 type)			{ mInterpolationType = type; }
 
 	void pauseInterpolationTimer();
@@ -173,8 +174,8 @@ public:
 	//BD
 	void addJointState(const LLPointer<LLJointState>& jointState);
 	void removeJointState(const LLPointer<LLJointState>& jointState);
-	const LLPointer<LLJointState>& findJointState(const std::string jointName);
-	const LLPointer<LLJointState>& findJointState(LLJoint *joint);
+	const LLPointer<LLJointState> findJointState(const std::string jointName);
+	const LLPointer<LLJointState> findJointState(LLJoint *joint);
 
 protected:
 	// called when a motion is activated
@@ -194,9 +195,9 @@ protected:
 	std::string		mName;			// instance name assigned by motion controller
 	LLUUID			mID;
 
-	//BD
-	F32					mInterpolationTime;
+	//BD - 0 = None , 1 = Linear Interpolatioon , 2 = Spherical Linear Interpolation
 	S32					mInterpolationType;
+	F32					mInterpolationTime;
 	LLFrameTimer		mInterpolationTimer;
 	
 	F32 mActivationTimestamp;	// time when motion was activated

@@ -6,8 +6,18 @@ layout="topleft"
 name="floater_animation_control"
 title="Poser"
 width="517">
-	<!-- Collapsed Size 494 -->
 	<!-- Expanded Size 745 -->
+	<panel
+	height="1"
+	visible="false"
+	name="max_panel"
+	width="745"/>
+	<!-- Collapsed Size 517 -->
+	<panel
+	height="1"
+	visible="false"
+	name="min_panel"
+	width="517"/>
 	<string
 	name="icon_category" translate="false">
 	Inv_Shape
@@ -139,6 +149,10 @@ width="517">
 				label="Pos Z"
 				name="pos_z"
 				relative_width="0.10"  />
+				<scroll_list.columns
+				label="#"
+				name="number"
+				relative_width="0.00"  />
 				</scroll_list>
 				<button
 				height="21"
@@ -246,7 +260,7 @@ width="517">
 				width="480"
 				top_pad="4"
 				left="0"/>
-				<panel
+				<!--<panel
 				follows="left|top|right"
 				height="20"
 				bg_visible="true"
@@ -266,241 +280,305 @@ width="517">
 				width="350"
 				top_delta="4">
 				Modifications:
-				</text>
-				<slider
-				decimal_digits="3"
-				can_edit_text="true"
-				follows="left|top"
-				height="14"
-				enabled="false"
-				increment="0.001"
-				initial_value="0"
-				label="Rotation X:"
-				label_width="70"
+				</text>-->
+				<tab_container
+				follows="all"
+				halign="center"
+				height="95"
 				layout="topleft"
-				left="10"
-				max_val="3.142"
-				min_val="-3.142"
-				name="Rotation_X"
-				top_pad="10"
-				width="224" >
-				<slider.commit_callback
-				function="Joint.Set"
-				parameter="x"/>
-				</slider>
-				<slider
-				decimal_digits="3"
-				can_edit_text="true"
-				visible="false"
-				follows="left|top"
-				height="14"
-				increment="0.001"
-				initial_value="0"
-				label="Rotation X:"
-				label_width="70"
-				layout="topleft"
-				left="10"
-				max_val="3.142"
-				min_val="-3.142"
-				name="Rotation_X_Big"
-				top_delta="0"
-				width="459" >
-				<slider.commit_callback
-				function="Joint.Set"
-				parameter="x"/>
-				</slider>
-				<slider
-				decimal_digits="3"
-				can_edit_text="true"
-				follows="left|top"
-				height="14"
-				enabled="false"
-				increment="0.001"
-				initial_value="0"
-				label="Rotation Y:"
-				label_width="70"
-				layout="topleft"
-				left="10"
-				max_val="3.142"
-				min_val="-3.142"
-				name="Rotation_Y"
-				top_pad="1"
-				width="224" >
-				<slider.commit_callback
-				function="Joint.Set"
-				parameter="y"/>
-				</slider>
-				<slider
-				decimal_digits="3"
-				visible="false"
-				can_edit_text="true"
-				follows="left|top"
-				height="14"
-				increment="0.001"
-				initial_value="0"
-				label="Rotation Y:"
-				label_width="70"
-				layout="topleft"
-				left="10"
-				max_val="3.142"
-				min_val="-3.142"
-				name="Rotation_Y_Big"
-				top_delta="0"
-				width="459" >
-				<slider.commit_callback
-				function="Joint.Set"
-				parameter="y"/>
-				</slider>
-				<slider
-				decimal_digits="3"
-				visible="true"
-				can_edit_text="true"
-				follows="left|top"
-				height="14"
-				enabled="false"
-				increment="0.001"
-				initial_value="0"
-				label="Rotation Z:"
-				label_width="70"
-				layout="topleft"
-				left="10"
-				max_val="3.142"
-				min_val="-3.142"
-				name="Rotation_Z"
-				top_pad="1"
-				width="224" >
-				<slider.commit_callback
-				function="Joint.Set"
-				parameter="z"/>
-				</slider>
-				<slider
-				decimal_digits="3"
-				visible="false"
-				can_edit_text="true"
-				follows="left|top"
-				height="14"
-				increment="0.001"
-				initial_value="0"
-				label="Rotation Z:"
-				label_width="70"
-				layout="topleft"
-				left="10"
-				max_val="3.142"
-				min_val="-3.142"
-				name="Rotation_Z_Big"
-				top_delta="0"
-				width="459" >
-				<slider.commit_callback
-				function="Joint.Set"
-				parameter="z"/>
-				</slider>
-				
-				<slider
-				decimal_digits="3"
-				can_edit_text="true"
-				follows="left|top"
-				height="14"
-				increment="0.001"
-				initial_value="0"
-				label="Position X:"
-				label_width="70"
-				layout="topleft"
-				left="245"
-				max_val="5"
-				min_val="-5"
-				name="Position_X"
-				top_delta="-30"
-				width="224" >
-				<slider.commit_callback
-				function="Joint.PosSet"
-				parameter="x"/>
-				</slider>
-				<slider
-				decimal_digits="3"
-				can_edit_text="true"
-				follows="left|top"
-				height="14"
-				increment="0.001"
-				initial_value="0"
-				label="Position Y:"
-				label_width="70"
-				layout="topleft"
-				left_delta="0"
-				max_val="5"
-				min_val="-5"
-				name="Position_Y"
-				top_pad="1"
-				width="224" >
-				<slider.commit_callback
-				function="Joint.PosSet"
-				parameter="y"/>
-				</slider>
-				<slider
-				decimal_digits="3"
-				can_edit_text="true"
-				follows="left|top"
-				height="14"
-				increment="0.001"
-				initial_value="0"
-				label="Position Z:"
-				label_width="70"
-				layout="topleft"
-				left_delta="0"
-				max_val="5"
-				min_val="-5"
-				name="Position_Z"
-				top_pad="1"
-				width="224" >
-				<slider.commit_callback
-				function="Joint.PosSet"
-				parameter="z"/>
-				</slider>
-				<panel
-				follows="top|left|right"
+				left_delta="-1"
+				name="Picks Tabs"
+				tab_min_width="236"
+				tab_max_width="235"
+				tab_height="20"
+				tab_group="1"
+				tab_position="top"
+				top_delta="2"
+				width="624">
+					<panel
+					follows="all"
+					background_visible="false"
+					height="95"
+					layout="topleft"
+					left="0"
+					title="Rotation"
+					name="rotation_panel"
+					top="0"
+					width="622">
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						enabled="false"
+						increment="0.001"
+						initial_value="0"
+						label="Rotation X:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="3.142"
+						min_val="-3.142"
+						name="Rotation_X"
+						top_pad="6"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.Set"
+						parameter="0"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						visible="false"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Rotation X:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="3.142"
+						min_val="-3.142"
+						name="Rotation_X_Big"
+						top_delta="0"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.Set"
+						parameter="0"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						enabled="false"
+						increment="0.001"
+						initial_value="0"
+						label="Rotation Y:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="3.142"
+						min_val="-3.142"
+						name="Rotation_Y"
+						top_pad="1"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.Set"
+						parameter="1"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						visible="false"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Rotation Y:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="3.142"
+						min_val="-3.142"
+						name="Rotation_Y_Big"
+						top_delta="0"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.Set"
+						parameter="1"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						visible="true"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						enabled="false"
+						increment="0.001"
+						initial_value="0"
+						label="Rotation Z:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="3.142"
+						min_val="-3.142"
+						name="Rotation_Z"
+						top_pad="1"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.Set"
+						parameter="2"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						visible="false"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Rotation Z:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="3.142"
+						min_val="-3.142"
+						name="Rotation_Z_Big"
+						top_delta="0"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.Set"
+						parameter="2"/>
+						</slider>
+						<panel
+						follows="top|left|right"
+						height="21"
+						background_visible="false"
+						layout="topleft"
+						mouse_opaque="false"
+						left="0"
+						name="title"
+						top_pad="6"
+						width="480">
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							enabled="true"
+							label="Reset Selected Rotation(s)"
+							label_selected="Disable Selected Bone(s)"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							name="reset_bone_rot"
+							width="238"
+							top="0"
+							left_delta="2">
+							<button.commit_callback
+							function="Joint.ResetJointRotation"/>
+							</button>
+						</panel>
+					</panel>
+					<panel
+					follows="all"
+					background_visible="false"
+					height="95"
+					layout="topleft"
+					left="0"
+					title="Position"
+					name="position_panel"
+					top="0"
+					width="622">
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Position X:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="0.5"
+						min_val="-0.5"
+						name="Position_X"
+						top_pad="6"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.PosSet"
+						parameter="0"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Position Y:"
+						label_width="70"
+						layout="topleft"
+						left_delta="0"
+						max_val="0.5"
+						min_val="-0.5"
+						name="Position_Y"
+						top_pad="1"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.PosSet"
+						parameter="1"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Position Z:"
+						label_width="70"
+						layout="topleft"
+						left_delta="0"
+						max_val="0.5"
+						min_val="-0.5"
+						name="Position_Z"
+						top_pad="1"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.PosSet"
+						parameter="2"/>
+						</slider>
+						<panel
+						follows="top|left|right"
+						height="21"
+						background_visible="false"
+						layout="topleft"
+						mouse_opaque="false"
+						left="0"
+						name="title"
+						top_pad="6"
+						width="480">
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							enabled="true"
+							label="Reset Selected Position(s)"
+							label_selected="Disable Selected Bone(s)"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							name="reset_bone_pos"
+							width="238"
+							top="0"
+							left_delta="2">
+							<button.commit_callback
+							function="Joint.ResetJointPosition"/>
+							</button>
+						</panel>
+					</panel>
+				</tab_container>
+				<button
 				height="21"
-				background_visible="false"
+				follows="top|left"
 				layout="topleft"
-				mouse_opaque="false"
-				left="0"
-				name="title"
-				top_pad="6"
-				width="480">
-					<button
-					height="21"
-					follows="top|left"
-					layout="topleft"
-					enabled="false"
-					label="Reset Selected Bone(s)"
-					label_selected="Disable Selected Bone(s)"
-					image_hover_unselected="Toolbar_Middle_Over"
-					image_selected="Toolbar_Middle_Selected"
-					image_unselected="Toolbar_Middle_Off"
-					name="reset_bone"
-					width="258"
-					top="0"
-					left_delta="2">
-					<button.commit_callback
-					function="Joint.ResetJoint"/>
-					</button>
-					<button
-					height="21"
-					follows="top|left"
-					layout="topleft"
-					is_toggle="true"
-					enabled="false"
-					label="Activate Selected Bone(s)"
-					label_selected="Disable Selected Bone(s)"
-					image_hover_unselected="Toolbar_Middle_Over"
-					image_selected="Toolbar_Middle_Selected"
-					image_unselected="Toolbar_Middle_Off"
-					name="toggle_bone"
-					width="217"
-					top="0"
-					left_pad="1">
-					<button.commit_callback
-					function="Joint.ChangeState"/>
-					</button>
-				</panel>
+				is_toggle="true"
+				enabled="false"
+				label="Activate Selected Bone(s)"
+				label_selected="Disable Selected Bone(s)"
+				image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
+				name="toggle_bone"
+				width="237"
+				top_pad="-19"
+				left_delta="242">
+				<button.commit_callback
+				function="Joint.ChangeState"/>
+				</button>
 			</panel>
 		</layout_panel>
 		<layout_panel

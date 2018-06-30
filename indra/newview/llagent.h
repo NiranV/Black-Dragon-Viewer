@@ -398,7 +398,7 @@ private:
 public:
 	void			setPosing()				{ mIsPosing = true; }
 	void			clearPosing()			{ mIsPosing = false; }
-	bool			getPosing()				{ return mIsPosing; }
+	bool			getPosing() const		{ return mIsPosing; }
 
 	bool			mIsPosing;
 

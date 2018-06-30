@@ -49,7 +49,7 @@ LLPose::~LLPose()
 //-----------------------------------------------------------------------------
 // getFirstJointState()
 //-----------------------------------------------------------------------------
-LLJointState* LLPose::getFirstJointState()
+LLPointer<LLJointState> LLPose::getFirstJointState()
 {
 	mListIter = mJointMap.begin();
 	if (mListIter == mJointMap.end())
@@ -65,7 +65,7 @@ LLJointState* LLPose::getFirstJointState()
 //-----------------------------------------------------------------------------
 // getNextJointState()
 //-----------------------------------------------------------------------------
-LLJointState *LLPose::getNextJointState()
+LLPointer<LLJointState> LLPose::getNextJointState()
 {
 	mListIter++;
 	if (mListIter == mJointMap.end())
@@ -111,7 +111,7 @@ BOOL LLPose::removeAllJointStates()
 //-----------------------------------------------------------------------------
 // findJointState()
 //-----------------------------------------------------------------------------
-LLJointState* LLPose::findJointState(LLJoint *joint)
+LLPointer<LLJointState> LLPose::findJointState(LLJoint *joint)
 {
 	joint_map_iterator iter = mJointMap.find(joint->getName());
 
@@ -128,7 +128,7 @@ LLJointState* LLPose::findJointState(LLJoint *joint)
 //-----------------------------------------------------------------------------
 // findJointState()
 //-----------------------------------------------------------------------------
-LLJointState* LLPose::findJointState(const std::string &name)
+LLPointer<LLJointState> LLPose::findJointState(const std::string &name)
 {
 	joint_map_iterator iter = mJointMap.find(name);
 
