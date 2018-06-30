@@ -561,7 +561,7 @@ void BDFloaterPoser::onPoseControlsRefresh()
 	getChild<LLUICtrl>("interp_time")->setEnabled(bool(item));
 	getChild<LLUICtrl>("interp_type")->setEnabled(bool(item));
 	getChild<LLUICtrl>("delete_poses")->setEnabled(bool(item));
-	getChild<LLUICtrl>("add_poses")->setEnabled(bool(item));
+	getChild<LLUICtrl>("add_entry")->setEnabled(bool(item));
 	getChild<LLUICtrl>("load_poses")->setEnabled(bool(item));
 }
 
@@ -1354,7 +1354,7 @@ void BDFloaterPoser::onAnimControlsRefresh()
 	{
 		getChild<LLUICtrl>("anim_time")->setEnabled(false);
 	}
-
+	getChild<LLUICtrl>("delete_entry")->setEnabled(bool(item));
 	getChild<LLUICtrl>("move_up")->setEnabled(item && index != 0);
 	getChild<LLUICtrl>("move_down")->setEnabled(item && !((index + 1) >= item_count));
 }

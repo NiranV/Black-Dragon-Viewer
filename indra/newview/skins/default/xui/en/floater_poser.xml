@@ -3,7 +3,7 @@
 positioning="centered"
 height="431"
 layout="topleft"
-name="floater_animation_control"
+name="floater_poser"
 title="Poser"
 width="517">
 	<!-- Expanded Size 745 -->
@@ -747,7 +747,7 @@ width="517">
 				image_selected="Toolbar_Middle_Selected"
 				image_unselected="Toolbar_Middle_Off"
 				image_overlay="Arrow_Right"
-				name="add_poses"
+				name="add_entry"
 				enabled="false"
 				width="26"
 				top="130"
@@ -801,7 +801,7 @@ width="517">
 				image_selected="Toolbar_Middle_Selected"
 				image_unselected="Toolbar_Middle_Off"
 				image_overlay="Arrow_Left"
-				name="delete_poses"
+				name="delete_entry"
 				enabled="false"
 				width="26"
 				top_pad="1"
