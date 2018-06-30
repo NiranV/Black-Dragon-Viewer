@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.1.7 - Selective Dragon]"
+       label="[CHANNEL] [VERSION] - [3.1.8 - Repositioning Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="7682"
+       height="7881"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,8 +174,62 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="39"
+              height="185"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Changed: Poser to Version 9.0.
+Changed: Poser window layout to allow for maximum accuracy for both rotation and position sliders.
+Changed: Split reset bone into reset rotation and reset position.
+Changed: Show all bone rotations and positions as 0 when we're not posing.
+Changed: Version to 3.1.8 - Repositioning Dragon.
+Added: Ability to reposition a wide array of bones that support it.
+Fixed: More cases in which the animation move buttons did not properly refresh after adding/removing/moving poses.
+Fixed: Many potential crashes in the poser code we never got to experience.
+Fixed: Warning for a missing UI checkbox.
+Fixed: Delete pose button not enabling.
+Fixed: Moving the left leg's position causes the body size recalculation to push your avatar up or down.
+Misc: Reworked large parts of the poser code with the help of Nat Linden, Cinder, Ansariel and Lirusaito for efficiency with coding standards in mind.
+Misc: Cleaned up, commented and removed and/or simplified many parts of the poser code.
+Misc: Reworked some parts of the Complexity floater code akin to the Poser overhaul.
+Misc: Reworked some parts of the Animation Manipulation floater code akin to the Poser overhaul.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.1.7
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="39"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
