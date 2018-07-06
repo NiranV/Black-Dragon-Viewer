@@ -20,7 +20,6 @@
 #include "lluictrlfactory.h"
 #include "llagent.h"
 #include "lldiriterator.h"
-#include "llfloaterpreference.h"
 #include "llkeyframemotion.h"
 #include "llsdserialize.h"
 #include "llsdutil.h"
@@ -28,6 +27,7 @@
 #include "llviewerjoint.h"
 #include "llvoavatarself.h"
 
+#include "bdanimator.h"
 #include "bdposingmotion.h"
 
 
@@ -76,6 +76,9 @@ BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 	mCommitCallbackRegistrar.add("Anim.Stop", boost::bind(&BDFloaterPoser::onAnimStop, this));
 	//BD - Change the value for a wait entry.
 	mCommitCallbackRegistrar.add("Anim.Set", boost::bind(&BDFloaterPoser::onAnimSet, this));
+
+	//BD - Test.
+	//mCommitCallbackRegistrar.add("Anim.SetValue", boost::bind(&BDFloaterPoser::onAnimSetValue, this, _1, _2));
 }
 
 BDFloaterPoser::~BDFloaterPoser()
@@ -101,56 +104,32 @@ BOOL BDFloaterPoser::postBuild()
 	//BD - Animations
 	mAnimEditorScroll = this->getChild<LLScrollListCtrl>("anim_editor_scroll", true);
 	mAnimEditorScroll->setCommitCallback(boost::bind(&BDFloaterPoser::onAnimControlsRefresh, this));
-	mAnimScrollIndex = 0;
+
+	//BD - Misc
+
+
+	//BD - Experimental
+	/*mTimeSlider = getChild<LLMultiSliderCtrl>("time_slider");
+	mKeySlider = getChild<LLMultiSliderCtrl>("key_slider");
+
+	mTimeSlider->addSlider();
+	addSliderKey(0.f, BDPoseKey(std::string("Default")));
+	mTimeSlider->setCommitCallback(boost::bind(&BDFloaterPoser::onTimeSliderMoved, this));
+	mKeySlider->setCommitCallback(boost::bind(&BDFloaterPoser::onKeyTimeMoved, this));
+	getChild<LLButton>("add_key")->setClickedCallback(boost::bind(&BDFloaterPoser::onAddKey, this));
+	getChild<LLButton>("delete_key")->setClickedCallback(boost::bind(&BDFloaterPoser::onDeleteKey, this));*/
 
 	return TRUE;
 }
 
 void BDFloaterPoser::draw()
 {
-	//BD - This only works while the window is visible, hiding the UI will stop it.
-	//     This part here is used to make the animator work, whenever we hit "Start" we
-	//     start the mAnimPlayTimer with a expiry time of 0.0 to fire off the first action
-	//     immediately after hitting "Start", this ensures we don't delay any actions.
-	if (mAnimPlayTimer.getStarted() &&
-		mAnimPlayTimer.getElapsedTimeF32() > mExpiryTime)
+	if (gDragonAnimator.getIsPlaying())
 	{
-		//BD - Stop the timer, we're going to reconfigure and restart it when we're done.
-		mAnimPlayTimer.stop();
+		S32 current_index = gDragonAnimator.getCurrentActionIndex();
 		if (mAnimEditorScroll->getItemCount() != 0)
 		{
-			mAnimEditorScroll->selectNthItem(mAnimScrollIndex);
-			LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
-			if (item)
-			{
-				//BD - We can't use Wait or Restart as label, need to fix this.
-				//     TODO: Allow these to be translated and read the "type" from hidden values.
-				std::string label = item->getColumn(0)->getValue().asString();
-				if (label == "Wait")
-				{
-					//BD - Do nothing?
-					mExpiryTime = item->getColumn(1)->getValue().asReal();
-					++mAnimScrollIndex;
-				}
-				else if (label == "Repeat")
-				{
-					mAnimScrollIndex = 0;
-					mExpiryTime = 0.0f;
-				}
-				else
-				{
-					mExpiryTime = 0.0f;
-					onPoseLoad(label);
-					++mAnimScrollIndex;
-				}
-			}
-		}
-
-		//BD - As long as we are not at the end, start the timer again, automatically
-		//     resetting the counter in the process.
-		if (mAnimEditorScroll->getItemCount() != mAnimScrollIndex)
-		{
-			mAnimPlayTimer.start();
+			mAnimEditorScroll->selectNthItem(current_index);
 		}
 	}
 
@@ -269,7 +248,7 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 		//BD - Read the pose and save it into an LLSD so we can rewrite it later.
 		while (!infile.eof())
 		{
-			if (LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(old_record, infile))
+			if (LLSDParser::PARSE_FAILURE == LLSDSerialize::fromXML(old_record, infile))
 			{
 				LL_WARNS("Posing") << "Failed to parse while rewrtiting file: " << filename << LL_ENDL;
 				return FALSE;
@@ -293,6 +272,13 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 		record[0]["time"] = time;
 
 		infile.close();
+
+		LLScrollListItem* item = mPoseScroll->getFirstSelected();
+		if (item)
+		{
+			item->getColumn(1)->setValue(time);
+			item->getColumn(2)->setValue(type);
+		}
 	}
 	else
 	{
@@ -368,118 +354,29 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 		LLSDSerialize::toXML(cur_line, file);
 	}
 	file.close();
-	onPoseRefresh();
+
+	if (!editing)
+	{
+		onPoseRefresh();
+	}
+
 	return TRUE;
 }
 
 BOOL BDFloaterPoser::onPoseLoad(const LLSD& name)
 {
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
-	std::string filename;
+	std::string pose_name;
 	if (!name.asString().empty())
 	{
-		filename = gDirUtilp->getExpandedFilename(LL_PATH_POSES, name.asString() + ".xml");
+		pose_name = name.asString();
 	}
 	else if (item)
 	{
-		filename = gDirUtilp->getExpandedFilename(LL_PATH_POSES, item->getColumn(0)->getValue().asString() + ".xml");
+		pose_name = item->getColumn(0)->getValue().asString();
 	}
 
-	LLSD pose;
-	llifstream infile;
-	infile.open(filename);
-	if (!infile.is_open())
-	{
-		LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
-		return FALSE;
-	}
-
-	while (!infile.eof())
-	{
-		S32 count = LLSDSerialize::fromXML(pose, infile);
-		if (count == LLSDParser::PARSE_FAILURE)
-		{
-			LL_WARNS("Posing") << "Failed to parse file: " << filename << LL_ENDL;
-			return FALSE;
-		}
-
-		//BD - Not sure how to read the exact line out of a XML file, so we're just going
-		//     by the amount of tags here, since the header has only 3 it's a good indicator
-		//     if it's the correct line we're in.
-		BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-		if (count == 3)
-		{
-			if (motion)
-			{
-				F32 time = pose["time"].asReal();
-				S32 type = pose["type"].asInteger();
-				motion->setInterpolationType(type);
-				motion->setInterpolationTime(time);
-				motion->startInterpolationTimer();
-			}
-		}
-
-		LLJoint* joint = gAgentAvatarp->getJoint(pose["bone"].asString());
-		if (joint)
-		{
-			if (motion)
-			{
-				LLPose* mpose = motion->getPose();
-				if (mpose)
-				{
-					//BD - Fail safe, assume that a bone is always enabled in case we
-					//     load a pose that was created prior to including the enabled
-					//     state or for whatever reason end up not having an enabled state
-					//     written into the file.
-					bool state_enabled = true;
-
-					//BD - Check whether the joint state of the current joint has any enabled
-					//     status saved into the pose file or not.
-					if (pose["enabled"].isDefined())
-					{
-						state_enabled = pose["enabled"].asBoolean();
-					}
-
-					//BD - Add the joint state but only if it's not active yet.
-					//     Same goes for removing it, don't remove it if it doesn't exist.
-					LLPointer<LLJointState> joint_state = mpose->findJointState(joint);
-					if (!joint_state && state_enabled)
-					{
-						motion->addJointToState(joint);
-					}
-					else if (joint_state && !state_enabled)
-					{
-						motion->removeJointState(joint_state);
-					}
-				}
-			}
-
-			LLVector3 vec3;
-			LLQuaternion quat;
-			LLQuaternion new_quat = joint->getRotation();
-
-			joint->setLastRotation(joint->getRotation());
-			vec3.setValue(pose["rotation"]);
-			quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
-			joint->setTargetRotation(quat);
-
-			//BD - We could just check whether position information is available since only joints
-			//     which can have their position changed will have position information but we
-			//     want this to be a minefield for crashes.
-			//     Bones that can support position
-			//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-			if (joint->mHasPosition)
-			{
-				if (pose["position"].isDefined())
-				{
-					vec3.setValue(pose["position"]);
-					joint->setLastPosition(joint->getPosition());
-					joint->setTargetPosition(vec3);
-				}
-			}
-		}
-	}
-	infile.close();
+	gDragonAnimator.loadPose(pose_name);
 	onJointRefresh();
 	return TRUE;
 }
@@ -552,6 +449,7 @@ void BDFloaterPoser::onPoseSet(LLUICtrl* ctrl, const LLSD& param)
 
 void BDFloaterPoser::onPoseControlsRefresh()
 {
+	bool is_playing = gDragonAnimator.getIsPlaying();
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
 	if (item)
 	{
@@ -561,7 +459,7 @@ void BDFloaterPoser::onPoseControlsRefresh()
 	getChild<LLUICtrl>("interp_time")->setEnabled(bool(item));
 	getChild<LLUICtrl>("interp_type")->setEnabled(bool(item));
 	getChild<LLUICtrl>("delete_poses")->setEnabled(bool(item));
-	getChild<LLUICtrl>("add_entry")->setEnabled(bool(item));
+	getChild<LLUICtrl>("add_entry")->setEnabled(!is_playing && item);
 	getChild<LLUICtrl>("load_poses")->setEnabled(bool(item));
 }
 
@@ -1091,139 +989,69 @@ void BDFloaterPoser::afterJointPositionReset()
 	}
 }
 
-/*void BDFloaterPoser::onJointStateCheck()
-{
-	bool all_enabled = true;
-	//BD - We check if all bones are enabled or not and pause or unpause depending on it.
-	S32 i = 0;
-	for (;; i++)
-	{
-		LLJoint* joint = gAgentAvatarp->getCharacterJoint(i);
-		if (joint)
-		{
-			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-			if (motion)
-			{
-				LLPose* pose = motion->getPose();
-				if (pose)
-				{
-					LLPointer<LLJointState> joint_state = pose->findJointState(joint);
-					if (!joint_state)
-					{
-						//BD - One joint state was not enabled, break out and unpause all motions.
-						all_enabled = false;
-						gAgentAvatarp->getMotionController().unpauseAllMotions();
-						break;
-					}
-				}
-			}
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	if (all_enabled)
-	{
-		//BD - We ran through with no bone disabled. Pause all motions.
-		gAgentAvatarp->getMotionController().pauseAllMotions();
-
-		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
-	}
-}*/
-
-
 ////////////////////////////////
 //BD - Animations
 ////////////////////////////////
 void BDFloaterPoser::onAnimAdd(const LLSD& param)
 {
-	S32 selected_index = mAnimEditorScroll->getFirstSelectedIndex();
-	std::vector<LLScrollListItem*> items = mAnimEditorScroll->getAllData();
-	LLScrollListItem* new_item;
-	LLSD row;
-
-	if (param.asString() == "Repeat")
+	//BD - Don't allow changing the list while it's currently playing, this might
+	//     cause a crash when the animator is past the null check and we delete an
+	//     entry between null checking and trying to read its values. 
+	if (gDragonAnimator.getIsPlaying())
 	{
-		row["columns"][0]["column"] = "name";
-		row["columns"][0]["value"] = "Repeat";
-	}
-	else if (param.asString() == "Wait")
-	{
-		row["columns"][0]["column"] = "name";
-		row["columns"][0]["value"] = "Wait";
-		row["columns"][1]["column"] = "time";
-		row["columns"][1]["value"] = 1.f;
-	}
-	else
-	{
-		LLScrollListItem* pose = mPoseScroll->getFirstSelected();
-		if (pose)
-		{
-			//BD - Replace with list fill.
-			row["columns"][0]["column"] = "name";
-			row["columns"][0]["value"] = pose->getColumn(0)->getValue().asString();
-		}
-		else
-		{
-			//BD - We should return here since when we dont add anything we don't need to do the rest.
-			//     This MIGHT actually cause the issues users are seeing that i cannot reproduce.
-			return;
-		}
-	}
-
-	new_item = mAnimEditorScroll->addElement(row);
-
-	if (!new_item)
-	{
-		LL_WARNS("Animator") << "Item we wrote is invalid, abort." << LL_ENDL;
 		return;
 	}
 
-	++selected_index;
-	items.insert(items.begin() + selected_index, new_item);
-	onAnimListWrite(items);
+	LLScrollListItem* pose = mPoseScroll->getFirstSelected();
+	std::string name = param.asString();
+	S32 location = mAnimEditorScroll->getFirstSelectedIndex() + 1;
+	F32 time = 0.f;
+	BDAnimator::EActionType type;
+	if (param.asString() == "Repeat")
+	{
+		type = BDAnimator::EActionType::REPEAT;
+	}
+	else if (param.asString() == "Wait")
+	{
+		type = BDAnimator::EActionType::WAIT;
+		time = 1.f;
+	}
+	else
+	{
+		name = pose->getColumn(0)->getValue().asString();
+		type = BDAnimator::EActionType::POSE;
+	}
+	gDragonAnimator.onAddAction(name, type, time, location);
+	onAnimListWrite();
 
 	//BD - Select added entry and make it appear as nothing happened.
 	//     In case of nothing being selected yet, select the first entry.
-	mAnimEditorScroll->selectNthItem(selected_index);
+	mAnimEditorScroll->selectNthItem(location);
 
 	//BD - Update our controls when we add items, the move and delete buttons
 	//     should enable now that we selected something.
 	onAnimControlsRefresh();
 }
 
-void BDFloaterPoser::onAnimListWrite(std::vector<LLScrollListItem*> item_list)
+void BDFloaterPoser::onAnimListWrite()
 {
+	mAnimEditorScroll->clearRows();
 	//BD - Now go through the new list we created, read them out and add them
 	//     to our list in the new desired order.
-	for (LLScrollListItem* item : item_list)
+	for (BDAnimator::Action action : gDragonAnimator.mAnimatorActions)
 	{
-		if (item)
+		LLSD row;
+		row["columns"][0]["column"] = "name";
+		row["columns"][0]["value"] = action.mPoseName;
+		if (action.mType == BDAnimator::EActionType::WAIT)
 		{
-			item->setFlagged(true);
-
-			LLSD row;
-			LLScrollListCell* column = item->getColumn(0);
-			if (column)
-			{
-				std::string value_str = column->getValue().asString();
-				row["columns"][0]["column"] = "name";
-				row["columns"][0]["value"] = value_str;
-				if (value_str == "Wait")
-				{
-					row["columns"][1]["column"] = "time";
-					row["columns"][1]["value"] = item->getColumn(1)->getValue().asString();
-				}
-				LLScrollListItem* new_item = mAnimEditorScroll->addElement(row);
-				new_item->setFlagged(false);
-			}
+			row["columns"][1]["column"] = "time";
+			row["columns"][1]["value"] = action.mTime;
+			row["columns"][2]["column"] = "type";
+			row["columns"][2]["value"] = action.mType;
 		}
+		mAnimEditorScroll->addElement(row);
 	}
-
-	//BD - Delete all flagged items now and we'll end up with a new list order.
-	mAnimEditorScroll->deleteFlaggedItems();
 
 	//BD - Make sure we don't have a scrollbar unless we need it.
 	mAnimEditorScroll->updateLayout();
@@ -1231,6 +1059,14 @@ void BDFloaterPoser::onAnimListWrite(std::vector<LLScrollListItem*> item_list)
 
 void BDFloaterPoser::onAnimMove(const LLSD& param)
 {
+	//BD - Don't allow changing the list while it's currently playing, this might
+	//     cause a crash when the animator is past the null check and we delete an
+	//     entry between null checking and trying to read its values. 
+	if (gDragonAnimator.getIsPlaying())
+	{
+		return;
+	}
+
 	S32 item_count = mAnimEditorScroll->getItemCount();
 	S32 new_index = mAnimEditorScroll->getFirstSelectedIndex();
 	S32 old_index = new_index;
@@ -1247,10 +1083,8 @@ void BDFloaterPoser::onAnimMove(const LLSD& param)
 		return;
 	}
 
-	LLScrollListItem* cur_item = mAnimEditorScroll->getFirstSelected();
-
 	//BD - Don't allow moving if we don't have anything selected either. (Crashfix)
-	if (!cur_item)
+	if (new_index == -1)
 	{
 		return;
 	}
@@ -1265,25 +1099,37 @@ void BDFloaterPoser::onAnimMove(const LLSD& param)
 		++new_index;
 	}
 
-	cur_item = mAnimEditorScroll->getFirstSelected();
-	std::vector<LLScrollListItem*> items = mAnimEditorScroll->getAllData();
-
-	items.erase(items.begin() + old_index);
-	items.insert(items.begin() + new_index, cur_item);
-	onAnimListWrite(items);
+	BDAnimator::Action action = gDragonAnimator.mAnimatorActions[old_index];
+	gDragonAnimator.onDeleteAction(old_index);
+	gDragonAnimator.onAddAction(action, new_index);
+	onAnimListWrite();
 
 	//BD - Select added entry and make it appear as nothing happened.
 	//     In case of nothing being selected yet, select the first entry.
 	mAnimEditorScroll->selectNthItem(new_index);
 
-	//BD - Update our controls when we add items, the move and delete buttons
-	//     should enable now that we selected something.
+	//BD - Update our controls when we move items, the move and delete buttons
+	//     should enable now that we might have selected something.
 	onAnimControlsRefresh();
 }
 
 void BDFloaterPoser::onAnimDelete()
 {
-	mAnimEditorScroll->deleteSelectedItems();
+	//BD - Don't allow changing the list while it's currently playing, this might
+	//     cause a crash when the animator is past the null check and we delete an
+	//     entry between null checking and trying to read its values. 
+	if (gDragonAnimator.getIsPlaying())
+	{
+		return;
+	}
+
+	std::vector<LLScrollListItem*> items = mAnimEditorScroll->getAllSelected();
+	while (!items.empty())
+	{
+		gDragonAnimator.onDeleteAction(mAnimEditorScroll->getFirstSelectedIndex());
+		items.erase(items.begin());
+	}
+	onAnimListWrite();
 
 	//BD - Make sure we don't have a scrollbar unless we need it.
 	mAnimEditorScroll->updateLayout();
@@ -1296,26 +1142,31 @@ void BDFloaterPoser::onAnimDelete()
 void BDFloaterPoser::onAnimSave()
 {
 	//BD - Work in Progress exporter.
-	//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-	//LLKeyframeMotion::JointMotionList* jointmotion_list;
-	//jointmotion_list = LLKeyframeDataCache::getKeyframeData(ANIM_BD_POSING_MOTION);
-	//typedef std::map<LLUUID, class LLKeyframeMotion::JointMotionList*> keyframe_data_map_t;
-	//LLKeyframeMotion::JointMotion* joint_motion = jointmotion_list->getJointMotion(0);
-	//LLKeyframeMotion::RotationCurve rot_courve = joint_motion->mRotationCurve;
-	//LLKeyframeMotion::RotationKey rot_key = rot_courve.mLoopInKey;
-	//LLQuaternion rotation = rot_key.mRotation;
-	//F32 time = rot_key.mTime;
+	/*LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	typedef std::map<LLUUID, class LLKeyframeMotion::JointMotionList*> keyframe_data_map_t;
+
+	LLKeyframeMotion::JointMotionList* jointmotion_list;
+	jointmotion_list = LLKeyframeDataCache::getKeyframeData(ANIM_BD_POSING_MOTION);
+
+	LLKeyframeMotion::JointMotion* joint_motion = jointmotion_list->getJointMotion(0);
+	LLKeyframeMotion::RotationCurve rot_courve = joint_motion->mRotationCurve;
+	LLKeyframeMotion::RotationKey rot_key = rot_courve.mLoopInKey;
+	LLQuaternion rotation = rot_key.mRotation;
+	F32 time = rot_key.mTime;*/
 }
 
 void BDFloaterPoser::onAnimSet()
 {
 	F32 value = getChild<LLUICtrl>("anim_time")->getValue().asReal();
+	S32 selected_index = mAnimEditorScroll->getFirstSelectedIndex();
+	BDAnimator::Action action = gDragonAnimator.mAnimatorActions[selected_index];
 	LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
 	if (item)
 	{
-		LLScrollListCell* column = item->getColumn(1);
-		if (item->getColumn(0)->getValue().asString() == "Wait")
+		if (action.mType == BDAnimator::EActionType::WAIT)
 		{
+			gDragonAnimator.mAnimatorActions[mAnimEditorScroll->getFirstSelectedIndex()].mTime = value;
+			LLScrollListCell* column = item->getColumn(1);
 			column->setValue(value);
 		}
 	}
@@ -1325,32 +1176,41 @@ void BDFloaterPoser::onAnimPlay()
 {
 	//BD - We start the animator frametimer here and set the expiry time to 0.0
 	//     to force the animator to start immediately when hitting the "Start" button.
-	mExpiryTime = 0.0f;
-	mAnimPlayTimer.start();
+	gDragonAnimator.startPlayback();
+
+	//BD - Update our controls when we start the animator. Most of them should
+	//     disable now.
+	onAnimControlsRefresh();
+	onPoseControlsRefresh();
 }
 
 void BDFloaterPoser::onAnimStop()
 {
-	//BD - We only need to stop it here because the .start function resets the timer automatically.
-	mAnimPlayTimer.stop();
+	//BD - We only need to stop it here because the .start function resets the timer 
+	//     automatically.
+	gDragonAnimator.stopPlayback();
+
+	//BD - Update our controls when we stop the animator. Most of them should
+	//     enable again.
+	onAnimControlsRefresh();
+	onPoseControlsRefresh();
 }
 
 void BDFloaterPoser::onAnimControlsRefresh()
 {
 	S32 item_count = mAnimEditorScroll->getItemCount();
 	S32 index = mAnimEditorScroll->getFirstSelectedIndex();
-	LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
-	if (item && item->getColumn(0)->getValue().asString() == "Wait")
-	{
-		getChild<LLUICtrl>("anim_time")->setEnabled(true);
-	}
-	else
-	{
-		getChild<LLUICtrl>("anim_time")->setEnabled(false);
-	}
-	getChild<LLUICtrl>("delete_entry")->setEnabled(bool(item));
-	getChild<LLUICtrl>("move_up")->setEnabled(item && index != 0);
-	getChild<LLUICtrl>("move_down")->setEnabled(item && !((index + 1) >= item_count));
+
+	bool is_playing = gDragonAnimator.getIsPlaying();
+	bool selected = index != -1;
+	bool is_wait = gDragonAnimator.mAnimatorActions[index].mType == BDAnimator::EActionType::WAIT;
+
+	getChild<LLUICtrl>("anim_time")->setEnabled(!is_playing && selected && is_wait);
+	getChild<LLUICtrl>("delete_entry")->setEnabled(!is_playing && selected);
+	getChild<LLUICtrl>("move_up")->setEnabled(!is_playing && selected && index != 0);
+	getChild<LLUICtrl>("move_down")->setEnabled(!is_playing && selected && !((index + 1) >= item_count));
+	getChild<LLUICtrl>("add_repeat")->setEnabled(!is_playing);
+	getChild<LLUICtrl>("add_wait")->setEnabled(!is_playing);
 }
 
 
@@ -1372,5 +1232,136 @@ void BDFloaterPoser::onUpdateLayout()
 		S32 expanded_width = getChild<LLPanel>("max_panel")->getRect().getWidth();
 		S32 floater_width = (poses_expanded && !animator_expanded) ? expanded_width : collapsed_width;
 		this->reshape(floater_width, this->getRect().getHeight());
+
+		if (animator_expanded)
+		{
+			//BD - Refresh our animation list
+			onAnimListWrite();
+		}
 	}
 }
+
+
+////////////////////////////////
+//BD - Experimental Functions
+////////////////////////////////
+
+/*void BDFloaterPoser::onAddKey()
+{
+	S32 max_sliders = 60;
+
+	if ((S32)mSliderToKey.size() >= max_sliders)
+	{
+		LLSD args;
+		args["MAX"] = max_sliders;
+		//LLNotificationsUtil::add("DayCycleTooManyKeyframes", args, LLSD(), LLNotificationFunctorRegistry::instance().DONOTHING);
+		return;
+	}
+
+	// add the slider key
+	std::string key_val = mPoseScroll->getFirstSelected()->getColumn(0)->getValue().asString();
+	BDPoseKey pose_params(key_val);
+
+	F32 time = mTimeSlider->getCurSliderValue();
+	addSliderKey(time, pose_params);
+}
+
+void BDFloaterPoser::addSliderKey(F32 time, BDPoseKey keyframe)
+{
+	// make a slider
+	const std::string& sldr_name = mKeySlider->addSlider(time);
+	if (sldr_name.empty())
+	{
+		return;
+	}
+
+	// set the key
+	SliderKey newKey(keyframe, mKeySlider->getCurSliderValue());
+
+	// add to map
+	mSliderToKey.insert(std::pair<std::string, SliderKey>(sldr_name, newKey));
+}
+
+void BDFloaterPoser::onTimeSliderMoved()
+{
+}
+
+void BDFloaterPoser::onKeyTimeMoved()
+{
+	if (mKeySlider->getValue().size() == 0)
+	{
+		return;
+	}
+
+	// make sure we have a slider
+	const std::string& cur_sldr = mKeySlider->getCurSlider();
+	if (cur_sldr == "")
+	{
+		return;
+	}
+
+	F32 time24 = mKeySlider->getCurSliderValue();
+
+	// check to see if a key exists
+	BDPoseKey key = mSliderToKey[cur_sldr].keyframe;
+	//LL_DEBUGS() << "Setting key time: " << time24 << LL_ENDL;
+	mSliderToKey[cur_sldr].time = time24;
+
+	// if it exists, turn on check box
+	//mSkyPresetsCombo->selectByValue(key.toStringVal());
+
+	//mTimeCtrl->setTime24(time24);
+}
+
+void BDFloaterPoser::onKeyTimeChanged()
+{
+	// if no keys, skipped
+	if (mSliderToKey.size() == 0)
+	{
+		return;
+	}
+
+	F32 time24 = getChild<LLTimeCtrl>("time_control")->getTime24();
+
+	const std::string& cur_sldr = mKeySlider->getCurSlider();
+	mKeySlider->setCurSliderValue(time24, TRUE);
+	F32 time = mKeySlider->getCurSliderValue() / 60;
+
+	// now set the key's time in the sliderToKey map
+	//LL_DEBUGS() << "Setting key time: " << time << LL_ENDL;
+	mSliderToKey[cur_sldr].time = time;
+
+	//applyTrack();
+}
+
+void BDFloaterPoser::onDeleteKey()
+{
+	if (mSliderToKey.size() == 0)
+	{
+		return;
+	}
+
+	// delete from map
+	const std::string& sldr_name = mKeySlider->getCurSlider();
+	std::map<std::string, SliderKey>::iterator mIt = mSliderToKey.find(sldr_name);
+	mSliderToKey.erase(mIt);
+
+	mKeySlider->deleteCurSlider();
+
+	if (mSliderToKey.size() == 0)
+	{
+		return;
+	}
+
+	const std::string& name = mKeySlider->getCurSlider();
+	//mSkyPresetsCombo->selectByValue(mSliderToKey[name].keyframe.toStringVal());
+	F32 time24 = mSliderToKey[name].time;
+
+	getChild<LLTimeCtrl>("time_control")->setTime24(time24);
+}
+
+void BDFloaterPoser::onAnimSetValue(LLUICtrl* ctrl, const LLSD& param)
+{
+	F32 val = ctrl->getValue().asReal();
+	mKeySlider->setValue(val);
+}*/

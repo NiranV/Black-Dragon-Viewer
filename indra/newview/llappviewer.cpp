@@ -101,6 +101,9 @@
 #include "rlvhandler.h"
 // [/RLVa:KB]
 
+//BD - Animator
+#include "bdanimator.h"
+
 #include "llweb.h"
 #include "llfloatertexturefetchdebugger.h"
 #include "llspellcheck.h"
@@ -4718,6 +4721,9 @@ void LLAppViewer::idle()
 			// Handle automatic walking towards points
 			gAgentPilot.updateTarget();
 			gAgent.autoPilot(&yaw);
+
+			//BD - Animator
+			gDragonAnimator.update();
 		}
 
 		static LLFrameTimer agent_update_timer;
