@@ -1075,7 +1075,7 @@ width="517">
 	width="26" />
 	<button
 	height="23"
-	label=" -- "
+	label=" - "
 	label_selected="Delete Key"
 	image_hover_unselected="Toolbar_Middle_Over"
 	image_selected="Toolbar_Middle_Selected"
