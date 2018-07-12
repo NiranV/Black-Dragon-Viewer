@@ -75,10 +75,8 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 	std::string title = mIsGroupMsg ? im_session->mName : sslurl;
 	mAvatarName->setValue(title);
 	mAvatarName->setVisible(!mIsGroupMsg);
-	mAvatarNameOfGroup->setVisible(mIsgroupMsg);
+	mAvatarNameOfGroup->setVisible(mIsGroupMsg);
 	mAvatarNameOfGroup->setValue(title);
-
-
 	
 	//Handle IRC styled /me messages.
 	std::string prefix = p.message.substr(0, 4);

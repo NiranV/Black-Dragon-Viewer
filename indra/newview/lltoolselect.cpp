@@ -244,7 +244,7 @@ LLObjectSelectionHandle LLToolSelect::handleObjectSelection(const LLPickInfo& pi
 											&target_rot,
 											NULL,
 											NULL,
-											MAX_FAR_CLIP /*stop_distance, don't care since we are looking, not moving*/,
+											MAX_FAR_CLIP,
 											gAgentAvatarp->isSitting() ? SELECTION_SITTING_ROTATION_TRESHOLD : SELECTION_ROTATION_TRESHOLD);
 			}
 		}*/
