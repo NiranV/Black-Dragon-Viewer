@@ -155,7 +155,7 @@ protected:
 			mPointer = NULL;
 
 			//BD
-			if (temp)
+			if (temp != NULL)
 			{
 				temp->unref();
 			}
