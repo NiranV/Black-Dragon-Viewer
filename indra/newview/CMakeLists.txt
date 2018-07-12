@@ -101,18 +101,19 @@ include_directories(SYSTEM
 
 set(viewer_SOURCE_FILES
 #	Black Dragon
-	bdpaneldrawdistance.cpp
+    bdanimator.cpp
+    bdpaneldrawdistance.cpp
     bdfloateranimations.cpp
     bdfloatercamera.cpp
     bdfloatercomplexity.cpp
-	bdfloaterposer.cpp
-	bdsidebar.cpp
+    bdfloaterposer.cpp
+    bdsidebar.cpp
     bdposingmotion.cpp
-	exopostprocess.cpp
+    exopostprocess.cpp
     piemenu.cpp
     pieseparator.cpp
     pieslice.cpp
-	qtoolalign.cpp
+    qtoolalign.cpp
 
     groupchatlistener.cpp
     llaccountingcostmanager.cpp
@@ -737,18 +738,19 @@ set(VIEWER_BINARY_NAME "blackdragon-bin" CACHE STRING
 
 set(viewer_HEADER_FILES
 #	Black Dragon
-	bdpaneldrawdistance.h
-  bdfloatercamera.h
+    bdanimator.h
+    bdpaneldrawdistance.h
+    bdfloatercamera.h
     bdfloateranimations.h
     bdfloatercomplexity.h
-	bdfloaterposer.h
-	bdsidebar.h
+    bdfloaterposer.h
+    bdsidebar.h
     bdposingmotion.h
     exopostprocess.h
-	piemenu.h
+    piemenu.h
     pieseparator.h
     pieslice.h
-	qtoolalign.h
+    qtoolalign.h
 
     CMakeLists.txt
     ViewerInstall.cmake
