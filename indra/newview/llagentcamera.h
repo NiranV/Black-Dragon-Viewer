@@ -451,6 +451,7 @@ private:
 public:
 //	//BD
 	bool	mMouseInvert;
+	S32		mFollowJoint;
 //	//BD - Third Person Steering Mode
 	bool	mThirdPersonSteeringMode;
 //	//BD - Cinematic Head Tracking

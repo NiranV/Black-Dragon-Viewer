@@ -43,6 +43,9 @@
 #include "llfirstuse.h"
 #include "llhints.h"
 
+//BD
+#include "llvoavatarself.h"
+
 static LLDefaultChildRegistry::Register<LLPanelCameraItem> r("panel_camera_item");
 
 const F32 NUDGE_TIME = 0.25f;		// in seconds
@@ -345,6 +348,15 @@ void LLFloaterCamera::onOpen(const LLSD& key)
 
 	mZoom->onOpen(key);
 
+	//BD
+	mJointComboBox->clear();
+	LLJoint* joint;
+	mJointComboBox->add("None", -1);
+	for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
+	{
+		mJointComboBox->add(joint->getName(), joint->mJointNum);
+	}
+
 	// Returns to previous mode, see EXT-2727(View tool should remember state).
 	// In case floater was just hidden and it isn't reset the mode
 	// just update state to current one. Else go to previous.
@@ -394,6 +406,8 @@ BOOL LLFloaterCamera::postBuild()
 	mRotate = getChild<LLJoystickCameraRotate>(ORBIT);
 	mZoom = findChild<LLPanelCameraZoom>(ZOOM);
 	mTrack = getChild<LLJoystickCameraTrack>(PAN);
+	//BD
+	mJointComboBox = getChild<LLComboBox>("joint_combo");
 
 	assignButton2Mode(CAMERA_CTRL_MODE_MODES,			"avatarview_btn");
 	assignButton2Mode(CAMERA_CTRL_MODE_PAN,				"pan_btn");

@@ -700,6 +700,13 @@ static bool handleInvertMouse(const LLSD& newvalue)
 	return true;
 }
 
+//BD - Follow a specified joint's movement.
+static bool handleFollowJoint(const LLSD& newvalue)
+{
+	gAgentCamera.mFollowJoint = newvalue.asInteger();
+	return true;
+}
+
 //BD - Camera position smoothing.
 static bool handleCameraSmoothing(const LLSD& newvalue)
 {
@@ -1073,6 +1080,7 @@ void settings_setup_listeners()
 
 	//BD - Camera
 	gSavedSettings.getControl("InvertMouseThirdPerson")->getSignal()->connect(boost::bind(&handleInvertMouse, _2));
+	gSavedSettings.getControl("CameraFollowJoint")->getSignal()->connect(boost::bind(&handleFollowJoint, _2));
 	gSavedSettings.getControl("CameraPositionSmoothing")->getSignal()->connect(boost::bind(&handleCameraSmoothing, _2));
 //	//BD - Third Person Steering Mode
 	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));

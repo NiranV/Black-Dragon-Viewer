@@ -133,13 +133,13 @@
       </panel>
       <panel
           follows="all"
-          height="68"
+          height="90"
           layout="topleft"
           left="8"
           name="camera_modes_list"
           top="0"
-          width="162"
-          visible="false">
+          width="170"
+          visible="true">
         <panel_camera_item
           name="object_view">
           <panel_camera_item.mousedown_callback
@@ -169,6 +169,28 @@
           <panel_camera_item.selected_picture
             image_name="MouseLook_View_On" />
         </panel_camera_item>
+        <combo_box
+        follows="top|left"
+        left="0"
+        height="25"
+        control_name="CameraFollowJoint"
+        name="joint_combo"
+        top_pad="27"
+        width="170">
+        <combo_box.item
+        label="Select a bone to follow"
+        name="item0"/>
+        <combo_box.combo_button
+        image_unselected="Toolbar_Middle_Off"
+        image_selected="Toolbar_Middle_Selected"
+        image_disabled="Toolbar_Middle_Off" />
+        <combo_box.drop_down_button
+        image_unselected="Toolbar_Middle_Off"
+        image_selected="Toolbar_Middle_Selected"
+        image_pressed="Toolbar_Middle_Selected" 
+        image_pressed_selected="Toolbar_Middle_Selected"
+        image_disabled="Toolbar_Middle_Off" />
+        </combo_box>
       </panel>
          <!--TODO: replace + - images -->
          <panel
@@ -177,7 +199,7 @@
             height="97"
             layout="topleft"
             left="0"
-												visible="true"
+												visible="false"
             mouse_opaque="false"
             name="zoom"
             top="0"

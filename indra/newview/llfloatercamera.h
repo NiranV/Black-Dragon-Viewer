@@ -31,6 +31,8 @@
 #include "lliconctrl.h"
 #include "lltextbox.h"
 #include "llflatlistview.h"
+//BD
+#include "llcombobox.h"
 
 class LLJoystickCameraRotate;
 class LLJoystickCameraTrack;
@@ -124,6 +126,9 @@ private:
 	ECameraControlMode mPrevMode;
 	ECameraControlMode mCurrMode;
 	std::map<ECameraControlMode, LLButton*> mMode2Button;
+
+	//BD
+	LLComboBox*		mJointComboBox;
 };
 
 /**

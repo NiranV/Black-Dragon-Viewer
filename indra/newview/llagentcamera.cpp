@@ -185,6 +185,7 @@ LLAgentCamera::LLAgentCamera() :
 
 	//BD
 	mMouseInvert(false),
+	mFollowJoint(0),
 
 //	//BD - Third Person Steering Mode
 	mThirdPersonSteeringMode(false),
@@ -263,6 +264,7 @@ void LLAgentCamera::init()
 
 	//BD
 	mMouseInvert = gSavedSettings.getBOOL("InvertMouseThirdPerson");
+	mFollowJoint = gSavedSettings.getS32("CameraFollowJoint");
 	mCameraPositionSmoothing = gSavedSettings.getF32("CameraPositionSmoothing");
 //	//BD - Realistic Mouselook
 	mRealisticMouselook = gSavedSettings.getBOOL("UseRealisticMouselook");
@@ -1489,7 +1491,8 @@ void LLAgentCamera::updateCamera()
 	}
 	
 	mCameraCurrentFOVZoomFactor = lerp(mCameraCurrentFOVZoomFactor, mCameraFOVZoomFactor, LLSmoothInterpolation::getInterpolant(FOV_ZOOM_HALF_LIFE));
-
+	//BD
+	LLVector3 offset = LLVector3(0,0,0);
 	LLVector3 focus_agent = gAgent.getPosAgentFromGlobal(mFocusGlobal);
 //	//BD - Cinematic Head Tracking
 	if (isAgentAvatarValid()
@@ -1499,7 +1502,6 @@ void LLAgentCamera::updateCamera()
 		//     against our Cinematic Head Tracking camera roll. This is also the perfect
 		//     place to revert our roll, simply go back to third person to "reset".
 		mCameraRollAngle = 0.f;
-
 		if (mCinematicCamera)
 		{
 			LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() -
@@ -1514,9 +1516,26 @@ void LLAgentCamera::updateCamera()
 			mCameraUpVector = LLVector3::z_axis * gAgentAvatarp->mHeadp->getWorldRotation();
 			mCameraUpVector = lerp(mCameraUpVector, LLVector3::z_axis, mCameraMaxRoll);
 		}
+		else if (mFollowJoint != -1)
+		{
+			LLJoint* joint = gAgentAvatarp->getCharacterJoint(mFollowJoint);
+			if (joint)
+			{
+				focus_agent = joint->getWorldPosition();
+				offset = focus_agent + getCameraOffsetInitial();
+			}
+		}
 	}
-	mCameraPositionAgent = gAgent.getPosAgentFromGlobal(camera_pos_global);
-	// Move the camera
+	//BD
+	if (mFollowJoint >= 0 && mFocusOnAvatar && mCameraMode == CAMERA_MODE_THIRD_PERSON)
+	{
+		mCameraPositionAgent = offset;
+	}
+	else
+	{
+		// Move the camera
+		mCameraPositionAgent = gAgent.getPosAgentFromGlobal(camera_pos_global);
+	}
 
 	LLViewerCamera::getInstance()->updateCameraLocation(mCameraPositionAgent, mCameraUpVector, focus_agent);
 
