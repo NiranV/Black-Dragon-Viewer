@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
 positioning="centered"
-height="431"
+height="461"
 layout="topleft"
 name="floater_poser"
 title="Poser"
@@ -1024,6 +1024,36 @@ width="517">
 			</panel>
 		</layout_panel>
 	</layout_stack>
+	
+	<multi_slider
+	can_edit_text="false"
+	decimal_digits="0"
+	follows="bottom"
+	height="10"
+	increment="0.1"
+	initial_value="0"
+	layout="topleft"
+	left_delta="0"
+	max_sliders="120"
+	max_val="30"
+	min_val="25"
+	name="key_slider"
+	show_text="false"
+	top_pad="3"
+	width="475" />
+	<line_editor
+	commit_on_focus_lost="true"
+	follows="left|top"
+	height="20"
+	label=""
+	enabled="true"
+	left_pad="1"
+	top_delta="0"
+	name="time"
+	width="62">
+	<line_editor.commit_callback
+	function="Anim.Edit"/>
+	</line_editor>
 	
 	
 	<!--<multi_slider

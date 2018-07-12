@@ -78,6 +78,7 @@ BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 	mCommitCallbackRegistrar.add("Anim.Set", boost::bind(&BDFloaterPoser::onAnimSet, this));
 
 	//BD - Test.
+	mCommitCallbackRegistrar.add("Anim.Edit", boost::bind(&BDFloaterPoser::onAnimEdit, this, _1, _2));
 	//mCommitCallbackRegistrar.add("Anim.SetValue", boost::bind(&BDFloaterPoser::onAnimSetValue, this, _1, _2));
 }
 
@@ -1245,6 +1246,51 @@ void BDFloaterPoser::onUpdateLayout()
 ////////////////////////////////
 //BD - Experimental Functions
 ////////////////////////////////
+
+void BDFloaterPoser::onAnimEdit(LLUICtrl* ctrl, const LLSD& param)
+{
+	getChild<LLMultiSliderCtrl>("key_slider")->clear();
+	LLUUID id = LLUUID("cd9b0386-b26d-e860-0114-d879ee12a777");
+
+	//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(id);
+	typedef std::map<LLUUID, class LLKeyframeMotion::JointMotionList*> keyframe_data_map_t;
+
+	LLKeyframeMotion::JointMotionList* jointmotion_list;
+	jointmotion_list = LLKeyframeDataCache::getKeyframeData(id);
+	S32 i = 0;
+
+	if (!jointmotion_list)
+	{
+		return;
+	}
+
+	LLScrollListItem* item = mJointsScroll->getLastSelectedItem();
+	if (!item)
+	{
+		return;
+	}
+
+	LLJoint* joint = (LLJoint*)item->getUserdata();
+	i = joint->mJointNum;
+
+	LLKeyframeMotion::JointMotion* joint_motion = jointmotion_list->getJointMotion(i);
+	LLKeyframeMotion::RotationCurve rot_courve = joint_motion->mRotationCurve;
+	LLKeyframeMotion::RotationKey rot_key;
+	LLQuaternion rotation;
+	F32 time;
+	LLKeyframeMotion::RotationCurve::key_map_t keys = rot_courve.mKeys;
+
+	for (LLKeyframeMotion::RotationCurve::key_map_t::const_iterator iter = keys.begin();
+		iter != keys.end(); ++iter)
+	{
+		time = iter->first;
+		rot_key = iter->second;
+
+		//const std::string& sldr_name = getChild<LLMultiSliderCtrl>("key_slider")->addSlider(time);
+		getChild<LLMultiSliderCtrl>("key_slider")->addSlider(time);
+		//getChild<LLMultiSliderCtrl>("key_slider")->getSliderValue();
+	}
+}
 
 /*void BDFloaterPoser::onAddKey()
 {

@@ -163,6 +163,7 @@ private:
 
 
 	//BD - Experimental
+	void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);
 	/*void onAddKey();
 	void onDeleteKey();
 	void addSliderKey(F32 time, BDPoseKey keyframe);
@@ -198,6 +199,7 @@ private:
 
 
 	//BD - Exerpimental
+	LLSD 							mAnimJointMap[134][200][2]; // 134 bones, 200 keyframes , 2 stats (rotation | time)
 	/*std::map<std::string, SliderKey> mSliderToKey;
 	LLMultiSliderCtrl*				mTimeSlider;
 	LLMultiSliderCtrl*				mKeySlider;*/
