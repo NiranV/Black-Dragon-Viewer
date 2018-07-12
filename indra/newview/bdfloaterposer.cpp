@@ -1204,7 +1204,12 @@ void BDFloaterPoser::onAnimControlsRefresh()
 
 	bool is_playing = gDragonAnimator.getIsPlaying();
 	bool selected = index != -1;
-	bool is_wait = gDragonAnimator.mAnimatorActions[index].mType == BDAnimator::EActionType::WAIT;
+	bool is_wait = false;
+	//BD - Crashfix.
+	if (selected)
+	{
+		is_wait = gDragonAnimator.mAnimatorActions[index].mType == BDAnimator::EActionType::WAIT;
+	}
 
 	getChild<LLUICtrl>("anim_time")->setEnabled(!is_playing && selected && is_wait);
 	getChild<LLUICtrl>("delete_entry")->setEnabled(!is_playing && selected);
