@@ -749,14 +749,14 @@ bool idle_startup()
 
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_ARROW);
 
-		//BD
-		LL_DEBUGS("AppInit") << "initializing menu bar" << LL_ENDL;
-		display_startup();
-		initialize_edit_menu();
-		initialize_spellcheck_menu();
-		display_startup();
-		init_menus();
-		display_startup();
+		// Login screen needs menus for preferences, but we can enter
+		// this startup phase more than once.
+		/*if (gLoginMenuBarView == NULL)
+		{
+			LL_DEBUGS("AppInit") << "initializing menu bar" << LL_ENDL;
+			initialize_spellcheck_menu();
+			init_menus();
+		}*/
 		show_release_notes_if_required();
 
 		if (show_connect_box)

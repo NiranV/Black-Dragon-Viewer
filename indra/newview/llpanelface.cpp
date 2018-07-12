@@ -1163,16 +1163,6 @@ void LLPanelFace::updateUI(bool force_set_values)
 			getChild<LLUICtrl>("combobox texgen")->setTentative(!identical);
 			getChildView("tex gen")->setEnabled(editable);
 
-			//BD - TODO: Check this sometime, it doesn't always work, probably why LL changed it.
-			if (selected_texgen == LLTextureEntry::TEX_GEN_PLANAR)
-			{
-				// EXP-1507 (change label based on the mapping mode)
-				getChild<LLUICtrl>("rptctrl")->setLabelArg("[REPEATS]", getString("string repeats per meter"));
-			}
-			else if (selected_texgen == LLTextureEntry::TEX_GEN_DEFAULT)
-			{
-				getChild<LLUICtrl>("rptctrl")->setLabelArg("[REPEATS]", getString("string repeats per face"));
-			}
 		}
 
 		{
@@ -1385,8 +1375,7 @@ void LLPanelFace::updateUI(bool force_set_values)
 			mColorSwatch->setValid(FALSE);
 		}
 		getChildView("color trans")->setEnabled(FALSE);
-		getChildView("rpt")->setEnabled(FALSE);
-		getChildView("tex offset")->setEnabled(FALSE);
+		getChildView("rptctrl")->setEnabled(FALSE);
 		getChildView("tex gen")->setEnabled(FALSE);
 		//BD
 		getChildView("lock_diffuse_check")->setEnabled(FALSE);

@@ -69,17 +69,16 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 	
 	LLIMModel::LLIMSession* im_session = LLIMModel::getInstance()->findIMSession(p.session_id);
 	mIsGroupMsg = (im_session && im_session->mSessionType == LLIMModel::LLIMSession::GROUP_SESSION);
+	
 //	//BD - SSFUI
-	std::string name = "secondlife:///app/agent/" + p.avatar_id.asString() + "/about";
-	if(mIsGroupMsg)
-	{
-		mAvatarName->setVisible(FALSE);
-		mAvatarNameOfGroup->setValue(name);
-	}
-	else
-	{
-		mAvatarNameOfGroup->setVisible(FALSE);
-	}
+	std::string sslurl = "secondlife:///app/agent/" + p.avatar_id.asString() + "/about";
+	std::string title = mIsGroupMsg ? im_session->mName : sslurl;
+	mAvatarName->setValue(title);
+	mAvatarName->setVisible(!mIsGroupMsg);
+	mAvatarNameOfGroup->setVisible(mIsgroupMsg);
+	mAvatarNameOfGroup->setValue(title);
+
+
 	
 	//Handle IRC styled /me messages.
 	std::string prefix = p.message.substr(0, 4);
@@ -96,15 +95,17 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 	}
 	else
 	{
+		if (mIsGroupMsg)
+		{
+			LLAvatarName avatar_name;
+			LLAvatarNameCache::get(p.avatar_id, &avatar_name);
+			p.message = "[From " + avatar_name.getDisplayName() + "]\n" + p.message;
+		}
 		style_params.font.style =  "NORMAL";
 		mMessage->setText(p.message, style_params);
 	}
 
 //	//BD - SSFUI
-	if (!mIsGroupMsg)
-	{
-		mAvatarName->setValue(name);
-	}
 	mTime->setValue(p.time);
 	mSessionID = p.session_id;
 	mAvatarID = p.avatar_id;

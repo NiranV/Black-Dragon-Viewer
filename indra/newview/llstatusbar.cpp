@@ -160,6 +160,7 @@ BOOL LLStatusBar::postBuild()
 	mIconPresets = getChild<LLIconCtrl>( "presets_icon" );
 	mIconPresets->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterPresets, this));
 
+
 	mIconPresets = getChild<LLIconCtrl>( "presets_icon" );
 	mIconPresets->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterPresets, this));
 
@@ -240,7 +241,6 @@ BOOL LLStatusBar::postBuild()
 	addChild(mPanelDrawDistance);
 	mPanelDrawDistance->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
 	mPanelDrawDistance->setVisible(FALSE);
-
 	return TRUE;
 }
 

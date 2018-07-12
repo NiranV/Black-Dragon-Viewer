@@ -55,7 +55,6 @@ public:
 
 	void fetchInventory();
 	void inventoryFetched();
-	void onNewOutfitButtonClicked();
 
 	void showOutfitsInventoryPanel();
 	void showOutfitEditPanel();
@@ -92,7 +91,6 @@ private:
 
 	//BD
 	LLButton*					mSearchBtn;
-	LLButton*					mNewOutfitBtn;
 
 	LLTextBox*					mCurrentLookName;
 	LLTextBox*					mOutfitStatus;
