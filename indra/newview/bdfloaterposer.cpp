@@ -643,7 +643,7 @@ void BDFloaterPoser::onJointControlsRefresh()
 	mPositionSliders[VY]->setEnabled(can_position);
 	mPositionSliders[VZ]->setEnabled(can_position);
 
-	F32 max_val = is_pelvis ? 5.f : 1.0f;
+	F32 max_val = is_pelvis ? 20.f : 1.0f;
 	mPositionSliders[VX]->setMaxValue(max_val);
 	mPositionSliders[VY]->setMaxValue(max_val);
 	mPositionSliders[VZ]->setMaxValue(max_val);
