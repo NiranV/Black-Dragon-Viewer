@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
 positioning="centered"
-height="461"
+height="431"
 layout="topleft"
 name="floater_poser"
 title="Poser"
@@ -909,6 +909,7 @@ width="517">
 				follows="top|left"
 				layout="topleft"
 				label="Play"
+				enabled="false"
 				tool_tip="Start playing the animation queue."
 				image_hover_unselected="Toolbar_Middle_Over"
 				image_selected="Toolbar_Middle_Selected"
@@ -925,6 +926,7 @@ width="517">
 				follows="top|left"
 				layout="topleft"
 				label="Stop"
+				enabled="false"
 				tool_tip="Stop playing the animation queue."
 				image_hover_unselected="Toolbar_Middle_Over"
 				image_selected="Toolbar_Middle_Selected"
@@ -1025,7 +1027,7 @@ width="517">
 		</layout_panel>
 	</layout_stack>
 	
-	<multi_slider
+	<!--<multi_slider
 	can_edit_text="false"
 	decimal_digits="0"
 	follows="bottom"
@@ -1053,7 +1055,7 @@ width="517">
 	width="62">
 	<line_editor.commit_callback
 	function="Anim.Edit"/>
-	</line_editor>
+	</line_editor>-->
 	
 	
 	<!--<multi_slider

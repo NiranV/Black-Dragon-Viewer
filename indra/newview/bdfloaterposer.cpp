@@ -1217,6 +1217,8 @@ void BDFloaterPoser::onAnimControlsRefresh()
 	getChild<LLUICtrl>("move_down")->setEnabled(!is_playing && selected && !((index + 1) >= item_count));
 	getChild<LLUICtrl>("add_repeat")->setEnabled(!is_playing);
 	getChild<LLUICtrl>("add_wait")->setEnabled(!is_playing);
+	getChild<LLUICtrl>("play_anim")->setEnabled(!is_playing && (item_count > 0));
+	getChild<LLUICtrl>("stop_anim")->setEnabled(is_playing);
 }
 
 
