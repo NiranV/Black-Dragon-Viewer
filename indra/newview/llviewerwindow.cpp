@@ -4171,7 +4171,9 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 		{
 			found = gPipeline.lineSegmentIntersectInWorld(mw_start, mw_end, pick_transparent, pick_rigged,
 														  face_hit, intersection, uv, normal, tangent);
-			if (found && !pick_transparent)
+			//BD - Check whether we have flycam enabled and ignore the fact we are showing transparent
+			//     otherwise we end up with locking our depth of field focus.
+			if (found && (!pick_transparent || LLViewerJoystick::getInstance()->getOverrideCamera()))
 			{
 				gDebugRaycastIntersection = *intersection;
 			}
