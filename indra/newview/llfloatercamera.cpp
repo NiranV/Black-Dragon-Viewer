@@ -348,15 +348,6 @@ void LLFloaterCamera::onOpen(const LLSD& key)
 
 	mZoom->onOpen(key);
 
-	//BD
-	mJointComboBox->clear();
-	LLJoint* joint;
-	mJointComboBox->add("None", -1);
-	for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
-	{
-		mJointComboBox->add(joint->getName(), joint->mJointNum);
-	}
-
 	// Returns to previous mode, see EXT-2727(View tool should remember state).
 	// In case floater was just hidden and it isn't reset the mode
 	// just update state to current one. Else go to previous.
@@ -554,6 +545,18 @@ void LLFloaterCamera::updateState()
 	if (CAMERA_CTRL_MODE_FREE_CAMERA == mCurrMode)
 	{
 		return;
+	}
+
+	//BD
+	if (show_camera_modes)
+	{
+		mJointComboBox->clear();
+		LLJoint* joint;
+		mJointComboBox->add("None", -1);
+		for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
+		{
+			mJointComboBox->add(joint->getName(), joint->mJointNum);
+		}
 	}
 
 	//updating buttons
