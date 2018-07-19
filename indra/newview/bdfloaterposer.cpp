@@ -162,7 +162,7 @@ void BDFloaterPoser::onPoseRefresh()
 	while (dir_iter.next(file))
 	{
 		std::string path = gDirUtilp->add(dir, file);
-		std::string name = LLURI::unescape(gDirUtilp->getBaseFileName(path, true));
+		std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
 
 		LLSD row;
 		row["columns"][0]["column"] = "name";
@@ -230,7 +230,7 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 		return FALSE;
 	}
 
-	std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_POSES, filename + ".xml");
+	std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_POSES, escapeString(filename) + ".xml");
 	LLSD record;
 	S32 line = 0;
 
@@ -1247,6 +1247,17 @@ void BDFloaterPoser::onUpdateLayout()
 			onAnimListWrite();
 		}
 	}
+}
+
+std::string BDFloaterPoser::escapeString(const std::string& str)
+{
+	//BD - Don't use LLURI::escape() because it doesn't encode '-' characters
+	//     which may break handling of some poses.
+	char* curl_str = curl_escape(str.c_str(), str.size());
+	std::string escaped_str(curl_str);
+	curl_free(curl_str);
+
+	return escaped_str;
 }
 
 

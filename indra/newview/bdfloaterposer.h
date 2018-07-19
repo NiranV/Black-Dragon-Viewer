@@ -160,8 +160,10 @@ private:
 
 	//BD - Misc
 	void onUpdateLayout();
+public:
+	static std::string escapeString(const std::string& str);
 
-
+private:
 	//BD - Experimental
 	void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);
 	/*void onAddKey();

@@ -172,7 +172,7 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 	std::string filename;
 	if (!name.asString().empty())
 	{
-		filename = gDirUtilp->getExpandedFilename(LL_PATH_POSES, name.asString() + ".xml");
+		filename = gDirUtilp->getExpandedFilename(LL_PATH_POSES, BDFloaterPoser::escapeString(name.asString()) + ".xml");
 	}
 
 	LLSD pose;
