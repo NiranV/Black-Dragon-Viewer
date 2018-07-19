@@ -70,6 +70,9 @@
 #include "lllocalbitmaps.h"
 #include "llerror.h"
 
+//BD
+#include "lltabcontainer.h"
+
 static const F32 CONTEXT_CONE_IN_ALPHA = 0.0f;
 static const F32 CONTEXT_CONE_OUT_ALPHA = 1.f;
 static const F32 CONTEXT_FADE_TIME = 0.08f;
@@ -930,7 +933,8 @@ void LLFloaterTexturePicker::onFilterEdit(const std::string& search_string )
 
 void LLFloaterTexturePicker::setLocalTextureEnabled(BOOL enabled)
 {
-	getChild<LLPanel>("local_mode")->setVisible(enabled);
+	//BD
+	getChild<LLTabContainer>("mode_tabs")->enableTabButton(1, enabled);
 }
 
 void LLFloaterTexturePicker::onTextureSelect( const LLTextureEntry& te )
