@@ -194,6 +194,10 @@ void LLFloaterColorPicker::showUI ()
 			setOrigRgb ( curCol [ 0 ], curCol [ 1 ], curCol [ 2 ] );
 			setCurRgb( curCol [ 0 ], curCol [ 1 ], curCol [ 2 ] );
 
+//			//BD - Color Picker Transparency
+			setOrigT( curCol [ 3 ]);
+			setCurT( curCol [ 3 ]);
+
 			LLColorSwatchCtrl::onColorChanged ( swatch, LLColorSwatchCtrl::COLOR_CHANGE );
 		}
 
@@ -254,6 +258,7 @@ void LLFloaterColorPicker::initUI ( F32 rValIn, F32 gValIn, F32 bValIn, F32 tVal
 	// starting point for current value to
 	setCurRgb ( rValIn, gValIn, bValIn );
 //	//BD - Color Picker Transparency
+	setOrigT ( tValIn );
 	setCurT ( tValIn );
 
 	// unpdate text entry fields
