@@ -93,7 +93,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 		parameter="nearby"/>
 		</menu_item_call>-->
 		<menu_item_check
-		label="View Map"
+		label="Show Minimap"
 		layout="topleft"
 		name="">
 		<on_click
