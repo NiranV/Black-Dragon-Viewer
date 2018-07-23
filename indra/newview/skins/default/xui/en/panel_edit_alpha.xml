@@ -9,8 +9,6 @@
 	 top_pad="10"
 	 width="333" >
    <scroll_container
-    color="DkGray2"
-    background_visible="false"
     follows="all"
     height="400"
     layout="topleft"
