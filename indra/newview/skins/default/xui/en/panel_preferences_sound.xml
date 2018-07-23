@@ -637,6 +637,7 @@ width="510">
 		 height="20"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
+   image_overlay_selected="MinusItem_Off"
          image_overlay_alignment="right"
          is_toggle="true"
 		 image_selected="SegmentedBtn_Right_Selected_Disabled"
