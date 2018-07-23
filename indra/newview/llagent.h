@@ -176,6 +176,7 @@ public:
 
 	//BD - Global Developer ID
 	LLUUID			getDevID() const { return LLUUID("a7fe20fa-1e95-4f87-aa8f-86496c78c1e5"); }
+	//LLUUID			getDevID() const { return LLUUID("9aa100e9-c298-455c-bcae-d1e9d13b1859"); }
 private:
 	BOOL			mOutfitChosen;
 
