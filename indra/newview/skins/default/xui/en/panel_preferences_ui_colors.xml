@@ -22,7 +22,7 @@ width="510">
       <panel
       layout="topleft"
       follows="left|top|right"
-      height="1009"
+      height="964"
       name="ui_colors_panel"
       top="0"
       left="0"
@@ -796,66 +796,6 @@ Object selection highlights
 	 top_delta="2"
 	 width="150">
 	   Button Label
-	 </text>
-	 <color_swatch
-	 can_apply_immediately="true"
-	 follows="left|top"
-	 height="40"
-	 enabled="true"
-	 layout="topleft"
-	 left_delta="-49"
-	 name="history_bg"
-	 top_pad="7"
-	 width="44" >
-	 <color_swatch.init_callback
-	 function="Pref.getUIColor"
-	 parameter="ChatHistoryBgColor" />
-	 <color_swatch.commit_callback
-	 function="Pref.applyUIColor"
-	 parameter="ChatHistoryBgColor" />
-	 </color_swatch>
-	 <text
-	 type="string"
-	 length="1"
-	 follows="left|top"
-	 height="14"
-	 layout="topleft"
-	 left_pad="5"
-	 mouse_opaque="false"
-	 name="history_bg_text"
-	 top_delta="2"
-	 width="150">
-	   Chat History BG
-	 </text>
-	 <color_swatch
-	 can_apply_immediately="true"
-	 follows="left|top"
-	 height="40"
-	 enabled="true"
-	 layout="topleft"
-	 left_delta="-49"
-	 name="historytext"
-	 top_pad="7"
-	 width="44" >
-	 <color_swatch.init_callback
-	 function="Pref.getUIColor"
-	 parameter="ChatHistoryTextColor" />
-	 <color_swatch.commit_callback
-	 function="Pref.applyUIColor"
-	 parameter="ChatHistoryTextColor" />
-	 </color_swatch>
-	 <text
-	 type="string"
-	 length="1"
-	 follows="left|top"
-	 height="14"
-	 layout="topleft"
-	 left_pad="5"
-	 mouse_opaque="false"
-	 name="history_text_text"
-	 top_delta="2"
-	 width="150">
-	   Chat History Text
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
