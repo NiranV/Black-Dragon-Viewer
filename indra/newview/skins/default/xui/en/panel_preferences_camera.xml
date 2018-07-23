@@ -24,33 +24,52 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1270"
+  height="1253"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
   left="0"
   width="495">
    <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top="0"
- width="492"/>
- <text
- name="show_ims_in_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Camera Options:
- </text>
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top="0"
+   width="492"/>
+   <text
+   name="show_ims_in_label"
+   follows="left|top"
+   layout="topleft"
+   left="10"
+   height="12"
+   width="350"
+   top_delta="4">
+   Camera Options:
+   </text>
+   <button
+   label="⌊Configure Flycam Controls⌉"
+   name="joystick_setup_button"
+   tool_tip="This button opens the configuration window for 3d mouse and controller setup to be used for free-form camera as well as avatar movement and build interactions."
+   layout="topleft"
+   top_delta="-6"
+   left_pad="-52"
+   image_overlay_alignment="left"
+   image_overlay="Edit_Wrench"
+   halign="right"
+   pad_bottom="0"
+   image_selected="Transparent"
+   image_unselected="Transparent"
+   width="182">
+   <button.commit_callback
+   function="Floater.Show"
+   parameter="pref_joystick" />
+   </button>
+   
    <slider
    can_edit_text="true"
    control_name="CameraAngle"
@@ -71,21 +90,21 @@
    show_text="true"
    width="336" />
    <button
- follows="left|top"
- control_name="CameraAngle"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="CameraAngle"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <slider
    can_edit_text="true"
    control_name="DynamicCameraStrength"
@@ -106,21 +125,21 @@
    width="327"
    top_pad="1"/>
    <button
- follows="left|top"
- control_name="DynamicCameraStrength"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="DynamicCameraStrength"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <slider
    can_edit_text="true"
    control_name="CameraOffsetScale"
@@ -141,21 +160,21 @@
    width="324"
    top_pad="1"/>
    <button
- follows="left|top"
- control_name="CameraOffsetScale"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="CameraOffsetScale"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <slider
    can_edit_text="true"
    control_name="CameraPositionSmoothing"
@@ -176,21 +195,21 @@
    width="330"
    top_pad="1"/>
    <button
- follows="left|top"
- control_name="CameraPositionSmoothing"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="CameraPositionSmoothing"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <slider
    can_edit_text="true"
    control_name="ZoomTime"
@@ -211,21 +230,21 @@
    width="330"
    top_pad="1"/>
    <button
- follows="left|top"
- control_name="ZoomTime"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="ZoomTime"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <check_box
    control_name="UseCinematicCamera"
    follows="left|top"
@@ -258,32 +277,32 @@
    width="330"
    top_pad="6"/>
    <button
- follows="left|top"
- control_name="CameraMaxRoll"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="CameraMaxRoll"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
+   follows="top|right"
+   height="1"
+   image_name="Prefs_Separator"
+   color="1 1 1 1"
+   layout="topleft"
+   name="separator"
+   mouse_opaque="false"
+   width="450"
+   left="25"
+   top_pad="4"/>
    <check_box
    control_name="EditCameraMovement"
    height="16"
@@ -330,41 +349,28 @@
    width="250"
    top_pad="0"/>
    
-   <button
- height="22"
- follows="top|left"
- layout="topleft"
- label="Flycam Setup"
- name="joystick_setup_button"
- tool_tip="This button opens the configuration window for 3d mouse and controller setup to be used for free-form camera as well as avatar movement and build interactions."
- width="130"
- top_pad="5"
- left="10">
-   <button.commit_callback
-   function="Floater.Show"
-   parameter="pref_joystick" />
- </button>
-<panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
- <text
- name="show_ims_in_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Avatar Tracking Options:
- </text>
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   name="show_ims_in_label"
+   follows="left|top"
+   layout="topleft"
+   left="10"
+   height="12"
+   width="350"
+   top_delta="4">
+   Avatar Tracking Options:
+   </text>
+   
    <slider
    can_edit_text="true"
    control_name="PitchFromMousePosition"
@@ -386,21 +392,21 @@
    width="312"
    top_pad="13"/>
    <button
- follows="left|top"
- control_name="PitchFromMousePosition"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="PitchFromMousePosition"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <slider
    can_edit_text="true"
    control_name="YawFromMousePosition"
@@ -421,22 +427,21 @@
    width="318"
    top_pad="1"/>
    <button
- follows="left|top"
- control_name="YawFromMousePosition"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-   
+   follows="left|top"
+   control_name="YawFromMousePosition"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <slider
    can_edit_text="true"
    control_name="AvatarRotateThresholdSlow"
@@ -457,21 +462,21 @@
    width="318"
    top_pad="1"/>
    <button
- follows="left|top"
- control_name="AvatarRotateThresholdSlow"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="AvatarRotateThresholdSlow"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <slider
    can_edit_text="true"
    control_name="AvatarRotateThresholdFast"
@@ -492,33 +497,33 @@
    width="312"
    top_pad="1"/>
    <button
- follows="left|top"
- control_name="AvatarRotateThresholdFast"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="AvatarRotateThresholdFast"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    
    <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
    <check_box
    control_name="EnableMouselook"
    follows="left|top"
@@ -530,6 +535,7 @@
    top_delta="1"
    name="AllowMouselook"
    width="256" />
+   
    <check_box
    control_name="FirstPersonAvatarVisible"
    follows="left|top"
@@ -632,21 +638,21 @@
    top_pad="4"
    width="334" />
    <button
- follows="left|top"
- control_name="MouseSensitivity"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="MouseSensitivity"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <slider
    can_edit_text="true"
    control_name="AvatarRotateThresholdMouselook"
@@ -667,43 +673,43 @@
    width="319"
    top_pad="1"/>
    <button
- follows="left|top"
- control_name="AvatarRotateThresholdMouselook"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="AvatarRotateThresholdMouselook"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    
    <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
- <text
- name="show_ims_in_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Top View Options:
- </text>
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   name="show_ims_in_label"
+   follows="left|top"
+   layout="topleft"
+   left="10"
+   height="12"
+   width="350"
+   top_delta="4">
+   Top View Options:
+   </text>
    
    <slider
    decimal_digits="3"
@@ -721,10 +727,10 @@
    name="CameraOffsetFrontView_X"
    top_pad="15"
    width="338">
-    <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="CameraOffsetFrontView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayX"
+   parameter="CameraOffsetFrontView"/>
+   </slider>
    <slider
    decimal_digits="3"
    can_edit_text="true"
@@ -741,10 +747,10 @@
    name="CameraOffsetFrontView_Y"
    top_pad="2"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="CameraOffsetFrontView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayY"
+   parameter="CameraOffsetFrontView"/>
+   </slider>
    <slider
    decimal_digits="3"
    can_edit_text="true"
@@ -761,41 +767,40 @@
    name="CameraOffsetFrontView_Z"
    top_pad="2"
    width="338">
-    <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="CameraOffsetFrontView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayZ"
+   parameter="CameraOffsetFrontView"/>
+   </slider>
    <button
- follows="left|top"
- control_name="CameraOffsetFrontView"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="CameraOffsetFrontView"
+   height="47"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="-32"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
-   
+   follows="top|right"
+   height="1"
+   image_name="Prefs_Separator"
+   color="1 1 1 1"
+   layout="topleft"
+   name="separator"
+   mouse_opaque="false"
+   width="450"
+   left="25"
+   top_pad="4"/>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -809,13 +814,13 @@ can_edit_text="true"
    name="FocusOffsetFrontView_X"
    top_pad="5"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="FocusOffsetFrontView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayX"
+   parameter="FocusOffsetFrontView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -830,12 +835,12 @@ can_edit_text="true"
    top_pad="2"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="FocusOffsetFrontView"/>
-      </slider>
+   function="Pref.ArrayY"
+   parameter="FocusOffsetFrontView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -850,50 +855,51 @@ can_edit_text="true"
    top_pad="2"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="FocusOffsetFrontView"/>
-      </slider>
+   function="Pref.ArrayZ"
+   parameter="FocusOffsetFrontView"/>
+   </slider>
    <button
- follows="left|top"
- control_name="FocusOffsetFrontView"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="FocusOffsetFrontView"
+   height="47"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="-32"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    
    <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
- <text
- name="show_ims_in_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Shoulder View Options:
- </text>
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   name="show_ims_in_label"
+   follows="left|top"
+   layout="topleft"
+   left="10"
+   height="12"
+   width="350"
+   top_delta="4">
+   Shoulder View Options:
+   </text>
+   
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -907,13 +913,13 @@ can_edit_text="true"
    name="CameraOffsetGroupView_X"
    top_pad="15"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="CameraOffsetGroupView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayX"
+   parameter="CameraOffsetGroupView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -927,13 +933,13 @@ can_edit_text="true"
    name="CameraOffsetGroupView_Y"
    top_pad="2"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="CameraOffsetGroupView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayY"
+   parameter="CameraOffsetGroupView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -948,40 +954,39 @@ can_edit_text="true"
    top_pad="2"
    width="338">
    <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="CameraOffsetGroupView"/>
-      </slider>
+   function="Pref.ArrayZ"
+   parameter="CameraOffsetGroupView"/>
+   </slider>
    <button
- follows="left|top"
- control_name="CameraOffsetGroupView"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="CameraOffsetGroupView"
+   height="47"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="-32"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
-   
+   follows="top|right"
+   height="1"
+   image_name="Prefs_Separator"
+   color="1 1 1 1"
+   layout="topleft"
+   name="separator"
+   mouse_opaque="false"
+   width="450"
+   left="25"
+   top_pad="4"/>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -996,12 +1001,12 @@ can_edit_text="true"
    top_pad="5"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="FocusOffsetGroupView"/>
-      </slider>
+   function="Pref.ArrayX"
+   parameter="FocusOffsetGroupView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1015,13 +1020,13 @@ can_edit_text="true"
    name="FocusOffsetGroupView_Y"
    top_pad="2"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="FocusOffsetGroupView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayY"
+   parameter="FocusOffsetGroupView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1036,51 +1041,51 @@ can_edit_text="true"
    top_pad="2"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="FocusOffsetGroupView"/>
-      </slider>
+   function="Pref.ArrayZ"
+   parameter="FocusOffsetGroupView"/>
+   </slider>
    <button
- follows="left|top"
- control_name="FocusOffsetGroupView"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-   
+   follows="left|top"
+   control_name="FocusOffsetGroupView"
+   height="47"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="-32"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    
    <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
- <text
- name="show_ims_in_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Rear View Options:
- </text>
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   name="show_ims_in_label"
+   follows="left|top"
+   layout="topleft"
+   left="10"
+   height="12"
+   width="350"
+   top_delta="4">
+   Rear View Options:
+   </text>
+   
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1094,13 +1099,13 @@ can_edit_text="true"
    name="CameraOffsetRearView_X"
    top_pad="15"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="CameraOffsetRearView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayX"
+   parameter="CameraOffsetRearView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1115,12 +1120,12 @@ can_edit_text="true"
    top_pad="2"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="CameraOffsetRearView"/>
-      </slider>
+   function="Pref.ArrayY"
+   parameter="CameraOffsetRearView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1135,40 +1140,39 @@ can_edit_text="true"
    top_pad="2"
    width="338">
    <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="CameraOffsetRearView"/>
-      </slider>
+   function="Pref.ArrayZ"
+   parameter="CameraOffsetRearView"/>
+   </slider>
    <button
- follows="left|top"
- control_name="CameraOffsetRearView"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="CameraOffsetRearView"
+   height="47"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="-32"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
-   
+   follows="top|right"
+   height="1"
+   image_name="Prefs_Separator"
+   color="1 1 1 1"
+   layout="topleft"
+   name="separator"
+   mouse_opaque="false"
+   width="450"
+   left="25"
+   top_pad="4"/>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1182,13 +1186,13 @@ can_edit_text="true"
    name="FocusOffsetRearView_X"
    top_pad="5"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="FocusOffsetRearView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayX"
+   parameter="FocusOffsetRearView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1202,13 +1206,13 @@ can_edit_text="true"
    name="FocusOffsetRearView_Y"
    top_pad="2"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="FocusOffsetRearView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayY"
+   parameter="FocusOffsetRearView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1222,51 +1226,52 @@ can_edit_text="true"
    name="FocusOffsetRearView_Z"
    top_pad="2"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="FocusOffsetRearView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayZ"
+   parameter="FocusOffsetRearView"/>
+   </slider>
    <button
- follows="left|top"
- control_name="FocusOffsetRearView"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="FocusOffsetRearView"
+   height="47"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="-32"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    
    <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
- <text
- name="show_ims_in_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
-  Right Shoulder View Options:
- </text>
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   name="show_ims_in_label"
+   follows="left|top"
+   layout="topleft"
+   left="10"
+   height="12"
+   width="350"
+   top_delta="4">
+   Right Shoulder View Options:
+   </text>
+   
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1281,12 +1286,12 @@ can_edit_text="true"
    top_pad="15"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="CameraOffsetRightShoulderView"/>
-      </slider>
+   function="Pref.ArrayX"
+   parameter="CameraOffsetRightShoulderView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1300,13 +1305,13 @@ can_edit_text="true"
    name="CameraOffsetRightShoulderView_Y"
    top_pad="2"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="CameraOffsetRightShoulderView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayY"
+   parameter="CameraOffsetRightShoulderView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1321,40 +1326,39 @@ can_edit_text="true"
    top_pad="2"
    width="338">
    <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="CameraOffsetRightShoulderView"/>
-      </slider>
+   function="Pref.ArrayZ"
+   parameter="CameraOffsetRightShoulderView"/>
+   </slider>
    <button
- follows="left|top"
- control_name="CameraOffsetRightShoulderView"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="CameraOffsetRightShoulderView"
+   height="47"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="-32"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
-   
+   follows="top|right"
+   height="1"
+   image_name="Prefs_Separator"
+   color="1 1 1 1"
+   layout="topleft"
+   name="separator"
+   mouse_opaque="false"
+   width="450"
+   left="25"
+   top_pad="4"/>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1369,12 +1373,12 @@ can_edit_text="true"
    top_pad="5"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="FocusOffsetRightShoulderView"/>
-      </slider>
+   function="Pref.ArrayX"
+   parameter="FocusOffsetRightShoulderView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1388,13 +1392,13 @@ can_edit_text="true"
    name="FocusOffsetRightShoulderView_Y"
    top_pad="2"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="FocusOffsetRightShoulderView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayY"
+   parameter="FocusOffsetRightShoulderView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1409,50 +1413,51 @@ can_edit_text="true"
    top_pad="2"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="FocusOffsetRightShoulderView"/>
-      </slider>
+   function="Pref.ArrayZ"
+   parameter="FocusOffsetRightShoulderView"/>
+   </slider>
    <button
- follows="left|top"
- control_name="FocusOffsetRightShoulderView"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="FocusOffsetRightShoulderView"
+   height="47"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="-32"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    
    <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
- <text
- name="show_ims_in_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Left Shoulder View Options:
- </text>
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   name="show_ims_in_label"
+   follows="left|top"
+   layout="topleft"
+   left="10"
+   height="12"
+   width="350"
+   top_delta="4">
+   Left Shoulder View Options:
+   </text>
+   
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1467,12 +1472,12 @@ can_edit_text="true"
    top_pad="15"
    width="332">
    <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="CameraOffsetLeftShoulderView"/>
-      </slider>
+   function="Pref.ArrayX"
+   parameter="CameraOffsetLeftShoulderView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1486,13 +1491,13 @@ can_edit_text="true"
    name="CameraOffsetLeftShoulderView_Y"
    top_pad="2"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="CameraOffsetLeftShoulderView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayY"
+   parameter="CameraOffsetLeftShoulderView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1506,41 +1511,40 @@ can_edit_text="true"
    name="CameraOffsetLeftShoulderView_Z"
    top_pad="2"
    width="338">
-    <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="CameraOffsetLeftShoulderView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayZ"
+   parameter="CameraOffsetLeftShoulderView"/>
+   </slider>
    <button
- follows="left|top"
- control_name="CameraOffsetLeftShoulderView"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="CameraOffsetLeftShoulderView"
+   height="47"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="-32"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
-   
+   follows="top|right"
+   height="1"
+   image_name="Prefs_Separator"
+   color="1 1 1 1"
+   layout="topleft"
+   name="separator"
+   mouse_opaque="false"
+   width="450"
+   left="25"
+   top_pad="4"/>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1554,13 +1558,13 @@ can_edit_text="true"
    name="FocusOffsetLeftShoulderView_X"
    top_pad="5"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayX"
-      parameter="FocusOffsetLeftShoulderView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayX"
+   parameter="FocusOffsetLeftShoulderView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1574,13 +1578,13 @@ can_edit_text="true"
    name="FocusOffsetLeftShoulderView_Y"
    top_pad="2"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayY"
-      parameter="FocusOffsetLeftShoulderView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayY"
+   parameter="FocusOffsetLeftShoulderView"/>
+   </slider>
    <slider
    decimal_digits="3"
-can_edit_text="true"
+   can_edit_text="true"
    follows="left|top"
    height="14"
    increment="0.01"
@@ -1594,26 +1598,26 @@ can_edit_text="true"
    name="FocusOffsetLeftShoulderView_Z"
    top_pad="2"
    width="332">
-    <slider.commit_callback
-      function="Pref.ArrayZ"
-      parameter="FocusOffsetLeftShoulderView"/>
-      </slider>
+   <slider.commit_callback
+   function="Pref.ArrayZ"
+   parameter="FocusOffsetLeftShoulderView"/>
+   </slider>
    <button
- follows="left|top"
- control_name="FocusOffsetLeftShoulderView"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="FocusOffsetLeftShoulderView"
+   height="47"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="-32"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
   </panel>
  </scroll_container>
 </panel>
