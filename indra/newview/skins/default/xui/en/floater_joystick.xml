@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
  legacy_header_height="18"
- height="510"
+ height="515"
  layout="topleft"
  name="Joystick"
- background_color="FloaterDefaultBackgroundColor"
- title="JOYSTICK CONFIGURATION"
- width="569">
+ title="Flycam Configuration"
+ width="517">
     <floater.string
      name="NoDevice">
-        no device detected
+        No Device detected
     </floater.string>
+    <icon
+				follows="top|left"
+				height="464"
+				color="1 1 1 1"
+				image_name="Panel_Background"
+				layout="topleft"
+				name="vicon"
+				mouse_opaque="false"
+				visible="true"
+				width="502"
+				top="20"
+				left="8"/>
     <scroll_container
  color="Transparent"
  follows="all"
  layout="topleft"
  mouse_opaque="false"
- left="2"
+ left="9"
  name="gfx_scroll"
  opaque="true"
  height="460"
- width="562"
- top="20">
+ width="499"
+ top="22">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="699"
+  height="759"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
   left="0"
-  width="547">
+  width="480">
    <panel
  follows="left|top|right"
  height="20"
@@ -41,11 +52,11 @@
  left="1"
  name="title"
  top="0"
- width="545"/>
+ width="482"/>
     <check_box
      control_name="JoystickEnabled"
      halign="left"
-     label="Enable Joystick:"
+     label="Enable Controller:"
      layout="topleft"
      height="14"
      left="5"
@@ -63,7 +74,7 @@
     <check_box
      control_name="JoystickAvatarEnabled"
      halign="top|left"
-     label="Avatar"
+     label="Use Flycam for Avatar Movement"
      layout="topleft"
      left="10"
      top_pad="15"
@@ -71,32 +82,33 @@
      height="16"
      width="60" />
     <check_box
+     control_name="JoystickBuildEnabled"
+     halign="top|left"
+     label="Use Flycam for Build Mode"
+     layout="topleft"
+     left_delta="0"
      top_pad="1"
+     height="14"
+     name="JoystickBuildEnabled"
+     width="60" />
+    <check_box
+     control_name="JoystickFlycamEnabled"
+     halign="top|left"
+     label="Use Flycam for Camera Movement"
+     layout="topleft"
+     left_delta="0"
+     top_pad="1"
+     height="14"
+     name="JoystickFlycamEnabled"
+     width="60" />
+    <check_box
+     top_delta="-30"
      control_name="ZoomDirect"
      label="Direct Zoom"
      layout="topleft"
-     left_delta="0"
+     left="270"
      name="ZoomDirect"
      height="14"
-     width="60" />
-    <check_box
-     top_pad="1"
-     control_name="JoystickInvertPitch"
-     label="Invert Pitch"
-     layout="topleft"
-     left_delta="0"
-     name="InvertPitch"
-     height="14"
-     width="60" />
-    <check_box
-     control_name="JoystickBuildEnabled"
-     halign="top|left"
-     label="Build"
-     layout="topleft"
-     left="185"
-     top="33"
-     height="14"
-     name="JoystickBuildEnabled"
      width="60" />
     <check_box
      control_name="Cursor3D"
@@ -108,23 +120,22 @@
      height="14"
      width="60" />
     <check_box
-     control_name="JoystickFlycamEnabled"
-     halign="top|left"
-     label="Flycam"
-     layout="topleft"
-     left="360"
-     top="33"
-     height="14"
-     name="JoystickFlycamEnabled"
-     width="60" />
-    <check_box
      top_pad="1"
      control_name="AutoLeveling"
-     label="Auto Level"
+     label="Auto Level Camera"
      layout="topleft"
      left_delta="0"
      height="14"
      name="AutoLeveling"
+     width="60" />
+    <check_box
+     top_pad="1"
+     control_name="JoystickInvertPitch"
+     label="Invert Pitch"
+     layout="topleft"
+     left_delta="0"
+     name="InvertPitch"
+     height="14"
      width="60" />
     <panel
  follows="left|top|right"
@@ -135,8 +146,8 @@
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="30"
- width="545"/>
+ top_pad="15"
+ width="482"/>
     <text
    name="general_label"
    follows="left|top"
@@ -144,16 +155,19 @@
    top_delta="4" 
    left="10" 
    height="12"
-   width="220">
+   width="94">
    Button Mapping:
    </text>
       <button
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="0"
-      top_pad="15"
-      left="10"
+      top_delta="-3"
+      left_pad="10"
       name="btn0"
       width="22"/>
       <button
@@ -161,6 +175,9 @@
       height="19"
       layout="topleft"
       label="1"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       left_pad="1"
       name="btn1"
       width="22"/>
@@ -168,6 +185,9 @@
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="2"
       left_pad="1"
       name="btn2"
@@ -176,6 +196,9 @@
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="3"
       left_pad="1"
       name="btn3"
@@ -184,14 +207,20 @@
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="4"
-      left_pad="10"
+      left_pad="1"
       name="btn4"
       width="22"/>
       <button
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="5"
       left_pad="1"
       name="btn5"
@@ -200,14 +229,20 @@
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="6"
-      left_pad="10"
+      left_pad="1"
       name="btn6"
       width="22"/>
       <button
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="7"
       left_pad="1"
       name="btn7"
@@ -216,14 +251,20 @@
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="8"
-      left_pad="10"
+      left_pad="1"
       name="btn8"
       width="22"/>
       <button
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="9"
       left_pad="1"
       name="btn9"
@@ -232,15 +273,21 @@
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="10"
       enabled="false"
-      left_pad="10"
+      left_pad="1"
       name="btn10"
       width="22"/>
       <button
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="11"
       enabled="false"
       left_pad="1"
@@ -250,6 +297,9 @@
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="12"
       enabled="false"
       left_pad="1"
@@ -259,6 +309,9 @@
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="13"
       enabled="false"
       left_pad="1"
@@ -268,6 +321,9 @@
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="14"
       enabled="false"
       left_pad="1"
@@ -277,6 +333,9 @@
       follows="top|left"
       height="19"
       layout="topleft"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
       label="15"
       enabled="false"
       left_pad="1"
@@ -288,143 +347,143 @@
      decimal_digits="0"
      increment="1"
      label="Jump Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
      left="10"
      max_val="15"
      min_val="-1"
      name="JoystickButtonJump"
-     width="160" />
+     width="170" />
       <spinner
      top_pad="11"
      control_name="JoystickButtonCrouch"
      decimal_digits="0"
      increment="1"
      label="Crouch Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
      left_delta="0"
      max_val="15"
      min_val="-1"
      name="JoystickButtonCrouch"
-     width="160" />
+     width="170" />
       <spinner
      top_pad="11"
      control_name="JoystickButtonFly"
      decimal_digits="0"
      increment="1"
      label="Fly Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
      left_delta="0"
      max_val="15"
      min_val="-1"
      name="JoystickButtonFly"
-     width="160" />
+     width="170" />
       <spinner
-     top_delta="-42"
+     top_pad="11"
      control_name="JoystickButtonRunToggle"
      decimal_digits="0"
      increment="1"
      label="Toggle Run Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
-     left="185"
+     left_delta="0"
      max_val="15"
      min_val="-1"
      name="JoystickButtonRunToggle"
-     width="160" />
+     width="170" />
       <spinner
      top_pad="11"
      control_name="JoystickButtonMouselook"
      decimal_digits="0"
      increment="1"
      label="Mouselook Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
      left_delta="0"
      max_val="15"
      min_val="-1"
      name="JoystickButtonMouselook"
-     width="160" />
-      <spinner
-     top_pad="11"
-     control_name="JoystickButtonZoomDefault"
-     decimal_digits="0"
-     increment="1"
-     label="Zoom Default Mapping"
-     label_width="120"
-     layout="topleft"
-     left_delta="0"
-     max_val="15"
-     min_val="-1"
-     name="JoystickButtonZoomDefault"
-     width="160" />
+     width="170" />
       <spinner
      top_pad="11"
      control_name="JoystickButtonFlycam"
      decimal_digits="0"
      increment="1"
      label="Flycam Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
      left_delta="0"
      max_val="15"
      min_val="-1"
      name="JoystickButtonFlycam"
-     width="160" />
+     width="170" />
       <spinner
-     top_delta="-63"
+     top_delta="-105"
      control_name="JoystickButtonZoomOut"
      decimal_digits="0"
      increment="1"
      label="Zoom Out Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
-     left="360"
+     left="270"
      max_val="15"
      min_val="-1"
      name="JoystickButtonZoomOut"
-     width="160" />
+     width="170" />
       <spinner
      top_pad="11"
      control_name="JoystickButtonZoomIn"
      decimal_digits="0"
      increment="1"
      label="Zoom In Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
      left_delta="0"
      max_val="15"
      min_val="-1"
      name="JoystickButtonZoomIn"
-     width="160" />
+     width="170" />
+      <spinner
+     top_pad="11"
+     control_name="JoystickButtonZoomDefault"
+     decimal_digits="0"
+     increment="1"
+     label="Zoom Default Mapping"
+     label_width="125"
+     layout="topleft"
+     left_delta="0"
+     max_val="15"
+     min_val="-1"
+     name="JoystickButtonZoomDefault"
+     width="170" />
       <spinner
      top_pad="11"
      control_name="JoystickButtonRollLeft"
      decimal_digits="0"
      increment="1"
      label="Roll Left Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
      left_delta="0"
      max_val="15"
      min_val="-1"
      name="JoystickButtonJump"
-     width="160" />
+     width="170" />
       <spinner
      top_pad="11"
      control_name="JoystickButtonRollRight"
      decimal_digits="0"
      increment="1"
      label="Roll Right Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
      left_delta="0"
      max_val="15"
      min_val="-1"
      name="JoystickButtonCrouch"
-     width="160" />
+     width="170" />
     <panel
  follows="left|top|right"
  height="20"
@@ -434,8 +493,8 @@
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="17"
- width="545"/>
+ top_pad="44"
+ width="482"/>
     <text
    name="general_label"
    follows="left|top"
@@ -452,91 +511,91 @@
      decimal_digits="0"
      increment="1"
      label="X Axis Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
      left="10"
      max_val="5"
      min_val="-1"
      name="JoystickAxis1"
-     width="160" />
+     width="170" />
     <spinner
-     top_delta="0"
+     top_pad="11"
      control_name="JoystickAxis2"
      decimal_digits="0"
      increment="1"
      label="Y Axis Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
-     left="185"
+     left_delta="0"
      max_val="5"
      min_val="-1"
      name="JoystickAxis2"
-     width="160" />
+     width="170" />
     <spinner
-     top_delta="0"
+     top_pad="11"
      control_name="JoystickAxis0"
      decimal_digits="0"
      increment="1"
      label="Z Axis Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
-     left="360"
+     left_delta="0"
      max_val="5"
      min_val="-1"
      name="JoystickAxis0"
-     width="160" />
+     width="170" />
     <spinner
-     top_pad="11"
+     top_delta="-42"
      control_name="JoystickAxis4"
      decimal_digits="0"
      increment="1"
      label="Pitch Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
-     left="10"
+     left="270"
      max_val="5"
      min_val="-1"
      name="JoystickAxis4"
-     width="160" />
+     width="170" />
     <spinner
-     top_delta="0"
+     top_pad="11"
      control_name="JoystickAxis5"
      decimal_digits="0"
      increment="1"
      label="Yaw Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
-     left="185"
+     left_delta="0"
      max_val="5"
      min_val="-1"
      name="JoystickAxis5"
-     width="160" />
+     width="170" />
     <spinner
-     top_delta="0"
+     top_pad="11"
      control_name="JoystickAxis3"
      decimal_digits="0"
      increment="1"
      label="Roll Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
-     left="360"
+     left_delta="0"
      max_val="5"
      min_val="-1"
      name="JoystickAxis3"
-     width="160" />
+     width="170" />
     <spinner
      top_pad="11"
      control_name="JoystickAxis6"
      decimal_digits="0"
      increment="1"
      label="Zoom Mapping"
-     label_width="120"
+     label_width="125"
      layout="topleft"
-     left="10"
+     left_delta="0"
      max_val="5"
      min_val="-1"
      name="JoystickAxis6"
-     width="160" />
+     width="170" />
     <panel
  follows="left|top|right"
  height="20"
@@ -546,8 +605,8 @@
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="17"
- width="545"/>
+ top_pad="22"
+ width="482"/>
     <text
    name="general_label"
    follows="left|top"
@@ -1150,7 +1209,7 @@
      increment="0.01"
      label_width="0"
      max_val="10"
-     min_val="0.1"
+     min_val="0.01"
      layout="topleft"
      left="110"
      name="AvatarFeathering"
@@ -1162,7 +1221,7 @@
      increment="0.01"
      label_width="0"
      max_val="5"
-     min_val="0.1"
+     min_val="0.01"
      layout="topleft"
      left="180"
      name="BuildFeathering"
@@ -1174,7 +1233,7 @@
      increment="0.01"
      label_width="0"
      max_val="5"
-     min_val="0.1"
+     min_val="0.01"
      layout="topleft"
      left="250"
      name="FlycamFeathering"
@@ -1183,11 +1242,12 @@
      height="250"
      label="Joystick Monitor"
      layout="topleft"
+     follows="top|left"
      left="325"
      name="axis_view"
-     show_label="false"
-     top="372"
-     width="200">
+     show_label="true"
+     top_delta="-278"
+     width="150">
         <stat_bar
          bar_max="1"
          bar_min="-1"
@@ -1235,44 +1295,56 @@
          layout="topleft"
          name="axis5"/>
     </stat_view>
+  </panel>
+    </scroll_container>
     <button
      follows="left|top"
      height="22"
      label="SpaceNavigator Defaults"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      layout="topleft"
-     left="325"
+     left="9"
      name="SpaceNavigatorDefaults"
      top_pad="3"
-     width="200" />
+     width="160" />
     <button
      follows="left|top"
      height="22"
      label="Xbox360 Controller Defaults"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      layout="topleft"
-     left="325"
+     left_pad="1"
      name="Xbox360Defaults"
-     top_pad="1"
-     width="200" />
-  </panel>
-    </scroll_container>
+     top_delta="0"
+     width="160" />
     <button
      follows="right|bottom"
      height="22"
      label="OK"
      label_selected="OK"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      layout="topleft"
-     left="360"
+     left_pad="1"
      name="ok_btn"
-     top_pad="4"
-     width="98" />
+     top_delta="0"
+     width="88" />
     <button
      follows="right|bottom"
      height="22"
      label="Cancel"
      label_selected="Cancel"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      layout="topleft"
-     left_pad="4"
+     left_pad="1"
      name="cancel_btn"
      top_delta="0"
-     width="98" />
+     width="88" />
 </floater>
