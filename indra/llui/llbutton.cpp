@@ -76,6 +76,9 @@ LLButton::Params::Params()
 	image_pressed("image_pressed"),
 	image_pressed_selected("image_pressed_selected"),
 	image_overlay("image_overlay"),
+	//BD - Selected Overlay Image
+	image_overlay_selected("image_overlay_selected"),
+
 	image_overlay_alignment("image_overlay_alignment", std::string("center")),
 	image_top_pad("image_top_pad"),
 	image_bottom_pad("image_bottom_pad"),
@@ -146,6 +149,9 @@ LLButton::LLButton(const LLButton::Params& p)
 	mFlashBgColor(p.flash_color()),
 	mDisabledImageColor(p.image_color_disabled()),
 	mImageOverlay(p.image_overlay()),
+	//BD - Selected Overlay Image
+	mImageOverlaySelected(p.image_overlay_selected()),
+
 	mImageOverlayColor(p.image_overlay_color()),
 	mImageOverlayDisabledColor(p.image_overlay_disabled_color()),
 	mImageOverlaySelectedColor(p.image_overlay_selected_color()),
@@ -834,7 +840,7 @@ void LLButton::draw()
 	S32 text_width = getRect().getWidth() - mLeftHPad - mRightHPad;
 
 	// draw overlay image
-	if (mImageOverlay.notNull())
+	if (mImageOverlay.notNull() || mImageOverlaySelected.notNull())
 	{
 		// get max width and height (discard level 0)
 		S32 overlay_width;
@@ -852,6 +858,9 @@ void LLButton::draw()
 			center_x++;
 		}
 
+		//BD - Selected Overlay Image
+		bool toggle_state = getToggleState();
+
 		center_y += (mImageOverlayBottomPad - mImageOverlayTopPad);
 		// fade out overlay images on disabled buttons
 		LLColor4 overlay_color = mImageOverlayColor.get();
@@ -859,40 +868,42 @@ void LLButton::draw()
 		{
 			overlay_color = mImageOverlayDisabledColor.get();
 		}
-		else if (getToggleState())
+		else if (toggle_state)
 		{
 			overlay_color = mImageOverlaySelectedColor.get();
 		}
 		overlay_color.mV[VALPHA] *= alpha;
 
-		switch(mImageOverlayAlignment)
+		//BD - Selected Overlay Image
+		LLPointer<LLUIImage> image = (toggle_state && mImageOverlaySelected.notNull()) ? mImageOverlaySelected : mImageOverlay;
+		switch (mImageOverlayAlignment)
 		{
 		case LLFontGL::LEFT:
 			text_left += overlay_width + mImgOverlayLabelSpace;
 			text_width -= overlay_width + mImgOverlayLabelSpace;
-			mImageOverlay->draw(
+			image->draw(
 				mLeftHPad,
-				center_y - (overlay_height / 2), 
-				overlay_width, 
-				overlay_height, 
+				center_y - (overlay_height / 2),
+				overlay_width,
+				overlay_height,
 				overlay_color);
 			break;
 		case LLFontGL::HCENTER:
-			mImageOverlay->draw(
-				center_x - (overlay_width / 2), 
-				center_y - (overlay_height / 2), 
-				overlay_width, 
-				overlay_height, 
+			image->draw(
+				center_x - (overlay_width / 2),
+				center_y - (overlay_height / 2),
+				overlay_width,
+				overlay_height,
 				overlay_color);
 			break;
 		case LLFontGL::RIGHT:
 			text_right -= overlay_width + mImgOverlayLabelSpace;
 			text_width -= overlay_width + mImgOverlayLabelSpace;
-			mImageOverlay->draw(
+			image->draw(
 				getRect().getWidth() - mRightHPad - overlay_width,
-				center_y - (overlay_height / 2), 
-				overlay_width, 
-				overlay_height, 
+				center_y - (overlay_height / 2),
+				overlay_width,
+				overlay_height,
 				overlay_color);
 			break;
 		default:
@@ -1067,7 +1078,7 @@ void LLButton::resize(LLUIString label)
 	if (mAutoResize)
 	{ 
 		S32 min_width = label_width + mLeftHPad + mRightHPad;
-		if (mImageOverlay)
+		if (mImageOverlay || mImageOverlaySelected)
 		{
 			S32 overlay_width = mImageOverlay->getWidth();
 			F32 scale_factor = (getRect().getHeight() - (mImageOverlayBottomPad + mImageOverlayTopPad)) / (F32)mImageOverlay->getHeight();
@@ -1179,6 +1190,35 @@ void LLButton::setImageOverlay(const LLUUID& image_id, LLFontGL::HAlign alignmen
 void LLButton::onMouseCaptureLost()
 {
 	resetMouseDownTimer();
+}
+
+//BD - Selected Overlay Image
+void LLButton::setImageOverlaySelected(const std::string& image_name, LLFontGL::HAlign alignment, const LLColor4& color)
+{
+	if (image_name.empty())
+	{
+		mImageOverlaySelected = NULL;
+	}
+	else
+	{
+		mImageOverlaySelected = LLUI::getUIImage(image_name);
+		mImageOverlayAlignment = alignment;
+		mImageOverlayColor = color;
+	}
+}
+
+void LLButton::setImageOverlaySelected(const LLUUID& image_id, LLFontGL::HAlign alignment, const LLColor4& color)
+{
+	if (image_id.isNull())
+	{
+		mImageOverlaySelected = NULL;
+	}
+	else
+	{
+		mImageOverlaySelected = LLUI::getUIImageByID(image_id);
+		mImageOverlayAlignment = alignment;
+		mImageOverlayColor = color;
+	}
 }
 
 //-------------------------------------------------------------------------

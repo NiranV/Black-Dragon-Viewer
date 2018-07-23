@@ -83,7 +83,9 @@ public:
 								image_flash,
 								image_pressed,
 								image_pressed_selected,
-								image_overlay;
+								image_overlay,
+								//BD - Selected Overlay Image
+								image_overlay_selected;
 
 		Optional<std::string>	image_overlay_alignment;
 		
@@ -232,6 +234,10 @@ public:
 	void 			setImageOverlay(const LLUUID& image_id, LLFontGL::HAlign alignment = LLFontGL::HCENTER, const LLColor4& color = LLColor4::white);
 	LLPointer<LLUIImage> getImageOverlay() { return mImageOverlay; }
 	LLFontGL::HAlign getImageOverlayHAlign() const	{ return mImageOverlayAlignment; }
+	//BD - Selected Overlay Image
+	void			setImageOverlaySelected(const std::string& image_name, LLFontGL::HAlign alignment = LLFontGL::HCENTER, const LLColor4& color = LLColor4::white);
+	void 			setImageOverlaySelected(const LLUUID& image_id, LLFontGL::HAlign alignment = LLFontGL::HCENTER, const LLColor4& color = LLColor4::white);
+	LLPointer<LLUIImage> getImageOverlaySelected() { return mImageOverlaySelected; }
 	
 	void            autoResize();	// resize with label of current btn state 
 	void            resize(LLUIString label); // resize with label input
@@ -311,6 +317,8 @@ protected:
 	LLUIColor					mImageOverlayColor;
 	LLUIColor					mImageOverlaySelectedColor;
 	LLUIColor					mImageOverlayDisabledColor;
+	//BD - Selected Overlay Image
+	LLPointer<LLUIImage>		mImageOverlaySelected;
 
 	LLPointer<LLUIImage>		mImageUnselected;
 	LLUIString					mUnselectedLabel;
