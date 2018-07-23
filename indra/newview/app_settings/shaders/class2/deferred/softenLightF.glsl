@@ -557,7 +557,7 @@ void main()
      vec3 refn = decode_normal(texture2DRect(normalMap, ref2d).xy);
      
      // darken reflections from points which face away from the reflected ray - our guess was a back-face
-     refapprop = min(refapprop, step(dot(refnorm, refn), 0.001));
+     //refapprop = min(refapprop, step(dot(refnorm, refn), 0.001));
      
      // kill guesses which are 'behind' the reflector
      float ppdist = dot(norm.xyz, refpos.xyz - pos.xyz);
