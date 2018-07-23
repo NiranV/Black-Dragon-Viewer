@@ -901,104 +901,103 @@ BOOL LLViewerWindow::handleAnyMouseClick(LLWindow *window,  LLCoordGL pos, MASK 
 	x = ll_round((F32)x / mDisplayScale.mV[VX]);
 	y = ll_round((F32)y / mDisplayScale.mV[VY]);
 
-	// only send mouse clicks to UI if UI is visible
-	if(gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
+	if (down)
+	{
+		buttonstatestr = "down" ;
+	}
+	else
+	{
+		buttonstatestr = "up" ;
+	}
+		
+	switch (clicktype)
+	{
+	case LLMouseHandler::CLICK_LEFT:
+		mLeftMouseDown = down;
+		buttonname = "Left";
+		break;
+	case LLMouseHandler::CLICK_RIGHT:
+		mRightMouseDown = down;
+		buttonname = "Right";
+		break;
+	case LLMouseHandler::CLICK_MIDDLE:
+		mMiddleMouseDown = down;
+		buttonname = "Middle";
+		break;
+	case LLMouseHandler::CLICK_DOUBLELEFT:
+		mLeftMouseDown = down;
+		buttonname = "Left Double Click";
+		break;
+	}
+		
+	LLView::sMouseHandlerMessage.clear();
+
+	if (gMenuBarView)
+	{
+		// stop ALT-key access to menu
+		gMenuBarView->resetMenuTrigger();
+	}
+
+	if (gDebugClicks)
 	{	
+		LL_INFOS() << "ViewerWindow " << buttonname << " mouse " << buttonstatestr << " at " << x << "," << y << LL_ENDL;
+	}
 
-		if (down)
-		{
-			buttonstatestr = "down" ;
-		}
-		else
-		{
-			buttonstatestr = "up" ;
-		}
-		
-		switch (clicktype)
-		{
-		case LLMouseHandler::CLICK_LEFT:
-			mLeftMouseDown = down;
-			buttonname = "Left";
-			break;
-		case LLMouseHandler::CLICK_RIGHT:
-			mRightMouseDown = down;
-			buttonname = "Right";
-			break;
-		case LLMouseHandler::CLICK_MIDDLE:
-			mMiddleMouseDown = down;
-			buttonname = "Middle";
-			break;
-		case LLMouseHandler::CLICK_DOUBLELEFT:
-			mLeftMouseDown = down;
-			buttonname = "Left Double Click";
-			break;
-		}
-		
-		LLView::sMouseHandlerMessage.clear();
+	// Make sure we get a corresponding mouseup event, even if the mouse leaves the window
+	if (down)
+		mWindow->captureMouse();
+	else
+		mWindow->releaseMouse();
 
-		if (gMenuBarView)
+	// Indicate mouse was active
+	LLUI::resetMouseIdleTimer();
+
+	// Don't let the user move the mouse out of the window until mouse up.
+	if( LLToolMgr::getInstance()->getCurrentTool()->clipMouseWhenDown() )
+	{
+		mWindow->setMouseClipping(down);
+	}
+
+	LLMouseHandler* mouse_captor = gFocusMgr.getMouseCapture();
+	if( mouse_captor )
+	{
+		S32 local_x;
+		S32 local_y;
+		mouse_captor->screenPointToLocal( x, y, &local_x, &local_y );
+		if (LLView::sDebugMouseHandling)
 		{
-			// stop ALT-key access to menu
-			gMenuBarView->resetMenuTrigger();
+			LL_INFOS() << buttonname << " Mouse " << buttonstatestr << " handled by captor " << mouse_captor->getName() << LL_ENDL;
 		}
 
-		if (gDebugClicks)
-		{	
-			LL_INFOS() << "ViewerWindow " << buttonname << " mouse " << buttonstatestr << " at " << x << "," << y << LL_ENDL;
-		}
+		BOOL r = mouse_captor->handleAnyMouseClick(local_x, local_y, mask, clicktype, down); 
+		if (r) {
 
-		// Make sure we get a corresponding mouseup event, even if the mouse leaves the window
-		if (down)
-			mWindow->captureMouse();
-		else
-			mWindow->releaseMouse();
-
-		// Indicate mouse was active
-		LLUI::resetMouseIdleTimer();
-
-		// Don't let the user move the mouse out of the window until mouse up.
-		if( LLToolMgr::getInstance()->getCurrentTool()->clipMouseWhenDown() )
-		{
-			mWindow->setMouseClipping(down);
-		}
-
-		LLMouseHandler* mouse_captor = gFocusMgr.getMouseCapture();
-		if( mouse_captor )
-		{
-			S32 local_x;
-			S32 local_y;
-			mouse_captor->screenPointToLocal( x, y, &local_x, &local_y );
-			if (LLView::sDebugMouseHandling)
-			{
-				LL_INFOS() << buttonname << " Mouse " << buttonstatestr << " handled by captor " << mouse_captor->getName() << LL_ENDL;
-			}
-
-			BOOL r = mouse_captor->handleAnyMouseClick(local_x, local_y, mask, clicktype, down); 
-			if (r) {
-
-				LL_DEBUGS() << "LLViewerWindow::handleAnyMouseClick viewer with mousecaptor calling updatemouseeventinfo - local_x|global x  "<< local_x << " " << x  << "local/global y " << local_y << " " << y << LL_ENDL;
-
-				LLViewerEventRecorder::instance().setMouseGlobalCoords(x,y);
-				LLViewerEventRecorder::instance().logMouseEvent(std::string(buttonstatestr),std::string(buttonname)); 
-
-			}
-			return r;
-		}
-
-		// Mark the click as handled and return if we aren't within the root view to avoid spurious bugs
-		if( !mRootView->pointInView(x, y) )
-		{
-			return TRUE;
-		}
-		// Give the UI views a chance to process the click
-
-		BOOL r= mRootView->handleAnyMouseClick(x, y, mask, clicktype, down) ;
-		if (r) 
-		{
-
-			LL_DEBUGS() << "LLViewerWindow::handleAnyMouseClick calling updatemouseeventinfo - global x  "<< " " << x	<< "global y " << y	 << "buttonstate: " << buttonstatestr << " buttonname " << buttonname << LL_ENDL;
+			LL_DEBUGS() << "LLViewerWindow::handleAnyMouseClick viewer with mousecaptor calling updatemouseeventinfo - local_x|global x  "<< local_x << " " << x  << "local/global y " << local_y << " " << y << LL_ENDL;
 
 			LLViewerEventRecorder::instance().setMouseGlobalCoords(x,y);
+			LLViewerEventRecorder::instance().logMouseEvent(std::string(buttonstatestr),std::string(buttonname)); 
+
+		}
+		return r;
+	}
+
+	// Mark the click as handled and return if we aren't within the root view to avoid spurious bugs
+	if( !mRootView->pointInView(x, y) )
+	{
+		return TRUE;
+	}
+	// Give the UI views a chance to process the click
+
+	//BD - Only send mouse clicks to UI if UI is visible
+	if (gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
+	{
+		BOOL r = mRootView->handleAnyMouseClick(x, y, mask, clicktype, down);
+		if (r)
+		{
+
+			LL_DEBUGS() << "LLViewerWindow::handleAnyMouseClick calling updatemouseeventinfo - global x  " << " " << x << "global y " << y << "buttonstate: " << buttonstatestr << " buttonname " << buttonname << LL_ENDL;
+
+			LLViewerEventRecorder::instance().setMouseGlobalCoords(x, y);
 
 			// Clear local coords - this was a click on root window so these are not needed
 			// By not including them, this allows the test skeleton generation tool to be smarter when generating code
@@ -1007,26 +1006,26 @@ BOOL LLViewerWindow::handleAnyMouseClick(LLWindow *window,  LLCoordGL pos, MASK 
 			// The drawback to this approach is sometimes a valid xui path will appear to work fine, but NOT interact with the UI element
 			// (VITA support not implemented yet or not visible to VITA due to widget further up xui path not being visible to VITA)
 			// For this reason it's best to provide hints where possible here by leaving out local coordinates
-			LLViewerEventRecorder::instance().setMouseLocalCoords(-1,-1);
-			LLViewerEventRecorder::instance().logMouseEvent(buttonstatestr,buttonname); 
+			LLViewerEventRecorder::instance().setMouseLocalCoords(-1, -1);
+			LLViewerEventRecorder::instance().logMouseEvent(buttonstatestr, buttonname);
 
 			if (LLView::sDebugMouseHandling)
 			{
-				LL_INFOS() << buttonname << " Mouse " << buttonstatestr << " " << LLViewerEventRecorder::instance().get_xui()	<< LL_ENDL;
-			} 
+				LL_INFOS() << buttonname << " Mouse " << buttonstatestr << " " << LLViewerEventRecorder::instance().get_xui() << LL_ENDL;
+			}
 			return TRUE;
-		} 
+		}
 		else if (LLView::sDebugMouseHandling)
 		{
-				LL_INFOS() << buttonname << " Mouse " << buttonstatestr << " not handled by view" << LL_ENDL;
+			LL_INFOS() << buttonname << " Mouse " << buttonstatestr << " not handled by view" << LL_ENDL;
 		}
+	}
 
-//		//BD - If we have the tools floater open and are right clicking pass this event to 
-		//     the pie menu tool otherwise it will be eaten.
-		if (clicktype == LLMouseHandler::CLICK_RIGHT && LLToolMgr::getInstance()->inBuildMode())
-		{
-			LLToolPie::getInstance()->handleRightMouseDown(x, y, mask);
-		}
+//	//BD - If we have the tools floater open and are right clicking pass this event to 
+	//     the pie menu tool otherwise it will be eaten.
+	if (clicktype == LLMouseHandler::CLICK_RIGHT && LLToolMgr::getInstance()->inBuildMode())
+	{
+		LLToolPie::getInstance()->handleRightMouseDown(x, y, mask);
 	}
 
 	// Do not allow tool manager to handle mouseclicks if we have disconnected	
@@ -3291,8 +3290,7 @@ void LLViewerWindow::updateUI()
 
 	// only handle hover events when UI is enabled
 	if (gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
-	{	
-
+	{
 		if( mouse_captor )
 		{
 			// Pass hover events to object capturing mouse events.
@@ -3445,12 +3443,33 @@ void LLViewerWindow::updateUI()
 		}		
 	}
 	else
-	{	// just have tools handle hover when UI is turned off
-		LLTool *tool = LLToolMgr::getInstance()->getCurrentTool();
-
-		if(mMouseInWindow && tool)
+	{
+		if (mouse_captor)
 		{
-			handled = tool->handleHover(x, y, mask);
+			// Pass hover events to object capturing mouse events.
+			S32 local_x;
+			S32 local_y;
+			mouse_captor->screenPointToLocal(x, y, &local_x, &local_y);
+			handled = mouse_captor->handleHover(local_x, local_y, mask);
+			if (LLView::sDebugMouseHandling)
+			{
+				LL_INFOS() << "Hover handled by captor " << mouse_captor->getName() << LL_ENDL;
+			}
+
+			if (!handled)
+			{
+				LL_DEBUGS("UserInput") << "hover not handled by mouse captor" << LL_ENDL;
+			}
+		}
+		else
+		{
+			// just have tools handle hover when UI is turned off
+			LLTool *tool = LLToolMgr::getInstance()->getCurrentTool();
+
+			if (mMouseInWindow && tool)
+			{
+				handled = tool->handleHover(x, y, mask);
+			}
 		}
 	}
 
