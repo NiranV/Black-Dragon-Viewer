@@ -6,7 +6,7 @@
 <floater
  legacy_header_height="25"
  bevel_style="in"
- bg_opaque_image="Inspector_Background" 
+ bg_opaque_image="Toast_Background" 
  can_close="false"
  can_minimize="false"
  height="158"
@@ -26,7 +26,7 @@
      height="16"
      left="8"
      name="group_name"
-     top="10"
+     top="7"
      text_color="White"
      translate="false"
      use_ellipses="true"
@@ -47,15 +47,16 @@
   </text>
   <text
    follows="all"
-   height="45"
+   height="54"
    left="8"
    name="group_details"
    use_ellipses="true"
-   top_pad="6"
+   top_pad="1"
    width="220"
    word_wrap="true">
 A group of folks charged with creating a room with a moose.
 Fear the moose!  Fear it!  And the mongoose too!
+Mooooose!
   </text>
   <text
    follows="all"
@@ -67,38 +68,46 @@ Fear the moose!  Fear it!  And the mongoose too!
 L$123 to join
   </text>
   <group_icon
-     follows="all"
-     height="38"
-     right="-10"
+     follows="top|left"
+     height="32"
+     right="-8"
      mouse_opaque="true"
      name="group_icon"
-     top="10"
-     width="38"
-     bevel_style="in" />
+     top="8"
+     width="32" />
   <button
    follows="bottom|left"
    height="23"
    label="Join"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
    left="8"
-   top="125"
+   top="128"
    name="join_btn"
-   width="103"
+   width="108"
    commit_callback.function="InspectGroup.Join"/>
   <button
    follows="bottom|left"
    height="23"
    label="Leave"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
    left="8"
-   top="125"
+   top="128"
    name="leave_btn"
-   width="103"
+   width="108"
    commit_callback.function="InspectGroup.Leave"/>
   <button
      follows="bottom|left"
      height="23"
      label="View Profile"
+     image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
      name="view_profile_btn"
-     top="125"
+     top="128"
      left="117"
      width="103"
      commit_callback.function="InspectGroup.ViewProfile" />

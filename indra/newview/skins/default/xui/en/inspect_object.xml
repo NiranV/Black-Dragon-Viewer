@@ -6,7 +6,7 @@
 <floater
  legacy_header_height="25"
  bevel_style="in"
- bg_opaque_image="Inspector_Background"
+ bg_opaque_image="Toast_Background"
  can_close="false"
  can_minimize="false"
  height="150"
@@ -66,87 +66,107 @@ L$30,000
    clip_partial="true"
    follows="all"
    font="SansSerifSmall"
-   height="25"
+   height="30"
    left="8"
    name="object_description"
    top="76"
    use_ellipses="true"
    width="220"
    word_wrap="true">
+First Line
+Second Line
   </text>
   <!-- Overlapping buttons for all default actions.  Show "Buy" if
   for sale, "Sit" if can sit, etc. -->
-  <icon
-   name="secure_browsing"
-   image_name="Lock"
-   left="0"
-   visible="false"
-   width="18"
-   height="18"
-   top="103"
-   tool_tip="Secure Browsing"
-   follows="left|top" />
    <text
    follows="all"
    font="SansSerifSmall"
    height="13"
    clip="false"
    name="object_media_url"
-   width="207"
-   left_pad="2"
-   top_delta="0"
+   width="190"
+   left="10"
+   top="105"
    max_length = "50"
    use_ellipses="true">
    http://www.superdupertest.com
 </text>
+   <icon
+   name="secure_browsing"
+   image_name="Lock"
+   left_pad="0"
+   visible="false"
+   width="18"
+   height="18"
+   top="107"
+   tool_tip="Secure Browsing"
+   follows="left|top" />
   <button
    follows="top|left"
    height="20"
    label="Buy"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
    left="8"
    name="buy_btn"
-   top="121"
-   width="80" />
+   top="122"
+   width="100" />
   <button
    follows="top|left"
    height="20"
    label="Pay"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
    left_delta="0"
    name="pay_btn"
    top_delta="0"
-   width="80" />
+   width="100" />
   <button
    follows="top|left"
    height="20"
    label="Take Copy"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
    left_delta="0"
    name="take_free_copy_btn"
    top_delta="0"
-   width="80" />
+   width="100" />
   <button
    follows="top|left"
    height="20"
    label="Touch"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
    left_delta="0"
    name="touch_btn"
    top_delta="0"
-   width="80" />
+   width="100" />
   <button
    follows="top|left"
    height="20"
    label="Sit"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
    left_delta="0"
    name="sit_btn"
    top_delta="0"
-   width="80" />
+   width="100" />
   <button
    follows="top|left"
    height="20"
    label="Open"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
    left_delta="0"
    name="open_btn"
    top_delta="0"
-   width="80" />
+   width="100" />
 
  <!--  non-overlapping buttons here -->
      <button
@@ -155,7 +175,10 @@ L$30,000
      label="More"
      layout="topleft"
      name="more_info_btn"
-     left_pad="10"
+     image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
+     left_pad="1"
      top_delta="0"
      tab_stop="false"
      width="80" />
@@ -163,9 +186,12 @@ L$30,000
      follows="top|left"
      height="20"
      image_overlay="OptionsMenu_Off"
+     image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
      menu_filename="menu_inspect_object_gear.xml"
      name="gear_btn"
-     right="-5"
+     right="-8"
      top_delta="0"
-     width="35" />
+     width="30" />
 </floater>

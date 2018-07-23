@@ -6,25 +6,25 @@
 <floater
  legacy_header_height="18"
  bevel_style="in"
- bg_opaque_image="Inspector_Background"
+ bg_opaque_image="Toast_Background"
  can_close="false"
  can_minimize="false"
- height="130"
+ height="105"
  layout="topleft"
  name="inspect_remote_object"
  single_instance="true"
  sound_flags="0"
  visible="true"
- width="300">
+ width="299">
   <text
    follows="all"
    font="SansSerifLarge"
    font_style="BOLD"
-   height="30"
+   height="34"
    left="8"
    name="object_name"
    text_color="White"
-   top="5"
+   top="0"
    use_ellipses="true"
    word_wrap="true"
    width="291">
@@ -37,16 +37,16 @@
    left="8"
    name="object_owner_label"
    width="65"
-   top_pad="12">
+   top_pad="4">
      Owner:
   </text>
   <text
    follows="top|left"
    height="16"
-   left_pad="5"
+   left_pad="2"
    name="object_owner"
    use_ellipses="true"
-   width="230"
+   width="217"
    word_wrap="false">
      Longavatarname Johnsonlongstonnammer
   </text>
@@ -63,8 +63,9 @@
    follows="top|left"
    height="16"
    left="8"
+   top_pad="0"
    name="object_slurl"
-   width="290"
+   width="284"
    use_ellipses="true"
    word_wrap="false">
      http://slurl.com/Ahern/50/50/50
@@ -73,23 +74,32 @@
    follows="top|left"
    height="23"
    label="Map"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
    left="8"
-   top_pad="8"
+   top_pad="5"
    name="map_btn"
-   width="90" />
+   width="94" />
   <button
    follows="top|left"
    height="23"
    label="Block"
-   left_pad="8"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
+   left_pad="1"
    name="block_btn"
-   width="90" />
+   width="94" />
   <button
    follows="top|left"
    height="23"
    label="Close"
-   right="-8"
+   image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
+   right="-7"
    name="close_btn"
    left_pad="5"
-   width="90" />
+   width="94" />
 </floater>
