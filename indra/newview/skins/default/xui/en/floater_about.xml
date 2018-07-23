@@ -196,7 +196,7 @@ Dummy Name replaced at run time
    left="5"
    text_readonly_color="LabelTextColor"
    max_length="65536"
-   name="credits_editor"
+   name="licenses_editor"
    top="1"
    width="448"
    word_wrap="true">
