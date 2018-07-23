@@ -137,8 +137,9 @@ BOOL LLFloaterAbout::postBuild()
 	getChild<LLUICtrl>("copy_btn")->setCommitCallback(
 		boost::bind(&LLFloaterAbout::onClickCopyToClipboard, this));
     
-    getChild<LLUICtrl>("update_btn")->setCommitCallback(
-        boost::bind(&LLFloaterAbout::onClickUpdateCheck, this));
+	//BD - Updates are currently not working for TPV's
+    //getChild<LLUICtrl>("update_btn")->setCommitCallback(
+    //    boost::bind(&LLFloaterAbout::onClickUpdateCheck, this));
 
 	static const LLUIColor about_color = LLUIColorTable::instance().getColor("TextFgReadOnlyColor");
 
