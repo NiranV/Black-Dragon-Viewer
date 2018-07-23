@@ -122,7 +122,7 @@ Second Life is brought to you by the Lindens:
    <text_editor
    enabled="false" 
    follows="top|left"
-   height="98"
+   height="161"
    left="5"
    bg_readonly_color="Transparent"
    text_readonly_color="LabelTextColor"
@@ -147,37 +147,12 @@ with open source contributions from:
    <text_editor
    enabled="false" 
    follows="top|left"
-   height="98"
+   height="162"
    bg_readonly_color="Transparent"
    text_readonly_color="LabelTextColor"
    left="5"
    max_length="65536"
    name="contrib_names"
-   top_pad="10"
-   width="448"
-   word_wrap="true">
-Dummy Name replaced at run time
-   </text_editor>
-   <text
-   follows="top|left"
-   height="10"
-   layout="topleft"
-   left="10"
-   name="trans_intro"
-   top_pad="10"
-   width="435"
-   wrap="true">
-and translations from:
-   </text>
-   <text_editor
-   enabled="false" 
-   follows="top|left"
-   height="98"
-   bg_readonly_color="Transparent"
-   text_readonly_color="LabelTextColor"
-   left="5"
-   max_length="65536"
-   name="trans_names"
    top_pad="10"
    width="448"
    word_wrap="true">
