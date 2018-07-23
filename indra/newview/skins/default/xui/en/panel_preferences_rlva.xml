@@ -21,7 +21,7 @@ width="510">
 	      <panel
 	      layout="topleft"
 	      follows="left|top|right"
-	      height="527"
+	      height="510"
 	      name="rlva_scroll_panel"
 	      top="0"
 	      left="0"
@@ -204,18 +204,6 @@ width="510">
 	tool_tip="This option suppresses reporting the 'unset' or 'duplicate' command restrictions when 'Restrained Love Debug Messages' is enabled."
 	follows="left|top"
 	name="RLVaHUD"
-	top_pad="0"
-	width="256" />
-	<check_box
-	control_name="RLVaShowNameTags"
-	height="16"
-	initial_value="true"
-	label="Show RLVa Name tags"
-	layout="topleft"
-	left_delta="0"
-	tool_tip="This option toggles whether the display of names above avatars is subject to the general 'Show Names' setting when @shownames=n is restricted or not."
-	follows="left|top"
-	name="RLVaNames"
 	top_pad="0"
 	width="256" />
 	<check_box
