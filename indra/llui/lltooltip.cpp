@@ -179,7 +179,7 @@ LLToolTip::LLToolTip(const LLToolTip::Params& p)
 	// bake textbox padding into initial rect
 	params.rect = LLRect (mPadding, mPadding + 1, mPadding + 1, mPadding);
 	params.h_pad = 0;
-	params.v_pad = 0;
+	params.v_pad = 2;
 	params.mouse_opaque = false;
 	params.text_color = p.text_color;
 	params.bg_visible = false;
