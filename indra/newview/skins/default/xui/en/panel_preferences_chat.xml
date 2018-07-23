@@ -23,867 +23,1186 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="778"
+  height="818"
   name="chat_scroll_panel"
   top="0"
   mouse_opaque="false"
   left="0"
   width="495">
- <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top="0"
- width="492"/>
- <text
- layout="topleft"
- follows="top|left"
- type="string"
- length="1"
- height="12"
- left="10"
- top_delta="4"
- name="send_label"
- width="250">
- Chat Sending Options:
- </text>
- <check_box
- control_name="CloseChatOnReturn"
- follows="left|top"
- height="16"
- label="Deselect Local Chat"
- tool_tip="This option toggles whether the local chat should be deselected after hitting return (sending a message) or not. In combination with 'Hide Local Chat window on focus loss' this will do the same as the 'Hide Local Chat' option."
- layout="topleft"
- left="10"
- name="CloseChatOnReturn"
- top_pad="15"
- width="100" />
- <check_box
- control_name="AutohideChatOnReturn"
- follows="left|top"
- layout="topleft"
- top_pad="0"
- height="16"
- label="Hide Local Chat"
- tool_tip="This option toggles whether the local chat should be closed (hidden) after hitting return (sending a message) or not. This option imitates a chat behavior similar to old Viewers and will only work if local chat is separated and collapsed to a chat bar."
- left_delta="0"
- name="AutohideChatbar"
- width="100" />
- <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
- <text
- type="string"
- layout="topleft"
- follows="top|left"
- length="1"
- height="12"
- left="10"
- top_delta="4"
- name="chat_options_label"
- width="120">
- General Chat Options:
- </text>
- <check_box
- control_name="AllowMUpose"
- height="16"
- initial_value="true"
- label="Allow MU* pose style in chat and IM"
- tool_tip="This option toggles whether ':' at the start of a chat message will turn into '/me' style emoting when send or not."
- layout="topleft"
- left_delta="0"
- name="AllowMUpose"
- top_pad="15"
- width="256" />
- <check_box
- control_name="AutoCloseOOC"
- height="16"
- initial_value="true"
- label="Auto-close OOC chat (i.e. add '))')"
- tool_tip="This option toggles whether Out-Of-Character chat should be closed automatically or not. This option will close all your '((' and '(' chat parts automatically at the end when sending a message."
- layout="topleft"
- left_delta="0"
- name="AutoCloseOOC"
- top_pad="0"
- width="256" />
- <check_box
- control_name="ChatAutocompleteGestures"
- height="16"
- initial_value="true"
- label="Auto-complete gestures in nearby chat"
- tool_tip="This option toggles whether the Viewer should attempt to automatically complete gesture names when writing into local chat or not."
- layout="topleft"
- left_delta="0"
- name="ChatAutocompleteGestures"
- top_pad="0"
- width="256" />
- <check_box
- control_name="EnableAutohidingChat"
- follows="left|top"
- height="16"
- label="Hide Local Chat window on focus loss"
- tool_tip="This option toggles whether local chat should be closed (hidden) whenever it loses focus or not. In combination with the 'Deselect Local Chat' option this will automatically close local chat after sending a message."
- layout="topleft"
- left="10"
- name="EnableAutohidingChat"
- top_pad="0"
- width="256" />
- <check_box
- control_name="ForceChatSingleLineMode"
- height="16"
- initial_value="true"
- label="Disable multi-line chat editor"
- tool_tip="This option forces all chat bars to remain single line text fields regardless of if your message is longer than the text field or if you are copying multi-line text into the chat bar."
- layout="topleft"
- left_delta="0"
- name="ForceChatSingleLineMode"
- top_pad="0"
- width="256" />
- <check_box
- control_name="SLURLTeleportDirectly"
- height="16"
- initial_value="true"
- label="Allow one-click TP on SLURL's in Chat"
- tool_tip="This option allows teleporting via SLURL's in chat without opening the 'Places' window first."
- layout="topleft"
- left_delta="0"
- name="SLURLTeleportDirectly"
- top_pad="0"
- width="256" />
- <check_box
- control_name="PlayTypingAnim"
- height="16"
- initial_value="true"
- label="Play typing animation when chatting"
- tool_tip="This option toggles whether you and others can see and hear you play a typing animation as long as you are actively typing a message in local chat."
- layout="topleft"
- left="10"
- name="play_typing_animation"
- top_pad="0"
- width="400" />
- <check_box
- control_name="PlayChatAnim"
- height="16"
- initial_value="true"
- label="Play chatting animation when sending chat"
- tool_tip="This option toggles the visibility of the head bobbing animation when sending a message in local chat."
- layout="topleft"
- left="10"
- name="play_chat_animation"
- top_pad="0"
- width="400" />
- <check_box
- control_name="PlaySoundNewConversation"
- height="16"
- label="Play 'New Conversation' Sound"
- tool_tip="This option toggles whether a sound should be played whenever a new conversation is started."
- layout="topleft"
- left="10"
- top_pad="0"
- name="new_conversation"
- width="150" />
- <check_box
- control_name="PlaySoundIncomingVoiceCall"
- height="16"
- label="Play 'Incoming Voice Call' Sound"
- tool_tip="This option toggles whether a sound should be played whenever you are asked to join a voice call."
- layout="topleft"
- top_pad="0"
- name="incoming_voice_call"
- width="150" />
- <check_box
- control_name="PlaySoundTeleportOffer"
- height="16"
- label="Play 'Teleport Offer' Sound"
- tool_tip="This option toggles whether a sound should be played whenever a teleport is offered to you."
- layout="topleft"
- top_pad="0"
- name="teleport_offer"
- width="150" />
- <check_box
- control_name="PlaySoundInventoryOffer"
- height="16"
- label="Play 'Inventory Offer' Sound"
- tool_tip="This option toggles whether a sound should be played whenever an inventory item is offered to you."
- layout="topleft"
- top_pad="0"
- name="inventory_offer"
- width="150" />
- <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
- <text
- type="string"
- layout="topleft"
- follows="top|left"
- length="1"
- height="12"
- left="10"
- top_delta="4"
- name="chat_options_label"
- width="200">
- Chat Appearance Options:
- </text>
- <check_box
- control_name="PlainTextChatHistory"
- height="16"
- label="Disable new-style name titles in IM"
- tool_tip="This option disables the new chat history name titles acting as separator for different avatars chatting. This option imitates a chat behavior similar to old Viewers."
- layout="topleft"
- left_delta="0"
- name="plain_text_chat_history"
- top_pad="15"
- width="250" />
- <check_box
- control_name="ShowScriptErrors" 
- follows="left|top"
- height="16"
- label="Show script errors when they happen"
- tool_tip="This option toggles the visibility of script errors."
- layout="topleft" 
- left="10"
- top_pad="0"
- name="show_script_errors" 
- width="250" />
- <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="10"
- name="show_errors_in"
- top_pad="4"
- width="150">
- Show script errors in:
- </text>
- <radio_group
- control_name="ShowScriptErrorsLocation"
- enabled_control="ShowScriptErrors" 
- height="19"
- layout="topleft"
- left="10"
- name="show_location"
- top_pad="5"
- width="600">
-       <radio_item
-       height="16"
-       label="Chat"
-       tool_tip="This option sets script errors to appear in local chat as red text warning rather than in an extra window."
-       value="0"
-       layout="topleft"
-       name="0"
-       top="0"
-       width="70">
-             <radio_item.check_button
-             image_unselected="Checkbox_Off"
-             image_selected="Checkbox_On"
-             image_disabled="Checkbox_Off_Disabled"
-             image_disabled_selected="Checkbox_On_Disabled"
-             image_pressed="Checkbox_Press"
-             image_pressed_selected="Checkbox_On_Press" />
-       </radio_item>
-       <radio_item
-       height="16"
-       label="Error Window"
-       tool_tip="This option sets script errors to appear in a separate window rather than as red text in local chat."
-       value="1"
-       layout="topleft"
-       name="0"
-       left_pad="10"
-       top_delta="0"
-       width="70">
-             <radio_item.check_button
-             image_unselected="Checkbox_Off"
-             image_selected="Checkbox_On"
-             image_disabled="Checkbox_Off_Disabled"
-             image_disabled_selected="Checkbox_On_Disabled"
-             image_pressed="Checkbox_Press"
-             image_pressed_selected="Checkbox_On_Press" />
-       </radio_item>
- </radio_group>
- <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- left="10"
- name="font_size"
- top_pad="4"
- width="150">
- Font Size:
- </text>
- <radio_group
- control_name="ChatFontSize"
- height="19"
- layout="topleft"
- left="10"
- name="chat_font_size"
- top_pad="5"
- width="600">
-       <radio_item
-       height="16"
-       label="Small"
-       tool_tip="This option sets the chat font size to small."
-       value="0"
-       layout="topleft"
-       name="0"
-       top="0"
-       width="70">
-             <radio_item.check_button
-             image_unselected="Checkbox_Off"
-             image_selected="Checkbox_On"
-             image_disabled="Checkbox_Off_Disabled"
-             image_disabled_selected="Checkbox_On_Disabled"
-             image_pressed="Checkbox_Press"
-             image_pressed_selected="Checkbox_On_Press" />
-       </radio_item>
-       <radio_item
-       height="16"
-       label="Medium"
-       tool_tip="This option sets the chat font size to medium. This is the default option."
-       value="1"
-       layout="topleft"
-       name="0"
-       left_pad="10"
-       top_delta="0"
-       width="70">
-             <radio_item.check_button
-             image_unselected="Checkbox_Off"
-             image_selected="Checkbox_On"
-             image_disabled="Checkbox_Off_Disabled"
-             image_disabled_selected="Checkbox_On_Disabled"
-             image_pressed="Checkbox_Press"
-             image_pressed_selected="Checkbox_On_Press" />
-       </radio_item>
-       <radio_item
-       height="16"
-       label="Large"
-       tool_tip="This option sets the chat font size to large. Useful for large displays or high resolutions."
-       value="2"
-       layout="topleft"
-       name="0"
-       left_pad="10"
-       top_delta="0"
-       width="70">
-             <radio_item.check_button
-             image_unselected="Checkbox_Off"
-             image_selected="Checkbox_On"
-             image_disabled="Checkbox_Off_Disabled"
-             image_disabled_selected="Checkbox_On_Disabled"
-             image_pressed="Checkbox_Press"
-             image_pressed_selected="Checkbox_On_Press" />
-       </radio_item>
- </radio_group>
-      <slider
-      control_name="NearbyToastLifeTime"
-      decimal_digits="0"
-      can_edit_text="true"
-      follows="left|top"
-      height="15"
-      increment="1"
-      initial_value="4"
-      label="Chattext Life Time:"
-      tool_tip="This option sets the amount of time in seconds any local chat remains on screen before starting to fade."
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="40"
-      min_val="1"
-      name="NearbyToastLifeTime"
-      top_pad="4"
-      width="312" />
-      <button
- follows="left|top"
- control_name="NearbyToastLifeTime"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <slider
-      control_name="NearbyToastFadingTime"
-      decimal_digits="0"
-      can_edit_text="true"
-      follows="left|top"
-      height="15"
-      increment="1"
-      initial_value="4"
-      label="Chattext Fade Time:"
-      tool_tip="This option sets the amount of time in seconds it takes before chat that started fading is hidden completely."
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="40"
-      min_val="1"
-      name="NearbyToastFadingTime"
-      top_pad="1"
-      width="312" />
-      <button
- follows="left|top"
- control_name="NearbyToastFadingTime"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
- <check_box
- control_name="UseChatBubbles"
- follows="left|top"
- height="16"
- label="Use Bubble Chat"
- tool_tip="This option controls whether chat should be shown as chat bubbles on nametags in addition to the normal chat or not."
- layout="topleft"
- left="10"
- top_pad="4"
- name="bubble_text_chat"
- width="120" />
- <slider
-      control_name="ChatBubbleOpacity"
-      enabled_control="UseChatBubbles"
-      decimal_digits="2"
-      can_edit_text="true"
-      follows="left|top"
-      height="15"
-      increment="0.05"
-      initial_value="1"
-      label="Bubble Chat Opacity:"
-      tool_tip="This option controls the opacity of the background for chat bubbles and name tags in general."
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="1"
-      min_val="0"
-      name="bubble_chat_opacity"
-      top_pad="4"
-      width="321" />
-      <button
- follows="left|top"
- control_name="ChatBubbleOpacity"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
- <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
- <text
- type="string"
- layout="topleft"
- follows="top|left"
- length="1"
- height="12"
- left="10"
- top_delta="4"
- name="chat_options_label"
- width="200">
- Chat Behavior Options:
- </text>
-    <text
-          follows="top|left"
-        layout="topleft"
-        height="15"
-        name="friend_ims"
-        width="200"
-        left="10"
-        top_pad="15">
-      Friend IMs:
-    </text>
-    <combo_box
-               follows="top|left"
-        control_name="NotificationFriendIMOptions"
-        tool_tip="This dropdown controls the action that should be taken when receiving IMs from friends."
-        height="23"
-        layout="topleft"
-        left_pad="0"
-        top_delta="-3"
-        name="FriendIMOptions"
-        width="170">
-      <item
-          label="Open Conversations window"
-          name="OpenConversationsWindow"
-          value="openconversations"/>      
-      <item
-          label="Pop up the message"
-          name="PopUpMessage"
-          value="toast"/>
-      <item
-          label="Flash toolbar button"
-          name="FlashToolbarButton"
-          value="flash"/>
-      <item
-          label="No action"
-          name="NoAction"
-          value="noaction"/>
-    </combo_box>
-    <check_box
-               follows="top|left"
-        control_name="PlaySoundFriendIM"
-        height="16"
-        label="Play sound"
-        layout="topleft"
-        name="play_sound_friend_im"
-        left_pad="7"
-        top_delta="4"
-        width="28">
-    </check_box>
-    <text
-          follows="top|left"
-        layout="topleft"
-        height="15"
-        name="non_friend_ims"
-        width="200"
-        left="10"
-        top_pad="8">
-      Non-friend IMs:
-    </text>
-    <combo_box
-               follows="top|left"
-        control_name="NotificationNonFriendIMOptions"
-        tool_tip="This dropdown controls the action that should be taken when receiving IMs from avatars not in your friendlist."
-        height="23"
-        layout="topleft"
-        left_pad="0"
-        top_delta="-3"
-        name="NonFriendIMOptions"
-        width="170">
-      <item
-          label="Open Conversations window"
-          name="OpenConversationsWindow"
-          value="openconversations"/>
-      <item
-          label="Pop up the message"
-          name="PopUpMessage"
-          value="toast"/>
-      <item
-          label="Flash toolbar button"
-          name="FlashToolbarButton"
-          value="flash"/>
-      <item
-          label="No action"
-          name="NoAction"
-          value="noaction"/>
-    </combo_box>
-    <check_box
-               follows="top|left"
-        control_name="PlaySoundNonFriendIM"
-        height="16"
-        label="Play sound"
-        layout="topleft"
-        name="play_sound_non_friend_im"
-        left_pad="7"
-        top_delta="4"
-        width="28">
-    </check_box>
-    <text
-          follows="top|left"
-        layout="topleft"
-        left="10"
-        height="15"
-        name="conference_ims"
-        width="200"
-        top_pad="8">
-      Conference IMs:
-    </text>
-    <combo_box
-               follows="top|left"
-        control_name="NotificationConferenceIMOptions"
-        tool_tip="This dropdown controls the action that should be taken when receiving IMs from an ad-hoc conference."
-        height="23"
-        layout="topleft"
-        left_pad="0"
-        top_delta="-3"
-        name="ConferenceIMOptions"
-        width="170">
-      <item
-          label="Open Conversations window"
-          name="OpenConversationsWindow"
-          value="openconversations"/>
-      <item
-          label="Pop up the message"
-          name="PopUpMessage"
-          value="toast"/>
-      <item
-          label="Flash toolbar button"
-          name="FlashToolbarButton"
-          value="flash"/>
-      <item
-          label="No action"
-          name="NoAction"
-          value="noaction"/>
-    </combo_box>
-    <check_box
-               follows="top|left"
-        control_name="PlaySoundConferenceIM"
-        height="16"
-        label="Play sound"
-        layout="topleft"
-        name="play_sound_conference_im"
-        left_pad="7"
-        top_delta="4"
-        width="28">
-    </check_box>
-    <text
-          follows="top|left"
-        layout="topleft"
-        left="10"
-        height="15"
-        name="group_chat"
-        width="200"
-        top_pad="8">
-      Group chat:
-    </text>
-    <combo_box
-               follows="top|left"
-        control_name="NotificationGroupChatOptions"
-        tool_tip="This dropdown controls the action that should be taken when receiving IMs from groups you are in."
-        height="23"
-        layout="topleft"
-        left_pad="0"
-        top_delta="-3"
-        name="GroupChatOptions"
-        width="170">
-      <item
-          label="Open Conversations window"
-          name="OpenConversationsWindow"
-          value="openconversations"/>
-      <item
-          label="Pop up the message"
-          name="PopUpMessage"
-          value="toast"/>
-      <item
-          label="Flash toolbar button"
-          name="FlashToolbarButton"
-          value="flash"/>
-      <item
-          label="No action"
-          name="NoAction"
-          value="noaction"/>
-    </combo_box>
-    <check_box
-               follows="top|left"
-        control_name="PlaySoundGroupChatIM"
-        height="16"
-        label="Play sound"
-        layout="topleft"
-        name="play_sound_group_chat_im"
-        left_pad="7"
-        top_delta="4"
-        width="28">
-    </check_box>
-    <text
-          follows="top|left"
-        layout="topleft"
-        left="10"
-        height="15"
-        name="nearby_chat"
-        width="200"
-        top_pad="8">
-      Nearby chat:
-    </text>
-    <combo_box
-               follows="top|left"
-        control_name="NotificationNearbyChatOptions"
-        tool_tip="This dropdown controls the action that should be taken when receiving new messages in local chat."
-        height="23"
-        layout="topleft"
-        left_pad="0"
-        top_delta="-3"
-        name="NearbyChatOptions"
-        width="170">
-      <item
-          label="Open Conversations window"
-          name="OpenConversationsWindow"
-          value="openconversations"/>
-      <item
-          label="Pop up the message"
-          name="PopUpMessage"
-          value="toast"/>
-      <item
-          label="Flash toolbar button"
-          name="FlashToolBarButton"
-          value="flash"/>
-      <item
-          label="No action"
-          name="NoAction"
-          value="noaction"/>
-    </combo_box>
-    <check_box
-               follows="top|left"
-        control_name="PlaySoundNearbyChatIM"
-        height="16"
-        label="Play sound"
-        layout="topleft"
-        name="play_sound_nearby_chat_im"
-        left_pad="7"
-        top_delta="4"
-        width="28">
-    </check_box>
-    <text
-          follows="top|left"
-        layout="topleft"
-        left="10"
-        height="15"
-        name="object_ims"
-        width="200"
-        top_pad="8">
-      Object IMs:
-    </text>
-    <combo_box
-               follows="top|left"
-        control_name="NotificationObjectIMOptions"
-        tool_tip="This dropdown controls the action that should be taken when receiving messages from objects."
-        height="23"
-        layout="topleft"
-        left_pad="0"
-        top_delta="-3"
-        name="ObjectIMOptions"
-        width="170">
-      <item
-          label="Open Conversations window"
-          name="OpenConversationsWindow"
-          value="openconversations"/>
-      <item
-          label="Pop up the message"
-          name="PopUpMessage"
-          value="toast"/>
-      <item
-          label="Flash toolbar button"
-          name="FlashToolBarButton"
-          value="flash"/>
-      <item
-          label="No action"
-          name="NoAction"
-          value="noaction"/>
-    </combo_box>
-    <check_box
-               follows="top|left"
-        control_name="PlaySoundObjectIM"
-        height="16"
-        label="Play sound"
-        layout="topleft"
-        name="play_sound_object_im"
-        left_pad="7"
-        top_delta="4"
-        width="28">
-    </check_box>
-
-        <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
- <text
- type="string"
- layout="topleft"
- follows="top|left"
- length="1"
- height="12"
- left="10"
- top_delta="4"
- name="chat_options_label"
- width="200">
- Misc Chat Options:
- </text>
-  
-  <button
-      height="23"
-      label="Translator Options"
-      tool_tip="&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-								                                             This option is currently disables as it is non-functional."
-      layout="topleft"
-      enabled="false"
-      left="9"
-      name="ok_btn"
-      top_pad="15"
-      width="150">
-    <commit_callback
-        function="Pref.TranslationSettings" />
-  </button>
-  <button
-      height="23"
-      layout="topleft"
-      top_pad="-23"
-      left_pad="5"
-      name="autoreplace_showgui"
-      commit_callback.function="Pref.AutoReplace"
-      label="Auto-Replacer Options"
-      width="150">
-  </button>
-  <button
-      height="23"
-      layout="topleft"
-      tool_tip="&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-								                                             This option is currently disables as it is non-functional."
-      enabled="false"
-      top_pad="-23"
-      left_pad="5"
-      name="spellcheck_showgui"
-      commit_callback.function="Pref.SpellChecker"
-      label="Spell Checker Options"
-      width="150">
-  </button>
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top="0"
+   width="492"/>
+   <text
+   layout="topleft"
+   follows="top|left"
+   type="string"
+   length="1"
+   height="12"
+   left="10"
+   top_delta="4"
+   name="send_label"
+   width="250">
+   Chat Sending Options:
+   </text>
+   
+   <check_box
+   control_name="CloseChatOnReturn"
+   follows="left|top"
+   height="16"
+   label="Deselect Local Chat"
+   tool_tip="This option toggles whether the local chat should be deselected after hitting return (sending a message) or not. In combination with 'Hide Local Chat window on focus loss' this will do the same as the 'Hide Local Chat' option."
+   layout="topleft"
+   left="10"
+   name="CloseChatOnReturn"
+   top_pad="15"
+   width="100" />
+   <check_box
+   control_name="AutohideChatOnReturn"
+   follows="left|top"
+   layout="topleft"
+   top_pad="0"
+   height="16"
+   label="Hide Local Chat"
+   tool_tip="This option toggles whether the local chat should be closed (hidden) after hitting return (sending a message) or not. This option imitates a chat behavior similar to old Viewers and will only work if local chat is separated and collapsed to a chat bar."
+   left_delta="0"
+   name="AutohideChatbar"
+   width="100" />
+   <check_box
+   control_name="AllowMUpose"
+   height="16"
+   initial_value="true"
+   label="Allow MU* pose style in chat and IM"
+   tool_tip="This option toggles whether ':' at the start of a chat message will turn into '/me' style emoting when send or not."
+   layout="topleft"
+   left_delta="0"
+   name="AllowMUpose"
+   top_pad="0"
+   width="256" />
+   <check_box
+   control_name="AutoCloseOOC"
+   height="16"
+   initial_value="true"
+   label="Auto-close OOC chat (i.e. add '))')"
+   tool_tip="This option toggles whether Out-Of-Character chat should be closed automatically or not. This option will close all your '((' and '(' chat parts automatically at the end when sending a message."
+   layout="topleft"
+   left_delta="0"
+   name="AutoCloseOOC"
+   top_pad="0"
+   width="256" />
+   <check_box
+   control_name="PlayChatAnim"
+   height="16"
+   initial_value="true"
+   label="Play chatting animation when sending chat"
+   tool_tip="This option toggles the visibility of the head bobbing animation when sending a message in local chat."
+   layout="topleft"
+   left="10"
+   name="play_chat_animation"
+   top_pad="0"
+   width="400" />
+   
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   type="string"
+   layout="topleft"
+   follows="top|left"
+   length="1"
+   height="12"
+   left="10"
+   top_delta="4"
+   name="chat_options_label"
+   width="120">
+   General Chat Options:
+   </text>
+   
+   <button
+   height="16"
+   layout="topleft"
+   top_delta="-2"
+   left_pad="200"
+   name="autoreplace_showgui"
+   commit_callback.function="Pref.AutoReplace"
+   image_overlay_alignment="left"
+   image_overlay="Edit_Wrench"
+   halign="right"
+   pad_bottom="0"
+   image_selected="Transparent"
+   image_unselected="Transparent"
+   label="⌊Auto-Replacer Options⌉"
+   width="160"/>
+   <check_box
+   control_name="ChatAutocompleteGestures"
+   height="16"
+   initial_value="true"
+   label="Auto-complete gestures in nearby chat"
+   tool_tip="This option toggles whether the Viewer should attempt to automatically complete gesture names when writing into local chat or not."
+   layout="topleft"
+   left="10"
+   name="ChatAutocompleteGestures"
+   top_pad="15"
+   width="256" />
+   <check_box
+   control_name="EnableAutohidingChat"
+   follows="left|top"
+   height="16"
+   label="Hide Local Chat window on focus loss"
+   tool_tip="This option toggles whether local chat should be closed (hidden) whenever it loses focus or not. In combination with the 'Deselect Local Chat' option this will automatically close local chat after sending a message."
+   layout="topleft"
+   left="10"
+   name="EnableAutohidingChat"
+   top_pad="0"
+   width="256" />
+   <check_box
+   control_name="ForceChatSingleLineMode"
+   height="16"
+   initial_value="true"
+   label="Disable multi-line chat editor"
+   tool_tip="This option forces all chat bars to remain single line text fields regardless of if your message is longer than the text field or if you are copying multi-line text into the chat bar."
+   layout="topleft"
+   left_delta="0"
+   name="ForceChatSingleLineMode"
+   top_pad="0"
+   width="256" />
+   <check_box
+   control_name="SLURLTeleportDirectly"
+   height="16"
+   initial_value="true"
+   label="Allow one-click TP on SLURL's in Chat"
+   tool_tip="This option allows teleporting via SLURL's in chat without opening the 'Places' window first."
+   layout="topleft"
+   left_delta="0"
+   name="SLURLTeleportDirectly"
+   top_pad="0"
+   width="256" />
+   <check_box
+   control_name="PlayTypingAnim"
+   height="16"
+   initial_value="true"
+   label="Play typing animation when chatting"
+   tool_tip="This option toggles whether you and others can see and hear you play a typing animation as long as you are actively typing a message in local chat."
+   layout="topleft"
+   left="10"
+   name="play_typing_animation"
+   top_pad="0"
+   width="400" />
+   <check_box
+   control_name="PlaySoundNewConversation"
+   height="16"
+   label="Play 'New Conversation' Sound"
+   tool_tip="This option toggles whether a sound should be played whenever a new conversation is started."
+   layout="topleft"
+   left="10"
+   top_pad="0"
+   name="new_conversation"
+   width="150" />
+   <check_box
+   control_name="PlaySoundIncomingVoiceCall"
+   height="16"
+   label="Play 'Incoming Voice Call' Sound"
+   tool_tip="This option toggles whether a sound should be played whenever you are asked to join a voice call."
+   layout="topleft"
+   top_pad="0"
+   name="incoming_voice_call"
+   width="150" />
+   <check_box
+   control_name="PlaySoundTeleportOffer"
+   height="16"
+   label="Play 'Teleport Offer' Sound"
+   tool_tip="This option toggles whether a sound should be played whenever a teleport is offered to you."
+   layout="topleft"
+   top_pad="0"
+   name="teleport_offer"
+   width="150" />
+   <check_box
+   control_name="PlaySoundInventoryOffer"
+   height="16"
+   label="Play 'Inventory Offer' Sound"
+   tool_tip="This option toggles whether a sound should be played whenever an inventory item is offered to you."
+   layout="topleft"
+   top_pad="0"
+   name="inventory_offer"
+   width="150" />
+   
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   type="string"
+   layout="topleft"
+   follows="top|left"
+   length="1"
+   height="12"
+   left="10"
+   top_delta="4"
+   name="chat_options_label"
+   width="200">
+   Chat Appearance Options:
+   </text>
+   
+   <check_box
+   control_name="PlainTextChatHistory"
+   height="16"
+   label="Disable new-style name titles in IM"
+   tool_tip="This option disables the new chat history name titles acting as separator for different avatars chatting. This option imitates a chat behavior similar to old Viewers."
+   layout="topleft"
+   left_delta="0"
+   name="plain_text_chat_history"
+   top_pad="15"
+   width="250" />
+   <check_box
+   control_name="ShowScriptErrors" 
+   follows="left|top"
+   height="16"
+   label="Show script errors when they happen"
+   tool_tip="This option toggles the visibility of script errors."
+   layout="topleft" 
+   left="10"
+   top_pad="0"
+   name="show_script_errors" 
+   width="250" />
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="show_errors_in"
+   top_pad="4"
+   width="150">
+   Show script errors in:
+   </text>
+   <radio_group
+   control_name="ShowScriptErrorsLocation"
+   enabled_control="ShowScriptErrors" 
+   height="19"
+   layout="topleft"
+   left="10"
+   name="show_location"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Chat"
+   tool_tip="This option sets script errors to appear in local chat as red text warning rather than in an extra window."
+   value="0"
+   layout="topleft"
+   name="0"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Error Window"
+   tool_tip="This option sets script errors to appear in a separate window rather than as red text in local chat."
+   value="1"
+   layout="topleft"
+   name="0"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="font_size"
+   top_pad="4"
+   width="150">
+   Font Size:
+   </text>
+   <radio_group
+   control_name="ChatFontSize"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="chat_font_size"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Small"
+   tool_tip="This option sets the chat font size to small."
+   value="0"
+   layout="topleft"
+   name="0"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Medium"
+   tool_tip="This option sets the chat font size to medium. This is the default option."
+   value="1"
+   layout="topleft"
+   name="0"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Large"
+   tool_tip="This option sets the chat font size to large. Useful for large displays or high resolutions."
+   value="2"
+   layout="topleft"
+   name="0"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
+   <slider
+   control_name="NearbyToastLifeTime"
+   decimal_digits="0"
+   can_edit_text="true"
+   follows="left|top"
+   height="15"
+   increment="1"
+   initial_value="4"
+   label="Chattext Life Time:"
+   tool_tip="This option sets the amount of time in seconds any local chat remains on screen before starting to fade."
+   label_width="150"
+   layout="topleft"
+   left="10"
+   max_val="40"
+   min_val="1"
+   name="NearbyToastLifeTime"
+   top_pad="4"
+   width="312" />
+   <button
+   follows="left|top"
+   control_name="NearbyToastLifeTime"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
+   <slider
+   control_name="NearbyToastFadingTime"
+   decimal_digits="0"
+   can_edit_text="true"
+   follows="left|top"
+   height="15"
+   increment="1"
+   initial_value="4"
+   label="Chattext Fade Time:"
+   tool_tip="This option sets the amount of time in seconds it takes before chat that started fading is hidden completely."
+   label_width="150"
+   layout="topleft"
+   left="10"
+   max_val="40"
+   min_val="1"
+   name="NearbyToastFadingTime"
+   top_pad="1"
+   width="312" />
+   <button
+   follows="left|top"
+   control_name="NearbyToastFadingTime"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
+   <check_box
+   control_name="UseChatBubbles"
+   follows="left|top"
+   height="16"
+   label="Use Bubble Chat"
+   tool_tip="This option controls whether chat should be shown as chat bubbles on nametags in addition to the normal chat or not."
+   layout="topleft"
+   left="10"
+   top_pad="4"
+   name="bubble_text_chat"
+   width="120" />
+   <slider
+   control_name="ChatBubbleOpacity"
+   enabled_control="UseChatBubbles"
+   decimal_digits="2"
+   can_edit_text="true"
+   follows="left|top"
+   height="15"
+   increment="0.05"
+   initial_value="1"
+   label="Bubble Chat Opacity:"
+   tool_tip="This option controls the opacity of the background for chat bubbles and name tags in general."
+   label_width="150"
+   layout="topleft"
+   left="10"
+   max_val="1"
+   min_val="0"
+   name="bubble_chat_opacity"
+   top_pad="6"
+   width="321" />
+   <button
+   follows="left|top"
+   control_name="ChatBubbleOpacity"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
+   
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   type="string"
+   layout="topleft"
+   follows="top|left"
+   length="1"
+   height="12"
+   left="10"
+   top_delta="4"
+   name="chat_options_label"
+   width="200">
+   Chat Behavior Options:
+   </text>
+   
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="friend_ims"
+   top_pad="15"
+   width="160">
+   Friend IM Behavior:
+   </text>
+   <radio_group
+   control_name="NotificationFriendIMOptions"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="FriendIMOptions"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Nothing"
+   value="noaction"
+   tool_tip="This option disables any action when receiving a message from a friend."
+   layout="topleft"
+   name="NoAction"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Flash Tab"
+   tool_tip="This option sets the action taken when receiving a message from a friend to flash the conversation tab."
+   value="flash"
+   layout="topleft"
+   name="FlashToolbarButton"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Pop Up"
+   halign="right"
+   value="toast"
+   tool_tip="This option sets the action taken when receiving a message from a friend to pop up the message on screen."
+   layout="topleft"
+   name="PopUpMessage"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Open Conversation"
+   halign="right"
+   value="openconversation"
+   tool_tip="This option sets the action taken when receiving a message from a friend to open the conversation window and focus the tab."
+   layout="topleft"
+   name="OpenConversationsWindow"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
+   <check_box
+   follows="top|left"
+   control_name="PlaySoundFriendIM"
+   height="16"
+   label="Play sound"
+   layout="topleft"
+   name="play_sound_friend_im"
+   left_pad="-223"
+   top_delta="0"
+   width="28">
+   </check_box>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="friend_ims"
+   top_pad="8"
+   width="160">
+   Non-Friend IM Behavior:
+   </text>
+   <radio_group
+   control_name="NotificationNonFriendIMOptions"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="NonFriendIMOptions"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Nothing"
+   value="noaction"
+   tool_tip="This option disables any action when receiving a message from someone who is not your friend."
+   layout="topleft"
+   name="NoAction"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Flash Tab"
+   tool_tip="This option sets the action taken when receiving a message from someone who is not your friend to flash the conversation tab."
+   value="flash"
+   layout="topleft"
+   name="FlashToolbarButton"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Pop Up"
+   halign="right"
+   value="toast"
+   tool_tip="This option sets the action taken when receiving a message from someone who is not your friend to pop up the message on screen."
+   layout="topleft"
+   name="PopUpMessage"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Open Conversation"
+   halign="right"
+   value="openconversation"
+   tool_tip="This option sets the action taken when receiving a message from someone who is not your friend to open the conversation window and focus the tab."
+   layout="topleft"
+   name="OpenConversationsWindow"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
+   <check_box
+   follows="top|left"
+   control_name="PlaySoundNonFriendIM"
+   height="16"
+   label="Play sound"
+   layout="topleft"
+   name="play_sound_non_friend_im"
+   left_pad="-223"
+   top_delta="0"
+   width="28">
+   </check_box>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="friend_ims"
+   top_pad="8"
+   width="160">
+   Conference IM Behavior:
+   </text>
+   <radio_group
+   control_name="NotificationConferenceIMOptions"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="ConferenceIMOptions"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Nothing"
+   value="noaction"
+   tool_tip="This option disables any action when receiving a message from a participant in a conference."
+   layout="topleft"
+   name="NoAction"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Flash Tab"
+   tool_tip="This option sets the action taken when receiving a message from a participant in a conference to flash the conversation tab."
+   value="flash"
+   layout="topleft"
+   name="FlashToolbarButton"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Pop Up"
+   halign="right"
+   value="toast"
+   tool_tip="This option sets the action taken when receiving a message from a participant in a conference to pop up the message on screen."
+   layout="topleft"
+   name="PopUpMessage"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Open Conversation"
+   halign="right"
+   value="openconversation"
+   tool_tip="This option sets the action taken when receiving a message from a participant in a conference to open the conversation window and focus the tab."
+   layout="topleft"
+   name="OpenConversationsWindow"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
+   <check_box
+   follows="top|left"
+   control_name="PlaySoundConferenceIM"
+   height="16"
+   label="Play sound"
+   layout="topleft"
+   name="play_sound_conference_im"
+   left_pad="-223"
+   top_delta="0"
+   width="28">
+   </check_box>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="friend_ims"
+   top_pad="8"
+   width="160">
+   Group IM Behavior:
+   </text>
+   <radio_group
+   control_name="PlaySoundGroupChatIM"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="GroupChatOptions"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Nothing"
+   value="noaction"
+   tool_tip="This option disables any action when receiving a message from a participant of a group chat."
+   layout="topleft"
+   name="NoAction"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Flash Tab"
+   tool_tip="This option sets the action taken when receiving a message from a participant of a group chat to flash the conversation tab."
+   value="flash"
+   layout="topleft"
+   name="FlashToolbarButton"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Pop Up"
+   halign="right"
+   value="toast"
+   tool_tip="This option sets the action taken when receiving a message from a participant of a group chat to pop up the message on screen."
+   layout="topleft"
+   name="PopUpMessage"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Open Conversation"
+   halign="right"
+   value="openconversation"
+   tool_tip="This option sets the action taken when receiving a message from a participant of a group chat to open the conversation window and focus the tab."
+   layout="topleft"
+   name="OpenConversationsWindow"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
+   <check_box
+   follows="top|left"
+   control_name="PlaySoundGroupChatIM"
+   height="16"
+   label="Play sound"
+   layout="topleft"
+   name="play_sound_group_chat_im"
+   left_pad="-223"
+   top_delta="0"
+   width="28">
+   </check_box>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="friend_ims"
+   top_pad="8"
+   width="160">
+   Nearby Chat Behavior:
+   </text>
+   <radio_group
+   control_name="NotificationNearbyChatOptions"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="NearbyChatOptions"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Nothing"
+   value="noaction"
+   tool_tip="This option disables any action when receiving a message in nearby chat."
+   layout="topleft"
+   name="NoAction"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Flash Tab"
+   tool_tip="This option sets the action taken when receiving a message in nearby chat to flash the nearby chat tab."
+   value="flash"
+   layout="topleft"
+   name="FlashToolbarButton"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Pop Up"
+   halign="right"
+   value="toast"
+   tool_tip="This option sets the action taken when receiving a message in nearby chat to pop up the message on screen."
+   layout="topleft"
+   name="PopUpMessage"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Open Conversation"
+   halign="right"
+   value="openconversation"
+   tool_tip="This option sets the action taken when receiving a message in nearby chat to open the nearby chat or conversation window and focus the tab."
+   layout="topleft"
+   name="OpenConversationsWindow"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
+   <check_box
+   follows="top|left"
+   control_name="PlaySoundNearbyChatIM"
+   height="16"
+   label="Play sound"
+   layout="topleft"
+   name="play_sound_nearby_chat_im"
+   left_pad="-223"
+   top_delta="0"
+   width="28">
+   </check_box>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="friend_ims"
+   top_pad="8"
+   width="160">
+   Object IM Behavior:
+   </text>
+   <radio_group
+   control_name="NotificationObjectIMOptions"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="ObjectIMOptions"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Nothing"
+   value="noaction"
+   tool_tip="This option disables any action when receiving a message from an object."
+   layout="topleft"
+   name="NoAction"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Flash Tab"
+   tool_tip="This option sets the action taken when receiving a message from an object to flash the conversation tab."
+   value="flash"
+   layout="topleft"
+   name="FlashToolbarButton"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Pop Up"
+   halign="right"
+   value="toast"
+   tool_tip="This option sets the action taken when receiving a message from an object to pop up the message on screen."
+   layout="topleft"
+   name="PopUpMessage"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Open Conversation"
+   halign="right"
+   value="openconversation"
+   tool_tip="This option sets the action taken when receiving a message from an object to open the conversation window and focus the tab."
+   layout="topleft"
+   name="OpenConversationsWindow"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
+    
+   <!--<button
+   height="23"
+   label="Translator Options"
+   tool_tip="&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+   This option is currently disables as it is non-functional."
+   layout="topleft"
+   enabled="false"
+   left="9"
+   name="ok_btn"
+   top_pad="15"
+   width="150">
+   <commit_callback
+   function="Pref.TranslationSettings" />
+   </button>-->
+   <!--<button
+   height="23"
+   layout="topleft"
+   tool_tip="&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+   This option is currently disables as it is non-functional."
+   enabled="false"
+   top_pad="-23"
+   left_pad="5"
+   name="spellcheck_showgui"
+   commit_callback.function="Pref.SpellChecker"
+   label="Spell Checker Options"
+   width="150">
+   </button>-->
   </panel>
  </scroll_container>
 
