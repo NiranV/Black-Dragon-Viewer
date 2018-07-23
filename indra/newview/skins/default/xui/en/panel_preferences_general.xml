@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- border="false"
- follows="left|top|right|bottom"
- height="408"
- label="General"
- mouse_opaque="false"
- layout="topleft"
- left="102"
- name="general_panel"
- top="45"
- width="510">
+border="false"
+follows="left|top|right|bottom"
+height="408"
+label="General"
+mouse_opaque="false"
+layout="topleft"
+left="102"
+name="general_panel"
+top="45"
+width="510">
  <scroll_container
  color="Transparent"
  follows="all"
@@ -24,234 +24,412 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="465"
+  height="530"
   name="general_scroll_panel"
   top="0"
   mouse_opaque="false"
   left="0"
   width="495">
-  <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top="0"
- width="492"/>
-  <text
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- name="personal_options"
- width="120"
- top_delta="4">
- Personal Options:
- </text>
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top="0"
+   width="492"/>
    <text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="15"
-     layout="topleft"
-     left="10"
-     name="language_textbox"
-     top_pad="15"
-     width="200">
-        My preferred language:
-    </text>
-    <combo_box
-     control_name="Language"
-     follows="left|top"
-     height="23"
-     layout="topleft"
-     tool_tip="This option sets the language all UI texts should use in the Viewer.  
-     &lt;icon&gt;Popup_Caution&lt;/icon&gt;
-								                                           Changing this option needs a restart."
-     left_pad="0"
-     top_delta="-3"
-     max_chars="135"
-     name="language_combobox"
-     width="170">
-        <combo_box.item
-         enabled="true"
-         label="System Default Language"
-         name="System Default Language"
-         value="default" />
-        <combo_box.item
-         enabled="true"
-         label="English"
-         name="English"
-         value="en" />
-        <combo_box.item
-         enabled="true"
-         label="Deutsch (German)"
-         name="Deutsch(German)"
-         value="de" />
-    </combo_box>
-    <text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="15"
-     layout="topleft"
-     left="10"
-     top_pad="5"
-     name="maturity_desired_prompt"
-     width="200">
-        I want to access content rated:
-    </text>
-    <icons_combo_box
-      control_name="PreferredMaturity"
-      follows="left|top"
-      height="23"
-      label="Moderate"
-      layout="topleft"
-      name="maturity_desired_combobox"
-      tool_tip="This option sets the maximum maturity rating a SIM can have that you are capable of visiting."
-      top_delta="-3"
-      left_pad="0"
-      width="170">
-      <icons_combo_box.drop_down_button
-        image_overlay="Parcel_M_Light"
-        image_overlay_alignment="left"
-        imgoverlay_label_space="3"
-        pad_left="3"/>
-      <icons_combo_box.item
-        label="General"
-        name="PG"
-        value="13">
-        <item.columns
-          halign="left"
-          type="icon"
-          value="Parcel_PG_Light"
-          width="20"/>
-      </icons_combo_box.item>
-      <icons_combo_box.item
-        label="Moderate"
-        name="Mature"
-        value="21">
-        <item.columns
-          halign="left"
-          type="icon"
-          value="Parcel_M_Light"
-          width="20"/>
-      </icons_combo_box.item>
-      <icons_combo_box.item
-        label="Adult"
-        name="Adult"
-        value="42">
-        <item.columns
-          halign="left"
-          type="icon"
-          value="Parcel_R_Light"
-          width="0"/>
-      </icons_combo_box.item>
-    </icons_combo_box>
-    <text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="15"
-     layout="topleft"
-     left="10"
-     name="start_location_textbox"
-     top_pad="5"
-     width="200">
-        Start location:
-    </text>
-    <combo_box
-     control_name="LoginLocation"
-     follows="left|top"
-     height="23"
-     layout="topleft"
-     name="start_location_combo"
-     tool_tip="This option sets the starting position for future log-in attempts."
-     left_pad="0"
-     top_delta="-3"
-     width="170">
-        <combo_box.item
-         label="My Last Location"
-         name="MyLastLocation"
-         value="last" />
-        <combo_box.item
-         label="My Home"
-         name="MyHome"
-         value="home" />
-    </combo_box>
-    <text
-      type="string"
-      length="1"
-      follows="left|top"
-      height="13"
-      layout="topleft"
-      left="10"
-      name="title_afk_text"
-      width="200"
-      top_pad="5">
-    Automatically go AFK after:
-    </text>
-  <combo_box
-    height="23"
-    layout="topleft"
-    follows="top|left"
-    control_name="AFKTimeout"
-    tool_tip="Sets the amount of time in minutes which has to pass without user input in the Viewer window before your avatar enters 'AFK' mode and is flagged as such."
-    left_pad="0"
-    top_delta="-3"
-    name="afk"
-    width="170">
-    <combo_box.item
-     label="2 Minutes"
-     name="item0"
-     value="120" />
-    <combo_box.item
-     label="5 Minutes"
-     name="item1"
-     value="300" />
-    <combo_box.item
-     label="10 Minutes"
-     name="item2"
-     value="600" />
-    <combo_box.item
-     label="15 Minutes"
-     name="item2"
-     value="900" />
-    <combo_box.item
-     label="30 Minutes"
-     name="item3"
-     value="1800" />
-    <combo_box.item
-     label="Never"
-     name="item4"
-     value="0" />
-  </combo_box>
-    <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
-   <text
-    type="string"
-    length="1"
-    follows="left|top"
-    height="12"
-    layout="topleft"
-    left="10"
-    name="name_tags_textbox"
-    top_delta="4"
-    width="300">
-       Avatar Name Options:
+   follows="left|top"
+   layout="topleft"
+   left="10"
+   height="12"
+   name="personal_options"
+   width="120"
+   top_delta="4">
+   Personal Options:
    </text>
+   
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="language_textbox"
+   top_pad="15"
+   width="220">
+   Interface Language:
+   </text>
+   <radio_group
+   control_name="Language"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="language_radio"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Default"
+   value="default"
+   tool_tip="This option sets the interface language to your system's default.  
+&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+                                                   Changing this option needs a restart."
+   layout="topleft"
+   name="System Default Language"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_overlay="Caution_Widget"
+   image_overlay_alignment="left"
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="English"
+   value="en"
+   tool_tip="This option sets the interface language to english.  
+                          &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+                                                   Changing this option needs a restart."
+   layout="topleft"
+   name="English"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_overlay="Caution_Widget"
+   image_overlay_alignment="left"
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="German"
+   halign="right"
+   value="de"
+   tool_tip="This option sets the interface language to german.  
+                        &lt;icon&gt;Popup_Caution&lt;/icon&gt;
+                                                   Changing this option needs a restart."
+   layout="topleft"
+   name="Deutsch(German)"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_overlay="Caution_Widget"
+   image_overlay_alignment="left"
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
+   
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="maturity_desired_prompt"
+   top_pad="5"
+   width="220">
+   Access Content Rated:
+   </text>
+   <radio_group
+   control_name="PreferredMaturity"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="maturity_desired_radio"
+   top_pad="5"
+   width="600">
+    <radio_item
+    height="16"
+    label="General"
+    value="13"
+    tool_tip="This option sets the maximum maturity rating a SIM can have that you are capable of visiting to General."
+    layout="topleft"
+    name="General"
+    top="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="Mature"
+    value="21"
+    tool_tip="This option sets the maximum maturity rating a SIM can have that you are capable of visiting to Mature."
+    layout="topleft"
+    name="Mature"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="Adult"
+    halign="right"
+    value="42"
+    tool_tip="This option sets the maximum maturity rating a SIM can have that you are capable of visiting to Adult."
+    layout="topleft"
+    name="Adult"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+   </radio_group>
+   
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="start_location_textbox"
+   top_pad="5"
+   width="220">
+   Start Location:
+   </text>
+   <radio_group
+   control_name="LoginLocation"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="start_location_radio"
+   top_pad="5"
+   width="600">
+    <radio_item
+    height="16"
+    label="My Home"
+    value="home"
+    tool_tip="This option sets the starting position for future log-in attempts to your home point."
+    layout="topleft"
+    name="MyHome"
+    top="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="Last Location"
+    value="last"
+    tool_tip="This option sets the starting position for future log-in attempts to the location you logged out."
+    layout="topleft"
+    name="MyLastLocation"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+   </radio_group>
+   
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="title_afk_text"
+   top_pad="5"
+   width="160">
+   Automatic AFK Timeout:
+   </text>
+   <radio_group
+   control_name="AFKTimeout"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="afk"
+   top_pad="5"
+   width="600">
+    <radio_item
+    height="16"
+    label="Never"
+    value="0"
+    tool_tip="This option disables going 'AFK' after a set amount of time completely."
+    layout="topleft"
+    name="item5"
+    top="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="2 Minutes"
+    tool_tip="This option sets the amount of time in minutes which has to pass without user input in the Viewer window before your avatar enters 'AFK' mode and is flagged as such to 2 minutes."
+    value="120"
+    layout="topleft"
+    name="item0"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="5 Minutes"
+    halign="right"
+    value="300"
+    tool_tip="This option sets the amount of time in minutes which has to pass without user input in the Viewer window before your avatar enters 'AFK' mode and is flagged as such to 5 minutes."
+    layout="topleft"
+    name="item1"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="10 Minutes"
+    halign="right"
+    value="600"
+    tool_tip="This option sets the amount of time in minutes which has to pass without user input in the Viewer window before your avatar enters 'AFK' mode and is flagged as such to 10 minutes."
+    layout="topleft"
+    name="item2"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="15 Minutes"
+    halign="right"
+    value="900"
+    tool_tip="This option sets the amount of time in minutes which has to pass without user input in the Viewer window before your avatar enters 'AFK' mode and is flagged as such to 15 minutes."
+    layout="topleft"
+    name="item3"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="30 Minutes"
+    halign="right"
+    value="1800"
+    tool_tip="This option sets the amount of time in minutes which has to pass without user input in the Viewer window before your avatar enters 'AFK' mode and is flagged as such to 30 minutes."
+    layout="topleft"
+    name="item4"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+   </radio_group>
+   
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="name_tags_textbox"
+   top_delta="4"
+   width="300">
+    Avatar Name Options:
+   </text>
+   
    <radio_group
    control_name="AvatarNameTagMode"
    height="19"
@@ -260,280 +438,281 @@
    name="Name_Tag_Preference"
    top_pad="15"
    width="600">
-         <radio_item
-         height="16"
-         label="On"
-         value="1"
-         tool_tip="This option shows name tags at all times."
-         layout="topleft"
-         name="2"
-         top="0"
-         width="70">
-               <radio_item.check_button
-               image_overlay="Default_Widget"
-               image_overlay_alignment="left"
-               image_unselected="Checkbox_Off"
-               image_selected="Checkbox_On"
-               image_disabled="Checkbox_Off_Disabled"
-               image_disabled_selected="Checkbox_On_Disabled"
-               image_pressed="Checkbox_Press"
-               image_pressed_selected="Checkbox_On_Press" />
-         </radio_item>
-         <radio_item
-         height="16"
-         label="Off"
-         value="0"
-         tool_tip="This option hides name tags at all times."
-         layout="topleft"
-         name="1"
-         left_pad="10"
-         top_delta="0"
-         width="70">
-               <radio_item.check_button
-               image_unselected="Checkbox_Off"
-               image_selected="Checkbox_On"
-               image_disabled="Checkbox_Off_Disabled"
-               image_disabled_selected="Checkbox_On_Disabled"
-               image_pressed="Checkbox_Press"
-               image_pressed_selected="Checkbox_On_Press" />
-         </radio_item>
-         <radio_item
-         height="16"
-         label="Show briefly"
-         value="2"
-         tool_tip="This option shows name tags for a short customizable amount of time when the avatar appears for the first time before fading away. This option depends on both 'Name Fade Duration' and 'Start Fading After' below."
-         layout="topleft"
-         name="0"
-         left_pad="10"
-         top_delta="0"
-         width="70">
-               <radio_item.check_button
-               image_unselected="Checkbox_Off"
-               image_selected="Checkbox_On"
-               image_disabled="Checkbox_Off_Disabled"
-               image_disabled_selected="Checkbox_On_Disabled"
-               image_pressed="Checkbox_Press"
-               image_pressed_selected="Checkbox_On_Press" />
-         </radio_item>
+    <radio_item
+    height="16"
+    label="On"
+    value="1"
+    tool_tip="This option shows name tags at all times."
+    layout="topleft"
+    name="2"
+    top="0"
+    width="70">
+    <radio_item.check_button
+    image_overlay="Default_Widget"
+    image_overlay_alignment="left"
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="Off"
+    value="0"
+    tool_tip="This option hides name tags at all times."
+    layout="topleft"
+    name="1"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="Show briefly"
+    value="2"
+    tool_tip="This option shows name tags for a short customizable amount of time when the avatar appears for the first time before fading away. This option depends on both 'Name Fade Duration' and 'Start Fading After' below."
+    layout="topleft"
+    name="0"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
    </radio_group>
    <slider
-      can_edit_text="true"
-      control_name="RenderNameFadeDuration"
-      decimal_digits="1"
-      follows="left|top"
-      height="15"
-      increment="0.1"
-      label="Name fade duration (s):"
-      tool_tip="This option controls the amount of time in s (seconds) it takes for name tags to fade out when they started doing so. This option only works with 'Show Briefly' as name tag visibility option selected."
-      initial_value="10"
-      layout="topleft"
-      left="10"
-      max_val="30"
-      min_val="0.1"
-      label_width="150"
-      name="name_fade_slider"
-      top_pad="4"
-      width="319" />
+   can_edit_text="true"
+   control_name="RenderNameFadeDuration"
+   decimal_digits="1"
+   follows="left|top"
+   height="15"
+   increment="0.1"
+   label="Name fade duration (s):"
+   tool_tip="This option controls the amount of time in s (seconds) it takes for name tags to fade out when they started doing so. This option only works with 'Show Briefly' as name tag visibility option selected."
+   initial_value="10"
+   layout="topleft"
+   left="10"
+   max_val="30"
+   min_val="0.1"
+   label_width="150"
+   name="name_fade_slider"
+   top_pad="4"
+   width="319" />
    <button
- follows="left|top"
- control_name="RenderNameFadeDuration"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   follows="left|top"
+   control_name="RenderNameFadeDuration"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <slider
-      can_edit_text="true"
-      control_name="RenderNameShowTime"
-      decimal_digits="1"
-      follows="left|top"
-      height="15"
-      increment="1"
-      label="Start fading after (s):"
-      tool_tip="This option controls the amount of time in s (seconds) which have to pass before name tags start fading out after appearing for the first time. This option only works with 'Show Briefly' as name tag visibility option selected."
-      initial_value="10"
-      layout="topleft"
-      left="10"
-      max_val="60"
-      min_val="1"
-      label_width="150"
-      name="name_start_fade_slider"
-      top_pad="1"
-      width="316" />
+   can_edit_text="true"
+   control_name="RenderNameShowTime"
+   decimal_digits="1"
+   follows="left|top"
+   height="15"
+   increment="1"
+   label="Start fading after (s):"
+   tool_tip="This option controls the amount of time in s (seconds) which have to pass before name tags start fading out after appearing for the first time. This option only works with 'Show Briefly' as name tag visibility option selected."
+   initial_value="10"
+   layout="topleft"
+   left="10"
+   max_val="60"
+   min_val="1"
+   label_width="150"
+   name="name_start_fade_slider"
+   top_pad="1"
+   width="316" />
    <button
- follows="left|top"
- control_name="RenderNameShowTime"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-    <check_box
-     follows="left|top"
-     layout="topleft"
-     height="16"
-     control_name="UseDisplayNames"
-     label="Allow Display Names"
-     left="10"
-     tool_tip="This option allows the usage of display names in most of the UI. Display names are user chosen, weekly changable names which can differ from the username used to log in."
-     name="display_names_check"
-     width="300"
-     top_pad="7"/>
+   follows="left|top"
+   control_name="RenderNameShowTime"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
    <check_box
-     enabled_control="UseDisplayNames"
-     control_name="NameTagShowDisplayNames"
-     follows="left|top"
-     height="16"
-     label="Show Display Names"
-     layout="topleft"
-     left_delta="0"
-     tool_tip="This option allows the usage of display names in name tags. Display names are user chosen, weekly changable names which can differ from the username used to log in."
-     top_pad="0"
-     name="show_display_names_checkbox1"
-     width="300" />
+   follows="left|top"
+   layout="topleft"
+   height="16"
+   control_name="UseDisplayNames"
+   label="Allow Display Names"
+   left="10"
+   tool_tip="This option allows the usage of display names in most of the UI. Display names are user chosen, weekly changable names which can differ from the username used to log in."
+   name="display_names_check"
+   width="300"
+   top_pad="7"/>
    <check_box
-     enabled_control="AvatarNameTagMode"
-     control_name="NameTagShowUsernames"
-     follows="left|top"
-     height="16"
-     label="Show Usernames"
-     tool_tip="This option shows the original user name used to log in to Second Life alongside the chosen display name should they be enabled."
-     layout="topleft"
-     top_pad="0"
-     left_delta="0"
-     name="show_usernames_checkbox1"
-     width="300" />
+   enabled_control="UseDisplayNames"
+   control_name="NameTagShowDisplayNames"
+   follows="left|top"
+   height="16"
+   label="Show Display Names"
+   layout="topleft"
+   left_delta="0"
+   tool_tip="This option allows the usage of display names in name tags. Display names are user chosen, weekly changable names which can differ from the username used to log in."
+   top_pad="0"
+   name="show_display_names_checkbox1"
+   width="300" />
    <check_box
-     control_name="NameTagShowGroupTitles"
-     follows="left|top"
-     height="16"
-     label="Show Group Titles"
-     tool_tip="This option shows group titles in name tags if a user has an active group currently, otherwise it wont show."
-     layout="topleft"
-     left_delta="0"
-     top_pad="0"
-     name="show_all_title_checkbox1"
-     width="200" />
+   enabled_control="AvatarNameTagMode"
+   control_name="NameTagShowUsernames"
+   follows="left|top"
+   height="16"
+   label="Show Usernames"
+   tool_tip="This option shows the original user name used to log in to Second Life alongside the chosen display name should they be enabled."
+   layout="topleft"
+   top_pad="0"
+   left_delta="0"
+   name="show_usernames_checkbox1"
+   width="300" />
    <check_box
-     enabled_control="UseDisplayNames"
-     control_name="NameTagShowFriends"
-     follows="left|top"
-     height="16"
-     label="Highlight Friend Names"
-     tool_tip="This option allows name tags of friends to visually differ in color to highlight that the user in question is currently on your friendlist."
-     layout="topleft"
-     left_delta="0"
-     top_pad="0"
-     name="show_friends_checkbox1"
-     width="200" />
+   control_name="NameTagShowGroupTitles"
+   follows="left|top"
+   height="16"
+   label="Show Group Titles"
+   tool_tip="This option shows group titles in name tags if a user has an active group currently, otherwise it wont show."
+   layout="topleft"
+   left_delta="0"
+   top_pad="0"
+   name="show_all_title_checkbox1"
+   width="200" />
    <check_box
-     follows="left|top"
-     control_name="RenderNameShowSelf"
-     height="16"
-     top_pad="0"
-     label="Show my own Name"
-     tool_tip="This option shows your own name tag. It works independently from other name tags but is subject to 'Name Fade Duration' and 'Start Fading After' still."
-     layout="topleft"
-     left_delta="0"
-     name="show_my_name_checkbox1"
-     width="180" />
-<panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="10"
- width="492"/>
-    <text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="12"
-     layout="topleft"
-     left="10"
-     name="login_options"
-     top_delta="4"
-     width="200">
-        Login Options:
-    </text>
+   enabled_control="UseDisplayNames"
+   control_name="NameTagShowFriends"
+   follows="left|top"
+   height="16"
+   label="Highlight Friend Names"
+   tool_tip="This option allows name tags of friends to visually differ in color to highlight that the user in question is currently on your friendlist."
+   layout="topleft"
+   left_delta="0"
+   top_pad="0"
+   name="show_friends_checkbox1"
+   width="200" />
    <check_box
-     control_name="AutoLogin"
-     height="16"
-     label="Automatically Login"
-     layout="topleft"
-     left="10"
-     top_pad="15"
-     tool_tip="This option controls whether the Viewer should attempt to log you in automatically whenever you start it. &lt;red&gt;It is currently unknown if this option is still functional.&lt;/red&gt;"
-     name="Auto_login"
-     width="200" />
-   <check_box
-     control_name="FlyingAtExit"
-     height="16"
-     label="Remember flying state at Logout"
-     layout="topleft"
-     left_delta="0"
-     top_pad="0"
-     tool_tip="This option controls whether the Viewer should remember your flying state when you log out. You will be flying when you log in the next time rather than falling to the ground."
-     name="Flying_At_Exit"
-     width="200" />
+   follows="left|top"
+   control_name="RenderNameShowSelf"
+   height="16"
+   top_pad="0"
+   label="Show my own Name"
+   tool_tip="This option shows your own name tag. It works independently from other name tags but is subject to 'Name Fade Duration' and 'Start Fading After' still."
+   layout="topleft"
+   left_delta="0"
+   name="show_my_name_checkbox1"
+   width="180" />
    <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="9"
- width="492"/>
-    <text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="13"
-     layout="topleft"
-     left="10"
-     mouse_opaque="false"
-     name="text_box3"
-     top_delta="4"
-     width="240">
-       Do-NOT-Disturb Response:
-    </text>
-    <line_editor
-     control_name="DoNotDisturbModeResponse"
-     text_readonly_color="LabelDisabledColor"
-     commit_on_focus_lost = "true"
-     follows="left|top|right"
-     height="22"
-     layout="topleft"
-     tool_tip="This option sets the automatic text answer that should be send to anyone sending you a message while you are in 'Busy' mode."
-     left="10"
-     top_pad="13"
-     name="do_not_disturb_response"
-     width="475">
-       log_in_to_change
-    </line_editor>
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="492"/>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="login_options"
+   top_delta="4"
+   width="200">
+   Login Options:
+   </text>
+   
+   <check_box
+   control_name="AutoLogin"
+   height="16"
+   label="Automatically Login"
+   layout="topleft"
+   left="10"
+   top_pad="15"
+   tool_tip="This option controls whether the Viewer should attempt to log you in automatically whenever you start it. &lt;red&gt;It is currently unknown if this option is still functional.&lt;/red&gt;"
+   name="Auto_login"
+   width="200" />
+   <check_box
+   control_name="FlyingAtExit"
+   height="16"
+   label="Remember flying state at Logout"
+   layout="topleft"
+   left_delta="0"
+   top_pad="0"
+   tool_tip="This option controls whether the Viewer should remember your flying state when you log out. You will be flying when you log in the next time rather than falling to the ground."
+   name="Flying_At_Exit"
+   width="200" />
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="9"
+   width="492"/>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="13"
+   layout="topleft"
+   left="10"
+   mouse_opaque="false"
+   name="text_box3"
+   top_delta="4"
+   width="240">
+   Do-NOT-Disturb Response:
+   </text>
+   <line_editor
+   control_name="DoNotDisturbModeResponse"
+   text_readonly_color="LabelDisabledColor"
+   commit_on_focus_lost = "true"
+   follows="left|top|right"
+   height="22"
+   layout="topleft"
+   tool_tip="This option sets the automatic text answer that should be send to anyone sending you a message while you are in 'Busy' mode."
+   left="10"
+   top_pad="13"
+   name="do_not_disturb_response"
+   width="475">
+   log_in_to_change
+   </line_editor>
   </panel>
  </scroll_container>
 </panel>
