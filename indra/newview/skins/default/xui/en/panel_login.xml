@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.2.0 - Falling Dragon]"
+       label="[CHANNEL] [VERSION] - [3.2.2 - Caring Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="8234"
+       height="8654"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,8 +174,78 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="26"
+              height="403"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Ability to define different selected overlay images on buttons.
+Added: Merry0722 as Patreon Patron.
+Added: Ability to grant/revoke permissions via the friendlist menus and clicking the permission icons.
+Added: Ability to grant/revoke permissions via the right click avatar menus.
+Changed: Don't darken points in SSR that face away from the reflection ray.
+Changed: Improve mini tooltip text layout.
+Changed: Improved layout in floater_about.xml.
+Changed: Improved all mini-profiles for land and objects.
+Changed: Greyscaled the texture for your own avatar on the minimap and changed it's default color.
+Changed: Show a minus icon when tabs in preferences are opened to indicate they can be collapsed again.
+Changed: Improved "Show Minimap" label in People window to make it clearer we mean the minimap.
+Changed: Overhauled layout and style of the joystick/flycam configuration window.
+Changed: Improved layout and consistency in Preferences - Chat tab.
+Changed: Improved layout and consistency in Preferences - Camera tab.
+Changed: Improved layout and consistency in Preferences - General tab.
+Changed: Improved layout and consistency in Preferences - Privacy tab.
+Changed: Version to 3.2.2 - Caring Dragon.
+Removed: Translation names list in floater_about.xml.
+Removed: Defunct Chat History BG and Chat History Text colors.
+Removed: Defunct "Show RLVa Name tags" option from RLVa tab.
+Removed: Invalid XML tokens in panel_edit_alpha.xml.
+Fixed: Deleting poses with special characters or spaces fails.
+Fixed: Texture Picker is behaving weird on open and appears to stack panels.
+Fixed: Highlight Transparent locking Depth of Field focus position in flycam when activated.
+Fixed: Color Picker always reverting transparency to 0 when clicking "Cancel".
+Fixed: XML warnings in floater_about.xml.
+Fixed: Licenses in floater_about.xml being outdated.
+Fixed: Constant missing debug option spam when opening the viewer main menu.
+Fixed: Contributor and Lindens lists in About Black Dragon window being empty.
+Fixed: Hide UI preventing left/right-click dragging your view up and down unless you were dragging before hiding the UI.
+Misc: Test changes.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.2.1
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="26"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
