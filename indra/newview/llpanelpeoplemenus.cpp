@@ -104,10 +104,14 @@ LLContextMenu* PeopleContextMenu::createMenu()
 		registrar.add("Avatar.GetSLURL",		boost::bind(&LLAvatarActions::copySLURLToClipboard,			id));
 
 		//BD - Right Click Menu
-		registrar.add("Avatar.Derender", boost::bind(&PeopleContextMenu::derenderAvatar,					this));
-		registrar.add("Avatar.BlockUnblockText", boost::bind(&PeopleContextMenu::toggleMuteText,			this));
-		registrar.add("Avatar.MuteUnmute", boost::bind(&LLAvatarActions::toggleMuteVoice,					id));
-		registrar.add("Avatar.SetImpostorMode", boost::bind(&PeopleContextMenu::setImpostorMode,			this, _2));
+		registrar.add("Avatar.Derender",		boost::bind(&PeopleContextMenu::derenderAvatar,				this));
+		registrar.add("Avatar.BlockUnblockText",boost::bind(&PeopleContextMenu::toggleMuteText,				this));
+		registrar.add("Avatar.MuteUnmute",		boost::bind(&LLAvatarActions::toggleMuteVoice,				id));
+		registrar.add("Avatar.SetImpostorMode",	boost::bind(&PeopleContextMenu::setImpostorMode,			this, _2));
+
+		//BD - Empower someone with rights or revoke them.
+		registrar.add("Avatar.GrantPermissions",	boost::bind(&PeopleContextMenu::grantPermissions,		this, _2));
+		enable_registrar.add("Avatar.CheckPermissions", boost::bind(&PeopleContextMenu::checkPermissions,	this, _2));
 
 		enable_registrar.add("Avatar.EnableItem", boost::bind(&PeopleContextMenu::enableContextMenuItem,	this, _2));
 		enable_registrar.add("Avatar.CheckItem",  boost::bind(&PeopleContextMenu::checkContextMenuItem,		this, _2));
@@ -131,6 +135,10 @@ LLContextMenu* PeopleContextMenu::createMenu()
 		registrar.add("Avatar.RemoveFriend",	boost::bind(&LLAvatarActions::removeFriendsDialog,		mUUIDs));
 		// registrar.add("Avatar.Share",		boost::bind(&LLAvatarActions::startIM,					mUUIDs)); // *TODO: unimplemented
 		// registrar.add("Avatar.Pay",			boost::bind(&LLAvatarActions::pay,						mUUIDs)); // *TODO: unimplemented
+
+		//BD - Empower someone with rights or revoke them.
+		registrar.add("Avatar.GrantPermissions", boost::bind(&PeopleContextMenu::grantPermissions,		this, _2));
+		enable_registrar.add("Avatar.CheckPermissions", boost::bind(&PeopleContextMenu::checkPermissions, this, _2));
 
 		enable_registrar.add("Avatar.EnableItem",	boost::bind(&PeopleContextMenu::enableContextMenuItem, this, _2));
 
@@ -160,6 +168,11 @@ void PeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("reset_skeleton_separator"));
 		items.push_back(std::string("reset_skeleton"));
 		items.push_back(std::string("reset_skeleton_animations"));
+		//BD - Empower someone with rights or revoke them.
+		items.push_back(std::string("permissions"));
+		items.push_back(std::string("grant_online"));
+		items.push_back(std::string("grant_map"));
+		items.push_back(std::string("grant_modify"));
 	}
 	else 
 	{
@@ -197,6 +210,11 @@ void PeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("always_render"));
 		items.push_back(std::string("dont_render"));
 		items.push_back(std::string("render_avatar"));
+		//BD - Empower someone with rights or revoke them.
+		items.push_back(std::string("permissions"));
+		items.push_back(std::string("grant_online"));
+		items.push_back(std::string("grant_map"));
+		items.push_back(std::string("grant_modify"));
 	}
 
     hide_context_entries(menu, items, disabled_items);
@@ -564,6 +582,32 @@ bool PeopleContextMenu::setImpostorMode(const LLSD& userdata)
 	return true;
 };
 
+//BD - Empower someone with rights or revoke them.
+void PeopleContextMenu::grantPermissions(const LLSD& userdata)
+{
+	if (mUUIDs.empty()) return;
+
+	S32 power = userdata.asInteger();
+	LLAvatarActions::empower(mUUIDs, power);
+};
+
+bool PeopleContextMenu::checkPermissions(const LLSD& userdata)
+{
+	if (mUUIDs.front().isNull()) return false;
+
+	LLAvatarTracker& at = LLAvatarTracker::instance();
+	if (!at.isBuddy(mUUIDs.front())) return false;
+
+	const LLRelationship* relation = at.getBuddyInfo(mUUIDs.front());
+	if (!relation) return false;
+
+	S32 power = userdata.asInteger();
+	S32 rights = relation->getRightsGrantedTo();
+	if (rights & power) return true;
+
+	return false;
+};
+
 //BD - Derender
 void PeopleContextMenu::derenderAvatar()
 {
@@ -607,6 +651,11 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 			items.push_back(std::string("reset_skeleton_separator"));
 			items.push_back(std::string("reset_skeleton"));
 			items.push_back(std::string("reset_skeleton_animations"));
+			//BD - Empower someone with rights or revoke them.
+			items.push_back(std::string("permissions"));
+			items.push_back(std::string("grant_online"));
+			items.push_back(std::string("grant_map"));
+			items.push_back(std::string("grant_modify"));
 		}
 	}
 	else if (flags & ITEM_IN_MULTI_SELECTION)
@@ -624,6 +673,11 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("reset_skeleton_separator"));
 		items.push_back(std::string("reset_skeleton"));
 		items.push_back(std::string("reset_skeleton_animations"));
+		//BD - Empower someone with rights or revoke them.
+		items.push_back(std::string("permissions"));
+		items.push_back(std::string("grant_online"));
+		items.push_back(std::string("grant_map"));
+		items.push_back(std::string("grant_modify"));
 	}
 	else 
 	{
@@ -663,6 +717,11 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("always_render"));
 		items.push_back(std::string("dont_render"));
 		items.push_back(std::string("render_avatar"));
+		//BD - Empower someone with rights or revoke them.
+		items.push_back(std::string("permissions"));
+		items.push_back(std::string("grant_online"));
+		items.push_back(std::string("grant_map"));
+		items.push_back(std::string("grant_modify"));
 	}
 
     hide_context_entries(menu, items, disabled_items);

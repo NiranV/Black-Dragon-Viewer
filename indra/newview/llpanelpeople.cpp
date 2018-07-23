@@ -363,7 +363,8 @@ public:
 	{
 		if (!mIsActive) return FALSE;
 
-		if (mMask & (LLFriendObserver::ADD | LLFriendObserver::REMOVE | LLFriendObserver::ONLINE))
+		//BD - TODO: When powers change refresh the display
+		if (mMask & (LLFriendObserver::ADD | LLFriendObserver::REMOVE | LLFriendObserver::ONLINE | LLFriendObserver::POWERS))
 		{
 			update();
 		}
@@ -567,6 +568,9 @@ LLPanelPeople::LLPanelPeople()
 	mEnableCallbackRegistrar.add("People.Nearby.Visible", boost::bind(&LLPanelPeople::onMenuVisibilityCheck, this, _2));
 	mEnableCallbackRegistrar.add("People.Groups.Visible", boost::bind(&LLPanelPeople::onMenuVisibilityCheck, this, _2));
 	mEnableCallbackRegistrar.add("People.Blocked.Visible", boost::bind(&LLPanelPeople::onMenuVisibilityCheck, this, _2));
+
+	//BD - Empower someone with rights or revoke them.
+	mCommitCallbackRegistrar.add("People.Friends.Permission.Action", boost::bind(&LLPanelPeople::onEmpowerFriend, this, _2));
 }
 
 LLPanelPeople::~LLPanelPeople()
@@ -783,6 +787,8 @@ void LLPanelPeople::updateFriendList()
 	mAllFriendList->setDirty(true, !mAllFriendList->filterHasMatches());
 	//update trash and other buttons according to a selected item
 	updateButtons();
+
+	//BD - TODO: Update permissions.
 
 	//BD - Make sure we sort the list again after it is done loading incase it got mixed up.
 	//     TODO: Remove this? It doesn't help as far as i can tell.
@@ -1409,6 +1415,26 @@ bool LLPanelPeople::onRecentViewSortMenuItemCheck(const LLSD& userdata)
 		return sort_order == E_SORT_BY_NAME;
 
 	return false;
+}
+
+//BD - Empower someone with rights or revoke them.
+void LLPanelPeople::onEmpowerFriend(const LLSD& userdata)
+{
+	std::string chosen_item = userdata.asString();
+	uuid_vec_t uuids;
+	mAllFriendList->getSelectedUUIDs(uuids);
+	if (chosen_item == "grant_modify")
+	{
+		LLAvatarActions::empower(uuids, LLRelationship::GRANT_MODIFY_OBJECTS);
+	}
+	else if (chosen_item == "grant_map")
+	{
+		LLAvatarActions::empower(uuids, LLRelationship::GRANT_MAP_LOCATION);
+	}
+	else if (chosen_item == "grant_online")
+	{
+		LLAvatarActions::empower(uuids, LLRelationship::GRANT_ONLINE_STATUS);
+	}
 }
 
 //BD

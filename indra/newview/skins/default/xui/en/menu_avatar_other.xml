@@ -259,4 +259,49 @@ name="Avatar Pie">
       parameter="avatar_render_settings" />
       </menu_item_call>
    </context_menu>
+   
+   <context_menu
+   label="Grant Permissions"
+   layout="topleft"
+   name="GrantPermissions">
+      <menu_item_check
+      name="GrantOnline"
+      label="Online Visibility">
+      <menu_item_check.on_check
+      function="Avatar.CheckPermissions"
+      parameter="1" />
+      <menu_item_check.on_enable
+      function="Avatar.EnableRemoveFriend"
+      parameter="1" />        
+      <menu_item_check.on_click
+      function="Avatar.GrantPermissions"
+      parameter="1" />
+      </menu_item_check>
+      <menu_item_check
+      name="GrantMap"
+      label="Map Tracking">
+      <menu_item_check.on_check
+      function="Avatar.CheckPermissions"
+      parameter="2" />
+      <menu_item_check.on_enable
+      function="Avatar.EnableRemoveFriend"
+      parameter="2" />      
+      <menu_item_check.on_click
+      function="Avatar.GrantPermissions"
+      parameter="2" />
+      </menu_item_check>
+      <menu_item_check
+      name="GrantModify"
+      label="Modify My Objects">
+      <menu_item_check.on_check
+      function="Avatar.CheckPermissions"
+      parameter="4" />
+      <menu_item_check.on_enable
+      function="Avatar.EnableRemoveFriend"
+      parameter="4" />      
+      <menu_item_check.on_click
+      function="Avatar.GrantPermissions"
+      parameter="4" />
+      </menu_item_check>
+   </context_menu>
 </context_menu>

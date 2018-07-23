@@ -45,6 +45,8 @@
 #include "rlvactions.h"
 #include "rlvcommon.h"
 // [/RLVa:KB]
+//BD
+#include "llpanelpeople.h"
 
 static LLWidgetNameRegistry::StaticRegistrar sRegisterAvatarListItemParams(&typeid(LLAvatarListItem::Params), "avatar_list_item");
 
@@ -112,10 +114,15 @@ BOOL  LLAvatarListItem::postBuild()
 	//BD
 	mExtraInformation = getChild<LLTextBox>("extra_information");
 
-	mIconPermissionOnline = getChild<LLIconCtrl>("permission_online_icon");
-	mIconPermissionMap = getChild<LLIconCtrl>("permission_map_icon");
-	mIconPermissionEditMine = getChild<LLIconCtrl>("permission_edit_mine_icon");
-	mIconPermissionEditTheirs = getChild<LLIconCtrl>("permission_edit_theirs_icon");
+	//BD - Empower someone with rights or revoke them.
+	mIconPermissionOnline = getChild<LLButton>("permission_online_icon");
+	mIconPermissionMap = getChild<LLButton>("permission_map_icon");
+	mIconPermissionEditMine = getChild<LLButton>("permission_edit_mine_icon");
+	mIconPermissionEditTheirs = getChild<LLButton>("permission_edit_theirs_icon");
+
+	mIconPermissionOnline->setCommitCallback(boost::bind(&LLAvatarListItem::empowerFriend, this, _1));
+	mIconPermissionMap->setCommitCallback(boost::bind(&LLAvatarListItem::empowerFriend, this, _1));
+	mIconPermissionEditMine->setCommitCallback(boost::bind(&LLAvatarListItem::empowerFriend, this, _1));
 
 	mSpeakingIndicator = getChild<LLOutputMonitorCtrl>("speaking_indicator");
 
@@ -487,13 +494,13 @@ bool LLAvatarListItem::showPermissions(bool visible)
 	const LLRelationship* relation = LLAvatarTracker::instance().getBuddyInfo(getAvatarId());
 	if(relation)
 	{
-		mIconPermissionOnline->setColor(LLUIColorTable::instance().getColor
+		mIconPermissionOnline->setImageColor(LLUIColorTable::instance().getColor
 			(relation->isRightGrantedTo(LLRelationship::GRANT_ONLINE_STATUS) ? "White" : "White_25"));
-		mIconPermissionMap->setColor(LLUIColorTable::instance().getColor
+		mIconPermissionMap->setImageColor(LLUIColorTable::instance().getColor
 			(relation->isRightGrantedTo(LLRelationship::GRANT_MAP_LOCATION) ? "White" : "White_25"));
-		mIconPermissionEditMine->setColor(LLUIColorTable::instance().getColor
+		mIconPermissionEditMine->setImageColor(LLUIColorTable::instance().getColor
 			(relation->isRightGrantedTo(LLRelationship::GRANT_MODIFY_OBJECTS) ? "White" : "White_25"));
-		mIconPermissionEditTheirs->setColor(LLUIColorTable::instance().getColor
+		mIconPermissionEditTheirs->setImageColor(LLUIColorTable::instance().getColor
 			(relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "White" : "White_25"));
 		mIconPermissionOnline->setVisible(visible);
 		mIconPermissionMap->setVisible(visible);
@@ -503,4 +510,23 @@ bool LLAvatarListItem::showPermissions(bool visible)
 
 	return NULL != relation;
 }
+
+//BD - Empower someone with rights or revoke them.
+void LLAvatarListItem::empowerFriend(LLUICtrl* ctrl)
+{
+	std::string name = ctrl->getName();
+	if (name == "permission_edit_mine_icon")
+	{
+		LLAvatarActions::empowerFriend(mAvatarId, 4);
+	}
+	else if (name == "permission_map_icon")
+	{
+		LLAvatarActions::empowerFriend(mAvatarId, 2);
+	}
+	else
+	{
+		LLAvatarActions::empowerFriend(mAvatarId, 1);
+	}
+}
+
 // EOF

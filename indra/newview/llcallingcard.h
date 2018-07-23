@@ -130,9 +130,9 @@ public:
 	void setBuddyOnline(const LLUUID& id, bool is_online);
 	bool isBuddyOnline(const LLUUID& id) const;
 
-	// simple empowered status
-	void setBuddyEmpowered(const LLUUID& id, bool is_empowered);
-	bool isBuddyEmpowered(const LLUUID& id) const;
+	//BD - Empower someone with rights or revoke them.
+	void setBuddyEmpowered(const LLUUID& id, bool is_empowered, S32 power);
+	bool isBuddyEmpowered(const LLUUID& id, S32 power) const;
 
 	// set the empower bit & message the server.
 	void empowerList(const buddy_map_t& list, bool grant);

@@ -292,4 +292,49 @@ name="Nearby People Context Menu">
 		parameter="avatar_render_settings" />
 		</menu_item_call>
 	</context_menu>
+	
+	<context_menu
+	label="Grant Permissions"
+	layout="topleft"
+	name="permissions">
+		<menu_item_check
+		name="grant_online"
+		label="Online Visibility">
+		<menu_item_check.on_check
+		function="Avatar.CheckPermissions"
+		parameter="1" />
+		<menu_item_check.on_enable
+		function="Avatar.EnableItem"
+		parameter="can_delete" />        
+		<menu_item_check.on_click
+		function="Avatar.GrantPermissions"
+		parameter="1" />
+		</menu_item_check>
+		<menu_item_check
+		name="grant_map"
+		label="Map Tracking">
+		<menu_item_check.on_check
+		function="Avatar.CheckPermissions"
+		parameter="2" />
+		<menu_item_check.on_enable
+		function="Avatar.EnableItem"
+		parameter="can_delete" />      
+		<menu_item_check.on_click
+		function="Avatar.GrantPermissions"
+		parameter="2" />
+		</menu_item_check>
+		<menu_item_check
+		name="grant_modify"
+		label="Modify My Objects">
+		<menu_item_check.on_check
+		function="Avatar.CheckPermissions"
+		parameter="4" />
+		<menu_item_check.on_enable
+		function="Avatar.EnableItem"
+		parameter="can_delete" />      
+		<menu_item_check.on_click
+		function="Avatar.GrantPermissions"
+		parameter="4" />
+		</menu_item_check>
+	</context_menu>
 </context_menu>

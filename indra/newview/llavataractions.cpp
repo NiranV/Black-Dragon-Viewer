@@ -81,6 +81,8 @@
 // [/RLVa:KB]
 //BD - Abuse Report
 #include "llfloaterreporter.h"
+//BD
+#include "llagentdata.h"
 
 // Flags for kick message
 const U32 KICK_FLAGS_DEFAULT	= 0x0;
@@ -1443,4 +1445,49 @@ bool LLAvatarActions::canBlock(const LLUUID& id)
 	bool is_linden = (full_name.find("Linden") != std::string::npos);
 	bool is_self = id == gAgentID;
 	return !is_self && !is_linden;
+}
+
+//BD - Empower someone with rights or revoke them.
+// static
+void LLAvatarActions::empowerFriend(const LLUUID& id, S32 power)
+{
+	if (id.isNull())
+		return;
+
+	std::vector<LLUUID> ids;
+	ids.push_back(id);
+	empower(ids, power);
+}
+
+// static
+void LLAvatarActions::empower(const uuid_vec_t& ids, S32 power)
+{
+	if (ids.size() == 0)
+		return;
+
+	LLAvatarTracker& at = LLAvatarTracker::instance();
+	for (uuid_vec_t::const_iterator id = ids.begin(), id_end = ids.end(); id != id_end; ++id)
+	{
+		LLUUID uuid = (*id);
+		//BD - Prevent someone from giving me rights while i'm not an actual friend.
+		if (at.isBuddy(uuid))
+		{
+			const LLRelationship* relation = at.getBuddyInfo(uuid);
+			if (relation)
+			{
+				S32 rights = relation->getRightsGrantedTo();
+				if (rights & power)
+				{
+					rights &= ~power;
+				}
+				else
+				{
+					rights |= power;
+				}
+
+				LLAvatarPropertiesProcessor* app = LLAvatarPropertiesProcessor::getInstance();
+				app->sendFriendRights(uuid, rights);
+			}
+		}
+	}
 }

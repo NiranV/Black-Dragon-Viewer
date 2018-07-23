@@ -257,6 +257,10 @@ public:
 
 	static std::set<LLUUID> getInventorySelectedUUIDs();
 
+	//BD - Empower someone with rights or revoke them.
+	static void empowerFriend(const LLUUID& id, S32 power);
+	static void empower(const uuid_vec_t& ids, S32 power);
+
 private:
 	static bool callbackAddFriendWithMessage(const LLSD& notification, const LLSD& response);
 	static bool handleRemove(const LLSD& notification, const LLSD& response);

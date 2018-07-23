@@ -357,18 +357,25 @@ bool LLAvatarTracker::isDeveloper(const LLUUID& id) const
 }
 
 
-// empowered status
-void LLAvatarTracker::setBuddyEmpowered(const LLUUID& id, bool is_empowered)
+//BD - Empower someone with rights or revoke them.
+void LLAvatarTracker::setBuddyEmpowered(const LLUUID& id, bool is_empowered, S32 power)
 {
 	LLRelationship* info = get_ptr_in_map(mBuddyInfo, id);
 	if(info)
 	{
-		info->grantRights(LLRelationship::GRANT_MODIFY_OBJECTS, 0);
-		mModifyMask |= LLFriendObserver::POWERS;
+		if (is_empowered)
+		{
+			info->grantRights(power, 0);
+		}
+		else
+		{
+			info->revokeRights(power, 0);
+		}
+		addChangedMask(LLFriendObserver::POWERS, id);
 	}
 }
 
-bool LLAvatarTracker::isBuddyEmpowered(const LLUUID& id) const
+bool LLAvatarTracker::isBuddyEmpowered(const LLUUID& id, S32 power) const
 {
 	LLRelationship* info = get_ptr_in_map(mBuddyInfo, id);
 	if(info)

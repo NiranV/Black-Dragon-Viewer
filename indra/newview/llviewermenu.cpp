@@ -9470,6 +9470,42 @@ class LLWorldTeleportForward : public view_listener_t
 	}
 };
 
+//BD - Permissions
+class LLAvatarGrantPermissions : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+		LLAvatarActions::empowerFriend(avatar->getID(), userdata.asInteger());
+		return true;
+	}
+};
+
+class LLAvatarCheckPermissions : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLViewerObject* object = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
+		if (!object) return false;
+
+		LLVOAvatar* avatar = find_avatar_from_object(object);
+		if (!avatar) return false;
+
+		LLAvatarTracker& at = LLAvatarTracker::instance();
+		LLUUID uuid = avatar->getID();
+		if (!at.isBuddy(uuid)) return false;
+
+		const LLRelationship* relation = at.getBuddyInfo(uuid);
+		if (!relation) return false;
+
+		S32 power = userdata.asInteger();
+		S32 rights = relation->getRightsGrantedTo();
+		if (rights & power) return true;
+
+		return false;
+	}
+};
+
 
 void initialize_edit_menu()
 {
@@ -10046,5 +10082,9 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLAvatarShare(), "Avatar.Share");
 	view_listener_t::addMenu(new LLAvatarRemoveFriend(), "Avatar.RemoveFriend");
 	view_listener_t::addMenu(new LLAvatarEnableRemoveFriend(), "Avatar.EnableRemoveFriend");
+
+//	//BD - Permissions
+	view_listener_t::addMenu(new LLAvatarGrantPermissions(), "Avatar.GrantPermissions");
+	view_listener_t::addMenu(new LLAvatarCheckPermissions(), "Avatar.CheckPermissions");
 
 }

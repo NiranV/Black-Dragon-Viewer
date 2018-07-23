@@ -62,6 +62,10 @@ private:
 	void toggleMuteText();
 	void derenderAvatar();
 
+	//BD - Empower someone with rights or revoke them.
+	void grantPermissions(const LLSD& userdata);
+	bool checkPermissions(const LLSD& userdata);
+
 	bool checkImpostorMode(const LLSD& userdata);
 	bool setImpostorMode(const LLSD& userdata);
 

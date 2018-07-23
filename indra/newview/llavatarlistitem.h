@@ -95,25 +95,27 @@ public:
 	virtual void setValue(const LLSD& value);
 	virtual void changed(U32 mask); // from LLFriendObserver
 
-	//BD - Developer tracker
-	void setOnline(bool online, bool is_dev = false);
 	void updateAvatarName(); // re-query the name cache
 	void setAvatarName(const std::string& name);
 	void setAvatarToolTip(const std::string& tooltip);
 	void setHighlight(const std::string& highlight);
 	void setState(EItemState item_style);
 	void setAvatarId(const LLUUID& id, const LLUUID& session_id, bool ignore_status_changes = false, bool is_resident = true);
-	//BD
-	void setExtraInformation(const std::string& information);
 	void showSpeakingIndicator(bool show);
 	void setShowPermissions(bool show) { mShowPermissions = show; };
 	void setLastInteractionTime(U32 secs_since);
-	//BD
-	void showExtraInformation(bool show);
 	void setShowCompleteName(bool show) { mShowCompleteName = show;};
 // [RLVa:KB] - Checked: RLVa-1.2.0
 	void setRlvCheckShowNames(bool fRlvCheckShowNames) { mRlvCheckShowNames = fRlvCheckShowNames; }
 // [/RLVa:KB]
+
+	//BD - Developer tracker
+	void setOnline(bool online, bool is_dev = false);
+	//BD
+	void showExtraInformation(bool show);
+	void setExtraInformation(const std::string& information);
+	//BD - Empower someone with rights or revoke them.
+	void empowerFriend(LLUICtrl* ctrl);
 	
 	const LLUUID& getAvatarId() const;
 	std::string getAvatarName() const;
@@ -130,14 +132,15 @@ protected:
 
 	LLAvatarIconCtrl* mAvatarIcon;
 
+	//BD - Empower someone with rights or revoke them.
 	/// Panel of the Indicator for permission to see me online.
-	LLIconCtrl* mIconPermissionOnline;
+	LLButton* mIconPermissionOnline;
 	/// Panel of the Indicator for permission to see my position on the map.
-	LLIconCtrl* mIconPermissionMap;
+	LLButton* mIconPermissionMap;
 	/// Panel of the Indicator for permission to edit my objects.
-	LLIconCtrl* mIconPermissionEditMine;
+	LLButton* mIconPermissionEditMine;
 	/// Panel of the Indicator for permission to edit their objects.
-	LLIconCtrl* mIconPermissionEditTheirs;
+	LLButton* mIconPermissionEditTheirs;
 
 private:
 

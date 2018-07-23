@@ -127,52 +127,65 @@
     top="5"
     value="DEVELOPER"
     width="76"/>
-    <icon
+    <button
     height="16"
     follows="right|top"
-    image_name="Permission_Edit_Objects_Theirs"
+    image_pressed="Permission_Edit_Objects_Theirs"
+    image_unselected="Permission_Edit_Objects_Theirs"
     layout="topleft"
     right="-47"
     visible="false"
-    color="1 1 1 0.5"
+    image_color="1 1 1 0.5"
     name="permission_edit_theirs_icon"
     tool_tip="You can edit this friend&apos;s objects"
     top="3"
     width="16" />
-    <icon
+    <button
     height="16"
     follows="right|top"
-    image_name="Permission_Edit_Objects_Mine"
+    image_pressed="Permission_Edit_Objects_Mine"
+    image_unselected="Permission_Edit_Objects_Mine"
     layout="topleft"
     right="-32"
     visible="false"
-    color="1 1 1 0.5"
+    image_color="1 1 1 0.5"
     name="permission_edit_mine_icon"
     tool_tip="This friend can edit, delete or take your objects"
     top="3"
-    width="16" />
-    <icon
+    width="16" >
+     <button.commit_callback
+     parameter="4"/>
+    </button>
+    <button
     height="16"
     follows="right|top"
-    image_name="Permission_Visible_Map"
+    image_pressed="Permission_Visible_Map"
+    image_unselected="Permission_Visible_Map"
     layout="topleft"
     tool_tip="This friend can locate you on the map"
     right="-17"
     visible="false"
-    color="1 1 1 0.5"
+    image_color="1 1 1 0.5"
     name="permission_map_icon"
     top="3"
-    width="16" />
-    <icon
+    width="16" >
+     <button.commit_callback
+     parameter="2"/>
+    </button>
+    <button
     height="16"
     follows="right|top"
-    image_name="Permission_Visible_Online"
+    image_pressed="Permission_Visible_Online"
+    image_unselected="Permission_Visible_Online"
     layout="topleft"
     right="-2"
     visible="false"
-    color="1 1 1 0.5"
+    image_color="1 1 1 0.5"
     name="permission_online_icon"
     tool_tip="This friend can see when you&apos;re online"
     top="3"
-    width="16" />
+    width="16" >
+     <button.commit_callback
+     parameter="1"/>
+    </button>
 </panel>

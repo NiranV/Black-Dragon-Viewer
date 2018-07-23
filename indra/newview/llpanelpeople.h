@@ -65,6 +65,10 @@ public:
 	void          updateNearbyList();
 // [/RLVa:KB]
 
+	//BD - Empower someone with rights or revoke them.
+	void		onEmpowerFriend(const LLSD& userdata);
+	LLAvatarList* getFriendList() { return mAllFriendList; }
+
 	// internals
 	class Updater;
 

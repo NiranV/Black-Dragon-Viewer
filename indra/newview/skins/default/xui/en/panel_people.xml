@@ -175,6 +175,39 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 		function="People.Friends.Visible"
 		parameter="friends"/>
 		</menu_item_check>
+  <menu_item_call
+		label="Grant / Revoke Edit Permission"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Friends.Permission.Action"
+  parameter="grant_modify"/>
+		<on_visible
+		function="People.Friends.Visible"
+		parameter="friends"/>
+  </menu_item_call>
+  <menu_item_call
+		label="Grant / Revoke Map Permission"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Friends.Permission.Action"
+  parameter="grant_map"/>
+		<on_visible
+		function="People.Friends.Visible"
+		parameter="friends"/>
+  </menu_item_call>
+  <menu_item_call
+		label="Grant / Revoke Online Permission"
+		layout="topleft"
+		name="">
+		<on_click
+		function="People.Friends.Permission.Action"
+  parameter="grant_online"/>
+		<on_visible
+		function="People.Friends.Visible"
+		parameter="friends"/>
+  </menu_item_call>
 		
 		<!-- Groups -->
 		<menu_item_call
