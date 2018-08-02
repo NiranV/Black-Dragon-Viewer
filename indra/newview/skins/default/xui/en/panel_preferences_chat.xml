@@ -884,7 +884,7 @@ width="510">
    Group IM Behavior:
    </text>
    <radio_group
-   control_name="PlaySoundGroupChatIM"
+   control_name="NotificationGroupChatOptions"
    height="19"
    layout="topleft"
    left="10"
