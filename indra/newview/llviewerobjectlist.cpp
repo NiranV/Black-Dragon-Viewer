@@ -1512,8 +1512,6 @@ void LLViewerObjectList::setAlphaMode(LLViewerObject *objectp, LLMaterial::eDiff
 						mat->setDiffuseAlphaMode(mode);
 						mat->setAlphaMaskCutoff(U8(75));
 						objectp->setTEMaterialParams(U8(i), mat);
-						//te->setMaterialParams(new_mat);
-						LL_INFOS() << "Mat found" << LL_ENDL;
 					}
 					else
 					{
@@ -1522,8 +1520,6 @@ void LLViewerObjectList::setAlphaMode(LLViewerObject *objectp, LLMaterial::eDiff
 						new_mat->setAlphaMaskCutoff(U8(75));
 						LLMaterialMgr::getInstance()->put(objectp->getID(), U8(i), *new_mat);
 						objectp->setTEMaterialParams(U8(i), new_mat);
-						//te->setMaterialParams(new_mat);
-						LL_INFOS() << "No Mat found" << LL_ENDL;
 					}
 				}
 			}
