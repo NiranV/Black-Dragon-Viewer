@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel 
- border="true" 
  enabled="true" 
  follows="left|top|right|bottom"
- height="500" 
+ height="400" 
  label="General" 
- left="102" 
+ left="0" 
  mouse_opaque="true"
  name="Media Settings General" 
  help_topic = "media_settings_general"
- width="365">
+ width="260">
 
   <text
-   bottom_delta="-25"
+   top="4"
    follows="top|left"
+   layout="topleft"
    height="15"
-   left="10"
+   left="5"
    name="home_label">
     Home Page:
-  </text>
-  <text
-   visible="false" 
-   bottom_delta="0"
-   follows="top|left"
-   height="15"
-   left_delta="64"
-   text_color="red"
-   name="home_fails_whitelist_label">
-    (This page does not pass the specified whitelist)
   </text>
   <line_editor 
    max_length_bytes="1024"
@@ -36,19 +26,29 @@
    follows="left|top" 
    font="SansSerif"
    height="20" 
-   left="10" 
+   left_delta="0" 
    name="home_url"
    tool_tip="The home page for this media source"
-   width="340"> 
+   width="235"> 
     <!--  <line_editor.commit_callback
 	     function="Media.CommitHomeURL"/> -->
   </line_editor>
+  <text
+   visible="true" 
+   top_pad="0"
+   follows="top|left"
+   height="15"
+   left_delta="0"
+   text_color="0.9 0.4 0.30 1"
+   name="home_fails_whitelist_label">
+    (This page does not pass the whitelist)
+  </text>
 
   <web_browser
    border_visible="true"
    bottom_delta="-133"
    follows="top|left"
-   left="120"
+   left="60"
    name="preview_media"
    width="128"
    height="128"
@@ -56,19 +56,19 @@
    decouple_texture_size="true" />
   
   <text
-   bottom_delta="-15"
+   top_pad="0"
    follows="top|left"
    height="15"
-   left="164"
+   left_delta="0"
    name="preview_label">
     Preview
   </text>
   
   <text 
-   bottom_delta="-20" 
+   top_pad="4" 
    follows="top|left" 
    height="15" 
-   left="10" 
+   left="5" 
    name="current_url_label">
     Current Page:
   </text>
@@ -76,121 +76,119 @@
    name="current_url"
    max_length="1024"
    use_ellipses="true"
-   bottom_delta="-20" 
+   top_pad="2" 
    enabled="false" 
    follows="left|top" 
    font="SansSerif"
-   height="20" 
-   left="10" 
+   height="15" 
+   left="5" 
    tool_tip="The current page for this media source"
    value="" 
-   width="340" />
+   width="240" />
   <button 
-   bottom_delta="-20" 
+   top_pad="4" 
    follows="top|left" 
-   height="20" 
+   height="18" 
    label="Reset"
-   left_delta="233" 
+   left="5" 
    name="current_url_reset_btn" 
    width="110" > 
    <button.commit_callback
 	     function="Media.ResetCurrentUrl"/>
   </button>
   <check_box 
-   bottom_delta="-25" 
+   top_pad="9" 
    enabled="true" 
    follows="left|top" 
-   font="SansSerifSmall"
-   height="16"
+   layout="topleft"
+   height="14"
    initial_value="false"
    label="Auto Loop" 
-   left="10" 
+   left="5" 
    mouse_opaque="true"
    name="auto_loop" 
-   radio_style="false" 
    width="150" />
   <check_box 
-   bottom_delta="-25" 
+   top_pad="1"
    visible="false" 
    enabled="false" 
    follows="left|top" 
-   font="SansSerifSmall"
-   height="16" 
-   initial_value="false"
+   layout="topleft"
+   height="14" 
    label="First Click Interacts" 
    left_delta="0" 
    mouse_opaque="true"
    name="first_click_interact" 
-   radio_style="false" 
    width="150" />
 
   <check_box 
-   bottom_delta="0" 
+   top_delta="0"
    enabled="true" 
    follows="left|top"
-   font="SansSerifSmall"
-   height="16" 
+   layout="topleft"
+   height="14" 
    initial_value="false"
    label="Auto Zoom" 
    left_delta="0" 
    mouse_opaque="true"
    name="auto_zoom" 
-   radio_style="false" 
    width="150" />
 
   <check_box 
-   bottom_delta="-25" 
+   top_pad="1"
    enabled="true" 
    follows="left|top" 
-   font="SansSerifSmall"
-   height="16" 
+   layout="topleft"
+   height="14" 
    initial_value="false"
    label="Auto Play Media" 
-   left="10" 
+   left="5" 
    mouse_opaque="true"
    name="auto_play" 
-   radio_style="false" 
    width="150" />
    
   <text 
-   bottom_delta="-14" 
+   top_pad="0"
    follows="top|left" 
    height="15" 
-   left="30" 
-   width="340" 
+   left="7" 
+   width="240" 
    enabled="false" 
    name="media_setting_note">
     Note: Residents can override this setting
   </text>
 
   <check_box 
-   bottom_delta="-25" 
+   top_pad="1"
    enabled="true" 
    follows="left|top" 
    font="SansSerifSmall"
-   height="16" 
+   layout="topleft"
+   height="14" 
    initial_value="false"
    label="Auto Scale Media on Face of Object" 
-   left="10" 
+   left="5" 
    mouse_opaque="true"
    name="auto_scale" 
    radio_style="false" 
    width="150" />
    
   <text 
-   bottom_delta="-20" 
-   follows="top|left" 
+   top_pad="8"
+   follows="top|left"
+   layout="topleft"
    height="15" 
-   left="30" 
+   left="7" 
    name="size_label">
     Size:
   </text>
   
   <spinner 
-   bottom_delta="0"
+   top_delta="-3"
    decimal_digits="0" 
    enabled="true" 
-   follows="left|top" 
+   follows="left|top"
+   layout="topleft"
    height="16"
    increment="1" 
    initial_value="256" 
@@ -201,26 +199,34 @@
    min_val="0" 
    mouse_opaque="true"
    name="width_pixels" 
-   width="50" />
+   width="60" />
    
-  <text bottom_delta="0" follows="top|left" height="15" left_delta="60" name="X_label">
+  <text
+        top_delta="3"
+        follows="top|left"
+        layout="topleft"
+        height="15"
+        width="10"
+        left_pad="10"
+        name="X_label">
 	X
   </text>
   <spinner 
-	  bottom_delta="0"
+	  top_delta="-3"
 	  decimal_digits="0"
 	  enabled="true"
-	  follows="left|top" 
+	  follows="left|top"
+   layout="topleft"
 	  height="16"
 	  increment="1"
 	  initial_value="256" 
 	  label=""
 	  label_width="0"
-	  left_delta="20" 
+	  left_pad="5" 
 	  max_val="2048" 
 	  min_val="0"
 	  mouse_opaque="true"
 	  name="height_pixels"
-	  width="50" />
+	  width="60" />
  
 </panel>

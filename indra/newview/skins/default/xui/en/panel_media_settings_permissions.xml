@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel 
- border="true" 
+ border="false" 
  enabled="true" 
  follows="left|top|right|bottom"
- height="500" 
+ height="460" 
  label="Customize" 
- left="102" 
+ left="0" 
  mouse_opaque="true"
  name="Media settings for controls" 
- help_topic = "media_settings_controls"
- width="365">
+ width="260">
 
   <text
-   bottom_delta="-50"
+   top="4"
    follows="top|left"
+   layout="topleft"
    height="15"
-   left="10"
-   name="controls_label" 
-   text_readonly_color="LabelDisabledColor">
+   left="5"
+   name="controls_label" >
     Controls:
   </text>
   <combo_box
    allow_text_entry="false"
-   bottom_delta="0"
+   top_delta="-1"
    follows="left|top"
+   layout="topleft"
    height="18"
    left="100"
    max_chars="20"
@@ -42,128 +42,128 @@
   </combo_box>
 
   <text 
-   bottom_delta="-50" 
+   top_pad="3"
    enabled="false"
-   follows="top|left" 
+   follows="top|left"
+   layout="topleft"
    height="15" 
-   left="10" 
-   name="owner_label" 
-   text_readonly_color="LabelDisabledColor">
+   left="5" 
+   name="owner_label" >
     Owner
   </text>
   
   <check_box 
-   bottom_delta="-22" 
+   top_pad="5"
    enabled="true" 
-   follows="left|top" 
-   font="SansSerifSmall"
-   height="16" 
+   follows="left|top"
+   layout="topleft"
+   height="14" 
    initial_value="false"
    label="Allow Navigation &amp; Interactivity" 
-   left="30" 
+   left="5" 
    mouse_opaque="true"
    name="perms_owner_interact" 
    radio_style="false" 
    width="250" />
 
   <check_box 
-   bottom_delta="-22" 
+   top_pad="1" 
    enabled="true" 
    follows="left|top" 
-   font="SansSerifSmall"
-   height="16" 
+   layout="topleft"
+   height="14" 
    initial_value="false"
    label="Show Control Bar" 
-   left="30" 
+   left="5" 
    mouse_opaque="true"
    name="perms_owner_control" 
    radio_style="false" 
    width="250" />
 
   <text 
-   bottom_delta="-36" 
+   top_pad="7"
    enabled="false"
-   follows="top|left" 
+   follows="top|left"
+   layout="topleft"
    height="15" 
-   left="10"
-   name="group_label" 
-   text_readonly_color="LabelDisabledColor">
+   left="5"
+   name="group_label" >
     Group:
   </text>
   
   <name_box 
-   bottom_delta="-5" 
+   top_delta="0"
    enabled="false" 
-   follows="left|top" 
-   font="SansSerif"
-   height="20" left="60" 
+   follows="left|top"
+   layout="topleft"
+   height="15"
+   left="60" 
    name="perms_group_name"
-   text_readonly_color="LabelDisabledColor"
-   value ="" 
+   value="" 
    width="200" />
    
   <check_box 
-   bottom_delta="-22" 
+   top_pad="5"
    enabled="true" 
    follows="left|top" 
-   font="SansSerifSmall"
-   height="16" 
+   layout="topleft"
+   height="14" 
    initial_value="false"
    label="Allow Navigation &amp; Interactivity" 
-   left="30" 
+   left="5" 
    mouse_opaque="true"
    name="perms_group_interact" 
    radio_style="false" 
    width="250" />
 
   <check_box 
-   bottom_delta="-22" 
+   top_pad="1"
    enabled="true" 
    follows="left|top" 
-   font="SansSerifSmall"
-   height="16" 
+   layout="topleft"
+   height="14" 
    initial_value="false"
    label="Show Control Bar" 
-   left="30" 
+   left="5" 
    mouse_opaque="true"
    name="perms_group_control" 
    radio_style="false" 
    width="250" />
 
   <text 
-   bottom_delta="-36" 
+   top_pad="7"
    enabled="false"
-   follows="top|left" 
+   follows="top|left"
+   layout="topleft"
    height="15" 
-   left="10" 
-   name="anyone_label" 
-   text_readonly_color="LabelDisabledColor">
+   left="5" 
+   name="anyone_label" >
     Anyone
   </text>
   
   <check_box 
-   bottom_delta="-22" 
+   top_pad="5"
    enabled="true" 
    follows="left|top" 
-   font="SansSerifSmall"
-   height="16" 
+   layout="topleft"
+   height="14" 
    initial_value="false"
    label="Allow Navigation &amp; Interactivity" 
-   left="30" 
+   left="5" 
    mouse_opaque="true"
    name="perms_anyone_interact" 
    radio_style="false" 
    width="250" />
 
   <check_box 
-   bottom_delta="-22" 
+   top_pad="1"
    enabled="true" 
    follows="left|top" 
-   font="SansSerifSmall"
-   height="16" 
+   layout="topleft"
+   height="14" 
    initial_value="false"
    label="Show Control Bar" 
-   left="30" 
+   left="5" 
    mouse_opaque="true"
    name="perms_anyone_control" 
    radio_style="false" 
