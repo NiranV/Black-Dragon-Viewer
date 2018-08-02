@@ -648,7 +648,7 @@ bool toggle_freeze_world(const LLSD& newvalue)
 static bool handleFullscreenWindow(const LLSD& newvalue)
 {
 	if ((gViewerWindow) && (gViewerWindow->canFullscreenWindow()))
-		gViewerWindow->setFullscreenWindow(!gViewerWindow->getFullscreenWindow());
+		gViewerWindow->setFullscreenWindow(newvalue.asBoolean());
 	return true;
 }
 
