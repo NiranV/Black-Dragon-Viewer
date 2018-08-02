@@ -118,15 +118,20 @@ private:
 	eControlType	mType;
 	ePersist		mPersist;
 	bool			mHideFromSettingsEditor;
+
+	//BD - Lock Arrays features
+	bool			mLockedArrays;
+
 	std::vector<LLSD> mValues;
 
 	commit_signal_t mCommitSignal;
 	validate_signal_t mValidateSignal;
 	
 public:
+	//BD - Lock Arrays features
 	LLControlVariable(const std::string& name, eControlType type,
 					  LLSD initial, const std::string& comment,
-					  ePersist persist = PERSIST_NONDFT, bool hidefromsettingseditor = false);
+					  ePersist persist = PERSIST_NONDFT, bool hidefromsettingseditor = false, bool lock = false);
 
 	virtual ~LLControlVariable();
 	
@@ -149,6 +154,10 @@ public:
 	bool shouldSave(bool nondefault_only);
 	bool isPersisted() { return mPersist != PERSIST_NO; }
 	bool isHiddenFromSettingsEditor() { return mHideFromSettingsEditor; }
+
+	//BD
+	bool isLocked() { return mLockedArrays; }
+
 	LLSD get()			const	{ return getValue(); }
 	LLSD getValue()		const	{ return mValues.back(); }
 	LLSD getDefault()	const	{ return mValues.front(); }
@@ -160,6 +169,8 @@ public:
 	void setPersist(ePersist);
 	void setHiddenFromSettingsEditor(bool hide);
 	void setComment(const std::string& comment);
+	//BD - Locked Arrays feature
+	void setLocked(bool lock);
 
 private:
 	void firePropertyChanged(const LLSD &pPreviousValue)
@@ -223,7 +234,8 @@ public:
 	};
 	void applyToAll(ApplyFunctor* func);
 
-	LLControlVariable* declareControl(const std::string& name, eControlType type, const LLSD initial_val, const std::string& comment, LLControlVariable::ePersist persist, BOOL hidefromsettingseditor = FALSE);
+	//BD - Locked Array feature
+	LLControlVariable* declareControl(const std::string& name, eControlType type, const LLSD initial_val, const std::string& comment, LLControlVariable::ePersist persist, BOOL hidefromsettingseditor = FALSE, BOOL lock = FALSE);
 	LLControlVariable* declareU32(const std::string& name, U32 initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
 	LLControlVariable* declareS32(const std::string& name, S32 initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
 	LLControlVariable* declareF32(const std::string& name, F32 initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);

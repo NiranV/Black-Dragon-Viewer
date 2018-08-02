@@ -3032,7 +3032,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       show_text="true"
       width="327" >
          <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="RenderGlowLumWeights"/>
       </slider>
       <slider  
@@ -3055,7 +3055,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       show_text="true"
       width="327" >
          <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="RenderGlowLumWeights"/>
       </slider>
       <slider  
@@ -3078,7 +3078,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       show_text="true"
       width="327" >
       <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="RenderGlowLumWeights"/>
       </slider>
       <button
@@ -3096,6 +3096,22 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  width="60">
          <button.commit_callback
                                  function="Pref.Default"/>
+      </button>
+      <button
+ follows="left|top"
+ height="47"
+ is_toggle="true"
+ label="⌊lock⌉"
+ image_selected="Transparent"
+ image_unselected="Transparent"
+ layout="topleft"
+ left_pad="1"
+ top_delta="0"
+ name="lock"
+ width="60">
+   <button.commit_callback
+   parameter="RenderGlowLumWeights"
+    function="Dragon.LockArray"/>
       </button>
 	  <text
  type="string"
@@ -3143,7 +3159,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       show_text="true"
       width="327" >
          <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="RenderGlowWarmthWeights"/>
       </slider>
       <slider  
@@ -3166,7 +3182,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       show_text="true"
       width="327" >
          <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="RenderGlowWarmthWeights"/>
       </slider>
       <slider  
@@ -3189,7 +3205,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       show_text="true"
       width="327" >
       <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="RenderGlowWarmthWeights"/>
       </slider>
       <button
@@ -3207,6 +3223,22 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  width="60">
          <button.commit_callback
                                  function="Pref.Default"/>
+      </button>
+      <button
+ follows="left|top"
+ height="47"
+ is_toggle="true"
+ label="⌊lock⌉"
+ image_selected="Transparent"
+ image_unselected="Transparent"
+ layout="topleft"
+ left_pad="1"
+ top_delta="0"
+ name="lock"
+ width="60">
+   <button.commit_callback
+   parameter="RenderGlowWarmthWeights"
+    function="Dragon.LockArray"/>
       </button>
       </layout_panel>
       
@@ -3598,7 +3630,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="5"
       width="318">
   <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
@@ -3659,7 +3691,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="0"
       width="318">
   <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
@@ -3682,7 +3714,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="1"
       width="318">
   <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
@@ -3705,7 +3737,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="1"
       width="318">
   <slider.commit_callback
-      function="Pref.ArrayW"
+      function="Dragon.ArrayW"
       parameter="RenderShadowDistance"/>
       </slider>
  <button
@@ -3746,7 +3778,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="1"
       width="324">
    <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="RenderShadowResolution"/>
       </slider>
  <slider
@@ -3770,7 +3802,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="324">
    <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="RenderShadowResolution"/>
       </slider>
  <slider
@@ -3794,7 +3826,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="324">
    <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="RenderShadowResolution"/>
       </slider>
  <slider
@@ -3818,7 +3850,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="324">
    <slider.commit_callback
-      function="Pref.ArrayW"
+      function="Dragon.ArrayW"
       parameter="RenderShadowResolution"/>
       </slider>
  <button
@@ -3837,6 +3869,22 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+ <button
+ follows="left|top"
+ height="63"
+ is_toggle="true"
+ label="⌊lock⌉"
+ image_selected="Transparent"
+ image_unselected="Transparent"
+ layout="topleft"
+ left_pad="1"
+ top_delta="0"
+ name="lock"
+ width="60">
+   <button.commit_callback
+   parameter="RenderShadowResolution"
+    function="Dragon.LockArray"/>
+	  </button>
  <text
  type="string"
  length="1"
@@ -3882,7 +3930,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="7"
       width="324">
    <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="RenderProjectorShadowResolution"/>
       </slider>
  <slider
@@ -3906,7 +3954,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="324">
    <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="RenderProjectorShadowResolution"/>
       </slider>
  <button
@@ -5411,7 +5459,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="5"
       width="328">
          <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="ExodusRenderToneAdvOptA"/>
       </slider>
       <slider
@@ -5433,7 +5481,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="328">
          <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="ExodusRenderToneAdvOptA"/>
       </slider>
       <slider
@@ -5455,7 +5503,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="328">
          <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="ExodusRenderToneAdvOptA"/>
       </slider>
       <button
@@ -5493,7 +5541,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="5"
       width="328">
          <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="ExodusRenderToneAdvOptB"/>
       </slider>
       <slider
@@ -5515,7 +5563,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="326">
          <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="ExodusRenderToneAdvOptB"/>
       </slider>
       <slider
@@ -5537,7 +5585,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="328">
          <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="ExodusRenderToneAdvOptB"/>
       </slider>
       <button
@@ -5556,6 +5604,22 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+      <button
+ follows="left|top"
+ height="47"
+ is_toggle="true"
+ label="⌊lock⌉"
+ image_selected="Transparent"
+ image_unselected="Transparent"
+ layout="topleft"
+ left_pad="1"
+ top_delta="0"
+ name="lock"
+ width="60">
+   <button.commit_callback
+   parameter="ExodusRenderToneAdvOptB"
+    function="Dragon.LockArray"/>
+   </button>
       <slider
       can_edit_text="true"
       enabled_control="ExodusRenderToneMapping"
@@ -5575,7 +5639,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="5"
       width="328">
          <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="ExodusRenderToneAdvOptC"/>
       </slider>
       <slider
@@ -5597,7 +5661,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="322">
          <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="ExodusRenderToneAdvOptC"/>
       </slider>
       <button
@@ -5745,7 +5809,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="7"
       width="326">
       <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="ExodusRenderExposure"/>
       </slider>
       <slider
@@ -5766,7 +5830,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="326">
       <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="ExodusRenderExposure"/>
       </slider>
       <slider
@@ -5787,7 +5851,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="326">
       <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="ExodusRenderExposure"/>
       </slider>
       <button
@@ -5806,7 +5870,22 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-	  
+      <button
+ follows="left|top"
+ height="47"
+ is_toggle="true"
+ label="⌊lock⌉"
+ image_selected="Transparent"
+ image_unselected="Transparent"
+ layout="topleft"
+ left_pad="1"
+ top_delta="0"
+ name="lock"
+ width="60">
+   <button.commit_callback
+   parameter="ExodusRenderExposure"
+    function="Dragon.LockArray"/>
+	  </button>
       <slider
       can_edit_text="true"
       decimal_digits="3"
@@ -5825,7 +5904,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="5"
       width="332">
          <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="ExodusRenderOffset"/>
       </slider>
       <slider
@@ -5846,7 +5925,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="332">
          <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="ExodusRenderOffset"/>
       </slider>
       <slider
@@ -5867,7 +5946,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="332">
       <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="ExodusRenderOffset"/>
       </slider>
       <button
@@ -5886,7 +5965,22 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-      
+      <button
+ follows="left|top"
+ height="47"
+ is_toggle="true"
+ label="⌊lock⌉"
+ image_selected="Transparent"
+ image_unselected="Transparent"
+ layout="topleft"
+ left_pad="1"
+ top_delta="0"
+ name="lock"
+ width="60">
+   <button.commit_callback
+   parameter="ExodusRenderOffset"
+    function="Dragon.LockArray"/>
+     </button> 
       
       <slider
       can_edit_text="true"
@@ -5906,7 +6000,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="5"
       width="322">
          <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="ExodusRenderGamma"/>
       </slider>
       <slider
@@ -5927,7 +6021,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="322">
          <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="ExodusRenderGamma"/>
       </slider>
       <slider
@@ -5948,7 +6042,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="322">
          <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="ExodusRenderGamma"/>
       </slider>
       <button
@@ -5967,7 +6061,22 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-      
+      <button
+ follows="left|top"
+ height="47"
+ is_toggle="true"
+ label="⌊lock⌉"
+ image_selected="Transparent"
+ image_unselected="Transparent"
+ layout="topleft"
+ left_pad="1"
+ top_delta="0"
+ name="lock"
+ width="60">
+   <button.commit_callback
+   parameter="ExodusRenderGamma"
+    function="Dragon.LockArray"/>
+      </button>
       </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -6034,7 +6143,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="10"
       width="322">
       <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="ExodusRenderVignette"/>
       </slider>
       <slider
@@ -6055,7 +6164,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="322">
       <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="ExodusRenderVignette"/>
       </slider>
       <slider
@@ -6076,7 +6185,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       top_pad="2"
       width="322">
       <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="ExodusRenderVignette"/>
       </slider>
       <button

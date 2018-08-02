@@ -216,13 +216,6 @@ public:
 //	//BD - Expandable Tabs
 	void toggleTabs();
 
-//	//BD - Debug Arrays
-	static void onCommitX(LLUICtrl* ctrl, const LLSD& param);
-	static void onCommitY(LLUICtrl* ctrl, const LLSD& param);
-	static void onCommitZ(LLUICtrl* ctrl, const LLSD& param);
-//	//BD - Vector4
-	static void onCommitW(LLUICtrl* ctrl, const LLSD& param);
-
 //	//BD - Revert to Default
 	void resetToDefault(LLUICtrl* ctrl);
 

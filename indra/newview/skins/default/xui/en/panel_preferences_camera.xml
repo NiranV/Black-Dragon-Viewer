@@ -728,7 +728,7 @@
    top_pad="15"
    width="338">
    <slider.commit_callback
-   function="Pref.ArrayX"
+   function="Dragon.ArrayX"
    parameter="CameraOffsetFrontView"/>
    </slider>
    <slider
@@ -748,7 +748,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayY"
+   function="Dragon.ArrayY"
    parameter="CameraOffsetFrontView"/>
    </slider>
    <slider
@@ -768,7 +768,7 @@
    top_pad="2"
    width="338">
    <slider.commit_callback
-   function="Pref.ArrayZ"
+   function="Dragon.ArrayZ"
    parameter="CameraOffsetFrontView"/>
    </slider>
    <button
@@ -815,7 +815,7 @@
    top_pad="5"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayX"
+   function="Dragon.ArrayX"
    parameter="FocusOffsetFrontView"/>
    </slider>
    <slider
@@ -835,7 +835,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayY"
+   function="Dragon.ArrayY"
    parameter="FocusOffsetFrontView"/>
    </slider>
    <slider
@@ -855,7 +855,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayZ"
+   function="Dragon.ArrayZ"
    parameter="FocusOffsetFrontView"/>
    </slider>
    <button
@@ -914,7 +914,7 @@
    top_pad="15"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayX"
+   function="Dragon.ArrayX"
    parameter="CameraOffsetGroupView"/>
    </slider>
    <slider
@@ -934,7 +934,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayY"
+   function="Dragon.ArrayY"
    parameter="CameraOffsetGroupView"/>
    </slider>
    <slider
@@ -954,7 +954,7 @@
    top_pad="2"
    width="338">
    <slider.commit_callback
-   function="Pref.ArrayZ"
+   function="Dragon.ArrayZ"
    parameter="CameraOffsetGroupView"/>
    </slider>
    <button
@@ -1001,7 +1001,7 @@
    top_pad="5"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayX"
+   function="Dragon.ArrayX"
    parameter="FocusOffsetGroupView"/>
    </slider>
    <slider
@@ -1021,7 +1021,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayY"
+   function="Dragon.ArrayY"
    parameter="FocusOffsetGroupView"/>
    </slider>
    <slider
@@ -1041,7 +1041,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayZ"
+   function="Dragon.ArrayZ"
    parameter="FocusOffsetGroupView"/>
    </slider>
    <button
@@ -1100,7 +1100,7 @@
    top_pad="15"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayX"
+   function="Dragon.ArrayX"
    parameter="CameraOffsetRearView"/>
    </slider>
    <slider
@@ -1120,7 +1120,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayY"
+   function="Dragon.ArrayY"
    parameter="CameraOffsetRearView"/>
    </slider>
    <slider
@@ -1140,7 +1140,7 @@
    top_pad="2"
    width="338">
    <slider.commit_callback
-   function="Pref.ArrayZ"
+   function="Dragon.ArrayZ"
    parameter="CameraOffsetRearView"/>
    </slider>
    <button
@@ -1187,7 +1187,7 @@
    top_pad="5"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayX"
+   function="Dragon.ArrayX"
    parameter="FocusOffsetRearView"/>
    </slider>
    <slider
@@ -1207,7 +1207,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayY"
+   function="Dragon.ArrayY"
    parameter="FocusOffsetRearView"/>
    </slider>
    <slider
@@ -1227,7 +1227,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayZ"
+   function="Dragon.ArrayZ"
    parameter="FocusOffsetRearView"/>
    </slider>
    <button
@@ -1286,7 +1286,7 @@
    top_pad="15"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayX"
+   function="Dragon.ArrayX"
    parameter="CameraOffsetRightShoulderView"/>
    </slider>
    <slider
@@ -1306,7 +1306,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayY"
+   function="Dragon.ArrayY"
    parameter="CameraOffsetRightShoulderView"/>
    </slider>
    <slider
@@ -1326,7 +1326,7 @@
    top_pad="2"
    width="338">
    <slider.commit_callback
-   function="Pref.ArrayZ"
+   function="Dragon.ArrayZ"
    parameter="CameraOffsetRightShoulderView"/>
    </slider>
    <button
@@ -1373,7 +1373,7 @@
    top_pad="5"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayX"
+   function="Dragon.ArrayX"
    parameter="FocusOffsetRightShoulderView"/>
    </slider>
    <slider
@@ -1393,7 +1393,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayY"
+   function="Dragon.ArrayY"
    parameter="FocusOffsetRightShoulderView"/>
    </slider>
    <slider
@@ -1413,7 +1413,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayZ"
+   function="Dragon.ArrayZ"
    parameter="FocusOffsetRightShoulderView"/>
    </slider>
    <button
@@ -1472,7 +1472,7 @@
    top_pad="15"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayX"
+   function="Dragon.ArrayX"
    parameter="CameraOffsetLeftShoulderView"/>
    </slider>
    <slider
@@ -1492,7 +1492,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayY"
+   function="Dragon.ArrayY"
    parameter="CameraOffsetLeftShoulderView"/>
    </slider>
    <slider
@@ -1512,7 +1512,7 @@
    top_pad="2"
    width="338">
    <slider.commit_callback
-   function="Pref.ArrayZ"
+   function="Dragon.ArrayZ"
    parameter="CameraOffsetLeftShoulderView"/>
    </slider>
    <button
@@ -1559,7 +1559,7 @@
    top_pad="5"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayX"
+   function="Dragon.ArrayX"
    parameter="FocusOffsetLeftShoulderView"/>
    </slider>
    <slider
@@ -1579,7 +1579,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayY"
+   function="Dragon.ArrayY"
    parameter="FocusOffsetLeftShoulderView"/>
    </slider>
    <slider
@@ -1599,7 +1599,7 @@
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Pref.ArrayZ"
+   function="Dragon.ArrayZ"
    parameter="FocusOffsetLeftShoulderView"/>
    </slider>
    <button

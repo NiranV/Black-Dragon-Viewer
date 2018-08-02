@@ -158,12 +158,14 @@ case TYPE_VEC2:
 
 LLControlVariable::LLControlVariable(const std::string& name, eControlType type,
 							 LLSD initial, const std::string& comment,
-							 ePersist persist, bool hidefromsettingseditor)
+							 ePersist persist, bool hidefromsettingseditor, bool lock)
 	: mName(name),
 	  mComment(comment),
 	  mType(type),
 	  mPersist(persist),
-	  mHideFromSettingsEditor(hidefromsettingseditor)
+	  mHideFromSettingsEditor(hidefromsettingseditor),
+	  //BD - Lock Arrays feature
+	  mLockedArrays(lock)
 {
 	if ((persist != PERSIST_NO) && mComment.empty())
 	{
@@ -301,6 +303,12 @@ void LLControlVariable::setComment(const std::string& comment)
 	mComment = comment;
 }
 
+//BD - Lock Arrays feature
+void LLControlVariable::setLocked(bool lock)
+{
+	mLockedArrays = lock;
+}
+
 void LLControlVariable::resetToDefault(bool fire_signal)
 {
 	//The first setting is always the default
@@ -405,7 +413,8 @@ std::string LLControlGroup::typeEnumToString(eControlType typeenum)
 	return mTypeString[typeenum];
 }
 
-LLControlVariable* LLControlGroup::declareControl(const std::string& name, eControlType type, const LLSD initial_val, const std::string& comment, LLControlVariable::ePersist persist, BOOL hidefromsettingseditor)
+//BD - Lock Arrays feature
+LLControlVariable* LLControlGroup::declareControl(const std::string& name, eControlType type, const LLSD initial_val, const std::string& comment, LLControlVariable::ePersist persist, BOOL hidefromsettingseditor, BOOL lock)
 {
 	LLControlVariable* existing_control = getControl(name);
 	if (existing_control)
@@ -427,8 +436,9 @@ LLControlVariable* LLControlGroup::declareControl(const std::string& name, eCont
  		return existing_control;
 	}
 
-	// if not, create the control and add it to the name table
-	LLControlVariable* control = new LLControlVariable(name, type, initial_val, comment, persist, hidefromsettingseditor);
+	//BD - Lock Arrays feature
+	//     If not, create the control and add it to the name table
+	LLControlVariable* control = new LLControlVariable(name, type, initial_val, comment, persist, hidefromsettingseditor, lock);
 	mNameTable[name] = control;	
 	return control;
 }

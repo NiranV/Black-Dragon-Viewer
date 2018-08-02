@@ -40,13 +40,6 @@ LLSideBar *gSideBar = NULL;
 LLSideBar::LLSideBar(const LLRect& rect)
 :	LLPanel()
 {
-//	//BD - Array Debugs
-	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, _1, _2));
-//	//BD - Vector4
-	mCommitCallbackRegistrar.add("Pref.ArrayW", boost::bind(&LLFloaterPreference::onCommitW, _1, _2));
-
 	//BD
 	/*mCommitCallbackRegistrar.add("Sidebar.ToggleEdit", boost::bind(&LLSideBar::toggleEditMode, this));
 	mCommitCallbackRegistrar.add("Sidebar.Load", boost::bind(&LLSideBar::loadWidgetList, this));

@@ -149,6 +149,7 @@
 #include "llsidepanelinventory.h"
 #include "llteleporthistory.h"
 #include "llurlaction.h"
+#include "bdfunctions.h"
 //BD - Pie Menu
 #include "piemenu.h"
 
@@ -10094,4 +10095,12 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLAvatarGrantPermissions(), "Avatar.GrantPermissions");
 	view_listener_t::addMenu(new LLAvatarCheckPermissions(), "Avatar.CheckPermissions");
 
+//	//BD - Functions
+	commit.add("Dragon.Default", boost::bind(&BDFunctions::resetToDefault, _1));
+	commit.add("Dragon.Invert", boost::bind(&BDFunctions::invertValue, _1));
+	commit.add("Dragon.ArrayX", boost::bind(&BDFunctions::onCommitX, _1, _2));
+	commit.add("Dragon.ArrayY", boost::bind(&BDFunctions::onCommitY, _1, _2));
+	commit.add("Dragon.ArrayZ", boost::bind(&BDFunctions::onCommitZ, _1, _2));
+	commit.add("Dragon.ArrayW", boost::bind(&BDFunctions::onCommitW, _1, _2));
+	commit.add("Dragon.LockArray", boost::bind(&BDFunctions::onControlLock, _1, _2));
 }

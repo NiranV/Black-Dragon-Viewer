@@ -1005,7 +1005,7 @@ width="345">
       top_pad="1"
       width="287">
   <slider.commit_callback
-      function="Pref.ArrayX"
+      function="Dragon.ArrayX"
       parameter="RenderShadowDistance"/>
       </slider>
       <slider
@@ -1047,7 +1047,7 @@ width="345">
       top_pad="1"
       width="287">
   <slider.commit_callback
-      function="Pref.ArrayY"
+      function="Dragon.ArrayY"
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
@@ -1068,7 +1068,7 @@ width="345">
       top_pad="1"
       width="287">
   <slider.commit_callback
-      function="Pref.ArrayZ"
+      function="Dragon.ArrayZ"
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
@@ -1089,7 +1089,7 @@ width="345">
       top_pad="1"
       width="287">
   <slider.commit_callback
-      function="Pref.ArrayW"
+      function="Dragon.ArrayW"
       parameter="RenderShadowDistance"/>
       </slider>
                   
@@ -1111,7 +1111,7 @@ width="345">
                   top_pad="7"
                   width="293">
                   <slider.commit_callback
-                  function="Pref.ArrayX"
+                  function="Dragon.ArrayX"
                   parameter="RenderShadowResolution"/>
                   </slider>
                   <slider
@@ -1132,7 +1132,7 @@ width="345">
                   top_pad="1"
                   width="293">
                   <slider.commit_callback
-                  function="Pref.ArrayY"
+                  function="Dragon.ArrayY"
                   parameter="RenderShadowResolution"/>
                   </slider>
                   <slider
@@ -1153,7 +1153,7 @@ width="345">
                   top_pad="1"
                   width="293">
                   <slider.commit_callback
-                  function="Pref.ArrayZ"
+                  function="Dragon.ArrayZ"
                   parameter="RenderShadowResolution"/>
                   </slider>
                   <slider
@@ -1174,7 +1174,7 @@ width="345">
                   top_pad="1"
                   width="293">
                   <slider.commit_callback
-                  function="Pref.ArrayW"
+                  function="Dragon.ArrayW"
                   parameter="RenderShadowResolution"/>
                   </slider>
                   
@@ -1196,7 +1196,7 @@ width="345">
                   top_pad="7"
                   width="293">
                   <slider.commit_callback
-                  function="Pref.ArrayX"
+                  function="Dragon.ArrayX"
                   parameter="RenderProjectorShadowResolution"/>
                   </slider>
                   <slider
@@ -1217,7 +1217,7 @@ width="345">
                   top_pad="1"
                   width="293">
                   <slider.commit_callback
-                  function="Pref.ArrayY"
+                  function="Dragon.ArrayY"
                   parameter="RenderProjectorShadowResolution"/>
                   </slider>
                   
@@ -1727,7 +1727,7 @@ width="345">
                   top_pad="7"
                   width="290" >
                   <slider.commit_callback
-                  function="Pref.ArrayX"
+                  function="Dragon.ArrayX"
                   parameter="ExodusRenderVignette"/>
                   </slider>
                   <slider
@@ -1749,7 +1749,7 @@ width="345">
                   top_pad="1"
                   width="290" >
                   <slider.commit_callback
-                  function="Pref.ArrayY"
+                  function="Dragon.ArrayY"
                   parameter="ExodusRenderVignette"/>
                   </slider>
                   <slider
@@ -1771,7 +1771,7 @@ width="345">
                   top_pad="1"
                   width="290" >
                   <slider.commit_callback
-                  function="Pref.ArrayZ"
+                  function="Dragon.ArrayZ"
                   parameter="ExodusRenderVignette"/>
                   </slider>
                   <panel

@@ -124,6 +124,7 @@
 #include "llfeaturemanager.h"
 #include "llviewertexturelist.h"
 #include "bdsidebar.h"
+#include "bdfunctions.h"
 
 //BD - Avatar Rendering Settings
 #include "llfloateravatarpicker.h"
@@ -1001,13 +1002,6 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 //	//BD - Expandable Tabs
 	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::toggleTabs, this));
 
-//	//BD - Array Debugs
-	mCommitCallbackRegistrar.add("Pref.ArrayX", boost::bind(&LLFloaterPreference::onCommitX, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayY", boost::bind(&LLFloaterPreference::onCommitY, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.ArrayZ", boost::bind(&LLFloaterPreference::onCommitZ, _1, _2));
-//	//BD - Vector4
-	mCommitCallbackRegistrar.add("Pref.ArrayW", boost::bind(&LLFloaterPreference::onCommitW, _1, _2));
-
 //	//BD - Revert to Default
 	mCommitCallbackRegistrar.add("Pref.Default", boost::bind(&LLFloaterPreference::resetToDefault, this, _1));
 
@@ -1126,12 +1120,12 @@ BOOL LLFloaterPreference::postBuild()
 
 	getChild<LLComboBox>("language_combobox")->setCommitCallback(boost::bind(&LLFloaterPreference::onLanguageChange, this));
 
-	getChild<LLComboBox>("FriendIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this,"FriendIMOptions"));
-	getChild<LLComboBox>("NonFriendIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this,"NonFriendIMOptions"));
-	getChild<LLComboBox>("ConferenceIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this,"ConferenceIMOptions"));
-	getChild<LLComboBox>("GroupChatOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this,"GroupChatOptions"));
-	getChild<LLComboBox>("NearbyChatOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this,"NearbyChatOptions"));
-	getChild<LLComboBox>("ObjectIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this,"ObjectIMOptions"));
+	getChild<LLUICtrl>("FriendIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this,"FriendIMOptions"));
+	getChild<LLUICtrl>("NonFriendIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this, "NonFriendIMOptions"));
+	getChild<LLUICtrl>("ConferenceIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this, "ConferenceIMOptions"));
+	getChild<LLUICtrl>("GroupChatOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this, "GroupChatOptions"));
+	getChild<LLUICtrl>("NearbyChatOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this, "NearbyChatOptions"));
+	getChild<LLUICtrl>("ObjectIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this, "ObjectIMOptions"));
 
 	//BD
 	mTabContainer = getChild<LLTabContainer>("pref core");
@@ -1253,98 +1247,6 @@ LLFloaterPreference::~LLFloaterPreference()
 	delete mContextMenu;
 	LLRenderMuteList::getInstance()->removeObserver(&sAvatarRenderMuteListObserver);
 	LLAvatarPropertiesProcessor::getInstance()->removeObserver(gAgent.getID(), this);
-}
-
-//BD - Array Debugs
-void LLFloaterPreference::onCommitX(LLUICtrl* ctrl, const LLSD& param)
-{
-	eControlType type = gSavedSettings.getControl(param.asString())->type();
-	LLVector4 value;
-	if (type == TYPE_VEC4)
-	{
-		value = gSavedSettings.getVector4(param.asString());
-	}
-	else if (type == TYPE_VEC3)
-	{
-		value.setValue(gSavedSettings.getVector3(param.asString()).getValue());
-	}
-	else if (type == TYPE_VEC3D)
-	{
-		value.setValue(gSavedSettings.getVector3d(param.asString()).getValue());
-	}
-	else
-	{
-		value.setValue(gSavedSettings.getVector2(param.asString()).getValue());
-	}
-	value.setValue(gSavedSettings.getControl(param.asString())->getValue());
-	value.mV[VX] = ctrl->getValue().asReal();
-	gSavedSettings.setUntypedValue(param.asString(), value.getValue());
-}
-
-void LLFloaterPreference::onCommitY(LLUICtrl* ctrl, const LLSD& param)
-{
-	eControlType type = gSavedSettings.getControl(param.asString())->type();
-	LLVector4 value;
-	if (type == TYPE_VEC4)
-	{
-		value = gSavedSettings.getVector4(param.asString());
-	}
-	else if (type == TYPE_VEC3)
-	{
-		value.setValue(gSavedSettings.getVector3(param.asString()).getValue());
-	}
-	else if (type == TYPE_VEC3D)
-	{
-		value.setValue(gSavedSettings.getVector3d(param.asString()).getValue());
-	}
-	else
-	{
-		value.setValue(gSavedSettings.getVector2(param.asString()).getValue());
-	}
-	value.setValue(gSavedSettings.getControl(param.asString())->getValue());
-	value.mV[VY] = ctrl->getValue().asReal();
-	gSavedSettings.setUntypedValue(param.asString(), value.getValue());
-}
-
-void LLFloaterPreference::onCommitZ(LLUICtrl* ctrl, const LLSD& param)
-{
-	eControlType type = gSavedSettings.getControl(param.asString())->type();
-	LLVector4 value;
-	if (type == TYPE_VEC4)
-	{
-		value = gSavedSettings.getVector4(param.asString());
-	}
-	else if (type == TYPE_VEC3)
-	{
-		value.setValue(gSavedSettings.getVector3(param.asString()).getValue());
-	}
-	else
-	{
-		value.setValue(gSavedSettings.getVector3d(param.asString()).getValue());
-	}
-	value.setValue(gSavedSettings.getControl(param.asString())->getValue());
-	value.mV[VZ] = ctrl->getValue().asReal();
-	gSavedSettings.setUntypedValue(param.asString(), value.getValue());
-}
-
-//BD - Vector4
-void LLFloaterPreference::onCommitW(LLUICtrl* ctrl, const LLSD& param)
-{
-	LLVector4 value = gSavedSettings.getVector4(param.asString());
-	value.mV[VW] = ctrl->getValue().asReal();
-	gSavedSettings.setVector4(param.asString(), value);
-}
-
-//BD - Revert to Default
-void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
-{
-	LLControlVariable* control = ctrl->getControlVariable();
-	if (control)
-	{
-		control->resetToDefault(true);
-		refreshGraphicControls();
-		refreshCameraControls();
-	}
 }
 
 //BD - Custom Keyboard Layout
@@ -3840,3 +3742,12 @@ void LLFloaterPreferenceProxy::onChangeSocksSettings()
 
 }
 
+//BD - Revert to Default
+void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
+{
+	if (gDragonLibrary.resetToDefault(ctrl))
+	{
+		refreshGraphicControls();
+		refreshCameraControls();
+	}
+}

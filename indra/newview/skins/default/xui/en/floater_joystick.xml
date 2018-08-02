@@ -36,7 +36,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="759"
+  height="789"
   name="gfx_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -638,7 +638,7 @@
      halign="left"
      height="12"
      layout="topleft"
-     left="195"
+     left="230"
      mouse_opaque="false"
      name="Build"
      top_delta="0"
@@ -652,7 +652,7 @@
      halign="left"
      height="12"
      layout="topleft"
-     left="265"
+     left="335"
      mouse_opaque="false"
      name="Flycam"
      top_delta="0"
@@ -681,32 +681,83 @@
      min_val="-50"
      name="AvatarAxisScale1"
      width="56" />
+     <button
+     follows="left|top"
+     control_name="AvatarAxisScale1"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="BuildAxisScale1"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale1"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="BuildAxisScale1"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="FlycamAxisScale1"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale1"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="FlycamAxisScale1"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="8"
      halign="right"
      layout="topleft"
      left="3"
@@ -725,32 +776,83 @@
      min_val="-50"
      name="AvatarAxisScale2"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="AvatarAxisScale2"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="BuildAxisScale2"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale2"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="BuildAxisScale2"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="FlycamAxisScale2"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale2"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="FlycamAxisScale2"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="8"
      halign="right"
      layout="topleft"
      left="3"
@@ -769,32 +871,83 @@
      min_val="-50"
      name="AvatarAxisScale0"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="AvatarAxisScale0"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="BuildAxisScale0"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale0"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="BuildAxisScale0"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="FlycamAxisScale0"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale0"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="FlycamAxisScale0"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="8"
      halign="right"
      layout="topleft"
      left="3"
@@ -813,32 +966,83 @@
      min_val="-1024"
      name="AvatarAxisScale4"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="AvatarAxisScale4"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="BuildAxisScale4"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale4"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="BuildAxisScale4"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="FlycamAxisScale4"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale4"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="FlycamAxisScale4"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="8"
      halign="right"
      layout="topleft"
      left="3"
@@ -857,32 +1061,83 @@
      min_val="-1024"
      name="AvatarAxisScale5"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="AvatarAxisScale5"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="BuildAxisScale5"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale5"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="BuildAxisScale5"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="FlycamAxisScale5"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale5"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="FlycamAxisScale5"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="8"
      halign="right"
      layout="topleft"
      left="3"
@@ -896,26 +1151,99 @@
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale3"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="BuildAxisScale3"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <spinner
-     top_delta="0"
+     top_delta="-3"
      control_name="FlycamAxisScale3"
      decimal_digits="2"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale3"
      width="56" />
+    <button
+     follows="left|top"
+     control_name="FlycamAxisScale3"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="8"
+     halign="right"
+     layout="topleft"
+     left="3"
+     name="ZoomScale2"
+     width="100">
+        Zoom Scale
+    </text>
+    <spinner
+     top_delta="-4"
+     control_name="FlycamAxisScale6"
+     decimal_digits="2"
+     label_width="0"
+     layout="topleft"
+     left="320"
+     max_val="1024"
+     min_val="-1024"
+     name="FlycamAxisScale6"
+     width="56" />
+    <button
+     follows="left|top"
+     control_name="FlycamAxisScale6"
+     height="15"
+     is_toggle="false"
+     label_color="White"
+     label="⌊invert⌉"
+     image_selected="Transparent"
+     image_unselected="Transparent"
+     layout="topleft"
+     left_pad="0"
+     top_delta="3"
+     name="invert"
+     width="50">
+     <button.commit_callback
+     function="Dragon.Invert"/>
+     </button>
+    <text
+     type="string"
+     length="1"
+     top_pad="8"
      halign="right"
      layout="topleft"
      left="3"
@@ -940,7 +1268,7 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      name="BuildAxisDeadZone1"
      width="56" />
     <spinner
@@ -950,13 +1278,13 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      name="FlycamAxisDeadZone1"
      width="56" />
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="16"
      halign="right"
      layout="topleft"
      left="3"
@@ -981,7 +1309,7 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      name="BuildAxisDeadZone2"
      width="56" />
     <spinner
@@ -991,13 +1319,13 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      name="FlycamAxisDeadZone2"
      width="56" />
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="16"
      halign="right"
      layout="topleft"
      left="3"
@@ -1022,7 +1350,7 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      name="BuildAxisDeadZone0"
      width="56" />
     <spinner
@@ -1032,13 +1360,13 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      name="FlycamAxisDeadZone0"
      width="56" />
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="16"
      halign="right"
      layout="topleft"
      left="2"
@@ -1063,7 +1391,7 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      name="BuildAxisDeadZone4"
      width="56" />
     <spinner
@@ -1073,13 +1401,13 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      name="FlycamAxisDeadZone4"
      width="56" />
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="16"
      halign="right"
      layout="topleft"
      left="3"
@@ -1104,7 +1432,7 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      name="BuildAxisDeadZone5"
      width="56" />
     <spinner
@@ -1114,13 +1442,13 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      name="FlycamAxisDeadZone5"
      width="56" />
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="16"
      halign="right"
      layout="topleft"
      left="3"
@@ -1135,7 +1463,7 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="180"
+     left="215"
      name="BuildAxisDeadZone3"
      width="56" />
     <spinner
@@ -1145,35 +1473,13 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      name="FlycamAxisDeadZone3"
      width="56" />
     <text
      type="string"
      length="1"
-     top_pad="14"
-     halign="right"
-     layout="topleft"
-     left="3"
-     name="ZoomScale2"
-     width="100">
-        Zoom Scale
-    </text>
-    <spinner
-     top_delta="-4"
-     control_name="FlycamAxisScale6"
-     decimal_digits="2"
-     label_width="0"
-     layout="topleft"
-     left="250"
-     max_val="1024"
-     min_val="-1024"
-     name="FlycamAxisScale6"
-     width="56" />
-    <text
-     type="string"
-     length="1"
-     top_pad="14"
+     top_pad="16"
      halign="right"
      layout="topleft"
      left="3"
@@ -1188,13 +1494,13 @@
      increment="0.01"
      label_width="0"
      layout="topleft"
-     left="250"
+     left="320"
      name="FlycamAxisDeadZone6"
      width="56" />
     <text
      type="string"
      length="1"
-     top_pad="14"
+     top_pad="16"
      halign="right"
      layout="topleft"
      left="3"
@@ -1223,7 +1529,7 @@
      max_val="5"
      min_val="0.01"
      layout="topleft"
-     left="180"
+     left="215"
      name="BuildFeathering"
      width="56" />
     <spinner
@@ -1235,7 +1541,7 @@
      max_val="5"
      min_val="0.01"
      layout="topleft"
-     left="250"
+     left="320"
      name="FlycamFeathering"
      width="56" />
     <stat_view
@@ -1243,15 +1549,15 @@
      label="Joystick Monitor"
      layout="topleft"
      follows="top|left"
-     left="325"
+     left="380"
      name="axis_view"
-     show_label="true"
-     top_delta="-278"
-     width="150">
+     show_label="false"
+     top_delta="-153"
+     width="100">
         <stat_bar
          bar_max="1"
          bar_min="-1"
-         show_bar="true"
+         show_bar="false"
          height="0"
          label="Axis 0"
          layout="topleft"
@@ -1262,35 +1568,35 @@
         <stat_bar
          bar_max="1"
          bar_min="-1"
-         show_bar="true"
+         show_bar="false"
          label="Axis 1"
          layout="topleft"
          name="axis1"/>
         <stat_bar
          bar_max="1"
          bar_min="-1"
-         show_bar="true"
+         show_bar="false"
          label="Axis 2"
          layout="topleft"
          name="axis2"/>
         <stat_bar
          bar_max="1"
          bar_min="-1"
-         show_bar="true"
+         show_bar="false"
          label="Axis 3"
          layout="topleft"
          name="axis3"/>
         <stat_bar
          bar_max="1"
          bar_min="-1"
-         show_bar="true"
+         show_bar="false"
          label="Axis 4"
          layout="topleft"
          name="axis4"/>
         <stat_bar
          bar_max="1"
          bar_min="-1"
-         show_bar="true"
+         show_bar="false"
          label="Axis 5"
          layout="topleft"
          name="axis5"/>
