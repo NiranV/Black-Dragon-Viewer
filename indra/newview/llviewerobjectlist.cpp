@@ -83,6 +83,9 @@
 #include <algorithm>
 #include <iterator>
 
+//BD
+#include "llpanelface.h"
+
 extern F32 gMinObjectDistance;
 extern BOOL gAnimateTextures;
 
@@ -1447,11 +1450,8 @@ void LLViewerObjectList::killAllFullbrights()
 			const LLTextureEntry* te = objectp->getTE(i);
 			if (te->getFullbrightFlag())
 			{
-				if (objectp != gAgentAvatarp)
-				{
-					LL_DEBUGS() << itoc(te->getFullbright()) << LL_ENDL;
-					objectp->setTEFullbright(i, 0);
-				}
+				LL_DEBUGS() << itoc(te->getFullbright()) << LL_ENDL;
+				objectp->setTEFullbright(i, 0);
 			}
 		}
 	}
@@ -1466,14 +1466,11 @@ void LLViewerObjectList::killAllAlphas()
 		objectp = *iter;
 		for (S32 i = 0; i < objectp->getNumTEs(); i++)
 		{
-			if (objectp != gAgentAvatarp)
-			{
-				const LLTextureEntry* te = objectp->getTE(i);
-				LLColor4 te_color = te->getColor();
-				te_color.mV[VW] = 1.0;
-				objectp->setTEColor(i, te_color);
-				objectp->setTEAlpha(i, 1.0);
-			}
+			const LLTextureEntry* te = objectp->getTE(i);
+			LLColor4 te_color = te->getColor();
+			te_color.mV[VW] = 1.0;
+			objectp->setTEColor(i, te_color);
+			objectp->setTEAlpha(i, 1.0);
 		}
 	}
 }
@@ -1485,8 +1482,7 @@ void LLViewerObjectList::setAlpha(LLViewerObject *objectp, bool alpha)
 	{
 		for (S32 i = 0; i < objectp->getNumTEs(); i++)
 		{
-			if (objectp != gAgentAvatarp
-				&& LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
+			if (LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
 			{
 				const LLTextureEntry* te = objectp->getTE(i);
 				LLColor4 te_color = te->getColor();
@@ -1505,17 +1501,29 @@ void LLViewerObjectList::setAlphaMode(LLViewerObject *objectp, LLMaterial::eDiff
 	{
 		for (S32 i = 0; i < objectp->getNumTEs(); i++)
 		{
-			if (objectp != gAgentAvatarp
-				&& LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
+			if (LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
 			{
 				LLTextureEntry* te = objectp->getTE(i);
 				if (te)
 				{
 					LLMaterialPtr mat = te->getMaterialParams();
-					if (mat)
+					if (!mat.isNull())
 					{
 						mat->setDiffuseAlphaMode(mode);
-						te->setMaterialParams(mat);
+						mat->setAlphaMaskCutoff(U8(75));
+						objectp->setTEMaterialParams(U8(i), mat);
+						//te->setMaterialParams(new_mat);
+						LL_INFOS() << "Mat found" << LL_ENDL;
+					}
+					else
+					{
+						LLMaterialPtr new_mat = new LLMaterial;
+						new_mat->setDiffuseAlphaMode(mode);
+						new_mat->setAlphaMaskCutoff(U8(75));
+						LLMaterialMgr::getInstance()->put(objectp->getID(), U8(i), *new_mat);
+						objectp->setTEMaterialParams(U8(i), new_mat);
+						//te->setMaterialParams(new_mat);
+						LL_INFOS() << "No Mat found" << LL_ENDL;
 					}
 				}
 			}
@@ -1530,8 +1538,7 @@ void LLViewerObjectList::setFullbright(LLViewerObject *objectp, bool fullbright)
 	{
 		for (S32 i = 0; i < objectp->getNumTEs(); i++)
 		{
-			if (objectp != gAgentAvatarp
-				&& LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
+			if (LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
 			{
 				if (objectp != gAgentAvatarp)
 				{

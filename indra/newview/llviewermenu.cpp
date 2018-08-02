@@ -2684,6 +2684,7 @@ class BDObjectSetAlpha : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
+		bool ret = false;
 		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
 		if (!selection.isNull())
 		{
@@ -2691,36 +2692,42 @@ class BDObjectSetAlpha : public view_listener_t
 			{
 				LLSelectNode* node = *iter;
 				LLViewerObject *objectp = node->getObject();
-				if (objectp->getID() != gAgentID)
+				if (!objectp->isAvatar())
 				{
 					if (userdata.asString() == "dealpha")
 					{
 						gObjectList.setAlpha(objectp, false);
+						ret = true;
 					}
 					else if (userdata.asString() == "alpha")
 					{
 						gObjectList.setAlpha(objectp, true);
+						ret = true;
 					}
 					else if (userdata.asString() == "set_none")
 					{
 						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_NONE);
+						ret = true;
 					}
 					else if (userdata.asString() == "set_sorting")
 					{
 						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_BLEND);
+						ret = true;
 					}
 					else if (userdata.asString() == "set_masking")
 					{
 						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_MASK);
+						ret = true;
 					}
 					else if (userdata.asString() == "set_emissive")
 					{
 						gObjectList.setAlphaMode(objectp, LLMaterial::DIFFUSE_ALPHA_MODE_EMISSIVE);
+						ret = true;
 					}
 				}
 			}
 		}
-		return true;
+		return ret;
 	}
 };
 
