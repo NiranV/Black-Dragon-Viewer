@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.2.2 - Caring Dragon]"
+       label="[CHANNEL] [VERSION] - [3.2.3 - Caring Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="8654"
+       height="8937"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,8 +174,67 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="403"
+              height="260"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Feature to invert values of settings.
+Added: Feature to link vector values together and change all values of a vector at the same time.
+Added: Buttons to lock array sliders and invert values to preferences and joystick window.
+Changed: Layout and style of Media-on-a-Prim configuration window.
+Changed: Improved object manipulation calls and simplified them.
+Changed: Moved generic special Black Dragon features into its own library to allow them to be used everywhere.
+Changed: Replaced all preferences and sidebar array calls with the new global version.
+Changed: SSAO defaults to be slightly less obnoxious on plainer surfaces such as human skin.
+Changed: Version to 3.2.3.
+Fixed: Viewer getting stuck inside a switch-to-fullscreen loop when toggling Fullscreen Window off on login when it was enabled last session.
+Fixed: Group Chat Notification settings not working.
+Fixed: Alpha Mode manipulation not working on objects that did not previously have an alpha mode set up. (Reverts on selection loss though)
+Fixed: Object manipulation potentially being applied to other avatars.
+Fixed: Enter key not being passed to the change key and set key dialogs when binding keys.
+Fixed: Missing label for right arm selections option.
+Fixed: Compile.
+Misc: Cleanup in code.
+Misc: Cleanup commented out logging code.
+Misc: Added bdfunctions.cpp/h to CMakeLists to properly include it in the next configuration.
+Merge with Linden Release. (66 Changes)
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.2.2
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="403"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
