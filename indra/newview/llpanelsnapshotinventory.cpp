@@ -149,7 +149,7 @@ void LLPanelSnapshotInventoryBase::onSend()
     {
         if (mSnapshotFloater)
         {
-            mSnapshotFloater->saveTexture(false);
+            mSnapshotFloater->saveTexture();
             mSnapshotFloater->postSave();
         }
     }

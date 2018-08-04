@@ -4561,12 +4561,16 @@ void LLViewerWindow::saveImageLocal(LLImageFormatted *image, const snapshot_save
 		filepath += sSnapshotBaseName;
 		filepath += llformat("_%.3d", i);
 
-		filepath += extension;
+		if (is_snapshot_name_loc_set)
+		{
+			filepath += extension;
+		}
 
 		llstat stat_info;
 		err = LLFile::stat( filepath, &stat_info );
 		i++;
-	} while (-1 != err);  // Search until the file is not found (i.e., stat() gives an error).
+	} while (-1 != err  // Search until the file is not found (i.e., stat() gives an error).
+			&& is_snapshot_name_loc_set); // Or stop if we are rewriting
 
 	LL_INFOS() << "Saving snapshot to " << filepath << LL_ENDL;
 	if (image->save(filepath))

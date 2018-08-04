@@ -52,7 +52,7 @@ public:
 	virtual S32 notify(const LLSD& info);
 
 	// TODO: create a snapshot model instead
-	virtual BOOL saveTexture(bool local = true) = 0;
+	virtual void saveTexture() = 0;
 	void postSave();
 	virtual void postPanelSwitch();
 	LLPointer<LLImageFormatted> getImageData();

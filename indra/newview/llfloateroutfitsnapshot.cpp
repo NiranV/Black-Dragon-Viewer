@@ -336,7 +336,7 @@ LLFloaterOutfitSnapshot* LLFloaterOutfitSnapshot::getInstance()
 }
 
 // virtual
-BOOL LLFloaterOutfitSnapshot::saveTexture(bool local)
+void LLFloaterOutfitSnapshot::saveTexture()
 {
     LL_DEBUGS() << "saveTexture" << LL_ENDL;
 
@@ -344,7 +344,7 @@ BOOL LLFloaterOutfitSnapshot::saveTexture(bool local)
     if (!previewp)
     {
         llassert(previewp != NULL);
-        return FALSE;
+        return;
     }
 
     if (mOutfitGallery)
@@ -357,7 +357,6 @@ BOOL LLFloaterOutfitSnapshot::saveTexture(bool local)
         mOutfitGallery->onAfterOutfitSnapshotSave();
     }
     closeFloater();
-	return TRUE;
 }
 
 ///----------------------------------------------------------------------------

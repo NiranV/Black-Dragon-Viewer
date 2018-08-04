@@ -54,7 +54,7 @@ public:
 
     static LLFloaterOutfitSnapshot* getInstance();
     static LLFloaterOutfitSnapshot* findInstance();
-    /*virtual*/ BOOL saveTexture(bool local = true);
+    /*virtual*/ void saveTexture();
 
     const LLRect& getThumbnailPlaceholderRect() { return mThumbnailPlaceholder->getRect(); }
 
