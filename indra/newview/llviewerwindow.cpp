@@ -1428,6 +1428,20 @@ BOOL LLViewerWindow::handleTranslatedKeyDown(KEY key,  MASK mask, BOOL repeated)
 	// it's all entered/processed.
 	if (key == KEY_RETURN && mask == MASK_NONE)
 	{
+		//BD - Fix for Enter key not being properly passed to change or set key dialog.
+		//     If any of them is open, pass the key so they handle it properly when pressing
+		//     Enter the first time around rather than needing to hold it down.
+		LLFloater* floater = LLFloaterReg::findInstance("set_any_key");
+		if (!floater || !floater->getVisible())
+		{
+			floater = LLFloaterReg::findInstance("change_key");
+		}
+		
+		if (floater && floater->getVisible())
+		{
+			floater->handleKeyHere(key, mask);
+		}
+
         // RIDER: although, at times some of the controlls (in particular the CEF viewer
         // would like to know about the KEYDOWN for an enter key... so ask and pass it along.
         LLFocusableElement* keyboard_focus = gFocusMgr.getKeyboardFocus();
