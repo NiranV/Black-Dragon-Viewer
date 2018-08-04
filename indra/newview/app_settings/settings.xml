@@ -9094,7 +9094,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>3000.0</real>
+    <real>70.0</real>
   </map>
   <key>RenderSSAOMaxScale</key>
   <map>
@@ -9105,7 +9105,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>150</integer>
+    <integer>300</integer>
   </map>
   <key>RenderSSAOFactor</key>
   <map>
