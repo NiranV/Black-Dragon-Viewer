@@ -195,6 +195,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	password_edit->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 
 	//BD
+	sendChildToBack(getChildView("sign_up_text"));
 	LLComboBox* favorites_combo = getChild<LLComboBox>("start_location_combo");
 	//favorites_combo->setReturnCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 	favorites_combo->setFocusLostCallback(boost::bind(&LLPanelLogin::onLocationSLURL, this));
@@ -891,6 +892,15 @@ void LLPanelLogin::onClickForgotPassword(void*)
 	if (sInstance )
 	{
 		LLWeb::loadURLExternal(sInstance->getString( "forgot_password_url" ));
+	}
+}
+
+//static
+void LLPanelLogin::onClickSignUp(void*)
+{
+	if (sInstance)
+	{
+		LLWeb::loadURLExternal(sInstance->getString("sign_up_url"));
 	}
 }
 

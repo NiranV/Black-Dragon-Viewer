@@ -217,6 +217,7 @@ set(viewer_SOURCE_FILES
     llflickrconnect.cpp
     llfloaterabout.cpp
     llfloaterbvhpreview.cpp
+    llfloaterauction.cpp
     llfloaterautoreplacesettings.cpp
     llfloateravatar.cpp
     llfloateravatarpicker.cpp
@@ -859,6 +860,7 @@ set(viewer_HEADER_FILES
     llflickrconnect.h
     llfloaterabout.h
     llfloaterbvhpreview.h
+    llfloaterauction.h
     llfloaterautoreplacesettings.h
     llfloateravatar.h
     llfloateravatarpicker.h
@@ -2096,7 +2098,12 @@ if (DARWIN)
   # These all get set with PROPERTIES
   set(product "Black Dragon")
   # this is the setting for the Python wrapper, see SL-322 and WRAPPER line in Info-BlackDragon.plist
-  set(MACOSX_WRAPPER_EXECUTABLE_NAME "BD_Launcher")
+  if (PACKAGE)
+      set(MACOSX_WRAPPER_EXECUTABLE_NAME "BD_Launcher")
+  else (PACKAGE)
+      # force the name of the actual executable to allow running it within Xcode for debugging
+      set(MACOSX_WRAPPER_EXECUTABLE_NAME "../Resources/Second Life Viewer.app/Contents/MacOS/Black Dragon")
+  endif (PACKAGE)
   set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.secondlife.indra.viewer")
   set(MACOSX_BUNDLE_LONG_VERSION_STRING "${VIEWER_CHANNEL} ${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
   set(MACOSX_BUNDLE_BUNDLE_NAME "BlackDragon")

@@ -1264,26 +1264,29 @@ LLFloaterSnapshot* LLFloaterSnapshot::getInstance()
 	return LLFloaterReg::getTypedInstance<LLFloaterSnapshot>("snapshot");
 }
 
-// static
-BOOL LLFloaterSnapshot::saveTexture(bool local)
+// virtual
+void LLFloaterSnapshot::saveTexture()
 {
+	LL_DEBUGS() << "saveTexture" << LL_ENDL;
+
 	LLSnapshotLivePreview* previewp = getPreviewView();
 	if (!previewp)
 	{
 		llassert(previewp != NULL);
-		return FALSE;
+		return;
 	}
 
-	if(local)
+	previewp->saveTexture();
+}
+
+void LLFloaterSnapshot::saveLocal(const snapshot_saved_signal_t::slot_type& success_cb, const snapshot_saved_signal_t::slot_type& failure_cb)
+{
+	LL_DEBUGS() << "saveLocal" << LL_ENDL;
+	LLSnapshotLivePreview* previewp = getPreviewView();
+	llassert(previewp != NULL);
+	if (previewp)
 	{
-		LL_DEBUGS() << "saveLocal" << LL_ENDL;
-		return previewp->saveLocal();
-	}
-	else
-	{
-		LL_DEBUGS() << "saveTexture" << LL_ENDL;
-		previewp->saveTexture();
-		return TRUE;
+		previewp->saveLocal(success_cb, failure_cb);
 	}
 }
 

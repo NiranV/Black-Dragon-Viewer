@@ -83,6 +83,8 @@ const F32 AVATAR_ZOOM_MIN_Y_FACTOR = 0.7f;
 const F32 AVATAR_ZOOM_MIN_Z_FACTOR = 1.15f;
 
 const F32 MAX_CAMERA_DISTANCE_FROM_AGENT = 50.f;
+const F32 MAX_CAMERA_DISTANCE_FROM_OBJECT = 496.f;
+const F32 CAMERA_FUDGE_FROM_OBJECT = 16.f;
 
 const F32 HEAD_BUFFER_SIZE = 0.3f;
 
@@ -846,16 +848,13 @@ void LLAgentCamera::setCameraZoomFraction(F32 fraction)
 
 		if (mFocusObject.notNull())
 		{
-			if (mFocusObject.notNull())
+			if (mFocusObject->isAvatar())
 			{
-				if (mFocusObject->isAvatar())
-				{
-					min_zoom = AVATAR_MIN_ZOOM;
-				}
-				else
-				{
-					min_zoom = OBJECT_MIN_ZOOM;
-				}
+				min_zoom = AVATAR_MIN_ZOOM;
+			}
+			else
+			{
+				min_zoom = OBJECT_MIN_ZOOM;
 			}
 		}
 
@@ -2189,6 +2188,13 @@ LLVector3 LLAgentCamera::getCameraOffsetInitial()
 	return convert_from_llsd<LLVector3>(mCameraOffsetInitial[mCameraPreset]->get(), TYPE_VEC3, "");
 }
 
+F32 LLAgentCamera::getCameraMaxZoomDistance()
+{
+    // Ignore "DisableCameraConstraints", we don't want to be out of draw range when we focus onto objects or avatars
+    return llmin(MAX_CAMERA_DISTANCE_FROM_OBJECT,
+                 mDrawDistance - 1, // convenience, don't hit draw limit when focusing on something
+                 LLWorld::getInstance()->getRegionWidthInMeters() - CAMERA_FUDGE_FROM_OBJECT);
+}
 
 //-----------------------------------------------------------------------------
 // handleScrollWheel()
