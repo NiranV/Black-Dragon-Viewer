@@ -821,8 +821,8 @@ void	LLToolCompGun::handleDeselect()
 	setMouseCapture(FALSE);
 }
 
-
-BOOL LLToolCompGun::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLToolCompGun::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	if (clicks > 0)
 	{

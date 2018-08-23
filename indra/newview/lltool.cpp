@@ -108,7 +108,8 @@ BOOL LLTool::handleHover(S32 x, S32 y, MASK mask)
 	return TRUE;
 }
 
-BOOL LLTool::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLTool::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	// by default, didn't handle it
 	// LL_INFOS() << "LLTool::handleScrollWheel" << LL_ENDL;

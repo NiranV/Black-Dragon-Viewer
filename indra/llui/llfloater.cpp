@@ -1536,9 +1536,11 @@ BOOL LLFloater::offerClickToButton(S32 x, S32 y, MASK mask, EFloaterButton index
 	return FALSE;
 }
 
-BOOL LLFloater::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLFloater::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-	LLPanel::handleScrollWheel(x,y,clicks);
+	//BD - UI Improvements
+	LLPanel::handleScrollWheel(x,y,clicks,mask);
 	return TRUE;//always
 }
 

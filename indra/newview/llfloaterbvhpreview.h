@@ -79,7 +79,8 @@ public:
 	BOOL handleMouseDown(S32 x, S32 y, MASK mask);
 	BOOL handleMouseUp(S32 x, S32 y, MASK mask);
 	BOOL handleHover(S32 x, S32 y, MASK mask);
-	BOOL handleScrollWheel(S32 x, S32 y, S32 clicks); 
+	//BD - UI Improvements
+	BOOL handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask); 
 	void onMouseCaptureLost();
 
 	void refresh();

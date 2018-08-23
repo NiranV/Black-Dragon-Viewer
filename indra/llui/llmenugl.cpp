@@ -465,7 +465,8 @@ BOOL LLMenuItemGL::handleMouseDown( S32 x, S32 y, MASK mask)
 	return LLView::handleMouseDown(x, y, mask);
 }
 
-BOOL LLMenuItemGL::handleScrollWheel( S32 x, S32 y, S32 clicks )
+//BD - UI Improvements
+BOOL LLMenuItemGL::handleScrollWheel( S32 x, S32 y, S32 clicks, MASK mask )
 {
 	// If the menu is scrollable let it handle the wheel event.
 	return !getMenu()->isScrollable();
@@ -3094,7 +3095,8 @@ BOOL LLMenuGL::handleHover( S32 x, S32 y, MASK mask )
 	return TRUE;
 }
 
-BOOL LLMenuGL::handleScrollWheel( S32 x, S32 y, S32 clicks )
+//BD - UI Improvements
+BOOL LLMenuGL::handleScrollWheel( S32 x, S32 y, S32 clicks, MASK mask )
 {
 	if (!mScrollable)
 		return blockMouseEvent(x, y);

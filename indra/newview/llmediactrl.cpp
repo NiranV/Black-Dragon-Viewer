@@ -197,9 +197,10 @@ BOOL LLMediaCtrl::handleHover( S32 x, S32 y, MASK mask )
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-BOOL LLMediaCtrl::handleScrollWheel( S32 x, S32 y, S32 clicks )
+//BD - UI Improvements
+BOOL LLMediaCtrl::handleScrollWheel( S32 x, S32 y, S32 clicks, MASK mask )
 {
-	if (LLPanel::handleScrollWheel(x, y, clicks)) return TRUE;
+	if (LLPanel::handleScrollWheel(x, y, clicks, mask)) return TRUE;
 	if (mMediaSource && mMediaSource->hasMedia())
 		mMediaSource->getMediaPlugin()->scrollEvent(0, clicks, gKeyboard->currentMask(TRUE));
 

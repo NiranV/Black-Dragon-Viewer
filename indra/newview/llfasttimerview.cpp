@@ -350,7 +350,8 @@ BOOL LLFastTimerView::handleToolTip(S32 x, S32 y, MASK mask)
 	return LLFloater::handleToolTip(x, y, mask);
 }
 
-BOOL LLFastTimerView::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLFastTimerView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	setPauseState(true);
 	mScrollIndex = llclamp(	mScrollIndex + clicks,

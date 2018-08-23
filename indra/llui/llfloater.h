@@ -295,7 +295,8 @@ public:
 	virtual BOOL	handleDoubleClick(S32 x, S32 y, MASK mask);
 	virtual BOOL	handleMiddleMouseDown(S32 x, S32 y, MASK mask);
 	
-	virtual BOOL	handleScrollWheel(S32 x, S32 y, S32 mask);
+	//BD - UI Improvements
+	virtual BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
 	
 	virtual void	draw();
 	virtual void	drawShadow(LLPanel* panel);

@@ -411,7 +411,8 @@ BOOL LLFloaterWorldMap::handleHover(S32 x, S32 y, MASK mask)
 	return handled;
 }
 
-BOOL LLFloaterWorldMap::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLFloaterWorldMap::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	if (!isMinimized() && isFrontmost())
 	{
@@ -424,7 +425,8 @@ BOOL LLFloaterWorldMap::handleScrollWheel(S32 x, S32 y, S32 clicks)
 		}
 	}
 	
-	return LLFloater::handleScrollWheel(x, y, clicks);
+	//BD - UI Improvements
+	return LLFloater::handleScrollWheel(x, y, clicks, mask);
 }
 
 

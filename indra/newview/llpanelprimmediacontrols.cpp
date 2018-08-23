@@ -827,10 +827,11 @@ void LLPanelPrimMediaControls::draw()
 	}
 }
 
-BOOL LLPanelPrimMediaControls::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLPanelPrimMediaControls::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	mInactivityTimer.start();
-	return LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks);
+	return LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks, mask);
 }
 
 BOOL LLPanelPrimMediaControls::handleMouseDown(S32 x, S32 y, MASK mask)

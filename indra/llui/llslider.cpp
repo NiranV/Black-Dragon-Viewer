@@ -77,13 +77,16 @@ LLSlider::LLSlider(const LLSlider::Params& p)
 	mTrackChangeHorizontalImage(p.track_change_horizontal_image),
 	mTrackChangeVerticalImage(p.track_change_vertical_image),
 	mMouseDownSignal(NULL),
-	mMouseUpSignal(NULL)
+	mMouseUpSignal(NULL),
+	//BD - UI Improvements
+	mRightMousePressed(false)
 {
     mViewModel->setValue(p.initial_value);
 	updateThumbRect();
 	mDragStartThumbRect = mThumbRect;
 	setControlName(p.control_name, NULL);
 	setValue(getValueF32());
+	mOriginalValue = getValueF32();
 	
 	if (p.mouse_down_callback.isProvided())
 	{
@@ -193,11 +196,21 @@ BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 			F32 t = F32(y - top_edge) / (bottom_edge - top_edge);
 			setValueAndCommit(t * (mMaxValue - mMinValue) + mMinValue );
 		}
+
 		getWindow()->setCursor(UI_CURSOR_ARROW);
 		LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (active)" << LL_ENDL;
 	}
 	else
 	{
+		//BD - Right Mouse down will interrupt hover but will not immediately fire left mouse up.
+		//     If we previously fire right mouse down, cancel out and revert out value.
+		if (mRightMousePressed)
+		{
+			gFocusMgr.setMouseCapture(NULL);
+			setValueAndCommit(mOriginalValue);
+			mRightMousePressed = false;
+		}
+
 		getWindow()->setCursor(UI_CURSOR_ARROW);
 		LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (inactive)" << LL_ENDL;		
 	}
@@ -208,18 +221,15 @@ BOOL LLSlider::handleMouseUp(S32 x, S32 y, MASK mask)
 {
 	BOOL handled = FALSE;
 
-	if( hasMouseCapture() )
+	if (hasMouseCapture())
 	{
-		gFocusMgr.setMouseCapture( NULL );
+		gFocusMgr.setMouseCapture(NULL);
 
 		if (mMouseUpSignal)
-			(*mMouseUpSignal)( this, getValueF32() );
+			(*mMouseUpSignal)(this, getValueF32());
 
-		handled = TRUE;
 		make_ui_sound("UISndClickRelease");
-	}
-	else
-	{
+
 		handled = TRUE;
 	}
 
@@ -243,23 +253,90 @@ BOOL LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 	else
 	{
 		// Find the offset of the actual mouse location from the center of the thumb.
-		if (mThumbRect.pointInRect(x,y))
+		if (mThumbRect.pointInRect(x, y))
 		{
 			mMouseOffset = (mOrientation == HORIZONTAL)
-				? (mThumbRect.mLeft + mThumbImage->getWidth()/2) - x
-				: (mThumbRect.mBottom + mThumbImage->getHeight()/2) - y;
+				? (mThumbRect.mLeft + mThumbImage->getWidth() / 2) - x
+				: (mThumbRect.mBottom + mThumbImage->getHeight() / 2) - y;
 		}
 		else
 		{
 			mMouseOffset = 0;
 		}
 
-		// Start dragging the thumb
+		//BD - If this is our first click on the widget don't immediately change our value
+		//     depending on the position, center the mouse on the thumb to give the user
+		//     a chance of selecting the slider without changing the value.
+		if (!hasMouseCapture())
+		{
+			S32 mouse_x_warp = 0;
+			S32 mouse_y_warp = 0;
+			LLUI::getMousePositionScreen(&mouse_x_warp, &mouse_y_warp);
+
+			if (mOrientation == HORIZONTAL)
+			{
+				mouse_x_warp += mMouseOffset;
+			}
+			else
+			{
+				mouse_y_warp += mMouseOffset;
+			}
+
+			LLUI::setMousePositionScreen(mouse_x_warp, mouse_y_warp);
+
+			mMouseOffset = 0;
+		}
+
+		mOriginalValue = getValueF32();
+
 		// No handler needed for focus lost since this class has no state that depends on it.
-		gFocusMgr.setMouseCapture( this );  
-		mDragStartThumbRect = mThumbRect;				
+		gFocusMgr.setMouseCapture(this);
+
+		// Start dragging the thumb
+		mDragStartThumbRect = mThumbRect;
 	}
 	make_ui_sound("UISndClick");
+
+	return TRUE;
+}
+
+//BD - UI Improvements
+BOOL LLSlider::handleRightMouseUp(S32 x, S32 y, MASK mask)
+{
+	//BD - Right Mouse down will interrupt hover but will not immediately fire left mouse up.
+	//     If we previously fire right mouse down, cancel out and revert out value.
+	if (mRightMousePressed)
+	{
+		gFocusMgr.setMouseCapture(NULL);
+		mRightMousePressed = false;
+		setValueAndCommit(mOriginalValue);
+	}
+
+	return TRUE;
+}
+
+//BD - UI Improvements
+BOOL LLSlider::handleRightMouseDown(S32 x, S32 y, MASK mask)
+{
+	// only do sticky-focus on non-chrome widgets
+	if (!getIsChrome())
+	{
+		setFocus(TRUE);
+	}
+
+	if ((MASK_SHIFT | MASK_CONTROL) & mask)
+	{
+		LLControlVariable* control = this->getControlVariable();
+		if (control)
+		{
+			control->resetToDefault(true);
+			make_ui_sound("UISndClick");
+		}
+	}
+	else
+	{
+		mRightMousePressed = true;
+	}
 
 	return TRUE;
 }
@@ -270,11 +347,21 @@ BOOL LLSlider::handleKeyHere(KEY key, MASK mask)
 	switch(key)
 	{
 	case KEY_DOWN:
+		//BD - Allow changing the increment value.
+		//     We should probably do something to indicate that the increment has changed.
+		setIncrement(mIncrement / 10);
+		handled = TRUE;
+		break;
 	case KEY_LEFT:
 		setValueAndCommit(getValueF32() - getIncrement());
 		handled = TRUE;
 		break;
 	case KEY_UP:
+		//BD - Allow changing the increment value.
+		//     We should probably do something to indicate that the increment has changed.
+		setIncrement(mIncrement * 10);
+		handled = TRUE;
+		break;
 	case KEY_RIGHT:
 		setValueAndCommit(getValueF32() + getIncrement());
 		handled = TRUE;
@@ -285,15 +372,23 @@ BOOL LLSlider::handleKeyHere(KEY key, MASK mask)
 	return handled;
 }
 
-BOOL LLSlider::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLSlider::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-	if ( mOrientation == VERTICAL )
+	//BD - Only allow using scrollwheel when holding down CTRL.
+	//     But allow using it on both horizontal and vertical sliders.
+	if (MASK_CONTROL & mask)
 	{
-		F32 new_val = getValueF32() - clicks * getIncrement();
+		F32 increment = getIncrement();
+		if (MASK_SHIFT & mask)
+		{
+			increment *= 10;
+		}
+		F32 new_val = getValueF32() - clicks * increment;
 		setValueAndCommit(new_val);
 		return TRUE;
 	}
-	return LLF32UICtrl::handleScrollWheel(x,y,clicks);
+	return LLF32UICtrl::handleScrollWheel(x,y,clicks,mask);
 }
 
 void LLSlider::draw()

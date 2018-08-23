@@ -1122,15 +1122,16 @@ BOOL LLTextBase::handleHover(S32 x, S32 y, MASK mask)
 	return LLUICtrl::handleHover(x, y, mask);
 }
 
-BOOL LLTextBase::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLTextBase::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	LLTextSegmentPtr cur_segment = getSegmentAtLocalPos(x, y);
-	if (cur_segment && cur_segment->handleScrollWheel(x, y, clicks))
+	//BD - UI Improvements
+	if (cur_segment && cur_segment->handleScrollWheel(x, y, clicks, mask))
 	{
 		return TRUE;
 	}
-
-	return LLUICtrl::handleScrollWheel(x, y, clicks);
+	return LLUICtrl::handleScrollWheel(x, y, clicks,mask);
 }
 
 BOOL LLTextBase::handleToolTip(S32 x, S32 y, MASK mask)
@@ -3109,7 +3110,8 @@ BOOL LLTextSegment::handleRightMouseDown(S32 x, S32 y, MASK mask) { return FALSE
 BOOL LLTextSegment::handleRightMouseUp(S32 x, S32 y, MASK mask) { return FALSE; }
 BOOL LLTextSegment::handleDoubleClick(S32 x, S32 y, MASK mask) { return FALSE; }
 BOOL LLTextSegment::handleHover(S32 x, S32 y, MASK mask) { return FALSE; }
-BOOL LLTextSegment::handleScrollWheel(S32 x, S32 y, S32 clicks) { return FALSE; }
+//BD - UI Improvements
+BOOL LLTextSegment::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask) { return FALSE; }
 BOOL LLTextSegment::handleToolTip(S32 x, S32 y, MASK mask) { return FALSE; }
 const std::string&	LLTextSegment::getName() const 
 {

@@ -157,7 +157,8 @@ public:
 	virtual BOOL handleKeyHere( KEY key, MASK mask );
 	virtual BOOL handleMouseDown( S32 x, S32 y, MASK mask );
 	virtual BOOL handleMouseUp( S32 x, S32 y, MASK mask );
-	virtual BOOL handleScrollWheel( S32 x, S32 y, S32 clicks );
+	//BD - UI Improvements
+	virtual BOOL handleScrollWheel( S32 x, S32 y, S32 clicks, MASK mask );
 
 	virtual void	onMouseEnter(S32 x, S32 y, MASK mask);
 	virtual void	onMouseLeave(S32 x, S32 y, MASK mask);
@@ -424,7 +425,8 @@ public:
 	// LLView Functionality
 	/*virtual*/ BOOL handleUnicodeCharHere( llwchar uni_char );
 	/*virtual*/ BOOL handleHover( S32 x, S32 y, MASK mask );
-	/*virtual*/ BOOL handleScrollWheel( S32 x, S32 y, S32 clicks );
+	//BD - UI Improvements
+	/*virtual*/ BOOL handleScrollWheel( S32 x, S32 y, S32 clicks , MASK mask);
 	/*virtual*/ void draw( void );
 	/*virtual*/ void drawBackground(LLMenuItemGL* itemp, F32 alpha);
 	/*virtual*/ void setVisible(BOOL visible);

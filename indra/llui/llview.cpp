@@ -746,6 +746,38 @@ LLView* LLView::childrenHandleMouseEvent(const METHOD& method, S32 x, S32 y, XDA
 	return NULL;
 }
 
+// XDATA might be MASK, or S32 clicks
+//BD - UI Improvements
+template <typename METHOD>
+LLView* LLView::childrenHandleScrollEvent(const METHOD& method, S32 x, S32 y, S32 clicks, MASK mask, bool allow_mouse_block)
+{
+	BOOST_FOREACH(LLView* viewp, mChildList)
+	{
+		S32 local_x = x - viewp->getRect().mLeft;
+		S32 local_y = y - viewp->getRect().mBottom;
+
+		if (!viewp->visibleEnabledAndContains(local_x, local_y))
+		{
+			continue;
+		}
+
+		if ((viewp->*method)(local_x, local_y, clicks, mask)
+			|| (allow_mouse_block && viewp->blockMouseEvent(local_x, local_y)))
+		{
+			LL_DEBUGS() << "LLView::childrenHandleMouseEvent calling updatemouseeventinfo - local_x|global x  " << local_x << " " << x << "local/global y " << local_y << " " << y << LL_ENDL;
+			LL_DEBUGS() << "LLView::childrenHandleMouseEvent  getPathname for viewp result: " << viewp->getPathname() << "for this view: " << getPathname() << LL_ENDL;
+
+			LLViewerEventRecorder::instance().updateMouseEventInfo(x, y, -55, -55, getPathname());
+
+			// This is NOT event recording related
+			viewp->logMouseEvent();
+
+			return viewp;
+		}
+	}
+	return NULL;
+}
+
 LLView* LLView::childrenHandleToolTip(S32 x, S32 y, MASK mask)
 {
 	BOOST_FOREACH(LLView* viewp, mChildList)
@@ -1049,9 +1081,10 @@ BOOL LLView::handleDoubleClick(S32 x, S32 y, MASK mask)
 	return childrenHandleDoubleClick( x, y, mask ) != NULL;
 }
 
-BOOL LLView::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-	return childrenHandleScrollWheel( x, y, clicks ) != NULL;
+	return childrenHandleScrollWheel( x, y, clicks, mask ) != NULL;
 }
 
 BOOL LLView::handleRightMouseDown(S32 x, S32 y, MASK mask)
@@ -1074,9 +1107,10 @@ BOOL LLView::handleMiddleMouseUp(S32 x, S32 y, MASK mask)
 	return childrenHandleMiddleMouseUp( x, y, mask ) != NULL;
 }
 
-LLView* LLView::childrenHandleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+LLView* LLView::childrenHandleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-	return childrenHandleMouseEvent(&LLView::handleScrollWheel, x, y, clicks, false);
+	return childrenHandleScrollEvent(&LLView::handleScrollWheel, x, y, clicks, mask, false);
 }
 
 // Called during downward traversal

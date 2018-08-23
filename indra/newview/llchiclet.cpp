@@ -982,7 +982,8 @@ boost::signals2::connection LLChicletPanel::setChicletClickedCallback(
 	return setCommitCallback(cb);
 }
 
-BOOL LLChicletPanel::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLChicletPanel::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	if(clicks > 0)
 	{

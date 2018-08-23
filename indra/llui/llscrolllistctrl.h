@@ -318,7 +318,8 @@ public:
 	/*virtual*/ BOOL	handleHover(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL	handleKeyHere(KEY key, MASK mask);
 	/*virtual*/ BOOL	handleUnicodeCharHere(llwchar uni_char);
-	/*virtual*/ BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks);
+	//BD - UI Improvements
+	/*virtual*/ BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
 	/*virtual*/ BOOL	handleToolTip(S32 x, S32 y, MASK mask);
 	/*virtual*/ void	setEnabled(BOOL enabled);
 	/*virtual*/ void	setFocus( BOOL b );

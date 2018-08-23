@@ -46,8 +46,6 @@ public:
 		Optional<bool> allow_text_entry;
 		Optional<bool> allow_digits_only;
 		Optional<bool> label_wrap;
-//		//BD - Optional Mousewheel Spinning
-		Optional<bool> allow_scrolling;
 
 		Optional<LLUIColor> text_enabled_color;
 		Optional<LLUIColor> text_disabled_color;
@@ -90,7 +88,9 @@ public:
 
 	void 			forceEditorCommit();			// for commit on external button
 
-	virtual BOOL	handleScrollWheel(S32 x,S32 y,S32 clicks);
+	//BD - UI Improvements
+	virtual BOOL	handleRightMouseDown(S32 x, S32 y, MASK mask);
+	virtual BOOL	handleScrollWheel(S32 x,S32 y,S32 clicks, MASK mask);
 	virtual BOOL	handleKeyHere(KEY key, MASK mask);
 
 	void			onEditorCommit(const LLSD& data);
@@ -121,9 +121,6 @@ private:
 
 	BOOL			mbHasBeenSet;
 	BOOL			mAllowEdit;
-
-//	//BD - Optional Mousewheel Spinning
-	BOOL			mAllowScrolling;
 };
 
 #endif  // LL_LLSPINCTRL_H

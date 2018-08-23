@@ -222,9 +222,11 @@ BOOL LLModalDialog::handleMouseUp(S32 x, S32 y, MASK mask)
 	return TRUE;
 }
 
-BOOL LLModalDialog::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLModalDialog::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-	childrenHandleScrollWheel(x, y, clicks);
+	//BD - UI Improvements
+	childrenHandleScrollWheel(x, y, clicks,mask);
 	return TRUE;
 }
 

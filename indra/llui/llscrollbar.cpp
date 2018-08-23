@@ -401,8 +401,8 @@ BOOL LLScrollbar::handleHover(S32 x, S32 y, MASK mask)
 	return handled;
 } // end handleHover
 
-
-BOOL LLScrollbar::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLScrollbar::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	BOOL handled = changeLine( clicks * mStepSize, TRUE );
 	return handled;

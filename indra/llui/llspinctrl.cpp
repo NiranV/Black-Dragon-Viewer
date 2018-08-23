@@ -57,9 +57,7 @@ LLSpinCtrl::Params::Params()
 	text_enabled_color("text_enabled_color"),
 	text_disabled_color("text_disabled_color"),
 	up_button("up_button"),
-	down_button("down_button"),
-//	//BD - Optional Mousewheel Spinning
-	allow_scrolling("allow_scrolling", true)
+	down_button("down_button")
 {}
 
 LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
@@ -68,9 +66,7 @@ LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
 	mbHasBeenSet( FALSE ),
 	mPrecision(p.decimal_digits),
 	mTextEnabledColor(p.text_enabled_color()),
-	mTextDisabledColor(p.text_disabled_color()),
-//	//BD - Optional Mousewheel Spinning
-	mAllowScrolling(p.allow_scrolling)
+	mTextDisabledColor(p.text_disabled_color())
 {
 	static LLUICachedControl<S32> spinctrl_spacing ("UISpinctrlSpacing", 0);
 	static LLUICachedControl<S32> spinctrl_btn_width ("UISpinctrlBtnWidth", 0);
@@ -84,7 +80,8 @@ LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
 	// Label
 	if( !p.label().empty() )
 	{
-		LLRect label_rect( 0, centered_top, label_width, centered_bottom );
+		//BD - UI Improvements
+		LLRect label_rect( 0, centered_top - 3, label_width, centered_bottom );
 		LLTextBox::Params params;
 		params.wrap(p.label_wrap);
 		params.name("SpinCtrl Label");
@@ -118,7 +115,8 @@ LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
 	mDownBtn = LLUICtrlFactory::create<LLButton>(down_button_params);
 	addChild(mDownBtn);
 
-	LLRect editor_rect( btn_right + 1, centered_top, getRect().getWidth(), centered_bottom );
+	//BD - UI Improvements
+	LLRect editor_rect( btn_right + 1, centered_top - 1, getRect().getWidth(), centered_bottom + 1 );
 	LLLineEditor::Params params;
 	params.name("SpinCtrl Editor");
 	params.rect(editor_rect);
@@ -179,7 +177,17 @@ void LLSpinCtrl::onUpBtn( const LLSD& data )
 			F32 cur_val = (F32) atof(text.c_str());
 		
 			// use getValue()/setValue() to force reload from/to control
-			F32 val = cur_val + mIncrement;
+			//BD - UI Improvements
+			F32 val = cur_val;
+			MASK mask = gKeyboard->currentMask(FALSE);
+			if (MASK_SHIFT & mask)
+			{
+				val += (mIncrement * 10);
+			}
+			else
+			{
+				val += mIncrement;
+			}
 			val = clamp_precision(val, mPrecision);
 			val = llmin( val, mMaxValue );
 			if (val < mMinValue) val = mMinValue;
@@ -208,11 +216,21 @@ void LLSpinCtrl::onDownBtn( const LLSD& data )
 		std::string text = mEditor->getText();
 		if( LLLineEditor::postvalidateFloat( text ) )
 		{
-
 			LLLocale locale(LLLocale::USER_LOCALE);
 			F32 cur_val = (F32) atof(text.c_str());
-		
-			F32 val = cur_val - mIncrement;
+
+			//BD - UI Improvements
+			F32 val = cur_val;
+			MASK mask = gKeyboard->currentMask(FALSE);
+			if (MASK_SHIFT & mask)
+			{
+				val -= (mIncrement * 10);
+			}
+			else
+			{
+				val -= mIncrement;
+			}
+
 			val = clamp_precision(val, mPrecision);
 			val = llmax( val, mMinValue );
 
@@ -452,10 +470,27 @@ void LLSpinCtrl::reportInvalidData()
 	make_ui_sound("UISndBadKeystroke");
 }
 
-BOOL LLSpinCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLSpinCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
-//	//BD - Optional Mousewheel Spinning
-	if( mAllowScrolling && mEditor->hasFocus())
+	if ((MASK_SHIFT | MASK_CONTROL) & mask)
+	{
+		LLControlVariable* control = this->getControlVariable();
+		if (control)
+		{
+			control->resetToDefault(true);
+			make_ui_sound("UISndClick");
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+//BD - UI Improvements
+BOOL LLSpinCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
+{
+	if( (MASK_CONTROL & mask) )
 	{
 		if( clicks > 0 )
 		{

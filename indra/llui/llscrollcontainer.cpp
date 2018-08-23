@@ -235,11 +235,13 @@ BOOL LLScrollContainer::handleUnicodeCharHere(llwchar uni_char)
 	return FALSE;
 }
 
-BOOL LLScrollContainer::handleScrollWheel( S32 x, S32 y, S32 clicks )
+//BD - UI Improvements
+BOOL LLScrollContainer::handleScrollWheel( S32 x, S32 y, S32 clicks, MASK mask )
 {
 	// Give event to my child views - they may have scroll bars
 	// (Bad UI design, but technically possible.)
-	if (LLUICtrl::handleScrollWheel(x,y,clicks))
+	//BD - UI Improvements
+	if (LLUICtrl::handleScrollWheel(x,y,clicks,mask))
 		return TRUE;
 
 	// When the vertical scrollbar is visible, scroll wheel
@@ -251,7 +253,8 @@ BOOL LLScrollContainer::handleScrollWheel( S32 x, S32 y, S32 clicks )
 		&& vertical->getEnabled())
 	{
 		// Pretend the mouse is over the scrollbar
-		if (vertical->handleScrollWheel( 0, 0, clicks ) )
+		//BD - UI Improvements
+		if (vertical->handleScrollWheel( 0, 0, clicks, mask ) )
 		{
 			updateScroll();
 		}
@@ -262,9 +265,10 @@ BOOL LLScrollContainer::handleScrollWheel( S32 x, S32 y, S32 clicks )
 	LLScrollbar* horizontal = mScrollbar[HORIZONTAL];
 	// Test enablement and visibility for consistency with
 	// LLView::childrenHandleScrollWheel().
+	//BD - UI Improvements
 	if (horizontal->getVisible()
 		&& horizontal->getEnabled()
-		&& horizontal->handleScrollWheel( 0, 0, clicks ) )
+		&& horizontal->handleScrollWheel( 0, 0, clicks, mask ) )
 	{
 		updateScroll();
 		return TRUE;

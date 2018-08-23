@@ -1609,11 +1609,13 @@ void LLScrollListCtrl::setEnabled(BOOL enabled)
 	mScrollbar->setTabStop(!enabled && mScrollbar->getPageSize() < mScrollbar->getDocSize());
 }
 
-BOOL LLScrollListCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLScrollListCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	BOOL handled = FALSE;
 	// Pretend the mouse is over the scrollbar
-	handled = mScrollbar->handleScrollWheel( 0, 0, clicks );
+	//BD - UI Improvements
+	handled = mScrollbar->handleScrollWheel( 0, 0, clicks, mask );
 
 	if (mMouseWheelOpaque)
 	{

@@ -47,7 +47,9 @@ public:
 	virtual ~LLPanelPrimMediaControls();
 	/*virtual*/ BOOL postBuild();
 	virtual void draw();
-	virtual BOOL handleScrollWheel(S32 x, S32 y, S32 clicks);
+
+	//BD - UI Improvements
+	virtual BOOL handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
 
 	virtual BOOL handleMouseDown(S32 x, S32 y, MASK mask);
 	virtual BOOL handleMouseUp(S32 x, S32 y, MASK mask);

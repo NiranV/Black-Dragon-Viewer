@@ -216,12 +216,13 @@ BOOL LLPopupView::handleHover(S32 x, S32 y, MASK mask)
 	return handled;	
 }
 
-BOOL LLPopupView::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLPopupView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-	BOOL handled = handleMouseEvent(boost::bind(&LLMouseHandler::handleScrollWheel, _1, _2, _3, clicks), view_visible_and_enabled, x, y, false);
+	BOOL handled = handleMouseEvent(boost::bind(&LLMouseHandler::handleScrollWheel, _1, _2, _3, clicks, mask), view_visible_and_enabled, x, y, false);
 	if (!handled)
 	{
-		handled = LLPanel::handleScrollWheel(x, y, clicks);
+		handled = LLPanel::handleScrollWheel(x, y, clicks, mask);
 	}
 	return handled;	
 }

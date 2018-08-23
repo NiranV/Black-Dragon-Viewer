@@ -371,7 +371,9 @@ BOOL LLViewerMediaFocus::handleUnicodeChar(llwchar uni_char, BOOL called_from_pa
 		media_impl->handleUnicodeCharHere(uni_char);
 	return true;
 }
-BOOL LLViewerMediaFocus::handleScrollWheel(S32 x, S32 y, S32 clicks)
+
+//BD - UI Improvements
+BOOL LLViewerMediaFocus::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	BOOL retval = FALSE;
 	LLViewerMediaImpl* media_impl = getFocusedMediaImpl();
@@ -382,7 +384,8 @@ BOOL LLViewerMediaFocus::handleScrollWheel(S32 x, S32 y, S32 clicks)
         // The former is the 'scroll amount' in x and y, respectively.
         // All we have for 'scroll amount' here is 'clicks'.
 		// We're also not passed the keyboard modifier mask, but we can get that from gKeyboard.
-		media_impl->getMediaPlugin()->scrollEvent(0, clicks, gKeyboard->currentMask(TRUE));
+		//BD - UI Improvements
+		media_impl->getMediaPlugin()->scrollEvent(0, clicks, mask);
 		retval = TRUE;
 	}
 	return retval;

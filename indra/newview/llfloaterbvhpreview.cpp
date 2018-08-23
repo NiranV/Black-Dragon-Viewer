@@ -553,7 +553,8 @@ BOOL LLFloaterBvhPreview::handleHover(S32 x, S32 y, MASK mask)
 //-----------------------------------------------------------------------------
 // handleScrollWheel()
 //-----------------------------------------------------------------------------
-BOOL LLFloaterBvhPreview::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLFloaterBvhPreview::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	if (!mAnimPreview)
 		return false;

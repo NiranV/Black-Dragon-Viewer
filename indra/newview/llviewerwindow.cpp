@@ -2822,7 +2822,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 					&& !(key == KEY_DOWN && mask == MASK_CONTROL)
 					&& !(key == KEY_UP && mask == MASK_ALT)
 					&& !(key == KEY_DOWN && mask == MASK_ALT)
-					//BD - Fix for Shift + Home not working whn Arrow Keys Move is enabled.
+					//BD - Fix for Shift + Home not working when Arrow Keys Move is enabled.
 					&& !(key == KEY_HOME && mask == MASK_SHIFT))
 				{
 					switch(key)
@@ -2968,13 +2968,16 @@ void LLViewerWindow::handleScrollWheel(S32 clicks)
 {
 	LLUI::resetMouseIdleTimer();
 	
+	//BD - UI Improvements
+	MASK mask = gKeyboard->currentMask(TRUE);
 	LLMouseHandler* mouse_captor = gFocusMgr.getMouseCapture();
 	if( mouse_captor )
 	{
 		S32 local_x;
 		S32 local_y;
 		mouse_captor->screenPointToLocal( mCurrentMousePoint.mX, mCurrentMousePoint.mY, &local_x, &local_y );
-		mouse_captor->handleScrollWheel(local_x, local_y, clicks);
+		//BD - UI Improvements
+		mouse_captor->handleScrollWheel(local_x, local_y, clicks, mask);
 		if (LLView::sDebugMouseHandling)
 		{
 			LL_INFOS() << "Scroll Wheel handled by captor " << mouse_captor->getName() << LL_ENDL;
@@ -2988,10 +2991,12 @@ void LLViewerWindow::handleScrollWheel(S32 clicks)
 		S32 local_x;
 		S32 local_y;
 		top_ctrl->screenPointToLocal( mCurrentMousePoint.mX, mCurrentMousePoint.mY, &local_x, &local_y );
-		if (top_ctrl->handleScrollWheel(local_x, local_y, clicks)) return;
+		//BD - UI Improvements
+		if (top_ctrl->handleScrollWheel(local_x, local_y, clicks, mask)) return;
 	}
 
-	if (mRootView->handleScrollWheel(mCurrentMousePoint.mX, mCurrentMousePoint.mY, clicks) )
+	//BD - UI Improvements
+	if (mRootView->handleScrollWheel(mCurrentMousePoint.mX, mCurrentMousePoint.mY, clicks, mask) )
 	{
 		if (LLView::sDebugMouseHandling)
 		{

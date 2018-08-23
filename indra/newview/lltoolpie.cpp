@@ -155,9 +155,10 @@ BOOL LLToolPie::handleRightMouseUp(S32 x, S32 y, MASK mask)
 	return LLTool::handleRightMouseUp(x, y, mask);
 }
 
-BOOL LLToolPie::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLToolPie::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-	return LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks);
+	return LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks, mask);
 }
 
 // True if you selected an object.

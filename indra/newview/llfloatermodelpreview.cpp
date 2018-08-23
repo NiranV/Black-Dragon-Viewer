@@ -815,7 +815,8 @@ BOOL LLFloaterModelPreview::handleHover	(S32 x, S32 y, MASK mask)
 //-----------------------------------------------------------------------------
 // handleScrollWheel()
 //-----------------------------------------------------------------------------
-BOOL LLFloaterModelPreview::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+BOOL LLFloaterModelPreview::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	if (mPreviewRect.pointInRect(x, y) && mModelPreview)
 	{
