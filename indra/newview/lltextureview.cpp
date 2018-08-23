@@ -245,9 +245,9 @@ void LLTextureBar::draw()
 		{ "REQ", LLColor4::yellow },// SEND_HTTP_REQ
 		{ "HTP", LLColor4::green },	// WAIT_HTTP_REQ
 		{ "DEC", LLColor4::yellow },// DECODE_IMAGE
-		{ "DEC", LLColor4::green }, // DECODE_IMAGE_UPDATE
+		{ "DEU", LLColor4::green }, // DECODE_IMAGE_UPDATE
 		{ "WRT", LLColor4::purple },// WRITE_TO_CACHE
-		{ "WRT", LLColor4::orange },// WAIT_ON_WRITE
+		{ "WWT", LLColor4::orange },// WAIT_ON_WRITE
 		{ "END", LLColor4::red },   // DONE
 #define LAST_STATE 14
 		{ "CRE", LLColor4::magenta }, // LAST_STATE+1
@@ -560,9 +560,29 @@ void LLGLTexMemBar::draw()
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, v_offset + line_height*9,
 											 text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
+	LLTrace::Recording& recording = LLViewerStats::instance().getRecording();
+
+	F64 cacheHits     = recording.getSampleCount(LLTextureFetch::sCacheHit);
+	F64 cacheAttempts = recording.getSampleCount(LLTextureFetch::sCacheAttempt);
+
+	F32 cacheHitRate = (cacheAttempts > 0.0) ? F32((cacheHits / cacheAttempts) * 100.0f) : 0.0f;
+
+	U32 cacheReadLatMin = U32(recording.getMin(LLTextureFetch::sCacheReadLatency).value() * 1000.0f);
+	U32 cacheReadLatMed = U32(recording.getMean(LLTextureFetch::sCacheReadLatency).value() * 1000.0f);
+	U32 cacheReadLatMax = U32(recording.getMax(LLTextureFetch::sCacheReadLatency).value() * 1000.0f);
+
+	U32 texDecodeLatMin = U32(recording.getMin(LLTextureFetch::sTexDecodeLatency).value() * 1000.0f);
+	U32 texDecodeLatMed = U32(recording.getMean(LLTextureFetch::sTexDecodeLatency).value() * 1000.0f);
+	U32 texDecodeLatMax = U32(recording.getMax(LLTextureFetch::sTexDecodeLatency).value() * 1000.0f);
+
+	U32 texFetchLatMin = U32(recording.getMin(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
+	U32 texFetchLatMed = U32(recording.getMean(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
+	U32 texFetchLatMax = U32(recording.getMax(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
+
+
+	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, v_offset + line_height*6,
 	//----------------------------------------------------------------------------
 	//BD - GPU Memory
-
 	text = llformat("Total VRAM:    %d MB",
 		used_vram);
 
@@ -748,7 +768,8 @@ void LLGLTexMemBar::draw()
 
 	text = llformat("Reads (Writes): %u (%u)",
 					cache_read,
-					cache_write);
+					cache_write,
+					res_wait);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 185, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
@@ -764,6 +785,19 @@ void LLGLTexMemBar::draw()
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 555, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
+
+    text = llformat("CacheHitRate: %3.2f Read: %d/%d/%d Decode: %d/%d/%d Fetch: %d/%d/%d",
+                    cacheHitRate,
+                    cacheReadLatMin,
+                    cacheReadLatMed,
+                    cacheReadLatMax,
+                    texDecodeLatMin,
+                    texDecodeLatMed,
+                    texDecodeLatMax,
+                    texFetchLatMin,
+                    texFetchLatMed,
+                    texFetchLatMax);
+
 
 	//----------------------------------------------------------------------------
 	//BD - Objects

@@ -1089,7 +1089,7 @@ bool LLAppViewer::init()
 		}
 	}
 
-// don't nag developers who need to run the executable directly
+// do not pester devs who need to run the executable directly to debug
 #if LL_RELEASE_FOR_DOWNLOAD
 	// MAINT-8305: If we're processing a SLURL, skip the launcher check.
 	//BD

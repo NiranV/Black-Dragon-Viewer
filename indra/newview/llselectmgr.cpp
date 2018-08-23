@@ -2107,29 +2107,33 @@ void LLSelectMgr::selectionSetGlow(F32 glow)
 	mSelectedObjects->applyToObjects( &func2 );
 }
 
-void LLSelectMgr::selectionSetMaterialParams(LLSelectedTEMaterialFunctor* material_func)
+void LLSelectMgr::selectionSetMaterialParams(LLSelectedTEMaterialFunctor* material_func, int te)
 {
 	struct f1 : public LLSelectedTEFunctor
 	{
 		LLMaterialPtr mMaterial;
-		f1(LLSelectedTEMaterialFunctor* material_func) : _material_func(material_func) {}
+		f1(LLSelectedTEMaterialFunctor* material_func, int te) : _material_func(material_func), _specific_te(te) {}
 
-		bool apply(LLViewerObject* object, S32 face)
+		bool apply(LLViewerObject* object, S32 te)
 		{
-			if (object && object->permModify() && _material_func)
-			{
-				LLTextureEntry* tep = object->getTE(face);
-				if (tep)
-				{
-					LLMaterialPtr current_material = tep->getMaterialParams();
-					_material_func->apply(object, face, tep, current_material);
-				}
-			}
+            if (_specific_te == -1 || (te == _specific_te))
+            {
+			    if (object && object->permModify() && _material_func)
+			    {
+				    LLTextureEntry* tep = object->getTE(te);
+				    if (tep)
+				    {
+					    LLMaterialPtr current_material = tep->getMaterialParams();
+					    _material_func->apply(object, te, tep, current_material);
+				    }
+			    }
+            }
 			return true;
 		}
 
 		LLSelectedTEMaterialFunctor* _material_func;
-	} func1(material_func);
+        int _specific_te;
+	} func1(material_func, te);
 	mSelectedObjects->applyToTEs( &func1 );
 
 	struct f2 : public LLSelectedObjectFunctor
@@ -6419,6 +6423,8 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		glPolygonMode(GL_FRONT, GL_POINT);
 	}
 
+	bool wireframe_selection = (gFloaterTools && gFloaterTools->getVisible()) || LLSelectMgr::sRenderHiddenSelections;
+
 	//BD - Force selection outlines coming through for every mode except Black Dragon
 	//     otherwise they dont look like they should.
 	if (LLSelectMgr::sRenderHiddenSelections
@@ -6430,7 +6436,7 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		{
 			gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
 			//BD
-			pushWireframe(drawable, update_rigged);
+			pushWireframe(drawable);
 		}
 		else
 		{
@@ -6446,7 +6452,7 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 			{
 				gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
 				//BD
-				pushWireframe(drawable, update_rigged);
+				pushWireframe(drawable);
 			}
 		}
 	}
@@ -8082,3 +8088,40 @@ void LLSelectMgr::sendSelectionMove()
 
 	//saveSelectedObjectTransform(SELECT_ACTION_TYPE_PICK);
 }
+
+template<>
+bool LLCheckIdenticalFunctor<F32>::same(const F32& a, const F32& b, const F32& tolerance)
+{
+    F32 delta = (a - b);
+    F32 abs_delta = fabs(delta);
+    return abs_delta <= tolerance;
+}
+
+#define DEF_DUMMY_CHECK_FUNCTOR(T)                                                  \
+template<>                                                                          \
+bool LLCheckIdenticalFunctor<T>::same(const T& a, const T& b, const T& tolerance)   \
+{                                                                                   \
+    (void)tolerance;                                                                \
+    return a == b;                                                                  \
+}
+
+DEF_DUMMY_CHECK_FUNCTOR(LLUUID)
+DEF_DUMMY_CHECK_FUNCTOR(LLGLenum)
+DEF_DUMMY_CHECK_FUNCTOR(LLTextureEntry)
+DEF_DUMMY_CHECK_FUNCTOR(LLTextureEntry::e_texgen)
+DEF_DUMMY_CHECK_FUNCTOR(bool)
+DEF_DUMMY_CHECK_FUNCTOR(U8)
+DEF_DUMMY_CHECK_FUNCTOR(int)
+DEF_DUMMY_CHECK_FUNCTOR(LLColor4)
+DEF_DUMMY_CHECK_FUNCTOR(LLMediaEntry)
+DEF_DUMMY_CHECK_FUNCTOR(LLPointer<LLMaterial>)
+DEF_DUMMY_CHECK_FUNCTOR(std::string)
+DEF_DUMMY_CHECK_FUNCTOR(std::vector<std::string>)
+
+template<>
+bool LLCheckIdenticalFunctor<class LLFace *>::same(class LLFace* const & a, class LLFace* const & b, class LLFace* const & tolerance)   \
+{                                                                                   \
+    (void)tolerance;                                                                \
+    return a == b;                                                                  \
+}
+

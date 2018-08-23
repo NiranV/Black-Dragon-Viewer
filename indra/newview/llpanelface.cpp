@@ -525,8 +525,14 @@ struct LLPanelFaceSetAlignedTEFunctor : public LLSelectedTEFunctor
 			if (set_aligned)
 			{
 				object->setTEOffset(te, uv_offset.mV[VX], uv_offset.mV[VY]);
-				object->setTEScale(te, uv_scale.mV[VX], uv_scale.mV[VY]);
+                object->setTEScale(te, uv_scale.mV[VX], uv_scale.mV[VY]);
 				object->setTERotation(te, uv_rot);
+                LLPanelFace::LLSelectedTEMaterial::setNormalOffsetX(mPanel, uv_offset.mV[VX], te);
+                LLPanelFace::LLSelectedTEMaterial::setNormalOffsetY(mPanel, uv_offset.mV[VY], te);
+                LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetX(mPanel, uv_offset.mV[VX], te);
+                LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetY(mPanel, uv_offset.mV[VY], te);
+				LLPanelFace::LLSelectedTEMaterial::setNormalRotation(mPanel, uv_rot, te);
+                LLPanelFace::LLSelectedTEMaterial::setSpecularRotation(mPanel, uv_rot, te);
 			}
 		}
 		if (!set_aligned)
@@ -574,12 +580,19 @@ struct LLPanelFaceGetIsAlignedTEFunctor : public LLSelectedTEFunctor
 			tep->getOffset(&st_offset.mV[VX], &st_offset.mV[VY]);
 			tep->getScale(&st_scale.mV[VX], &st_scale.mV[VY]);
 			F32 st_rot = tep->getRotation();
+
+            bool eq_offset_x = is_approx_equal_fraction(st_offset.mV[VX], aligned_st_offset.mV[VX], 12);
+            bool eq_offset_y = is_approx_equal_fraction(st_offset.mV[VY], aligned_st_offset.mV[VY], 12);
+            bool eq_scale_x  = is_approx_equal_fraction(st_scale.mV[VX], aligned_st_scale.mV[VX], 12);
+            bool eq_scale_y  = is_approx_equal_fraction(st_scale.mV[VY], aligned_st_scale.mV[VY], 12);
+            bool eq_rot      = is_approx_equal_fraction(st_rot, aligned_st_rot, 6);
+
 			// needs a fuzzy comparison, because of fp errors
-			if (is_approx_equal_fraction(st_offset.mV[VX], aligned_st_offset.mV[VX], 12) &&
-				is_approx_equal_fraction(st_offset.mV[VY], aligned_st_offset.mV[VY], 12) &&
-				is_approx_equal_fraction(st_scale.mV[VX], aligned_st_scale.mV[VX], 12) &&
-				is_approx_equal_fraction(st_scale.mV[VY], aligned_st_scale.mV[VY], 12) &&
-				is_approx_equal_fraction(st_rot, aligned_st_rot, 14))
+			if (eq_offset_x && 
+				eq_offset_y && 
+				eq_scale_x &&
+				eq_scale_y &&
+				eq_rot)
 			{
 				return true;
 			}
@@ -2130,7 +2143,7 @@ void LLPanelFace::LLSelectedTE::getFace(LLFace*& face_to_return, bool& identical
 			return (object->mDrawable) ? object->mDrawable->getFace(te) : NULL;
 		}
 	} get_te_face_func;
-	identical_face = LLSelectMgr::getInstance()->getSelection()->getSelectedTEValue(&get_te_face_func, face_to_return);
+	identical_face = LLSelectMgr::getInstance()->getSelection()->getSelectedTEValue(&get_te_face_func, face_to_return, false, (LLFace*)nullptr);
 }
 
 void LLPanelFace::LLSelectedTE::getImageFormat(LLGLenum& image_format_to_return, bool& identical_face)

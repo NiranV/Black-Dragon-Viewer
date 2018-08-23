@@ -546,8 +546,6 @@ GLhandleARB LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shade
 		}
 	}
 	
-	LL_DEBUGS("ShaderLoading") << "Loading shader file: " << filename << " class " << shader_level << LL_ENDL;
-
 	if (filename.empty()) 
 	{
 		return 0;
@@ -567,7 +565,7 @@ GLhandleARB LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shade
 		fname << getShaderDirPrefix();
 		fname << gpu_class << "/" << filename;
 		
- 		LL_DEBUGS("ShaderLoading") << "Looking in " << fname.str() << LL_ENDL;
+ 		
 		file = LLFile::fopen(fname.str(), "r");		/* Flawfinder: ignore */
 		if (file)
 		{
