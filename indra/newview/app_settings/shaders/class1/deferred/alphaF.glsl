@@ -442,7 +442,7 @@ float pcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen, float shad
 
 void main() 
 {
-    vec2 pos_screen = vary_fragcoord.xy;
+ vec2 pos_screen = vary_fragcoord.xy;
 	vec2 frag = vary_fragcoord.xy/vary_fragcoord.z*0.5+0.5;
 	frag *= screen_res;
 	
@@ -510,10 +510,6 @@ void main()
 		
 
 		shadow /= weight;
-	}
-	else
-	{
-		shadow = 1.0;
 	}
 #endif
 
