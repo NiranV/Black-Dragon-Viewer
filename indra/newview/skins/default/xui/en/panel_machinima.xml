@@ -57,6 +57,7 @@ width="345">
       height="756"
       width="341"
       top="4">
+            <!-- 1860 -->
             <panel
             border="false"
             background_visible="false"
@@ -1958,6 +1959,418 @@ width="345">
                   name="CameraAngle"
                   show_text="true"
                   width="297" />
+                  <!--
+                  <panel
+                  follows="left|top|right"
+                  height="20"
+                  bg_visible="true"
+                  bg_alpha_color="0.10 0.43 0.77 0.28"
+                  layout="topleft"
+                  mouse_opaque="false"
+                  left="2"
+                  name="title"
+                  top_pad="10"
+                  width="323"/>
+                  <text
+                  layout="topleft"
+                  follows="top|left"
+                  type="string"
+                  length="1"
+                  height="12"
+                  left="10"
+                  top_delta="4"
+                  name="title_label"
+                  width="250">
+                  Tone Mapping:
+                  </text>
+                  
+                  <slider
+                  can_edit_text="true"
+                  control_name="ExodusRenderToneExposure"
+                  enabled_control="ExodusRenderToneMapping"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="14"
+                  increment="0.01"
+                  initial_value="0.0"
+                  tool_tip="This option controls the exposure or overall brightness for Tone Mapping."
+                  label="Tone Exposure:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="4"
+                  min_val="0.01"
+                  name="ExodusRenderToneExposure"
+                  top_pad="15"
+                  width="291"/>
+                  <slider
+                  can_edit_text="true"
+                  enabled_control="ExodusRenderToneMapping"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="1.0"
+                  tool_tip="This option controls the shoulder strength for Tone Mapping."
+                  label="Shoulder Strength:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="1"
+                  min_val="0"
+                  name="ExodusRenderToneAdvOptA_X"
+                  top_pad="5"
+                  width="297">
+                  <slider.commit_callback
+                  function="Dragon.ArrayX"
+                  parameter="ExodusRenderToneAdvOptA"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  enabled_control="ExodusRenderToneMapping"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="1.0"
+                  tool_tip="This option controls the linear strength for Tone Mapping."
+                  label="Linear Strength:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="1"
+                  min_val="0"
+                  name="ExodusRenderToneAdvOptA_Y"
+                  top_pad="2"
+                  width="297">
+                  <slider.commit_callback
+                  function="Dragon.ArrayY"
+                  parameter="ExodusRenderToneAdvOptA"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  enabled_control="ExodusRenderToneMapping"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="1.0"
+                  tool_tip="This option controls the linear angle for Tone Mapping."
+                  label="Linear Angle:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="1"
+                  min_val="0"
+                  name="ExodusRenderToneAdvOptA_Z"
+                  top_pad="2"
+                  width="297">
+                  <slider.commit_callback
+                  function="Dragon.ArrayZ"
+                  parameter="ExodusRenderToneAdvOptA"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  enabled_control="ExodusRenderToneMapping"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="0.24"
+                  tool_tip="This option controls the toe strength for Tone Mapping."
+                  label="Toe Strength:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="3"
+                  min_val="0"
+                  name="ExodusRenderToneAdvOptB_X"
+                  top_pad="5"
+                  width="297">
+                  <slider.commit_callback
+                  function="Dragon.ArrayX"
+                  parameter="ExodusRenderToneAdvOptB"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  enabled_control="ExodusRenderToneMapping"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="0.02"
+                  tool_tip="This option controls the the numerator for Tone Mapping."
+                  label="Toe Numerator:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="0.1"
+                  min_val="-0.5"
+                  name="ExodusRenderToneAdvOptB_Y"
+                  top_pad="2"
+                  width="295">
+                  <slider.commit_callback
+                  function="Dragon.ArrayY"
+                  parameter="ExodusRenderToneAdvOptB"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  enabled_control="ExodusRenderToneMapping"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="0.18"
+                  tool_tip="This option controls the toe denominator for Tone Mapping."
+                  label="Toe Denominator:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="3"
+                  min_val="0.01"
+                  name="ExodusRenderToneAdvOptB_Z"
+                  top_pad="2"
+                  width="297">
+                  <slider.commit_callback
+                  function="Dragon.ArrayZ"
+                  parameter="ExodusRenderToneAdvOptB"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  enabled_control="ExodusRenderToneMapping"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="14"
+                  increment="0.01"
+                  initial_value="25.0"
+                  tool_tip="This option controls the linear white for Tone Mapping."
+                  label="Linear White:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="50"
+                  min_val="0.01"
+                  name="ExodusRenderToneAdvOptC_X"
+                  top_pad="5"
+                  width="297">
+                  <slider.commit_callback
+                  function="Dragon.ArrayX"
+                  parameter="ExodusRenderToneAdvOptC"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  enabled_control="ExodusRenderToneMapping"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="14"
+                  increment="0.01"
+                  initial_value="1.0"
+                  tool_tip="This option controls the exposure bias for Tone Mapping."
+                  label="Exposure Bias:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="5"
+                  min_val="0.01"
+                  name="ExodusRenderToneAdvOptC_Y"
+                  top_pad="2"
+                  width="291">
+                  <slider.commit_callback
+                  function="Dragon.ArrayY"
+                  parameter="ExodusRenderToneAdvOptC"/>
+                  </slider>
+                  
+                  <slider
+                  can_edit_text="true"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="14"
+                  increment="0.01"
+                  initial_value="0.0"
+                  tool_tip="This option controls how much the red color channel should be exposed."
+                  label="Exposure Red:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="4"
+                  min_val="-4"
+                  name="ExodusRenderExposure_X"
+                  top_pad="7"
+                  width="295">
+                  <slider.commit_callback
+                  function="Dragon.ArrayX"
+                  parameter="ExodusRenderExposure"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="14"
+                  increment="0.01"
+                  initial_value="0.0"
+                  tool_tip="This option controls how much the green color channel should be exposed."
+                  label="Exposure Green:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="4"
+                  min_val="-4"
+                  name="ExodusRenderExposure_Y"
+                  top_pad="2"
+                  width="295">
+                  <slider.commit_callback
+                  function="Dragon.ArrayY"
+                  parameter="ExodusRenderExposure"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="14"
+                  increment="0.01"
+                  initial_value="0.0"
+                  tool_tip="This option controls how much the blue color channel should be exposed."
+                  label="Exposure Blue:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="4"
+                  min_val="-4"
+                  name="ExodusRenderExposure_Z"
+                  top_pad="2"
+                  width="295">
+                  <slider.commit_callback
+                  function="Dragon.ArrayZ"
+                  parameter="ExodusRenderExposure"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="0.0"
+                  tool_tip="This option controls how much the red color channel should be offsetted."
+                  label="Offset Red:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="0.5"
+                  min_val="-0.5"
+                  name="ExodusRenderOffset_X"
+                  top_pad="5"
+                  width="301">
+                  <slider.commit_callback
+                  function="Dragon.ArrayX"
+                  parameter="ExodusRenderOffset"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="0.0"
+                  tool_tip="This option controls how much the green color channel should be offsetted."
+                  label="Offset Green:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="0.5"
+                  min_val="-0.5"
+                  name="ExodusRenderOffset_Y"
+                  top_pad="2"
+                  width="301">
+                  <slider.commit_callback
+                  function="Dragon.ArrayY"
+                  parameter="ExodusRenderOffset"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  decimal_digits="3"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="0.0"
+                  tool_tip="This option controls how much the blue color channel should be offsetted."
+                  label="Offset Blue:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="0.5"
+                  min_val="-0.5"
+                  name="ExodusRenderOffset_Z"
+                  top_pad="2"
+                  width="301">
+                  <slider.commit_callback
+                  function="Dragon.ArrayZ"
+                  parameter="ExodusRenderOffset"/>
+                  </slider>
+                  
+                  <slider
+                  can_edit_text="true"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="14"
+                  increment="0.01"
+                  initial_value="1.0"
+                  tool_tip="This option controls how much gamma the red color channel should use."
+                  label="Gamma Red:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="3"
+                  min_val="0"
+                  name="ExodusRenderGamma_X"
+                  top_pad="5"
+                  width="291">
+                  <slider.commit_callback
+                  function="Dragon.ArrayX"
+                  parameter="ExodusRenderGamma"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="14"
+                  increment="0.01"
+                  initial_value="1.0"
+                  tool_tip="This option controls how much gamma the green color channel should use."
+                  label="Gamma Green:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="3"
+                  min_val="0"
+                  name="ExodusRenderGamma_Y"
+                  top_pad="2"
+                  width="291">
+                  <slider.commit_callback
+                  function="Dragon.ArrayY"
+                  parameter="ExodusRenderGamma"/>
+                  </slider>
+                  <slider
+                  can_edit_text="true"
+                  decimal_digits="2"
+                  follows="left|top"
+                  height="14"
+                  increment="0.01"
+                  initial_value="1.0"
+                  tool_tip="This option controls how much gamma the blue color channel should use."
+                  label="Gamma Blue:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="3"
+                  min_val="0"
+                  name="ExodusRenderGamma_Z"
+                  top_pad="2"
+                  width="291">
+                  <slider.commit_callback
+                  function="Dragon.ArrayZ"
+                  parameter="ExodusRenderGamma"/>
+                  </slider>-->
+                  
             </panel>
             
       </scroll_container>
