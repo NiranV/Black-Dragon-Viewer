@@ -1220,11 +1220,6 @@ void LLAgentCamera::updateCamera()
 
 	validateFocusObject();
 
-	if (cameraThirdPerson() && mFocusOnAvatar && LLFollowCamMgr::getActiveFollowCamParams())
-	{
-		changeCameraToFollow();
-	}
-
 	//BD - Camera Rolling
 	//     Make sure we always start with a neutral camera roll.
 	mCameraUpVector = LLVector3::z_axis;
@@ -1239,6 +1234,10 @@ void LLAgentCamera::updateCamera()
 	}
 
 	//NOTE - this needs to be integrated into a general upVector system here within llAgent. 
+	if (cameraThirdPerson() && mFocusOnAvatar && LLFollowCamMgr::getActiveFollowCamParams())
+	{
+		changeCameraToFollow();
+	}
 
 //	//BD - Third Person Steering
 	if(mThirdPersonSteeringMode
@@ -1358,7 +1357,7 @@ void LLAgentCamera::updateCamera()
 			// (2) focus, and (3) upvector. They can then be queried elsewhere in llAgent.
 			//--------------------------------------------------------------------------------
 			// *TODO: use combined rotation of frameagent and sit object
-			LLQuaternion avatarRotationForFollowCam = gAgentAvatarp->isSitting() ? gAgentAvatarp->getRenderRotation() : mCameraRotation;
+			LLQuaternion avatarRotationForFollowCam = gAgentAvatarp->isSitting() ? gAgentAvatarp->getRenderRotation() : gAgent.getFrameAgent().getQuaternion();
 
 			LLFollowCamParams* current_cam = LLFollowCamMgr::getActiveFollowCamParams();
 			if (current_cam)
