@@ -579,8 +579,6 @@ void LLGLTexMemBar::draw()
 	U32 texFetchLatMed = U32(recording.getMean(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
 	U32 texFetchLatMax = U32(recording.getMax(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
 
-
-	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, v_offset + line_height*6,
 	//----------------------------------------------------------------------------
 	//BD - GPU Memory
 	text = llformat("Total VRAM:    %d MB",

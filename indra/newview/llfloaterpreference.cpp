@@ -283,7 +283,7 @@ void LLPanelVoiceDeviceSettings::cancel()
 void LLPanelVoiceDeviceSettings::refresh()
 {
 	//grab current volume
-	LLSliderCtrl* volume_slider = getChild<LLSliderCtrl>("mic_volume_slider");
+	LLSlider* volume_slider = getChild<LLSlider>("mic_volume_slider");
 	// set mic volume tuning slider based on last mic volume setting
 	F32 current_volume = (F32)volume_slider->getValue().asReal();
 	LLVoiceClient::getInstance()->tuningSetMicVolume(current_volume);
@@ -301,40 +301,39 @@ void LLPanelVoiceDeviceSettings::refresh()
 		mCtrlOutputDevices->setEnabled(device_settings_available);
 	}
 
-	getChild<LLSliderCtrl>("mic_volume_slider")->setEnabled(device_settings_available);
+	getChild<LLSlider>("mic_volume_slider")->setEnabled(device_settings_available);
 
-	if(!device_settings_available)
+	if (!device_settings_available)
 	{
 		// The combo boxes are disabled, since we can't get the device settings from the daemon just now.
 		// Put the currently set default (ONLY) in the box, and select it.
-		if(mCtrlInputDevices)
+		if (mCtrlInputDevices)
 		{
 			mCtrlInputDevices->removeall();
 			mCtrlInputDevices->add(getLocalizedDeviceName(mInputDevice), mInputDevice, ADD_BOTTOM);
 			mCtrlInputDevices->setValue(mInputDevice);
 		}
-		if(mCtrlOutputDevices)
+		if (mCtrlOutputDevices)
 		{
 			mCtrlOutputDevices->removeall();
 			mCtrlOutputDevices->add(getLocalizedDeviceName(mOutputDevice), mOutputDevice, ADD_BOTTOM);
 			mCtrlOutputDevices->setValue(mOutputDevice);
 		}
-		mDevicesUpdated = FALSE;
 	}
-	else if (!mDevicesUpdated)
+	else if (LLVoiceClient::getInstance()->deviceSettingsUpdated())
 	{
-		LLVoiceDeviceList::const_iterator iter;
-		
-		if(mCtrlInputDevices)
+		LLVoiceDeviceList::const_iterator device;
+
+		if (mCtrlInputDevices)
 		{
 			mCtrlInputDevices->removeall();
 			mCtrlInputDevices->add(getLocalizedDeviceName(DEFAULT_DEVICE), DEFAULT_DEVICE, ADD_BOTTOM);
 
-			for(iter=LLVoiceClient::getInstance()->getCaptureDevices().begin(); 
-				iter != LLVoiceClient::getInstance()->getCaptureDevices().end();
-				iter++)
+			for (device = LLVoiceClient::getInstance()->getCaptureDevices().begin();
+				device != LLVoiceClient::getInstance()->getCaptureDevices().end();
+				device++)
 			{
-				mCtrlInputDevices->add(getLocalizedDeviceName(*iter), *iter, ADD_BOTTOM);
+				mCtrlInputDevices->add(getLocalizedDeviceName(device->display_name), device->full_name, ADD_BOTTOM);
 			}
 
 			// Fix invalid input audio device preference.
@@ -345,16 +344,17 @@ void LLPanelVoiceDeviceSettings::refresh()
 				mInputDevice = DEFAULT_DEVICE;
 			}
 		}
-		
-		if(mCtrlOutputDevices)
+
+		if (mCtrlOutputDevices)
 		{
 			mCtrlOutputDevices->removeall();
 			mCtrlOutputDevices->add(getLocalizedDeviceName(DEFAULT_DEVICE), DEFAULT_DEVICE, ADD_BOTTOM);
 
-			for(iter= LLVoiceClient::getInstance()->getRenderDevices().begin(); 
-				iter !=  LLVoiceClient::getInstance()->getRenderDevices().end(); iter++)
+			for (device = LLVoiceClient::getInstance()->getRenderDevices().begin();
+				device != LLVoiceClient::getInstance()->getRenderDevices().end();
+				device++)
 			{
-				mCtrlOutputDevices->add(getLocalizedDeviceName(*iter), *iter, ADD_BOTTOM);
+				mCtrlOutputDevices->add(getLocalizedDeviceName(device->display_name), device->full_name, ADD_BOTTOM);
 			}
 
 			// Fix invalid output audio device preference.
@@ -365,8 +365,7 @@ void LLPanelVoiceDeviceSettings::refresh()
 				mOutputDevice = DEFAULT_DEVICE;
 			}
 		}
-		mDevicesUpdated = TRUE;
-	}	
+	}
 }
 
 void LLPanelVoiceDeviceSettings::initialize()
