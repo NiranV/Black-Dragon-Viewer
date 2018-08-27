@@ -83,7 +83,7 @@
    label="View Angle:"
    tool_tip="This option sets the camera view angle in radians, lower values look zoomed in, higher values look zoomed out. This option indirectly affects the Depth of Field strength because some calculations in Depth of Field depend on the camera view angle."
    left="10"
-   top_pad="13"
+   top_pad="11"
    max_val="3.97"
    min_val="0.17"
    name="camera_fov"

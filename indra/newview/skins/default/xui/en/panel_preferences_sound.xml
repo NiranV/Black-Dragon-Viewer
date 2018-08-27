@@ -64,7 +64,7 @@ width="510">
    show_text="true"
    can_edit_text="true"
    slider_label.halign="left"
-   top_pad="12"
+   top_pad="16"
    volume="true"
    width="332"/>
    <button

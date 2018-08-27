@@ -62,7 +62,7 @@ width="506"/>
  layout="topleft"
  left="10"
  name="online_searchresults"
- top_pad="15"
+ top_pad="12"
  width="350" />
  <check_box
  height="16"
