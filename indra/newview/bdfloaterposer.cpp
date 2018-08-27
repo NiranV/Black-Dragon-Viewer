@@ -494,7 +494,8 @@ void BDFloaterPoser::onJointRefresh()
 			row["columns"][COL_ICON]["value"] = getString("icon_category");
 			row["columns"][COL_NAME]["column"] = "joint";
 			row["columns"][COL_NAME]["value"] = getString("title_" + name);
-			mJointsScroll->addElement(row);
+			LLScrollListItem* element = mJointsScroll->addElement(row);
+			element->setEnabled(FALSE);
 		}
 
 		LLVector3 vec3;
