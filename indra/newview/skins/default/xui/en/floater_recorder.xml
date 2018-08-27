@@ -54,7 +54,7 @@ width="449">
 		name="recorder_scroll_container"
 		opaque="true"
 		height="394"
-		width="426"
+		width="430"
 		top="2">
 			<panel
 			follows="top|left"
@@ -65,18 +65,18 @@ width="449">
 			left="1"
 			name="recorder_panel"
 			top="0"
-			width="640">
+			width="429">
 		<scroll_list
  column_padding="2"
  draw_heading="true"
- height="374"
+ height="395"
  follows="left|top|right"
  layout="topleft"
- left="3"
- width="640"
+ left="0"
+ width="429"
  multi_select="true"
  name="recorder_scroll"
- top="2">
+ top="0">
     <scroll_list.columns
      label="#"
      name="number"
