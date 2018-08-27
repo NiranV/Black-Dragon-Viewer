@@ -769,6 +769,9 @@ void show_item_original(const LLUUID& item_uuid)
 
 	bool do_reset_inventory_filter = !floater_inventory->isInVisibleChain();
 
+	//BD - Show the item in the main inventory tab, always.
+	sidepanel_inventory->selectAllItemsPanel();
+
 	LLInventoryPanel* active_panel = LLInventoryPanel::getActiveInventoryPanel();
 	if (!active_panel) 
 	{
