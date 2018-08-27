@@ -1146,7 +1146,9 @@ void LLPanelPeople::onAddFriendButtonClicked()
 	LLUUID id = getCurrentItemID();
 	if (id.notNull())
 	{
-		LLAvatarActions::requestFriendshipDialog(id);
+		uuid_vec_t uuids;
+		uuids.push_back(id);
+		LLAvatarActions::requestFriendshipDialog(uuids);
 	}
 }
 
@@ -1252,7 +1254,7 @@ void LLPanelPeople::onImButtonClicked()
 void LLPanelPeople::onAvatarPicked(const uuid_vec_t& ids, const std::vector<LLAvatarName> names)
 {
 	if (!names.empty() && !ids.empty())
-		LLAvatarActions::requestFriendshipDialog(ids[0], names[0].getCompleteName());
+		LLAvatarActions::requestFriendshipDialog(ids);
 }
 
 bool LLPanelPeople::onGroupPlusButtonValidate()

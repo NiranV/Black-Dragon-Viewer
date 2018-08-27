@@ -91,40 +91,46 @@ const U32 KICK_FLAGS_UNFREEZE	= 1 << 1;
 
 
 // static
-void LLAvatarActions::requestFriendshipDialog(const LLUUID& id, const std::string& name)
+//BD - Allow adding multiple friends at the same time.
+void LLAvatarActions::requestFriendshipDialog(const uuid_vec_t& ids)
 {
-	if(id == gAgentID)
-	{
-		LLNotificationsUtil::add("AddSelfFriend");
+	if (ids.size() == 0)
 		return;
-	}
 
 	LLSD args;
-	args["NAME"] = LLSLURL("agent", id, "completename").getSLURLString();
-	LLSD payload;
-	payload["id"] = id;
-	payload["name"] = name;
-    
-    	LLNotificationsUtil::add("AddFriendWithMessage", args, payload, &callbackAddFriendWithMessage);
-
-	// add friend to recent people list
-	LLRecentPeople::instance().add(id);
-}
-
-static void on_avatar_name_friendship(const LLUUID& id, const LLAvatarName av_name)
-{
-	LLAvatarActions::requestFriendshipDialog(id, av_name.getCompleteName());
-}
-
-// static
-void LLAvatarActions::requestFriendshipDialog(const LLUUID& id)
-{
-	if(id.isNull())
+	std::string msgType;
+	if (ids.size() == 1)
 	{
-		return;
+		LLUUID agent_id = ids[0];
+		LLAvatarName av_name;
+		if (LLAvatarNameCache::get(agent_id, &av_name))
+		{
+			args["NAME"] = av_name.getCompleteName();
+		}
+
+		msgType = "AddFriendWithMessage";
+	}
+	else
+	{
+		msgType = "AddMultipleFriendsWithMessage";
 	}
 
-	LLAvatarNameCache::get(id, boost::bind(&on_avatar_name_friendship, _1, _2));
+	LLSD payload;
+	for (uuid_vec_t::const_iterator it = ids.begin(); it != ids.end(); ++it)
+	{
+		if ((*it) == gAgentID)
+		{
+			LLNotificationsUtil::add("AddSelfFriend");
+			continue;
+		}
+
+		payload["ids"].append(*it);
+	}
+
+	LLNotificationsUtil::add(msgType,
+							args,
+							payload,
+							&handleAdd);
 }
 
 // static
@@ -1239,6 +1245,29 @@ bool LLAvatarActions::handlePay(const LLSD& notification, const LLSD& response, 
 	}
 
 	LLFloaterPayUtil::payDirectly(&give_money, avatar_id, /*is_group=*/false);
+	return false;
+}
+
+// static
+//BD - Allow adding multiple friends at the same time.
+bool LLAvatarActions::handleAdd(const LLSD& notification, const LLSD& response)
+{
+	S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
+
+	if (option == 0)
+	{
+		const LLSD& ids = notification["payload"]["ids"];
+		for (LLSD::array_const_iterator itr = ids.beginArray(); itr != ids.endArray(); ++itr)
+		{
+			LLUUID id = itr->asUUID();
+			LLAvatarName av_name;
+			if (LLAvatarNameCache::get(id, &av_name))
+			{
+				requestFriendship(id, av_name.getCompleteName(), response["message"].asString());
+			}
+		}
+		return true;
+	}
 	return false;
 }
 

@@ -47,12 +47,8 @@ public:
 	/**
 	 * Show a dialog explaining what friendship entails, then request friendship.
 	 */
-	static void requestFriendshipDialog(const LLUUID& id, const std::string& name);
-
-	/**
-	 * Show a dialog explaining what friendship entails, then request friendship.
-	 */
-	static void requestFriendshipDialog(const LLUUID& id);
+	//BD - Allow adding multiple friends at the same time.
+	static void requestFriendshipDialog(const uuid_vec_t& ids);
 
 	/**
 	 * Show a friend removal dialog.
@@ -271,6 +267,8 @@ private:
 	static bool handleFreeze(const LLSD& notification, const LLSD& response);
 	static bool handleUnfreeze(const LLSD& notification, const LLSD& response);
 	static void callback_invite_to_group(LLUUID group_id, LLUUID id);
+	//BD - Allow adding multiple friends at the same time.
+	static bool handleAdd(const LLSD& notification, const LLSD& response);
 
 	// Just request friendship, no dialog.
 	static void requestFriendship(const LLUUID& target_id, const std::string& target_name, const std::string& message);

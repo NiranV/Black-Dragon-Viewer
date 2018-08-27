@@ -215,7 +215,9 @@ void LLFloaterBump::showProfile()
 
 void LLFloaterBump::addFriend()
 {
-	LLAvatarActions::requestFriendshipDialog(mItemUUID);
+	uuid_vec_t uuids;
+	uuids.push_back(mItemUUID);
+	LLAvatarActions::requestFriendshipDialog(uuids);
 }
 
 bool LLFloaterBump::enableAddFriend()

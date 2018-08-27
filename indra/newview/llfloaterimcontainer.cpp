@@ -1134,7 +1134,9 @@ void LLFloaterIMContainer::doToParticipants(const std::string& command, uuid_vec
 		}
 		else if ("add_friend" == command)
 		{
-			LLAvatarActions::requestFriendshipDialog(userID);
+			uuid_vec_t uuids;
+			uuids.push_back(userID);
+			LLAvatarActions::requestFriendshipDialog(uuids);
 		}
 		else if ("remove_friend" == command)
 		{

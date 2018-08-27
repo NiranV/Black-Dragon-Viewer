@@ -389,7 +389,10 @@ public:
 		}
 		else if (level == "add")
 		{
-			LLAvatarActions::requestFriendshipDialog(getAvatarId(), mFrom);
+			//BD
+			uuid_vec_t uuids;
+			uuids.push_back(getAvatarId());
+			LLAvatarActions::requestFriendshipDialog(uuids);
 		}
 		else if (level == "remove")
 		{

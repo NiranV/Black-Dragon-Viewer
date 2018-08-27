@@ -321,7 +321,9 @@ void LLConversationLogList::onCustomAction(const LLSD& userdata)
 	{
 		if (!LLAvatarActions::isFriend(selected_conversation_participant_id))
 		{
-			LLAvatarActions::requestFriendshipDialog(selected_conversation_participant_id);
+			uuid_vec_t uuids;
+			uuids.push_back(selected_conversation_participant_id);
+			LLAvatarActions::requestFriendshipDialog(uuids);
 		}
 	}
 	else if("remove_friend" == command_name)

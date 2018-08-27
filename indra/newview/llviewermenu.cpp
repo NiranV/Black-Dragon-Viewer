@@ -4184,7 +4184,9 @@ void request_friendship(const LLUUID& dest_id)
 		}
 		if (!full_name.empty())
 		{
-			LLAvatarActions::requestFriendshipDialog(dest_id, full_name);
+			uuid_vec_t uuids;
+			uuids.push_back(dest_id);
+			LLAvatarActions::requestFriendshipDialog(uuids);
 		}
 		else
 		{

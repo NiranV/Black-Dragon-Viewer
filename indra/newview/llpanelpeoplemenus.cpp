@@ -70,9 +70,16 @@ LLContextMenu* PeopleContextMenu::createMenu()
 	LLContextMenu* menu;
 
 	//BD - Right Click Menu
-	//     Doesn't matter. It can be used for both single and multi-selections.
+	//     Doesn't matter. These can be used for both single and multi-selections.
 	registrar.add("Avatar.ResetSkeleton", boost::bind(&PeopleContextMenu::resetSkeleton, this));
 	registrar.add("Avatar.ResetSkeletonAndAnimations", boost::bind(&PeopleContextMenu::resetSkeletonAndAnimations, this));
+	registrar.add("Avatar.AddFriend", boost::bind(&LLAvatarActions::requestFriendshipDialog, mUUIDs));
+	registrar.add("Avatar.RemoveFriend", boost::bind(&LLAvatarActions::removeFriendsDialog, mUUIDs));
+	registrar.add("Avatar.Derender", boost::bind(&PeopleContextMenu::derenderAvatar, this));
+	registrar.add("Avatar.OfferTeleport", boost::bind(&PeopleContextMenu::offerTeleport, this));
+	//BD - Empower someone with rights or revoke them.
+	registrar.add("Avatar.GrantPermissions", boost::bind(&PeopleContextMenu::grantPermissions, this, _2));
+	enable_registrar.add("Avatar.CheckPermissions", boost::bind(&PeopleContextMenu::checkPermissions, this, _2));
 
 	if ( mUUIDs.size() == 1 )
 	{
@@ -80,8 +87,6 @@ LLContextMenu* PeopleContextMenu::createMenu()
 
 		const LLUUID& id = mUUIDs.front();
 		registrar.add("Avatar.Profile",			boost::bind(&LLAvatarActions::showProfile,					id));
-		registrar.add("Avatar.AddFriend",		boost::bind(&LLAvatarActions::requestFriendshipDialog,		id));
-		registrar.add("Avatar.RemoveFriend",	boost::bind(&LLAvatarActions::removeFriendDialog, 			id));
 		registrar.add("Avatar.IM",				boost::bind(&LLAvatarActions::startIM,						id));
 		registrar.add("Avatar.Call",			boost::bind(&LLAvatarActions::startCall,					id));
 		registrar.add("Avatar.OfferTeleport",	boost::bind(&PeopleContextMenu::offerTeleport,				this));
@@ -104,14 +109,9 @@ LLContextMenu* PeopleContextMenu::createMenu()
 		registrar.add("Avatar.GetSLURL",		boost::bind(&LLAvatarActions::copySLURLToClipboard,			id));
 
 		//BD - Right Click Menu
-		registrar.add("Avatar.Derender",		boost::bind(&PeopleContextMenu::derenderAvatar,				this));
 		registrar.add("Avatar.BlockUnblockText",boost::bind(&PeopleContextMenu::toggleMuteText,				this));
 		registrar.add("Avatar.MuteUnmute",		boost::bind(&LLAvatarActions::toggleMuteVoice,				id));
 		registrar.add("Avatar.SetImpostorMode",	boost::bind(&PeopleContextMenu::setImpostorMode,			this, _2));
-
-		//BD - Empower someone with rights or revoke them.
-		registrar.add("Avatar.GrantPermissions",	boost::bind(&PeopleContextMenu::grantPermissions,		this, _2));
-		enable_registrar.add("Avatar.CheckPermissions", boost::bind(&PeopleContextMenu::checkPermissions,	this, _2));
 
 		enable_registrar.add("Avatar.EnableItem", boost::bind(&PeopleContextMenu::enableContextMenuItem,	this, _2));
 		enable_registrar.add("Avatar.CheckItem",  boost::bind(&PeopleContextMenu::checkContextMenuItem,		this, _2));
@@ -128,17 +128,10 @@ LLContextMenu* PeopleContextMenu::createMenu()
 	{
 		// Set up for multi-selected People
 
-		// registrar.add("Avatar.AddFriend",	boost::bind(&LLAvatarActions::requestFriendshipDialog,	mUUIDs)); // *TODO: unimplemented
 		registrar.add("Avatar.IM",				boost::bind(&PeopleContextMenu::startConference,		this));
 		registrar.add("Avatar.Call",			boost::bind(&LLAvatarActions::startAdhocCall,			mUUIDs, LLUUID::null));
-		registrar.add("Avatar.OfferTeleport",	boost::bind(&PeopleContextMenu::offerTeleport,			this));
-		registrar.add("Avatar.RemoveFriend",	boost::bind(&LLAvatarActions::removeFriendsDialog,		mUUIDs));
 		// registrar.add("Avatar.Share",		boost::bind(&LLAvatarActions::startIM,					mUUIDs)); // *TODO: unimplemented
 		// registrar.add("Avatar.Pay",			boost::bind(&LLAvatarActions::pay,						mUUIDs)); // *TODO: unimplemented
-
-		//BD - Empower someone with rights or revoke them.
-		registrar.add("Avatar.GrantPermissions", boost::bind(&PeopleContextMenu::grantPermissions,		this, _2));
-		enable_registrar.add("Avatar.CheckPermissions", boost::bind(&PeopleContextMenu::checkPermissions, this, _2));
 
 		enable_registrar.add("Avatar.EnableItem",	boost::bind(&PeopleContextMenu::enableContextMenuItem, this, _2));
 
@@ -164,6 +157,8 @@ void PeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("share"));
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("offer_teleport"));
+		//BD - Would this make sense?
+		//items.push_back(std::string("derender"));
 		//BD - Right Click Menu
 		items.push_back(std::string("reset_skeleton_separator"));
 		items.push_back(std::string("reset_skeleton"));
@@ -241,12 +236,6 @@ bool PeopleContextMenu::enableContextMenuItem(const LLSD& userdata)
 		// We can add friends if:
 		// - there are selected people
 		// - and there are no friends among selection yet.
-
-		//EXT-7389 - disable for more than 1
-		if(mUUIDs.size() > 1)
-		{
-			return false;
-		}
 
 		bool result = (mUUIDs.size() > 0);
 
@@ -612,11 +601,14 @@ bool PeopleContextMenu::checkPermissions(const LLSD& userdata)
 void PeopleContextMenu::derenderAvatar()
 {
 	//BD - Allow derendering everything in selection instead of just one link or the root prim.
-	if (!(mUUIDs.front() == gAgentID))
+	for (LLUUID uuid : mUUIDs)
 	{
-		LLViewerObject *objectp = gObjectList.findObject(mUUIDs.front());
+		if (!(uuid == gAgentID))
 		{
-			gObjectList.killObject(objectp, true);
+			LLViewerObject *objectp = gObjectList.findObject(uuid);
+			{
+				gObjectList.killObject(objectp, true);
+			}
 		}
 	}
 };
@@ -669,6 +661,7 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("share"));
 		items.push_back(std::string("pay"));
 		items.push_back(std::string("offer_teleport"));
+		items.push_back(std::string("derender"));
 		//BD - Right Click Menu
 		items.push_back(std::string("reset_skeleton_separator"));
 		items.push_back(std::string("reset_skeleton"));
@@ -739,7 +732,7 @@ LLContextMenu* SuggestedFriendsContextMenu::createMenu()
 	// Set up for one person selected menu
 	const LLUUID& id = mUUIDs.front();
 	registrar.add("Avatar.Profile",			boost::bind(&LLAvatarActions::showProfile,				id));
-	registrar.add("Avatar.AddFriend",		boost::bind(&LLAvatarActions::requestFriendshipDialog,	id));
+	registrar.add("Avatar.AddFriend",		boost::bind(&LLAvatarActions::requestFriendshipDialog,	mUUIDs));
 
 	// create the context menu from the XUI
 	menu = createFromFile("menu_people_nearby.xml");

@@ -8,7 +8,7 @@ name="Multi-Selected People Context Menu">
    layout="topleft"
    name="add_friends">
    <on_click
-   function="Avatar.AddFriends" />
+   function="Avatar.AddFriend" />
    <on_enable
    function="Avatar.EnableItem"
    parameter="can_add" />
@@ -66,6 +66,13 @@ name="Multi-Selected People Context Menu">
    function="Avatar.EnableItem"
    parameter="can_offer_teleport"/>
    </menu_item_call>
+   <menu_item_call
+	enabled="true"
+	label="Derender"
+	name="derender">
+	<menu_item_call.on_click
+	function="Avatar.Derender" />
+	</menu_item_call>
     
    <menu_item_separator name="reset_skeleton_separator"/>
     

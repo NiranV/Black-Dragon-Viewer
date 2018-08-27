@@ -128,7 +128,9 @@ public:
 
 		if (verb == "requestfriend")
 		{
-			LLAvatarActions::requestFriendshipDialog(avatar_id);
+			uuid_vec_t uuids;
+			uuids.push_back(avatar_id);
+			LLAvatarActions::requestFriendshipDialog(uuids);
 			return true;
 		}
 
