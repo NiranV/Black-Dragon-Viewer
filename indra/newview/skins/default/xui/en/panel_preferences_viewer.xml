@@ -460,12 +460,15 @@ width="510">
 		     layout="topleft"
 		     left="10"
 		     name="connection_port_enabled"
-		     tool_tip="This option enables using a custom specified port for connecting to Second Life."
+		     tool_tip="This option enables using a custom specified port for connecting to Second Life. Warning this might lock you out of using Second Life alltogether if configured wrong."
 		     top_pad="15"
 		     width="256">
 		     <check_box.commit_callback
 		     function="Notification.Show"
 		     parameter="ChangeConnectionPort" />
+       <check_box.check_button
+         image_overlay="Caution_Widget"
+         image_overlay_alignment="left"/>
 		     </check_box>
 			 <slider
 	    control_name="ConnectionPort"
