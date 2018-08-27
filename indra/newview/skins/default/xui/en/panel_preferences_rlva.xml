@@ -42,13 +42,17 @@ width="510">
 	height="16"
 	initial_value="true"
 	label="Enable Restrained Love (A)"
-	tool_tip="This option toggles the Restrained Love (A) features on or off. This option allows extended controls over the Viewer with scripts such as restricting certain feature or changing windlight presets."
+	tool_tip="This option toggles the Restrained Love (A) features on or off. This option allows extended controls over the Viewer with scripts such as restricting certain feature or changing windlight presets. Warning this feature is officially unsupported and might be outdated and broken partly or completely."
 	layout="topleft"
 	follows="left|top"
 	left="5"
 	name="RLVa"
 	top_delta="1"
-	width="256" />
+	width="256" >
+ <check_box.check_button
+ image_overlay="Caution_Widget"
+ image_overlay_alignment="left"/>
+ </check_box>
 	<check_box
 	control_name="RestrainedLoveCanOOC"
 	height="16"
@@ -59,7 +63,7 @@ width="510">
 	left_delta="5"
 	follows="left|top"
 	name="RLVaOOC"
-	top_pad="11"
+	top_pad="14"
 	width="256" />
 	<check_box
 	control_name="RestrainedLoveNoSetEnv"
@@ -384,7 +388,7 @@ width="510">
  layout="topleft"
  left="10"
  name="NotificationCanEmbedInIM"
- top_pad="9"
+ top_pad="6"
  width="600">
        <radio_item
        height="16"
