@@ -36,7 +36,7 @@ class LLSlider : public LLF32UICtrl
 public:
 	struct Params : public LLInitParam::Block<Params, LLF32UICtrl::Params>
 	{
-		Optional<std::string> orientation;
+		Optional<std::string>	orientation;
 
 		Optional<LLUIColor>	track_color,
 							thumb_outline_color,
@@ -55,6 +55,9 @@ public:
 
 		Optional<CommitCallbackParam>	mouse_down_callback,
 										mouse_up_callback;
+
+		//BD - UI Improvements
+		Optional<bool>			apply_immediately;
 
 
 		Params();
@@ -86,6 +89,7 @@ public:
 	virtual BOOL	handleKeyHere(KEY key, MASK mask);
 	//BD - UI Improvements
 	virtual BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
+	virtual void	onMouseCaptureLost();
 
 	virtual void	draw();
 
@@ -98,6 +102,7 @@ private:
 	LLRect			mDragStartThumbRect;
 
 	//BD - UI Improvements
+	bool			mApplyImmediately;
 	bool			mRightMousePressed;
 	F32				mOriginalValue;
 

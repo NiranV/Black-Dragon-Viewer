@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <slider name="slider" 
-        can_edit_text="false" 
+        can_edit_text="false"
+        apply_immediately="true"
         font="SansSerifSmall"
         volume="false"
         mouse_opaque="true" 

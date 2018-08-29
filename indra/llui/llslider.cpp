@@ -56,7 +56,9 @@ LLSlider::Params::Params()
 	track_change_horizontal_image("track_change_horizontal_image"),
 	track_change_vertical_image("track_change_vertical_image"),
 	mouse_down_callback("mouse_down_callback"),
-	mouse_up_callback("mouse_up_callback")
+	mouse_up_callback("mouse_up_callback"),
+	//BD - UI Improvements
+	apply_immediately("apply_immediately", true)
 {}
 
 LLSlider::LLSlider(const LLSlider::Params& p)
@@ -79,7 +81,8 @@ LLSlider::LLSlider(const LLSlider::Params& p)
 	mMouseDownSignal(NULL),
 	mMouseUpSignal(NULL),
 	//BD - UI Improvements
-	mRightMousePressed(false)
+	mRightMousePressed(false),
+	mApplyImmediately(p.apply_immediately)
 {
     mViewModel->setValue(p.initial_value);
 	updateThumbRect();
@@ -161,12 +164,20 @@ void LLSlider::setValueAndCommit(F32 value)
 	F32 old_value = getValueF32();
 	setValue(value);
 
-	if (getValueF32() != old_value)
+	if (getValueF32() != old_value
+		&& mApplyImmediately)
 	{
 		onCommit();
 	}
 }
 
+
+void LLSlider::onMouseCaptureLost()
+{
+	//BD - UI Improvements
+	setValueAndCommit(getValueF32());
+	onCommit();
+}
 
 BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 {
@@ -182,7 +193,9 @@ BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 			x = llclamp( x, left_edge, right_edge );
 
 			F32 t = F32(x - left_edge) / (right_edge - left_edge);
-			setValueAndCommit(t * (mMaxValue - mMinValue) + mMinValue );
+			//BD - UI Improvements
+			F32 val = t * (mMaxValue - mMinValue) + mMinValue;
+			setValueAndCommit(val);
 		}
 		else // mOrientation == VERTICAL
 		{
@@ -194,7 +207,9 @@ BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 			y = llclamp(y, top_edge, bottom_edge);
 
 			F32 t = F32(y - top_edge) / (bottom_edge - top_edge);
-			setValueAndCommit(t * (mMaxValue - mMinValue) + mMinValue );
+			//BD - UI Improvements
+			F32 val = t * (mMaxValue - mMinValue) + mMinValue;
+			setValueAndCommit(val);
 		}
 
 		getWindow()->setCursor(UI_CURSOR_ARROW);
