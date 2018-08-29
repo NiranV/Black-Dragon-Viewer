@@ -1085,8 +1085,6 @@ void LLFloaterInventoryFinder::draw()
 	}
 
 	if (!getChild<LLUICtrl>("check_landmark")->getValue())
-
-
 	{
 		filter &= ~(0x1 << LLInventoryType::IT_LANDMARK);
 		filtered_by_all_types = FALSE;

@@ -1527,7 +1527,6 @@ void LLInventoryPanel::openInventoryPanelAndSetSelection(BOOL auto_open, const L
 
 		if (in_inbox)
 		{
-			
 			LLInventoryPanel * inventory_panel = NULL;
 			sidepanel_inventory->openInbox();
 			inventory_panel = sidepanel_inventory->getInboxPanel();

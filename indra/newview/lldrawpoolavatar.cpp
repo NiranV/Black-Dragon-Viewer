@@ -1920,9 +1920,6 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 	{
 		LLFace* face = mRiggedFace[type][i];
 
-        S32 offset = face->getIndicesStart();
-		U32 count = face->getIndicesCount();
-
 		LLDrawable* drawable = face->getDrawable();
 		if (!drawable)
 		{
@@ -2106,7 +2103,9 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 			}
 
 			U16 start = face->getGeomStart();
-			U16 end = start + face->getGeomCount()-1;			
+			U16 end = start + face->getGeomCount()-1;
+			S32 offset = face->getIndicesStart();
+			U32 count = face->getIndicesCount();
 
 			/*if (glow)
 			{

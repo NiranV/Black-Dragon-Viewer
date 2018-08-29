@@ -6423,8 +6423,6 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		glPolygonMode(GL_FRONT, GL_POINT);
 	}
 
-	//bool wireframe_selection = (gFloaterTools && gFloaterTools->getVisible()) || LLSelectMgr::sRenderHiddenSelections;
-
 	//BD - Force selection outlines coming through for every mode except Black Dragon
 	//     otherwise they dont look like they should.
 	if (LLSelectMgr::sRenderHiddenSelections
