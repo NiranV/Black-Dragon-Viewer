@@ -25,10 +25,10 @@
      value="Conv_expand_one_line"/>
     <floater.string
      name="collapse_icon"
-     value="Conv_toolbar_collapse"/>
+     value="Conv_toolbar_expand"/>
     <floater.string
      name="expand_icon"
-     value="Conv_toolbar_expand"/>
+     value="Conv_toolbar_collapse"/>
     <floater.string
      name="tear_off_icon"
      value="Conv_toolbar_arrow_ne"/>
