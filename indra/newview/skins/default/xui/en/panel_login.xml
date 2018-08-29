@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.2.3 - Caring Dragon]"
+       label="[CHANNEL] [VERSION] - [3.2.4 - Caring Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="8937"
+       height="9527"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,8 +174,91 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="260"
+              height="572"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Support for MASK keys to the UI.
+Added: Ability to scroll through spinner and slider values by holding CTRL.
+Added: Ability to scroll faster through spinner and slider values by holding CTRL and Shift.
+Added: Ability to reset a slider back to it's default value by holding CTRL and Shift when right clicking on it.
+Added: Ability to cancel a slider drag by right clicking while dragging.
+Added: Ability to revert to the last value by right clicking the slider.
+Added: Ability to change the increment of sliders with Arrow Up and Arrow Down.
+Added: Menominum to the Patreon Patron list.
+Added: Ability to reset a button and checkbox back to it's default value by holding CTRL and Shift when right clicking on it.
+Added: Functionality to sliders to delay commiting their signal until the user lets go of the drag thumb.
+Added: 2 additional loadingscreen tips to inform about the newly added function of resetting and scrolling values.
+Added: Luke N Fortacos and Nyt to the Patreon patron list.
+Changed: Sliders will now center the mouse cursor on their drag thumb when clicking near it rather than immediately changing the value, makes selecting easier.
+Changed: Scaled text entries on spinners to match the button height.
+Changed: Disable category entries in Poser bone list.
+Changed: Allow derendering more than one selected person at a time.
+Changed: Allow friend inviting more than one selected person at a time.
+Changed: Switch to main inventory tab when hitting "Show Original" in Appearance.
+Changed: Fixed some padding inconsistencies in a couple preferences panels.
+Changed: Warn about custom ports possibly causing inability to log in if configured wrong.
+Changed: Warn about the pie menu causing random crashes on right click.
+Changed: Warn about RLVa being outdated and possibly completely broken.
+Changed: Misc layout changes to recorder floater.
+Changed: Sliders in Build - Texture tab will no longer commit their value immediately to drastically lessen their laggy behavior.
+Changed: Refactored and simplified the alpha, maskcutoff, glossiness, environment and glow slider commit code.
+Changed: Massively revamped and overhauled the entire texture console layout again.
+Changed: Swapped expand and collapse icons for collapse button in IM sessions.
+Changed: Version to 3.2.4.
+Fixed: HUDs taking camera control don't work.
+Fixed: Compile.
+Fixed: Shadows from rigged alpha masked/blended surfaces being skipped.
+Fixed: Shadows being skipped when the surface has a diffuse texture with alpha channel in it and both specular
+Fixed: Set the apply_immediately boolean in the correct slider widget file.
+and normal map set while the alpha mode is anything other than "Masking". Partly from Graham Linden.
+Misc: Slight alphaF.glsl shader cleanup.
+Misc: Commit Tone Mapping settings for Machinima Sidebar (commented out) for future use.
+Misc: Moved several menu commands into general as they can be used for both single and multi-people menus.
+Misc: Cleaned up llselectmgr.cpp a bit.
+Misc: Cleaned up llpanelmaininventory.cpp a bit.
+Misc: Cleaned up lldrawpoolavatar.cpp a bit and reverted an unnecessary change.
+Misc: Cleaned up llinventorypanel.cpp a bit.
+Misc: Added mac extra code snippets to newly added shaders.
+Merge with Linden Release (24 Changes)
+Merge with Cougar (33 Changes)
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.2.3
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="260"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
