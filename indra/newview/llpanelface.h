@@ -116,15 +116,15 @@ public:
 protected:
 	void			getState();
 
-	void			sendTexture();			// applies and sends texture
-	void			sendTextureInfo();		// applies and sends texture scale, offset, etc.
-	void			sendColor();			// applies and sends color
-	void			sendAlpha();			// applies and sends transparency
-	void			sendBump(U32 bumpiness);				// applies and sends bump map
+	void			sendTexture();				// applies and sends texture
+	void			sendTextureInfo();			// applies and sends texture scale, offset, etc.
+	void			sendColor();				// applies and sends color
+	void			sendAlpha();				// applies and sends transparency
+	void			sendBump(U32 bumpiness);	// applies and sends bump map
 	void			sendTexGen();				// applies and sends bump map
-	void			sendShiny(U32 shininess);			// applies and sends shininess
-	void			sendFullbright();		// applies and sends full bright
-	void        sendGlow();
+	void			sendShiny(U32 shininess);	// applies and sends shininess
+	void			sendFullbright();			// applies and sends full bright
+	void			sendGlow();
 	void			sendMedia();
 
 	// this function is to return TRUE if the drag should succeed.
@@ -141,7 +141,6 @@ protected:
 	void 	onSelectNormalTexture(const LLSD& data);
 	void 	onCommitColor(const LLSD& data);
 	void 	onCommitShinyColor(const LLSD& data);
-	void 	onCommitAlpha(const LLSD& data);
 	void 	onCancelColor(const LLSD& data);
 	void 	onCancelShinyColor(const LLSD& data);
 	void 	onSelectColor(const LLSD& data);
@@ -164,10 +163,6 @@ protected:
 	//
 	static void		onCommitTextureInfo( 		LLUICtrl* ctrl, void* userdata);
 
-	static void		onCommitMaterialGloss(		LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialEnv(		LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialMaskCutoff(	LLUICtrl* ctrl, void* userdata);
-
 	static void		onCommitMaterialsMedia(		LLUICtrl* ctrl, void* userdata);
 	static void		onCommitMaterialType(		LLUICtrl* ctrl, void* userdata);
 	static void		onCommitBump(				LLUICtrl* ctrl, void* userdata);
@@ -175,10 +170,14 @@ protected:
 	static void		onCommitShiny(				LLUICtrl* ctrl, void* userdata);
 	static void		onCommitAlphaMode(			LLUICtrl* ctrl, void* userdata);
 	static void		onCommitFullbright(			LLUICtrl* ctrl, void* userdata);
-	static void		onCommitGlow(				LLUICtrl* ctrl, void *userdata);
 	static void		onCommitPlanarAlign(		LLUICtrl* ctrl, void* userdata);
 	static void		onCommitRepeatsPerMeter(	LLUICtrl* ctrl, void* userinfo);
 	static void		onClickAutoFix(void*);
+
+	//BD
+	void			onCommitMaterialGloss();
+	void			onCommitMaterialEnv();
+	void			onCommitMaterialMaskCutoff();
 
 	static F32     valueGlow(LLViewerObject* object, S32 face);
 
@@ -194,10 +193,10 @@ private:
 	LLUUID	getCurrentSpecularMap();
 	U32		getCurrentShininess();
 	U32		getCurrentBumpiness();
-	U8			getCurrentDiffuseAlphaMode();
-	U8			getCurrentAlphaMaskCutoff();
-	U8			getCurrentEnvIntensity();
-	U8			getCurrentGlossiness();
+	U8		getCurrentDiffuseAlphaMode();
+	U8		getCurrentAlphaMaskCutoff();
+	U8		getCurrentEnvIntensity();
+	U8		getCurrentGlossiness();
 	F32		getCurrentBumpyRot();
 	F32		getCurrentBumpyScaleU();
 	F32		getCurrentBumpyScaleV();
@@ -273,7 +272,7 @@ private:
 
 					U32		new_alpha_mode			= new_material->getDiffuseAlphaMode();
 					LLUUID	new_normal_map_id		= new_material->getNormalID();
-					LLUUID	new_spec_map_id		= new_material->getSpecularID();
+					LLUUID	new_spec_map_id			= new_material->getSpecularID();
 
 					if ((new_alpha_mode == LLMaterial::DIFFUSE_ALPHA_MODE_BLEND) && !is_alpha_face)
 					{

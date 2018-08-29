@@ -136,10 +136,6 @@ BOOL	LLPanelFace::postBuild()
 	childSetCommitCallback("TexOffsetU", LLPanelFace::onCommitTextureInfo, this);
 	childSetCommitCallback("TexOffsetV", LLPanelFace::onCommitTextureInfo, this);
 
-	childSetCommitCallback("glossiness", &LLPanelFace::onCommitMaterialGloss, this);
-	childSetCommitCallback("environment", &LLPanelFace::onCommitMaterialEnv, this);
-	childSetCommitCallback("maskcutoff", &LLPanelFace::onCommitMaterialMaskCutoff, this);
-
 	childSetAction("button align", &LLPanelFace::onClickAutoFix, this);
 
 	LLTextureCtrl*	mTextureCtrl;
@@ -157,7 +153,10 @@ BOOL	LLPanelFace::postBuild()
 	LLTextBox*		mLabelColorTransp;
 	//BD
 	LLUICtrl*		mCtrlColorTransp;		// transparency = 1 - alpha
-	LLUICtrl*     mCtrlGlow;
+	LLUICtrl*		mCtrlGlow;
+	LLUICtrl*		mCtrlGlossinessp;
+	LLUICtrl*		mCtrlEnvironmentp;
+	LLUICtrl*		mCtrlMaskCutoffp;
 
 	setMouseOpaque(FALSE);
 
@@ -231,7 +230,7 @@ BOOL	LLPanelFace::postBuild()
 	mCtrlColorTransp = getChild<LLUICtrl>("ColorTrans");
 	if (mCtrlColorTransp)
 	{
-		mCtrlColorTransp->setCommitCallback(boost::bind(&LLPanelFace::onCommitAlpha, this, _2));
+		mCtrlColorTransp->setCommitCallback(boost::bind(&LLPanelFace::sendAlpha, this));
 	}
 
 	mCheckFullbright = getChild<LLCheckBoxCtrl>("checkbox fullbright");
@@ -258,9 +257,26 @@ BOOL	LLPanelFace::postBuild()
 	mCtrlGlow = getChild<LLUICtrl>("glow");
 	if (mCtrlGlow)
 	{
-		mCtrlGlow->setCommitCallback(LLPanelFace::onCommitGlow, this);
+		mCtrlGlow->setCommitCallback(boost::bind(&LLPanelFace::sendGlow, this));
 	}
 
+	mCtrlGlossinessp = getChild<LLUICtrl>("glossiness");
+	if (mCtrlGlossinessp)
+	{
+		mCtrlGlossinessp->setCommitCallback(boost::bind(&LLPanelFace::onCommitMaterialGloss, this));
+	}
+
+	mCtrlEnvironmentp = getChild<LLUICtrl>("environment");
+	if (mCtrlEnvironmentp)
+	{
+		mCtrlEnvironmentp->setCommitCallback(boost::bind(&LLPanelFace::onCommitMaterialEnv, this));
+	}
+
+	mCtrlMaskCutoffp = getChild<LLUICtrl>("maskcutoff");
+	if (mCtrlMaskCutoffp)
+	{
+		mCtrlMaskCutoffp->setCommitCallback(boost::bind(&LLPanelFace::onCommitMaterialMaskCutoff, this));
+	}
 
 	clearCtrls();
 
@@ -1437,11 +1453,6 @@ void LLPanelFace::onCommitShinyColor(const LLSD& data)
 	LLSelectedTEMaterial::setSpecularLightColor(this, getChild<LLColorSwatchCtrl>("shinycolorswatch")->get());
 }
 
-void LLPanelFace::onCommitAlpha(const LLSD& data)
-{
-	sendAlpha();
-}
-
 void LLPanelFace::onCancelColor(const LLSD& data)
 {
 	LLSelectMgr::getInstance()->selectionRevertColors();
@@ -1668,13 +1679,6 @@ void LLPanelFace::onCommitFullbright(LLUICtrl* ctrl, void* userdata)
 }
 
 // static
-void LLPanelFace::onCommitGlow(LLUICtrl* ctrl, void* userdata)
-{
-	LLPanelFace* self = (LLPanelFace*)userdata;
-	self->sendGlow();
-}
-
-// static
 BOOL LLPanelFace::onDragTexture(LLUICtrl*, LLInventoryItem* item)
 {
 	BOOL accept = TRUE;
@@ -1794,26 +1798,21 @@ void LLPanelFace::onSelectNormalTexture(const LLSD& data)
 
 //BD
 //static
-void LLPanelFace::onCommitMaterialGloss(LLUICtrl* ctrl, void* userdata)
+void LLPanelFace::onCommitMaterialGloss()
 {
-	LLPanelFace* self = (LLPanelFace*)userdata;
-	llassert_always(self);
-	LLSelectedTEMaterial::setSpecularLightExponent(self, self->getCurrentGlossiness());
+	LLSelectedTEMaterial::setSpecularLightExponent(this, getCurrentGlossiness());
 }
 
 //static
-void LLPanelFace::onCommitMaterialEnv(LLUICtrl* ctrl, void* userdata)
+void LLPanelFace::onCommitMaterialEnv()
 {
-	LLPanelFace* self = (LLPanelFace*)userdata;
-	llassert_always(self);
-	LLSelectedTEMaterial::setEnvironmentIntensity(self, self->getCurrentEnvIntensity());
+	LLSelectedTEMaterial::setEnvironmentIntensity(this, getCurrentEnvIntensity());
 }
 
 //static
-void LLPanelFace::onCommitMaterialMaskCutoff(LLUICtrl* ctrl, void* userdata)
+void LLPanelFace::onCommitMaterialMaskCutoff()
 {
-	LLPanelFace* self = (LLPanelFace*)userdata;
-	LLSelectedTEMaterial::setAlphaMaskCutoff(self, self->getCurrentAlphaMaskCutoff());
+	LLSelectedTEMaterial::setAlphaMaskCutoff(this, getCurrentAlphaMaskCutoff());
 }
 
 // static
