@@ -526,6 +526,16 @@ BOOL	LLButton::handleRightMouseDown(S32 x, S32 y, MASK mask)
 			setFocus(TRUE);
 		}
 
+		//BD - UI Improvements
+		if ((MASK_SHIFT | MASK_CONTROL) & mask)
+		{
+			LLControlVariable* control = this->getControlVariable();
+			if (control)
+			{
+				control->resetToDefault(true);
+			}
+		}
+
 //		if (pointInView(x, y))
 //		{
 //		}
