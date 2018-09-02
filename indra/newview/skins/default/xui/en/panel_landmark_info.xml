@@ -264,7 +264,6 @@
                  layout="topleft"
                  left="74"
                  name="title_value"
-                 text_color="white"
                  top_delta="0"
                  use_ellipses="true"
                  width="290" /> 
@@ -296,7 +295,8 @@
                  max_length="127"
                  name="notes_editor"
                  read_only="true"
-                 text_readonly_color="white"
+                 bg_readonly_color="Transparent"
+                 text_readonly_color="LabelTextColor"
                  text_type="ascii_with_newline"
                  top_pad="4"
                  width="294"
