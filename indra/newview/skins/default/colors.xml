@@ -932,6 +932,13 @@
  name="EmphasisColorUserNames"
  value="1 1 1 0.75" />
  
+ <color
+ name="TextEditorBgFocusColor"
+ reference="White_10" />
+ <color
+ name="TextEditorBgWriteableColor"
+ reference="White_05" />
+ 
  <!-- Chat color names -->
  <color
  name="Red_Chat"
