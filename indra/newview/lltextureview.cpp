@@ -537,14 +537,14 @@ void LLGLTexMemBar::draw()
 		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &used_vram);
 		used_vram = max_vram - (used_vram / 1024);
 	}
-	//BD - AMD needs special treatment.
-	else if (gGLManager.mHasATIMemInfo)
+	//BD - AMD's memory reports are completely useless right now.
+	/*else if (gGLManager.mHasATIMemInfo)
 	{
 		max_vram = gDXHardware.getVRAM();
 		S32 meminfo[4];
 		glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, meminfo);
 		used_vram = max_vram - used_vram;
-	}
+	}*/
 
 	//----------------------------------------------------------------------------
 	LLGLSUIDefault gls_ui;
@@ -592,14 +592,14 @@ void LLGLTexMemBar::draw()
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
 	//BD
-	if (gGLManager.mIsNVIDIA)
-	{
-		data_progress = ((F32)used_vram - (F32)total_mem.value() - (F32)bound_mem.value() - (F32)fbo) / (F32)max_vram;
-	}
-	else
+	//if (gGLManager.mIsNVIDIA)
+	//{
+		data_progress = llclamp(((F32)used_vram - (F32)total_mem.value() - (F32)bound_mem.value() - (F32)fbo) / (F32)max_vram, 0.0f, 1.0f);
+	//}
+	/*else
 	{
 		data_progress = ((F32)total_mem.value() + (F32)bound_mem.value() + (F32)fbo) / (F32)max_vram;
-	}
+	}*/
 
 	//BD - Render a multi-segmented multi-colored bar showing where our memory goes.
 	//     First render the available memory chunk with a black background.
@@ -662,7 +662,7 @@ void LLGLTexMemBar::draw()
 	left = 140;
 	gGL.color4f(0.f, 0.f, 0.f, 0.75f);
 	gl_rect_2d(left, top - 9, left + bar_width, top - 3);
-	data_progress = (F32)total_mem.value() / (F32)max_total_mem.value();
+	data_progress = llclamp((F32)total_mem.value() / (F32)max_total_mem.value(), 0.0f, 1.0f);
 	if (data_progress > 0.0f)
 	{
 		//BD - Clamp
@@ -692,7 +692,7 @@ void LLGLTexMemBar::draw()
 
 	gGL.color4f(0.f, 0.f, 0.f, 0.75f);
 	gl_rect_2d(left, top - 9, left + bar_width, top - 3);
-	data_progress = (F32)bound_mem.value() / (F32)max_bound_mem.value();
+	data_progress = llclamp((F32)bound_mem.value() / (F32)max_bound_mem.value(), 0.0f, 1.0f);
 	if (data_progress > 0.0f)
 	{
 		//BD - Clamp
