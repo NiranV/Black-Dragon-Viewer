@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 
 <floater
- legacy_header_height="25"
  bevel_style="in"
- bg_opaque_image="Inspector_Background"
+ bg_opaque_image="Toast_Background"
  can_close="false"
  can_minimize="false"
- height="90"
+ height="42"
  layout="topleft"
  name="floater_voice_volume"
  single_instance="true"
  sound_flags="0"
- title="VOICE CHAT VOLUME"
+ title="Voice Chat Volume"
  visible="true"
  width="245">
+ <text
+  follows="top|left|right"
+  font="SansSerifSmall"
+  height="14"
+  left="10"
+  name="slider_label"
+  parse_urls="false"
+  top="0"
+  text_color="White"
+  translate="false"
+  use_ellipses="true"
+  value="Voice Chat"
+  width="226" />
 	<slider
 		control_name="AudioLevelVoice"
 		disabled_control="MuteAudio"
 		follows="left|top"
-		height="16"
+		height="23"
 		increment="0.025"
 		initial_value="0.5"
-		label="Voice Chat"
-		label_width="50"
 		layout="topleft"
-		left="15"
-		top="50"
+		left="5"
+		top_pad="0"
 		name="chat_voice_volume"
 		show_text="false"
 		slider_label.halign="right"
 		volume="true"
-		width="200">
+		width="215">
 	</slider>
 	<button
 		control_name="MuteVoice"
@@ -41,7 +51,8 @@
 		image_unselected="Audio_Off"
 		is_toggle="true"
 		layout="topleft"
-		left_pad="5"
+		left_pad="0"
+  top_delta="4"
 		name="mute_audio"
 		tab_stop="false"
 		width="16" />

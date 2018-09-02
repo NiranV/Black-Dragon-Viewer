@@ -4,37 +4,36 @@
   Single instance - only have one at a time, recycle it each spawn
 -->
 <floater
- legacy_header_height="25"
  bevel_style="in"
- bg_opaque_image="Inspector_Background"
+ bg_opaque_image="Toast_Background"
  can_close="false"
  can_minimize="false"
- height="90"
+ height="42"
  layout="topleft"
  name="floater_voice_volume"
  single_instance="true"
  sound_flags="0"
- title="VOICE VOLUME"
+ title="Voice Volume"
  visible="true"
  width="245">
     <text
      follows="top|left|right"
      font="SansSerifSmall"
-     height="21"
+     height="14"
      left="10"
      name="avatar_name"
      parse_urls="false"
-     top="35"
+     top="0"
      text_color="White"
      translate="false"
      use_ellipses="true"
      value="TestString PleaseIgnore"
-     width="225" />
+     width="226" />
     <slider
      follows="top|left"
      height="23"
      increment="0.01"
-     left="1"
+     left="5"
      max_val="0.95"
      min_val="0.05"
      name="volume_slider"
@@ -42,7 +41,7 @@
      tool_tip="Voice volume"
      top_pad="0"
      value="0.5"
-     width="200" />
+     width="215" />
     <button
      follows="top|left"
      height="16"
