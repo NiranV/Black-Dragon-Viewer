@@ -1990,13 +1990,13 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                     case LLMaterial::DIFFUSE_ALPHA_MODE_MASK:
                     {
                         is_alpha_mask = true;
-						is_alpha_blend = false;
+						//is_alpha_blend = false;
                     }
                     break;
 
                     case LLMaterial::DIFFUSE_ALPHA_MODE_BLEND:
                     {
-						is_alpha_mask = false;
+						//is_alpha_mask = false;
                         is_alpha_blend = true;
                     }
                     break;
@@ -2006,7 +2006,7 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                     case LLMaterial::DIFFUSE_ALPHA_MODE_NONE:
                     default:
 						is_alpha_blend = false;
-						is_alpha_mask = false;
+						//is_alpha_mask = false;
                         break;
                 }
             }
@@ -2016,7 +2016,7 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                 if (tex_entry->getAlpha() <= 0.99f)
                 {
                     is_alpha_blend = true;
-					is_alpha_mask = false;
+					//is_alpha_mask = false;
                 }
             }
 
