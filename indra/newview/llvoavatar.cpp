@@ -9179,12 +9179,13 @@ void LLVOAvatar::idleUpdateRenderComplexity()
 		}
 		mText->addLine(info_line, info_color, info_style);
 
+		//BD
 		// Visual rank
-		info_line = llformat("%d rank", mVisibilityRank);
+		//info_line = llformat("%d rank", mVisibilityRank);
 		// Use grey for imposters, white for normal rendering or no impostors
-		info_color.set(isImpostor() ? LLColor4::grey : LLColor4::white);
-		info_style = LLFontGL::NORMAL;
-		mText->addLine(info_line, info_color, info_style);
+		//info_color.set(isImpostor() ? LLColor4::grey : LLColor4::white);
+		//info_style = LLFontGL::NORMAL;
+		//mText->addLine(info_line, info_color, info_style);
 
 		// Attachment Surface Area
 		static LLCachedControl<F32> max_attachment_area(gSavedSettings, "RenderAutoMuteSurfaceAreaLimit", 1000.0f);
