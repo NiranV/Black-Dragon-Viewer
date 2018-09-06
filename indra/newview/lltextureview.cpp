@@ -509,42 +509,68 @@ private:
 
 void LLGLTexMemBar::draw()
 {
-	S32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
-	S32Megabytes max_bound_mem = LLViewerTexture::sMaxBoundTextureMemory;
-	S32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
-	S32Megabytes max_total_mem = LLViewerTexture::sMaxTotalTextureMem;
+	//BD - Memory Pie Chart
+	//LLColor4 bg_color = LLColor4(0.0f, .0f, 0.0f, 0.75f); // Background
+	//LLColor4 unavail_color = LLColor4(0.2f, 0.2f, 0.2f, 0.35f); // Unavailable
+	//LLColor4 fbo_color = LLColor4(0.75f, 0.45f, 0.45f, 0.75f); // FBO
+	//LLColor4 sys_color = LLColor4(0.75f, 0.75f, 0.f, 0.75f); // System
+	//LLColor4 scene_color = LLColor4(0.f, 0.75f, 0.75f, 0.75f); // Scene
+	//const S32 PIE_INNER_SIZE = 30;		// radius of the inner pie circle
+	//const S32 PIE_OUTER_SIZE = 45;		// radius of the outer pie circle
+	//F32 segment;
+	//F32 last_segment;
+
+	LLTrace::Recording& recording = LLViewerStats::instance().getRecording();
+
+	F64 cacheHits = recording.getSampleCount(LLTextureFetch::sCacheHit);
+	F64 cacheAttempts = recording.getSampleCount(LLTextureFetch::sCacheAttempt);
+
+	F32 cacheHitRate = (cacheAttempts > 0.0) ? F32((cacheHits / cacheAttempts) * 100.0f) : 0.0f;
+
+	U32 cacheReadLatMin = U32(recording.getMin(LLTextureFetch::sCacheReadLatency).value() * 1000.0f);
+	U32 cacheReadLatMed = U32(recording.getMean(LLTextureFetch::sCacheReadLatency).value() * 1000.0f);
+	U32 cacheReadLatMax = U32(recording.getMax(LLTextureFetch::sCacheReadLatency).value() * 1000.0f);
+	U32 texDecodeLatMin = U32(recording.getMin(LLTextureFetch::sTexDecodeLatency).value() * 1000.0f);
+	U32 texDecodeLatMed = U32(recording.getMean(LLTextureFetch::sTexDecodeLatency).value() * 1000.0f);
+	U32 texDecodeLatMax = U32(recording.getMax(LLTextureFetch::sTexDecodeLatency).value() * 1000.0f);
+	U32 texFetchLatMin = U32(recording.getMin(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
+	U32 texFetchLatMed = U32(recording.getMean(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
+	U32 texFetchLatMax = U32(recording.getMax(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
+
+	//BD
+	U32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
+	U32Megabytes max_bound_mem = LLViewerTexture::sMaxBoundTextureMemory;
+	U32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
+	U32Megabytes max_total_mem = LLViewerTexture::sMaxTotalTextureMem;
+
+	F32Bytes total_texture_downloaded = gTotalTextureData;
+	F32Bytes total_object_downloaded = gTotalObjectData;
+
 	F32 discard_bias = LLViewerTexture::sDesiredDiscardBias;
 	F32 cache_usage = LLAppViewer::getTextureCache()->getUsage().valueInUnits<LLUnits::Megabytes>();
 	F32 cache_max_usage = LLAppViewer::getTextureCache()->getMaxUsage().valueInUnits<LLUnits::Megabytes>();
+	F32 data_progress = 0.f;
+
 	S32 line_height = LLFontGL::getFontMonospace()->getLineHeight();
-	S32 v_offset = 0;//(S32)((texture_bar_height + 2.2f) * mTextureView->mNumTextureBars + 2.0f);
-	F32Bytes total_texture_downloaded = gTotalTextureData;
-	F32Bytes total_object_downloaded = gTotalObjectData;
+	S32 bar_width = 531;
+	S32 v_offset = 0;
+	S32 top = v_offset + line_height * 10;
+	S32 left = 140;
+	S32 right = 0;
+	S32 max_vram = gGLManager.mVRAM;
+	S32 used_vram = 0;
+
 	U32 total_http_requests = LLAppViewer::getTextureFetch()->getTotalNumHTTPRequests();
 	U32 total_active_cached_objects = LLWorld::getInstance()->getNumOfActiveCachedObjects();
 	U32 total_objects = gObjectList.getNumObjects();
 	U32 fbo = LLRenderTarget::sBytesAllocated / (1024 * 1024);
-	//BD
-	F32 data_progress;
-	S32 bar_width = 531;
-	S32 left = 140;
-	S32 right;
-	S32 top = v_offset + line_height * 10;
-	S32 max_vram = gGLManager.mVRAM;
-	S32 used_vram = 0;
+	
+	//BD - AMD's memory reports are completely useless right now. We focus on NVidia.
 	if (gGLManager.mHasNVXMemInfo)
 	{
 		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &used_vram);
 		used_vram = max_vram - (used_vram / 1024);
 	}
-	//BD - AMD's memory reports are completely useless right now.
-	/*else if (gGLManager.mHasATIMemInfo)
-	{
-		max_vram = gDXHardware.getVRAM();
-		S32 meminfo[4];
-		glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, meminfo);
-		used_vram = max_vram - used_vram;
-	}*/
 
 	//----------------------------------------------------------------------------
 	LLGLSUIDefault gls_ui;
@@ -557,25 +583,6 @@ void LLGLTexMemBar::draw()
 	std::string text = "";
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, v_offset + line_height*10,
 											 text_color, LLFontGL::LEFT, LLFontGL::TOP);
-
-	LLTrace::Recording& recording = LLViewerStats::instance().getRecording();
-
-	F64 cacheHits     = recording.getSampleCount(LLTextureFetch::sCacheHit);
-	F64 cacheAttempts = recording.getSampleCount(LLTextureFetch::sCacheAttempt);
-
-	F32 cacheHitRate = (cacheAttempts > 0.0) ? F32((cacheHits / cacheAttempts) * 100.0f) : 0.0f;
-
-	U32 cacheReadLatMin = U32(recording.getMin(LLTextureFetch::sCacheReadLatency).value() * 1000.0f);
-	U32 cacheReadLatMed = U32(recording.getMean(LLTextureFetch::sCacheReadLatency).value() * 1000.0f);
-	U32 cacheReadLatMax = U32(recording.getMax(LLTextureFetch::sCacheReadLatency).value() * 1000.0f);
-
-	U32 texDecodeLatMin = U32(recording.getMin(LLTextureFetch::sTexDecodeLatency).value() * 1000.0f);
-	U32 texDecodeLatMed = U32(recording.getMean(LLTextureFetch::sTexDecodeLatency).value() * 1000.0f);
-	U32 texDecodeLatMax = U32(recording.getMax(LLTextureFetch::sTexDecodeLatency).value() * 1000.0f);
-
-	U32 texFetchLatMin = U32(recording.getMin(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
-	U32 texFetchLatMed = U32(recording.getMean(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
-	U32 texFetchLatMax = U32(recording.getMax(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
 
 	//----------------------------------------------------------------------------
 	//BD - GPU Memory
@@ -591,15 +598,7 @@ void LLGLTexMemBar::draw()
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 681, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	//BD
-	//if (gGLManager.mIsNVIDIA)
-	//{
-		data_progress = llclamp(((F32)used_vram - (F32)total_mem.value() - (F32)bound_mem.value() - (F32)fbo) / (F32)max_vram, 0.0f, 1.0f);
-	//}
-	/*else
-	{
-		data_progress = ((F32)total_mem.value() + (F32)bound_mem.value() + (F32)fbo) / (F32)max_vram;
-	}*/
+	data_progress = llclamp(((F32)used_vram - (F32)total_mem.value() - (F32)bound_mem.value() - (F32)fbo) / (F32)max_vram, 0.0f, 1.0f);
 
 	//BD - Render a multi-segmented multi-colored bar showing where our memory goes.
 	//     First render the available memory chunk with a black background.
@@ -607,9 +606,19 @@ void LLGLTexMemBar::draw()
 	right = left + bar_width - (bar_width * data_progress);
 	gl_rect_2d(left, top - 9, right, top - 3);
 
+	//BD - Memory Pie Chart
+	/*gGL.matrixMode(LLRender::MM_MODELVIEW);
+	gGL.pushMatrix();
+	gGL.translatef(800.f, 40.f, 0.f);
+	segment = F_TWO_PI - (F_TWO_PI * data_progress);
+	gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, 0.f, segment, 32, bg_color, bg_color);*/
+
 	//BD - Render the unavailable memory as almost transparent black background.
 	gGL.color4f(0.2f, 0.2f, 0.2f, 0.35f);
 	gl_rect_2d(right, top - 9, left + bar_width, top - 3);
+	
+	//BD - Memory Pie Chart
+	//gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, segment, F_TWO_PI, 32, unavail_color, unavail_color);
 
 	if (data_progress > 0.0f)
 	{
@@ -622,6 +631,10 @@ void LLGLTexMemBar::draw()
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
 
+		//BD - Memory Pie Chart
+		//segment = F_TWO_PI * data_progress;
+		//gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, 0.0f, segment, 32, unavail_color, fbo_color);
+
 		//BD - Render the system memory bar.
 		data_progress = ((F32)total_mem.value()) / (F32)max_vram;
 		left = right;
@@ -632,6 +645,11 @@ void LLGLTexMemBar::draw()
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
 
+		//BD - Memory Pie Chart
+		//last_segment = segment;
+		//segment = segment + (F_TWO_PI * data_progress);
+		//gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, last_segment, segment, 32, unavail_color, sys_color);
+
 		//BD - Render the scene memory bar.
 		data_progress = ((F32)bound_mem.value()) / (F32)max_vram;
 		left = right;
@@ -641,7 +659,15 @@ void LLGLTexMemBar::draw()
 			gGL.color4f(0.f, 0.75f, 0.75f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
+
+		//BD - Memory Pie Chart
+		//last_segment = segment;
+		//segment = segment + (F_TWO_PI * data_progress);
+		//gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, last_segment, segment, 32, unavail_color, scene_color);
 	}
+
+	//BD - Memory Pie Chart
+	//gGL.popMatrix();
 
 	//----------------------------------------------------------------------------
 	//BD - Total System (Viewer) Memory
@@ -907,6 +933,7 @@ void LLGLTexMemBar::draw()
 
 	LLFontGL::getFontMonospace()->renderUTF8(title_string4, 0, title_x4, v_offset + line_height,
 									 text_color, LLFontGL::LEFT, LLFontGL::TOP);
+
 }
 
 BOOL LLGLTexMemBar::handleMouseDown(S32 x, S32 y, MASK mask)
