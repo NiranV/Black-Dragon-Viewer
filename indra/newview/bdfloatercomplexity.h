@@ -44,8 +44,8 @@ private:
 	bool checkObject(LLVOVolume* vovolume, LLVOVolume::texture_cost_t &textures,
 					bool &is_flexible, bool &has_particles, bool &is_light, bool &is_projector,	bool &is_alpha,
 					bool &has_bump, bool &has_shiny, bool &has_glow, bool &is_animated, bool &is_rigged, bool &has_media,
-					S32 &flexibles, /*S32 particles,*/ S32 &lights, S32 &projectors, S32 &alphas, S32 &rigged, S32 &medias,
-					U32 &volume_cost, U32 &total_cost, U32 &base_cost, U64 &total_triangles, U64 &total_vertices);
+					S32 &flexibles, /*S32 particles,*/ S32 &lights, S32 &projectors, /*S32 &alphas,*/ S32 &rigged, S32 &medias,
+					U32 &volume_cost, /*U32 &total_cost,*/ U32 &base_cost, U64 &total_triangles, U64 &total_vertices);
 	void onSelectEntry();
 	void onSelectAttachment();
 

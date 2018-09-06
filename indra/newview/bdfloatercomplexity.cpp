@@ -32,6 +32,7 @@
 #include "llviewerobjectlist.h"
 #include "llviewerobject.h"
 #include "llvovolume.h"
+#include "llface.h"
 
 BDFloaterComplexity::BDFloaterComplexity(const LLSD& key)
 	:	LLFloater(key),
@@ -222,9 +223,11 @@ void BDFloaterComplexity::calcARC()
 
 								checkObject(volume, textures, is_flexible, has_particles, is_light, is_projector,
 									is_alpha, has_bump, has_shiny, has_glow, is_animated, is_rigged, has_media,
-									flexibles, lights, projectors, alphas, rigged, medias,
-									attachment_volume_cost, attachment_total_cost, attachment_base_cost,
+									flexibles, lights, projectors, /*alphas,*/ rigged, medias,
+									attachment_volume_cost, /*attachment_total_cost,*/ attachment_base_cost,
 									attachment_total_triangles, attachment_total_vertices);
+
+								attachment_total_cost = attachment_volume_cost;
 
 								for (LLViewerObject* child_obj : volume->getChildren())
 								{
@@ -233,13 +236,15 @@ void BDFloaterComplexity::calcARC()
 									{
 										checkObject(child, textures, is_flexible, has_particles, is_light, is_projector,
 											is_alpha, has_bump, has_shiny, has_glow, is_animated, is_rigged, has_media,
-											flexibles, lights, projectors, alphas, rigged, medias,
-											attachment_volume_cost, attachment_total_cost, attachment_base_cost,
+											flexibles, lights, projectors, /*alphas,*/ rigged, medias,
+											attachment_volume_cost, /*attachment_total_cost,*/ attachment_base_cost,
 											attachment_total_triangles, attachment_total_vertices);
+
+										attachment_total_cost += attachment_volume_cost;
 									}
 								}
 
-								//BD - Count the texture impact and memory usage here now that we got all textures colelcted.
+								//BD - Count the texture impact and memory usage here now that we got all textures collected.
 								for (auto volume_texture : textures)
 								{
 									LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(volume_texture.first);
@@ -252,7 +257,7 @@ void BDFloaterComplexity::calcARC()
 
 								//BD - Final results.
 								texture_memory += attachment_memory_usage;
-								attachment_final_cost = attachment_volume_cost + attachment_texture_cost;
+								attachment_final_cost = attachment_total_cost + attachment_texture_cost;
 								cost += attachment_final_cost;
 								vertices += attachment_total_vertices;
 								triangles += attachment_total_triangles;
@@ -336,100 +341,103 @@ void BDFloaterComplexity::calcARC()
 bool BDFloaterComplexity::checkObject(LLVOVolume* vovolume, LLVOVolume::texture_cost_t &textures,
 									  bool &is_flexible, bool &has_particles, bool &is_light, bool &is_projector, bool &is_alpha,
 									  bool &has_bump, bool &has_shiny, bool &has_glow, bool &is_animated, bool &is_rigged, bool &has_media,
-									  S32 &flexibles, /*S32 particles,*/ S32 &lights, S32 &projectors, S32 &alphas, S32 &rigged, S32 &medias,
-									  U32 &volume_cost, U32 &total_cost, U32 &base_cost, U64 &total_triangles, U64 &total_vertices)
+									  S32 &flexibles, /*S32 particles,*/ S32 &lights, S32 &projectors, /*S32 &alphas,*/ S32 &rigged, S32 &medias,
+									  U32 &volume_cost, /*U32 &total_cost,*/ U32 &base_cost, U64 &total_triangles, U64 &total_vertices)
 {
-	//BD - Check all the easy costs and counts first.
-	volume_cost += vovolume->getRenderCost(textures);
-	total_cost += vovolume->mRenderComplexityTotal;
-	base_cost += vovolume->mRenderComplexityBase;
-	total_triangles += vovolume->getHighLODTriangleCount64();
-	total_vertices += vovolume->getNumVertices();
+	LLVolumeParams volume_params = vovolume->getVolume()->getParams();
+	LLVolume* volume = vovolume->getVolume();
+	if (volume != NULL)
+	{
+		volume_params = volume->getParams();
+	}
 
-	//BD - Check each object and count each feature being used.
-	//     TODO: Remove all booleans, we can just check the count if we need to,
-	//     though booleans end up nicely as "true" or "false" strings, which would
-	//     need additional effort if we don't do it with booleans. Ugh.
-	if (vovolume->getIsLight())
+	const LLDrawable* drawablep = vovolume->mDrawable;
+	if (vovolume->isSculpted())
 	{
-		lights++;
-		is_light = true;
+		if (vovolume->isMesh())
+		{
+			// base cost is dependent on mesh complexity
+			// note that 3 is the highest LOD as of the time of this coding.
+			S32 size = gMeshRepo.getMeshSize(volume_params.getSculptID(), vovolume->getLOD());
+			if (size > 0)
+			{
+				if (gMeshRepo.getSkinInfo(volume_params.getSculptID(), vovolume))
+				{
+					is_rigged = true;
+					rigged++;
+				}
+			}
+		}
 	}
-	if (vovolume->isLightSpotlight())
-	{
-		projectors++;
-		is_projector = true;
-	}
+
 	if (vovolume->isFlexible())
 	{
 		flexibles++;
 		is_flexible = true;
 	}
-	if (!is_rigged)
-	{
-		LLVolumeParams volume_params;
-		volume_params = vovolume->getVolume()->getParams();
-		if (gMeshRepo.getSkinInfo(volume_params.getSculptID(), vovolume))
-		{
-			is_rigged = true;
-			rigged++;
-		}
-	}
 	if (vovolume->isParticleSource())
 	{
 		has_particles = true;
 	}
-	if (vovolume->mIsAnimated)
+
+	if (vovolume->getIsLight())
 	{
-		is_animated = true;
+		lights++;
+		is_light = true;
+	}
+	else if (vovolume->getHasShadow())
+	{
+		projectors++;
+		is_projector = true;
 	}
 
-	//BD - We iterate through faces here because below checks need to be checked
-	//     on each surface and are no global object specific features, they are face
-	//     specific.
-	for (S32 i = 0; (i < vovolume->getNumFaces()); i++)
+	U32 num_faces = drawablep->getNumFaces();
+	for (S32 i = 0; i < num_faces; ++i)
 	{
-		LLTextureEntry* te = vovolume->getTE(i);
+		const LLFace* face = drawablep->getFace(i);
+		if (!face) continue;
+		const LLTextureEntry* te = face->getTextureEntry();
+
+		if (face->getPoolType() == LLDrawPool::POOL_ALPHA)
+		{
+			is_alpha = true;
+			//alphas++;
+		}
+
+		if (face->hasMedia())
+		{
+			has_media = true;
+			medias++;
+		}
+
 		if (te)
 		{
-			if (!has_glow
-				&& te->getGlow())
+			if (te->getBumpmap() && !has_bump)
+			{
+				has_bump = true;
+			}
+			if (te->getShiny() && !has_shiny)
+			{
+				has_shiny = true;
+			}
+			if (te->getGlow() > 0.f && !has_glow)
 			{
 				has_glow = true;
 			}
-
-			LLMaterialPtr mat = te->getMaterialParams();
-			if (mat)
+			if (face->mTextureMatrix != NULL && !is_animated)
 			{
-				if (!has_bump
-					&& (te->getBumpmap()
-					|| mat->getNormalID().notNull()))
-				{
-					has_bump = true;
-				}
-
-				if (!has_shiny
-					&& (te->getShiny()
-					|| mat->getSpecularID().notNull()))
-				{
-					has_shiny = true;
-				}
-
-				if (te->getColor().mV[VW] < 1.f
-					|| mat->getDiffuseAlphaMode() == LLMaterial::eDiffuseAlphaMode::DIFFUSE_ALPHA_MODE_BLEND)
-				{
-					is_alpha = true;
-					alphas++;
-				}
-			}
-
-			if (te->hasMedia())
-			{
-				has_media = true;
-				medias++;
+				is_animated = true;
 			}
 		}
 	}
+
+	//BD - Check all the easy costs and counts first.
+	volume_cost = vovolume->getRenderCost(textures);
+	//total_cost += volume_cost;
+	base_cost += vovolume->mRenderComplexityBase;
+	total_triangles += vovolume->getHighLODTriangleCount64();
+	total_vertices += vovolume->getNumVertices();
+
 	return true;
 }
 
@@ -469,7 +477,7 @@ void BDFloaterComplexity::onSelectEntry()
 		getChild<LLUICtrl>("panel_projector")->setVisible(item->getColumn(7)->getValue().asBoolean());
 		getChild<LLUICtrl>("label_projector")->setValue(item->getColumn(19)->getValue());
 		getChild<LLUICtrl>("panel_alpha")->setVisible(item->getColumn(8)->getValue().asBoolean());
-		getChild<LLUICtrl>("label_alpha")->setValue(item->getColumn(20)->getValue());
+		//getChild<LLUICtrl>("label_alpha")->setValue(item->getColumn(20)->getValue());
 		getChild<LLUICtrl>("panel_media")->setVisible(item->getColumn(14)->getValue().asBoolean());
 		getChild<LLUICtrl>("label_media")->setValue(item->getColumn(23)->getValue());
 		getChild<LLUICtrl>("panel_rigged")->setVisible(item->getColumn(13)->getValue().asBoolean());

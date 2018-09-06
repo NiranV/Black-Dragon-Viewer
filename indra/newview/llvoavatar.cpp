@@ -9254,10 +9254,10 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 
 	if (mVisualComplexityStale)
 	{
-		U32 cost = VISUAL_COMPLEXITY_UNKNOWN;
+		U64 cost = VISUAL_COMPLEXITY_UNKNOWN;
 		//BD - Triangle Count
 		//U32 vertices = VISUAL_COMPLEXITY_UNKNOWN;
-		U32 triangles = VISUAL_COMPLEXITY_UNKNOWN;
+		U64 triangles = VISUAL_COMPLEXITY_UNKNOWN;
 		LLVOVolume::texture_cost_t textures;
 		hud_complexity_list_t hud_complexity_list;
 
@@ -9293,7 +9293,7 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 					const LLDrawable* drawable = attached_object->mDrawable;
 					if (drawable)
 					{
-						const LLVOVolume* volume = drawable->getVOVolume();
+						LLVOVolume* volume = drawable->getVOVolume();
 						if (volume)
 						{
                             F32 attachment_total_cost = 0;
@@ -9302,7 +9302,7 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
                             F32 attachment_children_cost = 0;
 
 							//BD - Triangle Count
-							F32 attachment_total_triangles = 0;
+							U32 attachment_total_triangles = volume->getHighLODTriangleCount();
 							//F32 attachment_total_vertices = 0;
 
 							attachment_volume_cost += volume->getRenderCost(textures);
@@ -9339,10 +9339,10 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
                                                    << " children: " << attachment_children_cost
                                                    << LL_ENDL;
                             // Limit attachment complexity to avoid signed integer flipping of the wearer's ACI
-                            cost += (U32)llclamp(attachment_total_cost, MIN_ATTACHMENT_COMPLEXITY, max_attachment_complexity);
+							cost += attachment_total_cost;
 							//BD - Triangle Count
 							//vertices += (U32)llclamp(attachment_total_vertices, MIN_ATTACHMENT_COMPLEXITY, 9999999.f);
-							triangles += (U32)llclamp(attachment_total_triangles, MIN_ATTACHMENT_COMPLEXITY, 9999999.f);
+							triangles += attachment_total_triangles;
 						}
 					}
 				}
