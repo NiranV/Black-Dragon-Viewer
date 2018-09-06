@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.2.4 - Caring Dragon]"
+       label="[CHANNEL] [VERSION] - [3.2.5 - Caring Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -163,7 +163,7 @@ top="600"
        top="3">
        <panel
        follows="top|left"
-       height="9527"
+       height="9907"
        layout="topleft"
        left="0"
        name="login_scroll_panel"
@@ -174,8 +174,75 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="572"
+              height="364"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: ApwGoose / Harriet to the Patreon patron list.
+Added: Per suggestion: Image save path to snapshot floater.
+Added: Global light brightness option.
+Added: Automatic Memory Management option to dynamically change the maximum scene and system memory depending on the need.
+Changed: Clamp memory usage bars between 0.0 and 1.0 to prevent them from going off the charts.
+Changed: Make AMD cards use the same memory information again.
+Changed: Make the view cases where the default text editor is used readable.
+Changed: Readability improvements for the landmark info window.
+Changed: Local Chat Voice Volume toast to use the same style as normal info toasts.
+Changed: Nearby/People Voice Volume toast to use the same style as normal info toasts.
+Changed: Per request: Renamed YoungBlood to "Booker" in the Patreon patron list.
+Changed: Experimental changes to better allow up to a total of 8gb of texture memory being used.
+Changed: Increase max memory slider value to 3984MB (new tested safe max) allowing a total of 8gb.
+Changed: Reworked Complexity, make integer overflows impossible and match all complexity calculations.
+Changed: Adjusted triangle count, rigged mesh  and alpha complexity weights and adjusted complexity calculation to be additive based on the base value.
+Changed: Made complexity straight forward, no more divide by 10 to get smaller values. Some people will have crazy numbers.
+Changed: Raised default max complexity from 125000 to 150000 to accomodate the higher complexity values.
+Changed: Style of online/offline friend notifications and stopped them from linebreaking.
+Changed: Version to 3.2.5.
+Fixed: Input and Output tab being clipped off a bit.
+Fixed: Inworld and "Advanced Complexity Information" window showing vastly differing values for complexity and triangle counts.
+Fixed: Base triangles of the root object/prim not being counted into the triangle count in the inworld display.
+Fixed: (POTENTIAL) Attachments from other people randomly attaching to your HUD after logging in while everything is still loading.
+Removed: Useless "Rank" display in complexity information.
+Misc: Cleanup in lltextureview.cpp.
+Misc: Comment fixes.
+Misc: Return early in the right click check in sliders.
+Misc: Cleaned up llfloaterpreferences.cpp/h.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.2.4
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="572"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
