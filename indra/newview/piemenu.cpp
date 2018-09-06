@@ -187,7 +187,7 @@ void PieMenu::hide()
 
 	//BD - Disable Pie Menu sounds for now, they got corrupted causing a 1 sec freeze.
 	// make a sound when hiding
-	//("UISndPieMenuHide");
+	//make_ui_sound("UISndPieMenuHide");
 
 	LL_DEBUGS() << "Clearing selections" << LL_ENDL;
 
