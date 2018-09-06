@@ -20,7 +20,7 @@ width="510">
  height="407">
   <panel
   follows="top|left|right"
-  height="616"
+  height="619"
   label="Sounds"
   layout="topleft"
   left="0"
