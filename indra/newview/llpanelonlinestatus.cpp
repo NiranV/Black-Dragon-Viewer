@@ -47,9 +47,12 @@ LLPanelOnlineStatus::LLPanelOnlineStatus(
 	{
 		setMouseDownCallback(boost::bind(&LLNotification::respond,
 				notification, notification->getResponseTemplate()));
+
+		getChild<LLUICtrl>("online_icon")->setVisible(true);
+		getChild<LLUICtrl>("offline_icon")->setVisible(false);
 	}
 
-	S32 max_line_count =  gSavedSettings.getS32("TipToastMessageLineCount");
-	snapToMessageHeight(getChild<LLTextBox> ("message"), max_line_count);
-
+	//BD
+	//S32 max_line_count =  gSavedSettings.getS32("TipToastMessageLineCount");
+	snapToMessageHeight(getChild<LLTextBox> ("message"), 1);
 }
