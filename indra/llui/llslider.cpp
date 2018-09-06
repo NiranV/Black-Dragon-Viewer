@@ -346,6 +346,7 @@ BOOL LLSlider::handleRightMouseDown(S32 x, S32 y, MASK mask)
 		{
 			control->resetToDefault(true);
 			make_ui_sound("UISndClick");
+			return TRUE;
 		}
 	}
 	else
