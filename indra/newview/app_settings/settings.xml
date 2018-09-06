@@ -10541,7 +10541,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>125000</integer>
+    <integer>150000</integer>
   </map>
   <key>RenderHUDObjectsWarning</key>
   <map>
