@@ -1633,8 +1633,8 @@ void LLFloaterPreference::refreshWarnings()
 //BD - Memory Allocation
 void LLFloaterPreference::refreshMemoryControls()
 {
-	S32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
-	S32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
+	U32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
+	U32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
 	S32 max_vram = gGLManager.mVRAM;
 	S32 max_mem;
 	S32 used_vram = 0;
@@ -1644,10 +1644,10 @@ void LLFloaterPreference::refreshMemoryControls()
 	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
 	used_vram = max_vram - (avail_vram / 1024);
 	max_mem = (avail_vram + (S32)bound_mem.value() + (S32)total_mem.value());
-	percent = ((F32)used_vram / (F32)max_vram) * 100.f;
+	percent = llclamp(((F32)used_vram / (F32)max_vram) * 100.f, 0.f , 100.f);
 
 	//BD - Cap out at the highest possible stable value we tested.
-	max_mem = llclamp(max_mem, 128, 1992);
+	max_mem = llclamp(max_mem, 128, 3984);
 
 	//BD - Don't update max values when the widget is selected, we make entering values impossible otherwise.
 	if (!mSystemMemory->hasFocus() && !mSceneMemory->hasFocus())

@@ -242,9 +242,9 @@ public:
 	static F32 sLastFrameTime;
 
 	// Global memory statistics
-	static S32Bytes sGlobalTextureMemory;	// Tracks main memory texmem
-	static S32Bytes sBoundTextureMemory;	// Tracks bound texmem for last completed frame
-	static S32Bytes sCurBoundTextureMemory;		// Tracks bound texmem for current frame
+	static U32Bytes sGlobalTextureMemory;	// Tracks main memory texmem
+	static U32Bytes sBoundTextureMemory;	// Tracks bound texmem for last completed frame
+	static U32Bytes sCurBoundTextureMemory;		// Tracks bound texmem for current frame
 	static U32 sBindCount;					// Tracks number of texture binds for current frame
 	static U32 sUniqueCount;				// Tracks number of unique texture binds for current frame
 	static BOOL sGlobalUseAnisotropic;

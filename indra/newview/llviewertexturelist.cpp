@@ -1411,26 +1411,17 @@ const S32Megabytes MIN_MEM_FOR_NON_TEXTURE(512);
 void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 {
 	// Initialize the image pipeline VRAM settings
-	S32Megabytes cur_mem(gSavedSettings.getS32("TextureMemory"));
-	S32Megabytes sys_mem(gSavedSettings.getS32("SystemMemory"));
+	U32Megabytes cur_mem(gSavedSettings.getS32("TextureMemory"));
+	U32Megabytes sys_mem(gSavedSettings.getS32("SystemMemory"));
 
 	//BD - Allow seperate system memory settings
 	//   - Make sure we always have at least a bit memory.
 	//     We'll not allow going below it in the UI anyway and it should be available
 	//     on every card... really.
-	//   - Make sure we do not allow more than 1992mb, it's the highest currently
+	//   - Make sure we do not allow more than 3984MB, it's the highest currently
 	//     tested and working memory we can use. Might raise this in future.
-	if (cur_mem == (S32Bytes)0)
-		//|| cur_mem > (S32Megabytes)1992)
-	{
-		cur_mem = llclamp(cur_mem, (S32Megabytes)128, (S32Megabytes)1992);
-	}
-
-	if (sys_mem == (S32Bytes)0)
-		//|| sys_mem > (S32Megabytes)1992)
-	{
-		sys_mem = llclamp(sys_mem, (S32Megabytes)128, (S32Megabytes)1992);
-	}
+	cur_mem = llclamp(cur_mem, (U32Megabytes)128, (U32Megabytes)3984);
+	sys_mem = llclamp(sys_mem, (U32Megabytes)128, (U32Megabytes)3984);
 
 	mMaxResidentTexMemInMegaBytes = cur_mem;
 	mMaxTotalTextureMemInMegaBytes = sys_mem;
