@@ -104,6 +104,8 @@ void LLViewerTextureList::init()
 	sNumImages = 0;
 	mMaxResidentTexMemInMegaBytes = (U32Bytes)0;
 	mMaxTotalTextureMemInMegaBytes = (U32Bytes)0;
+
+	mAutomaticMemoryManagement = gSavedSettings.getBOOL("AutomaticMemoryManagement");
 	
 	// Update how much texture RAM we're allowed to use.
 	updateMaxResidentTexMem(S32Megabytes(0)); // 0 = use current
@@ -1433,8 +1435,42 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 	mMaxResidentTexMemInMegaBytes = cur_mem;
 	mMaxTotalTextureMemInMegaBytes = sys_mem;
 
-	LL_INFOS() << "Available Video Memory set to: " << sys_mem << " MB" << LL_ENDL;
-	LL_INFOS() << "Available Texture Memory set to: " << cur_mem << " MB" << LL_ENDL;
+	LL_INFOS() << "Available System / Scene Memory set to: " << sys_mem << " MB / " << cur_mem << " MB" << LL_ENDL;
+}
+
+//BD - Automatic Memory Management
+void LLViewerTextureList::idleUpdateMaxResidentTexMem()
+{
+	//BD - First lets find out how much VRAM we actually have.
+	S32 tot_mem = gGLManager.mVRAM;
+
+	//BD - Limit our absolute maximum memory to roughly 90% of our available.
+	//     This way we leave some rest for FBO.
+	U32Megabytes max_mem = (U32Megabytes)tot_mem * 0.9f;
+
+	//BD - Find out how much memory we are currently using for each.
+	U32Megabytes cur_mem = LLViewerTexture::sBoundTextureMemory;
+	U32Megabytes sys_mem = LLViewerTexture::sTotalTextureMemory;
+
+	U32Megabytes new_cur_mem;
+	U32Megabytes new_sys_mem;
+
+	bool base_max = (max_mem >= (U32Megabytes)3984 || !gGLManager.mHasNVXMemInfo);
+
+	//BD - Give system memory first, either ~4000MB or whatever our 90% of our real max VRAM is.
+	//     Start out with the currently used memory and add 32 megabytes on top of it.
+	//     Make sure we never exceed our maximum though.
+	//     Fallback to ~4000MB when we are not using a NVidia GPU.
+	new_sys_mem = llclamp(sys_mem + (U32Megabytes)32, (U32Megabytes)128, base_max ? (U32Megabytes)3984 : max_mem);
+
+	max_mem -= new_sys_mem;
+	base_max = (max_mem >= (U32Megabytes)3984 || !gGLManager.mHasNVXMemInfo);
+
+	//BD - Give the rest memory to scene memory, again up to a total max of ~4000MB.
+	new_cur_mem = llclamp(cur_mem + (U32Megabytes)32, (U32Megabytes)128, base_max ? (U32Megabytes)3984 : max_mem);
+
+	mMaxResidentTexMemInMegaBytes = new_cur_mem;
+	mMaxTotalTextureMemInMegaBytes = new_sys_mem;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

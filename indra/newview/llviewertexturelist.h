@@ -129,6 +129,9 @@ public:
 	S32 getNumImages()					{ return mImageList.size(); }
 
 	void updateMaxResidentTexMem(S32Megabytes mem);
+
+	//BD - Automatic Memory Management
+	void idleUpdateMaxResidentTexMem();
 	
 	void doPreloadImages();
 	void doPrefetchImages();
@@ -208,6 +211,8 @@ public:
 	std::set<LLViewerFetchedTexture*> mDirtyTextureList;
 	
 	BOOL mForceResetTextureStats;
+
+	BOOL mAutomaticMemoryManagement;
     
 private:
     typedef std::map< LLTextureKey, LLPointer<LLViewerFetchedTexture> > uuid_map_t;

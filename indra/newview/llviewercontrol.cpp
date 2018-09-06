@@ -872,6 +872,17 @@ static bool handleMachinimaSidebar(const LLSD& newvalue)
 	gSideBar->refreshGraphicControls();
 	return true;
 }
+
+//BD - Automatic Memory Management
+static bool handleAutomaticMemoryManagement(const LLSD& newvalue)
+{
+	if (!newvalue.asBoolean())
+	{
+		gTextureList.updateMaxResidentTexMem((S32Megabytes)0);
+	}
+	gTextureList.mAutomaticMemoryManagement = newvalue.asBoolean();
+	return true;
+}
 //BD
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1038,6 +1049,8 @@ void settings_setup_listeners()
 	//BD - System
 	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
 	gSavedSettings.getControl("SystemMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
+	//BD - Automatic Memory Management
+	gSavedSettings.getControl("AutomaticMemoryManagement")->getSignal()->connect(boost::bind(&handleAutomaticMemoryManagement, _2));
 //	//BD - Catznip's Borderless Window Mode
 	gSavedSettings.getControl("FullScreenWindow")->getSignal()->connect(boost::bind(&handleFullscreenWindow, _2));
 	

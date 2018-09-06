@@ -110,6 +110,9 @@ BOOL LLViewerTexture::sFreezeImageScalingDown = FALSE;
 F32 LLViewerTexture::sCurrentTime = 0.0f;
 F32  LLViewerTexture::sTexelPixelRatio = 1.0f;
 
+//BD
+LLFrameTimer LLViewerTexture::sGracePeriodTimer;
+
 LLViewerTexture::EDebugTexels LLViewerTexture::sDebugTexelsMode = LLViewerTexture::DEBUG_TEXELS_OFF;
 
 const F32 desired_discard_bias_min = -2.0f; // -max number of levels to improve image quality by
@@ -475,6 +478,8 @@ void LLViewerTexture::initClass()
 	{
 		sTexelPixelRatio = gSavedSettings.getF32("TexelPixelRatio");
 	}
+
+	sGracePeriodTimer.stop();
 }
 
 // tuning params
@@ -564,24 +569,54 @@ void LLViewerTexture::updateClass(const F32 velocity, const F32 angular_velocity
 	sMaxTotalTextureMem = gTextureList.getMaxTotalTextureMem();
 	sMaxDesiredTextureMem = sMaxTotalTextureMem; //in Bytes, by default and when total used texture memory is small.
 
+	//BD - Automatic Memory Management
+	//     Do memory management here, check whether we need more memory
+	//     and if enough memory is available.
+	if (gTextureList.mAutomaticMemoryManagement)
+	{
+		gTextureList.idleUpdateMaxResidentTexMem();
+	}
+
 	if (sBoundTextureMemory >= sMaxBoundTextureMemory ||
 		sTotalTextureMemory >= sMaxTotalTextureMem)
 	{
-		//when texture memory overflows, lower down the threshold to release the textures more aggressively.
-		sMaxDesiredTextureMem = llmin(sMaxDesiredTextureMem * 0.75f, F32Bytes(gMaxVideoRam));
-	
-		// If we are using more texture memory than we should,
-		// scale up the desired discard level
-		if (sEvaluationTimer.getElapsedTimeF32() > discard_delta_time)
+		if (!sGracePeriodTimer.getStarted())
 		{
-			sDesiredDiscardBias += discard_bias_delta;
-			sEvaluationTimer.reset();
+			sGracePeriodTimer.start();
+		}
+		
+		//BD - Give it two seconds before starting to trash textures.
+		if (sGracePeriodTimer.getElapsedTimeF32() > 2.0f)
+		{
+			//when texture memory overflows, lower down the threshold to release the textures more aggressively.
+			sMaxDesiredTextureMem = llmin(sMaxDesiredTextureMem * 0.75f, F32Bytes(gMaxVideoRam));
+
+			// If we are using more texture memory than we should,
+			// scale up the desired discard level
+			if (sEvaluationTimer.getElapsedTimeF32() > discard_delta_time)
+			{
+				sDesiredDiscardBias += discard_bias_delta;
+				sEvaluationTimer.reset();
+				//BD - Stop our grace period timer.
+				sGracePeriodTimer.stop();
+			}
 		}
 	}
 	else if(sEvaluationTimer.getElapsedTimeF32() > discard_delta_time && isMemoryForTextureLow())
 	{
-		sDesiredDiscardBias += discard_bias_delta;
-		sEvaluationTimer.reset();
+		if (!sGracePeriodTimer.getStarted())
+		{
+			sGracePeriodTimer.start();
+		}
+
+		//BD - Give it two seconds before starting to trash textures.
+		if (sGracePeriodTimer.getElapsedTimeF32() > 2.0f)
+		{
+			sDesiredDiscardBias += discard_bias_delta;
+			sEvaluationTimer.reset();
+			//BD - Stop our grace period timer.
+			sGracePeriodTimer.stop();
+		}
 	}
 	else if (sDesiredDiscardBias > 0.0f &&
 			 sBoundTextureMemory < sMaxBoundTextureMemory * texmem_lower_bound_scale &&
@@ -594,6 +629,12 @@ void LLViewerTexture::updateClass(const F32 velocity, const F32 angular_velocity
 			sDesiredDiscardBias -= discard_bias_delta;
 			sEvaluationTimer.reset();
 		}
+	}
+	else
+	{
+		//BD - Stop the grace period timer immediately when we are out of the "overflow"
+		//     zone, to prevent texture trashing from going off still.
+		sGracePeriodTimer.stop();
 	}
 	sDesiredDiscardBias = llclamp(sDesiredDiscardBias, desired_discard_bias_min, desired_discard_bias_max);
 	

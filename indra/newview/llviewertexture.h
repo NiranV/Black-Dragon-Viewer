@@ -226,6 +226,8 @@ public:
 	static S32 sMaxSmallImageSize ;
 	static BOOL sFreezeImageScalingDown ;//do not scale down image res if set.
 	static F32  sCurrentTime ;
+	//BD
+	static LLFrameTimer sGracePeriodTimer;
 
 	enum EDebugTexels
 	{

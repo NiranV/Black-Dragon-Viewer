@@ -10,7 +10,7 @@ name="Display panel"
 top="0"
 width="510">
  <layout_stack
-   follows="top|left|right"
+   follows="all"
    height="408"
    layout="topleft"
    left="0"
@@ -21,7 +21,7 @@ width="510">
    top="0"
    width="510">
       <layout_panel
-	  follows="top|left|right"
+	  follows="all"
 	  layout="topleft"
 	  height="387"
 	  auto_resize="true"
@@ -49,7 +49,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="3393"
+   height="3437"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -155,7 +155,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsViewerVisible"
 	  layout="topleft"
-	  height="227"
+	  height="243"
 	  auto_resize="false"
       visible="false"
 	  name="viewer_layout_panel"
@@ -364,8 +364,20 @@ width="510">
          image_overlay="Caution_Widget"
          image_overlay_alignment="left"/>
       </check_box>
+ <check_box
+      control_name="AutomaticMemoryManagement"
+      height="16"
+      initial_value="false"
+      label="Automatic Memory Management"
+      layout="topleft"
+      left="10"
+      tool_tip="This option enables automatically raising or lowering the memory limits depending on how much is currently used to minimize the empty unused reserved memory to a minimum."
+      name="CompressTextures"
+      top_pad="0"
+      width="256"/>
  <slider
  control_name="SystemMemory"
+ disabled_control="AutomaticMemoryManagement"
  decimal_digits="0"
  can_edit_text="true"
  follows="left|top"
@@ -401,6 +413,7 @@ width="510">
       </button>
  <slider
  control_name="TextureMemory"
+ disabled_control="AutomaticMemoryManagement"
  decimal_digits="0"
  can_edit_text="true"
  follows="left|top"
@@ -3342,7 +3355,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="592"
+	  height="608"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
