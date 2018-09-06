@@ -178,7 +178,6 @@ void LLFloaterSnapshotBase::ImplBase::updateLayout(LLFloaterSnapshotBase* floate
 	LLUICtrl* thumbnail_placeholder = floaterp->getChild<LLUICtrl>("thumbnail_placeholder");
 	thumbnail_placeholder->setVisible(mAdvanced);
 	thumbnail_placeholder->reshape(panel_width, thumbnail_placeholder->getRect().getHeight());
-	floaterp->getChild<LLUICtrl>("image_res_text")->setVisible(mAdvanced);
 	floaterp->getChild<LLUICtrl>("file_size_label")->setVisible(mAdvanced);
 	if(!floaterp->isMinimized())
 	{
@@ -271,19 +270,13 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
 	}
 
 	// Update displayed image resolution.
-	LLTextBox* image_res_tb = floater->getChild<LLTextBox>("image_res_text");
-	image_res_tb->setVisible(got_snap);
-	if (got_snap)
-	{
-		image_res_tb->setTextArg("[WIDTH]", llformat("%d", previewp->getEncodedImageWidth()));
-		image_res_tb->setTextArg("[HEIGHT]", llformat("%d", previewp->getEncodedImageHeight()));
-	}
-
-	floater->getChild<LLUICtrl>("file_size_label")->setTextArg("[SIZE]", got_snap ? bytes_string : floater->getString("unknown"));
-	floater->getChild<LLUICtrl>("file_size_label")->setColor(
-			shot_type == LLSnapshotModel::SNAPSHOT_POSTCARD
-			&& got_bytes
-			&& previewp->getDataSize() > MAX_POSTCARD_DATASIZE ? LLUIColor(LLColor4::red) : LLUIColorTable::instance().getColor( "LabelTextColor" ));
+	LLTextBox* file_info_label = floater->getChild<LLTextBox>("file_size_label");
+	file_info_label->setTextArg("[WIDTH]", got_snap ? llformat("%d", previewp->getEncodedImageWidth()) : floater->getString("unknown"));
+	file_info_label->setTextArg("[HEIGHT]", got_snap ? llformat("%d", previewp->getEncodedImageHeight()) : floater->getString("unknown"));
+	file_info_label->setTextArg("[SIZE]", got_snap ? bytes_string : floater->getString("unknown"));
+	file_info_label->setColor(shot_type == LLSnapshotModel::SNAPSHOT_POSTCARD
+								&& got_bytes
+								&& previewp->getDataSize() > MAX_POSTCARD_DATASIZE ? LLUIColor(LLColor4::red) : LLUIColorTable::instance().getColor( "LabelTextColor" ));
 
 	// Update the width and height spinners based on the corresponding resolution combos. (?)
 	switch(shot_type)

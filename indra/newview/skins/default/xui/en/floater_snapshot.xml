@@ -17,7 +17,7 @@
  min_height="455">
     <floater.string
      name="unknown">
-        unknown
+        -
     </floater.string>
     <string
      name="postcard_progress_str">
@@ -57,19 +57,19 @@
  	</string>
  	<string
  	 name="local_succeeded_str">
- 	    Saved to Computer!
+ 	    Saved to Computer in:
  	</string>
  	<string
      name="facebook_failed_str">
- 	    Failed to upload image to your Facebook timeline.
+ 	    Failed to upload to Facebook.
  	</string>
  	<string
      name="profile_failed_str">
- 	    Failed to upload image to your Profile Feed.
+ 	    Failed to upload to profile.
  	</string>
  	<string
  	 name="postcard_failed_str">
- 	    Failed to send email.
+ 	    Failed to send EMail.
  	</string>
  	<string
  	 name="inventory_failed_str">
@@ -460,30 +460,30 @@
    <text
     type="string"
     font="SansSerifSmall"
+    control_name="SnapshotBaseDir"
     length="1"
     follows="left|top|right"
     height="14"
     layout="topleft"
     left="220"
-	right="-20"
+    right="-172"
     halign="left"
-    name="image_res_text"
+    name="image_path"
     top_delta="5"
-    width="200">
-       [WIDTH]px (width) x [HEIGHT]px (height)
+    width="230">
    </text>
    <text
     follows="right|top"
     font="SansSerifSmall"
     height="14"
     layout="topleft"
-    left="-65"
+    left="-167"
     length="1"
     halign="right"
     name="file_size_label"
     top_delta="0"
     type="string"
-    width="50">
-       [SIZE] KB
+    width="150">
+       [WIDTH]px x [HEIGHT]px @ [SIZE] KB
    </text>
 </floater>
