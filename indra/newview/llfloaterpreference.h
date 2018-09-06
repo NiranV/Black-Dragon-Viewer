@@ -54,15 +54,6 @@ class LLTabContainer;
 
 typedef std::map<std::string, std::string> notifications_map;
 
-typedef enum
-	{
-		GS_LOW_GRAPHICS,
-		GS_MID_GRAPHICS,
-		GS_HIGH_GRAPHICS,
-		GS_ULTRA_GRAPHICS
-		
-	} EGraphicsSettings;
-
 //BD
 class LLPanelVoiceDeviceSettings : public LLPanel
 {
@@ -134,8 +125,6 @@ protected:
 	//BD
 	void		onBtnOK();
 	void		onBtnCancel();
-	//BD - TODO: Maybe remove it?
-	void		onBtnApply();
 
 	void		onClickClearCache();			// Clear viewer texture cache, vfs, and VO cache on next startup
 	void		onClickBrowserClearCache();		// Clear web history and caches as well as viewer caches above

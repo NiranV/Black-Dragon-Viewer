@@ -957,7 +957,6 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 		registered_change_dialog = true;
 	}
 	
-	mCommitCallbackRegistrar.add("Pref.Apply",					boost::bind(&LLFloaterPreference::onBtnApply, this));
 	mCommitCallbackRegistrar.add("Pref.Cancel",					boost::bind(&LLFloaterPreference::onBtnCancel, this));
 	mCommitCallbackRegistrar.add("Pref.OK",						boost::bind(&LLFloaterPreference::onBtnOK, this));
 	
@@ -1734,9 +1733,6 @@ void LLFloaterPreference::apply()
 		if (panel)
 			panel->apply();
 	}
-	
-	//BD - Doesn't work anyway.
-	//gViewerWindow->requestResolutionUpdate(); // for UIScaleFactor
 
 	LLSliderCtrl* fov_slider = getChild<LLSliderCtrl>("camera_fov");
 	fov_slider->setMinValue(LLViewerCamera::getInstance()->getMinView());
@@ -1850,26 +1846,20 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 		gAgent.getID().notNull() &&
 		(gAgent.isMature() || gAgent.isGodlike());
 	
-	LLComboBox* maturity_combo = getChild<LLComboBox>("maturity_desired_combobox");
+	//BD
+	LLRadioGroup* maturity_radio = getChild<LLRadioGroup>("maturity_desired_radio");
 	LLAvatarPropertiesProcessor::getInstance()->sendAvatarPropertiesRequest( gAgent.getID() );
 	if (can_choose_maturity)
 	{		
 		// if they're not adult or a god, they shouldn't see the adult selection, so delete it
 		if (!gAgent.isAdult() && !gAgent.isGodlikeWithoutAdminMenuFakery())
 		{
-			// we're going to remove the adult entry from the combo
-			LLScrollListCtrl* maturity_list = maturity_combo->findChild<LLScrollListCtrl>("ComboBox");
-			if (maturity_list)
-			{
-				maturity_list->deleteItems(LLSD(SIM_ACCESS_ADULT));
-			}
+			//BD - We're going to disable the adult radio button
+			maturity_radio->setIndexEnabled(2, FALSE);
 		}
-		getChildView("maturity_desired_combobox")->setEnabled( true);
 	}
-	else
-	{
-		getChildView("maturity_desired_combobox")->setEnabled( false);
-	}
+
+	maturity_radio->setEnabled(can_choose_maturity);
 
 	// Forget previous language changes.
 	mLanguageChanged = false;
@@ -1951,8 +1941,6 @@ void LLFloaterPreference::updateShowFavoritesCheckbox(bool val)
 void LLFloaterPreference::setHardwareDefaults()
 {
 	LLFeatureManager::getInstance()->applyRecommendedSettings();
-
-	//refreshEnabledGraphics();
 
 	gSavedSettings.setString("PresetGraphicActive", "");
 	LLPresetsManager::getInstance()->triggerChangeSignal();
@@ -2089,24 +2077,6 @@ void LLFloaterPreference::onBtnOK()
 
 }
 
-//BD - We really have an apply button still? TODO: Remove.
-// static 
-void LLFloaterPreference::onBtnApply()
-{
-	if (hasFocus())
-	{
-		LLUICtrl* cur_focus = dynamic_cast<LLUICtrl*>(gFocusMgr.getKeyboardFocus());
-		if (cur_focus && cur_focus->acceptsTextInput())
-		{
-			cur_focus->onCommit();
-		}
-	}
-	apply();
-	saveSettings();
-
-	//LLPanelLogin::updateLocationSelectorsVisibility();
-}
-
 //BD
 // static 
 void LLFloaterPreference::onBtnCancel()
@@ -2137,46 +2107,11 @@ void LLFloaterPreference::updateUserInfo(const std::string& visibility, bool im_
 
 void LLFloaterPreference::refreshEnabledGraphics()
 {
-	//BD - Check which GPU we have and according to the GPU allow us to toggle options.
-	
 	//BD - If we detect an Intel GPU, display a warning that this will negatively impact
 	//     performance and not all features might be usable depending on the GPU.
 	bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsATI);
 
-	//BD - Viewer Options
-	//BD - Quality Options
-	//BD - Rendering Options
-	//BD - Windlight Options
-	//     These are enabled regardless.
-
 	getChild<LLUICtrl>("warning_multi_panel")->setVisible(!is_good_gpu);
-
-	/*
-	//BD - Deferred Rendering
-	getChild<LLUICtrl>("deferred_layout")->setEnabled(is_good_gpu);
-	getChild<LLUICtrl>("deferred_layout_panel")->setEnabled(is_good_gpu);
-	//BD - Screen Space Ambient Occlusion (SSAO)
-	getChild<LLUICtrl>("ao_layout")->setEnabled(is_good_gpu);
-	getChild<LLUICtrl>("ao_layout_panel")->setEnabled(is_good_gpu);
-	//BD - Depth of Field
-	getChild<LLUICtrl>("dof_layout")->setEnabled(is_good_gpu);
-	getChild<LLUICtrl>("dof_layout_panel")->setEnabled(is_good_gpu);
-	//BD - Motion Blur
-	getChild<LLUICtrl>("motionblur_layout")->setEnabled(is_good_gpu);
-	getChild<LLUICtrl>("motionblur_layout_panel")->setEnabled(is_good_gpu);
-	//BD - Volumetric Lighting
-	getChild<LLUICtrl>("godrays_layout")->setEnabled(is_good_gpu);
-	getChild<LLUICtrl>("godrays_layout_panel")->setEnabled(is_good_gpu);
-	//BD - Post Processing Effects
-	getChild<LLUICtrl>("post_layout")->setEnabled(is_good_gpu);
-	getChild<LLUICtrl>("post_layout_panel")->setEnabled(is_good_gpu);
-	//BD - Tone Mapping
-	getChild<LLUICtrl>("tonemapping_layout")->setEnabled(is_good_gpu);
-	getChild<LLUICtrl>("tonemapping_layout_panel")->setEnabled(is_good_gpu);
-	//BD - Vignette
-	getChild<LLUICtrl>("vignette_layout")->setEnabled(is_good_gpu);
-	getChild<LLUICtrl>("vignette_layout_panel")->setEnabled(is_good_gpu);
-	*/
 }
 
 void LLFloaterPreference::onClickClearCache()
@@ -2203,7 +2138,8 @@ void LLFloaterPreference::onLanguageChange()
 
 void LLFloaterPreference::onNotificationsChange(const std::string& OptionName)
 {
-	mNotificationOptions[OptionName] = getChild<LLComboBox>(OptionName)->getSelectedItemLabel();
+	//BD
+	mNotificationOptions[OptionName] = getChild<LLRadioGroup>(OptionName)->getSelectedValue();
 
 	bool show_notifications_alert = true;
 	for (notifications_map::iterator it_notification = mNotificationOptions.begin(); it_notification != mNotificationOptions.end(); it_notification++)
@@ -2232,7 +2168,6 @@ void LLFloaterPreference::onNameTagOpacityChange(const LLSD& newvalue)
 void LLFloaterPreference::onClickSetCache()
 {
 	std::string cur_name(gSavedSettings.getString("CacheLocation"));
-//	std::string cur_top_folder(gDirUtilp->getBaseFileName(cur_name));
 	
 	std::string proposed_name(cur_name);
 
@@ -2468,7 +2403,6 @@ void LLFloaterPreference::onClickEnablePopup()
 	for (itor = items.begin(); itor != items.end(); ++itor)
 	{
 		LLNotificationTemplatePtr templatep = LLNotifications::instance().getTemplate(*(std::string*)((*itor)->getUserdata()));
-		//gSavedSettings.setWarning(templatep->mName, TRUE);
 		std::string notification_name = templatep->mName;
 		LLUI::sSettingGroups["ignores"]->setBOOL(notification_name, TRUE);
 	}
@@ -2979,9 +2913,6 @@ BOOL LLPanelPreference::postBuild()
 	if (hasChild("favorites_on_login_check", TRUE))
 	{
 		getChild<LLCheckBoxCtrl>("favorites_on_login_check")->setCommitCallback(boost::bind(&handleFavoritesOnLoginChanged, _1, _2));
-		//BD
-		//bool show_favorites_at_login = LLPanelLogin::getShowFavorites();
-		//getChild<LLCheckBoxCtrl>("favorites_on_login_check")->setValue(show_favorites_at_login);
 	}
 
 	//////////////////////PanelAdvanced ///////////////////
