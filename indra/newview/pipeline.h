@@ -979,6 +979,7 @@ public:
 	static F32 RenderChromaStrength;
 	static F32 RenderSnapshotMultiplier;
 	static F32 RenderShadowFarClip;
+	static F32 RenderGlobalLightStrength;
 	static LLVector4 RenderShadowFarClipVec;
 
 //	//BD - Shadow Map Allocation

@@ -4043,6 +4043,39 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+ <slider
+      control_name="RenderGlobalLightStrength"
+      decimal_digits="2"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      can_edit_text="true"
+      label="Global Light Strength:"
+      label_width="150"
+      tool_tip="This option control the brightness of all lights in the scene regardless whether they are spotlights or pointlights."
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="0.00"
+      name="RenderGlobalLightStrength"
+      top_pad="1"
+      width="327"/>
+ <button
+ follows="left|top"
+ control_name="RenderGlobalLightStrength"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
 <text
  type="string"
  length="1"

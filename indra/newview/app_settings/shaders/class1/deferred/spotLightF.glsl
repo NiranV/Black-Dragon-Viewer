@@ -70,6 +70,8 @@ uniform vec2 screen_res;
 
 uniform mat4 inv_proj;
 
+uniform float global_light_strength;
+
 vec2 encode_normal(vec3 n)
 {
 	float f = sqrt(8 * n.z + 8);
@@ -342,6 +344,8 @@ void main()
 	}
 #endif
 	
+ col *= global_light_strength;
+ 
 	frag_color.rgb = col;	
 	frag_color.a = 0.0;
 }

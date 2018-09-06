@@ -71,6 +71,8 @@ uniform vec2 screen_res;
 
 uniform mat4 inv_proj;
 
+uniform float global_light_strength;
+
 vec3 srgb_to_linear(vec3 cs)
 {
 	vec3 low_range = cs / vec3(12.92);
@@ -360,7 +362,9 @@ void main()
 
 	//not sure why, but this line prevents MATBUG-194
 	col = max(col, vec3(0.0));
-
+ 
+ col *= global_light_strength;
+ 
 	frag_color.rgb = col;	
 	frag_color.a = 0.0;
 }

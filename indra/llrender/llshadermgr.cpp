@@ -1267,6 +1267,7 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("chroma_str");
 
 //	//BD - Special Options
+	mReservedUniforms.push_back("global_light_strength");
 	mReservedUniforms.push_back("blur_passes");
 	mReservedUniforms.push_back("time_step");
 	mReservedUniforms.push_back("mblur_strength");

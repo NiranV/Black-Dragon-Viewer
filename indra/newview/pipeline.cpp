@@ -219,6 +219,7 @@ F32 LLPipeline::RenderSSAOBlurSize;
 F32 LLPipeline::RenderChromaStrength;
 F32 LLPipeline::RenderSnapshotMultiplier;
 F32 LLPipeline::RenderShadowFarClip;
+F32 LLPipeline::RenderGlobalLightStrength;
 LLVector4 LLPipeline::RenderShadowFarClipVec;
 
 //	//BD - Shadow Map Allocation
@@ -697,6 +698,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
 	connectRefreshCachedSettingsSafe("RenderChromaStrength");
 	connectRefreshCachedSettingsSafe("RenderSnapshotMultiplier");
+	connectRefreshCachedSettingsSafe("RenderGlobalLightStrength");
 	connectRefreshCachedSettingsSafe("RenderShadowDistance");
 	connectRefreshCachedSettingsSafe("RenderShadowFarClip");
 
@@ -1318,6 +1320,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
 	RenderSnapshotMultiplier = gSavedSettings.getF32("RenderSnapshotMultiplier");
 	RenderShadowFarClip = gSavedSettings.getF32("RenderShadowFarClip");
+	RenderGlobalLightStrength = gSavedSettings.getF32("RenderGlobalLightStrength");
 	RenderShadowFarClipVec = gSavedSettings.getVector4("RenderShadowDistance");
 
 //	//BD - Volumetric Lighting
@@ -8701,6 +8704,8 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform2f(LLShaderMgr::DEFERRED_PROJ_SHADOW_RES, mShadow[4].getWidth(), mShadow[5].getWidth());
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);
+
+	shader.uniform1f(LLShaderMgr::DEFERRED_LIGHT_STRENGTH, RenderGlobalLightStrength);
 
 //	//BD - Special Options
 	F32 ssao_effect = RenderSSAOEffect;

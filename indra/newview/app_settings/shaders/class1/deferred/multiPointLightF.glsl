@@ -57,6 +57,8 @@ uniform float far_z;
 
 uniform mat4 inv_proj;
 
+uniform float global_light_strength;
+
 vec2 encode_normal(vec3 n)
 {
 	float f = sqrt(8 * n.z + 8);
@@ -160,6 +162,7 @@ void main()
 		}
 	}
 	
+ out_col *= global_light_strength;
 	
 	frag_color.rgb = out_col;
 	frag_color.a = 0.0;

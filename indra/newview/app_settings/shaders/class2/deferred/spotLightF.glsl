@@ -71,6 +71,8 @@ uniform vec2 screen_res;
 
 uniform mat4 inv_proj;
 
+uniform float global_light_strength;
+
 vec2 encode_normal(vec3 n)
 {
 	float f = sqrt(8 * n.z + 8);
@@ -359,6 +361,8 @@ void main()
 	
 	//not sure why, but this line prevents MATBUG-194
 	col = max(col, vec3(0.0));
+ 
+ col *= global_light_strength;
 
 	frag_color.rgb = col;	
 	frag_color.a = 0.0;
