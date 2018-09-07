@@ -1448,16 +1448,16 @@ void LLViewerTextureList::idleUpdateMaxResidentTexMem()
 
 	bool base_max = (max_mem >= (U32Megabytes)3984 || !gGLManager.mHasNVXMemInfo);
 
-	//BD - Give system memory first, either ~4000MB or whatever our 90% of our real max VRAM is.
+	//BD - Give system memory first, either 3984MB or whatever our 90% of our real max VRAM is.
 	//     Start out with the currently used memory and add 32 megabytes on top of it.
 	//     Make sure we never exceed our maximum though.
-	//     Fallback to ~4000MB when we are not using a NVidia GPU.
+	//     Fallback to 3984MB when we are not using a NVidia GPU.
 	new_sys_mem = llclamp(sys_mem + (U32Megabytes)32, (U32Megabytes)128, base_max ? (U32Megabytes)3984 : max_mem);
 
 	max_mem -= new_sys_mem;
 	base_max = (max_mem >= (U32Megabytes)3984 || !gGLManager.mHasNVXMemInfo);
 
-	//BD - Give the rest memory to scene memory, again up to a total max of ~4000MB.
+	//BD - Give the rest memory to scene memory, again up to a total max of 3984MB.
 	new_cur_mem = llclamp(cur_mem + (U32Megabytes)32, (U32Megabytes)128, base_max ? (U32Megabytes)3984 : max_mem);
 
 	mMaxResidentTexMemInMegaBytes = new_cur_mem;
