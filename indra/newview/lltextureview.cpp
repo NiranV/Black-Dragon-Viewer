@@ -53,9 +53,6 @@
 #include "llviewerstats.h"
 #include "llworld.h"
 
-//BD
-#include "lldxhardware.h"
-
 // For avatar texture view
 #include "llvoavatarself.h"
 #include "lltexlayer.h"
