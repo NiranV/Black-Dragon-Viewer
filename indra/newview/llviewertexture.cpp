@@ -597,8 +597,6 @@ void LLViewerTexture::updateClass(const F32 velocity, const F32 angular_velocity
 			{
 				sDesiredDiscardBias += discard_bias_delta;
 				sEvaluationTimer.reset();
-				//BD - Stop our grace period timer.
-				sGracePeriodTimer.stop();
 			}
 		}
 	}
@@ -634,7 +632,10 @@ void LLViewerTexture::updateClass(const F32 velocity, const F32 angular_velocity
 	{
 		//BD - Stop the grace period timer immediately when we are out of the "overflow"
 		//     zone, to prevent texture trashing from going off still.
-		sGracePeriodTimer.stop();
+		if (sGracePeriodTimer.getStarted())
+		{
+			sGracePeriodTimer.stop();
+		}
 	}
 	sDesiredDiscardBias = llclamp(sDesiredDiscardBias, desired_discard_bias_min, desired_discard_bias_max);
 	
