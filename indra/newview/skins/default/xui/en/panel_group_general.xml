@@ -130,9 +130,6 @@ Hover your mouse over the options for more help.
      max_length="511"
      name="charter"
      top_delta="1"
-     cursor_color="TextCursorColor"
-     text_color="Black"
-     text_readonly_color="White_50"
      word_wrap="true">
      Group Charter
     </text_editor>
