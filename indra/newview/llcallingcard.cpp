@@ -751,7 +751,6 @@ static void on_avatar_name_cache_notify(const LLUUID& agent_id,
 	LLSD args;
 //	//BD - SSFUI
 	args["NAME"] = "secondlife:///app/agent/" + agent_id.asString() + "/about";
-	args["STATUS"] = online ? LLTrans::getString("OnlineStatus") : LLTrans::getString("OfflineStatus");
 
 	LLNotificationPtr notification;
 	if (online)
@@ -771,6 +770,8 @@ static void on_avatar_name_cache_notify(const LLUUID& agent_id,
 	// If there's an open IM session with this agent, send a notification there too.
 	LLUUID session_id = LLIMMgr::computeSessionID(IM_NOTHING_SPECIAL, agent_id);
 	std::string notify_msg = notification->getMessage();
+	//BD - We only want the full "User is Offline/Online" message in IM not in the notification however.
+	notify_msg += online ? LLTrans::getString("OnlineStatus") : LLTrans::getString("OfflineStatus");
 	LLIMModel::instance().proccessOnlineOfflineNotification(session_id, notify_msg);
 }
 
