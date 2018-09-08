@@ -2102,8 +2102,6 @@ void LLViewerWindow::initWorldUI()
 	gStatusBar = new LLStatusBar(status_bar_container->getLocalRect());
 	gStatusBar->setFollowsAll();
 	gStatusBar->setShape(status_bar_container->getLocalRect());
-	// sync bg color with menu bar
-	gStatusBar->setBackgroundColor( gMenuBarView->getBackgroundColor().get() );
 	status_bar_container->addChildInBack(gStatusBar);
 	status_bar_container->setVisible(TRUE);
 
