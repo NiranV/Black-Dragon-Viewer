@@ -3529,7 +3529,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	//BD - Invisible prims are not rendered anymore in Black Dragon.
 	//static const F32 ARC_INVISI_COST = 2.0f;
 	//BD - Weighted mesh does have quite some impact and it only gets worse with more triangles to transform.
-	static const F32 ARC_WEIGHTED_MESH = 2.0f;
+	static const F32 ARC_WEIGHTED_MESH = 2.5f;
 
 	//BD - Animated textures hit quite hard, not as hard as quick alpha state changes.
 	static const F32 ARC_ANIM_TEX_COST = 2.f;
@@ -3690,8 +3690,8 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 		}
 	}
 
-	//BD - shame currently has the "base" cost of 1 point per 2 triangles, min 2.
-	shame = num_triangles / 4;
+	//BD - shame currently has the "base" cost of 1 point per 5 triangles, min 2.
+	shame = num_triangles / 5;
 	shame = shame < 2.f ? 2.f : shame;
 
 	vovolume->setRenderComplexityBase((S32)shame);
