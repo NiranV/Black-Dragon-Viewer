@@ -415,7 +415,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		F32 teleport_save_time = TELEPORT_EXPIRY + TELEPORT_EXPIRY_PER_ATTACHMENT * attach_count;
 		F32 teleport_elapsed = gTeleportDisplayTimer.getElapsedTimeF32();
 		F32 teleport_percent = teleport_elapsed * (100.f / teleport_save_time);
-		if( (gAgent.getTeleportState() != LLAgent::TELEPORT_START) && (teleport_percent > 100.f) )
+		if( (gAgent.getTeleportState() != LLAgent::TELEPORT_START) && (teleport_percent >= 100.f) )
 		{
 			// Give up.  Don't keep the UI locked forever.
 			gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
@@ -461,29 +461,19 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		case LLAgent::TELEPORT_START_ARRIVAL:
 			// Transition to ARRIVING.  Viewer has received avatar update, etc., from destination simulator
 			gTeleportArrivalTimer.reset();
-				gViewerWindow->setProgressCancelButtonVisible(FALSE, LLTrans::getString("Cancel"));
-			gViewerWindow->setProgressPercent(75.f);
+			gViewerWindow->setProgressCancelButtonVisible(FALSE, LLTrans::getString("Cancel"));
+			gViewerWindow->setProgressPercent(90.f);
 			gAgent.setTeleportState( LLAgent::TELEPORT_ARRIVING );
-			gAgent.setTeleportMessage(
-				LLAgent::sTeleportProgressMessages["arriving"]);
-			gTextureList.mForceResetTextureStats = TRUE;
-			gAgentCamera.resetView(TRUE, TRUE);
+			gViewerWindow->setProgressString(message);
 			
 			break;
 
 		case LLAgent::TELEPORT_ARRIVING:
 			// Make the user wait while content "pre-caches"
 			{
-				F32 arrival_fraction = (gTeleportArrivalTimer.getElapsedTimeF32() / teleport_arrival_delay());
-				if( arrival_fraction > 1.f )
-				{
-					arrival_fraction = 1.f;
-					//LLFirstUse::useTeleport();
-					gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
-				}
-				gViewerWindow->setProgressCancelButtonVisible(FALSE, LLTrans::getString("Cancel"));
-				gViewerWindow->setProgressPercent(  arrival_fraction * 25.f + 75.f);
-				gViewerWindow->setProgressString(message);
+				gViewerWindow->setProgressPercent(100.f);
+				gTextureList.mForceResetTextureStats = TRUE;
+				gAgent.setTeleportState(LLAgent::TELEPORT_NONE);
 			}
 			break;
 
@@ -491,16 +481,14 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			// Short delay when teleporting in the same sim (progress screen active but not shown - did not
 			// fall-through from TELEPORT_START)
 			{
-				//BD
-				//LLFirstUse::useTeleport();
 				gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
 			}
 			break;
 
 		case LLAgent::TELEPORT_NONE:
-			// No teleport in progress
 			gViewerWindow->setShowProgress(FALSE);
 			gTeleportDisplay = FALSE;
+			gAgentCamera.resetView(TRUE, TRUE);
 // [SL:KB] - Patch: Appearance-TeleportAttachKill | Checked: Catznip-4.0
 			LLViewerParcelMgr::getInstance()->onTeleportDone();
 // [/SL:KB]
