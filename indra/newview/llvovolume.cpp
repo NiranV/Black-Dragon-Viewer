@@ -1332,6 +1332,22 @@ BOOL LLVOVolume::updateLOD()
 	{
 		return FALSE;
 	}
+
+	//BD - We should do something here that either prevents updating LOD or simply forces
+	//     it to stay at max for the duration of a teleport and probably a few seconds after
+	//     this should drastically lower if not outright "fix" the issue with attachments
+	//     dropping a detail level and becoming invisible until right-clicked or otherwise
+	//     rebuild/updated.
+	//     Below code is an example of what we could do but we still need a timer and maybe
+	//     a better place to put this whole thing.
+	//     Tests have shown that disabling dynamic LOD with high Object Quality does a great
+	//     job at keeping attachments on your own avatar properly loaded.
+	//     TODO: Investigate further and implement this as actual solution.
+	/*if (gAgent.getTeleportState() != LLAgent::ETeleportState::TELEPORT_NONE
+		|| gViewerWindow->getShowProgress())
+	{
+		return FALSE;
+	}*/
 	
 	BOOL lod_changed = FALSE;
 
