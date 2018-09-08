@@ -719,19 +719,24 @@ void LLEnvManagerNew::onRegionChange()
 	LLUUID region_uuid = regionp ? regionp->getRegionID() : LLUUID::null;
 	if (region_uuid != mCurRegionUUID)
 	{
-	// Clear locally modified region settings.
-	mNewRegionPrefs.clear();
+		// Clear locally modified region settings.
+		mNewRegionPrefs.clear();
 
-	// *TODO: clear environment settings of the previous region?
+		// *TODO: clear environment settings of the previous region?
 
-	// Request environment settings of the new region.
-	mCurRegionUUID = region_uuid;
+		// Request environment settings of the new region.
+		mCurRegionUUID = region_uuid;
 		// for region crossings, interpolate the change; for teleports, don't
-		mInterpNextChangeMessage = (gAgent.getTeleportState() == LLAgent::TELEPORT_NONE);
+
+		//BD - Always interpolate region environment changes regardless of whether we teleport
+		//     or cross a region, we have teleport transitions.
+		mInterpNextChangeMessage = true;
+		//mInterpNextChangeMessage = (gAgent.getTeleportState() == LLAgent::TELEPORT_NONE);
 		LL_DEBUGS("Windlight") << (mInterpNextChangeMessage ? "Crossed" : "Teleported")
-							   << " to new region: " << region_uuid
-							   << LL_ENDL;
-	requestRegionSettings();
+								<< " to new region: " << region_uuid
+								<< LL_ENDL;
+
+		requestRegionSettings();
 	}
 	else
 	{
