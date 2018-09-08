@@ -1681,6 +1681,10 @@ bool LLAppViewer::cleanup()
 		LLSceneMonitor::instance().dumpToFile(gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "scene_monitor_results.csv"));
 	}
 
+	//BD - Clean the Snapshot location to force it to ask us of a path next login
+	//     when taking the first snapshot.
+	gViewerWindow->resetSnapshotLoc();
+
 	// There used to be an 'if (LLFastTimerView::sAnalyzePerformance)' block
 	// here, completely redundant with the one that occurs later in this same
 	// function. Presumably the duplication was due to an automated merge gone
