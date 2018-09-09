@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.2.5 - Caring Dragon]"
+       label="[CHANNEL] [VERSION] - [3.2.7 - Caring Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -174,8 +174,57 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="143"
+              height="130"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Changed: Reset snapshot location info on logout so the Viewer asks you when trying to save a snapshot for the first time next login.
+Changed: Interpolate regiolight between teleports.
+Changed: Reordered teleport behavior a bit, speeds up teleports and initiates the camera transition at a better time.
+Changed: Lower static triangle impact a bit more and raise rigged impact.
+Changed: Hover Height window size and layout slightly.
+Changed: Version to 3.2.7.
+Fixed: Online/Offline notifications in IM tabs only showing names, seperate them from the normal notifications.
+Misc: Update hgignore.
+Misc: Cleanup in llviewerwindow.cpp.
+Misc: Comment on possible fix for attachments becoming invisible on teleport.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.2.6
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="130"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
@@ -216,7 +265,7 @@ Misc: Minor optimizations to Automatic Memory Management.
               bg_writeable_color="Black_50" 
               width="990"
               word_wrap="false">
-3.2.4
+3.2.5
               </text>
         <text
               follows="top|left"
@@ -2326,57 +2375,7 @@ Misc: Cleanup in bdfloateranimations.cpp.
 Misc: Massive cleanup in preferences floater code.
 Merge with Alex Ivy
               </text>
-              <view_border
-    bevel_style="in"
-    follows="top|left"
-    height="1"
-    layout="topleft"
-    left="1"
-    name="cost_text_border"
-    top_pad="10"
-    width="250"/>
-              <text
-              follows="top|left|right"
-              font="SansSerifSmall"
-              font_shadow="soft"
-              halign="left"
-              height="14"
-              top_delta="-6"
-              left_pad="3"
-              name="changelog_text"
-              bg_visible="false"
-              bg_writeable_color="Black_50" 
-              width="990"
-              word_wrap="false">
-2.8.2
-              </text>
-              <text
-              follows="top|left"
-              font="SansSerifSmall"
-              font_shadow="soft"
-              halign="left"
-              height="169"
-              top_pad="3"
-              left="7"
-              name="changelog_text"
-              bg_visible="true"
-              bg_writeable_color="Black_50" 
-              width="490"
-              word_wrap="false">
-Changed: Disabled Regiolight and Daycycle by default.
-Changed: Allow the alpha depth inclusion option to work when Volumetric Lighting is enabled but DoF isn't.
-Changed: Raised default Texture Memory and System Memory to 512m, should lessen texture trashing when starting for the first time.
-Changed: Slightly tuned glow settings, slightly weaker glow to fix Greedy Greedy's horrible usage of fullbright and glow and prevent it from being unreadable.
-Changed: Per Adeon's request: Reduced collapsed topbar to a minimum size and make it OCD friendly.
-Changed: Tweaked toast popup space from top toolbar slightly.
-Changed: Updated Warning triggers thresholds in preferences to factor in the new defaults.
-Changed: Version to 2.8.2.
-Fixed: Render Own Attached Lights option in Machinima Sidebar not working.
-Fixed: Pie menu not closing when clicking into the center hole.
-Fixed: Don't render invisible surfaces with glow, shadows will no longer be cast either.
-Removed: Unused Bottom Pad option in chat tab.
-Removed: Bottom Space option double in alerts tab.
-              </text>
+
        </panel>
        </scroll_container>
       </layout_panel>
