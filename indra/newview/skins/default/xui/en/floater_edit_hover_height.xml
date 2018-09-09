@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
  positioning="cascading"
- legacy_header_height="225"
  can_minimize="true"
  can_close="true"
- can_resize="true"
- min_height="65"
  min_width="515"
- height="55"
+ height="29"
  layout="topleft"
  name="HoverHeight"
  single_instance="true"
@@ -16,12 +13,12 @@
  save_visibility="true"
  title="Set Hover Height"
  width="515">
-      <slider
+     <slider
      enabled="false"
      control_name="HoverHeightSlider"
      decimal_digits="3"
      follows="top|left"
-     height="15"
+     height="14"
      increment="0.001"
      initial_value="0.0"
      label="Height:"
@@ -30,8 +27,6 @@
      width="495"
      layout="topleft"
      name="HoverHeightSlider"
-     top="30"
-     can_edit_text="true"
-     >
-    </slider>
+     top="5"
+     can_edit_text="true"/>
 </floater>
