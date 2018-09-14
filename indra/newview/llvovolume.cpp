@@ -3750,11 +3750,6 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	}
 
 	// multiply shame by multipliers
-	if (weighted_mesh)
-	{
-		extra_shame += (shame * ARC_WEIGHTED_MESH) - shame;
-	}
-
 	if (flexi)
 	{
 		extra_shame += (shame * ARC_FLEXI_MULT) - shame;
