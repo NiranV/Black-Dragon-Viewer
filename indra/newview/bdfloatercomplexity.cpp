@@ -176,6 +176,29 @@ void BDFloaterComplexity::calcARC()
 		LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
 		if (avatar && !avatar->isDead())
 		{
+			//BD - Make sure that we initialize any not-yet-initialized attachment points if any.
+			//     Overkill #1
+			avatar->initAttachmentPoints(!avatar->isSelf());
+
+			//BD - Check if attachment points are still empty. Bail out if they are for whatever
+			//     reason.
+			//     Overkill #2
+			LLVOAvatar::attachment_map_t attachments = avatar->mAttachmentPoints;
+			if (attachments.empty())
+			{
+				return;
+			}
+
+			//BD - We are getting super paranoid here.
+			//     Overkill #3
+			if (avatar->mDrawable.isNull())
+			{
+				return;
+			}
+
+			//BD - We crashed here before. Checking invalid avatars does not work and does not
+			//     crash. Could it be that an avatar or its attachment map could become invalid
+			//     while we are still iterating through it? How would we go about fixing that?
 			for (auto iter : avatar->mAttachmentPoints)
 			{
 				LLViewerJointAttachment* attachment = iter.second;

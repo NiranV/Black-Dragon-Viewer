@@ -3791,10 +3791,6 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 
 	vovolume->mRenderComplexityTotal = (S32)shame;
 
-	//BD - We calculated everything with big numbers for precision, now we divide it by 10 to produce a number that
-	//     is easily human readable. No one can read a big red number with 3529380 ARC quickly without looking closer.
-	//shame /= 10;
-
 	if (shame > mRenderComplexity_current)
 	{
 		mRenderComplexity_current = (S32)shame;
