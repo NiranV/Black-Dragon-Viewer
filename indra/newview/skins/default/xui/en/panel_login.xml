@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.2.7 - Caring Dragon]"
+       label="[CHANNEL] [VERSION] - [3.2.8 - Caring Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -174,8 +174,59 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="130"
+              height="156"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: GPU Name and GPU Memory usage in numbers to preferences panel.
+Added: Option to configure the amount of roll while sitting in Cinematic Camera Mode.
+Added: Option to disable avatar-based camera roll while sitting upside down. (Cinematic Camera Roll still applies)
+Changed: Reworked Advanced Complexity Floater displays and breakdown to give clear information what parts of an attachment costs how much.
+Changed: Signal the permission changes in friendlist to the icons when we click them.
+Fixed: Rigged mesh being added twice into the complexity calculation.
+Fixed: Memory sliders showing 1992mb when they should show higher values.
+Fixed: Motion Blur Quality not disabling when Motion Blur is not enabled.
+Fixed: Motion Blur Amount not being persistent across sessions.
+Fixed: Mouse having an invalid click point after leaving Third Person Mousesteering Mode requiring to click to reset it and get rid of the "stop" cursor.
+Fixed: Avatar-based camera roll not working while Cinematic Camera Mode is enabled.
+Misc: Cleanup in llvovolume.cpp.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.2.7
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="130"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
@@ -2375,7 +2426,6 @@ Misc: Cleanup in bdfloateranimations.cpp.
 Misc: Massive cleanup in preferences floater code.
 Merge with Alex Ivy
               </text>
-
        </panel>
        </scroll_container>
       </layout_panel>
