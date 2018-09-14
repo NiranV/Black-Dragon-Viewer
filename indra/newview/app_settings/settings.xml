@@ -16972,7 +16972,7 @@
     <key>Comment</key>
     <string>Toggles between old automatic shadow clip plane scaling or fully customizable one.</string>
     <key>Persist</key>
-    <integer>0</integer>
+    <integer>1</integer>
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
