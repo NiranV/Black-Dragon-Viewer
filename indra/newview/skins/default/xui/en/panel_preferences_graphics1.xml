@@ -454,10 +454,23 @@ width="510">
  height="12"
  layout="topleft"
  left="10"
- name="MemoryUsage"
+ name="GPUString"
  top_pad="5"
- width="120">
- GPU Memory Usage:
+ width="375">
+ GPU: [GPU_STRING]
+ </text>
+ <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ halign="right"
+ right="-30"
+ name="MemoryUsage"
+ top_delta="0"
+ width="300">
+ Memory:[USED_MEM] MB /[MAX_MEM] MB
  </text>
  <progress_bar
     top_pad="5"

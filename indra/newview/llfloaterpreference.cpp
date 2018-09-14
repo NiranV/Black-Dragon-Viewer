@@ -1170,6 +1170,8 @@ BOOL LLFloaterPreference::postBuild()
 	mSystemMemory = getChild<LLSliderCtrl>("SystemMemory");
 	mSceneMemory = getChild<LLSliderCtrl>("SceneMemory");
 	mProgressBar = getChild<LLProgressBar>("progress_bar");
+	mGPUMemoryLabel = getChild<LLTextBox>("MemoryUsage");
+	getChild<LLTextBox>("GPUString")->setTextArg("[GPU_STRING]", llformat("%s", (const char*)(glGetString(GL_RENDERER))));
 
 	// if floater is opened before login set default localized do not disturb message
 	if (LLStartUp::getStartupState() < STATE_STARTED)
@@ -1632,18 +1634,19 @@ void LLFloaterPreference::refreshWarnings()
 //BD - Memory Allocation
 void LLFloaterPreference::refreshMemoryControls()
 {
-	U32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
-	U32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
+	U32Megabytes bound_mem = LLViewerTexture::sMaxBoundTextureMemory;
+	U32Megabytes total_mem = LLViewerTexture::sMaxDesiredTextureMem;
 	S32 max_vram = gGLManager.mVRAM;
-	S32 max_mem;
 	S32 used_vram = 0;
-	S32 avail_vram = max_vram;
+	S32 avail_vram;
+	S32 max_mem;
 	F32 percent;
 
 	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
 	used_vram = max_vram - (avail_vram / 1024);
-	max_mem = (avail_vram + (S32)bound_mem.value() + (S32)total_mem.value());
-	percent = llclamp(((F32)used_vram / (F32)max_vram) * 100.f, 0.f , 100.f);
+
+	//BD - Limit our slider max further on how much is actually still available.
+	max_mem = max_vram - bound_mem.value() + total_mem.value();
 
 	//BD - Cap out at the highest possible stable value we tested.
 	max_mem = llclamp(max_mem, 128, 3984);
@@ -1655,7 +1658,10 @@ void LLFloaterPreference::refreshMemoryControls()
 		mSceneMemory->setMaxValue(max_mem);
 	}
 
+	percent = llclamp(((F32)used_vram / (F32)max_vram) * 100.f, 0.f, 100.f);
 	mProgressBar->setValue(percent);
+	mGPUMemoryLabel->setTextArg("[USED_MEM]", llformat("%5d", used_vram));
+	mGPUMemoryLabel->setTextArg("[MAX_MEM]", llformat("%5d", max_vram));
 }
 
 void LLFloaterPreference::draw()

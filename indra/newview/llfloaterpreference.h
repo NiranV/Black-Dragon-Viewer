@@ -325,6 +325,7 @@ private:
 	LLSliderCtrl* mSystemMemory;
 	LLSliderCtrl* mSceneMemory;
 	LLProgressBar* mProgressBar;
+	LLTextBox* mGPUMemoryLabel;
 
 	//BD
 	LLFrameTimer	mUpdateTimer;
