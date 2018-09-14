@@ -680,16 +680,17 @@ static bool handleRenderDeferredLightsChanged(const LLSD& newvalue)
 //BD - Always-on Mouse-steering.
 static bool handleMouseSteeringChanged(const LLSD& newvalue)
 {
+	gAgentCamera.mThirdPersonSteeringMode = newvalue.asBoolean();
+
 	//BD - Whenever steering is off and we trigger this we will
 	//     show the cursor here because it would be too hacky in camera
 	//     cpp itself
-	if(!gAgentCamera.mThirdPersonSteeringMode)
+	if (!newvalue.asBoolean())
 	{
 		LLToolCamera::getInstance()->setMouseCapture(FALSE);
 		gViewerWindow->showCursor();
 	}
 
-	gAgentCamera.mThirdPersonSteeringMode = newvalue.asBoolean();
 	return true;
 }
 
