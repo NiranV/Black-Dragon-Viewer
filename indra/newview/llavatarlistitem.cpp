@@ -515,16 +515,23 @@ bool LLAvatarListItem::showPermissions(bool visible)
 void LLAvatarListItem::empowerFriend(LLUICtrl* ctrl)
 {
 	std::string name = ctrl->getName();
+	const LLRelationship* relation = LLAvatarTracker::instance().getBuddyInfo(getAvatarId());
 	if (name == "permission_edit_mine_icon")
 	{
+		mIconPermissionEditMine->setImageColor(LLUIColorTable::instance().getColor
+			(!relation->isRightGrantedTo(LLRelationship::GRANT_MODIFY_OBJECTS) ? "White" : "White_25"));
 		LLAvatarActions::empowerFriend(mAvatarId, 4);
 	}
 	else if (name == "permission_map_icon")
 	{
+		mIconPermissionMap->setImageColor(LLUIColorTable::instance().getColor
+			(!relation->isRightGrantedTo(LLRelationship::GRANT_MAP_LOCATION) ? "White" : "White_25"));
 		LLAvatarActions::empowerFriend(mAvatarId, 2);
 	}
 	else
 	{
+		mIconPermissionOnline->setImageColor(LLUIColorTable::instance().getColor
+			(!relation->isRightGrantedTo(LLRelationship::GRANT_ONLINE_STATUS) ? "White" : "White_25"));
 		LLAvatarActions::empowerFriend(mAvatarId, 1);
 	}
 }
