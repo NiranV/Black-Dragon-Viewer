@@ -4808,6 +4808,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  </text>
  <radio_group
                   control_name="RenderRiggedMotionBlurQuality"
+                  enabled_control="RenderMotionBlur"
                   height="19"
                   layout="topleft"
                   left="10"
