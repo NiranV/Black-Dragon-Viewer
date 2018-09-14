@@ -52,6 +52,8 @@ BOOL BDFloaterComplexity::postBuild()
 {
 	//BD - Complexity
 	mAvatarScroll = this->getChild<LLScrollListCtrl>("arc_avs_scroll", true);
+	mAvatarScroll->setCommitOnSelectionChange(TRUE);
+	mAvatarScroll->setCommitCallback(boost::bind(&BDFloaterComplexity::onAvatarsRefresh, this));
 	mAvatarScroll->setDoubleClickCallback(boost::bind(&BDFloaterComplexity::calcARC, this));
 	mARCScroll = this->getChild<LLScrollListCtrl>("arc_scroll", true);
 	mARCScroll->setCommitOnSelectionChange(TRUE);
@@ -202,10 +204,21 @@ void BDFloaterComplexity::calcARC()
 								U64 attachment_total_vertices = 0.f;
 								S32Bytes attachment_memory_usage;
 
+								U32 flexible_cost = 0;
+								U32 particle_cost = 0;
+								U32 light_cost = 0;
+								U32 projector_cost = 0;
+								U32 alpha_cost = 0;
+								U32 rigged_cost = 0;
+								U32 media_cost = 0;
+								U32 bump_cost = 0;
+								U32 shiny_cost = 0;
+								U32 glow_cost = 0;
+								U32 animated_cost = 0;
+
 								S32 flexibles = 0;
 								S32 lights = 0;
 								S32 projectors = 0;
-								S32 alphas = 0;
 								S32 rigged = 0;
 								S32 medias = 0;
 
@@ -227,6 +240,11 @@ void BDFloaterComplexity::calcARC()
 									attachment_volume_cost, /*attachment_total_cost,*/ attachment_base_cost,
 									attachment_total_triangles, attachment_total_vertices);
 
+								//BD - Get all necessary data.
+								volume->getRenderCostValues(flexible_cost, particle_cost, light_cost, projector_cost,
+									alpha_cost, rigged_cost, media_cost, bump_cost, shiny_cost,
+									glow_cost, animated_cost);
+
 								attachment_total_cost = attachment_volume_cost;
 
 								for (LLViewerObject* child_obj : volume->getChildren())
@@ -239,6 +257,10 @@ void BDFloaterComplexity::calcARC()
 											flexibles, lights, projectors, /*alphas,*/ rigged, medias,
 											attachment_volume_cost, /*attachment_total_cost,*/ attachment_base_cost,
 											attachment_total_triangles, attachment_total_vertices);
+
+										child->getRenderCostValues(flexible_cost, particle_cost, light_cost, projector_cost,
+											alpha_cost, rigged_cost, media_cost, bump_cost, shiny_cost,
+											glow_cost, animated_cost);
 
 										attachment_total_cost += attachment_volume_cost;
 									}
@@ -276,49 +298,37 @@ void BDFloaterComplexity::calcARC()
 								row["columns"][3]["column"] = "vertices";
 								row["columns"][3]["value"] = LLSD::Integer(attachment_total_vertices);
 								row["columns"][4]["column"] = "flexible";
-								row["columns"][4]["value"] = is_flexible;
+								row["columns"][4]["value"] = LLSD::Integer(flexible_cost);
 								row["columns"][5]["column"] = "particle";
-								row["columns"][5]["value"] = has_particles;
+								row["columns"][5]["value"] = LLSD::Integer(particle_cost);
 								row["columns"][6]["column"] = "light";
-								row["columns"][6]["value"] = is_light;
+								row["columns"][6]["value"] = LLSD::Integer(light_cost);
 								row["columns"][7]["column"] = "projector";
-								row["columns"][7]["value"] = is_projector;
+								row["columns"][7]["value"] = LLSD::Integer(projector_cost);
 								row["columns"][8]["column"] = "alpha";
-								row["columns"][8]["value"] = is_alpha;
+								row["columns"][8]["value"] = LLSD::Integer(alpha_cost);
 								row["columns"][9]["column"] = "bumpmap";
-								row["columns"][9]["value"] = has_bump;
+								row["columns"][9]["value"] = LLSD::Integer(bump_cost);
 								row["columns"][10]["column"] = "shiny";
-								row["columns"][10]["value"] = has_shiny;
+								row["columns"][10]["value"] = LLSD::Integer(shiny_cost);
 								row["columns"][11]["column"] = "glow";
-								row["columns"][11]["value"] = has_glow;
+								row["columns"][11]["value"] = LLSD::Integer(glow_cost);
 								row["columns"][12]["column"] = "animated";
-								row["columns"][12]["value"] = is_animated;
+								row["columns"][12]["value"] = LLSD::Integer(animated_cost);
 								row["columns"][13]["column"] = "rigged";
-								row["columns"][13]["value"] = is_rigged;
+								row["columns"][13]["value"] = LLSD::Integer(rigged_cost);
 								row["columns"][14]["column"] = "media";
-								row["columns"][14]["value"] = has_media;
+								row["columns"][14]["value"] = LLSD::Integer(media_cost);
 								row["columns"][15]["column"] = "base_arc";
 								row["columns"][15]["value"] = LLSD::Integer(attachment_base_cost);
 								row["columns"][16]["column"] = "memory";
 								row["columns"][16]["value"] = attachment_memory_usage.value();
 								row["columns"][17]["column"] = "uuid";
 								row["columns"][17]["value"] = volume->getAttachmentItemID();
-								row["columns"][18]["column"] = "lights";
-								row["columns"][18]["value"] = lights;
-								row["columns"][19]["column"] = "projectors";
-								row["columns"][19]["value"] = projectors;
-								row["columns"][20]["column"] = "alphas";
-								row["columns"][20]["value"] = alphas;
-								row["columns"][21]["column"] = "rigs";
-								row["columns"][21]["value"] = rigged;
-								row["columns"][22]["column"] = "flexis";
-								row["columns"][22]["value"] = flexibles;
-								row["columns"][23]["column"] = "medias";
-								row["columns"][23]["value"] = medias;
-								row["columns"][24]["column"] = "memory_arc";
-								row["columns"][24]["value"] = LLSD::Integer(attachment_texture_cost);
-								row["columns"][25]["column"] = "total_arc";
-								row["columns"][25]["value"] = LLSD::Integer(attachment_total_cost);
+								row["columns"][18]["column"] = "memory_arc";
+								row["columns"][18]["value"] = LLSD::Integer(attachment_texture_cost);
+								row["columns"][19]["column"] = "total_arc";
+								row["columns"][19]["value"] = LLSD::Integer(attachment_total_cost);
 								LLScrollListItem* element = mARCScroll->addElement(row);
 								element->setUserdata(attached_object);
 							}
@@ -448,16 +458,21 @@ void BDFloaterComplexity::onSelectEntry()
 	{
 		//BD - Lets write up all the easy information first.
 		//getChild<LLUICtrl>("label_name")->setValue(item->getColumn(0)->getValue());
-		getChild<LLUICtrl>("label_total_arc")->setValue(item->getColumn(25)->getValue());
 		getChild<LLUICtrl>("label_final_arc")->setValue(item->getColumn(1)->getValue());
 		getChild<LLUICtrl>("label_polygons")->setValue(item->getColumn(2)->getValue());
 		getChild<LLUICtrl>("label_vertices")->setValue(item->getColumn(3)->getValue());
-		getChild<LLUICtrl>("label_base_arc")->setValue(item->getColumn(15)->getValue());
-		getChild<LLUICtrl>("label_texture_memory")->setValue(item->getColumn(16)->getValue());
-		getChild<LLUICtrl>("label_texture_arc")->setValue(item->getColumn(24)->getValue());
-		getChild<LLUICtrl>("label_uuid")->setValue(item->getColumn(17)->getValue());
 
-		//BD - Now lets show all multiplicators of features enabled.
+		//BD - Write down all ARC values.
+		getChild<LLUICtrl>("panel_flexi")->setVisible(item->getColumn(4)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_flexi")->setValue(item->getColumn(4)->getValue());
+		getChild<LLUICtrl>("panel_particles")->setVisible(item->getColumn(5)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_particles")->setValue(item->getColumn(5)->getValue());
+		getChild<LLUICtrl>("panel_light")->setVisible(item->getColumn(6)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_light")->setValue(item->getColumn(6)->getValue());
+		getChild<LLUICtrl>("panel_projector")->setVisible(item->getColumn(7)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_projector")->setValue(item->getColumn(7)->getValue());
+		getChild<LLUICtrl>("panel_alpha")->setVisible(item->getColumn(8)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_alpha")->setValue(item->getColumn(8)->getValue());
 		getChild<LLUICtrl>("panel_bump")->setVisible(item->getColumn(9)->getValue().asBoolean());
 		getChild<LLUICtrl>("label_bump")->setValue(item->getColumn(9)->getValue());
 		getChild<LLUICtrl>("panel_shiny")->setVisible(item->getColumn(10)->getValue().asBoolean());
@@ -466,22 +481,15 @@ void BDFloaterComplexity::onSelectEntry()
 		getChild<LLUICtrl>("label_glow")->setValue(item->getColumn(11)->getValue());
 		getChild<LLUICtrl>("panel_animated")->setVisible(item->getColumn(12)->getValue().asBoolean());
 		getChild<LLUICtrl>("label_animated")->setValue(item->getColumn(12)->getValue());
-		
-		//BD - Now show the amount of objects that use a certain feature.
-		getChild<LLUICtrl>("panel_flexi")->setVisible(item->getColumn(4)->getValue().asBoolean());
-		getChild<LLUICtrl>("label_flexi")->setValue(item->getColumn(22)->getValue());
-		getChild<LLUICtrl>("panel_particles")->setVisible(item->getColumn(5)->getValue().asBoolean());
-		getChild<LLUICtrl>("label_particles")->setValue(item->getColumn(5)->getValue());
-		getChild<LLUICtrl>("panel_light")->setVisible(item->getColumn(6)->getValue().asBoolean());
-		getChild<LLUICtrl>("label_light")->setValue(item->getColumn(18)->getValue());
-		getChild<LLUICtrl>("panel_projector")->setVisible(item->getColumn(7)->getValue().asBoolean());
-		getChild<LLUICtrl>("label_projector")->setValue(item->getColumn(19)->getValue());
-		getChild<LLUICtrl>("panel_alpha")->setVisible(item->getColumn(8)->getValue().asBoolean());
-		//getChild<LLUICtrl>("label_alpha")->setValue(item->getColumn(20)->getValue());
-		getChild<LLUICtrl>("panel_media")->setVisible(item->getColumn(14)->getValue().asBoolean());
-		getChild<LLUICtrl>("label_media")->setValue(item->getColumn(23)->getValue());
 		getChild<LLUICtrl>("panel_rigged")->setVisible(item->getColumn(13)->getValue().asBoolean());
-		getChild<LLUICtrl>("label_rigged")->setValue(item->getColumn(21)->getValue());
+		getChild<LLUICtrl>("label_rigged")->setValue(item->getColumn(13)->getValue());
+		getChild<LLUICtrl>("panel_media")->setVisible(item->getColumn(14)->getValue().asBoolean());
+		getChild<LLUICtrl>("label_media")->setValue(item->getColumn(14)->getValue());
+		getChild<LLUICtrl>("label_base_arc")->setValue(item->getColumn(15)->getValue());
+		getChild<LLUICtrl>("label_texture_memory")->setValue(item->getColumn(16)->getValue());
+		getChild<LLUICtrl>("label_uuid")->setValue(item->getColumn(17)->getValue());
+		getChild<LLUICtrl>("label_texture_arc")->setValue(item->getColumn(18)->getValue());
+		getChild<LLUICtrl>("label_total_arc")->setValue(item->getColumn(19)->getValue());
 	}
 }
 

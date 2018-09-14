@@ -85,7 +85,7 @@ width="684">
 			left="1"
 			name="title"
 			top="0"
-			width="640">
+			width="1000">
 				<scroll_list
 				column_padding="2"
 				draw_heading="true"
@@ -93,70 +93,70 @@ width="684">
 				follows="left|top|right"
 				layout="topleft"
 				left="0"
-				width="640"
+				width="1000"
 				multi_select="true"
 				name="arc_scroll"
 				top="0">
 				   <scroll_list.columns
 					label="Attachment"
 					name="name"
-				  relative_width="0.27"  />
+				  relative_width="0.21"  />
 				   <scroll_list.columns
 					label="Complexity"
 					name="arc"
-				  relative_width="0.11"  />
+				  relative_width="0.07"  />
 				   <scroll_list.columns
 					label="Polygons"
 					name="triangles"
-				  relative_width="0.08"  />
+				  relative_width="0.06"  />
 				   <scroll_list.columns
 					label="Vertices"
 					name="vertices"
-				  relative_width="0.00"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
-					label="Flexi"
+					label="Flexible"
 					name="flexible"
-				  relative_width="0.07"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
-					label="Parts"
+					label="Particles"
 					name="particle"
-				  relative_width="0.00"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
-					label="Light"
+					label="Lights"
 					name="light"
-				  relative_width="0.07"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
-					label="Projector"
+					label="Projectors"
 					name="projector"
-				  relative_width="0.00"  />
+				  relative_width="0.06"  />
 				   <scroll_list.columns
-					label="Alpha"
+					label="Alphas"
 					name="alpha"
-				  relative_width="0.07"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
-					label="Bump"
+					label="Normalmap"
 					name="bumpmap"
-				  relative_width="0.07"  />
+				  relative_width="0.06"  />
 				   <scroll_list.columns
-					label="Shiny"
+					label="Specmap"
 					name="shiny"
-				  relative_width="0.07"  />
+				  relative_width="0.06"  />
 				   <scroll_list.columns
 					label="Glow"
 					name="glow"
-				  relative_width="0.07"  />
+				  relative_width="0.04"  />
 				   <scroll_list.columns
-					label="Anim"
+					label="Animated"
 					name="animated"
-				  relative_width="0.00"  />
+				  relative_width="0.06"  />
 				   <scroll_list.columns
 					label="Rigged"
 					name="rigged"
-				  relative_width="0.07"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
 					label="Media"
 					name="media"
-				  relative_width="0.00"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
 					label="Base"
 					name="base_arc"
@@ -485,7 +485,7 @@ width="684">
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_flexi"
 	  width="200">
@@ -498,37 +498,37 @@ width="684">
  height="12"
  width="20"
  top="0">
-	(x1.25) Flexi:
+	Flexible:
  </text>
  <text
  name="label_flexi"
  text_color="HTMLLinkColor"
  follows="right|top"
  layout="topleft"
- left_pad="16"
+ left_pad="50"
  halign="right"
  height="12"
  width="20"
  top_delta="0">
 	---
  </text>
- <text
+	<text
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left_pad="36"
+ left_pad="2"
  halign="right"
  height="12"
  width="10"
  top_delta="0">
-	x 1.25 +
+	+
  </text>
  </layout_panel>
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_particles"
 	  width="200">
@@ -548,30 +548,30 @@ width="684">
  text_color="HTMLLinkColor"
  follows="right|top"
  layout="topleft"
- left_pad="19"
+ left_pad="50"
  halign="right"
  height="12"
  width="20"
  top_delta="0">
 	---
  </text>
- <text
+	<text
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left_pad="33"
+ left_pad="2"
  halign="right"
  height="12"
  width="10"
  top_delta="0">
-	x 16c +
+	+
  </text>
  </layout_panel>
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_light"
 	  width="200">
@@ -584,37 +584,37 @@ width="684">
  height="12"
  width="20"
  top="0">
-	Light:
+	Lights:
  </text>
  <text
  name="label_light"
  text_color="HTMLLinkColor"
  follows="right|top"
  layout="topleft"
- left_pad="13"
+ left_pad="50"
  halign="right"
  height="12"
  width="20"
  top_delta="0">
 	---
  </text>
- <text
+	<text
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left_pad="39"
+ left_pad="2"
  halign="right"
  height="12"
  width="10"
  top_delta="0">
-	x 512c +
+	+
  </text>
  </layout_panel>
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_projector"
 	  width="200">
@@ -627,37 +627,37 @@ width="684">
  height="12"
  width="20"
  top="0">
-	Projector:
+	Projectors:
  </text>
  <text
  name="label_projector"
  text_color="HTMLLinkColor"
  follows="right|top"
  layout="topleft"
- left_pad="7"
+ left_pad="50"
  halign="right"
  height="12"
  width="20"
  top_delta="0">
 	---
  </text>
- <text
+	<text
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left_pad="45"
+ left_pad="2"
  halign="right"
  height="12"
  width="10"
  top_delta="0">
-	x 4096c +
+	+
  </text>
  </layout_panel>
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_alpha"
 	  width="200">
@@ -670,37 +670,37 @@ width="684">
  height="12"
  width="20"
  top="0">
-	Alpha:
+	Alphas:
  </text>
  <text
  name="label_alpha"
  text_color="HTMLLinkColor"
  follows="right|top"
  layout="topleft"
- left_pad="21"
+ left_pad="50"
  halign="right"
  height="12"
  width="20"
  top_delta="0">
 	---
  </text>
- <text
+	<text
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left_pad="31"
+ left_pad="2"
  halign="right"
  height="12"
  width="10"
  top_delta="0">
-	x 2.0 +
+	+
  </text>
  </layout_panel>
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_bump"
 	  width="200">
@@ -713,38 +713,38 @@ width="684">
  height="12"
  width="20"
  top="0">
-	(x1.05) Bump:
+	Normalmap:
  </text>
  <text
  name="label_bump"
- visible="false"
+ visible="true"
  text_color="HTMLLinkColor"
- follows="right|top"
- layout="topleft"
- left_pad="0"
- halign="right"
- height="12"
- width="20"
- top_delta="0">
-	false
- </text>
- <text
- name="label_arc"
  follows="right|top"
  layout="topleft"
  left_pad="50"
  halign="right"
  height="12"
+ width="20"
+ top_delta="0">
+	---
+ </text>
+	<text
+ name="label_arc"
+ follows="right|top"
+ layout="topleft"
+ left_pad="2"
+ halign="right"
+ height="12"
  width="10"
  top_delta="0">
-	x 1.05  *
+	+
  </text>
  </layout_panel>
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_shiny"
 	  width="200">
@@ -757,38 +757,38 @@ width="684">
  height="12"
  width="20"
  top="0">
-	(x1.05) Shiny:
+	Specularmap:
  </text>
  <text
  name="label_shiny"
- visible="false"
+ visible="true"
  text_color="HTMLLinkColor"
- follows="right|top"
- layout="topleft"
- left_pad="0"
- halign="right"
- height="12"
- width="20"
- top_delta="0">
-	false
- </text>
- <text
- name="label_arc"
  follows="right|top"
  layout="topleft"
  left_pad="50"
  halign="right"
  height="12"
+ width="20"
+ top_delta="0">
+	---
+ </text>
+	<text
+ name="label_arc"
+ follows="right|top"
+ layout="topleft"
+ left_pad="2"
+ halign="right"
+ height="12"
  width="10"
  top_delta="0">
-	x 1.05  *
+	+
  </text>
  </layout_panel>
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_glow"
 	  width="200">
@@ -801,38 +801,38 @@ width="684">
  height="12"
  width="20"
  top="0">
-	(x1.05) Glow:
+	Glow:
  </text>
  <text
  name="label_glow"
- visible="false"
+ visible="true"
  text_color="HTMLLinkColor"
- follows="right|top"
- layout="topleft"
- left_pad="0"
- halign="right"
- height="12"
- width="20"
- top_delta="0">
-	false
- </text>
- <text
- name="label_arc"
  follows="right|top"
  layout="topleft"
  left_pad="50"
  halign="right"
  height="12"
+ width="20"
+ top_delta="0">
+	---
+ </text>
+	<text
+ name="label_arc"
+ follows="right|top"
+ layout="topleft"
+ left_pad="2"
+ halign="right"
+ height="12"
  width="10"
  top_delta="0">
-	x 1.05  *
+	+
  </text>
  </layout_panel>
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_animated"
 	  width="200">
@@ -845,38 +845,38 @@ width="684">
  height="12"
  width="20"
  top="0">
-	(x2.0) Animated:
+	Animated:
  </text>
  <text
  name="label_animated"
- visible="false"
+ visible="true"
  text_color="HTMLLinkColor"
- follows="right|top"
- layout="topleft"
- left_pad="0"
- halign="right"
- height="12"
- width="20"
- top_delta="0">
-	false
- </text>
- <text
- name="label_arc"
  follows="right|top"
  layout="topleft"
  left_pad="50"
  halign="right"
  height="12"
+ width="20"
+ top_delta="0">
+	---
+ </text>
+	<text
+ name="label_arc"
+ follows="right|top"
+ layout="topleft"
+ left_pad="2"
+ halign="right"
+ height="12"
  width="10"
  top_delta="0">
-	x 2.0  *
+	+
  </text>
  </layout_panel>
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_rigged"
 	  width="200">
@@ -896,30 +896,30 @@ width="684">
  text_color="HTMLLinkColor"
  follows="right|top"
  layout="topleft"
- left_pad="21"
+ left_pad="50"
  halign="right"
  height="12"
  width="20"
  top_delta="0">
 	---
  </text>
- <text
+	<text
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left_pad="31"
+ left_pad="2"
  halign="right"
  height="12"
  width="10"
  top_delta="0">
-	x 1.5 +
+	+
  </text>
  </layout_panel>
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
 	  height="12"
-	  visible="false"
+	  visible="true"
 	  auto_resize="false"
 	  name="panel_media"
 	  width="200">
@@ -939,23 +939,23 @@ width="684">
  text_color="HTMLLinkColor"
  follows="right|top"
  layout="topleft"
- left_pad="0"
+ left_pad="50"
  halign="right"
  height="12"
  width="20"
  top_delta="0">
 	---
  </text>
- <text
+	<text
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left_pad="52"
+ left_pad="2"
  halign="right"
  height="12"
  width="10"
  top_delta="0">
-	x 10000c +
+	+
  </text>
  </layout_panel>
 	  <layout_panel
@@ -999,39 +999,6 @@ width="684">
  width="20"
  top_delta="0">
 	---
- </text>
-  <text
- name="label_arc"
- follows="right|top"
- layout="topleft"
- left="77"
- halign="right"
- height="12"
- width="20"
- top_pad="1">
-	Readabilitator:
- </text>
- <text
- name="label_divisor"
- follows="right|top"
- layout="topleft"
- left_pad="50"
- halign="right"
- height="12"
- width="20"
- top_delta="0">
-	10
- </text>
- <text
- name="label_arc"
- follows="right|top"
- layout="topleft"
- left_pad="0"
- halign="right"
- height="12"
- width="10"
- top_delta="0">
-	/
  </text>
  <text
  name="label_arc"
