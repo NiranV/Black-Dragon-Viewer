@@ -17280,6 +17280,28 @@
     <key>Value</key>
     <real>0.85</real>
   </map>
+  <key>CameraMaxRollSitting</key>
+  <map>
+    <key>Comment</key>
+    <string>Percentage which to clamp camera roll back towards straight up while sitting.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.85</real>
+  </map>
+  <key>AllowCameraFlipOnSit</key>
+  <map>
+    <key>Comment</key>
+    <string>Allow the camera to roll and flip upside down while sitting..</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <real>1</real>
+  </map>
   <key>RenderDeferredEnvironmentMap</key>
   <map>
 	<key>Comment</key>

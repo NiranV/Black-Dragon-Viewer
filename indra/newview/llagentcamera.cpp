@@ -199,6 +199,7 @@ LLAgentCamera::LLAgentCamera() :
 	mRollLeftKey(0.f),
 	mRollRightKey(0.f),
 	mCameraMaxRoll(0.85f),
+	mCameraMaxRollSitting(0.85f),
 
 //	//BD - Save/Load Camera Position
 	mSavedCameraPos(),
@@ -273,7 +274,9 @@ void LLAgentCamera::init()
 //	//BD - Cinematic Head Tracking
 	mCinematicCamera = gSavedSettings.getBOOL("UseCinematicCamera");
 	//BD - Camera Rolling
+	mAllowCameraFlipOnSit = gSavedSettings.getBOOL("AllowCameraFlipOnSit");
 	mCameraMaxRoll = gSavedSettings.getF32("CameraMaxRoll");
+	mCameraMaxRollSitting = gSavedSettings.getF32("CameraMaxRollSitting");
 
 	mInitialized = true;
 }
@@ -1229,8 +1232,10 @@ void LLAgentCamera::updateCamera()
 		gAgentAvatarp->isSitting() && mFocusOnAvatar &&
 		(mCameraMode == CAMERA_MODE_MOUSELOOK || mCameraMode == CAMERA_MODE_THIRD_PERSON))
 	{
-		//changed camera_skyward to the new global "mCameraUpVector"
-		mCameraUpVector = mCameraUpVector * gAgentAvatarp->getRenderRotation();
+		if (mAllowCameraFlipOnSit)
+		{
+			mCameraUpVector *= gAgentAvatarp->getRenderRotation();
+		}
 	}
 
 	//NOTE - this needs to be integrated into a general upVector system here within llAgent. 
@@ -1511,8 +1516,15 @@ void LLAgentCamera::updateCamera()
 //			//BD - Camera Rolling
 			//     This can be clamped via the camera max roll option up to the point it is
 			//     completely disabled, this is only for the cinematic camera.
-			mCameraUpVector = LLVector3::z_axis * gAgentAvatarp->mHeadp->getWorldRotation();
-			mCameraUpVector = lerp(mCameraUpVector, LLVector3::z_axis, mCameraMaxRoll);
+			mCameraUpVector += (LLVector3::z_axis * gAgentAvatarp->mHeadp->getWorldRotation());
+			if (gAgentAvatarp->isSitting())
+			{
+				mCameraUpVector = lerp(mCameraUpVector, LLVector3::z_axis, mCameraMaxRollSitting);
+			}
+			else
+			{
+				mCameraUpVector = lerp(mCameraUpVector, LLVector3::z_axis, mCameraMaxRoll);
+			}
 		}
 		else if (mFollowJoint != -1)
 		{

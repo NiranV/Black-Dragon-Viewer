@@ -461,8 +461,10 @@ public:
 //	//BD - Realistic Mouselook
 	bool	mRealisticMouselook;
 //	//BD - Camera Rolling
+	bool	mAllowCameraFlipOnSit;
 	F32		mCameraRollAngle;
 	F32		mCameraMaxRoll;
+	F32		mCameraMaxRollSitting;
 
 	F32		mCameraPositionSmoothing;
 };

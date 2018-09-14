@@ -729,6 +729,18 @@ static bool handleCameraMaxRoll(const LLSD& newvalue)
 	return true;
 }
 
+static bool handleCameraMaxRollSitting(const LLSD& newvalue)
+{
+	gAgentCamera.mCameraMaxRollSitting = newvalue.asReal();
+	return true;
+}
+
+static bool handleAllowCameraFlip(const LLSD& newvalue)
+{
+	gAgentCamera.mAllowCameraFlipOnSit = newvalue.asBoolean();
+	return true;
+}
+
 //BD - Realistic Mouselook
 static bool handleRealisticMouselook(const LLSD& newvalue)
 {
@@ -1100,6 +1112,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
 //	//BD - Camera Rolling
 	gSavedSettings.getControl("CameraMaxRoll")->getSignal()->connect(boost::bind(&handleCameraMaxRoll, _2));
+	gSavedSettings.getControl("CameraMaxRollSitting")->getSignal()->connect(boost::bind(&handleCameraMaxRollSitting, _2));
+	gSavedSettings.getControl("AllowCameraFlipOnSit")->getSignal()->connect(boost::bind(&handleAllowCameraFlip, _2));
 //	//BD - Cinematic Head Tracking
 	gSavedSettings.getControl("UseCinematicCamera")->getSignal()->connect(boost::bind(&handleCinematicCamera, _2));
 //	//BD - Realistic Mouselook
