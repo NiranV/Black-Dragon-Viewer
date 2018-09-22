@@ -1920,6 +1920,9 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 	{
 		LLFace* face = mRiggedFace[type][i];
 
+        U16 start = face->getGeomStart();
+		U16 end = start + face->getGeomCount()-1;			
+
 		LLDrawable* drawable = face->getDrawable();
 		if (!drawable)
 		{
@@ -1979,10 +1982,15 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
             bool is_alpha_blend = false;
             bool is_alpha_mask  = false;
 
-			//BD - Alpha Mode selection is the ultimate decision (except when an object is transparent)
-			//     Alpha Mode always decides how a surface is rendered no matter what, making these
-			//     either-or choices makes checking for the diffuse texture obsolete and fixes the alpha
-			//     blend shadows.
+            LLViewerTexture* tex = face->getTexture(LLRender::DIFFUSE_MAP);
+            if (tex)
+            {
+                if (tex->getIsAlphaMask())
+                {
+                    is_alpha_mask = true;
+                }
+            }
+
             if (mat)
             {                
                 switch (LLMaterial::eDiffuseAlphaMode(mat->getDiffuseAlphaMode()))
@@ -1990,13 +1998,11 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                     case LLMaterial::DIFFUSE_ALPHA_MODE_MASK:
                     {
                         is_alpha_mask = true;
-						//is_alpha_blend = false;
                     }
                     break;
 
                     case LLMaterial::DIFFUSE_ALPHA_MODE_BLEND:
                     {
-						//is_alpha_mask = false;
                         is_alpha_blend = true;
                     }
                     break;
@@ -2005,8 +2011,8 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                     case LLMaterial::DIFFUSE_ALPHA_MODE_DEFAULT:
                     case LLMaterial::DIFFUSE_ALPHA_MODE_NONE:
                     default:
-						is_alpha_blend = false;
-						//is_alpha_mask = false;
+                        is_alpha_blend = false;
+                        is_alpha_mask  = false;
                         break;
                 }
             }
@@ -2016,7 +2022,15 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                 if (tex_entry->getAlpha() <= 0.99f)
                 {
                     is_alpha_blend = true;
-					//is_alpha_mask = false;
+                }
+            }
+
+            if (tex)
+            {
+                LLGLenum image_format = tex->getPrimaryFormat();
+                if (!is_alpha_mask && (image_format == GL_RGBA || image_format == GL_ALPHA))
+                {
+                    is_alpha_blend = true;
                 }
             }
 
@@ -2101,11 +2115,6 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 			{
 				data_mask &= ~LLVertexBuffer::MAP_WEIGHT4;
 			}
-
-			U16 start = face->getGeomStart();
-			U16 end = start + face->getGeomCount()-1;
-			S32 offset = face->getIndicesStart();
-			U32 count = face->getIndicesCount();
 
 			/*if (glow)
 			{
