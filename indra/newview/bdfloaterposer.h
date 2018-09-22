@@ -21,12 +21,12 @@
 #include "llfloater.h"
 #include "llscrolllistctrl.h"
 #include "llsliderctrl.h"
-//#include "llmultisliderctrl.h"
-//#include "lltimectrl.h"
+#include "llmultisliderctrl.h"
+#include "lltimectrl.h"
 #include "llkeyframemotion.h"
 #include "llframetimer.h"
 
-/*struct BDPoseKey
+struct BDPoseKey
 {
 public:
 	// source of a pose set
@@ -97,7 +97,7 @@ public:
 	}
 
 	std::string toString() const;
-};*/
+};
 
 
 
@@ -166,7 +166,7 @@ public:
 private:
 	//BD - Experimental
 	void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);
-	/*void onAddKey();
+	void onAddKey();
 	void onDeleteKey();
 	void addSliderKey(F32 time, BDPoseKey keyframe);
 	void onTimeSliderMoved();
@@ -183,7 +183,7 @@ private:
 
 		BDPoseKey keyframe;
 		F32 time;
-	};*/
+	};
 
 
 
@@ -202,9 +202,9 @@ private:
 
 	//BD - Exerpimental
 	LLSD 							mAnimJointMap[134][200][2]; // 134 bones, 200 keyframes , 2 stats (rotation | time)
-	/*std::map<std::string, SliderKey> mSliderToKey;
+	std::map<std::string, SliderKey> mSliderToKey;
 	LLMultiSliderCtrl*				mTimeSlider;
-	LLMultiSliderCtrl*				mKeySlider;*/
+	LLMultiSliderCtrl*				mKeySlider;
 };
 
 #endif

@@ -1311,17 +1311,17 @@ void BDFloaterPoser::onAnimEdit(LLUICtrl* ctrl, const LLSD& param)
 	}
 }
 
-/*void BDFloaterPoser::onAddKey()
+void BDFloaterPoser::onAddKey()
 {
-	S32 max_sliders = 60;
+	//S32 max_sliders = 60;
 
-	if ((S32)mSliderToKey.size() >= max_sliders)
+	/*if ((S32)mSliderToKey.size() >= max_sliders)
 	{
 		LLSD args;
 		args["MAX"] = max_sliders;
 		//LLNotificationsUtil::add("DayCycleTooManyKeyframes", args, LLSD(), LLNotificationFunctorRegistry::instance().DONOTHING);
 		return;
-	}
+	}*/
 
 	// add the slider key
 	std::string key_val = mPoseScroll->getFirstSelected()->getColumn(0)->getValue().asString();
@@ -1429,4 +1429,4 @@ void BDFloaterPoser::onAnimSetValue(LLUICtrl* ctrl, const LLSD& param)
 {
 	F32 val = ctrl->getValue().asReal();
 	mKeySlider->setValue(val);
-}*/
+}
