@@ -189,7 +189,7 @@ void main()
 	
 	color.rgb += spec * specular;
 	
-	color.rgb = atmosTransport(color.rgb);
+	//color.rgb = atmosTransport(color.rgb);
 	color.rgb = scaleSoftClip(color.rgb);
 	color.a   = spec * sunAngle2;
 
