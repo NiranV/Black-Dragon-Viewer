@@ -60,6 +60,8 @@ public:
 	/*virtual*/ void endMotionBlurPass(S32 pass);
 	/*virtual*/ S32 getNumMotionBlurPasses();
 	/*virtual*/ void renderMotionBlur(S32 pass = 0);
+    ~LLDrawPoolAvatar();
+    /*virtual*/ BOOL isDead();
 
     typedef enum
 	{

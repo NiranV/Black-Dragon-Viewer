@@ -65,6 +65,7 @@ public:
 	static void 	onCommitLight(			LLUICtrl* ctrl, void* userdata);
 	void 			onCommitIsFlexible(		LLUICtrl* ctrl, void* userdata);
 	static void 	onCommitFlexible(		LLUICtrl* ctrl, void* userdata);
+    void            onCommitAnimatedMeshCheckbox(LLUICtrl* ctrl, void* userdata);
 	static void     onCommitPhysicsParam(       LLUICtrl* ctrl, void* userdata);
 	static void 	onCommitMaterial(		LLUICtrl* ctrl, void* userdata);
 	//BD

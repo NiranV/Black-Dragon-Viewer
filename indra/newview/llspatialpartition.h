@@ -472,8 +472,6 @@ public:
 	virtual LLCamera transformCamera(LLCamera& camera);
 	
 	LLDrawable* mDrawable;
-	LLPointer<LLVOAvatar> mAvatar;
-
 };
 
 class LLCullResult 
