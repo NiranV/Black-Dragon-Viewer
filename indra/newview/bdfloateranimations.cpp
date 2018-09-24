@@ -30,6 +30,9 @@
 #include "llvoavatar.h"
 #include "llvoavatarself.h"
 
+//BD - Animesh Support
+#include "llcontrolavatar.h"
+
 BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	:	LLFloater(key)
 {
@@ -93,15 +96,68 @@ void BDFloaterAnimations::onMotionRefresh()
 		}
 	}
 
-	bool create_new;
+	bool create_new = true;
+	//BD - Animesh Support
+	//     Search through Animesh first so that the rest of this function will automatically
+	//     skip all animesh entries and simply just check non-Animesh entries.
+	//     We do this because the LLCharacter::sInstances now also contains all Animesh instances
+	//     as well because they are handled as such internally, which is both good and bad.
+	for (LLCharacter* character : LLControlAvatar::sInstances)
+	{
+		LLControlAvatar* avatar = dynamic_cast<LLControlAvatar*>(character);
+		if (avatar)
+		{
+			LLUUID uuid = avatar->getID();
+			for (LLScrollListItem* item : mAvatarScroll->getAllData())
+			{
+				if (item)
+				{
+					if (avatar == item->getUserdata())
+					{
+						item->setFlagged(FALSE);
+
+						LL_INFOS("Animating") << "Animesh added: " << avatar->mIsControlAvatar << LL_ENDL;
+
+						std::string str = "Yes";
+						F32 value = avatar->getMotionController().getTimeFactor();
+						item->getColumn(2)->setValue(value);
+						item->getColumn(3)->setValue(str);
+						create_new = false;
+						break;
+					}
+				}
+			}
+
+			if (create_new)
+			{
+				F32 value = avatar->getMotionController().getTimeFactor();
+
+				LLSD row;
+				row["columns"][0]["column"] = "name";
+				row["columns"][0]["value"] = avatar->getFullname();
+				row["columns"][1]["column"] = "uuid";
+				row["columns"][1]["value"] = uuid.asString();
+				row["columns"][2]["column"] = "value";
+				row["columns"][2]["value"] = value;
+				//BD - Animesh always has editing permission since these are not actual avatars.
+				//     Allow doing whatever we want with them.
+				row["columns"][3]["column"] = "permission";
+				row["columns"][3]["value"] = "Yes";
+				LLScrollListItem* element = mAvatarScroll->addElement(row);
+				element->setUserdata(avatar);
+			}
+		}
+	}
+
 	LLAvatarTracker& at = LLAvatarTracker::instance();
 	for (LLCharacter* character : LLCharacter::sInstances)
 	{
 		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
-		if (avatar)
+		//BD - Don't even bother with control avatars, we already added them.
+		LL_INFOS("Animating") << "Tried to add animesh: " << avatar->mIsControlAvatar << LL_ENDL;
+		if (avatar && !avatar->mIsControlAvatar)
 		{
 			LLUUID uuid = avatar->getID();
-			create_new = true;
 			for (LLScrollListItem* item : mAvatarScroll->getAllData())
 			{
 				if (item)
@@ -125,6 +181,7 @@ void BDFloaterAnimations::onMotionRefresh()
 						//BD - Show if we got the permission to animate them and save their motions.
 						std::string str = "-";
 						const LLRelationship* relation = at.getBuddyInfo(uuid);
+
 						if (relation)
 						{
 							str = relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS) ? "Yes" : "No";
@@ -192,6 +249,15 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 		for (LLScrollListItem* element : mAvatarScroll->getAllSelected())
 		{
 			LLVOAvatar* avatar = (LLVOAvatar*)element->getUserdata();
+			//BD - Animesh Support
+			bool is_animesh = false;
+			LLControlAvatar* animesh = (LLControlAvatar*)element->getUserdata();
+			if (animesh)
+			{
+				is_animesh = animesh->mPlaying;
+				LL_INFOS("Animating") << "Animesh added: " << is_animesh << LL_ENDL;
+			}
+
 			if (!avatar->isDead())
 			{
 				if (param.asString() == "Freeze")
@@ -246,8 +312,8 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 					LLAvatarTracker& at = LLAvatarTracker::instance();
 					//BD - Only allow saving motions whose object mod rights we have.
 					const LLRelationship* relation = at.getBuddyInfo(avatar->getID());
-					if (relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS)
-						|| avatar->getID() == gAgentID)
+					if ((relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS))
+						|| avatar->getID() == gAgentID || is_animesh)
 					{
 						LLMotionController::motion_list_t motions = avatar->getMotionController().getActiveMotions();
 						for (LLMotion* motion : motions)
@@ -258,8 +324,10 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 								LLSD row;
 								LLAvatarName av_name;
 								LLAvatarNameCache::get(avatar->getID(), &av_name);
+
+								//BD - Animesh Support
 								row["columns"][0]["column"] = "name";
-								row["columns"][0]["value"] = av_name.getDisplayName();
+								row["columns"][0]["value"] = is_animesh ? animesh->getFullname() : av_name.getDisplayName();
 								row["columns"][1]["column"] = "uuid";
 								row["columns"][1]["value"] = motion_id.asString();
 								row["columns"][2]["column"] = "priority";
@@ -302,8 +370,10 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 					//const LLRelationship* relation = at.getBuddyInfo(character->getID());
 					//if (relation && relation->isRightGrantedFrom(LLRelationship::GRANT_MODIFY_OBJECTS)
 					//	|| character->getID() == gAgentID)
-					//if (character->getID() == gAgentID)
-					//{
+
+					//BD - Animesh Support
+					if (avatar->getID() == gAgentID || is_animesh)
+					{
 						//BD - Only allow animating ourselves, as per Oz Linden.
 						LLScrollListItem* item = mMotionScroll->getFirstSelected();
 						if (item)
@@ -311,12 +381,26 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 							LLUUID motion_id = item->getColumn(1)->getValue().asUUID();
 							if (!motion_id.isNull())
 							{
-								gAgentAvatarp->createMotion(motion_id);
-								gAgentAvatarp->stopMotion(motion_id, 1);
-								gAgentAvatarp->startMotion(motion_id, 0.0f);
+								//BD - Animesh Support
+								//if (animesh)
+								//{
+									//signaled_animation_map_t signaled_anims = LLObjectSignaledAnimationMap::instance().getMap()[avatar->getID()];
+									//signaled_anims[motion_id] = signaled_anims.size();
+									//LLObjectSignaledAnimationMap::instance().getMap()[avatar->getID()] = signaled_anims;
+									//animesh->createMotion(motion_id);
+									//animesh->stopMotion(motion_id, 1);
+									//animesh->startMotion(motion_id, 0.0f);
+								//}
+								//else
+								{
+									LL_INFOS("Animating") << "Adding animation to animesh" << LL_ENDL;
+									avatar->createMotion(motion_id);
+									avatar->stopMotion(motion_id, 1);
+									avatar->startMotion(motion_id, 0.0f);
+								}
 							}
 						}
-					//}
+					}
 				}
 			}
 		}
