@@ -2402,6 +2402,15 @@
              tool_tip="Allows object to flex about the Z axis (Client-side only)"
              top_pad="12"
              width="121" />
+            <check_box
+             height="16"
+             label="Animated Mesh"
+             layout="topleft"
+             left="155"
+             name="Animated Mesh Checkbox Ctrl"
+             tool_tip="Allows rigged mesh objects to be animated independently"
+             top_delta="0"
+             width="121" />
             <spinner
              follows="left|top"
              height="20"
@@ -2410,7 +2419,7 @@
              label="Softness"
              label_width="70"
              layout="topleft"
-             left_delta="0"
+             left="5"
              max_val="3"
              name="FlexNumSections"
              top_pad="5"
