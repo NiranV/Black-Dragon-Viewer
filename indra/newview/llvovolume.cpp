@@ -3979,22 +3979,6 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 
 		//BD - Punish high triangle counts.
 		num_triangles = drawablep->getVOVolume()->getHighLODTriangleCount();
-        LLMeshCostData costs;
-		if (getCostData(costs))
-		{
-            if (isAnimatedObject() && isRiggedMesh())
-            {
-                // Scaling here is to make animated object vs
-                // non-animated object ARC proportional to the
-                // corresponding calculations for streaming cost.
-                num_triangles = (ANIMATED_OBJECT_COST_PER_KTRI * 0.001 * costs.getEstTrisForStreamingCost())/0.06;
-            }
-            else
-            {
-                F32 radius = getScale().length()*0.5f;
-                num_triangles = costs.getRadiusWeightedTris(radius);
-            }
-		}
 	}
 
 	if (num_triangles <= 0)
