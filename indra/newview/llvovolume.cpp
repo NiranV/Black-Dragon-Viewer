@@ -3949,6 +3949,10 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	//BD - Alpha's aren't that bad as normal alphas if they are rigged and worn, static ones are evil.
 	//     Besides, as long as they are fully invisible Black Dragon won't render them anyway.
 	static const F32 ARC_RIGGED_ALPHA_COST = 1.25f;
+	//BD - In theory animated mesh are pretty limited and they are rendering wise not different to normal avatars.
+	//     Thus they should not be weighted differently, however, since they are just basic dummy avatars with no
+	//     super extensive information, relations, name tag and so on they deserve a tiny complexity discount.
+	static const F32 ARC_ANIMATED_MESH_COST = 0.95f;
 
 	F32 shame = 0;
 
@@ -3960,6 +3964,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	U32 particles = 0;
 	U32 bump = 0;
 	U32 weighted_mesh = 0;
+	U32 animated_mesh = 0;
 	U32 produces_light = 0;
 	U32 produces_shadows = 0;
 	U32 media_faces = 0;
@@ -4005,6 +4010,11 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 			{
 				// something went wrong - user should know their content isn't render-free
 				return 0;
+			}
+
+			if (isAnimatedObject())
+			{
+				animated_mesh = 1;
 			}
 		}
 		else
@@ -4143,6 +4153,11 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 		}
 	}
 
+	if (animated_mesh)
+	{
+		extra_shame += (shame * ARC_ANIMATED_MESH_COST) - shame;
+	}
+
 	// multiply shame by multipliers
 	if (flexi)
 	{
@@ -4197,8 +4212,8 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 }
 
 void LLVOVolume::getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32 &light_cost, U32 &projector_cost,
-									U32 &alpha_cost, U32 &rigged_cost, U32 &media_cost, U32 &bump_cost, U32 &shiny_cost,
-									U32 &glow_cost, U32 &animated_cost) const
+									U32 &alpha_cost, U32 &rigged_cost, U32 &animesh_cost, U32 &media_cost, U32 &bump_cost, 
+									U32 &shiny_cost, U32 &glow_cost, U32 &animated_cost) const
 {
 	/*****************************************************************
 	* This calculation should not be modified by third party viewers,
@@ -4260,6 +4275,10 @@ void LLVOVolume::getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32
 	//BD - Alpha's aren't that bad as normal alphas if they are rigged and worn, static ones are evil.
 	//     Besides, as long as they are fully invisible Black Dragon won't render them anyway.
 	static const F32 ARC_RIGGED_ALPHA_COST = 1.25f;
+	//BD - In theory animated mesh are pretty limited and they are rendering wise not different to normal avatars.
+	//     Thus they should not be weighted differently, however, since they are just basic dummy avatars with no
+	//     super extensive information, relations, name tag and so on they deserve a tiny complexity discount.
+	static const F32 ARC_ANIMATED_MESH_COST = 0.95f;
 
 	U32 shiny = 0;
 	U32 glow = 0;
@@ -4374,6 +4393,11 @@ void LLVOVolume::getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32
 		{
 			alpha_cost += (shame * ARC_RIGGED_ALPHA_COST) - shame;
 		}
+	}
+
+	if (isAnimatedObject())
+	{
+		animesh_cost += (shame * ARC_ANIMATED_MESH_COST) - shame;
 	}
 
 	// multiply shame by multipliers

@@ -148,8 +148,8 @@ public:
 	//BD
 	/*virtual*/ U64		getHighLODTriangleCount64();
 	void	getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32 &light_cost, U32 &projector_cost,
-								U32 &alpha_cost, U32 &rigged_cost, U32 &media_cost, U32 &bump_cost, U32 &shiny_cost,
-								U32 &glow_cost, U32 &animated_cost) const;
+								U32 &alpha_cost, U32 &rigged_cost, U32 &animesh_cost, U32 &media_cost, U32 &bump_cost, 
+								U32 &shiny_cost, U32 &glow_cost, U32 &animated_cost) const;
 
 	/*virtual*/ BOOL lineSegmentIntersect(const LLVector4a& start, const LLVector4a& end, 
 										  S32 face = -1,                        // which face to check, -1 = ALL_SIDES
