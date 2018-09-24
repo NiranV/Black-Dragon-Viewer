@@ -9880,8 +9880,6 @@ void LLVOAvatar::idleUpdateRenderComplexity()
 	if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_DRAW_INFO))
 	{
 		std::string info_line;
-		F32 red_level;
-		F32 green_level;
 		LLColor4 info_color;
 		LLFontGL::StyleFlags info_style;
 		
@@ -9903,62 +9901,29 @@ void LLVOAvatar::idleUpdateRenderComplexity()
 		static LLCachedControl<U32> max_render_cost(gSavedSettings, "RenderAvatarMaxComplexity", 0);
 		info_line = llformat("%d Complexity", mVisualComplexity);
 
-		if (max_render_cost != 0) // zero means don't care, so don't bother coloring based on this
-		{
-			green_level = 1.f-llclamp(((F32) mVisualComplexity-(F32)max_render_cost)/(F32)max_render_cost, 0.f, 1.f);
-			red_level   = llmin((F32) mVisualComplexity/(F32)max_render_cost, 1.f);
-			info_color.set(red_level, green_level, 0.0, 1.0);
-			info_style = (  mVisualComplexity > max_render_cost
-						  ? LLFontGL::BOLD : LLFontGL::NORMAL );
-		}
-		else
-		{
-			info_color.set(LLColor4::grey);
-			info_style = LLFontGL::NORMAL;
-		}
+		F32 mult = llclamp((F32)mVisualComplexity / (F32)max_render_cost, 0.5f, 1.f);
+		info_color.set((0.5 * mult), 1.0, (0.25 * mult), (1.0 - (0.5 - mult)));
+		info_style = (LLFontGL::NORMAL);
+
 		mText->addLine(info_line, info_color, info_style);
 
-		//BD
-		// Visual rank
-		//info_line = llformat("%d rank", mVisibilityRank);
-		// Use grey for imposters, white for normal rendering or no impostors
-		//info_color.set(isImpostor() ? LLColor4::grey : LLColor4::white);
-		//info_style = LLFontGL::NORMAL;
-		//mText->addLine(info_line, info_color, info_style);
-
+		//BD - We got something more accurate.
         // Triangle count
-        mText->addLine(std::string("VisTris ") + LLStringOps::getReadableNumber(mAttachmentVisibleTriangleCount), 
-                       info_color, info_style);
-        mText->addLine(std::string("EstMaxTris ") + LLStringOps::getReadableNumber(mAttachmentEstTriangleCount), 
-                       info_color, info_style);
+        //mText->addLine(std::string("VisTris ") + LLStringOps::getReadableNumber(mAttachmentVisibleTriangleCount), 
+        //               info_color, info_style);
+        //mText->addLine(std::string("EstMaxTris ") + LLStringOps::getReadableNumber(mAttachmentEstTriangleCount), 
+        //               info_color, info_style);
 
 		// Attachment Surface Area
 		static LLCachedControl<F32> max_attachment_area(gSavedSettings, "RenderAutoMuteSurfaceAreaLimit", 1000.0f);
 		info_line = llformat("%.0f m^2", mAttachmentSurfaceArea);
-
-		if (max_render_cost != 0 && max_attachment_area != 0) // zero means don't care, so don't bother coloring based on this
-		{
-			green_level = 1.f-llclamp((mAttachmentSurfaceArea-max_attachment_area)/max_attachment_area, 0.f, 1.f);
-			red_level   = llmin(mAttachmentSurfaceArea/max_attachment_area, 1.f);
-			info_color.set(red_level, green_level, 0.0, 1.0);
-			info_style = (  mAttachmentSurfaceArea > max_attachment_area
-						  ? LLFontGL::BOLD : LLFontGL::NORMAL );
-
-		}
-		else
-		{
-			info_color.set(LLColor4::grey);
-			info_style = LLFontGL::NORMAL;
-		}
+		info_color.set(LLColor4::white);
+		info_style = LLFontGL::NORMAL;
 
 		mText->addLine(info_line, info_color, info_style);
 
 		//BD - Triangles and Vertices count
-		info_line = llformat("%d triangles", mTotalTriangleCount);
-		//info_line = llformat("%d triangles (%d vertices)", mTotalTriangleCount, mTotalVerticeCount);
-		// Use grey for imposters, white for normal rendering or no impostors
-		info_color.set(LLColor4::white);
-		info_style = LLFontGL::NORMAL;
+		info_line = llformat("%d triangles", mAttachmentVisibleTriangleCount);
 		mText->addLine(info_line, info_color, info_style);
 
 		updateText(); // corrects position
