@@ -2002,6 +2002,10 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 
         if (LLDrawPoolAvatar::sShadowPass >= 0)
         {
+			//BD - Alpha Mode selection is the ultimate decision (except when an object is transparent)
+			//     Alpha Mode always decides how a surface is rendered no matter what, making these
+			//     either-or choices makes checking for the diffuse texture obsolete and fixes the alpha
+			//     blend shadows.
             bool is_alpha_blend = false;
             bool is_alpha_mask  = false;
 
@@ -2043,15 +2047,6 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
             if (tex_entry)
             {
                 if (tex_entry->getAlpha() <= 0.99f)
-                {
-                    is_alpha_blend = true;
-                }
-            }
-
-            if (tex)
-            {
-                LLGLenum image_format = tex->getPrimaryFormat();
-                if (!is_alpha_mask && (image_format == GL_RGBA || image_format == GL_ALPHA))
                 {
                     is_alpha_blend = true;
                 }
