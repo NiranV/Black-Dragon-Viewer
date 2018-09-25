@@ -2018,6 +2018,23 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                 }
             }
 
+			if (tex)
+			{
+				LLGLenum image_format = tex->getPrimaryFormat();
+				if (!is_alpha_mask && (image_format == GL_RGBA || image_format == GL_ALPHA))
+				{
+					is_alpha_blend = true;
+				}
+			}
+
+			if (tex_entry)
+			{
+				if (tex_entry->getAlpha() <= 0.99f)
+				{
+					is_alpha_blend = true;
+				}
+			}
+
             if (mat)
             {                
                 switch (LLMaterial::eDiffuseAlphaMode(mat->getDiffuseAlphaMode()))
@@ -2041,14 +2058,6 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                         is_alpha_blend = false;
                         is_alpha_mask  = false;
                         break;
-                }
-            }
-
-            if (tex_entry)
-            {
-                if (tex_entry->getAlpha() <= 0.99f)
-                {
-                    is_alpha_blend = true;
                 }
             }
 
