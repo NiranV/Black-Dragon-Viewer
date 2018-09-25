@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.2.8 - Caring Dragon]"
+       label="[CHANNEL] [VERSION] - [3.3.0 - Animating Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -174,8 +174,72 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="156"
+              height="325"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Support for Animated Mesh in our custom complexity calculation.
+Added: Support for Animesh in the Advanced Complexity Information window.
+Added: Support for Animesh in the Animation Control window.
+Added: Support to manipulate animations of Animesh content, including playing animations on them.
+Added: Chris R to Patreon Patron list.
+Added: Nastasya Sokolova to Patreon Patron list.
+Changed: Massively optimized joystick/flycam action execution performance.
+Changed: Allow left-click selecting land (even through objects) when the About Land window is open.
+Changed: Appearance of group IMs, show a clickable name instead of [ From X.Y ].
+Changed: Version to 3.3.0 - Animating Dragon.
+Fixed: Water color mismatch between void water and SIM water.
+Fixed: Compile. x2
+Fixed: Missing entries in Right-Click menu for objects.
+Fixed: Missing Animated Mesh checkbox in tools floater.
+Fixed: Complexity showing unusually low values.
+Fixed: Complexity Display showing inaccurate estimated and visible triangle counts in addition to already existing exact triangle counts.
+Fixed: Complexity Display becoming brightish red and hard to read when nearing/passing max complexity limit.
+Fixed: Shadows on almost all avatars missing almost completely under pretty common circumstances.
+Misc: Enabled experimental multislider support in the Poser window.
+Misc: Added possible extra 16 buttons for joystick configuration in the future should it ever become necessary.
+Misc: Cleaned up and simplified some code in the Advanced Complexity Information window.
+Misc: Lineendings fixing.
+Misc: Sync with Viewer Cougar changes now that Graham fixed missing shadows in his repo too.
+Merge with Viewer Cougar. (10 Changes)
+Merge with Axon (Animesh) (214 Changes)
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.2.8
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="156"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
