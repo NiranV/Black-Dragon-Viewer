@@ -34,9 +34,9 @@ class LLCheckBoxCtrl;
 
 class LLFloaterJoystick : public LLFloater
 {
-	friend class LLFloaterReg;
-
 public:
+	LLFloaterJoystick(const LLSD& key);
+	~LLFloaterJoystick();
 
 	virtual BOOL postBuild();
 	virtual void refresh();
@@ -47,11 +47,9 @@ public:
 //	//BD - Xbox360 Controller Support
 	static  void setXboxDefaults();
 
+	void refreshAll();
+
 private:
-
-	LLFloaterJoystick(const LLSD& data);
-	virtual ~LLFloaterJoystick();
-
 	void initFromSettings();
 	
 	static void onCommitJoystickEnabled(LLUICtrl*, void*);

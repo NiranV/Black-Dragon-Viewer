@@ -61,6 +61,8 @@ static LLTrace::SampleStatHandle<>* sJoystickAxes[6] =
 LLFloaterJoystick::LLFloaterJoystick(const LLSD& data)
 	: LLFloater(data)
 {
+	mCommitCallbackRegistrar.add("Joystick.Refresh", boost::bind(&LLFloaterJoystick::refreshAll, this));
+
 	initFromSettings();
 }
 
@@ -76,7 +78,7 @@ void LLFloaterJoystick::draw()
 	LLViewerJoystick* joystick(LLViewerJoystick::getInstance());
 	for (U32 i = 0; i < 6; i++)
 	{
-		F32 value = joystick->getJoystickAxis(i);
+		F32 value = joystick->mAxes[i];
 		sample(*sJoystickAxes[i], value * gFrameIntervalSeconds.value());
 		if (mAxisStatsBar[i])
 		{
@@ -93,8 +95,8 @@ void LLFloaterJoystick::draw()
 //	//BD - Custom Joystick Mapping
 	for (U32 i = 0; i < 16; i++)
 	{
-		U32 value = joystick->getJoystickButton(i);
-		if(!mAxisButton[i]->getEnabled() && joystick->getJoystickButton(i))
+		U32 value = joystick->mBtn[i];
+		if(!mAxisButton[i]->getEnabled() && joystick->mBtn[i])
 		{
 			mAxisButton[i]->setEnabled(TRUE);
 		}
@@ -334,6 +336,7 @@ void LLFloaterJoystick::onClickCancel(void *joy_panel)
 		if (self)
 		{
 			self->cancel();
+			LLViewerJoystick::getInstance()->refreshEverything();
 			self->closeFloater();
 		}
 	}
@@ -361,4 +364,9 @@ void LLFloaterJoystick::setSNDefaults()
 void LLFloaterJoystick::setXboxDefaults()
 {
 	LLViewerJoystick::getInstance()->setXboxDefaults();
+}
+
+void LLFloaterJoystick::refreshAll()
+{
+	LLViewerJoystick::getInstance()->refreshEverything();
 }

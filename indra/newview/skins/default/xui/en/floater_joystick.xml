@@ -62,7 +62,10 @@
      left="5"
      top_delta="3"
      name="enable_joystick"
-     width="120" />
+     width="120" >
+     <check_box.commit_callback
+     function="Joystick.Refresh"/>
+     </check_box>
      <text
      top_delta="1"
      follows="left|top"
@@ -80,7 +83,10 @@
      top_pad="15"
      name="JoystickAvatarEnabled"
      height="16"
-     width="60" />
+     width="60" >
+     <check_box.commit_callback
+     function="Joystick.Refresh"/>
+     </check_box>
     <check_box
      control_name="JoystickBuildEnabled"
      halign="top|left"
@@ -90,7 +96,10 @@
      top_pad="1"
      height="14"
      name="JoystickBuildEnabled"
-     width="60" />
+     width="60" >
+     <check_box.commit_callback
+     function="Joystick.Refresh"/>
+     </check_box>
     <check_box
      control_name="JoystickFlycamEnabled"
      halign="top|left"
@@ -100,7 +109,10 @@
      top_pad="1"
      height="14"
      name="JoystickFlycamEnabled"
-     width="60" />
+     width="60" >
+     <check_box.commit_callback
+     function="Joystick.Refresh"/>
+     </check_box>
     <check_box
      top_delta="-30"
      control_name="ZoomDirect"
@@ -109,7 +121,10 @@
      left="270"
      name="ZoomDirect"
      height="14"
-     width="60" />
+     width="60" >
+     <check_box.commit_callback
+     function="Joystick.Refresh"/>
+     </check_box>
     <check_box
      control_name="Cursor3D"
      top_pad="1"
@@ -118,7 +133,10 @@
      left_delta="0"
      name="Cursor3D"
      height="14"
-     width="60" />
+     width="60" >
+     <check_box.commit_callback
+     function="Joystick.Refresh"/>
+     </check_box>
     <check_box
      top_pad="1"
      control_name="AutoLeveling"
@@ -127,7 +145,10 @@
      left_delta="0"
      height="14"
      name="AutoLeveling"
-     width="60" />
+     width="60" >
+     <check_box.commit_callback
+     function="Joystick.Refresh"/>
+     </check_box>
     <check_box
      top_pad="1"
      control_name="JoystickInvertPitch"
@@ -136,7 +157,10 @@
      left_delta="0"
      name="InvertPitch"
      height="14"
-     width="60" />
+     width="60" >
+     <check_box.commit_callback
+     function="Joystick.Refresh"/>
+     </check_box>
     <panel
  follows="left|top|right"
  height="20"
@@ -536,7 +560,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonJump"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
       <spinner
      top_pad="11"
      control_name="JoystickButtonCrouch"
@@ -549,7 +576,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonCrouch"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
       <spinner
      top_pad="11"
      control_name="JoystickButtonFly"
@@ -562,7 +592,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonFly"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
       <spinner
      top_pad="11"
      control_name="JoystickButtonRunToggle"
@@ -575,7 +608,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonRunToggle"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
       <spinner
      top_pad="11"
      control_name="JoystickButtonMouselook"
@@ -588,7 +624,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonMouselook"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
       <spinner
      top_pad="11"
      control_name="JoystickButtonFlycam"
@@ -601,7 +640,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonFlycam"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
       <spinner
      top_delta="-105"
      control_name="JoystickButtonZoomOut"
@@ -614,7 +656,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonZoomOut"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
       <spinner
      top_pad="11"
      control_name="JoystickButtonZoomIn"
@@ -627,7 +672,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonZoomIn"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
       <spinner
      top_pad="11"
      control_name="JoystickButtonZoomDefault"
@@ -640,7 +688,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonZoomDefault"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
       <spinner
      top_pad="11"
      control_name="JoystickButtonRollLeft"
@@ -653,7 +704,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonJump"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
       <spinner
      top_pad="11"
      control_name="JoystickButtonRollRight"
@@ -666,7 +720,10 @@
      max_val="15"
      min_val="-1"
      name="JoystickButtonCrouch"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <panel
  follows="left|top|right"
  height="20"
@@ -700,7 +757,10 @@
      max_val="5"
      min_val="-1"
      name="JoystickAxis1"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_pad="11"
      control_name="JoystickAxis2"
@@ -713,7 +773,10 @@
      max_val="5"
      min_val="-1"
      name="JoystickAxis2"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_pad="11"
      control_name="JoystickAxis0"
@@ -726,7 +789,10 @@
      max_val="5"
      min_val="-1"
      name="JoystickAxis0"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="-42"
      control_name="JoystickAxis4"
@@ -739,7 +805,10 @@
      max_val="5"
      min_val="-1"
      name="JoystickAxis4"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_pad="11"
      control_name="JoystickAxis5"
@@ -752,7 +821,10 @@
      max_val="5"
      min_val="-1"
      name="JoystickAxis5"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_pad="11"
      control_name="JoystickAxis3"
@@ -765,7 +837,10 @@
      max_val="5"
      min_val="-1"
      name="JoystickAxis3"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_pad="11"
      control_name="JoystickAxis6"
@@ -778,7 +853,10 @@
      max_val="5"
      min_val="-1"
      name="JoystickAxis6"
-     width="170" />
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <panel
  follows="left|top|right"
  height="20"
@@ -863,7 +941,10 @@
      max_val="50"
      min_val="-50"
      name="AvatarAxisScale1"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
      <button
      follows="left|top"
      control_name="AvatarAxisScale1"
@@ -891,7 +972,10 @@
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale1"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="BuildAxisScale1"
@@ -919,7 +1003,10 @@
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale1"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="FlycamAxisScale1"
@@ -958,7 +1045,10 @@
      max_val="50"
      min_val="-50"
      name="AvatarAxisScale2"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="AvatarAxisScale2"
@@ -986,7 +1076,10 @@
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale2"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="BuildAxisScale2"
@@ -1014,7 +1107,10 @@
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale2"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="FlycamAxisScale2"
@@ -1053,7 +1149,10 @@
      max_val="50"
      min_val="-50"
      name="AvatarAxisScale0"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="AvatarAxisScale0"
@@ -1081,7 +1180,10 @@
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale0"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="BuildAxisScale0"
@@ -1109,7 +1211,10 @@
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale0"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="FlycamAxisScale0"
@@ -1148,7 +1253,10 @@
      max_val="1024"
      min_val="-1024"
      name="AvatarAxisScale4"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="AvatarAxisScale4"
@@ -1176,7 +1284,10 @@
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale4"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="BuildAxisScale4"
@@ -1204,7 +1315,10 @@
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale4"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="FlycamAxisScale4"
@@ -1243,7 +1357,10 @@
      max_val="1024"
      min_val="-1024"
      name="AvatarAxisScale5"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="AvatarAxisScale5"
@@ -1271,7 +1388,10 @@
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale5"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="BuildAxisScale5"
@@ -1299,7 +1419,10 @@
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale5"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="FlycamAxisScale5"
@@ -1338,7 +1461,10 @@
      max_val="1024"
      min_val="-1024"
      name="BuildAxisScale3"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="BuildAxisScale3"
@@ -1366,7 +1492,10 @@
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale3"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="FlycamAxisScale3"
@@ -1405,7 +1534,10 @@
      max_val="1024"
      min_val="-1024"
      name="FlycamAxisScale6"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <button
      follows="left|top"
      control_name="FlycamAxisScale6"
@@ -1443,7 +1575,10 @@
      layout="topleft"
      left="110"
      name="AvatarAxisDeadZone1"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="BuildAxisDeadZone1"
@@ -1453,7 +1588,10 @@
      layout="topleft"
      left="215"
      name="BuildAxisDeadZone1"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="FlycamAxisDeadZone1"
@@ -1463,7 +1601,10 @@
      layout="topleft"
      left="320"
      name="FlycamAxisDeadZone1"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <text
      type="string"
      length="1"
@@ -1484,7 +1625,10 @@
      layout="topleft"
      left="110"
      name="AvatarAxisDeadZone2"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="BuildAxisDeadZone2"
@@ -1494,7 +1638,10 @@
      layout="topleft"
      left="215"
      name="BuildAxisDeadZone2"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="FlycamAxisDeadZone2"
@@ -1504,7 +1651,10 @@
      layout="topleft"
      left="320"
      name="FlycamAxisDeadZone2"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <text
      type="string"
      length="1"
@@ -1525,7 +1675,10 @@
      layout="topleft"
      left="110"
      name="AvatarAxisDeadZone0"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="BuildAxisDeadZone0"
@@ -1535,7 +1688,10 @@
      layout="topleft"
      left="215"
      name="BuildAxisDeadZone0"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="FlycamAxisDeadZone0"
@@ -1545,7 +1701,10 @@
      layout="topleft"
      left="320"
      name="FlycamAxisDeadZone0"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <text
      type="string"
      length="1"
@@ -1566,7 +1725,10 @@
      layout="topleft"
      left="110"
      name="AvatarAxisDeadZone4"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="BuildAxisDeadZone4"
@@ -1576,7 +1738,10 @@
      layout="topleft"
      left="215"
      name="BuildAxisDeadZone4"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="FlycamAxisDeadZone4"
@@ -1586,7 +1751,10 @@
      layout="topleft"
      left="320"
      name="FlycamAxisDeadZone4"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <text
      type="string"
      length="1"
@@ -1607,7 +1775,10 @@
      layout="topleft"
      left="110"
      name="AvatarAxisDeadZone5"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="BuildAxisDeadZone5"
@@ -1617,7 +1788,10 @@
      layout="topleft"
      left="215"
      name="BuildAxisDeadZone5"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="FlycamAxisDeadZone5"
@@ -1627,7 +1801,10 @@
      layout="topleft"
      left="320"
      name="FlycamAxisDeadZone5"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <text
      type="string"
      length="1"
@@ -1648,7 +1825,10 @@
      layout="topleft"
      left="215"
      name="BuildAxisDeadZone3"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="FlycamAxisDeadZone3"
@@ -1658,7 +1838,10 @@
      layout="topleft"
      left="320"
      name="FlycamAxisDeadZone3"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <text
      type="string"
      length="1"
@@ -1679,7 +1862,10 @@
      layout="topleft"
      left="320"
      name="FlycamAxisDeadZone6"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <text
      type="string"
      length="1"
@@ -1702,7 +1888,10 @@
      layout="topleft"
      left="110"
      name="AvatarFeathering"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="BuildFeathering"
@@ -1714,7 +1903,10 @@
      layout="topleft"
      left="215"
      name="BuildFeathering"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <spinner
      top_delta="0"
      control_name="FlycamFeathering"
@@ -1726,7 +1918,10 @@
      layout="topleft"
      left="320"
      name="FlycamFeathering"
-     width="56" />
+     width="56" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <stat_view
      height="250"
      label="Joystick Monitor"

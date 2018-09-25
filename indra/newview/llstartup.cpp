@@ -821,6 +821,7 @@ bool idle_startup()
 		while( PeekMessage( &msg, /*All hWnds owned by this thread */ NULL, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE ) )
 		{ }
 #endif
+
         display_startup();
         timeout.reset();
 		return FALSE;

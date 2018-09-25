@@ -43,6 +43,60 @@ typedef enum e_joystick_driver_state
 	JDS_INITIALIZING
 } EJoystickDriverState;
 
+//BD - Optimized Joystick Mappings
+typedef enum E_Buttons
+{
+	ROLL_LEFT = 0,
+	ROLL_RIGHT = 1,
+	ZOOM_IN = 2,
+	ZOOM_OUT = 3,
+	ZOOM_DEFAULT = 4,
+	JUMP = 5,
+	CROUCH = 6,
+	FLY = 7,
+	MOUSELOOK = 8,
+	FLYCAM = 9,
+	TOGGLE_RUN = 10,
+	MAX_BUTTONS = 11
+} E_buttons;
+
+typedef enum E_Axes
+{
+	X_AXIS = 0,
+	Y_AXIS = 1,
+	Z_AXIS = 2,
+	CAM_X_AXIS = 3,
+	CAM_Y_AXIS = 4,
+	CAM_Z_AXIS = 5,
+	CAM_W_AXIS = 6,
+	MAX_AXES = 7
+} E_Axes;
+
+typedef enum E_Scalings
+{
+	AV_AXIS_0 = 0,
+	AV_AXIS_1 = 1,
+	AV_AXIS_2 = 2,
+	AV_AXIS_3 = 3,
+	AV_AXIS_4 = 4,
+	AV_AXIS_5 = 5,
+	BUILD_AXIS_0 = 6,
+	BUILD_AXIS_1 = 7,
+	BUILD_AXIS_2 = 8,
+	BUILD_AXIS_3 = 9,
+	BUILD_AXIS_4 = 10,
+	BUILD_AXIS_5 = 11,
+	FLYCAM_AXIS_0 = 12,
+	FLYCAM_AXIS_1 = 13,
+	FLYCAM_AXIS_2 = 14,
+	FLYCAM_AXIS_3 = 15,
+	FLYCAM_AXIS_4 = 16,
+	FLYCAM_AXIS_5 = 17,
+	FLYCAM_AXIS_6 = 18,
+	MAX_SCALINGS = 19
+} E_Scalings;
+
+
 class LLViewerJoystick : public LLSingleton<LLViewerJoystick>
 {
 	LLSINGLETON(LLViewerJoystick);
@@ -57,8 +111,6 @@ public:
 	void moveObjects(bool reset = false);
 	void moveAvatar(bool reset = false);
 	void moveFlycam(bool reset = false);
-	F32 getJoystickAxis(U32 axis) const;
-	U32 getJoystickButton(U32 button) const;
 	bool isJoystickInitialized() const {return (mDriverState==JDS_INITIALIZED);}
 	bool isLikeSpaceNavigator() const;
 	void setNeedsReset(bool reset = true) { mResetFlag = reset; }
@@ -70,8 +122,17 @@ public:
 	void setSNDefaults();
 //	//BD - Xbox360 Controller Support
 	void setXboxDefaults();
+	//BD - Optimized Joystick Mappings
+	void refreshButtonMapping();
+	void refreshAxesMapping();
+	void refreshSettings();
+
+	void refreshEverything();
 
 	std::string getDescription();
+
+	long					mBtn[16];
+	F32						mAxes[6];
 	
 protected:
 	void updateEnabled(bool autoenable);
@@ -89,18 +150,38 @@ protected:
 #endif
 	
 private:
-	F32						mAxes[6];
-	long					mBtn[16];
 	EJoystickDriverState	mDriverState;
 	NDOF_Device				*mNdofDev;
 	bool					mResetFlag;
-	F32						mPerfScale;
 	bool					mCameraUpdated;
 	bool 					mOverrideCamera;
 	U32						mJoystickRun;
 	
-	static F32				sLastDelta[7];
-	static F32				sDelta[7];
+	static F32				sLastDelta[MAX_AXES];
+	static F32				sDelta[MAX_AXES];
+
+	//BD - Optimized Joystick Mappings
+	S32 mMappedButtons[MAX_BUTTONS];
+	S32 mMappedAxes[MAX_AXES];
+	F32 mAxesScalings[MAX_SCALINGS];
+	F32 mAxesDeadzones[MAX_SCALINGS];
+
+	bool mAutoLeveling;
+	bool mZoomDirect;
+	bool mJoystickEnabled;
+	bool mJoystickFlycamEnabled;
+	bool mJoystickBuildEnabled;
+	bool mJoystickAvatarEnabled;
+	bool mJoystickInvertPitch;
+	bool mJoystickMouselookYaw;
+	bool mCursor3D;
+	bool mAutomaticFly;
+
+	F32 mFlycamFeathering;
+	F32 mAvatarFeathering;
+	F32 mBuildFeathering;
+	F32 mFlycamBuildModeScale;
+	F32 mJoystickRunThreshold;
 };
 
 #endif
