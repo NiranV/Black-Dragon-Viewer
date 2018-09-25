@@ -95,9 +95,11 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 	{
 		if (mIsGroupMsg)
 		{
-			LLAvatarName avatar_name;
-			LLAvatarNameCache::get(p.avatar_id, &avatar_name);
-			p.message = "[From " + avatar_name.getDisplayName() + "]\n" + p.message;
+//			//BD - SSFUI
+			//LLAvatarName avatar_name;
+			//LLAvatarNameCache::get(p.avatar_id, &avatar_name);
+			//p.message = "[From " + avatar_name.getDisplayName() + "]\n" + p.message;
+			p.message = sslurl + " " + p.message;
 		}
 		style_params.font.style =  "NORMAL";
 		mMessage->setText(p.message, style_params);
@@ -108,7 +110,6 @@ LLToastIMPanel::LLToastIMPanel(LLToastIMPanel::Params &p) :	LLToastPanel(p.notif
 	mSessionID = p.session_id;
 	mAvatarID = p.avatar_id;
 	mNotification = p.notification;
-
 
 	initIcon();
 
@@ -172,7 +173,7 @@ void LLToastIMPanel::spawnNameToolTip()
 	params.background_visible(false);
 	if(!mIsGroupMsg)
 	{
-	params.click_callback(boost::bind(&LLFloaterReg::showInstance, "inspect_avatar", LLSD().with("avatar_id", mAvatarID), FALSE));
+		params.click_callback(boost::bind(&LLFloaterReg::showInstance, "inspect_avatar", LLSD().with("avatar_id", mAvatarID), FALSE));
 	}
 	else
 	{
