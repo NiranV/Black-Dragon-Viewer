@@ -204,6 +204,16 @@ BOOL LLToolPie::handleLeftClickPick()
 	{
 		LLViewerParcelMgr::getInstance()->deselectLand();
 	}
+	if (mPick.mPickType == LLPickInfo::PICK_LAND || LLFloaterReg::getInstance("about_land")->getVisible())
+	{
+		//BD - Make sure our selection is empty before we try to select a new one
+		//	   otherwise we will end up not updating our selection correctly
+		if (!LLViewerParcelMgr::getInstance()->selectionEmpty())
+		{
+			LLViewerParcelMgr::getInstance()->deselectLand();
+		}
+		LLViewerParcelMgr::getInstance()->selectParcelAt(mPick.mPosGlobal);
+	}
 	
 	if (object)
 	{
