@@ -248,7 +248,7 @@ void BDFloaterComplexity::calcARC()
 
 				for (LLViewerObject* attached_object : attachment->mAttachedObjects)
 				{
-					if (attached_object && !attached_object->isHUDAttachment() && attached_object->mDrawable.notNull())
+					if (attached_object && attached_object->mDrawable.notNull() && !attached_object->isHUDAttachment())
 					{
 						textures.clear();
 						const LLDrawable* drawable = attached_object->mDrawable;
