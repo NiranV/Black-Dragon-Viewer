@@ -21,12 +21,12 @@
 #include "llfloater.h"
 #include "llscrolllistctrl.h"
 #include "llsliderctrl.h"
-#include "llmultisliderctrl.h"
-#include "lltimectrl.h"
+//#include "llmultisliderctrl.h"
+//#include "lltimectrl.h"
+#include "lltabcontainer.h"
 #include "llkeyframemotion.h"
-#include "llframetimer.h"
 
-struct BDPoseKey
+/*struct BDPoseKey
 {
 public:
 	// source of a pose set
@@ -97,9 +97,15 @@ public:
 	}
 
 	std::string toString() const;
-};
+};*/
 
 
+typedef enum E_BoneTypes
+{
+	JOINTS = 0,
+	COLLISION_VOLUMES = 1,
+	ATTACHMENT_BONES = 2
+} E_BoneTypes;
 
 typedef enum E_Columns
 {
@@ -110,7 +116,10 @@ typedef enum E_Columns
 	COL_ROT_Z = 4,
 	COL_POS_X = 5,
 	COL_POS_Y = 6,
-	COL_POS_Z = 7
+	COL_POS_Z = 7,
+	COL_SCALE_X = 8,
+	COL_SCALE_Y = 9,
+	COL_SCALE_Z = 10
 } E_Columns;
 
 class BDFloaterPoser :
@@ -136,16 +145,16 @@ private:
 	BOOL onPoseLoad(const LLSD& name);
 
 	//BD - Joints
-	void onJointRefresh();
+	void onJointRefresh(bool initial = false);
 	void onJointSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointScaleSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointChangeState();
 	void onJointControlsRefresh();
-	void onJointRotPosReset();
+	void onJointRotPosScaleReset();
 	void onJointRotationReset();
 	void onJointPositionReset();
-	void afterJointPositionReset();
+	void onJointScaleReset();
 
 	//BD - Animating
 	void onAnimAdd(const LLSD& param);
@@ -164,8 +173,29 @@ public:
 	static std::string escapeString(const std::string& str);
 
 private:
+	//BD - Posing
+	LLScrollListCtrl*						mPoseScroll;
+	LLTabContainer*							mJointTabs;
+
+	std::array<LLUICtrl*, 3>				mRotationSliders;
+	std::array<LLSliderCtrl*, 3>			mPositionSliders;
+	std::array<LLSliderCtrl*, 3>			mScaleSliders;
+
+	std::array<LLScrollListCtrl*, 3>		mJointScrolls;
+
+	//BD - I really didn't want to do this this way but we have to.
+	//     It's the easiest way doing this.
+	std::map<const std::string, LLVector3>	mDefaultScales;
+	std::map<const std::string, LLVector3>	mDefaultPositions;
+
+	//BD - Animations
+	LLScrollListCtrl*						mAnimEditorScroll;
+
+	//BD - Misc
+	bool									mDelayRefresh;
+
 	//BD - Experimental
-	void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);
+	/*void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);
 	void onAddKey();
 	void onDeleteKey();
 	void addSliderKey(F32 time, BDPoseKey keyframe);
@@ -185,26 +215,10 @@ private:
 		F32 time;
 	};
 
-
-
-	//BD - Posing
-	LLScrollListCtrl*				mPoseScroll;
-	LLScrollListCtrl*				mJointsScroll;
-
-	std::array<LLUICtrl*, 3>		mRotationSliders;
-	std::array<LLSliderCtrl*, 3>	mPositionSliders;
-
-	//BD - Animations
-	LLScrollListCtrl*				mAnimEditorScroll;
-
-	//BD - Misc
-
-
-	//BD - Exerpimental
-	LLSD 							mAnimJointMap[134][200][2]; // 134 bones, 200 keyframes , 2 stats (rotation | time)
-	std::map<std::string, SliderKey> mSliderToKey;
-	LLMultiSliderCtrl*				mTimeSlider;
-	LLMultiSliderCtrl*				mKeySlider;
+	LLSD 									mAnimJointMap[134][200][2]; // 134 bones, 200 keyframes , 2 stats (rotation | time)
+	std::map<std::string, SliderKey>		mSliderToKey;
+	LLMultiSliderCtrl*						mTimeSlider;
+	LLMultiSliderCtrl*						mKeySlider; */
 };
 
 #endif

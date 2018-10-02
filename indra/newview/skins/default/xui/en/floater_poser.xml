@@ -96,7 +96,7 @@ width="517">
 			width="483">
 				<icon
 				follows="top|left"
-				height="320"
+				height="300"
 				color="1 1 1 1"
 				image_name="Panel_Background"
 				layout="topleft"
@@ -104,56 +104,236 @@ width="517">
 				mouse_opaque="false"
 				visible="true"
 				width="480"
-				top="0"
+				top="20"
 				left="0"/>
-				<scroll_list
-				column_padding="2"
-				draw_heading="true"
+				<tab_container
+				follows="all"
+				halign="center"
 				height="299"
-				follows="left|top|right"
 				layout="topleft"
 				left="0"
-				width="480"
-				multi_select="true"
-				name="joints_scroll"
-				top_delta="0">
-				<scroll_list.columns
-				label=""
-				name="icon"
-				relative_width="0.04"  />
-				<scroll_list.columns
-				label="Bone Name"
-				name="joint"
-				relative_width="0.34"  />
-				<scroll_list.columns
-				label="Rot X"
-				name="x"
-				relative_width="0.10"  />
-				<scroll_list.columns
-				label="Rot Y"
-				name="y"
-				relative_width="0.10"  />
-				<scroll_list.columns
-				label="Rot Z"
-				name="z"
-				relative_width="0.10"  />
-				<scroll_list.columns
-				label="Pos X"
-				name="pos_x"
-				relative_width="0.10"  />
-				<scroll_list.columns
-				label="Pos Y"
-				name="pos_y"
-				relative_width="0.10"  />
-				<scroll_list.columns
-				label="Pos Z"
-				name="pos_z"
-				relative_width="0.10"  />
-				<scroll_list.columns
-				label="#"
-				name="number"
-				relative_width="0.00"  />
-				</scroll_list>
+				name="joints_tabs"
+				tab_min_width="157"
+				tab_max_width="156"
+				tab_height="20"
+				tab_group="1"
+				tab_position="top"
+				top="0"
+				width="624">
+					<panel
+					follows="all"
+					background_visible="false"
+					height="299"
+					layout="topleft"
+					left="0"
+					title="Skeleton"
+					name="joints_panel"
+					top="0"
+					width="622">
+						<scroll_list
+						column_padding="2"
+						draw_heading="true"
+						height="279"
+						follows="left|top|right"
+						layout="topleft"
+						left="0"
+						width="480"
+						multi_select="true"
+						name="joints_scroll"
+						top="0">
+						<scroll_list.columns
+						label=""
+						name="icon"
+						relative_width="0.04"  />
+						<scroll_list.columns
+						label="Bone Name"
+						name="joint"
+						relative_width="0.33"  />
+						<scroll_list.columns
+						label="Rot X"
+						name="x"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Rot Y"
+						name="y"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Rot Z"
+						name="z"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Pos X"
+						name="pos_x"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Pos Y"
+						name="pos_y"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Pos Z"
+						name="pos_z"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Size X"
+						name="scale_x"
+						relative_width="0.0"  />
+						<scroll_list.columns
+						label="Size Y"
+						name="scale_y"
+						relative_width="0.0"  />
+						<scroll_list.columns
+						label="Size Z"
+						name="scale_z"
+						relative_width="0.0"  />
+						<scroll_list.columns
+						label="#"
+						name="number"
+						relative_width="0.00"  />
+						</scroll_list>
+					</panel>
+					<panel
+					follows="all"
+					background_visible="false"
+					height="299"
+					layout="topleft"
+					left="0"
+					title="Collision Volumes"
+					name="cv_panel"
+					top="0"
+					width="622">
+						<scroll_list
+						column_padding="2"
+						draw_heading="true"
+						height="279"
+						follows="left|top|right"
+						layout="topleft"
+						left="0"
+						width="480"
+						multi_select="true"
+						name="cv_scroll"
+						top="0">
+						<scroll_list.columns
+						label=""
+						name="icon"
+						relative_width="0.04"  />
+						<scroll_list.columns
+						label="Collision Volume Name"
+						name="joint"
+						relative_width="0.33"  />
+						<scroll_list.columns
+						label="Rot X"
+						name="x"
+						relative_width="0.0"  />
+						<scroll_list.columns
+						label="Rot Y"
+						name="y"
+						relative_width="0.0"  />
+						<scroll_list.columns
+						label="Rot Z"
+						name="z"
+						relative_width="0.0"  />
+						<scroll_list.columns
+						label="Pos X"
+						name="pos_x"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Pos Y"
+						name="pos_y"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Pos Z"
+						name="pos_z"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Size X"
+						name="scale_x"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Size Y"
+						name="scale_y"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Size Z"
+						name="scale_z"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="#"
+						name="number"
+						relative_width="0.00"  />
+						</scroll_list>
+					</panel>
+					<panel
+					follows="all"
+					background_visible="false"
+					height="299"
+					layout="topleft"
+					left="0"
+					title="Attachment Bones"
+					name="attach_panel"
+					top="0"
+					width="622">
+						<scroll_list
+						column_padding="2"
+						draw_heading="true"
+						height="279"
+						follows="left|top|right"
+						layout="topleft"
+						left="0"
+						width="480"
+						multi_select="true"
+						name="attach_scroll"
+						top="0">
+						<scroll_list.columns
+						label=""
+						name="icon"
+						relative_width="0.04"  />
+						<scroll_list.columns
+						label="Attachment Bone Name"
+						name="joint"
+						relative_width="0.33"  />
+						<scroll_list.columns
+						label="Rot X"
+						name="x"
+						relative_width="0.0"  />
+						<scroll_list.columns
+						label="Rot Y"
+						name="y"
+						relative_width="0.0"  />
+						<scroll_list.columns
+						label="Rot Z"
+						name="z"
+						relative_width="0.0"  />
+						<scroll_list.columns
+						label="Pos X"
+						name="pos_x"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Pos Y"
+						name="pos_y"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Pos Z"
+						name="pos_z"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Size X"
+						name="scale_x"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Size Y"
+						name="scale_y"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="Size Z"
+						name="scale_z"
+						relative_width="0.10"  />
+						<scroll_list.columns
+						label="#"
+						name="number"
+						relative_width="0.00"  />
+						</scroll_list>
+					</panel>
+				</tab_container>
 				<button
 				height="21"
 				follows="top|left"
@@ -260,27 +440,6 @@ width="517">
 				width="480"
 				top_pad="4"
 				left="0"/>
-				<!--<panel
-				follows="left|top|right"
-				height="20"
-				bg_visible="true"
-				bg_alpha_color="0.10 0.43 0.77 0.28"
-				layout="topleft"
-				mouse_opaque="false"
-				left="2"
-				name="title"
-				top_delta="2"
-				width="476"/>
-				<text
-				name="first_person_label"
-				follows="left|top"
-				layout="topleft"
-				left="10"
-				height="12"
-				width="350"
-				top_delta="4">
-				Modifications:
-				</text>-->
 				<tab_container
 				follows="all"
 				halign="center"
@@ -288,8 +447,8 @@ width="517">
 				layout="topleft"
 				left_delta="-1"
 				name="Picks Tabs"
-				tab_min_width="236"
-				tab_max_width="235"
+				tab_min_width="157"
+				tab_max_width="156"
 				tab_height="20"
 				tab_group="1"
 				tab_position="top"
@@ -329,27 +488,6 @@ width="517">
 						<slider
 						decimal_digits="3"
 						can_edit_text="true"
-						visible="false"
-						follows="left|top"
-						height="14"
-						increment="0.001"
-						initial_value="0"
-						label="Rotation X:"
-						label_width="70"
-						layout="topleft"
-						left="10"
-						max_val="3.142"
-						min_val="-3.142"
-						name="Rotation_X_Big"
-						top_delta="0"
-						width="459" >
-						<slider.commit_callback
-						function="Joint.Set"
-						parameter="0"/>
-						</slider>
-						<slider
-						decimal_digits="3"
-						can_edit_text="true"
 						follows="left|top"
 						height="14"
 						enabled="false"
@@ -363,27 +501,6 @@ width="517">
 						min_val="-3.142"
 						name="Rotation_Y"
 						top_pad="1"
-						width="459" >
-						<slider.commit_callback
-						function="Joint.Set"
-						parameter="1"/>
-						</slider>
-						<slider
-						decimal_digits="3"
-						visible="false"
-						can_edit_text="true"
-						follows="left|top"
-						height="14"
-						increment="0.001"
-						initial_value="0"
-						label="Rotation Y:"
-						label_width="70"
-						layout="topleft"
-						left="10"
-						max_val="3.142"
-						min_val="-3.142"
-						name="Rotation_Y_Big"
-						top_delta="0"
 						width="459" >
 						<slider.commit_callback
 						function="Joint.Set"
@@ -406,27 +523,6 @@ width="517">
 						min_val="-3.142"
 						name="Rotation_Z"
 						top_pad="1"
-						width="459" >
-						<slider.commit_callback
-						function="Joint.Set"
-						parameter="2"/>
-						</slider>
-						<slider
-						decimal_digits="3"
-						visible="false"
-						can_edit_text="true"
-						follows="left|top"
-						height="14"
-						increment="0.001"
-						initial_value="0"
-						label="Rotation Z:"
-						label_width="70"
-						layout="topleft"
-						left="10"
-						max_val="3.142"
-						min_val="-3.142"
-						name="Rotation_Z_Big"
-						top_delta="0"
 						width="459" >
 						<slider.commit_callback
 						function="Joint.Set"
@@ -557,6 +653,105 @@ width="517">
 							left_delta="2">
 							<button.commit_callback
 							function="Joint.ResetJointPosition"/>
+							</button>
+						</panel>
+					</panel>
+					<panel
+					follows="all"
+					background_visible="false"
+					height="95"
+					layout="topleft"
+					left="0"
+					title="Scale"
+					name="scale_panel"
+					top="0"
+					width="622">
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Scale X:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="2"
+						min_val="0"
+						name="Scale_X"
+						top_pad="6"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.SetScale"
+						parameter="0"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Scale Y:"
+						label_width="70"
+						layout="topleft"
+						left_delta="0"
+						max_val="2"
+						min_val="0"
+						name="Scale_Y"
+						top_pad="1"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.SetScale"
+						parameter="1"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Scale Z:"
+						label_width="70"
+						layout="topleft"
+						left_delta="0"
+						max_val="2"
+						min_val="0"
+						name="Scale_Z"
+						top_pad="1"
+						width="459" >
+						<slider.commit_callback
+						function="Joint.SetScale"
+						parameter="2"/>
+						</slider>
+						<panel
+						follows="top|left|right"
+						height="21"
+						background_visible="false"
+						layout="topleft"
+						mouse_opaque="false"
+						left="0"
+						name="title"
+						top_pad="6"
+						width="480">
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							enabled="true"
+							label="Reset Selected Scale(s)"
+							label_selected="Disable Selected Bone(s)"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							name="reset_bone_scale"
+							width="238"
+							top="0"
+							left_delta="2">
+							<button.commit_callback
+							function="Joint.ResetJointScale"/>
 							</button>
 						</panel>
 					</panel>

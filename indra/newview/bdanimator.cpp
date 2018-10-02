@@ -245,27 +245,31 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 			}
 
 			LLVector3 vec3;
-			LLQuaternion quat;
-			LLQuaternion new_quat = joint->getRotation();
-
-			joint->setLastRotation(joint->getRotation());
-			vec3.setValue(pose["rotation"]);
-			quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
-			joint->setTargetRotation(quat);
-
-			//BD - We could just check whether position information is available since only joints
-			//     which can have their position changed will have position information but we
-			//     want this to be a minefield for crashes.
-			//     Bones that can support position
-			//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-			if (joint->mHasPosition)
+			if (pose["rotation"].isDefined())
 			{
-				if (pose["position"].isDefined())
-				{
-					vec3.setValue(pose["position"]);
-					joint->setLastPosition(joint->getPosition());
-					joint->setTargetPosition(vec3);
-				}
+				LLQuaternion quat;
+				LLQuaternion new_quat = joint->getRotation();
+
+				joint->setLastRotation(new_quat);
+				vec3.setValue(pose["rotation"]);
+				quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
+				joint->setTargetRotation(quat);
+			}
+
+			//BD - Position information is only ever written when it is actually safe to do.
+			//     It's safe to assume that IF information is available it's safe to apply.
+			if (pose["position"].isDefined())
+			{
+				vec3.setValue(pose["position"]);
+				joint->setLastPosition(joint->getPosition());
+				joint->setTargetPosition(vec3);
+			}
+
+			//BD - Bone Scales
+			if (pose["scale"].isDefined())
+			{
+				vec3.setValue(pose["scale"]);
+				joint->setScale(vec3);
 			}
 		}
 	}
