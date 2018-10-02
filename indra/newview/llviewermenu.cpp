@@ -6488,12 +6488,7 @@ class LLAvatarResetSkeleton: public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
     {
-		LLVOAvatar* avatar = NULL;
-        LLViewerObject *obj = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
-        if (obj)
-        {
-            avatar = obj->getAvatar();
-        }
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
 		if(avatar)
         {
             avatar->resetSkeleton(false);
@@ -6506,8 +6501,8 @@ class LLAvatarEnableResetSkeleton: public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
     {
-        LLViewerObject *obj = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
-        if (obj && obj->getAvatar())
+		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
+        if (avatar)
         {
             return true;
         }
