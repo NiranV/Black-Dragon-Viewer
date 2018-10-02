@@ -29,6 +29,8 @@
 #include "llvfile.h"
 #include "llvoavatar.h"
 #include "llvoavatarself.h"
+#include "llselectmgr.h"
+#include "llappearancemgr.h"
 
 //BD - Animesh Support
 #include "llcontrolavatar.h"
@@ -45,6 +47,7 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	//     "Load" - Copy a motion to a selected avatar and make it play it.
 	//     "Remove" - Remove all selected motions from our list.
 	//     "Create" - Create a new motion via a given UUID.
+	//     "Skeleton" - Copy and apply our own shape params to any avatar we can apply them to (animesh).
 	mCommitCallbackRegistrar.add("Motion.Command", boost::bind(&BDFloaterAnimations::onMotionCommand, this, _1, _2));
 
 	//BD - Refresh the avatar list.
@@ -255,7 +258,6 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 			if (animesh)
 			{
 				is_animesh = animesh->mPlaying;
-				LL_INFOS("Animating") << "Animesh added: " << is_animesh << LL_ENDL;
 			}
 
 			if (!avatar->isDead())
@@ -342,8 +344,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 								row["columns"][6]["value"] = motion->getEaseInDuration();
 								row["columns"][7]["column"] = "easeout";
 								row["columns"][7]["value"] = motion->getEaseOutDuration();
-								if (motion->getName().empty() &&
-									motion->getDuration() > 0.0f)
+								if (motion->getDuration() > 0.0f)
 								{
 									mMotionScroll->addElement(row);
 								}
@@ -381,26 +382,195 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 							LLUUID motion_id = item->getColumn(1)->getValue().asUUID();
 							if (!motion_id.isNull())
 							{
-								//BD - Animesh Support
-								//if (animesh)
-								//{
-									//signaled_animation_map_t signaled_anims = LLObjectSignaledAnimationMap::instance().getMap()[avatar->getID()];
-									//signaled_anims[motion_id] = signaled_anims.size();
-									//LLObjectSignaledAnimationMap::instance().getMap()[avatar->getID()] = signaled_anims;
-									//animesh->createMotion(motion_id);
-									//animesh->stopMotion(motion_id, 1);
-									//animesh->startMotion(motion_id, 0.0f);
-								//}
-								//else
-								{
-									LL_INFOS("Animating") << "Adding animation to animesh" << LL_ENDL;
-									avatar->createMotion(motion_id);
-									avatar->stopMotion(motion_id, 1);
-									avatar->startMotion(motion_id, 0.0f);
-								}
+								avatar->createMotion(motion_id);
+								avatar->stopMotion(motion_id, 1);
+								avatar->startMotion(motion_id, 0.0f);
 							}
 						}
 					}
+				}
+				else if (param.asString() == "Skeleton")
+				{
+					//BD - Clear all visual params first so they don't add ontop of each other or break.
+					avatar->clearVisualParamWeights();
+					for (LLVisualParam* param = gAgentAvatarp->getFirstVisualParam(); param; param = gAgentAvatarp->getNextVisualParam())
+					{
+						LLViewerVisualParam* viewer_param = (LLViewerVisualParam*)param;
+						if (viewer_param)
+						{
+							F32 weight = viewer_param->getWeight();
+
+							//BD - Apply our param weights to the selected avatar.
+							avatar->setVisualParamWeight(viewer_param->getID(), weight);
+						}
+					}
+
+					avatar->updateVisualParams();
+
+					//BD - We're going to override the entire skeleton and shape stats and weights
+					//     onto the selected avatar.
+					std::vector<std::string> bone_names, cv_names, attach_names, all_names;
+					avatar->getSortedJointNames(0, bone_names);
+					avatar->getSortedJointNames(1, cv_names);
+					avatar->getSortedJointNames(2, attach_names);
+					all_names.insert(all_names.end(), bone_names.begin(), bone_names.end());
+					all_names.insert(all_names.end(), cv_names.begin(), cv_names.end());
+					all_names.insert(all_names.end(), attach_names.begin(), attach_names.end());
+
+					//BD - After collecting all bone names, iterate through them, copy their position
+					//     and scale and apply them to the target's bones.
+					for (std::vector<std::string>::iterator name_iter = bone_names.begin();
+						name_iter != bone_names.end(); ++name_iter)
+					{
+						LLJoint* pJoint = gAgentAvatarp->getJoint(*name_iter);
+						if (!pJoint)
+							continue;
+						const LLVector3& pos = pJoint->getPosition();
+						const LLVector3& scale = pJoint->getScale();
+
+						LLJoint* joint = avatar->getJoint(*name_iter);
+						if (!joint)
+							continue;
+						joint->setPosition(pos);
+						joint->setScale(scale);
+
+						avatar->clearAttachmentOverrides();
+						avatar->updateAttachmentOverrides();
+
+						LLUUID mesh_id;
+						LLVector3 position_override;
+						bool override_changed;
+						if (pJoint->hasAttachmentPosOverride(position_override, mesh_id))
+						{
+							S32 num_pos_overrides;
+							std::set<LLVector3> distinct_pos_overrides;
+							pJoint->getAllAttachmentPosOverrides(num_pos_overrides, distinct_pos_overrides);
+
+							for (std::set<LLVector3>::iterator override_iter = distinct_pos_overrides.begin();
+								override_iter != distinct_pos_overrides.end(); ++override_iter)
+							{
+								joint->clearAttachmentPosOverrides();
+								joint->addAttachmentPosOverride(pos,mesh_id,avatar->avString(), override_changed);
+							}
+						}
+
+						LLVector3 scale_override;
+						if (pJoint && pJoint->hasAttachmentScaleOverride(scale_override, mesh_id))
+						{
+							S32 num_scale_overrides;
+							std::set<LLVector3> distinct_scale_overrides;
+							pJoint->getAllAttachmentPosOverrides(num_scale_overrides, distinct_scale_overrides);
+						
+							for (std::set<LLVector3>::iterator override_iter = distinct_scale_overrides.begin();
+								override_iter != distinct_scale_overrides.end(); ++override_iter)
+							{
+								joint->clearAttachmentScaleOverrides();
+								joint->addAttachmentScaleOverride(scale,mesh_id,avatar->avString());
+							}
+						}
+					}
+
+					// Joint pos overrides
+					/*for (std::vector<std::string>::iterator name_iter = all_names.begin();
+						name_iter != all_names.end(); ++name_iter)
+					{
+						LLJoint *pJoint = getJoint(*name_iter);
+
+						LLVector3 pos;
+						LLUUID mesh_id;
+
+						if (pJoint && pJoint->hasAttachmentPosOverride(pos, mesh_id))
+						{
+							S32 num_pos_overrides;
+							std::set<LLVector3> distinct_pos_overrides;
+							pJoint->getAllAttachmentPosOverrides(num_pos_overrides, distinct_pos_overrides);
+						}
+					}
+					// Joint scale overrides
+					for (std::vector<std::string>::iterator name_iter = all_names.begin();
+						name_iter != all_names.end(); ++name_iter)
+					{
+						LLJoint *pJoint = getJoint(*name_iter);
+
+						LLVector3 scale;
+						LLUUID mesh_id;
+
+						if (pJoint && pJoint->hasAttachmentScaleOverride(scale, mesh_id))
+						{
+							S32 num_scale_overrides;
+							std::set<LLVector3> distinct_scale_overrides;
+							pJoint->getAllAttachmentPosOverrides(num_scale_overrides, distinct_scale_overrides);
+						}
+					}*/
+				}
+				else if (param.asString() == "Attachments")
+				{
+					/*for (auto iter : avatar->mAttachmentPoints)
+					{
+						LLViewerJointAttachment* attachment = iter.second;
+						if (!attachment)
+						{
+							continue;
+						}
+
+						for (LLViewerObject* attached_object : attachment->mAttachedObjects)
+						{
+							if (attached_object && attached_object->mDrawable.notNull() && !attached_object->isHUDAttachment())
+							{
+								avatar->detachObject();
+							}
+						}
+					}*/
+
+					avatar->initAttachmentPoints();
+
+					LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
+					for (LLObjectSelection::iterator it = selection->begin();
+						it != selection->end(); it++)
+					{
+						LLSelectNode* node = (*it);
+						LLViewerObject* objectp = node->getObject();
+						//LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getFirstRootObject(TRUE);
+						if (objectp == NULL)
+							return;
+						LLViewerObject* root_object = objectp->getRootEdit();
+						//avatar->attachObject(root_object);
+						//LL_INFOS("Animating") << "Tried to add object: " << LL_ENDL;
+						const LLUUID& attachment_id = root_object->getAttachmentItemID();
+						LLAppearanceMgr::instance().removeItemFromAvatar(attachment_id);
+
+						const LLViewerJointAttachment *attachment = avatar->attachObject(root_object);
+						if (!attachment)
+						{
+							return;
+						}
+
+						// Then make sure the inventory is in sync with the avatar.
+
+						// Should just be the last object added
+						/*if (attachment->isObjectAttached(root_object))
+						{
+							const LLUUID& attachment_id = root_object->getAttachmentItemID();
+							LLAppearanceMgr::instance().removeItemFromAvatar(attachment_id);
+						}*/
+					}
+
+					/*for (auto iter : gAgentAvatarp->mAttachmentPoints)
+					{
+						LLViewerJointAttachment* attachment = iter.second;
+						if (!attachment)
+						{
+							continue;
+						}
+
+						for (LLViewerObject* attached_object : attachment->mAttachedObjects)
+						{
+							if (attached_object && attached_object->mDrawable.notNull() && !attached_object->isHUDAttachment())
+							{
+								avatar->attachObject(attached_object);
+							}
+						}
+					}*/
 				}
 			}
 		}

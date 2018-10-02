@@ -252,7 +252,7 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="83"
+ width="63"
  top_pad="1"
  left_delta="2">
    <button.commit_callback
@@ -268,7 +268,7 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="83"
+ width="63"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
@@ -284,18 +284,50 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="create"
- width="83"
+ width="63"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
    function="Motion.Command"
    parameter="Create"/>
  </button>
+			<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Skeleton"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="skeleton"
+ width="83"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Motion.Command"
+   parameter="Skeleton"/>
+ </button>
+			<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Attachments"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="attachments"
+ width="83"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="Motion.Command"
+   parameter="Attachments"/>
+ </button>
 	<icon
 	follows="left|top|right"
 	image_name="Toolbar_Middle_Off"
 	height="21"
-	width="140"
+	width="32"
 	layout="topleft"
 	left_pad="1"
 	top_delta="0"/>
