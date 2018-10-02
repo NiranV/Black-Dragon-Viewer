@@ -242,7 +242,7 @@ width="510">
       name="web_proxy_enabled"
       radio_style="false"
       width="400"
-      top_delta="4"/>
+      top_delta="1"/>
       <line_editor
       control_name="BrowserProxyAddress"
       enabled_control="BrowserProxyEnabled"
@@ -253,7 +253,7 @@ width="510">
       left="10"
       name="web_proxy_editor"
       tool_tip="This option sets name or IP address of the proxy you would like to use for the internal browser."
-      top_pad="12"
+      top_pad="15"
       width="488" />
 	  <slider
    control_name="BrowserProxyPort"
