@@ -4266,7 +4266,7 @@ void LLVOVolume::getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32
 	//BD - Invisible prims are not rendered anymore in Black Dragon.
 	//static const F32 ARC_INVISI_COST = 2.0f;
 	//BD - Weighted mesh does have quite some impact and it only gets worse with more triangles to transform.
-	static const F32 ARC_WEIGHTED_MESH = 2.5f;
+	static const F32 ARC_WEIGHTED_MESH = 5.0f;
 
 	//BD - Animated textures hit quite hard, not as hard as quick alpha state changes.
 	static const F32 ARC_ANIM_TEX_COST = 2.f;
