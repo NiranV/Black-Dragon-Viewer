@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.3.0 - Animating Dragon]"
+       label="[CHANNEL] [VERSION] - [3.3.1 - Animating Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -174,8 +174,66 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="325"
+              height="247"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Ability to copy shape to an animesh object.
+Added: Ability to move selected attachments over to an animesh object.
+Added: Support for Collision Volume positioning and scaling.
+Added: Support for Attachment Bone positioning and scaling.
+Added: Support for Avatar Bone scaling.
+Changed: Flip complexity if statement order to prevent using before checking.
+Changed: Simplified and improved performance when left clicking on land.
+Changed: Doubled rigged mesh complexity impact to further distinguish between rigged and unrigged content and legacy content.
+Changed: Web Proxy checkbox being positioned too low in comparison to other tabs's checkboxes.
+Changed: Simplified some code for the animation control floater regarding animesh.
+Changed: Inworld Poser to version 11.0.
+Changed: Improved way the Viewer reverts all position and scales.
+Changed: Improved various poser code parts.
+Changed: Version to 3.3.1.
+Fixed: Some animations not getting listed, simply list them all.
+Fixed: Reset Skeleton not working when right-clicking avatar names.
+Fixed: Compile.
+Fixed: Update Avatar Extend taking huge and increasingly bigger hits on performance with avatars around.
+Merge with Axon. (80 Changes)
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.3.0
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="325"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
