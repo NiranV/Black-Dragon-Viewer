@@ -2807,6 +2807,11 @@ void LLFloaterPreference::onPresetsListChange()
 	delete_btn->setEnabled(0 != combo->getItemCount());
 }
 
+/*void LLFloaterPreference::saveGraphicsPreset(std::string& preset)
+{
+	mSavedGraphicsPreset = preset;
+}*/
+
 //------------------------------Updater---------------------------------------
 
 static bool handleBandwidthChanged(const LLSD& newvalue)
@@ -3254,7 +3259,7 @@ void LLPanelPreferenceGraphics::saveSettings()
 		if (instance)
 		{
 			//don't restore previous preset after closing Preferences
-			instance->saveGraphicsPreset(preset_graphic_active);
+			//instance->saveGraphicsPreset(preset_graphic_active);
 		}
 	}
 	LLPanelPreference::saveSettings();

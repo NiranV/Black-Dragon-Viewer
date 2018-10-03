@@ -3896,12 +3896,12 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 					LLSelectMgr::getInstance()->selectGetEditMoveLinksetPermissions(all_selected_objects_move, all_selected_objects_modify);
 
 // [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c) | Modified: RLVa-0.2.0g
-							if ( (rlv_handler_t::isEnabled()) && 
-								 ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP))) )
-							{
-								if ((isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (gAgentAvatarp->getRoot() == object->getRootEdit()))
-									moveable_object_selected = this_object_movable = FALSE;
-							}
+//							if ( (rlv_handler_t::isEnabled()) && 
+//								 ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP))) )
+//							{
+//								if ((isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (gAgentAvatarp->getRoot() == object->getRootEdit()))
+//									moveable_object_selected = this_object_movable = FALSE;
+//							}
 // [/RLVa:KB]
 
 					BOOL draw_handles = TRUE;

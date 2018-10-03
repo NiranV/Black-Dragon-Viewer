@@ -256,6 +256,8 @@ public:
 
 	static void setNeedsUpdate();
 
+	//void saveGraphicsPreset(std::string& preset);
+
 private:
 
 //	//BD - Quick Graphics Presets
