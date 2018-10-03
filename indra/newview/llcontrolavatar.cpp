@@ -175,7 +175,16 @@ void LLControlAvatar::matchVolumeTransform()
             // complexity info and such line up better. Should defer
             // this until avatars also get fixed.
 
-            LLQuaternion obj_rot = mRootVolp->getRotation();
+            LLQuaternion obj_rot;
+            if (mRootVolp->mDrawable)
+            {
+                obj_rot = mRootVolp->mDrawable->getRotation();
+            }
+            else
+            {
+                obj_rot = mRootVolp->getRotation();
+            }
+            
 			LLMatrix3 bind_mat;
 
             LLQuaternion bind_rot;
@@ -508,7 +517,7 @@ void LLControlAvatar::updateAnimations()
     if (!mPlaying)
     {
         mPlaying = true;
-        if (!mRootVolp->isAnySelected())
+        //if (!mRootVolp->isAnySelected())
         {
             updateVolumeGeom();
             mRootVolp->recursiveMarkForUpdate(TRUE);
@@ -564,4 +573,18 @@ std::string LLControlAvatar::getFullname() const
     {
         return "AO_no_root_vol";
     }
+}
+
+// virtual
+bool LLControlAvatar::shouldRenderRigged() const
+{
+    if (mRootVolp && mRootVolp->isAttachment())
+    {
+        LLVOAvatar *attached_av = mRootVolp->getAvatarAncestor();
+        if (attached_av)
+        {
+            return attached_av->shouldRenderRigged();
+        }
+    }
+    return true;
 }

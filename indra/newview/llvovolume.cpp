@@ -5107,7 +5107,6 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 	}
     else
     {
-#if 1
         bool is_paused = avatar && avatar->areAnimationsPaused();
 		if (is_paused)
 		{
@@ -5117,7 +5116,6 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
                 return;
             }
 		}
-#endif
     }
 
 

@@ -51,6 +51,7 @@
          layout="topleft"
          left_pad="4"
          name="title"
+         parse_urls="false"
          text_color="GroupNotifyTextColor"
          top_delta="3"
          use_ellipses="true"

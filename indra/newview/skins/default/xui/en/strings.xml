@@ -58,7 +58,7 @@ UI Scaling: [UI_SCALE]
 Draw distance: [DRAW_DISTANCE]m
 Bandwidth: [NET_BANDWITH]kbit/s
 LOD factor: [LOD_FACTOR]
-Render quality: [RENDER_QUALITY] / 10
+Render quality: [RENDER_QUALITY]
 Advanced Lighting Model: [GPU_SHADERS]
 Texture memory: [TEXTURE_MEMORY]MB
 Scene memory: [SCENE_MEMORY]MB

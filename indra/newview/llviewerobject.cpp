@@ -3060,6 +3060,10 @@ void LLViewerObject::updateControlAvatar()
     if (getControlAvatar())
     {
         getControlAvatar()->updateAnimations();
+        if (isSelected())
+        {
+            LLSelectMgr::getInstance()->pauseAssociatedAvatars();
+        }
     }
 }
 
@@ -3085,7 +3089,7 @@ void LLViewerObject::linkControlAvatar()
         if (!cav->mPlaying)
         {
             cav->mPlaying = true;
-            if (!cav->mRootVolp->isAnySelected())
+            //if (!cav->mRootVolp->isAnySelected())
             {
                 cav->updateVolumeGeom();
                 cav->mRootVolp->recursiveMarkForUpdate(TRUE);

@@ -4250,7 +4250,8 @@ void LLVOAvatar::updateRootPositionAndRotation(LLAgent& agent, F32 speed, bool w
         LLControlAvatar *cav = dynamic_cast<LLControlAvatar*>(this);
         if (cav)
         {
-            cav->matchVolumeTransform();
+            // SL-1350: Moved to LLDrawable::updateXform()
+            //cav->matchVolumeTransform();
         }
         else
         {
@@ -7568,6 +7569,12 @@ void LLVOAvatar::onGlobalColorChanged(const LLTexGlobalColor* global_color)
 		invalidateComposite( mBakedTextureDatas[BAKED_EYES].mTexLayerSet);
 	}
 	updateMeshTextures();
+}
+
+// virtual
+bool LLVOAvatar::shouldRenderRigged() const
+{
+    return true;
 }
 
 // FIXME: We have an mVisible member, set in updateVisibility(), but this

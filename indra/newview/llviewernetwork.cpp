@@ -129,7 +129,7 @@ void LLGridManager::initialize(const std::string& grid_file)
 	addSystemGrid("Beta Grid (Aditi)",
 				  "util.aditi.lindenlab.com",
 				  "https://login.aditi.lindenlab.com/cgi-bin/login.cgi",
-				  "http://aditi-secondlife.webdev.lindenlab.com/helpers/",
+				  "https://secondlife.aditi.lindenlab.com/helpers/",
 				  DEFAULT_LOGIN_PAGE,
 				  SL_UPDATE_QUERY_URL,
 				  "https://my.aditi.lindenlab.com/",

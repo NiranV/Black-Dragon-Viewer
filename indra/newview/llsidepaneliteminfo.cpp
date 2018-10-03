@@ -639,7 +639,7 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
 		LLCheckBoxCtrl* ctl = getChild<LLCheckBoxCtrl>("CheckShareWithGroup");
 		if(ctl)
 		{
-			ctl->setTentative(TRUE);
+			ctl->setTentative(!ctl->getEnabled());
 			ctl->set(TRUE);
 		}
 	}
