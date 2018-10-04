@@ -1437,7 +1437,8 @@ void LLVOAvatar::calculateSpatialExtents(LLVector4a& newMin, LLVector4a& newMax)
         // FIXME could try to cache unless something has changed about attached rigged meshes, 
         // but needs more logic based on volume states.
 
-		if (mJointRiggingInfoTab.needsUpdate())
+		//BD - Only ever update this when it's relevant.
+		if (mJointRiggingInfoTab.needsUpdate() && gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_JOINTS))
         {
             updateRiggingInfo();
             mJointRiggingInfoTab.setNeedsUpdate(false);
