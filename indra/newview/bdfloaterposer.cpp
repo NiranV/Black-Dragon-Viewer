@@ -19,6 +19,8 @@
 #include "bdfloaterposer.h"
 #include "lluictrlfactory.h"
 #include "llagent.h"
+#include "llavatarname.h"
+#include "llavatarnamecache.h"
 #include "lldiriterator.h"
 #include "llkeyframemotion.h"
 #include "llsdserialize.h"
@@ -27,6 +29,10 @@
 #include "llviewerjoint.h"
 #include "llvoavatarself.h"
 
+//BD - Animesh Support
+#include "llcontrolavatar.h"
+
+//BD - Black Dragon specifics
 #include "bdanimator.h"
 #include "bdposingmotion.h"
 
@@ -119,6 +125,10 @@ BOOL BDFloaterPoser::postBuild()
 	mJointTabs = getChild<LLTabContainer>("joints_tabs");
 	mJointTabs->setCommitCallback(boost::bind(&BDFloaterPoser::onJointControlsRefresh, this));
 
+	//BD - Animesh
+	mAvatarScroll = this->getChild<LLScrollListCtrl>("avatar_scroll", true);
+	mAvatarScroll->setCommitCallback(boost::bind(&BDFloaterPoser::onAvatarsSelect, this));
+
 	//BD - Animations
 	mAnimEditorScroll = this->getChild<LLScrollListCtrl>("anim_editor_scroll", true);
 	mAnimEditorScroll->setCommitCallback(boost::bind(&BDFloaterPoser::onAnimControlsRefresh, this));
@@ -157,7 +167,7 @@ void BDFloaterPoser::draw()
 	{
 		if (gAgentAvatarp->isFullyLoaded())
 		{
-			onJointRefresh(true);
+			onCollectDefaults();
 			mDelayRefresh = false;
 		}
 	}
@@ -167,9 +177,15 @@ void BDFloaterPoser::draw()
 
 void BDFloaterPoser::onOpen(const LLSD& key)
 {
+	//BD - Check whether we should delay the default value collection or fire it immediately.
 	mDelayRefresh = !gAgentAvatarp->isFullyLoaded();
+	if (!mDelayRefresh)
+	{
+		onCollectDefaults();
+	}
 
-	onJointRefresh(true);
+	onAvatarsRefresh();
+	onJointRefresh();
 	onPoseRefresh();
 	onUpdateLayout();
 }
@@ -180,6 +196,7 @@ void BDFloaterPoser::onClose(bool app_quitting)
 	mJointScrolls[JOINTS]->clearRows();
 	mJointScrolls[COLLISION_VOLUMES]->clearRows();
 	mJointScrolls[ATTACHMENT_BONES]->clearRows();
+	mAvatarScroll->clearRows();
 }
 
 ////////////////////////////////
@@ -235,6 +252,20 @@ void BDFloaterPoser::onClickPoseSave()
 
 BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 {
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item)
+	{
+		LL_WARNS("Posing") << "No avatar selected." << LL_ENDL;
+		return FALSE;
+	}
+
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+	if (!avatar || avatar->isDead())
+	{
+		LL_WARNS("Posing") << "Couldn't find avatar, dead?" << LL_ENDL;
+		return FALSE;
+	}
+
 	//BD - First and foremost before we do anything, check if the folder exists.
 	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses");
 	if (!gDirUtilp->fileExists(pathname))
@@ -408,12 +439,14 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 BOOL BDFloaterPoser::onPoseLoad(const LLSD& name)
 {
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
+	if (!item) return FALSE;
+
 	std::string pose_name;
 	if (!name.asString().empty())
 	{
 		pose_name = name.asString();
 	}
-	else if (item)
+	else
 	{
 		pose_name = item->getColumn(0)->getValue().asString();
 	}
@@ -425,20 +458,30 @@ BOOL BDFloaterPoser::onPoseLoad(const LLSD& name)
 
 void BDFloaterPoser::onPoseStart()
 {
-	BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
+
+	BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
 	if (!motion || motion->isStopped())
 	{
-		gAgent.setPosing();
-		gAgent.stopFidget();
-		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
+		avatar->setPosing();
+		if (avatar->isSelf())
+		{
+			gAgent.stopFidget();
+		}
+		avatar->startMotion(ANIM_BD_POSING_MOTION);
 	}
 	else
 	{
 		//BD - Reset everything, all rotations, positions and scales of all bones.
 		onJointRotPosScaleReset();
 
-		gAgent.clearPosing();
-		gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
+		//BD - Clear posing when we're done now that we've safely endangered getting spaghetified.
+		avatar->clearPosing();
+		avatar->stopMotion(ANIM_BD_POSING_MOTION);
 	}
 	//BD - Wipe the joint list.
 	onJointRefresh();
@@ -511,14 +554,20 @@ void BDFloaterPoser::onPoseControlsRefresh()
 ////////////////////////////////
 //BD - Joints
 ////////////////////////////////
-void BDFloaterPoser::onJointRefresh(bool initial)
+void BDFloaterPoser::onJointRefresh()
 {
-	//BD - Getting collision volumes and attachment points.
-	std::vector<std::string> cv_names, attach_names, all_names;
-	gAgentAvatarp->getSortedJointNames(1, cv_names);
-	gAgentAvatarp->getSortedJointNames(2, attach_names);
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
 
-	bool is_posing = gAgent.getPosing();
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
+
+	//BD - Getting collision volumes and attachment points.
+	std::vector<std::string> cv_names, attach_names;
+	avatar->getSortedJointNames(1, cv_names);
+	avatar->getSortedJointNames(2, attach_names);
+
+	bool is_posing = avatar->getPosing();
 	mJointScrolls[JOINTS]->clearRows();
 	mJointScrolls[COLLISION_VOLUMES]->clearRows();
 	mJointScrolls[ATTACHMENT_BONES]->clearRows();
@@ -527,10 +576,10 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 	LLVector3 pos;
 	LLVector3 scale;
 	LLJoint* joint;
-	for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
+	for (S32 i = 0; (joint = avatar->getCharacterJoint(i)); ++i)
 	{
-		if (!joint)
-			continue;
+		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
+		if (!joint)	continue;
 
 		LLSD row;
 		const std::string name = joint->getName();
@@ -562,12 +611,6 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 		row["columns"][COL_NAME]["column"] = "joint";
 		row["columns"][COL_NAME]["value"] = name;
 
-		//BD - We always get the values but we don't write them out as they are not relevant for the
-		//     user yet but we need them to establish default values we revert to later on.
-		scale = joint->getScale();
-		if (initial)
-			mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
-
 		if (is_posing)
 		{
 			//BD - Bone Positions
@@ -580,6 +623,7 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 			row["columns"][COL_ROT_Z]["value"] = ll_round(rot.mV[VZ], 0.001f);
 
 			//BD - Bone Scales
+			scale = joint->getScale();
 			row["columns"][COL_SCALE_X]["column"] = "scale_x";
 			row["columns"][COL_SCALE_X]["value"] = ll_round(scale.mV[VX], 0.001f);
 			row["columns"][COL_SCALE_Y]["column"] = "scale_y";
@@ -595,14 +639,9 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 		//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
 		if (joint->mHasPosition)
 		{
-			//BD - We always get the values but we don't write them out as they are not relevant for the
-			//     user yet but we need them to establish default values we revert to later on.
-			pos = initial ? joint->getPosition() : joint->getTargetPosition();
-			if (initial)
-				mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
-
 			if (is_posing)
 			{
+				pos = joint->getTargetPosition();
 				row["columns"][COL_POS_X]["column"] = "pos_x";
 				row["columns"][COL_POS_X]["value"] = ll_round(pos.mV[VX], 0.001f);
 				row["columns"][COL_POS_Y]["column"] = "pos_y";
@@ -620,7 +659,7 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 		//     could be confusing to the user, this is due to how animations work.
 		if (is_posing)
 		{
-			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+			BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
 			if (motion)
 			{
 				LLPose* pose = motion->getPose();
@@ -661,9 +700,9 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 		name_iter != cv_names.end(); ++name_iter)
 	{
 		const std::string name = *name_iter;
-		LLJoint* joint = gAgentAvatarp->getJoint(name);
-		if (!joint)
-			continue;
+		LLJoint* joint = avatar->getJoint(name);
+		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
+		if (!joint) continue;
 
 		LLSD row;
 		row["columns"][COL_ICON]["column"] = "icon";
@@ -672,19 +711,10 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 		row["columns"][COL_NAME]["column"] = "joint";
 		row["columns"][COL_NAME]["value"] = name;
 
-		//BD - We always get the values but we don't write them out as they are not relevant for the
-		//     user yet but we need them to establish default values we revert to later on.
-		pos = joint->getPosition();
-		scale = joint->getScale();
-		if (initial)
-		{
-			mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
-			mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
-		}
-
 		if (is_posing)
 		{
 			//BD - Bone Positions
+			pos = joint->getPosition();
 			row["columns"][COL_POS_X]["column"] = "pos_x";
 			row["columns"][COL_POS_X]["value"] = ll_round(pos.mV[VX], 0.001f);
 			row["columns"][COL_POS_Y]["column"] = "pos_y";
@@ -693,6 +723,7 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 			row["columns"][COL_POS_Z]["value"] = ll_round(pos.mV[VZ], 0.001f);
 
 			//BD - Bone Scales
+			scale = joint->getScale();
 			row["columns"][COL_SCALE_X]["column"] = "scale_x";
 			row["columns"][COL_SCALE_X]["value"] = ll_round(scale.mV[VX], 0.001f);
 			row["columns"][COL_SCALE_Y]["column"] = "scale_y";
@@ -710,9 +741,9 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 		name_iter != attach_names.end(); ++name_iter)
 	{
 		const std::string name = *name_iter;
-		LLJoint* joint = gAgentAvatarp->getJoint(name);
-		if (!joint)
-			continue;
+		LLJoint* joint = avatar->getJoint(name);
+		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
+		if (!joint) continue;
 
 		LLSD row;
 		row["columns"][COL_ICON]["column"] = "icon";
@@ -721,19 +752,10 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 		row["columns"][COL_NAME]["column"] = "joint";
 		row["columns"][COL_NAME]["value"] = name;
 
-		//BD - We always get the values but we don't write them out as they are not relevant for the
-		//     user yet but we need them to establish default values we revert to later on.
-		pos = joint->getPosition();
-		scale = joint->getScale();
-		if (initial)
-		{
-			mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
-			mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
-		}
-
 		if (is_posing)
 		{
 			//BD - Bone Positions
+			pos = joint->getPosition();
 			row["columns"][COL_POS_X]["column"] = "pos_x";
 			row["columns"][COL_POS_X]["value"] = ll_round(pos.mV[VX], 0.001f);
 			row["columns"][COL_POS_Y]["column"] = "pos_y";
@@ -742,6 +764,7 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 			row["columns"][COL_POS_Z]["value"] = ll_round(pos.mV[VZ], 0.001f);
 
 			//BD - Bone Scales
+			scale = joint->getScale();
 			row["columns"][COL_SCALE_X]["column"] = "scale_x";
 			row["columns"][COL_SCALE_X]["value"] = ll_round(scale.mV[VX], 0.001f);
 			row["columns"][COL_SCALE_Y]["column"] = "scale_y";
@@ -759,9 +782,15 @@ void BDFloaterPoser::onJointRefresh(bool initial)
 
 void BDFloaterPoser::onJointControlsRefresh()
 {
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
+
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
+
 	bool can_position = false;
 	bool is_pelvis = false;
-	bool is_posing = (gAgentAvatarp->isFullyLoaded() && gAgent.getPosing());
+	bool is_posing = (avatar->isFullyLoaded() && avatar->getPosing());
 	S32 index = mJointTabs->getCurrentPanelIndex();
 	LLScrollListItem* item = mJointScrolls[index]->getFirstSelected();
 
@@ -853,6 +882,9 @@ void BDFloaterPoser::onJointControlsRefresh()
 	mPositionSliders[VX]->setMinValue(-max_val);
 	mPositionSliders[VY]->setMinValue(-max_val);
 	mPositionSliders[VZ]->setMinValue(-max_val);
+
+	//BD - Change our animator's target, make sure it is always up-to-date.
+	gDragonAnimator.mTargetAvatar = avatar;
 }
 
 void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
@@ -977,9 +1009,16 @@ void BDFloaterPoser::onJointChangeState()
 //BD - We use this to reset everything at once.
 void BDFloaterPoser::onJointRotPosScaleReset()
 {
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	//BD - We don't support resetting bones for anyone else yet.
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead() || !avatar->isSelf()) return;
+
 	//BD - While editing rotations, make sure we use a bit of spherical linear interpolation 
 	//     to make movements smoother.
-	BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
 	if (motion)
 	{
 		//BD - If we don't use our default spherical interpolation, set it once.
@@ -1060,9 +1099,16 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 //BD - Used to reset rotations only.
 void BDFloaterPoser::onJointRotationReset()
 {
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	//BD - We do support resetting bone rotations for everyone however.
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
+
 	//BD - While editing rotations, make sure we use a bit of spherical linear interpolation 
 	//     to make movements smoother.
-	BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
 	if (motion)
 	{
 		//BD - If we don't use our default spherical interpolation, set it once.
@@ -1100,10 +1146,17 @@ void BDFloaterPoser::onJointRotationReset()
 //     rotations does.
 void BDFloaterPoser::onJointPositionReset()
 {
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	//BD - We don't support resetting bones positions for anyone else yet.
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead() || !avatar->isSelf()) return;
+
 	S32 index = mJointTabs->getCurrentPanelIndex();
 
 	//BD - When resetting positions, we don't use interpolation for now, it looks stupid.
-	BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
 	if (motion)
 	{
 		motion->setInterpolationTime(0.25f);
@@ -1157,6 +1210,13 @@ void BDFloaterPoser::onJointPositionReset()
 //BD - Used to reset scales only.
 void BDFloaterPoser::onJointScaleReset()
 {
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	//BD - We don't support resetting bones scales for anyone else yet.
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead() || !avatar->isSelf()) return;
+
 	S32 index = mJointTabs->getCurrentPanelIndex();
 
 	//BD - Clear all attachment bone scale changes we've done, they are not automatically
@@ -1181,6 +1241,83 @@ void BDFloaterPoser::onJointScaleReset()
 		}
 	}
 	onJointControlsRefresh();
+}
+
+//BD - This is used to collect all default values at the beginning to revert to later on.
+void BDFloaterPoser::onCollectDefaults()
+{
+	LLVector3 rot;
+	LLVector3 pos;
+	LLVector3 scale;
+	LLJoint* joint;
+
+	//BD - Getting collision volumes and attachment points.
+	std::vector<std::string> cv_names;
+	std::vector<std::string> attach_names;
+	gAgentAvatarp->getSortedJointNames(1, cv_names);
+	gAgentAvatarp->getSortedJointNames(2, attach_names);
+
+	for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
+	{
+		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
+		if (!joint)	continue;
+
+		LLSD row;
+		const std::string name = joint->getName();
+
+		//BD - We always get the values but we don't write them out as they are not relevant for the
+		//     user yet but we need them to establish default values we revert to later on.
+		scale = joint->getScale();
+		mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
+
+		//BD - We could just check whether position information is available since only joints
+		//     which can have their position changed will have position information but we
+		//     want this to be a minefield for crashes.
+		//     Bones that can support position
+		//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
+		if (joint->mHasPosition)
+		{
+			//BD - We always get the values but we don't write them out as they are not relevant for the
+			//     user yet but we need them to establish default values we revert to later on.
+			pos = joint->getPosition();
+			mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
+		}
+	}
+
+	//BD - Collision Volumes
+	for (std::vector<std::string>::iterator name_iter = cv_names.begin();
+		name_iter != cv_names.end(); ++name_iter)
+	{
+		const std::string name = *name_iter;
+		LLJoint* joint = gAgentAvatarp->getJoint(name);
+		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
+		if (!joint)	continue;
+
+		//BD - We always get the values but we don't write them out as they are not relevant for the
+		//     user yet but we need them to establish default values we revert to later on.
+		pos = joint->getPosition();
+		scale = joint->getScale();
+		mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
+		mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
+	}
+
+	//BD - Attachment Bones
+	for (std::vector<std::string>::iterator name_iter = attach_names.begin();
+		name_iter != attach_names.end(); ++name_iter)
+	{
+		const std::string name = *name_iter;
+		LLJoint* joint = gAgentAvatarp->getJoint(name);
+		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
+		if (!joint)	continue;
+
+		//BD - We always get the values but we don't write them out as they are not relevant for the
+		//     user yet but we need them to establish default values we revert to later on.
+		pos = joint->getPosition();
+		scale = joint->getScale();
+
+		mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
+		mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
+	}
 }
 
 ////////////////////////////////
@@ -1452,6 +1589,114 @@ std::string BDFloaterPoser::escapeString(const std::string& str)
 
 	return escaped_str;
 }
+
+//BD - Animesh
+void BDFloaterPoser::onAvatarsSelect()
+{
+	//BD - Whenever we select an avatar in the list, check if the selected Avatar is still
+	//     valid and/or if new avatars have become valid for posing.
+	onAvatarsRefresh();
+
+	//BD - Now that we selected an avatar we can refresh the joint list to have all bones
+	//     mapped to that avatar so we can immediately start posing them or continue doing so.
+	//     This will automatically invoke a onJointControlsRefresh()
+	onJointRefresh();
+}
+
+void BDFloaterPoser::onAvatarsRefresh()
+{
+	bool skip_creation = false;
+	//BD - Flag all items first, we're going to unflag them when they are valid.
+	for (LLScrollListItem* item : mAvatarScroll->getAllData())
+	{
+		if (item)
+		{
+			//BD - Automatically flag all animesh, they might have vanished.
+			//     Our own avatar is never flagged, it does not need to be removed as it remains
+			//     valid throughout an entire session once created.
+			if (item->getColumn(3)->getValue().asBoolean())
+			{
+				item->setFlagged(TRUE);
+			}
+			else
+			{
+				skip_creation = true;
+			}
+		}
+	}
+
+	//BD - Add our own avatar first at all times, only if we haven't already.
+	if (!skip_creation)
+	{
+		for (LLCharacter* character : LLCharacter::sInstances)
+		{
+			LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
+			if (avatar && avatar->isSelf())
+			{
+				LLSD own_row;
+				LLAvatarName av_name;
+				LLAvatarNameCache::get(gAgent.getID(), &av_name);
+				own_row["columns"][0]["column"] = "icon";
+				own_row["columns"][0]["type"] = "icon";
+				own_row["columns"][0]["value"] = getString("icon_category");
+				own_row["columns"][1]["column"] = "name";
+				own_row["columns"][1]["value"] = av_name.getDisplayName();
+				own_row["columns"][2]["column"] = "uuid";
+				own_row["columns"][2]["value"] = gAgent.getID();
+				own_row["columns"][3]["column"] = "control_avatar";
+				own_row["columns"][3]["value"] = false;
+				LLScrollListItem* item = mAvatarScroll->addElement(own_row);
+				item->setUserdata(avatar);
+
+				//BD - We're just here to find outselves, break out immediately when we are done.
+				break;
+			}
+		}
+	}
+
+	bool create_new = true;
+	//BD - Animesh Support
+	//     Search through all control avatars.
+	for (LLCharacter* character : LLControlAvatar::sInstances)
+	{
+		LLControlAvatar* avatar = dynamic_cast<LLControlAvatar*>(character);
+		if (avatar)
+		{
+			LLUUID uuid = avatar->getID();
+			for (LLScrollListItem* item : mAvatarScroll->getAllData())
+			{
+				if (item)
+				{
+					if (avatar == item->getUserdata())
+					{
+						//BD - Avatar is still valid unflag it from removal.
+						item->setFlagged(FALSE);
+						create_new = false;
+						break;
+					}
+				}
+			}
+
+			if (create_new)
+			{
+				//BD - Avatar was not listed yet, create a new entry.
+				LLSD row;
+				row["columns"][0]["column"] = "icon";
+				row["columns"][0]["type"] = "icon";
+				row["columns"][0]["value"] = getString("icon_object");
+				row["columns"][1]["column"] = "name";
+				row["columns"][1]["value"] = avatar->getFullname();
+				row["columns"][2]["column"] = "uuid";
+				row["columns"][2]["value"] = avatar->getID();
+				row["columns"][3]["column"] = "control_avatar";
+				row["columns"][3]["value"] = false;
+				LLScrollListItem* item = mAvatarScroll->addElement(row);
+				item->setUserdata(avatar);
+			}
+		}
+	}
+}
+
 
 
 ////////////////////////////////

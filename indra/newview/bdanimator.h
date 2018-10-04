@@ -64,6 +64,8 @@ public:
 	S32				getCurrentActionIndex() { return mCurrentAction; }
 
 	std::vector<Action>		mAnimatorActions;
+	//BD - Animesh Support
+	LLVOAvatar*				mTargetAvatar;
 private:
 	bool					mPlaying;
 

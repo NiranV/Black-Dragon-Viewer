@@ -5,19 +5,21 @@ height="431"
 layout="topleft"
 name="floater_poser"
 title="Poser"
-width="517">
+width="678">
 	<!-- Expanded Size 745 -->
+	<!-- Expanded Size 906 -->
 	<panel
 	height="1"
 	visible="false"
 	name="max_panel"
-	width="745"/>
+	width="906"/>
 	<!-- Collapsed Size 517 -->
+	<!-- Collapsed Size 678 -->
 	<panel
 	height="1"
 	visible="false"
 	name="min_panel"
-	width="517"/>
+	width="678"/>
 	<string
 	name="icon_category" translate="false">
 	Inv_Shape
@@ -25,6 +27,10 @@ width="517">
 	<string
 	name="icon_bone" translate="false">
 	Transparent
+	</string>
+	<string
+	name="icon_object" translate="false">
+	Inv_Object
 	</string>
 	<string
 	name="title_mPelvis" translate="false">
@@ -75,7 +81,64 @@ width="517">
 	name="poser_stack"
 	orientation="horizontal"
 	top="0"
-	width="506">
+	width="666">
+		<layout_panel
+		follows="top|left|right"
+		layout="topleft"
+		height="420"
+		auto_resize="false"
+		visible="true"
+		name="poser_layout"
+		width="166">
+			<panel
+			follows="left|top|bottom"
+			height="420"
+			background_visible="false"
+			layout="topleft"
+			mouse_opaque="false"
+			left="0"
+			name="title"
+			top="0"
+			width="163">
+				<icon
+				follows="top|left"
+				height="403"
+				color="1 1 1 1"
+				image_name="Panel_Background"
+				layout="topleft"
+				name="vicon"
+				mouse_opaque="false"
+				visible="true"
+				width="155"
+				top="20"
+				left="0"/>
+				<scroll_list
+				column_padding="0"
+				draw_heading="true"
+				height="402"
+				follows="left|top|right"
+				layout="topleft"
+				left="1"
+				tool_tip="Select the targeted avatar or animesh."
+				width="153"
+				multi_select="false"
+				name="avatar_scroll"
+				top="20">
+				<scroll_list.columns
+				label=""
+				name="icon"
+				relative_width="0.14"  />
+				<scroll_list.columns
+				label="Name"
+				name="name"
+				relative_width="0.86"  />
+				<scroll_list.columns
+				label="UUID"
+				name="uuid"
+				relative_width="0.0"  />
+				</scroll_list>
+			</panel>
+		</layout_panel>
 		<layout_panel
 		follows="top|left|right"
 		layout="topleft"
@@ -137,7 +200,7 @@ width="517">
 						follows="left|top|right"
 						layout="topleft"
 						left="0"
-						width="480"
+						width="478"
 						multi_select="true"
 						name="joints_scroll"
 						top="0">

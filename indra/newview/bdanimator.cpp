@@ -169,6 +169,12 @@ void BDAnimator::stopPlayback()
 
 BOOL BDAnimator::loadPose(const LLSD& name)
 {
+	if (!mTargetAvatar || mTargetAvatar->isDead())
+	{
+		LL_WARNS("Posing") << "Couldn't find avatar, dead?" << LL_ENDL;
+		return FALSE;
+	}
+
 	std::string filename;
 	if (!name.asString().empty())
 	{
@@ -196,7 +202,7 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 		//BD - Not sure how to read the exact line out of a XML file, so we're just going
 		//     by the amount of tags here, since the header has only 3 it's a good indicator
 		//     if it's the correct line we're in.
-		BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+		BDPosingMotion* motion = (BDPosingMotion*)mTargetAvatar->findMotion(ANIM_BD_POSING_MOTION);
 		if (count == 3)
 		{
 			if (motion)
@@ -209,7 +215,7 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 			}
 		}
 
-		LLJoint* joint = gAgentAvatarp->getJoint(pose["bone"].asString());
+		LLJoint* joint = mTargetAvatar->getJoint(pose["bone"].asString());
 		if (joint)
 		{
 			if (motion)

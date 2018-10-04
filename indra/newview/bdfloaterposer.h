@@ -145,7 +145,7 @@ private:
 	BOOL onPoseLoad(const LLSD& name);
 
 	//BD - Joints
-	void onJointRefresh(bool initial = false);
+	void onJointRefresh();
 	void onJointSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointScaleSet(LLUICtrl* ctrl, const LLSD& param);
@@ -155,6 +155,7 @@ private:
 	void onJointRotationReset();
 	void onJointPositionReset();
 	void onJointScaleReset();
+	void onCollectDefaults();
 
 	//BD - Animating
 	void onAnimAdd(const LLSD& param);
@@ -169,6 +170,10 @@ private:
 
 	//BD - Misc
 	void onUpdateLayout();
+
+	//BD - Animesh
+	void onAvatarsRefresh();
+	void onAvatarsSelect();
 public:
 	static std::string escapeString(const std::string& str);
 
@@ -180,7 +185,6 @@ private:
 	std::array<LLUICtrl*, 3>				mRotationSliders;
 	std::array<LLSliderCtrl*, 3>			mPositionSliders;
 	std::array<LLSliderCtrl*, 3>			mScaleSliders;
-
 	std::array<LLScrollListCtrl*, 3>		mJointScrolls;
 
 	//BD - I really didn't want to do this this way but we have to.
@@ -193,6 +197,9 @@ private:
 
 	//BD - Misc
 	bool									mDelayRefresh;
+
+	//BD - Animesh
+	LLScrollListCtrl*						mAvatarScroll;
 
 	//BD - Experimental
 	/*void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);
