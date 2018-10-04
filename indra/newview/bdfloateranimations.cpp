@@ -119,8 +119,6 @@ void BDFloaterAnimations::onMotionRefresh()
 					{
 						item->setFlagged(FALSE);
 
-						LL_INFOS("Animating") << "Animesh added: " << avatar->mIsControlAvatar << LL_ENDL;
-
 						std::string str = "Yes";
 						F32 value = avatar->getMotionController().getTimeFactor();
 						item->getColumn(2)->setValue(value);
@@ -157,7 +155,6 @@ void BDFloaterAnimations::onMotionRefresh()
 	{
 		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
 		//BD - Don't even bother with control avatars, we already added them.
-		LL_INFOS("Animating") << "Tried to add animesh: " << avatar->mIsControlAvatar << LL_ENDL;
 		if (avatar && !avatar->mIsControlAvatar)
 		{
 			LLUUID uuid = avatar->getID();
@@ -469,59 +466,9 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 							}
 						}
 					}
-
-					// Joint pos overrides
-					/*for (std::vector<std::string>::iterator name_iter = all_names.begin();
-						name_iter != all_names.end(); ++name_iter)
-					{
-						LLJoint *pJoint = getJoint(*name_iter);
-
-						LLVector3 pos;
-						LLUUID mesh_id;
-
-						if (pJoint && pJoint->hasAttachmentPosOverride(pos, mesh_id))
-						{
-							S32 num_pos_overrides;
-							std::set<LLVector3> distinct_pos_overrides;
-							pJoint->getAllAttachmentPosOverrides(num_pos_overrides, distinct_pos_overrides);
-						}
-					}
-					// Joint scale overrides
-					for (std::vector<std::string>::iterator name_iter = all_names.begin();
-						name_iter != all_names.end(); ++name_iter)
-					{
-						LLJoint *pJoint = getJoint(*name_iter);
-
-						LLVector3 scale;
-						LLUUID mesh_id;
-
-						if (pJoint && pJoint->hasAttachmentScaleOverride(scale, mesh_id))
-						{
-							S32 num_scale_overrides;
-							std::set<LLVector3> distinct_scale_overrides;
-							pJoint->getAllAttachmentPosOverrides(num_scale_overrides, distinct_scale_overrides);
-						}
-					}*/
 				}
 				else if (param.asString() == "Attachments")
 				{
-					/*for (auto iter : avatar->mAttachmentPoints)
-					{
-						LLViewerJointAttachment* attachment = iter.second;
-						if (!attachment)
-						{
-							continue;
-						}
-
-						for (LLViewerObject* attached_object : attachment->mAttachedObjects)
-						{
-							if (attached_object && attached_object->mDrawable.notNull() && !attached_object->isHUDAttachment())
-							{
-								avatar->detachObject();
-							}
-						}
-					}*/
-
 					avatar->initAttachmentPoints();
 
 					LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
@@ -530,12 +477,9 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 					{
 						LLSelectNode* node = (*it);
 						LLViewerObject* objectp = node->getObject();
-						//LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getFirstRootObject(TRUE);
 						if (objectp == NULL)
 							return;
 						LLViewerObject* root_object = objectp->getRootEdit();
-						//avatar->attachObject(root_object);
-						//LL_INFOS("Animating") << "Tried to add object: " << LL_ENDL;
 						const LLUUID& attachment_id = root_object->getAttachmentItemID();
 						LLAppearanceMgr::instance().removeItemFromAvatar(attachment_id);
 
@@ -544,33 +488,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 						{
 							return;
 						}
-
-						// Then make sure the inventory is in sync with the avatar.
-
-						// Should just be the last object added
-						/*if (attachment->isObjectAttached(root_object))
-						{
-							const LLUUID& attachment_id = root_object->getAttachmentItemID();
-							LLAppearanceMgr::instance().removeItemFromAvatar(attachment_id);
-						}*/
 					}
-
-					/*for (auto iter : gAgentAvatarp->mAttachmentPoints)
-					{
-						LLViewerJointAttachment* attachment = iter.second;
-						if (!attachment)
-						{
-							continue;
-						}
-
-						for (LLViewerObject* attached_object : attachment->mAttachedObjects)
-						{
-							if (attached_object && attached_object->mDrawable.notNull() && !attached_object->isHUDAttachment())
-							{
-								avatar->attachObject(attached_object);
-							}
-						}
-					}*/
 				}
 			}
 		}
