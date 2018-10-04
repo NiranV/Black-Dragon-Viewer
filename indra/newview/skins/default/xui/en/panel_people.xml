@@ -336,6 +336,19 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 		function="People.Nearby.Visible"
 		parameter="nearby"/>
 		</menu_item_call>
+  <menu_item_check
+  label="Sort By Recent Arrival"
+  name="sort_arrival">
+  <menu_item_check.on_click
+  function="People.Nearby.ViewSort.Action"
+  parameter="sort_arrival"/>
+  <menu_item_check.on_check
+  function="People.Nearby.ViewSort.CheckItem"
+  parameter="sort_arrival"/>
+  <on_visible
+		function="People.Nearby.Visible"
+		parameter="nearby"/>
+  </menu_item_check>
 		
 		<!-- Friends -->
 		<menu_item_check
