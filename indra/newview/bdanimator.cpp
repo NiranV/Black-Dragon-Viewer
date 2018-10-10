@@ -218,7 +218,8 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 		LLJoint* joint = mTargetAvatar->getJoint(pose["bone"].asString());
 		if (joint)
 		{
-			if (motion)
+			//BD - Don't try to add/remove joint states for anything but our default bones.
+			if (motion && joint->getJointNum() < 134)
 			{
 				LLPose* mpose = motion->getPose();
 				if (mpose)

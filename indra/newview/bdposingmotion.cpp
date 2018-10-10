@@ -218,6 +218,10 @@ void BDPosingMotion::addJointToState(LLJoint *joint)
 	//     joint, all code calling this function has null checks in place.
 	S32 i = joint->getJointNum();
 
+	//BD - Don't add collision volumes and attachment bones.
+	if (i >= 134)
+		return;
+
 	mJointState[i]->setJoint(joint);
 	//BD - Bones that can support position
 	//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
