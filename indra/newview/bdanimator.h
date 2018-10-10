@@ -54,6 +54,7 @@ public:
 	void			onDeleteAction(S32 i);
 
 	BOOL			loadPose(const LLSD& name);
+	LLSD			returnPose(const LLSD& name);
 
 	void			update();
 	void			startPlayback();

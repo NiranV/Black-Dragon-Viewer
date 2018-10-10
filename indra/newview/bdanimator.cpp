@@ -283,3 +283,34 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 	infile.close();
 	return TRUE;
 }
+
+LLSD BDAnimator::returnPose(const LLSD& name)
+{
+	std::string filename;
+	if (!name.asString().empty())
+	{
+		filename = gDirUtilp->getExpandedFilename(LL_PATH_POSES, BDFloaterPoser::escapeString(name.asString()) + ".xml");
+	}
+
+	LLSD pose;
+	llifstream infile;
+	infile.open(filename);
+	if (!infile.is_open())
+	{
+		LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
+		//return;
+	}
+
+	for (S32 i = 0; !infile.eof(); ++i)
+	//while (!infile.eof())
+	{
+		S32 count = LLSDSerialize::fromXML(pose[i], infile);
+		if (count == LLSDParser::PARSE_FAILURE)
+		{
+			LL_WARNS("Posing") << "Failed to parse file: " << filename << LL_ENDL;
+			//return;
+		}
+	}
+	infile.close();
+	return pose;
+}

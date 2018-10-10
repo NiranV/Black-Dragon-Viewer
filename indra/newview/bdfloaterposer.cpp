@@ -1472,18 +1472,126 @@ void BDFloaterPoser::onAnimDelete()
 
 void BDFloaterPoser::onAnimSave()
 {
+	LLKeyframeMotion* temp_motion = NULL;
+	LLAssetID mMotionID;
+	LLTransactionID	mTransactionID;
+
+	//BD - To make this work we'll first need a unique UUID for this animation.
+	mTransactionID.generate();
+	mMotionID = mTransactionID.makeAssetID(gAgent.getSecureSessionID());
+	temp_motion->create(mMotionID);
+
 	//BD - Work in Progress exporter.
-	/*LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
-	typedef std::map<LLUUID, class LLKeyframeMotion::JointMotionList*> keyframe_data_map_t;
+	//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	//typedef std::map<LLUUID, class LLKeyframeMotion::JointMotionList*> keyframe_data_map_t;
 
-	LLKeyframeMotion::JointMotionList* jointmotion_list;
-	jointmotion_list = LLKeyframeDataCache::getKeyframeData(ANIM_BD_POSING_MOTION);
+	//LLKeyframeMotion::JointMotionList* jointmotion_list;
+	//jointmotion_list = LLKeyframeDataCache::getKeyframeData(ANIM_BD_POSING_MOTION);
 
-	LLKeyframeMotion::JointMotion* joint_motion = jointmotion_list->getJointMotion(0);
-	LLKeyframeMotion::RotationCurve rot_courve = joint_motion->mRotationCurve;
-	LLKeyframeMotion::RotationKey rot_key = rot_courve.mLoopInKey;
-	LLQuaternion rotation = rot_key.mRotation;
-	F32 time = rot_key.mTime;*/
+
+	//LLKeyframeMotion::JointMotion* joint_motion = jointmotion_list->getJointMotion(0);
+	//LLKeyframeMotion::RotationCurve rot_courve = joint_motion->mRotationCurve;
+	//LLKeyframeMotion::RotationKey rot_key = rot_courve.mLoopInKey;
+	//LLQuaternion rotation = rot_key.mRotation;
+	//F32 time = rot_key.mTime;
+	//LLDataPackerBinaryBuffer* dp;
+	//BOOL success = TRUE;
+
+	//BD - Lets collect everything we will need.
+	std::string motion_name = getChild<LLUICtrl>("set_name")->getValue().asString();
+	//U16 motion_major_version = KEYFRAME_MOTION_VERSION;
+	//U16 motion_sub_version = KEYFRAME_MOTION_SUBVERSION;
+	//S32 base_priority = getChild<LLUICtrl>("set_priority")->getValue().asInteger();
+	LLJoint::JointPriority base_priority = LLJoint::HIGHEST_PRIORITY;
+	F32 duration = getChild<LLUICtrl>("set_duration")->getValue().asReal();
+	std::string face_emote_name = getChild<LLUICtrl>("set_face_emote")->getValue();
+	F32 loop_in_time = getChild<LLUICtrl>("set_loop_in")->getValue().asReal();
+	F32 loop_out_time = getChild<LLUICtrl>("set_loop_out")->getValue().asReal();
+	S32 loop = getChild<LLUICtrl>("set_loop")->getValue().asBoolean();
+	F32 ease_in_time = getChild<LLUICtrl>("set_ease_in")->getValue().asReal();
+	F32 ease_out_time = getChild<LLUICtrl>("set_ease_out")->getValue().asReal();
+	//U32 hand_pose = getChild<LLUICtrl>("set_hand_pose")->getValue().asInteger();
+	//U32 joint_motion_count = getChild<LLUICtrl>("set_active_motions")->getValue().asInteger();
+	LLUUID emote_name = getChild<LLUICtrl>("set_emote")->getValue();
+
+	LLKeyframeMotion::JointMotionList* jointmotion_list = new LLKeyframeMotion::JointMotionList;
+
+	//BD - Reserve for all 134 joints.
+	jointmotion_list->mJointMotionArray.reserve(134);
+
+	LLJoint* joint;
+	for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
+	{
+		if (!joint)
+			continue;
+
+		//BD - Let's build joint motions
+		LLKeyframeMotion::JointMotion* joint_motion = jointmotion_list->mJointMotionArray[i];
+
+		//BD - We start with the joint name;
+		joint_motion->mJointName = joint->getName();
+
+		//BD - Add the priority
+		joint_motion->mPriority = LLJoint::HIGHEST_PRIORITY;
+
+		//BD - Define the bone usage
+		S32 usage = 0;
+		if (joint->mHasPosition)
+		{
+			usage = usage & LLJointState::POS;
+		}
+		usage = usage & LLJointState::ROT;
+		usage = usage & LLJointState::POS;
+		joint_motion->mUsage = usage;
+
+		//BD - And finally the fun part.
+		//LLKeyframeMotion::RotationCurve* rot_courve;
+		//LLKeyframeMotion::PositionCurve* pos_courve;
+		//LLKeyframeMotion::ScaleCurve* scale_courve;
+
+		//LLKeyframeMotion::RotationKey* rot_key;
+		//rot_key->mRotation = joint->getRotation();
+		//rot_key->mTime = 0.0f;		
+		//rot_courve->mKeys[0.0f].mRotation = joint->getRotation();
+		//rot_courve->mKeys[0.0f].mTime = 0.0f;
+		joint_motion->mRotationCurve.mKeys[0.0f].mRotation = joint->getRotation();
+		joint_motion->mRotationCurve.mKeys[0.0f].mTime = 0.0f;
+
+		joint_motion->mPositionCurve.mKeys[0.0f].mPosition = joint->getPosition();
+		joint_motion->mPositionCurve.mKeys[0.0f].mTime = 0.0f;
+
+		joint_motion->mScaleCurve.mKeys[0.0f].mScale = joint->getScale();
+		joint_motion->mScaleCurve.mKeys[0.0f].mTime = 0.0f;
+
+		//BD - Add the joint motion to our array.
+		jointmotion_list->mJointMotionArray[i] = joint_motion;
+	}
+	LLKeyframeDataCache::addKeyframeData(mMotionID, jointmotion_list);
+
+	temp_motion->setPriority(base_priority);
+	temp_motion->setEaseIn(ease_in_time);
+	temp_motion->setEaseOut(ease_out_time);
+	temp_motion->setEmote(emote_name);
+	//jointmotion_list->mHandPose = hand_pose;
+	temp_motion->setLoop(loop);
+	temp_motion->setLoopIn(loop_in_time);
+	temp_motion->setLoopOut(loop_out_time);
+
+	if (!jointmotion_list)
+		return;
+
+	jointmotion_list->mBasePriority = base_priority;
+	jointmotion_list->mDuration = duration;
+	jointmotion_list->mEaseInDuration = ease_in_time;
+	jointmotion_list->mEaseOutDuration = ease_out_time;
+	jointmotion_list->mEmoteName = face_emote_name;
+	//jointmotion_list->mHandPose = hand_pose;
+	jointmotion_list->mLoop = loop;
+	jointmotion_list->mLoopInPoint = loop_in_time;
+	jointmotion_list->mLoopOutPoint = loop_out_time;
+	jointmotion_list->mMaxPriority = base_priority;
+
+	temp_motion->dumpToFile(motion_name);
 }
 
 void BDFloaterPoser::onAnimSet()
