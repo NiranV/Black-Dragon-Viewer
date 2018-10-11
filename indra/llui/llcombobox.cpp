@@ -777,8 +777,6 @@ BOOL LLComboBox::handleKeyHere(KEY key, MASK mask)
 				--index;
 			else if (key == KEY_DOWN && index < mList->getItemCount())
 				++index;
-			//mList->selectNthItem(index);
-			//mOnReturnSignal(this, mList->getSelectedItemLabel());
 
 			//BD - Don't show list when we simply select the next/previous entry.
 			return mList->handleKeyHere(key, mask);
