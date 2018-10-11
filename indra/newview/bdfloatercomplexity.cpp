@@ -109,6 +109,7 @@ void BDFloaterComplexity::onAvatarsRefresh()
 	//     as well because they are handled as such internally, which is both good and bad.
 	for (LLCharacter* character : LLControlAvatar::sInstances)
 	{
+		create_new = true;
 		LLControlAvatar* avatar = dynamic_cast<LLControlAvatar*>(character);
 		if (avatar)
 		{
@@ -142,6 +143,7 @@ void BDFloaterComplexity::onAvatarsRefresh()
 
 	for (LLCharacter* character : LLCharacter::sInstances)
 	{
+		create_new = true;
 		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
 		if (avatar)
 		{
