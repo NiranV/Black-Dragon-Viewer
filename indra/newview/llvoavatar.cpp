@@ -1438,7 +1438,7 @@ void LLVOAvatar::calculateSpatialExtents(LLVector4a& newMin, LLVector4a& newMax)
         // but needs more logic based on volume states.
 
 		//BD - Only ever update this when it's relevant.
-		if (mJointRiggingInfoTab.needsUpdate() && gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_JOINTS))
+		if (mJointRiggingInfoTab.needsUpdate())
         {
             updateRiggingInfo();
             mJointRiggingInfoTab.setNeedsUpdate(false);
