@@ -2343,7 +2343,8 @@ void LLInventoryAction::doToSelected(LLInventoryModel* model, LLFolderView* root
     
 	if ("delete" == action)
 	{
-		static bool sDisplayedAtSession = false;
+		//BD - Making it a permanently mutable notification.
+		//static bool sDisplayedAtSession = false;
 		const LLUUID &marketplacelistings_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_MARKETPLACE_LISTINGS, false);
 		bool marketplacelistings_item = false;
 		LLAllDescendentsPassedFilter f;
@@ -2367,11 +2368,12 @@ void LLInventoryAction::doToSelected(LLInventoryModel* model, LLFolderView* root
 		}
 		else
 		{
-			if (!sDisplayedAtSession) // ask for the confirmation at least once per session
+			//BD - Making it a permanently mutable notification.
+			/*if (!sDisplayedAtSession) // ask for the confirmation at least once per session
 			{
 				LLNotifications::instance().setIgnored("DeleteItems", false);
 				sDisplayedAtSession = true;
-			}
+			}*/
 
 			LLSD args;
 			args["QUESTION"] = LLTrans::getString(root->getSelectedCount() > 1 ? "DeleteItems" :  "DeleteItem");

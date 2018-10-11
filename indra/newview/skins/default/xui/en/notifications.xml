@@ -5754,9 +5754,11 @@ You cannot undo this action.
     <unique/>
     [QUESTION]
     <tag>confirm</tag>
+    <usetemplate
+    ignoretext="Launch my browser to view a web page"/>
     <form name="form">
      <ignore name="ignore"
-      session_only="true"
+      session_only="false"
       text="Confirm before deleting items"/>
       <button
        default="true"
