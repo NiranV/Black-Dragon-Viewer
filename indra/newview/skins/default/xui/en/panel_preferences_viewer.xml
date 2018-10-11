@@ -23,7 +23,7 @@ width="510">
 	      <panel
 	      layout="topleft"
 	      follows="left|top|right"
-	      height="790"
+	      height="773"
 	      name="viewer_scroll_panel"
 	      top="0"
 	      left="0"
@@ -95,17 +95,7 @@ width="510">
 		     name="TabToTextFieldsOnly"
 		     top_pad="0"
 		     width="256" />
-		     <check_box
-		     control_name="AutoAcceptNewInventory"
-		     height="16"
-		     initial_value="true"
-		     label="Auto accept Inventory offers"
-		     tool_tip="This option toggles whether inventory offers should automatically be accepted. This option technically does nothing since all inventory offers are automatically accepted until declined anyway."
-		     layout="topleft"
-		     left="10"
-		     name="AutoAcceptNewInventory"
-		     top_pad="0"
-		     width="256" />
+		    
 			 <text
 		     name="head_label2"
 		     follows="left|top"

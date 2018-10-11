@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="730"
+     height="767"
      name="ui_panel"
      top="0"
      left="0"
@@ -754,13 +754,35 @@ width="510">
 	    control_name="ShowOfferedInventory"
 	    height="16"
 	    initial_value="true"
-	    label="Show offered Inventory"
+	    label="Preview offered Inventory items if possible"
 	    layout="topleft"
 	    left="10"
-	    tool_tip="This option toggles whether we should open the inventory and show the received item whenever you receive one."
+	    tool_tip="This option toggles whether we should preview the received item if possible or not. This only works on any previewable inventory type such as sounds, notecards, textures and so on."
 	    name="ShowOfferedInventory"
 	    top_pad="0"
 	    width="256" />
+     <check_box
+	    control_name="ShowInInventory"
+	    height="16"
+	    initial_value="true"
+	    label="Highlight received Inventory items in Inventory"
+	    layout="topleft"
+	    left="10"
+	    tool_tip="This option toggles whether we should open the Inventory (if not already) and highlight the received item."
+	    name="ShowOfferedInventory"
+	    top_pad="0"
+	    width="256" />
+     <check_box
+     control_name="AutoAcceptNewInventory"
+     height="16"
+     initial_value="true"
+     label="Auto accept Inventory offers"
+     tool_tip="This option toggles whether inventory offers for notecards, textures and landmarks should automatically be accepted. This option technically does nothing since all inventory offers are automatically accepted until declined anyway, it only hides the message."
+     layout="topleft"
+     left="10"
+     name="AutoAcceptNewInventory"
+     top_pad="0"
+     width="256" />
 		<check_box
 	    control_name="NoInventoryLibrary"
 	    height="16"
