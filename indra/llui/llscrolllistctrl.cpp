@@ -2333,6 +2333,32 @@ BOOL LLScrollListCtrl::handleKeyHere(KEY key,MASK mask )
 			}
 		}
 		// TODO: multiple: shift-up, shift-down, shift-home, shift-end, select all
+		if (mask == MASK_SHIFT)
+		{
+			switch (key)
+			{
+			case KEY_UP:
+				if (mAllowKeyboardMovement || hasFocus())
+				{
+					// commit implicit in call
+					selectPrevItem(FALSE);
+					mNeedsScroll = true;
+					handled = TRUE;
+					onCommit();
+				}
+				break;
+			case KEY_DOWN:
+				if (mAllowKeyboardMovement || hasFocus())
+				{
+					// commit implicit in call
+					selectNextItem(FALSE);
+					mNeedsScroll = true;
+					handled = TRUE;
+					onCommit();
+				}
+				break;
+			}
+		}
 	}
 
 	return handled;

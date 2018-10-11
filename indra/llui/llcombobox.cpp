@@ -770,6 +770,20 @@ BOOL LLComboBox::handleKeyHere(KEY key, MASK mask)
 	BOOL result = FALSE;
 	if (hasFocus())
 	{
+		if ((key == KEY_DOWN || key == KEY_UP) && mask == MASK_SHIFT)
+		{
+			S32 index = mList->getFirstSelectedIndex();
+			if (key == KEY_UP && index > 0)
+				--index;
+			else if (key == KEY_DOWN && index < mList->getItemCount())
+				++index;
+			//mList->selectNthItem(index);
+			//mOnReturnSignal(this, mList->getSelectedItemLabel());
+
+			//BD - Don't show list when we simply select the next/previous entry.
+			return mList->handleKeyHere(key, mask);
+		}
+
 		if (mList->getVisible() 
 			&& key == KEY_ESCAPE && mask == MASK_NONE)
 		{
