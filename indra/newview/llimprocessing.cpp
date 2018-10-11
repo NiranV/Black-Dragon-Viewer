@@ -261,6 +261,7 @@ void inventory_offer_handler(LLOfferInfo* info)
 
     LLNotification::Params p;
 
+	//BD - Inventory offers from objects are only treaded as such when auto-accept is off.
     // Object -> Agent Inventory Offer
     if (info->mFromObject && !bAutoAccept)
     {
