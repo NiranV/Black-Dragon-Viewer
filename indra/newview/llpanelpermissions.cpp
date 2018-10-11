@@ -405,34 +405,7 @@ void LLPanelPermissions::refresh()
 // [/RLVa:KB]
 //	LLSelectMgr::getInstance()->selectGetCreator(mCreatorID, creator_name);
 
-	// Style for creator and owner links (both group and agent)
-	LLStyle::Params style_params;
-	LLColor4 link_color = LLUIColorTable::instance().getColor("HTMLLinkColor");
-	style_params.color = link_color;
-	style_params.readonly_color = link_color;
-	style_params.is_link = true; // link will be added later
-	const LLFontGL* fontp = mLabelCreatorName->getFont();
-	style_params.font.name = LLFontGL::nameFromFont(fontp);
-	style_params.font.size = LLFontGL::sizeFromFont(fontp);
-	style_params.font.style = "UNDERLINE";
-
-	LLAvatarName av_name;
-	style_params.link_href = creator_app_link;
-	if (LLAvatarNameCache::get(mCreatorID, &av_name))
-	{
-		updateCreatorName(mCreatorID, av_name, style_params);
-	}
-	else
-	{
-		if (mCreatorCacheConnection.connected())
-		{
-			mCreatorCacheConnection.disconnect();
-		}
-		mLabelCreatorName->setText(LLTrans::getString("None"));
-		mCreatorCacheConnection = LLAvatarNameCache::get(mCreatorID, boost::bind(&LLPanelPermissions::updateCreatorName, this, _1, _2, style_params));
-	}
 	getChild<LLAvatarIconCtrl>("Creator Icon")->setValue(mCreatorID);
-	getChild<LLAvatarIconCtrl>("Creator Icon")->setVisible(TRUE);
 	mLabelCreatorName->setEnabled(TRUE);
 
 	// Update owner text field
@@ -441,15 +414,17 @@ void LLPanelPermissions::refresh()
 	std::string owner_app_link;
 	const BOOL owners_identical = LLSelectMgr::getInstance()->selectGetOwner(mOwnerID, owner_app_link);
 
+	//BD - Make sure we ALWAYS make at least the owner icon visible.
+	getChild<LLAvatarIconCtrl>("Owner Icon")->setVisible(TRUE);
+	getChild<LLUICtrl>("Owner Group Icon")->setVisible(FALSE);
 
+	LLUUID owner_id = mOwnerID;
 	if (LLSelectMgr::getInstance()->selectIsGroupOwned())
 	{
 		// Group owned already displayed by selectGetOwner
 		LLGroupMgrGroupData* group_data = LLGroupMgr::getInstance()->getGroupData(mOwnerID);
 		if (group_data && group_data->isGroupPropertiesDataComplete())
 		{
-			style_params.link_href = owner_app_link;
-			mLabelOwnerName->setText(group_data->mName, style_params);
 			getChild<LLGroupIconCtrl>("Owner Group Icon")->setIconId(group_data->mInsigniaID);
 			getChild<LLGroupIconCtrl>("Owner Group Icon")->setVisible(TRUE);
 			getChild<LLUICtrl>("Owner Icon")->setVisible(FALSE);
@@ -462,42 +437,17 @@ void LLPanelPermissions::refresh()
 	}
 	else
 	{
-		LLUUID owner_id = mOwnerID;
 		if (owner_id.isNull())
 		{
 			// Display last owner if public
 			std::string last_owner_app_link;
 			LLSelectMgr::getInstance()->selectGetLastOwner(mLastOwnerID, last_owner_app_link);
 
-			// It should never happen that the last owner is null and the owner
-			// is null, but it seems to be a bug in the simulator right now. JC
-			if (!mLastOwnerID.isNull() && !last_owner_app_link.empty())
-			{
-				owner_app_link.append(", last ");
-				owner_app_link.append(last_owner_app_link);
-			}
 			owner_id = mLastOwnerID;
 		}
-
-		style_params.link_href = owner_app_link;
-		if (LLAvatarNameCache::get(owner_id, &av_name))
-		{
-			updateOwnerName(owner_id, av_name, style_params);
-		}
-		else
-		{
-			if (mOwnerCacheConnection.connected())
-			{
-				mOwnerCacheConnection.disconnect();
-			}
-			mLabelOwnerName->setText(LLTrans::getString("None"));
-			mOwnerCacheConnection = LLAvatarNameCache::get(owner_id, boost::bind(&LLPanelPermissions::updateOwnerName, this, _1, _2, style_params));
-		}
-
-		getChild<LLAvatarIconCtrl>("Owner Icon")->setValue(owner_id);
-		getChild<LLAvatarIconCtrl>("Owner Icon")->setVisible(TRUE);
-		getChild<LLUICtrl>("Owner Group Icon")->setVisible(FALSE);
 	}
+	getChild<LLAvatarIconCtrl>("Owner Icon")->setValue(owner_id);
+
 	mLabelOwnerName->setEnabled(TRUE);
 // [RLVa:KB] - Moved further down to avoid an annoying flicker when the text is set twice in a row
 
@@ -513,10 +463,14 @@ void LLPanelPermissions::refresh()
 			owner_app_link = LLSLURL("agent", mOwnerID, "rlvanonym").getSLURLString();
 	}
 
-	mLabelCreatorName->setValue(creator_app_link);
+//	//BD - SSFUI
+	std::string creator_slurl = LLSLURL("agent", mCreatorID, "inspect").getSLURLString();
+	mLabelCreatorName->setValue(creator_slurl);
 	mLabelCreatorName->setEnabled(TRUE);
 
-	mLabelOwnerName->setValue(owner_app_link);
+//	//BD - SSFUI
+	std::string owner_slurl = LLSLURL("agent", owner_id, "inspect").getSLURLString();
+	mLabelOwnerName->setValue(owner_slurl);
 // [/RLVa:KB]
 
 	// update group text field
@@ -525,7 +479,7 @@ void LLPanelPermissions::refresh()
 	LLUUID group_id;
 	BOOL groups_identical = LLSelectMgr::getInstance()->selectGetGroup(group_id);
 //	//BD - SSFUI
-	std::string group_slurl = "secondlife:///app/group/" + group_id.asString() + "/about";
+	std::string group_slurl = LLSLURL("group", group_id, "inspect").getSLURLString();
 	if (groups_identical)
 	{
 		if (mGroupNameSLURL)
