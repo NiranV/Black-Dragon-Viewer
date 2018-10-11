@@ -1296,7 +1296,6 @@ bool LLPanelPeople::onGroupPlusButtonValidate()
 {
 	if (!gAgent.canJoinGroups())
 	{
-		LLNotificationsUtil::add("JoinedTooManyGroups");
 		return false;
 	}
 
@@ -1313,6 +1312,12 @@ void LLPanelPeople::onGroupMinusButtonClicked()
 void LLPanelPeople::onGroupPlusMenuItemClicked(const LLSD& userdata)
 {
 	std::string chosen_item = userdata.asString();
+
+	if (!gAgent.canJoinGroups())
+	{
+		LLNotificationsUtil::add("JoinedTooManyGroups");
+		return;
+	}
 
 	if (chosen_item == "join_group")
 		LLGroupActions::search();
