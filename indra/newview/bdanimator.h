@@ -64,15 +64,15 @@ public:
 	bool			getIsPlaying() { return mPlaying; }
 	S32				getCurrentActionIndex() { return mCurrentAction; }
 
-	std::vector<Action>		mAnimatorActions;
+	std::vector<Action>				mAnimatorActions;
 	//BD - Animesh Support
-	LLVOAvatar*				mTargetAvatar;
+	LLVOAvatar*						mTargetAvatar;
 private:
-	bool					mPlaying;
+	bool							mPlaying;
 
-	LLFrameTimer			mAnimPlayTimer;
-	F32						mExpiryTime;
-	S32						mCurrentAction;
+	LLFrameTimer					mAnimPlayTimer;
+	F32								mExpiryTime;
+	S32								mCurrentAction;
 };
 
 extern BDAnimator gDragonAnimator;
