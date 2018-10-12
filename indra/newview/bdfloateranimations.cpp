@@ -469,6 +469,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 						}
 					}
 				}
+				//BD - Super crashy, keep away from kids.
 				else if (param.asString() == "Attachments")
 				{
 					avatar->initAttachmentPoints();
@@ -482,8 +483,6 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 						if (objectp == NULL)
 							return;
 						LLViewerObject* root_object = objectp->getRootEdit();
-						const LLUUID& attachment_id = root_object->getAttachmentItemID();
-						LLAppearanceMgr::instance().removeItemFromAvatar(attachment_id);
 
 						const LLViewerJointAttachment *attachment = avatar->attachObject(root_object);
 						if (!attachment)
