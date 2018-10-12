@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.3.1 - Animating Dragon]"
+       label="[CHANNEL] [VERSION] - [3.3.2 - Animating Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -174,8 +174,76 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="247"
+              height="377"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Support for posing Animesh.
+Added: Support for animating Animesh.
+Added: Support to load and save pases from and to Animesh.
+Added: Support for posing multiple avatars (self + animesh) at the same time.
+Added: Ability to hold Shift and use the arrow keys up/down to cycle through dropdown lists without opening them.
+Added: Missing "Show In Inventory" option to Interface tab. This one is actually responsible for opening and highlighting new items.
+Changed: Improved performance fix for joint lookup, make it only ever trigger when we see the joint metadata.
+Changed: Poser to version 12.0.
+Changed: Seperated the Poser's collection of default values for better visibility and maintenance.
+Changed: Make delete confirmation permanently ignorable and configurable via the notification system.
+Changed: Moved Auto Accept Inventory Offers from Viewer to Interface tab.
+Changed: Improved tooltips and wording "Show Offered Inventory" and "Auto Accept Inventory Offers" to explain what they do.
+Changed: Reverted joint rigging lookup fix back to original fix to allow it to properly update the bounding box when needed.
+Changed: Version to 3.3.2.
+Fixed: Missing "Sort By Recent Arrival" filter menu entry in People - Nearby.
+Fixed: Crash when loading new poses with collision volumes and attachment bones included.
+Fixed: Slight inconsistencies between joint list width's.
+Fixed: "Too Many Groups" notification popping up when opening the "People" menus.
+Fixed: Animation Manipulation window not showing other avatars.
+Fixed: Advanced Complexity window not showing other avatars.
+Fixed: Creator label in tools floater missing the creator's profile icon.
+Fixed: Broken "move attachments to animesh" feature.
+Removed: Duplicate code in llviewerstats.cpp.
+Misc: Cleaned up bdfloateranimations.cpp.
+Misc: Make some trivial, crashy and non-working progress with the Pose exporter.
+Misc: Commenting in llimprocessing.cpp.
+Misc: Simplified creator, owner and group label display code in tools floater.
+Misc: Cleaned up code in llcombobox.cpp.
+Misc: Code spacing changes.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.3.1
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="247"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
