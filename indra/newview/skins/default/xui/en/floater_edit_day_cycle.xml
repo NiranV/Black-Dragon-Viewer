@@ -68,7 +68,7 @@
      layout="topleft"
      left="10"
      top="0"
-     width="600">
+     width="680">
         <multi_slider
          can_edit_text="true"
          control_name="WLTimeSlider"
