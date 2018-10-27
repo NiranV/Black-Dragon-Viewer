@@ -1031,7 +1031,7 @@ class LLAdvancedSetDisplayTextureDensity : public view_listener_t
 //////////////////
 // INFO DISPLAY //
 //////////////////
-U32 info_display_from_string(std::string info_display)
+U64 info_display_from_string(std::string info_display)
 {
 	if ("verify" == info_display)
 	{
@@ -1149,6 +1149,10 @@ U32 info_display_from_string(std::string info_display)
 	{
 		return LLPipeline::RENDER_DEBUG_TRIANGLE_COUNT;
 	}
+	else if ("impostors" == info_display)
+	{
+		return LLPipeline::RENDER_DEBUG_IMPOSTORS;
+	}
 	else
 	{
 		LL_WARNS() << "unrecognized feature name '" << info_display << "'" << LL_ENDL;
@@ -1160,7 +1164,7 @@ class LLAdvancedToggleInfoDisplay : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-		U32 info_display = info_display_from_string( userdata.asString() );
+		U64 info_display = info_display_from_string( userdata.asString() );
 
 		LL_INFOS("ViewerMenu") << "toggle " << userdata.asString() << LL_ENDL;
 		
@@ -1178,7 +1182,7 @@ class LLAdvancedCheckInfoDisplay : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-		U32 info_display = info_display_from_string( userdata.asString() );
+		U64 info_display = info_display_from_string( userdata.asString() );
 		bool new_value = false;
 
 		if ( info_display != 0 )

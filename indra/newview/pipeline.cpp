@@ -6978,7 +6978,7 @@ bool LLPipeline::toggleRenderTypeControlNegated(S32 type)
 }
 
 //static
-void LLPipeline::toggleRenderDebug(U32 bit)
+void LLPipeline::toggleRenderDebug(U64 bit)
 {
 	if (gPipeline.hasRenderDebugMask(bit))
 	{
@@ -6993,7 +6993,7 @@ void LLPipeline::toggleRenderDebug(U32 bit)
 
 
 //static
-bool LLPipeline::toggleRenderDebugControl(U32 bit)
+bool LLPipeline::toggleRenderDebugControl(U64 bit)
 {
 	return gPipeline.hasRenderDebugMask(bit);
 }
@@ -12176,6 +12176,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 
 	avatar->mNeedsImpostorUpdate = FALSE;
 	avatar->cacheImpostorValues();
+	avatar->mLastImpostorUpdateFrameTime = gFrameTimeSeconds;
 
 	LLVertexBuffer::unbind();
 	LLGLState::checkStates();

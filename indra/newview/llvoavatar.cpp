@@ -638,6 +638,7 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
 	mTyping(FALSE),
 	mMeshValid(FALSE),
 	mVisible(FALSE),
+	mLastImpostorUpdateFrameTime(0.f),
 	mWindFreq(0.f),
 	mRipplePhase( 0.f ),
 	mBelowWater(FALSE),
@@ -1122,6 +1123,8 @@ void LLVOAvatar::initClass()
 
     // Where should this be set initially?
     LLJoint::setDebugJointNames(gSavedSettings.getString("DebugAvatarJoints"));
+
+	LLControlAvatar::sRegionChangedSlot = gAgent.addRegionChangedCallback(&LLControlAvatar::onRegionChanged);
 }
 
 
@@ -1284,8 +1287,18 @@ void LLVOAvatar::updateSpatialExtents(LLVector4a& newMin, LLVector4a &newMax)
         calculateSpatialExtents(newMin,newMax);
         mLastAnimExtents[0].set(newMin.getF32ptr());
         mLastAnimExtents[1].set(newMax.getF32ptr());
+		mLastAnimBasePos = mPelvisp->getWorldPosition();
         mNeedsExtentUpdate = false;
     }
+	else
+	{
+		LLVector3 new_base_pos = mPelvisp->getWorldPosition();
+		LLVector3 shift = new_base_pos-mLastAnimBasePos;
+		mLastAnimExtents[0] += shift;
+		mLastAnimExtents[1] += shift;
+		mLastAnimBasePos = new_base_pos;
+
+	}
           
 	if (isImpostor() && !needsImpostorUpdate())
 	{
@@ -1308,7 +1321,7 @@ void LLVOAvatar::updateSpatialExtents(LLVector4a& newMin, LLVector4a &newMax)
 }
 
 
-static LLTrace::BlockTimerStatHandle FTM_AVATAR_EXTENT_UPDATE("Avatar Update Extent");
+static LLTrace::BlockTimerStatHandle FTM_AVATAR_EXTENT_UPDATE("Av Upd Extent");
 
 void LLVOAvatar::calculateSpatialExtents(LLVector4a& newMin, LLVector4a& newMax)
 {
@@ -1434,15 +1447,7 @@ void LLVOAvatar::calculateSpatialExtents(LLVector4a& newMin, LLVector4a& newMax)
     // Stretch bounding box by rigged mesh joint boxes
     if (box_detail>=3)
     {
-        // FIXME could try to cache unless something has changed about attached rigged meshes, 
-        // but needs more logic based on volume states.
-
-		//BD - Only ever update this when it's relevant.
-		if (mJointRiggingInfoTab.needsUpdate())
-        {
-            updateRiggingInfo();
-            mJointRiggingInfoTab.setNeedsUpdate(false);
-        }
+		updateRiggingInfo();
         for (S32 joint_num = 0; joint_num < LL_CHARACTER_MAX_ANIMATED_JOINTS; joint_num++)
         {
             LLJoint *joint = getJoint(joint_num);
@@ -2472,7 +2477,16 @@ void LLVOAvatar::idleUpdate(LLAgent &agent, const F64 &time)
 	}
 
     // Update should be happening max once per frame.
-    mNeedsExtentUpdate = true;
+	const S32 upd_freq = 4; // force update every upd_freq frames.
+	if ((mLastAnimExtents[0]==LLVector3())||
+		(mLastAnimExtents[1])==LLVector3())
+	{
+		mNeedsExtentUpdate = true;
+	}
+	else
+	{
+		mNeedsExtentUpdate = ((LLDrawable::getCurrentFrame()+mID.mData[0])%upd_freq==0);
+	}
     
     LLScopedContextString str("avatar_idle_update " + getFullname());
     
@@ -4252,7 +4266,7 @@ void LLVOAvatar::updateRootPositionAndRotation(LLAgent& agent, F32 speed, bool w
         if (cav)
         {
             // SL-1350: Moved to LLDrawable::updateXform()
-            //cav->matchVolumeTransform();
+            cav->matchVolumeTransform();
         }
         else
         {
@@ -5039,22 +5053,53 @@ U32 LLVOAvatar::renderImpostor(LLColor4U color, S32 diffuse_channel)
 	left *= mImpostorDim.mV[0];
 	up *= mImpostorDim.mV[1];
 
-	LLGLEnable test(GL_ALPHA_TEST);
-	gGL.setAlphaRejectSettings(LLRender::CF_GREATER, 0.f);
+	if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_IMPOSTORS))
+	{
+		LLGLEnable blend(GL_BLEND);
+		gGL.setSceneBlendType(LLRender::BT_ADD);
+		gGL.getTexUnit(diffuse_channel)->unbind(LLTexUnit::TT_TEXTURE);
 
-	gGL.color4ubv(color.mV);
-	gGL.getTexUnit(diffuse_channel)->bind(&mImpostor);
-	gGL.begin(LLRender::QUADS);
-	gGL.texCoord2f(0,0);
-	gGL.vertex3fv((pos+left-up).mV);
-	gGL.texCoord2f(1,0);
-	gGL.vertex3fv((pos-left-up).mV);
-	gGL.texCoord2f(1,1);
-	gGL.vertex3fv((pos-left+up).mV);
-	gGL.texCoord2f(0,1);
-	gGL.vertex3fv((pos+left+up).mV);
-	gGL.end();
-	gGL.flush();
+		// gGL.begin(LLRender::QUADS);
+		// gGL.vertex3fv((pos+left-up).mV);
+		// gGL.vertex3fv((pos-left-up).mV);
+		// gGL.vertex3fv((pos-left+up).mV);
+		// gGL.vertex3fv((pos+left+up).mV);
+		// gGL.end();
+
+
+		gGL.begin(LLRender::LINES); 
+		gGL.color4f(1.f,1.f,1.f,1.f);
+		F32 thickness = llmax(F32(5.0f-5.0f*(gFrameTimeSeconds-mLastImpostorUpdateFrameTime)),1.0f);
+		glLineWidth(thickness);
+		gGL.vertex3fv((pos+left-up).mV);
+		gGL.vertex3fv((pos-left-up).mV);
+		gGL.vertex3fv((pos-left-up).mV);
+		gGL.vertex3fv((pos-left+up).mV);
+		gGL.vertex3fv((pos-left+up).mV);
+		gGL.vertex3fv((pos+left+up).mV);
+		gGL.vertex3fv((pos+left+up).mV);
+		gGL.vertex3fv((pos+left-up).mV);
+		gGL.end();
+		gGL.flush();
+	}
+	{
+		LLGLEnable test(GL_ALPHA_TEST);
+		gGL.setAlphaRejectSettings(LLRender::CF_GREATER, 0.f);
+
+		gGL.color4ubv(color.mV);
+		gGL.getTexUnit(diffuse_channel)->bind(&mImpostor);
+		gGL.begin(LLRender::QUADS);
+		gGL.texCoord2f(0,0);
+		gGL.vertex3fv((pos+left-up).mV);
+		gGL.texCoord2f(1,0);
+		gGL.vertex3fv((pos-left-up).mV);
+		gGL.texCoord2f(1,1);
+		gGL.vertex3fv((pos-left+up).mV);
+		gGL.texCoord2f(0,1);
+		gGL.vertex3fv((pos+left+up).mV);
+		gGL.end();
+		gGL.flush();
+	}
 
 	return 6;
 }
@@ -9734,13 +9779,49 @@ void LLVOAvatar::getAssociatedVolumes(std::vector<LLVOVolume*>& volumes)
     }
 }
 
+static LLTrace::BlockTimerStatHandle FTM_AVATAR_RIGGING_INFO_UPDATE("Av Upd Rig Info");
+static LLTrace::BlockTimerStatHandle FTM_AVATAR_RIGGING_KEY_UPDATE("Av Upd Rig Key");
+static LLTrace::BlockTimerStatHandle FTM_AVATAR_RIGGING_AVOL_UPDATE("Av Upd Avol");
+
 // virtual
 void LLVOAvatar::updateRiggingInfo()
 {
+    LL_RECORD_BLOCK_TIME(FTM_AVATAR_RIGGING_INFO_UPDATE);
+
     LL_DEBUGS("RigSpammish") << getFullname() << " updating rig tab" << LL_ENDL;
-    mJointRiggingInfoTab.clear();
+
     std::vector<LLVOVolume*> volumes;
-    getAssociatedVolumes(volumes);
+
+	{
+		LL_RECORD_BLOCK_TIME(FTM_AVATAR_RIGGING_AVOL_UPDATE);
+		getAssociatedVolumes(volumes);
+	}
+
+	std::map<LLUUID,S32> curr_rigging_info_key;
+	{
+		LL_RECORD_BLOCK_TIME(FTM_AVATAR_RIGGING_KEY_UPDATE);
+		// Get current rigging info key
+		for (std::vector<LLVOVolume*>::iterator it = volumes.begin(); it != volumes.end(); ++it)
+		{
+			LLVOVolume *vol = *it;
+			if (vol->isMesh() && vol->getVolume())
+			{
+				const LLUUID& mesh_id = vol->getVolume()->getParams().getSculptID();
+				S32 max_lod = llmax(vol->getLOD(), vol->mLastRiggingInfoLOD);
+				curr_rigging_info_key[mesh_id] = max_lod;
+			}
+		}
+		
+		// Check for key change, which indicates some change in volume composition or LOD.
+		if (curr_rigging_info_key == mLastRiggingInfoKey)
+		{
+			return;
+		}
+	}
+
+	// Something changed. Update.
+	mLastRiggingInfoKey = curr_rigging_info_key;
+    mJointRiggingInfoTab.clear();
     for (std::vector<LLVOVolume*>::iterator it = volumes.begin(); it != volumes.end(); ++it)
     {
         LLVOVolume *vol = *it;
@@ -9790,6 +9871,7 @@ void LLVOAvatar::updateImpostors()
 	LLCharacter::sAllowInstancesChange = TRUE;
 }
 
+// virtual
 BOOL LLVOAvatar::isImpostor()
 {
 	return sUseImpostors && (isVisuallyMuted() || (mUpdatePeriod >= IMPOSTOR_PERIOD)) ? TRUE : FALSE;

@@ -222,7 +222,9 @@ public:
 
     // virtual
     void 					updateRiggingInfo();
-
+	// This encodes mesh id and LOD, so we can see whether display is up-to-date.
+	std::map<LLUUID,S32>	mLastRiggingInfoKey;
+	
     std::set<LLUUID>		mActiveOverrideMeshes;
     virtual void			onActiveOverrideMeshesChanged();
     
@@ -520,7 +522,7 @@ private:
 	// Impostors
 	//--------------------------------------------------------------------
 public:
-	BOOL 		isImpostor();
+	virtual BOOL isImpostor();
 	BOOL 		shouldImpostor(const U32 rank_factor = 1) const;
 	BOOL 	    needsImpostorUpdate() const;
 	const LLVector3& getImpostorOffset() const;
@@ -532,7 +534,10 @@ public:
 	static void updateImpostors();
 	LLRenderTarget mImpostor;
 	BOOL		mNeedsImpostorUpdate;
+	F32SecondsImplicit mLastImpostorUpdateFrameTime;
     const LLVector3*  getLastAnimExtents() const { return mLastAnimExtents; }
+	void		setNeedsExtentUpdate(bool val) { mNeedsExtentUpdate = val; }
+
 private:
 	LLVector3	mImpostorOffset;
 	LLVector2	mImpostorDim;
@@ -544,6 +549,7 @@ private:
 	F32			mImpostorDistance;
 	F32			mImpostorPixelArea;
 	LLVector3	mLastAnimExtents[2];  
+	LLVector3	mLastAnimBasePos;
 	
 	LLCachedControl<bool> mRenderUnloadedAvatar;
 
