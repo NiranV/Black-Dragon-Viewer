@@ -154,10 +154,18 @@ void BDFloaterPoser::draw()
 {
 	if (gDragonAnimator.getIsPlaying())
 	{
-		S32 current_index = gDragonAnimator.getCurrentActionIndex();
-		if (mAnimEditorScroll->getItemCount() != 0)
+		LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+		if (item)
 		{
-			mAnimEditorScroll->selectNthItem(current_index);
+			LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+			if (avatar || !avatar->isDead())
+			{
+				S32 current_index = avatar->getCurrentActionIndex();
+				if (mAnimEditorScroll->getItemCount() != 0)
+				{
+					mAnimEditorScroll->selectNthItem(current_index);
+				}
+			}
 		}
 	}
 
@@ -1328,31 +1336,36 @@ void BDFloaterPoser::onAnimAdd(const LLSD& param)
 	//BD - Don't allow changing the list while it's currently playing, this might
 	//     cause a crash when the animator is past the null check and we delete an
 	//     entry between null checking and trying to read its values. 
-	if (gDragonAnimator.getIsPlaying())
-	{
-		return;
-	}
+	if (gDragonAnimator.getIsPlaying()) return;
+
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
 
 	LLScrollListItem* pose = mPoseScroll->getFirstSelected();
 	std::string name = param.asString();
 	S32 location = mAnimEditorScroll->getFirstSelectedIndex() + 1;
 	F32 time = 0.f;
-	BDAnimator::EActionType type;
+	BD_EActionType type;
 	if (param.asString() == "Repeat")
 	{
-		type = BDAnimator::EActionType::REPEAT;
+		type = BD_EActionType::REPEAT;
 	}
 	else if (param.asString() == "Wait")
 	{
-		type = BDAnimator::EActionType::WAIT;
+		type = BD_EActionType::WAIT;
 		time = 1.f;
 	}
 	else
 	{
 		name = pose->getColumn(0)->getValue().asString();
-		type = BDAnimator::EActionType::POSE;
+		type = BD_EActionType::POSE;
 	}
-	gDragonAnimator.onAddAction(name, type, time, location);
+	//BD - We'll be adding the avatar into a list in here to keep track of all
+	//     avatars we've added actions for.
+	gDragonAnimator.onAddAction(avatar, name, type, time, location);
 	onAnimListWrite();
 
 	//BD - Select added entry and make it appear as nothing happened.
@@ -1366,15 +1379,21 @@ void BDFloaterPoser::onAnimAdd(const LLSD& param)
 
 void BDFloaterPoser::onAnimListWrite()
 {
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
+
 	mAnimEditorScroll->clearRows();
 	//BD - Now go through the new list we created, read them out and add them
 	//     to our list in the new desired order.
-	for (BDAnimator::Action action : gDragonAnimator.mAnimatorActions)
+	for (Action action : avatar->mAnimatorActions)
 	{
 		LLSD row;
 		row["columns"][0]["column"] = "name";
 		row["columns"][0]["value"] = action.mPoseName;
-		if (action.mType == BDAnimator::EActionType::WAIT)
+		if (action.mType == BD_EActionType::WAIT)
 		{
 			row["columns"][1]["column"] = "time";
 			row["columns"][1]["value"] = action.mTime;
@@ -1393,10 +1412,14 @@ void BDFloaterPoser::onAnimMove(const LLSD& param)
 	//BD - Don't allow changing the list while it's currently playing, this might
 	//     cause a crash when the animator is past the null check and we delete an
 	//     entry between null checking and trying to read its values. 
-	if (gDragonAnimator.getIsPlaying())
-	{
-		return;
-	}
+	if (gDragonAnimator.getIsPlaying())	return;
+
+	//BD - Don't allow moving if we don't have anything selected either. (Crashfix)
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
 
 	S32 item_count = mAnimEditorScroll->getItemCount();
 	S32 new_index = mAnimEditorScroll->getFirstSelectedIndex();
@@ -1414,12 +1437,6 @@ void BDFloaterPoser::onAnimMove(const LLSD& param)
 		return;
 	}
 
-	//BD - Don't allow moving if we don't have anything selected either. (Crashfix)
-	if (new_index == -1)
-	{
-		return;
-	}
-
 	//BD - Move up, otherwise move the entry down. No other option.
 	if (param.asString() == "Up")
 	{
@@ -1430,9 +1447,9 @@ void BDFloaterPoser::onAnimMove(const LLSD& param)
 		++new_index;
 	}
 
-	BDAnimator::Action action = gDragonAnimator.mAnimatorActions[old_index];
-	gDragonAnimator.onDeleteAction(old_index);
-	gDragonAnimator.onAddAction(action, new_index);
+	Action action = avatar->mAnimatorActions[old_index];
+	gDragonAnimator.onDeleteAction(avatar, old_index);
+	gDragonAnimator.onAddAction(avatar, action, new_index);
 	onAnimListWrite();
 
 	//BD - Select added entry and make it appear as nothing happened.
@@ -1449,15 +1466,20 @@ void BDFloaterPoser::onAnimDelete()
 	//BD - Don't allow changing the list while it's currently playing, this might
 	//     cause a crash when the animator is past the null check and we delete an
 	//     entry between null checking and trying to read its values. 
-	if (gDragonAnimator.getIsPlaying())
-	{
-		return;
-	}
+	if (gDragonAnimator.getIsPlaying())	return;
+
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
 
 	std::vector<LLScrollListItem*> items = mAnimEditorScroll->getAllSelected();
 	while (!items.empty())
 	{
-		gDragonAnimator.onDeleteAction(mAnimEditorScroll->getFirstSelectedIndex());
+		//BD - We'll delete the avatar from our list if necessary when no more actions
+		//     are saved in a given avatar.
+		gDragonAnimator.onDeleteAction(avatar, mAnimEditorScroll->getFirstSelectedIndex());
 		items.erase(items.begin());
 	}
 	onAnimListWrite();
@@ -1596,15 +1618,21 @@ void BDFloaterPoser::onAnimSave()
 
 void BDFloaterPoser::onAnimSet()
 {
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
+
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
+
 	F32 value = getChild<LLUICtrl>("anim_time")->getValue().asReal();
 	S32 selected_index = mAnimEditorScroll->getFirstSelectedIndex();
-	BDAnimator::Action action = gDragonAnimator.mAnimatorActions[selected_index];
+	Action action = avatar->mAnimatorActions[selected_index];
 	LLScrollListItem* item = mAnimEditorScroll->getFirstSelected();
 	if (item)
 	{
-		if (action.mType == BDAnimator::EActionType::WAIT)
+		if (action.mType == BD_EActionType::WAIT)
 		{
-			gDragonAnimator.mAnimatorActions[mAnimEditorScroll->getFirstSelectedIndex()].mTime = value;
+			avatar->mAnimatorActions[mAnimEditorScroll->getFirstSelectedIndex()].mTime = value;
 			LLScrollListCell* column = item->getColumn(1);
 			column->setValue(value);
 		}
@@ -1643,10 +1671,23 @@ void BDFloaterPoser::onAnimControlsRefresh()
 	bool is_playing = gDragonAnimator.getIsPlaying();
 	bool selected = index != -1;
 	bool is_wait = false;
-	//BD - Crashfix.
-	if (selected)
+
+	//BD - Don't.
+	if (!is_playing)
 	{
-		is_wait = gDragonAnimator.mAnimatorActions[index].mType == BDAnimator::EActionType::WAIT;
+		LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+		if (item)
+		{
+			LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+			if (avatar || !avatar->isDead())
+			{
+				//BD - Crashfix.
+				if (selected)
+				{
+					is_wait = avatar->mAnimatorActions[index].mType == BD_EActionType::WAIT;
+				}
+			}
+		}
 	}
 
 	getChild<LLUICtrl>("anim_time")->setEnabled(!is_playing && selected && is_wait);
@@ -1709,6 +1750,14 @@ void BDFloaterPoser::onAvatarsSelect()
 	//     mapped to that avatar so we can immediately start posing them or continue doing so.
 	//     This will automatically invoke a onJointControlsRefresh()
 	onJointRefresh();
+
+	//BD - Now that we support animating multiple avatars we also need to refresh all controls
+	//     and animation/pose lists for them when we switch to make it as easy as possible to
+	//     quickly switch back and forth and make edits.
+	onUpdateLayout();
+
+	onPoseControlsRefresh();
+	onAnimControlsRefresh();
 }
 
 void BDFloaterPoser::onAvatarsRefresh()

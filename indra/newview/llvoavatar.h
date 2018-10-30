@@ -53,6 +53,8 @@
 #include "llviewerstats.h"
 #include "llvovolume.h"
 #include "llavatarrendernotifier.h"
+//BD - Poser
+#include "bdanimator.h"
 
 extern const LLUUID ANIM_AGENT_BODY_NOISE;
 extern const LLUUID ANIM_AGENT_BREATHE_ROT;
@@ -1095,8 +1097,15 @@ public:
 	void			setPosing()				{ mIsPosing = true; }
 	void			clearPosing()			{ mIsPosing = false; }
 	bool			getPosing()				{ return mIsPosing; }
+	void			clearAnimList()			{ mAnimatorActions.clear(); }
 
 	bool			mIsPosing;
+	S32				getCurrentActionIndex() { return mCurrentAction; }
+
+	std::vector<Action>				mAnimatorActions;
+	LLFrameTimer					mAnimPlayTimer;
+	F32								mExpiryTime;
+	S32								mCurrentAction;
 
 /**                    Poser
 **                                                                            **

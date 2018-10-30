@@ -26,32 +26,32 @@
 #include "llkeyframemotion.h"
 #include "llframetimer.h"
 
+enum BD_EActionType
+{
+	WAIT = 0,
+	REPEAT = 1,
+	POSE = 2
+};
+
+class Action
+{
+public:
+	std::string		mPoseName;
+	BD_EActionType	mType;
+	F32				mTime;
+};
+
 class BDAnimator
 {
 public:
-	enum EActionType
-	{
-		WAIT = 0,
-		REPEAT = 1,
-		POSE = 2
-	};
-
-	class Action
-	{
-	public:
-
-		std::string		mPoseName;
-		EActionType		mType;
-		F32				mTime;
-	};
 
 	BDAnimator();
 	/*virtual*/	~BDAnimator();
 
-	void			onAddAction(LLScrollListItem* item, S32 location);
-	void			onAddAction(std::string name, EActionType type, F32 time, S32 location);
-	void			onAddAction(Action action, S32 location);
-	void			onDeleteAction(S32 i);
+	void			onAddAction(LLVOAvatar* avatar, LLScrollListItem* item, S32 location);
+	void			onAddAction(LLVOAvatar* avatar, std::string name, BD_EActionType type, F32 time, S32 location);
+	void			onAddAction(LLVOAvatar* avatar, Action action, S32 location);
+	void			onDeleteAction(LLVOAvatar* avatar, S32 i);
 
 	BOOL			loadPose(const LLSD& name);
 	LLSD			returnPose(const LLSD& name);
@@ -59,20 +59,14 @@ public:
 	void			update();
 	void			startPlayback();
 	void			stopPlayback();
-	void			clearAnimList() { mAnimatorActions.clear(); }
 
-	bool			getIsPlaying() { return mPlaying; }
-	S32				getCurrentActionIndex() { return mCurrentAction; }
-
-	std::vector<Action>				mAnimatorActions;
 	//BD - Animesh Support
 	LLVOAvatar*						mTargetAvatar;
-private:
-	bool							mPlaying;
 
-	LLFrameTimer					mAnimPlayTimer;
-	F32								mExpiryTime;
-	S32								mCurrentAction;
+	std::vector<LLVOAvatar*>		mAvatarsList;
+
+	bool			getIsPlaying() { return mPlaying; }
+	bool			mPlaying;
 };
 
 extern BDAnimator gDragonAnimator;

@@ -682,7 +682,9 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
     mIsUIAvatar(false),
     mEnableDefaultMotions(true),
     //BD - Custom Posing
-	mIsPosing(false)
+	mIsPosing(false),
+	mExpiryTime(0.0f),
+	mCurrentAction(0)
 {
 	LL_DEBUGS("AvatarRender") << "LLVOAvatar Constructor (0x" << this << ") id:" << mID << LL_ENDL;
 

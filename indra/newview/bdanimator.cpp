@@ -34,9 +34,7 @@ BDAnimator gDragonAnimator;
 
 
 BDAnimator::BDAnimator() :
-	mPlaying(false),
-	mExpiryTime(0.0f),
-	mCurrentAction(0)
+			mPlaying(false)
 {
 }
 
@@ -46,58 +44,68 @@ BDAnimator::~BDAnimator()
 
 void BDAnimator::update()
 {
-	if (!mPlaying)
+	//BD - Don't do anything if the animator is not activated.
+	if (!mPlaying) return;
+
+	//BD - Don't even bother when our list is empty.
+	if (mAvatarsList.empty()) return;
+
+	for (LLVOAvatar* avatar : mAvatarsList)
 	{
-		return;
-	}
+		if (!avatar || avatar->isDead()) continue;
 
-	if (mAnimatorActions.empty())
-	{
-		mAnimPlayTimer.stop();
-		return;
-	}
-
-
-	if (mAnimPlayTimer.getStarted() &&
-		mAnimPlayTimer.getElapsedTimeF32() > mExpiryTime)
-	{
-		Action action = mAnimatorActions[mCurrentAction];
-		//BD - Stop the timer, we're going to reconfigure and restart it when we're done.
-		mAnimPlayTimer.stop();
-
-		EActionType type = action.mType;
-		std::string name = action.mPoseName;
-
-		//BD - We can't use Wait or Restart as label, need to fix this.
-		if (type == WAIT)
+		//BD - This should never happen since avatars are only in this list if they have at
+		//     least one action saved, better be safe than sorry though.
+		if (avatar->mAnimatorActions.empty())
 		{
-			//BD - Do nothing?
-			mExpiryTime = action.mTime;
-			++mCurrentAction;
-		}
-		else if (type == REPEAT)
-		{
-			mCurrentAction = 0;
-			mExpiryTime = 0.0f;
-		}
-		else
-		{
-			mExpiryTime = 0.0f;
-			loadPose(name);
-			++mCurrentAction;
+			avatar->mAnimPlayTimer.stop();
+			continue;
 		}
 
-		//BD - As long as we are not at the end, start the timer again, automatically
-		//     resetting the counter in the process.
-		if (mAnimatorActions.size() != mCurrentAction)
+		if (avatar->mAnimPlayTimer.getStarted() &&
+			avatar->mAnimPlayTimer.getElapsedTimeF32() > avatar->mExpiryTime)
 		{
-			mAnimPlayTimer.start();
+			Action action = avatar->mAnimatorActions[avatar->mCurrentAction];
+			//BD - Stop the timer, we're going to reconfigure and restart it when we're done.
+			avatar->mAnimPlayTimer.stop();
+
+			BD_EActionType type = action.mType;
+			std::string name = action.mPoseName;
+
+			//BD - We can't use Wait or Restart as label, need to fix this.
+			if (type == WAIT)
+			{
+				//BD - Do nothing?
+				avatar->mExpiryTime = action.mTime;
+				++avatar->mCurrentAction;
+			}
+			else if (type == REPEAT)
+			{
+				avatar->mCurrentAction = 0;
+				avatar->mExpiryTime = 0.0f;
+			}
+			else
+			{
+				avatar->mExpiryTime = 0.0f;
+				mTargetAvatar = avatar;
+				loadPose(name);
+				++avatar->mCurrentAction;
+			}
+
+			//BD - As long as we are not at the end, start the timer again, automatically
+			//     resetting the counter in the process.
+			if (avatar->mAnimatorActions.size() != avatar->mCurrentAction)
+			{
+				avatar->mAnimPlayTimer.start();
+			}
 		}
 	}
 }
 
-void BDAnimator::onAddAction(LLScrollListItem* item, S32 location)
+void BDAnimator::onAddAction(LLVOAvatar* avatar, LLScrollListItem* item, S32 location)
 {
+	if (!avatar || avatar->isDead()) return;
+
 	if (item)
 	{
 		Action action;
@@ -116,54 +124,112 @@ void BDAnimator::onAddAction(LLScrollListItem* item, S32 location)
 		}
 		action.mPoseName = item->getColumn(0)->getValue().asString();
 		action.mTime = item->getColumn(1)->getValue().asReal();
-		mAnimatorActions.push_back(action);
+		avatar->mAnimatorActions.push_back(action);
+
+		//BD - Lookup whether we already added this avatar, do it if we didn't this is
+		//     important.
+		for (LLVOAvatar* list_avatar : mAvatarsList)
+		{
+			if (list_avatar == avatar) return;
+		}
+		mAvatarsList.push_back(avatar);
 	}
 }
 
-void BDAnimator::onAddAction(std::string name, EActionType type, F32 time, S32 location)
+void BDAnimator::onAddAction(LLVOAvatar* avatar, std::string name, BD_EActionType type, F32 time, S32 location)
 {
+	if (!avatar || avatar->isDead()) return;
+
 	Action action;
 	action.mType = type;
 	action.mPoseName = name;
 	action.mTime = time;
-	if (mAnimatorActions.size() == 0)
+	if (avatar->mAnimatorActions.size() == 0)
 	{
-		mAnimatorActions.push_back(action);
+		avatar->mAnimatorActions.push_back(action);
 	}
 	else
 	{
-		if (location <= mAnimatorActions.size())
+		if (location <= avatar->mAnimatorActions.size())
 		{
-			mAnimatorActions.insert(mAnimatorActions.begin() + location, action);
+			avatar->mAnimatorActions.insert(avatar->mAnimatorActions.begin() + location, action);
 		}
 	}
+
+	//BD - Lookup whether we already added this avatar, do it if we didn't this is
+	//     important.
+	for (LLVOAvatar* list_avatar : mAvatarsList)
+	{
+		if (list_avatar == avatar) return;
+	}
+	mAvatarsList.push_back(avatar);
 }
 
-void BDAnimator::onAddAction(Action action, S32 location)
+void BDAnimator::onAddAction(LLVOAvatar* avatar, Action action, S32 location)
 {
-	mAnimatorActions.insert(mAnimatorActions.begin() + location, action);
+	if (!avatar || avatar->isDead()) return;
+
+	avatar->mAnimatorActions.insert(avatar->mAnimatorActions.begin() + location, action);
+
+	//BD - Lookup whether we already added this avatar, do it if we didn't this is
+	//     important.
+	for (LLVOAvatar* list_avatar : mAvatarsList)
+	{
+		if (list_avatar == avatar) return;
+	}
+	mAvatarsList.push_back(avatar);
 }
 
 
-void BDAnimator::onDeleteAction(S32 location)
+void BDAnimator::onDeleteAction(LLVOAvatar* avatar, S32 location)
 {
 	if (!mPlaying)
 	{
-		mAnimatorActions.erase(mAnimatorActions.begin() + location);
+		avatar->mAnimatorActions.erase(avatar->mAnimatorActions.begin() + location);
+
+		//BD - If this avatar has no more actions, delete it from our list.
+		if (avatar->mAnimatorActions.empty())
+		{
+			S32 i = 0;
+			for (LLVOAvatar* list_avatar : mAvatarsList)
+			{
+				if (list_avatar == avatar)
+				{
+					mAvatarsList.erase(mAvatarsList.begin() + i);
+				}
+				++i;
+			}
+		}
 	}
 }
 
 void BDAnimator::startPlayback()
 {
-	mAnimPlayTimer.start();
-	mExpiryTime = 0.0f;
-	mCurrentAction = 0;
+	//BD - Don't even bother when our list is empty.
+	if (mAvatarsList.empty()) return;
+
+	for (LLVOAvatar* avatar : mAvatarsList)
+	{
+		if (!avatar || avatar->isDead()) continue;
+
+		avatar->mAnimPlayTimer.start();
+		avatar->mExpiryTime = 0.0f;
+		avatar->mCurrentAction = 0;
+	}
 	mPlaying = true;
 }
 
 void BDAnimator::stopPlayback()
 {
-	mAnimPlayTimer.stop();
+	//BD - Don't even bother when our list is empty.
+	if (mAvatarsList.empty()) return;
+
+	for (LLVOAvatar* avatar : mAvatarsList)
+	{
+		if (!avatar || avatar->isDead()) continue;
+
+		avatar->mAnimPlayTimer.stop();
+	}
 	mPlaying = false;
 }
 
