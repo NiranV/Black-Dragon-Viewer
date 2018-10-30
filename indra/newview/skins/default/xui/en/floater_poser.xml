@@ -1012,7 +1012,7 @@ width="678">
 			left="0"
 			name="animator_panel"
 			top="0"
-			width="221">
+			width="258">
 				<button
 				height="31"
 				follows="top|left"
@@ -1236,31 +1236,6 @@ width="678">
 				<line_editor.commit_callback
 				function="Anim.Set"/>
 				</line_editor>
-				<!--<combo_box
-				follows="left|top"
-				height="20"
-				layout="topleft"
-				left_pad="1"
-				top_delta="0"
-				max_chars="135"
-				name="anim_choice_combo"
-				width="72">
-				<combo_box.item
-				enabled="true"
-				label="Wait"
-				name="0"
-				value="Wait" />
-				<combo_box.item
-				enabled="true"
-				label="Repeat"
-				name="1"
-				value="Repeat" />
-				<combo_box.item
-				enabled="true"
-				label="Pose"
-				name="2"
-				value="" />
-				</combo_box>-->
 			</panel>
 		</layout_panel>
 		<layout_panel
