@@ -2027,14 +2027,6 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 				}
 			}
 
-			if (tex_entry)
-			{
-				if (tex_entry->getAlpha() <= 0.99f)
-				{
-					is_alpha_blend = true;
-				}
-			}
-
             if (mat)
             {                
                 switch (LLMaterial::eDiffuseAlphaMode(mat->getDiffuseAlphaMode()))
@@ -2042,12 +2034,14 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                     case LLMaterial::DIFFUSE_ALPHA_MODE_MASK:
                     {
                         is_alpha_mask = true;
+						is_alpha_blend = false;
                     }
                     break;
 
                     case LLMaterial::DIFFUSE_ALPHA_MODE_BLEND:
                     {
                         is_alpha_blend = true;
+						is_alpha_mask = false;
                     }
                     break;
 
@@ -2060,6 +2054,14 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                         break;
                 }
             }
+
+			if (tex_entry)
+			{
+				if (tex_entry->getAlpha() <= 0.99f)
+				{
+					is_alpha_blend = true;
+				}
+			}
 
             // if this is alpha mask content and we're doing opaques or a non-alpha-mask shadow pass...
             if (is_alpha_mask && (LLDrawPoolAvatar::sSkipTransparent || LLDrawPoolAvatar::sShadowPass != SHADOW_PASS_ATTACHMENT_ALPHA_MASK))
