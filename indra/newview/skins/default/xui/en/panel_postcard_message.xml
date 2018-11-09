@@ -73,8 +73,6 @@
      top_delta="-4" />
     <text_editor
      type="string"
-     cursor_color="TextCursorColor"
-     text_color="Black"
      length="1"
      follows="left|top|right"
      height="48"
