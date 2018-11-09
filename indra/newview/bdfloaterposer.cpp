@@ -570,6 +570,8 @@ void BDFloaterPoser::onJointRefresh()
 	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
+	if (!(avatar->getRegion() == gAgent.getRegion())) return;
+
 	//BD - Getting collision volumes and attachment points.
 	std::vector<std::string> cv_names, attach_names;
 	avatar->getSortedJointNames(1, cv_names);
@@ -1805,7 +1807,7 @@ void BDFloaterPoser::onAvatarsRefresh()
 				LLScrollListItem* item = mAvatarScroll->addElement(own_row);
 				item->setUserdata(avatar);
 
-				//BD - We're just here to find outselves, break out immediately when we are done.
+				//BD - We're just here to find ourselves, break out immediately when we are done.
 				break;
 			}
 		}
@@ -1817,7 +1819,7 @@ void BDFloaterPoser::onAvatarsRefresh()
 	for (LLCharacter* character : LLControlAvatar::sInstances)
 	{
 		LLControlAvatar* avatar = dynamic_cast<LLControlAvatar*>(character);
-		if (avatar)
+		if (avatar && !avatar->isDead() && (avatar->getRegion() == gAgent.getRegion()))
 		{
 			LLUUID uuid = avatar->getID();
 			for (LLScrollListItem* item : mAvatarScroll->getAllData())
@@ -1846,12 +1848,15 @@ void BDFloaterPoser::onAvatarsRefresh()
 				row["columns"][2]["column"] = "uuid";
 				row["columns"][2]["value"] = avatar->getID();
 				row["columns"][3]["column"] = "control_avatar";
-				row["columns"][3]["value"] = false;
+				row["columns"][3]["value"] = true;
 				LLScrollListItem* item = mAvatarScroll->addElement(row);
 				item->setUserdata(avatar);
 			}
 		}
 	}
+
+	//BD - Clear our list of invalid items.
+	mAvatarScroll->deleteFlaggedItems();
 }
 
 
