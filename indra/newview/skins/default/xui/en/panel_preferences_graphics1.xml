@@ -4600,7 +4600,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       layout="topleft"
       left="10"
       max_val="300"
-      min_val="0"
+      min_val="1"
       name="CameraFocal"
       tool_tip="This option controls the camera focal length in mm (Millimeters) for Depth of Field."
       top_pad="1"
