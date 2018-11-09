@@ -25,31 +25,15 @@ width="333">
    name="Changing outfits"
    value="Changing outfits" />
    <panel
-   background_opaque="true"
-   background_visible="true"
-   bg_opaque_color="White_02"
    left="10"
    top="5"
    follows="left|top|right"
    layout="topleft"
-   width="315"
+   width="32"
    height="26"
    name="panel_currentlook">
       <button
       follows="bottom|left"
-      height="25"
-      tool_tip="Create a new outfit"
-      image_hover_unselected="Toolbar_Middle_Over"
-       image_overlay="AddItem_Off"
-       image_selected="Toolbar_Middle_Selected"
-       image_unselected="Toolbar_Middle_Off"
-      layout="topleft"
-      left="1"
-      top="1"
-      name="newlook_btn"
-      width="31" />
-      <button
-      follows="top|right"
       height="25"
       image_overlay="Edit_Wrench"
       image_hover_unselected="Toolbar_Middle_Over"
@@ -57,10 +41,10 @@ width="333">
        image_unselected="Toolbar_Middle_Off"
       label=""
       layout="topleft"
-      right="-1"
+      left="1"
+      top="1"
       name="edit_outfit_btn"
       tool_tip="Edit this outfit"
-      top="1"
       width="31" />
       <loading_indicator
       follows="top|right"
@@ -73,6 +57,8 @@ width="333">
    </panel>
    <layout_stack
    follows="top|left|right"
+   open_time_constant="0.04"
+   close_time_constant="0.00"
    height="27"
    layout="topleft"
    border_size="0"
@@ -81,7 +67,7 @@ width="333">
    left="43"
    orientation="horizontal"
    top="5"
-   width="250">	
+   width="281">	
       <layout_panel
       follows="top|left|right"
       height="27"
@@ -174,7 +160,7 @@ width="333">
       top="1"
       width="215" />
          <filter_editor
-         height="23"
+         height="22"
          follows="left|top|right"
          layout="topleft"
          left="2"
