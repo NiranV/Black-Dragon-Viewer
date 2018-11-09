@@ -38,7 +38,7 @@
          label="Time(s)"
          layout="topleft"
          left="470"
-         top_delta="1"
+         top_delta="3"
          name="RenderWindlightInterpolateTime"
          width="180" />
  <panel
