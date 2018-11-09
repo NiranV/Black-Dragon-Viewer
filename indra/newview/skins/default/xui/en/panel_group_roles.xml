@@ -6,7 +6,7 @@
  left="0"
  top="0"
  name="roles_tab"
- width="316">
+ width="308">
     <panel.string
      name="default_needs_apply_text">
         There are unsaved changes
@@ -29,13 +29,13 @@
      tab_height="21"
      tab_min_width="76"
      top="0"
-     width="318">
+     width="310">
         <panel
          border="false"
          height="503"
          follows="all"
          label="Roles"
-         width="316"
+         width="308"
          layout="topleft"
          left="0"
          help_topic="roles_roles_tab"
@@ -82,16 +82,65 @@ including the Everyone and Owner Roles.
          name="roles_scroll"
          opaque="true"
          height="503"
-         width="315"
-         top="1">
+         width="307"
+         top="0">
          <panel
          border="false"
          follows="top|left|right"
-         height="517"
-         width="300"
+         height="521"
+         width="292"
          layout="topleft"
          left="0"
          name="members_panel">
+          <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top="1"
+ width="303"/>
+    <text
+      font="SansSerifSmall"
+      width="55"
+      follows="top|left|right"
+      layout="topleft"
+      mouse_opaque="false"
+     type="string"
+     height="10"
+     length="1"
+     left="8"
+     name="prepend_founded_by"
+     top_delta="4">
+      Roles List:
+    </text>
+            <scroll_list
+             column_padding="2"
+             draw_heading="true"
+             height="120"
+             follows="left|top|right"
+             layout="topleft"
+             left="1"
+             width="293"
+             multi_select="true"
+             name="role_list"
+             top_pad="5">
+                <scroll_list.columns
+                 label="Role"
+                 name="name"
+               relative_width="0.45"  />
+                <scroll_list.columns
+                 label="Title"
+                 name="title"
+               relative_width="0.45"  />
+                <scroll_list.columns
+                 label="#"
+                 name="members"
+               relative_width="0.15"  />
+            </scroll_list>
             <button
              follows="top|left"
              image_hover_unselected="Toolbar_Middle_Over"
@@ -100,8 +149,8 @@ including the Everyone and Owner Roles.
              image_unselected="Toolbar_Middle_Off"
              height="25"
              layout="topleft"
-             left="5"
-             top="5"
+             left="3"
+             top_pad="1"
              name="role_create"
              width="31" />
             <icon
@@ -111,8 +160,8 @@ including the Everyone and Owner Roles.
          mouse_opaque="false"
          image_name="Toolbar_Middle_Off"
          left_pad="1"
-         top="5"
-         width="231" />
+         top_delta="0"
+         width="225" />
          <filter_editor
          background_image="TextField_Off"
          background_image_disabled="TextField_Disabled"
@@ -120,8 +169,8 @@ including the Everyone and Owner Roles.
          layout="topleft"
          top_delta="1"
          left_delta="2"
-         right="-34"
-         height="23"
+         width="221"
+         height="22"
          search_button_visible="false"
          follows="left|top|right"
          label="Filter Roles"
@@ -138,141 +187,63 @@ including the Everyone and Owner Roles.
              top_delta="-1"
              name="role_delete"
              width="31" />
-            <scroll_list
-             column_padding="2"
-             draw_heading="true"
-             height="120"
-             follows="left|top|right"
-             layout="topleft"
-             left="3"
-             width="299"
-             multi_select="true"
-             name="role_list"
-             top_pad="0">
-                <scroll_list.columns
-                 label="Role"
-                 name="name"
-               relative_width="0.45"  />
-                <scroll_list.columns
-                 label="Title"
-                 name="title"
-               relative_width="0.45"  />
-                <scroll_list.columns
-                 label="#"
-                 name="members"
-               relative_width="0.15"  />
-            </scroll_list>
-            <icon
-         follows="top|left"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="1"
-         width="85" />
             <text
          type="string"
          height="16"
          layout="topleft"
          follows="left|top"
          left="8"
-         top_delta="5"
+         top_pad="9"
          name="static"
          width="85">
            Role Name
         </text>
-         <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="-2"
-         top_delta="-5"
-         width="209" />
         <line_editor
          type="string"
-         height="23"
+         height="22"
          layout="topleft"
          left_delta="2"
          follows="left|top|right"
          right="-3"
          max_length_bytes="20"
          name="role_name"
-         top_delta="1"
+         top_delta="-5"
          width="203">
         </line_editor>
-        <icon
-         follows="top|left"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="5"
-         width="85" />
             <text
          type="string"
          height="16"
          layout="topleft"
          follows="left|top"
          left="8"
-         top_delta="5"
+         top_pad="9"
          name="static3"
          width="85">
            Role Title
         </text>
-        <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="-2"
-         top_delta="-5"
-         width="209" />
         <line_editor
          type="string"
-         height="23"
+         height="22"
          layout="topleft"
          left_delta="2"
          follows="left|top|right"
          right="-3"
          max_length_bytes="20"
          name="role_title"
-         top_delta="1"
+         top_delta="-5"
          width="203">
         </line_editor>
-               <icon
-         follows="top|left"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="5"
-         width="85" />
             <text
          type="string"
          height="16"
          layout="topleft"
          follows="left|top"
          left="8"
-         top_delta="5"
+         top_pad="9"
          name="static2"
          width="85">
             Description
         </text>
-        <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="-2"
-         top_delta="-5"
-         width="209" />
         <line_editor
          type="string"
          height="23"
@@ -282,45 +253,27 @@ including the Everyone and Owner Roles.
          right="-3"
          max_length_bytes="20"
          name="role_description"
-         top_delta="1"
-         width="203"/>
-        <icon
-         follows="top|left"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="5"
-         width="125" />
-            <text
-         type="string"
-         height="16"
-         layout="topleft"
-         follows="left|top"
-         left="8"
-         top_delta="5"
-         name="static4"
-         width="120">
-            Assigned Members
-        </text>
-            <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="3"
          top_delta="-5"
-         width="169" />
+         width="203"/>
+            <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="5"
+ width="303"/>
          <check_box
          height="15"
-         label="Reveal members"
-         left_delta="5"
+         label="Reveal Assigned Members"
+         left="5"
          layout="topleft"
          name="role_visible_in_list"
          tool_tip="Sets whether members of this role are visible in the General tab to people outside of the group."
-         top_delta="6"
+         top_delta="2"
          width="160" />
         <name_list
          draw_stripes="true"
@@ -328,29 +281,31 @@ including the Everyone and Owner Roles.
              follows="left|top|right"
          height="115"
          layout="topleft"
-         left="3"
-         width="299"
+         left="1"
+         width="293"
          name="role_assigned_members"
          top_pad="2"/>
-         <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="3"
-         width="295" />
-            <text
+        <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="1"
+ width="303"/>
+         <text
+         follows="left|top|right"
          type="string"
-         height="16"
+         height="10"
          layout="topleft"
-         follows="left|top"
          left="8"
-         top_delta="5"
          name="static5"
-         width="200">
-            Allowed Abilities
+         top_delta="4"
+         width="150">
+           Allowed Abilities:
         </text>
         <scroll_list
          draw_stripes="true"
@@ -358,12 +313,12 @@ including the Everyone and Owner Roles.
              follows="left|top|right"
          height="115"
          layout="topleft"
-         left="3"
-         width="299"
+         left="1"
+         width="293"
          name="role_allowed_actions"
          search_column="2"
          tool_tip="For details of each allowed ability see the abilities tab"
-         top_pad="2">
+         top_pad="5">
             <scroll_list.columns
              label=""
              name="icon"
@@ -383,10 +338,10 @@ including the Everyone and Owner Roles.
         <panel
          border="false"
          follows="all"
-         height="503"
+         height="583"
          label="Members"
          layout="topleft"
-         width="316"
+         width="308"
          left="0"
          help_topic="roles_members_tab"
          name="members_sub_tab"
@@ -422,17 +377,68 @@ clicking on their names.
          left="0"
          name="roles_scroll"
          opaque="true"
-         height="503"
-         width="315"
-         top="1">
+         height="583"
+         width="307"
+         top="0">
          <panel
          border="false"
          follows="top|left|right"
          height="412"
-         width="300"
+         width="292"
          layout="topleft"
          left="0"
          name="members_panel">
+          <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="1"
+ width="303"/>
+         <text
+         follows="left|top|right"
+         type="string"
+         height="10"
+         layout="topleft"
+         left="8"
+         name="static5"
+         top_delta="4"
+         width="150">
+           Member List:
+        </text>
+            <name_list
+             column_padding="2"
+             draw_heading="true"
+             height="120"
+             follows="left|top|right"
+             layout="topleft"
+             left="1"
+             width="293"
+             multi_select="true"
+             name="member_list"
+             short_names="false" 
+             top_pad="5">
+                <name_list.columns
+                 label="Member"
+                 name="name"
+               relative_width="0.44" />
+                <name_list.columns
+                 label="Donation"
+                 name="donated"
+         		 relative_width="0.2" />
+                <name_list.columns
+                 label="Status"
+                 name="online"
+                 relative_width="0.18" />
+                <name_list.columns
+                 label="Title"
+                 name="title"
+                 relative_width="0.18" />
+            </name_list>
             <button
          height="25"
          follows="top|left"
@@ -440,8 +446,8 @@ clicking on their names.
          image_overlay="AddItem_Off"
          image_selected="Toolbar_Middle_Selected"
          image_unselected="Toolbar_Middle_Off"
-         left="5"
-         top="5"
+         left="3"
+         top_pad="1"
          name="member_invite"
          width="31" />
          <icon
@@ -451,8 +457,8 @@ clicking on their names.
          mouse_opaque="false"
          image_name="Toolbar_Middle_Off"
          left_pad="1"
-         top="5"
-         width="199" />
+         top_delta="0"
+         width="193" />
          <filter_editor
          background_image="TextField_Off"
          background_image_disabled="TextField_Disabled"
@@ -460,8 +466,8 @@ clicking on their names.
          layout="topleft"
          top_delta="1"
          left_delta="2"
-         right="-66"
-         height="23"
+         width="189"
+         height="22"
          search_button_visible="false"
          follows="left|top|right"
          label="Filter Members"
@@ -488,54 +494,27 @@ clicking on their names.
        left_pad="1"
        name="member_ban"
        width="31" />
-            <name_list
-             column_padding="2"
-             draw_heading="true"
-             height="120"
-             follows="left|top|right"
-             layout="topleft"
-             left="3"
-             width="299"
-             multi_select="true"
-             name="member_list"
-             short_names="false" 
-             top_pad="0">
-                <name_list.columns
-                 label="Member"
-                 name="name"
-               relative_width="0.44" />
-                <name_list.columns
-                 label="Donation"
-                 name="donated"
-         		 relative_width="0.2" />
-                <name_list.columns
-                 label="Status"
-                 name="online"
-                 relative_width="0.18" />
-                <name_list.columns
-                 label="Title"
-                 name="title"
-                 relative_width="0.18" />
-            </name_list>
-            <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="1"
-         width="295" />
-            <text
+            <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="5"
+ width="303"/>
+         <text
+         follows="left|top|right"
          type="string"
-         height="16"
+         height="10"
          layout="topleft"
-         follows="left|top"
          left="8"
-         top_delta="5"
-         name="static"
-         width="200">
-            Assigned Roles
+         name="static5"
+         top_delta="4"
+         width="150">
+           Assigned Roles:
         </text>
         <scroll_list
          draw_stripes="true"
@@ -544,10 +523,10 @@ clicking on their names.
          layout="topleft"
          column_padding="2"
          search_column="2"
-         left="3"
-         width="299"
+         left="1"
+         width="293"
          name="member_assigned_roles"
-         top_pad="2">
+         top_pad="5">
             <scroll_list.columns
              label=""
              name="checkbox"
@@ -557,25 +536,27 @@ clicking on their names.
              name="role"
              width="270" />
         </scroll_list>
-        <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="3"
-         width="295" />
-          <text
+        <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="1"
+ width="303"/>
+         <text
+         follows="left|top|right"
          type="string"
-         height="16"
+         height="10"
          layout="topleft"
-         follows="left|top"
          left="8"
-         top_delta="5"
-         name="static2"
-         width="200">
-            Allowed Abilities
+         name="static5"
+         top_delta="4"
+         width="150">
+           Allowed Abilities:
         </text>
         <scroll_list
          draw_stripes="true"
@@ -583,12 +564,12 @@ clicking on their names.
              follows="left|top|right"
          height="115"
          layout="topleft"
-         left="3"
-         width="299"
+         left="1"
+         width="293"
          name="member_allowed_actions"
          search_column="2"
          tool_tip="For details of each allowed ability see the abilities tab"
-         top_pad="2">
+         top_pad="5">
             <scroll_list.columns
              label=""
              name="icon"
@@ -612,7 +593,7 @@ clicking on their names.
          label="Abilities"
          layout="topleft"
          left="0"
-         width="316"
+         width="308"
          help_topic="roles_actions_tab"
          name="actions_sub_tab"
          class="panel_group_actions_subtab"
@@ -643,50 +624,53 @@ things in this group. There&apos;s a broad variety of Abilities.
          name="roles_scroll"
          opaque="true"
          height="503"
-         width="315"
-         top="1">
+         width="307"
+         top="0">
          <panel
          border="false"
          follows="top|left|right"
-         height="526"
-         width="300"
+         height="500"
+         width="292"
          layout="topleft"
          left="0"
          name="members_panel">
-         <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top="5"
-         width="295" />
-         <filter_editor
-         layout="topleft"
-         background_image="TextField_Off"
-         background_image_disabled="TextField_Disabled"
-         background_image_focused="TextField_Active"
-         top_delta="1"
-         left_delta="2"
-         right="-2"
-         height="23"
-         search_button_visible="false"
-         follows="left|top|right"
-         label="Filter Abilities"
-         name="filter_input" />
+          <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top="1"
+ width="303"/>
+    <text
+      font="SansSerifSmall"
+      width="75"
+      follows="top|left|right"
+      layout="topleft"
+      mouse_opaque="false"
+     type="string"
+     height="10"
+     length="1"
+     left="8"
+     name="prepend_founded_by"
+     top_delta="4">
+      Abilities List:
+    </text>
         <scroll_list
          column_padding="2"
-         height="120"
+         height="112"
          follows="left|top|right"
          layout="topleft"
-         left="3"
-         width="299"
+         left="1"
+         width="293"
          multi_select="true"
          name="action_list"
          search_column="2"
          tool_tip="Select an Ability to view more details"
-         top_pad="1">
+         top_pad="5">
             <scroll_list.columns
              label=""
              name="icon"
@@ -700,81 +684,128 @@ things in this group. There&apos;s a broad variety of Abilities.
              name="action"
              width="270" />
         </scroll_list>
-         <text_editor
-         bg_readonly_color="White_02"
-         type="string"
-         enabled="false"
-         layout="topleft"
-         follows="left|top|right"
-         left="5"
-         right="-1"
-         height="90"
-         width="300"
-         name="action_description"
-         top_pad="0"
-         word_wrap="true">
-            This Ability is &apos;Eject Members from this Group&apos;. Only an Owner can eject another Owner.
-        </text_editor>
-         <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="1"
-         width="295" />
-        <text
-         type="string"
-         height="16"
-         layout="topleft"
-         follows="left|top"
-         left="8"
-         name="static2"
-         top_delta="5"
-         width="280">
-            Roles with this ability
-        </text>
-        <scroll_list
-         column_padding="2"
-         height="120"
-         follows="left|top|right"
-         layout="topleft"
-         left="3"
-         width="299"
-         multi_select="true"
-         name="action_roles"
-         top_pad="0"/>
         <icon
          follows="top|left|right"
          height="25"
          name="bg"
          mouse_opaque="false"
          image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="1"
-         width="295" />
-        <text
-         type="string"
-         height="16"
+         left="3"
+         top_pad="0"
+         width="289" />
+         <filter_editor
          layout="topleft"
-         follows="left|top"
+         background_image="TextField_Off"
+         background_image_disabled="TextField_Disabled"
+         background_image_focused="TextField_Active"
+         top_delta="1"
+         left_delta="2"
+         width="285"
+         height="22"
+         search_button_visible="false"
+         follows="left|top|right"
+         label="Filter Abilities"
+         name="filter_input" />
+         <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="7"
+ width="303"/>
+         <text
+         follows="left|top|right"
+         type="string"
+         height="10"
+         layout="topleft"
          left="8"
-         name="static3"
-         top_delta="5"
-         width="280">
-            Members with this ability
+         name="static5"
+         top_delta="4"
+         width="150">
+           Allowed Abilities:
         </text>
-        <name_list
+         <text_editor
+         bg_readonly_color="Transparent"
+         type="string"
+         enabled="false"
+         layout="topleft"
+         follows="left|top|right"
+         left="3"
+         height="90"
+         width="290"
+         name="action_description"
+         top_pad="6"
+         word_wrap="true">
+            This Ability is &apos;Eject Members from this Group&apos;. Only an Owner can eject another Owner.
+        </text_editor>
+         <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="2"
+ width="303"/>
+         <text
+         follows="left|top|right"
+         type="string"
+         height="10"
+         layout="topleft"
+         left="8"
+         name="static5"
+         top_delta="4"
+         width="150">
+           Roles with this ability:
+        </text>
+        <scroll_list
          column_padding="2"
-         height="120"
+         height="90"
          follows="left|top|right"
          layout="topleft"
          left="3"
-         width="299"
+         width="290"
+         multi_select="true"
+         name="action_roles"
+         top_pad="6"/>
+        <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="2"
+ width="303"/>
+         <text
+         follows="left|top|right"
+         type="string"
+         height="10"
+         layout="topleft"
+         left="8"
+         name="static5"
+         top_delta="4"
+         width="150">
+           Members with this ability:
+        </text>
+        <name_list
+         column_padding="2"
+         height="90"
+         follows="left|top|right"
+         layout="topleft"
+         left="3"
+         width="290"
          multi_select="true"
          name="action_members"
-         top_pad="0"/>
+         top_pad="6"/>
          </panel>
             </scroll_container>
         </panel>
@@ -789,15 +820,14 @@ things in this group. There&apos;s a broad variety of Abilities.
      name="banlist_sub_tab"
      class="panel_group_banlist_subtab"
      tool_tip="View the banned residents from this group."
-     width="310">
+     width="308">
       <panel.string
        name="help_text">
         Any resident on the ban list will be unable to join the group.
       </panel.string>
       <panel.string
        name="ban_count_template">
-        Ban count:
-[COUNT] / [LIMIT]
+        Ban count: [COUNT] / [LIMIT]
       </panel.string>
       <scroll_container
          color="Transparent"
@@ -808,86 +838,50 @@ things in this group. There&apos;s a broad variety of Abilities.
          name="banned_scroll"
          opaque="true"
          height="303"
-         width="316"
+         width="308"
          top="1">
          <panel
          border="false"
-         follows="top|left|right"
-         height="432"
-         width="300"
+         follows="all"
+         height="303"
+         width="292"
          layout="topleft"
          left="0"
          name="banned_panel">
-      <button
-      follows="top|left"
-      image_hover_unselected="Toolbar_Middle_Over"
-      image_overlay="AddItem_Off"
-      image_selected="Toolbar_Middle_Selected"
-      image_unselected="Toolbar_Middle_Off"
-      height="25"
-      layout="topleft"
-      left="5"
-      top="5"
-      tool_tip="Ban residents from your group"
-      name="ban_create"
-      width="31" />
-      <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="1"
-         top="5"
-         width="200" />
-      <text
-        type="string"
-        height="25"
-        left_delta="3"
-        top_delta="0"
-        line_spacing.pixels="0"
-        follows="top|left|right"
-        layout="topleft"
-        name="ban_count"
-        width="197"/>
-         <button
-      follows="top|right"
-      image_hover_unselected="Toolbar_Middle_Over"
-      image_overlay="Refresh_Off"
-      image_selected="Toolbar_Middle_Selected"
-      image_unselected="Toolbar_Middle_Off"
-      height="25"
-      layout="topleft"
-      left_pad="1"
-      top_delta="0"
-      tool_tip="Ban residents from your group"
-      name="ban_refresh"
-      width="31" />
-            <button
-             height="25"
-             follows="top|right"
-             image_hover_unselected="Toolbar_Middle_Over"
-             image_overlay="TrashItem_Off"
-             image_selected="Toolbar_Middle_Selected"
-             image_unselected="Toolbar_Middle_Off"
-             layout="topleft"
-             left_pad="1"
-             top_delta="0"
-             tool_tip="Unban selected residents from your group"
-             name="ban_delete"
-             width="31" />
+          <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="1"
+ width="304"/>
+         <text
+         follows="left|top|right"
+         type="string"
+         height="10"
+         layout="topleft"
+         left="8"
+         name="static5"
+         top_delta="4"
+         width="150">
+           Ban List:
+        </text>
             <name_list
             column_padding="0"
             draw_heading="true"
-            width="300"
-            height="400"
-            follows="left|top|right"
+            width="308"
+            height="257"
+            follows="all"
             layout="topleft"
-            left="3"
+            left="1"
             multi_select="true"
             name="ban_list"
             short_names="false"
-            top_pad="0">
+            top_pad="5">
                <name_list.columns
                 label="Resident"
                 name="name"
@@ -899,6 +893,64 @@ things in this group. There&apos;s a broad variety of Abilities.
                 name="ban_date"
                 relative_width="0.3" />
              </name_list>
+            <button
+      follows="bottom|left"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_overlay="AddItem_Off"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+      height="25"
+      layout="topleft"
+      left="3"
+      top_pad="1"
+      tool_tip="Ban residents from your group"
+      name="ban_create"
+      width="31" />
+      <icon
+         follows="bottom|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="1"
+         top_delta="0"
+         width="208" />
+      <text
+        type="string"
+        height="25"
+        left_delta="3"
+        top_delta="6"
+        line_spacing.pixels="0"
+        follows="bottom|left|right"
+        layout="topleft"
+        name="ban_count"
+        width="205"/>
+         <button
+      follows="bottom|right"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_overlay="Refresh_Off"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+      height="25"
+      layout="topleft"
+      left_pad="1"
+      top_delta="-6"
+      tool_tip="Ban residents from your group"
+      name="ban_refresh"
+      width="31" />
+            <button
+             height="25"
+             follows="bottom|right"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_overlay="TrashItem_Off"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             layout="topleft"
+             left_pad="1"
+             top_delta="0"
+             tool_tip="Unban selected residents from your group"
+             name="ban_delete"
+             width="31" />
          </panel>
       </scroll_container>
     </panel>

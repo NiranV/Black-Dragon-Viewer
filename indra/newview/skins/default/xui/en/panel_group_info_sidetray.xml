@@ -152,7 +152,7 @@
                     name="group_notices_tab_panel"
                     top="0" />
                  <panel
-					 border="false"
+                     border="false"
                      class="panel_group_land_money"
                      filename="panel_group_land_money.xml"
                      background_visible="true"
@@ -164,16 +164,17 @@
                      name="group_land_tab_panel"
                      top="0" />
                  <panel
-               border="false"
-               class="panel_group_experiences"
-               filename="panel_experiences.xml"
-               background_visible="true"
-               follows="left|top|right"
-               layout="topleft"
-               left="0"
-               label="Experiences"
-               name="group_experiences_tab_panel"
-               top="0" />
+                     border="false"
+                     class="panel_group_experiences"
+                     filename="panel_experiences.xml"
+                     background_visible="true"
+                     bg_alpha_image="Panel_Background"
+                     follows="left|top|right"
+                     layout="topleft"
+                     left="0"
+                     label="Experiences"
+                     name="group_experiences_tab_panel"
+                     top="0" />
       </tab_container>
    
       <panel

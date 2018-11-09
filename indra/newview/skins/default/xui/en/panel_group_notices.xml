@@ -7,7 +7,7 @@
  name="notices_tab"
  follows="all"
  top="0"
- width="316">
+ width="308">
     <panel.string
      name="help_text">
         Notices let you send a message and an optionally attached item.
@@ -27,78 +27,54 @@ You can turn off Notices on the General tab.
          name="roles_scroll"
          opaque="true"
          height="498"
-         width="315"
+         width="307"
          top="1">
       <panel
          bevel_style="none"
          border="false"
          follows="top|left|right"
          height="395"
-         width="299"
+         width="291"
          layout="topleft"
          left="0"
          name="preferences_container"
          top="0">
-         <button
-       follows="top|left"
-       height="25"
-       image_overlay="AddItem_Off"
-       image_hover_unselected="Toolbar_Middle_Over"
-       image_selected="Toolbar_Middle_Selected"
-       image_unselected="Toolbar_Middle_Off"
-       layout="topleft"
-       left="5"
-       name="create_new_notice"
-       tool_tip="Create a new notice"
-       top="5"
-       width="31" />
-         <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="1"
-         top_delta="0"
-         width="231" />
-    <text
-      follows="left|top"
+       <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top="1"
+ width="303"/>
+       <text
+      font="SansSerifSmall"
+      width="255"
+      follows="top|left|right"
+      layout="topleft"
+      mouse_opaque="false"
      type="string"
-     word_wrap="true"
-     height="24"
-     halign="left"
-     layout="topleft"
-     left_delta="3"
-     name="lbl2"
-     top="5"
-     width="227">
-     Notices are kept for 14 days.
-Maximum 200 per group daily
+     height="10"
+     length="1"
+     left="8"
+     name="notices_label"
+     top_delta="4">
+      Notices of the last 14 days:
     </text>
-    <button
-     follows="top|right"
-     height="25"
-     image_overlay="Refresh_Off"
-     image_hover_unselected="Toolbar_Middle_Over"
-       image_selected="Toolbar_Middle_Selected"
-       image_unselected="Toolbar_Middle_Off"
-     layout="topleft"
-     name="refresh_notices"
-     left_pad="2"
-     tool_tip="Refresh list of notices"
-     top_delta="0"
-     width="31" />
     <scroll_list
      column_padding="2"
       draw_heading="true"
       height="120"
       follows="left|top|right"
       layout="topleft"
-      left="3"
-      width="299"
+      left="1"
+      width="293"
       multi_select="true"
      name="notice_list"
-     top_pad="3">
+     top_pad="5">
         <scroll_list.columns
          label=""
          name="icon"
@@ -124,12 +100,60 @@ Maximum 200 per group daily
      type="string"
      layout="topleft"
      height="14"
-     left="5"
+     left="8"
      top_pad="-14"
      name="notice_list_none_found"
-     visible="true">
+     visible="false">
         None found
     </text>
+    <button
+       follows="top|left"
+       height="25"
+       image_overlay="AddItem_Off"
+       image_hover_unselected="Toolbar_Middle_Over"
+       image_selected="Toolbar_Middle_Selected"
+       image_unselected="Toolbar_Middle_Off"
+       layout="topleft"
+       left="3"
+       name="create_new_notice"
+       tool_tip="Create a new notice"
+       top_pad="5"
+       width="31" />
+         <icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left_pad="1"
+         top_delta="0"
+         width="225" />
+    <!--<text
+      follows="left|top"
+     type="string"
+     word_wrap="false"
+     height="14"
+     halign="left"
+     layout="topleft"
+     left_delta="3"
+     name="lbl2"
+     top_delta="6"
+     width="234">
+Maximum of 200 daily.
+    </text>-->
+    <button
+     follows="top|right"
+     height="25"
+     image_overlay="Refresh_Off"
+     image_hover_unselected="Toolbar_Middle_Over"
+       image_selected="Toolbar_Middle_Selected"
+       image_unselected="Toolbar_Middle_Off"
+     layout="topleft"
+     name="refresh_notices"
+     left_pad="1"
+     tool_tip="Refresh list of notices"
+     top_delta="0"
+     width="31" />
     <panel
      follows="left|top|right"
      height="245"
@@ -140,36 +164,28 @@ Maximum 200 per group daily
      visible="false"
      name="panel_create_new_notice"
          width="300">
-      <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top="5"
-         width="295" />
-        <text
-         follows="left|top"
+     <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top="5"
+ width="303"/>
+         <text
+         follows="left|top|right"
          type="string"
-         height="16"
+         height="10"
          layout="topleft"
          left="8"
-         mouse_opaque="false"
          name="lbl"
-         top_delta="5"
-         width="220">
-            Create a Notice
+         top_delta="4"
+         width="150">
+           Create a Notice:
         </text>
-        <icon
-         follows="top|left"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="8"
-         width="60" />
         <text
          follows="left|top"
          type="string"
@@ -178,39 +194,21 @@ Maximum 200 per group daily
          left="8"
          layout="topleft"
          name="lbl3"
-         top_delta="5"
+         top_pad="16"
          width="62">
             Subject:
         </text>
-        <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="-4"
-         top_delta="-5"
-         width="234" />
         <line_editor
          follows="left|top|right"
          layout="topleft"
          height="23"
-         left_delta="2"
-         top_delta="1"
+         left_pad="2"
+         top_delta="-5"
          max_length_bytes="63"
          name="create_subject"
          prevalidate_callback="ascii"
          spellcheck="true"
-         width="230" />
-        <icon
-         follows="top|left"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="5"
-         width="60" />
+         width="220" />
         <text
          follows="left|top"
          type="string"
@@ -219,39 +217,21 @@ Maximum 200 per group daily
          left="8"
          layout="topleft"
          name="lbl4"
-         top_delta="5"
+         top_pad="9"
          width="62">
             Message:
         </text>
-        <icon
-         follows="top|left|right"
-         height="95"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="-4"
-         top_delta="-5"
-         width="234" />
         <text_editor
          follows="left|top|right"
          height="90"
          layout="topleft"
-         left_delta="3"
+         left_pad="2"
          max_length="511"
          name="create_message"
          spellcheck="true"
-         top_delta="2"
-         width="228"
+         top_delta="-5"
+         width="220"
          word_wrap="true" />
-        <icon
-         follows="top|left"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="6"
-         width="60" />
         <text
          follows="left|top"
          type="string"
@@ -259,60 +239,31 @@ Maximum 200 per group daily
          height="16"
          left="8"
          layout="topleft"
-         top_delta="5"
+         top_pad="9"
          name="lbl5"
          width="62">
             Attach:
         </text>
-        <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="-4"
-         top_delta="-5"
-         width="234" />
         <line_editor
          follows="left|top|right"
          layout="topleft"
          height="23"
-         left_delta="2"
-         top_delta="1"
+         left_pad="2"
+         top_delta="-5"
          max_length_bytes="90"
          mouse_opaque="false"
          name="create_inventory_name"
-         width="230" />
-        <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="5"
-         width="207" />
-        <text
-         follows="left|top|right"
-         type="string"
-         halign="left"
-         height="16"
-         layout="topleft"
-         left="8"
-         right="-90"
-         name="string"
-         top_delta="5"
-         width="200">
-            Drag and drop item here to attach it:
-        </text>
+         width="158">
+          Drag and drop item here ->
+        </line_editor>
         <icon
          follows="top|right"
          height="25"
          name="bg"
          mouse_opaque="false"
          image_name="Toolbar_Middle_Off"
-         left_pad="3"
-         top_delta="-5"
+         left_pad="1"
+         top_delta="0"
          width="29" />
         <icon
          height="22"
@@ -333,7 +284,7 @@ Maximum 200 per group daily
          name="drop_target"
          tool_tip="Drag an inventory item onto this target box to send it with this notice. You must have permission to copy and transfer the item in order to attach it."
          width="27" />
-        <button
+        <!--<button
          follows="right|top"
          layout="topleft"
          left_pad="2"
@@ -349,13 +300,13 @@ Maximum 200 per group daily
 			<button.init_callback
 				 function="Button.SetFloaterToggle"
 				 parameter="inventory"/>
-		</button>
+		</button>-->
         <button
          layout="topleft"
          follows="top|right"
-         left_pad="1"
+         left_pad="2"
          name="remove_attachment"
-         top_delta="0"
+         top_delta="-1"
                  height="25"
                  image_hover_unselected="Toolbar_Middle_Over"
              image_overlay="TrashItem_Off"
@@ -372,10 +323,32 @@ Maximum 200 per group daily
          label="Send"
          label_selected="Send"
          layout="topleft"
-         left="5"
-         top_pad="4"
+         left="3"
+         top_pad="3"
          name="send_notice"
-         width="295" />
+         width="289" />
+        <!--<icon
+         follows="top|left|right"
+         height="25"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Toolbar_Middle_Off"
+         left="5"
+         top_pad="5"
+         width="207" />
+        <text
+         follows="left|top|right"
+         type="string"
+         halign="left"
+         height="16"
+         layout="topleft"
+         left="8"
+         right="-90"
+         name="string"
+         top_delta="5"
+         width="200">
+            Drag and drop item here to attach it:
+        </text>-->
    </panel>
     <panel
      follows="left|top|right"
@@ -387,46 +360,39 @@ Maximum 200 per group daily
      name="panel_view_past_notice"
      top_delta="0"
     width="300">
-      <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top="5"
-         width="295" />
-        <text
+     <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top="5"
+ width="303"/>
+     <text
+         follows="left|top|right"
          type="string"
-         height="16"
+         height="10"
          layout="topleft"
          left="8"
-         mouse_opaque="false"
          name="lbl"
-         top_delta="5"
-         width="265">
-            Archived Notice
+         top_delta="4"
+         width="150">
+           Archived Notice:
         </text>
         <text
          type="string"
          height="16"
          word_wrap="true"
          layout="topleft"
-         left_delta="0"
+         left="8"
          name="lbl2"
-         top_pad="8"
+         top_pad="12"
          width="265">
-            To send a new notice, click the + button
+            To send a new notice, click the + button above.
         </text>
-        <icon
-         follows="top|left"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="3"
-         width="60" />
         <text
          type="string"
          halign="left"
@@ -434,19 +400,10 @@ Maximum 200 per group daily
          layout="topleft"
          left="8"
          name="lbl3"
-         top_delta="5"
-         width="60">
+         top_pad="7"
+         width="62">
             Subject:
         </text>
-        <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="-2"
-         top_delta="-5"
-         width="234" />
         <line_editor
          border_style="line"
          follows="top|left|right"
@@ -454,21 +411,12 @@ Maximum 200 per group daily
          enabled="false"
          height="23"
          layout="topleft"
-         left_delta="2"
+         left_pad="2"
          max_length_bytes="63"
          name="view_subject"
          spellcheck="true"
-         top_delta="1"
-         width="230" />
-        <icon
-         follows="top|left"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="5"
-         width="60" />
+         top_delta="-5"
+         width="220" />
         <text
          type="string"
          halign="left"
@@ -476,52 +424,45 @@ Maximum 200 per group daily
          layout="topleft"
          left="8"
          name="lbl4"
-         top_delta="5"
+         top_pad="9"
          visible="true"
-         width="60">
+         width="62">
             Message:
         </text>
-        <icon
-         follows="top|left|right"
-         height="95"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left_pad="-2"
-         top_delta="-5"
-         width="234" />
         <text_editor
          follows="left|top|right"
          height="90"
          layout="topleft"
-         left_delta="3"
+         left_pad="2"
          max_length="511"
          name="view_message"
          spellcheck="true"
-         top_delta="2"
-         width="228"
+         top_delta="-4"
+         width="220"
          word_wrap="true" />
-        <icon
-         follows="top|left|right"
-         height="25"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Toolbar_Middle_Off"
-         left="5"
-         top_pad="7"
-         width="221" />
+        <text
+         type="string"
+         halign="left"
+         height="16"
+         layout="topleft"
+         left="8"
+         name="lbl4"
+         top_pad="9"
+         visible="true"
+         width="62">
+            Item:
+        </text>
         <line_editor
          enabled="false"
          follows="top|left|right"
          height="23"
          layout="topleft"
-         left="7"
-         right="-76"
+         left_pad="2"
          max_length_bytes="63"
          mouse_opaque="false"
          name="view_inventory_name"
-         top_delta="1"
-         width="210"/>
+         top_delta="-4"
+         width="176"/>
         <button
          follows="right|top"
          image_hover_unselected="Toolbar_Middle_Over"
@@ -530,10 +471,10 @@ Maximum 200 per group daily
          height="25"
          label="Open"
          layout="topleft"
-         left_pad="3"
+         left_pad="1"
          name="open_attachment"
-         top_delta="-1"
-         width="73" />
+         top_delta="0"
+         width="43" />
         </panel>
       </panel>
     </scroll_container>

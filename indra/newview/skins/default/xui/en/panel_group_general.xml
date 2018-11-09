@@ -26,7 +26,7 @@ Hover your mouse over the options for more help.
          layout="topleft"
          mouse_opaque="false"
          left="0"
-         name="roles_scroll"
+         name="general_scroll"
          height="402"
          width="307"
          top="1">
@@ -34,24 +34,26 @@ Hover your mouse over the options for more help.
          bevel_style="none"
          border="false"
          follows="top|left|right"
-         height="280"
+         height="335"
          width="292"
          layout="topleft"
          left="0"
-         name="preferences_container"
+         name="general_container"
          top="0">
-    <icon
-      follows="top|left|right"
-      height="25"
-      name="bg"
-      mouse_opaque="false"
-      image_name="Toolbar_Middle_Off"
-      left="5"
-      top="5"
-      width="210" />
+       <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top="1"
+ width="303"/>
     <text
       font="SansSerifSmall"
-      width="206"
+      width="55"
       follows="top|left|right"
       layout="topleft"
       mouse_opaque="false"
@@ -60,54 +62,45 @@ Hover your mouse over the options for more help.
      length="1"
      left="8"
      name="prepend_founded_by"
-     top="5">
+     top_delta="4">
       Founder:
     </text>
      <text
       follows="left|top|right"
      height="10"
      layout="topleft"
-     left_delta="0"
+     left_pad="0"
      name="founder_name"
-     top_pad="1"
+     top_delta="0"
      use_ellipses="true"
-     width="206" />
-     <button
-     follows="right|top"
-     left_pad="2"
-     top="5"
-     height="25"
-     pad_bottom="-3"
-     label="JOIN NOW!"
-     image_hover_unselected="Toolbar_Middle_Over"
-       image_selected="Toolbar_Middle_Selected"
-       image_unselected="Toolbar_Middle_Off"
-     name="btn_join"
-     visible="true"
-     width="76" />
-     <icon
-      follows="top|right"
-      height="25"
-      name="btn_no_join"
-      mouse_opaque="false"
-      image_name="Toolbar_Middle_Off"
-      left_delta="0"
-      top="5"
-      width="76" />
+     value="secondlife:///app/agent/a7fe20fa-1e95-4f87-aa8f-86496c78c1e5/about"
+     width="167" />
     <text
-    font="SansSerifSmall"
     text_color="0.2 0.9 0.3 1"
      type="string"
-     follows="top|right"
+     follows="top|left"
      height="10"
      layout="topleft"
-     halign="center"
+     left_pad="26"
+     halign="left"
      name="join_cost_text"
-     top_delta="0"
+     top_delta="-5"
      visible="true"
-     width="77">
+     width="48">
       Free
     </text>
+    <button
+   label="⌊Join Now⌉"
+   name="btn_join"
+   layout="topleft"
+   top_delta="3"
+   left_delta="-19"
+   halign="left"
+   visible="true"
+   pad_bottom="0"
+   image_selected="Transparent"
+   image_unselected="Transparent"
+   width="72"/>
     <texture_picker
      default_image_name="Generic_Group_Large"
      follows="left|top"
@@ -118,7 +111,7 @@ Hover your mouse over the options for more help.
      name="insignia"
      no_commit_on_selection="true"
      tool_tip="Click to choose a picture"
-     top_pad="20"
+     top_pad="1"
      width="90" />
     <text_editor
      type="string"
@@ -133,15 +126,17 @@ Hover your mouse over the options for more help.
      word_wrap="true">
      Group Charter
     </text_editor>
-    <icon
-      follows="top|left"
-      height="25"
-      name="bg"
-      mouse_opaque="false"
-      image_name="Toolbar_Middle_Off"
-      left="5"
-      top_pad="5"
-      width="74" />
+    <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="7"
+ width="303"/>
          <text
          follows="left|top|right"
          type="string"
@@ -149,9 +144,9 @@ Hover your mouse over the options for more help.
          layout="topleft"
          left="8"
          name="my_group_settngs_label"
-         top_delta="1"
-         width="63">
-           Me
+         top_delta="4"
+         width="150">
+           Settings regarding myself:
         </text>
          <text
          follows="left|top|right"
@@ -160,19 +155,19 @@ Hover your mouse over the options for more help.
          layout="topleft"
          left="8"
          name="active_title_label"
-         top_pad="1"
+         top_pad="15"
          width="63">
-            My title:
+            My Title:
         </text>
         <combo_box
          follows="left|top|right"
-         height="25"
+         height="23"
          layout="topleft"
          left_pad="9"
          width="212"
          name="active_title"
          tool_tip="Sets the title that appears in your avatar&apos;s name tag when this group is active."
-         top_delta="-12" >
+         top_delta="-4" >
             <combo_box.combo_button
             image_unselected="Toolbar_Middle_Off"
             image_selected="Toolbar_Middle_Selected"
@@ -186,53 +181,66 @@ Hover your mouse over the options for more help.
         </combo_box>
         <check_box
          follows="left|top"
-         height="16"
+         height="14"
          font="SansSerifSmall"
          label="Receive group notices"
          layout="topleft"
-         left="10"
+         left="8"
          name="receive_notices"
          tool_tip="Sets whether you want to receive Notices from this group.  Uncheck this box if this group is spamming you."
          top_pad="5"
          width="300" />
         <check_box
          follows="left|top"
-         height="16"
+         height="14"
          label="Show in my profile"
          layout="topleft"
-         left="10"
+         left="8"
          name="list_groups_in_profile"
          tool_tip="Sets whether you want to show this group in your profile"
          top_pad="1"
          width="295" />
-      <icon
-      follows="top|left"
-      height="25"
-      name="bg"
-      mouse_opaque="false"
-      image_name="Toolbar_Middle_Off"
-      left="5"
-      top_pad="5"
-      width="74" />
+      <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top_pad="10"
+ width="303"/>
         <text
          follows="left|top"
          type="string"
-         height="12"
+         height="10"
          layout="topleft"
          left="8"
-         top_delta="1"
+         top_delta="4"
          name="group_settngs_label"
-         width="65">
-         Group
+         width="120">
+         Group Settings:
+        </text>
+        <text
+         follows="left|top|right"
+         type="string"
+         height="10"
+         layout="topleft"
+         left="8"
+         name="active_title_label"
+         top_pad="15"
+         width="63">
+            Maturity:
         </text>
       <icons_combo_box
          follows="left|top|right"
-         height="25"
+         height="23"
          layout="topleft"
-         left_pad="7"
+         left_pad="9"
          name="group_mature_check"
          tool_tip="Sets whether your group contains information rated as Moderate"
-         top_delta="-1"
+         top_delta="-4"
          width="212">
             <icons_combo_box.combo_button
             image_unselected="Toolbar_Middle_Off"
@@ -267,7 +275,7 @@ Hover your mouse over the options for more help.
         </icons_combo_box>
       <check_box
          follows="left|top"
-         height="16"
+         height="14"
          initial_value="true"
          label="Show in search"
          layout="topleft"
@@ -278,7 +286,7 @@ Hover your mouse over the options for more help.
          width="300" />
         <check_box
          follows="right|top|left"
-         height="16"
+         height="14"
          label="Anyone can join"
          layout="topleft"
          left="10"
@@ -288,7 +296,7 @@ Hover your mouse over the options for more help.
          width="90" />
         <check_box
          follows="left|top"
-         height="16"
+         height="14"
          label="Cost to join"
          layout="topleft"
          left_delta="0"
@@ -305,7 +313,7 @@ Hover your mouse over the options for more help.
          layout="topleft"
          max_val="99999"
          left_pad="5"
-         top_delta="-4"
+         top_delta="-2"
          name="spin_enrollment_fee"
          tool_tip="New members must pay this fee to join the group when Enrollment Fee is checked."
          width="100" />

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 
 <panel
-  layout="topleft"
-  top="3"
-  left="3"
-  width="200"
-  height="300"
-  label="Experiences"
-  bg_opaque_color="0 0.5 0 0.3"
-  follows="all">
+  border="false"
+ height="500"
+ layout="topleft"
+ left="0"
+ name="Experiences"
+ top="0"
+ width="308">
   <string
     name="loading_experiences"
     value="Loading experiences..."/>
@@ -20,12 +19,12 @@
     value="Acquire an Experience" />
   <layout_stack
     layout="topleft"
-    top="0"
-    left="4" 
-    right="-1"
-    bottom="-4"
-    orientation="vertical"
-    follows="all">
+    follows="all"
+    top="1"
+    left="1" 
+    height="500"
+    width="306"
+    orientation="vertical">
     <layout_panel
       layout="topleft"
       top="0"
@@ -35,6 +34,7 @@
       follows="all">
       <flat_list_view
         name="experiences_list"
+        color="Transparent"
         layout="topleft"
         top="0"
         left="1"
