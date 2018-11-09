@@ -119,8 +119,6 @@
     </text>
     <text_editor
      follows="top|left|right"
-     cursor_color="TextCursorColor"
-     text_color="Black"
      height="35"
      layout="topleft"
      left="10"
