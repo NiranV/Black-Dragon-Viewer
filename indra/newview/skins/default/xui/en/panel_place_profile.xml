@@ -330,7 +330,6 @@
              layout="topleft"
              left="4"
              name="owner_label"
-             text_color="White"
              top_pad="1"
              value="Owner:"
              width="90" />
@@ -339,7 +338,7 @@
              follows="left|top|right"
              height="14"
              layout="topleft"
-             left_pad="1"
+             left_pad="-3"
              name="owner_value"
              top_delta="0"
              value="Alex Superduperlongenamenton"
@@ -398,7 +397,7 @@
                          follows="left|top"
                          height="14"
                          layout="topleft"
-                         left_pad="6"
+                         left_pad="2"
                          name="rating_label"
                          value="Rating:"
                          width="90" />
@@ -675,7 +674,7 @@
                          follows="left|top|right"
                          height="14"
                          layout="topleft"
-                         left_pad="4"
+                         left_pad="3"
                          name="region_rating"
                          value="Adult"
                          width="159" />
@@ -692,7 +691,7 @@
                          follows="left|top|right"
                          height="14"
                          layout="topleft"
-                         left_pad="0"
+                         left_pad="-3"
                          name="region_owner"
                          top_delta="0"
                          value="moose Van Moose extra long name moose"
@@ -711,7 +710,7 @@
                          follows="left|top|right"
                          height="15"
                          layout="topleft"
-                         left_pad="0"
+                         left_pad="-3"
                          name="region_group"
                          top_delta="0"
                          use_ellipses="true"
@@ -815,8 +814,6 @@
                          value="Covenant:"
                          width="277" />
                         <text_editor
-                         bg_focus_color="Black_50"
-                         bg_readonly_color="Black_50"
                          follows="left|top|right"
                          height="90"
                          layout="topleft"
@@ -967,17 +964,15 @@
                          value="Subdivide/Join ability:"
                          width="277" />
                         <text_editor
-                         bg_focus_color="Black_50"
-                         bg_readonly_color="Black_50"
                          follows="left|top|right"
                          height="45"
                          layout="topleft"
-                         left="140"
+                         left="4"
                          max_length="65535"
                          name="subdivide"
                          read_only="true"
-                         top_delta="0"
-                         width="150"
+                         top_pad="0"
+                         width="284"
                          word_wrap="true" />
                         <text
                          follows="left|top"
@@ -989,17 +984,15 @@
                          value="ReSale ability:"
                          width="277" />
                         <text_editor
-                         bg_focus_color="Black_50"
-                         bg_readonly_color="Black_50"
                          follows="left|top|right"
                          height="45"
                          layout="topleft"
-                         left="140"
+                         left="4"
                          max_length="65535"
                          name="resale"
                          read_only="true"
-                         top_delta="0"
-                         width="150"
+                         top_pad="0"
+                         width="284"
                          word_wrap="true" />
         </panel>
                 </tab_container>
