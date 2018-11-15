@@ -800,7 +800,7 @@ F32 LLAgentCamera::getCameraZoomFraction()
 	{
 		F32 min_zoom;
 		//BD - Allow infinite zoom.
-		F32 max_zoom = 9999.f;
+		F32 max_zoom = mDrawDistance;
 
 		F32 distance = (F32)mCameraFocusOffsetTarget.magVec();
 		if (mFocusObject.notNull())
@@ -847,7 +847,7 @@ void LLAgentCamera::setCameraZoomFraction(F32 fraction)
 	{
 		F32 min_zoom = LAND_MIN_ZOOM;
 		//BD - Allow infinite zoom.
-		F32 max_zoom = 9999.f;
+		F32 max_zoom = mDrawDistance;
 
 		if (mFocusObject.notNull())
 		{
@@ -864,7 +864,8 @@ void LLAgentCamera::setCameraZoomFraction(F32 fraction)
 		LLVector3d camera_offset_dir = mCameraFocusOffsetTarget;
 		camera_offset_dir.normalize();
 // [RLVa:KB] - Checked: 2.0.0
-		const LLVector3d focus_offset_target = camera_offset_dir * rescale(fraction, 0.f, 1.f, max_zoom, min_zoom);
+		//BD - Clamp at roughly our draw distance.
+		const LLVector3d focus_offset_target = camera_offset_dir * rescale( fraction, 0.0f, 1.f, max_zoom, min_zoom);
 		if ( (RlvActions::isRlvEnabled()) && (!allowFocusOffsetChange(focus_offset_target)) )
 			return;
 		mCameraFocusOffsetTarget = focus_offset_target;

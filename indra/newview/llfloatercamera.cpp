@@ -400,8 +400,8 @@ BOOL LLFloaterCamera::postBuild()
 	//BD
 	mJointComboBox = getChild<LLComboBox>("joint_combo");
 
-	assignButton2Mode(CAMERA_CTRL_MODE_MODES,			"avatarview_btn");
-	assignButton2Mode(CAMERA_CTRL_MODE_PAN,				"pan_btn");
+	assignButton2Mode(CAMERA_CTRL_MODE_MODES,		"avatarview_btn");
+	assignButton2Mode(CAMERA_CTRL_MODE_PAN,			"pan_btn");
 	assignButton2Mode(CAMERA_CTRL_MODE_PRESETS,		"presets_btn");
 
 	update();
