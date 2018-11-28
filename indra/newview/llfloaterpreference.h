@@ -215,7 +215,7 @@ public:
 	void onUnbindControls();
 	void onDefaultControls();
 	void refreshKeys();
-	void onAddBind(KEY key, MASK mask, S32 mode);
+	void onAddBind(KEY key, MASK mask, S32 mode, std::string action);
 	void onRemoveBind(const LLSD& param);
 	void onReplaceBind(KEY key, MASK mask, S32 mode);
 

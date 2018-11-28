@@ -114,6 +114,7 @@
 
 //BD
 #include "lldefs.h"
+#include "lldiriterator.h"
 #include "llviewerkeyboard.h"
 #include "llprogressbar.h"
 #include "lllogininstance.h"        // to check if logged in yet
@@ -500,12 +501,14 @@ public:
 	BOOL handleKeyHere(KEY key, MASK mask);
 	void onCancel();
 	void onBind();
+	void onActionCommit(LLUICtrl* ctrl, const LLSD& param);
 	void onMasks();
 	void onOpen(const LLSD& key);
 
 	S32 mMode;
 	MASK mMask;
 	KEY mKey;
+	LLSD mAction;
 private:
 	LLFloaterPreference* mParent;
 };
@@ -515,10 +518,12 @@ LLSetKeyDialog::LLSetKeyDialog(const LLSD& key)
 	mParent(NULL),
 	mMode(NULL),
 	mMask(MASK_NONE),
-	mKey(NULL)
+	mKey(NULL),
+	mAction()
 {
 	mCommitCallbackRegistrar.add("Set.Masks", boost::bind(&LLSetKeyDialog::onMasks, this));
 	mCommitCallbackRegistrar.add("Set.Bind", boost::bind(&LLSetKeyDialog::onBind, this));
+	mCommitCallbackRegistrar.add("Set.Action", boost::bind(&LLSetKeyDialog::onActionCommit, this, _1, _2));
 	mCommitCallbackRegistrar.add("Set.Cancel", boost::bind(&LLSetKeyDialog::onCancel, this));
 }
 
@@ -543,6 +548,10 @@ void LLSetKeyDialog::onOpen(const LLSD& key)
 
 	ctrl->setTextArg("[KEY]", gKeyboard->stringFromKey(mKey));
 	ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
+
+	//BD - Show the correct bind action dropdown for the correct mode since each has
+	//     different actions depending on the mode we are binding for.
+	getChild<LLComboBox>(llformat("bind_action_%i", mMode))->setVisible(true);
 
 	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
 	gFocusMgr.setKeystrokesOnly(TRUE);
@@ -571,6 +580,16 @@ BOOL LLSetKeyDialog::handleKeyHere(KEY key, MASK mask)
 	return TRUE;
 }
 
+void LLSetKeyDialog::onActionCommit(LLUICtrl* ctrl, const LLSD& param)
+{
+	mAction = ctrl->getValue();
+
+	//BD - After selecting an action return the focus back to the focus catcher so
+	//     we can catch keypresses again.
+	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
+	gFocusMgr.setKeystrokesOnly(TRUE);
+}
+
 void LLSetKeyDialog::onMasks()
 {
 	mMask = MASK_NONE;
@@ -595,7 +614,7 @@ void LLSetKeyDialog::onMasks()
 	getChild<LLUICtrl>("key_display")->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
 
 	//BD - After clicking any mask return the focus back to the focus catcher so
-	//     we still get keypresses.
+	//     we can catch keypresses again.
 	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
 	gFocusMgr.setKeystrokesOnly(TRUE);
 }
@@ -607,11 +626,17 @@ void LLSetKeyDialog::onCancel()
 
 void LLSetKeyDialog::onBind()
 {
-	if (mParent && mKey != NULL)
+	if (mParent && mKey != NULL && !mAction == NULL)
 	{
-		mParent->onAddBind(mKey, mMask, mMode);
+		mParent->onAddBind(mKey, mMask, mMode, mAction);
+		this->closeFloater();
 	}
-	this->closeFloater();
+	else
+	{
+		//BD - We failed to bind, return focus to the focus button to receive inputs.
+		getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
+		gFocusMgr.setKeystrokesOnly(TRUE);
+	}
 }
 
 
@@ -734,7 +759,7 @@ void LLChangeKeyDialog::onMasks()
 	getChild<LLUICtrl>("key_display")->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
 
 	//BD - After clicking any mask return the focus back to the focus catcher so
-	//     we still get keypresses.
+	//     we can catch keypresses again.
 	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
 	gFocusMgr.setKeystrokesOnly(TRUE);
 }
@@ -1310,17 +1335,16 @@ void LLFloaterPreference::onRemoveBind(const LLSD &param)
 	onExportControls();
 }
 
-void LLFloaterPreference::onAddBind(KEY key, MASK mask, S32 mode)
+void LLFloaterPreference::onAddBind(KEY key, MASK mask, S32 mode, std::string action)
 {
 	LLScrollListCtrl* scroll = getChild<LLScrollListCtrl>(llformat("scroll_mode_%i", mode));
 	if (scroll)
 	{
 		LLSD row;
-		std::string function = getChild<LLComboBox>(llformat("bind_action_%i", mode))->getValue().asString();
 		row["columns"][0]["column"] = "action";
-		row["columns"][0]["value"] = getString(function);
+		row["columns"][0]["value"] = getString(action);
 		row["columns"][1]["column"] = "function";
-		row["columns"][1]["value"] = function;
+		row["columns"][1]["value"] = action;
 		row["columns"][2]["column"] = "button";
 		row["columns"][2]["value"] = LLKeyboard::stringFromKey(key);
 		row["columns"][3]["column"] = "modifiers";
@@ -2323,14 +2347,11 @@ void LLFloaterPreference::refresh()
 void LLFloaterPreference::onClickSetAnyKey(LLUICtrl* ctrl, const LLSD& param)
 {
 	//BD - Don't show the dialog if we have no action selected.
-	if (getChild<LLComboBox>("bind_action_" + param.asString())->getValue().asString() != "")
+	LLSetKeyDialog* dialog = LLFloaterReg::showTypedInstance<LLSetKeyDialog>("set_any_key", LLSD(), TRUE);
+	if (dialog)
 	{
-		LLSetKeyDialog* dialog = LLFloaterReg::showTypedInstance<LLSetKeyDialog>("set_any_key", LLSD(), TRUE);
-		if (dialog)
-		{
-			dialog->setParent(this);
-			dialog->setMode(param);
-		}
+		dialog->setParent(this);
+		dialog->setMode(param.asInteger());
 	}
 }
 
