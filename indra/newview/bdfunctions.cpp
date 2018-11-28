@@ -21,6 +21,8 @@
 #include "lluictrlfactory.h"
 #include "llviewercontrol.h"
 
+#include "message.h"
+
 BDFunctions gDragonLibrary;
 
 
@@ -259,4 +261,16 @@ void BDFunctions::invertValue(LLUICtrl* ctrl)
 		val = ctrl->getValue().asReal();
 		ctrl->setValue(-val);
 	}
+}
+
+//BD - Escape string
+std::string BDFunctions::escapeString(const std::string& str)
+{
+	//BD - Don't use LLURI::escape() because it doesn't encode '-' characters
+	//     which may break handling of some poses.
+	char* curl_str = curl_escape(str.c_str(), str.size());
+	std::string escaped_str(curl_str);
+	curl_free(curl_str);
+
+	return escaped_str;
 }

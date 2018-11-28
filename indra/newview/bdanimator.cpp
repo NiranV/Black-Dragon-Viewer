@@ -28,6 +28,7 @@
 
 #include "bdfloaterposer.h"
 #include "bdanimator.h"
+#include "bdfunctions.h"
 #include "bdposingmotion.h"
 
 BDAnimator gDragonAnimator;
@@ -244,7 +245,7 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 	std::string filename;
 	if (!name.asString().empty())
 	{
-		filename = gDirUtilp->getExpandedFilename(LL_PATH_POSES, BDFloaterPoser::escapeString(name.asString()) + ".xml");
+		filename = gDirUtilp->getExpandedFilename(LL_PATH_POSES, gDragonLibrary.escapeString(name.asString()) + ".xml");
 	}
 
 	LLSD pose;
@@ -355,7 +356,7 @@ LLSD BDAnimator::returnPose(const LLSD& name)
 	std::string filename;
 	if (!name.asString().empty())
 	{
-		filename = gDirUtilp->getExpandedFilename(LL_PATH_POSES, BDFloaterPoser::escapeString(name.asString()) + ".xml");
+		filename = gDirUtilp->getExpandedFilename(LL_PATH_POSES, gDragonLibrary.escapeString(name.asString()) + ".xml");
 	}
 
 	LLSD pose;

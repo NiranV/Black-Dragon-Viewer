@@ -174,8 +174,6 @@ private:
 	//BD - Animesh
 	void onAvatarsRefresh();
 	void onAvatarsSelect();
-public:
-	static std::string escapeString(const std::string& str);
 
 private:
 	//BD - Posing

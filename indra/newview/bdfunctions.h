@@ -18,6 +18,8 @@
 #ifndef BD_FUNCTIONS_H
 #define BD_FUNCTIONS_H
 
+#include <string>
+
 #include "llsliderctrl.h"
 #include "llbutton.h"
 
@@ -40,6 +42,8 @@ public:
 	static BOOL resetToDefault(LLUICtrl* ctrl);
 
 	static void invertValue(LLUICtrl* ctrl);
+
+	static std::string escapeString(const std::string& str);
 };
 
 extern BDFunctions gDragonLibrary;
