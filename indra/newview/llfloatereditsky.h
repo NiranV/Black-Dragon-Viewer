@@ -60,6 +60,7 @@ private:
 
 	//BD - Refresh all controls.
 	void refreshPresets();
+	void refreshNoiseImages();
 
 	void syncControls(); /// sync up sliders with parameters
 
@@ -116,6 +117,7 @@ private:
 	LLLineEditor*	mSkyPresetNameEditor;
 	LLComboBox*		mSkyPresetCombo;
 	//BD
+	LLComboBox*		mNoiseImagesCombo;
 	LLButton*		mMakeDefaultCheckBox;
 	LLButton*		mSaveButton;
 	//BD

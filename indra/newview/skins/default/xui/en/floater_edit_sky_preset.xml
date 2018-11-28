@@ -869,32 +869,7 @@ width="700">
 	follows="left|top"
 	top_pad="3"
 	name="CloudNoiseImage"
-	width="170">
-	<combo_box.item
-	label="Default"
-	name="0"
-	value="clouds2.tga"/>
-	<combo_box.item
-	label="High Definition"
-	name="1"
-	value="clouds.tga"/>
-	<combo_box.item
-	label="Cumolo Nimbus"
-	name="2"
-	value="clouds3.tga"/>
-	<combo_box.item
-	label="Altucumulus"
-	name="3"
-	value="clouds4.tga"/>
-	<combo_box.item
-	label="Layered"
-	name="4"
-	value="clouds5.tga"/>
-	<combo_box.item
-	label="Plasma"
-	name="5"
-	value="clouds6.tga"/>
-	</combo_box>
+	width="170"/>
         </panel>
     </tab_container>
 	 

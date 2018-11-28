@@ -45,6 +45,10 @@
 #include "llregioninfomodel.h"
 #include "llviewerregion.h"
 
+//BD
+#include "llviewercontrol.h"
+#include "lldiriterator.h"
+
 static const F32 WL_SUN_AMBIENT_SLIDER_SCALE = 3.0f;
 static const F32 WL_BLUE_HORIZON_DENSITY_SCALE = 2.0f;
 static const F32 WL_CLOUD_SLIDER_SCALE = 1.0f;
@@ -78,6 +82,7 @@ BOOL LLFloaterEditSky::postBuild()
 	mSkyPresetNameEditor = getChild<LLLineEditor>("sky_preset_name");
 	mSkyPresetCombo = getChild<LLComboBox>("sky_preset_combo");
 	//BD
+	mNoiseImagesCombo = getChild<LLComboBox>("CloudNoiseImage");
 	mMakeDefaultCheckBox = getChild<LLButton>("make_default_cb");
 	mSaveButton = getChild<LLButton>("save");
 	//BD
@@ -122,6 +127,8 @@ void LLFloaterEditSky::onOpen(const LLSD& key)
 
 	//BD - Refresh all presets.
 	refreshPresets();
+	//BD - Refresh all available cloud noise images.
+	refreshNoiseImages();
 
 	reset();
 }
@@ -700,6 +707,9 @@ void LLFloaterEditSky::reset()
 	{
 		refreshSkyPresetsList();
 
+		//BD - Refresh all available cloud noise images.
+		refreshNoiseImages();
+
 		// Disable controls until a sky preset to edit is selected.
 		enableEditing(false);
 	}
@@ -748,6 +758,23 @@ void LLFloaterEditSky::refreshSkyPresetsList()
 	}
 
 	mSkyPresetCombo->setLabel(getString("combo_label"));
+}
+
+void LLFloaterEditSky::refreshNoiseImages()
+{
+	mNoiseImagesCombo->removeall();
+
+	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight");
+	std::string file;
+	LLDirIterator dir_iter(dir, "*.tga");
+	while (dir_iter.next(file))
+	{
+		std::string path = gDirUtilp->add(dir, file);
+		std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
+
+		LL_INFOS("Posing") << "Found cloud noise file: " << file << LL_ENDL;
+		mNoiseImagesCombo->add(file, file);
+	}
 }
 
 void LLFloaterEditSky::enableEditing(bool enable)
@@ -918,6 +945,9 @@ void LLFloaterEditSky::onSkyPresetListChange()
 	// Refresh the presets list, though it may not make sense as the floater is about to be closed.
 	//BD
 	refreshSkyPresetsList();
+
+	//BD - Refresh all available cloud noise images.
+	refreshNoiseImages();
 }
 
 void LLFloaterEditSky::onRegionSettingsChange()
@@ -938,6 +968,9 @@ void LLFloaterEditSky::onRegionSettingsChange()
 	else // editing a local sky
 	{
 		refreshSkyPresetsList();
+
+		//BD - Refresh all available cloud noise images.
+		refreshNoiseImages();
 	}
 }
 
