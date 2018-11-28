@@ -124,7 +124,7 @@ LLScrollListCtrl::Contents::Contents()
 }
 
 LLScrollListCtrl::Params::Params()
-:	multi_select("multi_select", false),
+	: multi_select("multi_select", false),
 	has_border("draw_border"),
 	draw_heading("draw_heading"),
 	search_column("search_column", 0),
@@ -148,12 +148,14 @@ LLScrollListCtrl::Params::Params()
 	highlighted_color("highlighted_color"),
 	contents(""),
 	scroll_bar_bg_visible("scroll_bar_bg_visible"),
-	scroll_bar_bg_color("scroll_bar_bg_color"), 
-	border("border")
+	scroll_bar_bg_color("scroll_bar_bg_color"),
+	border("border"),
+	//BD
+	enable_sort("enable_sort", true)
 {}
 
 LLScrollListCtrl::LLScrollListCtrl(const LLScrollListCtrl::Params& p)
-:	LLUICtrl(p),
+	: LLUICtrl(p),
 	mLineHeight(0),
 	mScrollLines(0),
 	mMouseWheelOpaque(p.mouse_wheel_opaque),
@@ -166,11 +168,11 @@ LLScrollListCtrl::LLScrollListCtrl(const LLScrollListCtrl::Params& p)
 	mNeedsScroll(false),
 	mCanSelect(true),
 	mColumnsDirty(false),
-	mMaxItemCount(INT_MAX), 
-	mBorderThickness( 2 ),
-	mOnDoubleClickCallback( NULL ),
-	mOnMaximumSelectCallback( NULL ),
-	mOnSortChangedCallback( NULL ),
+	mMaxItemCount(INT_MAX),
+	mBorderThickness(2),
+	mOnDoubleClickCallback(NULL),
+	mOnMaximumSelectCallback(NULL),
+	mOnSortChangedCallback(NULL),
 	mHighlightedItem(-1),
 	mBorder(NULL),
 	mSortCallback(NULL),
@@ -202,6 +204,9 @@ LLScrollListCtrl::LLScrollListCtrl(const LLScrollListCtrl::Params& p)
 	mContextMenuType(MENU_NONE),
 	mIsFriendSignal(NULL)
 {
+	//BD
+	mAllowSorting = p.enable_sort;
+
 	mItemListRect.setOriginAndSize(
 		mBorderThickness,
 		mBorderThickness,
@@ -2888,6 +2893,8 @@ void LLScrollListCtrl::onClickColumn(void *userdata)
 
 	LLScrollListCtrl *parent = info->mParentCtrl;
 	if (!parent) return;
+
+	if (!parent->mAllowSorting)	return;
 
 	S32 column_index = info->mIndex;
 

@@ -108,13 +108,15 @@ public:
 
 		// layout
 		Optional<S32>	column_padding,
-							page_lines,
+						page_lines,
 						heading_height;
 
 		// sort and search behavior
 		Optional<S32>	search_column,
 						sort_column;
-		Optional<bool>	sort_ascending;
+		Optional<bool>	sort_ascending,
+						//BD
+						enable_sort;
 
 		// colors
 		Optional<LLUIColor>	fg_unselected_color,
@@ -400,6 +402,8 @@ public:
 
 	boost::signals2::connection setIsFriendCallback(const is_friend_signal_t::slot_type& cb);
 
+	//BD
+	bool			mAllowSorting;
 
 protected:
 	// "Full" interface: use this when you're creating a list that has one or more of the following:

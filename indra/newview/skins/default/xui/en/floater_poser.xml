@@ -116,6 +116,7 @@ width="678">
 				column_padding="0"
 				draw_heading="true"
 				height="402"
+				enable_sort="false"
 				follows="left|top|right"
 				layout="topleft"
 				left="1"
@@ -198,6 +199,7 @@ width="678">
 						draw_heading="true"
 						height="279"
 						follows="left|top|right"
+						enable_sort="false"
 						layout="topleft"
 						left="0"
 						width="478"
@@ -270,6 +272,7 @@ width="678">
 						height="279"
 						follows="left|top|right"
 						layout="topleft"
+						enable_sort="false"
 						left="0"
 						width="478"
 						multi_select="true"
@@ -341,6 +344,7 @@ width="678">
 						height="279"
 						follows="left|top|right"
 						layout="topleft"
+						enable_sort="false"
 						left="0"
 						width="478"
 						multi_select="true"
@@ -475,24 +479,6 @@ width="678">
 				<button.commit_callback
 				function="Pose.Save"/>
 				</button>
-				<!--<button
-				height="21"
-				follows="top|left"
-				layout="topleft"
-				label=""
-				image_overlay="Icon_Dock_Foreground"
-				image_overlay_alignment="right"
-				image_hover_unselected="Toolbar_Middle_Over"
-				image_selected="Toolbar_Middle_Selected"
-				image_unselected="Toolbar_Middle_Off"
-				tool_tip="Save the current pose."
-				name="save_anim"
-				width="25"
-				top_delta="0"
-				left_pad="1">
-				<button.commit_callback
-				function="Anim.Save"/>
-				</button>-->
 				<button
 				follows="left|top"
 				height="21"
@@ -1162,6 +1148,7 @@ width="678">
 				height="379"
 				follows="left|top|right"
 				layout="topleft"
+				enable_sort="false"
 				left_delta="-10"
 				width="221"
 				multi_select="true"
