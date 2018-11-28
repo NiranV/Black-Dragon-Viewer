@@ -3911,48 +3911,51 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	//     performance hog in Second Life. Just having them enabled and a tiny bunch around drops the framerate
 	//     noticeably.
 	static const U32 ARC_PARTICLE_COST = 16;
-	//BD - No punish limit here. Particles need to be punished hard.
-	//static const U32 ARC_PARTICLE_MAX = 2048;
-	static const U32 ARC_TEXTURE_COST = 16;
+	//BD - Textures don't directly influence performance impact on a large scale but allocating a lot of textures
+	//     and filling the Viewer memory as well as texture memory grinds at the Viewer's overall performance, the
+	//     lost performance does not fully recover when leaving the area in question, textures overall have a lingering
+	//     performance impact that slowly drives down the Viewer's performance, we should punish them much harder.
+	//     Textures are not free after all and not everyone can have 2+GB texture memory for SL.
+	static const U32 ARC_TEXTURE_COST = 5;
 	//BD - Lights are an itchy thing. They don't have any impact if used carefully. They do however have an
 	//     increasingly bigger impact above a certain threshold at which they will significantly drop your average
 	//     FPS. We should punish them slightly but not too hard otherwise Avatars with a few lights get overpunished.
 	static const U32 ARC_LIGHT_COST = 512;
 	//BD - Projectors have a huge impact, whether or not they cast a shadow or not, multiple of these will make quick
 	//     work of any good framerate.
-	static const U32 ARC_PROJECTOR_COST = 4096;
+	static const U32 ARC_PROJECTOR_COST = 16384;
 	//BD - Media faces have a huge impact on performance, they should never ever be attached and should be used
 	//     carefully. Punish them with extreme measure, besides, by default we can only have 6-8 active at any time
 	//     those alone will significantly draw resources both RAM and FPS.
-	static const U32 ARC_MEDIA_FACE_COST = 10000; // static cost per media-enabled face 
+	static const U32 ARC_MEDIA_FACE_COST = 100000; // static cost per media-enabled face 
 
 	// per-prim multipliers
 	//BD - Glow has nearly no impact, the impact is already there due to the omnipresent ambient glow Black Dragon
 	//     uses, putting up hundreds of glowing prims does nothing, it's a global post processing effect.
-	static const F32 ARC_GLOW_MULT = 1.05f;
+	static const F32 ARC_GLOW_MULT = 0.05f;
 	//BD - Bump has nearly no impact, it's biggest impact is texture memory which we really shouldn't be including.
-	static const F32 ARC_BUMP_MULT = 1.05f;
+	static const F32 ARC_BUMP_MULT = 0.05f;
 	//BD - I'm unsure about flexi, on one side its very efficient but if huge amounts of flexi are active at the same
 	//     time they can quickly become extremely slow which is hardly ever the case.
-	static const F32 ARC_FLEXI_MULT = 1.15f;
+	static const F32 ARC_FLEXI_MULT = 0.15f;
 	//BD - Shiny has nearly no impact, it's basically a global post process effect.
-	static const F32 ARC_SHINY_MULT = 1.05f;
+	static const F32 ARC_SHINY_MULT = 0.05f;
 	//BD - Invisible prims are not rendered anymore in Black Dragon.
-	//static const F32 ARC_INVISI_COST = 2.0f;
+	//static const F32 ARC_INVISI_COST = 1.0f;
 	//BD - Weighted mesh does have quite some impact and it only gets worse with more triangles to transform.
-	static const F32 ARC_WEIGHTED_MESH = 2.5f;
+	static const F32 ARC_WEIGHTED_MESH = 4.0f;
 
 	//BD - Animated textures hit quite hard, not as hard as quick alpha state changes.
-	static const F32 ARC_ANIM_TEX_COST = 2.f;
+	static const F32 ARC_ANIM_TEX_COST = 1.f;
 	//BD - Alpha's are bad.
-	static const F32 ARC_ALPHA_COST = 2.0f;
+	static const F32 ARC_ALPHA_COST = 1.0f;
 	//BD - Alpha's aren't that bad as normal alphas if they are rigged and worn, static ones are evil.
 	//     Besides, as long as they are fully invisible Black Dragon won't render them anyway.
-	static const F32 ARC_RIGGED_ALPHA_COST = 1.25f;
+	static const F32 ARC_RIGGED_ALPHA_COST = 0.25f;
 	//BD - In theory animated mesh are pretty limited and they are rendering wise not different to normal avatars.
 	//     Thus they should not be weighted differently, however, since they are just basic dummy avatars with no
 	//     super extensive information, relations, name tag and so on they deserve a tiny complexity discount.
-	static const F32 ARC_ANIMATED_MESH_COST = 0.95f;
+	static const F32 ARC_ANIMATED_MESH_COST = -0.05f;
 
 	F32 shame = 0;
 
@@ -4027,7 +4030,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 				if (texture)
 				{
 					//BD - Punish sculpt usage compared to normal prims or the much faster mesh.
-					S32 texture_cost = 1.5f * (S32)(ARC_TEXTURE_COST * ((texture->getFullHeight() / 4.f) + (texture->getFullWidth() / 4.f)));
+					S32 texture_cost = 256 + (S32)(((ARC_TEXTURE_COST * 2) * (texture->getFullHeight() * texture->getFullWidth())) / 1024);
 					textures.insert(texture_cost_t::value_type(sculpt_id, texture_cost));
 					vovolume->mRenderComplexityTextures += texture_cost;
 				}
@@ -4064,7 +4067,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 		{
 			if (textures.find(img->getID()) == textures.end())
 			{
-				S32 texture_cost = 256 + (S32)(ARC_TEXTURE_COST * (img->getFullHeight() / 128.f + img->getFullWidth() / 128.f));
+				S32 texture_cost = 256 + (S32)((ARC_TEXTURE_COST * (img->getFullHeight() * img->getFullWidth())) / 1024);
 				textures.insert(texture_cost_t::value_type(img->getID(), texture_cost));
 				vovolume->mRenderComplexityTextures += texture_cost;
 			}
@@ -4118,52 +4121,59 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	F32 extra_shame = 0.f;
 	if (animtex)
 	{
-		extra_shame += (shame * ARC_ANIM_TEX_COST) - shame;
+		extra_shame += (shame * ARC_ANIM_TEX_COST);
 	}
 
 	if (glow)
 	{
-		extra_shame += (shame * ARC_GLOW_MULT) - shame;
+		extra_shame += (shame * ARC_GLOW_MULT);
 	}
 
 	if (bump)
 	{
-		extra_shame += (shame * ARC_BUMP_MULT) - shame;
+		extra_shame += (shame * ARC_BUMP_MULT);
 	}
 
 	if (shiny)
 	{
-		extra_shame += (shame * ARC_SHINY_MULT) - shame;
+		extra_shame += (shame * ARC_SHINY_MULT);
 	}
 
 	if (weighted_mesh)
 	{
-		extra_shame += (shame * ARC_WEIGHTED_MESH) - shame;
+		extra_shame += (shame * ARC_WEIGHTED_MESH);
 
 		if (alpha)
 		{
-			extra_shame += (shame * ARC_ALPHA_COST) - shame;
+			extra_shame += (shame * ARC_ALPHA_COST);
 		}
 	}
 	else
 	{
 		if (alpha)
 		{
-			extra_shame += (shame * ARC_RIGGED_ALPHA_COST) - shame;
+			extra_shame += (shame * ARC_RIGGED_ALPHA_COST);
 		}
 	}
 
 	if (animated_mesh)
 	{
-		extra_shame += (shame * ARC_ANIMATED_MESH_COST) - shame;
+		extra_shame += (shame * ARC_ANIMATED_MESH_COST);
 	}
 
 	// multiply shame by multipliers
 	if (flexi)
 	{
-		extra_shame += (shame * ARC_FLEXI_MULT) - shame;
+		extra_shame += (shame * ARC_FLEXI_MULT);
 	}
 
+	// Streaming cost for animated objects includes a fixed cost
+	// per linkset. Add a corresponding charge here translated into
+	// triangles, but not weighted by any graphics properties.
+	/*if (isAnimatedObject() && isRootEdit())
+	{
+		shame += (ANIMATED_OBJECT_BASE_COST / 0.06) * 5.0f;
+	}*/
 
 	// add additional costs
 	if (particles)
@@ -4190,18 +4200,10 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 
 	if (media_faces)
 	{
-		shame += media_faces * ARC_MEDIA_FACE_COST;
+		shame += (media_faces * ARC_MEDIA_FACE_COST);
 	}
 
 	vovolume->mRenderComplexityTotal = (S32)shame;
-
-    // Streaming cost for animated objects includes a fixed cost
-    // per linkset. Add a corresponding charge here translated into
-    // triangles, but not weighted by any graphics properties.
-    if (isAnimatedObject() && isRootEdit())
-    {
-        shame += (ANIMATED_OBJECT_BASE_COST/0.06) * 5.0f;
-    }
 
 	if (shame > mRenderComplexity_current)
 	{
@@ -4237,48 +4239,45 @@ void LLVOVolume::getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32
 	//     performance hog in Second Life. Just having them enabled and a tiny bunch around drops the framerate
 	//     noticeably.
 	static const U32 ARC_PARTICLE_COST = 16;
-	//BD - No punish limit here. Particles need to be punished hard.
-	//static const U32 ARC_PARTICLE_MAX = 2048;
-	static const U32 ARC_TEXTURE_COST = 16;
 	//BD - Lights are an itchy thing. They don't have any impact if used carefully. They do however have an
 	//     increasingly bigger impact above a certain threshold at which they will significantly drop your average
 	//     FPS. We should punish them slightly but not too hard otherwise Avatars with a few lights get overpunished.
 	static const U32 ARC_LIGHT_COST = 512;
 	//BD - Projectors have a huge impact, whether or not they cast a shadow or not, multiple of these will make quick
 	//     work of any good framerate.
-	static const U32 ARC_PROJECTOR_COST = 4096;
+	static const U32 ARC_PROJECTOR_COST = 16384;
 	//BD - Media faces have a huge impact on performance, they should never ever be attached and should be used
 	//     carefully. Punish them with extreme measure, besides, by default we can only have 6-8 active at any time
 	//     those alone will significantly draw resources both RAM and FPS.
-	static const U32 ARC_MEDIA_FACE_COST = 10000; // static cost per media-enabled face 
+	static const U32 ARC_MEDIA_FACE_COST = 100000; // static cost per media-enabled face 
 
 	// per-prim multipliers
 	//BD - Glow has nearly no impact, the impact is already there due to the omnipresent ambient glow Black Dragon
 	//     uses, putting up hundreds of glowing prims does nothing, it's a global post processing effect.
-	static const F32 ARC_GLOW_MULT = 1.05f;
+	static const F32 ARC_GLOW_MULT = 0.05f;
 	//BD - Bump has nearly no impact, it's biggest impact is texture memory which we really shouldn't be including.
-	static const F32 ARC_BUMP_MULT = 1.05f;
+	static const F32 ARC_BUMP_MULT = 0.05f;
 	//BD - I'm unsure about flexi, on one side its very efficient but if huge amounts of flexi are active at the same
 	//     time they can quickly become extremely slow which is hardly ever the case.
-	static const F32 ARC_FLEXI_MULT = 1.15f;
+	static const F32 ARC_FLEXI_MULT = 0.15f;
 	//BD - Shiny has nearly no impact, it's basically a global post process effect.
-	static const F32 ARC_SHINY_MULT = 1.05f;
+	static const F32 ARC_SHINY_MULT = 0.05f;
 	//BD - Invisible prims are not rendered anymore in Black Dragon.
-	//static const F32 ARC_INVISI_COST = 2.0f;
+	//static const F32 ARC_INVISI_COST = 1.0f;
 	//BD - Weighted mesh does have quite some impact and it only gets worse with more triangles to transform.
-	static const F32 ARC_WEIGHTED_MESH = 5.0f;
+	static const F32 ARC_WEIGHTED_MESH = 4.0f;
 
 	//BD - Animated textures hit quite hard, not as hard as quick alpha state changes.
-	static const F32 ARC_ANIM_TEX_COST = 2.f;
+	static const F32 ARC_ANIM_TEX_COST = 1.f;
 	//BD - Alpha's are bad.
-	static const F32 ARC_ALPHA_COST = 2.0f;
+	static const F32 ARC_ALPHA_COST = 1.0f;
 	//BD - Alpha's aren't that bad as normal alphas if they are rigged and worn, static ones are evil.
 	//     Besides, as long as they are fully invisible Black Dragon won't render them anyway.
-	static const F32 ARC_RIGGED_ALPHA_COST = 1.25f;
+	static const F32 ARC_RIGGED_ALPHA_COST = 0.25f;
 	//BD - In theory animated mesh are pretty limited and they are rendering wise not different to normal avatars.
 	//     Thus they should not be weighted differently, however, since they are just basic dummy avatars with no
 	//     super extensive information, relations, name tag and so on they deserve a tiny complexity discount.
-	static const F32 ARC_ANIMATED_MESH_COST = 0.95f;
+	static const F32 ARC_ANIMATED_MESH_COST = -0.05f;
 
 	U32 shiny = 0;
 	U32 glow = 0;
