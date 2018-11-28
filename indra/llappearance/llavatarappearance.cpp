@@ -1679,7 +1679,6 @@ BOOL LLAvatarBoneInfo::parseXml(LLXmlTreeNode* node)
 	static LLStdStringHandle reposition_string = LLXmlTree::addAttributeString("reposition");
 	if (!node->getFastAttributeBOOL(reposition_string, mHasPosition))
 	{
-		LL_WARNS() << "Bone without reposition info" << mName << LL_ENDL;
 		mHasPosition = FALSE;
 	}
 
