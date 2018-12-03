@@ -188,7 +188,8 @@ LLToolTip::LLToolTip(const LLToolTip::Params& p)
 	params.use_ellipses = true;
 	params.wrap = p.wrap;
 	params.font_valign = LLFontGL::VCENTER;
-	params.parse_urls = true; // disallow hyperlinks in tooltips, as they want to spawn their own explanatory tooltips
+	//BD - Allow hyperlinks because we need them.
+	params.parse_urls = true;
 	mTextBox = LLUICtrlFactory::create<LLTextBox> (params);
 	addChild(mTextBox);
 	
