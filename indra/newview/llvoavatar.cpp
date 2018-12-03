@@ -10007,15 +10007,14 @@ void LLVOAvatar::idleUpdateRenderComplexity()
         //               info_color, info_style);
 
 		// Attachment Surface Area
-		static LLCachedControl<F32> max_attachment_area(gSavedSettings, "RenderAutoMuteSurfaceAreaLimit", 1000.0f);
-		info_line = llformat("%.0f m^2", mAttachmentSurfaceArea);
+		//info_line = llformat("%.0f MB Textures", mTextureMemoryUsage);
 		info_color.set(LLColor4::white);
 		info_style = LLFontGL::NORMAL;
 
-		mText->addLine(info_line, info_color, info_style);
+		//mText->addLine(info_line, info_color, info_style);
 
 		//BD - Triangles and Vertices count
-		info_line = llformat("%d triangles", mAttachmentVisibleTriangleCount);
+		info_line = llformat("%d Triangles @ %.0f m^2", mAttachmentVisibleTriangleCount, mAttachmentSurfaceArea);
 		mText->addLine(info_line, info_color, info_style);
 
 		updateText(); // corrects position
@@ -10083,6 +10082,13 @@ void LLVOAvatar::accountRenderComplexityForObject(
                 {
                     // add the cost of each individual texture in the linkset
                     attachment_texture_cost += volume_texture->second;
+
+					//BD - Count the texture impact and memory usage here now that we got all textures collected.
+					/*LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(volume_texture->first);
+					if (texture)
+					{
+						mTextureMemoryUsage += (texture->getTextureMemory() / 1024);
+					}*/
                 }
                 attachment_total_cost = attachment_volume_cost + attachment_texture_cost + attachment_children_cost;
                 LL_DEBUGS("ARCdetail") << "Attachment costs " << attached_object->getAttachmentItemID()
@@ -10229,6 +10235,16 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
                                                  textures, cost, hud_complexity_list);
 			}
 		}
+
+		//BD - Count the texture impact and memory usage here now that we got all textures collected.
+		/*for (auto volume_texture : textures)
+		{
+			LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(volume_texture.first);
+			if (texture)
+			{
+				mTextureMemoryUsage += (texture->getTextureMemory() / 1024);
+			}
+		}*/
 
 		// Diagnostic output to identify all avatar-related textures.
 		// Does not affect rendering cost calculation.

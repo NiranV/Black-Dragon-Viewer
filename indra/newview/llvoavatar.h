@@ -472,6 +472,7 @@ public:
 	//BD
 	mutable U32  mTotalTriangleCount;
 	mutable U32  mTotalVerticeCount;
+	//mutable S32Megabytes  mTextureMemoryUsage;
 
 	bool		mCachedInMuteList;
 	F64			mCachedMuteListUpdateTime;
