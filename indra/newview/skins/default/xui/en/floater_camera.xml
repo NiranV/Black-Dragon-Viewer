@@ -2,9 +2,10 @@
 <floater
  can_minimize="true"
  can_close="true"
- height="95"
+ height="82"
  layout="topleft"
  name="camera_floater"
+ title="Camera Controls"
  save_rect="true"
  save_visibility="true"
  single_instance="true"
@@ -39,7 +40,7 @@
     </floater.string>
     <panel
      border="false"
-     height="100"
+     height="90"
      layout="topleft"
      left="2"
      top="0"
@@ -48,98 +49,44 @@
      width="206">
        <panel
          follows="all"
-         height="102"
+         height="77"
          layout="topleft"
-         left="8"
+         left="5"
          name="preset_views_list"
          top="0"
-         width="162"
-         visible="false">
-        <panel_camera_item
-          name="front_view">
-          <panel_camera_item.mousedown_callback
-            function="CameraPresets.ChangeView"
-            parameter="front_view" />
-          <panel_camera_item.picture
-            image_name="Cam_Preset_Front_Off" />
-          <panel_camera_item.selected_picture
-            image_name="Cam_Preset_Front_On" />
-          <panel_camera_item.text
-            name="front_view_text">
-            Top Down View
-          </panel_camera_item.text>
-        </panel_camera_item>
-        <panel_camera_item
-          name="group_view"
-          top_pad="4">
-          <panel_camera_item.mousedown_callback
-            function="CameraPresets.ChangeView"
-            parameter="group_view" />
-          <panel_camera_item.picture
-            image_name="Cam_Preset_Side_Off" />
-          <panel_camera_item.selected_picture
-            image_name="Cam_Preset_Side_On" />
-          <panel_camera_item.text
-            name="side_view_text">
-            Shoulder View
-          </panel_camera_item.text>
-        </panel_camera_item>
-	<panel_camera_item
-          name="left_shoulder_view"
-          top_pad="4">
-          <panel_camera_item.mousedown_callback
-            function="CameraPresets.ChangeView"
-            parameter="left_shoulder_view" />
-          <panel_camera_item.picture
-            image_name="Cam_Preset_Side_Off" />
-          <panel_camera_item.selected_picture
-            image_name="Cam_Preset_Side_On" />
-          <panel_camera_item.text
-            name="left_shoulder_view_text">
-            Left Shoulder View
-          </panel_camera_item.text>
-        </panel_camera_item>
-	<panel_camera_item
-          name="right_shoulder_view"
-          top_pad="4">
-          <panel_camera_item.mousedown_callback
-            function="CameraPresets.ChangeView"
-            parameter="right_shoulder_view" />
-          <panel_camera_item.picture
-            image_name="Cam_Preset_Side_Off" />
-          <panel_camera_item.selected_picture
-            image_name="Cam_Preset_Side_On" />
-          <panel_camera_item.text
-            name="right_shoulder_view_text">
-            Right Shoulder View
-          </panel_camera_item.text>
-        </panel_camera_item>
-        <panel_camera_item
-          name="rear_view"
+         width="177"
+         visible="true">
+          <scroll_list
+          column_padding="0"
+          draw_heading="false"
+          height="82"
+          follows="left|top|right"
           layout="topleft"
-          top_pad="4">
-          <panel_camera_item.mousedown_callback
-            function="CameraPresets.ChangeView"
-            parameter="rear_view" />
-          <panel_camera_item.picture
-            image_name="Cam_Preset_Back_Off" />
-          <panel_camera_item.selected_picture
-            image_name="Cam_Preset_Back_On" />
-          <panel_camera_item.text
-            name="rear_view_text">
-            Rear View
-          </panel_camera_item.text>
-        </panel_camera_item>
+          left="0"
+          tool_tip="Double click a preset to use."
+          width="175"
+          multi_select="false"
+          name="presets_scroll"
+          top_pad="-2">
+          <scroll_list.columns
+          label=""
+          name="icon"
+          relative_width="0.15"  />
+          <scroll_list.columns
+          label=""
+          name="preset"
+          relative_width="0.85"  />
+          </scroll_list>
       </panel>
       <panel
           follows="all"
-          height="90"
+          height="77"
           layout="topleft"
           left="8"
           name="camera_modes_list"
           top="0"
           width="170"
-          visible="true">
+          visible="false">
         <panel_camera_item
           name="object_view">
           <panel_camera_item.mousedown_callback
@@ -175,7 +122,7 @@
         height="25"
         control_name="CameraFollowJoint"
         name="joint_combo"
-        top_pad="27"
+        top_pad="17"
         width="170">
         <combo_box.item
         label="Select a bone to follow"
@@ -196,10 +143,10 @@
          <panel
             border="false"
             class="camera_zoom_panel"
-            height="97"
+            height="77"
             layout="topleft"
             left="0"
-												visible="false"
+												visible="true"
             mouse_opaque="false"
             name="zoom"
             top="0"
@@ -218,7 +165,7 @@
               sound_flags="3"
               visible="true"
               tool_tip="Orbit camera around focus"
-              top="10"
+              top="0"
               width="78" />
            <button
               follows="top|left"
@@ -230,7 +177,7 @@
               left_pad="1" 
               name="zoom_plus_btn"
               width="18"
-              top="8">
+              top_delta="-3">
              <commit_callback
                 function="Zoom.plus" />
              <mouse_held_callback
@@ -275,7 +222,7 @@
          name="roll_right"
          scale_image="false"
          tool_tip="Roll right &lt;green&gt;(Default: Shift + E)&lt;/green&gt;"
-         top="5"
+         top="0"
          width="24">
             <commit_callback
                 function="Camera.roll_right" />
@@ -293,7 +240,7 @@
          name="roll_left"
          scale_image="false"
          tool_tip="Roll left &lt;green&gt;(Default: Shift + Q)&lt;/green&gt;"
-         top="5"
+         top="0"
          width="24">
             <commit_callback
                 function="Camera.roll_left" />
@@ -312,7 +259,7 @@
          scale_image="false"
          sound_flags="3"
          tool_tip="Move camera up and down, left and right"
-         top="10"
+         top="0"
          width="78"/>
         </panel>
     </panel>

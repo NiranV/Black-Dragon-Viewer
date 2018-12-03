@@ -43,8 +43,12 @@
 #include "llfirstuse.h"
 #include "llhints.h"
 
-//BD
+//BD - Bone Camera
 #include "llvoavatarself.h"
+//BD - Unlimited Camera Presets
+#include "lldiriterator.h"
+#include "lluictrlfactory.h"
+#include "llsdserialize.h"
 
 static LLDefaultChildRegistry::Register<LLPanelCameraItem> r("panel_camera_item");
 
@@ -397,12 +401,16 @@ BOOL LLFloaterCamera::postBuild()
 	mRotate = getChild<LLJoystickCameraRotate>(ORBIT);
 	mZoom = findChild<LLPanelCameraZoom>(ZOOM);
 	mTrack = getChild<LLJoystickCameraTrack>(PAN);
-	//BD
+	//BD - Bone Camera
 	mJointComboBox = getChild<LLComboBox>("joint_combo");
 
 	assignButton2Mode(CAMERA_CTRL_MODE_MODES,		"avatarview_btn");
 	assignButton2Mode(CAMERA_CTRL_MODE_PAN,			"pan_btn");
 	assignButton2Mode(CAMERA_CTRL_MODE_PRESETS,		"presets_btn");
+
+	//BD - Unlimited Camera Presets
+	mPresetsScroll = this->getChild<LLScrollListCtrl>("presets_scroll", true);
+	mPresetsScroll->setDoubleClickCallback(boost::bind(&LLFloaterCamera::switchToPreset, this));
 
 	update();
 
@@ -540,12 +548,89 @@ void LLFloaterCamera::updateState()
 																	&& CAMERA_CTRL_MODE_MODES == mPrevMode);
 	getChildView("camera_modes_list")->setVisible( show_camera_modes);
 
-	updateItemsSelection();
-
 	if (CAMERA_CTRL_MODE_FREE_CAMERA == mCurrMode)
 	{
 		return;
 	}
+
+	//BD - Unlimited Camera Presets
+	if (show_presets)
+	{
+		mPresetsScroll->clearRows();
+
+		//BD - Add all our default presets first.
+		std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "camera");
+		std::string file;
+		LLDirIterator dir_iter_app(dir, "*.xml");
+		while (dir_iter_app.next(file))
+		{
+			std::string path = gDirUtilp->add(dir, file);
+			std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
+
+			LLSD preset;
+			llifstream infile;
+			infile.open(path);
+			if (!infile.is_open())
+			{
+				//BD - If we can't open and read the file we shouldn't add it because we won't
+				//     be able to load it later.
+				LL_WARNS("Camera") << "Cannot open file in: " << path << LL_ENDL;
+				continue;
+			}
+
+			//BD - Camera Preset files only have one single line, so it's either a parse failure
+			//     or a success.
+			S32 ret = LLSDSerialize::fromXML(preset, infile);
+
+			//BD - We couldn't parse the file, don't bother adding it.
+			if (ret == LLSDParser::PARSE_FAILURE)
+			{
+				LL_WARNS("Camera") << "Failed to parse file: " << path << LL_ENDL;
+				continue;
+			}
+
+			//BD - Skip if this preset is meant to be invisible. This is for RLVa.
+			if (preset["hidden"].isDefined())
+			{
+				continue;
+			}
+
+			LLSD row;
+			row["columns"][0]["column"] = "icon";
+			row["columns"][0]["type"] = "icon";
+			row["columns"][0]["value"] = "Cam_Preset_Side_Off";
+			row["columns"][1]["column"] = "preset";
+			row["columns"][1]["value"] = name;
+			mPresetsScroll->addElement(row);
+		}
+
+		//BD - Separate defaults from custom ones.
+		mPresetsScroll->addSeparator(ADD_BOTTOM);
+
+		//BD - Add our custom presets at the bottom, just like with windlights.
+		dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera");
+		LLDirIterator dir_iter_user(dir, "*.xml");
+		while (dir_iter_user.next(file))
+		{
+			std::string path = gDirUtilp->add(dir, file);
+			std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
+
+			//BD - Don't add if we've already established it as default. It's name is already
+			//     in the list.
+			if (!mPresetsScroll->findChild<LLScrollListItem>(name))
+			{
+				LLSD row;
+				row["columns"][0]["column"] = "icon";
+				row["columns"][0]["type"] = "icon";
+				row["columns"][0]["value"] = "Cam_Preset_Side_Off";
+				row["columns"][1]["column"] = "preset";
+				row["columns"][1]["value"] = name;
+				mPresetsScroll->addElement(row);
+			}
+		}
+	}
+
+	updateItemsSelection();
 
 	//BD
 	if (show_camera_modes)
@@ -569,20 +654,21 @@ void LLFloaterCamera::updateState()
 
 void LLFloaterCamera::updateItemsSelection()
 {
-	ECameraPreset preset = (ECameraPreset) gSavedSettings.getU32("CameraPreset");
-	LLSD argument;
-	argument["selected"] = preset == CAMERA_PRESET_REAR_VIEW;
-	getChild<LLPanelCameraItem>("rear_view")->setValue(argument);
-	argument["selected"] = preset == CAMERA_PRESET_GROUP_VIEW;
-	getChild<LLPanelCameraItem>("group_view")->setValue(argument);
-	argument["selected"] = preset == CAMERA_PRESET_FRONT_VIEW;
-	getChild<LLPanelCameraItem>("front_view")->setValue(argument);
-//	//BD - Left/Right shoulder camera preset
-	argument["selected"] = preset == CAMERA_PRESET_LEFT_VIEW;
-	getChild<LLPanelCameraItem>("left_shoulder_view")->setValue(argument);
-	argument["selected"] = preset == CAMERA_PRESET_RIGHT_VIEW;
-	getChild<LLPanelCameraItem>("right_shoulder_view")->setValue(argument);
+	//BD - Unlimited Camera Presets
+	if (mPresetsScroll->isInVisibleChain())
+	{
+		std::string preset_name = gSavedSettings.getString("CameraPresetName");
+		for (auto item : mPresetsScroll->getAllData())
+		{
+			if (item->getColumn(1)->getValue().asString() == preset_name)
+			{
+				item->setSelected(TRUE);
+				break;
+			}
+		}
+	}
 
+	LLSD argument;
 	argument["selected"] = gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK;
 	getChild<LLPanelCameraItem>("mouselook_view")->setValue(argument);
 	argument["selected"] = mCurrMode == CAMERA_CTRL_MODE_FREE_CAMERA;
@@ -603,44 +689,24 @@ void LLFloaterCamera::onClickCameraItem(const LLSD& param)
 		if (camera_floater)
 		camera_floater->switchMode(CAMERA_CTRL_MODE_FREE_CAMERA);
 	}
-	else
-	{
-		switchToPreset(name);
-	}
+}
+
+void LLFloaterCamera::switchToPreset()
+{
+	LLScrollListItem* item = mPresetsScroll->getFirstSelected();
+	if (!item) return;
+
+	sFreeCamera = false;
+	clear_camera_tool();
+
+	//BD - Unlimited Camera Presets
+	std::string name = item->getColumn(1)->getValue();
+	gAgentCamera.switchCameraPreset(name);
 
 	LLFloaterCamera* camera_floater = LLFloaterCamera::findInstance();
 	if (camera_floater)
 	{
-		camera_floater->updateItemsSelection();
 		camera_floater->fromFreeToPresets();
-	}
-}
-
-/*static*/
-void LLFloaterCamera::switchToPreset(const std::string& name)
-{
-	sFreeCamera = false;
-	clear_camera_tool();
-	if ("rear_view" == name)
-	{
-		gAgentCamera.switchCameraPreset(CAMERA_PRESET_REAR_VIEW);
-	}
-	else if ("group_view" == name)
-	{
-		gAgentCamera.switchCameraPreset(CAMERA_PRESET_GROUP_VIEW);
-	}
-	else if ("front_view" == name)
-	{
-		gAgentCamera.switchCameraPreset(CAMERA_PRESET_FRONT_VIEW);
-	}
-//	//BD - Left/Right shoulder camera preset
-	else if ("left_shoulder_view" == name)
-	{
-		gAgentCamera.switchCameraPreset(CAMERA_PRESET_LEFT_VIEW);
-	}
-	else if ("right_shoulder_view" == name)
-	{
-		gAgentCamera.switchCameraPreset(CAMERA_PRESET_RIGHT_VIEW);
 	}
 }
 

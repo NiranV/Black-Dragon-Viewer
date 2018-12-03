@@ -198,6 +198,16 @@ public:
 //	//BD - Memory Allocation
 	void refreshMemoryControls();
 
+//	//BD - Unlimited Camera Presets
+	void onAddCameraPreset(bool refresh = false);
+	void onRemoveCameraPreset();
+	void onChangeCameraPreset();
+	void onCameraPresetReset(const LLSD& param);
+	void onCameraArray(LLUICtrl* ctrl, const LLSD& param);
+	void onFocusArray(LLUICtrl* ctrl, const LLSD& param);
+	void refreshPresets();
+	void refreshCameraControls();
+
 //	//BD - Warning System
 	void refreshWarnings();
 
@@ -227,7 +237,6 @@ public:
 
 //	//BD - Refresh all controls
 	void refreshGraphicControls();
-	void refreshCameraControls();
 
 //	//BD - Quick Graphics Presets
 	void deletePreset(const LLSD& user_data);

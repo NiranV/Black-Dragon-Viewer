@@ -46,31 +46,6 @@ enum ECameraMode
 	CAMERA_MODE_FOLLOW
 };
 
-/** Camera Presets for CAMERA_MODE_THIRD_PERSON */
-enum ECameraPreset 
-{
-	/** Default preset, what the Third Person Mode actually was */
-	CAMERA_PRESET_REAR_VIEW,
-	
-	/** "Looking at the Avatar from a top-down view" */
-	CAMERA_PRESET_FRONT_VIEW, 
-
-	/** "Above and to the right, over the shoulder, pulled back a little on the zoom" */
-	CAMERA_PRESET_GROUP_VIEW,
-
-// [RLVa:KB] - Checked: RLVa-2.0.0
-	/* Used by RLVa */
-	CAMERA_RLV_SETCAM_VIEW,
-// [/RLVa:KB]
-
-//	//BD - Left/Right shoulder camera preset
-	/** "Shooter like , close up over the left-shoulder cam" */
-	CAMERA_PRESET_LEFT_VIEW,
-
-	/** "Shooter like , close up over the right-shoulder cam" */
-	CAMERA_PRESET_RIGHT_VIEW
-};
-
 //------------------------------------------------------------------------
 // LLAgentCamera
 //------------------------------------------------------------------------
@@ -120,21 +95,25 @@ private:
 	// Preset
 	//--------------------------------------------------------------------
 public:
-	void switchCameraPreset(ECameraPreset preset);
+	//void switchCameraPreset(ECameraPreset preset);
+
+	//BD - Unlimited Camera Presets
+	void initializeCameraPresets();
+	void switchCameraPreset(std::string preset_name);
+
+	//BD - Unlimited Camera Presets
+	/** Camera preset in Third Person Mode */
+	std::string mCameraPresetName;
+	/** Initial camera offsets */
+	std::map<std::string, LLVector3>	mCameraOffsetInitial;
+	/** Initial focus offsets */
+	std::map<std::string, LLVector3d>	mFocusOffsetInitial;
+
 private:
 	/** Determines default camera offset depending on the current camera preset */
 	LLVector3 getCameraOffsetInitial();
 	/** Determines maximum camera distance from target for mouselook, opposite to LAND_MIN_ZOOM */
 	F32 getCameraMaxZoomDistance();
-
-	/** Camera preset in Third Person Mode */
-	ECameraPreset mCameraPreset; 
-
-	/** Initial camera offsets */
-	std::map<ECameraPreset, LLPointer<LLControlVariable> > mCameraOffsetInitial;
-
-	/** Initial focus offsets */
-	std::map<ECameraPreset, LLPointer<LLControlVariable> > mFocusOffsetInitial;
 
 	//--------------------------------------------------------------------
 	// Position

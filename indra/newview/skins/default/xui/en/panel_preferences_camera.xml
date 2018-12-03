@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1253"
+  height="707"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -346,6 +346,18 @@
    left_delta="0"
    name="InvertMouseThirdPerson"
    tool_tip="This option toggles whether looking up or down should be inverted or not."
+   width="250"
+   top_pad="0"/>
+   <check_box
+   control_name="TrackFocusObject"
+   follows="left|top"
+   height="16"
+   initial_value="false"
+   label="Follow Focused Objects"
+   layout="topleft"
+   left_delta="0"
+   name="InvertMouseThirdPerson"
+   tool_tip="This option toggles whether the camera should follow an object or avatar it is zoomed on."
    width="250"
    top_pad="0"/>
    
@@ -708,7 +720,7 @@
    height="12"
    width="350"
    top_delta="4">
-   Top View Options:
+   Camera Preset Options:
    </text>
    
    <slider
@@ -717,19 +729,19 @@
    follows="left|top"
    height="14"
    increment="0.1"
-   label="X Offset"
+   label="Camera X Offset"
    label_width="150"
    tool_tip="This option controls the position offset of the camera on the X axis relative to the camera focus point, where X works as zoom modifier for both Y and Z axis on a courve."
    layout="topleft"
    left="10"
    max_val="10"
    min_val="-4"
-   name="CameraOffsetFrontView_X"
+   name="CameraOffset_X"
    top_pad="15"
    width="338">
    <slider.commit_callback
-   function="Dragon.ArrayX"
-   parameter="CameraOffsetFrontView"/>
+   function="Pref.CameraArray"
+   parameter="X"/>
    </slider>
    <slider
    decimal_digits="3"
@@ -737,19 +749,19 @@
    follows="left|top"
    height="14"
    increment="0.1"
-   label="Y Offset"
+   label="Camera Y Offset"
    label_width="150"
    layout="topleft"
    left="10"
    tool_tip="This option controls the position offset of the camera on the Y axis relative to the camera focus point, where Y is the horizontal offset applied to the X axis."
    max_val="4"
    min_val="-4"
-   name="CameraOffsetFrontView_Y"
+   name="CameraOffset_Y"
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Dragon.ArrayY"
-   parameter="CameraOffsetFrontView"/>
+   function="Pref.CameraArray"
+   parameter="Y"/>
    </slider>
    <slider
    decimal_digits="3"
@@ -757,36 +769,20 @@
    follows="left|top"
    height="14"
    increment="0.1"
-   label="Z Offset"
+   label="Camera Z Offset"
    label_width="150"
    layout="topleft"
    left="10"
    tool_tip="This option controls the position offset of the camera on the Z axis relative to the camera focus point, where Z is the vertical offset applied to the X axis."
    max_val="15"
    min_val="-4"
-   name="CameraOffsetFrontView_Z"
+   name="CameraOffset_Z"
    top_pad="2"
    width="338">
    <slider.commit_callback
-   function="Dragon.ArrayZ"
-   parameter="CameraOffsetFrontView"/>
+   function="Pref.CameraArray"
+   parameter="Z"/>
    </slider>
-   <button
-   follows="left|top"
-   control_name="CameraOffsetFrontView"
-   height="47"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="-32"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
    <icon
    follows="top|right"
    height="1"
@@ -804,19 +800,19 @@
    follows="left|top"
    height="14"
    increment="0.01"
-   label="X Focus"
+   label="Focus X Offset"
    label_width="150"
    layout="topleft"
    left="10"
    tool_tip="This option controls the position offset of the focus point on the X axis, where X is the depth. X (depth) is affected by Y (left and right) and Z (up and down), they will change the path depth takes either to the front or backside of your avatar."
    max_val="4"
    min_val="-4"
-   name="FocusOffsetFrontView_X"
+   name="FocusOffset_X"
    top_pad="5"
    width="332">
    <slider.commit_callback
-   function="Dragon.ArrayX"
-   parameter="FocusOffsetFrontView"/>
+   function="Pref.FocusArray"
+   parameter="X"/>
    </slider>
    <slider
    decimal_digits="3"
@@ -824,19 +820,19 @@
    follows="left|top"
    height="14"
    increment="0.01"
-   label="Y Focus"
+   label="Focus Y Offset"
    label_width="150"
    layout="topleft"
    left_delta="0"
    tool_tip="This option controls the position offset of the focus point on the Y axis, where Y is left and right. Y affects X, it will change the path depth takes on a horizontal line."
    max_val="4"
    min_val="-4"
-   name="FocusOffsetFrontView_Y"
+   name="FocusOffset_Y"
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Dragon.ArrayY"
-   parameter="FocusOffsetFrontView"/>
+   function="Pref.FocusArray"
+   parameter="Y"/>
    </slider>
    <slider
    decimal_digits="3"
@@ -844,780 +840,100 @@
    follows="left|top"
    height="14"
    increment="0.01"
-   label="Z Focus"
+   label="Focus Z Offset"
    label_width="150"
    layout="topleft"
    left_delta="0"
    tool_tip="This option controls the position offset of the focus point on the Z axis, where Z is up and down. Z affects X, it will change the path depth takes on a vertical line."
    max_val="4"
    min_val="-4"
-   name="FocusOffsetFrontView_Z"
+   name="FocusOffset_Z"
    top_pad="2"
    width="332">
    <slider.commit_callback
-   function="Dragon.ArrayZ"
-   parameter="FocusOffsetFrontView"/>
+   function="Pref.FocusArray"
+   parameter="Z"/>
    </slider>
-   <button
-   follows="left|top"
-   control_name="FocusOffsetFrontView"
-   height="47"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="-32"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
+
    
-   <panel
-   follows="left|top|right"
-   height="20"
-   bg_visible="true"
-   bg_alpha_color="0.10 0.43 0.77 0.28"
-   layout="topleft"
-   mouse_opaque="false"
-   left="1"
-   name="title"
-   top_pad="10"
-   width="492"/>
-   <text
-   name="show_ims_in_label"
-   follows="left|top"
-   layout="topleft"
-   left="10"
-   height="12"
-   width="350"
-   top_delta="4">
-   Shoulder View Options:
-   </text>
-   
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="X Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the X axis relative to the camera focus point, where X works as zoom modifier for both Y and Z axis on a courve."
-   max_val="4"
-   min_val="-4"
-   name="CameraOffsetGroupView_X"
-   top_pad="15"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayX"
-   parameter="CameraOffsetGroupView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Y Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the Y axis relative to the camera focus point, where Y is the horizontal offset applied to the X axis."
-   max_val="4"
-   min_val="-4"
-   name="CameraOffsetGroupView_Y"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayY"
-   parameter="CameraOffsetGroupView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Z Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the Z axis relative to the camera focus point, where Z is the vertical offset applied to the X axis."
-   max_val="10"
-   min_val="-4"
-   name="CameraOffsetGroupView_Z"
-   top_pad="2"
-   width="338">
-   <slider.commit_callback
-   function="Dragon.ArrayZ"
-   parameter="CameraOffsetGroupView"/>
-   </slider>
-   <button
-   follows="left|top"
-   control_name="CameraOffsetGroupView"
-   height="47"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="-32"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
-   <icon
-   follows="top|right"
-   height="1"
-   image_name="Prefs_Separator"
-   color="1 1 1 1"
-   layout="topleft"
-   name="separator"
-   mouse_opaque="false"
-   width="450"
-   left="25"
-   top_pad="4"/>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="X Focus"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the focus point on the X axis, where X is the depth. X (depth) is affected by Y (left and right) and Z (up and down), they will change the path depth takes either to the front or backside of your avatar."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetGroupView_X"
-   top_pad="5"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayX"
-   parameter="FocusOffsetGroupView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Y Focus"
-   label_width="150"
-   layout="topleft"
-   left_delta="0"
-   tool_tip="This option controls the position offset of the focus point on the Y axis, where Y is left and right. Y affects X, it will change the path depth takes on a horizontal line."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetGroupView_Y"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayY"
-   parameter="FocusOffsetGroupView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Z Focus"
-   label_width="150"
-   layout="topleft"
-   left_delta="0"
-   tool_tip="This option controls the position offset of the focus point on the Z axis, where Z is up and down. Z affects X, it will change the path depth takes on a vertical line."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetGroupView_Z"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayZ"
-   parameter="FocusOffsetGroupView"/>
-   </slider>
-   <button
-   follows="left|top"
-   control_name="FocusOffsetGroupView"
-   height="47"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="-32"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
-   
-   <panel
-   follows="left|top|right"
-   height="20"
-   bg_visible="true"
-   bg_alpha_color="0.10 0.43 0.77 0.28"
-   layout="topleft"
-   mouse_opaque="false"
-   left="1"
-   name="title"
-   top_pad="10"
-   width="492"/>
-   <text
-   name="show_ims_in_label"
-   follows="left|top"
-   layout="topleft"
-   left="10"
-   height="12"
-   width="350"
-   top_delta="4">
-   Rear View Options:
-   </text>
-   
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="X Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the X axis relative to the camera focus point, where X works as zoom modifier for both Y and Z axis on a courve."
-   max_val="4"
-   min_val="-4"
-   name="CameraOffsetRearView_X"
-   top_pad="15"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayX"
-   parameter="CameraOffsetRearView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Y Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the Y axis relative to the camera focus point, where Y is the horizontal offset applied to the X axis."
-   max_val="4"
-   min_val="-4"
-   name="CameraOffsetRearView_Y"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayY"
-   parameter="CameraOffsetRearView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Z Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the Z axis relative to the camera focus point, where Z is the vertical offset applied to the X axis."
-   max_val="10"
-   min_val="-4"
-   name="CameraOffsetRearView_Z"
-   top_pad="2"
-   width="338">
-   <slider.commit_callback
-   function="Dragon.ArrayZ"
-   parameter="CameraOffsetRearView"/>
-   </slider>
-   <button
-   follows="left|top"
-   control_name="CameraOffsetRearView"
-   height="47"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="-32"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
-   <icon
-   follows="top|right"
-   height="1"
-   image_name="Prefs_Separator"
-   color="1 1 1 1"
-   layout="topleft"
-   name="separator"
-   mouse_opaque="false"
-   width="450"
-   left="25"
-   top_pad="4"/>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="X Focus"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the focus point on the X axis, where X is the depth. X (depth) is affected by Y (left and right) and Z (up and down), they will change the path depth takes either to the front or backside of your avatar."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetRearView_X"
-   top_pad="5"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayX"
-   parameter="FocusOffsetRearView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Y Focus"
-   label_width="150"
-   layout="topleft"
-   left_delta="0"
-   tool_tip="This option controls the position offset of the focus point on the Y axis, where Y is left and right. Y affects X, it will change the path depth takes on a horizontal line."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetRearView_Y"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayY"
-   parameter="FocusOffsetRearView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Z Focus"
-   label_width="150"
-   layout="topleft"
-   left_delta="0"
-   tool_tip="This option controls the position offset of the focus point on the Z axis, where Z is up and down. Z affects X, it will change the path depth takes on a vertical line."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetRearView_Z"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayZ"
-   parameter="FocusOffsetRearView"/>
-   </slider>
-   <button
-   follows="left|top"
-   control_name="FocusOffsetRearView"
-   height="47"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="-32"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
-   
-   <panel
-   follows="left|top|right"
-   height="20"
-   bg_visible="true"
-   bg_alpha_color="0.10 0.43 0.77 0.28"
-   layout="topleft"
-   mouse_opaque="false"
-   left="1"
-   name="title"
-   top_pad="10"
-   width="492"/>
-   <text
-   name="show_ims_in_label"
-   follows="left|top"
-   layout="topleft"
-   left="10"
-   height="12"
-   width="350"
-   top_delta="4">
-   Right Shoulder View Options:
-   </text>
-   
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="X Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the X axis relative to the camera focus point, where X works as zoom modifier for both Y and Z axis on a courve."
-   max_val="4"
-   min_val="-4"
-   name="CameraOffsetRightShoulderView_X"
-   top_pad="15"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayX"
-   parameter="CameraOffsetRightShoulderView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Y Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the Y axis relative to the camera focus point, where Y is the horizontal offset applied to the X axis."
-   max_val="4"
-   min_val="-4"
-   name="CameraOffsetRightShoulderView_Y"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayY"
-   parameter="CameraOffsetRightShoulderView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Z Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the Z axis relative to the camera focus point, where Z is the vertical offset applied to the X axis."
-   max_val="10"
-   min_val="-4"
-   name="CameraOffsetRightShoulderView_Z"
-   top_pad="2"
-   width="338">
-   <slider.commit_callback
-   function="Dragon.ArrayZ"
-   parameter="CameraOffsetRightShoulderView"/>
-   </slider>
-   <button
-   follows="left|top"
-   control_name="CameraOffsetRightShoulderView"
-   height="47"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="-32"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
-   <icon
-   follows="top|right"
-   height="1"
-   image_name="Prefs_Separator"
-   color="1 1 1 1"
-   layout="topleft"
-   name="separator"
-   mouse_opaque="false"
-   width="450"
-   left="25"
-   top_pad="4"/>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="X Focus"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the focus point on the X axis, where X is the depth. X (depth) is affected by Y (left and right) and Z (up and down), they will change the path depth takes either to the front or backside of your avatar."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetRightShoulderView_X"
-   top_pad="5"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayX"
-   parameter="FocusOffsetRightShoulderView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Y Focus"
-   label_width="150"
-   layout="topleft"
-   left_delta="0"
-   tool_tip="This option controls the position offset of the focus point on the Y axis, where Y is left and right. Y affects X, it will change the path depth takes on a horizontal line."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetRightShoulderView_Y"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayY"
-   parameter="FocusOffsetRightShoulderView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Z Focus"
-   label_width="150"
-   layout="topleft"
-   left_delta="0"
-   tool_tip="This option controls the position offset of the focus point on the Z axis, where Z is up and down. Z affects X, it will change the path depth takes on a vertical line."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetRightShoulderView_Z"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayZ"
-   parameter="FocusOffsetRightShoulderView"/>
-   </slider>
-   <button
-   follows="left|top"
-   control_name="FocusOffsetRightShoulderView"
-   height="47"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="-32"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
-   
-   <panel
-   follows="left|top|right"
-   height="20"
-   bg_visible="true"
-   bg_alpha_color="0.10 0.43 0.77 0.28"
-   layout="topleft"
-   mouse_opaque="false"
-   left="1"
-   name="title"
-   top_pad="10"
-   width="492"/>
-   <text
-   name="show_ims_in_label"
-   follows="left|top"
-   layout="topleft"
-   left="10"
-   height="12"
-   width="350"
-   top_delta="4">
-   Left Shoulder View Options:
-   </text>
-   
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="X Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the X axis relative to the camera focus point, where X works as zoom modifier for both Y and Z axis on a courve."
-   max_val="4"
-   min_val="-4"
-   name="CameraOffsetLeftShoulderView_X"
-   top_pad="15"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayX"
-   parameter="CameraOffsetLeftShoulderView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Y Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the Y axis relative to the camera focus point, where Y is the horizontal offset applied to the X axis."
-   max_val="4"
-   min_val="-4"
-   name="CameraOffsetLeftShoulderView_Y"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayY"
-   parameter="CameraOffsetLeftShoulderView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Z Offset"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the camera on the Z axis relative to the camera focus point, where Z is the vertical offset applied to the X axis."
-   max_val="10"
-   min_val="-4"
-   name="CameraOffsetLeftShoulderView_Z"
-   top_pad="2"
-   width="338">
-   <slider.commit_callback
-   function="Dragon.ArrayZ"
-   parameter="CameraOffsetLeftShoulderView"/>
-   </slider>
-   <button
-   follows="left|top"
-   control_name="CameraOffsetLeftShoulderView"
-   height="47"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="-32"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
-   <icon
-   follows="top|right"
-   height="1"
-   image_name="Prefs_Separator"
-   color="1 1 1 1"
-   layout="topleft"
-   name="separator"
-   mouse_opaque="false"
-   width="450"
-   left="25"
-   top_pad="4"/>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="X Focus"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   tool_tip="This option controls the position offset of the focus point on the X axis, where X is the depth. X (depth) is affected by Y (left and right) and Z (up and down), they will change the path depth takes either to the front or backside of your avatar."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetLeftShoulderView_X"
-   top_pad="5"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayX"
-   parameter="FocusOffsetLeftShoulderView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Y Focus"
-   label_width="150"
-   layout="topleft"
-   left_delta="0"
-   tool_tip="This option controls the position offset of the focus point on the Y axis, where Y is left and right. Y affects X, it will change the path depth takes on a horizontal line."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetLeftShoulderView_Y"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayY"
-   parameter="FocusOffsetLeftShoulderView"/>
-   </slider>
-   <slider
-   decimal_digits="3"
-   can_edit_text="true"
-   follows="left|top"
-   height="14"
-   increment="0.01"
-   label="Z Focus"
-   label_width="150"
-   layout="topleft"
-   left_delta="0"
-   tool_tip="This option controls the position offset of the focus point on the Z axis, where Z is up and down. Z affects X, it will change the path depth takes on a vertical line."
-   max_val="4"
-   min_val="-4"
-   name="FocusOffsetLeftShoulderView_Z"
-   top_pad="2"
-   width="332">
-   <slider.commit_callback
-   function="Dragon.ArrayZ"
-   parameter="FocusOffsetLeftShoulderView"/>
-   </slider>
-   <button
-   follows="left|top"
-   control_name="FocusOffsetLeftShoulderView"
-   height="47"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="-32"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
+   <combo_box
+	follows="bottom|left"
+	layout="topleft"
+	left="2"
+	height="20"
+	name="camera_preset_name"
+	allow_text_entry="true"
+	top_pad="7"
+	width="184">
+		<combo_box.combo_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"/>
+		<combo_box.drop_down_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"
+		image_disabled="ComboToolbarButton_Disabled"/>
+  <combo_box.commit_callback
+  function="Pref.ChangeCameraPreset"/>
+	</combo_box>
+  <button
+  height="21"
+  follows="top|left"
+  layout="topleft"
+  label="New Preset"
+  image_overlay_alignment="left"
+  image_overlay="AddItem_Off"
+  image_hover_unselected="Toolbar_Middle_Over"
+  image_selected="Toolbar_Middle_Selected"
+  image_unselected="Toolbar_Middle_Off"
+  tool_tip="This button creates a new camera preset with the set name."
+  name="AddCameraPreset"
+  width="100"
+  top_delta="0"
+  left_pad="-7">
+  <button.commit_callback
+  function="Pref.AddCameraPreset"/>
+  </button>
+  <button
+  height="21"
+  follows="top|left"
+  layout="topleft"
+  enabled="false"
+  label="Delete Preset"
+  image_overlay_alignment="left"
+  image_overlay="TrashItem_Off"
+  image_hover_unselected="Toolbar_Middle_Over"
+  image_selected="Toolbar_Middle_Selected"
+  image_unselected="Toolbar_Middle_Off"
+  tool_tip="This button removes the currently selected camera preset."
+  name="DeleteCameraPreset"
+  width="110"
+  top_delta="0"
+  left_pad="1">
+  <button.commit_callback
+  function="Pref.RemoveCameraPreset"/>
+  </button>
+  <button
+  height="21"
+  follows="top|left"
+  layout="topleft"
+  label="Reset Preset"
+  image_overlay_alignment="left"
+  image_overlay="Refresh_Off"
+  image_hover_unselected="Toolbar_Middle_Over"
+  image_selected="Toolbar_Middle_Selected"
+  image_unselected="Toolbar_Middle_Off"
+  tool_tip="This button resets the currently selected camera preset to either its defaults or to a basic 'rear view'."
+  name="ResetCameraPreset"
+  width="105"
+  top_delta="0"
+  left_pad="1">
+  <button.commit_callback
+  function="Pref.ResetCameraPreset"/>
+  </button>
   </panel>
  </scroll_container>
 </panel>

@@ -57,6 +57,10 @@
 
 //BD - Always-on Mouse-steering
 #include "lltoolfocus.h"
+//BD - Unlimited Camera Presets
+#include "lldir.h"
+#include "lldiriterator.h"
+#include "llsdserialize_xml.h"
 
 using namespace LLAvatarAppearanceDefines;
 
@@ -127,8 +131,8 @@ LLAgentCamera::LLAgentCamera() :
 	mCameraMode( CAMERA_MODE_THIRD_PERSON ),
 	mLastCameraMode( CAMERA_MODE_THIRD_PERSON ),
 
-	//BD
-	mCameraPreset(CAMERA_PRESET_GROUP_VIEW),
+	//BD - Unlimited Camera Presets
+	mCameraPresetName("Group View"),
 
 	mCameraAnimating( FALSE ),
 	mAnimationCameraStartGlobal(),
@@ -234,30 +238,10 @@ void LLAgentCamera::init()
 	LLViewerCamera::getInstance()->setViewHeightInPixels(768);			// default, overridden in LLViewerWindow::reshape
 
 	mCameraFocusOffsetTarget = LLVector4(gSavedSettings.getVector3("CameraOffsetBuild"));
-	
-	mCameraPreset = (ECameraPreset) gSavedSettings.getU32("CameraPreset");
 
-	mCameraOffsetInitial[CAMERA_PRESET_REAR_VIEW] = gSavedSettings.getControl("CameraOffsetRearView");
-	mCameraOffsetInitial[CAMERA_PRESET_FRONT_VIEW] = gSavedSettings.getControl("CameraOffsetFrontView");
-	mCameraOffsetInitial[CAMERA_PRESET_GROUP_VIEW] = gSavedSettings.getControl("CameraOffsetGroupView");
-// [RLVa:KB] - Checked: RLVa-2.0.0
-	mCameraOffsetInitial[CAMERA_RLV_SETCAM_VIEW] = gSavedSettings.declareVec3("CameraOffsetRLVaView", LLVector3(mCameraOffsetInitial[CAMERA_PRESET_REAR_VIEW]->getDefault()), "Declared in code", LLControlVariable::PERSIST_NO);
-	mCameraOffsetInitial[CAMERA_RLV_SETCAM_VIEW]->setHiddenFromSettingsEditor(true);
-// [/RLVa:KB]
-//	//BD - Left/Right shoulder camera preset
-	mCameraOffsetInitial[CAMERA_PRESET_LEFT_VIEW] = gSavedSettings.getControl("CameraOffsetLeftShoulderView");
-	mCameraOffsetInitial[CAMERA_PRESET_RIGHT_VIEW] = gSavedSettings.getControl("CameraOffsetRightShoulderView");
-
-	mFocusOffsetInitial[CAMERA_PRESET_REAR_VIEW] = gSavedSettings.getControl("FocusOffsetRearView");
-	mFocusOffsetInitial[CAMERA_PRESET_FRONT_VIEW] = gSavedSettings.getControl("FocusOffsetFrontView");
-	mFocusOffsetInitial[CAMERA_PRESET_GROUP_VIEW] = gSavedSettings.getControl("FocusOffsetGroupView");
-// [RLVa:KB] - Checked: RLVa-2.0.0
-	mFocusOffsetInitial[CAMERA_RLV_SETCAM_VIEW] = gSavedSettings.declareVec3("FocusOffsetRLVaView", LLVector3(mFocusOffsetInitial[CAMERA_PRESET_REAR_VIEW]->getDefault()), "Declared in code", LLControlVariable::PERSIST_NO);
-	mFocusOffsetInitial[CAMERA_RLV_SETCAM_VIEW]->setHiddenFromSettingsEditor(true);
-// [/RLVa:KB]
-//	//BD - Left/Right shoulder camera preset
-	mFocusOffsetInitial[CAMERA_PRESET_LEFT_VIEW] = gSavedSettings.getControl("FocusOffsetLeftShoulderView");
-	mFocusOffsetInitial[CAMERA_PRESET_RIGHT_VIEW] = gSavedSettings.getControl("FocusOffsetRightShoulderView");
+	//BD - Unlimited Camera Presets
+	mCameraPresetName = gSavedSettings.getString("CameraPresetName");
+	initializeCameraPresets();
 
 	mCameraCollidePlane.clearVec();
 	mCurrentCameraDistance = getCameraOffsetInitial().magVec() * gSavedSettings.getF32("CameraOffsetScale");
@@ -1784,7 +1768,7 @@ LLVector3d LLAgentCamera::calcThirdPersonFocusOffset()
 		agent_rot *= ((LLViewerObject*)(gAgentAvatarp->getParent()))->getRenderRotation();
 	}
 
-	focus_offset = convert_from_llsd<LLVector3d>(mFocusOffsetInitial[mCameraPreset]->get(), TYPE_VEC3D, "");
+	focus_offset = mFocusOffsetInitial[mCameraPresetName];
 	return focus_offset * agent_rot;
 }
 
@@ -2197,7 +2181,7 @@ bool LLAgentCamera::clampCameraPosition(LLVector3d& posCamGlobal, const LLVector
 
 LLVector3 LLAgentCamera::getCameraOffsetInitial()
 {
-	return convert_from_llsd<LLVector3>(mCameraOffsetInitial[mCameraPreset]->get(), TYPE_VEC3, "");
+	return mCameraOffsetInitial[mCameraPresetName];
 }
 
 F32 LLAgentCamera::getCameraMaxZoomDistance()
@@ -2595,25 +2579,30 @@ void LLAgentCamera::changeCameraToCustomizeAvatar()
 	setCameraPosAndFocusGlobal(focus_target_global + camera_offset, focus_target_global, gAgent.getID());
 }
 
-
-void LLAgentCamera::switchCameraPreset(ECameraPreset preset)
+void LLAgentCamera::switchCameraPreset(std::string preset_name)
 {
+	//BD - Unlimited Camera Presets
+	initializeCameraPresets();
+
 // [RLVa:KB] - Checked: RLVa-2.0.0
 	if (RlvActions::isRlvEnabled())
 	{
 		// Don't allow changing away from the our view if an object is restricting it
 		if (RlvActions::isCameraPresetLocked())
-			preset = CAMERA_RLV_SETCAM_VIEW;
+			preset_name = "RLVa View";
 
 		// Don't reset anything if our view is already current
-		if ( (CAMERA_RLV_SETCAM_VIEW == preset) && (CAMERA_RLV_SETCAM_VIEW == mCameraPreset) )
+		if (("RLVa View" == preset_name) && ("RLVa View" == mCameraPresetName))
 			return;
 
 		// Reset our view when switching away
-		if (CAMERA_RLV_SETCAM_VIEW != preset)
+		if ("RLVaView" != preset_name)
 		{
-			mCameraOffsetInitial[CAMERA_RLV_SETCAM_VIEW]->resetToDefault();
-			mFocusOffsetInitial[CAMERA_RLV_SETCAM_VIEW]->resetToDefault();
+			//mCameraOffsetInitial["RLVaView"]->resetToDefault();
+			//mFocusOffsetInitial["RLVaView"]->resetToDefault();
+
+			//BD - Reinitialize our presets, this should reload the RLVa preset values.
+			initializeCameraPresets();
 		}
 	}
 // [/RLVa:KB]
@@ -2627,9 +2616,78 @@ void LLAgentCamera::switchCameraPreset(ECameraPreset preset)
 	//focusing on avatar in that case means following him on movements
 	mFocusOnAvatar = TRUE;
 
-	mCameraPreset = preset;
+	mCameraPresetName = preset_name;
 
-	gSavedSettings.setU32("CameraPreset", mCameraPreset);
+	gSavedSettings.setString("CameraPresetName", mCameraPresetName);
+}
+
+//BD - Unlimited Camera Presets
+void LLAgentCamera::initializeCameraPresets()
+{
+	//BD - Load our defaults first.
+	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "camera");
+	std::string file;
+	LLDirIterator dir_iter_app(dir, "*.xml");
+	while (dir_iter_app.next(file))
+	{
+		std::string path = gDirUtilp->add(dir, file);
+		std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
+
+		LLSD preset;
+		llifstream infile;
+		infile.open(path);
+		if (!infile.is_open())
+		{
+			LL_WARNS("Camera") << "Cannot find camera preset file: " << file << LL_ENDL;
+			continue;
+		}
+
+		while (!infile.eof())
+		{
+			S32 count = LLSDSerialize::fromXML(preset, infile);
+			if (count == LLSDParser::PARSE_FAILURE)
+			{
+				LL_WARNS("Camera") << "Failed to parse camera preset file: " << file << LL_ENDL;
+				break;
+			}
+
+			mCameraOffsetInitial[name] = LLVector3(preset["camera_offset"]);
+			mFocusOffsetInitial[name] = LLVector3d(preset["focus_offset"]);
+		}
+		infile.close();
+	}
+
+	//BD - Simply load our custom presets ontop, they will replace our defaults if necessary.
+	dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera");
+	LLDirIterator dir_iter_user(dir, "*.xml");
+	while (dir_iter_user.next(file))
+	{
+		std::string path = gDirUtilp->add(dir, file);
+		std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
+
+		LLSD preset;
+		llifstream infile;
+		infile.open(path);
+		if (!infile.is_open())
+		{
+			LL_WARNS("Camera") << "Cannot find camera preset file: " << file << LL_ENDL;
+			continue;
+		}
+
+		while (!infile.eof())
+		{
+			S32 count = LLSDSerialize::fromXML(preset, infile);
+			if (count == LLSDParser::PARSE_FAILURE)
+			{
+				LL_WARNS("Camera") << "Failed to parse camera preset file: " << file << LL_ENDL;
+				break;
+			}
+
+			mCameraOffsetInitial[name] = LLVector3(preset["camera_offset"]);
+			mFocusOffsetInitial[name] = LLVector3d(preset["focus_offset"]);
+		}
+		infile.close();
+	}
 }
 
 

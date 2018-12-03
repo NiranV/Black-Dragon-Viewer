@@ -1014,6 +1014,14 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 //	//BD - Memory Allocation
 	mCommitCallbackRegistrar.add("Pref.RefreshMemoryControls",	boost::bind(&LLFloaterPreference::refreshMemoryControls, this));
 
+//	//BD - Unlimited Camera Presets
+	mCommitCallbackRegistrar.add("Pref.AddCameraPreset", boost::bind(&LLFloaterPreference::onAddCameraPreset, this, true));
+	mCommitCallbackRegistrar.add("Pref.RemoveCameraPreset", boost::bind(&LLFloaterPreference::onRemoveCameraPreset, this));
+	mCommitCallbackRegistrar.add("Pref.ChangeCameraPreset", boost::bind(&LLFloaterPreference::onChangeCameraPreset, this));
+	mCommitCallbackRegistrar.add("Pref.ResetCameraPreset", boost::bind(&LLFloaterPreference::onCameraPresetReset, this, _2));
+	mCommitCallbackRegistrar.add("Pref.CameraArray", boost::bind(&LLFloaterPreference::onCameraArray, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.FocusArray", boost::bind(&LLFloaterPreference::onFocusArray, this, _1, _2));
+
 //	//BD - Custom Keyboard Layout
 	mCommitCallbackRegistrar.add("Pref.ExportControls", boost::bind(&LLFloaterPreference::onExportControls, this));
 	mCommitCallbackRegistrar.add("Pref.UnbindAll", boost::bind(&LLFloaterPreference::onUnbindControls, this));
@@ -1568,51 +1576,6 @@ void LLFloaterPreference::refreshGraphicControls()
 	}
 }
 
-void LLFloaterPreference::refreshCameraControls()
-{
-	LLVector3d vec3d = gSavedSettings.getVector3d("FocusOffsetFrontView");
-	getChild<LLUICtrl>("FocusOffsetFrontView_X")->setValue(vec3d.mdV[VX]);
-	getChild<LLUICtrl>("FocusOffsetFrontView_Y")->setValue(vec3d.mdV[VY]);
-	getChild<LLUICtrl>("FocusOffsetFrontView_Z")->setValue(vec3d.mdV[VZ]);
-	vec3d = gSavedSettings.getVector3d("FocusOffsetGroupView");
-	getChild<LLUICtrl>("FocusOffsetGroupView_X")->setValue(vec3d.mdV[VX]);
-	getChild<LLUICtrl>("FocusOffsetGroupView_Y")->setValue(vec3d.mdV[VY]);
-	getChild<LLUICtrl>("FocusOffsetGroupView_Z")->setValue(vec3d.mdV[VZ]);
-	vec3d = gSavedSettings.getVector3d("FocusOffsetRearView");
-	getChild<LLUICtrl>("FocusOffsetRearView_X")->setValue(vec3d.mdV[VX]);
-	getChild<LLUICtrl>("FocusOffsetRearView_Y")->setValue(vec3d.mdV[VY]);
-	getChild<LLUICtrl>("FocusOffsetRearView_Z")->setValue(vec3d.mdV[VZ]);
-	vec3d = gSavedSettings.getVector3d("FocusOffsetLeftShoulderView");
-	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_X")->setValue(vec3d.mdV[VX]);
-	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_Y")->setValue(vec3d.mdV[VY]);
-	getChild<LLUICtrl>("FocusOffsetLeftShoulderView_Z")->setValue(vec3d.mdV[VZ]);
-	vec3d = gSavedSettings.getVector3d("FocusOffsetRightShoulderView");
-	getChild<LLUICtrl>("FocusOffsetRightShoulderView_X")->setValue(vec3d.mdV[VX]);
-	getChild<LLUICtrl>("FocusOffsetRightShoulderView_Y")->setValue(vec3d.mdV[VY]);
-	getChild<LLUICtrl>("FocusOffsetRightShoulderView_Z")->setValue(vec3d.mdV[VZ]);
-
-	LLVector3 vec3 = gSavedSettings.getVector3("CameraOffsetFrontView");
-	getChild<LLUICtrl>("CameraOffsetFrontView_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("CameraOffsetFrontView_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("CameraOffsetFrontView_Z")->setValue(vec3.mV[VZ]);
-	vec3 = gSavedSettings.getVector3("CameraOffsetGroupView");
-	getChild<LLUICtrl>("CameraOffsetGroupView_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("CameraOffsetGroupView_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("CameraOffsetGroupView_Z")->setValue(vec3.mV[VZ]);
-	vec3 = gSavedSettings.getVector3("CameraOffsetRearView");
-	getChild<LLUICtrl>("CameraOffsetRearView_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("CameraOffsetRearView_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("CameraOffsetRearView_Z")->setValue(vec3.mV[VZ]);
-	vec3 = gSavedSettings.getVector3("CameraOffsetLeftShoulderView");
-	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("CameraOffsetLeftShoulderView_Z")->setValue(vec3.mV[VZ]);
-	vec3 = gSavedSettings.getVector3("CameraOffsetRightShoulderView");
-	getChild<LLUICtrl>("CameraOffsetRightShoulderView_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("CameraOffsetRightShoulderView_Z")->setValue(vec3.mV[VZ]);
-}
-
 //BD - Warning System
 void LLFloaterPreference::refreshWarnings()
 {
@@ -1686,6 +1649,260 @@ void LLFloaterPreference::refreshMemoryControls()
 	mProgressBar->setValue(percent);
 	mGPUMemoryLabel->setTextArg("[USED_MEM]", llformat("%5d", used_vram));
 	mGPUMemoryLabel->setTextArg("[MAX_MEM]", llformat("%5d", max_vram));
+}
+
+//BD - Unlimited Camera Presets
+void LLFloaterPreference::onCameraArray(LLUICtrl* ctrl, const LLSD& param)
+{
+	std::string name = gAgentCamera.mCameraPresetName;
+	LLVector3 vec3 = gAgentCamera.mCameraOffsetInitial[name];
+
+	if (param.asString() == "X")
+	{
+		vec3[VX] = ctrl->getValue().asReal();
+	}
+	else if (param.asString() == "Y")
+	{
+		vec3[VY] = ctrl->getValue().asReal();
+	}
+	else
+	{
+		vec3[VZ] = ctrl->getValue().asReal();
+	}
+
+	gAgentCamera.mCameraOffsetInitial[name] = vec3;
+	onAddCameraPreset();
+}
+
+void LLFloaterPreference::onFocusArray(LLUICtrl* ctrl, const LLSD& param)
+{
+	std::string name = gAgentCamera.mCameraPresetName;
+	LLVector3d vec3 = gAgentCamera.mFocusOffsetInitial[name];
+
+	if (param.asString() == "X")
+	{
+		vec3[VX] = ctrl->getValue().asReal();
+	}
+	else if (param.asString() == "Y")
+	{
+		vec3[VY] = ctrl->getValue().asReal();
+	}
+	else
+	{
+		vec3[VZ] = ctrl->getValue().asReal();
+	}
+
+	gAgentCamera.mFocusOffsetInitial[name] = vec3;
+	onAddCameraPreset();
+}
+
+void LLFloaterPreference::onAddCameraPreset(bool refresh)
+{
+	//BD - First and foremost before we do anything, check if the folder exists.
+	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera");
+	if (!gDirUtilp->fileExists(pathname))
+	{
+		LL_WARNS("Camera") << "Couldn't find folder: " << pathname << " - creating one." << LL_ENDL;
+		LLFile::mkdir(pathname);
+	}
+
+	//BD - Get the name and make sure its not empty.
+	std::string name = getChild<LLComboBox>("camera_preset_name")->getValue().asString();
+	if (name.empty())
+	{
+		LL_WARNS("Camera") << "No name given for camera preset." << LL_ENDL;
+		return;
+	}
+
+	LLSD record;
+	llofstream file;
+
+	if (refresh)
+	{
+		//BD - Creates a basic empty camera preset for us to edit.
+		record["camera_offset"] = LLVector3(-3.f, 0.f, 0.f).getValue();
+		record["focus_offset"] = LLVector3d(0.3f, 0.f, 0.75f).getValue();
+	}
+	else
+	{
+		//BD - We're editing an already existing.
+		LLVector3 camera = gAgentCamera.mCameraOffsetInitial[name];
+		LLVector3d focus = gAgentCamera.mFocusOffsetInitial[name];
+		record["camera_offset"] = camera.getValue();
+		record["focus_offset"] = focus.getValue();
+	}
+
+	//BD - Hide custom presets of RLVa View, RLVa will be using this.
+	if (name == "RLVa View")
+	{
+		record["hidden"] = true;
+	}
+
+	//BD - Write the camera preset and save it into our folder.
+	std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera" , gDragonLibrary.escapeString(name) + ".xml");
+	file.open(full_path.c_str());
+	LLSDSerialize::toXML(record, file);
+	file.close();
+
+	if (refresh)
+	{
+		//BD - Switch to the newly created camera preset so we can start editing it right away.
+		gAgentCamera.switchCameraPreset(name);
+
+		//BD - Refresh our presets list.
+		refreshPresets();
+
+		//BD - Keep the controls in sync.
+		refreshCameraControls();
+	}
+}
+
+void LLFloaterPreference::onRemoveCameraPreset()
+{
+	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera");
+	std::string name = getChild<LLComboBox>("camera_preset_name")->getValue().asString();
+
+	if (gDirUtilp->deleteFilesInDir(pathname, LLURI::escape(name) + ".xml") < 1)
+	{
+		LL_WARNS("Camera") << "Cannot remove camera preset file: " << name << LL_ENDL;
+	}
+
+	gAgentCamera.initializeCameraPresets();
+}
+
+void LLFloaterPreference::refreshPresets()
+{
+	LLComboBox* combo = getChild<LLComboBox>("camera_preset_name");
+	combo->removeall();
+
+	//BD - Look through our defaults first.
+	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "camera");
+	std::string file;
+	LLDirIterator dir_iter_app(dir, "*.xml");
+	while (dir_iter_app.next(file))
+	{
+		std::string path = gDirUtilp->add(dir, file);
+		std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
+
+		LLSD preset;
+		llifstream infile;
+		infile.open(path);
+		if (!infile.is_open())
+		{
+			//BD - If we can't open and read the file we shouldn't add it because we won't
+			//     be able to load it later.
+			LL_WARNS("Camera") << "Cannot open file in: " << path << LL_ENDL;
+			continue;
+		}
+
+		//BD - Camera Preset files only have one single line, so it's either a parse failure
+		//     or a success.
+		S32 ret = LLSDSerialize::fromXML(preset, infile);
+
+		//BD - We couldn't parse the file, don't bother adding it.
+		if (ret == LLSDParser::PARSE_FAILURE)
+		{
+			LL_WARNS("Camera") << "Failed to parse file: " << path << LL_ENDL;
+			continue;
+		}
+
+		//BD - Skip if this preset is meant to be invisible. This is for RLVa.
+		if (preset["hidden"].isDefined())
+		{
+			continue;
+		}
+
+		combo->add(name);
+	}
+
+	//BD - Add a separator.
+	combo->addSeparator(ADD_BOTTOM);
+
+	//BD - Go through all custom presets.
+	dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera");
+	LLDirIterator dir_iter_user(dir, "*.xml");
+	while (dir_iter_user.next(file))
+	{
+		std::string path = gDirUtilp->add(dir, file);
+		std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
+
+		//BD - Don't add if we've already established it as default. It's name is already
+		//     in the list.
+		if (!combo->itemExists(name))
+		{
+			combo->add(name);
+		}
+	}
+}
+
+void LLFloaterPreference::refreshCameraControls()
+{
+	std::string preset_name = gSavedSettings.getString("CameraPresetName");
+	LLVector3 vec3 = gAgentCamera.mCameraOffsetInitial[preset_name];
+	LLVector3d vec3d = gAgentCamera.mFocusOffsetInitial[preset_name];
+
+	getChild<LLUICtrl>("CameraOffset_X")->setValue(vec3.mV[VX]);
+	getChild<LLUICtrl>("CameraOffset_Y")->setValue(vec3.mV[VY]);
+	getChild<LLUICtrl>("CameraOffset_Z")->setValue(vec3.mV[VZ]);
+	getChild<LLUICtrl>("FocusOffset_X")->setValue(vec3d.mdV[VX]);
+	getChild<LLUICtrl>("FocusOffset_Y")->setValue(vec3d.mdV[VY]);
+	getChild<LLUICtrl>("FocusOffset_Z")->setValue(vec3d.mdV[VZ]);
+
+	//BD - Disable the delete button when we have a default preset selected.
+	//     We will instead use the default buttons which essentially do the same
+	//     but make more sense label wise for the user.
+	if (preset_name == "Front View" || preset_name == "Group View"
+		|| preset_name == "Left Shoulder View" || preset_name == "Right Shoulder View"
+		|| preset_name == "Rear View" || preset_name == "RLVa View")
+	{
+		LL_WARNS("Camera") << "Disabling button" << LL_ENDL;
+		getChild<LLButton>("DeleteCameraPreset")->setEnabled(FALSE);
+	}
+	else
+	{
+		LL_WARNS("Camera") << "Enabling button" << LL_ENDL;
+		getChild<LLButton>("DeleteCameraPreset")->setEnabled(TRUE);
+	}
+}
+
+void LLFloaterPreference::onChangeCameraPreset()
+{
+	std::string name = getChild<LLComboBox>("camera_preset_name")->getValue().asString();
+
+	//BD - Switch to the selected camera preset so we can our changes live.
+	gAgentCamera.switchCameraPreset(name);
+
+	//BD - Keep the controls in sync.
+	refreshCameraControls();
+}
+
+void LLFloaterPreference::onCameraPresetReset(const LLSD& param)
+{
+	//BD - If we are using a modified default preset, delete it and reload the default
+	//     settings for it.
+	std::string preset_name = gSavedSettings.getString("CameraPresetName");
+	if (preset_name == "Front View" || preset_name == "Group View"
+		|| preset_name == "Left Shoulder View" || preset_name == "Right Shoulder View"
+		|| preset_name == "Rear View" || preset_name == "RLVa View")
+	{
+		//BD - Remove the currently selected preset.
+		onRemoveCameraPreset();
+
+		//BD - Reload the preset to load the default version of it.
+		gAgentCamera.switchCameraPreset(preset_name);
+	}
+	else
+	{
+		//BD - In case we are defaulting a non default preset, reset to a default rear
+		//     preset just like if we created a new one.
+		gAgentCamera.mCameraOffsetInitial[preset_name] = LLVector3(-3.f, 0.f, 0.f);
+		gAgentCamera.mFocusOffsetInitial[preset_name] = LLVector3d(0.3f, 0.f, 0.75f);
+
+		//BD - Overwrite it with the new values.
+		onAddCameraPreset();
+	}
+
+	refreshCameraControls();
 }
 
 void LLFloaterPreference::draw()
@@ -1917,12 +2134,15 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 
 	//BD
 	refreshGraphicControls();
-	refreshCameraControls();
 	refreshEnabledGraphics();
 	toggleTabs();
 
 //	//BD - Avatar Rendering Settings
 	updateList();
+
+//	//BD - Unlimited Camera Presets
+	refreshPresets();
+	refreshCameraControls();
 
 	// Make sure the current state of prefs are saved away when
 	// when the floater is opened.  That will make cancel do its
@@ -3715,6 +3935,5 @@ void LLFloaterPreference::resetToDefault(LLUICtrl* ctrl)
 	if (gDragonLibrary.resetToDefault(ctrl))
 	{
 		refreshGraphicControls();
-		refreshCameraControls();
 	}
 }

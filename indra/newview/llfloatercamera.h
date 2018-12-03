@@ -69,11 +69,11 @@ public:
 	/* determines actual mode and updates ui */
 	void update();
 
-	/*switch to one of the camera presets (front, rear, side)*/
-	static void switchToPreset(const std::string& name);
+	/*switch to one of the camera presets */
+	void switchToPreset();
 
 	/* move to CAMERA_CTRL_MODE_PRESETS from CAMERA_CTRL_MODE_FREE_CAMERA if we are on presets panel and
-	   are not in free camera mode*/
+	   are not in free camera mode */
 	void fromFreeToPresets();
 
 	virtual void onOpen(const LLSD& key);
@@ -82,6 +82,9 @@ public:
 	LLJoystickCameraRotate* mRotate;
 	LLPanelCameraZoom*	mZoom;
 	LLJoystickCameraTrack*	mTrack;
+
+	//BD - Unlimited Camera Presets
+	LLScrollListCtrl*	mPresetsScroll;
 
 private:
 
@@ -128,7 +131,7 @@ private:
 	std::map<ECameraControlMode, LLButton*> mMode2Button;
 
 	//BD
-	LLComboBox*		mJointComboBox;
+	LLComboBox*			mJointComboBox;
 };
 
 /**

@@ -16620,6 +16620,17 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
+  <key>CameraPresetName</key>
+  <map>
+    <key>Comment</key>
+    <string>Camera preset to use.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>String</string>
+    <key>Value</key>
+    <string>Group View</string>
+  </map>
   
   <!-- Pie Menus -->
 	<key>PieMenuPopup</key>

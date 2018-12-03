@@ -4410,18 +4410,8 @@ void handle_reset_view()
 		LLFloaterSidePanelContainer::showPanel("appearance", LLSD().with("type", "my_outfits"));
 	}
 
-	//BD - Do not change our camera preset on reset view.
-	ECameraPreset c_preset;
-	if(gSavedSettings.getU32("CameraPreset") == 0)
-		c_preset = CAMERA_PRESET_REAR_VIEW;
-	else if(gSavedSettings.getU32("CameraPreset") == 1)
-		c_preset = CAMERA_PRESET_FRONT_VIEW;
-	else if(gSavedSettings.getU32("CameraPreset") == 2)
-		c_preset = CAMERA_PRESET_GROUP_VIEW;
-	else if(gSavedSettings.getU32("CameraPreset") == 3)
-		c_preset = CAMERA_PRESET_LEFT_VIEW;
-	else
-		c_preset = CAMERA_PRESET_RIGHT_VIEW;
+	//BD - Unlimited Camera Presets
+	std::string c_preset = gSavedSettings.getString("CameraPresetName");
 	gAgentCamera.switchCameraPreset(c_preset);
 	//BD - Allow disabling steering mode here as most people will probably
 	//     hit ESC as reaction to steering mode being accidentally enabled.

@@ -1719,14 +1719,16 @@ void RlvBehaviourCamEyeFocusOffsetHandler::onCommandToggle(ERlvBehaviour eBhvr, 
 {
 	if (fHasBhvr)
 	{
-		gAgentCamera.switchCameraPreset(CAMERA_RLV_SETCAM_VIEW);
+		//BD - Unlimited Camera Presets
+		gAgentCamera.switchCameraPreset("RLVa View");
 	}
 	else
 	{
 		const RlvBehaviourModifier* pBhvrEyeModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_EYEOFFSET);
 		const RlvBehaviourModifier* pBhvrOffsetModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_FOCUSOFFSET);
+		//BD - Unlimited Camera Presets
 		if ( (!pBhvrEyeModifier->hasValue()) && (!pBhvrOffsetModifier->hasValue()) )
-			gAgentCamera.switchCameraPreset(CAMERA_PRESET_REAR_VIEW);
+			gAgentCamera.switchCameraPreset("Group View");
 	}
 }
 
@@ -1736,11 +1738,18 @@ void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_EYEOFFSET>::onValueChange()
 {
 	if (RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_EYEOFFSET))
 	{
-		LLControlVariable* pControl = gSavedSettings.getControl("CameraOffsetRLVaView");
+		/*LLControlVariable* pControl = gSavedSettings.getControl("CameraOffsetRLVaView");
 		if (pBhvrModifier->hasValue())
 			pControl->setValue(pBhvrModifier->getValue<LLVector3>().getValue());
 		else
-			pControl->resetToDefault();
+			pControl->resetToDefault();*/
+
+		//BD - Unlimited Camera Presets
+		LLVector3 pOffset = gAgentCamera.mCameraOffsetInitial["RLVa View"];
+		if (pBhvrModifier->hasValue())
+			pOffset.setValue(pBhvrModifier->getValue<LLVector3>().getValue());
+		else
+			gAgentCamera.initializeCameraPresets();
 	}
 }
 
@@ -1750,11 +1759,18 @@ void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_FOCUSOFFSET>::onValueChange
 {
 	if (RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_FOCUSOFFSET))
 	{
-		LLControlVariable* pControl = gSavedSettings.getControl("FocusOffsetRLVaView");
+		/*LLControlVariable* pControl = gSavedSettings.getControl("FocusOffsetRLVaView");
 		if (pBhvrModifier->hasValue())
-			pControl->setValue(pBhvrModifier->getValue<LLVector3>().getValue());
+			pControl->setValue(pBhvrModifier->getValue<LLVector3d>().getValue());
 		else
-			pControl->resetToDefault();
+			pControl->resetToDefault();*/
+
+		//BD - Unlimited Camera Presets
+		LLVector3d pFocus = gAgentCamera.mFocusOffsetInitial["RLVa View"];
+		if (pBhvrModifier->hasValue())
+			pFocus.setValue(pBhvrModifier->getValue<LLVector3d>().getValue());
+		else
+			gAgentCamera.initializeCameraPresets();
 	}
 }
 
@@ -1871,7 +1887,9 @@ void RlvBehaviourToggleHandler<RLV_BHVR_SETCAM>::onCommandToggle(ERlvBehaviour e
 	if (fHasCamUnlock != gRlvHandler.hasBehaviour(RLV_BHVR_SETCAM_UNLOCK))
 		RlvBehaviourToggleHandler<RLV_BHVR_SETCAM_UNLOCK>::onCommandToggle(RLV_BHVR_SETCAM_UNLOCK, !fHasCamUnlock);
 
-	gAgentCamera.switchCameraPreset( (fHasBhvr) ? CAMERA_RLV_SETCAM_VIEW : CAMERA_PRESET_REAR_VIEW );
+	//BD - Unlimited Camera Presets
+	gAgentCamera.switchCameraPreset( (fHasBhvr) ? "RLVa View" : "Group View" );
+
 	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_AVDISTMIN)->setPrimaryObject(idRlvObject);
 	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_AVDISTMAX)->setPrimaryObject(idRlvObject);
 	RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_ORIGINDISTMIN)->setPrimaryObject(idRlvObject);
@@ -2293,7 +2311,7 @@ ERlvCmdRet RlvForceCamEyeFocusOffsetHandler::onCommand(const RlvCommand& rlvCmd)
 	if (!RlvActions::canChangeCameraPreset(rlvCmd.getObjectID()))
 		return RLV_RET_FAILED_LOCK;
 
-	LLControlVariable* pOffsetControl = gSavedSettings.getControl("CameraOffsetRLVaView");
+	/*LLControlVariable* pOffsetControl = gSavedSettings.getControl("CameraOffsetRLVaView");
 	LLControlVariable* pFocusControl = gSavedSettings.getControl("FocusOffsetRLVaView");
 	LLControlVariable* pControl = (rlvCmd.getBehaviourType() == RLV_BHVR_SETCAM_EYEOFFSET) ? pOffsetControl : pFocusControl;
 	if (rlvCmd.hasOption())
@@ -2308,7 +2326,27 @@ ERlvCmdRet RlvForceCamEyeFocusOffsetHandler::onCommand(const RlvCommand& rlvCmd)
 		pControl->resetToDefault();
 	}
 
-	gAgentCamera.switchCameraPreset( ((pOffsetControl->isDefault()) && (pFocusControl->isDefault())) ? CAMERA_PRESET_REAR_VIEW : CAMERA_RLV_SETCAM_VIEW);
+	gAgentCamera.switchCameraPreset(((pOffsetControl->isDefault()) && (pFocusControl->isDefault())) ? "Group View" : "RLVa View");*/
+
+	//BD - Unlimited Camera Presets
+	LLVector3 pOffset = gAgentCamera.mCameraOffsetInitial["RLVa View"];
+	LLVector3d pFocus = gAgentCamera.mFocusOffsetInitial["RLVa View"];
+	LLVector3 pControl = (rlvCmd.getBehaviourType() == RLV_BHVR_SETCAM_EYEOFFSET) ? pOffset : LLVector3(pFocus);
+	if (rlvCmd.hasOption())
+	{
+		LLVector3 vecOffset;
+		if (!RlvCommandOptionHelper::parseOption(rlvCmd.getOption(), vecOffset))
+			return RLV_RET_FAILED_OPTION;
+		pControl.setValue(vecOffset.getValue());
+	}
+	else
+	{
+		//BD - We can't default just one value and we can't check whether something is default either.
+		//     I need to implement a way to selectively default something and/or check it against the defaults.
+		gAgentCamera.initializeCameraPresets();
+		gAgentCamera.switchCameraPreset("Group View");
+	}
+
 	return RLV_RET_SUCCESS;
 }
 
