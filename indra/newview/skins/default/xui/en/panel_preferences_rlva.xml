@@ -348,43 +348,6 @@ width="510">
 	width="200">
 	 Notification Embedding Behavior:
 	</text>
- <!--<radio_group
-	height="48"
-	layout="topleft"
-	left_delta="0"
-	control_name="NotificationCanEmbedInIM"
-	name="not_embed_in_IM"
-	top_pad="7"
-	tool_tip="Controls notification panel embedding in IMs (0 = default, 1 = focused, 2 = never)"
-	width="150">
-	<radio_item
-	height="16"
-	label="default"
-	layout="topleft"
-	left="0"
-	name="radio_default"
-	value="0"
-	top="0"
-	width="100" />
-	<radio_item
-	height="16"
-	label="focused"
-	layout="topleft"
-	top_delta="0"
-	left_pad="0"
-	name="radio_focused"
-	value="1"
-	width="100" />
-	<radio_item
-	height="16"
-	label="never"
-	layout="topleft"
-	top_delta="0"
-	left_pad="0"
-	name="radio_never"
-	value="2"
-	width="100" />
- </radio_group>-->
  <radio_group
  control_name="NotificationCanEmbedInIM"
  height="19"
