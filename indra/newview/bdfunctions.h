@@ -44,6 +44,8 @@ public:
 	static void invertValue(LLUICtrl* ctrl);
 
 	static std::string escapeString(const std::string& str);
+
+	static void triggerWarning(LLUICtrl* ctrl, const LLSD& param);
 };
 
 extern BDFunctions gDragonLibrary;

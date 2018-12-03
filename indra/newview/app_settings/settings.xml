@@ -1864,9 +1864,9 @@
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
-      <string>U32</string>
+      <string>String</string>
       <key>Value</key>
-      <integer>0</integer>
+      <string></string>
     </map>
 
   <key>CameraFocusTransitionTime</key>
@@ -9609,6 +9609,10 @@
       <real>1024</real>
       <real>1024</real>
     </array>
+    <key>MaxValue</key>
+    <real>2048</real>
+    <key>MinValue</key>
+    <real>0</real>
   </map>
   <key>RenderDeferredTreeShadowBias</key>
   <map>
@@ -9870,6 +9874,10 @@
       <string>F32</string>
       <key>Value</key>
       <real>96.0</real>
+      <key>MaxValue</key>
+      <real>128.0</real>
+      <key>MinValue</key>
+      <real>0.0</real>
     </map>
     <key>RenderAutoMaskAlphaNonDeferred</key>
     <map>
@@ -10629,7 +10637,11 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>150000</integer>
+    <integer>250000</integer>
+    <key>MaxValue</key>
+    <real>250000</real>
+    <key>MinValue</key>
+    <real>1</real>
   </map>
   <key>RenderHUDObjectsWarning</key>
   <map>
@@ -13284,6 +13296,10 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
+      <real>1.0</real>
+      <key>MaxValue</key>
+      <real>1.0</real>
+      <key>MinValue</key>
       <real>1.0</real>
     </map>
     <key>LastSystemUIScaleFactor</key>
@@ -17414,6 +17430,10 @@
       <real>1024</real>
       <real>1024</real>
     </array>
+    <key>MaxValue</key>
+    <integer>2048</integer>
+    <key>MinValue</key>
+    <integer>0</integer>
   </map>
   <key>RenderForceHighShaderLevel</key>
   <map>

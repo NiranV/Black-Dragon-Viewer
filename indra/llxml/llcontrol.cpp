@@ -158,14 +158,21 @@ case TYPE_VEC2:
 
 LLControlVariable::LLControlVariable(const std::string& name, eControlType type,
 							 LLSD initial, const std::string& comment,
-							 ePersist persist, bool hidefromsettingseditor, bool lock)
+							 ePersist persist, bool hidefromsettingseditor, 
+							 //BD - Lock Arrays features
+							 bool lock,
+							 //BD - Trigger Warning System
+							 F32 max_val, F32 min_val)
 	: mName(name),
 	  mComment(comment),
 	  mType(type),
 	  mPersist(persist),
 	  mHideFromSettingsEditor(hidefromsettingseditor),
 	  //BD - Lock Arrays feature
-	  mLockedArrays(lock)
+	  mLockedArrays(lock),
+	  //BD - Trigger Warning System
+	  mMaxValue(max_val),
+	  mMinValue(min_val)
 {
 	if ((persist != PERSIST_NO) && mComment.empty())
 	{
@@ -303,12 +310,6 @@ void LLControlVariable::setComment(const std::string& comment)
 	mComment = comment;
 }
 
-//BD - Lock Arrays feature
-void LLControlVariable::setLocked(bool lock)
-{
-	mLockedArrays = lock;
-}
-
 void LLControlVariable::resetToDefault(bool fire_signal)
 {
 	//The first setting is always the default
@@ -413,8 +414,11 @@ std::string LLControlGroup::typeEnumToString(eControlType typeenum)
 	return mTypeString[typeenum];
 }
 
-//BD - Lock Arrays feature
-LLControlVariable* LLControlGroup::declareControl(const std::string& name, eControlType type, const LLSD initial_val, const std::string& comment, LLControlVariable::ePersist persist, BOOL hidefromsettingseditor, BOOL lock)
+LLControlVariable* LLControlGroup::declareControl(const std::string& name, eControlType type, const LLSD initial_val, const std::string& comment, LLControlVariable::ePersist persist, BOOL hidefromsettingseditor, 
+	//BD - Lock Arrays feature
+	BOOL lock, 
+	//BD - Trigger Warning System
+	F32 max_val, F32 min_val)
 {
 	LLControlVariable* existing_control = getControl(name);
 	if (existing_control)
@@ -427,6 +431,9 @@ LLControlVariable* LLControlGroup::declareControl(const std::string& name, eCont
 				LLSD cur_value = existing_control->getValue(); // get the current value
 				existing_control->setDefaultValue(initial_val); // set the default to the declared value
 				existing_control->setValue(cur_value); // now set to the loaded value
+				//BD - Trigger Warning System
+				existing_control->setMaxValue(max_val);
+				existing_control->setMinValue(min_val);
 			}
 		}
 		else
@@ -436,9 +443,12 @@ LLControlVariable* LLControlGroup::declareControl(const std::string& name, eCont
  		return existing_control;
 	}
 
-	//BD - Lock Arrays feature
-	//     If not, create the control and add it to the name table
-	LLControlVariable* control = new LLControlVariable(name, type, initial_val, comment, persist, hidefromsettingseditor, lock);
+	//BD - If not, create the control and add it to the name table
+	LLControlVariable* control = new LLControlVariable(name, type, initial_val, comment, persist, hidefromsettingseditor, 
+		//BD - Lock Arrays feature
+		lock, 
+		//BD - Trigger Warning System
+		max_val, min_val);
 	mNameTable[name] = control;	
 	return control;
 }
@@ -991,6 +1001,19 @@ U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_v
 			hidefromsettingseditor = false;
 		}
 		
+		//BD - Trigger Warning System
+		F32 max_val = FLT_MAX;
+		if (control_map.has("MaxValue"))
+		{
+			max_val = control_map["MaxValue"].asReal();
+		}
+
+		F32 min_val = -FLT_MAX;
+		if (control_map.has("MinValue"))
+		{
+			min_val = control_map["MinValue"].asReal();
+		}
+
 		// If the control exists just set the value from the input file.
 		LLControlVariable* existing_control = getControl(name);
 		if(existing_control)
@@ -1008,6 +1031,9 @@ U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_v
 					existing_control->setPersist(persist);
 					existing_control->setHiddenFromSettingsEditor(hidefromsettingseditor);
 					existing_control->setComment(control_map["Comment"].asString());
+					//BD - Trigger Warning System
+					existing_control->setMaxValue(max_val);
+					existing_control->setMinValue(min_val);
 				}
 				else
 				{
@@ -1061,13 +1087,19 @@ U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_v
 				}
 			}
 
-			declareControl(name, 
-						   typeStringToEnum(control_map["Type"].asString()), 
-						   control_map["Value"], 
-						   control_map["Comment"].asString(), 
+
+
+			declareControl(name,
+						   typeStringToEnum(control_map["Type"].asString()),
+						   control_map["Value"],
+						   control_map["Comment"].asString(),
 						   persist,
-						   hidefromsettingseditor
-						   );
+						   hidefromsettingseditor,
+						   //BD - Lock Arrays features
+						   false,
+						   //BD - Trigger Warning System
+						   max_val,
+						   min_val);
 		}
 
 		++validitems;

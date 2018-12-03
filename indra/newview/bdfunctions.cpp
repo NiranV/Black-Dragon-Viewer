@@ -20,6 +20,8 @@
 
 #include "lluictrlfactory.h"
 #include "llviewercontrol.h"
+#include "llnotificationsutil.h"
+#include "llnotifications.h"
 
 #include "message.h"
 
@@ -84,6 +86,9 @@ void BDFunctions::onCommitX(LLUICtrl* ctrl, const LLSD& param)
 	}
 	vec4.mV[VX] = value;
 	gSavedSettings.setUntypedValue(param.asString(), vec4.getValue());
+
+	//BD - Trigger Warning System
+	triggerWarning(ctrl, param);
 }
 
 void BDFunctions::onCommitY(LLUICtrl* ctrl, const LLSD& param)
@@ -135,6 +140,9 @@ void BDFunctions::onCommitY(LLUICtrl* ctrl, const LLSD& param)
 	}
 	vec4.mV[VY] = value;
 	gSavedSettings.setUntypedValue(param.asString(), vec4.getValue());
+
+	//BD - Trigger Warning System
+	triggerWarning(ctrl, param);
 }
 
 void BDFunctions::onCommitZ(LLUICtrl* ctrl, const LLSD& param)
@@ -181,6 +189,9 @@ void BDFunctions::onCommitZ(LLUICtrl* ctrl, const LLSD& param)
 	}
 	vec4.mV[VZ] = value;
 	gSavedSettings.setUntypedValue(param.asString(), vec4.getValue());
+
+	//BD - Trigger Warning System
+	gDragonLibrary.triggerWarning(ctrl, param);
 }
 
 //BD - Vector4
@@ -222,6 +233,9 @@ void BDFunctions::onCommitW(LLUICtrl* ctrl, const LLSD& param)
 	}
 	vec4.mV[VW] = value;
 	gSavedSettings.setVector4(param.asString(), vec4);
+
+	//BD - Trigger Warning System
+	triggerWarning(ctrl, param);
 }
 
 //BD - Array Lock feature
@@ -273,4 +287,70 @@ std::string BDFunctions::escapeString(const std::string& str)
 	curl_free(curl_str);
 
 	return escaped_str;
+}
+
+//BD - Trigger Warning System
+void BDFunctions::triggerWarning(LLUICtrl* ctrl, const LLSD& param)
+{
+	LLSD val = ctrl->getValue();
+	LLControlVariable* control = ctrl->getControlVariable();
+	//BD - Debug was not found, maybe it is an account setting.
+	if (!control)
+	{
+		control = ctrl->getControlVariable();
+
+		//BD - Still not found, check whether we can get the debug via the param.
+		if (!control)
+		{
+			control = gSavedSettings.getControl(param.asString());
+
+			//BD - Debug was not found, maybe it is an account setting.
+			if (!control)
+			{
+				control = gSavedPerAccountSettings.getControl(param.asString());
+
+				//BD - Give up.
+				if (!control) return;
+			}
+		}
+	}
+
+	eControlType type = control->type();
+	std::string name = control->getName();
+	F32 max_val = control->getMaxValue();
+	F32 min_val = control->getMinValue();
+
+	//BD - We name all our warnings by the control's name, this makes it super easy
+	//     to distinguish which warning triggers for which control and when, this also
+	//     plays well into the fact that certain widgets will have other functions already
+	//     present such as Vector sliders which use the control name in its parameter.
+	if (type == TYPE_BOOLEAN)
+	{
+		if (val.asBoolean())
+		{
+			LLNotificationsUtil::add(name);
+			//BD - I don't think these one-off options should be muted after the first sight.
+			//     keep pestering the user that the option they enabled is up to no good.
+			//LLNotifications::instance().setIgnored(name, true);
+		}
+	}
+	//else if (type == TYPE_S32 || type == TYPE_U32 || type == TYPE_F32)
+	else if (type == TYPE_VEC2 || type == TYPE_VEC3 || type == TYPE_VEC3D || type == TYPE_VEC4
+			|| type == TYPE_S32 || type == TYPE_U32 || type == TYPE_F32)
+	{
+		if (val.asReal() > max_val)
+		{
+			LLNotificationsUtil::add(name + "_Max");
+			//BD - Don't spam the user every step.
+			LLNotifications::instance().setIgnored(name + "_Max", true);
+			LL_WARNS("Notifications") << "Value set to: " << val.asReal() << " but maximum allowed is: " << max_val << LL_ENDL;
+		}
+		else if (val.asReal() < min_val)
+		{
+			LLNotificationsUtil::add(name + "_Min");
+			//BD - Don't spam the user every step.
+			LLNotifications::instance().setIgnored(name + "_Min", true);
+			LL_WARNS("Notifications") << "Value set to: " << val.asReal() << " but minimum allowed is: " << min_val << LL_ENDL;
+		}
+	}
 }

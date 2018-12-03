@@ -359,7 +359,11 @@ width="510">
 		     left="10"
 		     name="LeftClickTouch"
 		     top_pad="0"
-		     width="256" />
+		     width="256">
+       <check_box.commit_callback
+ function="Dragon.TriggerWarn"
+ parameter="DisallowLeftClickGrab"/>
+       </check_box>
 		     
 			 <panel
  follows="left|top|right"
@@ -459,6 +463,9 @@ width="510">
        <check_box.check_button
          image_overlay="Caution_Widget"
          image_overlay_alignment="left"/>
+       <check_box.commit_callback
+ function="Dragon.TriggerWarn"
+ parameter="ConnectionPortEnabled"/>
 		     </check_box>
 			 <slider
 	    control_name="ConnectionPort"

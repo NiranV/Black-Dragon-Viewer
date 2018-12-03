@@ -10180,4 +10180,5 @@ void initialize_menus()
 	commit.add("Dragon.ArrayZ", boost::bind(&BDFunctions::onCommitZ, _1, _2));
 	commit.add("Dragon.ArrayW", boost::bind(&BDFunctions::onCommitW, _1, _2));
 	commit.add("Dragon.LockArray", boost::bind(&BDFunctions::onControlLock, _1, _2));
+	commit.add("Dragon.TriggerWarn", boost::bind(&BDFunctions::triggerWarning, _1, _2));
 }

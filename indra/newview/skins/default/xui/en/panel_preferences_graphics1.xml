@@ -286,6 +286,8 @@ width="510">
                               image_pressed="Checkbox_Press"
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
+        <radio_group.commit_callback
+        function="Dragon.TriggerWarn"/>
                   </radio_group>
  <slider
  control_name="FontScreenDPI"
@@ -363,6 +365,9 @@ width="510">
          <check_box.check_button
          image_overlay="Caution_Widget"
          image_overlay_alignment="left"/>
+         <check_box.commit_callback
+ function="Dragon.TriggerWarn"
+ parameter="RenderCompressTextures"/>
       </check_box>
  <check_box
       control_name="AutomaticMemoryManagement"
@@ -2274,7 +2279,11 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls your view distance in meters, starting from your camera."
  top_pad="12"
- width="325" />
+ width="325">
+    <slider.commit_callback
+ function="Dragon.TriggerWarn"
+ parameter="RenderFarClip"/>
+   </slider>
  <button
  follows="left|top"
  control_name="RenderFarClip"
@@ -2310,7 +2319,11 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum amount of particles rendered on screen."
  top_pad="1"
- width="325" />
+ width="325" >
+  <slider.commit_callback
+ function="Dragon.TriggerWarn"
+ parameter="RenderMaxPartCount"/>
+ </slider>
  <button
  follows="left|top"
  control_name="RenderMaxPartCount"
@@ -2678,7 +2691,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       can_edit_text="true"
       height="14"
       increment="1000"
-      initial_value="500000"
+      initial_value="250000"
 		tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite)."
@@ -2690,7 +2703,11 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="RenderAvatarMaxComplexity"
       top_pad="1"
-      width="337" />
+      width="337" >
+       <slider.commit_callback
+ function="Dragon.TriggerWarn"
+ parameter="RenderAvatarMaxComplexity"/>
+   </slider>
       <button
  follows="left|top"
  control_name="RenderAvatarMaxComplexity"
@@ -3795,7 +3812,12 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       label_width="150"
       tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance."
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance.
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;blue&gt;512x = 1MB VRAM usage                
+1024x = 4MB VRAM usage                
+2048x = 16MB VRAM usage                
+4096x = 64MB VRAM usage                
+6144x = 112MB VRAM usage&lt;/blue&gt;"
       layout="topleft"
       left="10"
       max_val="6144"
@@ -3819,7 +3841,12 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       label_width="150"
       tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance."
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance.
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;blue&gt;512x = 1MB VRAM usage                
+1024x = 4MB VRAM usage                
+2048x = 16MB VRAM usage                
+4096x = 64MB VRAM usage                
+6144x = 112MB VRAM usage&lt;/blue&gt;"
       layout="topleft"
       left="10"
       max_val="6144"
@@ -3843,7 +3870,12 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       label_width="150"
       tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance."
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance.
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;blue&gt;512x = 1MB VRAM usage                
+1024x = 4MB VRAM usage                
+2048x = 16MB VRAM usage                
+4096x = 64MB VRAM usage                
+6144x = 112MB VRAM usage&lt;/blue&gt;"
       layout="topleft"
       left="10"
       max_val="6144"
@@ -3867,7 +3899,12 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       label_width="150"
       tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance."
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance.
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;blue&gt;512x = 1MB VRAM usage                
+1024x = 4MB VRAM usage                
+2048x = 16MB VRAM usage                
+4096x = 64MB VRAM usage                
+6144x = 112MB VRAM usage&lt;/blue&gt;"
       layout="topleft"
       left="10"
       max_val="6144"
@@ -3947,7 +3984,12 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       label_width="150"
       tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low."
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low.
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;blue&gt;512x = 1MB VRAM usage                
+1024x = 4MB VRAM usage                
+2048x = 16MB VRAM usage                
+4096x = 64MB VRAM usage                
+6144x = 112MB VRAM usage&lt;/blue&gt;"
       layout="topleft"
       left="10"
       max_val="4096"
@@ -3971,7 +4013,12 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       label_width="150"
       tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low."
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;&lt;blue&gt;512x = 1MB VRAM usage                
+1024x = 4MB VRAM usage                
+2048x = 16MB VRAM usage                
+4096x = 64MB VRAM usage                
+6144x = 112MB VRAM usage&lt;/blue&gt;"
       layout="topleft"
       left="10"
       max_val="4096"

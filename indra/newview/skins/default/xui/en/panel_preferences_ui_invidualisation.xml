@@ -133,6 +133,9 @@ width="510">
       <check_box.check_button
          image_overlay="Caution_Widget"
          image_overlay_alignment="left"/>
+      <check_box.commit_callback
+         function="Dragon.TriggerWarn"
+         parameter="UsePieMenu"/>
        </check_box>
 	    <slider
 	    control_name="PieMenuOpacity"

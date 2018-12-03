@@ -11237,5 +11237,183 @@ Changes won't take effect until after you restart [APP_NAME].
      name="okbutton"
      yestext="OK"/>
   </notification>
+  
+  
+  <!-- Black Dragon Notifications -->
+  <notification
+   icon="alertmodal.tga"
+   name="UsePieMenu"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+The Pie Menu is marked as a dangerous feature.
+
+It has an unexplainable, random crash that can occur when you Right-Click that i couldn't fix yet and you will definitely experience it.
+
+&lt;b&gt;DO NOT USE if you want a stable experience!&lt;/b&gt;
+  <tag>warning</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="UIScaleFactor_Max"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+The UI is and cannot be designed to be properly viewed at bigger UI sizes.
+
+Changing the UI size to anything other than Normal will impact the UI quality, clipping, missing, overlapping text and options making it impossible to click options close to each other, weird offsets and other issues will appear.
+
+&lt;b&gt;DO NOT USE if you want a quality, bugfree UI!&lt;/b&gt;
+  <tag>warning</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="UIScaleFactor_Min"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+The UI is and cannot be designed to be properly viewed at smaller UI sizes.
+
+Changing the UI size to anything other than Normal will impact the UI quality, clipping, missing, overlapping text and options making it impossible to click options close to each other, weird offsets and other issues will appear.
+
+&lt;b&gt;DO NOT USE if you want a quality, bugfree UI!&lt;/b&gt;
+  <tag>warning</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="RenderCompressTextures"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+Enabling Texture Compression will result in texture quality loss, visual artifacts on textures (blockiness) and will drastically impact performance while loading and decoding textures for minimal texture memory savings.
+
+&lt;b&gt;DO NOT USE if you don't absolutely have to!&lt;/b&gt;
+  <tag>warning</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="RenderFarClip_Max"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+Setting the draw distance higher than 128m will have a drastic performance impact even on the most powerful machine.
+
+&lt;b&gt;DO NOT USE unless you want to take pictures that require it!&lt;/b&gt;
+  <tag>warning</tag>
+  <usetemplate
+     ignoretext="Draw Distance set too high"
+     name="okignore"
+     yestext="Oh Okay!"/>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="RenderAvatarMaxComplexity_Max"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+Setting the maximum allowed complexity beyond 250000 will negatively impact the performance with other avatars around.
+
+&lt;b&gt;Are you sure whatever you're doing is worth it?&lt;/b&gt;
+  <tag>warning</tag>
+  <usetemplate
+     ignoretext="Complexity limits set too high"
+     name="okignore"
+     yestext="I can handle this!"/>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="RenderAvatarMaxComplexity_Min"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+Setting the maximum allowed complexity to infinite will allow even the worst avatars to be rendered, this will have a huge impact on the viewer performance and memory usage.
+
+&lt;b&gt;Whatever you are doing, it is not worth it.&lt;/b&gt;
+  <tag>warning</tag>
+  <usetemplate
+     ignoretext="Complexity limits set to infinite"
+     name="okignore"
+     yestext="I can handle this!"/>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="DisallowLeftClickGrab"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+Disabling left-click touch will also prevent you from clicking your own HUDs.
+
+&lt;b&gt;DO NOT USE unless you really don't want to touch anything!&lt;/b&gt;
+  <tag>warning</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="ConnectionPortEnabled"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+Enabling a custom port can make you completely unable to connect to Second Life if not properly configured.
+
+&lt;b&gt;DO NOT USE unless you know what you're doing!&lt;/b&gt;
+  <tag>warning</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="RestrainedLove"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Please Note:&lt;/red&gt;
+
+RLVa is currently in an assumed defunct state, some parts of it may or may not work.
+
+&lt;b&gt;DO NOT REPORT any bugs with it, i know its broken, i can't fix it.&lt;/b&gt;
+  <tag>notification</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="RenderShadowResolution_Max"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+Setting shadow resolution higher than 2048 will drastically impact the performance of the viewer and raise texture memory usage quickly.
+
+The more complex a scene is the bigger the impact will be.
+
+&lt;blue&gt;Texture Memory Usage: 1024x = 4MB , 2048x = 16MB , 4096x = 64MB , 6144x = 112MB per texture.&lt;/blue&gt;
+
+&lt;b&gt;DO NOT DO this unless you have performance and a lot of texture memory to spare!&lt;/b&gt;
+  <tag>warning</tag>
+  <usetemplate
+     ignoretext="Shadow resolution is set too high"
+     name="okignore"
+     yestext="Oh Okay!"/>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="RenderProjectorShadowResolution_Max"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+Setting projector resolution higher than 2048 will drastically impact the performance of the viewer and raise texture memory usage quickly without much gain.
+
+&lt;blue&gt;Texture Memory Usage: 1024x = 4MB , 2048x = 16MB , 4096x = 64MB , 6144x = 112MB per texture.&lt;/blue&gt;
+
+&lt;b&gt;DO NOT DO this unless you have performance and a lot of texture memory to spare!&lt;/b&gt;
+  <tag>warning</tag>
+  <usetemplate
+     ignoretext="Projector shadow resolution is set too high"
+     name="okignore"
+     yestext="Oh Okay!"/>
+  </notification>
 
 </notifications>
