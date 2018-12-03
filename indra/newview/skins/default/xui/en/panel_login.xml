@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.3.4 - Animating Dragon]"
+       label="[CHANNEL] [VERSION] - [3.3.5 - Notifying Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -174,8 +174,82 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="208"
+              height="455"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Added: Baphy to Patreon Patron list.
+Added: Ben F Noviello to Patreon Patron list.
+Added: Ability to define whether a scrollist is sortable by clicking the headers or not.
+Added: Dynamic warning notifications to several critical options.
+Added: Global Light Strength option to Machinima Sidebar.
+Added: Ability to create unlimited custom camera presets, switch between them and edit them as well as share them.
+Added: New default Front View camera preset.
+Added: (Currently unfunctional) Texture Memory usage to the ARC display over people's heads.
+Changed: Drastically increased ARC for Media Surfaces.
+Changed: Drastically increased ARC for Projectors.
+Changed: Drastically increased ARC for texture memory usage, 1MB = 1024ARC.
+Changed: Made cloud noise image dropdown refresh and add all cloud images on opening the Sky Editor to allow easily adding custom cloud noise images.
+Changed: Made Poser joint lists and animation queue unsortable.
+Changed: Improved keybinding workflow, moved the action dropdown into the add keybind dialog.
+Changed: Renamed cloud noise files to reflect their actual cloud name in the cloud noise dropdown.
+Changed: Increased maximum default complexity to 250000.
+Changed: Reduced apr_pollset_poll warning to show only once rather than filling our log file when the plugin goes haywire after long sessions.
+Changed: Poser to version 13.2
+Changed: Use bone values when saving the pose rather than the clamped UI values.
+Changed: Billy Daxter's patron amount to 10$.
+Changed: Version to 3.3.5 - Notifying Dragon.
+Fixed: Inconsistencies between ARC calculation methods (actual and just getting info).
+Fixed: Bone Y and Z rotation values are switching place on loading a pose.
+Fixed: Collision Volume positions not working properly until they are reloaded.
+Fixed: Lineendings in llfloaterpreference.cpp.
+Fixed: Texture Memory usage of attachments not showing in the Advanced Complexity breakdown.
+Removed: Additional background shadow drawing for modal dialogs, unuglifies them a bit, still have stacked shadows though.
+Misc: Cleanup leftover log debugs in llavatarappearance.cpp.
+Misc: Moved escapeString function into bdfunctions.cpp/h.
+Misc: Simplified ARC calculations and removed a few unnecessary calculation steps.
+Misc: Improved shadow resolution tooltips and included VRAM usages.
+Misc: Added additional commenting and proper code tagging where possible.
+Misc: Commenting in lltooltip.cpp changes.
+Misc: Cleaned Machinima Sidebar XUI file a bit.
+Misc: Cleaned up panel_preferences_rlva.xml a bit.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.3.4
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="208"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
