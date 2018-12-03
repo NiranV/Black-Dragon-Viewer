@@ -883,7 +883,7 @@ void LLPluginProcessParent::poll(F64 timeout)
 		}
 		else if(status != APR_SUCCESS)
 		{
-			LL_WARNS("PluginPoll") << "apr_pollset_poll failed with status " << status << LL_ENDL;
+			LL_WARNS_ONCE("PluginPoll") << "apr_pollset_poll failed with status " << status << LL_ENDL;
 		}
 	}
 
