@@ -326,7 +326,7 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 
 				joint->setLastRotation(new_quat);
 				vec3.setValue(pose["rotation"]);
-				quat.setEulerAngles(vec3.mV[VX], vec3.mV[VZ], vec3.mV[VY]);
+				quat.setEulerAngles(vec3.mV[VX], vec3.mV[VX], vec3.mV[VZ]);
 				joint->setTargetRotation(quat);
 			}
 

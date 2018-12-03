@@ -389,15 +389,11 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 					//     as well as all attachment bones and collision volumes.
 					if (joint->mHasPosition || it > JOINTS)
 					{
-						vec3.mV[VX] = element->getColumn(COL_POS_X)->getValue().asReal();
-						vec3.mV[VY] = element->getColumn(COL_POS_Y)->getValue().asReal();
-						vec3.mV[VZ] = element->getColumn(COL_POS_Z)->getValue().asReal();
+						vec3 = joint->getTargetPosition();
 						record[line]["position"] = vec3.getValue();
 					}
 
-					vec3.mV[VX] = element->getColumn(COL_SCALE_X)->getValue().asReal();
-					vec3.mV[VY] = element->getColumn(COL_SCALE_Y)->getValue().asReal();
-					vec3.mV[VZ] = element->getColumn(COL_SCALE_Z)->getValue().asReal();
+					vec3 = joint->getScale();
 					record[line]["scale"] = vec3.getValue();
 
 					if (it == JOINTS)
@@ -956,7 +952,7 @@ void BDFloaterPoser::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 				S32 dir = param.asInteger();
 				vec3.mV[dir] = val;
 				cell[dir]->setValue(ll_round(vec3.mV[dir], 0.001f));
-				(index > JOINTS) ? joint->setPosition(vec3) : joint->setTargetPosition(vec3);
+				joint->setTargetPosition(vec3);
 			}
 		}
 	}
@@ -1081,12 +1077,7 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 						col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
 						col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
 						col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
-						if (it == JOINTS)
-						{
-							joint->setTargetPosition(pos);
-						}
-						//BD - Skip the animation.
-						joint->setPosition(pos);
+						joint->setTargetPosition(pos);
 					}
 
 					//BD - Resetting scales last.
@@ -1199,17 +1190,7 @@ void BDFloaterPoser::onJointPositionReset()
 					col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
 					col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
 					col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
-					//BD - Attachment bones and collision volumes don't have target positions.
-					//     They don't animate and they are not even included in our posing animation.
-					if (index == JOINTS)
-					{
-						joint->setTargetPosition(pos);
-					}
-					else
-					{
-						//BD - Skip the animation.
-						joint->setPosition(pos);
-					}
+					joint->setTargetPosition(pos);
 				}
 			}
 		}

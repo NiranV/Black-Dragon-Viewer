@@ -219,7 +219,7 @@ void BDPosingMotion::addJointToState(LLJoint *joint)
 	S32 i = joint->getJointNum();
 
 	//BD - Don't add collision volumes and attachment bones.
-	if (i >= 134)
+	if (i > 134)
 		return;
 
 	mJointState[i]->setJoint(joint);
