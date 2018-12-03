@@ -417,7 +417,7 @@ width="684">
 	Texture Memory:
  </text>
  <text
- name="label_texture_memory"
+ name="label_vram"
  text_color="HTMLLinkColor"
  follows="right|top"
  layout="topleft"

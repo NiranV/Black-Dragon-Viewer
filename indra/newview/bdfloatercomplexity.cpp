@@ -410,10 +410,10 @@ void BDFloaterComplexity::onSelectEntry()
 	if (item)
 	{
 		//BD - Lets write up all the easy information first.
-		//getChild<LLUICtrl>("label_name")->setValue(item->getColumn(0)->getValue());
 		getChild<LLUICtrl>("label_final_arc")->setValue(item->getColumn(1)->getValue());
 		getChild<LLUICtrl>("label_polygons")->setValue(item->getColumn(2)->getValue());
 		getChild<LLUICtrl>("label_vertices")->setValue(item->getColumn(3)->getValue());
+		getChild<LLUICtrl>("label_vram")->setValue(item->getColumn(17)->getValue());
 
 		//BD - Write down all ARC values.
 		getChild<LLUICtrl>("label_flexi")->setValue(item->getColumn(4)->getValue());
