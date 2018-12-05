@@ -621,7 +621,7 @@ void BDFloaterPoser::onJointRefresh()
 		if (is_posing)
 		{
 			//BD - Bone Positions
-			joint->getTargetRotation().getEulerAngles(&rot.mV[VX], &rot.mV[VZ], &rot.mV[VY]);
+			joint->getTargetRotation().getEulerAngles(&rot.mV[VX], &rot.mV[VY], &rot.mV[VZ]);
 			row["columns"][COL_ROT_X]["column"] = "x";
 			row["columns"][COL_ROT_X]["value"] = ll_round(rot.mV[VX], 0.001f);
 			row["columns"][COL_ROT_Y]["column"] = "y";
