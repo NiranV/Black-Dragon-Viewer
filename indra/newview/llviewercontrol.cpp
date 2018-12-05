@@ -347,6 +347,7 @@ static void handleAudioVolumeChanged(const LLSD& newvalue)
 static bool handleJoystickChanged(const LLSD& newvalue)
 {
 	LLViewerJoystick::getInstance()->setCameraNeedsUpdate(TRUE);
+	LLViewerJoystick::getInstance()->refreshAxesMapping();
 	return true;
 }
 
