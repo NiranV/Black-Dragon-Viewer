@@ -410,7 +410,7 @@ BOOL LLFloaterCamera::postBuild()
 
 	//BD - Unlimited Camera Presets
 	mPresetsScroll = this->getChild<LLScrollListCtrl>("presets_scroll", true);
-	mPresetsScroll->setDoubleClickCallback(boost::bind(&LLFloaterCamera::switchToPreset, this));
+	mPresetsScroll->setCommitCallback(boost::bind(&LLFloaterCamera::switchToPreset, this));
 
 	update();
 
