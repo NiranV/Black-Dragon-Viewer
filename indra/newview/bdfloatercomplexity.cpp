@@ -55,8 +55,7 @@ BOOL BDFloaterComplexity::postBuild()
 	//BD - Complexity
 	mAvatarScroll = this->getChild<LLScrollListCtrl>("arc_avs_scroll", true);
 	mAvatarScroll->setCommitOnSelectionChange(TRUE);
-	mAvatarScroll->setCommitCallback(boost::bind(&BDFloaterComplexity::onAvatarsRefresh, this));
-	mAvatarScroll->setDoubleClickCallback(boost::bind(&BDFloaterComplexity::calcARC, this));
+	mAvatarScroll->setCommitCallback(boost::bind(&BDFloaterComplexity::calcARC, this));
 	mARCScroll = this->getChild<LLScrollListCtrl>("arc_scroll", true);
 	mARCScroll->setCommitOnSelectionChange(TRUE);
 	mARCScroll->setCommitCallback(boost::bind(&BDFloaterComplexity::onSelectEntry, this));
@@ -195,6 +194,9 @@ void BDFloaterComplexity::onAvatarsRefresh()
 
 void BDFloaterComplexity::calcARC()
 {
+	//BD - Do an avatar refresh real quick before we continue.
+	onAvatarsRefresh();
+
 	//BD - First, clear the scroll.
 	mARCScroll->clearRows();
 
