@@ -1,324 +1,323 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
- legacy_header_height="18"
- positioning="centered"
- default_tab_group="1"
- height="460"
- layout="topleft"
- name="Preferences"
- help_topic="preferences"
- save_rect="true"
- single_instance="true"
- title="Preferences"
- width="668">
-	
-	<string
-    name="slide_left">
-  Move Left
- </string>
- <string
-    name="slide_right">
-  Move Right
- </string>
- <string
-    name="push_forward">
-  Move Forward
- </string>
- <string
-    name="push_backward">
-  Move Backwards
- </string>
- <string
-    name="turn_left">
-  Turn Left
- </string>
- <string
-    name="turn_right">
-  Turn Right
- </string>
- <string
-    name="jump">
-  Jump
- </string>
- <string
-    name="push_down">
-  Crouch
- </string>
- <string
-    name="toggle_fly">
-  Fly
- </string>
- <string
-    name="stop_moving">
-  Stop Movement
- </string>
- <string
-    name="start_chat">
-  Start Chat
- </string>
- <string
-    name="start_gesture">
-  Start Gesture
- </string>
- 
- <string
-    name="move_forward">
-  (Camera) Zoom In
- </string>
- <string
-    name="move_backward">
-  (Camera) Zoom Out
- </string>
- <string
-    name="pan_left">
-  (Camera) Move Left
- </string>
- <string
-    name="pan_right">
-  (Camera) Move Right
- </string>
- <string
-    name="pan_up">
-  (Camera) Move Up
- </string>
- <string
-    name="pan_down">
-  (Camera) Move Down
- </string>
- <string
-    name="spin_around_ccw">
-  (Camera) Spin Right
- </string>
- <string
-    name="spin_around_cw">
-  (Camera) Spin Left
- </string>
- <string
-    name="spin_over">
-  (Camera) Spin Over
- </string>
- <string
-    name="spin_under">
-  (Camera) Spin Under
- </string>
- <string
-    name="roll_left">
-  (Camera) Roll Left
- </string>
- <string
-    name="roll_right">
-  (Camera) Roll Right
- </string>
- 
- <string
-    name="edit_avatar_move_forward">
-  (Camera) Zoom In
- </string>
- <string
-    name="edit_avatar_move_backward">
-  (Camera) Zoom Out
- </string>
- <string
-    name="edit_avatar_spin_ccw">
-  (Camera) Spin Right
- </string>
- <string
-    name="edit_avatar_spin_cw">
-  (Camera) Spin Left
- </string>
- <string
-    name="edit_avatar_spin_over">
-  (Camera) Spin Over
- </string>
- <string
-    name="edit_avatar_spin_under">
-  (Camera) Spin Under
- </string>
- 
- <string
-    name="move_forward_sitting">
-  (Camera) Zoom In
- </string>
- <string
-    name="move_backward_sitting">
-  (Camera) Zoom Out
- </string>
- <string
-    name="spin_around_ccw_sitting">
-  (Camera) Spin Right
- </string>
- <string
-    name="spin_around_cw_sitting">
-  (Camera) Spin Left
- </string>
- <string
-    name="spin_over_sitting">
-  (Camera) Spin Over
- </string>
- <string
-    name="spin_under_sitting">
-  (Camera) Spin Under
- </string>
-	<string
-	name="av_never_render"
-	value="Never"/>
-	<string
-	name="av_always_render"
-	value="Always"/>
- 
-   <icon
-        follows="top|left"
-        height="411"
-        color="1 1 1 1"
-        image_name="Panel_Background"
-        layout="topleft"
-        name="vicon"
-        mouse_opaque="false"
-        visible="true"
-        width="142"
-		top="18"
-        left="9"/>
-   <button
-     follows="right|bottom"
-     height="21"
-     label="OK"
-     label_selected="OK"
-     layout="topleft"
-     right="-99"
-     name="OK"
-     top="433"
-     width="90">
-        <button.commit_callback
-         function="Pref.OK" />
-    </button>
-    <button
-     follows="right|bottom"
-     height="21"
-     label="Cancel"
-     label_selected="Cancel"
-     layout="topleft"
-     left_pad="5"
-     name="Cancel"
-     right="-8"
-     width="90" >
-        <button.commit_callback
-         function="Pref.Cancel" />
-    </button>
-    <tab_container
-     follows="all"
-     halign="left"
-     height="410"
-     layout="topleft"
-     left="7"
-     name="pref core"
-     tab_group="1"
-     tab_position="left"
-     tab_width="140"
-     tab_padding_right="0"
-     top="18"
-     width="656">
-        <panel
-	     class="panel_preference"
-         filename="panel_preferences_general.xml"
-         label="General"
-         layout="topleft"
-         name="general" />
-        <panel
-	     class="panel_preference_graphics"
-         filename="panel_preferences_graphics1.xml"
-         label="Display"
-         layout="topleft"
-         name="display" />
-		  <panel
-	     class="panel_preference"
-         filename="panel_preferences_render_settings.xml"
-         label="Avatar Mute Settings"
-         layout="topleft"
-         name="render_settings" />
-        <panel
-		 class="panel_preference"
-         filename="panel_preferences_sound.xml"
-         label="Sound &amp; Media"
-         layout="topleft"
-         name="audio" />
-        <panel
-		 class="panel_preference"
-         filename="panel_preferences_chat.xml"
-         label="Chat"
-         layout="topleft"
-         name="chat" />
-		<panel
-         class="panel_preference_privacy"
-         filename="panel_preferences_im.xml"
-         label="IM &amp; Groupchat"
-         layout="topleft"
-         name="instant" />
-		<panel
-		 class="panel_preference"
-         filename="panel_preferences_camera.xml"
-         label="Camera"
-         layout="topleft"
-         name="camera" />
-        <panel
-		 class="panel_preference"
-         filename="panel_preferences_controls.xml"
-         label="Controls"
-         layout="topleft"
-         name="controls" />
-		<panel
-		 class="panel_preference"
-         filename="panel_preferences_keybinds.xml"
-         label="Keybindings"
-         layout="topleft"
-         name="keybinds" />
-        <panel
-		 class="panel_preference"
-         filename="panel_preferences_alerts.xml"
-         label="Notifications"
-         layout="topleft"
-         name="msgs" />
-        <panel
-         class="panel_preference_privacy"
-         filename="panel_preferences_privacy.xml"
-         label="Privacy"
-         layout="topleft"
-         name="privacy" />
-		<panel
-		 class="panel_preference"
-         filename="panel_preferences_ui_colors.xml"
-         label="Colors"
-         layout="topleft"
-         name="colors" />
-        <panel
-		 class="panel_preference"
-         filename="panel_preferences_ui_invidualisation.xml"
-         label="Interface"
-         layout="topleft"
-         name="interface" />
-        <panel
-		 class="panel_preference"
-         filename="panel_preferences_viewer.xml"
-         label="Viewer"
-         layout="topleft"
-         name="viewer" />
-		<panel
-		 class="panel_preference"
-         filename="panel_preferences_browser.xml"
-         label="Browser"
-         layout="topleft"
-         name="browser" />
-		<panel
-         class="panel_preference"
-         filename="panel_preferences_rlva.xml"
-         label="Restrained Love"
-         layout="topleft"
-         name="rlva" />
-		<panel
-         class="panel_preference"
-         filename="panel_preferences_uploads.xml"
-         label="Uploads"
-         layout="topleft"
-         name="uploads" />
-    </tab_container>
+legacy_header_height="18"
+positioning="centered"
+default_tab_group="1"
+height="460"
+layout="topleft"
+name="Preferences"
+help_topic="preferences"
+save_rect="true"
+single_instance="true"
+title="Preferences"
+width="668">
 
+ <string
+ name="slide_left">
+ Move Left
+ </string>
+ <string
+ name="slide_right">
+ Move Right
+ </string>
+ <string
+ name="push_forward">
+ Move Forward
+ </string>
+ <string
+ name="push_backward">
+ Move Backwards
+ </string>
+ <string
+ name="turn_left">
+ Turn Left
+ </string>
+ <string
+ name="turn_right">
+ Turn Right
+ </string>
+ <string
+ name="jump">
+ Jump
+ </string>
+ <string
+ name="push_down">
+ Crouch
+ </string>
+ <string
+ name="toggle_fly">
+ Fly
+ </string>
+ <string
+ name="stop_moving">
+ Stop Movement
+ </string>
+ <string
+ name="start_chat">
+ Start Chat
+ </string>
+ <string
+ name="start_gesture">
+ Start Gesture
+ </string>
+ 
+ <string
+ name="move_forward">
+ (Camera) Zoom In
+ </string>
+ <string
+ name="move_backward">
+ (Camera) Zoom Out
+ </string>
+ <string
+ name="pan_left">
+ (Camera) Move Left
+ </string>
+ <string
+ name="pan_right">
+ (Camera) Move Right
+ </string>
+ <string
+ name="pan_up">
+ (Camera) Move Up
+ </string>
+ <string
+ name="pan_down">
+ (Camera) Move Down
+ </string>
+ <string
+ name="spin_around_ccw">
+ (Camera) Spin Right
+ </string>
+ <string
+ name="spin_around_cw">
+ (Camera) Spin Left
+ </string>
+ <string
+ name="spin_over">
+ (Camera) Spin Over
+ </string>
+ <string
+ name="spin_under">
+ (Camera) Spin Under
+ </string>
+ <string
+ name="roll_left">
+ (Camera) Roll Left
+ </string>
+ <string
+ name="roll_right">
+ (Camera) Roll Right
+ </string>
+ 
+ <string
+ name="edit_avatar_move_forward">
+ (Camera) Zoom In
+ </string>
+ <string
+ name="edit_avatar_move_backward">
+ (Camera) Zoom Out
+ </string>
+ <string
+ name="edit_avatar_spin_ccw">
+ (Camera) Spin Right
+ </string>
+ <string
+ name="edit_avatar_spin_cw">
+ (Camera) Spin Left
+ </string>
+ <string
+ name="edit_avatar_spin_over">
+ (Camera) Spin Over
+ </string>
+ <string
+ name="edit_avatar_spin_under">
+ (Camera) Spin Under
+ </string>
+ 
+ <string
+ name="move_forward_sitting">
+ (Camera) Zoom In
+ </string>
+ <string
+ name="move_backward_sitting">
+ (Camera) Zoom Out
+ </string>
+ <string
+ name="spin_around_ccw_sitting">
+ (Camera) Spin Right
+ </string>
+ <string
+ name="spin_around_cw_sitting">
+ (Camera) Spin Left
+ </string>
+ <string
+ name="spin_over_sitting">
+ (Camera) Spin Over
+ </string>
+ <string
+ name="spin_under_sitting">
+ (Camera) Spin Under
+ </string>
+ <string
+ name="av_never_render"
+ value="Never"/>
+ <string
+ name="av_always_render"
+ value="Always"/>
+ 
+ <icon
+ follows="top|left"
+ height="411"
+ color="1 1 1 1"
+ image_name="Panel_Background"
+ layout="topleft"
+ name="vicon"
+ mouse_opaque="false"
+ visible="true"
+ width="142"
+ top="18"
+ left="9"/>
+ <button
+ follows="right|bottom"
+ height="21"
+ label="OK"
+ label_selected="OK"
+ layout="topleft"
+ right="-99"
+ name="OK"
+ top="433"
+ width="90">
+ <button.commit_callback
+ function="Pref.OK" />
+ </button>
+ <button
+ follows="right|bottom"
+ height="21"
+ label="Cancel"
+ label_selected="Cancel"
+ layout="topleft"
+ left_pad="5"
+ name="Cancel"
+ right="-8"
+ width="90" >
+ <button.commit_callback
+ function="Pref.Cancel" />
+ </button>
+ <tab_container
+ follows="all"
+ halign="left"
+ height="410"
+ layout="topleft"
+ left="7"
+ name="pref core"
+ tab_group="1"
+ tab_position="left"
+ tab_width="140"
+ tab_padding_right="0"
+ top="18"
+ width="656">
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_general.xml"
+  label="General"
+  layout="topleft"
+  name="general" />
+  <panel
+  class="panel_preference_graphics"
+  filename="panel_preferences_graphics1.xml"
+  label="Display"
+  layout="topleft"
+  name="display" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_render_settings.xml"
+  label="Avatar Mute Settings"
+  layout="topleft"
+  name="render_settings" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_sound.xml"
+  label="Sound &amp; Media"
+  layout="topleft"
+  name="audio" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_chat.xml"
+  label="Chat"
+  layout="topleft"
+  name="chat" />
+  <panel
+  class="panel_preference_privacy"
+  filename="panel_preferences_im.xml"
+  label="IM &amp; Groupchat"
+  layout="topleft"
+  name="instant" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_camera.xml"
+  label="Camera"
+  layout="topleft"
+  name="camera" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_controls.xml"
+  label="Controls"
+  layout="topleft"
+  name="controls" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_keybinds.xml"
+  label="Keybindings"
+  layout="topleft"
+  name="keybinds" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_alerts.xml"
+  label="Notifications"
+  layout="topleft"
+  name="msgs" />
+  <panel
+  class="panel_preference_privacy"
+  filename="panel_preferences_privacy.xml"
+  label="Privacy"
+  layout="topleft"
+  name="privacy" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_ui_colors.xml"
+  label="Colors"
+  layout="topleft"
+  name="colors" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_ui_invidualisation.xml"
+  label="Interface"
+  layout="topleft"
+  name="interface" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_viewer.xml"
+  label="Viewer"
+  layout="topleft"
+  name="viewer" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_browser.xml"
+  label="Browser"
+  layout="topleft"
+  name="browser" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_rlva.xml"
+  label="Restrained Love"
+  layout="topleft"
+  name="rlva" />
+  <panel
+  class="panel_preference"
+  filename="panel_preferences_uploads.xml"
+  label="Uploads"
+  layout="topleft"
+  name="uploads" />
+ </tab_container>
 </floater>
