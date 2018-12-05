@@ -284,8 +284,8 @@ void PieMenu::draw()
 	S32 num = 0;
 
 	//BD - Render the background for each slice.
-	F32 segmentStart = F_PI / 8.0;
-	gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, segmentStart, segmentStart + (F_PI * factor), 42, bgColor, borderColor);
+	F32 segmentStart = F_TWO_PI / 8.0;
+	gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, segmentStart, segmentStart + (F_TWO_PI * factor), 42, bgColor, borderColor);
 
 	// clear current slice pointer
 	mSlice = 0;
