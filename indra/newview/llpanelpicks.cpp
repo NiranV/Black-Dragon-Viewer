@@ -56,7 +56,6 @@
 
 static const std::string XML_BTN_NEW = "new_btn";
 static const std::string XML_BTN_DELETE = "trash_btn";
-static const std::string XML_BTN_INFO = "info_btn";
 static const std::string XML_BTN_TELEPORT = "teleport_btn";
 static const std::string XML_BTN_SHOW_ON_MAP = "show_on_map_btn";
 
@@ -424,9 +423,6 @@ void LLPanelPicks::processProperties(void* data, EAvatarProcessorType type)
 				picture->setMouseUpCallback(boost::bind(&LLPanelPicks::updateButtons, this));
 			}
 
-			//BD
-			//showAccordion("tab_picks", mPicksList->size());
-
 			resetDirty();
 			updateButtons();
 		}
@@ -463,9 +459,6 @@ void LLPanelPicks::processProperties(void* data, EAvatarProcessorType type)
 				c_item->setRightMouseUpCallback(boost::bind(&LLPanelPicks::onRightMouseUpItem, this, _1, _2, _3, _4));
 				c_item->setMouseUpCallback(boost::bind(&LLPanelPicks::updateButtons, this));
 			}
-
-			//BD
-			//showAccordion("tab_classifieds", mClassifiedsList->size());
 
 			resetDirty();
 			updateButtons();
@@ -527,18 +520,13 @@ BOOL LLPanelPicks::postBuild()
 	childSetAction(XML_BTN_DELETE, boost::bind(&LLPanelPicks::onClickDelete, this));
 	childSetAction(XML_BTN_TELEPORT, boost::bind(&LLPanelPicks::onClickTeleport, this));
 	childSetAction(XML_BTN_SHOW_ON_MAP, boost::bind(&LLPanelPicks::onClickMap, this));
-	childSetAction(XML_BTN_INFO, boost::bind(&LLPanelPicks::onClickInfo, this));
 
 	//BD
 	mPicksAccTab = getChild<LLPanel>("tab_picks");
-	//mPicksAccTab->setDropDownStateChangedCallback(boost::bind(&LLPanelPicks::onAccordionStateChanged, this, mPicksAccTab));
-	//mPicksAccTab->setDisplayChildren(true);
 	mPicksAccTab->setVisibleCallback(boost::bind(&LLPanelPicks::onAccordionStateChanged, this));
 
 	//BD
 	mClassifiedsAccTab = getChild<LLPanel>("tab_classifieds");
-	//mClassifiedsAccTab->setDropDownStateChangedCallback(boost::bind(&LLPanelPicks::onAccordionStateChanged, this, mClassifiedsAccTab));
-	//mClassifiedsAccTab->setDisplayChildren(false);
 	mClassifiedsAccTab->setVisibleCallback(boost::bind(&LLPanelPicks::onAccordionStateChanged, this));
 	
 	LLUICtrl::CommitCallbackRegistry::ScopedRegistrar registar;
@@ -602,19 +590,8 @@ bool LLPanelPicks::isClassifiedPublished(LLClassifiedItem* c_item)
 	return false;
 }
 
-//BD
 void LLPanelPicks::onAccordionStateChanged()
 {
-	//BD
-	/*if(!mPicksAccTab->getDisplayChildren())
-	{
-		mPicksList->resetSelection(true);
-	}
-	if(!mClassifiedsAccTab->getDisplayChildren())
-	{
-		mClassifiedsList->resetSelection(true);
-	}*/
-
 	updateButtons();
 }
 
@@ -630,7 +607,6 @@ void LLPanelPicks::onOpen(const LLSD& key)
 	// Disable buttons when viewing profile for first time
 	if(getAvatarId() != id)
 	{
-		getChildView(XML_BTN_INFO)->setEnabled(FALSE);
 		getChildView(XML_BTN_TELEPORT)->setEnabled(FALSE);
 		getChildView(XML_BTN_SHOW_ON_MAP)->setEnabled(FALSE);
 	}
@@ -638,10 +614,6 @@ void LLPanelPicks::onOpen(const LLSD& key)
 	// and see a special title - set as invisible by default in xml file
 	if (self)
 	{
-		//BD
-		//getChildView("pick_title")->setVisible( !self);
-		//getChildView("pick_title_agent")->setVisible( self);
-
 		mPopupMenu->setItemVisible("pick_delete", TRUE);
 		mPopupMenu->setItemVisible("pick_edit", TRUE);
 		mPopupMenu->setItemVisible("pick_separator", TRUE);
@@ -649,10 +621,6 @@ void LLPanelPicks::onOpen(const LLSD& key)
 
 	if(getAvatarId() != id)
 	{
-		//BD
-		//showAccordion("tab_picks", false);
-		//showAccordion("tab_classifieds", false);
-
 		mPicksList->goToTop();
 		// Set dummy value to make panel dirty and make it reload picks
 		setValue(LLSD());
@@ -839,15 +807,8 @@ void LLPanelPicks::updateButtons()
 		getChildView(XML_BTN_DELETE)->setEnabled(has_selected);
 	}
 
-	getChildView(XML_BTN_INFO)->setEnabled(has_selected);
 	getChildView(XML_BTN_TELEPORT)->setEnabled(has_selected);
 	getChildView(XML_BTN_SHOW_ON_MAP)->setEnabled(has_selected);
-
-	LLClassifiedItem* c_item = dynamic_cast<LLClassifiedItem*>(mClassifiedsList->getSelectedItem());
-	if(c_item)
-	{
-		getChildView(XML_BTN_INFO)->setEnabled(isClassifiedPublished(c_item));
-	}
 }
 
 void LLPanelPicks::setProfilePanel(LLPanelProfile* profile_panel)
@@ -858,11 +819,6 @@ void LLPanelPicks::setProfilePanel(LLPanelProfile* profile_panel)
 
 void LLPanelPicks::buildPickPanel()
 {
-// 	if (mPickPanel == NULL)
-// 	{
-// 		mPickPanel = new LLPanelPick();
-// 		mPickPanel->setExitCallback(boost::bind(&LLPanelPicks::onPanelPickClose, this, NULL));
-// 	}
 }
 
 void LLPanelPicks::onClickPlusBtn()
@@ -950,15 +906,6 @@ void LLPanelPicks::openClassifiedEdit(const LLSD& params)
 	editClassified(classified_id);
 }
 
-//BD
-/*void LLPanelPicks::showAccordion(const std::string& name, bool show)
-{
-	LLAccordionCtrlTab* tab = getChild<LLAccordionCtrlTab>(name);
-	tab->setVisible(show);
-	LLAccordionCtrl* acc = getChild<LLAccordionCtrl>("accordion");
-	acc->arrange();
-}*/
-
 void LLPanelPicks::onPanelPickClose(LLPanel* panel)
 {
 	getProfilePanel()->closePanel(panel);
@@ -993,11 +940,6 @@ void LLPanelPicks::onPanelClassifiedSave(LLPanelClassifiedEdit* panel)
 		c_item->setRightMouseUpCallback(boost::bind(&LLPanelPicks::onRightMouseUpItem, this, _1, _2, _3, _4));
 		c_item->setMouseUpCallback(boost::bind(&LLPanelPicks::updateButtons, this));
 		c_item->childSetAction("info_chevron", boost::bind(&LLPanelPicks::onClickInfo, this));
-
-		//BD
-		// order does matter, showAccordion will invoke arrange for accordions.
-		//mClassifiedsAccTab->changeOpenClose(false);
-		//showAccordion("tab_classifieds", true);
 	}
 	else if(panel->isNewWithErrors())
 	{
@@ -1086,34 +1028,6 @@ void LLPanelPicks::createPickEditPanel()
 	mPanelPickEdit->setCancelCallback(boost::bind(&LLPanelPicks::onPanelPickClose, this, mPanelPickEdit));
 	mPanelPickEdit->setVisible(FALSE);
 }
-
-// void LLPanelPicks::openPickEditPanel(LLPickItem* pick)
-// {
-// 	if(!pick)
-// 	{
-// 		return;
-// 	}
-// }
-
-// void LLPanelPicks::openPickInfoPanel(LLPickItem* pick)
-// {
-// 	if(!mPanelPickInfo)
-// 	{
-// 		mPanelPickInfo = LLPanelPickInfo::create();
-// 		mPanelPickInfo->setExitCallback(boost::bind(&LLPanelPicks::onPanelPickClose, this, mPanelPickInfo));
-// 		mPanelPickInfo->setEditPickCallback(boost::bind(&LLPanelPicks::onPanelPickEdit, this));
-// 		mPanelPickInfo->setVisible(FALSE);
-// 	}
-// 
-// 	LLSD params;
-// 	params["pick_id"] = pick->getPickId();
-// 	params["avatar_id"] = pick->getCreatorId();
-// 	params["snapshot_id"] = pick->getSnapshotId();
-// 	params["pick_name"] = pick->getPickName();
-// 	params["pick_desc"] = pick->getPickDesc();
-// 
-// 	getProfilePanel()->openPanel(mPanelPickInfo, params);
-// }
 
 void LLPanelPicks::openPickEdit(const LLSD& params)
 {
