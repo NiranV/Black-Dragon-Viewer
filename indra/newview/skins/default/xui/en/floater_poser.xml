@@ -21,6 +21,14 @@ width="678">
 	name="min_panel"
 	width="678"/>
 	<string
+	name="linear_time" translate="false">
+	0.000+
+	</string>
+	<string
+	name="spherical_time" translate="false">
+	0.001 to 1.0
+	</string>
+	<string
 	name="icon_category" translate="false">
 	Inv_Shape
 	</string>
@@ -460,6 +468,8 @@ width="678">
 				label="Spherical Linear"
 				name="2"
 				value="2" />
+				<combo_box.commit_callback
+				function="Pose.Interpolation"/>
 				</combo_box>
 				<button
 				height="21"

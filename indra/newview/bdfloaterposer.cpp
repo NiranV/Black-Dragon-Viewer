@@ -53,6 +53,8 @@ BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pose.Set", boost::bind(&BDFloaterPoser::onPoseSet, this, _1, _2));
 	//BD - Extend or collapse the floater's pose list.
 	mCommitCallbackRegistrar.add("Pose.Layout", boost::bind(&BDFloaterPoser::onUpdateLayout, this));
+	//BD - Set the desired pose interpolation type.
+	mCommitCallbackRegistrar.add("Pose.Interpolation", boost::bind(&BDFloaterPoser::onJointControlsRefresh, this));
 
 	//BD - Change a bone's rotation.
 	mCommitCallbackRegistrar.add("Joint.Set", boost::bind(&BDFloaterPoser::onJointSet, this, _1, _2));
@@ -337,10 +339,10 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 		//BD - Change the header here.
 		record[0]["type"] = type;
 		//BD - If we are using spherical linear interpolation we need to clamp the values 
-		//     between 0.f and 1.f otherwise unexpected things might happen.
+		//     between 0.001f and 1.f otherwise unexpected things might happen.
 		if (type == 2)
 		{
-			time = llclamp(time, 0.0f, 1.0f);
+			time = llclamp(time, 0.001f, 1.0f);
 		}
 		record[0]["time"] = time;
 
@@ -359,10 +361,10 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 		S32 type = getChild<LLUICtrl>("interpolation_type")->getValue();
 		F32 time = getChild<LLUICtrl>("interpolation_time")->getValue().asReal();
 		//BD - If we are using spherical linear interpolation we need to clamp the values 
-		//     between 0.f and 1.f otherwise unexpected things might happen.
+		//     between 0.001f and 1.f otherwise unexpected things might happen.
 		if (type == 2)
 		{
-			time = llclamp(time, 0.0f, 1.0f);
+			time = llclamp(time, 0.001f, 1.0f);
 		}
 		record[line]["time"] = time;
 		record[line]["type"] = type;
@@ -620,7 +622,7 @@ void BDFloaterPoser::onJointRefresh()
 
 		if (is_posing)
 		{
-			//BD - Bone Positions
+			//BD - Bone Rotations
 			joint->getTargetRotation().getEulerAngles(&rot.mV[VX], &rot.mV[VY], &rot.mV[VZ]);
 			row["columns"][COL_ROT_X]["column"] = "x";
 			row["columns"][COL_ROT_X]["value"] = ll_round(rot.mV[VX], 0.001f);
@@ -866,9 +868,18 @@ void BDFloaterPoser::onJointControlsRefresh()
 	getChild<LLButton>("reset_bone_scale")->setEnabled(item && is_posing);
 	getChild<LLButton>("activate")->setValue(is_posing);
 	getChild<LLUICtrl>("pose_name")->setEnabled(is_posing);
-	getChild<LLUICtrl>("interpolation_time")->setEnabled(is_posing);
-	getChild<LLUICtrl>("interpolation_type")->setEnabled(is_posing);
 	getChild<LLUICtrl>("save_poses")->setEnabled(is_posing);
+
+	//BD - Depending on which interpolation type the user selects we want the time editor to show
+	//     a different label, since spherical and linear both have different min/max numbers and
+	//     work differently with them.
+	//     Spherical: 0.001 - 1.0.
+	//     Linear: 0.0 - infinite.
+	getChild<LLUICtrl>("interpolation_type")->setEnabled(is_posing);
+	S32 interp_type = getChild<LLUICtrl>("interpolation_type")->getValue();
+	getChild<LLUICtrl>("interpolation_time")->setEnabled(is_posing && interp_type != 0);
+	const std::string label_time = interp_type == 1 ? "linear_time" : "spherical_time";
+	getChild<LLLineEditor>("interpolation_time")->setLabel(getString(label_time));
 
 	mRotationSliders[VX]->setEnabled(item && is_posing && index == JOINTS);
 	mRotationSliders[VY]->setEnabled(item && is_posing && index == JOINTS);
