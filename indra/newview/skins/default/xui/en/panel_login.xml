@@ -92,7 +92,7 @@ top="600"
        height="20"
        image_unselected="transparentj2c"
        image_selected="transparentj2c"
-       label="[CHANNEL] [VERSION] - [3.3.5 - Notifying Dragon]"
+       label="[CHANNEL] [VERSION] - [3.3.6 - Notifying Dragon]"
        font="SansSerifSmall"
        layout="topleft"
        left="3"
@@ -174,8 +174,61 @@ top="600"
               font="SansSerifSmall"
               font_shadow="soft"
               halign="left"
-              height="455"
+              height="182"
               top="10"
+              left="7"
+              max_length="9999"
+              name="changelog_text"
+              bg_visible="true"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+Changed: Change double click to change camera preset to single click only.
+Changed: Reduced double click to select an avatar to single click.
+Changed: Improved the layout and consistency across all Picks panels.
+Changed: Experimental DoF tweaks, possibly improving alpha depth handling.
+Changed: Change interpolation time label depending on the selected mode to give the user a hint what to enter as value.
+Changed: Version to 3.3.6.
+Fixed: Pose loading being broken due to previous change that were meant to fix the switched Y and Z entries.
+Fixed: Invert buttons in Joystick Configuration now triggering the axis mapping refresh, having no actual effect until manually commiting the values again.
+Fixed: Pie menu background cutting off halfway.
+Fixed: User being able to enter 0.0 as value for spherical interpolation resulting in a pose only getting applied after selecting a bone.
+Fixed: Three little oversights in the Edit Classified panel.
+Removed: (Experimental) DoF Texture Filter used to hide the cheapness of lower quality DoF.
+Misc: Cleaned up floater_preferences.xml.
+Misc: Corrected wrong comments in bdfloaterpoer.cpp.
+              </text>
+              <view_border
+    bevel_style="in"
+    follows="top|left"
+    height="1"
+    layout="topleft"
+    left="1"
+    name="cost_text_border"
+    top_pad="10"
+    width="250"/>
+              <text
+              follows="top|left|right"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="14"
+              top_delta="-6"
+              left_pad="3"
+              name="changelog_text"
+              bg_visible="false"
+              bg_writeable_color="Black_50" 
+              width="990"
+              word_wrap="false">
+3.3.5
+              </text>
+        <text
+              follows="top|left"
+              font="SansSerifSmall"
+              font_shadow="soft"
+              halign="left"
+              height="455"
+              top_pad="3"
               left="7"
               max_length="9999"
               name="changelog_text"
