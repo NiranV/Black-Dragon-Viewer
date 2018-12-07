@@ -8112,7 +8112,7 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 			{ //perform DoF sampling at half-res (preserve alpha channel)
 				mScreen.bindTarget();
 				glViewport(0,0, dof_width, dof_height);
-				gGL.setColorMask(true, false);
+				gGL.setColorMask(true, true);
 
 				shader = &gDeferredPostProgram;
 				bindDeferredShader(*shader);
