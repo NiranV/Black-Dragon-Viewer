@@ -134,16 +134,13 @@ public:
 
 	//following methods operate with "add wearables" panel
 	void showWearablesFilter();
-	void showWearablesListView();
-	void showWearablesFolderView();
+	void showWearablesFolderListView();
 
 	void updateFiltersVisibility();
 
 	void onFolderViewFilterCommitted(LLUICtrl* ctrl);
 	void onListViewFilterCommitted(LLUICtrl* ctrl);
 	void onSearchEdit(const std::string& string);
-	void updatePlusButton();
-	void onPlusBtnClicked(void);
 
 	void onVisibilityChanged(const LLSD &in_visible_chain);
 
@@ -200,8 +197,6 @@ private:
 	*/
 	void saveListSelection();
 
-	void updateWearablesPanelVerbButtons();
-
 	typedef std::pair<LLWearableType::EType, size_t> selection_info_t;
 
 	LLWearableType::EType getCOFWearablesSelectionType() const;
@@ -215,7 +210,6 @@ private:
 	LLSaveFolderState*	mSavedFolderState;
 	std::string			mSearchString;
 	LLButton*			mFolderViewBtn;
-	LLButton*			mListViewBtn;
 	LLButton*			mPlusBtn;
 	LLPanel*			mAddWearablesPanel;
 	

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
  follows="top|right|left"
- height="23"
+ height="20"
  layout="topleft"
  left="0"
  name="dummy_clothing_item"
@@ -9,7 +9,7 @@
  width="380">
     <icon
      follows="top|right|left"
-     height="22"
+     height="19"
      image_name="ListItem_Over"
      layout="topleft"
      left="0"
@@ -18,7 +18,7 @@
      visible="false"
      width="380" />
     <icon
-     height="22"
+     height="19"
      follows="top|right|left"
      image_name="ListItem_Select"
      layout="topleft"
@@ -35,40 +35,30 @@
      layout="topleft"
      left="20"
      name="item_icon"
-     top="3"
+     top="2"
      width="16" />
     <text
      follows="left|right"
-     height="16"
+     height="14"
      layout="topleft"
      left_pad="5"
      parse_urls="false"
      use_ellipses="true"
      name="item_name"
      text_color="LtGray_50"
-     top="4"
+     top="3"
      value="..."
      width="359" />
-    <panel
-     name="btn_add_panel"
-     layout="topleft"
-     follows="top|right"
-     top="0"
-     left="0"
-     height="23"
-     width="26"
-     tab_stop="false">
       <button 
        name="btn_add"
        layout="topleft"
        follows="top|right"
        image_unselected="AddItem_Off"
        image_selected="AddItem_Off"
-       top="0"
-       left="0"
-       height="23"
-       width="23"
+       top="1"
+       left_pad="2"
+       height="18"
+       width="18"
        tab_stop="false"
        tool_tip="Add more items of this type" />
-    </panel>
 </panel>

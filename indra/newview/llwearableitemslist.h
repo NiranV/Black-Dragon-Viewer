@@ -151,8 +151,6 @@ public:
 		Optional<LLButton::Params>		up_btn,
 										down_btn,
 										edit_btn;
-		Optional<LLPanel::Params>		lock_panel,
-										edit_panel;
 		Optional<LLIconCtrl::Params>	lock_icon;
 
 		Params();
@@ -171,7 +169,7 @@ public:
 
 	inline void setShowMoveDownButton(bool show) { setShowWidget("btn_move_down", show); }
 	inline void setShowLockButton(bool show) { setShowWidget("btn_lock", show); }
-	inline void setShowEditButton(bool show) { setShowWidget("btn_edit_panel", show); }
+	inline void setShowEditButton(bool show) { setShowWidget("btn_edit", show); }
 
 protected:
 
@@ -186,8 +184,6 @@ public:
 	struct Params : public LLInitParam::Block<Params, LLPanelWearableListItem::Params>
 	{
 		Optional<LLButton::Params>		edit_btn;
-		Optional<LLPanel::Params>		lock_panel,
-										edit_panel;
 		Optional<LLIconCtrl::Params>	lock_icon;
 
 		Params();
@@ -203,7 +199,7 @@ public:
 	* Make button visible during mouse over event.
 	*/
 	inline void setShowLockButton(bool show) { setShowWidget("btn_lock", show); }
-	inline void setShowEditButton(bool show) { setShowWidget("btn_edit_panel", show); }
+	inline void setShowEditButton(bool show) { setShowWidget("btn_edit", show); }
 
 protected:
 	LLPanelBodyPartsListItem(LLViewerInventoryItem* item, const Params& params);
@@ -220,7 +216,6 @@ class LLPanelDummyClothingListItem : public LLPanelWearableListItem
 public:
 	struct Params : public LLInitParam::Block<Params, LLPanelWearableListItem::Params>
 	{
-		Optional<LLPanel::Params> add_panel;
 		Optional<LLButton::Params> add_btn;
 		Params();
 	};

@@ -51,7 +51,7 @@ width="320">
    <string name="Filter.Clothing" value="Clothing"/>
    <string name="Filter.Bodyparts" value="Body parts"/>
    <string name="replace_body_part" value="Click to replace your existing shape"/>
-
+   
    <panel
    name="bg_panel"
    layout="topleft"
@@ -60,127 +60,127 @@ width="320">
    height="25"
    left="6"
    mouse_opaque="false"
-   width="307"
-   top="4">
-   <button
-   follows="top|left"
-   height="25"
-   image_overlay="BackArrow_Off"
-   image_hover_unselected="Toolbar_Middle_Over"
-       image_selected="Toolbar_Middle_Selected"
-       image_unselected="Toolbar_Middle_Off"
-   layout="topleft"
-   name="back_btn"
-   left="0"
-   tab_stop="false"
-   top="0"
-   width="31"
-   use_draw_context_alpha="false" />
-   <text
-   follows="top|left|right"
-   height="26"
-   layout="topleft"
-   halign="right"
-   right="-4"
-   name="title"
-   text_color="LtGray"
-   top="2"
-   value="Edit Outfit"
-   use_ellipses="true"
-   width="275" />
-   <loading_indicator
-	 follows="left|top"
-	 height="24"
-	 layout="topleft"
-	 left="3"
-	 name="edit_outfit_loading_indicator"
-	 top="1"
-	 width="24" />
-   
-   <!-- "HEADER WITH ICON, STATUS TEXT AND OUTFIT NAME" -->
-   <layout_stack
-   follows="top|left|right"
-   height="27"
-   layout="topleft"
-   border_size="0"
-   mouse_opaque="false"
-   name="appearance_panel_ls"
-   left="32"
-   orientation="horizontal"
-   top="0"
-   width="282">	
-      <layout_panel
+   width="306"
+   top="0">
+      <button
+      follows="top|left"
+      height="25"
+      image_overlay="BackArrow_Off"
+      image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+      layout="topleft"
+      name="back_btn"
+      left="0"
+      tab_stop="false"
+      top="0"
+      width="31"
+      use_draw_context_alpha="false" />
+      <text
+      follows="top|left|right"
+      height="26"
+      layout="topleft"
+      halign="right"
+      right="-4"
+      name="title"
+      text_color="LtGray"
+      top="2"
+      value="Edit Outfit"
+      use_ellipses="true"
+      width="274" />
+      <loading_indicator
+      follows="left|top"
+      height="24"
+      layout="topleft"
+      left="3"
+      name="edit_outfit_loading_indicator"
+      top="1"
+      width="24" />
+      
+      <!-- "HEADER WITH ICON, STATUS TEXT AND OUTFIT NAME" -->
+      <layout_stack
       follows="top|left|right"
       height="27"
       layout="topleft"
-      left="0"
+      border_size="0"
       mouse_opaque="false"
-      name="outfit_name_lp2"
-      auto_resize="true"
-      min_width="216"
-      width="216">
-         <icon
-      follows="top|left|right"
-      height="25"
-      name="bg"
-      mouse_opaque="false"
-      image_name="Toolbar_Middle_Off"
-      left="0"
+      name="appearance_panel_ls"
+      left="32"
+      orientation="horizontal"
       top="0"
-      width="215" />
-	 <text
-	 font="SansSerifSmall"
-      text_color="BeaconColor"
-      width="210"
-      height="10"
-      follows="top|left|right"
-      layout="topleft"
-      left="3"
-      top="0"
-      mouse_opaque="false"
-	 value="Now editing..."
-	 use_ellipses="true" /> 
-	 <text
-	 font="SansSerifSmall"
-      height="10"
-      left="3"
-      text_color="White"
-      name="curr_outfit_name"
-      top="11"
-      use_ellipses="true"
-      width="210"
-      follows="top|left|right"
-      word_wrap="false"
-      mouse_opaque="false"
-	 value="[Current Outfit]"/> 
-          </layout_panel>
-   </layout_stack>
+      width="281">	
+         <layout_panel
+         follows="top|left|right"
+         height="27"
+         layout="topleft"
+         left="0"
+         mouse_opaque="false"
+         name="outfit_name_lp2"
+         auto_resize="true"
+         min_width="216"
+         width="215">
+            <icon
+            follows="top|left|right"
+            height="25"
+            name="bg"
+            mouse_opaque="false"
+            image_name="Toolbar_Middle_Off"
+            left="0"
+            top="0"
+            width="214" />
+            <text
+            font="SansSerifSmall"
+            text_color="BeaconColor"
+            width="209"
+            height="10"
+            follows="top|left|right"
+            layout="topleft"
+            left="3"
+            top="0"
+            mouse_opaque="false"
+            value="Now editing..."
+            use_ellipses="true" /> 
+            <text
+            font="SansSerifSmall"
+            height="10"
+            left="3"
+            text_color="White"
+            name="curr_outfit_name"
+            top="11"
+            use_ellipses="true"
+            width="209"
+            follows="top|left|right"
+            word_wrap="false"
+            mouse_opaque="false"
+            value="[Current Outfit]"/> 
+         </layout_panel>
+      </layout_stack>
    </panel>
    
-<!-- LIST OF WEARABLES (CURRENT OUTFIT/ WEARABLES TO ADD) -->
-<!-- *NOTE: border_size is used to calculate space between layout panels and also to calculate resize bar's height.
-Required height for dragbar (icon in spec) is 10, so resizebar height should be 10 px.
-It is calculated as border_size + 2*UIResizeBarOverlap
--->
-	<icon
-	follows="all"
-	height="485"
-	color="1 1 1 1"
-	image_name="Panel_Background"
-	layout="topleft"
-	name="vicon"
-	mouse_opaque="false"
-	visible="true"
-	width="317"
-	top_pad="10"
-	left="2"/>
+   <!-- LIST OF WEARABLES (CURRENT OUTFIT/ WEARABLES TO ADD) -->
+   <!-- *NOTE: border_size is used to calculate space between layout panels and also to calculate resize bar's height.
+   Required height for dragbar (icon in spec) is 10, so resizebar height should be 10 px.
+   It is calculated as border_size + 2*UIResizeBarOverlap
+   -->
+   <icon
+   follows="all"
+   height="489"
+   color="1 1 1 1"
+   image_name="Panel_Background"
+   layout="topleft"
+   name="vicon"
+   mouse_opaque="false"
+   visible="true"
+   width="317"
+   top_pad="10"
+   left="2"/>
    <layout_stack
    animate="true"
-   border_size="8"
+   border_size="6"
    clip="false"
    default_tab_group="2"
    follows="all"
-   height="456"
+   height="460"
    width="315"
    layout="topleft"
    orientation="vertical"
@@ -191,69 +191,170 @@ It is calculated as border_size + 2*UIResizeBarOverlap
       <layout_panel
       layout="topleft"
       height="187"
-      min_height="155"
+      min_height="255"
       name="outfit_wearables_panel"
       width="317"
       auto_resize="true"
       user_resize="true">
-	 <layout_stack
-	 animate="true"
-	 border_size="0"
-	 follows="all"
-	 height="192"
-	 width="315"
-	 orientation="vertical" 
-	 layout="topleft"
-	 name="filter_panels"
-	 top="0"
-	 left="0">
-	    <layout_panel
-	    auto_resize="true" 
-	    background_visible="false"
-	    layout="topleft"
-	    height="155"
-	    name="add_button_and_combobox"
-	    width="311"
-	    visible="true">
-	    <!-- List containing items from the COF and Base outfit -->
-	       <panel
-	       background_visible="false"
-	       class="cof_wearables"
-	       filename="panel_cof_wearables.xml"
-	       follows="all" 
-	       height="129"
-	       layout="topleft"
-	       left="0"
-	       name="cof_wearables_list"
-	       top="0"
-	       width="311" />
-           <panel
-            name="bg_panel"
+         <layout_stack
+         animate="true"
+         border_size="0"
+         follows="all"
+         height="192"
+         width="315"
+         orientation="vertical" 
+         layout="topleft"
+         name="filter_panels"
+         top="0"
+         left="0">
+            <layout_panel
+            auto_resize="true" 
             background_visible="false"
             layout="topleft"
-            follows="left|right|bottom"
-            border="false"
+            height="149"
+            name="add_button_and_combobox"
+            width="311"
+            visible="true">
+               <!-- List containing items from the COF and Base outfit -->
+               <panel
+               background_visible="false"
+               class="cof_wearables"
+               filename="panel_cof_wearables.xml"
+               follows="all" 
+               height="129"
+               layout="topleft"
+               left="0"
+               name="cof_wearables_list"
+               top="0"
+               width="311" />
+               <panel
+               name="bg_panel"
+               background_visible="false"
+               layout="topleft"
+               follows="left|right|bottom"
+               border="false"
+               height="20"
+               left="0"
+               mouse_opaque="false"
+               width="310"
+               top_pad="0">
+                  <panel
+                  follows="left|top|right"
+                  height="20"
+                  bg_visible="true"
+                  bg_alpha_color="0.10 0.43 0.77 0.28"
+                  layout="topleft"
+                  mouse_opaque="false"
+                  left="1"
+                  name="title"
+                  top_pad="0"
+                  width="309"/>
+                  <text
+                  type="string"
+                  length="1"
+                  follows="left|top"
+                  height="14"
+                  layout="topleft"
+                  left="5"
+                  name="location_label"
+                  top_delta="4"
+                  width="120">
+                  Editing:
+                  </text>
+                  <button
+                  follows="left|top"
+                  height="18"
+                  label="⌊Add More⌉"
+                  pad_bottom="0"
+                  image_selected="Transparent"
+                  image_unselected="Transparent"
+                  image_overlay_alignment="left"
+                  image_overlay="AddItem_Off"
+                  is_toggle="true"
+                  layout="topleft"
+                  left_pad="88"
+                  top_delta="-2"
+                  name="show_add_wearables_btn"
+                  tool_tip="Open/Close"
+                  width="90" />
+               </panel>
+            </layout_panel>
+         </layout_stack>
+      </layout_panel>
+      <layout_panel
+      background_visible="false"
+      auto_resize="true"
+      default_tab_group="3"
+      height="250"
+      min_height="80"
+      name="add_wearables_panel"
+      width="313"
+      tab_group="2"
+      user_resize="true"
+      visible="true">
+         <inventory_panel
+         allow_multi_select="true"
+         background_visible="false"
+         border="false"
+         follows="all"
+         height="221"
+         layout="topleft"
+         left="17"
+         mouse_opaque="false"
+         name="folder_view"
+         top="1"
+         width="312"
+         visible="false"/>
+         <panel
+         name="filtered_wearables_panel"
+         background_visible="false"
+         layout="topleft"
+         follows="left|top|right|bottom"
+         border="false"
+         height="221"
+         left="2"
+         mouse_opaque="false"
+         width="311"
+         top_delta="0"
+         visible="true">
+            <wearable_items_list
+            color="Transparent"
+            name="list_view"
+            allow_select="true"
+            layout="topleft"
+            follows="all"
+            multi_select="true"
+            width="308"
+            visible="true"
+            height="221"
+            left="0"
+            top="0"/>
+         </panel>
+         <panel
+         name="bg_panel"
+         background_visible="false"
+         layout="topleft"
+         follows="left|right|bottom"
+         border="false"
+         height="25"
+         left="0"
+         mouse_opaque="false"
+         width="311"
+         top_pad="2">
+            <button
+            follows="bottom|left"
             height="25"
-            left="1"
-            mouse_opaque="false"
-            width="310"
-            top_pad="2">
-	       <button
-	       follows="left|bottom" 
-	       height="25"
-           image_overlay="AddItem_Off"
-	       image_hover_unselected="Toolbar_Middle_Over"
-       image_selected="Toolbar_Middle_Selected"
-       image_unselected="Toolbar_Middle_Off"
-	       is_toggle="true"
-	       label=""
-	       layout="topleft"
-	       left="0"
-	       name="show_add_wearables_btn"
-	       top="0"
-	       tool_tip="Open/Close"
-	       width="31" />
-           <icon
+            image_hover_unselected="Toolbar_Middle_Over"
+            image_overlay="Hierarchy_View_Disabled"
+            image_selected="Toolbar_Middle_Selected"
+            image_unselected="Toolbar_Middle_Off"
+            is_toggle="true"
+            layout="topleft"
+            left="0"
+            name="folder_view_btn"
+            top="0"
+            width="31" />
+            <icon
             follows="bottom|left|right"
             height="25"
             name="bg"
@@ -261,40 +362,40 @@ It is calculated as border_size + 2*UIResizeBarOverlap
             mouse_opaque="false"
             image_name="Toolbar_Middle_Off"
             left_pad="1"
+            top="0"
+            width="152" />
+            <filter_editor
+            background_image="TextField_Off"
+            background_image_disabled="TextField_Disabled"
+            background_image_focused="TextField_Active"
+            enabled="true"
+            follows="left|right|bottom"
+            label="Filter Items"
+            layout="topleft"
+            left_delta="2"
+            top_delta="1"
+            width="148"
+            height="22"
+            name="look_item_filter"
+            visible="true"/>
+            <icon
+            follows="bottom|right"
+            height="25"
+            name="bg_filters"
+            mouse_opaque="false"
+            image_name="Toolbar_Middle_Off"
+            left_pad="3"
+            top_delta="-1"
+            width="126" />
+            <combo_box
+            follows="right|bottom"
+            height="25"
+            layout="topleft"
+            left_delta="0"
+            name="list_view_filter_combobox"
             top_delta="0"
-            width="176" />
-           <filter_editor
-	       background_image="TextField_Off"
-         background_image_disabled="TextField_Disabled"
-         background_image_focused="TextField_Active"
-	       enabled="true"
-	       follows="left|right|bottom"
-	       label="Filter Inventory Wearables"
-	       layout="topleft"
-	       left_delta="2"
-           top_delta="1"
-	       width="172"
-	       height="22"
-	       name="look_item_filter"
-	       visible="true"/>
-           <icon
-      follows="bottom|right"
-      height="25"
-      name="bg_filters"
-      mouse_opaque="false"
-      image_name="Toolbar_Middle_Off"
-      left_pad="3"
-      top_delta="-1"
-      width="100" />
-	       <combo_box
-	       follows="right|bottom"
-	       height="25"
-	       layout="topleft"
-	       left_delta="0"
-	       name="list_view_filter_combobox"
-	       top_delta="0"
-	       visible="false"
-	       width="100">
+            visible="false"
+            width="126">
             <combo_box.combo_button
             image_unselected="Toolbar_Middle_Off"
             image_selected="Toolbar_Middle_Selected"
@@ -306,15 +407,15 @@ It is calculated as border_size + 2*UIResizeBarOverlap
             image_pressed_selected="Toolbar_Middle_Selected"
             image_disabled="Toolbar_Middle_Off" />
             </combo_box>
-	       <combo_box
-	       follows="right|bottom"
-	       height="25"
-	       layout="topleft"
-	       left_delta="0"
-	       name="folder_view_filter_combobox"
-	       top_delta="0"
-	       visible="false"
-	       width="100">
+            <combo_box
+            follows="right|bottom"
+            height="25"
+            layout="topleft"
+            left_delta="0"
+            name="folder_view_filter_combobox"
+            top_delta="0"
+            visible="false"
+            width="126">
             <combo_box.combo_button
             image_unselected="Toolbar_Middle_Off"
             image_selected="Toolbar_Middle_Selected"
@@ -325,85 +426,8 @@ It is calculated as border_size + 2*UIResizeBarOverlap
             image_pressed="Toolbar_Middle_Selected" 
             image_pressed_selected="Toolbar_Middle_Selected"
             image_disabled="Toolbar_Middle_Off" />
-        </combo_box>
-           </panel>
-	    </layout_panel>
-	 </layout_stack>
-      </layout_panel>
-      <layout_panel
-      background_visible="false"
-      auto_resize="true"
-      default_tab_group="3"
-      height="450"
-      min_height="80"
-      name="add_wearables_panel"
-      width="313"
-      tab_group="2"
-      user_resize="true"
-      visible="false">
-	 <inventory_panel
-	 allow_multi_select="true"
-	 background_visible="false"
-	 border="false"
-	 follows="left|top|right|bottom"
-	 height="418"
-	 layout="topleft"
-	 left="17"
-	 mouse_opaque="false"
-	 name="folder_view"
-	 top_pad="0"
-	 width="313"
-	 visible="false"/>
-	 <panel
-	 name="filtered_wearables_panel"
-	 background_visible="false"
-	 layout="topleft"
-	 follows="left|top|right|bottom"
-	 border="false"
-	 height="418"
-	 left="2"
-	 mouse_opaque="false"
-	 width="310"
-	 top_delta="0"
-	 visible="true">
-	    <wearable_items_list
-	    color="Transparent"
-	    name="list_view"
-	    allow_select="true"
-	    layout="topleft"
-	    follows="all"
-	    multi_select="true"
-	    width="307"
-        visible="true"
-	    height="418"
-	    left="0"
-	    top="0"/>
-	 </panel>
-     <panel
-	 name="bg_panel"
-	 background_visible="true"
-     bg_alpha_color="White_02"
-	 layout="topleft"
-	 follows="left|right|bottom"
-	 border="false"
-	 height="25"
-	 left="2"
-	 mouse_opaque="false"
-	 width="307"
-	 top="4">
-	 <button
-	 follows="bottom|left|right"
-	 height="25"
-	 left="0"
-     image_hover_unselected="Toolbar_Middle_Over"
-         image_selected="Toolbar_Middle_Selected"
-         image_unselected="Toolbar_Middle_Off"
-	 label="Wear Item"
-	 layout="topleft"
-	 name="plus_btn"
-	 top="0"
-	 width="307" />
-     </panel>
+            </combo_box>
+         </panel>
       </layout_panel>
    </layout_stack>
    <!-- BUTTON BAR -->
@@ -454,79 +478,45 @@ It is calculated as border_size + 2*UIResizeBarOverlap
       name="wearables_gear_menu_btn"
       top="1"
       width="31" />
-      <button
-      follows="bottom|right"
-      height="25"
-      image_hover_unselected="Toolbar_Middle_Over"
-      image_overlay="Hierarchy_View_Disabled"
-      image_selected="Toolbar_Middle_Selected"
-      image_unselected="Toolbar_Middle_Off"
-      is_toggle="true"
-      layout="topleft"
-      left_pad="221"
-      name="folder_view_btn"
-      top="1"
-      width="31" />
-      <button
-      follows="bottom|right"
-      height="25"
-      image_hover_unselected="Toolbar_Middle_Over"
-      image_overlay="List_View_On"
-      image_selected="Toolbar_Middle_Selected"
-      image_unselected="Toolbar_Middle_Off"
-      is_toggle="true"
-      layout="topleft"
-      left_pad="1"
-      name="list_view_btn"
-      top="1"
-      width="31" />
    </panel>
    <!-- SAVE AND REVERT BUTTONS -->
-	    <button
-	    follows="bottom|left"
-	    height="25"
-	    label="Save"
-	    left="36"
-	    layout="topleft"
-        image_hover_unselected="Toolbar_Middle_Over"
-						  image_selected="Toolbar_Middle_Selected"
-						  image_unselected="Toolbar_Middle_Off"
-	    name="save_btn"
-	    top_delta="1"
-	    width="79" />
-	    <button
-	    follows="bottom|left"
-	    height="25"
-	    name="save_flyout_btn"
-	    label=""
-	    layout="topleft"
-	    left_pad="1"
-	    tab_stop="false"
-	    top_delta="0"
-	    image_hover_unselected="Toolbar_Middle_Over"
-						  image_selected="Toolbar_Middle_Selected"
-						  image_unselected="Toolbar_Middle_Off"
-	    image_overlay="Arrow_Small_Up"
-	    width="31"/>
-	    <button
-	    follows="bottom|left|right"
-	    height="25"
-	    left_pad="1"
-	    label="Undo Changes"
-	    layout="topleft"
-        image_hover_unselected="Toolbar_Middle_Over"
-						  image_selected="Toolbar_Middle_Selected"
-						  image_unselected="Toolbar_Middle_Off"
-	    name="revert_btn"
-	    top_delta="0"
-	    tool_tip="Revert to last saved version"
-	    width="105" />
-        <icon
-      follows="bottom|right"
-      height="25"
-      image_name="Toolbar_Middle_Off"
-      layout="topleft"
-      left_pad="1"
-      name="dummy_right_icon"
-      width="63" />
+   <button
+   follows="bottom|left"
+   height="25"
+   label="Save"
+   left="36"
+   layout="topleft"
+   image_hover_unselected="Toolbar_Middle_Over"
+   image_selected="Toolbar_Middle_Selected"
+   image_unselected="Toolbar_Middle_Off"
+   name="save_btn"
+   top_delta="1"
+   width="121" />
+   <button
+   follows="bottom|left"
+   height="25"
+   name="save_flyout_btn"
+   label=""
+   layout="topleft"
+   left_pad="1"
+   tab_stop="false"
+   top_delta="0"
+   image_hover_unselected="Toolbar_Middle_Over"
+   image_selected="Toolbar_Middle_Selected"
+   image_unselected="Toolbar_Middle_Off"
+   image_overlay="Arrow_Small_Up"
+   width="31"/>
+   <button
+   follows="bottom|left|right"
+   height="25"
+   left_pad="1"
+   label="Undo Changes"
+   layout="topleft"
+   image_hover_unselected="Toolbar_Middle_Over"
+   image_selected="Toolbar_Middle_Selected"
+   image_unselected="Toolbar_Middle_Off"
+   name="revert_btn"
+   top_delta="0"
+   tool_tip="Revert to last saved version"
+   width="127" />
 </panel>
