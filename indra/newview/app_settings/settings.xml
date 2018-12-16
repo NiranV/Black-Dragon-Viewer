@@ -17032,7 +17032,7 @@
     <key>Comment</key>
     <string>Set the percentual amount of greyscale's strength, 1.0 means fully greyscale , 0.0 means fully colored</string>
     <key>Persist</key>
-    <integer>0</integer>
+    <integer>1</integer>
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
@@ -17043,7 +17043,7 @@
     <key>Comment</key>
     <string>Set the percentual amount of sepia's strength, 1.0 means a full sepia tone, 0.0 means no sepia tone at all.</string>
     <key>Persist</key>
-    <integer>0</integer>
+    <integer>1</integer>
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
@@ -17054,7 +17054,7 @@
     <key>Comment</key>
     <string>Set the strength of chromatic abberation.</string>
     <key>Persist</key>
-    <integer>0</integer>
+    <integer>1</integer>
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
