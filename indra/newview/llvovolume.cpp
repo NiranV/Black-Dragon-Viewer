@@ -4359,50 +4359,50 @@ void LLVOVolume::getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32
 
 	if (animtex)
 	{
-		animated_cost += (shame * ARC_ANIM_TEX_COST) - shame;
+		animated_cost += (shame * ARC_ANIM_TEX_COST);
 	}
 
 	if (glow)
 	{
-		glow_cost += (shame * ARC_GLOW_MULT) - shame;
+		glow_cost += (shame * ARC_GLOW_MULT);
 	}
 
 	if (bump)
 	{
-		bump_cost += (shame * ARC_BUMP_MULT) - shame;
+		bump_cost += (shame * ARC_BUMP_MULT);
 	}
 
 	if (shiny)
 	{
-		shiny_cost += (shame * ARC_SHINY_MULT) - shame;
+		shiny_cost += (shame * ARC_SHINY_MULT);
 	}
 
 	if (weighted_mesh)
 	{
-		rigged_cost += (shame * ARC_WEIGHTED_MESH) - shame;
+		rigged_cost += (shame * ARC_WEIGHTED_MESH);
 
 		if (alpha)
 		{
-			alpha_cost += (shame * ARC_ALPHA_COST) - shame;
+			alpha_cost += (shame * ARC_ALPHA_COST);
 		}
 	}
 	else
 	{
 		if (alpha)
 		{
-			alpha_cost += (shame * ARC_RIGGED_ALPHA_COST) - shame;
+			alpha_cost += (shame * ARC_RIGGED_ALPHA_COST);
 		}
 	}
 
 	if (isAnimatedObject())
 	{
-		animesh_cost += (shame * ARC_ANIMATED_MESH_COST) - shame;
+		animesh_cost += (shame * ARC_ANIMATED_MESH_COST);
 	}
 
 	// multiply shame by multipliers
 	if (isFlexible())
 	{
-		flexible_cost += (shame * ARC_FLEXI_MULT) - shame;
+		flexible_cost += (shame * ARC_FLEXI_MULT);
 	}
 
 	// add additional costs
