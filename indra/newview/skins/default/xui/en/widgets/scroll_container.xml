@@ -5,4 +5,5 @@
                   min_auto_scroll_rate="120"
                   max_auto_scroll_rate="500"
                   tab_stop="false"
+                  scrollable="true"
                   mouse_opaque="true" />

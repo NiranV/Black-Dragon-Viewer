@@ -74,7 +74,9 @@ LLScrollContainer::Params::Params()
 	max_auto_scroll_rate("max_auto_scroll_rate", 1000),
 	max_auto_scroll_zone("max_auto_scroll_zone", 16),
 	reserve_scroll_corner("reserve_scroll_corner", false),
-	size("size", -1)
+	size("size", -1),
+	//BD
+	scrollable("scrollable", true)
 {}
 
 
@@ -91,7 +93,9 @@ LLScrollContainer::LLScrollContainer(const LLScrollContainer::Params& p)
 	mMaxAutoScrollRate(p.max_auto_scroll_rate),
 	mMaxAutoScrollZone(p.max_auto_scroll_zone),
 	mScrolledView(NULL),
-	mSize(p.size)
+	mSize(p.size),
+	//BD
+	mScrollable(p.scrollable)
 {
 	static LLUICachedControl<S32> scrollbar_size_control ("UIScrollbarSize", 0);
 	S32 scrollbar_size = (mSize == -1 ? scrollbar_size_control : mSize);
@@ -242,6 +246,14 @@ BOOL LLScrollContainer::handleScrollWheel( S32 x, S32 y, S32 clicks, MASK mask )
 	// (Bad UI design, but technically possible.)
 	//BD - UI Improvements
 	if (LLUICtrl::handleScrollWheel(x,y,clicks,mask))
+		return TRUE;
+
+	//BD - Eat the event if we don't want the scrollbar to be scollable via mousewheel.
+	//     But let it through to child views, this should allow mixing and matching
+	//     scrollbars as we see fit. Particularly useful for codeless scroll container
+	//     and scrolllist combinations which cannot automatically scale to the amount
+	//     of lines it has. (Would be a good TODO to add that)
+	if (!mScrollable)
 		return TRUE;
 
 	// When the vertical scrollbar is visible, scroll wheel
