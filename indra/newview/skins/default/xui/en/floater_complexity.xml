@@ -2,39 +2,27 @@
 <floater
 positioning="centered"
 legacy_header_height="18"
-height="465"
+height="446"
 layout="topleft"
 name="floater_complexity"
 save_rect="true"
 can_resize="true"
+min_width="632"
+min_height="360"
 title="Advanced Complexity Information"
 width="684">
-	<tab_container
-  follows="all"
-  halign="center"
-  height="445"
-  layout="topleft"
-  left="6"
-  name="Picks Tabs"
-  tab_min_width="118"
-  tab_max_width="157"
-  tab_height="20"
-  tab_group="1"
-  tab_position="top"
-  top="20"
-  width="684">
 	<panel
     follows="all"
 	background_visible="false"
     height="425"
     layout="topleft"
-    left="0"
+    left="7"
     title="Complexity"
     name="arc_panel"
-    top="0"
+    top="20"
     width="682">
 		<icon
-	follows="top|left|right"
+	follows="all"
 	height="419"
 	color="1 1 1 1"
 	image_name="Panel_Background"
@@ -48,8 +36,8 @@ width="684">
 		<scroll_list
  column_padding="2"
  draw_heading="true"
- height="393"
- follows="left|top"
+ height="396"
+ follows="left|top|bottom"
  layout="topleft"
  left="3"
  width="130"
@@ -70,41 +58,43 @@ width="684">
 		follows="all"
 		layout="topleft"
 		mouse_opaque="false"
-		left_pad="3"
+		left_pad="-1"
 		name="arc_scroll_container"
 		opaque="true"
+		scrollable="false"
 		height="394"
-		width="343"
+		width="346"
 		top="2">
 			<panel
-			follows="top|left"
-			height="375"
+			follows="all"
+			height="380"
 			background_visible="false"
 			layout="topleft"
 			mouse_opaque="false"
-			left="1"
+			left="0"
 			name="title"
 			top="0"
-			width="1000">
+			width="1100">
 				<scroll_list
 				column_padding="2"
 				draw_heading="true"
-				height="395"
-				follows="left|top|right"
+				height="380"
+				follows="all"
 				layout="topleft"
+				mouse_wheel_opaque="false"
 				left="0"
-				width="1000"
+				width="1102"
 				multi_select="true"
 				name="arc_scroll"
 				top="0">
 				   <scroll_list.columns
 					label="Attachment"
 					name="name"
-				  relative_width="0.21"  />
+				  relative_width="0.19"  />
 				   <scroll_list.columns
 					label="Complexity"
 					name="arc"
-				  relative_width="0.07"  />
+				  relative_width="0.06"  />
 				   <scroll_list.columns
 					label="Polygons"
 					name="triangles"
@@ -112,7 +102,7 @@ width="684">
 				   <scroll_list.columns
 					label="Vertices"
 					name="vertices"
-				  relative_width="0.05"  />
+				  relative_width="0.06"  />
 				   <scroll_list.columns
 					label="Flexible"
 					name="flexible"
@@ -128,7 +118,7 @@ width="684">
 				   <scroll_list.columns
 					label="Projectors"
 					name="projector"
-				  relative_width="0.06"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
 					label="Alphas"
 					name="alpha"
@@ -136,19 +126,19 @@ width="684">
 				   <scroll_list.columns
 					label="Normalmap"
 					name="bumpmap"
-				  relative_width="0.06"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
 					label="Specmap"
 					name="shiny"
-				  relative_width="0.06"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
 					label="Glow"
 					name="glow"
-				  relative_width="0.04"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
 					label="Animated"
 					name="animated"
-				  relative_width="0.06"  />
+				  relative_width="0.05"  />
 				   <scroll_list.columns
 					label="Rigged"
 					name="rigged"
@@ -178,7 +168,7 @@ width="684">
 	</scroll_container>
  <button
  height="21"
- follows="top|left"
+ follows="bottom|left"
  layout="topleft"
  label="Refresh Avatars"
  image_hover_unselected="Toolbar_Middle_Over"
@@ -192,7 +182,7 @@ width="684">
    function="ARC.AvatarRefresh"/>
  </button>
 	<icon
-	follows="left|top"
+	follows="left|bottom"
 	image_name="Toolbar_Middle_Off"
 	height="21"
 	width="87"
@@ -201,7 +191,7 @@ width="684">
 	top_delta="0"/>
  <text
  name="arc_count"
- follows="left|top"
+ follows="left|bottom"
  layout="topleft"
  left_delta="5"
  halign="right"
@@ -212,7 +202,7 @@ width="684">
  </text>
  <text
  name="arc"
- follows="left|top"
+ follows="left|bottom"
  layout="topleft"
  left_pad="1"
  halign="right"
@@ -222,7 +212,7 @@ width="684">
 	ARC
  </text>
 	<icon
-	follows="left|top"
+	follows="left|bottom"
 	image_name="Toolbar_Middle_Off"
 	height="21"
 	width="87"
@@ -231,7 +221,7 @@ width="684">
 	top_delta="-4"/>
  <text
  name="tri_count"
- follows="left|top"
+ follows="left|bottom"
  layout="topleft"
  left_delta="5"
  halign="right"
@@ -242,7 +232,7 @@ width="684">
  </text>
  <text
  name="tris"
- follows="left|top"
+ follows="left|bottom"
  layout="topleft"
  left_pad="1"
  halign="right"
@@ -252,7 +242,7 @@ width="684">
 	Tris
  </text>
 	<icon
-	follows="left|top"
+	follows="left|bottom"
 	image_name="Toolbar_Middle_Off"
 	height="21"
 	width="87"
@@ -261,7 +251,7 @@ width="684">
 	top_delta="-4"/>
  <text
  name="vert_count"
- follows="left|top"
+ follows="left|bottom"
  layout="topleft"
  left_delta="5"
  halign="right"
@@ -272,7 +262,7 @@ width="684">
  </text>
  <text
  name="verts"
- follows="left|top"
+ follows="left|bottom"
  layout="topleft"
  left_pad="1"
  halign="right"
@@ -282,7 +272,7 @@ width="684">
 	Verts
  </text>
  <icon
-	follows="left|top"
+	follows="left|bottom"
 	image_name="Toolbar_Middle_Off"
 	height="21"
 	width="87"
@@ -291,7 +281,7 @@ width="684">
 	top_delta="-4"/>
  <text
  name="memory_count"
- follows="left|top"
+ follows="left|bottom"
  layout="topleft"
  left_delta="5"
  halign="right"
@@ -302,7 +292,7 @@ width="684">
  </text>
  <text
  name="kb"
- follows="left|top"
+ follows="left|bottom"
  layout="topleft"
  left_pad="1"
  halign="right"
@@ -312,7 +302,7 @@ width="684">
 	KB
  </text>
  <icon
-	follows="left|top|right"
+	follows="left|bottom|right"
 	image_name="Toolbar_Middle_Off"
 	height="21"
 	width="51"
@@ -321,7 +311,7 @@ width="684">
 	top_delta="-4"/>
 	<button
  height="21"
- follows="top|right"
+ follows="bottom|right"
  layout="topleft"
  label="Refresh Complexity"
  image_hover_unselected="Toolbar_Middle_Over"
@@ -443,8 +433,8 @@ width="684">
  
  
  <layout_stack
-   follows="top|left|right"
-   height="333"
+   follows="top|right|bottom"
+   height="323"
    layout="topleft"
    border_size="2"
    left="480"
@@ -454,7 +444,7 @@ width="684">
    top_pad="12"
    width="200">
       <layout_panel
-	  follows="top|left|right"
+	  follows="top|right"
 	  layout="topleft"
 	  height="12"
 	  auto_resize="false"
@@ -1119,5 +1109,4 @@ width="684">
 	  </layout_panel>
  </layout_stack>
 	</panel>
-	</tab_container>
 </floater>

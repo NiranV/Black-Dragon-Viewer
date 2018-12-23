@@ -34,7 +34,7 @@
 #include "llvovolume.h"
 #include "llface.h"
 //BD - Animesh Support
-#include "llcontrolavatar.h"
+//#include "llcontrolavatar.h"
 
 BDFloaterComplexity::BDFloaterComplexity(const LLSD& key)
 	:	LLFloater(key),
@@ -106,7 +106,7 @@ void BDFloaterComplexity::onAvatarsRefresh()
 	//     skip all animesh entries and simply just check non-Animesh entries.
 	//     We do this because the LLCharacter::sInstances now also contains all Animesh instances
 	//     as well because they are handled as such internally, which is both good and bad.
-	for (LLCharacter* character : LLControlAvatar::sInstances)
+	/*for (LLCharacter* character : LLControlAvatar::sInstances)
 	{
 		create_new = true;
 		LLControlAvatar* avatar = dynamic_cast<LLControlAvatar*>(character);
@@ -138,13 +138,13 @@ void BDFloaterComplexity::onAvatarsRefresh()
 				element->setUserdata(avatar);
 			}
 		}
-	}
+	}*/
 
 	for (LLCharacter* character : LLCharacter::sInstances)
 	{
 		create_new = true;
 		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
-		if (avatar)
+		if (avatar && !avatar->isControlAvatar())
 		{
 			LLUUID uuid = avatar->getID();
 			for (LLScrollListItem* item : mAvatarScroll->getAllData())
