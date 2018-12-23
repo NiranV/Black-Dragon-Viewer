@@ -16,7 +16,7 @@
    border_size="0"
    clip="true"
    follows="all"
-   height="398"
+   height="423"
    layout="topleft"
    left="0"
    mouse_opaque="false"
@@ -30,7 +30,7 @@
       follows="all"
       height="398"
       left="0"
-      width="137"
+      width="120"
       background_visible="false"
       bg_alpha_color="Black_75"
       layout="topleft"
@@ -43,17 +43,19 @@
         height="398"
         top="0"
         left="7"
-        bg_alpha_color="White_02"
-        background_visible="true">
-          <icon
-          follows="top|left|right"
-          height="25"
-          image_name="Toolbar_Middle_Off"
-          layout="topleft"
-          left="0"
-          top="0"
-          name="dummy_icon"
-          width="130"/>
+        background_image="Panel_Background"
+	 background_visible="true">
+          <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top="1"
+ width="112"/>
            <text
            type="string"
            length="1"
@@ -61,11 +63,11 @@
            halign="left"
            height="16"
            layout="topleft"
-           left_delta="3"
+           left="6"
            name="legend_label"
-           top_delta="5"
+           top_delta="4"
            width="125">
-              Legend
+              Legend: Me
            </text>
            <button
            follows="left|top"
@@ -73,7 +75,7 @@
            image_overlay="map_avatar_16.tga"
            image_selected="transparent.j2c"
            image_unselected="transparent.j2c"
-           scale_image="true"
+           scale_image="false"
            left="3"
            layout="topleft"
            name="Show My Location"
@@ -106,7 +108,7 @@
            label_color="White"
            layout="topleft"
            left="3"
-           top_pad="-3"
+           top_pad="-2"
            name="Go Home"
            tool_tip="Teleport to my home location"
            width="24" >
@@ -126,60 +128,108 @@
            width="70">
               Home
            </text>
+           <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="112"/>
+           <text
+           type="string"
+           length="1"
+           follows="top|left"
+           halign="left"
+           height="16"
+           layout="topleft"
+           left="6"
+           name="legend_label"
+           top_delta="4"
+           width="125">
+              Legend: Land
+           </text>
            <icon
            color="0.5 0.25 1 1"
            follows="top|left"
-           height="18"
+           height="16"
            image_name="legend.tga"
            layout="topleft"
            mouse_opaque="true"
            name="square2"
-           left="5"
-           top_pad="-1"
-           width="18" />
+           left="6"
+           top_pad="8"
+           width="16" />
            <text
            type="string"
            length="1"
            follows="top|left"
            height="14"
            layout="topleft"
-           left_pad="4"
+           left_pad="3"
            name="auction_label"
-           top_delta="3"
+           top_delta="2"
            width="100">
               Land auction
            </text>
            <icon
            color="1 1 0.25 1"
            follows="top|left"
-           height="18"
+           height="16"
            image_name="legend.tga"
            layout="topleft"
            mouse_opaque="true"
            name="square2"
-           left="5"
-           top_pad="0"
-           width="18" />
+           left="6"
+           top_pad="1"
+           width="16" />
            <text
            type="string"
            length="1"
            follows="top|left"
            height="14"
            layout="topleft"
-           left_pad="4"
+           left_pad="3"
            name="by_owner_label"
-           top_delta="3"
+           top_delta="2"
            width="100">
               By owner
+           </text>
+           <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="112"/>
+           <text
+           type="string"
+           length="1"
+           follows="top|left"
+           halign="left"
+           height="16"
+           layout="topleft"
+           left="6"
+           name="legend_label"
+           top_delta="4"
+           width="125">
+              Legend: Misc
            </text>
            <check_box
            control_name="MapShowPeople"
            follows="top|left"
            height="16"
            layout="topleft"
-           left="3"
+           left="4"
            name="people_chk"
-           top_pad="1"
+           top_pad="10"
            width="22" />
            <icon
            color="0 1 0 1"
@@ -190,7 +240,7 @@
            left_pad="2"
            mouse_opaque="true"
            name="people_chek"
-           top_delta="2"
+           top_delta="4"
            width="10" />
            <text
            type="string"
@@ -198,8 +248,8 @@
            follows="top|left"
            halign="left"
            height="16"
-           top_delta="-1"
-           left_pad="6"
+           top_delta="0"
+           left_pad="7"
            layout="topleft"
            name="person_label"
            width="90">
@@ -210,9 +260,9 @@
            follows="top|left"
            height="16"
            layout="topleft"
-           left="3"
+           left="4"
            name="infohub_chk"
-           top_pad="0"
+           top_pad="-4"
            width="22" />
            <icon
            follows="top|left"
@@ -222,7 +272,7 @@
            left_pad="0"
            mouse_opaque="true"
            name="infohub"
-           top_delta="0"
+           top_delta="2"
            width="15" />
            <text
            type="string"
@@ -231,7 +281,7 @@
            halign="left"
            height="16"
            top_delta="2"
-           left_pad="3"
+           left_pad="4"
            layout="topleft"
            name="infohub_label"
            width="90">
@@ -242,9 +292,9 @@
            follows="top|left"
            height="16"
            layout="topleft"
-           left="3"
+           left="4"
            name="land_for_sale_chk"
-           top_pad="0"
+           top_pad="-4"
            width="22" />
            <icon
            follows="top|left"
@@ -253,8 +303,8 @@
            layout="topleft"
            mouse_opaque="true"
            name="landforsale"
-           top_delta="0"
-           left_pad="0"
+           top_delta="2"
+           left_pad="1"
            width="15" />
            <text
            type="string"
@@ -269,13 +319,37 @@
            width="90">
            Land Sale
            </text>
+           <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="10"
+ width="112"/>
+           <text
+           type="string"
+           length="1"
+           follows="top|left"
+           halign="left"
+           height="16"
+           layout="topleft"
+           left="6"
+           name="legend_label"
+           top_delta="4"
+           width="125">
+              Legend: Maturity
+           </text>
            <check_box
            control_name="MapShowEvents"
            follows="top|left"
            height="16"
            layout="topleft"
-           left="3"
-           top_pad="0"
+           left="4"
+           top_pad="10"
            name="event_chk"
            width="22" />
            <icon
@@ -285,8 +359,8 @@
            layout="topleft"
            mouse_opaque="true"
            name="event"
-           top_delta="-1"
-           left_pad="-2"
+           top_delta="1"
+           left_pad="-1"
            width="18" />
            <text
            type="string"
@@ -307,9 +381,9 @@
            height="16"
            initial_value="true"
            layout="topleft"
-           left="3"
+           left="4"
            name="events_mature_chk"
-           top_pad="0"
+           top_pad="-4"
            width="22" />
            <icon
            follows="top|left"
@@ -318,8 +392,8 @@
            layout="topleft"
            mouse_opaque="true"
            name="events_mature_icon"
-           top_delta="-1"
-           left_pad="-2"
+           top_delta="1"
+           left_pad="-1"
            width="18" />
            <text
            type="string"
@@ -339,19 +413,19 @@
            follows="top|left"
            height="16"
            layout="topleft"
-           left="3"
+           left="4"
            name="events_adult_chk"
-           top_pad="0"
+           top_pad="-4"
            width="22" />
            <icon
            follows="top|left"
            height="16"
            image_name="Parcel_R_Dark"
            layout="topleft"
-           left_pad="-2"
+           left_pad="-1"
            mouse_opaque="true"
            name="events_adult_icon"
-           top_delta="-1"
+           top_delta="1"
            width="18" />
            <text
            type="string"
@@ -388,9 +462,63 @@
 	 name="objects_mapview"
 	 top="0"
 	 width="285" />
+  <button
+  enabled="false"
+  follows="right|top"
+  height="18"
+  image_overlay="Command_Destinations_Icon"
+  image_hover_unselected="Transparent"
+  image_selected="Transparent"
+  image_unselected="Transparent"
+  left="-29"
+  top="17"
+  name="Show Destination"
+  tool_tip="Center map on selected location"
+  width="18">
+  <button.commit_callback
+  function="WMap.ShowTarget" />
+  </button>
+  <icon
+	 follows="right|top"
+	 height="16"
+	 image_name="Zoom_Off"
+	 layout="topleft"
+	 left="-28"
+	 mouse_opaque="true"
+	 name="zoom_icon"
+	 top="40"
+	 width="16"/>
+	 <slider
+	 follows="right|top"
+	 height="81"
+	 increment="0.1"
+	 initial_value="-2"
+	 left="-28"
+	 layout="topleft"
+  orientation="vertical"
+	 max_val="0"
+	 top="60"
+	 min_val="-8"
+	 name="zoom slider"
+	 show_text="false"
+	 width="16" />
+  <button
+	 control_name="WorldMapShowLegend"
+	 follows="left|bottom"
+	 height="18"
+  image_overlay="Command_Preferences_Icon"
+     image_hover_unselected="Transparent"
+      image_selected="Transparent"
+      image_unselected="Transparent"
+	 toggle="true"
+	 left="11"
+	 layout="topleft"
+	 name="Worldmap Controls"
+	 tool_tip="Show/Hide the worldmap controls"
+	 top="-35"
+	 width="18"/>
       </layout_panel>
       <layout_panel
-      visibility_control="ShowBigWorldMap"
       auto_resize="false"
       follows="right|top|bottom"
       height="580"
@@ -408,54 +536,47 @@
 	 height="580"
 	 top="0"
 	 left="0"
-     bg_alpha_color="White_02"
+  background_image="Panel_Background"
 	 background_visible="true">
-      <icon
-  follows="top|left|right"
-  height="25"
-  image_name="Toolbar_Middle_Off"
-  layout="topleft"
-  left="1"
-  top="0"
-  name="dummy_icon"
-  width="191"/>
+   <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="1"
+ width="190"/>
 	    <text
 	    type="string"
 	    length="1"
-	    follows="top|right"
+	    follows="top|left"
 	    halign="left"
 	    height="16"
 	    layout="topleft"
-	    left_delta="3"
+	    left="5"
 	    name="find_on_map_label"
-	    top_delta="5"
+	    top_delta="4"
 	    width="190">
 	       Find on Map
 	    </text>
-        <icon
-  follows="top|left|right"
-  height="25"
-  image_name="Toolbar_Middle_Off"
-  layout="topleft"
-  left="1"
-  top_pad="7"
-  name="dummy_icon"
-  width="32"/>
 	    <icon
 	    color="0.5 0 0 1"
 	    follows="top|right"
 	    height="16"
 	    image_name="map_track_16.tga"
 	    layout="topleft"
-	    left_delta="6"
-	    top_delta="4"
+	    left="5"
+	    top_pad="10"
 	    mouse_opaque="true"
 	    name="avatar_icon"
 	    width="16" />
 	    <combo_box
 	    allow_text_entry="true"
 	    follows="top|right"
-	    height="25"
+	    height="23"
 	    label="Online Friends"
 	    layout="topleft"
 	    top_delta="-4"
@@ -471,44 +592,37 @@
 	       <combo_box.commit_callback
 	       function="WMap.AvatarCombo"/>
            <combo_box.combo_editor
-          font_shadow="soft"
-          text_tentative_color="0.7 0.7 0.7 0.7"
-          cursor_color="White"
-          text_color="0.75 0.75 0.75 0.7"
-          background_image="Toolbar_Middle_Off"
-          background_image_disabled="Toolbar_Middle_Selected"
-          background_image_focused="Toolbar_Middle_Off"/>
-          <combo_box.combo_button
-          scale_image="true"
-          image_overlay="DownArrow_Off"
-          image_unselected="Toolbar_Middle_Dropdown_Off"
-          image_selected="Toolbar_Middle_Dropdown_Selected"
-          image_disabled="Toolbar_Middle_Dropdown_Off" />
+           text_pad_left="7"
+           background_image="TextField_Off"
+           background_image_disabled="TextField_Disabled"
+           background_image_focused="TextField_Active"/>
+         <combo_box.combo_button
+         image_unselected="ComboToolbarButton_Off"
+         image_selected="ComboToolbarButton_Selected"
+         image_pressed="ComboToolbarButton_Selected" 
+         image_pressed_selected="ComboToolbarButton_Selected"/>
+         <combo_box.drop_down_button
+         image_unselected="ComboToolbarButton_Off"
+         image_selected="ComboToolbarButton_Selected"
+         image_pressed="ComboToolbarButton_Selected" 
+         image_pressed_selected="ComboToolbarButton_Selected"
+         image_disabled="ComboToolbarButton_Disabled"/>
 	    </combo_box>
-        <icon
-  follows="top|left|right"
-  height="25"
-  image_name="Toolbar_Middle_Off"
-  layout="topleft"
-  left="1"
-  top_pad="3"
-  name="dummy_icon"
-  width="32"/>
 	    <icon
 	    color="0.5 0 0 1"
 	    follows="top|right"
 	    height="16"
 	    image_name="map_track_16.tga"
 	    layout="topleft"
-	    left_delta="6"
-	    top_delta="4"
+	    left="5"
+	    top_pad="6"
 	    mouse_opaque="true"
 	    name="landmark_icon"
 	    width="16" />
 	    <combo_box
 	    allow_text_entry="true"
 	    follows="top|right"
-	    height="25"
+	    height="23"
 	    label="My Landmarks"
 	    layout="topleft"
 	    top_delta="-4"
@@ -524,49 +638,33 @@
 	       <combo_box.commit_callback
 	       function="WMap.Landmark"/>
            <combo_box.combo_editor
-          font_shadow="soft"
-          text_tentative_color="0.7 0.7 0.7 0.7"
-          cursor_color="White"
-          text_color="0.75 0.75 0.75 0.7"
-          background_image="Toolbar_Middle_Off"
-          background_image_disabled="Toolbar_Middle_Selected"
-          background_image_focused="Toolbar_Middle_Off"/>
-          <combo_box.combo_button
-          scale_image="true"
-          image_overlay="DownArrow_Off"
-          image_unselected="Toolbar_Middle_Dropdown_Off"
-          image_selected="Toolbar_Middle_Dropdown_Selected"
-          image_disabled="Toolbar_Middle_Dropdown_Off" />
+           text_pad_left="7"
+           background_image="TextField_Off"
+           background_image_disabled="TextField_Disabled"
+           background_image_focused="TextField_Active"/>
+         <combo_box.combo_button
+         image_unselected="ComboToolbarButton_Off"
+         image_selected="ComboToolbarButton_Selected"
+         image_pressed="ComboToolbarButton_Selected" 
+         image_pressed_selected="ComboToolbarButton_Selected"/>
+         <combo_box.drop_down_button
+         image_unselected="ComboToolbarButton_Off"
+         image_selected="ComboToolbarButton_Selected"
+         image_pressed="ComboToolbarButton_Selected" 
+         image_pressed_selected="ComboToolbarButton_Selected"
+         image_disabled="ComboToolbarButton_Disabled"/>
 	    </combo_box>
-        <icon
-  follows="top|left|right"
-  height="25"
-  image_name="Toolbar_Middle_Off"
-  layout="topleft"
-  left="1"
-  top_pad="3"
-  name="dummy_icon"
-  width="32"/>
 	    <icon
 	    color="0.5 0 0 1"
 	    follows="top|right"
 	    height="16"
 	    image_name="map_track_16.tga"
 	    layout="topleft"
-	    left_delta="6"
-	    top_delta="4"
+	    left="5"
+	    top_pad="6"
 	    mouse_opaque="true"
 	    name="location_icon"
 	    width="16" />
-        <icon
-  follows="top|left|right"
-  height="25"
-  image_name="Toolbar_Middle_Off"
-  layout="topleft"
-  left_pad="11"
-  top_delta="-4"
-  name="dummy_icon"
-  width="158"/>
 	    <search_editor
 	    follows="top|right"
 	    search_button_visible="false"
@@ -579,24 +677,48 @@
         background_image_disabled="TextField_Disabled"
         background_image_focused="TextField_Active"
 	    text_pad_right="25"
-	    top_delta="1"
-	    left_delta="2"
+	    top_delta="-4"
+	    left_pad="11"
 	    name="location"
 	    select_on_focus="true"
 	    tool_tip="Type the name of a region"
-	    width="154">
+	    width="150">
 	       <search_editor.commit_callback
 	       function="WMap.Location" />
 	    </search_editor>
+     <panel
+ follows="left|top|right"
+ height="20"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="1"
+ name="title"
+ top_pad="6"
+ width="190"/>
+	    <text
+	    type="string"
+	    length="1"
+	    follows="top|left"
+	    halign="left"
+	    height="16"
+	    layout="topleft"
+	    left="5"
+	    name="find_on_map_label"
+	    top_delta="4"
+	    width="190">
+	       Places
+	    </text>
 	    <scroll_list
 	    draw_stripes="false"
 	    follows="all"
-	    height="468"
+	    height="431"
 	    layout="topleft"
 	    left="0"
 	    name="search_results"
 	    visible="true"
-	    top_pad="5"
+	    top_pad="-1"
 	    width="193"
 	    sort_column="1">
 	       <scroll_list.columns
@@ -610,18 +732,31 @@
 	       <scroll_list.commit_callback
 	       function="WMap.SearchResult" />
 	    </scroll_list>
-	 </panel>
-      </layout_panel>
-   </layout_stack>
-   <icon
+     <button
+	    follows="left|bottom"
+	    height="25"
+     image_overlay="Command_Picks_Icon"
+        image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+	    layout="topleft"
+	    left="1"
+	    name="copy_slurl"
+	    tool_tip="Copies current location as SLurl to be used on the web."
+	    top_pad="-1"
+	    width="31">
+	       <button.commit_callback
+	       function="WMap.CopySLURL" />
+	    </button>
+     <icon
   follows="bottom|left"
   height="25"
   image_name="Toolbar_Middle_Off"
   layout="topleft"
-  left="40"
-  top_pad="1"
+  left_pad="1"
+  top_delta="0"
   name="dummy_icon"
-  width="109"/>
+  width="101"/>
    <spinner
 	    control_name="Teleport_Coordinate_Z"
 	    decimal_digits="0"
@@ -630,12 +765,12 @@
 	    increment="1"
 	    initial_value="23"
 	    layout="topleft"
-	    left_delta="55"
+	    left_delta="51"
 	    top_delta="1"
 	    max_val="4096"
 	    min_val="0"
 	    name="teleport_coordinate_z"
-	    width="52" >
+	    width="48" >
 	       <spinner.commit_callback
 	       function="WMap.Coordinates" />
            <spinner.up_button
@@ -653,12 +788,12 @@
 	    increment="1"
 	    initial_value="256"
 	    layout="topleft"
-	    left_delta="-35"
+	    left_delta="-33"
 	    top_delta="0"
 	    max_val="255"
 	    min_val="0"
 	    name="teleport_coordinate_y"
-	    width="52" >
+	    width="48" >
 	       <spinner.commit_callback
 	       function="WMap.Coordinates" />
            <spinner.up_button
@@ -676,12 +811,12 @@
 	    increment="1"
 	    initial_value="256"
 	    layout="topleft"
-	    left_delta="-35"
+	    left_delta="-33"
 	    top_delta="0"
 	    max_val="255"
 	    min_val="0"
 	    name="teleport_coordinate_x"
-	    width="52" >
+	    width="48" >
 	       <spinner.commit_callback 
 	       function="WMap.Coordinates" />
           <spinner.up_button
@@ -697,126 +832,18 @@
         image_hover_unselected="Toolbar_Middle_Over"
       image_selected="Toolbar_Middle_Selected"
       image_unselected="Toolbar_Middle_Off"
-      image_overlay="Command_Map_Icon"
+      image_overlay_alignment="left"
 	    layout="topleft"
-	    left_pad="73"
+	    left_pad="69"
+     label="Teleport"
 	    name="Teleport"
 	    tool_tip="Teleport to selected location"
 	    top_delta="-1"
-	    width="32">
+	    width="56">
 	       <button.commit_callback
 	       function="WMap.Teleport" />
 	    </button>
-   <button
-	    enabled="false"
-	    follows="left|bottom"
-	    height="25"
-        image_overlay="Command_Destinations_Icon"
-        image_hover_unselected="Toolbar_Middle_Over"
-      image_selected="Toolbar_Middle_Selected"
-      image_unselected="Toolbar_Middle_Off"
-	    left_pad="1"
-	    top_delta="0"
-	    name="Show Destination"
-	    tool_tip="Center map on selected location"
-	    width="32">
-	       <button.commit_callback
-	       function="WMap.ShowTarget" />
-	    </button>
-   <icon
-  follows="bottom|left"
-  height="25"
-  image_name="Toolbar_Middle_Off"
-  layout="topleft"
-  left_pad="1"
-  top_delta="0"
-  name="dummy_icon"
-  width="26"/>
-   <icon
-	 follows="left|bottom"
-	 height="16"
-	 image_name="Zoom_Off"
-	 layout="topleft"
-	 left_delta="5"
-	 mouse_opaque="true"
-	 name="zoom_icon"
-	 top_delta="4"
-	 width="16"/>
-   <icon
-  follows="bottom|left"
-  height="25"
-  image_name="Toolbar_Middle_Off"
-  layout="topleft"
-  left_pad="6"
-  top_delta="-4"
-  name="dummy_icon"
-  width="76"/>
-	 <slider
-	 follows="left|bottom"
-	 height="16"
-	 increment="0.1"
-	 initial_value="-2"
-	 left_delta="-3"
-	 layout="topleft"
-	 max_val="0"
-	 top_delta="4"
-	 min_val="-8"
-	 name="zoom slider"
-	 show_text="false"
-	 width="81" />
-     <button
-	    follows="left|bottom"
-	    height="25"
-	    label="Copy SLurl"
-        image_hover_unselected="Toolbar_Middle_Over"
-      image_selected="Toolbar_Middle_Selected"
-      image_unselected="Toolbar_Middle_Off"
-	    layout="topleft"
-	    left_pad="-1"
-	    name="copy_slurl"
-	    tool_tip="Copies current location as SLurl to be used on the web."
-	    top_delta="-4"
-	    width="100">
-	       <button.commit_callback
-	       function="WMap.CopySLURL" />
-	    </button>
-     <icon
-  follows="bottom|left|right"
-  height="25"
-  image_name="Toolbar_Middle_Off"
-  layout="topleft"
-  left_pad="1"
-  top_delta="0"
-  name="dummy_icon"
-  width="135"/>
-   <button
-	 control_name="ShowBigWorldMap"
-	 follows="right|bottom"
-	 height="25"
-	 image_overlay="Command_Preferences_Icon"
-     image_hover_unselected="Toolbar_Middle_Over"
-      image_selected="Toolbar_Middle_Selected"
-      image_unselected="Toolbar_Middle_Off"
-	 toggle="true"
-	 left_pad="1"
-	 layout="topleft"
-	 name="Worldmap Controls"
-	 tool_tip="Show/Hide the worldmap controls"
-	 top_delta="0"
-	 width="32"/>
-   <button
-	 control_name="WorldMapShowLegend"
-	 follows="left|bottom"
-	 height="25"
-	 image_overlay="Command_HowTo_Icon"
-     image_hover_unselected="Toolbar_Middle_Over"
-      image_selected="Toolbar_Middle_Selected"
-      image_unselected="Toolbar_Middle_Off"
-	 toggle="true"
-	 left="7"
-	 layout="topleft"
-	 name="Worldmap Controls"
-	 tool_tip="Show/Hide the worldmap controls"
-	 top_delta="0"
-	 width="32"/>
+	 </panel>
+      </layout_panel>
+   </layout_stack>
 </floater>
