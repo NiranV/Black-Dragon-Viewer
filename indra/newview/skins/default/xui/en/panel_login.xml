@@ -183,21 +183,17 @@ width="996">
      width="990"
      word_wrap="false">
 Added: Function to make scroll containers optionally scrollable.
-Changed: Make chromatic abberation, greyscale and sepia post processing effects permanent.
-Changed: Reworked all 'Apperance' based panels.
-Changed: Improved Lock icon.
 Changed: Advanced Complexity Window complexity header widths.
 Changed: Minimum width and height of Advanced Complexity Window.
 Changed: Overhauled World Map layout and design to fit with all other windows.
 Changed: Version to 3.3.8 - Traveling Dragon.
-Fixed: Lots of appearance panel inconsistencies.
 Fixed: Advanced Complexity Window reporting negative and wrong values for some features.
 Fixed: Advanced Complexity Window showing animesh in the avatar list.
 Fixed: Advanced Complexity Window scrolling vertically and then horizontally when using the mousewheel.
 Fixed: Advanced Complexity Window complexity display cutting off the "media" section.
 Fixed: Advanced Complexity Window scaling.
 Removed: Removed "Complexity" tab in Advanced Complexity Window.
-Misc: Cleaned up some appearance panel code.
+Removed: Wrong changelog entries.
 Misc: Cleaned up panel_login.xml.
      </text>
      <view_border
