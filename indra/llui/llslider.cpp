@@ -374,6 +374,7 @@ BOOL LLSlider::handleKeyHere(KEY key, MASK mask)
 		break;
 	case KEY_LEFT:
 		setValueAndCommit(getValueF32() - getIncrement());
+		onCommit();
 		handled = TRUE;
 		break;
 	case KEY_UP:
@@ -388,6 +389,7 @@ BOOL LLSlider::handleKeyHere(KEY key, MASK mask)
 		break;
 	case KEY_RIGHT:
 		setValueAndCommit(getValueF32() + getIncrement());
+		onCommit();
 		handled = TRUE;
 		break;
 	default:
