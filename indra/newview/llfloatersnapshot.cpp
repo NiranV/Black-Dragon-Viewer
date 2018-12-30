@@ -389,9 +389,6 @@ void LLFloaterSnapshotBase::ImplBase::onClickFilter(LLUICtrl *ctrl, void* data)
 // static
 void LLFloaterSnapshotBase::ImplBase::onClickMultiplierCheck(LLUICtrl *ctrl, void* data)
 {
-	LLCheckBoxCtrl *check = (LLCheckBoxCtrl *)ctrl;
-	gSavedSettings.setBOOL("RenderSnapshotAutoAdjustMultiplier", check->get());
-
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
 	if (view)
 	{
@@ -906,7 +903,6 @@ BOOL LLFloaterSnapshot::postBuild()
 	//BD
 	childSetCommitCallback("freeze_world_check", Impl::onCommitFreezeWorld, this);
 	childSetCommitCallback("autoscale_check", ImplBase::onClickMultiplierCheck, this);
-	getChild<LLUICtrl>("autoscale_check")->setValue(gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier"));
 
     getChild<LLButton>("retract_btn")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onExtendFloater, this));
     getChild<LLButton>("extend_btn")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onExtendFloater, this));

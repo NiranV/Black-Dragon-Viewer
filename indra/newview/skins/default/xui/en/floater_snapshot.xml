@@ -240,6 +240,7 @@
          name="remember_mode_check" />
 		<check_box
          label="Autoscale rendering"
+         control_name="RenderSnapshotAutoAdjustMultiplier"
          layout="topleft"
 			tool_tip="Tries to automatically scale Depth of Field, Screen Space Ambient Occlusion and Shadow Blur strength up or down depending on the desired snapshot resolution to match the desired strength of the actual render scene. Useful if you notice mentioned effects become weaker with higher snapshot respolution but don't want (or know how) to manually adjust them."
 		 height="16"
