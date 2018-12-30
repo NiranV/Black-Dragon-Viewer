@@ -363,20 +363,28 @@ BOOL LLSlider::handleKeyHere(KEY key, MASK mask)
 	switch(key)
 	{
 	case KEY_DOWN:
-		//BD - Allow changing the increment value.
-		//     We should probably do something to indicate that the increment has changed.
-		setIncrement(mIncrement / 10);
-		handled = TRUE;
+		if (mask == MASK_SHIFT)
+		{
+			//BD - Allow changing the increment value.
+			//     We should probably do something to indicate that the increment has changed.
+			setIncrement(mIncrement / 10);
+			onCommit();
+			handled = TRUE;
+		}
 		break;
 	case KEY_LEFT:
 		setValueAndCommit(getValueF32() - getIncrement());
 		handled = TRUE;
 		break;
 	case KEY_UP:
-		//BD - Allow changing the increment value.
-		//     We should probably do something to indicate that the increment has changed.
-		setIncrement(mIncrement * 10);
-		handled = TRUE;
+		if (mask == MASK_SHIFT)
+		{
+			//BD - Allow changing the increment value.
+			//     We should probably do something to indicate that the increment has changed.
+			setIncrement(llmin(mIncrement * 10, mMaxValue));
+			onCommit();
+			handled = TRUE;
+		}
 		break;
 	case KEY_RIGHT:
 		setValueAndCommit(getValueF32() + getIncrement());
