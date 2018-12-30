@@ -395,6 +395,11 @@ void LLFloaterSnapshotBase::ImplBase::onClickMultiplierCheck(LLUICtrl *ctrl, voi
 	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
 	if (view)
 	{
+		LLSnapshotLivePreview* previewp = view->getPreviewView();
+		if (previewp)
+		{
+			previewp->updateSnapshot(TRUE);
+		}
 		view->impl->updateControls(view);
 	}
 }
