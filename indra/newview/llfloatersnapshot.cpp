@@ -1066,6 +1066,11 @@ void LLFloaterSnapshotBase::onClose(bool app_quitting)
 		previewp->setEnabled(FALSE);
 	}
 
+	//BD - When closing the window, automatically disable the autoscale option or we
+	//     get temporarily stuck with it until we disable it again and this might cause
+	//     confusion for the user who doesn't know what he might have missed.
+	gSavedSettings.setBOOL("RenderSnapshotAutoAdjustMultiplier", false);
+
 	//BD
 	if (impl->mSnapshotFreezeWorld)
 	{
