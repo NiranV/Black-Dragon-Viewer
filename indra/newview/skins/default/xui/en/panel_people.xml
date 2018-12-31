@@ -487,7 +487,6 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
      layout="topleft"
      left="3"
      name="tabs"
-     tab_min_width="62"
      tab_height="20"
      tab_position="top"
      top="18"
