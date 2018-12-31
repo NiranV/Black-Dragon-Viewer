@@ -1138,7 +1138,7 @@ void LLViewerJoystick::setXboxDefaults()
 	gSavedSettings.setF32("FlycamAxisScale4", 1.0f);
 	gSavedSettings.setF32("FlycamAxisScale5", 1.0f);
 	gSavedSettings.setF32("FlycamAxisScale3", 0.75f);
-	gSavedSettings.setF32("FlycamAxisScale6", 0.5f);
+	gSavedSettings.setF32("FlycamAxisScale6", 0.05f);
 	
 	gSavedSettings.setF32("AvatarAxisDeadZone0", .4f);
 	gSavedSettings.setF32("AvatarAxisDeadZone2", .2f);
