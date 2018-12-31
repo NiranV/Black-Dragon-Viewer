@@ -780,7 +780,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 
 	F32 cur_delta[7];
 	bool is_zero = true;
-
+	F32 flycam_feather = mFlycamFeathering;
 	for (U32 i = 0; i < 7; i++)
 	{
 		if (i < 6)
@@ -843,10 +843,10 @@ void LLViewerJoystick::moveFlycam(bool reset)
 			&& (sFlycamZoom == viewer_cam->getMinView()
 			|| sFlycamZoom == viewer_cam->getMaxView()))
 		{
-			mFlycamFeathering = 3.0f;
+			flycam_feather = 3.0f;
 		}
 
-		sDelta[i] = sDelta[i] + (cur_delta[i] - sDelta[i]) * time * mFlycamFeathering;
+		sDelta[i] = sDelta[i] + (cur_delta[i] - sDelta[i]) * time * flycam_feather;
 		is_zero = is_zero && (cur_delta[i] == 0.f);
 	}
 	
@@ -876,7 +876,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 		level.orthogonalize();
 				
 		LLQuaternion quat(level);
-		sFlycamRotation = nlerp(llmin(mFlycamFeathering * time, 1.f), sFlycamRotation, quat);
+		sFlycamRotation = nlerp(llmin(flycam_feather * time, 1.f), sFlycamRotation, quat);
 	}
 
 	if (mZoomDirect)
