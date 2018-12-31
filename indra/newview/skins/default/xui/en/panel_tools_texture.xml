@@ -58,14 +58,14 @@
             increment="0.01"
             initial_value="0"
             label="Glow"
-            label_width="70"
+            label_width="65"
             layout="topleft"
             left="110"
             max_val="1"
             min_val="0"
             name="glow"
             top_delta="0"
-            width="180">
+            width="175">
             <slider_bar
             apply_immediately="false"/>
             </slider>
@@ -77,7 +77,7 @@
     left="5"
     name="cost_text_border"
     top_pad="3"
-    width="285"/>
+    width="280"/>
             <texture_picker
              can_apply_immediately="true"
              default_image_name="Default"
@@ -119,11 +119,11 @@
              height="20"
              follows="top|left"
              layout="topleft"
-             label="Alpha mode"
-             left="190"
+             label="Alpha Mode"
+             left="189"
              name="combobox alphamode"
              top_delta="-3"
-             width="100">
+             width="96">
                 <combo_box.item
                  label="None"
                  name="None"
@@ -149,14 +149,14 @@
             increment="1"
             initial_value="55"
             label="Mask Cutoff"
-            label_width="70"
+            label_width="69"
             layout="topleft"
             left="110"
             max_val="255"
             min_val="0"
             name="maskcutoff"
             top_pad="2"
-            width="180" >
+            width="175" >
             <slider_bar
             apply_immediately="false"/>
             </slider>
@@ -168,14 +168,14 @@
             increment="1"
             initial_value="0"
             label="Alpha %"
-            label_width="70"
+            label_width="69"
             layout="topleft"
             left_delta="0"
             max_val="100"
             min_val="0"
             name="ColorTrans"
             top_pad="3"
-            width="180" >
+            width="175" >
             <slider_bar
             apply_immediately="false"/>
             </slider>
@@ -251,11 +251,11 @@
              height="20"
              layout="topleft"
              follows="top|left"
-             left="190"
-             label="Normalmap"
+             left="189"
+             label="Normal"
              name="combobox bumpiness"
              top_delta="-3"
-             width="100">
+             width="96">
                 <combo_box.item
                  label="None"
                  name="None"
@@ -377,11 +377,11 @@
              height="20"
              layout="topleft"
              follows="top|left"
-             left="190"
-             label="Specularmap"
+             left="189"
+             label="Specular"
              name="combobox shininess"
              top_delta="-3"
-             width="100">
+             width="96">
                 <combo_box.item
                  label="None"
                  name="None"
@@ -414,14 +414,14 @@
             increment="1"
             initial_value="51"
             label="Glossiness"
-            label_width="70"
+            label_width="69"
             layout="topleft"
             left="110"
             max_val="255"
             min_val="0"
             name="glossiness"
             top_pad="2"
-            width="180">
+            width="175">
             <slider_bar
             apply_immediately="false"/>
             </slider>
@@ -433,14 +433,14 @@
             increment="1"
             initial_value="0"
             label="Environment"
-            label_width="70"
+            label_width="69"
             layout="topleft"
             left_delta="0"
             max_val="255"
             min_val="0"
             name="environment"
             top_pad="3"
-            width="180">
+            width="175">
             <slider_bar
             apply_immediately="false"/>
             </slider>
@@ -588,7 +588,7 @@
     left="5"
     name="cost_text_border"
     top="220"
-    width="285"/>
+    width="280"/>
             <!--<check_box
              follows="top|left"
              height="16"
@@ -646,14 +646,14 @@
              height="19"
              initial_value="0"
              label="Horizontal | Vertical scale"
-             label_width="155"
+             label_width="150"
              layout="topleft"
              left="5"
              min_val="-100"
              max_val="100"
              name="TexScaleU"
              top_pad="5"
-             width="215" />
+             width="210" />
             <spinner
              follows="left|top"
              height="19"
@@ -674,12 +674,12 @@
              initial_value=""
 			 label="Repeats"
              layout="topleft"
-			 label_width="225"
+			 label_width="220"
              left="5"
              max_val="100"
              min_val="-100"
              name="rptctrl"
-             width="285" />
+             width="280" />
            <spinner
              decimal_digits="2"
              follows="left|top"
@@ -688,24 +688,24 @@
              initial_value="0"
 			 label="Rotation degrees"
              layout="topleft"
-			 label_width="225"
+			 label_width="220"
              left="5"
              max_val="9999"
              min_val="-9999"
              name="TexRot"
-             width="285" />
+             width="280" />
 
             <spinner
              follows="left|top"
              height="19"
              initial_value="0"
              label="Horizontal | Vertical offset"
-             label_width="155"
+             label_width="150"
              layout="topleft"
              left="5"
              min_val="-1"
              name="TexOffsetU"
-             width="215" />
+             width="210" />
             <spinner
              follows="left|top"
              height="19"
@@ -856,13 +856,13 @@
     left="5"
     name="cost_text_border"
     top_pad="5"
-    width="285"/>
+    width="280"/>
              <text
 			 follows="left|top|right"
 			 height="9"
 			 layout="topleft"
 			 left="5"
-			 top_pad="11"
+			 top_pad="9"
              text_readonly_color="HTMLLinkColor"
              use_ellipses="true"
 			 read_only="true"
@@ -879,7 +879,7 @@
 			 top_pad="5"
 			 tool_tip="Add Media"
 			 label="Choose..."
-			 width="94">
+			 width="92">
 				<button.commit_callback
 				function="BuildTool.AddMedia"/>
 			</button>
@@ -892,7 +892,7 @@
 			 tool_tip="Delete this media texture"
 			 top_delta="0"
 			 label="Remove"
-			 width="95">
+			 width="93">
 				<button.commit_callback
 				function="BuildTool.DeleteMedia"/>
 			</button>
@@ -906,7 +906,7 @@
 			 name="button align"
 			 top_delta="0"
 			 tool_tip="Align media texture (must load first)"
-			 width="94" />
+			 width="93" />
             <web_browser
              visible="false"
              enabled="false"
