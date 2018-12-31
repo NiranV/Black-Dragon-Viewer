@@ -799,7 +799,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 			cur_delta[4] *= -1.f;
 
 		if (mBtn[mMappedButtons[ZOOM_DEFAULT]])
-			sFlycamZoom = DEFAULT_FIELD_OF_VIEW;
+			sFlycamZoom = gSavedSettings.getF32("CameraAngle");
 
 
 		F32 tmp = cur_delta[i];
