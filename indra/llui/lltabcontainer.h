@@ -101,7 +101,9 @@ public:
 		Optional<bool>						use_ellipses;
 
 //		//BD - Optional Jump To Last Buttons
-		Optional<bool>						use_jump_buttons;
+		Optional<bool>						use_jump_buttons,
+		//BD - Optional Jump To Last Buttons
+											consistent_widths;
 
 		/**
 		 * Use LLCustomButtonIconCtrl or LLButton in LLTabTuple
@@ -287,6 +289,8 @@ private:
 
 //	//BD - Optional Jump To Last Buttons
 	BOOL							mUseJumpButtons;
+	//BD - Consistent Widths
+	BOOL							mConsistentWidths;
 
 	S32								mRightTabBtnOffset; // Extra room to the right of the tab buttons.
 

@@ -215,13 +215,15 @@ LLTabContainer::Params::Params()
 	first_tab("first_tab"),
 	middle_tab("middle_tab"),
 	last_tab("last_tab"),
-//	//BD - Optional Jump To Last Buttons
-	use_jump_buttons("use_jump_buttons"),
 	use_custom_icon_ctrl("use_custom_icon_ctrl", false),
 	open_tabs_on_drag_and_drop("open_tabs_on_drag_and_drop", false),
 	tab_icon_ctrl_pad("tab_icon_ctrl_pad", 0),
 	use_ellipses("use_ellipses"),
-	font_halign("halign")
+	font_halign("halign"),
+//	//BD - Optional Jump To Last Buttons
+	use_jump_buttons("use_jump_buttons"),
+	//BD - Consistent Widths
+	consistent_widths("consistent_widths", true)
 {}
 
 LLTabContainer::LLTabContainer(const LLTabContainer::Params& p)
@@ -252,12 +254,14 @@ LLTabContainer::LLTabContainer(const LLTabContainer::Params& p)
 	mFirstTabParams(p.first_tab),
 	mMiddleTabParams(p.middle_tab),
 	mLastTabParams(p.last_tab),
-//	//BD - Optional Jump To Last Buttons
-	mUseJumpButtons(p.use_jump_buttons),
 	mCustomIconCtrlUsed(p.use_custom_icon_ctrl),
 	mOpenTabsOnDragAndDrop(p.open_tabs_on_drag_and_drop),
 	mTabIconCtrlPad(p.tab_icon_ctrl_pad),
-	mUseTabEllipses(p.use_ellipses)
+	mUseTabEllipses(p.use_ellipses),
+//	//BD - Optional Jump To Last Buttons
+	mUseJumpButtons(p.use_jump_buttons),
+	//BD - Consistent Widths
+	mConsistentWidths(p.consistent_widths)
 {
 	static LLUICachedControl<S32> tabcntr_vert_tab_min_width ("UITabCntrVertTabMinWidth", 0);
 
@@ -426,7 +430,9 @@ void LLTabContainer::draw()
 	{
 		// Set the leftmost position of the tab buttons.
 //		//BD - Optional Jump To Last Buttons
-		left = LLPANEL_BORDER_WIDTH + (has_scroll_arrows ? tabcntr_arrow_btn_size : tabcntr_tab_h_pad);
+		if (has_scroll_arrows)
+			left += tabcntr_arrow_btn_size;
+		//left = LLPANEL_BORDER_WIDTH + (has_scroll_arrows ? tabcntr_arrow_btn_size : tabcntr_tab_h_pad);
 		left -= getScrollPosPixels();
 	}
 	
@@ -458,6 +464,11 @@ void LLTabContainer::draw()
 			tuple->mButton->setVisible( TRUE );
 		}
 
+		//BD
+		S32 available_width = getRect().getWidth() - LLPANEL_BORDER_WIDTH;
+		S32 consistent_width = llfloor(available_width / getTabCount());
+		S32 leftover_width = available_width % getTabCount();
+
 		S32 max_scroll_visible = getTabCount() - getMaxScrollPos() + getScrollPos();
 		S32 idx = 0;
 		for(tuple_list_t::iterator iter = mTabList.begin(); iter != mTabList.end(); ++iter)
@@ -467,7 +478,25 @@ void LLTabContainer::draw()
 			tuple->mButton->translate( left ? left - tuple->mButton->getRect().mLeft : 0,
 									   top ? top - tuple->mButton->getRect().mTop : 0 );
 			if (top) top -= BTN_HEIGHT + tabcntrv_pad;
-			if (left) left += tuple->mButton->getRect().getWidth();
+
+			if (left >= 0 && !(mIsVertical && !left))
+			{
+				if (!has_scroll_arrows && mConsistentWidths)
+				{
+					S32 button_width = consistent_width;
+					if (leftover_width > 0)
+					{
+						button_width += 1;
+						leftover_width -= 1;
+					}
+
+					LLRect rect = tuple->mButton->getRect();
+					rect.setLeftTopAndSize(rect.mLeft, rect.mTop, button_width, rect.getHeight());
+					tuple->mButton->setRect(rect);
+				}
+
+				left += tuple->mButton->getRect().getWidth();
+			}
 
 			if (!mIsVertical)
 			{
