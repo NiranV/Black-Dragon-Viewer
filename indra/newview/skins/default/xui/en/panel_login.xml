@@ -91,7 +91,7 @@ width="996">
  height="20"
  image_unselected="transparentj2c"
  image_selected="transparentj2c"
- label="[CHANNEL] [VERSION] - [3.3.8 - Traveling Dragon]"
+ label="[CHANNEL] [VERSION] - [3.3.9 - Exploding Dragon]"
  font="SansSerifSmall"
  layout="topleft"
  left="3"
@@ -173,8 +173,62 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="221"
+     height="195"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="true"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Added: Implement the ability to evenly distribute available space across all tabs.
+Changed: Up/Down arrows will now change the slider increment only if Shift is held down as well.
+Changed: Refresh snapshot when autoscale checkbox is changed to make the changes immediately visible in the preview.
+Changed: Disable autoscale when we close the snapshot floater.
+Changed: Some layout fixes to the texture tools tab.
+Changed: Default flycam zoom scale to 0.05, slower and smoother zoom.
+Changed: Version to 3.3.9 - Exploding Dragon.
+Fixed: Changing the increment can break sliders.
+Fixed: Changing slider values via Left/Right arrow does not apply their value in tools floater where the slider commit is delayed.
+Fixed: Flycam feathering getting killed when zooming out/in to the max.
+Fixed: Camera Angle reverting to default angle rather than current normal camera angle when hitting reset angle in flycam.
+Fixed: Poser tabs clipping outside the window.
+Fixed: Tools floater tabs clipping outside the window.
+Fixed: People panel tabs being cut short.
+Misc: Autoscale function cleanup.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.3.8
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="169"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
