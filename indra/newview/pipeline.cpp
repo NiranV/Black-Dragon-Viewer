@@ -1059,25 +1059,20 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		}
 
 		//BD - Force shader level 2 at all times.
-		//if (shadow_detail > 0 || ssao 
-		//	|| RenderDepthOfField || samples > 0 
-		//	|| RenderDeferredBlurLight)
-		//{ //only need mDeferredLight for shadows OR ssao OR dof OR fxaa
 		if (!mDeferredLight.allocate(resX, resY, GL_RGBA, FALSE, FALSE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
-		//}
-		/*else
-		{
-			mDeferredLight.release();
-		}*/
 
 //		//BD - Shadow Map Allocation
 		allocateShadowMaps(true);
+
+		//share depth buffer between deferred targets
+		mDeferredScreen.shareDepthBuffer(mScreen);
 
 //		//BD - Motion Blur
 		if (RenderMotionBlur)
 		{
 			//allocate velocity map
 			mVelocityMap.allocate(resX, resY, GL_RGB, FALSE, FALSE, LLTexUnit::TT_RECT_TEXTURE);
+			mDeferredScreen.shareDepthBuffer(mVelocityMap);
 		}
 		else
 		{
@@ -1085,10 +1080,10 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		}
 
 		//HACK make screenbuffer allocations start failing after 30 seconds
-		if (gSavedSettings.getBOOL("SimulateFBOFailure"))
+		/*if (gSavedSettings.getBOOL("SimulateFBOFailure"))
 		{
 			return false;
-		}
+		}*/
 	}
 	else
 	{
@@ -1107,16 +1102,6 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		mVelocityMap.release();
 						
 		if (!mScreen.allocate(resX, resY, GL_RGBA, TRUE, TRUE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
-	}
-	
-	if (LLPipeline::sRenderDeferred)
-	{ //share depth buffer between deferred targets
-		mDeferredScreen.shareDepthBuffer(mScreen);
-//		//BD - Motion Blur
-		if (RenderMotionBlur)
-		{
-			mDeferredScreen.shareDepthBuffer(mVelocityMap);
-		}
 	}
 
 	gGL.getTexUnit(0)->disable();
