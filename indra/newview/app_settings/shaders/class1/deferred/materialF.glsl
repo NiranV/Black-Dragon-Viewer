@@ -567,7 +567,7 @@ void main()
 	
 
 #if (DIFFUSE_ALPHA_MODE == DIFFUSE_ALPHA_MODE_BLEND)
-		//forward rendering, output just lit RGBA
+	//forward rendering, output just lit RGBA
 	vec3 pos = vary_position;
 
 #if HAS_SUN_SHADOW
@@ -643,7 +643,7 @@ void main()
 	vec4 diffuse = final_color;
 	float envIntensity = final_normal.z;
 
-    vec3 col = vec3(0.0f,0.0f,0.0f);
+ vec3 col = vec3(0.0f,0.0f,0.0f);
 
 	float bloom = 0.0;
 	calcAtmospherics(pos.xyz, 1.0);
@@ -652,12 +652,12 @@ void main()
 
 	float da =dot(norm.xyz, sun_dir.xyz);
 
-    float final_da = da;
-          final_da = min(final_da, shadow);
-          //final_da = max(final_da, diffuse.a);
-          final_da = max(final_da, 0.0f);
-		  final_da = min(final_da, 1.0f);
-		  final_da = pow(final_da, 1.0/1.3);
+ float final_da = da;
+       final_da = min(final_da, shadow);
+       //final_da = max(final_da, diffuse.a);
+       final_da = max(final_da, 0.0f);
+ final_da = min(final_da, 1.0f);
+ final_da = pow(final_da, 1.0/1.3);
 
 	col.rgb = atmosAmbient(col);
 	
