@@ -62,7 +62,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
    follows="top|left|right"
    bg_color="Black_25"
    bg_visible="false"
-   left="5"
+   left="6"
    name="people_menu"
    top="0">
 	  <menu
@@ -479,7 +479,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 	top="3"
 	width="83"
 	name="groupcount">
-	[COUNT] / 42 Groups
+	[COUNT] / [MAX_GROUPS] Groups
 	</text>
     <tab_container
      bottom="-10"
