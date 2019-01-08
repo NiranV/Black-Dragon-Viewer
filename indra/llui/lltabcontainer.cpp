@@ -431,8 +431,7 @@ void LLTabContainer::draw()
 		// Set the leftmost position of the tab buttons.
 //		//BD - Optional Jump To Last Buttons
 		if (has_scroll_arrows)
-			left += tabcntr_arrow_btn_size;
-		//left = LLPANEL_BORDER_WIDTH + (has_scroll_arrows ? tabcntr_arrow_btn_size : tabcntr_tab_h_pad);
+			left = LLPANEL_BORDER_WIDTH + tabcntr_arrow_btn_size;
 		left -= getScrollPosPixels();
 	}
 	
@@ -479,7 +478,7 @@ void LLTabContainer::draw()
 									   top ? top - tuple->mButton->getRect().mTop : 0 );
 			if (top) top -= BTN_HEIGHT + tabcntrv_pad;
 
-			if (left >= 0 && !(mIsVertical && !left))
+			if (left >= 0 && !(mIsVertical && !left) || (has_scroll_arrows && left))
 			{
 				if (!has_scroll_arrows && mConsistentWidths)
 				{
