@@ -178,7 +178,7 @@ width="996">
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -220,7 +220,7 @@ Misc: Cleaned up some code in pipeline.cpp.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -274,7 +274,7 @@ Misc: Autoscale function cleanup.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -326,7 +326,7 @@ Misc: Cleaned up panel_login.xml.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -371,7 +371,7 @@ Misc: Cleaned up some appearance panel code.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -424,7 +424,7 @@ Misc: Corrected wrong comments in bdfloaterpoer.cpp.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -498,7 +498,7 @@ Misc: Cleaned up panel_preferences_rlva.xml a bit.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -553,7 +553,7 @@ Merge with Linden Release
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -601,7 +601,7 @@ Merge with Axon. (13 Changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -669,7 +669,7 @@ Misc: Code spacing changes.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -727,7 +727,7 @@ Merge with Axon. (80 Changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -791,7 +791,7 @@ Merge with Axon (Animesh) (214 Changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -842,7 +842,7 @@ Misc: Cleanup in llvovolume.cpp.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -891,7 +891,7 @@ Misc: Comment on possible fix for attachments becoming invisible on teleport.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -940,7 +940,7 @@ Misc: Minor optimizations to Automatic Memory Management.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1007,7 +1007,7 @@ Misc: Cleaned up llfloaterpreferences.cpp/h.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1090,7 +1090,7 @@ Merge with Cougar (33 Changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1149,7 +1149,7 @@ Merge with Linden Release. (66 Changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1219,7 +1219,7 @@ Misc: Test changes.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1260,7 +1260,7 @@ Fixed: Crash on startup when the camera floater was trying to open on login.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1310,7 +1310,7 @@ Merge with Linden Release. (116 Changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1356,7 +1356,7 @@ Misc: Cleaned Poser code up a bit.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1411,7 +1411,7 @@ Misc: Reworked some parts of the Animation Manipulation floater code akin to the
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1453,7 +1453,7 @@ Fixed: Memory slider text boxes not usable due to their constant updating.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1516,7 +1516,7 @@ Moved: Pose list into the main poser window and got rid of all tabs.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1565,7 +1565,7 @@ Misc: Settings.xml cleanup.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1606,7 +1606,7 @@ Fixed: Selection scale and rotation backgrounds being opaque.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1674,7 +1674,7 @@ Merge with Release. (47 Changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1718,7 +1718,7 @@ Merged with Release (36 Changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1777,7 +1777,7 @@ Removed: Rotation order dropdown and all code.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1839,7 +1839,7 @@ Merge with Linden Release.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1910,7 +1910,7 @@ Misc: Fixed Line Endings in llagentcamera.cpp.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -1974,7 +1974,7 @@ Misc: Optimized Camera Smoothing setting calls.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2022,7 +2022,7 @@ Merge with Linden Bear. (91 Changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2069,7 +2069,7 @@ Misc: Overhauled and cleaned up a lot of code in bdsidebar.cpp/h.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2128,7 +2128,7 @@ Misc: Commenting in bdfloateranimations.cpp.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2172,7 +2172,7 @@ Fixed: Sidebar causing a crash when no sidebar file has been found.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2235,7 +2235,7 @@ Misc: Commenting on a potential crash location.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2278,7 +2278,7 @@ Changed: Version to 3.0.2.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2326,7 +2326,7 @@ Removed: Unused and crashing IM Flash Period and Count options.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2377,7 +2377,7 @@ Merge with Linden Release. (18 changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2418,7 +2418,7 @@ Changed: Version to 2.9.9B.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2478,7 +2478,7 @@ Merge with Linden Bear. (8 changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2528,7 +2528,7 @@ Misc: Some cleanup and glow resolution allocation changes.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2583,7 +2583,7 @@ Merge with Linden Bear (8 changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2636,7 +2636,7 @@ Misc: Applied extra code for mac on most other new shaders.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2705,7 +2705,7 @@ Merge with Alex Ivy (23 changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2754,7 +2754,7 @@ Merge with Release. (63 changes)
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2804,7 +2804,7 @@ Fixed: Vignette option still being cut off a bit.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2869,7 +2869,7 @@ Merge with Viewer Bear
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
@@ -2934,7 +2934,7 @@ Misc: Increment version to 5.1.1 for auto-updater purposes.
      left="7"
      max_length="9999"
      name="changelog_text"
-     bg_visible="true"
+     bg_visible="false"
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
