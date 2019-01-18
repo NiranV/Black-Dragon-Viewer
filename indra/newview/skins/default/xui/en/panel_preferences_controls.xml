@@ -47,7 +47,7 @@ width="510">
  control_name="AllowTapTapHoldRun"
  follows="left|top"
  height="16"
- label="Tap-tap-hold to run"
+ label="Double-press-hold forward to run"
  tool_tip="This option toggles whether double tapping and holding the move forward button will temporarily enable running or not."
  layout="topleft"
  left="10"
@@ -87,7 +87,7 @@ width="510">
  width="600">
        <radio_item
        height="16"
-       label="Move"
+       label="Move Me"
        value="0"
        tool_tip="This option allows letters bound to movement actions to move your avatar around rather than always opening the chat bar."
        layout="topleft"
@@ -104,7 +104,7 @@ width="510">
        </radio_item>
        <radio_item
        height="16"
-       label="Chat"
+       label="Start Chat"
        value="1"
        tool_tip="This option will force letters bound to movement actions to open chat at all times regardless of the action they are bound to. This option disabled movement with A W S D keys."
        layout="topleft"
