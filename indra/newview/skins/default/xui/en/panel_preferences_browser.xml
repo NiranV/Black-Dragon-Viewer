@@ -18,7 +18,7 @@ width="510">
  left="1"
  name="title"
  top="0"
- width="506"/>
+ width="508"/>
 		     <text
 		     type="string"
 		     length="1"
@@ -227,7 +227,7 @@ width="510">
  left="1"
  name="title"
  top_pad="10"
- width="506"/>
+ width="508"/>
 		     <check_box
       enabled="true"
       follows="left|top"
@@ -300,7 +300,7 @@ width="510">
  left="1"
  name="title"
  top_pad="10"
- width="506"/>
+ width="508"/>
 		     <text
 		     type="string"
 		     length="1"

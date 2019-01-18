@@ -35,7 +35,7 @@ width="510">
  left="0"
  name="gfx_scroll"
  opaque="true"
- height="387"
+ height="386"
  width="509"
  top="0">
   <panel
@@ -6334,7 +6334,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        left="1"
        name="warning_bg_panel"
        top="1"
-       width="507">
+       width="508">
         <icon
   follows="top|left"
   height="16"
@@ -6380,12 +6380,12 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   mouse_opaque="false"
   background_visible="true"
   left="1"
-  width="509">
+  width="510">
 	<icon
 	follows="left|bottom"
 	image_name="Toolbar_Middle_Off"
 	height="21"
-	width="197"
+	width="195"
 	layout="topleft"
 	left="0"
 	top="-21"/>
@@ -6413,7 +6413,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	 image_unselected="Toolbar_Middle_Off"
     halign="left"
     pad_bottom="0"
-    left="198"
+    left="196"
     name="PrefSaveButton"
     top="-21"
     width="60">
@@ -6472,7 +6472,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	name="preset_combo"
 	allow_text_entry="true"
 	top="-21"
-	width="125">
+	width="126">
 		<combo_box.combo_button
 		image_unselected="ComboToolbarButton_Off"
 		image_selected="ComboToolbarButton_Selected"

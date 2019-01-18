@@ -10,7 +10,7 @@ help_topic="preferences"
 save_rect="true"
 single_instance="true"
 title="Preferences"
-width="668">
+width="669">
 
  <string
  name="slide_left">
@@ -175,9 +175,9 @@ width="668">
  name="vicon"
  mouse_opaque="false"
  visible="true"
- width="142"
- top="18"
- left="9"/>
+ width="513"
+ top="17"
+ left="149"/>
  <button
  follows="right|bottom"
  height="21"
@@ -186,7 +186,7 @@ width="668">
  layout="topleft"
  right="-99"
  name="OK"
- top="433"
+ top="432"
  width="90">
  <button.commit_callback
  function="Pref.OK" />
@@ -209,12 +209,12 @@ width="668">
  halign="left"
  height="410"
  layout="topleft"
- left="7"
+ left="6"
  name="pref core"
  tab_group="1"
  tab_position="left"
  tab_width="140"
- tab_padding_right="0"
+ tab_padding_right="2"
  top="18"
  width="656">
   <panel

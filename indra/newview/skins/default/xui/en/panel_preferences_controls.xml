@@ -20,7 +20,7 @@ width="510">
  left="1"
  name="title"
  top="0"
- width="506"/>
+ width="508"/>
  
  <text
  name="show_ims_in_label"
@@ -131,7 +131,7 @@ width="510">
  left="1"
  name="title"
  top_pad="9"
- width="506"/>
+ width="508"/>
  <text
  name="show_ims_in_label"
  follows="left|top"
@@ -201,7 +201,7 @@ width="510">
  left="1"
  name="title"
  top_pad="10"
- width="506"/>
+ width="508"/>
  <text
  name="show_ims_in_label"
  follows="left|top"

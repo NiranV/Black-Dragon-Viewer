@@ -17,7 +17,7 @@
  left="1"
  name="title"
  top="0"
- width="506"/>
+ width="508"/>
       <text
        type="string"
        length="1"
@@ -82,7 +82,7 @@
  left="1"
  name="title"
  top_pad="10"
- width="506"/>
+ width="508"/>
       <text
        type="string"
        length="1"
@@ -176,7 +176,7 @@
  left="1"
  name="title"
  top_pad="10"
- width="506"/>
+ width="508"/>
       <text
        type="string"
        length="1"
@@ -191,7 +191,7 @@
       </text>
       <scroll_list
        follows="top|left"
-       height="67"
+       height="73"
        layout="topleft"
        left="10"
        top_pad="15"
@@ -204,7 +204,7 @@
 	  <button
        enabled_control="FirstSelectedEnabledPopups"
        follows="top|left"
-       height="67"
+       height="73"
        image_overlay="Arrow_Down"
        hover_glow_amount="0.15"
        tool_tip="This button moves the currently selected notification into the list below and thus prevents it from showing up."
@@ -226,7 +226,7 @@
  left="1"
  name="title"
  top_pad="11"
- width="506"/>
+ width="508"/>
       <text
        type="string"
        length="1"
@@ -241,7 +241,7 @@
       </text>
       <scroll_list
        follows="top|left"
-       height="67"
+       height="73"
        layout="topleft"
        left="10"
        top_pad="15"
@@ -254,7 +254,7 @@
       <button
        enabled_control="FirstSelectedDisabledPopups"
        follows="top|left"
-       height="67"
+       height="73"
        image_overlay="Arrow_Up"
        hover_glow_amount="0.15"
        tool_tip="This button moves the currently selected notification into the list above and thus allows it to be shown whenever it is triggered."

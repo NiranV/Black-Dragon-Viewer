@@ -4,7 +4,7 @@
  height="408"
  label="Uploads"
  layout="topleft"
- left="45"
+ left="0"
  name="uploads"
  top="0"
  width="510">
@@ -18,7 +18,7 @@
  left="1"
  name="title"
  top="0"
- width="506"/>
+ width="508"/>
  
  <text
  name="show_ims_in_label"
@@ -33,14 +33,14 @@
     <name_list
      column_padding="2"
      draw_heading="true"
-     height="368"
+     height="370"
      follows="left|top|right"
      layout="topleft"
-     left="0"
-     width="509"
+     left_delta="-11"
+     width="512"
      multi_select="true"
      name="render_settings_list"
-     top_pad="5">
+     top_pad="3">
         <name_list.columns
          label="Name"
          name="name"
@@ -60,11 +60,11 @@
       follows="left|bottom|right"
       height="22"
       name="buttons_panel"
-      top="-21"
+      top="-22"
       mouse_opaque="false"
       background_visible="true"
       left="1"
-      width="507">
+      width="508">
       <filter_editor
      background_image="TextField_Off"
      background_image_disabled="TextField_Disabled"
@@ -73,7 +73,7 @@
      height="20"
      layout="topleft"
      left="0"
-     right="-55"
+     right="-54"
      label="Filter People"
      max_length_chars="300"
      name="people_filter_input"
