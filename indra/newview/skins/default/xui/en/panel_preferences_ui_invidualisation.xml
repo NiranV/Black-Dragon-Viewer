@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="767"
+     height="850"
      name="ui_panel"
      top="0"
      left="0"
@@ -718,6 +718,81 @@ width="510">
 	    name="ShowAllHoverTips"
 	    top_pad="0"
 	    width="256" />
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="friend_ims"
+   top_pad="8"
+   width="300">
+   Default People Double-Click Action:
+   </text>
+   <radio_group
+   control_name="DoubleClickActionPeople"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="DoubleClickActionPeople"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Start IM"
+   value="0"
+   tool_tip="This option sets the default double-click action in avatar lists to opening an IM conversation."
+   layout="topleft"
+   name="IM"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Zoom In"
+   halign="right"
+   value="2"
+   tool_tip="This option sets the default double-click action in avatar lists to zooming in on the avatar. Note that this will do nothing if the avatar is not in render range. It is subject to the same limitations as the 'Zoom In' option."
+   layout="topleft"
+   name="ZoomIn"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Open Profile"
+   tool_tip="This option sets the default double-click action in avatar lists to opening the avatar's profile."
+   value="1"
+   layout="topleft"
+   name="OpenProfile"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
 		<text
 		type="string"
 		length="1"
@@ -808,6 +883,81 @@ width="510">
 	    name="InventoryOutboxMakeVisible"
 	    top_pad="0"
 	    width="256" />
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="friend_ims"
+   top_pad="8"
+   width="300">
+   Default Inventory Double-Click Action:
+   </text>
+   <radio_group
+   control_name="DoubleClickActionInventory"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="DoubleClickActionInventory"
+   top_pad="5"
+   width="600">
+   <radio_item
+   height="16"
+   label="Wear Item"
+   value="0"
+   tool_tip="This option sets the default double-click action to wearing items and replacing any on the same slot."
+   layout="topleft"
+   name="Wear"
+   top="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Add Item"
+   tool_tip="This option sets default double-click action to adding items without replacing any items on the same slot."
+   value="1"
+   layout="topleft"
+   name="Add"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   <radio_item
+   height="16"
+   label="Open Properties"
+   halign="right"
+   value="2"
+   tool_tip="This option sets the default double-click action to opening the item's properties page."
+   layout="topleft"
+   name="Properties"
+   left_pad="10"
+   top_delta="0"
+   width="70">
+   <radio_item.check_button
+   image_unselected="Checkbox_Off"
+   image_selected="Checkbox_On"
+   image_disabled="Checkbox_Off_Disabled"
+   image_disabled_selected="Checkbox_On_Disabled"
+   image_pressed="Checkbox_Press"
+   image_pressed_selected="Checkbox_On_Press" />
+   </radio_item>
+   </radio_group>
      </panel>
     </scroll_container>
 </panel>

@@ -6303,10 +6303,23 @@ void LLObjectBridge::performAction(LLInventoryModel* model, std::string action)
 
 void LLObjectBridge::openItem()
 {
-	// object double-click action is to wear/unwear object
-	//BD - Add attachments by default instead of replacing others.
-	performAction(getInventoryModel(),
-		      get_is_item_worn(mUUID) ? "detach" : "wear_add");
+	//BD - Double Click Action Preferences
+	//     0 - Wear Item
+	//     1 - Add Item
+	//     2 - Show Properties
+	S32 action = gSavedSettings.getS32("DoubleClickActionInventory");
+	if (action == 0)
+	{
+		performAction(getInventoryModel(), get_is_item_worn(mUUID) ? "detach" : "wear");
+	}
+	else if (action == 1)
+	{
+		performAction(getInventoryModel(), get_is_item_worn(mUUID) ? "detach" : "wear_add");
+	}
+	else
+	{
+		performAction(getInventoryModel(), "properties");
+	}
 }
 
 std::string LLObjectBridge::getLabelSuffix() const

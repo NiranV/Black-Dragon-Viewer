@@ -1157,11 +1157,23 @@ void LLPanelPeople::onAvatarListDoubleClicked(LLUICtrl* ctrl)
 	}
 // [/RLVa:KB]
 
-#if 0 // SJB: Useful for testing, but not currently functional or to spec
-	LLAvatarActions::showProfile(clicked_id);
-#else // spec says open IM window
-	LLAvatarActions::startIM(clicked_id);
-#endif
+	//BD - Double Click Action Preferences
+	//     0 - Start IM
+	//     1 - Open Profile
+	//     2 - Zoom In
+	S32 action = gSavedSettings.getS32("DoubleClickActionPeople");
+	if (action == 0)
+	{
+		LLAvatarActions::startIM(clicked_id);
+	}
+	else if (action == 1)
+	{
+		LLAvatarActions::showProfile(clicked_id);
+	}
+	else
+	{
+		handle_zoom_to_object(clicked_id);
+	}
 }
 
 void LLPanelPeople::onAvatarListCommitted(LLAvatarList* list)
