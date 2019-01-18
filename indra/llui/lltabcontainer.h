@@ -95,6 +95,9 @@ public:
 		 */
 		Optional<LLFontGL::HAlign>			font_halign;
 
+		//BD - Font Shadows
+		Optional<LLFontGL::ShadowType>	font_shadow;
+
 		/**
 		 * Tab label ellipses
 		 */
@@ -307,6 +310,8 @@ private:
 	
 	LLFontGL::HAlign                mFontHalign;
 	const LLFontGL*					mFont;
+	//BD - Font Shadows
+	const LLFontGL::ShadowType		mFontShadow;
 
 	TabParams						mFirstTabParams;
 	TabParams						mMiddleTabParams;

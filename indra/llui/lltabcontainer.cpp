@@ -220,6 +220,8 @@ LLTabContainer::Params::Params()
 	tab_icon_ctrl_pad("tab_icon_ctrl_pad", 0),
 	use_ellipses("use_ellipses"),
 	font_halign("halign"),
+	//BD - Font Shadows
+	font_shadow("font_shadow"),
 //	//BD - Optional Jump To Last Buttons
 	use_jump_buttons("use_jump_buttons"),
 	//BD - Consistent Widths
@@ -258,6 +260,8 @@ LLTabContainer::LLTabContainer(const LLTabContainer::Params& p)
 	mOpenTabsOnDragAndDrop(p.open_tabs_on_drag_and_drop),
 	mTabIconCtrlPad(p.tab_icon_ctrl_pad),
 	mUseTabEllipses(p.use_ellipses),
+	//BD - Font Shadows
+	mFontShadow(p.font_shadow),
 //	//BD - Optional Jump To Last Buttons
 	mUseJumpButtons(p.use_jump_buttons),
 	//BD - Consistent Widths
@@ -1029,6 +1033,7 @@ void LLTabContainer::addTabPanel(const TabPanelParams& panel)
 		params.rect(btn_rect);
 		params.initial_value(trimmed_label);
 		params.font(mFont);
+		params.font_shadow(mFontShadow);
 		textbox = LLUICtrlFactory::create<LLTextBox> (params);
 		
 		LLButton::Params p;
@@ -1051,7 +1056,7 @@ void LLTabContainer::addTabPanel(const TabPanelParams& panel)
 		p.pad_bottom( mLabelPadBottom );
 		p.scale_image(true);
 		p.tab_stop(false);
-		p.label_shadow(false);
+		p.label_shadow(mFontShadow == LLFontGL::DROP_SHADOW_SOFT ? true : false);
 		p.follows.flags = FOLLOWS_LEFT;
 		
 		if (mIsVertical)
