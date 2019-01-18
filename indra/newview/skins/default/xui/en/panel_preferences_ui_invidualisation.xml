@@ -698,6 +698,7 @@ width="510">
 	    width="256" />
 	    <check_box
 	    control_name="ShowLandHoverTip"
+     enabled_control="ShowHoverTips"
 	    height="16"
 	    initial_value="true"
 	    label="Show Land Inspectors"
@@ -709,6 +710,7 @@ width="510">
 	    width="256" />
 		<check_box
 	    control_name="ShowAllObjectHoverTip"
+     enabled_control="ShowHoverTips"
 	    height="16"
 	    initial_value="true"
 	    label="Show Inspectors on everything"
