@@ -94,6 +94,7 @@ public:
 //	//BD - Custom Keyboard Layout
 	BOOL			exportBindingsXML(const std::string& filename);
 	BOOL			unbindAllKeys(bool reset);
+	BOOL			unbindModeKeys(bool reset, S32 mode);
 	S32				loadBindingsSettings(const std::string& filename);
 
 	EKeyboardMode	getMode();

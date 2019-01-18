@@ -10,26 +10,6 @@ left="0"
 name="Keybindings panel"
 top="45"
 width="510">
- <scroll_container
- color="Transparent"
- follows="all"
- layout="topleft"
- mouse_opaque="false"
- left="0"
- name="gfx_scroll"
- opaque="true"
- height="387"
- width="509"
- top="0">
-  <panel
-  layout="topleft"
-  follows="left|top|right"
-  height="1278"
-  name="gfx_scroll_panel"
-  top="0"
-  mouse_opaque="false"
-  left="0"
-  width="495">
  <panel
  follows="left|top|right"
  height="20"
@@ -40,7 +20,7 @@ width="510">
  left="1"
  name="title"
  top="0"
- width="492"/>
+ width="508"/>
  
  <text
  name="third_person_label"
@@ -50,19 +30,19 @@ width="510">
  height="12"
  width="350"
  top_delta="4">
- Third Person Keybindings:
+ Keybindings:
  </text>
  <scroll_list
  column_padding="2"
  draw_heading="true"
- height="210"
+ height="369"
  follows="left|top|right"
  layout="topleft"
- left="0"
- width="495"
+ left_delta="-11"
+ width="512"
  multi_select="true"
- name="scroll_mode_1"
- top_pad="5">
+ name="scroll_mode"
+ top_pad="3">
     <scroll_list.columns
      label="Action"
      name="action"
@@ -81,11 +61,65 @@ width="510">
    relative_width="0.20"  />
 </scroll_list>
  
- <button
+ <panel
+  layout="topleft"
+  follows="left|bottom"
+  height="22"
+  name="buttons_panel"
+  top="-22"
+  mouse_opaque="false"
+  background_visible="true"
+  left="1"
+  width="510">
+  <combo_box
+	follows="top|left"
+	layout="topleft"
+	left="0"
+	height="20"
+ label="Third Person"
+	name="keybinding_mode"
+	allow_text_entry="true"
+	top="1"
+	width="142">
+  <combo_box.item
+  label="Third Person"
+  name="Third Person"
+  value="1" />
+  <combo_box.item
+  label="First Person"
+  name="First Person"
+  value="0" />
+  <combo_box.item
+  label="Editing"
+  name="Editing"
+  value="2" />
+  <combo_box.item
+  label="Appearance"
+  name="Appearance"
+  value="3" />
+  <combo_box.item
+  label="Sitting"
+  name="Sitting"
+  value="4" />
+		<combo_box.combo_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"/>
+		<combo_box.drop_down_button
+		image_unselected="ComboToolbarButton_Off"
+		image_selected="ComboToolbarButton_Selected"
+		image_pressed="ComboToolbarButton_Selected" 
+		image_pressed_selected="ComboToolbarButton_Selected"
+		image_disabled="ComboToolbarButton_Disabled"/>
+  <combo_box.commit_callback
+  function="Pref.ChangeMode"/>
+	</combo_box>
+  <button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Add New Keybind"
+ label="Add"
  image_overlay_alignment="left"
     image_overlay="AddItem_Off"
  image_hover_unselected="Toolbar_Middle_Over"
@@ -93,37 +127,35 @@ width="510">
 	 image_unselected="Toolbar_Middle_Off"
 		tool_tip="This button opens the bind popup to add a new entry into the above list and assign a key to the currently selected action."
  name="add"
- width="135"
- top_pad="1"
- left="1">
+ width="60"
+ top_delta="0"
+ left_pad="-7">
    <button.commit_callback
-   function="Pref.AddBind"
-   parameter="1"/>
+   function="Pref.AddBind"/>
  </button>
 	<button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Change Selected Keybind"
+ label="Modify"
  image_overlay_alignment="left"
     image_overlay="OptionsMenu_Off"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
 		tool_tip="This button opens the bind popup for the currently selected entry and allows you to assign a new key to the selected action in the above list. (Alternatively: Double-Click &lt;green&gt;LeftMouseButton&lt;/green&gt;)"
- name="add"
- width="180"
+ name="change"
+ width="75"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Pref.ChangeBind"
-   parameter="1"/>
+   function="Pref.ChangeBind"/>
  </button>
  <button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Delete Selected Keybind"
+ label="Delete"
  image_overlay_alignment="left"
     image_overlay="TrashItem_Off"
  image_hover_unselected="Toolbar_Middle_Over"
@@ -131,468 +163,32 @@ width="510">
 	 image_unselected="Toolbar_Middle_Off"
 		tool_tip="This button removes the currently selected entries which unbinds all keys and actions bound to them."
  name="remove"
- width="178"
+ width="70"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Pref.RemoveBind"
-   parameter="1"/>
- </button>
-
- <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="3"
- width="492"/>
- 
- <text
- name="first_person_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- First Person Keybindings:
- </text>
- <scroll_list
- column_padding="2"
- draw_heading="true"
- height="210"
- follows="left|top|right"
- layout="topleft"
- left="0"
- width="495"
- multi_select="true"
- name="scroll_mode_0"
- top_pad="5">
-    <scroll_list.columns
-     label="Action"
-     name="action"
-   relative_width="0.30"  />
-    <scroll_list.columns
-     label="Function Name"
-     name="function"
-   relative_width="0.35"  />
-    <scroll_list.columns
-     label="Button"
-     name="button"
-   relative_width="0.15"  />
-    <scroll_list.columns
-     label="Modifiers"
-     name="modifiers"
-   relative_width="0.20"  />
-</scroll_list>
- 
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Add New Keybind"
- image_overlay_alignment="left"
-    image_overlay="AddItem_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="add"
-	tool_tip="This button opens the bind popup to add a new entry into the above list and assign a key to the currently selected action."
- width="135"
- top_pad="1"
- left="1">
-   <button.commit_callback
-   function="Pref.AddBind"
-   parameter="0"/>
- </button>
-	<button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Change Selected Keybind"
- image_overlay_alignment="left"
-    image_overlay="OptionsMenu_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
-		tool_tip="This button opens the bind popup for the currently selected entry and allows you to assign a new key to the selected action in the above list. (Alternatively: Double-Click &lt;green&gt;LeftMouseButton&lt;/green&gt;)"
- name="add"
- width="180"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="Pref.ChangeBind"
-   parameter="0"/>
+   function="Pref.RemoveBind"/>
  </button>
  <button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Delete Selected Keybind"
+ label="Reset All"
  image_overlay_alignment="left"
-    image_overlay="TrashItem_Off"
+    image_overlay="Refresh_Off"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
- name="remove"
-	tool_tip="This button removes the currently selected entries which unbinds all keys and actions bound to them."
- width="178"
+ name="default"
+ width="81"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Pref.RemoveBind"
-   parameter="0"/>
- </button>
-   
-   <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="3"
- width="492"/>
- 
- <text
- name="editing_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Editing Keybindings:
- </text>
- 
- <scroll_list
- column_padding="2"
- draw_heading="true"
- height="210"
- follows="left|top|right"
- layout="topleft"
- left="0"
- width="495"
- multi_select="true"
- name="scroll_mode_2"
- top_pad="5">
-    <scroll_list.columns
-     label="Action"
-     name="action"
-   relative_width="0.30"  />
-    <scroll_list.columns
-     label="Function Name"
-     name="function"
-   relative_width="0.35"  />
-    <scroll_list.columns
-     label="Button"
-     name="button"
-   relative_width="0.15"  />
-    <scroll_list.columns
-     label="Modifiers"
-     name="modifiers"
-   relative_width="0.20"  />
-</scroll_list>
- 
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Add New Keybind"
- image_overlay_alignment="left"
-    image_overlay="AddItem_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="add"
-	tool_tip="This button opens the bind popup to add a new entry into the above list and assign a key to the currently selected action."
- width="135"
- top_pad="1"
- left="1">
-   <button.commit_callback
-   function="Pref.AddBind"
-   parameter="2"/>
- </button>
-	<button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Change Selected Keybind"
- image_overlay_alignment="left"
-    image_overlay="OptionsMenu_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
-		tool_tip="This button opens the bind popup for the currently selected entry and allows you to assign a new key to the selected action in the above list. (Alternatively: Double-Click &lt;green&gt;LeftMouseButton&lt;/green&gt;)"
- name="add"
- width="180"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="Pref.ChangeBind"
-   parameter="2"/>
+   function="Pref.DefaultControls"/>
  </button>
  <button
  height="21"
  follows="top|left"
- layout="topleft"
- label="Delete Selected Keybind"
- image_overlay_alignment="left"
-    image_overlay="TrashItem_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="remove"
-	tool_tip="This button removes the currently selected entries which unbinds all keys and actions bound to them."
- width="178"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="Pref.RemoveBind"
-   parameter="2"/>
- </button>
- 
-   <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="3"
- width="492"/>
- 
- <text
- name="appearance_mode_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Appearance Mode Keybindings:
- </text>
- 
- <scroll_list
- column_padding="2"
- draw_heading="true"
- height="210"
- follows="left|top|right"
- layout="topleft"
- left="0"
- width="495"
- multi_select="true"
- name="scroll_mode_3"
- top_pad="5">
-    <scroll_list.columns
-     label="Action"
-     name="action"
-   relative_width="0.30"  />
-    <scroll_list.columns
-     label="Function Name"
-     name="function"
-   relative_width="0.35"  />
-    <scroll_list.columns
-     label="Button"
-     name="button"
-   relative_width="0.15"  />
-    <scroll_list.columns
-     label="Modifiers"
-     name="modifiers"
-   relative_width="0.20"  />
-</scroll_list>
- 
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Add New Keybind"
- image_overlay_alignment="left"
-    image_overlay="AddItem_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="add"
-	tool_tip="This button opens the bind popup to add a new entry into the above list and assign a key to the currently selected action."
- width="135"
- top_pad="1"
- left="1">
-   <button.commit_callback
-   function="Pref.AddBind"
-   parameter="3"/>
- </button>
-	<button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Change Selected Keybind"
- image_overlay_alignment="left"
-    image_overlay="OptionsMenu_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
-		tool_tip="This button opens the bind popup for the currently selected entry and allows you to assign a new key to the selected action in the above list. (Alternatively: Double-Click &lt;green&gt;LeftMouseButton&lt;/green&gt;)"
- name="add"
- width="180"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="Pref.ChangeBind"
-   parameter="3"/>
- </button>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Delete Selected Keybind"
- image_overlay_alignment="left"
-    image_overlay="TrashItem_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="remove"
-	tool_tip="This button removes the currently selected entries which unbinds all keys and actions bound to them."
- width="178"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="Pref.RemoveBind"
-   parameter="3"/>
- </button>
- 
-   <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="1"
- name="title"
- top_pad="3"
- width="492"/>
- 
- <text
- name="sitting_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Sitting Keybindings:
- </text>
- 
- <scroll_list
- column_padding="2"
- draw_heading="true"
- height="210"
- follows="left|top|right"
- layout="topleft"
- left="0"
- width="495"
- multi_select="true"
- name="scroll_mode_4"
- top_pad="5">
-    <scroll_list.columns
-     label="Action"
-     name="action"
-   relative_width="0.30"  />
-    <scroll_list.columns
-     label="Function Name"
-     name="function"
-   relative_width="0.35"  />
-    <scroll_list.columns
-     label="Button"
-     name="button"
-   relative_width="0.15"  />
-    <scroll_list.columns
-     label="Modifiers"
-     name="modifiers"
-   relative_width="0.20"  />
-</scroll_list>
- 
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Add New Keybind"
- image_overlay_alignment="left"
-    image_overlay="AddItem_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="add"
-	tool_tip="This button opens the bind popup to add a new entry into the above list and assign a key to the currently selected action."
- width="135"
- top_pad="1"
- left="1">
-   <button.commit_callback
-   function="Pref.AddBind"
-   parameter="4"/>
- </button>
-	<button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Change Selected Keybind"
- image_overlay_alignment="left"
-    image_overlay="OptionsMenu_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
-		tool_tip="This button opens the bind popup for the currently selected entry and allows you to assign a new key to the selected action in the above list. (Alternatively: Double-Click &lt;green&gt;LeftMouseButton&lt;/green&gt;)"
- name="add"
- width="180"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="Pref.ChangeBind"
-   parameter="4"/>
- </button>
- <button
- height="21"
- follows="top|left"
- layout="topleft"
- label="Delete Selected Keybind"
- image_overlay_alignment="left"
-    image_overlay="TrashItem_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="remove"
-	tool_tip="This button removes the currently selected entries which unbinds all keys and actions bound to them."
- width="178"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="Pref.RemoveBind"
-   parameter="4"/>
- </button>
-  </panel>
- </scroll_container>
- 
- <panel
-  layout="topleft"
-  follows="left|bottom|right"
-  height="22"
-  name="buttons_panel"
-  top="-21"
-  mouse_opaque="false"
-  background_visible="true"
-  left="1"
-  width="509">
- <button
- height="21"
- follows="bottom|left"
  layout="topleft"
  label="Delete All"
  image_overlay_alignment="left"
@@ -601,36 +197,11 @@ width="510">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="unbind"
- width="94"
- top="-21"
- left="0">
-   <button.commit_callback
-   function="Pref.UnbindAll"/>
- </button>
- <icon
-	follows="left|top|right"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="263"
-	layout="topleft"
-	left_pad="1"
-	top_delta="0"/>
- <button
- height="21"
- follows="top|right"
- layout="topleft"
- label="Reset All To Default"
- image_overlay_alignment="left"
-    image_overlay="Refresh_Off"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="default"
- width="148"
+ width="86"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Pref.DefaultControls"/>
+   function="Pref.UnbindAll"/>
  </button>
 	</panel>
 </panel>

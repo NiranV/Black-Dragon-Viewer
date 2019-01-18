@@ -841,6 +841,23 @@ BOOL LLViewerKeyboard::unbindAllKeys(bool reset)
 	return TRUE;
 }
 
+BOOL LLViewerKeyboard::unbindModeKeys(bool reset, S32 mode)
+{
+	for (S32 it = 0, end_it = mBindingCount[mode]; it < end_it; it++)
+	{
+		mBindings[mode][it].mKey = NULL;
+		mBindings[mode][it].mMask = NULL;
+	}
+
+	//BD -  We need to seperate this to prevent evil things from happening.
+	if (reset)
+	{
+		mBindingCount[mode] = 0;
+	}
+
+	return TRUE;
+}
+
 LLViewerKeyboard::KeyBinding::KeyBinding()
 :	key("key"),
 	mask("mask"),

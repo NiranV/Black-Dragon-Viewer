@@ -211,9 +211,6 @@ public:
 //	//BD - Warning System
 	void refreshWarnings();
 
-//	//BD - Set Key dialog
-	void onClickSetAnyKey(LLUICtrl* ctrl, const LLSD& param);
-
 //	//BD - Expandable Tabs
 	void toggleTabs();
 
@@ -225,12 +222,13 @@ public:
 	void onUnbindControls();
 	void onDefaultControls();
 	void refreshKeys();
-	void onAddBind(KEY key, MASK mask, S32 mode, std::string action);
-	void onRemoveBind(const LLSD& param);
-	void onReplaceBind(KEY key, MASK mask, S32 mode);
+	void onAddBind(KEY key, MASK mask, std::string action);
+	void onRemoveBind();
+	void onReplaceBind(KEY key, MASK mask);
 
-	void onListClick(const LLSD &param);
-	void onListClickAction(S32 mode);
+	void onListClickAction();
+
+	void onClickSetAnyKey();
 
 	//BD - Toggle Input/Output Panel.
 	void inputOutput();
@@ -309,11 +307,7 @@ private:
 	LLSliderCtrl* mShadowDistSliderW;
 
 //	//BD - Custom Keyboard Layout
-	LLScrollListCtrl* mBindModeList0;
-	LLScrollListCtrl* mBindModeList1;
-	LLScrollListCtrl* mBindModeList2;
-	LLScrollListCtrl* mBindModeList3;
-	LLScrollListCtrl* mBindModeList4;
+	LLScrollListCtrl* mBindModeList;
 
 //	//BD - Warning System
 	LLUICtrl* mWarning0;

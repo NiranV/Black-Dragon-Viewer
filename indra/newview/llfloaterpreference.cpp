@@ -628,7 +628,7 @@ void LLSetKeyDialog::onBind()
 {
 	if (mParent && mKey != NULL && !mAction == NULL)
 	{
-		mParent->onAddBind(mKey, mMask, mMode, mAction);
+		mParent->onAddBind(mKey, mMask, mAction);
 		this->closeFloater();
 	}
 	else
@@ -773,7 +773,7 @@ void LLChangeKeyDialog::onBind()
 {
 	if (mParent && mKey != NULL)
 	{
-		mParent->onReplaceBind(mKey, mMask, mMode);
+		mParent->onReplaceBind(mKey, mMask);
 	}
 	this->closeFloater();
 }
@@ -1026,9 +1026,10 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ExportControls", boost::bind(&LLFloaterPreference::onExportControls, this));
 	mCommitCallbackRegistrar.add("Pref.UnbindAll", boost::bind(&LLFloaterPreference::onUnbindControls, this));
 	mCommitCallbackRegistrar.add("Pref.DefaultControls", boost::bind(&LLFloaterPreference::onDefaultControls, this));
-	mCommitCallbackRegistrar.add("Pref.AddBind", boost::bind(&LLFloaterPreference::onClickSetAnyKey, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.RemoveBind", boost::bind(&LLFloaterPreference::onRemoveBind, this, _2));
-	mCommitCallbackRegistrar.add("Pref.ChangeBind", boost::bind(&LLFloaterPreference::onListClick, this, _2));
+	mCommitCallbackRegistrar.add("Pref.AddBind", boost::bind(&LLFloaterPreference::onClickSetAnyKey, this));
+	mCommitCallbackRegistrar.add("Pref.RemoveBind", boost::bind(&LLFloaterPreference::onRemoveBind, this));
+	mCommitCallbackRegistrar.add("Pref.ChangeBind", boost::bind(&LLFloaterPreference::onListClickAction, this));
+	mCommitCallbackRegistrar.add("Pref.ChangeMode", boost::bind(&LLFloaterPreference::refreshKeys, this));
 
 //	//BD - Expandable Tabs
 	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::toggleTabs, this));
@@ -1170,17 +1171,8 @@ BOOL LLFloaterPreference::postBuild()
 	mShadowDistSliderW = getChild<LLSliderCtrl>("RenderShadowDistance_W");
 
 //	//BD - Custom Keyboard Layout
-	mBindModeList0 = this->getChild<LLScrollListCtrl>("scroll_mode_0", true);
-	mBindModeList1 = this->getChild<LLScrollListCtrl>("scroll_mode_1", true);
-	mBindModeList2 = this->getChild<LLScrollListCtrl>("scroll_mode_2", true);
-	mBindModeList3 = this->getChild<LLScrollListCtrl>("scroll_mode_3", true);
-	mBindModeList4 = this->getChild<LLScrollListCtrl>("scroll_mode_4", true);
-
-	mBindModeList0->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClick, this, "0"));
-	mBindModeList1->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClick, this, "1"));
-	mBindModeList2->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClick, this, "2"));
-	mBindModeList3->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClick, this, "3"));
-	mBindModeList4->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClick, this, "4"));
+	mBindModeList = this->getChild<LLScrollListCtrl>("scroll_mode", true);
+	mBindModeList->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClickAction, this));
 
 //	//BD - Warning System
 	mWarning0 = getChild<LLUICtrl>("warning_ui_size");
@@ -1285,26 +1277,23 @@ LLFloaterPreference::~LLFloaterPreference()
 //BD - Custom Keyboard Layout
 void LLFloaterPreference::onExportControls()
 {
-	gViewerKeyboard.unbindAllKeys(true);
+	if (!mBindModeList)
+		return;
 
-	for (S32 i = 0; i < 5; i++)
+	S32 mode = getChild<LLComboBox>("keybinding_mode")->getValue();
+	gViewerKeyboard.unbindModeKeys(true, mode);
+
+	S32 it = 0;
+	while (it < mBindModeList->getItemCount())
 	{
-		LLScrollListCtrl* scroll = getChild<LLScrollListCtrl>(llformat("scroll_mode_%i", i));
-		if (scroll)
-		{
-			S32 it = 0;
-			while (it < scroll->getItemCount())
-			{
-				scroll->selectNthItem(it);
-				LLScrollListItem* row = scroll->getFirstSelected();
-				MASK old_mask = MASK_NONE;
-				KEY old_key = NULL;
-				LLKeyboard::keyFromString(row->getColumn(2)->getValue().asString(), &old_key);
-				LLKeyboard::maskFromString(row->getColumn(3)->getValue().asString(), &old_mask);
-				gViewerKeyboard.bindKey(i, old_key, old_mask, row->getColumn(1)->getValue().asString());
-				it++;
-			}
-		}
+		mBindModeList->selectNthItem(it);
+		LLScrollListItem* row = mBindModeList->getFirstSelected();
+		MASK old_mask = MASK_NONE;
+		KEY old_key = NULL;
+		LLKeyboard::keyFromString(row->getColumn(2)->getValue().asString(), &old_key);
+		LLKeyboard::maskFromString(row->getColumn(3)->getValue().asString(), &old_mask);
+		gViewerKeyboard.bindKey(mode, old_key, old_mask, row->getColumn(1)->getValue().asString());
+		it++;
 	}
 
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
@@ -1314,11 +1303,11 @@ void LLFloaterPreference::onExportControls()
 
 void LLFloaterPreference::onUnbindControls()
 {
-	for (S32 i = 0; i < 5; i++)
-	{
-		getChild<LLScrollListCtrl>(llformat("scroll_mode_%i", i))->clearRows();
-	}
-	onExportControls();
+	//BD - Simply unbind everything and save it.
+	gViewerKeyboard.unbindAllKeys(true);
+	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
+	gViewerKeyboard.exportBindingsXML(filename);
+	refreshKeys();
 }
 
 void LLFloaterPreference::onDefaultControls()
@@ -1333,85 +1322,82 @@ void LLFloaterPreference::onDefaultControls()
 	refreshKeys();
 }
 
-void LLFloaterPreference::onRemoveBind(const LLSD &param)
+void LLFloaterPreference::onRemoveBind()
 {
-	LLScrollListCtrl* scroll = getChild<LLScrollListCtrl>("scroll_mode_" + param.asString());
-	if (scroll)
+	if (!mBindModeList)
+		return;
+
+	mBindModeList->deleteSelectedItems();
+	onExportControls();
+}
+
+void LLFloaterPreference::onAddBind(KEY key, MASK mask, std::string action)
+{
+	if (!mBindModeList)
+		return;
+
+	LLSD row;
+	row["columns"][0]["column"] = "action";
+	row["columns"][0]["value"] = getString(action);
+	row["columns"][1]["column"] = "function";
+	row["columns"][1]["value"] = action;
+	row["columns"][2]["column"] = "button";
+	row["columns"][2]["value"] = LLKeyboard::stringFromKey(key);
+	row["columns"][3]["column"] = "modifiers";
+	row["columns"][3]["value"] = LLKeyboard::stringFromMask(mask, true);
+	mBindModeList->addElement(row);
+	onExportControls();
+}
+
+void LLFloaterPreference::onReplaceBind(KEY key, MASK mask)
+{
+	if (!mBindModeList)
+		return;
+
+	LLScrollListItem* item = mBindModeList->getFirstSelected();
+	if (item)
 	{
-		scroll->deleteSelectedItems();
+		LLScrollListCell* column_3 = item->getColumn(2);
+		LLScrollListCell* column_4 = item->getColumn(3);
+
+		column_3->setValue(LLKeyboard::stringFromKey(key));
+		column_4->setValue(LLKeyboard::stringFromMask(mask, true));
 	}
 	onExportControls();
 }
 
-void LLFloaterPreference::onAddBind(KEY key, MASK mask, S32 mode, std::string action)
+void LLFloaterPreference::onListClickAction()
 {
-	LLScrollListCtrl* scroll = getChild<LLScrollListCtrl>(llformat("scroll_mode_%i", mode));
-	if (scroll)
+	S32 mode = getChild<LLComboBox>("keybinding_mode")->getValue();
+	if (mBindModeList)
 	{
-		LLSD row;
-		row["columns"][0]["column"] = "action";
-		row["columns"][0]["value"] = getString(action);
-		row["columns"][1]["column"] = "function";
-		row["columns"][1]["value"] = action;
-		row["columns"][2]["column"] = "button";
-		row["columns"][2]["value"] = LLKeyboard::stringFromKey(key);
-		row["columns"][3]["column"] = "modifiers";
-		row["columns"][3]["value"] = LLKeyboard::stringFromMask(mask, true);
-		scroll->addElement(row);
-	}
-	onExportControls();
-}
-
-void LLFloaterPreference::onReplaceBind(KEY key, MASK mask, S32 mode)
-{
-	LLScrollListCtrl* scroll = getChild<LLScrollListCtrl>(llformat("scroll_mode_%i", mode));
-	if (scroll)
-	{
-		LLScrollListItem* item = scroll->getFirstSelected();
-		if (item)
+		LLScrollListItem* row = mBindModeList->getFirstSelected();
+		if (row)
 		{
-			LLScrollListCell* column_3 = item->getColumn(2);
-			LLScrollListCell* column_4 = item->getColumn(3);
+			LLChangeKeyDialog* dialog = LLFloaterReg::getTypedInstance<LLChangeKeyDialog>("change_key", LLSD());
+			if (dialog)
+			{
+				MASK mask = MASK_NONE;
+				KEY key = NULL;
+				LLKeyboard::keyFromString(row->getColumn(2)->getValue().asString(), &key);
+				LLKeyboard::maskFromString(row->getColumn(3)->getValue().asString(), &mask);
 
-			column_3->setValue(LLKeyboard::stringFromKey(key));
-			column_4->setValue(LLKeyboard::stringFromMask(mask, true));
-		}
-	}
-	onExportControls();
-}
+				dialog->setParent(this);
+				dialog->setMode(mode);
+				dialog->setKey(key);
+				dialog->setMask(mask);
 
-void LLFloaterPreference::onListClick(const LLSD &param)
-{
-	S32 i = param.asInteger();
-	onListClickAction(i);
-}
-
-void LLFloaterPreference::onListClickAction(S32 mode)
-{
-	std::string name = llformat("scroll_mode_%i", mode);
-	LLScrollListItem* row = getChild<LLScrollListCtrl>(name)->getFirstSelected();
-	if (row)
-	{
-		LLChangeKeyDialog* dialog = LLFloaterReg::getTypedInstance<LLChangeKeyDialog>("change_key", LLSD());
-		if (dialog)
-		{
-			MASK mask = MASK_NONE;
-			KEY key = NULL;
-			LLKeyboard::keyFromString(row->getColumn(2)->getValue().asString(), &key);
-			LLKeyboard::maskFromString(row->getColumn(3)->getValue().asString(), &mask);
-
-			dialog->setParent(this);
-			dialog->setMode(mode);
-			dialog->setKey(key);
-			dialog->setMask(mask);
-
-			LLFloaterReg::showTypedInstance<LLChangeKeyDialog>("change_key", LLSD(), TRUE);
+				LLFloaterReg::showTypedInstance<LLChangeKeyDialog>("change_key", LLSD(), TRUE);
+			}
 		}
 	}
 }
 
 void LLFloaterPreference::refreshKeys()
 {
+	if (!mBindModeList)
+		return;
+
 	LLSD settings;
 	llifstream infile;
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
@@ -1423,38 +1409,46 @@ void LLFloaterPreference::refreshKeys()
 		return;
 	}
 
-	for (S32 i = 0; i < 5; i++)
-	{
-		getChild<LLScrollListCtrl>(llformat("scroll_mode_%i", i))->clearRows();
-	}
+	mBindModeList->clearRows();
 
-	LLScrollListCtrl* scroll;
+	S32 mode = getChild<LLComboBox>("keybinding_mode")->getValue();
 	while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(settings, infile))
 	{
-		scroll = getChild<LLScrollListCtrl>("scroll_mode_" + settings["mode"].asString());
+		if(mode != settings["mode"].asInteger())
+			continue;
 
-		if (scroll)
-		{
-			LLSD row;
-			MASK mask = MASK_NONE;
+		LLSD row;
+		MASK mask = MASK_NONE;
 
-			//BD - Translate to human readable text.
-			LLKeyboard::maskFromString(settings["mask"].asString(), &mask);
-			std::string action_str = getString(settings["function"].asString());
+		//BD - Translate to human readable text.
+		LLKeyboard::maskFromString(settings["mask"].asString(), &mask);
+		std::string action_str = getString(settings["function"].asString());
 
-			row["columns"][0]["column"] = "action";
-			row["columns"][0]["value"] = action_str;
-			row["columns"][1]["column"] = "function";
-			row["columns"][1]["value"] = settings["function"].asString();
-			row["columns"][2]["column"] = "button";
-			row["columns"][2]["value"] = settings["key"].asString();
-			row["columns"][3]["column"] = "modifiers";
-			row["columns"][3]["value"] = LLKeyboard::stringFromMask(mask, true);
-			scroll->addElement(row);
-		}
+		row["columns"][0]["column"] = "action";
+		row["columns"][0]["value"] = action_str;
+		row["columns"][1]["column"] = "function";
+		row["columns"][1]["value"] = settings["function"].asString();
+		row["columns"][2]["column"] = "button";
+		row["columns"][2]["value"] = settings["key"].asString();
+		row["columns"][3]["column"] = "modifiers";
+		row["columns"][3]["value"] = LLKeyboard::stringFromMask(mask, true);
+		mBindModeList->addElement(row);
 	}
 	
 	infile.close();
+}
+
+void LLFloaterPreference::onClickSetAnyKey()
+{
+	S32 mode = getChild<LLComboBox>("keybinding_mode")->getValue();
+
+	//BD - Don't show the dialog if we have no action selected.
+	LLSetKeyDialog* dialog = LLFloaterReg::showTypedInstance<LLSetKeyDialog>("set_any_key", LLSD(), TRUE);
+	if (dialog)
+	{
+		dialog->setParent(this);
+		dialog->setMode(mode);
+	}
 }
 
 //BD - Expandable Tabs
@@ -2561,18 +2555,6 @@ void LLFloaterPreference::refreshEnabledState()
 void LLFloaterPreference::refresh()
 {
 	LLPanel::refresh();
-}
-
-//BD - Custom Keybinding Layout
-void LLFloaterPreference::onClickSetAnyKey(LLUICtrl* ctrl, const LLSD& param)
-{
-	//BD - Don't show the dialog if we have no action selected.
-	LLSetKeyDialog* dialog = LLFloaterReg::showTypedInstance<LLSetKeyDialog>("set_any_key", LLSD(), TRUE);
-	if (dialog)
-	{
-		dialog->setParent(this);
-		dialog->setMode(param.asInteger());
-	}
 }
 
 void LLFloaterPreference::onClickSetKey()
