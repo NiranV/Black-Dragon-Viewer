@@ -6581,13 +6581,15 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	}
 
 	LLVOVolume* vobj = drawable->getVOVolume();
-	if (vobj && vobj->isMesh())
+	//BD - Use mesh selection outline for everything.
+	if (vobj /* && vobj->isMesh()*/)
 	{
 		renderOneWireframe(color);
 		return;
 	}
 
-	if (!mSilhouetteExists)
+	//BD - We use the mesh selection outline for everything now.
+	/*if (!mSilhouetteExists)
 	{
 		return;
 	}
@@ -6734,7 +6736,7 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	if (shader)
 	{
 		shader->bind();
-	}
+	}*/
 }
 
 //
