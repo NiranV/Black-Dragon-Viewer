@@ -508,26 +508,26 @@ void LLMenuItemGL::draw( void )
 	if (mBriefItem)
 	{
 		mFont->render( mLabel, 0, BRIEF_PAD_PIXELS / 2, 0, color,
-					   LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL);
+					   LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT);
 	}
 	else
 	{
 		if( !mDrawBoolLabel.empty() )
 		{
 			mFont->render( mDrawBoolLabel.getWString(), 0, (F32)LEFT_PAD_PIXELS, ((F32)MENU_ITEM_PADDING / 2.f), color,
-						   LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, S32_MAX, S32_MAX, NULL, FALSE );
+							LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT, S32_MAX, S32_MAX, NULL, FALSE );
 		}
 		mFont->render( mLabel.getWString(), 0, (F32)LEFT_PLAIN_PIXELS, ((F32)MENU_ITEM_PADDING / 2.f), color,
-					   LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, S32_MAX, S32_MAX, NULL, FALSE );
+							LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT, S32_MAX, S32_MAX, NULL, FALSE);
 		if( !mDrawAccelLabel.empty() )
 		{
 			mFont->render( mDrawAccelLabel.getWString(), 0, (F32)getRect().mRight - (F32)RIGHT_PLAIN_PIXELS, ((F32)MENU_ITEM_PADDING / 2.f), color,
-						   LLFontGL::RIGHT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, S32_MAX, S32_MAX, NULL, FALSE );
+							LLFontGL::RIGHT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT, S32_MAX, S32_MAX, NULL, FALSE);
 		}
 		if( !mDrawBranchLabel.empty() )
 		{
 			mFont->render( mDrawBranchLabel.getWString(), 0, (F32)getRect().mRight - (F32)RIGHT_PAD_PIXELS, ((F32)MENU_ITEM_PADDING / 2.f), color,
-						   LLFontGL::RIGHT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::NO_SHADOW, S32_MAX, S32_MAX, NULL, FALSE );
+							LLFontGL::RIGHT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT, S32_MAX, S32_MAX, NULL, FALSE);
 		}
 	}
 
@@ -1588,7 +1588,7 @@ void LLMenuItemBranchDownGL::draw( void )
 		color = mDisabledColor.get();
 	}
 	getFont()->render( mLabel.getWString(), 0, (F32)getRect().getWidth() / 2.f, (F32)LABEL_BOTTOM_PAD_PIXELS, color,
-				   LLFontGL::HCENTER, LLFontGL::BOTTOM, LLFontGL::NORMAL);
+				   LLFontGL::HCENTER, LLFontGL::BOTTOM, LLFontGL::DROP_SHADOW_SOFT);
 
 
 	// underline navigation key only when keyboard navigation has been initiated
