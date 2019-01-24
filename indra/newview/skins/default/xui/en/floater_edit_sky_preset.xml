@@ -40,7 +40,7 @@ width="700">
      name="WindLight"
      tab_position="top"
      top="2"
-     width="700">
+     width="689">
     <panel
      border="false"
      bevel_style="none"
@@ -48,7 +48,7 @@ width="700">
      height="196"
      label="Atmosphere"
      layout="topleft"
-     left="1"
+     left="0"
      mouse_opaque="false"
      name="Atmosphere"
      top="60"

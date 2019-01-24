@@ -29,9 +29,9 @@
       name="group_info_top"
       follows="top|left|right"
       top="1"
-      left="10"
+      left="7"
       height="25"
-      width="308"
+      width="311"
       layout="topleft">
       <button
       follows="top|left"
@@ -53,7 +53,7 @@
       image_name="Toolbar_Middle_Off"
       left_pad="1"
       top_delta="0"
-      width="275" />
+      width="278" />
     <!--<button
      follows="top|right"
      height="24"
@@ -83,7 +83,7 @@
       left_delta="3"
       top="6"
      use_ellipses="true"
-      width="267"
+      width="270"
       follows="top|left|right"
       word_wrap="false"
       mouse_opaque="false"/>
@@ -96,7 +96,7 @@
      max_length_bytes="35"
      name="group_name_editor"
      top_delta="-4"
-     width="270"
+     width="273"
      height="23"
      visible="true" />
     </panel>
@@ -108,9 +108,9 @@
      layout="topleft"
      left="4"
      name="roles_tab_container"
+     tab_min_width="56"
      tab_position="top"
      tab_height="21"
-     tab_min_width="56"
      top_pad="13"
      width="316">
                    <panel

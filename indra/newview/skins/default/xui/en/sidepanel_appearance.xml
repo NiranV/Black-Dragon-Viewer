@@ -25,7 +25,7 @@ width="333">
   name="Changing outfits"
   value="Changing outfits" />
   <panel
-  left="10"
+  left="7"
   top="1"
   follows="left|top|right"
   layout="topleft"
@@ -64,10 +64,10 @@ width="333">
   border_size="0"
   mouse_opaque="false"
   name="appearance_panel_ls"
-  left="43"
+  left="40"
   orientation="horizontal"
   top="1"
-  width="281">	
+  width="284">	
     <layout_panel
     follows="top|left|right"
     height="27"
@@ -77,7 +77,7 @@ width="333">
     name="outfit_name_lp"
     auto_resize="true"
     min_width="216"
-    width="216">
+    width="219">
       <icon
       follows="top|left|right"
       height="25"
@@ -86,11 +86,11 @@ width="333">
       image_name="Toolbar_Middle_Off"
       left="0"
       top="1"
-      width="215" />
+      width="218" />
       <text
       font="SansSerifSmall"
       text_color="Friend"
-      width="210"
+      width="213"
       height="10"
       follows="top|left|right"
       layout="topleft"
@@ -107,7 +107,7 @@ width="333">
       text_color="White"
       top="12"
       use_ellipses="true"
-      width="210"
+      width="213"
       follows="top|left|right"
       word_wrap="false"
       mouse_opaque="false"
@@ -149,7 +149,7 @@ width="333">
       visible="false"
       name="search_lp"
       auto_resize="true"
-      width="216">
+      width="219">
       <icon
       follows="top|left|right"
       height="25"
@@ -158,7 +158,7 @@ width="333">
       image_name="Toolbar_Middle_Off"
       left="0"
       top="1"
-      width="215" />
+      width="218" />
       <filter_editor
       height="22"
       follows="left|top|right"
@@ -170,7 +170,7 @@ width="333">
       background_image_disabled="TextField_Disabled"
       background_image_focused="TextField_Active"
       top="2"
-      width="211" />
+      width="214" />
     </layout_panel>
   </layout_stack>
   <panel

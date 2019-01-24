@@ -80,7 +80,7 @@ width="510">
 		 left="1"
 		 name="viewer_expand"
 		 top="0"
-		 width="495">
+		 width="493">
       <button.commit_callback
       function="Pref.Tab"
       parameter="viewer_layout_panel"/>
@@ -512,7 +512,7 @@ width="510">
 		 left="1"
 		 name="lod_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="lod_layout_panel"/>
@@ -2141,7 +2141,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
 		 left="1"
 		 name="performance_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="performance_layout_panel"/>
@@ -2784,7 +2784,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		 left="1"
 		 name="vertex_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="vertex_layout_panel"/>
@@ -3307,7 +3307,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		 left="1"
 		 name="deferred_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="deferred_layout_panel"/>
@@ -4281,7 +4281,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		 left="1"
 		 name="ao_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="ao_layout_panel"/>
@@ -4510,7 +4510,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		 left="1"
 		 name="dof_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="dof_layout_panel"/>
@@ -4798,7 +4798,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		 left="1"
 		 name="motionblur_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="motionblur_layout_panel"/>
@@ -4982,7 +4982,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		 left="1"
 		 name="godrays_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="godrays_layout_panel"/>
@@ -5166,7 +5166,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		 left="1"
 		 name="post_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="post_layout_panel"/>
@@ -5366,7 +5366,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		 left="1"
 		 name="tonemapping_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="tonemapping_layout_panel"/>
@@ -6207,7 +6207,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		 left="1"
 		 name="vignette_expand"
 		 top="0"
-		 width="495" >
+		 width="493" >
       <button.commit_callback
       function="Pref.Tab"
       parameter="vignette_layout_panel"/>

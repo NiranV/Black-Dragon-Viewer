@@ -389,7 +389,7 @@
       tool_tip="Choose the type of grid ruler for positioning the object"
       top_delta="0"
       left_pad="1"
-      width="84">
+      width="85">
       <combo_box.item
       label="World"
       name="World"
@@ -804,7 +804,7 @@
     left="10"
     name="cost_text_border"
     top="132"
-    width="285"/>
+    width="286"/>
 				<text
 	  type="string"
 	  length="1"
