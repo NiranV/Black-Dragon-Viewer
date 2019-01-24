@@ -1970,7 +1970,8 @@ void LLFloaterPreference::draw()
 	}
 
 //	//BD - Avatar Rendering Settings
-	if (mNeedsUpdate)
+	if ((mTabContainer->getCurrentPanelIndex() == 2
+		&& mAvatarSettingsList->isEmpty()) || mNeedsUpdate)
 	{
 		updateList();
 		mNeedsUpdate = false;
@@ -2168,7 +2169,14 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	toggleTabs();
 
 //	//BD - Avatar Rendering Settings
-	updateList();
+	//     Only update this when absolutely necessary, this causes a huge 
+	//     framedrop for up to a second or two.
+	if ((mTabContainer->getCurrentPanelIndex() == 2
+		&& mAvatarSettingsList->isEmpty()) || mNeedsUpdate)
+	{
+		updateList();
+		mNeedsUpdate = false;
+	}
 
 //	//BD - Unlimited Camera Presets
 	refreshPresets();
