@@ -18,6 +18,8 @@
 
 #include "bdfunctions.h"
 
+#include "llfloaterreg.h"
+#include "llfloaterpreference.h"
 #include "lluictrlfactory.h"
 #include "llviewercontrol.h"
 #include "llnotificationsutil.h"
@@ -351,6 +353,21 @@ void BDFunctions::triggerWarning(LLUICtrl* ctrl, const LLSD& param)
 			//BD - Don't spam the user every step.
 			LLNotifications::instance().setIgnored(name + "_Min", true);
 			LL_WARNS("Notifications") << "Value set to: " << val.asReal() << " but minimum allowed is: " << min_val << LL_ENDL;
+		}
+	}
+}
+
+//BD - Trigger Warning System
+void BDFunctions::openPreferences( const LLSD& param)
+{
+	LLFloaterReg::toggleInstanceOrBringToFront("preferences");
+	LLFloaterPreference* preferences = LLFloaterReg::getTypedInstance<LLFloaterPreference>("preferences");
+	if (preferences && preferences->getVisible() && !preferences->isMinimized())
+	{
+		LLTabContainer* prefs_tabs = preferences->getChild<LLTabContainer>("pref core");
+		if (prefs_tabs)
+		{
+			prefs_tabs->selectTabByName(param);
 		}
 	}
 }

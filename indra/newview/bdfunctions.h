@@ -22,6 +22,7 @@
 
 #include "llsliderctrl.h"
 #include "llbutton.h"
+#include "lltabcontainer.h"
 
 class BDFunctions
 {
@@ -46,6 +47,8 @@ public:
 	static std::string escapeString(const std::string& str);
 
 	static void triggerWarning(LLUICtrl* ctrl, const LLSD& param);
+
+	static void openPreferences(const LLSD& param);
 };
 
 extern BDFunctions gDragonLibrary;
