@@ -302,10 +302,6 @@ private:
 
 	std::string mNameFilter;
 
-	LLSliderCtrl* mShadowDistSliderY;
-	LLSliderCtrl* mShadowDistSliderZ;
-	LLSliderCtrl* mShadowDistSliderW;
-
 //	//BD - Custom Keyboard Layout
 	LLScrollListCtrl* mBindModeList;
 
@@ -327,14 +323,29 @@ private:
 	LLUICtrl* mWarning14;
 
 //	//BD - Memory Allocation
-	LLSliderCtrl* mSystemMemory;
-	LLSliderCtrl* mSceneMemory;
-	LLProgressBar* mProgressBar;
-	LLTextBox* mGPUMemoryLabel;
+	LLSliderCtrl*	mSystemMemory;
+	LLSliderCtrl*	mSceneMemory;
+	LLProgressBar*	mProgressBar;
+	LLTextBox*		mGPUMemoryLabel;
 
 	//BD
 	LLFrameTimer	mUpdateTimer;
 	LLTabContainer* mTabContainer;
+
+	std::array<LLUICtrl*, 3> mRenderGlowLumWeights;
+	std::array<LLUICtrl*, 3> mRenderGlowWarmthWeights;
+	std::array<LLUICtrl*, 3> mExodusRenderToneAdvOptA;
+	std::array<LLUICtrl*, 3> mExodusRenderToneAdvOptB;
+	std::array<LLUICtrl*, 3> mExodusRenderGamma;
+	std::array<LLUICtrl*, 3> mExodusRenderExposure;
+	std::array<LLUICtrl*, 3> mExodusRenderOffset;
+	std::array<LLUICtrl*, 3> mExodusRenderVignette;
+
+	std::array<LLUICtrl*, 4> mRenderShadowDistance;
+	std::array<LLUICtrl*, 4> mRenderShadowResolution;
+
+	std::array<LLUICtrl*, 2> mRenderProjectorShadowResolution;
+	std::array<LLUICtrl*, 2> mExodusRenderToneAdvOptC;
 };
 
 class LLPanelPreference : public LLPanel

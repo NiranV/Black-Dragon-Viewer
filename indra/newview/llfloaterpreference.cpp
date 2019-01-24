@@ -1166,9 +1166,44 @@ BOOL LLFloaterPreference::postBuild()
 		mTabContainer->selectFirstTab();
 	}
 
-	mShadowDistSliderY = getChild<LLSliderCtrl>("RenderShadowDistance_Y");
-	mShadowDistSliderZ = getChild<LLSliderCtrl>("RenderShadowDistance_Z");
-	mShadowDistSliderW = getChild<LLSliderCtrl>("RenderShadowDistance_W");
+	mRenderGlowLumWeights = { { getChild<LLUICtrl>("RenderGlowLumWeights_X"),
+							getChild<LLUICtrl>("RenderGlowLumWeights_Y"),
+							getChild<LLUICtrl>("RenderGlowLumWeights_Z") } };
+	mRenderGlowWarmthWeights = { { getChild<LLUICtrl>("RenderGlowWarmthWeights_X"),
+							getChild<LLUICtrl>("RenderGlowWarmthWeights_Y"),
+							getChild<LLUICtrl>("RenderGlowWarmthWeights_Z") } };
+	mExodusRenderToneAdvOptA = { { getChild<LLUICtrl>("ExodusRenderToneAdvOptA_X"),
+							getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Y"),
+							getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Z") } };
+	mExodusRenderToneAdvOptB = { { getChild<LLUICtrl>("ExodusRenderToneAdvOptB_X"),
+							getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Y"),
+							getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Z") } };
+	mExodusRenderGamma = { { getChild<LLUICtrl>("ExodusRenderGamma_X"),
+							getChild<LLUICtrl>("ExodusRenderGamma_Y"),
+							getChild<LLUICtrl>("ExodusRenderGamma_Z") } };
+	mExodusRenderExposure = { { getChild<LLUICtrl>("ExodusRenderExposure_X"),
+							getChild<LLUICtrl>("ExodusRenderExposure_Y"),
+							getChild<LLUICtrl>("ExodusRenderExposure_Z") } };
+	mExodusRenderOffset = { { getChild<LLUICtrl>("ExodusRenderOffset_X"),
+							getChild<LLUICtrl>("ExodusRenderOffset_Y"),
+							getChild<LLUICtrl>("ExodusRenderOffset_Z") } };
+	mExodusRenderVignette = { { getChild<LLUICtrl>("ExodusRenderVignette_X"),
+							getChild<LLUICtrl>("ExodusRenderVignette_Y"),
+							getChild<LLUICtrl>("ExodusRenderVignette_Z") } };
+
+	mRenderShadowDistance = { { getChild<LLUICtrl>("RenderShadowDistance_X"),
+								getChild<LLUICtrl>("RenderShadowDistance_Y"),
+								getChild<LLUICtrl>("RenderShadowDistance_Z"),
+								getChild<LLUICtrl>("RenderShadowDistance_W") } };
+	mRenderShadowResolution = { { getChild<LLUICtrl>("RenderShadowResolution_X"),
+								getChild<LLUICtrl>("RenderShadowResolution_Y"),
+								getChild<LLUICtrl>("RenderShadowResolution_Z"),
+								getChild<LLUICtrl>("RenderShadowResolution_W") } };
+
+	mRenderProjectorShadowResolution = { { getChild<LLUICtrl>("RenderProjectorShadowResolution_X"),
+										getChild<LLUICtrl>("RenderProjectorShadowResolution_Y") } };
+	mExodusRenderToneAdvOptC = { { getChild<LLUICtrl>("ExodusRenderToneAdvOptC_X"),
+										getChild<LLUICtrl>("ExodusRenderToneAdvOptC_Y") } };
 
 //	//BD - Custom Keyboard Layout
 	mBindModeList = this->getChild<LLScrollListCtrl>("scroll_mode", true);
@@ -1511,57 +1546,57 @@ void LLFloaterPreference::inputOutput()
 void LLFloaterPreference::refreshGraphicControls()
 {
 	LLVector3 vec3 = gSavedSettings.getVector3("RenderGlowLumWeights");
-	getChild<LLUICtrl>("RenderGlowLumWeights_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("RenderGlowLumWeights_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("RenderGlowLumWeights_Z")->setValue(vec3.mV[VZ]);
+	mRenderGlowLumWeights[0]->setValue(vec3.mV[VX]);
+	mRenderGlowLumWeights[1]->setValue(vec3.mV[VY]);
+	mRenderGlowLumWeights[2]->setValue(vec3.mV[VZ]);
 	vec3 = gSavedSettings.getVector3("RenderGlowWarmthWeights");
-	getChild<LLUICtrl>("RenderGlowWarmthWeights_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("RenderGlowWarmthWeights_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("RenderGlowWarmthWeights_Z")->setValue(vec3.mV[VZ]);
+	mRenderGlowWarmthWeights[0]->setValue(vec3.mV[VX]);
+	mRenderGlowWarmthWeights[1]->setValue(vec3.mV[VY]);
+	mRenderGlowWarmthWeights[2]->setValue(vec3.mV[VZ]);
 
 	LLVector4 vec4 = gSavedSettings.getVector4("RenderShadowDistance");
-	getChild<LLUICtrl>("RenderShadowDistance_X")->setValue(vec4.mV[VX]);
-	getChild<LLUICtrl>("RenderShadowDistance_Y")->setValue(vec4.mV[VY]);
-	getChild<LLUICtrl>("RenderShadowDistance_Z")->setValue(vec4.mV[VZ]);
-	getChild<LLUICtrl>("RenderShadowDistance_W")->setValue(vec4.mV[VW]);
+	mRenderShadowDistance[0]->setValue(vec4.mV[VX]);
+	mRenderShadowDistance[1]->setValue(vec4.mV[VY]);
+	mRenderShadowDistance[2]->setValue(vec4.mV[VZ]);
+	mRenderShadowDistance[3]->setValue(vec4.mV[VW]);
 	vec4 = gSavedSettings.getVector4("RenderShadowResolution");
-	getChild<LLUICtrl>("RenderShadowResolution_X")->setValue(vec4.mV[VX]);
-	getChild<LLUICtrl>("RenderShadowResolution_Y")->setValue(vec4.mV[VY]);
-	getChild<LLUICtrl>("RenderShadowResolution_Z")->setValue(vec4.mV[VZ]);
-	getChild<LLUICtrl>("RenderShadowResolution_W")->setValue(vec4.mV[VW]);
+	mRenderShadowResolution[0]->setValue(vec4.mV[VX]);
+	mRenderShadowResolution[1]->setValue(vec4.mV[VY]);
+	mRenderShadowResolution[2]->setValue(vec4.mV[VZ]);
+	mRenderShadowResolution[3]->setValue(vec4.mV[VW]);
 
 	LLVector2 vec2 = gSavedSettings.getVector2("RenderProjectorShadowResolution");
-	getChild<LLUICtrl>("RenderProjectorShadowResolution_X")->setValue(vec2.mV[VX]);
-	getChild<LLUICtrl>("RenderProjectorShadowResolution_Y")->setValue(vec2.mV[VY]);
+	mRenderProjectorShadowResolution[0]->setValue(vec2.mV[VX]);
+	mRenderProjectorShadowResolution[1]->setValue(vec2.mV[VY]);
 
 	vec3 = gSavedSettings.getVector3("ExodusRenderToneAdvOptA");
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Z")->setValue(vec3.mV[VZ]);
+	mExodusRenderToneAdvOptA[0]->setValue(vec3.mV[VX]);
+	mExodusRenderToneAdvOptA[1]->setValue(vec3.mV[VY]);
+	mExodusRenderToneAdvOptA[2]->setValue(vec3.mV[VZ]);
 	vec3 = gSavedSettings.getVector3("ExodusRenderToneAdvOptB");
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Z")->setValue(vec3.mV[VZ]);
+	mExodusRenderToneAdvOptB[0]->setValue(vec3.mV[VX]);
+	mExodusRenderToneAdvOptB[1]->setValue(vec3.mV[VY]);
+	mExodusRenderToneAdvOptB[2]->setValue(vec3.mV[VZ]);
 	vec3 = gSavedSettings.getVector3("ExodusRenderToneAdvOptC");
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptC_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderToneAdvOptC_Y")->setValue(vec3.mV[VY]);
+	mExodusRenderToneAdvOptC[0]->setValue(vec3.mV[VX]);
+	mExodusRenderToneAdvOptC[1]->setValue(vec3.mV[VY]);
 
 	vec3 = gSavedSettings.getVector3("ExodusRenderGamma");
-	getChild<LLUICtrl>("ExodusRenderGamma_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderGamma_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderGamma_Z")->setValue(vec3.mV[VZ]);
+	mExodusRenderGamma[0]->setValue(vec3.mV[VX]);
+	mExodusRenderGamma[1]->setValue(vec3.mV[VY]);
+	mExodusRenderGamma[2]->setValue(vec3.mV[VZ]);
 	vec3 = gSavedSettings.getVector3("ExodusRenderExposure");
-	getChild<LLUICtrl>("ExodusRenderExposure_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderExposure_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderExposure_Z")->setValue(vec3.mV[VZ]);
+	mExodusRenderExposure[0]->setValue(vec3.mV[VX]);
+	mExodusRenderExposure[1]->setValue(vec3.mV[VY]);
+	mExodusRenderExposure[2]->setValue(vec3.mV[VZ]);
 	vec3 = gSavedSettings.getVector3("ExodusRenderOffset");
-	getChild<LLUICtrl>("ExodusRenderOffset_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderOffset_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderOffset_Z")->setValue(vec3.mV[VZ]);
+	mExodusRenderOffset[0]->setValue(vec3.mV[VX]);
+	mExodusRenderOffset[1]->setValue(vec3.mV[VY]);
+	mExodusRenderOffset[2]->setValue(vec3.mV[VZ]);
 	vec3 = gSavedSettings.getVector3("ExodusRenderVignette");
-	getChild<LLUICtrl>("ExodusRenderVignette_X")->setValue(vec3.mV[VX]);
-	getChild<LLUICtrl>("ExodusRenderVignette_Y")->setValue(vec3.mV[VY]);
-	getChild<LLUICtrl>("ExodusRenderVignette_Z")->setValue(vec3.mV[VZ]);
+	mExodusRenderVignette[0]->setValue(vec3.mV[VX]);
+	mExodusRenderVignette[1]->setValue(vec3.mV[VY]);
+	mExodusRenderVignette[2]->setValue(vec3.mV[VZ]);
 
 	//BD - Anything that triggers this should also refresh the sidebar.
 	if (LLStartUp::getStartupState() == STATE_STARTED)
@@ -1590,7 +1625,7 @@ void LLFloaterPreference::refreshWarnings()
 	mWarning4->setVisible(gPipeline.RenderFarClip > 128);
 	mWarning5->setVisible(gSavedSettings.getU32("RenderAvatarMaxNonImpostors") > 15);
 	mWarning6->setVisible(gSavedSettings.getF32("RenderAutoMuteSurfaceAreaLimit") > 256.f);
-	mWarning7->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 150000);
+	mWarning7->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 250000);
 	mWarning8->setVisible(gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit") > 256.f);
 
 	//BD - Windlight Options
@@ -1919,9 +1954,10 @@ void LLFloaterPreference::draw()
 			refreshWarnings();
 		}
 
-		mShadowDistSliderY->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
-		mShadowDistSliderZ->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
-		mShadowDistSliderW->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
+		bool auto_shadow_distance = gPipeline.RenderShadowAutomaticDistance;
+		mRenderShadowDistance[1]->setEnabled(!auto_shadow_distance);
+		mRenderShadowDistance[2]->setEnabled(!auto_shadow_distance);
+		mRenderShadowDistance[3]->setEnabled(!auto_shadow_distance);
 
 		if (mTabContainer->getCurrentPanelIndex() == 9)
 		{
