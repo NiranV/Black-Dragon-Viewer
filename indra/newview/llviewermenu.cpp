@@ -537,7 +537,8 @@ void init_menus()
 	///
 	/// set up the colors
 	///
-	LLColor4 color;
+	//BD
+	LLColor4 color = LLUIColorTable::instance().getColor("MenuDefaultBgColor");
 
 	//BD
 	LLColor4 context_menu_color = LLUIColorTable::instance().getColor("MenuDefaultBgColor");
@@ -550,19 +551,7 @@ void init_menus()
 
 	gMenuLand->setBackgroundColor( context_menu_color );
 
-	//BD
-	color = LLUIColorTable::instance().getColor( "MenuDefaultBgColor" );
 	gPopupMenuView->setBackgroundColor( color );
-
-	// If we are not in production, use a different color to make it apparent.
-	if (LLGridManager::getInstance()->isInProductionGrid())
-	{
-		color = LLUIColorTable::instance().getColor( "MenuBarBgColor" );
-	}
-	else
-	{
-		color = LLUIColorTable::instance().getColor( "MenuNonProductionBgColor" );
-	}
 
 	LLView* menu_bar_holder = gViewerWindow->getRootView()->getChildView("menu_bar_holder");
 
@@ -571,9 +560,6 @@ void init_menus()
 	gMenuBarView->setBackgroundColor( color );
 
 	menu_bar_holder->addChild(gMenuBarView);
-  
-    gViewerWindow->setMenuBackgroundColor(false, 
-        LLGridManager::getInstance()->isInProductionGrid());
 
 	// Assume L$10 for now, the server will tell us the real cost at login
 	// *TODO:Also fix cost in llfolderview.cpp for Inventory menus
@@ -585,13 +571,6 @@ void init_menus()
 	
 	gAttachSubMenu = gMenuBarView->findChildMenuByName("Attach Object", TRUE);
 	gDetachSubMenu = gMenuBarView->findChildMenuByName("Detach Object", TRUE);
-
-	// Don't display the Memory console menu if the feature is turned off
-	LLMenuItemCheckGL *memoryMenu = gMenuBarView->getChild<LLMenuItemCheckGL>("Memory", TRUE);
-	if (memoryMenu)
-	{
-		memoryMenu->setVisible(FALSE);
-	}
 
 	gMenuBarView->createJumpKeys();
 
