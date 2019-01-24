@@ -36,7 +36,6 @@
        height="186"
        halign="center"
        layout="topleft"
-       tab_min_width="342"
        tab_height="20"
        left="3"
        name="Object Info Tabs"
