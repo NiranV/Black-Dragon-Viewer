@@ -5040,7 +5040,7 @@ void LLVOVolume::clearRiggedVolume()
 	}
 }
 
-void LLVOVolume::updateRiggedVolume(bool force_update)
+void LLVOVolume::updateRiggedVolume(bool force_update, bool is_selected)
 {
 	//Update mRiggedVolume to match current animation frame of avatar. 
 	//Also update position/size in octree.  
@@ -5074,13 +5074,13 @@ void LLVOVolume::updateRiggedVolume(bool force_update)
 		updateRelativeXform();
 	}
 
-	mRiggedVolume->update(skin, avatar, volume);
+	mRiggedVolume->update(skin, avatar, volume, is_selected);
 }
 
 static LLTrace::BlockTimerStatHandle FTM_SKIN_RIGGED("Skin");
 static LLTrace::BlockTimerStatHandle FTM_RIGGED_OCTREE("Octree");
 
-void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, const LLVolume* volume)
+void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, const LLVolume* volume, bool is_selected)
 {
 	bool copy = false;
 	if (volume->getNumVolumeFaces() != getNumVolumeFaces())
@@ -5164,33 +5164,40 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 					pos[j] = dst;
 				}
 
-				//update bounding box
-				// VFExtents change
-				LLVector4a& min = dst_face.mExtents[0];
-				LLVector4a& max = dst_face.mExtents[1];
-
-				min = pos[0];
-				max = pos[1];
-                if (i==0)
-                {
-                    box_min = min;
-                    box_max = max;
-                }
-
-				for (U32 j = 1; j < dst_face.mNumVertices; ++j)
+				//BD - Update bounding box when not selected.
+				if (!is_selected)
 				{
-					min.setMin(min, pos[j]);
-					max.setMax(max, pos[j]);
+					// VFExtents change
+					LLVector4a& min = dst_face.mExtents[0];
+					LLVector4a& max = dst_face.mExtents[1];
+
+					min = pos[0];
+					max = pos[1];
+					if (i == 0)
+					{
+						box_min = min;
+						box_max = max;
+					}
+
+					for (U32 j = 1; j < dst_face.mNumVertices; ++j)
+					{
+						min.setMin(min, pos[j]);
+						max.setMax(max, pos[j]);
+					}
+
+					box_min.setMin(min, box_min);
+					box_max.setMax(max, box_max);
+
+					dst_face.mCenter->setAdd(dst_face.mExtents[0], dst_face.mExtents[1]);
+					dst_face.mCenter->mul(0.5f);
 				}
-
-                box_min.setMin(min,box_min);
-                box_max.setMax(max,box_max);
-
-				dst_face.mCenter->setAdd(dst_face.mExtents[0], dst_face.mExtents[1]);
-				dst_face.mCenter->mul(0.5f);
-
 			}
 
+			//BD - Don't rebuild octrees while the item is selected, this will absolutely
+			//     murder our performance with high polygon counts.
+			//     Octrees don't need to be up-to-date for the short periods something is
+			//     selected.
+			if (!is_selected)
 			{
 				LL_RECORD_BLOCK_TIME(FTM_RIGGED_OCTREE);
 				delete dst_face.mOctree;

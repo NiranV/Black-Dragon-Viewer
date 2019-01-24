@@ -6354,8 +6354,8 @@ BOOL LLSelectNode::allowOperationOnNode(PermissionBit op, U64 group_proxy_power)
 }
 
 
-//BD - helper function for pushing relevant vertices from drawable to GL
-void pushWireframe(LLDrawable* drawable, bool rebuild_rigged)
+// helper function for pushing relevant vertices from drawable to GL
+void pushWireframe(LLDrawable* drawable)
 {
 	LLVOVolume* vobj = drawable->getVOVolume();
 	if (vobj)
@@ -6368,11 +6368,10 @@ void pushWireframe(LLDrawable* drawable, bool rebuild_rigged)
 
 		if (drawable->isState(LLDrawable::RIGGED))
 		{
-			//BD - Update the rigged volume periodically to reduce performance impact.
-			if (LLSelectMgr::sSelectionUpdate &&
-				rebuild_rigged)
+			//BD - Update the selection outline only if we chose to.
+			if (LLSelectMgr::sSelectionUpdate)
 			{
-				vobj->updateRiggedVolume();
+				vobj->updateRiggedVolume(false, vobj->isSelected());
 			}
 			volume = vobj->getRiggedVolume();
 		}
@@ -6396,14 +6395,6 @@ void pushWireframe(LLDrawable* drawable, bool rebuild_rigged)
 
 void LLSelectNode::renderOneWireframe(const LLColor4& color)
 {
-	//BD - We want to update the selection outlines every 5 seconds only.
-	bool update_rigged = false;
-	if (mUpdateTimer.getElapsedTimeF32() > 5.f)
-	{
-		update_rigged = true;
-		mUpdateTimer.reset();
-	}
-
 	//BD - Need to because crash on ATI 3800 (and similar cards) MAINT-5018 
 	if (gGLManager.mIsATI)
 	{
@@ -6477,7 +6468,7 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		{
 			gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
 			//BD
-			pushWireframe(drawable, update_rigged);
+			pushWireframe(drawable);
 		}
 		else
 		{
@@ -6493,7 +6484,7 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 			{
 				gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
 				//BD
-				pushWireframe(drawable, update_rigged);
+				pushWireframe(drawable);
 			}
 		}
 	}
@@ -6549,7 +6540,7 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 			glPointSize(2.f);
 			glPolygonMode(GL_FRONT, GL_POINT);
 		}
-		pushWireframe(drawable, update_rigged);
+		pushWireframe(drawable);
 	}
 
 	//BD
@@ -6580,21 +6571,20 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 		return;
 	}
 
+	BOOL is_hud_object = objectp->isHUDAttachment();
 	LLVOVolume* vobj = drawable->getVOVolume();
 	//BD - Use mesh selection outline for everything.
-	if (vobj /* && vobj->isMesh()*/)
+	if (vobj && !is_hud_object)
 	{
 		renderOneWireframe(color);
 		return;
 	}
 
-	//BD - We use the mesh selection outline for everything now.
-	/*if (!mSilhouetteExists)
+	//BD - We use the mesh selection outline for everything except the HUD.
+	if (!mSilhouetteExists)
 	{
 		return;
 	}
-
-	BOOL is_hud_object = objectp->isHUDAttachment();
 	
 	if (mSilhouetteVertices.size() == 0 || mSilhouetteNormals.size() != mSilhouetteVertices.size())
 	{
@@ -6627,18 +6617,9 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	}
 
 	LLVolume *volume = objectp->getVolume();
-	if (volume)
+	if (volume && isAgentAvatarValid())
 	{
-		F32 silhouette_thickness;
-		if (isAgentAvatarValid() && is_hud_object)
-		{
-			silhouette_thickness = LLSelectMgr::sHighlightThickness / gAgentCamera.mHUDCurZoom;
-		}
-		else
-		{
-			LLVector3 view_vector = LLViewerCamera::getInstance()->getOrigin() - objectp->getRenderPosition();
-			silhouette_thickness = view_vector.magVec() * LLSelectMgr::sHighlightThickness * (LLViewerCamera::getInstance()->getView() / LLViewerCamera::getInstance()->getDefaultFOV());
-		}		
+		F32 silhouette_thickness = LLSelectMgr::sHighlightThickness / gAgentCamera.mHUDCurZoom;
 		F32 animationTime = (F32)LLFrameTimer::getElapsedSeconds();
 
 		F32 u_coord = fmod(animationTime * LLSelectMgr::sHighlightUAnim, 1.f);
@@ -6736,7 +6717,7 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	if (shader)
 	{
 		shader->bind();
-	}*/
+	}
 }
 
 //

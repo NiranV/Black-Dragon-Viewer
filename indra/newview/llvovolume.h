@@ -63,7 +63,7 @@ public:
 	{
 	}
 
-	void update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, const LLVolume* src_volume);
+	void update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, const LLVolume* src_volume, bool is_selected = false);
 
     std::string mExtraDebugText;
 };
@@ -367,7 +367,7 @@ public:
 	
 
 	//rigged volume update (for raycasting)
-	void updateRiggedVolume(bool force_update = false);
+	void updateRiggedVolume(bool force_update = false, bool is_selected = false);
 	LLRiggedVolume* getRiggedVolume();
 
 	//returns true if volume should be treated as a rigged volume

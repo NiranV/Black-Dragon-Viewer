@@ -229,9 +229,6 @@ public:
 	std::vector<LLVector3>	mSilhouetteNormals;	// array of normals to render silhouette of object
 	BOOL					mSilhouetteExists;	// need to generate silhouette?
 
-	//BD
-	LLFrameTimer				mUpdateTimer;
-
 protected:
 	LLPointer<LLViewerObject>	mObject;
 	S32				mTESelectMask;
