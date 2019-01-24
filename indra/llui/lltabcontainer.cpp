@@ -467,10 +467,61 @@ void LLTabContainer::draw()
 			tuple->mButton->setVisible( TRUE );
 		}
 
-		//BD
-		S32 available_width = getRect().getWidth() - LLPANEL_BORDER_WIDTH;
-		S32 consistent_width = llfloor(available_width / getTabCount());
-		S32 leftover_width = available_width % getTabCount();
+		//BD - Consistent Widths
+		if (!has_scroll_arrows && !mIsVertical && mConsistentWidths)
+		{
+			static LLUICachedControl<S32> tab_padding("UITabPadding", 0);
+
+			S32 tab_count = getTabCount();
+			S32 available_width = getRect().getWidth() - LLPANEL_BORDER_WIDTH;
+			S32 consistent_width = llfloor(available_width / tab_count);
+			S32 leftover_width = available_width % tab_count;
+			//BD - We pre-emptively go through all tabs and check their button widths.
+			//     We do this to see whether one or more buttons need special attention due to their
+			//     labels requiring longer buttons than our desired consistent width.
+			//     We do 2 passes, the first to find all extra long buttons, the second to fix the others
+			for (S32 pass = 0; pass < 2; pass++)
+			{
+				for (tuple_list_t::iterator iter = mTabList.begin(); iter != mTabList.end(); ++iter)
+				{
+					LLTabTuple* tuple = *iter;
+					S32 button_width = mFont->getWidth(tuple->mButton->getLabelUnselected()) + tab_padding;
+					if (pass == 0)
+					{
+						if (button_width > consistent_width)
+						{
+							//BD - Subtract the button width of every button that needs more than our desired
+							//     consistent width so we can recalculate available and consistent width with
+							//     the new values.
+							--tab_count;
+							available_width -= button_width;
+							consistent_width = llfloor(available_width / tab_count);
+							leftover_width = available_width % tab_count;
+						}
+					}
+					else
+					{
+						//BD - Check whether any button is bigger than our desired width, if it is, we will
+						//     skip it.
+						if (button_width <= consistent_width)
+						{
+							//BD - Apply our consistent width for all other buttons.
+							button_width = consistent_width;
+						}
+
+						if (leftover_width > 0)
+						{
+							++button_width;
+							--leftover_width;
+						}
+					}
+
+					LLRect rect = tuple->mButton->getRect();
+					rect.setLeftTopAndSize(rect.mLeft, rect.mTop, button_width, rect.getHeight());
+					tuple->mButton->setRect(rect);
+				}
+			}
+		}
 
 		S32 max_scroll_visible = getTabCount() - getMaxScrollPos() + getScrollPos();
 		S32 idx = 0;
@@ -484,20 +535,6 @@ void LLTabContainer::draw()
 
 			if (left >= 0 && !(mIsVertical && !left) || (has_scroll_arrows && left))
 			{
-				if (!has_scroll_arrows && mConsistentWidths)
-				{
-					S32 button_width = consistent_width;
-					if (leftover_width > 0)
-					{
-						button_width += 1;
-						leftover_width -= 1;
-					}
-
-					LLRect rect = tuple->mButton->getRect();
-					rect.setLeftTopAndSize(rect.mLeft, rect.mTop, button_width, rect.getHeight());
-					tuple->mButton->setRect(rect);
-				}
-
 				left += tuple->mButton->getRect().getWidth();
 			}
 
