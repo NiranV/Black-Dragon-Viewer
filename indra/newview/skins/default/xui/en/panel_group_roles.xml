@@ -857,7 +857,7 @@ things in this group. There&apos;s a broad variety of Abilities.
  mouse_opaque="false"
  left="3"
  name="title"
- top_pad="1"
+ top_pad="0"
  width="304"/>
          <text
          follows="left|top|right"
@@ -874,7 +874,7 @@ things in this group. There&apos;s a broad variety of Abilities.
             column_padding="0"
             draw_heading="true"
             width="308"
-            height="257"
+            height="258"
             follows="all"
             layout="topleft"
             left="1"
