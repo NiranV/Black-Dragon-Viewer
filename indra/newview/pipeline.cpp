@@ -1122,7 +1122,8 @@ void LLPipeline::allocateShadowMaps(bool allocate)
 {
 	LLVector4 scale = gSavedSettings.getVector4("RenderShadowResolution");
 	LLVector2 proj_scale = gSavedSettings.getVector2("RenderProjectorShadowResolution");
-	U32 shadow_detail = gSavedSettings.getS32("RenderShadowDetail");
+	const U32 shadow_detail = gSavedSettings.getS32("RenderShadowDetail");
+	const U32 occl_div = gSavedSettings.getS32("RenderShadowOcclusionDivisor");
 
 	//BD - Go through all shadow maps and either clear them or decide weither we want to
 	//     allocate them (when enabling shadows) or just resize them (when changing shadow
@@ -1140,11 +1141,13 @@ void LLPipeline::allocateShadowMaps(bool allocate)
 					{
 						//BD - Now reallocate the released map with the new resolution.
 						mShadow[i].allocate(U32(scale.mV[i]), U32(scale.mV[i]), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE);
+						mShadowOcclusion[i].allocate(U32(scale.mV[i] / occl_div), U32(scale.mV[i] / occl_div), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE);
 					}
 					else
 					{
 						//BD - Resizing it should be sufficient.
 						mShadow[i].resize(U32(scale.mV[i]), U32(scale.mV[i]));
+						mShadowOcclusion[i].resize(U32(scale.mV[i] / occl_div), U32(scale.mV[i] / occl_div));
 					}
 				}
 			}
@@ -1158,11 +1161,13 @@ void LLPipeline::allocateShadowMaps(bool allocate)
 					{
 						//BD - Now reallocate the released map with the new resolution.
 						mShadow[i].allocate(U32(proj_scale.mV[i-4]), U32(proj_scale.mV[i-4]), 0, TRUE, FALSE);
+						mShadowOcclusion[i].allocate(U32(scale.mV[i] / occl_div), U32(scale.mV[i] / occl_div), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE);
 					}
 					else
 					{
 						//BD - Resizing it should be sufficient.
 						mShadow[i].resize(U32(proj_scale.mV[i-4]), U32(proj_scale.mV[i-4]));
+						mShadowOcclusion[i].resize(U32(proj_scale.mV[i-4] / occl_div), U32(proj_scale.mV[i-4] / occl_div));
 					}
 				}
 			}
@@ -1171,6 +1176,7 @@ void LLPipeline::allocateShadowMaps(bool allocate)
 		{
 			//BD - Flush all shadowmaps.
 			mShadow[i].release();
+			mShadowOcclusion[i].release();
 		}
 	}
 }
@@ -1406,6 +1412,7 @@ void LLPipeline::releaseScreenBuffers()
 	for (U32 i = 0; i < 6; i++)
 	{
 		mShadow[i].release();
+		mShadowOcclusion[i].release();
 	}
 }
 
@@ -10662,7 +10669,11 @@ void LLPipeline::renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera
 		gDeferredShadowCubeProgram.bind();
 	}
 
+	LLRenderTarget& occlusion_target = mShadowOcclusion[LLViewerCamera::sCurCameraID - 1];
+
+	occlusion_target.bindTarget();
 	updateCull(shadow_cam, result);
+	occlusion_target.flush();
 	stateSort(shadow_cam, result);
 	
 	
@@ -10753,6 +10764,10 @@ void LLPipeline::renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera
 	gDeferredShadowCubeProgram.bind();
 	gGLLastMatrix = NULL;
 	gGL.loadMatrix(gGLModelView);
+
+	LLRenderTarget& occlusion_source = mShadow[LLViewerCamera::sCurCameraID - 1];
+
+	doOcclusion(shadow_cam, occlusion_source, occlusion_target);
 
 	if (use_shader)
 	{

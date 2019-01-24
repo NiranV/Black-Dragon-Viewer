@@ -16488,6 +16488,17 @@
 		
   <!-- Black Dragon Debugs -->
   
+  <key>RenderShadowOcclusionDivisor</key>
+  <map>
+    <key>Comment</key>
+    <string>test</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>S32</string>
+    <key>Value</key>
+    <integer>4</integer>
+  </map>
   <key>DoubleClickActionInventory</key>
   <map>
     <key>Comment</key>
