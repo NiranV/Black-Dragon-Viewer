@@ -859,7 +859,7 @@
    <combo_box
 	follows="bottom|left"
 	layout="topleft"
-	left="2"
+	left="1"
 	height="20"
 	name="camera_preset_name"
 	allow_text_entry="true"
@@ -910,7 +910,7 @@
   image_unselected="Toolbar_Middle_Off"
   tool_tip="This button removes the currently selected camera preset."
   name="DeleteCameraPreset"
-  width="110"
+  width="109"
   top_delta="0"
   left_pad="1">
   <button.commit_callback

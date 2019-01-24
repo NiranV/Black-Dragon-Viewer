@@ -6378,7 +6378,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   name="buttons_panel"
   top="-22"
   mouse_opaque="false"
-  background_visible="true"
+  background_visible="false"
   left="1"
   width="510">
 	<icon

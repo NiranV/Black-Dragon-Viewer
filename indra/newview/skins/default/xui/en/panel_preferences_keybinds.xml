@@ -68,7 +68,7 @@ width="510">
   name="buttons_panel"
   top="-22"
   mouse_opaque="false"
-  background_visible="true"
+  background_visible="false"
   left="1"
   width="510">
   <combo_box
