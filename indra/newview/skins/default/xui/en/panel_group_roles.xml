@@ -27,7 +27,6 @@
      name="roles_tab_container"
      tab_position="top"
      tab_height="21"
-     tab_min_width="76"
      top="0"
      width="310">
         <panel
