@@ -91,7 +91,7 @@ width="996">
  height="20"
  image_unselected="transparentj2c"
  image_selected="transparentj2c"
- label="[CHANNEL] [VERSION] - [3.4.0 - Exploding Dragon]"
+ label="[CHANNEL] [VERSION] - [3.4.1 - Exploding Dragon]"
  font="SansSerifSmall"
  layout="topleft"
  left="3"
@@ -173,8 +173,86 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="39"
+     height="507"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Added: Option to change the default double-click action on avatars in People.
+Added: Option to change the default double-click action on items in Inventory.
+Added: Function to open a specified preferences tab from anywhere in the UI.
+Added: Bring back Shadow Occlusion and make it configurable.
+Changed: Reworked how keybinding works to make it easier to use and more apparent what the user is supposed to do.
+Changed: Keybindings is now a single mode list displaying only the binds of the currently selected mode.
+Changed: Moved the action dropdown to the keybinding dialog to make it more obvious.
+Changed: Disable specialized Inspector options when Inspectors are disabled.
+Changed: Enabled font shadowing in tabs.
+Changed: Enabled font shadowing in all generic texts and all widgets that use them.
+Changed: Layout consistency and improval pass over Preferences.
+Changed: Enabled font shadowing in menu items.
+Changed: Improved consistent tab width handling and made it take buttons with extra width needs into account.
+Changed: Nuked RenderLocalLights Debug setting and made it depent on the three light options instead.
+Changed: Use our new selection outlines for all types of objects, not just mesh.
+Changed: Partly undo pipeline cleanup to magically fix lower framerates. (??)
+Changed: Drastically improved preferences opening performance, no more freeze.
+Changed: Another consistency pass for several preferences panels.
+Changed: Update the Avatar Render List only when absolutely necessary to minimize the times we cause a freeze on opening the tab for it.
+Changed: Improved selection outline performance tweaks, allow outlines to refresh in realtime again but with much better performance.
+Changed: Another consistency pass over the Group Info panel.
+Changed: Tooltip for the refresh selection outline option.
+Changed: Version to 3.4.1.
+Removed: Black background on login panel changelog text.
+Fixed: Group count in people panel not accounting for premium membership.
+Fixed: Tabs in Sky Editor not using consistent width properly.
+Fixed: Tabs in Water Editor not using consistent widths properly.
+Fixed: Render Avatar - Exceptions doesn't work.
+Fixed: Tabs in Group Roles not using consistent widths properly.
+Fixed: Compile.
+Misc: Cleaned up tabs in materialF.glsl shader file.
+Misc: Label changes in Interface options.
+Misc: Label changes in Controls options.
+Misc: Label changes in Chat options.
+Misc: Cleanup in pipeline.cpp.
+Misc: Cleaned up llviewermenu.cpp and removed unused code.
+Misc: Consistency pass over several UI panels to ensure they are well aligned.
+Misc: Consistency pass over Group Roles tab.
+Merge with Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.4.0
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="39"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
