@@ -1329,6 +1329,7 @@ void LLFloaterPreference::onExportControls()
 		LLKeyboard::maskFromString(row->getColumn(3)->getValue().asString(), &old_mask);
 		gViewerKeyboard.bindKey(mode, old_key, old_mask, row->getColumn(1)->getValue().asString());
 		it++;
+	}
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
 	gViewerKeyboard.exportBindingsXML(filename);
 	refreshKeys();
