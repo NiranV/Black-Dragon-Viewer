@@ -108,11 +108,11 @@
      layout="topleft"
      left="4"
      name="roles_tab_container"
-     tab_min_width="56"
+     tab_min_width="55"
      tab_position="top"
      tab_height="21"
      top_pad="13"
-     width="316">
+     width="315">
                    <panel
                       border="false"
                       class="panel_group_general"
