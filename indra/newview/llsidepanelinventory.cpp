@@ -378,6 +378,11 @@ void LLSidepanelInventory::enableInbox(bool enabled)
 	
 	LLLayoutPanel * inbox_layout_panel = getChild<LLLayoutPanel>(INBOX_LAYOUT_PANEL_NAME);
 	inbox_layout_panel->setVisible(enabled);
+
+	//BD - Hack, the inbox is a very reliable way of telling whether this is the main inventory
+	//     or a new inventory window, make the balance display depent on it.
+	mBoxBalance->setVisible(enabled);
+	getChild<LLUICtrl>("balance_icon")->setVisible(enabled);
 }
 
 void LLSidepanelInventory::openInbox()
@@ -844,8 +849,6 @@ void LLSidepanelInventory::setBalance(S32 balance)
 	string_args["[AMT]"] = llformat("%s", money_str.c_str());
 	std::string label_str = getString("buycurrencylabel", string_args);
 	mBoxBalance->setValue(label_str);
-	mBoxBalance->setVisible(TRUE);
-	getChild<LLUICtrl>("balance_icon")->setVisible(TRUE);
 
 	if (mBalance && (fabs((F32)(mBalance - balance)) > gSavedSettings.getF32("UISndMoneyChangeThreshold")))
 	{
