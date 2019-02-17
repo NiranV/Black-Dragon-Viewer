@@ -2370,9 +2370,9 @@ If you continue to receive this message, please contact Second Life support for 
   <string name="Unconstrained">Unconstrained</string>
 
 	<!-- use value="" because they have preceding spaces -->
-	<string name="no_transfer" value=" (no transfer)" />
-	<string name="no_modify"   value=" (no modify)" />
-	<string name="no_copy"     value=" (no copy)" />
+	<string name="no_transfer" value=" t̶r̶a̶n̶s̶f̶e̶r̶" />
+	<string name="no_modify"   value=" m̶o̶d̶i̶f̶y̶" />
+	<string name="no_copy"     value=" c̶o̶p̶y̶" />
 	<string name="worn"        value=" (worn)" />
 	<string name="link"        value=" (link)" />
 	<string name="broken_link" value=" (broken_link)" />
