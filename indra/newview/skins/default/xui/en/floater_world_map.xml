@@ -43,7 +43,7 @@
         height="398"
         top="0"
         left="7"
-        background_image="Panel_Background"
+        bg_alpha_image="Panel_Background"
 	 background_visible="true">
           <panel
  follows="left|top|right"
@@ -536,7 +536,7 @@
 	 height="580"
 	 top="0"
 	 left="0"
-  background_image="Panel_Background"
+  bg_alpha_image="Panel_Background"
 	 background_visible="true">
    <panel
  follows="left|top|right"
