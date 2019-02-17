@@ -1010,13 +1010,11 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 	// remember these dimensions
 	mScreenWidth = resX;
 	mScreenHeight = resY;
-	
-	U32 res_mod = RenderResolutionDivisor;
 
-	if (res_mod > 1 && res_mod < resX && res_mod < resY)
+	if (RenderResolutionDivisor > 1 && RenderResolutionDivisor < resX && RenderResolutionDivisor < resY)
 	{
-		resX /= res_mod;
-		resY /= res_mod;
+		resX /= RenderResolutionDivisor;
+		resY /= RenderResolutionDivisor;
 	}
 
 	if (RenderUIBuffer)
@@ -1099,7 +1097,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		if (!mScreen.allocate(resX, resY, GL_RGBA, TRUE, TRUE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
 	}
 
-	if (LLPipeline::sRenderDeferred)
+	if (sRenderDeferred)
 	{ //share depth buffer between deferred targets
 		mDeferredScreen.shareDepthBuffer(mScreen);
 //		//BD - Motion Blur
@@ -1193,7 +1191,7 @@ void LLPipeline::updateRenderDeferred()
 	bool deferred = (bool(RenderDeferred && 
 					 LLRenderTarget::sUseFBO &&
 					 LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
-					 LLPipeline::sRenderBump) ? TRUE : FALSE) &&
+					 sRenderBump) ? TRUE : FALSE) &&
 					 //BD
 					 //VertexShaderEnable && 
 					 //RenderAvatarVP &&
@@ -1218,21 +1216,20 @@ void LLPipeline::updateRenderDeferred()
 //static
 void LLPipeline::refreshCachedSettings()
 {
-	LLPipeline::sAutoMaskAlphaDeferred = gSavedSettings.getBOOL("RenderAutoMaskAlphaDeferred");
-	LLPipeline::sAutoMaskAlphaNonDeferred = gSavedSettings.getBOOL("RenderAutoMaskAlphaNonDeferred");
-	LLPipeline::sUseFarClip = gSavedSettings.getBOOL("RenderUseFarClip");
+	sAutoMaskAlphaDeferred = gSavedSettings.getBOOL("RenderAutoMaskAlphaDeferred");
+	sAutoMaskAlphaNonDeferred = gSavedSettings.getBOOL("RenderAutoMaskAlphaNonDeferred");
+	sUseFarClip = gSavedSettings.getBOOL("RenderUseFarClip");
 	LLVOAvatar::sMaxNonImpostors = gSavedSettings.getU32("RenderAvatarMaxNonImpostors");
 	LLVOAvatar::updateImpostorRendering(LLVOAvatar::sMaxNonImpostors);
-	LLPipeline::sDelayVBUpdate = gSavedSettings.getBOOL("RenderDelayVBUpdate");
+	sDelayVBUpdate = gSavedSettings.getBOOL("RenderDelayVBUpdate");
 
 //	//BD - Freeze World
-	LLPipeline::sUseOcclusion = 
-			(!gUseWireframe
-			&& LLGLSLShader::sNoFixedFunction
-			&& LLFeatureManager::getInstance()->isFeatureAvailable("UseOcclusion") 
-			&& gSavedSettings.getBOOL("UseOcclusion") 
-			&& gGLManager.mHasOcclusionQuery) ? 2 : 0
-			&& !gSavedSettings.getBOOL("UseFreezeWorld");
+	sUseOcclusion = (!gUseWireframe
+					&& LLGLSLShader::sNoFixedFunction
+					&& LLFeatureManager::getInstance()->isFeatureAvailable("UseOcclusion") 
+					&& gSavedSettings.getBOOL("UseOcclusion") 
+					&& gGLManager.mHasOcclusionQuery) ? 2 : 0
+					&& !gSavedSettings.getBOOL("UseFreezeWorld");
 	
 	RenderDeferred = gSavedSettings.getBOOL("RenderDeferred");
 	VertexShaderEnable = gSavedSettings.getBOOL("VertexShaderEnable") || RenderDeferred;
@@ -1345,7 +1342,7 @@ void LLPipeline::handleReflectionChanges()
 	mWaterRef.release();
 	mWaterDis.release();
 
-	if (LLPipeline::sWaterReflections)
+	if (sWaterReflections)
 	{
 		U32 res = (U32) llmax(gSavedSettings.getS32("RenderWaterRefResolution"), 512);
 		mWaterRef.allocate(res,res,GL_RGBA,TRUE,FALSE);
@@ -1426,13 +1423,13 @@ void LLPipeline::createGLBuffers()
 	//BD
 	bool materials_in_water = gSavedSettings.getS32("RenderWaterMaterials");
 
-	if (LLPipeline::sWaterReflections)
+	if (sWaterReflections)
 	{ //water reflection texture
 		U32 res = (U32) llmax(gSavedSettings.getS32("RenderWaterRefResolution"), 512);
 			
 		// Set up SRGB targets if we're doing deferred-path reflection rendering
 		//
-		if (LLPipeline::sRenderDeferred && materials_in_water)
+		if (sRenderDeferred && materials_in_water)
 		{
 			mWaterRef.allocate(res,res,GL_SRGB8_ALPHA8,TRUE,FALSE);
 			//always use FBO for mWaterDis so it can be used for avatar texture bakes
@@ -1453,7 +1450,7 @@ void LLPipeline::createGLBuffers()
 	GLuint resX = gViewerWindow->getWorldViewWidthRaw();
 	GLuint resY = gViewerWindow->getWorldViewHeightRaw();
 	
-	if (LLPipeline::sRenderGlow)
+	if (sRenderGlow)
 	{ //screen space glow buffers
 		const U32 glow_res = llmax(1, 
 			llmin(512, 1 << gSavedSettings.getS32("RenderGlowResolutionPow")));
@@ -2594,7 +2591,7 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 	sCull->clear();
 
 	//BD
-	bool to_texture =	LLPipeline::sUseOcclusion > 1 &&
+	bool to_texture =	sUseOcclusion > 1 &&
 						!hasRenderType(LLPipeline::RENDER_TYPE_HUD) && 
 						LLViewerCamera::sCurCameraID == LLViewerCamera::CAMERA_WORLD &&
 						(gPipeline.canUseVertexShaders() &&
@@ -2756,7 +2753,7 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 
 	if (to_texture)
 	{
-		if (LLPipeline::sRenderDeferred)
+		if (sRenderDeferred)
 		{
 			mOcclusionDepth.flush();
 		}
@@ -2901,7 +2898,7 @@ void LLPipeline::doOcclusion(LLCamera& camera, LLRenderTarget& source, LLRenderT
 
 void LLPipeline::doOcclusion(LLCamera& camera)
 {
-	if (LLPipeline::sUseOcclusion > 1 && !LLSpatialPartition::sTeleportRequested && 
+	if (sUseOcclusion > 1 && !LLSpatialPartition::sTeleportRequested && 
 		(sCull->hasOcclusionGroups() || LLVOCachePartition::sNeedsOcclusionCheck))
 	{
 		LLVertexBuffer::unbind();
@@ -2925,7 +2922,7 @@ void LLPipeline::doOcclusion(LLCamera& camera)
 		bool bind_shader = LLGLSLShader::sNoFixedFunction && LLGLSLShader::sCurBoundShader == 0;
 		if (bind_shader)
 		{
-			if (LLPipeline::sShadowRender)
+			if (sShadowRender)
 			{
 				gDeferredShadowCubeProgram.bind();
 			}
@@ -2961,7 +2958,7 @@ void LLPipeline::doOcclusion(LLCamera& camera)
 
 		if (bind_shader)
 		{
-			if (LLPipeline::sShadowRender)
+			if (sShadowRender)
 			{
 				gDeferredShadowCubeProgram.unbind();
 			}
@@ -3331,7 +3328,7 @@ void LLPipeline::markMoved(LLDrawable *drawablep, bool damped_motion)
 {
 	if (!drawablep)
 	{
-		//LL_ERRS() << "Sending null drawable to moved list!" << LL_ENDL;
+		LL_WARNS() << "Sending null drawable to moved list!" << LL_ENDL;
 		return;
 	}
 	
@@ -4623,7 +4620,7 @@ void LLPipeline::renderGeom(LLCamera& camera, bool forceVBOUpdate)
 	LLVertexBuffer::unbind();
 	LLGLState::checkStates();
 
-	if (!LLPipeline::sImpostorRender)
+	if (!sImpostorRender)
 	{
 		LLAppViewer::instance()->pingMainloopTimeout("Pipeline:RenderHighlights");
 
@@ -8412,7 +8409,7 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 	}
 
 //	//BD - Motion Blur
-	if (LLPipeline::sRenderDeferred && LLPipeline::RenderMotionBlur)
+	if (sRenderDeferred && RenderMotionBlur)
 	{
 
 		gMotionBlurProgram.bind();
@@ -9364,7 +9361,7 @@ void LLPipeline::renderDeferredLighting()
 	}
 
 //	//BD - Motion Blur
-	if (LLPipeline::RenderMotionBlur)
+	if (RenderMotionBlur)
 	{
 		renderGeomMotionBlur();
 	}
@@ -10636,12 +10633,12 @@ void LLPipeline::renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera
 	LL_RECORD_BLOCK_TIME(FTM_SHADOW_RENDER);
 
 	//clip out geometry on the same side of water as the camera
-	S32 occlude = LLPipeline::sUseOcclusion;
+	U32 orig_occlusion = sUseOcclusion;
 	if (!use_occlusion)
 	{
-		LLPipeline::sUseOcclusion = 0;
+		sUseOcclusion = 0;
 	}
-	LLPipeline::sShadowRender = true;
+	sShadowRender = true;
 	
 	static const U32 types[] = { 
 		LLRenderPass::PASS_SIMPLE, 
@@ -10782,8 +10779,8 @@ void LLPipeline::renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera
 	gGL.popMatrix();
 	gGLLastMatrix = NULL;
 
-	LLPipeline::sUseOcclusion = occlude;
-	LLPipeline::sShadowRender = false;
+	sUseOcclusion = orig_occlusion;
+	sShadowRender = false;
 }
 
 static LLTrace::BlockTimerStatHandle FTM_VISIBLE_CLOUD("Visible Cloud");
