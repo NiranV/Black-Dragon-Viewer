@@ -1233,20 +1233,21 @@ void LLAgentCamera::updateCamera()
 	if(mThirdPersonSteeringMode
 		&& !cameraMouselook())
 	{
+		LLToolCamera* tool_cam = LLToolCamera::getInstance();
 		if(gViewerWindow->getRightMouseDown())
 		{
-			LLToolCamera::getInstance()->setMouseCapture(FALSE);
+			tool_cam->setMouseCapture(FALSE);
 			gViewerWindow->showCursor();
 		}
 		else if(gViewerWindow->getLeftMouseDown())
 		{
-			LLToolCamera::getInstance()->handleMouseDown(gViewerWindow->getCurrentMouseX(), gViewerWindow->getCurrentMouseY() , 0x0000);
+			tool_cam->handleMouseDown(gViewerWindow->getCurrentMouseX(), gViewerWindow->getCurrentMouseY(), 0x0000);
 		}
 		else
 		{
 			if(!LLToolCamera::getInstance()->hasMouseCapture())
 			{
-				LLToolCamera::getInstance()->setMouseCapture(TRUE);
+				tool_cam->setMouseCapture(TRUE);
 				gViewerWindow->hideCursor();
 			}
 			gViewerWindow->moveCursorToCenter();
@@ -1532,10 +1533,11 @@ void LLAgentCamera::updateCamera()
 		mCameraPositionAgent = gAgent.getPosAgentFromGlobal(camera_pos_global);
 	}
 
-	LLViewerCamera::getInstance()->updateCameraLocation(mCameraPositionAgent, mCameraUpVector, focus_agent);
+	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
+	viewer_cam->updateCameraLocation(mCameraPositionAgent, mCameraUpVector, focus_agent);
 
 	// Change FOV
-	LLViewerCamera::getInstance()->setView(LLViewerCamera::getInstance()->getDefaultFOV() / (1.f + mCameraCurrentFOVZoomFactor));
+	viewer_cam->setView(viewer_cam->getDefaultFOV() / (1.f + mCameraCurrentFOVZoomFactor));
 
 	// follow camera when in customize mode
 	if (cameraCustomizeAvatar())	
@@ -1583,7 +1585,7 @@ void LLAgentCamera::updateCamera()
 			}
 			at_axis = at_axis * agent_rot;
 			LLVector3 poi = gAgentAvatarp->mHeadp->getWorldPosition() + at_axis;
-			LLViewerCamera::getInstance()->updateCameraLocation(head_pos, mCameraUpVector, poi);
+			viewer_cam->updateCameraLocation(head_pos, mCameraUpVector, poi);
 		}
 		else
 		{
@@ -1624,15 +1626,15 @@ void LLAgentCamera::updateCamera()
 //	//BD - Camera Rolling
 	//     We have do this at the very end to make sure it takes all previous calculations into
 	//     account and then applies our roll on top of it, besides it wouldn't even work otherwise.
-	LLQuaternion rot_quat = LLViewerCamera::getInstance()->getQuaternion();
+	LLQuaternion rot_quat = viewer_cam->getQuaternion();
 	LLMatrix3 rot_mat(mCameraRollAngle, 0.f, 0.f);
 	rot_quat = LLQuaternion(rot_mat)*rot_quat;
 	
 	LLMatrix3 mat(rot_quat);
 	
-	LLViewerCamera::getInstance()->mXAxis = LLVector3(mat.mMatrix[0]);
-	LLViewerCamera::getInstance()->mYAxis = LLVector3(mat.mMatrix[1]);
-	LLViewerCamera::getInstance()->mZAxis = LLVector3(mat.mMatrix[2]);
+	viewer_cam->mXAxis = LLVector3(mat.mMatrix[0]);
+	viewer_cam->mYAxis = LLVector3(mat.mMatrix[1]);
+	viewer_cam->mZAxis = LLVector3(mat.mMatrix[2]);
 }
 
 void LLAgentCamera::updateLastCamera()
