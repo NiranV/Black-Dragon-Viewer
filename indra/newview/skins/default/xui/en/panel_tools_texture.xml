@@ -116,7 +116,7 @@
                 Alpha Mode
             </text>
             <combo_box
-             height="20"
+             height="21"
              follows="top|left"
              layout="topleft"
              label="Alpha Mode"
@@ -140,6 +140,16 @@
                  label="Emissive"
                  name="Emissive mask"
                  value="Emissive mask" />
+                <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_pressed="ToolbarDropDown_Selected" 
+            image_pressed_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <slider
             decimal_digits="0"
@@ -155,7 +165,7 @@
             max_val="255"
             min_val="0"
             name="maskcutoff"
-            top_pad="2"
+            top_pad="1"
             width="175" >
             <slider_bar
             apply_immediately="false"/>
@@ -248,7 +258,7 @@
                 Normalmap
             </text>
             <combo_box
-             height="20"
+             height="21"
              layout="topleft"
              follows="top|left"
              left="189"
@@ -335,6 +345,16 @@
                  name="Use texture"
                  value="Use texture" />
                  -->
+                <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_pressed="ToolbarDropDown_Selected" 
+            image_pressed_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <texture_picker
              allow_no_texture="true"
@@ -347,7 +367,7 @@
              left="25"
              name="shinytexture control"
              tool_tip="Click to choose a picture"
-             top_pad="43"
+             top_pad="42"
              width="64" />
             <color_swatch
              can_apply_immediately="true"
@@ -374,7 +394,7 @@
                 Shiny
             </text>
             <combo_box
-             height="20"
+             height="21"
              layout="topleft"
              follows="top|left"
              left="189"
@@ -405,6 +425,16 @@
                  name="Use texture"
                  value="Use texture" />
                  -->
+                <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_pressed="ToolbarDropDown_Selected" 
+            image_pressed_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <slider
             decimal_digits="0"
@@ -420,7 +450,7 @@
             max_val="255"
             min_val="0"
             name="glossiness"
-            top_pad="2"
+            top_pad="1"
             width="175">
             <slider_bar
             apply_immediately="false"/>
@@ -614,7 +644,7 @@
                 Mapping
             </text>
             <combo_box
-             height="20"
+             height="21"
              layout="topleft"
              follows="top|left"
              left="120"
@@ -629,6 +659,16 @@
                  label="Planar"
                  name="Planar"
                  value="Planar" />
+                <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_pressed="ToolbarDropDown_Selected" 
+            image_pressed_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <check_box
              follows="top|left"
@@ -639,7 +679,7 @@
              left_pad="4"
              name="checkbox planar align"
              tool_tip="Align textures on all selected faces with the last selected face. Requires Planar texture mapping."
-             top_delta="3"
+             top_delta="2"
              width="260" />
             <spinner
              follows="left|top"
@@ -862,7 +902,7 @@
 			 height="9"
 			 layout="topleft"
 			 left="5"
-			 top_pad="9"
+			 top_pad="7"
              text_readonly_color="HTMLLinkColor"
              use_ellipses="true"
 			 read_only="true"
@@ -872,34 +912,43 @@
 			 </text>
 			<button
 			 follows="top|left"
-			 height="18"
+			 height="21"
 			 layout="topleft"
 			 left="5"
 			 name="add_media"
 			 top_pad="5"
 			 tool_tip="Add Media"
 			 label="Choose..."
+             image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
 			 width="92">
 				<button.commit_callback
 				function="BuildTool.AddMedia"/>
 			</button>
 			<button
 			 follows="top|left"
-			 height="18"
+			 height="21"
 			 layout="topleft"
 			 left_pad="1"
 			 name="delete_media"
 			 tool_tip="Delete this media texture"
 			 top_delta="0"
 			 label="Remove"
+             image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
 			 width="93">
 				<button.commit_callback
 				function="BuildTool.DeleteMedia"/>
 			</button>
             <button
 			 follows="left|top"
-			 height="18"
+			 height="21"
 			 label="Align"
+             image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
 			 label_selected="Align Media"
 			 layout="topleft"
 			 left_pad="1"

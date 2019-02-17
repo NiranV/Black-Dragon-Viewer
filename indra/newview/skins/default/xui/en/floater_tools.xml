@@ -341,8 +341,11 @@
 	</check_box>
 				<button
      follows="left|top"
-     height="20"
+     height="21"
      label="Link"
+     image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
      top="110"
      layout="topleft"
      left="10"
@@ -353,8 +356,11 @@
     </button>
     <button
      follows="left|top"
-     height="20"
+     height="21"
      label="Unlink"
+     image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
      layout="topleft"
      left_pad="1"
      name="unlink_btn"
@@ -366,8 +372,11 @@
 	 control_name="SnapEnabled"
      follows="left|top"
 	 is_toggle="true"
-     height="20"
+     height="21"
      label="Snap to"
+     image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
      layout="topleft"
      left_pad="1"
      name="checkbox snap to grid"
@@ -382,7 +391,7 @@
      name="checkbox snap to grid"
      width="134" />-->
     <combo_box
-      height="20"
+      height="21"
       layout="topleft"
       follows="left|top"
       name="combobox grid mode"
@@ -404,6 +413,16 @@
       value="Reference" />
       <combo_box.commit_callback
       function="BuildTool.gridMode"/>
+      <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Middle_Selected"
+            image_disabled="ToolbarDropDown_Middle_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Middle_Selected"
+            image_pressed="ToolbarDropDown_Middle_Selected" 
+            image_pressed_selected="ToolbarDropDown_Middle_Selected"
+            image_disabled="ToolbarDropDown_Middle_Off" />
     </combo_box>
 	<button
      left_pad="1"
@@ -412,10 +431,13 @@
      layout="topleft"
      follows="top|left"
      name="Options..."
+     image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
      tool_tip="See more grid options"
      top_delta="0"
      width="19"
-     height="20" >
+     height="21" >
 	 <button.commit_callback
 	     function="BuildTool.gridOptions"/>
 	</button>
@@ -859,7 +881,7 @@
      width="291">
 	
 <panel
-  bg_opaque_image="Panel_Background"
+  bg_alpha_image="Panel_Background"
   background_visible="true"
 	 border="false"
 	 follows="all"
@@ -1049,12 +1071,15 @@
 			width="195" />
             <button
 			 follows="top|left"
-			 height="20"
+			 height="21"
 			 image_overlay="Edit_Wrench"
 			 image_overlay_alignment="left"
 			 imgoverlay_label_space="7"
 			 layout="topleft"
 			 label="Change Group"
+    image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
 			 halign="left"
 			 left="5"
 			 name="button set group"
@@ -1064,9 +1089,12 @@
 			 width="110" />
 			<button
              follows="top|left"
-             height="20"
+             height="21"
              label="Deed"
              label_selected="Deeded"
+             image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
 			 image_overlay="Conv_toolbar_expand"
 			 image_overlay_alignment="left"
 			 imgoverlay_label_space="3"
@@ -1074,6 +1102,7 @@
              layout="topleft"
              name="button deed"
              left_pad="1"
+             top_delta="0"
              tool_tip="Deeding gives this item away with next owner permissions. Group shared objects can be deeded by a group officer."
              width="100" />
             <check_box
@@ -1109,7 +1138,7 @@
             </text>
             <combo_box
              follows="left|top"
-             height="20"
+             height="21"
              layout="topleft"
              name="clickaction"
              width="190"
@@ -1134,7 +1163,7 @@
                  label="Open"
                  name="Open"
                  value="Open" />
-				 <combo_box.item
+                <combo_box.item
                  label="Zoom"
                  name="Zoom"
                  value="Zoom" />
@@ -1142,6 +1171,16 @@
                  label="None"
                  name="None"
                  value="None" />
+                <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_pressed="ToolbarDropDown_Selected" 
+            image_pressed_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <check_box
              height="20"
@@ -1149,7 +1188,7 @@
              layout="topleft"
              name="checkbox for sale"
              left="5"
-			 top_pad="3"
+			 top_pad="0"
              width="90" />
   <spinner
       follows="left|top"
@@ -1161,21 +1200,22 @@
       label_width="0"
       valign="center"
       width="86"
+      top_delta="2"
       min_val="0"
       height="20"
       max_val="999999999" />
       <combo_box
-            left_pad="1"
+            left_pad="2"
             layout="topleft"
             follows="left|top"
             allow_text_entry="false"
-            height="20"
+            height="21"
             top_pad="-19"
             initial_value="2"
             max_chars="20"
             mouse_opaque="true"
             name="sale type"
-            width="105">
+            width="104">
         <combo_box.item
            name="Copy"
            label="Copy"
@@ -1188,11 +1228,21 @@
            name="Original"
            label="Original"
            value="1" />
+        <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_pressed="ToolbarDropDown_Selected" 
+            image_pressed_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
       </combo_box>
       <check_box
 	   height="16"
 	   width="110"
-	   top_pad="3"
+	   top_pad="2"
 	   label="Show this object in search"
        layout="topleft"
 	   left="5"
@@ -1423,7 +1473,7 @@
 </panel>
       <panel
          border="false"
-         bg_opaque_image="Panel_Background"
+         bg_alpha_image="Panel_Background"
          background_visible="true"
          follows="all"
          height="567"
@@ -1448,7 +1498,7 @@
                 Prim Type
             </text>
             <combo_box
-             height="20"
+             height="21"
              layout="topleft"
 			 follows="top|left"
              name="comboBaseType"
@@ -1487,6 +1537,16 @@
                  label="Sculpted"
                  name="Sculpted"
                  value="Sculpted" />
+                <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_pressed="ToolbarDropDown_Selected" 
+            image_pressed_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <check_box
              height="16"
@@ -1494,7 +1554,7 @@
              layout="topleft"
              name="checkbox locked"
              tool_tip="Prevents object from being moved or deleted. Frequently useful during building to avoid unintended edits."
-             top_pad="7"
+             top_pad="6"
              left="5"
              width="123" />
             <check_box
@@ -1796,7 +1856,7 @@
                 Hollow Shape
             </text>
             <combo_box
-             height="20"
+             height="21"
              layout="topleft"
 			 follows="top|left"
              left_delta="0"
@@ -1819,6 +1879,16 @@
                  label="Triangle"
                  name="Triangle"
                  value="Triangle" />
+                <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_pressed="ToolbarDropDown_Selected" 
+            image_pressed_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <text
              type="string"
@@ -1828,7 +1898,7 @@
              layout="topleft"
              left_delta="0"
              name="text twist"
-             top_pad="5"
+             top_pad="4"
              width="150">
                 Twist (begin/end)
             </text>
@@ -2212,7 +2282,7 @@
          layout="topleft"
          left_delta="0"
          mouse_opaque="false"
-         bg_opaque_image="Panel_Background"
+         bg_alpha_image="Panel_Background"
          background_visible="true"
          help_topic="toolbox_features_tab"
          name="Features"
@@ -2260,7 +2330,7 @@
                 Physics Material:
             </text>
             <combo_box
-             height="20"
+             height="21"
              layout="topleft"
 			 follows="top|left"
              name="material"
@@ -2295,6 +2365,16 @@
                  label="Rubber"
                  name="Rubber"
                  value="Rubber" />
+                <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_pressed="ToolbarDropDown_Selected" 
+            image_pressed_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
             </combo_box>
 			<text
              type="string"
@@ -2304,19 +2384,30 @@
 			 left="150"
              layout="topleft"
              name="label physicsshapetype"
-             top_pad="-37"
+             top_pad="-38"
              width="150">
                 Physics Shape Type:
             </text>
 			<combo_box
-			   height="20"
+			   height="21"
 			   top_pad="3"
 			   left_delta="0"
 			   layout="topleft"
 			   follows="left|top"
 			   name="Physics Shape Type Combo Ctrl"
 			   tool_tip="Choose the physics shape type"
-			   width="135"/>
+			   width="135">
+    <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Selected"
+            image_pressed="ToolbarDropDown_Selected" 
+            image_pressed_selected="ToolbarDropDown_Selected"
+            image_disabled="ToolbarDropDown_Off" />
+   </combo_box>
 
             <spinner
              follows="left|top"
@@ -2330,7 +2421,7 @@
              min_val="-1"
              max_val="28"
              name="Physics Gravity"
-             top_pad="5"
+             top_pad="4"
              width="135" />
 
             <spinner
@@ -2673,7 +2764,7 @@ the light into a projected light )
         </panel>
          <panel
          label="Texture"
-         bg_opaque_image="Panel_Background"
+         bg_alpha_image="Panel_Background"
          background_visible="true"
          help_topic="toolbox_texture_tab"
          name="Texture"
@@ -2684,7 +2775,7 @@ the light into a projected light )
          follows="all"
 		 height="367"
          label="Content"
-         bg_opaque_image="Panel_Background"
+         bg_alpha_image="Panel_Background"
          background_visible="true"
          layout="topleft"
          left_delta="0"
@@ -2693,24 +2784,6 @@ the light into a projected light )
          name="Contents"
          top_delta="0"
          width="290">
-            <button
-             follows="left|top"
-             height="23"
-             label="New Script"
-             label_selected="New Script"
-             layout="topleft"
-             left="5"
-             name="button new script"
-             top="5"
-             width="140" />
-            <button
-             follows="left|top"
-             height="23"
-             label="Permissions"
-             layout="topleft"
-             left_pad="1"
-             name="button permissions"
-             width="139" />
             <panel_inventory_object
              border="true"
              border_visible="true"
@@ -2720,8 +2793,32 @@ the light into a projected light )
              layout="topleft"
              left="6"
              name="contents_inventory"
-             top_pad="5"
+             top_pad="3"
              width="280" />
+            <button
+             follows="left|top"
+             height="25"
+             label="New Script"
+             label_selected="New Script"
+             image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+             layout="topleft"
+             left="5"
+             name="button new script"
+             top_pad="5"
+             width="140" />
+            <button
+             follows="left|top"
+             height="25"
+             label="Permissions"
+             image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+             layout="topleft"
+             left_pad="1"
+             name="button permissions"
+             width="139" />
 		</panel>
 	</tab_container>
 	<panel
@@ -2729,6 +2826,7 @@ the light into a projected light )
      height="367"
      layout="topleft"
      left="6"
+     visible="false"
      name="land info panel"
      top_delta="0"
      width="290">
