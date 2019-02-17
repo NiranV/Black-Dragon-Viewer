@@ -431,25 +431,23 @@ void LLDrawPoolAvatar::renderPostDeferred(S32 pass)
 void LLDrawPoolAvatar::beginMotionBlurPass(S32 pass)
 {
 	glh::matrix4f last(gGLLastModelView);
+	glh::matrix4f last_inv = last.inverse();
 
-	if (pass == 0)
+	switch (pass)
 	{
+	case 0:
 		gAvatarVelocityProgram.bind();
 		sVertexProgram = &gAvatarVelocityProgram;
-
-		glh::matrix4f last_inv = last.inverse();
 		sVertexProgram->uniformMatrix4fv(LLShaderMgr::LAST_MODELVIEW_MATRIX_INVERSE, 1, GL_FALSE, last_inv.m);
-
-	}
-	else if (pass == 1)
-	{
+		break;
+	case 1:
 		gSkinnedVelocityProgram.bind();
 		sVertexProgram = &gSkinnedVelocityProgram;
-	}
-	else if (pass == 2)
-	{
+		break;
+	case 2:
 		gSkinnedVelocityAlphaProgram.bind();
 		sVertexProgram = &gSkinnedVelocityAlphaProgram;
+		break;
 	}
 
 	sVertexProgram->uniform4f(LLShaderMgr::VIEWPORT, (F32) gGLViewport[0],
