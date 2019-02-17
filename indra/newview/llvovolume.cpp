@@ -5398,7 +5398,7 @@ void LLVolumeGeometryManager::registerFace(LLSpatialGroup* group, LLFace* facep,
 	{
 		model_mat = &drawable->getWorldMatrix();
 //		//BD - Motion Blur
-		if (LLPipeline::RenderMotionBlur)
+		if (gPipeline.RenderMotionBlur)
 		{
 			last_model_mat = &drawable->getLastRenderMatrix();
 		}
@@ -5407,7 +5407,7 @@ void LLVolumeGeometryManager::registerFace(LLSpatialGroup* group, LLFace* facep,
 	{
 		model_mat = &drawable->getRenderMatrix();
 //		//BD - Motion Blur
-		if (LLPipeline::RenderMotionBlur)
+		if (gPipeline.RenderMotionBlur)
 		{
 			last_model_mat = &drawable->getLastRenderMatrix();
 		}
