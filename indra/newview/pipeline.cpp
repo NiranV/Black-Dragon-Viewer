@@ -1117,8 +1117,8 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 //BD - Shadow Map Allocation
 void LLPipeline::allocateShadowMaps(bool allocate)
 {
-	LLVector4 scale = gSavedSettings.getVector4("RenderShadowResolution");
-	LLVector2 proj_scale = gSavedSettings.getVector2("RenderProjectorShadowResolution");
+	const LLVector4 scale = gSavedSettings.getVector4("RenderShadowResolution");
+	const LLVector2 proj_scale = gSavedSettings.getVector2("RenderProjectorShadowResolution");
 	const U32 shadow_detail = gSavedSettings.getS32("RenderShadowDetail");
 
 	//BD - Go through all shadow maps and either clear them or decide weither we want to
