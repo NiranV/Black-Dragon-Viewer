@@ -6286,7 +6286,8 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 			//BD
 			if (light && light->isAttachment())
 			{
-				if ((!sRenderOtherAttachedLights && (light->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
+				if (light->getAvatarAncestor()
+					&& (!sRenderOtherAttachedLights && (light->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
 					|| (!sRenderOwnAttachedLights && (light->getAvatarAncestor() == gAgentAvatarp->getAvatar())))
 				{
 					continue;
