@@ -274,7 +274,7 @@
    min_val="0"
    name="CameraMaxRoll"
    show_text="true"
-   width="330"
+   width="324"
    top_pad="6"/>
    <button
    follows="left|top"
