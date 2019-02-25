@@ -474,12 +474,10 @@ S32 LLDrawPoolAvatar::getNumMotionBlurPasses()
 
 void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
 {
-	S32 motion_blur_quality = gSavedSettings.getS32("RenderRiggedMotionBlurQuality");
-	//BD - Don't render any avatars or rigged meshes if we don't want to.
-	if (motion_blur_quality < 1)
-	{
+	const U32 motion_blur_quality = gPipeline.RenderMotionBlurQuality;
+	//BD - Don't include rigged attachments at all.
+	if (motion_blur_quality == 0)
 		return;
-	}
 
 	if (pass == 0)
 	{
@@ -494,30 +492,22 @@ void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
 		}
 
 		LLVOAvatar* avatarp = (LLVOAvatar *)facep->getDrawable()->getVObj().get();
-
-		//BD - Don't render other avatars or rigged meshes if we don't want to.
-		if ((!avatarp->isSelf() && motion_blur_quality < 2))
-		{
+		if (!avatarp)
 			return;
-		}
+
+		//BD - Don't include others.
+		if (!avatarp->isSelf() && motion_blur_quality < 2)
+			return;
+
+		//BD - Don't include ourself.
+		if (avatarp->isSelf() && motion_blur_quality == 2)
+			return;
 
 		//BD - Don't include impostored or visually muted avatars in Motion Blur.
 		//     This alone massively increases the performance with many avatars
 		//     in the scene.
-		BOOL impostor = avatarp->isImpostor();
-		if (impostor
-			&& LLVOAvatar::AV_DO_NOT_RENDER != avatarp->getVisualMuteSettings()
-			&& LLVOAvatar::AV_ALWAYS_RENDER != avatarp->getVisualMuteSettings())
-		{
+		if (avatarp->isImpostor() || avatarp->isVisuallyMuted())
 			return;
-		}
-
-		//BD - Motion Blur quality options to set what we want to be included in Motion Blur.
-		if ((!avatarp->isSelf() && motion_blur_quality < 2)
-			|| motion_blur_quality < 1)
-		{
-			return;
-		}
 
 		if (pass == 1)
 		{

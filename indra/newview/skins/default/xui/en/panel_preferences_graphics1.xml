@@ -4851,14 +4851,13 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  height="12"
  layout="topleft"
  left="10"
- name="motionblur_label"
- top_pad="10"
+ name="ObjectLOD"
+ top_pad="15"
  width="120">
- Motion Blur Amount:
+ Motion Blur Inclusion:
  </text>
  <radio_group
                   control_name="RenderRiggedMotionBlurQuality"
-                  enabled_control="RenderMotionBlur"
                   height="19"
                   layout="topleft"
                   left="10"
@@ -4871,7 +4870,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         value="0"
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows only objects with fast movement to be blurred."
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option sets Motion Blur to include only objects and unrigged attachments."
                         layout="topleft"
                         name="0"
                         top="0"
@@ -4887,12 +4886,12 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         <radio_item
                         height="16"
                         label="Self"
-                        value="1"
 								tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
-&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows objects and your own avatar to be blurred."
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option sets Motion Blur to include all objects and your own rigged attachments."
+                        value="1"
                         layout="topleft"
-                        name="0"
+                        name="1"
                         left_pad="10"
                         top_delta="0"
                         width="70">
@@ -4906,14 +4905,36 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         </radio_item>
                         <radio_item
                         height="16"
-                        label="Everything"
+                        label="Others"
                         halign="right"
                         value="2"
 								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option allows everything moving fast to be blurred."
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option sets Motion Blur to include all objects and other people's rigged attachments but not your own."
                         layout="topleft"
                         name="2"
+                        left_pad="10"
+                        top_delta="0"
+                        width="70">
+                              <radio_item.check_button
+                              image_overlay_alignment="left"
+                              image_unselected="Checkbox_Off"
+                              image_selected="Checkbox_On"
+                              image_disabled="Checkbox_Off_Disabled"
+                              image_disabled_selected="Checkbox_On_Disabled"
+                              image_pressed="Checkbox_Press"
+                              image_pressed_selected="Checkbox_On_Press" />
+                        </radio_item>
+                        <radio_item
+                        height="16"
+                        label="Everything"
+                        halign="right"
+                        value="3"
+								tool_tip="&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option sets Motion Blur to include all objects, unrigged and rigged on everyone."
+                        layout="topleft"
+                        name="3"
                         left_pad="10"
                         top_delta="0"
                         width="70">

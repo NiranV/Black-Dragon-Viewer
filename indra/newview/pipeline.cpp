@@ -235,6 +235,7 @@ F32 LLPipeline::RenderGodraysFalloffMultiplier;
 //	//BD - Motion Blur
 BOOL LLPipeline::RenderMotionBlur;
 U32 LLPipeline::RenderMotionBlurStrength;
+U32 LLPipeline::RenderMotionBlurQuality;
 
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
@@ -721,6 +722,7 @@ void LLPipeline::init()
 //	//BD - Motion Blur
 	connectRefreshCachedSettingsSafe("RenderMotionBlur");
 	connectRefreshCachedSettingsSafe("RenderMotionBlurStrength");
+	connectRefreshCachedSettingsSafe("RenderRiggedMotionBlurQuality");
 
 //	//BD - Exodus Post Process
 	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
@@ -1323,6 +1325,7 @@ void LLPipeline::refreshCachedSettings()
 //	//BD - Motion Blur
 	RenderMotionBlur = gSavedSettings.getBOOL("RenderMotionBlur");
 	RenderMotionBlurStrength = gSavedSettings.getU32("RenderMotionBlurStrength");
+	RenderMotionBlurQuality = gSavedSettings.getU32("RenderRiggedMotionBlurQuality");
 
 //	//BD - Exodus Post Process
 	exoPostProcess::instance().ExodusRenderPostSettingsUpdate();

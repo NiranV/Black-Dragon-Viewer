@@ -1635,7 +1635,7 @@ void LLFloaterPreference::refreshWarnings()
 	mWarning11->setVisible(gPipeline.RenderShadowResolution.mV[VX] > 2048
 															|| gPipeline.RenderShadowResolution.mV[VY] > 2048
 															|| gPipeline.RenderShadowResolution.mV[VZ] > 1024
-															|| gPipeline.RenderShadowResolution.mV[VW] > 512);
+															|| gPipeline.RenderShadowResolution.mV[VW] > 1024);
 	mWarning12->setVisible(gPipeline.RenderProjectorShadowResolution.mV[VX] > 2048
 																|| gPipeline.RenderProjectorShadowResolution.mV[VY] > 2048);
 

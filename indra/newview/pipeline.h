@@ -997,6 +997,7 @@ public:
 //	//BD - Motion Blur
 	static BOOL RenderMotionBlur;
 	static U32 RenderMotionBlurStrength;
+	static U32 RenderMotionBlurQuality;
 };
 
 void render_bbox(const LLVector3 &min, const LLVector3 &max);
