@@ -49,6 +49,14 @@ public:
 	static void triggerWarning(LLUICtrl* ctrl, const LLSD& param);
 
 	static void openPreferences(const LLSD& param);
+
+	static void askFactoryReset(const LLSD& param);
+	static void doFactoryReset(const LLSD& notification, const LLSD& response);
+
+//	//BD - Camera Recorder
+	bool getCameraOverride() { return mCameraOverride; }
+
+	bool mCameraOverride;
 };
 
 extern BDFunctions gDragonLibrary;

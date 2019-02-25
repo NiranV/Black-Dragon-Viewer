@@ -104,6 +104,9 @@
 
 //BD - Animator
 #include "bdanimator.h"
+//BD - Functions
+#include "bdfunctions.h"
+#include "bdfloatercamera.h"
 
 #include "llweb.h"
 #include "llfloatertexturefetchdebugger.h"
@@ -4998,12 +5001,16 @@ void LLAppViewer::idle()
 	}
 	else
 	{
-		if (LLToolMgr::getInstance()->inBuildMode())
+		//BD - Camera Recorder
+		if (!gDragonLibrary.getCameraOverride())
 		{
-			LLViewerJoystick::getInstance()->moveObjects();
-		}
+			if (LLToolMgr::getInstance()->inBuildMode())
+			{
+				LLViewerJoystick::getInstance()->moveObjects();
+			}
 
-		gAgentCamera.updateCamera();
+			gAgentCamera.updateCamera();
+		}
 	}
 
 	// update media focus

@@ -2,7 +2,7 @@
 <floater
 positioning="centered"
 legacy_header_height="18"
-height="465"
+height="665"
 layout="topleft"
 name="floater_recorder"
 save_rect="true"
@@ -12,7 +12,7 @@ width="449">
 	<tab_container
   follows="all"
   halign="center"
-  height="445"
+  height="645"
   layout="topleft"
   left="6"
   name="Picks Tabs"
@@ -26,7 +26,7 @@ width="449">
 	<panel
     follows="all"
 	background_visible="false"
-    height="425"
+    height="625"
     layout="topleft"
     left="0"
     title="Recorder"
@@ -95,40 +95,16 @@ width="449">
    relative_width="0.06"  />
 	<scroll_list.columns
      label="rot x"
-     name="rot_x_x"
-   relative_width="0.0"  />
+     name="rot_x"
+   relative_width="0.06"  />
 	<scroll_list.columns
      label="rot y"
-     name="rot_x_y"
-   relative_width="0.0"  />
+     name="rot_y"
+   relative_width="0.06"  />
 	<scroll_list.columns
      label="rot z"
-     name="rot_x_z"
-   relative_width="0.0"  />
-	<scroll_list.columns
-     label="rot x"
-     name="rot_y_x"
-   relative_width="0.0"  />
-	<scroll_list.columns
-     label="rot y"
-     name="rot_y_y"
-   relative_width="0.0"  />
-	<scroll_list.columns
-     label="rot z"
-     name="rot_y_z"
-   relative_width="0.0"  />
-	<scroll_list.columns
-     label="rot x"
-     name="rot_z_x"
-   relative_width="0.0"  />
-	<scroll_list.columns
-     label="rot y"
-     name="rot_z_y"
-   relative_width="0.0"  />
-	<scroll_list.columns
-     label="rot z"
-     name="rot_z_z"
-   relative_width="0.0"  />
+     name="rot_z"
+   relative_width="0.06"  />
 	<scroll_list.columns
      label="target x"
      name="target_x"
@@ -171,8 +147,7 @@ width="449">
  top_pad="1"
  left_delta="0">
    <button.commit_callback
-   function="Recorder.Command"
-   parameter="Record"/>
+   function="Recorder.Record"/>
  </button>
 		<button
  height="21"
@@ -189,8 +164,7 @@ width="449">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Recorder.Command"
-   parameter="Playback"/>
+   function="Recorder.StartStop"/>
  </button>
 		<button
  height="21"
@@ -207,8 +181,7 @@ width="449">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Recorder.Command"
-   parameter="Loop"/>
+   function="Recorder.Loop"/>
  </button>
 		<button
  height="21"
@@ -223,8 +196,7 @@ width="449">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Recorder.Command"
-   parameter="Refresh"/>
+   function="Recorder.Refresh"/>
  </button>
 		<button
  height="21"
@@ -239,8 +211,7 @@ width="449">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Recorder.Command"
-   parameter="Save Camera"/>
+   function="Recorder.Waypoint"/>
  </button>
 		<button
  height="21"
@@ -255,8 +226,7 @@ width="449">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Recorder.Command"
-   parameter="Save Position"/>
+   function="Recorder.Position"/>
  </button>
 		<button
  height="21"
@@ -271,8 +241,7 @@ width="449">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Recorder.Command"
-   parameter="Save Rotation"/>
+   function="Recorder.Rotation"/>
  </button>
 		<button
  height="21"
@@ -287,8 +256,7 @@ width="449">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Recorder.Command"
-   parameter="Remove"/>
+   function="Recorder.Delete"/>
  </button>
 		<button
  height="21"
@@ -303,8 +271,7 @@ width="449">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Recorder.Command"
-   parameter="Export"/>
+   function="Recorder.Export"/>
  </button>
 		<button
  height="21"
@@ -319,9 +286,190 @@ width="449">
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="Recorder.Command"
-   parameter="Import"/>
+   function="Recorder.Import"/>
  </button>
+		<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Override"
+	is_toggle="true"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="override_btn"
+ width="71"
+ top_pad="1"
+ left="7">
+   <button.commit_callback
+   function="Recorder.Override"/>
+ </button>
+		
+		<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Position X:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="256"
+						min_val="0"
+						name="Position_X"
+						top_pad="6"
+						width="459" >
+						<slider.commit_callback
+						function="Recorder.CamPos"
+						parameter="X"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Position Y:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="256"
+						min_val="0"
+						name="Position_Y"
+						top_pad="1"
+						width="459" >
+						<slider.commit_callback
+						function="Recorder.CamPos"
+						parameter="Y"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						visible="true"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Position Z:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="256"
+						min_val="0"
+						name="Position_Z"
+						top_pad="1"
+						width="459" >
+						<slider.commit_callback
+						function="Recorder.CamPos"
+						parameter="Z"/>
+						</slider>
+						
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Roll:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="3.142"
+						min_val="-3.142"
+						name="Rotation_X"
+						top_pad="6"
+						width="459" >
+						<slider.commit_callback
+						function="Recorder.CamRot"
+						parameter="0"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Pitch:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="3.142"
+						min_val="-3.142"
+						name="Rotation_Y"
+						top_pad="1"
+						width="459" >
+						<slider.commit_callback
+						function="Recorder.CamRot"
+						parameter="1"/>
+						</slider>
+						<slider
+						decimal_digits="3"
+						visible="true"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Yaw:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="3.142"
+						min_val="-3.142"
+						name="Rotation_Z"
+						top_pad="1"
+						width="459" >
+						<slider.commit_callback
+						function="Recorder.CamRot"
+						parameter="2"/>
+						</slider>
+						
+						<slider
+						decimal_digits="3"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.001"
+						initial_value="0"
+						label="Camera Angle:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="2"
+						min_val="0.5"
+						name="CameraView"
+						top_pad="6"
+						width="459" >
+						<slider.commit_callback
+						function="Recorder.CamAngle"
+						parameter="0"/>
+						</slider>
+						
+						<slider
+						decimal_digits="2"
+						can_edit_text="true"
+						follows="left|top"
+						height="14"
+						increment="0.01"
+						initial_value="0"
+						label="Time:"
+						label_width="70"
+						layout="topleft"
+						left="10"
+						max_val="60"
+						min_val="0"
+						name="Transition_Time"
+						top_pad="6"
+						width="459" >
+						<slider.commit_callback
+						function="Recorder.Time"
+						parameter="0"/>
+						</slider>
 		
 	</panel>
 	</tab_container>
