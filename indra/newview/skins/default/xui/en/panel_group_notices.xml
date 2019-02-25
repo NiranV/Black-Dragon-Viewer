@@ -201,7 +201,7 @@ Maximum of 200 daily.
         <line_editor
          follows="left|top|right"
          layout="topleft"
-         height="23"
+         height="24"
          left_pad="2"
          top_delta="-5"
          max_length_bytes="63"
@@ -247,23 +247,34 @@ Maximum of 200 daily.
         <line_editor
          follows="left|top|right"
          layout="topleft"
-         height="23"
+         height="24"
          left_pad="2"
          top_delta="-5"
+         text_pad_left="3"
          max_length_bytes="90"
          mouse_opaque="false"
+         label="Drag&amp;Drop item here ->"
          name="create_inventory_name"
-         width="158">
-          Drag and drop item here ->
-        </line_editor>
+         width="158"/>
+        <icon
+         height="16"
+         follows="top|left"
+         image_name="Inv_Object"
+         layout="topleft"
+         left_delta="4"
+         visible="true"
+         mouse_opaque="true"
+         name="create_inv_icon"
+         top_delta="4"
+         width="16" />
         <icon
          follows="top|right"
          height="25"
          name="bg"
          mouse_opaque="false"
          image_name="Toolbar_Middle_Off"
-         left_pad="1"
-         top_delta="0"
+         left_pad="139"
+         top_delta="-4"
          width="29" />
         <icon
          height="22"
@@ -463,6 +474,17 @@ Maximum of 200 daily.
          name="view_inventory_name"
          top_delta="-4"
          width="176"/>
+        <icon
+         height="16"
+         follows="top|left"
+         image_name="Inv_Object"
+         layout="topleft"
+         left_delta="4"
+         visible="false"
+         mouse_opaque="true"
+         name="view_inv_icon"
+         top_delta="4"
+         width="16" />
         <button
          follows="right|top"
          image_hover_unselected="Toolbar_Middle_Over"
@@ -471,9 +493,9 @@ Maximum of 200 daily.
          height="25"
          label="Open"
          layout="topleft"
-         left_pad="1"
+         left_pad="157"
          name="open_attachment"
-         top_delta="0"
+         top_delta="-4"
          width="43" />
         </panel>
       </panel>
