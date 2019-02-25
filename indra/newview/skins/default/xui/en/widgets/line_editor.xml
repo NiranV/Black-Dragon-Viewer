@@ -7,7 +7,7 @@
              ignore_tab="true"
              cursor_color="TextCursorColor"
              text_color="LabelTextColor"
-			 text_pad_left="2"
+			 text_pad_left="3"
              text_readonly_color="LabelTextColor"
              text_tentative_color="LabelTextColor"
 			 highlight_color="EmphasisColor"
