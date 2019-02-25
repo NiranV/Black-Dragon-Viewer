@@ -783,7 +783,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	F32 flycam_feather = mFlycamFeathering;
 	for (U32 i = 0; i < 7; i++)
 	{
-		if (i < 6)
+		if (i < 7)
 			cur_delta[i] = -mAxes[mMappedAxes[i]];
 
 //		//BD - Remappable Joystick Controls
