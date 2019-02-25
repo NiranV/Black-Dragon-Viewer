@@ -306,7 +306,10 @@ width="510">
  min_val="64"
  name="DPI"
  top_pad="5"
- width="319" />
+ width="319" >
+  <slider.commit_callback
+                         function="Dragon.TriggerWarn"/>
+ </slider>
  <button
  follows="left|top"
  control_name="FontScreenDPI"

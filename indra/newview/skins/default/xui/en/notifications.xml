@@ -11272,7 +11272,7 @@ It has an unexplainable, random crash that can occur when you Right-Click that i
 
 The UI is and cannot be designed to be properly viewed at bigger UI sizes.
 
-Changing the UI size to anything other than Normal will impact the UI quality, clipping, missing, overlapping text and options making it impossible to click options close to each other, weird offsets and other issues will appear.
+Changing the UI size to anything other than Normal will impact the UI quality. Clipping, missing, overlapping text and options making it impossible to click options close to each other, weird offsets and other issues will appear.
 
 &lt;b&gt;DO NOT USE if you want a quality, bugfree UI!&lt;/b&gt;
   <tag>warning</tag>
@@ -11286,7 +11286,35 @@ Changing the UI size to anything other than Normal will impact the UI quality, c
 
 The UI is and cannot be designed to be properly viewed at smaller UI sizes.
 
-Changing the UI size to anything other than Normal will impact the UI quality, clipping, missing, overlapping text and options making it impossible to click options close to each other, weird offsets and other issues will appear.
+Changing the UI size to anything other than Normal will impact the UI quality. Clipping, missing, overlapping text and options making it impossible to click options close to each other, weird offsets and other issues will appear.
+
+&lt;b&gt;DO NOT USE if you want a quality, bugfree UI!&lt;/b&gt;
+  <tag>warning</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="FontScreenDPI_Min"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+The UI is and cannot be designed to be properly viewed with smaller font sizes.
+
+Changing the font size to anything other than 96 will impact the UI quality. Clipping, missing, overlapping text and options making it impossible to click options close to each other, weird offsets and other issues will appear.
+
+&lt;b&gt;DO NOT USE if you want a quality, bugfree UI!&lt;/b&gt;
+  <tag>warning</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="FontScreenDPI_Max"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+The UI is and cannot be designed to be properly viewed with bigger font sizes.
+
+Changing the font size to anything other than 96 will impact the UI quality. Clipping, missing, overlapping text and options making it impossible to click options close to each other, weird offsets and other issues will appear.
 
 &lt;b&gt;DO NOT USE if you want a quality, bugfree UI!&lt;/b&gt;
   <tag>warning</tag>
