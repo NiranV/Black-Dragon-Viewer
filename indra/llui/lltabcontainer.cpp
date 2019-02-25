@@ -494,6 +494,9 @@ void LLTabContainer::draw()
 							//     consistent width so we can recalculate available and consistent width with
 							//     the new values.
 							--tab_count;
+							if (tab_count <= 0)
+								break;
+
 							available_width -= button_width;
 							consistent_width = llfloor(available_width / tab_count);
 							leftover_width = available_width % tab_count;
