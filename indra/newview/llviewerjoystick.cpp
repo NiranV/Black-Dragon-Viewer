@@ -238,7 +238,7 @@ void LLViewerJoystick::init(bool autoenable)
 	updateEnabled(autoenable);
 	
 	//BD - Tell us the name of the product beforehand so in future we can add more.
-	LL_INFOS() << "Product Name=" << mNdofDev->product << LL_ENDL;
+	LL_INFOS() << "Product Name = " << mNdofDev->product << LL_ENDL;
 
 	if (mDriverState == JDS_INITIALIZED)
 	{
