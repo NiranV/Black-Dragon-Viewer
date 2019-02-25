@@ -1716,7 +1716,13 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 	mStatesDirty(false),
 	mCurrResolutionIndex(0),
 	mProgressView(NULL),
-	mSystemUIScaleFactorChanged(false)
+	mSystemUIScaleFactorChanged(false),
+	mChicletBar(NULL),
+	mStatusBarContainer(NULL),
+	mNavBarContainer(NULL),
+	mMachinimaSidebar(NULL),
+	mChicletContainer(NULL),
+	mFloaterSnapRegion(NULL)
 {
 	// gKeyboard is still NULL, so it doesn't do LLWindowListener any good to
 	// pass its value right now. Instead, pass it a nullary function that
@@ -2030,7 +2036,8 @@ void LLViewerWindow::initBase()
 			toolbarp->getCenterLayoutPanel()->setReshapeCallback(boost::bind(&LLFloaterView::setToolbarRect, gFloaterView, _1, _2));
 		}
 	}
-	gFloaterView->setFloaterSnapView(main_view->getChild<LLView>("floater_snap_region")->getHandle());
+	mFloaterSnapRegion = main_view->getChild<LLView>("floater_snap_region");
+	gFloaterView->setFloaterSnapView(mFloaterSnapRegion->getHandle());
 	gSnapshotFloaterView = main_view->getChild<LLSnapshotFloaterView>("Snapshot Floater View");
 
 	// Console
@@ -2107,36 +2114,58 @@ void LLViewerWindow::initWorldUI()
 
 
 	// Status bar
-	LLPanel* status_bar_container = getRootView()->getChild<LLPanel>("status_bar_container");
-	gStatusBar = new LLStatusBar(status_bar_container->getLocalRect());
-	gStatusBar->setFollowsAll();
-	gStatusBar->setShape(status_bar_container->getLocalRect());
-	status_bar_container->addChildInBack(gStatusBar);
-	status_bar_container->setVisible(TRUE);
+	//LLPanel* status_bar_container = getRootView()->getChild<LLPanel>("status_bar_container");
+	if (!mStatusBarContainer)
+		mStatusBarContainer = getRootView()->getChild<LLPanel>("status_bar_container");
+
+	if (mStatusBarContainer && !gStatusBar)
+	{
+		gStatusBar = new LLStatusBar(mStatusBarContainer->getLocalRect());
+		gStatusBar->setFollowsAll();
+		gStatusBar->setShape(mStatusBarContainer->getLocalRect());
+		mStatusBarContainer->addChildInBack(gStatusBar);
+		mStatusBarContainer->setVisible(TRUE);
+	}
 
 	//BD
-	LLPanel* chiclet_container = gStatusBar->getChild<LLPanel>("chiclet_container");
-	LLChicletBar* chiclet_bar = LLChicletBar::getInstance();
-	chiclet_bar->setShape(chiclet_container->getLocalRect());
-	chiclet_bar->setFollowsAll();
-	chiclet_container->addChild(chiclet_bar);
-	chiclet_container->setVisible(TRUE);
+	if (!mChicletContainer)
+		mChicletContainer = gStatusBar->getChild<LLPanel>("chiclet_container");
+	//LLPanel* chiclet_container = gStatusBar->getChild<LLPanel>("chiclet_container");
+	if (mChicletContainer && !mChicletBar)
+	{
+		mChicletBar = LLChicletBar::getInstance();
+		//LLChicletBar* chiclet_bar = LLChicletBar::getInstance();
+		mChicletBar->setShape(mChicletContainer->getLocalRect());
+		mChicletBar->setFollowsAll();
+		mChicletContainer->addChild(mChicletBar);
+		mChicletContainer->setVisible(TRUE);
+	}
 
 	//BD - Machinima Sidebar
-	LLPanel* machinima_sidebar = gToolBarView->getChild<LLPanel>("machinima");
-	gSideBar = new LLSideBar(machinima_sidebar->getLocalRect());
-	gSideBar->setShape(machinima_sidebar->getLocalRect());
-	machinima_sidebar->addChild(gSideBar);
-	machinima_sidebar->setVisible(TRUE);
+	if (!mMachinimaSidebar)
+		mMachinimaSidebar = gToolBarView->getChild<LLPanel>("machinima");
+	//LLPanel* machinima_sidebar = gToolBarView->getChild<LLPanel>("machinima");
+	if (mMachinimaSidebar && !gSideBar)
+	{
+		gSideBar = new LLSideBar(mMachinimaSidebar->getLocalRect());
+		gSideBar->setShape(mMachinimaSidebar->getLocalRect());
+		mMachinimaSidebar->addChild(gSideBar);
+		mMachinimaSidebar->setVisible(TRUE);
+	}
 
 	// Navigation bar
-	LLPanel* nav_bar_container = getRootView()->getChild<LLPanel>("nav_bar_container");
+	if (!mNavBarContainer)
+		mNavBarContainer = getRootView()->getChild<LLPanel>("nav_bar_container");
+	//LLPanel* nav_bar_container = getRootView()->getChild<LLPanel>("nav_bar_container");
 
-	LLNavigationBar* navbar = LLNavigationBar::getInstance();
-	navbar->setShape(nav_bar_container->getLocalRect());
-	navbar->setBackgroundColor(gMenuBarView->getBackgroundColor().get());
-	nav_bar_container->addChild(navbar);
-	nav_bar_container->setVisible(TRUE);
+	if (mNavBarContainer)
+	{
+		LLNavigationBar* navbar = LLNavigationBar::getInstance();
+		navbar->setShape(mNavBarContainer->getLocalRect());
+		navbar->setBackgroundColor(gMenuBarView->getBackgroundColor().get());
+		mNavBarContainer->addChild(navbar);
+		mNavBarContainer->setVisible(TRUE);
+	}
 
 	if ( gHUDView == NULL )
 	{
@@ -2451,10 +2480,12 @@ void LLViewerWindow::reshape(S32 width, S32 height)
 // Hide normal UI when a logon fails
 void LLViewerWindow::setNormalControlsVisible( BOOL visible )
 {
-	if(LLChicletBar::instanceExists())
+	if (mChicletBar->instanceExists())
 	{
-		LLChicletBar::getInstance()->setVisible(visible);
-		LLChicletBar::getInstance()->setEnabled(visible);
+		mChicletBar->setVisible(visible);
+		mChicletBar->setEnabled(visible);
+		//LLChicletBar::getInstance()->setVisible(visible);
+		//LLChicletBar::getInstance()->setEnabled(visible);
 	}
 
 	if ( gMenuBarView )
@@ -5591,7 +5622,7 @@ void LLViewerWindow::setUIVisibility(bool visible)
 		gToolBarView->setToolBarsVisible(visible);
 	}
 
-	mRootView->getChildView("status_bar_container")->setVisible(visible);
+	mStatusBarContainer->setVisible(visible);
 }
 
 bool LLViewerWindow::getUIVisibility()

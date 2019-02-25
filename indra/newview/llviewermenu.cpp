@@ -391,11 +391,15 @@ LLMenuParcelObserver::~LLMenuParcelObserver()
 void LLMenuParcelObserver::changed()
 {
 	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getParcelSelection()->getParcel();
-	gMenuHolder->childSetEnabled("Land Buy Pass", LLPanelLandGeneral::enableBuyPass(NULL) && !(parcel->getOwnerID()== gAgent.getID()));
+	gMenuHolder->mLandBuyPass->setEnabled(LLPanelLandGeneral::enableBuyPass(NULL) && !(parcel->getOwnerID() == gAgent.getID()));
+	//gMenuHolder->childSetEnabled("Land Buy Pass", LLPanelLandGeneral::enableBuyPass(NULL) && !(parcel->getOwnerID()== gAgent.getID()));
 	
 	BOOL buyable = enable_buy_land(NULL);
-	gMenuHolder->childSetEnabled("Land Buy", buyable);
-	gMenuHolder->childSetEnabled("Buy Land...", buyable);
+	gMenuHolder->mLandBuy->setEnabled(buyable);
+	gMenuHolder->mBuyLand->setEnabled(buyable);
+
+	//gMenuHolder->childSetEnabled("Land Buy", buyable);
+	//gMenuHolder->childSetEnabled("Buy Land...", buyable);
 }
 
 
@@ -430,7 +434,7 @@ void set_underclothes_menu_options()
 void set_merchant_SLM_menu()
 {
     // All other cases (new merchant, not merchant, migrated merchant): show the new Marketplace Listings menu and enable the tool
-    gMenuHolder->getChild<LLView>("MarketplaceListings")->setVisible(TRUE);
+	gMenuHolder->mMarketPlaceListings->setVisible(TRUE);
     LLCommand* command = LLCommandManager::instance().getCommand("marketplacelistings");
 	gToolBarView->enableCommand(command->id(), true);
 }
@@ -445,7 +449,7 @@ void check_merchant_status(bool force)
             LLMarketplaceData::instance().setSLMStatus(MarketplaceStatusCodes::MARKET_PLACE_NOT_INITIALIZED);
         }
         // Hide SLM related menu item
-        gMenuHolder->getChild<LLView>("MarketplaceListings")->setVisible(FALSE);
+        gMenuHolder->mMarketPlaceListings->setVisible(FALSE);
         
         // Also disable the toolbar button for Marketplace Listings
         LLCommand* command = LLCommandManager::instance().getCommand("marketplacelistings");
@@ -579,6 +583,13 @@ void init_menus()
 	
 	// tooltips are on top of EVERYTHING, including menus
 	gViewerWindow->getRootView()->sendChildToFront(gToolTipView);
+
+	gMenuHolder->mMarketPlaceListings = gMenuHolder->getChild<LLView>("MarketplaceListings");
+	gMenuHolder->mLandBuyPass = gMenuHolder->getChild<LLView>("Land Buy Pass");
+	gMenuHolder->mLandBuy = gMenuHolder->getChild<LLView>("Land Buy");
+	gMenuHolder->mBuyLand = gMenuHolder->getChild<LLView>("Buy Land...");
+
+	//gMenuHolder->mObjectSit = gMenuHolder->getChild<LLMenuItemGL>("Object Sit");
 }
 
 ///////////////////
@@ -2882,18 +2893,20 @@ bool enable_object_touch(LLUICtrl* ctrl)
 	}
 // [/RLVa:KB]
 
-	std::string item_name = ctrl->getName();
-	init_default_item_label(item_name);
+	//std::string item_name = ctrl->getName();
+	//init_default_item_label(item_name);
 
 	// Update label based on the node touch name if available.
 	LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
 	if (node && node->mValid && !node->mTouchName.empty())
 	{
-		gMenuHolder->childSetValue(item_name, node->mTouchName);
+		ctrl->setValue(node->mTouchName);
+		//gMenuHolder->childSetValue(item_name, node->mTouchName);
 	}
 	else
 	{
-		gMenuHolder->childSetValue(item_name, get_default_item_label(item_name));
+		ctrl->setValue(get_default_item_label(ctrl->getName()));
+		//gMenuHolder->childSetValue(item_name, get_default_item_label(item_name));
 	}
 
 	return new_value;
@@ -6120,21 +6133,21 @@ void show_debug_menus()
 	if ( gMenuBarView )
 	{
 		BOOL debug = gSavedSettings.getBOOL("UseDebugMenus");
-		BOOL qamode = gSavedSettings.getBOOL("QAMode");
+		//BOOL qamode = gSavedSettings.getBOOL("QAMode");
 
-		gMenuBarView->setItemVisible("Advanced", debug);
+		//gMenuBarView->setItemVisible("Advanced", debug);
 // 		gMenuBarView->setItemEnabled("Advanced", debug); // Don't disable Advanced keyboard shortcuts when hidden
 
 // [RLVa:KB] - Checked: 2011-08-16 (RLVa-1.4.0b) | Modified: RLVa-1.4.0b
 		// NOTE: this is supposed to execute whether RLVa is enabled or not
-		rlvMenuToggleVisible();
+		//rlvMenuToggleVisible();
 // [/RLVa:KB]
 		
-		gMenuBarView->setItemVisible("Debug", qamode);
-		gMenuBarView->setItemEnabled("Debug", qamode);
+		//gMenuBarView->setItemVisible("Debug", qamode);
+		//gMenuBarView->setItemEnabled("Debug", qamode);
 
-		gMenuBarView->setItemVisible("Develop", qamode);
-		gMenuBarView->setItemEnabled("Develop", qamode);
+		//gMenuBarView->setItemVisible("Develop", qamode);
+		//gMenuBarView->setItemEnabled("Develop", qamode);
 
 		// Server ('Admin') menu hidden when not in godmode.
 		const bool show_server_menu = (gAgent.getGodLevel() > GOD_NOT || (debug && gAgent.getAdminOverride()));
@@ -6602,20 +6615,24 @@ bool enable_object_sit(LLUICtrl* ctrl)
 	bool sitting_on_sel = sitting_on_selection();
 	if (!sitting_on_sel)
 	{
-		std::string item_name = ctrl->getName();
+		//std::string item_name = ctrl->getName();
 
 		// init default labels
-		init_default_item_label(item_name);
+		//init_default_item_label(item_name);
 
 		// Update label
 		LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
 		if (node && node->mValid && !node->mSitName.empty())
 		{
-			gMenuHolder->childSetValue(item_name, node->mSitName);
+			ctrl->setValue(node->mSitName);
+			//gMenuHolder->mObjectSit->setValue(node->mSitName);
+			//gMenuHolder->childSetValue(item_name, node->mSitName);
 		}
 		else
 		{
-			gMenuHolder->childSetValue(item_name, get_default_item_label(item_name));
+			ctrl->setValue(get_default_item_label(ctrl->getName()));
+			//gMenuHolder->mObjectSit->setValue(get_default_item_label(item_name));
+			//gMenuHolder->childSetValue(item_name, get_default_item_label(item_name));
 		}
 	}
 
@@ -10143,6 +10160,7 @@ void initialize_menus()
 
 //	//BD - Functions
 	commit.add("Dragon.Default", boost::bind(&BDFunctions::resetToDefault, _1));
+	commit.add("Dragon.FactoryReset", boost::bind(&BDFunctions::askFactoryReset, _2));
 	commit.add("Dragon.Invert", boost::bind(&BDFunctions::invertValue, _1));
 	commit.add("Dragon.ArrayX", boost::bind(&BDFunctions::onCommitX, _1, _2));
 	commit.add("Dragon.ArrayY", boost::bind(&BDFunctions::onCommitY, _1, _2));

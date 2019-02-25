@@ -237,6 +237,13 @@ BOOL	LLPanelObject::postBuild()
 	childSetCommitCallback("Revolutions",onCommitParametric,this);
 	mSpinRevolutions->setValidateBeforeCommit( &precommitValidate );
 
+	//BD
+	mScaleHole = getChild<LLTextBox>("scale_hole");
+	mScaleTaper = getChild<LLTextBox>("scale_taper");
+	mAdvancedCut = getChild<LLTextBox>("advanced_cut");
+	mAdvancedDimple = getChild<LLTextBox>("advanced_dimple");
+	mAdvancedSlice = getChild<LLTextBox>("advanced_slice");
+
 	// Sculpt
 	mCtrlSculptTexture = getChild<LLTextureCtrl>("sculpt texture control");
 	if (mCtrlSculptTexture)
@@ -302,11 +309,13 @@ LLPanelObject::~LLPanelObject()
 
 void LLPanelObject::getState( )
 {
-	LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getFirstRootObject();
+	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
+	LLObjectSelectionHandle selection = select_mgr->getSelection();
+	LLViewerObject* objectp = selection->getFirstRootObject();
 	LLViewerObject* root_objectp = objectp;
 	if(!objectp)
 	{
-		objectp = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
+		objectp = selection->getFirstObject();
 		// *FIX: shouldn't we just keep the child?
 		if (objectp)
 		{
@@ -346,14 +355,14 @@ void LLPanelObject::getState( )
 	}
 
 	//BD
-	S32 selected_count = LLSelectMgr::getInstance()->getSelection()->getObjectCount();
-	BOOL single_volume = (LLSelectMgr::getInstance()->selectionAllPCode( LL_PCODE_VOLUME ))
+	S32 selected_count = selection->getObjectCount();
+	BOOL single_volume = (select_mgr->selectionAllPCode(LL_PCODE_VOLUME))
 						 && (selected_count == 1);
 
 	bool enable_move;
 	bool enable_modify;
 
-	LLSelectMgr::getInstance()->selectGetEditMoveLinksetPermissions(enable_move, enable_modify);
+	select_mgr->selectGetEditMoveLinksetPermissions(enable_move, enable_modify);
 
 	BOOL enable_scale = enable_modify;
 	BOOL enable_rotate = enable_move; // already accounts for a case of children, which needs permModify() as well
@@ -402,10 +411,11 @@ void LLPanelObject::getState( )
 	}
 	else
 	{
-		F32 region_width = LLWorld::getInstance()->getRegionWidthInMeters();
+		LLWorld* world = LLWorld::getInstance();
+		F32 region_width = world->getRegionWidthInMeters();
 		mCtrlPosX->setMaxValue(region_width);
 		mCtrlPosY->setMaxValue(region_width);
-		mCtrlPosZ->setMaxValue(LLWorld::getInstance()->getRegionMaxHeight());
+		mCtrlPosZ->setMaxValue(world->getRegionMaxHeight());
 	}
 
 	if (enable_scale)
@@ -466,10 +476,10 @@ void LLPanelObject::getState( )
 
 	LLUUID owner_id;
 	std::string owner_name;
-	LLSelectMgr::getInstance()->selectGetOwner(owner_id, owner_name);
+	select_mgr->selectGetOwner(owner_id, owner_name);
 
 	// BUG? Check for all objects being editable?
-	S32 roots_selected = LLSelectMgr::getInstance()->getSelection()->getRootObjectCount();
+	S32 roots_selected = selection->getRootObjectCount();
 	BOOL editable = root_objectp->permModify();
 
 	BOOL is_flexible = volobjp && volobjp->isFlexible();
@@ -486,7 +496,7 @@ void LLPanelObject::getState( )
 	BOOL valid;
 	U32 owner_mask_on;
 	U32 owner_mask_off;
-	valid = LLSelectMgr::getInstance()->selectGetPerm(PERM_OWNER, &owner_mask_on, &owner_mask_off);
+	valid = select_mgr->selectGetPerm(PERM_OWNER, &owner_mask_on, &owner_mask_off);
 
 	if(valid)
 	{
@@ -979,19 +989,25 @@ void LLPanelObject::getState( )
 	mLabelSkew		->setEnabled( enabled );
 	mSpinSkew		->setEnabled( enabled );
 
-	getChildView("scale_hole")->setVisible( FALSE);
-	getChildView("scale_taper")->setVisible( FALSE);
+	mScaleHole		->setVisible(FALSE);
+	mScaleTaper		->setVisible(FALSE);
+	//getChildView("scale_hole")->setVisible( FALSE);
+	//getChildView("scale_taper")->setVisible( FALSE);
 	if (top_size_x_visible || top_size_y_visible)
 	{
 		if (size_is_hole)
 		{
-			getChildView("scale_hole")->setVisible( TRUE);
-			getChildView("scale_hole")->setEnabled(enabled);
+			mScaleHole->setVisible(TRUE);
+			mScaleHole->setEnabled(enabled);
+			//getChildView("scale_hole")->setVisible( TRUE);
+			//getChildView("scale_hole")->setEnabled(enabled);
 		}
 		else
 		{
-			getChildView("scale_taper")->setVisible( TRUE);
-			getChildView("scale_taper")->setEnabled(enabled);
+			mScaleTaper->setVisible(TRUE);
+			mScaleTaper->setEnabled(enabled);
+			//getChildView("scale_taper")->setVisible( TRUE);
+			//getChildView("scale_taper")->setEnabled(enabled);
 		}
 	}
 	
@@ -1002,27 +1018,36 @@ void LLPanelObject::getState( )
 	mSpinShearX		->setEnabled( enabled );
 	mSpinShearY		->setEnabled( enabled );
 
-	getChildView("advanced_cut")->setVisible( FALSE);
-	getChildView("advanced_dimple")->setVisible( FALSE);
-	getChildView("advanced_slice")->setVisible( FALSE);
+	mAdvancedCut	->setVisible(FALSE);
+	mAdvancedDimple	->setVisible(FALSE);
+	mAdvancedSlice	->setVisible(FALSE);
+	//getChildView("advanced_cut")->setVisible( FALSE);
+	//getChildView("advanced_dimple")->setVisible( FALSE);
+	//getChildView("advanced_slice")->setVisible( FALSE);
 
 	if (advanced_cut_visible)
 	{
 		if (advanced_is_dimple)
 		{
-			getChildView("advanced_dimple")->setVisible( TRUE);
-			getChildView("advanced_dimple")->setEnabled(enabled);
+			mAdvancedDimple->setVisible(TRUE);
+			mAdvancedDimple->setEnabled(enabled);
+			//getChildView("advanced_dimple")->setVisible( TRUE);
+			//getChildView("advanced_dimple")->setEnabled(enabled);
 		}
 
 		else if (advanced_is_slice)
 		{
-			getChildView("advanced_slice")->setVisible( TRUE);
-			getChildView("advanced_slice")->setEnabled(enabled);
+			mAdvancedSlice->setVisible(TRUE);
+			mAdvancedSlice->setEnabled(enabled);
+			//getChildView("advanced_slice")->setVisible( TRUE);
+			//getChildView("advanced_slice")->setEnabled(enabled);
 		}
 		else
 		{
-			getChildView("advanced_cut")->setVisible( TRUE);
-			getChildView("advanced_cut")->setEnabled(enabled);
+			mAdvancedCut->setVisible(TRUE);
+			mAdvancedCut->setEnabled(enabled);
+			//getChildView("advanced_cut")->setVisible( TRUE);
+			//getChildView("advanced_cut")->setEnabled(enabled);
 		}
 	}
 	
@@ -1800,9 +1825,9 @@ void LLPanelObject::refresh()
 	
 	F32 max_scale = get_default_max_prim_scale(LLPickInfo::isFlora(mObject));
 
-	getChild<LLSpinCtrl>("Scale X")->setMaxValue(max_scale);
-	getChild<LLSpinCtrl>("Scale Y")->setMaxValue(max_scale);
-	getChild<LLSpinCtrl>("Scale Z")->setMaxValue(max_scale);
+	mCtrlScaleX->setMaxValue(max_scale);
+	mCtrlScaleY->setMaxValue(max_scale);
+	mCtrlScaleZ->setMaxValue(max_scale);
 }
 
 
@@ -1904,11 +1929,16 @@ void LLPanelObject::clearCtrls()
 	mLabelRadiusOffset->setEnabled( FALSE );
 	mLabelRevolutions->setEnabled( FALSE );
 	
-	getChildView("scale_hole")->setEnabled(FALSE);
-	getChildView("scale_taper")->setEnabled(FALSE);
-	getChildView("advanced_cut")->setEnabled(FALSE);
-	getChildView("advanced_dimple")->setEnabled(FALSE);
-	getChildView("advanced_slice")->setVisible( FALSE);
+	mScaleHole->setEnabled(FALSE);
+	mScaleTaper->setEnabled(FALSE);
+	mAdvancedCut->setEnabled(FALSE);
+	mAdvancedDimple->setEnabled(FALSE);
+	mAdvancedSlice->setEnabled(FALSE);
+	//getChildView("scale_hole")->setEnabled(FALSE);
+	//getChildView("scale_taper")->setEnabled(FALSE);
+	//getChildView("advanced_cut")->setEnabled(FALSE);
+	//getChildView("advanced_dimple")->setEnabled(FALSE);
+	//getChildView("advanced_slice")->setVisible( FALSE);
 }
 
 //

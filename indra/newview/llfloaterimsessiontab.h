@@ -181,6 +181,14 @@ protected:
 	LLChatEntry* mInputEditor;
 	LLLayoutPanel * mChatLayoutPanel;
 	LLLayoutStack * mInputPanels;
+
+	LLLayoutPanel* mChatHistoryPanel;
+	LLLayoutPanel* mNearbyHistoryPanel;
+
+	LLLayoutPanel* mCloseBtnPanel;
+	LLLayoutPanel* mAddBtnPanel;
+
+	LLView* mContentsView;
 	
 	LLButton* mExpandCollapseLineBtn;
 	LLButton* mExpandCollapseBtn;

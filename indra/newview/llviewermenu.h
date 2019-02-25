@@ -166,6 +166,12 @@ public:
 
 	virtual const LLRect getMenuRect() const;
 
+	LLView* mMarketPlaceListings;
+	LLView* mBuyLand;
+	LLView* mLandBuy;
+	LLView* mLandBuyPass;
+	//LLMenuItemGL* mObjectSit;
+
 protected:
 	LLSafeHandle<LLParcelSelection> mParcelSelection;
 	LLSafeHandle<LLObjectSelection> mObjectSelection;

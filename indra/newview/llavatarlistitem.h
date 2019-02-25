@@ -170,6 +170,8 @@ private:
 	
 	LLButton* mInfoBtn;
 
+	LLIconCtrl* mSelectedIcon;
+
 	LLUUID mAvatarId;
 	std::string mHighlihtSubstring; // substring to highlight
 	EOnlineStatus mOnlineStatus;

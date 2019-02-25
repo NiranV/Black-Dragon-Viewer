@@ -48,6 +48,16 @@ public:
 	
 	LLCheckBoxCtrl	*mCheckShowOwners;
 
+	LLTextBox* mLabelAreaPrice;
+	LLTextBox* mLabelArea;
+
+	LLUICtrl* mLabelPrice;
+	LLButton* mBtnBuyLand;
+	LLButton* mBtnAbandonLand;
+	LLButton* mBtnSubdivideLand;
+	LLButton* mBtnJoinLand;
+	LLButton* mBtnAboutLand;
+
 protected:
 	static void onClickClaim();
 	static void onClickRelease();

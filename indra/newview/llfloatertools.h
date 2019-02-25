@@ -144,14 +144,31 @@ public:
 	LLButton*		mBtnUnlink;
 
 	//BD
+	LLPanel*		mFocusPanel;
+	LLPanel*		mGrabPanel;
+	LLPanel*		mEditPanel;
+	LLPanel*		mCreatePanel;
+	LLPanel*		mLandPanel;
+
 	LLUICtrl*		mCheckSnapToGrid;
 	LLUICtrl*		mCheckMyObjects;
 	LLUICtrl*		mCheckPhysicalObjects;
+
+	LLSlider*	mZoomSlider;
 
 	LLButton*		mBtnGridOptions;
 	LLComboBox*		mComboGridMode;
 	LLCheckBoxCtrl*	mCheckStretchUniform;
 	LLCheckBoxCtrl*	mCheckStretchTexture;
+
+	LLTextBox*		mSelectionCount;
+	LLTextBox*		mRemainingCapacity;
+	LLTextBox*		mNothingSelected;
+	LLTextBox*		mMediaInfo;
+
+	LLButton*		mMediaAdd;
+	LLButton*		mMediaDelete;
+	LLButton*		mMediaAlign;
 
 	// !HACK! Replacement of mCheckStretchUniform label because LLCheckBoxCtrl
 	//  doesn't support word_wrap of its label. Need to fix truncation bug EXT-6658

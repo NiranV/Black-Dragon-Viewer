@@ -290,12 +290,12 @@ void LLFloaterIMNearbyChatScreenChannel::addChat(LLSD& chat)
 	if(mStopProcessing)
 		return;
 
-	if (mFloaterSnapRegion == NULL)
-	{
-		mFloaterSnapRegion = gViewerWindow->getRootView()->getChildView("floater_snap_region");
-	}
+	//if (mFloaterSnapRegion == NULL)
+	//{
+	//	mFloaterSnapRegion = gViewerWindow->getRootView()->getChildView("floater_snap_region");
+	//}
 	LLRect channel_rect;
-	mFloaterSnapRegion->localRectToOtherView(mFloaterSnapRegion->getLocalRect(), &channel_rect, gFloaterView);
+	gViewerWindow->mFloaterSnapRegion->localRectToOtherView(gViewerWindow->mFloaterSnapRegion->getLocalRect(), &channel_rect, gFloaterView);
 	chat["available_height"] = channel_rect.getHeight() - channel_rect.mBottom - gSavedSettings.getS32("ToastGap") - 110;;
 
 	/*
@@ -381,15 +381,15 @@ void LLFloaterIMNearbyChatScreenChannel::arrangeToasts()
 	if(mStopProcessing || isHovering())
 		return;
 
-	if (mFloaterSnapRegion == NULL)
-	{
-		mFloaterSnapRegion = gViewerWindow->getRootView()->getChildView("floater_snap_region");
-	}
+	//if (mFloaterSnapRegion == NULL)
+	//{
+	//	mFloaterSnapRegion = gViewerWindow->getRootView()->getChildView("floater_snap_region");
+	//}
 	
 	if (!getParent())
 	{
 		// connect to floater snap region just to get resize events, we don't care about being a proper widget 
-		mFloaterSnapRegion->addChild(this);
+		gViewerWindow->mFloaterSnapRegion->addChild(this);
 		setFollows(FOLLOWS_ALL);
 	}
 
@@ -397,7 +397,7 @@ void LLFloaterIMNearbyChatScreenChannel::arrangeToasts()
 	updateRect();
 
 	LLRect channel_rect;
-	mFloaterSnapRegion->localRectToOtherView(mFloaterSnapRegion->getLocalRect(), &channel_rect, gFloaterView);
+	gViewerWindow->mFloaterSnapRegion->localRectToOtherView(gViewerWindow->mFloaterSnapRegion->getLocalRect(), &channel_rect, gFloaterView);
 	channel_rect.mLeft += 10;
 	channel_rect.mRight = channel_rect.mLeft + 300;
 

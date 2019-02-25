@@ -54,22 +54,24 @@ LLRect LLScreenChannelBase::getChannelRect()
 {
 	LL_RECORD_BLOCK_TIME(FTM_GET_CHANNEL_RECT);
 
-	if (mFloaterSnapRegion == NULL)
+	/*if (mFloaterSnapRegion == NULL)
 	{
 		mFloaterSnapRegion = gViewerWindow->getRootView()->getChildView("floater_snap_region");
-	}
+	}*/
 	
-	if (mChicletRegion == NULL)
+	/*if (mChicletRegion == NULL)
 	{
 		//BD
 		mChicletRegion = gViewerWindow->getRootView()->getChildView("status_bar_container");
-	}
+	}*/
 	
 	LLRect channel_rect;
 	LLRect chiclet_rect;
 
-	mFloaterSnapRegion->localRectToScreen(mFloaterSnapRegion->getLocalRect(), &channel_rect);
-	mChicletRegion->localRectToScreen(mChicletRegion->getLocalRect(), &chiclet_rect);
+	if (gViewerWindow->mFloaterSnapRegion != NULL)
+		gViewerWindow->mFloaterSnapRegion->localRectToScreen(gViewerWindow->mFloaterSnapRegion->getLocalRect(), &channel_rect);
+	if (gViewerWindow->mStatusBarContainer != NULL)
+		gViewerWindow->mStatusBarContainer->localRectToScreen(gViewerWindow->mStatusBarContainer->getLocalRect(), &chiclet_rect);
 
 	//BD
 	channel_rect.mTop = chiclet_rect.mBottom - 10;
@@ -92,9 +94,9 @@ LLScreenChannelBase::LLScreenChannelBase(const Params& p)
 	mShowToasts(true),
 	mID(p.id),
 	mDisplayToastsAlways(p.display_toasts_always),
-	mChannelAlignment(p.channel_align),
-	mFloaterSnapRegion(NULL),
-	mChicletRegion(NULL)
+	mChannelAlignment(p.channel_align)
+	//mFloaterSnapRegion(NULL),
+	//mChicletRegion(NULL)
 {
 	mID = p.id;
 
@@ -104,7 +106,7 @@ LLScreenChannelBase::LLScreenChannelBase(const Params& p)
 
 BOOL LLScreenChannelBase::postBuild()
 {
-	if (mFloaterSnapRegion == NULL)
+	/*if (mFloaterSnapRegion == NULL)
 	{
 		mFloaterSnapRegion = gViewerWindow->getRootView()->getChildView("floater_snap_region");
 	}
@@ -113,7 +115,7 @@ BOOL LLScreenChannelBase::postBuild()
 	{
 		//BD
 		mChicletRegion = gViewerWindow->getRootView()->getChildView("status_bar_container");
-	}
+	}*/
 	
 	return TRUE;
 }
@@ -581,7 +583,8 @@ void LLScreenChannel::redrawToasts()
 	if (!getParent())
 	{
 		// connect to floater snap region just to get resize events, we don't care about being a proper widget 
-		mFloaterSnapRegion->addChild(this);
+		gViewerWindow->mFloaterSnapRegion->addChild(this);
+		//mFloaterSnapRegion->addChild(this);
 		setFollows(FOLLOWS_ALL);
 	}
 

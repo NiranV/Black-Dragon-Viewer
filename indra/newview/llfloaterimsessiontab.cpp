@@ -276,6 +276,14 @@ BOOL LLFloaterIMSessionTab::postBuild()
 
 	mInputEditor = getChild<LLChatEntry>("chat_editor");
 
+	mChatHistoryPanel = getChild<LLLayoutPanel>("chat_history_btn_panel");
+	mNearbyHistoryPanel = getChild<LLLayoutPanel>("nearby_history_btn_panel");
+
+	mAddBtnPanel = getChild<LLLayoutPanel>("add_btn_panel");
+	mCloseBtnPanel = getChild<LLLayoutPanel>("close_btn_panel");
+
+	mContentsView = getChild<LLView>("contents_view");
+
 	mChatLayoutPanel = getChild<LLLayoutPanel>("chat_layout_panel");
 	mInputPanels = getChild<LLLayoutStack>("input_panels");
 	
@@ -700,7 +708,6 @@ void LLFloaterIMSessionTab::hideOrShowTitle()
 {
 	const LLFloater::Params& default_params = LLFloater::getDefaultParams();
 	S32 floater_header_size = default_params.header_height;
-	LLView* floater_contents = getChild<LLView>("contents_view");
 
 	LLRect floater_rect = getLocalRect();
 	S32 top_border_of_contents = floater_rect.mTop - (isTornOff()? floater_header_size : 0);
@@ -708,7 +715,7 @@ void LLFloaterIMSessionTab::hideOrShowTitle()
 	LLRect contents_rect (0, top_border_of_contents, floater_rect.mRight, floater_rect.mBottom);
 	mDragHandle->setShape(handle_rect);
 	mDragHandle->setVisible(isTornOff());
-	floater_contents->setShape(contents_rect);
+	mContentsView->setShape(contents_rect);
 }
 
 void LLFloaterIMSessionTab::updateSessionName(const std::string& name)
@@ -775,17 +782,21 @@ void LLFloaterIMSessionTab::updateHeaderAndToolbar()
 	mTearOffBtn->setToolTip(getString(is_not_torn_off? "tooltip_to_separate_window" : "tooltip_to_main_window"));
 
 
-	mCloseBtn->setVisible(is_not_torn_off && !mIsNearbyChat);
+	//mCloseBtn->setVisible(is_not_torn_off && !mIsNearbyChat);
 	//BD
-	getChild<LLPanel>("close_btn_panel")->setVisible(is_not_torn_off && !mIsNearbyChat);
+	mCloseBtnPanel->setVisible(is_not_torn_off && !mIsNearbyChat);
+	//getChild<LLPanel>("close_btn_panel")->setVisible(is_not_torn_off && !mIsNearbyChat);
 
 	//BD - Disable the chat history button in nearby.
-	getChild<LLLayoutPanel>("chat_history_btn_panel")->setVisible(!mIsNearbyChat);
-	getChild<LLLayoutPanel>("nearby_history_btn_panel")->setVisible(mIsNearbyChat);
+	mChatHistoryPanel->setVisible(!mIsNearbyChat);
+	mNearbyHistoryPanel->setVisible(mIsNearbyChat);
+	//getChild<LLLayoutPanel>("chat_history_btn_panel")->setVisible(!mIsNearbyChat);
+	//getChild<LLLayoutPanel>("nearby_history_btn_panel")->setVisible(mIsNearbyChat);
 
 	//BD - Disable the "Add Participant" button if it's a group chat or local chat.
 	bool is_ad_hoc = (mSession ? mSession->isAdHocSessionType() : false);
-	getChild<LLLayoutPanel>("add_btn_panel")->setVisible(mIsP2PChat || is_ad_hoc);
+	mAddBtnPanel->setVisible(mIsP2PChat || is_ad_hoc);
+	//getChild<LLLayoutPanel>("add_btn_panel")->setVisible(mIsP2PChat || is_ad_hoc);
 
 	enableDisableCallBtn();
 

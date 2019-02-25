@@ -54,6 +54,7 @@
 
 class LLView;
 class LLViewerObject;
+class LLChicletBar;
 class LLUUID;
 class LLProgressView;
 class LLTool;
@@ -507,7 +508,7 @@ private:
 	LLHandle<LLView> mHintHolder;			// container for hints
 	LLHandle<LLView> mLoginPanelHolder;		// container for login panel
 	LLPopupView*	mPopupView;			// container for transient popups
-	
+
 	class LLDebugText* mDebugText; // Internal class for debug text
 	
 	bool			mResDirty;
@@ -522,6 +523,16 @@ private:
 
 	static LLTrace::SampleStatHandle<>	sMouseVelocityStat;
 	bool mSystemUIScaleFactorChanged; // system UI scale factor changed from last run
+
+public:
+	LLChicletBar* mChicletBar;
+
+	LLPanel* mStatusBarContainer;
+	LLPanel* mNavBarContainer;
+	LLPanel* mMachinimaSidebar;
+	LLPanel* mChicletContainer;
+
+	LLView* mFloaterSnapRegion;
 };
 
 //

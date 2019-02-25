@@ -113,7 +113,8 @@ LLScrollbar::LLScrollbar(const Params & p)
 	up_btn.tab_stop(false);
 	up_btn.follows.flags = (mOrientation == VERTICAL ? (FOLLOWS_RIGHT | FOLLOWS_TOP) : (FOLLOWS_LEFT | FOLLOWS_BOTTOM));
 
-	addChild(LLUICtrlFactory::create<LLButton>(up_btn));
+	mUpBtn = LLUICtrlFactory::create<LLButton>(up_btn);
+	addChild(mUpBtn);
 
 	LLButton::Params down_btn(mOrientation == VERTICAL ? p.down_button : p.right_button);
 	down_btn.name(std::string("Line Down"));
@@ -123,7 +124,8 @@ LLScrollbar::LLScrollbar(const Params & p)
 	down_btn.mouse_held_callback.function(boost::bind(&LLScrollbar::onLineDownBtnPressed, this, _2));
 	down_btn.tab_stop(false);
 
-	addChild(LLUICtrlFactory::create<LLButton>(down_btn));
+	mDownBtn = LLUICtrlFactory::create<LLButton>(down_btn);
+	addChild(mDownBtn);
 }
 
 
@@ -458,20 +460,18 @@ void LLScrollbar::reshape(S32 width, S32 height, BOOL called_from_parent)
 {
 	if (width == getRect().getWidth() && height == getRect().getHeight()) return;
 	LLView::reshape( width, height, called_from_parent );
-	LLButton* up_button = getChild<LLButton>("Line Up");
-	LLButton* down_button = getChild<LLButton>("Line Down");
 
 	if (mOrientation == VERTICAL)
 	{
-		up_button->reshape(up_button->getRect().getWidth(), llmin(getRect().getHeight() / 2, mThickness));
-		down_button->reshape(down_button->getRect().getWidth(), llmin(getRect().getHeight() / 2, mThickness));
-		up_button->setOrigin(up_button->getRect().mLeft, getRect().getHeight() - up_button->getRect().getHeight());
+		mUpBtn->reshape(mUpBtn->getRect().getWidth(), llmin(getRect().getHeight() / 2, mThickness));
+		mDownBtn->reshape(mDownBtn->getRect().getWidth(), llmin(getRect().getHeight() / 2, mThickness));
+		mUpBtn->setOrigin(mUpBtn->getRect().mLeft, getRect().getHeight() - mUpBtn->getRect().getHeight());
 	}
 	else
 	{
-		up_button->reshape(llmin(getRect().getWidth() / 2, mThickness), up_button->getRect().getHeight());
-		down_button->reshape(llmin(getRect().getWidth() / 2, mThickness), down_button->getRect().getHeight());
-		down_button->setOrigin(getRect().getWidth() - down_button->getRect().getWidth(), down_button->getRect().mBottom);
+		mUpBtn->reshape(llmin(getRect().getWidth() / 2, mThickness), mUpBtn->getRect().getHeight());
+		mDownBtn->reshape(llmin(getRect().getWidth() / 2, mThickness), mDownBtn->getRect().getHeight());
+		mDownBtn->setOrigin(getRect().getWidth() - mDownBtn->getRect().getWidth(), mDownBtn->getRect().mBottom);
 	}
 	updateThumbRect();
 }

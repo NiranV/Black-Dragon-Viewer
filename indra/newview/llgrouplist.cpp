@@ -228,10 +228,10 @@ void LLGroupList::addNewItem(const LLUUID& id, const std::string& name, const LL
 	item->setGroupIconID(icon_id);
 
 	//BD
-	if (id.notNull()) // don't show the info button for the "none" group
+	/*if (id.isNull()) // don't show the info button for the "none" group
 	{
-		getChildView("profile_btn")->setVisible(true);
-	}
+		getChildView("profile_btn")->setVisible(false);
+	}*/
 	item->setGroupIconVisible(mShowIcons);
 
 	addItem(item, id, pos);
@@ -315,7 +315,9 @@ LLGroupListItem::LLGroupListItem()
 :	LLPanel(),
 mGroupIcon(NULL),
 mGroupNameBox(NULL),
-mInfoBtn(NULL),
+//mInfoBtn(NULL),
+mProfileBtn(NULL),
+mSelectedIcon(NULL),
 mGroupID(LLUUID::null)
 {
 	buildFromFile( "panel_group_list_item.xml");
@@ -339,11 +341,12 @@ BOOL  LLGroupListItem::postBuild()
 	mGroupIcon = getChild<LLGroupIconCtrl>("group_icon");
 	mGroupNameBox = getChild<LLTextBox>("group_name");
 
-	mInfoBtn = getChild<LLButton>("info_btn");
-	mInfoBtn->setClickedCallback(boost::bind(&LLGroupListItem::onInfoBtnClick, this));
+	getChild<LLButton>("info_btn")->setClickedCallback(boost::bind(&LLGroupListItem::onInfoBtnClick, this));
 
-	childSetAction("profile_btn", boost::bind(&LLGroupListItem::onProfileBtnClick, this));
+	mProfileBtn = getChild<LLButton>("profile_btn");
+	mProfileBtn->setClickedCallback(boost::bind(&LLGroupListItem::onProfileBtnClick, this));
 
+	mSelectedIcon = getChild<LLIconCtrl>("selected_icon");
 	return TRUE;
 }
 
@@ -352,18 +355,17 @@ void LLGroupListItem::setValue( const LLSD& value )
 {
 	if (!value.isMap()) return;
 	if (!value.has("selected")) return;
-	getChildView("selected_icon")->setVisible( value["selected"]);
+		mSelectedIcon->setVisible( value["selected"]);
 }
 
 void LLGroupListItem::onMouseEnter(S32 x, S32 y, MASK mask)
 {
 	getChildView("hovered_icon")->setVisible( true);
 
-//	//BD - Make sure we show it in case something went wrong and its still not visible
-	if (mGroupID.notNull()) // don't show the info button for the "none" group
+	/*if (mGroupID.isNull()) // don't show the info button for the "none" group
 	{
-		getChildView("profile_btn")->setVisible(true);
-	}
+		getChildView("profile_btn")->setVisible(false);
+	}*/
 
 	LLPanel::onMouseEnter(x, y, mask);
 }
@@ -389,6 +391,8 @@ void LLGroupListItem::setGroupID(const LLUUID& group_id)
 	mID = group_id;
 	mGroupID = group_id;
 	setActive(group_id == gAgent.getGroupID());
+
+	mProfileBtn->setVisible(!mGroupID.isNull());
 
 	LLGroupMgr::getInstance()->addObserver(this);
 }

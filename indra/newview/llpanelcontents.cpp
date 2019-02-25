@@ -90,6 +90,9 @@ BOOL LLPanelContents::postBuild()
 
 	mPanelInventoryObject = getChild<LLPanelObjectInventory>("contents_inventory");
 
+	mBtnNewScript = getChild<LLButton>("button new script");
+	mBtnPermissions = getChild<LLButton>("button permissions");
+
 	return TRUE;
 }
 
@@ -110,18 +113,21 @@ void LLPanelContents::getState(LLViewerObject *objectp )
 {
 	if( !objectp )
 	{
-		getChildView("button new script")->setEnabled(FALSE);
+		mBtnNewScript->setEnabled(FALSE);
+		//getChildView("button new script")->setEnabled(FALSE);
 		return;
 	}
 
+	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
+	LLObjectSelectionHandle selection = select_mgr->getSelection();
 	LLUUID group_id;			// used for SL-23488
-	LLSelectMgr::getInstance()->selectGetGroup(group_id);  // sets group_id as a side effect SL-23488
+	select_mgr->selectGetGroup(group_id);  // sets group_id as a side effect SL-23488
 
 	// BUG? Check for all objects being editable?
 	bool editable = gAgent.isGodlike()
 					|| (objectp->permModify() && !objectp->isPermanentEnforced()
 					       && ( objectp->permYouOwner() || ( !group_id.isNull() && gAgent.isInGroup(group_id) )));  // solves SL-23488
-	BOOL all_volume = LLSelectMgr::getInstance()->selectionAllPCode( LL_PCODE_VOLUME );
+	BOOL all_volume = select_mgr->selectionAllPCode(LL_PCODE_VOLUME);
 
 // [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.2.0c) | Modified: RLVa-1.0.5a
 	if ( (rlv_handler_t::isEnabled()) && (editable) )
@@ -134,7 +140,7 @@ void LLPanelContents::getState(LLViewerObject *objectp )
 		if ( (editable) && ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP))) )
 		{
 			// Only check the first (non-)root object because nothing else would result in enabling the button (see below)
-			LLViewerObject* pObj = LLSelectMgr::getInstance()->getSelection()->getFirstRootObject(TRUE);
+			LLViewerObject* pObj = selection->getFirstRootObject(TRUE);
 
 			editable = 
 				(pObj) && (isAgentAvatarValid()) && ((!gAgentAvatarp->isSitting()) || (gAgentAvatarp->getRoot() != pObj->getRootEdit()));
@@ -143,13 +149,15 @@ void LLPanelContents::getState(LLViewerObject *objectp )
 // [/RLVa:KB]
 
 	// Edit script button - ok if object is editable and there's an unambiguous destination for the object.
-	getChildView("button new script")->setEnabled(
+	mBtnNewScript->setEnabled(
+	//getChildView("button new script")->setEnabled(
 		editable &&
 		all_volume &&
-		((LLSelectMgr::getInstance()->getSelection()->getRootObjectCount() == 1)
-			|| (LLSelectMgr::getInstance()->getSelection()->getObjectCount() == 1)));
+		((selection->getRootObjectCount() == 1)
+			|| (selection->getObjectCount() == 1)));
 
-	getChildView("button permissions")->setEnabled(!objectp->isPermanentEnforced());
+	mBtnPermissions->setEnabled(!objectp->isPermanentEnforced());
+	//getChildView("button permissions")->setEnabled(!objectp->isPermanentEnforced());
 	mPanelInventoryObject->setEnabled(!objectp->isPermanentEnforced());
 }
 

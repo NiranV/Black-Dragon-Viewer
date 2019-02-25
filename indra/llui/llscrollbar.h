@@ -160,6 +160,9 @@ private:
 	LLUIImagePtr		mTrackImageV;
 	LLUIImagePtr		mTrackImageH;
 
+	LLButton*			mUpBtn;
+	LLButton*			mDownBtn;
+
 	S32					mThickness;
 };
 

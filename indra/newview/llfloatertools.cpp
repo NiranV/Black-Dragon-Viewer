@@ -224,7 +224,8 @@ LLPCode toolData[]={
 BOOL	LLFloaterTools::postBuild()
 {	
 	// Hide until tool selected
-	setVisible(FALSE);
+	//BD
+	//setVisible(FALSE);
 
 	// Since we constantly show and hide this during drags, don't
 	// make sounds on visibility changes.
@@ -238,8 +239,6 @@ BOOL	LLFloaterTools::postBuild()
 	mBtnEdit			= getChild<LLButton>("button edit");
 	mBtnCreate			= getChild<LLButton>("button create");
 	mBtnLand			= getChild<LLButton>("button land" );
-	//BD
-	//mTextStatus			= getChild<LLTextBox>("text status");
 	mRadioGroupFocus	= getChild<LLRadioGroup>("focus_radio_group");
 	mRadioGroupMove		= getChild<LLRadioGroup>("move_radio_group");
 	mRadioGroupEdit		= getChild<LLRadioGroup>("edit_radio_group");
@@ -249,19 +248,24 @@ BOOL	LLFloaterTools::postBuild()
 	mBtnUnlink			= getChild<LLButton>("unlink_btn");
 	
 	//BD
+	mFocusPanel			= getChild<LLPanel>("focus_panel");
+	mGrabPanel			= getChild<LLPanel>("grab_panel");
+	mEditPanel			= getChild<LLPanel>("select_panel");
+	mCreatePanel		= getChild<LLPanel>("create_panel");
+	mLandPanel			= getChild<LLPanel>("land_panel");
+
 	mCheckMyObjects			= getChild<LLUICtrl>("checkbox only my objects");
 	mCheckPhysicalObjects	= getChild<LLUICtrl>("checkbox only physical objects");
-
 	mCheckSelectIndividual	= getChild<LLCheckBoxCtrl>("checkbox edit linked parts");	
-	getChild<LLUICtrl>("checkbox edit linked parts")->setValue((BOOL)gSavedSettings.getBOOL("EditLinkedParts"));
-	//BD
 	mCheckSnapToGrid		= getChild<LLUICtrl>("checkbox snap to grid");
-	getChild<LLUICtrl>("checkbox snap to grid")->setValue((BOOL)gSavedSettings.getBOOL("SnapEnabled"));
 	mCheckStretchUniform	= getChild<LLCheckBoxCtrl>("checkbox uniform");
-	getChild<LLUICtrl>("checkbox uniform")->setValue((BOOL)gSavedSettings.getBOOL("ScaleUniform"));
 	mCheckStretchTexture	= getChild<LLCheckBoxCtrl>("checkbox stretch textures");
-	getChild<LLUICtrl>("checkbox stretch textures")->setValue((BOOL)gSavedSettings.getBOOL("ScaleStretchTextures"));
 	mComboGridMode			= getChild<LLComboBox>("combobox grid mode");
+
+	mCheckSnapToGrid->setValue((BOOL)gSavedSettings.getBOOL("SnapEnabled"));
+	mCheckStretchUniform->setValue((BOOL)gSavedSettings.getBOOL("ScaleUniform"));
+	mCheckStretchTexture->setValue((BOOL)gSavedSettings.getBOOL("ScaleStretchTextures"));
+	mCheckSelectIndividual->setValue((BOOL)gSavedSettings.getBOOL("EditLinkedParts"));
 
 	//
 	// Create Buttons
@@ -278,32 +282,44 @@ BOOL	LLFloaterTools::postBuild()
 			LL_WARNS() << "Tool button not found! DOA Pending." << LL_ENDL;
 		}
 	}
-	mCheckCopySelection = getChild<LLCheckBoxCtrl>("checkbox copy selection");
-	getChild<LLUICtrl>("checkbox copy selection")->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopySelection"));
-	mCheckSticky = getChild<LLCheckBoxCtrl>("checkbox sticky");
-	getChild<LLUICtrl>("checkbox sticky")->setValue((BOOL)gSavedSettings.getBOOL("CreateToolKeepSelected"));
-	mCheckCopyCenters = getChild<LLCheckBoxCtrl>("checkbox copy centers");
-	getChild<LLUICtrl>("checkbox copy centers")->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopyCenters"));
-	mCheckCopyRotates = getChild<LLCheckBoxCtrl>("checkbox copy rotates");
-	getChild<LLUICtrl>("checkbox copy rotates")->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopyRotates"));
+	mCheckCopySelection		= getChild<LLCheckBoxCtrl>("checkbox copy selection");
+	mCheckSticky			= getChild<LLCheckBoxCtrl>("checkbox sticky");
+	mCheckCopyCenters		= getChild<LLCheckBoxCtrl>("checkbox copy centers");
+	mCheckCopyRotates		= getChild<LLCheckBoxCtrl>("checkbox copy rotates");
+
+	mCheckCopySelection->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopySelection"));
+	mCheckSticky->setValue((BOOL)gSavedSettings.getBOOL("CreateToolKeepSelected"));
+	mCheckCopyCenters->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopyCenters"));
+	mCheckCopyRotates->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopyRotates"));
 
 	mRadioGroupLand			= getChild<LLRadioGroup>("land_radio_group");
 	mBtnApplyToSelection	= getChild<LLButton>("button apply to selection");
 	mSliderDozerSize		= getChild<LLSlider>("slider brush size");
-	getChild<LLUICtrl>("slider brush size")->setValue(gSavedSettings.getF32("LandBrushSize"));
 	mSliderDozerForce		= getChild<LLSlider>("slider force");
+
+	mZoomSlider				= getChild<LLSlider>("slider zoom");
+
+	mSliderDozerSize->setValue(gSavedSettings.getF32("LandBrushSize"));
 	// the setting stores the actual force multiplier, but the slider is logarithmic, so we convert here
-	getChild<LLUICtrl>("slider force")->setValue(log10(gSavedSettings.getF32("LandBrushForce")));
+	mSliderDozerForce->setValue(log10(gSavedSettings.getF32("LandBrushForce")));
 
-	mCostTextBorder = getChild<LLViewBorder>("cost_text_border");
+	mCostTextBorder			= getChild<LLViewBorder>("cost_text_border");
+	mSelectionCount			= getChild<LLTextBox>("selection_count");
+	mRemainingCapacity		= getChild<LLTextBox>("remaining_capacity");
+	mNothingSelected		= getChild<LLTextBox>("selection_empty");
 
-	mTab = getChild<LLTabContainer>("Object Info Tabs");
-	if(mTab)
+	mMediaInfo				= getChild<LLTextBox>("media_info");
+	mMediaAdd				= getChild<LLButton>("add_media");
+	mMediaDelete			= getChild<LLButton>("delete_media");
+	mMediaAlign				= getChild<LLButton>("align_media");
+
+	mTab					= getChild<LLTabContainer>("Object Info Tabs");
+	/*if(mTab)
 	{
 		mTab->setFollows(FOLLOWS_TOP | FOLLOWS_LEFT);
 		mTab->setBorderVisible(FALSE);
 		mTab->selectFirstTab();
-	}
+	}*/
 
 	mStatusText["rotate"] = getString("status_rotate");
 	mStatusText["scale"] = getString("status_scale");
@@ -354,6 +370,14 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mBtnLink(NULL),
 	mBtnUnlink(NULL),
 
+	mFocusPanel(NULL),
+	mGrabPanel(NULL),
+	mEditPanel(NULL),
+	mCreatePanel(NULL),
+	mLandPanel(NULL),
+
+	mZoomSlider(NULL),
+
 	mBtnDelete(NULL),
 	mBtnDuplicate(NULL),
 	mBtnDuplicateInPlace(NULL),
@@ -378,6 +402,15 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mCostTextBorder(NULL),
 	mTabLand(NULL),
 
+	mSelectionCount(NULL),
+	mRemainingCapacity(NULL),
+	mNothingSelected(NULL),
+	mMediaInfo(NULL),
+
+	mMediaAdd(NULL),
+	mMediaDelete(NULL),
+	mMediaAlign(NULL),
+
 	mLandImpactsObserver(NULL),
 
 	mDirty(TRUE),
@@ -387,12 +420,12 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	gFloaterTools = this;
 
 	setAutoFocus(FALSE);
-	mFactoryMap["General"] = LLCallbackMap(createPanelPermissions, this);//LLPanelPermissions
-	mFactoryMap["Object"] = LLCallbackMap(createPanelObject, this);//LLPanelObject
-	mFactoryMap["Features"] = LLCallbackMap(createPanelVolume, this);//LLPanelVolume
-	mFactoryMap["Texture"] = LLCallbackMap(createPanelFace, this);//LLPanelFace
-	mFactoryMap["Contents"] = LLCallbackMap(createPanelContents, this);//LLPanelContents
-	mFactoryMap["land info panel"] = LLCallbackMap(createPanelLandInfo, this);//LLPanelLandInfo
+	mFactoryMap["General"] = LLCallbackMap(createPanelPermissions, this);		//LLPanelPermissions
+	mFactoryMap["Object"] = LLCallbackMap(createPanelObject, this);				//LLPanelObject
+	mFactoryMap["Features"] = LLCallbackMap(createPanelVolume, this);			//LLPanelVolume
+	mFactoryMap["Texture"] = LLCallbackMap(createPanelFace, this);				//LLPanelFace
+	mFactoryMap["Contents"] = LLCallbackMap(createPanelContents, this);			//LLPanelContents
+	mFactoryMap["land info panel"] = LLCallbackMap(createPanelLandInfo, this);	//LLPanelLandInfo
 	
 	mCommitCallbackRegistrar.add("BuildTool.setTool",			boost::bind(&LLFloaterTools::setTool,this, _2));
 	mCommitCallbackRegistrar.add("BuildTool.commitZoom",		boost::bind(&commit_slider_zoom, _1));
@@ -444,13 +477,15 @@ void LLFloaterTools::refresh()
 {
 	const S32 INFO_WIDTH = getRect().getWidth();
 	const S32 INFO_HEIGHT = 384;
+
 	LLRect object_info_rect(0, 0, INFO_WIDTH, -INFO_HEIGHT);
-	BOOL all_volume = LLSelectMgr::getInstance()->selectionAllPCode( LL_PCODE_VOLUME );
+	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
+
+	BOOL all_volume = select_mgr->selectionAllPCode( LL_PCODE_VOLUME );
 
 	S32 idx_features = mTab->getPanelIndexByTitle(PANEL_NAMES[PANEL_FEATURES]);
 	S32 idx_face = mTab->getPanelIndexByTitle(PANEL_NAMES[PANEL_FACE]);
 	S32 idx_contents = mTab->getPanelIndexByTitle(PANEL_NAMES[PANEL_CONTENTS]);
-
 	S32 selected_index = mTab->getCurrentPanelIndex();
 
 	if (!all_volume && (selected_index == idx_features || selected_index == idx_face ||
@@ -469,40 +504,42 @@ void LLFloaterTools::refresh()
 	if (!gMeshRepo.meshRezEnabled())
 	{		
 		std::string obj_count_string;
-		LLResMgr::getInstance()->getIntegerString(obj_count_string, LLSelectMgr::getInstance()->getSelection()->getRootObjectCount());
-		getChild<LLUICtrl>("selection_count")->setTextArg("[OBJ_COUNT]", obj_count_string);
+		LLResMgr* res_mgr = LLResMgr::getInstance();
+		res_mgr->getIntegerString(obj_count_string, LLSelectMgr::getInstance()->getSelection()->getRootObjectCount());
+		mSelectionCount->setTextArg("[OBJ_COUNT]", obj_count_string);
 		std::string prim_count_string;
-		LLResMgr::getInstance()->getIntegerString(prim_count_string, LLSelectMgr::getInstance()->getSelection()->getObjectCount());
-		getChild<LLUICtrl>("selection_count")->setTextArg("[PRIM_COUNT]", prim_count_string);
+		res_mgr->getIntegerString(prim_count_string, LLSelectMgr::getInstance()->getSelection()->getObjectCount());
+		mSelectionCount->setTextArg("[PRIM_COUNT]", prim_count_string);
 
 		// calculate selection rendering cost
-		if (sShowObjectCost)
+		/*if (sShowObjectCost)
 		{
 			std::string prim_cost_string;
-			S32 render_cost = LLSelectMgr::getInstance()->getSelection()->getSelectedObjectRenderCost();
-			LLResMgr::getInstance()->getIntegerString(prim_cost_string, render_cost);
+			S32 render_cost = select_mgr->getSelection()->getSelectedObjectRenderCost();
+			res_mgr->getIntegerString(prim_cost_string, render_cost);
 			getChild<LLUICtrl>("RenderingCost")->setTextArg("[COUNT]", prim_cost_string);
-		}
+		}*/
 		
 		// disable the object and prim counts if nothing selected
-		bool have_selection = ! LLSelectMgr::getInstance()->getSelection()->isEmpty();
-		getChildView("obj_count")->setEnabled(have_selection);
-		getChildView("prim_count")->setEnabled(have_selection);
-		getChildView("RenderingCost")->setEnabled(have_selection && sShowObjectCost);
+		//bool have_selection = ! LLSelectMgr::getInstance()->getSelection()->isEmpty();
+		//getChildView("obj_count")->setEnabled(have_selection);
+		//getChildView("prim_count")->setEnabled(have_selection);
+		//getChildView("RenderingCost")->setEnabled(have_selection && sShowObjectCost);
 	}
 	else
 #endif
 	{
-		F32 link_cost  = LLSelectMgr::getInstance()->getSelection()->getSelectedLinksetCost();
-		S32 link_count = LLSelectMgr::getInstance()->getSelection()->getRootObjectCount();
+		//LLObjectSelectionHandle selection = select_mgr->getSelection();
+		F32 link_cost = mObjectSelection->getSelectedLinksetCost();
+		S32 link_count = mObjectSelection->getRootObjectCount();
 
 		LLCrossParcelFunctor func;
-		if (LLSelectMgr::getInstance()->getSelection()->applyToRootObjects(&func, true))
+		if (mObjectSelection->applyToRootObjects(&func, true))
 		{
 			// Selection crosses parcel bounds.
 			// We don't display remaining land capacity in this case.
 			const LLStringExplicit empty_str("");
-			childSetTextArg("remaining_capacity", "[CAPACITY_STRING]", empty_str);
+			mRemainingCapacity->setTextArg("[CAPACITY_STRING]", empty_str);
 		}
 		else
 		{
@@ -526,12 +563,12 @@ void LLFloaterTools::refresh()
 
 		selection_info << getString("status_selectcount", selection_args);
 
-		getChild<LLTextBox>("selection_count")->setText(selection_info.str());
+		mSelectionCount->setText(selection_info.str());
 
-		bool have_selection = !LLSelectMgr::getInstance()->getSelection()->isEmpty();
-		childSetVisible("selection_count",  have_selection);
-		childSetVisible("remaining_capacity", have_selection);
-		childSetVisible("selection_empty", !have_selection);
+		bool have_selection = !mObjectSelection->isEmpty();
+		mSelectionCount->setVisible(have_selection);
+		mRemainingCapacity->setVisible(have_selection);
+		mNothingSelected->setVisible(!have_selection);
 	}
 
 
@@ -604,68 +641,75 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 		return;
 	}
 
-	if ( isMinimized() )
+	if (isMinimized())
 	{	// SL looks odd if we draw the tools while the window is minimized
 		return;
 	}
 	
 	// Focus buttons
-	BOOL focus_visible = (	tool == LLToolCamera::getInstance() );
+	BOOL focus_visible = (tool == LLToolCamera::getInstance());
 
-	mBtnFocus	->setToggleState( focus_visible );
+	mFocusPanel->setVisible(focus_visible);
+	mBtnFocus->setToggleState(focus_visible);
+	//mRadioGroupFocus->setVisible(focus_visible);
 
-	mRadioGroupFocus->setVisible( focus_visible );
-	getChildView("slider zoom")->setVisible( focus_visible);
-	getChildView("slider zoom")->setEnabled(gCameraBtnZoom);
-
-	if (!gCameraBtnOrbit &&
-		!gCameraBtnPan &&
-		!(mask == MASK_ORBIT) &&
-		!(mask == (MASK_ORBIT | MASK_ALT)) &&
-		!(mask == MASK_PAN) &&
-		!(mask == (MASK_PAN | MASK_ALT)) )
+	//mZoomSlider->setVisible(focus_visible);
+	//mZoomSlider->setEnabled(gCameraBtnZoom);
+	if (focus_visible)
 	{
-		mRadioGroupFocus->setValue("radio zoom");
-	}
-	else if (	gCameraBtnOrbit || 
-				(mask == MASK_ORBIT) ||
-				(mask == (MASK_ORBIT | MASK_ALT)) )
-	{
-		mRadioGroupFocus->setValue("radio orbit");
-	}
-	else if (	gCameraBtnPan ||
-				(mask == MASK_PAN) ||
-				(mask == (MASK_PAN | MASK_ALT)) )
-	{
-		mRadioGroupFocus->setValue("radio pan");
-	}
+		if (!gCameraBtnOrbit &&
+			!gCameraBtnPan &&
+			!(mask == MASK_ORBIT) &&
+			!(mask == (MASK_ORBIT | MASK_ALT)) &&
+			!(mask == MASK_PAN) &&
+			!(mask == (MASK_PAN | MASK_ALT)))
+		{
+			mRadioGroupFocus->setValue("radio zoom");
+		}
+		else if (gCameraBtnOrbit ||
+			(mask == MASK_ORBIT) ||
+			(mask == (MASK_ORBIT | MASK_ALT)))
+		{
+			mRadioGroupFocus->setValue("radio orbit");
+		}
+		else if (gCameraBtnPan ||
+			(mask == MASK_PAN) ||
+			(mask == (MASK_PAN | MASK_ALT)))
+		{
+			mRadioGroupFocus->setValue("radio pan");
+		}
 
-	// multiply by correction factor because volume sliders go [0, 0.5]
-	getChild<LLUICtrl>("slider zoom")->setValue(gAgentCamera.getCameraZoomFraction() * 0.5f);
+		// multiply by correction factor because volume sliders go [0, 0.5]
+		mZoomSlider->setValue(gAgentCamera.getCameraZoomFraction() * 0.5f);
+	}
 
 	// Move buttons
 	BOOL move_visible = (tool == LLToolGrab::getInstance());
 
-	if (mBtnMove) mBtnMove	->setToggleState( move_visible );
+	mGrabPanel->setVisible(move_visible);
+	mBtnMove->setToggleState(move_visible);
 
-	// HACK - highlight buttons for next click
-	mRadioGroupMove->setVisible(move_visible);
-	if (!(gGrabBtnSpin || 
-		gGrabBtnVertical || 
-		(mask == MASK_VERTICAL) || 
-		(mask == MASK_SPIN)))
+	if (move_visible)
 	{
-		mRadioGroupMove->setValue("radio move");
-	}
-	else if ((mask == MASK_VERTICAL) ||
-			 (gGrabBtnVertical && (mask != MASK_SPIN)))
-	{
-		mRadioGroupMove->setValue("radio lift");
-	}
-	else if ((mask == MASK_SPIN) || 
-			 (gGrabBtnSpin && (mask != MASK_VERTICAL)))
-	{
-		mRadioGroupMove->setValue("radio spin");
+		// HACK - highlight buttons for next click
+		mRadioGroupMove->setVisible(move_visible);
+		if (!(gGrabBtnSpin ||
+			gGrabBtnVertical ||
+			(mask == MASK_VERTICAL) ||
+			(mask == MASK_SPIN)))
+		{
+			mRadioGroupMove->setValue("radio move");
+		}
+		else if ((mask == MASK_VERTICAL) ||
+			(gGrabBtnVertical && (mask != MASK_SPIN)))
+		{
+			mRadioGroupMove->setValue("radio lift");
+		}
+		else if ((mask == MASK_SPIN) ||
+			(gGrabBtnSpin && (mask != MASK_VERTICAL)))
+		{
+			mRadioGroupMove->setValue("radio spin");
+		}
 	}
 
 	// Edit buttons
@@ -678,152 +722,173 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 //						//BD - Qarl's Aligning Tool
 						tool == QToolAlign::getInstance();
 
-	mBtnEdit	->setToggleState( edit_visible );
-	mRadioGroupEdit->setVisible( edit_visible );
+	mEditPanel->setVisible(edit_visible);
+	mBtnEdit->setToggleState( edit_visible );
+	//mRadioGroupEdit->setVisible( edit_visible );
 	//bool linked_parts = gSavedSettings.getBOOL("EditLinkedParts");
 	//getChildView("RenderingCost")->setVisible( !linked_parts && (edit_visible || focus_visible || move_visible) && sShowObjectCost);
 
-	mBtnLink->setVisible(edit_visible);
-	mBtnUnlink->setVisible(edit_visible);
+	//mBtnLink->setVisible(edit_visible);
+	//mBtnUnlink->setVisible(edit_visible);
 
-	mBtnLink->setEnabled(LLSelectMgr::instance().enableLinkObjects());
-	mBtnUnlink->setEnabled(LLSelectMgr::instance().enableUnlinkObjects());
-
-	if (mCheckSelectIndividual)
+	if (edit_visible)
 	{
+		mBtnLink->setEnabled(LLSelectMgr::instance().enableLinkObjects());
+		mBtnUnlink->setEnabled(LLSelectMgr::instance().enableUnlinkObjects());
+
+		/*if (mCheckSelectIndividual)
+		{
 		mCheckSelectIndividual->setVisible(edit_visible);
 		//mCheckSelectIndividual->set(gSavedSettings.getBOOL("EditLinkedParts"));
-	}
+		}*/
 
-	if ( tool == LLToolCompTranslate::getInstance() )
-	{
-		mRadioGroupEdit->setValue("radio position");
-	}
-	else if ( tool == LLToolCompRotate::getInstance() )
-	{
-		mRadioGroupEdit->setValue("radio rotate");
-	}
-	else if ( tool == LLToolCompScale::getInstance() )
-	{
-		mRadioGroupEdit->setValue("radio stretch");
-	}
-	else if ( tool == LLToolFace::getInstance() )
-	{
-		mRadioGroupEdit->setValue("radio select face");
-	}
-//	//BD - Qarl's Aligning Tool
-	else if ( tool == QToolAlign::getInstance() )
-	{
-		mRadioGroupEdit->setValue("radio align");
-	}
+		if (tool == LLToolCompTranslate::getInstance())
+		{
+			mRadioGroupEdit->setValue("radio position");
+		}
+		else if (tool == LLToolCompRotate::getInstance())
+		{
+			mRadioGroupEdit->setValue("radio rotate");
+		}
+		else if (tool == LLToolCompScale::getInstance())
+		{
+			mRadioGroupEdit->setValue("radio stretch");
+		}
+		else if (tool == LLToolFace::getInstance())
+		{
+			mRadioGroupEdit->setValue("radio select face");
+		}
+		//	//BD - Qarl's Aligning Tool
+		else if (tool == QToolAlign::getInstance())
+		{
+			mRadioGroupEdit->setValue("radio align");
+		}
 
-	if (mComboGridMode) 
+		//if (mComboGridMode) 
 	{
-		mComboGridMode->setVisible( edit_visible );
+		//mComboGridMode->setVisible( edit_visible );
 		S32 index = mComboGridMode->getCurrentIndex();
 		mComboGridMode->removeall();
 
 		switch (mObjectSelection->getSelectType())
 		{
-			case SELECT_TYPE_HUD:
-				mComboGridMode->add(getString("grid_screen_text"));
-				mComboGridMode->add(getString("grid_local_text"));
-				break;
-			case SELECT_TYPE_WORLD:
-				mComboGridMode->add(getString("grid_world_text"));
-				mComboGridMode->add(getString("grid_local_text"));
-				mComboGridMode->add(getString("grid_reference_text"));
-				break;
-			case SELECT_TYPE_ATTACHMENT:
-				mComboGridMode->add(getString("grid_attachment_text"));
-				mComboGridMode->add(getString("grid_local_text"));
-				mComboGridMode->add(getString("grid_reference_text"));
-				break;
+		case SELECT_TYPE_HUD:
+			mComboGridMode->add(getString("grid_screen_text"));
+			mComboGridMode->add(getString("grid_local_text"));
+			break;
+		case SELECT_TYPE_WORLD:
+			mComboGridMode->add(getString("grid_world_text"));
+			mComboGridMode->add(getString("grid_local_text"));
+			mComboGridMode->add(getString("grid_reference_text"));
+			break;
+		case SELECT_TYPE_ATTACHMENT:
+			mComboGridMode->add(getString("grid_attachment_text"));
+			mComboGridMode->add(getString("grid_local_text"));
+			mComboGridMode->add(getString("grid_reference_text"));
+			break;
 		}
 
 		mComboGridMode->setCurrentByIndex(index);
 	}
 
 	// Snap to grid disabled for grab tool - very confusing
-	if (mCheckSnapToGrid) mCheckSnapToGrid->setVisible( edit_visible /* || tool == LLToolGrab::getInstance() */ );
-	if (mBtnGridOptions) mBtnGridOptions->setVisible( edit_visible /* || tool == LLToolGrab::getInstance() */ );
+	//if (mCheckSnapToGrid) 
+	//mCheckSnapToGrid->setVisible( edit_visible /* || tool == LLToolGrab::getInstance() */ );
+	//if (mBtnGridOptions) 
+	//mBtnGridOptions->setVisible( edit_visible /* || tool == LLToolGrab::getInstance() */ );
 	//BD
-	if (mCheckMyObjects) mCheckMyObjects->setVisible( edit_visible);
-	if (mCheckPhysicalObjects) mCheckPhysicalObjects->setVisible( edit_visible);
+	//if (mCheckMyObjects) 
+	//mCheckMyObjects->setVisible( edit_visible);
+	//if (mCheckPhysicalObjects) 
+	//mCheckPhysicalObjects->setVisible( edit_visible);
 
 	//mCheckSelectLinked	->setVisible( edit_visible );
-	if (mCheckStretchUniform) mCheckStretchUniform->setVisible( edit_visible );
-	if (mCheckStretchTexture) mCheckStretchTexture->setVisible( edit_visible );
+	//if (mCheckStretchUniform) 
+	//mCheckStretchUniform->setVisible( edit_visible );
+	//if (mCheckStretchTexture) 
+	//mCheckStretchTexture->setVisible( edit_visible );
+	}
 
 	// Create buttons
 	BOOL create_visible = (tool == LLToolCompCreate::getInstance());
 
-	mBtnCreate	->setToggleState(	tool == LLToolCompCreate::getInstance() );
+	mCreatePanel->setVisible(create_visible);
+	mBtnCreate->setToggleState(tool == LLToolCompCreate::getInstance());
 
-	if (mCheckCopySelection
-		&& mCheckCopySelection->get())
+	if (create_visible)
 	{
-		// don't highlight any placer button
-		for (std::vector<LLButton*>::size_type i = 0; i < mButtons.size(); i++)
+		if (/*mCheckCopySelection &&*/ mCheckCopySelection->getValue())
 		{
-			mButtons[i]->setToggleState(FALSE);
-			mButtons[i]->setVisible( create_visible );
+			// don't highlight any placer button
+			for (std::vector<LLButton*>::size_type i = 0; i < mButtons.size(); i++)
+			{
+				mButtons[i]->setToggleState(FALSE);
+				//mButtons[i]->setVisible( create_visible );
+			}
+		}
+		else
+		{
+			// Highlight the correct placer button
+			for (S32 t = 0; t < (S32)mButtons.size(); t++)
+			{
+				LLPCode pcode = LLToolPlacer::getObjectType();
+				LLPCode button_pcode = toolData[t];
+				BOOL state = (pcode == button_pcode);
+				mButtons[t]->setToggleState(state);
+				//mButtons[t]->setVisible( create_visible );
+			}
 		}
 	}
-	else
-	{
-		// Highlight the correct placer button
-		for( S32 t = 0; t < (S32)mButtons.size(); t++ )
-		{
-			LLPCode pcode = LLToolPlacer::getObjectType();
-			LLPCode button_pcode = toolData[t];
-			BOOL state = (pcode == button_pcode);
-			mButtons[t]->setToggleState( state );
-			mButtons[t]->setVisible( create_visible );
-		}
-	}
 
-	if (mCheckSticky) mCheckSticky		->setVisible( create_visible );
-	if (mCheckCopySelection) mCheckCopySelection	->setVisible( create_visible );
-	if (mCheckCopyCenters) mCheckCopyCenters	->setVisible( create_visible );
-	if (mCheckCopyRotates) mCheckCopyRotates	->setVisible( create_visible );
+	//if (mCheckSticky) 
+		//mCheckSticky->setVisible(create_visible);
+	//if (mCheckCopySelection) 
+		//mCheckCopySelection->setVisible(create_visible);
+	//if (mCheckCopyCenters) 
+		//mCheckCopyCenters->setVisible(create_visible);
+	//if (mCheckCopyRotates) 
+		//mCheckCopyRotates->setVisible(create_visible);
 
-	if (mCheckCopyCenters && mCheckCopySelection) mCheckCopyCenters->setEnabled( mCheckCopySelection->get() );
-	if (mCheckCopyRotates && mCheckCopySelection) mCheckCopyRotates->setEnabled( mCheckCopySelection->get() );
+	//if (mCheckCopyCenters && mCheckCopySelection) 
+		//mCheckCopyCenters->setEnabled( mCheckCopySelection->getValue() );
+	//if (mCheckCopyRotates && mCheckCopySelection) 
+		//mCheckCopyRotates->setEnabled( mCheckCopySelection->getValue() );
 
 	// Land buttons
-	BOOL land_visible = (tool == LLToolBrushLand::getInstance() || tool == LLToolSelectLand::getInstance() );
+	BOOL land_visible = (tool == LLToolBrushLand::getInstance() || tool == LLToolSelectLand::getInstance());
 
+	mLandPanel->setVisible(land_visible);
 	mCostTextBorder->setVisible(!land_visible);
 
-	if (mBtnLand)	mBtnLand	->setToggleState( land_visible );
+	//if (mBtnLand)	
+		mBtnLand->setToggleState(land_visible);
 
-	mRadioGroupLand->setVisible( land_visible );
-	if ( tool == LLToolSelectLand::getInstance() )
+	//mRadioGroupLand->setVisible(land_visible);
+	if (tool == LLToolSelectLand::getInstance())
 	{
 		mRadioGroupLand->setValue("radio select land");
 	}
-	else if ( tool == LLToolBrushLand::getInstance() )
+	else if (tool == LLToolBrushLand::getInstance())
 	{
 		S32 dozer_mode = gSavedSettings.getS32("RadioLandBrushAction");
 		switch(dozer_mode)
 		{
-		case 0:
+		case 1:
 			mRadioGroupLand->setValue("radio flatten");
 			break;
-		case 1:
+		case 2:
 			mRadioGroupLand->setValue("radio raise");
 			break;
-		case 2:
+		case 3:
 			mRadioGroupLand->setValue("radio lower");
 			break;
-		case 3:
+		case 4:
 			mRadioGroupLand->setValue("radio smooth");
 			break;
-		case 4:
+		case 5:
 			mRadioGroupLand->setValue("radio noise");
 			break;
-		case 5:
+		case 6:
 			mRadioGroupLand->setValue("radio revert");
 			break;
 		default:
@@ -831,28 +896,28 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 		}
 	}
 
-	if (mBtnApplyToSelection)
-	{
-		mBtnApplyToSelection->setVisible( land_visible );
+	//if (mBtnApplyToSelection)
+	//{
+		//mBtnApplyToSelection->setVisible( land_visible );
 		mBtnApplyToSelection->setEnabled( land_visible && !LLViewerParcelMgr::getInstance()->selectionEmpty() && tool != LLToolSelectLand::getInstance());
-	}
-	if (mSliderDozerSize)
+	//}
+	/*if (mSliderDozerSize)
 	{
-		mSliderDozerSize	->setVisible( land_visible );
+		mSliderDozerSize->setVisible( land_visible );
 		getChildView("Bulldozer:")->setVisible( land_visible);
 		getChildView("Dozer Size:")->setVisible( land_visible);
-	}
-	if (mSliderDozerForce)
+	}*/
+	/*if (mSliderDozerForce)
 	{
-		mSliderDozerForce	->setVisible( land_visible );
+		mSliderDozerForce->setVisible( land_visible );
 		getChildView("Strength:")->setVisible( land_visible);
-	}
+	}*/
 
 	bool have_selection = !LLSelectMgr::getInstance()->getSelection()->isEmpty();
 
-	getChildView("selection_count")->setVisible(!land_visible && have_selection);
-	getChildView("remaining_capacity")->setVisible(!land_visible && have_selection);
-	getChildView("selection_empty")->setVisible(!land_visible && !have_selection);
+	mSelectionCount->setVisible(!land_visible && have_selection);
+	mRemainingCapacity->setVisible(!land_visible && have_selection);
+	mNothingSelected->setVisible(!land_visible && !have_selection);
 	
 	mTab->setVisible(!land_visible);
 	mPanelLandInfo->setVisible(land_visible);
@@ -884,7 +949,7 @@ void LLFloaterTools::onOpen(const LLSD& key)
 // virtual
 void LLFloaterTools::onClose(bool app_quitting)
 {
-	mTab->setVisible(FALSE);
+	//mTab->setVisible(FALSE);
 
 	LLViewerJoystick::getInstance()->moveAvatar(false);
 
@@ -907,11 +972,12 @@ void LLFloaterTools::onClose(bool app_quitting)
 	mParcelSelection = NULL;
 	mObjectSelection = NULL;
 
+	LLToolMgr* tool_mgr = LLToolMgr::getInstance();
 	// Switch back to basic toolset
-	LLToolMgr::getInstance()->setCurrentToolset(gBasicToolset);
+	tool_mgr->setCurrentToolset(gBasicToolset);
 	// we were already in basic toolset, using build tools
 	// so manually reset tool to default (pie menu tool)
-	LLToolMgr::getInstance()->getCurrentToolset()->selectFirstTool();
+	tool_mgr->getCurrentToolset()->selectFirstTool();
 
 	//gMenuBarView->setItemVisible("BuildTools", FALSE);
 	LLFloaterReg::hideInstance("media_settings");
@@ -1036,15 +1102,15 @@ void commit_radio_group_edit(LLUICtrl *ctrl)
 void commit_radio_group_land(LLUICtrl* ctrl)
 {
 	LLRadioGroup* group = (LLRadioGroup*)ctrl;
-	std::string selected = group->getValue().asString();
-	if (selected == "radio select land")
+	S32 selected = group->getValue().asInteger();
+	if (selected == 0)
 	{
 		LLFloaterTools::setEditTool( LLToolSelectLand::getInstance() );
 	}
 	else
 	{
 		LLFloaterTools::setEditTool( LLToolBrushLand::getInstance() );
-		S32 dozer_mode = gSavedSettings.getS32("RadioLandBrushAction");
+		/*S32 dozer_mode; = gSavedSettings.getS32("RadioLandBrushAction");
 		if (selected == "radio flatten")
 			dozer_mode = 0;
 		else if (selected == "radio raise")
@@ -1057,7 +1123,7 @@ void commit_radio_group_land(LLUICtrl* ctrl)
 			dozer_mode = 4;
 		else if (selected == "radio revert")
 			dozer_mode = 5;
-		gSavedSettings.setS32("RadioLandBrushAction", dozer_mode);
+		gSavedSettings.setS32("RadioLandBrushAction", dozer_mode);*/
 	}
 }
 
@@ -1071,8 +1137,8 @@ void commit_select_component(void *data)
 		gFocusMgr.setKeyboardFocus(NULL);
 	}
 
-	BOOL select_individuals = floaterp->mCheckSelectIndividual->get();
-	gSavedSettings.setBOOL("EditLinkedParts", select_individuals);
+	BOOL select_individuals = floaterp->mCheckSelectIndividual->getValue();
+	//gSavedSettings.setBOOL("EditLinkedParts", select_individuals);
 	floaterp->dirty();
 
 	if (select_individuals)
@@ -1220,7 +1286,7 @@ void LLFloaterTools::updateLandImpacts()
 		remaining_capacity_str = getString("status_remaining_capacity", remaining_capacity_args);
 	}
 
-	childSetTextArg("remaining_capacity", "[CAPACITY_STRING]", remaining_capacity_str);
+	mRemainingCapacity->setTextArg("[CAPACITY_STRING]", remaining_capacity_str);
 
 	// Update land impacts info in the weights floater
 	LLFloaterObjectWeights* object_weights_floater = LLFloaterReg::findTypedInstance<LLFloaterObjectWeights>("object_weights");
@@ -1232,17 +1298,17 @@ void LLFloaterTools::updateLandImpacts()
 
 void LLFloaterTools::getMediaState()
 {
-	LLObjectSelectionHandle selected_objects =LLSelectMgr::getInstance()->getSelection();
+	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
+	LLObjectSelectionHandle selected_objects = select_mgr->getSelection();
 	LLViewerObject* first_object = selected_objects->getFirstObject();
-	LLTextBox* media_info = getChild<LLTextBox>("media_info");
 	
 	if( !(first_object 
 		  && first_object->getPCode() == LL_PCODE_VOLUME
 		  &&first_object->permModify() 
 	      ))
 	{
-		getChildView("add_media")->setEnabled(FALSE);
-		media_info->clear();
+		mMediaAdd->setEnabled(FALSE);
+		mMediaInfo->clear();
 		clearMediaSettings();
 		return;
 	}
@@ -1252,15 +1318,15 @@ void LLFloaterTools::getMediaState()
 	
 	if(!has_media_capability)
 	{
-		getChildView("add_media")->setEnabled(FALSE);
+		mMediaAdd->setEnabled(FALSE);
 		LL_WARNS("LLFloaterToolsMedia") << "Media not enabled (no capability) in this region!" << LL_ENDL;
 		clearMediaSettings();
 		return;
 	}
 	
-	BOOL is_nonpermanent_enforced = (LLSelectMgr::getInstance()->getSelection()->getFirstRootNode() 
-		&& LLSelectMgr::getInstance()->selectGetRootsNonPermanentEnforced())
-		|| LLSelectMgr::getInstance()->selectGetNonPermanentEnforced();
+	BOOL is_nonpermanent_enforced = (selected_objects->getFirstRootNode() 
+		&& select_mgr->selectGetRootsNonPermanentEnforced())
+		|| select_mgr->selectGetNonPermanentEnforced();
 	bool editable = is_nonpermanent_enforced && (first_object->permModify() || selectedMediaEditable());
 
 	// Check modify permissions and whether any selected objects are in
@@ -1340,21 +1406,22 @@ void LLFloaterTools::getMediaState()
     } func_media_data(default_media_data);
 
 	LLMediaEntry media_data_get;
-    LLFloaterMediaSettings::getInstance()->mMultipleMedia = !(selected_objects->getSelectedTEValue( &func_media_data, media_data_get ));
+	LLFloaterMediaSettings* media_settings = LLFloaterMediaSettings::getInstance();
+    media_settings->mMultipleMedia = !(selected_objects->getSelectedTEValue( &func_media_data, media_data_get ));
 	
 	std::string multi_media_info_str = LLTrans::getString("Multiple Media");
 	std::string media_title = "";
 	// update UI depending on whether "object" (prim or face) has media
 	// and whether or not you are allowed to edit it.
 	
-	getChildView("add_media")->setEnabled(editable);
+	mMediaAdd->setEnabled(editable);
 	// IF all the faces have media (or all dont have media)
-	if ( LLFloaterMediaSettings::getInstance()->mIdenticalHasMediaInfo )
+	if (media_settings->mIdenticalHasMediaInfo )
 	{
 		// TODO: get media title and set it.
-		media_info->clear();
+		mMediaInfo->clear();
 		// if identical is set, all faces are same (whether all empty or has the same media)
-		if(!(LLFloaterMediaSettings::getInstance()->mMultipleMedia) )
+		if(!(media_settings->mMultipleMedia) )
 		{
 			// Media data is valid
 			if(media_data_get!=default_media_data)
@@ -1369,15 +1436,15 @@ void LLFloaterTools::getMediaState()
 			media_title = multi_media_info_str;
 		}
 		
-		getChildView("delete_media")->setEnabled(bool_has_media && editable );
+		mMediaDelete->setEnabled(bool_has_media && editable );
 			// TODO: display a list of all media on the face - use 'identical' flag
 	}
 	else // not all face has media but at least one does.
 	{
 		// seleted faces have not identical value
-		LLFloaterMediaSettings::getInstance()->mMultipleValidMedia = selected_objects->isMultipleTEValue(&func_media_data, default_media_data );
+		media_settings->mMultipleValidMedia = selected_objects->isMultipleTEValue(&func_media_data, default_media_data );
 	
-		if(LLFloaterMediaSettings::getInstance()->mMultipleValidMedia)
+		if(media_settings->mMultipleValidMedia)
 		{
 			media_title = multi_media_info_str;
 		}
@@ -1391,11 +1458,11 @@ void LLFloaterTools::getMediaState()
 			}
 		}
 		
-		getChildView("delete_media")->setEnabled(TRUE);
+		mMediaDelete->setEnabled(TRUE);
 	}
 
 	navigateToTitleMedia(media_title);
-	media_info->setText(media_title);
+	mMediaInfo->setText(media_title);
 	
 	// load values for media settings
 	updateMediaSettings();
@@ -1516,24 +1583,23 @@ void LLFloaterTools::navigateToTitleMedia( const std::string url )
 void LLFloaterTools::updateMediaTitle()
 {
 	// only get the media name if we need it
-	if ( ! mNeedMediaTitle )
+	if (!mNeedMediaTitle)
 		return;
 
 	// get plugin impl
 	LLPluginClassMedia* media_plugin = mTitleMedia->getMediaPlugin();
-	if ( media_plugin )
+	if (media_plugin)
 	{
 		// get the media name (asynchronous - must call repeatedly)
 		std::string media_title = media_plugin->getMediaName();
 
 		// only replace the title if what we get contains something
-		if ( ! media_title.empty() )
+		if (!media_title.empty())
 		{
 			// update the UI widget
-			LLTextBox* media_title_field = getChild<LLTextBox>("media_info");
-			if ( media_title_field )
+			if (mMediaInfo)
 			{
-				media_title_field->setText( media_title );
+				mMediaInfo->setText(media_title);
 
 				// stop looking for a title when we get one
 				// FIXME: check this is the right approach

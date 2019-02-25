@@ -211,6 +211,7 @@ private:
 	std::string			mSearchString;
 	LLButton*			mFolderViewBtn;
 	LLButton*			mPlusBtn;
+	LLButton*			mFilterBtn;
 	LLPanel*			mAddWearablesPanel;
 	
 	LLComboBox*			mFolderViewFilterCmbBox;

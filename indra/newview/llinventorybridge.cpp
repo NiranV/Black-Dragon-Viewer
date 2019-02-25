@@ -845,7 +845,7 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id,
 			{
 				items.push_back(std::string("Marketplace Separator"));
 
-                if (gMenuHolder->getChild<LLView>("MarketplaceListings")->getVisible())
+				if (gMenuHolder->mMarketPlaceListings->getVisible())
                 {
                     items.push_back(std::string("Marketplace Copy"));
                     items.push_back(std::string("Marketplace Move"));

@@ -70,6 +70,9 @@ protected:
 
 public:
 	LLPanelObjectInventory* mPanelInventoryObject;
+
+	LLButton* mBtnNewScript;
+	LLButton* mBtnPermissions;
 };
 
 #endif // LL_LLPANELCONTENTS_H

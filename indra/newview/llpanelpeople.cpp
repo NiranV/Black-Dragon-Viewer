@@ -722,6 +722,11 @@ BOOL LLPanelPeople::postBuild()
 	//BD
 	mBlockedList = getChild<LLBlockList>("blocked");
 
+	mLabelNoFriends = getChild<LLTextBox>("no_friends_help_text");
+
+	mMenuFilters = getChild<LLMenuItemBranchGL>("Filters");
+	mMenuEdit = getChild<LLMenuItemBranchGL>("Edit");
+
 	// Must go after setting commit callback and initializing all pointers to children.
 	mTabContainer->selectTabByName(NEARBY_TAB_NAME);
 
@@ -749,14 +754,14 @@ void LLPanelPeople::onChange(EStatusType status, const std::string &channelURI, 
 void LLPanelPeople::updateFriendListHelpText()
 {
 	// show special help text for just created account to help finding friends. EXT-4836
-	static LLTextBox* no_friends_text = getChild<LLTextBox>("no_friends_help_text");
+	//static LLTextBox* mLabelNoFriends = getChild<LLTextBox>("no_friends_help_text");
 
 	// Seems sometimes all_friends can be empty because of issue with Inventory loading (clear cache, slow connection...)
 	// So, lets check all lists to avoid overlapping the text with online list. See EXT-6448.
 	//BD
 	bool any_friend_exists = mAllFriendList->filterHasMatches();
-	no_friends_text->setVisible(!any_friend_exists);
-	if (no_friends_text->getVisible())
+	mLabelNoFriends->setVisible(!any_friend_exists);
+	if (mLabelNoFriends->getVisible())
 	{
 		//update help text for empty lists
 		const std::string& filter = mSavedOriginalFilters[mTabContainer->getCurrentPanelIndex()];
@@ -764,7 +769,7 @@ void LLPanelPeople::updateFriendListHelpText()
 		std::string message_name = filter.empty() ? "no_friends_msg" : "no_filtered_friends_msg";
 		LLStringUtil::format_map_t args;
 		args["[SEARCH_TERM]"] = LLURI::escape(filter);
-		no_friends_text->setText(getString(message_name, args));
+		mLabelNoFriends->setText(getString(message_name, args));
 	}
 }
 
@@ -893,8 +898,8 @@ void LLPanelPeople::updateButtons()
 	U32 block_count = mBlockedList->size();
 	mBlockCount->setTextArg("[BLOCKED_COUNT]", llformat("%d", block_count));
 	mBlockCount->setTextArg("[LIMIT]", llformat("%d", gSavedSettings.getS32("MuteListLimit")));
-	getChild<LLMenuItemBranchGL>("Filters")->setVisible(!group_tab_active);
-	getChild<LLMenuItemBranchGL>("Edit")->setVisible(!recent_tab_active);
+	mMenuFilters->setVisible(!group_tab_active);
+	mMenuEdit->setVisible(!recent_tab_active);
 
 	if (group_tab_active)
 	{
@@ -1016,7 +1021,7 @@ void LLPanelPeople::getCurrentItemIDs(uuid_vec_t& selected_uuids) const
 
 }
 
-void LLPanelPeople::showGroupMenu(LLMenuGL* menu)
+/*void LLPanelPeople::showGroupMenu(LLMenuGL* menu)
 {
 	// Shows the menu at the top of the button bar.
 
@@ -1033,7 +1038,7 @@ void LLPanelPeople::showGroupMenu(LLMenuGL* menu)
 	menu->buildDrawLabels();
 	menu->updateParent(LLMenuGL::sMenuContainer);
 	LLMenuGL::showPopup(parent_panel, menu, menu_x, menu_y);
-}
+}*/
 
 void LLPanelPeople::setSortOrder(LLAvatarList* list, ESortOrder order, bool save)
 {
@@ -1132,7 +1137,7 @@ void LLPanelPeople::onGroupLimitInfo()
 
 void LLPanelPeople::onTabSelected(const LLSD& param)
 {
-	std::string tab_name = getChild<LLPanel>(param.asString())->getName();
+	//std::string tab_name = getChild<LLPanel>(param.asString())->getName();
 	updateButtons();
 }
 
@@ -1667,7 +1672,7 @@ bool LLPanelPeople::notifyChildren(const LLSD& info)
 	return LLPanel::notifyChildren(info);
 }
 
-void LLPanelPeople::showAccordion(const std::string name, bool show)
+/*void LLPanelPeople::showAccordion(const std::string name, bool show)
 {
 	if(name.empty())
 	{
@@ -1686,7 +1691,7 @@ void LLPanelPeople::showAccordion(const std::string name, bool show)
 			tab->changeOpenClose(false);
 		}
 	}
-}
+}*/
 
 //BD
 /*void LLPanelPeople::showFriendsAccordionsIfNeeded()
@@ -1721,7 +1726,7 @@ void LLPanelPeople::showAccordion(const std::string name, bool show)
 	}
 }*/
 
-void LLPanelPeople::setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed)
+/*void LLPanelPeople::setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed)
 {
 	if(!acc_tab)
 	{
@@ -1758,7 +1763,7 @@ bool LLPanelPeople::isAccordionCollapsedByUser(LLUICtrl* acc_tab)
 bool LLPanelPeople::isAccordionCollapsedByUser(const std::string& name)
 {
 	return isAccordionCollapsedByUser(getChild<LLUICtrl>(name));
-}
+}*/
 
 std::string LLPanelPeople::getAvatarInformation(const LLUUID& avatar)
 {

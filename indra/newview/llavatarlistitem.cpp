@@ -76,6 +76,7 @@ LLAvatarListItem::LLAvatarListItem(bool not_from_ui_factory/* = true*/)
 	mIconPermissionEditTheirs(NULL),
 	mSpeakingIndicator(NULL),
 	mInfoBtn(NULL),
+	mSelectedIcon(NULL),
 	mOnlineStatus(E_UNKNOWN),
 // [RLVa:KB] - Checked: RLVa-1.2.0
 	mRlvCheckShowNames(false),
@@ -119,6 +120,8 @@ BOOL  LLAvatarListItem::postBuild()
 	mIconPermissionMap = getChild<LLButton>("permission_map_icon");
 	mIconPermissionEditMine = getChild<LLButton>("permission_edit_mine_icon");
 	mIconPermissionEditTheirs = getChild<LLButton>("permission_edit_theirs_icon");
+
+	mSelectedIcon = getChild<LLIconCtrl>("selected_icon");
 
 	mIconPermissionOnline->setCommitCallback(boost::bind(&LLAvatarListItem::empowerFriend, this, _1));
 	mIconPermissionMap->setCommitCallback(boost::bind(&LLAvatarListItem::empowerFriend, this, _1));
@@ -276,10 +279,10 @@ void LLAvatarListItem::setAvatarId(const LLUUID& id, const LLUUID& session_id, b
 		getChild<LLIconCtrl>("developer_tag")->setVisible(TRUE);
 		getChild<LLTextBox>("developer_text")->setVisible(TRUE);
 	}
-	else
-	{
+	//else
+	//{
 		mSpeakingIndicator->setSpeakerId(id, session_id);
-	}
+	//}
 
 	if (is_resident)
 	{
@@ -339,7 +342,7 @@ void LLAvatarListItem::setValue( const LLSD& value )
 {
 	if (!value.isMap()) return;;
 	if (!value.has("selected")) return;
-	getChildView("selected_icon")->setVisible( value["selected"]);
+		mSelectedIcon->setVisible( value["selected"]);
 }
 
 const LLUUID& LLAvatarListItem::getAvatarId() const

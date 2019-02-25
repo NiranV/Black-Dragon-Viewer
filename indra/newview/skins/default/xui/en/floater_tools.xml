@@ -188,6 +188,16 @@
      width="285">
         Drag to move, shift-drag to copy
 	</text>-->
+    <panel
+	 follows="left|top"
+     height="130"
+     layout="topleft"
+     left="0"
+     visible="true"
+     mouse_opaque="false"
+     name="focus_panel"
+     top="0"
+     width="290">
    <radio_group
      layout="topleft"
      left="8"
@@ -195,17 +205,17 @@
       top="27"
      name="focus_radio_group">
         <radio_item
-         top_pad="6"
+         top_pad="5"
          label="Zoom"
          layout="topleft"
          name="radio zoom" />
         <radio_item
-         top_pad="6"
+         top_pad="5"
          label="Orbit (Ctrl)"
          layout="topleft"
          name="radio orbit" />
         <radio_item
-         top_pad="6"
+         top_pad="5"
          label="Pan (Ctrl+Shift)"
          layout="topleft"
          name="radio pan" />
@@ -226,6 +236,18 @@
 	 <slider_bar.commit_callback
 	     function="BuildTool.commitZoom"/>
 			</slider_bar>
+    </panel>
+    
+    <panel
+	 follows="left|top"
+     height="130"
+     layout="topleft"
+     left="0"
+     visible="true"
+     mouse_opaque="false"
+     name="grab_panel"
+     top="0"
+     width="290">
    <radio_group
       left="8"
       height="70"
@@ -233,23 +255,35 @@
      layout="topleft"
      name="move_radio_group">
         <radio_item
-         top_pad="6"
+         top_pad="5"
          label="Move"
          layout="topleft"
          name="radio move" />
         <radio_item
-		 top_pad="6"
+		 top_pad="5"
          label="Lift (Ctrl)"
          layout="topleft"
          name="radio lift" />
         <radio_item
-         top_pad="6"
+         top_pad="5"
          label="Spin (Ctrl+Shift)"
          layout="topleft"
          name="radio spin" />
 		 <radio_group.commit_callback
 			function="BuildTool.commitRadioMove"/>
 	</radio_group>
+    </panel>
+    
+    <panel
+	 follows="left|top"
+     height="130"
+     layout="topleft"
+     left="0"
+     mouse_opaque="false"
+     visible="true"
+     name="select_panel"
+     top="0"
+     width="290">
 	<radio_group
      follows="left|top"
 	 left="8"
@@ -441,7 +475,18 @@
 	 <button.commit_callback
 	     function="BuildTool.gridOptions"/>
 	</button>
-  
+    </panel>
+    
+    <panel
+	 follows="left|top"
+     height="130"
+     layout="topleft"
+     left="0"
+     visible="true"
+     mouse_opaque="false"
+     name="create_panel"
+     top="0"
+     width="290">
    <button
      follows="left|top"
      height="20"
@@ -676,9 +721,22 @@
      name="checkbox copy rotates"
      top_pad="0"
      width="134" />
+    </panel>
+    
+    <panel
+	 follows="left|top"
+     height="130"
+     layout="topleft"
+     left="0"
+     visible="true"
+     mouse_opaque="false"
+     name="land_panel"
+     top="0"
+     width="290">
     <radio_group
      height="103"
      layout="topleft"
+     control_name="RadioLandBrushAction"
      left="8"
      name="land_radio_group"
      top="27"
@@ -688,6 +746,7 @@
          label="Select Land"
          layout="topleft"
          left="0"
+         value="0"
          name="radio select land"
          top="-106"
          width="134" />
@@ -696,6 +755,7 @@
          label="Flatten"
          layout="topleft"
          left_delta="0"
+         value="1"
          name="radio flatten"
          top_delta="15"
          width="114" />
@@ -704,6 +764,7 @@
          label="Raise"
          layout="topleft"
          left_delta="0"
+         value="2"
          name="radio raise"
          top_delta="15"
          width="114" />
@@ -712,6 +773,7 @@
          label="Lower"
          layout="topleft"
          left_delta="0"
+         value="3"
          name="radio lower"
          top_delta="15"
          width="114" />
@@ -720,6 +782,7 @@
          label="Smooth"
          layout="topleft"
          left_delta="0"
+         value="4"
          name="radio smooth"
          top_delta="15"
          width="114" />
@@ -728,6 +791,7 @@
          label="Roughen"
          layout="topleft"
          left_delta="0"
+         value="5"
          name="radio noise"
          top_delta="15"
          width="114" />
@@ -736,6 +800,7 @@
          label="Revert"
          layout="topleft"
          left_delta="0"
+         value="6"
          name="radio revert"
          top_delta="15"
          width="114" />
@@ -818,6 +883,7 @@
 	  <button.commit_callback
 	     function="BuildTool.applyToSelection"/>
 				</button>
+    </panel>
     <view_border
     bevel_style="none"
     follows="top|left"
@@ -2794,7 +2860,7 @@ the light into a projected light )
              left="6"
              name="contents_inventory"
              top_pad="3"
-             width="280" />
+             width="278" />
             <button
              follows="left|top"
              height="25"

@@ -113,13 +113,13 @@ void LLFastTimerView::setPauseState(bool pause_state)
 	if (!pause_state)
 	{
 		
-		getChild<LLButton>("pause_btn")->setLabel(getString("pause"));
+		mPauseBtn->setLabel(getString("pause"));
 	}
 	else
 	{
 		mScrollIndex = 0;
 
-		getChild<LLButton>("pause_btn")->setLabel(getString("run"));
+		mPauseBtn->setLabel(getString("run"));
 	}
 
 	mPauseHistory = pause_state;
@@ -127,9 +127,16 @@ void LLFastTimerView::setPauseState(bool pause_state)
 
 BOOL LLFastTimerView::postBuild()
 {
-	LLButton& pause_btn = getChildRef<LLButton>("pause_btn");
+	//LLButton& pause_btn = getChildRef<LLButton>("pause_btn");
+	mPauseBtn = getChild<LLButton>("pause_btn");
+	mLinesPanel = getChild<LLView>("lines_panel");
+	mLegendPanel = getChild<LLView>("legend");
+	mBarsPanel = getChild<LLView>("bars_panel");
+
+	mScaleCombo = getChild<LLComboBox>("time_scale_combo");
+	mMetricCombo = getChild<LLComboBox>("metric_combo");
 	
-	pause_btn.setCommitCallback(boost::bind(&LLFastTimerView::onPause, this));
+	mPauseBtn->setCommitCallback(boost::bind(&LLFastTimerView::onPause, this));
 	return TRUE;
 }
 
@@ -376,22 +383,22 @@ void LLFastTimerView::draw()
 		mTimerBarRows.push_front(TimerBarRow());
 	}
 
-	mDisplayMode = llclamp(getChild<LLComboBox>("time_scale_combo")->getCurrentIndex(), 0, 3);
-	mDisplayType = (EDisplayType)llclamp(getChild<LLComboBox>("metric_combo")->getCurrentIndex(), 0, 2);
-		
+	mDisplayMode = llclamp(mScaleCombo->getCurrentIndex(), 0, 3);
+	mDisplayType = (EDisplayType)llclamp(mMetricCombo->getCurrentIndex(), 0, 2);
+
 	generateUniqueColors();
 
 	LLView::drawChildren();
 	//getChild<LLLayoutStack>("timer_bars_stack")->updateLayout();
 	//getChild<LLLayoutStack>("legend_stack")->updateLayout();
-	LLView* bars_panel = getChildView("bars_panel");
-	bars_panel->localRectToOtherView(bars_panel->getLocalRect(), &mBarRect, this);
+	//LLView* bars_panel = getChildView("bars_panel");
+	mBarsPanel->localRectToOtherView(mBarsPanel->getLocalRect(), &mBarRect, this);
 
-	LLView* lines_panel = getChildView("lines_panel");
-	lines_panel->localRectToOtherView(lines_panel->getLocalRect(), &mGraphRect, this);
+	//LLView* lines_panel = getChildView("lines_panel");
+	mLinesPanel->localRectToOtherView(mLinesPanel->getLocalRect(), &mGraphRect, this);
 
-	LLView* legend_panel = getChildView("legend");
-	legend_panel->localRectToOtherView(legend_panel->getLocalRect(), &mLegendRect, this);
+	//LLView* legend_panel = getChildView("legend");
+	mLegendPanel->localRectToOtherView(mLegendPanel->getLocalRect(), &mLegendRect, this);
 
 	// Draw the window background
 			gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);

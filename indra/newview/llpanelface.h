@@ -46,6 +46,7 @@ class LLTextureCtrl;
 class LLUICtrl;
 class LLViewerObject;
 class LLFloater;
+class LLRadioGroup;
 class LLMaterialID;
 
 // Represents an edit for use in replicating the op across one or more materials in the selection set.
@@ -181,7 +182,60 @@ protected:
 
 	static F32     valueGlow(LLViewerObject* object, S32 face);
 
-	
+public:
+	LLTextureCtrl*	mTextureCtrl;
+	LLTextureCtrl*	mShinyTextureCtrl;
+	LLTextureCtrl*	mBumpyTextureCtrl;
+
+	LLColorSwatchCtrl*	mColorSwatch;
+	LLColorSwatchCtrl*	mColorSwatchShiny;
+
+	LLUICtrl* mColorTransparency;
+
+	LLComboBox* mComboShiny;
+	LLComboBox* mComboBumpy;
+	LLComboBox* mComboAlpha;
+
+	LLComboBox*		mComboTexGen;
+	//BD
+	LLRadioGroup*	mRadioMaterialType;
+
+	LLCheckBoxCtrl*	mCheckFullbright;
+
+	//LLTextBox*		mLabelColorTransp;
+	//BD
+	//LLUICtrl*		mCtrlColorTransp;		// transparency = 1 - alpha
+	//LLUICtrl*		mCtrlGlow;
+	//LLUICtrl*		mCtrlGlossinessp;
+	//LLUICtrl*		mCtrlEnvironmentp;
+	//LLUICtrl*		mCtrlMaskCutoffp;
+
+	LLButton* mBtnAlign;
+
+	LLTextBox* mLabelShiny;
+	LLTextBox* mLabelBumpy;
+	LLTextBox* mLabelAlpha;
+	LLTextBox* mLabelGlow;
+	LLTextBox* mLabelTexGen;
+
+	LLUICtrl* mLockDiffuse;
+	LLUICtrl* mLockSpec;
+	LLUICtrl* mLockBump;
+
+	LLUICtrl* mGlossiness;
+	LLUICtrl* mEnvironment;
+	LLUICtrl* mMaskCutoff;
+	LLUICtrl* mGlow;
+
+	LLUICtrl* mTexScaleU;
+	LLUICtrl* mTexScaleV;
+	LLUICtrl* mTexOffsetU;
+	LLUICtrl* mTexOffsetV;
+	LLUICtrl* mTexRot;
+	LLUICtrl* mRepeats;
+
+	LLCheckBoxCtrl* mCheckAlignPlanar;
+
 
 private:
 

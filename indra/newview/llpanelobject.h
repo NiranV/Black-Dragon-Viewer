@@ -117,6 +117,13 @@ protected:
 	LLSpinCtrl*		mSpinShearX;
 	LLSpinCtrl*		mSpinShearY;
 
+	//BD
+	LLTextBox*		mScaleHole;
+	LLTextBox*		mScaleTaper;
+	LLTextBox*		mAdvancedCut;
+	LLTextBox*		mAdvancedDimple;
+	LLTextBox*		mAdvancedSlice;
+
 	// Advanced Path
 	LLSpinCtrl*		mCtrlPathBegin;
 	LLSpinCtrl*		mCtrlPathEnd;

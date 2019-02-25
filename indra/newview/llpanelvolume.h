@@ -40,6 +40,7 @@ class LLButton;
 class LLViewerObject;
 class LLComboBox;
 class LLColorSwatchCtrl;
+class LLTextureCtrl;
 
 class LLPanelVolume : public LLPanel
 {
@@ -124,6 +125,43 @@ protected:
 	LLSpinCtrl*     mSpinPhysicsFriction;
 	LLSpinCtrl*     mSpinPhysicsDensity;
 	LLSpinCtrl*     mSpinPhysicsRestitution;
+
+	LLCheckBoxCtrl* mCheckLight;
+	LLCheckBoxCtrl* mCheckShadow;
+	LLSpinCtrl*	mLightFoV;
+	LLSpinCtrl*	mLightFocus;
+	LLSpinCtrl*	mLightAmbiance;
+	LLSpinCtrl* mLightIntensity;
+	LLSpinCtrl* mLightRadius;
+	LLSpinCtrl* mLightFalloff;
+	LLTextureCtrl* mLightTextureCtrl;
+	LLColorSwatchCtrl* mLightColorSwatch;
+
+	LLTextBox* mLabelLights;
+	LLTextBox* mLabelPhysicsShape;
+	LLTextBox* mLabelMaterialType;
+	LLTextBox* mLabelDensity;
+
+	LLUICtrl* mSelectSingle;
+	LLUICtrl* mEditObject;
+
+	LLCheckBoxCtrl* mCheckFlexible;
+	LLCheckBoxCtrl* mCheckAnimatedMesh;
+	LLSpinCtrl* mSpinFlexSections;
+	LLSpinCtrl* mSpinFlexGravity;
+	LLSpinCtrl* mSpinFlexTension;
+	LLSpinCtrl* mSpinFlexFriction;
+	LLSpinCtrl* mSpinFlexWind;
+	LLSpinCtrl* mSpinFlexForceX;
+	LLSpinCtrl* mSpinFlexForceY;
+	LLSpinCtrl* mSpinFlexForceZ;
+
+
+		/*mComboPhysicsShape
+		mPhysicsGravity
+		mPhysicsFriction
+		mPhysicsDensity
+		mPhysicsRestitution*/
 };
 
 #endif
