@@ -2893,8 +2893,8 @@ bool enable_object_touch(LLUICtrl* ctrl)
 	}
 // [/RLVa:KB]
 
-	//std::string item_name = ctrl->getName();
-	//init_default_item_label(item_name);
+	std::string item_name = ctrl->getName();
+	init_default_item_label(item_name);
 
 	// Update label based on the node touch name if available.
 	LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
@@ -2905,7 +2905,7 @@ bool enable_object_touch(LLUICtrl* ctrl)
 	}
 	else
 	{
-		ctrl->setValue(get_default_item_label(ctrl->getName()));
+		ctrl->setValue(get_default_item_label(item_name));
 		//gMenuHolder->childSetValue(item_name, get_default_item_label(item_name));
 	}
 
@@ -6615,10 +6615,9 @@ bool enable_object_sit(LLUICtrl* ctrl)
 	bool sitting_on_sel = sitting_on_selection();
 	if (!sitting_on_sel)
 	{
-		//std::string item_name = ctrl->getName();
-
 		// init default labels
-		//init_default_item_label(item_name);
+		std::string item_name = ctrl->getName();
+		init_default_item_label(item_name);
 
 		// Update label
 		LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
@@ -6630,7 +6629,7 @@ bool enable_object_sit(LLUICtrl* ctrl)
 		}
 		else
 		{
-			ctrl->setValue(get_default_item_label(ctrl->getName()));
+			ctrl->setValue(get_default_item_label(item_name));
 			//gMenuHolder->mObjectSit->setValue(get_default_item_label(item_name));
 			//gMenuHolder->childSetValue(item_name, get_default_item_label(item_name));
 		}
