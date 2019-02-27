@@ -139,9 +139,6 @@ protected:
 
 	// channel's ID
 	LLUUID	mID;
-	
-	//LLView*	mFloaterSnapRegion;
-	//LLView* mChicletRegion;
 };
 
 

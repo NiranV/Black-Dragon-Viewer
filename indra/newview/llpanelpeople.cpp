@@ -754,8 +754,6 @@ void LLPanelPeople::onChange(EStatusType status, const std::string &channelURI, 
 void LLPanelPeople::updateFriendListHelpText()
 {
 	// show special help text for just created account to help finding friends. EXT-4836
-	//static LLTextBox* mLabelNoFriends = getChild<LLTextBox>("no_friends_help_text");
-
 	// Seems sometimes all_friends can be empty because of issue with Inventory loading (clear cache, slow connection...)
 	// So, lets check all lists to avoid overlapping the text with online list. See EXT-6448.
 	//BD
@@ -1021,25 +1019,6 @@ void LLPanelPeople::getCurrentItemIDs(uuid_vec_t& selected_uuids) const
 
 }
 
-/*void LLPanelPeople::showGroupMenu(LLMenuGL* menu)
-{
-	// Shows the menu at the top of the button bar.
-
-	// Calculate its coordinates.
-	// (assumes that groups panel is the current tab)
-	LLPanel* bottom_panel = mTabContainer->getCurrentPanel()->getChild<LLPanel>("bottom_panel");
-	LLPanel* parent_panel = mTabContainer->getCurrentPanel();
-	menu->arrangeAndClear();
-	S32 menu_height = menu->getRect().getHeight();
-	S32 menu_x = -2; // *HACK: compensates HPAD in showPopup()
-	S32 menu_y = bottom_panel->getRect().mTop + menu_height;
-
-	// Actually show the menu.
-	menu->buildDrawLabels();
-	menu->updateParent(LLMenuGL::sMenuContainer);
-	LLMenuGL::showPopup(parent_panel, menu, menu_x, menu_y);
-}*/
-
 void LLPanelPeople::setSortOrder(LLAvatarList* list, ESortOrder order, bool save)
 {
 	switch (order)
@@ -1137,7 +1116,6 @@ void LLPanelPeople::onGroupLimitInfo()
 
 void LLPanelPeople::onTabSelected(const LLSD& param)
 {
-	//std::string tab_name = getChild<LLPanel>(param.asString())->getName();
 	updateButtons();
 }
 
@@ -1671,99 +1649,6 @@ bool LLPanelPeople::notifyChildren(const LLSD& info)
 
 	return LLPanel::notifyChildren(info);
 }
-
-/*void LLPanelPeople::showAccordion(const std::string name, bool show)
-{
-	if(name.empty())
-	{
-		LL_WARNS() << "No name provided" << LL_ENDL;
-		return;
-	}
-
-	LLAccordionCtrlTab* tab = getChild<LLAccordionCtrlTab>(name);
-	tab->setVisible(show);
-	if(show)
-	{
-		// don't expand accordion if it was collapsed by user
-		if(!isAccordionCollapsedByUser(tab))
-		{
-			// expand accordion
-			tab->changeOpenClose(false);
-		}
-	}
-}*/
-
-//BD
-/*void LLPanelPeople::showFriendsAccordionsIfNeeded()
-{
-	if(FRIENDS_TAB_NAME == getActiveTabName())
-	{
-		// Expand and show accordions if needed, else - hide them
-		showAccordion("tab_online", mOnlineFriendList->filterHasMatches());
-		showAccordion("tab_all", mAllFriendList->filterHasMatches());
-		showAccordion("tab_suggested_friends", mSuggestedFriends->filterHasMatches());
-
-		// Rearrange accordions
-		LLAccordionCtrl* accordion = getChild<LLAccordionCtrl>("friends_accordion");
-		accordion->arrange();
-
-		// *TODO: new no_matched_tabs_text attribute was implemented in accordion (EXT-7368).
-		// this code should be refactored to use it
-		// keep help text in a synchronization with accordions visibility.
-		updateFriendListHelpText();
-	}
-}*/
-
-/*void LLPanelPeople::onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param)
-{
-	if(ctrl == mOnlineFriendList)
-	{
-		showAccordion("tab_online", param.asInteger());
-	}
-	else if(ctrl == mAllFriendList)
-	{
-		showAccordion("tab_all", param.asInteger());
-	}
-}*/
-
-/*void LLPanelPeople::setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed)
-{
-	if(!acc_tab)
-	{
-		LL_WARNS() << "Invalid parameter" << LL_ENDL;
-		return;
-	}
-
-	LLSD param = acc_tab->getValue();
-	param[COLLAPSED_BY_USER] = collapsed;
-	acc_tab->setValue(param);
-}
-
-void LLPanelPeople::setAccordionCollapsedByUser(const std::string& name, bool collapsed)
-{
-	setAccordionCollapsedByUser(getChild<LLUICtrl>(name), collapsed);
-}
-
-bool LLPanelPeople::isAccordionCollapsedByUser(LLUICtrl* acc_tab)
-{
-	if(!acc_tab)
-	{
-		LL_WARNS() << "Invalid parameter" << LL_ENDL;
-		return false;
-	}
-
-	LLSD param = acc_tab->getValue();
-	if(!param.has(COLLAPSED_BY_USER))
-	{
-		return false;
-	}
-	return param[COLLAPSED_BY_USER].asBoolean();
-}
-
-bool LLPanelPeople::isAccordionCollapsedByUser(const std::string& name)
-{
-	return isAccordionCollapsedByUser(getChild<LLUICtrl>(name));
-}*/
 
 std::string LLPanelPeople::getAvatarInformation(const LLUUID& avatar)
 {

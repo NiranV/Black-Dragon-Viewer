@@ -478,7 +478,6 @@ BOOL LLPanelOutfitEdit::postBuild()
 
 	mFilterBtn = getChild<LLButton>("filter_button");
 	mFilterBtn->setCommitCallback(boost::bind(&LLPanelOutfitEdit::showWearablesFilter, this));
-	//childSetCommitCallback("filter_button", boost::bind(&LLPanelOutfitEdit::showWearablesFilter, this), NULL);
 	childSetCommitCallback("folder_view_btn", boost::bind(&LLPanelOutfitEdit::showWearablesFolderListView, this), NULL);
 	childSetCommitCallback("folder_view_btn", boost::bind(&LLPanelOutfitEdit::saveListSelection, this), NULL);
 	childSetCommitCallback("shop_btn_1", boost::bind(&LLPanelOutfitEdit::onShopButtonClicked, this), NULL);

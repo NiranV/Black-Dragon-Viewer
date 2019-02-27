@@ -170,7 +170,6 @@ public:
 	LLView* mBuyLand;
 	LLView* mLandBuy;
 	LLView* mLandBuyPass;
-	//LLMenuItemGL* mObjectSit;
 
 protected:
 	LLSafeHandle<LLParcelSelection> mParcelSelection;

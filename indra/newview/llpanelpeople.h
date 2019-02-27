@@ -99,7 +99,6 @@ private:
 	std::string				getActiveTabName() const;
 	LLUUID					getCurrentItemID() const;
 	void					getCurrentItemIDs(uuid_vec_t& selected_uuids) const;
-	//void					showGroupMenu(LLMenuGL* menu);
 	void					setSortOrder(LLAvatarList* list, ESortOrder order, bool save = true);
 
 	// UI callbacks
@@ -132,13 +131,6 @@ private:
 
 	// misc callbacks
 	static void				onAvatarPicked(const uuid_vec_t& ids, const std::vector<LLAvatarName> names);
-
-	/*void					showAccordion(const std::string name, bool show);
-
-	void					setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed);
-	void					setAccordionCollapsedByUser(const std::string& name, bool collapsed);
-	bool					isAccordionCollapsedByUser(LLUICtrl* acc_tab);
-	bool					isAccordionCollapsedByUser(const std::string& name);*/
 
 	//BD
 	void					onBlockedPlusMenuItemClicked(const LLSD& userdata);

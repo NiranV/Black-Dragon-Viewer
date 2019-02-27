@@ -279,10 +279,8 @@ void LLAvatarListItem::setAvatarId(const LLUUID& id, const LLUUID& session_id, b
 		getChild<LLIconCtrl>("developer_tag")->setVisible(TRUE);
 		getChild<LLTextBox>("developer_text")->setVisible(TRUE);
 	}
-	//else
-	//{
-		mSpeakingIndicator->setSpeakerId(id, session_id);
-	//}
+
+	mSpeakingIndicator->setSpeakerId(id, session_id);
 
 	if (is_resident)
 	{

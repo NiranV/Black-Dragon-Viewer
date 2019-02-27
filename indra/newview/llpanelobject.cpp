@@ -991,23 +991,18 @@ void LLPanelObject::getState( )
 
 	mScaleHole		->setVisible(FALSE);
 	mScaleTaper		->setVisible(FALSE);
-	//getChildView("scale_hole")->setVisible( FALSE);
-	//getChildView("scale_taper")->setVisible( FALSE);
+
 	if (top_size_x_visible || top_size_y_visible)
 	{
 		if (size_is_hole)
 		{
 			mScaleHole->setVisible(TRUE);
 			mScaleHole->setEnabled(enabled);
-			//getChildView("scale_hole")->setVisible( TRUE);
-			//getChildView("scale_hole")->setEnabled(enabled);
 		}
 		else
 		{
 			mScaleTaper->setVisible(TRUE);
 			mScaleTaper->setEnabled(enabled);
-			//getChildView("scale_taper")->setVisible( TRUE);
-			//getChildView("scale_taper")->setEnabled(enabled);
 		}
 	}
 	
@@ -1021,9 +1016,6 @@ void LLPanelObject::getState( )
 	mAdvancedCut	->setVisible(FALSE);
 	mAdvancedDimple	->setVisible(FALSE);
 	mAdvancedSlice	->setVisible(FALSE);
-	//getChildView("advanced_cut")->setVisible( FALSE);
-	//getChildView("advanced_dimple")->setVisible( FALSE);
-	//getChildView("advanced_slice")->setVisible( FALSE);
 
 	if (advanced_cut_visible)
 	{
@@ -1031,23 +1023,17 @@ void LLPanelObject::getState( )
 		{
 			mAdvancedDimple->setVisible(TRUE);
 			mAdvancedDimple->setEnabled(enabled);
-			//getChildView("advanced_dimple")->setVisible( TRUE);
-			//getChildView("advanced_dimple")->setEnabled(enabled);
 		}
 
 		else if (advanced_is_slice)
 		{
 			mAdvancedSlice->setVisible(TRUE);
 			mAdvancedSlice->setEnabled(enabled);
-			//getChildView("advanced_slice")->setVisible( TRUE);
-			//getChildView("advanced_slice")->setEnabled(enabled);
 		}
 		else
 		{
 			mAdvancedCut->setVisible(TRUE);
 			mAdvancedCut->setEnabled(enabled);
-			//getChildView("advanced_cut")->setVisible( TRUE);
-			//getChildView("advanced_cut")->setEnabled(enabled);
 		}
 	}
 	
@@ -1934,11 +1920,6 @@ void LLPanelObject::clearCtrls()
 	mAdvancedCut->setEnabled(FALSE);
 	mAdvancedDimple->setEnabled(FALSE);
 	mAdvancedSlice->setEnabled(FALSE);
-	//getChildView("scale_hole")->setEnabled(FALSE);
-	//getChildView("scale_taper")->setEnabled(FALSE);
-	//getChildView("advanced_cut")->setEnabled(FALSE);
-	//getChildView("advanced_dimple")->setEnabled(FALSE);
-	//getChildView("advanced_slice")->setVisible( FALSE);
 }
 
 //

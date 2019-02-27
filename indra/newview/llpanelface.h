@@ -192,23 +192,15 @@ public:
 
 	LLUICtrl* mColorTransparency;
 
-	LLComboBox* mComboShiny;
-	LLComboBox* mComboBumpy;
-	LLComboBox* mComboAlpha;
-
+	LLComboBox*		mComboShiny;
+	LLComboBox*		mComboBumpy;
+	LLComboBox*		mComboAlpha;
 	LLComboBox*		mComboTexGen;
-	//BD
-	LLRadioGroup*	mRadioMaterialType;
+
+	LLRadioGroup* mRadioMaterialType;
 
 	LLCheckBoxCtrl*	mCheckFullbright;
-
-	//LLTextBox*		mLabelColorTransp;
-	//BD
-	//LLUICtrl*		mCtrlColorTransp;		// transparency = 1 - alpha
-	//LLUICtrl*		mCtrlGlow;
-	//LLUICtrl*		mCtrlGlossinessp;
-	//LLUICtrl*		mCtrlEnvironmentp;
-	//LLUICtrl*		mCtrlMaskCutoffp;
+	LLCheckBoxCtrl* mCheckAlignPlanar;
 
 	LLButton* mBtnAlign;
 
@@ -233,9 +225,6 @@ public:
 	LLUICtrl* mTexOffsetV;
 	LLUICtrl* mTexRot;
 	LLUICtrl* mRepeats;
-
-	LLCheckBoxCtrl* mCheckAlignPlanar;
-
 
 private:
 

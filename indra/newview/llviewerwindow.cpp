@@ -2114,7 +2114,6 @@ void LLViewerWindow::initWorldUI()
 
 
 	// Status bar
-	//LLPanel* status_bar_container = getRootView()->getChild<LLPanel>("status_bar_container");
 	if (!mStatusBarContainer)
 		mStatusBarContainer = getRootView()->getChild<LLPanel>("status_bar_container");
 
@@ -2130,11 +2129,10 @@ void LLViewerWindow::initWorldUI()
 	//BD
 	if (!mChicletContainer)
 		mChicletContainer = gStatusBar->getChild<LLPanel>("chiclet_container");
-	//LLPanel* chiclet_container = gStatusBar->getChild<LLPanel>("chiclet_container");
+
 	if (mChicletContainer && !mChicletBar)
 	{
 		mChicletBar = LLChicletBar::getInstance();
-		//LLChicletBar* chiclet_bar = LLChicletBar::getInstance();
 		mChicletBar->setShape(mChicletContainer->getLocalRect());
 		mChicletBar->setFollowsAll();
 		mChicletContainer->addChild(mChicletBar);
@@ -2144,7 +2142,7 @@ void LLViewerWindow::initWorldUI()
 	//BD - Machinima Sidebar
 	if (!mMachinimaSidebar)
 		mMachinimaSidebar = gToolBarView->getChild<LLPanel>("machinima");
-	//LLPanel* machinima_sidebar = gToolBarView->getChild<LLPanel>("machinima");
+
 	if (mMachinimaSidebar && !gSideBar)
 	{
 		gSideBar = new LLSideBar(mMachinimaSidebar->getLocalRect());
@@ -2156,7 +2154,6 @@ void LLViewerWindow::initWorldUI()
 	// Navigation bar
 	if (!mNavBarContainer)
 		mNavBarContainer = getRootView()->getChild<LLPanel>("nav_bar_container");
-	//LLPanel* nav_bar_container = getRootView()->getChild<LLPanel>("nav_bar_container");
 
 	if (mNavBarContainer)
 	{
@@ -2484,8 +2481,6 @@ void LLViewerWindow::setNormalControlsVisible( BOOL visible )
 	{
 		mChicletBar->setVisible(visible);
 		mChicletBar->setEnabled(visible);
-		//LLChicletBar::getInstance()->setVisible(visible);
-		//LLChicletBar::getInstance()->setEnabled(visible);
 	}
 
 	if ( gMenuBarView )

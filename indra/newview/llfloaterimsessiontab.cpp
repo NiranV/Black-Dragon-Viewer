@@ -781,22 +781,16 @@ void LLFloaterIMSessionTab::updateHeaderAndToolbar()
 	mTearOffBtn->setImageOverlay(getString(is_not_torn_off? "tear_off_icon" : "return_icon"));
 	mTearOffBtn->setToolTip(getString(is_not_torn_off? "tooltip_to_separate_window" : "tooltip_to_main_window"));
 
-
-	//mCloseBtn->setVisible(is_not_torn_off && !mIsNearbyChat);
 	//BD
 	mCloseBtnPanel->setVisible(is_not_torn_off && !mIsNearbyChat);
-	//getChild<LLPanel>("close_btn_panel")->setVisible(is_not_torn_off && !mIsNearbyChat);
 
 	//BD - Disable the chat history button in nearby.
 	mChatHistoryPanel->setVisible(!mIsNearbyChat);
 	mNearbyHistoryPanel->setVisible(mIsNearbyChat);
-	//getChild<LLLayoutPanel>("chat_history_btn_panel")->setVisible(!mIsNearbyChat);
-	//getChild<LLLayoutPanel>("nearby_history_btn_panel")->setVisible(mIsNearbyChat);
 
 	//BD - Disable the "Add Participant" button if it's a group chat or local chat.
 	bool is_ad_hoc = (mSession ? mSession->isAdHocSessionType() : false);
 	mAddBtnPanel->setVisible(mIsP2PChat || is_ad_hoc);
-	//getChild<LLLayoutPanel>("add_btn_panel")->setVisible(mIsP2PChat || is_ad_hoc);
 
 	enableDisableCallBtn();
 

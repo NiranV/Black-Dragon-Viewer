@@ -391,13 +391,10 @@ void LLFastTimerView::draw()
 	LLView::drawChildren();
 	//getChild<LLLayoutStack>("timer_bars_stack")->updateLayout();
 	//getChild<LLLayoutStack>("legend_stack")->updateLayout();
-	//LLView* bars_panel = getChildView("bars_panel");
 	mBarsPanel->localRectToOtherView(mBarsPanel->getLocalRect(), &mBarRect, this);
 
-	//LLView* lines_panel = getChildView("lines_panel");
 	mLinesPanel->localRectToOtherView(mLinesPanel->getLocalRect(), &mGraphRect, this);
 
-	//LLView* legend_panel = getChildView("legend");
 	mLegendPanel->localRectToOtherView(mLegendPanel->getLocalRect(), &mLegendRect, this);
 
 	// Draw the window background

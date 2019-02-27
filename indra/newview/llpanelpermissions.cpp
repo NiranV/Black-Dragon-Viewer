@@ -164,21 +164,6 @@ BOOL LLPanelPermissions::postBuild()
 
 	mBtnSetGroup = getChild<LLButton>("button set group");
 	mBtnSetGroup->setCommitCallback(boost::bind(&LLPanelPermissions::onClickGroup, this));
-	//getChild<LLUICtrl>("button set group")->setCommitCallback(boost::bind(&LLPanelPermissions::onClickGroup,this));
-
-	//childSetCommitCallback("checkbox share with group",LLPanelPermissions::onCommitGroupShare,this);
-
-	//childSetAction("button deed",LLPanelPermissions::onClickDeedToGroup,this);
-
-	//childSetCommitCallback("checkbox allow everyone move",LLPanelPermissions::onCommitEveryoneMove,this);
-
-	//childSetCommitCallback("checkbox allow everyone copy",LLPanelPermissions::onCommitEveryoneCopy,this);
-	
-	//childSetCommitCallback("checkbox for sale",LLPanelPermissions::onCommitSaleInfo,this);
-
-	//childSetCommitCallback("sale type",LLPanelPermissions::onCommitSaleType,this);
-
-	//childSetCommitCallback("Edit Cost", LLPanelPermissions::onCommitSaleInfo, this);
 
 	mCheckboxGroupShare = getChild<LLCheckBoxCtrl>("checkbox share with group");
 	mCheckboxGroupShare->setCommitCallback(boost::bind(&LLPanelPermissions::onCommitGroupShare, this, _1));
@@ -197,12 +182,6 @@ BOOL LLPanelPermissions::postBuild()
 	mCheckboxNextOwnerCopy->setCommitCallback(boost::bind(&LLPanelPermissions::onCommitNextOwnerCopy, this, _1));
 	mCheckboxNextOwnerTransfer = getChild<LLCheckBoxCtrl>("checkbox next owner can transfer");
 	mCheckboxNextOwnerTransfer->setCommitCallback(boost::bind(&LLPanelPermissions::onCommitNextOwnerTransfer, this, _1));
-	
-	//childSetCommitCallback("checkbox next owner can modify",LLPanelPermissions::onCommitNextOwnerModify,this);
-	//childSetCommitCallback("checkbox next owner can copy",LLPanelPermissions::onCommitNextOwnerCopy,this);
-	//childSetCommitCallback("checkbox next owner can transfer",LLPanelPermissions::onCommitNextOwnerTransfer,this);
-	//childSetCommitCallback("clickaction",LLPanelPermissions::onCommitClickAction,this);
-	//childSetCommitCallback("search_check",LLPanelPermissions::onCommitIncludeInSearch,this);
 	
 	mLabelGroupName = getChild<LLNameBox>("Group Name Proxy");
 	mLabelOwnerName = getChild<LLTextBox>("Owner Name");
@@ -250,10 +229,6 @@ BOOL LLPanelPermissions::postBuild()
 	mNextOwnerModify = getChild<LLUICtrl>("checkbox next owner can modify");
 	mNextOwnerCopy = getChild<LLUICtrl>("checkbox next owner can copy");
 	mNextOwnerTransfer = getChild<LLUICtrl>("checkbox next owner can transfer");
-	//LLCheckBoxCtrl* mCheckboxNextOwnerModify = getChild<LLCheckBoxCtrl>("checkbox next owner can modify");
-	//LLCheckBoxCtrl* mCheckboxNextOwnerCopy = getChild<LLCheckBoxCtrl>("checkbox next owner can copy");
-	//LLCheckBoxCtrl* mCheckboxNextOwnerTransfer = getChild<LLCheckBoxCtrl>("checkbox next owner can transfer");
-	//LLCheckBoxCtrl* mCheckboxSearch = getChild<LLCheckBoxCtrl>("search_check");
 
 	mLabelClickAction = getChild<LLUICtrl>("label click action");
 
@@ -343,11 +318,9 @@ void LLPanelPermissions::disableAll()
 	mEditCost->setEnabled(FALSE);
 		
 	mLabelClickAction->setEnabled(FALSE);
-	//if (combo_click_action)
-	//{
 	mClickAction->setEnabled(FALSE);
 	mClickAction->clear();
-	//}
+
 	mB->setVisible(FALSE);
 	mO->setVisible(FALSE);
 	mG->setVisible(FALSE);
@@ -358,21 +331,18 @@ void LLPanelPermissions::disableAll()
 
 void LLPanelPermissions::refresh()
 {
-	//mBtnDeedToGroup = getChild<LLButton>("button deed");
-	//if(mBtnDeedToGroup)
-	{	
-		std::string deedText;
-		if (gWarningSettings.getBOOL("DeedObject"))
-		{
-			deedText = getString("text deed continued");
-		}
-		else
-		{
-			deedText = getString("text deed");
-		}
-		mBtnDeedToGroup->setLabelSelected(deedText);
-		mBtnDeedToGroup->setLabelUnselected(deedText);
+	std::string deedText;
+	if (gWarningSettings.getBOOL("DeedObject"))
+	{
+		deedText = getString("text deed continued");
 	}
+	else
+	{
+		deedText = getString("text deed");
+	}
+	mBtnDeedToGroup->setLabelSelected(deedText);
+	mBtnDeedToGroup->setLabelUnselected(deedText);
+
 	BOOL root_selected = TRUE;
 	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
 	LLObjectSelectionHandle selection = select_mgr->getSelection();
@@ -433,8 +403,6 @@ void LLPanelPermissions::refresh()
 	}
 	mPermModify->setEnabled(TRUE);
 	mPermModify->setValue(MODIFY_INFO_STRINGS[string_index]);
-	//getChildView("perm_modify")->setEnabled(TRUE);
-	//getChild<LLUICtrl>("perm_modify")->setValue(MODIFY_INFO_STRINGS[string_index]);
 
 	std::string pfAttrName;
 
@@ -463,12 +431,9 @@ void LLPanelPermissions::refresh()
 
 	mPathfindingAttributes->setEnabled(TRUE);
 	mPathfindingAttributes->setValue(LLTrans::getString(pfAttrName));
-	//getChildView("pathfinding_attributes_value")->setEnabled(TRUE);
-	//getChild<LLUICtrl>("pathfinding_attributes_value")->setValue(LLTrans::getString(pfAttrName));
 	
 	// Update creator text field
 	mCreator->setEnabled(TRUE);
-	//getChildView("Creator:")->setEnabled(TRUE);
 	std::string creator_app_link;
 	//LLSelectMgr::getInstance()->selectGetCreator(mCreatorID, creator_app_link);
 
@@ -481,12 +446,10 @@ void LLPanelPermissions::refresh()
 //	LLSelectMgr::getInstance()->selectGetCreator(mCreatorID, creator_name);
 
 	mCreatorIcon->setValue(mCreatorID);
-	//getChild<LLAvatarIconCtrl>("Creator Icon")->setValue(mCreatorID);
 	mLabelCreatorName->setEnabled(TRUE);
 
 	// Update owner text field
 	mOwner->setEnabled(TRUE);
-	//getChildView("Owner:")->setEnabled(TRUE);
 
 	std::string owner_app_link;
 	const BOOL owners_identical = select_mgr->selectGetOwner(mOwnerID, owner_app_link);
@@ -494,8 +457,6 @@ void LLPanelPermissions::refresh()
 	//BD - Make sure we ALWAYS make at least the owner icon visible.
 	mOwnerIcon->setVisible(TRUE);
 	mGroupOwnerIcon->setVisible(FALSE);
-	//getChild<LLAvatarIconCtrl>("Owner Icon")->setVisible(TRUE);
-	//getChild<LLUICtrl>("Owner Group Icon")->setVisible(FALSE);
 
 	LLUUID owner_id = mOwnerID;
 	if (select_mgr->selectIsGroupOwned())
@@ -508,9 +469,6 @@ void LLPanelPermissions::refresh()
 			mGroupOwnerIcon->setIconId(group_data->mInsigniaID);
 			mGroupOwnerIcon->setVisible(TRUE);
 			mOwnerIcon->setVisible(FALSE);
-			//getChild<LLGroupIconCtrl>("Owner Group Icon")->setIconId(group_data->mInsigniaID);
-			//getChild<LLGroupIconCtrl>("Owner Group Icon")->setVisible(TRUE);
-			//getChild<LLUICtrl>("Owner Icon")->setVisible(FALSE);
 		}
 		else
 		{
@@ -530,7 +488,6 @@ void LLPanelPermissions::refresh()
 		}
 	}
 	mOwnerIcon->setValue(owner_id);
-	//getChild<LLAvatarIconCtrl>("Owner Icon")->setValue(owner_id);
 
 	mLabelOwnerName->setEnabled(TRUE);
 // [RLVa:KB] - Moved further down to avoid an annoying flicker when the text is set twice in a row
@@ -560,8 +517,6 @@ void LLPanelPermissions::refresh()
 	// update group text field
 	mGroup->setEnabled(TRUE);
 	mGroupName->setValue(LLStringUtil::null);
-	//getChildView("Group:")->setEnabled(TRUE);
-	//getChild<LLUICtrl>("Group Name")->setValue(LLStringUtil::null);
 	LLUUID group_id;
 	BOOL groups_identical = select_mgr->selectGetGroup(group_id);
 //	//BD - SSFUI
@@ -594,12 +549,9 @@ void LLPanelPermissions::refresh()
 	}
 
 	mBtnSetGroup->setEnabled(root_selected && owners_identical && (mOwnerID == gAgent.getID()) && is_nonpermanent_enforced);
-	//getChildView("button set group")->setEnabled(root_selected && owners_identical && (mOwnerID == gAgent.getID()) && is_nonpermanent_enforced);
 
 	mName->setEnabled(TRUE);
 	mDescription->setEnabled(TRUE);
-	//getChildView("Name:")->setEnabled(TRUE);
-	//getChildView("Description:")->setEnabled(TRUE);
 	
 
 	if (is_one_object)
@@ -662,9 +614,6 @@ void LLPanelPermissions::refresh()
 		mCost->setEnabled(FALSE);
 		mEditCost->setValue(LLStringUtil::null);
 		mEditCost->setEnabled(FALSE);
-		//getChildView("Cost")->setEnabled(FALSE);
-		//getChild<LLUICtrl>("Edit Cost")->setValue(LLStringUtil::null);
-		//getChildView("Edit Cost")->setEnabled(FALSE);
 	}
 	// You own these objects.
 	else if (self_owned || (group_owned && gAgent.hasPowerInGroup(group_id,GP_OBJECT_SET_SALE)))
@@ -673,15 +622,12 @@ void LLPanelPermissions::refresh()
 		if (num_for_sale > 1)
 		{
 			mCost->setValue(getString("Cost Per Unit"));
-			//getChild<LLUICtrl>("Cost")->setValue(getString("Cost Per Unit"));
 		}
 		else
 		{
 			mCost->setValue(getString("Cost Default"));
-			//getChild<LLUICtrl>("Cost")->setValue(getString("Cost Default"));
 		}
 		
-		//LLSpinCtrl *edit_price = getChild<LLSpinCtrl>("Edit Cost");
 		if (!mEditCost->hasFocus())
 		{
 			// If the sale price is mixed then set the cost to MIXED, otherwise
@@ -704,45 +650,33 @@ void LLPanelPermissions::refresh()
 		BOOL enable_edit = (num_for_sale && can_transfer) ? !is_for_sale_mixed : FALSE;
 		mCost->setEnabled(enable_edit);
 		mEditCost->setEnabled(enable_edit);
-		//getChildView("Cost")->setEnabled(enable_edit);
-		//getChildView("Edit Cost")->setEnabled(enable_edit);
 	}
 	// Someone, not you, owns these objects.
 	else if (!public_owned)
 	{
 		mCost->setEnabled(FALSE);
 		mEditCost->setEnabled(FALSE);
-		//getChildView("Cost")->setEnabled(FALSE);
-		//getChildView("Edit Cost")->setEnabled(FALSE);
 		
 		// Don't show a price if none of the items are for sale.
 		if (num_for_sale)
 			mEditCost->setValue(llformat("%d", total_sale_price));
-			//getChild<LLUICtrl>("Edit Cost")->setValue(llformat("%d",total_sale_price));
 		else
 			mEditCost->setValue(LLStringUtil::null);
-			//getChild<LLUICtrl>("Edit Cost")->setValue(LLStringUtil::null);
 
 		// If multiple items are for sale, set text to TOTAL PRICE.
 		if (num_for_sale > 1)
 			mCost->setValue(getString("Cost Total"));
-			//getChild<LLUICtrl>("Cost")->setValue(getString("Cost Total"));
 		else
 			mCost->setValue(getString("Cost Default"));
-			//getChild<LLUICtrl>("Cost")->setValue(getString("Cost Default"));
 	}
 	// This is a public object.
 	else
 	{
 		mCost->setEnabled(FALSE);
 		mCost->setValue(getString("Cost Default"));
-		//getChildView("Cost")->setEnabled(FALSE);
-		//getChild<LLUICtrl>("Cost")->setValue(getString("Cost Default"));
 		
 		mEditCost->setValue(LLStringUtil::null);
 		mEditCost->setEnabled(FALSE);
-		//getChild<LLUICtrl>("Edit Cost")->setValue(LLStringUtil::null);
-		//getChildView("Edit Cost")->setEnabled(FALSE);
 	}
 
 	// Enable and disable the permissions checkboxes
@@ -841,12 +775,6 @@ void LLPanelPermissions::refresh()
 		mE->setVisible(FALSE);
 		mN->setVisible(FALSE);
 		mF->setVisible(FALSE);
-		//getChildView("B:")->setVisible(								FALSE);
-		//getChildView("O:")->setVisible(								FALSE);
-		//getChildView("G:")->setVisible(								FALSE);
-		//getChildView("E:")->setVisible(								FALSE);
-		//getChildView("N:")->setVisible(								FALSE);
-		//getChildView("F:")->setVisible(								FALSE);
 	}
 
 	BOOL has_change_perm_ability = FALSE;
@@ -867,7 +795,6 @@ void LLPanelPermissions::refresh()
 	{
 		// ...must select root to choose permissions
 		mPermModify->setValue(getString("text modify warning"));
-		//getChild<LLUICtrl>("perm_modify")->setValue(getString("text modify warning"));
 	}
 
 	if (has_change_perm_ability)
@@ -875,18 +802,12 @@ void LLPanelPermissions::refresh()
 		mCheckboxGroupShare->setEnabled(TRUE);
 		mCheckboxEveryoneMove->setEnabled(owner_mask_on & PERM_MOVE);
 		mCheckboxEveryoneCopy->setEnabled(owner_mask_on & PERM_COPY && owner_mask_on & PERM_TRANSFER);
-		//getChildView("checkbox share with group")->setEnabled(TRUE);
-		//getChildView("checkbox allow everyone move")->setEnabled(owner_mask_on & PERM_MOVE);
-		//getChildView("checkbox allow everyone copy")->setEnabled(owner_mask_on & PERM_COPY && owner_mask_on & PERM_TRANSFER);
 	}
 	else
 	{
 		mCheckboxGroupShare->setEnabled(FALSE);
 		mCheckboxEveryoneMove->setEnabled(FALSE);
 		mCheckboxEveryoneCopy->setEnabled(FALSE);
-		//getChildView("checkbox share with group")->setEnabled(FALSE);
-		//getChildView("checkbox allow everyone move")->setEnabled(FALSE);
-		//getChildView("checkbox allow everyone copy")->setEnabled(FALSE);
 	}
 
 	if (has_change_sale_ability && (owner_mask_on & PERM_TRANSFER))
@@ -899,16 +820,6 @@ void LLPanelPermissions::refresh()
 		mCheckboxNextOwnerModify->setEnabled(base_mask_on & PERM_MODIFY);
 		mCheckboxNextOwnerCopy->setEnabled(base_mask_on & PERM_COPY);
 		mCheckboxNextOwnerTransfer->setEnabled(next_owner_mask_on & PERM_COPY);
-		//getChildView("checkbox for sale")->setEnabled(can_transfer || (!can_transfer && num_for_sale));
-		// Set the checkbox to tentative if the prices of each object selected
-		// are not the same.
-		//getChild<LLUICtrl>("checkbox for sale")->setTentative( 				is_for_sale_mixed);
-		//getChildView("sale type")->setEnabled(num_for_sale && can_transfer && !is_sale_price_mixed);
-
-		//getChildView("Next owner can:")->setEnabled(TRUE);
-		//getChildView("checkbox next owner can modify")->setEnabled(base_mask_on & PERM_MODIFY);
-		//getChildView("checkbox next owner can copy")->setEnabled(base_mask_on & PERM_COPY);
-		//getChildView("checkbox next owner can transfer")->setEnabled(next_owner_mask_on & PERM_COPY);
 	}
 	else 
 	{
@@ -919,13 +830,6 @@ void LLPanelPermissions::refresh()
 		mCheckboxNextOwnerModify->setEnabled(FALSE);
 		mCheckboxNextOwnerCopy->setEnabled(FALSE);
 		mCheckboxNextOwnerTransfer->setEnabled(FALSE);
-		//getChildView("checkbox for sale")->setEnabled(FALSE);
-		//getChildView("sale type")->setEnabled(FALSE);
-
-		//getChildView("Next owner can:")->setEnabled(FALSE);
-		//getChildView("checkbox next owner can modify")->setEnabled(FALSE);
-		//getChildView("checkbox next owner can copy")->setEnabled(FALSE);
-		//getChildView("checkbox next owner can transfer")->setEnabled(FALSE);
 	}
 
 	if (valid_group_perms)
@@ -935,27 +839,18 @@ void LLPanelPermissions::refresh()
 			mCheckboxGroupShare->setValue(TRUE);
 			mCheckboxGroupShare->setTentative(FALSE);
 			mBtnDeedToGroup->setEnabled(gAgent.hasPowerInGroup(group_id, GP_OBJECT_DEED) && (owner_mask_on & PERM_TRANSFER) && !group_owned && can_transfer);
-			//getChild<LLUICtrl>("checkbox share with group")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox share with group")->setTentative(	FALSE);
-			//getChildView("button deed")->setEnabled(gAgent.hasPowerInGroup(group_id, GP_OBJECT_DEED) && (owner_mask_on & PERM_TRANSFER) && !group_owned && can_transfer);
 		}
 		else if ((group_mask_off & PERM_COPY) && (group_mask_off & PERM_MODIFY) && (group_mask_off & PERM_MOVE))
 		{
 			mCheckboxGroupShare->setValue(FALSE);
 			mCheckboxGroupShare->setTentative(FALSE);
 			mBtnDeedToGroup->setEnabled(FALSE);
-			//getChild<LLUICtrl>("checkbox share with group")->setValue(FALSE);
-			//getChild<LLUICtrl>("checkbox share with group")->setTentative(	FALSE);
-			//getChildView("button deed")->setEnabled(FALSE);
 		}
 		else
 		{
 			mCheckboxGroupShare->setValue(TRUE);
 			mCheckboxGroupShare->setTentative(!has_change_perm_ability);
 			mBtnDeedToGroup->setEnabled(gAgent.hasPowerInGroup(group_id, GP_OBJECT_DEED) && (group_mask_on & PERM_MOVE) && (owner_mask_on & PERM_TRANSFER) && !group_owned && can_transfer);
-			//getChild<LLUICtrl>("checkbox share with group")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox share with group")->setTentative(!has_change_perm_ability);
-			//getChildView("button deed")->setEnabled(gAgent.hasPowerInGroup(group_id, GP_OBJECT_DEED) && (group_mask_on & PERM_MOVE) && (owner_mask_on & PERM_TRANSFER) && !group_owned && can_transfer);
 		}
 	}			
 
@@ -966,22 +861,16 @@ void LLPanelPermissions::refresh()
 		{
 			mCheckboxEveryoneMove->setValue(TRUE);
 			mCheckboxEveryoneMove->setTentative(FALSE);
-			//getChild<LLUICtrl>("checkbox allow everyone move")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox allow everyone move")->setTentative( 	FALSE);
 		}
 		else if (everyone_mask_off & PERM_MOVE)
 		{
 			mCheckboxEveryoneMove->setValue(FALSE);
 			mCheckboxEveryoneMove->setTentative(FALSE);
-			//getChild<LLUICtrl>("checkbox allow everyone move")->setValue(FALSE);
-			//getChild<LLUICtrl>("checkbox allow everyone move")->setTentative( 	FALSE);
 		}
 		else
 		{
 			mCheckboxEveryoneMove->setValue(TRUE);
 			mCheckboxEveryoneMove->setTentative(TRUE);
-			//getChild<LLUICtrl>("checkbox allow everyone move")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox allow everyone move")->setTentative( 	TRUE);
 		}
 
 		// Copy == everyone can't copy
@@ -989,22 +878,16 @@ void LLPanelPermissions::refresh()
 		{
 			mCheckboxEveryoneCopy->setValue(TRUE);
 			mCheckboxEveryoneCopy->setTentative(!can_copy || !can_transfer);
-			//getChild<LLUICtrl>("checkbox allow everyone copy")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox allow everyone copy")->setTentative( 	!can_copy || !can_transfer);
 		}
 		else if (everyone_mask_off & PERM_COPY)
 		{
 			mCheckboxEveryoneCopy->setValue(FALSE);
 			mCheckboxEveryoneCopy->setTentative(FALSE);
-			//getChild<LLUICtrl>("checkbox allow everyone copy")->setValue(FALSE);
-			//getChild<LLUICtrl>("checkbox allow everyone copy")->setTentative(	FALSE);
 		}
 		else
 		{
 			mCheckboxEveryoneCopy->setValue(TRUE);
 			mCheckboxEveryoneCopy->setTentative(TRUE);
-			//getChild<LLUICtrl>("checkbox allow everyone copy")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox allow everyone copy")->setTentative(	TRUE);
 		}
 	}
 
@@ -1015,22 +898,16 @@ void LLPanelPermissions::refresh()
 		{
 			mNextOwnerModify->setValue(TRUE);
 			mNextOwnerModify->setTentative(FALSE);
-			//getChild<LLUICtrl>("checkbox next owner can modify")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox next owner can modify")->setTentative(	FALSE);
 		}
 		else if (next_owner_mask_off & PERM_MODIFY)
 		{
 			mNextOwnerModify->setValue(FALSE);
 			mNextOwnerModify->setTentative(FALSE);
-			//getChild<LLUICtrl>("checkbox next owner can modify")->setValue(FALSE);
-			//getChild<LLUICtrl>("checkbox next owner can modify")->setTentative(	FALSE);
 		}
 		else
 		{
 			mNextOwnerModify->setValue(TRUE);
 			mNextOwnerModify->setTentative(TRUE);
-			//getChild<LLUICtrl>("checkbox next owner can modify")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox next owner can modify")->setTentative(	TRUE);
 		}
 
 		// Copy == next owner cannot copy
@@ -1038,22 +915,16 @@ void LLPanelPermissions::refresh()
 		{		
 			mNextOwnerCopy->setValue(TRUE);
 			mNextOwnerCopy->setTentative(!can_copy);
-			//getChild<LLUICtrl>("checkbox next owner can copy")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox next owner can copy")->setTentative(	!can_copy);
 		}
 		else if (next_owner_mask_off & PERM_COPY)
 		{
 			mNextOwnerCopy->setValue(FALSE);
 			mNextOwnerCopy->setTentative(FALSE);
-			//getChild<LLUICtrl>("checkbox next owner can copy")->setValue(FALSE);
-			//getChild<LLUICtrl>("checkbox next owner can copy")->setTentative(	FALSE);
 		}
 		else
 		{
 			mNextOwnerCopy->setValue(TRUE);
 			mNextOwnerCopy->setTentative(TRUE);
-			//getChild<LLUICtrl>("checkbox next owner can copy")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox next owner can copy")->setTentative(	TRUE);
 		}
 
 		// Transfer == next owner cannot transfer
@@ -1061,22 +932,16 @@ void LLPanelPermissions::refresh()
 		{
 			mNextOwnerTransfer->setValue(TRUE);
 			mNextOwnerTransfer->setTentative(!can_transfer);
-			//getChild<LLUICtrl>("checkbox next owner can transfer")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox next owner can transfer")->setTentative( !can_transfer);
 		}
 		else if (next_owner_mask_off & PERM_TRANSFER)
 		{
 			mNextOwnerTransfer->setValue(FALSE);
 			mNextOwnerTransfer->setTentative(FALSE);
-			//getChild<LLUICtrl>("checkbox next owner can transfer")->setValue(FALSE);
-			//getChild<LLUICtrl>("checkbox next owner can transfer")->setTentative( FALSE);
 		}
 		else
 		{
 			mNextOwnerTransfer->setValue(TRUE);
 			mNextOwnerTransfer->setTentative(TRUE);
-			//getChild<LLUICtrl>("checkbox next owner can transfer")->setValue(TRUE);
-			//getChild<LLUICtrl>("checkbox next owner can transfer")->setTentative( TRUE);
 		}
 	}
 
@@ -1111,7 +976,6 @@ void LLPanelPermissions::refresh()
 		if (num_for_sale && has_change_sale_ability)
 		{
 			mCheckboxForSale->setEnabled(true);
-			//getChildView("checkbox for sale")->setEnabled(true);
 		}
 	}
 	
@@ -1122,20 +986,13 @@ void LLPanelPermissions::refresh()
 	mCheckboxSearch->setEnabled(has_change_sale_ability && all_volume);
 	mCheckboxSearch->setValue(include_in_search);
 	mCheckboxSearch->setTentative(!all_include_in_search);
-	//getChildView("search_check")->setEnabled(has_change_sale_ability && all_volume);
-	//getChild<LLUICtrl>("search_check")->setValue(include_in_search);
-	//getChild<LLUICtrl>("search_check")->setTentative( 				!all_include_in_search);
 
 	// Click action (touch, sit, buy)
 	U8 click_action = 0;
 	if (select_mgr->selectionGetClickAction(&click_action))
 	{
-		//LLComboBox*	combo_click_action = getChild<LLComboBox>("clickaction");
-		//if(mClickAction)
-		//{
-			const std::string combo_value = click_action_to_string_value(click_action);
-			mClickAction->setValue(LLSD(combo_value));
-		//}
+		const std::string combo_value = click_action_to_string_value(click_action);
+		mClickAction->setValue(LLSD(combo_value));
 	}
 
 	if(selection->isAttachment())
@@ -1143,15 +1000,10 @@ void LLPanelPermissions::refresh()
 		mCheckboxForSale->setEnabled(FALSE);
 		mEditCost->setEnabled(FALSE);
 		mSaleType->setEnabled(FALSE);
-		//getChildView("checkbox for sale")->setEnabled(FALSE);
-		//getChildView("Edit Cost")->setEnabled(FALSE);
-		//getChild<LLComboBox>("sale type")->setEnabled(FALSE);
 	}
 
 	mLabelClickAction->setEnabled(is_perm_modify && is_nonpermanent_enforced  && all_volume);
 	mClickAction->setEnabled(is_perm_modify && is_nonpermanent_enforced && all_volume);
-	//getChildView("label click action")->setEnabled(is_perm_modify && is_nonpermanent_enforced  && all_volume);
-	//getChildView("clickaction")->setEnabled(is_perm_modify && is_nonpermanent_enforced && all_volume);
 }
 
 void LLPanelPermissions::updateOwnerName(const LLUUID& owner_id, const LLAvatarName& owner_name, const LLStyle::Params& style_params)
@@ -1300,21 +1152,16 @@ void LLPanelPermissions::onCommitNextOwnerTransfer(LLUICtrl* ctrl)
 // static
 void LLPanelPermissions::onCommitName(LLUICtrl*)
 {
-	LLLineEditor* tb = this->getChild<LLLineEditor>("Object Name");
-	if (!tb)
-	{
-		return;
-	}
-	LLSelectMgr::getInstance()->selectionSetObjectName(tb->getText());
+	LLSelectMgr::getInstance()->selectionSetObjectName(mObjectName->getText());
 	LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
-	if (selection->isAttachment() && (selection->getNumNodes() == 1) && !tb->getText().empty())
+	if (selection->isAttachment() && (selection->getNumNodes() == 1) && !mObjectName->getText().empty())
 	{
 		LLUUID object_id = selection->getFirstObject()->getAttachmentItemID();
 		LLViewerInventoryItem* item = findItem(object_id);
 		if (item)
 		{
 			LLPointer<LLViewerInventoryItem> new_item = new LLViewerInventoryItem(item);
-			new_item->rename(tb->getText());
+			new_item->rename(mObjectName->getText());
 			new_item->updateServer(FALSE);
 			gInventory.updateItem(new_item);
 			gInventory.notifyObservers();
@@ -1326,12 +1173,7 @@ void LLPanelPermissions::onCommitName(LLUICtrl*)
 // static
 void LLPanelPermissions::onCommitDesc(LLUICtrl*)
 {
-	LLLineEditor* le = this->getChild<LLLineEditor>("Object Description");
-	if (!le)
-	{
-		return;
-	}
-	LLSelectMgr::getInstance()->selectionSetObjectDescription(le->getText());
+	LLSelectMgr::getInstance()->selectionSetObjectDescription(mObjectDescription->getText());
 	LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
 	if (selection->isAttachment() && (selection->getNumNodes() == 1))
 	{
@@ -1340,7 +1182,7 @@ void LLPanelPermissions::onCommitDesc(LLUICtrl*)
 		if (item)
 		{
 			LLPointer<LLViewerInventoryItem> new_item = new LLViewerInventoryItem(item);
-			new_item->setDescription(le->getText());
+			new_item->setDescription(mObjectDescription->getText());
 			new_item->updateServer(FALSE);
 			gInventory.updateItem(new_item);
 			gInventory.notifyObservers();

@@ -588,8 +588,6 @@ void init_menus()
 	gMenuHolder->mLandBuyPass = gMenuHolder->getChild<LLView>("Land Buy Pass");
 	gMenuHolder->mLandBuy = gMenuHolder->getChild<LLView>("Land Buy");
 	gMenuHolder->mBuyLand = gMenuHolder->getChild<LLView>("Buy Land...");
-
-	//gMenuHolder->mObjectSit = gMenuHolder->getChild<LLMenuItemGL>("Object Sit");
 }
 
 ///////////////////
@@ -2901,12 +2899,10 @@ bool enable_object_touch(LLUICtrl* ctrl)
 	if (node && node->mValid && !node->mTouchName.empty())
 	{
 		ctrl->setValue(node->mTouchName);
-		//gMenuHolder->childSetValue(item_name, node->mTouchName);
 	}
 	else
 	{
 		ctrl->setValue(get_default_item_label(item_name));
-		//gMenuHolder->childSetValue(item_name, get_default_item_label(item_name));
 	}
 
 	return new_value;
@@ -6133,21 +6129,11 @@ void show_debug_menus()
 	if ( gMenuBarView )
 	{
 		BOOL debug = gSavedSettings.getBOOL("UseDebugMenus");
-		//BOOL qamode = gSavedSettings.getBOOL("QAMode");
-
-		//gMenuBarView->setItemVisible("Advanced", debug);
-// 		gMenuBarView->setItemEnabled("Advanced", debug); // Don't disable Advanced keyboard shortcuts when hidden
 
 // [RLVa:KB] - Checked: 2011-08-16 (RLVa-1.4.0b) | Modified: RLVa-1.4.0b
 		// NOTE: this is supposed to execute whether RLVa is enabled or not
 		//rlvMenuToggleVisible();
 // [/RLVa:KB]
-		
-		//gMenuBarView->setItemVisible("Debug", qamode);
-		//gMenuBarView->setItemEnabled("Debug", qamode);
-
-		//gMenuBarView->setItemVisible("Develop", qamode);
-		//gMenuBarView->setItemEnabled("Develop", qamode);
 
 		// Server ('Admin') menu hidden when not in godmode.
 		const bool show_server_menu = (gAgent.getGodLevel() > GOD_NOT || (debug && gAgent.getAdminOverride()));
@@ -6624,14 +6610,10 @@ bool enable_object_sit(LLUICtrl* ctrl)
 		if (node && node->mValid && !node->mSitName.empty())
 		{
 			ctrl->setValue(node->mSitName);
-			//gMenuHolder->mObjectSit->setValue(node->mSitName);
-			//gMenuHolder->childSetValue(item_name, node->mSitName);
 		}
 		else
 		{
 			ctrl->setValue(get_default_item_label(item_name));
-			//gMenuHolder->mObjectSit->setValue(get_default_item_label(item_name));
-			//gMenuHolder->childSetValue(item_name, get_default_item_label(item_name));
 		}
 	}
 

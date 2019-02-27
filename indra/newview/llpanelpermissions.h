@@ -126,9 +126,6 @@ private:
 	LLCheckBoxCtrl* mCheckboxNextOwnerCopy;
 	LLCheckBoxCtrl* mCheckboxNextOwnerTransfer;
 
-	boost::signals2::connection mOwnerCacheConnection;
-	boost::signals2::connection mCreatorCacheConnection;
-
 	LLUICtrl* mPermModify;
 	LLUICtrl* mPathfindingAttributes;
 
@@ -155,12 +152,13 @@ private:
 	LLUICtrl* mNextOwnerModify;
 	LLUICtrl* mNextOwnerCopy;
 	LLUICtrl* mNextOwnerTransfer;
-	//LLCheckBoxCtrl* mCheckboxNextOwnerModify;
-	//LLCheckBoxCtrl* mCheckboxNextOwnerCopy;
-	//LLCheckBoxCtrl* mCheckboxNextOwnerTransfer;
+
 	LLCheckBoxCtrl* mCheckboxSearch;
 
 	LLUICtrl* mLabelClickAction;
+
+	boost::signals2::connection mOwnerCacheConnection;
+	boost::signals2::connection mCreatorCacheConnection;
 };
 
 

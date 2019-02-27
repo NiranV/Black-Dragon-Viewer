@@ -114,7 +114,6 @@ private:
 	LLTextBox*	mGroupNameBox;
 	LLUUID		mGroupID;
 	LLGroupIconCtrl* mGroupIcon;
-	//LLButton*	mInfoBtn;
 	LLButton*	mProfileBtn;
 	LLIconCtrl* mSelectedIcon;
 

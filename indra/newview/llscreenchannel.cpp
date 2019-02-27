@@ -54,17 +54,6 @@ LLRect LLScreenChannelBase::getChannelRect()
 {
 	LL_RECORD_BLOCK_TIME(FTM_GET_CHANNEL_RECT);
 
-	/*if (mFloaterSnapRegion == NULL)
-	{
-		mFloaterSnapRegion = gViewerWindow->getRootView()->getChildView("floater_snap_region");
-	}*/
-	
-	/*if (mChicletRegion == NULL)
-	{
-		//BD
-		mChicletRegion = gViewerWindow->getRootView()->getChildView("status_bar_container");
-	}*/
-	
 	LLRect channel_rect;
 	LLRect chiclet_rect;
 
@@ -72,12 +61,8 @@ LLRect LLScreenChannelBase::getChannelRect()
 	//     which would come after clicking login but we require notifications such as the "quit" dialog to appear
 	//     properly before logging in already. In case we can't initialize these here we'll end up initializing
 	//     them on login.
-	//if (gViewerWindow->mFloaterSnapRegion == NULL)
-	//	gViewerWindow->mFloaterSnapRegion = gViewerWindow->getRootView()->getChild<LLPanel>("floater_snap_region");
-	
 	if (gViewerWindow->mFloaterSnapRegion != NULL)
 		gViewerWindow->mFloaterSnapRegion->localRectToScreen(gViewerWindow->mFloaterSnapRegion->getLocalRect(), &channel_rect);
-
 
 	if (gViewerWindow->mStatusBarContainer == NULL)
 		gViewerWindow->mStatusBarContainer = gViewerWindow->getRootView()->getChild<LLPanel>("status_bar_container");
@@ -107,8 +92,6 @@ LLScreenChannelBase::LLScreenChannelBase(const Params& p)
 	mID(p.id),
 	mDisplayToastsAlways(p.display_toasts_always),
 	mChannelAlignment(p.channel_align)
-	//mFloaterSnapRegion(NULL),
-	//mChicletRegion(NULL)
 {
 	mID = p.id;
 
@@ -118,17 +101,6 @@ LLScreenChannelBase::LLScreenChannelBase(const Params& p)
 
 BOOL LLScreenChannelBase::postBuild()
 {
-	/*if (mFloaterSnapRegion == NULL)
-	{
-		mFloaterSnapRegion = gViewerWindow->getRootView()->getChildView("floater_snap_region");
-	}
-	
-	if (mChicletRegion == NULL)
-	{
-		//BD
-		mChicletRegion = gViewerWindow->getRootView()->getChildView("status_bar_container");
-	}*/
-	
 	return TRUE;
 }
 
@@ -596,7 +568,6 @@ void LLScreenChannel::redrawToasts()
 	{
 		// connect to floater snap region just to get resize events, we don't care about being a proper widget
 		gViewerWindow->mFloaterSnapRegion->addChild(this);
-		//mFloaterSnapRegion->addChild(this);
 		setFollows(FOLLOWS_ALL);
 	}
 

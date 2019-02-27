@@ -114,7 +114,6 @@ void LLPanelContents::getState(LLViewerObject *objectp )
 	if( !objectp )
 	{
 		mBtnNewScript->setEnabled(FALSE);
-		//getChildView("button new script")->setEnabled(FALSE);
 		return;
 	}
 
@@ -150,14 +149,12 @@ void LLPanelContents::getState(LLViewerObject *objectp )
 
 	// Edit script button - ok if object is editable and there's an unambiguous destination for the object.
 	mBtnNewScript->setEnabled(
-	//getChildView("button new script")->setEnabled(
 		editable &&
 		all_volume &&
 		((selection->getRootObjectCount() == 1)
 			|| (selection->getObjectCount() == 1)));
 
 	mBtnPermissions->setEnabled(!objectp->isPermanentEnforced());
-	//getChildView("button permissions")->setEnabled(!objectp->isPermanentEnforced());
 	mPanelInventoryObject->setEnabled(!objectp->isPermanentEnforced());
 }
 

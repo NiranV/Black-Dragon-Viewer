@@ -69,7 +69,6 @@ BOOL	LLPanelLandInfo::postBuild()
 	childSetAction("button about land", boost::bind(onClickAbout));
 
 	mCheckShowOwners = getChild<LLCheckBoxCtrl>("checkbox show owners");
-	//getChild<LLUICtrl>("checkbox show owners")->setValue(gSavedSettings.getBOOL("ShowParcelOwners"));
 
 	mLabelAreaPrice = getChild<LLTextBox>("label_area_price");
 	mLabelArea = getChild<LLTextBox>("label_area");
@@ -135,23 +134,14 @@ void LLPanelLandInfo::refresh()
 		// nothing selected, disable panel
 		mLabelAreaPrice->setVisible(false);
 		mLabelArea->setVisible(false);
-		//getChildView("label_area_price")->setVisible(false);
-		//getChildView("label_area")->setVisible(false);
 		
-		//mTextPrice->setText(LLStringUtil::null);
 		mLabelPrice->setValue(LLStringUtil::null);
-		//getChild<LLUICtrl>("textbox price")->setValue(LLStringUtil::null);
 
 		mBtnBuyLand->setEnabled(FALSE);
 		mBtnAbandonLand->setEnabled(FALSE);
 		mBtnSubdivideLand->setEnabled(FALSE);
 		mBtnJoinLand->setEnabled(FALSE);
 		mBtnAboutLand->setEnabled(FALSE);
-		//getChildView("button buy land")->setEnabled(FALSE);
-		//getChildView("button abandon land")->setEnabled(FALSE);
-		//getChildView("button subdivide land")->setEnabled(FALSE);
-		//getChildView("button join land")->setEnabled(FALSE);
-		//getChildView("button about land")->setEnabled(FALSE);
 	}
 	else
 	{
@@ -170,12 +160,10 @@ void LLPanelLandInfo::refresh()
 		if (is_public && !LLViewerParcelMgr::getInstance()->getParcelSelection()->getMultipleOwners())
 		{
 			mBtnBuyLand->setEnabled(TRUE);
-			//getChildView("button buy land")->setEnabled(TRUE);
 		}
 		else
 		{
 			mBtnBuyLand->setEnabled(can_buy);
-			//getChildView("button buy land")->setEnabled(can_buy);
 		}
 
 		BOOL owner_release = LLViewerParcelMgr::isParcelOwnedByAgent(parcel, GP_LAND_RELEASE);
@@ -188,18 +176,15 @@ void LLPanelLandInfo::refresh()
 								&& ((parcel->getOwnerID() == regionp->getOwner()) || owner_divide) );
 
 		mBtnAbandonLand->setEnabled(owner_release || manager_releaseable || gAgent.isGodlike());
-		//getChildView("button abandon land")->setEnabled(owner_release || manager_releaseable || gAgent.isGodlike());
 
 		// only mainland sims are subdividable by owner
 		if (regionp->getRegionFlag(REGION_FLAGS_ALLOW_PARCEL_CHANGES))
 		{
 			mBtnSubdivideLand->setEnabled(owner_divide || manager_divideable || gAgent.isGodlike());
-			//getChildView("button subdivide land")->setEnabled(owner_divide || manager_divideable || gAgent.isGodlike());
 		}
 		else
 		{
 			mBtnSubdivideLand->setEnabled(manager_divideable || gAgent.isGodlike());
-			//getChildView("button subdivide land")->setEnabled(manager_divideable || gAgent.isGodlike());
 		}
 		
 		// To join land, must have something selected,
@@ -211,17 +196,14 @@ void LLPanelLandInfo::refresh()
 			&& !LLViewerParcelMgr::getInstance()->getParcelSelection()->getWholeParcelSelected())
 		{
 			mBtnJoinLand->setEnabled(TRUE);
-			//getChildView("button join land")->setEnabled(TRUE);
 		}
 		else
 		{
 			mBtnJoinLand->setEnabled(FALSE);
 			LL_DEBUGS() << "Invalid selection for joining land" << LL_ENDL;
-			//getChildView("button join land")->setEnabled(FALSE);
 		}
 
 		mBtnAboutLand->setEnabled(TRUE);
-		//getChildView("button about land")->setEnabled(TRUE);
 
 		// show pricing information
 		S32 area;
@@ -240,19 +222,12 @@ void LLPanelLandInfo::refresh()
 			mLabelAreaPrice->setTextArg("[AREA]", llformat("%d", area));
 			mLabelAreaPrice->setVisible(true);
 			mLabelArea->setVisible(false);
-			//getChild<LLUICtrl>("label_area_price")->setTextArg("[PRICE]", llformat("%d",claim_price));
-			//getChild<LLUICtrl>("label_area_price")->setTextArg("[AREA]", llformat("%d",area));
-			//getChildView("label_area_price")->setVisible(true);
-			//getChildView("label_area")->setVisible(false);
 		}
 		else
 		{
 			mLabelAreaPrice->setVisible(false);
 			mLabelArea->setTextArg("[AREA]", llformat("%d", area));
 			mLabelArea->setVisible(true);
-			//getChildView("label_area_price")->setVisible(false);
-			//getChild<LLUICtrl>("label_area")->setTextArg("[AREA]", llformat("%d",area));
-			//getChildView("label_area")->setVisible(true);
 		}
 	}
 }

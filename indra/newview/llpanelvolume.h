@@ -155,13 +155,6 @@ protected:
 	LLSpinCtrl* mSpinFlexForceX;
 	LLSpinCtrl* mSpinFlexForceY;
 	LLSpinCtrl* mSpinFlexForceZ;
-
-
-		/*mComboPhysicsShape
-		mPhysicsGravity
-		mPhysicsFriction
-		mPhysicsDensity
-		mPhysicsRestitution*/
 };
 
 #endif
