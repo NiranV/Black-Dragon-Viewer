@@ -68,8 +68,20 @@ LLRect LLScreenChannelBase::getChannelRect()
 	LLRect channel_rect;
 	LLRect chiclet_rect;
 
+	//BD - Initialize snap region and statusbar here, this is a much earlier instance than the normal window init
+	//     which would come after clicking login but we require notifications such as the "quit" dialog to appear
+	//     properly before logging in already. In case we can't initialize these here we'll end up initializing
+	//     them on login.
+	//if (gViewerWindow->mFloaterSnapRegion == NULL)
+	//	gViewerWindow->mFloaterSnapRegion = gViewerWindow->getRootView()->getChild<LLPanel>("floater_snap_region");
+	
 	if (gViewerWindow->mFloaterSnapRegion != NULL)
 		gViewerWindow->mFloaterSnapRegion->localRectToScreen(gViewerWindow->mFloaterSnapRegion->getLocalRect(), &channel_rect);
+
+
+	if (gViewerWindow->mStatusBarContainer == NULL)
+		gViewerWindow->mStatusBarContainer = gViewerWindow->getRootView()->getChild<LLPanel>("status_bar_container");
+
 	if (gViewerWindow->mStatusBarContainer != NULL)
 		gViewerWindow->mStatusBarContainer->localRectToScreen(gViewerWindow->mStatusBarContainer->getLocalRect(), &chiclet_rect);
 
@@ -582,7 +594,7 @@ void LLScreenChannel::redrawToasts()
 {
 	if (!getParent())
 	{
-		// connect to floater snap region just to get resize events, we don't care about being a proper widget 
+		// connect to floater snap region just to get resize events, we don't care about being a proper widget
 		gViewerWindow->mFloaterSnapRegion->addChild(this);
 		//mFloaterSnapRegion->addChild(this);
 		setFollows(FOLLOWS_ALL);
