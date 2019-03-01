@@ -155,11 +155,6 @@ BOOL	LLPanelFace::postBuild()
 	mLabelGlow = getChild<LLTextBox>("glow label");
 	mLabelTexGen = getChild<LLTextBox>("tex gen");
 
-	mGlossiness = getChild<LLUICtrl>("glossiness");
-	mEnvironment = getChild<LLUICtrl>("environment");
-	mMaskCutoff = getChild<LLUICtrl>("maskcutoff");
-	mGlow = getChild<LLUICtrl>("glow");
-
 	mCheckAlignPlanar = getChild<LLCheckBoxCtrl>("checkbox planar align");
 
 	mTexScaleU = getChild<LLUICtrl>("TexScaleU");
@@ -353,7 +348,6 @@ void LLPanelFace::sendFullbright()
 void LLPanelFace::sendColor()
 {
 	LLColor4 color = mColorSwatch->get();
-
 	LLSelectMgr::getInstance()->selectionSetColorOnly(color);
 }
 
