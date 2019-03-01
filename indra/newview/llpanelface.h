@@ -41,6 +41,7 @@ class LLComboBox;
 class LLInventoryItem;
 class LLLineEditor;
 class LLSpinCtrl;
+class LLSliderCtrl;
 class LLTextBox;
 class LLTextureCtrl;
 class LLUICtrl;
@@ -190,7 +191,7 @@ public:
 	LLColorSwatchCtrl*	mColorSwatch;
 	LLColorSwatchCtrl*	mColorSwatchShiny;
 
-	LLUICtrl* mColorTransparency;
+	LLSliderCtrl* mColorTransparency;
 
 	LLComboBox*		mComboShiny;
 	LLComboBox*		mComboBumpy;
@@ -214,10 +215,10 @@ public:
 	LLUICtrl* mLockSpec;
 	LLUICtrl* mLockBump;
 
-	LLUICtrl* mGlossiness;
-	LLUICtrl* mEnvironment;
-	LLUICtrl* mMaskCutoff;
-	LLUICtrl* mGlow;
+	LLSliderCtrl* mGlossiness;
+	LLSliderCtrl* mEnvironment;
+	LLSliderCtrl* mMaskCutoff;
+	LLSliderCtrl* mGlow;
 
 	LLUICtrl* mTexScaleU;
 	LLUICtrl* mTexScaleV;

@@ -53,6 +53,7 @@
 #include "llresmgr.h"
 #include "llselectmgr.h"
 #include "llspinctrl.h"
+#include "llsliderctrl.h"
 #include "lltextbox.h"
 #include "lltexturectrl.h"
 #include "lltextureentry.h"
@@ -102,10 +103,10 @@ LLUUID	LLPanelFace::getCurrentNormalMap()			{ return mBumpyTextureCtrl->getImage
 LLUUID	LLPanelFace::getCurrentSpecularMap()		{ return mShinyTextureCtrl->getImageAssetID(); }
 U32		LLPanelFace::getCurrentShininess()			{ return mComboShiny->getCurrentIndex(); }
 U32		LLPanelFace::getCurrentBumpiness()			{ return mComboBumpy->getCurrentIndex(); }
-U8			LLPanelFace::getCurrentDiffuseAlphaMode()	{ return (U8)mComboAlpha->getCurrentIndex(); }
-U8			LLPanelFace::getCurrentAlphaMaskCutoff()	{ return (U8)mMaskCutoff->getValue().asInteger(); }
-U8			LLPanelFace::getCurrentEnvIntensity()		{ return (U8)mEnvironment->getValue().asInteger(); }
-U8			LLPanelFace::getCurrentGlossiness()			{ return (U8)mGlossiness->getValue().asInteger(); }
+U8		LLPanelFace::getCurrentDiffuseAlphaMode()	{ return (U8)mComboAlpha->getCurrentIndex(); }
+U8		LLPanelFace::getCurrentAlphaMaskCutoff()	{ return (U8)mMaskCutoff->getValue().asInteger(); }
+U8		LLPanelFace::getCurrentEnvIntensity()		{ return (U8)mEnvironment->getValue().asInteger(); }
+U8		LLPanelFace::getCurrentGlossiness()			{ return (U8)mGlossiness->getValue().asInteger(); }
 //BD
 F32		LLPanelFace::getCurrentBumpyRot()			{ return mTexRot->getValue().asReal(); }
 F32		LLPanelFace::getCurrentBumpyScaleU()		{ return mTexScaleU->getValue().asReal(); }
@@ -220,7 +221,7 @@ BOOL	LLPanelFace::postBuild()
 	mColorSwatchShiny->setCanApplyImmediately(TRUE);
 
 	//BD
-	mColorTransparency = getChild<LLUICtrl>("ColorTrans");
+	mColorTransparency = getChild<LLSliderCtrl>("ColorTrans");
 	mColorTransparency->setCommitCallback(boost::bind(&LLPanelFace::sendAlpha, this));
 
 	mCheckFullbright = getChild<LLCheckBoxCtrl>("checkbox fullbright");
@@ -235,16 +236,16 @@ BOOL	LLPanelFace::postBuild()
 	mRadioMaterialType->selectNthItem(MATTYPE_DIFFUSE);
 
 	//BD
-	mGlow = getChild<LLUICtrl>("glow");
+	mGlow = getChild<LLSliderCtrl>("glow");
 	mGlow->setCommitCallback(boost::bind(&LLPanelFace::sendGlow, this));
 
-	mGlossiness = getChild<LLUICtrl>("glossiness");
+	mGlossiness = getChild<LLSliderCtrl>("glossiness");
 	mGlossiness->setCommitCallback(boost::bind(&LLPanelFace::onCommitMaterialGloss, this));
 
-	mEnvironment = getChild<LLUICtrl>("environment");
+	mEnvironment = getChild<LLSliderCtrl>("environment");
 	mEnvironment->setCommitCallback(boost::bind(&LLPanelFace::onCommitMaterialEnv, this));
 
-	mMaskCutoff = getChild<LLUICtrl>("maskcutoff");
+	mMaskCutoff = getChild<LLSliderCtrl>("maskcutoff");
 	mMaskCutoff->setCommitCallback(boost::bind(&LLPanelFace::onCommitMaterialMaskCutoff, this));
 	clearCtrls();
 
@@ -359,15 +360,59 @@ void LLPanelFace::sendColor()
 void LLPanelFace::sendAlpha()
 {
 	F32 alpha = (100.f - mColorTransparency->getValue().asReal()) / 100.f;
-
-	LLSelectMgr::getInstance()->selectionSetAlphaOnly(alpha);
+	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
+	LLObjectSelectionHandle handle = select_mgr->getSelection();
+	for (LLObjectSelection::iterator iter = handle->begin(); iter != handle->end(); ++iter)
+	{
+		LLSelectNode* node = (*iter);
+		if (node)
+		{
+			LLViewerObject* objectp = node->getObject();
+			if (objectp)
+			{
+				for (S32 index = 0; index != objectp->getNumTEs(); ++index)
+				{
+					LLTextureEntry* te = objectp->getTE(index);
+					if (te && te->isSelected())
+					{
+						LLColor4 prev_color = te->getColor();
+						prev_color.mV[VALPHA] = alpha;
+						objectp->setTEColor(index, prev_color);
+					}
+				}
+			}
+		}
+	}
+	if (!mColorTransparency->isMouseHeldDown())
+		select_mgr->selectionSetAlphaOnly(alpha);
 }
-
 
 void LLPanelFace::sendGlow()
 {
 	F32 glow = mGlow->getValue().asReal();
-	LLSelectMgr::getInstance()->selectionSetGlow(glow);
+	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
+	LLObjectSelectionHandle handle = select_mgr->getSelection();
+	for (LLObjectSelection::iterator iter = handle->begin(); iter != handle->end(); ++iter)
+	{
+		LLSelectNode* node = (*iter);
+		if (node)
+		{
+			LLViewerObject* objectp = node->getObject();
+			if (objectp)
+			{
+				for (S32 index = 0; index != objectp->getNumTEs(); ++index)
+				{
+					LLTextureEntry* te = objectp->getTE(index);
+					if (te && te->isSelected())
+					{
+						objectp->setTEGlow(index, glow);
+					}
+				}
+			}
+		}
+	}
+	if (!mGlow->isMouseHeldDown())
+		select_mgr->selectionSetGlow(glow);
 }
 
 struct LLPanelFaceSetTEFunctor : public LLSelectedTEFunctor
