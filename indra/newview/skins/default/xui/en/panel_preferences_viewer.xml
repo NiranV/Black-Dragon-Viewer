@@ -23,7 +23,7 @@ width="510">
 	      <panel
 	      layout="topleft"
 	      follows="left|top|right"
-	      height="773"
+	      height="813"
 	      name="viewer_scroll_panel"
 	      top="0"
 	      left="0"
@@ -145,7 +145,7 @@ width="510">
 		     control_name="RectangleSelectInclusive"
 		     height="16"
 		     initial_value="false"
-		     label="Select entire Prim when one rectangle in Selection"
+		     label="Select entire Prim when one rectangle is in Selection"
 		     layout="topleft"
 		     left="10"
 		     tool_tip="This option toggles whether the entire prim should be selected whenever a rectangle comes into your drawn selection rectangle or not."
@@ -750,6 +750,29 @@ width="510">
  width="60">
        <button.commit_callback
                                  function="Pref.Default"/>
+      </button>
+    
+    <button
+ follows="left|top"
+ height="30"
+ is_toggle="false"
+ halign="left"
+ label="Reset Everything To Default"
+ image_hover_unselected="Toolbar_Middle_Over"
+ image_selected="Toolbar_Middle_Selected"
+ image_unselected="Toolbar_Middle_Off"
+ image_color="1 0.1 0.1 1"
+ image_overlay="Popup_Caution"
+ image_overlay_alignment="left"
+ imgoverlay_label_space="5"
+ layout="topleft"
+ left="160"
+ top_pad="10"
+ name="default"
+ width="180">
+       <button.commit_callback
+                                 function="Dragon.FactoryReset"
+                                 parameter="FactoryReset"/>
       </button>
 	      </panel>
        </scroll_container>

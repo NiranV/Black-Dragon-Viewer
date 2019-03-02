@@ -11454,4 +11454,22 @@ Setting projector resolution higher than 2048 will drastically impact the perfor
      yestext="Oh Okay!"/>
   </notification>
 
+<notification
+   icon="alert.tga"
+   name="FactoryReset"
+   type="alertmodal">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+
+Are you truly sure you want to reset all settings of Black Dragon back to the default?
+
+This will unreversably undo every setting you changed in the Viewer putting it back into it's default state.
+
+&lt;b&gt;DO NOT DO this unless you are experiencing unknown problems and there is no other way to fix them.&lt;/b&gt;
+  <tag>confirm</tag>
+    <usetemplate
+     name="okcancelignore"
+     notext="I think i changed my mind."
+     yestext="Yes. Undo everything."/>
+  </notification>
+
 </notifications>

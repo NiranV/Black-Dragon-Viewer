@@ -371,3 +371,23 @@ void BDFunctions::openPreferences( const LLSD& param)
 		}
 	}
 }
+
+//BD - Factory Reset
+void BDFunctions::askFactoryReset(const LLSD& param)
+{
+	LLNotificationsUtil::add(param,	LLSD(),	LLSD(),	&doFactoryReset);
+}
+
+void BDFunctions::doFactoryReset(const LLSD& notification, const LLSD& response)
+{
+	S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
+	//BD - Cancel
+	if (option == 1)
+	{
+		return;
+	}
+
+	LL_WARNS("Notifications") << "ABANDON SHIP. We are resetting the Viewer to stock." << LL_ENDL;
+	gSavedSettings.doFactoryReset();
+	gSavedPerAccountSettings.doFactoryReset();
+}

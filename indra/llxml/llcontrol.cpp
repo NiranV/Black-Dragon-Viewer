@@ -1121,6 +1121,19 @@ void LLControlGroup::resetToDefaults()
 	}
 }
 
+//BD - Factory Reset
+void LLControlGroup::doFactoryReset()
+{
+	ctrl_name_table_t::iterator control_iter;
+	for (control_iter = mNameTable.begin();
+		control_iter != mNameTable.end();
+		++control_iter)
+	{
+		LLControlVariable* control = (*control_iter).second;
+		control->resetToDefault(true);
+	}
+}
+
 void LLControlGroup::applyToAll(ApplyFunctor* func)
 {
 	for (ctrl_name_table_t::iterator iter = mNameTable.begin();

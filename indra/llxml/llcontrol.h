@@ -358,6 +358,8 @@ public:
  	U32 saveToFile(const std::string& filename, BOOL nondefault_only);
  	U32	loadFromFile(const std::string& filename, bool default_values = false, bool save_values = true);
 	void	resetToDefaults();
+//	//BD - Factory Reset
+	void	doFactoryReset();
 };
 
 
