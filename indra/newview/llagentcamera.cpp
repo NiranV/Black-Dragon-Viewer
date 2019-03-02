@@ -1563,17 +1563,11 @@ void LLAgentCamera::updateCamera()
 		LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() + 
  			LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() + 
  			LLVector3(0.1f, 0.f, 0.f) * gAgentAvatarp->mPelvisp->getWorldRotation();
-		
-		LLJoint* torso_joint = gAgentAvatarp->mTorsop;
-		LLJoint* chest_joint = gAgentAvatarp->mChestp;
-		LLVector3 torso_scale = torso_joint->getScale();
-		LLVector3 chest_scale = chest_joint->getScale();
 
 		if (mRealisticMouselook)
 		{
 			//BD - Use a realistic camera movement in Mouselook, this will make the camera bob on movement
 			//	   and allow the body to freely move around instead of beeing locked into place below you.
-			LLVector3 at_axis(1.0, 0.0, 0.0);
 			LLQuaternion agent_rot = gAgent.getFrameAgent().getQuaternion();
 			if (isAgentAvatarValid() && gAgentAvatarp->getParent())
 			{
@@ -1583,7 +1577,7 @@ void LLAgentCamera::updateCamera()
  					agent_rot *= ((LLViewerObject*)(gAgentAvatarp->getParent()))->getRenderRotation();
  				}
 			}
-			at_axis = at_axis * agent_rot;
+			LLVector3 at_axis = LLVector3(1.0, 0.0, 0.0) * agent_rot;
 			LLVector3 poi = gAgentAvatarp->mHeadp->getWorldPosition() + at_axis;
 			viewer_cam->updateCameraLocation(head_pos, mCameraUpVector, poi);
 		}
@@ -1618,9 +1612,6 @@ void LLAgentCamera::updateCamera()
 				}
 			}
 		}
-
-		torso_joint->setScale(torso_scale);
-		chest_joint->setScale(chest_scale);
 	}
 
 //	//BD - Camera Rolling
