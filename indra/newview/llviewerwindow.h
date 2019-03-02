@@ -533,6 +533,8 @@ public:
 	LLPanel* mChicletContainer;
 
 	LLView* mFloaterSnapRegion;
+
+	LLPanel* mMainView;
 };
 
 //

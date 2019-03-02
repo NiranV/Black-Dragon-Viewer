@@ -2002,24 +2002,24 @@ void LLViewerWindow::initBase()
 	// Create the floater view at the start so that other views can add children to it. 
 	// (But wait to add it as a child of the root view so that it will be in front of the 
 	// other views.)
-	MainPanel* main_view = new MainPanel();
-	if (!main_view->buildFromFile("main_view.xml"))
+	mMainView = new MainPanel();
+	if (!mMainView->buildFromFile("main_view.xml"))
 	{
 		LL_ERRS() << "Failed to initialize viewer: Viewer couldn't process file main_view.xml, "
 				<< "if this problem happens again, please validate your installation." << LL_ENDL;
 	}
-	main_view->setShape(full_window);
-	getRootView()->addChild(main_view);
+	mMainView->setShape(full_window);
+	getRootView()->addChild(mMainView);
 
 	// placeholder widget that controls where "world" is rendered
-	mWorldViewPlaceholder = main_view->getChildView("world_view_rect")->getHandle();
-	mPopupView = main_view->getChild<LLPopupView>("popup_holder");
-	mHintHolder = main_view->getChild<LLView>("hint_holder")->getHandle();
-	mLoginPanelHolder = main_view->getChild<LLView>("login_panel_holder")->getHandle();
+	mWorldViewPlaceholder = mMainView->getChildView("world_view_rect")->getHandle();
+	mPopupView = mMainView->getChild<LLPopupView>("popup_holder");
+	mHintHolder = mMainView->getChild<LLView>("hint_holder")->getHandle();
+	mLoginPanelHolder = mMainView->getChild<LLView>("login_panel_holder")->getHandle();
 
 	// Create the toolbar view
 	// Get a pointer to the toolbar view holder
-	LLPanel* panel_holder = main_view->getChild<LLPanel>("toolbar_view_holder");
+	LLPanel* panel_holder = mMainView->getChild<LLPanel>("toolbar_view_holder");
 	// Load the toolbar view from file 
 	gToolBarView = LLUICtrlFactory::getInstance()->createFromFile<LLToolBarView>("panel_toolbar_view.xml", panel_holder, LLDefaultChildRegistry::instance());
 	gToolBarView->setShape(panel_holder->getLocalRect());
@@ -2027,7 +2027,7 @@ void LLViewerWindow::initBase()
 	gToolBarView->setVisible(FALSE);
 
 	// Constrain floaters to inside the menu and status bar regions.
-	gFloaterView = main_view->getChild<LLFloaterView>("Floater View");
+	gFloaterView = mMainView->getChild<LLFloaterView>("Floater View");
 	for (S32 i = 0; i < LLToolBarEnums::TOOLBAR_COUNT; ++i)
 	{
 		LLToolBar * toolbarp = gToolBarView->getToolbar((LLToolBarEnums::EToolBarLocation)i);
@@ -2036,9 +2036,9 @@ void LLViewerWindow::initBase()
 			toolbarp->getCenterLayoutPanel()->setReshapeCallback(boost::bind(&LLFloaterView::setToolbarRect, gFloaterView, _1, _2));
 		}
 	}
-	mFloaterSnapRegion = main_view->getChild<LLView>("floater_snap_region");
+	mFloaterSnapRegion = mMainView->getChild<LLView>("floater_snap_region");
 	gFloaterView->setFloaterSnapView(mFloaterSnapRegion->getHandle());
-	gSnapshotFloaterView = main_view->getChild<LLSnapshotFloaterView>("Snapshot Floater View");
+	gSnapshotFloaterView = mMainView->getChild<LLSnapshotFloaterView>("Snapshot Floater View");
 
 	// Console
 	llassert( !gConsole );
