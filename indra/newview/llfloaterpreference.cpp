@@ -1895,8 +1895,12 @@ void LLFloaterPreference::onChangeCameraPreset()
 {
 	std::string name = getChild<LLComboBox>("camera_preset_name")->getValue().asString();
 
-	//BD - Switch to the selected camera preset so we can our changes live.
-	gAgentCamera.switchCameraPreset(name);
+	//BD - Don't switch to the Mouselook preset.
+	if (name != "Mouselook")
+	{
+		//BD - Switch to the selected camera preset so we can our changes live.
+		gAgentCamera.switchCameraPreset(name);
+	}
 
 	//BD - Keep the controls in sync.
 	refreshCameraControls();

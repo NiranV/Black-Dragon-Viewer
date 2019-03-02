@@ -1560,7 +1560,7 @@ void LLAgentCamera::updateCamera()
 	if (LLVOAvatar::sVisibleInFirstPerson && isAgentAvatarValid() && cameraMouselook()
 		&& (!gAgentAvatarp->isSitting() || mRealisticMouselook))
 	{
-		LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() + 
+		LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() +
  			LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() + 
  			LLVector3(0.1f, 0.f, 0.f) * gAgentAvatarp->mPelvisp->getWorldRotation();
 
@@ -1579,7 +1579,7 @@ void LLAgentCamera::updateCamera()
 			}
 			LLVector3 at_axis = LLVector3(1.0, 0.0, 0.0) * agent_rot;
 			LLVector3 poi = gAgentAvatarp->mHeadp->getWorldPosition() + at_axis;
-			viewer_cam->updateCameraLocation(head_pos, mCameraUpVector, poi);
+			viewer_cam->updateCameraLocation(head_pos + mCameraOffsetInitial["Mouselook"], mCameraUpVector, poi + mCameraOffsetInitial["Mouselook"]);
 		}
 		else
 		{
