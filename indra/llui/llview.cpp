@@ -1595,6 +1595,7 @@ LLView* LLView::findChildView(const std::string& name, BOOL recurse) const
 	//if(name.empty())
 	//	return NULL;
 	// Look for direct children *first*
+	LL_DEBUGS() << "Trying to find Widget: " << name << LL_ENDL;
 	BOOST_FOREACH(LLView* childp, mChildList)
 	{
 		llassert(childp);
