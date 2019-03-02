@@ -1883,12 +1883,10 @@ void LLFloaterPreference::refreshCameraControls()
 		|| preset_name == "Left Shoulder View" || preset_name == "Right Shoulder View"
 		|| preset_name == "Rear View" || preset_name == "RLVa View")
 	{
-		LL_WARNS("Camera") << "Disabling button" << LL_ENDL;
 		getChild<LLButton>("DeleteCameraPreset")->setEnabled(FALSE);
 	}
 	else
 	{
-		LL_WARNS("Camera") << "Enabling button" << LL_ENDL;
 		getChild<LLButton>("DeleteCameraPreset")->setEnabled(TRUE);
 	}
 }
