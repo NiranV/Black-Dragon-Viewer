@@ -91,7 +91,7 @@ width="996">
  height="20"
  image_unselected="transparentj2c"
  image_selected="transparentj2c"
- label="[CHANNEL] [VERSION] - [3.4.1 - Exploding Dragon]"
+ label="[CHANNEL] [VERSION] - [3.4.2 - Exploding Dragon]"
  font="SansSerifSmall"
  layout="topleft"
  left="3"
@@ -173,8 +173,104 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="507"
+     height="741"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Added: Textures for text input-less dropdowns matching the glass look of buttons.
+Added: Warning when trying to change the Font DPI.
+Added: First draft of the Camera Recorder feature.
+Added: Feature to do a factory reset (delete all settings).
+Added: Ability to control Mouselook camera offset, mostly height, everything else works but is kinda wonky.
+Added: Log debugging for getChild to find often used ones.
+Added: Rich Washabaugh to Patreon patron list.
+Added: Natade to Patreon patron list.
+Changed: World map legend and controls background to use the proper gradient background.
+Changed: Consistency pass over tools floater to match it's visuals to all other windows.
+Changed: Improved and shortened copy/mod/transfer permission tags in inventory.
+Changed: Reduced framerate hitching with People panel open.
+Changed: Reduced framerate hitching and performance impact with fasttimers view open.
+Changed: Reduced random framerate hitching when nearby chat pops up or is updated.
+Changed: Reduced framerate hitching and performance impact with Conversations window open.
+Changed: Massively reduced framerate hitching and performance impact with Edit window open.
+Changed: Reduced framerate hitching when creating and hovering over group list entries.
+Changed: Reduced framerate hitching when right clicking marketplace-able items in inventory.
+Changed: Reduced random framerate hitching due to Edit Panel lookups.
+Changed: Reduced framerate hitching and freezing when right clicking objects inworld.
+Changed: Improved overall framerate stability while idle when looking up UI parts internally.
+Changed: Move all line editor text padding one pixel to the right for better spacing.
+Changed: Set Deferred Rendering to TRUE by default in preparations for the upcoming changes.
+Changed: Improved Motion Blur inclusion selection logic.
+Changed: Commit transparency and glow changes locally until we let go of the slider to reduce bombarding the server and stop the parameter from reverting constantly.
+Changed: Disabled Motion Blur by default.
+Changed: Version to 3.4.2.
+Fixed: Balance display vanishing under rare conditions in the main inventory panel.
+Fixed: (Potential) Random super low framerate with projectors enabled.
+Fixed: Extremely rare startup crash with rendering attached lights.
+Fixed: Random framerate hitching due to scrollbar button lookups while idle.
+Fixed: Viewer crash with Font DPI higher than normal when opening a tabbed window.
+Fixed: Font creation warnings.
+Fixed: Group join button and join cost not moving with the window size.
+Fixed: Group Notices not showing the attachment icon.
+Fixed: "Drag items here" label in Group Notices vanishing forever after dragging something there.
+Fixed: Keybindings falsely showing "Third Person" as default menu entry when First Person was the default mode selected.
+Fixed: Flycam rolling not working when rolling was bound to an axis.
+Fixed: Camera Max Roll slider length not matching all other sliders.
+Fixed: Notifications not appearing centered on screen on login.
+Fixed: Right-click having no default label for sit and touch.
+Fixed: Got rid of a missed getChild call.
+Misc: Make traversing the attachment list in the complexity floater safer.
+Misc: Do a few optimizations in Camera code.
+Misc: Do a few optimizations in lldrawpoolavatar.cpp.
+Misc: Do some cleanup in llvovolume.cpp.
+Misc: Do some cleanup in pipeline.cpp.
+Misc: Optimizations in pipeline.cpp.
+Misc: Massive performance optimization pass over many parts of the UI.
+Misc: Debugging info fixes.
+Misc: Massive clean up after performance changes.
+Misc: Kill some double getChild calls in Tools - Texture.
+Misc: More performance tweaks in llviewerwindow.cpp, kill some more getChild calls.
+Misc: Performance tweaks for Debug Settings, killed all unnecessary getChild calls.
+Misc: Cleaned up obsolete log debugging in Preferences.
+Misc: Simplified mouselook camera code.
+Attempt to reduce number of menus retained in memory for duration of runtime.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.4.1
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="507"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
