@@ -1682,7 +1682,7 @@ void LLFloaterPreference::refreshMemoryControls()
 //BD - Unlimited Camera Presets
 void LLFloaterPreference::onCameraArray(LLUICtrl* ctrl, const LLSD& param)
 {
-	std::string name = gAgentCamera.mCameraPresetName;
+	std::string name = gSavedSettings.getString("CameraPresetName");
 	LLVector3 vec3 = gAgentCamera.mCameraOffsetInitial[name];
 
 	if (param.asString() == "X")
@@ -1704,7 +1704,7 @@ void LLFloaterPreference::onCameraArray(LLUICtrl* ctrl, const LLSD& param)
 
 void LLFloaterPreference::onFocusArray(LLUICtrl* ctrl, const LLSD& param)
 {
-	std::string name = gAgentCamera.mCameraPresetName;
+	std::string name = gSavedSettings.getString("CameraPresetName");
 	LLVector3d vec3 = gAgentCamera.mFocusOffsetInitial[name];
 
 	if (param.asString() == "X")
@@ -1788,7 +1788,7 @@ void LLFloaterPreference::onAddCameraPreset(bool refresh)
 void LLFloaterPreference::onRemoveCameraPreset()
 {
 	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera");
-	std::string name = getChild<LLComboBox>("camera_preset_name")->getValue().asString();
+	std::string name = gSavedSettings.getString("CameraPresetName");
 
 	if (gDirUtilp->deleteFilesInDir(pathname, LLURI::escape(name) + ".xml") < 1)
 	{
@@ -1796,6 +1796,9 @@ void LLFloaterPreference::onRemoveCameraPreset()
 	}
 
 	gAgentCamera.initializeCameraPresets();
+
+	//BD - Refresh.
+	refreshPresets();
 }
 
 void LLFloaterPreference::refreshPresets()
@@ -1881,7 +1884,8 @@ void LLFloaterPreference::refreshCameraControls()
 	//     but make more sense label wise for the user.
 	if (preset_name == "Front View" || preset_name == "Group View"
 		|| preset_name == "Left Shoulder View" || preset_name == "Right Shoulder View"
-		|| preset_name == "Rear View" || preset_name == "RLVa View")
+		|| preset_name == "Rear View" || preset_name == "RLVa View"
+		|| preset_name == "Mouselook" || preset_name == "Top View")
 	{
 		getChild<LLButton>("DeleteCameraPreset")->setEnabled(FALSE);
 	}
@@ -1901,6 +1905,11 @@ void LLFloaterPreference::onChangeCameraPreset()
 		//BD - Switch to the selected camera preset so we can our changes live.
 		gAgentCamera.switchCameraPreset(name);
 	}
+	else
+	{
+		//BD - Since we don't switch to the preset we need to set the debug manually.
+		gSavedSettings.setString("CameraPresetName", name);
+	}
 
 	//BD - Keep the controls in sync.
 	refreshCameraControls();
@@ -1913,13 +1922,18 @@ void LLFloaterPreference::onCameraPresetReset(const LLSD& param)
 	std::string preset_name = gSavedSettings.getString("CameraPresetName");
 	if (preset_name == "Front View" || preset_name == "Group View"
 		|| preset_name == "Left Shoulder View" || preset_name == "Right Shoulder View"
-		|| preset_name == "Rear View" || preset_name == "RLVa View")
+		|| preset_name == "Rear View" || preset_name == "RLVa View"
+		|| preset_name == "Mouselook" || preset_name == "Top View")
 	{
 		//BD - Remove the currently selected preset.
 		onRemoveCameraPreset();
 
-		//BD - Reload the preset to load the default version of it.
-		gAgentCamera.switchCameraPreset(preset_name);
+		//BD - Don't switch to the Mouselook preset.
+		if (preset_name != "Mouselook")
+		{
+			//BD - Reload the preset to load the default version of it.
+			gAgentCamera.switchCameraPreset(preset_name);
+		}
 	}
 	else
 	{
