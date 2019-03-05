@@ -1248,6 +1248,11 @@ BOOL LLFloaterPreference::postBuild()
 	fov_slider->setMinValue(LLViewerCamera::getInstance()->getMinView());
 	fov_slider->setMaxValue(LLViewerCamera::getInstance()->getMaxView());
 
+	//BD
+	mLoadBtn = findChild<LLButton>("PrefLoadButton");
+	mSaveBtn = findChild<LLButton>("PrefSaveButton");
+	mDeleteBtn = findChild<LLButton>("PrefDeleteButton");
+
 	//BD - Refresh our controls at the start
 	refreshGraphicControls();
 	refreshCameraControls();
@@ -2209,14 +2214,9 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	LLPresetsManager::getInstance()->createMissingDefault();
 
 	bool started = (LLStartUp::getStartupState() == STATE_STARTED);
-
-	LLButton* load_btn = findChild<LLButton>("PrefLoadButton");
-	LLButton* save_btn = findChild<LLButton>("PrefSaveButton");
-	LLButton* delete_btn = findChild<LLButton>("PrefDeleteButton");
-
-	load_btn->setEnabled(started);
-	save_btn->setEnabled(started);
-	delete_btn->setEnabled(started);
+	mLoadBtn->setEnabled(started);
+	mSaveBtn->setEnabled(started);
+	mDeleteBtn->setEnabled(started);
 }
 
 void LLFloaterPreference::onAvatarImpostorsEnable()

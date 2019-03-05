@@ -332,6 +332,10 @@ private:
 	LLFrameTimer	mUpdateTimer;
 	LLTabContainer* mTabContainer;
 
+	LLButton*		mSaveBtn;
+	LLButton*		mLoadBtn;
+	LLButton*		mDeleteBtn;
+
 	std::array<LLUICtrl*, 3> mRenderGlowLumWeights;
 	std::array<LLUICtrl*, 3> mRenderGlowWarmthWeights;
 	std::array<LLUICtrl*, 3> mExodusRenderToneAdvOptA;
