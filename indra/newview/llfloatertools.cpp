@@ -799,16 +799,16 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	mCostTextBorder->setVisible(!land_visible);
 
 	mBtnLand->setToggleState(land_visible);
-
-	if (tool == LLToolSelectLand::getInstance())
-	{
-		mRadioGroupLand->setValue("radio select land");
-	}
-	else if (tool == LLToolBrushLand::getInstance())
+	
+	if (tool == LLToolSelectLand::getInstance() 
+		|| tool == LLToolBrushLand::getInstance())
 	{
 		S32 dozer_mode = gSavedSettings.getS32("RadioLandBrushAction");
 		switch(dozer_mode)
 		{
+		case 0:
+			mRadioGroupLand->setValue("radio select land");
+			break;
 		case 1:
 			mRadioGroupLand->setValue("radio flatten");
 			break;
