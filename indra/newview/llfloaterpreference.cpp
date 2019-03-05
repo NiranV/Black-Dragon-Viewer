@@ -2152,6 +2152,9 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 		}
 	}
 
+//	//BD - Unlimited Camera Presets
+	getChild<LLComboBox>("camera_preset_name")->setValue(gSavedSettings.getString("CameraPresetName"));
+
 	maturity_radio->setEnabled(can_choose_maturity);
 
 	// Forget previous language changes.
