@@ -68,13 +68,14 @@ const F32 LAND_BRUSH_SIZE[LAND_BRUSH_SIZE_COUNT] = {1.0f, 2.0f, 4.0f};
 
 enum
 {
-	E_LAND_LEVEL	= 0,
-	E_LAND_RAISE	= 1,
-	E_LAND_LOWER	= 2,
-	E_LAND_SMOOTH	= 3,
-	E_LAND_NOISE	= 4,
-	E_LAND_REVERT	= 5,
-	E_LAND_INVALID 	= 6,
+	E_LAND_SELECT	= 0,
+	E_LAND_LEVEL	= 1,
+	E_LAND_RAISE	= 2,
+	E_LAND_LOWER	= 3,
+	E_LAND_SMOOTH	= 4,
+	E_LAND_NOISE	= 5,
+	E_LAND_REVERT	= 6,
+	E_LAND_INVALID 	= 7,
 };
 const LLColor4 OVERLAY_COLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -128,23 +129,23 @@ void LLToolBrushLand::modifyLandAtPointGlobal(const LLVector3d &pos_global,
 		char action = E_LAND_LEVEL;
 		switch (radioAction)
 		{
-		case 0:
+		case 1:
 		//	// average toward mStartingZ
 			action = E_LAND_LEVEL;
 			break;
-		case 1:
+		case 2:
 			action = E_LAND_RAISE;
 			break;
-		case 2:
+		case 3:
 			action = E_LAND_LOWER;
 			break;
-		case 3:
+		case 4:
 			action = E_LAND_SMOOTH;
 			break;
-		case 4:
+		case 5:
 			action = E_LAND_NOISE;
 			break;
-		case 5:
+		case 6:
 			action = E_LAND_REVERT;
 			break;
 		default:
@@ -261,28 +262,28 @@ void LLToolBrushLand::modifyLandInSelectionGlobal()
 		char action = E_LAND_LEVEL;
 		switch (radioAction)
 		{
-		case 0:
+		case 1:
 		//	// average toward mStartingZ
 			action = E_LAND_LEVEL;
 			seconds *= 0.25f;
 			break;
-		case 1:
+		case 2:
 			action = E_LAND_RAISE;
 			seconds *= 0.25f;
 			break;
-		case 2:
+		case 3:
 			action = E_LAND_LOWER;
 			seconds *= 0.25f;
 			break;
-		case 3:
+		case 4:
 			action = E_LAND_SMOOTH;
 			seconds *= 5.0f;
 			break;
-		case 4:
+		case 5:
 			action = E_LAND_NOISE;
 			seconds *= 0.5f;
 			break;
-		case 5:
+		case 6:
 			action = E_LAND_REVERT;
 			seconds = 0.5f;
 			break;
