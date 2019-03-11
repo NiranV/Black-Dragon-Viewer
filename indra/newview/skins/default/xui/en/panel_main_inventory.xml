@@ -542,7 +542,7 @@
            left="1"
            top="0"
            name="dummy_icon"
-           width="210" />
+           width="190" />
 					<filter_editor
    follows="left|top|right"
    height="22"
@@ -552,7 +552,7 @@
    name="inventory search editor"
    tool_tip="Type in one or more words to search for, separated by '+' "
    top="2"
-   width="206"
+   width="186"
 			background_image="TextField_Off"
 			background_image_disabled="TextField_Disabled"
 			background_image_focused="TextField_Active"/>
@@ -563,7 +563,7 @@
 	top="0"
    name="search_type"
    follows="bottom|right"
-   width="70">
+   width="90">
     <item
      label="Name"
      name="Name"
@@ -581,16 +581,16 @@
      name="UUID"
      value="search_by_UUID"/>
 	 <combo_box.combo_button
-		image_unselected="Toolbar_Middle_Off"
-		image_selected="Toolbar_Middle_Selected"
-		image_disabled="Toolbar_Middle_Off" />
+		image_unselected="ToolbarDropDown_Off"
+		image_selected="ToolbarDropDown_Press"
+		image_disabled="ToolbarDropDown_Off" />
 		<combo_box.drop_down_button
 		pad_right="0"
-		image_unselected="Toolbar_Middle_Off"
-		image_selected="Toolbar_Middle_Selected"
-		image_pressed="Toolbar_Middle_Selected" 
-		image_pressed_selected="Toolbar_Middle_Selected"
-		image_disabled="Toolbar_Middle_Off" />
+		image_unselected="ToolbarDropDown_Off"
+		image_selected="ToolbarDropDown_Press"
+		image_pressed="ToolbarDropDown_Press" 
+		image_pressed_selected="ToolbarDropDown_Press"
+		image_disabled="ToolbarDropDown_Off" />
     </combo_box>
 
       </layout_panel>

@@ -170,15 +170,15 @@ Hover your mouse over the options for more help.
          tool_tip="Sets the title that appears in your avatar&apos;s name tag when this group is active."
          top_delta="-4" >
             <combo_box.combo_button
-            image_unselected="Toolbar_Middle_Off"
-            image_selected="Toolbar_Middle_Selected"
-            image_disabled="Toolbar_Middle_Off" />
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
-            image_unselected="Toolbar_Middle_Off"
-            image_selected="Toolbar_Middle_Selected"
-            image_pressed="Toolbar_Middle_Selected" 
-            image_pressed_selected="Toolbar_Middle_Selected"
-            image_disabled="Toolbar_Middle_Off" />
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
         </combo_box>
         <check_box
          follows="left|top"
@@ -244,15 +244,15 @@ Hover your mouse over the options for more help.
          top_delta="-4"
          width="212">
             <icons_combo_box.combo_button
-            image_unselected="Toolbar_Middle_Off"
-            image_selected="Toolbar_Middle_Selected"
-            image_disabled="Toolbar_Middle_Off" />
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
             <icons_combo_box.drop_down_button
-            image_unselected="Toolbar_Middle_Off"
-            image_selected="Toolbar_Middle_Selected"
-            image_pressed="Toolbar_Middle_Selected" 
-            image_pressed_selected="Toolbar_Middle_Selected"
-            image_disabled="Toolbar_Middle_Off" />
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
             <icons_combo_box.item
                label="General Content"
                name="pg"
