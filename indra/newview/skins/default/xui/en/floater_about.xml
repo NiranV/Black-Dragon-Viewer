@@ -24,10 +24,9 @@ width="470">
  <tab_container
  follows="all" 
  top="25"
- left="5"
- tab_min_width="83"
+ left="7"
  height="410" 
- width="460" 
+ width="455" 
  name="about_tab"
  tab_position="top">
   <panel
@@ -38,10 +37,10 @@ width="470">
    parse_urls="true" 
    follows="top|left"
    font="SansSerif"
-   height="355"
+   height="357"
    bg_readonly_color="Transparent"
    text_readonly_color="LabelTextColor"
-   left="5"
+   left="3"
    max_length="65536"
    name="support_editor"
    top="1"
@@ -50,16 +49,18 @@ width="470">
    <button
    follows="left|top" 
    label="Copy to Clipboard"
+   image_unselected="Toolbar_Middle_Off"
+    image_selected="Toolbar_Middle_Selected"
    name="copy_btn"
-   left="5"
-   top_pad="2"
+   left="3"
+   top_pad="1"
    height="25"
    width="448" />
   </panel>
   <panel
   border="false"
   label="Patreon Support"
-  name="licenses_panel">
+  name="patreon_panel">
    <text_editor
    enabled="false"
    follows="left|top"
@@ -67,7 +68,7 @@ width="470">
    height="382"
    bg_readonly_color="Transparent"
    text_readonly_color="LabelTextColor"
-   left="5"
+   left="3"
    max_length="65536"
    name="credits_editor"
    top="1"
@@ -124,7 +125,7 @@ Woodruff (5$)
    follows="top|left|right"
    height="10"
    layout="topleft"
-   left="10"
+   left="8"
    name="linden_intro"
    top="10"
    width="435"
@@ -135,7 +136,7 @@ Second Life is brought to you by the Lindens:
    enabled="false" 
    follows="top|left"
    height="161"
-   left="5"
+   left="3"
    bg_readonly_color="Transparent"
    text_readonly_color="LabelTextColor"
    max_length="65536"
@@ -149,7 +150,7 @@ Philip, Andrew, Doug, Richard, Phoenix, Ian, Mark, Robin, Dan, Char, Ryan, Eric,
    follows="top|left"
    height="10"
    layout="topleft"
-   left="10"
+   left="8"
    name="contrib_intro"
    top_pad="10"
    width="435"
@@ -162,7 +163,7 @@ with open source contributions from:
    height="162"
    bg_readonly_color="Transparent"
    text_readonly_color="LabelTextColor"
-   left="5"
+   left="3"
    max_length="65536"
    name="contrib_names"
    top_pad="10"
@@ -180,7 +181,7 @@ Dummy Name replaced at run time
    follows="left|top"
    height="382"
    bg_readonly_color="Transparent"
-   left="5"
+   left="3"
    text_readonly_color="LabelTextColor"
    max_length="65536"
    name="licenses_editor"
@@ -193,7 +194,7 @@ Collada DOM Copyright 2005 Sony Computer Entertainment Inc.
 cURL Copyright (C) 1996-2002, Daniel Stenberg, (daniel@haxx.se)
 DBus/dbus-glib Copyright (C) 2002, 2003  CodeFactory AB / Copyright (C) 2003, 2004 Red Hat, Inc.
 expat Copyright (C) 1998, 1999, 2000 Thai Open Source Software Center Ltd.
-FMOD Sound System, copyright © Firelight Technologies Pty, Ltd., 1994-2012
+FMOD Studio, (C) 2019 Firelight Technologies Pty Ltd.
 FreeType Copyright (C) 1996-2002, The FreeType Project (www.freetype.org).
 GL Copyright (C) 1999-2004 Brian Paul.
 GLOD Copyright (C) 2003-04 Jonathan Cohen, Nat Duca, Chris Niski, Johns Hopkins University and David Luebke, Brenden Schubert, University of Virginia.
@@ -230,7 +231,7 @@ Voice chat Audio coding: Polycom(R) Siren14(TM) (ITU-T Rec. G.722.1 Annex C)
    height="382"
    bg_readonly_color="Transparent"
    text_readonly_color="LabelTextColor"
-   left="5"
+   left="3"
    max_length="65536"
    name="credits_editor"
    top="1"
