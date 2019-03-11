@@ -28,15 +28,18 @@
 
 #include "lllistener.h"
 
-#define DEFAULT_AT  0.0f,0.0f,-1.0f
-#define DEFAULT_UP  0.0f,1.0f,0.0f
+const LLVector3 DEFAULT_AT(0.0f, 0.0f, -1.0f);
+const LLVector3 DEFAULT_UP(0.0f, 1.0f, 0.0f);
 
 //-----------------------------------------------------------------------
 // constructor
 //-----------------------------------------------------------------------
 LLListener::LLListener()
+	: mPosition(LLVector3::zero),
+	mVelocity(LLVector3::zero),
+	mListenAt(DEFAULT_AT),
+	mListenUp(DEFAULT_UP)
 {
-	init();
 }
 
 //-----------------------------------------------------------------------
@@ -45,22 +48,13 @@ LLListener::~LLListener()
 }
 
 //-----------------------------------------------------------------------
-void LLListener::init(void)
-{
-	mPosition.zeroVec();
-	mListenAt.setVec(DEFAULT_AT);
-	mListenUp.setVec(DEFAULT_UP);
-	mVelocity.zeroVec();
-}
-
-//-----------------------------------------------------------------------
-void LLListener::translate(LLVector3 offset)
+void LLListener::translate(const LLVector3& offset)
 {
 	mPosition += offset;
 }
 
 //-----------------------------------------------------------------------
-void LLListener::setPosition(LLVector3 pos)
+void LLListener::setPosition(const LLVector3& pos)
 {
 	mPosition = pos;
 }
@@ -84,24 +78,21 @@ LLVector3 LLListener::getUp(void)
 }
 
 //-----------------------------------------------------------------------
-void LLListener::setVelocity(LLVector3 vel)
+void LLListener::setVelocity(const LLVector3& vel)
 {
 	mVelocity = vel;
 }
 
 //-----------------------------------------------------------------------
-void LLListener::orient(LLVector3 up, LLVector3 at)
+void LLListener::orient(const LLVector3& up, const LLVector3& at)
 {
 	mListenUp = up;
 	mListenAt = at;
 }
 
 //-----------------------------------------------------------------------
-void LLListener::set(LLVector3 pos, LLVector3 vel, LLVector3 up, LLVector3 at)
+void LLListener::set(const LLVector3& pos, const LLVector3& vel, const LLVector3& up, const LLVector3& at)
 {
-	mPosition = pos;
-	mVelocity = vel;
-
 	setPosition(pos);
 	setVelocity(vel);
 	orient(up,at);

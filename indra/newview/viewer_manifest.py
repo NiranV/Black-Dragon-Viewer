@@ -1142,12 +1142,12 @@ open "%s" --args "$@"
                         # dylibs that vary based on configuration
                         if self.args['configuration'].lower() == 'debug':
                             for libfile in (
-                                        "libfmodexL.dylib",
+                                        "libfmodL.dylib",
                                         ):
                                 dylibs += path_optional(os.path.join(debpkgdir, libfile), libfile)
                         else:
                             for libfile in (
-                                        "libfmodex.dylib",
+                                        "libfmod.dylib",
                                         ):
                                 dylibs += path_optional(os.path.join(relpkgdir, libfile), libfile)
 

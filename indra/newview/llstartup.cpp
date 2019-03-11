@@ -39,8 +39,8 @@
 #include "llviewermedia_streamingaudio.h"
 #include "llaudioengine.h"
 
-#ifdef LL_FMODEX
-# include "llaudioengine_fmodex.h"
+#ifdef LL_FMODSTUDIO
+#include "llaudioengine_fmodstudio.h"
 #endif
 
 #ifdef LL_OPENAL
@@ -621,21 +621,25 @@ bool idle_startup()
 		if (FALSE == gSavedSettings.getBOOL("NoAudio"))
 		{
 			delete gAudiop;
-			gAudiop = NULL;
+			gAudiop = nullptr;
 
-#ifdef LL_FMODEX		
+#ifdef LL_FMODSTUDIO
+			if (!gAudiop
 #if !LL_WINDOWS
-			if (NULL == getenv("LL_BAD_FMODEX_DRIVER"))
+				&& NULL == getenv("LL_BAD_FMODSTUDIO_DRIVER")
 #endif // !LL_WINDOWS
+				)
 			{
-				gAudiop = (LLAudioEngine *) new LLAudioEngine_FMODEX(gSavedSettings.getBOOL("FMODExProfilerEnable"));
+				gAudiop = (LLAudioEngine *) new LLAudioEngine_FMODSTUDIO(LLAppViewer::instance()->getSecondLifeTitle(), gSavedSettings.getBOOL("FMODProfilerEnable"), gSavedSettings.getU32("FMODResampleMethod"));
 			}
 #endif
 
 #ifdef LL_OPENAL
+			if (!gAudiop
 #if !LL_WINDOWS
-			if (NULL == getenv("LL_BAD_OPENAL_DRIVER"))
+				&& NULL == getenv("LL_BAD_OPENAL_DRIVER")
 #endif // !LL_WINDOWS
+				)
 			{
 				gAudiop = (LLAudioEngine *) new LLAudioEngine_OpenAL();
 			}
@@ -644,7 +648,7 @@ bool idle_startup()
 			if (gAudiop)
 			{
 #if LL_WINDOWS
-				// FMOD Ex on Windows needs the window handle to stop playing audio
+				// FMOD Studio on Windows needs the window handle to stop playing audio
 				// when window is minimized. JC
 				void* window_handle = (HWND)gViewerWindow->getPlatformWindow();
 #else
@@ -659,13 +663,13 @@ bool idle_startup()
 				{
 					LL_WARNS("AppInit") << "Unable to initialize audio engine" << LL_ENDL;
 					delete gAudiop;
-					gAudiop = NULL;
+					gAudiop = nullptr;
 				}
 
 				if (gAudiop)
 				{
 					// if the audio engine hasn't set up its own preferred handler for streaming audio then set up the generic streaming audio implementation which uses media plugins
-					if (NULL == gAudiop->getStreamingAudioImpl())
+					if (!gAudiop->getStreamingAudioImpl())
 					{
 						LL_INFOS("AppInit") << "Using media plugins to render streaming audio" << LL_ENDL;
 						gAudiop->setStreamingAudioImpl(new LLStreamingAudio_MediaPlugins());

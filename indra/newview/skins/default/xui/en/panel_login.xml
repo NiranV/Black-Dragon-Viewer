@@ -182,6 +182,9 @@ width="996">
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
+Changed: Reworked Camera Offset system to not require the preset to be loaded to be edited.
+Changed: Tooltip for Object Cache and added a warning that disabling this option will have negative effects.
+Changed: Version to 3.4.3.
 Fixed: Mouselook offset not working anymore.
 Fixed: Top View preset not properly disabling the "Delete" button.
 Fixed: Preset list not refreshing after deleting a preset.
@@ -189,9 +192,6 @@ Fixed: Camera Preset combobox not showing the currently selected preset when ope
 Fixed: XUI warning about missing Conversation Log Combo, it's a radiobutton now.
 Fixed: Land edit tools selecting the wrong tool.
 Fixed: Land Edit tool selection not selecting "Select Land" as default.
-Changed: Reworked Camera Offset system to not require the preset to be loaded to be edited.
-Changed: Tooltip for Object Cache and added a warning that disabling this option will have negative effects.
-Changed: Version to 3.4.3.
 Misc: Elimiated more unnecessary getChild calls in Preferences.
      </text>
      <view_border

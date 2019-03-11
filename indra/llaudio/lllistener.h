@@ -45,15 +45,14 @@ class LLListener
  public:  
 	LLListener();
 	virtual ~LLListener();
-	virtual void init();  
 
-	virtual void set(LLVector3 pos, LLVector3 vel, LLVector3 up, LLVector3 at);
+	virtual void set(const LLVector3& pos, const LLVector3& vel, const LLVector3& up, const LLVector3& at);
 
-	virtual void setPosition(LLVector3 pos);
-	virtual void setVelocity(LLVector3 vel);
+	virtual void setPosition(const LLVector3& pos);
+	virtual void setVelocity(const LLVector3& vel);
 
-	virtual void orient(LLVector3 up, LLVector3 at);
-	virtual void translate(LLVector3 offset);
+	virtual void orient(const LLVector3& up, const LLVector3& at);
+	virtual void translate(const LLVector3& offset);
 
 	virtual void setDopplerFactor(F32 factor);
 	virtual void setRolloffFactor(F32 factor);

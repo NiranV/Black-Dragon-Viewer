@@ -6,6 +6,8 @@
 
 include(CMakeCopyIfDifferent)
 include(Linking)
+include(Variables)
+include(LLCommon)
 
 ###################################################################
 # set up platform specific lists of files that need to be copied
@@ -49,14 +51,15 @@ if(WINDOWS)
         libhunspell.dll
         )
 
-    if (FMODEX)
-
-        if(ADDRESS_SIZE EQUAL 32)
-            set(release_files ${release_files} fmodex.dll)
-        else(ADDRESS_SIZE EQUAL 32)
-            set(release_files ${release_files} fmodex64.dll)
-        endif(ADDRESS_SIZE EQUAL 32)
-    endif (FMODEX)
+    if (FMODSTUDIO)
+      if(ADDRESS_SIZE STREQUAL 64)
+        list(APPEND debug_files fmodL64.dll)
+        list(APPEND release_files fmod64.dll)
+      else(ADDRESS_SIZE STREQUAL 64)
+        list(APPEND debug_files fmodL.dll)
+        list(APPEND release_files fmod.dll)
+      endif(ADDRESS_SIZE STREQUAL 64)
+    endif (FMODSTUDIO)
 
     #*******************************
     # Copy MS C runtime dlls, required for packaging.
@@ -180,10 +183,14 @@ elseif(DARWIN)
         libnghttp2.14.14.0.dylib
        )
 
-    if (FMODEX)
-      set(debug_files ${debug_files} libfmodexL.dylib)
-      set(release_files ${release_files} libfmodex.dylib)
-    endif (FMODEX)
+    if (OPENAL)
+      list(APPEND release_files libopenal.dylib libalut.dylib)
+    endif (OPENAL)
+
+    if (FMODSTUDIO)
+      list(APPEND debug_files libfmodL.dylib)
+      list(APPEND release_files libfmod.dylib)
+    endif (FMODSTUDIO)
 
 elseif(LINUX)
     # linux is weird, multiple side by side configurations aren't supported
@@ -230,10 +237,14 @@ elseif(LINUX)
         libfontconfig.so.1
        )
 
-    if (FMODEX)
-      set(debug_files ${debug_files} "libfmodexL.so")
-      set(release_files ${release_files} "libfmodex.so")
-    endif (FMODEX)
+    if (USE_TCMALLOC)
+      list(APPEND release_files "libtcmalloc_minimal.so")
+    endif (USE_TCMALLOC)
+
+    if (FMODSTUDIO)
+      list(APPEND debug_files "libfmodL.so")
+      list(APPEND release_files "libfmod.so")
+    endif (FMODSTUDIO)
 
 else(WINDOWS)
     message(STATUS "WARNING: unrecognized platform for staging 3rd party libs, skipping...")
