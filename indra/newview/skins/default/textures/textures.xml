@@ -733,8 +733,7 @@ with the same filename but different name
   <texture name="ComboToolbarButton_UpOff" file_name="widgets/ComboToolbarButton_UpOff.png" preload="false" scale.left="19" scale.top="19" scale.right="22" scale.bottom="1" />
   
   <texture name="ToolbarDropDown_Disabled" file_name="widgets/DropDownToolbar_Off.png" preload="true" scale.left="3" scale.top="23" scale.right="26" scale.bottom="2" />
-  <texture name="ToolbarDropDown_Press" file_name="widgets/DropDownToolbar_Press.png" preload="true" scale.left="3" scale.top="23" scale.right="26" scale.bottom="2" />
-  <texture name="ToolbarDropDown_On" file_name="widgets/DropDownToolbar_On.png" preload="true" scale.left="3" scale.top="23" scale.right="26" scale.bottom="2" />
+  <texture name="ToolbarDropDown_Press" file_name="widgets/DropDownToolbar_Selected.png" preload="true" scale.left="3" scale.top="23" scale.right="26" scale.bottom="2" />
   <texture name="ToolbarDropDown_Off" file_name="widgets/DropDownToolbar_Off.png" preload="true" scale.left="3" scale.top="23" scale.right="26" scale.bottom="2" />
   
   <texture name="Name_Rect"	file_name="Name_Rect.png" preload="true" scale.left="6" scale.top="26" scale.right="58" scale.bottom="6" />
