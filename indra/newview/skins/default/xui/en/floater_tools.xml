@@ -449,14 +449,14 @@
       function="BuildTool.gridMode"/>
       <combo_box.combo_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Middle_Selected"
-            image_disabled="ToolbarDropDown_Middle_Off" />
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Middle_Selected"
-            image_pressed="ToolbarDropDown_Middle_Selected" 
-            image_pressed_selected="ToolbarDropDown_Middle_Selected"
-            image_disabled="ToolbarDropDown_Middle_Off" />
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
     </combo_box>
 	<button
      left_pad="1"
@@ -1239,13 +1239,13 @@
                  value="None" />
                 <combo_box.combo_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
-            image_pressed="ToolbarDropDown_Selected" 
-            image_pressed_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <check_box
@@ -1296,13 +1296,13 @@
            value="1" />
         <combo_box.combo_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
-            image_pressed="ToolbarDropDown_Selected" 
-            image_pressed_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
       </combo_box>
       <check_box
@@ -1605,13 +1605,13 @@
                  value="Sculpted" />
                 <combo_box.combo_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
-            image_pressed="ToolbarDropDown_Selected" 
-            image_pressed_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <check_box
@@ -1947,13 +1947,13 @@
                  value="Triangle" />
                 <combo_box.combo_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
-            image_pressed="ToolbarDropDown_Selected" 
-            image_pressed_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <text
@@ -2433,13 +2433,13 @@
                  value="Rubber" />
                 <combo_box.combo_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
-            image_pressed="ToolbarDropDown_Selected" 
-            image_pressed_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             </combo_box>
 			<text
@@ -2465,13 +2465,13 @@
 			   width="135">
     <combo_box.combo_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
-            image_pressed="ToolbarDropDown_Selected" 
-            image_pressed_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
    </combo_box>
 

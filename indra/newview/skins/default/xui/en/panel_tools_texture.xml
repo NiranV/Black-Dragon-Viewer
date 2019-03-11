@@ -646,13 +646,13 @@
                  value="Planar" />
                 <combo_box.combo_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
             image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Selected"
-            image_pressed="ToolbarDropDown_Selected" 
-            image_pressed_selected="ToolbarDropDown_Selected"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             </combo_box>
             <check_box
