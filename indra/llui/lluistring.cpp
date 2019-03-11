@@ -41,6 +41,15 @@ LLUIString::LLUIString(const std::string& instring, const LLStringUtil::format_m
 	dirty();
 }
 
+LLUIString::~LLUIString()
+{ 
+	if (mArgs)
+	{
+		delete mArgs;
+	}
+}
+
+
 void LLUIString::assign(const std::string& s)
 {
 	mOrig = s;
