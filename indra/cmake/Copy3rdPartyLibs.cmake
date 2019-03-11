@@ -60,6 +60,21 @@ if(WINDOWS)
         list(APPEND release_files fmod.dll)
       endif(ADDRESS_SIZE STREQUAL 64)
     endif (FMODSTUDIO)
+    
+    # Filenames are different for 32/64 bit BugSplat file and we don't
+    # have any control over them so need to branch.
+    if (BUGSPLAT_DB)
+      if(ADDRESS_SIZE EQUAL 32)
+        set(release_files ${release_files} BugSplat.dll)
+        set(release_files ${release_files} BugSplatRc.dll)
+        set(release_files ${release_files} BsSndRpt.exe)
+      else(ADDRESS_SIZE EQUAL 32)
+        set(release_files ${release_files} BugSplat64.dll)
+        set(release_files ${release_files} BugSplatRc64.dll)
+        set(release_files ${release_files} BsSndRpt64.exe)
+      endif(ADDRESS_SIZE EQUAL 32)
+    endif (BUGSPLAT_DB)
+
 
     #*******************************
     # Copy MS C runtime dlls, required for packaging.
