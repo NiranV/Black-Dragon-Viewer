@@ -311,6 +311,8 @@ void LLFloaterIMNearbyChat::onTearOffClicked()
 void LLFloaterIMNearbyChat::onOpen(const LLSD& key)
 {
 	LLFloaterIMSessionTab::onOpen(key);
+	//BD - This causes the nearby chat to slide downwards towards the edge of the screen
+	//     on subsequent opens.
 	if(!isMessagePaneExpanded())
 	{
 		restoreFloater();
