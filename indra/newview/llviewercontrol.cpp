@@ -86,6 +86,7 @@
 #include "lltoolfocus.h"
 #include "llviewerobjectlist.h"
 #include "bdsidebar.h"
+#include "llheadrotmotion.h"
 
 // Third party library includes
 #include <boost/algorithm/string.hpp>
@@ -710,6 +711,20 @@ static bool handleCameraSmoothing(const LLSD& newvalue)
 	return true;
 }
 
+static bool handleEyeConstrainsChanged(const LLSD& newvalue)
+{
+	LLEyeMotion* eye_rot_motion = (LLEyeMotion*)gAgentAvatarp->getMotionController().findMotion(ANIM_AGENT_EYE);
+	eye_rot_motion->setEyeConstrains(newvalue.asInteger());
+	return true;
+}
+
+static bool handleHeadConstrainsChanged(const LLSD& newvalue)
+{
+	LLHeadRotMotion* head_rot_motion = (LLHeadRotMotion*)gAgentAvatarp->getMotionController().findMotion(ANIM_AGENT_HEAD_ROT);
+	head_rot_motion->setHeadConstrains(newvalue.asInteger());
+	return true;
+}
+
 //BD - Cinematic Camera
 static bool handleCinematicCamera(const LLSD& newvalue)
 {
@@ -1102,6 +1117,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("InvertMouseThirdPerson")->getSignal()->connect(boost::bind(&handleInvertMouse, _2));
 	gSavedSettings.getControl("CameraFollowJoint")->getSignal()->connect(boost::bind(&handleFollowJoint, _2));
 	gSavedSettings.getControl("CameraPositionSmoothing")->getSignal()->connect(boost::bind(&handleCameraSmoothing, _2));
+	gSavedSettings.getControl("PitchFromMousePosition")->getSignal()->connect(boost::bind(&handleEyeConstrainsChanged, _2));
+	gSavedSettings.getControl("YawFromMousePosition")->getSignal()->connect(boost::bind(&handleHeadConstrainsChanged, _2));
 //	//BD - Third Person Steering Mode
 	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
 //	//BD - Camera Rolling

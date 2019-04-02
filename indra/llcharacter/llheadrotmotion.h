@@ -101,6 +101,9 @@ public:
 	// called when a motion is deactivated
 	virtual void onDeactivate();
 
+	//BD
+	void setHeadConstrains(U32 degrees) { mHeadConstrains = degrees; }
+
 public:
 	//-------------------------------------------------------------------------
 	// joint states to be animated
@@ -117,6 +120,9 @@ public:
 	LLPointer<LLJointState> mHeadState;
 
 	LLQuaternion		mLastHeadRot;
+
+	//BD
+	U32					mHeadConstrains;
 };
 
 //-----------------------------------------------------------------------------
@@ -178,6 +184,9 @@ public:
 
     void adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_state, LLJointState& right_eye_state);
 
+	//BD
+	void setEyeConstrains(U32 degrees) { mEyeConstrains = degrees; }
+
 	// called per time step
 	// must return TRUE while it is active, and
 	// must return FALSE when the motion is completed.
@@ -210,6 +219,9 @@ public:
 	LLFrameTimer		mEyeBlinkTimer;
 	F32					mEyeBlinkTime;
 	BOOL				mEyesClosed;
+
+	//BD
+	U32					mEyeConstrains;
 };
 
 #endif // LL_LLHEADROTMOTION_H
