@@ -800,8 +800,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 
 	mBtnLand->setToggleState(land_visible);
 	
-	if (tool == LLToolSelectLand::getInstance() 
-		|| tool == LLToolBrushLand::getInstance())
+	if (land_visible)
 	{
 		S32 dozer_mode = gSavedSettings.getS32("RadioLandBrushAction");
 		switch(dozer_mode)
