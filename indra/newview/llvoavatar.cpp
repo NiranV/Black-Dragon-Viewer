@@ -1329,7 +1329,8 @@ void LLVOAvatar::calculateSpatialExtents(LLVector4a& newMin, LLVector4a& newMax)
 {
     LL_RECORD_BLOCK_TIME(FTM_AVATAR_EXTENT_UPDATE);
 
-    S32 box_detail = gSavedSettings.getS32("AvatarBoundingBoxComplexity");
+	//BD
+    const S32 box_detail = gSavedSettings.getS32("AvatarBoundingBoxComplexity");
 
     // FIXME the update_min_max function used below assumes there is a
     // known starting point, but in general there isn't. Ideally the
