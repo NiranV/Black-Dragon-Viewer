@@ -1450,7 +1450,13 @@ void LLVOAvatar::calculateSpatialExtents(LLVector4a& newMin, LLVector4a& newMax)
     // Stretch bounding box by rigged mesh joint boxes
     if (box_detail>=3)
     {
-		updateRiggingInfo();
+		//BD
+		if (mJointRiggingInfoTab.needsUpdate())
+		{
+			updateRiggingInfo();
+			mJointRiggingInfoTab.setNeedsUpdate(false);
+		}
+
         for (S32 joint_num = 0; joint_num < LL_CHARACTER_MAX_ANIMATED_JOINTS; joint_num++)
         {
             LLJoint *joint = getJoint(joint_num);
