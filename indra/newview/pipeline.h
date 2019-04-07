@@ -648,7 +648,6 @@ public:
 
 	//sun shadow map
 	LLRenderTarget			mShadow[6];
-	LLRenderTarget			mShadowOcclusion[6];
 	std::vector<LLVector3>	mShadowFrustPoints[4];
 	LLVector4				mShadowError;
 	LLVector4				mShadowFOV;
@@ -969,6 +968,7 @@ public:
 
 //	//BD - Special Options
 	static BOOL CameraFreeDoFFocus;
+	static BOOL CameraDoFLocked;
 	static bool RenderDepthOfFieldInEditMode;
 	static BOOL RenderDeferredBlurLight;
 	static BOOL RenderSnapshotAutoAdjustMultiplier;
