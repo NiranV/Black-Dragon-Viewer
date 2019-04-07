@@ -68,14 +68,13 @@ const F32 LAND_BRUSH_SIZE[LAND_BRUSH_SIZE_COUNT] = {1.0f, 2.0f, 4.0f};
 
 enum
 {
-	E_LAND_SELECT	= 0,
-	E_LAND_LEVEL	= 1,
-	E_LAND_RAISE	= 2,
-	E_LAND_LOWER	= 3,
-	E_LAND_SMOOTH	= 4,
-	E_LAND_NOISE	= 5,
-	E_LAND_REVERT	= 6,
-	E_LAND_INVALID 	= 7,
+	E_LAND_LEVEL	= 0,
+	E_LAND_RAISE	= 1,
+	E_LAND_LOWER	= 2,
+	E_LAND_SMOOTH	= 3,
+	E_LAND_NOISE	= 4,
+	E_LAND_REVERT	= 5,
+	E_LAND_INVALID 	= 6,
 };
 const LLColor4 OVERLAY_COLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -533,7 +532,7 @@ void LLToolBrushLand::renderOverlay(LLSurface& land, const LLVector3& pos_region
 	S32 i = (S32) pos_region.mV[VX];
 	S32 j = (S32) pos_region.mV[VY];
 	S32 half_edge = llfloor(mBrushSize);
-	S32 radioAction = gSavedSettings.getS32("RadioLandBrushAction");
+	S32 radioAction = gSavedSettings.getS32("RadioLandBrushAction") - 1;
 	F32 force = gSavedSettings.getF32("LandBrushForce"); // .1 to 100?
 	
 	gGL.begin(LLRender::LINES);
