@@ -24,6 +24,7 @@
 #include "llviewercontrol.h"
 #include "llnotificationsutil.h"
 #include "llnotifications.h"
+#include "llstartup.h"
 
 #include "message.h"
 
@@ -389,5 +390,9 @@ void BDFunctions::doFactoryReset(const LLSD& notification, const LLSD& response)
 
 	LL_WARNS("Notifications") << "ABANDON SHIP. We are resetting the Viewer to stock." << LL_ENDL;
 	gSavedSettings.doFactoryReset();
-	gSavedPerAccountSettings.doFactoryReset();
+	//BD - Do not allow resetting personal settings before we've logged in.
+	if (LLStartUp::getStartupState() == STATE_STARTED)
+	{
+		gSavedPerAccountSettings.doFactoryReset();
+	}
 }
