@@ -46,7 +46,6 @@ const F32 TORSO_LAG	= 0.35f;	// torso rotation factor
 const F32 NECK_LAG = 0.5f;		// neck rotation factor
 const F32 HEAD_LOOKAT_LAG_HALF_LIFE	= 0.15f;		// half-life of lookat targeting for head
 const F32 TORSO_LOOKAT_LAG_HALF_LIFE	= 0.27f;		// half-life of lookat targeting for torso
-//const F32 HEAD_ROTATION_CONSTRAINT = F_PI_BY_TWO * 0.8f;	// limit angle for head rotation
 const F32 MIN_HEAD_LOOKAT_DISTANCE = 0.3f;	// minimum distance from head before we turn to look at it
 const F32 EYE_JITTER_MIN_TIME = 0.3f; // min amount of time between eye "jitter" motions
 const F32 EYE_JITTER_MAX_TIME = 2.5f; // max amount of time between eye "jitter" motions
@@ -58,7 +57,6 @@ const F32 EYE_LOOK_BACK_MIN_TIME = 1.f; // min amount of time before looking bac
 const F32 EYE_LOOK_BACK_MAX_TIME = 5.f; // max amount of time before looking back after looking away
 const F32 EYE_LOOK_AWAY_MAX_YAW = 0.15f; // max yaw of eye look away motion
 const F32 EYE_LOOK_AWAY_MAX_PITCH = 0.12f; // max pitch of look away motion
-//const F32 EYE_ROT_LIMIT_ANGLE = F_PI_BY_TWO * 0.3f; //max angle in radians for eye rotation
 
 const F32 EYE_BLINK_MIN_TIME = 0.5f; // minimum amount of time between blinks
 const F32 EYE_BLINK_MAX_TIME = 8.f;	// maximum amount of time between blinks
