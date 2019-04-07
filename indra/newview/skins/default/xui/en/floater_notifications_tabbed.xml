@@ -5,10 +5,10 @@
  name="floater_notifications_tabbed"
  help_topic="notification_chiclet"
  save_rect="true"
- title="NOTIFICATIONS"
- width="350"
- min_width="320"
- height="525"
+ title="Notifications"
+ width="380"
+ min_width="380"
+ height="522"
  can_minimize="false"
  can_tear_off="false"
  can_resize="true"
@@ -16,8 +16,7 @@
  can_dock="true"
  save_dock_state="true"
  save_visibility="true"
- single_instance="true"
->
+ single_instance="true">
   <floater.string
     name="system_tab_title">
     System ([COUNT])
@@ -37,93 +36,140 @@
 
   <string
    name="title_notification_tabbed_window">
-    NOTIFICATIONS
+    Notifications
   </string>
-  <layout_stack width="350" height="550" enabled="true" orientation="vertical" name="TabButtonsStack" follows="left|top|right|bottom">
-  <layout_panel width="350" height="550" enabled="true" name="TabButtonsLayoutPanel">
+  <icon
+  follows="all"
+  height="290"
+  color="1 1 1 1"
+  image_name="Panel_Background"
+  layout="topleft"
+  name="vicon"
+  mouse_opaque="false"
+  visible="true"
+  width="363"
+  top="20"
+  bottom="-8"
+  left="9"/>
     <tab_container
+     border="false"
      follows="all"
+     height="489"
+     halign="center"
      layout="topleft"
-     tab_position="top"
      left="7"
-     right="-7"
+     tab_min_width="55"
+     tab_position="top"
+     tab_height="21"
      top="0"
-     width="335"
-     height="491"
-     mouse_opaque="true"
+     width="366"
      name="notifications_tab_container">
       <panel
        follows="left|top|right|bottom"
-       label="System (0)"
+       label="System (99)"
        layout="topleft"
        name="system_notification_list_tab">
         <notification_list_view
-          color="Black_50"
+          color="Transparent"
           follows="all"
           layout="topleft"
           name="system_notification_list"
           left="0"
-          top="5"
-          height="0"
-          width="335"/>
+          top="1"
+          bottom="-1"
+          height="491"
+          width="362"/>
       </panel>
       <panel
        follows="left|top|right|bottom"
-       label="Transactions (0)"
+       label="Transactions (99)"
        layout="topleft"
        name="transaction_notifications_tab">
         <notification_list_view
-          color="Black_50"
+          color="Transparent"
           follows="all"
           layout="topleft"
           name="transaction_notification_list"
           left="0"
-          top="5"
-          height="0"
-          width="335"/>
+          top="1"
+          height="491"
+          bottom="-1"
+          width="362"/>
       </panel>
       <panel
        follows="left|top|right|bottom"
-       label="Invitations (0)"
+       label="Invitations (99)"
        layout="topleft"
        name="group_invite_notifications_tab">
         <notification_list_view
-          color="Black_50"
+          color="Transparent"
           follows="all"
           layout="topleft"
           name="group_invite_notification_list"
           left="0"
-          top="5"
-          height="0"
-          width="335"/>
+          top="1"
+          height="491"
+          bottom="-1"
+          width="362"/>
       </panel>
       <panel
        follows="left|top|right|bottom"
-       label="Group (0)"
+       label="Group (99)"
        layout="topleft"
        name="group_notice_notifications_tab">
         <notification_list_view
-          color="Black_50"
+          color="Transparent"
           follows="all"
           layout="topleft"
           name="group_notice_notification_list"
           left="0"
-          top="5"
-          height="0"
-          width="335"/>
+          top="1"
+          height="491"
+          bottom="-1"
+          width="362"/>
       </panel>
     </tab_container>
     
-    <layout_stack width="335" height="21" top_pad="0" enabled="true" orientation="horizontal"  follows="left|right" name="ButtonsStack">
-      <layout_panel width="100" height="21" enabled="true" auto_resize="true" name="CondenseAllButtonPanel">
-        <button width="100" follows="top|left|right" layout="topleft" top="0" height="21" left="3" label="Collapse all" name="collapse_all_button">
+    <layout_stack
+    width="359"
+    height="25"
+    top_pad="-1"
+    border_size="1"
+    left="11"
+    layout="topleft"
+    enabled="true"
+    orientation="horizontal"
+    follows="bottom|left|right"
+    name="ButtonsStack">
+      <layout_panel width="100" height="25" enabled="true" auto_resize="true" name="CondenseAllButtonPanel">
+        <button
+        width="100"
+        follows="top|left|right"
+        layout="topleft"
+        top="0"
+        height="25"
+        left="0"
+        label="Collapse all"
+        name="collapse_all_button"
+        image_hover_unselected="Toolbar_Middle_Over"
+        image_selected="Toolbar_Middle_Selected"
+        image_unselected="Toolbar_Middle_Off">
         </button>
       </layout_panel>
-      <layout_panel width="100" height="21" enabled="true" auto_resize="true" name="DeleteAllButtonPanel">
-        <button width="100" follows="top|left|right" layout="topleft" top="0" height="21" left="0" label="Delete all" name="delete_all_button">
+      <layout_panel width="100" height="25" enabled="true" auto_resize="true" name="DeleteAllButtonPanel">
+        <button
+        width="100"
+        follows="top|left|right"
+        layout="topleft"
+        top="0"
+        height="25"
+        left="0"
+        label="Delete all"
+        name="delete_all_button"
+        image_hover_unselected="Toolbar_Middle_Over"
+        image_selected="Toolbar_Middle_Selected"
+        image_unselected="Toolbar_Middle_Off">
         </button>
       </layout_panel>
     </layout_stack>
-  </layout_panel>
-  </layout_stack>
 </floater>
