@@ -102,23 +102,28 @@ void LLFloaterEnvironmentSettings::onSwitchRegionSettings()
 
 void LLFloaterEnvironmentSettings::onSelectWaterPreset()
 {
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(false);
 	apply();
 }
 
 void LLFloaterEnvironmentSettings::onSelectSkyPreset()
 {
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(false);
 	apply();
 }
 
 void LLFloaterEnvironmentSettings::onSelectDayCyclePreset()
 {
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(false);
 	apply();
 }
 
 void LLFloaterEnvironmentSettings::onBtnCancel()
 {
 	// Revert environment to user preferences.
-	//BD
 	LLEnvManagerNew::instance().usePrefs();
 	closeFloater();
 }

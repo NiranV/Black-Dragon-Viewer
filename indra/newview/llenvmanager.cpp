@@ -648,12 +648,18 @@ void LLEnvManagerNew::updateManagersFromPrefs(bool interpolate)
 	}
 // [/RLVa:KB]
 
-	// Apply water settings.
-	updateWaterFromPrefs(interpolate);
+	//BD - Apply water settings.
+	if (!mCustomWaterSettings)
+	{
+		updateWaterFromPrefs(interpolate);
+	}
 
 	// Apply sky settings.
 //	//BD - Animated Windlight Transitions
-	updateSkyFromPrefs(interpolate);
+	if (!mCustomSkySettings)
+	{
+		updateSkyFromPrefs(interpolate);
+	}
 }
 
 bool LLEnvManagerNew::useRegionSky()

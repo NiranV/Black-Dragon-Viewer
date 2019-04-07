@@ -9083,7 +9083,8 @@ class LLWorldEnvSettings : public view_listener_t
 // [/RLVa:KB]
 
 		std::string tod = userdata.asString();
-		
+		LLEnvManagerNew &envmgr = LLEnvManagerNew::instance();
+
 		if (tod == "editor")
 		{
 			LLFloaterReg::toggleInstance("env_settings");
@@ -9092,23 +9093,32 @@ class LLWorldEnvSettings : public view_listener_t
 
 		if (tod == "sunrise")
 		{
-			LLEnvManagerNew::instance().setUseSkyPreset("Sunrise");
+			//BD
+			envmgr.setUseCustomSkySettings(false);
+			envmgr.setUseSkyPreset("Sunrise");
 		}
 		else if (tod == "noon")
 		{
-			LLEnvManagerNew::instance().setUseSkyPreset("Midday");
+			//BD
+			envmgr.setUseCustomSkySettings(false);
+			envmgr.setUseSkyPreset("Midday");
 		}
 		else if (tod == "sunset")
 		{
-			LLEnvManagerNew::instance().setUseSkyPreset("Sunset");
+			//BD
+			envmgr.setUseCustomSkySettings(false);
+			envmgr.setUseSkyPreset("Sunset");
 		}
 		else if (tod == "midnight")
 		{
-			LLEnvManagerNew::instance().setUseSkyPreset("Midnight");
+			//BD
+			envmgr.setUseCustomSkySettings(false);
+			envmgr.setUseSkyPreset("Midnight");
 		}
 		else
 		{
-			LLEnvManagerNew &envmgr = LLEnvManagerNew::instance();
+			//BD
+			envmgr.setUseCustomSkySettings(false);
 			// reset all environmental settings to track the region defaults, make this reset 'sticky' like the other sun settings.
 			bool use_fixed_sky = false;
 			bool use_region_settings = true;

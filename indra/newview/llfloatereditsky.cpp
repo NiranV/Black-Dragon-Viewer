@@ -400,6 +400,8 @@ void LLFloaterEditSky::onColorControlMoved(LLUICtrl* ctrl, WLColorControl* color
 	*color_ctrl = color_vec;
 	color_ctrl->update(LLWLParamManager::getInstance()->mCurParams);
 	LLWLParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 void LLFloaterEditSky::onColorControlRMoved(LLUICtrl* ctrl, void* userdata)
@@ -443,6 +445,8 @@ void LLFloaterEditSky::onColorControlRMoved(LLUICtrl* ctrl, void* userdata)
 	color_ctrl->update(LLWLParamManager::getInstance()->mCurParams);
 
 	LLWLParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 void LLFloaterEditSky::onColorControlGMoved(LLUICtrl* ctrl, void* userdata)
@@ -486,6 +490,8 @@ void LLFloaterEditSky::onColorControlGMoved(LLUICtrl* ctrl, void* userdata)
 	color_ctrl->update(LLWLParamManager::getInstance()->mCurParams);
 
 	LLWLParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 void LLFloaterEditSky::onColorControlBMoved(LLUICtrl* ctrl, void* userdata)
@@ -529,6 +535,8 @@ void LLFloaterEditSky::onColorControlBMoved(LLUICtrl* ctrl, void* userdata)
 	color_ctrl->update(LLWLParamManager::getInstance()->mCurParams);
 
 	LLWLParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 /// GLOW SPECIFIC CODE
@@ -544,6 +552,8 @@ void LLFloaterEditSky::onGlowRMoved(LLUICtrl* ctrl, void* userdata)
 
 	color_ctrl->update(LLWLParamManager::getInstance()->mCurParams);
 	LLWLParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 /// \NOTE that we want NEGATIVE (-) B
@@ -559,6 +569,8 @@ void LLFloaterEditSky::onGlowBMoved(LLUICtrl* ctrl, void* userdata)
 
 	color_ctrl->update(LLWLParamManager::getInstance()->mCurParams);
 	LLWLParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 void LLFloaterEditSky::onFloatControlMoved(LLUICtrl* ctrl, void* userdata)
@@ -572,6 +584,8 @@ void LLFloaterEditSky::onFloatControlMoved(LLUICtrl* ctrl, void* userdata)
 
 	floatControl->update(LLWLParamManager::getInstance()->mCurParams);
 	LLWLParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 
@@ -606,6 +620,8 @@ void LLFloaterEditSky::onSunMoved(LLUICtrl* ctrl, void* userdata)
 
 	color_ctrl->update(param_mgr->mCurParams);
 	param_mgr->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 void LLFloaterEditSky::onTimeChanged()
@@ -630,6 +646,8 @@ void LLFloaterEditSky::onStarAlphaMoved(LLUICtrl* ctrl)
 	LLSliderCtrl* sldr_ctrl = static_cast<LLSliderCtrl*>(ctrl);
 
 	LLWLParamManager::getInstance()->mCurParams.setStarBrightness(sldr_ctrl->getValueF32());
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 // Clouds
@@ -640,6 +658,8 @@ void LLFloaterEditSky::onCloudScrollXMoved(LLUICtrl* ctrl)
 	LLSliderCtrl* sldr_ctrl = static_cast<LLSliderCtrl*>(ctrl);
 	// *HACK  all cloud scrolling is off by an additive of 10.
 	LLWLParamManager::getInstance()->mCurParams.setCloudScrollX(sldr_ctrl->getValueF32() + 10.0f);
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 void LLFloaterEditSky::onCloudScrollYMoved(LLUICtrl* ctrl)
@@ -650,6 +670,8 @@ void LLFloaterEditSky::onCloudScrollYMoved(LLUICtrl* ctrl)
 
 	// *HACK  all cloud scrolling is off by an additive of 10.
 	LLWLParamManager::getInstance()->mCurParams.setCloudScrollY(sldr_ctrl->getValueF32() + 10.0f);
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 void LLFloaterEditSky::onCloudScrollXToggled(LLUICtrl* ctrl)
@@ -672,6 +694,8 @@ void LLFloaterEditSky::onCloudScrollXToggled(LLUICtrl* ctrl)
 		sldr->setEnabled(true);
 	}
 
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 void LLFloaterEditSky::onCloudScrollYToggled(LLUICtrl* ctrl)
@@ -692,6 +716,9 @@ void LLFloaterEditSky::onCloudScrollYToggled(LLUICtrl* ctrl)
 	{
 		sldr->setEnabled(true);
 	}
+
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(true);
 }
 
 //=================================================================================================
@@ -848,6 +875,8 @@ void LLFloaterEditSky::onSkyPresetSelected()
 
 	LLEnvManagerNew::instance().useSkyParams(sky_params.getAll());
 	//syncControls();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(false);
 
 	bool can_edit = (key.scope == LLEnvKey::SCOPE_LOCAL || LLEnvManagerNew::canEditRegionSettings());
 	enableEditing(can_edit);
@@ -891,6 +920,8 @@ void LLFloaterEditSky::onSaveConfirmed()
 	{
 		LL_DEBUGS("Windlight") << key.name << " is now the new preferred sky preset" << LL_ENDL;
 		LLEnvManagerNew::instance().setUseSkyPreset(key.name);
+		//BD
+		LLEnvManagerNew::instance().setUseCustomSkySettings(false);
 	}
 }
 

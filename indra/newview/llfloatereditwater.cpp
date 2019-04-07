@@ -270,6 +270,8 @@ void LLFloaterEditWater::onColorControlRMoved(LLUICtrl* ctrl, WaterColorControl*
 	color_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 void LLFloaterEditWater::onColorControlGMoved(LLUICtrl* ctrl, WaterColorControl* color_ctrl)
@@ -294,6 +296,8 @@ void LLFloaterEditWater::onColorControlGMoved(LLUICtrl* ctrl, WaterColorControl*
 	color_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 void LLFloaterEditWater::onColorControlBMoved(LLUICtrl* ctrl, WaterColorControl* color_ctrl)
@@ -317,6 +321,8 @@ void LLFloaterEditWater::onColorControlBMoved(LLUICtrl* ctrl, WaterColorControl*
 	color_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 void LLFloaterEditWater::onColorControlAMoved(LLUICtrl* ctrl, WaterColorControl* color_ctrl)
@@ -328,6 +334,8 @@ void LLFloaterEditWater::onColorControlAMoved(LLUICtrl* ctrl, WaterColorControl*
 	color_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 
@@ -388,6 +396,8 @@ void LLFloaterEditWater::onColorControlIMoved(LLUICtrl* ctrl, WaterColorControl*
 	// now update the current parameters and send them to shaders
 	color_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 // vector control callbacks
@@ -400,6 +410,8 @@ void LLFloaterEditWater::onVector3ControlXMoved(LLUICtrl* ctrl, WaterVector3Cont
 	vector_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 // vector control callbacks
@@ -412,6 +424,8 @@ void LLFloaterEditWater::onVector3ControlYMoved(LLUICtrl* ctrl, WaterVector3Cont
 	vector_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 // vector control callbacks
@@ -424,6 +438,8 @@ void LLFloaterEditWater::onVector3ControlZMoved(LLUICtrl* ctrl, WaterVector3Cont
 	vector_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 
@@ -437,6 +453,8 @@ void LLFloaterEditWater::onVector2ControlXMoved(LLUICtrl* ctrl, WaterVector2Cont
 	vector_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 // vector control callbacks
@@ -449,6 +467,8 @@ void LLFloaterEditWater::onVector2ControlYMoved(LLUICtrl* ctrl, WaterVector2Cont
 	vector_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 void LLFloaterEditWater::onFloatControlMoved(LLUICtrl* ctrl, WaterFloatControl* floatControl)
@@ -459,6 +479,8 @@ void LLFloaterEditWater::onFloatControlMoved(LLUICtrl* ctrl, WaterFloatControl* 
 
 	floatControl->update(LLWaterParamManager::getInstance()->mCurParams);
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 void LLFloaterEditWater::onExpFloatControlMoved(LLUICtrl* ctrl, WaterExpFloatControl* expFloatControl)
@@ -471,6 +493,8 @@ void LLFloaterEditWater::onExpFloatControlMoved(LLUICtrl* ctrl, WaterExpFloatCon
 
 	expFloatControl->update(LLWaterParamManager::getInstance()->mCurParams);
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 void LLFloaterEditWater::onWaterFogColorMoved(LLUICtrl* ctrl, WaterColorControl* color_ctrl)
@@ -480,6 +504,8 @@ void LLFloaterEditWater::onWaterFogColorMoved(LLUICtrl* ctrl, WaterColorControl*
 
 	color_ctrl->update(LLWaterParamManager::getInstance()->mCurParams);
 	LLWaterParamManager::getInstance()->propagateParameters();
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 void LLFloaterEditWater::onNormalMapPicked(LLUICtrl* ctrl)
@@ -487,6 +513,8 @@ void LLFloaterEditWater::onNormalMapPicked(LLUICtrl* ctrl)
 	LLTextureCtrl* textCtrl = static_cast<LLTextureCtrl*>(ctrl);
 	LLUUID textID = textCtrl->getImageAssetID();
 	LLWaterParamManager::getInstance()->setNormalMapID(textID);
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(true);
 }
 
 //=============================================================================
@@ -649,6 +677,9 @@ void LLFloaterEditWater::onWaterPresetSelected()
 	enableEditing(can_edit);
 
 	mMakeDefaultCheckBox->setEnabled(scope == LLEnvKey::SCOPE_LOCAL);
+
+	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(false);
 }
 
 bool LLFloaterEditWater::onSaveAnswer(const LLSD& notification, const LLSD& response)
@@ -687,6 +718,8 @@ void LLFloaterEditWater::onSaveConfirmed()
 	{
 		LL_DEBUGS("Windlight") << name << " is now the new preferred water preset" << LL_ENDL;
 		LLEnvManagerNew::instance().setUseWaterPreset(name);
+		//BD
+		LLEnvManagerNew::instance().setUseCustomWaterSettings(false);
 	}
 }
 

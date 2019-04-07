@@ -772,6 +772,9 @@ static bool handleUseRegioLight(const LLSD& newvalue)
 	LLEnvManagerNew& envmgr = LLEnvManagerNew::instance();
 	gSavedSettings.setBOOL("UseEnvironmentFromRegion" , newvalue.asBoolean());
 	bool fixed = gSavedSettings.getBOOL("UseEnvironmentFromRegion");
+	//BD
+	envmgr.setUseCustomSkySettings(false);
+
 	if (fixed)
 	{
 		envmgr.setUseRegionSettings(true);

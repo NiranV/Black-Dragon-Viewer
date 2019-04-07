@@ -258,6 +258,12 @@ public:
 	std::string getSkyPresetName() const;
 	std::string getDayCycleName() const;
 
+	//BD - We use this to determine whether the user has edited the windlight and not yet
+	//     saved these changes as preset, if so we block all attempts to "refresh" the current
+	//     preset.
+	bool getUseCustomWaterSettings() const { return mCustomWaterSettings; }
+	bool getUseCustomSkySettings() const { return mCustomSkySettings; }
+
 	/// @return cached env. settings of the current region.
 	const LLEnvironmentSettings& getRegionSettings() const;
 
@@ -293,6 +299,12 @@ public:
 		const std::string& day_cycle_preset,
 		bool use_fixed_sky,
 		bool use_region_settings);
+
+	//BD - We use this to determine whether the user has edited the windlight and not yet
+	//     saved these changes as preset, if so we block all attempts to "refresh" the current
+	//     preset.
+	void setUseCustomWaterSettings(bool custom) { mCustomWaterSettings = custom; }
+	void setUseCustomSkySettings(bool custom) { mCustomSkySettings = custom; }
 
 	// debugging methods
 	void dumpUserPrefs();
@@ -346,6 +358,12 @@ private:
 	bool					mInterpNextChangeMessage;	/// Interpolate env. settings on next region change.
 	LLUUID					mCurRegionUUID;				/// To avoid duplicated region env. settings requests.
 	LLUUID					mLastReceivedID;			/// Id of last received region env. settings.
+
+	//BD - We use this to determine whether the user has edited the windlight and not yet
+	//     saved these changes as preset, if so we block all attempts to "refresh" the current
+	//     preset.
+	bool					mCustomWaterSettings;
+	bool					mCustomSkySettings;
 };
 
 #endif // LL_LLENVMANAGER_H
