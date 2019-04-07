@@ -9189,10 +9189,10 @@ class LLWorldEnvPreset : public view_listener_t
 		{
 			LLFloaterReg::showInstance("env_edit_water", "edit");
 		}
-		else if (item == "delete_water")
+		/*else if (item == "delete_water")
 		{
 			LLFloaterReg::showInstance("env_delete_preset", "water");
-		}
+		}*/
 		else if (item == "new_sky")
 		{
 			LLFloaterReg::showInstance("env_edit_sky", "new");
@@ -9201,10 +9201,10 @@ class LLWorldEnvPreset : public view_listener_t
 		{
 			LLFloaterReg::showInstance("env_edit_sky", "edit");
 		}
-		else if (item == "delete_sky")
+		/*else if (item == "delete_sky")
 		{
 			LLFloaterReg::showInstance("env_delete_preset", "sky");
-		}
+		}*/
 		else if (item == "new_day_cycle")
 		{
 			LLFloaterReg::showInstance("env_edit_day_cycle", "new");
@@ -9213,10 +9213,10 @@ class LLWorldEnvPreset : public view_listener_t
 		{
 			LLFloaterReg::showInstance("env_edit_day_cycle", "edit");
 		}
-		else if (item == "delete_day_cycle")
+		/*else if (item == "delete_day_cycle")
 		{
 			LLFloaterReg::showInstance("env_delete_preset", "day_cycle");
-		}
+		}*/
 		else
 		{
 			LL_WARNS() << "Unknown item selected" << LL_ENDL;
