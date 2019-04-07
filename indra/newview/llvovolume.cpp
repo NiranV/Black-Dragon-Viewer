@@ -1646,6 +1646,8 @@ void LLVOVolume::regenFaces()
 	}
 }
 
+static LLTrace::BlockTimerStatHandle FTM_UPDATE_RIGGED_VOLUME("Update Rigged");
+
 BOOL LLVOVolume::genBBoxes(BOOL force_global)
 {
 	BOOL res = TRUE;
@@ -1659,12 +1661,13 @@ BOOL LLVOVolume::genBBoxes(BOOL force_global)
 
     if (getRiggedVolume())
     {
+		LL_RECORD_BLOCK_TIME(FTM_UPDATE_RIGGED_VOLUME);
         // MAINT-8264 - better to use the existing call in calling
         // func LLVOVolume::updateGeometry() if we can detect when
         // updates needed, set REBUILD_RIGGED accordingly.
 
         // Without the flag, this will remove unused rigged volumes, which we are not currently very aggressive about.
-        updateRiggedVolume();
+        updateRiggedVolume(false, !rebuild);
     }
     
 	LLVolume* volume = mRiggedVolume;
@@ -1860,7 +1863,6 @@ void LLVOVolume::updateRelativeXform(bool force_identity)
 
 static LLTrace::BlockTimerStatHandle FTM_GEN_FLEX("Generate Flexies");
 static LLTrace::BlockTimerStatHandle FTM_UPDATE_PRIMITIVES("Update Primitives");
-static LLTrace::BlockTimerStatHandle FTM_UPDATE_RIGGED_VOLUME("Update Rigged");
 
 bool LLVOVolume::lodOrSculptChanged(LLDrawable *drawable, BOOL &compiled)
 {
@@ -1933,10 +1935,6 @@ BOOL LLVOVolume::updateGeometry(LLDrawable *drawable)
 	
 	if (mDrawable->isState(LLDrawable::REBUILD_RIGGED))
 	{
-		{
-			LL_RECORD_BLOCK_TIME(FTM_UPDATE_RIGGED_VOLUME);
-			updateRiggedVolume();
-		}
 		genBBoxes(FALSE);
 		mDrawable->clearState(LLDrawable::REBUILD_RIGGED);
 	}
@@ -4839,9 +4837,9 @@ BOOL LLVOVolume::lineSegmentIntersect(const LLVector4a& start, const LLVector4a&
 	if (mDrawable->isState(LLDrawable::RIGGED))
 	{
 		//BD - Allow picking rigged attachments of others.
-		if ((pick_rigged) || (getAvatar() && LLFloater::isVisible(gFloaterTools)))
+		if (pick_rigged)
 		{
-			updateRiggedVolume(true);
+			updateRiggedVolume(true, true);
 			volume = mRiggedVolume;
 			transform = false;
 		}
@@ -5165,7 +5163,7 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 				}
 
 				//BD - Update bounding box when not selected.
-				if (!is_selected)
+				if (mBBox)
 				{
 					// VFExtents change
 					LLVector4a& min = dst_face.mExtents[0];
@@ -5190,6 +5188,8 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 
 					dst_face.mCenter->setAdd(dst_face.mExtents[0], dst_face.mExtents[1]);
 					dst_face.mCenter->mul(0.5f);
+					
+					mBBox = TRUE;
 				}
 			}
 
@@ -5202,11 +5202,6 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 				LL_RECORD_BLOCK_TIME(FTM_RIGGED_OCTREE);
 				delete dst_face.mOctree;
 				dst_face.mOctree = NULL;
-
-				LLVector4a size;
-				size.setSub(dst_face.mExtents[1], dst_face.mExtents[0]);
-				size.splat(size.getLength3().getF32()*0.5f);
-			
 				dst_face.createOctree(1.f);
 			}
 		}

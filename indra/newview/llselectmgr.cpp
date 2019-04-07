@@ -6371,7 +6371,7 @@ void pushWireframe(LLDrawable* drawable)
 			//BD - Update the selection outline only if we chose to.
 			if (LLSelectMgr::sSelectionUpdate)
 			{
-				vobj->updateRiggedVolume(false, vobj->isSelected());
+				vobj->updateRiggedVolume(false, true);
 			}
 			volume = vobj->getRiggedVolume();
 		}

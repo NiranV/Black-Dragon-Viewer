@@ -1011,6 +1011,8 @@ public:
 
 	void setDirty() { mPathp->setDirty(); mProfilep->setDirty(); }
 
+	void setHasBBox()						{ mBBox = TRUE; }
+
 	void regen();
 	void genTangents(S32 face);
 
@@ -1018,6 +1020,8 @@ public:
 	BOOL isCap(S32 face);
 	BOOL isFlat(S32 face);
 	BOOL isUnique() const									{ return mUnique; }
+
+	BOOL hasBBox() const									{ return mBBox; }
 
 	S32 getSculptLevel() const                              { return mSculptLevel; }
 	void setSculptLevel(S32 level)							{ mSculptLevel = level; }
@@ -1086,6 +1090,8 @@ public:
 
 	virtual void setMeshAssetLoaded(BOOL loaded);
 	virtual BOOL isMeshAssetLoaded();
+
+	BOOL mBBox;
 
  protected:
 	BOOL mUnique;
