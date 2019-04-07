@@ -430,6 +430,12 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 			mValZ->setIncrement(1.f);
 			break;
 		  }
+		  //BD - LLSD
+		  case TYPE_LLSD:
+		  {
+			  //BD - We do nothing here, we just want it to fill the comment properly.
+			  break;
+		  }
 		  case TYPE_COL4:
 		  {
 			LLColor4 clr;
