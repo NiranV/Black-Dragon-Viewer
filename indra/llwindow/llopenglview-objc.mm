@@ -28,6 +28,8 @@
 #import "llwindowmacosx-objc.h"
 #import "llappdelegate-objc.h"
 
+extern BOOL gHiDPISupport;
+
 #pragma mark local functions
 
 NativeKeyEventData extractKeyDataFromKeyEvent(NSEvent* theEvent)
@@ -167,6 +169,9 @@ attributedStringInfo getSegments(NSAttributedString *str)
     [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(windowDidBecomeKey:) name:NSWindowDidBecomeKeyNotification
 											   object:[self window]];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(windowDidChangeScreen:) name:NSWindowDidChangeScreenNotification
+											   object:[self window]];
 
 
     NSRect wnd_rect = [[self window] frame];
@@ -186,7 +191,7 @@ attributedStringInfo getSegments(NSAttributedString *str)
 {
     if (!mOldResize)  //Maint-3288
     {
-        NSSize dev_sz = [self convertSizeToBacking:[self frame].size];
+        NSSize dev_sz = gHiDPISupport ? [self convertSizeToBacking:[self frame].size] : [self frame].size;
         callResize(dev_sz.width, dev_sz.height);
     }
 }
@@ -204,6 +209,11 @@ attributedStringInfo getSegments(NSAttributedString *str)
 - (void)windowDidBecomeKey:(NSNotification *)notification;
 {
     mModifiers = [NSEvent modifierFlags];
+}
+
+-(void)windowDidChangeScreen:(NSNotification *)notification;
+{
+	callWindowDidChangeScreen();
 }
 
 - (void)dealloc
@@ -268,7 +278,7 @@ attributedStringInfo getSegments(NSAttributedString *str)
 	[self setPixelFormat:pixelFormat];
 
 	//for retina support
-	[self setWantsBestResolutionOpenGLSurface:YES];
+	[self setWantsBestResolutionOpenGLSurface:gHiDPISupport];
 
 	[self setOpenGLContext:glContext];
 	
@@ -361,7 +371,7 @@ attributedStringInfo getSegments(NSAttributedString *str)
         callRightMouseUp(mMousePos, [theEvent modifierFlags]);
         mSimulatedRightClick = false;
     } else {
-        NSPoint mPoint = [self convertPointToBacking:[theEvent locationInWindow]];
+        NSPoint mPoint = gHiDPISupport ? [self convertPointToBacking:[theEvent locationInWindow]] : [theEvent locationInWindow];
         mMousePos[0] = mPoint.x;
         mMousePos[1] = mPoint.y;
         callLeftMouseUp(mMousePos, [theEvent modifierFlags]);
@@ -380,7 +390,7 @@ attributedStringInfo getSegments(NSAttributedString *str)
 
 - (void)mouseMoved:(NSEvent *)theEvent
 {
-	NSPoint dev_delta = [self convertPointToBacking:NSMakePoint([theEvent deltaX], [theEvent deltaY])];
+    NSPoint dev_delta = gHiDPISupport ? [self convertPointToBacking:NSMakePoint([theEvent deltaX], [theEvent deltaY])] : NSMakePoint([theEvent deltaX], [theEvent deltaY]);
 
 	float mouseDeltas[] = {
 		float(dev_delta.x),
@@ -389,7 +399,7 @@ attributedStringInfo getSegments(NSAttributedString *str)
 	
 	callDeltaUpdate(mouseDeltas, 0);
 	
-	NSPoint mPoint = [self convertPointToBacking:[theEvent locationInWindow]];
+    NSPoint mPoint = gHiDPISupport ? [self convertPointToBacking:[theEvent locationInWindow]] : [theEvent locationInWindow];
 	mMousePos[0] = mPoint.x;
 	mMousePos[1] = mPoint.y;
 	callMouseMoved(mMousePos, 0);
@@ -404,7 +414,7 @@ attributedStringInfo getSegments(NSAttributedString *str)
 	// The old CoreGraphics APIs we previously relied on are now flagged as obsolete.
 	// NSEvent isn't obsolete, and provides us with the correct deltas.
 
-	NSPoint dev_delta = [self convertPointToBacking:NSMakePoint([theEvent deltaX], [theEvent deltaY])];
+    NSPoint dev_delta = gHiDPISupport ? [self convertPointToBacking:NSMakePoint([theEvent deltaX], [theEvent deltaY])] : NSMakePoint([theEvent deltaX], [theEvent deltaY]);
 
 	float mouseDeltas[] = {
 		float(dev_delta.x),
@@ -413,7 +423,7 @@ attributedStringInfo getSegments(NSAttributedString *str)
 	
 	callDeltaUpdate(mouseDeltas, 0);
 	
-	NSPoint mPoint = [self convertPointToBacking:[theEvent locationInWindow]];
+	NSPoint mPoint = gHiDPISupport ? [self convertPointToBacking:[theEvent locationInWindow]] : [theEvent locationInWindow];
 	mMousePos[0] = mPoint.x;
 	mMousePos[1] = mPoint.y;
 	callMouseDragged(mMousePos, 0);

@@ -5912,6 +5912,7 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 		gGL.translatef(-hud_bbox.getCenterLocal().mV[VX] + (depth *0.5f), 0.f, 0.f);
 		gGL.scalef(cur_zoom, cur_zoom, cur_zoom);
 	}
+
 	if (mSelectedObjects->getNumNodes())
 	{
 		LLUUID inspect_item_id= LLUUID::null;
@@ -5929,6 +5930,9 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 			}
 		}
 
+		bool wireframe_selection = (gFloaterTools && gFloaterTools->getVisible()) || LLSelectMgr::sRenderHiddenSelections;
+		F32 fogCfx = (F32)llclamp((LLSelectMgr::getInstance()->getSelectionCenterGlobal() - gAgentCamera.getCameraPositionGlobal()).magVec() / (LLSelectMgr::getInstance()->getBBoxOfSelection().getExtentLocal().magVec() * 4), 0.0, 1.0);
+
 		LLUUID focus_item_id = LLViewerMediaFocus::getInstance()->getFocusedObjectID();
 		for (S32 pass = 0; pass < 2; pass++)
 		{
@@ -5939,35 +5943,63 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 				LLViewerObject* objectp = node->getObject();
 				if (!objectp)
 					continue;
-				if (objectp->isHUDAttachment() != for_hud)
-				{
-					continue;
-				}
-				if (objectp->getID() == focus_item_id)
-				{
-					node->renderOneSilhouette(gFocusMgr.getFocusColor());
-				}
-				else if(objectp->getID() == inspect_item_id)
-				{
-					node->renderOneSilhouette(sHighlightInspectColor);
-				}
-				else if (node->isTransient())
-				{
-					BOOL oldHidden = LLSelectMgr::sRenderHiddenSelections;
-					LLSelectMgr::sRenderHiddenSelections = FALSE;
-					node->renderOneSilhouette(sContextSilhouetteColor);
-					LLSelectMgr::sRenderHiddenSelections = oldHidden;
-				}
-				else if (objectp->isRootEdit())
-				{
-					node->renderOneSilhouette(sSilhouetteParentColor);
-				}
-				else
-				{
-					node->renderOneSilhouette(sSilhouetteChildColor);
-				}
-			}
-		}
+
+                if(getTEMode() && !node->hasSelectedTE()) 
+                    continue;
+
+                if (objectp->mDrawable 
+                    && objectp->mDrawable->getVOVolume() 
+                    && objectp->mDrawable->getVOVolume()->isMesh())
+                {
+                    S32 num_tes = llmin((S32)objectp->getNumTEs(), (S32)objectp->getNumFaces()); // avatars have TEs but no faces
+                    for (S32 te = 0; te < num_tes; ++te)
+                    {
+                        if (!getTEMode())
+                        {
+                            objectp->mDrawable->getFace(te)->renderOneWireframe(
+                                LLColor4(sSilhouetteParentColor[VRED], sSilhouetteParentColor[VGREEN], sSilhouetteParentColor[VBLUE], LLSelectMgr::sHighlightAlpha * 2)
+                                , fogCfx, wireframe_selection, node->isTransient() ? FALSE : LLSelectMgr::sRenderHiddenSelections);
+                        }
+                        else if(node->isTESelected(te))
+                        {
+                            objectp->mDrawable->getFace(te)->renderOneWireframe(
+                                LLColor4(sSilhouetteParentColor[VRED], sSilhouetteParentColor[VGREEN], sSilhouetteParentColor[VBLUE], LLSelectMgr::sHighlightAlpha * 2)
+                                , fogCfx, wireframe_selection, node->isTransient() ? FALSE : LLSelectMgr::sRenderHiddenSelections);
+                        }
+                    }
+                }
+                else
+                {
+                    if (objectp->isHUDAttachment() != for_hud)
+                    {
+                        continue;
+                    }
+                    if (objectp->getID() == focus_item_id)
+                    {
+                        node->renderOneSilhouette(gFocusMgr.getFocusColor());
+                    }
+                    else if (objectp->getID() == inspect_item_id)
+                    {
+                        node->renderOneSilhouette(sHighlightInspectColor);
+                    }
+                    else if (node->isTransient())
+                    {
+                        BOOL oldHidden = LLSelectMgr::sRenderHiddenSelections;
+                        LLSelectMgr::sRenderHiddenSelections = FALSE;
+                        node->renderOneSilhouette(sContextSilhouetteColor);
+                        LLSelectMgr::sRenderHiddenSelections = oldHidden;
+                    }
+                    else if (objectp->isRootEdit())
+                    {
+                        node->renderOneSilhouette(sSilhouetteParentColor);
+                    }
+                    else
+                    {
+                        node->renderOneSilhouette(sSilhouetteChildColor);
+                    }
+                }
+			} //for all selected node's
+		} //for pass
 	}
 
 	if (mHighlightedObjects->getNumNodes())
@@ -6131,7 +6163,7 @@ void LLSelectNode::selectTE(S32 te_index, BOOL selected)
 	mLastTESelected = te_index;
 }
 
-BOOL LLSelectNode::isTESelected(S32 te_index)
+BOOL LLSelectNode::isTESelected(S32 te_index) const
 {
 	if (te_index < 0 || te_index >= mObject->getNumTEs())
 	{
@@ -6140,17 +6172,12 @@ BOOL LLSelectNode::isTESelected(S32 te_index)
 	return (mTESelectMask & (0x1 << te_index)) != 0;
 }
 
-S32 LLSelectNode::getLastSelectedTE()
+S32 LLSelectNode::getLastSelectedTE() const
 {
 	if (!isTESelected(mLastTESelected))
 	{
 		return -1;
 	}
-	return mLastTESelected;
-}
-
-S32 LLSelectNode::getLastOperatedTE()
-{
 	return mLastTESelected;
 }
 
@@ -6412,19 +6439,14 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 	{
 		return;
 	}
-
 	LLGLSLShader* shader = LLGLSLShader::sCurBoundShaderPtr;
-
 	if (shader)
 	{
 		gDebugProgram.bind();
 	}
-
-	gGL.matrixMode(LLRender::MM_MODELVIEW);
-	gGL.pushMatrix();
-
+    gGL.matrixMode(LLRender::MM_MODELVIEW);
+    gGL.pushMatrix();
 	BOOL is_hud_object = objectp->isHUDAttachment();
-
 	if (drawable->isActive())
 	{
 		gGL.loadMatrix(gGLModelView);
@@ -6437,7 +6459,6 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		LLVector3 trans = objectp->getRegion()->getOriginAgent();
 		gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
 	}
-
 	//BD - Different Selection Methods for different people.
 	if (LLSelectMgr::sRenderHighlightType == 0
 		|| LLSelectMgr::sRenderHighlightType == 3)
@@ -6456,7 +6477,6 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		//BD - Beacon of Light
 		glPolygonMode(GL_FRONT, GL_POINT);
 	}
-
 	//BD - Force selection outlines coming through for every mode except Black Dragon
 	//     otherwise they dont look like they should.
 	if (LLSelectMgr::sRenderHiddenSelections
@@ -6479,7 +6499,6 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 			glFogf(GL_FOG_START, d);
 			glFogf(GL_FOG_END, d*(1 + (LLViewerCamera::getInstance()->getView() / LLViewerCamera::getInstance()->getDefaultFOV())));
 			glFogfv(GL_FOG_COLOR, fogCol.mV);
-
 			gGL.setAlphaRejectSettings(LLRender::CF_DEFAULT);
 			{
 				gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
@@ -6488,12 +6507,9 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 			}
 		}
 	}
-
 	gGL.flush();
 	gGL.setSceneBlendType(LLRender::BT_ALPHA);
-
 	gGL.diffuseColor4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, LLSelectMgr::sHighlightAlpha * 2);
-
 	//BD - Always use outline shader where possible.
 	//     Looks cooler and runs smoother. (Doesn't work on rigged though)
 	{
@@ -6513,7 +6529,6 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 			glStencilFunc(GL_GEQUAL, 2, 0xffff);
 		}
 		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
 		LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
 		glPolygonOffset(LLSelectMgr::sRenderHighlightType == 0 ? 0.f : 3.f, LLSelectMgr::sRenderHighlightType == 0 ? 0.f : 3.f);
 		glLineWidth(4.f);
@@ -6542,12 +6557,10 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		}
 		pushWireframe(drawable);
 	}
-
 	//BD
 	glLineWidth(1.f);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	gGL.popMatrix();
-
 	if (shader)
 	{
 		shader->bind();
@@ -6576,7 +6589,8 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	//BD - Use mesh selection outline for everything.
 	if (vobj && !is_hud_object)
 	{
-		renderOneWireframe(color);
+		//This check (if(...)) with assert here just for ensure that this situation will not happens, and can be removed later. For example on the next release.
+		llassert(!"renderOneWireframe() was removed SL-10194");
 		return;
 	}
 

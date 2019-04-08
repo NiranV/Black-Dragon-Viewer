@@ -3633,6 +3633,9 @@ bool LLFloaterPreference::isHiddenRow(const std::string& av_name)
 	LLStringUtil::toUpper(upper_name);
 	return std::string::npos == upper_name.find(mNameFilter);
 }
+	
+	LLCheckBoxCtrl *use_HiDPI = getChild<LLCheckBoxCtrl>("use HiDPI");
+	use_HiDPI->setVisible(FALSE);
 
 static LLVOAvatar* find_avatar(const LLUUID& id)
 {

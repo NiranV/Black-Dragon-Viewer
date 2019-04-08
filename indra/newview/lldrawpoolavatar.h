@@ -55,14 +55,8 @@ public:
 							LLVertexBuffer::MAP_CLOTHWEIGHT
 	};
 
-//	//BD - Motion Blur
-	/*virtual*/ void beginMotionBlurPass(S32 pass);
-	/*virtual*/ void endMotionBlurPass(S32 pass);
-	/*virtual*/ S32 getNumMotionBlurPasses();
-	/*virtual*/ void renderMotionBlur(S32 pass = 0);
     ~LLDrawPoolAvatar();
     /*virtual*/ BOOL isDead();
-
     typedef enum
 	{
 		RIGGED_MATERIAL=0,
@@ -209,6 +203,12 @@ typedef enum
 	/*virtual*/ void beginShadowPass(S32 pass);
 	/*virtual*/ void endShadowPass(S32 pass);
 	/*virtual*/ void renderShadow(S32 pass);
+	
+//	//BD - Motion Blur
+	/*virtual*/ void beginMotionBlurPass(S32 pass);
+	/*virtual*/ void endMotionBlurPass(S32 pass);
+	/*virtual*/ S32 getNumMotionBlurPasses();
+	/*virtual*/ void renderMotionBlur(S32 pass = 0);
 
 	void beginRigid();
 	void beginImpostor();
