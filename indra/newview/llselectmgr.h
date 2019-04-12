@@ -178,6 +178,7 @@ public:
 	S32 getLastSelectedTE() const;
 	S32 getLastOperatedTE() const { return mLastTESelected; }
 	S32 getTESelectMask() { return mTESelectMask; }
+	void renderOneWireframe(const LLColor4& color);
 	void renderOneSilhouette(const LLColor4 &color);
 	void setTransient(BOOL transient) { mTransient = transient; }
 	BOOL isTransient() const { return mTransient; }

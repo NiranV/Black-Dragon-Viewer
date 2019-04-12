@@ -5930,76 +5930,47 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 			}
 		}
 
-		bool wireframe_selection = (gFloaterTools && gFloaterTools->getVisible()) || LLSelectMgr::sRenderHiddenSelections;
-		F32 fogCfx = (F32)llclamp((LLSelectMgr::getInstance()->getSelectionCenterGlobal() - gAgentCamera.getCameraPositionGlobal()).magVec() / (LLSelectMgr::getInstance()->getBBoxOfSelection().getExtentLocal().magVec() * 4), 0.0, 1.0);
-
 		LLUUID focus_item_id = LLViewerMediaFocus::getInstance()->getFocusedObjectID();
 		for (S32 pass = 0; pass < 2; pass++)
 		{
 			for (LLObjectSelection::iterator iter = mSelectedObjects->begin();
-				 iter != mSelectedObjects->end(); iter++)
+				iter != mSelectedObjects->end(); iter++)
 			{
 				LLSelectNode* node = *iter;
 				LLViewerObject* objectp = node->getObject();
 				if (!objectp)
 					continue;
 
-                if(getTEMode() && !node->hasSelectedTE()) 
-                    continue;
 
-                if (objectp->mDrawable 
-                    && objectp->mDrawable->getVOVolume() 
-                    && objectp->mDrawable->getVOVolume()->isMesh())
-                {
-                    S32 num_tes = llmin((S32)objectp->getNumTEs(), (S32)objectp->getNumFaces()); // avatars have TEs but no faces
-                    for (S32 te = 0; te < num_tes; ++te)
-                    {
-                        if (!getTEMode())
-                        {
-                            objectp->mDrawable->getFace(te)->renderOneWireframe(
-                                LLColor4(sSilhouetteParentColor[VRED], sSilhouetteParentColor[VGREEN], sSilhouetteParentColor[VBLUE], LLSelectMgr::sHighlightAlpha * 2)
-                                , fogCfx, wireframe_selection, node->isTransient() ? FALSE : LLSelectMgr::sRenderHiddenSelections);
-                        }
-                        else if(node->isTESelected(te))
-                        {
-                            objectp->mDrawable->getFace(te)->renderOneWireframe(
-                                LLColor4(sSilhouetteParentColor[VRED], sSilhouetteParentColor[VGREEN], sSilhouetteParentColor[VBLUE], LLSelectMgr::sHighlightAlpha * 2)
-                                , fogCfx, wireframe_selection, node->isTransient() ? FALSE : LLSelectMgr::sRenderHiddenSelections);
-                        }
-                    }
-                }
-                else
-                {
-                    if (objectp->isHUDAttachment() != for_hud)
-                    {
-                        continue;
-                    }
-                    if (objectp->getID() == focus_item_id)
-                    {
-                        node->renderOneSilhouette(gFocusMgr.getFocusColor());
-                    }
-                    else if (objectp->getID() == inspect_item_id)
-                    {
-                        node->renderOneSilhouette(sHighlightInspectColor);
-                    }
-                    else if (node->isTransient())
-                    {
-                        BOOL oldHidden = LLSelectMgr::sRenderHiddenSelections;
-                        LLSelectMgr::sRenderHiddenSelections = FALSE;
-                        node->renderOneSilhouette(sContextSilhouetteColor);
-                        LLSelectMgr::sRenderHiddenSelections = oldHidden;
-                    }
-                    else if (objectp->isRootEdit())
-                    {
-                        node->renderOneSilhouette(sSilhouetteParentColor);
-                    }
-                    else
-                    {
-                        node->renderOneSilhouette(sSilhouetteChildColor);
-                    }
-                }
-			} //for all selected node's
-		} //for pass
+				if (objectp->isHUDAttachment() != for_hud)
+				{
+					continue;
+				}
+				if (objectp->getID() == focus_item_id)
+				{
+					node->renderOneSilhouette(gFocusMgr.getFocusColor());
+				}
+				else if (objectp->getID() == inspect_item_id)
+				{
+					node->renderOneSilhouette(sHighlightInspectColor);
+				}
+				else if (node->isTransient())
+				{
+					BOOL oldHidden = LLSelectMgr::sRenderHiddenSelections;
+					LLSelectMgr::sRenderHiddenSelections = FALSE;
+					node->renderOneSilhouette(sContextSilhouetteColor);
+					LLSelectMgr::sRenderHiddenSelections = oldHidden;
+				}
+				else if (objectp->isRootEdit())
+				{
+					node->renderOneSilhouette(sSilhouetteParentColor);
+				}
+				else
+				{
+					node->renderOneSilhouette(sSilhouetteChildColor);
+				}
+			}
+		}
 	}
 
 	if (mHighlightedObjects->getNumNodes())
@@ -6589,8 +6560,7 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	//BD - Use mesh selection outline for everything.
 	if (vobj && !is_hud_object)
 	{
-		//This check (if(...)) with assert here just for ensure that this situation will not happens, and can be removed later. For example on the next release.
-		llassert(!"renderOneWireframe() was removed SL-10194");
+		renderOneWireframe(color);
 		return;
 	}
 
