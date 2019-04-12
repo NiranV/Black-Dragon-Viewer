@@ -417,7 +417,7 @@ struct LLPanelFaceSetTEFunctor : public LLSelectedTEFunctor
 		BOOL valid;
 		F32 value;
 
-		bool align_planar = mCheckAlignPlanar->get();
+		bool align_planar = mPanel->mCheckAlignPlanar->get();
 
 		llassert(object);
 
