@@ -6907,6 +6907,12 @@ void LLSelectMgr::pauseAssociatedAvatars()
         LLViewerObject* object = node->getObject();
         if (!object)
             continue;
+
+		//BD - Don't pause us when we select others. Pause everyone selected
+		//     when selection outlines are set to not update.
+		LLVOAvatar* avatar = object->getAvatarAncestor();
+		if (LLSelectMgr::sSelectionUpdate && (avatar && !avatar->isSelf()))
+			return;
 			
         mSelectedObjects->mSelectType = getSelectTypeForObject(object);
 
