@@ -55,6 +55,9 @@
 #include "llviewershadermgr.h"
 #include "llcontrolavatar.h"
 
+//BD
+#include "lltoolmgr.h"
+
 //#pragma optimize("", off)
 
 static LLTrace::BlockTimerStatHandle FTM_FRUSTUM_CULL("Frustum Culling");
@@ -3924,7 +3927,7 @@ public:
 				{
 					LLVOAvatar* avatar = (LLVOAvatar*) vobj;
 					//BD - Allow selecting other rigged mesh on other avatars.
-					if ((mPickRigged) || (LLFloater::isVisible(gFloaterTools)))
+					if (mPickRigged || LLToolMgr::getInstance()->inEdit())
 					{
 						LLViewerObject* hit = avatar->lineSegmentIntersectRiggedAttachments(mStart, mEnd, -1, mPickTransparent, mPickRigged, mFaceHit, &intersection, mTexCoord, mNormal, mTangent);
 						if (hit)
