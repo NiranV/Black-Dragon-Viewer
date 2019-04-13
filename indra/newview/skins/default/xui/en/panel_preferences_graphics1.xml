@@ -2833,7 +2833,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="Iterations"
       show_text="true"
-      width="312" />
+      width="313" />
       <button
  follows="left|top"
  control_name="RenderGlowIterations"
@@ -2869,7 +2869,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="Strength"
       show_text="true"
-      width="327" />
+      width="328" />
       <button
  follows="left|top"
  control_name="RenderGlowStrength"
@@ -2906,7 +2906,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="MinLuminance"
       show_text="true"
-      width="315" />
+      width="316" />
       <button
  follows="left|top"
  control_name="RenderGlowMinLuminance"
@@ -2943,7 +2943,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="Warmth"
       show_text="true"
-      width="321" />
+      width="322" />
       <button
  follows="left|top"
  control_name="RenderGlowWarmthAmount"
@@ -2979,7 +2979,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="Width"
       show_text="true"
-      width="321" />
+      width="322" />
       <button
  follows="left|top"
  control_name="RenderGlowWidth"
@@ -3015,7 +3015,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="MaxAlpha"
       show_text="true"
-      width="327" />
+      width="328" />
       <button
  follows="left|top"
  control_name="RenderGlowMaxExtractAlpha"
@@ -3076,7 +3076,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="RenderGlowLumWeights_X"
       show_text="true"
-      width="327" >
+      width="328" >
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="RenderGlowLumWeights"/>
@@ -3099,7 +3099,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="RenderGlowLumWeights_Y"
       show_text="true"
-      width="327" >
+      width="328" >
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="RenderGlowLumWeights"/>
@@ -3122,7 +3122,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="RenderGlowLumWeights_Z"
       show_text="true"
-      width="327" >
+      width="328" >
       <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="RenderGlowLumWeights"/>
@@ -3203,7 +3203,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="RenderGlowWarmthWeights_X"
       show_text="true"
-      width="327" >
+      width="328" >
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="RenderGlowWarmthWeights"/>
@@ -3226,7 +3226,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="RenderGlowWarmthWeights_Y"
       show_text="true"
-      width="327" >
+      width="328" >
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="RenderGlowWarmthWeights"/>
@@ -3249,7 +3249,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       mouse_opaque="true"
       name="RenderGlowWarmthWeights_Z"
       show_text="true"
-      width="327" >
+      width="328" >
       <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="RenderGlowWarmthWeights"/>
@@ -5554,7 +5554,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0.01"
       name="ExodusRenderToneExposure"
       top_pad="7"
-      width="322"/>
+      width="321"/>
       <button
  follows="left|top"
  control_name="ExodusRenderToneExposure"
@@ -5588,7 +5588,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="ExodusRenderToneAdvOptA_X"
       top_pad="5"
-      width="328">
+      width="327">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderToneAdvOptA"/>
@@ -5610,7 +5610,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="ExodusRenderToneAdvOptA_Y"
       top_pad="2"
-      width="328">
+      width="327">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderToneAdvOptA"/>
@@ -5632,7 +5632,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="ExodusRenderToneAdvOptA_Z"
       top_pad="2"
-      width="328">
+      width="327">
          <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderToneAdvOptA"/>
@@ -5670,7 +5670,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="ExodusRenderToneAdvOptB_X"
       top_pad="5"
-      width="328">
+      width="327">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderToneAdvOptB"/>
@@ -5692,7 +5692,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="-0.5"
       name="ExodusRenderToneAdvOptB_Y"
       top_pad="2"
-      width="326">
+      width="325">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderToneAdvOptB"/>
@@ -5714,7 +5714,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0.01"
       name="ExodusRenderToneAdvOptB_Z"
       top_pad="2"
-      width="328">
+      width="327">
          <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderToneAdvOptB"/>
@@ -5768,7 +5768,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0.01"
       name="ExodusRenderToneAdvOptC_X"
       top_pad="5"
-      width="328">
+      width="327">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderToneAdvOptC"/>
@@ -5790,7 +5790,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0.01"
       name="ExodusRenderToneAdvOptC_Y"
       top_pad="2"
-      width="322">
+      width="321">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderToneAdvOptC"/>
@@ -5938,7 +5938,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="-4"
       name="ExodusRenderExposure_X"
       top_pad="7"
-      width="326">
+      width="325">
       <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderExposure"/>
@@ -5959,7 +5959,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="-4"
       name="ExodusRenderExposure_Y"
       top_pad="2"
-      width="326">
+      width="325">
       <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderExposure"/>
@@ -5980,7 +5980,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="-4"
       name="ExodusRenderExposure_Z"
       top_pad="2"
-      width="326">
+      width="325">
       <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderExposure"/>
@@ -6033,7 +6033,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="-0.5"
       name="ExodusRenderOffset_X"
       top_pad="5"
-      width="332">
+      width="331">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderOffset"/>
@@ -6054,7 +6054,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="-0.5"
       name="ExodusRenderOffset_Y"
       top_pad="2"
-      width="332">
+      width="331">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderOffset"/>
@@ -6075,7 +6075,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="-0.5"
       name="ExodusRenderOffset_Z"
       top_pad="2"
-      width="332">
+      width="331">
       <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderOffset"/>
@@ -6129,7 +6129,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="ExodusRenderGamma_X"
       top_pad="5"
-      width="322">
+      width="321">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderGamma"/>
@@ -6150,7 +6150,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="ExodusRenderGamma_Y"
       top_pad="2"
-      width="322">
+      width="321">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderGamma"/>
@@ -6171,7 +6171,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="ExodusRenderGamma_Z"
       top_pad="2"
-      width="322">
+      width="321">
          <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderGamma"/>
@@ -6272,7 +6272,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="ExodusRenderVignette_X"
       top_pad="10"
-      width="322">
+      width="321">
       <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderVignette"/>
@@ -6293,7 +6293,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="ExodusRenderVignette_Y"
       top_pad="2"
-      width="322">
+      width="321">
       <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderVignette"/>
@@ -6314,7 +6314,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="ExodusRenderVignette_Z"
       top_pad="2"
-      width="322">
+      width="321">
       <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderVignette"/>
