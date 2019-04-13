@@ -90,6 +90,9 @@
 #include "rlvlocks.h"
 // [/RLVa:KB]
 
+//BD
+#include "lltoolmgr.h"
+
 const F32 FORCE_SIMPLE_RENDER_AREA = 512.f;
 const F32 FORCE_CULL_AREA = 8.f;
 U32 JOINT_COUNT_REQUIRED_FOR_FULLRIG = 1;
@@ -1648,40 +1651,34 @@ void LLVOVolume::regenFaces()
 
 static LLTrace::BlockTimerStatHandle FTM_UPDATE_RIGGED_VOLUME("Update Rigged");
 
+//BD
 BOOL LLVOVolume::genBBoxes(BOOL force_global)
 {
 	BOOL res = TRUE;
-
+	BOOL rebuild = mDrawable->isState(LLDrawable::REBUILD_VOLUME | LLDrawable::REBUILD_POSITION | LLDrawable::REBUILD_RIGGED);
 	LLVector4a min,max;
+	bool any_valid_boxes = false;
 
 	min.clear();
 	max.clear();
 
-	BOOL rebuild = mDrawable->isState(LLDrawable::REBUILD_VOLUME | LLDrawable::REBUILD_POSITION | LLDrawable::REBUILD_RIGGED);
-
-    if (getRiggedVolume())
-    {
-		LL_RECORD_BLOCK_TIME(FTM_UPDATE_RIGGED_VOLUME);
-        // MAINT-8264 - better to use the existing call in calling
-        // func LLVOVolume::updateGeometry() if we can detect when
-        // updates needed, set REBUILD_RIGGED accordingly.
-
-        // Without the flag, this will remove unused rigged volumes, which we are not currently very aggressive about.
-        updateRiggedVolume(false, !rebuild);
-    }
-    
 	LLVolume* volume = mRiggedVolume;
 	if (!volume)
 	{
 		volume = getVolume();
 	}
+	else
+	{
+		//LL_RECORD_BLOCK_TIME(FTM_UPDATE_RIGGED_VOLUME);
+		// MAINT-8264 - better to use the existing call in calling
+		// func LLVOVolume::updateGeometry() if we can detect when
+		// updates needed, set REBUILD_RIGGED accordingly.
 
-    bool any_valid_boxes = false;
-    
-    if (getRiggedVolume())
-    {
+		// Without the flag, this will remove unused rigged volumes, which we are not currently very aggressive about.
+		//updateRiggedVolume();
         LL_DEBUGS("RiggedBox") << "rebuilding box, volume face count " << getVolume()->getNumVolumeFaces() << " drawable face count " << mDrawable->getNumFaces() << LL_ENDL;
     }
+
     // There's no guarantee that getVolume()->getNumFaces() == mDrawable->getNumFaces()
 	for (S32 i = 0;
 		 i < getVolume()->getNumVolumeFaces() && i < mDrawable->getNumFaces() && i < getNumTEs();
@@ -1693,8 +1690,7 @@ BOOL LLVOVolume::genBBoxes(BOOL force_global)
 			continue;
 		}
 
-        BOOL face_res = face->genVolumeBBoxes(*volume, i,
-                                              mRelativeXform, 
+        BOOL face_res = face->genVolumeBBoxes(*volume, i, mRelativeXform, 
                                               (mVolumeImpl && mVolumeImpl->isVolumeGlobal()) || force_global);
         res &= face_res; // note that this result is never used
 		
@@ -1703,12 +1699,14 @@ BOOL LLVOVolume::genBBoxes(BOOL force_global)
         {
             continue;
         }
+
 		if (rebuild)
 		{
-            if (getRiggedVolume())
+            if (mRiggedVolume)
             {
                 LL_DEBUGS("RiggedBox") << "rebuilding box, face " << i << " extents " << face->mExtents[0] << ", " << face->mExtents[1] << LL_ENDL;
             }
+
 			if (!any_valid_boxes)
 			{
 				min = face->mExtents[0];
@@ -1727,10 +1725,11 @@ BOOL LLVOVolume::genBBoxes(BOOL force_global)
     {
         if (rebuild)
         {
-            if (getRiggedVolume())
+            if (mRiggedVolume)
             {
                 LL_DEBUGS("RiggedBox") << "rebuilding got extents " << min << ", " << max << LL_ENDL;
             }
+
             mDrawable->setSpatialExtents(min,max);
             min.add(max);
             min.mul(0.5f);
@@ -1982,7 +1981,8 @@ BOOL LLVOVolume::updateGeometry(LLDrawable *drawable)
 			was_regen_faces = lodOrSculptChanged(drawable, compiled);
 		}
 
-		if (!was_regen_faces) {
+		if (!was_regen_faces) 
+		{
 			LL_RECORD_BLOCK_TIME(FTM_GEN_TRIANGLES);
 			regenFaces();
 		}
@@ -1997,7 +1997,8 @@ BOOL LLVOVolume::updateGeometry(LLDrawable *drawable)
 		
 		if(drawable->isState(LLDrawable::REBUILD_RIGGED | LLDrawable::RIGGED)) 
 		{
-			updateRiggedVolume(false);
+			LL_RECORD_BLOCK_TIME(FTM_UPDATE_RIGGED_VOLUME);
+			updateRiggedVolume();
 		}
 		genBBoxes(FALSE);
 	}
@@ -4837,7 +4838,7 @@ BOOL LLVOVolume::lineSegmentIntersect(const LLVector4a& start, const LLVector4a&
 	if (mDrawable->isState(LLDrawable::RIGGED))
 	{
 		//BD - Allow picking rigged attachments of others.
-		if (pick_rigged)
+		if (pick_rigged || LLToolMgr::getInstance()->inEdit())
 		{
 			updateRiggedVolume(true, true);
 			volume = mRiggedVolume;
@@ -5162,8 +5163,6 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 					pos[j] = dst;
 				}
 
-				//BD - Update bounding box when not selected.
-				if (mBBox)
 				{
 					// VFExtents change
 					LLVector4a& min = dst_face.mExtents[0];
@@ -5188,8 +5187,6 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 
 					dst_face.mCenter->setAdd(dst_face.mExtents[0], dst_face.mExtents[1]);
 					dst_face.mCenter->mul(0.5f);
-					
-					mBBox = TRUE;
 				}
 			}
 
