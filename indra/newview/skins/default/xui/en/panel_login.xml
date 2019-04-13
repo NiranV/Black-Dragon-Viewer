@@ -91,7 +91,7 @@ width="996">
  height="20"
  image_unselected="transparentj2c"
  image_selected="transparentj2c"
- label="[CHANNEL] [VERSION] - [3.4.4 - Audible Dragon]"
+ label="[CHANNEL] [VERSION] - [3.4.6 - Playing Dragon]"
  font="SansSerifSmall"
  layout="topleft"
  left="3"
@@ -174,8 +174,78 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="26"
+     height="403"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Changed: Dropped avatar bounding box calculation complexity to basic bounding boxes for now.
+Changed: Modify head tracking options to allow customizing max head and eye rotation in degrees.
+Changed: Improved reliability of right-click selecting meshes.
+Changed: Re-introduced old performance fix for joint map updates in hopes to improve its performance with many avatars around.
+Changed: Decapitalized Debug Settings title and removed the non-functional help button.
+Changed: Overhauled system notification well window layout.
+Changed: Reverted Linden Labs selection changes to fix massive performance drop when selecting something.
+Changed: Always include rigged in picking when we hover our mouse via free mouse depth of field.
+Changed: Don't pause our avatar when we select other people's attachments.
+Changed: Version to 3.4.6 - Playing Dragon.
+Fixed: Unchanged windlight settings reverting when opening any land info window.
+Fixed: Unchanged water settings reverting when selecting a sky preset from the dropdown.
+Fixed: Wrong land edit tool being send to the server.
+Fixed: LLSD control types showing no comments in Debug Settings window.
+Fixed: Crash when doing a factory reset while not logged in yet.
+Fixed: Compile.
+Fixed: Minor slider length inconsistencies in preferences - display.
+Misc: Micro-optimizations in tools floater.
+Misc: slightly optimized vovolume trace and update logic to not double update unnecessarily.
+Misc: (EXPERIMENTAL) Don't rebuild bounding box.
+Misc: Cleaned up llheadrotmotion.cpp a bit.
+Misc: Micro-optimizations in lldrawpoolalpha.cpp.
+Misc: Micro-optimizations in lldrawpoolavatar.cpp.
+Misc: Micro-optimizations in llnavigationbar.cpp.
+Misc: Removed old "delete" windlight preset window calls since they are not used anymore.
+Misc: Micro-optimizations in llvoavatar.cpp.
+Misc: Massive cleanup and micro-optimization pass in the rendering pipeline.
+Misc: Optimized rigged mesh picking logic to check for edit tool (faster) rather than for open windows.
+Misc: Optimized bounding box call amount and generate bounding box call slightly.
+Misc: Lineending fixes.
+Merge with Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.4.5
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="26"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
