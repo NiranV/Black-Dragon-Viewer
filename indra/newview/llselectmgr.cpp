@@ -6458,7 +6458,6 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		if (shader)
 		{
 			gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
-			//BD
 			pushWireframe(drawable);
 		}
 		else
@@ -6473,7 +6472,6 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 			gGL.setAlphaRejectSettings(LLRender::CF_DEFAULT);
 			{
 				gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
-				//BD
 				pushWireframe(drawable);
 			}
 		}
@@ -6886,7 +6884,7 @@ void LLSelectMgr::updateSelectionCenter()
 		gEditMenuHandler = NULL;
 	}
 
-    pauseAssociatedAvatars();
+	pauseAssociatedAvatars();
 }
 
 //-----------------------------------------------------------------------------
@@ -6927,12 +6925,12 @@ void LLSelectMgr::pauseAssociatedAvatars()
                 {
                     mPauseRequests.push_back(object->getControlAvatar()->requestPause());
                 }
-                mPauseRequests.push_back(gAgentAvatarp->requestPause());
+                mPauseRequests.push_back(object->getControlAvatar()->getAvatarAncestor()->requestPause());
             }
             else
             {
-                // Is a regular attachment. Pause the avatar it's attached to.
-                mPauseRequests.push_back(gAgentAvatarp->requestPause());
+				//BD - Is a regular attachment. Pause the avatar it's attached to.
+				mPauseRequests.push_back(object->getAvatarAncestor()->requestPause());
             }
         }
         else

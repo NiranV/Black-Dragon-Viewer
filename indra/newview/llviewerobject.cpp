@@ -3063,7 +3063,7 @@ void LLViewerObject::updateControlAvatar()
     if (getControlAvatar())
     {
         getControlAvatar()->updateAnimations();
-        if (isSelected())
+		if (isSelected())
         {
             LLSelectMgr::getInstance()->pauseAssociatedAvatars();
         }
