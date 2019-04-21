@@ -117,6 +117,8 @@ uniform mat4 inv_proj;
 uniform mat3 env_mat;
 uniform float ssao_effect;
 
+uniform float global_light_strength;
+
 
 vec3 srgb_to_linear(vec3 cs)
 {
@@ -735,7 +737,8 @@ void main()
 		LIGHT_LOOP(6)
 		LIGHT_LOOP(7)
 
-	col.rgb += light.rgb;
+ light.rgb *= global_light_strength;
+	col.rgb += light.rgb ;
 
 	glare = min(glare, 1.0);
 	float al = max(diffcol.a,glare)*vertex_color.a;

@@ -96,6 +96,8 @@ uniform vec4 waterFogColor;
 uniform float waterFogDensity;
 uniform float waterFogKS;
 
+uniform float global_light_strength;
+
 vec3 srgb_to_linear(vec3 cs)
 {
 	vec3 low_range = cs / vec3(12.92);
@@ -600,6 +602,7 @@ void main()
 
 	// keep it linear
 	//
+ light.rgb *= global_light_strength;
 	color.rgb += light.rgb;
 
 	// straight to display gamma, we're post-deferred
