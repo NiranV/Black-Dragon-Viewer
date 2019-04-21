@@ -233,6 +233,7 @@ set(viewer_SOURCE_FILES
     llfloateravatar.cpp
     llfloateravatarpicker.cpp
     llfloateravatartextures.cpp
+    llfloaterbanduration.cpp
     llfloaterbeacons.cpp
     llfloaterbigpreview.cpp
     llfloaterbuildoptions.cpp
@@ -878,6 +879,7 @@ set(viewer_HEADER_FILES
     llfloateravatar.h
     llfloateravatarpicker.h
     llfloateravatartextures.h
+    llfloaterbanduration.h
     llfloaterbeacons.h
     llfloaterbigpreview.h
     llfloaterbuildoptions.h
