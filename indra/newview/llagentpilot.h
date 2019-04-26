@@ -77,7 +77,9 @@ public:
 	bool isPlaying() { return mPlaying; }
 	bool getOverrideCamera() { return mOverrideCamera; }
 	
-	void updateTarget();
+	//BD
+	void updatePlayback();
+	void updateRecord();
 
 	void addWaypoint();
 	void moveCamera();

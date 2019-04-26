@@ -328,76 +328,75 @@ void LLAgentPilot::moveCamera()
 	}
 }
 
-void LLAgentPilot::updateTarget()
+//BD
+void LLAgentPilot::updatePlayback()
 {
-	if (mPlaying)
+	if (mCurrentAction < mActions.size())
 	{
-		if (mCurrentAction < mActions.size())
+		if (0 == mCurrentAction)
 		{
-			if (0 == mCurrentAction)
+			if (gAgent.getAutoPilot())
 			{
-				if (gAgent.getAutoPilot())
-				{
-					// Wait until we get to the first location before starting.
-					return;
-				}
-				else
-				{
-					if (!mStarted)
-					{
-						LL_INFOS() << "At start, beginning playback" << LL_ENDL;
-						mTimer.reset();
-						mStarted = TRUE;
-					}
-				}
+				// Wait until we get to the first location before starting.
+				return;
 			}
-			if (mTimer.getElapsedTimeF32() > mActions[mCurrentAction].mTime)
+			else
 			{
-				//gAgent.stopAutoPilot();
-				mCurrentAction++;
-
-				if (mCurrentAction < mActions.size())
+				if (!mStarted)
 				{
-					gAgent.startAutoPilotGlobal(mActions[mCurrentAction].mTarget);
-					moveCamera();
-				}
-				else
-				{
-					stopPlayback();
-					mNumRuns--;
-					if (mLoop)
-					{
-						if ((mNumRuns < 0) || (mNumRuns > 0))
-						{
-							LL_INFOS() << "Looping, restarting playback" << LL_ENDL;
-							startPlayback();
-						}
-						else if (mQuitAfterRuns)
-						{
-							LL_INFOS() << "Done with all runs, quitting viewer!" << LL_ENDL;
-							LLAppViewer::instance()->forceQuit();
-						}
-						else
-						{
-							LL_INFOS() << "Done with all runs, disabling pilot" << LL_ENDL;
-							stopPlayback();
-						}
-					}
+					LL_INFOS() << "At start, beginning playback" << LL_ENDL;
+					mTimer.reset();
+					mStarted = TRUE;
 				}
 			}
 		}
-		else
+		if (mTimer.getElapsedTimeF32() > mActions[mCurrentAction].mTime)
 		{
-			stopPlayback();
+			//gAgent.stopAutoPilot();
+			mCurrentAction++;
+
+			if (mCurrentAction < mActions.size())
+			{
+				gAgent.startAutoPilotGlobal(mActions[mCurrentAction].mTarget);
+				moveCamera();
+			}
+			else
+			{
+				stopPlayback();
+				mNumRuns--;
+				if (mLoop)
+				{
+					if ((mNumRuns < 0) || (mNumRuns > 0))
+					{
+						LL_INFOS() << "Looping, restarting playback" << LL_ENDL;
+						startPlayback();
+					}
+					else if (mQuitAfterRuns)
+					{
+						LL_INFOS() << "Done with all runs, quitting viewer!" << LL_ENDL;
+						LLAppViewer::instance()->forceQuit();
+					}
+					else
+					{
+						LL_INFOS() << "Done with all runs, disabling pilot" << LL_ENDL;
+						stopPlayback();
+					}
+				}
+			}
 		}
 	}
-	else if (mRecording)
+	else
 	{
-		//BD
-		if (mTimer.getElapsedTimeF32() - mLastRecordTime > 0.1f)
-		{
-			addAction(STRAIGHT);
-		}
+		stopPlayback();
+	}
+}
+
+//BD
+void LLAgentPilot::updateRecord()
+{
+	if (mTimer.getElapsedTimeF32() - mLastRecordTime > 0.1f)
+	{
+		addAction(STRAIGHT);
 	}
 }
 

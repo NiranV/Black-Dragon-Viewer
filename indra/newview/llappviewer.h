@@ -56,6 +56,7 @@ class LLImageDecodeThread;
 class LLTextureFetch;
 class LLWatchdogTimeout;
 class LLViewerJoystick;
+class LLToolMgr;
 
 extern LLTrace::BlockTimerStatHandle FTM_FRAME;
 
@@ -128,8 +129,9 @@ public:
     void forceDisconnect(const std::string& msg); // Force disconnection, with a message to the user.
     void badNetworkHandler(); // Cause a crash state due to bad network packet.
 
-	bool hasSavedFinalSnapshot() { return mSavedFinalSnapshot; }
-	void saveFinalSnapshot(); 
+	//BD
+	//bool hasSavedFinalSnapshot() { return mSavedFinalSnapshot; }
+	//void saveFinalSnapshot(); 
 
     void loadNameCache();
     void saveNameCache();
@@ -284,9 +286,12 @@ private:
 	std::string mSerialNumber;
 	bool mPurgeCache;
     bool mPurgeOnExit;
-	LLViewerJoystick* joystick;
+	//BD
+	LLViewerJoystick* mJoystick;
+	LLToolMgr* mToolMgr;
 
-	bool mSavedFinalSnapshot;
+	//BD
+	//bool mSavedFinalSnapshot;
 	bool mSavePerAccountSettings;		// only save per account settings if login succeeded
 
 	boost::optional<U32> mForceGraphicsLevel;

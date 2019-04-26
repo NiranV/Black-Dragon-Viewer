@@ -200,12 +200,14 @@ void display_update_camera()
 	{
 		final_far *= 0.5f;
 	}
-	LLViewerCamera::getInstance()->setFar(final_far);
+
+	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
+	viewer_cam->setFar(final_far);
 	gViewerWindow->setup3DRender();
 	
 	// update all the sky/atmospheric/water settings
-	LLWLParamManager::getInstance()->update(LLViewerCamera::getInstance());
-	LLWaterParamManager::getInstance()->update(LLViewerCamera::getInstance());
+	LLWLParamManager::getInstance()->update(viewer_cam);
+	LLWaterParamManager::getInstance()->update(viewer_cam);
 
 	// Update land visibility too
 	LLWorld::getInstance()->setLandFarClip(final_far);
@@ -271,6 +273,11 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		return;
 	}
 
+	//BD
+	LLAppViewer* app_viewer = LLAppViewer::instance();
+	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
+	LLSceneMonitor* scene_monitor = LLSceneMonitor::getInstance();
+
 	if (LLPipeline::sRenderDeferred)
 	{ //hack to make sky show up in deferred snapshots
 		for_snapshot = FALSE;
@@ -325,11 +332,11 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	
 	{
 		LL_RECORD_BLOCK_TIME(FTM_PICK);
-		LLAppViewer::instance()->pingMainloopTimeout("Display:Pick");
+		app_viewer->pingMainloopTimeout("Display:Pick");
 		gViewerWindow->performPick();
 	}
 	
-	LLAppViewer::instance()->pingMainloopTimeout("Display:CheckStates");
+	app_viewer->pingMainloopTimeout("Display:CheckStates");
 	LLGLState::checkStates();
 	LLGLState::checkTextureChannels();
 	
@@ -362,7 +369,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	//
 	if (LLStartUp::getStartupState() < STATE_PRECACHE)
 	{
-		LLAppViewer::instance()->pingMainloopTimeout("Display:Startup");
+		app_viewer->pingMainloopTimeout("Display:Startup");
 		display_startup();
 		return;
 	}
@@ -380,7 +387,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	// Update GL Texture statistics (used for discard logic?)
 	//
 
-	LLAppViewer::instance()->pingMainloopTimeout("Display:TextureStats");
+	app_viewer->pingMainloopTimeout("Display:TextureStats");
 	stop_glerror();
 
 	LLImageGL::updateStats(gFrameTimeSeconds);
@@ -404,7 +411,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	if (gTeleportDisplay)
 	{
 		LL_RECORD_BLOCK_TIME(FTM_TELEPORT_DISPLAY);
-		LLAppViewer::instance()->pingMainloopTimeout("Display:Teleport");
+		app_viewer->pingMainloopTimeout("Display:Teleport");
 		static LLCachedControl<F32> teleport_arrival_delay(gSavedSettings, "TeleportArrivalDelay");
 
 		S32 attach_count = 0;
@@ -495,9 +502,9 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			break;
 		}
 	}
-    else if(LLAppViewer::instance()->logoutRequestSent())
+	else if (app_viewer->logoutRequestSent())
 	{
-		LLAppViewer::instance()->pingMainloopTimeout("Display:Logout");
+		app_viewer->pingMainloopTimeout("Display:Logout");
 		F32 percent_done = gLogoutTimer.getElapsedTimeF32() * 100.f / gLogoutMaxTime;
 		if (percent_done > 100.f)
 		{
@@ -515,7 +522,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	else
 	if (gRestoreGL)
 	{
-		LLAppViewer::instance()->pingMainloopTimeout("Display:RestoreGL");
+		app_viewer->pingMainloopTimeout("Display:RestoreGL");
 		F32 percent_done = gRestoreGLTimer.getElapsedTimeF32() * 100.f / RESTORE_GL_TIME;
 		if( percent_done > 100.f )
 		{
@@ -546,9 +553,9 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	//
 	//
 
-	LLAppViewer::instance()->pingMainloopTimeout("Display:Camera");
-	LLViewerCamera::getInstance()->setZoomParameters(zoom_factor, subfield);
-	LLViewerCamera::getInstance()->setNear(MIN_NEAR_PLANE);
+	app_viewer->pingMainloopTimeout("Display:Camera");
+	viewer_cam->setZoomParameters(zoom_factor, subfield);
+	viewer_cam->setNear(MIN_NEAR_PLANE);
 
 	//////////////////////////
 	//
@@ -558,7 +565,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 	if (gDisconnected)
 	{
-		LLAppViewer::instance()->pingMainloopTimeout("Display:Disconnected");
+		app_viewer->pingMainloopTimeout("Display:Disconnected");
 		render_ui();
 		swap();
 	}
@@ -568,7 +575,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	// Set rendering options
 	//
 	//
-	LLAppViewer::instance()->pingMainloopTimeout("Display:RenderSetup");
+	app_viewer->pingMainloopTimeout("Display:RenderSetup");
 	stop_glerror();
 
 	///////////////////////////////////////
@@ -590,7 +597,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	// do render-to-texture stuff here
 	if (gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_DYNAMIC_TEXTURES))
 	{
-		LLAppViewer::instance()->pingMainloopTimeout("Display:DynamicTextures");
+		app_viewer->pingMainloopTimeout("Display:DynamicTextures");
 		LL_RECORD_BLOCK_TIME(FTM_UPDATE_DYNAMIC_TEXTURES);
 		if (LLViewerDynamicTexture::updateAllInstances())
 		{
@@ -605,7 +612,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	
 	if (!gDisconnected)
 	{
-		LLAppViewer::instance()->pingMainloopTimeout("Display:Update");
+		app_viewer->pingMainloopTimeout("Display:Update");
 		if (gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_HUD))
 		{ //don't draw hud objects in this frame
 			gPipeline.toggleRenderType(LLPipeline::RENDER_TYPE_HUD);
@@ -644,12 +651,14 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		
 		stop_glerror();
 
+		//BD
+		bool under_water = viewer_cam->cameraUnderWater();
 		S32 water_clip = 0;
 		if ((LLViewerShaderMgr::instance()->getVertexShaderLevel(LLViewerShaderMgr::SHADER_ENVIRONMENT) > 1) &&
 			 (gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_WATER) || 
 			  gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_VOIDWATER)))
 		{
-			if (LLViewerCamera::getInstance()->cameraUnderWater())
+			if (under_water)
 			{
 				water_clip = -1;
 			}
@@ -659,7 +668,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			}
 		}
 		
-		LLAppViewer::instance()->pingMainloopTimeout("Display:Cull");
+		app_viewer->pingMainloopTimeout("Display:Cull");
 		
 		//Increment drawable frame counter
 		LLDrawable::incrementVisible();
@@ -680,8 +689,8 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 		static LLCullResult result;
 		LLViewerCamera::sCurCameraID = LLViewerCamera::CAMERA_WORLD;
-		LLPipeline::sUnderWaterRender = LLViewerCamera::getInstance()->cameraUnderWater();
-		gPipeline.updateCull(*LLViewerCamera::getInstance(), result, water_clip);
+		LLPipeline::sUnderWaterRender = under_water;
+		gPipeline.updateCull(*viewer_cam, result, water_clip);
 		stop_glerror();
 
 		LLGLState::checkStates();
@@ -693,7 +702,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 						  gPipeline.sRenderGlow ||
 						  gPipeline.RenderDeferred;
 
-		LLAppViewer::instance()->pingMainloopTimeout("Display:Swap");
+		app_viewer->pingMainloopTimeout("Display:Swap");
 		
 		{ 
 			if (gResizeScreenTexture)
@@ -714,7 +723,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 				if (gFrameCount > 1)
 				{ //for some reason, ATI 4800 series will error out if you 
 				  //try to generate a shadow before the first frame is through
-					gPipeline.generateSunShadow(*LLViewerCamera::getInstance());
+					gPipeline.generateSunShadow(*viewer_cam);
 				}
 
 				LLVertexBuffer::unbind();
@@ -754,9 +763,9 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 		//if (!for_snapshot)
 		{
-			LLAppViewer::instance()->pingMainloopTimeout("Display:Imagery");
-			gPipeline.generateWaterReflection(*LLViewerCamera::getInstance());
-			gPipeline.generateHighlight(*LLViewerCamera::getInstance());
+			app_viewer->pingMainloopTimeout("Display:Imagery");
+			gPipeline.generateWaterReflection(*viewer_cam);
+			gPipeline.generateHighlight(*viewer_cam);
 			gPipeline.renderPhysicsDisplay();
 		}
 
@@ -770,7 +779,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		// Can put objects onto the retextured list.
 		//
 		// Doing this here gives hardware occlusion queries extra time to complete
-		LLAppViewer::instance()->pingMainloopTimeout("Display:UpdateImages");
+		app_viewer->pingMainloopTimeout("Display:UpdateImages");
 		
 		{
 			LL_RECORD_BLOCK_TIME(FTM_IMAGE_UPDATE);
@@ -815,10 +824,10 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		// In the case of alpha objects, z-sorts them first.
 		// Also creates special lists for outlines and selected face rendering.
 		//
-		LLAppViewer::instance()->pingMainloopTimeout("Display:StateSort");
+		app_viewer->pingMainloopTimeout("Display:StateSort");
 		{
 			LLViewerCamera::sCurCameraID = LLViewerCamera::CAMERA_WORLD;
-			gPipeline.stateSort(*LLViewerCamera::getInstance(), result);
+			gPipeline.stateSort(*viewer_cam, result);
 			stop_glerror();
 				
 			if (rebuild)
@@ -833,7 +842,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			}
 		}
 
-		LLSceneMonitor::getInstance()->fetchQueryResult();
+		scene_monitor->fetchQueryResult();
 		
 		LLGLState::checkStates();
 		LLGLState::checkClientArrays();
@@ -841,7 +850,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		LLPipeline::sUseOcclusion = occlusion;
 
 		{
-			LLAppViewer::instance()->pingMainloopTimeout("Display:Sky");
+			app_viewer->pingMainloopTimeout("Display:Sky");
 			LL_RECORD_BLOCK_TIME(FTM_UPDATE_SKY);	
 			gSky.updateSky();
 		}
@@ -853,7 +862,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 
-		LLAppViewer::instance()->pingMainloopTimeout("Display:RenderStart");
+		app_viewer->pingMainloopTimeout("Display:RenderStart");
 		
 		//// render frontmost floater opaque for occlusion culling purposes
 		//LLFloater* frontmost_floaterp = gFloaterView->getFrontmost();
@@ -892,7 +901,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		//	gGL.popMatrix();
 		//}
 
-		LLPipeline::sUnderWaterRender = LLViewerCamera::getInstance()->cameraUnderWater();
+		//LLPipeline::sUnderWaterRender = under_water;
 
 		LLGLState::checkStates();
 		LLGLState::checkClientArrays();
@@ -912,7 +921,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			else
 			{
 				gPipeline.mScreen.bindTarget();
-				if (LLPipeline::sUnderWaterRender && !gPipeline.canUseWindLightShaders())
+				if (under_water && !gPipeline.canUseWindLightShaders())
 				{
 					const LLColor4 &col = LLDrawPoolWater::sWaterFogColor;
 					glClearColor(col.mV[0], col.mV[1], col.mV[2], 0.f);
@@ -923,9 +932,10 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			gGL.setColorMask(true, false);
 		}
 		
-		LLAppViewer::instance()->pingMainloopTimeout("Display:RenderGeom");
-		
-		if (!(LLAppViewer::instance()->logoutRequestSent() && LLAppViewer::instance()->hasSavedFinalSnapshot())
+		app_viewer->pingMainloopTimeout("Display:RenderGeom");
+		//BD
+		if (!app_viewer->logoutRequestSent()
+			  /*&& LLAppViewer::instance()->hasSavedFinalSnapshot())*/
 				&& !gRestoreGL)
 		{
 			LLViewerCamera::sCurCameraID = LLViewerCamera::CAMERA_WORLD;
@@ -954,11 +964,11 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			gGL.setColorMask(true, false);
 			if (LLPipeline::sRenderDeferred)
 			{
-				gPipeline.renderGeomDeferred(*LLViewerCamera::getInstance());
+				gPipeline.renderGeomDeferred(*viewer_cam);
 			}
 			else
 			{
-				gPipeline.renderGeom(*LLViewerCamera::getInstance(), TRUE);
+				gPipeline.renderGeom(*viewer_cam, TRUE);
 			}
 			
 			gGL.setColorMask(true, true);
@@ -976,7 +986,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			}
 		}
 
-		LLAppViewer::instance()->pingMainloopTimeout("Display:RenderFlush");		
+		app_viewer->pingMainloopTimeout("Display:RenderFlush");
 		
 		if (to_texture)
 		{
@@ -1025,10 +1035,10 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 		{
 			//capture the frame buffer.
-			LLSceneMonitor::getInstance()->capture();
+			scene_monitor->capture();
 		}
 
-		LLAppViewer::instance()->pingMainloopTimeout("Display:RenderUI");
+		app_viewer->pingMainloopTimeout("Display:RenderUI");
 		if (!for_snapshot)
 		{
 			LL_RECORD_BLOCK_TIME(FTM_RENDER_UI);
@@ -1043,7 +1053,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		gPipeline.rebuildGroups();
 	}
 
-	LLAppViewer::instance()->pingMainloopTimeout("Display:FrameStats");
+	app_viewer->pingMainloopTimeout("Display:FrameStats");
 	
 	stop_glerror();
 
@@ -1055,7 +1065,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 	display_stats();
 				
-	LLAppViewer::instance()->pingMainloopTimeout("Display:Done");
+	app_viewer->pingMainloopTimeout("Display:Done");
 
 	gShiftFrame = false;
 
@@ -1266,6 +1276,7 @@ void render_ui(F32 zoom_factor, int subfield)
 	LLGLState::checkStates();
 	
 	glh::matrix4f saved_view = glh_get_current_modelview();
+	LLSceneMonitor* scene_monitor = LLSceneMonitor::getInstance();
 
 	if (!gSnapshot)
 	{
@@ -1274,11 +1285,11 @@ void render_ui(F32 zoom_factor, int subfield)
 		glh_set_current_modelview(glh_copy_matrix(gGLLastModelView));
 	}
 	
-	if(LLSceneMonitor::getInstance()->needsUpdate())
+	if(scene_monitor->needsUpdate())
 	{
 		gGL.pushMatrix();
 		gViewerWindow->setup2DRender();
-		LLSceneMonitor::getInstance()->compare();
+		scene_monitor->compare();
 		gViewerWindow->setup3DRender();
 		gGL.popMatrix();
 	}
@@ -1468,8 +1479,9 @@ void render_ui_2d()
 	//  Menu overlays, HUD, etc
 	gViewerWindow->setup2DRender();
 
-	F32 zoom_factor = LLViewerCamera::getInstance()->getZoomFactor();
-	S16 sub_region = LLViewerCamera::getInstance()->getZoomSubRegion();
+	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
+	F32 zoom_factor = viewer_cam->getZoomFactor();
+	S16 sub_region = viewer_cam->getZoomSubRegion();
 
 	if (zoom_factor > 1.f)
 	{

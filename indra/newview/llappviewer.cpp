@@ -696,7 +696,8 @@ LLAppViewer::LLAppViewer()
 	mPurgeCache(false),
 	mPurgeOnExit(false),
 	mSecondInstance(false),
-	mSavedFinalSnapshot(false),
+	//BD
+	//mSavedFinalSnapshot(false),
 	mSavePerAccountSettings(false),		// don't save settings on logout unless login succeeded.
 	mQuitRequested(false),
 	mLogoutRequestSent(false),
@@ -937,7 +938,7 @@ bool LLAppViewer::init()
 
 	/////////////////////////////////////////////////
 
-	LLToolMgr::getInstance(); // Initialize tool manager if not already instantiated
+	mToolMgr = LLToolMgr::getInstance(); // Initialize tool manager if not already instantiated
 
 	LLViewerFloaterReg::registerFloaters();
 
@@ -1139,8 +1140,9 @@ bool LLAppViewer::init()
 	gSimLastTime = gRenderStartTime.getElapsedTimeF32();
 	gSimFrames = (F32)gFrameCount;
 
-	LLViewerJoystick::getInstance()->init(false);
-
+	mJoystick = LLViewerJoystick::getInstance();
+	mJoystick->init(false);
+	
 	try {
 		initializeSecHandler();
 	}
@@ -1255,8 +1257,8 @@ bool LLAppViewer::init()
 	LLVoiceClient::getInstance()->init(gServicePump);
 	LLVoiceChannel::setCurrentVoiceChannelChangedCallback(boost::bind(&LLFloaterIMContainer::onCurrentChannelChanged, _1), true);
 
-	joystick = LLViewerJoystick::getInstance();
-	joystick->setNeedsReset(true);
+	//BD
+	mJoystick->setNeedsReset(true);
 	/*----------------------------------------------------------------------*/
 
 	gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
@@ -1474,7 +1476,8 @@ bool LLAppViewer::doFrame()
 				&& (gHeadlessClient || !gViewerWindow->getShowProgress())
 				&& !gFocusMgr.focusLocked())
 			{
-				joystick->scanJoystick();
+				//BD
+				mJoystick->scanJoystick();
 				gKeyboard->scanKeyboard();
 			}
 
@@ -1491,7 +1494,8 @@ bool LLAppViewer::doFrame()
 			if (gDoDisconnect && (LLStartUp::getStartupState() == STATE_STARTED))
 			{
 				pauseMainloopTimeout();
-				saveFinalSnapshot();
+				//BD
+				//saveFinalSnapshot();
 				disconnectViewer();
 				resumeMainloopTimeout();
 			}
@@ -1633,11 +1637,12 @@ bool LLAppViewer::doFrame()
 
 	if (LLApp::isExiting())
 	{
+		//BD
 		// Save snapshot for next time, if we made it through initialization
-		if (STATE_STARTED == LLStartUp::getStartupState())
+		/*if (STATE_STARTED == LLStartUp::getStartupState())
 		{
 			saveFinalSnapshot();
-		}
+		}*/
 
 		if (LLVoiceClient::instanceExists())
 		{
@@ -1883,8 +1888,9 @@ bool LLAppViewer::cleanup()
 	delete gKeyboard;
 	gKeyboard = NULL;
 
-	// Turn off Space Navigator and similar devices
-	LLViewerJoystick::getInstance()->terminate();
+	//BD - Turn off Space Navigator and similar devices
+	mJoystick->terminate();
+	mJoystick = NULL;
 
 	LL_INFOS() << "Cleaning up Objects" << LL_ENDL;
 
@@ -4556,10 +4562,11 @@ void LLAppViewer::badNetworkHandler()
 	LLApp::instance()->writeMiniDump();
 }
 
+//BD
 // This routine may get called more than once during the shutdown process.
 // This can happen because we need to get the screenshot before the window
 // is destroyed.
-void LLAppViewer::saveFinalSnapshot()
+/*void LLAppViewer::saveFinalSnapshot()
 {
 	if (!mSavedFinalSnapshot)
 	{
@@ -4571,7 +4578,7 @@ void LLAppViewer::saveFinalSnapshot()
 		idle();
 		mSavedFinalSnapshot = TRUE;
 	}
-}
+}*/
 
 void LLAppViewer::loadNameCache()
 {
@@ -4680,6 +4687,11 @@ void LLAppViewer::idle()
 	LLDirPickerThread::clearDead();
 	F32 dt_raw = idle_timer.getElapsedTimeAndResetF32();
 
+	//BD
+	LLWorld* world = LLWorld::getInstance();
+	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
+	LLHUDManager* hud_mgr = LLHUDManager::getInstance();
+
 	// Cap out-of-control frame times
 	// Too low because in menus, swapping, debugger, etc.
 	// Too high because idle called with no objects in view, etc.
@@ -4694,7 +4706,8 @@ void LLAppViewer::idle()
 	// Smoothly weight toward current frame
 	gFPSClamped = (frame_rate_clamped + (4.f * gFPSClamped)) / 5.f;
 
-	F32 qas = gSavedSettings.getF32("QuitAfterSeconds");
+	//BD
+	/*F32 qas = gSavedSettings.getF32("QuitAfterSeconds");
 	if (qas > 0.f)
 	{
 		if (gRenderStartTime.getElapsedTimeF32() > qas)
@@ -4702,7 +4715,7 @@ void LLAppViewer::idle()
 			LL_INFOS() << "Quitting after " << qas << " seconds. See setting \"QuitAfterSeconds\"." << LL_ENDL;
 			LLAppViewer::instance()->forceQuit();
 		}
-	}
+	}*/
 
 	// Must wait until both have avatar object and mute list, so poll
 	// here.
@@ -4731,7 +4744,7 @@ void LLAppViewer::idle()
 	{
 		LL_RECORD_BLOCK_TIME(FTM_NETWORK);
 		// Update spaceserver timeinfo
-	    LLWorld::getInstance()->setSpaceTimeUSec(LLWorld::getInstance()->getSpaceTimeUSec() + LLUnits::Seconds::fromValue(dt_raw));
+	    world->setSpaceTimeUSec(world->getSpaceTimeUSec() + LLUnits::Seconds::fromValue(dt_raw));
 
 
 	    //////////////////////////////////////
@@ -4739,16 +4752,24 @@ void LLAppViewer::idle()
 	    // Update simulator agent state
 	    //
 
-		if (gSavedSettings.getBOOL("RotateRight"))
+		//BD
+		/*if (gSavedSettings.getBOOL("RotateRight"))
 		{
 			gAgent.moveYaw(-1.f);
-		}
+		}*/
 
 		{
 			LL_RECORD_BLOCK_TIME(FTM_AGENT_AUTOPILOT);
 			// Handle automatic walking towards points
-			gAgentPilot.updateTarget();
-			gAgent.autoPilot(&yaw);
+			if (gAgentPilot.isPlaying())
+			{
+				gAgentPilot.updatePlayback();
+				gAgent.autoPilot(&yaw);
+			}
+			else if (gAgentPilot.isRecording())
+			{
+				gAgentPilot.updateRecord();
+			}
 
 			//BD - Animator
 			gDragonAnimator.update();
@@ -4886,7 +4907,7 @@ void LLAppViewer::idle()
 	{
 		// After agent and camera moved, figure out if we need to
 		// deselect objects.
-		LLSelectMgr::getInstance()->deselectAllIfTooFar();
+		select_mgr->deselectAllIfTooFar();
 
 	}
 
@@ -4901,7 +4922,7 @@ void LLAppViewer::idle()
 	{
 		LL_RECORD_BLOCK_TIME(FTM_OBJECTLIST_UPDATE);
 
-        if (!(logoutRequestSent() && hasSavedFinalSnapshot()))
+        if (!logoutRequestSent() /*&& hasSavedFinalSnapshot())*/)
 		{
 			gObjectList.update(gAgent);
 		}
@@ -4940,9 +4961,9 @@ void LLAppViewer::idle()
 
 	{
 		LL_RECORD_BLOCK_TIME(FTM_HUD_EFFECTS);
-		LLSelectMgr::getInstance()->updateEffects();
-		LLHUDManager::getInstance()->cleanupEffects();
-		LLHUDManager::getInstance()->sendEffects();
+		select_mgr->updateEffects();
+		hud_mgr->cleanupEffects();
+		hud_mgr->sendEffects();
 	}
 
 	////////////////////////////////////////
@@ -4960,11 +4981,11 @@ void LLAppViewer::idle()
 	// Update surfaces, and surface textures as well.
 	//
 
-	LLWorld::getInstance()->updateVisibilities();
+	world->updateVisibilities();
 	{
 		const F32 max_region_update_time = .001f; // 1ms
 		LL_RECORD_BLOCK_TIME(FTM_REGION_UPDATE);
-		LLWorld::getInstance()->updateRegions(max_region_update_time);
+		world->updateRegions(max_region_update_time);
 	}
 
 	/////////////////////////
@@ -4978,7 +4999,7 @@ void LLAppViewer::idle()
 	static LLVector3 average_wind;
 
 	LLViewerRegion *regionp;
-	regionp = LLWorld::getInstance()->resolveRegionGlobal(wind_position_region, gAgent.getPositionGlobal());	// puts agent's local coords into wind_position
+	regionp = world->resolveRegionGlobal(wind_position_region, gAgent.getPositionGlobal());	// puts agent's local coords into wind_position
 	if (regionp)
 	{
 		gWindVec = regionp->mWind.getVelocity(wind_position_region);
@@ -5003,26 +5024,25 @@ void LLAppViewer::idle()
 	LL_RECORD_BLOCK_TIME(FTM_WORLD_UPDATE);
 	gPipeline.updateMove();
 
-	LLWorld::getInstance()->updateParticles();
+	world->updateParticles();
 
 	if (gAgentPilot.isPlaying() && gAgentPilot.getOverrideCamera())
 	{
 		gAgentPilot.moveCamera();
 	}
-	else if (LLViewerJoystick::getInstance()->getOverrideCamera())
+	else if (mJoystick->getOverrideCamera())
 	{
-		LLViewerJoystick::getInstance()->moveFlycam();
+		if (mToolMgr->inBuildMode())
+		{
+			mJoystick->moveObjects();
+		}
+		mJoystick->moveFlycam();
 	}
 	else
 	{
 		//BD - Camera Recorder
 		if (!gDragonLibrary.getCameraOverride())
 		{
-			if (LLToolMgr::getInstance()->inBuildMode())
-			{
-				LLViewerJoystick::getInstance()->moveObjects();
-			}
-
 			gAgentCamera.updateCamera();
 		}
 	}
