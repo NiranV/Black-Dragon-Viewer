@@ -6909,38 +6909,24 @@ void LLSelectMgr::pauseAssociatedAvatars()
 		//BD - Don't pause us when we select others. Pause everyone selected
 		//     when selection outlines are set to not update.
 		LLVOAvatar* avatar = object->getAvatarAncestor();
-		if (LLSelectMgr::sSelectionUpdate && (avatar && !avatar->isSelf()))
-			return;
-			
-        mSelectedObjects->mSelectType = getSelectTypeForObject(object);
+		if (!avatar)
+			continue;
 
-        if (mSelectedObjects->mSelectType == SELECT_TYPE_ATTACHMENT && 
-            isAgentAvatarValid() && object->getParent() != NULL)
-        {
-            if (object->isAnimatedObject())
-            {
-                // Is an animated object attachment.
-                // Pause both the control avatar and the avatar it's attached to.
-                if (object->getControlAvatar())
-                {
-                    mPauseRequests.push_back(object->getControlAvatar()->requestPause());
-                }
-                mPauseRequests.push_back(object->getControlAvatar()->getAvatarAncestor()->requestPause());
-            }
-            else
-            {
-				//BD - Is a regular attachment. Pause the avatar it's attached to.
-				mPauseRequests.push_back(object->getAvatarAncestor()->requestPause());
-            }
-        }
-        else
-        {
-            if (object && object->isAnimatedObject() && object->getControlAvatar())
-            {
-                // Is a non-attached animated object. Pause the control avatar.
-                mPauseRequests.push_back(object->getControlAvatar()->requestPause());
-            }
-        }
+		if (!avatar->isSelf() && LLSelectMgr::sSelectionUpdate)
+			continue;
+
+		if (object->isAnimatedObject())
+		{
+			LLControlAvatar* c_avatar = object->getControlAvatar();
+			if (!c_avatar)
+				continue;
+
+			//BD - Is an animated object attachment. Stop the animated object.
+			mPauseRequests.push_back(c_avatar->requestPause());
+		}
+
+		//BD - Is an animated object. Stop it.
+		mPauseRequests.push_back(avatar->requestPause());
     }
 }
 
