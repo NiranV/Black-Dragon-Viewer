@@ -901,7 +901,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		//	gGL.popMatrix();
 		//}
 
-		//LLPipeline::sUnderWaterRender = under_water;
+		LLPipeline::sUnderWaterRender = under_water;
 
 		LLGLState::checkStates();
 		LLGLState::checkClientArrays();
