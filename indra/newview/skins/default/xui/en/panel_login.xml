@@ -91,7 +91,7 @@ width="996">
  height="20"
  image_unselected="transparentj2c"
  image_selected="transparentj2c"
- label="[CHANNEL] [VERSION] - [3.4.6 - Playing Dragon]"
+ label="[CHANNEL] [VERSION] - [3.4.7 - Playing Dragon]"
  font="SansSerifSmall"
  layout="topleft"
  left="3"
@@ -174,8 +174,56 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="403"
+     height="130"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Changed: Overhauled the "General" tab layout in About Land window. More later.
+Changed: Version to 3.4.7.
+Fixed: Global Light Brightness option not working on material alpha and alpha surfaces.
+Fixed: (POTENTIAL) Issue with projectors randomly breaking on alpha surfaces and local lights breaking in windlight.
+Fixed: Crash when right clicking attached animesh on either yourself or with disabled outline updates on others. Simplified the check.
+Fixed: Crash when editing head/eye tracking options while the animation was stopped.
+Misc: Micro-optimized more main loop calls, reduced if checks where possible and reduced getInstance calls to a minimum.
+Misc: Micro-optimize the joystick flycam logic a bit more and make it less jerky with unstable framerates.
+Merge with Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.4.6
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="403"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
