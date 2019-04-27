@@ -2,13 +2,12 @@
 <floater
  positioning="cascading"
  can_tear_off="false"
- height="420"
+ height="407"
  layout="topleft"
  name="floaterland"
- help_topic="floaterland"
  save_rect="true"
- title="ABOUT LAND"
- width="490">
+ title="About Land"
+ width="500">
     <floater.string
       name="maturity_icon_general">
       "Parcel_PG_Dark"
@@ -51,19 +50,21 @@
     </floater.string>
     <tab_container
      follows="all"
-     height="410"
+     height="400"
      layout="topleft"
-     left="0"
+     left="5"
      name="landtab"
      tab_position="top"
      tab_height="21"
-     tab_min_width="67"
-     top="10"
+     tab_min_width="10"
+     top="0"
      width="489">
         <panel
          border="false"
+         bg_alpha_image="Panel_Background"
+         background_visible="true"
          follows="all"
-         label="GENERAL"
+         label="General"
          layout="topleft"
          left="0"
          help_topic="land_general_tab"
@@ -130,7 +131,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="Name:"
              top="10"
              width="100">
@@ -143,15 +144,16 @@
              left_pad="2"
              max_length_bytes="63"
              name="Name"
-             top_delta="0"
-             width="365" />
+             top_delta="-4"
+             width="377" />
             <text
              type="string"
              length="1"
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
+             top_pad="7"
              name="Description:"
              width="100">
                 Description:
@@ -162,8 +164,8 @@
              layout="topleft"
              left_pad="2"
              name="Description"
-             top_delta="0"
-             width="365"
+             top_delta="-4"
+             width="379"
              word_wrap="true" />
             <text
              type="string"
@@ -171,7 +173,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="LandType"
              top_pad="5"
              width="100">
@@ -186,7 +188,7 @@
              left_pad="2"
              name="LandTypeText"
              top_delta="0"
-             width="250">
+             width="377">
                 Mainland / Homestead
             </text>
             <text
@@ -195,7 +197,8 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
+             top_pad="4"
              name="ContentRating"
              width="100">
                 Rating:
@@ -204,13 +207,13 @@
              type="string"
              length="1"
              follows="left|top"
-             height="18"
+             height="16"
              layout="topleft"
+             valign="center"
              left_pad="2"
-             valign="center" 
              name="ContentRatingText"
              top_delta="-2"
-             width="250">
+             width="377">
                 Adult
             </text>
             <text
@@ -219,9 +222,9 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="Owner:"
-             top_pad="3"
+             top_pad="6"
              width="100">
                 Owner:
             </text>
@@ -231,14 +234,14 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left_pad="2"
+             left_pad="-1"
              name="OwnerText"
              translate="false"
              use_ellipses="true" 
-             width="360">
+             width="377">
                 TestString PleaseIgnore
             </text>
-             <button
+             <!--<button
      follows="right"
      height="23"
      image_pressed="Info_Press"
@@ -247,7 +250,7 @@
      name="info_btn"
      top_delta="-2"
      width="16" />
-          <!--  <button
+            <button
              follows="left|top"
              height="23"
              label="Profile"
@@ -261,9 +264,9 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="Group:"
-             top_pad="7"
+             top_pad="4"
              width="100">
                 Group:
             </text>
@@ -271,14 +274,14 @@
             <text
              follows="left|top"
              height="16"
-             left_pad="2"
+             left_pad="-1"
              layout="topleft"
              name="GroupText"
              translate="false"
-             width="240">
+             width="377">
                 TestString PleaseIgnore
             </text>
-                 <button
+                 <!--<button
      follows="right"
      height="23"
      image_pressed="Info_Press"
@@ -286,49 +289,71 @@
      left_pad="3"
      name="info_btn"
      top_delta="-2"
-     width="16" />
-            <button
-             follows="left|top"
-             height="23"
-             label="Set"
-             layout="topleft"
-             left_pad="4"
-             right="-10"
-             name="Set..."
-             width="90"
-             top_delta="-2"/>
-            <check_box
+     width="16" />-->
+                 <check_box
              enabled="false"
-             height="16"
+             height="14"
              label="Allow Deed to Group"
              layout="topleft"
-             left="108"
+             left="5"
              name="check deed"
              tool_tip="A group officer can deed this land to the group, so it will be supported by the group&apos;s land allocation."
-             top_pad="3"
+             top_pad="4"
              width="146" />
+            <button
+             follows="left|top"
+             height="21"
+             label="Change Group"
+             layout="topleft"
+             left="5"
+             name="Set..."
+             width="110"
+             image_overlay="Edit_Wrench"
+             image_overlay_alignment="left"
+             imgoverlay_label_space="7"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             halign="left"
+             top_pad="6"/>
             <button
              enabled="false"
              follows="left|top"
-             height="23"
+             height="21"
              label="Deed"
              layout="topleft"
-             left_pad="2"
-             right="-10"
+             left_pad="1"
              name="Deed..."
              tool_tip="You may only deed land if you are an officer in the selected group."
-             top_delta="-2"
-             width="90" />
+             top_delta="0"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             image_overlay="Conv_toolbar_expand"
+             image_overlay_alignment="left"
+             imgoverlay_label_space="3"
+             halign="left"
+             width="100" />
             <check_box
              enabled="false"
-             height="16"
+             height="14"
              label="Owner Makes Contribution With Deed"
              layout="topleft"
-             left="108"
+             left_pad="1"
              name="check contrib"
              tool_tip="When the land is deeded to the group, the former owner contributes enough land allocation to support it."
              width="199"
-             top_pad="0"/>
+             top_delta="3"/>
+            <view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="5"
+			width="478"/>
+            
             <text
              type="string"
              length="1"
@@ -336,6 +361,7 @@
              height="16"
              layout="topleft"
              left="10"
+             top_pad="7"
              name="For Sale:"
              width="100">
                 For Sale:
@@ -369,27 +395,17 @@
              layout="topleft"
              left_delta="0"
              name="SalePending"
-             top_pad="5"
+             top_delta="0"
              width="324" />
-            <button
-             follows="left|top"
-             height="23"
-             label="Sell Land"
-             layout="topleft"
-             left_pad="5"
-             right="-10"
-             name="Sell Land..."
-             width="145"
-             top_delta="-25"/>
             <text
              type="string"
              length="1"
              follows="left|top"
              height="16"
              layout="topleft"
-             left_delta="-199"
+             left_delta="20"
              name="For sale to"
-             top_delta="20"
+             top_pad="0"
              use_ellipses="true" 
              width="340">
                 For sale to: [BUYER]
@@ -402,7 +418,7 @@
              layout="topleft"
              left_delta="0"
              name="Sell with landowners objects in parcel."
-             top_pad="-2"
+             top_pad="0"
              width="186">
                 Objects included in sale
             </text>
@@ -420,15 +436,39 @@
             </text>
             <button
              follows="left|top"
-             height="23"
+             height="21"
+             label="Sell Land"
+             layout="topleft"
+             left="5"
+             name="Sell Land..."
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             width="147"
+             top_pad="0"/>
+            <button
+             follows="left|top"
+             height="21"
              label="Cancel Land Sale"
              label_selected="Cancel Land Sale"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
-             right="-10"
              name="Cancel Land Sale"
-             left_pad="5"
-             top_pad="7"
-             width="180" />
+             left_pad="1"
+             top_delta="0"
+             width="148" />
+            <view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="1"
+			width="478"/>
+            
             <text
              type="string"
              length="1"
@@ -437,7 +477,7 @@
              layout="topleft"
              left="10"
              name="Claimed:"
-             top="268"
+             top_pad="7"
              width="100">
                 Claimed:
             </text>
@@ -461,7 +501,7 @@
              layout="topleft"
              left="10"
              name="PriceLabel"
-             top_pad="5"
+             top_pad="4"
              width="100">
                 Area:
             </text>
@@ -485,7 +525,7 @@
              layout="topleft"
              left="10"
              name="Traffic:"
-             top="308"
+             top_pad="4"
              width="100">
                 Traffic:
             </text>
@@ -501,82 +541,105 @@
              width="186">
                 Loading...
             </text>
-
-            <button
-             enabled="false"
-             follows="left|top"
-             height="23"
-             label="Buy Land"
-             layout="topleft"
-             left_delta="52"
-			 top_pad="5"
-             name="Buy Land..."
-             width="130" />
-			<button
-             enabled="false"
-             follows="left|top"
-             height="23"
-             label="Linden Sale"
-             layout="topleft"
-             left="10"
-             name="Linden Sale..."
-             tool_tip="Land must be owned, set content, and not already for auction."
-             top_pad="-23"
-             width="150" />
-            <button
-             enabled="true"
-             follows="left|top"
-             height="23"
-             label="Script Info"
-             layout="topleft"
-             left="10"
-             name="Scripts..."
-             top_pad="1"
-             width="150" />
-            <button
-             enabled="false"
-             follows="left|top"
-             height="23"
-             label="Buy For Group"
-             layout="topleft"
-             right="-10"
-             name="Buy For Group..."
-             top_delta="0"
-             width="180" />
-            <button
-             enabled="false"
-             follows="left|top"
-             height="23"
-             label="Buy Pass"
-             layout="topleft"
-             left_delta="-135"
-             name="Buy Pass..."
-             tool_tip="A pass gives you temporary access to this land."
-             top_delta="0"
-             width="130" />
-            <button
-             follows="left|top"
-             height="23"
-             label="Abandon Land"
-             layout="topleft"
-             right="-10"
-             name="Abandon Land..."
-             top_pad="-47"
-             width="180" />
             <button
              follows="left|top"
              height="23"
              label="Reclaim Land"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
-             left_delta="0"
+             left_pad="4"
              name="Reclaim Land..."
-             top_delta="-25"
-             width="180" />
+             top_delta="-44"
+             width="181" />
+
+            <button
+             enabled="true"
+             follows="left|top"
+             height="21"
+             label="Script Info"
+             layout="topleft"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             left="5"
+             name="Scripts..."
+             top_pad="40"
+             width="85" />
+            <button
+             enabled="false"
+             follows="left|top"
+             height="21"
+             label="Buy Land"
+             layout="topleft"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             left_pad="1"
+			 top_delta="0"
+             name="Buy Land..."
+             width="95" />
+			<button
+             enabled="false"
+             follows="left|top"
+             height="21"
+             label="Linden Sale"
+             layout="topleft"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             left_delta="0"
+             name="Linden Sale..."
+             tool_tip="Land must be owned, set content, and not already for auction."
+             top_delta="0"
+             width="95" />
+   <button
+             enabled="false"
+             follows="left|top"
+             height="21"
+             label="Buy Pass"
+             layout="topleft"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             left_pad="1"
+             name="Buy Pass..."
+             tool_tip="A pass gives you temporary access to this land."
+             top_delta="0"
+             width="95" />
+            <button
+             enabled="false"
+             follows="left|top"
+             height="21"
+             label="Buy For Group"
+             layout="topleft"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             left_pad="1"
+             name="Buy For Group..."
+             top_delta="0"
+             width="100" />
+            
+            <button
+             follows="left|top"
+             height="21"
+             label="Abandon Land"
+             layout="topleft"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             left_pad="1"
+             name="Abandon Land..."
+             top_delta="0"
+             width="100" />
+            
         </panel>
         <panel
          border="true"
          follows="all"
-         label="COVENANT"
+         label="Covenant"
          layout="topleft"
          left="0"
          top="0"
@@ -809,7 +872,7 @@
         <panel
          border="true"
          follows="all"
-         label="OBJECTS"
+         label="Objects"
          layout="topleft"
          left="0"
          top="0"
@@ -1170,7 +1233,7 @@
         <panel
          border="true"
          follows="all"
-         label="OPTIONS"
+         label="Options"
          layout="topleft"
          help_topic="land_options_tab"
          name="land_options_panel"
@@ -1558,7 +1621,7 @@ Only large parcels can be listed in search.
         <panel
          border="true"
          follows="all"
-         label="MEDIA"
+         label="Media"
          layout="topleft"
          left="0"
          top="0"
@@ -1771,7 +1834,7 @@ Only large parcels can be listed in search.
         <panel
          border="true"
          follows="all"
-         label="SOUND"
+         label="Sound"
          layout="topleft"
          left="0"
          top="0"
@@ -1886,7 +1949,7 @@ Only large parcels can be listed in search.
         <panel
          border="true"
          follows="all"
-         label="ACCESS"
+         label="Access"
          layout="topleft"
          left="0"
          top="0"
@@ -2120,7 +2183,7 @@ Only large parcels can be listed in search.
        <panel
           border="true"
           follows="all"
-          label="EXPERIENCES"
+          label="Experience"
           layout="topleft"
           left="0"
           top="0"
