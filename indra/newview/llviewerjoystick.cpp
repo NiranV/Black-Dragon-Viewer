@@ -477,7 +477,7 @@ void LLViewerJoystick::moveObjects(bool reset)
 	F32 time = gFrameIntervalSeconds.value();
 
 	//BD - Avoid making ridicously big movements if there's a big drop in fps 
-	time = llclamp(time, 0.125f, 0.2f);
+	time = llclamp(time, 0.016f, 0.033f);
 
 	// max feather is 32
 	bool is_zero = true;
@@ -640,7 +640,7 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	F32 time = gFrameIntervalSeconds.value();
 
 	//BD - Avoid making ridicously big movements if there's a big drop in fps 
-	time = llclamp(time, 0.125f, 0.2f);
+	time = llclamp(time, 0.016f, 0.033f);
 
 	// note: max feather is 32.0
 	
@@ -705,7 +705,7 @@ void LLViewerJoystick::moveAvatar(bool reset)
 
 //	//BD - Invertable Pitch Controls
 	if (!mJoystickInvertPitch)
-		cur_delta[RX_I] *= -1.f;
+		cur_delta[RX_I] = -cur_delta[RX_I];
 
 	// forward|backward movements overrule the real dominant movement if 
 	// they're bigger than its 20%. This is what you want 'cos moving forward
@@ -749,19 +749,17 @@ void LLViewerJoystick::moveAvatar(bool reset)
 // -----------------------------------------------------------------------------
 void LLViewerJoystick::moveFlycam(bool reset)
 {
-	static LLQuaternion 		sFlycamRotation;
-	static LLVector3    		sFlycamPosition;
-	static F32          		sFlycamZoom;
-
-	static LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
-	
 	if (!gFocusMgr.getAppHasFocus() || mDriverState != JDS_INITIALIZED
 		|| !mJoystickEnabled || !mJoystickFlycamEnabled)
 	{
 		return;
 	}
 
-	bool in_build_mode = LLToolMgr::getInstance()->inBuildMode();
+	static LLQuaternion 		sFlycamRotation;
+	static LLVector3    		sFlycamPosition;
+	static F32          		sFlycamZoom;
+	static LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
+
 	if (reset || mResetFlag)
 	{
 		sFlycamPosition = viewer_cam->getOrigin();
@@ -776,31 +774,39 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	F32 time = gFrameIntervalSeconds.value();
 
 	//BD - Avoid making ridiculously big movements if there's a big drop in fps 
-	time = llclamp(time, 0.125f, 0.2f);
+	time = llclamp(time, 0.016f, 0.033f);
 
-	F32 cur_delta[7];
-	bool is_zero = true;
 	F32 flycam_feather = mFlycamFeathering;
-	for (U32 i = 0; i < 7; i++)
+	F32 cur_delta[MAX_AXES];
+	F32 max_angle = viewer_cam->getMaxView();
+	F32 min_angle = viewer_cam->getMinView();
+
 	{
-		if (i < 7)
-			cur_delta[i] = -mAxes[mMappedAxes[i]];
-
-//		//BD - Remappable Joystick Controls
-		cur_delta[3] -= (F32)mBtn[mMappedButtons[ROLL_LEFT]];
-		cur_delta[3] += (F32)mBtn[mMappedButtons[ROLL_RIGHT]];
-		cur_delta[6] -= (F32)mBtn[mMappedButtons[ZOOM_OUT]];
-		cur_delta[6] += (F32)mBtn[mMappedButtons[ZOOM_IN]];
-		cur_delta[2] += (F32)mBtn[mMappedButtons[JUMP]];
-		cur_delta[2] -= (F32)mBtn[mMappedButtons[CROUCH]];
-
-//		//BD - Invertable Pitch Controls
-		if (mJoystickInvertPitch)
-			cur_delta[4] *= -1.f;
-
 		if (mBtn[mMappedButtons[ZOOM_DEFAULT]])
 			sFlycamZoom = gSavedSettings.getF32("CameraAngle");
 
+		//BD - Only smooth flycam zoom if we are not capping at the min/max otherwise the feathering
+		//     ends up working against previous input, delaying zoom in movement when we just zoomed
+		//     out beyond capped max for a bit and vise versa.
+		if ((sFlycamZoom <= min_angle
+			|| sFlycamZoom >= max_angle))
+		{
+			flycam_feather = 3.0f;
+		}
+	}
+
+	bool is_zero = true;
+	for (U32 i = 0; i < MAX_AXES; i++)
+	{
+		cur_delta[i] = -mAxes[mMappedAxes[i]];
+
+//		//BD - Remappable Joystick Controls
+		cur_delta[CAM_X_AXIS] -= (F32)mBtn[mMappedButtons[ROLL_LEFT]];
+		cur_delta[CAM_X_AXIS] += (F32)mBtn[mMappedButtons[ROLL_RIGHT]];
+		cur_delta[CAM_W_AXIS] -= (F32)mBtn[mMappedButtons[ZOOM_OUT]];
+		cur_delta[CAM_W_AXIS] += (F32)mBtn[mMappedButtons[ZOOM_IN]];
+		cur_delta[Z_AXIS] += (F32)mBtn[mMappedButtons[JUMP]];
+		cur_delta[Z_AXIS] -= (F32)mBtn[mMappedButtons[CROUCH]];
 
 		F32 tmp = cur_delta[i];
 		if (mCursor3D)
@@ -821,7 +827,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 		// We may want to scale camera movements up or down in build mode.
 		// NOTE: this needs to remain after the deadzone calculation, otherwise
 		// we have issues with flycam "jumping" when the build dialog is opened/closed  -Nyx
-		if (in_build_mode)
+		if (LLToolMgr::getInstance()->inBuildMode())
 		{
 			if (i == X_I || i == Y_I || i == Z_I)
 			{
@@ -836,19 +842,13 @@ void LLViewerJoystick::moveFlycam(bool reset)
 			cur_delta[i] *= time;
 		}
 
-		//BD - Only smooth flycam zoom if we are not capping at the min/max otherwise the feathering
-		//     ends up working against previous input, delaying zoom in movement when we just zoomed
-		//     out beyond capped max for a bit and vise versa.
-		if (i == 6
-			&& (sFlycamZoom == viewer_cam->getMinView()
-			|| sFlycamZoom == viewer_cam->getMaxView()))
-		{
-			flycam_feather = 3.0f;
-		}
-
 		sDelta[i] = sDelta[i] + (cur_delta[i] - sDelta[i]) * time * flycam_feather;
 		is_zero = is_zero && (cur_delta[i] == 0.f);
 	}
+
+//	//BD - Invertable Pitch Controls
+	if (mJoystickInvertPitch)
+		cur_delta[CAM_Y_AXIS] = -cur_delta[CAM_Y_AXIS];
 	
 	// Clear AFK state if moved beyond the deadzone
 	if (!is_zero && gAwayTimer.getElapsedTimeF32() > LLAgent::MIN_AFK_TIME)
@@ -857,9 +857,14 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	}
 
 	sFlycamPosition += LLVector3(sDelta) * sFlycamRotation;
-
-	LLMatrix3 rot_mat(sDelta[3], sDelta[4], sDelta[5]);
+	LLMatrix3 rot_mat(sDelta[CAM_X_AXIS], sDelta[CAM_Y_AXIS], sDelta[CAM_Z_AXIS]);
 	sFlycamRotation = LLQuaternion(rot_mat)*sFlycamRotation;
+
+	/*LLVector3 new_pos = sFlycamPosition + LLVector3(sDelta) * sFlycamRotation;
+	sFlycamPosition = lerp(sFlycamPosition, new_pos, llmin(flycam_feather, 1.f));
+	LLMatrix3 rot_mat(sDelta[CAM_X_AXIS], sDelta[CAM_Y_AXIS], sDelta[CAM_Z_AXIS]);
+	LLQuaternion new_rot = LLQuaternion(rot_mat)*sFlycamRotation;
+	sFlycamRotation = nlerp(llmin(flycam_feather, 1.f), sFlycamRotation, new_rot);*/
 
 	if (mAutoLeveling)
 	{
@@ -881,23 +886,22 @@ void LLViewerJoystick::moveFlycam(bool reset)
 
 	if (mZoomDirect)
 	{
-		sFlycamZoom = sLastDelta[6] * mAxesScalings[18] + mAxesScalings[18];
+		sFlycamZoom = sLastDelta[CAM_W_AXIS] * mAxesScalings[FLYCAM_AXIS_6] + mAxesScalings[FLYCAM_AXIS_6];
 	}
 	else
 	{
 		//BD - We need to cap zoom otherwise it internally counts higher causing
 		//     the zoom level to not react until that extra has been removed first.
-		sFlycamZoom += sDelta[6];
-		sFlycamZoom = llclamp(sFlycamZoom, viewer_cam->getMinView(), viewer_cam->getMaxView());
+		sFlycamZoom = llclamp(sFlycamZoom + sDelta[CAM_W_AXIS], viewer_cam->getMinView(), viewer_cam->getMaxView());
 	}
 
 	LLMatrix3 mat(sFlycamRotation);
 
 	viewer_cam->setView(sFlycamZoom);
 	viewer_cam->setOrigin(sFlycamPosition);
-	viewer_cam->mXAxis = LLVector3(mat.mMatrix[0]);
-	viewer_cam->mYAxis = LLVector3(mat.mMatrix[1]);
-	viewer_cam->mZAxis = LLVector3(mat.mMatrix[2]);
+	viewer_cam->mXAxis = LLVector3(mat.mMatrix[X_AXIS]);
+	viewer_cam->mYAxis = LLVector3(mat.mMatrix[Y_AXIS]);
+	viewer_cam->mZAxis = LLVector3(mat.mMatrix[Z_AXIS]);
 }
 
 // -----------------------------------------------------------------------------
