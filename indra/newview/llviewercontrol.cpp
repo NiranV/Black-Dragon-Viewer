@@ -714,14 +714,16 @@ static bool handleCameraSmoothing(const LLSD& newvalue)
 static bool handleEyeConstrainsChanged(const LLSD& newvalue)
 {
 	LLEyeMotion* eye_rot_motion = (LLEyeMotion*)gAgentAvatarp->getMotionController().findMotion(ANIM_AGENT_EYE);
-	eye_rot_motion->setEyeConstrains(newvalue.asInteger());
+	if (eye_rot_motion)
+		eye_rot_motion->setEyeConstrains(newvalue.asInteger());
 	return true;
 }
 
 static bool handleHeadConstrainsChanged(const LLSD& newvalue)
 {
 	LLHeadRotMotion* head_rot_motion = (LLHeadRotMotion*)gAgentAvatarp->getMotionController().findMotion(ANIM_AGENT_HEAD_ROT);
-	head_rot_motion->setHeadConstrains(newvalue.asInteger());
+	if (head_rot_motion)
+		head_rot_motion->setHeadConstrains(newvalue.asInteger());
 	return true;
 }
 
