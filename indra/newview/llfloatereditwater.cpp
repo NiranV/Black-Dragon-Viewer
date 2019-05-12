@@ -771,6 +771,7 @@ void LLFloaterEditWater::onBtnSave()
 void LLFloaterEditWater::onBtnCancel()
 {
 	//BD
+	LLEnvManagerNew::instance().setUseCustomWaterSettings(false);
 	LLEnvManagerNew::instance().usePrefs(); // revert changes made to current environment
 	closeFloater();
 }

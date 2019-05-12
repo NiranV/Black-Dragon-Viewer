@@ -966,6 +966,7 @@ void LLFloaterEditSky::onBtnSave()
 void LLFloaterEditSky::onBtnCancel()
 {
 	//BD
+	LLEnvManagerNew::instance().setUseCustomSkySettings(false);
 	LLEnvManagerNew::instance().usePrefs(); // revert changes made to current environment
 	closeFloater();
 }
