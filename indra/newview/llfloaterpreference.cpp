@@ -1166,6 +1166,8 @@ BOOL LLFloaterPreference::postBuild()
 		mTabContainer->selectFirstTab();
 	}
 
+	mGFXStack = getChild<LLLayoutStack>("gfx_stack");
+
 	mRenderGlowLumWeights = { { getChild<LLUICtrl>("RenderGlowLumWeights_X"),
 							getChild<LLUICtrl>("RenderGlowLumWeights_Y"),
 							getChild<LLUICtrl>("RenderGlowLumWeights_Z") } };
@@ -1204,6 +1206,54 @@ BOOL LLFloaterPreference::postBuild()
 										getChild<LLUICtrl>("RenderProjectorShadowResolution_Y") } };
 	mExodusRenderToneAdvOptC = { { getChild<LLUICtrl>("ExodusRenderToneAdvOptC_X"),
 										getChild<LLUICtrl>("ExodusRenderToneAdvOptC_Y") } };
+
+	mExodusRenderToneMappingTech = getChild<LLUICtrl>("ExodusRenderToneMappingTech");
+	mExodusRenderToneExposure = getChild<LLUICtrl>("ExodusRenderToneExposure");
+	mExodusRenderColorGradeTech = getChild<LLUICtrl>("ExodusRenderColorGradeTech");
+
+	mRenderSpotLightReflections = getChild<LLUICtrl>("RenderSpotLightReflections");
+	mRenderSpotLightImages = getChild<LLUICtrl>("RenderSpotLightImages");
+	mRenderShadowAutomaticDistance = getChild<LLUICtrl>("RenderShadowAutomaticDistance");
+
+	mRenderShadowBlurSize = getChild<LLUICtrl>("RenderShadowBlurSize");
+	mRenderSSRResolution = getChild<LLUICtrl>("RenderSSRResolution");
+	mRenderSSRBrightness = getChild<LLUICtrl>("RenderSSRBrightness");
+
+	mRenderShadowBlurSize = getChild<LLUICtrl>("RenderShadowBlurSize");
+	mRenderSSRResolution = getChild<LLUICtrl>("RenderSSRResolution");
+	mRenderSSRBrightness = getChild<LLUICtrl>("RenderSSRBrightness");
+	mRenderDepthOfFieldHighQuality = getChild<LLUICtrl>("RenderDepthOfFieldHighQuality");
+	mCameraFOV = getChild<LLUICtrl>("CameraFOV");
+	mCameraFNum = getChild<LLUICtrl>("CameraFNum");
+	mCameraFocal = getChild<LLUICtrl>("CameraFocal");
+	mCameraCoF = getChild<LLUICtrl>("CameraCoF");
+	mCameraFocusTrans = getChild<LLUICtrl>("CameraFocusTrans");
+	mCameraDoFRes = getChild<LLUICtrl>("CameraDoFRes");
+	mRenderSSAOBlurSize = getChild<LLUICtrl>("RenderSSAOBlurSize");
+	mSSAOEffect = getChild<LLUICtrl>("SSAOEffect");
+	mSSAOScale = getChild<LLUICtrl>("SSAOScale");
+	mSSAOMaxScale = getChild<LLUICtrl>("SSAOMaxScale");
+	mSSAOFactor = getChild<LLUICtrl>("SSAOFactor");
+	mRenderRiggedMotionBlurQuality = getChild<LLUICtrl>("RenderRiggedMotionBlurQuality");
+	mMotionBlurQuality = getChild<LLUICtrl>("MotionBlurQuality");
+	mRenderGodrays = getChild<LLUICtrl>("RenderGodrays");
+	mRenderGodraysDirectional = getChild<LLUICtrl>("RenderGodraysDirectional");
+	mRenderGodraysResolution = getChild<LLUICtrl>("GodraysResolution");
+	mRenderGodraysMultiplier = getChild<LLUICtrl>("GodraysMultiplier");
+	mRenderGodraysFalloffMultiplier = getChild<LLUICtrl>("GodraysFalloffMultiplier");
+
+	mDisplayTabs = { { getChild<LLView>("viewer_layout_panel"),
+					getChild<LLView>("lod_layout_panel"),
+					getChild<LLView>("performance_layout_panel"),
+					getChild<LLView>("vertex_layout_panel"),
+					getChild<LLView>("deferred_layout_panel"),
+					getChild<LLView>("dof_layout_panel"),
+					getChild<LLView>("ao_layout_panel"),
+					getChild<LLView>("motionblur_layout_panel"),
+					getChild<LLView>("godrays_layout_panel"),
+					getChild<LLView>("post_layout_panel"),
+					getChild<LLView>("tonemapping_layout_panel"),
+					getChild<LLView>("vignette_layout_panel") } };
 
 //	//BD - Custom Keyboard Layout
 	mBindModeList = this->getChild<LLScrollListCtrl>("scroll_mode", true);
@@ -1493,39 +1543,39 @@ void LLFloaterPreference::onClickSetAnyKey()
 //BD - Expandable Tabs
 void LLFloaterPreference::toggleTabs()
 {
-	getChild<LLLayoutStack>("gfx_stack")->translate(0, -mModifier);
+	mGFXStack->translate(0, -mModifier);
 
 	LLRect rect = getChild<LLPanel>("gfx_scroll_panel")->getRect();
 	mModifier = 0;
 
 	if (gSavedSettings.getBOOL("PrefsViewerVisible"))
-		mModifier += (getChild<LLLayoutPanel>("viewer_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[0]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsLoDVisible"))
-		mModifier += (getChild<LLLayoutPanel>("lod_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[1]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsPerformanceVisible"))
-		mModifier += (getChild<LLLayoutPanel>("performance_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[2]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsVertexVisible"))
-		mModifier += (getChild<LLLayoutPanel>("vertex_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[3]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsDeferredVisible"))
-		mModifier += (getChild<LLLayoutPanel>("deferred_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[4]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsDoFVisible"))
-		mModifier += (getChild<LLLayoutPanel>("dof_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[5]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsAOVisible"))
-		mModifier += (getChild<LLLayoutPanel>("ao_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[6]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsMotionBlurVisible"))
-		mModifier += (getChild<LLLayoutPanel>("motionblur_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[7]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsGodraysVisible"))
-		mModifier += (getChild<LLLayoutPanel>("godrays_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[8]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsPostVisible"))
-		mModifier += (getChild<LLLayoutPanel>("post_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[9]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsToneMappingVisible"))
-		mModifier += (getChild<LLLayoutPanel>("tonemapping_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[10]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsVignetteVisible"))
-		mModifier += (getChild<LLLayoutPanel>("vignette_layout_panel")->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[11]->getRect().getHeight() - 5);
 
 	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (255 + mModifier));
 	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
-	getChild<LLLayoutStack>("gfx_stack")->translate(0, mModifier);
+	mGFXStack->translate(0, mModifier);
 }
 
 //BD - Input/Output resizer
@@ -1543,6 +1593,168 @@ void LLFloaterPreference::inputOutput()
 		{
 			panel->reshape(panel->getRect().getWidth(), panel->getRect().getHeight() - panel2->getRect().getHeight());
 		}
+	}
+}
+
+//BD - Refresh Display Settings
+void LLFloaterPreference::refreshEverything()
+{
+	//BD - Start with global preferences stuff
+	if (mTabContainer->getCurrentPanelIndex() == 1)
+	{
+//		//BD - Warning System
+		refreshWarnings();
+
+		LLRect scroll_rect = mGFXStack->calcScreenRect();
+
+		//BD - Viewer Options
+		//===================
+		LLRect layout_rect = mDisplayTabs[0]->calcScreenRect();
+		if (scroll_rect.overlaps(layout_rect))
+		{
+//			//BD - Memory Allocation
+			//     Since we cannot work out how to get AMD Cards to properly and accurately
+			//     report back its maximum and free memory we'll just use the max, whatever
+			//     that is and only show the actual used memory from SL. Only NVIDIA Cards seem
+			//     to properly and accurately report back their max and free memory.
+			if (gGLManager.mIsNVIDIA)
+			{
+				refreshMemoryControls();
+			}
+		}
+
+		bool deferred_enabled = gPipeline.RenderDeferred;
+		//BD - Deferred Rendering
+		//=======================
+		LLRect deferred_rect = mDisplayTabs[4]->calcScreenRect();
+		if (scroll_rect.overlaps(deferred_rect))
+		{
+			bool shadows_enabled = (gPipeline.RenderShadowDetail > 0 && deferred_enabled);
+			mRenderShadowResolution[0]->setEnabled(shadows_enabled);
+			mRenderShadowResolution[1]->setEnabled(shadows_enabled);
+			mRenderShadowResolution[2]->setEnabled(shadows_enabled);
+			mRenderShadowResolution[3]->setEnabled(shadows_enabled);
+
+			mRenderShadowAutomaticDistance->setEnabled(shadows_enabled);
+
+			bool auto_shadow_distance = (gPipeline.RenderShadowAutomaticDistance && shadows_enabled );
+			mRenderShadowDistance[0]->setEnabled(shadows_enabled);
+			mRenderShadowDistance[1]->setEnabled(!auto_shadow_distance && shadows_enabled);
+			mRenderShadowDistance[2]->setEnabled(!auto_shadow_distance && shadows_enabled);
+			mRenderShadowDistance[3]->setEnabled(!auto_shadow_distance && shadows_enabled);
+
+			bool projectors_enabled = (gPipeline.RenderShadowDetail > 1 && deferred_enabled);
+			mRenderProjectorShadowResolution[0]->setEnabled(projectors_enabled);
+			mRenderProjectorShadowResolution[1]->setEnabled(projectors_enabled);
+
+			mRenderSpotLightReflections->setEnabled(projectors_enabled);
+			mRenderSpotLightImages->setEnabled(projectors_enabled);
+
+			bool soften_enabled = (gPipeline.RenderDeferredBlurLight && deferred_enabled);
+			mRenderShadowBlurSize->setEnabled(soften_enabled);
+
+			bool ssr_enabled = (gSavedSettings.getBOOL("RenderScreenSpaceReflections") && deferred_enabled);
+			mRenderSSRResolution->setEnabled(ssr_enabled);
+			mRenderSSRBrightness->setEnabled(ssr_enabled);
+		}
+
+		//BD - Depth of Field
+		//===================
+		LLRect dof_rect = mDisplayTabs[5]->calcScreenRect();
+		if (scroll_rect.overlaps(dof_rect))
+		{
+			bool dof_enabled = (gPipeline.RenderDepthOfField && deferred_enabled);
+			mRenderDepthOfFieldHighQuality->setEnabled(dof_enabled);
+			mCameraFOV->setEnabled(dof_enabled);
+			mCameraFNum->setEnabled(dof_enabled);
+			mCameraFocal->setEnabled(dof_enabled);
+			mCameraCoF->setEnabled(dof_enabled);
+			mCameraFocusTrans->setEnabled(dof_enabled);
+			mCameraDoFRes->setEnabled(dof_enabled);
+		}
+
+		//BD - Screen Space Ambient Occlusion (SSAO)
+		//==========================================
+		LLRect ssao_rect = mDisplayTabs[6]->calcScreenRect();
+		if (scroll_rect.overlaps(ssao_rect))
+		{
+			bool ssao_enabled = (gPipeline.RenderDeferredSSAO && deferred_enabled);
+			mRenderSSAOBlurSize->setEnabled(ssao_enabled);
+			mSSAOEffect->setEnabled(ssao_enabled);
+			mSSAOScale->setEnabled(ssao_enabled);
+			mSSAOMaxScale->setEnabled(ssao_enabled);
+			mSSAOFactor->setEnabled(ssao_enabled);
+		}
+
+		//BD - Motion Blur
+		//================
+		LLRect blur_rect = mDisplayTabs[7]->calcScreenRect();
+		if (scroll_rect.overlaps(blur_rect))
+		{
+			bool blur_enabled = (gPipeline.RenderMotionBlur && deferred_enabled);
+			mRenderRiggedMotionBlurQuality->setEnabled(blur_enabled);
+			mMotionBlurQuality->setEnabled(blur_enabled);
+		}
+
+		//BD - Volumetric Lighting
+		//========================
+		LLRect volumetric_rect = mDisplayTabs[8]->calcScreenRect();
+		if (scroll_rect.overlaps(volumetric_rect))
+		{
+			bool shadows_enabled = (gPipeline.RenderShadowDetail > 0 && deferred_enabled);
+			bool volumetric_enabled = (gPipeline.RenderGodrays && shadows_enabled);
+			mRenderGodrays->setEnabled(shadows_enabled);
+			mRenderGodraysDirectional->setEnabled(volumetric_enabled);
+			mRenderGodraysResolution->setEnabled(volumetric_enabled);
+			mRenderGodraysMultiplier->setEnabled(volumetric_enabled);
+			mRenderGodraysFalloffMultiplier->setEnabled(volumetric_enabled);
+		}
+
+		//BD - Tone Mapping
+		//=================
+		LLRect tone_rect = mDisplayTabs[10]->calcScreenRect();
+		if (scroll_rect.overlaps(deferred_rect))
+		{
+			//BD - Tone Mapping
+			bool tone_enabled = (exoPostProcess::sExodusRenderToneMapping && deferred_enabled);
+			bool custom_enabled = (mExodusRenderToneMappingTech->getValue().asInteger() == 3 && tone_enabled);
+			mExodusRenderToneMappingTech->setEnabled(deferred_enabled);
+			mExodusRenderToneExposure->setEnabled(tone_enabled);
+			mExodusRenderToneAdvOptA[0]->setEnabled(custom_enabled);
+			mExodusRenderToneAdvOptA[1]->setEnabled(custom_enabled);
+			mExodusRenderToneAdvOptA[2]->setEnabled(custom_enabled);
+
+			mExodusRenderToneAdvOptB[0]->setEnabled(custom_enabled);
+			mExodusRenderToneAdvOptB[1]->setEnabled(custom_enabled);
+			mExodusRenderToneAdvOptB[2]->setEnabled(custom_enabled);
+
+			mExodusRenderToneAdvOptC[0]->setEnabled(custom_enabled);
+			mExodusRenderToneAdvOptC[1]->setEnabled(custom_enabled);
+
+			//BD - Color Correction
+			bool color_enabled = (mExodusRenderColorGradeTech->getValue().asInteger() == 0 && deferred_enabled);
+			mExodusRenderColorGradeTech->setEnabled(deferred_enabled);
+			mExodusRenderGamma[0]->setEnabled(color_enabled);
+			mExodusRenderGamma[1]->setEnabled(color_enabled);
+			mExodusRenderGamma[2]->setEnabled(color_enabled);
+
+			mExodusRenderExposure[0]->setEnabled(color_enabled);
+			mExodusRenderExposure[1]->setEnabled(color_enabled);
+			mExodusRenderExposure[2]->setEnabled(color_enabled);
+
+			mExodusRenderOffset[0]->setEnabled(color_enabled);
+			mExodusRenderOffset[1]->setEnabled(color_enabled);
+			mExodusRenderOffset[2]->setEnabled(color_enabled);
+		}
+	}
+
+	if (mTabContainer->getCurrentPanelIndex() == 9)
+	{
+		BOOL has_first_selected = (getChildRef<LLScrollListCtrl>("disabled_popups").getFirstSelected() != NULL);
+		gSavedSettings.setBOOL("FirstSelectedDisabledPopups", has_first_selected);
+
+		has_first_selected = (getChildRef<LLScrollListCtrl>("enabled_popups").getFirstSelected() != NULL);
+		gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
 	}
 }
 
@@ -1959,34 +2171,8 @@ void LLFloaterPreference::draw()
 	if (mUpdateTimer.getElapsedTimeF32() > 1.f)
 	{
 		mUpdateTimer.reset();
-		if (mTabContainer->getCurrentPanelIndex() == 1)
-		{
-//			//BD - Memory Allocation
-			//     Since we cannot work out how to get AMD Cards to properly and accurately
-			//     report back its maximum and free memory we'll just use the max, whatever
-			//     that is and only show the actual used memory from SL. Only NVIDIA Cards seem
-			//     to properly and accurately report back their max and free memory.
-			if (gGLManager.mIsNVIDIA)
-			{
-				refreshMemoryControls();
-			}
-//			//BD - Warning System
-			refreshWarnings();
-		}
 
-		bool auto_shadow_distance = gPipeline.RenderShadowAutomaticDistance;
-		mRenderShadowDistance[1]->setEnabled(!auto_shadow_distance);
-		mRenderShadowDistance[2]->setEnabled(!auto_shadow_distance);
-		mRenderShadowDistance[3]->setEnabled(!auto_shadow_distance);
-
-		if (mTabContainer->getCurrentPanelIndex() == 9)
-		{
-			BOOL has_first_selected = (getChildRef<LLScrollListCtrl>("disabled_popups").getFirstSelected() != NULL);
-			gSavedSettings.setBOOL("FirstSelectedDisabledPopups", has_first_selected);
-
-			has_first_selected = (getChildRef<LLScrollListCtrl>("enabled_popups").getFirstSelected() != NULL);
-			gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
-		}
+		refreshEverything();
 	}
 
 //	//BD - Avatar Rendering Settings

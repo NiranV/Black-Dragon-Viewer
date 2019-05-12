@@ -233,6 +233,9 @@ public:
 	//BD - Toggle Input/Output Panel.
 	void inputOutput();
 
+//	//BD - Refresh Display Settings
+	void refreshEverything();
+
 //	//BD - Refresh all controls
 	void refreshGraphicControls();
 
@@ -331,10 +334,42 @@ private:
 	//BD
 	LLFrameTimer	mUpdateTimer;
 	LLTabContainer* mTabContainer;
+	LLLayoutStack*	mGFXStack;
 
 	LLButton*		mSaveBtn;
 	LLButton*		mLoadBtn;
 	LLButton*		mDeleteBtn;
+
+	LLUICtrl*	mRenderSpotLightReflections;
+	LLUICtrl*	mRenderSpotLightImages;
+	LLUICtrl*	mRenderShadowAutomaticDistance;
+	LLUICtrl*	mRenderShadowBlurSize;
+	LLUICtrl*	mRenderSSRResolution;
+	LLUICtrl*	mRenderSSRBrightness;
+	LLUICtrl*	mRenderDepthOfFieldHighQuality;
+	LLUICtrl*	mCameraFOV;
+	LLUICtrl*	mCameraFNum;
+	LLUICtrl*	mCameraFocal;
+	LLUICtrl*	mCameraCoF;
+	LLUICtrl*	mCameraFocusTrans;
+	LLUICtrl*	mCameraDoFRes;
+	LLUICtrl*	mRenderSSAOBlurSize;
+	LLUICtrl*	mSSAOEffect;
+	LLUICtrl*	mSSAOScale;
+	LLUICtrl*	mSSAOMaxScale;
+	LLUICtrl*	mSSAOFactor;
+	LLUICtrl*	mRenderRiggedMotionBlurQuality;
+	LLUICtrl*	mMotionBlurQuality;
+	LLUICtrl*	mRenderGodrays;
+	LLUICtrl*	mRenderGodraysDirectional;
+	LLUICtrl*	mRenderGodraysResolution;
+	LLUICtrl*	mRenderGodraysMultiplier;
+	LLUICtrl*	mRenderGodraysFalloffMultiplier;
+	LLUICtrl*	mExodusRenderToneExposure;
+	LLUICtrl*	mExodusRenderColorGradeTech;
+	LLUICtrl*	mExodusRenderToneMappingTech;
+
+	std::array<LLView*, 12> mDisplayTabs;
 
 	std::array<LLUICtrl*, 3> mRenderGlowLumWeights;
 	std::array<LLUICtrl*, 3> mRenderGlowWarmthWeights;

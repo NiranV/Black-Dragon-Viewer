@@ -3395,6 +3395,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  width="515">
          <check_box
    control_name="RenderDeferredLights"
+   enabled_control="RenderDeferred"
    height="16"
    label="Render World Lights"
    tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
@@ -3407,6 +3408,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    width="115" />
 		<check_box
    control_name="RenderOtherAttachedLights"
+   enabled_control="RenderDeferred"
    height="16"
    label="Render Other Attached Lights"
    tool_tip="&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Performance  		
@@ -3419,6 +3421,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    width="115" />
 	  <check_box
    control_name="RenderOwnAttachedLights"
+   enabled_control="RenderDeferred"
    height="16"
    label="Render Own Attached Lights"
    tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
@@ -3431,6 +3434,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    width="115" />
 	  <check_box
    control_name="RenderDeferredEnvironmentMap"
+   enabled_control="RenderDeferred"
    height="16"
    label="Render Environment Map"
    tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
@@ -3443,6 +3447,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    width="115" />
    <check_box
    control_name="RenderHighPrecisionNormals"
+   enabled_control="RenderDeferred"
    height="16"
    label="Render High Precision Normals"
    tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
@@ -3492,6 +3497,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  </text>
  <radio_group
                   control_name="RenderFSAASamples"
+                  enabled_control="RenderDeferred"
                   height="19"
                   layout="topleft"
                   left="10"
@@ -3577,6 +3583,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  </text>
  <radio_group
                   control_name="RenderShadowDetail"
+                  enabled_control="RenderDeferred"
                   height="19"
                   layout="topleft"
                   left="10"
@@ -3657,7 +3664,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    width="115" />
  <slider
       invisibility_control="RenderShadowAutomaticDistance"
-      enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
       height="14"
@@ -3681,7 +3687,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </slider>
  <slider
       visibility_control="RenderShadowAutomaticDistance"
-      enabled_control="RenderDeferred"
       control_name="RenderShadowFarClip"
       decimal_digits="0"
       follows="left|top"
@@ -4075,6 +4080,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   top_pad="0"/>
  <check_box
      control_name="RenderDeferredBlurLight"
+     enabled_control="RenderDeferred"
      height="16"
      initial_value="true"
      label="Light Softening"
@@ -4121,6 +4127,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
  <slider
       control_name="RenderGlobalLightStrength"
+      enabled_control="RenderDeferred"
       decimal_digits="2"
       follows="left|top"
       height="14"
@@ -4178,6 +4185,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   top_pad="0"/>
  <check_box
      control_name="RenderScreenSpaceReflections"
+     enabled_control="RenderDeferred"
      height="16"
      initial_value="true"
      label="Render Screen Space Reflections"
@@ -4191,7 +4199,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
      width="115" />
       <slider
       control_name="RenderSSRResolution"
-      enabled_control="RenderScreenSpaceReflections"
       decimal_digits="0"
       can_edit_text="true"
       follows="left|top"
@@ -4228,7 +4235,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
 		<slider
       control_name="RenderSSRBrightness"
-      enabled_control="RenderScreenSpaceReflections"
       decimal_digits="1"
       can_edit_text="true"
       follows="left|top"
@@ -4291,6 +4297,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    </button>
  <check_box
    control_name="RenderDeferredSSAO"
+   enabled_control="RenderDeferred"
    height="16"
    initial_value="true"
    label="Screen Space Ambient Occlusion (SSAO)"
@@ -4316,7 +4323,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  width="515">
      <slider
       control_name="RenderSSAOBlurSize"
-      enabled_control="RenderDeferredSSAO"
       decimal_digits="3"
       follows="left|top"
       height="14"
@@ -4350,7 +4356,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
      <slider
       decimal_digits="2"
-      enabled_control="RenderDeferredSSAO"
       control_name="RenderSSAOEffect"
       can_edit_text="true"
       follows="left|top"
@@ -4385,7 +4390,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider
       control_name="RenderSSAOScale"
-      enabled_control="RenderDeferredSSAO"
       decimal_digits="0"
       can_edit_text="true"
       follows="left|top"
@@ -4420,7 +4424,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider
       control_name="RenderSSAOMaxScale"
-      enabled_control="RenderDeferredSSAO"
       decimal_digits="0"
       follows="left|top"
       can_edit_text="true"
@@ -4455,7 +4458,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider
       control_name="RenderSSAOFactor"
-      enabled_control="RenderDeferredSSAO"
       decimal_digits="3"
       can_edit_text="true"
       follows="left|top"
@@ -4520,6 +4522,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    </button>
  <check_box
      control_name="RenderDepthOfField"
+     enabled_control="RenderDeferred"
      height="16"
      initial_value="true"
      label="Depth of Field"
@@ -4542,7 +4545,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  width="515">
  <check_box
    control_name="RenderDepthOfFieldAlphas"
-   enabled_control="RenderDepthOfField"
+   enabled_control="RenderDeferred"
    height="16"
    initial_value="true"
    label="Enable Alphas in Depth of Field calculations"
@@ -4554,7 +4557,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    width="115"/>
  <check_box
    control_name="RenderDepthOfFieldHighQuality"
-   enabled_control="RenderDepthOfField"
    height="16"
    initial_value="false"
    label="Enable High Quality Depth of Field"
@@ -4568,7 +4570,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    width="115"/>
      <slider
       control_name="CameraFieldOfView"
-      enabled_control="RenderDepthOfField"
       can_edit_text="true"
       decimal_digits="0"
       follows="left|top"
@@ -4603,7 +4604,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider
       control_name="CameraFNumber"
-      enabled_control="RenderDepthOfField"
       can_edit_text="true"
       decimal_digits="1"
       follows="left|top"
@@ -4638,7 +4638,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider
       control_name="CameraFocalLength"
-      enabled_control="RenderDepthOfField"
       can_edit_text="true"
       decimal_digits="0"
       follows="left|top"
@@ -4673,7 +4672,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider
       control_name="CameraMaxCoF"
-      enabled_control="RenderDepthOfField"
       can_edit_text="true"
       decimal_digits="1"
       follows="left|top"
@@ -4707,7 +4705,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                                  function="Pref.Default"/>
       </button>
       <slider
-      enabled_control="RenderDepthOfField"
       control_name="CameraFocusTransitionTime"
       can_edit_text="true"
       decimal_digits="2"
@@ -4743,7 +4740,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider
       control_name="CameraDoFResScale"
-      enabled_control="RenderDepthOfField"
       can_edit_text="true"
       decimal_digits="2"
       follows="left|top"
@@ -4808,6 +4804,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    </button>
    <check_box
    control_name="RenderMotionBlur"
+   enabled_control="RenderDeferred"
    height="16"
    initial_value="false"
    label="Motion Blur"
@@ -4848,6 +4845,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  type="string"
  length="1"
  follows="left|top"
+ enabled_control="RenderMotionBlur"
  height="12"
  layout="topleft"
  left="10"
@@ -4951,7 +4949,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    <slider
       can_edit_text="true"
       control_name="RenderMotionBlurStrength"
-      enabled_control="RenderMotionBlur"
       decimal_digits="0"
       follows="left|top"
       height="14"
@@ -5063,7 +5060,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    <slider
       can_edit_text="true"
       control_name="RenderGodraysResolution"
-      enabled_control="RenderGodrays"
       decimal_digits="0"
       follows="left|top"
       height="14"
@@ -5100,7 +5096,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    <slider
       can_edit_text="true"
       control_name="RenderGodraysMultiplier"
-      enabled_control="RenderGodrays"
       decimal_digits="2"
       follows="left|top"
       height="14"
@@ -5135,7 +5130,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    <slider
       can_edit_text="true"
       control_name="RenderGodraysFalloffMultiplier"
-      enabled_control="RenderGodrays"
       decimal_digits="1"
       follows="left|top"
       height="14"
@@ -5216,6 +5210,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  width="515">
    <check_box
    control_name="RenderLensFlare"
+   enabled_control="RenderDeferred"
    height="16"
    initial_value="true"
    label="Lens Flare Effect"
@@ -5397,6 +5392,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    </button>
    <check_box
    control_name="ExodusRenderToneMapping"
+   enabled_control="RenderDeferred"
    height="16"
    initial_value="false"
    label="Tone Mapping"
@@ -5425,7 +5421,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       follows="left|top"
       height="12"
       layout="topleft"
-      enabled_control="ExodusRenderToneMapping"
       left="10"
       name="tone_style_label"
       top_pad="10"
@@ -5539,7 +5534,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <slider
       can_edit_text="true"
       control_name="ExodusRenderToneExposure"
-      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="14"
@@ -5573,7 +5567,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider
       can_edit_text="true"
-      enabled_control="ExodusRenderToneMapping"
       decimal_digits="3"
       follows="left|top"
       height="14"
@@ -5595,7 +5588,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </slider>
       <slider
       can_edit_text="true"
-      enabled_control="ExodusRenderToneMapping"
       decimal_digits="3"
       follows="left|top"
       height="14"
@@ -5617,7 +5609,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </slider>
       <slider
       can_edit_text="true"
-      enabled_control="ExodusRenderToneMapping"
       decimal_digits="3"
       follows="left|top"
       height="14"
@@ -5655,7 +5646,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider
       can_edit_text="true"
-      enabled_control="ExodusRenderToneMapping"
       decimal_digits="3"
       follows="left|top"
       height="14"
@@ -5677,7 +5667,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </slider>
       <slider
       can_edit_text="true"
-      enabled_control="ExodusRenderToneMapping"
       decimal_digits="3"
       follows="left|top"
       height="14"
@@ -5699,7 +5688,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </slider>
       <slider
       can_edit_text="true"
-      enabled_control="ExodusRenderToneMapping"
       decimal_digits="3"
       follows="left|top"
       height="14"
@@ -5753,7 +5741,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    </button>
       <slider
       can_edit_text="true"
-      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="14"
@@ -5775,7 +5762,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </slider>
       <slider
       can_edit_text="true"
-      enabled_control="ExodusRenderToneMapping"
       decimal_digits="2"
       follows="left|top"
       height="14"
