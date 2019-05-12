@@ -138,6 +138,10 @@ public:
 	void setWaterHeight(F32 water_level);
 	F32 getWaterHeight() const;
 
+	//BD - Change Water Height
+	void setWaterHeightLocal(F32 water_level);
+	F32 getOriginalWaterHeight() const;
+
 	BOOL isVoiceEnabled() const;
 
 	void setBillableFactor(F32 billable_factor) { mBillableFactor = billable_factor; }
@@ -522,6 +526,9 @@ private:
 	BOOL    mReleaseNotesRequested;
 	BOOL    mDead;  //if true, this region is in the process of deleting.
 	BOOL    mPaused; //pause processing the objects in the region
+
+	//BD - Change Water Height
+	F32		mOriginalWaterHeight;
 
 	typedef std::map<U32, std::vector<U32> > orphan_list_t;
 	orphan_list_t mOrphanMap;

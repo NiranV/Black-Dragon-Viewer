@@ -741,12 +741,26 @@ void LLViewerRegion::sendReliableMessage()
 void LLViewerRegion::setWaterHeight(F32 water_level)
 {
 	mImpl->mLandp->setWaterHeight(water_level);
+	//BD - Change Water Height
+	mOriginalWaterHeight = water_level;
 }
 
 F32 LLViewerRegion::getWaterHeight() const
 {
 	return mImpl->mLandp->getWaterHeight();
 }
+
+//BD - Change Water Height
+void LLViewerRegion::setWaterHeightLocal(F32 water_level)
+{
+	mImpl->mLandp->setWaterHeight(water_level);
+}
+
+F32 LLViewerRegion::getOriginalWaterHeight() const
+{
+	return mOriginalWaterHeight;
+}
+
 
 BOOL LLViewerRegion::isVoiceEnabled() const
 {

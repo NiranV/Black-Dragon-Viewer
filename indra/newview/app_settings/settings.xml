@@ -17703,6 +17703,17 @@
 	<key>Value</key>
 	<integer>1</integer>
   </map>
+  <key>RenderWaterHeightFudge</key>
+  <map>
+      <key>Comment</key>
+      <string>Test</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>0.0</real>
+  </map>
     
   <!-- Remappable Keys -->
   <key>JoystickButtonFlycam</key>

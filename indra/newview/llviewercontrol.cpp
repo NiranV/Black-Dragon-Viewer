@@ -79,7 +79,8 @@
 // [/RLVa:KB]
 
 //BD - Includes we need for special features
-#include "llappviewer.h"
+#include "llvoavatar.h"
+#include "llviewerregion.h"
 #include "lldrawpoolwlsky.h"
 #include "llenvmanager.h"
 #include "llfloatersnapshot.h"
@@ -727,6 +728,13 @@ static bool handleHeadConstrainsChanged(const LLSD& newvalue)
 	return true;
 }
 
+//BD - Water Height
+static bool handleWaterHeightChanged(const LLSD& newvalue)
+{
+	gAgent.getRegion()->setWaterHeightLocal(newvalue.asReal());
+	return true;
+}
+
 //BD - Cinematic Camera
 static bool handleCinematicCamera(const LLSD& newvalue)
 {
@@ -1117,6 +1125,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderEnableFullbright")->getSignal()->connect(boost::bind(&handleFullbrightChanged, _2));
 	gSavedSettings.getControl("RenderEnableAlpha")->getSignal()->connect(boost::bind(&handleAlphaChanged, _2));
 	gSavedSettings.getControl("RenderGodraysDirectional")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
+	gSavedSettings.getControl("RenderWaterHeightFudge")->getSignal()->connect(boost::bind(&handleWaterHeightChanged, _2));
 
 	//BD - Camera
 	gSavedSettings.getControl("InvertMouseThirdPerson")->getSignal()->connect(boost::bind(&handleInvertMouse, _2));

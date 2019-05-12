@@ -106,6 +106,8 @@ void LLFloaterEditWater::onOpen(const LLSD& key)
 	mWaterPresetNameEditor->setVisible(new_preset);
 	//BD
 	getChild<LLUICtrl>("water_preset_icon")->setVisible(new_preset);
+	//BD - Change Water Height
+	getChild<LLUICtrl>("RenderWaterHeightFudge")->setValue(gAgent.getRegion()->getWaterHeight());
 
 	//BD - Refresh all presets.
 	refreshPresets();
@@ -171,6 +173,9 @@ void LLFloaterEditWater::initCallbacks(void)
 	getChild<LLUICtrl>("WaterWave1DirY")->setCommitCallback(boost::bind(&LLFloaterEditWater::onVector2ControlYMoved, this, _1, &water_mgr.mWave1Dir));
 	getChild<LLUICtrl>("WaterWave2DirX")->setCommitCallback(boost::bind(&LLFloaterEditWater::onVector2ControlXMoved, this, _1, &water_mgr.mWave2Dir));
 	getChild<LLUICtrl>("WaterWave2DirY")->setCommitCallback(boost::bind(&LLFloaterEditWater::onVector2ControlYMoved, this, _1, &water_mgr.mWave2Dir));
+
+	//BD - Change Water Height
+	getChild<LLUICtrl>("DefaultWaterHeight")->setCommitCallback(boost::bind(&LLFloaterEditWater::onDefaultWaterHeight, this));
 
 	LLTextureCtrl* texture_ctrl = getChild<LLTextureCtrl>("WaterNormalMap");
 	texture_ctrl->setDefaultImageAssetID(DEFAULT_WATER_NORMAL);
@@ -811,6 +816,14 @@ void LLFloaterEditWater::onRegionInfoUpdate()
 	}
 
 	enableEditing(can_edit);
+}
+
+//BD - Change Water Height
+void LLFloaterEditWater::onDefaultWaterHeight()
+{
+	F32 water_height = gAgent.getRegion()->getOriginalWaterHeight();
+	getChild<LLUICtrl>("RenderWaterHeightFudge")->setValue(water_height);
+	gAgent.getRegion()->setWaterHeightLocal(water_height);
 }
 
 //BD

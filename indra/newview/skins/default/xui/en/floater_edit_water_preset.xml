@@ -296,6 +296,43 @@
       top_pad="3"
       width="189"/>
      
+     <text
+      follows="left|top|right"
+      font="SansSerif"
+      height="16"
+      layout="topleft"
+      left_delta="0"
+      name="MaxAltText"
+      top="131"
+      width="215">
+         Water Height
+     </text>
+     <slider
+      control_name="RenderWaterHeightFudge"
+      follows="left|top"
+      can_edit_text="true"
+      height="16"
+      increment="0.01"
+      initial_value="0"
+      layout="topleft"
+      left_delta="0"
+      max_val="256.0"
+      name="RenderWaterHeightFudge"
+      top_pad="1"
+      width="201"/>
+     <button
+ follows="left|top"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="Transparent"
+ image_unselected="Transparent"
+ layout="topleft"
+ left_pad="-55"
+ top_delta="-17"
+ name="DefaultWaterHeight"
+ width="60"/>
+     
 	</panel>
        <panel
        border="false"

@@ -112,6 +112,9 @@ private:
 	void onRegionSettingsChange();
 	void onRegionInfoUpdate();
 
+	//BD - Change Water Height
+	void onDefaultWaterHeight();
+
 	LLLineEditor*	mWaterPresetNameEditor;
 	LLComboBox*		mWaterPresetCombo;
 	//BD
