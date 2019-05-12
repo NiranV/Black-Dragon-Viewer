@@ -104,15 +104,15 @@
        label="-Select a preset-"
        name="item0"/>
       <combo_box.combo_button
-            image_unselected="Toolbar_Middle_Off"
-            image_selected="Toolbar_Middle_Selected"
-            image_disabled="Toolbar_Middle_Off" />
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
-            image_unselected="Toolbar_Middle_Off"
-            image_selected="Toolbar_Middle_Selected"
-            image_pressed="Toolbar_Middle_Selected" 
-            image_pressed_selected="Toolbar_Middle_Selected"
-            image_disabled="Toolbar_Middle_Off" />
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
         </combo_box>
   <combo_box
    follows="top|left"
@@ -128,15 +128,15 @@
        label="-Select a preset-"
        name="item0"/>
       <combo_box.combo_button
-            image_unselected="Toolbar_Middle_Off"
-            image_selected="Toolbar_Middle_Selected"
-            image_disabled="Toolbar_Middle_Off" />
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
-            image_unselected="Toolbar_Middle_Off"
-            image_selected="Toolbar_Middle_Selected"
-            image_pressed="Toolbar_Middle_Selected" 
-            image_pressed_selected="Toolbar_Middle_Selected"
-            image_disabled="Toolbar_Middle_Off" />
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
         </combo_box>
   
   <icon
@@ -167,15 +167,15 @@
        label="-Select a preset-"
        name="item0"/>
       <combo_box.combo_button
-            image_unselected="Toolbar_Middle_Off"
-            image_selected="Toolbar_Middle_Selected"
-            image_disabled="Toolbar_Middle_Off" />
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
-            image_unselected="Toolbar_Middle_Off"
-            image_selected="Toolbar_Middle_Selected"
-            image_pressed="Toolbar_Middle_Selected" 
-            image_pressed_selected="Toolbar_Middle_Selected"
-            image_disabled="Toolbar_Middle_Off" />
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
         </combo_box>
   </panel>
  <button
