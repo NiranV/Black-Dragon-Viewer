@@ -465,7 +465,6 @@ set(viewer_SOURCE_FILES
     llpanelgrouproles.cpp
     llpanelhome.cpp
     llpanelland.cpp
-    llpanellandaudio.cpp
     llpanellandmarkinfo.cpp
     llpanellandmarks.cpp
     llpanellandmedia.cpp
@@ -1104,7 +1103,6 @@ set(viewer_HEADER_FILES
     llpanelgrouproles.h
     llpanelhome.h
     llpanelland.h
-    llpanellandaudio.h
     llpanellandmarkinfo.h
     llpanellandmarks.h
     llpanellandmedia.h

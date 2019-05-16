@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
-  border="true"
+  border="false"
   follows="all"
   height="320"
+  bg_alpha_image="Panel_Background"
+         background_visible="true"
   help_topic="panel_region_experience_tab"
   label="Experiences"
   name="Experiences"
@@ -47,22 +49,13 @@ Blocked Experiences may not run on this parcel.
    <panel.string
       name="parcel_caption">
    </panel.string>
-   <text
-      type="string"
-      length="1"
-      follows="left|top"
-      height="32"
-      layout="topleft"
-      left="10"
-      name="experiences_help_text"
-      top="14"
-      word_wrap="true"/>
   <layout_stack
-    left="5"
+    left="0"
     layout="topleft"
-    follows="all"
+    follows="top|left|right"
+    top="6"
     right="-5"
-    height="260"
+    height="330"
     orientation="vertical">
     <layout_panel
        follows="all"
@@ -80,11 +73,11 @@ Blocked Experiences may not run on this parcel.
         layout="topleft"
         name="trusted_text_help"
         length="1"
-        top="5"
+        top="0"
         left_pad="5"
-        width="200"
-        height="200"
-        follows="top|right"
+        width="194"
+        height="205"
+        follows="top|left"
         word_wrap="true">
       </text>
     </layout_panel>
@@ -102,10 +95,10 @@ Blocked Experiences may not run on this parcel.
         layout="topleft"
         name="allowed_text_help"
         length="1"
-        top="5"
+        top="0"
         left_pad="5"
-        width="200"
-        height="200"
+        width="194"
+        height="205"
         follows="top|right"
         word_wrap="true">
       </text>
@@ -124,13 +117,24 @@ Blocked Experiences may not run on this parcel.
         layout="topleft"
         name="blocked_text_help"
         length="1"
-        top="5"
+        top="0"
         left_pad="5"
-        width="200"
-        height="200"
+        width="194"
+        height="205"
         follows="top|right"
         word_wrap="true">
       </text>
     </layout_panel>
   </layout_stack>
+  <text
+      type="string"
+      length="1"
+      follows="left|top"
+      height="33"
+      layout="topleft"
+      width="477"
+      left="5"
+      name="experiences_help_text"
+      top_pad="4"
+      word_wrap="true"/>
 </panel>

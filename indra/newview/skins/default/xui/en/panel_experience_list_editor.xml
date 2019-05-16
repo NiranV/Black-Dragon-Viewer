@@ -5,9 +5,8 @@
   top="0"
   width="300"
   height="100"
-  min_height="100"
   follows="all"
-  border="true"
+  border="false"
   name="experince_list_editor">
   <panel.string
     name="loading">
@@ -32,7 +31,7 @@
    <text
       layout="topleft"
       name="text_name"
-      left="3"
+      left="5"
       right="120"
       height="12"
       follows="left|top">
@@ -49,9 +48,9 @@
    </text>
   <name_list
     draw_heading="false"
-    left="3"
-    width="225"
-    height="75"
+    left="5"
+    width="295"
+    height="49"
     follows="all"
     name="experience_list">
     <name_list.columns
@@ -62,22 +61,35 @@
   </name_list>
   <button
     layout="topleft"
-    follows="top|right"
-    top_pad="-77" 
-    left_pad="3"
-    width="65"
+    follows="bottom|left|right"
+    image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+    top_pad="1" 
+    left_delta="0"
+    width="98"
     name="btn_add"
     label="Add..."/>
   <button
     layout="topleft"
-    follows="top|right"
-    width="64"
+    follows="bottom|right"
+    image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+    width="97"
+    top_delta="0"
+    left_pad="1"
     name="btn_remove"
     label="Remove"/>
   <button
     layout="topleft"
-    follows="top|right"
-    width="64"
+    follows="bottom|right"
+    image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+    width="97"
+    top_delta="0"
+    left_pad="1"
     name="btn_profile"
     label="Profile..."/>
 </panel>

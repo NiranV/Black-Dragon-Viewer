@@ -56,7 +56,6 @@
      name="landtab"
      tab_position="top"
      tab_height="21"
-     tab_min_width="10"
      top="0"
      width="489">
         <panel
@@ -360,7 +359,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              top_pad="7"
              name="For Sale:"
              width="100">
@@ -475,7 +474,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="Claimed:"
              top_pad="7"
              width="100">
@@ -499,7 +498,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="PriceLabel"
              top_pad="4"
              width="100">
@@ -523,7 +522,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="Traffic:"
              top_pad="4"
              width="100">
@@ -637,7 +636,9 @@
             
         </panel>
         <panel
-         border="true"
+         border="false"
+         bg_alpha_image="Panel_Background"
+         background_visible="true"
          follows="all"
          label="Covenant"
          layout="topleft"
@@ -671,7 +672,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              mouse_opaque="false"
              name="estate_section_lbl"
              top="10"
@@ -684,7 +685,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left_pad="0"
+             left_pad="2"
              mouse_opaque="false"
              name="estate_name_text"
              top_delta="0"
@@ -697,7 +698,8 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             top_pad="4"
+             left="5"
              mouse_opaque="false"
              name="estate_owner_lbl"
              width="100">
@@ -709,7 +711,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left_pad="0"
+             left_pad="2"
              mouse_opaque="false"
              name="estate_owner_text"
              width="300">
@@ -720,12 +722,12 @@
              length="1"
              enabled="false"
              follows="all"
-             height="200"
+             height="215"
              layout="topleft"
-             left="10"
+             left="5"
              max_length="65535"
              name="covenant_editor"
-             width="470"
+             width="480"
              word_wrap="true">
                 There is no Covenant provided for this Estate.
             </text_editor>
@@ -736,8 +738,8 @@
              height="16"
              halign="right"
              layout="topleft"
-             right="-10"
-             top_pad="0"
+             right="-5"
+             top_pad="-20"
              mouse_opaque="false"
              name="covenant_timestamp_text"
              width="460">
@@ -749,7 +751,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              mouse_opaque="false"
              name="region_section_lbl"
              width="100">
@@ -761,7 +763,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left_pad="10"
+             left_pad="2"
              mouse_opaque="false"
              name="region_name_text"
              width="150">
@@ -773,7 +775,8 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
+             top_pad="4"
              mouse_opaque="false"
              name="region_landtype_lbl"
              width="100">
@@ -785,7 +788,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left_pad="10"
+             left_pad="2"
              mouse_opaque="false"
              name="region_landtype_text"
              width="150">
@@ -797,7 +800,8 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
+             top_pad="4"
              mouse_opaque="false"
              name="region_maturity_lbl"
              width="100">
@@ -809,8 +813,8 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left_pad="10"
-             top_delta="-1" 
+             left_pad="2"
+             top_delta="-2" 
              mouse_opaque="false"
              name="region_maturity_text"
              valign="center" 
@@ -823,10 +827,10 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              mouse_opaque="false"
              name="resellable_lbl"
-             top_pad="9" 
+             top_pad="6" 
              width="100">
                 Resale:
             </text>
@@ -836,20 +840,22 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left_pad="10"
+             left_pad="2"
+             top_delta="0"
              mouse_opaque="false"
              name="resellable_clause"
              word_wrap="true"
-             width="360">
+             width="375">
                 Land in this region may not be resold.
             </text>
             <text
              type="string"
              length="1"
              follows="left|top"
-             height="30"
+             height="16"
              layout="topleft"
-             left="10"
+             left="5"
+             top_pad="4"
              mouse_opaque="false"
              name="changeable_lbl"
              width="100">
@@ -859,18 +865,21 @@
              type="string"
              length="1"
              follows="left|top"
-             height="30"
+             height="16"
              layout="topleft"
-             left_pad="10"
+             left_pad="2"
+             top_delta="0"
              mouse_opaque="false"
              name="changeable_clause"
              word_wrap="true"
-             width="330">
+             width="375">
                 Land in this region may not be joined/subdivided.
             </text>
         </panel>
         <panel
-         border="true"
+         border="false"
+         bg_alpha_image="Panel_Background"
+         background_visible="true"
          follows="all"
          label="Objects"
          layout="topleft"
@@ -892,23 +901,10 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
-             name="parcel_object_bonus"
-             top="4"
-             visible="false"
-             width="364">
-                Region Object Bonus Factor: [BONUS]
-            </text>
-            <text
-             type="string"
-             length="1"
-             follows="left|top"
-             height="16"
-             layout="topleft"
-             left_delta="0"
+             left="5"
              name="Simulator primitive usage:"
-             top_pad="4"
-             width="364">
+             top="10"
+             width="100">
                Region capacity:
             </text>
             <text
@@ -917,7 +913,7 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left_delta="190"
+             left_pad="2"
              name="objects_available"
              top_delta="0"
              width="260">
@@ -929,9 +925,22 @@
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left_delta="0"
+             name="parcel_object_bonus"
+             top_pad="0"
+             visible="true"
+             width="364">
+                Region Object Bonus Factor: [BONUS]
+            </text>
+            <text
+             type="string"
+             length="1"
+             follows="left|top"
+             height="16"
+             layout="topleft"
+             left="5"
              name="Primitives parcel supports:"
-             top="44"
+             top_pad="4"
              width="152">
                 Parcel land capacity:
             </text>
@@ -947,15 +956,24 @@
              width="212">
                 [COUNT]
             </text>
+            <view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="5"
+			width="478"/>
             <text
              type="string"
              length="1"
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="Primitives on parcel:"
-             top="64"
+             top_pad="7"
              width="152">
                 Parcel land impact:
             </text>
@@ -975,11 +993,11 @@
              type="string"
              length="1"
              follows="left|top"
-             height="23"
+             height="16"
              layout="topleft"
-             left="28"
+             left="23"
              name="Owned by parcel owner:"
-             top="84"
+             top_pad="4"
              width="176">
                 Owned by parcel owner:
             </text>
@@ -999,20 +1017,26 @@
              bottom="100"
              enabled="false"
              follows="left|top"
-             height="23"
+             height="20"
              label="Show"
              label_selected="Show"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
              name="ShowOwner"
              right="-140"
              width="60"
-             top_delta="-6"/>
+             top_delta="-2"/>
             <button
              bottom="100"
              enabled="false"
              follows="left|top"
-             height="23"
+             height="20"
              label="Return"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
              name="ReturnOwner..."
              right="-10"
@@ -1025,9 +1049,9 @@
              follows="left|top"
              height="23"
              layout="topleft"
-             left="28"
+             left="23"
              name="Set to group:"
-             top_pad="5"
+             top_pad="1"
              width="176">
                 Set to group:
             </text>
@@ -1035,7 +1059,7 @@
              type="string"
              length="1"
              follows="left|top"
-             height="23"
+             height="21"
              layout="topleft"
              left_delta="172"
              name="group_objects_text"
@@ -1048,19 +1072,25 @@
              enabled="false"
              follows="left|top"
              label="Show"
-             height="23"
+             height="20"
              label_selected="Show"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
              name="ShowGroup"
              right="-140"
              width="60"
-             top_delta="-6"/>
+             top_delta="-2"/>
             <button
              bottom="120"
              enabled="false"
              follows="left|top"
-             height="23"
+             height="20"
              label="Return"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
              name="ReturnGroup..."
              right="-10"
@@ -1073,9 +1103,9 @@
              follows="left|top"
              height="23"
              layout="topleft"
-             left="28"
+             left="23"
              name="Owned by others:"
-             top_pad="5"
+             top_pad="1"
              width="176">
                 Owned by others:
             </text>
@@ -1095,20 +1125,26 @@
              bottom="140"
              enabled="false"
              follows="left|top"
-             height="23"
+             height="21"
              label="Show"
              label_selected="Show"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
              name="ShowOther"
              right="-140"
              width="60"
-             top_delta="-6"/>
+             top_delta="-2"/>
             <button
              bottom="140"
              enabled="false"
              follows="left|top"
-             height="23"
+             height="21"
              label="Return"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
              name="ReturnOther..."
              right="-10"
@@ -1119,21 +1155,21 @@
              type="string"
              length="1"
              follows="left|top"
-             height="23"
+             height="16"
              layout="topleft"
-             left="28"
+             left="23"
              name="Selected / sat upon:"
-             top_pad="5"
-             width="230">
+             top_pad="1"
+             width="176">
                 Selected / sat upon:
             </text>
             <text
              type="string"
              length="1"
              follows="left|top"
-             height="23"
+             height="16"
              layout="topleft"
-             left_delta="220"
+             left_delta="172"
              name="selected_objects_text"
              top_delta="0"
              width="48">
@@ -1145,9 +1181,9 @@
              follows="left|top"
              height="23"
              layout="topleft"
-             left="10"
+             left="5"
              name="Autoreturn"
-             top_pad="0"
+             top_pad="4"
              width="412"
              word_wrap="true">
                 Auto return other Residents&apos; objects (minutes, 0 for off):
@@ -1156,58 +1192,74 @@
              border_style="line"
              border_thickness="1"
              bottom="180"
-             follows="left|top"
-             height="23"
+             follows="right|top"
+             height="21"
              layout="topleft"
              max_length_bytes="6"
              name="clean other time"
-             left_pad="0"
+             right="-4"
              width="46"
-             top_delta="-2"/>
+             top_delta="-3"/>
+            <view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="2"
+			width="478"/>
             <text
              type="string"
              length="1"
              follows="left|top"
              height="23"
              layout="topleft"
-             left="10"
+             left="5"
              name="Object Owners:"
-             top_pad="10"
+             top_pad="7"
              width="104">
                 Object Owners:
             </text>
              <button
      follows="top|right"
-     height="23"
+     height="21"
      image_overlay="Refresh_Off"
      layout="topleft"
      name="Refresh List"
+     image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
      left_pad="5"
-     right="-183"
+     right="-169"
      tool_tip="Refresh Object List"
-     width="20"
-  top_delta="-6"/>
+     width="25"
+  top_delta="-4"/>
             <button
              enabled="false"
-             follows="left|top"
-             height="23"
+             follows="right|top"
+             height="21"
              label="Return Objects"
              layout="topleft"
-             left_pad="6"
+             left_pad="1"
              name="Return objects..."
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              top_delta="0"
-             right="-10"
+             right="-4"
              width="164" />
             <name_list
              column_padding="0"
              draw_heading="true"
              follows="all"
-             height="180"
+             height="187"
+             top_pad="-1"
              layout="topleft"
-             left="10"
+             left="4"
              name="owner list"
              name_column="name"
-             width="470">
+             width="482">
                 <name_list.columns
                  label="Type"
                  name="type"
@@ -1231,7 +1283,9 @@
             </name_list>
         </panel>
         <panel
-         border="true"
+         border="false"
+         bg_alpha_image="Panel_Background"
+         background_visible="true"
          follows="all"
          label="Options"
          layout="topleft"
@@ -1284,10 +1338,9 @@ Only large parcels can be listed in search.
              type="string"
              length="1"
              follows="left|top"
-             text_color="White"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="allow_label"
              top="10"
              width="278">
@@ -1299,9 +1352,10 @@ Only large parcels can be listed in search.
            follows="left|top"
            height="16"
            layout="topleft"
-           left="20"
+           top_pad="4"
+           left="23"
            name="allow_label0"
-           width="150">
+           width="170">
             Fly:
           </text>
 
@@ -1319,9 +1373,10 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="16"
              layout="topleft"
-             left="20"
+             left="23"
+             top_pad="4"
              name="allow_label2"
-             width="150">
+             width="170">
                 Build:
             </text>
             <check_box
@@ -1344,9 +1399,10 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="16"
              layout="topleft"
-             left="20"
+             left="23"
+             top_pad="4"
              name="allow_label3"
-             width="150">
+             width="170">
                 Object Entry:
             </text>
             <check_box
@@ -1371,9 +1427,10 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="16"
              layout="topleft"
-             left="20"
+             left="23"
+             top_pad="4"
              name="allow_label4"
-             width="150">
+             width="170">
                 Run Scripts:
             </text>
             <check_box
@@ -1392,50 +1449,130 @@ Only large parcels can be listed in search.
              name="check group scripts"
              top_delta="0"
              width="70" />
-          <panel
-            bevel_style="none"
-            border="true"
-            top="146"
-            bottom="146"
-            follows="left|bottom|right"
-            left="20"
-            right="-20"/>
+            <view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="5"
+			width="478"/>
           <check_box
              height="16"
              label="Safe (no damage)"
              layout="topleft"
-             left="18"
+             left="5"
              name="check safe"
              tool_tip="If checked, sets the land to Safe, disabling damage combat. If cleared, damage combat is enabled."
-             top="130"
-             width="200" />
+             top_pad="6"
+             width="188" />
             <check_box
              height="16"
              label="No Pushing"
              layout="topleft"
-             left_pad="35"
+             left_pad="2"
              name="PushRestrictCheck"
              tool_tip="Prevents scripts from pushing. Checking this option may be useful for preventing disruptive behavior on your land."
-             top="130"
+             top_delta="0"
              width="119" />
             <check_box
              height="16"
              label="Show Place in Search (L$30/week)"
              layout="topleft"
-             left="18"
+             left="5"
              name="ShowDirectoryCheck"
              tool_tip="Let people see this parcel in search results"
-             top="150"
+             top_pad="4"
              width="430" />
+            <check_box
+             height="16"
+             follows="top"
+             layout="topleft"
+             left="5"
+             label="Avatars on other parcels can see and chat with avatars on this parcel"
+             top_pad="4"
+             name="SeeAvatarsCheck"
+             tool_tip="Allows avatars on other parcels to see and chat with avatars on this parcel, and you to see and chat with them."
+             width="10" />
+            <check_box
+             height="16"
+             label="Moderate Content"
+             layout="topleft"
+             left="5"
+             name="MatureCheck"
+             top_pad="4"
+             label_text.valign="center" 
+             label_text.v_pad="-2" 
+             tool_tip=" "
+             width="200" />
+            <view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="7"
+			width="478"/>
+            
+            <text
+             type="string"
+             length="1"
+             follows="left|top"
+             height="16"
+             layout="topleft"
+             left="5"
+             name="Snapshot:"
+             text_color="White"
+             top_pad="7"
+             width="200">
+                Snapshot:
+            </text>
+            <texture_picker
+             follows="left|top"
+             top_pad="0"
+             height="173"
+             layout="topleft"
+             left="5"
+             name="snapshot_ctrl"
+             fallback_image="default_land_picture.j2c" 
+             tool_tip="Click to choose a picture"
+             width="233" />
+            
+            <text
+             type="string"
+             length="1"
+             follows="left|top"
+             height="16"
+             layout="topleft"
+             left="255"
+             top="207"
+             text_color="White"
+             name="landing_point"
+             word_wrap="true"
+             width="200">
+                Category:
+            </text>
             <combo_box
              enabled="true"
              height="23"
              layout="topleft"
-             left="20"
-             top="194"
+             left_delta="0"
+             top_pad="2"
              name="land category"
              visible="true"
-             width="140">
+             width="150">
+             <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
                 <combo_box.item
                  label="Any Category"
                  name="item0"
@@ -1489,71 +1626,15 @@ Only large parcels can be listed in search.
                  name="item12"
                  value="other" />
             </combo_box>
-            <check_box
-             height="16"
-             label="Moderate Content"
-             layout="topleft"
-             left="18"
-             name="MatureCheck"
-             top="170"
-             label_text.valign="center" 
-             label_text.v_pad="-1" 
-             tool_tip=" "
-             width="200" />
+            
             <text
              type="string"
              length="1"
              follows="left|top"
              height="16"
              layout="topleft"
-             left="20"
-             name="Snapshot:"
-             text_color="White"
-             top="225"
-             width="200">
-                Snapshot:
-            </text>
-            <texture_picker
-             follows="left|top"
-             top_pad="0"
-             height="150"
-             layout="topleft"
-             left="20"
-             name="snapshot_ctrl"
-             fallback_image="default_land_picture.j2c" 
-             tool_tip="Click to choose a picture"
-             width="195" />
-            <text
-             type="string"
-             length="1"
-             follows="left|top"
-             text_color="LtGray"
-             height="32"
-             layout="topleft"
-             left="274"
-             top="150"
-             name="allow_label5"
-             width="205"
-             word_wrap="true">
-              Avatars on other parcels can see and chat with avatars on this parcel
-            </text>
-            <check_box
-             height="16"
-             follows="top"
-             layout="topleft"
-             left="253"
-             top="150"
-             name="SeeAvatarsCheck"
-             tool_tip="Allows avatars on other parcels to see and chat with avatars on this parcel, and you to see and chat with them."
-             width="10" />
-            <text
-             type="string"
-             length="1"
-             follows="left|top"
-             height="16"
-             layout="topleft"
-             left="255"
-             top="282"
+             left_delta="0"
+             top_pad="9"
              text_color="White"
              name="landing_point"
              word_wrap="true"
@@ -1562,25 +1643,31 @@ Only large parcels can be listed in search.
             </text>
             <button
              follows="right|top"
-             top_pad="0"
+             top_pad="2"
              height="23"
              label="Set"
              label_selected="Set"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
              name="Set"
-             left="255"
+             left_delta="0"
              tool_tip="Sets the landing point where visitors arrive. Sets to your avatar&apos;s location inside this parcel."
-             width="50" />
+             width="74" />
             <button
              follows="right|top"
              height="23"
              label="Clear"
              label_selected="Clear"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
-             left_pad="5"
+             left_pad="1"
              name="Clear"
              tool_tip="Clear the landing point"
-             width="55" />
+             width="75" />
             <text
              type="string"
              length="1"
@@ -1589,7 +1676,7 @@ Only large parcels can be listed in search.
              height="16"
              layout="topleft"
              left="255"
-             top_pad="10"
+             top_pad="9"
              name="Teleport Routing: "
              width="200">
                 Teleport Routing:
@@ -1598,9 +1685,19 @@ Only large parcels can be listed in search.
              height="23"
              layout="topleft"
              name="landing type"
-             top_pad="0"
+             top_pad="2"
              tool_tip="Teleport Routing -- select how to handle teleports onto your land"
-             width="120">
+             width="150">
+             <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
                 <combo_box.item
                  enabled="true"
                  label="Blocked"
@@ -1619,8 +1716,10 @@ Only large parcels can be listed in search.
             </combo_box>
         </panel>
         <panel
-         border="true"
+         border="false"
          follows="all"
+         bg_alpha_image="Panel_Background"
+         background_visible="true"
          label="Media"
          layout="topleft"
          left="0"
@@ -1633,7 +1732,7 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="20"
              layout="topleft"
-             left="10"
+             left="5"
              name="with media:"
              top="10"
              width="100">
@@ -1642,15 +1741,27 @@ Only large parcels can be listed in search.
             <combo_box
              height="23"
              layout="topleft"
-             left_pad="0"
+             left_pad="2"
              name="media type"
              tool_tip="Specify if the URL is a movie, web page, or other media"
              width="120"
-             top_delta="0"/>
+             top_delta="-3">
+             <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+            </combo_box>
             <text
              follows="left|top"
-             height="16"
+             height="20"
              layout="topleft"
+             top_delta="3"
              left_pad="10"
              name="mime_type"
              width="200" />
@@ -1660,30 +1771,33 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="20"
              layout="topleft"
-             left="10"
+             left="5"
              name="at URL:"
              width="100"
-             top_pad="10">
+             top_pad="7">
                 Home Page:
             </text>
             <line_editor
              follows="left|top"
              height="23"
              layout="topleft"
-             left_pad="0"
+             left_pad="2"
              max_length_bytes="255"
              name="media_url"
              select_on_focus="true"
-             width="300"
-             top_delta="0"/>
+             width="299"
+             top_delta="-3"/>
             <button
              follows="right|top"
-             height="23"
+             height="24"
              label="Set"
              layout="topleft"
-             left_pad="5"
+             left_pad="2"
              name="set_media_url"
-             width="70"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             width="77"
              top_delta="0"/>
             <text
              type="string"
@@ -1691,33 +1805,33 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="23"
              layout="topleft"
-             left="10"
+             left="5"
              name="Description:"
-             width="364"
-             top_pad="10">
+             width="100"
+             top_pad="7">
                 Description:
             </text>
             <line_editor
              follows="left|top"
-             height="20"
+             height="23"
              layout="topleft"
-             left="110"
+             left_pad="2"
              max_length_bytes="255"
              name="url_description"
              select_on_focus="true"
              tool_tip="Text displayed next to play/load button"
-             top_delta="0"
-             width="300" />
+             top_delta="-3"
+             width="377" />
             <text
              type="string"
              length="1"
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="Media texture:"
-             top_pad="10"
-             width="364"
+             top_pad="7"
+             width="100"
              word_wrap="true">
                 Replace Texture:
             </text>
@@ -1727,10 +1841,10 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="80"
              layout="topleft"
-             left="110"
+             left_pad="2"
              name="media texture"
              tool_tip="Click to choose a picture"
-             top_delta="0"
+             top_delta="-3"
              width="64" />
             <text
              type="string"
@@ -1751,7 +1865,7 @@ Only large parcels can be listed in search.
              layout="topleft"
              left="107"
              name="media_auto_scale"
-             top_pad="-10"
+             top_pad="-17"
              tool_tip="Checking this option will scale the content for this parcel automatically. It may be slightly slower and lower quality visually but no other texture scaling or alignment will be required."
              width="200" />
             <text
@@ -1760,11 +1874,11 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="20"
              layout="topleft"
-             left="10"
+             left="5"
              name="media_size"
              tool_tip="Size to render Web media, leave 0 for default."
              width="100"
-             top_pad="10">
+             top_pad="8">
                 Size:
             </text>
             <spinner
@@ -1776,11 +1890,11 @@ Only large parcels can be listed in search.
              increment="1"
              initial_value="0"
              layout="topleft"
-             left_pad="0"
+             left_pad="2"
              max_val="1024"
              name="media_size_width"
              tool_tip="Size to render Web media, leave 0 for default."
-             top_delta="0"
+             top_delta="-3"
              width="64" />
             <spinner
              decimal_digits="0"
@@ -1800,13 +1914,12 @@ Only large parcels can be listed in search.
             <text
              type="string"
              length="1"
-             bottom_delta="0"
+             top_delta="3"
              follows="left|top"
-             height="16"
+             height="19"
              layout="topleft"
              left_pad="5"
-             name="pixels"
-             right="-10">
+             name="pixels">
                 pixels
             </text>
             <text
@@ -1815,9 +1928,9 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="Options:"
-             top_pad="10"
+             top_pad="7"
              width="100">
                 Options:
             </text>
@@ -1825,42 +1938,41 @@ Only large parcels can be listed in search.
              height="16"
              label="Loop"
              layout="topleft"
-             left_pad="-3"
+             left_pad="2"
              name="media_loop"
              tool_tip="Play media in a loop.  When the media has finished playing, it will restart from the beginning."
-             top_delta="-1"
+             top_delta="-3"
              width="200" />
-        </panel>
-        <panel
-         border="true"
-         follows="all"
-         label="Sound"
-         layout="topleft"
-         left="0"
-         top="0"
-         help_topic="land_audio_tab"
-         name="land_audio_panel">
+            <view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="7"
+			width="478"/>
             <text
              type="string"
              length="1"
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
-             top="10"
+             left="5"
+             top_pad="10"
              name="MusicURL:"
-             width="364">
+             width="100">
                 Music URL:
             </text>
             <line_editor
              follows="left|top"
              height="23"
              layout="topleft"
-             left="100"
+             left_pad="2"
              max_length_bytes="255"
              name="music_url"
-             top_delta="0"
-             right="-15"
+             top_delta="-3"
+             width="377"
              select_on_focus="true" />
             <text
              type="string"
@@ -1868,9 +1980,9 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="Sound:"
-             top_pad="10"
+             top_pad="7"
              width="100">
                 Sound:
             </text>
@@ -1879,7 +1991,8 @@ Only large parcels can be listed in search.
              label="Restrict gesture and object sounds to this parcel"
              layout="topleft"
              name="check sound local"
-             left_pad="0"
+             left_pad="2"
+             top_delta="-3"
              width="292" />
           <text
              type="string"
@@ -1887,9 +2000,9 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              name="Avatar Sounds:"
-             top_pad="10"
+             top_pad="14"
              width="100">
                Avatar Sounds:
           </text>
@@ -1897,9 +2010,9 @@ Only large parcels can be listed in search.
              height="16"
              label="Everyone"
              layout="topleft"
-             left_pad="0"
+             left_pad="2"
              name="all av sound check"
-             top_delta="0"
+             top_delta="-3"
              width="130" />
           <check_box
              height="16"
@@ -1915,10 +2028,10 @@ Only large parcels can be listed in search.
              follows="left|top"
              height="16"
              layout="topleft"
-             left="10"
+             left="5"
              mouse_opaque="false"
              name="Voice settings:"
-             top_pad="10"
+             top_pad="14"
              width="100">
                 Voice:
             </text>
@@ -1926,7 +2039,8 @@ Only large parcels can be listed in search.
              height="16"
              label="Enable Voice"
              layout="topleft"
-             left_pad="0"
+             left_pad="2"
+             top_delta="-3"
              name="parcel_enable_voice_channel"
              width="300" />
             <check_box
@@ -1934,7 +2048,7 @@ Only large parcels can be listed in search.
              height="16"
              label="Enable Voice (established by the Estate)"
              layout="topleft"
-             left="110"
+             left_delta="0"
              name="parcel_enable_voice_channel_is_estate_disabled"
              top_delta="0"
              width="300" />
@@ -1942,13 +2056,16 @@ Only large parcels can be listed in search.
              height="16"
              label="Restrict Voice to this parcel"
              layout="topleft"
-             left="110"
+             left_delta="0"
+             top_pad="4"
              name="parcel_enable_voice_channel_local"
              width="300" />
         </panel>
         <panel
-         border="true"
+         border="false"
          follows="all"
+         bg_alpha_image="Panel_Background"
+         background_visible="true"
          label="Access"
          layout="topleft"
          left="0"
@@ -1967,7 +2084,7 @@ Only large parcels can be listed in search.
              follows="top|left"
              height="16"
              layout="topleft"
-             left="8"
+             left="5"
              name="public_access"
              label="Anyone can visit (Unchecking this will create ban lines)"
              top_pad="10" 
@@ -1977,7 +2094,7 @@ Only large parcels can be listed in search.
              height="16"
              label="Must be 18+ [ESTATE_AGE_LIMIT]"
              layout="topleft"
-             left_delta="20"
+             left_delta="10"
              name="limit_age_verified"
              tool_tip="Residents must be age 18 or older to access this parcel. See the [SUPPORT_SITE] for more information."
              top_pad="4"
@@ -1996,10 +2113,10 @@ Only large parcels can be listed in search.
              height="16"
              label="Allow group [GROUP] with no restrictions"
              layout="topleft"
-             left="8"
+             left="5"
              name="GroupCheck"
              tool_tip="Set group in the General tab."
-             top="73"
+             top_pad="7"
              width="278" />
             <check_box
              enabled="false"
@@ -2009,15 +2126,25 @@ Only large parcels can be listed in search.
              left_delta="0"
              name="PassCheck"
              tool_tip="Allows temporary access to this parcel"
-             top_pad="4"
-             width="120" />
+             top_pad="7"
+             width="100" />
             <combo_box
              height="23"
              layout="topleft"
              left_pad="22"
              name="pass_combo"
-             top_delta="0"
+             top_delta="-3"
              width="100">
+             <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
                 <combo_box.item
                  label="Anyone"
                  name="Anyone"
@@ -2034,13 +2161,13 @@ Only large parcels can be listed in search.
              increment="1"
              initial_value="10"
              label="Price in L$:"
-             label_width="120"
+             label_width="117"
              layout="topleft"
-             left="28"
+             left="5"
              max_val="500"
              min_val="1"
              name="PriceSpin"
-             top_pad="5"
+             top_pad="4"
              width="200" />
             <spinner
              enabled="false"
@@ -2049,13 +2176,13 @@ Only large parcels can be listed in search.
              increment="0.25"
              initial_value="1"
              label="Hours of access:"
-             label_width="120"
+             label_width="117"
              layout="topleft"
              left_delta="0"
              max_val="24"
              min_val="0.01"
              name="HoursSpin"
-             top_pad="5"
+             top_pad="4"
              width="200" />
             <text
              type="string"
@@ -2063,18 +2190,27 @@ Only large parcels can be listed in search.
              follows="top|left"
              height="16"
              layout="topleft"
-             left="8"
+             left="5"
              name="OwnerLimited"
-             top_pad="5"
+             top_pad="4"
              width="400">
                 (The estate owner may have limited these choices)
-            </text>            
+            </text>
+            <view_border
+			bevel_style="none"
+			follows="top|left"
+			height="0"
+			layout="topleft"
+			left="5"
+			name="cost_text_border"
+			top_pad="3"
+			width="478"/>
             <panel
             name="Allowed_layout_panel"
             follows="top|left"
-            left="10"
+            left="4"
             height="170"
-             top_pad="8"
+             top_pad="5"
             width="240">
             <text
              type="string"
@@ -2083,47 +2219,59 @@ Only large parcels can be listed in search.
              height="16"
              label="Always Allow"
              layout="topleft"
-             left="0"
+             left="2"
              name="AllowedText"
              top="0"
-             width="230">
+             width="240">
                 Always allowed ([COUNT], max [MAX])
             </text>
             <name_list
              column_padding="0"
              follows="top|bottom"
-             heading_height="14"
-             height="125"
+             heading_height="20"
+             draw_heading="true"
+             height="136"
              layout="topleft"
+             top_pad="0"
              left="0"
              multi_select="true"
              name="AccessList"
              tool_tip="([LISTED] listed, [MAX] max)"
-             width="230" />
+             width="240" >
+             <columns
+              label="Name"
+              name="name"
+              width="240" />
+            </name_list>
             <button
-             follows="bottom"
-             height="23"
+             follows="top|left"
+             height="21"
              label="Add"
              layout="topleft"
-             left="0"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
+             left="1"
              name="add_allowed"
-             width="100" />
+             width="118" />
             <button
-             follows="bottom"
-             height="23"
+             follows="top|right"
+             height="21"
              label="Remove"
              label_selected="Remove"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              layout="topleft"
-             left_pad="10"
+             left_pad="1"
              name="remove_allowed"
-             right="-10"
-             width="100" />
+             width="118" />
              </panel>
             <panel
             name="Banned_layout_panel"
             follows="top|right"
             height="170"
-            width="240"
+            width="250"
             left_pad="2">
             <text
              type="string"
@@ -2132,24 +2280,25 @@ Only large parcels can be listed in search.
              height="16"
              label="Ban"
              layout="topleft"
-             left="0"
+             left="2"
              name="BanCheck"
              top="0"
-             width="200">
+             width="210">
                 Banned ([COUNT], max [MAX])
             </text>
             <name_list
              column_padding="0"
              follows="top|bottom"
-             heading_height="16"
-             height="125"
+             heading_height="20"
+             height="136"
              layout="topleft"
+             top_pad="0"
              left="0"
              multi_select="true"
              draw_heading="true"
              name="BannedList"
              tool_tip="([LISTED] listed, [MAX] max)"
-             width="230">
+             width="240">
              <columns
               label="Name"
               name="name"
@@ -2160,30 +2309,37 @@ Only large parcels can be listed in search.
               width="75" />
             </name_list>
             <button
-             follows="bottom"
-             height="23"
+             follows="top|left"
+             height="21"
              label="Add"
              layout="topleft"
-             left="0"
+             left="1"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              name="add_banned"
-             width="100" />
+             width="118" />
             <button
              enabled="false"
-             follows="bottom"
-             height="23"
+             follows="top|right"
+             height="21"
              label="Remove"
              label_selected="Remove"
              layout="topleft"
-             left_pad="10"
+             left_pad="1"
+             image_hover_unselected="Toolbar_Middle_Over"
+             image_selected="Toolbar_Middle_Selected"
+             image_unselected="Toolbar_Middle_Off"
              name="remove_banned"
-             right="-10"
-             width="100" />
+             width="118" />
              </panel>
         </panel>
        <panel
-          border="true"
+          border="false"
           follows="all"
-          label="Experience"
+          bg_alpha_image="Panel_Background"
+         background_visible="true"
+          label="Experiences"
           layout="topleft"
           left="0"
           top="0"
