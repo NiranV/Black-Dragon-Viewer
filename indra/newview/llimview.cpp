@@ -205,7 +205,7 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 		if (msg["source_type"].asInteger() == CHAT_SOURCE_OBJECT)
 		{
 			user_preferences = gSavedSettings.getString("NotificationObjectIMOptions");
-			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundObjectIM") == TRUE))
+			if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundObjectIM"))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
 			}
@@ -213,7 +213,7 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 		else
 		{
     		user_preferences = gSavedSettings.getString("NotificationNearbyChatOptions");
-			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundNearbyChatIM") == TRUE))
+			if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundNearbyChatIM"))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
 			}
@@ -224,7 +224,7 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
         if (LLAvatarTracker::instance().isBuddy(participant_id))
         {
         	user_preferences = gSavedSettings.getString("NotificationFriendIMOptions");
-			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundFriendIM") == TRUE))
+			if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundFriendIM"))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
 			}
@@ -232,7 +232,7 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
         else
         {
         	user_preferences = gSavedSettings.getString("NotificationNonFriendIMOptions");
-			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundNonFriendIM") == TRUE))
+			if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundNonFriendIM"))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
 			}
@@ -241,7 +241,7 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
     else if(session->isAdHocSessionType())
     {
     	user_preferences = gSavedSettings.getString("NotificationConferenceIMOptions");
-		if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundConferenceIM") == TRUE))
+		if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundConferenceIM"))
 		{
 			make_ui_sound("UISndNewIncomingIMSession");
 		}
@@ -249,7 +249,7 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
     else if(session->isGroupSessionType())
     {
     	user_preferences = gSavedSettings.getString("NotificationGroupChatOptions");
-		if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundGroupChatIM") == TRUE))
+		if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundGroupChatIM"))
 		{
 			make_ui_sound("UISndNewIncomingIMSession");
 		}
@@ -2727,7 +2727,7 @@ void LLIMMgr::addMessage(
 			}
 
 			//Play sound for new conversations
-			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundNewConversation") == TRUE))
+			if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundNewConversation"))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
 			}
