@@ -450,7 +450,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			gAgent.setTeleportMessage(
 				LLAgent::sTeleportProgressMessages["requesting"]);
 			gViewerWindow->setProgressString(LLAgent::sTeleportProgressMessages["requesting"]);
-			gViewerWindow->setProgressMessage(gAgent.mMOTD);
+			gViewerWindow->setProgressMessage("");
 			break;
 
 		case LLAgent::TELEPORT_REQUESTED:

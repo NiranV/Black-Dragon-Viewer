@@ -64,6 +64,8 @@ public:
 	//BD
 	// Set a random Tip every X seconds
 	void setTip();
+	void setText(const std::string& string);
+	void setMessage(const std::string& string);
 	
 	// turns on (under certain circumstances) the into video after login
 	void revealIntroPanel();
@@ -79,6 +81,8 @@ public:
 
 	//BD
 	LLUICtrl* mMessageText;
+	LLUICtrl* mStateText;
+	LLUICtrl* mStatusText;
 	LLTextBox* mPercentText;
 
 	// note - this is not just hiding the intro panel - it also hides the parent panel

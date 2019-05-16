@@ -97,7 +97,7 @@ Voice Server Version: [VOICE_VERSION]
 	<string name="LoginVerifyingCache">Verifying cache files (can take 60-90 seconds)...</string>
 	<string name="LoginProcessingResponse">Processing response...</string>
 	<string name="LoginInitializingWorld">Initializing world...</string>
-	<string name="LoginDecodingImages">Decoding images...</string>
+	<string name="LoginDecodingImages">Decoding images</string>
 	<string name="LoginInitializingQuicktime">Initializing QuickTime...</string>
 	<string name="LoginQuicktimeNotFound">QuickTime not found - unable to initialize.</string>
 	<string name="LoginQuicktimeOK">QuickTime initialized successfully.</string>
@@ -4277,4 +4277,22 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_Water_Tooltip">Edit a water preset or create a new one</string>
   <string name="Command_Navbar_Tooltip">Show the Navigationbar and your Favorites</string>
 	<string name="Command_Poser_Tooltip">Open the poser and strike a pose</string>
+	
+	<string name="LoginCleanup">Login Cleanup</string>
+  <string name="LoginAuthInit">Initializing Login Authentification</string>
+  <string name="LoginCurlUnstuck">Unstucking Login Curl</string>
+  <string name="LoginProcessResponse">Awaiting Login Response</string>
+  <string name="WorldInit">Initializing World</string>
+  <string name="MediaInit">Initializing Multimedia</string>
+  <string name="FontInit">Initializing Fonts</string>
+  <string name="SeedWaiting">Awaiting Seed Caps</string>
+  <string name="SeedGranted">Seed Caps Granted</string>
+  <string name="WorldWait">Awaiting World</string>
+  <string name="AgentSend">Sending Agent Request</string>
+  <string name="AgentWait">Awaiting Agent Data</string>
+  <string name="InventorySend">Sending Inventory Request</string>
+  <string name="Misc">Miscellaneous</string>
+  <string name="Precache">Precaching</string>
+  <string name="WearablesWait">Awaiting Wearables</string>
+  <string name="Cleanup">Cleanup</string>
 </strings>

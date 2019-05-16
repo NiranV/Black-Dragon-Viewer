@@ -98,6 +98,8 @@ BOOL LLProgressView::postBuild()
 	//BD
 	mTipCycleTimer.getStarted();
 	mMessageText = getChild<LLUICtrl>("message_text");
+	mStateText = getChild<LLUICtrl>("state_text");
+	mStatusText = getChild<LLUICtrl>("status_text");
 	mPercentText = getChild<LLTextBox>("percent_text");
 
 	// hidden initially, until we need it
@@ -193,6 +195,16 @@ void LLProgressView::setTip()
 		std::string output = llformat("LoadingTip %i" , mRandom);
 		mMessageText->setValue(getString(output));
 	}
+}
+
+void LLProgressView::setText(const std::string& string)
+{
+	mStatusText->setValue(string);
+}
+
+void LLProgressView::setMessage(const std::string& string)
+{
+	mStateText->setValue(string);
 }
 
 /*

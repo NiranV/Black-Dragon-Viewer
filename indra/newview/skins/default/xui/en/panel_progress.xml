@@ -36,6 +36,7 @@
   <string name="LoadingTip 22">You should verify your E-mail on SL's website in order to receive offline mails in the future.</string>
   <string name="LoadingTip 23">&lt;green&gt;[CTRL] + [Shift] + RightMouseButton&lt;/green&gt; on UI widgets to reset their option to default.</string>
   <string name="LoadingTip 24">&lt;green&gt;[CTRL] + MouseScrollWheel&lt;/green&gt; on sliders and spinners to scroll values up and down. Add &lt;green&gt;[Shift]&lt;/green&gt; to scroll faster.</string>
+  
 <layout_stack
 follows="left|right|top|bottom"
 height="768"
@@ -74,7 +75,7 @@ width="1024">
    layout="topleft"
    min_height="10"
    name="panel3"
-   width="100" />
+   width="100"/>
    <layout_panel
    auto_resize="false"
    height="100"
@@ -164,7 +165,37 @@ width="1024">
    layout="topleft"
    min_height="10"
    name="panel3"
-   width="100" />
+   width="100">
+    <text
+    follows="left|right|bottom"
+    font="SansSerif"
+    font.style="BOLD"
+    text_color="Friend"
+    height="20"
+    layout="topleft"
+    left="0"
+    width="100"
+    line_spacing.pixels="2"
+    name="status_text"
+    top="-51"
+    word_wrap="false">
+    Initializing World
+    </text>
+    <text
+    follows="left|right|bottom"
+    font="SansSerif"
+    font.style="ITALIC"
+    height="20"
+    layout="topleft"
+    left="0"
+    width="100"
+    line_spacing.pixels="2"
+    name="state_text"
+    top="-37"
+    word_wrap="false">
+    Loading
+    </text>
+   </layout_panel>
   </layout_stack>
  </layout_panel>
  </layout_stack>

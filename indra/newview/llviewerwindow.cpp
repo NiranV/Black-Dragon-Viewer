@@ -5146,7 +5146,7 @@ void LLViewerWindow::setProgressString(const std::string& string)
 	if (mProgressView)
 	{
 		//BD
-		//mProgressView->setText(string);
+		mProgressView->setText(string);
 	}
 }
 
@@ -5155,7 +5155,7 @@ void LLViewerWindow::setProgressMessage(const std::string& msg)
 	if(mProgressView)
 	{
 		//BD
-		//mProgressView->setMessage(msg);
+		mProgressView->setMessage(msg);
 	}
 }
 
