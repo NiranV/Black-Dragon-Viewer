@@ -1150,7 +1150,7 @@ BOOL LLFloaterPreference::postBuild()
 
 	getChild<LLUICtrl>("log_path_string")->setEnabled(FALSE); // make it read-only but selectable
 
-	getChild<LLComboBox>("language_combobox")->setCommitCallback(boost::bind(&LLFloaterPreference::onLanguageChange, this));
+	getChild<LLUICtrl>("language_radio")->setCommitCallback(boost::bind(&LLFloaterPreference::onLanguageChange, this));
 
 	getChild<LLUICtrl>("FriendIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this,"FriendIMOptions"));
 	getChild<LLUICtrl>("NonFriendIMOptions")->setCommitCallback(boost::bind(&LLFloaterPreference::onNotificationsChange, this, "NonFriendIMOptions"));
