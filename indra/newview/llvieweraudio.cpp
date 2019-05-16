@@ -418,7 +418,7 @@ void audio_update_volume(bool force_update)
 	{
 		mute_audio = TRUE;
 	}
-	F32 mute_volume = mute_audio ? 0.0f : 1.0f;
+	F32 mute_volume = mute_audio ? 0.000f : 1.0f;
 
 	if (gAudiop) 
 	{
