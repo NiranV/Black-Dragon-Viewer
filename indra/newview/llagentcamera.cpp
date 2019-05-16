@@ -1517,8 +1517,9 @@ void LLAgentCamera::updateCamera()
 			LLJoint* joint = gAgentAvatarp->getCharacterJoint(mFollowJoint);
 			if (joint)
 			{
+				LLQuaternion avatarRotationForFollowCam = gAgentAvatarp->isSitting() ? gAgentAvatarp->getRenderRotation() : gAgent.getFrameAgent().getQuaternion();
 				focus_agent = joint->getWorldPosition();
-				offset = focus_agent + getCameraOffsetInitial();
+				offset = focus_agent + getCameraOffsetInitial() * avatarRotationForFollowCam;
 			}
 		}
 	}
