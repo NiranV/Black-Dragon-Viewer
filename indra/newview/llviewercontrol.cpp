@@ -677,6 +677,8 @@ static bool handleRenderDeferredLightsChanged(const LLSD& newvalue)
 //BD - Always-on Mouse-steering.
 static bool handleMouseSteeringChanged(const LLSD& newvalue)
 {
+	if (!gAgentCamera.isInitialized())
+		return false;
 	gAgentCamera.mThirdPersonSteeringMode = newvalue.asBoolean();
 
 	//BD - Whenever steering is off and we trigger this we will
@@ -694,26 +696,31 @@ static bool handleMouseSteeringChanged(const LLSD& newvalue)
 //BD - Invert mouse pitch in third person.
 static bool handleInvertMouse(const LLSD& newvalue)
 {
-	gAgentCamera.mMouseInvert = newvalue.asBoolean();
+	if (gAgentCamera.isInitialized())
+		gAgentCamera.mMouseInvert = newvalue.asBoolean();
 	return true;
 }
 
 //BD - Follow a specified joint's movement.
 static bool handleFollowJoint(const LLSD& newvalue)
 {
-	gAgentCamera.mFollowJoint = newvalue.asInteger();
+	if (gAgentCamera.isInitialized())
+		gAgentCamera.mFollowJoint = newvalue.asInteger();
 	return true;
 }
 
 //BD - Camera position smoothing.
 static bool handleCameraSmoothing(const LLSD& newvalue)
 {
-	gAgentCamera.mCameraPositionSmoothing = newvalue.asReal();
+	if (gAgentCamera.isInitialized())
+		gAgentCamera.mCameraPositionSmoothing = newvalue.asReal();
 	return true;
 }
 
 static bool handleEyeConstrainsChanged(const LLSD& newvalue)
 {
+	if (!gAgentAvatarp)
+		return false;
 	LLEyeMotion* eye_rot_motion = (LLEyeMotion*)gAgentAvatarp->getMotionController().findMotion(ANIM_AGENT_EYE);
 	if (eye_rot_motion)
 		eye_rot_motion->setEyeConstrains(newvalue.asInteger());
@@ -722,6 +729,8 @@ static bool handleEyeConstrainsChanged(const LLSD& newvalue)
 
 static bool handleHeadConstrainsChanged(const LLSD& newvalue)
 {
+	if (!gAgentAvatarp)
+		return false;
 	LLHeadRotMotion* head_rot_motion = (LLHeadRotMotion*)gAgentAvatarp->getMotionController().findMotion(ANIM_AGENT_HEAD_ROT);
 	if (head_rot_motion)
 		head_rot_motion->setHeadConstrains(newvalue.asInteger());
@@ -731,40 +740,46 @@ static bool handleHeadConstrainsChanged(const LLSD& newvalue)
 //BD - Water Height
 static bool handleWaterHeightChanged(const LLSD& newvalue)
 {
-	gAgent.getRegion()->setWaterHeightLocal(newvalue.asReal());
+	if (gAgentCamera.isInitialized())
+		gAgent.getRegion()->setWaterHeightLocal(newvalue.asReal());
 	return true;
 }
 
 //BD - Cinematic Camera
 static bool handleCinematicCamera(const LLSD& newvalue)
 {
-	gAgentCamera.mCinematicCamera = newvalue.asBoolean();
+	if (gAgentCamera.isInitialized())
+		gAgentCamera.mCinematicCamera = newvalue.asBoolean();
 	return true;
 }
 
 //BD - Camera Rolling
 static bool handleCameraMaxRoll(const LLSD& newvalue)
 {
-	gAgentCamera.mCameraMaxRoll = newvalue.asReal();
+	if (gAgentCamera.isInitialized())
+		gAgentCamera.mCameraMaxRoll = newvalue.asReal();
 	return true;
 }
 
 static bool handleCameraMaxRollSitting(const LLSD& newvalue)
 {
-	gAgentCamera.mCameraMaxRollSitting = newvalue.asReal();
+	if (gAgentCamera.isInitialized())
+		gAgentCamera.mCameraMaxRollSitting = newvalue.asReal();
 	return true;
 }
 
 static bool handleAllowCameraFlip(const LLSD& newvalue)
 {
-	gAgentCamera.mAllowCameraFlipOnSit = newvalue.asBoolean();
+	if (gAgentCamera.isInitialized())
+		gAgentCamera.mAllowCameraFlipOnSit = newvalue.asBoolean();
 	return true;
 }
 
 //BD - Realistic Mouselook
 static bool handleRealisticMouselook(const LLSD& newvalue)
 {
-	gAgentCamera.mRealisticMouselook = newvalue.asBoolean();
+	if (gAgentCamera.isInitialized())
+		gAgentCamera.mRealisticMouselook = newvalue.asBoolean();
 	return true;
 }
 
@@ -871,6 +886,8 @@ static bool handleShadowsChanged(const LLSD& newvalue)
 
 static bool handleTimeFactorChanged(const LLSD& newvalue)
 {
+	if (!gAgentAvatarp)
+		return false;
 	if (gSavedSettings.getBOOL("SlowMotionAnimation"))
 	{
 		gAgentAvatarp->setAnimTimeFactor(gSavedSettings.getF32("SlowMotionTimeFactor"));
@@ -905,8 +922,12 @@ static bool handleCloudNoiseChanged(const LLSD& newvalue)
 //BD - Machinima Sidebar
 static bool handleMachinimaSidebar(const LLSD& newvalue)
 {
-	gSideBar->refreshGraphicControls();
-	return true;
+	if (gSideBar)
+	{
+		gSideBar->refreshGraphicControls();
+		return true;
+	}
+	return false;
 }
 
 //BD - Automatic Memory Management
