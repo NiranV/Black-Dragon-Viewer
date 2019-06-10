@@ -290,8 +290,8 @@ private:
 	void loadPresetsFromDir(const std::string& dir);
 	bool loadPreset(const std::string& path);
 
-	static std::string getSysDir();
-	static std::string getUserDir();
+	static std::string getSysDir(S32 viewer = 0);
+	static std::string getUserDir(S32 viewer = 0);
 
 	/*virtual*/ void initSingleton();
 	// list of all the parameters, listed by name

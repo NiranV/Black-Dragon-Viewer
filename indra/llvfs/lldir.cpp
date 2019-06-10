@@ -94,7 +94,16 @@ LLDir::LLDir()
 	mTempDir(""),
 	mDirDelimiter("/"), // fallback to forward slash if not overridden
 	mLanguage("en"),
-	mUserName("undefined")
+	mUserName("undefined"),
+	//BD - Multiple Viewer Presets
+	mFSAppDir(""),
+	mALAppDir(""),
+	mCNAppDir(""),
+	mLLAppDir(""),
+	mFSAppRODataDir(""),
+	mALAppRODataDir(""),
+	mCNAppRODataDir(""),
+	mLLAppRODataDir("")
 {
 }
 
@@ -443,6 +452,47 @@ const std::string &LLDir::getUserName() const
 	return mUserName;
 }
 
+//BD - Multiple Viewer Presets
+const std::string &LLDir::getFSOSUserDir() const
+{
+	return mFSAppDir;
+}
+
+const std::string &LLDir::getALOSUserDir() const
+{
+	return mALAppDir;
+}
+
+const std::string &LLDir::getCNOSUserDir() const
+{
+	return mCNAppDir;
+}
+
+const std::string &LLDir::getLLOSUserDir() const
+{
+	return mLLAppDir;
+}
+
+const std::string &LLDir::getFSAppRODataDir() const
+{
+	return mFSAppRODataDir;
+}
+
+const std::string &LLDir::getALAppRODataDir() const
+{
+	return mALAppRODataDir;
+}
+
+const std::string &LLDir::getCNAppRODataDir() const
+{
+	return mCNAppRODataDir;
+}
+
+const std::string &LLDir::getLLAppRODataDir() const
+{
+	return mLLAppRODataDir;
+}
+
 static std::string ELLPathToString(ELLPath location)
 {
 	typedef std::map<ELLPath, const char*> ELLPathMap;
@@ -587,8 +637,42 @@ std::string LLDir::getExpandedFilename(ELLPath location, const std::string& subd
 		prefix = add(getAppRODataDir(), "fonts");
 		break;
 
+	//BD - Poser
 	case LL_PATH_POSES:
 		prefix = add(getOSUserAppDir(), "user_settings", "poses");
+		break;
+
+	//BD - Multiple Viewer Presets
+	case LL_PATH_FS:
+		prefix = getFSAppRODataDir();
+		break;
+
+	case LL_PATH_AL:
+		prefix = getALAppRODataDir();
+		break;
+
+	case LL_PATH_CN:
+		prefix = getCNAppRODataDir();
+		break;
+
+	case LL_PATH_LL:
+		prefix = getLLAppRODataDir();
+		break;
+
+	case LL_PATH_USER_SETTINGS_FS:
+		prefix = getFSOSUserDir();
+		break;
+
+	case LL_PATH_USER_SETTINGS_AL:
+		prefix = getALOSUserDir();
+		break;
+
+	case LL_PATH_USER_SETTINGS_CN:
+		prefix = getCNOSUserDir();
+		break;
+
+	case LL_PATH_USER_SETTINGS_LL:
+		prefix = getLLOSUserDir();
 		break;
 		
 	default:

@@ -18237,6 +18237,143 @@
       <key>Value</key>
       <integer>-1</integer>
     </map>
+    
+    <!-- Windlight Presets -->
+    <!-- <string>C:/Program Files/Firestorm-Releasex64/app_settings/windlight/skies</string> -->
+    <key>InstallDirFirestorm</key>
+    <map>
+      <key>Comment</key>
+      <string>Installation folder for Firestorm Viewer to look into for new windlight presets.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>%ProgramFiles%/Firestorm-Releasex64/app_settings/windlight/skies</string>
+    </map>
+    <key>InstallDirAlchemy</key>
+    <map>
+      <key>Comment</key>
+      <string>Installation folder for Alchemy Viewer to look into for new windlight presets.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>C:/Program Files/Alchemy/app_settings/windlight/skies</string>
+    </map>
+    <key>InstallDirCatznip</key>
+    <map>
+      <key>Comment</key>
+      <string>Installation folder for Catznip Viewer to look into for new windlight presets.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>C:/Program Files/CatznipViewer/app_settings/windlight/skies</string>
+    </map>
+    <key>InstallDirLinden</key>
+    <map>
+      <key>Comment</key>
+      <string>Installation folder for the Second Life Viewer to look into for new windlight presets.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>C:/Program Files/SecondLife/app_settings/windlight/skies</string>
+    </map>
+    
+    <key>UserDirFirestorm</key>
+    <map>
+      <key>Comment</key>
+      <string>App user folder for Firestorm Viewer to look into for new windlight presets.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>%APPDATA%/Firestorm/user_settings/windlight/skies</string>
+    </map>
+    <key>UserDirAlchemy</key>
+    <map>
+      <key>Comment</key>
+      <string>App user folder for Alchemy Viewer to look into for new windlight presets.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>%APPDATA%/Alchemy/user_settings/windlight/skies</string>
+    </map>
+    <key>UserDirCatznip</key>
+    <map>
+      <key>Comment</key>
+      <string>App user folder for Catznip Viewer to look into for new windlight presets.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>%APPDATA%/Catznip/user_settings/windlight/skies</string>
+    </map>
+    <key>UserDirLinden</key>
+    <map>
+      <key>Comment</key>
+      <string>App user folder for the Second Life Viewer to look into for new windlight presets.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>%APPDATA%/SecondLife/user_settings/windlight/skies</string>
+    </map>
+    
+    <key>LoadPresetsFirestorm</key>
+    <map>
+      <key>Comment</key>
+      <string>Allow searching for presets in the configured Firestorm folder.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>        
+    </map>
+    <key>LoadPresetsAlchemy</key>
+    <map>
+      <key>Comment</key>
+      <string>Allow searching for presets in the configured Alchemy folder.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>        
+    </map>
+    <key>LoadPresetsCatznip</key>
+    <map>
+      <key>Comment</key>
+      <string>Allow searching for presets in the configured Catznip folder.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>        
+    </map>
+    <key>LoadPresetsSecondLife</key>
+    <map>
+      <key>Comment</key>
+      <string>Allow searching for presets in the configured Second Life folder.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>        
+    </map>
   </map>
 </llsd>
 

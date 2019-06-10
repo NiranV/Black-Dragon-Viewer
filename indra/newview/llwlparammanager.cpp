@@ -265,16 +265,34 @@ void LLWLParamManager::refreshRegionPresets(const LLSD& region_sky_presets)
 
 void LLWLParamManager::loadAllPresets()
 {
-	// First, load system (coming out of the box) sky presets.
-	loadPresetsFromDir(getSysDir());
+	std::string dir_string;
+	//BD - Multiple Viewer Presets
+	//     First, load system (coming out of the box) sky presets.
+	for (S32 i = 0; i < 5; i++)
+	{
+		dir_string = getSysDir(i);
+		if (!dir_string.empty())
+			loadPresetsFromDir(dir_string);
+	}
 
-	// Then load user presets. Note that user day presets will modify any system ones already loaded.
-	loadPresetsFromDir(getUserDir());
+	//BD - Multiple Viewer Presets
+	//     Then load user presets. Note that user day presets will modify any system ones already loaded.
+	for (S32 i = 0; i < 5; i++)
+	{
+		dir_string = getSysDir(i);
+		if (!dir_string.empty())
+			loadPresetsFromDir(dir_string);
+	}
 }
 
 void LLWLParamManager::loadPresetsFromDir(const std::string& dir)
 {
 	LL_INFOS("AppInit", "Shaders") << "Loading sky presets from " << dir << LL_ENDL;
+
+	//BD - Multiple Viewer Presets
+	//     Don't attempt to load if the folder doesn't exist, for instance from other Viewers.
+	//if (dir.empty() || !gDirUtilp->fileExists(dir))
+	//	return;
 
 	LLDirIterator dir_iter(dir, "*.xml");
 	while (1)
@@ -724,16 +742,65 @@ void LLWLParamManager::initSingleton()
 	mAnimator.setTimeType(LLWLAnimator::TIME_LINDEN);
 }
 
+//BD - Multiple Viewer Presets
 // static
-std::string LLWLParamManager::getSysDir()
+std::string LLWLParamManager::getSysDir(S32 viewer)
 {
-	return gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight/skies", "");
+	std::string sys_dir;
+	if (viewer == 0)
+	{
+		sys_dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight/skies", "");
+	}
+	else if (viewer == 1 && gSavedSettings.getBOOL("LoadPresetsFirestorm"))
+	{
+		sys_dir = gDirUtilp->getExpandedFilename(LL_PATH_FS, "");
+	}
+	else if (viewer == 2 && gSavedSettings.getBOOL("LoadPresetsAlcheemy"))
+	{
+		sys_dir = gDirUtilp->getExpandedFilename(LL_PATH_AL, "");
+	}
+	else if (viewer == 3 && gSavedSettings.getBOOL("LoadPresetsCatznip"))
+	{
+		sys_dir = gDirUtilp->getExpandedFilename(LL_PATH_CN, "");
+	}
+	else if (viewer == 4 && gSavedSettings.getBOOL("LoadPresetsLinden"))
+	{
+		sys_dir = gDirUtilp->getExpandedFilename(LL_PATH_LL, "");
+	}
+
+	return sys_dir;
 }
 
 // static
-std::string LLWLParamManager::getUserDir()
+std::string LLWLParamManager::getUserDir(S32 viewer)
 {
-	return gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS , "windlight/skies", "");
+	std::string user_dir;
+	if (viewer == 0)
+	{
+		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "");
+	}
+	else if (viewer == 1 && gSavedSettings.getBOOL("LoadPresetsFirestorm"))
+	{
+		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_FS, "");
+		//user_dir = gSavedSettings.getString("UserDirFirestorm");
+	}
+	else if (viewer == 2 && gSavedSettings.getBOOL("LoadPresetsAlchemy"))
+	{
+		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_AL, "");
+		//user_dir = gSavedSettings.getString("UserDirAlchemy");
+	}
+	else if (viewer == 3 && gSavedSettings.getBOOL("LoadPresetsCatznip"))
+	{
+		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_CN, "");
+		//user_dir = gSavedSettings.getString("UserDirCatznip");
+	}
+	else if (viewer == 4 && gSavedSettings.getBOOL("LoadPresetsLinden"))
+	{
+		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_LL, "");
+		//user_dir = gSavedSettings.getString("UserDirLinden");
+	}
+
+	return user_dir;
 }
 
 // static

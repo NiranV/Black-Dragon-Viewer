@@ -255,7 +255,6 @@ LLDir_Win32::LLDir_Win32()
 	// Try the working directory then the exe's dir.
 	mAppRODataDir = mWorkingDir;	
 
-
 //	if (mExecutableDir.find("indra") == std::string::npos)
 	
 	// *NOTE:Mani - It is a mistake to put viewer specific code in
@@ -304,6 +303,26 @@ void LLDir_Win32::initAppDirs(const std::string &app_name,
 	}
 	mAppName = app_name;
 	mOSUserAppDir = add(mOSUserDir, app_name);
+
+	//BD - Multiple Viewer Presets
+	//     Load presets from all main Viewers if installed.
+	//     LL includes Singularity here.
+	std::string program_files;
+	auto ProgramFiles = LLStringUtil::getoptenv("ProgramFiles");
+	mFSAppDir = add(mOSUserDir, "Firestorm", "user_settings", "windlight", "skies");
+	mALAppDir = add(mOSUserDir, "Alchemy", "user_settings", "windlight", "skies");
+	mCNAppDir = add(mOSUserDir, "Catznip", "user_settings", "windlight", "skies");
+	mLLAppDir = add(mOSUserDir, "SecondLife", "user_settings", "windlight", "skies");
+	if (ProgramFiles)
+	{
+		program_files = *ProgramFiles;
+
+		mFSAppRODataDir = add(program_files, "Firestorm-Releasex64", "app_settings", "windlight", "skies");
+		mSGAppRODataDir = add(program_files, "Singularity", "app_settings", "windlight", "skies");
+		mALAppRODataDir = add(program_files, "Alchemy", "app_settings", "windlight", "skies");
+		mCNAppRODataDir = add(program_files, "CatznipViewer", "app_settings", "windlight", "skies");
+		mLLAppRODataDir = add(program_files, "SecondLife", "app_settings", "windlight", "skies");
+	}
 
 	int res = LLFile::mkdir(mOSUserAppDir);
 	if (res == -1)

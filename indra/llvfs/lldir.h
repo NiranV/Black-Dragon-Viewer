@@ -54,7 +54,17 @@ typedef enum ELLPath
 	LL_PATH_DEFAULT_SKIN = 17,
 	LL_PATH_FONTS = 18,
     LL_PATH_DUMP = 19,
+	//BD - Poser
 	LL_PATH_POSES = 20,
+	//BD - Multiple Viewer Presets
+	LL_PATH_FS = 21,
+	LL_PATH_AL = 22,
+	LL_PATH_CN = 23,
+	LL_PATH_LL = 24,
+	LL_PATH_USER_SETTINGS_FS = 25,
+	LL_PATH_USER_SETTINGS_AL = 26,
+	LL_PATH_USER_SETTINGS_CN = 27,
+	LL_PATH_USER_SETTINGS_LL = 28,
 	LL_PATH_LAST
 } ELLPath;
 
@@ -109,6 +119,16 @@ class LLDir
 	const std::string getSkinBaseDir() const;		// folder that contains all installed skins (not user modifications). e.g. c:\program files\second life\skins
 	const std::string &getLLPluginDir() const;		// Directory containing plugins and plugin shell
 	const std::string &getUserName() const;
+
+	//BD - Multiple Viewer Presets
+	const std::string &getFSOSUserDir() const;		// Location of the os-specific user dir
+	const std::string &getALOSUserDir() const;		// Location of the os-specific user dir
+	const std::string &getCNOSUserDir() const;		// Location of the os-specific user dir
+	const std::string &getLLOSUserDir() const;		// Location of the os-specific user dir
+	const std::string &getFSAppRODataDir() const;	// Location of read-only data files
+	const std::string &getALAppRODataDir() const;	// Location of read-only data files
+	const std::string &getCNAppRODataDir() const;	// Location of read-only data files
+	const std::string &getLLAppRODataDir() const;	// Location of read-only data files
 
 	// Expanded filename
 	std::string getExpandedFilename(ELLPath location, const std::string &filename) const;
@@ -272,6 +292,18 @@ protected:
 	std::string mLLPluginDir;			// Location for plugins and plugin shell
     static std::string sDumpDir;            // Per-run crash report subdir of log directory.
 	std::string mUserName;				// Current user name
+
+	//BD - Multiple Viewer Presets
+	std::string mFSAppDir;			// Firestorm's user app dir
+	std::string mALAppDir;			// Alchemy's user app dir
+	std::string mCNAppDir;			// Catznip's user app dir
+	std::string mLLAppDir;			// Linden Lab's user app dir
+
+	std::string mFSAppRODataDir;	// Firestorm's app dir
+	std::string mSGAppRODataDir;	// Singularity's app dir
+	std::string mALAppRODataDir;	// Alchemy's app dir
+	std::string mCNAppRODataDir;	// Catznip's app dir
+	std::string mLLAppRODataDir;	// Linden Lab's app dir
 };
 
 void dir_exists_or_crash(const std::string &dir_name);
