@@ -287,7 +287,6 @@ private:
 	bool mPurgeCache;
     bool mPurgeOnExit;
 	//BD
-	LLViewerJoystick* mJoystick;
 	LLToolMgr* mToolMgr;
 
 	//BD

@@ -352,7 +352,7 @@ void LLAgentCamera::resetView(BOOL reset_camera, BOOL change_camera)
 	{
 		changeCameraToDefault();
 		
-		if (LLViewerJoystick::getInstance()->getOverrideCamera())
+		if (gJoystick.getOverrideCamera())
 		{
 			handle_toggle_flycam();
 		}
@@ -360,7 +360,7 @@ void LLAgentCamera::resetView(BOOL reset_camera, BOOL change_camera)
 		// reset avatar mode from eventual residual motion
 		if (LLToolMgr::getInstance()->inBuildMode())
 		{
-			LLViewerJoystick::getInstance()->moveAvatar(true);
+			gJoystick.moveAvatar(true);
 		}
 
 		//Camera Tool is needed for Free Camera Control Mode
@@ -1356,7 +1356,7 @@ void LLAgentCamera::updateCamera()
 				mFollowCam.copyParams(*current_cam);
 				mFollowCam.setSubjectPositionAndRotation( gAgentAvatarp->getRenderPosition(), avatarRotationForFollowCam );
 				mFollowCam.update();
-				LLViewerJoystick::getInstance()->setCameraNeedsUpdate(true);
+				gJoystick.setCameraNeedsUpdate(true);
 			}
 			else
 			{
@@ -2284,8 +2284,7 @@ void LLAgentCamera::changeCameraToMouselook(BOOL animate)
 // [RLVa:KB] - Checked: RLVa-2.0.0
 		|| ( (RlvActions::isRlvEnabled()) && (!RlvActions::canChangeToMouselook()) )
 // [/RLVa:KB]
-
-		|| LLViewerJoystick::getInstance()->getOverrideCamera())
+		|| gJoystick.getOverrideCamera())
 	{
 		return;
 	}
@@ -2345,7 +2344,7 @@ void LLAgentCamera::changeCameraToMouselook(BOOL animate)
 //-----------------------------------------------------------------------------
 void LLAgentCamera::changeCameraToDefault()
 {
-	if (LLViewerJoystick::getInstance()->getOverrideCamera())
+	if (gJoystick.getOverrideCamera())
 	{
 		return;
 	}
@@ -2371,7 +2370,7 @@ void LLAgentCamera::changeCameraToDefault()
 //-----------------------------------------------------------------------------
 void LLAgentCamera::changeCameraToFollow(BOOL animate)
 {
-	if (LLViewerJoystick::getInstance()->getOverrideCamera())
+	if (gJoystick.getOverrideCamera())
 	{
 		return;
 	}
@@ -2425,7 +2424,7 @@ void LLAgentCamera::changeCameraToFollow(BOOL animate)
 //-----------------------------------------------------------------------------
 void LLAgentCamera::changeCameraToThirdPerson(BOOL animate)
 {
-	if (LLViewerJoystick::getInstance()->getOverrideCamera())
+	if (gJoystick.getOverrideCamera())
 	{
 		return;
 	}
@@ -2503,7 +2502,7 @@ void LLAgentCamera::changeCameraToThirdPerson(BOOL animate)
 //-----------------------------------------------------------------------------
 void LLAgentCamera::changeCameraToCustomizeAvatar()
 {
-	if (LLViewerJoystick::getInstance()->getOverrideCamera() || !isAgentAvatarValid())
+	if (gJoystick.getOverrideCamera() || !isAgentAvatarValid())
 	{
 		return;
 	}

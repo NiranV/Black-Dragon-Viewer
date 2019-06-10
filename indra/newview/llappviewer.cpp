@@ -1140,8 +1140,7 @@ bool LLAppViewer::init()
 	gSimLastTime = gRenderStartTime.getElapsedTimeF32();
 	gSimFrames = (F32)gFrameCount;
 
-	mJoystick = LLViewerJoystick::getInstance();
-	mJoystick->init(false);
+	gJoystick.init(false);
 	
 	try {
 		initializeSecHandler();
@@ -1258,7 +1257,7 @@ bool LLAppViewer::init()
 	LLVoiceChannel::setCurrentVoiceChannelChangedCallback(boost::bind(&LLFloaterIMContainer::onCurrentChannelChanged, _1), true);
 
 	//BD
-	mJoystick->setNeedsReset(true);
+	gJoystick.setNeedsReset(true);
 	/*----------------------------------------------------------------------*/
 
 	gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
@@ -1477,7 +1476,7 @@ bool LLAppViewer::doFrame()
 				&& !gFocusMgr.focusLocked())
 			{
 				//BD
-				mJoystick->scanJoystick();
+				gJoystick.scanJoystick();
 				gKeyboard->scanKeyboard();
 			}
 
@@ -1889,8 +1888,7 @@ bool LLAppViewer::cleanup()
 	gKeyboard = NULL;
 
 	//BD - Turn off Space Navigator and similar devices
-	mJoystick->terminate();
-	mJoystick = NULL;
+	gJoystick.terminate();
 
 	LL_INFOS() << "Cleaning up Objects" << LL_ENDL;
 
@@ -5030,13 +5028,13 @@ void LLAppViewer::idle()
 	{
 		gAgentPilot.moveCamera();
 	}
-	else if (mJoystick->getOverrideCamera())
+	else if (gJoystick.getOverrideCamera())
 	{
 		if (mToolMgr->inBuildMode())
 		{
-			mJoystick->moveObjects();
+			gJoystick.moveObjects();
 		}
-		mJoystick->moveFlycam();
+		gJoystick.moveFlycam();
 	}
 	else
 	{

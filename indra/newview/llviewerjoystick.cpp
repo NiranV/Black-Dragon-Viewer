@@ -43,6 +43,7 @@
 //BD
 #include "lldefs.h"
 
+LLViewerJoystick gJoystick;
 
 // ----------------------------------------------------------------------------
 // Constants
@@ -107,16 +108,15 @@ void LLViewerJoystick::setOverrideCamera(bool val)
 NDOF_HotPlugResult LLViewerJoystick::HotPlugAddCallback(NDOF_Device *dev)
 {
 	NDOF_HotPlugResult res = NDOF_DISCARD_HOTPLUGGED;
-	LLViewerJoystick* joystick(LLViewerJoystick::getInstance());
-	if (joystick->mDriverState == JDS_UNINITIALIZED)
+	if (gJoystick.mDriverState == JDS_UNINITIALIZED)
 	{
         LL_INFOS() << "HotPlugAddCallback: will use device:" << LL_ENDL;
 		ndof_dump(dev);
-		joystick->mNdofDev = dev;
-        joystick->mDriverState = JDS_INITIALIZED;
+		gJoystick.mNdofDev = dev;
+		gJoystick.mDriverState = JDS_INITIALIZED;
         res = NDOF_KEEP_HOTPLUGGED;
 	}
-	joystick->updateEnabled(true);
+	gJoystick.updateEnabled(true);
     return res;
 }
 #endif
@@ -125,15 +125,14 @@ NDOF_HotPlugResult LLViewerJoystick::HotPlugAddCallback(NDOF_Device *dev)
 #if LIB_NDOF
 void LLViewerJoystick::HotPlugRemovalCallback(NDOF_Device *dev)
 {
-	LLViewerJoystick* joystick(LLViewerJoystick::getInstance());
-	if (joystick->mNdofDev == dev)
+	if (gJoystick.mNdofDev == dev)
 	{
         LL_INFOS() << "HotPlugRemovalCallback: joystick->mNdofDev=" 
-				<< joystick->mNdofDev << "; removed device:" << LL_ENDL;
+			<< gJoystick.mNdofDev << "; removed device:" << LL_ENDL;
 		ndof_dump(dev);
-		joystick->mDriverState = JDS_UNINITIALIZED;
+		gJoystick.mDriverState = JDS_UNINITIALIZED;
 	}
-	joystick->updateEnabled(true);
+	gJoystick.updateEnabled(true);
 }
 #endif
 

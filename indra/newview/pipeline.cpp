@@ -6216,7 +6216,7 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 		// begin() == the closest light and rbegin() == the farthest light
 		const S32 MAX_LOCAL_LIGHTS = 6;
 // 		LLVector3 cam_pos = gAgent.getCameraPositionAgent();
-		LLVector3 cam_pos = LLViewerJoystick::getInstance()->getOverrideCamera() ?
+		LLVector3 cam_pos = gJoystick.getOverrideCamera() ?
 						camera.getOrigin() : 
 						gAgent.getPositionAgent();
 
@@ -7742,7 +7742,6 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 	}
 
 	//BD
-	LLViewerJoystick* joystick = LLViewerJoystick::getInstance();
 	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
 	exoPostProcess* exo = exoPostProcess::getInstance();
 	LLViewerMediaFocus* media_focus = LLViewerMediaFocus::getInstance();
@@ -7949,31 +7948,19 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 			}
 
 			//BD
-			if(CameraDoFLocked)
+			if (focus_point.isExactlyZero())
 			{
-				focus_point = PrevDoFFocusPoint;
-			}
-			else if (focus_point.isExactlyZero())
-			{
-				if (joystick->getOverrideCamera())
+				//BD - Free Depth of Field Focus
+				if (gJoystick.getOverrideCamera() || CameraFreeDoFFocus)
 				{ //focus on point under cursor
 					focus_point.set(gDebugRaycastIntersection.getF32ptr());
 				}
-				//BD
-				else if ((CameraFreeDoFFocus && !joystick->getOverrideCamera()) 
-					|| gAgentCamera.cameraMouselook())
+				else if (gAgentCamera.cameraMouselook())
 				{ //focus on point under mouselook crosshairs
 					LLVector4a result;
 					result.clear();
-					gViewerWindow->cursorIntersect(-1, -1, 512.f, NULL, -1, FALSE, TRUE,
- 													NULL,
- 													&result);
-
+					gViewerWindow->cursorIntersect(-1, -1, 512.f, NULL, -1, FALSE, TRUE, NULL, &result);
 					focus_point.set(result.getF32ptr());
-					//BD - Safeguard against sudden all-blurry-screen in rare
-					//     inconsistent situations caused by unknown reasons.
-					focus_point.clamp(LLVector3(0,0,0),focus_point);
-
 				}
 				else
 				{
@@ -7985,11 +7972,19 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 					}
 				}
 
+				//BD - Safeguard against sudden all-blurry-screen in rare
+				//     inconsistent situations caused by unknown reasons.
+				focus_point.clamp(LLVector3(0, 0, 0), focus_point);
+
 				//BD
 				if(!focus_point.isExactlyZero())
 				{
 					PrevDoFFocusPoint = focus_point;
 				}
+			}
+			else if (CameraDoFLocked)
+			{
+				focus_point = PrevDoFFocusPoint;
 			}
 
 			LLVector3 eye = viewer_cam->getOrigin();

@@ -6470,7 +6470,7 @@ void process_teleport_local(LLMessageSystem *msg,void**)
 	gAgent.setPositionAgent(pos);
 	gAgentCamera.slamLookAt(look_at);
 
-	if ( !(gAgent.getTeleportKeepsLookAt() && LLViewerJoystick::getInstance()->getOverrideCamera()) )
+	if (!(gAgent.getTeleportKeepsLookAt() && gJoystick.getOverrideCamera()))
 	{
 		gAgentCamera.resetView(TRUE, TRUE);
 	}

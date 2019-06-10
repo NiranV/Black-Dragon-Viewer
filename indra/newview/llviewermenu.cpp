@@ -2957,14 +2957,14 @@ class LLViewCheckJoystickFlycam : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-		bool new_value = LLViewerJoystick::getInstance()->getOverrideCamera();
+		bool new_value = gJoystick.getOverrideCamera();
 		return new_value;
 	}
 };
 
 void handle_toggle_flycam()
 {
-	LLViewerJoystick::getInstance()->toggleFlycam();
+	gJoystick.toggleFlycam();
 }
 
 class LLObjectBuild : public view_listener_t
@@ -3032,8 +3032,8 @@ void handle_object_edit()
 	LLToolMgr::getInstance()->setCurrentToolset(gBasicToolset);
 	gFloaterTools->setEditTool( LLToolCompTranslate::getInstance() );
 	
-	LLViewerJoystick::getInstance()->moveObjects(true);
-	LLViewerJoystick::getInstance()->setNeedsReset(true);
+	gJoystick.moveObjects(true);
+	gJoystick.setNeedsReset(true);
 	
 	// Could be first use
 	//LLFirstUse::useBuild();

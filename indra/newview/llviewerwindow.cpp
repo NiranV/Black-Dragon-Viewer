@@ -1482,7 +1482,7 @@ BOOL LLViewerWindow::handleTranslatedKeyUp(KEY key,  MASK mask)
 
 void LLViewerWindow::handleScanKey(KEY key, BOOL key_down, BOOL key_up, BOOL key_level)
 {
-	LLViewerJoystick::getInstance()->setCameraNeedsUpdate(true);
+	gJoystick.setCameraNeedsUpdate(true);
 	gViewerKeyboard.scanKey(key, key_down, key_up, key_level);
 	return; // Be clear this function returns nothing
 }
@@ -1529,7 +1529,7 @@ BOOL LLViewerWindow::handleActivateApp(LLWindow *window, BOOL activating)
 {
 	//if (!activating) gAgentCamera.changeCameraToDefault();
 
-	LLViewerJoystick::getInstance()->setNeedsReset(true);
+	gJoystick.setNeedsReset(true);
 	return FALSE;
 }
 
@@ -1620,9 +1620,9 @@ void LLViewerWindow::handleDataCopy(LLWindow *window, S32 data_type, void *data)
 
 BOOL LLViewerWindow::handleTimerEvent(LLWindow *window)
 {
-	if (LLViewerJoystick::getInstance()->getOverrideCamera())
+	if (gJoystick.getOverrideCamera())
 	{
-		LLViewerJoystick::getInstance()->updateStatus();
+		gJoystick.updateStatus();
 		return TRUE;
 	}
 	return FALSE;
@@ -1631,9 +1631,9 @@ BOOL LLViewerWindow::handleTimerEvent(LLWindow *window)
 BOOL LLViewerWindow::handleDeviceChange(LLWindow *window)
 {
 	// give a chance to use a joystick after startup (hot-plugging)
-	if (!LLViewerJoystick::getInstance()->isJoystickInitialized() )
+	if (!gJoystick.isJoystickInitialized())
 	{
-		LLViewerJoystick::getInstance()->init(true);
+		gJoystick.init(true);
 		return TRUE;
 	}
 	return FALSE;
@@ -4112,6 +4112,8 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 	S32 x = mouse_x;
 	S32 y = mouse_y;
 
+	LLViewerCamera* camera = LLViewerCamera::getInstance();
+
 	if ((mouse_x == -1) && (mouse_y == -1)) // use current mouse position
 	{
 		x = getCurrentMouseX();
@@ -4125,11 +4127,11 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 	
 	// world coordinates of mouse
 	LLVector3 mouse_direction_global = mouseDirectionGlobal(x,y);
-	LLVector3 mouse_point_global = LLViewerCamera::getInstance()->getOrigin();
+	LLVector3 mouse_point_global = camera->getOrigin();
 	
 	//get near clip plane
-	LLVector3 n = LLViewerCamera::getInstance()->getAtAxis();
-	LLVector3 p = mouse_point_global + n * LLViewerCamera::getInstance()->getNear();
+	LLVector3 n = camera->getAtAxis();
+	LLVector3 p = mouse_point_global + n * camera->getNear();
 
 	//project mouse point onto plane
 	LLVector3 pos;
@@ -4139,9 +4141,11 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 	LLVector3 mouse_world_start = mouse_point_global;
 	LLVector3 mouse_world_end   = mouse_point_global + mouse_direction_global * depth;
 
-	if (!LLViewerJoystick::getInstance()->getOverrideCamera())
-	{ //always set raycast intersection to mouse_world_end unless
-		//flycam is on (for DoF effect)
+	//BD - Always set raycast intersection to mouse_world_end unless
+	//     flycam is on, mouselook is active or free DoF is enabled (for DoF effect)
+	if (!gJoystick.getOverrideCamera()
+		&& !gPipeline.CameraFreeDoFFocus)
+	{
 		gDebugRaycastIntersection.load3(mouse_world_end.mV);
 	}
 
@@ -4204,7 +4208,7 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 														  face_hit, intersection, uv, normal, tangent);
 			//BD - Check whether we have flycam enabled and ignore the fact we are showing transparent
 			//     otherwise we end up with locking our depth of field focus.
-			if (found && (!pick_transparent || LLViewerJoystick::getInstance()->getOverrideCamera()))
+			if (found && (!pick_transparent || gJoystick.getOverrideCamera()))
 			{
 				gDebugRaycastIntersection = *intersection;
 			}

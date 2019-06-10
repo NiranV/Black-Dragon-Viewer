@@ -324,7 +324,7 @@ void LLToolMgr::enterBuildMode(bool verify_canedit /*=false*/)
 		if (gSavedSettings.getBOOL("EditCameraMovement"))
 		{
 			// camera should be set
-			if (LLViewerJoystick::getInstance()->getOverrideCamera())
+			if (gJoystick.getOverrideCamera())
 			{
 				handle_toggle_flycam();
 			}
@@ -349,7 +349,7 @@ void LLToolMgr::enterBuildMode(bool verify_canedit /*=false*/)
 		gAgentCamera.resetView(false);
 
 		// avoid spurious avatar movements
-		LLViewerJoystick::getInstance()->setNeedsReset();
+		gJoystick.setNeedsReset();
 
 	}
 // [RLVa:KB] - Checked: RLVa-2.1.0
@@ -380,7 +380,7 @@ void LLToolMgr::leaveBuildMode()
 			gViewerWindow->showCursor();			
 		}
 		// avoid spurious avatar movements pulling out of edit mode
-		LLViewerJoystick::getInstance()->setNeedsReset();
+		gJoystick.setNeedsReset();
 	}
 
 }

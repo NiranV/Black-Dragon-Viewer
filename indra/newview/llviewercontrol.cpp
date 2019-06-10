@@ -348,8 +348,8 @@ static void handleAudioVolumeChanged(const LLSD& newvalue)
 
 static bool handleJoystickChanged(const LLSD& newvalue)
 {
-	LLViewerJoystick::getInstance()->setCameraNeedsUpdate(TRUE);
-	LLViewerJoystick::getInstance()->refreshAxesMapping();
+	gJoystick.setCameraNeedsUpdate(TRUE);
+	gJoystick.refreshAxesMapping();
 	return true;
 }
 
@@ -624,8 +624,6 @@ bool toggle_freeze_world(const LLSD& newvalue)
 			avatarp = *iter;
 			mAvatarPauseHandles.push_back(avatarp->requestPause());
 		}
-
-
 
 		// freeze everything else
 		gSavedSettings.setBOOL("FreezeTime", TRUE);
