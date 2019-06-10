@@ -252,6 +252,7 @@ set(viewer_SOURCE_FILES
     llfloaterdeleteprefpreset.cpp
     llfloaterdeleteprefpreset.cpp
     llfloaterdestinations.cpp
+    llfloaterdisplayname.cpp
     llfloatereditdaycycle.cpp
     llfloatereditsky.cpp
     llfloatereditwater.cpp
@@ -306,6 +307,7 @@ set(viewer_SOURCE_FILES
     llfloaterpay.cpp
     llfloaterperms.cpp
     llfloaterpostprocess.cpp
+    llfloaterprofile.cpp
     llfloaterpreference.cpp
     llfloaterpreviewtrash.cpp
     llfloaterproperties.cpp
@@ -446,7 +448,6 @@ set(viewer_SOURCE_FILES
     llpanelavatar.cpp
     llpanelavatartag.cpp
     llpanelblockedlist.cpp
-    llpanelclassified.cpp
     llpanelcontents.cpp
     llpaneleditwearable.cpp
     llpanelexperiencelisteditor.cpp
@@ -477,7 +478,6 @@ set(viewer_SOURCE_FILES
     llpanelmediasettingsgeneral.cpp
     llpanelmediasettingspermissions.cpp
     llpanelmediasettingssecurity.cpp
-    llpanelme.cpp
     llpanelnearbymedia.cpp
     llpanelobject.cpp
     llpanelobjectinventory.cpp
@@ -488,7 +488,6 @@ set(viewer_SOURCE_FILES
     llpanelpeoplemenus.cpp
     llpanelpermissions.cpp
     llpanelpick.cpp
-    llpanelpicks.cpp
     llpanelplaceinfo.cpp
     llpanelplaceprofile.cpp
     llpanelplaces.cpp
@@ -496,6 +495,8 @@ set(viewer_SOURCE_FILES
     llpanelpresetspulldown.cpp
     llpanelprimmediacontrols.cpp
     llpanelprofile.cpp
+    llpanelprofileclassifieds.cpp
+    llpanelprofilepicks.cpp
     llpanelsnapshot.cpp
     llpanelsnapshotinventory.cpp
     llpanelsnapshotlocal.cpp
@@ -652,6 +653,7 @@ set(viewer_SOURCE_FILES
     llviewercontrol.cpp
     llviewercontrollistener.cpp
     llviewerdisplay.cpp
+    llviewerdisplayname.cpp
     llviewerfloaterreg.cpp
     llviewerfoldertype.cpp
     llviewergenericmessage.cpp
@@ -898,6 +900,7 @@ set(viewer_HEADER_FILES
     llfloaterconversationpreview.h
     llfloaterdeleteprefpreset.h
     llfloaterdestinations.h
+    llfloaterdisplayname.h
     llfloatereditdaycycle.h
     llfloatereditsky.h
     llfloatereditwater.h
@@ -955,6 +958,7 @@ set(viewer_HEADER_FILES
     llfloaterpay.h
     llfloaterperms.h
     llfloaterpostprocess.h
+    llfloaterprofile.h
     llfloaterpreference.h
     llfloaterpreviewtrash.h
     llfloaterproperties.h
@@ -1085,7 +1089,6 @@ set(viewer_HEADER_FILES
     llpanelavatar.h
     llpanelavatartag.h
     llpanelblockedlist.h
-    llpanelclassified.h
     llpanelcontents.h
     llpaneleditwearable.h
     llpanelexperiencelisteditor.h
@@ -1117,7 +1120,6 @@ set(viewer_HEADER_FILES
     llpanelmediasettingsgeneral.h
     llpanelmediasettingspermissions.h
     llpanelmediasettingssecurity.h
-    llpanelme.h
     llpanelnearbymedia.h
     llpanelobject.h
     llpanelobjectinventory.h
@@ -1128,7 +1130,6 @@ set(viewer_HEADER_FILES
     llpanelpeoplemenus.h
     llpanelpermissions.h
     llpanelpick.h
-    llpanelpicks.h
     llpanelplaceinfo.h
     llpanelplaceprofile.h
     llpanelplaces.h
@@ -1136,6 +1137,8 @@ set(viewer_HEADER_FILES
     llpanelpresetspulldown.h
     llpanelprimmediacontrols.h
     llpanelprofile.h
+    llpanelprofileclassifieds.h
+    llpanelprofilepicks.h
     llpanelsnapshot.h
     llpanelteleporthistory.h
     llpaneltiptoast.h
@@ -1293,6 +1296,7 @@ set(viewer_HEADER_FILES
     llviewercontrol.h
     llviewercontrollistener.h
     llviewerdisplay.h
+    llviewerdisplayname.h
     llviewerfloaterreg.h
     llviewerfoldertype.h
     llviewergenericmessage.h

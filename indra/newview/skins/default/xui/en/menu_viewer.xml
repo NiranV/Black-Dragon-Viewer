@@ -165,9 +165,9 @@
 	<menu_item_call
          label="Picks"
          name="Picks">
-            <menu_item_call.on_click
-             function="Floater.Toggle"
-             parameter="picks" />
+           <menu_item_call.on_click
+         function="ShowAgentProfilePicks" />
+      </menu_item_call>
         </menu_item_call>
 	<menu_item_call
          label="Places"
