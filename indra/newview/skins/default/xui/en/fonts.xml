@@ -6,6 +6,7 @@
     <os name="Windows">
       <file>meiryo.TTC</file>
       <file>MSGOTHIC.TTC</file>
+      <file>msyh.ttc</file>
     </os>
     <os name="Mac">
       <file>ヒラギノ角ゴシック W3.ttc</file>  
@@ -16,6 +17,7 @@
       <file>AppleGothic.ttf</file>
       <file>AppleSDGothicNeo-Regular.otf</file>
       <file>华文细黑.ttf</file>
+      <file>PingFang.ttc</file>
     </os>
   </font>
 

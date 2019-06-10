@@ -36,6 +36,7 @@
 #include "llfloater.h"
 #include "llavatarpropertiesprocessor.h"
 #include "llconversationlog.h"
+#include "llsearcheditor.h"
 #include "lllistcontextmenu.h"
 #include "llmutelist.h"
 
@@ -51,6 +52,14 @@ class LLTextBox;
 class LLNameListCtrl;
 class LLProgressBar;
 class LLTabContainer;
+
+namespace ll
+{
+	namespace prefs
+	{
+		struct SearchData;
+	}
+}
 
 typedef std::map<std::string, std::string> notifications_map;
 
@@ -277,6 +286,8 @@ private:
 	void onDeleteTranscriptsResponse(const LLSD& notification, const LLSD& response);
 	void updateDeleteTranscriptsButton();
 
+	static bool loadFromFilename(const std::string& filename, std::map<std::string, std::string> &label_map);
+	
 //	//BD - Expandable Tabs
 	S32 mModifier;
 
@@ -295,6 +306,12 @@ private:
 	LLAvatarData mAvatarProperties;
 	LOG_CLASS(LLFloaterPreference);
 
+	LLSearchEditor *mFilterEdit;
+	std::unique_ptr< ll::prefs::SearchData > mSearchData;
+
+	void onUpdateFilterTerm( bool force = false );
+	void collectSearchableItems();
+	
 //	//BD - Avatar Render Settings
 	bool isHiddenRow(const std::string& av_name);
 	void callbackAvatarPicked(const uuid_vec_t& ids, S32 visual_setting);

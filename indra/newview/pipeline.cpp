@@ -4314,6 +4314,108 @@ void LLPipeline::renderHighlights()
 	LLGLEnable color_mat(GL_COLOR_MATERIAL);
 	disableLights();
 
+	if (!hasRenderType(LLPipeline::RENDER_TYPE_HUD) && !mHighlightSet.empty())
+	{ //draw blurry highlight image over screen
+		LLGLEnable blend(GL_BLEND);
+		LLGLDepthTest depth(GL_TRUE, GL_FALSE, GL_ALWAYS);
+		LLGLDisable test(GL_ALPHA_TEST);
+
+		LLGLEnable stencil(GL_STENCIL_TEST);
+		gGL.flush();
+		glStencilMask(0xFFFFFFFF);
+		glClearStencil(1);
+		glClear(GL_STENCIL_BUFFER_BIT);
+
+		glStencilFunc(GL_ALWAYS, 0, 0xFFFFFFFF);
+		glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+
+        if (canUseVertexShaders())
+        {
+            gHighlightProgram.bind();
+        }
+
+		gGL.setColorMask(false, false);
+		for (std::set<HighlightItem>::iterator iter = mHighlightSet.begin(); iter != mHighlightSet.end(); ++iter)
+		{
+			renderHighlight(iter->mItem->getVObj(), 1.f);
+		}
+		gGL.setColorMask(true, false);
+
+		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+		glStencilFunc(GL_NOTEQUAL, 0, 0xFFFFFFFF);
+		
+		//gGL.setSceneBlendType(LLRender::BT_ADD_WITH_ALPHA);
+
+		gGL.pushMatrix();
+		gGL.loadIdentity();
+		gGL.matrixMode(LLRender::MM_PROJECTION);
+		gGL.pushMatrix();
+		gGL.loadIdentity();
+
+		gGL.getTexUnit(0)->bind(&mHighlight);
+
+		LLVector2 tc1;
+		LLVector2 tc2;
+
+		tc1.setVec(0,0);
+		tc2.setVec(2,2);
+
+		gGL.begin(LLRender::TRIANGLES);
+				
+		F32 scale = RenderHighlightBrightness;
+		LLColor4 color = RenderHighlightColor;
+		F32 thickness = RenderHighlightThickness;
+
+		for (S32 pass = 0; pass < 2; ++pass)
+		{
+			if (pass == 0)
+			{
+				gGL.setSceneBlendType(LLRender::BT_ADD_WITH_ALPHA);
+			}
+			else
+			{
+				gGL.setSceneBlendType(LLRender::BT_ALPHA);
+			}
+
+			for (S32 i = 0; i < 8; ++i)
+			{
+				for (S32 j = 0; j < 8; ++j)
+				{
+					LLVector2 tc(i-4+0.5f, j-4+0.5f);
+
+					F32 dist = 1.f-(tc.length()/sqrtf(32.f));
+					dist *= scale/64.f;
+
+					tc *= thickness;
+					tc.mV[0] = (tc.mV[0])/mHighlight.getWidth();
+					tc.mV[1] = (tc.mV[1])/mHighlight.getHeight();
+
+					gGL.color4f(color.mV[0],
+								color.mV[1],
+								color.mV[2],
+								color.mV[3]*dist);
+					
+					gGL.texCoord2f(tc.mV[0]+tc1.mV[0], tc.mV[1]+tc2.mV[1]);
+					gGL.vertex2f(-1,3);
+					
+					gGL.texCoord2f(tc.mV[0]+tc1.mV[0], tc.mV[1]+tc1.mV[1]);
+					gGL.vertex2f(-1,-1);
+					
+					gGL.texCoord2f(tc.mV[0]+tc2.mV[0], tc.mV[1]+tc1.mV[1]);
+					gGL.vertex2f(3,-1);
+				}
+			}
+		}
+
+		gGL.end();
+
+		gGL.popMatrix();
+		gGL.matrixMode(LLRender::MM_MODELVIEW);
+		gGL.popMatrix();
+		
+		//gGL.setSceneBlendType(LLRender::BT_ALPHA);
+	}
+
 	if ((LLViewerShaderMgr::instance()->getVertexShaderLevel(LLViewerShaderMgr::SHADER_INTERFACE) > 0))
 	{
 		gHighlightProgram.bind();
@@ -10957,6 +11059,11 @@ void LLPipeline::generateHighlight(LLCamera& camera)
 		disableLights();
 		gGL.setColorMask(true, true);
 		mHighlight.clear();
+
+        if (canUseVertexShaders())
+        {
+            gHighlightProgram.bind();
+        }
 
 		gGL.getTexUnit(0)->bind(LLViewerFetchedTexture::sWhiteImagep);
 		for (std::set<HighlightItem>::iterator iter = mHighlightSet.begin(); iter != mHighlightSet.end(); )

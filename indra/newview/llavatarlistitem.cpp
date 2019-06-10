@@ -114,6 +114,7 @@ BOOL  LLAvatarListItem::postBuild()
 	mAvatarName = getChild<LLTextBox>("avatar_name");
 	//BD
 	mExtraInformation = getChild<LLTextBox>("extra_information");
+	mSpeakingIndicator->setChannelState(LLOutputMonitorCtrl::UNDEFINED_CHANNEL);
 
 	//BD - Empower someone with rights or revoke them.
 	mIconPermissionOnline = getChild<LLButton>("permission_online_icon");
