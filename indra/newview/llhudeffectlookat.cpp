@@ -456,10 +456,10 @@ void LLHUDEffectLookAt::clearLookAtTarget()
 	mTargetObject = NULL;
 	mTargetOffsetGlobal.clearVec();
 	mTargetType = LOOKAT_TARGET_NONE;
-	if (mSourceObject.notNull())
+	/*if (mSourceObject.notNull())
 	{
 		((LLVOAvatar*)(LLViewerObject*)mSourceObject)->stopMotion(ANIM_AGENT_HEAD_ROT);
-	}
+	}*/
 }
 
 //-----------------------------------------------------------------------------
