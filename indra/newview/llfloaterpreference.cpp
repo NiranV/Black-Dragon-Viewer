@@ -3746,12 +3746,20 @@ void LLPanelPreferenceGraphics::draw()
 
 void LLPanelPreferenceGraphics::onPresetsListChange()
 {
+	resetDirtyChilds();
 	setPresetText();
+
+	LLFloaterPreference* instance = LLFloaterReg::findTypedInstance<LLFloaterPreference>("preferences");
+	if (instance && !gSavedSettings.getString("PresetGraphicActive").empty())
+	{
+		instance->saveSettings(); //make cancel work correctly after changing the preset
+	}
 	else
 	{
 		std::string dummy;
-		instance->saveGraphicsPreset(dummy);
+		//instance->saveGraphicsPreset(dummy);
 	}
+
 }
 
 void LLPanelPreferenceGraphics::setPresetText()
@@ -3760,6 +3768,15 @@ void LLPanelPreferenceGraphics::setPresetText()
 	//LLTextBox* preset_text = getChild<LLTextBox>("preset_text");
 
 	std::string preset_graphic_active = gSavedSettings.getString("PresetGraphicActive");
+
+	/*if (!preset_graphic_active.empty() && preset_graphic_active != preset_text->getText())
+	{
+		LLFloaterPreference* instance = LLFloaterReg::findTypedInstance<LLFloaterPreference>("preferences");
+		if (instance)
+		{
+			instance->saveGraphicsPreset(preset_graphic_active);
+		}
+	}*/
 
 	if (hasDirtyChilds() && !preset_graphic_active.empty())
 	{
@@ -3773,6 +3790,10 @@ void LLPanelPreferenceGraphics::setPresetText()
 //	//BD - Quick Graphics Presets
 	/*if (!preset_graphic_active.empty())
 	{
+		if (preset_graphic_active == PRESETS_DEFAULT)
+		{
+			preset_graphic_active = LLTrans::getString(PRESETS_DEFAULT);
+		}
 		preset_text->setText(preset_graphic_active);
 	}
 	else
