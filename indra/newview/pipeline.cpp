@@ -4362,9 +4362,13 @@ void LLPipeline::renderHighlights()
 
 		gGL.begin(LLRender::TRIANGLES);
 				
-		F32 scale = RenderHighlightBrightness;
-		LLColor4 color = RenderHighlightColor;
-		F32 thickness = RenderHighlightThickness;
+		//F32 scale = RenderHighlightBrightness;
+		//LLColor4 color = RenderHighlightColor;
+		//F32 thickness = RenderHighlightThickness;
+
+		F32 scale = 1.f;
+		LLColor4 color = LLColor4::cyan1;
+		F32 thickness = 3.f;
 
 		for (S32 pass = 0; pass < 2; ++pass)
 		{

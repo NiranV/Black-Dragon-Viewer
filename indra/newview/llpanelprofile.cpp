@@ -574,7 +574,9 @@ void LLPanelProfileSecondLife::onClickToggleBlock()
 
 void LLPanelProfileSecondLife::onAddFriendButtonClick()
 {
-    LLAvatarActions::requestFriendshipDialog(getAvatarId());
+	uuid_vec_t uuids;
+	uuids.push_back(getAvatarId());
+	LLAvatarActions::requestFriendshipDialog(uuids);
 }
 
 void LLPanelProfileSecondLife::onIMButtonClick()

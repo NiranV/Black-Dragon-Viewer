@@ -606,7 +606,7 @@ void LLViewerTexture::updateClass(const F32 velocity, const F32 angular_velocity
 		{
 			sGracePeriodTimer.start();
 		}
-		
+
 		//BD - Give it two seconds before starting to trash textures.
 		if (sGracePeriodTimer.getElapsedTimeF32() > 2.0f)
 		{
@@ -621,6 +621,7 @@ void LLViewerTexture::updateClass(const F32 velocity, const F32 angular_velocity
 				sEvaluationTimer.reset();
 			}
 		}
+	}
 	else if(isMemoryForTextureLow())
 	{
 		// Note: isMemoryForTextureLow() uses 1s delay, make sure we waited enough for it to recheck

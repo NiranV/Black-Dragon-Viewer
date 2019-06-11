@@ -401,14 +401,13 @@ void LLTabContainer::draw()
 	S32 cur_scroll_pos = getScrollPos();
 	if (cur_scroll_pos > 0)
 	{
-		S32 available_width_with_arrows = getRect().getWidth() - mRightTabBtnOffset - (LLPANEL_BORDER_WIDTH + tabcntr_arrow_btn_size  + tabcntr_arrow_btn_size + 1);
 		if (mIsVertical)
 		{
 			target_pixel_scroll = cur_scroll_pos * (BTN_HEIGHT + tabcntrv_pad);
 		}
 		else
 		{
-			S32 available_width_with_arrows = getRect().getWidth() - mRightTabBtnOffset - 2 * (LLPANEL_BORDER_WIDTH + tabcntr_arrow_btn_size  + tabcntr_arrow_btn_size + 1);
+			S32 available_width_with_arrows = getRect().getWidth() - mRightTabBtnOffset - (LLPANEL_BORDER_WIDTH + tabcntr_arrow_btn_size + tabcntr_arrow_btn_size + 1);
 			for(tuple_list_t::iterator iter = mTabList.begin(); iter != mTabList.end(); ++iter)
 			{
 				if (cur_scroll_pos == 0)
