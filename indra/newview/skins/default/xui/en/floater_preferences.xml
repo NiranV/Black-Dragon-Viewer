@@ -3,7 +3,7 @@
 legacy_header_height="18"
 positioning="centered"
 default_tab_group="1"
-height="460"
+height="461"
 layout="topleft"
 name="Preferences"
 help_topic="preferences"
@@ -178,67 +178,6 @@ width="669">
  width="513"
  top="17"
  left="149"/>
- <button
- follows="right|bottom"
- height="21"
- label="OK"
- label_selected="OK"
- layout="topleft"
- right="-99"
- name="OK"
- top="432"
- width="90">
- <button.commit_callback
- function="Pref.OK" />
- </button>
- <button
- follows="right|bottom"
- height="21"
- label="Cancel"
- label_selected="Cancel"
- layout="topleft"
- left_pad="5"
- name="Cancel"
- right="-8"
- width="90" >
- <button.commit_callback
- function="Pref.Cancel" />
- </button>
-
-    <panel
-     name="search_panel"
-     layout="topleft"
-     follows="left|top|right"
-     left="4"
-     right="-4"
-     top="21"
-     height="18"
-     tab_group="2">
-        <search_editor
-         clear_button_visible="true"
-         follows="left|top|right"
-         height="18"
-         label="Search Settings"
-         layout="topleft"
-         left="0"
-         max_length_bytes="255"
-         name="search_prefs_edit"
-         right="-1"
-         text_pad_left="6"
-         tool_tip="Type the search term you are interested in here. Results will be displayed for partial fulltext matches within the setting's name or comment."
-         top="0">
-         <search_editor.commit_callback
-          function="UpdateFilter" />
-         <search_editor.clear_button
-          rect.height="18"
-          rect.width="18"
-          rect.bottom="-1" />
-         <search_editor.search_button
-          rect.height="12"
-          rect.width="12"
-          rect.bottom="-1" />
-        </search_editor>
-    </panel>
 
  <tab_container
  follows="all"
@@ -356,4 +295,55 @@ width="669">
   layout="topleft"
   name="uploads" />
  </tab_container>
+ 
+ <button
+ follows="left|bottom"
+ height="22"
+ label="OK"
+ label_selected="OK"
+ layout="topleft"
+ image_hover_unselected="Toolbar_Middle_Over"
+ image_selected="Toolbar_Middle_Selected"
+ image_unselected="Toolbar_Middle_Off"
+ left="8"
+ name="OK"
+ top="432"
+ width="90">
+ <button.commit_callback
+ function="Pref.OK" />
+ </button>
+ <filter_editor
+  follows="left|bottom|right"
+  height="21"
+  label="Search Preferences"
+  layout="topleft"
+  left_pad="1"
+  max_length_bytes="255"
+  name="search_prefs_edit"
+  background_image="TextField_Off"
+  background_image_disabled="TextField_Disabled"
+  background_image_focused="TextField_Active"
+  right="-99"
+  text_pad_left="6"
+  tool_tip="Type the search term you are interested in here. Results will be displayed for partial fulltext matches within the setting's name or comment."
+  top_delta="0">
+  <filter_editor.commit_callback
+   function="UpdateFilter" />
+ </filter_editor>
+ <button
+ follows="right|bottom"
+ height="22"
+ label="Cancel"
+ label_selected="Cancel"
+ image_hover_unselected="Toolbar_Middle_Over"
+ image_selected="Toolbar_Middle_Selected"
+ image_unselected="Toolbar_Middle_Off"
+ layout="topleft"
+ name="Cancel"
+ right="-8"
+ width="90"
+ top_delta="0">
+ <button.commit_callback
+ function="Pref.Cancel" />
+ </button>
 </floater>
