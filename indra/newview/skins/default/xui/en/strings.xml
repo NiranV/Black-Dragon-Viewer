@@ -4257,19 +4257,6 @@ Try enclosing path to the editor with double quotes.
   <!-- Statistics -->
   <string name="na">n/a</string>
 
-  <!-- Presets graphic/camera -->
-  <string name="preset_combo_label">-Empty list-</string>
-  <string name="Default">Default</string>
-  <string name="none_paren_cap">(None)</string>
-  <string name="no_limit">No Limit</string>
-  
-  <!-- Black Dragon specific -->
-  <string name="UnmuteText">Show Text</string>
-  <string name="MuteText">Block Text</string>
-  <string name="UnmuteVoice">Unmute Voice</string>
-  <string name="MuteVoice">Mute Voice</string>
-  </string>
-
   <!-- CURL error messages -->
   <string name="couldnt_resolve_host">
 DNS could not resolve the host name([HOSTNAME]).
@@ -4293,6 +4280,19 @@ to the Support section of the SecondLife.com web site
 and report the problem.
 
 [https://community.secondlife.com/knowledgebase/english/error-messages-r520/#Section__3 Knowledge Base]
+	</string>
+
+<!-- Presets graphic/camera -->
+  <string name="preset_combo_label">-Empty list-</string>
+  <string name="Default">Default</string>
+  <string name="none_paren_cap">(None)</string>
+  <string name="no_limit">No Limit</string>
+  
+  <!-- Black Dragon specific -->
+  <string name="UnmuteText">Show Text</string>
+  <string name="MuteText">Block Text</string>
+  <string name="UnmuteVoice">Unmute Voice</string>
+  <string name="MuteVoice">Mute Voice</string>
 	
 	<string name="Toolbar_Top_Tooltip" >currently in your top toolbar</string>
 	
