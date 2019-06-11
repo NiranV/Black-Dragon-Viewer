@@ -72,12 +72,20 @@ public:
 
 	void		setHealth(S32 percent);
 
+	void setLandCredit(S32 credit);
+	void setLandCommitted(S32 committed);
+
 	void		refresh();
 	void setVisibleForMouselook(bool visible);
 		// some elements should hide in mouselook
 
 	// ACCESSORS
 	S32			getHealth() const;
+
+	BOOL isUserTiered() const;
+	S32 getSquareMetersCredit() const;
+	S32 getSquareMetersCommitted() const;
+	S32 getSquareMetersLeft() const;
 
 	LLPanelNearByMedia* getNearbyMediaPanel() { return mPanelNearByMedia; }
 
@@ -121,6 +129,8 @@ private:
 	LLIconCtrl	*mDrawDistance;
 
 	S32				mHealth;
+	S32				mSquareMetersCredit;
+	S32				mSquareMetersCommitted;
 	LLFrameTimer*	mHealthTimer;
 	LLPanelPresetsPulldown* mPanelPresetsPulldown;
 	LLPanelVolumePulldown* mPanelVolumePulldown;

@@ -385,6 +385,36 @@ S32 LLStatusBar::getHealth() const
 	return mHealth;
 }
 
+void LLStatusBar::setLandCredit(S32 credit)
+{
+	mSquareMetersCredit = credit;
+}
+void LLStatusBar::setLandCommitted(S32 committed)
+{
+	mSquareMetersCommitted = committed;
+}
+
+BOOL LLStatusBar::isUserTiered() const
+{
+	return (mSquareMetersCredit > 0);
+}
+
+S32 LLStatusBar::getSquareMetersCredit() const
+{
+	return mSquareMetersCredit;
+}
+
+S32 LLStatusBar::getSquareMetersCommitted() const
+{
+	return mSquareMetersCommitted;
+}
+
+S32 LLStatusBar::getSquareMetersLeft() const
+{
+	return mSquareMetersCredit - mSquareMetersCommitted;
+}
+
+
 void LLStatusBar::onMouseEnterPresets()
 {
 	LLView* popup_holder = gViewerWindow->getRootView()->getChildView("popup_holder");
