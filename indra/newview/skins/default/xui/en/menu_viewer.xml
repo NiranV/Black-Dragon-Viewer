@@ -168,7 +168,6 @@
            <menu_item_call.on_click
          function="ShowAgentProfilePicks" />
       </menu_item_call>
-        </menu_item_call>
 	<menu_item_call
          label="Places"
          name="Places">
