@@ -261,20 +261,20 @@ void BDFloaterPoser::onClickPoseSave()
 	onPoseSave(2, 0.1f, false);
 }
 
-BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
+void BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 {
 	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
 	if (!av_item)
 	{
 		LL_WARNS("Posing") << "No avatar selected." << LL_ENDL;
-		return FALSE;
+		return;
 	}
 
 	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead())
 	{
 		LL_WARNS("Posing") << "Couldn't find avatar, dead?" << LL_ENDL;
-		return FALSE;
+		return;
 	}
 
 	//BD - First and foremost before we do anything, check if the folder exists.
@@ -301,7 +301,7 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 
 	if (filename.empty())
 	{
-		return FALSE;
+		return;
 	}
 
 	std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_POSES, gDragonLibrary.escapeString(filename) + ".xml");
@@ -316,7 +316,7 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 		if (!infile.is_open())
 		{
 			LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
-			return FALSE;
+			return;
 		}
 
 		LLSD old_record;
@@ -326,7 +326,7 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 			if (LLSDParser::PARSE_FAILURE == LLSDSerialize::fromXML(old_record, infile))
 			{
 				LL_WARNS("Posing") << "Failed to parse while rewrtiting file: " << filename << LL_ENDL;
-				return FALSE;
+				return;
 			}
 
 			if (line != 0)
@@ -439,14 +439,12 @@ BOOL BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 	{
 		onPoseRefresh();
 	}
-
-	return TRUE;
 }
 
-BOOL BDFloaterPoser::onPoseLoad(const LLSD& name)
+void BDFloaterPoser::onPoseLoad(const LLSD& name)
 {
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
-	if (!item) return FALSE;
+	if (!item) return;
 
 	std::string pose_name;
 	if (!name.asString().empty())
@@ -460,7 +458,6 @@ BOOL BDFloaterPoser::onPoseLoad(const LLSD& name)
 
 	gDragonAnimator.loadPose(pose_name);
 	onJointRefresh();
-	return TRUE;
 }
 
 void BDFloaterPoser::onPoseStart()

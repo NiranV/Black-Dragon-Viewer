@@ -141,8 +141,8 @@ private:
 	void onPoseRefresh();
 	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
 	void onPoseControlsRefresh();
-	BOOL onPoseSave(S32 type, F32 time, bool editing);
-	BOOL onPoseLoad(const LLSD& name);
+	void onPoseSave(S32 type, F32 time, bool editing);
+	void onPoseLoad(const LLSD& name);
 
 	//BD - Joints
 	void onJointRefresh();
