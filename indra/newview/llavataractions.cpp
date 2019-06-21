@@ -430,67 +430,67 @@ void LLAvatarActions::showProfile(const LLUUID& avatar_id)
 // static
 void LLAvatarActions::showPicks(const LLUUID& avatar_id)
 {
-	if (avatar_id.notNull())
+	/*if (avatar_id.notNull())
 	{
         LLFloaterProfile* profilefloater = dynamic_cast<LLFloaterProfile*>(LLFloaterReg::showInstance("profile", LLSD().with("id", avatar_id)));
         if (profilefloater)
         {
             profilefloater->showPick();
         }
-	}
+	}*/
 }
 
 // static
 void LLAvatarActions::showPick(const LLUUID& avatar_id, const LLUUID& pick_id)
 {
-	if (avatar_id.notNull())
+	/*if (avatar_id.notNull())
 	{
         LLFloaterProfile* profilefloater = dynamic_cast<LLFloaterProfile*>(LLFloaterReg::showInstance("profile", LLSD().with("id", avatar_id)));
         if (profilefloater)
         {
             profilefloater->showPick(pick_id);
         }
-	}
+	}*/
 }
 
 // static
 bool LLAvatarActions::isPickTabSelected(const LLUUID& avatar_id)
 {
-    if (avatar_id.notNull())
+    /*if (avatar_id.notNull())
     {
         LLFloaterProfile* profilefloater = LLFloaterReg::findTypedInstance<LLFloaterProfile>("profile", LLSD().with("id", avatar_id));
         if (profilefloater)
         {
             return profilefloater->isPickTabSelected();
         }
-    }
+    }*/
     return false;
 }
 
 // static
 void LLAvatarActions::showClassifieds(const LLUUID& avatar_id)
 {
-	if (avatar_id.notNull())
+	/*if (avatar_id.notNull())
 	{
         LLFloaterProfile* profilefloater = dynamic_cast<LLFloaterProfile*>(LLFloaterReg::showInstance("profile", LLSD().with("id", avatar_id)));
         if (profilefloater)
         {
             profilefloater->showClassified();
         }
-	}
+	}*/
 }
 
 // static
 void LLAvatarActions::showClassified(const LLUUID& avatar_id, const LLUUID& classified_id, bool edit)
 {
-	if (avatar_id.notNull())
+	/*if (avatar_id.notNull())
 	{
         LLFloaterProfile* profilefloater = dynamic_cast<LLFloaterProfile*>(LLFloaterReg::showInstance("profile", LLSD().with("id", avatar_id)));
         if (profilefloater)
         {
             profilefloater->showClassified(classified_id, edit);
         }
-	}
+	}*/
 }
 
 //static 

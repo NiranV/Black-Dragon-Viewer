@@ -31,12 +31,12 @@
 #include "llclassifiedinfo.h"
 #include "llfloater.h"
 #include "llpanel.h"
-#include "llpanelavatar.h"
 #include "llrect.h"
 #include "lluuid.h"
 #include "v3dmath.h"
 #include "llcoros.h"
 #include "lleventcoro.h"
+#include "llfloaterprofile.h"
 
 class LLCheckBoxCtrl;
 class LLLineEditor;
@@ -46,7 +46,7 @@ class LLTabContainer;
 class LLTextEditor;
 class LLTextureCtrl;
 class LLUICtrl;
-
+class LLComboBox;
 
 class LLPublishClassifiedFloater : public LLFloater
 {
@@ -64,50 +64,8 @@ public:
 };
 
 
-/**
-* Panel for displaying Avatar's picks.
-*/
-class LLPanelProfileClassifieds
-    : public LLPanelProfileTab
-{
-public:
-    LLPanelProfileClassifieds();
-    /*virtual*/ ~LLPanelProfileClassifieds();
-
-    /*virtual*/ BOOL postBuild();
-
-    /*virtual*/ void onOpen(const LLSD& key);
-
-    void selectClassified(const LLUUID& classified_id, bool edit);
-
-    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
-
-    /*virtual*/ void resetData();
-
-    /*virtual*/ void updateButtons();
-
-    /*virtual*/ void updateData();
-
-private:
-    void onClickNewBtn();
-    void onClickDelete();
-    void callbackDeleteClassified(const LLSD& notification, const LLSD& response);
-
-    bool canAddNewClassified();
-    bool canDeleteClassified();
-
-    LLTabContainer* mTabContainer;
-    LLUICtrl*       mNoItemsLabel;
-    LLButton*       mNewButton;
-    LLButton*       mDeleteButton;
-
-    LLUUID          mClassifiedToSelectOnLoad;
-    bool            mClassifiedEditOnLoad;
-};
-
-
 class LLPanelProfileClassified
-    : public LLPanelProfileTab
+	: public LLPanel
 {
 public:
 
@@ -347,6 +305,7 @@ private:
     bool mFromSearch;
     bool mInfoLoaded;
     bool mEditMode;
+	bool mSelfProfile;
 
     // Needed for stat tracking
     S32 mTeleportClicksOld;

@@ -29,39 +29,7 @@
 
 #include "llagent.h"
 #include "llloadingindicator.h"
-#include "lltooldraganddrop.h"
 
-//////////////////////////////////////////////////////////////////////////
-// LLProfileDropTarget
-
-LLProfileDropTarget::LLProfileDropTarget(const LLProfileDropTarget::Params& p)
-:   LLView(p),
-    mAgentID(p.agent_id)
-{}
-
-void LLProfileDropTarget::doDrop(EDragAndDropType cargo_type, void* cargo_data)
-{
-    LL_INFOS() << "LLProfileDropTarget::doDrop()" << LL_ENDL;
-}
-
-BOOL LLProfileDropTarget::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
-                                     EDragAndDropType cargo_type,
-                                     void* cargo_data,
-                                     EAcceptance* accept,
-                                     std::string& tooltip_msg)
-{
-    if (getParent())
-    {
-        LLToolDragAndDrop::handleGiveDragAndDrop(mAgentID, LLUUID::null, drop,
-                                                 cargo_type, cargo_data, accept);
-
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
-static LLDefaultChildRegistry::Register<LLProfileDropTarget> r("profile_drop_target");
 
 //////////////////////////////////////////////////////////////////////////
 // LLPanelProfileTab

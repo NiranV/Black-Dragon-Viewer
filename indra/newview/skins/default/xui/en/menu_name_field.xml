@@ -5,18 +5,24 @@
      label="Copy Display Name"
      layout="topleft"
      name="copy_display">
-      <on_click function="Profile.CopyName" parameter="display"/>
+      <on_click function="Profile.Action" parameter="copy_display_name"/>
     </menu_item_call>
     <menu_item_call
      label="Copy Agent Name"
      layout="topleft"
      name="copy_name">
-        <on_click function="Profile.CopyName" parameter="name"/>
+        <on_click function="Profile.Action" parameter="copy_user_name"/>
     </menu_item_call>
     <menu_item_call
-     label="Copy Agent Id"
+     label="Copy Agent UUID"
      layout="topleft"
      name="copy_id">
-      <on_click function="Profile.CopyName" parameter="id"/>
+      <on_click function="Profile.Action" parameter="copy_uuid"/>
+    </menu_item_call>
+    <menu_item_call
+     label="Copy Agent SLURL"
+     layout="topleft"
+     name="copy_id">
+      <on_click function="Profile.Action" parameter="copy_slurl"/>
     </menu_item_call>  
 </toggleable_menu>

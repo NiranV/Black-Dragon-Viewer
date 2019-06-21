@@ -31,6 +31,7 @@
 #include "lluuid.h"
 #include "llavatarpropertiesprocessor.h"
 #include "llpanelavatar.h"
+#include "llfloaterprofile.h"
 #include "llremoteparcelrequest.h"
 
 class LLTabContainer;
@@ -39,59 +40,11 @@ class LLMediaCtrl;
 class LLLineEditor;
 class LLTextEditor;
 
-
-/**
-* Panel for displaying Avatar's picks.
-*/
-class LLPanelProfilePicks
-    : public LLPanelProfileTab
-{
-public:
-    LLPanelProfilePicks();
-    /*virtual*/ ~LLPanelProfilePicks();
-
-    /*virtual*/ BOOL postBuild();
-
-    /*virtual*/ void onOpen(const LLSD& key);
-
-    void selectPick(const LLUUID& pick_id);
-
-    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
-
-    /*virtual*/ void resetData();
-
-    /*virtual*/ void updateButtons();
-
-    /**
-     * Saves changes.
-     */
-    virtual void apply();
-
-    /**
-     * Sends update data request to server.
-     */
-    /*virtual*/ void updateData();
-
-private:
-    void onClickNewBtn();
-    void onClickDelete();
-    void callbackDeletePick(const LLSD& notification, const LLSD& response);
-
-    bool canAddNewPick();
-    bool canDeletePick();
-
-    LLTabContainer* mTabContainer;
-    LLUICtrl*       mNoItemsLabel;
-    LLButton*       mNewButton;
-    LLButton*       mDeleteButton;
-
-    LLUUID          mPickToSelectOnLoad;
-};
-
-
 class LLPanelProfilePick
-    : public LLPanelProfileTab
+	: public LLPanel
+    //: public LLPanelProfileTab
     , public LLRemoteParcelInfoObserver
+	//, public LLFloaterProfile
 {
 public:
 
@@ -112,7 +65,10 @@ public:
     virtual void setPickName(const std::string& name);
     const std::string getPickName();
 
-    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
+	void setLoaded() { mLoaded = true; }
+	bool getLoaded() { return mLoaded; }
+
+    virtual void processProperties(void* data, EAvatarProcessorType type);
 
     /**
      * Saves changes.
@@ -221,10 +177,13 @@ protected:
     LLUUID mParcelId;
     LLUUID mPickId;
     LLUUID mRequestedId;
+	LLUUID mAvatarId;
 
     bool mLocationChanged;
     bool mNewPick;
-    bool                mIsEditing;
+    bool mIsEditing;
+	bool mSelfProfile;
+	bool mLoaded;
 
     std::string mCurrentPickDescription;
 

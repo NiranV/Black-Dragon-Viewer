@@ -494,7 +494,6 @@ set(viewer_SOURCE_FILES
     llpanelplacestab.cpp
     llpanelpresetspulldown.cpp
     llpanelprimmediacontrols.cpp
-    llpanelprofile.cpp
     llpanelprofileclassifieds.cpp
     llpanelprofilepicks.cpp
     llpanelsnapshot.cpp
@@ -1136,7 +1135,6 @@ set(viewer_HEADER_FILES
     llpanelplacestab.h
     llpanelpresetspulldown.h
     llpanelprimmediacontrols.h
-    llpanelprofile.h
     llpanelprofileclassifieds.h
     llpanelprofilepicks.h
     llpanelsnapshot.h

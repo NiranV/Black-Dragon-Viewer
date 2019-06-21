@@ -8,92 +8,76 @@
  follows="all"
  layout="topleft"
  help_topic="panel_profile_classified"
- min_height="250"
->
+ min_height="250">
     <panel.string
-     name="type_mature"
-    >
+     name="type_mature">
         Moderate
     </panel.string>
     <panel.string
-     name="type_pg"
-    >
+     name="type_pg">
         General Content
     </panel.string>
     <panel.string
-     name="l$_price"
-    >
+     name="l$_price">
         L$[PRICE]
     </panel.string>
     <panel.string
-     name="click_through_text_fmt"
-    >
+     name="click_through_text_fmt">
         [TELEPORT] teleport, [MAP] map, [PROFILE] profile
     </panel.string>
     <panel.string
-     name="date_fmt"
-    >
+     name="date_fmt">
         [mthnum,datetime,slt]/[day,datetime,slt]/[year,datetime,slt]
     </panel.string>
     <panel.string
-     name="auto_renew_on"
-    >
+     name="auto_renew_on">
         Enabled
     </panel.string>
     <panel.string
-     name="auto_renew_off"
-    >
+     name="auto_renew_off">
         Disabled
     </panel.string>
     <panel.string
-     name="location_notice"
-    >
+     name="location_notice">
         (will update after save)
     </panel.string>
     <string
-     name="publish_label"
-    >
+     name="publish_label">
         Publish
     </string>
     <string
-     name="save_label"
-    >
+     name="save_label">
         Save
     </string>
     <scroll_container
      name="profile_scroll"
      top="0"
      left="0"
-     bottom="-35"
-     width="320"
+     bottom="-31"
+     width="324"
      follows="all"
      layout="topleft"
-     color="DkGray2"
-     opaque="true"
-     reserve_scroll_corner="false"
-    >
+     reserve_scroll_corner="false">
         <panel
          name="info_scroll_content_panel"
          top="0"
          left="0"
-         height="562"
-         width="290"
+         height="539"
+         width="260"
          follows="left|top"
          layout="topleft"
          background_visible="false"
-         min_height="200"
-        >
+         min_height="200">
             <texture_picker
              name="classified_snapshot"
              enabled="false"
              top="0"
-             left="10"
-             height="197"
-             width="275"
-             follows="left|top|right"
+             left="7"
+             height="180"
+             width="250"
+             follows="left|top"
              layout="topleft"
-             fallback_image="default_land_picture.j2c"
-            />
+             fallback_image="default_land_picture.j2c"/>
             <icon
              name="edit_icon"
              label=""
@@ -105,11 +89,10 @@
              layout="topleft"
              follows="left|top|right"
              image_name="spacer24.tga"
-             visible="false"
-            />
+             visible="false"/>
             <layout_stack
              name="info_panel"
-             top="180"
+             top_pad="-35"
              left="0"
              height="375"
              width="320"
@@ -117,56 +100,47 @@
              layout="topleft"
              visible="true"
              animate="false"
-             orientation="vertical"
-             >
+             orientation="vertical">
                 <layout_panel
                  name="main_info_panel"
                  top="0"
                  left="0"
-                 height="160"
+                 height="137"
                  width="290"
                  follows="all"
                  layout="topleft"
-                 auto_resize="false"
-                    >
+                 auto_resize="false">
                     <text_editor
                      name="classified_name"
                      top="0"
-                     left="10"
-                     height="35"
+                     left="7"
+                     height="14"
                      width="280"
                      follows="left|top|right"
                      layout="topleft"
                      allow_scroll="false"
                      bg_visible="false"
-                     font="SansSerifBig"
-                     font.style="BOLD"
                      h_pad="0"
                      read_only="true"
-                     text_color="white"
                      use_ellipses="true"
-                     v_pad="0"
-                     >
+                     v_pad="0">
                         [name]
                     </text_editor>
                     <text
                      name="classified_location_label"
                      value="Location:"
-                     top_pad="-2"
-                     left="10"
-                     height="10"
+                     top_pad="7"
+                     left="7"
+                     height="14"
                      width="250"
                      follows="left|top"
-                     layout="topleft"
-                     font.style="BOLD"
-                     text_color="white"
-                     />
+                     layout="topleft" />
                     <text_editor
                      name="classified_location"
                      value="[loading...]"
-                     top_pad="5"
-                     left="10"
-                     height="30"
+                     top_pad="3"
+                     left="7"
+                     height="14"
                      width="290"
                      follows="left|top"
                      layout="topleft"
@@ -175,30 +149,25 @@
                      h_pad="0"
                      read_only="true"
                      v_pad="0"
-                     word_wrap="true"
-                     />
+                     word_wrap="true"/>
                     <text
                      name="content_type_label"
                      value="Content Type:"
-                     top_pad="10"
-                     left="10"
-                     height="10"
+                     top_pad="7"
+                     left="7"
+                     height="14"
                      width="140"
                      follows="left|top"
-                     layout="topleft"
-                     font.style="BOLD"
-                     text_color="white"
-                     />
+                     layout="topleft"/>
                     <icon
                      name="content_type_moderate"
-                     top_pad="-11"
+                     top_delta="-1"
                      left_pad="0"
                      height="16"
                      width="18"
                      follows="top|left"
                      layout="topleft"
-                     image_name="Parcel_M_Light"
-                     />
+                     image_name="Parcel_M_Light"/>
                     <icon
                      name="content_type_general"
                      top_delta="0"
@@ -207,183 +176,135 @@
                      width="18"
                      follows="top|left"
                      layout="topleft"
-                     image_name="Parcel_PG_Light"
-                     />
-                    <text_editor
+                     image_name="Parcel_PG_Light"/>
+                    <text
                      name="content_type"
                      value="[content type]"
                      top_delta="1"
                      left_pad="2"
-                     height="18"
+                     height="14"
                      width="130"
                      follows="left|top|right"
                      layout="topleft"
-                     allow_scroll="false"
-                     bg_visible="false"
                      h_pad="0"
-                     read_only="true"
-                     v_pad="0"
-                     />
+                     v_pad="0"/>
                     <text
                      name="category_label"
                      value="Category:"
-                     top_pad="0"
-                     left="10"
-                     height="10"
+                     top_pad="7"
+                     left="7"
+                     height="14"
                      width="140"
                      follows="left|top"
-                     layout="topleft"
-                     font.style="BOLD"
-                     text_color="white"
-                     />
-                    <text_editor
+                     layout="topleft"/>
+                    <text
                      name="category"
                      value="[category]"
-                     top_pad="-10"
+                     top_delta="0"
                      left_pad="0"
-                     height="18"
+                     height="14"
                      width="150"
                      follows="left|top|right"
                      layout="topleft"
-                     allow_scroll="false"
-                     bg_visible="false"
                      h_pad="0"
                      parse_urls="true"
-                     read_only="true"
-                     v_pad="0"
-                     />
+                     v_pad="0"/>
                     <text
                      name="creation_date_label"
                      value="Creation date:"
-                     top_pad="0"
-                     left="10"
-                     height="10"
+                     top_pad="7"
+                     left="7"
+                     height="14"
                      width="140"
                      follows="left|top"
-                     layout="topleft"
-                     font.style="BOLD"
-                     text_color="white"
-                     />
-                    <text_editor
+                     layout="topleft"/>
+                    <text
                      name="creation_date"
                      value="[date]"
                      tool_tip="Creation date"
-                     top_pad="-10"
+                     top_delta="0"
                      left_pad="0"
-                     height="16"
+                     height="14"
                      width="150"
                      follows="left|top"
-                     layout="topleft"
-                     allow_scroll="false"
-                     bg_visible="false"
-                     h_pad="0"
-                     halign="left"
-                     read_only="true"
-                     v_pad="0"
-                     />
+                     layout="topleft"/>
                     <text
                      name="price_for_listing_label"
                      value="Price for listing:"
-                     top_pad="5"
-                     left="10"
-                     height="10"
+                     top_pad="7"
+                     left="7"
+                     height="14"
                      width="140"
                      follows="left|top"
-                     layout="topleft"
-                     font.style="BOLD"
-                     text_color="white"
-                     />
-                    <text_editor
+                     layout="topleft"/>
+                    <text
                      name="price_for_listing"
                      tool_tip="Price for listing."
-                     top_pad="-10"
+                     top_delta="0"
                      left_pad="0"
-                     height="16"
+                     height="14"
                      width="105"
                      follows="left|top"
-                     layout="topleft"
-                     allow_scroll="false"
-                     bg_visible="false"
-                     h_pad="0"
-                     halign="left"
-                     read_only="true"
-                     v_pad="0"
-                     >
+                     layout="topleft">
                      [PRICE]
-                    </text_editor>
+                    </text>
                 </layout_panel>
                 <layout_panel
                  name="clickthrough_layout_panel"
                  top="0"
                  left="0"
-                 height="16"
+                 height="18"
                  width="290"
                  follows="all"
                  layout="topleft"
-                 auto_resize="false"
-                 >
+                 auto_resize="false">
                     <text
                      name="click_through_label"
                      value="Clicks:"
-                     top_pad="0"
-                     left="10"
-                     height="10"
+                     top="3"
+                     left="7"
+                     height="14"
                      width="140"
                      follows="left|top"
-                     layout="topleft"
-                     font.style="BOLD"
-                     text_color="white"
-                     />
-                    <text_editor
+                     layout="topleft"/>
+                    <text
                      name="click_through_text"
                      value="[clicks]"
                      tool_tip="Click through data"
-                     top_pad="-10"
+                     top_delta="0"
                      left_pad="0"
-                     height="16"
+                     height="14"
                      width="150"
                      follows="left|top"
-                     layout="topleft"
-                     allow_scroll="false"
-                     bg_visible="false"
-                     h_pad="0"
-                     halign="left"
-                     read_only="true"
-                     v_pad="0"
-                     />
+                     layout="topleft"/>
                 </layout_panel>
                 <layout_panel
                  name="auto_renew_layout_panel"
                  top="0"
                  left="0"
-                 height="16"
+                 height="18"
                  width="290"
                  follows="all"
                  layout="topleft"
-                 auto_resize="false"
-                 >
+                 auto_resize="false">
                     <text
                      name="auto_renew_label"
                      value="Auto renew:"
-                     top="0"
-                     left="10"
-                     height="10"
+                     top="3"
+                     left="7"
+                     height="14"
                      width="140"
                      follows="left|top"
-                     layout="topleft"
-                     font.style="BOLD"
-                     text_color="white"
-                     />
+                     layout="topleft"/>
                     <text
                      name="auto_renew"
                      value="Enabled"
-                     top_pad="-10"
+                     top_delta="0"
                      left_pad="0"
-                     height="16"
+                     height="14"
                      width="150"
                      follows="top|left"
-                     layout="topleft"
-                     />
+                     layout="topleft"/>
                 </layout_panel>
                 <layout_panel
                  name="descr_layout_panel"
@@ -393,38 +314,31 @@
                  width="290"
                  follows="all"
                  layout="topleft"
-                 auto_resize="true"
-                 >
+                 auto_resize="true">
                     <text
                      name="classified_desc_label"
                      value="Description:"
-                     top="0"
-                     left="10"
-                     height="10"
+                     top="3"
+                     left="7"
+                     height="14"
                      width="250"
                      follows="left|top"
-                     layout="topleft"
-                     font.style="BOLD"
-                     text_color="white"
-                     />
+                     layout="topleft"/>
                     <text_editor
                      name="classified_desc"
                      value="[description]"
-                     top_pad="7"
-                     left="10"
+                     top_pad="3"
+                     left="7"
                      height="200"
-                     width="280"
+                     width="220"
                      follows="all"
                      layout="topleft"
-                     allow_scroll="false"
-                     bg_visible="false"
                      h_pad="0"
                      max_length="1023"
                      parse_urls="true"
                      read_only="true"
                      v_pad="0"
-                     word_wrap="true"
-                     />
+                     word_wrap="true"/>
                 </layout_panel>
             </layout_stack>
             <panel
@@ -435,8 +349,7 @@
              width="320"
              follows="left|top|right"
              layout="topleft"
-             visible="false"
-            >
+             visible="false">
                 <text
                  name="Name:"
                  top="0"
@@ -653,13 +566,14 @@
     <layout_stack
      name="edit_btns_pnl"
      bottom="-1"
-     left="9"
+     left="7"
+     border_size="1"
+     right="-2"
      height="25"
      follows="left|right|bottom"
      layout="topleft"
      orientation="horizontal"
-     animate="false"
-    >
+     animate="false">
         <layout_panel
             follows="all"
             height="25"
@@ -668,17 +582,19 @@
             name="teleport_btn_lp"
             auto_resize="true"
             top="0"
-            width="101">
+            width="131">
             <button
              name="teleport_btn"
              label="Teleport"
+             image_hover_unselected="Toolbar_Middle_Over"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
              top="0"
              left="0"
              height="23"
-             width="101"
+             width="131"
              follows="bottom|left|right"
-             layout="topleft"
-             />
+             layout="topleft"/>
         </layout_panel>
 
         <layout_panel
@@ -688,17 +604,19 @@
             left_pad="2"
             name="map_btn_lp"
             auto_resize="true"
-            width="100">
+            width="90">
             <button
              name="show_on_map_btn"
              label="Map"
+             image_hover_unselected="Toolbar_Middle_Over"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
              top="0"
              left="0"
              height="23"
-             width="100"
+             width="90"
              follows="bottom|left|right"
-             layout="topleft"
-             />
+             layout="topleft"/>
         </layout_panel>
 
         <layout_panel
@@ -708,17 +626,19 @@
             left_pad="2"
             name="edit_btn_lp"
             auto_resize="true"
-            width="101">
+            width="91">
             <button
              name="edit_btn"
              label="Edit"
+             image_hover_unselected="Toolbar_Middle_Over"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
              top="0"
              left="0"
              height="23"
-             width="101"
+             width="91"
              follows="bottom|left|right"
-             layout="topleft"
-             />
+             layout="topleft"/>
         </layout_panel>
 
         <layout_panel
@@ -733,34 +653,37 @@
             <button
              name="save_changes_btn"
              label="[LABEL]"
+             image_hover_unselected="Toolbar_Middle_Over"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
              top="0"
              left="0"
              left_pad="5"
              height="23"
              width="155"
              follows="bottom|left|right"
-             layout="topleft"
-             />
+             layout="topleft"/>
         </layout_panel>
 
         <layout_panel
             follows="all"
             height="25"
             layout="bottomleft"
-            left_pad="2"
             name="cancel_btn_lp"
             auto_resize="true"
-            width="156">
+            width="146">
             <button
              name="cancel_btn"
              label="Cancel"
+             image_hover_unselected="Toolbar_Middle_Over"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
              top="0"
              left="0"
              height="23"
-             width="156"
+             width="146"
              follows="bottom|left|right"
-             layout="topleft"
-             />
+             layout="topleft"/>
         </layout_panel>
     </layout_stack>
 </panel>
