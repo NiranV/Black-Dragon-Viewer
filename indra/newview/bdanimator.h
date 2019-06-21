@@ -24,7 +24,6 @@
 #include "llmultisliderctrl.h"
 #include "lltimectrl.h"
 #include "llkeyframemotion.h"
-#include "llframetimer.h"
 
 enum BD_EActionType
 {
