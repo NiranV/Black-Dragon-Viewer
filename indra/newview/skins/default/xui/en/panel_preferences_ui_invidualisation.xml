@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="850"
+     height="885"
      name="ui_panel"
      top="0"
      left="0"
@@ -96,6 +96,28 @@ width="510">
 	    name="ShowNetStats"
 	    top_pad="0"
 	    width="256" />
+     <check_box
+		control_name="MenuSearch"
+		height="16"
+		initial_value="true"
+		label="Show Menu Filter in the Navigationbar"
+		layout="topleft"
+		tool_tip="This option toggles the visibility of a filter editor allowing you to filter the main menu via search terms."
+		left="10"
+		name="MenuSearch"
+		top_pad="0"
+		width="256" />
+     <check_box
+		control_name="ShowTopSearchBar"
+		height="16"
+		initial_value="true"
+		label="Show Search Bar in the Navigationbar"
+		layout="topleft"
+		tool_tip="This option toggles the visibility of a seperate search bar that can be used to search for terms in Second Life. This is essentially the same as using the search window."
+		left="10"
+		name="ShowTopSearchBar"
+		top_pad="0"
+		width="256" />
 		<check_box
 		control_name="SearchFromAddressBar"
 		height="16"

@@ -41,6 +41,30 @@
     </menu_item_check>
     <menu_item_separator
      name="Separator" />
+    <menu_item_check
+         label="Show Search Bar"
+         layout="topleft"
+         name="ShowTopSearchBar">
+           <on_click
+             function="ToggleControl"
+             parameter="ShowTopSearchBar" /> 
+             <on_check
+             function="CheckControl"
+             parameter="ShowTopSearchBar" />
+    </menu_item_check>
+    <menu_item_check
+         label="Show Menu Filter"
+         layout="topleft"
+         name="MenuSearch">
+           <on_click
+             function="ToggleControl"
+             parameter="MenuSearch" /> 
+             <on_check
+             function="CheckControl"
+             parameter="MenuSearch" />
+    </menu_item_check>
+    <menu_item_separator
+     name="Separator" />
     <!-- Label of 'Landmark' item is changing in runtime, 
     see  AddLandmarkNavBarMenu/EditLandmarkNavBarMenu in strings.xml -->
     <menu_item_call

@@ -17097,6 +17097,7 @@
     <integer>1</integer>
   </map>
 
+  <!-- Rendering Options -->
   <key>RenderPostPosterizationSamples</key>
   <map>
     <key>Comment</key>
@@ -17300,6 +17301,8 @@
     <key>Value</key>
     <integer>1.0</integer>
   </map>
+  
+  <!-- Misc -->
   <key>SlowMotionTimeFactor</key>
   <map>
     <key>Comment</key>
@@ -17735,6 +17738,17 @@
       <string>F32</string>
       <key>Value</key>
       <real>0.0</real>
+  </map>
+  <key>ShowTopSearchBar</key>
+  <map>
+    <key>Comment</key>
+    <string>Show search bar in navigationbar</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
   </map>
     
   <!-- Remappable Keys -->
