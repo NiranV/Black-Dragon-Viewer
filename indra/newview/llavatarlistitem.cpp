@@ -114,7 +114,6 @@ BOOL  LLAvatarListItem::postBuild()
 	mAvatarName = getChild<LLTextBox>("avatar_name");
 	//BD
 	mExtraInformation = getChild<LLTextBox>("extra_information");
-	mSpeakingIndicator->setChannelState(LLOutputMonitorCtrl::UNDEFINED_CHANNEL);
 
 	//BD - Empower someone with rights or revoke them.
 	mIconPermissionOnline = getChild<LLButton>("permission_online_icon");
@@ -129,6 +128,7 @@ BOOL  LLAvatarListItem::postBuild()
 	mIconPermissionEditMine->setCommitCallback(boost::bind(&LLAvatarListItem::empowerFriend, this, _1));
 
 	mSpeakingIndicator = getChild<LLOutputMonitorCtrl>("speaking_indicator");
+	mSpeakingIndicator->setChannelState(LLOutputMonitorCtrl::UNDEFINED_CHANNEL);
 
 	mInfoBtn = getChild<LLButton>("info_btn");
 	mInfoBtn->setClickedCallback(boost::bind(&LLAvatarListItem::onInfoBtnClick, this));
