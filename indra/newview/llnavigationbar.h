@@ -31,12 +31,16 @@
 #include "llbutton.h"
 #include "lllayoutstack.h"
 #include "llinitdestroyclass.h"
+//BD - Menu Search
+#include "llsearchableui.h"
 
 class LLLocationInputCtrl;
 class LLMenuGL;
 class LLSearchEditor;
 //BD - Search Combo Box
 class LLSearchComboBox;
+//BD - Menu Search
+class LLFilterEditor;
 
 /**
  * This button is able to handle click-dragging mouse event.
@@ -45,6 +49,14 @@ class LLSearchComboBox;
  * 
  * *TODO: move to llui?  
  */
+
+namespace ll
+{
+	namespace statusbar
+	{
+		struct SearchData;
+	}
+}
 
 class LLPullButton: public LLButton
 {
@@ -138,6 +150,10 @@ private:
 			U64 region_handle, const std::string& url,
 			const LLUUID& snapshot_id, bool teleport);
 
+	//BD - Menu Search
+	void onUpdateFilterTerm();
+	void collectSearchableItems();
+
 	static void destroyClass()
 	{
 		if (LLNavigationBar::instanceExists())
@@ -157,7 +173,12 @@ private:
 	LLLayoutPanel* 				mNavigationPanel;
 	LLLayoutPanel* 				mFavoritePanel;
 //	//BD - Search Combo Box
-	LLSearchComboBox			*mSearchComboBox;
+	LLSearchComboBox*			mSearchComboBox;
+
+	//BD - Menu Search
+	LLFilterEditor*				mMenuFilterEdit;
+
+	std::unique_ptr<LLSearchableUI::LLMenuData> mSearchData;
 
 	boost::signals2::connection	mTeleportFailedConnection;
 	boost::signals2::connection	mTeleportFinishConnection;

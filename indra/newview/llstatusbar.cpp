@@ -116,9 +116,7 @@ LLStatusBar::LLStatusBar(const LLRect& rect)
 	mBtnVolume(NULL),
 	mHealth(100),
 	mSquareMetersCredit(0),
-	mSquareMetersCommitted(0),
-	mFilterEdit(NULL),			// Edit for filtering
-	mSearchPanel(NULL)			// Panel for filtering
+	mSquareMetersCommitted(0)
 {
 	setRect(rect);
 	
@@ -247,16 +245,6 @@ BOOL LLStatusBar::postBuild()
 	addChild(mPanelDrawDistance);
 	mPanelDrawDistance->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
 	mPanelDrawDistance->setVisible(FALSE);
-	
-	// Hook up and init for filtering
-	mFilterEdit = getChild<LLSearchEditor>( "search_menu_edit" );
-	mSearchPanel = getChild<LLPanel>( "menu_search_panel" );
-
-	mSearchPanel->setVisible(gSavedSettings.getBOOL("MenuSearch"));
-	mFilterEdit->setKeystrokeCallback(boost::bind(&LLStatusBar::onUpdateFilterTerm, this));
-	mFilterEdit->setCommitCallback(boost::bind(&LLStatusBar::onUpdateFilterTerm, this));
-	collectSearchableItems();
-	gSavedSettings.getControl("MenuSearch")->getCommitSignal()->connect(boost::bind(&LLStatusBar::updateMenuSearchVisibility, this, _2));
 
 	return TRUE;
 }
@@ -341,13 +329,6 @@ void LLStatusBar::setVisibleForMouselook(bool visible)
 {
 //	//BD - Hide UI In Mouselook
 	if(gSavedSettings.getBOOL("AllowUIHidingInML"))
-	mSearchPanel->setVisible(visible && gSavedSettings.getBOOL("MenuSearch"));
-	// If the search panel is shown, move this according to the new balance width. Parcel text will reshape itself in setParcelInfoText
-	if (mSearchPanel && mSearchPanel->getVisible())
-	{
-		updateMenuSearchPosition();
-	}
-
 	{
 		setVisible(visible);
 	}
@@ -539,74 +520,6 @@ BOOL can_afford_transaction(S32 cost)
 void LLStatusBar::onVolumeChanged(const LLSD& newvalue)
 {
 	refresh();
-}
-
-void LLStatusBar::onUpdateFilterTerm()
-{
-	LLWString searchValue = utf8str_to_wstring( mFilterEdit->getValue() );
-	LLWStringUtil::toLower( searchValue );
-
-	if( !mSearchData || mSearchData->mLastFilter == searchValue )
-		return;
-
-	mSearchData->mLastFilter = searchValue;
-
-	mSearchData->mRootMenu->hightlightAndHide( searchValue );
-	gMenuBarView->needsArrange();
-}
-
-void collectChildren( LLMenuGL *aMenu, ll::statusbar::SearchableItemPtr aParentMenu )
-{
-	for( U32 i = 0; i < aMenu->getItemCount(); ++i )
-	{
-		LLMenuItemGL *pMenu = aMenu->getItem( i );
-
-		ll::statusbar::SearchableItemPtr pItem( new ll::statusbar::SearchableItem );
-		pItem->mCtrl = pMenu;
-		pItem->mMenu = pMenu;
-		pItem->mLabel = utf8str_to_wstring( pMenu->ll::ui::SearchableControl::getSearchText() );
-		LLWStringUtil::toLower( pItem->mLabel );
-		aParentMenu->mChildren.push_back( pItem );
-
-		LLMenuItemBranchGL *pBranch = dynamic_cast< LLMenuItemBranchGL* >( pMenu );
-		if( pBranch )
-			collectChildren( pBranch->getBranch(), pItem );
-	}
-
-}
-
-void LLStatusBar::collectSearchableItems()
-{
-	mSearchData.reset( new ll::statusbar::SearchData );
-	ll::statusbar::SearchableItemPtr pItem( new ll::statusbar::SearchableItem );
-	mSearchData->mRootMenu = pItem;
-	collectChildren( gMenuBarView, pItem );
-}
-
-void LLStatusBar::updateMenuSearchVisibility(const LLSD& data)
-{
-	bool visible = data.asBoolean();
-	mSearchPanel->setVisible(visible);
-	if (!visible)
-	{
-		mFilterEdit->setText(LLStringUtil::null);
-		onUpdateFilterTerm();
-	}
-	else
-	{
-		updateMenuSearchPosition();
-	}
-}
-
-void LLStatusBar::updateMenuSearchPosition()
-{
-	const S32 HPAD = 12;
-	LLRect balanceRect = getChildView("balance_bg")->getRect();
-	LLRect searchRect = mSearchPanel->getRect();
-	S32 w = searchRect.getWidth();
-	searchRect.mLeft = balanceRect.mLeft - w - HPAD;
-	searchRect.mRight = searchRect.mLeft + w;
-	mSearchPanel->setShape( searchRect );
 }
 
 

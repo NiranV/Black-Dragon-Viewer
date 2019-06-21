@@ -51,13 +51,6 @@ class LLSearchEditor;
 class BDPanelDrawDistance;
 
 
-namespace ll
-{
-	namespace statusbar
-	{
-		struct SearchData;
-	}
-}
 class LLStatusBar
 :	public LLPanel
 {
@@ -101,15 +94,6 @@ private:
 	void onMouseEnterDrawDistance();
 
 	static void onClickMediaToggle(void* data);
-
-	LLSearchEditor *mFilterEdit;
-	LLPanel *mSearchPanel;
-	void onUpdateFilterTerm();
-
-	std::unique_ptr< ll::statusbar::SearchData > mSearchData;
-	void collectSearchableItems();
-	void updateMenuSearchVisibility( const LLSD& data );
-	void updateMenuSearchPosition();
 
 private:
 	LLTextBox	*mTextTime;

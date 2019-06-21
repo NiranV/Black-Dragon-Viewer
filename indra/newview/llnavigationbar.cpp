@@ -64,6 +64,9 @@
 
 //BD
 #include "llsearchcombobox.h"
+//BD - Menu Search
+#include "llsearchableui.h"
+#include "llfiltereditor.h"
 
 #include <boost/regex.hpp>
 
@@ -268,6 +271,8 @@ LLNavigationBar::LLNavigationBar()
 	mBtnBack(NULL),
 	mBtnForward(NULL),
 	mBtnHome(NULL),
+	//BD - Menu Search
+	mMenuFilterEdit(NULL),
 //	//BD - Search Combo Box
 	mSearchComboBox(NULL),
 	mCmbLocation(NULL),
@@ -326,6 +331,12 @@ BOOL LLNavigationBar::postBuild()
 			boost::bind(&LLNavigationBar::onTeleportHistoryChanged, this));
 
 	LLHints::registerHintTarget("nav_bar", getHandle());
+
+	// Hook up and init for filtering
+	mMenuFilterEdit = getChild<LLFilterEditor>("search_menu_edit");
+	mMenuFilterEdit->setKeystrokeCallback(boost::bind(&LLNavigationBar::onUpdateFilterTerm, this));
+	mMenuFilterEdit->setCommitCallback(boost::bind(&LLNavigationBar::onUpdateFilterTerm, this));
+	collectSearchableItems();
 
 	return TRUE;
 }
@@ -731,4 +742,47 @@ int LLNavigationBar::getDefNavBarHeight()
 int LLNavigationBar::getDefFavBarHeight()
 {
 	return mDefaultFpRect.getHeight();
+}
+
+//BD - Menu Search
+void LLNavigationBar::onUpdateFilterTerm()
+{
+	LLWString searchValue = utf8str_to_wstring(mMenuFilterEdit->getValue());
+	LLWStringUtil::toLower(searchValue);
+
+	if (!mSearchData || mSearchData->mLastFilter == searchValue)
+		return;
+
+	mSearchData->mLastFilter = searchValue;
+
+	mSearchData->mRootMenu->hightlightAndHide(searchValue);
+	gMenuBarView->needsArrange();
+}
+
+void collectChildren(LLMenuGL *aMenu, LLSearchableUI::LLSearchableEntryPtr aParentMenu)
+{
+	for (U32 i = 0; i < aMenu->getItemCount(); ++i)
+	{
+		LLMenuItemGL *pMenu = aMenu->getItem(i);
+
+		LLSearchableUI::LLSearchableEntryPtr pItem(new LLSearchableEntry);
+		pItem->mCtrl = pMenu;
+		pItem->mMenu = pMenu;
+		pItem->mLabel = utf8str_to_wstring(pMenu->LLSearchableControl::getSearchText());
+		LLWStringUtil::toLower(pItem->mLabel);
+		aParentMenu->mChildren.push_back(pItem);
+
+		LLMenuItemBranchGL *pBranch = dynamic_cast< LLMenuItemBranchGL* >(pMenu);
+		if (pBranch)
+			collectChildren(pBranch->getBranch(), pItem);
+	}
+
+}
+
+void LLNavigationBar::collectSearchableItems()
+{
+	mSearchData.reset(new LLSearchableUI::LLMenuData);
+	LLSearchableUI::LLSearchableEntryPtr pItem(new LLSearchableEntry);
+	mSearchData->mRootMenu = pItem;
+	collectChildren(gMenuBarView, pItem);
 }

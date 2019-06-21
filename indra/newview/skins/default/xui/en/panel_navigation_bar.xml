@@ -217,8 +217,6 @@ width="800">
 		mouse_opaque="false"
 		border_size="-5"
 		left="0"
-		open_time_constant="0.11"
-		close_time_constant="0.11"
 		name="nvpb_stack"
 		orientation="horizontal"
 		top="0"
@@ -284,7 +282,7 @@ width="800">
 		 mouse_opaque="false"
 		 name="location_combo"
 		 top="1"
-		 width="126">
+		 width="127">
 		 <combo_list
 		 mouse_wheel_opaque="true"/>
 		 </location_input>
@@ -295,7 +293,6 @@ width="800">
 		auto_resize="false"
 		mouse_opaque="false"
 		layout="topleft"
-		visible="false"
 		height="24"
 		name="navigation_layout_panel"
 		width="120">
@@ -304,18 +301,18 @@ width="800">
 		  height="23"
 		  label="Search"
 		  layout="topleft"
-		  left="0"
+		  left="2"
 		  mouse_opaque="false"
 		  name="search_combo_box"
 		  tool_tip="Search for something in Second Life"
 		  top="1"
-		  width="118" >
+		  width="112" >
 		  <combo_editor
 		  background_image="TextField_Off"
 		  background_image_disabled="TextField_Disabled"
 		  background_image_focused="TextField_Active"
 		  label="Search"
-		  text_pad_left="20" 
+		  text_pad_left="19" 
 		  text_pad_right="4" 
 		  name="search_combo_editor"/>
 		  <search_button 
@@ -329,6 +326,32 @@ width="800">
 		  mouse_wheel_opaque="true" />
 		  </search_combo_box>
 		</layout_panel>
+      <layout_panel
+		visibility_control="MenuSearch"
+		follows="top|left|right"
+		auto_resize="false"
+		mouse_opaque="false"
+		layout="topleft"
+		height="24"
+		name="navigation_layout_panel"
+		width="121">
+       <search_editor
+		 clear_button_visible="true"
+		 follows="left|top"
+		 height="23"
+		 label="Search Menus"
+		 layout="topleft"
+		 left="2"
+       width="118"
+		 max_length_bytes="255"
+		 name="search_menu_edit"
+       background_image="TextField_Off"
+		  background_image_disabled="TextField_Disabled"
+		  background_image_focused="TextField_Active"
+		 text_pad_left="6"
+		 tool_tip="Type the search term you are interested in here. Results will be displayed for partial fulltext matches within the menu."
+		 top="1"/>
+      </layout_panel>
 		</layout_stack>
 	  </layout_panel>
    </layout_stack>
