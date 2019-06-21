@@ -296,6 +296,24 @@ width="669">
   name="uploads" />
  </tab_container>
  
+ <filter_editor
+  follows="left|bottom|right"
+  height="21"
+  label="Search Preferences"
+  layout="topleft"
+  left="8"
+  max_length_bytes="255"
+  name="search_prefs_edit"
+  background_image="TextField_Off"
+  background_image_disabled="TextField_Disabled"
+  background_image_focused="TextField_Active"
+  right="-190"
+  text_pad_left="6"
+  tool_tip="Type the search term you are interested in here. Results will be displayed for partial fulltext matches within the setting's name or comment."
+  top="432">
+  <filter_editor.commit_callback
+   function="UpdateFilter" />
+ </filter_editor>
  <button
  follows="left|bottom"
  height="22"
@@ -305,31 +323,13 @@ width="669">
  image_hover_unselected="Toolbar_Middle_Over"
  image_selected="Toolbar_Middle_Selected"
  image_unselected="Toolbar_Middle_Off"
- left="8"
+ left_pad="1"
  name="OK"
- top="432"
+ top_delta="0"
  width="90">
  <button.commit_callback
  function="Pref.OK" />
  </button>
- <filter_editor
-  follows="left|bottom|right"
-  height="21"
-  label="Search Preferences"
-  layout="topleft"
-  left_pad="1"
-  max_length_bytes="255"
-  name="search_prefs_edit"
-  background_image="TextField_Off"
-  background_image_disabled="TextField_Disabled"
-  background_image_focused="TextField_Active"
-  right="-99"
-  text_pad_left="6"
-  tool_tip="Type the search term you are interested in here. Results will be displayed for partial fulltext matches within the setting's name or comment."
-  top_delta="0">
-  <filter_editor.commit_callback
-   function="UpdateFilter" />
- </filter_editor>
  <button
  follows="right|bottom"
  height="22"
