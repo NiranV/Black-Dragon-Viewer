@@ -2002,6 +2002,7 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                 if (tex->getIsAlphaMask())
                 {
                     is_alpha_mask = true;
+					is_alpha_blend = false;
                 }
             }
 
@@ -2011,6 +2012,7 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 				if (!is_alpha_mask && (image_format == GL_RGBA || image_format == GL_ALPHA))
 				{
 					is_alpha_blend = true;
+					is_alpha_mask = false;
 				}
 			}
 
@@ -2047,25 +2049,26 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 				if (tex_entry->getAlpha() <= 0.99f)
 				{
 					is_alpha_blend = true;
+					is_alpha_mask = false;
 				}
 			}
 
             // if this is alpha mask content and we're doing opaques or a non-alpha-mask shadow pass...
-            if (is_alpha_mask && (LLDrawPoolAvatar::sSkipTransparent || LLDrawPoolAvatar::sShadowPass != SHADOW_PASS_ATTACHMENT_ALPHA_MASK))
+			if (is_alpha_mask && (LLDrawPoolAvatar::sSkipTransparent || LLDrawPoolAvatar::sShadowPass != SHADOW_PASS_ATTACHMENT_ALPHA_MASK))
             {
-                return;
+				continue;
             }
 
             // if this is alpha blend content and we're doing opaques or a non-alpha-blend shadow pass...
             if (is_alpha_blend && (LLDrawPoolAvatar::sSkipTransparent || LLDrawPoolAvatar::sShadowPass != SHADOW_PASS_ATTACHMENT_ALPHA_BLEND))
             {
-                return;
+				continue;
             }
 
             // if this is opaque content and we're skipping opaques...
             if (!is_alpha_mask && !is_alpha_blend && LLDrawPoolAvatar::sSkipOpaque)
             {
-                return;
+                continue;
             }
         }
 
