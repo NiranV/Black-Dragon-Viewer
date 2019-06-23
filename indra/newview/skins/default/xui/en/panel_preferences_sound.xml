@@ -747,7 +747,7 @@ width="510">
     tool_tip="This option controls the volume of your own voice in voice chat."
     left="10"
     max_val="2"
-    name="SystemMemory"
+    name="mic_volume_slider"
     top_pad="5"
     width="300" />
     <text

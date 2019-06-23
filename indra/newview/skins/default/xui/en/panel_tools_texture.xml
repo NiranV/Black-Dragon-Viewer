@@ -937,7 +937,7 @@
 			 label_selected="Align Media"
 			 layout="topleft"
 			 left_pad="1"
-			 name="button align"
+			 name="align_media"
 			 top_delta="0"
 			 tool_tip="Align media texture (must load first)"
 			 width="93" />

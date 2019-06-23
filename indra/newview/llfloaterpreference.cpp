@@ -1323,29 +1323,6 @@ BOOL LLFloaterPreference::postBuild()
 	// Hook up and init for filtering
 	mFilterEdit = getChild<LLSearchEditor>("search_prefs_edit");
 	mFilterEdit->setKeystrokeCallback(boost::bind(&LLFloaterPreference::onUpdateFilterTerm, this, false));
-
-	// Load and assign label for 'default language'
-	std::string user_filename = gDirUtilp->getExpandedFilename(LL_PATH_DEFAULT_SKIN, "default_languages.xml");
-	std::map<std::string, std::string> labels;
-	if (loadFromFilename(user_filename, labels))
-	{
-		std::string system_lang = gSavedSettings.getString("SystemLanguage");
-		std::map<std::string, std::string>::iterator iter = labels.find(system_lang);
-		if (iter != labels.end())
-		{
-			getChild<LLComboBox>("language_combobox")->add(iter->second, LLSD("default"), ADD_TOP, true);
-		}
-		else
-		{
-			LL_WARNS() << "Language \"" << system_lang << "\" is not in default_languages.xml" << LL_ENDL;
-			getChild<LLComboBox>("language_combobox")->add("System default", LLSD("default"), ADD_TOP, true);
-		}
-	}
-	else
-	{
-		LL_WARNS() << "Failed to load labels from " << user_filename << ". Using default." << LL_ENDL;
-		getChild<LLComboBox>("language_combobox")->add("System default", LLSD("default"), ADD_TOP, true);
-	}
 	
 	//BD
 	mLoadBtn = findChild<LLButton>("PrefLoadButton");

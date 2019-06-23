@@ -1019,7 +1019,7 @@ bool idle_startup()
 
 		// Poke the VFS, which could potentially block for a while if
 		// Windows XP is acting up
-		set_startup_status(0.01f, LLTrans::getString(""), LLStringUtil::null);
+		set_startup_status(0.01f, LLStringUtil::null, LLStringUtil::null);
 		display_startup();
 
 		gVFS->pokeFiles();

@@ -208,7 +208,6 @@ public:
 	LLTextBox* mLabelShiny;
 	LLTextBox* mLabelBumpy;
 	LLTextBox* mLabelAlpha;
-	LLTextBox* mLabelGlow;
 	LLTextBox* mLabelTexGen;
 
 	LLUICtrl* mLockDiffuse;

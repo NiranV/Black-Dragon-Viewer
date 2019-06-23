@@ -310,10 +310,7 @@ width="669">
   right="-190"
   text_pad_left="6"
   tool_tip="Type the search term you are interested in here. Results will be displayed for partial fulltext matches within the setting's name or comment."
-  top="432">
-  <filter_editor.commit_callback
-   function="UpdateFilter" />
- </filter_editor>
+  top="432"/>
  <button
  follows="left|bottom"
  height="22"

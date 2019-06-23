@@ -152,7 +152,6 @@ BOOL	LLPanelFace::postBuild()
 	mLabelShiny = getChild<LLTextBox>("shininess_label");
 	mLabelBumpy = getChild<LLTextBox>("normalmap_label");
 	mLabelAlpha = getChild<LLTextBox>("alphamode_label");
-	mLabelGlow = getChild<LLTextBox>("glow label");
 	mLabelTexGen = getChild<LLTextBox>("tex gen");
 
 	mCheckAlignPlanar = getChild<LLCheckBoxCtrl>("checkbox planar align");
@@ -1148,7 +1147,6 @@ void LLPanelFace::updateUI(bool force_set_values)
 			mGlow->setValue(glow);
 			mGlow->setTentative(!identical_glow);
 			mGlow->setEnabled(editable);
-			mLabelGlow->setEnabled(editable);
 		}
 
 		{

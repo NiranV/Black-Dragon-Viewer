@@ -587,7 +587,7 @@ void init_menus()
 	gMenuHolder->mMarketPlaceListings = gMenuHolder->getChild<LLView>("MarketplaceListings");
 	gMenuHolder->mLandBuyPass = gMenuHolder->getChild<LLView>("Land Buy Pass");
 	gMenuHolder->mLandBuy = gMenuHolder->getChild<LLView>("Land Buy");
-	gMenuHolder->mBuyLand = gMenuHolder->getChild<LLView>("Buy Land...");
+	gMenuHolder->mBuyLand = gMenuHolder->getChild<LLView>("Buy Land");
 }
 
 ///////////////////

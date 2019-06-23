@@ -132,14 +132,9 @@ private:
 	LLUICtrl* mCreator;
 	LLUICtrl* mOwner;
 	LLUICtrl* mGroup;
-	LLUICtrl* mGroupName;
 	LLUICtrl* mName;
 	LLUICtrl* mDescription;
 	LLUICtrl* mCost;
-
-	LLAvatarIconCtrl* mCreatorIcon;
-	LLAvatarIconCtrl* mOwnerIcon;
-	LLGroupIconCtrl* mGroupOwnerIcon;
 
 	LLUICtrl* mB;
 	LLUICtrl* mO;

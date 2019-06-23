@@ -62,7 +62,6 @@
 #include "llmutelist.h"
 #include "llnotificationsutil.h"	// for LLNotificationsUtil
 #include "llpaneloutfitedit.h"
-#include "llpanelprofile.h"
 #include "llrecentpeople.h"
 #include "lltrans.h"
 #include "llurlaction.h"

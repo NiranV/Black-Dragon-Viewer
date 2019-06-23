@@ -209,14 +209,9 @@ BOOL LLPanelPermissions::postBuild()
 	mCreator = getChild<LLUICtrl>("Creator:");
 	mOwner = getChild<LLUICtrl>("Owner:");
 	mGroup = getChild<LLUICtrl>("Group:");
-	mGroupName = getChild<LLUICtrl>("Group Name");
 	mName = getChild<LLUICtrl>("Name:");
 	mDescription = getChild<LLUICtrl>("Description:");
-	mCost = getChild<LLUICtrl>("Cost");
-
-	mCreatorIcon = getChild<LLAvatarIconCtrl>("Creator Icon");
-	mOwnerIcon = getChild<LLAvatarIconCtrl>("Owner Icon");
-	mGroupOwnerIcon = getChild<LLGroupIconCtrl>("Owner Group Icon");
+	mCost = getChild<LLUICtrl>("Edit Cost");
 
 	mB = getChild<LLUICtrl>("B:");
 	mO = getChild<LLUICtrl>("O:");
@@ -259,13 +254,10 @@ void LLPanelPermissions::disableAll()
 	mPathfindingAttributes->setValue(LLStringUtil::null);
 
 	mCreator->setEnabled(FALSE);
-	mCreatorIcon->setVisible(FALSE);
 	mLabelCreatorName->setValue(LLStringUtil::null);
 	mLabelCreatorName->setEnabled(FALSE);
 
 	mOwner->setEnabled(FALSE);
-	mOwnerIcon->setVisible(FALSE);
-	mOwnerIcon->setVisible(FALSE);
 	mLabelOwnerName->setValue(LLStringUtil::null);
 	mLabelOwnerName->setEnabled(FALSE);
 
@@ -277,8 +269,6 @@ void LLPanelPermissions::disableAll()
 	mObjectName->setValue(LLStringUtil::null);
 	mObjectName->setEnabled(FALSE);
 	mName->setEnabled(FALSE);
-	mGroupName->setValue(LLStringUtil::null);
-	mGroupName->setEnabled(FALSE);
 	mDescription->setEnabled(FALSE);
 	mObjectDescription->setValue(LLStringUtil::null);
 	mObjectDescription->setEnabled(FALSE);
@@ -445,7 +435,6 @@ void LLPanelPermissions::refresh()
 // [/RLVa:KB]
 //	LLSelectMgr::getInstance()->selectGetCreator(mCreatorID, creator_name);
 
-	mCreatorIcon->setValue(mCreatorID);
 	mLabelCreatorName->setEnabled(TRUE);
 
 	// Update owner text field
@@ -454,23 +443,13 @@ void LLPanelPermissions::refresh()
 	std::string owner_app_link;
 	const BOOL owners_identical = select_mgr->selectGetOwner(mOwnerID, owner_app_link);
 
-	//BD - Make sure we ALWAYS make at least the owner icon visible.
-	mOwnerIcon->setVisible(TRUE);
-	mGroupOwnerIcon->setVisible(FALSE);
-
 	LLUUID owner_id = mOwnerID;
 	if (select_mgr->selectIsGroupOwned())
 	{
 		// Group owned already displayed by selectGetOwner
 		LLGroupMgr* group_mgr = LLGroupMgr::getInstance();
 		LLGroupMgrGroupData* group_data = group_mgr->getGroupData(mOwnerID);
-		if (group_data && group_data->isGroupPropertiesDataComplete())
-		{
-			mGroupOwnerIcon->setIconId(group_data->mInsigniaID);
-			mGroupOwnerIcon->setVisible(TRUE);
-			mOwnerIcon->setVisible(FALSE);
-		}
-		else
+		if (!group_data && !group_data->isGroupPropertiesDataComplete())
 		{
 			// Triggers refresh
 			group_mgr->sendGroupPropertiesRequest(mOwnerID);
@@ -487,7 +466,6 @@ void LLPanelPermissions::refresh()
 			owner_id = mLastOwnerID;
 		}
 	}
-	mOwnerIcon->setValue(owner_id);
 
 	mLabelOwnerName->setEnabled(TRUE);
 // [RLVa:KB] - Moved further down to avoid an annoying flicker when the text is set twice in a row
@@ -516,7 +494,6 @@ void LLPanelPermissions::refresh()
 
 	// update group text field
 	mGroup->setEnabled(TRUE);
-	mGroupName->setValue(LLStringUtil::null);
 	LLUUID group_id;
 	BOOL groups_identical = select_mgr->selectGetGroup(group_id);
 //	//BD - SSFUI
