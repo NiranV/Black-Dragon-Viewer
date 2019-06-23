@@ -50,14 +50,6 @@ class LLFilterEditor;
  * *TODO: move to llui?  
  */
 
-namespace ll
-{
-	namespace statusbar
-	{
-		struct SearchData;
-	}
-}
-
 class LLPullButton: public LLButton
 {
 	LOG_CLASS(LLPullButton);

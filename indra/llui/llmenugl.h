@@ -48,7 +48,7 @@ extern S32 MENU_BAR_WIDTH;
 // The LLMenuItemGL represents a single menu item in a menu. 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class LLMenuItemGL: public LLUICtrl, public ll::ui::SearchableControl
+class LLMenuItemGL: public LLUICtrl, public LLSearchableControl
 {
 public:
 	struct Params : public LLInitParam::Block<Params, LLUICtrl::Params>

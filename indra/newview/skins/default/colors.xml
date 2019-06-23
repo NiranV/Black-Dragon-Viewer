@@ -919,6 +919,16 @@
  <!-- Black Dragon colors -->
  
  <color
+ name="SearchableControlHighlightColor"
+ value="0.35 0.6 1 0.4" />
+ <color
+ name="SearchableMenuHighlightColor"
+ value="0.45 0.7 1 1.0" />
+ <color
+ name="SearchableButtonHighlightColor"
+ value="0.45 0.7 1 1.0" />
+ 
+ <color
  name="Friend"
  value="0.447 0.884 0.544 1" />
  <color

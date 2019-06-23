@@ -505,8 +505,8 @@ void LLMenuItemGL::draw( void )
 	}
 
 	// Highlight if needed
-	if( ll::ui::SearchableControl::getHighlighted() )
-		color = ll::ui::SearchableControl::getHighlightColor();
+	if(getHighlighted())
+		color = LLUIColorTable::instance().getColor("SearchableMenuHighlightColor", LLColor4::red);
 
 	// Draw the text on top.
 	if (mBriefItem)

@@ -29,43 +29,24 @@
 #include "lluicolortable.h"
 #include "lluicolor.h"
 
-namespace ll
+class LLSearchableControl
 {
-	namespace ui
-	{
-		class SearchableControl
-		{
-			mutable bool mIsHighlighed;
-		public:
-			SearchableControl()
-				: mIsHighlighed( false )
-			{ }
-			virtual ~SearchableControl()
-			{ }
+	mutable bool mIsHighlighed;
+public:
+	LLSearchableControl();
+	virtual ~LLSearchableControl();
 
-			LLColor4 getHighlightColor( ) const
-			{
-				static LLUIColor highlight_color = LLUIColorTable::instance().getColor("SearchableControlHighlightColor", LLColor4::red);
-				return highlight_color.get();
-			}
+	void setHighlighted(bool aVal) const;
 
-			void setHighlighted( bool aVal ) const
-			{
-				mIsHighlighed = aVal;
-				onSetHighlight( );
-			}
-			bool getHighlighted( ) const
-			{ return mIsHighlighed; }
+	bool getHighlighted() const;
 
-			std::string getSearchText() const
-			{ return _getSearchText(); } 
-		protected:
-			virtual std::string _getSearchText() const = 0;
-			virtual void onSetHighlight( ) const
-			{ }
-		};
-	}
-}
+	LLColor4 getHighlightColor() const;
+
+	std::string getSearchText() const;
+protected:
+	virtual std::string _getSearchText() const { return ""; }
+	virtual void onSetHighlight() const {}
+};
 
 
 #endif

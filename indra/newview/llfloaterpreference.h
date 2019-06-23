@@ -36,9 +36,10 @@
 #include "llfloater.h"
 #include "llavatarpropertiesprocessor.h"
 #include "llconversationlog.h"
-#include "llsearcheditor.h"
+#include "llfiltereditor.h"
 #include "lllistcontextmenu.h"
 #include "llmutelist.h"
+#include "llsearchableui.h"
 
 class LLConversationLogObserver;
 class LLPanelPreference;
@@ -52,14 +53,8 @@ class LLTextBox;
 class LLNameListCtrl;
 class LLProgressBar;
 class LLTabContainer;
-
-namespace ll
-{
-	namespace prefs
-	{
-		struct SearchData;
-	}
-}
+class LLSearchableUI;
+class LLSearchableControl;
 
 typedef std::map<std::string, std::string> notifications_map;
 
@@ -306,11 +301,13 @@ private:
 	LLAvatarData mAvatarProperties;
 	LOG_CLASS(LLFloaterPreference);
 
-	LLSearchEditor *mFilterEdit;
-	std::unique_ptr< ll::prefs::SearchData > mSearchData;
+	LLFilterEditor *mFilterEdit;
+	std::unique_ptr<LLSearchableUI::LLTabData> mSearchData;
 
 	void onUpdateFilterTerm( bool force = false );
 	void collectSearchableItems();
+
+	bool mFilterCleared;
 	
 //	//BD - Avatar Render Settings
 	bool isHiddenRow(const std::string& av_name);

@@ -788,8 +788,8 @@ void LLButton::draw()
 	}
 
 	// Highlight if needed
-	if( ll::ui::SearchableControl::getHighlighted() )
-		label_color = ll::ui::SearchableControl::getHighlightColor();
+	if(getHighlighted())
+		label_color = LLUIColorTable::instance().getColor("SearchableButtonHighlightColor", LLColor4::red);
 
 	// Unselected label assignments
 	LLWString label = getCurrentLabel();

@@ -62,7 +62,7 @@ class LLUICtrlFactory;
 
 class LLButton
 : public LLUICtrl, public LLBadgeOwner
-, public ll::ui::SearchableControl
+, public LLSearchableControl
 {
 public:
 	struct Params 

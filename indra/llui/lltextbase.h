@@ -277,7 +277,7 @@ class LLTextBase
 :	public LLUICtrl,
 	protected LLEditMenuHandler,
 	public LLSpellCheckMenuHandler,
-	public ll::ui::SearchableControl
+	public LLSearchableControl
 {
 public:
 	friend class LLTextSegment;

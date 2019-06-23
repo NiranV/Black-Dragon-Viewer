@@ -35,7 +35,7 @@
 #include "lllineeditor.h"
 
 
-class LLSliderCtrl: public LLF32UICtrl, public ll::ui::SearchableControl
+class LLSliderCtrl: public LLF32UICtrl, public LLSearchableControl
 {
 public:
 	struct Params : public LLInitParam::Block<Params, LLF32UICtrl::Params>
@@ -142,7 +142,7 @@ protected:
 	virtual void onSetHighlight() const  // When highlight, really do highlight the label
 	{
 		if( mLabelBox )
-			mLabelBox->ll::ui::SearchableControl::setHighlighted( ll::ui::SearchableControl::getHighlighted() );
+			mLabelBox->setHighlighted(getHighlighted());
 	}
 private:
 	void			updateText();

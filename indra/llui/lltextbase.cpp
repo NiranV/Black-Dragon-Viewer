@@ -1271,9 +1271,9 @@ void LLTextBase::draw()
 	}
 
 	// Draw highlighted if needed
-	if( ll::ui::SearchableControl::getHighlighted() )
+	if(getHighlighted())
 	{
-		LLColor4 bg_color = ll::ui::SearchableControl::getHighlightColor();
+		LLColor4 bg_color = getHighlightColor();
 		LLRect bg_rect = mVisibleTextRect;
 		if( mScroller )
 			bg_rect.intersectWith( text_rect );

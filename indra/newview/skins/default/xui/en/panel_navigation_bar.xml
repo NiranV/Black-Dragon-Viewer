@@ -335,8 +335,7 @@ width="800">
 		height="24"
 		name="navigation_layout_panel"
 		width="121">
-       <search_editor
-		 clear_button_visible="true"
+       <filter_editor
 		 follows="left|top"
 		 height="23"
 		 label="Search Menus"
@@ -346,8 +345,8 @@ width="800">
 		 max_length_bytes="255"
 		 name="search_menu_edit"
        background_image="TextField_Off"
-		  background_image_disabled="TextField_Disabled"
-		  background_image_focused="TextField_Active"
+       background_image_disabled="TextField_Disabled"
+       background_image_focused="TextField_Active"
 		 text_pad_left="6"
 		 tool_tip="Type the search term you are interested in here. Results will be displayed for partial fulltext matches within the menu."
 		 top="1"/>

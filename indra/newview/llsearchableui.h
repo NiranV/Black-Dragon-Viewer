@@ -26,96 +26,99 @@
 #ifndef LL_SEARCHABLE_UI_H
 #define LL_SEARCHABLE_UI_H
 
+#include "llsearchablecontrol.h"
+
 class LLMenuItemGL;
 class LLView;
 class LLPanel;
 class LLTabContainer;
 
-#include "llsearchablecontrol.h"
+class LLSearchableItem;
+class LLSearchableEntry;
 
-namespace ll
+
+class LLSearchableUI : 
+	public LLSearchableControl
 {
-	namespace prefs
+public:
+	LLSearchableUI();
+	/*virtual*/ ~LLSearchableUI();
+
+	struct LLPanelData;
+	struct LLTabContainerData;
+
+	typedef boost::shared_ptr<LLSearchableItem> LLSearchableItemPtr;
+	typedef boost::shared_ptr<LLSearchableEntry> LLSearchableEntryPtr;
+	typedef boost::shared_ptr<LLPanelData> LLPanelDataPtr;
+	typedef boost::shared_ptr<LLTabContainerData> LLTabContainerDataPtr;
+
+	typedef std::vector<LLTabContainerData> tTabContainerDataList;
+	typedef std::vector<LLSearchableItemPtr> tSearchableItemList;
+	typedef std::vector<LLSearchableEntryPtr> tSearchableEntryList;
+	typedef std::vector<LLPanelDataPtr> tPanelDataList;
+
+	struct LLPanelData
 	{
-		struct SearchableItem;
-		struct PanelData;
-		struct TabContainerData;
+		LLPanel const *mPanel;
+		std::string mLabel;
 
-		typedef boost::shared_ptr< SearchableItem > SearchableItemPtr;
-		typedef boost::shared_ptr< PanelData > PanelDataPtr;
-		typedef boost::shared_ptr< TabContainerData > TabContainerDataPtr;
+		std::vector<boost::shared_ptr<LLSearchableItem>> mChildren;
+		std::vector<boost::shared_ptr<LLPanelData>> mChildPanel;
 
-		typedef std::vector< TabContainerData > tTabContainerDataList;
-		typedef std::vector< SearchableItemPtr > tSearchableItemList;
-		typedef std::vector< PanelDataPtr > tPanelDataList;
+		virtual ~LLPanelData();
 
-		struct SearchableItem
-		{
-			LLWString mLabel;
-			LLView const *mView;
-			ll::ui::SearchableControl const *mCtrl;
+		virtual bool hightlightAndHide(LLWString const &aFilter);
+	};
 
-			std::vector< boost::shared_ptr< SearchableItem >  > mChildren;
-
-			virtual ~SearchableItem();
-
-			void setNotHighlighted();
-			virtual bool hightlightAndHide( LLWString const &aFilter );
-		};
-
-		struct PanelData
-		{
-			LLPanel const *mPanel;
-			std::string mLabel;
-
-			std::vector< boost::shared_ptr< SearchableItem > > mChildren;
-			std::vector< boost::shared_ptr< PanelData > > mChildPanel;
-
-			virtual ~PanelData();
-
-			virtual bool hightlightAndHide( LLWString const &aFilter );
-		};
-
-		struct TabContainerData: public PanelData
-		{
-			LLTabContainer *mTabContainer;
-			virtual bool hightlightAndHide( LLWString const &aFilter );
-		};
-
-		struct SearchData
-		{
-			TabContainerDataPtr mRootTab;
-			LLWString mLastFilter;
-		};
-	}
-	namespace statusbar
+	struct LLTabContainerData : public LLPanelData
 	{
-		struct SearchableItem;
+		LLTabContainer *mTabContainer;
+		virtual bool hightlightAndHide(LLWString const &aFilter);
+	};
 
-		typedef boost::shared_ptr< SearchableItem > SearchableItemPtr;
+	struct LLTabData
+	{
+		LLTabContainerDataPtr mRootTab;
+		LLWString mLastFilter;
+	};
 
-		typedef std::vector< SearchableItemPtr > tSearchableItemList;
+	struct LLMenuData
+	{
+		LLSearchableEntryPtr mRootMenu;
+		LLWString mLastFilter;
+	};
+};
 
-		struct SearchableItem
-		{
-			LLWString mLabel;
-			LLMenuItemGL *mMenu;
-			tSearchableItemList mChildren;
-			ll::ui::SearchableControl const *mCtrl;
-			bool mWasHiddenBySearch;
+class LLSearchableItem : public LLSearchableControl
+{
+public:
+	LLSearchableItem();
+	/*virtual*/ ~LLSearchableItem();
 
-			SearchableItem();
+	LLWString mLabel;
+	LLView const *mView;
+	const LLSearchableControl *mCtrl;
 
-			void setNotHighlighted( );
-			bool hightlightAndHide( LLWString const &aFilter );
-		};
+	std::vector<boost::shared_ptr<LLSearchableItem>> mChildren;
 
-		struct SearchData
-		{
-			SearchableItemPtr mRootMenu;
-			LLWString mLastFilter;
-		};
-	}
-}
+	void setNotHighlighted();
+	virtual bool hightlightAndHide(LLWString const &aFilter);
+};
+
+class LLSearchableEntry : public LLSearchableControl
+{
+public:
+	LLSearchableEntry();
+	/*virtual*/ ~LLSearchableEntry();
+
+	LLWString mLabel;
+	LLMenuItemGL *mMenu;
+	LLSearchableUI::tSearchableEntryList mChildren;
+	const LLSearchableControl *mCtrl;
+	bool mWasHiddenBySearch;
+
+	void setNotHighlighted();
+	virtual bool hightlightAndHide(LLWString const &aFilter);
+};
 
 #endif

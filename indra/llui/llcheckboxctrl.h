@@ -47,7 +47,7 @@ class LLViewBorder;
 
 class LLCheckBoxCtrl
 : public LLUICtrl
-, public ll::ui::SearchableControl
+, public LLSearchableControl
 {
 public:
 	struct Params 
@@ -118,7 +118,7 @@ protected:
 	virtual void onSetHighlight() const // When highlight, really do highlight the label
 	{
 		if( mLabel )
-			mLabel->ll::ui::SearchableControl::setHighlighted( ll::ui::SearchableControl::getHighlighted() );
+			mLabel->setHighlighted(getHighlighted());
 	}
 
 protected:

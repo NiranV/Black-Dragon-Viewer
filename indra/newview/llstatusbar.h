@@ -28,6 +28,7 @@
 #define LL_LLSTATUSBAR_H
 
 #include "llpanel.h"
+#include "llsearchableui.h"
 
 // "Constants" loaded from settings.xml at start time
 extern S32 STATUS_BAR_HEIGHT;
@@ -47,6 +48,7 @@ class LLPanelNearByMedia;
 
 class LLIconCtrl;
 class LLSearchEditor;
+class LLSearchableUI;
 //BD - Quick Draw Distance Slider
 class BDPanelDrawDistance;
 
