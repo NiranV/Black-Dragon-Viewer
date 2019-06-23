@@ -91,7 +91,7 @@ width="996">
  height="20"
  image_unselected="transparentj2c"
  image_selected="transparentj2c"
- label="[CHANNEL] [VERSION] - [3.4.8 - Playing Dragon]"
+ label="[CHANNEL] [VERSION] - [3.4.9 - Searching Dragon]"
  font="SansSerifSmall"
  layout="topleft"
  left="3"
@@ -174,8 +174,86 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="195"
+     height="507"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Added: (EXPERIMENTAL) Loading of presets from other Viewers. Only works if they were installed in their default directory.
+Added: Option to toggle the menu search on/off.
+Added: Brought back the option to toggle the normal search on/off.
+Added: Added both search bar options to the navigationbar right click menu.
+Changed: Don't kill the head look animation on lookat clear.
+Changed: Moved search editor in preferences to the bottom, replaced it with a filter editor to match all other windows.
+Changed: Overhauled layout of all legacy profile panels.
+Changed: Clarify play typing animation option and tell the user that it disables sound as well.
+Changed: Moved filter editor in preferences to the left to keep the old layout intact.
+Changed: Moved menu filter editor from statusbar to navigationbar stack to make use of layout panels.
+Changed: Search Editor for preferences into a Filter Editor for better consistency with everything else.
+Changed: Make preferences empty the filter terms whenever we open it, not just when we left a filter term when closing.
+Changed: Color for highlighting to be a much saner and nicer color without making it hard to spot.
+Changed: Use different colors for menus and buttons to use brighter colors since their text is being colored, not the background.
+Changed: Version to 3.4.9 - Searching Dragon
+Fixed: Several crashes when attempting to reset the Viewer back to default while not logged in.
+Fixed: Broken strings after merge.
+Fixed: Broken main menu after merge.
+Fixed: Compile.
+Fixed: Compile #2.
+Fixed: Compile #3.
+Fixed: Mesh shadows not being rendered when certain face alpha type combinations were encountered.
+Fixed: Crash when people panel was opened due to the voice channel being set before the indicator was initialized.
+Fixed: Large batch of warnings, name mismatches and parser errors across the Viewer.
+Fixed: Highlighting not resetting when emptying the Filter Editor.
+Misc: Cleanup llheadrotmotion.cpp a bit.
+Misc: Cleanup llagent.cpp a bit.
+Misc: Micro-optimize many more getInstance() calls away for Joystick and Camera.
+Misc: Optimize and simplify Free-DoF-Focus feature.
+Misc: Prevent Motion Blur modelview and projection matrix iteration from potentially running on logout.
+Misc: Massive refactor of legacy profiles code wise. Some things might still be missing.
+Misc: Cleanup lineendings in llstatusbar.h.
+Misc: Cleaned up bdfloaterposer.cpp/h.
+Misc: Cleaned up bdanimator.h.
+Misc: Cleaned up several files and removed unneeded stuff.
+Misc: Refactor Firestorm's searchable UI to be more sane, get rid of namespaces. Could use a second pass to get rid of mutables and const.
+Merge with Linden Release. (140 Changes)
+Merge with Legacy Profiles (39 Changes)
+Merge with Linden Release. (6 Changes)
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.4.8
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="195"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
