@@ -279,7 +279,7 @@ void LLWLParamManager::loadAllPresets()
 	//     Then load user presets. Note that user day presets will modify any system ones already loaded.
 	for (S32 i = 0; i < 5; i++)
 	{
-		dir_string = getSysDir(i);
+		dir_string = getUserDir(i);
 		if (!dir_string.empty())
 			loadPresetsFromDir(dir_string);
 	}
@@ -777,27 +777,23 @@ std::string LLWLParamManager::getUserDir(S32 viewer)
 	std::string user_dir;
 	if (viewer == 0)
 	{
-		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "");
+		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "windlight/skies", "");
 	}
 	else if (viewer == 1 && gSavedSettings.getBOOL("LoadPresetsFirestorm"))
 	{
-		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_FS, "");
-		//user_dir = gSavedSettings.getString("UserDirFirestorm");
+		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_FS, "windlight/skies", "");
 	}
 	else if (viewer == 2 && gSavedSettings.getBOOL("LoadPresetsAlchemy"))
 	{
-		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_AL, "");
-		//user_dir = gSavedSettings.getString("UserDirAlchemy");
+		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_AL, "windlight/skies", "");
 	}
 	else if (viewer == 3 && gSavedSettings.getBOOL("LoadPresetsCatznip"))
 	{
-		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_CN, "");
-		//user_dir = gSavedSettings.getString("UserDirCatznip");
+		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_CN, "windlight/skies", "");
 	}
 	else if (viewer == 4 && gSavedSettings.getBOOL("LoadPresetsLinden"))
 	{
-		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_LL, "");
-		//user_dir = gSavedSettings.getString("UserDirLinden");
+		user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS_LL, "windlight/skies", "");
 	}
 
 	return user_dir;
