@@ -178,11 +178,13 @@ private:
 	void onOKBtn();
 	void onCancelBtn();
 
+	void onDescriptionFocusChange();
 	void onClickSetName();
 
 	typedef std::map<std::string, LLUUID> group_map_t;
 	group_map_t				mGroups;
 
+	std::string			mOriginalDescription;
 	LLTextBox*			mStatusText;
 	LLGroupList*		mGroupList;
 	LLCheckBoxCtrl*		mShowInSearchCheckbox;
@@ -285,7 +287,9 @@ private:
 	void confirmModifyRights(bool grant, S32 rights);
 	void onCommitRights();
 	void onCommitNotes();
+	void onFirstDescriptionFocusChange();
 
+	std::string			mOriginalFirstDescription;
 	LLCheckBoxCtrl*     mOnlineStatus;
 	LLCheckBoxCtrl*     mMapRights;
 	LLCheckBoxCtrl*     mEditObjectRights;

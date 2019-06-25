@@ -422,6 +422,7 @@ BOOL LLFloaterProfile::postBuild()
 	mSecondLifePic = getChild<LLTextureCtrl>("2nd_life_pic");
 	mSecondLifePicLayout = getChild<LLPanel>("image_stack");
 	mSecondLifeDescriptionEdit = getChild<LLTextBase>("sl_description_edit");
+	mSecondLifeDescriptionEdit->setFocusChangedCallback(boost::bind(&LLFloaterProfile::onDescriptionFocusChange, this));
 	mTeleportButton = getChild<LLButton>("teleport");
 	mShowOnMapButton = getChild<LLButton>("show_on_map_btn");
 	mBlockButton = getChild<LLButton>("block");
@@ -483,6 +484,7 @@ BOOL LLFloaterProfile::postBuild()
 
 	//BD - First Life
 	mDescriptionEdit = getChild<LLTextEditor>("fl_description_edit");
+	mDescriptionEdit->setFocusChangedCallback(boost::bind(&LLFloaterProfile::onFirstDescriptionFocusChange, this));
 	mPicture = getChild<LLTextureCtrl>("real_world_pic");
 
 	mOnlineStatus = getChild<LLCheckBoxCtrl>("status_check");
@@ -766,10 +768,12 @@ void LLFloaterProfile::processProfileProperties(const LLAvatarData* avatar_data)
 	getChild<LLUICtrl>("register_date")->setValue(register_date);
 
 	mSecondLifeDescriptionEdit->setValue(avatar_data->about_text);
+	mOriginalDescription = avatar_data->about_text;
 	mSecondLifePic->setValue(avatar_data->image_id);
 
 	//mCurrentDescription = avatar_data->fl_about_text;
 	mDescriptionEdit->setValue(avatar_data->fl_about_text);
+	mOriginalFirstDescription = avatar_data->fl_about_text;
 	mPicture->setValue(avatar_data->fl_image_id);
 
 	//BD - We don't load the image loaded callbacks because they can crash the Viewer if called
@@ -837,6 +841,8 @@ void LLFloaterProfile::processGroupProperties(const LLAvatarGroups* avatar_group
 	// *NOTE dzaporozhan
 	// Group properties may arrive in two callbacks, we need to save them across
 	// different calls. We can't do that in textbox as textbox may change the text.
+	if (avatar_groups->group_list.empty())
+		return;
 
 	LLAvatarGroups::group_list_t::const_iterator it = avatar_groups->group_list.begin();
 	const LLAvatarGroups::group_list_t::const_iterator it_end = avatar_groups->group_list.end();
@@ -1161,6 +1167,20 @@ void LLFloaterProfile::onCommitRights()
 	}
 }
 
+void LLFloaterProfile::onFirstDescriptionFocusChange()
+{
+	if (mDescriptionEdit->hasFocus())
+	{
+		mDescriptionEdit->setParseHTML(false);
+	}
+	else
+	{
+		mOriginalFirstDescription = mDescriptionEdit->getValue().asString();
+		mDescriptionEdit->setParseHTML(true);
+	}
+	mDescriptionEdit->setValue(mOriginalFirstDescription);
+}
+
 
 void LLFloaterProfile::rightsConfirmationCallback(const LLSD& notification,
 	const LLSD& response, S32 rights)
@@ -1266,6 +1286,20 @@ void LLFloaterProfile::updateBtns()
 	//BD - Hide the rights checkboxes and show the search checkboxes if this is our own profile.
 	getChild<LLPanel>("rights_layout")->setVisible(!mSelfProfile);
 	getChild<LLPanel>("search_layout")->setVisible(mSelfProfile);
+}
+
+void LLFloaterProfile::onDescriptionFocusChange()
+{
+	if (mSecondLifeDescriptionEdit->hasFocus())
+	{
+		mSecondLifeDescriptionEdit->setParseHTML(false);
+	}
+	else
+	{
+		mOriginalDescription = mSecondLifeDescriptionEdit->getValue().asString();
+		mSecondLifeDescriptionEdit->setParseHTML(true);
+	}
+	mSecondLifeDescriptionEdit->setValue(mOriginalDescription);
 }
 
 void LLFloaterProfile::onClickSetName()
@@ -1556,7 +1590,7 @@ void LLFloaterProfile::apply()
 
 			//BD - Second Life
 			data.image_id = mSecondLifePic->getImageAssetID();
-			data.about_text = mSecondLifeDescriptionEdit->getValue().asString();
+			data.about_text = mOriginalDescription;
 			data.allow_publish = mShowInSearchCheckbox->getValue();
 
 			//BD - Web
@@ -1567,7 +1601,7 @@ void LLFloaterProfile::apply()
 
 			//BD - First Life
 			data.fl_image_id = mPicture->getImageAssetID();
-			data.fl_about_text = mDescriptionEdit->getValue().asString();
+			data.fl_about_text = mOriginalFirstDescription;
 
 			LLAvatarPropertiesProcessor::getInstance()->sendAvatarPropertiesUpdate(&data);
 		}
