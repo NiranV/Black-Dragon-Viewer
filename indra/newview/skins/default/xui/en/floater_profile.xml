@@ -389,7 +389,7 @@
                   left="0"
                   visible="true"
                   height="83"
-                  auto_resize="false"
+                  auto_resize="true"
                   user_resize="false">
                    <layout_stack
                     name="group_stack"

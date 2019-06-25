@@ -1207,7 +1207,10 @@ void LLFloaterProfile::updateBtns()
 	//BD - Hide the groups list layout if the group list is empty.
 	getChild<LLPanel>("group_layout")->setVisible(!mGroups.empty());
 	LLRect new_rect = getChild<LLPanel>("group_stack_layout")->getRect();
-	getChild<LLPanel>("group_stack_layout")->reshape(new_rect.getWidth(), !mGroups.empty() ? 83.f : 26.f);
+	if (mGroups.empty() && mGroupsLoaded)
+	{
+		getChild<LLPanel>("group_stack_layout")->reshape(new_rect.getWidth(), 26.f);
+	}
 
 	//BD - Hide the about section if there is no profile description and this is not our own profile.
 	getChild<LLPanel>("about_layout")->setVisible(mSelfProfile || !mSecondLifeDescriptionEdit->getText().empty());
