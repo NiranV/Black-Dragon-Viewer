@@ -1482,7 +1482,7 @@ BOOL LLViewerWindow::handleTranslatedKeyUp(KEY key,  MASK mask)
 
 void LLViewerWindow::handleScanKey(KEY key, BOOL key_down, BOOL key_up, BOOL key_level)
 {
-	gJoystick.setCameraNeedsUpdate(true);
+	gJoystick->setCameraNeedsUpdate(true);
 	gViewerKeyboard.scanKey(key, key_down, key_up, key_level);
 	return; // Be clear this function returns nothing
 }
@@ -1529,7 +1529,7 @@ BOOL LLViewerWindow::handleActivateApp(LLWindow *window, BOOL activating)
 {
 	//if (!activating) gAgentCamera.changeCameraToDefault();
 
-	gJoystick.setNeedsReset(true);
+	gJoystick->setNeedsReset(true);
 	return FALSE;
 }
 
@@ -1620,9 +1620,9 @@ void LLViewerWindow::handleDataCopy(LLWindow *window, S32 data_type, void *data)
 
 BOOL LLViewerWindow::handleTimerEvent(LLWindow *window)
 {
-	if (gJoystick.getOverrideCamera())
+	if (gJoystick->getOverrideCamera())
 	{
-		gJoystick.updateStatus();
+		gJoystick->updateStatus();
 		return TRUE;
 	}
 	return FALSE;
@@ -1631,9 +1631,9 @@ BOOL LLViewerWindow::handleTimerEvent(LLWindow *window)
 BOOL LLViewerWindow::handleDeviceChange(LLWindow *window)
 {
 	// give a chance to use a joystick after startup (hot-plugging)
-	if (!gJoystick.isJoystickInitialized())
+	if (!gJoystick->isJoystickInitialized())
 	{
-		gJoystick.init(true);
+		gJoystick->init(true);
 		return TRUE;
 	}
 	return FALSE;
@@ -4143,7 +4143,7 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 
 	//BD - Always set raycast intersection to mouse_world_end unless
 	//     flycam is on, mouselook is active or free DoF is enabled (for DoF effect)
-	if (!gJoystick.getOverrideCamera()
+	if (!gJoystick->getOverrideCamera()
 		&& !gPipeline.CameraFreeDoFFocus)
 	{
 		gDebugRaycastIntersection.load3(mouse_world_end.mV);
@@ -4208,7 +4208,7 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 														  face_hit, intersection, uv, normal, tangent);
 			//BD - Check whether we have flycam enabled and ignore the fact we are showing transparent
 			//     otherwise we end up with locking our depth of field focus.
-			if (found && (!pick_transparent || gJoystick.getOverrideCamera()))
+			if (found && (!pick_transparent || gJoystick->getOverrideCamera()))
 			{
 				gDebugRaycastIntersection = *intersection;
 			}

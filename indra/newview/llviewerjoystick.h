@@ -97,11 +97,12 @@ typedef enum E_Scalings
 } E_Scalings;
 
 
-class LLViewerJoystick
+class LLViewerJoystick : public LLSingleton<LLViewerJoystick>
 {
+	LLSINGLETON(LLViewerJoystick);
 public:
-	LLViewerJoystick();
-	/*virtual*/ ~LLViewerJoystick();
+	//LLViewerJoystick();
+	virtual ~LLViewerJoystick();
 
 	void init(bool autoenable);
 	void terminate();
@@ -184,6 +185,6 @@ private:
 	F32 mJoystickRunThreshold;
 };
 
-extern LLViewerJoystick gJoystick;
+extern LLViewerJoystick* gJoystick;
 
 #endif

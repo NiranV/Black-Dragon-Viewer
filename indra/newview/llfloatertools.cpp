@@ -869,7 +869,7 @@ void LLFloaterTools::onOpen(const LLSD& key)
 // virtual
 void LLFloaterTools::onClose(bool app_quitting)
 {
-	gJoystick.moveAvatar(false);
+	gJoystick->moveAvatar(false);
 
 	// destroy media source used to grab media title
 	if( mTitleMedia )

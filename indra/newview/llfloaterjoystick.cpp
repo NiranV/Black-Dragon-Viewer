@@ -68,16 +68,16 @@ LLFloaterJoystick::LLFloaterJoystick(const LLSD& data)
 
 void LLFloaterJoystick::draw()
 {
-	bool joystick_inited = gJoystick.isJoystickInitialized();
+	bool joystick_inited = gJoystick->isJoystickInitialized();
 	getChildView("enable_joystick")->setEnabled(joystick_inited);
 	getChildView("joystick_type")->setEnabled(joystick_inited);
-	std::string desc = gJoystick.getDescription();
+	std::string desc = gJoystick->getDescription();
 	if (desc.empty()) desc = getString("NoDevice");
 	getChild<LLUICtrl>("joystick_type")->setValue(desc);
 
 	for (U32 i = 0; i < 6; i++)
 	{
-		F32 value = gJoystick.mAxes[i];
+		F32 value = gJoystick->mAxes[i];
 		sample(*sJoystickAxes[i], value * gFrameIntervalSeconds.value());
 		if (mAxisStatsBar[i])
 		{
@@ -94,8 +94,8 @@ void LLFloaterJoystick::draw()
 //	//BD - Custom Joystick Mapping
 	for (U32 i = 0; i < 16; i++)
 	{
-		U32 value = gJoystick.mBtn[i];
-		if (!mAxisButton[i]->getEnabled() && gJoystick.mBtn[i])
+		U32 value = gJoystick->mBtn[i];
+		if (!mAxisButton[i]->getEnabled() && gJoystick->mBtn[i])
 		{
 			mAxisButton[i]->setEnabled(TRUE);
 		}
@@ -307,9 +307,9 @@ void LLFloaterJoystick::onCommitJoystickEnabled(LLUICtrl*, void *joy_panel)
 	if (!joystick_enabled || !flycam_enabled)
 	{
 		// Turn off flycam
-		if (gJoystick.getOverrideCamera())
+		if (gJoystick->getOverrideCamera())
 		{
-			gJoystick.toggleFlycam();
+			gJoystick->toggleFlycam();
 		}
 	}
 }
@@ -334,7 +334,7 @@ void LLFloaterJoystick::onClickCancel(void *joy_panel)
 		if (self)
 		{
 			self->cancel();
-			gJoystick.refreshEverything();
+			gJoystick->refreshEverything();
 			self->closeFloater();
 		}
 	}
@@ -355,16 +355,16 @@ void LLFloaterJoystick::onClickOK(void *joy_panel)
 
 void LLFloaterJoystick::setSNDefaults()
 {
-	gJoystick.setSNDefaults();
+	gJoystick->setSNDefaults();
 }
 
 //BD - Xbox360 Controller Support
 void LLFloaterJoystick::setXboxDefaults()
 {
-	gJoystick.setXboxDefaults();
+	gJoystick->setXboxDefaults();
 }
 
 void LLFloaterJoystick::refreshAll()
 {
-	gJoystick.refreshEverything();
+	gJoystick->refreshEverything();
 }

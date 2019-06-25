@@ -43,7 +43,7 @@
 //BD
 #include "lldefs.h"
 
-LLViewerJoystick gJoystick;
+LLViewerJoystick* gJoystick = NULL;
 
 // ----------------------------------------------------------------------------
 // Constants
@@ -108,15 +108,15 @@ void LLViewerJoystick::setOverrideCamera(bool val)
 NDOF_HotPlugResult LLViewerJoystick::HotPlugAddCallback(NDOF_Device *dev)
 {
 	NDOF_HotPlugResult res = NDOF_DISCARD_HOTPLUGGED;
-	if (gJoystick.mDriverState == JDS_UNINITIALIZED)
+	if (gJoystick->mDriverState == JDS_UNINITIALIZED)
 	{
         LL_INFOS() << "HotPlugAddCallback: will use device:" << LL_ENDL;
 		ndof_dump(dev);
-		gJoystick.mNdofDev = dev;
-		gJoystick.mDriverState = JDS_INITIALIZED;
+		gJoystick->mNdofDev = dev;
+		gJoystick->mDriverState = JDS_INITIALIZED;
         res = NDOF_KEEP_HOTPLUGGED;
 	}
-	gJoystick.updateEnabled(true);
+	gJoystick->updateEnabled(true);
     return res;
 }
 #endif
@@ -125,14 +125,14 @@ NDOF_HotPlugResult LLViewerJoystick::HotPlugAddCallback(NDOF_Device *dev)
 #if LIB_NDOF
 void LLViewerJoystick::HotPlugRemovalCallback(NDOF_Device *dev)
 {
-	if (gJoystick.mNdofDev == dev)
+	if (gJoystick->mNdofDev == dev)
 	{
         LL_INFOS() << "HotPlugRemovalCallback: joystick->mNdofDev=" 
-			<< gJoystick.mNdofDev << "; removed device:" << LL_ENDL;
+			<< gJoystick->mNdofDev << "; removed device:" << LL_ENDL;
 		ndof_dump(dev);
-		gJoystick.mDriverState = JDS_UNINITIALIZED;
+		gJoystick->mDriverState = JDS_UNINITIALIZED;
 	}
-	gJoystick.updateEnabled(true);
+	gJoystick->updateEnabled(true);
 }
 #endif
 
@@ -273,6 +273,8 @@ void LLViewerJoystick::init(bool autoenable)
 	LL_INFOS() << "ndof: mDriverState=" << mDriverState << "; mNdofDev="
 		<< mNdofDev << "; libinit=" << libinit << LL_ENDL;
 #endif
+
+	gJoystick = LLViewerJoystick::getInstance();
 }
 
 // -----------------------------------------------------------------------------
@@ -284,6 +286,8 @@ void LLViewerJoystick::terminate()
 	LL_INFOS() << "Terminated connection with NDOF device." << LL_ENDL;
 	mDriverState = JDS_UNINITIALIZED;
 #endif
+	delete gJoystick;
+	gJoystick = NULL;
 }
 
 // -----------------------------------------------------------------------------
@@ -795,7 +799,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	}
 
 	bool is_zero = true;
-	for (U32 i = 0; i < MAX_AXES; i++)
+	for (U32 i = 0; i < 6; i++)
 	{
 		cur_delta[i] = -mAxes[mMappedAxes[i]];
 

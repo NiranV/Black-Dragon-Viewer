@@ -154,6 +154,8 @@
 //BD - Pie Menu
 #include "piemenu.h"
 
+extern LLViewerJoystick* gJoystick;
+
 using namespace LLAvatarAppearanceDefines;
 
 typedef LLPointer<LLViewerObject> LLViewerObjectPtr;
@@ -2957,14 +2959,14 @@ class LLViewCheckJoystickFlycam : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-		bool new_value = gJoystick.getOverrideCamera();
+		bool new_value = gJoystick->getOverrideCamera();
 		return new_value;
 	}
 };
 
 void handle_toggle_flycam()
 {
-	gJoystick.toggleFlycam();
+	gJoystick->toggleFlycam();
 }
 
 class LLObjectBuild : public view_listener_t
@@ -3032,8 +3034,8 @@ void handle_object_edit()
 	LLToolMgr::getInstance()->setCurrentToolset(gBasicToolset);
 	gFloaterTools->setEditTool( LLToolCompTranslate::getInstance() );
 	
-	gJoystick.moveObjects(true);
-	gJoystick.setNeedsReset(true);
+	gJoystick->moveObjects(true);
+	gJoystick->setNeedsReset(true);
 	
 	// Could be first use
 	//LLFirstUse::useBuild();

@@ -6322,7 +6322,7 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 		// begin() == the closest light and rbegin() == the farthest light
 		const S32 MAX_LOCAL_LIGHTS = 6;
 // 		LLVector3 cam_pos = gAgent.getCameraPositionAgent();
-		LLVector3 cam_pos = gJoystick.getOverrideCamera() ?
+		LLVector3 cam_pos = gJoystick->getOverrideCamera() ?
 						camera.getOrigin() : 
 						gAgent.getPositionAgent();
 
@@ -8057,7 +8057,7 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 			if (focus_point.isExactlyZero())
 			{
 				//BD - Free Depth of Field Focus
-				if (gJoystick.getOverrideCamera() || CameraFreeDoFFocus)
+				if (gJoystick->getOverrideCamera() || CameraFreeDoFFocus)
 				{ //focus on point under cursor
 					focus_point.set(gDebugRaycastIntersection.getF32ptr());
 				}

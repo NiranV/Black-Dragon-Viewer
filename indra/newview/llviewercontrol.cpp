@@ -348,8 +348,8 @@ static void handleAudioVolumeChanged(const LLSD& newvalue)
 
 static bool handleJoystickChanged(const LLSD& newvalue)
 {
-	gJoystick.setCameraNeedsUpdate(TRUE);
-	gJoystick.refreshAxesMapping();
+	gJoystick->setCameraNeedsUpdate(TRUE);
+	gJoystick->refreshAxesMapping();
 	return true;
 }
 
