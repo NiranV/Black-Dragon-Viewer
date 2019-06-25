@@ -498,6 +498,9 @@ BOOL LLFloaterProfile::postBuild()
 	LLAvatarPropertiesProcessor::getInstance()->addObserver(mAvatarId, this);
 	mNameCallbackConnection = LLAvatarNameCache::get(mAvatarId, boost::bind(&LLFloaterProfile::onAvatarNameCache, this, _1, _2));
 
+	//BD - Disable scaling the width.
+	this->enableResizeCtrls(true, false, true);
+
 	return TRUE;
 }
 
