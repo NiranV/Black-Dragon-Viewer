@@ -4769,10 +4769,11 @@ void LLAppViewer::idle()
 		{
 			LL_RECORD_BLOCK_TIME(FTM_AGENT_AUTOPILOT);
 			// Handle automatic walking towards points
+			gAgent.autoPilot(&yaw);
+
 			if (gAgentPilot.isPlaying())
 			{
 				gAgentPilot.updatePlayback();
-				gAgent.autoPilot(&yaw);
 			}
 			else if (gAgentPilot.isRecording())
 			{
