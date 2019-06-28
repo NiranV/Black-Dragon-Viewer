@@ -91,7 +91,9 @@ LLFastTimerView::LLFastTimerView(const LLSD& key)
 	mHoverBarIndex(-1),
 	mStatsIndex(-1),
 	mPauseHistory(false),
-	mRecording(NUM_FRAMES_HISTORY)
+	mRecording(NUM_FRAMES_HISTORY),
+	mOverLegend(false),
+	mScrollOffset(0)
 {
 	mTimerBarRows.resize(NUM_FRAMES_HISTORY);
 }
@@ -153,6 +155,7 @@ BOOL LLFastTimerView::handleRightMouseDown(S32 x, S32 y, MASK mask)
 		{
 			mHoverTimer->getParent()->getTreeNode().mCollapsed = true;
 		}
+		mNeedColorUpdate = true;
 		return TRUE;
 	}
 	else if (mBarRect.pointInRect(x, y))
@@ -160,6 +163,7 @@ BOOL LLFastTimerView::handleRightMouseDown(S32 x, S32 y, MASK mask)
 		S32 bar_idx = MAX_VISIBLE_HISTORY - ((y - mBarRect.mBottom) * (MAX_VISIBLE_HISTORY + 2) / mBarRect.getHeight());
 		bar_idx = llclamp(bar_idx, 0, MAX_VISIBLE_HISTORY);
 		mStatsIndex = mScrollIndex + bar_idx;
+		mNeedColorUpdate = true;
 		return TRUE;
 	}
 	return LLFloater::handleRightMouseDown(x, y, mask);
@@ -184,6 +188,7 @@ BOOL LLFastTimerView::handleDoubleClick(S32 x, S32 y, MASK mask)
 		++it)
 	{
 		(*it)->getTreeNode().mCollapsed = false;
+		mNeedColorUpdate = true;
 	}
 	return TRUE;
 }
@@ -196,19 +201,20 @@ BOOL LLFastTimerView::handleMouseDown(S32 x, S32 y, MASK mask)
 		if (idp)
 		{
 			idp->getTreeNode().mCollapsed = !idp->getTreeNode().mCollapsed;
+			mNeedColorUpdate = true;
 		}
 	}
 	else if (mHoverTimer)
 	{
 		//left click drills down by expanding timers
 		mHoverTimer->getTreeNode().mCollapsed = false;
+		mNeedColorUpdate = true;
 	}
 	else if (mGraphRect.pointInRect(x, y))
 	{
 		gFocusMgr.setMouseCapture(this);
 		return TRUE;
 	}
-
 	return LLFloater::handleMouseDown(x, y, mask);
 }
 
@@ -232,6 +238,7 @@ BOOL LLFastTimerView::handleHover(S32 x, S32 y, MASK mask)
 	}
 	mHoverTimer = NULL;
 	mHoverID = NULL;
+	mOverLegend = false;
 
 	if(mPauseHistory && mBarRect.pointInRect(x, y))
 	{
@@ -298,6 +305,7 @@ BOOL LLFastTimerView::handleHover(S32 x, S32 y, MASK mask)
 		{
 			mHoverID = timer_id;
 		}
+		mOverLegend = true;
 	}
 	
 	return LLFloater::handleHover(x, y, mask);
@@ -360,10 +368,30 @@ BOOL LLFastTimerView::handleToolTip(S32 x, S32 y, MASK mask)
 //BD - UI Improvements
 BOOL LLFastTimerView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-	setPauseState(true);
-	mScrollIndex = llclamp(	mScrollIndex + clicks,
-							0,
-							llmin((S32)mRecording.getNumRecordedPeriods(), (S32)mRecording.getNumRecordedPeriods() - MAX_VISIBLE_HISTORY));
+	if(mOverLegend)
+	{
+		mScrollOffset += clicks;
+		S32 count = 0;
+		for (block_timer_tree_df_iterator_t it = LLTrace::begin_block_timer_tree_df(FTM_FRAME);
+   			it != block_timer_tree_df_iterator_t();
+   			++it)
+		{
+			count++;
+			BlockTimerStatHandle* idp = (*it);
+			if (idp->getTreeNode().mCollapsed) 
+			{
+				it.skipDescendants();
+			}
+		}
+		mScrollOffset = llclamp(mScrollOffset,0,count-5);
+	}
+	else
+	{
+		setPauseState(true);
+		mScrollIndex = llclamp(	mScrollIndex + clicks,
+								0,
+								llmin((S32)mRecording.getNumRecordedPeriods(), (S32)mRecording.getNumRecordedPeriods() - MAX_VISIBLE_HISTORY));
+	}
 	return TRUE;
 }
 
@@ -385,8 +413,11 @@ void LLFastTimerView::draw()
 
 	mDisplayMode = llclamp(mScaleCombo->getCurrentIndex(), 0, 3);
 	mDisplayType = (EDisplayType)llclamp(mMetricCombo->getCurrentIndex(), 0, 2);
-
-	generateUniqueColors();
+	if (mNeedColorUpdate)
+	{
+		generateUniqueColors();
+		mNeedColorUpdate = false;
+	}
 
 	LLView::drawChildren();
 	//getChild<LLLayoutStack>("timer_bars_stack")->updateLayout();
@@ -1204,11 +1235,21 @@ void LLFastTimerView::drawLegend()
 		S32 cur_line = 0;
 		ft_display_idx.clear();
 		std::map<BlockTimerStatHandle*, S32> display_line;
+		S32 mScrollOffset_tmp = mScrollOffset;
 		for (block_timer_tree_df_iterator_t it = LLTrace::begin_block_timer_tree_df(FTM_FRAME);
 			it != block_timer_tree_df_iterator_t();
 			++it)
 		{
 			BlockTimerStatHandle* idp = (*it);
+			if(mScrollOffset_tmp)
+			{
+				--mScrollOffset_tmp;
+				if (idp->getTreeNode().mCollapsed) 
+				{
+					it.skipDescendants();
+				}
+				continue;
+			}
 			display_line[idp] = cur_line;
 			ft_display_idx.push_back(idp);
 			cur_line++;
@@ -1442,12 +1483,12 @@ void LLFastTimerView::drawBars()
 
 	// Draw bars for each history entry
 	// Special: 0 = show running average
-	LLPointer<LLUIImage> bar_image = LLUI::getUIImage("Rounded_Square");
+	//LLPointer<LLUIImage> bar_image = LLUI::getUIImage("Rounded_Square");
 
-	const S32 image_width = bar_image->getTextureWidth();
-	const S32 image_height = bar_image->getTextureHeight();
+	//const S32 image_width = bar_image->getTextureWidth();
+	//const S32 image_height = bar_image->getTextureHeight();
 
-	gGL.getTexUnit(0)->bind(bar_image->getImage());
+	//gGL.getTexUnit(0)->bind(bar_image->getImage());
 	{	
 		const S32 histmax = (S32)mRecording.getNumRecordedPeriods();
 
@@ -1484,7 +1525,7 @@ void LLFastTimerView::drawBars()
 										bar_height);
 		mAverageTimerRow.mTop = frame_bar_rect.mTop;
 		mAverageTimerRow.mBottom = frame_bar_rect.mBottom;
-		drawBar(frame_bar_rect, mAverageTimerRow, image_width, image_height);
+		drawBar(frame_bar_rect, mAverageTimerRow, 1, 1);
 		frame_bar_rect.translate(0, -(bar_height + vpad + bar_height));
 
 		for(S32 bar_index = mScrollIndex; bar_index < llmin(histmax, mScrollIndex + MAX_VISIBLE_HISTORY); ++bar_index)
@@ -1495,13 +1536,13 @@ void LLFastTimerView::drawBars()
 			row.mBottom = frame_bar_rect.mBottom;
 			frame_bar_rect.mRight = frame_bar_rect.mLeft 
 									+ ll_round((row.mBars[0].mTotalTime / mTotalTimeDisplay) * mBarRect.getWidth());
- 			drawBar(frame_bar_rect, row, image_width, image_height);
+ 			drawBar(frame_bar_rect, row, 1, 1);
 
 			frame_bar_rect.translate(0, -(bar_height + vpad));
 		}
 
 	}	
-	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
+	//gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 }
 
 static LLTrace::BlockTimerStatHandle FTM_UPDATE_TIMER_BAR_WIDTHS("Update timer bar widths");

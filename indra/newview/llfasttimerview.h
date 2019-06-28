@@ -145,6 +145,9 @@ private:
 									mLegendRect;
 	LLFrameTimer					mHighlightTimer;
 	LLTrace::PeriodicRecording		mRecording;
+	bool							mOverLegend;
+	bool							mNeedColorUpdate;
+	S32								mScrollOffset;
 
 	LLButton* mPauseBtn;
 
