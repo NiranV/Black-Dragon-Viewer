@@ -8053,6 +8053,11 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 				}
 			}
 
+			if (CameraDoFLocked)
+			{
+				focus_point = PrevDoFFocusPoint;
+			}
+
 			//BD
 			if (focus_point.isExactlyZero())
 			{
@@ -8087,10 +8092,6 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 				{
 					PrevDoFFocusPoint = focus_point;
 				}
-			}
-			else if (CameraDoFLocked)
-			{
-				focus_point = PrevDoFFocusPoint;
 			}
 
 			LLVector3 eye = viewer_cam->getOrigin();
