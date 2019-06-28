@@ -246,12 +246,12 @@ BOOL LLHeadRotMotion::onUpdate(F32 time, U8* joint_mask)
 	mLastHeadRot = head_rot_local;
 
 	// Set the head rotation.
-	if(mNeckState->getJoint() && mNeckState->getJoint()->getParent())
+	if (mNeckState->getJoint() && mTorsoJoint)
 	{
 		LLQuaternion torsoRotLocal =  mTorsoJoint->getWorldRotation() * currentInvRootRotWorld;
 		head_rot_local = head_rot_local * ~torsoRotLocal;
-		mNeckState->setRotation(nlerp(NECK_LAG, torsoRotLocal, head_rot_local));
-		mHeadState->setRotation(nlerp(1.f - NECK_LAG, torsoRotLocal, head_rot_local));
+		mNeckState->setRotation(nlerp(NECK_LAG, LLQuaternion::DEFAULT, head_rot_local));
+		mHeadState->setRotation(nlerp(1.f - NECK_LAG, LLQuaternion::DEFAULT, head_rot_local));
 	}
 
 	return TRUE;
