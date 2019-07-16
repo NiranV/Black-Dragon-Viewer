@@ -133,6 +133,10 @@
 #include "llnamelistctrl.h"
 #include "llmenugl.h"
 
+#include <string>
+#include <iostream>
+#include <thread>
+
 #include "llsearchableui.h"
 
 const F32 BANDWIDTH_UPDATER_TIMEOUT = 0.5f;
@@ -978,7 +982,7 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mClickActionDirty(false),
 //	//BD - Avatar Rendering Settings
 	mAvatarSettingsList(NULL),
-	mNeedsUpdate(false)
+	mNeedsUpdate(true)
 {
 	//BD
 	static bool registered_voice_dialog = false;
@@ -1383,6 +1387,12 @@ void LLFloaterPreference::onDoNotDisturbResponseChanged()
 
 LLFloaterPreference::~LLFloaterPreference()
 {
+	//BD - Shutdown the update thread.
+	if (mUpdateThread.joinable())
+	{
+		mUpdateThread.join();
+	}
+
 	LLConversationLog::instance().removeObserver(this);
 
 //	//BD - Avatar Rendering Settings
@@ -2203,11 +2213,26 @@ void LLFloaterPreference::draw()
 	}
 
 //	//BD - Avatar Rendering Settings
-	if ((mTabContainer->getCurrentPanelIndex() == 2
-		&& mAvatarSettingsList->isEmpty()) || mNeedsUpdate)
+	if (!mUpdateThread.joinable() && !mNeedsUpdate)
 	{
-		updateList();
-		mNeedsUpdate = false;
+		//BD - Multithreading Experiments
+		//     Updating and filling the render settings list tanks performance hard,
+		//     even harder with bigger lists, this is the perfect candidate to test
+		//     multithreading to get rid of the growing time it takes to update the
+		//     the list.
+		//
+		//     Experiments so far have shown that multithreading is a very crashy
+		//     endeavour, everything can crash at any time for seemingly no reason
+		//     and multithreading this stuff needs a lot of thought put into it to
+		//     make use of it proper. It's tiny babysteps so far but the results are
+		//     extremely promising, showing complete elimination of the increasingly
+		//     longer freeze times.
+		mUpdateThread = std::thread(&LLFloaterPreference::updateList, this);
+	}
+
+	if (mNeedsUpdate)
+	{
+		fillList();
 	}
 
 	//BD - Unhighlight everything when we clear the filter terms.
@@ -2220,7 +2245,6 @@ void LLFloaterPreference::draw()
 		onUpdateFilterTerm(true);
 		mFilterCleared = true;
 	}
-	
 	LLFloater::draw();
 }
 
@@ -2416,13 +2440,10 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	toggleTabs();
 
 //	//BD - Avatar Rendering Settings
-	//     Only update this when absolutely necessary, this causes a huge 
-	//     framedrop for up to a second or two.
-	if ((mTabContainer->getCurrentPanelIndex() == 2
-		&& mAvatarSettingsList->isEmpty()) || mNeedsUpdate)
+	if (!mUpdateThread.joinable())
 	{
-		updateList();
-		mNeedsUpdate = false;
+		mUpdateThread = std::thread(&LLFloaterPreference::updateList, this);
+		//mUpdateThread.detach();
 	}
 
 //	//BD - Unlimited Camera Presets
@@ -2535,6 +2556,11 @@ void LLFloaterPreference::getControlNames(std::vector<std::string>& names)
 void LLFloaterPreference::onClose(bool app_quitting)
 {
 	gSavedSettings.setS32("LastPrefTab", mTabContainer->getCurrentPanelIndex());
+
+	if (mUpdateThread.joinable())
+	{
+		mUpdateThread.join();
+	}
 
 	//BD
 	if (!app_quitting)
@@ -3897,23 +3923,44 @@ void LLFloaterPreference::onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y)
 
 void LLFloaterPreference::updateList()
 {
-	mAvatarSettingsList->deleteAllItems();
+	S32 i = 0;
 	LLAvatarName av_name;
-	LLNameListCtrl::NameItem item_params;
 	for (std::map<LLUUID, S32>::iterator iter = LLRenderMuteList::getInstance()->sVisuallyMuteSettingsMap.begin(); iter != LLRenderMuteList::getInstance()->sVisuallyMuteSettingsMap.end(); iter++)
 	{
-		item_params.value = iter->first;
 		LLAvatarNameCache::get(iter->first, &av_name);
 		if (!isHiddenRow(av_name.getCompleteName()))
 		{
-			item_params.columns.add().value(av_name.getCompleteName()).column("name");
 			std::string setting = getString(iter->second == 1 ? "av_never_render" : "av_always_render");
-			item_params.columns.add().value(setting).column("setting");
 			std::string timestamp = createTimestamp(LLRenderMuteList::getInstance()->getVisualMuteDate(iter->first));
-			item_params.columns.add().value(timestamp).column("timestamp");
-			mAvatarSettingsList->addNameItemRow(item_params);
+			LLSD element;
+			element["columns"][0]["column"] = "name";
+			element["columns"][0]["value"] = av_name.getCompleteName();
+			element["columns"][1]["column"] = "setting";
+			element["columns"][1]["value"] = setting;
+			element["columns"][2]["column"] = "timestamp";
+			element["columns"][2]["value"] = timestamp;
+			element["columns"][3]["column"] = "id";
+			element["columns"][3]["value"] = iter->first;
+			mScrollListParams.push_back(element);
+			++i;
 		}
 	}
+	mNeedsUpdate = true;
+}
+
+void LLFloaterPreference::fillList()
+{
+	mAvatarSettingsList->deleteAllItems();
+	for (LLSD iter : mScrollListParams)
+	{
+		LLNameListCtrl::NameItem item_params;
+		item_params.columns.add().value(iter["columns"][0]["value"]).column("name");
+		item_params.columns.add().value(iter["columns"][1]["value"]).column("setting");
+		item_params.columns.add().value(iter["columns"][2]["value"]).column("timestamp");
+		item_params.value(iter["columns"][3]["value"].asUUID());
+		mAvatarSettingsList->addNameItemRow(item_params);
+	}
+	mNeedsUpdate = false;
 }
 
 void LLFloaterPreference::onFilterEdit(const std::string& search_string)
@@ -3923,7 +3970,7 @@ void LLFloaterPreference::onFilterEdit(const std::string& search_string)
 	if (mNameFilter != filter_upper)
 	{
 		mNameFilter = filter_upper;
-		mNeedsUpdate = true;
+		mNeedsUpdate = false;
 	}
 }
 
@@ -4000,7 +4047,7 @@ void LLFloaterPreference::setNeedsUpdate()
 {
 	LLFloaterPreference* instance = LLFloaterReg::getTypedInstance<LLFloaterPreference>("preferences");
 	if (!instance) return;
-	instance->mNeedsUpdate = true;
+		instance->mNeedsUpdate = false;
 }
 
 void LLFloaterPreference::onClickAdd(const LLSD& userdata)
@@ -4070,8 +4117,12 @@ void LLFloaterPreference::setAvatarRenderSetting(const uuid_vec_t& av_ids, S32 n
 				LLRenderMuteList::getInstance()->saveVisualMuteSetting(av_id, new_setting);
 			}
 		}
-		//BD
-		updateList();
+
+		if (!mUpdateThread.joinable())
+		{
+			mUpdateThread = std::thread(&LLFloaterPreference::updateList, this);
+			//mUpdateThread.detach();
+		}
 	}
 }
 

@@ -40,6 +40,7 @@
 #include "lllistcontextmenu.h"
 #include "llmutelist.h"
 #include "llsearchableui.h"
+#include "llnamelistctrl.h"
 
 class LLConversationLogObserver;
 class LLPanelPreference;
@@ -258,6 +259,7 @@ public:
 
 
 	void updateList();
+	void fillList();
 	void onFilterEdit(const std::string& search_string);
 	bool isActionChecked(const LLSD& userdata, const LLUUID& av_id);
 	void onClickAdd(const LLSD& userdata);
@@ -399,6 +401,10 @@ private:
 
 	std::array<LLUICtrl*, 2> mRenderProjectorShadowResolution;
 	std::array<LLUICtrl*, 2> mExodusRenderToneAdvOptC;
+
+	std::thread mUpdateThread;
+	std::vector<LLSD> mScrollListParams;
+
 };
 
 class LLPanelPreference : public LLPanel
