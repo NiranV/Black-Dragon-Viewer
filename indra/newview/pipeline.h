@@ -979,6 +979,9 @@ public:
 	static F32 RenderSSAOEffect;
 	static F32 RenderSSAOBlurSize;
 	static F32 RenderChromaStrength;
+	static F32 RenderSepiaStrength;
+	static F32 RenderGreyscaleStrength;
+	static F32 RenderNumColors;
 	static F32 RenderSnapshotMultiplier;
 	static F32 RenderShadowFarClip;
 	static F32 RenderGlobalLightStrength;

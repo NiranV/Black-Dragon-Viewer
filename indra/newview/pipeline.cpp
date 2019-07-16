@@ -218,6 +218,9 @@ F32 LLPipeline::RenderSSRBrightness;
 F32 LLPipeline::RenderSSAOEffect;
 F32 LLPipeline::RenderSSAOBlurSize;
 F32 LLPipeline::RenderChromaStrength;
+F32 LLPipeline::RenderSepiaStrength;
+F32 LLPipeline::RenderGreyscaleStrength;
+F32 LLPipeline::RenderNumColors;
 F32 LLPipeline::RenderSnapshotMultiplier;
 F32 LLPipeline::RenderShadowFarClip;
 F32 LLPipeline::RenderGlobalLightStrength;
@@ -1310,6 +1313,9 @@ void LLPipeline::refreshCachedSettings()
 	RenderSSAOEffect = gSavedSettings.getF32("RenderSSAOEffect");
 	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
+	RenderSepiaStrength = gSavedSettings.getF32("RenderPostSepiaStrength");
+	RenderGreyscaleStrength = gSavedSettings.getF32("RenderPostGreyscaleStrength");
+	RenderNumColors = gSavedSettings.getF32("RenderPostPosterizationSamples");
 	RenderSnapshotMultiplier = gSavedSettings.getF32("RenderSnapshotMultiplier");
 	RenderShadowFarClip = gSavedSettings.getF32("RenderShadowFarClip");
 	RenderGlobalLightStrength = gSavedSettings.getF32("RenderGlobalLightStrength");
@@ -8336,6 +8342,8 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 			bindDeferredShader(*shader);
 
 			shader->uniform1f(LLShaderMgr::DOF_RES_SCALE, RenderDepthOfField ? CameraDoFResScale : 1.0f);
+			shader->uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, RenderGreyscaleStrength);
+			shader->uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, RenderSepiaStrength);
 
 			S32 channel = shader->enableTexture(LLShaderMgr::DEFERRED_DIFFUSE, mScreen.getUsage());
 			if (channel > -1)

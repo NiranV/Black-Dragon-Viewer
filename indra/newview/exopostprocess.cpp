@@ -322,9 +322,10 @@ void exoPostProcess::ExodusRenderSpecial(LLRenderTarget* src, LLRenderTarget* ds
     
     exoShader::BindRenderTarget(dst, shader, LLShaderMgr::EXO_RENDER_SCREEN);
     
+	bool godrays = LLPipeline::RenderGodrays;
 	shader->uniform1i(LLShaderMgr::DEFERRED_NUM_COLORS, sNumColors);
-	shader->uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, sGreyscaleStrength);
-	shader->uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, sSepiaStrength);
+	shader->uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, !godrays ? sGreyscaleStrength : 0.0f);
+	shader->uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, !godrays ? sSepiaStrength : 0.0f);
     mExoPostBuffer->drawArrays(LLRender::TRIANGLES, 0, 3);
     stop_glerror();
     shader->unbind();

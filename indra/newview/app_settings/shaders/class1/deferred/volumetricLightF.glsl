@@ -74,6 +74,10 @@ uniform vec4 shadow_res;
 
 uniform vec4 shadow_bias;
 
+uniform float greyscale_str;
+uniform int num_colors;
+uniform float sepia_str;
+
 float rand(vec2 co)
 {
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -182,5 +186,15 @@ void main()
     vec4 bloom = texture2D(bloomMap, tc/screen_res);
     diff.rgb += bloom.rgb;
 #endif
+
+    vec3 col_gr = vec3((0.299 * diff.r) + (0.587 * diff.g) + (0.114 * diff.b));
+    diff.rgb = mix(diff.rgb, col_gr, greyscale_str);
+    
+    vec3 col_sep;
+    col_sep.r = (diff.r*0.3588) + (diff.g*0.7044) + (diff.b*0.1368);
+    col_sep.g = (diff.r*0.299) + (diff.g*0.5870) + (diff.b*0.114);
+    col_sep.b = (diff.r*0.2392) + (diff.g*0.4696) + (diff.b*0.0912);
+    diff.rgb = mix(diff.rgb, col_sep, sepia_str);
+
     frag_color = diff;
 }
