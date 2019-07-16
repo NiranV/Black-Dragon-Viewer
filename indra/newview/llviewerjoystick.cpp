@@ -1130,8 +1130,8 @@ void LLViewerJoystick::setXboxDefaults()
 	gSavedSettings.setF32("AvatarAxisScale0", .2f);
 	gSavedSettings.setF32("AvatarAxisScale2", .1f);
 	gSavedSettings.setF32("AvatarAxisScale1", .2f);
-	gSavedSettings.setF32("AvatarAxisScale4", 0.75f);
-	gSavedSettings.setF32("AvatarAxisScale5", 1.0f);
+	gSavedSettings.setF32("AvatarAxisScale4", 3.75f);
+	gSavedSettings.setF32("AvatarAxisScale5", 4.5f);
 	gSavedSettings.setF32("AvatarAxisScale3", 1.0f);
 	gSavedSettings.setF32("BuildAxisScale0", 1.25f);
 	gSavedSettings.setF32("BuildAxisScale2", 1.25f);
@@ -1139,13 +1139,13 @@ void LLViewerJoystick::setXboxDefaults()
 	gSavedSettings.setF32("BuildAxisScale4", 1.f);
 	gSavedSettings.setF32("BuildAxisScale5", 1.f);
 	gSavedSettings.setF32("BuildAxisScale3", 1.f);
-	gSavedSettings.setF32("FlycamAxisScale0", 1.5f);
-	gSavedSettings.setF32("FlycamAxisScale2", 1.5f);
-	gSavedSettings.setF32("FlycamAxisScale1", 1.5f);
-	gSavedSettings.setF32("FlycamAxisScale4", 1.0f);
-	gSavedSettings.setF32("FlycamAxisScale5", 1.0f);
-	gSavedSettings.setF32("FlycamAxisScale3", 0.75f);
-	gSavedSettings.setF32("FlycamAxisScale6", 0.05f);
+	gSavedSettings.setF32("FlycamAxisScale0", 5.0f);
+	gSavedSettings.setF32("FlycamAxisScale2", 5.0f);
+	gSavedSettings.setF32("FlycamAxisScale1", 5.0f);
+	gSavedSettings.setF32("FlycamAxisScale4", 2.0f);
+	gSavedSettings.setF32("FlycamAxisScale5", 2.5f);
+	gSavedSettings.setF32("FlycamAxisScale3", 2.0f);
+	gSavedSettings.setF32("FlycamAxisScale6", 1.0f);
 	
 	gSavedSettings.setF32("AvatarAxisDeadZone0", .4f);
 	gSavedSettings.setF32("AvatarAxisDeadZone2", .2f);
@@ -1167,9 +1167,9 @@ void LLViewerJoystick::setXboxDefaults()
 	gSavedSettings.setF32("FlycamAxisDeadZone5", .1f);
 	gSavedSettings.setF32("FlycamAxisDeadZone6", .1f);
 	
-	gSavedSettings.setF32("AvatarFeathering", 3.0f);
+	gSavedSettings.setF32("AvatarFeathering", 20.0f);
 	gSavedSettings.setF32("BuildFeathering", 3.f);
-	gSavedSettings.setF32("FlycamFeathering", 0.1f);
+	gSavedSettings.setF32("FlycamFeathering", 1.0f);
 
 	refreshEverything();
 }
