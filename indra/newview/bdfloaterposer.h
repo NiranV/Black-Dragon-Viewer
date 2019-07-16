@@ -175,6 +175,11 @@ private:
 	void onAvatarsRefresh();
 	void onAvatarsSelect();
 
+	//BD
+	void loadPoseRotations(std::string name, LLVector3 *rotations);
+	void loadPosePositions(std::string name, LLVector3 *rotations);
+	void loadPoseScales(std::string name, LLVector3 *rotations);
+
 private:
 	//BD - Posing
 	LLScrollListCtrl*						mPoseScroll;
