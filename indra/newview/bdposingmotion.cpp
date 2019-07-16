@@ -111,9 +111,11 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 	LLQuaternion target_quat;
 	LLQuaternion joint_quat;
 	LLQuaternion last_quat;
+	LLQuaternion next_quat;
 	LLVector3 joint_pos;
 	LLVector3 last_pos;
 	LLVector3 target_pos;
+	LLVector3 next_pos;
 	F32 perc = 0.0f;
 
 	for (auto joint_state : mJointState)
@@ -148,6 +150,16 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 						//     re-creates spherical linear interpolation's behavior.
 						joint_pos = lerp(joint_pos, target_pos, mInterpolationTime);
 					}
+					else if (mInterpolationType == 3)
+					{
+						next_pos = joint->getNextPosition();
+						//BD - Do curve interpolation.
+						//     This is a special kind of interpolation where we interpolate towards
+						//     a "middle" pose to a given degree while on our way to the actual final
+						//     pose.
+						joint_pos = lerp(joint_pos, next_pos, perc);
+						joint_pos = lerp(joint_pos, target_pos, 0.5f - abs(0.5f - perc));
+					}
 					else
 					{
 						if (perc >= 1.0f)
@@ -172,6 +184,16 @@ BOOL BDPosingMotion::onUpdate(F32 time, U8* joint_mask)
 				{
 					//BD - Do spherical linear interpolation.
 					joint_quat = slerp(mInterpolationTime, joint_quat, target_quat);
+				}
+				else if (mInterpolationType == 3)
+				{
+					next_pos = joint->getNextPosition();
+					//BD - Do curve interpolation.
+					//     This is a special kind of interpolation where we interpolate towards
+					//     a "middle" pose to a given degree while on our way to the actual final
+					//     pose.
+					joint_quat = lerp(perc, joint_quat, next_quat);
+					joint_quat = lerp(0.5f - abs(0.5f - perc), joint_quat, target_quat);
 				}
 				else
 				{

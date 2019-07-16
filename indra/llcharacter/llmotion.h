@@ -163,7 +163,10 @@ public:
 	virtual void setInterpolationTime(F32 time)			{ mInterpolationTime = time; }
 
 	//BD - functions to set/get our interpolation type
-	//     0 = None , 1 = Linear Interpolatioon , 2 = Spherical Linear Interpolation
+	//     0 = None, 
+	// 	   1 = Linear Interpolatioon, 
+	//     2 = Spherical Linear Interpolation,
+	//     3 = Curve
 	S32 getInterpolationType() const					{ return mInterpolationType; }
 	virtual void setInterpolationType(S32 type)			{ mInterpolationType = type; }
 
@@ -195,7 +198,11 @@ protected:
 	std::string		mName;			// instance name assigned by motion controller
 	LLUUID			mID;
 
-	//BD - 0 = None , 1 = Linear Interpolatioon , 2 = Spherical Linear Interpolation
+	//BD - functions to set/get our interpolation type
+	//     0 = None, 
+	// 	   1 = Linear Interpolatioon, 
+	//     2 = Spherical Linear Interpolation,
+	//     3 = Curve
 	S32					mInterpolationType;
 	F32					mInterpolationTime;
 	LLFrameTimer		mInterpolationTimer;
