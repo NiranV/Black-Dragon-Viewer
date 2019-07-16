@@ -1273,9 +1273,9 @@ void LLFloaterProfile::updateBtns()
 
 	//BD - Picks
 	mNewButton->setVisible(mSelfProfile);
-	mNewButton->setVisible(canAddNewPick());
+	mNewButton->setEnabled(canAddNewPick());
 	mDeleteButton->setVisible(mSelfProfile);
-	mDeleteButton->setVisible(canDeletePick());
+	mDeleteButton->setEnabled(canDeletePick());
 
 	//BD - Classifieds
 	mNewClassifiedButton->setVisible(mSelfProfile);
