@@ -1169,6 +1169,9 @@ void LLFloaterProfile::onCommitRights()
 
 void LLFloaterProfile::onFirstDescriptionFocusChange()
 {
+	if (!mSelfProfile)
+		return;
+
 	if (mDescriptionEdit->hasFocus())
 	{
 		mDescriptionEdit->setParseHTML(false);
@@ -1290,6 +1293,9 @@ void LLFloaterProfile::updateBtns()
 
 void LLFloaterProfile::onDescriptionFocusChange()
 {
+	if (!mSelfProfile)
+		return;
+
 	if (mSecondLifeDescriptionEdit->hasFocus())
 	{
 		mSecondLifeDescriptionEdit->setParseHTML(false);
