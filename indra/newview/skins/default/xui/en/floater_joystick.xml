@@ -1883,7 +1883,7 @@
      decimal_digits="2"
      increment="0.01"
      label_width="0"
-     max_val="10"
+     max_val="30"
      min_val="0.01"
      layout="topleft"
      left="110"
