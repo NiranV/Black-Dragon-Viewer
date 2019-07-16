@@ -5140,11 +5140,11 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       label_width="150"
       layout="topleft"
       left="10"
-      max_val="60"
+      max_val="500"
       min_val="0.1"
       name="GodraysFalloffMultiplier"
       top_pad="1"
-      width="321"/>
+      width="327"/>
    <button
  follows="left|top"
  control_name="RenderGodraysFalloffMultiplier"

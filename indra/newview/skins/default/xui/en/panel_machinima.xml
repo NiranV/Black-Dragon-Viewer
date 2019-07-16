@@ -1675,11 +1675,11 @@ width="345">
                   tool_tip="Set the strength of the brightness falloff over distance"
                   layout="topleft"
                   left="10"
-                  max_val="60"
+                  max_val="500"
                   min_val="0.1"
                   name="GodrayFalloffMultiplier"
                   top_pad="1"
-                  width="290" />
+                  width="296" />
                   
                   <slider
                   enabled_control="RenderDeferred"
