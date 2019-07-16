@@ -799,7 +799,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	}
 
 	bool is_zero = true;
-	for (U32 i = 0; i < 6; i++)
+	for (U32 i = 0; i < 7; i++)
 	{
 		cur_delta[i] = -mAxes[mMappedAxes[i]];
 
