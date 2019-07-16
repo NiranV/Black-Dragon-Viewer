@@ -1377,7 +1377,7 @@ void LLVOAvatar::calculateSpatialExtents(LLVector4a& newMin, LLVector4a& newMax)
 
 
 	//stretch bounding box by static attachments
-    if (box_detail >= 2)
+    if (box_detail >= 2 || isControlAvatar())
     {
         float max_attachment_span = get_default_max_prim_scale() * 5.0f;
 	
@@ -1448,7 +1448,7 @@ void LLVOAvatar::calculateSpatialExtents(LLVector4a& newMin, LLVector4a& newMax)
     }
 
     // Stretch bounding box by rigged mesh joint boxes
-    if (box_detail>=3)
+    if (box_detail>=3 || isControlAvatar())
     {
 		//BD
 		if (mJointRiggingInfoTab.needsUpdate())
