@@ -771,7 +771,7 @@ static void on_avatar_name_cache_notify(const LLUUID& agent_id,
 	LLUUID session_id = LLIMMgr::computeSessionID(IM_NOTHING_SPECIAL, agent_id);
 	std::string notify_msg = notification->getMessage();
 	//BD - We only want the full "User is Offline/Online" message in IM not in the notification however.
-	notify_msg += online ? LLTrans::getString("OnlineStatus") : LLTrans::getString("OfflineStatus");
+	notify_msg = LLTrans::getString(online ? "OnlineStatus" : "OfflineStatus", args);
 	LLIMModel::instance().proccessOnlineOfflineNotification(session_id, notify_msg);
 }
 
