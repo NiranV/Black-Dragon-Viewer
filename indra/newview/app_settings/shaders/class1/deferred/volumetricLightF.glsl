@@ -166,7 +166,7 @@ void main()
     shaftify /= godray_res;
     
     farpos = pos * (min(-pos.z, godray_res) / -pos.z);
-    fade *= max(abs(falloff_multiplier / farpos.z), 1.0);
+    fade *= max(abs(falloff_multiplier / (farpos.z * farpos.z)), 1.0);
     shaftify = (shaftify / fade) * godray_multiplier;
 #if GODRAYS_FADE
     fade = 0.0;
