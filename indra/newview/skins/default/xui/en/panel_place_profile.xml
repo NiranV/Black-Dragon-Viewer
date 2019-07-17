@@ -220,7 +220,7 @@
      width="284">
         <panel
          follows="all"
-         height="554"
+         height="584"
          layout="topleft"
          left="0"
          name="scrolling_panel"
