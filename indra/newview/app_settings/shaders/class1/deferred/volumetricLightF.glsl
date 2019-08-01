@@ -78,6 +78,11 @@ uniform float greyscale_str;
 uniform int num_colors;
 uniform float sepia_str;
 
+float fade = 1.0;
+float shadamount = 0.0;
+float shaftify = 0.0;
+float last_shadsample = 0.0;
+
 float rand(vec2 co)
 {
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -89,33 +94,31 @@ float nonpcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen, float s
   stc.xyz /= stc.w;
   stc.z += bias;
   
-  stc.x = floor(stc.x*shad_res + fract(pos_screen.y*1.0)) * recip_shadow_res;
+  stc.x = floor(stc.x*shad_res + fract(pos_screen.y)) * recip_shadow_res;
   return shadow2D(shadowMap, stc.xyz).x;
 }
 
 float nonpcfShadowAtPos(vec4 pos_world)
 {
-  vec2 pos_screen = vary_fragcoord.xy;
-  vec4 pos = pos_world;
-  if (pos.z > -shadow_clip.w) {	
+  if (pos_world.z > -shadow_clip.w) {	
     vec4 near_split = shadow_clip*-0.75;
     vec4 far_split = shadow_clip*-1.25;
     
-    if (pos.z < near_split.z) {
-      pos = shadow_matrix[3]*pos;
-      return nonpcfShadow(shadowMap3, pos, pos_screen, shadow_res.w, shadow_bias.w);
+    if (pos_world.z < near_split.z) {
+      pos_world = shadow_matrix[3]*pos_world;
+      return nonpcfShadow(shadowMap3, pos_world, vary_fragcoord.xy, shadow_res.w, shadow_bias.w);
     }
-    else if (pos.z < near_split.y) {
-      pos = shadow_matrix[2]*pos;
-      return nonpcfShadow(shadowMap2, pos, pos_screen, shadow_res.z, shadow_bias.z);
+    else if (pos_world.z < near_split.y) {
+      pos_world = shadow_matrix[2]*pos_world;
+      return nonpcfShadow(shadowMap2, pos_world, vary_fragcoord.xy, shadow_res.z, shadow_bias.z);
     }
-    else if (pos.z < near_split.x) {
-      pos = shadow_matrix[1]*pos;
-      return nonpcfShadow(shadowMap1, pos, pos_screen, shadow_res.y, shadow_bias.y);
+    else if (pos_world.z < near_split.x) {
+      pos_world = shadow_matrix[1]*pos_world;
+      return nonpcfShadow(shadowMap1, pos_world, vary_fragcoord.xy, shadow_res.y, shadow_bias.y);
     }
-    else if (pos.z > far_split.x) {
-      pos = shadow_matrix[0]*pos;
-      return nonpcfShadow(shadowMap0, pos, pos_screen, shadow_res.x, shadow_bias.x);
+    else if (pos_world.z > far_split.x) {
+      pos_world = shadow_matrix[0]*pos_world;
+      return nonpcfShadow(shadowMap0, pos_world, vary_fragcoord.xy, shadow_res.x, shadow_bias.x);
     }
   }
   return 1.0;
@@ -146,10 +149,6 @@ void main()
     haze_weight = vec4(haze_density) / temp1;
     
     // craptacular rays
-    float fade = 1.0;
-    float shadamount = 0.0;
-    float shaftify = 0.0;
-    float last_shadsample = 0.0;
     float roffset = rand(tc);
     vec3 farpos = pos;
     farpos *= min(-pos.z, 512.0) / -pos.z;
@@ -175,7 +174,7 @@ void main()
 #if GODRAYS_FADE
     fade = 0.0;
     if(sun_dir.z < 0.0)
-	{
+    {
         fade = clamp(1 - dot(sun_dir.xy * 1.2, sun_dir.xy * 1.8), 0, 1);
     }
     shaftify *= fade;
@@ -187,14 +186,20 @@ void main()
     diff.rgb += bloom.rgb;
 #endif
 
-    vec3 col_gr = vec3((0.299 * diff.r) + (0.587 * diff.g) + (0.114 * diff.b));
-    diff.rgb = mix(diff.rgb, col_gr, greyscale_str);
+    if(greyscale_str > 0.0)
+    {
+     vec3 col_gr = vec3((0.299 * diff.r) + (0.587 * diff.g) + (0.114 * diff.b));
+     diff.rgb = mix(diff.rgb, col_gr, greyscale_str);
+    }
     
-    vec3 col_sep;
-    col_sep.r = (diff.r*0.3588) + (diff.g*0.7044) + (diff.b*0.1368);
-    col_sep.g = (diff.r*0.299) + (diff.g*0.5870) + (diff.b*0.114);
-    col_sep.b = (diff.r*0.2392) + (diff.g*0.4696) + (diff.b*0.0912);
-    diff.rgb = mix(diff.rgb, col_sep, sepia_str);
+    if(sepia_str > 0.0)
+    {
+      vec3 col_sep;
+      col_sep.r = (diff.r*0.3588) + (diff.g*0.7044) + (diff.b*0.1368);
+      col_sep.g = (diff.r*0.299) + (diff.g*0.5870) + (diff.b*0.114);
+      col_sep.b = (diff.r*0.2392) + (diff.g*0.4696) + (diff.b*0.0912);
+      diff.rgb = mix(diff.rgb, col_sep, sepia_str);
+    }
 
     frag_color = diff;
 }
