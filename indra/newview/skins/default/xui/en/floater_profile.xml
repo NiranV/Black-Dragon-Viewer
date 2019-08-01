@@ -4,9 +4,12 @@
  height="510"
  width="400"
  layout="topleft"
- can_close="true"
+ legacy_header_height="18"
+ close_pressed_image="Transparent"
+ close_image="Transparent"
+ can_close="false"
+ can_minimize="false"
  can_resize="true"
- help_topic="panel_my_profile_tab"
  min_height="510"
  min_width="400"
  positioning="centered"
@@ -67,18 +70,38 @@
      name="FSGW"
      value=" Gateway"
      />
+    <button
+    name="close_btn"
+    image_selected="Icon_Close_Press"
+    image_unselected="Icon_Close_Foreground"
+    top="0"
+    right="-4"
+    width="16"
+    height="16"
+    follows="right|top"
+    layout="topleft"/>
+    <button
+    name="minimize_btn"
+    image_selected="Icon_Minimize_Press"
+    image_unselected="Icon_Minimize_Foreground"
+    top="0"
+    left_pad="-32"
+    width="16"
+    height="16"
+    follows="right|top"
+    layout="topleft"/>
     <panel
      name="panel_profile_view"
-     top="0"
+     top_pad="0"
      left="0"
-     height="500"
+     height="485"
      width="445"
      follows="all">
         <tab_container
          name="panel_profile_tabs"
          top_pad="5"
          left="7"
-         height="497"
+         height="482"
          width="386"
          follows="all"
          layout="topleft"
@@ -378,7 +401,7 @@
                 top_pad="5"
                 left="0"
                 width="420"
-                height="291"
+                height="288"
                 follows="all"
                 layout="topleft"
                 orientation="vertical">
@@ -697,42 +720,6 @@
                      parameter="block"/>
                      </button> 
                  </layout_panel>
-                 <layout_panel
-                  name="close_layout"
-                  follows="left|bottom"
-                  visible="false"
-                  layout="topleft"
-                  left="0"
-                  height="26"
-                  auto_resize="false"
-                  user_resize="false">
-                  <button
-                  name="ok_btn"
-                  label="OK"
-                  tool_tip="Save changes to profile and close"
-                  image_hover_unselected="Toolbar_Middle_Over"
-                     image_selected="Toolbar_Middle_Selected"
-                     image_unselected="Toolbar_Middle_Off"
-                  top="1"
-                  left="3"
-                  height="23"
-                  width="189"
-                  follows="left|top"
-                  layout="topleft"/>
-                 <button
-                  name="cancel_btn"
-                  label="Cancel"
-                  image_hover_unselected="Toolbar_Middle_Over"
-                     image_selected="Toolbar_Middle_Selected"
-                     image_unselected="Toolbar_Middle_Off"
-                  top_delta="0"
-                  left_pad="1"
-                  height="23"
-                  width="189"
-                  follows="left|top"
-                  layout="topleft"
-                  label_selected="Cancel"/>
-                 </layout_panel>
                </layout_stack>
            </panel>
             <panel
@@ -887,7 +874,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="chk1"
                  label="Explore"
@@ -896,7 +887,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="chk2"
                  label="Meet"
@@ -905,7 +900,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="chk3"
                  label="Group"
@@ -914,7 +913,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="chk7"
                  label="Hire"
@@ -923,7 +926,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="chk6"
                  label="Be Hired"
@@ -932,7 +939,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="chk4"
                  label="Buy"
@@ -941,7 +952,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="chk5"
                  label="Sell"
@@ -950,7 +965,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <line_editor
                  name="want_to_edit"
                  top_pad="10"
@@ -961,6 +980,9 @@
                  layout="topleft"
                  text_pad_left="4"
                  max_length_bytes="254">
+                 <line_editor.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
                     (loading...)
                 </line_editor>
             
@@ -997,7 +1019,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="schk1"
                  label="Architecture"
@@ -1006,7 +1032,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <!-- The next two are out of order on purpose due to legacy ordering -->
                 <check_box
                  name="schk3"
@@ -1016,7 +1046,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="schk2"
                  label="Event Planning"
@@ -1025,7 +1059,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="schk4"
                  label="Scripting"
@@ -1034,7 +1072,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <check_box
                  name="schk5"
                  label="Custom Characters"
@@ -1043,7 +1085,11 @@
                  height="16"
                  width="90"
                  follows="left|top"
-                 layout="topleft"/>
+                 layout="topleft">
+                 <check_box.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
+                </check_box>
                 <line_editor
                  name="skills_edit"
                  top_pad="10"
@@ -1054,6 +1100,9 @@
                  layout="topleft"
                  text_pad_left="4"
                  max_length_bytes="254">
+                 <line_editor.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
                     (loading...)
                 </line_editor>
             
@@ -1092,11 +1141,14 @@
                  layout="topleft"
                  text_pad_left="4"
                  max_length_bytes="254">
+                 <line_editor.commit_callback
+                 function="Profile.Action"
+                 parameter="trigger_change"/>
                     (loading...)
                 </line_editor>
             </panel>
             <panel
-             name="panel_picks"
+             name="panel_profile_picks"
              label="Picks"
              bg_alpha_image="Panel_Background"
              background_visible="true"
@@ -1474,6 +1526,7 @@
                  height="448"
                  follows="all"
                  layout="topleft"
+                 commit_on_focus_lost="true"
                  max_length="1000"
                  word_wrap="true"/>
                    </layout_panel>

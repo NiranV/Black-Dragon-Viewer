@@ -99,7 +99,7 @@ class LLFloaterProfile
     LOG_CLASS(LLFloaterProfile);
 public:
 
-	LLFloaterProfile(const LLSD& key);
+	LLFloaterProfile(const LLSD& key);			
 	virtual ~LLFloaterProfile();
 
 	/*virtual*/ void onOpen(const LLSD& key);
@@ -123,10 +123,12 @@ public:
 
 	// Saves changes.
 	void apply();
+	void closeSaveConfirm(const LLSD& notification,	const LLSD& response);
 
 	//void onCommitTexture();
 	void onTabChange();
 	void onCustomAction(LLUICtrl* ctrl, const LLSD& param);
+	void onCloseBtn();
 
 	//void onImageLoaded(BOOL success, LLViewerFetchedTexture *imagep);
 	//static void onImageLoaded(BOOL success,
@@ -151,6 +153,16 @@ public:
 	//BD - Web Panel
 	//////////////////////////
 	/*virtual*/ void handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
+
+	//////////////////////////
+	//BD - Picks Panel
+	//////////////////////////
+	void showPick(const LLUUID& pick_id = LLUUID::null);
+
+	//////////////////////////
+	//BD - Classifieds Panel
+	//////////////////////////
+	void showClassified(const LLUUID& classified_id = LLUUID::null, bool edit = false);
 
 private:
 	//////////////////////////
@@ -206,6 +218,7 @@ private:
 	LLPanel*			mActionsPanel;
 
 	bool				mVoiceStatus;
+	bool				mUnsavedChanges;
 
 	LLAvatarNameCache::callback_connection_t mNameCallbackConnection;
 

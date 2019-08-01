@@ -97,10 +97,8 @@ public:
      * Show avatar profile.
      */
     static void showProfile(const LLUUID& avatar_id);
-    static void showPicks(const LLUUID& avatar_id);
-    static void showPick(const LLUUID& avatar_id, const LLUUID& pick_id);
-    static void showClassifieds(const LLUUID& avatar_id);
-    static void showClassified(const LLUUID& avatar_id, const LLUUID& classified_id, bool edit = false);
+    static void showPick(const LLUUID& avatar_id, const LLUUID& pick_id = LLUUID::null);
+	static void showClassified(const LLUUID& avatar_id, const LLUUID& classified_id = LLUUID::null, bool edit = false);
     static void hideProfile(const LLUUID& avatar_id);
     static bool profileVisible(const LLUUID& avatar_id);
     static bool isPickTabSelected(const LLUUID& avatar_id);

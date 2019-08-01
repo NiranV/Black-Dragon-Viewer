@@ -6473,7 +6473,7 @@ class LLAvatarTogglePicks : public view_listener_t
         {
             instance->setMinimized(FALSE);
             instance->setFocus(TRUE);
-            LLAvatarActions::showPicks(gAgent.getID());
+            LLAvatarActions::showPick(gAgent.getID());
         }
         else if (picks_tab_visible())
         {
@@ -6481,7 +6481,7 @@ class LLAvatarTogglePicks : public view_listener_t
         }
         else
         {
-            LLAvatarActions::showPicks(gAgent.getID());
+            LLAvatarActions::showPick(gAgent.getID());
         }
         return true;
     }
@@ -6926,7 +6926,7 @@ class LLShowAgentProfilePicks : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
     {
-        LLAvatarActions::showPicks(gAgent.getID());
+        LLAvatarActions::showPick(gAgent.getID());
         return true;
     }
 };

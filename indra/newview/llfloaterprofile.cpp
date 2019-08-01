@@ -280,7 +280,7 @@ public:
 		// handle app/classified/create urls first
 		if (params.size() == 1 && params[0].asString() == "create")
 		{
-			LLAvatarActions::showPicks(gAgent.getID());
+			LLAvatarActions::showPick(gAgent.getID());
 			return true;
 		}
 
@@ -331,7 +331,7 @@ public:
 		// handle app/classified/create urls first
 		if (params.size() == 1 && params[0].asString() == "create")
 		{
-			LLAvatarActions::showClassifieds(gAgent.getID());
+			LLAvatarActions::showClassified(gAgent.getID());
 			return true;
 		}
 
@@ -403,9 +403,11 @@ LLFloaterProfile::~LLFloaterProfile()
 
 BOOL LLFloaterProfile::postBuild()
 {
-	childSetAction("ok_btn", boost::bind(&LLFloaterProfile::onOKBtn, this));
-	childSetAction("cancel_btn", boost::bind(&LLFloaterProfile::onCancelBtn, this));
+	childSetAction("close_btn", boost::bind(&LLFloaterProfile::onCloseBtn, this));
+	childSetAction("minimize_btn", boost::bind(&LLFloater::onClickMinimize, this));
 
+	mUnsavedChanges = false;
+	
 	mTabContainer = getChild<LLTabContainer>("panel_profile_tabs");
 	mTabContainer->setCommitCallback(boost::bind(&LLFloaterProfile::onTabChange, this));
 	mPanelSecondlife = findChild<LLPanel>(PANEL_SECONDLIFE);
@@ -422,7 +424,7 @@ BOOL LLFloaterProfile::postBuild()
 	mSecondLifePic = getChild<LLTextureCtrl>("2nd_life_pic");
 	mSecondLifePicLayout = getChild<LLPanel>("image_stack");
 	mSecondLifeDescriptionEdit = getChild<LLTextBase>("sl_description_edit");
-	mSecondLifeDescriptionEdit->setFocusChangedCallback(boost::bind(&LLFloaterProfile::onDescriptionFocusChange, this));
+	mSecondLifeDescriptionEdit->setFocusChangedCallback(boost::bind(&LLFloaterProfile::onDescriptionFocusChange, this)); //
 	mTeleportButton = getChild<LLButton>("teleport");
 	mShowOnMapButton = getChild<LLButton>("show_on_map_btn");
 	mBlockButton = getChild<LLButton>("block");
@@ -625,14 +627,7 @@ void LLFloaterProfile::processProperties(void* data, EAvatarProcessorType type)
 		LLAvatarNotes* avatar_notes = static_cast<LLAvatarNotes*>(data);
 		if (avatar_notes && mAvatarId == avatar_notes->target_id)
 		{
-			if (avatar_notes->notes.empty())
-			{
-				mNotesEditor->setValue(avatar_notes->notes);
-			}
-			else
-			{
-				mNotesEditor->clear();
-			}
+			mNotesEditor->setValue(avatar_notes->notes);
 			mNotesEditor->setEnabled(TRUE);
 			mNotesLoaded = true;
 		}
@@ -1182,6 +1177,35 @@ void LLFloaterProfile::onFirstDescriptionFocusChange()
 		mDescriptionEdit->setParseHTML(true);
 	}
 	mDescriptionEdit->setValue(mOriginalFirstDescription);
+
+	mUnsavedChanges = true;
+}
+
+void LLFloaterProfile::onCloseBtn()
+{
+	if (mUnsavedChanges)
+	{
+		LLSD args;
+		args["NAME"] = LLSLURL("agent", mAvatarId, "completename").getSLURLString();
+		//BD - Ask whether you want to save all changes or cancel out when closing
+		//     the window after making a change.
+		LLNotificationsUtil::add("SaveProfileChanges", args, LLSD(),
+			boost::bind(&LLFloaterProfile::closeSaveConfirm, this, _1, _2));
+	}
+	else
+	{
+		closeFloater();
+	}
+}
+
+void LLFloaterProfile::closeSaveConfirm(const LLSD& notification, const LLSD& response)
+{
+	S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
+	if (option == 0)
+	{
+		apply();
+	}
+	closeFloater();
 }
 
 
@@ -1240,9 +1264,6 @@ void LLFloaterProfile::updateBtns()
 
 	//BD - Hide invite to group button if its our own profile.
 	getChild<LLPanel>("group_invite_layout")->setVisible(!mSelfProfile);
-
-	//BD - Hide the close/ok buttons if this isn't our own profile.
-	getChild<LLPanel>("close_layout")->setVisible(mSelfProfile);
 
 	//BD - Show or keep the action buttons hidden.
 	mActionsPanel->setVisible(!mSelfProfile);
@@ -1306,6 +1327,8 @@ void LLFloaterProfile::onDescriptionFocusChange()
 		mSecondLifeDescriptionEdit->setParseHTML(true);
 	}
 	mSecondLifeDescriptionEdit->setValue(mOriginalDescription);
+
+	mUnsavedChanges = true;
 }
 
 void LLFloaterProfile::onClickSetName()
@@ -1393,6 +1416,10 @@ void LLFloaterProfile::onCustomAction(LLUICtrl* ctrl, const LLSD& param)
 	else if (param.asString() == "copy_slurl")
 	{
 		LLAvatarActions::copySLURLToClipboard(mAvatarId);
+	}
+	else if (param.asString() == "trigger_change")
+	{
+		mUnsavedChanges = true;
 	}
 }
 
@@ -1583,6 +1610,46 @@ bool LLFloaterProfile::canDeletePick()
 {
 	return (mPicksTabContainer->getTabCount() > 0);
 }
+
+void LLFloaterProfile::showPick(const LLUUID& pick_id)
+{
+	//BD - Open picks panel, thats why we are here.
+	mTabContainer->selectTabByName(PANEL_PICKS);
+	if (pick_id.notNull())
+	{
+		//BD - Iterate through all picks to find the one we're looking for.
+		for (S32 idx = 0; idx < mPicksTabContainer->getTabCount(); idx++)
+		{
+			LLPanelProfilePick* pick_panel = dynamic_cast<LLPanelProfilePick*>(mPicksTabContainer->getPanelByIndex(idx));
+			if (pick_panel && pick_panel->getPickId() == pick_id)
+			{
+				//BD - If we found the pick we were looking for, open it.
+				mPicksTabContainer->selectTabPanel(pick_panel);
+			}
+		}
+	}
+}
+
+void LLFloaterProfile::showClassified(const LLUUID& classified_id, bool edit)
+{
+	//BD - Open picks panel, thats why we are here.
+	mTabContainer->selectTabByName(PANEL_CLASSIFIEDS);
+	if (classified_id.notNull())
+	{
+		//BD - Iterate through all picks to find the one we're looking for.
+		for (S32 idx = 0; idx < mPicksTabContainer->getTabCount(); idx++)
+		{
+			LLPanelProfileClassified* pick_panel = dynamic_cast<LLPanelProfileClassified*>(mPicksTabContainer->getPanelByIndex(idx));
+			if (pick_panel && pick_panel->getClassifiedId() == classified_id)
+			{
+				//BD - If we found the pick we were looking for, open it.
+				mClassifiedsTabContainer->selectTabPanel(pick_panel);
+				pick_panel->setEditMode(edit);
+			}
+		}
+	}
+}
+
 
 
 void LLFloaterProfile::apply()
