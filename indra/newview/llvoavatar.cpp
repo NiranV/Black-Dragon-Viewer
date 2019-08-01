@@ -1537,6 +1537,30 @@ void render_sphere_and_line(const LLVector3& begin_pos, const LLVector3& end_pos
     gGL.popMatrix();
 }
 
+void render_line(const LLVector3& begin_pos, const LLVector3& end_pos, const LLVector3& color, const LLVector3& vis_color)
+{
+	// Unoccluded bone portions
+	LLGLDepthTest normal_depth(GL_TRUE);
+
+	// Draw line segment for unoccluded joint
+	gGL.diffuseColor3f(vis_color[0], vis_color[1], vis_color[2]);
+
+	gGL.begin(LLRender::LINES);
+	gGL.vertex3fv(begin_pos.mV);
+	gGL.vertex3fv(end_pos.mV);
+	gGL.end();
+
+	LLGLDepthTest depth_under(GL_TRUE, GL_FALSE, GL_GREATER);
+
+	// Occluded bone portions
+	gGL.diffuseColor3f(color[0], color[1], color[2]);
+
+	gGL.begin(LLRender::LINES);
+	gGL.vertex3fv(begin_pos.mV);
+	gGL.vertex3fv(end_pos.mV);
+	gGL.end();
+}
+
 //-----------------------------------------------------------------------------
 // renderCollisionVolumes()
 //-----------------------------------------------------------------------------
@@ -1603,18 +1627,10 @@ void LLVOAvatar::renderBones()
 	avatar_joint_list_t::iterator iter = mSkeleton.begin();
 	avatar_joint_list_t::iterator end  = mSkeleton.end();
 
-    // For bones with position overrides defined
-    static LLVector3 OVERRIDE_COLOR_OCCLUDED(1.0f, 0.0f, 0.0f);
-    static LLVector3 OVERRIDE_COLOR_VISIBLE(0.5f, 0.5f, 0.5f);
-    // For bones which are rigged to by at least one attachment
-    static LLVector3 RIGGED_COLOR_OCCLUDED(0.0f, 1.0f, 1.0f);
-    static LLVector3 RIGGED_COLOR_VISIBLE(0.5f, 0.5f, 0.5f);
-    // For bones not otherwise colored
     static LLVector3 OTHER_COLOR_OCCLUDED(0.0f, 1.0f, 0.0f);
     static LLVector3 OTHER_COLOR_VISIBLE(0.5f, 0.5f, 0.5f);
-    
-    static F32 SPHERE_SCALEF = 0.001f;
 
+	//BD - Simplify joint rendering.
 	for (; iter != end; ++iter)
 	{
 		LLJoint* jointp = *iter;
@@ -1625,37 +1641,13 @@ void LLVOAvatar::renderBones()
 
 		jointp->updateWorldMatrix();
 
-        LLVector3 occ_color, visible_color;
-
-        LLVector3 pos;
-        LLUUID mesh_id;
-        if (jointp->hasAttachmentPosOverride(pos,mesh_id))
-        {
-            occ_color = OVERRIDE_COLOR_OCCLUDED;
-            visible_color = OVERRIDE_COLOR_VISIBLE;
-        }
-        else
-        {
-            if (jointIsRiggedTo(jointp))
-            {
-                occ_color = RIGGED_COLOR_OCCLUDED;
-                visible_color = RIGGED_COLOR_VISIBLE;
-            }
-            else
-            {
-                occ_color = OTHER_COLOR_OCCLUDED;
-                visible_color = OTHER_COLOR_VISIBLE;
-            }
-        }
         LLVector3 begin_pos(0,0,0);
         LLVector3 end_pos(jointp->getEnd());
-
-        F32 sphere_scale = SPHERE_SCALEF;
         
 		gGL.pushMatrix();
 		gGL.multMatrix( &jointp->getXform()->getWorldMatrix().mMatrix[0][0] );
 
-        render_sphere_and_line(begin_pos, end_pos, sphere_scale, occ_color, visible_color);
+		render_line(begin_pos, end_pos, OTHER_COLOR_VISIBLE, OTHER_COLOR_OCCLUDED);
         
 		gGL.popMatrix();
 	}
@@ -1679,7 +1671,7 @@ void LLVOAvatar::renderJoints()
 		ostr << jointp->getName() << ", ";
 
 		jointp->updateWorldMatrix();
-	
+		
 		gGL.pushMatrix();
 		gGL.multMatrix( &jointp->getXform()->getWorldMatrix().mMatrix[0][0] );
 
