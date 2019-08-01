@@ -8078,6 +8078,10 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 					result.clear();
 					gViewerWindow->cursorIntersect(-1, -1, 512.f, NULL, -1, FALSE, TRUE, NULL, &result);
 					focus_point.set(result.getF32ptr());
+
+					//BD - Safeguard against sudden all-blurry-screen in rare
+					//     inconsistent situations caused by unknown reasons.
+					focus_point.clamp(LLVector3(0, 0, 0), focus_point);
 				}
 				else
 				{
@@ -8088,10 +8092,6 @@ void LLPipeline::renderBloom(bool for_snapshot, F32 zoom_factor, int subfield)
 						focus_point = LLVector3(gAgentCamera.getFocusGlobal()-region->getOriginGlobal());
 					}
 				}
-
-				//BD - Safeguard against sudden all-blurry-screen in rare
-				//     inconsistent situations caused by unknown reasons.
-				focus_point.clamp(LLVector3(0, 0, 0), focus_point);
 
 				//BD
 				if(!focus_point.isExactlyZero())
