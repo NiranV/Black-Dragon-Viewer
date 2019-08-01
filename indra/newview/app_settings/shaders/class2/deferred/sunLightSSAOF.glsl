@@ -78,10 +78,10 @@ vec3 decode_normal (vec2 enc)
 {
     vec2 fenc = enc*4-2;
     float f = dot(fenc,fenc);
-    float g = sqrt(1-f/4);
+    float g = sqrt(1-f*0.25);
     vec3 n;
     n.xy = fenc*g;
-    n.z = 1-f/2;
+    n.z = 1-f*0.5;
     return n;
 }
 
@@ -102,14 +102,14 @@ vec2 getKern(int i)
 {
 	vec2 kern[8];
 	// exponentially (^2) distant occlusion samples spread around origin
-	kern[0] = vec2(-1.0, 0.0) * 0.125*0.125;
-	kern[1] = vec2(1.0, 0.0) * 0.250*0.250;
-	kern[2] = vec2(0.0, 1.0) * 0.375*0.375;
-	kern[3] = vec2(0.0, -1.0) * 0.500*0.500;
-	kern[4] = vec2(0.7071, 0.7071) * 0.625*0.625;
-	kern[5] = vec2(-0.7071, -0.7071) * 0.750*0.750;
-	kern[6] = vec2(-0.7071, 0.7071) * 0.875*0.875;
-	kern[7] = vec2(0.7071, -0.7071) * 1.000*1.000;
+	kern[0] = vec2(-0.015625, 0.0);
+	kern[1] = vec2(0.0625, 0.0);
+	kern[2] = vec2(0.0, 0.140625);
+	kern[3] = vec2(0.0, -0.25);
+	kern[4] = vec2(0.2762, 0.2762);
+	kern[5] = vec2(-0.3977, -0.3977);
+	kern[6] = vec2(-0.5414, 0.5414);
+	kern[7] = vec2(0.7071, -0.7071);
        
 	return kern[i];
 }
@@ -121,7 +121,7 @@ float calcAmbientOcclusion(vec4 pos, vec3 norm)
 
 	vec2 pos_screen = vary_fragcoord.xy;
 	vec3 pos_world = pos.xyz;
-	vec2 noise_reflect = texture2D(noiseMap, vary_fragcoord.xy/64.0).xy;
+	vec2 noise_reflect = texture2D(noiseMap, vary_fragcoord.xy*0.015625).xy;
 		
 	float angle_hidden = 0.0;
 	float points = 0;
@@ -187,12 +187,12 @@ float pcfSpotShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_scr
 	float cs = shadow2D(shadowMap, stc.xyz).x;
 	float shadow = cs;
 	
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.45/shad_res, 0.45/shad_res, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.65/shad_res, -0.65/shad_res, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.45/shad_res, 0.45/shad_res, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.65/shad_res, -0.65/shad_res, 0.0)).x;
+	//shadow += shadow2D(shadowMap, stc.xyz+vec3(0.45/shad_res, 0.45/shad_res, 0.0)).x;
+	//shadow += shadow2D(shadowMap, stc.xyz+vec3(0.65/shad_res, -0.65/shad_res, 0.0)).x;
+	//shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.45/shad_res, 0.45/shad_res, 0.0)).x;
+	//shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.65/shad_res, -0.65/shad_res, 0.0)).x;
 
-	return shadow*0.2;
+	return shadow;
 }
 
 void main() 
@@ -306,11 +306,11 @@ void main()
 	//spotlight shadow 1
 	vec4 lpos = shadow_matrix[4]*spos;
 	frag_color[2] = pcfSpotShadow(shadowMap4, lpos, 0.8, pos_screen, proj_shadow_res.x);
-	
+
 	//spotlight shadow 2
 	lpos = shadow_matrix[5]*spos;
 	frag_color[3] = pcfSpotShadow(shadowMap5, lpos, 0.8, pos_screen, proj_shadow_res.y);
-
+ 
 	//frag_color.rgb = pos.xyz;
 	//frag_color.b = shadow;
 }

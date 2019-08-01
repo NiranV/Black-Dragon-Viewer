@@ -389,7 +389,7 @@ vec3 scaleUpLight(vec3 light)
 
 vec3 atmosAmbient(vec3 light)
 {
-	return getAmblitColor() + light / 2.0;
+	return getAmblitColor() + light * 0.5;
 }
 
 vec3 atmosAffectDirectionalLight(float lightIntensity)
@@ -448,7 +448,7 @@ void main()
 	float light_gamma = 1.0/1.3;
 	da = pow(da, light_gamma);
 	
-    vec4 diffuse ;
+    vec4 diffuse;
     vec2 fromCentre = vec2(0.0);
     if(chroma_str > 0.0)
     {
@@ -620,7 +620,7 @@ void main()
    
    // add the two types of shiny together
    vec3 spec_contrib = dumbshiny * spec.rgb;
-   bloom = dot(spec_contrib, spec_contrib) / 6;
+   bloom = dot(spec_contrib, spec_contrib) * 0.166667;
    col += spec_contrib;
   }
 #endif
