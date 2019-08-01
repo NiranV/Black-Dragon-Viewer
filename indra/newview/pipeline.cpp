@@ -220,7 +220,7 @@ F32 LLPipeline::RenderSSAOBlurSize;
 F32 LLPipeline::RenderChromaStrength;
 F32 LLPipeline::RenderSepiaStrength;
 F32 LLPipeline::RenderGreyscaleStrength;
-F32 LLPipeline::RenderNumColors;
+U32 LLPipeline::RenderNumColors;
 F32 LLPipeline::RenderSnapshotMultiplier;
 F32 LLPipeline::RenderShadowFarClip;
 F32 LLPipeline::RenderGlobalLightStrength;
@@ -1315,7 +1315,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
 	RenderSepiaStrength = gSavedSettings.getF32("RenderPostSepiaStrength");
 	RenderGreyscaleStrength = gSavedSettings.getF32("RenderPostGreyscaleStrength");
-	RenderNumColors = gSavedSettings.getF32("RenderPostPosterizationSamples");
+	RenderNumColors = gSavedSettings.getU32("RenderPostPosterizationSamples");
 	RenderSnapshotMultiplier = gSavedSettings.getF32("RenderSnapshotMultiplier");
 	RenderShadowFarClip = gSavedSettings.getF32("RenderShadowFarClip");
 	RenderGlobalLightStrength = gSavedSettings.getF32("RenderGlobalLightStrength");
