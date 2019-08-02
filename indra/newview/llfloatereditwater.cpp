@@ -655,36 +655,13 @@ void LLFloaterEditWater::onWaterPresetNameEdited()
 
 void LLFloaterEditWater::onWaterPresetSelected()
 {
-	LLWaterParamSet water_params;
-	std::string name;
-	LLEnvKey::EScope scope;
-
-	getSelectedPreset(name, scope);
-
-	// Display selected preset.
-	if (scope == LLEnvKey::SCOPE_REGION)
-	{
-		water_params.setAll(LLEnvManagerNew::instance().getRegionSettings().getWaterParams());
-	}
-	else // local preset selected
-	{
-		if (!LLWaterParamManager::instance().getParamSet(name, water_params))
-		{
-			// Manually entered string?
-			LL_WARNS("Windlight") << "No water preset named " << name << LL_ENDL;
-			return;
-		}
-	}
-
-	LLEnvManagerNew::instance().useWaterParams(water_params.getAll());
-
-	bool can_edit = (scope == LLEnvKey::SCOPE_LOCAL || LLEnvManagerNew::canEditRegionSettings());
-	enableEditing(can_edit);
-
-	mMakeDefaultCheckBox->setEnabled(scope == LLEnvKey::SCOPE_LOCAL);
-
-	//BD
+	std::string water_preset = getCurrentPresetName();
+	//BD - Setting water presets was handled differently in the Environment Editor so we
+	//     copied this behavior here to make sure that changing a preset in the Water
+	//     Editor actually changes it internally and makes it stick.
 	LLEnvManagerNew::instance().setUseCustomWaterSettings(false);
+	LLEnvManagerNew::instance().setUseWaterPreset(water_preset, false);
+	syncControls();
 }
 
 bool LLFloaterEditWater::onSaveAnswer(const LLSD& notification, const LLSD& response)

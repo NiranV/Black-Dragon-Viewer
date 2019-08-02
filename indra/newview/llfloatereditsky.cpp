@@ -864,24 +864,12 @@ void LLFloaterEditSky::onSkyPresetNameEdited()
 void LLFloaterEditSky::onSkyPresetSelected()
 {
 	LLWLParamKey key = getSelectedSkyPreset();
-	LLWLParamSet sky_params;
-
-	if (!LLWLParamManager::instance().getParamSet(key, sky_params))
-	{
-		// Manually entered string?
-		LL_WARNS("Windlight") << "No sky preset named " << key.toString() << LL_ENDL;
-		return;
-	}
-
-	LLEnvManagerNew::instance().useSkyParams(sky_params.getAll());
-	//syncControls();
-	//BD
+	//BD - Setting sky presets was handled differently in the Environment Editor so we
+	//     copied this behavior here to make sure that changing a preset in the Sky
+	//     Editor actually changes it internally and makes it stick.
 	LLEnvManagerNew::instance().setUseCustomSkySettings(false);
-
-	bool can_edit = (key.scope == LLEnvKey::SCOPE_LOCAL || LLEnvManagerNew::canEditRegionSettings());
-	enableEditing(can_edit);
-
-	mMakeDefaultCheckBox->setEnabled(key.scope == LLEnvKey::SCOPE_LOCAL);
+	LLEnvManagerNew::instance().setUseSkyPreset(key.name, false);
+	syncControls();
 }
 
 bool LLFloaterEditSky::onSaveAnswer(const LLSD& notification, const LLSD& response)
