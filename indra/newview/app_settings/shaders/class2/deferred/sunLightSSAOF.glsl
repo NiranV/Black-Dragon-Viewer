@@ -100,7 +100,7 @@ vec4 getPosition(vec2 pos_screen)
 
 vec2 getKern(int i)
 {
-	vec2 kern[8];
+	vec2 kern[16];
 	// exponentially (^2) distant occlusion samples spread around origin
 	kern[0] = vec2(-0.015625, 0.0);
 	kern[1] = vec2(0.0625, 0.0);
@@ -110,6 +110,14 @@ vec2 getKern(int i)
 	kern[5] = vec2(-0.3977, -0.3977);
 	kern[6] = vec2(-0.5414, 0.5414);
 	kern[7] = vec2(0.7071, -0.7071);
+ kern[8] = vec2(-0.015625, 0.0);
+	kern[9] = vec2(0.0, 0.0625);
+	kern[10] = vec2(0.140625, 0.0);
+	kern[11] = vec2(-0.25, 0.0);
+	kern[12] = vec2(0.2762, 0.2762);
+	kern[13] = vec2(-0.3977, 0.3977);
+	kern[14] = vec2(0.5414, -0.5414);
+	kern[15] = vec2(-0.7071, 0.7071);
        
 	return kern[i];
 }
@@ -129,8 +137,9 @@ float calcAmbientOcclusion(vec4 pos, vec3 norm)
 	float scale = min(ssao_radius / -pos_world.z, ssao_max_radius);
 	
 	// it was found that keeping # of samples a constant was the fastest, probably due to compiler optimizations (unrolling?)
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 16; i++)
 	{
+  
 		vec2 samppos_screen = pos_screen + scale * reflect(getKern(i), noise_reflect);
 		vec3 samppos_world = getPosition(samppos_screen).xyz; 
 		
