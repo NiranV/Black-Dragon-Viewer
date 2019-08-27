@@ -11862,7 +11862,7 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 
 			LLViewerCamera::sCurCameraID = (LLViewerCamera::eCameraID)(LLViewerCamera::CAMERA_SHADOW0 + i + 4);
 
-			renderShadow(view[i+4], proj[i+4], shadow_cam, result[i], FALSE, FALSE, target_width);
+			renderShadow(view[i+4], proj[i+4], shadow_cam, result[i], FALSE, TRUE, target_width);
 
 			mShadow[i+4].flush();
  		}
