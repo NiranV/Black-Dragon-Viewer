@@ -126,7 +126,7 @@ void main()
 	  * 0.0001;
 
 	const float mindp = 0.70;
-	for (int i = 8-1; i > 0; i--)
+	for (int i = 0; i < 8; i++)
 	{
 	  vec2 w = kern[i].xy;
 	  w.y = gaussian.y;
@@ -148,7 +148,7 @@ void main()
 	}
 	
 	
-	for (int i = 8-1; i > 0; i--)
+	for (int i = 0; i < 8; i++)
 	{
 	  vec2 w = kern[i].xy;
 	  w.y = gaussian.y;
