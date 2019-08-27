@@ -276,6 +276,9 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	getChild<LLUICtrl>("intel_warning_icon1")->setVisible(!is_good_gpu);
 	getChild<LLUICtrl>("intel_warning_icon2")->setVisible(!is_good_gpu);
 
+	//BD - Force preferences to initialize.
+	LLFloaterReg::getInstance("preferences");
+
 	loadLoginPage();
 }
 

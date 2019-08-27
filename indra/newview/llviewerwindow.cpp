@@ -2083,10 +2083,6 @@ void LLViewerWindow::initWorldUI()
 	// Force gFloaterTools to initialize
 	LLFloaterReg::getInstance("build");
 
-	//BD - Force preferences to initialize.
-	LLFloaterReg::getInstance("preferences");
-
-
 	// Status bar
 	if (!mStatusBarContainer)
 		mStatusBarContainer = getRootView()->getChild<LLPanel>("status_bar_container");
