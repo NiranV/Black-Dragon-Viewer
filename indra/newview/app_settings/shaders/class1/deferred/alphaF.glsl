@@ -434,12 +434,12 @@ float pcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen, float shad
 	
 	float shadow = cs;
 	
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.60*recip_shadow_res, 0.55*recip_shadow_res, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(0.72*recip_shadow_res, -0.65*recip_shadow_res, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.60*recip_shadow_res, 0.55*recip_shadow_res, 0.0)).x;
-	shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.72*recip_shadow_res, -0.65*recip_shadow_res, 0.0)).x;
+	//shadow += shadow2D(shadowMap, stc.xyz+vec3(0.40*recip_shadow_res, 0.35*recip_shadow_res, 0.0)).x;
+	//shadow += shadow2D(shadowMap, stc.xyz+vec3(0.72*recip_shadow_res, -0.65*recip_shadow_res, 0.0)).x;
+	//shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.60*recip_shadow_res, 0.55*recip_shadow_res, 0.0)).x;
+	//shadow += shadow2D(shadowMap, stc.xyz+vec3(-0.92*recip_shadow_res, -0.85*recip_shadow_res, 0.0)).x;
 	         
-    return shadow*0.2;
+    return shadow;
 }
 
 void main() 
