@@ -11767,11 +11767,11 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 			}
 		}
 
+		glh_set_current_modelview(saved_view);
+		glh_set_current_projection(saved_proj);
+
 		for (S32 i = 0; i < 2; i++)
 		{
-			glh_set_current_modelview(saved_view);
-			glh_set_current_projection(saved_proj);
-
 			if (mShadowSpotLight[i].isNull())
 			{
 				continue;
