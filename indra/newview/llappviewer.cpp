@@ -1152,7 +1152,7 @@ bool LLAppViewer::init()
 
 	gGLActive = FALSE;
 
-	LLProcess::Params updater;
+/*	LLProcess::Params updater;
 	updater.desc = "updater process";
 	// Because it's the updater, it MUST persist beyond the lifespan of the
 	// viewer itself.
@@ -1212,7 +1212,7 @@ bool LLAppViewer::init()
 		// don't consider any one --leap command mission-critical, so if one
 		// fails, log it, shrug and carry on.
 		LLLeap::create("", leap, false); // exception=false
-	}
+	}*/
 
 	if (gSavedSettings.getBOOL("QAMode") && gSavedSettings.getS32("QAModeEventHostPort") > 0)
 	{
