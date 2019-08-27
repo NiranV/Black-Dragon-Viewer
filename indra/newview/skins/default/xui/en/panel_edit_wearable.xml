@@ -72,6 +72,10 @@ width="320">
  Editing Tattoo
  </string>
  <string
+ name="edit_universal_title">
+ Editing Universal
+ </string>
+ <string
  name="edit_physics_title">
  Editing Physics
  </string>
@@ -134,6 +138,10 @@ width="320">
  <string
  name="tattoo_desc_text">
  Tattoo:
+ </string>
+ <string
+ name="universal_desc_text">
+ Universal:
  </string>
  <string
  name="physics_desc_text">
@@ -442,6 +450,16 @@ width="320">
   layout="topleft"
   left="0"
   name="edit_tattoo_panel"
+         top="8"
+         visible="false"
+         width="333" />
+      <panel
+         filename="panel_edit_universal.xml"
+         follows="all"
+         height="425"
+         layout="topleft"
+         left="0"
+         name="edit_universal_panel"
   top="8"
   visible="false"
   width="333" />

@@ -4139,6 +4139,16 @@
 				<menu_item_call.on_click
 				function="Object.SetAlphaMode"
 				parameter="set_none"/>
+            </menu_item_call>
+            <menu_item_call
+             label="Universal"
+             name="Universal">
+              <menu_item_call.on_click
+               function="Edit.TakeOff"
+               parameter="tattoo" />
+              <menu_item_call.on_enable
+               function="Edit.EnableTakeOff"
+               parameter="universal" />
 				</menu_item_call>
 				<menu_item_call
 				label="Set To Blending"

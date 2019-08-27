@@ -128,6 +128,7 @@ protected:
 	void			sendFullbright();			// applies and sends full bright
 	void			sendGlow();
 	void			sendMedia();
+    void            alignTestureLayer();
 
 	// this function is to return TRUE if the drag should succeed.
 	static BOOL onDragTexture(LLUICtrl* ctrl, LLInventoryItem* item);
@@ -175,6 +176,7 @@ protected:
 	static void		onCommitPlanarAlign(		LLUICtrl* ctrl, void* userdata);
 	static void		onCommitRepeatsPerMeter(	LLUICtrl* ctrl, void* userinfo);
 	static void		onClickAutoFix(void*);
+    static void		onAlignTexture(void*);
 
 	//BD
 	void			onCommitMaterialGloss();

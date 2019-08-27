@@ -101,6 +101,7 @@
 #include "rlvhelper.h"
 // [/RLVa:KB]
 #include "llglheaders.h"
+#include "llinventoryobserver.h"
 
 LLViewerObject* getSelectedParentObject(LLViewerObject *object) ;
 //
@@ -188,7 +189,7 @@ LLSelectMgr::LLSelectMgr()
 	sHighlightThickness	= gSavedSettings.getF32("SelectionHighlightThickness");
 	sHighlightUScale	= gSavedSettings.getF32("SelectionHighlightUScale");
 	sHighlightVScale	= gSavedSettings.getF32("SelectionHighlightVScale");
-	sHighlightAlpha		= gSavedSettings.getF32("SelectionHighlightAlpha");
+	sHighlightAlpha		= gSavedSettings.getF32("SelectionHighlightAlpha") * 2;
 	sHighlightAlphaTest	= gSavedSettings.getF32("SelectionHighlightAlphaTest");
 	sHighlightUAnim		= gSavedSettings.getF32("SelectionHighlightUAnim");
 	sHighlightVAnim		= gSavedSettings.getF32("SelectionHighlightVAnim");
@@ -1684,6 +1685,7 @@ void LLSelectMgr::selectionSetImage(const LLUUID& imageid)
 				// * Can just apply the texture and be done with it.
 				objectp->setTEImage(te, LLViewerTextureManager::getFetchedTexture(mImageID, FTT_DEFAULT, TRUE, LLGLTexture::BOOST_NONE, LLViewerTexture::LOD_TEXTURE));
 			}
+
 			return true;
 		}
 	};
@@ -1883,6 +1885,7 @@ BOOL LLSelectMgr::selectionRevertTextures()
 					else
 					{
 						object->setTEImage(te, LLViewerTextureManager::getFetchedTexture(id, FTT_DEFAULT, TRUE, LLGLTexture::BOOST_NONE, LLViewerTexture::LOD_TEXTURE));
+
 					}
 				}
 			}
@@ -5913,6 +5916,84 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 		gGL.scalef(cur_zoom, cur_zoom, cur_zoom);
 	}
 
+	bool wireframe_selection = (gFloaterTools && gFloaterTools->getVisible()) || LLSelectMgr::sRenderHiddenSelections;
+	F32 fogCfx = (F32)llclamp((LLSelectMgr::getInstance()->getSelectionCenterGlobal() - gAgentCamera.getCameraPositionGlobal()).magVec() / (LLSelectMgr::getInstance()->getBBoxOfSelection().getExtentLocal().magVec() * 4), 0.0, 1.0);
+
+	static LLColor4 sParentColor = LLColor4(sSilhouetteParentColor[VRED], sSilhouetteParentColor[VGREEN], sSilhouetteParentColor[VBLUE], LLSelectMgr::sHighlightAlpha);
+	static LLColor4 sChildColor = LLColor4(sSilhouetteChildColor[VRED], sSilhouetteChildColor[VGREEN], sSilhouetteChildColor[VBLUE], LLSelectMgr::sHighlightAlpha);
+
+	auto renderMeshSelection_f = [fogCfx, wireframe_selection](LLSelectNode* node, LLViewerObject* objectp, LLColor4 hlColor)
+	{
+		//Need to because crash on ATI 3800 (and similar cards) MAINT-5018 
+		LLGLDisable multisample(LLPipeline::RenderFSAASamples > 0 ? GL_MULTISAMPLE_ARB : 0);
+
+		LLGLSLShader* shader = LLGLSLShader::sCurBoundShaderPtr;
+
+		if (shader)
+		{
+			gDebugProgram.bind();
+		}
+
+		gGL.matrixMode(LLRender::MM_MODELVIEW);
+		gGL.pushMatrix();
+
+		BOOL is_hud_object = objectp->isHUDAttachment();
+
+		if (!is_hud_object)
+		{
+			gGL.loadIdentity();
+			gGL.multMatrix(gGLModelView);
+		}
+
+		if (objectp->mDrawable->isActive())
+		{
+			gGL.multMatrix((F32*)objectp->getRenderMatrix().mMatrix);
+		}
+		else if (!is_hud_object)
+		{
+			LLVector3 trans = objectp->getRegion()->getOriginAgent();
+			gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
+		}
+
+		bool bRenderHidenSelection = node->isTransient() ? false : LLSelectMgr::sRenderHiddenSelections;
+
+
+		LLVOVolume* vobj = objectp->mDrawable->getVOVolume();
+		if (vobj)
+		{
+			LLVertexBuffer::unbind();
+			gGL.pushMatrix();
+			gGL.multMatrix((F32*)vobj->getRelativeXform().mMatrix);
+
+			if (objectp->mDrawable->isState(LLDrawable::RIGGED))
+			{
+				vobj->updateRiggedVolume(true);
+			}
+		}
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+		S32 num_tes = llmin((S32)objectp->getNumTEs(), (S32)objectp->getNumFaces()); // avatars have TEs but no faces
+		for (S32 te = 0; te < num_tes; ++te)
+		{
+			if (node->isTESelected(te))
+			{
+				objectp->mDrawable->getFace(te)->renderOneWireframe(hlColor, fogCfx, wireframe_selection, bRenderHidenSelection, nullptr != shader);
+			}
+		}
+
+		gGL.popMatrix();
+		gGL.popMatrix();
+
+		glLineWidth(1.f);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		if (shader)
+		{
+			shader->bind();
+		}
+	};
+
 	if (mSelectedObjects->getNumNodes())
 	{
 		LLUUID inspect_item_id= LLUUID::null;
@@ -5937,38 +6018,54 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 				iter != mSelectedObjects->end(); iter++)
 			{
 				LLSelectNode* node = *iter;
+                
+                if (getTEMode() && !node->hasSelectedTE())
+                    continue;
+
 				LLViewerObject* objectp = node->getObject();
 				if (!objectp)
 					continue;
 
-
-				if (objectp->isHUDAttachment() != for_hud)
-				{
-					continue;
-				}
-				if (objectp->getID() == focus_item_id)
-				{
-					node->renderOneSilhouette(gFocusMgr.getFocusColor());
-				}
-				else if (objectp->getID() == inspect_item_id)
-				{
-					node->renderOneSilhouette(sHighlightInspectColor);
-				}
-				else if (node->isTransient())
-				{
-					BOOL oldHidden = LLSelectMgr::sRenderHiddenSelections;
-					LLSelectMgr::sRenderHiddenSelections = FALSE;
-					node->renderOneSilhouette(sContextSilhouetteColor);
-					LLSelectMgr::sRenderHiddenSelections = oldHidden;
-				}
-				else if (objectp->isRootEdit())
-				{
-					node->renderOneSilhouette(sSilhouetteParentColor);
-				}
-				else
-				{
-					node->renderOneSilhouette(sSilhouetteChildColor);
-				}
+                if (objectp->mDrawable 
+                    && objectp->mDrawable->getVOVolume() 
+                    && objectp->mDrawable->getVOVolume()->isMesh())
+                {
+                    LLColor4 hlColor = objectp->isRootEdit() ? sParentColor : sChildColor;
+                    if (objectp->getID() == inspect_item_id)
+                    {
+                        hlColor = sHighlightInspectColor;
+                    }
+                    else if (node->isTransient())
+                    {
+                        hlColor = sContextSilhouetteColor;
+                    }
+                    renderMeshSelection_f(node, objectp, hlColor);
+			if (objectp->isHUDAttachment() != for_hud)
+			{
+				continue;
+			}
+			if (objectp->getID() == focus_item_id)
+			{
+				node->renderOneSilhouette(gFocusMgr.getFocusColor());
+			}
+			else if (objectp->getID() == inspect_item_id)
+			{
+				node->renderOneSilhouette(sHighlightInspectColor);
+			}
+			else if (node->isTransient())
+			{
+				BOOL oldHidden = LLSelectMgr::sRenderHiddenSelections;
+				LLSelectMgr::sRenderHiddenSelections = FALSE;
+				node->renderOneSilhouette(sContextSilhouetteColor);
+				LLSelectMgr::sRenderHiddenSelections = oldHidden;
+			}
+			else if (objectp->isRootEdit())
+			{
+				node->renderOneSilhouette(sSilhouetteParentColor);
+			}
+			else
+			{
+				node->renderOneSilhouette(sSilhouetteChildColor);
 			}
 		}
 	}
@@ -5990,14 +6087,20 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 				{
 					continue;
 				}
-
-				if (subtracting_from_selection)
+				
+				LLColor4 highlight_color = objectp->isRoot() ? sHighlightParentColor : sHighlightChildColor;
+				if (objectp->mDrawable
+					&& objectp->mDrawable->getVOVolume()
+					&& objectp->mDrawable->getVOVolume()->isMesh())
+				{
+					renderMeshSelection_f(node, objectp, subtracting_from_selection ? LLColor4::red : highlight_color);
+				}
+				else if (subtracting_from_selection)
 				{
 					node->renderOneSilhouette(LLColor4::red);
 				}
 				else if (!objectp->isSelected())
 				{
-					LLColor4 highlight_color = objectp->isRoot() ? sHighlightParentColor : sHighlightChildColor;
 					node->renderOneSilhouette(highlight_color);
 				}
 			}
@@ -6672,7 +6775,7 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 				gGL.texCoord2fv(tc[0].mV);
 				gGL.vertex3fv( v[0].mV ); 
 				
-				gGL.color4f(color.mV[VRED]*2, color.mV[VGREEN]*2, color.mV[VBLUE]*2, LLSelectMgr::sHighlightAlpha*2);
+				gGL.color4f(color.mV[VRED]*2, color.mV[VGREEN]*2, color.mV[VBLUE]*2, LLSelectMgr::sHighlightAlpha);
 				gGL.texCoord2fv( tc[1].mV );
 				gGL.vertex3fv( v[1].mV );
 
@@ -6682,7 +6785,7 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 
 				gGL.vertex3fv( v[2].mV );
 
-				gGL.color4f(color.mV[VRED]*2, color.mV[VGREEN]*2, color.mV[VBLUE]*2, LLSelectMgr::sHighlightAlpha*2);
+				gGL.color4f(color.mV[VRED]*2, color.mV[VGREEN]*2, color.mV[VBLUE]*2, LLSelectMgr::sHighlightAlpha);
 				gGL.texCoord2fv( tc[1].mV );
 				gGL.vertex3fv( v[1].mV );
 
