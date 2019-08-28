@@ -38,7 +38,6 @@ set(llaudio_HEADER_FILES
     llaudioengine.h
     lllistener.h
     llaudiodecodemgr.h
-	llstreamingaudio.h
     llvorbisencode.h
     llwindgen.h
     )
