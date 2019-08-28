@@ -125,7 +125,7 @@ width="220">
      name="mode_tabs"
      tab_height="20"
      tab_position="top"
-     tab_min_width="100"
+     tab_min_width="50"
      top="250"
      width="210">
         <panel
@@ -298,6 +298,97 @@ width="220">
         <column name="unit_name" label="Name" dynamicwidth="true" />
         <column name="unit_id_HIDDEN" label="ID" width="0" />
     </scroll_list>
+    </panel>
+    <panel
+    bg_alpha_image="Panel_Background"
+    background_visible="true"
+    bottom="-1"
+    follows="all"
+    label="Bakes"
+    layout="topleft"
+    left="0"
+    name="Bakes"
+    right="-1"
+    top="0">
+        <combo_box
+        left="3"
+        top="2"
+        height="23"
+        layout="topleft"
+        follows="left|top"
+        name="l_bake_use_texture_combo_box"
+        tool_tip="Choose the bake texture"
+        width="203">
+        <combo_box.item
+        label="None"
+        name="None"
+        value="-1" />
+        <combo_box.item
+        label="BAKED_HEAD"
+        name="BAKED_HEAD"
+        value="0" />
+        <combo_box.item
+        label="BAKED_UPPER"
+        name="BAKED_UPPER"
+        value="1" />
+        <combo_box.item
+        label="BAKED_LOWER"
+        name="BAKED_LOWER"
+        value="2" />
+        <combo_box.item
+        label="BAKED_EYES"
+        name="BAKED_EYES"
+        value="3" />
+        <combo_box.item
+        label="BAKED_SKIRT"
+        name="BAKED_SKIRT"
+        value="4" />
+        <combo_box.item
+        label="BAKED_HAIR"
+        name="BAKED_HAIR"
+        value="5" />
+        <combo_box.item
+        label="BAKED_LEFTARM"
+        name="BAKED_LEFTARM"
+        value="6" />
+        <combo_box.item
+        label="BAKED_LEFTLEG"
+        name="BAKED_LEFTLEG"
+        value="7" />
+        <combo_box.item
+        label="BAKED_AUX1"
+        name="BAKED_AUX1"
+        value="8" />
+        <combo_box.item
+        label="BAKED_AUX2"
+        name="BAKED_AUX2"
+        value="9" />
+        <combo_box.item
+        label="BAKED_AUX3"
+        name="BAKED_AUX3"
+        value="10" />
+        <combo_box.combo_button
+        image_unselected="ToolbarDropDown_Off"
+        image_selected="ToolbarDropDown_Press"
+        image_disabled="ToolbarDropDown_Off" />
+        <combo_box.drop_down_button
+        image_unselected="ToolbarDropDown_Off"
+        image_selected="ToolbarDropDown_Press"
+        image_pressed="ToolbarDropDown_Press" 
+        image_pressed_selected="ToolbarDropDown_Press"
+        image_disabled="ToolbarDropDown_Off" />
+        </combo_box>
+        <check_box
+        follows="left|top"
+        height="14"
+        initial_value="false"
+        label="Hide Base Mesh Region"
+        layout="topleft"
+        name="hide_base_mesh_region"
+        left_delta="0"
+        top_pad="5"
+        width="120" />
+
     </panel>
     </tab_container>
     <button

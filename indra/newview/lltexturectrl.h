@@ -48,6 +48,7 @@ class LLButton;
 class LLFloaterTexturePicker;
 class LLInventoryItem;
 class LLViewerFetchedTexture;
+class LLTabContainer;
 
 // used for setting drag & drop callbacks.
 typedef boost::function<BOOL (LLUICtrl*, LLInventoryItem*)> drag_n_drop_callback;
@@ -319,6 +320,7 @@ public:
 	static void		onBtnNone(void* userdata);
 	static void		onBtnClear(void* userdata);
 	void			onSelectionChange(const std::deque<LLFolderViewItem*> &items, BOOL user_action);
+	static void		onModeSelect(LLUICtrl* ctrl, void *userdata);
 	//BD
 	//static void		onShowFolders(LLUICtrl* ctrl, void* userdata);
 	static void		onApplyImmediateCheck(LLUICtrl* ctrl, void* userdata);
@@ -368,6 +370,9 @@ protected:
 	BOOL				mSelectedItemPinned;
 
 	LLScrollListCtrl*	mLocalScrollCtrl;
+
+	//BD
+	LLTabContainer*		mTabModes;
 
 private:
 	bool mCanApply;
