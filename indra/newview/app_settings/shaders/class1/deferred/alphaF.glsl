@@ -68,14 +68,18 @@ uniform mat4 shadow_matrix[6];
 uniform vec4 shadow_clip;
 uniform vec4 shadow_bias;
 
+#ifdef USE_DIFFUSE_TEX
 uniform sampler2D diffuseMap;
+#endif
 
 VARYING vec3 vary_fragcoord;
 VARYING vec3 vary_position;
 VARYING vec2 vary_texcoord0;
 VARYING vec3 vary_norm;
 
+#ifdef USE_VERTEX_COLOR
 VARYING vec4 vertex_color;
+#endif
 
 vec3 vary_PositionEye;
 vec3 vary_SunlitColor;
@@ -512,6 +516,10 @@ void main()
 		
 
 		shadow /= weight;
+	}
+	else
+	{
+		shadow = 1.0;
 	}
 #endif
 

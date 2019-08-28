@@ -5522,17 +5522,6 @@ void LLViewerObject::restoreHudText()
     }
 }
 
-//BD - TODO: Check this.
-void LLViewerObject::initDebugTextHud()
-{
-	mText = (LLHUDText *)LLHUDObject::addHUDObject(LLHUDObject::LL_HUD_TEXT);
-	mText->setFont(LLFontGL::getFontSansSerif());
-	mText->setVertAlignment(LLHUDText::ALIGN_VERT_TOP);
-	mText->setMaxLines(-1);
-	mText->setSourceObject(this);
-	mText->setOnHUDAttachment(isHUDAttachment());
-}
-
 void LLViewerObject::setIcon(LLViewerTexture* icon_image)
 {
 	if (!mIcon)
@@ -5582,8 +5571,7 @@ void LLViewerObject::updateText()
 		    LLVOAvatar* avatar = getAvatar();
 		    if (avatar)
 		    {
-				//BD - TODO: Check this:
-		        mText->setHidden(avatar->isVisuallyMuted());
+		        mText->setHidden(avatar->isInMuteList());
 		    }
 
 		    LLVector3 up_offset(0,0,0);

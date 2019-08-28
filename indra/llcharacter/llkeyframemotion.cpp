@@ -42,7 +42,6 @@
 #include "llvfile.h"
 #include "m3math.h"
 #include "message.h"
-#include "llsdserialize.h"
 
 //-----------------------------------------------------------------------------
 // Static Definitions
@@ -1229,7 +1228,7 @@ void LLKeyframeMotion::applyConstraint(JointConstraint* constraint, F32 time, U8
 //-----------------------------------------------------------------------------
 // deserialize()
 //-----------------------------------------------------------------------------
-BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, bool log)
+BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id)
 {
 	BOOL old_version = FALSE;
 	mJointMotionList = new LLKeyframeMotion::JointMotionList;
@@ -1368,6 +1367,7 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
                    << " for animation " << asset_id << LL_ENDL;
 		return FALSE;
 	}
+
 	//-------------------------------------------------------------------------
 	// get hand pose
 	//-------------------------------------------------------------------------
@@ -1378,6 +1378,7 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
                    << " for animation " << asset_id << LL_ENDL;
 		return FALSE;
 	}
+	
 	if(word > LLHandMotion::NUM_HAND_POSES)
 	{
 		LL_WARNS() << "invalid LLHandMotion::eHandPose index: " << word
@@ -1397,6 +1398,7 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
                    << " for animation " << asset_id << LL_ENDL;
 		return FALSE;
 	}
+
 	if (num_motions == 0)
 	{
 		LL_WARNS() << "no joints"
@@ -1532,6 +1534,7 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
                                << " for animation " << asset_id << LL_ENDL;
 					return FALSE;
 				}
+
 			}
 			else
 			{
@@ -1640,6 +1643,7 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
                                << " for animation " << asset_id << LL_ENDL;
 					return FALSE;
 				}
+
 				pos_key.mTime = U16_to_F32(time_short, 0.f, mJointMotionList->mDuration);
 			}
 
@@ -1648,6 +1652,7 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 			if (old_version)
 			{
 				success = dp.unpackVector3(pos_key.mPosition, "pos");
+                
                 //MAINT-6162
                 pos_key.mPosition.mV[VX] = llclamp( pos_key.mPosition.mV[VX], -LL_MAX_PELVIS_OFFSET, LL_MAX_PELVIS_OFFSET);
                 pos_key.mPosition.mV[VY] = llclamp( pos_key.mPosition.mV[VY], -LL_MAX_PELVIS_OFFSET, LL_MAX_PELVIS_OFFSET);
@@ -1872,13 +1877,15 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 				delete constraintp;
 				return FALSE;
 			}
-			if (!dp.unpackF32(constraintp->mEaseOutStartTime, "ease_in_stop") || !llfinite(constraintp->mEaseOutStartTime))
+
+			if (!dp.unpackF32(constraintp->mEaseOutStartTime, "ease_out_start") || !llfinite(constraintp->mEaseOutStartTime))
 			{
 				LL_WARNS() << "can't read constraint ease out start time"
                            << " for animation " << asset_id << LL_ENDL;
 				delete constraintp;
 				return FALSE;
 			}
+
 			if (!dp.unpackF32(constraintp->mEaseOutStopTime, "ease_out_stop") || !llfinite(constraintp->mEaseOutStopTime))
 			{
 				LL_WARNS() << "can't read constraint ease out stop time"
@@ -1886,6 +1893,7 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 				delete constraintp;
 				return FALSE;
 			}
+
 			mJointMotionList->mConstraints.push_front(constraintp);
 
 			constraintp->mJointStateIndices = new S32[constraintp->mChainLength + 1]; // note: mChainLength is size-limited - comes from a byte

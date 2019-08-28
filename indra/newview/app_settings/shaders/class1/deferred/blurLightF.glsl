@@ -25,6 +25,8 @@
 
 #extension GL_ARB_texture_rectangle : enable
 
+/*[EXTRA_CODE_HERE]*/
+
 #ifdef DEFINE_GL_FRAGCOLOR
 out vec4 frag_color;
 #else
@@ -61,6 +63,11 @@ vec4 getPosition(vec2 pos_screen)
 	return pos;
 }
 
+vec2 encode_normal(vec3 n)
+{
+	float f = sqrt(8 * n.z + 8);
+	return n.xy / f + 0.5;
+}
 
 vec3 decode_normal (vec2 enc)
 {

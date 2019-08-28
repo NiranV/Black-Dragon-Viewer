@@ -518,21 +518,21 @@ static std::string get_object_log(GLhandleARB ret)
 	return res;
 }
 
-void LLShaderMgr::dumpObjectLog(GLhandleARB ret, BOOL warns, const std::string& filename)
+void LLShaderMgr::dumpObjectLog(GLhandleARB ret, BOOL warns, const std::string& filename) 
 {
 	std::string log = get_object_log(ret);
-	std::string fname = filename;
-	if (filename.empty())
-	{
-		fname = "unknown shader file";
-	}
 
-	if (log.length() > 0)
+	if (log.length() > 0 || warns)
 	{
-		LL_INFOS() << "Shader loading from " << fname << ":\n" << LL_ENDL;
-		LL_INFOS() << log << LL_ENDL;
+        LL_DEBUGS("ShaderLoading") << "Shader loading ";
+        
+		if (!filename.empty())
+		{
+            LL_CONT << "From " << filename << ":\n";
+		}
+        LL_CONT << log << LL_ENDL;
 	}
-}
+ }
 
 GLhandleARB LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_level, GLenum type, boost::unordered_map<std::string, std::string>* defines, S32 texture_index_channels)
 {

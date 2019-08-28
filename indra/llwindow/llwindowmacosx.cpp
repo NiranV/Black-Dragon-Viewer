@@ -1334,9 +1334,8 @@ BOOL LLWindowMacOSX::convertCoords(LLCoordScreen from, LLCoordWindow* to)
 		
 		convertScreenToWindow(mWindow, mouse_point);
 
-		float scale_factor = getDeviceScaleFactor();
-		to->mX = mouse_point[0] * scale_factor;
-		to->mY = mouse_point[1] * scale_factor;
+		to->mX = mouse_point[0];
+		to->mY = mouse_point[1];
 
 		return TRUE;
 	}
@@ -1354,9 +1353,8 @@ BOOL LLWindowMacOSX::convertCoords(LLCoordWindow from, LLCoordScreen *to)
 		
 		convertWindowToScreen(mWindow, mouse_point);
 
-		float scale_factor = getDeviceScaleFactor();
-		to->mX = mouse_point[0] / scale_factor;
-		to->mY = mouse_point[1] / scale_factor;
+		to->mX = mouse_point[0];
+		to->mY = mouse_point[1];
 
 		return TRUE;
 	}

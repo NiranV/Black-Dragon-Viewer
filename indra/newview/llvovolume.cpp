@@ -5214,6 +5214,11 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 				LL_RECORD_BLOCK_TIME(FTM_RIGGED_OCTREE);
 				delete dst_face.mOctree;
 				dst_face.mOctree = NULL;
+
+				LLVector4a size;
+				size.setSub(dst_face.mExtents[1], dst_face.mExtents[0]);
+				size.splat(size.getLength3().getF32()*0.5f);
+			
 				dst_face.createOctree(1.f);
 			}
 		}

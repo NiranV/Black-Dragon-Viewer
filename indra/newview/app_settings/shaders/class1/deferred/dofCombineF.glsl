@@ -48,19 +48,19 @@ VARYING vec2 vary_fragcoord;
 
 vec4 dofSample(sampler2DRect tex, vec2 tc)
 {
-  	tc.x = min(tc.x, dof_width);
-  	tc.y = min(tc.y, dof_height);
+	tc.x = min(tc.x, dof_width);
+	tc.y = min(tc.y, dof_height);
 
-  	return texture2DRect(tex, tc);
+	return texture2DRect(tex, tc);
 }
 
 void main() 
 {
 	vec2 tc = vary_fragcoord.xy;
 	
-	vec4 diff = texture2DRect(lightMap, tc.xy);
-	vec4 dof = dofSample(diffuseRect, tc.xy*res_scale);
-	dof.a = 0.0;
+	vec4 dof = dofSample(diffuseRect, vary_fragcoord.xy*res_scale);
+	
+	vec4 diff = texture2DRect(lightMap, vary_fragcoord.xy);
 
 	float a = min(abs(diff.a*2.0-1.0) * max_cof*res_scale, 1.0);
 

@@ -179,11 +179,7 @@ void main()
 	
 	//mix with reflection
 	// Note we actually want to use just df1, but multiplying by 0.999999 gets around an nvidia compiler bug
-#ifdef MATERIALS_IN_WATER
-	color.rgb = mix(linear_to_srgb(fb.rgb), refcol.rgb, df1 * 0.99999);
-#else
 	color.rgb = mix(fb.rgb, refcol.rgb, df1 * 0.99999);
-#endif
 	
 	vec4 pos = vary_position;
 	
