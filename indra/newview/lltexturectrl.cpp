@@ -75,6 +75,7 @@
 
 //BD
 #include "lltabcontainer.h"
+#include "llviewerregion.h"
 
 static const F32 CONTEXT_CONE_IN_ALPHA = 0.0f;
 static const F32 CONTEXT_CONE_OUT_ALPHA = 1.f;
@@ -124,8 +125,7 @@ LLFloaterTexturePicker::LLFloaterTexturePicker(
 	mOnFloaterCommitCallback(NULL),
 	mOnFloaterCloseCallback(NULL),
 	mSetImageAssetIDCallback(NULL),
-	mOnUpdateImageStatsCallback(NULL),
-	mBakeTextureEnabled(FALSE)
+	mOnUpdateImageStatsCallback(NULL)
 {
 	buildFromFile("floater_texture_ctrl.xml");
 	mCanApplyImmediately = can_apply_immediately;
@@ -146,7 +146,8 @@ void LLFloaterTexturePicker::setImageID(const LLUUID& image_id, bool set_selecti
 
 		if (LLAvatarAppearanceDefines::LLAvatarAppearanceDictionary::isBakedImageId(mImageAssetID))
 		{
-			if ( mBakeTextureEnabled && mTabModes->getCurrentPanelIndex() != 2)
+			//BD - TODO: Remove and force bake tab always on.
+			if (mTabModes->getCurrentPanelIndex() != 2)
 			{
 				mTabModes->selectTab(2);
 				onModeSelect(0,this);
@@ -437,7 +438,6 @@ BOOL LLFloaterTexturePicker::postBuild()
 	getChild<LLComboBox>("l_bake_use_texture_combo_box")->setCommitCallback(onBakeTextureSelect, this);
 	getChild<LLCheckBoxCtrl>("hide_base_mesh_region")->setCommitCallback(onHideBaseMeshRegionCheck, this);
 
-	setBakeTextureEnabled(FALSE);
 	return TRUE;
 }
 
@@ -1131,28 +1131,6 @@ void LLFloaterTexturePicker::setLocalTextureEnabled(BOOL enabled)
 	mTabModes->enableTabButton(1, enabled);
 }
 
-void LLFloaterTexturePicker::setBakeTextureEnabled(BOOL enabled)
-{
-	BOOL changed = (enabled != mBakeTextureEnabled);
-
-	mBakeTextureEnabled = enabled;
-	mTabModes->enableTabButton(2, enabled);
-
-	if (!mBakeTextureEnabled && (mTabModes->getCurrentPanelIndex() == 2))
-	{
-		mTabModes->selectTab(0);
-	}
-	
-	if (changed && mBakeTextureEnabled && LLAvatarAppearanceDefines::LLAvatarAppearanceDictionary::isBakedImageId(mImageAssetID))
-	{
-		if (mTabModes->getCurrentPanelIndex() != 2)
-		{
-			mTabModes->selectTab(2);
-		}
-	}
-	onModeSelect(0, this);
-}
-
 void LLFloaterTexturePicker::onTextureSelect( const LLTextureEntry& te )
 {
 	LLUUID inventory_item_id = findItemID(te.getID(), TRUE);
@@ -1202,8 +1180,7 @@ LLTextureCtrl::LLTextureCtrl(const LLTextureCtrl::Params& p)
 	mImageAssetID(p.image_id),
 	mDefaultImageAssetID(p.default_image_id),
 	mDefaultImageName(p.default_image_name),
-	mFallbackImage(p.fallback_image),
-	mBakeTextureEnabled(FALSE)
+	mFallbackImage(p.fallback_image)
 {
 
 	// Default of defaults is white image for diff tex
@@ -1389,14 +1366,7 @@ void LLTextureCtrl::showPicker(BOOL take_focus)
 		if (texture_floaterp)
 		{
 			texture_floaterp->setOnFloaterCommitCallback(boost::bind(&LLTextureCtrl::onFloaterCommit, this, _1, _2));
-		}
-		if (texture_floaterp)
-		{
 			texture_floaterp->setSetImageAssetIDCallback(boost::bind(&LLTextureCtrl::setImageAssetID, this, _1));
-		}
-		if (texture_floaterp)
-		{
-			texture_floaterp->setBakeTextureEnabled(mBakeTextureEnabled);
 		}
 
 		LLFloater* root_floater = gFloaterView->getParentFloater(this);
@@ -1570,16 +1540,6 @@ void LLTextureCtrl::setImageAssetID( const LLUUID& asset_id )
 			floaterp->setImageID( asset_id );
 			floaterp->resetDirty();
 		}
-	}
-}
-
-void LLTextureCtrl::setBakeTextureEnabled(BOOL enabled)
-{
-	mBakeTextureEnabled = enabled;
-	LLFloaterTexturePicker* floaterp = (LLFloaterTexturePicker*)mFloaterHandle.get();
-	if (floaterp)
-	{
-		floaterp->setBakeTextureEnabled(enabled);
 	}
 }
 
