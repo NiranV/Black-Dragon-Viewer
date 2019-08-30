@@ -91,7 +91,7 @@ width="996">
  height="20"
  image_unselected="transparentj2c"
  image_selected="transparentj2c"
- label="[CHANNEL] [VERSION] - [3.5.3 - Searching Dragon]"
+ label="[CHANNEL] [VERSION] - [3.6.0 - Baking Dragon]"
  font="SansSerifSmall"
  layout="topleft"
  left="3"
@@ -174,8 +174,75 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="195"
+     height="364"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Added: Rita Baumann as Patreon Patron.
+Changed: Disabled additional shadow lookups on alpha since alpha shadows are pixelated anyway.
+Changed: Moved preferences pre-initialization to login page to prevent it from stalling the viewer in the crucial UI initialization stage causing a failed login.
+Changed: (EXPERIMENTAL) Render alpha and grass shadow pass as alpha masked objects rather than normal alpha.
+Changed: (EXPERIMENTAL) Use occlusion in projector shadows just like with normal shadows.
+Changed: (EXPERIMENTAL) Double the amount of SSAO smoothing kernel steps.
+Changed: Always enable bake tab in texture picker and remove activation code.
+Changed: Tweaked SSAO defaults, softer, wider and weaker.
+Changed: Enabled FXAA by default.
+Changed: Disabled projector shadows by default, they have a huge performance impact just being on.
+Changed: Tweaked shadow distance defaults, better at both close and normal camera distances.
+Changed: Version to 3.6.0 - Baking Dragon.
+Fixed: Lineendings in llfloaterprofile.cpp.
+Fixed: Texture picker layout.
+Fixed: Compile.
+Fixed: Selection outline crashes introduced with LL's latest changes.
+Fixed: Selection outline performance introduced with LL's latest changes.
+Fixed: RenderFullGamma debug being passed as float rather than boolean as expected.
+Fixed: Friend online/offline notifications in German UI.
+Removed: SLVersionChecker for now.
+Misc: Shader cleanup.
+Misc: Slight projector optimization.
+Misc: Cleanup and merge with Linden code.
+Misc: More cleanup.
+Misc: Micro optimized selection outlines further.
+Misc: Reverted LL's selection outline changes.
+Misc: Cleaned up llviewercontrol.cpp a bit.
+Merge with Linden Release. (99 Changes)
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.5.3
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="195"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
@@ -221,7 +288,7 @@ Misc: Optimized softenLightF and sunLightSSAOF shaders slightly.
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
-     3.5.1
+     3.5.2
      </text>
      <text
      follows="top|left"
