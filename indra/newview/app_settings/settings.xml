@@ -17196,9 +17196,9 @@
     <string>Vector4</string>
     <key>Value</key>
     <array>
-      <real>1</real>
-      <real>4</real>
-      <real>24</real>
+      <real>2</real>
+      <real>8</real>
+      <real>16</real>
       <real>64</real>
     </array>
   </map>
