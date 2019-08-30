@@ -546,7 +546,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 					//BD - Use the datapacker now to actually deserialize and unpack the animation
 					//     into our temporary motion so we can use it after we added it into the list.
 					LLDataPackerBinaryBuffer dp(anim_data, anim_file_size);
-					success = temp_motion && temp_motion->deserialize(dp, mMotionID, true);
+					success = temp_motion && temp_motion->deserialize(dp, mMotionID);
 
 					//BD - Cleanup the rest.
 					delete[]anim_data;
