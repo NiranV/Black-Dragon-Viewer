@@ -4409,10 +4409,10 @@ Falls diese Meldung weiterhin angezeigt wird, wenden Sie sich bitte an [SUPPORT_
 		Wenn Sie diese Meldung sehen, müssen Sie unter „Einstellungen“ &gt; „Privatsphäre“ die Option „Nur IMs und Anrufe von Freunden oder Gruppen durchstellen“ deaktivieren.
 	</string>
 	<string name="OnlineStatus">
-		Online
+		[NAME] ist Online.
 	</string>
 	<string name="OfflineStatus">
-		Offline
+		[NAME] ist Offline.
 	</string>
 	<string name="not_online_msg">
 		Benutzer nicht online – Nachricht wird gespeichert und später zugestellt.
