@@ -140,14 +140,8 @@ protected:
 	// set value of "DoNotDisturbResponseChanged" in account settings depending on whether do not disturb response
 	// string differs from default after user changes.
 	void onDoNotDisturbResponseChanged();
-	// if the custom settings box is clicked
-	void onChangeCustom();
-	void updateMeterText(LLUICtrl* ctrl);
 	// callback for defaults
 	void setHardwareDefaults();
-
-	// callback for when client turns on impostors
-	void onAvatarImpostorsEnable();
 	
 public:
 	// This function squirrels away the current values of the controls so that
@@ -176,8 +170,6 @@ public:
 	void setPersonalInfo(const std::string& visibility, bool im_via_email, bool is_verified_email);
 	void refreshEnabledState();
 	void refresh();	// Refresh enable/disable
-	
-	void refreshUI();
 
 	void onCommitParcelMediaAutoPlayEnable();
 	void onCommitMediaEnabled();

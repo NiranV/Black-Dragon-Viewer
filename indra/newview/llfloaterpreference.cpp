@@ -1023,8 +1023,6 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ClickDisablePopup",		boost::bind(&LLFloaterPreference::onClickDisablePopup, this));	
 	mCommitCallbackRegistrar.add("Pref.LogPath",				boost::bind(&LLFloaterPreference::onClickLogPath, this));
 	mCommitCallbackRegistrar.add("Pref.HardwareDefaults",		boost::bind(&LLFloaterPreference::setHardwareDefaults, this));
-	mCommitCallbackRegistrar.add("Pref.AvatarImpostorsEnable",	boost::bind(&LLFloaterPreference::onAvatarImpostorsEnable, this));
-	mCommitCallbackRegistrar.add("Pref.UpdateSliderText",		boost::bind(&LLFloaterPreference::refreshUI,this));
 	mCommitCallbackRegistrar.add("Pref.applyUIColor",			boost::bind(&LLFloaterPreference::applyUIColor, this ,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.getUIColor",				boost::bind(&LLFloaterPreference::getUIColor, this ,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.BlockList",				boost::bind(&LLFloaterPreference::onClickBlockList, this));
@@ -2429,7 +2427,6 @@ void LLFloaterPreference::cancel()
 
 void LLFloaterPreference::onOpen(const LLSD& key)
 {
-
 	// this variable and if that follows it are used to properly handle do not disturb mode response message
 	static bool initialized = FALSE;
 	// if user is logged in and we haven't initialized do not disturb mode response yet, do it
@@ -2518,9 +2515,6 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	// job
 	saveSettings();
 
-	// Make sure there is a default preference file
-	LLPresetsManager::getInstance()->createMissingDefault();
-
 	bool started = (LLStartUp::getStartupState() == STATE_STARTED);
 	mLoadBtn->setEnabled(started);
 	mSaveBtn->setEnabled(started);
@@ -2533,20 +2527,15 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	onUpdateFilterTerm(true);
 }
 
-void LLFloaterPreference::onAvatarImpostorsEnable()
-{
-	//refreshEnabledGraphics();
-}
-
 //static
 void LLFloaterPreference::initDoNotDisturbResponse()
+{
+	if (!gSavedPerAccountSettings.getBOOL("DoNotDisturbResponseChanged"))
 	{
-		if (!gSavedPerAccountSettings.getBOOL("DoNotDisturbResponseChanged"))
-		{
-			//LLTrans::getString("DoNotDisturbModeResponseDefault") is used here for localization (EXT-5885)
-			gSavedPerAccountSettings.setString("DoNotDisturbModeResponse", LLTrans::getString("DoNotDisturbModeResponseDefault"));
-		}
+		//LLTrans::getString("DoNotDisturbModeResponseDefault") is used here for localization (EXT-5885)
+		gSavedPerAccountSettings.setString("DoNotDisturbModeResponse", LLTrans::getString("DoNotDisturbModeResponseDefault"));
 	}
+}
 
 //static 
 void LLFloaterPreference::updateShowFavoritesCheckbox(bool val)
@@ -3186,12 +3175,6 @@ void LLFloaterPreference::setPersonalInfo(const std::string& visibility, bool im
 	getChildView("log_path_button")->setEnabled(TRUE);
 	getChildView("chat_font_size")->setEnabled(TRUE);
 	getChildView("conversation_log_radio")->setEnabled(TRUE);
-}
-
-
-void LLFloaterPreference::refreshUI()
-{
-	refresh();
 }
 
 bool LLFloaterPreference::loadFromFilename(const std::string& filename, std::map<std::string, std::string> &label_map)
