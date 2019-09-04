@@ -1080,6 +1080,8 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>1</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>AvatarSex</key>
     <map>
@@ -8890,6 +8892,8 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderAppleUseMultGL</key>
     <map>
@@ -8914,16 +8918,18 @@
             <integer>1</integer>
         </map>
     <key>RenderAttachedParticles</key>
-        <map>
-        <key>Comment</key>
-            <string>Render particle systems that are attached to avatars</string>
-        <key>Persist</key>
-            <integer>1</integer>
-        <key>Type</key>
-            <string>Boolean</string>
-        <key>Value</key>
-            <integer>1</integer>
-        </map>
+    <map>
+      <key>Comment</key>
+      <string>Render particle systems that are attached to avatars</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
+    </map>
   <key>AlwaysRenderFriends</key>
     <map>
       <key>Comment</key>
@@ -8934,6 +8940,8 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
   <key>RenderAvatar</key>
     <map>
@@ -9037,6 +9045,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>0.5</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderAvatarMaxVisible</key>
     <map>
@@ -9059,6 +9069,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>1.0</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderAvatarVP</key>
     <map>
@@ -9209,6 +9221,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>1000.0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderSSAOMaxScale</key>
   <map>
@@ -9220,6 +9234,8 @@
     <string>U32</string>
     <key>Value</key>
     <integer>3000</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderSSAOFactor</key>
   <map>
@@ -9231,6 +9247,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>0.075</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderSSAOEffect</key>
   <map>
@@ -9242,6 +9260,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>-1.0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderBumpmapMinDistanceSquared</key>
     <map>
@@ -9547,6 +9567,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   
   <key>RenderDepthOfField</key>
@@ -9559,6 +9581,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 
   <key>RenderDepthOfFieldInEditMode</key>
@@ -9583,6 +9607,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>1.0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 
   <key>RenderSpotLightsInNondeferred</key>
@@ -9639,6 +9665,8 @@
     <real>2048</real>
     <key>MinValue</key>
     <real>0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderDeferredTreeShadowBias</key>
   <map>
@@ -9734,6 +9762,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>1</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 
   <key>RenderDeferredSun</key>
@@ -9770,6 +9800,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>1</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 
   <key>RenderDeferredBlurLight</key>
@@ -9781,6 +9813,8 @@
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
+    <integer>1</integer>
+    <key>PresetType</key>
     <integer>1</integer>
   </map>
 
@@ -9855,6 +9889,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>1.0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderShadowBlurDistFactor</key>
   <map>
@@ -9866,6 +9902,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>0.01</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 
   <key>RenderDynamicLOD</key>
@@ -9878,6 +9916,8 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>1</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderFSAASamples</key>
     <map>
@@ -9889,6 +9929,8 @@
       <string>U32</string>
       <key>Value</key>
       <integer>2</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderFarClip</key>
     <map>
@@ -9904,6 +9946,8 @@
       <real>128.0</real>
       <key>MinValue</key>
       <real>0.0</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderAutoMaskAlphaNonDeferred</key>
     <map>
@@ -9937,6 +9981,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>1.0</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderFogRatio</key>
     <map>
@@ -10003,6 +10049,8 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>1</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderGlowIterations</key>
     <map>
@@ -10014,6 +10062,8 @@
       <string>S32</string>
       <key>Value</key>
       <integer>5</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderGlowLumWeights</key>
     <map>
@@ -10029,6 +10079,8 @@
         <real>0.3</real>
         <real>0.3</real>
       </array>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderGlowMaxExtractAlpha</key>
     <map>
@@ -10040,6 +10092,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>0.03</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderGlowMinLuminance</key>
     <map>
@@ -10051,6 +10105,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>0.0</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderGlowResolutionPow</key>
     <map>
@@ -10062,6 +10118,8 @@
       <string>S32</string>
       <key>Value</key>
       <integer>10</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderGlowStrength</key>
     <map>
@@ -10073,6 +10131,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>0.233</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderGlowWarmthAmount</key>
     <map>
@@ -10084,6 +10144,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>16.0</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderGlowWarmthWeights</key>
     <map>
@@ -10099,6 +10161,8 @@
         <real>0.6</real>
         <real>0.712</real>
       </array>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderGlowWidth</key>
     <map>
@@ -10110,6 +10174,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>3.6</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderGround</key>
     <map>
@@ -10275,6 +10341,8 @@
       <string>S32</string>
       <key>Value</key>
       <integer>4096</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
   <key>RenderMaxNodeSize</key>
   <map>
@@ -10363,6 +10431,8 @@
       <string>S32</string>
       <key>Value</key>
       <integer>2</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderShadowDetail</key>
     <map>
@@ -10373,6 +10443,8 @@
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
+      <integer>1</integer>
+      <key>PresetType</key>
       <integer>1</integer>
     </map>
 
@@ -10386,6 +10458,8 @@
       <string>S32</string>
       <key>Value</key>
       <integer>64</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderResolutionDivisor</key>
     <map>
@@ -10463,6 +10537,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>1.0</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderTerrainScale</key>
     <map>
@@ -10474,6 +10550,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>6.0</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderTextureMemoryMultiple</key>
     <map>
@@ -10518,6 +10596,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>1.0</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderUIInSnapshot</key>
     <map>
@@ -10551,6 +10631,8 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
   <key>RenderUseTriStrips</key>
   <map>
@@ -10572,6 +10654,8 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
+      <integer>1</integer>
+      <key>PresetType</key>
       <integer>1</integer>
     </map>
     <key>RenderUseImpostors</key>
@@ -10595,6 +10679,8 @@
     <string>U32</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+      <integer>1</integer>
   </map>
   <key>RenderAvatarMaxNonImpostors</key>
   <map>
@@ -10608,6 +10694,8 @@
     <string>U32</string>
     <key>Value</key>
     <integer>12</integer>
+    <key>PresetType</key>
+      <integer>1</integer>
   </map>
   <key>RenderAutoMuteRenderWeightLimit</key>
   <map>
@@ -10619,6 +10707,8 @@
     <string>U32</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+      <integer>1</integer>
   </map>
   <key>ShowMyComplexityChanges</key>
   <map>
@@ -10668,6 +10758,8 @@
     <real>250000</real>
     <key>MinValue</key>
     <real>1</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderHUDObjectsWarning</key>
   <map>
@@ -10725,6 +10817,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>200.0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderAutoMuteLogging</key>
   <map>
@@ -10747,6 +10841,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>256</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 
     <key>RenderVBOEnable</key>
@@ -10815,6 +10911,8 @@
 		<string>Boolean</string>
 		<key>Value</key>
 		<integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
 	</map>
 	<key>RenderVolumeLODFactor</key>
     <map>
@@ -10826,6 +10924,8 @@
       <string>F32</string>
       <key>Value</key>
       <real>2.0</real>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderWater</key>
     <map>
@@ -10859,6 +10959,8 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>1</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderWaterRefResolution</key>
     <map>
@@ -10870,6 +10972,8 @@
       <string>S32</string>
       <key>Value</key>
       <integer>768</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>RenderParcelSelection</key>
     <map>
@@ -14658,6 +14762,8 @@
       <string>U32</string>
       <key>Value</key>
       <integer>64</integer>
+      <key>PresetType</key>
+      <integer>1</integer>
     </map>
     <key>WatchdogEnabled</key>
     <map>
@@ -16535,18 +16641,7 @@
   
 		
   <!-- Black Dragon Debugs -->
-  
-  <key>RenderShadowOcclusionDivisor</key>
-  <map>
-    <key>Comment</key>
-    <string>test</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>4</integer>
-  </map>
+
   <key>DoubleClickActionInventory</key>
   <map>
     <key>Comment</key>
@@ -16601,6 +16696,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>AllowMouselookGrab</key>
   <map>
@@ -17108,6 +17205,8 @@
     <string>U32</string>
     <key>Value</key>
     <integer>1</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderPostGreyscaleStrength</key>
   <map>
@@ -17119,6 +17218,8 @@
     <string>F32</string>
     <key>Value</key>
     <integer>0.0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderPostSepiaStrength</key>
   <map>
@@ -17130,6 +17231,8 @@
     <string>F32</string>
     <key>Value</key>
     <integer>0.0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderChromaStrength</key>
   <map>
@@ -17141,6 +17244,8 @@
     <string>F32</string>
     <key>Value</key>
     <integer>0.0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderSSAOBlurSize</key>
   <map>
@@ -17152,6 +17257,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>1.0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>EnableThirdPersonSteering</key>
   <map>
@@ -17174,6 +17281,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderShadowFarClip</key>
   <map>
@@ -17185,6 +17294,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>200</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderShadowDistance</key>
   <map>
@@ -17201,6 +17312,8 @@
       <real>16</real>
       <real>64</real>
     </array>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderDepthOfFieldAlphas</key>
   <map>
@@ -17212,6 +17325,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderEnableFullbright</key>
   <map>
@@ -17256,6 +17371,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <real>0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderSSRResolution</key>
   <map>
@@ -17267,6 +17384,8 @@
     <string>U32</string>
     <key>Value</key>
     <integer>13</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 	<key>RenderSSRBrightness</key>
   <map>
@@ -17278,6 +17397,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>1.0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderHighPrecisionNormals</key>
   <map>
@@ -17289,6 +17410,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <real>0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderGlobalLightStrength</key>
   <map>
@@ -17300,6 +17423,8 @@
     <string>F32</string>
     <key>Value</key>
     <integer>1.0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   
   <!-- Misc -->
@@ -17502,15 +17627,17 @@
     <real>1</real>
   </map>
   <key>RenderDeferredEnvironmentMap</key>
-  <map>
-	<key>Comment</key>
-	<string>Toggles rendering the environment map on shiny surfaces in Deferred Rendering.</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>Boolean</string>
-	<key>Value</key>
-	<integer>0</integer>
+    <map>
+    <key>Comment</key>
+    <string>Toggles rendering the environment map on shiny surfaces in Deferred Rendering.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderProjectorShadowResolution</key>
   <map>
@@ -17529,6 +17656,8 @@
     <integer>2048</integer>
     <key>MinValue</key>
     <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderForceHighShaderLevel</key>
   <map>
@@ -17543,14 +17672,16 @@
   </map>
   <key>RenderMotionBlurStrength</key>
   <map>
-      <key>Comment</key>
-      <string>Test</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>U32</string>
-      <key>Value</key>
-      <integer>120</integer>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>120</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderGodrays</key>
   <map>
@@ -17562,39 +17693,47 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderGodraysResolution</key>
   <map>
-      <key>Comment</key>
-      <string>Test</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>U32</string>
-      <key>Value</key>
-      <integer>32</integer>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>32</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderGodraysMultiplier</key>
   <map>
-      <key>Comment</key>
-      <string>Test</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>2.0</real>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>2.0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderGodraysFalloffMultiplier</key>
   <map>
-      <key>Comment</key>
-      <string>Test</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>24.0</real>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>24.0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderGodraysDirectional</key>
   <map>
@@ -17606,6 +17745,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderLensFlare</key>
   <map>
@@ -17617,6 +17758,8 @@
     <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>DisallowLeftClickSit</key>
   <map>
@@ -17675,69 +17818,79 @@
   </map>
   <key>RenderOtherAttachedLights</key>
 	<map>
-	<key>Comment</key>
-	<string>Render lighted prims that are attached to other avatars</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>Boolean</string>
-	<key>Value</key>
-	<integer>1</integer>
+    <key>Comment</key>
+    <string>Render lighted prims that are attached to other avatars</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 	<key>RenderOwnAttachedLights</key>
 	<map>
-	<key>Comment</key>
-	<string>Render lighted prims that are attached to other avatars</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>Boolean</string>
-	<key>Value</key>
-	<integer>1</integer>
+    <key>Comment</key>
+    <string>Render lighted prims that are attached to other avatars</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 	<key>RenderDeferredLights</key>
 	<map>
-	<key>Comment</key>
-	<string>Render lighted prims that are attached to other avatars</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>Boolean</string>
-	<key>Value</key>
-	<integer>1</integer>
+    <key>Comment</key>
+    <string>Render lighted prims that are attached to other avatars</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 	<key>RenderSpotLightReflections</key>
 	<map>
-	<key>Comment</key>
-	<string>Render the reflection of spotlight projections on shiny surfaces with environment enabled</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>Boolean</string>
-	<key>Value</key>
-	<integer>1</integer>
+    <key>Comment</key>
+    <string>Render the reflection of spotlight projections on shiny surfaces with environment enabled</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
 	<key>RenderSpotLightImages</key>
 	<map>
-	<key>Comment</key>
-	<string>Render the reflection of spotlight projections on shiny surfaces with environment enabled</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>Boolean</string>
-	<key>Value</key>
-	<integer>1</integer>
+    <key>Comment</key>
+    <string>Render the reflection of spotlight projections on shiny surfaces with environment enabled</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>RenderWaterHeightFudge</key>
   <map>
-      <key>Comment</key>
-      <string>Test</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>0.0</real>
+    <key>Comment</key>
+    <string>Test</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.0</real>
   </map>
   <key>ShowTopSearchBar</key>
   <map>
@@ -17992,81 +18145,87 @@
   <!-- Tonemapping -->
   <key>ExodusRenderAutoExposeStep</key>
   <map>
-      <key>Comment</key>
-      <string>Amount to "correct" exposure by every frame until we've reached the target exposure in ExodusRenderExposureTarget.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>0.125</real>
+    <key>Comment</key>
+    <string>Amount to "correct" exposure by every frame until we've reached the target exposure in ExodusRenderExposureTarget.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.125</real>
   </map>
   <key>ExodusRenderExposureTarget</key>
   <map>
-      <key>Comment</key>
-      <string>Target exposure level for auto exposure. Only applied when ExodusRenderAutoExposure is set to TRUE.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>0.0</real>
+    <key>Comment</key>
+    <string>Target exposure level for auto exposure. Only applied when ExodusRenderAutoExposure is set to TRUE.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.0</real>
   </map>
   <key>ExodusRenderAutoExposure</key>
   <map>
-      <key>Comment</key>
-      <string>Whether or not to enable auto exposure. Note: autoexposure is slightly more expensive, and may not work on all GPUs and drivers.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
+    <key>Comment</key>
+    <string>Whether or not to enable auto exposure. Note: autoexposure is slightly more expensive, and may not work on all GPUs and drivers.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
   </map>
   <key>ExodusRenderToneAdvOptA</key>
   <map>
-      <key>Comment</key>
-      <string>Advanced tone mapping options. X = Shoulder strength, Y = Linear strength, Z = Linear angle.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Vector3</string>
-      <key>Value</key>
-      <array>
-          <real>0.19</real>
-          <real>0.40</real>
-          <real>0.18</real>
-      </array>
+    <key>Comment</key>
+    <string>Advanced tone mapping options. X = Shoulder strength, Y = Linear strength, Z = Linear angle.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>0.19</real>
+      <real>0.40</real>
+      <real>0.18</real>
+    </array>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>ExodusRenderToneAdvOptB</key>
   <map>
-      <key>Comment</key>
-      <string>Advanced tone mapping options (cont'd). X = Toe strength, Y = Toe numerator, Z = Toe denominator.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Vector3</string>
-      <key>Value</key>
-      <array>
-          <real>0.24</real>
-          <real>0.02</real>
-          <real>0.18</real>
-      </array>
+    <key>Comment</key>
+    <string>Advanced tone mapping options (cont'd). X = Toe strength, Y = Toe numerator, Z = Toe denominator.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>0.24</real>
+      <real>0.02</real>
+      <real>0.18</real>
+    </array>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>ExodusRenderToneAdvOptC</key>
   <map>
-      <key>Comment</key>
-      <string>Advanced tone mapping options (cont'd). X = Linear white point, Y = Exposure bias.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Vector3</string>
-      <key>Value</key>
-      <array>
-          <real>6.20</real>
-          <real>2.8</real>
-          <real>0</real>
-      </array>
+    <key>Comment</key>
+    <string>Advanced tone mapping options (cont'd). X = Linear white point, Y = Exposure bias.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>6.20</real>
+      <real>2.8</real>
+      <real>0</real>
+    </array>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>ExodusRenderToneExposure</key>
   <map>
@@ -18078,6 +18237,8 @@
     <string>F32</string>
     <key>Value</key>
     <real>1.00</real>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>ExodusRenderToneMapping</key>
   <map>
@@ -18088,6 +18249,8 @@
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
+    <integer>1</integer>
+    <key>PresetType</key>
     <integer>1</integer>
   </map>
   <key>ExodusRenderToneMappingTech</key>
@@ -18100,6 +18263,8 @@
     <string>S32</string>
     <key>Value</key>
     <integer>3</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>ExodusRenderColorGradeTech</key>
   <map>
@@ -18111,6 +18276,8 @@
     <string>S32</string>
     <key>Value</key>
     <integer>0</integer>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>ExodusRenderColorGradeTexture</key>
   <map>
@@ -18128,15 +18295,17 @@
     <key>Comment</key>
     <string>Amount of vignette to apply (X), power of vignette shading (Y), and multiplier for vignette shading (Z).</string>
     <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Vector3</string>
-      <key>Value</key>
-      <array>
-          <real>0.0</real>
-          <real>1.0</real>
-          <real>3.0</real>
-      </array>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>0.0</real>
+      <real>1.0</real>
+      <real>3.0</real>
+    </array>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>ExodusRenderExposure</key>
   <map>
@@ -18152,6 +18321,8 @@
       <real>0.07</real>
       <real>0.07</real>
     </array>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>ExodusRenderGamma</key>
   <map>
@@ -18167,6 +18338,8 @@
       <real>1.00</real>
       <real>1.00</real>
     </array>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
   <key>ExodusRenderOffset</key>
   <map>
@@ -18182,6 +18355,8 @@
       <real>-0.07</real>
       <real>-0.07</real>
     </array>
+    <key>PresetType</key>
+    <integer>1</integer>
   </map>
     
 		<key>RenderRiggedMotionBlurQuality</key>
@@ -18193,6 +18368,8 @@
       <key>Type</key>
       <string>U32</string>
       <key>Value</key>
+      <integer>1</integer>
+      <key>PresetType</key>
       <integer>1</integer>
     </map>
     <key>ControlSettingsFile</key>

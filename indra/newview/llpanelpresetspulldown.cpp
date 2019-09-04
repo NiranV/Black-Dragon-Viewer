@@ -40,6 +40,11 @@
 #include "llscrolllistctrl.h"
 #include "lltrans.h"
 
+//BD 
+#include "lldir.h"
+#include "lldiriterator.h"
+#include "llsdserialize.h"
+
 /* static */ const F32 LLPanelPresetsPulldown::sAutoCloseFadeStartTimeSec = 2.0f;
 /* static */ const F32 LLPanelPresetsPulldown::sAutoCloseTotalTimeSec = 3.0f;
 
@@ -60,11 +65,6 @@ LLPanelPresetsPulldown::LLPanelPresetsPulldown()
 
 BOOL LLPanelPresetsPulldown::postBuild()
 {
-	LLPresetsManager* presetsMgr = LLPresetsManager::getInstance();
-    presetsMgr->setPresetListChangeCallback(boost::bind(&LLPanelPresetsPulldown::populatePanel, this));
-	// Make sure there is a default preference file
-    presetsMgr->createMissingDefault();
-
 	populatePanel();
 
 	return LLPanel::postBuild();
@@ -72,51 +72,65 @@ BOOL LLPanelPresetsPulldown::postBuild()
 
 void LLPanelPresetsPulldown::populatePanel()
 {
-	std::string presets_dir = LLPresetsManager::getInstance()->getPresetsDir(PRESETS_GRAPHIC);
-	LLPresetsManager::getInstance()->loadPresetNamesFromDir(presets_dir, mPresetNames, DEFAULT_TOP);
-
 	LLScrollListCtrl* scroll = getChild<LLScrollListCtrl>("preset_list");
+	scroll->clearRows();
 
-	if (scroll && mPresetNames.begin() != mPresetNames.end())
+	std::string active_preset = gSavedSettings.getString("PresetGraphicActive");
+
+	//BD - Look through our defaults first.
+	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets", "graphic");
+	std::string file;
+	LLDirIterator dir_iter_app(dir, "*.xml");
+	while (dir_iter_app.next(file))
 	{
-		scroll->clearRows();
+		std::string path = gDirUtilp->add(dir, file);
+		std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
 
-		std::string active_preset = gSavedSettings.getString("PresetGraphicActive");
-		if (active_preset == PRESETS_DEFAULT)
+		LLSD preset;
+		llifstream infile;
+		infile.open(path);
+		if (!infile.is_open())
 		{
-			active_preset = LLTrans::getString(PRESETS_DEFAULT);
+			//BD - If we can't open and read the file we shouldn't add it because we won't
+			//     be able to load it later.
+			LL_WARNS("Settings") << "Cannot open file in: " << path << LL_ENDL;
+			continue;
 		}
 
-		for (std::list<std::string>::const_iterator it = mPresetNames.begin(); it != mPresetNames.end(); ++it)
+		//BD - Camera Preset files only have one single line, so it's either a parse failure
+		//     or a success.
+		S32 ret = LLSDSerialize::fromXML(preset, infile);
+
+		//BD - We couldn't parse the file, don't bother adding it.
+		if (ret == LLSDParser::PARSE_FAILURE)
 		{
-			const std::string& name = *it;
-            LL_DEBUGS() << "adding '" << name << "'" << LL_ENDL;
-            
-			LLSD row;
-			row["columns"][0]["column"] = "preset_name";
-			row["columns"][0]["value"] = name;
-
-			//BD
-			row["columns"][1]["column"] = "icon";
-			row["columns"][1]["type"] = "icon";
-
-			bool is_selected_preset = false;
-			if (name == active_preset)
-			{
-				//BD
-				row["columns"][1]["value"] = "Checkbox_On";
-
-				is_selected_preset = true;
-			}
-			//BD
-			else
-			{
-				row["columns"][1]["value"] = "Checkbox_Off";
-			}
-
-			LLScrollListItem* new_item = scroll->addElement(row);
-			new_item->setSelected(is_selected_preset);
+			LL_WARNS("Settings") << "Failed to parse file: " << path << LL_ENDL;
+			continue;
 		}
+
+		LLSD row;
+		row["columns"][0]["column"] = "preset_name";
+		row["columns"][0]["value"] = name;
+
+		//BD
+		row["columns"][1]["column"] = "icon";
+		row["columns"][1]["type"] = "icon";
+
+		bool is_selected_preset = false;
+		if (name == active_preset)
+		{
+			//BD
+			row["columns"][1]["value"] = "Checkbox_On";
+			is_selected_preset = true;
+		}
+		//BD
+		else
+		{
+			row["columns"][1]["value"] = "Checkbox_Off";
+		}
+
+		LLScrollListItem* new_item = scroll->addElement(row);
+		new_item->setSelected(is_selected_preset);
 	}
 }
 
@@ -167,11 +181,11 @@ void LLPanelPresetsPulldown::onVisibilityChange ( BOOL new_visibility )
 	if (new_visibility)	
 	{
 		mHoverTimer.start(); // timer will be stopped when mouse hovers over panel
+		populatePanel();
 	}
 	else
 	{
 		mHoverTimer.stop();
-
 	}
 }
 
@@ -187,8 +201,9 @@ void LLPanelPresetsPulldown::onRowClick(const LLSD& user_data)
 			std::string name = item->getColumn(1)->getValue().asString();
 
             LL_DEBUGS() << "selected '" << name << "'" << LL_ENDL;
-			LLPresetsManager::getInstance()->loadPreset(PRESETS_GRAPHIC, name);
-
+			//BD
+			gSavedSettings.loadPreset(1, name);
+			gSavedSettings.setString("PresetGraphicActive", name);
 			setVisible(FALSE);
 		}
         else

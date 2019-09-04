@@ -119,12 +119,15 @@ private:
 	ePersist		mPersist;
 	bool			mHideFromSettingsEditor;
 
-	//BD - Lock Arrays features
+//	//BD - Lock Arrays features
 	bool			mLockedArrays;
 
-	//BD - Trigger Warning System
+//	//BD - Trigger Warning System
 	F32				mMaxValue;
 	F32				mMinValue;
+
+//	//BD - Presets
+	S32				mPresetType;
 
 	std::vector<LLSD> mValues;
 
@@ -132,14 +135,16 @@ private:
 	validate_signal_t mValidateSignal;
 	
 public:
-	//BD - Lock Arrays features
+//	//BD - Lock Arrays features
 	LLControlVariable(const std::string& name, eControlType type,
 					  LLSD initial, const std::string& comment,
 					  ePersist persist = PERSIST_NONDFT, bool hidefromsettingseditor = false, 
 					  //BD - Lock Arrays features
 					  bool lock = false, 
 					  //BD - Trigger Warning System
-					  F32 max_val = FLT_MAX, F32 min_val = -FLT_MAX);
+					  F32 max_val = FLT_MAX, F32 min_val = -FLT_MAX,
+					  //BD - Presets
+					  S32 preset_type = 0);
 
 	virtual ~LLControlVariable();
 	
@@ -166,9 +171,13 @@ public:
 	//BD - Locked Arrays feature
 	bool isLocked() { return mLockedArrays; }
 
-	//BD - Trigger Warning System
+//	//BD - Trigger Warning System
 	F32 getMaxValue() { return mMaxValue; }
 	F32 getMinValue() { return mMinValue; }
+
+//	//BD - Presets
+	void setPresetType(S32 preset_type) { mPresetType = preset_type; }
+	S32 getPresetType() { return mPresetType; }
 
 	LLSD get()			const	{ return getValue(); }
 	LLSD getValue()		const	{ return mValues.back(); }
@@ -182,10 +191,10 @@ public:
 	void setHiddenFromSettingsEditor(bool hide);
 	void setComment(const std::string& comment);
 
-	//BD - Locked Arrays feature
+//	//BD - Locked Arrays feature
 	void setLocked(bool lock) { mLockedArrays = lock; }
 
-	//BD - Trigger Warning System
+//	//BD - Trigger Warning System
 	void setMaxValue(F32 max_val) { mMaxValue = max_val; }
 	void setMinValue(F32 min_val) { mMinValue = min_val; }
 
@@ -253,7 +262,7 @@ public:
 
 	//BD - Locked Array feature
 	//     Trigger Warning System
-	LLControlVariable* declareControl(const std::string& name, eControlType type, const LLSD initial_val, const std::string& comment, LLControlVariable::ePersist persist, BOOL hidefromsettingseditor = FALSE, BOOL lock = FALSE, F32 max_val = FLT_MAX, F32 min_val = -FLT_MAX);
+	LLControlVariable* declareControl(const std::string& name, eControlType type, const LLSD initial_val, const std::string& comment, LLControlVariable::ePersist persist, BOOL hidefromsettingseditor = FALSE, BOOL lock = FALSE, F32 max_val = FLT_MAX, F32 min_val = -FLT_MAX, S32 preset_type = 0);
 	LLControlVariable* declareU32(const std::string& name, U32 initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
 	LLControlVariable* declareS32(const std::string& name, S32 initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
 	LLControlVariable* declareF32(const std::string& name, F32 initial_val, const std::string& comment, LLControlVariable::ePersist persist = LLControlVariable::PERSIST_NONDFT);
@@ -364,6 +373,10 @@ public:
 	
 //	//BD - Factory Reset
 	void	doFactoryReset();
+
+//	//BD - Presets
+	void savePreset(S32 preset_type, std::string filename);
+	BOOL loadPreset(S32 preset_type, std::string filename);
 };
 
 

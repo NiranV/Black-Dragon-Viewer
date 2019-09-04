@@ -50,6 +50,8 @@
 #include "v2math.h"
 //BD - Vector4
 #include "v4math.h"
+//BD
+#include "llsdutil.h"
 
 #if LL_RELEASE_WITH_DEBUG_INFO || LL_DEBUG
 #define CONTROL_ERRS LL_ERRS("ControlErrors")
@@ -176,7 +178,9 @@ LLControlVariable::LLControlVariable(const std::string& name, eControlType type,
 							 //BD - Lock Arrays features
 							 bool lock,
 							 //BD - Trigger Warning System
-							 F32 max_val, F32 min_val)
+							 F32 max_val, F32 min_val,
+							 //BD - Presets
+							 S32 preset_type)
 	: mName(name),
 	  mComment(comment),
 	  mType(type),
@@ -186,7 +190,9 @@ LLControlVariable::LLControlVariable(const std::string& name, eControlType type,
 	  mLockedArrays(lock),
 	  //BD - Trigger Warning System
 	  mMaxValue(max_val),
-	  mMinValue(min_val)
+	  mMinValue(min_val),
+	  //BD - Presets
+	  mPresetType(preset_type)
 {
 	if ((persist != PERSIST_NO) && mComment.empty())
 	{
@@ -501,7 +507,9 @@ LLControlVariable* LLControlGroup::declareControl(const std::string& name, eCont
 	//BD - Lock Arrays feature
 	BOOL lock, 
 	//BD - Trigger Warning System
-	F32 max_val, F32 min_val)
+	F32 max_val, F32 min_val,
+	//BD - Presets
+	S32 preset_type)
 {
 	LLControlVariable* existing_control = getControl(name);
 	if (existing_control)
@@ -531,7 +539,9 @@ LLControlVariable* LLControlGroup::declareControl(const std::string& name, eCont
 		//BD - Lock Arrays feature
 		lock, 
 		//BD - Trigger Warning System
-		max_val, min_val);
+		max_val, min_val,
+		//BD - Presets
+		preset_type);
 	mNameTable[name] = control;	
 	return control;
 }
@@ -1106,6 +1116,13 @@ U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_v
 			min_val = control_map["MinValue"].asReal();
 		}
 
+		//BD - Presets
+		S32 preset_type = 0;
+		if (control_map.has("PresetType"))
+		{
+			preset_type = control_map["PresetType"].asInteger();
+		}
+
 		// If the control exists just set the value from the input file.
 		LLControlVariable* existing_control = getControl(name);
 		if(existing_control)
@@ -1126,6 +1143,8 @@ U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_v
 					//BD - Trigger Warning System
 					existing_control->setMaxValue(max_val);
 					existing_control->setMinValue(min_val);
+					//BD - Presets
+					existing_control->setPresetType(preset_type);
 				}
 				else
 				{
@@ -1191,7 +1210,9 @@ U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_v
 						   false,
 						   //BD - Trigger Warning System
 						   max_val,
-						   min_val);
+						   min_val,
+						   //BD - Presets
+						   preset_type);
 		}
 
 		++validitems;
@@ -1224,6 +1245,112 @@ void LLControlGroup::doFactoryReset()
 		LLControlVariable* control = (*control_iter).second;
 		control->resetToDefault(true);
 	}
+}
+
+//BD - Presets
+void LLControlGroup::savePreset(S32 preset_type, std::string filename)
+{
+	std::string preset_type_string;
+	if (preset_type == 1)
+		preset_type_string = "graphic";
+	else if (preset_type == 2)
+		preset_type_string = "viewer";
+	else
+	{
+		LL_INFOS("Settings") << "no preset type" << LL_ENDL;
+		return;
+	}
+
+	if (filename.empty())
+	{
+		LL_INFOS("Settings") << "filename empty" << LL_ENDL;
+		return;
+	}
+
+	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets", preset_type_string);
+	if (!gDirUtilp->fileExists(pathname))
+	{
+		LL_WARNS("Settings") << "Couldn't find folder: " << pathname << " - creating one." << LL_ENDL;
+		LLFile::mkdir(pathname);
+	}
+
+	std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets", preset_type_string, LLSDXMLFormatter::escapeString(filename) + ".xml");
+
+	LLSD settings;
+	S32 i = 0;
+	ctrl_name_table_t::iterator control_iter;
+	for (control_iter = mNameTable.begin();
+		control_iter != mNameTable.end();
+		++control_iter)
+	{
+		LLControlVariable* control = (*control_iter).second;
+		if (control && control->getPresetType() == preset_type)
+		{
+			settings[i]["name"] = control->getName();
+			settings[i]["value"] = control->getValue();
+			++i;
+		}
+	}
+
+	llofstream file;
+	file.open(full_path.c_str());
+	for (LLSD cur_line : llsd::inArray(settings))
+	{
+		LLSDSerialize::toXML(cur_line, file);
+	}
+	file.close();
+	LL_INFOS("Settings") << "Saved preset to: " << full_path << LL_ENDL;
+}
+
+BOOL LLControlGroup::loadPreset(S32 preset_type, std::string name)
+{
+	std::string preset_type_string;
+	if (preset_type == 1)
+		preset_type_string = "graphic";
+	else if (preset_type == 2)
+		preset_type_string = "viewer";
+	else
+	{
+		LL_INFOS("Settings") << "no preset type" << LL_ENDL;
+		return FALSE;
+	}
+
+	std::string filename;
+	if (!name.empty())
+	{
+		filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets", preset_type_string, LLSDXMLFormatter::escapeString(name) + ".xml");
+	}
+
+	LLSD preset;
+	llifstream infile;
+	infile.open(filename);
+	if (!infile.is_open())
+	{
+		LL_WARNS("Settings") << "Cannot find file in: " << filename << LL_ENDL;
+		return FALSE;
+	}
+
+	while (!infile.eof())
+	{
+		S32 count = LLSDSerialize::fromXML(preset, infile);
+		if (count == LLSDParser::PARSE_FAILURE)
+		{
+			LL_WARNS("Settings") << "Failed to parse file: " << filename << LL_ENDL;
+			return FALSE;
+		}
+
+		std::string setting = preset["name"].asString();
+		LLSD value = preset["value"];
+
+		LLControlVariable* control = getControl(setting);
+		if (control)
+		{
+			control->setValue(value);
+		}
+	}
+	infile.close();
+	LL_INFOS("Settings") << "Successfully loaded preset: " << filename << LL_ENDL;
+	return TRUE;
 }
 
 void LLControlGroup::applyToAll(ApplyFunctor* func)

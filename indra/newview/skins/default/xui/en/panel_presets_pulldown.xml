@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- background_opaque="true"
  background_visible="true"
- bg_opaque_image="Window_NoTitle_Foreground" 
  bg_alpha_image="Window_NoTitle_Foreground" 
  border_visible="false"
  border="false"
@@ -18,9 +16,8 @@
     follows="left|top"
     height="12"
     layout="topleft"
-    top="4"
-    left_delta="5"
-    font.style="BOLD"
+    top="5"
+    left_delta="6"
     name="Graphic Presets"
     width="180">
       Graphic Presets
@@ -28,12 +25,11 @@
   <scroll_list
     follows="left|top"
     layout="topleft"
-    column_padding="0"
+    column_padding="2"
     height="100"
     width="215"
     draw_heading="false"
     draw_stripes="false"
-    bg_stripe_color="EmphasisColor"
     top_delta="15"
     left_delta="0"
     name="preset_list">
@@ -57,11 +53,14 @@
     width="215" />
   <button
     name="open_prefs_btn"
-    label="Open Graphics Preferences"
-    tool_tip = "Bring up graphics prefs"
-    top_delta="5"
+    label="Open Display Preferences"
+    tool_tip="Open the preferences window"
+    image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+    top_delta="2"
     left="5"
-    height="20"
+    height="23"
     width="215">
     <button.commit_callback
       function="Presets.GoGraphicsPrefs" />

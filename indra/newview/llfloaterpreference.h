@@ -244,13 +244,14 @@ public:
 //	//BD - Refresh all controls
 	void refreshGraphicControls();
 
-//	//BD - Quick Graphics Presets
-	void deletePreset(const LLSD& user_data);
-	void savePreset(const LLSD& user_data);
-	void loadPreset(const LLSD& user_data);
-
 //	//BD - Avatar Rendering Settings
 	/*virtual*/ BOOL handleKeyHere(KEY key, MASK mask);
+
+//	//BD - Presets
+	void saveGraphicPreset();
+	void loadGraphicPreset();
+	void deleteGraphicPreset();
+	void refreshGraphicPresets();
 
 	//BD
 	void onClickSetNone();
@@ -272,12 +273,7 @@ public:
 
 	static void setNeedsUpdate();
 
-	//void saveGraphicsPreset(std::string& preset);
-
 private:
-
-//	//BD - Quick Graphics Presets
-	void onPresetsListChange();
 
 	void onDeleteTranscripts();
 	void onDeleteTranscriptsResponse(const LLSD& notification, const LLSD& response);
@@ -427,11 +423,6 @@ public:
 	// This function squirrels away the current values of the controls so that
 	// cancel() can restore them.
 	virtual void saveSettings();
-
-//	//BD - Quick Graphics Presets
-	void deletePreset(const LLSD& user_data);
-	void savePreset(const LLSD& user_data);
-	void loadPreset(const LLSD& user_data);
 
 	class Updater;
 

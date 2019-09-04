@@ -1068,10 +1068,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.InputOutput", boost::bind(&LLFloaterPreference::inputOutput, this));
 
 //	//BD - Quick Graphics Presets
-	mCommitCallbackRegistrar.add("Pref.PrefDelete", boost::bind(&LLFloaterPreference::deletePreset, this, _2));
-	mCommitCallbackRegistrar.add("Pref.PrefSave", boost::bind(&LLFloaterPreference::savePreset, this, _2));
-	mCommitCallbackRegistrar.add("Pref.PrefLoad", boost::bind(&LLFloaterPreference::loadPreset, this, _2));
-	LLPresetsManager::instance().setPresetListChangeCallback(boost::bind(&LLFloaterPreference::onPresetsListChange, this));
+	mCommitCallbackRegistrar.add("Pref.PrefDelete", boost::bind(&LLFloaterPreference::deleteGraphicPreset, this));
+	mCommitCallbackRegistrar.add("Pref.PrefSave", boost::bind(&LLFloaterPreference::saveGraphicPreset, this));
+	mCommitCallbackRegistrar.add("Pref.PrefLoad", boost::bind(&LLFloaterPreference::loadGraphicPreset, this));
 
 //	//BD - Avatar Rendering Settings
 	mContextMenu = new LLSettingsContextMenu(this);
@@ -2200,6 +2199,73 @@ void LLFloaterPreference::onCameraPresetReset(const LLSD& param)
 	refreshCameraControls();
 }
 
+//BD - Presets
+void LLFloaterPreference::saveGraphicPreset()
+{
+	gSavedSettings.savePreset(1, getChild<LLComboBox>("preset_combo")->getValue());
+	refreshGraphicPresets();
+}
+
+void LLFloaterPreference::loadGraphicPreset()
+{
+	std::string name = getChild<LLComboBox>("preset_combo")->getValue();
+	gSavedSettings.loadPreset(1, name);
+	gSavedSettings.setString("PresetGraphicActive", name);
+}
+
+void LLFloaterPreference::deleteGraphicPreset()
+{
+	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets", "graphic");
+	std::string name = getChild<LLComboBox>("preset_combo")->getValue();
+
+	if (gDirUtilp->deleteFilesInDir(pathname, LLURI::escape(name) + ".xml") < 1)
+	{
+		LL_WARNS("Settings") << "Cannot remove graphics preset file: " << name << LL_ENDL;
+	}
+
+	refreshGraphicPresets();
+}
+
+void LLFloaterPreference::refreshGraphicPresets()
+{
+	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
+	combo->removeall();
+
+	//BD - Look through our defaults first.
+	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets", "graphic");
+	std::string file;
+	LLDirIterator dir_iter_app(dir, "*.xml");
+	while (dir_iter_app.next(file))
+	{
+		std::string path = gDirUtilp->add(dir, file);
+		std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
+
+		LLSD preset;
+		llifstream infile;
+		infile.open(path);
+		if (!infile.is_open())
+		{
+			//BD - If we can't open and read the file we shouldn't add it because we won't
+			//     be able to load it later.
+			LL_WARNS("Settings") << "Cannot open file in: " << path << LL_ENDL;
+			continue;
+		}
+
+		//BD - Camera Preset files only have one single line, so it's either a parse failure
+		//     or a success.
+		S32 ret = LLSDSerialize::fromXML(preset, infile);
+
+		//BD - We couldn't parse the file, don't bother adding it.
+		if (ret == LLSDParser::PARSE_FAILURE)
+		{
+			LL_WARNS("Settings") << "Failed to parse file: " << path << LL_ENDL;
+			continue;
+		}
+
+		combo->add(name);
+	}
+}
+
 void LLFloaterPreference::draw()
 {
 	if (mUpdateTimer.getElapsedTimeF32() > 1.f)
@@ -2428,10 +2494,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	onNotificationsChange("ObjectIMOptions");
 
 	//BD
-	//LLPanelLogin::setAlwaysRefresh(true);
 	refresh();
-
-	//BD
 	refreshGraphicControls();
 	refreshEnabledGraphics();
 	toggleTabs();
@@ -2446,6 +2509,9 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 //	//BD - Unlimited Camera Presets
 	refreshPresets();
 	refreshCameraControls();
+
+	//BD - Presets
+	refreshGraphicPresets();
 
 	// Make sure the current state of prefs are saved away when
 	// when the floater is opened.  That will make cancel do its
@@ -3323,71 +3389,6 @@ void LLFloaterPreference::changed()
 	updateDeleteTranscriptsButton();
 
 }
-
-//BD - Quick Graphics Presets
-void LLFloaterPreference::deletePreset(const LLSD& user_data)
-{
-	std::string subdirectory = user_data.asString();
-	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
-	std::string name = combo->getSimple();
-
-	if (!LLPresetsManager::getInstance()->deletePreset(subdirectory, name)
-		&& name != "Default")
-	{
-		LLSD args;
-		args["NAME"] = name;
-		LLNotificationsUtil::add("PresetNotDeleted", args);
-	}
-}
-
-void LLFloaterPreference::savePreset(const LLSD& user_data)
-{
-	std::string subdirectory = user_data.asString();
-	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
-	std::string name = combo->getSimple();
-
-	if (!LLPresetsManager::getInstance()->savePreset(subdirectory, name))
-	{
-		LLSD args;
-		args["NAME"] = name;
-		LLNotificationsUtil::add("PresetNotSaved", args);
-	}
-	//BD - We should probably show some sort of notification regardless to inform
-	//     the user that he successfully saved a preset.
-}
-
-void LLFloaterPreference::loadPreset(const LLSD& user_data)
-{
-	std::string subdirectory = user_data.asString();
-	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
-	std::string name = combo->getSimple();
-
-	LLPresetsManager::getInstance()->loadPreset(subdirectory, name);
-	toggleTabs();
-	refreshGraphicControls();
-	//BD - Machinima Sidebar.
-	//     Refresh it's controls too if its open.
-	if (gSideBar && gSideBar->isInVisibleChain())
-	{
-		gSideBar->refreshGraphicControls();
-	}
-}
-
-void LLFloaterPreference::onPresetsListChange()
-{
-	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
-	LLButton* delete_btn = getChild<LLButton>("delete");
-
-	EDefaultOptions option = DEFAULT_TOP;
-	LLPresetsManager::getInstance()->setPresetNamesInComboBox("graphic", combo, option);
-
-	delete_btn->setEnabled(0 != combo->getItemCount());
-}
-
-/*void LLFloaterPreference::saveGraphicsPreset(std::string& preset)
-{
-	mSavedGraphicsPreset = preset;
-}*/
 
 //------------------------------Updater---------------------------------------
 
