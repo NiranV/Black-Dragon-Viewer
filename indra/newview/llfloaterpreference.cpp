@@ -1684,9 +1684,6 @@ void LLFloaterPreference::refreshEverything()
 			mRenderProjectorShadowResolution[0]->setEnabled(projectors_enabled);
 			mRenderProjectorShadowResolution[1]->setEnabled(projectors_enabled);
 
-			mRenderSpotLightReflections->setEnabled(projectors_enabled);
-			mRenderSpotLightImages->setEnabled(projectors_enabled);
-
 			bool soften_enabled = (gPipeline.RenderDeferredBlurLight && deferred_enabled);
 			mRenderShadowBlurSize->setEnabled(soften_enabled);
 

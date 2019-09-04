@@ -3460,6 +3460,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    width="115" />
 	  <check_box
    control_name="RenderSpotLightReflections"
+   enabled_control="RenderDeferred"
    height="16"
    label="Render Projector Image Reflections"
    tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
@@ -3472,6 +3473,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    width="115" />
 	  <check_box
    control_name="RenderSpotLightImages"
+   enabled_control="RenderDeferred"
    height="16"
    label="Render Spotlight Light Refraction"
    tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
