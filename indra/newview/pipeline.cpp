@@ -498,7 +498,8 @@ LLPipeline::LLPipeline() :
 	mScreenHeight(0)
 {
 	mNoiseMap = 0;
-	mTrueNoiseMap = 0;
+	//BD
+	//mTrueNoiseMap = 0;
 	mLightFunc = 0;
 }
 
@@ -1366,11 +1367,12 @@ void LLPipeline::releaseGLBuffers()
 		mNoiseMap = 0;
 	}
 
-	if (mTrueNoiseMap)
+	//BD
+	/*if (mTrueNoiseMap)
 	{
 		LLImageGL::deleteTextures(1, &mTrueNoiseMap);
 		mTrueNoiseMap = 0;
-	}
+	}*/
 
 	releaseLUTBuffers();
 
@@ -1494,7 +1496,8 @@ void LLPipeline::createGLBuffers()
 			gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_POINT);
 		}
 
-		if (!mTrueNoiseMap)
+		//BD
+		/*if (!mTrueNoiseMap)
 		{
 			const U32 noiseRes = 128;
 			F32 noise[noiseRes*noiseRes*3];
@@ -1507,7 +1510,7 @@ void LLPipeline::createGLBuffers()
 			gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_TEXTURE, mTrueNoiseMap);
 			LLImageGL::setManualImage(LLTexUnit::getInternalType(LLTexUnit::TT_TEXTURE), 0, GL_RGB16F_ARB, noiseRes, noiseRes, GL_RGB,GL_FLOAT, noise, false);
 			gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_POINT);
-		}
+		}*/
 
 		createLUTBuffers();
 	}

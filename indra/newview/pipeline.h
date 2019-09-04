@@ -686,7 +686,8 @@ public:
 
 	//noise map
 	U32					mNoiseMap;
-	U32					mTrueNoiseMap;
+	//BD
+	//U32				mTrueNoiseMap;
 	U32					mLightFunc;
 
 	LLColor4				mSunDiffuse;
