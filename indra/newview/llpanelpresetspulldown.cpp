@@ -44,6 +44,7 @@
 #include "lldir.h"
 #include "lldiriterator.h"
 #include "llsdserialize.h"
+#include "bdfunctions.h"
 
 /* static */ const F32 LLPanelPresetsPulldown::sAutoCloseFadeStartTimeSec = 2.0f;
 /* static */ const F32 LLPanelPresetsPulldown::sAutoCloseTotalTimeSec = 3.0f;
@@ -57,7 +58,7 @@ LLPanelPresetsPulldown::LLPanelPresetsPulldown()
 {
 	mHoverTimer.stop();
 
-	mCommitCallbackRegistrar.add("Presets.GoGraphicsPrefs", boost::bind(&LLPanelPresetsPulldown::onGraphicsButtonClick, this, _2));
+	mCommitCallbackRegistrar.add("Presets.GoGraphicsPrefs", boost::bind(&LLPanelPresetsPulldown::onGraphicsButtonClick, this));
 	mCommitCallbackRegistrar.add("Presets.RowClick", boost::bind(&LLPanelPresetsPulldown::onRowClick, this, _2));
 
 	buildFromFile( "panel_presets_pulldown.xml");
@@ -217,24 +218,13 @@ void LLPanelPresetsPulldown::onRowClick(const LLSD& user_data)
     }
 }
 
-void LLPanelPresetsPulldown::onGraphicsButtonClick(const LLSD& user_data)
+void LLPanelPresetsPulldown::onGraphicsButtonClick()
 {
 	// close the minicontrol, we're bringing up the big one
 	setVisible(FALSE);
 
 	// bring up the prefs floater
-	LLFloater* prefsfloater = LLFloaterReg::showInstance("preferences");
-	if (prefsfloater)
-	{
-		// grab the 'graphics' panel from the preferences floater and
-		// bring it the front!
-		LLTabContainer* tabcontainer = prefsfloater->getChild<LLTabContainer>("pref core");
-		LLPanel* graphicspanel = prefsfloater->getChild<LLPanel>("display");
-		if (tabcontainer && graphicspanel)
-		{
-			tabcontainer->selectTabPanel(graphicspanel);
-		}
-	}
+	gDragonLibrary.openPreferences("display");
 }
 
 //virtual
