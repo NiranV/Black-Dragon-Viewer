@@ -116,7 +116,10 @@ LLStatusBar::LLStatusBar(const LLRect& rect)
 	mBtnVolume(NULL),
 	mHealth(100),
 	mSquareMetersCredit(0),
-	mSquareMetersCommitted(0)
+	mSquareMetersCommitted(0),
+	//BD
+	mMediaEnabled(false),
+	mShowNetStats(false)
 {
 	setRect(rect);
 	
@@ -164,6 +167,13 @@ BOOL LLStatusBar::postBuild()
 	mIconPresets = getChild<LLIconCtrl>( "presets_icon" );
 	mIconPresets->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterPresets, this));
 
+	//BD
+	mMediaEnabled = (gSavedSettings.getBOOL("AudioStreamingMusic") || gSavedSettings.getBOOL("AudioStreamingMedia"));
+	gSavedSettings.getControl("AudioStreamingMedia")->getSignal()->connect(boost::bind(&LLStatusBar::setMediaEnabled, this, _2));
+	gSavedSettings.getControl("AudioStreamingMusic")->getSignal()->connect(boost::bind(&LLStatusBar::setMediaEnabled, this, _2));
+
+	mShowNetStats = gSavedSettings.getBOOL("ShowNetStats");
+	gSavedSettings.getControl("ShowNetStats")->getSignal()->connect(boost::bind(&LLStatusBar::setShowNetStats, this, _2));
 
 	mIconPresets = getChild<LLIconCtrl>( "presets_icon" );
 	mIconPresets->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterPresets, this));
@@ -200,6 +210,7 @@ BOOL LLStatusBar::postBuild()
 	mSGBandwidth = LLUICtrlFactory::create<LLStatGraph>(sgp);
 	addChild(mSGBandwidth);
 	x -= SIM_STAT_WIDTH + 2;
+	mSGBandwidth->setVisible(mShowNetStats);
 
 	//BD
 	r.set( x-SIM_STAT_WIDTH, y+MENU_BAR_HEIGHT+34, x, y+32);
@@ -219,11 +230,10 @@ BOOL LLStatusBar::postBuild()
 	thresholds.threshold.add(LLStatGraph::ThresholdParams().value(0.1).color(LLColor4::green))
 						.add(LLStatGraph::ThresholdParams().value(0.25f).color(LLColor4::yellow))
 						.add(LLStatGraph::ThresholdParams().value(0.6f).color(LLColor4::red));
-
 	pgp.thresholds(thresholds);
-
 	mSGPacketLoss = LLUICtrlFactory::create<LLStatGraph>(pgp);
 	addChild(mSGPacketLoss);
+	mSGPacketLoss->setVisible(mShowNetStats);
 
 	mPanelPresetsPulldown = new LLPanelPresetsPulldown();
 	addChild(mPanelPresetsPulldown);
@@ -252,10 +262,7 @@ BOOL LLStatusBar::postBuild()
 // Per-frame updates of visibility
 void LLStatusBar::refresh()
 {
-	static LLCachedControl<bool> show_net_stats(gSavedSettings, "ShowNetStats", false);
-	bool net_stats_visible = show_net_stats;
-
-	if (net_stats_visible)
+	if (mShowNetStats)
 	{
 		// Adding Net Stat Meter back in
 		F32 bwtotal = gViewerThrottle.getMaxBandwidth() / 1000.f;
@@ -297,26 +304,14 @@ void LLStatusBar::refresh()
 		mTextTime->setToolTip (dtStr);
 	}
 
-	LLRect r;
-	const S32 MENU_RIGHT = gMenuBarView->getRightmostMenuEdge();
-
-	// reshape menu bar to its content's width
-	if (MENU_RIGHT != gMenuBarView->getRect().getWidth())
-	{
-		gMenuBarView->reshape(MENU_RIGHT, gMenuBarView->getRect().getHeight());
-	}
-
-	mSGBandwidth->setVisible(net_stats_visible);
-	mSGPacketLoss->setVisible(net_stats_visible);
-
 	// update the master volume button state
 	bool mute_audio = LLAppViewer::instance()->getMasterSystemAudioMute();
 	mBtnVolume->setToggleState(mute_audio);
 	
 	// Disable media toggle if there's no media, parcel media, and no parcel audio
 	// (or if media is disabled)
-	bool button_enabled = (gSavedSettings.getBOOL("AudioStreamingMusic")||gSavedSettings.getBOOL("AudioStreamingMedia")) && 
-						  (LLViewerMedia::hasInWorldMedia() || LLViewerMedia::hasParcelMedia() || LLViewerMedia::hasParcelAudio());
+	bool button_enabled = mMediaEnabled &&
+		(LLViewerMedia::hasInWorldMedia() || LLViewerMedia::hasParcelMedia() || LLViewerMedia::hasParcelAudio());
 	mMediaToggle->setEnabled(button_enabled);
 	// Note the "sense" of the toggle is opposite whether media is playing or not
 	bool any_media_playing = (LLViewerMedia::isAnyMediaPlaying() || 
@@ -520,6 +515,14 @@ BOOL can_afford_transaction(S32 cost)
 void LLStatusBar::onVolumeChanged(const LLSD& newvalue)
 {
 	refresh();
+}
+
+//BD
+void LLStatusBar::setShowNetStats(bool enabled)
+{
+	mShowNetStats = enabled;
+	mSGBandwidth->setVisible(enabled);
+	mSGPacketLoss->setVisible(enabled);
 }
 
 

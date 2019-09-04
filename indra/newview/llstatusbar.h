@@ -67,6 +67,10 @@ public:
 
 	void		setHealth(S32 percent);
 
+	//BD
+	void		setMediaEnabled(bool enabled) { mMediaEnabled = enabled; }
+	void		setShowNetStats(bool enabled);
+
 	void setLandCredit(S32 credit);
 	void setLandCommitted(S32 committed);
 
@@ -123,6 +127,9 @@ private:
 	LLPanelNearByMedia*	mPanelNearByMedia;
 //	//BD - Quick Draw Distance Slider
 	BDPanelDrawDistance* mPanelDrawDistance;
+
+	bool	mMediaEnabled;
+	bool	mShowNetStats;
 };
 
 // *HACK: Status bar owns your cached money balance. JC
