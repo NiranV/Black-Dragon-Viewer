@@ -1477,7 +1477,9 @@ void LLPipeline::createGLBuffers()
 			const U32 noiseRes = 128;
 			LLVector3 noise[noiseRes*noiseRes];
 
-			F32 scaler = gSavedSettings.getF32("RenderDeferredNoise")/100.f;
+			//BD
+			//F32 scaler = gSavedSettings.getF32("RenderDeferredNoise")/100.f;
+			F32 scaler = 0.04f;
 			for (U32 i = 0; i < noiseRes*noiseRes; ++i)
 			{
 				noise[i] = LLVector3(ll_frand()-0.5f, ll_frand()-0.5f, 0.f);
