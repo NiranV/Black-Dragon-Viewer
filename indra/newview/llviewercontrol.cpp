@@ -938,7 +938,6 @@ static bool handleAutomaticMemoryManagement(const LLSD& newvalue)
 	gTextureList.mAutomaticMemoryManagement = newvalue.asBoolean();
 	return true;
 }
-//BD
 
 ////////////////////////////////////////////////////////////////////////////
 
