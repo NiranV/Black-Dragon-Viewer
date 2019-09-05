@@ -642,6 +642,11 @@ std::string LLDir::getExpandedFilename(ELLPath location, const std::string& subd
 		prefix = add(getOSUserAppDir(), "user_settings", "poses");
 		break;
 
+	//BD - Poser
+	case LL_PATH_PRESETS:
+		prefix = add(getOSUserAppDir(), "user_settings", "presets");
+		break;
+
 	//BD - Multiple Viewer Presets
 	case LL_PATH_FS:
 		prefix = getFSAppRODataDir();

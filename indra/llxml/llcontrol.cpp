@@ -1267,14 +1267,21 @@ void LLControlGroup::savePreset(S32 preset_type, std::string filename)
 		return;
 	}
 
-	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets", preset_type_string);
+	//BD - Check for the top level folder first
+	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets");
+	if (!gDirUtilp->fileExists(pathname))
+	{
+		LLFile::mkdir(pathname);
+	}
+	
+	pathname = gDirUtilp->getExpandedFilename(LL_PATH_PRESETS, "graphic");
 	if (!gDirUtilp->fileExists(pathname))
 	{
 		LL_WARNS("Settings") << "Couldn't find folder: " << pathname << " - creating one." << LL_ENDL;
 		LLFile::mkdir(pathname);
 	}
 
-	std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets", preset_type_string, LLSDXMLFormatter::escapeString(filename) + ".xml");
+	std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_PRESETS, "graphic", LLSDXMLFormatter::escapeString(filename) + ".xml");
 
 	LLSD settings;
 	S32 i = 0;
@@ -1318,7 +1325,7 @@ BOOL LLControlGroup::loadPreset(S32 preset_type, std::string name)
 	std::string filename;
 	if (!name.empty())
 	{
-		filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets", preset_type_string, LLSDXMLFormatter::escapeString(name) + ".xml");
+		filename = gDirUtilp->getExpandedFilename(LL_PATH_PRESETS, preset_type_string, LLSDXMLFormatter::escapeString(name) + ".xml");
 	}
 
 	LLSD preset;
