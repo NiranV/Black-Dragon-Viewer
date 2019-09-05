@@ -2515,11 +2515,6 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	// job
 	saveSettings();
 
-	bool started = (LLStartUp::getStartupState() == STATE_STARTED);
-	mLoadBtn->setEnabled(started);
-	mSaveBtn->setEnabled(started);
-	mDeleteBtn->setEnabled(started);
-
 	collectSearchableItems();
 
 	//BD - Always clear highlighting when opening prefs.

@@ -6430,8 +6430,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
     top="-21"
     width="60">
     <button.commit_callback
-      function="Pref.PrefSave"
-      parameter="graphic" />
+      function="Pref.PrefSave" />
   </button>
    
    <button
@@ -6451,8 +6450,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
     top_delta="0"
     width="61">
     <button.commit_callback
-      function="Pref.PrefLoad"
-	  parameter="graphic"/>
+      function="Pref.PrefLoad"/>
   </button>
 
   <button
@@ -6472,8 +6470,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
     top_delta="0"
     width="71">
     <button.commit_callback
-      function="Pref.PrefDelete"
-	  parameter="graphic"/>
+      function="Pref.PrefDelete"/>
   </button>
   
 	<combo_box
