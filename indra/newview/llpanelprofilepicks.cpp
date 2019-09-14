@@ -127,6 +127,7 @@ void LLPanelProfilePick::setAvatarId(const LLUUID& avatar_id)
         setPickDesc(pick_desc);
         setSnapshotId(snapshot_id);
         setPickLocation(createLocationText(getLocationNotice(), pick_name, region_name, getPosGlobal()));
+		mCurrentPickDescription = pick_desc;
     }
 
 	enableSaveButton(getPickId().isNull() && mSelfProfile);
