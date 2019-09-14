@@ -2200,23 +2200,24 @@ void LLFloaterPreference::onCameraPresetReset(const LLSD& param)
 //BD - Presets
 void LLFloaterPreference::saveGraphicPreset()
 {
-	gSavedSettings.savePreset(1, getChild<LLComboBox>("preset_combo")->getValue());
+	std::string name = getChild<LLComboBox>("preset_combo")->getValue();
+	gSavedSettings.savePreset(1, gDragonLibrary.escapeString(name));
 	refreshGraphicPresets();
 }
 
 void LLFloaterPreference::loadGraphicPreset()
 {
 	std::string name = getChild<LLComboBox>("preset_combo")->getValue();
-	gSavedSettings.loadPreset(1, name);
+	gSavedSettings.loadPreset(1, gDragonLibrary.escapeString(name));
 	gSavedSettings.setString("PresetGraphicActive", name);
 }
 
 void LLFloaterPreference::deleteGraphicPreset()
 {
-	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "presets", "graphic");
+	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_PRESETS, "graphic");
 	std::string name = getChild<LLComboBox>("preset_combo")->getValue();
 
-	if (gDirUtilp->deleteFilesInDir(pathname, LLURI::escape(name) + ".xml") < 1)
+	if (gDirUtilp->deleteFilesInDir(pathname, gDragonLibrary.escapeString(name) + ".xml") < 1)
 	{
 		LL_WARNS("Settings") << "Cannot remove graphics preset file: " << name << LL_ENDL;
 	}
