@@ -391,7 +391,7 @@
    follows="left|top"
    height="15"
    increment="1"
-   initial_value="48"
+   initial_value="40"
    layout="topleft"
    label="Eyes ° Limit"
    tool_tip="This option controls the rotation in degrees the eyes are allowed to move to follow mouse movement on screen. This option will not prevent the eye movement being sent to others and will not disable random eye movement."
