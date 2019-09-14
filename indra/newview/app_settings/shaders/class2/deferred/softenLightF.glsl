@@ -607,7 +607,10 @@ void main()
    // add the two types of shiny together
    vec3 spec_contrib = (ssshiny * (1.0 - fullbrightification) * 0.5 + dumbshiny);
    bloom = spec.a * dot(spec_contrib, spec_contrib) * 0.25 * (1.0 - bloomdamp);
-   col.rgb = mix(col.rgb + ssshiny, diffuse.rgb, fullbrightification) + dumbshiny;
+   dumbshiny = vary_SunlitColor*scol_ambocc.r*(texture2D(lightFunc, vec2(sa, spec.a)).r);
+   spec_contrib = dumbshiny * spec.rgb;
+   col.rgb = mix(col.rgb + ssshiny, diffuse.rgb, fullbrightification);
+   col += spec_contrib;
   }
 #else
   if (spec.a > 0.0) // specular reflection
