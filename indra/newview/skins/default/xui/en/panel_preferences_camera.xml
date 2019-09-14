@@ -432,7 +432,7 @@
    tool_tip="This option controls the rotation in degrees the head is allowed to move to follow mouse movement on screen. This option will not prevent the head movement being sent to others."
    left="10"
    label_width="150"
-   max_val="100"
+   max_val="90"
    min_val="0"
    name="YawFromMousePosition"
    show_text="true"
