@@ -426,7 +426,7 @@
    follows="left|top"
    height="15"
    increment="1"
-   initial_value="90"
+   initial_value="60"
    layout="topleft"
    label="Head ° Limit"
    tool_tip="This option controls the rotation in degrees the head is allowed to move to follow mouse movement on screen. This option will not prevent the head movement being sent to others."
