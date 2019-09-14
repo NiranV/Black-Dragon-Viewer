@@ -1241,6 +1241,7 @@ void LLFastTimerView::drawLegend()
 			++it)
 		{
 			BlockTimerStatHandle* idp = (*it);
+
 			if(mScrollOffset_tmp)
 			{
 				--mScrollOffset_tmp;
