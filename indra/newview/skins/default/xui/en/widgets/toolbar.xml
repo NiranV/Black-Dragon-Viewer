@@ -10,7 +10,6 @@ mouse_opaque="false"
 read_only="false">
  <button_panel
  name="button_panel"
- bg_opaque_image="Rounded_Rect"
  background_visible="true"
  bg_opaque_image_overlay="MouseGray"
  background_opaque="true"/>
