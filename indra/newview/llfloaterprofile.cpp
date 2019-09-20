@@ -422,6 +422,7 @@ BOOL LLFloaterProfile::postBuild()
 	mGroupList = getChild<LLGroupList>("group_list");
 	mShowInSearchCheckbox = getChild<LLCheckBoxCtrl>("show_in_search_checkbox");
 	mSecondLifePic = getChild<LLTextureCtrl>("2nd_life_pic");
+	mSecondLifePic->setCommitCallback(boost::bind(&LLFloaterProfile::onProfilePicChange, this));
 	mSecondLifePicLayout = getChild<LLPanel>("image_stack");
 	mSecondLifeDescriptionEdit = getChild<LLTextBase>("sl_description_edit");
 	mSecondLifeDescriptionEdit->setFocusChangedCallback(boost::bind(&LLFloaterProfile::onDescriptionFocusChange, this)); //
@@ -488,6 +489,7 @@ BOOL LLFloaterProfile::postBuild()
 	mDescriptionEdit = getChild<LLTextEditor>("fl_description_edit");
 	mDescriptionEdit->setFocusChangedCallback(boost::bind(&LLFloaterProfile::onFirstDescriptionFocusChange, this));
 	mPicture = getChild<LLTextureCtrl>("real_world_pic");
+	mPicture->setCommitCallback(boost::bind(&LLFloaterProfile::onProfilePicChange, this));
 
 	mOnlineStatus = getChild<LLCheckBoxCtrl>("status_check");
 	mOnlineStatus->setCommitCallback(boost::bind(&LLFloaterProfile::onCommitRights, this));
@@ -1665,6 +1667,7 @@ void LLFloaterProfile::apply()
 			data.image_id = mSecondLifePic->getImageAssetID();
 			data.about_text = mOriginalDescription;
 			data.allow_publish = mShowInSearchCheckbox->getValue();
+			LL_INFOS("LegacyProfile") << mSecondLifePic->getImageAssetID() << LL_ENDL;
 
 			//BD - Web
 			if (mWebLoaded)

@@ -52,6 +52,8 @@ public:
 	struct Toolbar : public LLInitParam::Block<Toolbar>
 	{
 		Mandatory<LLToolBarEnums::ButtonType>	button_display_mode;
+//		//BD - Additional Toolbar Layouts
+		Mandatory<LLToolBarEnums::LayoutType>	button_layout_mode;
 		Multiple<LLCommandId::Params>	commands;
 
 		Toolbar();

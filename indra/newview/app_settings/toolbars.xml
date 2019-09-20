@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <toolbars>
   <top_toolbar
-  button_display_mode="icons_small">
+  button_display_mode="icons_small"
+  button_layout_mode="center">
      <command
       name="speak" />
      <command

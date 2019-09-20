@@ -78,6 +78,14 @@ namespace LLInitParam
 //		//BD - Top Toolbar
 		declare("top",		SIDE_TOP);
 	}
+
+//	//BD - Additional Toolbar Layouts
+	void TypeValues<LayoutType>::declareValues()
+	{
+		declare("left", LAYOUT_LEFT);
+		declare("center", LAYOUT_CENTER);
+		declare("right", LAYOUT_RIGHT);
+	}
 }
 
 LLToolBar::Params::Params()
@@ -98,7 +106,9 @@ LLToolBar::Params::Params()
 	pad_bottom("pad_bottom"),
 	pad_between("pad_between"),
 	min_girth("min_girth"),
-	button_panel("button_panel")
+	button_panel("button_panel"),
+//	//BD - Additional Toolbar Layouts
+	button_layout_mode("button_layout_mode")
 {}
 
 LLToolBar::LLToolBar(const LLToolBar::Params& p)
@@ -128,7 +138,9 @@ LLToolBar::LLToolBar(const LLToolBar::Params& p)
 	mButtonRemoveSignal(NULL),
 	mDragAndDropTarget(false),
 	mCaretIcon(NULL),
-	mCenterPanel(NULL)
+	mCenterPanel(NULL),
+//	//BD - Additional Toolbar Layouts
+	mLayoutType(p.button_layout_mode)
 {
 	mButtonParams[LLToolBarEnums::BTNTYPE_ICONS_WITH_TEXT] = p.button_icon_and_text;
 	mButtonParams[LLToolBarEnums::BTNTYPE_ICONS_ONLY] = p.button_icon;
@@ -205,8 +217,9 @@ void LLToolBar::initFromParams(const LLToolBar::Params& p)
 	border_panel_p.auto_resize = true;
 	border_panel_p.user_resize = false;
 	border_panel_p.mouse_opaque = false;
-	
-	mCenteringStack->addChild(LLUICtrlFactory::create<LLLayoutPanel>(border_panel_p));
+//	//BD - Additional Toolbar Layouts
+	mLeftLayoutPanel = LLUICtrlFactory::create<LLLayoutPanel>(border_panel_p);
+	mCenteringStack->addChild(mLeftLayoutPanel);
 
 	LLLayoutPanel::Params center_panel_p;
 	center_panel_p.name = "center_panel";
@@ -223,14 +236,16 @@ void LLToolBar::initFromParams(const LLToolBar::Params& p)
 	mButtonPanel = LLUICtrlFactory::create<LLPanel>(button_panel_p);
 	mCenterPanel->setButtonPanel(mButtonPanel);
 	mCenterPanel->addChild(mButtonPanel);
-	
-	mCenteringStack->addChild(LLUICtrlFactory::create<LLLayoutPanel>(border_panel_p));
+//	//BD - Additional Toolbar Layouts
+	mRightLayoutPanel = LLUICtrlFactory::create<LLLayoutPanel>(border_panel_p);
+	mCenteringStack->addChild(mRightLayoutPanel);
 
 	BOOST_FOREACH(LLCommandId id, p.commands)
 	{
 		addCommand(id);
 	}
 
+	setLayoutType(p.button_layout_mode);
 	mNeedsLayout = true;
 }
 
@@ -479,6 +494,20 @@ BOOL LLToolBar::isSettingChecked(const LLSD& userdata)
 		retval = (mButtonType == BTNTYPE_TEXT_ONLY);
 	}
 
+//	//BD - Additional Toolbar Layouts
+	if (setting_name == "align_left")
+	{
+		retval = (mLayoutType == LAYOUT_LEFT);
+	}
+	else if (setting_name == "align_right")
+	{
+		retval = (mLayoutType == LAYOUT_RIGHT);
+	}
+	else if (setting_name == "align_center")
+	{
+		retval = (mLayoutType == LAYOUT_CENTER);
+	}
+
 	return retval;
 }
 
@@ -509,6 +538,20 @@ void LLToolBar::onSettingEnable(const LLSD& userdata)
 	{
 		setButtonType(BTNTYPE_TEXT_ONLY);
 	}
+
+//	//BD - Additional Toolbar Layouts
+	if (setting_name == "align_left")
+	{
+		setLayoutType(LAYOUT_LEFT);
+	}
+	else if (setting_name == "align_center")
+	{
+		setLayoutType(LAYOUT_CENTER);
+	}
+	else if (setting_name == "align_right")
+	{
+		setLayoutType(LAYOUT_RIGHT);
+	}
 }
 
 void LLToolBar::onRemoveSelectedCommand()
@@ -533,6 +576,27 @@ void LLToolBar::setButtonType(LLToolBarEnums::ButtonType button_type)
 	{
 		createButtons();
 	}
+}
+
+//BD - Additional Toolbar Layouts
+void LLToolBar::setLayoutType(LLToolBarEnums::LayoutType layout_type)
+{
+	if (layout_type == LAYOUT_LEFT)
+	{
+		mLeftLayoutPanel->setVisible(false);
+		mRightLayoutPanel->setVisible(true);
+	}
+	else if (layout_type == LAYOUT_CENTER)
+	{
+		mLeftLayoutPanel->setVisible(true);
+		mRightLayoutPanel->setVisible(true);
+	}
+	else if (layout_type == LAYOUT_RIGHT)
+	{
+		mLeftLayoutPanel->setVisible(true);
+		mRightLayoutPanel->setVisible(false);
+	}
+	mLayoutType = layout_type;
 }
 
 void LLToolBar::resizeButtonsInRow(std::vector<LLToolBarButton*>& buttons_in_row, S32 max_row_girth)

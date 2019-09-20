@@ -139,6 +139,8 @@ public:
 	//		BOOL final,
 	//		void* userdata);
 
+	void onProfilePicChange() { mUnsavedChanges = true; }
+
 	//////////////////////////
 	//BD - Second Life Panel
 	//////////////////////////

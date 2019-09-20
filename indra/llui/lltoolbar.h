@@ -129,6 +129,14 @@ namespace LLToolBarEnums
 		SIDE_TOP,
 	};
 
+//	//BD - Additional Toolbar Layouts
+	enum LayoutType
+	{
+		LAYOUT_CENTER = 0,
+		LAYOUT_LEFT,
+		LAYOUT_RIGHT,
+	};
+
 	enum EToolBarLocation
 	{
 		TOOLBAR_NONE = 0,
@@ -159,6 +167,13 @@ namespace LLInitParam
 
 	template<>
 	struct TypeValues<LLToolBarEnums::SideType> : public TypeValuesHelper<LLToolBarEnums::SideType>
+	{
+		static void declareValues();
+	};
+
+//	//BD - Additional Toolbar Layouts
+	template<>
+	struct TypeValues<LLToolBarEnums::LayoutType> : public TypeValuesHelper<LLToolBarEnums::LayoutType>
 	{
 		static void declareValues();
 	};
@@ -196,6 +211,8 @@ public:
 	struct Params : public LLInitParam::Block<Params, LLUICtrl::Params>
 	{
 		Mandatory<LLToolBarEnums::ButtonType>	button_display_mode;
+//		//BD - Additional Toolbar Layouts
+		Mandatory<LLToolBarEnums::LayoutType>	button_layout_mode;
 		Mandatory<LLToolBarEnums::SideType>		side;
 
 		Optional<LLToolBarButton::Params>		button_icon,
@@ -271,6 +288,10 @@ public:
 	command_id_list_t& getCommandsList() { return mButtonCommands; }
 	void clearCommandsList();
 
+//	//BD - Additional Toolbar Layouts
+	void setLayoutType(LLToolBarEnums::LayoutType layout_type);
+	LLToolBarEnums::LayoutType getLayoutType() { return mLayoutType; }
+
 private:
 	friend class LLUICtrlFactory;
 	LLToolBar(const Params&);
@@ -316,12 +337,19 @@ private:
 	LLToolBarEnums::ButtonType		mButtonType;
 	LLToolBarButton::Params			mButtonParams[LLToolBarEnums::BTNTYPE_COUNT];
 
+//	//BD - Additional Toolbar Layouts
+	LLToolBarEnums::LayoutType		mLayoutType;
+
 	// related widgets
 	LLLayoutStack*					mCenteringStack;
 	LLCenterLayoutPanel*			mCenterPanel;
 	LLPanel*						mButtonPanel;
 	LLHandle<class LLContextMenu>	mPopupMenuHandle;
 	LLHandle<class LLView>			mRemoveButtonHandle;
+
+//	//BD - Additional Toolbar Layouts
+	LLPanel*						mLeftLayoutPanel;
+	LLPanel*						mRightLayoutPanel;
 
 	LLToolBarButton*				mRightMouseTargetButton;
 

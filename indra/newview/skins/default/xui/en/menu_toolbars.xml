@@ -56,4 +56,29 @@
     <on_check function="Toolbars.CheckSetting"
               parameter="text_only" />
   </menu_item_check>
+  <menu_item_separator layout="topleft" />
+  <menu_item_check label="Align Left/Top"
+                   layout="topleft"
+                   name="align_left">
+    <on_click function="Toolbars.EnableSetting"
+              parameter="align_left" />
+    <on_check function="Toolbars.CheckSetting"
+              parameter="align_left" />
+  </menu_item_check>
+  <menu_item_check label="Align Center"
+                   layout="topleft"
+                   name="align_center">
+    <on_click function="Toolbars.EnableSetting"
+              parameter="align_center" />
+    <on_check function="Toolbars.CheckSetting"
+              parameter="align_center" />
+  </menu_item_check>
+  <menu_item_check label="Align Right/Bottom"
+                   layout="topleft"
+                   name="align_right">
+    <on_click function="Toolbars.EnableSetting"
+              parameter="align_right" />
+    <on_check function="Toolbars.CheckSetting"
+              parameter="align_right" />
+  </menu_item_check>
 </context_menu>

@@ -58,6 +58,8 @@ bool isToolDragged()
 
 LLToolBarView::Toolbar::Toolbar()
 :	button_display_mode("button_display_mode"),
+//	//BD - Additional Toolbar Layouts
+	button_layout_mode("button_layout_mode"),
 	commands("command")
 {}
 
@@ -287,6 +289,12 @@ bool LLToolBarView::loadToolbars(bool force_default)
 			LLToolBarEnums::ButtonType button_type = toolbar_set.left_toolbar.button_display_mode;
 			mToolbars[LLToolBarEnums::TOOLBAR_LEFT]->setButtonType(button_type);
 		}
+//		//BD - Additional Toolbar Layouts
+		if (toolbar_set.left_toolbar.button_layout_mode.isProvided())
+		{
+			LLToolBarEnums::LayoutType layout_type = toolbar_set.left_toolbar.button_layout_mode;
+			mToolbars[LLToolBarEnums::TOOLBAR_LEFT]->setLayoutType(layout_type);
+		}
 		BOOST_FOREACH(const LLCommandId::Params& command_params, toolbar_set.left_toolbar.commands)
 		{
 			if (!addCommandInternal(LLCommandId(command_params), mToolbars[LLToolBarEnums::TOOLBAR_LEFT]))
@@ -301,6 +309,12 @@ bool LLToolBarView::loadToolbars(bool force_default)
 		{
 			LLToolBarEnums::ButtonType button_type = toolbar_set.right_toolbar.button_display_mode;
 			mToolbars[LLToolBarEnums::TOOLBAR_RIGHT]->setButtonType(button_type);
+		}
+//		//BD - Additional Toolbar Layouts
+		if (toolbar_set.right_toolbar.button_layout_mode.isProvided())
+		{
+			LLToolBarEnums::LayoutType layout_type = toolbar_set.right_toolbar.button_layout_mode;
+			mToolbars[LLToolBarEnums::TOOLBAR_RIGHT]->setLayoutType(layout_type);
 		}
 		BOOST_FOREACH(const LLCommandId::Params& command_params, toolbar_set.right_toolbar.commands)
 		{
@@ -317,6 +331,12 @@ bool LLToolBarView::loadToolbars(bool force_default)
 			LLToolBarEnums::ButtonType button_type = toolbar_set.bottom_toolbar.button_display_mode;
 			mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]->setButtonType(button_type);
 		}
+//		//BD - Additional Toolbar Layouts
+		if (toolbar_set.bottom_toolbar.button_layout_mode.isProvided())
+		{
+			LLToolBarEnums::LayoutType layout_type = toolbar_set.bottom_toolbar.button_layout_mode;
+			mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]->setLayoutType(layout_type);
+		}
 		BOOST_FOREACH(const LLCommandId::Params& command_params, toolbar_set.bottom_toolbar.commands)
 		{
 			if (!addCommandInternal(LLCommandId(command_params), mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]))
@@ -332,6 +352,12 @@ bool LLToolBarView::loadToolbars(bool force_default)
 		{
 			LLToolBarEnums::ButtonType button_type = toolbar_set.top_toolbar.button_display_mode;
 			mToolbars[LLToolBarEnums::TOOLBAR_TOP]->setButtonType(button_type);
+		}
+//		//BD - Additional Toolbar Layouts
+		if (toolbar_set.top_toolbar.button_layout_mode.isProvided())
+		{
+			LLToolBarEnums::LayoutType layout_type = toolbar_set.top_toolbar.button_layout_mode;
+			mToolbars[LLToolBarEnums::TOOLBAR_TOP]->setLayoutType(layout_type);
 		}
 		BOOST_FOREACH(const LLCommandId::Params& command_params, toolbar_set.top_toolbar.commands)
 		{
@@ -402,22 +428,26 @@ void LLToolBarView::saveToolbars() const
 	if (mToolbars[LLToolBarEnums::TOOLBAR_LEFT])
 	{
 		toolbar_set.left_toolbar.button_display_mode = mToolbars[LLToolBarEnums::TOOLBAR_LEFT]->getButtonType();
+		toolbar_set.left_toolbar.button_layout_mode = mToolbars[LLToolBarEnums::TOOLBAR_LEFT]->getLayoutType();
 		addToToolset(mToolbars[LLToolBarEnums::TOOLBAR_LEFT]->getCommandsList(), toolbar_set.left_toolbar);
 	}
 	if (mToolbars[LLToolBarEnums::TOOLBAR_RIGHT])
 	{
 		toolbar_set.right_toolbar.button_display_mode = mToolbars[LLToolBarEnums::TOOLBAR_RIGHT]->getButtonType();
+		toolbar_set.right_toolbar.button_layout_mode = mToolbars[LLToolBarEnums::TOOLBAR_RIGHT]->getLayoutType();
 		addToToolset(mToolbars[LLToolBarEnums::TOOLBAR_RIGHT]->getCommandsList(), toolbar_set.right_toolbar);
 	}
 	if (mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM])
 	{
 		toolbar_set.bottom_toolbar.button_display_mode = mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]->getButtonType();
+		toolbar_set.bottom_toolbar.button_layout_mode = mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]->getLayoutType();
 		addToToolset(mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]->getCommandsList(), toolbar_set.bottom_toolbar);
 	}
 //	//BD - Top Toolbar
 	if (mToolbars[LLToolBarEnums::TOOLBAR_TOP])
 	{
 		toolbar_set.top_toolbar.button_display_mode = mToolbars[LLToolBarEnums::TOOLBAR_TOP]->getButtonType();
+		toolbar_set.top_toolbar.button_layout_mode = mToolbars[LLToolBarEnums::TOOLBAR_TOP]->getLayoutType();
 		addToToolset(mToolbars[LLToolBarEnums::TOOLBAR_TOP]->getCommandsList(), toolbar_set.top_toolbar);
 	}
 	
