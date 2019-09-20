@@ -461,7 +461,8 @@ void LLFace::setTextureIndex(U8 index)
 		{
 			if (mDrawInfo && !mDrawInfo->mTextureList.empty())
 			{
-				LL_ERRS() << "Face with no texture index references indexed texture draw info." << LL_ENDL;
+				//BD - Ignore it.
+				LL_WARNS() << "Face with no texture index references indexed texture draw info." << LL_ENDL;
 			}
 		}
 	}
