@@ -1667,7 +1667,6 @@ void LLFloaterProfile::apply()
 			data.image_id = mSecondLifePic->getImageAssetID();
 			data.about_text = mOriginalDescription;
 			data.allow_publish = mShowInSearchCheckbox->getValue();
-			LL_INFOS("LegacyProfile") << mSecondLifePic->getImageAssetID() << LL_ENDL;
 
 			//BD - Web
 			if (mWebLoaded)
