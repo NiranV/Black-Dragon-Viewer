@@ -158,6 +158,7 @@ void LLFloaterEnvironmentSettings::apply()
 	//BD
 	bool use_region_settings	= gSavedSettings.getBOOL("UseEnvironmentFromRegion");
 	bool use_fixed_sky			= gSavedSettings.getBOOL("UseDayCycle");
+	bool windlight_transition = gSavedSettings.getBOOL("RenderInterpolateWindlight");
 	std::string water_preset	= mWaterPresetCombo->getValue().asString();
 	std::string sky_preset		= mSkyPresetCombo->getValue().asString();
 	std::string day_cycle		= mDayCyclePresetCombo->getValue().asString();
@@ -166,23 +167,23 @@ void LLFloaterEnvironmentSettings::apply()
 	if (use_region_settings)
 	{
 		//BD - Animated Windlight Transition
-		env_mgr.setUseRegionSettings(true, gSavedSettings.getBOOL("RenderInterpolateWindlight"));
+		env_mgr.setUseRegionSettings(true, windlight_transition);
 	}
 	else
 	{
 		if(use_fixed_sky)
 		{
 			//BD - Animated Windlight Transition
-			env_mgr.setUseDayCycle(day_cycle, gSavedSettings.getBOOL("RenderInterpolateWindlight"));
+			env_mgr.setUseDayCycle(day_cycle, windlight_transition);
 		}
 		else
 		{
 			//BD - Animated Windlight Transition
-			env_mgr.setUseSkyPreset(sky_preset, gSavedSettings.getBOOL("RenderInterpolateWindlight"));
+			env_mgr.setUseSkyPreset(sky_preset, windlight_transition);
 		}
 
 		//BD - Animated Windlight Transition
-		env_mgr.setUseWaterPreset(water_preset, gSavedSettings.getBOOL("RenderInterpolateWindlight"));
+		env_mgr.setUseWaterPreset(water_preset, windlight_transition);
 	}
 }
 
