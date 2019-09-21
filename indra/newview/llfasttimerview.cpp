@@ -433,15 +433,19 @@ void LLFastTimerView::draw()
 	gl_rect_2d(getLocalRect(), LLColor4(0.f, 0.f, 0.f, 0.25f));
 
 	drawHelp(getRect().getHeight() - MARGIN);
-	drawLegend();
-			
-	//mBarRect.mLeft = MARGIN + LEGEND_WIDTH + 8;
-	//mBarRect.mTop = y;
-	//mBarRect.mRight = getRect().getWidth() - MARGIN;
-	//mBarRect.mBottom = MARGIN + LINE_GRAPH_HEIGHT;
+	//BD
+	if (sTimerColors.size() > 0)
+	{
+		drawLegend();
 
-	drawBars();
-	drawLineGraph();
+		//mBarRect.mLeft = MARGIN + LEGEND_WIDTH + 8;
+		//mBarRect.mTop = y;
+		//mBarRect.mRight = getRect().getWidth() - MARGIN;
+		//mBarRect.mBottom = MARGIN + LINE_GRAPH_HEIGHT;
+
+		drawBars();
+		drawLineGraph();
+	}
 	printLineStats();
 	LLView::draw();
 
@@ -1093,6 +1097,8 @@ void LLFastTimerView::drawLineGraph()
 		++it)
 	{
 		BlockTimerStatHandle* idp = (*it);
+		if (!idp)
+			continue;
 
 		//fatten highlighted timer
 		if (mHoverID == idp)
@@ -1265,6 +1271,7 @@ void LLFastTimerView::drawLegend()
 			}
 			bar_rect.stretch(scale_offset);
 			llassert(idp->getIndex() < sTimerColors.size());
+
 			gl_rect_2d(bar_rect, sTimerColors[idp->getIndex()]);
 
 			F32Milliseconds ms(0);
@@ -1350,7 +1357,8 @@ void LLFastTimerView::generateUniqueColors()
 			++it)
 		{
 			BlockTimerStatHandle* idp = (*it);
-
+			if (!idp)
+				continue;
 			const F32 HUE_INCREMENT = 0.23f;
 			hue = fmodf(hue + HUE_INCREMENT, 1.f);
 			// saturation increases with depth
@@ -1605,6 +1613,8 @@ S32 LLFastTimerView::updateTimerBarOffsets(LLTrace::BlockTimerStatHandle* time_b
 		
 		TimerBar& child_timer_bar = row.mBars[timer_bar_index];
 		BlockTimerStatHandle* child_time_block = *it;
+		if (!child_time_block)
+			continue;
 
 		if (last_child_timer_bar)
 		{
@@ -1641,7 +1651,8 @@ S32 LLFastTimerView::drawBar(LLRect bar_rect, TimerBarRow& row, S32 image_width,
 {
 	TimerBar& timer_bar = row.mBars[bar_index];
 	LLTrace::BlockTimerStatHandle* time_block = timer_bar.mTimeBlock;
-
+	if (!time_block)
+		return 0;
 	hovered |= mHoverID == time_block;
 
 	// animate scale of bar when hovering over that particular timer
