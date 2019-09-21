@@ -609,6 +609,7 @@ void LLSidepanelInventory::updateVerbs()
 	mWearBtn->setEnabled(FALSE);
 	mPlayBtn->setVisible(FALSE);
 	mPlayBtn->setEnabled(FALSE);
+	mPlayBtn->setToolTip(std::string(""));
  	mTeleportBtn->setVisible(FALSE);
  	mTeleportBtn->setEnabled(FALSE);
  	mShopBtn->setVisible(TRUE);
@@ -633,11 +634,23 @@ void LLSidepanelInventory::updateVerbs()
 		 	mShopBtn->setVisible(FALSE);
 			break;
 		case LLInventoryType::IT_SOUND:
+			mPlayBtn->setVisible(TRUE);
+			mPlayBtn->setEnabled(TRUE);
+			mPlayBtn->setToolTip(LLTrans::getString("InventoryPlaySoundTooltip"));
+			mShopBtn->setVisible(FALSE);
+			break;
 		case LLInventoryType::IT_GESTURE:
+			mPlayBtn->setVisible(TRUE);
+			mPlayBtn->setEnabled(TRUE);
+			mPlayBtn->setToolTip(LLTrans::getString("InventoryPlayGestureTooltip"));
+			mShopBtn->setVisible(FALSE);
+			break;
 		case LLInventoryType::IT_ANIMATION:
 			mPlayBtn->setVisible(TRUE);
 			mPlayBtn->setEnabled(TRUE);
-		 	mShopBtn->setVisible(FALSE);
+			mPlayBtn->setEnabled(TRUE);
+			mPlayBtn->setToolTip(LLTrans::getString("InventoryPlayAnimationTooltip"));
+			mShopBtn->setVisible(FALSE);
 			break;
 		case LLInventoryType::IT_LANDMARK:
 			mTeleportBtn->setVisible(TRUE);

@@ -56,7 +56,6 @@
 #include "lldaycyclemanager.h"
 #include "lldebugview.h"
 #include "llenvmanager.h"
-#include "llfacebookconnect.h"
 #include "llfilepicker.h"
 #include "llfirstuse.h"
 #include "llfloaterabout.h"
@@ -4353,10 +4352,8 @@ void near_sit_down_point(BOOL success, void *)
 	if (success)
 	{
 		gAgent.setFlying(FALSE);
+		gAgent.clearControlFlags(AGENT_CONTROL_STAND_UP); // might have been set by autopilot
 		gAgent.setControlFlags(AGENT_CONTROL_SIT_ON_GROUND);
-
-		// Might be first sit
-		//LLFirstUse::useSit();
 	}
 }
 
@@ -5091,6 +5088,12 @@ void handle_take()
 				category_id.setNull();
 			}
 
+			// check inbox
+			const LLUUID inbox_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_INBOX);
+			if (category_id == inbox_id || gInventory.isObjectDescendentOf(category_id, inbox_id))
+			{
+				category_id.setNull();
+			}
 		}
 	}
 	if(category_id.isNull())
@@ -10072,7 +10075,6 @@ void initialize_menus()
 	enable.add("Object.EnableSit", boost::bind(&enable_object_sit, _1));
 
 	view_listener_t::addMenu(new LLObjectEnableReturn(), "Object.EnableReturn");
-	enable.add("Object.EnableDuplicate", boost::bind(&LLSelectMgr::canDuplicate, LLSelectMgr::getInstance()));
 	view_listener_t::addMenu(new LLObjectEnableReportAbuse(), "Object.EnableReportAbuse");
 
 	enable.add("Avatar.EnableMute", boost::bind(&enable_object_mute));

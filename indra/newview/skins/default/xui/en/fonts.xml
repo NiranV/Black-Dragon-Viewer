@@ -7,6 +7,8 @@
       <file>meiryo.TTC</file>
       <file>MSGOTHIC.TTC</file>
       <file>msyh.ttc</file>
+      <file load_collection="true">Cambria.ttc</file>
+      <file>malgun.ttf</file>
     </os>
     <os name="Mac">
       <file>ヒラギノ角ゴシック W3.ttc</file>  
@@ -18,6 +20,7 @@
       <file>AppleSDGothicNeo-Regular.otf</file>
       <file>华文细黑.ttf</file>
       <file>PingFang.ttc</file>
+      <file>STIXGeneral.otf</file>
     </os>
   </font>
 
