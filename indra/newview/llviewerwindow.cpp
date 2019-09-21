@@ -217,6 +217,7 @@
 
 //BD
 #include "bdsidebar.h"
+#include "bdfunctions.h"
 
 #if LL_WINDOWS
 #include <tchar.h> // For Unicode conversion methods
@@ -1909,6 +1910,9 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 	mDebugText = new LLDebugText(this);
 
 	mWorldViewRectScaled = calcScaledRect(mWorldViewRectRaw, mDisplayScale);
+
+	//BD
+	gDragonLibrary.initializeControls();
 }
 
 std::string LLViewerWindow::getLastSnapshotDir()

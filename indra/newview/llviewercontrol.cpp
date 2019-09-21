@@ -87,6 +87,7 @@
 #include "lltoolfocus.h"
 #include "llviewerobjectlist.h"
 #include "bdsidebar.h"
+#include "bdfunctions.h"
 #include "llheadrotmotion.h"
 
 // Third party library includes
@@ -597,14 +598,43 @@ void handleRenderAutoMuteByteLimitChanged(const LLSD& new_value);
 //BD
 /////////////////////////////////////////////////////////////////////////////
 
-//BD
+
+static bool handleAvatarRotateThresholdFast(const LLSD& newvalue)
+{
+	gDragonLibrary.mAvatarRotateThresholdFast = newvalue.asReal();
+	return true;
+}
+
+static bool handleAvatarRotateThresholdSlow(const LLSD& newvalue)
+{
+	gDragonLibrary.mAvatarRotateThresholdSlow = newvalue.asReal();
+	return true;
+}
+
+static bool handleAvatarRotateThresholdMouselook(const LLSD& newvalue)
+{
+	gDragonLibrary.mAvatarRotateThresholdMouselook = newvalue.asReal();
+	return true;
+}
+
+static bool handleMovementRotationSpeed(const LLSD& newvalue)
+{
+	gDragonLibrary.mMovementRotationSpeed = newvalue.asReal();
+	return true;
+}
+
+static bool handleAllowWalkingBackwards(const LLSD& newvalue)
+{
+	gDragonLibrary.mAllowWalkingBackwards = newvalue.asBoolean();
+	return true;
+}
+
 static bool handleHighlightChanged(const LLSD& newvalue)
 {
 	LLSelectMgr::sRenderHighlightType = newvalue.asInteger();
 	return true;
 }
 
-//BD
 static bool handleSelectionUpdateChanged(const LLSD& newvalue)
 {
 	LLSelectMgr::sSelectionUpdate = newvalue.asInteger();
@@ -614,7 +644,8 @@ static bool handleSelectionUpdateChanged(const LLSD& newvalue)
 //BD - Freeze World
 bool toggle_freeze_world(const LLSD& newvalue)
 {
-	if (newvalue.asBoolean())
+	bool val = newvalue.asBoolean();
+	if (val)
 	{
 		// freeze all avatars
 		LLCharacter* avatarp;
@@ -624,18 +655,16 @@ bool toggle_freeze_world(const LLSD& newvalue)
 			avatarp = *iter;
 			mAvatarPauseHandles.push_back(avatarp->requestPause());
 		}
-
-		// freeze everything else
-		gSavedSettings.setBOOL("FreezeTime", TRUE);
 	}
 	else // turning off freeze world mode, either temporarily or not.
 	{
 		// thaw all avatars
 		mAvatarPauseHandles.clear();
-
-		// thaw everything else
-		gSavedSettings.setBOOL("FreezeTime", FALSE);
 	}
+
+	// freeze/thaw everything else
+	gSavedSettings.setBOOL("FreezeTime", val);
+	gDragonLibrary.mUseFreezeWorld = val;
 	return true;
 }
 
@@ -1160,6 +1189,13 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("UseCinematicCamera")->getSignal()->connect(boost::bind(&handleCinematicCamera, _2));
 //	//BD - Realistic Mouselook
 	gSavedSettings.getControl("UseRealisticMouselook")->getSignal()->connect(boost::bind(&handleRealisticMouselook, _2));
+
+
+	gSavedSettings.getControl("AvatarRotateThresholdFast")->getSignal()->connect(boost::bind(&handleAvatarRotateThresholdFast, _2));
+	gSavedSettings.getControl("AvatarRotateThresholdSlow")->getSignal()->connect(boost::bind(&handleAvatarRotateThresholdSlow, _2));
+	gSavedSettings.getControl("AvatarRotateThresholdMouselook")->getSignal()->connect(boost::bind(&handleAvatarRotateThresholdMouselook, _2));
+	gSavedSettings.getControl("MovementRotationSpeed")->getSignal()->connect(boost::bind(&handleMovementRotationSpeed, _2));
+	gSavedSettings.getControl("AllowWalkingBackwards")->getSignal()->connect(boost::bind(&handleAllowWalkingBackwards, _2));
 //	//BD
 }
 

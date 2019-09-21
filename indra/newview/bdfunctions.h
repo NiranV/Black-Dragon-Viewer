@@ -30,6 +30,8 @@ public:
 	BDFunctions();
 	/*virtual*/	~BDFunctions();
 
+	void initializeControls();
+
 //	//BD - Debug Arrays
 	static void onCommitX(LLUICtrl* ctrl, const LLSD& param);
 	static void onCommitY(LLUICtrl* ctrl, const LLSD& param);
@@ -57,6 +59,18 @@ public:
 	bool getCameraOverride() { return mCameraOverride; }
 
 	bool mCameraOverride;
+
+	//BD - Cached Settings
+	//     llvoavatar.cpp
+	bool mAllowWalkingBackwards;
+	F32 mAvatarRotateThresholdSlow;
+	F32 mAvatarRotateThresholdFast;
+	F32 mAvatarRotateThresholdMouselook;
+	F32 mMovementRotationSpeed;
+
+	bool mUseFreezeWorld;
+
+	bool mDebugAvatarRezTime;
 };
 
 extern BDFunctions gDragonLibrary;

@@ -32,11 +32,31 @@ BDFunctions gDragonLibrary;
 
 
 BDFunctions::BDFunctions()
+	: mAllowWalkingBackwards(TRUE)
+	, mAvatarRotateThresholdSlow(2.f)
+	, mAvatarRotateThresholdFast(2.f)
+	, mAvatarRotateThresholdMouselook(120.f)
+	, mMovementRotationSpeed(0.2f)
+	, mUseFreezeWorld(FALSE)
+	, mDebugAvatarRezTime(FALSE)
 {
 }
 
 BDFunctions::~BDFunctions()
 {
+}
+
+void BDFunctions::initializeControls()
+{
+	mAllowWalkingBackwards = gSavedSettings.getBOOL("AllowWalkingBackwards");
+	mAvatarRotateThresholdSlow = gSavedSettings.getF32("AvatarRotateThresholdSlow");
+	mAvatarRotateThresholdFast = gSavedSettings.getF32("AvatarRotateThresholdFast");
+	mAvatarRotateThresholdMouselook = gSavedSettings.getF32("AvatarRotateThresholdMouselook");
+	mMovementRotationSpeed = gSavedSettings.getF32("MovementRotationSpeed");
+
+	mUseFreezeWorld = gSavedSettings.getBOOL("UseFreezeWorld");
+
+	mDebugAvatarRezTime = gSavedSettings.getBOOL("DebugAvatarRezTime");
 }
 
 //BD - Array Debugs
