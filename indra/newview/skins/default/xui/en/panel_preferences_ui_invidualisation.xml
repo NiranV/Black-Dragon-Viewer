@@ -626,7 +626,7 @@ width="510">
 	    width="319" />
 		<button
  follows="left|top"
- control_name="InspectorShowTime"
+ control_name="InactiveFloaterTransparency"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
@@ -659,7 +659,7 @@ width="510">
 	    width="319" />
 		<button
  follows="left|top"
- control_name="InspectorShowTime"
+ control_name="ActiveFloaterTransparency"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
