@@ -246,8 +246,8 @@ width="508"/>
  mouse_opaque="false"
  name="log_path_desc"
  top_delta="4"
- width="128">
- Location of your Logfiles:
+ width="256">
+ Location of your logfiles:
  </text>
  
  <line_editor
