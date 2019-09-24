@@ -118,7 +118,7 @@ public:
 	bool mWasHiddenBySearch;
 
 	void setNotHighlighted();
-	virtual bool hightlightAndHide(LLWString const &aFilter);
+	virtual bool hightlightAndHide(LLWString const &aFilter, bool hide = true);
 };
 
 #endif

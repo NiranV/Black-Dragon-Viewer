@@ -34,6 +34,7 @@
 #include <deque>
 
 class LLComboBox;
+class LLScrollbar;
 
 class LLFastTimerView : public LLFloater
 {
@@ -61,7 +62,6 @@ public:
 	virtual BOOL handleMouseUp(S32 x, S32 y, MASK mask);
 	virtual BOOL handleHover(S32 x, S32 y, MASK mask);
 	virtual BOOL handleToolTip(S32 x, S32 y, MASK mask);
-	//BD - UI Improvements
 	virtual BOOL handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
 	virtual void draw();
 	virtual void onOpen(const LLSD& key);
@@ -145,15 +145,15 @@ private:
 									mLegendRect;
 	LLFrameTimer					mHighlightTimer;
 	LLTrace::PeriodicRecording		mRecording;
-	bool							mOverLegend;
 	bool							mNeedColorUpdate;
-	S32								mScrollOffset;
 
 	LLButton* mPauseBtn;
 
 	LLView* mLegendPanel;
 	LLView* mBarsPanel;
 	LLView* mLinesPanel;
+
+	LLScrollbar* mScrollBar;
 
 	LLComboBox* mMetricCombo;
 	LLComboBox* mScaleCombo;
