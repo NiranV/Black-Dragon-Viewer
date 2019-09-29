@@ -91,7 +91,7 @@ width="996">
  height="20"
  image_unselected="transparentj2c"
  image_selected="transparentj2c"
- label="[CHANNEL] [VERSION] - [3.6.2 - Baking Dragon]"
+ label="[CHANNEL] [VERSION] - [3.6.3 - Baking Dragon]"
  font="SansSerifSmall"
  layout="topleft"
  left="3"
@@ -174,8 +174,72 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="39"
+     height="325"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Added: Ability to align all toolbars to the left/right or top/bottom.
+Changed: (EXPERIMENTAL) Always play the head tracking motion on top of all other animations, blend it additively.
+Changed: Reduced default Headtracking Head limitation to 60°.
+Changed: Reduced default Headtracking Eye limitation to 40°. Fixes eyes going bonkers.
+Changed: Reduced max Headtracking Head degrees to 90 (down from 100).
+Changed: Version to 3.6.3.
+Fixed: Picks deleting their description when creating a new one and clicking into the description field.
+Fixed: Screen Space Reflections missing the normal reflections completely.
+Fixed: Graphic presets not deletable.
+Fixed: Graphic presets not being saved with proper escape string.
+Fixed: Lineendings in llfasttimerview.cpp.
+Fixed: (POTENTIAL) Do not crash when we hit a face index that doesn't exist.
+Fixed: XUI warnings in toolbar.xml.
+Fixed: XUI warnings in spinner.xml.
+Fixed: Left/Right Shoulder View camera behaving weird when dragging the camera around.
+Fixed: Several crashes when opening the fast timers console.
+Fixed: Window transparency default buttons not working.
+Fixed: "Location of your logfiles" label cutting off.
+Fixed: Compile.
+Misc: Reverted change: 7d9ee3c13d6b34401bdd0b61f49d03eaf2950c84
+Misc: Improved animated windlight check slightly.
+Misc: Cleaned up llfloaterprofile.cpp of unnecessary logging.
+Misc: Removed a bunch of gSavedSettings calls and commented out some code that was disabled anyway.
+Merge with Linden Release. (137 Changes)
+Misc: Synced code to merge.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.6.2
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="39"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
