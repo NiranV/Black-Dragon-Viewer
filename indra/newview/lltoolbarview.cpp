@@ -387,7 +387,7 @@ bool LLToolBarView::loadToolbars(bool force_default)
 		}
 		BOOST_FOREACH(const LLCommandId::Params& command_params, toolbar_set.top_toolbar.commands)
 		{
-			if (addCommandInternal(LLCommandId(command_params), mToolbars[LLToolBarEnums::TOOLBAR_TOP]))
+			if (!addCommandInternal(LLCommandId(command_params), mToolbars[LLToolBarEnums::TOOLBAR_TOP]))
 			{
 				LL_WARNS() << "Error adding command '" << command_params.name() << "' to top toolbar." << LL_ENDL;
 			}
