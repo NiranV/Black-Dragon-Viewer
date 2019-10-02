@@ -34,7 +34,6 @@
 #include "lleconomy.h"
 #include "llfloaterperms.h"
 #include "llfloaterreg.h"
-#include "llfloaterfacebook.h"
 #include "llfloaterflickr.h"
 #include "llfloatertwitter.h"
 #include "llimagefilter.h"

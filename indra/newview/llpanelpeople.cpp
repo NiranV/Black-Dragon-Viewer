@@ -54,7 +54,6 @@
 #include "llcallingcard.h"			// for LLAvatarTracker
 #include "llcallbacklist.h"
 #include "llerror.h"
-#include "llfacebookconnect.h"
 #include "llfloateravatarpicker.h"
 #include "llfriendcard.h"
 #include "llgroupactions.h"
