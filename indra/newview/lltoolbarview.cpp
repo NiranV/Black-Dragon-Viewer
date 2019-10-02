@@ -282,7 +282,11 @@ bool LLToolBarView::loadToolbars(bool force_default)
 	}
 	
 	// Add commands to each toolbar
-	if (toolbar_set.left_toolbar.isProvided() && mToolbars[LLToolBarEnums::TOOLBAR_LEFT])
+	//BD - This check is preventing the toolbars from going through and falling back in case
+	//     the button display mode or layout mode are missing. We don't really need to check
+	//     whether the toolbars are provided because if they aren't we won't have anything
+	//     provided and all other checks will simply fail.
+	if (/*toolbar_set.left_toolbar.isProvided() &&*/ mToolbars[LLToolBarEnums::TOOLBAR_LEFT])
 	{
 		if (toolbar_set.left_toolbar.button_display_mode.isProvided())
 		{
@@ -295,6 +299,11 @@ bool LLToolBarView::loadToolbars(bool force_default)
 			LLToolBarEnums::LayoutType layout_type = toolbar_set.left_toolbar.button_layout_mode;
 			mToolbars[LLToolBarEnums::TOOLBAR_LEFT]->setLayoutType(layout_type);
 		}
+		else
+		{
+			mToolbars[LLToolBarEnums::TOOLBAR_LEFT]->setLayoutType(LLToolBarEnums::LAYOUT_CENTER);
+			LL_WARNS() << "left toolbar has no alignment, using default center." << LL_ENDL;
+		}
 		BOOST_FOREACH(const LLCommandId::Params& command_params, toolbar_set.left_toolbar.commands)
 		{
 			if (!addCommandInternal(LLCommandId(command_params), mToolbars[LLToolBarEnums::TOOLBAR_LEFT]))
@@ -303,7 +312,8 @@ bool LLToolBarView::loadToolbars(bool force_default)
 			}
 		}
 	}
-	if (toolbar_set.right_toolbar.isProvided() && mToolbars[LLToolBarEnums::TOOLBAR_RIGHT])
+	//BD
+	if (/*toolbar_set.right_toolbar.isProvided() &&*/ mToolbars[LLToolBarEnums::TOOLBAR_RIGHT])
 	{
 		if (toolbar_set.right_toolbar.button_display_mode.isProvided())
 		{
@@ -316,6 +326,11 @@ bool LLToolBarView::loadToolbars(bool force_default)
 			LLToolBarEnums::LayoutType layout_type = toolbar_set.right_toolbar.button_layout_mode;
 			mToolbars[LLToolBarEnums::TOOLBAR_RIGHT]->setLayoutType(layout_type);
 		}
+		else
+		{
+			mToolbars[LLToolBarEnums::TOOLBAR_RIGHT]->setLayoutType(LLToolBarEnums::LAYOUT_CENTER);
+			LL_WARNS() << "right toolbar has no alignment, using default center." << LL_ENDL;
+		}
 		BOOST_FOREACH(const LLCommandId::Params& command_params, toolbar_set.right_toolbar.commands)
 		{
 			if (!addCommandInternal(LLCommandId(command_params), mToolbars[LLToolBarEnums::TOOLBAR_RIGHT]))
@@ -324,7 +339,8 @@ bool LLToolBarView::loadToolbars(bool force_default)
 			}
 		}
 	}
-	if (toolbar_set.bottom_toolbar.isProvided() && mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM])
+	//BD
+	if (/*toolbar_set.bottom_toolbar.isProvided() &&*/ mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM])
 	{
 		if (toolbar_set.bottom_toolbar.button_display_mode.isProvided())
 		{
@@ -337,6 +353,11 @@ bool LLToolBarView::loadToolbars(bool force_default)
 			LLToolBarEnums::LayoutType layout_type = toolbar_set.bottom_toolbar.button_layout_mode;
 			mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]->setLayoutType(layout_type);
 		}
+		else
+		{
+			mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]->setLayoutType(LLToolBarEnums::LAYOUT_CENTER);
+			LL_WARNS() << "bottom toolbar has no alignment, using default center." << LL_ENDL;
+		}
 		BOOST_FOREACH(const LLCommandId::Params& command_params, toolbar_set.bottom_toolbar.commands)
 		{
 			if (!addCommandInternal(LLCommandId(command_params), mToolbars[LLToolBarEnums::TOOLBAR_BOTTOM]))
@@ -346,7 +367,7 @@ bool LLToolBarView::loadToolbars(bool force_default)
 		}
 	}
 //	//BD - Top Toolbar
-	if (toolbar_set.top_toolbar.isProvided() && mToolbars[LLToolBarEnums::TOOLBAR_TOP])
+	if (/*toolbar_set.top_toolbar.isProvided() &&*/ mToolbars[LLToolBarEnums::TOOLBAR_TOP])
 	{
 		if (toolbar_set.top_toolbar.button_display_mode.isProvided())
 		{
@@ -358,6 +379,11 @@ bool LLToolBarView::loadToolbars(bool force_default)
 		{
 			LLToolBarEnums::LayoutType layout_type = toolbar_set.top_toolbar.button_layout_mode;
 			mToolbars[LLToolBarEnums::TOOLBAR_TOP]->setLayoutType(layout_type);
+		}
+		else
+		{
+			mToolbars[LLToolBarEnums::TOOLBAR_TOP]->setLayoutType(LLToolBarEnums::LAYOUT_CENTER);
+			LL_WARNS() << "top toolbar has no alignment, using default center." << LL_ENDL;
 		}
 		BOOST_FOREACH(const LLCommandId::Params& command_params, toolbar_set.top_toolbar.commands)
 		{
