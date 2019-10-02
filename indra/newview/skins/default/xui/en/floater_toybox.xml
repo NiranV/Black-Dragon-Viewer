@@ -46,6 +46,7 @@
   <toolbar
     bottom="230"
     button_display_mode="icons_with_text"
+    button_layout_mode="center"
     follows="all"
     left="15"
     button_icon_and_text.button_width.max="190"
