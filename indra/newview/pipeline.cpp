@@ -11771,11 +11771,11 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 			}
 		}
 
-		glh_set_current_modelview(saved_view);
-		glh_set_current_projection(saved_proj);
-
 		for (S32 i = 0; i < 2; i++)
 		{
+			glh_set_current_modelview(saved_view);
+			glh_set_current_projection(saved_proj);
+
 			if (mShadowSpotLight[i].isNull())
 			{
 				continue;
@@ -11866,7 +11866,7 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 
 			LLViewerCamera::sCurCameraID = (LLViewerCamera::eCameraID)(LLViewerCamera::CAMERA_SHADOW0 + i + 4);
 
-			renderShadow(view[i+4], proj[i+4], shadow_cam, result[i], FALSE, TRUE, target_width);
+			renderShadow(view[i+4], proj[i+4], shadow_cam, result[i], FALSE, FALSE, target_width);
 
 			mShadow[i+4].flush();
  		}
