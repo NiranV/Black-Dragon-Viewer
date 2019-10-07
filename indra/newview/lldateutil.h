@@ -40,6 +40,18 @@ namespace LLDateUtil
 	 */
 	bool dateFromPDTString(LLDate& date, const std::string& str);
 
+	//BD
+	/**
+	* Convert a date into a format usable in the file explorer.
+	*
+	* @param[out] date Number of seconds since 01/01/1970 UTC. Uses dots
+	*			  instead of slashes for the date.
+	* @param[in]  Date in PDT time zone.
+	*
+	* @return true on success, false on parse error
+	*/
+	bool stringFromDate(std::string& str_out, LLDate date);
+
 	/**
 	 * Get human-readable avatar age.
 	 * 

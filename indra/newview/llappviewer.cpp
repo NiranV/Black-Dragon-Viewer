@@ -107,6 +107,8 @@
 //BD - Functions
 #include "bdfunctions.h"
 #include "bdfloatercamera.h"
+//BD
+#include "lldateutil.h"
 
 #include "llweb.h"
 #include "llfloatertexturefetchdebugger.h"
@@ -2268,14 +2270,21 @@ void LLAppViewer::initLoggingAndGetLastDuration()
 	LLError::setFatalFunction(errorCallback);
 	//LLError::setTimeFunction(getRuntime);
 
-	// Remove the last ".old" log file.
-	std::string old_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-							     "BlackDragon.old");
-	LLFile::remove(old_log_file);
+	//BD - Remove the last ".old" log file.
+	//     We disabled the remove and rename this will mean that the Viewer
+	//     will always use today's log file and continue writing into it, this
+	//     might get messy but its mainly for myself anyway to allow people
+	//     to give me relevant log files without worrying that they will be
+	//     removed when restarting.
+	//std::string old_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
+	//						     "BlackDragon.old");
+	//LLFile::remove(old_log_file);
 
-	// Get name of the log file
-	std::string log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-							     "BlackDragon.log");
+	//BD - Get name of the log file
+	//     We use the date to allow one file per day.
+	std::string log_date;
+	LLDateUtil::stringFromDate(log_date, LLDate::now());
+	std::string log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "BlackDragon_" + log_date + ".log");
  	/*
 	 * Before touching any log files, compute the duration of the last run
 	 * by comparing the ctime of the previous start marker file with the ctime
@@ -2319,8 +2328,8 @@ void LLAppViewer::initLoggingAndGetLastDuration()
 		start_marker_file.close();
 	}
 
-	// Rename current log file to ".old"
-	LLFile::rename(log_file, old_log_file);
+	//BD - Do not rename current log file to ".old"
+	//LLFile::rename(log_file, old_log_file);
 
 	// Set the log file to SecondLife.log
 	LLError::logToFile(log_file);

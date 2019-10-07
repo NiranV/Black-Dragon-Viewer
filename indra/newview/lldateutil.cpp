@@ -72,6 +72,15 @@ bool LLDateUtil::dateFromPDTString(LLDate& date, const std::string& str)
 	return true;
 }
 
+//BD
+bool LLDateUtil::stringFromDate(std::string& str_out, LLDate date)
+{
+	S32 month, day, year;
+	date.split(&year, &month, &day);
+	str_out = llformat("%d.%d.%d", month, day, year);
+	return true;
+}
+
 std::string LLDateUtil::ageFromDate(const LLDate& born_date, const LLDate& now)
 {
 	S32 born_month, born_day, born_year;
