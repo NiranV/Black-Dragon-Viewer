@@ -208,6 +208,9 @@ public:
 //	//BD - Warning System
 	void refreshWarnings();
 
+//	//BD - Open Log Path
+	void openLog();
+
 //	//BD - Expandable Tabs
 	void toggleTabs();
 

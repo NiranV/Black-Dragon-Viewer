@@ -133,6 +133,8 @@
 #include "llnamelistctrl.h"
 #include "llmenugl.h"
 
+#include <shellapi.h>
+
 #include <string>
 #include <iostream>
 #include <thread>
@@ -1056,6 +1058,9 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ChangeBind", boost::bind(&LLFloaterPreference::onListClickAction, this));
 	mCommitCallbackRegistrar.add("Pref.ChangeMode", boost::bind(&LLFloaterPreference::refreshKeys, this));
 
+//	//BD - Open Log Path
+	mCommitCallbackRegistrar.add("Pref.OpenLog", boost::bind(&LLFloaterPreference::openLog, this));
+
 //	//BD - Expandable Tabs
 	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::toggleTabs, this));
 
@@ -1574,6 +1579,19 @@ void LLFloaterPreference::onClickSetAnyKey()
 	}
 }
 
+//BD - Open Log Path
+void LLFloaterPreference::openLog()
+{
+	std::string path = gDirUtilp->getChatLogsDir();
+	LLWString url_wstring = utf8str_to_wstring(path);
+	llutf16string url_utf16 = wstring_to_utf16str(url_wstring);
+	SHELLEXECUTEINFO sei = { sizeof(sei) };
+	sei.nShow = SW_SHOWNORMAL;
+	sei.lpVerb = L"open";
+	sei.lpFile = url_utf16.c_str();
+	ShellExecuteEx(&sei);
+}
+
 //BD - Expandable Tabs
 void LLFloaterPreference::toggleTabs()
 {
@@ -1786,6 +1804,11 @@ void LLFloaterPreference::refreshEverything()
 
 		has_first_selected = (getChildRef<LLScrollListCtrl>("enabled_popups").getFirstSelected() != NULL);
 		gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
+	}
+
+	if (mTabContainer->getCurrentPanelIndex() == 10)
+	{
+		getChild<LLButton>("open_log_path_button")->setEnabled(LLStartUp::getStartupState() == STATE_STARTED);
 	}
 }
 
