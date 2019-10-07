@@ -2102,7 +2102,7 @@ void LLViewerWindow::initWorldUI()
 
 	//BD
 	if (!mChicletContainer)
-		mChicletContainer = gStatusBar->getChild<LLPanel>("chiclet_container");
+		mChicletContainer = getRootView()->getChild<LLPanel>("chiclet_container");
 
 	if (mChicletContainer && !mChicletBar)
 	{
@@ -2562,8 +2562,6 @@ void LLViewerWindow::draw()
 	LLView::sIsDrawing = TRUE;
 //#endif
 	stop_glerror();
-	
-	LLUI::setLineWidth(1.f);
 
 	LLUI::setLineWidth(1.f);
 	// Reset any left-over transforms

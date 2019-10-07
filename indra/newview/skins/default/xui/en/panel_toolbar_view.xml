@@ -145,6 +145,16 @@ visible="true">
 								mouse_opaque="false"
 								height="100"
 								width="200">
+									<panel
+									follows="top|right"
+									layout="topleft"
+									height="35"
+									left="0"
+									mouse_opaque="false"
+									name="chiclet_container"
+									tab_stop="false"
+									top="0"
+									width="190"/>
 									<view
 									top="0"
 									follows="all"

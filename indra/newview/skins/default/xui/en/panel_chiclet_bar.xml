@@ -20,48 +20,8 @@
      top="0"
      width="1310">
     <layout_panel
-         auto_resize="false"
-         follows="top|left"
-         height="21"
-         min_height="21"
-         mouse_opaque="false"
-         layout="topleft"
-         name="notification_well_panel2"
-         width="75">
-      <chiclet_notification
-             follows="right|top|left"
-             height="26"
-             mouse_opaque="false"
-             layout="topleft"
-             left="0"
-             max_displayed_count="99"
-             name="notification_well"
-             top="0"
-             width="50">
-        <button
-                 auto_resize="false"
-                 follows="top|right"
-                 layout="topleft"
-                 halign="left"
-                 height="22"
-                 image_pressed="Sys_BG_Pressed"
-                 image_pressed_selected="Sys_BG_Pressed"
-                 image_selected="Sys_BG"
-                 image_unselected="Sys_BG"
-                 left="0"
-                 top_delta="0"
-                 name="Unread"
-                 tool_tip="Notifications"
-                 width="48">
-          <init_callback
-                     function="Button.SetDockableFloaterToggle"
-                     parameter="notification_well_window" />
-        </button>
-      </chiclet_notification>
-    </layout_panel>
-    <layout_panel
          follows="left|right"
-         height="34"
+         height="54"
          layout="topleft"
          min_width="95"
          mouse_opaque="false"
@@ -78,7 +38,7 @@
              min_width="95"
              mouse_opaque="false"
              name="chiclet_list"
-             top_pad="0"
+             top="0"
              width="189">
         <button
                  auto_resize="false"

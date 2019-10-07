@@ -43,6 +43,10 @@
 #include "llscriptfloater.h"
 #include "llrootview.h"
 
+//BD
+#include "llchiclet.h"
+#include "llchicletbar.h"
+
 #include <algorithm>
 
 using namespace LLNotificationsUI;
@@ -54,7 +58,9 @@ LLRect LLScreenChannelBase::getChannelRect()
 {
 	LL_RECORD_BLOCK_TIME(FTM_GET_CHANNEL_RECT);
 
+	//BD
 	LLRect channel_rect;
+	LLRect status_rect;
 	LLRect chiclet_rect;
 
 	//BD - Initialize snap region and statusbar here, this is a much earlier instance than the normal window init
@@ -70,8 +76,16 @@ LLRect LLScreenChannelBase::getChannelRect()
 	if (gViewerWindow->mStatusBarContainer != NULL)
 		gViewerWindow->mStatusBarContainer->localRectToScreen(gViewerWindow->mStatusBarContainer->getLocalRect(), &chiclet_rect);
 
-	//BD
-	channel_rect.mTop = chiclet_rect.mBottom - 10;
+	//BD - Correct for the chiclet bar being included in the floater view.
+	S32 chiclet_bar_shift = 10;
+	if (gViewerWindow->mChicletBar && gViewerWindow->mChicletContainer)
+	{
+		LLChicletPanel* chiclet_panel = gViewerWindow->mChicletBar->getChicletPanel();
+		if (chiclet_panel && chiclet_panel->getChicletCount() > 0)
+			chiclet_bar_shift = 41;
+	}
+
+	channel_rect.mTop = chiclet_rect.mBottom - chiclet_bar_shift;
 	return channel_rect;
 }
 
@@ -789,7 +803,8 @@ void LLScreenChannel::showToastsTop()
 				S32 shift = -floater->getRect().getHeight();
 				if(floater->getDockControl())
 				{
-					shift -= floater->getDockControl()->getTongueHeight();
+					//BD - Correct for docked windows properly.
+					shift -= (floater->getDockControl()->getTongueHeight() + 7);
 				}
 				toast->translate(0, shift);
 			}
