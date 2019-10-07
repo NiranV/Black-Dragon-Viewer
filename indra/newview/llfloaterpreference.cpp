@@ -132,7 +132,7 @@
 #include "llfiltereditor.h"
 #include "llnamelistctrl.h"
 #include "llmenugl.h"
-
+//BD - Open Log Path
 #include <shellapi.h>
 
 #include <string>
