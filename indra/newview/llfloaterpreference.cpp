@@ -2518,6 +2518,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	refresh();
 	refreshGraphicControls();
 	refreshEnabledGraphics();
+	refreshEnabledState();
 	toggleTabs();
 
 //	//BD - Avatar Rendering Settings
@@ -2927,12 +2928,14 @@ void LLFloaterPreference::buildPopupLists()
 
 void LLFloaterPreference::refreshEnabledState()
 {
-
 	// Cannot have floater active until caps have been received
 	getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
 
+	//BD
+	bool started = LLStartUp::getStartupState() == STATE_STARTED;
+	getChild<LLUICtrl>("do_not_disturb_response")->setEnabled(started);
 // [RLVa:KB] - Checked: 2013-05-11 (RLVa-1.4.9)
-	if (rlv_handler_t::isEnabled())
+	if (rlv_handler_t::isEnabled() && started)
 	{
 		getChild<LLUICtrl>("do_not_disturb_response")->setEnabled(!RlvActions::hasBehaviour(RLV_BHVR_SENDIM));
 	}

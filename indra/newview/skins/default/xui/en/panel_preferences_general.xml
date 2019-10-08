@@ -702,7 +702,7 @@ width="510">
    <line_editor
    control_name="DoNotDisturbModeResponse"
    text_readonly_color="LabelDisabledColor"
-   commit_on_focus_lost = "true"
+   commit_on_focus_lost="true"
    follows="left|top|right"
    height="22"
    layout="topleft"
@@ -710,6 +710,7 @@ width="510">
    left="10"
    top_pad="13"
    name="do_not_disturb_response"
+   enabled="false"
    width="475">
    log_in_to_change
    </line_editor>
