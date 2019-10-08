@@ -17488,11 +17488,11 @@
     <key>Comment</key>
     <string>Smoothly animate Windlight Preset changes</string>
     <key>Persist</key>
-    <integer>1</integer>
+    <integer>0</integer>
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
-    <integer>1</integer>
+    <integer>0</integer>
   </map>
   <key>RenderWindlightInterpolateTime</key>
   <map>
