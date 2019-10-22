@@ -114,7 +114,7 @@
 #include "llgroupmgr.h"
 #include "llhudeffecttrail.h"
 #include "llhudmanager.h"
-#include "llimagebmp.h"
+#include "llimage.h"
 #include "llinventorybridge.h"
 #include "llinventorymodel.h"
 #include "llinventorymodelbackgroundfetch.h"
@@ -161,6 +161,7 @@
 #include "llviewerparcelmgr.h"
 #include "llviewerregion.h"
 #include "llviewerstats.h"
+#include "llviewerstatsrecorder.h"
 #include "llviewerthrottle.h"
 #include "llviewerwindow.h"
 #include "llvoavatar.h"
@@ -214,7 +215,7 @@
 bool gAgentMovementCompleted = false;
 S32  gMaxAgentGroups;
 
-std::string SCREEN_HOME_FILENAME = "screen_home.bmp";
+const std::string SCREEN_HOME_FILENAME = "screen_home%s.png";
 
 LLPointer<LLViewerTexture> gStartTexture;
 
@@ -351,6 +352,14 @@ bool idle_startup()
 	// to work.
 	gIdleCallbacks.callFunctions();
 	gViewerWindow->updateUI();
+
+	// There is a crash on updateClass, this is an attempt to get more information
+	if (LLMortician::graveyardCount())
+	{
+		std::stringstream log_stream;
+		LLMortician::logClass(log_stream);
+		LL_INFOS() << log_stream.str() << LL_ENDL;
+	}
 	LLMortician::updateClass();
 
 	const std::string delims (" ");
@@ -1259,6 +1268,7 @@ bool idle_startup()
 		//
 		// Initialize classes w/graphics stuff.
 		//
+		LLViewerStatsRecorder::instance(); // Since textures work in threads
 		gTextureList.doPrefetchImages();	
 		set_startup_status(0.11f, LLTrans::getString("WorldInit"), "Initializing Surfaces");
 		display_startup();
@@ -2683,6 +2693,34 @@ bool callback_choose_gender(const LLSD& notification, const LLSD& response)
 	return false;
 }
 
+std::string get_screen_filename(const std::string& pattern)
+{
+    if (LLGridManager::getInstance()->isInProductionGrid())
+    {
+        return llformat(pattern.c_str(), "");
+    }
+    else
+    {
+        const std::string& grid_id_str = LLGridManager::getInstance()->getGridId();
+        const std::string& grid_id_lower = utf8str_tolower(grid_id_str);
+        std::string grid = "." + grid_id_lower;
+        return llformat(pattern.c_str(), grid.c_str());
+    }
+}
+
+//static
+std::string LLStartUp::getScreenLastFilename()
+{
+    return get_screen_filename(SCREEN_LAST_FILENAME);
+}
+
+//static
+std::string LLStartUp::getScreenHomeFilename()
+{
+    return get_screen_filename(SCREEN_HOME_FILENAME);
+}
+
+//static
 void LLStartUp::loadInitialOutfit( const std::string& outfit_folder_name,
 								   const std::string& gender_name )
 {

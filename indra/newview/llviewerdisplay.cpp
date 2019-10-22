@@ -42,7 +42,7 @@
 #include "llfeaturemanager.h"
 //#include "llfirstuse.h"
 #include "llhudmanager.h"
-#include "llimagebmp.h"
+#include "llimagepng.h"
 #include "llmemory.h"
 #include "llselectmgr.h"
 #include "llsky.h"
