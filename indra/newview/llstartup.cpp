@@ -215,8 +215,6 @@
 bool gAgentMovementCompleted = false;
 S32  gMaxAgentGroups;
 
-const std::string SCREEN_HOME_FILENAME = "screen_home%s.png";
-
 LLPointer<LLViewerTexture> gStartTexture;
 
 //
@@ -2708,8 +2706,9 @@ std::string get_screen_filename(const std::string& pattern)
     }
 }
 
+//BD
 //static
-std::string LLStartUp::getScreenLastFilename()
+/*std::string LLStartUp::getScreenLastFilename()
 {
     return get_screen_filename(SCREEN_LAST_FILENAME);
 }
@@ -2718,7 +2717,7 @@ std::string LLStartUp::getScreenLastFilename()
 std::string LLStartUp::getScreenHomeFilename()
 {
     return get_screen_filename(SCREEN_HOME_FILENAME);
-}
+}*/
 
 //static
 void LLStartUp::loadInitialOutfit( const std::string& outfit_folder_name,

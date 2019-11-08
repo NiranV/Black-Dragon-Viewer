@@ -1578,8 +1578,6 @@ void render_ui_2d()
 		gViewerWindow->draw();
 	}
 
-
-
 	// reset current origin for font rendering, in case of tiling render
 	LLFontGL::sCurOrigin.set(0, 0);
 }

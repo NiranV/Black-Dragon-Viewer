@@ -5399,15 +5399,16 @@ bool attempt_standard_notification(LLMessageSystem* msgsystem)
 				return true;
 			}
 		}
+		//BD
 		// HACK -- handle callbacks for specific alerts.
-		if( notificationID == "HomePositionSet" )
+		/*if( notificationID == "HomePositionSet" )
 		{
 			// save the home location image to disk
 			std::string snap_filename = gDirUtilp->getLindenUserDir();
 			snap_filename += gDirUtilp->getDirDelimiter();
 			snap_filename += LLStartUp::getScreenHomeFilename();
 			gViewerWindow->saveSnapshot(snap_filename, gViewerWindow->getWindowWidthRaw(), gViewerWindow->getWindowHeightRaw(), FALSE, FALSE, LLSnapshotModel::SNAPSHOT_TYPE_COLOR, LLSnapshotModel::SNAPSHOT_FORMAT_PNG);
-		}
+		}*/
 		
 		if (notificationID == "RegionRestartMinutes" ||
 			notificationID == "RegionRestartSeconds")
@@ -5483,14 +5484,15 @@ static void process_special_alert_messages(const std::string & message)
 	{
 		add(LLStatViewer::KILLED, 1);
 	}
-	else if( message == "Home position set." )
+	//BD
+	/*else if( message == "Home position set." )
 	{
 		// save the home location image to disk
 		std::string snap_filename = gDirUtilp->getLindenUserDir();
 		snap_filename += gDirUtilp->getDirDelimiter();
 		snap_filename += LLStartUp::getScreenHomeFilename();
 		gViewerWindow->saveSnapshot(snap_filename, gViewerWindow->getWindowWidthRaw(), gViewerWindow->getWindowHeightRaw(), FALSE, FALSE, LLSnapshotModel::SNAPSHOT_TYPE_COLOR, LLSnapshotModel::SNAPSHOT_FORMAT_PNG);
-	}
+	}*/
 }
 
 

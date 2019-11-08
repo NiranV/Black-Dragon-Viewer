@@ -92,8 +92,9 @@ public:
 	static void setStartupState( EStartupState state );
 	static EStartupState getStartupState() { return gStartupState; };
 	static std::string getStartupStateString() { return startupStateToString(gStartupState); };
-	static std::string getScreenLastFilename(); // screenshot taken on exit
-	static std::string getScreenHomeFilename(); // screenshot taken on setting Home
+	//BD
+	//static std::string getScreenLastFilename(); // screenshot taken on exit
+	//static std::string getScreenHomeFilename(); // screenshot taken on setting Home
 
 	static void multimediaInit();
 		// Initialize LLViewerMedia multimedia engine.
