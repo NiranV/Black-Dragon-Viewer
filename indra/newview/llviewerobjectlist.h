@@ -73,7 +73,10 @@ public:
 								 const LLUUID &uuid, const U32 local_id, const LLHost &sender);
 
 	LLViewerObject *replaceObject(const LLUUID &id, const LLPCode pcode, LLViewerRegion *regionp); // TomY: hack to switch VO instances on the fly
-	
+
+	//BD
+	typedef std::vector<LLPointer<LLViewerObject> > vobj_list_t;
+
 //	//BD - Derender
 	BOOL killObject(LLViewerObject *objectp, bool derendered = false);
 
@@ -88,10 +91,13 @@ public:
 
 //	//BD - De/ReAlpha
 	void setAlpha(LLViewerObject *objectp, bool alpha);
-	void setAlphaMode(LLViewerObject *objectp, LLMaterial::eDiffuseAlphaMode mode);
+	void setAlphaMode(LLViewerObject *objectp, LLMaterial::eDiffuseAlphaMode mode, bool needs_selection = true);
 
 //	//BD - DeBright
 	void setFullbright(LLViewerObject *objectp, bool fullbright);
+
+//	//BD - Misc
+	vobj_list_t getAllObjects() { return mObjects; }
 
 	void removeDrawable(LLDrawable* drawablep);
 
@@ -219,8 +225,6 @@ protected:
 	std::vector<U64>	mOrphanParents;	// LocalID/ip,port of orphaned objects
 	std::vector<OrphanInfo> mOrphanChildren;	// UUID's of orphaned objects
 	S32 mNumOrphans;
-
-	typedef std::vector<LLPointer<LLViewerObject> > vobj_list_t;
 
 	vobj_list_t mObjects;
 	std::vector<LLPointer<LLViewerObject> > mActiveObjects;

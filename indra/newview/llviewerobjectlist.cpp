@@ -1534,14 +1534,15 @@ void LLViewerObjectList::setAlpha(LLViewerObject *objectp, bool alpha)
 	}
 }
 
-//BD - Set Alpha Mode (Requires deselecting the face/object)
-void LLViewerObjectList::setAlphaMode(LLViewerObject *objectp, LLMaterial::eDiffuseAlphaMode mode)
+//BD - Set Alpha Mode (Requires selecting the face/object)
+void LLViewerObjectList::setAlphaMode(LLViewerObject *objectp, LLMaterial::eDiffuseAlphaMode mode, bool needs_selection)
 {
 	if (objectp)
 	{
 		for (S32 i = 0; i < objectp->getNumTEs(); i++)
 		{
-			if (LLSelectMgr::getInstance()->getSelection()->contains(objectp, i))
+			if (!needs_selection ||
+				(needs_selection && LLSelectMgr::getInstance()->getSelection()->contains(objectp, i)))
 			{
 				LLTextureEntry* te = objectp->getTE(i);
 				if (te)

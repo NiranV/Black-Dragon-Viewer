@@ -163,6 +163,7 @@
 #include "bdfloateranimations.h"
 #include "bdfloatercomplexity.h"
 #include "bdfloatercamera.h"
+#include "bdfloaterobjects.h"
 #include "bdfloaterposer.h"
 
 // *NOTE: Please add files in alphabetical order to keep merges easy.
@@ -386,6 +387,7 @@ void LLViewerFloaterReg::registerFloaters()
 	LLFloaterReg::add("world_map", "floater_world_map.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterWorldMap>);	
 
 	//BD
+	LLFloaterReg::add("object_manipulation", "floater_object_list.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterObjects>);
 	LLFloaterReg::add("animation_control", "floater_animation_control.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterAnimations>);
 	LLFloaterReg::add("complexity", "floater_complexity.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterComplexity>);
 	LLFloaterReg::add("recorder", "floater_recorder.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterCamera>);

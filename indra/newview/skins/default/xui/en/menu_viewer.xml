@@ -3862,6 +3862,96 @@
              function="Floater.Toggle"
              parameter="animation_control" />
         </menu_item_check>
+   <menu
+         create_jump_keys="true"
+         label="Manipulate Prims"
+         name="Manipulate Prims"
+         tear_off="true"
+         visible="false">
+    <menu_item_check
+        label="Object Manipulator"
+        name="Object Manipulation">
+            <menu_item_check.on_check
+             function="Floater.Visible"
+             parameter="object_manipulation" />
+            <menu_item_check.on_click
+             function="Floater.Toggle"
+             parameter="object_manipulation" />
+        </menu_item_check>
+    <menu_item_separator/>
+				<menu_item_call
+				label="Unalpha Selected"
+				name="Unalpha">
+				<menu_item_call.on_click
+				function="Object.SetAlphaMode"
+				parameter="dealpha"/>
+				</menu_item_call>
+				<menu_item_call
+				label="Alpha Selected"
+				name="Alpha">
+				<menu_item_call.on_click
+				function="Object.SetAlphaMode"
+				parameter="alpha"/>
+				</menu_item_call>
+				
+				<menu_item_separator/>
+				
+				<menu_item_call
+				label="Set To None"
+				name="Alpha">
+				<menu_item_call.on_click
+				function="Object.SetAlphaMode"
+				parameter="set_none"/>
+            </menu_item_call>
+            <menu_item_call
+             label="Universal"
+             name="Universal">
+              <menu_item_call.on_click
+               function="Edit.TakeOff"
+               parameter="tattoo" />
+              <menu_item_call.on_enable
+               function="Edit.EnableTakeOff"
+               parameter="universal" />
+				</menu_item_call>
+				<menu_item_call
+				label="Set To Blending"
+				name="Alpha">
+				<menu_item_call.on_click
+				function="Object.SetAlphaMode"
+				parameter="set_sorting"/>
+				</menu_item_call>
+				<menu_item_call
+				label="Set To Masking"
+				name="Alpha">
+				<menu_item_call.on_click
+				function="Object.SetAlphaMode"
+				parameter="set_masking"/>
+				</menu_item_call>
+				<menu_item_call
+				label="Set To Emissive"
+				name="Alpha">
+				<menu_item_call.on_click
+				function="Object.SetAlphaMode"
+				parameter="set_emissive"/>
+				</menu_item_call>
+				
+				<menu_item_separator/>
+			
+				<menu_item_call
+				label="Debright Selected"
+				name="Debright">
+					<menu_item_call.on_click
+					 function="Object.SetFullbright"
+					 parameter="debright"/>
+			  </menu_item_call>
+				<menu_item_call
+				label="Fullbright Selected"
+				name="Rebright">
+					<menu_item_call.on_click
+					 function="Object.SetFullbright"
+					 parameter="rebright"/>
+			  </menu_item_call>
+			</menu>
    <menu_item_check
         label="Poser"
         name="Poser">
@@ -4108,86 +4198,6 @@
         </menu_item_check>
 			
 			<menu_item_separator/>
-			
-			<menu
-         create_jump_keys="true"
-         label="Manipulate Prims"
-         name="Manipulate Prims"
-         tear_off="true"
-         visible="false">
-				<menu_item_call
-				label="Unalpha Selected"
-				name="Unalpha">
-				<menu_item_call.on_click
-				function="Object.SetAlphaMode"
-				parameter="dealpha"/>
-				</menu_item_call>
-				<menu_item_call
-				label="Alpha Selected"
-				name="Alpha">
-				<menu_item_call.on_click
-				function="Object.SetAlphaMode"
-				parameter="alpha"/>
-				</menu_item_call>
-				
-				<menu_item_separator/>
-				
-				<menu_item_call
-				label="Set To None"
-				name="Alpha">
-				<menu_item_call.on_click
-				function="Object.SetAlphaMode"
-				parameter="set_none"/>
-            </menu_item_call>
-            <menu_item_call
-             label="Universal"
-             name="Universal">
-              <menu_item_call.on_click
-               function="Edit.TakeOff"
-               parameter="tattoo" />
-              <menu_item_call.on_enable
-               function="Edit.EnableTakeOff"
-               parameter="universal" />
-				</menu_item_call>
-				<menu_item_call
-				label="Set To Blending"
-				name="Alpha">
-				<menu_item_call.on_click
-				function="Object.SetAlphaMode"
-				parameter="set_sorting"/>
-				</menu_item_call>
-				<menu_item_call
-				label="Set To Masking"
-				name="Alpha">
-				<menu_item_call.on_click
-				function="Object.SetAlphaMode"
-				parameter="set_masking"/>
-				</menu_item_call>
-				<menu_item_call
-				label="Set To Emissive"
-				name="Alpha">
-				<menu_item_call.on_click
-				function="Object.SetAlphaMode"
-				parameter="set_emissive"/>
-				</menu_item_call>
-				
-				<menu_item_separator/>
-			
-				<menu_item_call
-				label="Debright Selected"
-				name="Debright">
-					<menu_item_call.on_click
-					 function="Object.SetFullbright"
-					 parameter="debright"/>
-			  </menu_item_call>
-				<menu_item_call
-				label="Fullbright Selected"
-				name="Rebright">
-					<menu_item_call.on_click
-					 function="Object.SetFullbright"
-					 parameter="rebright"/>
-			  </menu_item_call>
-			</menu>
 			
 			<menu_item_separator/>
 			
