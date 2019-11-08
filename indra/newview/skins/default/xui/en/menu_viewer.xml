@@ -2239,8 +2239,7 @@
             </menu_item_check>
             <menu_item_check
              label="Badge"
-             name="Badge"
-			 shortcut="alt|control|shift|h">
+             name="Badge">
                 <menu_item_check.on_check
                  function="Advanced.CheckHUDInfo"
                  parameter="badge" />
