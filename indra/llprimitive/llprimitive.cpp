@@ -393,6 +393,7 @@ void LLPrimitive::setTESelected(const U8 te, bool sel)
 	if ( (tep) && (tep->setSelected(sel)) && (!sel) && (tep->hasPendingMaterialUpdate()) )
 	{
 		LLMaterialID material_id = tep->getMaterialID();
+		//BD - This causes the alpha mask manipulation to be reverted due to a false pending material update.
 		setTEMaterialID(te, material_id);
 	}
 }
