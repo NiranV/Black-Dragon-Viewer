@@ -175,9 +175,9 @@ width="684">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="131"
+ width="132"
  top_pad="1"
- left="3">
+ left="2">
    <button.commit_callback
    function="ARC.AvatarRefresh"/>
  </button>
