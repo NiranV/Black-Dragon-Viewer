@@ -173,7 +173,7 @@ BOOL LLPanelPermissions::postBuild()
 	mCheckboxEveryoneCopy->setCommitCallback(boost::bind(&LLPanelPermissions::onCommitEveryoneCopy, this, _1));
 	mCheckboxForSale = getChild<LLCheckBoxCtrl>("checkbox for sale");
 	mCheckboxForSale->setCommitCallback(boost::bind(&LLPanelPermissions::onCommitSaleInfo, this, _1));
-	mEditCost = getChild<LLUICtrl>("checkbox share with group");
+	mEditCost = getChild<LLUICtrl>("Edit Cost");
 	mEditCost->setCommitCallback(boost::bind(&LLPanelPermissions::onCommitSaleInfo, this, _1));
 
 	mCheckboxNextOwnerModify = getChild<LLCheckBoxCtrl>("checkbox next owner can modify");
