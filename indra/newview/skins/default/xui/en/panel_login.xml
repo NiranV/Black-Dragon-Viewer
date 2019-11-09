@@ -174,6 +174,65 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
+     height="260"
+     top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Added: Window to list all objects and their alpha mode and projector shadow casting toggle.
+Added: Function to retrieve all objects the Viewer knows about.
+Added: Local viewer version number and identifier to "About Black Dragon" window.
+Changed: Moved object manipulation options into "My Useful Features" menu.
+Changed: Rerouted "Check for Updates" to the blog.
+Changed: Icon for Grid Status to a better one.
+Changed: Make the local viewer version number and identifier a global string and replace the login screen to use these.
+Changed: Login screen background video to a creepier version of the original for Halloween.
+Changed: Version to 3.6.6.
+Fixed: Cannot set a price for items on sale.
+Fixed: Compile.
+Fixed: Minor complexity floater inconsistency.
+Fixed: "Release Notes" for the Viewer trying to open a release notes page that does not exist, reroute to Changelog page.
+Removed: Shortcut to screen badge to prevent users from accidentally toggling it.
+Removed: (AGAIN) All language files other than those for german and english.
+Removed: Unnecessary double line seperator in viewer menu.
+Misc: Added some commenting.
+Misc: Comment out unnecessary versioning code.
+Merge with Linden Release. (55 Changes)
+Merged with Linden Release. (18 Changes)
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.6.5
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
      height="143"
      top_pad="3"
      left="7"
