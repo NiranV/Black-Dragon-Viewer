@@ -282,6 +282,8 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	LLButton* channel_text = getChild<LLButton>("channel_text");
 	channel_text->setLabelArg("[CHANNEL]", channel);
 	channel_text->setLabelArg("[VERSION]", version);
+	channel_text->setLabelArg("[VIEWER_VERSION_LOCAL]", LLTrans::getString("VIEWER_VERSION_LOCAL"));
+	channel_text->setLabelArg("[VIEWER_VERSION_IDENTIFIER]", LLTrans::getString("VIEWER_VERSION_IDENTIFIER"));
 
 	//BD - Only NVIDIA and AMD get to use ANY of the gragphics features beyond vertex shaders.
 	//     Keep everything disabled if we detect an Intel GPU. Intel can't run our Deferred

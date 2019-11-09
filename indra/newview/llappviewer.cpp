@@ -3170,6 +3170,10 @@ LLSD LLAppViewer::getViewerInfo() const
         info["BUILD_CONFIG"] = build_config;
     }
 
+	//BD
+	info["VIEWER_VERSION_LOCAL"] = LLTrans::getString("VIEWER_VERSION_LOCAL");
+	info["VIEWER_VERSION_IDENTIFIER"] = LLTrans::getString("VIEWER_VERSION_IDENTIFIER");
+
 	//BD - return a URL to the release notes for this viewer, such as:
 	// https://releasenotes.secondlife.com/viewer/2.1.0.123456.html
 	std::string url = LLTrans::getString("RELEASE_NOTES_BASE_URL");

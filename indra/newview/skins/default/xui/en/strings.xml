@@ -23,7 +23,8 @@
 	<!-- about dialog/support string-->
 	<string name="AboutHeader">
 [CHANNEL] [VIEWER_VERSION_0].[VIEWER_VERSION_1].[VIEWER_VERSION_2].[VIEWER_VERSION_3] ([ADDRESS_SIZE]bit)
-[[VIEWER_RELEASE_NOTES_URL] [ReleaseNotes]]
+[VIEWER_VERSION_LOCAL] - [VIEWER_VERSION_IDENTIFIER]
+[https://niranv-sl.blogspot.com/p/these-are-listed-from-newest-to-oldest_5310.html Release Notes]
 	</string>
     <string name="BuildConfig">Build Configuration [BUILD_CONFIG]</string>
 
@@ -4290,6 +4291,9 @@ and report the problem.
   <string name="no_limit">No Limit</string>
   
   <!-- Black Dragon specific -->
+	<string name="VIEWER_VERSION_LOCAL">3.6.6</string>
+	<string name="VIEWER_VERSION_IDENTIFIER">Baking Dragon</string>
+	
   <string name="UnmuteText">Show Text</string>
   <string name="MuteText">Block Text</string>
   <string name="UnmuteVoice">Unmute Voice</string>
