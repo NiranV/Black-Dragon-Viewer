@@ -1414,7 +1414,8 @@
          label="Check for Updates"
          name="Check for Updates">
           <menu_item_call.on_click
-           function="Advanced.CheckViewerUpdates"/>
+	       function="Advanced.WebContentTest"
+	       parameter="http://niranv-sl.blogspot.de/"/>
         </menu_item_call>
 		<menu_item_separator/>
         <menu_item_check
