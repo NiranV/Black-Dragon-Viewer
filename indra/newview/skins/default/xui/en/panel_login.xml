@@ -2949,7 +2949,7 @@ Removed: Rotation order dropdown and all code.
     height="18"
     image_overlay_alignment="left"
     pad_bottom="0"
-    image_overlay="Command_AboutLand_Icon"
+    image_overlay="Command_HowTo_Icon"
     image_unselected="Toolbar_Middle_Off"
     image_selected="Toolbar_Middle_Selected"
     label="Grid Status"
