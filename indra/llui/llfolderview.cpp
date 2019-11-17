@@ -337,7 +337,7 @@ static LLTrace::BlockTimerStatHandle FTM_FILTER("Filter Folder View");
 void LLFolderView::filter( LLFolderViewFilter& filter )
 {
 	LL_RECORD_BLOCK_TIME(FTM_FILTER);
-    filter.resetTime(llclamp(LLUI::sSettingGroups["config"]->getS32(mParentPanel.get()->getVisible() ? "FilterItemsMaxTimePerFrameVisible" : "FilterItemsMaxTimePerFrameUnvisible"), 1, 100));
+    filter.resetTime(llclamp(LLUI::getInstance()->mSettingGroups["config"]->getS32(mParentPanel.get()->getVisible() ? "FilterItemsMaxTimePerFrameVisible" : "FilterItemsMaxTimePerFrameUnvisible"), 1, 100));
 
     // Note: we filter the model, not the view
 	getViewModelItem()->filter(filter);
@@ -656,7 +656,7 @@ void LLFolderView::draw()
 		closeAutoOpenedFolders();
 	}
 
-	if (mSearchTimer.getElapsedTimeF32() > LLUI::sSettingGroups["config"]->getF32("TypeAheadTimeout") || !mSearchString.size())
+	if (mSearchTimer.getElapsedTimeF32() > LLUI::getInstance()->mSettingGroups["config"]->getF32("TypeAheadTimeout") || !mSearchString.size())
 	{
 		mSearchString.clear();
 	}
@@ -732,7 +732,7 @@ void LLFolderView::closeRenamer( void )
 	if (mRenamer && mRenamer->getVisible())
 	{
 		// Triggers onRenamerLost() that actually closes the renamer.
-		LLUI::removePopup(mRenamer);
+		LLUI::getInstance()->removePopup(mRenamer);
 	}
 }
 
@@ -1063,7 +1063,7 @@ void LLFolderView::startRenamingSelectedItem( void )
 		// set focus will fail unless item is visible
 		mRenamer->setFocus( TRUE );
 		mRenamer->setTopLostCallback(boost::bind(&LLFolderView::onRenamerLost, this));
-		LLUI::addPopup(mRenamer);
+		LLUI::getInstance()->addPopup(mRenamer);
 	}
 }
 
@@ -1320,7 +1320,7 @@ BOOL LLFolderView::handleUnicodeCharHere(llwchar uni_char)
 		}
 
 		//do text search
-		if (mSearchTimer.getElapsedTimeF32() > LLUI::sSettingGroups["config"]->getF32("TypeAheadTimeout"))
+		if (mSearchTimer.getElapsedTimeF32() > LLUI::getInstance()->mSettingGroups["config"]->getF32("TypeAheadTimeout"))
 		{
 			mSearchString.clear();
 		}
@@ -1802,7 +1802,7 @@ void LLFolderView::updateRenamerPosition()
 		screenPointToLocal( x, y, &x, &y );
 		mRenamer->setOrigin( x, y );
 
-		LLRect scroller_rect(0, 0, (S32)LLUI::getWindowSize().mV[VX], 0);
+		LLRect scroller_rect(0, 0, (S32)LLUI::getInstance()->getWindowSize().mV[VX], 0);
 		if (mScrollContainer)
 		{
 			scroller_rect = mScrollContainer->getContentWindowRect();

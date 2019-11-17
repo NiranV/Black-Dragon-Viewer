@@ -1208,6 +1208,7 @@ void LLAgentCamera::updateCamera()
 		setFocusOnAvatar(TRUE, FALSE);
 	}
 // [/RLVa:KB]
+	U32 camera_mode = mCameraAnimating ? mLastCameraMode : mCameraMode;
 
 	validateFocusObject();
 
@@ -1218,7 +1219,7 @@ void LLAgentCamera::updateCamera()
 	//BD
 	if (isAgentAvatarValid() && 
 		gAgentAvatarp->isSitting() && mFocusOnAvatar &&
-		(mCameraMode == CAMERA_MODE_MOUSELOOK || mCameraMode == CAMERA_MODE_THIRD_PERSON))
+		(camera_mode == CAMERA_MODE_MOUSELOOK || camera_mode == CAMERA_MODE_THIRD_PERSON))
 	{
 		if (mAllowCameraFlipOnSit)
 		{
@@ -1226,8 +1227,7 @@ void LLAgentCamera::updateCamera()
 		}
 	}
 
-	//NOTE - this needs to be integrated into a general upVector system here within llAgent. 
-	if (cameraThirdPerson() && mFocusOnAvatar && LLFollowCamMgr::getActiveFollowCamParams())
+	if (cameraThirdPerson() && (mFocusOnAvatar || mAllowChangeToFollow) && LLFollowCamMgr::getInstance()->getActiveFollowCamParams())
 	{
 		changeCameraToFollow();
 	}
@@ -1353,7 +1353,7 @@ void LLAgentCamera::updateCamera()
 			// *TODO: use combined rotation of frameagent and sit object
 			LLQuaternion avatarRotationForFollowCam = gAgentAvatarp->isSitting() ? gAgentAvatarp->getRenderRotation() : gAgent.getFrameAgent().getQuaternion();
 
-			LLFollowCamParams* current_cam = LLFollowCamMgr::getActiveFollowCamParams();
+			LLFollowCamParams* current_cam = LLFollowCamMgr::getInstance()->getActiveFollowCamParams();
 			if (current_cam)
 			{
 				mFollowCam.copyParams(*current_cam);
@@ -2297,7 +2297,7 @@ void LLAgentCamera::changeCameraToMouselook(BOOL animate)
 
 	// Menus should not remain open on switching to mouselook...
 	LLMenuGL::sMenuContainer->hideMenus();
-	LLUI::clearPopups();
+	LLUI::getInstance()->clearPopups();
 
 	// unpause avatar animation
 	gAgent.unpauseAnimation();
@@ -2352,7 +2352,7 @@ void LLAgentCamera::changeCameraToDefault()
 		return;
 	}
 
-	if (LLFollowCamMgr::getActiveFollowCamParams())
+	if (LLFollowCamMgr::getInstance()->getActiveFollowCamParams())
 	{
 		changeCameraToFollow();
 	}

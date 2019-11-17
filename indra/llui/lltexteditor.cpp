@@ -1050,7 +1050,7 @@ void LLTextEditor::removeCharOrTab()
 	}
 	else
 	{
-		LLUI::reportBadKeystroke();
+		LLUI::getInstance()->reportBadKeystroke();
 	}
 }
 
@@ -1073,7 +1073,7 @@ void LLTextEditor::removeChar()
 	}
 	else
 	{
-		LLUI::reportBadKeystroke();
+		LLUI::getInstance()->reportBadKeystroke();
 	}
 }
 
@@ -1320,7 +1320,7 @@ BOOL LLTextEditor::handleNavigationKey(const KEY key, const MASK mask)
 				}
 				else
 				{
-					LLUI::reportBadKeystroke();
+					LLUI::getInstance()->reportBadKeystroke();
 				}
 			}
 			break;
@@ -1338,7 +1338,7 @@ BOOL LLTextEditor::handleNavigationKey(const KEY key, const MASK mask)
 				}
 				else
 				{
-					LLUI::reportBadKeystroke();
+					LLUI::getInstance()->reportBadKeystroke();
 				}
 			}	
 			break;
@@ -1670,7 +1670,7 @@ BOOL LLTextEditor::handleSpecialKey(const KEY key, const MASK mask)
 		}
 		else
 		{
-			LLUI::reportBadKeystroke();
+			LLUI::getInstance()->reportBadKeystroke();
 		}
 		break;
 
@@ -2757,7 +2757,7 @@ BOOL LLTextEditor::getPreeditLocation(S32 query_offset, LLCoordGL *coord, LLRect
 	{
 		LLRect control_rect_screen;
 		localRectToScreen(mVisibleTextRect, &control_rect_screen);
-		LLUI::screenRectToGL(control_rect_screen, control);
+		LLUI::getInstance()->screenRectToGL(control_rect_screen, control);
 	}
 
 	S32 preedit_left_position, preedit_right_position;
@@ -2811,7 +2811,7 @@ BOOL LLTextEditor::getPreeditLocation(S32 query_offset, LLCoordGL *coord, LLRect
 		const S32 query_y = mVisibleTextRect.mTop - (current_line - first_visible_line) * line_height - line_height / 2;
 		S32 query_screen_x, query_screen_y;
 		localPointToScreen(query_x, query_y, &query_screen_x, &query_screen_y);
-		LLUI::screenPointToGL(query_screen_x, query_screen_y, &coord->mX, &coord->mY);
+		LLUI::getInstance()->screenPointToGL(query_screen_x, query_screen_y, &coord->mX, &coord->mY);
 	}
 
 	if (bounds)
@@ -2838,7 +2838,7 @@ BOOL LLTextEditor::getPreeditLocation(S32 query_offset, LLCoordGL *coord, LLRect
 		const LLRect preedit_rect_local(preedit_left, preedit_top, preedit_right, preedit_bottom);
 		LLRect preedit_rect_screen;
 		localRectToScreen(preedit_rect_local, &preedit_rect_screen);
-		LLUI::screenRectToGL(preedit_rect_screen, bounds);
+		LLUI::getInstance()->screenRectToGL(preedit_rect_screen, bounds);
 	}
 
 	return TRUE;

@@ -330,7 +330,7 @@ BOOL LLNavigationBar::postBuild()
 	LLTeleportHistory::getInstance()->setHistoryChangedCallback(
 			boost::bind(&LLNavigationBar::onTeleportHistoryChanged, this));
 
-	LLHints::registerHintTarget("nav_bar", getHandle());
+	LLHints::getInstance()->registerHintTarget("nav_bar", getHandle());
 
 	// Hook up and init for filtering
 	mMenuFilterEdit = getChild<LLFilterEditor>("search_menu_edit");
