@@ -3257,8 +3257,8 @@ LLSD LLAppViewer::getViewerInfo() const
     info["RENDER_QUALITY"] = (F32)gSavedSettings.getU32("RenderQualityPerformance");
     info["GPU_SHADERS"] = gSavedSettings.getBOOL("RenderDeferred") ? "Enabled" : "Disabled";
 	//BD
-	info["TEXTURE_MEMORY"] = gSavedSettings.getS32("SystemMemory");
-	info["SCENE_MEMORY"] = gSavedSettings.getS32("TextureMemory");
+	info["TEXTURE_MEMORY"] = (S32)gTextureList.getMaxTotalTextureMem().value();
+	info["SCENE_MEMORY"] = (S32)gTextureList.getMaxResidentTexMem().value();
 
     LLSD substitution;
     substitution["datetime"] = (S32)(gVFS ? gVFS->creationTime() : 0);
