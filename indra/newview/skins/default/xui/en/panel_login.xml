@@ -3071,7 +3071,7 @@ Removed: Rotation order dropdown and all code.
     follows="left|top"
     commit_on_focus_lost="false"
     height="22"
-    max_length_bytes="16"
+    max_length_bytes="32"
     name="password_edit"
     label="Password"
     is_password="true" 
