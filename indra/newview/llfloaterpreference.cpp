@@ -523,7 +523,7 @@ public:
 	/*virtual*/ BOOL postBuild();
 
 	void setParent(LLFloaterPreference* parent) { mParent = parent; }
-	void setMode(S32 mode) { mMode = mode; }
+	void setMode(S32 mode);
 
 	BOOL handleKeyHere(KEY key, MASK mask);
 	void onCancel();
@@ -576,12 +576,16 @@ void LLSetKeyDialog::onOpen(const LLSD& key)
 	ctrl->setTextArg("[KEY]", gKeyboard->stringFromKey(mKey));
 	ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
 
+	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
+	gFocusMgr.setKeystrokesOnly(TRUE);
+}
+
+void LLSetKeyDialog::setMode(S32 mode)
+{
+	mMode = mode;
 	//BD - Show the correct bind action dropdown for the correct mode since each has
 	//     different actions depending on the mode we are binding for.
 	getChild<LLComboBox>(llformat("bind_action_%i", mMode))->setVisible(true);
-
-	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(TRUE);
 }
 
 BOOL LLSetKeyDialog::handleKeyHere(KEY key, MASK mask)
