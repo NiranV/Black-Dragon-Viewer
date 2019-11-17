@@ -9519,8 +9519,18 @@ void handle_copy_uuid()
 	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
 	if (select_mgr)
 	{
-		LLUrlAction::copyURLToClipboard(select_mgr->getSelection()->
-										getFirstRootObject()->getID().asString());
+		LLViewerObject* objectp = select_mgr->getSelection()->getFirstRootObject();
+		//BD - Attempt to get the root prim, if there is none we're probably trying to get
+		//     the UUID of a linkset prim, get the first selected object and return its ID.
+		if (objectp)
+		{
+			LLUrlAction::copyURLToClipboard(objectp->getID().asString());
+		}
+		else
+		{
+			LLUrlAction::copyURLToClipboard(select_mgr->getSelection()
+											->getFirstObject()->getID().asString());
+		}
 	}
 }
 
