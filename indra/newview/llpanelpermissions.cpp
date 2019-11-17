@@ -449,7 +449,7 @@ void LLPanelPermissions::refresh()
 		// Group owned already displayed by selectGetOwner
 		LLGroupMgr* group_mgr = LLGroupMgr::getInstance();
 		LLGroupMgrGroupData* group_data = group_mgr->getGroupData(mOwnerID);
-		if (!group_data && !group_data->isGroupPropertiesDataComplete())
+		if (!group_data || group_data && !group_data->isGroupPropertiesDataComplete())
 		{
 			// Triggers refresh
 			group_mgr->sendGroupPropertiesRequest(mOwnerID);
