@@ -12,7 +12,7 @@ width="494">
  background_visible="false"
  layout="topleft"
  mouse_opaque="false"
- left="7"
+ left="6"
  name="title"
  top="0"
  width="480">
@@ -25,56 +25,62 @@ width="494">
 	name="vicon"
 	mouse_opaque="false"
 	visible="true"
-	width="480"
+	width="478"
 	top_pad="0"
-	left="0"/>
- <panel
- follows="left|top|right"
- height="20"
- bg_visible="true"
- bg_alpha_color="0.10 0.43 0.77 0.28"
- layout="topleft"
- mouse_opaque="false"
- left="2"
- name="title"
- top_delta="2"
- width="476"/>
+	left="1"/>
  
- <text
- name="first_person_label"
- follows="left|top"
- layout="topleft"
- left="10"
- height="12"
- width="350"
- top_delta="4">
- Objects
- </text>
- <scroll_list
- column_padding="2"
- draw_heading="true"
- height="376"
- follows="left|top|right"
- layout="topleft"
- left="0"
- width="480"
- multi_select="true"
- name="object_scroll"
- top_pad="3">
-    <scroll_list.columns
-     label="Object"
-     name="name"
-   relative_width="0.60"  />
-    <scroll_list.columns
-     label="Shadows"
-     name="shadow"
-   relative_width="0.15"  />
-    <scroll_list.columns
-     label="Alpha Mode"
-     name="alpha"
-   relative_width="0.25"  />
-</scroll_list>
-	<button
+ 
+	<tab_container
+				follows="all"
+				halign="center"
+				height="423"
+				layout="topleft"
+				left="0"
+				name="object_tabs"
+				tab_height="20"
+				tab_group="1"
+				tab_position="top"
+				top="1"
+				width="479">
+					<panel
+					follows="all"
+					background_visible="false"
+					height="376"
+					layout="topleft"
+					left="0"
+					title="Objects"
+					name="objects_panel"
+					top="0"
+					width="479">
+						<scroll_list
+						column_padding="2"
+						draw_heading="true"
+						height="376"
+						follows="left|top|right"
+						layout="topleft"
+						left="0"
+						width="480"
+						multi_select="true"
+						name="object_scroll"
+						top_pad="0">
+									<scroll_list.columns
+										label="Object"
+										name="name"
+								relative_width="0.70"  />
+									<scroll_list.columns
+										label="Distance"
+										name="distance"
+								relative_width="0.15"  />
+									<scroll_list.columns
+										label="Attached"
+										name="attachment"
+								relative_width="0.15"  />
+									<scroll_list.columns
+										label="Parent ID"
+										name="parent"
+								relative_width="0.0"  />
+					</scroll_list>
+						<button
  height="21"
  follows="top|left"
  layout="topleft"
@@ -83,11 +89,143 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="72"
+ width="94"
  top_pad="1"
  left_delta="2">
    <button.commit_callback
    function="ObjectList.Refresh"/>
+ </button>
+						<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Fullbright"
+	toggle="true"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="fullbright"
+ width="94"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="ObjectList.Object"
+   parameter="fullbright"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Alpha"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="94"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="ObjectList.Object"
+   parameter="alpha"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="DeAlpha"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="dealpha_object"
+ width="94"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="ObjectList.Object"
+   parameter="dealpha"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Derender"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="derender_object"
+ width="94"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="ObjectList.Object"
+   parameter="derender"/>
+	</button>
+					</panel>
+					<panel
+					follows="all"
+					background_visible="false"
+					height="376"
+					layout="topleft"
+					left="0"
+					title="Lights"
+					name="lights_panel"
+					top="0"
+					width="479">
+						<scroll_list
+						column_padding="2"
+						draw_heading="true"
+						height="376"
+						follows="left|top|right"
+						layout="topleft"
+						left="0"
+						width="480"
+						multi_select="true"
+						name="light_object_scroll"
+						top_pad="0">
+									<scroll_list.columns
+										label="Object"
+										name="name"
+								relative_width="0.70"  />
+									<scroll_list.columns
+										label="Is Light"
+										name="light"
+								relative_width="0.15"  />
+									<scroll_list.columns
+										label="Shadows"
+										name="shadow"
+								relative_width="0.15"  />
+					</scroll_list>
+						<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Refresh"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="94"
+ top_pad="1"
+ left_delta="2">
+   <button.commit_callback
+   function="ObjectList.Refresh"/>
+ </button>
+						<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Light"
+	toggle="true"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="set_light"
+ width="94"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="ObjectList.Light"
+   parameter="toggle_light"/>
  </button>
  <button
  height="21"
@@ -98,15 +236,99 @@ width="494">
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
- name="default"
- width="82"
+ name="set_shadows"
+ width="94"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="ObjectList.Command"
+   function="ObjectList.Light"
    parameter="set_shadow"/>
  </button>
- <button
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Alpha"
+	toggle="true"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="94"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="ObjectList.Light"
+   parameter="alpha"/>
+ </button>
+	<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="DeAlpha"
+	toggle="true"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="dealpha_object"
+ width="94"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="ObjectList.Light"
+   parameter="dealpha"/>
+ </button>
+					</panel>
+					<panel
+					follows="all"
+					background_visible="false"
+					height="376"
+					layout="topleft"
+					left="0"
+					title="Alphas"
+					name="alpha_panel"
+					top="0"
+					width="479">
+						<scroll_list
+						column_padding="2"
+						draw_heading="true"
+						height="376"
+						follows="left|top|right"
+						layout="topleft"
+						left="0"
+						width="480"
+						multi_select="true"
+						name="alpha_object_scroll"
+						top_pad="0">
+									<scroll_list.columns
+										label="Object"
+										name="name"
+								relative_width="0.70"  />
+									<scroll_list.columns
+										label="Original"
+										name="old_alpha"
+								relative_width="0.0"  />
+									<scroll_list.columns
+										label="Alpha Mode"
+										name="alpha"
+								relative_width="0.30"  />
+					</scroll_list>
+						<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Refresh"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="94"
+ top_pad="1"
+ left_delta="2">
+   <button.commit_callback
+   function="ObjectList.Refresh"/>
+ </button>
+						<button
  height="21"
  follows="top|left"
  layout="topleft"
@@ -115,11 +337,11 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="82"
+ width="94"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="ObjectList.Command"
+   function="ObjectList.Alpha"
    parameter="set_sorting"/>
  </button>
 	<button
@@ -131,11 +353,11 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="82"
+ width="94"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="ObjectList.Command"
+   function="ObjectList.Alpha"
    parameter="set_masking"/>
  </button>
 	<button
@@ -147,11 +369,11 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="82"
+ width="94"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="ObjectList.Command"
+   function="ObjectList.Alpha"
    parameter="set_emissive"/>
  </button>
 	<button
@@ -163,12 +385,14 @@ width="494">
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="71"
+ width="94"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
-   function="ObjectList.Command"
+   function="ObjectList.Alpha"
    parameter="reset"/>
  </button>
+					</panel>
+	</tab_container>
 	</panel>
 </floater>

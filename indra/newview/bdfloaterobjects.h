@@ -37,11 +37,13 @@ private:
 
 	void onObjectRefresh();
 	void onObjectCommand(LLUICtrl* ctrl, const LLSD& param);
+	void onLightCommand(LLUICtrl* ctrl, const LLSD& param);
+	void onAlphaCommand(LLUICtrl* ctrl, const LLSD& param);
 
-	void onSelectEntry();
-	void onSelectObject();
+	void onSelectEntry(S32 mode);
+	void onSelectObject(S32 mode);
 
-	LLScrollListCtrl* mObjectsScroll;
+	std::array<LLScrollListCtrl*, 3> mObjectsScroll;
 
 	LLSafeHandle<LLObjectSelection> mObjectSelection;
 };
