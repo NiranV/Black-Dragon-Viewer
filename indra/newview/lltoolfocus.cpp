@@ -576,7 +576,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 				}
 			}
 			gViewerWindow->hideCursor();
-			LLUI::setMousePositionScreen(mMouseRightUpX, mMouseRightUpY);
+			LLUI::getInstance()->setMousePositionScreen(mMouseRightUpX, mMouseRightUpY);
 		}
 	}
 

@@ -483,8 +483,8 @@ void LLStatusBar::onMouseEnterDrawDistance()
 	
 	// show the draw distance pull-down
 	mPanelDrawDistance->setShape(draw_distance_rect);
-	LLUI::clearPopups();
-	LLUI::addPopup(mPanelDrawDistance);
+	LLUI::getInstance()->clearPopups();
+	LLUI::getInstance()->addPopup(mPanelDrawDistance);
 
 	mPanelNearByMedia->setVisible(FALSE);
 	mPanelVolumePulldown->setVisible(FALSE);

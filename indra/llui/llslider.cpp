@@ -286,7 +286,7 @@ BOOL LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 		{
 			S32 mouse_x_warp = 0;
 			S32 mouse_y_warp = 0;
-			LLUI::getMousePositionScreen(&mouse_x_warp, &mouse_y_warp);
+			LLUI::getInstance()->getMousePositionScreen(&mouse_x_warp, &mouse_y_warp);
 
 			if (mOrientation == HORIZONTAL)
 			{
@@ -297,7 +297,7 @@ BOOL LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 				mouse_y_warp += mMouseOffset;
 			}
 
-			LLUI::setMousePositionScreen(mouse_x_warp, mouse_y_warp);
+			LLUI::getInstance()->setMousePositionScreen(mouse_x_warp, mouse_y_warp);
 
 			mMouseOffset = 0;
 		}
