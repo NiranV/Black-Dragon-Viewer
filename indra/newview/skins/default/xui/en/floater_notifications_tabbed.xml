@@ -3,7 +3,6 @@
  bevel_style="in"
  layout="topleft"
  name="floater_notifications_tabbed"
- help_topic="notification_chiclet"
  save_rect="true"
  title="Notifications"
  width="380"
