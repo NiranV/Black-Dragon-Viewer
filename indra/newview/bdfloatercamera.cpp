@@ -293,6 +293,7 @@ void BDFloaterCamera::addWaypoint()
 {
 	gAgentPilot.addAction(LLAgentPilot::EActionType::STRAIGHT);
 	gAgentPilot.save();
+	onRefresh();
 }
 
 void BDFloaterCamera::savePosition()
