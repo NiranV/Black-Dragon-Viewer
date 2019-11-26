@@ -20,4 +20,20 @@
              draw_border="false"
              draw_heading="false"
              border.name="dig border"
-             border.bevel_style="in" />
+             border.bevel_style="in">
+             <!-- Examples to add XML rows and fill them with columns -->
+             <!--<scroll_list.columns
+             label="Bake Area"
+             name="Name"
+             relative_width="0.85"/>
+             <scroll_list.columns
+             label="ID"
+             name="Value"
+             relative_width="0.15"/>
+             <row
+             name="0">
+             <column
+             name="Name">BAKED_HEAD</column>
+             </row>-->
+</scroll_list>
+
