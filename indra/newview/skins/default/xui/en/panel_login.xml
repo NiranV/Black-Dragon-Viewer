@@ -3042,7 +3042,6 @@ Removed: Rotation order dropdown and all code.
     <button
     follows="left|top"
     height="18"
-    control_name="PreferencesLogin"
     image_overlay_alignment="left"
     pad_bottom="0"
     image_overlay="Command_Preferences_Icon"
