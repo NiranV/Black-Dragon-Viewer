@@ -862,7 +862,7 @@ width="700">
 	<combo_box
 	control_name="CloudNoiseImageName"
 	height="23"
-	allow_text_entry="true"
+	allow_text_entry="false"
 	layout="topleft"
 	left_delta="6"
 	follows="left|top"
