@@ -435,7 +435,7 @@ BOOL LLFloaterTexturePicker::postBuild()
 
 	LLToolPipette::getInstance()->setToolSelectCallback(boost::bind(&LLFloaterTexturePicker::onTextureSelect, this, _1));
 	
-	getChild<LLComboBox>("l_bake_use_texture_combo_box")->setCommitCallback(onBakeTextureSelect, this);
+	getChild<LLUICtrl>("l_bake_use_texture_ctrl")->setCommitCallback(onBakeTextureSelect, this);
 	getChild<LLCheckBoxCtrl>("hide_base_mesh_region")->setCommitCallback(onHideBaseMeshRegionCheck, this);
 
 	return TRUE;
@@ -825,55 +825,10 @@ void LLFloaterTexturePicker::onModeSelect(LLUICtrl* ctrl, void *userdata)
 	{
 		self->stopUsingPipette();
 
-		S8 val = -1;
-
-		LLUUID imageID = self->mImageAssetID;
-		if (imageID == IMG_USE_BAKED_HEAD)
-		{
-			val = 0;
-		}
-		else if (imageID == IMG_USE_BAKED_UPPER)
-		{
-			val = 1;
-		}
-		else if (imageID == IMG_USE_BAKED_LOWER)
-		{
-			val = 2;
-		}
-		else if (imageID == IMG_USE_BAKED_EYES)
-		{
-			val = 3;
-		}
-		else if (imageID == IMG_USE_BAKED_SKIRT)
-		{
-			val = 4;
-		}
-		else if (imageID == IMG_USE_BAKED_HAIR)
-		{
-			val = 5;
-		}
-		else if (imageID == IMG_USE_BAKED_LEFTARM)
-		{
-			val = 6;
-		}
-		else if (imageID == IMG_USE_BAKED_LEFTLEG)
-		{
-			val = 7;
-		}
-		else if (imageID == IMG_USE_BAKED_AUX1)
-		{
-			val = 8;
-		}
-		else if (imageID == IMG_USE_BAKED_AUX2)
-		{
-			val = 9;
-		}
-		else if (imageID == IMG_USE_BAKED_AUX3)
-		{
-			val = 10;
-		}
-
-		self->getChild<LLComboBox>("l_bake_use_texture_combo_box")->setSelectedByValue(val, TRUE);
+		//BD - Does not work. Might need to have the second tab selected first.
+		//     TODO: Get rid of it alltogether or make the tab switch to bake when we detect a baked texture.
+		//LLUUID imageID = self->mImageAssetID;
+		//self->getChild<LLScrollListCtrl>("l_bake_use_texture_ctrl")->setSelectedByValue(imageID, TRUE);
 	}
 }
 
@@ -999,55 +954,8 @@ void LLFloaterTexturePicker::onApplyImmediateCheck(LLUICtrl* ctrl, void *user_da
 void LLFloaterTexturePicker::onBakeTextureSelect(LLUICtrl* ctrl, void *user_data)
 {
 	LLFloaterTexturePicker* self = (LLFloaterTexturePicker*)user_data;
-	LLComboBox* combo_box = (LLComboBox*)ctrl;
-
-	S8 type = combo_box->getValue().asInteger();
-	
-	LLUUID imageID = self->mDefaultImageAssetID;
-	if (type == 0)
-	{
-		imageID = IMG_USE_BAKED_HEAD;
-	}
-	else if (type == 1)
-	{
-		imageID = IMG_USE_BAKED_UPPER;
-	}
-	else if (type == 2)
-	{
-		imageID = IMG_USE_BAKED_LOWER;
-	}
-	else if (type == 3)
-	{
-		imageID = IMG_USE_BAKED_EYES;
-	}
-	else if (type == 4)
-	{
-		imageID = IMG_USE_BAKED_SKIRT;
-	}
-	else if (type == 5)
-	{
-		imageID = IMG_USE_BAKED_HAIR;
-	}
-	else if (type == 6)
-	{
-		imageID = IMG_USE_BAKED_LEFTARM;
-	}
-	else if (type == 7)
-	{
-		imageID = IMG_USE_BAKED_LEFTLEG;
-	}
-	else if (type == 8)
-	{
-		imageID = IMG_USE_BAKED_AUX1;
-	}
-	else if (type == 9)
-	{
-		imageID = IMG_USE_BAKED_AUX2;
-	}
-	else if (type == 10)
-	{
-		imageID = IMG_USE_BAKED_AUX3;
-	}
+	auto val = ctrl->getValue();
+	LLUUID imageID = val.asUUID();
 
 	self->setImageID(imageID);
 	self->mViewModel->setDirty(); // *TODO: shouldn't we be using setValue() here?

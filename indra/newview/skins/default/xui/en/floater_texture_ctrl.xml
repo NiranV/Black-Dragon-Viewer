@@ -310,83 +310,99 @@ width="220">
     name="Bakes"
     right="-1"
     top="0">
-        <combo_box
-        left="3"
-        top="2"
-        height="23"
-        layout="topleft"
-        follows="left|top"
-        name="l_bake_use_texture_combo_box"
-        tool_tip="Choose the bake texture"
-        width="203">
-        <combo_box.item
-        label="None"
-        name="None"
-        value="-1" />
-        <combo_box.item
-        label="BAKED_HEAD"
+     <scroll_list
+     name="l_bake_use_texture_ctrl"
+     left="1"
+     top_pad="0"
+     width="208"
+     height="236"
+     follows="left|top|right|bottom"
+     heading_height="23"
+     draw_heading="true"
+     multi_select="true"
+     background_visible="false"
+     visible="true">
+        <scroll_list.columns
+        label="Bake Area"
+        name="Name"
+        relative_width="1.0"/>
+        <scroll_list.row
         name="BAKED_HEAD"
-        value="0" />
-        <combo_box.item
-        label="BAKED_UPPER"
+        value="5a9f4a74-30f2-821c-b88d-70499d3e7183">
+        <column
+        name="Name" value="BAKED_HEAD"/>
+        </scroll_list.row>
+        <scroll_list.row
         name="BAKED_UPPER"
-        value="1" />
-        <combo_box.item
-        label="BAKED_LOWER"
+        value="ae2de45c-d252-50b8-5c6e-19f39ce79317">
+        <column
+        name="Name">BAKED_UPPER</column>
+        </scroll_list.row>
+        <row
         name="BAKED_LOWER"
-        value="2" />
-        <combo_box.item
-        label="BAKED_EYES"
+        value="24daea5f-0539-cfcf-047f-fbc40b2786ba">
+        <column
+        name="Name">BAKED_LOWER</column>
+        </row>
+        <row
         name="BAKED_EYES"
-        value="3" />
-        <combo_box.item
-        label="BAKED_SKIRT"
+        value="52cc6bb6-2ee5-e632-d3ad-50197b1dcb8a">
+        <column
+        name="Name">BAKED_EYES</column>
+        </row>
+        <row
         name="BAKED_SKIRT"
-        value="4" />
-        <combo_box.item
-        label="BAKED_HAIR"
+        value="43529ce8-7faa-ad92-165a-bc4078371687">
+        <column
+        name="Name">BAKED_SKIRT</column>
+        </row>
+        <row
         name="BAKED_HAIR"
-        value="5" />
-        <combo_box.item
-        label="BAKED_LEFTARM"
+        value="09aac1fb-6bce-0bee-7d44-caac6dbb6c63">
+        <column
+        name="Name">BAKED_HAIR</column>
+        </row>
+        <row
         name="BAKED_LEFTARM"
-        value="6" />
-        <combo_box.item
-        label="BAKED_LEFTLEG"
+        value="ff62763f-d60a-9855-890b-0c96f8f8cd98">
+        <column
+        name="Name">BAKED_LEFTARM</column>
+        </row>
+        <row
         name="BAKED_LEFTLEG"
-        value="7" />
-        <combo_box.item
-        label="BAKED_AUX1"
+        value="8e915e25-31d1-cc95-ae08-d58a47488251">
+        <column
+        name="Name">BAKED_LEFTLEG</column>
+        </row>
+        <row
         name="BAKED_AUX1"
-        value="8" />
-        <combo_box.item
-        label="BAKED_AUX2"
+        value="9742065b-19b5-297c-858a-29711d539043">
+        <column
+        name="Name">BAKED_AUX1</column>
+        </row>
+        <row
         name="BAKED_AUX2"
-        value="9" />
-        <combo_box.item
-        label="BAKED_AUX3"
+        value="03642e83-2bd1-4eb9-34b4-4c47ed586d2d">
+        <column
+        name="Name">BAKED_AUX2</column>
+        </row>
+        <row
         name="BAKED_AUX3"
-        value="10" />
-        <combo_box.combo_button
-        image_unselected="ToolbarDropDown_Off"
-        image_selected="ToolbarDropDown_Press"
-        image_disabled="ToolbarDropDown_Off" />
-        <combo_box.drop_down_button
-        image_unselected="ToolbarDropDown_Off"
-        image_selected="ToolbarDropDown_Press"
-        image_pressed="ToolbarDropDown_Press" 
-        image_pressed_selected="ToolbarDropDown_Press"
-        image_disabled="ToolbarDropDown_Off" />
-        </combo_box>
+        value="edd51b77-fc10-ce7a-4b3d-011dfc349e4f">
+        <column
+        name="Name">BAKED_AUX3</column>
+        </row>
+        </scroll_list>
         <check_box
         follows="left|top"
         height="14"
         initial_value="false"
+        visible="false"
         label="Hide Base Mesh Region"
         layout="topleft"
         name="hide_base_mesh_region"
         left_delta="0"
-        top_pad="5"
+        top_pad="-15"
         width="120" />
 
     </panel>

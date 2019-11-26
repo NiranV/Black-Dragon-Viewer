@@ -50,6 +50,18 @@ class LLScrollListItem
 {
 	friend class LLScrollListCtrl;
 public:
+	//BD - Cells ~ Thanks to Liru
+	struct Contents : public LLInitParam::Block<Contents>
+	{
+		Multiple<LLScrollListCell::Params>	columns;
+		Contents()
+		:	columns("columns")
+		{
+			addSynonym(columns, "columns");
+			addSynonym(columns, "cell");
+		}
+	};
+
 	struct Params : public LLInitParam::Block<Params>
 	{
 		Optional<bool>		enabled;
@@ -61,6 +73,8 @@ public:
 		Ignored				length; 
 
 		Multiple<LLScrollListCell::Params> columns;
+		//BD - Cells ~ Thanks to Liru
+		Optional<Contents> contents;
 
 		Params()
 		:	enabled("enabled", true),
@@ -68,7 +82,9 @@ public:
 			name("name"),
 			type("type"),
 			length("length"),
-			columns("columns")
+			columns("columns"),
+			//BD - Cells ~ Thanks to Liru
+			contents("contents")
 		{
 			addSynonym(columns, "column");
 			addSynonym(value, "id");

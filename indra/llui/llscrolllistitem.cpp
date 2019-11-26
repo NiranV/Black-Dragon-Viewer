@@ -45,6 +45,11 @@ LLScrollListItem::LLScrollListItem( const Params& p )
 	mUserdata(p.userdata),
 	mItemValue(p.value)
 {
+	//BD - Cells ~ Thanks to Liru
+	for (const auto& cell : p.contents.columns)
+	{
+		addColumn(cell);
+	}
 }
 
 
