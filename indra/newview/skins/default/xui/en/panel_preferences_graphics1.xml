@@ -95,61 +95,6 @@ width="510">
    width="220">
    Viewer Options:
    </text>
-   
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_ui_size"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Using 'small' or 'big' interface size requires a restart. The UI is not designed for the 'small' or 'big' size, you will encounter problems."
-  width="16"
-  left="445"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_font_dpi"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Using a different DPI other than 96 will cause clipping text, broken labels, spacing issues and broken layouts, use with caution."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_texture_memory"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: You might be allowing too much memory or even more than your GPU has available. Too high texture memory may cause drastic negative performance impact. Too low texture memory will cause faster texture trashing issues."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  visibility_control="RenderCompressTextures"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_texture_compression"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Using texture compression will save some texture memory but at a massive negative performance impact while loading textures and possible overarll as the Viewer spends most of its time processing textures."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -171,6 +116,29 @@ width="510">
    name="FullscreenWindow"
    top_pad="15"
    width="115" />
+   <panel
+       follows="top|left|right"
+       height="39"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_ui_size"
+       top_pad="3"
+       width="508">
+    <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_ui_size2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Using 'small' or 'big' interface size requires a restart. The UI is not designed for the 'small' or 'big' size, you will encounter problems."
+  width="16"
+  left="472"
+  top="11"/>
+   </panel>
    <text
  type="string"
  length="1"
@@ -179,7 +147,7 @@ width="510">
  layout="topleft"
  left="10"
  name="InterfaceSize"
- top_pad="5"
+ top_delta="2"
  width="220">
  Interface Size:
  </text>
@@ -289,6 +257,29 @@ width="510">
         <radio_group.commit_callback
         function="Dragon.TriggerWarn"/>
                   </radio_group>
+                  <panel
+       follows="top|left|right"
+       height="16"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_font_dpi"
+       top_pad="4"
+       width="508">
+                   <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_font_dpi2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Using a different DPI other than 96 will cause clipping text, broken labels, spacing issues and broken layouts, use with caution."
+  width="16"
+  left="472"
+  top="0"/>
+                  </panel>
  <slider
  control_name="FontScreenDPI"
  decimal_digits="0"
@@ -305,7 +296,7 @@ width="510">
  max_val="164"
  min_val="64"
  name="DPI"
- top_pad="5"
+ top_delta="1"
  width="319" >
   <slider.commit_callback
                          function="Dragon.TriggerWarn"/>
@@ -352,6 +343,30 @@ width="510">
   width="450"
   left="25"
   top_pad="0"/>
+ <panel
+       follows="top|left|right"
+       height="17"
+       background_visible="true"
+       visibility_control="RenderCompressTextures"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_texture_compression"
+       top_pad="7"
+       width="508">
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_texture_compression2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Using texture compression will save some texture memory but at a massive negative performance impact while loading textures and possible overarll as the Viewer spends most of its time processing textures."
+  width="16"
+  left="472"
+  top="0"/>
+ </panel>
  <check_box
       control_name="RenderCompressTextures"
       height="16"
@@ -363,7 +378,7 @@ width="510">
 &lt;icon&gt;Stat_Dot0&lt;/icon&gt; Graphics       
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option enables texture compression, this will save some texture memory but will cause artifacts on textures and will impact the performance negatively."
       name="CompressTextures"
-      top_pad="7"
+      top_delta="0"
       width="256">
          <check_box.check_button
          image_overlay="Caution_Widget"
@@ -383,6 +398,29 @@ width="510">
       name="CompressTextures"
       top_pad="0"
       width="256"/>
+ <panel
+       follows="top|left|right"
+       height="34"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_texture_memory"
+       top_pad="4"
+       width="508">
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_texture_memory2"
+  mouse_opaque="false"
+  tool_tip="WARNING: You might be allowing too much memory or even more than your GPU has available. Too high texture memory may cause drastic negative performance impact. Too low texture memory will cause faster texture trashing issues."
+  width="16"
+  left="472"
+  top="8"/>
+ </panel>
  <slider
  control_name="SystemMemory"
  disabled_control="AutomaticMemoryManagement"
@@ -400,7 +438,7 @@ width="510">
  max_val="3984"
  min_val="128"
  name="SystemMemory"
- top_pad="6"
+ top_delta="2"
  width="325" />
  <button
  follows="left|top"
@@ -530,61 +568,6 @@ width="510">
    width="220">
    Quality Options:
    </text>
-   
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  invisibility_control="RenderDynamicLOD"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_dynamic_lod"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Disabling Dynamic Level of Detail will make all object quality solely dependant on the 'Object Quality' setting, all objects will use the same level of detail no matter their distance to the camera."
-  width="16"
-  left="445"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_object_lod"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Object Quality beyond 'medium' may have a negative impact on performance especially with sculpts and meshes."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-	<icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_reflection_quality"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Higher than 'normal' Reflection Quality may noticably impact performance negatively."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_sky_quality"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Higher than 'high' Sky Quality may have a slight negative impact on performance without any noticable visual improvements."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -595,6 +578,30 @@ width="510">
 	  auto_resize="false"
 	  name="lod_layout_panel"
 	  width="515">
+       <panel
+       follows="top|left|right"
+       height="17"
+       background_visible="true"
+       invisibility_control="RenderDynamicLOD"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_dynamic_lod"
+       top_pad="15"
+       width="508">
+        <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_dynamic_lod2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Disabling Dynamic Level of Detail will make all object quality solely dependant on the 'Object Quality' setting, all objects will use the same level of detail no matter their distance to the camera."
+  width="16"
+  left="472"
+  top="0"/>
+       </panel>
          <check_box
    control_name="RenderDynamicLOD"
    height="16"
@@ -606,8 +613,31 @@ width="510">
    layout="topleft"
    left="10"
    name="DynamicLOD"
-   top_pad="15"
+   top_delta="0"
    width="115" />
+         <panel
+       follows="top|left|right"
+       height="39"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_object_lod"
+       top_pad="3"
+       width="508">
+          <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_object_lod2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Object Quality beyond 'medium' may have a negative impact on performance especially with sculpts and meshes."
+  width="16"
+  left="472"
+  top="11"/>
+         </panel>
  <text
  type="string"
  length="1"
@@ -616,7 +646,7 @@ width="510">
  layout="topleft"
  left="10"
  name="ObjectLOD"
- top_pad="5"
+ top_delta="2"
  width="120">
  Object Quality:
  </text>
@@ -1223,6 +1253,29 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
+ <panel
+       follows="top|left|right"
+       height="39"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_sky_quality"
+       top_pad="3"
+       width="508">
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_sky_quality2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Higher than 'high' Sky Quality may have a slight negative impact on performance without any noticable visual improvements."
+  width="16"
+  left="472"
+  top="11"/>
+ </panel>
  <text
  type="string"
  length="1"
@@ -1231,7 +1284,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
  layout="topleft"
  left="10"
  name="SkyLOD"
- top_pad="7"
+ top_delta="2"
  width="120">
  Sky Quality:
  </text>
@@ -1727,6 +1780,29 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
+ <panel
+       follows="top|left|right"
+       height="39"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_reflection_quality"
+       top_pad="3"
+       width="508">
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_reflection_quality2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Higher than 'normal' Reflection Quality may noticably impact performance negatively."
+  width="16"
+  left="472"
+  top="11"/>
+ </panel>
  <text
  type="string"
  length="1"
@@ -1735,7 +1811,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
  layout="topleft"
  left="10"
  name="Reflectiontext"
- top_pad="5"
+ top_delta="2"
  width="120">
  Reflection Quality:
  </text>
@@ -2159,100 +2235,6 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
    width="220">
    Rendering Options:
    </text>
-   
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  visibility_control="UseOcclusion"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_object_occlusion"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Object-Object Occlusion may cause overall performance degradation, its usually worse in open but can be a lot better in enclosed areas."
-  width="16"
-  left="445"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_avatars_visible"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: A lot maximum visible avatars on screen may cause absolutely unusable performance depending on hardware and the detail of shown avatars."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_derender_kb"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Heavy weight avatars (in KB) may cause a lot of traffic, high performance degradation and quick texture trashing."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_derender_m2"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Avatars with a lot of attachment surface (in m²) may cause high performance degradation and even crash you as high square meters are often a possible indicator for graphic crashers."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_derender_ar"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: High complexity avatars (AR) may cause high performance degradation, quick texture trashing, unstable framerates and possibly even freezes or crashes depending on your hardware."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_derender_surface"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: High surface areas are often used for crashing purposes, everything beyond 200m² can safely be ignored as its very likely that it is of malicious nature or simply not worth rendering."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_draw_distance"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Draw Distance has a high impact on performance for almost no visual gains in every day usage."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -2263,6 +2245,29 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
       visible="false"
 	  name="performance_layout_panel"
 	  width="515">
+       <panel
+       follows="top|left|right"
+       height="16"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_draw_distance"
+       top_pad="11"
+       width="508">
+        <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_draw_distance2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Draw Distance has a high impact on performance for almost no visual gains in every day usage."
+  width="16"
+  left="472"
+  top="0"/>
+       </panel>
    <slider
  control_name="RenderFarClip"
  decimal_digits="0"
@@ -2281,7 +2286,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
  tool_tip="&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls your view distance in meters, starting from your camera."
- top_pad="12"
+ top_delta="1"
  width="325">
     <slider.commit_callback
  function="Dragon.TriggerWarn"
@@ -2427,6 +2432,30 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   width="450"
   left="25"
   top_pad="0"/>
+ <panel
+       follows="top|left|right"
+       height="17"
+       background_visible="true"
+       visibility_control="UseOcclusion"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_object_occlusion"
+       top_pad="7"
+       width="508">
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_object_occlusion2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Object-Object Occlusion may cause overall performance degradation, its usually worse in open but can be a lot better in enclosed areas."
+  width="16"
+  left="472"
+  top="0"/>
+ </panel>
    <check_box
    control_name="UseOcclusion"
    height="16"
@@ -2438,7 +2467,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="10"
    name="UseOcclusion"
-   top_pad="7"
+   top_delta="0"
    width="115" />
    <check_box
       control_name="RenderPreferStreamDraw"
@@ -2525,7 +2554,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="144"
       min_val="0"
       name="FramePerSecondLimit"
-      top_pad="2"
+      top_pad="1"
       width="319" />
    <button
  follows="left|top"
@@ -2579,6 +2608,29 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       name="UnloadedAvatars"
       top_pad="7"
       width="315" />
+   <panel
+       follows="top|left|right"
+       height="16"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_avatars_visible"
+       top_pad="6"
+       width="508">
+    <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_avatars_visible2"
+  mouse_opaque="false"
+  tool_tip="WARNING: A lot maximum visible avatars on screen may cause absolutely unusable performance depending on hardware and the detail of shown avatars."
+  width="16"
+  left="472"
+  top="0"/>
+   </panel>
    <slider
       control_name="RenderAvatarMaxNonImpostors"
       decimal_digits="0"
@@ -2597,7 +2649,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="50"
       min_val="0"
       name="RenderAvatarMaxVisible"
-      top_pad="5"
+      top_delta="1"
       width="313" />
  <button
  follows="left|top"
@@ -2651,6 +2703,29 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       name="AlwaysRenderFriends"
       top_pad="7"
       width="315" />
+ <panel
+       follows="top|left|right"
+       height="16"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_derender_m2"
+       top_pad="2"
+       width="508">
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_derender_m22"
+  mouse_opaque="false"
+  tool_tip="WARNING: Avatars with a lot of attachment surface (in m²) may cause high performance degradation and even crash you as high square meters are often a possible indicator for graphic crashers."
+  width="16"
+  left="472"
+  top="0"/>
+ </panel>
       <slider
       control_name="RenderAutoMuteSurfaceAreaLimit"
       decimal_digits="0"
@@ -2669,7 +2744,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="256"
       min_val="0"
       name="RenderAutoMuteSurfaceAreaLimit"
-      top_pad="5"
+      top_delta="1"
       width="319" />
       <button
  follows="left|top"
@@ -2687,6 +2762,29 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+      <panel
+       follows="top|left|right"
+       height="16"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_derender_ar"
+       top_pad="1"
+       width="508">
+       <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_derender_ar2"
+  mouse_opaque="false"
+  tool_tip="WARNING: High complexity avatars (AR) may cause high performance degradation, quick texture trashing, unstable framerates and possibly even freezes or crashes depending on your hardware."
+  width="16"
+  left="472"
+  top="0"/>
+      </panel>
       <slider
       control_name="RenderAvatarMaxComplexity"
       decimal_digits="0"
@@ -2705,7 +2803,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="800000"
       min_val="0"
       name="RenderAvatarMaxComplexity"
-      top_pad="1"
+      top_delta="1"
       width="337" >
        <slider.commit_callback
  function="Dragon.TriggerWarn"
@@ -2727,6 +2825,29 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+      <panel
+       follows="top|left|right"
+       height="16"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_derender_surface"
+       top_pad="1"
+       width="508">
+       <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_derender_surface2"
+  mouse_opaque="false"
+  tool_tip="WARNING: High surface areas are often used for crashing purposes, everything beyond 200m² can safely be ignored as its very likely that it is of malicious nature or simply not worth rendering."
+  width="16"
+  left="472"
+  top="0"/>
+      </panel>
       <slider
       control_name="RenderAutoHideSurfaceAreaLimit"
       decimal_digits="0"
@@ -2745,7 +2866,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="512"
       min_val="0"
       name="RenderAutoHideSurfaceAreaLimit"
-      top_pad="1"
+      top_delta="1"
       width="319" />
       <button
  follows="left|top"
@@ -3154,7 +3275,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  left_pad="1"
  top_delta="0"
  name="lock"
- width="60">
+ width="40">
    <button.commit_callback
    parameter="RenderGlowLumWeights"
     function="Dragon.LockArray"/>
@@ -3281,7 +3402,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  left_pad="1"
  top_delta="0"
  name="lock"
- width="60">
+ width="40">
    <button.commit_callback
    parameter="RenderGlowWarmthWeights"
     function="Dragon.LockArray"/>
@@ -3328,61 +3449,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="Deferred"
    top_delta="1"
    width="115" />
-   
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  invisibility_control="RenderFSAASamples"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_fxaa"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: FXAA has basically zero impact on performance, not using it will cause aliasing on edges and may impact overall visual fidelity negatively."
-  width="16"
-  left="445"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_shadow_resolution"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Using high shadow resolutions may have a huge negative impact on performance depending on the complexity of the scene."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_projector_resolution"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: High projector shadow resolutions may have a slight to medium impact on performance with very little visual improvement."
-  width="16"
-  left_delta="-18"
-  top="2"/>
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  visibility_control="RenderScreenSpaceReflections"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_ssr"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Screen Space Reflections may cause drastic performance degradation depending on the surface it is rendered on and the screen space resolution used."
-  width="16"
-  left_delta="-18"
-  top="2"/>
       </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -3485,6 +3551,30 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    top_pad="0"
    width="115" />
 	  
+   <panel
+       follows="top|left|right"
+       height="39"
+       background_visible="true"
+       invisibility_control="RenderFSAASamples"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_fxaa"
+       top_pad="3"
+       width="508">
+    <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_fxaa2"
+  mouse_opaque="false"
+  tool_tip="WARNING: FXAA has basically zero impact on performance, not using it will cause aliasing on edges and may impact overall visual fidelity negatively."
+  width="16"
+  left="472"
+  top="11"/>
+   </panel>
    <text
  type="string"
  length="1"
@@ -3493,7 +3583,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  layout="topleft"
  left="10"
  name="Antialiasing:"
- top_pad="4"
+ top_delta="2"
  width="120">
  Antialiasing:
  </text>
@@ -3711,7 +3801,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  follows="left|top"
  control_name="RenderShadowFarClip"
  visibility_control="RenderShadowAutomaticDistance"
- height="15"
+ height="14"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
@@ -3741,7 +3831,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="256"
       min_val="1"
       name="RenderShadowDistance_Y"
-      top_pad="0"
+      top_pad="2"
       width="318">
   <slider.commit_callback
       function="Dragon.ArrayY"
@@ -3764,7 +3854,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="256"
       min_val="1"
       name="RenderShadowDistance_Z"
-      top_pad="1"
+      top_pad="2"
       width="318">
   <slider.commit_callback
       function="Dragon.ArrayZ"
@@ -3787,7 +3877,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="256"
       min_val="1"
       name="RenderShadowDistance_W"
-      top_pad="1"
+      top_pad="2"
       width="318">
   <slider.commit_callback
       function="Dragon.ArrayW"
@@ -3810,6 +3900,29 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+ <panel
+       follows="top|left|right"
+       height="64"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_shadow_resolution"
+       top_pad="0"
+       width="508">
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_shadow_resolution2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Using high shadow resolutions may have a huge negative impact on performance depending on the complexity of the scene."
+  width="16"
+  left="472"
+  top="24"/>
+ </panel>
  <slider
       enabled_control="RenderDeferred"
       decimal_digits="0"
@@ -3833,7 +3946,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="6144"
       min_val="256"
       name="RenderShadowResolution_X"
-      top_pad="1"
+      top_delta="1"
       width="324">
    <slider.commit_callback
       function="Dragon.ArrayX"
@@ -3953,7 +4066,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  left_pad="1"
  top_delta="0"
  name="lock"
- width="60">
+ width="40">
    <button.commit_callback
    parameter="RenderShadowResolution"
     function="Dragon.LockArray"/>
@@ -3982,6 +4095,29 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   width="450"
   left="25"
   top_pad="0"/>
+ <panel
+       follows="top|left|right"
+       height="32"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_projector_resolution"
+       top_pad="6"
+       width="508">
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_projector_resolution2"
+  mouse_opaque="false"
+  tool_tip="WARNING: High projector shadow resolutions may have a slight to medium impact on performance with very little visual improvement."
+  width="16"
+  left="472"
+  top="8"/>
+ </panel>
  <slider
       enabled_control="RenderDeferred"
       decimal_digits="0"
@@ -4005,7 +4141,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="4096"
       min_val="256"
       name="RenderProjectorShadowResolution_X"
-      top_pad="7"
+      top_delta="1"
       width="324">
    <slider.commit_callback
       function="Dragon.ArrayX"
@@ -4199,6 +4335,29 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
      name="RenderScreenSpaceReflections"
      top_pad="7"
      width="115" />
+ <panel
+       follows="top|left|right"
+       height="16"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_ssr"
+       top_pad="3"
+       width="508">
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_ssr2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Screen Space Reflections may cause drastic performance degradation depending on the surface it is rendered on and the screen space resolution used."
+  width="16"
+  left="472"
+  top="0"/>
+ </panel>
       <slider
       control_name="RenderSSRResolution"
       decimal_digits="0"
@@ -4217,7 +4376,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="64"
       min_val="2"
       name="RenderSSRResolution"
-      top_pad="4"
+      top_delta="1"
       width="312" />
 		<button
  follows="left|top"
@@ -4818,21 +4977,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="MotionBlur"
    top_delta="1"
    width="115" />
-   
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_blur_quality"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: Motion Blur may look too strong and noticeable a low Motion Blur Quality setting."
-  width="16"
-  left="445"
-  top="2"/>
-
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -4948,6 +5092,29 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                               image_pressed_selected="Checkbox_On_Press" />
                         </radio_item>
                   </radio_group>
+ <panel
+       follows="top|left|right"
+       height="16"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_blur_quality"
+       top_pad="4"
+       width="508">
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_blur_quality2"
+  mouse_opaque="false"
+  tool_tip="WARNING: Motion Blur may look too strong and noticeable a low Motion Blur Quality setting."
+  width="16"
+  left="472"
+  top="0"/>
+ </panel>
    <slider
       can_edit_text="true"
       control_name="RenderMotionBlurStrength"
@@ -4964,7 +5131,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="120"
       min_val="15"
       name="MotionBlurQuality"
-      top_pad="5"
+      top_delta="1"
       width="318"/>
    <button
  follows="left|top"
@@ -5023,20 +5190,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="RenderGodrays"
    top_delta="1"
    width="115" />
-   
-   <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_light_resolution"
-  mouse_opaque="false"
-  visible="false"
-  tool_tip="WARNING: A high volumetric light resolution may have medium performance impact depending on the scene and shadow resolution."
-  width="16"
-  left="445"
-  top="2"/>
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -5058,7 +5211,29 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="RenderGodraysDirectional"
    top_pad="15"
    width="115"/>
-   
+   <panel
+       follows="top|left|right"
+       height="16"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_light_resolution"
+       top_pad="3"
+       width="508">
+    <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_light_resolution2"
+  mouse_opaque="false"
+  tool_tip="WARNING: A high volumetric light resolution may have medium performance impact depending on the scene and shadow resolution."
+  width="16"
+  left="472"
+  top="0"/>
+   </panel>
    <slider
       can_edit_text="true"
       control_name="RenderGodraysResolution"
@@ -5077,7 +5252,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="128"
       min_val="16"
       name="GodraysResolution"
-      top_pad="4"
+      top_delta="1"
       width="318"/>
    <button
  follows="left|top"
@@ -5736,7 +5911,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  left_pad="1"
  top_delta="0"
  name="lock"
- width="60">
+ width="40">
    <button.commit_callback
    parameter="ExodusRenderToneAdvOptB"
     function="Dragon.LockArray"/>
@@ -6000,7 +6175,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  left_pad="1"
  top_delta="0"
  name="lock"
- width="60">
+ width="40">
    <button.commit_callback
    parameter="ExodusRenderExposure"
     function="Dragon.LockArray"/>
@@ -6095,7 +6270,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
  left_pad="1"
  top_delta="0"
  name="lock"
- width="60">
+ width="40">
    <button.commit_callback
    parameter="ExodusRenderOffset"
     function="Dragon.LockArray"/>
