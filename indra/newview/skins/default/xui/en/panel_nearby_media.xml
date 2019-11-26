@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- bg_opaque_image="Window_NoTitle_Foreground" 
- bg_alpha_image="Window_NoTitle_Foreground" 
-  background_opaque="true"
+ bg_alpha_image="Toast_Background" 
 	background_visible="true"
 	layout="topleft"
 	width="324"

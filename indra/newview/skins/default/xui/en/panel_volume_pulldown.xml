@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- background_opaque="true"
  background_visible="true"
- bg_opaque_image="Window_NoTitle_Foreground" 
- bg_alpha_image="Window_NoTitle_Foreground" 
+ bg_alpha_image="Toast_Background" 
  border_visible="false"
  border="false"
  chrome="true"
