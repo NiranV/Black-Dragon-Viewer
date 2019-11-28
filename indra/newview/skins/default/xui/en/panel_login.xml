@@ -174,8 +174,62 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="273"
+     height="195"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Changed: Background texture for quickfloaters (volume, preset, media and draw distance).
+Changed: Disable automatic fly by default. Works around accidentally flying when hitting jump on controller.
+Changed: Disabled selection distance limitation.
+Changed: Disable Invert Pitch for controllers by default.
+Changed: Improved warning system, mark dangerous settings in red in addition to showing warnings.
+Changed: Texture selection 'Bake' tab layout.
+Changed: Version to 3.6.8.
+Fixed: Links in the last lines of description texts in hover profiles are not clickable.
+Fixed: Default Cloud Noise is set to a non-existent texture resulting in no clouds until a noise texture is selected.
+Fixed: Noise Image dropdown not showing which noise image is currently selected.
+Fixed: Scrolllist items never properly creating Scrolllist cells inside them.
+Fixed: Some people not able to login after the max password character increase.
+Removed: Unnecessary control target.
+Misc: Added some examples to scroll_list and how to fill them.
+Misc: Fixed a few graphics panel inconsistencies.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.6.7
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="273"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
