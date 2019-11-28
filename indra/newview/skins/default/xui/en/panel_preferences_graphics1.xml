@@ -4363,7 +4363,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       decimal_digits="0"
       can_edit_text="true"
       follows="left|top"
-      height="15"
+      height="14"
       increment="1"
       initial_value="10"
 		tool_tip="&lt;icon&gt;Stat_Dot5&lt;/icon&gt; Performance  		
@@ -4399,7 +4399,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       decimal_digits="1"
       can_edit_text="true"
       follows="left|top"
-      height="15"
+      height="14"
       increment="0.1"
       initial_value="1"
 		tool_tip="This option controls the brightness of reflections on shiny surfaces from Screen Space Reflections."
@@ -4410,7 +4410,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="10"
       min_val="0.1"
       name="RenderSSRBrightness"
-      top_pad="1"
+      top_pad="2"
       width="321" />
       <button
  follows="left|top"
