@@ -755,7 +755,7 @@ std::string LLWLParamManager::getSysDir(S32 viewer)
 	{
 		sys_dir = gDirUtilp->getExpandedFilename(LL_PATH_FS, "");
 	}
-	else if (viewer == 2 && gSavedSettings.getBOOL("LoadPresetsAlcheemy"))
+	else if (viewer == 2 && gSavedSettings.getBOOL("LoadPresetsAlchemy"))
 	{
 		sys_dir = gDirUtilp->getExpandedFilename(LL_PATH_AL, "");
 	}
