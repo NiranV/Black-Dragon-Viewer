@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="885"
+     height="900"
      name="ui_panel"
      top="0"
      left="0"
@@ -707,6 +707,17 @@ width="510">
 	    top_pad="15"
 	    width="256" />
 		
+  <check_box
+	    control_name="BasicUITooltips"
+	    height="16"
+	    initial_value="true"
+	    label="Enable User Interface Tooltips"
+		tool_tip="This option toggles whether tooltips should be shown when hovering the mouse over any interface widget such as a button, checkbox, slider and so on."
+	    layout="topleft"
+	    left="10"
+	    name="BasicUITooltips"
+	    top_pad="0"
+	    width="256" />
 		<check_box
 	    control_name="ShowHoverTips"
 	    height="16"
