@@ -860,9 +860,6 @@ void BDFloaterPoser::onJointControlsRefresh()
 	}
 
 	getChild<LLButton>("toggle_bone")->setEnabled(item && is_posing && index == JOINTS);
-	//getChild<LLButton>("reset_bone_rot")->setEnabled(item && is_posing && index == JOINTS);
-	//getChild<LLButton>("reset_bone_pos")->setEnabled(item && is_posing);
-	//getChild<LLButton>("reset_bone_scale")->setEnabled(item && is_posing);
 	getChild<LLButton>("activate")->setValue(is_posing);
 	getChild<LLUICtrl>("pose_name")->setEnabled(is_posing);
 	getChild<LLUICtrl>("save_poses")->setEnabled(is_posing);
@@ -883,23 +880,10 @@ void BDFloaterPoser::onJointControlsRefresh()
 	//     unless we are editing attachment bones, rotations on the other hand are only
 	//     enabled when editing joints.
 	LLTabContainer* modifier_tabs = getChild<LLTabContainer>("modifier_tabs");
+	modifier_tabs->setEnabled(item && is_posing);
 	modifier_tabs->enableTabButton(0, (item && is_posing && index == JOINTS));
-	//getChild<LLUICtrl>("rotation_panel")->setEnabled(item && is_posing && index == JOINTS);
-	//mRotationSliders[VX]->setEnabled(item && is_posing && index == JOINTS);
-	//mRotationSliders[VY]->setEnabled(item && is_posing && index == JOINTS);
-	//mRotationSliders[VZ]->setEnabled(item && is_posing && index == JOINTS);
-
-	modifier_tabs->enableTabButton(0, (item && is_posing && can_position));
-	//getChild<LLUICtrl>("position_panel")->setEnabled(item && is_posing && can_position);
-	//mPositionSliders[VX]->setEnabled(is_posing && can_position);
-	//mPositionSliders[VY]->setEnabled(is_posing && can_position);
-	//mPositionSliders[VZ]->setEnabled(is_posing && can_position);
-
-	modifier_tabs->enableTabButton(0, (item && is_posing && index != ATTACHMENT_BONES));
-	//getChild<LLUICtrl>("scale_panel")->setEnabled(item && is_posing && index != ATTACHMENT_BONES);
-	//mScaleSliders[VX]->setEnabled(item && is_posing);
-	//mScaleSliders[VY]->setEnabled(item && is_posing);
-	//mScaleSliders[VZ]->setEnabled(item && is_posing);
+	modifier_tabs->enableTabButton(1, (item && is_posing && can_position));
+	modifier_tabs->enableTabButton(2, (item && is_posing && index != ATTACHMENT_BONES));
 
 	F32 max_val = is_pelvis ? 20.f : 1.0f;
 	mPositionSliders[VX]->setMaxValue(max_val);
