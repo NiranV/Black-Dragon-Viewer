@@ -102,6 +102,19 @@ Hover your mouse over the options for more help.
    image_selected="Transparent"
    image_unselected="Transparent"
    width="72"/>
+    <button
+   label="⌊Can't join⌉"
+   name="btn_no_join"
+   layout="topleft"
+   follows="top|right"
+   top_delta="1"
+   left_delta="-3"
+   halign="left"
+   enabled="false"
+   visible="false"
+   image_selected="Transparent"
+   image_unselected="Transparent"
+   width="72"/>
     <texture_picker
      default_image_name="Generic_Group_Large"
      follows="left|top"

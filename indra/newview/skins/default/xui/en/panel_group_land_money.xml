@@ -423,7 +423,7 @@
              layout="topleft"
              left="4"
              right="-6"
-             max_lengt="4096"
+             max_length="4096"
              name="group_money_details_text"
              top="2"
              width="293"
