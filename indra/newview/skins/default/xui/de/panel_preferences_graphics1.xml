@@ -1,479 +1,397 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="Grafik" name="Display panel"/>
-<!--	<scroll_container name="gfx_scroll">
-		<panel name="gfx_scroll_panel">
-			<layout_stack name="gfx_stack">
-				<layout_panel name="title_layout_panel">
-					<text name="general_label">
-						Viewer Optionen:
-					</text>
-				</layout_panel>
-				<layout_panel name="viewer_layout_panel">
-				<text name="Font DPI:">
-					Schriftgröße:
-				</text>
-				<text name="InterfaceSize">
-					Oberflächengröße:
-				</text>
-				<radio_group name="UIScaleFactor">
-				<radio_item label="Klein" name="0"/>
-				<radio_item label="Mittel" name="1"/>
-				<radio_item label="Groß" name="2"/>
-				</radio_group>
-				<checkbox label="Benutzerdefinierter Speicher" tool_tip="Schaltet um zwischen einer völlig freien benutzerdefinierten Verteilung von Speicher oder der normalen automatischen Szenenspeicher Verwaltung." name="CustomSystemMemory"/>
-				<checkbox label="Vollbild Fenstermodus" tool_tip="Schaltet zwischen Vollbild Fenstermodus und normalem Fenstermodus um." name="FullscreenWindow"/>
-				<checkbox label="Automatisches Bildformat" tool_tip="Wählt das passenste Bildformat automatisch aus" name="FullAspect"/>
-				<check_box label="Erlaube Textur Komprimierung" name="CompressTextures" tool_tip="Kann zu FPS einbrüchen führen wärend Texturen laden aber sollte den RAM verbrauch minimieren"/>
-				<slider label="Texturspeicher (MB)" name="SystemMemory"/>
-				<slider label="Texturspeicher (MB)" name="VideoMemory"/>
-				<slider label="Szenenspeicher (MB)" name="VideoMemory2"/>
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<text name="lod_label">
-						Qualität Optionen:
-					</text>
-				</layout_panel>
-				<layout_panel name="lod_layout_panel">
-					<checkbox label="Nutze dynamischen Detailgrad" tool_tip="Dynamisches LOD (Level of Detail/ Detailstufen) sorgt dafür das auf Distanz Objekte nahezu unbemerkt mit weniger Details dargestellt werden , das kann ein wenig Geschwindigkeit geben" name="DynamicLOD"/>
-					<checkbox label="Erlaube Avatar Physik Simulationen" tool_tip="Simuliert die natürlichen Physikalischen bewegungen des Körpers" name="AvatarPhysics"/>
-					<check_box label="Wasser Mip-Maps" name="MipMaps"/>
-					<text name="ObjectLOD">
-						Objekt Qualität:
-					</text>
-					<text name="GlowResolution">
-						Nachbearbeitung:
-					</text>
-					<text name="TerrainTexQuality">
-						Bodentextur Qualität:
-					</text>
-					<text name="FlexiLOD">
-						Flexi Qualität:
-					</text>
-					<text name="TreeLOD">
-						Baum Qualität:
-					</text>
-					<text name="AvatarLOD">
-						Avatar Qualität:
-					</text>
-					<text name="TerrainLOD">
-						Boden Qualität:
-					</text>
-					<text name="SkyLOD">
-						Himmel Qualität:
-					</text>
-					<text name="Reflectiontext">
-						Reflektionsqualität:
-					</text>
-					<text name="ReflectionAmount">
-						Reflektionsanzahl:
-					</text>
-					<text name="AVPhys">
-						Avatar Physik:
-					</text>
-					<radio_group name="AvatarCountDrop">
-					<radio_item label="Wenig" name="0"/>
-					<radio_item label="Ein paar" name="1"/>
-					<radio_item label="Normal viele*" name="2"/>
-					<radio_item label="Mehr" name="3"/>
-					<radio_item label="Viele" name="4"/>
-					<radio_item label="Haufenweise" name="5"/>
-					</radio_group>
-					<radio_group name="RenderGlowResolutionPow">
-					<radio_item label="Niedrig" name="0"/>
-					<radio_item label="Normal" name="0"/>
-					<radio_item label="Hoch" name="0"/>
-					</radio_group>
-					<radio_group name="RenderTerrainScale">
-					<radio_item label="Niedrigste" name="0"/>
-					<radio_item label="Niedrig" name="0"/>
-					<radio_item label="Normal" name="2"/>
-					<radio_item label="Hoch" name="2"/>
-					<radio_item label="Sehr Hoch" name="2"/>
-					<radio_item label="Ultra" name="2"/>
-					</radio_group>
-					<radio_group name="RenderVolumeLODFactor">
-					<radio_item label="Niedrigste" name="0"/>
-					<radio_item label="Niedrig" name="0"/>
-					<radio_item label="Normal" name="2"/>
-					<radio_item label="Hoch" name="2"/>
-					<radio_item label="Sehr Hoch" name="2"/>
-					<radio_item label="Ultra" name="2"/>
-					</radio_group>
-					<radio_group name="FlexiLODDrop">
-					<radio_item label="Sehr Niedrig" name="0"/>
-					<radio_item label="Niedrig" name="0"/>
-					<radio_item label="Normal" name="2"/>
-					<radio_item label="Hoch" name="2"/>
-					<radio_item label="Sehr Hoch*" name="2"/>
-					</radio_group>
-					<radio_group name="RenderTreeLODFactor">
-					<radio_item label="Niedrigste" name="0"/>
-					<radio_item label="Niedrig" name="0"/>
-					<radio_item label="Normal" name="2"/>
-					<radio_item label="Hoch" name="2"/>
-					<radio_item label="Sehr Hoch" name="2"/>
-					<radio_item label="Ultra" name="2"/>
-					</radio_group>
-					<radio_group name="RenderAvatarLODFactor">
-					<radio_item label="Niedrigste" name="0"/>
-					<radio_item label="Niedrig" name="0"/>
-					<radio_item label="Normal" name="2"/>
-					<radio_item label="Hoch" name="2"/>
-					<radio_item label="Sehr Hoch" name="2"/>
-					</radio_group>
-					<radio_group name="RenderTerrainLODFactor">
-					<radio_item label="Niedrigste" name="0"/>
-					<radio_item label="Niedrig" name="0"/>
-					<radio_item label="Normal" name="2"/>
-					<radio_item label="Hoch" name="2"/>
-					<radio_item label="Sehr Hoch" name="2"/>
-					<radio_item label="Ultra" name="2"/>
-					</radio_group>
-					<radio_group name="WLSkyDetail">
-					<radio_item label="Niedrigste" name="0"/>
-					<radio_item label="Niedrig" name="0"/>
-					<radio_item label="Normal" name="0"/>
-					<radio_item label="Hoch" name="0"/>
-					<radio_item label="Sehr Hoch" name="0"/>
-					<radio_item label="Ultra" name="0"/>
-					</radio_group>
-					<radio_group name="RenderWaterRefResolution">
-					<radio_item label="Niedrigste" name="0"/>
-					<radio_item label="Niedrig" name="0"/>
-					<radio_item label="Normal" name="0"/>
-					<radio_item label="Hoch" name="0"/>
-					<radio_item label="Sehr Hoch" name="0"/>
-					<radio_item label="Ultra" name="0"/>
-					</radio_group>
-					<radio_group name="RenderAvatarPhysicsLODFactor">
-					<radio_item label="Niedrigste" name="0"/>
-					<radio_item label="Niedrig" name="0"/>
-					<radio_item label="Normal" name="2"/>
-					<radio_item label="Hoch" name="2"/>
-					<radio_item label="Sehr Hoch" name="2"/>
-					<radio_item label="Ultra" name="2"/>
-					</radio_group>
-					<radio_group name="RenderReflectionDetail">
-					<radio_item label="Keine" name="0"/>
-					<radio_item label="Terrain" name="0"/>
-					<radio_item label="Objekte" name="0"/>
-					<radio_item label="Avatare" name="0"/>
-					<radio_item label="Alle" name="0"/>
-					</radio_group>
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<text name="performance_label">
-						Rendering Optionen:
-					</text>
-				</layout_panel>
-				<layout_panel name="performance_layout_panel">
-					<checkbox label="Angehängte Partikel anzeigen" tool_tip="Schaltet angehängte Partikel von Objekten aus" name="attached_particles"/>
-					<checkbox label="Nutze Objekt-Objekt Verdeckung" tool_tip="Verdeckung sorgt dafür das Objekte hinter Objekten versteckt werden (nicht gerendert) um so Performance zu sparen , sollte bei aktiven Deferred Renderer ausgeschaltet werden!" name="UseOcclusion"/>
-					<check_box label="Nutze hintere Clippingebene" name="RenderUseFarClip"/>
-					<check_box label="Nutze Plugin Read-Thread" name="PluginUseReadThread"/>
-					<check_box label="Nutze Stream-Rendering" name="vbostream"/>
-					<check_box label="Erlaube Anisotropischer Filter" name="ani"/>
-					<check_box label="Ungeladene Avatare anzeigen" name="UnloadedAvatars"/>
-					<slider label="Avatare > AR derendern:" name="RenderAvatarMaxComplexity"/>
-					<slider label="Avatare > m² derendern:" name="RenderAutoMuteSurfaceAreaLimit"/>
-					<slider label="Flächen > m² verstecken:" name="RenderAutoHideSurfaceAreaLimit"/>
-					<slider name="FarClip" label="Sichtweite:"/>
-					<slider name="MaxParticles" label="Partikelanzahl:"/>
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<text name="vertex_label">
-						Windlight Optionen:
-					</text>
-				</layout_panel>
-				<layout_panel name="vertex_layout_panel">
-					<slider label="Wiederholungen:" name="Iterations"/>
-					<slider label="Stärke:" name="Strength"/>
-					<slider label="Helligkeit:" name="MinLuminance"/>
-					<slider label="Wärmeeffekt:" name="Warmth"/>
-					<slider label="Leuchtdicke:" name="Width"/>
-					<slider label="Max. Leuchtalpha:" name="MaxAlpha"/>
-					<slider label="Luminanz Rot:" name="RenderGlowLumWeights_X"/>
-					<slider label="Luminanz Grün:" name="RenderGlowLumWeights_Y"/>
-					<slider label="Luminanz Blau:" name="RenderGlowLumWeights_Z"/>
-					<slider label="Wärmegew. Rot:" name="RenderGlowWarmthWeights_X"/>
-					<slider label="Wärmegew. Grün:" name="RenderGlowWarmthWeights_Y"/>
-					<slider label="Wärmegew. Blau:" name="RenderGlowWarmthWeights_Z"/>
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<checkbox label="Deferred Shading (Deferred Rendering)" tool_tip="Der Deferred Renderer sorgt für noch realistischere Umgebungsbeläuchtung , zudem können Schatten angezeigt werden und Projektionslichter werden möglich" name="Deferred"/>
-				</layout_panel>
-				<layout_panel name="deferred_layout_panel">
-					<checkbox label="Angehängte Lichter anzeigen" tool_tip="Schaltet angehängte Lichtquellen aus , z.B Facelights" name="RenderAttachedLights"/>
-					<checkbox label="Deferred Lichter anzeigen" tool_tip="Schaltet die Lichter im Deferred Renderer ein oder aus" name="RenderLocalLights"/>
-					<text name="Antialiasing:">
-						Kantenglättung:
-					</text>
-					<radio_group name="RenderFSAASamples">
-					<radio_item label="Deaktiviert" name="0"/>
-					<radio_item label="FXAA" name="0"/>
-					</radio_group>
-					<text name="BumpStrength">
-						Normalmap Stärke:
-					</text>
-					<text name="ShadowAmount">
-						Schatten:
-					</text>
-					<radio_group name="RenderShadowDetail">
-					<radio_item label="Keine" name="0"/>
-					<radio_item label="Sonne" name="0"/>
-					<radio_item label="Projektoren" name="0"/>
-					</radio_group>
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<checkbox label="Umgebungsverdeckung" tool_tip="Umgebungsverdeckung oder auch SSAO genannt sorgt für mehr Realität indem Schatten weichgezeichnet werden und eine Subtile Beleuchtung entstehen kann (dunkle Rillen)" name="UseSSAO"/>
-				</layout_panel>
-				<layout_panel name="ao_layout_panel">
-					<slider label="SSAO Stärke:" name="SSAOEffect"/>
-					<slider label="SSAO Größe:" name="SSAOScale"/>
-					<slider label="SSAO Max. Größe:" name="SSAOMaxScale"/>
-					<slider label="SSAO Faktor:" name="SSAOFactor"/>
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<checkbox label="Tiefenunschärfe" tool_tip="Simuliert Tiefenschärfe Effekte wie bei einer Kamera" name="UseDoF"/>
-				</layout_panel>
-				<layout_panel name="dof_layout_panel">
-					<slider label="Sichtfeld (°):" name="CameraFOV"/>
-					<slider label="Blendenzahl:" name="CameraFNum"/>
-					<slider label="Brennweite (mm):" name="CameraFocal"/>
-					<slider label="Bildverhältnis:" name="CameraAspect"/>
-					<slider label="Zerstreuungskreis:" name="CameraCoF"/>
-					<slider label="Fokusübergangszeit (s):" name="CameraFocusTrans"/>
-					<slider label="Auflösung:" name="CameraDoFRes"/>
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<checkbox label="Bewegungsunschärfe" name="MotionBlur"/>
-				</layout_panel>
-				<layout_panel name="motionblur_layout_panel">
-					
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<checkbox label="Volumetrische Beleuchtung" name="RenderGodrays"/>
-				</layout_panel>
-				<layout_panel name="godrays_layout_panel">
-					
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<text name="post_label">
-						Nachbearbeitungseffekte:
-					</text>
-				</layout_panel>
-				<layout_panel name="post_layout_panel">
-					
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<checkbox label="Dynamikkompression (Tone Mapping)" tool_tip="Schaltet Tone Mapping (Dynamikkompression) zusätzlich zur Gamma Korrektur hinzu , benötigt wird Gamma Korrektur" name="ToneMapping"/>
-				</layout_panel>
-				<layout_panel name="tonemapping_layout_panel">
-					<text name="gamma_label">
-						Gamma Korrektur Einstellungen:
-					</text>
-					<slider label="Gamma Rot:" name="ExodusRenderGamma_X"/>
-					<slider label="Gamma Grün:" name="ExodusRenderGamma_Y"/>
-					<slider label="Gamma Blau:" name="ExodusRenderGamma_Z"/>
-					<text name="color_corr_label">
-						Farbkorrektur Typ:
-					</text>
-					<slider label="Belichtung Rot:" name="ExodusRenderExposure_X"/>
-					<slider label="Belichtung Grün:" name="ExodusRenderExposure_Y"/>
-					<slider label="Belichtung Blau:" name="ExodusRenderExposure_Z"/>
-					<slider label="Versatz Rot:" name="ExodusRenderOffset_X"/>
-					<slider label="Versatz Grün:" name="ExodusRenderOffset_Y"/>
-					<slider label="Versatz Blau:" name="ExodusRenderOffset_Z"/>
-					<text name="grading_label">
-						Farbkorrektur Typ:
-					</text>
-					<text name="tone_label">
-						Tone Mapping Einstellungen:
-					</text>
-					<slider label="Tone Belichtung:" name="ExodusRenderToneExposure"/>
-					<text name="tone_style_label">
-						Tone Mapping Typ:
-					</text>
-				</layout_panel>
-				<layout_panel name="title_layout_panel">
-					<text name="vignette_label">
-						Vignettierung:
-					</text>
-				</layout_panel>
-				<layout_panel name="vignette_layout_panel">
-					<slider label="Menge:" name="ExodusRenderVignette_X"/>
-					<slider label="Stärke:" name="ExodusRenderVignette_Y"/>
-					<slider label="Multiplikator:" name="ExodusRenderVignette_Z"/>
-				</layout_panel>-->
-			<!--	
-			<text name="gfx_preset_label">
-				Grafik Voreinstellung:
-			</text>
-			<button label="Speichern" name="preset_save"/>
-			<button label="Laden" name="preset_load"/>
-			<checkbox label="'Advanced Materials' anzeigen" tool_tip="Erlaubt Bumpmapping (Reliefzuordnung) und Glanzeffekte die das Licht in der Umgebung reflektieren" name="BumpShiny"/>
-			<checkbox label="Vertex Shader" tool_tip="Erlaubt erweiterte Himmel/Wasser und Leuchteffekte auch bekannt als Windlight" name="VertexShader"/>
-			<checkbox label="Atmosphären Shader" tool_tip="Fügt dem Vertex Shader noch mehr Realismus hinzu in dem Textur Wolken eingesetzt werden und die Beleuchtung etwas realistischer berechnet wird" name="WindLightUseAtmosShaders"/>
-			<checkbox label="Animierte Bäume" tool_tip="Animierte Bäume bewegt Bäume im Wind um ihnen Leben einzuhauchen , aber Achtung diese Option lässt selbst den härtesten High End PC brechen wie ein Zahnstocher" name="AnimateTrees"/>
-			<checkbox label="Zeige Transparentwasser" tool_tip="Stellt Wasser wahlweise Transparent dar, oder wenn deaktiviert , mit einer einfachen nicht transparenten Textur" name="RenderTransparentWater"/>
-			<checkbox label="Nutze einfache Avatare" tool_tip="Ersetzt zuviele Avatare durch 2D Sprites (Texturen) um an Geschwindigkeit zu gewinnen" name="AvatarImpostors"/>
-			<checkbox label="Erlaube Hautberechnung" tool_tip="Hardware Hautberechnung sorgt für alle Vorbereitungen um Avatar Kleidung zu Simulieren (Kleidersimulation) und kann zudem auf manchen Systemen zu Geschwindigkeitszuwachs führen" name="AvatarVertexProgram"/>
-			<checkbox label="Erlaube Kleidersimulation erlauben" tool_tip="Simuliert Kleiderbewegungen im Wind und durch Bewegungen , funktioniert mit aktiven Deferred Renderer nicht mehr" name="AvatarCloth"/>
-			<checkbox label="Leuchteffekte" tool_tip="Schaltet Leuchteffekte (Glow) ein oder aus" name="Glow"/>
-			<checkbox label="High Precision Renderer" tool_tip="Schaltet den Deferred Renderer auf Hochprezisions Floating Pointers um um so ein sauberes , stufenloseres Bild zu erzeugen" name="HighPrecision"/>
-			<checkbox label="Unterwassertrübung" tool_tip="Simuliert mithilfe von Tiefenschärfe einen Unterwasser Sicht-Verschlechterungs Effekt" name="RenderUWDistortion"/>
-			<text name="QualitySpeed">
-				Gesamtqualität (!):
-			</text>
-			<text name="MaxAvatars">
-				Max. Avataranzahl:
-			</text>
-			<text name="LightAmount">
-				Lichter Anzahl:
-			</text>
-			
-			<text name="ShadowQuality">
-				Schatten Qualität:
-			</text>
-			
-			
-			<text name="SSAOStyleText">
-				SSAO Typ:
-			</text>
-			
-			<radio_group name="QualityPerformanceSelection">
-			<radio_item label="Niedrig" name="0"/>
-			<radio_item label="Mittel" name="1"/>
-			<radio_item label="Hoch" name="2"/>
-			<radio_item label="Ultra" name="3"/>
-			</radio_group>
-			<radio_group name="MaxPartCountDrop">
-			<radio_item label="Keine" name="0"/>
-			<radio_item label="Wenige" name="1"/>
-			<radio_item label="Normal viele" name="2"/>
-			<radio_item label="Mehr" name="3"/>
-			<radio_item label="Noch Mehr" name="4"/>
-			<radio_item label="Dutzende*" name="5"/>
-			</radio_group>
-			
-			<radio_group name="ShadowResDrop">
-			<radio_item label="Sehr Schlecht" name="0"/>
-			<radio_item label="Unscharf" name="1"/>
-			<radio_item label="Normal" name="2"/>
-			<radio_item label="Scharf*" name="3"/>
-			<radio_item label="Sehr Scharf" name="4"/>
-			<radio_item label="Super Scharf" name="5"/>
-			<radio_item label="Extrem Scharf" name="6"/>
-			</radio_group>
-			
-			
-			
-			<radio_group name="Lightcount">
-			<radio_item label="Nur Sonne/Mond" name="0"/>
-			<radio_item label="Viele Lichter" name="1"/>
-			<radio_item label="Alle Lichter" name="2"/>
-			</radio_group>
-			<button label="Zurücksetzen" name="Defaults"/>
-			
-		
-			
-			
-	<check_box label="Keine Sounds/Texturen vorausladen" name="NoPreload"/>
-	
-	
-	
-	
-	<check_box label="Nutze volles Gammaspektrum" name="RenderGammaFull"/>
-	<check_box label="VBO glMapBufferARB deaktivieren (Speicher hack)" name="vbomembuffer"/>
-	<check_box label="Erlaube OpenGL Vertex Buffer" name="vbo"/>
-	<slider label="Anwendungszurückhaltezeit:" name="BackgroundYieldTime"/>
-	<spinner label="Auflösungsteiler:" name="resdivisor"/>
-	<text name="AVMC">
-		Visuelle Auto-ignorier Einstellungen:
-
-This function will allow you to set a size limit in KB and surface size in m² for objects and avatars,
-if an avatat hits the overall surface or size limit, the whole avatar will be visually muted,
-your own included, if the whole object or a prim of that object linkset hits the limit the whole object
-will be derendered, your HUDs included. Use the Avatar Render Cost option in Usefull Functions to get
-an idea about what your and all the other avatars consume in KB/m². 0 = Unlimited.
-	</text>
-	<text name="AVHC">
-		Visuelle Auto-derender Einstellungen (Anti-Sculpt-crash):
-
-This function allows you to set a surface size in m² at which single objects or whole linksets
-should be derendered, this is good for sculpt crashers or very expensive single prim/sculpt objects
-that might otherwise kill your performance, keep in mind that most objects are pending between
-0.1 and 20m² depending on your size and how much textured faces an object has,
-meshes will also count towards this, especially rigged meshes will probably hit the 20m² limit fast.
-A good default for crash protection therefor is about 100-200m² as it shouldnt derender anything
-important but prevents you from seeing those crashers. 0 = Unlimited.
-	</text>
-	<text name="BlurText">
-		Schattenunschärfe Optionen:
-	</text>
-	<slider label="Schattenunschärfe:" name="BlurSize"/>
-	<slider label="Unschärfe auf Distanz:" name="BlurDistance"/>
-	<text name="SSAOText">
-		SSAO Optionen:
-	</text>
-	<text name="DapplingText">
-		Zufallsfleckung Optionen:
-	</text>
-	<slider label="Fleckenstärke:" name="RenderMacroNoiseStrength"/>
-	<text name="DoFText">
-		Tiefenschärfe Optionen:
-	</text>
-	
-	<slider label="Wassertrübungssstärke:" name="CameraUWD"/>
-	
-	<text name="GlowOpts">
-		Leuchtoptionen:
-	</text>
-	
-	<check_box label="Parzellen Auswahlumrandungen anzeigen" name="RenderParcelSelection"/>
-	<check_box label="Privaten Speicher-Pool aktivieren" name="MemoryPrivatePoolEnabled"/>
-	<check_box label="Pulsierender Markierungsstrahl" name="CheesyBeacon"/>
-	<check_box label="Keine Scriptpartikel" name="NoScriptLights"/>
-	<check_box label="Speicher-Pool Fehlschlagsunterbindung" name="MemoryFailurePreventionEnabled"/>
-	<spinner label="Maximale Mesh Prozesse:" name="MeshMaxConcurrentRequests"/>
-	<spinner label="Minimum Mesh Prozesse:" name="MeshThreadCount"/>
-	<slider label="Aktiv:" name="active"/>
-	<slider label="Inaktiv:" name="inactive"/>
-	<slider label="Größe (MB):" name="sizemb"/>
-	<text name="floater_opacity">
-		Fenster Transparenz
-	</text>
-	<text name="MemorySetting">
-		Privater Speicher-Pool Einstellungen
-	</text>
-	<text name="requires_restart_label">
-		(Neustart erforderlich)
-	</text>
-	<text name="requires_restart_label2">
-		(Neustart erforderlich)
-	</text>
-	<text name="TextureOptions">
-		Textur Optionen:
-	</text>
-	<check_box label="HTTP-Get Texturtechnik verwenden" name="HTTPGet"/>
-	<check_box label="Textur Atlas (!)" name="Atlas"/>
-	<check_box label="Texturen Animieren" name="AnimTextures"/>
-	<check_box label="Texturen Protokollieren (!)" name="TexAudit"/>
-	<check_box label="Voll Auflösende Texturen (!)" name="FullResTextures"/>
-	
-	<check_box label="Auto.-Normal Alpha Masken" name="ND Alpha"/>
-	<check_box label="Auto.-Deferred Alpha Masken" name="DEF Alpha"/>
-	<slider label="Deferred Alpha Weichzeichnen" name="RenderDeferredAlphaSoften"/>
-	<text name="TerrainDetailText">
-		Terraindetails:
-	</text>
-	
-	<radio_group name="TerrainDetailRadio">
-		<radio_item label="Niedrig" name="0"/>
-		<radio_item label="Hoch" name="2"/>
-	</radio_group>
-	<slider label="Auflösungsteiler" name="resdivisor"/>-->
-			<!--</layout_stack>
-		</panel>
-	</scroll_container>
-</panel>-->
+<panel label="Grafik" name="Display panel">
+    <layout_stack name="display_multi_stack">
+        <layout_panel name="display_multi_layout">
+            <scroll_container name="gfx_scroll">
+                <panel name="gfx_scroll_panel">
+                    <layout_stack name="gfx_stack">
+                        <layout_panel name="title_layout_panel">
+                            <text name="general_label">
+                                Vieweroptionen:
+                            </text>
+                        </layout_panel>
+                        <layout_panel name="viewer_layout_panel">
+                        <text name="Font DPI:">
+                            Schriftgröße:
+                        </text>
+                        <text name="InterfaceSize">
+                            Oberflächengröße:
+                        </text>
+                        <radio_group name="UIScaleFactor">
+                        <radio_item label="Klein" name="0"/>
+                        <radio_item label="Mittel" name="1"/>
+                        <radio_item label="Groß" name="2"/>
+                        <radio_item label="Riesig (4K)" name="3"/>
+                        </radio_group>
+                        <checkbox label="Benutzerdefinierter Speicher" tool_tip="Schaltet um zwischen einer völlig freien benutzerdefinierten Verteilung von Speicher oder der normalen automatischen Szenenspeicher Verwaltung." name="CustomSystemMemory"/>
+                        <checkbox label="Randloser Fenstermodus" tool_tip="Schaltet zwischen Vollbild Fenstermodus und normalem Fenstermodus um." name="FullscreenWindow"/>
+                        <checkbox label="Automatisches Bildformat" tool_tip="Wählt das passenste Bildformat automatisch aus" name="FullAspect"/>
+                        <text name="separator_label">
+                            Texturspeicher:
+                        </text>
+                        <check_box label="Erlaube Textur Komprimierung" name="CompressTextures" tool_tip="Kann zu FPS einbrüchen führen wärend Texturen laden aber sollte den RAM verbrauch minimieren"/>
+                        <check_box label="Automatische Speicherverwaltung" name="AutomaticMemoryManagement" tool_tip=""/>
+                        <slider label="Systemspeicher (MB)" name="SystemMemory"/>
+                        <slider label="Texturspeicher (MB)" name="VideoMemory"/>
+                        <slider label="Szenenspeicher (MB)" name="SceneMemory"/>
+                        <text name="GPUString">
+                            Grafikkarte: [GPU_STRING]
+                        </text>
+                        <text name="MemoryUsage">
+                            Speicher: [USED_MEM] MB/[MAX_MEM] MB
+                        </text>
+                        </layout_panel>
+                        <layout_panel name="title_layout_panel">
+                            <text name="lod_label">
+                                Qualitätsoptionen:
+                            </text>
+                        </layout_panel>
+                        <layout_panel name="lod_layout_panel">
+                            <checkbox label="Nutze dynamischen Detailgrad" tool_tip="Dynamisches LOD (Level of Detail/ Detailstufen) sorgt dafür das auf Distanz Objekte nahezu unbemerkt mit weniger Details dargestellt werden , das kann ein wenig Geschwindigkeit geben" name="DynamicLOD"/>
+                            <checkbox label="Erlaube Avatar Physik Simulationen" tool_tip="Simuliert die natürlichen Physikalischen bewegungen des Körpers" name="AvatarPhysics"/>
+                            <check_box label="Wasser Mip-Maps" name="MipMaps"/>
+                            <text name="ObjectLOD">
+                                Objekt Qualität:
+                            </text>
+                            <text name="GlowResolution">
+                                Nachbearbeitung:
+                            </text>
+                            <text name="TerrainTexQuality">
+                                Bodentextur Qualität:
+                            </text>
+                            <text name="FlexiLOD">
+                                Flexi Qualität:
+                            </text>
+                            <text name="TreeLOD">
+                                Baum Qualität:
+                            </text>
+                            <text name="AvatarLOD">
+                                Avatar Qualität:
+                            </text>
+                            <text name="TerrainLOD">
+                                Boden Qualität:
+                            </text>
+                            <text name="SkyLOD">
+                                Himmel Qualität:
+                            </text>
+                            <text name="Reflectiontext">
+                                Reflektionsqualität:
+                            </text>
+                            <text name="ReflectionAmount">
+                                Reflektionsanzahl:
+                            </text>
+                            <text name="AVPhys">
+                                Avatar Physik:
+                            </text>
+                            <radio_group name="AvatarCountDrop">
+                            <radio_item label="Wenig" name="0"/>
+                            <radio_item label="Ein paar" name="1"/>
+                            <radio_item label="Normal viele*" name="2"/>
+                            <radio_item label="Mehr" name="3"/>
+                            <radio_item label="Viele" name="4"/>
+                            <radio_item label="Haufenweise" name="5"/>
+                            </radio_group>
+                            <radio_group name="RenderGlowResolutionPow">
+                            <radio_item label="Niedrig" name="0"/>
+                            <radio_item label="Normal" name="0"/>
+                            <radio_item label="Hoch" name="0"/>
+                            </radio_group>
+                            <radio_group name="RenderTerrainScale">
+                            <radio_item label="Niedrigste" name="0"/>
+                            <radio_item label="Niedrig" name="0"/>
+                            <radio_item label="Normal" name="2"/>
+                            <radio_item label="Hoch" name="2"/>
+                            <radio_item label="Sehr Hoch" name="2"/>
+                            <radio_item label="Ultra" name="2"/>
+                            </radio_group>
+                            <radio_group name="RenderVolumeLODFactor">
+                            <radio_item label="Niedrigste" name="0"/>
+                            <radio_item label="Niedrig" name="0"/>
+                            <radio_item label="Normal" name="2"/>
+                            <radio_item label="Hoch" name="2"/>
+                            <radio_item label="Sehr Hoch" name="2"/>
+                            <radio_item label="Ultra" name="2"/>
+                            </radio_group>
+                            <radio_group name="FlexiLODDrop">
+                            <radio_item label="Sehr Niedrig" name="0"/>
+                            <radio_item label="Niedrig" name="0"/>
+                            <radio_item label="Normal" name="2"/>
+                            <radio_item label="Hoch" name="2"/>
+                            <radio_item label="Sehr Hoch*" name="2"/>
+                            </radio_group>
+                            <radio_group name="RenderTreeLODFactor">
+                            <radio_item label="Niedrigste" name="0"/>
+                            <radio_item label="Niedrig" name="0"/>
+                            <radio_item label="Normal" name="2"/>
+                            <radio_item label="Hoch" name="2"/>
+                            <radio_item label="Sehr Hoch" name="2"/>
+                            <radio_item label="Ultra" name="2"/>
+                            </radio_group>
+                            <radio_group name="RenderAvatarLODFactor">
+                            <radio_item label="Niedrigste" name="0"/>
+                            <radio_item label="Niedrig" name="0"/>
+                            <radio_item label="Normal" name="2"/>
+                            <radio_item label="Hoch" name="2"/>
+                            <radio_item label="Sehr Hoch" name="2"/>
+                            </radio_group>
+                            <radio_group name="RenderTerrainLODFactor">
+                            <radio_item label="Niedrigste" name="0"/>
+                            <radio_item label="Niedrig" name="0"/>
+                            <radio_item label="Normal" name="2"/>
+                            <radio_item label="Hoch" name="2"/>
+                            <radio_item label="Sehr Hoch" name="2"/>
+                            <radio_item label="Ultra" name="2"/>
+                            </radio_group>
+                            <radio_group name="WLSkyDetail">
+                            <radio_item label="Niedrigste" name="0"/>
+                            <radio_item label="Niedrig" name="0"/>
+                            <radio_item label="Normal" name="0"/>
+                            <radio_item label="Hoch" name="0"/>
+                            <radio_item label="Sehr Hoch" name="0"/>
+                            <radio_item label="Ultra" name="0"/>
+                            </radio_group>
+                            <radio_group name="RenderWaterRefResolution">
+                            <radio_item label="Niedrigste" name="0"/>
+                            <radio_item label="Niedrig" name="0"/>
+                            <radio_item label="Normal" name="0"/>
+                            <radio_item label="Hoch" name="0"/>
+                            <radio_item label="Sehr Hoch" name="0"/>
+                            <radio_item label="Ultra" name="0"/>
+                            </radio_group>
+                            <radio_group name="RenderAvatarPhysicsLODFactor">
+                            <radio_item label="Niedrigste" name="0"/>
+                            <radio_item label="Niedrig" name="0"/>
+                            <radio_item label="Normal" name="2"/>
+                            <radio_item label="Hoch" name="2"/>
+                            <radio_item label="Sehr Hoch" name="2"/>
+                            <radio_item label="Ultra" name="2"/>
+                            </radio_group>
+                            <radio_group name="RenderReflectionDetail">
+                            <radio_item label="Keine" name="0"/>
+                            <radio_item label="Terrain" name="0"/>
+                            <radio_item label="Objekte" name="0"/>
+                            <radio_item label="Avatare" name="0"/>
+                            <radio_item label="Alle" name="0"/>
+                            </radio_group>
+                        </layout_panel>
+                        <layout_panel name="title_layout_panel">
+                            <text name="performance_label">
+                                Renderoptionen:
+                            </text>
+                        </layout_panel>
+                        <layout_panel name="performance_layout_panel">
+                            <checkbox label="Angehängte Partikel anzeigen" tool_tip="Schaltet angehängte Partikel von Objekten aus" name="attached_particles"/>
+                            <checkbox label="Nutze Objekt-Objekt Verdeckung" tool_tip="Verdeckung sorgt dafür das Objekte hinter Objekten versteckt werden (nicht gerendert) um so Performance zu sparen , sollte bei aktiven Deferred Renderer ausgeschaltet werden!" name="UseOcclusion"/>
+                            <check_box label="Nutze hintere Clippingebene" name="RenderUseFarClip"/>
+                            <check_box label="Nutze Plugin Read-Thread" name="PluginUseReadThread"/>
+                            <check_box label="Nutze Stream-Rendering" name="vbostream"/>
+                            <text name="separator_label">
+                                Avatare
+                            </text>
+                            <text name="separator_label">
+                                Jelly Dolls
+                            </text>
+                            <text name="separator_label">
+                                Umschaltbares
+                            </text>
+                            <text name="separator_label">
+                                Debugoptionen
+                            </text>
+                            <check_box label="Erlaube Anisotropischer Filter" name="ani"/>
+                            <check_box label="Erlaube Fullbright" name="EnableFullbright"/>
+                            
+                            <slider label="Zurückhaltezeit:" name="BackgroundYieldTime"/>
+                            <slider label="Max. Bilder pro Sekunde:" name="FramePerSecondLimit"/>
+                            
+                            <check_box label="Ungeladene Avatare anzeigen" name="UnloadedAvatars"/>
+                            <slider label="Max. sichtbare Avatare:" name="RenderAvatarMaxVisible"/>
+                            <check_box label="Freunde Immer anzeigen" name="AlwaysRenderFriends"/>
+                            <slider label="Avatare > ARC verstecken:" name="RenderAvatarMaxComplexity"/>
+                            <slider label="Avatare > m² verstecken:" name="RenderAutoMuteSurfaceAreaLimit"/>
+                            <slider label="Flächen > m² verstecken:" name="RenderAutoHideSurfaceAreaLimit"/>
+                            <slider name="FarClip" label="Sichtweite:"/>
+                            <slider name="MaxParticles" label="Partikelanzahl:"/>
+                            <button label="⌊standart⌉" name="default"/>
+                            <button label="⌊standart⌉" name="default"/>
+                            <button label="⌊standart⌉" name="default"/>
+                            <button label="⌊standart⌉" name="default"/>
+                            <button label="⌊standart⌉" name="default"/>
+                            <button label="⌊standart⌉" name="default"/>
+                            <button label="⌊standart⌉" name="default"/>
+                            <button label="⌊standart⌉" name="default"/>
+                        </layout_panel>
+                        <layout_panel name="title_layout_panel">
+                            <text name="vertex_label">
+                                Windlightoptionen:
+                            </text>
+                        </layout_panel>
+                        <layout_panel name="vertex_layout_panel">
+                            <slider label="Wiederholungen:" name="Iterations"/>
+                            <slider label="Stärke:" name="Strength"/>
+                            <slider label="Helligkeit:" name="MinLuminance"/>
+                            <slider label="Wärmeeffekt:" name="Warmth"/>
+                            <slider label="Leuchtdicke:" name="Width"/>
+                            <slider label="Max. Leuchtalpha:" name="MaxAlpha"/>
+                            <slider label="Luminanz Rot:" name="RenderGlowLumWeights_X"/>
+                            <slider label="Luminanz Grün:" name="RenderGlowLumWeights_Y"/>
+                            <slider label="Luminanz Blau:" name="RenderGlowLumWeights_Z"/>
+                            <slider label="Wärmegewicht Rot:" name="RenderGlowWarmthWeights_X"/>
+                            <slider label="Wärmegewicht Grün:" name="RenderGlowWarmthWeights_Y"/>
+                            <slider label="Wärmegewicht Blau:" name="RenderGlowWarmthWeights_Z"/>
+                        </layout_panel>
+                        <layout_panel name="deferred_layout">
+                            <checkbox label="Deferred Shading (Deferred Rendering)" tool_tip="Der Deferred Renderer sorgt für noch realistischere Umgebungsbeläuchtung , zudem können Schatten angezeigt werden und Projektionslichter werden möglich" name="Deferred"/>
+                        </layout_panel>
+                        <layout_panel name="deferred_layout_panel">
+                            <checkbox label="Globale Lichter anzeigen" name="RenderDeferredLights"/>
+                            <checkbox label="Getragene Lichter anderer anzeigen" name="RenderOtherAttachedLights"/>
+                            <checkbox label="Getragene Lichter von dir anzeigen" name="RenderOwnAttachedLights"/>
+                            <checkbox label="Environment Map anzeigen" name="RenderDeferredEnvironmentMap"/>
+                            <checkbox label="Normalen mit hoher Präzision anzeigen" name="RenderHighPrecisionNormals"/>
+                            <checkbox label="Reflektionen von Projektorbildern anzeigen" name="RenderSpotLightReflections"/>
+                            <checkbox label="Reflektionen von Projektorlicht anzeigen" name="RenderSpotLightImages"/>
+                            <text name="Antialiasing:">
+                                Kantenglättung:
+                            </text>
+                            <text name="separator_label">
+                                Schatten
+                            </text>
+                            <text name="separator_label">
+                                Projektoren
+                            </text>
+                            <text name="separator_label">
+                                Beleuchtung
+                            </text>
+                            <text name="separator_label">
+                                Bildschirmreflektionen
+                            </text>
+                            <radio_group name="RenderFSAASamples">
+                            <radio_item label="Aus" name="0"/>
+                            </radio_group>
+                            <text name="BumpStrength">
+                                Normalmap Stärke:
+                            </text>
+                            <text name="ShadowAmount">
+                                Schatten:
+                            </text>
+                            <radio_group name="RenderShadowDetail">
+                            <radio_item label="Keine" name="0"/>
+                            <radio_item label="Sonne" name="0"/>
+                            <radio_item label="Projektoren" name="0"/>
+                            </radio_group>
+                            <checkbox label="Automatische Schattendistanz" name="RenderShadowAutomaticDistance"/>
+                            <slider label="Schattendistanz:" name="RenderShadowFarClip"/>
+                            <slider label="Näheste Schattendistanz:" name="RenderShadowDistance_X"/>
+                            <slider label="Nahe Schattendistanz:" name="RenderShadowDistance_Y"/>
+                            <slider label="Weite Schattendistanz:" name="RenderShadowDistance_Z"/>
+                            <slider label="Ferne Schattendistanz:" name="RenderShadowDistance_W"/>
+                            <slider label="Näheste Schattengröße:" name="RenderShadowResolution_X"/>
+                            <slider label="Nahe Schattengröße:" name="RenderShadowResolution_Y"/>
+                            <slider label="Weite Schattengröße:" name="RenderShadowResolution_Z"/>
+                            <slider label="Ferne Schattengröße:" name="RenderShadowResolution_W"/>
+                            
+                            <slider label="Erster Projektor:" name="RenderProjectorShadowResolution_X"/>
+                            <slider label="Zweiter Projektor:" name="RenderProjectorShadowResolution_Y"/>
+                            
+                            <checkbox label="Weiche Beleuchtung" name="RenderDeferredBlurLight"/>
+                            <slider label="Weichzeichner Breite:" name="RenderShadowBlurSize"/>
+                            <slider label="Globale Lichterstärke:" name="RenderGlobalLightStrength"/>
+                            
+                            <checkbox label="Bildschirmreflektionen anzeigen" tool_tip="" name="RenderScreenSpaceReflections"/>
+                            <slider label="Reflektonsauflösung:" name="RenderSSRResolution"/>
+                            <slider label="Reflektionshelligkeit:" name="RenderSSRBrightness"/>
+                        </layout_panel>
+                        <layout_panel name="ao_layout">
+                            <checkbox label="Umgebungsverdeckung (SSAO)" tool_tip="Umgebungsverdeckung oder auch SSAO genannt sorgt für mehr Realität indem Schatten weichgezeichnet werden und eine Subtile Beleuchtung entstehen kann (dunkle Rillen)" name="UseSSAO"/>
+                        </layout_panel>
+                        <layout_panel name="ao_layout_panel">
+                            <slider label="SSAO Stärke:" name="SSAOEffect"/>
+                            <slider label="SSAO Größe:" name="SSAOScale"/>
+                            <slider label="SSAO Max. Größe:" name="SSAOMaxScale"/>
+                            <slider label="SSAO Faktor:" name="SSAOFactor"/>
+                        </layout_panel>
+                        <layout_panel name="dof_layout">
+                            <checkbox label="Tiefenunschärfe (Depth of Field)" tool_tip="Simuliert Tiefenschärfe Effekte wie bei einer Kamera" name="UseDoF"/>
+                        </layout_panel>
+                        <layout_panel name="dof_layout_panel">
+                            <slider label="Sichtfeld (°):" name="CameraFOV"/>
+                            <slider label="Blendenzahl:" name="CameraFNum"/>
+                            <slider label="Brennweite (mm):" name="CameraFocal"/>
+                            <slider label="Bildverhältnis:" name="CameraAspect"/>
+                            <slider label="Zerstreuungskreis:" name="CameraCoF"/>
+                            <slider label="Fokusübergangszeit (s):" name="CameraFocusTrans"/>
+                            <slider label="Auflösung:" name="CameraDoFRes"/>
+                        </layout_panel>
+                        <layout_panel name="motionblur_layout">
+                            <checkbox label="Bewegungsunschärfe (Motion Blur)" name="MotionBlur"/>
+                        </layout_panel>
+                        <layout_panel name="motionblur_layout_panel">
+                            
+                        </layout_panel>
+                        <layout_panel name="godrays_layout">
+                            <checkbox label="Volumetrische Beleuchtung (Volumetric Lighting)" name="RenderGodrays"/>
+                        </layout_panel>
+                        <layout_panel name="godrays_layout_panel">
+                            <checkbox label="Richtungsabhängige Volumetrische Beleuchtung" name="RenderGodraysDirectional"/>
+                            <slider label="Licht Auflösung:" name="GodraysResolution"/>
+                            <slider label="Licht Helligkeit:" name="GodraysMultiplier"/>
+                            <slider label="Licht Helligkeitsabfall:" name="GodraysFalloffMultiplier"/>
+                        </layout_panel>
+                        <layout_panel name="post_layout">
+                            <text name="post_label">
+                                Nachbearbeitungseffekte:
+                            </text>
+                        </layout_panel>
+                        <layout_panel name="post_layout_panel">
+                            
+                        </layout_panel>
+                        <layout_panel name="tonemapping_layout">
+                            <checkbox label="Dynamikkompression (Tone Mapping)" tool_tip="Schaltet Tone Mapping (Dynamikkompression) zusätzlich zur Gamma Korrektur hinzu , benötigt wird Gamma Korrektur" name="ToneMapping"/>
+                        </layout_panel>
+                        <layout_panel name="tonemapping_layout_panel">
+                            <text name="tone_style_label">
+                                Tone Mapping Typ:
+                            </text>
+                            <radio_group name="ExodusRenderToneMappingTech">
+                            <radio_item label="Filmisch" name="0"/>
+                            <radio_item label="Benutzerdefiniert" name="3"/>
+                            </radio_group>
+                            <text name="separator_label">
+                                Erweitert
+                            </text>
+                            <slider label="Tone Belichtung:" name="ExodusRenderToneExposure"/>
+                            <text name="separator_label">
+                                Farbkorrektur
+                            </text>
+                            <text name="color_corr_label">
+                                Farbkorrektur Typ:
+                            </text>
+                            <text name="separator_label">
+                                Erweitert
+                            </text>
+                            <slider label="Belichtung Rot:" name="ExodusRenderExposure_X"/>
+                            <slider label="Belichtung Grün:" name="ExodusRenderExposure_Y"/>
+                            <slider label="Belichtung Blau:" name="ExodusRenderExposure_Z"/>
+                            <slider label="Versatz Rot:" name="ExodusRenderOffset_X"/>
+                            <slider label="Versatz Grün:" name="ExodusRenderOffset_Y"/>
+                            <slider label="Versatz Blau:" name="ExodusRenderOffset_Z"/>
+                            <slider label="Gamma Rot:" name="ExodusRenderGamma_X"/>
+                            <slider label="Gamma Grün:" name="ExodusRenderGamma_Y"/>
+                            <slider label="Gamma Blau:" name="ExodusRenderGamma_Z"/>
+                        </layout_panel>
+                        <layout_panel name="vignette_layout">
+                            <text name="vignette_label">
+                                Vignettierung:
+                            </text>
+                        </layout_panel>
+                        <layout_panel name="vignette_layout_panel">
+                            <slider label="Menge:" name="ExodusRenderVignette_X"/>
+                            <slider label="Stärke:" name="ExodusRenderVignette_Y"/>
+                            <slider label="Multiplikator:" name="ExodusRenderVignette_Z"/>
+                        </layout_panel>
+                    </layout_stack>
+                </panel>
+            </scroll_container>
+        </layout_panel>
+    </layout_stack>
+</panel>

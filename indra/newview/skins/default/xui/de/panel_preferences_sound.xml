@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="Sounds" name="Preference Media panel">
-     <!--<scroll_container name="panel_scroll">
+     <scroll_container name="panel_scroll">
 	  <panel name="audio_media_panel">
 	       <panel.string name="middle_mouse">
 		       Mittlere Maustaste
 	       </panel.string>
-	       <slider label="Master-Lautstärke" name="System Volume"/>
+	       <slider label="Gesamtlautstärke" name="System Volume"/>
 	       <slider label="Benutzeroberfläche" name="UI Volume"/>
 	       <slider label="Umgebung" name="Ambient Volume"/>
 	       <slider label="Wind" name="Wind Volume"/>
@@ -43,10 +43,10 @@
 	       <button label="Eingabe-/Ausgabegeräte" name="device_settings_btn"/>
 	       <panel label="Geräte-Einstellungen" name="device_settings_panel">
 		    <check_box label="Sprachfunktion ein-/ausschalten bei:" name="push_to_talk_toggle_check" tool_tip="Wenn der Umschaltmodus aktiviert ist, drücken Sie die Auslöse-Taste EINMAL, um Ihr Mikrofon an oder aus zu stellen. Wenn der Umschaltmodus nicht motiviert ist, ist das Mikro nur dann eingeschaltet, wenn Sie die Auslösetaste gedrückt halten."/>
-		    <line_editor label="Auslöser für Zum-Sprechen-drücken:" name="modifier_combo"/>-->
-		    <!--<button label="Taste festlegen" name="set_voice_hotkey_button"/>-->
-		    <!--<button label="Maus 3" name="set_voice_middlemouse_button" tool_tip="Auf mittlere Maustaste zurücksetzen"/>-->
-		    <!--<panel.string name="default_text">
+		    <line_editor label="Auslöser für Zum-Sprechen-drücken:" name="modifier_combo"/>
+		    <button label="Taste festlegen" name="set_voice_hotkey_button"/>
+		    <button label="Maus 3" name="set_voice_middlemouse_button" tool_tip="Auf mittlere Maustaste zurücksetzen"/>
+		    <panel.string name="default_text">
 			 Standard
 		    </panel.string>
 		    <panel.string name="default system device">
@@ -70,5 +70,5 @@
 		    </text>
 	       </panel>
 	  </panel>
-     </scroll_container>-->
+     </scroll_container>
 </panel>

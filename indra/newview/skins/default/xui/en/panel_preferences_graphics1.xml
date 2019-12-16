@@ -192,7 +192,7 @@ width="510">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt;
 								                                           Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset. It will break layouts, spacing, text labels and any sort of consistency in the UI."
                         layout="topleft"
-                        name="0"
+                        name="1"
                         left_pad="10"
                         top_delta="0"
                         width="70">
@@ -395,7 +395,7 @@ width="510">
       layout="topleft"
       left="10"
       tool_tip="This option enables automatically raising or lowering the memory limits depending on how much is currently used to minimize the empty unused reserved memory to a minimum."
-      name="CompressTextures"
+      name="AutomaticMemoryManagement"
       top_pad="0"
       width="256"/>
  <panel
@@ -5313,7 +5313,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       increment="0.1"
       initial_value="0"
 		tool_tip="This option controls the strength and distance at which Volumetric Lighting should be faded out around your camera."
-      label="Light Falloff:"
+      label="Light Brightness Falloff:"
       label_width="150"
       layout="topleft"
       left="10"
@@ -5635,7 +5635,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         value="1"
 								tool_tip="This option switches the Tone Mapping algorythm to 'Linear', similar to 'Custom' but without customizations."
                         layout="topleft"
-                        name="0"
+                        name="1"
                         left_pad="10"
                         top_delta="0"
                         width="70">
@@ -5653,7 +5653,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         value="2"
 								tool_tip="This option switches the Tone Mapping algorythm to 'Rheinard'."
                         layout="topleft"
-                        name="0"
+                        name="2"
                         left_pad="10"
                         top_delta="0"
                         width="70">
@@ -5671,7 +5671,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         value="3"
 								tool_tip="This option switches allows full control over the weights of the Tone Mapping algorythm."
                         layout="topleft"
-                        name="0"
+                        name="3"
                         left_pad="10"
                         top_delta="0"
                         width="70">
