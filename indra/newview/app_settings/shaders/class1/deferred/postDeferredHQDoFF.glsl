@@ -34,6 +34,7 @@ out vec4 frag_color;
 #endif
 
 uniform sampler2DRect diffuseRect;
+uniform sampler2DRect depthMap;
 
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
@@ -42,23 +43,24 @@ uniform float res_scale;
 
 VARYING vec2 vary_fragcoord;
 
-void dofSample(inout vec4 diff, inout float w, float min_sc, vec2 tc)
+void dofSample(inout vec4 diff, inout float w, float min_sc, vec2 tc, float depth, vec2 orig_tc)
 {
 	vec4 s = texture2DRect(diffuseRect, tc);
-
+ if(s.a <= depth*0.50)
+ {
 	float sc = abs(s.a*2.0-1.0)*(max_cof*4);
 
 	if (sc > min_sc) //sampled pixel is more "out of focus" than current sample radius
 	{
-		float wg = 0.25;
+		float wg = 0.0;
 		
 		// de-weight dull areas to make highlights 'pop'
-		wg += s.r+s.g+s.b;
-	
+		wg += (s.r+s.g+s.b)*0.1;
 		diff += wg*s;
 		
 		w += wg;
 	}
+ }
 }
 
 void dofSampleNear(inout vec4 diff, inout float w, float min_sc, vec2 tc)
@@ -80,6 +82,7 @@ void main()
 	vec2 tc = vary_fragcoord.xy;
 	
 	vec4 diff = texture2DRect(diffuseRect, vary_fragcoord.xy);
+ float depth = texture2DRect(depthMap, tc).r;
 	
 	{ 
 		float w = 1.0;
@@ -87,20 +90,20 @@ void main()
 		float sc = (diff.a*2.0-1.0)*(max_cof*4);
 			
 		float PI = 3.14159265358979323846264;
-
+  int its = 64;
 		// sample quite uniformly spaced points within a circle, for a circular 'bokeh'		
 		if (sc > 0.5)
 		{
 			while (sc > 0.5)
 			{
-				int its = int(max(1.0,(sc*3.7)));
+				//int its = int(max(1.0,(sc*3.7)));
 				for (int i=0; i<its; ++i)
 				{
 					float ang = sc+i*2*PI/its; // sc is added for rotary perturbance
 					float samp_x = sc*sin(ang);
 					float samp_y = sc*cos(ang);
 					// you could test sample coords against an interesting non-circular aperture shape here, if desired.
-					dofSampleNear(diff, w, sc, vary_fragcoord.xy + vec2(samp_x,samp_y));
+					//dofSampleNear(diff, w, sc, vary_fragcoord.xy + vec2(samp_x,samp_y));
 				}
 				sc -= 1.0;
 			}
@@ -110,14 +113,14 @@ void main()
 			sc = abs(sc);
 			while (sc > 0.5)
 			{
-				int its = int(max(1.0,(sc*3.7)));
+				//int its = int(max(1.0,(sc*3.7)));
 				for (int i=0; i<its; ++i)
 				{
 					float ang = sc+i*2*PI/its; // sc is added for rotary perturbance
 					float samp_x = sc*sin(ang);
 					float samp_y = sc*cos(ang);
 					// you could test sample coords against an interesting non-circular aperture shape here, if desired.
-					dofSample(diff, w, sc, vary_fragcoord.xy + vec2(samp_x,samp_y));
+     dofSample(diff, w, sc, vary_fragcoord.xy + vec2(samp_x,samp_y), depth, vary_fragcoord.xy);
 				}
 				sc -= 1.0;
 			}
