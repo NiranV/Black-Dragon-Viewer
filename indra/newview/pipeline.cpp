@@ -12015,7 +12015,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 				attachment_iter != attachment->mAttachedObjects.end();
 				++attachment_iter)
 			{
-				if (LLViewerObject* attached_object = (*attachment_iter))
+				if (LLViewerObject* attached_object = attachment_iter->get())
 				{
 					markVisible(attached_object->mDrawable->getSpatialBridge(), *viewer_camera);
 				}

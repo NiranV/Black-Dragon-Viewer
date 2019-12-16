@@ -690,6 +690,14 @@ width="510">
     Middle Mouse
     </panel.string>
     <panel.string
+     name="button4_mouse">
+     Mouse Button 4
+    </panel.string>
+    <panel.string
+     name="button5_mouse">
+     Mouse Button 5
+    </panel.string>
+    <panel.string
     name="none">
     No button assigned
     </panel.string>

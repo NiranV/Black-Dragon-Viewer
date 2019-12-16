@@ -30,8 +30,6 @@
 
 #include "llfloaterbigpreview.h"
 #include "llfloaterreg.h"
-#include "llfloaterflickr.h"
-#include "llfloatertwitter.h"
 #include "llimagefiltersmanager.h"
 #include "llcheckboxctrl.h"
 #include "llcombobox.h"
@@ -1209,10 +1207,7 @@ BOOL LLFloaterSnapshot::isWaitingState()
 
 BOOL LLFloaterSnapshotBase::ImplBase::updatePreviewList(bool initialized)
 {
-	LLFloaterFlickr* floater_flickr = LLFloaterReg::findTypedInstance<LLFloaterFlickr>("flickr");
-	LLFloaterTwitter* floater_twitter = LLFloaterReg::findTypedInstance<LLFloaterTwitter>("twitter");
-
-	if (!initialized && !floater_flickr && !floater_twitter)
+	if (!initialized)
 		return FALSE;
 
 	BOOL changed = FALSE;
