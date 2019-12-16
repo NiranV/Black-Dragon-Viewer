@@ -113,7 +113,8 @@ void LLPanelGroup::onOpen(const LLSD& key)
 	if(!key.has("action"))
 	{
 		setGroupID(group_id);
-		getChild<LLAccordionCtrl>("groups_accordion")->expandDefaultTab();
+		//BD
+		//getChild<LLAccordionCtrl>("groups_accordion")->expandDefaultTab();
 		return;
 	}
 
@@ -588,7 +589,8 @@ void LLPanelGroup::draw()
 	{
 		mRefreshTimer.stop();
 		childEnable("btn_refresh");
-		childEnable("groups_accordion");
+		//BD
+		//childEnable("groups_accordion");
 	}
 
 	LLButton* button_apply = findChild<LLButton>("btn_apply");
@@ -617,7 +619,8 @@ void LLPanelGroup::refreshData()
 	
 	// 5 second timeout
 	childDisable("btn_refresh");
-	childDisable("groups_accordion");
+	//BD
+	//childDisable("groups_accordion");
 
 	mRefreshTimer.start();
 	mRefreshTimer.setTimerExpirySec(5);

@@ -136,11 +136,11 @@ BOOL	LLPanelFace::postBuild()
 	childSetCommitCallback("TexOffsetU", LLPanelFace::onCommitTextureInfo, this);
 	childSetCommitCallback("TexOffsetV", LLPanelFace::onCommitTextureInfo, this);
 
-	childSetAction("button align", &LLPanelFace::onClickAutoFix, this);
+	childSetAction("align_media", &LLPanelFace::onClickAutoFix, this);
 
 	setMouseOpaque(FALSE);
 
-	mBtnAlign = getChild<LLButton>("button align");
+	mBtnAlign = getChild<LLButton>("align_media");
 	mRadioMaterialType = getChild<LLRadioGroup>("radio mattype");
 	mComboShiny = getChild<LLComboBox>("combobox shininess");
 	mComboBumpy = getChild<LLComboBox>("combobox bumpiness");
