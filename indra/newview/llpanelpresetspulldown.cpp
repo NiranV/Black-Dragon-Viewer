@@ -203,7 +203,7 @@ void LLPanelPresetsPulldown::onRowClick(const LLSD& user_data)
 
             LL_DEBUGS() << "selected '" << name << "'" << LL_ENDL;
 			//BD
-			gSavedSettings.loadPreset(1, name);
+			gSavedSettings.loadPreset(1, gDragonLibrary.escapeString(name));
 			gSavedSettings.setString("PresetGraphicActive", name);
 			setVisible(FALSE);
 		}
