@@ -174,8 +174,65 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="195"
+     height="234"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+Added: Option to disable Tooltips to preferences.
+Changed: Improved labeling and tooltips for Inventory highlight and preview options, make clear what they actually do.
+Changed: Default text in preset dropdown to make it clearer that you can type in a name too.
+Changed: Added a simple depth check to Depth of Field blurring to prevent blur halos around blurred objects.
+Changed: Disabled near blur for Depth of Field for now.
+Changed: Disable all Poser controls until we started posing to 'guide' the user better. Still needs some more work.
+Changed: Version to 3.6.9.
+Fixed: Wrong startup project.
+Fixed: Some XML errors.
+Fixed: Profile layout inconsistencies
+Fixed: German translations for General, Display and Sound preferences tabs.
+Fixed: More XML errors.
+Fixed: A debug setting typo.
+Fixed: (POTENTIAL) Viewer slowing down to a crawl whenever a object script menu is opened after prolonged Viewer use.
+Fixed: Poser not properly enabling/disabling tabs when the conditions are met.
+Removed: Preferences help topic.
+Removed: Flickr and Twitter commands from toolbar toybox.
+Merge with Linden Release. (68 Changes)
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.6.8
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="195"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
