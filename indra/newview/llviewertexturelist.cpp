@@ -1435,9 +1435,9 @@ void LLViewerTextureList::idleUpdateMaxResidentTexMem()
 	//BD - First lets find out how much VRAM we actually have.
 	S32 tot_mem = gGLManager.mVRAM;
 
-	//BD - Limit our absolute maximum memory to roughly 90% of our available.
+	//BD - Limit our absolute maximum memory  of our available.
 	//     This way we leave some rest for FBO.
-	U32Megabytes max_mem = (U32Megabytes)tot_mem * 0.9f;
+	U32Megabytes max_mem = (U32Megabytes)tot_mem - (U32Megabytes)256;
 
 	//BD - Find out how much memory we are currently using for each.
 	U32Megabytes cur_mem = LLViewerTexture::sBoundTextureMemory;

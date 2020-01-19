@@ -217,8 +217,8 @@ public:
 	static LLFrameTimer sEvaluationTimer;
 	static F32 sDesiredDiscardBias;
 	static F32 sDesiredDiscardScale;
-	static U32Bytes sBoundTextureMemory;
-	static U32Bytes sTotalTextureMemory;
+	static U64Bytes sBoundTextureMemory;
+	static U64Bytes sTotalTextureMemory;
 	static U32Megabytes sMaxBoundTextureMemory;
 	static U32Megabytes sMaxTotalTextureMem;
 	static S32Bytes sMaxDesiredTextureMem ;
