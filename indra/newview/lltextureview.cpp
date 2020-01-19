@@ -57,6 +57,9 @@
 #include "llvoavatarself.h"
 #include "lltexlayer.h"
 
+#include "windows.h"
+#include "psapi.h"
+
 extern F32 texmem_lower_bound_scale;
 
 LLTextureView *gTextureView = NULL;
@@ -506,17 +509,6 @@ private:
 
 void LLGLTexMemBar::draw()
 {
-	//BD - Memory Pie Chart
-	//LLColor4 bg_color = LLColor4(0.0f, .0f, 0.0f, 0.75f); // Background
-	//LLColor4 unavail_color = LLColor4(0.2f, 0.2f, 0.2f, 0.35f); // Unavailable
-	//LLColor4 fbo_color = LLColor4(0.75f, 0.45f, 0.45f, 0.75f); // FBO
-	//LLColor4 sys_color = LLColor4(0.75f, 0.75f, 0.f, 0.75f); // System
-	//LLColor4 scene_color = LLColor4(0.f, 0.75f, 0.75f, 0.75f); // Scene
-	//const S32 PIE_INNER_SIZE = 30;		// radius of the inner pie circle
-	//const S32 PIE_OUTER_SIZE = 45;		// radius of the outer pie circle
-	//F32 segment;
-	//F32 last_segment;
-
 	LLTrace::Recording& recording = LLViewerStats::instance().getRecording();
 
 	F64 cacheHits = recording.getSampleCount(LLTextureFetch::sCacheHit);
@@ -543,11 +535,6 @@ void LLGLTexMemBar::draw()
 	F32Bytes total_texture_downloaded = gTotalTextureData;
 	F32Bytes total_object_downloaded = gTotalObjectData;
 
-	F32 discard_bias = LLViewerTexture::sDesiredDiscardBias;
-	F32 cache_usage = LLAppViewer::getTextureCache()->getUsage().valueInUnits<LLUnits::Megabytes>();
-	F32 cache_max_usage = LLAppViewer::getTextureCache()->getMaxUsage().valueInUnits<LLUnits::Megabytes>();
-	F32 data_progress = 0.f;
-
 	S32 line_height = LLFontGL::getFontMonospace()->getLineHeight();
 	S32 bar_width = 531;
 	S32 v_offset = 0;
@@ -557,16 +544,34 @@ void LLGLTexMemBar::draw()
 	S32 max_vram = gGLManager.mVRAM;
 	S32 used_vram = 0;
 
+	F32 discard_bias = LLViewerTexture::sDesiredDiscardBias;
+	F32 cache_usage = LLAppViewer::getTextureCache()->getUsage().valueInUnits<LLUnits::Megabytes>();
+	F32 cache_max_usage = LLAppViewer::getTextureCache()->getMaxUsage().valueInUnits<LLUnits::Megabytes>();
+	F32 data_progress = 0.f;
+	F32 bar_right = left + bar_width;
+
 	U32 total_http_requests = LLAppViewer::getTextureFetch()->getTotalNumHTTPRequests();
 	U32 total_active_cached_objects = LLWorld::getInstance()->getNumOfActiveCachedObjects();
 	U32 total_objects = gObjectList.getNumObjects();
 	U32 fbo = LLRenderTarget::sBytesAllocated / (1024 * 1024);
 	
+	PROCESS_MEMORY_COUNTERS_EX pmc;
+	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+	//SIZE_T virtualMemUsedByMe = pmc.PrivateUsage;
+	U32 own_texture_memory = pmc.WorkingSetSize / (1024 * 1024);
+
 	//BD - AMD's memory reports are completely useless right now. We focus on NVidia.
 	if (gGLManager.mHasNVXMemInfo)
 	{
 		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &used_vram);
 		used_vram = max_vram - (used_vram / 1024);
+	}
+	else if (gGLManager.mHasATIMemInfo)
+	{
+		S32 meminfo[4];
+		glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, meminfo);
+		S32Megabytes free = (S32Megabytes)meminfo[0];
+		used_vram = max_vram - free.value();
 	}
 
 	//----------------------------------------------------------------------------
@@ -583,101 +588,87 @@ void LLGLTexMemBar::draw()
 
 	//----------------------------------------------------------------------------
 	//BD - GPU Memory
-	text = llformat("Total VRAM:  %5d MB",
-		used_vram);
+	text = llformat("Total VRAM:  %5d MB", used_vram);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("%5d MB",
-		max_vram);
+	text = llformat("%5d MB", max_vram);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 681, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	data_progress = llclamp(((F32)used_vram - (F32)total_mem.value() - (F32)bound_mem.value() - (F32)fbo) / (F32)max_vram, 0.0f, 1.0f);
+	used_vram -= own_texture_memory;
+	data_progress = (F32)used_vram / (F32)max_vram;
 
 	//BD - Render a multi-segmented multi-colored bar showing where our memory goes.
 	//     First render the available memory chunk with a black background.
 	gGL.color4f(0.0f, .0f, 0.0f, 0.75f);
-	right = left + bar_width - (bar_width * data_progress);
+	right = bar_right - (bar_width * data_progress);
 	gl_rect_2d(left, top - 9, right, top - 3);
 
-	//BD - Memory Pie Chart
-	/*gGL.matrixMode(LLRender::MM_MODELVIEW);
-	gGL.pushMatrix();
-	gGL.translatef(800.f, 40.f, 0.f);
-	segment = F_TWO_PI - (F_TWO_PI * data_progress);
-	gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, 0.f, segment, 32, bg_color, bg_color);*/
-
 	//BD - Render the unavailable memory as almost transparent black background.
-	gGL.color4f(0.2f, 0.2f, 0.2f, 0.35f);
-	gl_rect_2d(right, top - 9, left + bar_width, top - 3);
+	if (right < (left + bar_width))
+	{
+		gGL.color4f(0.2f, 0.2f, 0.2f, 0.35f);
+		gl_rect_2d(right, top - 9, bar_right, top - 3);
+	}
 	
-	//BD - Memory Pie Chart
-	//gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, segment, F_TWO_PI, 32, unavail_color, unavail_color);
-
 	if (data_progress > 0.0f)
 	{
 		//BD - Render the FBO bar.
-		data_progress = ((F32)fbo) / (F32)max_vram;
-		right = left + llfloor(data_progress * (F32)bar_width);
+		data_progress = (F32)fbo / (F32)max_vram;
+		right = llfloor(llclamp(left + (bar_width * data_progress), (F32)left, bar_right));
 		if (right > left)
 		{
 			gGL.color4f(0.75f, 0.45f, 0.45f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
 
-		//BD - Memory Pie Chart
-		//segment = F_TWO_PI * data_progress;
-		//gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, 0.0f, segment, 32, unavail_color, fbo_color);
-
 		//BD - Render the system memory bar.
-		data_progress = ((F32)total_mem.value()) / (F32)max_vram;
+		data_progress = ((F32)total_mem.value() - (F32)fbo) / (F32)max_vram;
 		left = right;
-		right = left + llfloor(data_progress * (F32)bar_width);
+		right = llfloor(llclamp(left + (bar_width * data_progress), (F32)left, bar_right));
 		if (right > left)
 		{
 			gGL.color4f(0.75f, 0.75f, 0.f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
 
-		//BD - Memory Pie Chart
-		//last_segment = segment;
-		//segment = segment + (F_TWO_PI * data_progress);
-		//gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, last_segment, segment, 32, unavail_color, sys_color);
-
 		//BD - Render the scene memory bar.
-		data_progress = ((F32)bound_mem.value()) / (F32)max_vram;
+		data_progress = (F32)bound_mem.value() / (F32)max_vram;
 		left = right;
-		right = left + llfloor(data_progress * (F32)bar_width);
+		right = llfloor(llclamp(left + (bar_width * data_progress), (F32)left, bar_right));
 		if (right > left)
 		{
 			gGL.color4f(0.f, 0.75f, 0.75f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
 
-		//BD - Memory Pie Chart
-		//last_segment = segment;
-		//segment = segment + (F_TWO_PI * data_progress);
-		//gl_washer_segment_2d(PIE_OUTER_SIZE, PIE_INNER_SIZE, last_segment, segment, 32, unavail_color, scene_color);
+		//BD - Render the 'misc' memory bar which shows us the whole rest that the Viewer
+		//     keeps around secretly, weirdly enough this gets a lot of use for instance
+		//     when using impostors when they swap out to impostored sprites, their entire
+		//     texture set is kept in memory but it is no longer used in scene memory.
+		data_progress = ((F32)own_texture_memory - (bound_mem.value() + total_mem.value())) / (F32)max_vram;
+		left = right;
+		right = llfloor(llclamp(left + (bar_width * data_progress), (F32)left, bar_right));
+		if (right > left)
+		{
+			gGL.color4f(0.25f, 0.55f, 0.75f, 0.75f);
+			gl_rect_2d(left, top - 9, right, top - 3);
+		}
 	}
-
-	//BD - Memory Pie Chart
-	//gGL.popMatrix();
 
 	//----------------------------------------------------------------------------
 	//BD - Total System (Viewer) Memory
 
-	text = llformat("System:      %5d MB",
-					total_mem.value());
+	text = llformat("System+FBO:  %5d MB", total_mem.value());
 
 	top = v_offset + line_height * 9;
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("%5d MB",
-		max_total_mem.value());
+	text = llformat("%5d MB", max_total_mem.value());
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 681, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
@@ -685,11 +676,27 @@ void LLGLTexMemBar::draw()
 	left = 140;
 	gGL.color4f(0.f, 0.f, 0.f, 0.75f);
 	gl_rect_2d(left, top - 9, left + bar_width, top - 3);
-	data_progress = llclamp((F32)total_mem.value() / (F32)max_total_mem.value(), 0.0f, 1.0f);
+
+	//BD - Render the FBO part of System Memory
+	data_progress = (F32)fbo / (F32)max_total_mem.value();
 	if (data_progress > 0.0f)
 	{
 		//BD - Clamp
 		right = left + llfloor(llclamp(data_progress, 0.0f, 1.0f) * (F32)bar_width);
+		if (right > left)
+		{
+			gGL.color4f(0.75f, 0.45f, 0.45f, 0.75f);
+			gl_rect_2d(left, top - 9, right, top - 3);
+		}
+	}
+
+	//BD - Render the rest.
+	data_progress = ((F32)total_mem.value() - (F32)fbo) / (F32)max_total_mem.value();
+	if (data_progress > 0.0f)
+	{
+		//BD - Clamp
+		left = right;
+		right += llfloor(llclamp(data_progress, 0.0f, 1.0f) * (F32)bar_width);
 		if (right > left)
 		{
 			gGL.color4f(0.75f, 0.75f, 0.f, 0.75f);
@@ -700,22 +707,21 @@ void LLGLTexMemBar::draw()
 	//----------------------------------------------------------------------------
 	//BD - Current Scene Memory
 
-	text = llformat("Scene:       %5d MB",
-					bound_mem.value());
+	text = llformat("Scene:       %5d MB", bound_mem.value());
 
 	top = v_offset + line_height * 8;
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("%5d MB",
-					max_bound_mem.value());
+	text = llformat("%5d MB", max_bound_mem.value());
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 681, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
+	left = 140;
 	gGL.color4f(0.f, 0.f, 0.f, 0.75f);
 	gl_rect_2d(left, top - 9, left + bar_width, top - 3);
-	data_progress = llclamp((F32)bound_mem.value() / (F32)max_bound_mem.value(), 0.0f, 1.0f);
+	data_progress = (F32)bound_mem.value() / (F32)max_bound_mem.value();
 	if (data_progress > 0.0f)
 	{
 		//BD - Clamp
@@ -736,31 +742,31 @@ void LLGLTexMemBar::draw()
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("Raw Total: %15d MB",
-					LLImageRaw::sGlobalRawMemory >> 20);
+	text = llformat("Raw Total: %15d MB", LLImageRaw::sGlobalRawMemory >> 20);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 185, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
+	text = llformat("Used By Viewer: %10d MB", own_texture_memory);
+
+	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 370, top,
+		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
 	//----------------------------------------------------------------------------
 	//BD - Textures
 	
-	text = llformat("Discard Bias: %15.2f",
-					discard_bias);
+	text = llformat("Discard Bias: %15.2f",	discard_bias);
 
 	top = v_offset + line_height * 6;
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("Textures: %19d",
-					gTextureList.getNumImages());
+	text = llformat("Textures: %19d", gTextureList.getNumImages());
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 185, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("Raw Textures: %15d",
-					LLImageRaw::sRawImageCount);
+	text = llformat("Raw Textures: %15d", LLImageRaw::sRawImageCount);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 370, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
@@ -777,18 +783,13 @@ void LLGLTexMemBar::draw()
 	U32 cache_read(0U), cache_write(0U), res_wait(0U);
 	LLAppViewer::getTextureFetch()->getStateStats(&cache_read, &cache_write, &res_wait);
 
-	text = llformat("Cache: %12.1f/%6.1f MB",
-					cache_usage,
-					cache_max_usage);
+	text = llformat("Cache: %12.1f/%6.1f MB", cache_usage, cache_max_usage);
 
 	top = v_offset + line_height * 5;
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("Reads/Writes: %9u/%5u",
-					cache_read,
-					cache_write,
-					res_wait);
+	text = llformat("Reads/Writes: %9u/%5u", cache_read, cache_write, res_wait);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 185, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
@@ -808,33 +809,23 @@ void LLGLTexMemBar::draw()
 	//----------------------------------------------------------------------------
 	//BD - Cache 2
 
-	text = llformat("CacheHitRate: %15.2f",
-		cacheHitRate);
+	text = llformat("CacheHitRate: %15.2f", cacheHitRate);
 
 	top = v_offset + line_height * 4;
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("Read: %11d/%5d/%5d",
-		cacheReadLatMin,
-		cacheReadLatMed,
-		cacheReadLatMax);
+	text = llformat("Read: %11d/%5d/%5d", cacheReadLatMin, cacheReadLatMed, cacheReadLatMax);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 185, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("Decode: %9d/%5d/%5d",
-		texDecodeLatMin,
-		texDecodeLatMed,
-		texDecodeLatMax);
+	text = llformat("Decode: %9d/%5d/%5d", texDecodeLatMin,	texDecodeLatMed, texDecodeLatMax);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 370, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("Fetch: %10d/%5d/%5d",
-		texFetchLatMin,
-		texFetchLatMed,
-		texFetchLatMax);
+	text = llformat("Fetch: %10d/%5d/%5d", texFetchLatMin, texFetchLatMed, texFetchLatMax);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 555, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
@@ -843,9 +834,7 @@ void LLGLTexMemBar::draw()
 	//----------------------------------------------------------------------------
 	//BD - Objects
 
-	text = llformat("Objects/Cached: %7d/%5d",
-					total_objects,
-					total_active_cached_objects);
+	text = llformat("Objects/Cached: %7d/%5d", total_objects, total_active_cached_objects);
 
 	top = v_offset + line_height * 3;
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
@@ -869,9 +858,7 @@ void LLGLTexMemBar::draw()
 
 	F32Kilobits bandwidth(LLAppViewer::getTextureFetch()->getTextureBandwidth());
 	F32Kilobits max_bandwidth(gSavedSettings.getF32("ThrottleBandwidthKBPS"));
-	text = llformat("Bandwidth: %12.0f/%5.0f",
-					bandwidth.value(),
-					max_bandwidth.value());
+	text = llformat("Bandwidth: %12.0f/%5.0f", bandwidth.value(), max_bandwidth.value());
 	
 	top = v_offset + line_height * 2;
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
@@ -883,8 +870,7 @@ void LLGLTexMemBar::draw()
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 185, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	text = llformat("Total Http Requests: %8d",
-					total_http_requests);
+	text = llformat("Total Http Requests: %8d",	total_http_requests);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 370, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
