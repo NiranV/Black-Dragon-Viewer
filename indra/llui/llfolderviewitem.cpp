@@ -746,9 +746,10 @@ void LLFolderViewItem::drawHighlight(const BOOL showContent, const BOOL hasKeybo
                 // fading in
                 bg_color.mV[VALPHA] = clamp_rescale(fade_time, 0.f, 0.4f, 0.f, bg_color.mV[VALPHA]);
             }
+			//BD
         	gl_rect_2d(FOCUS_LEFT,
 					   focus_top, 
-					   getRect().getWidth() - 2,
+					   getRect().getWidth(),
 					   focus_bottom,
 					   bg_color, hasKeyboardFocus);
         }
@@ -756,32 +757,34 @@ void LLFolderViewItem::drawHighlight(const BOOL showContent, const BOOL hasKeybo
 		// Highlight for currently selected or flashing item
         if (isHighlightActive())
         {
-			// Background
+			//BD - Background
         	gl_rect_2d(FOCUS_LEFT,
                 focus_top,
-                getRect().getWidth() - 2,
+                getRect().getWidth(),
                 focus_bottom,
                 bgColor, hasKeyboardFocus);
-			// Outline
-            gl_rect_2d(FOCUS_LEFT, 
+			//BD - Outline
+            /*gl_rect_2d(FOCUS_LEFT, 
                 focus_top, 
-                getRect().getWidth() - 2,
+                getRect().getWidth(),
                 focus_bottom,
-                focusOutlineColor, FALSE);
+                focusOutlineColor, FALSE);*/
         }
 
         if (folder_open)
         {
+			//BD
             gl_rect_2d(FOCUS_LEFT,
                 focus_bottom + 1, // overlap with bottom edge of above rect
-                getRect().getWidth() - 2,
+                getRect().getWidth(),
                 0,
                 focusOutlineColor, FALSE);
             if (showContent && !isFlashing())
             {
+				//BD
                 gl_rect_2d(FOCUS_LEFT,
                     focus_bottom + 1,
-                    getRect().getWidth() - 2,
+                    getRect().getWidth(),
                     0,
                     bgColor, TRUE);
             }
@@ -789,9 +792,10 @@ void LLFolderViewItem::drawHighlight(const BOOL showContent, const BOOL hasKeybo
     }
     else if (mIsMouseOverTitle)
     {
+		//BD
         gl_rect_2d(FOCUS_LEFT,
             focus_top, 
-            getRect().getWidth() - 2,
+            getRect().getWidth(),
             focus_bottom,
             mouseOverColor, FALSE);
     }
