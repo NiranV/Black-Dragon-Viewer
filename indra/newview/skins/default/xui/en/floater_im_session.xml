@@ -71,7 +71,7 @@
 	  name="vicon"
 	  mouse_opaque="false"
 	  visible="true"
-	  width="383"
+	  width="385"
 	  top="0"
 	  bottom="-1"
 	  left="5"/>
@@ -88,7 +88,7 @@
          animate="false" 
          default_tab_group="2"
          follows="all"
-         right="-7"
+         right="-4"
          height="349"
          border_size="0"
          top="1"
@@ -424,7 +424,7 @@
                   image_name="Toolbar_Middle_Off"
                   left="0"
                   top="0"
-                  width="376" />
+                  width="379" />
                         <chat_editor
                          layout="topleft"
                          follows="bottom|left|right"
@@ -442,8 +442,8 @@
                          v_pad="2"
                          line_spacing.pixels="-1" 
                          bottom="-2"
-                         left_delta="2"
-                         width="372"
+                         left_delta="3"
+                         width="373"
                          wrap="true" />
                     </layout_panel>
                     <layout_panel

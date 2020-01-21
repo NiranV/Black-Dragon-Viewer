@@ -179,10 +179,13 @@ BOOL LLFloaterIMContainer::postBuild()
     mStubTextBox->setURLClickedCallback(boost::bind(&LLFloaterIMContainer::returnFloaterToHost, this));
 
 	mConversationsStack = getChild<LLLayoutStack>("conversations_stack");
-	mConversationsPane = getChild<LLLayoutPanel>("conversations_layout_panel");
+	//BD
+	mConversationsPane = getChild<LLLayoutPanel>(gSavedSettings.getBOOL("IMWindowSwitchSide") ? "conversations_layout_panel2" : "conversations_layout_panel");
+	mConversationsPane->setVisible(true);
 	mMessagesPane = getChild<LLLayoutPanel>("messages_layout_panel");
 	
-	mConversationsListPanel = getChild<LLPanel>("conversations_list_panel");
+	//BD
+	mConversationsListPanel = mConversationsPane->getChild<LLPanel>("conversations_list_panel");
 
 	// Open IM session with selected participant on double click event
 	mConversationsListPanel->setDoubleClickCallback(boost::bind(&LLFloaterIMContainer::doToSelected, this, LLSD("im")));
@@ -228,16 +231,18 @@ BOOL LLFloaterIMContainer::postBuild()
 
 	addConversationListItem(LLUUID()); // manually add nearby chat
 
-	mExpandCollapseBtn = getChild<LLButton>("expand_collapse_btn");
+	//BD
+	mExpandCollapseBtn = mConversationsPane->getChild<LLButton>("expand_collapse_btn");
 	mExpandCollapseBtn->setClickedCallback(boost::bind(&LLFloaterIMContainer::onExpandCollapseButtonClicked, this));
-	mStubCollapseBtn = getChild<LLButton>("stub_collapse_btn");
+	mStubCollapseBtn = mConversationsPane->getChild<LLButton>("stub_collapse_btn");
 	mStubCollapseBtn->setClickedCallback(boost::bind(&LLFloaterIMContainer::onStubCollapseButtonClicked, this));
-    mSpeakBtn = getChild<LLButton>("speak_btn");
+	mSpeakBtn = mConversationsPane->getChild<LLButton>("speak_btn");
 
 	mSpeakBtn->setMouseDownCallback(boost::bind(&LLFloaterIMContainer::onSpeakButtonPressed, this));
 	mSpeakBtn->setMouseUpCallback(boost::bind(&LLFloaterIMContainer::onSpeakButtonReleased, this));
 
-	childSetAction("add_btn", boost::bind(&LLFloaterIMContainer::onAddButtonClicked, this));
+	//BD
+	mConversationsPane->childSetAction("add_btn", boost::bind(&LLFloaterIMContainer::onAddButtonClicked, this));
 
 	collapseMessagesPane(gSavedPerAccountSettings.getBOOL("ConversationsMessagePaneCollapsed"));
 	collapseConversationsPane(gSavedPerAccountSettings.getBOOL("ConversationsListPaneCollapsed"), false);
@@ -466,7 +471,9 @@ void LLFloaterIMContainer::idleUpdate()
             }
             // Update floater's title as required by the currently selected session or use the default title
             LLFloaterIMSession * conversation_floaterp = LLFloaterIMSession::findInstance(current_session->getUUID());
-            setTitle(conversation_floaterp && conversation_floaterp->needsTitleOverwrite() ? conversation_floaterp->getTitle() : mGeneralTitle);
+			//BD
+            //setTitle(conversation_floaterp && conversation_floaterp->needsTitleOverwrite() ? conversation_floaterp->getTitle() : mGeneralTitle);
+			setTitle(conversation_floaterp ? conversation_floaterp->getTitle() : mGeneralTitle);
         }
 
         mParticipantRefreshTimer.setTimerExpirySec(1.0f);
@@ -780,6 +787,8 @@ void LLFloaterIMContainer::collapseMessagesPane(bool collapse)
 	S32 conv_pane_width = mConversationsPane->getRect().getWidth();
     S32 msg_pane_width = mMessagesPane->getRect().getWidth();
 
+	//BD - Switchable Conversations window conversation side.
+	bool is_left = gSavedSettings.getBOOL("IMWindowSwitchside");
 	if (collapse)
 	{
 		// Save the messages pane width before collapsing it.
@@ -788,13 +797,16 @@ void LLFloaterIMContainer::collapseMessagesPane(bool collapse)
 		// Save the order in which the panels are closed to reverse user's last action.
 		gSavedPerAccountSettings.setBOOL("ConversationsExpandMessagePaneFirst", mConversationsPane->isCollapsed());
 		
-		//BD - Make sure our floater moves to the right instead of left since we put the list there.
-		translate(msg_pane_width,0);
+		if (!is_left)
+		{
+			//BD - Make sure our floater moves to the right instead of left since we put the list there.
+			translate(msg_pane_width, 0);
+		}
 	}
-	else
+	else if (!collapse && !is_left)
 	{
 		//BD - Revert what we did when we collapsed the floater.
-		translate(-gSavedPerAccountSettings.getS32("ConversationsMessagePaneWidth"),0);
+		translate(-gSavedPerAccountSettings.getS32("ConversationsMessagePaneWidth"), 0);
 	}
 
 	mConversationsPane->setIgnoreReshape(collapse);
@@ -821,7 +833,8 @@ void LLFloaterIMContainer::collapseConversationsPane(bool collapse, bool save_is
 		return;
 	}
 
-	LLView* button_panel = getChild<LLView>("conversations_pane_buttons_expanded");
+	//BD
+	LLView* button_panel = mConversationsPane->getChild<LLView>("conversations_pane_buttons_expanded");
 	button_panel->setVisible(!collapse);
 	mExpandCollapseBtn->setImageOverlay(getString(collapse ? "expand_icon" : "collapse_icon"));
 
@@ -908,7 +921,8 @@ void LLFloaterIMContainer::assignResizeLimits()
 
 void LLFloaterIMContainer::onAddButtonClicked()
 {
-    LLView * button = findChild<LLView>("conversations_pane_buttons_expanded")->findChild<LLButton>("add_btn");
+	//BD
+	LLView * button = mConversationsPane->findChild<LLView>("conversations_pane_buttons_expanded")->findChild<LLButton>("add_btn");
     LLFloater* root_floater = gFloaterView->getParentFloater(this);
     LLFloaterAvatarPicker* picker = LLFloaterAvatarPicker::show(boost::bind(&LLFloaterIMContainer::onAvatarPicked, this, _1), TRUE, TRUE, TRUE, root_floater->getName(), button);
     

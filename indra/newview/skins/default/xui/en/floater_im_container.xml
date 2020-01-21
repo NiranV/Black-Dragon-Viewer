@@ -13,7 +13,7 @@
  title="Conversations"
  bottom="-50"
  right="-5"
- width="450"
+ width="480"
  min_width="31">
     <string
      name="collapse_icon"
@@ -32,88 +32,26 @@
      left="0"
      name="conversations_stack"
      orientation="horizontal"
-     right="-1"
+     right="-3"
      top="0">
-        <layout_panel
-         auto_resize="true"
-         user_resize="true"
-         name="messages_layout_panel"
-         expanded_min_dim="222">
-         <icon
-         follows="all"
-         height="210"
-         name="bg"
-         mouse_opaque="false"
-         image_name="Panel_Background"
-         left="6"
-         right="-7"
-         top="0"
-         bottom="-1"/>
-            <panel_container
-             bottom="-1"
-             follows="all"
-             layout="topleft"
-             left="1"
-             name="im_box_tab_container"
-             right="-1"
-             top="0">
-             <panel
-               bottom="-1"
-               follows="all"
-               layout="topleft"
-               name="stub_panel"
-               top_pad="0"
-               left="1"
-               right="-1">
-                 <button
-                 follows="right|top"
-                 height="25"
-                 image_hover_unselected="Toolbar_Middle_Over"
-                 image_overlay="Conv_toolbar_collapse"
-                 image_selected="Toolbar_Middle_Selected"
-                 image_unselected="Toolbar_Middle_Off"
-                 layout="topleft"
-                 top="2"
-                 right="-1"
-                 visible="false"
-                 name="stub_collapse_btn"
-                 tool_tip="Collapse this pane"
-                 width="31" />
-                 <text
-                   type="string"
-                   clip_partial="false"
-                   follows="left|top|right"
-                   layout="topleft"
-                   left="15"
-                   right="-15"
-                   name="stub_textbox"
-                   top="25"
-                   height="40"
-                   valign="center"
-                   parse_urls="true"
-                   wrap="true">
-                   This conversation is in a separate window.   [secondlife:/// Bring it back.]
-                 </text>
-             </panel>
-            </panel_container>
-        </layout_panel>
         <layout_panel
          auto_resize="false"
          user_resize="true"
          width="130"
-         name="conversations_layout_panel"
-         min_dim="31"
+         visible="false"
+         name="conversations_layout_panel2"
+         min_dim="32"
          expanded_min_dim="130">
             <layout_stack
              animate="true" 
              follows="left|top|right"
              height="30"
              layout="topleft"
-             left="0"
+             left="1"
              border_size="0"
              name="conversations_pane_buttons_stack"
              orientation="horizontal"
-             right="-4"
+             right="-3"
              width="64"
              top="0">
                 <layout_panel
@@ -194,11 +132,179 @@
             </layout_stack>
             <panel
              bottom="-1"
+             right="-1"
              follows="all"
              layout="topleft"
              name="conversations_list_panel"
              top="30"
-             left="0"/>
+             left="2"/>
+        </layout_panel>
+        <layout_panel
+         auto_resize="true"
+         user_resize="true"
+         name="messages_layout_panel"
+         expanded_min_dim="220">
+         <icon
+         follows="all"
+         height="210"
+         name="bg"
+         mouse_opaque="false"
+         image_name="Panel_Background"
+         left="6"
+         right="-4"
+         top="0"
+         bottom="-1"/>
+            <panel_container
+             bottom="-1"
+             follows="all"
+             layout="topleft"
+             left="1"
+             name="im_box_tab_container"
+             right="-1"
+             top="0">
+             <panel
+               bottom="-1"
+               follows="all"
+               layout="topleft"
+               name="stub_panel"
+               top_pad="0"
+               left="1"
+               right="-1">
+                 <button
+                 follows="right|top"
+                 height="25"
+                 image_hover_unselected="Toolbar_Middle_Over"
+                 image_overlay="Conv_toolbar_collapse"
+                 image_selected="Toolbar_Middle_Selected"
+                 image_unselected="Toolbar_Middle_Off"
+                 layout="topleft"
+                 top="2"
+                 right="-1"
+                 visible="false"
+                 name="stub_collapse_btn"
+                 tool_tip="Collapse this pane"
+                 width="31" />
+                 <text
+                   type="string"
+                   clip_partial="false"
+                   follows="left|top|right"
+                   layout="topleft"
+                   left="15"
+                   right="-15"
+                   name="stub_textbox"
+                   top="25"
+                   height="40"
+                   valign="center"
+                   parse_urls="true"
+                   wrap="true">
+                   This conversation is in a separate window.   [secondlife:/// Bring it back.]
+                 </text>
+             </panel>
+            </panel_container>
+        </layout_panel>
+        <layout_panel
+         auto_resize="false"
+         user_resize="true"
+         visible="false"
+         width="130"
+         name="conversations_layout_panel"
+         min_dim="31"
+         expanded_min_dim="130">
+            <layout_stack
+             animate="true" 
+             follows="left|top|right"
+             height="30"
+             layout="topleft"
+             left="2"
+             border_size="2"
+             name="conversations_pane_buttons_stack"
+             orientation="horizontal"
+             right="-1"
+             width="130"
+             top="0">
+                <layout_panel
+                 auto_resize="true"
+                 height="27"
+                 width="64"
+                 name="conversations_pane_buttons_expanded">
+                    <menu_button
+                     follows="top|left"
+                     height="25"
+                     image_hover_unselected="Toolbar_Middle_Over"
+                     image_overlay="Conv_toolbar_sort"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
+                     menu_filename="menu_participant_view.xml"
+                     layout="topleft"
+                     left="0"
+                     name="sort_btn"
+                     tool_tip="View/sort options"
+                     top="2"
+                     width="31" />
+                    <button
+                     follows="top|left"
+                     height="25"
+                     image_hover_unselected="Toolbar_Middle_Over"
+                     image_overlay="Conv_toolbar_plus"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
+                     layout="topleft"
+                     top="2"
+                     left_pad="1"
+                     name="add_btn"
+                     tool_tip="Start a new conversation"
+                     width="31"/>
+                    <button
+                     follows="top|left"
+                     height="25"
+                     image_hover_unselected="Toolbar_Middle_Over"
+                     image_overlay="Command_Speak_Icon"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
+                     layout="topleft"
+                     top="2"
+                     left_pad="1"
+                     name="speak_btn"
+                     tool_tip="Speak with people using your microphone"
+                     width="31"/>
+                     <icon
+                     follows="top|left|right"
+                     layout="topleft"
+                     height="25"
+                     name="bg"
+                     mouse_opaque="false"
+                     image_name="Toolbar_Middle_Off"
+                     left_pad="1"
+                     top="2"
+                     width="31" />
+                </layout_panel>
+                <layout_panel
+                 auto_resize="false"
+                 height="27"
+                 name="conversations_pane_buttons_collapsed"
+                 width="32">
+                    <button
+                     follows="right|top"
+                     height="25"
+                     image_hover_unselected="Toolbar_Middle_Over"
+                     image_overlay="Conv_toolbar_collapse"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
+                     layout="topleft"
+                     top="2"
+                     left="0"
+                     name="expand_collapse_btn"
+                     tool_tip="Collapse/Expand this list"
+                     width="31" />
+                </layout_panel>
+            </layout_stack>
+            <panel
+             bottom="-1"
+             follows="all"
+             layout="topleft"
+             name="conversations_list_panel"
+             top="30"
+             left="2"/>
         </layout_panel>
     </layout_stack>
 </multi_floater>

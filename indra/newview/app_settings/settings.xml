@@ -17450,6 +17450,17 @@
   </map>
   
   <!-- Misc -->
+  <key>IMWindowSwitchSide</key>
+  <map>
+    <key>Comment</key>
+    <string>Hide the Local Chat floater whenever you press the return key, no matter if the Chat is empty or not</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>SlowMotionTimeFactor</key>
   <map>
     <key>Comment</key>
