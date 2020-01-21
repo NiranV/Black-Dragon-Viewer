@@ -139,6 +139,8 @@ BOOL BDFloaterPoser::postBuild()
 	//BD - Misc
 	mDelayRefresh = false;
 
+	mStartPosingBtn = getChild<LLButton>("activate");
+
 	//BD - Experimental
 	/*mTimeSlider = getChild<LLMultiSliderCtrl>("time_slider");
 	mKeySlider = getChild<LLMultiSliderCtrl>("key_slider");
@@ -2016,6 +2018,8 @@ void BDFloaterPoser::onAvatarsSelect()
 
 	onPoseControlsRefresh();
 	onAnimControlsRefresh();
+
+	mStartPosingBtn->setFlashing(true, true);
 }
 
 void BDFloaterPoser::onAvatarsRefresh()
