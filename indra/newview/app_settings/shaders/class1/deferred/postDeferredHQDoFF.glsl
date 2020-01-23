@@ -52,10 +52,10 @@ void dofSample(inout vec4 diff, inout float w, float min_sc, vec2 tc, float dept
 
 	if (sc > min_sc) //sampled pixel is more "out of focus" than current sample radius
 	{
-		float wg = 0.0;
+		float wg = 0.25;
 		
 		// de-weight dull areas to make highlights 'pop'
-		wg += (s.r+s.g+s.b)*0.1;
+		wg += s.r+s.g+s.b;
 		diff += wg*s;
 		
 		w += wg;
@@ -90,13 +90,13 @@ void main()
 		float sc = (diff.a*2.0-1.0)*(max_cof*4);
 			
 		float PI = 3.14159265358979323846264;
-  int its = 64;
+  //int its = 64;
 		// sample quite uniformly spaced points within a circle, for a circular 'bokeh'		
 		if (sc > 0.5)
 		{
 			while (sc > 0.5)
 			{
-				//int its = int(max(1.0,(sc*3.7)));
+				int its = int(max(1.0,(sc*3.7)));
 				for (int i=0; i<its; ++i)
 				{
 					float ang = sc+i*2*PI/its; // sc is added for rotary perturbance
@@ -113,7 +113,7 @@ void main()
 			sc = abs(sc);
 			while (sc > 0.5)
 			{
-				//int its = int(max(1.0,(sc*3.7)));
+				int its = int(max(1.0,(sc*3.7)));
 				for (int i=0; i<its; ++i)
 				{
 					float ang = sc+i*2*PI/its; // sc is added for rotary perturbance
