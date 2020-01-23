@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="818"
+  height="828"
   name="chat_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -274,6 +274,17 @@ width="510">
    left_delta="0"
    name="plain_text_chat_history"
    top_pad="15"
+   width="250" />
+   <check_box
+   control_name="IMWindowSwitchSide" 
+   follows="left|top"
+   height="16"
+   label="Switch IM tabs to the left side"
+   tool_tip="This option toggles whether the IM tabs should be shown on the left or right side in the Conversation window."
+   layout="topleft" 
+   left="10"
+   top_pad="0"
+   name="IMWindowSwitchSide" 
    width="250" />
    <check_box
    control_name="ShowScriptErrors" 
