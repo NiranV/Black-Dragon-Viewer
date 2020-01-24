@@ -124,6 +124,7 @@ width="510">
        layout="topleft"
        left="0"
        name="warning_ui_size"
+       visible="false"
        top_pad="3"
        width="508">
     <icon
@@ -265,6 +266,7 @@ width="510">
        layout="topleft"
        left="0"
        name="warning_font_dpi"
+       visible="false"
        top_pad="4"
        width="508">
                    <icon
@@ -352,6 +354,7 @@ width="510">
        layout="topleft"
        left="0"
        name="warning_texture_compression"
+       visible="false"
        top_pad="7"
        width="508">
   <icon
@@ -406,6 +409,7 @@ width="510">
        layout="topleft"
        left="0"
        name="warning_texture_memory"
+       visible="false"
        top_pad="4"
        width="508">
   <icon
@@ -587,6 +591,7 @@ width="510">
        layout="topleft"
        left="0"
        name="warning_dynamic_lod"
+       visible="false"
        top_pad="15"
        width="508">
         <icon
@@ -623,6 +628,7 @@ width="510">
        layout="topleft"
        left="0"
        name="warning_object_lod"
+       visible="false"
        top_pad="3"
        width="508">
           <icon
@@ -1261,6 +1267,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
        layout="topleft"
        left="0"
        name="warning_sky_quality"
+       visible="false"
        top_pad="3"
        width="508">
   <icon
@@ -1788,6 +1795,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
        layout="topleft"
        left="0"
        name="warning_reflection_quality"
+       visible="false"
        top_pad="3"
        width="508">
   <icon
@@ -2253,6 +2261,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
        layout="topleft"
        left="0"
        name="warning_draw_distance"
+       visible="false"
        top_pad="11"
        width="508">
         <icon
@@ -2441,6 +2450,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        layout="topleft"
        left="0"
        name="warning_object_occlusion"
+       visible="false"
        top_pad="7"
        width="508">
   <icon
@@ -2616,6 +2626,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        layout="topleft"
        left="0"
        name="warning_avatars_visible"
+       visible="false"
        top_pad="6"
        width="508">
     <icon
@@ -2711,6 +2722,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        layout="topleft"
        left="0"
        name="warning_derender_m2"
+       visible="false"
        top_pad="2"
        width="508">
   <icon
@@ -2770,6 +2782,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        layout="topleft"
        left="0"
        name="warning_derender_ar"
+       visible="false"
        top_pad="1"
        width="508">
        <icon
@@ -2833,6 +2846,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        layout="topleft"
        left="0"
        name="warning_derender_surface"
+       visible="false"
        top_pad="1"
        width="508">
        <icon
@@ -3560,6 +3574,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        layout="topleft"
        left="0"
        name="warning_fxaa"
+       visible="false"
        top_pad="3"
        width="508">
     <icon
@@ -3908,6 +3923,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        layout="topleft"
        left="0"
        name="warning_shadow_resolution"
+       visible="false"
        top_pad="0"
        width="508">
   <icon
@@ -4103,6 +4119,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        layout="topleft"
        left="0"
        name="warning_projector_resolution"
+       visible="false"
        top_pad="6"
        width="508">
   <icon
@@ -4321,28 +4338,16 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   width="450"
   left="25"
   top_pad="0"/>
- <check_box
-     control_name="RenderScreenSpaceReflections"
-     enabled_control="RenderDeferred"
-     height="16"
-     initial_value="true"
-     label="Render Screen Space Reflections"
-     tool_tip="&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Performance  		
-&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles cheap looking but performance costly reflections based on a copy what you see on screen."
-     layout="topleft"
-     left="10"
-     name="RenderScreenSpaceReflections"
-     top_pad="7"
-     width="115" />
  <panel
        follows="top|left|right"
-       height="16"
+       height="18"
        background_visible="true"
        bg_alpha_color="0.5 0.2 0.2 0.3"
        layout="topleft"
        left="0"
        name="warning_ssr"
+       visibility_control="RenderScreenSpaceReflections"
+       visible="false"
        top_pad="3"
        width="508">
   <icon
@@ -4356,8 +4361,22 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   tool_tip="WARNING: Screen Space Reflections may cause drastic performance degradation depending on the surface it is rendered on and the screen space resolution used."
   width="16"
   left="472"
-  top="0"/>
+  top_pad="1"/>
  </panel>
+ <check_box
+     control_name="RenderScreenSpaceReflections"
+     enabled_control="RenderDeferred"
+     height="16"
+     initial_value="true"
+     label="Render Screen Space Reflections"
+     tool_tip="&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles cheap looking but performance costly reflections based on a copy what you see on screen."
+     layout="topleft"
+     left="10"
+     name="RenderScreenSpaceReflections"
+     top_delta="0"
+     width="115" />
       <slider
       control_name="RenderSSRResolution"
       decimal_digits="0"
@@ -4376,7 +4395,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="64"
       min_val="2"
       name="RenderSSRResolution"
-      top_delta="1"
+      top_pad="4"
       width="312" />
 		<button
  follows="left|top"
@@ -5111,6 +5130,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        layout="topleft"
        left="0"
        name="warning_blur_quality"
+       visible="false"
        top_pad="4"
        width="508">
   <icon
@@ -5230,6 +5250,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        layout="topleft"
        left="0"
        name="warning_light_resolution"
+       visible="false"
        top_pad="3"
        width="508">
     <icon
