@@ -91,7 +91,8 @@ void main()
 			
 		float PI = 3.14159265358979323846264;
   //int its = 64;
-		// sample quite uniformly spaced points within a circle, for a circular 'bokeh'		
+		// sample quite uniformly spaced points within a circle, for a circular 'bokeh'
+#if FRONT_BLUR
 		if (sc > 0.5)
 		{
 			while (sc > 0.5)
@@ -103,12 +104,15 @@ void main()
 					float samp_x = sc*sin(ang);
 					float samp_y = sc*cos(ang);
 					// you could test sample coords against an interesting non-circular aperture shape here, if desired.
-					//dofSampleNear(diff, w, sc, vary_fragcoord.xy + vec2(samp_x,samp_y));
+					dofSampleNear(diff, w, sc, vary_fragcoord.xy + vec2(samp_x,samp_y));
 				}
 				sc -= 1.0;
 			}
 		}
 		else if (sc < -0.5)
+#else
+  if (sc < -0.5)
+#endif
 		{
 			sc = abs(sc);
 			while (sc > 0.5)

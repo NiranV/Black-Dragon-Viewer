@@ -1165,6 +1165,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
 //	//BD - Motion Blur
 	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
+//	//BD - Depth of Field
+	gSavedSettings.getControl("RenderDepthOfFieldFront")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
 
 	//BD - Rendering (General)
 	gSavedSettings.getControl("RenderAttachedParticles")->getSignal()->connect(boost::bind(&handleRenderAttachedParticlesChanged, _2));

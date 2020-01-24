@@ -49,7 +49,7 @@ width="510">
   width="495">
    <layout_stack
    follows="top|left|right"
-   height="3437"
+   height="3457"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -4700,7 +4700,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  follows="top|left|right"
       visibility_control="PrefsDoFVisible"
 	  layout="topleft"
-	  height="167"
+	  height="187"
 	  auto_resize="false"
 	  name="dof_layout_panel"
 	  width="515">
@@ -4715,6 +4715,17 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    tool_tip="This option toggle if the Viewer should include alphas and particles into the depth map. This will affect whether alpha transparent surfaces block godrays and if said surface is considered a solid surface when blurring."
    name="RenderDepthOfFieldAlphas"
    top_pad="15"
+   width="115"/>
+ <check_box
+   control_name="RenderDepthOfFieldFront"
+   height="16"
+   initial_value="false"
+   label="Enable Foreground Blur in Depth of Field"
+   layout="topleft"
+   left="10"
+   tool_tip="This option toggles the foreground blur when using Depth of Field allowing you to blur only the background if desired."
+   name="RenderDepthOfFieldFront"
+   top_pad="0"
    width="115"/>
  <check_box
    control_name="RenderDepthOfFieldHighQuality"
