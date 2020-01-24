@@ -204,6 +204,8 @@ private:
 	//BD - Animesh
 	LLScrollListCtrl*						mAvatarScroll;
 
+	LLButton*								mStartPosingBtn;
+
 	//BD - Experimental
 	/*void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);
 	void onAddKey();
