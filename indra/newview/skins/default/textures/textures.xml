@@ -760,6 +760,12 @@ with the same filename but different name
   
   <texture name="BlackDragon_16" file_name="icons/blackdragon_16.png"/>
   
+  <texture name="Discord_Icon" file_name="discord_gr.png" preload="true"/>
+  <texture name="Youtube_Icon" file_name="youtube_gr.png" preload="true"/>
+  <texture name="Patreon_Icon" file_name="patreon_gr.png" preload="true"/>
+  <texture name="Blogger_Icon" file_name="blogger_gr.png" preload="true"/>
+  <texture name="FMOD_Logo" file_name="fmod.png" preload="true"/>
+  
   <texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
   <texture name="Command_Script_Limits_Icon" file_name="toolbar_icons/script.png"      preload="true" />
   <texture name="Command_PF_Linksets_Icon"  file_name="toolbar_icons/linksets.png"     preload="true" />

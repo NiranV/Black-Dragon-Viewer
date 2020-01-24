@@ -3367,5 +3367,149 @@ Removed: Rotation order dropdown and all code.
     width="77"/>
    </layout_panel>
   </layout_stack>
+  <icon
+  follows="top|left"
+  height="30"
+  image_name="FMOD_Logo"
+  color="1 1 1 0.85"
+  layout="topleft"
+  name="fmod_logo"
+  mouse_opaque="false"
+  visible="true"
+  width="120"
+  left="5"
+  top="-40"/>
+  <layout_stack
+  border_size="0"
+  follows="right|bottom"
+  height="150"
+  layout="topleft"
+  left="-165"
+  mouse_opaque="true"
+  name="root_stack"
+  orientation="horizontal"
+  top="105"
+  width="165">
+   <layout_panel
+   auto_resize="false"
+   follows="all"
+   height="40"
+   layout="topleft"
+   mouse_opaque="true"
+   name="info_panel"
+   top_pad="0"
+   width="40">
+    <button
+    follows="right|top"
+    height="36"
+    image_unselected="Discord_Icon"
+    image_selected="Discord_Icon"
+    label=""
+    font="SansSerif"
+    font.style="BOLD"
+    label_color="1 1 1 0.7"
+    tool_tip="Join the Discord Channel to share your pictures and ask for help or talk about all kinds of Second Life and Black Dragon related things!"
+    layout="topleft"
+    left="0"
+    halign="center"
+    name="discord_btn"
+    top="0"
+    width="36">
+    <button.commit_callback
+    function="Advanced.WebContentTest"
+    parameter="https://discord.gg/SucYaDC"/>
+    </button>
+   </layout_panel>
+   <layout_panel
+   auto_resize="false"
+   follows="all"
+   height="40"
+   layout="topleft"
+   mouse_opaque="true"
+   name="info_panel"
+   top_pad="0"
+   width="40">
+    <button
+    follows="right|top"
+    height="36"
+    image_unselected="Blogger_Icon"
+    image_selected="Blogger_Icon"
+    label=""
+    font="SansSerif"
+    font.style="BOLD"
+    label_color="1 1 1 0.7"
+    tool_tip="Follow me on the official Black Dragon blogger page to get the latest news and some helpful hints!"
+    layout="topleft"
+    left="0"
+    halign="center"
+    name="blogger_btn"
+    top="0"
+    width="36">
+    <button.commit_callback
+    function="Advanced.WebContentTest"
+    parameter="https://niranv-sl.blogspot.com/"/>
+    </button>
+   </layout_panel>
+   <layout_panel
+   auto_resize="false"
+   follows="all"
+   height="40"
+   layout="topleft"
+   mouse_opaque="true"
+   name="info_panel"
+   top_pad="0"
+   width="40">
+    <button
+    follows="right|top"
+    height="36"
+    image_unselected="Patreon_Icon"
+    image_selected="Patreon_Icon"
+    label=""
+    font="SansSerif"
+    font.style="BOLD"
+    label_color="1 1 1 0.7"
+    tool_tip="Become a Patron on Patreon!"
+    layout="topleft"
+    left="0"
+    halign="center"
+    name="patreon_btn"
+    top="0"
+    width="36">
+    <button.commit_callback
+    function="Advanced.WebContentTest"
+    parameter="https://www.patreon.com/niranvsl"/>
+    </button>
+   </layout_panel>
+   <layout_panel
+   auto_resize="false"
+   follows="all"
+   height="40"
+   layout="topleft"
+   mouse_opaque="true"
+   name="info_panel"
+   top_pad="0"
+   width="40">
+    <button
+    follows="right|top"
+    height="36"
+    image_unselected="Youtube_Icon"
+    image_selected="Youtube_Icon"
+    label=""
+    font="SansSerif"
+    font.style="BOLD"
+    label_color="1 1 1 0.7"
+    tool_tip="Follow me on Youtube and watch some awesome videos made with Black Dragon!"
+    layout="topleft"
+    left="0"
+    halign="center"
+    name="youtube_btn"
+    top="0"
+    width="36">
+    <button.commit_callback
+    function="Advanced.WebContentTest"
+    parameter="https://www.youtube.com/channel/UC2_6jAkf8rK2YiD8dg0zH6A?view_as=subscriber"/>
+    </button>
+   </layout_panel>
+  </layout_stack>
  </panel>
 </panel>
