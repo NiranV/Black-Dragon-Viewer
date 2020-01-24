@@ -1910,9 +1910,9 @@ void LLFloaterPreference::refreshWarnings()
 	S32 max_vram = gGLManager.mVRAM;
 	S32 tex_mem = gSavedSettings.getS32("TextureMemory");
 	S32 sys_mem = gSavedSettings.getS32("SystemMemory");
-	mWarning2->setVisible((tex_mem < 368) || (sys_mem < 512)
-						|| (tex_mem > 1024) || (sys_mem > 1024)
-						|| (tex_mem + sys_mem) > (max_vram * 0.8));
+	mWarning2->setVisible(!gSavedSettings.getBOOL("AutomaticMemoryManagement") 
+						&& ((tex_mem < 368) || (sys_mem < 512)
+						|| (tex_mem + sys_mem) > (max_vram * 0.9)));
 
 	//BD - Quality Options
 	mWarning3->setVisible(LLVOVolume::sLODFactor > 2.0);
@@ -1921,7 +1921,7 @@ void LLFloaterPreference::refreshWarnings()
 	mWarning4->setVisible(gPipeline.RenderFarClip > 128);
 	mWarning5->setVisible(gSavedSettings.getU32("RenderAvatarMaxNonImpostors") > 15);
 	mWarning6->setVisible(gSavedSettings.getF32("RenderAutoMuteSurfaceAreaLimit") > 256.f);
-	mWarning7->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 250000);
+	mWarning7->setVisible(gSavedSettings.getU32("RenderAvatarMaxComplexity") > 350000);
 	mWarning8->setVisible(gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit") > 256.f);
 
 	//BD - Windlight Options
@@ -1940,7 +1940,7 @@ void LLFloaterPreference::refreshWarnings()
 	mWarning13->setVisible(gSavedSettings.getU32("RenderMotionBlurStrength") < 80);
 
 	//BD - Volumetric Lighting Options
-	mWarning14->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 32);
+	mWarning14->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 48);
 }
 
 //BD - Memory Allocation
