@@ -51,22 +51,21 @@ float weightByColor(vec4 s)
 
 void dofSample(inout vec4 diff, inout float w, vec2 tc)
 {
-	vec4 s = texture2DRect(diffuseRect, tc);
-
-	float sweight = weightByColor(s);
-		
-	// modulate weight by how similarly-focused the origin and sample-point are
-	sweight *= 1.0 - abs(s.a - diff.a);
-	
-	diff.rgb += sweight * s.rgb;
-	
-	w += sweight;
+ vec4 s = texture2DRect(diffuseRect, tc);
+ float sweight = weightByColor(s);
+  
+ // modulate weight by how similarly-focused the origin and sample-point are
+ sweight *= 1.0 - abs(s.a - diff.a);
+ 
+ diff.rgb += sweight * s.rgb;
+ 
+ w += sweight;
 }
 
 void main() 
 {
   vec4 diff = texture2DRect(diffuseRect, vary_fragcoord.xy);
-	
+  
   float w = weightByColor(diff);
   diff.rgb *= w;
 
@@ -74,19 +73,24 @@ void main()
   const float PI = 3.14159265358979323846264;
   
   // sample quite uniformly spaced points within a circle, for a circular 'bokeh'
-  sc = abs(sc);
-  while (sc > 0.5)
-    {
-      int its = int(max(1.0,(sc*PI)));
-      for (int i=0; i<its; ++i)
-	{
-	  float ang = sc+i*2*PI/its; // sc is added for rotary perturbance
-	  float samp_x = sc*sin(ang);
-	  float samp_y = sc*cos(ang);
-	  dofSample(diff, w, vary_fragcoord.xy + vec2(samp_x,samp_y));
-	}
-      sc -= 2.0;
-    }
+#if !FRONT_BLUR
+  if(sc < -0.5)
+#endif
+  {
+   sc = abs(sc);
+   while (sc > 0.5)
+   {
+     int its = int(max(1.0,(sc*PI)));
+     for (int i=0; i<its; ++i)
+     {
+       float ang = sc+i*2*PI/its; // sc is added for rotary perturbance
+       float samp_x = sc*sin(ang);
+       float samp_y = sc*cos(ang);
+       dofSample(diff, w, vary_fragcoord.xy + vec2(samp_x,samp_y));
+     }
+     sc -= 2.0;
+   }
+  }
   
   diff.rgb /= w;
 
