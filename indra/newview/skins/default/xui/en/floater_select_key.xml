@@ -563,6 +563,22 @@
   label="Roll Right"
   name="roll_right"
   value="roll_right" />
+  <combo_box.item
+  label="Pan Left"
+  name="pan_left"
+  value="pan_left" />
+  <combo_box.item
+  label="Pan Right"
+  name="pan_right"
+  value="pan_right" />
+  <combo_box.item
+  label="Pan Up"
+  name="pan_up"
+  value="pan_up" />
+  <combo_box.item
+  label="Pan Down"
+  name="pan_down"
+  value="pan_down" />
 		<combo_box.item
   label="         Vehicle Specific"
   enabled="false"
