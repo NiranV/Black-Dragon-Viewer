@@ -1481,6 +1481,9 @@ void LLFloaterPreference::onRemoveBind()
 	if (!mBindModeList)
 		return;
 
+	if (!mBindModeList->hasSelectedItem())
+		return;
+
 	mBindModeList->deleteSelectedItems();
 	onExportControls();
 }
