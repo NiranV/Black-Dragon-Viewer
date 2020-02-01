@@ -151,6 +151,7 @@ LLScrollListCtrl::Params::Params()
 	scroll_bar_bg_color("scroll_bar_bg_color"),
 	border("border"),
 	//BD
+	bg_marked_color("bg_marked_color"),
 	enable_sort("enable_sort", true)
 {}
 
@@ -202,7 +203,9 @@ LLScrollListCtrl::LLScrollListCtrl(const LLScrollListCtrl::Params& p)
 	mSearchColumn(p.search_column),
 	mColumnPadding(p.column_padding),
 	mContextMenuType(MENU_NONE),
-	mIsFriendSignal(NULL)
+	mIsFriendSignal(NULL),
+	//BD
+	mBgMarkedColor(p.bg_marked_color())
 {
 	auto menu = mPopupMenuHandle.get();
 	if (menu)
@@ -1531,9 +1534,17 @@ void LLScrollListCtrl::drawItems()
 			if( mScrollLines <= line && line < mScrollLines + num_page_lines )
 			{
 				fg_color = (item->getEnabled() ? mFgUnselectedColor.get() : mFgDisabledColor.get());
-				if (item->getMarked())
+				//BD
+				if (item->getMarked() && mCanSelect)
 				{
-					bg_color = LLColor4::red4;
+					if (item->getSelected())	// if it's highlighted, average the colors
+					{
+						bg_color = lerp(mBgSelectedColor.get(), mBgMarkedColor.get(), 0.5f);
+					}
+					else						// otherwise just select-highlight it
+					{
+						bg_color = mBgMarkedColor.get();
+					}
 				}
 				else if( item->getSelected() && mCanSelect)
 				{

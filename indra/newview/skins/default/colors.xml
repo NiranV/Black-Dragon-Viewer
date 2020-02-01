@@ -919,6 +919,10 @@
  <!-- Black Dragon colors -->
  
  <color
+ name="ScrollBGMarkedColor"
+ value="0.5 0.2 0.2 0.3" />
+ 
+ <color
  name="SearchableControlHighlightColor"
  value="0.35 0.6 1 0.4" />
  <color

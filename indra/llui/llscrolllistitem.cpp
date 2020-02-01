@@ -44,6 +44,7 @@ LLScrollListItem::LLScrollListItem(const Params& p)
 	mEnabled(p.enabled),
 	mUserdata(p.userdata),
 	mItemValue(p.value),
+	//BD
 	mMarked(false)
 {
 	//BD - Cells ~ Thanks to Liru

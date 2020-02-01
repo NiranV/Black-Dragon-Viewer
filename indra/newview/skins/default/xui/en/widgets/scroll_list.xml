@@ -7,6 +7,7 @@
              bg_writeable_color="ScrollBgWriteableColor"
              bg_readonly_color="ScrollBgReadOnlyColor"
              bg_stripe_color="ScrollBGStripeColor"
+             bg_marked_color="ScrollBGMarkedColor"
              hovered_color="ScrollHoveredColor"
              highlighted_color="ScrollHighlightedColor"
              column_padding="5"

@@ -128,7 +128,9 @@ public:
 							bg_stripe_color,
 							hovered_color,
 							highlighted_color,
-							scroll_bar_bg_color;
+							scroll_bar_bg_color,
+							//BD
+							bg_marked_color;
 
 		Optional<Contents> contents;
 
@@ -285,6 +287,9 @@ public:
 	void setHoveredColor(const LLColor4 &c)		{ mHoveredColor = c; }
 	void setHighlightedColor(const LLColor4 &c) { mHighlightedColor = c; }
 	void setFgDisableColor(const LLColor4 &c)	{ mFgDisabledColor = c; }
+
+	//BD
+	void setBgMarkedColor(const LLColor4& c)	{ mBgMarkedColor = c; }
 
 	void setBackgroundVisible(BOOL b)			{ mBackgroundVisible = b; }
 	void setDrawStripes(BOOL b)					{ mDrawStripes = b; }
@@ -496,6 +501,9 @@ private:
 	LLUIColor		mFgDisabledColor;
 	LLUIColor		mHoveredColor;
 	LLUIColor		mHighlightedColor;
+
+	//BD
+	LLUIColor		mBgMarkedColor;
 
 	S32				mBorderThickness;
 	callback_t		mOnDoubleClickCallback;
