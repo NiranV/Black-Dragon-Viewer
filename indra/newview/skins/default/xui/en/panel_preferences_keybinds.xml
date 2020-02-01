@@ -53,8 +53,8 @@ width="510">
  <scroll_list
  column_padding="2"
  draw_heading="true"
- height="348"
- follows="left|top|right"
+ height="360"
+ follows="all"
  layout="topleft"
  left_delta="-11"
  width="512"
