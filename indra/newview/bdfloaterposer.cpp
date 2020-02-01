@@ -23,6 +23,10 @@
 #include "llavatarnamecache.h"
 #include "lldiriterator.h"
 #include "llkeyframemotion.h"
+#include "llmenugl.h"
+#include "llmenubutton.h"
+#include "lltoggleablemenu.h"
+#include "llviewermenu.h"
 #include "llsdserialize.h"
 #include "llsdutil.h"
 #include "llviewerjointattachment.h"
@@ -46,7 +50,7 @@ BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 	//BD - Start our custom pose.
 	mCommitCallbackRegistrar.add("Pose.Start", boost::bind(&BDFloaterPoser::onPoseStart, this));
 	//BD - Load the current pose and export all its values into the UI so we can alter them.
-	mCommitCallbackRegistrar.add("Pose.Load", boost::bind(&BDFloaterPoser::onPoseLoad, this, ""));
+	mCommitCallbackRegistrar.add("Pose.Load", boost::bind(&BDFloaterPoser::onPoseLoad, this));
 	//BD - Delete the currently selected Pose.
 	mCommitCallbackRegistrar.add("Pose.Delete", boost::bind(&BDFloaterPoser::onPoseDelete, this));
 	//BD - Change a pose's blend type and time.
@@ -55,6 +59,8 @@ BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pose.Layout", boost::bind(&BDFloaterPoser::onUpdateLayout, this));
 	//BD - Set the desired pose interpolation type.
 	mCommitCallbackRegistrar.add("Pose.Interpolation", boost::bind(&BDFloaterPoser::onJointControlsRefresh, this));
+	//BD - Include some menu interactions. Sadly necessary.
+	mCommitCallbackRegistrar.add("Pose.Menu", boost::bind(&BDFloaterPoser::onPoseMenuAction, this, _2));
 
 	//BD - Change a bone's rotation.
 	mCommitCallbackRegistrar.add("Joint.Set", boost::bind(&BDFloaterPoser::onJointSet, this, _1, _2));
@@ -119,7 +125,8 @@ BOOL BDFloaterPoser::postBuild()
 	mPoseScroll = this->getChild<LLScrollListCtrl>("poses_scroll", true);
 	mPoseScroll->setCommitOnSelectionChange(TRUE);
 	mPoseScroll->setCommitCallback(boost::bind(&BDFloaterPoser::onPoseControlsRefresh, this));
-	mPoseScroll->setDoubleClickCallback(boost::bind(&BDFloaterPoser::onPoseLoad, this, ""));
+	mPoseScroll->setDoubleClickCallback(boost::bind(&BDFloaterPoser::onPoseLoad, this));
+	mPoseScroll->setRightMouseDownCallback(boost::bind(&BDFloaterPoser::onPoseScrollRightMouse, this, _1, _2, _3));
 
 	mRotationSliders = { { getChild<LLUICtrl>("Rotation_X"), getChild<LLUICtrl>("Rotation_Y"), getChild<LLUICtrl>("Rotation_Z") } };
 	mPositionSliders = { { getChild<LLSliderCtrl>("Position_X"), getChild<LLSliderCtrl>("Position_Y"), getChild<LLSliderCtrl>("Position_Z") } };
@@ -140,6 +147,17 @@ BOOL BDFloaterPoser::postBuild()
 	mDelayRefresh = false;
 
 	mStartPosingBtn = getChild<LLButton>("activate");
+	mLoadPosesBtn = getChild<LLMenuButton>("load_poses");
+
+	//BD - Poser Menu
+	LLUICtrl::CommitCallbackRegistry::ScopedRegistrar registrar; registrar.add("Pose.Menu", boost::bind(&BDFloaterPoser::onPoseLoadSelective, this, _2));
+	LLToggleableMenu* context_menu = LLUICtrlFactory::getInstance()->createFromFile<LLToggleableMenu>("menu_poser_poses.xml",
+		gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
+	if (context_menu)
+	{
+		mPosesMenuHandle = context_menu->getHandle();
+		mLoadPosesBtn->setMenu(context_menu, LLMenuButton::MP_BOTTOM_LEFT);
+	}
 
 	//BD - Experimental
 	/*mTimeSlider = getChild<LLMultiSliderCtrl>("time_slider");
@@ -443,22 +461,41 @@ void BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 	}
 }
 
-void BDFloaterPoser::onPoseLoad(const LLSD& name)
+void BDFloaterPoser::onPoseLoad()
 {
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
 	if (!item) return;
 
-	std::string pose_name;
-	if (!name.asString().empty())
-	{
-		pose_name = name.asString();
-	}
-	else
-	{
-		pose_name = item->getColumn(0)->getValue().asString();
-	}
+	std::string pose_name = item->getColumn(0)->getValue().asString();
 
 	gDragonAnimator.loadPose(pose_name);
+	onJointRefresh();
+}
+
+void BDFloaterPoser::onPoseLoadSelective(const LLSD& param)
+{
+	LLScrollListItem* item = mPoseScroll->getFirstSelected();
+	if (!item) return;
+
+	std::string pose_name = item->getColumn(0)->getValue().asString();
+
+	S32 load_type = 0;
+	if (param.asString() == "rotation")
+		load_type |= ROTATIONS;
+	else if (param.asString() == "position")
+		load_type |= POSITIONS;
+	else if (param.asString() == "scale")
+		load_type |= SCALES;
+	else if (param.asString() == "rot_pos")
+		load_type |= ROTATIONS | POSITIONS;
+	else if (param.asString() == "rot_scale")
+		load_type |= ROTATIONS | SCALES;
+	else if (param.asString() == "pos_scale")
+		load_type |= POSITIONS | SCALES;
+	else if (param.asString() == "all")
+		load_type |= ROTATIONS | POSITIONS | SCALES;
+
+	gDragonAnimator.loadPose(pose_name, load_type);
 	onJointRefresh();
 }
 
@@ -555,6 +592,26 @@ void BDFloaterPoser::onPoseControlsRefresh()
 	getChild<LLUICtrl>("delete_poses")->setEnabled(bool(item));
 	getChild<LLUICtrl>("add_entry")->setEnabled(!is_playing && item);
 	getChild<LLUICtrl>("load_poses")->setEnabled(bool(item));
+}
+
+void BDFloaterPoser::onPoseMenuAction(const LLSD& param)
+{
+	onPoseLoadSelective(param);
+}
+
+void BDFloaterPoser::onPoseScrollRightMouse(LLUICtrl* ctrl, S32 x, S32 y)
+{
+	mPoseScroll->selectItemAt(x, y, MASK_NONE);
+	if (mPoseScroll->getFirstSelected())
+	{
+		LLToggleableMenu* poses_menu = mPosesMenuHandle.get();
+		if (poses_menu)
+		{
+			poses_menu->buildDrawLabels();
+			poses_menu->updateParent(LLMenuGL::sMenuContainer);
+			LLMenuGL::showPopup(mPoseScroll, poses_menu, x, y);
+		}
+	}
 }
 
 ////////////////////////////////

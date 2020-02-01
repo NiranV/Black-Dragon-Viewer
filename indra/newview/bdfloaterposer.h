@@ -25,6 +25,8 @@
 //#include "lltimectrl.h"
 #include "lltabcontainer.h"
 #include "llkeyframemotion.h"
+#include "lltoggleablemenu.h"
+#include "llmenubutton.h"
 
 /*struct BDPoseKey
 {
@@ -142,7 +144,10 @@ private:
 	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
 	void onPoseControlsRefresh();
 	void onPoseSave(S32 type, F32 time, bool editing);
-	void onPoseLoad(const LLSD& name);
+	void onPoseLoad();
+	void onPoseLoadSelective(const LLSD& param);
+	void onPoseMenuAction(const LLSD& param);
+	void onPoseScrollRightMouse(LLUICtrl* ctrl, S32 x, S32 y);
 
 	//BD - Joints
 	void onJointRefresh();
@@ -184,6 +189,7 @@ private:
 	//BD - Posing
 	LLScrollListCtrl*						mPoseScroll;
 	LLTabContainer*							mJointTabs;
+	LLHandle<LLToggleableMenu>				mPosesMenuHandle;
 
 	std::array<LLUICtrl*, 3>				mRotationSliders;
 	std::array<LLSliderCtrl*, 3>			mPositionSliders;
@@ -205,6 +211,7 @@ private:
 	LLScrollListCtrl*						mAvatarScroll;
 
 	LLButton*								mStartPosingBtn;
+	LLMenuButton*							mLoadPosesBtn;
 
 	//BD - Experimental
 	/*void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);

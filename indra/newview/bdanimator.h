@@ -32,6 +32,14 @@ enum BD_EActionType
 	POSE = 2
 };
 
+enum BD_ELoadType
+{
+	NOTHING = 0,
+	ROTATIONS = 0x1,			// Load rotations
+	POSITIONS = 0x1 << 1,		// Load positions
+	SCALES = 0x1 << 2,			// Load scales
+};
+
 class Action
 {
 public:
@@ -52,7 +60,7 @@ public:
 	void			onAddAction(LLVOAvatar* avatar, Action action, S32 location);
 	void			onDeleteAction(LLVOAvatar* avatar, S32 i);
 
-	BOOL			loadPose(const LLSD& name);
+	BOOL			loadPose(const LLSD& name, S32 load_type = 3);
 	LLSD			returnPose(const LLSD& name);
 
 	void			update();

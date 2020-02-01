@@ -234,7 +234,11 @@ void BDAnimator::stopPlayback()
 	mPlaying = false;
 }
 
-BOOL BDAnimator::loadPose(const LLSD& name)
+//BD - We allow loading rotations, positions and scales seperately
+//     by giving the load an integer which determines what to load.
+//     1 is default and loads rotations only, 2 = positions only,
+//     4 = scales only, thus 3 = rotations and positions and so on.
+BOOL BDAnimator::loadPose(const LLSD& name, S32 load_type)
 {
 	if (!mTargetAvatar || mTargetAvatar->isDead())
 	{
@@ -319,7 +323,7 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 			}
 
 			LLVector3 vec3;
-			if (pose["rotation"].isDefined())
+			if (load_type & ROTATIONS && pose["rotation"].isDefined())
 			{
 				LLQuaternion quat;
 				LLQuaternion new_quat = joint->getRotation();
@@ -332,7 +336,7 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 
 			//BD - Position information is only ever written when it is actually safe to do.
 			//     It's safe to assume that IF information is available it's safe to apply.
-			if (pose["position"].isDefined())
+			if (load_type & POSITIONS && pose["position"].isDefined())
 			{
 				vec3.setValue(pose["position"]);
 				joint->setLastPosition(joint->getPosition());
@@ -340,7 +344,7 @@ BOOL BDAnimator::loadPose(const LLSD& name)
 			}
 
 			//BD - Bone Scales
-			if (pose["scale"].isDefined())
+			if (load_type & SCALES && pose["scale"].isDefined())
 			{
 				vec3.setValue(pose["scale"]);
 				joint->setScale(vec3);

@@ -921,7 +921,7 @@ width="678">
 				name="type"
 				relative_width="0.15"  />
 				</scroll_list>
-				<button
+				<menu_button
 				height="21"
 				follows="top|left"
 				layout="topleft"
@@ -932,13 +932,12 @@ width="678">
 				image_hover_unselected="Toolbar_Middle_Over"
 				image_selected="Toolbar_Middle_Selected"
 				image_unselected="Toolbar_Middle_Off"
+				menu_filename="menu_poser_poses.xml"
+                menu_position="topright"
 				name="load_poses"
 				width="25"
 				top_pad="-1"
-				left_delta="2">
-				<button.commit_callback
-				function="Pose.Load"/>
-				</button>
+				left_delta="2"/>
 				<line_editor
 				commit_on_focus_lost="true"
 				follows="left|top"
