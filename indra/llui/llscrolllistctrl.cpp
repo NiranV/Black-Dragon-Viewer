@@ -1531,7 +1531,11 @@ void LLScrollListCtrl::drawItems()
 			if( mScrollLines <= line && line < mScrollLines + num_page_lines )
 			{
 				fg_color = (item->getEnabled() ? mFgUnselectedColor.get() : mFgDisabledColor.get());
-				if( item->getSelected() && mCanSelect)
+				if (item->getMarked())
+				{
+					bg_color = LLColor4::red4;
+				}
+				else if( item->getSelected() && mCanSelect)
 				{
 					if(item->getHighlighted())	// if it's highlighted, average the colors
 					{

@@ -37,13 +37,14 @@
 // LLScrollListItem
 //---------------------------------------------------------------------------
 
-LLScrollListItem::LLScrollListItem( const Params& p )
-:	mSelected(FALSE),
+LLScrollListItem::LLScrollListItem(const Params& p)
+	: mSelected(FALSE),
 	mHighlighted(FALSE),
 	mFlagged(false),
 	mEnabled(p.enabled),
 	mUserdata(p.userdata),
-	mItemValue(p.value)
+	mItemValue(p.value),
+	mMarked(false)
 {
 	//BD - Cells ~ Thanks to Liru
 	for (const auto& cell : p.contents.columns)

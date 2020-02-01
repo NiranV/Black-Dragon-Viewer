@@ -106,6 +106,10 @@ public:
 	void	setFlagged(bool b)				{ mFlagged = b; }
 	bool	getFlagged() const				{ return mFlagged; }
 
+	//BD
+	void	setMarked(bool b)				{ mMarked = b; }
+	bool	getMarked() const				{ return mMarked; }
+
 	void	setUserdata( void* userdata )	{ mUserdata = userdata; }
 	void*	getUserdata() const 			{ return mUserdata; }
 
@@ -138,6 +142,7 @@ private:
 	BOOL	mEnabled;
 	//BD
 	bool	mFlagged;
+	bool	mMarked;
 
 	void*	mUserdata;
 	LLSD	mItemValue;
