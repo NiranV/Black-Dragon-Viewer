@@ -224,7 +224,7 @@ void LLSpinCtrl::onDownBtn( const LLSD& data )
 			MASK mask = gKeyboard->currentMask(FALSE);
 			if (MASK_SHIFT & mask)
 			{
-				val -= (mIncrement * 10);
+				val -= (mIncrement / 10);
 			}
 			else
 			{
