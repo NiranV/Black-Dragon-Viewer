@@ -2723,7 +2723,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
        left="0"
        name="warning_derender_m2"
        visible="false"
-       top_pad="2"
+       top_pad="4"
        width="508">
   <icon
   follows="top|right"
@@ -2761,7 +2761,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="RenderAutoMuteSurfaceAreaLimit"
- height="15"
+ height="14"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
@@ -2825,7 +2825,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="RenderAvatarMaxComplexity"
- height="15"
+ height="14"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
@@ -2885,7 +2885,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="RenderAutoHideSurfaceAreaLimit"
- height="15"
+ height="14"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
@@ -4400,7 +4400,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 		<button
  follows="left|top"
  control_name="RenderSSRResolution"
- height="15"
+ height="14"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
@@ -4434,7 +4434,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <button
  follows="left|top"
  control_name="RenderSSRBrightness"
- height="15"
+ height="14"
  is_toggle="false"
  label="⌊default⌉"
  image_selected="PushButton_Default_Off"
