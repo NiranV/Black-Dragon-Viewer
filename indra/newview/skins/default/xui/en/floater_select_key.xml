@@ -223,6 +223,10 @@
   label="Roll Right"
   name="roll_right"
   value="roll_right" />
+  <combo_box.item
+  label="Reset Roll"
+  name="roll_reset"
+  value="roll_reset" />
 		<combo_box.combo_button
 		image_unselected="ComboToolbarButton_Off"
 		image_selected="ComboToolbarButton_Selected"
@@ -313,6 +317,10 @@
   label="Roll Right"
   name="roll_right"
   value="roll_right" />
+  <combo_box.item
+  label="Reset Roll"
+  name="roll_reset"
+  value="roll_reset" />
 		<combo_box.combo_button
 		image_unselected="ComboToolbarButton_Off"
 		image_selected="ComboToolbarButton_Selected"
@@ -443,6 +451,10 @@
   label="Roll Right"
   name="roll_right"
   value="roll_right" />
+  <combo_box.item
+  label="Reset Roll"
+  name="roll_reset"
+  value="roll_reset" />
 		<combo_box.combo_button
 		image_unselected="ComboToolbarButton_Off"
 		image_selected="ComboToolbarButton_Selected"
@@ -563,6 +575,10 @@
   label="Roll Right"
   name="roll_right"
   value="roll_right" />
+  <combo_box.item
+  label="Reset Roll"
+  name="roll_reset"
+  value="roll_reset" />
   <combo_box.item
   label="Pan Left"
   name="pan_left"

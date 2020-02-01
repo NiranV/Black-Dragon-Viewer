@@ -108,6 +108,10 @@ width="669">
  name="roll_right">
  (Camera) Roll Right
  </string>
+ <string
+ name="roll_reset">
+ (Camera) Reset Roll
+ </string>
  
  <string
  name="edit_avatar_move_forward">

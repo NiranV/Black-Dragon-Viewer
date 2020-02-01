@@ -404,6 +404,12 @@ void camera_roll_right(EKeystate s)
 	gAgentCamera.setRollRightKey( get_orbit_rate());
 }
 
+void camera_roll_reset(EKeystate s)
+{
+	if (KEYSTATE_UP == s) return;
+	gAgentCamera.mCameraRollAngle = 0.f;
+}
+
 void camera_spin_over_sitting( EKeystate s )
 {
 	if( KEYSTATE_UP == s  ) return;
@@ -670,6 +676,7 @@ REGISTER_KEYBOARD_ACTION("start_gesture", start_gesture);
 //BD - Camera Roll
 REGISTER_KEYBOARD_ACTION("roll_left", camera_roll_left);
 REGISTER_KEYBOARD_ACTION("roll_right", camera_roll_right);
+REGISTER_KEYBOARD_ACTION("roll_reset", camera_roll_reset);
 #undef REGISTER_KEYBOARD_ACTION
 
 LLViewerKeyboard::LLViewerKeyboard()
