@@ -1445,8 +1445,8 @@ void LLFloaterPreference::onExportControls()
 		LLScrollListItem* row = mBindModeList->getFirstSelected();
 		MASK old_mask = MASK_NONE;
 		KEY old_key = NULL;
-		LLKeyboard::keyFromString(row->getColumn(2)->getValue().asString(), &old_key);
-		LLKeyboard::maskFromString(row->getColumn(3)->getValue().asString(), &old_mask);
+		gKeyboard->keyFromString(row->getColumn(2)->getValue().asString(), &old_key);
+		gKeyboard->maskFromString(row->getColumn(3)->getValue().asString(), &old_mask);
 		gViewerKeyboard.bindKey(mode, old_key, old_mask, row->getColumn(1)->getValue().asString());
 		it++;
 	}
@@ -1496,9 +1496,9 @@ void LLFloaterPreference::onAddBind(KEY key, MASK mask, std::string action)
 	row["columns"][1]["column"] = "function";
 	row["columns"][1]["value"] = action;
 	row["columns"][2]["column"] = "button";
-	row["columns"][2]["value"] = LLKeyboard::stringFromKey(key);
+	row["columns"][2]["value"] = gKeyboard->stringFromKey(key);
 	row["columns"][3]["column"] = "modifiers";
-	row["columns"][3]["value"] = LLKeyboard::stringFromMask(mask, true);
+	row["columns"][3]["value"] = gKeyboard->stringFromMask(mask, true);
 	mBindModeList->addElement(row);
 	onExportControls();
 }
@@ -1533,8 +1533,8 @@ void LLFloaterPreference::onListClickAction()
 			{
 				MASK mask = MASK_NONE;
 				KEY key = NULL;
-				LLKeyboard::keyFromString(row->getColumn(2)->getValue().asString(), &key);
-				LLKeyboard::maskFromString(row->getColumn(3)->getValue().asString(), &mask);
+				gKeyboard->keyFromString(row->getColumn(2)->getValue().asString(), &key);
+				gKeyboard->maskFromString(row->getColumn(3)->getValue().asString(), &mask);
 
 				dialog->setParent(this);
 				dialog->setMode(mode);
@@ -1565,6 +1565,7 @@ void LLFloaterPreference::refreshKeys()
 
 	mBindModeList->clearRows();
 
+	bool show_warning = false;
 	S32 mode = getChild<LLComboBox>("keybinding_mode")->getValue();
 	while (!infile.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(settings, infile))
 	{
@@ -1575,8 +1576,9 @@ void LLFloaterPreference::refreshKeys()
 		MASK mask = MASK_NONE;
 
 		//BD - Translate to human readable text.
-		LLKeyboard::maskFromString(settings["mask"].asString(), &mask);
+		gKeyboard->maskFromString(settings["mask"].asString(), &mask);
 		std::string action_str = getString(settings["function"].asString());
+		std::string mask_str = gKeyboard->stringFromMask(mask, true);
 
 		row["columns"][0]["column"] = "action";
 		row["columns"][0]["value"] = action_str;
@@ -1585,9 +1587,38 @@ void LLFloaterPreference::refreshKeys()
 		row["columns"][2]["column"] = "button";
 		row["columns"][2]["value"] = settings["key"].asString();
 		row["columns"][3]["column"] = "modifiers";
-		row["columns"][3]["value"] = LLKeyboard::stringFromMask(mask, true);
-		mBindModeList->addElement(row);
+		row["columns"][3]["value"] = mask_str;
+		LLScrollListItem* element = mBindModeList->addElement(row);
+
+		//BD - Ouch, we're doing super slow string comparison here to check for
+		//     each entry and whether it has a double somewhere.
+		for (LLScrollListItem* item : mBindModeList->getAllData())
+		{
+			item->setMarked(false);
+			element->setMarked(false);
+
+			if (item != element)
+			{
+				if (item->getColumn(2)->getValue().asString() == settings["key"].asString())
+				{
+					if (item->getColumn(3)->getValue().asString() == mask_str)
+					{
+						item->setMarked(true);
+						element->setMarked(true);
+						show_warning = true;
+						//BD - I think we can break out here since we always immediately flag doubles
+						//     and even if we just find the first of multiple double entries we will
+						//     always flag the first one found and the one we are currently adding
+						//     which automatically includes non-first ones.
+						break;
+					}
+				}
+			}
+		}
 	}
+
+	//BD - Show a warning in the keybinds panel to inform the user that there are still duplicates.
+	getChild<LLUICtrl>("warning_keybinds_panel")->setVisible(show_warning);
 	
 	infile.close();
 }

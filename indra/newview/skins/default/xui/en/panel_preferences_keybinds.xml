@@ -10,6 +10,24 @@ left="0"
 name="Keybindings panel"
 top="45"
 width="510">
+ <layout_stack
+   follows="top|left|right"
+   height="386"
+   layout="topleft"
+   border_size="-5"
+   left="0"
+   mouse_opaque="false"
+   name="gfx_stack"
+   orientation="vertical"
+   top="0"
+   width="515">
+      <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="382"
+	  auto_resize="true"
+	  name="title_layout_panel"
+	  width="515">
  <panel
  follows="left|top|right"
  height="20"
@@ -35,7 +53,7 @@ width="510">
  <scroll_list
  column_padding="2"
  draw_heading="true"
- height="369"
+ height="348"
  follows="left|top|right"
  layout="topleft"
  left_delta="-11"
@@ -60,7 +78,54 @@ width="510">
      name="modifiers"
    relative_width="0.20"  />
 </scroll_list>
- 
+ </layout_panel>
+ <layout_panel
+	  follows="top|left|right"
+   visible="false"
+	  layout="topleft"
+	  height="21"
+   min_dim="21"
+	  auto_resize="false"
+	  name="warning_keybinds_panel"
+	  width="510">
+       <panel
+       follows="top|left|right"
+       height="20"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="1"
+       name="warning_bg_panel"
+       top="1"
+       width="508">
+        <icon
+  follows="top|left"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_keybinds_gpu"
+  mouse_opaque="false"
+  tool_tip="WARNING: You have multiple actions bound to the exact same key and modifier, this will cause multiple actions being used when pressing the bound keys. Remove the duplicates unless that is what you want."
+  width="16"
+  left="5"
+  top="3"/>
+   <text
+        follows="left|top|right"
+        font="SansSerif"
+        font_shadow="soft"
+        halign="left"
+        height="20"
+        top="4"
+        left="25"
+        name="warning_keybinds_label"
+        width="994"
+        word_wrap="false">
+&lt;red&gt;Multiple actions are bound to the same key combo!&lt;/red&gt; Please remove them.
+        </text>
+       </panel>
+      </layout_panel>
+ </layout_stack>
  <panel
   layout="topleft"
   follows="left|bottom"
