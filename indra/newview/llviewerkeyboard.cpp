@@ -644,8 +644,6 @@ REGISTER_KEYBOARD_ACTION("spin_around_ccw_sitting", camera_spin_around_ccw_sitti
 REGISTER_KEYBOARD_ACTION("spin_around_cw_sitting", camera_spin_around_cw_sitting);
 REGISTER_KEYBOARD_ACTION("spin_over", camera_spin_over);
 REGISTER_KEYBOARD_ACTION("spin_under", camera_spin_under);
-REGISTER_KEYBOARD_ACTION("roll_left", camera_roll_left);
-REGISTER_KEYBOARD_ACTION("roll_right", camera_roll_right);
 REGISTER_KEYBOARD_ACTION("spin_over_sitting", camera_spin_over_sitting);
 REGISTER_KEYBOARD_ACTION("spin_under_sitting", camera_spin_under_sitting);
 REGISTER_KEYBOARD_ACTION("move_forward", camera_move_forward);
@@ -669,6 +667,9 @@ REGISTER_KEYBOARD_ACTION("edit_avatar_move_backward", edit_avatar_move_backward)
 REGISTER_KEYBOARD_ACTION("stop_moving", stop_moving);
 REGISTER_KEYBOARD_ACTION("start_chat", start_chat);
 REGISTER_KEYBOARD_ACTION("start_gesture", start_gesture);
+//BD - Camera Roll
+REGISTER_KEYBOARD_ACTION("roll_left", camera_roll_left);
+REGISTER_KEYBOARD_ACTION("roll_right", camera_roll_right);
 #undef REGISTER_KEYBOARD_ACTION
 
 LLViewerKeyboard::LLViewerKeyboard()
