@@ -211,14 +211,14 @@
                             <slider label="Flächen > m² verstecken:" name="RenderAutoHideSurfaceAreaLimit"/>
                             <slider name="FarClip" label="Sichtweite:"/>
                             <slider name="MaxParticles" label="Partikelanzahl:"/>
-                            <button label="⌊standart⌉" name="default"/>
-                            <button label="⌊standart⌉" name="default"/>
-                            <button label="⌊standart⌉" name="default"/>
-                            <button label="⌊standart⌉" name="default"/>
-                            <button label="⌊standart⌉" name="default"/>
-                            <button label="⌊standart⌉" name="default"/>
-                            <button label="⌊standart⌉" name="default"/>
-                            <button label="⌊standart⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
                         </layout_panel>
                         <layout_panel name="title_layout_panel">
                             <text name="vertex_label">

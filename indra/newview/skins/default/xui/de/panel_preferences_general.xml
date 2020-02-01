@@ -9,7 +9,7 @@
 				Sprache:
 			</text>
 			<radio_group name="language_radio">
-				<radio_item label="Standart" name="System Default Language"/>
+				<radio_item label="Standard" name="System Default Language"/>
 				<radio_item label="Englisch" name="English"/>
 				<radio_item label="Deutsch" name="Deutsch(German)"/>
 			</radio_group>
@@ -69,8 +69,8 @@
 			<text name="text_box3">
 				Antwort, wenn im „Nicht Stören“-Modus:
 			</text>
-            <button label="⌊standart⌉" name="default"/>
-            <button label="⌊standart⌉" name="default"/>
+            <button label="⌊standard⌉" name="default"/>
+            <button label="⌊standard⌉" name="default"/>
 		</panel>
 	</scroll_container>
 </panel>
