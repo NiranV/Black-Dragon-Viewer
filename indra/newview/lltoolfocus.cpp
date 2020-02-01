@@ -556,27 +556,59 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		//	   prevent any unintentional left-click blocking or interceptions
 		if (hasMouseCapture())
 		{
-			const F32 RADIANS_PER_PIXEL = 360.f * DEG_TO_RAD / gViewerWindow->getWorldViewWidthScaled();
-
-			if (dx != 0)
+			if (mask == MASK_PAN ||
+				mask == (MASK_PAN | MASK_ALT))
 			{
-				gAgentCamera.cameraOrbitAround( -dx * RADIANS_PER_PIXEL );
-			}
+				//BD - Make sure we unlock the camera otherwise nothing will happen if we
+				//     attempt to pan the camera while still in Third Person mode.
+				gAgentCamera.unlockView();
 
-			if (dy != 0)
-			{
-				//BD - Invert Pitch in third person.
-				if (gAgentCamera.mMouseInvert)
+				// Pan tool
+				LLVector3d camera_to_focus = gAgentCamera.getCameraPositionGlobal();
+				camera_to_focus -= gAgentCamera.getFocusGlobal();
+				F32 dist = (F32)camera_to_focus.normVec();
+
+				// Fudge factor for pan
+				F32 meters_per_pixel = 3.f * dist / gViewerWindow->getWorldViewWidthScaled();
+
+				if (dx != 0)
 				{
-					gAgentCamera.cameraOrbitOver(-dy * RADIANS_PER_PIXEL);
+					gAgentCamera.cameraPanLeft(dx * meters_per_pixel);
 				}
-				else
+
+				if (dy != 0)
 				{
-					gAgentCamera.cameraOrbitOver(dy * RADIANS_PER_PIXEL);
+					gAgentCamera.cameraPanUp(-dy * meters_per_pixel);
 				}
+
+				LLUI::getInstance()->setMousePositionScreen(mMouseRightUpX, mMouseRightUpY);
+				//gViewerWindow->moveCursorToCenter();
+				LL_DEBUGS("UserInput") << "hover handled by LLToolPan" << LL_ENDL;
 			}
-			gViewerWindow->hideCursor();
-			LLUI::getInstance()->setMousePositionScreen(mMouseRightUpX, mMouseRightUpY);
+			else
+			{
+				const F32 RADIANS_PER_PIXEL = 360.f * DEG_TO_RAD / gViewerWindow->getWorldViewWidthScaled();
+
+				if (dx != 0)
+				{
+					gAgentCamera.cameraOrbitAround(-dx * RADIANS_PER_PIXEL);
+				}
+
+				if (dy != 0)
+				{
+					//BD - Invert Pitch in third person.
+					if (gAgentCamera.mMouseInvert)
+					{
+						gAgentCamera.cameraOrbitOver(-dy * RADIANS_PER_PIXEL);
+					}
+					else
+					{
+						gAgentCamera.cameraOrbitOver(dy * RADIANS_PER_PIXEL);
+					}
+				}
+				gViewerWindow->hideCursor();
+				LLUI::getInstance()->setMousePositionScreen(mMouseRightUpX, mMouseRightUpY);
+			}
 		}
 	}
 
