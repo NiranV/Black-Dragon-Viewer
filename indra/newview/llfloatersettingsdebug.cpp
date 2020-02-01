@@ -207,6 +207,7 @@ void LLFloaterSettingsDebug::onClickDefault()
 // we've switched controls, or doing per-frame update, so update spinners, etc.
 void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 {
+//	//BD - Vector4
 	if (!mValX || !mValY || !mValZ || !mValW || !mColor)
 	{
 		LL_WARNS() << "Could not find all desired controls by name"
@@ -217,10 +218,11 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 	mValX->setVisible(FALSE);
 	mValY->setVisible(FALSE);
 	mValZ->setVisible(FALSE);
-	mValZ->setVisible(FALSE);
 	mColor->setVisible(FALSE);
 	mText->setVisible(FALSE);
 	mComment->setText(LLStringUtil::null);
+//	//BD - Vector4
+	mValW->setVisible(FALSE);
 
 	if (controlp)
 	{
@@ -231,11 +233,12 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		mValX->setEnabled(fEnable);
 		mValY->setEnabled(fEnable);
 		mValZ->setEnabled(fEnable);
-		mValZ->setEnabled(fEnable);
 		mColor->setEnabled(fEnable);
 		mText->setEnabled(fEnable);
 		mBool->setEnabled(fEnable);
 		mDefaultBtn->setEnabled(fEnable);
+//		//BD - Vector4
+		mValW->setEnabled(fEnable);
 // [/RLVa:KB]
 
 		eControlType type = controlp->type();
@@ -248,11 +251,12 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		mValX->setMaxValue(F32_MAX);
 		mValY->setMaxValue(F32_MAX);
 		mValZ->setMaxValue(F32_MAX);
-		mValZ->setMaxValue(F32_MAX);
 		mValX->setMinValue(-F32_MAX);
 		mValY->setMinValue(-F32_MAX);
 		mValZ->setMinValue(-F32_MAX);
-		mValZ->setMinValue(-F32_MAX);
+//		//BD - Vector4
+		mValW->setMaxValue(F32_MAX);
+		mValW->setMinValue(-F32_MAX);
 		if (!mValX->hasFocus())
 		{
 			mValX->setIncrement(0.1f);
@@ -265,7 +269,8 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		{
 			mValZ->setIncrement(0.1f);
 		}
-		if (!mValZ->hasFocus())
+//		//BD - Vector4
+		if (!mValW->hasFocus())
 		{
 			mValZ->setIncrement(0.1f);
 		}
@@ -390,8 +395,8 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 			mValY->setLabel(std::string("Right"));
 			mValZ->setVisible(TRUE);
 			mValZ->setLabel(std::string("Bottom"));
-			mValZ->setVisible(TRUE);
-			mValZ->setLabel(std::string("Top"));
+			mValW->setVisible(TRUE);
+			mValW->setLabel(std::string("Top"));
 			if (!mValX->hasFocus())
 			{
 				mValX->setPrecision(0);
@@ -407,10 +412,10 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 				mValZ->setPrecision(0);
 				mValZ->setValue(r.mBottom);
 			}
-			if (!mValZ->hasFocus())
+			if (!mValW->hasFocus())
 			{
-				mValZ->setPrecision(0);
-				mValZ->setValue(r.mTop);
+				mValW->setPrecision(0);
+				mValW->setValue(r.mTop);
 			}
 
 			mValX->setMinValue((F32)S32_MIN);
@@ -425,9 +430,9 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 			mValZ->setMaxValue((F32)S32_MAX);
 			mValZ->setIncrement(1.f);
 
-			mValZ->setMinValue((F32)S32_MIN);
-			mValZ->setMaxValue((F32)S32_MAX);
-			mValZ->setIncrement(1.f);
+			mValW->setMinValue((F32)S32_MIN);
+			mValW->setMaxValue((F32)S32_MAX);
+			mValW->setIncrement(1.f);
 			break;
 		  }
 		  //BD - LLSD
@@ -497,8 +502,9 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 			  mValY->setLabel(std::string("Y"));
 			  mValZ->setVisible(TRUE);
 			  mValZ->setLabel(std::string("Z"));
-			  mValZ->setVisible(TRUE);
-			  mValZ->setLabel(std::string("W"));
+//			  //BD - Vector4
+			  mValW->setVisible(TRUE);
+			  mValW->setLabel(std::string("W"));
 			  if (!mValX->hasFocus())
 			  {
 				  mValX->setPrecision(3);
@@ -514,10 +520,11 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 				  mValZ->setPrecision(3);
 				  mValZ->setValue(v[VZ]);
 			  }
-			  if (!mValZ->hasFocus())
+//			  //BD - Vector4
+			  if (!mValW->hasFocus())
 			  {
-				  mValZ->setPrecision(3);
-				  mValZ->setValue(v[VW]);
+				  mValW->setPrecision(3);
+				  mValW->setValue(v[VW]);
 			  }
 			  break;
 		  }
