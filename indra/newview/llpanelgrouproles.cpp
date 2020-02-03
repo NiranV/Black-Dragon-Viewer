@@ -1136,7 +1136,7 @@ void LLPanelGroupMembersSubTab::onInviteMember(void *userdata)
 
 void LLPanelGroupMembersSubTab::handleInviteMember()
 {
-	LLFloaterGroupInvite::showForGroup(mGroupID);
+	LLFloaterGroupInvite::showForGroup(mGroupID, NULL, false);
 }
 
 void LLPanelGroupMembersSubTab::onEjectMembers(void *userdata)

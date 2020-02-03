@@ -34,7 +34,6 @@
      width="306"/>
     <texture_picker
      allow_no_texture="true"
-     border_enabled="true"
      fallback_image="default_land_picture.j2c"
      enabled="false"
      follows="left|top"

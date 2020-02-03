@@ -1093,6 +1093,11 @@ BOOL LLView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 	return childrenHandleScrollWheel( x, y, clicks, mask ) != NULL;
 }
 
+BOOL LLView::handleScrollHWheel(S32 x, S32 y, S32 clicks)
+{
+	return childrenHandleScrollHWheel( x, y, clicks ) != NULL;
+}
+
 BOOL LLView::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
 	return childrenHandleRightMouseDown( x, y, mask ) != NULL;
@@ -1117,6 +1122,11 @@ BOOL LLView::handleMiddleMouseUp(S32 x, S32 y, MASK mask)
 LLView* LLView::childrenHandleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	return childrenHandleScrollEvent(&LLView::handleScrollWheel, x, y, clicks, mask, false);
+}
+
+LLView* LLView::childrenHandleScrollHWheel(S32 x, S32 y, S32 clicks)
+{
+	return childrenHandleMouseEvent(&LLView::handleScrollHWheel, x, y, clicks, false);
 }
 
 // Called during downward traversal

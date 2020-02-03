@@ -116,6 +116,12 @@ BOOL LLTool::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 	return FALSE;
 }
 
+BOOL LLTool::handleScrollHWheel(S32 x, S32 y, S32 clicks)
+{
+    // by default, didn't handle it
+    return FALSE;
+}
+
 BOOL LLTool::handleDoubleClick(S32 x,S32 y,MASK mask)
 {
 	// LL_INFOS() << "LLTool::handleDoubleClick" << LL_ENDL;

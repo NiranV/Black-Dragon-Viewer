@@ -5259,7 +5259,7 @@
     <key>InventoryOutboxDisplayBoth</key>
     <map>
         <key>Comment</key>
-        <string>Show the legacy Merchant Outbox UI as well as the Marketplace Listings UI</string>
+        <string>(Deprecated) Show the legacy Merchant Outbox UI as well as the Marketplace Listings UI</string>
         <key>Persist</key>
         <integer>1</integer>
         <key>Type</key>
@@ -7840,11 +7840,11 @@
     <key>ParcelMediaAutoPlayEnable</key>
     <map>
       <key>Comment</key>
-      <string>Auto play parcel media when available</string>
+      <string>Auto play parcel media when available. 0 - Do not autoplay; 1- Autoplay; 2 - Ask</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
-      <string>Boolean</string>
+      <string>S32</string>
       <key>Value</key>
       <integer>0</integer>
     </map>
@@ -8780,6 +8780,17 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
+    <key>RememberUser</key>
+    <map>
+      <key>Comment</key>
+      <string>Keep user name for next login</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
     <key>RememberPassword</key>
     <map>
       <key>Comment</key>
@@ -9649,7 +9660,11 @@
   <key>RenderShadowResolution</key>
   <map>
     <key>Comment</key>
+<<<<<<< HEAD
     <string>Raw shadow width and height of each of the four shadow maps, closest (X), mid (Y), far (Z) furthest. (W)</string>
+=======
+    <string>Scale of shadow map resolution vs. screen resolution (only positivie values are allowed)</string>
+>>>>>>> 2c81050b689284886b30740ac226feaafeb54544
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>

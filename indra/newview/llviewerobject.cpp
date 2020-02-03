@@ -3027,6 +3027,7 @@ void LLViewerObject::fetchInventoryFromServer()
 	if (!isInventoryPending())
 	{
 		delete mInventory;
+		mInventory = NULL;
 
 		// Results in processTaskInv
 		LLMessageSystem* msg = gMessageSystem;

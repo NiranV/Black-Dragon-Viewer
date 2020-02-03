@@ -425,8 +425,13 @@ public:
 	/*virtual*/ BOOL	handleMiddleMouseUp(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL	handleMiddleMouseDown(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL	handleDoubleClick(S32 x, S32 y, MASK mask);
+<<<<<<< HEAD
 	//BD - UI Improvements
 	/*virtual*/ BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
+=======
+	/*virtual*/ BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks);
+	/*virtual*/ BOOL	handleScrollHWheel(S32 x, S32 y, S32 clicks);
+>>>>>>> 2c81050b689284886b30740ac226feaafeb54544
 	/*virtual*/ BOOL	handleRightMouseDown(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL	handleRightMouseUp(S32 x, S32 y, MASK mask);	
 	/*virtual*/ BOOL	handleToolTip(S32 x, S32 y, MASK mask);
@@ -556,8 +561,13 @@ protected:
 	LLView* childrenHandleMiddleMouseUp(S32 x, S32 y, MASK mask);
 	LLView* childrenHandleMiddleMouseDown(S32 x, S32 y, MASK mask);
 	LLView* childrenHandleDoubleClick(S32 x, S32 y, MASK mask);
+<<<<<<< HEAD
 	//BD - UI Improvements
 	LLView*	childrenHandleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
+=======
+	LLView*	childrenHandleScrollWheel(S32 x, S32 y, S32 clicks);
+	LLView*	childrenHandleScrollHWheel(S32 x, S32 y, S32 clicks);
+>>>>>>> 2c81050b689284886b30740ac226feaafeb54544
 	LLView* childrenHandleRightMouseDown(S32 x, S32 y, MASK mask);
 	LLView* childrenHandleRightMouseUp(S32 x, S32 y, MASK mask);
 	LLView* childrenHandleToolTip(S32 x, S32 y, MASK mask);
