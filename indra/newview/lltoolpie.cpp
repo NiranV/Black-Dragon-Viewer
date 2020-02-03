@@ -1284,13 +1284,11 @@ BOOL LLToolPie::handleTooltipObject( LLViewerObject* hover_object, std::string l
 			// also check the primary node since sometimes it can have an action even though
 			// the root node doesn't
 			
-			bool needs_tip = (!is_media_displaying || 
-				              for_sale) &&
-				(has_media || 
-				 needs_tooltip(nodep) || 
-				 needs_tooltip(LLSelectMgr::getInstance()->getPrimaryHoverNode()));
+			bool needs_tip = (!is_media_displaying || for_sale) 
+				&& (has_media || needs_tooltip(nodep) 
+				|| needs_tooltip(LLSelectMgr::getInstance()->getPrimaryHoverNode()));
 			
-			if (show_all_object_tips || needs_tip)
+			if (show_all_object_tips && needs_tip)
 			{
 				// We may select this object, so pretend it was clicked
 				mPick = mHoverPick;
