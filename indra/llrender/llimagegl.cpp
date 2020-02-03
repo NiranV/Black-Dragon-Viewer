@@ -51,9 +51,9 @@ U32 wpo2(U32 i);
 
 U32 LLImageGL::sUniqueCount				= 0;
 U32 LLImageGL::sBindCount				= 0;
-U32Bytes LLImageGL::sGlobalTextureMemory(0);
-U32Bytes LLImageGL::sBoundTextureMemory(0);
-U32Bytes LLImageGL::sCurBoundTextureMemory(0);
+U64Bytes LLImageGL::sGlobalTextureMemory(0);
+U64Bytes LLImageGL::sBoundTextureMemory(0);
+U64Bytes LLImageGL::sCurBoundTextureMemory(0);
 S32 LLImageGL::sCount					= 0;
 
 BOOL LLImageGL::sGlobalUseAnisotropic	= FALSE;

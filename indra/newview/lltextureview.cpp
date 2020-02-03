@@ -543,6 +543,7 @@ void LLGLTexMemBar::draw()
 	S32 right = 0;
 	S32 max_vram = gGLManager.mVRAM;
 	S32 used_vram = 0;
+	S32 free_vram = 0;
 
 	F32 discard_bias = LLViewerTexture::sDesiredDiscardBias;
 	F32 cache_usage = LLAppViewer::getTextureCache()->getUsage().valueInUnits<LLUnits::Megabytes>();
@@ -554,25 +555,20 @@ void LLGLTexMemBar::draw()
 	U32 total_active_cached_objects = LLWorld::getInstance()->getNumOfActiveCachedObjects();
 	U32 total_objects = gObjectList.getNumObjects();
 	U32 fbo = LLRenderTarget::sBytesAllocated / (1024 * 1024);
-	
-	PROCESS_MEMORY_COUNTERS_EX pmc;
-	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
-	//SIZE_T virtualMemUsedByMe = pmc.PrivateUsage;
-	U32 own_texture_memory = pmc.WorkingSetSize / (1024 * 1024);
 
-	//BD - AMD's memory reports are completely useless right now. We focus on NVidia.
 	if (gGLManager.mHasNVXMemInfo)
 	{
-		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &used_vram);
-		used_vram = max_vram - (used_vram / 1024);
+		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &free_vram);
+		free_vram = (free_vram / 1024);
 	}
 	else if (gGLManager.mHasATIMemInfo)
 	{
 		S32 meminfo[4];
 		glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, meminfo);
 		S32Megabytes free = (S32Megabytes)meminfo[0];
-		used_vram = max_vram - free.value();
+		free_vram = max_vram - free.value();
 	}
+	used_vram = max_vram - free_vram;
 
 	//----------------------------------------------------------------------------
 	LLGLSUIDefault gls_ui;
@@ -598,28 +594,27 @@ void LLGLTexMemBar::draw()
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 681, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
-	used_vram -= own_texture_memory;
-	data_progress = (F32)used_vram / (F32)max_vram;
+	S32 available_vram = free_vram + total_mem.value() + bound_mem.value();
+	data_progress = (F32)available_vram / (F32)max_vram;
 
 	//BD - Render a multi-segmented multi-colored bar showing where our memory goes.
 	//     First render the available memory chunk with a black background.
-	gGL.color4f(0.0f, .0f, 0.0f, 0.75f);
-	right = bar_right - (bar_width * data_progress);
-	gl_rect_2d(left, top - 9, right, top - 3);
+	gGL.color4f(0.0f, 0.0f, 0.0f, 0.75f);
+	right = llfloor(llclamp(left + (bar_width * data_progress), (F32)left, bar_right));
+	gl_rect_2d(left, top - 11, right, top - 1);
 
 	//BD - Render the unavailable memory as almost transparent black background.
-	if (right < (left + bar_width))
+	if (right <= (left + bar_width))
 	{
-		gGL.color4f(0.2f, 0.2f, 0.2f, 0.35f);
-		gl_rect_2d(right, top - 9, bar_right, top - 3);
+		gGL.color4f(0.2f, 0.2f, 0.2f, 0.45f);
+		gl_rect_2d(right, top - 10, bar_right, top - 2);
 	}
-	
-	if (data_progress > 0.0f)
+
 	{
 		//BD - Render the FBO bar.
 		data_progress = (F32)fbo / (F32)max_vram;
 		right = llfloor(llclamp(left + (bar_width * data_progress), (F32)left, bar_right));
-		if (right > left)
+		if (right >= left)
 		{
 			gGL.color4f(0.75f, 0.45f, 0.45f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
@@ -629,7 +624,7 @@ void LLGLTexMemBar::draw()
 		data_progress = ((F32)total_mem.value() - (F32)fbo) / (F32)max_vram;
 		left = right;
 		right = llfloor(llclamp(left + (bar_width * data_progress), (F32)left, bar_right));
-		if (right > left)
+		if (right >= left)
 		{
 			gGL.color4f(0.75f, 0.75f, 0.f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
@@ -639,22 +634,9 @@ void LLGLTexMemBar::draw()
 		data_progress = (F32)bound_mem.value() / (F32)max_vram;
 		left = right;
 		right = llfloor(llclamp(left + (bar_width * data_progress), (F32)left, bar_right));
-		if (right > left)
+		if (right >= left)
 		{
 			gGL.color4f(0.f, 0.75f, 0.75f, 0.75f);
-			gl_rect_2d(left, top - 9, right, top - 3);
-		}
-
-		//BD - Render the 'misc' memory bar which shows us the whole rest that the Viewer
-		//     keeps around secretly, weirdly enough this gets a lot of use for instance
-		//     when using impostors when they swap out to impostored sprites, their entire
-		//     texture set is kept in memory but it is no longer used in scene memory.
-		data_progress = ((F32)own_texture_memory - (bound_mem.value() + total_mem.value())) / (F32)max_vram;
-		left = right;
-		right = llfloor(llclamp(left + (bar_width * data_progress), (F32)left, bar_right));
-		if (right > left)
-		{
-			gGL.color4f(0.25f, 0.55f, 0.75f, 0.75f);
 			gl_rect_2d(left, top - 9, right, top - 3);
 		}
 	}
@@ -682,7 +664,7 @@ void LLGLTexMemBar::draw()
 	if (data_progress > 0.0f)
 	{
 		//BD - Clamp
-		right = left + llfloor(llclamp(data_progress, 0.0f, 1.0f) * (F32)bar_width);
+		right = llfloor(llclamp(left + ((F32)bar_width * data_progress), (F32)left, bar_right));
 		if (right > left)
 		{
 			gGL.color4f(0.75f, 0.45f, 0.45f, 0.75f);
@@ -696,7 +678,7 @@ void LLGLTexMemBar::draw()
 	{
 		//BD - Clamp
 		left = right;
-		right += llfloor(llclamp(data_progress, 0.0f, 1.0f) * (F32)bar_width);
+		right = llfloor(llclamp(left + ((F32)bar_width * data_progress), (F32)left, bar_right));
 		if (right > left)
 		{
 			gGL.color4f(0.75f, 0.75f, 0.f, 0.75f);
@@ -745,11 +727,6 @@ void LLGLTexMemBar::draw()
 	text = llformat("Raw Total: %15d MB", LLImageRaw::sGlobalRawMemory >> 20);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 185, top,
-		text_color, LLFontGL::LEFT, LLFontGL::TOP);
-
-	text = llformat("Used By Viewer: %10d MB", own_texture_memory);
-
-	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 370, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
 	//----------------------------------------------------------------------------
