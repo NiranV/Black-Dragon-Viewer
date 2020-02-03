@@ -948,7 +948,7 @@ LLSD LLMemoryInfo::loadStatsMap()
 	stats.add("Total Virtual KB",   state.ullTotalVirtual/div);
 	stats.add("Avail Virtual KB",   state.ullAvailVirtual/div);
 
-	PERFORMANCE_INFORMATION perf;
+	/*PERFORMANCE_INFORMATION perf;
 	perf.cb = sizeof(perf);
 	GetPerformanceInfo(&perf, sizeof(perf));
 
@@ -965,7 +965,7 @@ LLSD LLMemoryInfo::loadStatsMap()
 	stats.add("PageSize KB",        pagekb);
 	stats.add("HandleCount",        perf.HandleCount);
 	stats.add("ProcessCount",       perf.ProcessCount);
-	stats.add("ThreadCount",        perf.ThreadCount);
+	stats.add("ThreadCount",        perf.ThreadCount);*/
 
 	PROCESS_MEMORY_COUNTERS_EX pmem;
 	pmem.cb = sizeof(pmem);
