@@ -469,6 +469,7 @@
      top_delta="0"
      width="177" >
      <combo_box.combo_editor
+          text_pad_left="5"
           background_image="TextField_Off"
           background_image_disabled="TextField_Disabled"
           background_image_focused="TextField_Active"/>
@@ -488,6 +489,7 @@
      height="20"
      left_delta="3"
      name="day_cycle_name"
+     text_pad_left="5"
      top_delta="1"
      visible="true"
      width="163" />

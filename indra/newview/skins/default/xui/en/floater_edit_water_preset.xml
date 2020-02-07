@@ -461,6 +461,7 @@
     height="20"
      left="11"
      name="water_preset_name"
+     text_pad_left="5"
      top_delta="1"
      width="165" />
    <combo_box
@@ -474,6 +475,7 @@
    top_delta="-1"
      width="177">
     <combo_box.combo_editor
+          text_pad_left="5"
           background_image="TextField_Off"
           background_image_disabled="TextField_Disabled"
           background_image_focused="TextField_Active"/>
