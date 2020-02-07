@@ -410,7 +410,7 @@ BOOL LLScrollbar::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 	return handled;
 }
 
-BOOL LLScrollbar::handleScrollHWheel(S32 x, S32 y, S32 clicks)
+BOOL LLScrollbar::handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	BOOL handled = FALSE;
 	if (LLScrollbar::HORIZONTAL == mOrientation)

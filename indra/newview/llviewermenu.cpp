@@ -442,28 +442,9 @@ void set_merchant_SLM_menu()
 
 void check_merchant_status(bool force)
 {
-    if (force)
-    {
-<<<<<<< HEAD
-        if (force)
-        {
-            // Reset the SLM status: we actually want to check again, that's the point of calling check_merchant_status()
-            LLMarketplaceData::instance().setSLMStatus(MarketplaceStatusCodes::MARKET_PLACE_NOT_INITIALIZED);
-        }
-        // Hide SLM related menu item
-        gMenuHolder->mMarketPlaceListings->setVisible(FALSE);
-        
-        // Also disable the toolbar button for Marketplace Listings
-        LLCommand* command = LLCommandManager::instance().getCommand("marketplacelistings");
-		gToolBarView->enableCommand(command->id(), false);
-        
-        // Launch an SLM test connection to get the merchant status
-        LLMarketplaceData::instance().initializeSLM(boost::bind(&set_merchant_SLM_menu));
-=======
-        // Reset the SLM status: we actually want to check again, that's the point of calling check_merchant_status()
-        LLMarketplaceData::instance().setSLMStatus(MarketplaceStatusCodes::MARKET_PLACE_NOT_INITIALIZED);
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544
-    }
+    // Reset the SLM status: we actually want to check again, that's the point of calling check_merchant_status()
+    LLMarketplaceData::instance().setSLMStatus(MarketplaceStatusCodes::MARKET_PLACE_NOT_INITIALIZED);
+
     // Hide SLM related menu item
     gMenuHolder->getChild<LLView>("MarketplaceListings")->setVisible(FALSE);
 

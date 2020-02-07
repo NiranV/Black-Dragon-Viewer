@@ -3067,13 +3067,15 @@ void LLViewerWindow::handleScrollHWheel(S32 clicks)
 {
     LLUI::getInstance()->resetMouseIdleTimer();
 
+	//BD - UI Improvements
+	MASK mask = gKeyboard->currentMask(TRUE);
     LLMouseHandler* mouse_captor = gFocusMgr.getMouseCapture();
     if (mouse_captor)
     {
         S32 local_x;
         S32 local_y;
         mouse_captor->screenPointToLocal(mCurrentMousePoint.mX, mCurrentMousePoint.mY, &local_x, &local_y);
-        mouse_captor->handleScrollHWheel(local_x, local_y, clicks);
+        mouse_captor->handleScrollHWheel(local_x, local_y, clicks, mask);
         if (LLView::sDebugMouseHandling)
         {
             LL_INFOS() << "Scroll Horizontal Wheel handled by captor " << mouse_captor->getName() << LL_ENDL;
@@ -3087,10 +3089,10 @@ void LLViewerWindow::handleScrollHWheel(S32 clicks)
         S32 local_x;
         S32 local_y;
         top_ctrl->screenPointToLocal(mCurrentMousePoint.mX, mCurrentMousePoint.mY, &local_x, &local_y);
-        if (top_ctrl->handleScrollHWheel(local_x, local_y, clicks)) return;
+        if (top_ctrl->handleScrollHWheel(local_x, local_y, clicks, mask)) return;
     }
 
-    if (mRootView->handleScrollHWheel(mCurrentMousePoint.mX, mCurrentMousePoint.mY, clicks))
+    if (mRootView->handleScrollHWheel(mCurrentMousePoint.mX, mCurrentMousePoint.mY, clicks, mask))
     {
         if (LLView::sDebugMouseHandling)
         {

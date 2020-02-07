@@ -212,9 +212,9 @@ BOOL LLMediaCtrl::handleScrollWheel( S32 x, S32 y, S32 clicks, MASK mask )
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-BOOL LLMediaCtrl::handleScrollHWheel(S32 x, S32 y, S32 clicks)
+BOOL LLMediaCtrl::handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-    if (LLPanel::handleScrollHWheel(x, y, clicks)) return TRUE;
+    if (LLPanel::handleScrollHWheel(x, y, clicks, mask)) return TRUE;
     if (mMediaSource && mMediaSource->hasMedia())
     {
         convertInputCoords(x, y);

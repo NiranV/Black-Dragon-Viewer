@@ -319,13 +319,11 @@ public:
 	// Sadly, these are all pure virtual, so I have to supply implementations here:
 	/*virtual*/ BOOL	handleMouseDown(S32 x, S32 y, MASK mask) { return FALSE; };
 	/*virtual*/ BOOL	handleHover(S32 x, S32 y, MASK mask) { return FALSE; };
-<<<<<<< HEAD
+
 	//BD - UI Improvements
 	/*virtual*/ BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask) { return FALSE; };
-=======
-	/*virtual*/ BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks) { return FALSE; };
-	/*virtual*/ BOOL	handleScrollHWheel(S32 x, S32 y, S32 clicks) { return FALSE; };
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544
+	/*virtual*/ BOOL	handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask) { return FALSE; };
+
 	/*virtual*/ BOOL	handleDoubleClick(S32 x, S32 y, MASK mask) { return FALSE; };
 	/*virtual*/ BOOL	handleRightMouseDown(S32 x, S32 y, MASK mask) { return FALSE; };
 	/*virtual*/ BOOL	handleRightMouseUp(S32 x, S32 y, MASK mask) { return FALSE; };

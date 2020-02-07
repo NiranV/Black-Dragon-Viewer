@@ -1654,11 +1654,11 @@ BOOL LLScrollListCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 	return handled;
 }
 
-BOOL LLScrollListCtrl::handleScrollHWheel(S32 x, S32 y, S32 clicks)
+BOOL LLScrollListCtrl::handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	BOOL handled = FALSE;
 	// Pretend the mouse is over the scrollbar
-	handled = mScrollbar->handleScrollHWheel( 0, 0, clicks );
+	handled = mScrollbar->handleScrollHWheel(0, 0, clicks, mask);
 
 	if (mMouseWheelOpaque)
 	{

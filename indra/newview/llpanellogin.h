@@ -76,12 +76,8 @@ public:
 
 	static void closePanel();
 
-<<<<<<< HEAD
-=======
 	void setSiteIsAlive( bool alive );
 
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544
-	static void loadLoginPage();	
 	static void giveFocus();
 	
 	// inherited from LLViewerMediaObserver
@@ -90,15 +86,9 @@ public:
 	/// to be called from LLStartUp::setStartSLURL
 	static void onUpdateStartSLURL(const LLSLURL& new_start_slurl);
 
-<<<<<<< HEAD
-=======
-	// called from prefs when initializing panel
-	static bool getShowFavorites();
-
 	// extract name from cred in a format apropriate for username field
 	static std::string getUserName(LLPointer<LLCredential> &cred);
 
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544
 private:
 	friend class LLPanelLoginListener;
 	void addFavoritesToStartLocation();

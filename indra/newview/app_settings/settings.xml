@@ -9660,11 +9660,7 @@
   <key>RenderShadowResolution</key>
   <map>
     <key>Comment</key>
-<<<<<<< HEAD
     <string>Raw shadow width and height of each of the four shadow maps, closest (X), mid (Y), far (Z) furthest. (W)</string>
-=======
-    <string>Scale of shadow map resolution vs. screen resolution (only positivie values are allowed)</string>
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>

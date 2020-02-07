@@ -1064,11 +1064,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			mFXAABuffer.release();
 		}
 
-<<<<<<< HEAD
 		if (!mDeferredLight.allocate(resX, resY, GL_RGBA, FALSE, FALSE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
-=======
-		F32 scale = llmax(0.f, RenderShadowResolutionScale);
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544
 
 //		//BD - Shadow Map Allocation
 		allocateShadowMaps(true);

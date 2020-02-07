@@ -288,9 +288,9 @@ BOOL LLScrollContainer::handleScrollWheel( S32 x, S32 y, S32 clicks, MASK mask )
 	return FALSE;
 }
 
-BOOL LLScrollContainer::handleScrollHWheel(S32 x, S32 y, S32 clicks)
+BOOL LLScrollContainer::handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-	if (LLUICtrl::handleScrollHWheel(x,y,clicks))
+	if (LLUICtrl::handleScrollHWheel(x, y, clicks, mask))
 	{
 		return TRUE;
 	}
@@ -298,7 +298,7 @@ BOOL LLScrollContainer::handleScrollHWheel(S32 x, S32 y, S32 clicks)
 	LLScrollbar* horizontal = mScrollbar[HORIZONTAL];
 	if (horizontal->getVisible()
 		&& horizontal->getEnabled()
-		&& horizontal->handleScrollHWheel( 0, 0, clicks ) )
+		&& horizontal->handleScrollHWheel( 0, 0, clicks, mask ) )
 	{
 		updateScroll();
 		return TRUE;

@@ -2830,8 +2830,6 @@ std::string& LLStartUp::getInitialOutfitName()
 	return sInitialOutfit;
 }
 
-<<<<<<< HEAD
-=======
 std::string LLStartUp::getUserId()
 {
     if (gUserCredential.isNull())
@@ -2841,8 +2839,9 @@ std::string LLStartUp::getUserId()
     return gUserCredential->userID();
 }
 
+//BD
 // Loads a bitmap to display during load
-void init_start_screen(S32 location_id)
+/*void init_start_screen(S32 location_id)
 {
 	if (gStartTexture.notNull())
 	{
@@ -2922,9 +2921,7 @@ void release_start_screen()
 {
 	LL_DEBUGS("AppInit") << "Releasing bitmap..." << LL_ENDL;
 	gStartTexture = NULL;
-}
-
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544
+}*/
 
 // static
 std::string LLStartUp::startupStateToString(EStartupState state)

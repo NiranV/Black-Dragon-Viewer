@@ -287,15 +287,13 @@ private:
 
 	std::string mSerialNumber;
 	bool mPurgeCache;
-<<<<<<< HEAD
     bool mPurgeOnExit;
 	//BD
 	LLToolMgr* mToolMgr;
-=======
+
 	bool mPurgeCacheOnExit;
 	bool mPurgeUserDataOnExit;
 	LLViewerJoystick* joystick;
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544
 
 	//BD
 	//bool mSavedFinalSnapshot;

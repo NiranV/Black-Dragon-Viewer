@@ -3167,13 +3167,11 @@ BOOL LLTextSegment::handleRightMouseDown(S32 x, S32 y, MASK mask) { return FALSE
 BOOL LLTextSegment::handleRightMouseUp(S32 x, S32 y, MASK mask) { return FALSE; }
 BOOL LLTextSegment::handleDoubleClick(S32 x, S32 y, MASK mask) { return FALSE; }
 BOOL LLTextSegment::handleHover(S32 x, S32 y, MASK mask) { return FALSE; }
-<<<<<<< HEAD
+
 //BD - UI Improvements
 BOOL LLTextSegment::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask) { return FALSE; }
-=======
-BOOL LLTextSegment::handleScrollWheel(S32 x, S32 y, S32 clicks) { return FALSE; }
-BOOL LLTextSegment::handleScrollHWheel(S32 x, S32 y, S32 clicks) { return FALSE; }
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544
+BOOL LLTextSegment::handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask) { return FALSE; }
+
 BOOL LLTextSegment::handleToolTip(S32 x, S32 y, MASK mask) { return FALSE; }
 const std::string&	LLTextSegment::getName() const 
 {

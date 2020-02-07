@@ -219,9 +219,9 @@ BOOL LLToolPie::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 	return LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks, mask);
 }
 
-BOOL LLToolPie::handleScrollHWheel(S32 x, S32 y, S32 clicks)
+BOOL LLToolPie::handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-    return LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks);
+    return LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks, mask);
 }
 
 // True if you selected an object.

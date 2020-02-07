@@ -108,13 +108,11 @@ public:
 	virtual void	reshape(S32 width, S32 height, BOOL called_from_parent = TRUE);
 	virtual BOOL	handleKeyHere(KEY key, MASK mask);
 	virtual BOOL	handleUnicodeCharHere(llwchar uni_char);
-<<<<<<< HEAD
+
 	//BD - UI Improvements
-	virtual BOOL	handleScrollWheel( S32 x, S32 y, S32 clicks , MASK mask);
-=======
-	virtual BOOL	handleScrollWheel( S32 x, S32 y, S32 clicks );
-	virtual BOOL	handleScrollHWheel( S32 x, S32 y, S32 clicks );
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544
+	virtual BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
+	virtual BOOL	handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask);
+
 	virtual BOOL	handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 								   EDragAndDropType cargo_type,
 								   void* cargo_data,
