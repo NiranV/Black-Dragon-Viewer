@@ -174,8 +174,7 @@ width="510">
 	    max_val="1.0"
 	    min_val="0.0"
 	    name="pie_menu_opacity"
-	    top_pad="10"
-	    width="319" />
+	    top_pad="10"/>
 		<button
  follows="left|top"
  control_name="PieMenuOpacity"
@@ -207,8 +206,7 @@ width="510">
 	    max_val="1.0"
 	    min_val="0.0"
 	    name="pie_menu_fade_out"
-	    top_pad="1"
-	    width="319" />
+	    top_pad="1"/>
 		<button
  follows="left|top"
  control_name="PieMenuFade"
@@ -241,8 +239,7 @@ width="510">
 	    max_val="0.5"
 	    min_val="0.0"
 	    name="pie_menu_popup_time"
-	    top_pad="1"
-	    width="319" />
+	    top_pad="1"/>
 		<button
  follows="left|top"
  control_name="PieMenuPopupTime"
@@ -297,8 +294,7 @@ width="510">
 	    min_val="0"
 	    name="ToolTipDelay"
 	    tool_tip="This option controls the time in s (seconds) it takes before a tooltip is shown when hovering your mouse over something. This option is subject to the tooltip options below."
-	    top_pad="15"
-	    width="313" />
+	    top_pad="15"/>
 		<button
  follows="left|top"
  control_name="ToolTipDelay"
@@ -331,8 +327,7 @@ width="510">
 	    min_val="0.1"
 	    name="ToolTipFadeTime"
 	    tool_tip="This option controls how long it takes in s (seconds) for any tooltip to fade away when it is no longer used."
-	    top_pad="1"
-	    width="307" />
+	    top_pad="1" />
 		<button
  follows="left|top"
  control_name="ToolTipFadeTime"
@@ -365,8 +360,7 @@ width="510">
 	    min_val="0"
 	    name="ToolTipVisibleTimeFar"
 	    tool_tip="This option controls how long it takes in s (seconds) for tooltips to start fading away when the mouse has been moved away from the hovered object."
-	    top_pad="1"
-	    width="313" />
+	    top_pad="1" />
 		<button
  follows="left|top"
  control_name="ToolTipVisibleTimeFar"
@@ -399,8 +393,7 @@ width="510">
 	    min_val="0"
 	    name="ToolTipVisibleTimeNear"
 	    tool_tip="This option controls the time it takes in s (seconds) before any tooltip will automatically start fading away even if the mouse was not moved away."
-	    top_pad="1"
-	    width="313" />
+	    top_pad="1" />
 		<button
  follows="left|top"
  control_name="ToolTipVisibleTimeNear"
@@ -433,8 +426,7 @@ width="510">
 	    min_val="1"
 	    name="InspectorFadeTime"
 	    tool_tip="This option controls the amount of time it takes in s (seconds) for any inspector (mouse-over mini profiles of objects, land and avatars) to fade away when they are no longer used."
-	    top_pad="1"
-	    width="310" />
+	    top_pad="1" />
 		<button
  follows="left|top"
  control_name="InspectorFadeTime"
@@ -467,8 +459,7 @@ width="510">
 	    min_val="1"
 	    name="InspectorShowTime"
 	    tool_tip="This option controls the time it takes in s (seconds) before inspectors (mouse-over mini profiles of objects, land and avatars) will automatically start fading away even if the mouse has not been moved away."
-	    top_pad="1"
-	    width="310" />
+	    top_pad="1"/>
 		<button
  follows="left|top"
  control_name="InspectorShowTime"
@@ -567,8 +558,7 @@ width="510">
 	    max_val="256"
 	    min_val="0"
 	    name="InactiveFloaterTransparency"
-	    top_pad="4"
-	    width="313" />
+	    top_pad="4" />
 		<button
  follows="left|top"
  control_name="MiniMapPrimMaxRadius"
@@ -622,8 +612,7 @@ width="510">
 	    min_val="0.0"
 	    name="InactiveFloaterTransparency"
 	    tool_tip="This option controls the opacity of all currently focused windows."
-	    top_pad="15"
-	    width="319" />
+	    top_pad="15"/>
 		<button
  follows="left|top"
  control_name="InactiveFloaterTransparency"
@@ -655,8 +644,7 @@ width="510">
 	    min_val="0.0"
 	    name="ActiveFloaterTransparency"
 	    tool_tip="This option controls the opacity of windows that are currently not focused."
-	    top_pad="1"
-	    width="319" />
+	    top_pad="1"/>
 		<button
  follows="left|top"
  control_name="ActiveFloaterTransparency"

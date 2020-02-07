@@ -87,8 +87,7 @@
    max_val="3.97"
    min_val="0.17"
    name="camera_fov"
-   show_text="true"
-   width="336" />
+   show_text="true" />
    <button
    follows="left|top"
    control_name="CameraAngle"
@@ -122,7 +121,6 @@
    min_val="0"
    name="camera_lag"
    show_text="true"
-   width="327"
    top_pad="1"/>
    <button
    follows="left|top"
@@ -157,7 +155,6 @@
    min_val="0.5"
    name="camera_offset_scale"
    show_text="true"
-   width="324"
    top_pad="1"/>
    <button
    follows="left|top"
@@ -192,7 +189,6 @@
    min_val="0.0"
    name="camera_position_smoothing"
    show_text="true"
-   width="330"
    top_pad="1"/>
    <button
    follows="left|top"
@@ -227,7 +223,6 @@
    min_val="0"
    name="zoomtime"
    show_text="true"
-   width="330"
    top_pad="1"/>
    <button
    follows="left|top"
@@ -274,7 +269,6 @@
    min_val="0"
    name="CameraMaxRoll"
    show_text="true"
-   width="324"
    top_pad="6"/>
    <button
    follows="left|top"
@@ -401,7 +395,6 @@
    min_val="0"
    name="PitchFromMousePosition"
    show_text="true"
-   width="312"
    top_pad="13"/>
    <button
    follows="left|top"
@@ -436,7 +429,6 @@
    min_val="0"
    name="YawFromMousePosition"
    show_text="true"
-   width="318"
    top_pad="1"/>
    <button
    follows="left|top"
@@ -471,7 +463,6 @@
    min_val="2"
    name="camrotateslow"
    show_text="true"
-   width="318"
    top_pad="1"/>
    <button
    follows="left|top"
@@ -506,7 +497,6 @@
    min_val="2"
    name="camrotatefast"
    show_text="true"
-   width="312"
    top_pad="1"/>
    <button
    follows="left|top"
@@ -647,8 +637,7 @@
    left="10"
    max_val="15"
    name="mouse_sensitivity"
-   top_pad="4"
-   width="334" />
+   top_pad="4" />
    <button
    follows="left|top"
    control_name="MouseSensitivity"
@@ -682,7 +671,6 @@
    min_val="2"
    name="camrotateml"
    show_text="true"
-   width="319"
    top_pad="1"/>
    <button
    follows="left|top"
@@ -737,8 +725,7 @@
    max_val="10"
    min_val="-4"
    name="CameraOffset_X"
-   top_pad="15"
-   width="338">
+   top_pad="15">
    <slider.commit_callback
    function="Pref.CameraArray"
    parameter="X"/>
@@ -757,8 +744,7 @@
    max_val="4"
    min_val="-4"
    name="CameraOffset_Y"
-   top_pad="2"
-   width="332">
+   top_pad="2">
    <slider.commit_callback
    function="Pref.CameraArray"
    parameter="Y"/>
@@ -777,8 +763,7 @@
    max_val="15"
    min_val="-4"
    name="CameraOffset_Z"
-   top_pad="2"
-   width="338">
+   top_pad="2">
    <slider.commit_callback
    function="Pref.CameraArray"
    parameter="Z"/>
@@ -808,8 +793,7 @@
    max_val="4"
    min_val="-4"
    name="FocusOffset_X"
-   top_pad="5"
-   width="332">
+   top_pad="5">
    <slider.commit_callback
    function="Pref.FocusArray"
    parameter="X"/>
@@ -828,8 +812,7 @@
    max_val="4"
    min_val="-4"
    name="FocusOffset_Y"
-   top_pad="2"
-   width="332">
+   top_pad="2">
    <slider.commit_callback
    function="Pref.FocusArray"
    parameter="Y"/>
@@ -848,8 +831,7 @@
    max_val="4"
    min_val="-4"
    name="FocusOffset_Z"
-   top_pad="2"
-   width="332">
+   top_pad="2">
    <slider.commit_callback
    function="Pref.FocusArray"
    parameter="Z"/>

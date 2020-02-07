@@ -510,8 +510,7 @@ width="510">
    min_val="0.1"
    label_width="150"
    name="name_fade_slider"
-   top_pad="4"
-   width="319" />
+   top_pad="4"/>
    <button
    follows="left|top"
    control_name="RenderNameFadeDuration"
@@ -544,8 +543,7 @@ width="510">
    min_val="1"
    label_width="150"
    name="name_start_fade_slider"
-   top_pad="1"
-   width="316" />
+   top_pad="1"/>
    <button
    follows="left|top"
    control_name="RenderNameShowTime"

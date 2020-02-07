@@ -501,8 +501,7 @@ width="510">
 	    min_val="13000"
 	    name="ConnectionPort"
 	    tool_tip="This option sets the custom port being used to connect to Second Life."
-	    top_pad="4"
-	    width="322" />
+	    top_pad="4" />
 		<button
  follows="left|top"
  control_name="ConnectionPortEnabled"
@@ -535,8 +534,7 @@ width="510">
 		     min_val="100"
 		     name="max_bandwidth"
 		     top_pad="1"
-			 label_width="150"
-		     width="322" />
+			 label_width="150" />
 			 <button
  follows="left|top"
  control_name="ThrottleBandwidthKBPS"
@@ -592,8 +590,7 @@ width="510">
    max_val="9984"
    min_val="64"
    top_pad="15"
-   name="cachesizespinner"
-   width="316" />
+   name="cachesizespinner"/>
   <button
  follows="left|top"
  control_name="CacheSize"
@@ -755,8 +752,7 @@ width="510">
 		     max_val="10"
 		     min_val="1"
 		     name="PrecachingDelay"
-		     top_pad="15"
-		     width="304" />
+		     top_pad="15"/>
 			 <button
  follows="left|top"
  control_name="PrecachingDelay"

@@ -84,7 +84,7 @@
     layout="topleft"
     left="10"
     height="16"
-    top="90"
+    top="91"
     name="water_fog_density_label"
     width="215">
     	Fog Density Exponent
@@ -99,7 +99,7 @@
     max_val="10"
     name="WaterFogDensity"
     top_pad="3"
-    width="183"/>
+    width="196"/>
     
     
    <text
@@ -108,7 +108,7 @@
     layout="topleft"
     left="10"
     height="16"
-    top="131"
+    top="133"
     name="underwater_fog_modifier_label"
     width="215">
     	Underwater Fog Modifier
@@ -124,7 +124,7 @@
     max_val="2"
     name="WaterUnderWaterFogMod"
     top_pad="3"
-    width="183"/>
+    width="196"/>
     
 <!--======== II conlumn of controls ========-->    
     
@@ -151,7 +151,7 @@
      left_delta="0"
      name="WaterFresnelScale"
      top_pad="3"
-     width="183"/>
+     width="196"/>
     <text
      follows="left|top|right"
      font="SansSerif"
@@ -174,7 +174,7 @@
      left_delta="0"
      name="WaterFresnelOffset"
      top_pad="3"
-     width="183"/>
+     width="196"/>
     
     <text
      follows="left|top|right"
@@ -183,7 +183,7 @@
      layout="topleft"
      left="235"
      name="BDensText"
-     top="90"
+     top="91"
      width="215">
         Reflection Wavelet Scale
     </text>
@@ -199,7 +199,7 @@
      max_val="10"
      name="WaterNormalScaleX"
      top_pad="3"
-     width="183"/>
+     width="196"/>
     <slider
      control_name="WaterNormalScaleY"
      decimal_digits="1"
@@ -210,7 +210,7 @@
      max_val="10"
      name="WaterNormalScaleY"
      top_pad="6"
-     width="183"/>
+     width="196"/>
     <slider
      control_name="WaterNormalScaleZ"
      decimal_digits="1"
@@ -221,7 +221,7 @@
      max_val="10"
      name="WaterNormalScaleZ"
      top_pad="6"
-     width="183"/>
+     width="196"/>
     
     	 <text
       follows="left|top|right"
@@ -244,7 +244,7 @@
       left_delta="0"
       name="WaterScaleAbove"
       top_pad="3"
-      width="183" />
+      width="196" />
      
      <text
       type="string"
@@ -270,7 +270,7 @@
       left_delta="0"
       name="WaterScaleBelow"
       top_pad="3"
-      width="183"/>
+      width="196"/>
      
       <text
       follows="left|top|right"
@@ -279,7 +279,7 @@
       layout="topleft"
       left_delta="0"
       name="MaxAltText"
-      top="90"
+      top="91"
       width="215">
          Blur Multiplier
      </text>
@@ -294,7 +294,7 @@
       max_val="6.0"
       name="WaterBlurMult"
       top_pad="3"
-      width="189"/>
+      width="196"/>
      
      <text
       follows="left|top|right"
@@ -303,7 +303,7 @@
       layout="topleft"
       left_delta="0"
       name="MaxAltText"
-      top="131"
+      top="133"
       width="215">
          Water Height
      </text>
@@ -318,8 +318,8 @@
       left_delta="0"
       max_val="256.0"
       name="RenderWaterHeightFudge"
-      top_pad="1"
-      width="201"/>
+      top_pad="0"
+      width="196"/>
      <button
  follows="left|top"
  height="15"
@@ -371,7 +371,7 @@
      min_val="-4"
      name="WaterWave1DirX"
      top_pad="3"
-     width="183"/>    
+     width="196"/>    
     <slider
      control_name="WaterWave1DirY"
      decimal_digits="2"
@@ -384,7 +384,7 @@
      min_val="-4"
      name="WaterWave1DirY"
      top_pad="5"
-     width="183"/>
+     width="196"/>
     
          <text
       follows="left|top|right"
@@ -393,7 +393,7 @@
       left="10"
       height="16"
       name="BHText2"
-      top="90"
+      top="91"
       width="215">
          Little Wave Direction
      </text>
@@ -410,7 +410,7 @@
       min_val="-4"
       name="WaterWave2DirX"
       top_pad="3"
-      width="183" />
+      width="196" />
      <slider
       control_name="WaterWave2DirY"
       decimal_digits="2"
@@ -423,7 +423,7 @@
       min_val="-4"
       name="WaterWave2DirY"
       top_pad="6"
-      width="183" />
+      width="196" />
       
       <text
        follows="left|top|right"

@@ -40,7 +40,7 @@
          left="470"
          top_delta="3"
          name="RenderWindlightInterpolateTime"
-         width="180" />
+         width="220" />
  <panel
   height="70"
   layout="topleft"

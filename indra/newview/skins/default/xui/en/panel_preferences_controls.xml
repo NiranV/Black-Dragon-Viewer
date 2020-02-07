@@ -252,8 +252,7 @@ width="510">
    max_val="1"
    min_val="0"
    name="RotationSpeed"
-   show_text="true"
-   width="324" />
+   show_text="true" />
    <button
  follows="left|top"
  control_name="MovementRotationSpeed"

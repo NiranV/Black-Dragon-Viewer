@@ -3,7 +3,9 @@
         can_edit_text="false"
         font="SansSerifSmall"
         volume="false"
-        mouse_opaque="true" 
+        mouse_opaque="true"
+        text_width="42"
+        width="348"
         show_text="true" 
         text_color="LabelTextColor" 
         text_disabled_color="LabelDisabledColor">

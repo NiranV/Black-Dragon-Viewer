@@ -198,8 +198,7 @@ width="510">
    min_val="0"
    tool_tip="This option sets maximum amount of opened internal browsers instances. Setting this to 0 disables the limit."
    top_pad="5"
-   name="MediaBrowserWindowLimit"
-   width="310" />
+   name="MediaBrowserWindowLimit"/>
   <button
  follows="left|top"
  control_name="CacheSize"
@@ -272,8 +271,7 @@ width="510">
    max_val="12000"
    min_val="10"
    top_pad="5"
-   name="web_proxy_port"
-   width="322" />
+   name="web_proxy_port"/>
   <button
  follows="left|top"
  control_name="BrowserProxyPort"
@@ -362,8 +360,7 @@ width="510">
    max_val="100"
    min_val="0"
    top_pad="5"
-   name="MediaControlTimeout"
-   width="319" />
+   name="MediaControlTimeout" />
   <button
  follows="left|top"
  control_name="MediaControlTimeout"
@@ -396,8 +393,7 @@ width="510">
    max_val="100"
    min_val="10"
    top_pad="1"
-   name="PluginInstancesTotal"
-   width="310" />
+   name="PluginInstancesTotal"/>
   <button
  follows="left|top"
  control_name="PluginInstancesTotal"

@@ -76,8 +76,7 @@ width="510">
       max_val="10"
       min_val="0"
       name="ToastFadingTime"
-      top_pad="14"
-      width="312" />
+      top_pad="14"/>
       <button
  follows="left|top"
  control_name="ToastFadingTime"
@@ -110,8 +109,7 @@ width="510">
       max_val="25"
       min_val="0"
       name="ToastGap"
-      top_pad="1"
-      width="312" />
+      top_pad="1"/>
       <button
  follows="left|top"
  control_name="ToastGap"
@@ -144,8 +142,7 @@ width="510">
       max_val="100"
       min_val="0"
       name="ChannelBottomPanelMargin"
-      top_pad="1"
-      width="318" />
+      top_pad="1" />
       <button
       follows="left|top"
       control_name="ChannelBottomPanelMargin"

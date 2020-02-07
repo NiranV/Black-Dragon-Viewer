@@ -444,8 +444,7 @@ width="510">
    max_val="40"
    min_val="1"
    name="NearbyToastLifeTime"
-   top_pad="4"
-   width="312" />
+   top_pad="4" />
    <button
    follows="left|top"
    control_name="NearbyToastLifeTime"
@@ -478,8 +477,7 @@ width="510">
    max_val="40"
    min_val="1"
    name="NearbyToastFadingTime"
-   top_pad="1"
-   width="312" />
+   top_pad="1"/>
    <button
    follows="left|top"
    control_name="NearbyToastFadingTime"
@@ -524,8 +522,7 @@ width="510">
    max_val="1"
    min_val="0"
    name="bubble_chat_opacity"
-   top_pad="6"
-   width="321" />
+   top_pad="6" />
    <button
    follows="left|top"
    control_name="ChatBubbleOpacity"

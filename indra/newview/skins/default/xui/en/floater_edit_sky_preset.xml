@@ -85,7 +85,7 @@ width="700">
          height="16"
          layout="topleft"
          left_delta="-7"
-         top="90"
+         top="91"
          name="BDensText"
          width="200">
             Haze Horizon
@@ -149,7 +149,7 @@ width="700">
          layout="topleft"
          left_delta="-7"
          name="HDText"
-         top="90"
+         top="91"
          width="200">
             Haze Density
         </text>
@@ -272,7 +272,7 @@ width="700">
 	  layout="topleft"
 	  left="470"
 	  name="MaxAltText"
-	  top="90"
+	  top="91"
 	  width="200">
 	     Max Altitude
 	 </text>
@@ -348,7 +348,7 @@ width="700">
              layout="topleft"
              left_delta="-7"
              name="TODText"
-             top="90"
+             top="91"
              width="200">
                 Sun/Moon Position
             </text>
@@ -357,7 +357,7 @@ width="700">
              image_name="icon_diurnal.tga"
              layout="topleft"
              left_delta="5"
-             top_pad="7"
+             top_pad="3"
              name="SkyDayCycle"
              width="133" />
             <multi_slider
@@ -382,7 +382,7 @@ width="700">
              layout="topleft"
              left_pad="0"
              name="WLDayTime"
-             top_delta="-47"
+             top_delta="-46"
              value="6:00 AM"
              width="75"/> 
             <text
@@ -418,7 +418,7 @@ width="700">
              layout="topleft"
              left_delta="-7"
              name="WLEastAngleText"
-             top="90"
+             top="91"
              width="200">
                 East Angle
             </text>
@@ -537,9 +537,9 @@ width="700">
              layout="topleft"
              left="470"
              name="SunGlowText"
-             top="90"
+             top="91"
              width="200">
-                Sun Glow
+                Sun Focus
             </text>
             <slider
              decimal_digits="2"
@@ -547,29 +547,38 @@ width="700">
              height="10"
              increment="0.01"
              initial_value="0.1"
-             label="Focus"
              layout="topleft"
              left_delta="0"
-	     label_width="35"
              max_val="0.5"
              name="WLGlowB"
              top_pad="3"
-             width="183" />
+             width="196" />
+			<text
+             type="string"
+             length="1"
+             follows="left|top"
+             font="SansSerif"
+             height="16"
+             layout="topleft"
+             left="470"
+             name="SunGlowText"
+             top="133"
+             width="200">
+                Sun Size
+            </text>
             <slider
              decimal_digits="2"
              follows="top|left"
              height="10"
              increment="0.01"
              initial_value="0.25"
-             label="Size"
              layout="topleft"
              left_delta="0"
              max_val="1.99"
-	     label_width="35"
              min_val="0.01"
              name="WLGlowR"
-             top_pad="6"
-             width="183" />
+             top_pad="3"
+             width="196" />
         </panel>
         <panel
          border="false"
@@ -617,7 +626,7 @@ width="700">
              layout="topleft"
              left_delta="-7"
              name="WLCloudColorText2"
-             top="90"
+             top="91"
              width="200">
                 Cloud XY/Density
             </text>
@@ -634,7 +643,7 @@ width="700">
              left_delta="0"
              top_pad="3"
              name="WLCloudX"
-             width="183" />
+             width="196" />
             <slider
              control_name="WLCloudY"
              decimal_digits="2"
@@ -648,7 +657,7 @@ width="700">
              left_delta="0"
              top_pad="6"
              name="WLCloudY"
-             width="183" />
+             width="196" />
             <slider
              control_name="WLCloudDensity"
              decimal_digits="2"
@@ -662,7 +671,7 @@ width="700">
              left_delta="0"
              name="WLCloudDensity"
              top_pad="6"
-             width="183" />
+             width="196" />
             
             <text
              type="string"
@@ -688,7 +697,7 @@ width="700">
              left_delta="0"
              name="WLCloudCoverage"
              top_pad="3"
-             width="183" />
+             width="196" />
             <text
              type="string"
              length="1"
@@ -714,7 +723,7 @@ width="700">
              min_val="0.01"
              name="WLCloudScale"
              top_pad="3"
-             width="183" />
+             width="196" />
             
             <text
              type="string"
@@ -725,7 +734,7 @@ width="700">
              layout="topleft"
              left="235"
              name="WLCloudDetailText"
-             top="90"
+             top="91"
              width="200">
                 Cloud Detail (XY/Density)
             </text>
@@ -742,7 +751,7 @@ width="700">
              left_delta="0"
              top_pad="3"
              name="WLCloudDetailX"
-             width="183" />
+             width="196" />
             <slider
              control_name="WLCloudDetailY"
              decimal_digits="2"
@@ -756,7 +765,7 @@ width="700">
              left_delta="0"
              name="WLCloudDetailY"
              top_pad="6"
-             width="183" />
+             width="196" />
             <slider
              control_name="WLCloudDetailDensity"
              decimal_digits="2"
@@ -770,7 +779,7 @@ width="700">
              left_delta="0"
              name="WLCloudDetailDensity"
              top_pad="6"
-             width="183" />
+             width="196" />
             
             <text
              type="string"
@@ -798,7 +807,7 @@ width="700">
              min_val="-10"
              name="WLCloudScrollX"
              top_pad="3"
-             width="183" />
+             width="196" />
 				<check_box
              control_name="WLCloudLockX"
              follows="left|top"
@@ -807,7 +816,7 @@ width="700">
              layout="topleft"
              left_pad="-67"
              name="WLCloudLockX"
-             top_delta="-18"
+             top_delta="-21"
              width="200" />
             <text
              type="string"
@@ -835,14 +844,14 @@ width="700">
              min_val="-10"
              name="WLCloudScrollY"
              top_pad="3"
-             width="183" />
+             width="196" />
 				<check_box
              control_name="WLCloudLockY"
              follows="left|top"
              height="16"
              label="   Lock"
              layout="topleft"
-				 top_delta="-18"
+				 top_delta="-21"
              left_pad="-67"
              name="WLCloudLockY"
              width="200" />
@@ -855,7 +864,7 @@ width="700">
              layout="topleft"
              left="470"
              name="CloudNoiseImageText"
-             top="90"
+             top="91"
              width="150">
                 Cloud Noise Image
             </text>

@@ -112,8 +112,7 @@
    max_val="30"
    min_val="0"
    name="NotificationTipToastLifeTime"
-   show_text="true"
-   width="315" />
+   show_text="true" />
    <button
  follows="left|top"
  control_name="NotificationTipToastLifeTime"
@@ -147,8 +146,7 @@
    max_val="60"
    min_val="1"
    name="NotificationToastLifeTime"
-   show_text="true"
-   width="315" />
+   show_text="true"/>
    <button
  follows="left|top"
  control_name="NotificationToastLifeTime"

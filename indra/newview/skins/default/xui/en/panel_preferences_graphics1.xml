@@ -298,8 +298,7 @@ width="510">
  max_val="164"
  min_val="64"
  name="DPI"
- top_delta="1"
- width="319" >
+ top_delta="1" >
   <slider.commit_callback
                          function="Dragon.TriggerWarn"/>
  </slider>
@@ -442,8 +441,7 @@ width="510">
  max_val="3984"
  min_val="128"
  name="SystemMemory"
- top_delta="2"
- width="325" />
+ top_delta="2"/>
  <button
  follows="left|top"
  control_name="SystemMemory"
@@ -478,8 +476,7 @@ width="510">
  max_val="3984"
  min_val="128"
  name="SceneMemory"
- top_pad="1"
- width="325" />
+ top_pad="1"/>
  <button
  follows="left|top"
  control_name="TextureMemory"
@@ -2295,8 +2292,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
  tool_tip="&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot2&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls your view distance in meters, starting from your camera."
- top_delta="1"
- width="325">
+ top_delta="1">
     <slider.commit_callback
  function="Dragon.TriggerWarn"
  parameter="RenderFarClip"/>
@@ -2335,8 +2331,7 @@ This option is equivalent of the maximum (Ultra) available in the official Viewe
  tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the maximum amount of particles rendered on screen."
- top_pad="1"
- width="325" >
+ top_pad="1" >
   <slider.commit_callback
  function="Dragon.TriggerWarn"
  parameter="RenderMaxPartCount"/>
@@ -2529,8 +2524,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="300"
       min_val="0"
       name="BackgroundYieldTime"
-      top_pad="5"
-      width="319" />
+      top_pad="5" />
 	<button
  follows="left|top"
  control_name="BackgroundYieldTime"
@@ -2564,8 +2558,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="144"
       min_val="0"
       name="FramePerSecondLimit"
-      top_pad="1"
-      width="319" />
+      top_pad="1"/>
    <button
  follows="left|top"
  control_name="FramePerSecondLimit"
@@ -2660,8 +2653,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="50"
       min_val="0"
       name="RenderAvatarMaxVisible"
-      top_delta="1"
-      width="313" />
+      top_delta="1" />
  <button
  follows="left|top"
  control_name="RenderAvatarMaxNonImpostors"
@@ -2756,8 +2748,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="256"
       min_val="0"
       name="RenderAutoMuteSurfaceAreaLimit"
-      top_delta="1"
-      width="319" />
+      top_delta="1"/>
       <button
  follows="left|top"
  control_name="RenderAutoMuteSurfaceAreaLimit"
@@ -2816,8 +2807,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="800000"
       min_val="0"
       name="RenderAvatarMaxComplexity"
-      top_delta="1"
-      width="337" >
+      top_delta="1">
        <slider.commit_callback
  function="Dragon.TriggerWarn"
  parameter="RenderAvatarMaxComplexity"/>
@@ -2880,8 +2870,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="512"
       min_val="0"
       name="RenderAutoHideSurfaceAreaLimit"
-      top_delta="1"
-      width="319" />
+      top_delta="1"/>
       <button
  follows="left|top"
  control_name="RenderAutoHideSurfaceAreaLimit"
@@ -2967,8 +2956,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       mouse_opaque="true"
       name="Iterations"
-      show_text="true"
-      width="313" />
+      show_text="true"/>
       <button
  follows="left|top"
  control_name="RenderGlowIterations"
@@ -3003,8 +2991,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0.001"
       mouse_opaque="true"
       name="Strength"
-      show_text="true"
-      width="328" />
+      show_text="true" />
       <button
  follows="left|top"
  control_name="RenderGlowStrength"
@@ -3040,8 +3027,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       mouse_opaque="true"
       name="MinLuminance"
-      show_text="true"
-      width="316" />
+      show_text="true"/>
       <button
  follows="left|top"
  control_name="RenderGlowMinLuminance"
@@ -3077,8 +3063,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       mouse_opaque="true"
       name="Warmth"
-      show_text="true"
-      width="322" />
+      show_text="true" />
       <button
  follows="left|top"
  control_name="RenderGlowWarmthAmount"
@@ -3113,8 +3098,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0.1"
       mouse_opaque="true"
       name="Width"
-      show_text="true"
-      width="322" />
+      show_text="true" />
       <button
  follows="left|top"
  control_name="RenderGlowWidth"
@@ -3149,8 +3133,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       mouse_opaque="true"
       name="MaxAlpha"
-      show_text="true"
-      width="328" />
+      show_text="true" />
       <button
  follows="left|top"
  control_name="RenderGlowMaxExtractAlpha"
@@ -3210,8 +3193,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       mouse_opaque="true"
       name="RenderGlowLumWeights_X"
-      show_text="true"
-      width="328" >
+      show_text="true" >
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="RenderGlowLumWeights"/>
@@ -3233,8 +3215,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       mouse_opaque="true"
       name="RenderGlowLumWeights_Y"
-      show_text="true"
-      width="328" >
+      show_text="true" >
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="RenderGlowLumWeights"/>
@@ -3256,8 +3237,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       mouse_opaque="true"
       name="RenderGlowLumWeights_Z"
-      show_text="true"
-      width="328" >
+      show_text="true" >
       <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="RenderGlowLumWeights"/>
@@ -3337,8 +3317,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       mouse_opaque="true"
       name="RenderGlowWarmthWeights_X"
-      show_text="true"
-      width="328" >
+      show_text="true">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="RenderGlowWarmthWeights"/>
@@ -3360,8 +3339,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       mouse_opaque="true"
       name="RenderGlowWarmthWeights_Y"
-      show_text="true"
-      width="328" >
+      show_text="true">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="RenderGlowWarmthWeights"/>
@@ -3383,8 +3361,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       mouse_opaque="true"
       name="RenderGlowWarmthWeights_Z"
-      show_text="true"
-      width="328" >
+      show_text="true">
       <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="RenderGlowWarmthWeights"/>
@@ -3786,8 +3763,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="256"
       min_val="1"
       name="RenderShadowDistance_X"
-      top_pad="5"
-      width="318">
+      top_pad="5">
   <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="RenderShadowDistance"/>
@@ -3810,8 +3786,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="600"
       min_val="8"
       name="RenderShadowFarClip"
-      top_delta="0"
-      width="318"/>
+      top_delta="0"/>
  <button
  follows="left|top"
  control_name="RenderShadowFarClip"
@@ -3846,8 +3821,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="256"
       min_val="1"
       name="RenderShadowDistance_Y"
-      top_pad="2"
-      width="318">
+      top_pad="2">
   <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="RenderShadowDistance"/>
@@ -3869,8 +3843,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="256"
       min_val="1"
       name="RenderShadowDistance_Z"
-      top_pad="2"
-      width="318">
+      top_pad="2">
   <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="RenderShadowDistance"/>
@@ -3892,8 +3865,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="256"
       min_val="1"
       name="RenderShadowDistance_W"
-      top_pad="2"
-      width="318">
+      top_pad="2">
   <slider.commit_callback
       function="Dragon.ArrayW"
       parameter="RenderShadowDistance"/>
@@ -3962,8 +3934,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="6144"
       min_val="256"
       name="RenderShadowResolution_X"
-      top_delta="1"
-      width="324">
+      top_delta="1">
    <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="RenderShadowResolution"/>
@@ -3991,8 +3962,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="6144"
       min_val="256"
       name="RenderShadowResolution_Y"
-      top_pad="2"
-      width="324">
+      top_pad="2">
    <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="RenderShadowResolution"/>
@@ -4020,8 +3990,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="6144"
       min_val="256"
       name="RenderShadowResolution_Z"
-      top_pad="2"
-      width="324">
+      top_pad="2">
    <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="RenderShadowResolution"/>
@@ -4049,8 +4018,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="6144"
       min_val="256"
       name="RenderShadowResolution_W"
-      top_pad="2"
-      width="324">
+      top_pad="2">
    <slider.commit_callback
       function="Dragon.ArrayW"
       parameter="RenderShadowResolution"/>
@@ -4158,8 +4126,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="4096"
       min_val="256"
       name="RenderProjectorShadowResolution_X"
-      top_delta="1"
-      width="324">
+      top_delta="1">
    <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="RenderProjectorShadowResolution"/>
@@ -4187,8 +4154,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="4096"
       min_val="256"
       name="RenderProjectorShadowResolution_Y"
-      top_pad="2"
-      width="324">
+      top_pad="2">
    <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="RenderProjectorShadowResolution"/>
@@ -4262,8 +4228,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="4"
       min_val="0.0"
       name="RenderShadowBlurSize"
-      top_pad="4"
-      width="315"/>
+      top_pad="4"/>
  <button
  follows="left|top"
  control_name="RenderShadowBlurSize"
@@ -4296,8 +4261,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="10"
       min_val="0.00"
       name="RenderGlobalLightStrength"
-      top_pad="1"
-      width="327"/>
+      top_pad="1"/>
  <button
  follows="left|top"
  control_name="RenderGlobalLightStrength"
@@ -4395,8 +4359,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="64"
       min_val="2"
       name="RenderSSRResolution"
-      top_pad="4"
-      width="312" />
+      top_pad="4"/>
 		<button
  follows="left|top"
  control_name="RenderSSRResolution"
@@ -4429,8 +4392,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="10"
       min_val="0.1"
       name="RenderSSRBrightness"
-      top_pad="2"
-      width="321" />
+      top_pad="2" />
       <button
  follows="left|top"
  control_name="RenderSSRBrightness"
@@ -4516,8 +4478,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="1.0"
       min_val="0.0"
       name="RenderSSAOBlurSize"
-      top_pad="10"
-      width="327"/>
+      top_pad="10"/>
  <button
  follows="left|top"
  control_name="RenderSSAOBlurSize"
@@ -4550,8 +4511,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="10"
       min_val="-10"
       name="SSAOEffect"
-      top_pad="1"
-      width="331"/>
+      top_pad="1"/>
      <button
  follows="left|top"
  control_name="RenderSSAOEffect"
@@ -4584,8 +4544,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="3000"
       min_val="0"
       name="SSAOScale"
-      top_pad="1"
-      width="324" />
+      top_pad="1"/>
       <button
  follows="left|top"
  control_name="RenderSSAOScale"
@@ -4618,8 +4577,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="3000"
       min_val="0"
       name="SSAOMaxScale"
-      top_pad="1"
-      width="324" />
+      top_pad="1"/>
       <button
  follows="left|top"
  control_name="RenderSSAOMaxScale"
@@ -4652,8 +4610,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="10"
       min_val="0"
       name="SSAOFactor"
-      top_pad="1"
-      width="333" />
+      top_pad="1"/>
       <button
  follows="left|top"
  control_name="RenderSSAOFactor"
@@ -4775,8 +4732,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="CameraFOV"
       tool_tip="This option controls the vertical camera field of view in ° (Degrees) for Depth of Field."
-      top_pad="4"
-      width="318" />
+      top_pad="4"/>
      <button
  follows="left|top"
  control_name="CameraFieldOfView"
@@ -4809,8 +4765,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0.50"
       name="CameraFNum"
       tool_tip="This option controls the camera f-number value for Depth of Field."
-      top_pad="1"
-      width="327" />
+      top_pad="1"/>
       <button
  follows="left|top"
  control_name="CameraFNumber"
@@ -4843,8 +4798,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="1"
       name="CameraFocal"
       tool_tip="This option controls the camera focal length in mm (Millimeters) for Depth of Field."
-      top_pad="1"
-      width="318"/>
+      top_pad="1"/>
       <button
  follows="left|top"
  control_name="CameraFocalLength"
@@ -4877,8 +4831,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0"
       name="CameraCoF"
       tool_tip="This option controls the camera circle of confusion for Depth of Field."
-      top_pad="1"
-      width="327" />
+      top_pad="1" />
       <button
  follows="left|top"
  control_name="CameraMaxCoF"
@@ -4911,8 +4864,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       min_val="0.01"
       name="CameraFocusTrans"
       tool_tip="This option controls the time in s (Seconds) it takes to switch focus from one point to another."
-      top_pad="1"
-      width="327" />
+      top_pad="1"/>
       <button
  follows="left|top"
  control_name="CameraFocusTransitionTime"
@@ -4947,8 +4899,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       tool_tip="&lt;icon&gt;Stat_Dot4&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
 &lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option controls the sampling resolution for Depth of Field. It multiplies the current screen resolution with this number, lower means less accurate."
-      top_pad="1"
-      width="321" />
+      top_pad="1" />
       <button
  follows="left|top"
  control_name="CameraDoFResScale"
@@ -5162,8 +5113,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="120"
       min_val="15"
       name="MotionBlurQuality"
-      top_delta="1"
-      width="318"/>
+      top_delta="1"/>
    <button
  follows="left|top"
  control_name="RenderMotionBlurStrength"
@@ -5284,8 +5234,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="128"
       min_val="16"
       name="GodraysResolution"
-      top_delta="1"
-      width="318"/>
+      top_delta="1"/>
    <button
  follows="left|top"
  control_name="RenderGodraysResolution"
@@ -5318,8 +5267,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="30"
       min_val="0.01"
       name="GodraysMultiplier"
-      top_pad="1"
-      width="327"/>
+      top_pad="1"/>
    <button
  follows="left|top"
  control_name="RenderGodraysMultiplier"
@@ -5352,8 +5300,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="500"
       min_val="0.1"
       name="GodraysFalloffMultiplier"
-      top_pad="1"
-      width="327"/>
+      top_pad="1"/>
    <button
  follows="left|top"
  control_name="RenderGodraysFalloffMultiplier"
@@ -5448,8 +5395,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="1"
       min_val="0"
       name="GreyscaleStrength"
-      top_pad="4"
-      width="321"/>
+      top_pad="4"/>
    <button
  follows="left|top"
  control_name="RenderPostGreyscaleStrength"
@@ -5483,8 +5429,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="1"
       min_val="0"
       name="SepiaStrength"
-      top_pad="1"
-      width="321"/>
+      top_pad="1"/>
    <button
  follows="left|top"
  control_name="RenderPostSepiaStrength"
@@ -5518,8 +5463,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="64"
       min_val="1"
       name="PosterizeSamples"
-      top_pad="1"
-      width="312"/>
+      top_pad="1"/>
    <button
  follows="left|top"
  control_name="RenderPostPosterizationSamples"
@@ -5553,8 +5497,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="50"
       min_val="0"
       name="ChromaStrength"
-      top_pad="1"
-      width="321"/>
+      top_pad="1"/>
    <button
  follows="left|top"
  control_name="RenderChromaStrength"
@@ -5756,8 +5699,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="4"
       min_val="0.01"
       name="ExodusRenderToneExposure"
-      top_pad="7"
-      width="321"/>
+      top_pad="7"/>
       <button
  follows="left|top"
  control_name="ExodusRenderToneExposure"
@@ -5789,8 +5731,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="1"
       min_val="0"
       name="ExodusRenderToneAdvOptA_X"
-      top_pad="5"
-      width="327">
+      top_pad="5">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderToneAdvOptA"/>
@@ -5810,8 +5751,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="1"
       min_val="0"
       name="ExodusRenderToneAdvOptA_Y"
-      top_pad="2"
-      width="327">
+      top_pad="2">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderToneAdvOptA"/>
@@ -5831,8 +5771,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="1"
       min_val="0"
       name="ExodusRenderToneAdvOptA_Z"
-      top_pad="2"
-      width="327">
+      top_pad="2">
          <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderToneAdvOptA"/>
@@ -5868,8 +5807,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="3"
       min_val="0"
       name="ExodusRenderToneAdvOptB_X"
-      top_pad="5"
-      width="327">
+      top_pad="5">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderToneAdvOptB"/>
@@ -5889,8 +5827,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="0.1"
       min_val="-0.5"
       name="ExodusRenderToneAdvOptB_Y"
-      top_pad="2"
-      width="325">
+      top_pad="2">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderToneAdvOptB"/>
@@ -5910,8 +5847,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="3"
       min_val="0.01"
       name="ExodusRenderToneAdvOptB_Z"
-      top_pad="2"
-      width="327">
+      top_pad="2">
          <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderToneAdvOptB"/>
@@ -5963,8 +5899,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="50"
       min_val="0.01"
       name="ExodusRenderToneAdvOptC_X"
-      top_pad="5"
-      width="327">
+      top_pad="5">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderToneAdvOptC"/>
@@ -5984,8 +5919,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="5"
       min_val="0.01"
       name="ExodusRenderToneAdvOptC_Y"
-      top_pad="2"
-      width="321">
+      top_pad="2">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderToneAdvOptC"/>
@@ -6132,8 +6066,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="4"
       min_val="-4"
       name="ExodusRenderExposure_X"
-      top_pad="7"
-      width="325">
+      top_pad="7">
       <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderExposure"/>
@@ -6153,8 +6086,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="4"
       min_val="-4"
       name="ExodusRenderExposure_Y"
-      top_pad="2"
-      width="325">
+      top_pad="2">
       <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderExposure"/>
@@ -6174,8 +6106,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="4"
       min_val="-4"
       name="ExodusRenderExposure_Z"
-      top_pad="2"
-      width="325">
+      top_pad="2">
       <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderExposure"/>
@@ -6227,8 +6158,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="0.5"
       min_val="-0.5"
       name="ExodusRenderOffset_X"
-      top_pad="5"
-      width="331">
+      top_pad="5">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderOffset"/>
@@ -6248,8 +6178,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="0.5"
       min_val="-0.5"
       name="ExodusRenderOffset_Y"
-      top_pad="2"
-      width="331">
+      top_pad="2">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderOffset"/>
@@ -6269,8 +6198,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="0.5"
       min_val="-0.5"
       name="ExodusRenderOffset_Z"
-      top_pad="2"
-      width="331">
+      top_pad="2">
       <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderOffset"/>
@@ -6323,8 +6251,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="3"
       min_val="0"
       name="ExodusRenderGamma_X"
-      top_pad="5"
-      width="321">
+      top_pad="5">
          <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderGamma"/>
@@ -6344,8 +6271,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="3"
       min_val="0"
       name="ExodusRenderGamma_Y"
-      top_pad="2"
-      width="321">
+      top_pad="2">
          <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderGamma"/>
@@ -6365,8 +6291,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="3"
       min_val="0"
       name="ExodusRenderGamma_Z"
-      top_pad="2"
-      width="321">
+      top_pad="2">
          <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderGamma"/>
@@ -6466,8 +6391,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="10"
       min_val="0"
       name="ExodusRenderVignette_X"
-      top_pad="10"
-      width="321">
+      top_pad="10">
       <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="ExodusRenderVignette"/>
@@ -6487,8 +6411,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="10"
       min_val="0"
       name="ExodusRenderVignette_Y"
-      top_pad="2"
-      width="321">
+      top_pad="2">
       <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="ExodusRenderVignette"/>
@@ -6508,8 +6431,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       max_val="10"
       min_val="0"
       name="ExodusRenderVignette_Z"
-      top_pad="2"
-      width="321">
+      top_pad="2">
       <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="ExodusRenderVignette"/>
