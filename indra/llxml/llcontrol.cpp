@@ -1337,6 +1337,7 @@ BOOL LLControlGroup::loadPreset(S32 preset_type, std::string name)
 		return FALSE;
 	}
 
+	bool failed = false;
 	while (!infile.eof())
 	{
 		S32 count = LLSDSerialize::fromXML(preset, infile);
@@ -1354,9 +1355,21 @@ BOOL LLControlGroup::loadPreset(S32 preset_type, std::string name)
 		{
 			control->setValue(value);
 		}
+		else
+		{
+			failed = true;
+			LL_WARNS("Settings") << "Couldn't find control either because it doesn't exist or because it could not be parsed, possibly due to the attempt of loading old presets." << LL_ENDL;
+		}
 	}
 	infile.close();
-	LL_INFOS("Settings") << "Successfully loaded preset: " << filename << LL_ENDL;
+	if (failed)
+	{
+		LL_WARNS("Settings") << "The preset " << filename << " could not be completely or successfully loaded." << LL_ENDL;
+	}
+	else
+	{
+		LL_INFOS("Settings") << "Successfully loaded preset: " << filename << LL_ENDL;
+	}
 	return TRUE;
 }
 
