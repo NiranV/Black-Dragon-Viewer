@@ -168,7 +168,7 @@ float calcAmbientOcclusion(vec4 pos, vec3 norm)
 	return min(ret, 1.0);
 }
 
-float pcfShadow(sampler2DShadow shadowMap, vec4 stc, float scl, vec2 pos_screen, float shad_res, float bias)
+float pcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen, float shad_res, float bias)
 {
 	float recip_shadow_res = 1.0 / shad_res;
 	stc.xyz /= stc.w;
@@ -242,7 +242,7 @@ void main()
 				
 				float w = 1.0;
 				w -= max(spos.z-far_split.z, 0.0)/transition_domain.z;
-				shadow += pcfShadow(shadowMap3, lpos, 0.25, pos_screen, shadow_res.w, shadow_bias.w)*w;
+				shadow += pcfShadow(shadowMap3, lpos, pos_screen, shadow_res.w, shadow_bias.w)*w;
 				weight += w;
 				shadow += max((pos.z+shadow_clip.z)/(shadow_clip.z-shadow_clip.w)*2.0-1.0, 0.0);
 			}
@@ -254,7 +254,7 @@ void main()
 				float w = 1.0;
 				w -= max(spos.z-far_split.y, 0.0)/transition_domain.y;
 				w -= max(near_split.z-spos.z, 0.0)/transition_domain.z;
-				shadow += pcfShadow(shadowMap2, lpos, 0.5, pos_screen, shadow_res.z, shadow_bias.z)*w;
+				shadow += pcfShadow(shadowMap2, lpos, pos_screen, shadow_res.z, shadow_bias.z)*w;
 				weight += w;
 			}
 
@@ -265,7 +265,7 @@ void main()
 				float w = 1.0;
 				w -= max(spos.z-far_split.x, 0.0)/transition_domain.x;
 				w -= max(near_split.y-spos.z, 0.0)/transition_domain.y;
-				shadow += pcfShadow(shadowMap1, lpos, 0.75, pos_screen, shadow_res.y, shadow_bias.y)*w;
+				shadow += pcfShadow(shadowMap1, lpos, pos_screen, shadow_res.y, shadow_bias.y)*w;
 				weight += w;
 			}
 
@@ -276,7 +276,7 @@ void main()
 				float w = 1.0;
 				w -= max(near_split.x-spos.z, 0.0)/transition_domain.x;
 				
-				shadow += pcfShadow(shadowMap0, lpos, 1.0, pos_screen, shadow_res.x, shadow_bias.x)*w;
+				shadow += pcfShadow(shadowMap0, lpos, pos_screen, shadow_res.x, shadow_bias.x)*w;
 				weight += w;
 			}
 		
@@ -288,13 +288,6 @@ void main()
 			//  * an unblurred dot product between the sun and this norm
 			// the goal is to err on the side of most-shadow to fill-in shadow holes and reduce artifacting
 			shadow = min(shadow, dp_directional_light);
-			
-			//lpos.xy /= lpos.w*32.0;
-			//if (fract(lpos.x) < 0.1 || fract(lpos.y) < 0.1)
-			//{
-			//	shadow = 0.0;
-			//}
-			
 		}
 	}
 	else
