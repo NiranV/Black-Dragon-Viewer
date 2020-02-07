@@ -49,7 +49,25 @@ width="510">
 		     left="10"
 		     name="viewer_label"
 		     top_delta="4"
-		     width="120">Viewer Options:</text>
+		     width="300">Viewer Options:</text>
+       <button
+ height="18"
+ layout="topleft"
+ top_delta="-3"
+ left_pad="50"
+ name="remembered_usernames"
+ tool_tip="Open the Account Manager where you can manage all remembered usernames."
+ image_overlay_alignment="left"
+ image_overlay="Edit_Wrench"
+ halign="right"
+ pad_bottom="0"
+ image_selected="Transparent"
+ image_unselected="Transparent"
+ label="⌊Manage Accounts⌉"
+ width="130">
+ <button.commit_callback
+ function="Pref.RememberedUsernames" />
+ </button>
 		     
 		     <check_box
 		     control_name="AllowMultipleViewers"
