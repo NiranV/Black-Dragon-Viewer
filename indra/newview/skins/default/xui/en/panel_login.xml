@@ -3227,7 +3227,8 @@ Removed: Rotation order dropdown and all code.
     bg_writeable_color="White_02"
     background_visible="true"/>
     </combo_box>
-    <line_editor
+    <combo_box
+    allow_text_entry="true"
     commit_on_focus_lost="false"
     follows="left|top"
     height="22"
@@ -3236,7 +3237,31 @@ Removed: Rotation order dropdown and all code.
     tool_tip="The username you chose when you registered, like bobsmith12 or Steller Sunshine"
     top_pad="12"
     name="username_combo"
-    width="152"/>
+    width="160">
+    <combo_box.combo_editor
+    background_image="TextField_Off"
+    background_image_disabled="TextField_Disabled"
+    background_image_focused="TextField_Active"/>
+    <combo_box.item
+    label="My last location"
+    name="MyLastLocation"
+    value="last" />
+    <combo_box.item
+    label="My home"
+    name="MyHome"
+    value="home" />
+    <combo_box.combo_button
+    image_unselected="ComboToolbarButton_Off"
+    image_selected="ComboToolbarButton_Selected"
+    image_pressed="ComboToolbarButton_Selected" 
+    image_pressed_selected="ComboToolbarButton_Selected"/>
+    <combo_box.drop_down_button
+    image_unselected="ComboToolbarButton_Off"
+    image_selected="ComboToolbarButton_Selected"
+    image_pressed="ComboToolbarButton_Selected" 
+    image_pressed_selected="ComboToolbarButton_Selected"
+    image_disabled="ComboToolbarButton_Disabled"/>
+    </combo_box>
     <line_editor
     follows="left|top"
     commit_on_focus_lost="false"
