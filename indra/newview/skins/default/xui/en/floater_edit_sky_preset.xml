@@ -877,7 +877,18 @@ width="700">
 	follows="left|top"
 	top_pad="3"
 	name="CloudNoiseImage"
-	width="170"/>
+	width="170">
+	<combo_box.combo_button
+	image_unselected="ToolbarDropDown_Off"
+	image_selected="ToolbarDropDown_Press"
+	image_disabled="ToolbarDropDown_Off" />
+	<combo_box.drop_down_button
+	image_unselected="ToolbarDropDown_Off"
+	image_selected="ToolbarDropDown_Press"
+	image_pressed="ToolbarDropDown_Press" 
+	image_pressed_selected="ToolbarDropDown_Press"
+	image_disabled="ToolbarDropDown_Off" />
+	</combo_box>
         </panel>
     </tab_container>
 	 
