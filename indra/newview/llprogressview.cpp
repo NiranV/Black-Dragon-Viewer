@@ -238,6 +238,8 @@ void LLProgressView::draw()
 		{
 			mFadeFromLoginTimer.stop();
 			LLPanelLogin::closePanel();
+			//BD - Enable the quit button after fade so we avoid spurious double-clicks on login.
+			mCancelBtn->setEnabled(true);
 		}
 
 		return;
@@ -293,7 +295,6 @@ void LLProgressView::setPercent(const F32 percent)
 
 void LLProgressView::setCancelButtonVisible(BOOL b, const std::string& label)
 {
-	mCancelBtn->setEnabled( b );
 	mCancelBtn->setLabelSelected(label);
 	mCancelBtn->setLabelUnselected(label);
 }
@@ -310,9 +311,6 @@ void LLProgressView::onCancelButtonClicked(void*)
 	}
 	else
 	{
-		//BD
-		gSavedSettings.setF32("RenderPostGreyscaleStrength" , 0.f);
-
 		gAgent.teleportCancel();
 		sInstance->mCancelBtn->setEnabled(FALSE);
 		sInstance->setVisible(FALSE);

@@ -36,7 +36,6 @@
   <string name="LoadingTip 22">You should verify your E-mail on SL's website in order to receive offline mails in the future.</string>
   <string name="LoadingTip 23">&lt;green&gt;[CTRL] + [Shift] + RightMouseButton&lt;/green&gt; on UI widgets to reset their option to default.</string>
   <string name="LoadingTip 24">&lt;green&gt;[CTRL] + MouseScrollWheel&lt;/green&gt; on sliders and spinners to scroll values up and down. Add &lt;green&gt;[Shift]&lt;/green&gt; to scroll faster.</string>
-  
 <layout_stack
 follows="left|right|top|bottom"
 height="768"
@@ -154,6 +153,7 @@ width="1024">
     follows="left|top"
     height="22"
     layout="topleft"
+    enabled="false"
     left="1"
     name="cancel_btn"
     top="108"
