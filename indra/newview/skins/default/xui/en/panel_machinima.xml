@@ -914,9 +914,9 @@ width="345">
                   left="10"
                   max_val="20"
                   min_val="0"
-                  name="BlurDistance"
+                  name="RenderWindlightInterpolateTime"
                   top_pad="3"
-                  width="282" />
+                  width="310" />
                   <panel
                   follows="left|top|right"
                   height="20"
@@ -958,7 +958,7 @@ width="345">
                   min_val="0"
                   name="BlurSize"
                   top_pad="15"
-                  width="284"/>
+                  width="310"/>
                   <slider
       invisibility_control="RenderShadowAutomaticDistance"
       enabled_control="RenderDeferred"
@@ -976,7 +976,7 @@ width="345">
       min_val="1"
       name="RenderShadowDistance_X"
       top_pad="1"
-      width="287">
+      width="310">
   <slider.commit_callback
       function="Dragon.ArrayX"
       parameter="RenderShadowDistance"/>
@@ -1001,7 +1001,7 @@ width="345">
       min_val="8"
       name="RenderShadowFarClip"
       top_delta="0"
-      width="287"/>
+      width="310"/>
  <slider
       enabled_control="RenderDeferred"
       decimal_digits="0"
@@ -1018,7 +1018,7 @@ width="345">
       min_val="1"
       name="RenderShadowDistance_Y"
       top_pad="1"
-      width="287">
+      width="310">
   <slider.commit_callback
       function="Dragon.ArrayY"
       parameter="RenderShadowDistance"/>
@@ -1039,7 +1039,7 @@ width="345">
       min_val="1"
       name="RenderShadowDistance_Z"
       top_pad="1"
-      width="287">
+      width="310">
   <slider.commit_callback
       function="Dragon.ArrayZ"
       parameter="RenderShadowDistance"/>
@@ -1060,7 +1060,7 @@ width="345">
       min_val="1"
       name="RenderShadowDistance_W"
       top_pad="1"
-      width="287">
+      width="310">
   <slider.commit_callback
       function="Dragon.ArrayW"
       parameter="RenderShadowDistance"/>
@@ -1082,7 +1082,7 @@ width="345">
                   min_val="256"
                   name="RenderShadowResolution_X"
                   top_pad="7"
-                  width="293">
+                  width="310">
                   <slider.commit_callback
                   function="Dragon.ArrayX"
                   parameter="RenderShadowResolution"/>
@@ -1103,7 +1103,7 @@ width="345">
                   min_val="256"
                   name="RenderShadowResolution_Y"
                   top_pad="1"
-                  width="293">
+                  width="310">
                   <slider.commit_callback
                   function="Dragon.ArrayY"
                   parameter="RenderShadowResolution"/>
@@ -1124,7 +1124,7 @@ width="345">
                   min_val="256"
                   name="RenderShadowResolution_Z"
                   top_pad="1"
-                  width="293">
+                  width="310">
                   <slider.commit_callback
                   function="Dragon.ArrayZ"
                   parameter="RenderShadowResolution"/>
@@ -1145,7 +1145,7 @@ width="345">
                   min_val="256"
                   name="RenderShadowResolution_W"
                   top_pad="1"
-                  width="293">
+                  width="310">
                   <slider.commit_callback
                   function="Dragon.ArrayW"
                   parameter="RenderShadowResolution"/>
@@ -1167,7 +1167,7 @@ width="345">
                   min_val="256"
                   name="RenderProjectorShadowResolution_X"
                   top_pad="7"
-                  width="293">
+                  width="310">
                   <slider.commit_callback
                   function="Dragon.ArrayX"
                   parameter="RenderProjectorShadowResolution"/>
@@ -1188,7 +1188,7 @@ width="345">
                   min_val="256"
                   name="RenderProjectorShadowResolution_Y"
                   top_pad="1"
-                  width="293">
+                  width="310">
                   <slider.commit_callback
                   function="Dragon.ArrayY"
                   parameter="RenderProjectorShadowResolution"/>
@@ -1235,7 +1235,7 @@ width="345">
                   min_val="0"
                   name="SSAOBlurSize"
                   top_pad="15"
-                  width="296"/>
+                  width="310"/>
                   <slider
                   control_name="RenderSSAOEffect"
                   enabled_control="RenderDeferredSSAO"
@@ -1253,7 +1253,7 @@ width="345">
                   min_val="-10"
                   name="SSAOEffect"
                   top_pad="1"
-                  width="300" />
+                  width="310" />
                   <slider
                   control_name="RenderSSAOScale"
                   enabled_control="RenderDeferredSSAO"
@@ -1271,7 +1271,7 @@ width="345">
                   min_val="0"
                   name="SSAOScale"
                   top_pad="1"
-                  width="293" />
+                  width="310" />
                   <slider
                   control_name="RenderSSAOMaxScale"
                   enabled_control="RenderDeferredSSAO"
@@ -1289,7 +1289,7 @@ width="345">
                   min_val="0"
                   name="SSAOMaxScale"
                   top_pad="1"
-                  width="293" />
+                  width="310" />
                   <slider
                   control_name="RenderSSAOFactor"
                   enabled_control="RenderDeferredSSAO"
@@ -1307,7 +1307,7 @@ width="345">
                   min_val="0"
                   name="SSAOFactor"
                   top_pad="1"
-                  width="302" />
+                  width="310" />
                   <panel
                   follows="left|top|right"
                   height="20"
@@ -1349,7 +1349,7 @@ width="345">
                   name="CameraFOV"
                   tool_tip="Vertical camera field of view for Depth of Field effect (in degrees)"
                   top_pad="15"
-                  width="287" />
+                  width="310" />
                   <slider
                   control_name="CameraFNumber"
                   enabled_control="RenderDepthOfField"
@@ -1368,7 +1368,7 @@ width="345">
                   name="CameraFNum"
                   tool_tip="Camera f-number value for Depth of Field effect"
                   top_pad="1"
-                  width="296" />
+                  width="310" />
                   <slider
                   control_name="CameraFocalLength"
                   enabled_control="RenderDepthOfField"
@@ -1387,7 +1387,7 @@ width="345">
                   name="CameraFocal"
                   tool_tip="Camera focal length for Depth of Field effect (in millimeters)"
                   top_pad="1"
-                  width="287" />
+                  width="310" />
                   <slider
                   control_name="CameraMaxCoF"
                   enabled_control="RenderDepthOfField"
@@ -1406,7 +1406,7 @@ width="345">
                   name="CameraCoF"
                   tool_tip="Set the Camera circle of confusion"
                   top_pad="1"
-                  width="296" />
+                  width="310" />
                   <slider
                   enabled_control="RenderDepthOfField"
                   control_name="CameraFocusTransitionTime"
@@ -1425,7 +1425,7 @@ width="345">
                   name="CameraFocusTrans"
                   tool_tip="Time taken to alter focus from one place to the next"
                   top_pad="1"
-                  width="296" />
+                  width="310" />
                   <slider
                   control_name="CameraDoFResScale"
                   enabled_control="RenderDepthOfField"
@@ -1444,7 +1444,7 @@ width="345">
                   name="CameraDoFRes"
                   tool_tip="Set the Resolution (Quality) of each DoF pixel"
                   top_pad="1"
-                  width="290" />
+                  width="310" />
                   <panel
                   follows="left|top|right"
                   height="20"
@@ -1485,7 +1485,7 @@ width="345">
                   min_val="2"
                   name="RenderSSRResolution"
                   top_pad="15"
-                  width="281" />
+                  width="310" />
                   <slider
                   control_name="RenderSSRBrightness"
                   enabled_control="RenderScreenSpaceReflections"
@@ -1504,7 +1504,7 @@ width="345">
                   min_val="0.0"
                   name="RenderSSRBrightness"
                   top_pad="1"
-                  width="290" />
+                  width="310" />
                   <panel
                   follows="left|top|right"
                   height="20"
@@ -1546,7 +1546,7 @@ width="345">
                   min_val="10"
                   name="MotionBlurQuality"
                   top_pad="15"
-                  width="287" />
+                  width="310" />
                   <slider
                   control_name="RenderPostGreyscaleStrength"
                   enabled_control="RenderDeferred"
@@ -1565,7 +1565,7 @@ width="345">
                   min_val="0"
                   name="GreyscaleStrength"
                   top_pad="7"
-                  width="290" />
+                  width="310" />
                   <slider
                   control_name="RenderPostSepiaStrength"
                   enabled_control="RenderDeferred"
@@ -1584,7 +1584,7 @@ width="345">
                   min_val="0"
                   name="SepiaStrength"
                   top_pad="1"
-                  width="290" />
+                  width="310" />
                   <slider
                   control_name="RenderPostPosterizationSamples"
                   enabled_control="RenderDeferred"
@@ -1603,7 +1603,7 @@ width="345">
                   min_val="1"
                   name="PosterizationSamples"
                   top_pad="1"
-                  width="287" />
+                  width="310" />
                   <slider
                   control_name="RenderChromaStrength"
                   enabled_control="RenderDeferred"
@@ -1622,7 +1622,7 @@ width="345">
                   min_val="0"
                   name="ChromaStrength"
                   top_pad="1"
-                  width="290" />
+                  width="310" />
                   <slider
                   control_name="RenderGodraysResolution"
                   enabled_control="RenderDeferred"
@@ -1641,7 +1641,7 @@ width="345">
                   min_val="16"
                   name="GodrayResolution"
                   top_pad="7"
-                  width="287" />
+                  width="310" />
                   <slider
                   control_name="RenderGodraysMultiplier"
                   enabled_control="RenderDeferred"
@@ -1660,7 +1660,7 @@ width="345">
                   min_val="0.01"
                   name="GodrayMultiplier"
                   top_pad="1"
-                  width="296" />
+                  width="310" />
                   <slider
                   control_name="RenderGodraysFalloffMultiplier"
                   enabled_control="RenderDeferred"
@@ -1679,7 +1679,7 @@ width="345">
                   min_val="0.1"
                   name="GodrayFalloffMultiplier"
                   top_pad="1"
-                  width="296" />
+                  width="310" />
                   
                   <slider
                   enabled_control="RenderDeferred"
@@ -1698,7 +1698,7 @@ width="345">
                   min_val="0"
                   name="ExodusRenderVignette_X"
                   top_pad="7"
-                  width="290" >
+                  width="310" >
                   <slider.commit_callback
                   function="Dragon.ArrayX"
                   parameter="ExodusRenderVignette"/>
@@ -1720,7 +1720,7 @@ width="345">
                   min_val="0"
                   name="ExodusRenderVignette_Y"
                   top_pad="1"
-                  width="290" >
+                  width="310" >
                   <slider.commit_callback
                   function="Dragon.ArrayY"
                   parameter="ExodusRenderVignette"/>
@@ -1742,7 +1742,7 @@ width="345">
                   min_val="0"
                   name="ExodusRenderVignette_Z"
                   top_pad="1"
-                  width="290" >
+                  width="310" >
                   <slider.commit_callback
                   function="Dragon.ArrayZ"
                   parameter="ExodusRenderVignette"/>
@@ -1788,7 +1788,7 @@ width="345">
                   mouse_opaque="true"
                   name="RenderGlobalLightStrength"
                   show_text="true"
-                  width="297" />
+                  width="310" />
                   <slider  
                   control_name="RenderGlowIterations"
                   visiblity_control="RenderGlow"
@@ -1808,7 +1808,7 @@ width="345">
                   mouse_opaque="true"
                   name="Iterations"
                   show_text="true"
-                  width="282" />
+                  width="310" />
                   <slider  
                   control_name="RenderGlowStrength"
                   visiblity_control="RenderGlow"
@@ -1828,7 +1828,7 @@ width="345">
                   name="Strength"
                   show_text="true"
                   top_pad="1"
-                  width="297" />
+                  width="310" />
                   <slider  
                   control_name="RenderGlowMinLuminance"
                   visiblity_control="RenderGlow"
@@ -1848,7 +1848,7 @@ width="345">
                   mouse_opaque="true"
                   name="MinLuminance"
                   show_text="true"
-                  width="285" />
+                  width="310" />
                   <slider  
                   control_name="RenderGlowWarmthAmount"
                   visiblity_control="RenderGlow"
@@ -1868,7 +1868,7 @@ width="345">
                   mouse_opaque="true"
                   name="Warmth"
                   show_text="true"
-                  width="291" />
+                  width="310" />
                   <slider  
                   control_name="RenderGlowWidth"
                   visiblity_control="RenderGlow"
@@ -1888,7 +1888,7 @@ width="345">
                   mouse_opaque="true"
                   name="Width"
                   show_text="true"
-                  width="291" />
+                  width="310" />
                   <slider  
                   control_name="RenderGlowMaxExtractAlpha"
                   visiblity_control="RenderGlow"
@@ -1908,7 +1908,7 @@ width="345">
                   mouse_opaque="true"
                   name="MaxAlpha"
                   show_text="true"
-                  width="297" />
+                  width="310" />
                   <panel
                   follows="left|top|right"
                   height="20"
@@ -1949,7 +1949,7 @@ width="345">
                   top_pad="15"
                   name="CameraAngle"
                   show_text="true"
-                  width="297" />
+                  width="310" />
             </panel>
       </scroll_container>
 </panel>
