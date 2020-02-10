@@ -4265,8 +4265,8 @@ and report the problem.
   <string name="no_limit">No Limit</string>
   
   <!-- Black Dragon specific -->
-	<string name="VIEWER_VERSION_LOCAL">3.6.9</string>
-	<string name="VIEWER_VERSION_IDENTIFIER">Manipulating Dragon</string>
+	<string name="VIEWER_VERSION_LOCAL">3.7.0</string>
+	<string name="VIEWER_VERSION_IDENTIFIER">Improving Dragon</string>
 	
   <string name="UnmuteText">Show Text</string>
   <string name="MuteText">Block Text</string>

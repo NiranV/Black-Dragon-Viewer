@@ -174,8 +174,118 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="234"
+     height="923"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Lakaluka Luka as Patreon Patron.
+Added: PolygonBird as Patreon Patron.
+Added: Swan Princess as Patreon Patron.
+Added: Option to switch Conversation tab side.
+Added: IM tab side switch option to Preferences - Chat.
+Added: Option to toggle closeup blur in Depth of Field.
+Added: Patreon, Youtube, Blogspot and Discord link buttons to the login screen.
+Added: FMOD Logo to the login screen.
+Added: Synced keybindings with Lindens default controls, added all missing ones that made sense, kept those out that didn't.
+Added: Missing pan controls for sitting controls to select key dialog.
+Added: Ability to toggle close blur in low quality Depth of Field.
+Added: Ability to "mark" or highlight permanently list entries seperately from temporary highlighting them.
+Added: Rachel Quinn as Patreon Patron.
+Added: Ability to load rotations, positions, scales or any of the combinations of these seperately in the Poser.
+Added: Right click menu to the pose list to select whether we want to load rotations, positions, scales or any combination of these.
+Added: Right click menu to the load button to select whether we want to load rotations, positions, scales or any combination of these.
+Added: Ability to pan the camera around while using the click-and-hold right mouse camera steering by holding the panning modifier keys (Shift + Ctrl).
+Added: Mark duplicate keybindings as well as keybinds that feature the same keys for multiple actions.
+Added: Warning in Keybindings tab informing the user about existing duplicate keybinds.
+Added: New keybind function "Reset Roll" to reset any rolling that has been done without having to reset the camera.
+Added: "Reset Roll" keybind, default is Ctrl + Shift + Q or E.
+Added: Missing account manager button to Preferences - Viewer.
+Added: Patreon, Discord, Blogger, Youtube and Fmod textures.
+Added: Eva SpoiledBrat-opoulos as Patreon Patron.
+Changed: Improved texture console display and memory consumption visualization.
+Changed: Potentially fixed rough viewer memory usage display for AMD cards.
+Changed: Made some improvements to automatic memory handling, use max VRAM minus 256mb instead of 90% of max.
+Changed: Make Start Posing button flash to show the user that it needs to be pressed before you can pose.
+Changed: Disabled several more controls in Poser and changed the look of dropdowns to match the rest of the UI.
+Changed: Improved Conversations window layout slightly.
+Changed: Display the name of your IM partner as title when selecting any IM conversation.
+Changed: Improved folder view selection rectangle and remove it from active selections, keep it for hovering.
+Changed: Default IM tab side switch option to off to retain current behavior.
+Changed: Moved Screen Space Reflection warning to the SSR checkbox and made it dependent on toggling SSR.
+Changed: Improved warning triggers, do not trigger the memory warning when we use automatic memory management.
+Changed: Bring back original login screen video pre-Halloween.
+Changed: Use Shift to scroll through values with 10 times less increment instead of 10 times more, allows scrolling with higher precision.
+Changed: "Standart" to "Standard" in german UI, "Standart"
+Changed: Default behavior of pose loading to rotations and positions. Scales are no longer automatically loaded, this allows using poses with different scales to be used across different avatars.
+Changed: Improved marking ability for scrolllist items and color, blend between selected and marked color when both are true.
+Changed: Don't trigger the keybind delete function when we don't have anything selected, prevents the list from refreshing and jumping back to the top.
+Changed: Make all sliders have a default width, label width and text width so they follow an uniform shape unless defined otherwise.
+Changed: Cloud Noise dropdown to use the new dropdown textures.
+Changed: Added 5 pixel padding from the left to name editors in Sky/Water/Daycycle editors to make the text look nice and less clipping.
+Changed: Login username dropdown to use the new dropdown textures.
+Changed: Decreased text width for Tools - Texture sliders.
+Changed: Overhauled forget user window.
+Changed: Make all Machinima Sidebar sliders have the same length.
+Changed: Disable "Quit" button while we progress from login to progress screen to prevent spurious double clicks immediately killing the Viewer.
+Changed: Version to 3.7.0 - Improving Dragon.
+Fixed: Graphic presets with spaces or special characters cannot be loaded.
+Fixed: High Quality Depth of Field appearing smudgy and not blurring properly.
+Fixed: Several sliders in "Display" not having a consistent space between each slider in comparison to the rest of the Display tab.
+Fixed: Rects and Vector4's in the Debug Settings window not showing 4 spinner controls like they should.
+Fixed: Keybinds list not scaling when the keybinds warning is not shown.
+Fixed: Compile after merge.
+Fixed: Poser bone list size inconsistency.
+Fixed: Wrong widget type warning spam.
+Fixed: Lineendings in llkeyboard.cpp.
+Removed: Double main menu entry for 'Region Objects'.
+Misc: Corrected IM tab side switch debug description.
+Misc: Hid all warnings by default so they don't appear for a second when opening preferences.
+Misc: Commited missing changes.
+Misc: Code commenting.
+Misc: Simplified the loading function a bit.
+Misc: Replace LLKeyboard:: with gKeyboard.
+Misc: Rearranged all new controls in controls.xml so movement and camera controls are once again grouped together properly.
+Misc: Cleaned up sunLightSSAOF.glsl shader a bit, removed unnecessary code.
+Misc: Added logging for when loading a graphic preset fails or doesn't load one or multiple debug settings.
+Misc: Removed unnecessary commented code.
+Merge with Linden Release
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.6.9
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="234"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
