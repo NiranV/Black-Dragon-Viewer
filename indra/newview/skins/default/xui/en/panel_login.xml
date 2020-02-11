@@ -3386,13 +3386,23 @@ Removed: Rotation order dropdown and all code.
     top_pad="3"
     width="152" />
     <check_box
-    control_name="RememberPassword"
+    control_name="RememberUser"
     follows="left|top"
     font="SansSerifSmall"
     height="18"
     left_pad="0"
-    label="remember"
-    top_delta="2"
+    label="remember user"
+    top_delta="-25"
+    name="remember_name"
+    width="200"/>
+    <check_box
+    control_name="RememberPassword"
+    follows="left|top"
+    font="SansSerifSmall"
+    height="18"
+    left_delta="0"
+    label="remember password"
+    top_pad="6"
     name="remember_check"
     width="200"/>
     <combo_box
@@ -3401,7 +3411,7 @@ Removed: Rotation order dropdown and all code.
     follows="left|top"
     height="23"
     max_chars="128"
-    top_pad="5"
+    top_pad="8"
     left="113"
     name="start_location_combo"
     width="160">

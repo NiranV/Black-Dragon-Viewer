@@ -32,6 +32,11 @@
 #include "llmediactrl.h"	// LLMediaCtrlObserver
 #include <boost/scoped_ptr.hpp>
 
+#include "llcombobox.h"
+#include "llbutton.h"
+#include "lllineeditor.h"
+#include "llcheckboxctrl.h"
+
 class LLLineEditor;
 class LLUIImage;
 class LLPanelLoginListener;
@@ -52,13 +57,6 @@ public:
 	//BD
 	virtual BOOL handleKeyHere(KEY key, MASK mask);
 	virtual void draw();
-
-	virtual void setFocus( BOOL b );
-
-	//BD - TODO: Look at this.
-	// Show the XUI first name, last name, and password widgets.  They are
-	// hidden on startup for reg-in-client
-	static void showLoginWidgets();
 
 	static void show(const LLRect &rect,
 		void (*callback)(S32 option, void* user_data), 
@@ -95,21 +93,21 @@ private:
 	void onSelectServer();
 	void onLocationSLURL();
 
-	static void setFields(LLPointer<LLCredential> credential);
+	void setFields(LLPointer<LLCredential> credential);
 
-	static void onClickConnect(void*);
-	static void onClickNewAccount(void*);
-	static void onClickVersion(void*);
-	static void onClickForgotPassword(void*);
-	static void onClickSignUp(void*);
-	static void onUserNameTextEnty(void*);
-	static void onUserListCommit(void*);
-	static void onRememberUserCheck(void*);
-	static void onPassKey(LLLineEditor* caller, void* user_data);
-	static void updateServerCombo();
+	void onClickConnect();
+	void onClickNewAccount();
+	void onClickVersion();
+	void onClickForgotPassword();
+	void onClickSignUp();
+	void onUserNameTextEnty();
+	void onUserListCommit();
+	void onRememberUserCheck();
+	void onPassKey();
+	void updateServerCombo();
 
 	//BD
-	static void onClickQuit(void*);
+	void onClickQuit();
 
 private:
 	boost::scoped_ptr<LLPanelLoginListener> mListener;
@@ -127,9 +125,14 @@ private:
     
     static BOOL sCredentialSet;
 
-	unsigned int mUsernameLength;
-	unsigned int mPasswordLength;
-	unsigned int mLocationLength;
+	LLComboBox*		mUsernameCombo;
+	LLLineEditor*	mPasswordEdit;
+	LLComboBox*		mFavoritesCombo;
+	LLComboBox*		mGridCombo;
+
+	LLButton*		mLoginBtn;
+	LLCheckBoxCtrl*	mRememberMeCheck;
+	LLCheckBoxCtrl*	mRememberPassCheck;
 };
 
 #endif
