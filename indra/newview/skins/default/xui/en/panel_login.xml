@@ -3315,6 +3315,7 @@ Removed: Rotation order dropdown and all code.
     top_delta="0"
     left_pad="1"
     name="server_combo"
+    list_position="above"
     width="157"
     visible="true">
     <combo_box.combo_editor
@@ -3334,7 +3335,7 @@ Removed: Rotation order dropdown and all code.
     image_selected="Toolbar_Middle_Dropdown_Selected"
     image_disabled="Toolbar_Middle_Dropdown_Off" />
     <combo_box.combo_list
-    bg_writeable_color="White_02"
+    bg_writeable_color="Black_75"
     background_visible="true"/>
     </combo_box>
     <combo_box
