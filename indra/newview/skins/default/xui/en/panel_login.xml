@@ -3386,10 +3386,10 @@ Removed: Rotation order dropdown and all code.
     </combo_box>
     <combo_box
     allow_text_entry="true"
-    commit_on_focus_lost="false"
     follows="left|top"
     height="22"
     label="Username"
+    max_chars="128"
     left="113"
     tool_tip="The username you chose when you registered, like bobsmith12 or Steller Sunshine"
     top_pad="12"
