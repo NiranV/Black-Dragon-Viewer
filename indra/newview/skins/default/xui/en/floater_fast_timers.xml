@@ -72,9 +72,7 @@
         follows="top|right|bottom"
         name="scroll_vert"
         orientation="vertical"
-        step_size="16"
-        doc_size="3000"
-          />
+        step_size="16"/>
     </layout_panel>
     <layout_panel name="timers_panel"
                   auto_resize="true"
