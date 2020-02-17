@@ -240,6 +240,11 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 
 	reshape(rect.getWidth(), rect.getHeight());
 
+	//BD
+	mLoginBtn = getChild<LLButton>("connect_btn");
+	mLoginBtn->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
+	mLoginBtn->setFocus(true);
+
 	mFavoritesCombo = getChild<LLComboBox>("start_location_combo");
 	mFavoritesCombo->setReturnCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 	mFavoritesCombo->setFocusLostCallback(boost::bind(&LLPanelLogin::onLocationSLURL, this));
@@ -318,11 +323,6 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	{
 		onUpdateStartSLURL(start_slurl); // updates grid if needed
 	}
-
-	//BD
-	mLoginBtn = getChild<LLButton>("connect_btn");
-	mLoginBtn->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
-	mLoginBtn->setFocus(true);
 
 	//BD - Show last logged in user favorites in "Start at" combo.
 	addFavoritesToStartLocation();
