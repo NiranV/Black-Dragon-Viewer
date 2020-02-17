@@ -10827,7 +10827,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>200.0</real>
+    <real>0</real>
     <key>PresetType</key>
     <integer>1</integer>
   </map>
@@ -10851,7 +10851,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>256</real>
+    <real>0</real>
     <key>PresetType</key>
     <integer>1</integer>
   </map>
