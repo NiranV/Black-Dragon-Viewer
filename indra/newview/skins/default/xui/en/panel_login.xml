@@ -174,8 +174,67 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="94"
+     height="260"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: A Paden as Patreon Patron.
+Added: Akasha Sternberg as Patreon Patron.
+Added: Aquila Emberpaw as Patreon Patron.
+Added: Brantley Curry as Patreon Patron.
+Added: Caleb Bryant as Patreon Patron.
+Added: Chickadee Tremor as Patreon Patron.
+Added: D. Bessant as Patreon Patron.
+Added: L Akers as Patreon Patron.
+Added: Molly Footman as Patreon Patron.
+Added: Norbert Gerntrup as Patreon Patron.
+Added: Sarah Aikens as Patreon Patron.
+Added: Shyralei Nefekalum as Patreon Patron.
+Added: Virginia J Hughes as Patreon Patron.
+Changed: Reduced default master volume to 50%
+Changed: Reduced default media and music volume to 10% in an attempt to not immediately blow up someones ears when starting the Viewer.
+Changed: Disabled jellydolling based on object and avatar surface area, keep complexity however.
+Changed: Version to 3.7.2.
+Fixed: Users with more than 16 characters in their name not being able to type in their name into the username field.
+Fixed: Viewer crashing-locking on startup when user changed the starting location last run.
+Fixed: XUI warnings in floater_fast_timers.xml.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.7.1
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="94"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
