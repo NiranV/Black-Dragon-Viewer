@@ -2717,7 +2717,9 @@ void LLAppearanceMgr::updateAppearanceFromCOF(bool enforce_item_restrictions,
 		// attachments, even those that are not being removed. This is
 		// needed to get joint positions all slammed down to their
 		// pre-attachment states.
-		gAgentAvatarp->clearAttachmentOverrides();
+		//BD - Do NOT do this, we end up scrunching our avatar with deformers and BOM. Besides, we already do
+		//     it somewhere else.
+		//gAgentAvatarp->clearAttachmentOverrides();
 		// (End of LL code)
 
 		// Take off the attachments that will no longer be in the outfit.
@@ -2730,11 +2732,13 @@ void LLAppearanceMgr::updateAppearanceFromCOF(bool enforce_item_restrictions,
 
 		// (Start of LL code from LLWearableHoldingPattern::onAllComplete())
 		// Restore attachment pos overrides for the attachments that are remaining in the outfit.
-		for (LLAgentWearables::llvo_vec_t::iterator it = objects_to_retain.begin(); it != objects_to_retain.end(); ++it)
+		//BD - Do NOT do this, we end up scrunching our avatar with deformers and BOM. Besides, we already do
+		//     it somewhere else.
+		/*for (LLAgentWearables::llvo_vec_t::iterator it = objects_to_retain.begin(); it != objects_to_retain.end(); ++it)
 		{
 			LLViewerObject *objectp = *it;
 			gAgentAvatarp->addAttachmentOverridesForObject(objectp);
-		}
+		}*/
 
 		// Add new attachments to match those requested.
 		LL_DEBUGS("Avatar") << self_av_string() << "Adding " << items_to_add.size() << " attachments" << LL_ENDL;
