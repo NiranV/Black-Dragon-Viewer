@@ -217,20 +217,44 @@
       top="27"
      name="focus_radio_group">
         <radio_item
-         top_pad="5"
+         top_pad="6"
          label="Zoom"
          layout="topleft"
-         name="radio zoom" />
+         name="radio zoom">
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
-         top_pad="5"
+         top_pad="6"
          label="Orbit (Ctrl)"
          layout="topleft"
-         name="radio orbit" />
+         name="radio orbit" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
-         top_pad="5"
+         top_pad="6"
          label="Pan (Ctrl+Shift)"
          layout="topleft"
-         name="radio pan" />
+         name="radio pan" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
 		 <radio_group.commit_callback
 	     function="BuildTool.commitRadioFocus"/>
     </radio_group>
@@ -267,20 +291,44 @@
      layout="topleft"
      name="move_radio_group">
         <radio_item
-         top_pad="5"
+         top_pad="6"
          label="Move"
          layout="topleft"
-         name="radio move" />
+         name="radio move" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
-		 top_pad="5"
+		 top_pad="6"
          label="Lift (Ctrl)"
          layout="topleft"
-         name="radio lift" />
+         name="radio lift" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
-         top_pad="5"
+         top_pad="6"
          label="Spin (Ctrl+Shift)"
          layout="topleft"
-         name="radio spin" />
+         name="radio spin" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
 		 <radio_group.commit_callback
 			function="BuildTool.commitRadioMove"/>
 	</radio_group>
@@ -306,27 +354,67 @@
         <radio_item
 		 label="Move"
 		 layout="topleft"
-		 name="radio position" />
+		 name="radio position" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
-		 top_pad="5"
+		 top_pad="6"
          label="Rotate (Ctrl)"
          layout="topleft"
-         name="radio rotate" />
+         name="radio rotate" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
-		 top_pad="5"
+		 top_pad="6"
          label="Stretch (Ctrl+Shift)"
          layout="topleft"
-         name="radio stretch" />
+         name="radio stretch" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
-		 top_pad="5"
+		 top_pad="6"
          label="Select Face"
          layout="topleft"
-         name="radio select face" />
+         name="radio select face" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
 		<radio_item
-		 top_pad="5"
+		 top_pad="6"
          label="Align"
          layout="topleft"
-         name="radio align" />
+         name="radio align" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
 			<radio_group.commit_callback
 			function="BuildTool.commitRadioEdit"/>
     </radio_group>
@@ -761,7 +849,15 @@
          value="0"
          name="radio select land"
          top="-106"
-         width="134" />
+         width="134" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
          height="19"
          label="Flatten"
@@ -769,8 +865,16 @@
          left_delta="0"
          value="1"
          name="radio flatten"
-         top_delta="15"
-         width="114" />
+         top_delta="16"
+         width="114" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
          height="19"
          label="Raise"
@@ -778,8 +882,16 @@
          left_delta="0"
          value="2"
          name="radio raise"
-         top_delta="15"
-         width="114" />
+         top_delta="16"
+         width="114" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
          height="19"
          label="Lower"
@@ -787,8 +899,16 @@
          left_delta="0"
          value="3"
          name="radio lower"
-         top_delta="15"
-         width="114" />
+         top_delta="16"
+         width="114" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
          height="19"
          label="Smooth"
@@ -796,8 +916,16 @@
          left_delta="0"
          value="4"
          name="radio smooth"
-         top_delta="15"
-         width="114" />
+         top_delta="16"
+         width="114" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
          height="19"
          label="Roughen"
@@ -805,8 +933,16 @@
          left_delta="0"
          value="5"
          name="radio noise"
-         top_delta="15"
-         width="114" />
+         top_delta="16"
+         width="114" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
         <radio_item
          height="19"
          label="Revert"
@@ -814,8 +950,16 @@
          left_delta="0"
          value="6"
          name="radio revert"
-         top_delta="15"
-         width="114" />
+         top_delta="16"
+         width="114" >
+         <radio_item.check_button
+         image_unselected="Checkbox_Off"
+         image_selected="Checkbox_On"
+         image_disabled="Checkbox_Off_Disabled"
+         image_disabled_selected="Checkbox_On_Disabled"
+         image_pressed="Checkbox_Press"
+         image_pressed_selected="Checkbox_On_Press" />
+         </radio_item>
 		 <radio_group.commit_callback
 	     function="BuildTool.commitRadioLand"/>
     </radio_group>
