@@ -20,12 +20,12 @@
      border="false"
        background_visible="false"
      follows="all"
-     height="600"
+     height="680"
      left="10"
      layout="topleft"
      name="avatar_universal_color_panel"
      top="0"
-     width="303" >
+     width="293" >
       <texture_picker
        can_apply_immediately="true"
        default_image_name="Default"
