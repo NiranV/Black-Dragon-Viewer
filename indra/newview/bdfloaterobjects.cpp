@@ -85,10 +85,11 @@ void BDFloaterObjects::onObjectRefresh()
 	mObjectsScroll[1]->clearRows();
 	mObjectsScroll[2]->clearRows();
 
+
 	LLViewerObjectList::vobj_list_t objects = gObjectList.getAllObjects();
 	for (LLViewerObject* objectp : objects)
 	{
-		if (!objectp->isRootEdit())
+		if (!objectp->isRoot())
 			continue;
 
 		LLPointer<LLDrawable> drawable = objectp->mDrawable;
@@ -100,7 +101,6 @@ void BDFloaterObjects::onObjectRefresh()
 		//BD - Check if this object is an attachment.
 		if (attachment)
 		{
-			//row["columns"][0]["font"]["style"] = "BOLD";
 			//BD - Check if this attachment's owner is us.
 			LLVOAvatar* avatar = objectp->getAvatarAncestor();
 			if (avatar && avatar->isSelf())
@@ -121,14 +121,12 @@ void BDFloaterObjects::onObjectRefresh()
 		}
 
 		row["columns"][0]["column"] = "name";
-		row["columns"][0]["value"] = objectp->getID();
+		row["columns"][0]["value"] = objectp->mID;
 		row["columns"][0]["font"]["style"] = "BOLD";
 		row["columns"][1]["column"] = "distance";
 		row["columns"][1]["value"] = "???";
 		row["columns"][2]["column"] = "attachment";
 		row["columns"][2]["value"] = attachment ? "yes" : "no";
-		//row["columns"][3]["column"] = "parent";
-		//row["columns"][3]["value"] = objectp->getID();
 		mObjectsScroll[0]->addSeparator(ADD_BOTTOM);
 		mObjectsScroll[0]->addElement(row);
 
@@ -190,7 +188,7 @@ void BDFloaterObjects::onObjectRefresh()
 
 		for (LLViewerObject* link : objectp->getChildren())
 		{
-			if (link->isRootEdit())
+			if (link->isRoot())
 				continue;
 
 			LLPointer<LLDrawable> drawable = link->mDrawable;
@@ -279,17 +277,17 @@ void BDFloaterObjects::onObjectCommand(LLUICtrl* ctrl, const LLSD& param)
 	{
 		for (LLScrollListItem* element : mObjectsScroll[0]->getAllSelected())
 		{
-			LLViewerObject* objectp = gObjectList.findObject(element->getColumn(0)->getValue());
+			LLViewerObject* objectp = gObjectList.findObject(element->getColumn(0)->getValue().asUUID());
 			if (!objectp)
-				return;
+				continue;
 
 			LLPointer<LLDrawable> drawable = objectp->mDrawable;
 			if (!drawable)
-				return;
+				continue;
 
 			LLVOVolume* volobjp = (LLVOVolume*)objectp;
 			if (!volobjp)
-				return;
+				continue;
 
 			if (param.asString() == "fullbright")
 			{
@@ -319,17 +317,17 @@ void BDFloaterObjects::onLightCommand(LLUICtrl* ctrl, const LLSD& param)
 	{
 		for (LLScrollListItem* element : mObjectsScroll[1]->getAllSelected())
 		{
-			LLViewerObject* objectp = gObjectList.findObject(element->getColumn(0)->getValue());
+			LLViewerObject* objectp = gObjectList.findObject(element->getColumn(0)->getValue().asUUID());
 			if (!objectp)
-				return;
+				continue;
 
 			LLPointer<LLDrawable> drawable = objectp->mDrawable;
 			if (!drawable)
-				return;
+				continue;
 
 			LLVOVolume* volobjp = (LLVOVolume*)objectp;
 			if (!volobjp)
-				return;
+				continue;
 
 			if (param.asString() == "toggle_light")
 			{
@@ -362,17 +360,17 @@ void BDFloaterObjects::onAlphaCommand(LLUICtrl* ctrl, const LLSD& param)
 	{
 		for (LLScrollListItem* element : mObjectsScroll[2]->getAllSelected())
 		{
-			LLViewerObject* objectp = gObjectList.findObject(element->getColumn(0)->getValue());
+			LLViewerObject* objectp = gObjectList.findObject(element->getColumn(0)->getValue().asUUID());
 			if (!objectp)
-				return;
+				continue;
 
 			LLPointer<LLDrawable> drawable = objectp->mDrawable;
 			if (!drawable)
-				return;
+				continue;
 
 			LLVOVolume* volobjp = (LLVOVolume*)objectp;
 			if (!volobjp)
-				return;
+				continue;
 
 			if (param.asString() == "dealpha")
 			{
