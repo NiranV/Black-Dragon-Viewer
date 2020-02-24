@@ -69,6 +69,18 @@
         [OBJ_COUNT] objects selected, land impact [LAND_IMPACT]
     </floater.string>
     <floater.string
+     name="status_selectlinkcount">
+        [OBJ_COUNT] links selected, land impact [LAND_IMPACT]
+    </floater.string>
+    <floater.string
+     name="status_selectlink">
+        , link [LINK_IDX]
+    </floater.string>
+    <floater.string
+     name="status_selectface">
+        , face [FACE_IDX]
+    </floater.string>
+    <floater.string
      name="status_remaining_capacity">
         Remaining capacity [LAND_CAPACITY].
     </floater.string>

@@ -519,9 +519,57 @@ void LLFloaterTools::refresh()
 	else
 #endif
 	{
+		//BD - Selected Face / Link index.
+		bool is_link_select = mCheckSelectIndividual->getValue().asBoolean();
+
 		//LLObjectSelectionHandle selection = select_mgr->getSelection();
 		F32 link_cost = mObjectSelection->getSelectedLinksetCost();
 		S32 link_count = mObjectSelection->getRootObjectCount();
+
+		//BD - Selected Face / Link index.
+		S32 link_index = -1;
+		S32 face_index = -1;
+		bool is_face_select = LLToolMgr::getInstance()->getCurrentToolset()->getSelectedTool() == LLToolFace::getInstance();
+		if (is_link_select || is_face_select)
+		{
+			link_count = mObjectSelection->getObjectCount();
+
+			LLViewerObject* selected_object = mObjectSelection->getFirstObject();
+			if (selected_object)
+			{
+				if (selected_object && selected_object->getRootEdit())
+				{
+					LLViewerObject::child_list_t children = selected_object->getRootEdit()->getChildren();
+					children.push_front(selected_object->getRootEdit());	// need root in the list too
+
+					S32 i = 0;
+					bool selected = false;
+					for (LLViewerObject::child_list_t::iterator iter = children.begin(); iter != children.end(); ++iter)
+					{
+						if ((*iter)->isSelected())
+						{
+							link_index = selected ? -2 : i;
+							selected = true;
+						}
+						++i;
+					}
+				}
+
+				if (is_face_select)
+				{
+					bool selected = false;
+					for (S32 i = 0; i < selected_object->getNumTEs(); i++)
+					{
+						LLTextureEntry* te = selected_object->getTE(i);
+						if (te && te->isSelected())
+						{
+							face_index = selected ? -2 : i;
+							selected = true;
+						}
+					}
+				}
+			}
+		}
 
 		LLCrossParcelFunctor func;
 		if (mObjectSelection->applyToRootObjects(&func, true))
@@ -549,9 +597,20 @@ void LLFloaterTools::refresh()
 		selection_args["OBJ_COUNT"] = llformat("%.1d", link_count);
 		selection_args["LAND_IMPACT"] = llformat("%.1d", (S32)link_cost);
 
+		//BD - Selected Face / Link index.
+		selection_args["FACE_IDX"] = llformat("%.1d", face_index);
+		selection_args["LINK_IDX"] = llformat("%.1d", link_index);
+
 		std::ostringstream selection_info;
 
-		selection_info << getString("status_selectcount", selection_args);
+		selection_info << getString(is_link_select ? "status_selectlinkcount" : "status_selectcount", selection_args);
+
+		//BD - Selected Face / Link index.
+		if (link_index >= 0)
+			selection_info << getString("status_selectlink", selection_args);
+
+		if (face_index >= 0)
+			selection_info << getString("status_selectface", selection_args);
 
 		mSelectionCount->setText(selection_info.str());
 
