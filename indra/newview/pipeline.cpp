@@ -6366,21 +6366,25 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 				continue;
 			}
 			//BD
-			if (volight && volight->isAttachment())
+			if (volight->isAttachment())
 			{
-				if ((!sRenderOtherAttachedLights && (volight->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
-					|| (!sRenderOwnAttachedLights && (volight->getAvatarAncestor() == gAgentAvatarp->getAvatar())))
+				//BD
+				LLVOAvatar* avatar = volight->getAvatarAncestor();
+				if ((!sRenderOtherAttachedLights && (avatar != gAgentAvatarp))
+					|| (!sRenderOwnAttachedLights && (avatar == gAgentAvatarp)))
 				{
 					drawable->clearState(LLDrawable::NEARBY_LIGHT);
 					continue;
 				}
 			}
 			//BD - Attached lights only option.
-			if (volight && !volight->isAttachment()
-				&& !sRenderDeferredLights)
+			else
 			{
-				drawable->clearState(LLDrawable::NEARBY_LIGHT);
-				continue;
+				if (!sRenderDeferredLights)
+				{
+					drawable->clearState(LLDrawable::NEARBY_LIGHT);
+					continue;
+				}
 			}
 
 			F32 dist = calc_light_dist(volight, cam_pos, max_dist);
@@ -6409,20 +6413,23 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 				continue;
 			}
 			//BD
-			if (light && light->isAttachment())
+			if(light->isAttachment())
 			{
-				if (light->getAvatarAncestor()
-					&& (!sRenderOtherAttachedLights && (light->getAvatarAncestor() != gAgentAvatarp->getAvatar()))
-					|| (!sRenderOwnAttachedLights && (light->getAvatarAncestor() == gAgentAvatarp->getAvatar())))
+				//BD
+				LLVOAvatar* avatar = light->getAvatarAncestor();
+				if ((!sRenderOtherAttachedLights && (avatar != gAgentAvatarp))
+					|| (!sRenderOwnAttachedLights && (avatar == gAgentAvatarp)))
 				{
 					continue;
 				}
 			}
 			//BD - Attached lights only option.
-			if (light && !light->isAttachment()
-				&& !sRenderDeferredLights)
+			else
 			{
-				continue;
+				if (!sRenderDeferredLights)
+				{
+					continue;
+				}
 			}
 			new_nearby_lights.insert(Light(drawable, dist, 0.f));
 			if (new_nearby_lights.size() > (U32)MAX_LOCAL_LIGHTS)
@@ -9119,10 +9126,9 @@ void LLPipeline::renderDeferredLighting()
 					if (volume->isAttachment())
 					{
 						//BD
-						if ((!sRenderOtherAttachedLights
-							&& (volume->getAvatarAncestor() != gAgentAvatarp))
-							|| (!sRenderOwnAttachedLights
-							&& (volume->getAvatarAncestor() == gAgentAvatarp)))
+						LLVOAvatar* avatar = volume->getAvatarAncestor();
+						if ((!sRenderOtherAttachedLights && (avatar != gAgentAvatarp))
+							|| (!sRenderOwnAttachedLights && (avatar == gAgentAvatarp)))
 						{
 							continue;
 						}
@@ -9699,10 +9705,9 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 					if (volume->isAttachment())
 					{
 						//BD
-						if ((!sRenderOtherAttachedLights
-							&& (volume->getAvatarAncestor() != gAgentAvatarp))
-							|| (!sRenderOwnAttachedLights
-							&& (volume->getAvatarAncestor() == gAgentAvatarp)))
+						LLVOAvatar* avatar = volume->getAvatarAncestor();
+						if ((!sRenderOtherAttachedLights && (avatar != gAgentAvatarp))
+							|| (!sRenderOwnAttachedLights && (avatar == gAgentAvatarp)))
 						{
 							continue;
 						}
