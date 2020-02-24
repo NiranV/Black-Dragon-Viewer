@@ -3286,6 +3286,44 @@ Removed: Rotation order dropdown and all code.
  </layout_stack>
  
  <panel
+ follows="top|right"
+ height="42"
+ background_visible="true"
+ bg_alpha_color="0.0 0.0 0.0 0.55"
+ layout="topleft"
+ left="663"
+ name="patreon_supports"
+ top="32"
+ width="307">
+  <text
+    follows="left|top|right"
+    font="SansSerifBig"
+    font_shadow="soft"
+    font.style="BOLD"
+    halign="left"
+    height="20"
+    top="4"
+    left="7"
+    name="app_name_text"
+    width="300"
+    word_wrap="true">
+    Patreon Supporting Shops:
+    </text>
+  <text
+    follows="left|top|right"
+    font_shadow="soft"
+    halign="left"
+    height="200"
+    top_pad="0"
+    left="7"
+    name="app_name_text"
+    width="300"
+    word_wrap="true">
+    Crazy Kobold Creations - [https://marketplace.secondlife.com/stores/38282 Marketplace] - [https://maps.secondlife.com/secondlife/Montecito%20Bay/55/171/723 Inworld Store]
+    </text>
+ </panel>
+ 
+ <panel
  follows="right|left|bottom"
  height="150"
  layout="topleft"
