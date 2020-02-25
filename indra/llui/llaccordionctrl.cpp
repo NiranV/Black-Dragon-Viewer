@@ -94,7 +94,7 @@ void LLAccordionCtrl::draw()
 	// clear this flag to be set on next call to autoScroll
 	mAutoScrolling = false;
 
-	LLRect local_rect(0, getRect().getHeight(), getRect().getWidth(), 0);
+	LLRect local_rect(0, getRect().getHeight() - 4, getRect().getWidth(), 0);
 	
 	LLLocalClipRect clip(local_rect);
 	

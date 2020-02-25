@@ -526,9 +526,9 @@ void LLScrollContainer::draw()
 				calcVisibleSize( &visible_width, &visible_height, &show_h_scrollbar, &show_v_scrollbar );
 
 				LLLocalClipRect clip(LLRect(mInnerRect.mLeft, 
-						mInnerRect.mBottom + (show_h_scrollbar ? scrollbar_size : 0) + visible_height,
+						mInnerRect.mBottom + (show_h_scrollbar ? scrollbar_size : 0) + visible_height - 2,
 						mInnerRect.mRight - (show_v_scrollbar ? scrollbar_size: 0),
-						mInnerRect.mBottom + (show_h_scrollbar ? scrollbar_size : 0)
+						mInnerRect.mBottom + (show_h_scrollbar ? scrollbar_size : 0) + 1
 						));
 				drawChild(mScrolledView);
 			}
