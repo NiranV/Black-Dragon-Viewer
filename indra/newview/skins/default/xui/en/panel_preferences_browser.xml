@@ -201,7 +201,7 @@ width="510">
    name="MediaBrowserWindowLimit"/>
   <button
  follows="left|top"
- control_name="CacheSize"
+ control_name="MediaBrowserWindowLimit"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
