@@ -3360,14 +3360,15 @@ void LLVOVolume::updateSpotLightPriority()
 
 	pos += at * r;
 
-	at = LLViewerCamera::getInstance()->getAtAxis();
+	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
+	at = viewer_cam->getAtAxis();
 
 	pos -= at * r;
 	
 	//BD
 	if (mDrawable->hasShadow())
 	{
-		mSpotLightPriority = gPipeline.calcPixelArea(pos, LLVector3(r, r, r), *LLViewerCamera::getInstance());
+		mSpotLightPriority = gPipeline.calcPixelArea(pos, LLVector3(r, r, r), *viewer_cam);
 	}
 	else
 	{
