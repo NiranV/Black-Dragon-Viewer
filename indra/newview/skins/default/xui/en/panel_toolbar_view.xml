@@ -20,14 +20,6 @@ visible="true">
 	follows="all"
 	mouse_opaque="false">
 		<layout_panel
-		name="topbar_panel"
-		visibility_control="ShowNavbarFavoritesPanel"
-		height="17"
-		min_height="17"
-		auto_resize="false"
-		width="1024"
-		mouse_opaque="false"/>
-		<layout_panel
 		name="toolbar_panel"
 		height="500"
 		auto_resize="true"
@@ -37,9 +29,9 @@ visible="true">
 			name="main"
 			orientation="horizontal"
 			left="0"
-			top="26"
+			top="0"
 			width="1024"
-			height="474"
+			height="500"
 			follows="all"
 			mouse_opaque="false">
 				<layout_panel

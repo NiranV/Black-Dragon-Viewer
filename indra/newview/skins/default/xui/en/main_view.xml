@@ -102,26 +102,51 @@ width="1024">
          height="768"
          name="DebugView"
          width="1024"/>
-         <floater_view
-         follows="all"
-         height="722"
+         <layout_stack
+         name="world"
+         orientation="vertical"
          left="0"
-         mouse_opaque="false"
-         name="Floater View"
-         tab_group="-1"
-         tab_stop="false"
-         top="46"
-         width="1024"/>
-         <panel
-         name="toolbar_view_holder"
-         follows="all"
-         layout="topleft"
-         height="768"
+         top="26"
          width="1024"
-         top="0"
-         left="0"
-         mouse_opaque="false"
-         tab_stop="false"/>
+         height="742"
+         follows="all"
+         mouse_opaque="false">
+            <layout_panel
+            name="spacer_panel"
+            visibility_control="ShowNavbarFavoritesPanel"
+            height="17"
+            min_height="17"
+            width="1024"
+            mouse_opaque="false"/>
+            <layout_panel
+            name="spacer_panel"
+            height="744"
+            auto_resize="true"
+            tab_stop="false" 
+            width="1024"
+            mouse_opaque="false">
+            <floater_view
+            follows="all"
+            height="744"
+            left="0"
+            mouse_opaque="false"
+            name="Floater View"
+            tab_group="-1"
+            tab_stop="false"
+            top="0"
+            width="1024"/>
+            <panel
+            name="toolbar_view_holder"
+            follows="all"
+            layout="topleft"
+            height="744"
+            width="1024"
+            top="0"
+            left="0"
+            mouse_opaque="false"
+            tab_stop="false"/>
+            </layout_panel>
+         </layout_stack>
       </layout_panel>
    </layout_stack>
    <panel
