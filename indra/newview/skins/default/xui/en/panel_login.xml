@@ -3351,14 +3351,14 @@ Removed: Rotation order dropdown and all code.
  
  <panel
  follows="top|right"
- height="42"
+ height="80"
  background_visible="true"
  bg_alpha_color="0.0 0.0 0.0 0.55"
  layout="topleft"
- left="663"
+ left="643"
  name="patreon_supports"
  top="32"
- width="307">
+ width="327">
   <text
     follows="left|top|right"
     font="SansSerifBig"
@@ -3369,22 +3369,26 @@ Removed: Rotation order dropdown and all code.
     top="4"
     left="7"
     name="app_name_text"
-    width="300"
+    width="320"
     word_wrap="true">
     Patreon Supporting Shops:
     </text>
   <text
     follows="left|top|right"
     font_shadow="soft"
+    font.style="BOLD"
     halign="left"
     height="200"
     top_pad="0"
     left="7"
     name="app_name_text"
-    width="300"
+    width="320"
     word_wrap="true">
     Crazy Kobold Creations - [https://marketplace.secondlife.com/stores/38282 Marketplace] - [https://maps.secondlife.com/secondlife/Montecito%20Bay/55/171/723 Inworld Store]
-    </text>
+THIRST - [https://marketplace.secondlife.com/stores/153058 Marketplace] - [http://maps.secondlife.com/secondlife/The%20Boardwalk/219/49/30 Inworld Store]
+Luane's World - [https://marketplace.secondlife.com/stores/170473 Marketplace] - [https://maps.secondlife.com/secondlife/Slice%20of%20Heaven/83/132/30 Inworld Store]
+Vesta Corporation: Robotic Division - [https://maps.secondlife.com/secondlife/Horizons%20Mars/238/241/1401 Inworld Store]
+  </text>
  </panel>
  
  <panel
