@@ -173,8 +173,109 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="325"
+     height="806"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: THIRST shop entry to login screen.
+Added: Luane's World shop entry to login screen.
+Added: Vesta Corporation: Robotic Division shop entry to login screen.
+Added: ねりあ as Patreon Patron.
+Added: Aeeykay as Patreon Patron.
+Added: Alexander Powell as Patreon Patron.
+Added: Alexis Matthews as Patreon Patron.
+Added: Andrea Reaux as Patreon Patron.
+Added: Andrew Maher as Patreon Patron.
+Added: Ashley Beery as Patreon Patron.
+Added: Chuu Akamine as Patreon Patron.
+Added: Clarisa Comail as Patreon Patron.
+Added: CokeLore as Patreon Patron.
+Added: Cyanna Song as Patreon Patron.
+Added: D'n'Bneko as Patreon Patron.
+Added: Elvi Hartley as Patreon Patron.
+Added: Emms Sygall as Patreon Patron.
+Added: Evastika Aura as Patreon Patron.
+Added: Faullon as Patreon Patron.
+Added: Gary McClellan as Patreon Patron.
+Added: Ivonne Mejia as Patreon Patron.
+Added: Katrin Chapman as Patreon Patron.
+Added: KenjiHimura as Patreon Patron.
+Added: Linda Reddevil as Patreon Patron.
+Added: Lone as Patreon Patron.
+Added: Luana Meo as Patreon Patron.
+Added: Matenkuo Sauber as Patreon Patron.
+Added: Miaa Rebane as Patreon Patron.
+Added: Starr as Patreon Patron.
+Added: Magnum Yoshikawa as Patreon Patron.
+Added: Mauro Rosenfeld as Patreon Patron.
+Added: Nairias Patreon Patron.
+Added: Nikita Pesterev as Patreon Patron.
+Added: Nodnol Jameson as Patreon Patron.
+Added: Nunmina as Patreon Patron.
+Added: Parker (Kobi) Troiani as Patreon Patron.
+Added: Priscilla Lilienthal as Patreon Patron.
+Added: Renko Usana as Patreon Patron.
+Added: Riot as Patreon Patron.
+Added: RyukoMR as Patreon Patron.
+Added: Sally Crofton as Patreon Patron.
+Added: Shocking Wonder as Patreon Patron.
+Added: SingularisLupus as Patreon Patron.
+Added: Stephen Bedard as Patreon Patron.
+Added: Stelia Archer as Patreon Patron.
+Added: Taya Karpenko as Patreon Patron.
+Added: Vanessa as Patreon Patron.
+Added: Wolfdenden as Patreon Patron.
+Changed: Include HUDs into the complexity list in the Advanced Complexity Information window.
+Changed: Improved the tooltip for Show Merchant Outbox and Inbox in Inventory.
+Changed: Make it clearer that Disable Library in Inventory needs a restart to work.
+Changed: Jakeb's patronage to 15$.
+Changed: Rich Washabaugh's patronage to 2$.
+Changed: Renamed a certain person to Catalina Bryant.
+Changed: Version to 3.7.4.
+Fixed: Detach Bodypart - Universal body item menu entry being in the wrong menu.
+Fixed: Typo in Show Media outside your current Parcel option label.
+Fixed: Default button for Media Browser Limit doesn't revert its value back to default and instead resets cache size.
+Fixed: Preferences - Chat - Chat Behavior - "Open Conversation" options don't work.
+Fixed: The area in which windows can me moved does not resize when hiding the Favoritesbar.
+Misc: Reduced getInstance calls in llvovolume.cpp some more.
+Misc: Cleaned up bdfloatercomplexity.cpp and removed leftover comments.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.7.3
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="325"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
