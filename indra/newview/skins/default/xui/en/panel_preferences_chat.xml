@@ -640,7 +640,7 @@ width="510">
    </radio_item>
    <radio_item
    height="16"
-   label="Open Conversation"
+   label="Open Conversations"
    halign="right"
    value="openconversation"
    tool_tip="This option sets the action taken when receiving a message from a friend to open the conversation window and focus the tab."
@@ -745,9 +745,9 @@ width="510">
    </radio_item>
    <radio_item
    height="16"
-   label="Open Conversation"
+   label="Open Conversations"
    halign="right"
-   value="openconversation"
+   value="openconversations"
    tool_tip="This option sets the action taken when receiving a message from someone who is not your friend to open the conversation window and focus the tab."
    layout="topleft"
    name="OpenConversationsWindow"
@@ -850,9 +850,9 @@ width="510">
    </radio_item>
    <radio_item
    height="16"
-   label="Open Conversation"
+   label="Open Conversations"
    halign="right"
-   value="openconversation"
+   value="openconversations"
    tool_tip="This option sets the action taken when receiving a message from a participant in a conference to open the conversation window and focus the tab."
    layout="topleft"
    name="OpenConversationsWindow"
@@ -955,9 +955,9 @@ width="510">
    </radio_item>
    <radio_item
    height="16"
-   label="Open Conversation"
+   label="Open Conversations"
    halign="right"
-   value="openconversation"
+   value="openconversations"
    tool_tip="This option sets the action taken when receiving a message from a participant of a group chat to open the conversation window and focus the tab."
    layout="topleft"
    name="OpenConversationsWindow"
@@ -1060,9 +1060,9 @@ width="510">
    </radio_item>
    <radio_item
    height="16"
-   label="Open Conversation"
+   label="Open Conversations"
    halign="right"
-   value="openconversation"
+   value="openconversations"
    tool_tip="This option sets the action taken when receiving a message in nearby chat to open the nearby chat or conversation window and focus the tab."
    layout="topleft"
    name="OpenConversationsWindow"
@@ -1165,9 +1165,9 @@ width="510">
    </radio_item>
    <radio_item
    height="16"
-   label="Open Conversation"
+   label="Open Conversations"
    halign="right"
-   value="openconversation"
+   value="openconversations"
    tool_tip="This option sets the action taken when receiving a message from an object to open the conversation window and focus the tab."
    layout="topleft"
    name="OpenConversationsWindow"
