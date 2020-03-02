@@ -101,45 +101,6 @@ void BDFloaterComplexity::onAvatarsRefresh()
 	}
 
 	bool create_new = true;
-	//BD - Animesh Support
-	//     Search through Animesh first so that the rest of this function will automatically
-	//     skip all animesh entries and simply just check non-Animesh entries.
-	//     We do this because the LLCharacter::sInstances now also contains all Animesh instances
-	//     as well because they are handled as such internally, which is both good and bad.
-	/*for (LLCharacter* character : LLControlAvatar::sInstances)
-	{
-		create_new = true;
-		LLControlAvatar* avatar = dynamic_cast<LLControlAvatar*>(character);
-		if (avatar)
-		{
-			LLUUID uuid = avatar->getID();
-			for (LLScrollListItem* item : mAvatarScroll->getAllData())
-			{
-				if (item)
-				{
-					if (avatar == item->getUserdata())
-					{
-						//BD - Don't do anything here, there's nothing to do.
-						item->setFlagged(FALSE);
-						create_new = false;
-						break;
-					}
-				}
-			}
-
-			if (create_new)
-			{
-				LLSD row;
-				row["columns"][0]["column"] = "name";
-				row["columns"][0]["value"] = avatar->getFullname();
-				row["columns"][1]["column"] = "uuid";
-				row["columns"][1]["value"] = uuid.asString();
-				LLScrollListItem* element = mAvatarScroll->addElement(row);
-				element->setUserdata(avatar);
-			}
-		}
-	}*/
-
 	for (LLCharacter* character : LLCharacter::sInstances)
 	{
 		create_new = true;
@@ -404,7 +365,6 @@ void BDFloaterComplexity::checkObject(LLVOVolume* vovolume, LLVOVolume::texture_
 {
 	//BD - Check all the easy costs and counts first.
 	volume_cost = vovolume->getRenderCost(textures);
-	//total_cost += volume_cost;
 	base_cost += vovolume->mRenderComplexityBase;
 	total_triangles += vovolume->getHighLODTriangleCount64();
 	total_vertices += vovolume->getNumVertices();
