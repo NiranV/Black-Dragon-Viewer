@@ -252,7 +252,7 @@ void BDFloaterComplexity::calcARC()
 
 				for (LLViewerObject* attached_object : attachment->mAttachedObjects)
 				{
-					if (attached_object && !attached_object->isDead() && attached_object->mDrawable.notNull() && !attached_object->isHUDAttachment())
+					if (attached_object && !attached_object->isDead() && attached_object->mDrawable.notNull())
 					{
 						textures.clear();
 						const LLDrawable* drawable = attached_object->mDrawable;
@@ -323,11 +323,15 @@ void BDFloaterComplexity::calcARC()
 								}
 
 								//BD - Final results.
-								texture_memory += attachment_memory_usage;
-								attachment_final_cost = attachment_total_cost + attachment_texture_cost;
-								cost += attachment_final_cost;
-								vertices += attachment_total_vertices;
-								triangles += attachment_total_triangles;
+								//     Do not add HUDs to this.
+								if (!attached_object->isHUDAttachment())
+								{
+									texture_memory += attachment_memory_usage;
+									attachment_final_cost = attachment_total_cost + attachment_texture_cost;
+									cost += attachment_final_cost;
+									vertices += attachment_total_vertices;
+									triangles += attachment_total_triangles;
+								}
 
 								//BD - Write our results into the list.
 								//     Note that most of these values are actually not shown in the list, they are
