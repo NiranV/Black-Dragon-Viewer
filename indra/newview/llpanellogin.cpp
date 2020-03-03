@@ -1074,6 +1074,8 @@ void LLPanelLogin::populateUserList(LLPointer<LLCredential> credential)
             // selection failed, just deselect whatever might be selected
 			mUsernameCombo->setValue(std::string());
             mPasswordEdit->setValue(std::string());
+
+            // selection failed, fields will be mepty
             updateLoginButtons();
         }
         else
@@ -1089,6 +1091,8 @@ void LLPanelLogin::populateUserList(LLPointer<LLCredential> credential)
             if (ident.isMap() && ident.has("type"))
             {
 				mUsernameCombo->add(LLPanelLogin::getUserName(credential), credential->userID(), ADD_BOTTOM, TRUE);
+                // this llsd might hold invalid credencial (failed login), so
+                // do not add to the list, just set field.
                 setFields(credential);
             }
             else

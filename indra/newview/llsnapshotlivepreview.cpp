@@ -57,6 +57,7 @@
 #include <boost/filesystem.hpp>
 
 S32 BORDER_WIDTH = 6;
+S32 TOP_PANEL_HEIGHT = 30;
 
 const S32 MAX_TEXTURE_SIZE = 512 ; //max upload texture size 512 * 512
 
