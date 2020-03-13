@@ -10403,9 +10403,6 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 			water_clip = 1;
 		}
 
-		//BD
-		bool materials_in_water = gSavedSettings.getS32("RenderWaterMaterials");
-
 		if (!viewer_cam->cameraUnderWater())
 		{	//generate planar reflection map
 
@@ -10465,22 +10462,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 					updateCull(camera, result);
 					stateSort(camera, result);
 
-					if (LLPipeline::sRenderDeferred && materials_in_water)
-					{
-						mWaterRef.flush();
-
-						gPipeline.grabReferences(result);
-						gPipeline.mDeferredScreen.bindTarget();
-						gGL.setColorMask(true, true);
-						glClearColor(0,0,0,0);
-						gPipeline.mDeferredScreen.clear();
-
-						renderGeomDeferred(camera);
-					}
-					else
-					{
-						renderGeom(camera, TRUE);
-					}
+					renderGeom(camera, TRUE);
 
 					gPipeline.popRenderTypeMask();
 				}
@@ -10525,21 +10507,8 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 						gPipeline.grabReferences(ref_result);
 						LLGLUserClipPlane clip_plane(plane, mat, projection);
 
-						if (LLPipeline::sRenderDeferred && materials_in_water)
-						{
-							renderGeomDeferred(camera);
-						}
-						else
-						{
-							renderGeom(camera);
-						}
+						renderGeom(camera);
 					}
-				}
-
-				if (LLPipeline::sRenderDeferred && materials_in_water)
-				{
-					gPipeline.mDeferredScreen.flush();
-					renderDeferredLightingToRT(&mWaterRef);
 				}
 
 				gPipeline.popRenderTypeMask();
@@ -10563,7 +10532,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 								END_RENDER_TYPES);	
 			stop_glerror();
 
-			LLPipeline::sUnderWaterRender = ! LLViewerCamera::getInstance()->cameraUnderWater();
+			LLPipeline::sUnderWaterRender = ! viewer_cam->cameraUnderWater();
 
 			if (LLPipeline::sUnderWaterRender)
 			{
@@ -10601,38 +10570,18 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 
 				gGL.setColorMask(true, false);
 
-				
-				if (sRenderDeferred && materials_in_water)
-				{
-					mWaterDis.flush();
-					gPipeline.mDeferredScreen.bindTarget();
-					gGL.setColorMask(true, true);
-					glClearColor(0,0,0,0);
-					gPipeline.mDeferredScreen.clear();
-					gPipeline.grabReferences(result);
-					renderGeomDeferred(camera);
-				}
-				else
-				{
-					renderGeom(camera);
+				renderGeom(camera);
 
-					if (LLGLSLShader::sNoFixedFunction)
-					{
-						gUIProgram.bind();
-					}
-					
-					LLWorld::getInstance()->renderPropertyLines();
-					
-					if (LLGLSLShader::sNoFixedFunction)
-					{
-						gUIProgram.unbind();
-					}
-				}
-
-				if (sRenderDeferred && materials_in_water)
+				if (LLGLSLShader::sNoFixedFunction)
 				{
-					gPipeline.mDeferredScreen.flush();
-					renderDeferredLightingToRT(&mWaterDis);
+					gUIProgram.bind();
+				}
+					
+				LLWorld::getInstance()->renderPropertyLines();
+					
+				if (LLGLSLShader::sNoFixedFunction)
+				{
+					gUIProgram.unbind();
 				}
 			}
 
