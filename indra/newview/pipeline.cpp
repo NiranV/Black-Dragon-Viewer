@@ -4234,7 +4234,9 @@ void LLPipeline::postSort(LLCamera& camera)
 		LLPipeline::setRenderHighlightTextureChannel(gFloaterTools->getPanelFace()->getTextureChannelToEdit());
 
 		// Draw face highlights for selected faces.
-		if (LLSelectMgr::getInstance()->getTEMode())
+		//BD - Micro optimization
+		LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
+		if (select_mgr->getTEMode())
 		{
 			struct f : public LLSelectedTEFunctor
 			{
@@ -4251,7 +4253,7 @@ void LLPipeline::postSort(LLCamera& camera)
 					return true;
 				}
 			} func;
-			LLSelectMgr::getInstance()->getSelection()->applyToTEs(&func);
+			select_mgr->getSelection()->applyToTEs(&func);
 		}
 	}
 
@@ -4290,8 +4292,10 @@ void render_hud_elements()
 		
 		// Show the property lines
 		LLWorld::getInstance()->renderPropertyLines();
-		LLViewerParcelMgr::getInstance()->render();
-		LLViewerParcelMgr::getInstance()->renderParcelCollision();
+		//BD - Micro optimization
+		LLViewerParcelMgr* parcel_mgr = LLViewerParcelMgr::getInstance();
+		parcel_mgr->render();
+		parcel_mgr->renderParcelCollision();
 	
 		// Render name tags.
 		LLHUDObject::renderAll();
@@ -8798,13 +8802,15 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, U32 light_index, U32 n
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_FACTOR, ssao_factor);
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_FACTOR_INV, 1.0/ssao_factor);
 
-	//F32 shadow_offset_error = 1.f + RenderShadowOffsetError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]);
-	//F32 shadow_bias_error = RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2])/4000.f;
+	//BD - Micro optimization
+	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
+	//F32 shadow_offset_error = 1.f + RenderShadowOffsetError * fabsf(viewer_cam->getOrigin().mV[2]);
+	//F32 shadow_bias_error = RenderShadowBiasError * fabsf(viewer_cam->getOrigin().mV[2])/4000.f;
 	LLVector4 shadow_bias_error = LLVector4(-0.00025, -0.0005, -0.001, -0.002);
-	shadow_bias_error += (RenderShadowBiasError / llclamp(fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]) / 686.f, 1.0f, 5.83f));
+	shadow_bias_error += (RenderShadowBiasError / llclamp(fabsf(viewer_cam->getOrigin().mV[2]) / 686.f, 1.0f, 5.83f));
 
 	shader.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, mDeferredScreen.getWidth(), mDeferredScreen.getHeight());
-	shader.uniform1f(LLShaderMgr::DEFERRED_NEAR_CLIP, LLViewerCamera::getInstance()->getNear()*2.f);
+	shader.uniform1f(LLShaderMgr::DEFERRED_NEAR_CLIP, viewer_cam->getNear()*2.f);
 	shader.uniform1f(LLShaderMgr::DEFERRED_SHADOW_OFFSET, RenderShadowOffset); //*shadow_offset_error);
 	shader.uniform4fv(LLShaderMgr::DEFERRED_SHADOW_BIAS, 1, shadow_bias_error.mV);
 	shader.uniform1f(LLShaderMgr::DEFERRED_SPOT_SHADOW_OFFSET, RenderSpotShadowOffset);
@@ -8873,10 +8879,10 @@ void LLPipeline::renderDeferredLighting()
 		return;
 	}
 
+	LLViewerCamera* camera = LLViewerCamera::getInstance();
 	{
 		LL_RECORD_BLOCK_TIME(FTM_RENDER_DEFERRED);
 
-		LLViewerCamera* camera = LLViewerCamera::getInstance();
 		{
 			LLGLDepthTest depth(GL_TRUE);
 			mDeferredDepth.copyContents(mDeferredScreen, 0, 0, mDeferredScreen.getWidth(), mDeferredScreen.getHeight(),
@@ -9082,7 +9088,7 @@ void LLPipeline::renderDeferredLighting()
 										LLPipeline::END_RENDER_TYPES);
 								
 			
-			renderGeomPostDeferred(*LLViewerCamera::getInstance(), false);
+			renderGeomPostDeferred(*camera, false);
 			gPipeline.popRenderTypeMask();
 		}
 				
@@ -9154,7 +9160,7 @@ void LLPipeline::renderDeferredLighting()
 							//     with one of LL's changes. We use the avatar's root bone world position now instead of the
 							//     avatar position because this one will always be accurate unless our avatar is really
 							//     being rendered at 0 0 0 and in that case our camera will probably be janked there as well.
-							if (av->isTooComplex() || av->isInMuteList() || dist_vec(av->mRoot->getWorldPosition(), LLViewerCamera::getInstance()->getOrigin()) > RenderFarClip)
+							if (av->isTooComplex() || av->isInMuteList() || dist_vec(av->mRoot->getWorldPosition(), camera->getOrigin()) > RenderFarClip)
 							{
 								continue;
 							}
@@ -9465,7 +9471,7 @@ void LLPipeline::renderDeferredLighting()
 						 LLPipeline::RENDER_TYPE_FULLBRIGHT_ALPHA_MASK,
 						 END_RENDER_TYPES);
 		
-		renderGeomPostDeferred(*LLViewerCamera::getInstance());
+		renderGeomPostDeferred(*camera);
 		popRenderTypeMask();
 	}
 
@@ -9503,10 +9509,9 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 		return;
 	}
 
+	LLViewerCamera* camera = LLViewerCamera::getInstance();
 	{
 		LL_RECORD_BLOCK_TIME(FTM_RENDER_DEFERRED);
-
-		LLViewerCamera* camera = LLViewerCamera::getInstance();
 
 		{
 			LLGLDepthTest depth(GL_TRUE);
@@ -9661,7 +9666,7 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 										LLPipeline::END_RENDER_TYPES);
 								
 			
-			renderGeomPostDeferred(*LLViewerCamera::getInstance(), false);
+			renderGeomPostDeferred(*camera, false);
 			gPipeline.popRenderTypeMask();
 		}
 
@@ -10028,7 +10033,7 @@ void LLPipeline::renderDeferredLightingToRT(LLRenderTarget* target)
 						 LLPipeline::RENDER_TYPE_FULLBRIGHT_ALPHA_MASK,
 						 END_RENDER_TYPES);
 		
-		renderGeomPostDeferred(*LLViewerCamera::getInstance());
+		renderGeomPostDeferred(*camera);
 		popRenderTypeMask();
 	}
 
