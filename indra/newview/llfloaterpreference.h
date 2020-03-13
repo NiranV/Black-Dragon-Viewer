@@ -267,7 +267,7 @@ public:
 
 	std::string createTimestamp(S32 datetime);
 
-	static void setNeedsUpdate();
+	static void triggerUpdate();
 
 private:
 
@@ -394,6 +394,18 @@ private:
 	std::array<LLUICtrl*, 2> mRenderProjectorShadowResolution;
 	std::array<LLUICtrl*, 2> mExodusRenderToneAdvOptC;
 
+//	//BD - Multithreading Experiments
+	//     Updating and filling the render settings list tanks performance hard,
+	//     even harder with bigger lists, this is the perfect candidate to test
+	//     multithreading to get rid of the growing time it takes to update the
+	//     the list.
+	//
+	//     Experiments so far have shown that multithreading is a very crashy
+	//     endeavour, everything can crash at any time for seemingly no reason
+	//     and multithreading this stuff needs a lot of thought put into it to
+	//     make use of it proper. It's tiny babysteps so far but the results are
+	//     extremely promising, showing complete elimination of the increasingly
+	//     longer freeze times.
 	std::thread mUpdateThread;
 	std::vector<LLSD> mScrollListParams;
 

@@ -996,7 +996,8 @@ protected:
 
 class LLAvatarRenderMuteListObserver : public LLMuteListObserver
 {
-	/* virtual */ void onChange()  { LLFloaterPreference::setNeedsUpdate(); }
+//	//BD - Multithreading Experiments
+	/* virtual */ void onChange()  { LLFloaterPreference::triggerUpdate(); }
 };
 
 static LLAvatarRenderMuteListObserver sAvatarRenderMuteListObserver;
@@ -2358,22 +2359,15 @@ void LLFloaterPreference::draw()
 		refreshEverything();
 	}
 
-//	//BD - Avatar Rendering Settings
-	if (!mUpdateThread.joinable() && !mNeedsUpdate)
+//	//BD - Multithreading Experiments
+	//     We need to join the thread here whenever it is done because we 
+	//     check whether it is joinable to see if its currently available 
+	//     to do something for us. A thread becomes joinable and thus 
+	//     unavailable when its set to do something but it will remain 
+	//     joinable even when its done.
+	if (mUpdateThread.joinable())
 	{
-		//BD - Multithreading Experiments
-		//     Updating and filling the render settings list tanks performance hard,
-		//     even harder with bigger lists, this is the perfect candidate to test
-		//     multithreading to get rid of the growing time it takes to update the
-		//     the list.
-		//
-		//     Experiments so far have shown that multithreading is a very crashy
-		//     endeavour, everything can crash at any time for seemingly no reason
-		//     and multithreading this stuff needs a lot of thought put into it to
-		//     make use of it proper. It's tiny babysteps so far but the results are
-		//     extremely promising, showing complete elimination of the increasingly
-		//     longer freeze times.
-		mUpdateThread = std::thread(&LLFloaterPreference::updateList, this);
+		mUpdateThread.join();
 	}
 
 	if (mNeedsUpdate)
@@ -2583,11 +2577,21 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	refreshEnabledState();
 	toggleTabs();
 
-//	//BD - Avatar Rendering Settings
+//	//BD - Multithreading Experiments
+	//     Updating and filling the render settings list tanks performance hard,
+	//     even harder with bigger lists, this is the perfect candidate to test
+	//     multithreading to get rid of the growing time it takes to update the
+	//     the list.
+	//
+	//     Experiments so far have shown that multithreading is a very crashy
+	//     endeavour, everything can crash at any time for seemingly no reason
+	//     and multithreading this stuff needs a lot of thought put into it to
+	//     make use of it proper. It's tiny babysteps so far but the results are
+	//     extremely promising, showing complete elimination of the increasingly
+	//     longer freeze times.
 	if (!mUpdateThread.joinable())
 	{
 		mUpdateThread = std::thread(&LLFloaterPreference::updateList, this);
-		//mUpdateThread.detach();
 	}
 
 //	//BD - Unlimited Camera Presets
@@ -4035,8 +4039,12 @@ void LLFloaterPreference::onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y)
 	}
 }
 
+//BD - Multithreading Experiments
 void LLFloaterPreference::updateList()
 {
+	//BD - Clear our params list before we start.
+	mScrollListParams.clear();
+
 	S32 i = 0;
 	LLAvatarName av_name;
 	for (std::map<LLUUID, S32>::iterator iter = LLRenderMuteList::getInstance()->sVisuallyMuteSettingsMap.begin(); iter != LLRenderMuteList::getInstance()->sVisuallyMuteSettingsMap.end(); iter++)
@@ -4062,6 +4070,7 @@ void LLFloaterPreference::updateList()
 	mNeedsUpdate = true;
 }
 
+//BD - Multithreading Experiments
 void LLFloaterPreference::fillList()
 {
 	mAvatarSettingsList->deleteAllItems();
@@ -4084,7 +4093,9 @@ void LLFloaterPreference::onFilterEdit(const std::string& search_string)
 	if (mNameFilter != filter_upper)
 	{
 		mNameFilter = filter_upper;
-		mNeedsUpdate = false;
+//		//BD - Multithreading Experiments
+		//     Ouch...
+		triggerUpdate();
 	}
 }
 
@@ -4157,11 +4168,17 @@ bool LLFloaterPreference::isActionChecked(const LLSD& userdata, const LLUUID& av
 	return false;
 }
 
-void LLFloaterPreference::setNeedsUpdate()
+//BD - Multithreading Experiments
+void LLFloaterPreference::triggerUpdate()
 {
 	LLFloaterPreference* instance = LLFloaterReg::getTypedInstance<LLFloaterPreference>("preferences");
-	if (!instance) return;
-		instance->mNeedsUpdate = false;
+	if (instance)
+	{
+		if (!instance->mUpdateThread.joinable())
+		{
+			instance->mUpdateThread = std::thread(&LLFloaterPreference::updateList, instance);
+		}
+	}
 }
 
 void LLFloaterPreference::onClickAdd(const LLSD& userdata)
@@ -4232,11 +4249,13 @@ void LLFloaterPreference::setAvatarRenderSetting(const uuid_vec_t& av_ids, S32 n
 			}
 		}
 
-		if (!mUpdateThread.joinable())
-		{
-			mUpdateThread = std::thread(&LLFloaterPreference::updateList, this);
-			//mUpdateThread.detach();
-		}
+//		//BD - Multithreading Experiments
+		//     Trigger an update whenever we change something.
+		//     Quite expensive, we could instead change it to change the selected entries only
+		//     but since we are doing this in a separate thread anyway we don't care.
+		//     TODO: Make it change the entries only and only call a refresh whenever something
+		//     has changed from the outside.
+		triggerUpdate();
 	}
 }
 
