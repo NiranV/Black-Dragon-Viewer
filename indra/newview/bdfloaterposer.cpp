@@ -393,7 +393,7 @@ void BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 		//BD - Now create the rest.
 		for (S32 it = 0; it < 3; ++it)
 		{
-			for (LLScrollListItem* element : mJointScrolls[it]->getAllData())
+			for (auto element : mJointScrolls[it]->getAllData())
 			{
 				LLVector3 vec3;
 				LLJoint* joint = (LLJoint*)element->getUserdata();
@@ -534,17 +534,14 @@ void BDFloaterPoser::onPoseStart()
 
 void BDFloaterPoser::onPoseDelete()
 {
-	for (LLScrollListItem* item : mPoseScroll->getAllSelected())
+	for (auto item : mPoseScroll->getAllSelected())
 	{
-		if (item)
-		{
-			std::string filename = item->getColumn(0)->getValue().asString();
-			std::string dirname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses");
+		std::string filename = item->getColumn(0)->getValue().asString();
+		std::string dirname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses");
 
-			if (gDirUtilp->deleteFilesInDir(dirname, LLURI::escape(filename) + ".xml") < 1)
-			{
-				LL_WARNS("Posing") << "Cannot remove file: " << filename << LL_ENDL;
-			}
+		if (gDirUtilp->deleteFilesInDir(dirname, LLURI::escape(filename) + ".xml") < 1)
+		{
+			LL_WARNS("Posing") << "Cannot remove file: " << filename << LL_ENDL;
 		}
 	}
 	onPoseRefresh();
@@ -628,7 +625,8 @@ void BDFloaterPoser::onJointRefresh()
 	if (!(avatar->getRegion() == gAgent.getRegion())) return;
 
 	//BD - Getting collision volumes and attachment points.
-	std::vector<std::string> cv_names, attach_names;
+	std::vector<std::string> joint_names, cv_names, attach_names;
+	avatar->getSortedJointNames(0, joint_names);
 	avatar->getSortedJointNames(1, cv_names);
 	avatar->getSortedJointNames(2, attach_names);
 
@@ -641,13 +639,13 @@ void BDFloaterPoser::onJointRefresh()
 	LLVector3 pos;
 	LLVector3 scale;
 	LLJoint* joint;
-	for (S32 i = 0; (joint = avatar->getCharacterJoint(i)); ++i)
+	for (auto joint_name : joint_names)
 	{
+		joint = avatar->getJoint(joint_name);
 		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
 		if (!joint)	continue;
 
 		LLSD row;
-		const std::string name = joint->getName();
 		//BD - Show some categories to make it a bit easier finding out which
 		//     bone belongs where and what they might be for those who can't use
 		//     bone names.
@@ -665,7 +663,7 @@ void BDFloaterPoser::onJointRefresh()
 			row["columns"][COL_ICON]["type"] = "icon";
 			row["columns"][COL_ICON]["value"] = getString("icon_category");
 			row["columns"][COL_NAME]["column"] = "joint";
-			row["columns"][COL_NAME]["value"] = getString("title_" + name);
+			row["columns"][COL_NAME]["value"] = getString("title_" + joint_name);
 			LLScrollListItem* element = mJointScrolls[JOINTS]->addElement(row);
 			element->setEnabled(FALSE);
 		}
@@ -674,7 +672,7 @@ void BDFloaterPoser::onJointRefresh()
 		row["columns"][COL_ICON]["type"] = "icon";
 		row["columns"][COL_ICON]["value"] = getString("icon_bone");
 		row["columns"][COL_NAME]["column"] = "joint";
-		row["columns"][COL_NAME]["value"] = name;
+		row["columns"][COL_NAME]["value"] = joint_name;
 
 		if (is_posing)
 		{
@@ -761,11 +759,9 @@ void BDFloaterPoser::onJointRefresh()
 	mJointScrolls[ATTACHMENT_BONES]->deleteSingleItem(0);
 
 	//BD - Collision Volumes
-	for (std::vector<std::string>::iterator name_iter = cv_names.begin();
-		name_iter != cv_names.end(); ++name_iter)
+	for (auto name : cv_names)
 	{
-		const std::string name = *name_iter;
-		LLJoint* joint = avatar->getJoint(name);
+		joint = avatar->getJoint(name);
 		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
 		if (!joint) continue;
 
@@ -802,11 +798,9 @@ void BDFloaterPoser::onJointRefresh()
 	}
 
 	//BD - Attachment Bones
-	for (std::vector<std::string>::iterator name_iter = attach_names.begin();
-		name_iter != attach_names.end(); ++name_iter)
+	for (auto name : attach_names)
 	{
-		const std::string name = *name_iter;
-		LLJoint* joint = avatar->getJoint(name);
+		joint = avatar->getJoint(name);
 		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
 		if (!joint) continue;
 
@@ -1049,7 +1043,7 @@ void BDFloaterPoser::onJointChangeState()
 	BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
 	if (motion)
 	{
-		for (LLScrollListItem* item : mJointScrolls[JOINTS]->getAllSelected())
+		for (auto item : mJointScrolls[JOINTS]->getAllSelected())
 		{
 			LLJoint* joint = (LLJoint*)item->getUserdata();
 			if (joint)
@@ -1099,7 +1093,7 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 	{
 		//BD - We use this bool to determine whether or not we'll be in need for a full skeleton
 		//     reset and to prevent checking for it every single time.
-		for (LLScrollListItem* item : mJointScrolls[it]->getAllData())
+		for (auto item : mJointScrolls[it]->getAllData())
 		{
 			if (item)
 			{
@@ -1180,7 +1174,7 @@ void BDFloaterPoser::onJointRotationReset()
 		motion->setInterpolationType(2);
 	}
 
-	for (LLScrollListItem* item : mJointScrolls[JOINTS]->getAllSelected())
+	for (auto item : mJointScrolls[JOINTS]->getAllSelected())
 	{
 		if (item)
 		{
@@ -1229,7 +1223,7 @@ void BDFloaterPoser::onJointPositionReset()
 
 	//BD - We use this bool to prevent going through attachment override reset every single time.
 	//bool has_reset = false;
-	for (LLScrollListItem* item : mJointScrolls[index]->getAllSelected())
+	for (auto item : mJointScrolls[index]->getAllSelected())
 	{
 		if (item)
 		{
@@ -1275,7 +1269,7 @@ void BDFloaterPoser::onJointScaleReset()
 
 	//BD - Clear all attachment bone scale changes we've done, they are not automatically
 	//     reverted.
-	for (LLScrollListItem* item : mJointScrolls[index]->getAllSelected())
+	for (auto item : mJointScrolls[index]->getAllSelected())
 	{
 		if (item)
 		{
@@ -1306,18 +1300,18 @@ void BDFloaterPoser::onCollectDefaults()
 	LLJoint* joint;
 
 	//BD - Getting collision volumes and attachment points.
-	std::vector<std::string> cv_names;
-	std::vector<std::string> attach_names;
+	std::vector<std::string> joint_names, cv_names, attach_names;
+	gAgentAvatarp->getSortedJointNames(0, joint_names);
 	gAgentAvatarp->getSortedJointNames(1, cv_names);
 	gAgentAvatarp->getSortedJointNames(2, attach_names);
 
-	for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
+	for (auto name : joint_names)
 	{
+		joint = gAgentAvatarp->getJoint(name);
 		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
 		if (!joint)	continue;
 
 		LLSD row;
-		const std::string name = joint->getName();
 
 		//BD - We always get the values but we don't write them out as they are not relevant for the
 		//     user yet but we need them to establish default values we revert to later on.
@@ -1339,10 +1333,8 @@ void BDFloaterPoser::onCollectDefaults()
 	}
 
 	//BD - Collision Volumes
-	for (std::vector<std::string>::iterator name_iter = cv_names.begin();
-		name_iter != cv_names.end(); ++name_iter)
+	for (auto name : cv_names)
 	{
-		const std::string name = *name_iter;
 		LLJoint* joint = gAgentAvatarp->getJoint(name);
 		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
 		if (!joint)	continue;
@@ -1356,10 +1348,8 @@ void BDFloaterPoser::onCollectDefaults()
 	}
 
 	//BD - Attachment Bones
-	for (std::vector<std::string>::iterator name_iter = attach_names.begin();
-		name_iter != attach_names.end(); ++name_iter)
+	for (auto name : attach_names)
 	{
-		const std::string name = *name_iter;
 		LLJoint* joint = gAgentAvatarp->getJoint(name);
 		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
 		if (!joint)	continue;
@@ -1434,7 +1424,7 @@ void BDFloaterPoser::onAnimListWrite()
 	mAnimEditorScroll->clearRows();
 	//BD - Now go through the new list we created, read them out and add them
 	//     to our list in the new desired order.
-	for (Action action : avatar->mAnimatorActions)
+	for (auto action : avatar->mAnimatorActions)
 	{
 		LLSD row;
 		row["columns"][0]["column"] = "name";
@@ -2083,7 +2073,7 @@ void BDFloaterPoser::onAvatarsRefresh()
 {
 	bool skip_creation = false;
 	//BD - Flag all items first, we're going to unflag them when they are valid.
-	for (LLScrollListItem* item : mAvatarScroll->getAllData())
+	for (auto item : mAvatarScroll->getAllData())
 	{
 		if (item)
 		{
@@ -2133,7 +2123,7 @@ void BDFloaterPoser::onAvatarsRefresh()
 	bool create_new = true;
 	//BD - Animesh Support
 	//     Search through all control avatars.
-	for (LLCharacter* character : LLControlAvatar::sInstances)
+	for (auto character : LLControlAvatar::sInstances)
 	{
 		LLControlAvatar* avatar = dynamic_cast<LLControlAvatar*>(character);
 		if (avatar && !avatar->isDead() && (avatar->getRegion() == gAgent.getRegion()))
