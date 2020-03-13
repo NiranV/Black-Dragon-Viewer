@@ -6827,8 +6827,23 @@ void LLWearableBridge::performAction(LLInventoryModel* model, std::string action
 
 void LLWearableBridge::openItem()
 {
-	performAction(getInventoryModel(),
-			      get_is_item_worn(mUUID) ? "take_off" : "wear");
+	//BD - Double Click Action Preferences
+	//     0 - Wear Item
+	//     1 - Add Item
+	//     2 - Show Properties
+	S32 action = gSavedSettings.getS32("DoubleClickActionInventory");
+	if (action == 0)
+	{
+		performAction(getInventoryModel(), get_is_item_worn(mUUID) ? "take_off" : "wear");
+	}
+	else if (action == 1)
+	{
+		performAction(getInventoryModel(), get_is_item_worn(mUUID) ? "take_off" : "wear_add");
+	}
+	else
+	{
+		performAction(getInventoryModel(), "properties");
+	}
 }
 
 void LLWearableBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
