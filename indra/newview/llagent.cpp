@@ -912,6 +912,8 @@ void LLAgent::setRegion(LLViewerRegion *regionp)
 	llassert(regionp);
 	if (mRegionp != regionp)
 	{
+		//BD - Microoptimizations
+		LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
 
 		std::string ip = regionp->getHost().getString();
 		LL_INFOS("AgentLocation") << "Moving agent into region: " << regionp->getName()
@@ -927,8 +929,8 @@ void LLAgent::setRegion(LLViewerRegion *regionp)
 
 			setPositionAgent(getPositionAgent() - delta);
 
-			LLVector3 camera_position_agent = LLViewerCamera::getInstance()->getOrigin();
-			LLViewerCamera::getInstance()->setOrigin(camera_position_agent - delta);
+			LLVector3 camera_position_agent = viewer_cam->getOrigin();
+			viewer_cam->setOrigin(camera_position_agent - delta);
 
 			// Update all of the regions.
 			LLWorld::getInstance()->updateAgentOffset(agent_offset_global);
@@ -964,8 +966,8 @@ void LLAgent::setRegion(LLViewerRegion *regionp)
 			delta.setVec(regionp->getOriginGlobal());
 
 			setPositionAgent(getPositionAgent() - delta);
-			LLVector3 camera_position_agent = LLViewerCamera::getInstance()->getOrigin();
-			LLViewerCamera::getInstance()->setOrigin(camera_position_agent - delta);
+			LLVector3 camera_position_agent = viewer_cam->getOrigin();
+			viewer_cam->setOrigin(camera_position_agent - delta);
 
 			// Update all of the regions.
 			LLWorld::getInstance()->updateAgentOffset(mAgentOriginGlobal);
@@ -2094,7 +2096,9 @@ U8 LLAgent::getRenderState()
 		stopTyping();
 	}
 	
-	if ((!LLSelectMgr::getInstance()->getSelection()->isEmpty() && LLSelectMgr::getInstance()->shouldShowSelection())
+	//BD - Micro optimizations
+	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
+	if ((!select_mgr->getSelection()->isEmpty() && select_mgr->shouldShowSelection())
 		|| LLToolMgr::getInstance()->getCurrentTool()->isEditing() )
 	{
 		setRenderState(AGENT_STATE_EDITING);
