@@ -173,8 +173,80 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="806"
+     height="429"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: BabyCo shop list entry.
+Added: Alessia Kirova as Patreon Patron.
+Added: Alamandite as Patreon Patron.
+Added: BiPie as Patreon Patron.
+Added: Boudicca Amat as Patreon Patron.
+Added: Ethrick Slocum as Patreon Patron.
+Added: Ewan Haggarty as Patreon Patron.
+Added: Freyja as Patreon Patron.
+Added: Jacob Allison as Patreon Patron.
+Added: Jaqui as Patreon Patron.
+Added: Jax Winchester as Patreon Patron.
+Added: Mayzatourment as Patreon Patron.
+Added: Norsks as Patreon Patron.
+Added: SAINT as Patreon Patron.
+Added: Saysh Infiniti as Patreon Patron.
+Changed: Andrea Reaux's patronage amount and added store links.
+Changed: Layout and button sizes of scripted notifications that present up to 12 buttons.
+Changed: Version to 3.7.5.
+Fixed: Avatar Render Settings not updating when any setting is changed.
+Fixed: Wearables and BOM layers not subject to the double-click default inventory action option.
+Fixed: Preferences - Avatar Render Settings search filter text being unreadable.
+Fixed: Right half of navigationbar not clickable.
+Fixed: Joint names being sorted wrong.
+Removed: Unused water materials reflection code.
+Removed: XUI Preview tool dupe entry from main menu.
+Misc: Micro optimizations in poser code.
+Misc: Get rid of a few getInstance calls.
+Misc: Get rid of some getInstance calls in pipeline.cpp.
+Misc: Removed the ugly grey background on text input dialogs.
+Misc: Widget param clean up.
+Misc: Added missed commenting.
+Misc: Micro optimizations in Poser code.
+Merged Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.7.4
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="806"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
@@ -3452,7 +3524,7 @@ Removed: Rotation order dropdown and all code.
  
  <panel
  follows="top|right"
- height="80"
+ height="94"
  background_visible="true"
  bg_alpha_color="0.0 0.0 0.0 0.55"
  layout="topleft"
