@@ -2093,21 +2093,21 @@ void BDFloaterPoser::onAvatarsRefresh()
 	//BD - Add our own avatar first at all times, only if we haven't already.
 	if (!skip_creation)
 	{
-		for (LLCharacter* character : LLCharacter::sInstances)
+		for (auto character : LLCharacter::sInstances)
 		{
 			LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
 			if (avatar && avatar->isSelf())
 			{
 				LLSD own_row;
 				LLAvatarName av_name;
-				LLAvatarNameCache::get(gAgent.getID(), &av_name);
+				LLAvatarNameCache::get(avatar->getID(), &av_name);
 				own_row["columns"][0]["column"] = "icon";
 				own_row["columns"][0]["type"] = "icon";
 				own_row["columns"][0]["value"] = getString("icon_category");
 				own_row["columns"][1]["column"] = "name";
 				own_row["columns"][1]["value"] = av_name.getDisplayName();
 				own_row["columns"][2]["column"] = "uuid";
-				own_row["columns"][2]["value"] = gAgent.getID();
+				own_row["columns"][2]["value"] = avatar->getID();
 				own_row["columns"][3]["column"] = "control_avatar";
 				own_row["columns"][3]["value"] = false;
 				LLScrollListItem* item = mAvatarScroll->addElement(own_row);
