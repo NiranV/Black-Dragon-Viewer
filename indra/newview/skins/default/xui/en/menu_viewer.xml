@@ -3191,13 +3191,6 @@
                  function="Floater.Show"
                  parameter="font_test" />
             </menu_item_call>
-												<menu_item_call
-												label="XUI Preview Tool"
-												name="UI Preview Tool">
-															<menu_item_call.on_click
-																function="Floater.Toggle"
-																parameter="ui_preview" />
-											</menu_item_call>
             <menu_item_check
              label="Show XUI Names"
              name="Show XUI Names">
