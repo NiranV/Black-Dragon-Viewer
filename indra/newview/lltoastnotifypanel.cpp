@@ -44,6 +44,7 @@
 #include "llfloaterimsession.h"
 #include "llavataractions.h"
 
+//BD
 const S32 BOTTOM_PAD = VPAD;
 const S32 IGNORE_BTN_TOP_DELTA = 3*VPAD;//additional ignore_btn padding
 S32 BUTTON_WIDTH = 90;
