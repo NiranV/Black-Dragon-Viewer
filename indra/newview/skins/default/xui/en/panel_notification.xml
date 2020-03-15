@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
-  background_opaque="false"
   border_visible="false"
-  background_visible="true"
-  bg_alpha_color="PanelNotificationBackground"
-  bg_opaque_color="PanelNotificationBackground"
+  background_visible="false"
   label="notification_panel"
   layout="topleft"
   left="0"
@@ -18,9 +15,7 @@
   <panel
     border_visible="false"
     bevel_style="none"
-    background_visible="true"
-    bg_alpha_color="ToastBackground"
-    bg_opaque_color="ToastBackground"
+    background_visible="false"
     follows="left|right|top"
     height="100"
     label="info_panel"
@@ -58,7 +53,7 @@
       wrap="true"/>
     <text_editor
     	h_pad="0"
-	v_pad="0"
+      v_pad="0"
       bg_readonly_color="Transparent"
       border_visible="false"
       embedded_items="false"
