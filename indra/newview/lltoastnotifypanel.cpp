@@ -44,7 +44,7 @@
 #include "llfloaterimsession.h"
 #include "llavataractions.h"
 
-const S32 BOTTOM_PAD = VPAD * 3;
+const S32 BOTTOM_PAD = VPAD;
 const S32 IGNORE_BTN_TOP_DELTA = 3*VPAD;//additional ignore_btn padding
 S32 BUTTON_WIDTH = 90;
 
@@ -85,8 +85,9 @@ LLButton* LLToastNotifyPanel::createButton(const LLSD& form_element, BOOL is_opt
 	mBtnCallbackData.push_back(userdata);
 
 	LLButton::Params p;
-	bool make_small_btn = form_element["index"].asInteger() == -1 || form_element["index"].asInteger() == -2;
-	const LLFontGL* font = make_small_btn ? sFontSmall: sFont; // for block and ignore buttons in script dialog
+	//BD
+	//bool make_small_btn = form_element["index"].asInteger() == -1 || form_element["index"].asInteger() == -2;
+	const LLFontGL* font = sFont; // for block and ignore buttons in script dialog
 	p.name = form_element["name"].asString();
 	p.label = form_element["text"].asString();
 	p.font = font;
@@ -101,19 +102,20 @@ LLButton* LLToastNotifyPanel::createButton(const LLSD& form_element, BOOL is_opt
 		p.image_color(LLUIColorTable::instance().getColor("ButtonCautionImageColor"));
 		p.image_color_disabled(LLUIColorTable::instance().getColor("ButtonCautionImageColor"));
 	}
-	// for the scriptdialog buttons we use fixed button size. This  is a limit!
+	// for the scriptdialog buttons we use fixed button size. This is a limit!
 	if (!mIsScriptDialog && font->getWidth(form_element["text"].asString()) > (BUTTON_WIDTH-2*HPAD))
 	{
 		p.rect.width = 1;
 		p.auto_resize = true;
 	}
-	else if (mIsScriptDialog && make_small_btn)
+	//BD
+	/*else if (mIsScriptDialog && make_small_btn)
 	{
 		// this is ignore button, make it smaller
 		p.rect.height = BTN_HEIGHT_SMALL;
 		p.rect.width = 1;
 		p.auto_resize = true;
-	}
+	}*/
 	LLButton* btn = LLUICtrlFactory::create<LLButton>(p);
 	mNumButtons++;
 	btn->autoResize();
@@ -186,13 +188,15 @@ void LLToastNotifyPanel::updateButtonsLayout(const std::vector<index_button_pair
 	if (mIsScriptDialog && ignore_btn != NULL)
 	{
 		LLRect ignore_btn_rect(ignore_btn->getRect());
-		S32 ignore_btn_left = max_width - ignore_btn_rect.getWidth();
+		//BD
+		S32 ignore_btn_left = max_width - ignore_btn_rect.getWidth() - 1;
 		ignore_btn_rect.setOriginAndSize(ignore_btn_left, BOTTOM_PAD,// always move ignore button at the bottom
 				ignore_btn_rect.getWidth(), ignore_btn_rect.getHeight());
 		ignore_btn->setRect(ignore_btn_rect);
 		ignore_btn_width = ignore_btn_rect.getWidth();
 		mControlPanel->addChild(ignore_btn, -1);
-		mute_btn_pad = 4 * HPAD; //only use a 4 * HPAD padding if an ignore button exists
+		//BD
+		mute_btn_pad = h_pad; //only use a 4 * HPAD padding if an ignore button exists
 	}
 
 	if (mIsScriptDialog && mute_btn != NULL)
