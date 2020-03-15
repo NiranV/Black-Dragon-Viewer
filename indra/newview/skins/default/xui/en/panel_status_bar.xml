@@ -30,7 +30,7 @@
         [weekday, datetime, slt], [day, datetime, slt] [month, datetime, slt] [year, datetime, slt]
     </panel.string>
     <chiclet_notification
-    follows="right|top|left"
+    follows="right|top"
     height="26"
     mouse_opaque="false"
     layout="topleft"
