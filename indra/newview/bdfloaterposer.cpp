@@ -625,8 +625,7 @@ void BDFloaterPoser::onJointRefresh()
 	if (!(avatar->getRegion() == gAgent.getRegion())) return;
 
 	//BD - Getting collision volumes and attachment points.
-	std::vector<std::string> joint_names, cv_names, attach_names;
-	avatar->getSortedJointNames(0, joint_names);
+	std::vector<std::string> cv_names, attach_names;
 	avatar->getSortedJointNames(1, cv_names);
 	avatar->getSortedJointNames(2, attach_names);
 
@@ -639,13 +638,13 @@ void BDFloaterPoser::onJointRefresh()
 	LLVector3 pos;
 	LLVector3 scale;
 	LLJoint* joint;
-	for (auto joint_name : joint_names)
+	for (S32 i = 0; (joint = avatar->getCharacterJoint(i)); ++i)
 	{
-		joint = avatar->getJoint(joint_name);
 		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
 		if (!joint)	continue;
 
 		LLSD row;
+		const std::string joint_name = joint->getName();
 		//BD - Show some categories to make it a bit easier finding out which
 		//     bone belongs where and what they might be for those who can't use
 		//     bone names.
