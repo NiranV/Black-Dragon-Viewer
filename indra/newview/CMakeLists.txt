@@ -132,6 +132,7 @@ set(viewer_SOURCE_FILES
     llaisapi.cpp
     llagent.cpp
     llagentaccess.cpp
+    llagentbenefits.cpp
     llagentcamera.cpp
     llagentdata.cpp
     llagentlanguage.cpp
@@ -187,7 +188,6 @@ set(viewer_SOURCE_FILES
     llcurrencyuimanager.cpp
     llcylinder.cpp
     lldateutil.cpp
-    lldaycyclemanager.cpp
     lldebugmessagebox.cpp
     lldebugview.cpp
     lldeferredsounds.cpp
@@ -210,7 +210,7 @@ set(viewer_SOURCE_FILES
     lldrawpoolwlsky.cpp
     lldynamictexture.cpp
     llemote.cpp
-    llenvmanager.cpp
+    llenvironment.cpp
     llestateinfomodel.cpp
     lleventnotifier.cpp
     lleventpoll.cpp
@@ -248,6 +248,7 @@ set(viewer_SOURCE_FILES
     llfloatercolorpicker.cpp
     llfloaterconversationlog.cpp
     llfloaterconversationpreview.cpp
+<<<<<<< HEAD
     llfloaterdeleteprefpreset.cpp
     llfloaterdeleteprefpreset.cpp
     llfloaterdestinations.cpp
@@ -256,10 +257,17 @@ set(viewer_SOURCE_FILES
     llfloatereditsky.cpp
     llfloatereditwater.cpp
     llfloaterenvironmentsettings.cpp
+=======
+    llfloaterdeleteprefpreset.cpp
+    llfloaterdestinations.cpp
+    llfloatereditextdaycycle.cpp
+    llfloaterenvironmentadjust.cpp
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
     llfloaterevent.cpp
     llfloaterexperiencepicker.cpp
     llfloaterexperienceprofile.cpp
     llfloaterexperiences.cpp
+    llfloaterfixedenvironment.cpp
     llfloaterfonttest.cpp
     llfloaterforgetuser.cpp
     llfloatergesture.cpp
@@ -291,6 +299,7 @@ set(viewer_SOURCE_FILES
     llfloatermodelpreview.cpp
     llfloatermodeluploadbase.cpp
     llfloatermyscripts.cpp
+    llfloatermyenvironment.cpp
     llfloaternamedesc.cpp
     llfloaternotificationsconsole.cpp
     llfloaternotificationstabbed.cpp
@@ -345,6 +354,7 @@ set(viewer_SOURCE_FILES
     llfolderviewmodelinventory.cpp
     llfollowcam.cpp
     llfriendcard.cpp
+    llflyoutcombobtn.cpp
     llgesturelistener.cpp
     llgesturemgr.cpp
     llgiveinventory.cpp
@@ -392,6 +402,7 @@ set(viewer_SOURCE_FILES
     lljoystickbutton.cpp
     lllandmarkactions.cpp
     lllandmarklist.cpp
+    lllegacyatmospherics.cpp
     lllistbrowser.cpp
     lllistcontextmenu.cpp
     lllistview.cpp
@@ -446,7 +457,10 @@ set(viewer_SOURCE_FILES
     llpanelavatartag.cpp
     llpanelblockedlist.cpp
     llpanelcontents.cpp
+    llpaneleditsky.cpp
+    llpaneleditwater.cpp
     llpaneleditwearable.cpp
+    llpanelenvironment.cpp
     llpanelexperiencelisteditor.cpp
     llpanelexperiencelog.cpp
     llpanelexperiencepicker.cpp
@@ -454,6 +468,7 @@ set(viewer_SOURCE_FILES
     llpanelface.cpp
     llpanelgenerictip.cpp
     llpanelgroup.cpp
+    llpanelgroupcreate.cpp
     llpanelgroupbulk.cpp
     llpanelgroupbulkban.cpp
     llpanelgroupexperiences.cpp
@@ -558,6 +573,8 @@ set(viewer_SOURCE_FILES
     llsecapi.cpp
     llsechandler_basic.cpp
     llselectmgr.cpp
+    llsettingspicker.cpp
+    llsettingsvo.cpp
     llshareavatarhandler.cpp
     llsidepanelappearance.cpp
     llsidepanelinventory.cpp
@@ -622,6 +639,7 @@ set(viewer_SOURCE_FILES
     lltoolselectland.cpp
     lltoolselectrect.cpp
     lltracker.cpp
+    lltrackpicker.cpp
     lltransientdockablefloater.cpp
     lltransientfloatermgr.cpp
     lltranslate.cpp
@@ -714,19 +732,13 @@ set(viewer_SOURCE_FILES
     llvowater.cpp
     llvowlsky.cpp
     llwatchdog.cpp
-    llwaterparammanager.cpp
-    llwaterparamset.cpp
     llwearableitemslist.cpp
     llwearablelist.cpp
     llweb.cpp
     llwebprofile.cpp
     llwind.cpp
     llwindowlistener.cpp
-    llwlanimator.cpp
-    llwldaycycle.cpp
     llwlhandlers.cpp
-    llwlparammanager.cpp
-    llwlparamset.cpp
     llworld.cpp
     llworldmap.cpp
     llworldmapmessage.cpp
@@ -776,6 +788,7 @@ set(viewer_HEADER_FILES
     llaisapi.h
     llagent.h
     llagentaccess.h
+    llagentbenefits.h
     llagentcamera.h
     llagentdata.h
     llagentlanguage.h
@@ -832,7 +845,6 @@ set(viewer_HEADER_FILES
     llcurrencyuimanager.h
     llcylinder.h
     lldateutil.h
-    lldaycyclemanager.h
     lldebugmessagebox.h
     lldebugview.h
     lldeferredsounds.h
@@ -855,7 +867,7 @@ set(viewer_HEADER_FILES
     lldrawpoolwlsky.h
     lldynamictexture.h
     llemote.h
-    llenvmanager.h
+    llenvironment.h
     llestateinfomodel.h
     lleventnotifier.h
     lleventpoll.h
@@ -895,15 +907,21 @@ set(viewer_HEADER_FILES
     llfloaterconversationpreview.h
     llfloaterdeleteprefpreset.h
     llfloaterdestinations.h
+<<<<<<< HEAD
     llfloaterdisplayname.h
     llfloatereditdaycycle.h
     llfloatereditsky.h
     llfloatereditwater.h
     llfloaterenvironmentsettings.h
+=======
+    llfloatereditextdaycycle.h
+    llfloaterenvironmentadjust.h
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
     llfloaterevent.h
     llfloaterexperiencepicker.h
     llfloaterexperienceprofile.h
     llfloaterexperiences.h
+    llfloaterfixedenvironment.h
     llfloaterfonttest.h
     llfloaterforgetuser.h
     llfloatergesture.h
@@ -938,6 +956,7 @@ set(viewer_HEADER_FILES
     llfloatermodelpreview.h
     llfloatermodeluploadbase.h
     llfloatermyscripts.h
+    llfloatermyenvironment.h
     llfloaternamedesc.h
     llfloaternotificationsconsole.h
     llfloaternotificationstabbed.h
@@ -992,6 +1011,7 @@ set(viewer_HEADER_FILES
     llfolderviewmodelinventory.h
     llfollowcam.h
     llfriendcard.h
+    llflyoutcombobtn.h
     llgesturelistener.h
     llgesturemgr.h
     llgiveinventory.h
@@ -1083,7 +1103,10 @@ set(viewer_HEADER_FILES
     llpanelavatartag.h
     llpanelblockedlist.h
     llpanelcontents.h
+    llpaneleditsky.h
+    llpaneleditwater.h
     llpaneleditwearable.h
+    llpanelenvironment.h
     llpanelexperiencelisteditor.h
     llpanelexperiencelog.h
     llpanelexperiencepicker.h
@@ -1091,6 +1114,7 @@ set(viewer_HEADER_FILES
     llpanelface.h
     llpanelgenerictip.h
     llpanelgroup.h
+    llpanelgroupcreate.h
     llpanelgroupbulk.h
     llpanelgroupbulkimpl.h
     llpanelgroupbulkban.h
@@ -1194,6 +1218,8 @@ set(viewer_HEADER_FILES
     llsecapi.h
     llsechandler_basic.h
     llselectmgr.h
+    llsettingspicker.h
+    llsettingsvo.h
     llsidepanelappearance.h
     llsidepanelinventory.h
     llsidepanelinventorysubpanel.h
@@ -1259,6 +1285,7 @@ set(viewer_HEADER_FILES
     lltoolselectland.h
     lltoolselectrect.h
     lltracker.h
+    lltrackpicker.h
     lltransientdockablefloater.h
     lltransientfloatermgr.h
     lltranslate.h
@@ -1352,19 +1379,13 @@ set(viewer_HEADER_FILES
     llvowater.h
     llvowlsky.h
     llwatchdog.h
-    llwaterparammanager.h
-    llwaterparamset.h
     llwearableitemslist.h
     llwearablelist.h
     llweb.h
     llwebprofile.h
     llwind.h
     llwindowlistener.h
-    llwlanimator.h
-    llwldaycycle.h
     llwlhandlers.h
-    llwlparammanager.h
-    llwlparamset.h
     llworld.h
     llworldmap.h
     llworldmapmessage.h
@@ -2165,8 +2186,13 @@ if (DARWIN)
   set(MACOSX_BUNDLE_BUNDLE_NAME "BlackDragon")
   set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
   set(MACOSX_BUNDLE_BUNDLE_VERSION "${VIEWER_SHORT_VERSION}${VIEWER_MACOSX_PHASE}${VIEWER_REVISION}")
+<<<<<<< HEAD
   set(MACOSX_BUNDLE_COPYRIGHT "Copyright © Linden Research, Inc. 2018")
   set(MACOSX_BUNDLE_NSMAIN_NIB_FILE "BlackDragon.nib")
+=======
+  set(MACOSX_BUNDLE_COPYRIGHT "Copyright © Linden Research, Inc. 2019")
+  set(MACOSX_BUNDLE_NSMAIN_NIB_FILE "SecondLife.nib")
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
   set(MACOSX_BUNDLE_NSPRINCIPAL_CLASS "LLApplication")
 
   # https://blog.kitware.com/upcoming-in-cmake-2-8-12-osx-rpath-support/
@@ -2574,7 +2600,6 @@ if (LL_TESTS)
 include(LLAddBuildTest)
 SET(viewer_TEST_SOURCE_FILES
   llagentaccess.cpp
-  llwlparammanager.cpp
   )
 set_source_files_properties(
   ${viewer_TEST_SOURCE_FILES}

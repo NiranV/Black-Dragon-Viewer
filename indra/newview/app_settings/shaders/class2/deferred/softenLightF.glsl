@@ -1,5 +1,5 @@
 /** 
- * @file softenLightF.glsl
+ * @file class2/deferred/softenLightF.glsl
  *
  * $LicenseInfo:firstyear=2007&license=viewerlgpl$
  * Second Life Viewer Source Code
@@ -22,8 +22,9 @@
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
- 
+
 #extension GL_ARB_texture_rectangle : enable
+#extension GL_ARB_shader_texture_lod : enable
 
 /*[EXTRA_CODE_HERE]*/
 
@@ -39,7 +40,7 @@ uniform sampler2DRect normalMap;
 uniform sampler2DRect lightMap;
 uniform sampler2DRect depthMap;
 uniform samplerCube environmentMap;
-uniform sampler2D	  lightFunc;
+uniform sampler2D     lightFunc;
 
 uniform float blur_size;
 uniform float blur_fidelity;
@@ -67,159 +68,32 @@ uniform float res_scale;
 uniform float chroma_str;
 
 // Inputs
-uniform vec4 morphFactor;
-uniform vec3 camPosLocal;
-//uniform vec4 camPosWorld;
-uniform vec4 gamma;
-uniform vec4 lightnorm;
-uniform vec4 sunlight_color;
-uniform vec4 ambient;
-uniform vec4 blue_horizon;
-uniform vec4 blue_density;
-uniform float haze_horizon;
-uniform float haze_density;
-uniform float cloud_shadow;
-uniform float density_multiplier;
-uniform float distance_multiplier;
-uniform float max_y;
-uniform vec4 glow;
-uniform float global_gamma;
-uniform float scene_light_strength;
 uniform mat3 env_mat;
+<<<<<<< HEAD
 uniform vec4 shadow_clip;
 uniform float ssao_effect;
+=======
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 uniform vec3 sun_dir;
+uniform vec3 moon_dir;
+uniform int sun_up_factor;
 VARYING vec2 vary_fragcoord;
-
-vec3 vary_PositionEye;
-
-vec3 vary_SunlitColor;
-vec3 vary_AmblitColor;
-vec3 vary_AdditiveColor;
-vec3 vary_AtmosAttenuation;
 
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
 
-vec3 srgb_to_linear(vec3 cs)
-{
-	vec3 low_range = cs / vec3(12.92);
-	vec3 high_range = pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
-	bvec3 lte = lessThanEqual(cs,vec3(0.04045));
+vec3 getNorm(vec2 pos_screen);
+vec4 getPositionWithDepth(vec2 pos_screen, float depth);
 
-#ifdef OLD_SELECT
-	vec3 result;
-	result.r = lte.r ? low_range.r : high_range.r;
-	result.g = lte.g ? low_range.g : high_range.g;
-	result.b = lte.b ? low_range.b : high_range.b;
-    return result;
-#else
-	return mix(high_range, low_range, lte);
-#endif
+void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, out vec3 sunlit, out vec3 amblit, out vec3 additive, out vec3 atten, bool use_ao);
+float getAmbientClamp();
+vec3 atmosFragLighting(vec3 l, vec3 additive, vec3 atten);
+vec3 scaleSoftClipFrag(vec3 l);
+vec3 fullbrightAtmosTransportFrag(vec3 light, vec3 additive, vec3 atten);
+vec3 fullbrightScaleSoftClip(vec3 light);
 
-}
-
-vec3 linear_to_srgb(vec3 cl)
-{
-	cl = clamp(cl, vec3(0), vec3(1));
-	vec3 low_range  = cl * 12.92;
-	vec3 high_range = 1.055 * pow(cl, vec3(0.41666)) - 0.055;
-	bvec3 lt = lessThan(cl,vec3(0.0031308));
-
-#ifdef OLD_SELECT
-	vec3 result;
-	result.r = lt.r ? low_range.r : high_range.r;
-	result.g = lt.g ? low_range.g : high_range.g;
-	result.b = lt.b ? low_range.b : high_range.b;
-    return result;
-#else
-	return mix(high_range, low_range, lt);
-#endif
-
-}
-
-vec2 encode_normal(vec3 n)
-{
-	float f = sqrt(8 * n.z + 8);
-	return n.xy / f + 0.5;
-}
-
-vec3 decode_normal (vec2 enc)
-{
-    vec2 fenc = enc*4-2;
-    float f = dot(fenc,fenc);
-    float g = sqrt(1-f/4);
-    vec3 n;
-    n.xy = fenc*g;
-    n.z = 1-f/2;
-    return n;
-}
-
-vec4 getPosition_d(vec2 pos_screen, float depth)
-{
-	vec2 sc = pos_screen.xy*2.0;
-	sc /= screen_res;
-	sc -= vec2(1.0,1.0);
-	vec4 ndc = vec4(sc.x, sc.y, 2.0*depth-1.0, 1.0);
-	vec4 pos = inv_proj * ndc;
-	pos /= pos.w;
-	pos.w = 1.0;
-	return pos;
-}
-
-vec4 getPosition(vec2 pos_screen)
-{ //get position in screen space (world units) given window coordinate and depth map
-	float depth = texture2DRect(depthMap, pos_screen.xy).r;
-	return getPosition_d(pos_screen, depth);
-}
-
-vec3 getPositionEye()
-{
-	return vary_PositionEye;
-}
-vec3 getSunlitColor()
-{
-	return vary_SunlitColor;
-}
-vec3 getAmblitColor()
-{
-	return vary_AmblitColor;
-}
-vec3 getAdditiveColor()
-{
-	return vary_AdditiveColor;
-}
-vec3 getAtmosAttenuation()
-{
-	return vary_AtmosAttenuation;
-}
-
-void setPositionEye(vec3 v)
-{
-	vary_PositionEye = v;
-}
-
-void setSunlitColor(vec3 v)
-{
-	vary_SunlitColor = v;
-}
-
-void setAmblitColor(vec3 v)
-{
-	vary_AmblitColor = v;
-}
-
-void setAdditiveColor(vec3 v)
-{
-	vary_AdditiveColor = v;
-}
-
-void setAtmosAttenuation(vec3 v)
-{
-	vary_AtmosAttenuation = v;
-}
-
+<<<<<<< HEAD
 float rand(vec2 co)
 {
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -304,53 +178,16 @@ void calcAtmospherics(vec3 inPositionEye, float ambFactor) {
 	setAmblitColor(vec3(tmpAmbient * .25));
 	setAdditiveColor(getAdditiveColor() * vec3(1.0 - temp1));
 }
+=======
+vec3 linear_to_srgb(vec3 c);
+vec3 srgb_to_linear(vec3 c);
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 #ifdef WATER_FOG
-uniform vec4 waterPlane;
-uniform vec4 waterFogColor;
-uniform float waterFogDensity;
-uniform float waterFogKS;
-
-vec4 applyWaterFogDeferred(vec3 pos, vec4 color)
-{
-	//normalize view vector
-	vec3 view = normalize(pos);
-	float es = -(dot(view, waterPlane.xyz));
-
-	//find intersection point with water plane and eye vector
-	
-	//get eye depth
-	float e0 = max(-waterPlane.w, 0.0);
-	
-	vec3 int_v = waterPlane.w > 0.0 ? view * waterPlane.w/es : vec3(0.0, 0.0, 0.0);
-	
-	//get object depth
-	float depth = length(pos - int_v);
-		
-	//get "thickness" of water
-	float l = max(depth, 0.1);
-
-	float kd = waterFogDensity;
-	float ks = waterFogKS;
-	vec4 kc = waterFogColor;
-	
-	float F = 0.98;
-	
-	float t1 = -kd * pow(F, ks * e0);
-	float t2 = kd + ks * es;
-	float t3 = pow(F, t2*l) - 1.0;
-	
-	float L = min(t1/t2*t3, 1.0);
-	
-	float D = pow(0.98, l*kd);
-	
-	color.rgb = color.rgb * D + kc.rgb * L;
-	color.a = kc.a + color.a;
-	
-	return color;
-}
+vec4 applyWaterFogView(vec3 pos, vec4 color);
 #endif
 
+<<<<<<< HEAD
 vec3 atmosLighting(vec3 light)
 {
 	light *= getAtmosAttenuation().r;
@@ -662,3 +499,130 @@ void main()
 	frag_color.rgb = col;
 	frag_color.a = bloom;
 }
+=======
+void main() 
+{
+    vec2 tc = vary_fragcoord.xy;
+    float depth = texture2DRect(depthMap, tc.xy).r;
+    vec4 pos = getPositionWithDepth(tc, depth);
+    vec4 norm = texture2DRect(normalMap, tc);
+    float envIntensity = norm.z;
+    norm.xyz = getNorm(tc);
+    
+    vec3 light_dir = (sun_up_factor == 1) ? sun_dir : moon_dir;
+    float da = clamp(dot(norm.xyz, light_dir.xyz), 0.0, 1.0);
+    float light_gamma = 1.0/1.3;
+    da = pow(da, light_gamma);
+    
+    vec4 diffuse = texture2DRect(diffuseRect, tc);
+    
+    vec4 spec = texture2DRect(specularRect, vary_fragcoord.xy);
+
+    vec2 scol_ambocc = texture2DRect(lightMap, vary_fragcoord.xy).rg;
+    scol_ambocc = pow(scol_ambocc, vec2(light_gamma));
+
+    float scol = max(scol_ambocc.r, diffuse.a); 
+
+    float ambocc = scol_ambocc.g;
+
+    vec3 color = vec3(0);
+    float bloom = 0.0;
+    {
+        vec3 sunlit;
+        vec3 amblit;
+        vec3 additive;
+        vec3 atten;
+    
+        calcAtmosphericVars(pos.xyz, light_dir, ambocc, sunlit, amblit, additive, atten, true);
+
+        color.rgb = amblit;
+
+        float ambient = min(abs(dot(norm.xyz, sun_dir.xyz)), 1.0);
+        ambient *= 0.5;
+        ambient *= ambient;
+        ambient = (1.0 - ambient);
+
+        color.rgb *= ambient;
+
+        vec3 sun_contrib = min(da, scol) * sunlit;
+
+        color.rgb += sun_contrib;
+
+        color.rgb *= diffuse.rgb;
+
+        vec3 refnormpersp = normalize(reflect(pos.xyz, norm.xyz));
+
+        if (spec.a > 0.0) // specular reflection
+        {
+
+#if 1 //EEP
+            vec3 npos = -normalize(pos.xyz);
+
+            //vec3 ref = dot(pos+lv, norm);
+            vec3 h = normalize(light_dir.xyz+npos);
+            float nh = dot(norm.xyz, h);
+            float nv = dot(norm.xyz, npos);
+            float vh = dot(npos, h);
+            float sa = nh;
+            float fres = pow(1 - dot(h, npos), 5)*0.4+0.5;
+
+            float gtdenom = 2 * nh;
+            float gt = max(0, min(gtdenom * nv / vh, gtdenom * da / vh));
+            
+            if (nh > 0.0)
+            {
+                float scontrib = fres*texture2D(lightFunc, vec2(nh, spec.a)).r*gt/(nh*da);
+                vec3 sp = sun_contrib*scontrib / 6.0;
+                sp = clamp(sp, vec3(0), vec3(1));
+                bloom += dot(sp, sp) / 4.0;
+                color += sp * spec.rgb;
+            }
+#else //PRODUCTION
+            float sa = dot(refnormpersp, light_dir.xyz);
+            vec3 dumbshiny = sunlit*(texture2D(lightFunc, vec2(sa, spec.a)).r);
+            
+            // add the two types of shiny together
+            vec3 spec_contrib = dumbshiny * spec.rgb;
+            bloom = dot(spec_contrib, spec_contrib) / 6;
+            color.rgb += spec_contrib;
+#endif
+
+        }
+       
+       color.rgb = mix(color.rgb, diffuse.rgb, diffuse.a);
+
+        if (envIntensity > 0.0)
+        { //add environmentmap
+            vec3 env_vec = env_mat * refnormpersp;
+            vec3 reflected_color = textureCube(environmentMap, env_vec).rgb;
+            color = mix(color.rgb, reflected_color, envIntensity);
+        }
+       
+        if (norm.w < 0.5)
+        {
+            color = mix(atmosFragLighting(color, additive, atten), fullbrightAtmosTransportFrag(color, additive, atten), diffuse.a);
+            color = mix(scaleSoftClipFrag(color), fullbrightScaleSoftClip(color), diffuse.a);
+        }
+
+        #ifdef WATER_FOG
+            vec4 fogged = applyWaterFogView(pos.xyz,vec4(color, bloom));
+            color = fogged.rgb;
+            bloom = fogged.a;
+        #endif
+
+    }
+
+// linear debuggables
+//color.rgb = vec3(final_da);
+//color.rgb = vec3(ambient);
+//color.rgb = vec3(scol);
+//color.rgb = diffuse_srgb.rgb;
+
+    // convert to linear as fullscreen lights need to sum in linear colorspace
+    // and will be gamma (re)corrected downstream...
+    
+    frag_color.rgb = srgb_to_linear(color.rgb);
+    frag_color.a = bloom;
+}
+
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762

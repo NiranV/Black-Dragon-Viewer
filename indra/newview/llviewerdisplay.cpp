@@ -74,13 +74,13 @@
 #include "llviewerregion.h"
 #include "lldrawpoolwater.h"
 #include "lldrawpoolbump.h"
-#include "llwlparammanager.h"
-#include "llwaterparammanager.h"
 #include "llpostprocess.h"
 #include "llscenemonitor.h"
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
 #include "rlvlocks.h"
 // [/RLVa:KB]
+
+#include "llenvironment.h"
 
 extern LLPointer<LLViewerTexture> gStartTexture;
 extern bool gShiftFrame;
@@ -97,6 +97,7 @@ BOOL gForceRenderLandFence = FALSE;
 BOOL gDisplaySwapBuffers = FALSE;
 BOOL gDepthDirty = FALSE;
 BOOL gResizeScreenTexture = FALSE;
+BOOL gResizeShadowTexture = FALSE;
 BOOL gWindowResized = FALSE;
 BOOL gSnapshot = FALSE;
 BOOL gShaderProfileFrame = FALSE;
@@ -134,9 +135,6 @@ void display_startup()
 
 	gPipeline.updateGL();
 
-	// Update images?
-	//gImageList.updateImages(0.01f);
-	
 	// Written as branch to appease GCC which doesn't like different
 	// pointer types across ternary ops
 	//
@@ -205,10 +203,13 @@ void display_update_camera()
 	viewer_cam->setFar(final_far);
 	gViewerWindow->setup3DRender();
 	
+<<<<<<< HEAD
 	// update all the sky/atmospheric/water settings
 	LLWLParamManager::getInstance()->update(viewer_cam);
 	LLWaterParamManager::getInstance()->update(viewer_cam);
 
+=======
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	// Update land visibility too
 	LLWorld::getInstance()->setLandFarClip(final_far);
 }
@@ -255,6 +256,7 @@ static LLTrace::BlockTimerStatHandle FTM_HUD_UPDATE("HUD Update");
 static LLTrace::BlockTimerStatHandle FTM_DISPLAY_UPDATE_GEOM("Update Geom");
 static LLTrace::BlockTimerStatHandle FTM_TEXTURE_UNBIND("Texture Unbind");
 static LLTrace::BlockTimerStatHandle FTM_TELEPORT_DISPLAY("Teleport Display");
+static LLTrace::BlockTimerStatHandle FTM_EEP_UPDATE("Env Update");
 
 // Paint the display!
 void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
@@ -274,10 +276,18 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		return;
 	}
 
+<<<<<<< HEAD
 	//BD
 	LLAppViewer* app_viewer = LLAppViewer::instance();
 	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
 	LLSceneMonitor* scene_monitor = LLSceneMonitor::getInstance();
+=======
+    if (gResizeShadowTexture)
+	{ //skip render on frames where window has been resized
+		gPipeline.resizeShadowTexture();
+		gResizeShadowTexture = FALSE;
+	}
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	if (LLPipeline::sRenderDeferred)
 	{ //hack to make sky show up in deferred snapshots
@@ -566,8 +576,12 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 	if (gDisconnected)
 	{
+<<<<<<< HEAD
 		app_viewer->pingMainloopTimeout("Display:Disconnected");
 		LL_RECORD_BLOCK_TIME(FTM_RENDER_UI);
+=======
+		LLAppViewer::instance()->pingMainloopTimeout("Display:Disconnected");
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		render_ui();
 		swap();
 	}
@@ -632,6 +646,12 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		display_update_camera();
 		stop_glerror();
 				
+		{
+			LL_RECORD_BLOCK_TIME(FTM_EEP_UPDATE);
+            // update all the sky/atmospheric/water settings
+            LLEnvironment::instance().update(LLViewerCamera::getInstance());
+		}
+
 		// *TODO: merge these two methods
 		{
 			LL_RECORD_BLOCK_TIME(FTM_HUD_UPDATE);
@@ -656,7 +676,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		//BD
 		bool under_water = viewer_cam->cameraUnderWater();
 		S32 water_clip = 0;
-		if ((LLViewerShaderMgr::instance()->getVertexShaderLevel(LLViewerShaderMgr::SHADER_ENVIRONMENT) > 1) &&
+		if ((LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_ENVIRONMENT) > 1) &&
 			 (gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_WATER) || 
 			  gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_VOIDWATER)))
 		{
@@ -734,8 +754,8 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 				LLGLState::checkTextureChannels();
 				LLGLState::checkClientArrays();
 
-				glh::matrix4f proj = glh_get_current_projection();
-				glh::matrix4f mod = glh_get_current_modelview();
+				glh::matrix4f proj = get_current_projection();
+				glh::matrix4f mod = get_current_modelview();
 				glViewport(0,0,512,512);
 				LLVOAvatar::updateFreezeCounter() ;
 
@@ -744,8 +764,8 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 					LLVOAvatar::updateImpostors();
 				}
 
-				glh_set_current_projection(proj);
-				glh_set_current_modelview(mod);
+				set_current_projection(proj);
+				set_current_modelview(mod);
 				gGL.matrixMode(LLRender::MM_PROJECTION);
 				gGL.loadMatrix(proj.m);
 				gGL.matrixMode(LLRender::MM_MODELVIEW);
@@ -903,7 +923,11 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		//	gGL.popMatrix();
 		//}
 
+<<<<<<< HEAD
 		LLPipeline::sUnderWaterRender = under_water;
+=======
+		LLPipeline::sUnderWaterRender = LLViewerCamera::getInstance()->cameraUnderWater() ? TRUE : FALSE;
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 		LLGLState::checkStates();
 		LLGLState::checkClientArrays();
@@ -925,7 +949,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 				gPipeline.mScreen.bindTarget();
 				if (under_water && !gPipeline.canUseWindLightShaders())
 				{
-					const LLColor4 &col = LLDrawPoolWater::sWaterFogColor;
+					const LLColor4 &col = LLEnvironment::instance().getCurrentWater()->getWaterFogColor();
 					glClearColor(col.mV[0], col.mV[1], col.mV[2], 0.f);
 				}
 				gPipeline.mScreen.clear();
@@ -1029,7 +1053,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 		if (LLPipeline::sRenderDeferred)
 		{
-			gPipeline.renderDeferredLighting();
+			gPipeline.renderDeferredLighting(&gPipeline.mScreen);
 		}
 
 		stop_glerror();
@@ -1044,7 +1068,6 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		app_viewer->pingMainloopTimeout("Display:RenderUI");
 		if (!for_snapshot)
 		{
-			LL_RECORD_BLOCK_TIME(FTM_RENDER_UI);
 			render_ui();
 			swap();
 		}
@@ -1086,8 +1109,8 @@ void render_hud_attachments()
 	gGL.matrixMode(LLRender::MM_MODELVIEW);
 	gGL.pushMatrix();
 		
-	glh::matrix4f current_proj = glh_get_current_projection();
-	glh::matrix4f current_mod = glh_get_current_modelview();
+	glh::matrix4f current_proj = get_current_projection();
+	glh::matrix4f current_mod = get_current_modelview();
 
 	// clamp target zoom level to reasonable values
 //	gAgentCamera.mHUDTargetZoom = llclamp(gAgentCamera.mHUDTargetZoom, 0.1f, 1.f);
@@ -1183,8 +1206,8 @@ void render_hud_attachments()
 	gGL.matrixMode(LLRender::MM_MODELVIEW);
 	gGL.popMatrix();
 	
-	glh_set_current_projection(current_proj);
-	glh_set_current_modelview(current_mod);
+	set_current_projection(current_proj);
+	set_current_modelview(current_mod);
 }
 
 LLRect get_whole_screen_region()
@@ -1266,30 +1289,37 @@ bool setup_hud_matrices(const LLRect& screen_region)
 	// set up transform to keep HUD objects in front of camera
 	gGL.matrixMode(LLRender::MM_PROJECTION);
 	gGL.loadMatrix(proj.m);
-	glh_set_current_projection(proj);
+	set_current_projection(proj);
 	
 	gGL.matrixMode(LLRender::MM_MODELVIEW);
 	gGL.loadMatrix(model.m);
-	glh_set_current_modelview(model);
+	set_current_modelview(model);
 	return TRUE;
 }
 
 void render_ui(F32 zoom_factor, int subfield)
 {
+    LL_RECORD_BLOCK_TIME(FTM_RENDER_UI);
+
 	LLGLState::checkStates();
 	
+<<<<<<< HEAD
 	glh::matrix4f saved_view = glh_get_current_modelview();
 	LLSceneMonitor* scene_monitor = LLSceneMonitor::getInstance();
+=======
+	glh::matrix4f saved_view = get_current_modelview();
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	if (!gSnapshot)
 	{
 		gGL.pushMatrix();
 		gGL.loadMatrix(gGLLastModelView);
-		glh_set_current_modelview(glh_copy_matrix(gGLLastModelView));
+		set_current_modelview(copy_matrix(gGLLastModelView));
 	}
 	
 	if(scene_monitor->needsUpdate())
 	{
+        LL_RECORD_BLOCK_TIME(FTM_RENDER_UI_SCENE_MON);
 		gGL.pushMatrix();
 		gViewerWindow->setup2DRender();
 		scene_monitor->compare();
@@ -1307,7 +1337,7 @@ void render_ui(F32 zoom_factor, int subfield)
 		{
 			gPipeline.renderBloom(gSnapshot, zoom_factor, subfield);
 		}
-
+		
 		LL_RECORD_BLOCK_TIME(FTM_RENDER_HUD);
 		render_hud_elements();
 		render_hud_attachments();
@@ -1325,16 +1355,19 @@ void render_ui(F32 zoom_factor, int subfield)
 		{
 			if (!gDisconnected)
 			{
+                LL_RECORD_BLOCK_TIME(FTM_RENDER_UI_3D);
 				render_ui_3d();
 				LLGLState::checkStates();
 			}
 
+            LL_RECORD_BLOCK_TIME(FTM_RENDER_UI_2D);
 			render_ui_2d();
 			LLGLState::checkStates();
 		}
 		gGL.flush();
 
 		{
+            LL_RECORD_BLOCK_TIME(FTM_RENDER_UI_DEBUG_TEXT);
 			gViewerWindow->setup2DRender();
 			gViewerWindow->updateDebugText();
 			gViewerWindow->drawDebugText();
@@ -1345,7 +1378,7 @@ void render_ui(F32 zoom_factor, int subfield)
 
 	if (!gSnapshot)
 	{
-		glh_set_current_modelview(saved_view);
+		set_current_modelview(saved_view);
 		gGL.popMatrix();
 	}
 }

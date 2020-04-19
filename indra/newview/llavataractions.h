@@ -252,6 +252,7 @@ public:
 	 */
 	static void viewChatHistory(const LLUUID& id);
 
+<<<<<<< HEAD
 	//BD
 	/**
 	* Reports the selected avatar
@@ -259,6 +260,9 @@ public:
 	static void report(const LLUUID& id);
 
 	static std::set<LLUUID> getInventorySelectedUUIDs();
+=======
+	static std::set<LLUUID> getInventorySelectedUUIDs(LLInventoryPanel* active_panel = NULL);
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	//BD - Empower someone with rights or revoke them.
 	static void empowerFriend(const LLUUID& id, S32 power);

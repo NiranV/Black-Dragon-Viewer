@@ -142,7 +142,23 @@ protected:
 	void onDoNotDisturbResponseChanged();
 	// callback for defaults
 	void setHardwareDefaults();
+<<<<<<< HEAD
 	
+=======
+	void setRecommended();
+	// callback for when client modifies a render option
+    void onRenderOptionEnable();
+	// callback for when client turns on impostors
+	void onAvatarImpostorsEnable();
+
+	// callback for commit in the "Single click on land" and "Double click on land" comboboxes.
+	void onClickActionChange();
+	// updates click/double-click action settings depending on controls values
+	void updateClickActionSettings();
+	// updates click/double-click action controls depending on values from settings.xml
+	void updateClickActionControls();
+
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 public:
 	// This function squirrels away the current values of the controls so that
 	// cancel() can restore them.	
@@ -477,6 +493,46 @@ private:
 	LOG_CLASS(LLPanelPreferenceGraphics);
 };
 
+<<<<<<< HEAD
+=======
+class LLFloaterPreferenceGraphicsAdvanced : public LLFloater
+{
+  public: 
+	LLFloaterPreferenceGraphicsAdvanced(const LLSD& key);
+	~LLFloaterPreferenceGraphicsAdvanced();
+	/*virtual*/ BOOL postBuild();
+	void onOpen(const LLSD& key);
+	void onClickCloseBtn(bool app_quitting);
+	void disableUnavailableSettings();
+	void refreshEnabledGraphics();
+	void refreshEnabledState();
+	void updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box);
+	void updateMaxNonImpostors();
+	void setMaxNonImpostorsText(U32 value, LLTextBox* text_box);
+	void updateMaxComplexity();
+	void setMaxComplexityText(U32 value, LLTextBox* text_box);
+	static void setIndirectControls();
+	static void setIndirectMaxNonImpostors();
+	static void setIndirectMaxArc();
+	void refresh();
+	// callback for when client modifies a render option
+	void onRenderOptionEnable();
+    void onAdvancedAtmosphericsEnable();
+	LOG_CLASS(LLFloaterPreferenceGraphicsAdvanced);
+};
+
+class LLAvatarComplexityControls
+{
+  public: 
+	static void updateMax(LLSliderCtrl* slider, LLTextBox* value_label);
+	static void setText(U32 value, LLTextBox* text_box);
+	static void setIndirectControls();
+	static void setIndirectMaxNonImpostors();
+	static void setIndirectMaxArc();
+	LOG_CLASS(LLAvatarComplexityControls);
+};
+
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 class LLFloaterPreferenceProxy : public LLFloater
 {
 public: 

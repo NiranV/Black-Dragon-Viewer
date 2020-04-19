@@ -130,6 +130,7 @@ BOOL LLFastTimerView::postBuild()
 {
 	mPauseBtn = getChild<LLButton>("pause_btn");
 	mScrollBar = getChild<LLScrollbar>("scroll_vert");
+<<<<<<< HEAD
 
 	mLinesPanel = getChild<LLView>("lines_panel");
 	mLegendPanel = getChild<LLView>("legend");
@@ -139,6 +140,10 @@ BOOL LLFastTimerView::postBuild()
 	mMetricCombo = getChild<LLComboBox>("metric_combo");
 	
 	mPauseBtn->setCommitCallback(boost::bind(&LLFastTimerView::onPause, this));
+=======
+	
+	pause_btn.setCommitCallback(boost::bind(&LLFastTimerView::onPause, this));
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	return TRUE;
 }
 
@@ -365,6 +370,7 @@ BOOL LLFastTimerView::handleToolTip(S32 x, S32 y, MASK mask)
 
 BOOL LLFastTimerView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
+<<<<<<< HEAD
 	if (x < mBarRect.mLeft)
 	{
 		// Inside mScrollBar and list of timers
@@ -377,6 +383,20 @@ BOOL LLFastTimerView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 			0,
 			llmin((S32)mRecording.getNumRecordedPeriods(), (S32)mRecording.getNumRecordedPeriods() - MAX_VISIBLE_HISTORY));
 	}
+=======
+    if (x < mBarRect.mLeft)
+    {
+        // Inside mScrollBar and list of timers
+        mScrollBar->handleScrollWheel(x,y,clicks);
+    }
+    else
+    {
+	setPauseState(true);
+	mScrollIndex = llclamp(	mScrollIndex + clicks,
+							0,
+							llmin((S32)mRecording.getNumRecordedPeriods(), (S32)mRecording.getNumRecordedPeriods() - MAX_VISIBLE_HISTORY));
+    }
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	return TRUE;
 }
 

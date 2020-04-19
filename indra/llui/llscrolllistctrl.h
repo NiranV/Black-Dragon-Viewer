@@ -108,6 +108,10 @@ public:
 
 		// layout
 		Optional<S32>	column_padding,
+<<<<<<< HEAD
+=======
+						row_padding,
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 						page_lines,
 						heading_height;
 
@@ -293,8 +297,10 @@ public:
 
 	void setBackgroundVisible(BOOL b)			{ mBackgroundVisible = b; }
 	void setDrawStripes(BOOL b)					{ mDrawStripes = b; }
-	void setColumnPadding(const S32 c)          { mColumnPadding = c; }
-	S32  getColumnPadding()						{ return mColumnPadding; }
+	void setColumnPadding(const S32 c)			{ mColumnPadding = c; }
+	S32  getColumnPadding() const				{ return mColumnPadding; }
+	void setRowPadding(const S32 c)				{ mColumnPadding = c; }
+	S32  getRowPadding() const					{ return mColumnPadding; }
 	void setCommitOnKeyboardMovement(BOOL b)	{ mCommitOnKeyboardMovement = b; }
 	void setCommitOnSelectionChange(BOOL b)		{ mCommitOnSelectionChange = b; }
 	void setAllowKeyboardMovement(BOOL b)		{ mAllowKeyboardMovement = b; }
@@ -491,6 +497,7 @@ private:
 
 	LLRect			mItemListRect;
 	S32             mColumnPadding;
+	S32             mRowPadding;
 
 	BOOL			mBackgroundVisible;
 	BOOL			mDrawStripes;

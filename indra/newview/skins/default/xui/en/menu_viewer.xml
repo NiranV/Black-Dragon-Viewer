@@ -729,8 +729,8 @@
 
 	 <menu
          create_jump_keys="true"
-         label="Sun"
-         name="Sun"
+         label="Environment"
+         name="Environment"
          tear_off="true">
             <menu_item_call
              label="Sunrise"
@@ -770,6 +770,7 @@
                 <menu_item_call.on_click
                  function="World.EnvSettings"
                  parameter="midnight" />
+<<<<<<< HEAD
                 <menu_item_call.on_enable
                  function="RLV.EnableIfNot"
                  parameter="setenv" />
@@ -787,43 +788,105 @@
             </menu_item_call>
         </menu>
 
+=======
+                <menu_item_check.on_check
+                 function="World.EnableEnvSettings" 
+                 parameter="midnight" />
+            </menu_item_check>
+            <menu_item_check
+             label="Use Shared Environment"
+             name="Use Shared Environment">
+                <menu_item_check.on_click
+                 function="World.EnvSettings"
+                 parameter="region" />
+                <menu_item_check.on_check
+                 function="World.EnableEnvSettings" 
+                 parameter="region" />
+            </menu_item_check>
+        <menu_item_separator/>
+	     	<menu_item_call
+	     	 label="My Environments..."
+	     	 name="my_environs">
+	     	 	<menu_item_call.on_click
+	     	 	 function="World.EnvSettings"
+                 parameter="my_environs" />
+	     	</menu_item_call>
+	     	
+<menu_item_call
+	     	 	 label="Personal Lighting..."
+	     	 	 name="adjustment_tool">
+	     	 	 	<menu_item_call.on_click
+	     	 	 	function="World.EnvSettings"
+	     	 	 	parameter="adjust_tool" />
+	     	 	</menu_item_call>
+	     	 	<menu_item_separator/>
+	     	 	 <menu_item_check
+	     	 	 label="Pause Clouds"
+	     	 	 name="pause_clouds">
+	     	 	 	<menu_item_check.on_click
+	     	 	 	function="World.EnvSettings"
+	     	 	 	parameter="pause_clouds" />
+	     	 	 	<menu_item_check.on_check
+	     	 	 	function="World.EnableEnvSettings" 
+	     	 	 	parameter="pause_clouds" />
+	     	 	</menu_item_check>
+	     	</menu>
+	     	
+<!--   
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	    <menu
 	     create_jump_keys="true"
 	     label="Environment Editor"
 	     name="Environment Editor"
 	     tear_off="true">
+<<<<<<< HEAD
 	     	<menu_item_call
+=======
+	     	 	 		     	<menu_item_call
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	     	 label="Environment Settings..."
 	     	 name="Environment Settings">
-	     	 	<menu_item_call.on_click
+<menu_item_call.on_click
 	     	 	 function="World.EnvSettings"
                  parameter="editor"/>
           <menu_item_call.on_enable
            function="RLV.EnableIfNot"
            parameter="setenv" />
 	     	</menu_item_call>
+<<<<<<< HEAD
 
 	     	<menu_item_separator/>
 
 	     	<menu
+=======
+	     		     	<menu_item_separator/>
+<menu
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	     	 name="Water Presets"
 	     	 label="Water Presets">
-	     	 	<menu_item_call
-	     	 	 label="New preset..."
+<menu_item_call
+label="New preset..."
 	     	 	 name="new_water_preset">
-	     	 	 	<menu_item_call.on_click
-	     	 	 	function="World.EnvPreset"
+<menu_item_call.on_click
+function="World.EnvPreset"
 	     	 	 	parameter="new_water"/>
+<<<<<<< HEAD
             <menu_item_call.on_enable
             function="RLV.EnableIfNot"
             parameter="setenv" />
 	     	 	</menu_item_call>
 	     	 	<menu_item_call
 	     	 	 label="Edit preset..."
+=======
+</menu_item_call>
+<menu_item_call
+label="Edit preset..."
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	     	 	 name="edit_water_preset">
-	     	 	 	<menu_item_call.on_click
-	     	 	 	function="World.EnvPreset"
+<menu_item_call.on_click
+function="World.EnvPreset"
 	     	 	 	parameter="edit_water"/>
+<<<<<<< HEAD
             <menu_item_call.on_enable
             function="RLV.EnableIfNot"
             parameter="setenv" />
@@ -832,23 +895,36 @@
 
 	     	<menu
 	     	 name="Sky Presets"
+=======
+</menu_item_call>
+</menu>
+	     	 	 <menu
+name="Sky Presets"
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	     	 label="Sky Presets">
-	     	 	<menu_item_call
-	     	 	 label="New preset..."
+<menu_item_call
+label="New preset..."
 	     	 	 name="new_sky_preset">
-	     	 	 	<menu_item_call.on_click
-	     	 	 	function="World.EnvPreset"
+<menu_item_call.on_click
+function="World.EnvPreset"
 	     	 	 	parameter="new_sky"/>
+<<<<<<< HEAD
             <menu_item_call.on_enable
             function="RLV.EnableIfNot"
             parameter="setenv" />
           </menu_item_call>
 	     	 	<menu_item_call
 	     	 	 label="Edit preset..."
+=======
+</menu_item_call>
+<menu_item_call
+label="Edit preset..."
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	     	 	 name="edit_sky_preset">
-	     	 	 	<menu_item_call.on_click
-	     	 	 	function="World.EnvPreset"
+<menu_item_call.on_click
+function="World.EnvPreset"
 	     	 	 	parameter="edit_sky"/>
+<<<<<<< HEAD
             <menu_item_call.on_enable
             function="RLV.EnableIfNot"
             parameter="setenv" />
@@ -860,23 +936,36 @@
 
 	     	<menu
 	     	 name="Day Presets"
+=======
+</menu_item_call>
+</menu>
+<menu
+name="Day Presets"
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	     	 label="Day Presets">
-	     	 	<menu_item_call
-	     	 	 label="New preset..."
+<menu_item_call
+label="New preset..."
 	     	 	 name="new_day_preset">
-	     	 	 	<menu_item_call.on_click
-	     	 	 	function="World.EnvPreset"
+<menu_item_call.on_click
+function="World.EnvPreset"
 	     	 	 	parameter="new_day_cycle"/>
+<<<<<<< HEAD
             <menu_item_call.on_enable
             function="RLV.EnableIfNot"
             parameter="setenv" />
           </menu_item_call>
 	     	 	<menu_item_call
 	     	 	 label="Edit preset..."
+=======
+</menu_item_call>
+<menu_item_call
+label="Edit preset..."
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	     	 	 name="edit_day_preset">
-	     	 	 	<menu_item_call.on_click
-	     	 	 	function="World.EnvPreset"
+<menu_item_call.on_click
+function="World.EnvPreset"
 	     	 	 	parameter="edit_day_cycle"/>
+<<<<<<< HEAD
             <menu_item_call.on_enable
             function="RLV.EnableIfNot"
             parameter="setenv" />
@@ -886,6 +975,13 @@
           </menu_item_call>
 	     	</menu>
 	    </menu>
+=======
+</menu_item_call>
+</menu>
+</menu>
+-->    
+    
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
     </menu>
     <menu
      create_jump_keys="true"
@@ -1108,6 +1204,16 @@
 			<menu_item_call.on_enable
                function="Object.EnableReturn" />
           </menu_item_call>
+<<<<<<< HEAD
+=======
+          <menu_item_call
+           label="Duplicate"
+           name="DuplicateObject"
+           shortcut="control|D">
+            <menu_item_call.on_click
+               function="Object.Duplicate" />
+                      </menu_item_call>
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		</menu>
         <menu
            create_jump_keys="true"
@@ -1348,6 +1454,79 @@
                      parameter="perms_default" />
                 </menu_item_call>
         </menu>
+<<<<<<< HEAD
+=======
+        <menu
+         create_jump_keys="true"
+         label="Upload"
+         layout="topleft"
+         name="Upload"
+         tear_off="true">
+            <menu_item_call
+             label="Image (L$[COST])..."
+             layout="topleft"
+             name="Upload Image"
+             shortcut="control|U">
+                <menu_item_call.on_click
+                 function="File.UploadImage"
+                 parameter="" />
+                <menu_item_call.on_enable
+                 function="File.EnableUpload" />
+                <menu_item_call.on_visible
+                 function="Upload.CalculateCosts"
+                 parameter="Upload Image,texture" />
+            </menu_item_call>
+            <menu_item_call
+             label="Sound (L$[COST])..."
+             layout="topleft"
+             name="Upload Sound">
+                <menu_item_call.on_click
+                 function="File.UploadSound"
+                 parameter="" />
+                <menu_item_call.on_enable
+                 function="File.EnableUpload" />
+                <menu_item_call.on_visible
+                 function="Upload.CalculateCosts"
+                 parameter="Upload Sound,sound" />
+            </menu_item_call>
+            <menu_item_call
+             label="Animation (L$[COST])..."
+             layout="topleft"
+             name="Upload Animation">
+                <menu_item_call.on_click
+                 function="File.UploadAnim"
+                 parameter="" />
+                <menu_item_call.on_enable
+                 function="File.EnableUpload" />
+                <menu_item_call.on_visible
+                 function="Upload.CalculateCosts"
+                 parameter="Upload Animation,animation" />
+            </menu_item_call>
+            <menu_item_call
+           label="Model..."
+           layout="topleft"
+           name="Upload Model">
+            <menu_item_call.on_click
+             function="File.UploadModel"
+             parameter="" />
+            <menu_item_call.on_enable
+             function="File.EnableUploadModel" />
+            <menu_item_call.on_visible
+            function="File.VisibleUploadModel"/>
+            </menu_item_call>
+	   <menu_item_call
+             label="Bulk..."
+             layout="topleft"
+             name="Bulk Upload">
+                <menu_item_call.on_visible
+                 function="Upload.CalculateCosts"
+                 parameter="Bulk Upload,texture" />
+                <menu_item_call.on_click
+                 function="File.UploadBulk"
+                 parameter="" />
+            </menu_item_call>
+        </menu>
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
         <menu_item_separator/>
         <menu_item_call
          enabled="false"
@@ -2879,6 +3058,36 @@
                  function="ToggleControl"
                  parameter="TextureDisable" />
             </menu_item_check>
+            <menu_item_check
+              label="Disable Ambient"
+             name="Disable Ambient">
+            <menu_item_check.on_check
+             function="CheckControl"
+             parameter="AmbientDisable" />
+            <menu_item_check.on_click
+             function="ToggleShaderControl"
+             parameter="AmbientDisable" />
+          </menu_item_check>
+          <menu_item_check
+             label="Disable Sunlight"
+             name="Disable Sunlight">
+            <menu_item_check.on_check
+             function="CheckControl"
+             parameter="SunlightDisable" />
+            <menu_item_check.on_click
+             function="ToggleShaderControl"
+             parameter="SunlightDisable" />
+          </menu_item_check>
+          <menu_item_check
+             label="Disable Local Lights"
+             name="Disable Local Lights">
+            <menu_item_check.on_check
+             function="CheckControl"
+             parameter="LocalLightDisable" />
+            <menu_item_check.on_click
+             function="ToggleShaderControl"
+             parameter="LocalLightDisable" />
+          </menu_item_check>
             <menu_item_check
               label="Full Res Textures"
              name="Rull Res Textures">

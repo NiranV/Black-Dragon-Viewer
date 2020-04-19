@@ -22,7 +22,11 @@
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 /*[EXTRA_CODE_HERE]*/
 
 #ifdef DEFINE_GL_FRAGCOLOR
@@ -38,11 +42,7 @@ uniform sampler2D diffuseMap;
 VARYING vec3 vary_normal;
 VARYING vec2 vary_texcoord0;
 
-vec2 encode_normal(vec3 n)
-{
-	float f = sqrt(8 * n.z + 8);
-	return n.xy / f + 0.5;
-}
+vec2 encode_normal(vec3 n);
 
 void main() 
 {

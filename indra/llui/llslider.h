@@ -38,8 +38,7 @@ public:
 	{
 		Optional<std::string>	orientation;
 
-		Optional<LLUIColor>	track_color,
-							thumb_outline_color,
+		Optional<LLUIColor>	thumb_outline_color,
 							thumb_center_color;
 
 		Optional<LLUIImage*>	thumb_image,
@@ -120,7 +119,6 @@ private:
 	const EOrientation	mOrientation;
 
 	LLRect		mThumbRect;
-	LLUIColor	mTrackColor;
 	LLUIColor	mThumbOutlineColor;
 	LLUIColor	mThumbCenterColor;
 	

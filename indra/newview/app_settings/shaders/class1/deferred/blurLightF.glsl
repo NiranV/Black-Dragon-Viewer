@@ -33,9 +33,12 @@ out vec4 frag_color;
 #define frag_color gl_FragColor
 #endif
 
+<<<<<<< HEAD
 #define LINEAR
 
 uniform sampler2DRect depthMap;
+=======
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 uniform sampler2DRect normalMap;
 uniform sampler2DRect lightMap;
 
@@ -45,6 +48,7 @@ uniform vec2 gaussian;
 
 VARYING vec2 vary_fragcoord;
 
+<<<<<<< HEAD
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
 
@@ -79,6 +83,10 @@ vec3 decode_normal (vec2 enc)
     n.z = 1-f/2;
     return n;
 }
+=======
+vec4 getPosition(vec2 pos_screen);
+vec3 getNorm(vec2 pos_screen);
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 vec3 xxsrgb_to_linear(vec3 cl)
 {
@@ -103,6 +111,7 @@ vec3 xxlinear_to_srgb(vec3 cl)
 void main() 
 {
     vec2 tc = vary_fragcoord.xy;
+<<<<<<< HEAD
 	vec3 norm = texture2DRect(normalMap, tc).xyz;
 	norm = decode_normal(norm.xy); // unpack norm
 
@@ -177,13 +186,66 @@ void main()
 	}
 	
 	col /= defined_weight.xyyy;
+=======
+    vec3 norm = getNorm(tc);
+    vec3 pos = getPosition(tc).xyz;
+    vec4 ccol = texture2DRect(lightMap, tc).rgba;
+    
+    vec2 dlt = kern_scale * delta / (1.0+norm.xy*norm.xy);
+    dlt /= max(-pos.z*dist_factor, 1.0);
+    
+    vec2 defined_weight = kern[0].xy; // special case the first (centre) sample's weight in the blur; we have to sample it anyway so we get it for 'free'
+    vec4 col = defined_weight.xyxx * ccol;
+
+    // relax tolerance according to distance to avoid speckling artifacts, as angles and distances are a lot more abrupt within a small screen area at larger distances
+    float pointplanedist_tolerance_pow2 = pos.z*pos.z*0.00005;
+
+    // perturb sampling origin slightly in screen-space to hide edge-ghosting artifacts where smoothing radius is quite large
+    float tc_mod = 0.5*(tc.x + tc.y); // mod(tc.x+tc.y,2)
+    tc_mod -= floor(tc_mod);
+    tc_mod *= 2.0;
+    tc += ( (tc_mod - 0.5) * kern[1].z * dlt * 0.5 );
+
+    for (int i = 1; i < 4; i++)
+    {
+        vec2 samptc = tc + kern[i].z*dlt;
+        vec3 samppos = getPosition(samptc).xyz; 
+
+        float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
+        
+        if (d*d <= pointplanedist_tolerance_pow2)
+        {
+            col += texture2DRect(lightMap, samptc)*kern[i].xyxx;
+            defined_weight += kern[i].xy;
+        }
+    }
+
+    for (int i = 1; i < 4; i++)
+    {
+        vec2 samptc = tc - kern[i].z*dlt;
+        vec3 samppos = getPosition(samptc).xyz; 
+
+        float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
+        
+        if (d*d <= pointplanedist_tolerance_pow2)
+        {
+            col += texture2DRect(lightMap, samptc)*kern[i].xyxx;
+            defined_weight += kern[i].xy;
+        }
+    }
+
+    col /= defined_weight.xyxx;
+    col.y *= col.y;
+    
+    frag_color = col;
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	col.gba = xxlinear_to_srgb(col.gba);
 	frag_color = col.xyzw;
 	
 #ifdef IS_AMD_CARD
-	// If it's AMD make sure the GLSL compiler sees the arrays referenced once by static index. Otherwise it seems to optimise the storage awawy which leads to unfun crashes and artifacts.
-	vec3 dummy1 = kern[0];
-	vec3 dummy2 = kern[3];
+    // If it's AMD make sure the GLSL compiler sees the arrays referenced once by static index. Otherwise it seems to optimise the storage awawy which leads to unfun crashes and artifacts.
+    vec3 dummy1 = kern[0];
+    vec3 dummy2 = kern[3];
 #endif
 }

@@ -35,19 +35,12 @@ out vec4 frag_color;
 
 //class 1 -- no shadow, SSAO only
 
-uniform sampler2DRect depthMap;
 uniform sampler2DRect normalMap;
-uniform sampler2D noiseMap;
-
 
 // Inputs
-uniform float ssao_radius;
-uniform float ssao_max_radius;
-uniform float ssao_factor;
-uniform float ssao_factor_inv;
-
 VARYING vec2 vary_fragcoord;
 
+<<<<<<< HEAD
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
 
@@ -135,10 +128,18 @@ float calcAmbientOcclusion(vec4 pos, vec3 norm)
 	ret = max(ret, 0.0);
 	return min(ret, 1.0);
 }
+=======
+vec3 getNorm(vec2 pos_screen);
+vec4 getPosition(vec2 pos_screen);
+
+//calculate decreases in ambient lighting when crowded out (SSAO)
+float calcAmbientOcclusion(vec4 pos, vec3 norm, vec2 pos_screen);
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 void main() 
 {
 	vec2 pos_screen = vary_fragcoord.xy;
+<<<<<<< HEAD
 	vec4 pos = getPosition(pos_screen);
 	vec3 norm = texture2DRect(normalMap, pos_screen).xyz;
 	
@@ -150,6 +151,16 @@ void main()
 #else
 	frag_color[1] = 1.0;
 #endif
+=======
+	
+	//try doing an unproject here
+	
+	vec4 pos  = getPosition(pos_screen);
+	vec3 norm = getNorm(pos_screen);
+
+	frag_color[0] = 1.0;
+	frag_color[1] = calcAmbientOcclusion(pos, norm, pos_screen);
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	frag_color[2] = 1.0; 
 	frag_color[3] = 1.0;
 }

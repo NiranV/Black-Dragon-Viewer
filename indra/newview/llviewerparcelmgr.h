@@ -158,6 +158,7 @@ public:
 
 	//LLParcel *getParcelSelection() const;
 	LLParcel *getAgentParcel() const;
+    LLParcel *getAgentOrSelectedParcel() const;
 
 	BOOL	inAgentParcel(const LLVector3d &pos_global) const;
 
@@ -266,6 +267,7 @@ public:
 
 	// accessors for mAgentParcel
 	const std::string& getAgentParcelName() const;
+    const S32 getAgentParcelId() const;
 
 	// Create a landmark at the "appropriate" location for the
 	// currently selected parcel.
@@ -293,9 +295,13 @@ public:
 // [/SL:KB]
 	void onTeleportFinished(bool local, const LLVector3d& new_pos);
 	void onTeleportFailed();
+<<<<<<< HEAD
 // [SL:KB] - Patch: Appearance-TeleportAttachKill | Checked: Catznip-4.0
 	void onTeleportDone();
 // [/SL:KB]
+=======
+	bool getTeleportInProgress();
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	static BOOL isParcelOwnedByAgent(const LLParcel* parcelp, U64 group_proxy_power);
 	static BOOL isParcelModifiableByAgent(const LLParcel* parcelp, U64 group_proxy_power);

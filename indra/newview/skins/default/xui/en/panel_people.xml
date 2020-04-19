@@ -55,6 +55,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 	 value="[REGION](Double-click to teleport, shift-drag to pan)"/>
 	<string
 	 name="GroupCountWithInfo"
+<<<<<<< HEAD
 	 value="[COUNT] / 42 Groups"/>
 	<menu_bar
    height="18"
@@ -481,6 +482,9 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 	name="groupcount">
 	[COUNT] / [MAX_GROUPS] Groups
 	</text>
+=======
+	 value="You belong to [COUNT] groups, and can join [REMAINING] more.  [secondlife:/// Raise your limit]"/>
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
     <tab_container
      bottom="-10"
      follows="all"
@@ -939,6 +943,33 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
                      function="People.Group.Plus.Validate" />
                 </menu_button>-->
             </panel>
+<<<<<<< HEAD
+=======
+            <text
+                type="string"
+                length="1"
+                follows="left|top|right"
+                height="14"
+                layout="topleft"
+                right="-10"
+                top_pad="4"
+                left="3"
+                use_ellipses="true"
+                skip_link_underline="true"
+                name="groupcount">
+              You belong to [COUNT] groups, and can join [REMAINING] more.
+            </text>
+            <group_list
+             allow_select="true" 
+             follows="all"
+             height="388"
+             layout="topleft"
+             left="3"
+             keep_one_selected="false"
+             name="group_list"
+             right="-2"
+             top_pad="4" />
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
         </panel>
 
 <!-- ================================= RECENT tab =========================== -->

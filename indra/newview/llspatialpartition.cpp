@@ -55,11 +55,14 @@
 #include "llviewershadermgr.h"
 #include "llcontrolavatar.h"
 
+<<<<<<< HEAD
 //BD
 #include "lltoolmgr.h"
 
 //#pragma optimize("", off)
 
+=======
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 static LLTrace::BlockTimerStatHandle FTM_FRUSTUM_CULL("Frustum Culling");
 static LLTrace::BlockTimerStatHandle FTM_CULL_REBOUND("Cull Rebound Partition");
 
@@ -1094,6 +1097,11 @@ public:
 
 	virtual bool earlyFail(LLViewerOctreeGroup* base_group)
 	{
+        if (LLPipeline::sReflectionRender)
+        {
+            return false;
+        }
+
 		LLSpatialGroup* group = (LLSpatialGroup*)base_group;
 		group->checkOcclusion();
 

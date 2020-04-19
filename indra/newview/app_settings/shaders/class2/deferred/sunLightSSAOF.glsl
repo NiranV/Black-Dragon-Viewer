@@ -1,5 +1,5 @@
 /** 
- * @file sunLightSSAOF.glsl
+ * @file class2/deferred/sunLightSSAOF.glsl
  * $LicenseInfo:firstyear=2007&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2007, Linden Research, Inc.
@@ -34,27 +34,10 @@ out vec4 frag_color;
 
 //class 2 -- shadows and SSAO
 
-uniform sampler2DRect depthMap;
-uniform sampler2DRect normalMap;
-uniform sampler2DShadow shadowMap0;
-uniform sampler2DShadow shadowMap1;
-uniform sampler2DShadow shadowMap2;
-uniform sampler2DShadow shadowMap3;
-uniform sampler2DShadow shadowMap4;
-uniform sampler2DShadow shadowMap5;
-uniform sampler2D noiseMap;
-
-
 // Inputs
-uniform mat4 shadow_matrix[6];
-uniform vec4 shadow_clip;
-uniform float ssao_radius;
-uniform float ssao_max_radius;
-uniform float ssao_factor;
-uniform float ssao_factor_inv;
-
 VARYING vec2 vary_fragcoord;
 
+<<<<<<< HEAD
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
 uniform vec2 proj_shadow_res;
@@ -315,4 +298,23 @@ void main()
  
 	//frag_color.rgb = pos.xyz;
 	//frag_color.b = shadow;
+=======
+vec4 getPosition(vec2 pos_screen);
+vec3 getNorm(vec2 pos_screen);
+
+float sampleDirectionalShadow(vec3 shadow_pos, vec3 norm, vec2 pos_screen);
+float sampleSpotShadow(vec3 shadow_pos, vec3 norm, int index, vec2 pos_screen);
+float calcAmbientOcclusion(vec4 pos, vec3 norm, vec2 pos_screen);
+
+void main() 
+{
+    vec2 pos_screen = vary_fragcoord.xy;
+    vec4 pos  = getPosition(pos_screen);
+    vec3 norm = getNorm(pos_screen);
+
+    frag_color.r = sampleDirectionalShadow(pos.xyz, norm, pos_screen);
+    frag_color.g = calcAmbientOcclusion(pos, norm, pos_screen);
+    frag_color.b = sampleSpotShadow(pos.xyz, norm, 0, pos_screen);
+    frag_color.a = sampleSpotShadow(pos.xyz, norm, 1, pos_screen);
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 }

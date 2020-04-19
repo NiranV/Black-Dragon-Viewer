@@ -115,6 +115,23 @@ BOOL LLToolGun::handleHover(S32 x, S32 y, MASK mask)
 			LLVector3 skyward = gAgent.getReferenceUpVector();
 			gAgent.rotate(mouse_sensitivity * dx, skyward.mV[VX], skyward.mV[VY], skyward.mV[VZ]);
 
+<<<<<<< HEAD
+=======
+			if (gSavedSettings.getBOOL("MouseSun"))
+			{
+                LLVector3 sunpos = LLViewerCamera::getInstance()->getAtAxis();
+				gSky.setSunDirectionCFR(sunpos);
+				gSavedSettings.setVector3("SkySunDefaultPosition", LLViewerCamera::getInstance()->getAtAxis());
+			}
+
+            if (gSavedSettings.getBOOL("MouseMoon"))
+			{
+                LLVector3 moonpos = LLViewerCamera::getInstance()->getAtAxis();
+				gSky.setMoonDirectionCFR(moonpos);
+				gSavedSettings.setVector3("SkyMoonDefaultPosition", LLViewerCamera::getInstance()->getAtAxis());
+			}
+
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 			gViewerWindow->moveCursorToCenter();
 			gViewerWindow->hideCursor();
 		}

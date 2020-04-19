@@ -31,7 +31,6 @@
 
 // linden library includes
 #include "llclickaction.h"
-#include "lleconomy.h"
 #include "llerror.h"
 #include "llfontgl.h"
 #include "llflexibleobject.h"
@@ -327,9 +326,20 @@ void LLPanelVolume::getState( )
 	
 	if (is_light && editable && single_volume)
 	{
+<<<<<<< HEAD
 		mLightColorSwatch->setEnabled( TRUE );
 		mLightColorSwatch->setValid(TRUE);
 		mLightColorSwatch->set(volobjp->getLightBaseColor());
+=======
+		//mLabelColor		 ->setEnabled( TRUE );
+		LLColorSwatchCtrl* LightColorSwatch = getChild<LLColorSwatchCtrl>("colorswatch");
+		if(LightColorSwatch)
+		{
+			LightColorSwatch->setEnabled( TRUE );
+			LightColorSwatch->setValid( TRUE );
+			LightColorSwatch->set(volobjp->getLightSRGBBaseColor());
+		}
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 		mLightTextureCtrl->setEnabled(TRUE);
 		mLightTextureCtrl->setValid(TRUE);
@@ -355,7 +365,7 @@ void LLPanelVolume::getState( )
 		mLightFocus->setValue(params.mV[1]);
 		mLightAmbiance->setValue(params.mV[2]);
 
-		mLightSavedColor = volobjp->getLightColor();
+		mLightSavedColor = volobjp->getLightSRGBBaseColor();
 	}
 	else
 	{
@@ -608,7 +618,7 @@ void LLPanelVolume::refresh()
 		mRootObject = NULL;
 	}
 
-	BOOL visible = LLViewerShaderMgr::instance()->getVertexShaderLevel(LLViewerShaderMgr::SHADER_DEFERRED) > 0 ? TRUE : FALSE;
+	BOOL visible = LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_DEFERRED) > 0 ? TRUE : FALSE;
 
 	mLightFoV->setVisible(visible);
 	mLightFocus->setVisible(visible);
@@ -854,7 +864,7 @@ void LLPanelVolume::onLightSelectColor(const LLSD& data)
 	{
 		LLColor4	clr = LightColorSwatch->get();
 		LLColor3	clr3( clr );
-		volobjp->setLightColor(clr3);
+		volobjp->setLightSRGBColor(clr3);
 		mLightSavedColor = clr;
 	}
 }
@@ -923,7 +933,7 @@ void LLPanelVolume::onCommitLight( LLUICtrl* ctrl, void* userdata )
 	if(LightColorSwatch)
 	{
 		LLColor4	clr = LightColorSwatch->get();
-		volobjp->setLightColor(LLColor3(clr));
+		volobjp->setLightSRGBColor(LLColor3(clr));
 	}
 
 	LLTextureCtrl*	LightTextureCtrl = self->getChild<LLTextureCtrl>("light texture control");

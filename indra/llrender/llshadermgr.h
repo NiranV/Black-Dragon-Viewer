@@ -42,6 +42,7 @@ public:
 		PROJECTION_MATRIX,
 		INVERSE_PROJECTION_MATRIX,
 		MODELVIEW_PROJECTION_MATRIX,
+        INVERSE_MODELVIEW_MATRIX,
 		NORMAL_MATRIX,
 		TEXTURE_MATRIX0,
 		TEXTURE_MATRIX1,
@@ -80,10 +81,13 @@ public:
 		PROJECTOR_AMBIENT_LOD,
 		DIFFUSE_COLOR,
 		DIFFUSE_MAP,
+        ALTERNATE_DIFFUSE_MAP,
 		SPECULAR_MAP,
 		BUMP_MAP,
+        BUMP_MAP2,
 		ENVIRONMENT_MAP,
 		CLOUD_NOISE_MAP,
+        CLOUD_NOISE_MAP_NEXT,
 		FULLBRIGHT,
 		LIGHTNORM,
 		SUNLIGHT_COLOR,
@@ -138,6 +142,7 @@ public:
 		DEFERRED_SPOT_SHADOW_BIAS,
 		DEFERRED_SPOT_SHADOW_OFFSET,
 		DEFERRED_SUN_DIR,
+        DEFERRED_MOON_DIR,
 		DEFERRED_SHADOW_RES,
 		DEFERRED_PROJ_SHADOW_RES,
 		DEFERRED_DEPTH_CUTOFF,
@@ -175,6 +180,7 @@ public:
 		DEFERRED_BLOOM,
 		DEFERRED_PROJECTION,
 		DEFERRED_NORM_MATRIX,
+<<<<<<< HEAD
 
 //		//BD - Exodus Post Process
 		EXO_RENDER_GAMMA,
@@ -192,6 +198,9 @@ public:
 		GLOBAL_GAMMA,
 		TEXTURE_GAMMA,
 		
+=======
+		TEXTURE_GAMMA,		
+>>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		SPECULAR_COLOR,
 		ENVIRONMENT_INTENSITY,
 		
@@ -255,7 +264,38 @@ public:
 		TERRAIN_ALPHARAMP,
 		
 		SHINY_ORIGIN,
-DISPLAY_GAMMA,
+        DISPLAY_GAMMA,
+
+        INSCATTER_RT,
+        SUN_SIZE,
+        FOG_COLOR,
+
+        // precomputed textures
+        TRANSMITTANCE_TEX,
+        SCATTER_TEX,
+        SINGLE_MIE_SCATTER_TEX,
+        ILLUMINANCE_TEX,
+        BLEND_FACTOR,
+
+        NO_ATMO,
+        MOISTURE_LEVEL,
+        DROPLET_RADIUS,
+        ICE_LEVEL,
+        RAINBOW_MAP,
+        HALO_MAP,
+
+        MOON_BRIGHTNESS,
+
+        CLOUD_VARIANCE,
+
+        SH_INPUT_L1R,
+        SH_INPUT_L1G,
+        SH_INPUT_L1B,
+
+        SUN_MOON_GLOW_FACTOR,
+        WATER_EDGE_FACTOR,
+        SUN_UP_FACTOR,
+        MOONLIGHT_COLOR,
 		END_RESERVED_UNIFORMS
 	} eGLSLReservedUniforms;
 
@@ -266,6 +306,7 @@ DISPLAY_GAMMA,
 
 	BOOL attachShaderFeatures(LLGLSLShader * shader);
 	void dumpObjectLog(GLhandleARB ret, BOOL warns = TRUE, const std::string& filename = "");
+    void dumpShaderSource(U32 shader_code_count, GLcharARB** shader_code_text);
 	BOOL	linkProgramObject(GLhandleARB obj, BOOL suppress_errors = FALSE);
 	BOOL	validateProgramObject(GLhandleARB obj);
 	GLhandleARB loadShaderFile(const std::string& filename, S32 & shader_level, GLenum type, boost::unordered_map<std::string, std::string>* defines = NULL, S32 texture_index_channels = -1);
@@ -278,7 +319,8 @@ DISPLAY_GAMMA,
 
 public:
 	// Map of shader names to compiled
-	std::map<std::string, GLhandleARB> mShaderObjects;
+    std::map<std::string, GLhandleARB> mVertexShaderObjects;
+    std::map<std::string, GLhandleARB> mFragmentShaderObjects;
 
 	//global (reserved slot) shader parameters
 	std::vector<std::string> mReservedAttribs;
